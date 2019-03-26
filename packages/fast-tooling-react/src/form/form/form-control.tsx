@@ -235,6 +235,9 @@ class FormControl extends React.Component<FormControlProps, FormControlState> {
             default: get(this.props, "schema.default"),
             badge: get(this.props, "schema.badge"),
             badgeDescription: get(this.props, "schema.badgeDescription"),
+            invalidMessage: this.props.invalidMessage,
+            displayValidationBrowserDefault: this.props.displayValidationBrowserDefault,
+            displayValidationInline: this.props.displayValidationInline,
         };
     }
 }

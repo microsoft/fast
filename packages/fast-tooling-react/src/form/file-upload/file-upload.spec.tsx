@@ -17,6 +17,7 @@ const fileUploadProps: CustomFormItemComponent = {
     required: false,
     label: "",
     onChange: jest.fn(),
+    invalidMessage: "",
 };
 
 describe("FileUpload", () => {

@@ -4,9 +4,11 @@ import {
     accent,
     applyCleanListStyle,
     applyControl,
+    applyControlRegion,
     applyControlWrapper,
     applyFormItemBadge,
     applyGlobalStyle,
+    applyInvalidMessage,
     applyLabelRegionStyle,
     applyLabelStyle,
     applyRemoveItemStyle,
@@ -74,6 +76,9 @@ const styles: ComponentStyles<FormItemArrayClassNameContract, {}> = {
         ...applyLabelRegionStyle(),
         width: "calc(100% - 30px)",
     },
+    formItemArray_controlRegion: {
+        ...applyControlRegion(),
+    },
     formItemArray_existingItemList: {
         ...applyCleanListStyle(),
         fontSize: "12px",
@@ -108,6 +113,9 @@ const styles: ComponentStyles<FormItemArrayClassNameContract, {}> = {
     formItemArray_existingItemRemoveButton: {
         ...applyRemoveItemStyle(),
         cursor: "pointer",
+    },
+    formItemArray_invalidMessage: {
+        ...applyInvalidMessage(),
     },
 };
 

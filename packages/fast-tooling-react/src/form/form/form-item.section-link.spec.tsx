@@ -18,6 +18,7 @@ const formItemSectionLinkProps: FormItemSectionLinkProps = {
     label: "",
     onChange: jest.fn(),
     onUpdateSection: jest.fn(),
+    invalidMessage: "",
 };
 
 describe("NumberField", () => {
@@ -115,5 +116,30 @@ describe("NumberField", () => {
 
         expect(handleChange).toHaveBeenCalledTimes(2);
         expect(handleChange.mock.calls[1][1]).toBe(data);
+    });
+    test("should not show an invalid message inline if `invalidMessage` is passed and `displayValidationInline` is undefined", () => {
+        const invalidMessage: string = "Foo";
+        const rendered: any = mount(
+            <FormItemSectionLink
+                {...formItemSectionLinkProps}
+                data={"foo"}
+                invalidMessage={invalidMessage}
+            />
+        );
+
+        expect(rendered.html().includes(invalidMessage)).toBe(false);
+    });
+    test("should show an invalid message inline if `invalidMessage` is passed and `displayValidationInline` is true", () => {
+        const invalidMessage: string = "Foo";
+        const rendered: any = mount(
+            <FormItemSectionLink
+                {...formItemSectionLinkProps}
+                data={"foo"}
+                invalidMessage={invalidMessage}
+                displayValidationInline={true}
+            />
+        );
+
+        expect(rendered.html().includes(invalidMessage)).toBe(true);
     });
 });

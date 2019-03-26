@@ -1,10 +1,12 @@
 import { ComponentStyles } from "@microsoft/fast-jss-manager";
 import {
     applyControl,
+    applyControlRegion,
     applyControlWrapper,
     applyFormItemBadge,
     applyFormItemDisabled,
     applyInputStyle,
+    applyInvalidMessage,
     applyLabelRegionStyle,
     applyLabelStyle,
     applySoftRemove,
@@ -14,7 +16,6 @@ import { FormItemNumberFieldClassNameContract } from "./form-item.number-field.p
 
 const styles: ComponentStyles<FormItemNumberFieldClassNameContract, {}> = {
     formItemNumberField: {
-        display: "flex",
         ...applyControlWrapper(),
     },
     formItemNumberField__disabled: {
@@ -25,6 +26,9 @@ const styles: ComponentStyles<FormItemNumberFieldClassNameContract, {}> = {
     },
     formItemNumberField_control: {
         ...applyControl(),
+    },
+    formItemNumberField_controlRegion: {
+        ...applyControlRegion(),
     },
     formItemNumberField_controlLabel: {
         ...applyLabelStyle(),
@@ -41,6 +45,9 @@ const styles: ComponentStyles<FormItemNumberFieldClassNameContract, {}> = {
     },
     formItemNumberField_softRemoveInput: {
         ...applySoftRemoveInput(),
+    },
+    formItemNumberField_invalidMessage: {
+        ...applyInvalidMessage(),
     },
 };
 

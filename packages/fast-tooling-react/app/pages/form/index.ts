@@ -1,5 +1,6 @@
 export interface ExampleComponent {
     schema: any;
+    data?: any;
 }
 
 import TextareaSchema from "../../../src/__tests__/schemas/textarea.schema.json";
@@ -66,4 +67,12 @@ import BadgeSchema from "../../../src/__tests__/schemas/badge.schema.json";
 
 export const badge: ExampleComponent = {
     schema: BadgeSchema,
+};
+
+import InvalidDataSchema from "../../../src/__tests__/schemas/invalid-data.schema.json";
+import InvalidDataDataSet from "../../../src/__tests__/datasets/invalid-data";
+
+export const invalidData: ExampleComponent = {
+    schema: InvalidDataSchema,
+    data: InvalidDataDataSet,
 };

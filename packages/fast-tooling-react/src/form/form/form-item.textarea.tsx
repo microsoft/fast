@@ -22,42 +22,55 @@ class FormItemTextarea extends FormItemBase<
     public render(): JSX.Element {
         return (
             <div className={this.generateClassNames()}>
-                <div className={this.props.managedClasses.formItemTextarea_control}>
-                    <div
-                        className={get(
-                            this.props,
-                            "managedClasses.formItemTextarea_controlLabelRegion"
-                        )}
-                    >
-                        <label
-                            htmlFor={this.props.dataLocation}
-                            className={
-                                this.props.managedClasses.formItemTextarea_controlLabel
-                            }
+                <div className={this.props.managedClasses.formItemTextarea_controlRegion}>
+                    <div className={this.props.managedClasses.formItemTextarea_control}>
+                        <div
+                            className={get(
+                                this.props,
+                                "managedClasses.formItemTextarea_controlLabelRegion"
+                            )}
                         >
-                            {this.props.label}
-                        </label>
-                        {this.renderBadge(
-                            get(this.props, "managedClasses.formItemTextarea_badge")
+                            <label
+                                htmlFor={this.props.dataLocation}
+                                className={
+                                    this.props.managedClasses
+                                        .formItemTextarea_controlLabel
+                                }
+                            >
+                                {this.props.label}
+                            </label>
+                            {this.renderBadge(
+                                get(this.props, "managedClasses.formItemTextarea_badge")
+                            )}
+                        </div>
+                        <textarea
+                            className={
+                                this.props.managedClasses.formItemTextarea_controlTextarea
+                            }
+                            id={this.props.dataLocation}
+                            name={this.props.dataLocation}
+                            rows={
+                                typeof this.props.rows === "number" ? this.props.rows : 3
+                            }
+                            value={this.props.data || ""}
+                            onChange={this.handleChange}
+                            disabled={this.props.disabled}
+                            ref={this.textAreaRef}
+                            onFocus={this.reportValidity}
+                            onBlur={this.updateValidity}
+                        />
+                    </div>
+                    <div
+                        className={this.props.managedClasses.formItemTextarea_softRemove}
+                    >
+                        {this.renderSoftRemove(
+                            this.props.managedClasses.formItemTextarea_softRemoveInput
                         )}
                     </div>
-                    <textarea
-                        className={
-                            this.props.managedClasses.formItemTextarea_controlTextarea
-                        }
-                        id={this.props.dataLocation}
-                        name={this.props.dataLocation}
-                        rows={typeof this.props.rows === "number" ? this.props.rows : 3}
-                        value={this.props.data || ""}
-                        onChange={this.handleChange}
-                        disabled={this.props.disabled}
-                    />
                 </div>
-                <div className={this.props.managedClasses.formItemTextarea_softRemove}>
-                    {this.renderSoftRemove(
-                        this.props.managedClasses.formItemTextarea_softRemoveInput
-                    )}
-                </div>
+                {this.renderInvalidMessage(
+                    get(this.props, "managedClasses.formItemTextarea_invalidMessage")
+                )}
             </div>
         );
     }

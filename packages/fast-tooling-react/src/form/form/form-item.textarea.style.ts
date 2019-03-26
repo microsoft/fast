@@ -1,21 +1,26 @@
 import { ComponentStyles } from "@microsoft/fast-jss-manager";
 import {
     applyControl,
+    applyControlRegion,
     applyControlWrapper,
     applyFormItemBadge,
     applyFormItemDisabled,
     applyInputStyle,
+    applyInvalidMessage,
     applyLabelRegionStyle,
     applyLabelStyle,
     applySoftRemove,
     applySoftRemoveInput,
+    error,
 } from "../../style";
 import { FormItemTextareaClassNameContract } from "./form-item.textarea.props";
 
 const styles: ComponentStyles<FormItemTextareaClassNameContract, {}> = {
     formItemTextarea: {
-        display: "flex",
         ...applyControlWrapper(),
+    },
+    formItemTextarea_invalidMessage: {
+        ...applyInvalidMessage(),
     },
     formItemTextarea__disabled: {
         ...applyFormItemDisabled(),
@@ -25,6 +30,9 @@ const styles: ComponentStyles<FormItemTextareaClassNameContract, {}> = {
     },
     formItemTextarea_control: {
         ...applyControl(),
+    },
+    formItemTextarea_controlRegion: {
+        ...applyControlRegion(),
     },
     formItemTextarea_controlLabel: {
         ...applyLabelStyle(),

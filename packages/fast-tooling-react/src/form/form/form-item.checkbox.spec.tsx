@@ -16,6 +16,7 @@ const checkboxProps: FormItemCommon = {
     required: false,
     label: "",
     onChange: jest.fn(),
+    invalidMessage: "",
 };
 
 describe("Checkbox", () => {
@@ -98,5 +99,25 @@ describe("Checkbox", () => {
 
         expect(handleChange).toHaveBeenCalledTimes(2);
         expect(handleChange.mock.calls[1][1]).toBe(data);
+    });
+    test("should not show an invalid message inline if `invalidMessage` is passed and `displayValidationInline` is undefined", () => {
+        const invalidMessage: string = "Foo";
+        const rendered: any = mount(
+            <Checkbox {...checkboxProps} invalidMessage={invalidMessage} />
+        );
+
+        expect(rendered.html().includes(invalidMessage)).toBe(false);
+    });
+    test("should show an invalid message inline if `invalidMessage` is passed and `displayValidationInline` is true", () => {
+        const invalidMessage: string = "Foo";
+        const rendered: any = mount(
+            <Checkbox
+                {...checkboxProps}
+                invalidMessage={invalidMessage}
+                displayValidationInline={true}
+            />
+        );
+
+        expect(rendered.html().includes(invalidMessage)).toBe(true);
     });
 });

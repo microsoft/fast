@@ -8,7 +8,7 @@ import {
     mapSchemaLocationFromDataLocation,
     normalizeDataLocation,
 } from "../../data-utilities/location";
-import ajv from "ajv";
+import ajv, { ErrorObject, ValidationError } from "ajv";
 import {
     AttributeSettingsMappingToPropertyNames,
     FormOrderByPropertyNamesCategories,
@@ -104,7 +104,7 @@ export function getInitialOneOfAnyOfState(
  * Validate a schema against a set of data
  */
 export function validateSchema(schema: any, data: any): boolean | PromiseLike<any> {
-    const validation: ajv.Ajv = new ajv({ schemaId: "auto" });
+    const validation: ajv.Ajv = new ajv({ schemaId: "auto", allErrors: true });
     return validation.validate(schema, data) || false;
 }
 
@@ -580,6 +580,7 @@ export interface NavigationItem {
     title: string;
     data: any;
     schema: any;
+    invalidMessage?: ValidationError;
 }
 
 export interface NavigationItem {
@@ -890,4 +891,42 @@ export function getComponentByDataLocation(
     const childOption: FormChildOptionItem = getChildOptionBySchemaId(id, childOptions);
 
     return childOption ? childOption.component : null;
+}
+
+/**
+ * Gets the validation error message using a data location
+ */
+export function getErrorFromDataLocation(
+    dataLocation: string,
+    validationErrors: ErrorObject[] | void
+): string {
+    let error: string = "";
+
+    if (Array.isArray(validationErrors)) {
+        validationErrors.forEach(
+            (validationError: ErrorObject): void => {
+                const matchingDataLocationToDataPath: string =
+                    dataLocation === "" ? dataLocation : `.${dataLocation}`;
+
+                if (matchingDataLocationToDataPath === validationError.dataPath) {
+                    error = validationError.message;
+                } else if (validationError.keyword === "required") {
+                    const dataLocationItems: string[] = matchingDataLocationToDataPath.split(
+                        "."
+                    );
+
+                    if (
+                        dataLocationItems.slice(0, -1).join(".") ===
+                            validationError.dataPath &&
+                        get(validationError, "params.missingProperty") ===
+                            dataLocationItems[dataLocationItems.length - 1]
+                    ) {
+                        error = validationError.message;
+                    }
+                }
+            }
+        );
+    }
+
+    return error;
 }

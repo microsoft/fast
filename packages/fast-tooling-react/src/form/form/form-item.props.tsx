@@ -59,6 +59,21 @@ export default interface FormItemCommon {
      * The badge description which is used as an HTML title
      */
     badgeDescription?: string;
+
+    /**
+     * The validation message if the form item is invalid
+     */
+    invalidMessage: string;
+
+    /**
+     * Display the validation inline
+     */
+    displayValidationInline?: boolean;
+
+    /**
+     * Display the validation as browser default tooltips
+     */
+    displayValidationBrowserDefault?: boolean;
 }
 
 export interface CustomFormItemComponent extends FormItemCommon {

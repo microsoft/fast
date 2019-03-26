@@ -29,6 +29,7 @@ The tooling available in FAST Tooling React can be used together to create UI fo
     - [Using form plugins](#using-form-plugins)
     - [React children as options](#react-children-as-options)
     - [Controlling the visible section](#controlling-the-visible-section)
+    - [Validation](#validation)
     - [JSON schema metadata](#json-schema-metadata)
         - [Title](#title)
         - [Disabled](#disabled)
@@ -815,6 +816,10 @@ handleChange = (dataLocation) => {
     });
 }
 ```
+
+### Validation
+
+Form validation uses the [ajv](https://github.com/epoberezkin/ajv) package. The validation can be displayed inline or using the browser default HTML5 validation UI. This can be achieved through the `displayValidationBrowserDefault` which is `true` by default and `displayValidationInline` which will show validation messages below the associated form element.
 
 ### JSON schema metadata
 

@@ -19,6 +19,7 @@ const formSectionProps: FormSectionProps = {
     untitled: "",
     onChange: jest.fn(),
     onUpdateActiveSection: jest.fn(),
+    validationErrors: null,
 };
 
 describe("FormSection", () => {

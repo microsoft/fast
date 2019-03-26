@@ -4,16 +4,19 @@ import {
     applyControlSingleLineWrapper,
     applyFormItemBadge,
     applyFormItemDisabled,
+    applyInvalidMessage,
     applyLabelStyle,
     applySoftRemove,
     applySoftRemoveInput,
+    error,
     foreground300,
     foreground800,
     insetStrongBoxShadow,
 } from "../../style";
 
 const styles: ComponentStyles<FormItemCheckboxClassNameContract, {}> = {
-    formItemCheckbox: {
+    formItemCheckbox: {},
+    formItemCheckbox_control: {
         ...applyControlSingleLineWrapper(),
         position: "relative",
     },
@@ -75,6 +78,12 @@ const styles: ComponentStyles<FormItemCheckboxClassNameContract, {}> = {
                 },
             },
         },
+        "&:invalid": {
+            borderColor: error,
+        },
+    },
+    formItemCheckbox_invalidMessage: {
+        ...applyInvalidMessage(),
     },
     formItemCheckbox_softRemove: {
         ...applySoftRemove(),

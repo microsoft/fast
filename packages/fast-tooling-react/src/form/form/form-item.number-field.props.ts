@@ -13,6 +13,8 @@ export interface FormItemNumberFieldClassNameContract {
     formItemNumberField__disabled?: string;
     formItemNumberField_softRemove?: string;
     formItemNumberField_softRemoveInput?: string;
+    formItemNumberField_invalidMessage?: string;
+    formItemNumberField_controlRegion?: string;
 }
 
 export interface FormItemNumberFieldProps extends FormItemCommon {

@@ -10,6 +10,7 @@ import {
     background300,
     background800,
     disabledOpacity,
+    error,
     foreground200,
     foreground300,
     foreground800,
@@ -126,6 +127,9 @@ export function applySelectInputStyles(): CSSRules<{}> {
         "&:focus": {
             ...insetStrongBoxShadow(accent),
         },
+        "&:invalid": {
+            border: `1px solid ${error}`,
+        },
     };
 }
 
@@ -190,6 +194,9 @@ export function applyInputStyle(): CSSRules<{}> {
         },
         "&:focus": {
             ...insetStrongBoxShadow(accent),
+        },
+        "&:invalid": {
+            border: `1px solid ${error}`,
         },
     };
 }
@@ -280,12 +287,19 @@ export function applyControl(): CSSRules<{}> {
     };
 }
 
+export function applyControlRegion(): CSSRules<{}> {
+    return {
+        display: "flex",
+        width: "100%",
+        position: "relative",
+    };
+}
+
 export function applySoftRemove(): CSSRules<{}> {
     return {
         display: "flex",
         height: "23px",
         minWidth: "30px",
-        position: "relative",
         justifyContent: "center",
         alignItems: "center",
     };
@@ -312,5 +326,14 @@ export function applySoftRemoveInput(): CSSRules<{}> {
         "&:disabled + svg": {
             opacity: `${disabledOpacity}`,
         },
+    };
+}
+
+export function applyInvalidMessage(): CSSRules<{}> {
+    return {
+        color: error,
+        fontSize: "11px",
+        marginRight: "10px",
+        ...ellipsis(),
     };
 }

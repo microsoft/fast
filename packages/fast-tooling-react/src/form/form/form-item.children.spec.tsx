@@ -48,6 +48,7 @@ const childrenProps: FormItemChildrenProps = {
     data: undefined,
     onChange: jest.fn(),
     onUpdateActiveSection: jest.fn(),
+    invalidMessage: "",
 };
 
 /* tslint:disable:no-string-literal */

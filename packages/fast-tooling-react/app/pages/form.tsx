@@ -25,6 +25,8 @@ export interface FormTestPageState {
     showExtendedControls: boolean;
     dataLocation: string;
     controlled: ControlledState;
+    defaultBrowserErrors?: boolean;
+    inlineErrors?: boolean;
 }
 
 export interface Option {
@@ -76,29 +78,26 @@ class FormTestPage extends React.Component<{}, FormTestPageState> {
         this.state = {
             schema: testConfigs.textField.schema,
             data: exampleData,
-            orderByPropertyNames: void 0,
-            attributeAssignment: void 0,
             onChange: this.onChange,
             showExtendedControls: false,
             dataLocation: "",
             controlled: ControlledState.uncontrolled,
+            inlineErrors: void 0,
+            defaultBrowserErrors: void 0,
         };
     }
 
     public render(): JSX.Element {
         return (
             <DesignSystemProvider designSystem={designSystemDefaults}>
-                <div
-                    style={{
-                        fontFamily:
-                            "Segoe UI, SegoeUI, Helvetica Neue, Helvetica, Arial, sans-serif",
-                    }}
-                >
+                <div>
                     <div
                         style={{
                             width: "250px",
                             height: "100vh",
                             float: "left",
+                            fontFamily:
+                                "Segoe UI, SegoeUI, Helvetica Neue, Helvetica, Arial, sans-serif",
                         }}
                     >
                         <Form {...this.coerceFormProps()} />
@@ -129,6 +128,26 @@ class FormTestPage extends React.Component<{}, FormTestPageState> {
                             <select onChange={this.handleComponentUpdate}>
                                 {this.getComponentOptions()}
                             </select>
+                            <br />
+                            <br />
+                            <input
+                                id={"showInlineErrors"}
+                                type="checkbox"
+                                value={(!!this.state.inlineErrors).toString()}
+                                onChange={this.handleShowInlineErrors}
+                            />
+                            <label htmlFor={"showInlineErrors"}>Show inline errors</label>
+                            <br />
+                            <input
+                                id={"showBrowserErrors"}
+                                type="checkbox"
+                                value={(!!this.state.defaultBrowserErrors).toString()}
+                                onChange={this.handleShowBrowserErrors}
+                            />
+                            <label htmlFor={"showBrowserErrors"}>
+                                Show default browser errors
+                            </label>
+                            <br />
                         </div>
                         <pre
                             style={{
@@ -186,6 +205,14 @@ class FormTestPage extends React.Component<{}, FormTestPageState> {
             childOptions: this.childOptions,
         };
 
+        if (typeof this.state.defaultBrowserErrors === "boolean") {
+            formProps.displayValidationBrowserDefault = this.state.defaultBrowserErrors;
+        }
+
+        if (typeof this.state.inlineErrors === "boolean") {
+            formProps.displayValidationInline = this.state.inlineErrors;
+        }
+
         if (this.state.controlled === ControlledState.uncontrolled) {
             return formProps;
         } else {
@@ -200,6 +227,30 @@ class FormTestPage extends React.Component<{}, FormTestPageState> {
             };
         }
     }
+
+    private handleShowInlineErrors = (e: React.ChangeEvent<HTMLInputElement>): void => {
+        if (e.target.value === "true") {
+            this.setState({
+                inlineErrors: false,
+            });
+        } else {
+            this.setState({
+                inlineErrors: true,
+            });
+        }
+    };
+
+    private handleShowBrowserErrors = (e: React.ChangeEvent<HTMLInputElement>): void => {
+        if (e.target.value === "true") {
+            this.setState({
+                defaultBrowserErrors: false,
+            });
+        } else {
+            this.setState({
+                defaultBrowserErrors: true,
+            });
+        }
+    };
 
     /**
      * Handles the change in schema
@@ -248,14 +299,12 @@ class FormTestPage extends React.Component<{}, FormTestPageState> {
     };
 
     private handleComponentUpdate = (e: React.ChangeEvent<HTMLSelectElement>): void => {
-        const exampleData: any = getDataFromSchema(testConfigs[e.target.value].schema);
-
         this.setState({
             schema: testConfigs[e.target.value].schema,
             config: testConfigs[e.target.value].config,
-            data: exampleData,
-            orderByPropertyNames: testConfigs[e.target.value].weight,
-            attributeAssignment: testConfigs[e.target.value].attributeAssignment,
+            data:
+                testConfigs[e.target.value].data ||
+                getDataFromSchema(testConfigs[e.target.value].schema),
         });
     };
 

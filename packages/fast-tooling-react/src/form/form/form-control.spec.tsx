@@ -29,6 +29,7 @@ const formControlProps: FormControlProps = {
     childOptions: [],
     onUpdateActiveSection: null,
     onChange: null,
+    invalidMessage: "",
 };
 
 describe("FormControl", () => {
