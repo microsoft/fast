@@ -18,8 +18,8 @@ const srcSidebar = path.join("website", "sidebars.json");
 var dryRun = false;
 var sidebarEntries = [];
 
-var totalDocs;
-var updatedDocs = 0;
+var totalDocsCount;
+var updatedDocsCount = 0;
 
 /**
  * Determine if a dry run will be executed based off --dry-run argument being present
@@ -51,7 +51,7 @@ function copyReadmeFiles() {
     dryRun ? console.log(`In ${destDir}, this script would...`) : console.log(`In ${destDir}...`);
 
     fs.readdir('packages', (err, files) => {
-        totalDocs = files.length;
+        totalDocsCount = files.length;
     });
 
     createDirectory(destDir);
@@ -64,7 +64,7 @@ function copyReadmeFiles() {
             sidebarEntries.push(`en/packages/${lastSrcDir}/index`);
         });
 
-        console.log(chalk.green(`${updatedDocs} of ${totalDocs} package readme.md files updated`));
+        console.log(chalk.green(`${updatedDocsCount} of ${totalDocsCount} package readme.md files updated`));
         updateSidebar();
        
     });
@@ -115,7 +115,7 @@ function createDestReadme(srcReadmePath) {
         try {
             fs.writeFileSync(destReadmePath, docusaurusHeader);
             fs.appendFileSync(destReadmePath, srcReadmeText);
-            updatedDocs++;
+            updatedDocsCount++;
             console.log(`...${folderName} was succesfully updated`);
         } catch (err) {
             console.log(chalk.red(err));
