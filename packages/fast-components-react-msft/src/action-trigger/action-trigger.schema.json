@@ -30,13 +30,26 @@
         "children": {
             "title": "Children",
             "type": "children",
-            "formPluginId": "@microsoft/fast-components-react-msft/action-trigger/children"
+            "formPluginId": "@microsoft/fast-components-react-msft/action-trigger/children",
+            "examples": [
+                "Lorem ipsum"
+            ]
         },
         "glyph": {
             "title": "Glyph",
             "type": "children",
             "pluginId": "@microsoft/fast-components-react-msft/action-trigger/glyph",
-            "formPluginId": "@microsoft/fast-components-react-msft/action-trigger/glyph"
+            "formPluginId": "@microsoft/fast-components-react-msft/action-trigger/glyph",
+            "examples": [
+                {
+                    "id": "svg-svg-element",
+                    "props": {}
+                }
+            ]
         }
-    }
+    },
+    "required": [
+        "children",
+        "glyph"
+    ]
 }

@@ -14,7 +14,10 @@
     "reactProperties": {
         "children": {
             "title": "Children",
-            "type": "children"
+            "type": "children",
+            "examples": [
+                "Lorem"
+            ]
         },
         "separator": {
             "title": "Separator",
@@ -25,5 +28,8 @@
                 "text"
             ]
         }
-    }
+    },
+    "required": [
+        "children"
+    ]
 }

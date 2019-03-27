@@ -39,7 +39,13 @@
             "formPluginId": "@microsoft/fast-components-react-msft/heading/children",
             "defaults": [
                 "text"
+            ],
+            "examples": [
+                "Lorem ipsum sit amet"
             ]
         }
-    }
+    },
+    "required": [
+        "children"
+    ]
 }

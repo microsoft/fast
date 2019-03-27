@@ -27,7 +27,13 @@
             "formPluginId": "@microsoft/fast-components-react-msft/label/children",
             "defaults": [
                 "text"
+            ],
+            "examples": [
+                "Lorem ipsum"
             ]
         }
-    }
+    },
+    "required": [
+        "label"
+    ]
 }

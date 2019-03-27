@@ -45,7 +45,13 @@
             "formPluginId": "@microsoft/fast-components-react-msft/typography/children",
             "defaults": [
                 "text"
+            ],
+            "examples": [
+                "Lorem ipsum sit amet"
             ]
         }
-    }
+    },
+    "required": [
+        "children"
+    ]
 }
