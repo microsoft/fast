@@ -3,14 +3,26 @@ import {
     ManagedClasses,
     SliderClassNameContract,
 } from "@microsoft/fast-components-class-name-contracts-base";
-import { SliderState } from "./slider";
+import { SliderState, SliderThumb } from "./slider";
 
 export interface SliderManagedClasses extends ManagedClasses<SliderClassNameContract> {}
-export interface SliderUnhandledProps extends React.AllHTMLAttributes<HTMLElement> {}
+export interface SliderUnhandledProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export enum SliderOrientation {
     horizontal = "horizontal",
     vertical = "vertical",
+}
+
+export enum SliderMode {
+    singleValue = "singleValue",
+    adustUpperValue = "adustUpperValue",
+    adustLowerValue = "adjustLowerValue",
+    adjustBoth = "adjustBoth",
+}
+
+export interface SliderRange {
+    minValue: number;
+    maxValue: number;
 }
 
 export interface SliderHandledProps extends SliderManagedClasses {
@@ -20,49 +32,55 @@ export interface SliderHandledProps extends SliderManagedClasses {
     orientation?: SliderOrientation;
 
     /**
+     * The slider mode
+     */
+    mode?: SliderMode;
+
+    /**
      * Custom function to render the thumb of the control
      */
     thumb?: (
         props: SliderProps,
         state: SliderState,
         mouseDownCallback: (event: React.MouseEvent) => void,
-        keyDownCallback: (event: React.KeyboardEvent) => void
+        keyDownCallback: (event: React.KeyboardEvent) => void,
+        thumb: SliderThumb
     ) => React.ReactNode;
 
     /**
      * The initial value of the slider
      */
-    initialValue?: number;
+    initialValue?: number | SliderRange;
 
     /**
-     * The initial value of the slider
+     * The total range of values represented in the slider
      */
-    min?: number;
+    range?: SliderRange;
 
     /**
-     * The initial value of the slider
+     * Constrains the slider to a subset of the whole bar
      */
-    max?: number;
+    constrainedRange?: SliderRange;
 
     /**
-     * The initial value of the slider
+     * Contrains the slider to a particular value increments
      */
     step?: number;
 
     /**
-     * The initial value of the slider
+     * The amount added/subtracted to the current value per page up/down keystroke
      */
     pageStep?: number;
 
     /**
      * The value of the slider (controlled mode)
      */
-    value?: number;
+    value?: number | SliderRange;
 
     /**
      * The onValueChange event handler
      */
-    onValueChange?: (newValue: number) => void;
+    onValueChange?: (newValue: number | SliderRange) => void;
 
     /**
      * The children

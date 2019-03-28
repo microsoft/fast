@@ -21,7 +21,7 @@
         "mode": {
             "title": "Mode",
             "type": "string",
-            "default": "adustUpperValue",
+            "default": "singleValue",
             "enum": [
                 "singleValue",
                 "adustUpperValue",

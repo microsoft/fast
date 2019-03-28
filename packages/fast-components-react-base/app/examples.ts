@@ -61,6 +61,9 @@ export { SelectExamples };
 import SliderExamples from "../src/slider/examples.data";
 export { SliderExamples };
 
+import SliderTrackItemExamples from "../src/slider-track-item/examples.data";
+export { SliderTrackItemExamples };
+
 import TabsExamples from "../src/tabs/examples.data";
 export { TabsExamples };
 
