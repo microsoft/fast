@@ -26,6 +26,9 @@ root.setAttribute("id", "root");
 document.body.appendChild(root);
 
 function render(): void {
+    const renderColumnA: boolean = true;
+    const renderColumnB: boolean = false;
+
     ReactDOM.render(
         <React.Fragment>
             <Container>
@@ -62,6 +65,26 @@ function render(): void {
                                     row={[4, 3, 3, 2]}
                                     position={[1, 1, 1, 9]}
                                 />
+                                {renderColumnA && (
+                                    <Column
+                                        jssStyleSheet={columnTestStyles}
+                                        span={[12, 12, 12, 4]}
+                                        row={[4, 3, 3, 2]}
+                                        position={[1, 1, 1, 9]}
+                                    >
+                                        A
+                                    </Column>
+                                )}
+                                {renderColumnB && (
+                                    <Column
+                                        jssStyleSheet={columnTestStyles}
+                                        span={[12, 12, 12, 4]}
+                                        row={[4, 3, 3, 2]}
+                                        position={[1, 1, 1, 9]}
+                                    >
+                                        B
+                                    </Column>
+                                )}
                             </Grid>
                         </Page>
                     </Canvas>

@@ -165,7 +165,11 @@ export class Grid extends Foundation<GridHandledProps, GridUnhandledProps, {}> {
         return React.Children.map(
             this.props.children,
             (child: React.ReactNode | React.ReactNode[]) => {
-                if ((child as any).type !== Column || (child as any).props.gutter) {
+                if (
+                    !child ||
+                    (child as any).type !== Column ||
+                    (child as any).props.gutter
+                ) {
                     return child;
                 }
 
