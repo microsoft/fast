@@ -104,6 +104,34 @@ describe("NumberField", () => {
         expect(handleChange).toHaveBeenCalledTimes(2);
         expect(handleChange.mock.calls[1][1]).toBe(data);
     });
+    test("should be invalid if an invalid message is passed", () => {
+        const invalidMessage: string = "Foo";
+        const rendered: any = mount(
+            <NumberField {...numberFieldProps} invalidMessage={invalidMessage} />
+        );
+
+        expect(
+            rendered
+                .find("input")
+                .at(0)
+                .getDOMNode()
+                .checkValidity()
+        ).toBe(false);
+    });
+    test("should not be invalid if an invalid message is passed as an empty string", () => {
+        const invalidMessage: string = "";
+        const rendered: any = mount(
+            <NumberField {...numberFieldProps} invalidMessage={invalidMessage} />
+        );
+
+        expect(
+            rendered
+                .find("input")
+                .at(0)
+                .getDOMNode()
+                .checkValidity()
+        ).toBe(true);
+    });
     test("should not show an invalid message inline if `invalidMessage` is passed and `displayValidationInline` is undefined", () => {
         const invalidMessage: string = "Foo";
         const rendered: any = mount(
@@ -123,5 +151,22 @@ describe("NumberField", () => {
         );
 
         expect(rendered.html().includes(invalidMessage)).toBe(true);
+    });
+    test("should update an invalid message if the invalid message is updated", () => {
+        const invalidMessage1: string = "Foo";
+        const invalidMessage2: string = "Bar";
+        const rendered: any = mount(
+            <NumberField
+                {...numberFieldProps}
+                invalidMessage={invalidMessage1}
+                displayValidationInline={true}
+            />
+        );
+
+        expect(rendered.html().includes(invalidMessage1)).toBe(true);
+
+        rendered.setProps({ invalidMessage: invalidMessage2 });
+
+        expect(rendered.html().includes(invalidMessage2)).toBe(true);
     });
 });

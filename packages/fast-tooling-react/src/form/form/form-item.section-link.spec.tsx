@@ -142,4 +142,21 @@ describe("NumberField", () => {
 
         expect(rendered.html().includes(invalidMessage)).toBe(true);
     });
+    test("should update an invalid message if the invalid message is updated", () => {
+        const invalidMessage1: string = "Foo";
+        const invalidMessage2: string = "Bar";
+        const rendered: any = mount(
+            <FormItemSectionLink
+                {...formItemSectionLinkProps}
+                invalidMessage={invalidMessage1}
+                displayValidationInline={true}
+            />
+        );
+
+        expect(rendered.html().includes(invalidMessage1)).toBe(true);
+
+        rendered.setProps({ invalidMessage: invalidMessage2 });
+
+        expect(rendered.html().includes(invalidMessage2)).toBe(true);
+    });
 });
