@@ -27,7 +27,13 @@
             "defaults": [
                 "text"
             ],
-            "formPluginId": "@microsoft/fast-components-react-msft/badge/children"
+            "formPluginId": "@microsoft/fast-components-react-msft/badge/children",
+            "examples": [
+                "Lorem"
+            ]
         }
-    }
+    },
+    "required": [
+        "children"
+    ]
 }

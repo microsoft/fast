@@ -6,6 +6,10 @@
     "id": "@microsoft/fast-components-react-msft/toggle",
     "formPluginId": "@microsoft/fast-components-react-msft/toggle",
     "properties": {
+        "id": {
+            "title": "HTML id attribute",
+            "type": "string"
+        },
         "disabled": {
             "title": "Disabled",
             "type": "boolean"
@@ -24,7 +28,10 @@
         },
         "selectedMessage": {
             "title": "Selected text",
-            "type": "string"
+            "type": "string",
+            "examples": [
+                "Ipsum"
+            ]
         },
         "statusMessageId": {
             "title": "HTML status label id attribute",
@@ -32,7 +39,10 @@
         },
         "unselectedMessage": {
             "title": "Unselected text",
-            "type": "string"
+            "type": "string",
+            "examples": [
+                "Lorem"
+            ]
         }
     },
     "reactProperties": {

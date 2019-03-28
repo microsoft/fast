@@ -22,7 +22,13 @@
             "formPluginId": "@microsoft/fast-components-react-msft/metatext/children",
             "defaults": [
                 "text"
+            ],
+            "examples": [
+                "Lorem ipsum"
             ]
         }
-    }
+    },
+    "required": [
+        "children"
+    ]
 }

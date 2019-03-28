@@ -8,7 +8,11 @@
     "properties": {
         "href": {
             "title": "HTML href attribute",
-            "type": "string"
+            "type": "string",
+            "examples": [
+                "#",
+                "http://microsoft.com"
+            ]
         }
     },
     "reactProperties": {
@@ -18,7 +22,13 @@
             "formPluginId": "@microsoft/fast-components-react-msft/hypertext/children",
             "defaults": [
                 "text"
+            ],
+            "examples": [
+                "Lorem ipsum"
             ]
         }
-    }
+    },
+    "required": [
+        "children"
+    ]
 }

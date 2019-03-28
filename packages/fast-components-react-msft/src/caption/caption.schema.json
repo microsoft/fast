@@ -34,7 +34,13 @@
             "formPluginId": "@microsoft/fast-components-react-msft/caption/children",
             "defaults": [
                 "text"
+            ],
+            "examples": [
+                "Lorem ipsum dolor sit amet."
             ]
         }
-    }
+    },
+    "required": [
+        "children"
+    ]
 }

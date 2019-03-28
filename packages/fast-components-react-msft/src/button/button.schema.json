@@ -32,6 +32,9 @@
             "formPluginId": "@microsoft/fast-components-react-msft/button/children",
             "defaults": [
                 "text"
+            ],
+            "examples": [
+                "Lorem"
             ]
         },
         "beforeContent": {
@@ -46,5 +49,8 @@
             "formPluginId": "@microsoft/fast-components-react-msft/button/afterContent",
             "pluginId": "@microsoft/fast-components-react-msft/button/afterContent"
         }
-    }
+    },
+    "required": [
+        "children"
+    ]
 }
