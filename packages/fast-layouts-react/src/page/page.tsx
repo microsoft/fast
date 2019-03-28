@@ -1,14 +1,7 @@
 import React from "react";
-import manageJss, {
-    ComponentStyles,
-    ManagedClasses,
-    ManagedJSSProps,
-} from "@microsoft/fast-jss-manager-react";
+import { ComponentStyles } from "@microsoft/fast-jss-manager-react";
 import { PageHandledProps, PageProps, PageUnhandledProps } from "./page.props";
-import Foundation, {
-    FoundationProps,
-    HandledProps,
-} from "@microsoft/fast-components-foundation-react";
+import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 
 export interface PageClassNamesContract {
     page?: string;
@@ -48,27 +41,25 @@ export class Page extends Foundation<PageHandledProps, PageUnhandledProps, {}> {
     }
 
     private generateAttributes(): React.HTMLAttributes<HTMLDivElement> {
-        const attributes: React.HTMLAttributes<HTMLDivElement> = Object.assign(
-            {},
-            this.unhandledProps(),
-            {
-                className: super.generateClassNames(this.props.managedClasses.page),
-            }
-        );
         const columns: string = `${this.props.margin} minmax(0, ${this.props.maxWidth}) ${
             this.props.margin
         }`;
 
-        if (!attributes.style) {
-            attributes.style = {};
-        }
-
-        attributes.style = {
-            gridTemplateColumns: columns,
-            msGridColumns: columns,
+        const attributes: React.HTMLAttributes<HTMLDivElement> = {
+            ...this.unhandledProps(),
+            className: super.generateClassNames(this.props.managedClasses.page),
         };
 
-        return attributes;
+        return {
+            ...attributes,
+            style: {
+                // attributes.style has to be spread here again in order to
+                // merge the styles attribute, otherwise it is just overriden
+                ...attributes.style,
+                gridTemplateColumns: columns,
+                msGridColumns: columns,
+            },
+        };
     }
 }
 
