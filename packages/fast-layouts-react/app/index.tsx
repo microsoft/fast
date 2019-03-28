@@ -8,6 +8,7 @@ import { Pane, PaneResizeDirection } from "../src/pane";
 import { Page } from "../src/page";
 import { Grid } from "../src/grid";
 import { Column, ColumnClassNamesContract } from "../src/column";
+import { jsxAttribute } from "@babel/types";
 
 const columnTestStyles: ComponentStyles<ColumnClassNamesContract, undefined> = {
     column: {
@@ -24,6 +25,13 @@ const columnTestStyles: ComponentStyles<ColumnClassNamesContract, undefined> = {
 const root: HTMLElement = document.createElement("div");
 root.setAttribute("id", "root");
 document.body.appendChild(root);
+
+function renderIfEnabled(
+    isEnabled: boolean,
+    renderFunction: () => JSX.Element
+): JSX.Element {
+    return isEnabled ? renderFunction() : null;
+}
 
 function render(): void {
     const renderColumnA: boolean = true;
@@ -73,7 +81,7 @@ function render(): void {
                                         A
                                     </Column>
                                 )}
-                                {renderColumnB && (
+                                {renderIfEnabled(renderColumnB, () => (
                                     <Column
                                         jssStyleSheet={columnTestStyles}
                                         span={[12, 12, 12, 4]}
@@ -82,7 +90,7 @@ function render(): void {
                                     >
                                         B
                                     </Column>
-                                )}
+                                ))}
                             </Grid>
                         </Page>
                     </Canvas>
