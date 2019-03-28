@@ -181,7 +181,10 @@ export { TypographyStyles };
  * Export utilities
  */
 export * from "./utilities/acrylic";
+export * from "./utilities/border";
+export * from "./utilities/cursor";
 export * from "./utilities/density";
+export * from "./utilities/disabled";
 export * from "./utilities/elevation";
 export * from "./utilities/fonts";
 export * from "./utilities/keyof-to-type";
