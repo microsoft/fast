@@ -68,9 +68,7 @@ function render(): void {
                                 {renderColumnA && (
                                     <Column
                                         jssStyleSheet={columnTestStyles}
-                                        span={[12, 12, 12, 4]}
-                                        row={[4, 3, 3, 2]}
-                                        position={[1, 1, 1, 9]}
+                                        span={[12, 6, 6, 4]}
                                     >
                                         A
                                     </Column>
