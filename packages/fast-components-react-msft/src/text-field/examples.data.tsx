@@ -1,7 +1,7 @@
-import * as React from "react";
+import React from "react";
 import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
 import { TextField, TextFieldProps, TextFieldType } from "./index";
-import schema from "@microsoft/fast-components-react-base/dist/text-field/text-field.schema.json";
+import schema from "./text-field.schema.json";
 import Documentation from "./.tmp/documentation";
 
 export default {

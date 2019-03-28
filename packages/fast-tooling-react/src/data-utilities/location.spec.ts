@@ -12,14 +12,14 @@ import Children from "./__tests__/components/children";
 import General from "./__tests__/components/general-example";
 import TextField from "./__tests__/components/text-field";
 
-import * as alignHorizontalSchema from "./__tests__/schemas/align-horizontal.schema.json";
-import * as arraysSchema from "./__tests__/schemas/arrays.schema.json";
-import * as generalSchema from "./__tests__/schemas/general-example.schema.json";
-import * as anyOfSchema from "./__tests__/schemas/any-of.schema.json";
-import * as childrenSchema from "./__tests__/schemas/children.schema.json";
-import * as childrenWithPluginPropsSchema from "./__tests__/schemas/children-plugin.schema.json";
-import * as componentPluginSchema from "./__tests__/schemas/component-plugin.schema.json";
-import * as textFieldSchema from "./__tests__/schemas/text-field.schema.json";
+import alignHorizontalSchema from "../__tests__/schemas/align-horizontal.schema.json";
+import arraysSchema from "../__tests__/schemas/arrays.schema.json";
+import generalSchema from "../__tests__/schemas/general-example.schema.json";
+import anyOfSchema from "../__tests__/schemas/any-of.schema.json";
+import childrenSchema from "../__tests__/schemas/children.schema.json";
+import childrenWithPluginPropsSchema from "../__tests__/schemas/children-plugin.schema.json";
+import componentPluginSchema from "../__tests__/schemas/component-plugin.schema.json";
+import textFieldSchema from "../__tests__/schemas/text-field.schema.json";
 
 /**
  * Map schema location from data location
@@ -88,9 +88,9 @@ describe("mapSchemaLocationFromDataLocation", () => {
             anyOfSchema
         );
 
-        expect(schemaLocationRootProperty).toBe("anyOf.2.properties.nestedAnyOf.anyOf.1");
+        expect(schemaLocationRootProperty).toBe("anyOf.4.properties.nestedAnyOf.anyOf.1");
         expect(schemaLocation).toBe(
-            "anyOf.2.properties.nestedAnyOf.anyOf.1.properties.string"
+            "anyOf.4.properties.nestedAnyOf.anyOf.1.properties.string"
         );
     });
     test("should return a schema location from a non-object anyOf/oneOf location", () => {
@@ -105,8 +105,8 @@ describe("mapSchemaLocationFromDataLocation", () => {
             anyOfSchema
         );
 
-        expect(schemaLocationNumber).toBe("anyOf.3.properties.numberOrString.anyOf.0");
-        expect(schemaLocationString).toBe("anyOf.3.properties.numberOrString.anyOf.1");
+        expect(schemaLocationNumber).toBe("anyOf.5.properties.numberOrString.anyOf.0");
+        expect(schemaLocationString).toBe("anyOf.5.properties.numberOrString.anyOf.1");
     });
     test("should return a schema location from a non-object anyOf/oneOf location in an array", () => {
         const chemaLocationArrayOfStrings: string = mapSchemaLocationFromDataLocation(
@@ -126,13 +126,13 @@ describe("mapSchemaLocationFromDataLocation", () => {
         );
 
         expect(chemaLocationArrayOfStrings).toBe(
-            "anyOf.3.properties.numberOrString.anyOf.2.items"
+            "anyOf.5.properties.numberOrString.anyOf.2.items"
         );
         expect(schemaLocationArrayOfObjects).toBe(
-            "anyOf.3.properties.numberOrString.anyOf.3.items.anyOf.0.properties.string"
+            "anyOf.5.properties.numberOrString.anyOf.3.items.anyOf.0.properties.string"
         );
         expect(schemaLocationArrayOfNumbers).toBe(
-            "anyOf.3.properties.numberOrString.anyOf.3.items.anyOf.1"
+            "anyOf.5.properties.numberOrString.anyOf.3.items.anyOf.1"
         );
     });
     test("should return a schema location from a child location", () => {

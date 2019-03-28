@@ -1,7 +1,7 @@
-import * as React from "react";
+import React from "react";
 import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
 import { Toggle, ToggleProps } from "./index";
-import schema from "@microsoft/fast-components-react-base/dist/toggle/toggle.schema.json";
+import schema from "./toggle.schema.json";
 import Documentation from "./.tmp/documentation";
 
 export default {
@@ -11,7 +11,7 @@ export default {
     documentation: <Documentation />,
     detailData: {
         children: "Toggle label default on",
-        id: "toggle01",
+        inputId: "toggle01",
         labelId: "label01",
         selectedMessage: "On",
         statusMessageId: "span01",
@@ -21,7 +21,7 @@ export default {
         {
             children: "Toggle label default on",
             disabled: false,
-            id: "toggle01",
+            inputId: "toggle01",
             labelId: "label01",
             selected: true,
             selectedMessage: "On",
@@ -32,7 +32,7 @@ export default {
         {
             children: "Toggle label default off",
             disabled: false,
-            id: "toggle02",
+            inputId: "toggle02",
             labelId: "label02",
             selected: false,
             selectedMessage: "On",
@@ -43,7 +43,7 @@ export default {
         {
             children: "Toggle label disabled on",
             disabled: true,
-            id: "toggle03",
+            inputId: "toggle03",
             labelId: "label03",
             selected: true,
             selectedMessage: "On",
@@ -54,7 +54,7 @@ export default {
         {
             children: "Toggle label disabled off",
             disabled: true,
-            id: "toggle04",
+            inputId: "toggle04",
             labelId: "label04",
             selected: false,
             selectedMessage: "On",

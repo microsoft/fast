@@ -1,6 +1,6 @@
-import * as React from "react";
+import React from "react";
 import * as ShallowRenderer from "react-test-renderer/shallow";
-import * as Adapter from "enzyme-adapter-react-16";
+import Adapter from "enzyme-adapter-react-16";
 import { configure, mount, shallow, ShallowWrapper } from "enzyme";
 import { KeyCodes, Orientation } from "@microsoft/fast-web-utilities";
 import { noop } from "lodash-es";
@@ -20,6 +20,7 @@ import Tabs, {
     TabsSlot,
     TabsUnhandledProps,
 } from "./index";
+import { DisplayNamePrefix } from "../utilities";
 
 export enum CustomTabsSlot {
     tab = "customTab",
@@ -145,7 +146,7 @@ describe("tabs", (): void => {
     });
 
     test("should have a displayName that matches the component name", () => {
-        expect((Tabs as any).name).toBe(Tabs.displayName);
+        expect(`${DisplayNamePrefix}${(Tabs as any).name}`).toBe(Tabs.displayName);
     });
 
     test("should not throw if managedClasses are not provided", () => {
@@ -242,17 +243,29 @@ describe("tabs", (): void => {
             </Tabs>
         );
 
-        expect(renderedWithChildren.find("Tab").get(0).props["aria-controls"]).toBe(id0);
         expect(
-            renderedWithChildren.find("TabPanel").get(0).props["aria-labelledby"]
+            renderedWithChildren.find(Tab.displayName).get(0).props["aria-controls"]
         ).toBe(id0);
-        expect(renderedWithChildren.find("Tab").get(1).props["aria-controls"]).toBe(id1);
         expect(
-            renderedWithChildren.find("TabPanel").get(1).props["aria-labelledby"]
+            renderedWithChildren.find(TabPanel.displayName).get(0).props[
+                "aria-labelledby"
+            ]
+        ).toBe(id0);
+        expect(
+            renderedWithChildren.find(Tab.displayName).get(1).props["aria-controls"]
         ).toBe(id1);
-        expect(renderedWithChildren.find("Tab").get(2).props["aria-controls"]).toBe(id2);
         expect(
-            renderedWithChildren.find("TabPanel").get(2).props["aria-labelledby"]
+            renderedWithChildren.find(TabPanel.displayName).get(1).props[
+                "aria-labelledby"
+            ]
+        ).toBe(id1);
+        expect(
+            renderedWithChildren.find(Tab.displayName).get(2).props["aria-controls"]
+        ).toBe(id2);
+        expect(
+            renderedWithChildren.find(TabPanel.displayName).get(2).props[
+                "aria-labelledby"
+            ]
         ).toBe(id2);
     });
 
@@ -281,7 +294,7 @@ describe("tabs", (): void => {
         );
 
         expect(renderedWithChildren.prop("children")).not.toBe(undefined);
-        expect(renderedWithChildren.find("Tab").length).toEqual(3);
+        expect(renderedWithChildren.find(Tab.displayName).length).toEqual(3);
     });
 
     test("should handle non existing active id set in props by keeping previous tab active.", () => {
@@ -291,10 +304,10 @@ describe("tabs", (): void => {
             </Tabs>
         );
 
-        expect(renderedWithChildren.find("Tab").length).toEqual(3);
+        expect(renderedWithChildren.find(Tab.displayName).length).toEqual(3);
 
-        const tab1: any = renderedWithChildren.find("Tab").at(0);
-        const tab2: any = renderedWithChildren.find("Tab").at(1);
+        const tab1: any = renderedWithChildren.find(Tab.displayName).at(0);
+        const tab2: any = renderedWithChildren.find(Tab.displayName).at(1);
 
         expect(tab1.prop("active")).toEqual(true);
         expect(tab2.prop("active")).toEqual(false);
@@ -351,42 +364,42 @@ describe("tabs", (): void => {
             />
         );
 
-        const tab1: any = rendered.find("Tab").at(0);
-        const tab2: any = rendered.find("Tab").at(1);
+        const tab1: any = rendered.find(Tab.displayName).at(0);
+        const tab2: any = rendered.find(Tab.displayName).at(1);
 
         expect(
             rendered
-                .find("Tab")
+                .find(Tab.displayName)
                 .at(0)
                 .prop("tabIndex")
         ).toEqual(0);
         expect(
             rendered
-                .find("Tab")
+                .find(Tab.displayName)
                 .at(1)
                 .prop("tabIndex")
         ).toEqual(-1);
         expect(
             rendered
-                .find("Tab")
+                .find(Tab.displayName)
                 .at(2)
                 .prop("tabIndex")
         ).toEqual(-1);
         expect(
             rendered
-                .find("Tab")
+                .find(Tab.displayName)
                 .at(0)
                 .prop("active")
         ).toBe(true);
         expect(
             rendered
-                .find("Tab")
+                .find(Tab.displayName)
                 .at(1)
                 .prop("active")
         ).toBe(false);
         expect(
             rendered
-                .find("Tab")
+                .find(Tab.displayName)
                 .at(2)
                 .prop("active")
         ).toBe(false);
@@ -399,37 +412,37 @@ describe("tabs", (): void => {
 
         expect(
             rendered
-                .find("Tab")
+                .find(Tab.displayName)
                 .at(0)
                 .prop("tabIndex")
         ).toEqual(0);
         expect(
             rendered
-                .find("Tab")
+                .find(Tab.displayName)
                 .at(1)
                 .prop("tabIndex")
         ).toEqual(-1);
         expect(
             rendered
-                .find("Tab")
+                .find(Tab.displayName)
                 .at(2)
                 .prop("tabIndex")
         ).toEqual(-1);
         expect(
             rendered
-                .find("Tab")
+                .find(Tab.displayName)
                 .at(0)
                 .prop("active")
         ).toBe(true);
         expect(
             rendered
-                .find("Tab")
+                .find(Tab.displayName)
                 .at(1)
                 .prop("active")
         ).toBe(false);
         expect(
             rendered
-                .find("Tab")
+                .find(Tab.displayName)
                 .at(2)
                 .prop("active")
         ).toBe(false);
@@ -440,37 +453,37 @@ describe("tabs", (): void => {
 
         expect(
             rendered
-                .find("Tab")
+                .find(Tab.displayName)
                 .at(0)
                 .prop("tabIndex")
         ).toEqual(0);
         expect(
             rendered
-                .find("Tab")
+                .find(Tab.displayName)
                 .at(1)
                 .prop("tabIndex")
         ).toEqual(-1);
         expect(
             rendered
-                .find("Tab")
+                .find(Tab.displayName)
                 .at(2)
                 .prop("tabIndex")
         ).toEqual(-1);
         expect(
             rendered
-                .find("Tab")
+                .find(Tab.displayName)
                 .at(0)
                 .prop("active")
         ).toBe(true);
         expect(
             rendered
-                .find("Tab")
+                .find(Tab.displayName)
                 .at(1)
                 .prop("active")
         ).toBe(false);
         expect(
             rendered
-                .find("Tab")
+                .find(Tab.displayName)
                 .at(2)
                 .prop("active")
         ).toBe(false);
@@ -481,37 +494,37 @@ describe("tabs", (): void => {
 
         expect(
             rendered
-                .find("Tab")
+                .find(Tab.displayName)
                 .at(0)
                 .prop("tabIndex")
         ).toEqual(0);
         expect(
             rendered
-                .find("Tab")
+                .find(Tab.displayName)
                 .at(1)
                 .prop("tabIndex")
         ).toEqual(-1);
         expect(
             rendered
-                .find("Tab")
+                .find(Tab.displayName)
                 .at(2)
                 .prop("tabIndex")
         ).toEqual(-1);
         expect(
             rendered
-                .find("Tab")
+                .find(Tab.displayName)
                 .at(0)
                 .prop("active")
         ).toBe(true);
         expect(
             rendered
-                .find("Tab")
+                .find(Tab.displayName)
                 .at(1)
                 .prop("active")
         ).toBe(false);
         expect(
             rendered
-                .find("Tab")
+                .find(Tab.displayName)
                 .at(2)
                 .prop("active")
         ).toBe(false);
@@ -522,37 +535,37 @@ describe("tabs", (): void => {
 
         expect(
             rendered
-                .find("Tab")
+                .find(Tab.displayName)
                 .at(0)
                 .prop("tabIndex")
         ).toEqual(0);
         expect(
             rendered
-                .find("Tab")
+                .find(Tab.displayName)
                 .at(1)
                 .prop("tabIndex")
         ).toEqual(-1);
         expect(
             rendered
-                .find("Tab")
+                .find(Tab.displayName)
                 .at(2)
                 .prop("tabIndex")
         ).toEqual(-1);
         expect(
             rendered
-                .find("Tab")
+                .find(Tab.displayName)
                 .at(0)
                 .prop("active")
         ).toBe(true);
         expect(
             rendered
-                .find("Tab")
+                .find(Tab.displayName)
                 .at(1)
                 .prop("active")
         ).toBe(false);
         expect(
             rendered
-                .find("Tab")
+                .find(Tab.displayName)
                 .at(2)
                 .prop("active")
         ).toBe(false);
@@ -563,37 +576,37 @@ describe("tabs", (): void => {
 
         expect(
             rendered
-                .find("Tab")
+                .find(Tab.displayName)
                 .at(0)
                 .prop("tabIndex")
         ).toEqual(0);
         expect(
             rendered
-                .find("Tab")
+                .find(Tab.displayName)
                 .at(1)
                 .prop("tabIndex")
         ).toEqual(-1);
         expect(
             rendered
-                .find("Tab")
+                .find(Tab.displayName)
                 .at(2)
                 .prop("tabIndex")
         ).toEqual(-1);
         expect(
             rendered
-                .find("Tab")
+                .find(Tab.displayName)
                 .at(0)
                 .prop("active")
         ).toBe(true);
         expect(
             rendered
-                .find("Tab")
+                .find(Tab.displayName)
                 .at(1)
                 .prop("active")
         ).toBe(false);
         expect(
             rendered
-                .find("Tab")
+                .find(Tab.displayName)
                 .at(2)
                 .prop("active")
         ).toBe(false);
@@ -604,37 +617,37 @@ describe("tabs", (): void => {
 
         expect(
             rendered
-                .find("Tab")
+                .find(Tab.displayName)
                 .at(0)
                 .prop("tabIndex")
         ).toEqual(0);
         expect(
             rendered
-                .find("Tab")
+                .find(Tab.displayName)
                 .at(1)
                 .prop("tabIndex")
         ).toEqual(-1);
         expect(
             rendered
-                .find("Tab")
+                .find(Tab.displayName)
                 .at(2)
                 .prop("tabIndex")
         ).toEqual(-1);
         expect(
             rendered
-                .find("Tab")
+                .find(Tab.displayName)
                 .at(0)
                 .prop("active")
         ).toBe(true);
         expect(
             rendered
-                .find("Tab")
+                .find(Tab.displayName)
                 .at(1)
                 .prop("active")
         ).toBe(false);
         expect(
             rendered
-                .find("Tab")
+                .find(Tab.displayName)
                 .at(2)
                 .prop("active")
         ).toBe(false);
@@ -645,37 +658,37 @@ describe("tabs", (): void => {
 
         expect(
             rendered
-                .find("Tab")
+                .find(Tab.displayName)
                 .at(0)
                 .prop("tabIndex")
         ).toEqual(0);
         expect(
             rendered
-                .find("Tab")
+                .find(Tab.displayName)
                 .at(1)
                 .prop("tabIndex")
         ).toEqual(-1);
         expect(
             rendered
-                .find("Tab")
+                .find(Tab.displayName)
                 .at(2)
                 .prop("tabIndex")
         ).toEqual(-1);
         expect(
             rendered
-                .find("Tab")
+                .find(Tab.displayName)
                 .at(0)
                 .prop("active")
         ).toBe(true);
         expect(
             rendered
-                .find("Tab")
+                .find(Tab.displayName)
                 .at(1)
                 .prop("active")
         ).toBe(false);
         expect(
             rendered
-                .find("Tab")
+                .find(Tab.displayName)
                 .at(2)
                 .prop("active")
         ).toBe(false);
@@ -684,37 +697,37 @@ describe("tabs", (): void => {
 
         expect(
             rendered
-                .find("Tab")
+                .find(Tab.displayName)
                 .at(0)
                 .prop("tabIndex")
         ).toEqual(-1);
         expect(
             rendered
-                .find("Tab")
+                .find(Tab.displayName)
                 .at(1)
                 .prop("tabIndex")
         ).toEqual(0);
         expect(
             rendered
-                .find("Tab")
+                .find(Tab.displayName)
                 .at(2)
                 .prop("tabIndex")
         ).toEqual(-1);
         expect(
             rendered
-                .find("Tab")
+                .find(Tab.displayName)
                 .at(0)
                 .prop("active")
         ).toBe(false);
         expect(
             rendered
-                .find("Tab")
+                .find(Tab.displayName)
                 .at(1)
                 .prop("active")
         ).toBe(true);
         expect(
             rendered
-                .find("Tab")
+                .find(Tab.displayName)
                 .at(2)
                 .prop("active")
         ).toBe(false);
@@ -733,23 +746,23 @@ describe("tabs", (): void => {
         );
 
         rendered
-            .find("Tab")
+            .find(Tab.displayName)
             .at(0)
             .simulate("keydown", { keyCode: KeyCodes.end });
         rendered
-            .find("Tab")
+            .find(Tab.displayName)
             .at(0)
             .simulate("keydown", { keyCode: KeyCodes.home });
         rendered
-            .find("Tab")
+            .find(Tab.displayName)
             .at(0)
             .simulate("keydown", { keyCode: KeyCodes.arrowLeft });
         rendered
-            .find("Tab")
+            .find(Tab.displayName)
             .at(0)
             .simulate("keydown", { keyCode: KeyCodes.arrowRight });
         rendered
-            .find("Tab")
+            .find(Tab.displayName)
             .at(0)
             .simulate("click", {
                 currentTarget: { getAttribute: (): string => id1 },
@@ -765,43 +778,43 @@ describe("tabs", (): void => {
             />
         );
 
-        const tab1: any = rendered.find("Tab").at(0);
-        const tab2: any = rendered.find("Tab").at(1);
-        const tab3: any = rendered.find("Tab").at(2);
+        const tab1: any = rendered.find(Tab.displayName).at(0);
+        const tab2: any = rendered.find(Tab.displayName).at(1);
+        const tab3: any = rendered.find(Tab.displayName).at(2);
 
         expect(
             rendered
-                .find("Tab")
+                .find(Tab.displayName)
                 .at(0)
                 .prop("tabIndex")
         ).toEqual(0);
         expect(
             rendered
-                .find("Tab")
+                .find(Tab.displayName)
                 .at(1)
                 .prop("tabIndex")
         ).toEqual(-1);
         expect(
             rendered
-                .find("Tab")
+                .find(Tab.displayName)
                 .at(2)
                 .prop("tabIndex")
         ).toEqual(-1);
         expect(
             rendered
-                .find("Tab")
+                .find(Tab.displayName)
                 .at(0)
                 .prop("active")
         ).toBe(true);
         expect(
             rendered
-                .find("Tab")
+                .find(Tab.displayName)
                 .at(1)
                 .prop("active")
         ).toBe(false);
         expect(
             rendered
-                .find("Tab")
+                .find(Tab.displayName)
                 .at(2)
                 .prop("active")
         ).toBe(false);
@@ -810,37 +823,37 @@ describe("tabs", (): void => {
 
         expect(
             rendered
-                .find("Tab")
+                .find(Tab.displayName)
                 .at(0)
                 .prop("tabIndex")
         ).toEqual(-1);
         expect(
             rendered
-                .find("Tab")
+                .find(Tab.displayName)
                 .at(1)
                 .prop("tabIndex")
         ).toEqual(-1);
         expect(
             rendered
-                .find("Tab")
+                .find(Tab.displayName)
                 .at(2)
                 .prop("tabIndex")
         ).toEqual(0);
         expect(
             rendered
-                .find("Tab")
+                .find(Tab.displayName)
                 .at(0)
                 .prop("active")
         ).toBe(false);
         expect(
             rendered
-                .find("Tab")
+                .find(Tab.displayName)
                 .at(1)
                 .prop("active")
         ).toBe(false);
         expect(
             rendered
-                .find("Tab")
+                .find(Tab.displayName)
                 .at(2)
                 .prop("active")
         ).toBe(true);
@@ -849,37 +862,37 @@ describe("tabs", (): void => {
 
         expect(
             rendered
-                .find("Tab")
+                .find(Tab.displayName)
                 .at(0)
                 .prop("tabIndex")
         ).toEqual(-1);
         expect(
             rendered
-                .find("Tab")
+                .find(Tab.displayName)
                 .at(1)
                 .prop("tabIndex")
         ).toEqual(0);
         expect(
             rendered
-                .find("Tab")
+                .find(Tab.displayName)
                 .at(2)
                 .prop("tabIndex")
         ).toEqual(-1);
         expect(
             rendered
-                .find("Tab")
+                .find(Tab.displayName)
                 .at(0)
                 .prop("active")
         ).toBe(false);
         expect(
             rendered
-                .find("Tab")
+                .find(Tab.displayName)
                 .at(1)
                 .prop("active")
         ).toBe(true);
         expect(
             rendered
-                .find("Tab")
+                .find(Tab.displayName)
                 .at(2)
                 .prop("active")
         ).toBe(false);
@@ -888,37 +901,37 @@ describe("tabs", (): void => {
 
         expect(
             rendered
-                .find("Tab")
+                .find(Tab.displayName)
                 .at(0)
                 .prop("tabIndex")
         ).toEqual(0);
         expect(
             rendered
-                .find("Tab")
+                .find(Tab.displayName)
                 .at(1)
                 .prop("tabIndex")
         ).toEqual(-1);
         expect(
             rendered
-                .find("Tab")
+                .find(Tab.displayName)
                 .at(2)
                 .prop("tabIndex")
         ).toEqual(-1);
         expect(
             rendered
-                .find("Tab")
+                .find(Tab.displayName)
                 .at(0)
                 .prop("active")
         ).toBe(true);
         expect(
             rendered
-                .find("Tab")
+                .find(Tab.displayName)
                 .at(1)
                 .prop("active")
         ).toBe(false);
         expect(
             rendered
-                .find("Tab")
+                .find(Tab.displayName)
                 .at(2)
                 .prop("active")
         ).toBe(false);
@@ -927,37 +940,37 @@ describe("tabs", (): void => {
 
         expect(
             rendered
-                .find("Tab")
+                .find(Tab.displayName)
                 .at(0)
                 .prop("tabIndex")
         ).toEqual(-1);
         expect(
             rendered
-                .find("Tab")
+                .find(Tab.displayName)
                 .at(1)
                 .prop("tabIndex")
         ).toEqual(0);
         expect(
             rendered
-                .find("Tab")
+                .find(Tab.displayName)
                 .at(2)
                 .prop("tabIndex")
         ).toEqual(-1);
         expect(
             rendered
-                .find("Tab")
+                .find(Tab.displayName)
                 .at(0)
                 .prop("active")
         ).toBe(false);
         expect(
             rendered
-                .find("Tab")
+                .find(Tab.displayName)
                 .at(1)
                 .prop("active")
         ).toBe(true);
         expect(
             rendered
-                .find("Tab")
+                .find(Tab.displayName)
                 .at(2)
                 .prop("active")
         ).toBe(false);
@@ -966,37 +979,37 @@ describe("tabs", (): void => {
 
         expect(
             rendered
-                .find("Tab")
+                .find(Tab.displayName)
                 .at(0)
                 .prop("tabIndex")
         ).toEqual(-1);
         expect(
             rendered
-                .find("Tab")
+                .find(Tab.displayName)
                 .at(1)
                 .prop("tabIndex")
         ).toEqual(-1);
         expect(
             rendered
-                .find("Tab")
+                .find(Tab.displayName)
                 .at(2)
                 .prop("tabIndex")
         ).toEqual(0);
         expect(
             rendered
-                .find("Tab")
+                .find(Tab.displayName)
                 .at(0)
                 .prop("active")
         ).toBe(false);
         expect(
             rendered
-                .find("Tab")
+                .find(Tab.displayName)
                 .at(1)
                 .prop("active")
         ).toBe(false);
         expect(
             rendered
-                .find("Tab")
+                .find(Tab.displayName)
                 .at(2)
                 .prop("active")
         ).toBe(true);
@@ -1005,37 +1018,37 @@ describe("tabs", (): void => {
 
         expect(
             rendered
-                .find("Tab")
+                .find(Tab.displayName)
                 .at(0)
                 .prop("tabIndex")
         ).toEqual(0);
         expect(
             rendered
-                .find("Tab")
+                .find(Tab.displayName)
                 .at(1)
                 .prop("tabIndex")
         ).toEqual(-1);
         expect(
             rendered
-                .find("Tab")
+                .find(Tab.displayName)
                 .at(2)
                 .prop("tabIndex")
         ).toEqual(-1);
         expect(
             rendered
-                .find("Tab")
+                .find(Tab.displayName)
                 .at(0)
                 .prop("active")
         ).toBe(true);
         expect(
             rendered
-                .find("Tab")
+                .find(Tab.displayName)
                 .at(1)
                 .prop("active")
         ).toBe(false);
         expect(
             rendered
-                .find("Tab")
+                .find(Tab.displayName)
                 .at(2)
                 .prop("active")
         ).toBe(false);
@@ -1044,37 +1057,37 @@ describe("tabs", (): void => {
 
         expect(
             rendered
-                .find("Tab")
+                .find(Tab.displayName)
                 .at(0)
                 .prop("tabIndex")
         ).toEqual(-1);
         expect(
             rendered
-                .find("Tab")
+                .find(Tab.displayName)
                 .at(1)
                 .prop("tabIndex")
         ).toEqual(-1);
         expect(
             rendered
-                .find("Tab")
+                .find(Tab.displayName)
                 .at(2)
                 .prop("tabIndex")
         ).toEqual(0);
         expect(
             rendered
-                .find("Tab")
+                .find(Tab.displayName)
                 .at(0)
                 .prop("active")
         ).toBe(false);
         expect(
             rendered
-                .find("Tab")
+                .find(Tab.displayName)
                 .at(1)
                 .prop("active")
         ).toBe(false);
         expect(
             rendered
-                .find("Tab")
+                .find(Tab.displayName)
                 .at(2)
                 .prop("active")
         ).toBe(true);
@@ -1083,37 +1096,37 @@ describe("tabs", (): void => {
 
         expect(
             rendered
-                .find("Tab")
+                .find(Tab.displayName)
                 .at(0)
                 .prop("tabIndex")
         ).toEqual(0);
         expect(
             rendered
-                .find("Tab")
+                .find(Tab.displayName)
                 .at(1)
                 .prop("tabIndex")
         ).toEqual(-1);
         expect(
             rendered
-                .find("Tab")
+                .find(Tab.displayName)
                 .at(2)
                 .prop("tabIndex")
         ).toEqual(-1);
         expect(
             rendered
-                .find("Tab")
+                .find(Tab.displayName)
                 .at(0)
                 .prop("active")
         ).toBe(true);
         expect(
             rendered
-                .find("Tab")
+                .find(Tab.displayName)
                 .at(1)
                 .prop("active")
         ).toBe(false);
         expect(
             rendered
-                .find("Tab")
+                .find(Tab.displayName)
                 .at(2)
                 .prop("active")
         ).toBe(false);
@@ -1124,37 +1137,37 @@ describe("tabs", (): void => {
 
         expect(
             rendered
-                .find("Tab")
+                .find(Tab.displayName)
                 .at(0)
                 .prop("tabIndex")
         ).toEqual(-1);
         expect(
             rendered
-                .find("Tab")
+                .find(Tab.displayName)
                 .at(1)
                 .prop("tabIndex")
         ).toEqual(0);
         expect(
             rendered
-                .find("Tab")
+                .find(Tab.displayName)
                 .at(2)
                 .prop("tabIndex")
         ).toEqual(-1);
         expect(
             rendered
-                .find("Tab")
+                .find(Tab.displayName)
                 .at(0)
                 .prop("active")
         ).toBe(false);
         expect(
             rendered
-                .find("Tab")
+                .find(Tab.displayName)
                 .at(1)
                 .prop("active")
         ).toBe(true);
         expect(
             rendered
-                .find("Tab")
+                .find(Tab.displayName)
                 .at(2)
                 .prop("active")
         ).toBe(false);
@@ -1213,7 +1226,7 @@ describe("tabs", (): void => {
 
         expect(
             renderedWithChildren
-                .find("Tab")
+                .find(Tab.displayName)
                 .at(1)
                 .prop("tabIndex")
         ).toEqual(0);
@@ -1222,26 +1235,28 @@ describe("tabs", (): void => {
 
 describe("Tab", (): void => {
     test("should have a displayName that matches the component name", () => {
-        expect((Tab as any).name).toBe(Tab.displayName);
+        expect(`${DisplayNamePrefix}${(Tab as any).name}`).toBe(Tab.displayName);
     });
 
     test("should not throw if managedClasses are not provided", () => {
         expect(() => {
             shallow(<Tab slot={TabsSlot.tab} />);
-            shallow(<Tab slot={TabsSlot.tab} selected={true} />);
+            shallow(<Tab slot={TabsSlot.tab} active={true} />);
         }).not.toThrow();
     });
 });
 
 describe("TabItem", (): void => {
     test("should have a displayName that matches the component name", () => {
-        expect((TabItem as any).name).toBe(TabItem.displayName);
+        expect(`${DisplayNamePrefix}${(TabItem as any).name}`).toBe(TabItem.displayName);
     });
 });
 
 describe("TabPanel", (): void => {
     test("should have a displayName that matches the component name", () => {
-        expect((TabPanel as any).name).toBe(TabPanel.displayName);
+        expect(`${DisplayNamePrefix}${(TabPanel as any).name}`).toBe(
+            TabPanel.displayName
+        );
     });
 
     test("should not throw if managedClasses are not provided", () => {

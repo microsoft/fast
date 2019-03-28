@@ -1,14 +1,8 @@
-import * as React from "react";
+import React from "react";
 import { manageJss } from "./manage-jss";
 import { JSSManager } from "./jss-manager";
-import { jss, stylesheetRegistry } from "./jss";
-import {
-    ComponentStyles,
-    ComponentStyleSheetResolver,
-} from "@microsoft/fast-jss-manager";
-import * as ShallowRenderer from "react-test-renderer/shallow";
-import { configure, mount, ReactWrapper, render, shallow } from "enzyme";
-import * as Adapter from "enzyme-adapter-react-16";
+import { configure, mount } from "enzyme";
+import Adapter from "enzyme-adapter-react-16";
 
 /*
  * Configure Enzyme

@@ -1,6 +1,6 @@
-import * as React from "react";
+import React from "react";
 import { get } from "lodash-es";
-import * as ReactDOM from "react-dom";
+import ReactDOM from "react-dom";
 import { canUseDOM } from "exenv-es6";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import {
@@ -13,10 +13,11 @@ import {
     PivotClassNameContract,
 } from "@microsoft/fast-components-class-name-contracts-msft";
 import { TabsClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
-import { Direction } from "@microsoft/fast-application-utilities";
+import { Direction } from "@microsoft/fast-web-utilities";
 import { toPx } from "@microsoft/fast-jss-utilities";
 import { Tabs as BaseTabs } from "@microsoft/fast-components-react-base";
 import { PivotProps } from ".";
+import { DisplayNamePrefix } from "../utilities";
 
 export interface PivotState {
     offsetX: number;
@@ -25,7 +26,7 @@ export interface PivotState {
 }
 
 class Pivot extends Foundation<PivotHandledProps, PivotUnhandledProps, PivotState> {
-    public static displayName: string = "Pivot";
+    public static displayName: string = `${DisplayNamePrefix}Pivot`;
 
     /**
      * React life-cycle method

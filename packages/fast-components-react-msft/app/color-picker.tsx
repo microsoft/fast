@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import manageJss, {
     ComponentStyles,
     ManagedClasses,
@@ -6,7 +6,6 @@ import manageJss, {
 import { DesignSystem } from "@microsoft/fast-components-styles-msft";
 
 export interface ColorConfig {
-    foregroundColor: string;
     backgroundColor: string;
     accentColor: string;
 }
@@ -62,12 +61,6 @@ class ColorPicker extends React.Component<
         return (
             <div className={this.props.managedClasses.colorPicker}>
                 {this.createColorInput(
-                    "foreground",
-                    this.props.foregroundColor,
-                    "foregroundInput",
-                    this.foregroundRef
-                )}
-                {this.createColorInput(
                     "background",
                     this.props.backgroundColor,
                     "backgroundInput",
@@ -118,11 +111,9 @@ class ColorPicker extends React.Component<
     private handleColorPickerChange = (e: React.FormEvent<HTMLInputElement>): void => {
         const value: string = e.currentTarget.value;
         const updatedColorKey: keyof ColorConfig =
-            e.currentTarget === this.foregroundRef.current
-                ? "foregroundColor"
-                : e.currentTarget === this.backgroundRef.current
-                    ? "backgroundColor"
-                    : "accentColor";
+            e.currentTarget === this.backgroundRef.current
+                ? "backgroundColor"
+                : "accentColor";
 
         if (typeof this.props.onColorUpdate === "function") {
             this.props.onColorUpdate(

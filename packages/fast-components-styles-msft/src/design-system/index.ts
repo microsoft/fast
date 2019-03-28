@@ -1,6 +1,11 @@
-import { Direction } from "@microsoft/fast-application-utilities";
-import { memoize } from "lodash-es";
+import { Direction } from "@microsoft/fast-web-utilities";
+import { white } from "../utilities/color/color-constants";
+import { ColorPalette, ColorRGBA64, parseColorHexRGB } from "@microsoft/fast-colors";
+import { Palette } from "../utilities/color/palette";
+import { TypeRamp } from "../utilities/typography";
 import { withDefaults } from "@microsoft/fast-jss-utilities";
+
+export type DensityOffset = -3 | -2 | -1 | 0 | 1 | 2 | 3;
 
 export interface DesignSystem {
     /**
@@ -9,10 +14,14 @@ export interface DesignSystem {
     backgroundColor: string;
 
     /**
-     * The brand color used as color accents.
-     *
+     * Configuration object to derive the neutral palette. Expects a ColorPaletteConfig from @microsoft/fast-colors
      */
-    brandColor: string;
+    neutralPalette: Palette;
+
+    /**
+     * Configuration object to derive the accent palette. Expects a ColorPaletteConfig from @microsoft/fast-colors
+     */
+    accentPalette: Palette;
 
     /**
      * A number between 0 and 100 that represents the contrast scale value.
@@ -20,14 +29,24 @@ export interface DesignSystem {
     contrast: number;
 
     /**
-     * The density multiplier
+     * The density offset, used with designUnit to calculate height and spacing.
      */
-    density: number;
+    density: DensityOffset;
 
     /**
-     * The grid-unit that UI dimensions are derived from
+     * The grid-unit that UI dimensions are derived from in pixels.
      */
     designUnit: number;
+
+    /**
+     * The number of designUnits used for component height at the base density.
+     */
+    baseHeightMultiplier: number;
+
+    /**
+     * The number of designUnits used for horizontal spacing at the base density.
+     */
+    baseHorizontalSpacingMultiplier: number;
 
     /**
      * The primary direction of the view.
@@ -35,31 +54,143 @@ export interface DesignSystem {
     direction: Direction;
 
     /**
-     * The value typically used for foreground elements, such as text
-     */
-    foregroundColor: string;
-
-    /**
-     * The corner default radius applied to controls
+     * The corner default radius applied to controls.
      */
     cornerRadius?: number;
 
-    /*
-     * The width of the outline in pixels applied to outline components
+    /**
+     * The width of the outline in pixels applied to outline components.
      */
-    outlinePatternOutlineWidth?: number;
+    outlineWidth?: number;
+
+    /**
+     * The width of the outline for focus state in pixels.
+     */
+    focusOutlineWidth: number;
+
+    /**
+     * The opacity to use for disabled component state.
+     */
+    disabledOpacity: number;
+
+    /**
+     * Color swatch deltas for accent-fill recipe
+     */
+    accentFillRestDelta: number;
+    accentFillHoverDelta: number;
+    accentFillActiveDelta: number;
+    accentFillSelectedDelta: number;
+
+    /**
+     * Color swatch deltas for accent-foreground recipe
+     */
+    accentForegroundRestDelta: number;
+    accentForegroundHoverDelta: number;
+    accentForegroundActiveDelta: number;
+
+    /*
+     * Color swatch deltas for neutral-fill recipe
+     */
+    neutralFillRestDelta: number;
+    neutralFillHoverDelta: number;
+    neutralFillActiveDelta: number;
+    neutralFillSelectedDelta: number;
+
+    /**
+     * Color swatch deltas for neutral-fill-input recipe
+     */
+    neutralFillInputRestDelta: number;
+    neutralFillInputHoverDelta: number;
+    neutralFillInputActiveDelta: number;
+    neutralFillInputSelectedDelta: number;
+
+    /**
+     * Color swatch deltas for neutral-fill-stealth recipe
+     */
+    neutralFillStealthRestDelta: number;
+    neutralFillStealthHoverDelta: number;
+    neutralFillStealthActiveDelta: number;
+    neutralFillStealthSelectedDelta: number;
+
+    /**
+     * Color swatch deltas for neutral-foreground
+     */
+    neutralForegroundDarkIndex: number;
+    neutralForegroundLightIndex: number;
+    neutralForegroundHoverDelta: number;
+    neutralForegroundActiveDelta: number;
+
+    /**
+     * Color swatch deltas for neutral-outline
+     */
+    neutralOutlineRestDelta: number;
+    neutralOutlineHoverDelta: number;
+    neutralOutlineActiveDelta: number;
+}
+
+function createColorPalette(baseColor: ColorRGBA64): Palette {
+    return new ColorPalette({
+        baseColor,
+        clipDark: 0,
+        clipLight: 0,
+        overlayDark: 0,
+        overlayLight: 0,
+        saturationDark: 0,
+        saturationLight: 0,
+        steps: 63,
+    }).palette.map((color: ColorRGBA64) => color.toStringHexRGB());
 }
 
 const designSystemDefaults: DesignSystem = {
-    backgroundColor: "#FFF",
-    brandColor: "#0078D4",
+    backgroundColor: white,
     contrast: 0,
-    density: 1,
+    density: 0,
     designUnit: 4,
+    baseHeightMultiplier: 8,
+    baseHorizontalSpacingMultiplier: 3,
     direction: Direction.ltr,
-    foregroundColor: "#111",
     cornerRadius: 2,
-    outlinePatternOutlineWidth: 1,
+    focusOutlineWidth: 2,
+    disabledOpacity: 0.3,
+    outlineWidth: 1,
+    neutralPalette: createColorPalette(new ColorRGBA64(0.5, 0.5, 0.5, 1)),
+    accentPalette: createColorPalette(parseColorHexRGB("#0078D4")),
+
+    /**
+     * Recipe Deltas
+     */
+    accentFillRestDelta: 0,
+    accentFillHoverDelta: 2,
+    accentFillActiveDelta: 4,
+    accentFillSelectedDelta: 12,
+
+    accentForegroundRestDelta: 0,
+    accentForegroundHoverDelta: 4,
+    accentForegroundActiveDelta: 8,
+
+    neutralFillRestDelta: 4,
+    neutralFillHoverDelta: 3,
+    neutralFillActiveDelta: 2,
+    neutralFillSelectedDelta: 16,
+
+    neutralFillInputRestDelta: 4,
+    neutralFillInputHoverDelta: 4,
+    neutralFillInputActiveDelta: 4,
+    neutralFillInputSelectedDelta: 4,
+
+    neutralFillStealthRestDelta: 0,
+    neutralFillStealthHoverDelta: 3,
+    neutralFillStealthActiveDelta: 2,
+    neutralFillStealthSelectedDelta: 12,
+
+    neutralForegroundDarkIndex: 58,
+    neutralForegroundLightIndex: 0,
+    neutralForegroundHoverDelta: 8,
+    neutralForegroundActiveDelta: 16,
+
+    neutralOutlineRestDelta: 12,
+    neutralOutlineHoverDelta: 24,
+    neutralOutlineActiveDelta: 18,
 };
 
 /**
@@ -72,10 +203,26 @@ export const withDesignSystemDefaults: (config: Partial<DesignSystem>) => Design
 /**
  * Safely retrieves a single property from a design system
  */
-export function getDesignSystemProperty(key: string): (config: DesignSystem) => string {
+export function getDesignSystemProperty(key: string): DesignSystemResolver<string> {
     return function(config: DesignSystem): string {
         return withDesignSystemDefaults(config)[key];
     };
 }
+
+/**
+ * Returns a function that calls the callback with designSystemDefaults ensured.
+ */
+export function ensureDesignSystemDefaults<T>(
+    callback: (designSystem: DesignSystem) => T
+): (designSystem: DesignSystem) => T {
+    return (designSystem: DesignSystem): T => {
+        return callback(withDesignSystemDefaults(designSystem));
+    };
+}
+
+/**
+ * A function that accepts a design system and returns a generic type
+ */
+export type DesignSystemResolver<T> = (designSystem: DesignSystem) => T;
 
 export default designSystemDefaults;

@@ -40,9 +40,21 @@ class FormItemArray extends FormItemBase<
 
         return (
             <div className={this.props.managedClasses.formItemArray_control}>
-                <label className={this.props.managedClasses.formItemArray_controlLabel}>
-                    {label}
-                </label>
+                <div
+                    className={get(
+                        this.props,
+                        "managedClasses.formItemArray_controlLabelRegion"
+                    )}
+                >
+                    <label
+                        className={this.props.managedClasses.formItemArray_controlLabel}
+                    >
+                        {label}
+                    </label>
+                    {this.renderBadge(
+                        get(this.props, "managedClasses.formItemArray_badge")
+                    )}
+                </div>
                 {this.renderAddArrayItemTrigger()}
             </div>
         );

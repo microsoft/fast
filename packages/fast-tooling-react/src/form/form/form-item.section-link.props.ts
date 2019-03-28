@@ -4,10 +4,11 @@ import FormItemCommon from "./form-item.props";
  * SectionLink class name contract
  */
 export interface FormItemSectionLinkClassNameContract {
-    formItemSectionLink: string;
-    formItemSectionLink_anchor: string;
-    formItemSectionLink_softRemove: string;
-    formItemSectionLink_softRemoveInput: string;
+    formItemSectionLink?: string;
+    formItemSectionLink_anchor?: string;
+    formItemSectionLink_badge?: string;
+    formItemSectionLink_softRemove?: string;
+    formItemSectionLink_softRemoveInput?: string;
 }
 
 /**

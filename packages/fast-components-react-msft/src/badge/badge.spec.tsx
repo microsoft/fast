@@ -1,16 +1,16 @@
-import * as React from "react";
-import * as Adapter from "enzyme-adapter-react-16";
+import React from "react";
+import Adapter from "enzyme-adapter-react-16";
 import { configure, mount, shallow } from "enzyme";
 import { BadgeClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import MSFTBadge from "./badge";
 import {
     Badge,
-    BadgeAppearance,
     BadgeHandledProps,
     BadgeProps,
     BadgeSize,
     BadgeUnhandledProps,
 } from "./index";
+import { DisplayNamePrefix } from "../utilities";
 
 /*
  * Configure Enzyme
@@ -22,28 +22,25 @@ describe("badge", (): void => {
         badge: "badge",
         badge__small: "badge__small",
         badge__large: "badge__large",
-        badge__lowlight: "badge__lowlight",
-        badge__highlight: "badge__highlight",
-        badge__accent: "badge__accent",
+        badge__filled: "badge__filled",
     };
 
     test("should have a displayName that matches the component name", () => {
-        expect((MSFTBadge as any).name).toBe(MSFTBadge.displayName);
+        expect(`${DisplayNamePrefix}${(MSFTBadge as any).name}`).toBe(
+            MSFTBadge.displayName
+        );
     });
 
     test("should not throw if managedClasses are not provided", () => {
         expect(() => {
             shallow(<MSFTBadge />);
-            shallow(<MSFTBadge appearance={BadgeAppearance.lowlight} />);
-            shallow(<MSFTBadge appearance={BadgeAppearance.highlight} />);
-            shallow(<MSFTBadge appearance={BadgeAppearance.accent} />);
+            shallow(<MSFTBadge filled={true} />);
         }).not.toThrow();
     });
 
     test("should accept unhandledProps", () => {
         const handledProps: BadgeHandledProps = {
             size: BadgeSize.small,
-            appearance: BadgeAppearance.lowlight,
         };
 
         const unhandledProps: BadgeUnhandledProps = {
@@ -57,27 +54,11 @@ describe("badge", (): void => {
         expect(rendered.find("span").prop("aria-hidden")).toEqual(true);
     });
 
-    test("should apply a 'lowlight' html class when appearance is lowlight", () => {
-        const rendered: any = mount(<Badge appearance={BadgeAppearance.lowlight} />);
+    test("should apply a 'filled' html class when filled is true", () => {
+        const rendered: any = mount(<Badge filled={true} />);
 
         expect(rendered.find("span").prop("className")).toContain(
-            managedClasses.badge__lowlight
-        );
-    });
-
-    test("should apply a 'highlight' html class when appearance is highlight", () => {
-        const rendered: any = mount(<Badge appearance={BadgeAppearance.highlight} />);
-
-        expect(rendered.find("span").prop("className")).toContain(
-            managedClasses.badge__highlight
-        );
-    });
-
-    test("should apply an 'accent' html class when appearance is accent", () => {
-        const rendered: any = mount(<Badge appearance={BadgeAppearance.accent} />);
-
-        expect(rendered.find("span").prop("className")).toContain(
-            managedClasses.badge__accent
+            managedClasses.badge__filled
         );
     });
 

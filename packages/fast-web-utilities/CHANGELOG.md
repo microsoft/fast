@@ -3,6 +3,29 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.0.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-web-utilities@3.1.3...@microsoft/fast-web-utilities@4.0.0) (2019-03-25)
+
+
+### Bug Fixes
+
+* update to use esModuleInterop in the TypeScript configuration files ([#1211](https://github.com/Microsoft/fast-dna/issues/1211)) ([2ec0644](https://github.com/Microsoft/fast-dna/commit/2ec0644))
+
+
+### Features
+
+* remove fast-application-utilities package ([#1455](https://github.com/Microsoft/fast-dna/issues/1455)) ([7ee34fa](https://github.com/Microsoft/fast-dna/commit/7ee34fa))
+
+
+### BREAKING CHANGES
+
+* removal of fast-application-utilities-package
+* This will affect how imports will be handled by
+consumers
+
+
+
+
+
 ## [3.1.3](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-web-utilities@3.1.2...@microsoft/fast-web-utilities@3.1.3) (2019-03-19)
 
 

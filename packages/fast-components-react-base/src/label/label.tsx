@@ -1,5 +1,5 @@
-import * as React from "react";
-import * as ReactDOM from "react-dom";
+import React from "react";
+import ReactDOM from "react-dom";
 import { get, isUndefined } from "lodash-es";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import {
@@ -13,9 +13,9 @@ import {
     LabelClassNameContract,
     ManagedClasses,
 } from "@microsoft/fast-components-class-name-contracts-base";
-
+import { DisplayNamePrefix } from "../utilities";
 class Label extends Foundation<LabelHandledProps, LabelUnhandledProps, {}> {
-    public static displayName: string = "Label";
+    public static displayName: string = `${DisplayNamePrefix}Label`;
 
     public static defaultProps: Partial<LabelProps> = {
         tag: LabelTag.label,

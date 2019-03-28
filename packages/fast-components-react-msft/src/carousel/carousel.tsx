@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import {
     CarouselHandledProps,
@@ -11,6 +11,7 @@ import { Flipper, FlipperDirection } from "../flipper";
 import { Tabs, TabsItem } from "@microsoft/fast-components-react-base";
 import { TabsClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import { get } from "lodash-es";
+import { DisplayNamePrefix } from "../utilities";
 
 /**
  * The carousel state interface
@@ -27,7 +28,7 @@ class Carousel extends Foundation<
     CarouselUnhandledProps,
     CarouselState
 > {
-    public static displayName: string = "Carousel";
+    public static displayName: string = `${DisplayNamePrefix}Carousel`;
 
     /**
      * Handled props

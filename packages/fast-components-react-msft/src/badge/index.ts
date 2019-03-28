@@ -1,9 +1,8 @@
-import * as React from "react";
+import React from "react";
 import { BadgeClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { BadgeStyles, DesignSystem } from "@microsoft/fast-components-styles-msft";
 import MSFTBadge, {
-    BadgeAppearance,
     BadgeHandledProps as MSFTBadgeHandledProps,
     BadgeManagedClasses,
     BadgeProps as MSFTBadgeProps,
@@ -26,7 +25,6 @@ type BadgeProps = ManagedJSSProps<MSFTBadgeProps, BadgeClassNameContract, Design
 
 export {
     Badge,
-    BadgeAppearance,
     BadgeProps,
     BadgeClassNameContract,
     BadgeHandledProps,

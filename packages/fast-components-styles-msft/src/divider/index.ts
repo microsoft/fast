@@ -3,11 +3,8 @@ import designSystemDefaults, {
     withDesignSystemDefaults,
 } from "../design-system";
 import { ComponentStyles, ComponentStyleSheet } from "@microsoft/fast-jss-manager";
-import { normalContrast } from "../utilities/colors";
-import { density } from "../utilities/density";
+import { neutralOutlineRest } from "../utilities/color";
 import { DividerClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
-import { contrast, toPx } from "@microsoft/fast-jss-utilities";
-import { get } from "lodash-es";
 
 const styles: ComponentStyles<DividerClassNameContract, DesignSystem> = (
     config: DesignSystem
@@ -20,11 +17,8 @@ const styles: ComponentStyles<DividerClassNameContract, DesignSystem> = (
             height: "0",
             margin: "0",
             border: "none",
-            borderTop: `1px solid ${normalContrast(
-                designSystem.contrast,
-                designSystem.foregroundColor,
-                designSystem.backgroundColor
-            )}`,
+            borderTop: `1px solid ${neutralOutlineRest(designSystem)}`,
+            transition: "all 0.2s ease-in-out",
         },
     };
 };

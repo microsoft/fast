@@ -3,7 +3,8 @@
     "title": "Call to action",
     "description": "A call to action component's schema definition.",
     "type": "object",
-    "id": "call-to-action",
+    "id": "@microsoft/fast-components-react-msft/call-to-action",
+    "formPluginId": "@microsoft/fast-components-react-msft/call-to-action",
     "properties": {
         "href": {
             "title": "HTML href attribute",
@@ -28,9 +29,16 @@
         "children": {
             "title": "Children",
             "type": "children",
+            "formPluginId": "@microsoft/fast-components-react-msft/call-to-action/children",
             "defaults": [
                 "text"
+            ],
+            "examples": [
+                "Lorem ipsum sit"
             ]
         }
-    }
+    },
+    "required": [
+        "children"
+    ]
 }

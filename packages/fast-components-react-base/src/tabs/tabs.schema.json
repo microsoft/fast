@@ -3,7 +3,8 @@
     "title": "Tabs",
     "description": "A tabs component's schema definition.",
     "type": "object",
-    "id": "tabs",
+    "id": "@microsoft/fast-components-react-base/tabs",
+    "formPluginId": "@microsoft/fast-components-react-base/tabs",
     "properties": {
         "activeId": {
             "title": "Active tab ID",
@@ -41,6 +42,7 @@
         "children": {
             "title": "Children",
             "type": "children",
+            "formPluginId": "@microsoft/fast-components-react-base/tabs/children",
             "ids": [
                 "tab-item"
             ]

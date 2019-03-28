@@ -1,5 +1,5 @@
-import * as React from "react";
-import * as ReactDOM from "react-dom";
+import React from "react";
+import ReactDOM from "react-dom";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import {
     TextAreaHandledProps,
@@ -11,13 +11,12 @@ import {
     TextAreaClassNameContract,
 } from "@microsoft/fast-components-class-name-contracts-base";
 import { get } from "lodash-es";
+import { DisplayNamePrefix } from "../utilities";
 
 class TextArea extends Foundation<TextAreaHandledProps, TextAreaUnhandledProps, {}> {
-    public static displayName: string = "TextArea";
+    public static displayName: string = `${DisplayNamePrefix}TextArea`;
 
     protected handledProps: HandledProps<TextAreaHandledProps> = {
-        disabled: void 0,
-        placeholder: void 0,
         managedClasses: void 0,
     };
 
@@ -29,8 +28,8 @@ class TextArea extends Foundation<TextAreaHandledProps, TextAreaUnhandledProps, 
             <textarea
                 {...this.unhandledProps()}
                 className={this.generateClassNames()}
-                disabled={this.props.disabled || null}
-                placeholder={this.props.placeholder || null}
+                disabled={get(this.props, "disabled", null)}
+                placeholder={get(this.props, "placeholder", null)}
             />
         );
     }

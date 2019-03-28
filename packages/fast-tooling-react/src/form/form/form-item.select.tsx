@@ -36,11 +36,23 @@ class FormItemSelect extends FormItemBase<
         return (
             <div className={this.generateClassNames()}>
                 <div className={this.props.managedClasses.formItemSelect_control}>
-                    <label
-                        className={this.props.managedClasses.formItemSelect_controlLabel}
+                    <div
+                        className={get(
+                            this.props,
+                            "managedClasses.formItemSelect_controlLabelRegion"
+                        )}
                     >
-                        {this.props.label}
-                    </label>
+                        <label
+                            className={
+                                this.props.managedClasses.formItemSelect_controlLabel
+                            }
+                        >
+                            {this.props.label}
+                        </label>
+                        {this.renderBadge(
+                            get(this.props, "managedClasses.formItemSelect_badge")
+                        )}
+                    </div>
                     <span className={this.generateControlSpanClassNames()}>
                         <select
                             className={

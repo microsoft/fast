@@ -1,9 +1,10 @@
-import * as React from "react";
-import * as Adapter from "enzyme-adapter-react-16";
+import React from "react";
+import Adapter from "enzyme-adapter-react-16";
 import { configure, mount, render, shallow } from "enzyme";
 import Select, { SelectUnhandledProps } from "./select";
 import ListboxItem from "../listbox-item";
 import { KeyCodes } from "@microsoft/fast-web-utilities";
+import { DisplayNamePrefix } from "../utilities";
 
 /*
  * Configure Enzyme
@@ -22,7 +23,7 @@ document.body.appendChild(container);
 
 describe("select", (): void => {
     test("should have a displayName that matches the component name", () => {
-        expect((Select as any).name).toBe(Select.displayName);
+        expect(`${DisplayNamePrefix}${(Select as any).name}`).toBe(Select.displayName);
     });
 
     test("should not throw if managedClasses are not provided", () => {

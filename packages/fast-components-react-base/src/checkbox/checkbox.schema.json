@@ -3,7 +3,8 @@
     "title": "Checkbox",
     "description": "A checkbox component's schema definition.",
     "type": "object",
-    "id": "checkbox",
+    "id": "@microsoft/fast-components-react-base/checkbox",
+    "formPluginId": "@microsoft/fast-components-react-base/checkbox",
     "properties": {
         "checked": {
             "title": "Checked",
@@ -25,7 +26,8 @@
     "reactProperties": {
         "children": {
             "title": "Children",
-            "type": "children"
+            "type": "children",
+            "formPluginId": "@microsoft/fast-components-react-base/checkbox/children"
         }
     }
 }

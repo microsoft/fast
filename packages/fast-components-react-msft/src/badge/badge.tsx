@@ -1,7 +1,6 @@
-import * as React from "react";
+import React from "react";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import {
-    BadgeAppearance,
     BadgeHandledProps,
     BadgeProps,
     BadgeSize,
@@ -9,16 +8,18 @@ import {
 } from "./badge.props";
 import { Badge as BaseBadge } from "@microsoft/fast-components-react-base";
 import { get } from "lodash-es";
+import { DisplayNamePrefix } from "../utilities";
 
 class Badge extends Foundation<BadgeHandledProps, BadgeUnhandledProps, {}> {
-    public static displayName: string = "Badge";
+    public static displayName: string = `${DisplayNamePrefix}Badge`;
 
     public static defaultProps: Partial<BadgeProps> = {
         size: BadgeSize.small,
+        filled: true,
     };
 
     protected handledProps: HandledProps<BadgeHandledProps> = {
-        appearance: void 0,
+        filled: void 0,
         size: void 0,
         managedClasses: void 0,
     };
@@ -44,30 +45,12 @@ class Badge extends Foundation<BadgeHandledProps, BadgeUnhandledProps, {}> {
     protected generateClassNames(): string {
         let classNames: string = "";
 
-        switch (this.props.appearance) {
-            case BadgeAppearance.highlight:
-                classNames = `${classNames} ${get(
-                    this.props,
-                    "managedClasses.badge__highlight",
-                    ""
-                )}`;
-                break;
-            case BadgeAppearance.lowlight:
-                classNames = `${classNames} ${get(
-                    this.props,
-                    "managedClasses.badge__lowlight",
-                    ""
-                )}`;
-                break;
-            case BadgeAppearance.accent:
-                classNames = `${classNames} ${get(
-                    this.props,
-                    "managedClasses.badge__accent",
-                    ""
-                )}`;
-                break;
-            default:
-                break;
+        if (this.props.filled) {
+            classNames = `${classNames} ${get(
+                this.props,
+                "managedClasses.badge__filled",
+                ""
+            )}`;
         }
 
         switch (this.props.size) {

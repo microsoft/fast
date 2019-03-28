@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { get } from "lodash-es";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import {
@@ -11,13 +11,14 @@ import {
     TabPanelProps,
     TabPanelUnhandledProps,
 } from "./tab-panel.props";
+import { DisplayNamePrefix } from "../utilities";
 
 class TabPanel extends Foundation<TabPanelHandledProps, TabPanelUnhandledProps, {}> {
     public static defaultProps: Partial<TabPanelProps> = {
         active: false,
     };
 
-    public static displayName: string = "TabPanel";
+    public static displayName: string = `${DisplayNamePrefix}TabPanel`;
 
     protected handledProps: HandledProps<TabPanelHandledProps> = {
         managedClasses: void 0,

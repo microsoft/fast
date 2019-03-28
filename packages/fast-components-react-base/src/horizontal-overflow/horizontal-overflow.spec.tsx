@@ -1,5 +1,5 @@
-import * as React from "react";
-import * as Adapter from "enzyme-adapter-react-16";
+import React from "react";
+import Adapter from "enzyme-adapter-react-16";
 import { configure, mount, shallow } from "enzyme";
 import HorizontalOverflow, {
     ButtonDirection,
@@ -7,6 +7,7 @@ import HorizontalOverflow, {
 } from "./";
 import "raf/polyfill";
 import { ConstructableResizeObserver } from "./resize-observer";
+import { DisplayNamePrefix } from "../utilities";
 
 /*
  * Configure Enzyme
@@ -57,7 +58,9 @@ const managedClasses: HorizontalOverflowClassNameContract = {
 /* tslint:disable:no-string-literal */
 describe("horizontal overflow", (): void => {
     test("should have a displayName that matches the component name", () => {
-        expect((HorizontalOverflow as any).name).toBe(HorizontalOverflow.displayName);
+        expect(`${DisplayNamePrefix}${(HorizontalOverflow as any).name}`).toBe(
+            HorizontalOverflow.displayName
+        );
     });
 
     test("should not throw if managedClasses are not provided", () => {

@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { TabsSlot } from "./tabs";
 
 export interface TabItemUnhandledProps extends React.AllHTMLAttributes<HTMLElement> {}

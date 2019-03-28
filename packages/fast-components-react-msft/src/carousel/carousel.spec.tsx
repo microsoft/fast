@@ -1,5 +1,5 @@
-import * as React from "react";
-import * as Adapter from "enzyme-adapter-react-16";
+import React from "react";
+import Adapter from "enzyme-adapter-react-16";
 import { configure, mount, shallow } from "enzyme";
 import MSFTCarousel, {
     CarouselHandledProps,
@@ -18,6 +18,7 @@ import {
     Paragraph,
     ParagraphSize,
 } from "../index";
+import { DisplayNamePrefix } from "../utilities";
 
 function contentOne(): (className?: string) => React.ReactNode {
     return (className?: string): React.ReactNode => (
@@ -122,7 +123,9 @@ describe("carousel", (): void => {
         items: detailTabItem,
     };
     test("should have a displayName that matches the component name", () => {
-        expect((MSFTCarousel as any).name).toBe(MSFTCarousel.displayName);
+        expect(`${DisplayNamePrefix}${(MSFTCarousel as any).name}`).toBe(
+            MSFTCarousel.displayName
+        );
     });
 
     test("should not throw if managedClasses are not provided", () => {

@@ -1,5 +1,5 @@
-import * as React from "react";
-import * as ReactDOM from "react-dom";
+import React from "react";
+import ReactDOM from "react-dom";
 import { get } from "lodash-es";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import {
@@ -12,9 +12,9 @@ import {
     CardClassNameContract,
     ManagedClasses,
 } from "@microsoft/fast-components-class-name-contracts-base";
-
+import { DisplayNamePrefix } from "../utilities";
 class Card extends Foundation<CardHandledProps, CardUnhandledProps, {}> {
-    public static displayName: string = "Card";
+    public static displayName: string = `${DisplayNamePrefix}Card`;
 
     protected handledProps: HandledProps<CardHandledProps> = {
         children: void 0,

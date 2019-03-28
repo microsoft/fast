@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import {
     ManagedClasses,
     RadioClassNameContract,
@@ -8,7 +8,7 @@ export interface RadioHandledProps extends RadioManagedClasses {
     /**
      * Unique Id
      */
-    id: string;
+    inputId: string;
 
     /**
      * The checked state

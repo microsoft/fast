@@ -3,13 +3,14 @@
     "title": "Toggle",
     "description": "A toggle component's schema definition.",
     "type": "object",
-    "id": "toggle",
+    "id": "@microsoft/fast-components-react-base/toggle",
+    "formPluginId": "@microsoft/fast-components-react-base/toggle",
     "properties": {
         "disabled": {
             "title": "Disabled",
             "type": "boolean"
         },
-        "id": {
+        "inputId": {
             "title": "HTML id attribute",
             "type": "string"
         },
@@ -38,6 +39,7 @@
         "children": {
             "title": "Children",
             "type": "children",
+            "formPluginId": "@microsoft/fast-components-react-base/toggle/children",
             "defaults": [
                 "text"
             ]

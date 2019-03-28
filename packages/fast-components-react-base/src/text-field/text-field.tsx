@@ -1,5 +1,5 @@
-import * as React from "react";
-import * as ReactDOM from "react-dom";
+import React from "react";
+import ReactDOM from "react-dom";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import {
     TextFieldHandledProps,
@@ -12,13 +12,12 @@ import {
     TextFieldClassNameContract,
 } from "@microsoft/fast-components-class-name-contracts-base";
 import { get } from "lodash-es";
+import { DisplayNamePrefix } from "../utilities";
 
 class TextField extends Foundation<TextFieldHandledProps, TextFieldUnhandledProps, {}> {
-    public static displayName: string = "TextField";
+    public static displayName: string = `${DisplayNamePrefix}TextField`;
 
     protected handledProps: HandledProps<TextFieldHandledProps> = {
-        disabled: void 0,
-        placeholder: void 0,
         managedClasses: void 0,
         type: void 0,
     };
@@ -31,8 +30,8 @@ class TextField extends Foundation<TextFieldHandledProps, TextFieldUnhandledProp
             <input
                 {...this.unhandledProps()}
                 className={this.generateClassNames()}
-                disabled={this.props.disabled || null}
-                placeholder={this.props.placeholder || null}
+                disabled={get(this.props, "disabled", null)}
+                placeholder={get(this.props, "placeholder", null)}
                 type={this.props.type || TextFieldType.text}
             />
         );

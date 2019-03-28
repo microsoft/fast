@@ -1,5 +1,5 @@
-import * as React from "react";
-import * as ReactDOM from "react-dom";
+import React from "react";
+import ReactDOM from "react-dom";
 import Site, {
     componentFactory,
     formChildFromExamplesFactory,
@@ -18,7 +18,7 @@ import { Tab, TabItem, TabPanel } from "../src";
 import TabSchema from "../src/tabs/tab.schema.json";
 import TabItemSchema from "../src/tabs/tab-item.schema.json";
 import TabPanelSchema from "../src/tabs/tab-panel.schema.json";
-import { Plugin, PluginProps } from "@microsoft/fast-data-utilities-react";
+import { Plugin, PluginProps } from "@microsoft/fast-tooling-react";
 import ClassNamePlugin from "./utilities/class-name.plugin";
 
 /**

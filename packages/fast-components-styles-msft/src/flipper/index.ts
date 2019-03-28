@@ -5,15 +5,18 @@ import {
     applyFocusVisible,
     applyLocalizedProperty,
     Direction,
+    toPx,
 } from "@microsoft/fast-jss-utilities";
 import {
-    applyMixedColor,
-    ensureNormalContrast,
-    hoverContrast,
-    normalContrast,
-} from "../utilities/colors";
-import { get } from "lodash-es";
-import outlinePattern from "../patterns/outline";
+    neutralFillStealthActive,
+    neutralFillStealthHover,
+    neutralFillStealthRest,
+    neutralFocus,
+    neutralForegroundRest,
+    neutralOutlineActive,
+    neutralOutlineHover,
+    neutralOutlineRest,
+} from "../utilities/color";
 
 const eastFlipperTransform: string = "translateX(-3px) rotate(45deg)";
 const westFlipperTransform: string = "translateX(3px) rotate(-135deg)";
@@ -22,37 +25,54 @@ const styles: ComponentStyles<FlipperClassNameContract, DesignSystem> = (
     config: DesignSystem
 ): ComponentStyleSheet<FlipperClassNameContract, DesignSystem> => {
     const designSystem: DesignSystem = withDesignSystemDefaults(config);
-
-    const backgroundColor: string = designSystem.backgroundColor;
     const direction: Direction = designSystem.direction;
-    const foregroundColor: string = ensureNormalContrast(
-        designSystem.contrast,
-        designSystem.foregroundColor,
-        designSystem.backgroundColor
-    );
-
-    const glyphColorHover: string = hoverContrast(config.contrast, foregroundColor);
 
     return {
         flipper: {
-            width: "40px",
-            height: "40px",
+            width: toPx(
+                (designSystem.baseHeightMultiplier + 2) * designSystem.designUnit
+            ),
+            height: toPx(
+                (designSystem.baseHeightMultiplier + 2) * designSystem.designUnit
+            ),
             margin: "0",
-            color: foregroundColor,
-            ...outlinePattern.rest,
-            borderRadius: "50%",
+            position: "relative",
+            color: neutralForegroundRest,
+            background: "transparent",
+            border: "none",
             padding: "0",
+            "&::before": {
+                transition: "all 0.1s ease-in-out",
+                content: "''",
+                opacity: "0.8",
+                background: neutralFillStealthRest,
+                border: `${toPx(designSystem.outlineWidth)} solid ${neutralOutlineRest(
+                    designSystem
+                )}`,
+                borderRadius: "50%",
+                position: "absolute",
+                top: "0",
+                right: "0",
+                bottom: "0",
+                left: "0",
+            },
+            "&:active": {
+                "&::before": {
+                    background: neutralFillStealthActive,
+                    borderColor: neutralOutlineActive,
+                },
+            },
             "&:hover": {
-                ...outlinePattern.hover,
-                "& $flipper_glyph": {
-                    "&::before": {
-                        borderRightColor: glyphColorHover,
-                        borderTopColor: glyphColorHover,
-                    },
+                "&::before": {
+                    background: neutralFillStealthHover,
+                    borderColor: neutralOutlineHover,
                 },
             },
             ...applyFocusVisible({
-                ...outlinePattern.focus,
+                "&::before": {
+                    boxShadow: `0 0 0 1px ${neutralFocus(designSystem)} inset`,
+                    border: neutralFocus,
+                },
             }),
             "&::-moz-focus-inner": {
                 border: "0",
@@ -69,8 +89,8 @@ const styles: ComponentStyles<FlipperClassNameContract, DesignSystem> = (
                 height: "12px",
                 width: "12px",
                 content: '""',
-                borderRight: `1px solid ${foregroundColor}`,
-                borderTop: `1px solid ${foregroundColor}`,
+                borderRight: `1px solid ${neutralForegroundRest(designSystem)}`,
+                borderTop: `1px solid ${neutralForegroundRest(designSystem)}`,
             },
         },
         flipper__next: {

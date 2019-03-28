@@ -1,9 +1,10 @@
-import * as React from "react";
-import * as Adapter from "enzyme-adapter-react-16";
+import React from "react";
+import Adapter from "enzyme-adapter-react-16";
 import { configure, mount, shallow } from "enzyme";
 import examples from "./examples.data";
 import MSFTFlipper, { FlipperHandledProps, FlipperUnhandledProps } from "./flipper";
 import { Flipper, FlipperProps } from "./index";
+import { DisplayNamePrefix } from "../utilities";
 
 /*
  * Configure Enzyme
@@ -12,7 +13,9 @@ configure({ adapter: new Adapter() });
 
 describe("flipper", (): void => {
     test("should have a displayName that matches the component name", () => {
-        expect((MSFTFlipper as any).name).toBe(MSFTFlipper.displayName);
+        expect(`${DisplayNamePrefix}${(MSFTFlipper as any).name}`).toBe(
+            MSFTFlipper.displayName
+        );
     });
 
     test("should not throw if managedClasses are not provided", () => {

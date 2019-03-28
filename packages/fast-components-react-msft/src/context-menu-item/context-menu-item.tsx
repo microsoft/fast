@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import {
     ContextMenuItemHandledProps,
@@ -8,13 +8,14 @@ import {
 } from "./context-menu-item.props";
 import { ContextMenuItem as BaseContextMenuItem } from "@microsoft/fast-components-react-base";
 import { get } from "lodash-es";
+import { DisplayNamePrefix } from "../utilities";
 
 class ContextMenuItem extends Foundation<
     ContextMenuItemHandledProps,
     ContextMenuItemUnhandledProps,
     {}
 > {
-    public static displayName: string = "ContextMenuItem";
+    public static displayName: string = `${DisplayNamePrefix}ContextMenuItem`;
 
     protected handledProps: HandledProps<ContextMenuItemHandledProps> = {
         before: void 0,

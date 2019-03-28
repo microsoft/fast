@@ -1,7 +1,7 @@
-import * as React from "react";
+import React from "react";
 import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
 import { Typography, TypographyProps, TypographySize, TypographyTag } from "./index";
-import schema from "@microsoft/fast-components-react-base/dist/typography/typography.schema.json";
+import schema from "./typography.schema.json";
 import Documentation from "./.tmp/documentation";
 
 const testString: string = "Typography example string";

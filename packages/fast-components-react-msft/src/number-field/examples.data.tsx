@@ -1,7 +1,7 @@
-import * as React from "react";
+import React from "react";
 import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
 import { NumberField, NumberFieldProps } from "./index";
-import schema from "@microsoft/fast-components-react-base/dist/number-field/number-field.schema.json";
+import schema from "./number-field.schema.json";
 import Documentation from "./.tmp/documentation";
 
 export default {

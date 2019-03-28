@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { ComponentStyles } from "@microsoft/fast-jss-manager-react";
 import BreakpointTracker from "../utilities/breakpoint-tracker";
 import { getValueByBreakpoint } from "../utilities/breakpoints";

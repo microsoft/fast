@@ -1,5 +1,5 @@
-import * as React from "react";
-import * as ReactDOM from "react-dom";
+import React from "react";
+import ReactDOM from "react-dom";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import { BreadcrumbClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import {
@@ -8,13 +8,14 @@ import {
     BreadcrumbUnhandledProps,
 } from "./breadcrumb.props";
 import { get } from "lodash-es";
+import { DisplayNamePrefix } from "../utilities";
 
 class Breadcrumb extends Foundation<
     BreadcrumbHandledProps,
     BreadcrumbUnhandledProps,
     {}
 > {
-    public static displayName: string = "Breadcrumb";
+    public static displayName: string = `${DisplayNamePrefix}Breadcrumb`;
 
     protected handledProps: HandledProps<BreadcrumbHandledProps> = {
         children: void 0,

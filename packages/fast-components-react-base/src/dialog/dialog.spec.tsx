@@ -1,7 +1,7 @@
-import * as React from "react";
-import * as ReactDOM from "react-dom";
+import React from "react";
+import ReactDOM from "react-dom";
 import * as ShallowRenderer from "react-test-renderer/shallow";
-import * as Adapter from "enzyme-adapter-react-16";
+import Adapter from "enzyme-adapter-react-16";
 import { configure, mount, shallow } from "enzyme";
 import examples from "./examples.data";
 import Dialog, {
@@ -12,6 +12,7 @@ import Dialog, {
     DialogUnhandledProps,
 } from "./dialog";
 import { KeyCodes } from "@microsoft/fast-web-utilities";
+import { DisplayNamePrefix } from "../utilities";
 
 /*
  * Configure Enzyme
@@ -26,7 +27,7 @@ describe("dialog", (): void => {
     };
 
     test("should have a displayName that matches the component name", () => {
-        expect((Dialog as any).name).toBe(Dialog.displayName);
+        expect(`${DisplayNamePrefix}${(Dialog as any).name}`).toBe(Dialog.displayName);
     });
 
     test("should have correct element attribute role 'dialog'", () => {

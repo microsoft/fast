@@ -4,10 +4,10 @@ import { configure, mount } from "enzyme";
 import Form from "./form";
 import { FormProps } from "./form.props";
 
-import objectSchema from "../../../app/pages/form/objects/objects.schema.json";
-import arraySchema from "../../../app/pages/form/arrays/arrays.schema.json";
-import childrenSchema from "../../../app/pages/form/children/children.schema.json";
-import pluginSchema from "../../../app/pages/form/plugin/plugin.schema.json";
+import objectSchema from "../../__tests__/schemas/objects.schema.json";
+import arraySchema from "../../__tests__/schemas/arrays.schema.json";
+import childrenSchema from "../../__tests__/schemas/children.schema.json";
+import pluginSchema from "../../__tests__/schemas/plugin.schema.json";
 
 import { StringUpdateSchemaPlugin } from "../../../app/pages/form/plugin/plugin";
 

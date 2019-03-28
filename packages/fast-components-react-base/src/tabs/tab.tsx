@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { get } from "lodash-es";
 import {
     ManagedClasses,
@@ -11,13 +11,14 @@ import {
     TabProps,
     TabUnhandledProps,
 } from "./tab.props";
+import { DisplayNamePrefix } from "../utilities";
 
 class Tab extends Foundation<TabHandledProps, TabUnhandledProps, {}> {
     public static defaultProps: Partial<TabProps> = {
         active: false,
     };
 
-    public static displayName: string = "Tab";
+    public static displayName: string = `${DisplayNamePrefix}Tab`;
 
     protected handledProps: HandledProps<TabHandledProps> = {
         managedClasses: void 0,

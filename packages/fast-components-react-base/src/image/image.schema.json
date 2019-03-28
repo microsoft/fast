@@ -3,7 +3,8 @@
     "title": "Image",
     "description": "An image component's schema definition.",
     "type": "object",
-    "id": "image",
+    "id": "@microsoft/fast-components-react-base/image",
+    "formPluginId": "@microsoft/fast-components-react-base/image",
     "properties": {
         "alt": {
             "title": "HTML alt attribute",

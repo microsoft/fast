@@ -1,5 +1,5 @@
-import * as React from "react";
-import * as Adapter from "enzyme-adapter-react-16";
+import React from "react";
+import Adapter from "enzyme-adapter-react-16";
 import { configure, mount, shallow } from "enzyme";
 import examples from "./examples.data";
 import MSFTSubheading, {
@@ -11,6 +11,7 @@ import MSFTSubheading, {
 } from "./subheading";
 import { Subheading, SubheadingProps } from "./index";
 import { TypographySize } from "../typography";
+import { DisplayNamePrefix } from "../utilities";
 
 /**
  * Configure enzyme
@@ -19,7 +20,9 @@ configure({ adapter: new Adapter() });
 
 describe("subheading", (): void => {
     test("should have a displayName that matches the component name", () => {
-        expect((MSFTSubheading as any).name).toBe(MSFTSubheading.displayName);
+        expect(`${DisplayNamePrefix}${(MSFTSubheading as any).name}`).toBe(
+            MSFTSubheading.displayName
+        );
     });
 
     test("should not throw if managedClasses are not provided", () => {

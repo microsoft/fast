@@ -1,5 +1,5 @@
-import * as React from "react";
-import { Badge, BadgeAppearance, BadgeProps, BadgeSize } from "./index";
+import React from "react";
+import { Badge, BadgeProps, BadgeSize } from "./index";
 import schema from "./badge.schema.json";
 import Documentation from "./.tmp/documentation";
 import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
@@ -11,47 +11,26 @@ export default {
     documentation: <Documentation />,
     detailData: {
         children: "Badge",
-        appearance: BadgeAppearance.lowlight,
         size: BadgeSize.large,
     },
     data: [
         {
-            children: "Badge lowlight large",
-            appearance: BadgeAppearance.lowlight,
+            children: "Filled badge large",
             size: BadgeSize.large,
         },
         {
-            children: "Badge highlight large",
-            appearance: BadgeAppearance.highlight,
+            children: "Filled badge small",
+            size: BadgeSize.small,
+        },
+        {
+            children: "Badge large",
+            filled: false,
             size: BadgeSize.large,
         },
         {
-            children: "Badge accent large",
-            appearance: BadgeAppearance.accent,
-            size: BadgeSize.large,
-        },
-        {
-            children: "Badge lowlight small",
-            appearance: BadgeAppearance.lowlight,
+            children: "Badge small",
+            filled: false,
             size: BadgeSize.small,
         },
-        {
-            children: "Badge highlight small",
-            appearance: BadgeAppearance.highlight,
-            size: BadgeSize.small,
-        },
-        {
-            children: "Badge accent small",
-            appearance: BadgeAppearance.accent,
-            size: BadgeSize.small,
-        },
-        {
-            children: "Badge default small",
-            size: BadgeSize.small,
-        },
-        {
-            children: "Badge default large",
-            size: BadgeSize.large,
-        } as any,
     ],
 } as ComponentFactoryExample<BadgeProps>;

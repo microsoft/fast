@@ -1,76 +1,77 @@
+import { ButtonClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
+import {
+    applyFocusVisible,
+    applyLocalizedProperty,
+    Direction,
+    toPx,
+} from "@microsoft/fast-jss-utilities";
+import { DesignSystem, withDesignSystemDefaults } from "../design-system";
 import {
     ComponentStyles,
     ComponentStyleSheet,
     CSSRules,
 } from "@microsoft/fast-jss-manager";
-import { applyTypeRampConfig } from "../utilities/typography";
-import { ButtonClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
+import { height, horizontalSpacing } from "../utilities/density";
 import {
-    applyFocusVisible,
-    applyLocalizedProperty,
-    contrast,
-    Direction,
-    focusVisible,
-    scaleContrast,
-    toPx,
-} from "@microsoft/fast-jss-utilities";
-import { curry } from "lodash-es";
-import { DesignSystem, withDesignSystemDefaults } from "../design-system";
-import {
-    disabledContrast,
-    ensureBrandNormal,
-    ensureForegroundNormal,
-    ensureLargeContrast,
-    ensureNormalContrast,
-    hoverContrast,
-    scaleContrastNormal,
-} from "../utilities/colors";
-import Chroma from "chroma-js";
-import { density } from "../utilities/density";
-import { defaultHeight, maxHeight, minHeight } from "../utilities/height";
-import outlinePattern from "../patterns/outline";
+    accentFillActive,
+    accentFillHover,
+    accentFillRest,
+    accentForegroundActive,
+    accentForegroundCut,
+    accentForegroundHover,
+    accentForegroundRest,
+    neutralFillActive,
+    neutralFillHover,
+    neutralFillRest,
+    neutralFillStealthActive,
+    neutralFillStealthHover,
+    neutralFillStealthRest,
+    neutralFocus,
+    neutralForegroundRest,
+    neutralOutlineActive,
+    neutralOutlineHover,
+    neutralOutlineRest,
+} from "../utilities/color";
+import { applyCursorPointer } from "../utilities/cursor";
+import { applyCornerRadius, applyFocusPlaceholderBorder } from "../utilities/border";
+import { applyDisabledState } from "../utilities/disabled";
+import { applyScaledTypeRamp } from "../utilities/typography";
 
 function applyTransparentBackplateStyles(
     designSystem: DesignSystem
 ): CSSRules<DesignSystem> {
     return {
-        color: ensureBrandNormal(designSystem),
-        fill: ensureBrandNormal(designSystem),
+        color: accentForegroundRest,
+        fill: accentForegroundRest,
         ...applyTransparentBackground(),
-        [`&:hover, &${focusVisible()}`]: {
+        ...applyFocusVisible({
             borderColor: "transparent",
             boxShadow: "none",
-            ...applyTransparentBackground(),
+            "& $button_contentRegion::before": {
+                background: neutralForegroundRest,
+            },
+        }),
+        // Underline
+        "&:hover $button_contentRegion::before": {
+            background: accentForegroundHover,
         },
-        "&:active $button_contentRegion::before, &:hover $button_contentRegion::before": {
-            background: ensureBrandNormal(designSystem),
-        },
-        [`&${focusVisible()} $button_contentRegion::before`]: {
-            background: ensureForegroundNormal,
+        "&:active $button_contentRegion::before": {
+            background: accentForegroundActive,
         },
         "&$button__disabled, &$button__disabled $button_contentRegion::before": {
             ...applyTransparentBackground(),
         },
-        "&$button__disabled": {
-            borderColor: "transparent",
-            color: disabledForegroundContrast(designSystem),
-            fill: disabledForegroundContrast(designSystem),
-            "& $button_beforeContent, & $button_afterContent": {
-                fill: disabledForegroundContrast(designSystem),
-            },
+        "&:hover:enabled": {
+            color: accentForegroundHover,
+            fill: accentForegroundHover,
+            ...applyTransparentBackground(),
         },
-        "& $button_beforeContent, & $button_afterContent": {
-            fill: ensureBrandNormal(designSystem),
+        "&:active:enabled": {
+            color: accentForegroundActive,
+            fill: accentForegroundActive,
+            ...applyTransparentBackground(),
         },
     };
-}
-
-function disabledForegroundContrast(designSystem: DesignSystem): string {
-    return disabledContrast(
-        designSystem.contrast,
-        designSystem.foregroundColor,
-        designSystem.backgroundColor
-    );
 }
 
 function applyTransparentBackground(): CSSRules<DesignSystem> {
@@ -82,190 +83,88 @@ function applyTransparentBackground(): CSSRules<DesignSystem> {
 const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = (
     config: DesignSystem
 ): ComponentStyleSheet<ButtonClassNameContract, DesignSystem> => {
-    type ContrastFunction = (operandColor: string, referenceColor: string) => string;
     const designSystem: DesignSystem = withDesignSystemDefaults(config);
-    const contrastScale: number = designSystem.contrast;
-    const foregroundColor: string = designSystem.foregroundColor;
-    const backgroundColor: string = designSystem.backgroundColor;
-    const brandColor: string = designSystem.brandColor;
     const direction: Direction = designSystem.direction;
-    const scaledEnsureNormalContrast: ContrastFunction = curry(ensureNormalContrast)(
-        contrastScale
-    );
-    const scaledEnsureLargeContrast: ContrastFunction = curry(ensureLargeContrast)(
-        contrastScale
-    );
-    const focusBoxShadowDefaults: string = "inset 0 0 0 2px";
-
-    // Define secondary button colors
-    const color: string = "white";
-    const secondaryForegroundColor: string = designSystem.foregroundColor;
-    const secondaryBackgroundColor: string = scaledEnsureNormalContrast(
-        contrast(
-            scaleContrast(1.32, contrastScale),
-            designSystem.foregroundColor,
-            designSystem.backgroundColor
-        ),
-        secondaryForegroundColor
-    );
-    const secondaryHoverBackgroundColor: string = hoverContrast(
-        designSystem.contrast,
-        secondaryBackgroundColor
-    );
-    const secondaryFocusBorderColor: string = scaledEnsureNormalContrast(
-        scaledEnsureNormalContrast(foregroundColor, backgroundColor),
-        secondaryBackgroundColor
-    );
-    const secondaryFocusBoxShadow: string =
-        Chroma.contrast(secondaryBackgroundColor, secondaryFocusBorderColor) <
-        scaleContrastNormal(contrastScale)
-            ? `${focusBoxShadowDefaults} ${ensureNormalContrast(
-                  contrastScale,
-                  secondaryBackgroundColor,
-                  secondaryFocusBorderColor
-              )}`
-            : "none";
-    const secondaryDisabledBackgroundColor: string = disabledContrast(
-        contrastScale,
-        secondaryBackgroundColor,
-        backgroundColor
-    );
-    const secondaryDisabledColor: string = disabledContrast(
-        contrastScale,
-        secondaryForegroundColor,
-        secondaryDisabledBackgroundColor
-    );
-
-    // Define primary button colors
-    const primaryRestBackgroundColor: string = scaledEnsureLargeContrast(
-        scaledEnsureNormalContrast(brandColor, backgroundColor),
-        color
-    );
-    const primaryHoverBackground: string = hoverContrast(
-        designSystem.contrast,
-        primaryRestBackgroundColor
-    );
-    const primaryFocusBorderColor: string = scaledEnsureNormalContrast(
-        scaledEnsureNormalContrast(foregroundColor, backgroundColor),
-        primaryRestBackgroundColor
-    );
-    const primaryFocusBoxShadow: string =
-        Chroma.contrast(primaryRestBackgroundColor, primaryFocusBorderColor) <
-        scaleContrastNormal(contrastScale)
-            ? `${focusBoxShadowDefaults} ${ensureNormalContrast(
-                  contrastScale,
-                  primaryRestBackgroundColor,
-                  primaryFocusBorderColor
-              )}`
-            : "none";
-    const primaryDisabledBackground: string = disabledContrast(
-        contrastScale,
-        primaryRestBackgroundColor,
-        backgroundColor
-    );
-    const primaryDisabledColor: string = disabledContrast(
-        contrastScale,
-        color,
-        primaryDisabledBackground
-    );
-
-    const outlineColor: string = scaledEnsureNormalContrast(
-        foregroundColor,
-        backgroundColor
-    );
-    const outlineDisabledColor: string = disabledContrast(
-        designSystem.contrast,
-        outlineColor,
-        backgroundColor
-    );
 
     return {
         button: {
-            ...applyTypeRampConfig("t7"),
+            ...applyScaledTypeRamp("t7"),
             fontFamily: "inherit",
+            ...applyCursorPointer(),
             boxSizing: "border-box",
             maxWidth: "374px",
-            minWidth: "120px",
-            padding: "0 16px",
+            minWidth: designSystem.density <= -2 ? "100px" : "120px",
+            padding: `0 ${horizontalSpacing(designSystem.focusOutlineWidth)(
+                designSystem
+            )}`,
             display: "inline-flex",
             justifyContent: "center",
             alignItems: "center",
-            height: density(defaultHeight)(designSystem),
-            minHeight: toPx(minHeight),
-            maxHeight: toPx(maxHeight),
-            border: "2px solid",
-            borderColor: "transparent",
-            borderRadius: "2px",
+            height: height(),
+            ...applyFocusPlaceholderBorder(designSystem),
+            ...applyCornerRadius(),
             lineHeight: "1",
             overflow: "hidden",
             textDecoration: "none",
             whiteSpace: "nowrap",
-            transition: "all 0.2s ease-in-out",
-            color: secondaryForegroundColor,
-            fill: secondaryForegroundColor,
-            backgroundColor: secondaryBackgroundColor,
-            "&:hover": {
-                backgroundColor: secondaryHoverBackgroundColor,
+            transition: "all 0.1s ease-in-out",
+            color: neutralForegroundRest,
+            fill: neutralForegroundRest,
+            background: neutralFillRest,
+            "&:hover:enabled": {
+                background: neutralFillHover,
             },
-            ...applyFocusVisible({
-                borderColor: secondaryFocusBorderColor,
-                boxShadow: secondaryFocusBoxShadow,
+            "&:active:enabled": {
+                background: neutralFillActive,
+            },
+            ...applyFocusVisible<DesignSystem>({
+                borderColor: neutralFocus,
             }),
-            "&$button__disabled": {
-                cursor: "not-allowed",
-                backgroundColor: secondaryDisabledBackgroundColor,
-                color: secondaryDisabledColor,
-                fill: secondaryDisabledColor,
-                "& $button_beforeContent, & $button_afterContent": {
-                    fill: secondaryDisabledColor,
-                },
-            },
             "&::-moz-focus-inner": {
                 border: "0",
             },
         },
         button__primary: {
-            color,
-            fill: color,
-            backgroundColor: primaryRestBackgroundColor,
-            "&:hover": {
-                backgroundColor: primaryHoverBackground,
+            color: accentForegroundCut,
+            fill: accentForegroundCut,
+            background: accentFillRest,
+            "&:hover:enabled": {
+                background: accentFillHover,
             },
-            ...applyFocusVisible({
-                borderColor: primaryFocusBorderColor,
-                boxShadow: primaryFocusBoxShadow,
+            "&:active:enabled": {
+                background: accentFillActive,
+            },
+            ...applyFocusVisible<DesignSystem>({
+                borderColor: neutralFocus,
             }),
-            "&$button__disabled": {
-                color: primaryDisabledColor,
-                fill: primaryDisabledColor,
-                backgroundColor: primaryDisabledBackground,
-                "& $button_beforeContent, & $button_afterContent": {
-                    fill: primaryDisabledColor,
-                },
-            },
             "& $button_beforeContent, & $button_afterContent": {
-                fill: color,
+                fill: accentForegroundCut,
             },
         },
         button__outline: {
-            ...outlinePattern.rest,
-            "&, &:hover": {
-                color: outlineColor,
-                ...applyTransparentBackground(),
+            background: neutralFillStealthRest,
+            border: `${toPx(designSystem.outlineWidth)} solid ${neutralOutlineRest(
+                designSystem
+            )}`,
+            padding: `0 ${horizontalSpacing(designSystem.outlineWidth)(designSystem)}`,
+            "&:hover:enabled": {
+                background: neutralFillStealthHover,
+                border: `${toPx(designSystem.outlineWidth)} solid ${neutralOutlineHover(
+                    designSystem
+                )}`,
             },
-            "&:hover": {
-                ...outlinePattern.hover,
+            "&:active:enabled": {
+                background: neutralFillStealthActive,
+                border: `${toPx(designSystem.outlineWidth)} solid ${neutralOutlineActive(
+                    designSystem
+                )}`,
             },
-            ...applyFocusVisible({
-                ...applyTransparentBackground(),
-                ...outlinePattern.focus,
+            ...applyFocusVisible<DesignSystem>({
+                boxShadow: `0 0 0 ${toPx(
+                    designSystem.focusOutlineWidth - designSystem.outlineWidth
+                )} ${neutralFocus(designSystem)} inset`,
+                borderColor: neutralFocus,
             }),
-            "&$button__disabled": {
-                ...applyTransparentBackground(),
-                ...outlinePattern.disabled,
-                color: outlineDisabledColor,
-                fill: outlineDisabledColor,
-            },
         },
         button__lightweight: {
             ...applyTransparentBackplateStyles(designSystem),
@@ -273,7 +172,9 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = (
         button__justified: {
             ...applyTransparentBackplateStyles(designSystem),
             minWidth: "74px",
-            [applyLocalizedProperty("paddingLeft", "paddingRight", direction)]: "0",
+            paddingLeft: "0",
+            paddingRight: "0",
+            borderWidth: "0",
             justifyContent: "flex-start",
         },
         button_contentRegion: {
@@ -281,14 +182,16 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = (
             "&::before": {
                 content: "''",
                 display: "block",
-                height: "2px",
+                height: toPx(designSystem.focusOutlineWidth),
                 position: "absolute",
                 bottom: "-3px",
                 width: "100%",
                 [applyLocalizedProperty("left", "right", direction)]: "0",
             },
         },
-        button__disabled: {},
+        button__disabled: {
+            ...applyDisabledState(designSystem),
+        },
         button_beforeContent: {},
         button_afterContent: {},
     };

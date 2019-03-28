@@ -1,9 +1,8 @@
 import { DesignSystem, withDesignSystemDefaults } from "../design-system";
 import { ComponentStyles, ComponentStyleSheet } from "@microsoft/fast-jss-manager";
 import { NumberFieldClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
-import { toPx } from "@microsoft/fast-jss-utilities";
-import { density } from "../utilities/density";
-import { defaultHeight, maxHeight, minHeight } from "../utilities/height";
+import { Direction, localizeSpacing } from "@microsoft/fast-jss-utilities";
+import { height, horizontalSpacing } from "../utilities/density";
 import { inputFieldStyles } from "../patterns/input-field";
 
 /* tslint:disable-next-line */
@@ -11,13 +10,15 @@ const styles: ComponentStyles<NumberFieldClassNameContract, DesignSystem> = (
     config: DesignSystem
 ): ComponentStyleSheet<NumberFieldClassNameContract, DesignSystem> => {
     const designSystem: DesignSystem = withDesignSystemDefaults(config);
+    const direction: Direction = designSystem.direction;
 
     return {
         numberField: {
             ...inputFieldStyles(designSystem),
-            height: density(defaultHeight)(designSystem),
-            minHeight: toPx(minHeight),
-            maxHeight: toPx(maxHeight),
+            height: height(),
+            padding: localizeSpacing(direction)(
+                `0 6px 0 ${horizontalSpacing()(designSystem)}`
+            ),
         },
     };
 };

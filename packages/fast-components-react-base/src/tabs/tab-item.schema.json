@@ -3,7 +3,8 @@
     "title": "Tab item",
     "description": "A tab item component's schema definition.",
     "type": "object",
-    "id": "tab-item",
+    "id": "@microsoft/fast-components-react-base/tab-item",
+    "formPluginId": "@microsoft/fast-components-react-base/tab-item",
     "properties": {
         "id": {
             "title": "Unique ID",
@@ -19,6 +20,7 @@
         "children": {
             "title": "Children",
             "type": "children",
+            "formPluginId": "@microsoft/fast-components-react-base/tab-item/children",
             "ids": [
                 "tab",
                 "tab-panel"

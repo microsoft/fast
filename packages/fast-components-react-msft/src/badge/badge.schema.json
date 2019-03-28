@@ -3,17 +3,12 @@
     "title": "Badge",
     "description": "A badge component's schema definition.",
     "type": "object",
-    "id": "badge",
+    "id": "@microsoft/fast-components-react-msft/badge",
+    "formPluginId": "@microsoft/fast-components-react-msft/badge",
     "properties": {
-        "appearance": {
-            "title": "Appearance",
-            "type": "string",
-            "default": "lowlight",
-            "enum": [
-                "lowlight",
-                "highlight",
-                "accent"
-            ]
+        "filled": {
+            "title": "Filled",
+            "type": "boolean"
         },
         "size": {
             "title": "Size",
@@ -31,7 +26,14 @@
             "type": "children",
             "defaults": [
                 "text"
+            ],
+            "formPluginId": "@microsoft/fast-components-react-msft/badge/children",
+            "examples": [
+                "Lorem"
             ]
         }
-    }
+    },
+    "required": [
+        "children"
+    ]
 }

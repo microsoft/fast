@@ -1,45 +1,47 @@
 import { DesignSystem, withDesignSystemDefaults } from "../design-system";
-import {
-    ComponentStyles,
-    ComponentStyleSheet,
-    CSSRules,
-} from "@microsoft/fast-jss-manager";
+import { ComponentStyles, ComponentStyleSheet } from "@microsoft/fast-jss-manager";
 import { RadioClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import {
     applyFocusVisible,
     applyLocalizedProperty,
     Direction,
+    toPx,
 } from "@microsoft/fast-jss-utilities";
 import {
-    disabledContrast,
-    ensureNormalContrast,
-    normalContrast,
-} from "../utilities/colors";
-import outlinePattern from "../patterns/outline";
-import switchFieldPattern from "../patterns/switch-field";
-import typographyPattern from "../patterns/typography";
+    neutralFillInputActive,
+    neutralFillInputHover,
+    neutralFillInputRest,
+    neutralFocus,
+    neutralForegroundRest,
+    neutralOutlineActive,
+    neutralOutlineHover,
+    neutralOutlineRest,
+} from "../utilities/color";
+import {
+    DensityCategory,
+    getDensityCategory,
+    heightNumber,
+    horizontalSpacing,
+} from "../utilities/density";
+import { applyDisabledState } from "../utilities/disabled";
+import { applyScaledTypeRamp } from "../utilities/typography";
 
 const styles: ComponentStyles<RadioClassNameContract, DesignSystem> = (
     config: DesignSystem
 ): ComponentStyleSheet<RadioClassNameContract, DesignSystem> => {
     const designSystem: DesignSystem = withDesignSystemDefaults(config);
-    const backgroundColor: string = designSystem.backgroundColor;
-    const foregroundColor: string = ensureNormalContrast(
-        config.contrast,
-        designSystem.foregroundColor,
-        designSystem.backgroundColor
-    );
     const direction: Direction = designSystem.direction;
-    const radioColor: string = normalContrast(
-        designSystem.contrast,
-        foregroundColor,
-        backgroundColor
-    );
-    const radioDisabled: string = disabledContrast(
-        designSystem.contrast,
-        foregroundColor,
-        backgroundColor
-    );
+    const size: number = heightNumber()(designSystem) / 2 + designSystem.designUnit;
+
+    const category: DensityCategory = getDensityCategory(designSystem);
+    const indicatorMarginOffset: number =
+        category === DensityCategory.compact
+            ? -1
+            : category === DensityCategory.spacious
+                ? 1
+                : 0;
+
+    const indicatorMargin: string = toPx(designSystem.designUnit + indicatorMarginOffset);
 
     return {
         radio: {
@@ -47,29 +49,40 @@ const styles: ComponentStyles<RadioClassNameContract, DesignSystem> = (
             display: "inline-flex",
             flexDirection: "row",
             alignItems: "center",
+            transition: "all 0.2s ease-in-out",
         },
         radio_input: {
             position: "absolute",
-            width: "20px",
-            height: "20px",
+            width: toPx(size),
+            height: toPx(size),
             appearance: "none",
             borderRadius: "50%",
             margin: "0",
             zIndex: "1",
-            ...outlinePattern.rest,
+            background: neutralFillInputRest,
+            transition: "all 0.2s ease-in-out",
+            border: `${toPx(designSystem.outlineWidth)} solid ${neutralOutlineRest(
+                designSystem
+            )}`,
             "&:hover": {
-                ...outlinePattern.hover,
+                background: neutralFillInputHover,
+                borderColor: neutralOutlineHover,
+            },
+            "&:active": {
+                background: neutralFillInputActive,
+                borderColor: neutralOutlineActive,
             },
             ...applyFocusVisible({
-                ...outlinePattern.focus,
+                boxShadow: `0 0 0 1px ${neutralFocus(designSystem)} inset`,
+                borderColor: neutralFocus(designSystem),
             }),
         },
         radio_stateIndicator: {
             position: "relative",
             borderRadius: "50%",
             display: "inline-block",
-            width: "20px",
-            height: "20px",
+            width: toPx(size),
+            height: toPx(size),
             flexShrink: "0",
             "&::before": {
                 pointerEvents: "none",
@@ -77,39 +90,34 @@ const styles: ComponentStyles<RadioClassNameContract, DesignSystem> = (
                 zIndex: "1",
                 content: '""',
                 borderRadius: "50%",
-                top: "4px",
-                left: "4px",
-                height: "12px",
-                width: "12px",
+                top: indicatorMargin,
+                left: indicatorMargin,
+                bottom: indicatorMargin,
+                right: indicatorMargin,
                 background: "transparent",
             },
         },
         radio_label: {
-            ...typographyPattern.rest,
-            [applyLocalizedProperty("marginLeft", "marginRight", direction)]: "8px",
+            color: neutralForegroundRest,
+            ...applyScaledTypeRamp("t7"),
+            [applyLocalizedProperty(
+                "marginLeft",
+                "marginRight",
+                direction
+            )]: horizontalSpacing(2)(designSystem),
         },
         radio__checked: {
             "& $radio_stateIndicator": {
                 "&::before": {
-                    ...switchFieldPattern.rest.stateIndicator,
+                    background: neutralForegroundRest,
+                    "@media (-ms-high-contrast:active)": {
+                        backgroundColor: "ButtonHighlight",
+                    },
                 },
             },
         },
         radio__disabled: {
-            "& $radio_label, & $radio_stateIndicator, & $radio_input": {
-                cursor: "not-allowed",
-            },
-            "& $radio_input": {
-                ...outlinePattern.disabled,
-            },
-            "& $radio_label": {
-                ...typographyPattern.disabled,
-            },
-            "&$radio__checked": {
-                "& $radio_stateIndicator::before": {
-                    ...switchFieldPattern.disabled.stateIndicator,
-                },
-            },
+            ...applyDisabledState(designSystem),
         },
     };
 };

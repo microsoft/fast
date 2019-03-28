@@ -8,7 +8,7 @@ import {
     mapSchemaLocationFromDataLocation,
     normalizeDataLocation,
 } from "../../data-utilities/location";
-import tv4 from "tv4";
+import ajv from "ajv";
 import {
     AttributeSettingsMappingToPropertyNames,
     FormOrderByPropertyNamesCategories,
@@ -103,8 +103,9 @@ export function getInitialOneOfAnyOfState(
 /**
  * Validate a schema against a set of data
  */
-export function validateSchema(schema: any, data: any): boolean {
-    return tv4 ? tv4.validate(data, schema) : false;
+export function validateSchema(schema: any, data: any): boolean | PromiseLike<any> {
+    const validation: ajv.Ajv = new ajv({ schemaId: "auto" });
+    return validation.validate(schema, data) || false;
 }
 
 /**
@@ -668,7 +669,8 @@ export function getNavigation(
     dataLocation: string,
     data: any,
     schema: any,
-    childOptions: FormChildOptionItem[]
+    childOptions: FormChildOptionItem[],
+    schemaLocation?: string
 ): NavigationItem[] {
     const allChildOptions: FormChildOptionItem[] = getReactDefaultChildren().concat(
         childOptions
@@ -723,11 +725,13 @@ export function getNavigation(
                 dataLocationItem,
                 lastComponentDataLocation
             );
-            let currentSchemaLocation: string = mapSchemaLocationFromDataLocation(
-                isRoot ? dataLocationItem : dataLocationFromLastComponent,
-                isRoot ? data : get(data, rootLocationOfComponent),
-                currentComponentSchema
-            );
+            let currentSchemaLocation: string =
+                schemaLocation ||
+                mapSchemaLocationFromDataLocation(
+                    isRoot ? dataLocationItem : dataLocationFromLastComponent,
+                    isRoot ? data : get(data, rootLocationOfComponent),
+                    currentComponentSchema
+                );
             const currentSchemaLocationSegments: string[] = currentSchemaLocation.split(
                 "."
             );

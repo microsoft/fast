@@ -1,6 +1,8 @@
-import * as React from "react";
+import React from "react";
 import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
 import schema from "./context-menu.schema.json";
+import contextMenuItemSchema from "../context-menu-item/context-menu-item.schema.json";
+import dividerSchema from "../divider/divider.schema.json";
 import ContextMenu, { ContextMenuManagedClasses, ContextMenuProps } from "./context-menu";
 import { ContextMenuItemProps } from "../context-menu-item";
 import { noop } from "lodash-es";
@@ -30,21 +32,21 @@ const examples: ComponentFactoryExample<ContextMenuProps> = {
         ...managedClasses,
         children: [
             {
-                id: "context-menu-item",
+                id: contextMenuItemSchema.id,
                 props: {
                     ...contextMenuItemPropFactory(),
                     children: "context menu item 1",
                 },
             },
             {
-                id: "context-menu-item",
+                id: contextMenuItemSchema.id,
                 props: {
                     ...contextMenuItemPropFactory(),
                     children: "context menu item 2",
                 },
             },
             {
-                id: "context-menu-item",
+                id: contextMenuItemSchema.id,
                 props: {
                     ...contextMenuItemPropFactory(),
                     children: "context menu item 3",
@@ -58,24 +60,24 @@ const examples: ComponentFactoryExample<ContextMenuProps> = {
             enableAutoFocus: true,
             children: [
                 {
-                    id: "context-menu-item",
+                    id: contextMenuItemSchema.id,
                     props: {
                         ...contextMenuItemPropFactory(),
                         children: "context menu item 1",
                     },
                 },
                 {
-                    id: "divider",
+                    id: dividerSchema.id,
                 },
                 {
-                    id: "context-menu-item",
+                    id: contextMenuItemSchema.id,
                     props: {
                         ...contextMenuItemPropFactory(),
                         children: "context menu item 2",
                     },
                 },
                 {
-                    id: "context-menu-item",
+                    id: contextMenuItemSchema.id,
                     props: {
                         ...contextMenuItemPropFactory(),
                         children: "context menu item 2",
@@ -83,7 +85,7 @@ const examples: ComponentFactoryExample<ContextMenuProps> = {
                     },
                 },
                 {
-                    id: "context-menu-item",
+                    id: contextMenuItemSchema.id,
                     props: {
                         ...contextMenuItemPropFactory(),
                         children: "context menu item 3",

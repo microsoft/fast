@@ -1,5 +1,5 @@
-import * as React from "react";
-import * as Adapter from "enzyme-adapter-react-16";
+import React from "react";
+import Adapter from "enzyme-adapter-react-16";
 import { configure, mount, shallow } from "enzyme";
 import MSFTAutoSuggest from "./auto-suggest";
 import { AutoSuggestOption } from "../auto-suggest-option";
@@ -10,6 +10,7 @@ import {
     AutoSuggestUnhandledProps,
 } from "./index";
 import { KeyCodes } from "@microsoft/fast-web-utilities";
+import { DisplayNamePrefix } from "../utilities";
 
 /*
  * Configure Enzyme
@@ -24,7 +25,9 @@ describe("auto suggest", (): void => {
     const href: string = "https://www.microsoft.com";
 
     test("should have a displayName that matches the component name", () => {
-        expect((MSFTAutoSuggest as any).name).toBe(MSFTAutoSuggest.displayName);
+        expect(`${DisplayNamePrefix}${(MSFTAutoSuggest as any).name}`).toBe(
+            MSFTAutoSuggest.displayName
+        );
     });
 
     test("should not throw if managedClasses are not provided", () => {

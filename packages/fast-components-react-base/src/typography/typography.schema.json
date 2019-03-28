@@ -3,7 +3,8 @@
     "title": "Typography",
     "description": "A typography component's schema definition.",
     "type": "object",
-    "id": "typography",
+    "id": "@microsoft/fast-components-react-base/typography",
+    "formPluginId": "@microsoft/fast-components-react-base/typography",
     "properties": {
         "tag": {
             "title": "HTML tag",
@@ -41,6 +42,7 @@
         "children": {
             "title": "Children",
             "type": "children",
+            "formPluginId": "@microsoft/fast-components-react-base/typography/children",
             "defaults": [
                 "text"
             ]

@@ -1,5 +1,5 @@
-import * as React from "react";
-import * as ReactDOM from "react-dom";
+import React from "react";
+import ReactDOM from "react-dom";
 import { get } from "lodash-es";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import {
@@ -11,13 +11,14 @@ import {
     ImageClassNameContract,
     ManagedClasses,
 } from "@microsoft/fast-components-class-name-contracts-base";
+import { DisplayNamePrefix } from "../utilities";
 
 export enum ImageSlot {
     source = "source",
 }
 
 class Image extends Foundation<ImageHandledProps, ImageUnhandledProps, {}> {
-    public static displayName: string = "Image";
+    public static displayName: string = `${DisplayNamePrefix}Image`;
 
     protected handledProps: HandledProps<ImageHandledProps> = {
         managedClasses: void 0,

@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import Toggle, {
     ToggleHandledProps,
     ToggleManagedClasses,
@@ -22,7 +22,7 @@ const examples: ComponentFactoryExample<ToggleHandledProps> = {
             toggle_stateIndicator: "toggle_stateIndicator",
         },
         children: "Toggle",
-        id: "toggle01",
+        inputId: "toggle01",
         labelId: "label01",
         selectedMessage: "On",
         statusMessageId: "span01",
@@ -39,7 +39,7 @@ const examples: ComponentFactoryExample<ToggleHandledProps> = {
             },
             children: "Toggle label",
             disabled: false,
-            id: "toggle01",
+            inputId: "toggle01",
             labelId: "label01",
             selected: true,
             selectedMessage: "On",

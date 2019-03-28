@@ -3,7 +3,8 @@
     "title": "Paragraph",
     "description": "A paragraph component's schema definition.",
     "type": "object",
-    "id": "paragraph",
+    "id": "@microsoft/fast-components-react-msft/paragraph",
+    "formPluginId": "@microsoft/fast-components-react-msft/paragraph",
     "properties": {
         "size": {
             "title": "Size",
@@ -19,9 +20,16 @@
         "children": {
             "title": "Children",
             "type": "children",
+            "formPluginId": "@microsoft/fast-components-react-msft/paragraph/children",
             "defaults": [
                 "text"
+            ],
+            "examples": [
+                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam risus erat, tincidunt a lectus sit amet, commodo vulputate sem. In rhoncus ultrices augue, eget dictum mauris convallis eget. Nulla scelerisque aliquam eros, et egestas ex eleifend eget. Proin cursus nisi at molestie faucibus. Etiam tristique facilisis tellus, sagittis dignissim metus viverra ac. Nam vitae lacus ex. Curabitur eu lobortis sapien, ac bibendum nisl. Donec quam purus, mattis eu blandit non, aliquet vitae odio. Nunc elit augue, dignissim et vehicula pretium, venenatis sit amet lorem. Aliquam erat volutpat. Aliquam pulvinar lorem elit, ac tempus enim porta in. Proin iaculis in quam sit amet interdum. Sed dictum lacus nunc, eu euismod mauris gravida id. Aenean aliquam metus sed turpis tincidunt accumsan."
             ]
         }
-    }
+    },
+    "required": [
+        "children"
+    ]
 }

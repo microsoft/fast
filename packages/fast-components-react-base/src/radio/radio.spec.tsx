@@ -1,5 +1,5 @@
-import * as React from "react";
-import * as Adapter from "enzyme-adapter-react-16";
+import React from "react";
+import Adapter from "enzyme-adapter-react-16";
 import { configure, mount, shallow, ShallowWrapper } from "enzyme";
 import examples from "./examples.data";
 import Radio, {
@@ -9,6 +9,7 @@ import Radio, {
     RadioSlot,
 } from "./radio";
 import Label from "../label";
+import { DisplayNamePrefix } from "../utilities";
 
 /**
  * Configure Enzyme
@@ -27,17 +28,17 @@ describe("radio", (): void => {
     const inputSelector: string = `.${managedClasses.radio_input}`;
 
     test("should have a displayName that matches the component name", () => {
-        expect((Radio as any).name).toBe(Radio.displayName);
+        expect(`${DisplayNamePrefix}${(Radio as any).name}`).toBe(Radio.displayName);
     });
 
     test("should have correct input type attribute 'radio'", () => {
-        const rendered: ShallowWrapper = shallow(<Radio id="radio" />);
+        const rendered: ShallowWrapper = shallow(<Radio inputId="radio" />);
         expect(rendered.find("#radio").prop("type")).toBe("radio");
     });
 
     test("should render with a `radio_disabled` class when an `disabled` prop is passed", () => {
         const rendered: any = shallow(
-            <Radio managedClasses={managedClasses} id="radio" disabled={true} />
+            <Radio managedClasses={managedClasses} inputId="radio" disabled={true} />
         );
 
         expect(rendered.prop("className")).toBe(
@@ -47,7 +48,7 @@ describe("radio", (): void => {
 
     test("should render an input with a `disabled` prop when `disabled` prop is passed as true", () => {
         const rendered: any = shallow(
-            <Radio managedClasses={managedClasses} id="radio" disabled={true} />
+            <Radio managedClasses={managedClasses} inputId="radio" disabled={true} />
         );
 
         expect(rendered.find(inputSelector).prop("disabled")).toBe(true);
@@ -56,7 +57,7 @@ describe("radio", (): void => {
     test("should render an input with an `id` prop when an `id` prop is passed", () => {
         const testId: string = "radio";
         const rendered: any = shallow(
-            <Radio managedClasses={managedClasses} id={testId} />
+            <Radio managedClasses={managedClasses} inputId={testId} />
         );
 
         expect(rendered.find(inputSelector).prop("id")).toBe(testId);
@@ -64,7 +65,7 @@ describe("radio", (): void => {
 
     test("should render a child if one is passed as a child with the `label` slot prop", () => {
         const rendered: any = mount(
-            <Radio managedClasses={managedClasses} id="radio03">
+            <Radio managedClasses={managedClasses} inputId="radio03">
                 <div id="testLabel" slot={RadioSlot.label}>
                     Label
                 </div>
@@ -76,7 +77,7 @@ describe("radio", (): void => {
 
     test("should NOT render a child if one is passed as a child without the `label` slot prop", () => {
         const rendered: any = shallow(
-            <Radio id="radio03">
+            <Radio inputId="radio03">
                 <div>Label</div>
             </Radio>
         );
@@ -89,7 +90,7 @@ describe("radio", (): void => {
 
     test("should add a `radio_label` className to a child with the `label` slot prop", () => {
         const rendered: any = mount(
-            <Radio managedClasses={managedClasses} id="radio03">
+            <Radio managedClasses={managedClasses} inputId="radio03">
                 <div id="testLabel" slot={RadioSlot.label}>
                     Label
                 </div>
@@ -105,7 +106,7 @@ describe("radio", (): void => {
         const existingClass: string = "existingLabelClass";
 
         const rendered: any = mount(
-            <Radio managedClasses={managedClasses} id="radio04">
+            <Radio managedClasses={managedClasses} inputId="radio04">
                 <div id="testLabel" className={existingClass} slot={RadioSlot.label}>
                     Label
                 </div>
@@ -119,7 +120,7 @@ describe("radio", (): void => {
 
     test("should initialize as unchecked if the `checked` prop is not provided", () => {
         const rendered: any = shallow(
-            <Radio managedClasses={managedClasses} id="radioId" />
+            <Radio managedClasses={managedClasses} inputId="radioId" />
         );
 
         expect(rendered.find(inputSelector).prop("checked")).toBe(false);
@@ -132,13 +133,13 @@ describe("radio", (): void => {
                 managedClasses={managedClasses}
                 checked={true}
                 onChange={onChange}
-                id="radio"
+                inputId="radio"
             >
                 <div slot={RadioSlot.label} />
             </Radio>
         );
         const uncontrolled: any = shallow(
-            <Radio managedClasses={managedClasses} onChange={onChange} id="radio" />
+            <Radio managedClasses={managedClasses} onChange={onChange} inputId="radio" />
         );
 
         controlled.find(inputSelector).simulate("change");

@@ -1,5 +1,5 @@
-import * as React from "react";
-import * as ReactDOM from "react-dom";
+import React from "react";
+import ReactDOM from "react-dom";
 import { get } from "lodash-es";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import {
@@ -14,6 +14,7 @@ import {
     ManagedClasses,
     TypographyClassNameContract,
 } from "@microsoft/fast-components-class-name-contracts-base";
+import { DisplayNamePrefix } from "../utilities";
 
 class Typography extends Foundation<
     TypographyHandledProps,
@@ -24,7 +25,7 @@ class Typography extends Foundation<
         tag: TypographyTag.p,
     };
 
-    public static displayName: string = "Typography";
+    public static displayName: string = `${DisplayNamePrefix}Typography`;
 
     protected handledProps: HandledProps<TypographyHandledProps> = {
         managedClasses: void 0,

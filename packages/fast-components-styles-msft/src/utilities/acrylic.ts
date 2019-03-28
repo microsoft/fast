@@ -1,7 +1,8 @@
 import { AcrylicConfig, applyAcrylic, toPx } from "@microsoft/fast-jss-utilities";
 import { CSSRules } from "@microsoft/fast-jss-manager";
 import designSystemDefaults, { DesignSystem } from "../design-system";
-import Chroma from "chroma-js";
+import { parseColorString } from "../utilities/color/common";
+import { ColorRGBA64 } from "@microsoft/fast-colors";
 
 /* tslint:disable max-line-length */
 export const acrylicNoise: string =
@@ -22,21 +23,31 @@ export function applyAcrylicMaterial(
     fallbackOpacity: number = 0.9,
     topHighlight: boolean = false
 ): CSSRules<DesignSystem> {
+    const background: ColorRGBA64 = parseColorString(backgroundColor);
     const acrylicConfig: AcrylicConfig = {
         textureImage: acrylicNoise,
-        backgroundColor: Chroma(backgroundColor)
-            .alpha(opacity)
-            .css(),
-        fallbackBackgroundColor: Chroma(backgroundColor)
-            .alpha(fallbackOpacity)
-            .css(),
+        backgroundColor: new ColorRGBA64(
+            background.r,
+            background.g,
+            background.b,
+            opacity
+        ).toStringWebRGBA(),
+        fallbackBackgroundColor: new ColorRGBA64(
+            background.r,
+            background.g,
+            background.b,
+            fallbackOpacity
+        ).toStringWebRGBA(),
     };
 
     return {
         borderTop: topHighlight
-            ? `${toPx(1)} solid ${Chroma(backgroundColor)
-                  .alpha(0.1)
-                  .css()}`
+            ? `${toPx(1)} solid ${new ColorRGBA64(
+                  background.r,
+                  background.g,
+                  background.b,
+                  0.1
+              ).toStringWebRGBA()}`
             : "",
         ...applyAcrylic<DesignSystem>(acrylicConfig),
     };

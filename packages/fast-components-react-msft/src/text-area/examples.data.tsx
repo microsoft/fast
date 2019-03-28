@@ -1,7 +1,7 @@
-import * as React from "react";
+import React from "react";
 import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
 import { TextArea, TextAreaProps } from "./index";
-import schema from "@microsoft/fast-components-react-base/dist/text-area/text-area.schema.json";
+import schema from "./text-area.schema.json";
 import Documentation from "./.tmp/documentation";
 
 export default {

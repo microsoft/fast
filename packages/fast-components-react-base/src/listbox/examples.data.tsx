@@ -1,6 +1,7 @@
-import * as React from "react";
+import React from "react";
 import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
 import schema from "./listbox.schema.json";
+import listboxItemSchema from "../listbox-item/listbox-item.schema.json";
 import Listbox, { ListboxManagedClasses, ListboxProps } from "./listbox";
 import { ListboxItemProps } from "../listbox-item";
 import Documentation from "./.tmp/documentation";
@@ -34,19 +35,19 @@ const examples: ComponentFactoryExample<ListboxProps> = {
         typeAheadPropertyKey: "displayString",
         children: [
             {
-                id: "listbox-item",
+                id: listboxItemSchema.id,
                 props: {
                     ...listboxItemPropFactory("a"),
                 },
             },
             {
-                id: "listbox-item",
+                id: listboxItemSchema.id,
                 props: {
                     ...listboxItemPropFactory("b"),
                 },
             },
             {
-                id: "listbox-item",
+                id: listboxItemSchema.id,
                 props: {
                     ...listboxItemPropFactory("c"),
                 },
@@ -58,19 +59,19 @@ const examples: ComponentFactoryExample<ListboxProps> = {
             ...managedClasses,
             children: [
                 {
-                    id: "listbox-item",
+                    id: listboxItemSchema.id,
                     props: {
                         ...listboxItemPropFactory("a"),
                     },
                 },
                 {
-                    id: "listbox-item",
+                    id: listboxItemSchema.id,
                     props: {
                         ...listboxItemPropFactory("b"),
                     },
                 },
                 {
-                    id: "listbox-item",
+                    id: listboxItemSchema.id,
                     props: {
                         ...listboxItemPropFactory("c"),
                     },

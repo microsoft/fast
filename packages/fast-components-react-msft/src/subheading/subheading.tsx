@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { get } from "lodash-es";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import { TypographySize, TypographyTag } from "@microsoft/fast-components-react-base";
@@ -10,12 +10,12 @@ import {
     SubheadingTag,
     SubheadingUnhandledProps,
 } from "./subheading.props";
-
 import { Typography } from "../typography";
 import {
     ManagedClasses,
     SubheadingClassNameContract,
 } from "@microsoft/fast-components-class-name-contracts-msft";
+import { DisplayNamePrefix } from "../utilities";
 
 class Subheading extends Foundation<
     SubheadingHandledProps,
@@ -27,7 +27,7 @@ class Subheading extends Foundation<
         tag: SubheadingTag.h3,
     };
 
-    public static displayName: string = "Subheading";
+    public static displayName: string = `${DisplayNamePrefix}Subheading`;
 
     protected handledProps: HandledProps<SubheadingHandledProps> = {
         size: void 0,

@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.0.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-breakpoint-tracker-react@1.2.5...@microsoft/fast-breakpoint-tracker-react@2.0.0) (2019-03-25)
+
+
+### Bug Fixes
+
+* update to use esModuleInterop in the TypeScript configuration files ([#1211](https://github.com/Microsoft/fast-dna/issues/1211)) ([2ec0644](https://github.com/Microsoft/fast-dna/commit/2ec0644))
+
+
+### BREAKING CHANGES
+
+* This will affect how imports will be handled by
+consumers
+
+
+
+
+
 ## [1.2.5](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-breakpoint-tracker-react@1.2.4...@microsoft/fast-breakpoint-tracker-react@1.2.5) (2019-03-19)
 
 

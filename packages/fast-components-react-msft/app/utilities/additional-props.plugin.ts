@@ -1,9 +1,5 @@
-import * as React from "react";
-import {
-    ChildOptionItem,
-    Plugin,
-    PluginProps,
-} from "@microsoft/fast-data-utilities-react";
+import React from "react";
+import { ChildOptionItem, Plugin, PluginProps } from "@microsoft/fast-tooling-react";
 
 export default class MapChildrenPropToCallbackPassingClassName extends Plugin<
     PluginProps

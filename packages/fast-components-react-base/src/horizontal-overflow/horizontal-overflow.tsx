@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { get } from "lodash-es";
 import { canUseDOM } from "exenv-es6";
 import {
@@ -6,7 +6,7 @@ import {
     ManagedClasses,
 } from "@microsoft/fast-components-class-name-contracts-base";
 import { getClientRectWithMargin } from "@microsoft/fast-web-utilities";
-import { Direction } from "@microsoft/fast-application-utilities";
+import { Direction } from "@microsoft/fast-web-utilities";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import {
     HorizontalOverflowHandledProps,
@@ -20,6 +20,7 @@ import {
     ResizeObserverClassDefinition,
 } from "./resize-observer";
 import { ResizeObserverEntry } from "./resize-observer-entry";
+import { DisplayNamePrefix } from "../utilities";
 
 export enum ButtonDirection {
     previous = "previous",
@@ -41,7 +42,7 @@ class HorizontalOverflow extends Foundation<
     HorizontalOverflowUnhandledProps,
     HorizontalOverflowState
 > {
-    public static displayName: string = "HorizontalOverflow";
+    public static displayName: string = `${DisplayNamePrefix}HorizontalOverflow`;
 
     protected handledProps: HandledProps<HorizontalOverflowHandledProps> = {
         scrollDuration: void 0,

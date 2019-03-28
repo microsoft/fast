@@ -2,12 +2,13 @@ import { ComponentStyles } from "@microsoft/fast-jss-manager";
 import {
     applyControl,
     applyControlWrapper,
+    applyFormItemBadge,
     applyFormItemDisabled,
     applyInputStyle,
+    applyLabelRegionStyle,
     applyLabelStyle,
     applySoftRemove,
     applySoftRemoveInput,
-    disabledOpacity,
 } from "../../style";
 import { FormItemNumberFieldClassNameContract } from "./form-item.number-field.props";
 
@@ -19,11 +20,17 @@ const styles: ComponentStyles<FormItemNumberFieldClassNameContract, {}> = {
     formItemNumberField__disabled: {
         ...applyFormItemDisabled(),
     },
+    formItemNumberField_badge: {
+        ...applyFormItemBadge(),
+    },
     formItemNumberField_control: {
         ...applyControl(),
     },
     formItemNumberField_controlLabel: {
         ...applyLabelStyle(),
+    },
+    formItemNumberField_controlLabelRegion: {
+        ...applyLabelRegionStyle(),
     },
     formItemNumberField_controlInput: {
         ...applyInputStyle(),

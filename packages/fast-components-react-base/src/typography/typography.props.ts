@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import {
     ManagedClasses,
     TypographyClassNameContract,
@@ -30,7 +30,7 @@ export enum TypographySize {
 }
 
 export interface TypographyUnhandledProps
-    extends React.BaseHTMLAttributes<
+    extends React.HTMLAttributes<
             | HTMLHeadingElement
             | HTMLParagraphElement
             | HTMLSpanElement

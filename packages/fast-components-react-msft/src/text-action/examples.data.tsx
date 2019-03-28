@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { TextAction, TextActionProps } from "./index";
 import schema from "./text-action.schema.json";
 import Documentation from "./.tmp/documentation";
@@ -6,6 +6,7 @@ import { ComponentFactoryExample } from "@microsoft/fast-development-site-react"
 import { TextActionButtonPosition } from "./text-action.props";
 import { SVGGlyph } from "../../app/components/svg-svg-element";
 import svgSchema from "../../app/components/svg-svg-element.schema.json";
+import buttonSchema from "../button/button.schema.json";
 
 const examples: ComponentFactoryExample<TextActionProps> = {
     name: "Text action",
@@ -15,7 +16,7 @@ const examples: ComponentFactoryExample<TextActionProps> = {
     detailData: {
         placeholder: "Placeholder",
         button: {
-            id: "button",
+            id: buttonSchema.id,
             props: {
                 disabled: true,
                 children: {
@@ -37,7 +38,7 @@ const examples: ComponentFactoryExample<TextActionProps> = {
         {
             title: "Search",
             button: {
-                id: "button",
+                id: buttonSchema.id,
                 props: {
                     disabled: true,
                     children: {
@@ -58,7 +59,7 @@ const examples: ComponentFactoryExample<TextActionProps> = {
         {
             disabled: true,
             button: {
-                id: "button",
+                id: buttonSchema.id,
                 props: {
                     disabled: true,
                     children: {
@@ -79,7 +80,7 @@ const examples: ComponentFactoryExample<TextActionProps> = {
         {
             defaultValue: "foo",
             button: {
-                id: "button",
+                id: buttonSchema.id,
                 props: {
                     disabled: true,
                     children: {
@@ -122,7 +123,7 @@ const examples: ComponentFactoryExample<TextActionProps> = {
         },
         {
             button: {
-                id: "button",
+                id: buttonSchema.id,
                 props: {
                     disabled: true,
                     children: {
@@ -145,7 +146,7 @@ const examples: ComponentFactoryExample<TextActionProps> = {
         {
             buttonPosition: TextActionButtonPosition.before,
             button: {
-                id: "button",
+                id: buttonSchema.id,
                 props: {
                     disabled: true,
                     children: {

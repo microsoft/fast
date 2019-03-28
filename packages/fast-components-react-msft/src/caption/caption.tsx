@@ -1,5 +1,5 @@
-import * as React from "react";
-import * as ReactDOM from "react-dom";
+import React from "react";
+import ReactDOM from "react-dom";
 import { get } from "lodash-es";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import { TypographySize, TypographyTag } from "@microsoft/fast-components-react-base";
@@ -11,6 +11,7 @@ import {
     CaptionUnhandledProps,
 } from "./caption.props";
 import { Typography } from "../typography";
+import { DisplayNamePrefix } from "../utilities";
 
 class Caption extends Foundation<CaptionHandledProps, CaptionUnhandledProps, {}> {
     public static defaultProps: Partial<CaptionProps> = {
@@ -18,7 +19,7 @@ class Caption extends Foundation<CaptionHandledProps, CaptionUnhandledProps, {}>
         size: CaptionSize._1,
     };
 
-    public static displayName: string = "Caption";
+    public static displayName: string = `${DisplayNamePrefix}Caption`;
 
     protected handledProps: HandledProps<CaptionHandledProps> = {
         size: void 0,

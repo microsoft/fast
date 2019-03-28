@@ -1,53 +1,49 @@
-import designSystemDefaults, {
-    DesignSystem,
-    withDesignSystemDefaults,
-} from "../design-system";
-import { disabledContrast, ensureNormalContrast } from "../utilities/colors";
+import { DesignSystem, withDesignSystemDefaults } from "../design-system";
 import {
-    ComponentStyles,
-    ComponentStyleSheet,
-    CSSRules,
-} from "@microsoft/fast-jss-manager";
+    accentFillRest,
+    accentForegroundCut,
+    neutralFillInputActive,
+    neutralFillInputHover,
+    neutralFillInputRest,
+    neutralFillSelected,
+    neutralFocus,
+    neutralForegroundRest,
+    neutralOutlineActive,
+    neutralOutlineHover,
+    neutralOutlineRest,
+} from "../utilities/color";
+import { ComponentStyles, ComponentStyleSheet } from "@microsoft/fast-jss-manager";
 import {
     applyFocusVisible,
     applyLocalizedProperty,
     Direction,
+    toPx,
 } from "@microsoft/fast-jss-utilities";
-import { applyTypeRampConfig } from "../utilities/typography";
 import { ToggleClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
-import Chroma from "chroma-js";
-import outlinePattern from "../patterns/outline";
-import switchFieldPattern from "../patterns/switch-field";
-import typographyPattern from "../patterns/typography";
+import { applyDisabledState } from "../utilities/disabled";
+import { applyScaledTypeRamp } from "../utilities/typography";
+import { heightNumber } from "../utilities/density";
 
 const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = (
     config: DesignSystem
 ): ComponentStyleSheet<ToggleClassNameContract, DesignSystem> => {
     const designSystem: DesignSystem = withDesignSystemDefaults(config);
-    const backgroundColor: string = ensureNormalContrast(
-        config.contrast,
-        designSystem.backgroundColor,
-        designSystem.foregroundColor
-    );
-    const brandColor: string = ensureNormalContrast(
-        config.contrast,
-        designSystem.brandColor,
-        designSystem.backgroundColor
-    );
-    const foregroundColor: string = ensureNormalContrast(
-        config.contrast,
-        designSystem.foregroundColor,
-        designSystem.backgroundColor
-    );
     const direction: Direction = designSystem.direction;
+    const height: number = heightNumber()(designSystem) / 2 + designSystem.designUnit;
+    const width: number = height * 2 + designSystem.designUnit;
+    const indicatorSize: number = height / 2;
+    const indicatorMargin: number = indicatorSize / 2;
+    const indicatorCheckedLeft: number =
+        height + designSystem.designUnit + indicatorMargin;
 
     return {
         toggle: {
             display: "inline-block",
-            ...typographyPattern.rest,
+            color: neutralForegroundRest,
+            transition: "all 0.2s ease-in-out",
         },
         toggle_label: {
-            ...applyTypeRampConfig("t8"),
+            ...applyScaledTypeRamp("t7"),
             display: "block",
             paddingBottom: "7px",
             clear: "both",
@@ -60,69 +56,71 @@ const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = (
         toggle_stateIndicator: {
             position: "absolute",
             pointerEvents: "none",
-            top: "5px",
-            left: "5px",
+            top: toPx(indicatorMargin),
+            left: toPx(indicatorMargin),
             transition: "all .1s ease",
-            borderRadius: "10px",
-            width: "10px",
-            height: "10px",
-            ...switchFieldPattern.rest.stateIndicator,
+            borderRadius: toPx(indicatorSize),
+            width: toPx(indicatorSize),
+            height: toPx(indicatorSize),
+            background: neutralForegroundRest,
+            "@media (-ms-high-contrast:active)": {
+                backgroundColor: "ButtonHighlight",
+            },
         },
         toggle_input: {
             position: "relative",
             margin: "0",
-            width: "44px",
-            height: "20px",
-            ...outlinePattern.rest,
-            borderRadius: "20px",
+            width: toPx(width),
+            height: toPx(height),
+            background: neutralFillInputRest,
+            border: `${toPx(designSystem.outlineWidth)} solid ${neutralOutlineRest(
+                designSystem
+            )}`,
+            borderRadius: toPx(height),
             appearance: "none",
             outline: "none",
             "&:hover": {
-                ...outlinePattern.hover,
+                background: neutralFillInputHover,
+                borderColor: neutralOutlineHover,
+            },
+            "&:active": {
+                background: neutralFillInputActive,
+                borderColor: neutralOutlineActive,
             },
             ...applyFocusVisible({
-                ...outlinePattern.focus,
+                boxShadow: `0 0 0 1px ${neutralFocus(designSystem)} inset`,
+                borderColor: neutralFocus(designSystem),
             }),
-        },
-        toggle__disabled: {
-            ...typographyPattern.disabled,
-            "& $toggle_input, & $toggle_label, & $toggle_statusMessage": {
-                cursor: "not-allowed",
-            },
-            "& $toggle_input": {
-                ...outlinePattern.disabled,
-            },
-            "& $toggle_stateIndicator": {
-                ...switchFieldPattern.disabled.stateIndicator,
-                "@media screen and (-ms-high-contrast:active)": {
-                    background: "ButtonText",
-                },
-            },
-            "&$toggle__checked": {
-                "& $toggle_input": {
-                    ...outlinePattern.disabled,
-                    borderColor: "transparent",
-                    ...switchFieldPattern.disabled.stateIndicator,
-                },
-                "& $toggle_stateIndicator": {
-                    background: backgroundColor,
-                },
-            },
         },
         toggle__checked: {
             "& $toggle_input": {
-                backgroundColor: brandColor,
-                borderColor: brandColor,
+                background: accentFillRest,
+                borderColor: accentFillRest,
                 ...applyFocusVisible({
-                    ...outlinePattern.focus,
+                    boxShadow: `0 0 0 1px ${neutralFocus(designSystem)} inset`,
+                    borderColor: neutralFocus(designSystem),
                 }),
-                "& + $toggle_stateIndicator": {
-                    left: "28px",
-                    backgroundColor,
-                },
+            },
+            "& $toggle_stateIndicator": {
+                left: toPx(indicatorCheckedLeft),
+                background: accentForegroundCut,
+            },
+        },
+        toggle__disabled: {
+            ...applyDisabledState(designSystem),
+            "& $toggle_input": {
+                background: neutralFillSelected,
+                borderColor: neutralFillSelected,
+            },
+            "& $toggle_stateIndicator": {
+                background: neutralForegroundRest,
+            },
+            "& $toggle_input, & $toggle_label, & $toggle_statusMessage": {
+                cursor: "not-allowed",
             },
         },
         toggle_statusMessage: {
+            ...applyScaledTypeRamp("t7"),
             float: applyLocalizedProperty("left", "right", direction),
             [applyLocalizedProperty("padding-left", "padding-right", direction)]: "5px",
             userSelect: "none",

@@ -1,5 +1,5 @@
-import * as React from "react";
-import * as Adapter from "enzyme-adapter-react-16";
+import React from "react";
+import Adapter from "enzyme-adapter-react-16";
 import { configure, mount, shallow } from "enzyme";
 import examples from "./examples.data";
 import MSFTHeading, {
@@ -10,6 +10,7 @@ import MSFTHeading, {
 } from "./heading";
 import { Typography } from "@microsoft/fast-components-react-base";
 import { Heading, HeadingProps } from "./index";
+import { DisplayNamePrefix } from "../utilities";
 
 /*
  * Configure Enzyme
@@ -18,7 +19,9 @@ configure({ adapter: new Adapter() });
 
 describe("heading", (): void => {
     test("should have a displayName that matches the component name", () => {
-        expect((MSFTHeading as any).name).toBe(MSFTHeading.displayName);
+        expect(`${DisplayNamePrefix}${(MSFTHeading as any).name}`).toBe(
+            MSFTHeading.displayName
+        );
     });
 
     test("should not throw if managedClasses are not provided", () => {

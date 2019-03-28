@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import {
     ManagedClasses,
     TabsClassNameContract,
@@ -12,7 +12,7 @@ export interface TabsItem {
 }
 
 export interface TabsManagedClasses extends ManagedClasses<TabsClassNameContract> {}
-export interface TabsUnhandledProps extends React.AllHTMLAttributes<HTMLElement> {}
+export interface TabsUnhandledProps extends React.HTMLAttributes<HTMLDivElement> {}
 export interface TabsHandledProps extends TabsManagedClasses {
     /**
      * The active tab item id

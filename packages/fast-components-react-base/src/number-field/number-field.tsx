@@ -1,5 +1,5 @@
-import * as React from "react";
-import * as ReactDOM from "react-dom";
+import React from "react";
+import ReactDOM from "react-dom";
 import { get } from "lodash-es";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import {
@@ -13,13 +13,14 @@ import {
     NumberFieldClassNameContract,
 } from "@microsoft/fast-components-class-name-contracts-base";
 import { TextFieldType } from "../text-field/index";
+import { DisplayNamePrefix } from "../utilities";
 
 class NumberField extends Foundation<
     NumberFieldHandledProps,
     NumberFieldUnhandledProps,
     {}
 > {
-    public static displayName: string = "NumberField";
+    public static displayName: string = `${DisplayNamePrefix}NumberField`;
 
     protected handledProps: HandledProps<NumberFieldHandledProps> = {
         managedClasses: void 0,

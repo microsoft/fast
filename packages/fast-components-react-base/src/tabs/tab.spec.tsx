@@ -1,10 +1,9 @@
-import * as Adapter from "enzyme-adapter-react-16";
-import * as React from "react";
-
+import Adapter from "enzyme-adapter-react-16";
+import React from "react";
 import { TabHandledProps, TabProps } from "./tab.props";
 import { configure, shallow, ShallowWrapper } from "enzyme";
-
 import Tab from "./tab";
+import { DisplayNamePrefix } from "../utilities";
 
 /**
  * Configure Enzyme

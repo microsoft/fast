@@ -3,6 +3,54 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-development-site-react@4.0.0...@microsoft/fast-development-site-react@4.0.1) (2019-03-25)
+
+**Note:** Version bump only for package @microsoft/fast-development-site-react
+
+
+
+
+
+# [4.0.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-development-site-react@3.4.5...@microsoft/fast-development-site-react@4.0.0) (2019-03-25)
+
+
+### Bug Fixes
+
+* update to use esModuleInterop in the TypeScript configuration files ([#1211](https://github.com/Microsoft/fast-dna/issues/1211)) ([2ec0644](https://github.com/Microsoft/fast-dna/commit/2ec0644))
+
+
+### Features
+
+* applies fast-jss-manager-react as peer dependency ([#1556](https://github.com/Microsoft/fast-dna/issues/1556)) ([f63c0c7](https://github.com/Microsoft/fast-dna/commit/f63c0c7))
+* remove deprecated packages ([#1584](https://github.com/Microsoft/fast-dna/issues/1584)) ([dcd213c](https://github.com/Microsoft/fast-dna/commit/dcd213c))
+* remove fast-application-utilities package ([#1455](https://github.com/Microsoft/fast-dna/issues/1455)) ([7ee34fa](https://github.com/Microsoft/fast-dna/commit/7ee34fa))
+* remove legacy color utils ([#1557](https://github.com/Microsoft/fast-dna/issues/1557)) ([3f39ff9](https://github.com/Microsoft/fast-dna/commit/3f39ff9))
+* update the dependencies of the development site ([#1545](https://github.com/Microsoft/fast-dna/issues/1545)) ([9475fa2](https://github.com/Microsoft/fast-dna/commit/9475fa2))
+
+
+### BREAKING CHANGES
+
+* removes legacy color utilities
+* moves dependency to peer dependency
+* removal of fast-application-utilities-package
+* This will affect how imports will be handled by
+consumers
+
+
+
+
+
+## [3.4.5](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-development-site-react@3.4.4...@microsoft/fast-development-site-react@3.4.5) (2019-03-22)
+
+
+### Bug Fixes
+
+* resolve an issue with the examples route not being editable ([#1580](https://github.com/Microsoft/fast-dna/issues/1580)) ([77dfabc](https://github.com/Microsoft/fast-dna/commit/77dfabc))
+
+
+
+
+
 ## [3.4.4](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-development-site-react@3.4.3...@microsoft/fast-development-site-react@3.4.4) (2019-03-19)
 
 

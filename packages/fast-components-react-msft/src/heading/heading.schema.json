@@ -3,7 +3,8 @@
     "title": "Heading",
     "description": "A heading component's schema definition.",
     "type": "object",
-    "id": "heading",
+    "id": "@microsoft/fast-components-react-msft/heading",
+    "formPluginId": "@microsoft/fast-components-react-msft/heading",
     "properties": {
         "tag": {
             "title": "HTML tag",
@@ -35,9 +36,16 @@
         "children": {
             "title": "Children",
             "type": "children",
+            "formPluginId": "@microsoft/fast-components-react-msft/heading/children",
             "defaults": [
                 "text"
+            ],
+            "examples": [
+                "Lorem ipsum sit amet"
             ]
         }
-    }
+    },
+    "required": [
+        "children"
+    ]
 }

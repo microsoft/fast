@@ -4,19 +4,18 @@ import designSystemDefaults, {
 } from "../design-system";
 import { ComponentStyles, ComponentStyleSheet } from "@microsoft/fast-jss-manager";
 import { AutoSuggestOptionClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
-import { density } from "../utilities/density";
+import { height } from "../utilities/density";
 import {
-    disabledContrast,
-    ensureForegroundNormal,
-    ensureNormalContrast,
-    hoverContrast,
-} from "../utilities/colors";
+    neutralFillStealthHover,
+    neutralFillStealthRest,
+    neutralFillStealthSelected,
+    neutralFocus,
+    neutralForegroundRest,
+} from "../utilities/color";
 import { applyFocusVisible } from "@microsoft/fast-jss-utilities";
 import { applyTypeRampConfig } from "../utilities/typography";
-import typographyPattern from "../patterns/typography";
 import {
     applyLocalizedProperty,
-    contrast,
     Direction,
     ellipsis,
     toPx,
@@ -26,38 +25,13 @@ import { curry } from "lodash-es";
 const styles: ComponentStyles<AutoSuggestOptionClassNameContract, DesignSystem> = (
     config: DesignSystem
 ): ComponentStyleSheet<AutoSuggestOptionClassNameContract, DesignSystem> => {
-    type ContrastFunction = (operandColor: string, referenceColor: string) => string;
     const designSystem: DesignSystem = withDesignSystemDefaults(config);
     const direction: Direction = designSystem.direction;
-    const contrastScale: number = designSystem.contrast;
-    const brandColor: string = designSystem.brandColor;
-    const color: string = designSystem.foregroundColor;
-    const scaledEnsureNormalContrast: ContrastFunction = curry(ensureNormalContrast)(
-        contrastScale
-    );
-    const primaryRestBackgroundColor: string = scaledEnsureNormalContrast(
-        scaledEnsureNormalContrast(brandColor, designSystem.backgroundColor),
-        color
-    );
-    const primaryDisabledBackground: string = disabledContrast(
-        contrastScale,
-        primaryRestBackgroundColor,
-        designSystem.backgroundColor
-    );
-    const primaryDisabledColor: string = disabledContrast(
-        contrastScale,
-        color,
-        primaryDisabledBackground
-    );
-    const primarySelectedBackground: string = contrast(
-        1.7,
-        designSystem.foregroundColor,
-        designSystem.backgroundColor
-    );
+
     return {
         autoSuggestOption: {
             listStyleType: "none",
-            height: density(32),
+            height: height(),
             display: "grid",
             gridTemplateColumns: `${applyLocalizedProperty(
                 "12px auto auto 1fr 12px",
@@ -68,22 +42,19 @@ const styles: ComponentStyles<AutoSuggestOptionClassNameContract, DesignSystem> 
             alignItems: "center",
             padding: "0",
             margin: "0 4px",
-            ...typographyPattern.rest,
             whiteSpace: "nowrap",
             overflow: "hidden",
             cursor: "default",
+            color: neutralForegroundRest,
             ...applyTypeRampConfig("t7"),
-            background: designSystem.backgroundColor,
+            background: neutralFillStealthRest,
             borderRadius: toPx(designSystem.cornerRadius),
             border: "2px solid transparent",
-            ...applyFocusVisible({
-                borderColor: ensureForegroundNormal,
+            ...applyFocusVisible<DesignSystem>({
+                borderColor: neutralFocus,
             }),
             "&:hover": {
-                background: hoverContrast(
-                    designSystem.contrast,
-                    designSystem.backgroundColor
-                ),
+                background: neutralFillStealthHover,
             },
         },
         autoSuggestOption_contentRegion: {
@@ -93,18 +64,15 @@ const styles: ComponentStyles<AutoSuggestOptionClassNameContract, DesignSystem> 
         },
         autoSuggestOption__disabled: {
             cursor: "not-allowed",
-            ...typographyPattern.disabled,
+            opacity: ".3",
             "&:hover": {
-                background: designSystem.backgroundColor,
+                background: neutralFillStealthRest,
             },
-            ...applyFocusVisible({
-                background: designSystem.backgroundColor,
-            }),
         },
         autoSuggestOption__selected: {
-            background: primarySelectedBackground,
+            background: neutralFillStealthSelected,
             "&:hover": {
-                background: primarySelectedBackground,
+                background: neutralFillStealthSelected,
             },
         },
     };

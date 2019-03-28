@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { ComponentStyles } from "@microsoft/fast-jss-manager-react";
 import { PageHandledProps, PageProps, PageUnhandledProps } from "./page.props";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";

@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { get } from "lodash-es";
 import { KeyCodes } from "@microsoft/fast-web-utilities";
 import {
@@ -16,6 +16,7 @@ import {
 import Tab, { TabManagedClasses } from "./tab";
 import TabItem from "./tab-item";
 import TabPanel, { TabPanelManagedClasses } from "./tab-panel";
+import { DisplayNamePrefix } from "../utilities";
 
 export enum TabLocation {
     first,
@@ -35,7 +36,7 @@ export interface TabsState {
 }
 
 class Tabs extends Foundation<TabsHandledProps, TabsUnhandledProps, TabsState> {
-    public static displayName: string = "Tabs";
+    public static displayName: string = `${DisplayNamePrefix}Tabs`;
 
     /**
      * React life-cycle method
@@ -285,7 +286,7 @@ class Tabs extends Foundation<TabsHandledProps, TabsUnhandledProps, TabsState> {
     /**
      * Handles the click event on the tab element
      */
-    private handleClick = (e: React.MouseEvent<HTMLButtonElement>): void => {
+    private handleClick = (e: React.MouseEvent<HTMLDivElement>): void => {
         if (!this.props.activeId) {
             this.setState({
                 activeId: e.currentTarget.getAttribute("aria-controls"),
@@ -298,7 +299,7 @@ class Tabs extends Foundation<TabsHandledProps, TabsUnhandledProps, TabsState> {
     /**
      * Handles the keydown event on the tab element
      */
-    private handleKeyDown = (e: React.KeyboardEvent<HTMLButtonElement>): void => {
+    private handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>): void => {
         switch (e.keyCode) {
             case KeyCodes.arrowLeft:
             case KeyCodes.arrowUp:

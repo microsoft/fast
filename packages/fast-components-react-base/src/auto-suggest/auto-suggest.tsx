@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import { get, isEqual } from "lodash-es";
 import { KeyCodes } from "@microsoft/fast-web-utilities";
@@ -12,6 +12,7 @@ import { ListboxItemProps } from "../listbox-item";
 import Listbox from "../listbox";
 import TextField, { TextFieldType } from "../text-field";
 import { AutoSuggestContext, AutoSuggestContextType } from "./auto-suggest-context";
+import { DisplayNamePrefix } from "../utilities";
 
 export interface AutoSuggestState {
     value: string;
@@ -24,7 +25,7 @@ class AutoSuggest extends Foundation<
     AutoSuggestUnhandledProps,
     AutoSuggestState
 > {
-    public static displayName: string = "AutoSuggest";
+    public static displayName: string = `${DisplayNamePrefix}AutoSuggest`;
 
     public static defaultProps: Partial<AutoSuggestProps> = {
         initialValue: "",

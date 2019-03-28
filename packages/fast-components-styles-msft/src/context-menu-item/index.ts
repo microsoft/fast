@@ -1,70 +1,73 @@
-import designSystemDefaults, {
-    DesignSystem,
-    withDesignSystemDefaults,
-} from "../design-system";
-import { ComponentStyles } from "@microsoft/fast-jss-manager";
+import { DesignSystem, withDesignSystemDefaults } from "../design-system";
+import { ComponentStyles, ComponentStyleSheet } from "@microsoft/fast-jss-manager";
 import { ContextMenuItemClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
-import { density } from "../utilities/density";
-import { defaultHeight, maxHeight, minHeight } from "../utilities/height";
+import { height, horizontalSpacingNumber } from "../utilities/density";
 import {
-    backgroundColor,
-    disabledContrast,
-    ensureForegroundNormal,
-    hoverContrast,
-} from "../utilities/colors";
-import { applyFocusVisible } from "@microsoft/fast-jss-utilities";
-import { applyTypeRampConfig } from "../utilities/typography";
-import typographyPattern from "../patterns/typography";
-import { toPx } from "@microsoft/fast-jss-utilities";
+    neutralFillStealthActive,
+    neutralFillStealthHover,
+    neutralFocus,
+    neutralForegroundActive,
+    neutralForegroundHover,
+    neutralForegroundRest,
+} from "../utilities/color";
+import { applyFocusVisible, toPx } from "@microsoft/fast-jss-utilities";
+import { applyCornerRadius, applyFocusPlaceholderBorder } from "../utilities/border";
+import { applyCursorDefault } from "../utilities/cursor";
+import { applyDisabledState } from "../utilities/disabled";
+import { applyScaledTypeRamp } from "../utilities/typography";
 
-const styles: ComponentStyles<ContextMenuItemClassNameContract, DesignSystem> = {
-    contextMenuItem: {
-        listStyleType: "none",
-        height: density(32),
-        display: "grid",
-        gridTemplateColumns: "32px auto 32px",
-        gridTemplateRows: "auto",
-        alignItems: "center",
-        padding: "0",
-        margin: "0 4px",
-        ...typographyPattern.rest,
-        whiteSpace: "nowrap",
-        overflow: "hidden",
-        cursor: "default",
-        ...applyTypeRampConfig("t7"),
-        background: backgroundColor,
-        borderRadius: (config: DesignSystem): string => {
-            const designSystem: DesignSystem = withDesignSystemDefaults(config);
+const styles: ComponentStyles<ContextMenuItemClassNameContract, DesignSystem> = (
+    config: DesignSystem
+): ComponentStyleSheet<ContextMenuItemClassNameContract, DesignSystem> => {
+    const designSystem: DesignSystem = withDesignSystemDefaults(config);
+    const glyphWidth: number = 16;
+    const padding: number =
+        horizontalSpacingNumber(-2)(designSystem) +
+        glyphWidth +
+        horizontalSpacingNumber()(designSystem);
 
-            return toPx(designSystem.cornerRadius);
-        },
-        border: "2px solid transparent",
-        ...applyFocusVisible({
-            borderColor: ensureForegroundNormal,
-        }),
-        "&:hover": {
-            background: (config: DesignSystem): string => {
-                const designSystem: DesignSystem = withDesignSystemDefaults(config);
-
-                return hoverContrast(designSystem.contrast, designSystem.backgroundColor);
+    return {
+        contextMenuItem: {
+            listStyleType: "none",
+            boxSizing: "border-box",
+            height: height(),
+            display: "grid",
+            gridTemplateColumns: `${toPx(padding)} auto ${toPx(padding)}`,
+            gridTemplateRows: "auto",
+            justifyItems: "center",
+            alignItems: "center",
+            padding: "0",
+            margin: `0 ${toPx(designSystem.designUnit)}`,
+            color: neutralForegroundRest,
+            fill: neutralForegroundRest,
+            whiteSpace: "nowrap",
+            overflow: "hidden",
+            ...applyCursorDefault(),
+            ...applyScaledTypeRamp("t7"),
+            ...applyCornerRadius(),
+            ...applyFocusPlaceholderBorder(designSystem),
+            ...applyFocusVisible<DesignSystem>({
+                borderColor: neutralFocus,
+            }),
+            "&:hover": {
+                color: neutralForegroundHover,
+                background: neutralFillStealthHover,
+            },
+            "&:active": {
+                color: neutralForegroundActive,
+                background: neutralFillStealthActive,
             },
         },
-    },
-    contextMenuItem_contentRegion: {
-        gridColumnStart: "2",
-        overflow: "hidden",
-        textOverflow: "ellipsis",
-    },
-    contextMenuItem__disabled: {
-        cursor: "not-allowed",
-        ...typographyPattern.disabled,
-        "&:hover": {
-            background: backgroundColor,
+        contextMenuItem_contentRegion: {
+            gridColumnStart: "2",
+            justifySelf: "start",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
         },
-        ...applyFocusVisible({
-            background: backgroundColor,
-        }),
-    },
+        contextMenuItem__disabled: {
+            ...applyDisabledState(designSystem),
+        },
+    };
 };
 
 export default styles;

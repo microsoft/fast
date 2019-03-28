@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import {
     AutoSuggestOptionHandledProps,
@@ -13,13 +13,14 @@ import {
 import { get, slice } from "lodash-es";
 import { startsWith } from "@microsoft/fast-web-utilities";
 import { isNullOrUndefined } from "util";
+import { DisplayNamePrefix } from "../utilities";
 
 class AutoSuggestOption extends Foundation<
     AutoSuggestOptionHandledProps,
     AutoSuggestOptionUnhandledProps,
     {}
 > {
-    public static displayName: string = "AutoSuggestOption";
+    public static displayName: string = `${DisplayNamePrefix}AutoSuggestOption`;
 
     public static contextType: React.Context<AutoSuggestContextType> = AutoSuggestContext;
 

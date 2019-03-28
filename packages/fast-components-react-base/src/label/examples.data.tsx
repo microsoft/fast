@@ -1,7 +1,8 @@
-import * as React from "react";
+import React from "react";
 import Label, {
     LabelHandledProps,
     LabelManagedClasses,
+    LabelProps,
     LabelTag,
     LabelUnhandledProps,
 } from "./label";
@@ -9,7 +10,7 @@ import schema from "./label.schema.json";
 import Documentation from "./.tmp/documentation";
 import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
 
-const examples: ComponentFactoryExample<LabelHandledProps> = {
+const examples: ComponentFactoryExample<LabelProps> = {
     name: "Label",
     component: Label,
     schema: schema as any,
@@ -19,6 +20,7 @@ const examples: ComponentFactoryExample<LabelHandledProps> = {
             label: "label",
             label__hidden: "hidden_label",
         },
+        htmlFor: "example-id",
         tag: LabelTag.label,
         children: "Label",
     },

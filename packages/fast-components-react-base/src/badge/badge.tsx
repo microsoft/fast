@@ -1,11 +1,11 @@
-import * as React from "react";
+import React from "react";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import { BadgeClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import { BadgeHandledProps, BadgeUnhandledProps } from "./badge.props";
 import { get } from "lodash-es";
-
+import { DisplayNamePrefix } from "../utilities";
 class Badge extends Foundation<BadgeHandledProps, BadgeUnhandledProps, {}> {
-    public static displayName: string = "Badge";
+    public static displayName: string = `${DisplayNamePrefix}Badge`;
 
     protected handledProps: HandledProps<BadgeHandledProps> = {
         managedClasses: void 0,

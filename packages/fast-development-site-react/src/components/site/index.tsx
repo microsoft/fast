@@ -1,21 +1,24 @@
+import React from "react";
 import SiteTitle from "./title";
-import * as React from "react";
 import manageJss, {
     ComponentStyles,
     DesignSystemProvider,
     ManagedClasses,
     ManagedJSSProps,
 } from "@microsoft/fast-jss-manager-react";
-import Navigation from "@microsoft/fast-navigation-generator-react";
 import {
     glyphArrowright,
     glyphBuildingblocks,
     glyphGlobalnavbutton,
     glyphTransparency,
 } from "@microsoft/fast-glyphs-msft";
-import { mapDataToComponent } from "@microsoft/fast-form-generator-react";
+import {
+    mapDataToComponent,
+    Navigation,
+    Plugin,
+    PluginProps,
+} from "@microsoft/fast-tooling-react";
 import { applyScrollbarStyle } from "../../utilities";
-import { Plugin, PluginProps } from "@microsoft/fast-data-utilities-react";
 import { get, uniqueId } from "lodash-es";
 import devSiteDesignSystemDefaults, { DevSiteDesignSystem } from "../design-system";
 import Shell, { ShellHeader, ShellInfoBar, ShellPaneCollapse, ShellSlot } from "../shell";
@@ -46,7 +49,19 @@ import {
     Row,
     RowResizeDirection,
 } from "@microsoft/fast-layouts-react";
-import { Direction, isRTL } from "@microsoft/fast-application-utilities";
+import { Direction } from "@microsoft/fast-web-utilities";
+
+export const localeDirectionMapping: { [key: string]: Direction } = {
+    en: Direction.ltr,
+};
+
+export function isRTL(locale: string): boolean {
+    if (localeDirectionMapping[locale]) {
+        return localeDirectionMapping[locale] === Direction.rtl;
+    }
+
+    return false;
+}
 
 export enum ComponentViewSlot {
     example = "canvas-example-view",
@@ -793,9 +808,11 @@ class Site extends React.Component<
     };
 
     private getCurrentPath = (): string => {
+        const splitPath: string[] = window.location.pathname.split("/");
+
         return this.getComponentViewTypesByLocation() === ComponentViewTypes.detail
             ? window.location.pathname
-            : window.location.pathname.slice(0, window.location.pathname.indexOf("/", 1));
+            : `${splitPath.slice(0, splitPath.length - 2).join("/")}/`;
     };
 
     private generateNavigation(

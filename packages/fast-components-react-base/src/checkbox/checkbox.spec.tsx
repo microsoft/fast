@@ -1,6 +1,6 @@
-import * as React from "react";
+import React from "react";
 import * as ShallowRenderer from "react-test-renderer/shallow";
-import * as Adapter from "enzyme-adapter-react-16";
+import Adapter from "enzyme-adapter-react-16";
 import { configure, mount, shallow, ShallowWrapper } from "enzyme";
 import examples from "./examples.data";
 import Checkbox, {
@@ -12,6 +12,7 @@ import Checkbox, {
     CheckboxState,
     CheckboxUnhandledProps,
 } from "./checkbox";
+import { DisplayNamePrefix } from "../utilities";
 
 /*
  * Configure Enzyme
@@ -30,7 +31,9 @@ describe("checkbox", (): void => {
     const inputSelector: string = `.${managedClasses.checkbox_input}`;
 
     test("should have a displayName that matches the component name", () => {
-        expect((Checkbox as any).name).toBe(Checkbox.displayName);
+        expect(`${DisplayNamePrefix}${(Checkbox as any).name}`).toBe(
+            Checkbox.displayName
+        );
     });
 
     test("should have correct input attribute type 'checkbox'", () => {

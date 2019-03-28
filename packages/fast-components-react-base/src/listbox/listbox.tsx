@@ -1,4 +1,4 @@
-import * as ReactDOM from "react-dom";
+import ReactDOM from "react-dom";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import { ListboxClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import {
@@ -6,13 +6,13 @@ import {
     ListboxProps,
     ListboxUnhandledProps,
 } from "./listbox.props";
-import * as React from "react";
+import React from "react";
 import { KeyCodes, startsWith } from "@microsoft/fast-web-utilities";
 import { get, inRange, isEqual } from "lodash-es";
 import { canUseDOM } from "exenv-es6";
 import { ListboxContext, ListboxContextType } from "./listbox-context";
 import { ListboxItemProps } from "../listbox-item";
-
+import { DisplayNamePrefix } from "../utilities";
 export interface ListboxState {
     /**
      * The index of the focusable child
@@ -27,7 +27,7 @@ class Listbox extends Foundation<
     ListboxUnhandledProps,
     ListboxState
 > {
-    public static displayName: string = "Listbox";
+    public static displayName: string = `${DisplayNamePrefix}Listbox`;
 
     public static defaultProps: Partial<ListboxProps> = {
         multiselectable: false,

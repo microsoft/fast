@@ -6,8 +6,10 @@ import {
     applyCleanListStyle,
     applyControl,
     applyControlWrapper,
+    applyFormItemBadge,
     applyGlobalStyle,
     applyInputStyle,
+    applyLabelRegionStyle,
     applyLabelStyle,
     applyRemoveItemStyle,
     applySoftRemove,
@@ -26,12 +28,18 @@ const styles: ComponentStyles<FormItemChildrenClassNameContract, {}> = {
         flexDirection: "column",
         ...applyControlWrapper(),
     },
+    formItemChildren_badge: {
+        ...applyFormItemBadge(),
+    },
     formItemChildren_control: {
         ...applyControl(),
         verticalAlign: "middle",
     },
     formItemChildren_controlLabel: {
         ...applyLabelStyle(),
+    },
+    formItemChildren_controlLabelRegion: {
+        ...applyLabelRegionStyle(),
     },
     formItemChildren_existingChildren: {
         ...applyCleanListStyle(),

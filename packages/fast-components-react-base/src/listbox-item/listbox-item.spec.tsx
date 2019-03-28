@@ -1,5 +1,5 @@
-import * as React from "react";
-import * as Adapter from "enzyme-adapter-react-16";
+import React from "react";
+import Adapter from "enzyme-adapter-react-16";
 import { configure, mount, shallow } from "enzyme";
 import ListboxItem, {
     ListboxItemHandledProps,
@@ -8,6 +8,7 @@ import ListboxItem, {
 } from "./listbox-item";
 import { KeyCodes } from "@microsoft/fast-web-utilities";
 import { noop } from "lodash-es";
+import { DisplayNamePrefix } from "../utilities";
 
 /*
  * Configure Enzyme
@@ -16,7 +17,9 @@ configure({ adapter: new Adapter() });
 
 describe("listbox item", (): void => {
     test("should have a displayName that matches the component name", () => {
-        expect((ListboxItem as any).name).toBe(ListboxItem.displayName);
+        expect(`${DisplayNamePrefix}${(ListboxItem as any).name}`).toBe(
+            ListboxItem.displayName
+        );
     });
 
     test("should not throw if managedClasses are not provided", () => {

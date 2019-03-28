@@ -1,7 +1,7 @@
-import * as React from "react";
+import React from "react";
 import { ContextMenuItem, ContextMenuItemProps } from "./index";
 import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
-import schema from "@microsoft/fast-components-react-base/dist/context-menu-item/context-menu-item.schema.json";
+import schema from "./context-menu-item.schema.json";
 import Documentation from "./.tmp/documentation";
 
 export default {

@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import {
     ManagedClasses,
     ToggleClassNameContract,
@@ -20,7 +20,7 @@ export interface ToggleHandledProps extends ToggleManagedClasses {
     /**
      * The toggle HTML id attribute
      */
-    id: string;
+    inputId: string;
 
     /**
      * The HTML id attribute associated with the label

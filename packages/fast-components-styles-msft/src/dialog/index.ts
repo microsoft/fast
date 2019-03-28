@@ -1,10 +1,8 @@
 import { DesignSystem, withDesignSystemDefaults } from "../design-system";
 import { ComponentStyles, ComponentStyleSheet } from "@microsoft/fast-jss-manager";
 import { DialogClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
-import { toPx } from "@microsoft/fast-jss-utilities";
-import { get } from "lodash-es";
-import Chroma from "chroma-js";
 import { applyAcrylicMaterial } from "../utilities/acrylic";
+import { applyFloatingCornerRadius } from "../utilities/border";
 import { elevation, ElevationMultiplier } from "../utilities/elevation";
 
 /* tslint:disable-next-line */
@@ -13,7 +11,6 @@ const styles: ComponentStyles<DialogClassNameContract, DesignSystem> = (
 ): ComponentStyleSheet<DialogClassNameContract, DesignSystem> => {
     const designSystem: DesignSystem = withDesignSystemDefaults(config);
     const backgroundColor: string = designSystem.backgroundColor;
-    const foregroundColor: string = designSystem.foregroundColor;
 
     return {
         dialog: {
@@ -42,9 +39,9 @@ const styles: ComponentStyles<DialogClassNameContract, DesignSystem> = (
         },
         dialog_contentRegion: {
             background: backgroundColor,
-            borderRadius: toPx(designSystem.cornerRadius * 2),
+            ...applyFloatingCornerRadius(),
+            ...elevation(ElevationMultiplier.e14)(designSystem),
             zIndex: "1",
-            ...elevation(ElevationMultiplier.e14, "#000")(designSystem),
         },
     };
 };

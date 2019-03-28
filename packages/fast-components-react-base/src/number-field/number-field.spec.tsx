@@ -1,5 +1,5 @@
-import * as React from "react";
-import * as Adapter from "enzyme-adapter-react-16";
+import React from "react";
+import Adapter from "enzyme-adapter-react-16";
 import { configure, mount, shallow, ShallowWrapper } from "enzyme";
 import NumberField, {
     NumberFieldHandledProps,
@@ -7,6 +7,7 @@ import NumberField, {
     NumberFieldProps,
     NumberFieldUnhandledProps,
 } from "./";
+import { DisplayNamePrefix } from "../utilities";
 
 /*
  * Configure Enzyme
@@ -21,7 +22,9 @@ const managedClasses: NumberFieldManagedClasses = {
 
 describe("number field", (): void => {
     test("should have a displayName that matches the component name", () => {
-        expect((NumberField as any).name).toBe(NumberField.displayName);
+        expect(`${DisplayNamePrefix}${(NumberField as any).name}`).toBe(
+            NumberField.displayName
+        );
     });
 
     test("should not throw if managedClasses are not provided", () => {

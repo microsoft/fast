@@ -1,10 +1,8 @@
-import * as React from "react";
+import React from "react";
 import { JSSManager, mergeClassNames } from "./jss-manager";
 import { ComponentStyles } from "@microsoft/fast-jss-manager";
-import * as ShallowRenderer from "react-test-renderer/shallow";
-import { configure, mount, ReactWrapper, render, shallow } from "enzyme";
-import * as Adapter from "enzyme-adapter-react-16";
-import { jss, stylesheetRegistry } from "./jss";
+import { configure, mount } from "enzyme";
+import Adapter from "enzyme-adapter-react-16";
 import { DesignSystemProvider } from "./design-system-provider";
 import { values } from "lodash-es";
 
@@ -75,12 +73,12 @@ const staticAndDynamicStyles: ComponentStyles<any, any> = {
 describe("The JSSManager", (): void => {
     class NoStylesManager extends JSSManager<any, any, any> {
         protected styles: void = undefined;
-        protected managedComponent: React.ComponentType<any> = SimpleComponent;
+        protected managedComponent: React.ComponentClass<any> = SimpleComponent;
     }
 
     class StyledManager extends JSSManager<any, any, any> {
         protected styles: any = staticAndDynamicStyles;
-        protected managedComponent: React.ComponentType<any> = StyledComponent;
+        protected managedComponent: React.ComponentClass<any> = StyledComponent;
     }
 
     test("should render the managedComponent", () => {
@@ -291,6 +289,14 @@ describe("The JSSManager", (): void => {
         rendered.setProps({ jssStyleSheet: { foo: { color: "red" } } });
 
         expect(rendered.instance().createPropStyleSheet).toHaveBeenCalledTimes(1);
+    });
+
+    test("should pass the innerRef prop as a ref prop to the managedComponent", (): void => {
+        const ref: React.RefObject<StyledComponent> = React.createRef();
+        expect(ref.current instanceof StyledComponent).toBe(false);
+
+        const rendered: any = mount(<StyledManager innerRef={ref} />);
+        expect(ref.current instanceof StyledComponent).toBe(true);
     });
 });
 

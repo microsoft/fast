@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import {
     ManagedClasses,
     TabClassNameContract,
@@ -6,7 +6,7 @@ import {
 import { TabsSlot } from "./tabs";
 
 export interface TabManagedClasses extends ManagedClasses<TabClassNameContract> {}
-export interface TabUnhandledProps extends React.AllHTMLAttributes<HTMLElement> {}
+export interface TabUnhandledProps extends React.HTMLAttributes<HTMLDivElement> {}
 export interface TabHandledProps extends TabManagedClasses {
     /**
      * The slot identifying this component to the Tab component as a tab

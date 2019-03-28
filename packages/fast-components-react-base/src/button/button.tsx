@@ -1,5 +1,5 @@
-import * as React from "react";
-import * as ReactDOM from "react-dom";
+import React from "react";
+import ReactDOM from "react-dom";
 import { get } from "lodash-es";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import { ButtonHandledProps, ButtonUnhandledProps } from "./button.props";
@@ -7,6 +7,7 @@ import {
     ButtonClassNameContract,
     ManagedClasses,
 } from "@microsoft/fast-components-class-name-contracts-base";
+import { DisplayNamePrefix } from "../utilities";
 
 /**
  * Button HTML tags
@@ -17,7 +18,7 @@ export enum ButtonHTMLTags {
 }
 
 class Button extends Foundation<ButtonHandledProps, ButtonUnhandledProps, {}> {
-    public static displayName: string = "Button";
+    public static displayName: string = `${DisplayNamePrefix}Button`;
 
     protected handledProps: HandledProps<ButtonHandledProps> = {
         disabled: void 0,

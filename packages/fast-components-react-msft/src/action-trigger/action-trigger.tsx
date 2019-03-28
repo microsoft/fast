@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { get } from "lodash-es";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import { Button, ButtonAppearance } from "../button";
@@ -8,13 +8,14 @@ import {
     ActionTriggerUnhandledProps,
 } from "./action-trigger.props";
 import { actionTriggerButtonOverrides } from "@microsoft/fast-components-styles-msft";
+import { DisplayNamePrefix } from "../utilities";
 
 class ActionTrigger extends Foundation<
     ActionTriggerHandledProps,
     ActionTriggerUnhandledProps,
     {}
 > {
-    public static displayName: string = "ActionTrigger";
+    public static displayName: string = `${DisplayNamePrefix}ActionTrigger`;
 
     protected handledProps: HandledProps<ActionTriggerHandledProps> = {
         appearance: void 0,

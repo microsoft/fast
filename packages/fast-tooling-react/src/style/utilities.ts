@@ -10,7 +10,6 @@ import {
     background300,
     background800,
     disabledOpacity,
-    foreground000,
     foreground200,
     foreground300,
     foreground800,
@@ -48,6 +47,15 @@ export function applyTriggerStyle(color: string): CSSRules<{}> {
         boxSizing: "border-box",
         color,
         ...ellipsis(),
+    };
+}
+
+export function applyFormItemBadge(): CSSRules<{}> {
+    return {
+        fill: foreground800,
+        padding: "0 5px",
+        alignSelf: "center",
+        minWidth: "12px",
     };
 }
 
@@ -151,13 +159,18 @@ export function insetStrongBoxShadow(color: string): CSSRules<{}> {
 export function applyLabelStyle(): CSSRules<{}> {
     return {
         flexGrow: "1",
-        lineHeight: "16px",
+        lineHeight: "23px",
         fontSize: "12px",
-        minHeight: "30px",
-        display: "flex",
+        minHeight: "23px",
         boxSizing: "border-box",
-        paddingTop: "7px",
         ...ellipsis(),
+    };
+}
+
+export function applyLabelRegionStyle(): CSSRules<{}> {
+    return {
+        display: "flex",
+        maxWidth: "100%",
     };
 }
 
@@ -219,8 +232,8 @@ export function applyAriaHiddenStyles(): CSSRules<{}> {
 export function applyRemoveItemStyle(): CSSRules<{}> {
     return {
         position: "absolute",
-        right: "5px",
         top: "5px",
+        right: "5px",
         appearance: "none",
         background: "none",
         border: "none",
@@ -248,6 +261,7 @@ export function applyRemoveItemStyle(): CSSRules<{}> {
 
 export function applyControlWrapper(): CSSRules<{}> {
     return {
+        paddingTop: "7px",
         marginBottom: "12px",
     };
 }
@@ -262,7 +276,6 @@ export function applyControlSingleLineWrapper(): CSSRules<{}> {
 
 export function applyControl(): CSSRules<{}> {
     return {
-        display: "grid",
         width: `calc(100% - 30px)`,
     };
 }
@@ -270,8 +283,8 @@ export function applyControl(): CSSRules<{}> {
 export function applySoftRemove(): CSSRules<{}> {
     return {
         display: "flex",
-        height: "30px",
-        width: "30px",
+        height: "23px",
+        minWidth: "30px",
         position: "relative",
         justifyContent: "center",
         alignItems: "center",
@@ -283,7 +296,6 @@ export function applySoftRemoveInput(): CSSRules<{}> {
         appearance: "none",
         background: "none",
         position: "absolute",
-        right: "5px",
         border: "none",
         width: "20px",
         margin: "0",

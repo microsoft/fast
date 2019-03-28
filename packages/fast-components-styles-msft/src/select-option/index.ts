@@ -1,120 +1,84 @@
-import designSystemDefaults, {
-    DesignSystem,
-    withDesignSystemDefaults,
-} from "../design-system";
-import { ComponentStyles, ComponentStyleSheet } from "@microsoft/fast-jss-manager";
+import { applyFocusVisible, toPx } from "@microsoft/fast-jss-utilities";
+import { DesignSystem, withDesignSystemDefaults } from "../design-system";
 import { SelectOptionClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
-import { density } from "../utilities/density";
+import { height, horizontalSpacing } from "../utilities/density";
 import {
-    disabledContrast,
-    ensureForegroundNormal,
-    ensureNormalContrast,
-    hoverContrast,
-} from "../utilities/colors";
-import { applyFocusVisible } from "@microsoft/fast-jss-utilities";
-import { applyTypeRampConfig } from "../utilities/typography";
-import typographyPattern from "../patterns/typography";
+    neutralFillStealthHover,
+    neutralFillStealthRest,
+    neutralFillStealthSelected,
+    neutralFocus,
+    neutralForegroundRest,
+} from "../utilities/color";
+import { ComponentStyles, ComponentStyleSheet } from "@microsoft/fast-jss-manager";
 import {
     applyLocalizedProperty,
-    contrast,
     Direction,
     ellipsis,
-    toPx,
 } from "@microsoft/fast-jss-utilities";
-import { curry } from "lodash-es";
+import { applyCornerRadius, applyFocusPlaceholderBorder } from "../utilities/border";
+import { applyCursorDefault, applyCursorPointer } from "../utilities/cursor";
+import { applyDisabledState } from "../utilities/disabled";
+import { applyScaledTypeRamp } from "../utilities/typography";
 
 const styles: ComponentStyles<SelectOptionClassNameContract, DesignSystem> = (
     config: DesignSystem
 ): ComponentStyleSheet<SelectOptionClassNameContract, DesignSystem> => {
-    type ContrastFunction = (operandColor: string, referenceColor: string) => string;
     const designSystem: DesignSystem = withDesignSystemDefaults(config);
     const direction: Direction = designSystem.direction;
-    const contrastScale: number = designSystem.contrast;
-    const brandColor: string = designSystem.brandColor;
-    const color: string = designSystem.foregroundColor;
-    const scaledEnsureNormalContrast: ContrastFunction = curry(ensureNormalContrast)(
-        contrastScale
-    );
-    const primaryRestBackgroundColor: string = scaledEnsureNormalContrast(
-        scaledEnsureNormalContrast(brandColor, designSystem.backgroundColor),
-        color
-    );
-    const primaryDisabledBackground: string = disabledContrast(
-        contrastScale,
-        primaryRestBackgroundColor,
-        designSystem.backgroundColor
-    );
-    const primaryDisabledColor: string = disabledContrast(
-        contrastScale,
-        color,
-        primaryDisabledBackground
-    );
-    const primarySelectedBackground: string = contrast(
-        1.7,
-        designSystem.foregroundColor,
-        designSystem.backgroundColor
-    );
+
     return {
         selectOption: {
             listStyleType: "none",
-            height: density(32),
-            display: "grid",
-            gridTemplateColumns: `${applyLocalizedProperty(
-                "12px auto auto 1fr 12px",
-                "12px 1fr auto auto 12px",
-                direction
-            )}`,
-            gridTemplateRows: "auto",
+            boxSizing: "border-box",
+            height: height(),
+            display: "flex",
             alignItems: "center",
-            padding: "0",
-            margin: "0 4px",
-            ...typographyPattern.rest,
+            padding: `0 ${horizontalSpacing(designSystem.focusOutlineWidth)(
+                designSystem
+            )}`,
+            margin: `0 ${toPx(designSystem.designUnit)}`,
+            color: neutralForegroundRest,
+            fill: neutralForegroundRest,
             whiteSpace: "nowrap",
             overflow: "hidden",
-            cursor: "default",
-            ...applyTypeRampConfig("t7"),
-            background: designSystem.backgroundColor,
-            borderRadius: toPx(designSystem.cornerRadius),
-            border: "2px solid transparent",
-            ...applyFocusVisible({
-                borderColor: ensureForegroundNormal,
+            ...applyCursorDefault(),
+            ...applyScaledTypeRamp("t7"),
+            background: neutralFillStealthRest,
+            ...applyCursorPointer(),
+            ...applyCornerRadius(),
+            ...applyFocusPlaceholderBorder(designSystem),
+            ...applyFocusVisible<DesignSystem>({
+                borderColor: neutralFocus,
             }),
             "&:hover": {
-                background: hoverContrast(
-                    designSystem.contrast,
-                    designSystem.backgroundColor
-                ),
+                background: neutralFillStealthHover,
             },
         },
         selectOption_contentRegion: {
-            gridColumnStart: "3",
             overflow: "hidden",
             ...ellipsis(),
         },
         selectOption_glyph: {
-            gridColumnStart: `${applyLocalizedProperty("2", "4", direction)}`,
             display: "inline-block",
             position: "relative",
             maxWidth: "16px",
-            margin: `${applyLocalizedProperty("0 12px 0 0", "0 0 0 12px", direction)}`,
+            flexShrink: "0",
+            margin: `${applyLocalizedProperty(
+                `0 ${horizontalSpacing()(designSystem)} 0 0`,
+                `0 0 0 ${horizontalSpacing()(designSystem)}`,
+                direction
+            )}`,
         },
         selectOption__disabled: {
-            cursor: "not-allowed",
-            ...typographyPattern.disabled,
-            "&:hover": {
-                background: designSystem.backgroundColor,
-            },
-            ...applyFocusVisible({
-                background: designSystem.backgroundColor,
-            }),
-            "& $selectOption_glyph": {
-                fill: primaryDisabledColor,
+            ...applyDisabledState(designSystem),
+            "&, &:hover": {
+                background: neutralFillStealthRest,
             },
         },
         selectOption__selected: {
-            background: primarySelectedBackground,
+            background: neutralFillStealthSelected,
             "&:hover": {
-                background: primarySelectedBackground,
+                background: neutralFillStealthSelected,
             },
         },
     };

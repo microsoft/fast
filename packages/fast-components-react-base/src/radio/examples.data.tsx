@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import Radio, {
     RadioHandledProps,
     RadioManagedClasses,
@@ -24,27 +24,27 @@ const examples: ComponentFactoryExample<RadioHandledProps & RadioManagedClasses>
     schema: schema as any,
     documentation: <Documentation />,
     detailData: {
-        id: "radio01",
+        inputId: "radio01",
         ...classes,
         checked: true,
     },
     data: [
         {
-            id: "checked_true",
+            inputId: "checked_true",
             ...classes,
             checked: true,
         },
         {
-            id: "checked_false",
+            inputId: "checked_false",
             ...classes,
             checked: false,
         },
         {
-            id: "checked_none",
+            inputId: "checked_none",
             ...classes,
         },
         {
-            id: "disabled",
+            inputId: "disabled",
             ...classes,
             disabled: true,
         },

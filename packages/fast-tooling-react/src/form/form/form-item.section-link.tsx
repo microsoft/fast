@@ -1,6 +1,7 @@
 import React from "react";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
+import { get } from "lodash-es";
 import styles from "./form-item.section-link.style";
 import {
     FormItemSectionLinkClassNameContract,
@@ -31,6 +32,9 @@ class FormItemSectionLink extends FormItemBase<
                 >
                     {this.props.label}
                 </a>
+                {this.renderBadge(
+                    get(this.props, "managedClasses.formItemSectionLink_badge")
+                )}
                 <div className={this.props.managedClasses.formItemSectionLink_softRemove}>
                     {this.renderSoftRemove(
                         this.props.managedClasses.formItemSectionLink_softRemoveInput

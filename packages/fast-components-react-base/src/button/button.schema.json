@@ -3,7 +3,8 @@
     "title": "Button",
     "description": "A button component's schema definition.",
     "type": "object",
-    "id": "button",
+    "id": "@microsoft/fast-components-react-base/button",
+    "formPluginId": "@microsoft/fast-components-react-base/button",
     "properties": {
         "disabled": {
             "title": "Disabled",
@@ -18,6 +19,7 @@
         "children": {
             "title": "Children",
             "type": "children",
+            "formPluginId": "@microsoft/fast-components-react-base/button/children",
             "defaults": [
                 "text"
             ]

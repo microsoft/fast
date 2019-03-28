@@ -1,6 +1,6 @@
-import * as React from "react";
+import React from "react";
 import * as ShallowRenderer from "react-test-renderer/shallow";
-import * as Adapter from "enzyme-adapter-react-16";
+import Adapter from "enzyme-adapter-react-16";
 import { configure, render, shallow, ShallowWrapper } from "enzyme";
 import examples from "./examples.data";
 import TextArea, {
@@ -10,6 +10,7 @@ import TextArea, {
     TextAreaProps,
     TextAreaUnhandledProps,
 } from "./text-area";
+import { DisplayNamePrefix } from "../utilities";
 
 const managedClasses: TextAreaClassNameContract = {
     textArea: "text-area-class",
@@ -22,7 +23,9 @@ configure({ adapter: new Adapter() });
 
 describe("text-area", (): void => {
     test("should have a displayName that matches the component name", () => {
-        expect((TextArea as any).name).toBe(TextArea.displayName);
+        expect(`${DisplayNamePrefix}${(TextArea as any).name}`).toBe(
+            TextArea.displayName
+        );
     });
 
     test("should have correct root element type 'textarea'", () => {
@@ -39,7 +42,6 @@ describe("text-area", (): void => {
     test("should return an object that includes all valid props which are not enumerated as handledProps", () => {
         const handledProps: TextAreaHandledProps = {
             managedClasses,
-            placeholder: "Placeholder",
         };
 
         const unhandledProps: TextAreaUnhandledProps = {

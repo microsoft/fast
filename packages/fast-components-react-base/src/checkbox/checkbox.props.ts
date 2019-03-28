@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import {
     CheckboxClassNameContract,
     ManagedClasses,
@@ -10,7 +10,7 @@ export enum CheckboxSlot {
 
 export interface CheckboxManagedClasses
     extends ManagedClasses<CheckboxClassNameContract> {}
-export interface CheckboxUnhandledProps extends React.AllHTMLAttributes<HTMLElement> {}
+export interface CheckboxUnhandledProps extends React.HTMLAttributes<HTMLDivElement> {}
 export interface CheckboxHandledProps extends CheckboxManagedClasses {
     /**
      * The id of the checkbox input element

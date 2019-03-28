@@ -1,6 +1,7 @@
-import * as React from "react";
+import React from "react";
 import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
 import schema from "./auto-suggest.schema.json";
+import autoSuggestOptionSchema from "../auto-suggest-option/auto-suggest-option.schema.json";
 import { AutoSuggest, AutoSuggestProps } from "./index";
 import { AutoSuggestOptionProps } from "../auto-suggest-option";
 import Documentation from "./.tmp/documentation";
@@ -23,19 +24,19 @@ const examples: ComponentFactoryExample<AutoSuggestProps> = {
         listboxId: "listboxId",
         children: [
             {
-                id: "@microsoft/fast-components-react-msft/auto-suggest-option",
+                id: autoSuggestOptionSchema.id,
                 props: {
                     ...autoSuggestOptionPropFactory("a"),
                 },
             },
             {
-                id: "@microsoft/fast-components-react-msft/auto-suggest-option",
+                id: autoSuggestOptionSchema.id,
                 props: {
                     ...autoSuggestOptionPropFactory("b"),
                 },
             },
             {
-                id: "@microsoft/fast-components-react-msft/auto-suggest-option",
+                id: autoSuggestOptionSchema.id,
                 props: {
                     ...autoSuggestOptionPropFactory("c"),
                 },
@@ -48,20 +49,20 @@ const examples: ComponentFactoryExample<AutoSuggestProps> = {
             listboxId: "listboxId",
             children: [
                 {
-                    id: "@microsoft/fast-components-react-msft/auto-suggest-option",
+                    id: autoSuggestOptionSchema.id,
                     props: {
                         ...autoSuggestOptionPropFactory("value 1"),
                         selected: true,
                     },
                 },
                 {
-                    id: "@microsoft/fast-components-react-msft/auto-suggest-option",
+                    id: autoSuggestOptionSchema.id,
                     props: {
                         ...autoSuggestOptionPropFactory("value 2"),
                     },
                 },
                 {
-                    id: "@microsoft/fast-components-react-msft/auto-suggest-option",
+                    id: autoSuggestOptionSchema.id,
                     props: {
                         ...autoSuggestOptionPropFactory("value 3"),
                     },

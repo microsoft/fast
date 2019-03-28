@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 
 /**
  * Create and export JSSManager consumer/provider components to be used by

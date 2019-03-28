@@ -1,5 +1,5 @@
-import * as React from "react";
-import * as ReactDOM from "react-dom";
+import React from "react";
+import ReactDOM from "react-dom";
 import { get } from "lodash-es";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import { TypographySize, TypographyTag } from "@microsoft/fast-components-react-base";
@@ -14,9 +14,10 @@ import {
     HeadingClassNameContract,
     ManagedClasses,
 } from "@microsoft/fast-components-class-name-contracts-msft";
+import { DisplayNamePrefix } from "../utilities";
 
 class Heading extends Foundation<HeadingHandledProps, HeadingUnhandledProps, {}> {
-    public static displayName: string = "Heading";
+    public static displayName: string = `${DisplayNamePrefix}Heading`;
 
     protected handledProps: HandledProps<HeadingHandledProps> = {
         size: void 0,

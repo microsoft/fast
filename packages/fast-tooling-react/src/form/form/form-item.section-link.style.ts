@@ -2,6 +2,7 @@ import { ComponentStyles } from "@microsoft/fast-jss-manager";
 import { ellipsis } from "@microsoft/fast-jss-utilities";
 import {
     applyControlSingleLineWrapper,
+    applyFormItemBadge,
     applySoftRemove,
     applySoftRemoveInput,
 } from "../../style";
@@ -17,6 +18,9 @@ const styles: ComponentStyles<FormItemSectionLinkClassNameContract, {}> = {
         cursor: "pointer",
         fontSize: "12px",
         lineHeight: "16px",
+    },
+    formItemSectionLink_badge: {
+        ...applyFormItemBadge(),
     },
     formItemSectionLink_softRemove: {
         ...applySoftRemove(),

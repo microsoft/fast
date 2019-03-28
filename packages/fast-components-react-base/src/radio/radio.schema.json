@@ -3,10 +3,10 @@
     "title": "Radio",
     "description": "A radio component's schema definition",
     "type": "object",
-    "id": "radio",
-    "children": true,
+    "id": "@microsoft/fast-components-react-base/radio",
+    "formPluginId": "@microsoft/fast-components-react-base/radio",
     "properties": {
-        "id": {
+        "inputId": {
             "title": "Unique Id",
             "type": "string"
         },
@@ -23,6 +23,7 @@
         "children": {
             "title": "Children",
             "type": "children",
+            "formPluginId": "@microsoft/fast-components-react-base/radio/children",
             "defaults": [
                 "text"
             ]

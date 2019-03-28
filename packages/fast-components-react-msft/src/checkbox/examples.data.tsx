@@ -1,7 +1,8 @@
-import * as React from "react";
+import React from "react";
 import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
 import { Checkbox, CheckboxProps, CheckboxSlot } from "./index";
-import schema from "@microsoft/fast-components-react-base/dist/checkbox/checkbox.schema.json";
+import schema from "./checkbox.schema.json";
+import labelSchema from "../label/label.schema.json";
 import Documentation from "./.tmp/documentation";
 import { Label } from "../label";
 
@@ -13,7 +14,7 @@ export default {
     detailData: {
         inputId: "checkbox",
         children: {
-            id: "label",
+            id: labelSchema.id,
             props: {
                 slot: CheckboxSlot.label,
                 htmlFor: "checkbox",
@@ -25,7 +26,7 @@ export default {
         {
             inputId: "checkbox1",
             children: {
-                id: "label",
+                id: labelSchema.id,
                 props: {
                     slot: CheckboxSlot.label,
                     htmlFor: "checkbox1",
@@ -37,7 +38,7 @@ export default {
             inputId: "checkbox2",
             checked: true,
             children: {
-                id: "label",
+                id: labelSchema.id,
                 props: {
                     slot: CheckboxSlot.label,
                     htmlFor: "checkbox2",
@@ -49,7 +50,7 @@ export default {
             inputId: "checkbox3",
             disabled: true,
             children: {
-                id: "label",
+                id: labelSchema.id,
                 props: {
                     slot: CheckboxSlot.label,
                     htmlFor: "checkbox3",
@@ -61,7 +62,7 @@ export default {
             inputId: "checkbox4",
             indeterminate: true,
             children: {
-                id: "label",
+                id: labelSchema.id,
                 props: {
                     slot: CheckboxSlot.label,
                     htmlFor: "checkbox4",
@@ -74,7 +75,7 @@ export default {
             indeterminate: true,
             checked: true,
             children: {
-                id: "label",
+                id: labelSchema.id,
                 props: {
                     slot: CheckboxSlot.label,
                     htmlFor: "checkbox5",

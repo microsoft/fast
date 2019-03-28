@@ -3,7 +3,8 @@
     "title": "Subheading",
     "description": "A Subheading component's schema definition",
     "type": "object",
-    "id": "Subheading",
+    "id": "@microsoft/fast-components-react-msft/subheading",
+    "formPluginId": "@microsoft/fast-components-react-msft/subheading",
     "properties": {
         "tag": {
             "title": "HTML Tag",
@@ -37,9 +38,16 @@
         "children": {
             "title": "Children",
             "type": "children",
+            "formPluginId": "@microsoft/fast-components-react-msft/subheading/children",
             "defaults": [
                 "text"
+            ],
+            "examples": [
+                "Lorem ipsum sit amet"
             ]
         }
-    }
+    },
+    "required": [
+        "children"
+    ]
 }

@@ -1,6 +1,6 @@
-import * as React from "react";
+import React from "react";
 import * as ShallowRenderer from "react-test-renderer/shallow";
-import * as Adapter from "enzyme-adapter-react-16";
+import Adapter from "enzyme-adapter-react-16";
 import { configure, shallow, ShallowWrapper } from "enzyme";
 import examples from "./examples.data";
 import Toggle, {
@@ -11,6 +11,7 @@ import Toggle, {
     ToggleState,
     ToggleUnhandledProps,
 } from "./toggle";
+import { DisplayNamePrefix } from "../utilities";
 
 /*
  * Configure Enzyme
@@ -27,7 +28,7 @@ describe("toggle", (): void => {
     };
     const handledProps: ToggleHandledProps = {
         managedClasses,
-        id: "id",
+        inputId: "id",
         selectedMessage: "selected-message",
         statusMessageId: "status-message-id",
         unselectedMessage: "unselected-message",
@@ -36,7 +37,7 @@ describe("toggle", (): void => {
     const inputSelector: string = `.${managedClasses.toggle_input}`;
 
     test("should have a displayName that matches the component name", () => {
-        expect((Toggle as any).name).toBe(Toggle.displayName);
+        expect(`${DisplayNamePrefix}${(Toggle as any).name}`).toBe(Toggle.displayName);
     });
 
     test("should have correct input type attribute 'checkbox'", () => {
@@ -48,7 +49,7 @@ describe("toggle", (): void => {
         expect(() => {
             shallow(
                 <Toggle
-                    id="id"
+                    inputId="id"
                     selectedMessage="selectedString"
                     unselectedMessage="selectedString"
                     statusMessageId="statusLabelId"

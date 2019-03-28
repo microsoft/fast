@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import {
     LabelClassNameContract,
     ManagedClasses,
@@ -11,7 +11,8 @@ export enum LabelTag {
 
 export interface LabelManagedClasses extends ManagedClasses<LabelClassNameContract> {}
 export interface LabelUnhandledProps
-    extends React.HTMLAttributes<HTMLLabelElement | HTMLLegendElement> {}
+    extends React.LabelHTMLAttributes<HTMLLabelElement | HTMLLegendElement>,
+        React.HTMLAttributes<HTMLLabelElement | HTMLLegendElement> {}
 export interface LabelHandledProps extends LabelManagedClasses {
     /**
      * Label content

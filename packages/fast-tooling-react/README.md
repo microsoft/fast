@@ -2,7 +2,7 @@
 
 The tooling available in FAST Tooling React can be used together to create UI for manipulating serializable data and viewing React components.
 
-![JavaScript](https://img.shields.io/badge/ES6-Supported-yellow.svg?style=for-the-badge&logo=JavaScript) &nbsp; ![TypeScript](https://img.shields.io/badge/TypeScript-Supported-blue.svg?style=for-the-badge) &nbsp; ![TypeScript](https://img.shields.io/badge/WAAPI-Supported-purple.svg?style=for-the-badge)
+![JavaScript](https://img.shields.io/badge/ES6-Supported-yellow.svg?style=for-the-badge&logo=JavaScript) &nbsp; ![TypeScript](https://img.shields.io/badge/TypeScript-Supported-blue.svg?style=for-the-badge)
 
 - [Benefits](#benefits)
 - [Installation](#installation)
@@ -33,6 +33,7 @@ The tooling available in FAST Tooling React can be used together to create UI fo
         - [Title](#title)
         - [Disabled](#disabled)
         - [Examples & default](#examples-&-default)
+        - [Badges](#badges)
     - [JSON schema keywords](#json-schema-keywords)
         - [oneOf & anyOf](#oneof-&-anyof)
         - [Enums](#enums)
@@ -108,8 +109,8 @@ The `mapDataToComponent` function can be used to map data to a React component. 
 An example of mapping data to a component from the `@microsoft/fast-tooling-react` package:
 
 ```jsx
-import * as React from "react";
-import * as ReactDOM from "react-dom";
+import React from "react";
+import ReactDOM from "react-dom";
 import { Heading } from "@microsoft/fast-components-react-msft";
 import * as headingSchema from "@microsoft/fast-components-react-msft/dist/heading/heading.schema.json";
 import { mapDataToComponent } from "@microsoft/fast-tooling-react";
@@ -133,8 +134,8 @@ render();
 Using the `childOptions` argument allows the `mapDataToComponent` function to create nested structures. Child components will be identified by the provided `id` and the props will be applied to the appropriate component.
 
 ```jsx
-import * as React from "react";
-import * as ReactDOM from "react-dom";
+import React from "react";
+import ReactDOM from "react-dom";
 import { Dialog } from "@microsoft/fast-components-react-msft";
 import * as dialogSchema from "@microsoft/fast-components-react-base/dist/dialog/dialog.schema.json";
 import * as headingSchema from "@microsoft/fast-components-react-msft/dist/heading/heading.schema.json";
@@ -326,7 +327,7 @@ export class Example extends React.Component {
 Both the `dataLocation` and `onLocationUpdate` props are optional, including both of them will allow the component to be fully controlled.
 
 ```jsx
-import * as React from "react";
+import React from "react";
 import { Navigation } from "@microsoft/fast-tooling-react";
 import noChildrenSchema from "./no-children.schema.json";
 import childrenSchema from "./children.schema.json";
@@ -572,8 +573,8 @@ export class Example extends React.Component {
     render() {
         return (
             <CSSEditor
-                {...this.state.CSSValues}
-                onPositionUpdate={this.handleCssValueUpdate}
+                data={this.state.CSSValues}
+                onChange={this.handleCssValueUpdate}
             />
         );
     }
@@ -588,7 +589,7 @@ export class Example extends React.Component {
 
 ### Spacing
 
-The `CSSSpacing` component shows the CSS spacing (margin and padding) value as four input elements, it will also provide a callback for updating this values. When the `spacingType` is set to "margin" the inputs will adjust the top/bottom/left/right margins and when `spacingType` is set to "padding" it will adjust the top/bottom/left/right padding. The components `spacingType` will default to "margin" if not set.
+The `CSSSpacing` component shows the CSS spacing (margin and padding) value as four input elements, when the spacing is set to "margin" the inputs will adjust the top/bottom/left/right margins and when the spacing is set to "padding" it will adjust the top/bottom/left/right padding.
 
 Example:
 
@@ -611,8 +612,8 @@ export class Example extends React.Component {
     render() {
         return (
             <CSSSpacing
-                {...this.state.spacingValues}
-                onSpacingUpdate={this.handleSpacingValueUpdate}
+                data={this.state.spacingValues}
+                onChange={this.handleSpacingValueUpdate}
             />
         );
     }
@@ -640,7 +641,7 @@ export class Example extends React.Component {
         super(props);
 
         this.state = {
-            positionValues: {
+            cssValues: {
                 position: "absolute",
                 left: "0"
             }
@@ -650,15 +651,15 @@ export class Example extends React.Component {
     render() {
         return (
             <CSSPosition
-                {...this.state.positionValues}
-                onPositionUpdate={this.handlePositionValueUpdate}
+                data={this.state.cssValues}
+                onChange={this.handleCSSValueUpdate}
             />
         );
     }
 
-    handlePositionValueUpdate = (updatedPositionValues) => {
+    handleCSSValueUpdate = (updatedPositionValues) => {
         this.setState({
-            positionValues: updatedPositionValues
+            cssValues: updatedPositionValues
         });
     }
 }
@@ -921,6 +922,20 @@ Example:
 ```
 
 Because the style is optional, you can toggle to add it. The schema form generator will see that color is a required piece of data and use the example given to fill in.
+
+#### Badges
+
+To allow more detail about a field two additional fields can be added to JSON schemas, `badge` and `badgeDescription`. The `badge` can have the values "info", "warning" and "locked" which will create the related icons. Adding a `badgeDescription` will add a native tooltip when the badge is hovered.
+
+Example:
+
+```json
+{
+    "type": "string",
+    "badge": "warning",
+    "badgeDescription": "Setting this field will cause adverse effects"
+}
+```
 
 ### JSON schema keywords
 

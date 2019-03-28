@@ -1,5 +1,5 @@
-import * as React from "react";
-import * as ReactDOM from "react-dom";
+import React from "react";
+import ReactDOM from "react-dom";
 import { get } from "lodash-es";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import { TypographySize, TypographyTag } from "@microsoft/fast-components-react-base";
@@ -15,13 +15,14 @@ import {
     ManagedClasses,
     MetatextClassNameContract,
 } from "@microsoft/fast-components-class-name-contracts-msft";
+import { DisplayNamePrefix } from "../utilities";
 
 class Metatext extends Foundation<MetatextHandledProps, MetatextUnhandledProps, {}> {
     public static defaultProps: Partial<MetatextProps> = {
         tag: MetatextTag.span,
     };
 
-    public static displayName: string = "Metatext";
+    public static displayName: string = `${DisplayNamePrefix}Metatext`;
 
     protected handledProps: HandledProps<MetatextHandledProps> = {
         managedClasses: void 0,

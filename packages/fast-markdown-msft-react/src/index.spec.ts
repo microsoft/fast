@@ -1,4 +1,4 @@
-import * as MarkdownIt from "markdown-it";
+import MarkdownIt from "markdown-it";
 import FASTMarkdownIt from "./index";
 
 const md: any = new MarkdownIt({

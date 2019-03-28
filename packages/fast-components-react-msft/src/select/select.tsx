@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { get } from "lodash-es";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import {
@@ -10,9 +10,10 @@ import {
 import { Select as BaseSelect, SelectState } from "@microsoft/fast-components-react-base";
 import { Button, ButtonAppearance } from "../button";
 import { selectDisplayButtonOverrides } from "@microsoft/fast-components-styles-msft";
+import { DisplayNamePrefix } from "../utilities";
 
 class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, {}> {
-    public static displayName: string = "Select";
+    public static displayName: string = `${DisplayNamePrefix}Select`;
 
     protected handledProps: HandledProps<SelectHandledProps> = {
         disabled: void 0,

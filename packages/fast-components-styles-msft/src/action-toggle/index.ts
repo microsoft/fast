@@ -1,24 +1,18 @@
-import {
-    ComponentStyles,
-    ComponentStyleSheet,
-    CSSRules,
-} from "@microsoft/fast-jss-manager";
+import { ComponentStyles, ComponentStyleSheet } from "@microsoft/fast-jss-manager";
 import {
     ActionToggleClassNameContract,
     ButtonClassNameContract,
 } from "@microsoft/fast-components-class-name-contracts-msft";
-import {
-    applyLocalizedProperty,
-    Direction,
-    localizeSpacing,
-} from "@microsoft/fast-jss-utilities";
-import { curry } from "lodash-es";
+import { applyLocalizedProperty, Direction } from "@microsoft/fast-jss-utilities";
 import { DesignSystem, withDesignSystemDefaults } from "../design-system/index";
 import {
-    disabledContrast,
-    ensureNormalContrast,
-    normalContrast,
-} from "../utilities/colors";
+    accentForegroundActive,
+    accentForegroundCut,
+    accentForegroundHover,
+    accentForegroundRest,
+    neutralForegroundRest,
+} from "../utilities/color";
+import { horizontalSpacing } from "../utilities/density";
 
 // Since MSFT button is already styled, we need to override in this way to alter button classes
 export const actionToggleButtonOverrides: ComponentStyles<
@@ -27,6 +21,7 @@ export const actionToggleButtonOverrides: ComponentStyles<
 > = {
     button: {
         maxWidth: "100%",
+        minWidth: "14px",
     },
     button_contentRegion: {
         alignItems: "center",
@@ -39,73 +34,11 @@ export const actionToggleButtonOverrides: ComponentStyles<
 const styles: ComponentStyles<ActionToggleClassNameContract, DesignSystem> = (
     config: DesignSystem
 ): ComponentStyleSheet<ActionToggleClassNameContract, DesignSystem> => {
-    type ContrastFunction = (operandColor: string, referenceColor: string) => string;
     const designSystem: DesignSystem = withDesignSystemDefaults(config);
-    const contrastScale: number = designSystem.contrast;
-    const foregroundColor: string = designSystem.foregroundColor;
-    const backgroundColor: string = designSystem.backgroundColor;
-    const brandColor: string = designSystem.brandColor;
     const direction: Direction = designSystem.direction;
-    const scaledNormalContrast: ContrastFunction = curry(normalContrast)(contrastScale);
-    const scaledEnsureNormalContrast: ContrastFunction = curry(ensureNormalContrast)(
-        contrastScale
-    );
 
-    // Define secondary button colors
-    const color: string = "white";
-    const secondaryBackgroundColor: string = scaledEnsureNormalContrast(
-        scaledNormalContrast(backgroundColor, foregroundColor),
-        color
-    );
-    const secondaryFocusBorderColor: string = scaledEnsureNormalContrast(
-        scaledEnsureNormalContrast(foregroundColor, backgroundColor),
-        secondaryBackgroundColor
-    );
-    const secondaryDisabledBackgroundColor: string = disabledContrast(
-        contrastScale,
-        secondaryBackgroundColor,
-        backgroundColor
-    );
-    const secondaryDisabledColor: string = disabledContrast(
-        contrastScale,
-        foregroundColor,
-        designSystem.brandColor
-    );
-    // Define primary button colors
-    const primaryRestBackgroundColor: string = scaledEnsureNormalContrast(
-        scaledEnsureNormalContrast(brandColor, backgroundColor),
-        color
-    );
-    const primaryDisabledBackground: string = disabledContrast(
-        contrastScale,
-        primaryRestBackgroundColor,
-        backgroundColor
-    );
-    const primaryDisabledColor: string = disabledContrast(
-        contrastScale,
-        color,
-        primaryDisabledBackground
-    );
-    const outlineColor: string = scaledEnsureNormalContrast(
-        foregroundColor,
-        backgroundColor
-    );
-    const outlineBorderColor: string = scaledNormalContrast(
-        foregroundColor,
-        backgroundColor
-    );
-    const outlineDisabledColor: string = disabledContrast(
-        designSystem.contrast,
-        outlineColor,
-        backgroundColor
-    );
-    const outlineDisabledBorderColor: string = outlineDisabledColor;
     return {
-        actionToggle: {
-            display: "inline-flex",
-            maxWidth: "100%",
-            minWidth: "14px",
-        },
+        actionToggle: {},
         actionToggle__selected: {},
         actionToggle_selectedGlyph: {
             display: "inline-block",
@@ -119,40 +52,64 @@ const styles: ComponentStyles<ActionToggleClassNameContract, DesignSystem> = (
         },
         actionToggle__primary: {
             "& $actionToggle_selectedGlyph, & $actionToggle_unselectedGlyph": {
-                fill: color,
+                fill: accentForegroundCut,
             },
             "&$actionToggle__disabled $actionToggle_selectedGlyph, &$actionToggle__disabled $actionToggle_unselectedGlyph": {
-                fill: primaryDisabledColor,
+                fill: accentForegroundCut,
             },
         },
         actionToggle__lightweight: {
             "& $actionToggle_selectedGlyph, & $actionToggle_unselectedGlyph": {
-                fill: primaryRestBackgroundColor,
+                fill: accentForegroundRest,
+            },
+            "&:hover": {
+                "& $actionToggle_selectedGlyph, & $actionToggle_unselectedGlyph": {
+                    fill: accentForegroundHover,
+                },
+            },
+            "&:active": {
+                "& $actionToggle_selectedGlyph, & $actionToggle_unselectedGlyph": {
+                    fill: accentForegroundActive,
+                },
             },
             "&$actionToggle__disabled $actionToggle_selectedGlyph, &$actionToggle__disabled $actionToggle_unselectedGlyph": {
-                fill: outlineDisabledColor,
+                fill: neutralForegroundRest,
             },
         },
         actionToggle__justified: {
             "& $actionToggle_selectedGlyph, & $actionToggle_unselectedGlyph": {
-                fill: primaryRestBackgroundColor,
+                fill: accentForegroundRest,
+            },
+            "&:hover": {
+                "& $actionToggle_selectedGlyph, & $actionToggle_unselectedGlyph": {
+                    fill: accentForegroundHover,
+                },
+            },
+            "&:active": {
+                "& $actionToggle_selectedGlyph, & $actionToggle_unselectedGlyph": {
+                    fill: accentForegroundActive,
+                },
             },
             "&$actionToggle__disabled $actionToggle_selectedGlyph, &$actionToggle__disabled $actionToggle_unselectedGlyph": {
-                fill: secondaryDisabledColor,
+                fill: neutralForegroundRest,
             },
         },
         actionToggle__outline: {
             "& $actionToggle_selectedGlyph, & $actionToggle_unselectedGlyph": {
-                fill: outlineColor,
+                fill: neutralForegroundRest,
             },
             "&$actionToggle__disabled $actionToggle_selectedGlyph, &$actionToggle__disabled $actionToggle_unselectedGlyph": {
-                fill: outlineDisabledColor,
+                fill: neutralForegroundRest,
             },
         },
         actionToggle__disabled: {},
         actionToggle__hasGlyphAndContent: {
-            "& $actionToggle_selectedGlyph, & $actionToggle_unselectedGlyph,": {
-                [applyLocalizedProperty("marginRight", "marginLeft", direction)]: "6px",
+            "& $actionToggle_selectedGlyph, & $actionToggle_unselectedGlyph": {
+                [applyLocalizedProperty(
+                    "marginRight",
+                    "marginLeft",
+                    direction
+                )]: horizontalSpacing(),
             },
         },
     };

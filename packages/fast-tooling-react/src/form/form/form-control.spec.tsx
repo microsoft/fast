@@ -3,13 +3,13 @@ import Adapter from "enzyme-adapter-react-16";
 import { configure, mount, render, shallow } from "enzyme";
 import FormControl, { FormControlProps } from "./form-control";
 
-import numberFieldSchema from "../../../app/pages/form/number-field/number-field.schema.json";
-import textareaSchema from "../../../app/pages/form/textarea/textarea.schema.json";
-import checkboxSchema from "../../../app/pages/form/checkbox/checkbox.schema.json";
-import objectSchema from "../../../app/pages/form/objects/objects.schema.json";
-import arraySchema from "../../../app/pages/form/arrays/arrays.schema.json";
-import childrenSchema from "../../../app/pages/form/children/children.schema.json";
-import oneOfSchema from "../../../app/pages/form/one-of/one-of.schema.json";
+import numberFieldSchema from "../../__tests__/schemas/number-field.schema.json";
+import textareaSchema from "../../__tests__/schemas/textarea.schema.json";
+import checkboxSchema from "../../__tests__/schemas/checkbox.schema.json";
+import objectSchema from "../../__tests__/schemas/objects.schema.json";
+import arraySchema from "../../__tests__/schemas/arrays.schema.json";
+import childrenSchema from "../../__tests__/schemas/children.schema.json";
+import oneOfSchema from "../../__tests__/schemas/one-of.schema.json";
 
 /*
  * Configure Enzyme

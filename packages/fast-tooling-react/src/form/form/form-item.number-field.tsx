@@ -26,14 +26,24 @@ class FormItemNumberField extends FormItemBase<
         return (
             <div className={this.generateClassNames()}>
                 <div className={this.props.managedClasses.formItemNumberField_control}>
-                    <label
-                        className={
-                            this.props.managedClasses.formItemNumberField_controlLabel
-                        }
-                        htmlFor={this.props.dataLocation}
+                    <div
+                        className={get(
+                            this.props,
+                            "managedClasses.formItemNumberField_controlLabelRegion"
+                        )}
                     >
-                        {this.props.label}
-                    </label>
+                        <label
+                            className={
+                                this.props.managedClasses.formItemNumberField_controlLabel
+                            }
+                            htmlFor={this.props.dataLocation}
+                        >
+                            {this.props.label}
+                        </label>
+                        {this.renderBadge(
+                            get(this.props, "managedClasses.formItemNumberField_badge")
+                        )}
+                    </div>
                     <input
                         className={
                             this.props.managedClasses.formItemNumberField_controlInput

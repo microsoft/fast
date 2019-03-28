@@ -1,5 +1,5 @@
-import * as React from "react";
-import * as ReactDOM from "react-dom";
+import React from "react";
+import ReactDOM from "react-dom";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import {
     RadioHandledProps,
@@ -12,6 +12,7 @@ import {
     RadioClassNameContract,
 } from "@microsoft/fast-components-class-name-contracts-base";
 import { get } from "lodash-es";
+import { DisplayNamePrefix } from "../utilities";
 
 /**
  * Radio slot options
@@ -25,7 +26,7 @@ interface RadioState {
 }
 
 class Radio extends Foundation<RadioHandledProps, RadioUnhandledProps, RadioState> {
-    public static displayName: string = "Radio";
+    public static displayName: string = `${DisplayNamePrefix}Radio`;
 
     public static getDerivedStateFromProps(
         nextProps: RadioProps,
@@ -47,7 +48,7 @@ class Radio extends Foundation<RadioHandledProps, RadioUnhandledProps, RadioStat
      * Handled props instantiation
      */
     protected handledProps: HandledProps<RadioHandledProps> = {
-        id: void 0,
+        inputId: void 0,
         checked: void 0,
         disabled: void 0,
         managedClasses: void 0,
@@ -69,7 +70,7 @@ class Radio extends Foundation<RadioHandledProps, RadioUnhandledProps, RadioStat
                 <input
                     className={get(this.props, "managedClasses.radio_input")}
                     type="radio"
-                    id={this.props.id}
+                    id={this.props.inputId}
                     onChange={this.handleRadioChange}
                     disabled={this.props.disabled || null}
                     checked={this.state.checked}

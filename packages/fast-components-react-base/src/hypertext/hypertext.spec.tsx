@@ -1,6 +1,6 @@
-import * as React from "react";
+import React from "react";
 import * as ShallowRenderer from "react-test-renderer/shallow";
-import * as Adapter from "enzyme-adapter-react-16";
+import Adapter from "enzyme-adapter-react-16";
 import { configure, shallow, ShallowWrapper } from "enzyme";
 import examples from "./examples.data";
 import Hypertext, {
@@ -10,6 +10,7 @@ import Hypertext, {
     HypertextProps,
     HypertextUnhandledProps,
 } from "./hypertext";
+import { DisplayNamePrefix } from "../utilities";
 
 /*
  * Configure Enzyme
@@ -22,7 +23,9 @@ describe("hypertext", (): void => {
     };
 
     test("should have a displayName that matches the component name", () => {
-        expect((Hypertext as any).name).toBe(Hypertext.displayName);
+        expect(`${DisplayNamePrefix}${(Hypertext as any).name}`).toBe(
+            Hypertext.displayName
+        );
     });
 
     test("should have correct root element type 'a'", () => {
@@ -53,7 +56,7 @@ describe("hypertext", (): void => {
         expect(rendered.prop("aria-hidden")).toEqual(true);
     });
 
-    test("should render with an attribute of `href` if `href` prop is passed", () => {
+    test("should render with an attribute of `href` if `href` is passed as an unhandled prop", () => {
         const testHref: string = "http://www.microsoft.com";
         const rendered: any = shallow(
             <Hypertext href={testHref} managedClasses={managedClasses} />
@@ -62,14 +65,14 @@ describe("hypertext", (): void => {
         expect(rendered.prop("href")).toBe(testHref);
     });
 
-    test("should NOT render with an attribute of `href` if no `href` prop is passed", () => {
+    test("should NOT render with an attribute of `href` if `href` prop is NOT passed", () => {
         const rendered: any = shallow(<Hypertext managedClasses={managedClasses} />);
 
         expect(rendered.prop("href")).toBe(null);
     });
 
     test("should correctly handle children", () => {
-        const handledProps: HypertextHandledProps & HypertextManagedClasses = {
+        const handledProps: HypertextProps = {
             managedClasses,
             href: "http://www.microsoft.com",
         };

@@ -1,5 +1,5 @@
-import * as React from "react";
-import * as ReactDOM from "react-dom";
+import React from "react";
+import ReactDOM from "react-dom";
 import { get } from "lodash-es";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import {
@@ -12,10 +12,11 @@ import {
     DividerClassNameContract,
     ManagedClasses,
 } from "@microsoft/fast-components-class-name-contracts-base";
+import { DisplayNamePrefix } from "../utilities";
 
 /* tslint:disable-next-line */
 class Divider extends Foundation<DividerHandledProps, DividerUnhandledProps, {}> {
-    public static displayName: string = "Divider";
+    public static displayName: string = `${DisplayNamePrefix}Divider`;
 
     protected handledProps: HandledProps<DividerHandledProps> = {
         managedClasses: void 0,

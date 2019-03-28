@@ -2,7 +2,7 @@
   "name": "@microsoft/fast-components-react-msft",
   "description": "FAST Microsoft components implemented in React",
   "sideEffects": false,
-  "version": "3.13.0",
+  "version": "4.0.1",
   "author": {
     "name": "Microsoft",
     "url": "https://discord.gg/FcSNfg4"
@@ -41,7 +41,7 @@
     "coverageThreshold": {
       "global": {
         "statements": 95,
-        "branches": 90,
+        "branches": 89,
         "functions": 95,
         "lines": 95
       }
@@ -76,11 +76,13 @@
     "@babel/core": "^7.0.0",
     "@babel/preset-env": "^7.1.0",
     "@babel/preset-react": "^7.0.0",
-    "@microsoft/fast-components-class-name-contracts-base": "^3.10.0",
-    "@microsoft/fast-data-utilities-react": "^1.5.1",
-    "@microsoft/fast-development-site-react": "^3.4.4",
-    "@microsoft/fast-jss-manager": "^3.0.13",
-    "@microsoft/fast-sketch-library": "^3.0.5",
+    "@microsoft/fast-colors": "^4.0.0",
+    "@microsoft/fast-components-class-name-contracts-base": "^4.0.0",
+    "@microsoft/fast-development-site-react": "^4.0.1",
+    "@microsoft/fast-jss-manager": "^4.0.0",
+    "@microsoft/fast-jss-manager-react": "^4.0.0",
+    "@microsoft/fast-sketch-library": "^4.0.0",
+    "@microsoft/fast-tooling-react": "^1.0.1",
     "@microsoft/fast-tslint-rules": "^3.0.2",
     "@types/jest": "^24.0.11",
     "@types/lodash-es": "^4.17.0",
@@ -99,6 +101,7 @@
     "jest": "^24.5.0",
     "lodash-es": "^4.0.0",
     "prettier": "1.14.3",
+    "raf-throttle": "^2.0.3",
     "react": "^16.6.0",
     "react-dom": "^16.6.0",
     "rimraf": "^2.6.2",
@@ -107,6 +110,7 @@
     "tslint": "^5.9.1",
     "tslint-config-prettier": "^1.15.0",
     "tslint-loader": "^3.6.0",
+    "tv4": "^1.3.0",
     "typescript": "^3.0.1",
     "utility-types": "^2.1.0",
     "webpack": "^4.1.0",
@@ -117,6 +121,7 @@
     "yargs": "^11.0.0"
   },
   "peerDependencies": {
+    "@microsoft/fast-jss-manager-react": "^3.1.13",
     "exenv-es6": "^1.0.0",
     "lodash-es": "^4.0.0",
     "react": "^16.6.0",
@@ -124,14 +129,12 @@
     "utility-types": "^2.1.0"
   },
   "dependencies": {
-    "@microsoft/fast-application-utilities": "^3.1.3",
-    "@microsoft/fast-components-class-name-contracts-msft": "^3.9.0",
-    "@microsoft/fast-components-foundation-react": "^2.1.4",
-    "@microsoft/fast-components-react-base": "^3.11.0",
-    "@microsoft/fast-components-styles-msft": "^3.14.0",
-    "@microsoft/fast-glyphs-msft": "^3.1.1",
-    "@microsoft/fast-jss-manager-react": "^3.1.14",
-    "@microsoft/fast-jss-utilities": "^3.2.5",
-    "@microsoft/fast-web-utilities": "^3.1.3"
+    "@microsoft/fast-components-class-name-contracts-msft": "^4.0.0",
+    "@microsoft/fast-components-foundation-react": "^3.0.0",
+    "@microsoft/fast-components-react-base": "^4.0.1",
+    "@microsoft/fast-components-styles-msft": "^4.0.0",
+    "@microsoft/fast-glyphs-msft": "^4.0.0",
+    "@microsoft/fast-jss-utilities": "^4.0.0",
+    "@microsoft/fast-web-utilities": "^4.0.0"
   }
 }

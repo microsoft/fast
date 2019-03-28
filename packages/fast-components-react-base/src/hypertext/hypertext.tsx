@@ -1,5 +1,5 @@
-import * as React from "react";
-import * as ReactDOM from "react-dom";
+import React from "react";
+import ReactDOM from "react-dom";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import {
     HypertextHandledProps,
@@ -11,12 +11,12 @@ import {
     ManagedClasses,
 } from "@microsoft/fast-components-class-name-contracts-base";
 import { get } from "lodash-es";
+import { DisplayNamePrefix } from "../utilities";
 
 class Hypertext extends Foundation<HypertextHandledProps, HypertextUnhandledProps, {}> {
-    public static displayName: string = "Hypertext";
+    public static displayName: string = `${DisplayNamePrefix}Hypertext`;
 
     protected handledProps: HandledProps<HypertextHandledProps> = {
-        href: void 0,
         managedClasses: void 0,
     };
 
@@ -27,7 +27,7 @@ class Hypertext extends Foundation<HypertextHandledProps, HypertextUnhandledProp
         return (
             <a
                 {...this.unhandledProps()}
-                href={this.props.href || null}
+                href={get(this.props, "href", null)}
                 className={this.generateClassNames()}
             >
                 {this.props.children}
@@ -39,7 +39,7 @@ class Hypertext extends Foundation<HypertextHandledProps, HypertextUnhandledProp
      * Generates class names
      */
     protected generateClassNames(): string {
-        return super.generateClassNames(get(this.props, "managedClasses.hypertext"));
+        return super.generateClassNames(get(this.props, "managedClasses.hypertext", ""));
     }
 }
 

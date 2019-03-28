@@ -1,14 +1,11 @@
-import * as React from "react";
+import React from "react";
 import manageJss, {
     ComponentStyles,
-    CSSRules,
     DesignSystemProvider,
     ManagedClasses,
-    ManagedJSSProps,
 } from "@microsoft/fast-jss-manager-react";
-import { ErrorBoundary, ErrorBoundaryProps } from "../../utilities";
-import { contrast, toPx } from "@microsoft/fast-jss-utilities";
-import { Direction } from "@microsoft/fast-application-utilities";
+import { ErrorBoundary } from "../../utilities";
+import { toPx } from "@microsoft/fast-jss-utilities";
 import devSiteDesignSystemDefaults, { DevSiteDesignSystem } from "../design-system";
 import { ComponentViewTypes } from "./component-view";
 

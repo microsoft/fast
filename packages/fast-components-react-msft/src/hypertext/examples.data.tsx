@@ -1,7 +1,7 @@
-import * as React from "react";
+import React from "react";
 import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
 import { Hypertext, HypertextProps } from "./index";
-import schema from "@microsoft/fast-components-react-base/dist/hypertext/hypertext.schema.json";
+import schema from "./hypertext.schema.json";
 import Documentation from "./.tmp/documentation";
 
 export default {

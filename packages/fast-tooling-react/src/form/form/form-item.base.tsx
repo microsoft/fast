@@ -1,4 +1,5 @@
 import React from "react";
+import BadgeControl from "./badge-control";
 import SoftRemove from "./soft-remove";
 import FormItemCommon from "./form-item.props";
 
@@ -18,6 +19,18 @@ abstract class FormItemBase<P, S> extends React.Component<P & FormItemCommon, S>
                     checked={this.props.data !== undefined}
                     onChange={this.handleSoftRemove}
                     disabled={this.props.data === undefined && this.cache === undefined}
+                />
+            );
+        }
+    }
+
+    public renderBadge(className: string): React.ReactNode {
+        if (this.props.badge) {
+            return (
+                <BadgeControl
+                    className={className}
+                    type={this.props.badge}
+                    description={this.props.badgeDescription}
                 />
             );
         }

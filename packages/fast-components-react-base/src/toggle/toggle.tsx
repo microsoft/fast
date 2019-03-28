@@ -1,5 +1,5 @@
-import * as React from "react";
-import * as ReactDOM from "react-dom";
+import React from "react";
+import ReactDOM from "react-dom";
 import { get } from "lodash-es";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import {
@@ -12,6 +12,7 @@ import {
     ManagedClasses,
     ToggleClassNameContract,
 } from "@microsoft/fast-components-class-name-contracts-base";
+import { DisplayNamePrefix } from "../utilities";
 
 /**
  * Toggle state interface
@@ -24,7 +25,7 @@ export interface ToggleState {
  * Toggle base component
  */
 class Toggle extends Foundation<ToggleHandledProps, ToggleUnhandledProps, ToggleState> {
-    public static displayName: string = "Toggle";
+    public static displayName: string = `${DisplayNamePrefix}Toggle`;
 
     /**
      * React life-cycle method
@@ -48,7 +49,7 @@ class Toggle extends Foundation<ToggleHandledProps, ToggleUnhandledProps, Toggle
     protected handledProps: HandledProps<ToggleHandledProps> = {
         managedClasses: void 0,
         disabled: void 0,
-        id: void 0,
+        inputId: void 0,
         labelId: void 0,
         selected: void 0,
         selectedMessage: void 0,
@@ -83,7 +84,7 @@ class Toggle extends Foundation<ToggleHandledProps, ToggleUnhandledProps, Toggle
                     <input
                         className={get(this.props, "managedClasses.toggle_input")}
                         type="checkbox"
-                        id={this.props.id}
+                        id={this.props.inputId}
                         aria-describedby={this.props.statusMessageId}
                         disabled={this.props.disabled}
                         value={this.generateToggleStateLabel()}
@@ -163,7 +164,7 @@ class Toggle extends Foundation<ToggleHandledProps, ToggleUnhandledProps, Toggle
                 <label
                     className={get(this.props, "managedClasses.toggle_label")}
                     id={this.props.labelId}
-                    htmlFor={this.props.id}
+                    htmlFor={this.props.inputId}
                 >
                     {this.props.children}
                 </label>

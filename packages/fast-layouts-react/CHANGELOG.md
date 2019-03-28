@@ -3,6 +3,31 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.0.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-layouts-react@3.2.1...@microsoft/fast-layouts-react@4.0.0) (2019-03-25)
+
+
+### Bug Fixes
+
+* update to use esModuleInterop in the TypeScript configuration files ([#1211](https://github.com/Microsoft/fast-dna/issues/1211)) ([2ec0644](https://github.com/Microsoft/fast-dna/commit/2ec0644))
+
+
+### Features
+
+* add setter to breakpoint tracker to enable customizing breakpoints in fast-layouts ([#1575](https://github.com/Microsoft/fast-dna/issues/1575)) ([1b13554](https://github.com/Microsoft/fast-dna/commit/1b13554))
+* applies fast-jss-manager-react as peer dependency ([#1556](https://github.com/Microsoft/fast-dna/issues/1556)) ([f63c0c7](https://github.com/Microsoft/fast-dna/commit/f63c0c7))
+
+
+### BREAKING CHANGES
+
+* This change removes the ability to set breakpoints during the subscribe method in favor of using a setter
+* moves dependency to peer dependency
+* This will affect how imports will be handled by
+consumers
+
+
+
+
+
 ## [3.2.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-layouts-react@3.2.0...@microsoft/fast-layouts-react@3.2.1) (2019-03-19)
 
 

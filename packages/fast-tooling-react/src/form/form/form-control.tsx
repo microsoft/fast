@@ -72,13 +72,9 @@ class FormControl extends React.Component<FormControlProps, FormControlState> {
     private renderChildren(): React.ReactNode {
         return (
             <FormItemChildren
+                {...this.getFormItemCommonProps()}
                 required={false}
-                index={this.props.index}
-                label={this.props.schema.title || this.props.untitled}
-                dataLocation={this.props.dataLocation}
-                data={this.props.data}
                 schema={this.props.schema}
-                onChange={this.props.onChange}
                 defaultChildOptions={this.props.schema.defaults || null}
                 childOptions={this.props.childOptions}
                 onUpdateActiveSection={this.props.onUpdateActiveSection}
@@ -237,6 +233,8 @@ class FormControl extends React.Component<FormControlProps, FormControlState> {
             disabled: get(this.props, "schema.disabled"),
             onChange: this.props.onChange,
             default: get(this.props, "schema.default"),
+            badge: get(this.props, "schema.badge"),
+            badgeDescription: get(this.props, "schema.badgeDescription"),
         };
     }
 }

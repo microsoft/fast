@@ -1,5 +1,5 @@
-import * as React from "react";
-import * as Adapter from "enzyme-adapter-react-16";
+import React from "react";
+import Adapter from "enzyme-adapter-react-16";
 import { configure, mount, shallow } from "enzyme";
 import MSFTSelectOption from "./select-option";
 import {
@@ -7,6 +7,7 @@ import {
     SelectOptionHandledProps,
     SelectOptionUnhandledProps,
 } from "./index";
+import { DisplayNamePrefix } from "../utilities";
 
 /*
  * Configure Enzyme
@@ -15,7 +16,9 @@ configure({ adapter: new Adapter() });
 
 describe("select option", (): void => {
     test("should have a displayName that matches the component name", () => {
-        expect((MSFTSelectOption as any).name).toBe(MSFTSelectOption.displayName);
+        expect(`${DisplayNamePrefix}${(MSFTSelectOption as any).name}`).toBe(
+            MSFTSelectOption.displayName
+        );
     });
 
     test("should not throw if managedClasses are not provided", () => {

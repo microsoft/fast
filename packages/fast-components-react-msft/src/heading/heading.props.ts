@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { TypographyUnhandledProps } from "../typography";
 import {
     HeadingClassNameContract,
@@ -48,5 +48,6 @@ export interface HeadingHandledProps extends HeadingManagedClasses {
 }
 
 /* tslint:disable-next-line:no-empty-interface */
-export interface HeadingUnhandledProps extends TypographyUnhandledProps {}
+export interface HeadingUnhandledProps
+    extends React.HTMLAttributes<HTMLHeadingElement | HTMLParagraphElement> {}
 export type HeadingProps = HeadingHandledProps & HeadingUnhandledProps;

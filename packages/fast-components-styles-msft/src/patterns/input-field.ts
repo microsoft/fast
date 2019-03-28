@@ -1,42 +1,59 @@
-import { applyTypeRampConfig } from "../utilities/typography";
+import { horizontalSpacing } from "../utilities/density";
 import { fontWeight } from "../utilities/fonts";
-import outlinePattern from "../patterns/outline";
-import typographyPattern from "../patterns/typography";
 import { CSSRules } from "@microsoft/fast-jss-manager";
 import { DesignSystem } from "../design-system";
-import { applyFocusVisible, toPx } from "@microsoft/fast-jss-utilities";
-import { foregroundNormal } from "../utilities/colors";
+import { toPx } from "@microsoft/fast-jss-utilities";
+import {
+    neutralFillInputActive,
+    neutralFillInputHover,
+    neutralFillInputRest,
+    neutralFocus,
+    neutralForegroundHint,
+    neutralForegroundRest,
+    neutralOutlineActive,
+    neutralOutlineHover,
+    neutralOutlineRest,
+} from "../utilities/color";
+import { applyCornerRadius } from "../utilities/border";
+import { applyDisabledState } from "../utilities/disabled";
+import { applyScaledTypeRamp } from "../utilities/typography";
 
 /**
  * Shared input field styles
  */
 export function inputFieldStyles(designSystem: DesignSystem): CSSRules<{}> {
     return {
-        ...applyTypeRampConfig("t7"),
-        ...outlinePattern.rest,
-        ...typographyPattern.rest,
+        ...applyScaledTypeRamp("t7"),
+        background: neutralFillInputRest,
+        border: `${toPx(designSystem.outlineWidth)} solid ${neutralOutlineRest(
+            designSystem
+        )}`,
+        color: neutralForegroundRest,
         fontFamily: "inherit",
         fontWeight: fontWeight.normal.toString(),
         boxSizing: "border-box",
-        borderRadius: toPx(designSystem.cornerRadius),
-        padding: "10px",
+        padding: `0 ${horizontalSpacing(designSystem.outlineWidth)(designSystem)}`,
+        ...applyCornerRadius(),
         margin: "0",
-        "&:hover": {
-            ...outlinePattern.hover,
+        transition: "all 0.2s ease-in-out",
+        "&:hover:enabled": {
+            background: neutralFillInputHover,
+            borderColor: neutralOutlineHover,
         },
-        ...applyFocusVisible({
-            ...outlinePattern.focus,
-        }),
+        "&:active:enabled": {
+            background: neutralFillInputActive,
+            borderColor: neutralOutlineActive,
+        },
+        "&:focus": {
+            boxShadow: `0 0 0 1px ${neutralFocus(designSystem)} inset`,
+            borderColor: neutralFocus,
+            outline: "none",
+        },
         "&:disabled": {
-            ...outlinePattern.disabled,
-            ...typographyPattern.disabled,
-            cursor: "not-allowed",
-            "&::placeholder": {
-                ...typographyPattern.disabled,
-            },
+            ...applyDisabledState(designSystem),
         },
         "&::placeholder": {
-            color: foregroundNormal,
+            color: neutralForegroundHint,
         },
     };
 }

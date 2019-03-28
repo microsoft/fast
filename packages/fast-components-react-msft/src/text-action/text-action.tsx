@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import {
     TextActionButtonPosition,
@@ -9,6 +9,7 @@ import {
 import { textFieldOverrides } from "@microsoft/fast-components-styles-msft";
 import { TextField } from "../text-field";
 import { get } from "lodash-es";
+import { DisplayNamePrefix } from "../utilities";
 
 /**
  * Text action state interface
@@ -21,7 +22,7 @@ class TextAction extends Foundation<
     TextActionUnhandledProps,
     TextActionState
 > {
-    public static displayName: string = "TextAction";
+    public static displayName: string = `${DisplayNamePrefix}TextAction`;
 
     public static defaultProps: Partial<TextActionProps> = {
         buttonPosition: TextActionButtonPosition.after,
@@ -56,8 +57,8 @@ class TextAction extends Foundation<
                 {this.generateBeforeGlyph()}
                 <TextField
                     {...this.unhandledProps()}
-                    disabled={this.props.disabled}
-                    placeholder={this.props.placeholder}
+                    disabled={get(this.props, "disabled", null)}
+                    placeholder={get(this.props, "placeholder", null)}
                     jssStyleSheet={textFieldOverrides}
                     onBlur={this.handleOnBlur}
                     onFocus={this.handleOnFocus}

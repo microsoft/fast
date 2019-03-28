@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import { SiteCategoryItemProps } from "./category-item";
 import { SiteCategoryProps } from "./category";

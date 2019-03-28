@@ -1,5 +1,5 @@
-import * as React from "react";
-import * as ReactDOM from "react-dom";
+import React from "react";
+import ReactDOM from "react-dom";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import {
     CheckboxHandledProps,
@@ -13,6 +13,7 @@ import {
     ManagedClasses,
 } from "@microsoft/fast-components-class-name-contracts-base";
 import { get } from "lodash-es";
+import { DisplayNamePrefix } from "../utilities";
 
 /**
  * Checkbox state interface
@@ -26,7 +27,7 @@ class Checkbox extends Foundation<
     CheckboxUnhandledProps,
     CheckboxState
 > {
-    public static displayName: string = "Checkbox";
+    public static displayName: string = `${DisplayNamePrefix}Checkbox`;
 
     /**
      * React life-cycle method

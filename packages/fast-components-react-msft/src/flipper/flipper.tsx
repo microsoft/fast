@@ -1,5 +1,5 @@
-import * as React from "react";
-import * as ReactDOM from "react-dom";
+import React from "react";
+import ReactDOM from "react-dom";
 import { get } from "lodash-es";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import { Button, ButtonProps } from "@microsoft/fast-components-react-base";
@@ -13,9 +13,10 @@ import {
     FlipperClassNameContract,
     ManagedClasses,
 } from "@microsoft/fast-components-class-name-contracts-msft";
+import { DisplayNamePrefix } from "../utilities";
 
 class Flipper extends Foundation<FlipperHandledProps, FlipperUnhandledProps, {}> {
-    public static displayName: string = "Flipper";
+    public static displayName: string = `${DisplayNamePrefix}Flipper`;
 
     protected handledProps: HandledProps<FlipperHandledProps> = {
         label: void 0,

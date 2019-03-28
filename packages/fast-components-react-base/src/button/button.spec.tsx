@@ -1,6 +1,6 @@
-import * as React from "react";
+import React from "react";
 import * as ShallowRenderer from "react-test-renderer/shallow";
-import * as Adapter from "enzyme-adapter-react-16";
+import Adapter from "enzyme-adapter-react-16";
 import { configure, shallow } from "enzyme";
 import examples from "./examples.data";
 import Button, {
@@ -11,6 +11,7 @@ import Button, {
     ButtonProps,
     ButtonUnhandledProps,
 } from "./button";
+import { DisplayNamePrefix } from "../utilities";
 
 /*
  * Configure Enzyme
@@ -24,7 +25,7 @@ describe("button", (): void => {
     const href: string = "https://www.microsoft.com";
 
     test("should have a displayName that matches the component name", () => {
-        expect((Button as any).name).toBe(Button.displayName);
+        expect(`${DisplayNamePrefix}${(Button as any).name}`).toBe(Button.displayName);
     });
 
     test("should not throw if managedClasses are not provided", () => {

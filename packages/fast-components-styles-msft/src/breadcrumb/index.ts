@@ -1,18 +1,14 @@
-import designSystemDefaults, {
-    DesignSystem,
-    withDesignSystemDefaults,
-} from "../design-system";
+import { DesignSystem, withDesignSystemDefaults } from "../design-system";
 import { ComponentStyles, ComponentStyleSheet } from "@microsoft/fast-jss-manager";
+import { applyLocalizedProperty, Direction } from "@microsoft/fast-jss-utilities";
 import {
-    applyLocalizedProperty,
-    Direction,
-    focusVisible,
-} from "@microsoft/fast-jss-utilities";
-import { ensureBrandNormal, ensureForegroundNormal } from "../utilities/colors";
+    accentForegroundRest,
+    neutralForegroundHint,
+    neutralForegroundRest,
+} from "../utilities/color";
 import { BreadcrumbClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
-import { applyTypeRampConfig } from "../utilities/typography";
-import { fontWeight } from "../utilities/fonts";
-import typographyPattern from "../patterns/typography";
+import { applyCursorDefault } from "../utilities/cursor";
+import { applyScaledTypeRamp } from "../utilities/typography";
 
 const styles: ComponentStyles<BreadcrumbClassNameContract, DesignSystem> = (
     config: DesignSystem
@@ -21,15 +17,18 @@ const styles: ComponentStyles<BreadcrumbClassNameContract, DesignSystem> = (
     const direction: Direction = designSystem.direction;
 
     return {
+        breadcrumb: {
+            color: neutralForegroundRest,
+            ...applyScaledTypeRamp("t7"),
+            ...applyCursorDefault(),
+        },
         breadcrumb_item: {
-            fontWeight: `${fontWeight.bold}`,
             display: "inline",
             outline: "none",
             textDecoration: "none",
-            ...typographyPattern.rest,
-            ...applyTypeRampConfig("t7"),
+            transition: "all 0.2s ease-in-out",
             "&:link, &:visited": {
-                color: ensureBrandNormal,
+                color: accentForegroundRest,
                 borderBottom: "0px",
             },
         },
@@ -41,10 +40,9 @@ const styles: ComponentStyles<BreadcrumbClassNameContract, DesignSystem> = (
             flexWrap: "wrap",
         },
         breadcrumb_separator: {
-            fontWeight: `${fontWeight.normal}`,
             display: "inline-block",
-            ...applyTypeRampConfig("t7"),
-            ...typographyPattern.rest,
+            ...applyCursorDefault(),
+            color: neutralForegroundHint,
             margin: "0 6px",
         },
     };

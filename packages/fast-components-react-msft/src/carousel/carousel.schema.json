@@ -3,7 +3,8 @@
     "title": "Carousel",
     "description": "A carousel component's schema definition.",
     "type": "object",
-    "id": "carousel",
+    "id": "@microsoft/fast-components-react-msft/carousel",
+    "formPluginId": "@microsoft/fast-components-react-msft/carousel",
     "properties": {
         "label": {
             "title": "Carousel accessible label",
@@ -40,6 +41,7 @@
                     "content": {
                         "title": "Slide content",
                         "type": "children",
+                        "formPluginId": "@microsoft/fast-components-react-msft/carousel/items/content",
                         "pluginId": "@microsoft/fast-components-react-msft/carousel/items/content"
                     }
                 }

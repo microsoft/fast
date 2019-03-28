@@ -1,8 +1,6 @@
-import * as React from "react";
+import React from "react";
 import { ComponentStyles, ManagedClasses } from "@microsoft/fast-jss-manager";
-import { omit } from "lodash-es";
-import { Consumer } from "./context";
-import { JSSManagedComponentProps, JSSManager, ManagedJSSProps } from "./jss-manager";
+import { JSSManager, ManagedJSSProps } from "./jss-manager";
 /* tslint:disable-next-line */
 const hoistNonReactStatics = require("hoist-non-react-statics");
 

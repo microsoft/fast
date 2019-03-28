@@ -1,7 +1,8 @@
-import * as React from "react";
-import * as Adapter from "enzyme-adapter-react-16";
+import React from "react";
+import Adapter from "enzyme-adapter-react-16";
 import { configure, mount, shallow, ShallowWrapper } from "enzyme";
 import Progress, { ProgressClassNameContract, ProgressType } from "./";
+import { DisplayNamePrefix } from "../utilities";
 
 /*
  * Configure Enzyme
@@ -14,7 +15,9 @@ const managedClasses: ProgressClassNameContract = {
 
 describe("progress", (): void => {
     test("should have a displayName that matches the component name", () => {
-        expect((Progress as any).name).toBe(Progress.displayName);
+        expect(`${DisplayNamePrefix}${(Progress as any).name}`).toBe(
+            Progress.displayName
+        );
     });
 
     test("should have correct element attribute role 'progressbar'", () => {

@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import {
     ImageClassNameContract,
     ManagedClasses,
@@ -37,8 +37,8 @@ export interface ImageHandledProps extends ImageManagedClasses {
      * The image children
      */
     children?:
-        | React.ReactElement<HTMLSourceElement>
-        | Array<React.ReactElement<HTMLSourceElement>>;
+        | Array<React.ReactElement<HTMLSourceElement>>
+        | React.ReactElement<HTMLSourceElement>;
 }
 
 export type ImageProps = ImageHandledProps & ImageUnhandledProps;
