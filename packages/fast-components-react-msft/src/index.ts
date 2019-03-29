@@ -2,6 +2,7 @@ export * from "./action-toggle";
 export * from "./action-trigger";
 export * from "./auto-suggest";
 export * from "./auto-suggest-option";
+export * from "./background";
 export * from "./badge";
 export * from "./breadcrumb";
 export * from "./button";
