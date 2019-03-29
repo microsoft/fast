@@ -17,18 +17,18 @@ import {
 } from "./Background.props";
 import { get, has, memoize } from "lodash-es";
 
-class Background extends Foundation<
+export class Background extends Foundation<
     BackgroundHandledProps,
     BackgroundUnhandledProps,
     {}
 > {
     public static defaultProps: Partial<BackgroundProps> = {
         tag: "div",
-        background: LightModeBackgrounds.L1,
+        value: LightModeBackgrounds.L1,
     };
     protected handledProps: HandledProps<Required<BackgroundHandledProps>> = {
         tag: void 0,
-        background: void 0,
+        value: void 0,
     };
 
     private getDesignSystemOverrides: (color: string) => Partial<DesignSystem> = memoize(
@@ -41,8 +41,8 @@ class Background extends Foundation<
         return <DesignSystemConsumer>{this.withContext}</DesignSystemConsumer>;
     }
 
-    private withContext(designSystem: DesignSystem): JSX.Element {
-        const background: string | number = this.props.background;
+    private withContext = (designSystem: DesignSystem): JSX.Element => {
+        const background: string | number = this.props.value;
         const color: string =
             typeof background === "string"
                 ? background
@@ -63,5 +63,5 @@ class Background extends Foundation<
                 </this.props.tag>
             </DesignSystemProvider>
         );
-    }
+    };
 }
