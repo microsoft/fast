@@ -14,15 +14,29 @@
             ],
             "default": "button"
         },
-        "text": {
-            "title": "Text",
+        "textWithExamples": {
+            "title": "Text with examples",
             "type": "string",
-            "example": "Example text"
+            "examples": [
+                "Example text"
+            ]
         },
-        "optionalText": {
-            "title": "Optional text",
+        "textWithDefault": {
+            "title": "Text with default",
             "type": "string",
-            "example": "Example text"
+            "default": "Default value"
+        },
+        "optionalTextWithExamples": {
+            "title": "Optional text with examples",
+            "type": "string",
+            "examples": [
+                "Example text"
+            ]
+        },
+        "optionalTextWithDefault": {
+            "title": "Optional text with default",
+            "type": "string",
+            "default": "Default value"
         },
         "optionalTag": {
             "title": "Optional tag",
@@ -46,13 +60,16 @@
         "disabledText": {
             "title": "Disabled text area",
             "type": "string",
-            "example": "Example text",
+            "examples": [
+                "Example text"
+            ],
             "disabled": true
         }
     },
     "required": [
         "tag",
-        "text",
+        "textWithDefault",
+        "textWithExamples",
         "disabledText"
     ]
 }

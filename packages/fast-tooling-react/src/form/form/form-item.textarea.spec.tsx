@@ -1,13 +1,32 @@
 import React from "react";
 import Adapter from "enzyme-adapter-react-16";
 import { configure, mount, shallow } from "enzyme";
-import Textarea from "./form-item.textarea";
-import { FormItemTextareaProps } from "./form-item.textarea.props";
+import { FormItemTextarea } from "./form-item.textarea";
+import {
+    FormItemTextareaClassNameContract,
+    FormItemTextareaProps,
+} from "./form-item.textarea.props";
 
 /*
  * Configure Enzyme
  */
 configure({ adapter: new Adapter() });
+
+const managedClasses: FormItemTextareaClassNameContract = {
+    formItemTextarea: "formItemTextarea-class",
+    formItemTextarea__disabled: "formItemTextarea__disabled-class",
+    formItemTextarea_badge: "formItemTextarea_badge-class",
+    formItemTextarea_control: "formItemTextarea_control-class",
+    formItemTextarea_controlLabel: "formItemTextarea_controlLabel-class",
+    formItemTextarea_controlLabelRegion: "formItemTextarea_controlLabelRegion-class",
+    formItemTextarea_controlRegion: "formItemTextarea_controlRegion-class",
+    formItemTextarea_controlTextarea: "formItemTextarea_controlTextarea-class",
+    formItemTextarea_defaultValueIndicator:
+        "formItemTextarea_defaultValueIndicator-class",
+    formItemTextarea_invalidMessage: "formItemTextarea_invalidMessage-class",
+    formItemTextarea_softRemove: "formItemTextarea_softRemove-class",
+    formItemTextarea_softRemoveInput: "formItemTextarea_softRemoveInput-class",
+};
 
 const textareaProps: FormItemTextareaProps = {
     index: 1,
@@ -22,21 +41,29 @@ const textareaProps: FormItemTextareaProps = {
 describe("Textarea", () => {
     test("should not throw", () => {
         expect(() => {
-            shallow(<Textarea {...textareaProps} />);
+            shallow(
+                <FormItemTextarea {...textareaProps} managedClasses={managedClasses} />
+            );
         }).not.toThrow();
     });
     test("should generate an HTML textarea element", () => {
-        const rendered: any = mount(<Textarea {...textareaProps} />);
+        const rendered: any = mount(
+            <FormItemTextarea {...textareaProps} managedClasses={managedClasses} />
+        );
 
         expect(rendered.find("textarea")).toHaveLength(1);
     });
     test("should generate an HTML label element", () => {
-        const rendered: any = mount(<Textarea {...textareaProps} />);
+        const rendered: any = mount(
+            <FormItemTextarea {...textareaProps} managedClasses={managedClasses} />
+        );
 
         expect(rendered.find("label")).toHaveLength(1);
     });
     test("should have an `id` attribute on the HTML textarea element and a corresponding `for` attribute on the HTML label element", () => {
-        const rendered: any = mount(<Textarea {...textareaProps} />);
+        const rendered: any = mount(
+            <FormItemTextarea {...textareaProps} managedClasses={managedClasses} />
+        );
         const label: any = rendered.find("label");
         const textarea: any = rendered.find("textarea");
 
@@ -45,7 +72,11 @@ describe("Textarea", () => {
     test("should fire an `onChange` callback when the textarea value is changed", () => {
         const handleChange: any = jest.fn();
         const rendered: any = mount(
-            <Textarea {...textareaProps} onChange={handleChange} />
+            <FormItemTextarea
+                {...textareaProps}
+                onChange={handleChange}
+                managedClasses={managedClasses}
+            />
         );
 
         rendered.find("textarea").simulate("change", { target: { value: "foo" } });
@@ -56,7 +87,12 @@ describe("Textarea", () => {
     test("should remove the data if the soft remove is triggered", () => {
         const handleChange: any = jest.fn();
         const rendered: any = mount(
-            <Textarea {...textareaProps} data={"foo"} onChange={handleChange} />
+            <FormItemTextarea
+                {...textareaProps}
+                data={"foo"}
+                onChange={handleChange}
+                managedClasses={managedClasses}
+            />
         );
 
         rendered.find("input").simulate("change");
@@ -66,7 +102,12 @@ describe("Textarea", () => {
     });
     test("should be disabled when disabled props is passed", () => {
         const rendered: any = mount(
-            <Textarea {...textareaProps} data={"foo"} disabled={true} />
+            <FormItemTextarea
+                {...textareaProps}
+                data={"foo"}
+                disabled={true}
+                managedClasses={managedClasses}
+            />
         );
         const wrapper: any = rendered.find("textarea");
 
@@ -77,7 +118,12 @@ describe("Textarea", () => {
         const handleChange: any = jest.fn();
         const data: string = "foo";
         const rendered: any = mount(
-            <Textarea {...textareaProps} data={data} onChange={handleChange} />
+            <FormItemTextarea
+                {...textareaProps}
+                data={data}
+                onChange={handleChange}
+                managedClasses={managedClasses}
+            />
         );
 
         rendered.find("input").simulate("change");
@@ -92,7 +138,11 @@ describe("Textarea", () => {
     test("should be invalid if an invalid message is passed", () => {
         const invalidMessage: string = "Foo";
         const rendered: any = mount(
-            <Textarea {...textareaProps} invalidMessage={invalidMessage} />
+            <FormItemTextarea
+                {...textareaProps}
+                invalidMessage={invalidMessage}
+                managedClasses={managedClasses}
+            />
         );
 
         expect(
@@ -106,7 +156,11 @@ describe("Textarea", () => {
     test("should not be invalid if an invalid message is passed as an empty string", () => {
         const invalidMessage: string = "";
         const rendered: any = mount(
-            <Textarea {...textareaProps} invalidMessage={invalidMessage} />
+            <FormItemTextarea
+                {...textareaProps}
+                invalidMessage={invalidMessage}
+                managedClasses={managedClasses}
+            />
         );
 
         expect(
@@ -120,7 +174,12 @@ describe("Textarea", () => {
     test("should not show an invalid message inline if `invalidMessage` is passed and `displayValidationInline` is undefined", () => {
         const invalidMessage: string = "Foo";
         const rendered: any = mount(
-            <Textarea {...textareaProps} data={"foo"} invalidMessage={invalidMessage} />
+            <FormItemTextarea
+                {...textareaProps}
+                data={"foo"}
+                invalidMessage={invalidMessage}
+                managedClasses={managedClasses}
+            />
         );
 
         expect(rendered.html().includes(invalidMessage)).toBe(false);
@@ -128,8 +187,9 @@ describe("Textarea", () => {
     test("should show an invalid message inline if `invalidMessage` is passed and `displayValidationInline` is true", () => {
         const invalidMessage: string = "Foo";
         const rendered: any = mount(
-            <Textarea
+            <FormItemTextarea
                 {...textareaProps}
+                managedClasses={managedClasses}
                 data={"foo"}
                 invalidMessage={invalidMessage}
                 displayValidationInline={true}
@@ -142,8 +202,9 @@ describe("Textarea", () => {
         const invalidMessage1: string = "Foo";
         const invalidMessage2: string = "Bar";
         const rendered: any = mount(
-            <Textarea
+            <FormItemTextarea
                 {...textareaProps}
+                managedClasses={managedClasses}
                 invalidMessage={invalidMessage1}
                 displayValidationInline={true}
             />
@@ -154,5 +215,69 @@ describe("Textarea", () => {
         rendered.setProps({ invalidMessage: invalidMessage2 });
 
         expect(rendered.html().includes(invalidMessage2)).toBe(true);
+    });
+    test("should show a default indicator if default values exist and no data is available", () => {
+        const rendered: any = mount(
+            <FormItemTextarea
+                {...textareaProps}
+                managedClasses={managedClasses}
+                data={undefined}
+                default={"foo"}
+            />
+        );
+
+        expect(
+            rendered.find(`.${managedClasses.formItemTextarea_defaultValueIndicator}`)
+        ).toHaveLength(1);
+    });
+    test("should not show a default indicator if data exists", () => {
+        const rendered: any = mount(
+            <FormItemTextarea
+                {...textareaProps}
+                managedClasses={managedClasses}
+                data={"foo"}
+                default={"bar"}
+            />
+        );
+
+        expect(
+            rendered.find(`.${managedClasses.formItemTextarea_defaultValueIndicator}`)
+        ).toHaveLength(0);
+    });
+    test("should show default values if they exist and no data is available", () => {
+        const defaultValue: string = "foo";
+        const rendered: any = mount(
+            <FormItemTextarea
+                {...textareaProps}
+                managedClasses={managedClasses}
+                data={undefined}
+                default={defaultValue}
+            />
+        );
+
+        expect(
+            rendered
+                .find("textarea")
+                .at(0)
+                .prop("value")
+        ).toBe(defaultValue);
+    });
+    test("should not show default values if data exists", () => {
+        const value: string = "foo";
+        const defaultValue: string = "bar";
+        const rendered: any = mount(
+            <FormItemTextarea
+                {...textareaProps}
+                managedClasses={managedClasses}
+                data={value}
+                default={defaultValue}
+            />
+        );
+        expect(
+            rendered
+                .find("textarea")
+                .at(0)
+                .prop("value")
+        ).toBe(value);
     });
 });

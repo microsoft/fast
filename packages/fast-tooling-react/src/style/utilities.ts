@@ -51,12 +51,12 @@ export function applyTriggerStyle(color: string): CSSRules<{}> {
     };
 }
 
-export function applyFormItemBadge(): CSSRules<{}> {
+export function applyFormItemIndicator(): CSSRules<{}> {
     return {
         fill: foreground800,
-        padding: "0 5px",
+        padding: "0 4px",
         alignSelf: "center",
-        minWidth: "12px",
+        minWidth: "14px",
     };
 }
 

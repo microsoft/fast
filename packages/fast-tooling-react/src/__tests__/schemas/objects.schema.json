@@ -61,6 +61,18 @@
                     }
                 }
             }
+        },
+        "optionalObjectWithDefaultValue": {
+            "title": "object with defaultValues",
+            "type": "object",
+            "properties": {
+                "foo": {
+                    "type": "string"
+                }
+            },
+            "default": {
+                "foo": "bar"
+            }
         }
     },
     "required": [

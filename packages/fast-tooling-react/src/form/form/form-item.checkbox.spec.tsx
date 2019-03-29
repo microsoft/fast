@@ -1,15 +1,32 @@
 import React from "react";
 import Adapter from "enzyme-adapter-react-16";
 import { configure, mount, shallow } from "enzyme";
-import FormItemCommon from "./form-item.props";
-import Checkbox from "./form-item.checkbox";
+import { FormItemCheckbox } from "./form-item.checkbox";
+import {
+    FormItemCheckboxClassNameContract,
+    FormItemCheckboxProps,
+} from "./form-item.checkbox.props";
 
 /*
  * Configure Enzyme
  */
 configure({ adapter: new Adapter() });
 
-const checkboxProps: FormItemCommon = {
+const managedClasses: FormItemCheckboxClassNameContract = {
+    formItemCheckbox: "formItemCheckbox-class",
+    formItemCheckbox__disabled: "formItemCheckbox__disabled-class",
+    formItemCheckbox_badge: "formItemCheckbox_badge-class",
+    formItemCheckbox_control: "formItemCheckbox_control-class",
+    formItemCheckbox_input: "formItemCheckbox_input-class",
+    formItemCheckbox_invalidMessage: "formItemCheckbox_invalidMessage-class",
+    formItemCheckbox_label: "formItemCheckbox_label-class",
+    formItemCheckbox_softRemove: "formItemCheckbox_softRemove-class",
+    formItemCheckbox_softRemoveInput: "formItemCheckbox_softRemoveInput-class",
+    formItemCheckbox_defaultValueIndicator:
+        "formItemCheckbox_defaultValueIndicator-class",
+};
+
+const checkboxProps: FormItemCheckboxProps = {
     index: 1,
     dataLocation: "",
     data: false,
@@ -22,21 +39,29 @@ const checkboxProps: FormItemCommon = {
 describe("Checkbox", () => {
     test("should not throw", () => {
         expect(() => {
-            shallow(<Checkbox {...checkboxProps} />);
+            shallow(
+                <FormItemCheckbox {...checkboxProps} managedClasses={managedClasses} />
+            );
         }).not.toThrow();
     });
     test("should generate an input HTML element", () => {
-        const rendered: any = mount(<Checkbox {...checkboxProps} />);
+        const rendered: any = mount(
+            <FormItemCheckbox {...checkboxProps} managedClasses={managedClasses} />
+        );
 
         expect(rendered.find("input")).toHaveLength(2);
     });
     test("should generate a label HTML element", () => {
-        const rendered: any = mount(<Checkbox {...checkboxProps} />);
+        const rendered: any = mount(
+            <FormItemCheckbox {...checkboxProps} managedClasses={managedClasses} />
+        );
 
         expect(rendered.find("label")).toHaveLength(1);
     });
     test("should have an `id` attribute on the HTML input element and a corresponding `for` attribute on the HTML label element", () => {
-        const rendered: any = mount(<Checkbox {...checkboxProps} />);
+        const rendered: any = mount(
+            <FormItemCheckbox {...checkboxProps} managedClasses={managedClasses} />
+        );
         const input: any = rendered.find("input").at(0);
         const label: any = rendered.find("label");
 
@@ -45,7 +70,11 @@ describe("Checkbox", () => {
     test("should fire an `onChange` callback with the input is changed", () => {
         const handleChange: any = jest.fn();
         const rendered: any = mount(
-            <Checkbox {...checkboxProps} onChange={handleChange} />
+            <FormItemCheckbox
+                {...checkboxProps}
+                onChange={handleChange}
+                managedClasses={managedClasses}
+            />
         );
 
         rendered
@@ -57,7 +86,13 @@ describe("Checkbox", () => {
         expect(handleChange.mock.calls[0][1]).toEqual(true);
     });
     test("should be disabled when disabled props is passed", () => {
-        const rendered: any = mount(<Checkbox {...checkboxProps} disabled={true} />);
+        const rendered: any = mount(
+            <FormItemCheckbox
+                {...checkboxProps}
+                disabled={true}
+                managedClasses={managedClasses}
+            />
+        );
 
         const input: any = rendered.find("input");
 
@@ -67,7 +102,12 @@ describe("Checkbox", () => {
     test("should remove the data if the soft remove is triggered", () => {
         const handleChange: any = jest.fn();
         const rendered: any = mount(
-            <Checkbox {...checkboxProps} data={true} onChange={handleChange} />
+            <FormItemCheckbox
+                {...checkboxProps}
+                data={true}
+                onChange={handleChange}
+                managedClasses={managedClasses}
+            />
         );
 
         rendered
@@ -82,7 +122,12 @@ describe("Checkbox", () => {
         const handleChange: any = jest.fn();
         const data: boolean = true;
         const rendered: any = mount(
-            <Checkbox {...checkboxProps} data={data} onChange={handleChange} />
+            <FormItemCheckbox
+                {...checkboxProps}
+                data={data}
+                onChange={handleChange}
+                managedClasses={managedClasses}
+            />
         );
 
         rendered
@@ -103,7 +148,11 @@ describe("Checkbox", () => {
     test("should be invalid if an invalid message is passed", () => {
         const invalidMessage: string = "Foo";
         const rendered: any = mount(
-            <Checkbox {...checkboxProps} invalidMessage={invalidMessage} />
+            <FormItemCheckbox
+                {...checkboxProps}
+                invalidMessage={invalidMessage}
+                managedClasses={managedClasses}
+            />
         );
 
         expect(
@@ -117,7 +166,11 @@ describe("Checkbox", () => {
     test("should not be invalid if an invalid message is passed as an empty string", () => {
         const invalidMessage: string = "";
         const rendered: any = mount(
-            <Checkbox {...checkboxProps} invalidMessage={invalidMessage} />
+            <FormItemCheckbox
+                {...checkboxProps}
+                invalidMessage={invalidMessage}
+                managedClasses={managedClasses}
+            />
         );
 
         expect(
@@ -131,7 +184,11 @@ describe("Checkbox", () => {
     test("should not show an invalid message inline if `invalidMessage` is passed and `displayValidationInline` is undefined", () => {
         const invalidMessage: string = "Foo";
         const rendered: any = mount(
-            <Checkbox {...checkboxProps} invalidMessage={invalidMessage} />
+            <FormItemCheckbox
+                {...checkboxProps}
+                invalidMessage={invalidMessage}
+                managedClasses={managedClasses}
+            />
         );
 
         expect(rendered.html().includes(invalidMessage)).toBe(false);
@@ -139,8 +196,9 @@ describe("Checkbox", () => {
     test("should show an invalid message inline if `invalidMessage` is passed and `displayValidationInline` is true", () => {
         const invalidMessage: string = "Foo";
         const rendered: any = mount(
-            <Checkbox
+            <FormItemCheckbox
                 {...checkboxProps}
+                managedClasses={managedClasses}
                 invalidMessage={invalidMessage}
                 displayValidationInline={true}
             />
@@ -152,8 +210,9 @@ describe("Checkbox", () => {
         const invalidMessage1: string = "Foo";
         const invalidMessage2: string = "Bar";
         const rendered: any = mount(
-            <Checkbox
+            <FormItemCheckbox
                 {...checkboxProps}
+                managedClasses={managedClasses}
                 invalidMessage={invalidMessage1}
                 displayValidationInline={true}
             />
@@ -164,5 +223,66 @@ describe("Checkbox", () => {
         rendered.setProps({ invalidMessage: invalidMessage2 });
 
         expect(rendered.html().includes(invalidMessage2)).toBe(true);
+    });
+    test("should show a default indicator if default values exist and no data is available", () => {
+        const rendered: any = mount(
+            <FormItemCheckbox
+                {...checkboxProps}
+                managedClasses={managedClasses}
+                data={undefined}
+                default={true}
+            />
+        );
+
+        expect(
+            rendered.find(`.${managedClasses.formItemCheckbox_defaultValueIndicator}`)
+        ).toHaveLength(1);
+    });
+    test("should not show a default indicator if data exists", () => {
+        const rendered: any = mount(
+            <FormItemCheckbox
+                {...checkboxProps}
+                managedClasses={managedClasses}
+                data={false}
+                default={true}
+            />
+        );
+
+        expect(
+            rendered.find(`.${managedClasses.formItemCheckbox_defaultValueIndicator}`)
+        ).toHaveLength(0);
+    });
+    test("should show default values if they exist and no data is available", () => {
+        const rendered: any = mount(
+            <FormItemCheckbox
+                {...checkboxProps}
+                managedClasses={managedClasses}
+                data={undefined}
+                default={true}
+            />
+        );
+
+        expect(
+            rendered
+                .find("input")
+                .at(0)
+                .prop("value")
+        ).toBe(true.toString());
+    });
+    test("should not show default values if data exists", () => {
+        const rendered: any = mount(
+            <FormItemCheckbox
+                {...checkboxProps}
+                managedClasses={managedClasses}
+                data={false}
+                default={true}
+            />
+        );
+        expect(
+            rendered
+                .find("input")
+                .at(0)
+                .prop("value")
+        ).toBe(false.toString());
     });
 });

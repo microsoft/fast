@@ -1,13 +1,28 @@
 import React from "react";
 import Adapter from "enzyme-adapter-react-16";
 import { configure, mount, shallow } from "enzyme";
-import FormItemSectionLink from "./form-item.section-link";
-import { FormItemSectionLinkProps } from "./form-item.section-link.props";
+import { FormItemSectionLink } from "./form-item.section-link";
+import {
+    FormItemSectionLinkClassNameContract,
+    FormItemSectionLinkProps,
+} from "./form-item.section-link.props";
 
 /*
  * Configure Enzyme
  */
 configure({ adapter: new Adapter() });
+
+const managedClasses: FormItemSectionLinkClassNameContract = {
+    formItemSectionLink: "formItemSectionLink-class",
+    formItemSectionLink_anchor: "formItemSectionLink_anchor-class",
+    formItemSectionLink_badge: "formItemSectionLink_badge-class",
+    formItemSectionLink_controlRegion: "formItemSectionLink_controlRegion-class",
+    formItemSectionLink_defaultValueIndicator:
+        "formItemSectionLink_defaultValueIndicator-class",
+    formItemSectionLink_invalidMessage: "formItemSectionLink_invalidMessage-class",
+    formItemSectionLink_softRemove: "formItemSectionLink_softRemove-class",
+    formItemSectionLink_softRemoveInput: "formItemSectionLink_softRemoveInput-class",
+};
 
 const formItemSectionLinkProps: FormItemSectionLinkProps = {
     index: 1,
@@ -24,12 +39,20 @@ const formItemSectionLinkProps: FormItemSectionLinkProps = {
 describe("NumberField", () => {
     test("should not throw", () => {
         expect(() => {
-            shallow(<FormItemSectionLink {...formItemSectionLinkProps} />);
+            shallow(
+                <FormItemSectionLink
+                    {...formItemSectionLinkProps}
+                    managedClasses={managedClasses}
+                />
+            );
         }).not.toThrow();
     });
     test("should generate an HTML anchor element", () => {
         const rendered: any = mount(
-            <FormItemSectionLink {...formItemSectionLinkProps} />
+            <FormItemSectionLink
+                {...formItemSectionLinkProps}
+                managedClasses={managedClasses}
+            />
         );
 
         expect(rendered.find("a")).toHaveLength(1);
@@ -39,6 +62,7 @@ describe("NumberField", () => {
         const rendered: any = mount(
             <FormItemSectionLink
                 {...formItemSectionLinkProps}
+                managedClasses={managedClasses}
                 onUpdateSection={handleSectionUpdate}
             />
         );
@@ -56,6 +80,7 @@ describe("NumberField", () => {
         const renderedWithTestLocations: any = mount(
             <FormItemSectionLink
                 {...formItemSectionLinkProps}
+                managedClasses={managedClasses}
                 onUpdateSection={handleSectionUpdateWithTestLocations}
                 schemaLocation={"properties.test"}
                 dataLocation={"test"}
@@ -78,6 +103,7 @@ describe("NumberField", () => {
         const rendered: any = mount(
             <FormItemSectionLink
                 {...formItemSectionLinkProps}
+                managedClasses={managedClasses}
                 data={10}
                 onChange={handleChange}
             />
@@ -97,6 +123,7 @@ describe("NumberField", () => {
         const rendered: any = mount(
             <FormItemSectionLink
                 {...formItemSectionLinkProps}
+                managedClasses={managedClasses}
                 data={data}
                 onChange={handleChange}
             />
@@ -122,6 +149,7 @@ describe("NumberField", () => {
         const rendered: any = mount(
             <FormItemSectionLink
                 {...formItemSectionLinkProps}
+                managedClasses={managedClasses}
                 data={"foo"}
                 invalidMessage={invalidMessage}
             />
@@ -134,6 +162,7 @@ describe("NumberField", () => {
         const rendered: any = mount(
             <FormItemSectionLink
                 {...formItemSectionLinkProps}
+                managedClasses={managedClasses}
                 data={"foo"}
                 invalidMessage={invalidMessage}
                 displayValidationInline={true}
@@ -148,6 +177,7 @@ describe("NumberField", () => {
         const rendered: any = mount(
             <FormItemSectionLink
                 {...formItemSectionLinkProps}
+                managedClasses={managedClasses}
                 invalidMessage={invalidMessage1}
                 displayValidationInline={true}
             />
@@ -158,5 +188,33 @@ describe("NumberField", () => {
         rendered.setProps({ invalidMessage: invalidMessage2 });
 
         expect(rendered.html().includes(invalidMessage2)).toBe(true);
+    });
+    test("should show a default indicator if default values exist and no data is available", () => {
+        const rendered: any = mount(
+            <FormItemSectionLink
+                {...formItemSectionLinkProps}
+                managedClasses={managedClasses}
+                data={undefined}
+                default={{}}
+            />
+        );
+
+        expect(
+            rendered.find(`.${managedClasses.formItemSectionLink_defaultValueIndicator}`)
+        ).toHaveLength(1);
+    });
+    test("should not show a default indicator if data exists", () => {
+        const rendered: any = mount(
+            <FormItemSectionLink
+                {...formItemSectionLinkProps}
+                managedClasses={managedClasses}
+                data={{}}
+                default={{}}
+            />
+        );
+
+        expect(
+            rendered.find(`.${managedClasses.formItemSectionLink_defaultValueIndicator}`)
+        ).toHaveLength(0);
     });
 });

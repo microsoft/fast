@@ -11,8 +11,10 @@ export interface FormItemChildrenClassNameContract {
     formItemChildren_control?: string;
     formItemChildren_controlLabel?: string;
     formItemChildren_controlLabelRegion?: string;
+    formItemChildren_defaultValueIndicator?: string;
     formItemChildren_existingChildren?: string;
     formItemChildren_existingChildrenItem?: string;
+    formItemChildren_existingChildrenItem__default?: string;
     formItemChildren_existingChildrenItem__sorting?: string;
     formItemChildren_existingChildrenItemLink?: string;
     formItemChildren_existingChildrenItemContent?: string;

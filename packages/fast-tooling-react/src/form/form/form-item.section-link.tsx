@@ -38,6 +38,12 @@ class FormItemSectionLink extends FormItemBase<
                     >
                         {this.props.label}
                     </a>
+                    {this.renderDefaultValueIndicator(
+                        get(
+                            this.props,
+                            "managedClasses.formItemSectionLink_defaultValueIndicator"
+                        )
+                    )}
                     {this.renderBadge(
                         get(this.props, "managedClasses.formItemSectionLink_badge")
                     )}
@@ -67,4 +73,5 @@ class FormItemSectionLink extends FormItemBase<
     };
 }
 
+export { FormItemSectionLink };
 export default manageJss(styles)(FormItemSectionLink);

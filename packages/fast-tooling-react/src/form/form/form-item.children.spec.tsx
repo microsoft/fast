@@ -2,13 +2,45 @@ import React from "react";
 import Adapter from "enzyme-adapter-react-16";
 import { configure, mount } from "enzyme";
 import { KeyCodes } from "@microsoft/fast-web-utilities";
-import Children from "./form-item.children";
-import { FormItemChildrenProps } from "./form-item.children.props";
+import { FormItemChildren } from "./form-item.children";
+import {
+    FormItemChildrenClassNameContract,
+    FormItemChildrenProps,
+} from "./form-item.children.props";
 
 /*
  * Configure Enzyme
  */
 configure({ adapter: new Adapter() });
+
+const managedClasses: FormItemChildrenClassNameContract = {
+    formItemChildren: "formItemChildren-class",
+    formItemChildren_badge: "formItemChildren_badge-class",
+    formItemChildren_childrenList: "formItemChildren_childrenList-class",
+    formItemChildren_childrenListControl: "formItemChildren_childrenListControl-class",
+    formItemChildren_childrenListInput: "formItemChildren_childrenListInput-class",
+    formItemChildren_childrenListItem: "formItemChildren_childrenListItem-class",
+    formItemChildren_childrenListTrigger: "formItemChildren_childrenListTrigger-class",
+    formItemChildren_control: "formItemChildren_control-class",
+    formItemChildren_controlLabel: "formItemChildren_controlLabel-class",
+    formItemChildren_controlLabelRegion: "formItemChildren_controlLabelRegion-class",
+    formItemChildren_defaultValueIndicator:
+        "formItemChildren_defaultValueIndicator-class",
+    formItemChildren_delete: "formItemChildren_delete-class",
+    formItemChildren_deleteButton: "formItemChildren_deleteButton-class",
+    formItemChildren_existingChildren: "formItemChildren_existingChildren-class",
+    formItemChildren_existingChildrenItem: "formItemChildren_existingChildrenItem-class",
+    formItemChildren_existingChildrenItemContent:
+        "formItemChildren_existingChildrenItemContent-class",
+    formItemChildren_existingChildrenItemLink:
+        "formItemChildren_existingChildrenItemLink-class",
+    formItemChildren_existingChildrenItemName:
+        "formItemChildren_existingChildrenItemName-class",
+    formItemChildren_existingChildrenItem__default:
+        "formItemChildren_existingChildrenItem__default-class",
+    formItemChildren_existingChildrenItem__sorting:
+        "formItemChildren_existingChildrenItem__sorting-class",
+};
 
 const childrenProps: FormItemChildrenProps = {
     index: 0,
@@ -55,46 +87,62 @@ const childrenProps: FormItemChildrenProps = {
 describe("Children", () => {
     test("should not throw", () => {
         expect(() => {
-            mount(<Children {...childrenProps} />);
+            mount(
+                <FormItemChildren {...childrenProps} managedClasses={managedClasses} />
+            );
         }).not.toThrow();
     });
     test("should generate a text input", () => {
-        const rendered: any = mount(<Children {...childrenProps} />);
+        const rendered: any = mount(
+            <FormItemChildren {...childrenProps} managedClasses={managedClasses} />
+        );
 
         expect(rendered.find("input")).toHaveLength(1);
     });
     test("should add an `aria-autocomplete` with `list` value on a text input", () => {
-        const rendered: any = mount(<Children {...childrenProps} />);
+        const rendered: any = mount(
+            <FormItemChildren {...childrenProps} managedClasses={managedClasses} />
+        );
         const input: any = rendered.find("input");
 
         expect(input.props()["aria-autocomplete"]).toEqual("list");
     });
     test("should generate a button", () => {
-        const rendered: any = mount(<Children {...childrenProps} />);
+        const rendered: any = mount(
+            <FormItemChildren {...childrenProps} managedClasses={managedClasses} />
+        );
 
         expect(rendered.find("button")).toHaveLength(1);
     });
     test("should generate a label", () => {
-        const rendered: any = mount(<Children {...childrenProps} />);
+        const rendered: any = mount(
+            <FormItemChildren {...childrenProps} managedClasses={managedClasses} />
+        );
 
         expect(rendered.find("label")).toHaveLength(1);
     });
     test("should generate a listbox", () => {
-        const rendered: any = mount(<Children {...childrenProps} />);
+        const rendered: any = mount(
+            <FormItemChildren {...childrenProps} managedClasses={managedClasses} />
+        );
         const listbox: any = rendered.find("ul");
 
         expect(listbox).toHaveLength(1);
         expect(listbox.props()["role"]).toEqual("listbox");
     });
     test("should add an `aria-controls` on a text input with the same value as the id of the `listbox`", () => {
-        const rendered: any = mount(<Children {...childrenProps} />);
+        const rendered: any = mount(
+            <FormItemChildren {...childrenProps} managedClasses={managedClasses} />
+        );
         const inputAriaControls: string = rendered.find("input").props()["aria-controls"];
         const listboxId: string = rendered.find("ul").props()["id"];
 
         expect(inputAriaControls).toEqual(listboxId);
     });
     test("should add an `aria-labelledby` on a text input with the same value as the id of the `label`", () => {
-        const rendered: any = mount(<Children {...childrenProps} />);
+        const rendered: any = mount(
+            <FormItemChildren {...childrenProps} managedClasses={managedClasses} />
+        );
         const inputAriaLabelledby: string = rendered.find("input").props()[
             "aria-labelledby"
         ];
@@ -103,13 +151,17 @@ describe("Children", () => {
         expect(inputAriaLabelledby).toEqual(labelId);
     });
     test("should have a listbox with an `aria-hidden` attribute set to `true`", () => {
-        const rendered: any = mount(<Children {...childrenProps} />);
+        const rendered: any = mount(
+            <FormItemChildren {...childrenProps} managedClasses={managedClasses} />
+        );
         const listbox: any = rendered.find("ul");
 
         expect(listbox.props()["aria-hidden"]).toEqual(true);
     });
     test("should have a listbox with an `aria-hidden` attribute set to `false` when the button is clicked", () => {
-        const rendered: any = mount(<Children {...childrenProps} />);
+        const rendered: any = mount(
+            <FormItemChildren {...childrenProps} managedClasses={managedClasses} />
+        );
         const button: any = rendered.find("button");
 
         button.simulate("click");
@@ -119,13 +171,17 @@ describe("Children", () => {
         expect(listbox.props()["aria-hidden"]).toEqual(false);
     });
     test("should generate options based on the `childOptions` provided", () => {
-        const rendered: any = mount(<Children {...childrenProps} />);
+        const rendered: any = mount(
+            <FormItemChildren {...childrenProps} managedClasses={managedClasses} />
+        );
         const listboxItems: any = rendered.find("ul li");
 
         expect(listboxItems).toHaveLength(3);
     });
     test("should generate options based on the `childOptions` provided and filtered by a search term", () => {
-        const rendered: any = mount(<Children {...childrenProps} />);
+        const rendered: any = mount(
+            <FormItemChildren {...childrenProps} managedClasses={managedClasses} />
+        );
         const input: any = rendered.find("input");
 
         input.simulate("change", { target: { value: "beta" } });
@@ -135,7 +191,9 @@ describe("Children", () => {
         expect(listboxItems).toHaveLength(2);
     });
     test("should have a listbox that can be navigated by the `down` key", () => {
-        const rendered: any = mount(<Children {...childrenProps} />);
+        const rendered: any = mount(
+            <FormItemChildren {...childrenProps} managedClasses={managedClasses} />
+        );
         const button: any = rendered.find("button");
         const input: any = rendered.find("input");
 
@@ -194,7 +252,9 @@ describe("Children", () => {
         ).toEqual(true);
     });
     test("should have a listbox that can be navigated by the `up` key", () => {
-        const rendered: any = mount(<Children {...childrenProps} />);
+        const rendered: any = mount(
+            <FormItemChildren {...childrenProps} managedClasses={managedClasses} />
+        );
         const button: any = rendered.find("button");
         const input: any = rendered.find("input");
 
@@ -254,7 +314,11 @@ describe("Children", () => {
     });
     test("should show if children are present in the data as an item with a button", () => {
         const renderedWithOneChild: any = mount(
-            <Children {...childrenProps} data={{ id: "alpha", props: {} }} />
+            <FormItemChildren
+                {...childrenProps}
+                data={{ id: "alpha", props: {} }}
+                managedClasses={managedClasses}
+            />
         );
 
         expect(
@@ -265,7 +329,11 @@ describe("Children", () => {
         ).toHaveLength(1);
 
         const renderedWithOneChildString: any = mount(
-            <Children {...childrenProps} data={"hello world"} />
+            <FormItemChildren
+                {...childrenProps}
+                data={"hello world"}
+                managedClasses={managedClasses}
+            />
         );
 
         expect(
@@ -276,8 +344,9 @@ describe("Children", () => {
         ).toHaveLength(1);
 
         const renderedWithThreeChildren: any = mount(
-            <Children
+            <FormItemChildren
                 {...childrenProps}
+                managedClasses={managedClasses}
                 data={[
                     {
                         id: "alpha",
@@ -301,7 +370,13 @@ describe("Children", () => {
     });
     test("should fire a callback to update the data when an `option` in the `listbox` is clicked", () => {
         const callback: any = jest.fn();
-        const rendered: any = mount(<Children {...childrenProps} onChange={callback} />);
+        const rendered: any = mount(
+            <FormItemChildren
+                {...childrenProps}
+                onChange={callback}
+                managedClasses={managedClasses}
+            />
+        );
 
         rendered
             .find("ul")
@@ -317,8 +392,9 @@ describe("Children", () => {
     test("should fire a callback to update the data when a default text `option` in the `listbox` is clicked", () => {
         const callback: any = jest.fn();
         const rendered: any = mount(
-            <Children
+            <FormItemChildren
                 {...childrenProps}
+                managedClasses={managedClasses}
                 defaultChildOptions={["text"]}
                 onChange={callback}
             />
@@ -338,7 +414,13 @@ describe("Children", () => {
     });
     test("should not add a child option to the data when a value has been added to the `input` that is an empty string", () => {
         const callback: any = jest.fn();
-        const rendered: any = mount(<Children {...childrenProps} onChange={callback} />);
+        const rendered: any = mount(
+            <FormItemChildren
+                {...childrenProps}
+                onChange={callback}
+                managedClasses={managedClasses}
+            />
+        );
 
         rendered.find("input").simulate("change", { target: { value: "" } });
         rendered.find("input").simulate("keydown", { keyCode: KeyCodes.enter });
@@ -347,7 +429,13 @@ describe("Children", () => {
     });
     test("should not add a child option to the data when a value has been added to the `input` that does not partially match any of the options", () => {
         const callback: any = jest.fn();
-        const rendered: any = mount(<Children {...childrenProps} onChange={callback} />);
+        const rendered: any = mount(
+            <FormItemChildren
+                {...childrenProps}
+                onChange={callback}
+                managedClasses={managedClasses}
+            />
+        );
 
         rendered.find("input").simulate("change", { target: { value: "echo" } });
         rendered.find("input").simulate("keydown", { keyCode: KeyCodes.enter });
@@ -356,7 +444,13 @@ describe("Children", () => {
     });
     test("should add a child option to the data when a value has been added to the `input` that at least partially matches one of the options", () => {
         const callback: any = jest.fn();
-        const rendered: any = mount(<Children {...childrenProps} onChange={callback} />);
+        const rendered: any = mount(
+            <FormItemChildren
+                {...childrenProps}
+                onChange={callback}
+                managedClasses={managedClasses}
+            />
+        );
 
         rendered.find("input").simulate("change", { target: { value: "b" } });
         rendered.find("input").simulate("keydown", { keyCode: KeyCodes.enter });
@@ -367,8 +461,9 @@ describe("Children", () => {
     test("should remove a child option from the data when the remove button has been clicked", () => {
         const callback: any = jest.fn();
         const renderedWithTwoChildren: any = mount(
-            <Children
+            <FormItemChildren
                 {...childrenProps}
+                managedClasses={managedClasses}
                 data={[
                     {
                         id: "alpha",
@@ -394,5 +489,60 @@ describe("Children", () => {
         expect(callback).toHaveBeenCalled();
         expect(callback.mock.calls[0][1]).toEqual(undefined);
         expect(callback.mock.calls[0][2]).toEqual(true);
+    });
+    test("should show a default indicator if default values exist and no data is available", () => {
+        const rendered: any = mount(
+            <FormItemChildren
+                {...childrenProps}
+                managedClasses={managedClasses}
+                data={undefined}
+                default={"foo"}
+            />
+        );
+
+        expect(
+            rendered.find(`.${managedClasses.formItemChildren_defaultValueIndicator}`)
+        ).toHaveLength(1);
+    });
+    test("should not show a default indicator if data exists", () => {
+        const rendered: any = mount(
+            <FormItemChildren
+                {...childrenProps}
+                managedClasses={managedClasses}
+                data={"foo"}
+                default={"bar"}
+            />
+        );
+
+        expect(
+            rendered.find(`.${managedClasses.formItemChildren_defaultValueIndicator}`)
+        ).toHaveLength(0);
+    });
+    test("should show default values if they exist and no data is available", () => {
+        const children: string = "foo";
+        const rendered: any = mount(
+            <FormItemChildren
+                {...childrenProps}
+                managedClasses={managedClasses}
+                data={undefined}
+                default={children}
+            />
+        );
+
+        expect(rendered.html().includes(children)).toBe(true);
+    });
+    test("should not show default values if data exists", () => {
+        const children: string = "foo";
+        const defaultChildren: string = "bar";
+        const rendered: any = mount(
+            <FormItemChildren
+                {...childrenProps}
+                managedClasses={managedClasses}
+                data={children}
+                default={defaultChildren}
+            />
+        );
+        expect(rendered.html().includes(children)).toBe(true);
+        expect(rendered.html().includes(defaultChildren)).toBe(false);
     });
 });

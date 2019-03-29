@@ -108,11 +108,18 @@ class FormItemChildren extends FormItemBase<
                         >
                             {this.props.label}
                         </label>
+                        {this.renderDefaultValueIndicator(
+                            get(
+                                this.props,
+                                "managedClasses.formItemChildren_defaultValueIndicator"
+                            )
+                        )}
                         {this.renderBadge(
                             get(this.props, "managedClasses.formItemChildren_badge")
                         )}
                     </div>
                 </div>
+                {this.renderDefaultChildren()}
                 {this.renderExistingChildren()}
                 {this.renderAddChild()}
             </div>
@@ -246,9 +253,7 @@ class FormItemChildren extends FormItemBase<
         // see: https://github.com/clauderic/react-sortable-hoc/issues/305
         return (
             <SortableListItem
-                className={
-                    this.props.managedClasses.formItemChildren_existingChildrenItem
-                }
+                className={this.getExistingChildItemClassNames()}
                 key={`item-${index}`}
                 id={uniqueId(index ? index.toString() : "")}
             >
@@ -375,6 +380,88 @@ class FormItemChildren extends FormItemBase<
         }
 
         return null;
+    }
+
+    /**
+     * Render default children
+     */
+    private renderDefaultChildren(): React.ReactNode {
+        if (
+            typeof this.props.data === "undefined" &&
+            typeof this.props.default !== "undefined"
+        ) {
+            const defaultValue: any[] = Array.isArray(this.props.default)
+                ? this.props.default
+                : [this.props.default];
+
+            const defaultChildItems: React.ReactNode = this.renderDefaultChildItems(
+                defaultValue
+            );
+
+            return (
+                <ul
+                    className={
+                        this.props.managedClasses.formItemChildren_existingChildren
+                    }
+                >
+                    {defaultChildItems}
+                </ul>
+            );
+        }
+    }
+
+    /**
+     * Render default child items
+     */
+    private renderDefaultChildItems(defaultValue: any[]): React.ReactNode {
+        return defaultValue.map(
+            (defaultItem: ChildComponent, index: number): JSX.Element => {
+                const displayValue: string =
+                    typeof defaultItem === "object"
+                        ? this.generateChildOptionText(defaultItem)
+                        : defaultItem;
+
+                return (
+                    <li
+                        key={`item-${index}`}
+                        className={this.getExistingChildItemClassNames(true)}
+                    >
+                        <span
+                            className={
+                                this.props.managedClasses
+                                    .formItemChildren_existingChildrenItemLink
+                            }
+                        >
+                            <span
+                                className={
+                                    this.props.managedClasses
+                                        .formItemChildren_existingChildrenItemName
+                                }
+                            >
+                                {displayValue}
+                            </span>
+                            {this.renderExistingChildCaption(defaultItem)}
+                        </span>
+                    </li>
+                );
+            }
+        );
+    }
+
+    private getExistingChildItemClassNames(isDefault?: boolean): string {
+        let classes: string = get(
+            this.props,
+            "managedClasses.formItemChildren_existingChildrenItem"
+        );
+
+        if (isDefault) {
+            classes = `${classes} ${get(
+                this.props,
+                "managedClasses.formItemChildren_existingChildrenItem__default"
+            )}`;
+        }
+
+        return classes;
     }
 
     /**
@@ -718,4 +805,5 @@ class FormItemChildren extends FormItemBase<
     }
 }
 
+export { FormItemChildren };
 export default manageJss(styles)(FormItemChildren);

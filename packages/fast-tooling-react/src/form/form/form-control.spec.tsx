@@ -56,7 +56,7 @@ describe("FormControl", () => {
         const rendered: any = mount(
             <FormControl
                 {...formControlProps}
-                schema={textareaSchema.properties.text}
+                schema={textareaSchema.properties.textWithDefault}
                 schemaLocation={"properties.text"}
                 dataLocation={"text"}
                 propertyName={"text"}

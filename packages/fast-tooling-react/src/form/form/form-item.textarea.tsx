@@ -39,6 +39,12 @@ class FormItemTextarea extends FormItemBase<
                             >
                                 {this.props.label}
                             </label>
+                            {this.renderDefaultValueIndicator(
+                                get(
+                                    this.props,
+                                    "managedClasses.formItemTextarea_defaultValueIndicator"
+                                )
+                            )}
                             {this.renderBadge(
                                 get(this.props, "managedClasses.formItemTextarea_badge")
                             )}
@@ -52,7 +58,7 @@ class FormItemTextarea extends FormItemBase<
                             rows={
                                 typeof this.props.rows === "number" ? this.props.rows : 3
                             }
-                            value={this.props.data || ""}
+                            value={this.getValue()}
                             onChange={this.handleChange}
                             disabled={this.props.disabled}
                             ref={this.textAreaRef}
@@ -88,6 +94,19 @@ class FormItemTextarea extends FormItemBase<
 
         return classes;
     }
+
+    private getValue(): string {
+        if (typeof this.props.data === "undefined") {
+            if (typeof this.props.default === "string") {
+                return this.props.default;
+            }
+
+            return "";
+        }
+
+        return this.props.data;
+    }
 }
 
+export { FormItemTextarea };
 export default manageJss(styles)(FormItemTextarea);

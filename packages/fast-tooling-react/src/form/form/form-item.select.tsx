@@ -50,6 +50,12 @@ class FormItemSelect extends FormItemBase<
                             >
                                 {this.props.label}
                             </label>
+                            {this.renderDefaultValueIndicator(
+                                get(
+                                    this.props,
+                                    "managedClasses.formItemSelect_defaultValueIndicator"
+                                )
+                            )}
                             {this.renderBadge(
                                 get(this.props, "managedClasses.formItemSelect_badge")
                             )}
@@ -149,4 +155,5 @@ class FormItemSelect extends FormItemBase<
     }
 }
 
+export { FormItemSelect };
 export default manageJss(styles)(FormItemSelect);

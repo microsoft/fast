@@ -12,6 +12,7 @@ export interface FormItemTextareaClassNameContract {
     formItemTextarea_controlLabel?: string;
     formItemTextarea_controlLabelRegion?: string;
     formItemTextarea_controlTextarea?: string;
+    formItemTextarea_defaultValueIndicator?: string;
     formItemTextarea_invalidMessage?: string;
     formItemTextarea_softRemove?: string;
     formItemTextarea_softRemoveInput?: string;

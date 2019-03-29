@@ -3,15 +3,14 @@ import {
     applyControl,
     applyControlRegion,
     applyControlWrapper,
-    applyFormItemBadge,
     applyFormItemDisabled,
+    applyFormItemIndicator,
     applyInputStyle,
     applyInvalidMessage,
     applyLabelRegionStyle,
     applyLabelStyle,
     applySoftRemove,
     applySoftRemoveInput,
-    error,
 } from "../../style";
 import { FormItemTextareaClassNameContract } from "./form-item.textarea.props";
 
@@ -26,7 +25,7 @@ const styles: ComponentStyles<FormItemTextareaClassNameContract, {}> = {
         ...applyFormItemDisabled(),
     },
     formItemTextarea_badge: {
-        ...applyFormItemBadge(),
+        ...applyFormItemIndicator(),
     },
     formItemTextarea_control: {
         ...applyControl(),
@@ -45,6 +44,9 @@ const styles: ComponentStyles<FormItemTextareaClassNameContract, {}> = {
         width: "100%",
         resize: "none",
         fontFamily: "inherit",
+    },
+    formItemTextarea_defaultValueIndicator: {
+        ...applyFormItemIndicator(),
     },
     formItemTextarea_softRemove: {
         ...applySoftRemove(),

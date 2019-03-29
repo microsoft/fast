@@ -21,8 +21,6 @@ class FormItemNumberField extends FormItemBase<
     public static displayName: string = "FormItemNumberField";
 
     public render(): JSX.Element {
-        const value: string = getStringValue(this.props.data, this.props.default);
-
         return (
             <div className={this.generateClassNames()}>
                 <div
@@ -48,6 +46,12 @@ class FormItemNumberField extends FormItemBase<
                             >
                                 {this.props.label}
                             </label>
+                            {this.renderDefaultValueIndicator(
+                                get(
+                                    this.props,
+                                    "managedClasses.formItemNumberField_defaultValueIndicator"
+                                )
+                            )}
                             {this.renderBadge(
                                 get(
                                     this.props,
@@ -61,8 +65,8 @@ class FormItemNumberField extends FormItemBase<
                             }
                             id={this.props.dataLocation}
                             type="number"
-                            value={value}
-                            name={`number${value}`}
+                            value={this.getValue()}
+                            name={this.props.dataLocation}
                             onChange={this.handleChange}
                             min={this.props.min}
                             max={this.props.max}
@@ -122,6 +126,11 @@ class FormItemNumberField extends FormItemBase<
 
         return classes;
     }
+
+    private getValue(): string {
+        return getStringValue(this.props.data, this.props.default);
+    }
 }
 
+export { FormItemNumberField };
 export default manageJss(styles)(FormItemNumberField);

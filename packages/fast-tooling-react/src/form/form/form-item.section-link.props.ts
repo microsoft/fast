@@ -8,6 +8,7 @@ export interface FormItemSectionLinkClassNameContract {
     formItemSectionLink_anchor?: string;
     formItemSectionLink_badge?: string;
     formItemSectionLink_controlRegion?: string;
+    formItemSectionLink_defaultValueIndicator?: string;
     formItemSectionLink_invalidMessage?: string;
     formItemSectionLink_softRemove?: string;
     formItemSectionLink_softRemoveInput?: string;

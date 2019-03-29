@@ -53,6 +53,66 @@
                 "title": "String item",
                 "type": "string"
             }
+        },
+        "stringWithDefault": {
+            "title": "Textarea",
+            "badge": "info",
+            "badgeDescription": "More information is provided",
+            "type": "string",
+            "default": "Hello world"
+        },
+        "booleanWithDefault": {
+            "title": "Checkbox",
+            "badge": "warning",
+            "badgeDescription": "Warning message",
+            "type": "boolean",
+            "default": true
+        },
+        "enumWithDefault": {
+            "title": "Select",
+            "badge": "locked",
+            "badgeDescription": "This field is locked",
+            "type": "string",
+            "enum": [
+                "span",
+                "button"
+            ],
+            "default": "button"
+        },
+        "numberWithDefault": {
+            "title": "Numberfield",
+            "badge": "info",
+            "badgeDescription": "More information is provided",
+            "type": "number",
+            "default": 42
+        },
+        "objectWithDefault": {
+            "title": "Object (no required items)",
+            "badge": "warning",
+            "badgeDescription": "Warning message",
+            "type": "object",
+            "properties": {
+                "number": {
+                    "type": "number"
+                }
+            },
+            "default": {
+                "number": 100
+            }
+        },
+        "arrayWithDefault": {
+            "title": "Array",
+            "type": "array",
+            "badge": "warning",
+            "badgeDescription": "Warning message",
+            "items": {
+                "title": "String item",
+                "type": "string"
+            },
+            "default": [
+                "foo",
+                "bar"
+            ]
         }
     },
     "reactProperties": {
@@ -61,6 +121,18 @@
             "type": "children",
             "badge": "warning",
             "badgeDescription": "Warning message"
+        },
+        "childrenWithDefault": {
+            "title": "Children",
+            "type": "children",
+            "badge": "warning",
+            "badgeDescription": "Warning message",
+            "default": {
+                "id": "textField",
+                "props": {
+                    "text": "Hello world"
+                }
+            }
         }
     }
 }

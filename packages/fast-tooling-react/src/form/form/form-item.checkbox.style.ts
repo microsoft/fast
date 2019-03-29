@@ -2,8 +2,8 @@ import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager";
 import { FormItemCheckboxClassNameContract } from "./form-item.checkbox.props";
 import {
     applyControlSingleLineWrapper,
-    applyFormItemBadge,
     applyFormItemDisabled,
+    applyFormItemIndicator,
     applyInvalidMessage,
     applyLabelStyle,
     applySoftRemove,
@@ -24,7 +24,10 @@ const styles: ComponentStyles<FormItemCheckboxClassNameContract, {}> = {
         ...applyFormItemDisabled(),
     },
     formItemCheckbox_badge: {
-        ...applyFormItemBadge(),
+        ...applyFormItemIndicator(),
+    },
+    formItemCheckbox_defaultValueIndicator: {
+        ...applyFormItemIndicator(),
     },
     formItemCheckbox_label: {
         ...applyLabelStyle(),

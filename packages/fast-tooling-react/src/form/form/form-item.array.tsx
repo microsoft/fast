@@ -60,6 +60,12 @@ class FormItemArray extends FormItemBase<
                         >
                             {label}
                         </label>
+                        {this.renderDefaultValueIndicator(
+                            get(
+                                this.props,
+                                "managedClasses.formItemArray_defaultValueIndicator"
+                            )
+                        )}
                         {this.renderBadge(
                             get(this.props, "managedClasses.formItemArray_badge")
                         )}
@@ -154,35 +160,6 @@ class FormItemArray extends FormItemBase<
     }
 
     /**
-     * Render the links to an array section to be activated
-     */
-    private renderExistingArrayItems(): React.ReactNode {
-        const arraySections: string[] = getArrayLinks(this.props.data);
-        const props: any = Object.assign({}, sortingProps, {
-            onSortEnd: this.handleSort,
-            helperClass: this.props.managedClasses
-                .formItemArray_existingItemListItem__sorting,
-        });
-
-        if (arraySections.length > 0) {
-            return React.createElement(
-                SortableContainer(() => {
-                    return (
-                        <ul
-                            className={
-                                this.props.managedClasses.formItemArray_existingItemList
-                            }
-                        >
-                            {this.generateArrayLinkItems()}
-                        </ul>
-                    );
-                }),
-                props
-            );
-        }
-    }
-
-    /**
      * Array add/remove item click handler factory
      */
     private arrayItemClickHandlerFactory(
@@ -256,9 +233,7 @@ class FormItemArray extends FormItemBase<
                 id={uniqueId(index.toString())}
             >
                 <a
-                    className={
-                        this.props.managedClasses.formItemArray_existingItemListItemLink
-                    }
+                    className={this.getArrayItemClassNames()}
                     onClick={this.arrayClickHandlerFactory(value, index)}
                 >
                     {value}
@@ -267,6 +242,37 @@ class FormItemArray extends FormItemBase<
             </SortableListItem>
         );
     };
+
+    private generateDefaultArrayLinkItem = (
+        value: any,
+        index: number
+    ): React.ReactNode => {
+        return (
+            <li
+                className={this.props.managedClasses.formItemArray_existingItemListItem}
+                key={`item-${index}`}
+                id={uniqueId(index.toString())}
+            >
+                <span className={this.getArrayItemClassNames(true)}>{value}</span>
+            </li>
+        );
+    };
+
+    private getArrayItemClassNames(isDefault?: boolean): string {
+        let classes: string = get(
+            this.props,
+            "managedClasses.formItemArray_existingItemListItemLink"
+        );
+
+        if (isDefault) {
+            classes = `${classes} ${get(
+                this.props,
+                "managedClasses.formItemArray_existingItemListItemLink__default"
+            )}`;
+        }
+
+        return classes;
+    }
 
     /**
      * Generates UI for all items in an array
@@ -288,6 +294,14 @@ class FormItemArray extends FormItemBase<
         );
     }
 
+    private generateDefaultArrayLinkItems(): React.ReactNode {
+        return getArrayLinks(this.props.default).map(
+            (value: any, index: number): React.ReactNode => {
+                return this.generateDefaultArrayLinkItem(value, index);
+            }
+        );
+    }
+
     /**
      * Handle user drag and drop interactions
      */
@@ -297,6 +311,45 @@ class FormItemArray extends FormItemBase<
             arrayMove(this.props.data, oldIndex, newIndex)
         );
     };
+
+    /**
+     * Generates the links to an array section to be activated
+     */
+    private renderExistingArrayItems(): React.ReactNode {
+        const hasData: boolean = Array.isArray(this.props.data);
+        const hasDefault: boolean = Array.isArray(this.props.default);
+
+        if (hasData) {
+            const props: any = Object.assign({}, sortingProps, {
+                onSortEnd: this.handleSort,
+                helperClass: this.props.managedClasses
+                    .formItemArray_existingItemListItem__sorting,
+            });
+
+            return React.createElement(
+                SortableContainer(() => {
+                    return (
+                        <ul
+                            className={
+                                this.props.managedClasses.formItemArray_existingItemList
+                            }
+                        >
+                            {this.generateArrayLinkItems()}
+                        </ul>
+                    );
+                }),
+                props
+            );
+        }
+
+        if (hasDefault) {
+            return (
+                <ul className={this.props.managedClasses.formItemArray_existingItemList}>
+                    {this.generateDefaultArrayLinkItems()}
+                </ul>
+            );
+        }
+    }
 }
 
 export { FormItemArray };
