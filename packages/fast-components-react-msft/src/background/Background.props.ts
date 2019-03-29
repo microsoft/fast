@@ -39,3 +39,7 @@ export interface BackgroundHandledProps {
      */
     background: number | string | LightModeBackgrounds | DarkModeBackgrounds;
 }
+
+export interface BackgroundUnhandledProps extends React.HTMLAttributes<HTMLElement> {}
+
+export type BackgroundProps = BackgroundHandledProps & BackgroundUnhandledProps;
