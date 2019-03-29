@@ -33,11 +33,11 @@ export interface BackgroundHandledProps {
     tag: keyof React.ReactHTML;
 
     /**
-     * The background to set. When set to a number, the value will be
+     * The value of the background to set. When set to a number, the value will be
      * treated as an index on the neutral ramp. When the value is a string,
      * it will be treated as a color string and applied directly
      */
-    background: number | string | LightModeBackgrounds | DarkModeBackgrounds;
+    value: number | string | LightModeBackgrounds | DarkModeBackgrounds;
 }
 
 export interface BackgroundUnhandledProps extends React.HTMLAttributes<HTMLElement> {}

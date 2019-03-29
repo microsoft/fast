@@ -17,7 +17,7 @@ import {
 } from "./Background.props";
 import { get, has, memoize } from "lodash-es";
 
-export class Background extends Foundation<
+export default class Background extends Foundation<
     BackgroundHandledProps,
     BackgroundUnhandledProps,
     {}
@@ -48,12 +48,10 @@ export class Background extends Foundation<
                 ? background
                 : has(designSystem.neutralPalette, background)
                     ? get(designSystem.neutralPalette, background)
-                    : DesignSystemDefaults.neutralPalette[
-                          Background.defaultProps.background
-                      ];
+                    : DesignSystemDefaults.neutralPalette[Background.defaultProps.value];
 
         const style: React.CSSProperties = Object.assign({}, this.props.style, {
-            background: color,
+            backgroundColor: color,
         });
 
         return (
@@ -65,3 +63,5 @@ export class Background extends Foundation<
         );
     };
 }
+
+export * from "./Background.props";
