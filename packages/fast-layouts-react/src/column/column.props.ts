@@ -33,4 +33,4 @@ export interface ColumnHandledProps extends ColumnManagedClasses {
     gutter?: GridGutter;
 }
 
-export type ColumnProps = ColumnHandledProps & ColumnHandledProps;
+export type ColumnProps = ColumnHandledProps & ColumnUnhandledProps;
