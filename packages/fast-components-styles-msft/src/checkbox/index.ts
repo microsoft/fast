@@ -37,10 +37,10 @@ const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = (
     const category: DensityCategory = getDensityCategory(designSystem);
     const indicatorMarginOffset: number =
         category === DensityCategory.compact
-            ? -1
+            ? 0
             : category === DensityCategory.spacious
-                ? 1
-                : 0;
+                ? 2
+                : 1;
     const indeterminateIndicatorMargin: string = toPx(
         designSystem.designUnit + indicatorMarginOffset
     );

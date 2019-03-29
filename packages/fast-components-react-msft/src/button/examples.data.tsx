@@ -170,6 +170,14 @@ const examples: ComponentFactoryExample<ButtonProps> = {
             appearance: ButtonAppearance.outline,
         },
         {
+            children: {
+                id: svgSchema.id,
+                props: {
+                    path: SVGGlyph.robot,
+                },
+            },
+        },
+        {
             beforeContent: {
                 id: svgSchema.id,
                 props: {

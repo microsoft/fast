@@ -1,18 +1,17 @@
-import designSystemDefaults, {
-    DesignSystem,
-    withDesignSystemDefaults,
-} from "../design-system";
+import { DesignSystem, withDesignSystemDefaults } from "../design-system";
 import { ComponentStyles, ComponentStyleSheet } from "@microsoft/fast-jss-manager";
 import { AutoSuggestClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
-import { elevation, ElevationMultiplier } from "../utilities/elevation";
 import { toPx } from "@microsoft/fast-jss-utilities";
+import { applyFloatingCornerRadius } from "../utilities/border";
 import { neutralFillStealthRest } from "../utilities/color";
-import { curry } from "lodash-es";
+import { heightNumber } from "../utilities/density";
+import { elevation, ElevationMultiplier } from "../utilities/elevation";
 
 const styles: ComponentStyles<AutoSuggestClassNameContract, DesignSystem> = (
     config: DesignSystem
 ): ComponentStyleSheet<AutoSuggestClassNameContract, DesignSystem> => {
     const designSystem: DesignSystem = withDesignSystemDefaults(config);
+    const visibleOptionCount: number = 10;
 
     return {
         autoSuggest: {
@@ -28,13 +27,17 @@ const styles: ComponentStyles<AutoSuggestClassNameContract, DesignSystem> = (
             width: "100%",
             margin: "0",
 
-            padding: "4px 0",
+            padding: `${toPx(designSystem.designUnit)} 0`,
+            marginTop: toPx(designSystem.designUnit),
             maxWidth: "374px",
             minWidth: "276px",
 
-            maxHeight: "328px",
+            maxHeight: `${toPx(
+                heightNumber(visibleOptionCount)(designSystem) +
+                    designSystem.designUnit * 2
+            )}`,
             overflow: "auto",
-            borderRadius: toPx(designSystem.cornerRadius * 2),
+            ...applyFloatingCornerRadius(),
         },
 
         autoSuggest__menuOpen: {},

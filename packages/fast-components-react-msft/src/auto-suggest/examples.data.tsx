@@ -14,6 +14,19 @@ function autoSuggestOptionPropFactory(id: string): AutoSuggestOptionProps {
     };
 }
 
+function generateChildren(): any[] {
+    const array: any[] = [];
+    for (let i: number = 0; i < 12; i++) {
+        array.push({
+            id: autoSuggestOptionSchema.id,
+            props: {
+                ...autoSuggestOptionPropFactory(String.fromCharCode(65 + i)),
+            },
+        });
+    }
+    return array;
+}
+
 const examples: ComponentFactoryExample<AutoSuggestProps> = {
     name: "Auto suggest",
     component: AutoSuggest,
@@ -22,26 +35,7 @@ const examples: ComponentFactoryExample<AutoSuggestProps> = {
     detailData: {
         placeholder: "placeholder",
         listboxId: "listboxId",
-        children: [
-            {
-                id: autoSuggestOptionSchema.id,
-                props: {
-                    ...autoSuggestOptionPropFactory("a"),
-                },
-            },
-            {
-                id: autoSuggestOptionSchema.id,
-                props: {
-                    ...autoSuggestOptionPropFactory("b"),
-                },
-            },
-            {
-                id: autoSuggestOptionSchema.id,
-                props: {
-                    ...autoSuggestOptionPropFactory("c"),
-                },
-            },
-        ],
+        children: generateChildren(),
     },
     data: [
         {

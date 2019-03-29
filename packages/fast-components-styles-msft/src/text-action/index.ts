@@ -18,7 +18,7 @@ import {
     neutralOutlineRest,
 } from "../utilities/color";
 import { applyCornerRadius } from "../utilities/border";
-import { height, horizontalSpacing } from "../utilities/density";
+import { glyphSize, height, horizontalSpacing } from "../utilities/density";
 import { applyDisabledState } from "../utilities/disabled";
 
 // Since MSFT button is already styled, we need to override in this way to alter button classes
@@ -47,9 +47,8 @@ const styles: ComponentStyles<TextActionClassNameContract, DesignSystem> = (
     const designSystem: DesignSystem = withDesignSystemDefaults(config);
     const direction: Direction = designSystem.direction;
     const glyphStyles: CSSRules<{}> = {
-        height: "16px",
-        width: "auto",
-        marginTop: "8px",
+        width: glyphSize(),
+        height: glyphSize(),
         margin: "auto",
         fill: neutralForegroundRest,
     };
@@ -115,7 +114,11 @@ const styles: ComponentStyles<TextActionClassNameContract, DesignSystem> = (
         },
         textAction_afterGlyph: {
             ...glyphStyles,
-            [applyLocalizedProperty("marginRight", "marginLeft", direction)]: "8px",
+            [applyLocalizedProperty(
+                "marginRight",
+                "marginLeft",
+                direction
+            )]: horizontalSpacing(1)(designSystem),
         },
     };
 };

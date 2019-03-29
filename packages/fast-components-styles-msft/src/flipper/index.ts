@@ -1,12 +1,7 @@
 import { DesignSystem, withDesignSystemDefaults } from "../design-system";
 import { ComponentStyles, ComponentStyleSheet } from "@microsoft/fast-jss-manager";
 import { FlipperClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
-import {
-    applyFocusVisible,
-    applyLocalizedProperty,
-    Direction,
-    toPx,
-} from "@microsoft/fast-jss-utilities";
+import { applyFocusVisible, Direction, toPx } from "@microsoft/fast-jss-utilities";
 import {
     neutralFillStealthActive,
     neutralFillStealthHover,
@@ -17,9 +12,7 @@ import {
     neutralOutlineHover,
     neutralOutlineRest,
 } from "../utilities/color";
-
-const eastFlipperTransform: string = "translateX(-3px) rotate(45deg)";
-const westFlipperTransform: string = "translateX(3px) rotate(-135deg)";
+import { glyphSize, height } from "../utilities/density";
 
 const styles: ComponentStyles<FlipperClassNameContract, DesignSystem> = (
     config: DesignSystem
@@ -29,14 +22,14 @@ const styles: ComponentStyles<FlipperClassNameContract, DesignSystem> = (
 
     return {
         flipper: {
-            width: toPx(
-                (designSystem.baseHeightMultiplier + 2) * designSystem.designUnit
-            ),
-            height: toPx(
-                (designSystem.baseHeightMultiplier + 2) * designSystem.designUnit
-            ),
+            width: height(),
+            height: height(),
+            display: "inline-flex",
+            justifyContent: "center",
+            alignItems: "center",
             margin: "0",
             position: "relative",
+            fill: neutralForegroundRest,
             color: neutralForegroundRest,
             background: "transparent",
             border: "none",
@@ -79,38 +72,12 @@ const styles: ComponentStyles<FlipperClassNameContract, DesignSystem> = (
             },
         },
         flipper_glyph: {
-            display: "inline-flex",
-            justifyContent: "center",
-            alignItems: "center",
-            width: "14px",
-            height: "14px",
-            "&::before": {
-                boxSizing: "border-box",
-                height: "12px",
-                width: "12px",
-                content: '""',
-                borderRight: `1px solid ${neutralForegroundRest(designSystem)}`,
-                borderTop: `1px solid ${neutralForegroundRest(designSystem)}`,
-            },
+            position: "relative",
+            width: glyphSize(),
+            height: glyphSize(),
         },
-        flipper__next: {
-            "& $flipper_glyph": {
-                transform: applyLocalizedProperty(
-                    eastFlipperTransform,
-                    westFlipperTransform,
-                    direction
-                ),
-            },
-        },
-        flipper__previous: {
-            "& $flipper_glyph": {
-                transform: applyLocalizedProperty(
-                    westFlipperTransform,
-                    eastFlipperTransform,
-                    direction
-                ),
-            },
-        },
+        flipper__next: {},
+        flipper__previous: {},
     };
 };
 

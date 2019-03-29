@@ -1,11 +1,9 @@
-import { applyTypeRampConfig, TypeRamp, typeRamp } from "../utilities/typography";
 import {
     DesignSystem,
     DesignSystemResolver,
     ensureDesignSystemDefaults,
     withDesignSystemDefaults,
 } from "../design-system";
-import { CSSRules } from "@microsoft/fast-jss-manager";
 import { toPx } from "@microsoft/fast-jss-utilities";
 
 export enum DensityCategory {
@@ -100,6 +98,41 @@ export function horizontalSpacingNumber(
                 (designSystem.baseHorizontalSpacingMultiplier + densityOffset) *
                     designSystem.designUnit -
                 adjustment;
+            return value;
+        }
+    );
+}
+
+/**
+ * Returns the width and height for an icon formatted in the provided unit or px by default.
+ *
+ * @param unit The unit of measurement; px by default.
+ */
+export function glyphSize(unit?: string): DesignSystemResolver<string> {
+    return ensureDesignSystemDefaults(
+        (designSystem: DesignSystem): string => {
+            const value: number = glyphSizeNumber()(designSystem);
+            return typeof unit === "string" ? `${value}${unit}` : toPx(value);
+        }
+    );
+}
+
+/**
+ * Returns the width and height for an icon as a number.
+ */
+export function glyphSizeNumber(): DesignSystemResolver<number> {
+    return ensureDesignSystemDefaults(
+        (designSystem: DesignSystem): number => {
+            const category: DensityCategory = getDensityCategory(designSystem);
+            const sizeOffset: number =
+                category === DensityCategory.compact
+                    ? -2
+                    : category === DensityCategory.spacious
+                        ? 2
+                        : 0;
+            const value: number =
+                (designSystem.baseHeightMultiplier / 2) * designSystem.designUnit +
+                sizeOffset;
             return value;
         }
     );

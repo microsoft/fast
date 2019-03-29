@@ -36,10 +36,10 @@ const styles: ComponentStyles<RadioClassNameContract, DesignSystem> = (
     const category: DensityCategory = getDensityCategory(designSystem);
     const indicatorMarginOffset: number =
         category === DensityCategory.compact
-            ? -1
+            ? 0
             : category === DensityCategory.spacious
-                ? 1
-                : 0;
+                ? 2
+                : 1;
 
     const indicatorMargin: string = toPx(designSystem.designUnit + indicatorMarginOffset);
 
