@@ -10,6 +10,7 @@ import DevicePageViewerContent from "./pages/viewer/device-page.viewer-content";
 import UpdatePropsPage from "./pages/viewer/update-props-page";
 import UpdatePropsViewerContent from "./pages/viewer/update-props-page.viewer-content";
 import { CSSEditorTestPage } from "./pages/css-editor";
+import { DataUtilitiesTestPage } from "./pages/data-utilities";
 import { FormTestPage } from "./pages/form";
 
 class App extends React.Component<{}, {}> {
@@ -23,6 +24,11 @@ class App extends React.Component<{}, {}> {
                             exact={true}
                             path={"/css-editor"}
                             component={CSSEditorTestPage}
+                        />
+                        <Route
+                            exact={true}
+                            path={"/data-utilities"}
+                            component={DataUtilitiesTestPage}
                         />
                         <Route
                             exact={true}
@@ -86,6 +92,9 @@ class App extends React.Component<{}, {}> {
                     <ul>
                         <li>
                             <Link to="/css-editor">CSS Editor</Link>
+                        </li>
+                        <li>
+                            <Link to="/data-utilities">Data utilities</Link>
                         </li>
                         <li>
                             <Link to="/form">Form</Link>

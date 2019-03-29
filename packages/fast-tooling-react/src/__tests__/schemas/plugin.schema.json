@@ -186,5 +186,12 @@
                 }
             ]
         }
+    },
+    "reactProperties": {
+        "renderProp": {
+            "title": "React render pop",
+            "type": "children",
+            "pluginId": "plugin/renderProp"
+        }
     }
 }
