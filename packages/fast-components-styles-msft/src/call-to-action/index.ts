@@ -13,31 +13,41 @@ import {
     Direction,
     toPx,
 } from "@microsoft/fast-jss-utilities";
-import { DesignSystem, withDesignSystemDefaults } from "../design-system/index";
+import {
+    DesignSystem,
+    ensureDesignSystemDefaults,
+    withDesignSystemDefaults,
+} from "../design-system";
 import { accentFillRest, accentForegroundCut } from "../utilities/color";
 import { glyphSize } from "../utilities/density";
 
 function applyContentRegionTransform(): CSSRules<DesignSystem> {
     return {
-        transform: (config: DesignSystem): string => {
-            const designSystem: DesignSystem = withDesignSystemDefaults(config);
-            const translateXValue: string = toPx(designSystem.designUnit);
-            return designSystem.direction === Direction.ltr
-                ? `translateX(-${translateXValue})`
-                : `translateX(${translateXValue})`;
-        },
+        transform: ensureDesignSystemDefaults(
+            (designSystem: DesignSystem): string => {
+                const translateXValue: string = toPx(designSystem.designUnit);
+                return applyLocalizedProperty(
+                    `translateX(-${translateXValue})`,
+                    `translateX(${translateXValue})`,
+                    designSystem.direction
+                );
+            }
+        ),
     };
 }
 
 function applyGlyphTransform(): CSSRules<DesignSystem> {
     return {
-        transform: (config: DesignSystem): string => {
-            const designSystem: DesignSystem = withDesignSystemDefaults(config);
-            const translateXValue: string = toPx(designSystem.designUnit);
-            return designSystem.direction === Direction.ltr
-                ? `translateX(${translateXValue})`
-                : `rotate(180deg) translateX(${translateXValue})`;
-        },
+        transform: ensureDesignSystemDefaults(
+            (designSystem: DesignSystem): string => {
+                const translateXValue: string = toPx(designSystem.designUnit);
+                return applyLocalizedProperty(
+                    `translateX(${translateXValue})`,
+                    `rotate(180deg) translateX(${translateXValue})`,
+                    designSystem.direction
+                );
+            }
+        ),
         position: "relative",
     };
 }
