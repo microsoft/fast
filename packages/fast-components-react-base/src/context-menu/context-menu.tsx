@@ -60,6 +60,7 @@ class ContextMenu extends Foundation<
                 role="menu"
                 className={this.generateClassNames()}
                 onKeyDown={this.handleMenuKeyDown}
+                onContextMenu={this.handleContextMenu}
             >
                 {this.renderChildren()}
             </div>
@@ -222,6 +223,14 @@ class ContextMenu extends Foundation<
                 this.setFocus(0, 1);
 
                 break;
+        }
+    };
+
+    private handleContextMenu = (e: React.MouseEvent<HTMLDivElement>): void => {
+        e.preventDefault(); // prevent browser context-menu becuase this *is* a context menu
+
+        if (typeof this.props.onContextMenu === "function") {
+            this.props.onContextMenu(e);
         }
     };
 }

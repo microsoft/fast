@@ -73,6 +73,15 @@ describe("context menu item", (): void => {
         expect(onInvoke).toHaveBeenCalledTimes(1);
     });
 
+    test("should call a registered callback after a click event", (): void => {
+        const onInvoke: any = jest.fn();
+        const rendered: any = shallow(<ContextMenuItem onInvoke={onInvoke} />);
+
+        rendered.simulate("contextMenu", { preventDefault: jest.fn() });
+
+        expect(onInvoke).toHaveBeenCalledTimes(1);
+    });
+
     test("should not call a registered callback after a click event because it is disabled", (): void => {
         const onInvoke: any = jest.fn();
         const rendered: any = shallow(
@@ -122,7 +131,7 @@ describe("context menu item", (): void => {
             <ContextMenuItem onClick={onClick} onKeyDown={onKeyDown} />
         );
 
-        rendered.simulate("keydown");
+        rendered.simulate("keydown", { keyCode: KeyCodes.enter });
         rendered.simulate("click");
 
         expect(onClick).toBeCalledTimes(1);

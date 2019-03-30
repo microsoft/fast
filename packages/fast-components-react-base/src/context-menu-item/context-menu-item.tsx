@@ -47,6 +47,7 @@ class ContextMenuItem extends Foundation<
                 aria-disabled={this.props.disabled || undefined}
                 onKeyDown={this.handleMenuItemKeyDown}
                 onClick={this.handleMenuItemClick}
+                onContextMenu={this.handleContextMenu}
             >
                 {this.props.children}
             </div>
@@ -88,13 +89,11 @@ class ContextMenuItem extends Foundation<
      * Handle the keydown event of the item
      */
     private handleMenuItemKeyDown = (e: React.KeyboardEvent<HTMLDivElement>): void => {
-        if (typeof this.props.onInvoke === "function" && !this.props.disabled) {
-            switch (e.keyCode) {
-                case KeyCodes.enter:
-                case KeyCodes.space:
-                    this.props.onInvoke(e, this.props);
-                    break;
-            }
+        switch (e.keyCode) {
+            case KeyCodes.enter:
+            case KeyCodes.space:
+                this.handleInvoke(e);
+                break;
         }
 
         if (typeof this.props.onKeyDown === "function") {
@@ -106,14 +105,36 @@ class ContextMenuItem extends Foundation<
      * Handle the keydown event of the item
      */
     private handleMenuItemClick = (e: React.MouseEvent<HTMLDivElement>): void => {
-        if (typeof this.props.onInvoke === "function" && !this.props.disabled) {
-            this.props.onInvoke(e, this.props);
-        }
+        this.handleInvoke(e);
 
         if (typeof this.props.onClick === "function") {
             this.props.onClick(e);
         }
     };
+
+    /**
+     * Handle the contextMenu event
+     */
+    private handleContextMenu = (e: React.MouseEvent<HTMLDivElement>): void => {
+        e.preventDefault(); // Cancel browser context-menu because the user is clicking the context-menu-item
+
+        this.handleInvoke(e);
+
+        if (typeof this.props.onContextMenu === "function") {
+            this.props.onContextMenu(e);
+        }
+    };
+
+    /**
+     * Inform app-authors that the user has invoked the item
+     */
+    private handleInvoke(
+        e: React.MouseEvent<HTMLDivElement> | React.KeyboardEvent<HTMLDivElement>
+    ): void {
+        if (typeof this.props.onInvoke === "function" && !this.props.disabled) {
+            this.props.onInvoke(e, this.props);
+        }
+    }
 }
 
 export default ContextMenuItem;
