@@ -118,6 +118,7 @@ export class Row extends Foundation<
 
     public static defaultProps: Partial<RowProps> = {
         fill: false,
+        initialHeight: 300,
         minHeight: 40,
         maxHeight: 800,
         resizable: false,
@@ -156,7 +157,7 @@ export class Row extends Foundation<
         this.state = {
             resizing: false,
             dragReference: null,
-            height: this.props.minHeight || 300,
+            height: this.props.initialHeight,
         };
 
         this.onMouseMove = throttle(this.onMouseMove, 16);
