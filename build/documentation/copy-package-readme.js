@@ -8,14 +8,18 @@
 const path = require("path");
 const fs = require("fs");
 const glob = require("glob");
+const chalk = require('chalk');
 
 const rootDir = path.resolve(process.cwd());
-const srcReadmePaths = "packages/*/README.md";
+const srcReadmePaths = "packages/*/?(readme.md|README.md)";
 const destDir = path.join("docs", "en", "packages");
 const srcSidebar = path.join("website", "sidebars.json");
 
 var dryRun = false;
 var sidebarEntries = [];
+
+var totalDocsCount;
+var updatedDocsCount = 0;
 
 /**
  * Determine if a dry run will be executed based off --dry-run argument being present
@@ -30,7 +34,7 @@ process.argv.forEach(function (val, index) {
     }
 
     if (!validArg) {
-        console.log('\x1b[31m%s\x1b[0m', 'Invalid argument used. To perform a dry-run use --dry-run');
+        console.log(chalk.red('Invalid argument used. To perform a dry-run use --dry-run'));
         process.exit(1);
     }
 
@@ -44,11 +48,15 @@ function copyReadmeFiles() {
 
     const resolvedSrcReadmePaths = path.resolve(rootDir, srcReadmePaths);
 
-    if (dryRun) console.log(`For ${destDir}, this script would...`);
+    dryRun ? console.log(`In ${destDir}, this script would...`) : console.log(`In ${destDir}...`);
+
+    fs.readdir('packages', (err, files) => {
+        totalDocsCount = files.length;
+    });
 
     createDirectory(destDir);
     glob(resolvedSrcReadmePaths, {realpath:true}, function(error, srcFiles) {
-
+        
         srcFiles.forEach((srcReadmePath) => {    
             createDestReadme(srcReadmePath);
             const srcDirPath = path.dirname(srcReadmePath);
@@ -56,6 +64,7 @@ function copyReadmeFiles() {
             sidebarEntries.push(`en/packages/${lastSrcDir}/index`);
         });
 
+        console.log(chalk.green(`${updatedDocsCount} of ${totalDocsCount} package readme.md files updated`));
         updateSidebar();
        
     });
@@ -106,9 +115,10 @@ function createDestReadme(srcReadmePath) {
         try {
             fs.writeFileSync(destReadmePath, docusaurusHeader);
             fs.appendFileSync(destReadmePath, srcReadmeText);
-            console.log('\x1b[32m%s\x1b[0m', `${destReadmePath} was succesfully updated!`);
+            updatedDocsCount++;
+            console.log(`...${folderName} was succesfully updated`);
         } catch (err) {
-            console.log('\x1b[31m%s\x1b[0m', err);
+            console.log(chalk.red(err));
         }
     }
 
@@ -133,7 +143,7 @@ function updateSidebar() {
     } else {
         fs.writeFile(sidebarJSONPath, JSON.stringify(sidebarJSON, null, 2), 'utf8', (err) => {
             if (err) throw err;
-            console.log('\x1b[32m%s\x1b[0m', "./website/sidebar.json was succesfully updated!");
+            console.log(chalk.green(`${srcSidebar} was succesfully updated!`));
         }); 
     }
 
