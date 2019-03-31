@@ -1,36 +1,27 @@
-import { DesignSystem } from "../design-system";
+import { DesignSystem, withDesignSystemDefaults } from "../design-system";
 import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager";
 import { HeadingClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
-import { fontWeight } from "../utilities/fonts";
+import { applyFontWeightSemiBold } from "../utilities/fonts";
 
-function applyHeadingStyles(): CSSRules<DesignSystem> {
-    return {
-        fontWeight: `${fontWeight.semibold}`,
-    };
-}
-
-/**
- * TODO #306: Pull font weight styles when we have an API for font/variable font properties
- */
 const styles: ComponentStyles<HeadingClassNameContract, DesignSystem> = {
     heading: {
         "&$heading__1": {
-            ...applyHeadingStyles(),
+            ...applyFontWeightSemiBold(),
         },
         "&$heading__2": {
-            ...applyHeadingStyles(),
+            ...applyFontWeightSemiBold(),
         },
         "&$heading__3": {
-            ...applyHeadingStyles(),
+            ...applyFontWeightSemiBold(),
         },
         "&$heading__4": {
-            ...applyHeadingStyles(),
+            ...applyFontWeightSemiBold(),
         },
         "&$heading__5": {
-            ...applyHeadingStyles(),
+            ...applyFontWeightSemiBold(),
         },
         "&$heading__6": {
-            ...applyHeadingStyles(),
+            ...applyFontWeightSemiBold(),
         },
     },
     heading__1: {},

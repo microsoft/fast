@@ -1,11 +1,11 @@
-import { DesignSystem } from "../design-system";
+import { DesignSystem, withDesignSystemDefaults } from "../design-system";
 import { ComponentStyles } from "@microsoft/fast-jss-manager";
 import { ParagraphClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
-import { fontWeight } from "../utilities/fonts";
+import { applyFontWeightNormal } from "../utilities/fonts";
 
 const styles: ComponentStyles<ParagraphClassNameContract, DesignSystem> = {
     paragraph: {
-        fontWeight: `${fontWeight.normal}`,
+        ...applyFontWeightNormal(),
     },
     paragraph__1: {},
     paragraph__2: {},

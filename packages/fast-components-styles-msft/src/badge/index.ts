@@ -11,8 +11,8 @@ import { accentForegroundCut, neutralForegroundRest } from "../utilities/color";
 import { Swatch } from "../utilities/color/common";
 import { applyCursorDefault } from "../utilities/cursor";
 import { horizontalSpacing } from "../utilities/density";
-import { fontWeight } from "../utilities/fonts";
 import { applyScaledTypeRamp } from "../utilities/typography";
+import { applyFontWeightNormal, applyFontWeightSemiBold } from "../utilities/fonts";
 
 const styles: ComponentStyles<BadgeClassNameContract, DesignSystem> = (
     config: DesignSystem
@@ -27,11 +27,11 @@ const styles: ComponentStyles<BadgeClassNameContract, DesignSystem> = (
     return {
         badge: {
             ...applyScaledTypeRamp("t7"),
+            ...applyFontWeightSemiBold(),
             ...ellipsis(),
             overflow: "hidden",
             ...applyCursorDefault(),
             boxSizing: "border-box",
-            fontWeight: `${fontWeight.semibold}`,
             display: "inline-block",
             maxWidth: "215px",
             color: neutralForegroundRest,
@@ -39,7 +39,7 @@ const styles: ComponentStyles<BadgeClassNameContract, DesignSystem> = (
         },
         badge__filled: {
             ...applyCornerRadius(),
-            fontWeight: `${fontWeight.normal}`,
+            ...applyFontWeightNormal(),
             backgroundColor: filledBackground,
             color: accentForegroundCut((): Swatch => filledBackground),
         },
