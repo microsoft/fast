@@ -10,8 +10,10 @@ export interface FormItemSelectClassNameContract {
     formItemSelect_control?: string;
     formItemSelect_controlLabel?: string;
     formItemSelect_controlLabelRegion?: string;
+    formItemSelect_controlRegion?: string;
     formItemSelect_controlSpan?: string;
     formItemSelect_controlInput?: string;
+    formItemSelect_invalidMessage?: string;
     formItemSelect_softRemove?: string;
     formItemSelect_softRemoveInput?: string;
 }

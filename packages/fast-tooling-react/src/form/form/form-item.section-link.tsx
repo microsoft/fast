@@ -26,20 +26,34 @@ class FormItemSectionLink extends FormItemBase<
     public render(): JSX.Element {
         return (
             <div className={this.props.managedClasses.formItemSectionLink}>
-                <a
-                    className={this.props.managedClasses.formItemSectionLink_anchor}
-                    onClick={this.handleUpdateSection}
-                >
-                    {this.props.label}
-                </a>
-                {this.renderBadge(
-                    get(this.props, "managedClasses.formItemSectionLink_badge")
-                )}
-                <div className={this.props.managedClasses.formItemSectionLink_softRemove}>
-                    {this.renderSoftRemove(
-                        this.props.managedClasses.formItemSectionLink_softRemoveInput
+                <div
+                    className={get(
+                        this.props,
+                        "managedClasses.formItemSectionLink_controlRegion"
                     )}
+                >
+                    <a
+                        className={this.props.managedClasses.formItemSectionLink_anchor}
+                        onClick={this.handleUpdateSection}
+                    >
+                        {this.props.label}
+                    </a>
+                    {this.renderBadge(
+                        get(this.props, "managedClasses.formItemSectionLink_badge")
+                    )}
+                    <div
+                        className={
+                            this.props.managedClasses.formItemSectionLink_softRemove
+                        }
+                    >
+                        {this.renderSoftRemove(
+                            this.props.managedClasses.formItemSectionLink_softRemoveInput
+                        )}
+                    </div>
                 </div>
+                {this.renderInvalidMessage(
+                    get(this.props, "managedClasses.formItemSectionLink_invalidMessage")
+                )}
             </div>
         );
     }

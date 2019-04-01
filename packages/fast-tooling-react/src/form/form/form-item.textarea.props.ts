@@ -8,9 +8,11 @@ export interface FormItemTextareaClassNameContract {
     formItemTextarea__disabled?: string;
     formItemTextarea_badge?: string;
     formItemTextarea_control?: string;
+    formItemTextarea_controlRegion?: string;
     formItemTextarea_controlLabel?: string;
     formItemTextarea_controlLabelRegion?: string;
     formItemTextarea_controlTextarea?: string;
+    formItemTextarea_invalidMessage?: string;
     formItemTextarea_softRemove?: string;
     formItemTextarea_softRemoveInput?: string;
 }

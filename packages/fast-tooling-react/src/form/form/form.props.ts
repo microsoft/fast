@@ -1,5 +1,6 @@
 import { NavigationItem } from "../utilities";
 import { FormPlugin, FormPluginProps } from "../plugin";
+import { ErrorObject } from "ajv";
 
 /**
  * Form class name contract
@@ -93,6 +94,16 @@ export interface FormProps {
      * The custom passed location of a subsection to initially activate
      */
     location?: FormLocation;
+
+    /**
+     * Display the validation inline
+     */
+    displayValidationInline?: boolean;
+
+    /**
+     * Display the validation as browser default tooltips
+     */
+    displayValidationBrowserDefault?: boolean;
 }
 
 /**
@@ -129,6 +140,11 @@ export interface FormState {
      * which corresponds to a different section
      */
     location?: FormLocation;
+
+    /**
+     * The validation errors if there are any
+     */
+    validationErrors: ErrorObject[] | void;
 }
 
 export interface FormLocation {

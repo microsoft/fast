@@ -11,6 +11,7 @@ import {
     generateExampleData,
     getCategoryParams,
     getData,
+    getErrorFromDataLocation,
     getInitialOneOfAnyOfState,
     getIsNotRequired,
     getIsRequired,
@@ -103,7 +104,8 @@ class FormSection extends React.Component<
         schemaLocation: string,
         dataLocation: string,
         required: boolean,
-        label: string
+        label: string,
+        invalidMessage: string | null
     ): React.ReactNode {
         if (schema.type === "object" && propertyName === "") {
             return this.renderForm(propertyName, schema);
@@ -125,6 +127,11 @@ class FormSection extends React.Component<
                 schema={schema}
                 onChange={this.props.onChange}
                 onUpdateActiveSection={this.props.onUpdateActiveSection}
+                invalidMessage={invalidMessage}
+                displayValidationBrowserDefault={
+                    this.props.displayValidationBrowserDefault
+                }
+                displayValidationInline={this.props.displayValidationInline}
             />
         );
     }
@@ -163,7 +170,11 @@ class FormSection extends React.Component<
                 item.params.schemaLocation,
                 item.params.dataLocation,
                 item.params.isRequired,
-                item.params.title
+                item.params.title,
+                getErrorFromDataLocation(
+                    item.params.dataLocation,
+                    this.props.validationErrors
+                )
             );
         });
     }
@@ -225,6 +236,10 @@ class FormSection extends React.Component<
                                 title:
                                     schema[propertyKey][propertyName].title ||
                                     this.props.untitled,
+                                invalidMessage: getErrorFromDataLocation(
+                                    dataLocation,
+                                    this.props.validationErrors
+                                ),
                             };
 
                             formItems.items.push(
@@ -235,7 +250,8 @@ class FormSection extends React.Component<
                                     params.schemaLocation,
                                     params.dataLocation,
                                     params.isRequired,
-                                    params.title
+                                    params.title,
+                                    params.invalidMessage
                                 )
                             );
 
@@ -331,7 +347,11 @@ class FormSection extends React.Component<
                         this.getSchemaLocation(),
                         this.props.dataLocation,
                         true,
-                        ""
+                        "",
+                        getErrorFromDataLocation(
+                            this.props.dataLocation,
+                            this.props.validationErrors
+                        )
                     )}
                 </div>
             </div>

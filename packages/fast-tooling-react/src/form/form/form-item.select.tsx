@@ -35,42 +35,50 @@ class FormItemSelect extends FormItemBase<
 
         return (
             <div className={this.generateClassNames()}>
-                <div className={this.props.managedClasses.formItemSelect_control}>
-                    <div
-                        className={get(
-                            this.props,
-                            "managedClasses.formItemSelect_controlLabelRegion"
-                        )}
-                    >
-                        <label
-                            className={
-                                this.props.managedClasses.formItemSelect_controlLabel
-                            }
+                <div className={this.props.managedClasses.formItemSelect_controlRegion}>
+                    <div className={this.props.managedClasses.formItemSelect_control}>
+                        <div
+                            className={get(
+                                this.props,
+                                "managedClasses.formItemSelect_controlLabelRegion"
+                            )}
                         >
-                            {this.props.label}
-                        </label>
-                        {this.renderBadge(
-                            get(this.props, "managedClasses.formItemSelect_badge")
+                            <label
+                                className={
+                                    this.props.managedClasses.formItemSelect_controlLabel
+                                }
+                            >
+                                {this.props.label}
+                            </label>
+                            {this.renderBadge(
+                                get(this.props, "managedClasses.formItemSelect_badge")
+                            )}
+                        </div>
+                        <span className={this.generateControlSpanClassNames()}>
+                            <select
+                                className={
+                                    this.props.managedClasses.formItemSelect_controlInput
+                                }
+                                onChange={this.handleChange}
+                                value={JSON.stringify(value)}
+                                disabled={this.props.disabled}
+                                ref={this.selectRef}
+                                onBlur={this.updateValidity}
+                                onFocus={this.reportValidity}
+                            >
+                                {this.renderOptions()}
+                            </select>
+                        </span>
+                    </div>
+                    <div className={this.props.managedClasses.formItemSelect_softRemove}>
+                        {this.renderSoftRemove(
+                            this.props.managedClasses.formItemSelect_softRemoveInput
                         )}
                     </div>
-                    <span className={this.generateControlSpanClassNames()}>
-                        <select
-                            className={
-                                this.props.managedClasses.formItemSelect_controlInput
-                            }
-                            onChange={this.handleChange}
-                            value={JSON.stringify(value)}
-                            disabled={this.props.disabled}
-                        >
-                            {this.renderOptions()}
-                        </select>
-                    </span>
                 </div>
-                <div className={this.props.managedClasses.formItemSelect_softRemove}>
-                    {this.renderSoftRemove(
-                        this.props.managedClasses.formItemSelect_softRemoveInput
-                    )}
-                </div>
+                {this.renderInvalidMessage(
+                    get(this.props, "managedClasses.formItemSelect_invalidMessage")
+                )}
             </div>
         );
     }

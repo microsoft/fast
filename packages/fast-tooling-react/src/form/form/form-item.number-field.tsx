@@ -25,45 +25,67 @@ class FormItemNumberField extends FormItemBase<
 
         return (
             <div className={this.generateClassNames()}>
-                <div className={this.props.managedClasses.formItemNumberField_control}>
+                <div
+                    className={
+                        this.props.managedClasses.formItemNumberField_controlRegion
+                    }
+                >
                     <div
-                        className={get(
-                            this.props,
-                            "managedClasses.formItemNumberField_controlLabelRegion"
-                        )}
+                        className={this.props.managedClasses.formItemNumberField_control}
                     >
-                        <label
-                            className={
-                                this.props.managedClasses.formItemNumberField_controlLabel
-                            }
-                            htmlFor={this.props.dataLocation}
+                        <div
+                            className={get(
+                                this.props,
+                                "managedClasses.formItemNumberField_controlLabelRegion"
+                            )}
                         >
-                            {this.props.label}
-                        </label>
-                        {this.renderBadge(
-                            get(this.props, "managedClasses.formItemNumberField_badge")
+                            <label
+                                className={
+                                    this.props.managedClasses
+                                        .formItemNumberField_controlLabel
+                                }
+                                htmlFor={this.props.dataLocation}
+                            >
+                                {this.props.label}
+                            </label>
+                            {this.renderBadge(
+                                get(
+                                    this.props,
+                                    "managedClasses.formItemNumberField_badge"
+                                )
+                            )}
+                        </div>
+                        <input
+                            className={
+                                this.props.managedClasses.formItemNumberField_controlInput
+                            }
+                            id={this.props.dataLocation}
+                            type="number"
+                            value={value}
+                            name={`number${value}`}
+                            onChange={this.handleChange}
+                            min={this.props.min}
+                            max={this.props.max}
+                            step={this.props.step}
+                            disabled={this.props.disabled}
+                            ref={this.inputRef}
+                            onBlur={this.updateValidity}
+                            onFocus={this.reportValidity}
+                        />
+                    </div>
+                    <div
+                        className={
+                            this.props.managedClasses.formItemNumberField_softRemove
+                        }
+                    >
+                        {this.renderSoftRemove(
+                            this.props.managedClasses.formItemNumberField_softRemoveInput
                         )}
                     </div>
-                    <input
-                        className={
-                            this.props.managedClasses.formItemNumberField_controlInput
-                        }
-                        id={this.props.dataLocation}
-                        type="number"
-                        value={value}
-                        name={`number${value}`}
-                        onChange={this.handleChange}
-                        min={this.props.min}
-                        max={this.props.max}
-                        step={this.props.step}
-                        disabled={this.props.disabled}
-                    />
                 </div>
-                <div className={this.props.managedClasses.formItemNumberField_softRemove}>
-                    {this.renderSoftRemove(
-                        this.props.managedClasses.formItemNumberField_softRemoveInput
-                    )}
-                </div>
+                {this.renderInvalidMessage(
+                    get(this.props, "managedClasses.formItemNumberField_invalidMessage")
+                )}
             </div>
         );
     }

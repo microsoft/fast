@@ -1,9 +1,11 @@
 import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager";
 import {
     applyControl,
+    applyControlRegion,
     applyControlWrapper,
     applyFormItemBadge,
     applyFormItemDisabled,
+    applyInvalidMessage,
     applyLabelRegionStyle,
     applyLabelStyle,
     applySelectInputStyles,
@@ -15,7 +17,6 @@ import { FormItemSelectClassNameContract } from "./form-item.select.props";
 
 const styles: ComponentStyles<FormItemSelectClassNameContract, {}> = {
     formItemSelect: {
-        display: "flex",
         ...applyControlWrapper(),
     },
     formItemSelect__disabled: {
@@ -33,11 +34,17 @@ const styles: ComponentStyles<FormItemSelectClassNameContract, {}> = {
     formItemSelect_controlLabelRegion: {
         ...applyLabelRegionStyle(),
     },
+    formItemSelect_controlRegion: {
+        ...applyControlRegion(),
+    },
     formItemSelect_controlSpan: {
         ...applySelectSpanStyles(),
     },
     formItemSelect_controlInput: {
         ...applySelectInputStyles(),
+    },
+    formItemSelect_invalidMessage: {
+        ...applyInvalidMessage(),
     },
     formItemSelect_softRemove: {
         ...applySoftRemove(),

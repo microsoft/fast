@@ -1,4 +1,5 @@
 import React from "react";
+import ajv, { Ajv, ErrorObject, ValidateFunction } from "ajv";
 import { cloneDeep, get, set, unset } from "lodash-es";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
@@ -34,15 +35,26 @@ class Form extends React.Component<
 > {
     public static displayName: string = "Form";
 
+    public static defaultProps: Partial<FormProps> = {
+        displayValidationBrowserDefault: true,
+    };
+
     /**
      * The default untitled string
      */
     private untitled: string;
 
+    /**
+     * The validator
+     */
+    private validator: Ajv;
+
     constructor(props: FormProps & ManagedClasses<FormClassNameContract>) {
         super(props);
 
         this.untitled = "Untitled";
+        this.validator = new ajv({ schemaId: "auto", allErrors: true });
+
         const schema: any = mapPluginsToSchema(
             this.props.schema,
             this.props.data,
@@ -71,6 +83,7 @@ class Form extends React.Component<
                           this.props.childOptions
                       )
                     : getNavigation("", this.props.data, schema, this.props.childOptions),
+            validationErrors: void 0,
         };
     }
 
@@ -109,6 +122,19 @@ class Form extends React.Component<
         }
 
         return classNames;
+    }
+
+    /**
+     * Gets the validation errors
+     */
+    private getValidationErrors(props: FormProps): ErrorObject[] | void {
+        this.validator.removeSchema(props.schema.id);
+        const validate: ValidateFunction = this.validator.compile(props.schema);
+        const isValid: boolean | PromiseLike<any> = validate(props.data);
+
+        if (!!!isValid) {
+            return validate.errors;
+        }
     }
 
     /**
@@ -179,6 +205,7 @@ class Form extends React.Component<
 
         const schemaState: Partial<FormState> = {
             dataCache: getDataCache(dataCache, props.data),
+            validationErrors: this.getValidationErrors(props),
         };
 
         return Object.assign({}, state, schemaState);
@@ -306,6 +333,11 @@ class Form extends React.Component<
                 dataLocation={this.state.activeDataLocation}
                 untitled={this.untitled}
                 childOptions={this.props.childOptions}
+                validationErrors={this.state.validationErrors}
+                displayValidationBrowserDefault={
+                    this.props.displayValidationBrowserDefault
+                }
+                displayValidationInline={this.props.displayValidationInline}
             />
         );
     }

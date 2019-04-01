@@ -4,17 +4,14 @@ import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-
 import { get } from "lodash-es";
 import FormItemCommon from "./form-item.props";
 import styles from "./form-item.checkbox.style";
-import { FormItemCheckboxClassNameContract } from "./form-item.checkbox.props";
+import { FormItemCheckboxProps } from "./form-item.checkbox.props";
 import FormItemBase from "./form-item.base";
 
 /**
  * Schema form component definition
  * @extends React.Component
  */
-class FormItemCheckbox extends FormItemBase<
-    FormItemCommon & ManagedClasses<FormItemCheckboxClassNameContract>,
-    {}
-> {
+class FormItemCheckbox extends FormItemBase<FormItemCheckboxProps, {}> {
     public static displayName: string = "FormItemCheckbox";
 
     public render(): JSX.Element {
@@ -25,30 +22,42 @@ class FormItemCheckbox extends FormItemBase<
 
         return (
             <div className={this.generateClassNames()}>
-                <input
-                    className={this.props.managedClasses.formItemCheckbox_input}
-                    id={this.props.dataLocation}
-                    type="checkbox"
-                    value={value.toString()}
-                    onChange={this.handleChange}
-                    checked={value}
-                    disabled={this.props.disabled}
-                />
-                <span />
-                <label
-                    className={this.props.managedClasses.formItemCheckbox_label}
-                    htmlFor={this.props.dataLocation}
+                <div
+                    className={get(this.props, "managedClasses.formItemCheckbox_control")}
                 >
-                    {this.props.label}
-                </label>
-                {this.renderBadge(
-                    get(this.props, "managedClasses.formItemCheckbox_badge")
-                )}
-                <div className={this.props.managedClasses.formItemCheckbox_softRemove}>
-                    {this.renderSoftRemove(
-                        this.props.managedClasses.formItemCheckbox_softRemoveInput
+                    <input
+                        className={this.props.managedClasses.formItemCheckbox_input}
+                        id={this.props.dataLocation}
+                        type="checkbox"
+                        value={value.toString()}
+                        onChange={this.handleChange}
+                        checked={value}
+                        disabled={this.props.disabled}
+                        ref={this.inputRef}
+                        onFocus={this.reportValidity}
+                        onBlur={this.updateValidity}
+                    />
+                    <span />
+                    <label
+                        className={this.props.managedClasses.formItemCheckbox_label}
+                        htmlFor={this.props.dataLocation}
+                    >
+                        {this.props.label}
+                    </label>
+                    {this.renderBadge(
+                        get(this.props, "managedClasses.formItemCheckbox_badge")
                     )}
+                    <div
+                        className={this.props.managedClasses.formItemCheckbox_softRemove}
+                    >
+                        {this.renderSoftRemove(
+                            this.props.managedClasses.formItemCheckbox_softRemoveInput
+                        )}
+                    </div>
                 </div>
+                {this.renderInvalidMessage(
+                    get(this.props, "managedClasses.formItemCheckbox_invalidMessage")
+                )}
             </div>
         );
     }

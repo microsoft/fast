@@ -4,6 +4,7 @@ import {
     FormOrderByPropertyNamesProperties,
     FormOrderByPropertyNamesProps,
 } from "./form.props";
+import { ErrorObject } from "ajv";
 
 /**
  * Section class name contract
@@ -104,6 +105,21 @@ export interface FormSectionProps {
      * The configuration for ordering properties by their names
      */
     orderByPropertyNames?: FormOrderByPropertyNamesProps;
+
+    /**
+     * The validation errors
+     */
+    validationErrors: ErrorObject[] | void;
+
+    /**
+     * Display the validation inline
+     */
+    displayValidationInline?: boolean;
+
+    /**
+     * Display the validation as browser default tooltips
+     */
+    displayValidationBrowserDefault?: boolean;
 }
 
 export interface FormCategoryItems {

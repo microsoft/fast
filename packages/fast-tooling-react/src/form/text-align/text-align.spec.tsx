@@ -17,6 +17,7 @@ const textAlignProps: CustomFormItemComponent = {
     required: false,
     label: "",
     onChange: jest.fn(),
+    invalidMessage: "",
 };
 
 describe("TextAlign", () => {

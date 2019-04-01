@@ -17,6 +17,7 @@ const themeProps: CustomFormItemComponent = {
     required: false,
     label: "",
     onChange: jest.fn(),
+    invalidMessage: "",
 };
 
 describe("Theme", () => {
