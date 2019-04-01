@@ -17,8 +17,7 @@
             "type": "children",
             "ids": [
                 "objects",
-                "arrays",
-                "anyOf"
+                "arrays"
             ],
             "defaults": [
                 "text"
@@ -28,7 +27,6 @@
             "title": "Restricted children without react defaults",
             "type": "children",
             "ids": [
-                "textField",
                 "children"
             ]
         }
