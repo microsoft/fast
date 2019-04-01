@@ -19,6 +19,11 @@ export interface RowManagedClasses extends ManagedClasses<RowClassNamesContract>
 export interface RowUnhandledProps extends React.HTMLAttributes<HTMLDivElement> {}
 export interface RowHandledProps extends RowManagedClasses {
     /**
+     * The initial height of the row
+     */
+    initialHeight?: number;
+
+    /**
      * Causes the row to fill all available vertical space
      */
     fill?: boolean;
@@ -34,7 +39,7 @@ export interface RowHandledProps extends RowManagedClasses {
     maxHeight?: number;
 
     /**
-     * The initial height of the row
+     * The height of the row
      */
     height?: number;
 
