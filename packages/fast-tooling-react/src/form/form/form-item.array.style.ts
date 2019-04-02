@@ -12,6 +12,8 @@ import {
     applyLabelRegionStyle,
     applyLabelStyle,
     applyRemoveItemStyle,
+    applySoftRemove,
+    applySoftRemoveInput,
     background100,
     foreground300,
     insetStrongBoxShadow,
@@ -25,6 +27,14 @@ const styles: ComponentStyles<FormItemArrayClassNameContract, {}> = {
     formItemArray: {
         ...applyControlWrapper(),
     },
+    formItemArray_addItem: {
+        ...applyLabelRegionStyle(),
+        position: "relative",
+    },
+    formItemArray_addItemLabel: {
+        ...applyLabelStyle(),
+        maxWidth: "calc(100% - 30px)",
+    },
     formItemArray_badge: {
         ...applyFormItemBadge(),
     },
@@ -33,7 +43,7 @@ const styles: ComponentStyles<FormItemArrayClassNameContract, {}> = {
         position: "relative",
         verticalAlign: "middle",
     },
-    formItemArray_controlAddButton: {
+    formItemArray_addItemButton: {
         position: "absolute",
         right: "5px",
         top: "1px",
@@ -116,6 +126,12 @@ const styles: ComponentStyles<FormItemArrayClassNameContract, {}> = {
     },
     formItemArray_invalidMessage: {
         ...applyInvalidMessage(),
+    },
+    formItemArray_softRemove: {
+        ...applySoftRemove(),
+    },
+    formItemArray_softRemoveInput: {
+        ...applySoftRemoveInput(),
     },
 };
 

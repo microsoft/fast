@@ -29,7 +29,9 @@ const arrayProps: FormItemArrayProps = {
 const managedClasses: FormItemArrayClassNameContract = {
     formItemArray: "formItemArray-class",
     formItemArray_control: "formItemArray_control-class",
-    formItemArray_controlAddButton: "formItemArray_controlAddButton-class",
+    formItemArray_addItem: "formItemArray_addItem-class",
+    formItemArray_addItemLabel: "formItemArray_addItemLabel-class",
+    formItemArray_addItemButton: "formItemArray_controlAddButton-class",
     formItemArray_controlLabel: "formItemArray_controlLabel-class",
     formItemArray_existingItemList: "formItemArray_existingItemList-class",
     formItemArray_existingItemListItem: "formItemArray_existingItemListItem-class",
@@ -69,7 +71,7 @@ describe("Array", () => {
         );
 
         expect(
-            rendered.find(`.${managedClasses.formItemArray_controlAddButton}`).length
+            rendered.find(`.${managedClasses.formItemArray_addItemButton}`).length
         ).toEqual(1);
     });
     test("should generate a button to add an array item if no maximum number of items has been specified", () => {
@@ -82,7 +84,7 @@ describe("Array", () => {
         );
 
         expect(
-            rendered.find(`.${managedClasses.formItemArray_controlAddButton}`).length
+            rendered.find(`.${managedClasses.formItemArray_addItemButton}`).length
         ).toEqual(1);
     });
     test("should not generate a button to add an array item if the maximum number of items has been reached", () => {
@@ -96,7 +98,7 @@ describe("Array", () => {
         );
 
         expect(
-            rendered.find(`.${managedClasses.formItemArray_controlAddButton}`).length
+            rendered.find(`.${managedClasses.formItemArray_addItemButton}`).length
         ).toEqual(0);
     });
     test("should add an item to the array if the add button has been clicked", () => {
@@ -111,7 +113,7 @@ describe("Array", () => {
             />
         );
         const addButton: any = rendered.find(
-            `.${managedClasses.formItemArray_controlAddButton}`
+            `.${managedClasses.formItemArray_addItemButton}`
         );
         addButton.simulate("click");
 
@@ -192,6 +194,54 @@ describe("Array", () => {
         expect(callback.mock.calls[0][1]).toBe(undefined);
         expect(callback.mock.calls[0][2]).toBe(true);
         expect(callback.mock.calls[0][3]).toBe(1);
+    });
+    test("should remove the data if the soft remove is triggered", () => {
+        const callback: any = jest.fn();
+        const rendered: any = mount(
+            <FormItemArray
+                {...arrayProps}
+                schema={schema}
+                data={["foo", "bar", "bat"]}
+                managedClasses={managedClasses}
+                onChange={callback}
+            />
+        );
+
+        rendered
+            .find("input")
+            .at(0)
+            .simulate("change");
+
+        expect(callback).toHaveBeenCalled();
+        expect(callback.mock.calls[0][1]).toEqual(undefined);
+    });
+    test("should add the previous data that was removed if the soft remove is triggered", () => {
+        const callback: any = jest.fn();
+        const data: string[] = ["foo", "bar", "bat"];
+        const rendered: any = mount(
+            <FormItemArray
+                {...arrayProps}
+                schema={schema}
+                data={data}
+                managedClasses={managedClasses}
+                onChange={callback}
+            />
+        );
+
+        rendered
+            .find("input")
+            .at(0)
+            .simulate("change");
+
+        rendered.setProps({ data: callback.mock.calls[0][1] });
+
+        rendered
+            .find("input")
+            .at(0)
+            .simulate("change");
+
+        expect(callback).toHaveBeenCalledTimes(2);
+        expect(callback.mock.calls[1][1]).toBe(data);
     });
     test("should not show an invalid message inline if `invalidMessage` is passed and `displayValidationInline` is undefined", () => {
         const invalidMessage: string = "Foo";

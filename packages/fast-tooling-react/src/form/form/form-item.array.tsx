@@ -27,6 +27,7 @@ class FormItemArray extends FormItemBase<
         return (
             <div className={this.props.managedClasses.formItemArray}>
                 {this.renderLabel()}
+                {this.renderAddArrayItem()}
                 {this.renderExistingArrayItems()}
             </div>
         );
@@ -63,7 +64,19 @@ class FormItemArray extends FormItemBase<
                             get(this.props, "managedClasses.formItemArray_badge")
                         )}
                     </div>
-                    {this.renderAddArrayItemTrigger()}
+                    <div
+                        className={get(
+                            this.props,
+                            "managedClasses.formItemArray_softRemove"
+                        )}
+                    >
+                        {this.renderSoftRemove(
+                            get(
+                                this.props,
+                                "managedClasses.formItemArray_softRemoveInput"
+                            )
+                        )}
+                    </div>
                 </div>
                 {this.renderInvalidMessage(
                     get(this.props, "managedClasses.formItemArray_invalidMessage")
@@ -76,28 +89,16 @@ class FormItemArray extends FormItemBase<
      * Render a button for adding an item to the array
      */
     private renderAddArrayItemTrigger(): React.ReactNode {
-        const maxItems: number =
-            this.props.schemaLocation === ""
-                ? get(this.props, "schema.maxItems", Infinity)
-                : get(
-                      this.props,
-                      `schema.${this.props.schemaLocation}.maxItems`,
-                      Infinity
-                  );
-        const items: number = Array.isArray(this.props.data) ? this.props.data.length : 0;
-
-        if (maxItems > items) {
-            return (
-                <button
-                    className={this.props.managedClasses.formItemArray_controlAddButton}
-                    aria-label={"Select to add item"}
-                    onClick={this.arrayItemClickHandlerFactory(
-                        this.props.dataLocation,
-                        ArrayAction.add
-                    )}
-                />
-            );
-        }
+        return (
+            <button
+                className={get(this.props, "managedClasses.formItemArray_addItemButton")}
+                aria-label={"Select to add item"}
+                onClick={this.arrayItemClickHandlerFactory(
+                    this.props.dataLocation,
+                    ArrayAction.add
+                )}
+            />
+        );
     }
 
     /**
@@ -122,6 +123,61 @@ class FormItemArray extends FormItemBase<
                         index
                     )}
                 />
+            );
+        }
+    }
+
+    /**
+     * Render an add array item section
+     */
+    private renderAddArrayItem(): React.ReactNode {
+        const maxItemLength: number = get(this.props, `schema.maxItems`, Infinity);
+        const existingItemLength: number = Array.isArray(this.props.data)
+            ? this.props.data.length
+            : 0;
+
+        if (maxItemLength > existingItemLength) {
+            return (
+                <div className={get(this.props, "managedClasses.formItemArray_addItem")}>
+                    <div
+                        className={get(
+                            this.props,
+                            "managedClasses.formItemArray_addItemLabel"
+                        )}
+                    >
+                        Add item
+                    </div>
+                    {this.renderAddArrayItemTrigger()}
+                </div>
+            );
+        }
+    }
+
+    /**
+     * Render the links to an array section to be activated
+     */
+    private renderExistingArrayItems(): React.ReactNode {
+        const arraySections: string[] = getArrayLinks(this.props.data);
+        const props: any = Object.assign({}, sortingProps, {
+            onSortEnd: this.handleSort,
+            helperClass: this.props.managedClasses
+                .formItemArray_existingItemListItem__sorting,
+        });
+
+        if (arraySections.length > 0) {
+            return React.createElement(
+                SortableContainer(() => {
+                    return (
+                        <ul
+                            className={
+                                this.props.managedClasses.formItemArray_existingItemList
+                            }
+                        >
+                            {this.generateArrayLinkItems()}
+                        </ul>
+                    );
+                }),
+                props
             );
         }
     }
@@ -241,35 +297,6 @@ class FormItemArray extends FormItemBase<
             arrayMove(this.props.data, oldIndex, newIndex)
         );
     };
-
-    /**
-     * Generates the links to an array section to be activated
-     */
-    private renderExistingArrayItems(): React.ReactNode {
-        const arraySections: string[] = getArrayLinks(this.props.data);
-        const props: any = Object.assign({}, sortingProps, {
-            onSortEnd: this.handleSort,
-            helperClass: this.props.managedClasses
-                .formItemArray_existingItemListItem__sorting,
-        });
-
-        if (arraySections.length > 0) {
-            return React.createElement(
-                SortableContainer(() => {
-                    return (
-                        <ul
-                            className={
-                                this.props.managedClasses.formItemArray_existingItemList
-                            }
-                        >
-                            {this.generateArrayLinkItems()}
-                        </ul>
-                    );
-                }),
-                props
-            );
-        }
-    }
 }
 
 export { FormItemArray };
