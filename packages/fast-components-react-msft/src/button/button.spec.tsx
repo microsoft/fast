@@ -46,6 +46,7 @@ describe("button", (): void => {
             shallow(<MSFTButton appearance={ButtonAppearance.outline} />);
             shallow(<MSFTButton appearance={ButtonAppearance.lightweight} />);
             shallow(<MSFTButton appearance={ButtonAppearance.primary} />);
+            shallow(<MSFTButton appearance={ButtonAppearance.stealth} />);
         }).not.toThrow();
     });
 
@@ -92,6 +93,12 @@ describe("button", (): void => {
         const rendered: any = mount(<Button appearance={ButtonAppearance.justified} />);
 
         expect(rendered.find("button").prop("className")).toContain("button__justified");
+    });
+
+    test("should apply a 'stealth' html class when appearance is stealth", () => {
+        const rendered: any = mount(<Button appearance={ButtonAppearance.justified} />);
+
+        expect(rendered.find("button").prop("className")).toContain("button__stealth");
     });
 
     test("should set a custom class name when passed", () => {

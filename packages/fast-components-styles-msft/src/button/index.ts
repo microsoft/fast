@@ -183,6 +183,9 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = (
             borderWidth: "0",
             justifyContent: "flex-start",
         },
+        button__stealth: {
+            background: "purple",
+        },
         button_contentRegion: {
             position: "relative",
             "&::before": {

@@ -59,6 +59,10 @@ const examples: ComponentFactoryExample<ButtonProps> = {
             children: "Justified button",
         },
         {
+            appearance: ButtonAppearance.stealth,
+            children: "Justified button",
+        },
+        {
             href: "#",
             children: "Anchor",
         },

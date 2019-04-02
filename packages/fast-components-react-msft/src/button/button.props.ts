@@ -15,6 +15,7 @@ export enum ButtonAppearance {
     lightweight = "lightweight",
     outline = "outline",
     primary = "primary",
+    stealth = "stealth",
 }
 
 export interface ButtonManagedClasses extends ManagedClasses<ButtonClassNameContract> {}
