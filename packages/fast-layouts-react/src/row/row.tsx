@@ -118,7 +118,7 @@ export class Row extends Foundation<
 
     public static defaultProps: Partial<RowProps> = {
         fill: false,
-        initialHeight: 300,
+        initialHeight: 40,
         minHeight: 40,
         maxHeight: 800,
         resizable: false,
