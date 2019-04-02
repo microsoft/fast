@@ -1,7 +1,9 @@
 import {
+    accentPaletteSwatch,
     findClosestSwatchIndex,
     findSwatchIndex,
     getSwatch,
+    neutralPaletteSwatch,
     palette,
     Palette,
     PaletteType,
@@ -147,5 +149,16 @@ describe("getSwatch", (): void => {
         expect(getSwatch(0, colorPalette)).toBe("#FFF");
         expect(getSwatch(1, colorPalette)).toBe("#F00");
         expect(getSwatch(2, colorPalette)).toBe("#000");
+    });
+});
+
+describe("neutralPaletteSwatch & accentPaletteSwatch", (): void => {
+    test("should opperate on designSystemDefaults", (): void => {
+        expect(neutralPaletteSwatch(0)({} as DesignSystem)).toBe(
+            designSystemDefaults.neutralPalette[0]
+        );
+        expect(accentPaletteSwatch(0)({} as DesignSystem)).toBe(
+            designSystemDefaults.accentPalette[0]
+        );
     });
 });

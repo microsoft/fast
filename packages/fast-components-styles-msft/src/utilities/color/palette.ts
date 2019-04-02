@@ -114,9 +114,7 @@ export function findClosestSwatchIndex(
 }
 
 /**
- * Determines if we're in a dark theme, determined by comparing the contrast
- * of light neutral-foreground and dark neutral-foreground to the background. If light neutral-foreground
- * has a higher contrast, then we're in a dark theme
+ * Determines if the design-system should be considered in "dark mode".
  */
 export function isDarkTheme(designSystem: DesignSystem): boolean {
     return (
@@ -126,9 +124,51 @@ export function isDarkTheme(designSystem: DesignSystem): boolean {
 }
 
 /**
+ * Determines if the design-system should be considered in "light mode".
+ */
+export function isLightMode(designSystem: DesignSystem): boolean {
+    return !isDarkMode(designSystem);
+}
+
+/**
  * Safely retrieves an index of a palette. The index is clamped to valid
  * array indexes so that a swatch is always returned
  */
 export function getSwatch(index: number, colorPalette: Palette): Swatch {
     return colorPalette[clamp(index, 0, colorPalette.length - 1)];
 }
+
+function swatchFromPalette(
+    paletteName: PaletteType
+): (a: number, b?: number) => DesignSystemResolver<Swatch> {
+    const paletteKey: keyof DesignSystem =
+        paletteName === PaletteType.accent ? "accentPalette" : "neutralPalette";
+
+    return (valueA: number, valueB?: number): DesignSystemResolver<Swatch> => {
+        return ensureDesignSystemDefaults(
+            (designSystem: DesignSystem): Swatch => {
+                return typeof valueB === "number" && isDarkMode(designSystem)
+                    ? getSwatch(valueB, designSystem[paletteKey])
+                    : getSwatch(valueA, designSystem[paletteKey]);
+            }
+        );
+    };
+}
+
+/**
+ * Retrieve a swatch, by index, from the neutral palette. If two indexes are provided,
+ * the first will be used when in "light mode" and the second will be used when in "dark mode"
+ */
+export const neutralPaletteSwatch: (
+    a: number,
+    b?: number
+) => DesignSystemResolver<Swatch> = swatchFromPalette(PaletteType.neutral);
+
+/**
+ * Retrieve a swatch, by index, from the accent palette. If two indexes are provided,
+ * the first will be used when in "light mode" and the second will be used when in "dark mode"
+ */
+export const accentPaletteSwatch: (
+    a: number,
+    b?: number
+) => DesignSystemResolver<Swatch> = swatchFromPalette(PaletteType.accent);
