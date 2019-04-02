@@ -1,8 +1,8 @@
 # Background
 
-The *background* component is used to create regions of a page that has a background color. The component will coordinate applying the supplied background color to both the created element *and* adjusting the `DesignSystem` for all child components.
+The *background* component is used to create regions of a page that have a background color. The component will coordinate applying the supplied background color to both the created element *and* adjusting the `DesignSystem` for all child components.
 
-#Usage
+## Usage
 
 Ensure that a `DesignSystemProvider` that supplies a `neutralPalette` property is wrapping any `Background` instance. The easiest way to do this is using `DesignSystemDefaults`.
 
