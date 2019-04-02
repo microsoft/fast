@@ -1,7 +1,7 @@
+import { ComponentStyles, ComponentStyleSheet } from "@microsoft/fast-jss-manager";
 import { applyFocusVisible, toPx } from "@microsoft/fast-jss-utilities";
-import { DesignSystem, withDesignSystemDefaults } from "../design-system";
 import { SelectOptionClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
-import { height, horizontalSpacing } from "../utilities/density";
+import { glyphSize, height, horizontalSpacing } from "../utilities/density";
 import {
     neutralFillStealthHover,
     neutralFillStealthRest,
@@ -9,7 +9,7 @@ import {
     neutralFocus,
     neutralForegroundRest,
 } from "../utilities/color";
-import { ComponentStyles, ComponentStyleSheet } from "@microsoft/fast-jss-manager";
+import { DesignSystem, withDesignSystemDefaults } from "../design-system";
 import {
     applyLocalizedProperty,
     Direction,
@@ -61,7 +61,8 @@ const styles: ComponentStyles<SelectOptionClassNameContract, DesignSystem> = (
         selectOption_glyph: {
             display: "inline-block",
             position: "relative",
-            maxWidth: "16px",
+            width: glyphSize,
+            height: glyphSize,
             flexShrink: "0",
             margin: `${applyLocalizedProperty(
                 `0 ${horizontalSpacing()(designSystem)} 0 0`,

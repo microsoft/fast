@@ -12,7 +12,7 @@ import {
     accentForegroundRest,
     neutralForegroundRest,
 } from "../utilities/color";
-import { horizontalSpacing } from "../utilities/density";
+import { glyphSize, horizontalSpacing } from "../utilities/density";
 
 // Since MSFT button is already styled, we need to override in this way to alter button classes
 export const actionTriggerButtonOverrides: ComponentStyles<
@@ -21,13 +21,12 @@ export const actionTriggerButtonOverrides: ComponentStyles<
 > = {
     button: {
         maxWidth: "100%",
-        minWidth: "14px",
+        minWidth: "initial",
     },
     button_contentRegion: {
         transition: "all 600ms cubic-bezier(0.19, 1, 0.22, 1)",
         display: "flex",
         alignItems: "center",
-        [applyLocalizedProperty("left", "right", Direction.ltr)]: "0",
     },
 };
 
@@ -42,7 +41,8 @@ const styles: ComponentStyles<ActionTriggerClassNameContract, DesignSystem> = (
         actionTrigger_glyph: {
             display: "inline-block",
             position: "relative",
-            maxWidth: "16px",
+            width: glyphSize,
+            height: glyphSize,
             flexShrink: "0",
             [applyLocalizedProperty(
                 "marginRight",

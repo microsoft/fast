@@ -7,7 +7,6 @@ import {
     CallToActionUnhandledProps,
 } from "./call-to-action.props";
 import { get } from "lodash-es";
-import { glyphArrowright } from "@microsoft/fast-glyphs-msft";
 import { callToActionButtonOverrides } from "@microsoft/fast-components-styles-msft";
 import { DisplayNamePrefix } from "../utilities";
 
@@ -90,10 +89,11 @@ class CallToAction extends Foundation<
     private renderAfterContent(): (classname?: string) => React.ReactNode {
         return (): React.ReactNode => {
             return (
-                <span
-                    className={get(this.props, "managedClasses.callToAction_glyph")}
-                    dangerouslySetInnerHTML={{ __html: glyphArrowright }}
-                />
+                <span className={get(this.props, "managedClasses.callToAction_glyph")}>
+                    <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M4.023 15.273L11.29 8 4.023.727l.704-.704L12.71 8l-7.984 7.977-.704-.704z" />
+                    </svg>
+                </span>
             );
         };
     }

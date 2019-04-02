@@ -12,7 +12,7 @@ import {
     accentForegroundRest,
     neutralForegroundRest,
 } from "../utilities/color";
-import { horizontalSpacing } from "../utilities/density";
+import { glyphSize, horizontalSpacing } from "../utilities/density";
 
 // Since MSFT button is already styled, we need to override in this way to alter button classes
 export const actionToggleButtonOverrides: ComponentStyles<
@@ -21,7 +21,7 @@ export const actionToggleButtonOverrides: ComponentStyles<
 > = {
     button: {
         maxWidth: "100%",
-        minWidth: "14px",
+        minWidth: "initial",
     },
     button_contentRegion: {
         alignItems: "center",
@@ -43,12 +43,14 @@ const styles: ComponentStyles<ActionToggleClassNameContract, DesignSystem> = (
         actionToggle_selectedGlyph: {
             display: "inline-block",
             position: "relative",
-            maxWidth: "16px",
+            width: glyphSize,
+            height: glyphSize,
         },
         actionToggle_unselectedGlyph: {
             display: "inline-block",
             position: "relative",
-            maxWidth: "16px",
+            width: glyphSize,
+            height: glyphSize,
         },
         actionToggle__primary: {
             "& $actionToggle_selectedGlyph, & $actionToggle_unselectedGlyph": {

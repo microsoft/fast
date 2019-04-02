@@ -22,7 +22,7 @@ import {
 import { ToggleClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import { applyDisabledState } from "../utilities/disabled";
 import { applyScaledTypeRamp } from "../utilities/typography";
-import { heightNumber } from "../utilities/density";
+import { DensityCategory, getDensityCategory, heightNumber } from "../utilities/density";
 
 const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = (
     config: DesignSystem
@@ -30,11 +30,19 @@ const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = (
     const designSystem: DesignSystem = withDesignSystemDefaults(config);
     const direction: Direction = designSystem.direction;
     const height: number = heightNumber()(designSystem) / 2 + designSystem.designUnit;
-    const width: number = height * 2 + designSystem.designUnit;
-    const indicatorSize: number = height / 2;
-    const indicatorMargin: number = indicatorSize / 2;
-    const indicatorCheckedLeft: number =
-        height + designSystem.designUnit + indicatorMargin;
+    const width: number = height * 2;
+
+    const category: DensityCategory = getDensityCategory(designSystem);
+    const indicatorMarginOffset: number =
+        category === DensityCategory.compact
+            ? 0
+            : category === DensityCategory.spacious
+                ? 2
+                : 1;
+
+    const indicatorMargin: number = designSystem.designUnit + indicatorMarginOffset;
+    const indicatorSize: number = height - indicatorMargin * 2;
+    const indicatorCheckedLeft: number = width - indicatorMargin - indicatorSize;
 
     return {
         toggle: {
@@ -121,6 +129,7 @@ const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = (
         },
         toggle_statusMessage: {
             ...applyScaledTypeRamp("t7"),
+            lineHeight: toPx(height),
             float: applyLocalizedProperty("left", "right", direction),
             [applyLocalizedProperty("padding-left", "padding-right", direction)]: "5px",
             userSelect: "none",

@@ -7,6 +7,7 @@ import {
     FlipperDirection,
     FlipperHandledProps,
     FlipperManagedClasses,
+    FlipperProps,
     FlipperUnhandledProps,
 } from "./flipper.props";
 import {
@@ -17,6 +18,10 @@ import { DisplayNamePrefix } from "../utilities";
 
 class Flipper extends Foundation<FlipperHandledProps, FlipperUnhandledProps, {}> {
     public static displayName: string = `${DisplayNamePrefix}Flipper`;
+
+    public static defaultProps: Partial<FlipperProps> = {
+        direction: FlipperDirection.next,
+    };
 
     protected handledProps: HandledProps<FlipperHandledProps> = {
         label: void 0,
@@ -34,9 +39,8 @@ class Flipper extends Foundation<FlipperHandledProps, FlipperUnhandledProps, {}>
                 {...this.coerceButtonProps()}
                 className={this.generateClassNames()}
             >
-                <span className={get(this.props, "managedClasses.flipper_glyph")}>
-                    {this.props.children}
-                </span>
+                {this.renderGlyph()}
+                {this.props.children}
             </Button>
         );
     }
@@ -74,6 +78,30 @@ class Flipper extends Foundation<FlipperHandledProps, FlipperUnhandledProps, {}>
         }
 
         return coercedProps;
+    }
+
+    private renderGlyph(): React.ReactNode {
+        let path: React.ReactNode;
+        if (this.props.direction === FlipperDirection.previous) {
+            path = (
+                <path d="M11.273 15.977L3.29 8 11.273.023l.704.704L4.71 8l7.266 7.273-.704.704z" />
+            );
+        } else {
+            path = (
+                <path d="M4.023 15.273L11.29 8 4.023.727l.704-.704L12.71 8l-7.984 7.977-.704-.704z" />
+            );
+        }
+        if (path) {
+            return (
+                <svg
+                    viewBox="0 0 16 16"
+                    xmlns="http://www.w3.org/2000/svg"
+                    className={get(this.props, "managedClasses.flipper_glyph")}
+                >
+                    {path}
+                </svg>
+            );
+        }
     }
 }
 

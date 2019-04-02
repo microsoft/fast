@@ -13,8 +13,44 @@ import {
     Direction,
     toPx,
 } from "@microsoft/fast-jss-utilities";
-import { DesignSystem, withDesignSystemDefaults } from "../design-system/index";
+import {
+    DesignSystem,
+    ensureDesignSystemDefaults,
+    withDesignSystemDefaults,
+} from "../design-system";
 import { accentFillRest, accentForegroundCut } from "../utilities/color";
+import { glyphSize } from "../utilities/density";
+
+function applyContentRegionTransform(): CSSRules<DesignSystem> {
+    return {
+        transform: ensureDesignSystemDefaults(
+            (designSystem: DesignSystem): string => {
+                const translateXValue: string = toPx(designSystem.designUnit);
+                return applyLocalizedProperty(
+                    `translateX(-${translateXValue})`,
+                    `translateX(${translateXValue})`,
+                    designSystem.direction
+                );
+            }
+        ),
+    };
+}
+
+function applyGlyphTransform(): CSSRules<DesignSystem> {
+    return {
+        transform: ensureDesignSystemDefaults(
+            (designSystem: DesignSystem): string => {
+                const translateXValue: string = toPx(designSystem.designUnit);
+                return applyLocalizedProperty(
+                    `translateX(${translateXValue})`,
+                    `rotate(180deg) translateX(${translateXValue})`,
+                    designSystem.direction
+                );
+            }
+        ),
+        position: "relative",
+    };
+}
 
 // Since MSFT button is already styled, we need to override in this way to alter button classes
 export const callToActionButtonOverrides: ComponentStyles<
@@ -26,18 +62,18 @@ export const callToActionButtonOverrides: ComponentStyles<
     },
     button_contentRegion: {
         transition: "all 600ms cubic-bezier(0.19, 1, 0.22, 1)",
-        [applyLocalizedProperty("left", "right", Direction.ltr)]: "0",
     },
     button__primary: {
         "&:hover": {
             "& $button_contentRegion": {
-                transform: (config: DesignSystem): string => {
-                    const designSystem: DesignSystem = withDesignSystemDefaults(config);
-                    const xTranslatePx: string = toPx(designSystem.designUnit);
-                    return designSystem.direction === Direction.ltr
-                        ? `translateX(-${xTranslatePx})`
-                        : `translateX(${xTranslatePx})`;
-                },
+                ...applyContentRegionTransform(),
+            },
+        },
+    },
+    button__lightweight: {
+        "&:hover": {
+            "& $button_contentRegion": {
+                ...applyContentRegionTransform(),
             },
         },
     },
@@ -67,30 +103,22 @@ const styles: ComponentStyles<CallToActionClassNameContract, DesignSystem> = (
             whiteSpace: "nowrap",
             "&:hover": {
                 "& $callToAction_glyph": {
-                    transform:
-                        direction === Direction.ltr
-                            ? `translateX(${translateXValue})`
-                            : `rotate(180deg) translateX(${translateXValue})`,
-                    position: "relative",
+                    ...applyGlyphTransform(),
                 },
             },
             ...applyFocusVisible("& $callToAction_glyph", {
-                transform:
-                    direction === Direction.ltr
-                        ? `translateX(${translateXValue})`
-                        : `rotate(180deg) translateX(${translateXValue})`,
-                position: "relative",
+                ...applyGlyphTransform(),
             }),
         },
         callToAction_glyph: {
             fill: accentForegroundCut,
             display: "inline-block",
             position: "relative",
-            width: "8px",
+            width: glyphSize,
+            height: glyphSize,
             [applyLocalizedProperty("marginLeft", "marginRight", direction)]: "6px",
             transform: direction === Direction.ltr ? "none" : "rotate(180deg)",
             transition: "all 600ms cubic-bezier(0.19, 1, 0.22, 1)",
-            marginTop: direction === Direction.ltr ? translateXValue : "0",
         },
         callToAction__primary: {
             "& $callToAction_glyph": {

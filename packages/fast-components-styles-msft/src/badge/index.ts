@@ -21,7 +21,10 @@ const styles: ComponentStyles<BadgeClassNameContract, DesignSystem> = (
     // Badges do not switch color on theme change
     const filledBackground: string = "#FFD800";
     const largeHeight: number =
-        (designSystem.baseHeightMultiplier + designSystem.density - 2) *
+        Math.max(designSystem.baseHeightMultiplier + designSystem.density - 2, 5) *
+        designSystem.designUnit;
+    const smallHeight: number =
+        Math.max(designSystem.baseHeightMultiplier + designSystem.density - 3, 4) *
         designSystem.designUnit;
 
     return {
@@ -45,8 +48,8 @@ const styles: ComponentStyles<BadgeClassNameContract, DesignSystem> = (
         },
         badge__small: {
             ...applyScaledTypeRamp("t8"),
-            lineHeight: "13px",
-            height: "16px",
+            lineHeight: toPx(smallHeight - 3),
+            height: toPx(smallHeight),
             "&$badge__filled": {
                 padding: `1px ${toPx(
                     designSystem.designUnit *

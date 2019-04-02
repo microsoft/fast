@@ -1,10 +1,7 @@
-import designSystemDefaults, {
-    DesignSystem,
-    withDesignSystemDefaults,
-} from "../design-system";
+import { DesignSystem, withDesignSystemDefaults } from "../design-system";
 import { ComponentStyles, ComponentStyleSheet } from "@microsoft/fast-jss-manager";
 import { AutoSuggestOptionClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
-import { height } from "../utilities/density";
+import { height, horizontalSpacing } from "../utilities/density";
 import {
     neutralFillStealthHover,
     neutralFillStealthRest,
@@ -13,14 +10,16 @@ import {
     neutralForegroundRest,
 } from "../utilities/color";
 import { applyFocusVisible } from "@microsoft/fast-jss-utilities";
-import { applyTypeRampConfig } from "../utilities/typography";
+import { applyScaledTypeRamp } from "../utilities/typography";
 import {
     applyLocalizedProperty,
     Direction,
     ellipsis,
     toPx,
 } from "@microsoft/fast-jss-utilities";
-import { curry } from "lodash-es";
+import { applyCornerRadius, applyFocusPlaceholderBorder } from "../utilities/border";
+import { applyCursorDefault } from "../utilities/cursor";
+import { applyDisabledState } from "../utilities/disabled";
 
 const styles: ComponentStyles<AutoSuggestOptionClassNameContract, DesignSystem> = (
     config: DesignSystem
@@ -34,22 +33,26 @@ const styles: ComponentStyles<AutoSuggestOptionClassNameContract, DesignSystem> 
             height: height(),
             display: "grid",
             gridTemplateColumns: `${applyLocalizedProperty(
-                "12px auto auto 1fr 12px",
-                "12px 1fr auto auto 12px",
+                `${horizontalSpacing()(designSystem)} auto auto 1fr ${horizontalSpacing()(
+                    designSystem
+                )}`,
+                `${horizontalSpacing()(designSystem)} 1fr auto auto ${horizontalSpacing()(
+                    designSystem
+                )}`,
                 direction
             )}`,
             gridTemplateRows: "auto",
             alignItems: "center",
             padding: "0",
-            margin: "0 4px",
+            margin: `0 ${toPx(designSystem.designUnit)}`,
             whiteSpace: "nowrap",
             overflow: "hidden",
-            cursor: "default",
+            ...applyCursorDefault(),
             color: neutralForegroundRest,
-            ...applyTypeRampConfig("t7"),
+            ...applyScaledTypeRamp("t7"),
             background: neutralFillStealthRest,
-            borderRadius: toPx(designSystem.cornerRadius),
-            border: "2px solid transparent",
+            ...applyCornerRadius(),
+            ...applyFocusPlaceholderBorder(designSystem),
             ...applyFocusVisible<DesignSystem>({
                 borderColor: neutralFocus,
             }),
@@ -63,8 +66,7 @@ const styles: ComponentStyles<AutoSuggestOptionClassNameContract, DesignSystem> 
             ...ellipsis(),
         },
         autoSuggestOption__disabled: {
-            cursor: "not-allowed",
-            opacity: ".3",
+            ...applyDisabledState(designSystem),
             "&:hover": {
                 background: neutralFillStealthRest,
             },

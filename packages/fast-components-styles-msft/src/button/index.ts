@@ -11,7 +11,7 @@ import {
     ComponentStyleSheet,
     CSSRules,
 } from "@microsoft/fast-jss-manager";
-import { height, horizontalSpacing } from "../utilities/density";
+import { glyphSize, height, horizontalSpacing } from "../utilities/density";
 import {
     accentFillActive,
     accentFillHover,
@@ -188,12 +188,22 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = (
                 width: "100%",
                 [applyLocalizedProperty("left", "right", direction)]: "0",
             },
+            "& svg": {
+                width: glyphSize,
+                height: glyphSize,
+            },
         },
         button__disabled: {
             ...applyDisabledState(designSystem),
         },
-        button_beforeContent: {},
-        button_afterContent: {},
+        button_beforeContent: {
+            width: glyphSize,
+            height: glyphSize,
+        },
+        button_afterContent: {
+            width: glyphSize,
+            height: glyphSize,
+        },
     };
 };
 
