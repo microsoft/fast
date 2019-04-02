@@ -73,8 +73,8 @@ const styles: ComponentStyles<FlipperClassNameContract, DesignSystem> = (
         },
         flipper_glyph: {
             position: "relative",
-            width: glyphSize(),
-            height: glyphSize(),
+            width: glyphSize,
+            height: glyphSize,
         },
         flipper__next: {},
         flipper__previous: {},

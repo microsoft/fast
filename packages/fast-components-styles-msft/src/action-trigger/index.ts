@@ -41,8 +41,8 @@ const styles: ComponentStyles<ActionTriggerClassNameContract, DesignSystem> = (
         actionTrigger_glyph: {
             display: "inline-block",
             position: "relative",
-            width: glyphSize(),
-            height: glyphSize(),
+            width: glyphSize,
+            height: glyphSize,
             flexShrink: "0",
             [applyLocalizedProperty(
                 "marginRight",

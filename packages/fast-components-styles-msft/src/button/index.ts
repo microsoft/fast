@@ -189,20 +189,20 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = (
                 [applyLocalizedProperty("left", "right", direction)]: "0",
             },
             "& svg": {
-                width: glyphSize(),
-                height: glyphSize(),
+                width: glyphSize,
+                height: glyphSize,
             },
         },
         button__disabled: {
             ...applyDisabledState(designSystem),
         },
         button_beforeContent: {
-            width: glyphSize(),
-            height: glyphSize(),
+            width: glyphSize,
+            height: glyphSize,
         },
         button_afterContent: {
-            width: glyphSize(),
-            height: glyphSize(),
+            width: glyphSize,
+            height: glyphSize,
         },
     };
 };

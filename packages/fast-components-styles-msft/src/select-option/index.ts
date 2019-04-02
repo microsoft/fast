@@ -61,8 +61,8 @@ const styles: ComponentStyles<SelectOptionClassNameContract, DesignSystem> = (
         selectOption_glyph: {
             display: "inline-block",
             position: "relative",
-            width: glyphSize(),
-            height: glyphSize(),
+            width: glyphSize,
+            height: glyphSize,
             flexShrink: "0",
             margin: `${applyLocalizedProperty(
                 `0 ${horizontalSpacing()(designSystem)} 0 0`,

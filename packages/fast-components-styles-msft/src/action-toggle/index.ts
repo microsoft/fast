@@ -43,14 +43,14 @@ const styles: ComponentStyles<ActionToggleClassNameContract, DesignSystem> = (
         actionToggle_selectedGlyph: {
             display: "inline-block",
             position: "relative",
-            width: glyphSize(),
-            height: glyphSize(),
+            width: glyphSize,
+            height: glyphSize,
         },
         actionToggle_unselectedGlyph: {
             display: "inline-block",
             position: "relative",
-            width: glyphSize(),
-            height: glyphSize(),
+            width: glyphSize,
+            height: glyphSize,
         },
         actionToggle__primary: {
             "& $actionToggle_selectedGlyph, & $actionToggle_unselectedGlyph": {

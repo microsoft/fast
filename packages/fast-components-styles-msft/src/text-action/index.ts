@@ -47,8 +47,8 @@ const styles: ComponentStyles<TextActionClassNameContract, DesignSystem> = (
     const designSystem: DesignSystem = withDesignSystemDefaults(config);
     const direction: Direction = designSystem.direction;
     const glyphStyles: CSSRules<{}> = {
-        width: glyphSize(),
-        height: glyphSize(),
+        width: glyphSize,
+        height: glyphSize,
         margin: "auto",
         fill: neutralForegroundRest,
     };
