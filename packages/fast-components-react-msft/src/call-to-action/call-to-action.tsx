@@ -7,7 +7,6 @@ import {
     CallToActionUnhandledProps,
 } from "./call-to-action.props";
 import { get } from "lodash-es";
-import { glyphArrowright } from "@microsoft/fast-glyphs-msft";
 import { callToActionButtonOverrides } from "@microsoft/fast-components-styles-msft";
 import { DisplayNamePrefix } from "../utilities";
 

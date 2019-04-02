@@ -104,38 +104,45 @@ export function horizontalSpacingNumber(
 }
 
 /**
- * Returns the width and height for an icon formatted in the provided unit or px by default.
+ * Returns the width and height for an icon formatted in pixels.
+ *
+ * @param designSystem The design system config.
+ */
+export function glyphSize(designSystem: DesignSystem): string;
+
+/**
+ * Returns the width and height for an icon formatted in the provided unit.
  *
  * @param unit The unit of measurement; px by default.
  */
-export function glyphSize(unit?: string): DesignSystemResolver<string> {
-    return ensureDesignSystemDefaults(
-        (designSystem: DesignSystem): string => {
-            const value: number = glyphSizeNumber()(designSystem);
-            return typeof unit === "string" ? `${value}${unit}` : toPx(value);
-        }
-    );
+export function glyphSize(unit: string): DesignSystemResolver<string>;
+
+/**
+ * Returns the width and height for an icon.
+ *
+ * @param arg The design system config or the unit of measurement.
+ */
+export function glyphSize(arg: any): any {
+    return typeof arg === "string"
+        ? (designSystem: DesignSystem): string => `${glyphSizeNumber(designSystem)}${arg}`
+        : toPx(glyphSizeNumber(arg));
 }
 
 /**
  * Returns the width and height for an icon as a number.
  */
-export function glyphSizeNumber(): DesignSystemResolver<number> {
-    return ensureDesignSystemDefaults(
-        (designSystem: DesignSystem): number => {
-            const category: DensityCategory = getDensityCategory(designSystem);
-            const sizeOffset: number =
-                category === DensityCategory.compact
-                    ? -2
-                    : category === DensityCategory.spacious
-                        ? 2
-                        : 0;
-            const value: number =
-                (designSystem.baseHeightMultiplier / 2) * designSystem.designUnit +
-                sizeOffset;
-            return value;
-        }
-    );
+export function glyphSizeNumber(config: DesignSystem): number {
+    const designSystem: DesignSystem = withDesignSystemDefaults(config);
+    const category: DensityCategory = getDensityCategory(designSystem);
+    const sizeOffset: number =
+        category === DensityCategory.compact
+            ? -2
+            : category === DensityCategory.spacious
+                ? 2
+                : 0;
+    const value: number =
+        (designSystem.baseHeightMultiplier / 2) * designSystem.designUnit + sizeOffset;
+    return value;
 }
 
 /**
