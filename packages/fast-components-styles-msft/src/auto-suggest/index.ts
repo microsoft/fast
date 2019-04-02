@@ -11,7 +11,7 @@ const styles: ComponentStyles<AutoSuggestClassNameContract, DesignSystem> = (
     config: DesignSystem
 ): ComponentStyleSheet<AutoSuggestClassNameContract, DesignSystem> => {
     const designSystem: DesignSystem = withDesignSystemDefaults(config);
-    const visibleOptionCount: number = 10;
+    const visibleChildCount: number = 10;
 
     return {
         autoSuggest: {
@@ -33,7 +33,7 @@ const styles: ComponentStyles<AutoSuggestClassNameContract, DesignSystem> = (
             minWidth: "276px",
 
             maxHeight: `${toPx(
-                heightNumber(visibleOptionCount)(designSystem) +
+                heightNumber(visibleChildCount)(designSystem) +
                     designSystem.designUnit * 2
             )}`,
             overflow: "auto",
