@@ -1,33 +1,27 @@
-import { DesignSystem } from "../design-system";
+import { DesignSystem, withDesignSystemDefaults } from "../design-system";
 import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager";
 import { SubheadingClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
-import { fontWeight } from "../utilities/fonts";
-
-function applySubheadingStyles(): CSSRules<DesignSystem> {
-    return {
-        fontWeight: `${fontWeight.normal}`,
-    };
-}
+import { applyFontWeightNormal } from "../utilities/fonts";
 
 const styles: ComponentStyles<SubheadingClassNameContract, DesignSystem> = {
     subheading: {
         "&$subheading__1": {
-            ...applySubheadingStyles(),
+            ...applyFontWeightNormal(),
         },
         "&$subheading__2": {
-            ...applySubheadingStyles(),
+            ...applyFontWeightNormal(),
         },
         "&$subheading__3": {
-            ...applySubheadingStyles(),
+            ...applyFontWeightNormal(),
         },
         "&$subheading__4": {
-            ...applySubheadingStyles(),
+            ...applyFontWeightNormal(),
         },
         "&$subheading__5": {
-            ...applySubheadingStyles(),
+            ...applyFontWeightNormal(),
         },
         "&$subheading__6": {
-            ...applySubheadingStyles(),
+            ...applyFontWeightNormal(),
         },
     },
     subheading__1: {},

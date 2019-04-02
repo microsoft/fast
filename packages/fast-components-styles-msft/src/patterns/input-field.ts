@@ -1,7 +1,6 @@
 import { horizontalSpacing } from "../utilities/density";
-import { fontWeight } from "../utilities/fonts";
 import { CSSRules } from "@microsoft/fast-jss-manager";
-import { DesignSystem } from "../design-system";
+import { DesignSystem, withDesignSystemDefaults } from "../design-system";
 import { toPx } from "@microsoft/fast-jss-utilities";
 import {
     neutralFillInputActive,
@@ -17,6 +16,7 @@ import {
 import { applyCornerRadius } from "../utilities/border";
 import { applyDisabledState } from "../utilities/disabled";
 import { applyScaledTypeRamp } from "../utilities/typography";
+import { applyFontWeightNormal } from "../utilities/fonts";
 
 /**
  * Shared input field styles
@@ -24,13 +24,13 @@ import { applyScaledTypeRamp } from "../utilities/typography";
 export function inputFieldStyles(designSystem: DesignSystem): CSSRules<{}> {
     return {
         ...applyScaledTypeRamp("t7"),
+        ...applyFontWeightNormal(),
         background: neutralFillInputRest,
         border: `${toPx(designSystem.outlineWidth)} solid ${neutralOutlineRest(
             designSystem
         )}`,
         color: neutralForegroundRest,
         fontFamily: "inherit",
-        fontWeight: fontWeight.normal.toString(),
         boxSizing: "border-box",
         padding: `0 ${horizontalSpacing(designSystem.outlineWidth)(designSystem)}`,
         ...applyCornerRadius(),

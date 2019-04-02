@@ -4,6 +4,7 @@ import { ColorPalette, ColorRGBA64, parseColorHexRGB } from "@microsoft/fast-col
 import { Palette } from "../utilities/color/palette";
 import { TypeRamp } from "../utilities/typography";
 import { withDefaults } from "@microsoft/fast-jss-utilities";
+import { defaultFontWeights, FontWeight } from "../utilities/fonts";
 
 export type DensityOffset = -3 | -2 | -1 | 0 | 1 | 2 | 3;
 
@@ -52,6 +53,11 @@ export interface DesignSystem {
      * The primary direction of the view.
      */
     direction: Direction;
+
+    /**
+     * An object representing the supported font weights
+     */
+    fontWeight?: FontWeight;
 
     /**
      * The corner default radius applied to controls.
@@ -151,6 +157,7 @@ const designSystemDefaults: DesignSystem = {
     direction: Direction.ltr,
     cornerRadius: 2,
     focusOutlineWidth: 2,
+    fontWeight: defaultFontWeights,
     disabledOpacity: 0.3,
     outlineWidth: 1,
     neutralPalette: createColorPalette(new ColorRGBA64(0.5, 0.5, 0.5, 1)),
