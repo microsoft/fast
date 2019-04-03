@@ -21,12 +21,14 @@
     "clean:dist": "node ../../build/clean.js dist",
     "tslint": "tslint -c ./tslint.json '**/*.ts'",
     "tslint:fix": "tslint -c ./tslint.json --fix '**/*.ts'",
-    "test": "npm run tslint && jest",
+    "test": "npm run tslint && npm run unit-tests",
     "build": "tsc -p ./tsconfig.json",
     "build:watch": "npm run build -- -w",
     "prepare": "npm run clean:dist && npm run build",
     "prettier": "prettier --config ../../.prettierrc --write \"**/*.ts\"",
     "prettier:diff": "prettier --config ../../.prettierrc \"**/*.ts\" --list-different",
+    "unit-tests": "jest --maxWorkers=2",
+    "unit-tests:watch": "jest --watch",
     "watch": "npm run build -- -w --preserveWatchOutput"
   },
   "jest": {
