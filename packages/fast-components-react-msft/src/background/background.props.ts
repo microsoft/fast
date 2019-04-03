@@ -1,4 +1,8 @@
 import React from "react";
+import {
+    NeutralPaletteDarkModeLayers,
+    NeutralPaletteLightModeLayers,
+} from "@microsoft/fast-components-styles-msft";
 
 /**
  * Friendly names for the indexes of light mode backgrounds
@@ -6,11 +10,11 @@ import React from "react";
  * the default neutral ramp provided by the DesignSystem
  */
 export enum LightModeBackgrounds {
-    L1 = 0,
-    L1Alt = 2,
-    L2 = 4,
-    L3 = 6,
-    L4 = 8,
+    L1 = NeutralPaletteLightModeLayers.L1,
+    L1Alt = NeutralPaletteLightModeLayers.L1Alt,
+    L2 = NeutralPaletteLightModeLayers.L2,
+    L3 = NeutralPaletteLightModeLayers.L3,
+    L4 = NeutralPaletteLightModeLayers.L4,
 }
 
 /**
@@ -19,11 +23,11 @@ export enum LightModeBackgrounds {
  * the default neutral ramp provided by the DesignSystem
  */
 export enum DarkModeBackgrounds {
-    L1 = 49,
-    L1Alt = 49, // This is intentionally the same as L1
-    L2 = 51,
-    L3 = 53,
-    L4 = 55,
+    L1 = NeutralPaletteDarkModeLayers.L1,
+    L1Alt = NeutralPaletteDarkModeLayers.L1Alt,
+    L2 = NeutralPaletteDarkModeLayers.L2,
+    L3 = NeutralPaletteDarkModeLayers.L3,
+    L4 = NeutralPaletteDarkModeLayers.L4,
 }
 
 export interface BackgroundHandledProps {
