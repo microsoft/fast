@@ -1,3 +1,3 @@
-import Background from "./Background";
+import Background from "./background";
 export { Background };
-export * from "./Background";
+export * from "./background";

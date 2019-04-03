@@ -1,5 +1,5 @@
 import React from "react";
-import Background from "./Background";
+import Background from "./background";
 import * as ShallowRenderer from "react-test-renderer/shallow";
 import Adapter from "enzyme-adapter-react-16/build";
 import { configure, mount, shallow } from "enzyme";

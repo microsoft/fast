@@ -14,7 +14,7 @@ import {
     BackgroundUnhandledProps,
     DarkModeBackgrounds,
     LightModeBackgrounds,
-} from "./Background.props";
+} from "./background.props";
 import { get, has, memoize } from "lodash-es";
 
 export default class Background extends Foundation<
@@ -64,4 +64,4 @@ export default class Background extends Foundation<
     };
 }
 
-export * from "./Background.props";
+export * from "./background.props";
