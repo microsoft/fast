@@ -45,22 +45,26 @@ const neutralForegroundAlgorithm: SwatchFamilyResolver = (
 /**
  * Retrieve light neutral-foreground color for use on dark backgrounds
  */
-export function neutralForegroundLight(designSystem: DesignSystem): Swatch {
-    return getSwatch(
-        designSystem.neutralForegroundLightIndex,
-        palette(PaletteType.neutral)(designSystem)
-    );
-}
+export const neutralForegroundLight: SwatchResolver = ensureDesignSystemDefaults(
+    (designSystem: DesignSystem): Swatch => {
+        return getSwatch(
+            designSystem.neutralForegroundLightIndex,
+            palette(PaletteType.neutral)(designSystem)
+        );
+    }
+);
 
 /**
  * Retrieve dark neutral-foreground color for use on light backgrounds
  */
-export function neutralForegroundDark(designSystem: DesignSystem): Swatch {
-    return getSwatch(
-        designSystem.neutralForegroundDarkIndex,
-        palette(PaletteType.neutral)(designSystem)
-    );
-}
+export const neutralForegroundDark: SwatchResolver = ensureDesignSystemDefaults(
+    (designSystem: DesignSystem): Swatch => {
+        return getSwatch(
+            designSystem.neutralForegroundDarkIndex,
+            palette(PaletteType.neutral)(designSystem)
+        );
+    }
+);
 
 export function neutralForeground(designSystem: DesignSystem): SwatchFamily;
 export function neutralForeground(

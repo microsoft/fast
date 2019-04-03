@@ -56,8 +56,8 @@ const neutralFillStealthAlgorithm: DesignSystemResolver<FillSwatchFamily> = (
         selected: getSwatch(
             restIndex +
                 (isDarkTheme(designSystem)
-                    ? designSystem.neutralFillStealthActiveDelta * -1
-                    : designSystem.neutralFillStealthActiveDelta),
+                    ? designSystem.neutralFillStealthSelectedDelta * -1
+                    : designSystem.neutralFillStealthSelectedDelta),
             neutralPalette
         ),
     };
