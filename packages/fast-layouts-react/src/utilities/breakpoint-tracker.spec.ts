@@ -1,5 +1,5 @@
 import BreakpointTracker, { BreakpointTrackerCallback } from "./breakpoint-tracker";
-import { Breakpoints, defaultBreakpoints } from "./breakpoints";
+import { Breakpoint, Breakpoints, defaultBreakpoints } from "./breakpoints";
 
 /* tslint:disable:no-string-literal */
 describe("breakpointTracker", (): void => {
@@ -35,6 +35,12 @@ describe("breakpointTracker", (): void => {
         BreakpointTracker.subscribe(subscriber.onBreakpointChange);
 
         expect(BreakpointTracker.breakpoints).toEqual(defaultBreakpoints);
+    });
+
+    test("should provide a breakpoint value when `currentBreakpoint` is called", (): void => {
+        BreakpointTracker.subscribe(subscriber.onBreakpointChange);
+
+        expect(typeof BreakpointTracker.currentBreakpoint() === "number").toBe(true);
     });
 
     test("should set new breakpoint values when provided", (): void => {
