@@ -8,7 +8,6 @@ import { Pane, PaneResizeDirection } from "../src/pane";
 import { Page } from "../src/page";
 import { Grid } from "../src/grid";
 import { Column, ColumnClassNamesContract } from "../src/column";
-import { jsxAttribute } from "@babel/types";
 
 const columnTestStyles: ComponentStyles<ColumnClassNamesContract, undefined> = {
     column: {
