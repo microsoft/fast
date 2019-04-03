@@ -134,7 +134,7 @@ export interface DesignSystem {
     neutralOutlineActiveDelta: number;
 }
 
-function createColorPalette(baseColor: ColorRGBA64): Palette {
+export function createColorPalette(baseColor: ColorRGBA64): Palette {
     return new ColorPalette({
         baseColor,
         clipDark: 0,
@@ -144,7 +144,7 @@ function createColorPalette(baseColor: ColorRGBA64): Palette {
         saturationDark: 0,
         saturationLight: 0,
         steps: 63,
-    }).palette.map((color: ColorRGBA64) => color.toStringHexRGB());
+    }).palette.map((color: ColorRGBA64) => color.toStringHexRGB().toUpperCase());
 }
 
 const designSystemDefaults: DesignSystem = {

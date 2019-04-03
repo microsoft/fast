@@ -6,6 +6,7 @@ import {
 import { clamp } from "lodash-es";
 import { colorMatches, contrast, luminance, Swatch } from "./common";
 import { neutralForegroundDark, neutralForegroundLight } from "./neutral-foreground";
+import { ColorPalette, ColorRGBA64 } from "@microsoft/fast-colors";
 
 /**
  * The named palettes of the MSFT design system

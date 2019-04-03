@@ -17,22 +17,22 @@ describe("accentForeground", (): void => {
     const accentPalette: Palette = palette(PaletteType.accent)(designSystemDefaults);
 
     test("should opperate on design system defaults", (): void => {
-        expect(accentForegroundRest({} as DesignSystem)).toBe(accentPalette[32]);
+        expect(accentForegroundRest({} as DesignSystem)).toBe(accentPalette[35]);
         expect(accentForegroundHover({} as DesignSystem)).toBe(accentPalette[31]);
-        expect(accentForegroundActive({} as DesignSystem)).toBe(accentPalette[30]);
+        expect(accentForegroundActive({} as DesignSystem)).toBe(accentPalette[27]);
         expect(accentForegroundLargeRest({} as DesignSystem)).toBe(accentPalette[31]);
-        expect(accentForegroundLargeHover({} as DesignSystem)).toBe(accentPalette[30]);
-        expect(accentForegroundLargeActive({} as DesignSystem)).toBe(accentPalette[29]);
+        expect(accentForegroundLargeHover({} as DesignSystem)).toBe(accentPalette[27]);
+        expect(accentForegroundLargeActive({} as DesignSystem)).toBe(accentPalette[23]);
     });
 
     test("should accept a function that resolves a background swatch", (): void => {
         expect(typeof accentForegroundRest(() => "#FFF")).toBe("function");
         expect(accentForegroundRest(() => "#000")({} as DesignSystem)).toBe(
-            accentPalette[30]
+            accentPalette[27]
         );
         expect(typeof accentForegroundRest(() => "#FFFFFF")).toBe("function");
         expect(accentForegroundRest(() => "#000000")({} as DesignSystem)).toBe(
-            accentPalette[30]
+            accentPalette[27]
         );
     });
 
@@ -110,7 +110,7 @@ describe("accentForeground", (): void => {
                         expect(
                             contrast(swatch, accentForegroundHover(designSystem))
                             // There are a few states that are impossible to meet contrast on
-                        ).toBeGreaterThanOrEqual(4.2);
+                        ).toBeGreaterThanOrEqual(3.7);
                         expect(
                             contrast(swatch, accentForegroundLargeRest(designSystem))
                         ).toBeGreaterThanOrEqual(3);
