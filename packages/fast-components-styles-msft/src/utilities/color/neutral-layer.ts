@@ -18,37 +18,27 @@ export enum NeutralPaletteDarkModeLayers {
     L4 = 55,
 }
 
-export function neutralLayerL1(designSystem: DesignSystem): SwatchResolver {
-    return swatchByMode(PaletteType.neutral)(
-        NeutralPaletteLightModeLayers.L1,
-        NeutralPaletteDarkModeLayers.L1
-    );
-}
+export const neutralLayerL1: SwatchResolver = swatchByMode(PaletteType.neutral)(
+    NeutralPaletteLightModeLayers.L1,
+    NeutralPaletteDarkModeLayers.L1
+);
 
-export function neutralLayerL1Alt(designSystem: DesignSystem): SwatchResolver {
-    return swatchByMode(PaletteType.neutral)(
-        NeutralPaletteLightModeLayers.L1Alt,
-        NeutralPaletteDarkModeLayers.L1Alt
-    );
-}
+export const neutralLayerL1Alt: SwatchResolver = swatchByMode(PaletteType.neutral)(
+    NeutralPaletteLightModeLayers.L1Alt,
+    NeutralPaletteDarkModeLayers.L1Alt
+);
 
-export function neutralLayerL2(designSystem: DesignSystem): SwatchResolver {
-    return swatchByMode(PaletteType.neutral)(
-        NeutralPaletteLightModeLayers.L2,
-        NeutralPaletteDarkModeLayers.L2
-    );
-}
+export const neutralLayerL2: SwatchResolver = swatchByMode(PaletteType.neutral)(
+    NeutralPaletteLightModeLayers.L2,
+    NeutralPaletteDarkModeLayers.L2
+);
 
-export function neutralLayerL3(designSystem: DesignSystem): SwatchResolver {
-    return swatchByMode(PaletteType.neutral)(
-        NeutralPaletteLightModeLayers.L3,
-        NeutralPaletteDarkModeLayers.L3
-    );
-}
+export const neutralLayerL3: SwatchResolver = swatchByMode(PaletteType.neutral)(
+    NeutralPaletteLightModeLayers.L3,
+    NeutralPaletteDarkModeLayers.L3
+);
 
-export function neutralLayerL4(designSystem: DesignSystem): SwatchResolver {
-    return swatchByMode(PaletteType.neutral)(
-        NeutralPaletteLightModeLayers.L4,
-        NeutralPaletteDarkModeLayers.L4
-    );
-}
+export const neutralLayerL4: SwatchResolver = swatchByMode(PaletteType.neutral)(
+    NeutralPaletteLightModeLayers.L4,
+    NeutralPaletteDarkModeLayers.L4
+);
