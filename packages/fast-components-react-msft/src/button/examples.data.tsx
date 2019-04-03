@@ -60,7 +60,12 @@ const examples: ComponentFactoryExample<ButtonProps> = {
         },
         {
             appearance: ButtonAppearance.stealth,
-            children: "Justified button",
+            children: {
+                id: svgSchema.id,
+                props: {
+                    path: SVGGlyph.robot,
+                },
+            } as any,
         },
         {
             href: "#",

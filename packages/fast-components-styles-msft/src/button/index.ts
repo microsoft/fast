@@ -184,7 +184,19 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = (
             justifyContent: "flex-start",
         },
         button__stealth: {
-            background: "purple",
+            minWidth: "32px",
+            maxWidth: "unset",
+            padding: "0",
+            background: neutralFillStealthRest,
+            "&:hover:enabled": {
+                backgroundColor: neutralFillStealthHover,
+            },
+            "&:active:enabled": {
+                backgroundColor: neutralFillStealthActive,
+            },
+            ...applyFocusVisible<DesignSystem>({
+                borderColor: neutralFocus,
+            }),
         },
         button_contentRegion: {
             position: "relative",
