@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.1.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-layouts-react@4.0.1...@microsoft/fast-layouts-react@4.1.0) (2019-04-03)
+
+
+### Bug Fixes
+
+* fast-layouts-react accepts null children ([#1596](https://github.com/Microsoft/fast-dna/issues/1596)) ([5e9ad1b](https://github.com/Microsoft/fast-dna/commit/5e9ad1b))
+
+
+### Features
+
+* add public function to breakpoint tracker to provide current breakpoint ([#1617](https://github.com/Microsoft/fast-dna/issues/1617)) ([f03f991](https://github.com/Microsoft/fast-dna/commit/f03f991))
+
+
+
+
+
 ## [4.0.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-layouts-react@4.0.0...@microsoft/fast-layouts-react@4.0.1) (2019-04-03)
 
 

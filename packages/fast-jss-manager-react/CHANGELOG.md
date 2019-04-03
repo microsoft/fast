@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.2.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-jss-manager-react@4.1.0...@microsoft/fast-jss-manager-react@4.2.0) (2019-04-03)
+
+
+### Features
+
+* add Background component ([#1603](https://github.com/Microsoft/fast-dna/issues/1603)) ([4c2f2fc](https://github.com/Microsoft/fast-dna/commit/4c2f2fc))
+
+
+
+
+
 # [4.1.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-jss-manager-react@4.0.0...@microsoft/fast-jss-manager-react@4.1.0) (2019-04-03)
 
 
