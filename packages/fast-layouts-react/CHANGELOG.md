@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-layouts-react@4.0.0...@microsoft/fast-layouts-react@4.0.1) (2019-04-03)
+
+
+### Bug Fixes
+
+* add prop to support setting initial height on Row ([#1605](https://github.com/Microsoft/fast-dna/issues/1605)) ([4019e4d](https://github.com/Microsoft/fast-dna/commit/4019e4d))
+* ensure column props are a union type of both handled and unhandled props ([#1601](https://github.com/Microsoft/fast-dna/issues/1601)) ([627fbab](https://github.com/Microsoft/fast-dna/commit/627fbab))
+* fast layouts react cleanup ([#1565](https://github.com/Microsoft/fast-dna/issues/1565)) ([99a1fb1](https://github.com/Microsoft/fast-dna/commit/99a1fb1))
+* update initial row height to be 40 to match previous implementation ([#1609](https://github.com/Microsoft/fast-dna/issues/1609)) ([477511b](https://github.com/Microsoft/fast-dna/commit/477511b))
+
+
+
+
+
 # [4.0.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-layouts-react@3.2.1...@microsoft/fast-layouts-react@4.0.0) (2019-03-25)
 
 

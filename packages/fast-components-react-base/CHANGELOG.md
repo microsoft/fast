@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.1.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-base@4.0.1...@microsoft/fast-components-react-base@4.1.0) (2019-04-03)
+
+
+### Features
+
+* invoke context-menu-item from right click [#1604](https://github.com/Microsoft/fast-dna/issues/1604) ([5ae0487](https://github.com/Microsoft/fast-dna/commit/5ae0487))
+
+
+
+
+
 ## [4.0.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-base@4.0.0...@microsoft/fast-components-react-base@4.0.1) (2019-03-25)
 
 **Note:** Version bump only for package @microsoft/fast-components-react-base

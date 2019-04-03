@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.1.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-styles-msft@4.0.0...@microsoft/fast-components-styles-msft@4.1.0) (2019-04-03)
+
+
+### Bug Fixes
+
+* added support for glyphs to resize based on density ([#1602](https://github.com/Microsoft/fast-dna/issues/1602)) ([4d51770](https://github.com/Microsoft/fast-dna/commit/4d51770))
+* ensure all MSFT style utilities are exported ([#1597](https://github.com/Microsoft/fast-dna/issues/1597)) ([5a5437f](https://github.com/Microsoft/fast-dna/commit/5a5437f))
+
+
+### Features
+
+* add design system support for font weights ([#1607](https://github.com/Microsoft/fast-dna/issues/1607)) ([5db6782](https://github.com/Microsoft/fast-dna/commit/5db6782))
+
+
+
+
+
 # [4.0.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-styles-msft@3.14.0...@microsoft/fast-components-styles-msft@4.0.0) (2019-03-25)
 
 

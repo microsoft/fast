@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.1.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-jss-manager-react@4.0.0...@microsoft/fast-jss-manager-react@4.1.0) (2019-04-03)
+
+
+### Features
+
+* add context-consumer to package exports ([#1587](https://github.com/Microsoft/fast-dna/issues/1587)) ([a0cf6ec](https://github.com/Microsoft/fast-dna/commit/a0cf6ec))
+
+
+
+
+
 # [4.0.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-jss-manager-react@3.1.14...@microsoft/fast-jss-manager-react@4.0.0) (2019-03-25)
 
 

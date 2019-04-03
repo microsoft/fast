@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.2](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-msft@4.0.1...@microsoft/fast-components-react-msft@4.0.2) (2019-04-03)
+
+
+### Bug Fixes
+
+* add children as required in JSON schemas where children are expected ([#1592](https://github.com/Microsoft/fast-dna/issues/1592)) ([676ae47](https://github.com/Microsoft/fast-dna/commit/676ae47))
+* added support for glyphs to resize based on density ([#1602](https://github.com/Microsoft/fast-dna/issues/1602)) ([4d51770](https://github.com/Microsoft/fast-dna/commit/4d51770))
+
+
+
+
+
 ## [4.0.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-msft@4.0.0...@microsoft/fast-components-react-msft@4.0.1) (2019-03-25)
 
 **Note:** Version bump only for package @microsoft/fast-components-react-msft

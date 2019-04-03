@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-tooling-react@1.0.1...@microsoft/fast-tooling-react@1.1.0) (2019-04-03)
+
+
+### Features
+
+* add inline and native browser validation derived from JSON schema ([#1595](https://github.com/Microsoft/fast-dna/issues/1595)) ([3f5a702](https://github.com/Microsoft/fast-dna/commit/3f5a702))
+
+
+
+
+
 ## [1.0.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-tooling-react@1.0.0...@microsoft/fast-tooling-react@1.0.1) (2019-03-25)
 
 
