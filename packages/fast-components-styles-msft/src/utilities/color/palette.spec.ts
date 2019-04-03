@@ -1,12 +1,11 @@
 import {
-    accentPaletteSwatch,
     findClosestSwatchIndex,
     findSwatchIndex,
     getSwatch,
-    neutralPaletteSwatch,
     palette,
     Palette,
     PaletteType,
+    swatchByMode,
 } from "./palette";
 import designSystemDefaults, { DesignSystem } from "../../design-system";
 import { accent } from "./color-constants";
@@ -152,12 +151,12 @@ describe("getSwatch", (): void => {
     });
 });
 
-describe("neutralPaletteSwatch & accentPaletteSwatch", (): void => {
+describe("swatchByMode", (): void => {
     test("should opperate on designSystemDefaults", (): void => {
-        expect(neutralPaletteSwatch(0)({} as DesignSystem)).toBe(
+        expect(swatchByMode(PaletteType.neutral)(0, 0)({} as DesignSystem)).toBe(
             designSystemDefaults.neutralPalette[0]
         );
-        expect(accentPaletteSwatch(0)({} as DesignSystem)).toBe(
+        expect(swatchByMode(PaletteType.accent)(0, 0)({} as DesignSystem)).toBe(
             designSystemDefaults.accentPalette[0]
         );
     });
