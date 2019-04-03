@@ -96,7 +96,7 @@ describe("button", (): void => {
     });
 
     test("should apply a 'stealth' html class when appearance is stealth", () => {
-        const rendered: any = mount(<Button appearance={ButtonAppearance.justified} />);
+        const rendered: any = mount(<Button appearance={ButtonAppearance.stealth} />);
 
         expect(rendered.find("button").prop("className")).toContain("button__stealth");
     });
