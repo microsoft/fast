@@ -7,7 +7,7 @@ import {
 import {
     findClosestSwatchIndex,
     getSwatch,
-    isDarkTheme,
+    isDarkMode,
     palette,
     Palette,
     PaletteType,
@@ -52,7 +52,7 @@ const neutralFillAlgorithm: DesignSystemResolver<FillSwatchFamily> = (
         ),
         selected: getSwatch(
             restIndex +
-                (isDarkTheme(designSystem)
+                (isDarkMode(designSystem)
                     ? designSystem.neutralFillSelectedDelta * -1
                     : designSystem.neutralFillSelectedDelta),
             neutralPalette

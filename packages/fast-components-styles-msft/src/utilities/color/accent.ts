@@ -1,7 +1,7 @@
 import { DesignSystem, ensureDesignSystemDefaults } from "../../design-system";
 import { Palette, palette, PaletteType } from "./palette";
 import { accent } from "./color-constants";
-import { findClosestSwatchIndex, isDarkTheme } from "./palette";
+import { findClosestSwatchIndex, isDarkMode } from "./palette";
 import { contrast, Swatch, SwatchResolver } from "./common";
 import { clamp, inRange } from "lodash-es";
 
@@ -37,7 +37,7 @@ export function findAccessibleAccentSwatchIndexs(
 } {
     const accentColor: Swatch = accentSwatch(designSystem);
     const accentPalette: Palette = palette(PaletteType.accent)(designSystem);
-    const darkTheme: boolean = isDarkTheme(designSystem);
+    const darkTheme: boolean = isDarkMode(designSystem);
     const stateDirection: 1 | -1 = darkTheme ? 1 : -1;
     const accessibleTextDirection: 1 | -1 = darkTheme ? -1 : 1;
     const maxIndex: number = accentPalette.length - 1;

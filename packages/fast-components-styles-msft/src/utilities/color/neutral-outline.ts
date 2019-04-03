@@ -6,7 +6,7 @@ import {
 import {
     findClosestSwatchIndex,
     getSwatch,
-    isDarkTheme,
+    isDarkMode,
     palette,
     Palette,
     PaletteType,
@@ -28,7 +28,7 @@ const neutralOutlineAlgorithm: SwatchFamilyResolver = (
         PaletteType.neutral,
         designSystem.backgroundColor
     )(designSystem);
-    const direction: 1 | -1 = isDarkTheme(designSystem) ? -1 : 1;
+    const direction: 1 | -1 = isDarkMode(designSystem) ? -1 : 1;
 
     return {
         rest: getSwatch(

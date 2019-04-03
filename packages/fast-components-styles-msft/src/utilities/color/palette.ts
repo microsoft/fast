@@ -116,7 +116,7 @@ export function findClosestSwatchIndex(
 /**
  * Determines if the design-system should be considered in "dark mode".
  */
-export function isDarkTheme(designSystem: DesignSystem): boolean {
+export function isDarkMode(designSystem: DesignSystem): boolean {
     return (
         contrast(neutralForegroundLight(designSystem), designSystem.backgroundColor) >=
         contrast(neutralForegroundDark(designSystem), designSystem.backgroundColor)
