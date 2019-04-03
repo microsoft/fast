@@ -92,6 +92,13 @@ class BreakpointTracker {
     };
 
     /**
+     * Returns the current breakpoint
+     */
+    public currentBreakpoint = (): Breakpoint => {
+        return this.breakpoint;
+    };
+
+    /**
      * Call all subscribed callbacks
      */
     public notifySubscribers(breakpoint: Breakpoint): void {
