@@ -138,37 +138,19 @@ export function getSwatch(index: number, colorPalette: Palette): Swatch {
     return colorPalette[clamp(index, 0, colorPalette.length - 1)];
 }
 
-function swatchFromPalette(
+export function swatchByMode(
     paletteName: PaletteType
-): (a: number, b?: number) => DesignSystemResolver<Swatch> {
+): (a: number, b: number) => DesignSystemResolver<Swatch> {
     const paletteKey: keyof DesignSystem =
         paletteName === PaletteType.accent ? "accentPalette" : "neutralPalette";
 
     return (valueA: number, valueB?: number): DesignSystemResolver<Swatch> => {
         return ensureDesignSystemDefaults(
             (designSystem: DesignSystem): Swatch => {
-                return typeof valueB === "number" && isDarkMode(designSystem)
+                return isDarkMode(designSystem)
                     ? getSwatch(valueB, designSystem[paletteKey])
                     : getSwatch(valueA, designSystem[paletteKey]);
             }
         );
     };
 }
-
-/**
- * Retrieve a swatch, by index, from the neutral palette. If two indexes are provided,
- * the first will be used when in "light mode" and the second will be used when in "dark mode"
- */
-export const neutralPaletteSwatch: (
-    a: number,
-    b?: number
-) => DesignSystemResolver<Swatch> = swatchFromPalette(PaletteType.neutral);
-
-/**
- * Retrieve a swatch, by index, from the accent palette. If two indexes are provided,
- * the first will be used when in "light mode" and the second will be used when in "dark mode"
- */
-export const accentPaletteSwatch: (
-    a: number,
-    b?: number
-) => DesignSystemResolver<Swatch> = swatchFromPalette(PaletteType.accent);

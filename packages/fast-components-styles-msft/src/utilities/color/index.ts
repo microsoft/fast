@@ -75,6 +75,19 @@ export {
 } from "./neutral-outline";
 
 /**
+ * App layer exports
+ */
+export {
+    neutralLayerL1,
+    neutralLayerL1Alt,
+    neutralLayerL2,
+    neutralLayerL3,
+    neutralLayerL4,
+    NeutralPaletteLightModeLayers,
+    NeutralPaletteDarkModeLayers,
+} from "./neutral-layer";
+
+/**
  * Focus colors
  */
 export { neutralFocus } from "./neutral-focus";
