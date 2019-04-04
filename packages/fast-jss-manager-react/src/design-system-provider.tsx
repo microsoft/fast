@@ -6,7 +6,10 @@
  */
 import React from "react";
 import { designSystemContext, Provider } from "./context";
-import { merge } from "lodash-es";
+import {
+    mergeDesignSystem,
+    DesignSystemMergingFunction,
+} from "@microsoft/fast-jss-manager";
 
 export type DesignSystem<T> = T extends { [key: string]: unknown } ? T : never;
 /**
@@ -15,6 +18,7 @@ export type DesignSystem<T> = T extends { [key: string]: unknown } ? T : never;
  */
 export interface DesignSystemProviderProps<T> {
     designSystem: DesignSystem<T>;
+    designSystemMergingFunction?: DesignSystemMergingFunction<T>;
 }
 
 export class DesignSystemProvider<T> extends React.Component<
@@ -87,6 +91,11 @@ export class DesignSystemProvider<T> extends React.Component<
      * Returns a new object
      */
     private createDesignSystem(): T {
-        return merge({}, this.upstreamDesignSystem, this.designSystemOverrides);
+        return typeof this.props.designSystemMergingFunction === "function"
+            ? this.props.designSystemMergingFunction(
+                  this.upstreamDesignSystem,
+                  this.designSystemOverrides
+              )
+            : mergeDesignSystem(this.upstreamDesignSystem, this.designSystemOverrides);
     }
 }

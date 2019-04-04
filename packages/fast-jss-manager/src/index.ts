@@ -1,5 +1,6 @@
 import * as CSS from "csstype";
 import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
+import { mergeWith } from "lodash-es";
 export { ManagedClasses };
 
 /**
@@ -67,3 +68,24 @@ export type ComponentClassNameStyleSheet<T, C> = { [P in keyof T]: CSSRules<C> }
 
 export type ComponentStyleSheet<T, C> = ComponentClassNameStyleSheet<T, C> &
     NestedAtRules<C>;
+
+export type DesignSystemMergingFunction<T> = (original: T, overrides: T) => T;
+
+/**
+ * Merges design-system values. Only plain Object values will be merged recursively,
+ * all other values will be merged by assignment.
+ *
+ * This function returns a new object
+ */
+export function mergeDesignSystem<T>(original: T, overrides: T): T {
+    return mergeWith(
+        {},
+        original,
+        overrides,
+        (objValue: unknown, srcValue: unknown): unknown => {
+            if (Array.isArray(srcValue)) {
+                return srcValue;
+            }
+        }
+    );
+}

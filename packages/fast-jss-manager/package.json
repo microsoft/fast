@@ -29,9 +29,21 @@
     "watch": "npm run build -- -w --preserveWatchOutput"
   },
   "devDependencies": {
+    "@babel/core": "^7.0.0",
+    "@babel/preset-env": "^7.1.0",
     "@microsoft/fast-tslint-rules": "^3.0.2",
+    "@types/jest": "^24.0.11",
+    "@types/lodash-es": "^4.17.0",
+    "@types/node": "^9.4.6",
+    "babel-core": "^7.0.0-bridge.0",
+    "babel-jest": "^24.5.0",
     "csstype": "^2.3.0",
+    "enzyme": "^3.3.0",
+    "enzyme-adapter-react-16": "^1.1.1",
+    "jest": "^24.5.0",
+    "lodash-es": "^4.17.11",
     "prettier": "1.14.3",
+    "ts-jest": "^24.0.0",
     "tslint": "^5.9.1",
     "tslint-config-prettier": "^1.15.0",
     "typescript": "^3.0.1"
@@ -40,6 +52,34 @@
     "@microsoft/fast-components-class-name-contracts-base": "^4.0.0"
   },
   "peerDependencies": {
-    "csstype": "^2.3.0"
+    "csstype": "^2.3.0",
+    "lodash-es": "^4.0.0"
+  },
+  "jest": {
+    "collectCoverage": true,
+    "coverageThreshold": {
+      "global": {
+        "statements": 100,
+        "branches": 100,
+        "functions": 100,
+        "lines": 100
+      }
+    },
+    "testURL": "http://localhost",
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest",
+      "^.+\\.jsx?$": "babel-jest"
+    },
+    "transformIgnorePatterns": [
+      "!<rootDir>/node_modules/lodash-es"
+    ],
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx",
+      "json"
+    ],
+    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$"
   }
 }
