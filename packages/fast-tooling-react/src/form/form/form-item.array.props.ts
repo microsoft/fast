@@ -6,9 +6,11 @@ import { updateActiveSection } from "./form-section.props";
  */
 export interface FormItemArrayClassNameContract {
     formItemArray?: string;
+    formItemArray_addItem?: string;
+    formItemArray_addItemButton?: string;
+    formItemArray_addItemLabel?: string;
     formItemArray_badge?: string;
     formItemArray_control?: string;
-    formItemArray_controlAddButton?: string;
     formItemArray_controlLabel?: string;
     formItemArray_controlLabelRegion?: string;
     formItemArray_controlRegion?: string;
@@ -18,6 +20,8 @@ export interface FormItemArrayClassNameContract {
     formItemArray_existingItemListItemLink?: string;
     formItemArray_existingItemRemoveButton?: string;
     formItemArray_invalidMessage?: string;
+    formItemArray_softRemove?: string;
+    formItemArray_softRemoveInput?: string;
 }
 
 export enum ItemConstraints {
