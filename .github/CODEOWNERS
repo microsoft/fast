@@ -18,9 +18,6 @@
 # fast-animation
 /packages/fast-animation/ @nicholasrice @chrisdholt
 
-# fast-application-utils
-/packages/fast-application-utils/ @janechu @chrisdholt
-
 # fast-breakpoint-tracker-react
 /packages/fast-breakpoint-tracker-react/ @nicholasrice @chrisdholt
 
@@ -40,9 +37,6 @@
 # fast-development-site
 /packages/fast-development-site/ @nicholasrice @chrisdholt @janechu
 
-# fast-form-generator
-/packages/fast-form-generator/ @janechu @nicholasrice
-
 # fast-glyphs
 /packages/fast-glyphs/ @janechu @chrisdholt
 
@@ -61,17 +55,14 @@
 # fast-markdown-react
 /packages/fast-markdown-msft-react/ @janechu @chrisdholt
 
-# fast-permutator
-/packages/fast-permutator/ @janechu @nicholasrice
-
 # fast-sketch-library
 /packages/fast-sketch-library/ @nicholasrice @janechu
 
+# fast-tooling-react
+/packages/fast-tooling-react/ @janechu @nicholasrice @chrisdholt
+
 # fast-tslint-rules
 /packages/fast-tslint-rules/ @nicholasrice @janechu @chrisdholt
-
-# fast-viewer-react
-/packages/fast-viewer-react/ @janechu @chrisdholt
 
 # fast-web-utilities
 /packages/fast-web-utilities/ @janechu @chrisdholt @nicholasrice
