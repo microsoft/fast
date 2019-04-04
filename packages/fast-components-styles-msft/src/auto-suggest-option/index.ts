@@ -20,6 +20,7 @@ import {
 import { applyCornerRadius, applyFocusPlaceholderBorder } from "../utilities/border";
 import { applyCursorDefault } from "../utilities/cursor";
 import { applyDisabledState } from "../utilities/disabled";
+import { format } from "../utilities/format";
 
 const styles: ComponentStyles<AutoSuggestOptionClassNameContract, DesignSystem> = (
     config: DesignSystem
@@ -33,12 +34,8 @@ const styles: ComponentStyles<AutoSuggestOptionClassNameContract, DesignSystem> 
             height: height(),
             display: "grid",
             gridTemplateColumns: `${applyLocalizedProperty(
-                `${horizontalSpacing()(designSystem)} auto auto 1fr ${horizontalSpacing()(
-                    designSystem
-                )}`,
-                `${horizontalSpacing()(designSystem)} 1fr auto auto ${horizontalSpacing()(
-                    designSystem
-                )}`,
+                format("{0} auto auto 1fr {0}", horizontalSpacing())(designSystem),
+                format("{0} 1fr auto auto {0}", horizontalSpacing())(designSystem),
                 direction
             )}`,
             gridTemplateRows: "auto",

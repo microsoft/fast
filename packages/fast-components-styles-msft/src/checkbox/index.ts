@@ -26,6 +26,8 @@ import {
 } from "../utilities/density";
 import { applyDisabledState } from "../utilities/disabled";
 import { applyScaledTypeRamp } from "../utilities/typography";
+import { outlineWidth } from "../utilities/design-system";
+import { format } from "../utilities/format";
 
 const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = (
     config: DesignSystem
@@ -76,9 +78,11 @@ const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = (
             zIndex: "1",
             background: neutralFillInputRest,
             transition: "all 0.2s ease-in-out",
-            border: `${toPx(designSystem.outlineWidth)} solid ${neutralOutlineRest(
-                designSystem
-            )}`,
+            border: format(
+                "{0} solid {1}",
+                toPx<DesignSystem>(outlineWidth),
+                neutralOutlineRest
+            ),
             "&:hover": {
                 background: neutralFillInputHover,
                 borderColor: neutralOutlineHover,
@@ -88,8 +92,8 @@ const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = (
                 borderColor: neutralOutlineActive,
             },
             ...applyFocusVisible({
-                boxShadow: `0 0 0 1px ${neutralFocus(designSystem)} inset`,
-                borderColor: neutralFocus(designSystem),
+                boxShadow: format(`0 0 0 1px {0} inset`, neutralFocus),
+                borderColor: neutralFocus,
             }),
         },
         checkbox_stateIndicator: {

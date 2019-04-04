@@ -4,17 +4,11 @@ import { MetatextClassNameContract } from "@microsoft/fast-components-class-name
 import { neutralForegroundHint } from "../utilities/color";
 import { applyScaledTypeRamp } from "../utilities/typography";
 
-const styles: ComponentStyles<MetatextClassNameContract, DesignSystem> = (
-    config: DesignSystem
-): ComponentStyleSheet<MetatextClassNameContract, DesignSystem> => {
-    const designSystem: DesignSystem = withDesignSystemDefaults(config);
-
-    return {
-        metatext: {
-            ...applyScaledTypeRamp("t7"),
-            color: neutralForegroundHint,
-        },
-    };
+const styles: ComponentStyles<MetatextClassNameContract, DesignSystem> = {
+    metatext: {
+        ...applyScaledTypeRamp("t7"),
+        color: neutralForegroundHint,
+    },
 };
 
 export default styles;

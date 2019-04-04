@@ -36,6 +36,8 @@ import { applyCursorPointer } from "../utilities/cursor";
 import { applyCornerRadius, applyFocusPlaceholderBorder } from "../utilities/border";
 import { applyDisabledState } from "../utilities/disabled";
 import { applyScaledTypeRamp } from "../utilities/typography";
+import { format } from "../utilities/format";
+import { outlineWidth } from "../utilities/design-system";
 
 function applyTransparentBackplateStyles(
     designSystem: DesignSystem
@@ -94,9 +96,7 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = (
             boxSizing: "border-box",
             maxWidth: "374px",
             minWidth: designSystem.density <= -2 ? "100px" : "120px",
-            padding: `0 ${horizontalSpacing(designSystem.focusOutlineWidth)(
-                designSystem
-            )}`,
+            padding: format("0 {0}", horizontalSpacing(designSystem.focusOutlineWidth)),
             display: "inline-flex",
             justifyContent: "center",
             alignItems: "center",
@@ -143,21 +143,27 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = (
         },
         button__outline: {
             background: neutralFillStealthRest,
-            border: `${toPx(designSystem.outlineWidth)} solid ${neutralOutlineRest(
-                designSystem
-            )}`,
-            padding: `0 ${horizontalSpacing(designSystem.outlineWidth)(designSystem)}`,
+            border: format(
+                "{0} solid {1}",
+                toPx<DesignSystem>(outlineWidth),
+                neutralOutlineRest
+            ),
+            padding: format("0 {0}", horizontalSpacing(designSystem.outlineWidth)),
             "&:hover:enabled": {
                 background: neutralFillStealthHover,
-                border: `${toPx(designSystem.outlineWidth)} solid ${neutralOutlineHover(
-                    designSystem
-                )}`,
+                border: format(
+                    "{0} solid {1}",
+                    toPx<DesignSystem>(outlineWidth),
+                    neutralOutlineHover
+                ),
             },
             "&:active:enabled": {
                 background: neutralFillStealthActive,
-                border: `${toPx(designSystem.outlineWidth)} solid ${neutralOutlineActive(
-                    designSystem
-                )}`,
+                border: format(
+                    "{0} solid {1}",
+                    toPx<DesignSystem>(outlineWidth),
+                    neutralOutlineActive
+                ),
             },
             ...applyFocusVisible<DesignSystem>({
                 boxShadow: `0 0 0 ${toPx(

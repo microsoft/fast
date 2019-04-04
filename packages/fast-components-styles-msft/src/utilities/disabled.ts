@@ -1,11 +1,19 @@
 import { CSSRules } from "@microsoft/fast-jss-manager";
-import { DesignSystem, withDesignSystemDefaults } from "../design-system";
+import {
+    DesignSystem,
+    ensureDesignSystemDefaults,
+    withDesignSystemDefaults,
+} from "../design-system";
 import { applyCursorDisabled } from "./cursor";
 
-export function applyDisabledState(config: DesignSystem): CSSRules<DesignSystem> {
-    const designSystem: DesignSystem = withDesignSystemDefaults(config);
+export function applyDisabledState(
+    config?: DesignSystem /* @deprecated - this function doesn't need an argument */
+): CSSRules<DesignSystem> {
     return {
-        opacity: `${designSystem.disabledOpacity}`,
+        opacity: ensureDesignSystemDefaults(
+            (designSystem: DesignSystem): string =>
+                designSystem.disabledOpacity.toString()
+        ),
         ...applyCursorDisabled(),
     };
 }

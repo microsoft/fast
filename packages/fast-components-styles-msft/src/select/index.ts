@@ -12,6 +12,8 @@ import {
     neutralOutlineRest,
 } from "../utilities/color";
 import { applyFloatingCornerRadius } from "../utilities/border";
+import { format } from "../utilities/format";
+import { designUnit } from "../utilities/design-system";
 
 export const selectDisplayButtonOverrides: ComponentStyles<
     Partial<ButtonClassNameContract>,
@@ -54,7 +56,7 @@ const styles: ComponentStyles<SelectClassNameContract, DesignSystem> = (
             position: "absolute",
             width: "100%",
             margin: "0",
-            padding: `${toPx(designSystem.designUnit)} 0`,
+            padding: format("{0} 0", toPx<DesignSystem>(designUnit)),
             maxWidth: "374px",
             minWidth: "276px",
             maxHeight: "328px",
