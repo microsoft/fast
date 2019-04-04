@@ -16,10 +16,8 @@
             "title": "Restricted children with react defaults",
             "type": "children",
             "ids": [
-                "alignHorizontal",
                 "objects",
-                "arrays",
-                "anyOf"
+                "arrays"
             ],
             "defaults": [
                 "text"
@@ -29,9 +27,7 @@
             "title": "Restricted children without react defaults",
             "type": "children",
             "ids": [
-                "alignVertical",
-                "children",
-                "theme"
+                "children"
             ]
         }
     },

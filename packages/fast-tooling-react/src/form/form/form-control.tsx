@@ -10,6 +10,7 @@ import FormItemCheckbox from "./form-item.checkbox";
 import { FormControlProps, FormControlState } from "./form-control.props";
 import FormOneOfAnyOf from "./form-one-of-any-of";
 import FormItemCommon from "./form-item.props";
+import { FormChildOptionItem } from "./form.props";
 import {
     checkIsDifferentSchema,
     generateExampleData,
@@ -76,7 +77,7 @@ class FormControl extends React.Component<FormControlProps, FormControlState> {
                 required={false}
                 schema={this.props.schema}
                 defaultChildOptions={this.props.schema.defaults || null}
-                childOptions={this.props.childOptions}
+                childOptions={this.getChildOptions()}
                 onUpdateActiveSection={this.props.onUpdateActiveSection}
             />
         );
@@ -219,6 +220,21 @@ class FormControl extends React.Component<FormControlProps, FormControlState> {
             },
         });
     };
+
+    /**
+     * Gets the child options available to the control
+     */
+    private getChildOptions(): FormChildOptionItem[] {
+        if (Array.isArray(this.props.schema.ids)) {
+            return this.props.childOptions.filter(
+                (childOption: FormChildOptionItem): boolean => {
+                    return this.props.schema.ids.includes(childOption.schema.id);
+                }
+            );
+        }
+
+        return this.props.childOptions;
+    }
 
     /**
      * Gets the common form item props

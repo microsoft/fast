@@ -170,4 +170,86 @@ describe("FormControl", () => {
         expect(callback.mock.calls[0][0]).toEqual("");
         expect(typeof callback.mock.calls[0][1].number).toEqual("number");
     });
+    test("should restrict the child options if ids have been passed", () => {
+        const renderedWithDefault: any = mount(
+            <FormControl
+                {...formControlProps}
+                childOptions={[
+                    {
+                        component: null,
+                        schema: objectSchema,
+                    },
+                    {
+                        component: null,
+                        schema: arraySchema,
+                    },
+                    {
+                        component: null,
+                        schema: childrenSchema,
+                    },
+                ]}
+                schema={childrenSchema.reactProperties.children}
+                schemaLocation={"reactProperties.children"}
+                dataLocation={"children"}
+                propertyName={"children"}
+                data={[]}
+            />
+        );
+
+        const renderedWithoutDefaultAndIds: any = mount(
+            <FormControl
+                {...formControlProps}
+                childOptions={[
+                    {
+                        component: null,
+                        schema: objectSchema,
+                    },
+                    {
+                        component: null,
+                        schema: arraySchema,
+                    },
+                    {
+                        component: null,
+                        schema: childrenSchema,
+                    },
+                ]}
+                schema={
+                    childrenSchema.reactProperties.restrictedChildrenWithReactDefaults
+                }
+                schemaLocation={"reactProperties.restrictedChildrenWithReactDefaults"}
+                dataLocation={"restrictedChildrenWithReactDefaults"}
+                propertyName={"restrictedChildrenWithReactDefaults"}
+                data={[]}
+            />
+        );
+
+        const renderedWithDefaultAndIds: any = mount(
+            <FormControl
+                {...formControlProps}
+                childOptions={[
+                    {
+                        component: null,
+                        schema: objectSchema,
+                    },
+                    {
+                        component: null,
+                        schema: arraySchema,
+                    },
+                    {
+                        component: null,
+                        schema: childrenSchema,
+                    },
+                ]}
+                schema={childrenSchema.reactProperties.restrictedWithChildren}
+                schemaLocation={"reactProperties.restrictedWithChildren"}
+                dataLocation={"restrictedWithChildren"}
+                propertyName={"restrictedWithChildren"}
+                data={[]}
+            />
+        );
+
+        expect(renderedWithDefault.find("li")).toHaveLength(4);
+        expect(renderedWithoutDefaultAndIds.find("li")).toHaveLength(1);
+        expect(renderedWithDefaultAndIds.find("li")).toHaveLength(3);
+    });
 });
