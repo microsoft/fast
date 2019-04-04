@@ -93,6 +93,11 @@ export {
 export { neutralFocus } from "./neutral-focus";
 
 /**
+ * Background-color
+ */
+export { backgroundColor } from "./background-color";
+
+/**
  * Export supporting types
  */
 export { neutralPaletteConfig, accentPaletteConfig } from "./color-constants";
