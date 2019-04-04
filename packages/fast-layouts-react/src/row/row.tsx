@@ -144,6 +144,7 @@ export class Row extends Foundation<
         hidden: void 0,
         resizeFrom: void 0,
         managedClasses: void 0,
+        initialHeight: void 0,
     };
 
     /**
