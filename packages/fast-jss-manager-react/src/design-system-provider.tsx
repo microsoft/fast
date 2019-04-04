@@ -7,8 +7,8 @@
 import React from "react";
 import { designSystemContext, Provider } from "./context";
 import {
-    mergeDesignSystem,
     DesignSystemMergingFunction,
+    mergeDesignSystem,
 } from "@microsoft/fast-jss-manager";
 
 export type DesignSystem<T> = T extends { [key: string]: unknown } ? T : never;
