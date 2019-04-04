@@ -26,8 +26,12 @@ describe("format", (): void => {
         );
     });
     test("should format multiple variables when multiple formatters are passed", (): void => {
-        expect(format("{0}{1}", formatter, formatter)(designSystemDefaults)).toBe(
-            formatter(designSystemDefaults) + formatter(designSystemDefaults)
+        function secondFormatter(designSystem: DesignSystem): string {
+            return "anotherString";
+        }
+
+        expect(format("{0}{1}", formatter, secondFormatter)(designSystemDefaults)).toBe(
+            formatter(designSystemDefaults) + secondFormatter(designSystemDefaults)
         );
     });
     test("should throw when formatter args are not functions", (): void => {

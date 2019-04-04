@@ -92,7 +92,7 @@ const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = (
                 borderColor: neutralOutlineActive,
             },
             ...applyFocusVisible({
-                boxShadow: format(`0 0 0 1px {0} inset`, neutralFocus),
+                boxShadow: format("0 0 0 1px {0} inset", neutralFocus),
                 borderColor: neutralFocus,
             }),
         },

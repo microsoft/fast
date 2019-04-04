@@ -67,9 +67,6 @@ const styles: ComponentStyles<TextActionClassNameContract, DesignSystem> = (
                 toPx<DesignSystem>(outlineWidth),
                 neutralOutlineRest
             ),
-            // border: `${toPx(designSystem.outlineWidth)} solid ${neutralOutlineRest(
-            //     designSystem
-            // )}`,
             background: neutralFillInputRest,
             ...applyCornerRadius(),
             display: "flex",

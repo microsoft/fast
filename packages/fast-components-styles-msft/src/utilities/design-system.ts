@@ -26,9 +26,9 @@ export function outlineWidth(arg: any): any {
 }
 
 /**
- * Retrieve the outlineWidth when invoked with a DesignSystem
+ * Retrieve the designUnit when invoked with a DesignSystem
  * When invoked with a multiplier, a function is returned that accepts the DesignSystem,
- * which returns the outlineWidth multiplied by the multiplier
+ * which returns the designUnit multiplied by the multiplier
  */
 export function designUnit(designSystem: DesignSystem): number;
 export function designUnit(multiplier: number): DesignSystemResolver<number>;
