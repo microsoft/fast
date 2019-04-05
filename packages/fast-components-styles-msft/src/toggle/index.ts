@@ -23,6 +23,8 @@ import { ToggleClassNameContract } from "@microsoft/fast-components-class-name-c
 import { applyDisabledState } from "../utilities/disabled";
 import { applyScaledTypeRamp } from "../utilities/typography";
 import { DensityCategory, getDensityCategory, heightNumber } from "../utilities/density";
+import { format } from "../utilities/format";
+import { outlineWidth } from "../utilities/design-system";
 
 const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = (
     config: DesignSystem
@@ -81,9 +83,11 @@ const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = (
             width: toPx(width),
             height: toPx(height),
             background: neutralFillInputRest,
-            border: `${toPx(designSystem.outlineWidth)} solid ${neutralOutlineRest(
-                designSystem
-            )}`,
+            border: format(
+                "{0} solid {1}",
+                toPx<DesignSystem>(outlineWidth),
+                neutralOutlineRest
+            ),
             borderRadius: toPx(height),
             appearance: "none",
             outline: "none",
@@ -96,8 +100,8 @@ const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = (
                 borderColor: neutralOutlineActive,
             },
             ...applyFocusVisible({
-                boxShadow: `0 0 0 1px ${neutralFocus(designSystem)} inset`,
-                borderColor: neutralFocus(designSystem),
+                boxShadow: format("0 0 0 1px {0} inset", neutralFocus),
+                borderColor: neutralFocus,
             }),
         },
         toggle__checked: {
@@ -105,8 +109,8 @@ const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = (
                 background: accentFillRest,
                 borderColor: accentFillRest,
                 ...applyFocusVisible({
-                    boxShadow: `0 0 0 1px ${neutralFocus(designSystem)} inset`,
-                    borderColor: neutralFocus(designSystem),
+                    boxShadow: format("0 0 0 1px {0} inset", neutralFocus),
+                    borderColor: neutralFocus,
                 }),
             },
             "& $toggle_stateIndicator": {

@@ -18,7 +18,7 @@ function cornerRadius(arg: any): any {
         );
     }
 
-    return toPx(arg.cornerRadius);
+    return toPx(withDesignSystemDefaults(arg).cornerRadius);
 }
 
 export function applyCornerRadius(): CSSRules<DesignSystem> {
@@ -31,14 +31,14 @@ export function applyFloatingCornerRadius(): CSSRules<DesignSystem> {
 
 /**
  * Sets the border width, style, and color to reserve the space for the focus indicator.
- *
- * @param config The design system config
  */
 export function applyFocusPlaceholderBorder(
-    config: DesignSystem
+    config?: DesignSystem /* @deprecated - this function doesn't need an argument */
 ): CSSRules<DesignSystem> {
-    const designSystem: DesignSystem = withDesignSystemDefaults(config);
     return {
-        border: `${toPx(designSystem.focusOutlineWidth)} solid transparent`,
+        border: ensureDesignSystemDefaults(
+            (designSystem: DesignSystem): string =>
+                `${toPx(designSystem.focusOutlineWidth)} solid transparent`
+        ),
     };
 }

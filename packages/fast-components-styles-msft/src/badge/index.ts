@@ -13,6 +13,7 @@ import { applyCursorDefault } from "../utilities/cursor";
 import { horizontalSpacing } from "../utilities/density";
 import { applyScaledTypeRamp } from "../utilities/typography";
 import { applyFontWeightNormal, applyFontWeightSemiBold } from "../utilities/fonts";
+import { format } from "../utilities/format";
 
 const styles: ComponentStyles<BadgeClassNameContract, DesignSystem> = (
     config: DesignSystem
@@ -61,7 +62,7 @@ const styles: ComponentStyles<BadgeClassNameContract, DesignSystem> = (
             height: toPx(largeHeight),
             lineHeight: toPx(largeHeight),
             "&$badge__filled": {
-                padding: `0 ${horizontalSpacing()(designSystem)}`,
+                padding: format("0 {0}", horizontalSpacing()),
             },
         },
     };

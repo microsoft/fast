@@ -4,6 +4,7 @@ import { NumberFieldClassNameContract } from "@microsoft/fast-components-class-n
 import { Direction, localizeSpacing } from "@microsoft/fast-jss-utilities";
 import { height, horizontalSpacing } from "../utilities/density";
 import { inputFieldStyles } from "../patterns/input-field";
+import { format } from "../utilities/format";
 
 /* tslint:disable-next-line */
 const styles: ComponentStyles<NumberFieldClassNameContract, DesignSystem> = (
@@ -17,7 +18,7 @@ const styles: ComponentStyles<NumberFieldClassNameContract, DesignSystem> = (
             ...inputFieldStyles(designSystem),
             height: height(),
             padding: localizeSpacing(direction)(
-                `0 6px 0 ${horizontalSpacing()(designSystem)}`
+                format("0 6px 0 {0}", horizontalSpacing())(designSystem)
             ),
         },
     };

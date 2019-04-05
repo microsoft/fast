@@ -13,35 +13,30 @@ import {
 } from "@microsoft/fast-jss-manager";
 import { HypertextClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import { applyFocusVisible } from "@microsoft/fast-jss-utilities";
+import { format } from "../utilities/format";
 
-const styles: ComponentStyles<HypertextClassNameContract, DesignSystem> = (
-    config: DesignSystem
-): ComponentStyleSheet<HypertextClassNameContract, DesignSystem> => {
-    const designSystem: DesignSystem = withDesignSystemDefaults(config);
-
-    return {
-        hypertext: {
-            outline: "none",
-            textDecoration: "none",
-            color: neutralForegroundRest,
-            transition: "all 0.2s ease-in-out, border 0.03s ease-in-out",
-            "&:link, &:visited": {
-                borderBottom: `1px solid ${accentForegroundRest(designSystem)}`,
-                color: accentForegroundRest,
-                "&:hover": {
-                    borderBottom: `2px solid ${accentForegroundHover(designSystem)}`,
-                    color: accentForegroundHover,
-                },
-                "&:active": {
-                    borderBottom: `2px solid ${accentForegroundActive(designSystem)}`,
-                    color: accentForegroundActive,
-                },
-                ...applyFocusVisible({
-                    borderBottom: `2px solid ${neutralFocus(designSystem)}`,
-                }),
+const styles: ComponentStyles<HypertextClassNameContract, DesignSystem> = {
+    hypertext: {
+        outline: "none",
+        textDecoration: "none",
+        color: neutralForegroundRest,
+        transition: "all 0.2s ease-in-out, border 0.03s ease-in-out",
+        "&:link, &:visited": {
+            borderBottom: format("1px solid {0}", accentForegroundRest),
+            color: accentForegroundRest,
+            "&:hover": {
+                borderBottom: format("2px solid {0}", accentForegroundHover),
+                color: accentForegroundHover,
             },
+            "&:active": {
+                borderBottom: format("2px solid {0}", accentForegroundActive),
+                color: accentForegroundActive,
+            },
+            ...applyFocusVisible({
+                borderBottom: format("2px solid {0}", neutralFocus),
+            }),
         },
-    };
+    },
 };
 
 export default styles;

@@ -12,6 +12,8 @@ import {
     neutralOutlineRest,
 } from "../utilities/color";
 import { CarouselClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
+import { format } from "../utilities/format";
+import { designUnit, outlineWidth } from "../utilities/design-system";
 
 const styles: ComponentStyles<CarouselClassNameContract, DesignSystem> = (
     config: DesignSystem
@@ -67,7 +69,7 @@ const styles: ComponentStyles<CarouselClassNameContract, DesignSystem> = (
                 borderRadius: "40px",
                 content: "''",
                 display: "block",
-                height: toPx(designSystem.designUnit),
+                height: toPx<DesignSystem>(designUnit),
                 width: "32px",
                 transition: "all 0.05s ease-in-out",
             },
@@ -106,9 +108,11 @@ const styles: ComponentStyles<CarouselClassNameContract, DesignSystem> = (
                     color: neutralForegroundRest((): string => black),
                     fill: neutralForegroundRest((): string => black),
                     background: neutralFillStealthRest((): string => black),
-                    border: `${toPx(
-                        designSystem.outlineWidth
-                    )} solid ${neutralOutlineRest((): string => black)}`,
+                    border: format(
+                        "{0} solid {1}",
+                        toPx<DesignSystem>(outlineWidth),
+                        neutralOutlineRest((): string => black)
+                    ),
                 },
                 "& span::before": {
                     borderColor: neutralForegroundRest((): string => black),
@@ -140,9 +144,11 @@ const styles: ComponentStyles<CarouselClassNameContract, DesignSystem> = (
                     color: neutralForegroundRest((): string => white),
                     fill: neutralForegroundRest((): string => white),
                     background: neutralFillStealthRest((): string => white),
-                    border: `${toPx(
-                        designSystem.outlineWidth
-                    )} solid ${neutralOutlineRest((): string => white)}`,
+                    border: format(
+                        "{0} solid {1}",
+                        toPx<DesignSystem>(outlineWidth),
+                        neutralOutlineRest((): string => white)
+                    ),
                 },
                 "& span::before": {
                     borderColor: neutralForegroundRest((): string => white),

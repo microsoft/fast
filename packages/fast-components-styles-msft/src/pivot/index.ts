@@ -21,6 +21,7 @@ import {
 import { PivotClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import { applyCornerRadius, applyFocusPlaceholderBorder } from "../utilities/border";
 import { applyScaledTypeRamp } from "../utilities/typography";
+import { format } from "../utilities/format";
 
 const styles: ComponentStyles<PivotClassNameContract, DesignSystem> = (
     config: DesignSystem
@@ -42,7 +43,7 @@ const styles: ComponentStyles<PivotClassNameContract, DesignSystem> = (
         },
         pivot_tab: {
             height: height(),
-            padding: `0 ${horizontalSpacing(2)(designSystem)}`,
+            padding: format("0 {0}", horizontalSpacing(2)),
             whiteSpace: "nowrap",
             display: "flex",
             ...applyFocusPlaceholderBorder(designSystem),

@@ -31,7 +31,7 @@ const styles: ComponentStyles<RadioClassNameContract, DesignSystem> = (
 ): ComponentStyleSheet<RadioClassNameContract, DesignSystem> => {
     const designSystem: DesignSystem = withDesignSystemDefaults(config);
     const direction: Direction = designSystem.direction;
-    const size: number = heightNumber()(designSystem) / 2 + designSystem.designUnit;
+    const size: string = toPx(heightNumber()(designSystem) / 2 + designSystem.designUnit);
 
     const category: DensityCategory = getDensityCategory(designSystem);
     const indicatorMarginOffset: number =
@@ -53,8 +53,8 @@ const styles: ComponentStyles<RadioClassNameContract, DesignSystem> = (
         },
         radio_input: {
             position: "absolute",
-            width: toPx(size),
-            height: toPx(size),
+            width: size,
+            height: size,
             appearance: "none",
             borderRadius: "50%",
             margin: "0",
@@ -81,8 +81,8 @@ const styles: ComponentStyles<RadioClassNameContract, DesignSystem> = (
             position: "relative",
             borderRadius: "50%",
             display: "inline-block",
-            width: toPx(size),
-            height: toPx(size),
+            width: size,
+            height: size,
             flexShrink: "0",
             "&::before": {
                 pointerEvents: "none",

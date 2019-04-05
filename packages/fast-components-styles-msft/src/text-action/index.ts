@@ -20,6 +20,8 @@ import {
 import { applyCornerRadius } from "../utilities/border";
 import { glyphSize, height, horizontalSpacing } from "../utilities/density";
 import { applyDisabledState } from "../utilities/disabled";
+import { format } from "../utilities/format";
+import { outlineWidth } from "../utilities/design-system";
 
 // Since MSFT button is already styled, we need to override in this way to alter button classes
 export const textFieldOverrides: ComponentStyles<
@@ -60,9 +62,11 @@ const styles: ComponentStyles<TextActionClassNameContract, DesignSystem> = (
             height: height(),
             margin: "0",
             minWidth: "92px",
-            border: `${toPx(designSystem.outlineWidth)} solid ${neutralOutlineRest(
-                designSystem
-            )}`,
+            border: format(
+                "{0} solid {1}",
+                toPx<DesignSystem>(outlineWidth),
+                neutralOutlineRest
+            ),
             background: neutralFillInputRest,
             ...applyCornerRadius(),
             display: "flex",

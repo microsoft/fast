@@ -5,22 +5,16 @@ import { applyScreenReader } from "@microsoft/fast-jss-utilities";
 import { neutralForegroundRest } from "../utilities/color";
 import { applyScaledTypeRamp } from "../utilities/typography";
 
-const styles: ComponentStyles<LabelClassNameContract, DesignSystem> = (
-    config: DesignSystem
-): ComponentStyleSheet<LabelClassNameContract, DesignSystem> => {
-    const designSystem: DesignSystem = withDesignSystemDefaults(config);
-
-    return {
-        label: {
-            ...applyScaledTypeRamp("t7"),
-            display: "inline-block",
-            color: neutralForegroundRest,
-            padding: "0",
-        },
-        label__hidden: {
-            ...applyScreenReader(),
-        },
-    };
+const styles: ComponentStyles<LabelClassNameContract, DesignSystem> = {
+    label: {
+        ...applyScaledTypeRamp("t7"),
+        display: "inline-block",
+        color: neutralForegroundRest,
+        padding: "0",
+    },
+    label__hidden: {
+        ...applyScreenReader(),
+    },
 };
 
 export default styles;

@@ -19,6 +19,7 @@ import { applyCornerRadius, applyFocusPlaceholderBorder } from "../utilities/bor
 import { applyCursorDefault, applyCursorPointer } from "../utilities/cursor";
 import { applyDisabledState } from "../utilities/disabled";
 import { applyScaledTypeRamp } from "../utilities/typography";
+import { format } from "../utilities/format";
 
 const styles: ComponentStyles<SelectOptionClassNameContract, DesignSystem> = (
     config: DesignSystem
@@ -33,9 +34,7 @@ const styles: ComponentStyles<SelectOptionClassNameContract, DesignSystem> = (
             height: height(),
             display: "flex",
             alignItems: "center",
-            padding: `0 ${horizontalSpacing(designSystem.focusOutlineWidth)(
-                designSystem
-            )}`,
+            padding: format("0 {0}", horizontalSpacing(designSystem.focusOutlineWidth)),
             margin: `0 ${toPx(designSystem.designUnit)}`,
             color: neutralForegroundRest,
             fill: neutralForegroundRest,
