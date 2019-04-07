@@ -18,6 +18,7 @@
   "scripts": {
     "docs:build": "node build/documentation/generate-typedocs.js",
     "docs:build:dry-run": "node build/documentation/generate-typedocs.js --dry-run",
+    "docs:build:verbose": "node build/documentation/generate-typedocs.js --verbose",
     "docs:build:readme": "node build/documentation/copy-package-readme.js",
     "docs:build:api": "node build/documentation/generate-typedocs.js",
     "integration-tests:alpha": "node build/testing/sauce-labs/test-browsers.js alpha",
