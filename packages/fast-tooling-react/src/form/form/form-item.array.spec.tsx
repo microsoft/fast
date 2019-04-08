@@ -33,12 +33,15 @@ const managedClasses: FormItemArrayClassNameContract = {
     formItemArray_addItemLabel: "formItemArray_addItemLabel-class",
     formItemArray_addItemButton: "formItemArray_controlAddButton-class",
     formItemArray_controlLabel: "formItemArray_controlLabel-class",
+    formItemArray_defaultValueIndicator: "formItemArray_defaultValueIndicator-class",
     formItemArray_existingItemList: "formItemArray_existingItemList-class",
     formItemArray_existingItemListItem: "formItemArray_existingItemListItem-class",
     formItemArray_existingItemListItem__sorting:
         "formItemArray_existingItemListItem__sorting-class",
     formItemArray_existingItemListItemLink:
         "formItemArray_existingItemListItemLink-class",
+    formItemArray_existingItemListItemLink__default:
+        "formItemArray_existingItemListItemLink__default-class",
     formItemArray_existingItemRemoveButton:
         "formItemArray_existingItemRemoveButton-class",
 };
@@ -285,5 +288,66 @@ describe("Array", () => {
         rendered.setProps({ invalidMessage: invalidMessage2 });
 
         expect(rendered.html().includes(invalidMessage2)).toBe(true);
+    });
+    test("should show a default indicator if default values exist and no data is available", () => {
+        const rendered: any = mount(
+            <FormItemArray
+                {...arrayProps}
+                data={undefined}
+                default={[]}
+                managedClasses={managedClasses}
+            />
+        );
+
+        expect(
+            rendered.find(`.${managedClasses.formItemArray_defaultValueIndicator}`)
+        ).toHaveLength(1);
+    });
+    test("should not show a default indicator if data exists", () => {
+        const rendered: any = mount(
+            <FormItemArray
+                {...arrayProps}
+                data={[]}
+                default={[]}
+                managedClasses={managedClasses}
+            />
+        );
+
+        expect(
+            rendered.find(`.${managedClasses.formItemArray_defaultValueIndicator}`)
+        ).toHaveLength(0);
+    });
+    test("should show default values if they exist and no data is available", () => {
+        const defaultArrayItem1: string = "foo";
+        const defaultArrayItem2: string = "bar";
+        const rendered: any = mount(
+            <FormItemArray
+                {...arrayProps}
+                data={undefined}
+                default={[defaultArrayItem1, defaultArrayItem2]}
+                managedClasses={managedClasses}
+            />
+        );
+
+        expect(rendered.html().includes(defaultArrayItem1)).toBe(true);
+        expect(rendered.html().includes(defaultArrayItem2)).toBe(true);
+    });
+    test("should not show default values if data exists", () => {
+        const arrayItem1: string = "foo";
+        const arrayItem2: string = "bar";
+        const defaultArrayItem1: string = "hello";
+        const defaultArrayItem2: string = "world";
+        const rendered: any = mount(
+            <FormItemArray
+                {...arrayProps}
+                data={[arrayItem1, arrayItem2]}
+                default={[defaultArrayItem1, defaultArrayItem2]}
+                managedClasses={managedClasses}
+            />
+        );
+        expect(rendered.html().includes(arrayItem1)).toBe(true);
+        expect(rendered.html().includes(arrayItem2)).toBe(true);
+        expect(rendered.html().includes(defaultArrayItem1)).toBe(false);
+        expect(rendered.html().includes(defaultArrayItem2)).toBe(false);
     });
 });

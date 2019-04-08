@@ -13,6 +13,11 @@
             "title": "Optional Checkbox",
             "type": "boolean"
         },
+        "defaultToggle": {
+            "title": "Default Checkbox",
+            "type": "boolean",
+            "default": true
+        },
         "disabledToggle": {
             "title": "Disabled Checkbox",
             "type": "boolean",

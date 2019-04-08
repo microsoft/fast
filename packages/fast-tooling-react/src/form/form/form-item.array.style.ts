@@ -3,10 +3,9 @@ import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager";
 import {
     accent,
     applyCleanListStyle,
-    applyControl,
     applyControlRegion,
     applyControlWrapper,
-    applyFormItemBadge,
+    applyFormItemIndicator,
     applyGlobalStyle,
     applyInvalidMessage,
     applyLabelRegionStyle,
@@ -36,7 +35,7 @@ const styles: ComponentStyles<FormItemArrayClassNameContract, {}> = {
         maxWidth: "calc(100% - 30px)",
     },
     formItemArray_badge: {
-        ...applyFormItemBadge(),
+        ...applyFormItemIndicator(),
     },
     formItemArray_control: {
         width: "100%",
@@ -89,6 +88,9 @@ const styles: ComponentStyles<FormItemArrayClassNameContract, {}> = {
     formItemArray_controlRegion: {
         ...applyControlRegion(),
     },
+    formItemArray_defaultValueIndicator: {
+        ...applyFormItemIndicator(),
+    },
     formItemArray_existingItemList: {
         ...applyCleanListStyle(),
         fontSize: "12px",
@@ -119,6 +121,9 @@ const styles: ComponentStyles<FormItemArrayClassNameContract, {}> = {
         height: "30px",
         lineHeight: "30px",
         width: "calc(100% - 30px)",
+    },
+    formItemArray_existingItemListItemLink__default: {
+        cursor: "auto",
     },
     formItemArray_existingItemRemoveButton: {
         ...applyRemoveItemStyle(),

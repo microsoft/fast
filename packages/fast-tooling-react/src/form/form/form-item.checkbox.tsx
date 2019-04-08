@@ -2,16 +2,21 @@ import React from "react";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 import { get } from "lodash-es";
-import FormItemCommon from "./form-item.props";
 import styles from "./form-item.checkbox.style";
-import { FormItemCheckboxProps } from "./form-item.checkbox.props";
+import {
+    FormItemCheckboxClassNameContract,
+    FormItemCheckboxProps,
+} from "./form-item.checkbox.props";
 import FormItemBase from "./form-item.base";
 
 /**
  * Schema form component definition
  * @extends React.Component
  */
-class FormItemCheckbox extends FormItemBase<FormItemCheckboxProps, {}> {
+class FormItemCheckbox extends FormItemBase<
+    FormItemCheckboxProps & ManagedClasses<FormItemCheckboxClassNameContract>,
+    {}
+> {
     public static displayName: string = "FormItemCheckbox";
 
     public render(): JSX.Element {
@@ -44,6 +49,12 @@ class FormItemCheckbox extends FormItemBase<FormItemCheckboxProps, {}> {
                     >
                         {this.props.label}
                     </label>
+                    {this.renderDefaultValueIndicator(
+                        get(
+                            this.props,
+                            "managedClasses.formItemCheckbox_defaultValueIndicator"
+                        )
+                    )}
                     {this.renderBadge(
                         get(this.props, "managedClasses.formItemCheckbox_badge")
                     )}
@@ -85,4 +96,5 @@ class FormItemCheckbox extends FormItemBase<FormItemCheckboxProps, {}> {
     };
 }
 
+export { FormItemCheckbox };
 export default manageJss(styles)(FormItemCheckbox);

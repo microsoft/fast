@@ -6,7 +6,7 @@ import {
     applyCleanListStyle,
     applyControl,
     applyControlWrapper,
-    applyFormItemBadge,
+    applyFormItemIndicator,
     applyGlobalStyle,
     applyInputStyle,
     applyLabelRegionStyle,
@@ -29,7 +29,7 @@ const styles: ComponentStyles<FormItemChildrenClassNameContract, {}> = {
         ...applyControlWrapper(),
     },
     formItemChildren_badge: {
-        ...applyFormItemBadge(),
+        ...applyFormItemIndicator(),
     },
     formItemChildren_control: {
         ...applyControl(),
@@ -40,6 +40,9 @@ const styles: ComponentStyles<FormItemChildrenClassNameContract, {}> = {
     },
     formItemChildren_controlLabelRegion: {
         ...applyLabelRegionStyle(),
+    },
+    formItemChildren_defaultValueIndicator: {
+        ...applyFormItemIndicator(),
     },
     formItemChildren_existingChildren: {
         ...applyCleanListStyle(),
@@ -61,10 +64,14 @@ const styles: ComponentStyles<FormItemChildrenClassNameContract, {}> = {
         "&$formItemChildren_existingChildrenItem__sorting": {
             backgroundColor: background100,
         },
+        "&$formItemChildren_existingChildrenItem__default": {
+            cursor: "auto",
+        },
         "&:hover": {
             backgroundColor: "rgba(255, 255, 255, 0.04)",
         },
     },
+    formItemChildren_existingChildrenItem__default: {},
     formItemChildren_existingChildrenItemLink: {
         width: "calc(100% - 36px)",
         "&$formItemChildren_existingChildrenItemName, &$formItemChildren_existingChildrenItemContent": {

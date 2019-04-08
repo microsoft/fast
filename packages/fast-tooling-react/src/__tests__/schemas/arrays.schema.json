@@ -31,6 +31,43 @@
                     "string"
                 ]
             }
+        },
+        "stringsWithDefault": {
+            "title": "Array of strings with default",
+            "type": "array",
+            "items": {
+                "title": "String",
+                "type": "string"
+            },
+            "default": [
+                "foo",
+                "bar"
+            ]
+        },
+        "objectsWithDefault": {
+            "title": "Array of objects with default",
+            "type": "array",
+            "items": {
+                "title": "Object",
+                "type": "object",
+                "properties": {
+                    "string": {
+                        "title": "String",
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "string"
+                ]
+            },
+            "default": [
+                {
+                    "string": "foo"
+                },
+                {
+                    "string": "bar"
+                }
+            ]
         }
     },
     "required": [

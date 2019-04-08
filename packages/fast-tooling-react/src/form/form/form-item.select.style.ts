@@ -3,8 +3,8 @@ import {
     applyControl,
     applyControlRegion,
     applyControlWrapper,
-    applyFormItemBadge,
     applyFormItemDisabled,
+    applyFormItemIndicator,
     applyInvalidMessage,
     applyLabelRegionStyle,
     applyLabelStyle,
@@ -23,7 +23,7 @@ const styles: ComponentStyles<FormItemSelectClassNameContract, {}> = {
         ...applyFormItemDisabled(),
     },
     formItemSelect_badge: {
-        ...applyFormItemBadge(),
+        ...applyFormItemIndicator(),
     },
     formItemSelect_control: {
         ...applyControl(),
@@ -42,6 +42,9 @@ const styles: ComponentStyles<FormItemSelectClassNameContract, {}> = {
     },
     formItemSelect_controlInput: {
         ...applySelectInputStyles(),
+    },
+    formItemSelect_defaultValueIndicator: {
+        ...applyFormItemIndicator(),
     },
     formItemSelect_invalidMessage: {
         ...applyInvalidMessage(),

@@ -10,6 +10,7 @@ export interface FormItemNumberFieldClassNameContract {
     formItemNumberField_controlLabel?: string;
     formItemNumberField_controlLabelRegion?: string;
     formItemNumberField_controlInput?: string;
+    formItemNumberField_defaultValueIndicator?: string;
     formItemNumberField__disabled?: string;
     formItemNumberField_softRemove?: string;
     formItemNumberField_softRemoveInput?: string;

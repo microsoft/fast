@@ -4,7 +4,7 @@ import {
     applyControl,
     applyControlRegion,
     applyControlSingleLineWrapper,
-    applyFormItemBadge,
+    applyFormItemIndicator,
     applyInvalidMessage,
     applySoftRemove,
     applySoftRemoveInput,
@@ -24,10 +24,13 @@ const styles: ComponentStyles<FormItemSectionLinkClassNameContract, {}> = {
         lineHeight: "23px",
     },
     formItemSectionLink_badge: {
-        ...applyFormItemBadge(),
+        ...applyFormItemIndicator(),
     },
     formItemSectionLink_controlRegion: {
         ...applyControlRegion(),
+    },
+    formItemSectionLink_defaultValueIndicator: {
+        ...applyFormItemIndicator(),
     },
     formItemSectionLink_invalidMessage: {
         ...applyInvalidMessage(),

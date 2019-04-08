@@ -3,8 +3,8 @@ import {
     applyControl,
     applyControlRegion,
     applyControlWrapper,
-    applyFormItemBadge,
     applyFormItemDisabled,
+    applyFormItemIndicator,
     applyInputStyle,
     applyInvalidMessage,
     applyLabelRegionStyle,
@@ -22,7 +22,7 @@ const styles: ComponentStyles<FormItemNumberFieldClassNameContract, {}> = {
         ...applyFormItemDisabled(),
     },
     formItemNumberField_badge: {
-        ...applyFormItemBadge(),
+        ...applyFormItemIndicator(),
     },
     formItemNumberField_control: {
         ...applyControl(),
@@ -39,6 +39,9 @@ const styles: ComponentStyles<FormItemNumberFieldClassNameContract, {}> = {
     formItemNumberField_controlInput: {
         ...applyInputStyle(),
         width: "100%",
+    },
+    formItemNumberField_defaultValueIndicator: {
+        ...applyFormItemIndicator(),
     },
     formItemNumberField_softRemove: {
         ...applySoftRemove(),

@@ -14,10 +14,12 @@ export interface FormItemArrayClassNameContract {
     formItemArray_controlLabel?: string;
     formItemArray_controlLabelRegion?: string;
     formItemArray_controlRegion?: string;
+    formItemArray_defaultValueIndicator?: string;
     formItemArray_existingItemList?: string;
     formItemArray_existingItemListItem?: string;
     formItemArray_existingItemListItem__sorting?: string;
     formItemArray_existingItemListItemLink?: string;
+    formItemArray_existingItemListItemLink__default?: string;
     formItemArray_existingItemRemoveButton?: string;
     formItemArray_invalidMessage?: string;
     formItemArray_softRemove?: string;

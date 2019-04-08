@@ -24,6 +24,11 @@
             "maximum": 50,
             "multipleOf": 5
         },
+        "defaultNumber": {
+            "title": "Default number",
+            "type": "number",
+            "default": 5
+        },
         "optionalNumber": {
             "title": "Optional number field",
             "type": "number"
