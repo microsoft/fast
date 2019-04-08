@@ -102,7 +102,7 @@
     "tslint": "^5.9.1",
     "typedoc": "^0.14.2",
     "typedoc-plugin-markdown": "^1.1.27",
-    "typescript": "^3.0.1",
+    "typescript": "3.3.3",
     "yargs": "^11.0.0"
   },
   "dependencies": {

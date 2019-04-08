@@ -39,6 +39,6 @@
     "ts-node": "^5.0.1",
     "tslint": "^5.9.1",
     "tslint-config-prettier": "^1.15.0",
-    "typescript": "^3.0.1"
+    "typescript": "3.3.3"
   }
 }
