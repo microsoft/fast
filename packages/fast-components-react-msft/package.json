@@ -111,7 +111,7 @@
     "tslint-config-prettier": "^1.15.0",
     "tslint-loader": "^3.6.0",
     "tv4": "^1.3.0",
-    "typescript": "^3.0.1",
+    "typescript": "3.3.3",
     "utility-types": "^2.1.0",
     "webpack": "^4.1.0",
     "webpack-bundle-analyzer": "^2.13.1",

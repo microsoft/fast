@@ -24,6 +24,6 @@
   "dependencies": {
     "tslint": "^5.9.1",
     "tslint-react": "^3.4.0",
-    "typescript": "^3.0.1"
+    "typescript": "3.3.3"
   }
 }
