@@ -53,6 +53,7 @@ import { Direction } from "@microsoft/fast-web-utilities";
 
 export const localeDirectionMapping: { [key: string]: Direction } = {
     en: Direction.ltr,
+    "en-rtl": Direction.rtl,
 };
 
 export function isRTL(locale: string): boolean {
