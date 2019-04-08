@@ -104,7 +104,6 @@ function execute() {
 
             if(valid) {
                 dryRun ? console.log(`...generate TypeDoc API files for ${packageName}`) : createAPIFiles(packageName, srcPath);
-                dryRun ? console.log(`...add API link to ${packageName}`) : addAPILinkToReadme(packageName);
             }
 
         });
@@ -139,6 +138,7 @@ function createAPIFiles(packageName, srcPath) {
         } else {
             console.log(`${packageName} - TypeDoc API docs generated`)
             addHeaderToReadme(packageName);
+            addAPILinkToReadme(packageName);
         }
     });
 
