@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.1.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-jss-utilities@4.0.0...@microsoft/fast-jss-utilities@4.1.0) (2019-04-09)
+
+
+### Bug Fixes
+
+* update design-system merging strategy to not deeply merge array values ([#1626](https://github.com/Microsoft/fast-dna/issues/1626)) ([1bee417](https://github.com/Microsoft/fast-dna/commit/1bee417))
+
+
+### Features
+
+* add DesignSystemResolver formatting utility ([#1620](https://github.com/Microsoft/fast-dna/issues/1620)) ([0d5f1b9](https://github.com/Microsoft/fast-dna/commit/0d5f1b9))
+
+
+
+
+
 # [4.0.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-jss-utilities@3.2.5...@microsoft/fast-jss-utilities@4.0.0) (2019-03-25)
 
 

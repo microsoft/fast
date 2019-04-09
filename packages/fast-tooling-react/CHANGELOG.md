@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.2.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-tooling-react@1.1.1...@microsoft/fast-tooling-react@1.2.0) (2019-04-09)
+
+
+### Bug Fixes
+
+* fixes a reversion where ids no longer restricted the child options ([#1608](https://github.com/Microsoft/fast-dna/issues/1608)) ([94f5f00](https://github.com/Microsoft/fast-dna/commit/94f5f00))
+
+
+### Features
+
+* allow an array to be unset/reset if it is optional ([#1613](https://github.com/Microsoft/fast-dna/issues/1613)) ([c671b4c](https://github.com/Microsoft/fast-dna/commit/c671b4c))
+* use defaults as values if the data has not been set and adds an indicator in the UI to signify that the data is default ([#1619](https://github.com/Microsoft/fast-dna/issues/1619)) ([7131fc8](https://github.com/Microsoft/fast-dna/commit/7131fc8))
+
+
+
+
+
 ## [1.1.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-tooling-react@1.1.0...@microsoft/fast-tooling-react@1.1.1) (2019-04-03)
 
 **Note:** Version bump only for package @microsoft/fast-tooling-react

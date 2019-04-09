@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.2.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-jss-manager-react@4.2.0...@microsoft/fast-jss-manager-react@4.2.1) (2019-04-09)
+
+
+### Bug Fixes
+
+* update design-system merging strategy to not deeply merge array values ([#1626](https://github.com/Microsoft/fast-dna/issues/1626)) ([1bee417](https://github.com/Microsoft/fast-dna/commit/1bee417))
+
+
+
+
+
 # [4.2.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-jss-manager-react@4.1.0...@microsoft/fast-jss-manager-react@4.2.0) (2019-04-03)
 
 

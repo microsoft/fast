@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.1.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-layouts-react@4.1.0...@microsoft/fast-layouts-react@4.1.1) (2019-04-09)
+
+
+### Bug Fixes
+
+* prevent error from unhandled props ([#1622](https://github.com/Microsoft/fast-dna/issues/1622)) ([5ce25ef](https://github.com/Microsoft/fast-dna/commit/5ce25ef))
+
+
+
+
+
 # [4.1.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-layouts-react@4.0.1...@microsoft/fast-layouts-react@4.1.0) (2019-04-03)
 
 

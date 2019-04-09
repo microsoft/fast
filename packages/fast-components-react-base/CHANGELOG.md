@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.1.2](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-base@4.1.1...@microsoft/fast-components-react-base@4.1.2) (2019-04-09)
+
+
+### Bug Fixes
+
+* updates the allowed children ids for the context menu component ([#1628](https://github.com/Microsoft/fast-dna/issues/1628)) ([bb12b66](https://github.com/Microsoft/fast-dna/commit/bb12b66))
+
+
+
+
+
 ## [4.1.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-base@4.1.0...@microsoft/fast-components-react-base@4.1.1) (2019-04-03)
 
 **Note:** Version bump only for package @microsoft/fast-components-react-base

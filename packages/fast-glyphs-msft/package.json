@@ -2,7 +2,7 @@
   "name": "@microsoft/fast-glyphs-msft",
   "description": "Microsoft SVG Glyphs",
   "sideEffects": false,
-  "version": "4.0.0",
+  "version": "4.0.1",
   "author": {
     "name": "Microsoft",
     "url": "https://discord.gg/FcSNfg4"
@@ -33,7 +33,7 @@
   "homepage": "https://github.com/Microsoft/fast-tslint-rules#readme",
   "devDependencies": {
     "@babel/preset-env": "^7.1.0",
-    "@microsoft/fast-tslint-rules": "^3.0.2",
+    "@microsoft/fast-tslint-rules": "^3.0.3",
     "@types/node": "^9.6.2",
     "prettier": "1.14.3",
     "ts-node": "^5.0.1",
