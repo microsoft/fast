@@ -17,7 +17,7 @@ const styles: ComponentStyles<ContextMenuClassNameContract, DesignSystem> = {
             (designSystem: DesignSystem): string => designSystem.backgroundColor
         ),
         ...applyFloatingCornerRadius(),
-        ...elevation(ElevationMultiplier.e11),
+        ...elevation(ElevationMultiplier.e11)({} as DesignSystem),
         margin: "0",
         padding: format("{0} 0", toPx<DesignSystem>(designUnit)),
         maxWidth: "368px",
