@@ -13,8 +13,8 @@
             "type": "children",
             "formPluginId": "@microsoft/fast-components-react-msft/context-menu/children",
             "ids": [
-                "context-menu-item",
-                "divider"
+                "@microsoft/fast-components-react-msft/context-menu-item",
+                "@microsoft/fast-components-react-msft/divider"
             ]
         }
     }
