@@ -2,7 +2,7 @@
   "name": "@microsoft/fast-components-styles-msft",
   "description": "Javascript style sheets for FAST components",
   "sideEffects": false,
-  "version": "4.2.0",
+  "version": "4.2.1",
   "author": {
     "name": "Microsoft",
     "url": "https://discord.gg/FcSNfg4"

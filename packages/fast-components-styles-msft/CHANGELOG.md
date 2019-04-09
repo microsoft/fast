@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.2.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-styles-msft@4.2.0...@microsoft/fast-components-styles-msft@4.2.1) (2019-04-09)
+
+
+### Bug Fixes
+
+* fix drop shadow ([#1637](https://github.com/Microsoft/fast-dna/issues/1637)) ([be05181](https://github.com/Microsoft/fast-dna/commit/be05181))
+
+
+
+
+
 # [4.2.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-styles-msft@4.1.1...@microsoft/fast-components-styles-msft@4.2.0) (2019-04-09)
 
 
