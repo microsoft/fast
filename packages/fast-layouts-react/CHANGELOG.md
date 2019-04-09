@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.1.2](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-layouts-react@4.1.1...@microsoft/fast-layouts-react@4.1.2) (2019-04-09)
+
+
+### Bug Fixes
+
+* Update breakpoint value when Brekpoints set. ([#1627](https://github.com/Microsoft/fast-dna/issues/1627)) ([fdba48d](https://github.com/Microsoft/fast-dna/commit/fdba48d))
+
+
+
+
+
 ## [4.1.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-layouts-react@4.1.0...@microsoft/fast-layouts-react@4.1.1) (2019-04-09)
 
 

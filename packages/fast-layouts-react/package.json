@@ -1,6 +1,6 @@
 {
   "name": "@microsoft/fast-layouts-react",
-  "version": "4.1.1",
+  "version": "4.1.2",
   "description": "FAST layout components written in React",
   "sideEffects": false,
   "author": {
