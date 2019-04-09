@@ -2,8 +2,14 @@ import { ManagedClasses } from "@microsoft/fast-jss-manager-react";
 import { CSSEditorClassNameContract } from "./editor.style";
 import { CSSSpacingValues } from "./spacing";
 import { CSSPositionValues } from "./position";
+import { CSSWidthValues } from "./width";
+import { CSSHeightValues } from "./height";
 
-export interface CSSEditorValues extends CSSSpacingValues, CSSPositionValues {}
+export interface CSSEditorValues
+    extends CSSSpacingValues,
+        CSSPositionValues,
+        CSSWidthValues,
+        CSSHeightValues {}
 
 export type CSSOnChange = (CSS: CSSEditorValues) => void;
 
