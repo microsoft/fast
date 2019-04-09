@@ -56,6 +56,8 @@ class BreakpointTracker {
      */
     public set breakpoints(breakpointConfig: Breakpoints) {
         this._breakpoints = breakpointConfig;
+
+        this.breakpoint = identifyBreakpoint(window.innerWidth, this._breakpoints);
     }
 
     /**

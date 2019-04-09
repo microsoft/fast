@@ -61,4 +61,27 @@ describe("breakpointTracker", (): void => {
         // Expect default values
         expect(BreakpointTracker.breakpoints).toEqual(defaultBreakpoints);
     });
+
+    test("should update `currentBreakpoint` value when new breakpoint values provided", (): void => {
+        const breakpointsOne: Breakpoints = [0, 500, 900, 1400];
+        const breakpointsTwo: Breakpoints = [0, 200, 400, 600, 800];
+
+        // set innerWidth to 700
+        (window as any)["innerWidth"] = 700;
+
+        // Set breakpoints set one
+        BreakpointTracker.breakpoints = breakpointsOne;
+
+        // Expect new values
+        expect(BreakpointTracker.currentBreakpoint()).toEqual(1);
+
+        // Set breakpoints set two
+        BreakpointTracker.breakpoints = breakpointsTwo;
+
+        // Expect new values
+        expect(BreakpointTracker.currentBreakpoint()).toEqual(3);
+
+        // Update to default values
+        BreakpointTracker.breakpoints = defaultBreakpoints;
+    });
 });
