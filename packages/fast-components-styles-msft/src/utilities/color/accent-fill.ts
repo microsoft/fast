@@ -13,7 +13,7 @@ import {
     SwatchRecipe,
 } from "./common";
 import { accentSwatch, findAccessibleAccentSwatchIndexs } from "./accent";
-import { getSwatch, isDarkTheme, Palette, palette, PaletteType } from "./palette";
+import { getSwatch, isDarkMode, Palette, palette, PaletteType } from "./palette";
 import { accentForegroundCut } from "./accent-foreground-cut";
 
 /**
@@ -49,7 +49,7 @@ export const accentFillAlgorithm: (
         active: getSwatch(indexes.active, accentPalette),
         selected: getSwatch(
             indexes.rest +
-                (isDarkTheme(designSystem)
+                (isDarkMode(designSystem)
                     ? designSystem.accentFillSelectedDelta * -1
                     : designSystem.accentFillSelectedDelta),
             accentPalette

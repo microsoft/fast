@@ -1,4 +1,4 @@
-import { getSwatch, isDarkTheme, palette, Palette, PaletteType } from "./palette";
+import { getSwatch, isDarkMode, palette, Palette, PaletteType } from "./palette";
 import {
     Swatch,
     SwatchFamily,
@@ -24,7 +24,7 @@ const neutralForegroundAlgorithm: SwatchFamilyResolver = (
     designSystem: DesignSystem
 ): SwatchFamily => {
     const neutralPalette: Palette = palette(PaletteType.neutral)(designSystem);
-    const isDark: boolean = isDarkTheme(designSystem);
+    const isDark: boolean = isDarkMode(designSystem);
     const direction: 1 | -1 = isDark ? 1 : -1;
     const restColor: Swatch = isDark
         ? neutralForegroundLight(designSystem)

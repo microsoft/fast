@@ -5,6 +5,7 @@ import {
     palette,
     Palette,
     PaletteType,
+    swatchByMode,
 } from "./palette";
 import designSystemDefaults, { DesignSystem } from "../../design-system";
 import { accent } from "./color-constants";
@@ -147,5 +148,28 @@ describe("getSwatch", (): void => {
         expect(getSwatch(0, colorPalette)).toBe("#FFF");
         expect(getSwatch(1, colorPalette)).toBe("#F00");
         expect(getSwatch(2, colorPalette)).toBe("#000");
+    });
+});
+
+describe("swatchByMode", (): void => {
+    test("should opperate on designSystemDefaults", (): void => {
+        expect(swatchByMode(PaletteType.neutral)(0, 0)({} as DesignSystem)).toBe(
+            designSystemDefaults.neutralPalette[0]
+        );
+        expect(swatchByMode(PaletteType.accent)(0, 0)({} as DesignSystem)).toBe(
+            designSystemDefaults.accentPalette[0]
+        );
+    });
+    test("should return the dark index color when the background color is dark", (): void => {
+        expect(
+            swatchByMode(PaletteType.neutral)(0, 7)({
+                backgroundColor: "#000",
+            } as DesignSystem)
+        ).toBe(designSystemDefaults.neutralPalette[7]);
+        expect(
+            swatchByMode(PaletteType.accent)(0, 7)({
+                backgroundColor: "#000",
+            } as DesignSystem)
+        ).toBe(designSystemDefaults.accentPalette[7]);
     });
 });

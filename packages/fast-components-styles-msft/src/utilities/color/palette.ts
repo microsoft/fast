@@ -114,15 +114,20 @@ export function findClosestSwatchIndex(
 }
 
 /**
- * Determines if we're in a dark theme, determined by comparing the contrast
- * of light neutral-foreground and dark neutral-foreground to the background. If light neutral-foreground
- * has a higher contrast, then we're in a dark theme
+ * Determines if the design-system should be considered in "dark mode".
  */
-export function isDarkTheme(designSystem: DesignSystem): boolean {
+export function isDarkMode(designSystem: DesignSystem): boolean {
     return (
         contrast(neutralForegroundLight(designSystem), designSystem.backgroundColor) >=
         contrast(neutralForegroundDark(designSystem), designSystem.backgroundColor)
     );
+}
+
+/**
+ * Determines if the design-system should be considered in "light mode".
+ */
+export function isLightMode(designSystem: DesignSystem): boolean {
+    return !isDarkMode(designSystem);
 }
 
 /**
@@ -131,4 +136,21 @@ export function isDarkTheme(designSystem: DesignSystem): boolean {
  */
 export function getSwatch(index: number, colorPalette: Palette): Swatch {
     return colorPalette[clamp(index, 0, colorPalette.length - 1)];
+}
+
+export function swatchByMode(
+    paletteName: PaletteType
+): (a: number, b: number) => DesignSystemResolver<Swatch> {
+    const paletteKey: keyof DesignSystem =
+        paletteName === PaletteType.accent ? "accentPalette" : "neutralPalette";
+
+    return (valueA: number, valueB?: number): DesignSystemResolver<Swatch> => {
+        return ensureDesignSystemDefaults(
+            (designSystem: DesignSystem): Swatch => {
+                return isDarkMode(designSystem)
+                    ? getSwatch(valueB, designSystem[paletteKey])
+                    : getSwatch(valueA, designSystem[paletteKey]);
+            }
+        );
+    };
 }
