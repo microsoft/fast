@@ -15,6 +15,7 @@ const fs = require("fs");
 const glob = require("glob");
 const os = require('os');
 const chalk = require('chalk');
+const yargs = require('yargs');
 
 const { exec } = require('child_process');
 const { spawn } = require("child_process");
@@ -36,31 +37,12 @@ const excludedPackages = [
 ];
 
 /**
- * Determine if a dry run will be executed based off --dry-run argument being present
- * if an invalid third parameter is entered, the application will exit
+ * Obtain command line aguments
+ * If present when the script is run, their corresponding flags get set to true
  */
-process.argv.forEach(function (val, index) {
-
-    var validArg = true;
-
-    if (index === 2) {
-        if(val === "--dry-run") {
-            dryRun = true;
-        } else if(val === '--verbose') {
-            verbose = true;
-        } else {
-            validArg = false;
-        }
-    }
-
-    if (!validArg) {
-        console.log(chalk.red(`Invalid operation '${val}'. 
-            To perform a dry-run use --dry-run
-            To print verbose typedoc errors use --verbose`));
-        process.exit(1);
-    }
-
-});
+const argv = yargs.argv;
+dryRun = argv.dryRun;
+verbose = argv.verbose;
 
 /**
  * Run the copy readme script, then this one if successful
@@ -158,7 +140,7 @@ function createAPIFiles(packageName, srcPath) {
     // useful for debugging
     if (verbose) {
         typedoc.stdout.on('data', (data) => {
-            console.error(`${data}`);
+            console.log(`${data}`);
         });
     }
 
