@@ -8,6 +8,7 @@ import {
     applyFocusVisible,
     applyLocalizedProperty,
     Direction,
+    format,
     toPx,
 } from "@microsoft/fast-jss-utilities";
 import { height, heightNumber, horizontalSpacing } from "../utilities/density";
@@ -21,7 +22,6 @@ import {
 import { PivotClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import { applyCornerRadius, applyFocusPlaceholderBorder } from "../utilities/border";
 import { applyScaledTypeRamp } from "../utilities/typography";
-import { format } from "../utilities/format";
 
 const styles: ComponentStyles<PivotClassNameContract, DesignSystem> = (
     config: DesignSystem

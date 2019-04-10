@@ -5,6 +5,7 @@ import {
     applyFocusVisible,
     applyLocalizedProperty,
     Direction,
+    format,
     toPx,
 } from "@microsoft/fast-jss-utilities";
 import {
@@ -27,7 +28,6 @@ import {
 import { applyDisabledState } from "../utilities/disabled";
 import { applyScaledTypeRamp } from "../utilities/typography";
 import { outlineWidth } from "../utilities/design-system";
-import { format } from "../utilities/format";
 
 const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = (
     config: DesignSystem
@@ -92,7 +92,7 @@ const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = (
                 borderColor: neutralOutlineActive,
             },
             ...applyFocusVisible({
-                boxShadow: format("0 0 0 1px {0} inset", neutralFocus),
+                boxShadow: format<DesignSystem>("0 0 0 1px {0} inset", neutralFocus),
                 borderColor: neutralFocus,
             }),
         },

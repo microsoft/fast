@@ -3,6 +3,7 @@ import {
     applyFocusVisible,
     applyLocalizedProperty,
     Direction,
+    format,
     toPx,
 } from "@microsoft/fast-jss-utilities";
 import { DesignSystem, withDesignSystemDefaults } from "../design-system";
@@ -36,7 +37,6 @@ import { applyCursorPointer } from "../utilities/cursor";
 import { applyCornerRadius, applyFocusPlaceholderBorder } from "../utilities/border";
 import { applyDisabledState } from "../utilities/disabled";
 import { applyScaledTypeRamp } from "../utilities/typography";
-import { format } from "../utilities/format";
 import { outlineWidth } from "../utilities/design-system";
 
 function applyTransparentBackplateStyles(

@@ -1,6 +1,6 @@
 import { DesignSystem, withDesignSystemDefaults } from "../design-system";
 import { ComponentStyles, ComponentStyleSheet } from "@microsoft/fast-jss-manager";
-import { toPx } from "@microsoft/fast-jss-utilities";
+import { format, toPx } from "@microsoft/fast-jss-utilities";
 import {
     ButtonClassNameContract,
     SelectClassNameContract,
@@ -12,7 +12,6 @@ import {
     neutralOutlineRest,
 } from "../utilities/color";
 import { applyFloatingCornerRadius } from "../utilities/border";
-import { format } from "../utilities/format";
 import { designUnit } from "../utilities/design-system";
 
 export const selectDisplayButtonOverrides: ComponentStyles<

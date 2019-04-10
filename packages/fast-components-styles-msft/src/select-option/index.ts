@@ -14,12 +14,12 @@ import {
     applyLocalizedProperty,
     Direction,
     ellipsis,
+    format,
 } from "@microsoft/fast-jss-utilities";
 import { applyCornerRadius, applyFocusPlaceholderBorder } from "../utilities/border";
 import { applyCursorDefault, applyCursorPointer } from "../utilities/cursor";
 import { applyDisabledState } from "../utilities/disabled";
 import { applyScaledTypeRamp } from "../utilities/typography";
-import { format } from "../utilities/format";
 
 const styles: ComponentStyles<SelectOptionClassNameContract, DesignSystem> = (
     config: DesignSystem

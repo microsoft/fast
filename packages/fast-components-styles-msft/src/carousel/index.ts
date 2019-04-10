@@ -4,7 +4,12 @@ import {
     ComponentStyleSheet,
     CSSRules,
 } from "@microsoft/fast-jss-manager";
-import { applyLocalizedProperty, Direction, toPx } from "@microsoft/fast-jss-utilities";
+import {
+    applyLocalizedProperty,
+    Direction,
+    format,
+    toPx,
+} from "@microsoft/fast-jss-utilities";
 import {
     neutralFillStealthHover,
     neutralFillStealthRest,
@@ -12,7 +17,6 @@ import {
     neutralOutlineRest,
 } from "../utilities/color";
 import { CarouselClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
-import { format } from "../utilities/format";
 import { designUnit, outlineWidth } from "../utilities/design-system";
 
 const styles: ComponentStyles<CarouselClassNameContract, DesignSystem> = (

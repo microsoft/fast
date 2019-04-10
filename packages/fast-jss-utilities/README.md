@@ -178,3 +178,19 @@ const withGlobalDefaults: (config: Partial<GlobalDefaults>) => GlobalDefaults = 
     config: Partial<GlobalDefaults>
 ): GlobalDefaults => withDefaults(globalVariableDefaults)(config);
 ```
+
+### format
+
+The `format` function is used to format strings with the result of functions. It returns a single function which accepts the design-system
+the stylesheet is compiled with. The first argument is the string to be formatted - all other arguments should be functions that accept your design-system and return a string. The first formatter function passed replaces the literal string `"{0}"`, while the second replaces `"{1}"`, etc. There is no limit to the number of formatters that can be used with the function:
+
+```ts
+
+function getMyColor(designSystem) {
+    return designSystem.myColor
+}
+
+{
+    border: format("1px solid {0}", getMyColor)
+}
+```

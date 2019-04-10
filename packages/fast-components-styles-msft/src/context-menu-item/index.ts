@@ -14,12 +14,11 @@ import {
     neutralForegroundHover,
     neutralForegroundRest,
 } from "../utilities/color";
-import { applyFocusVisible, toPx } from "@microsoft/fast-jss-utilities";
+import { applyFocusVisible, format, toPx } from "@microsoft/fast-jss-utilities";
 import { ComponentStyles, ComponentStyleSheet } from "@microsoft/fast-jss-manager";
 import { applyCursorDefault } from "../utilities/cursor";
 import { applyDisabledState } from "../utilities/disabled";
 import { applyScaledTypeRamp } from "../utilities/typography";
-import { format } from "../utilities/format";
 import { designUnit } from "../utilities/design-system";
 
 const padding: DesignSystemResolver<string> = (designSystem: DesignSystem): string => {

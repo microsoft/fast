@@ -10,3 +10,4 @@ export * from "./truncation";
 export * from "./units";
 export * from "./focus";
 export * from "./with-defaults";
+export * from "./format";

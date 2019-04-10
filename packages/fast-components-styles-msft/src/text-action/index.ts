@@ -6,7 +6,12 @@ import {
 } from "@microsoft/fast-jss-manager";
 import { TextActionClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import { TextFieldClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
-import { applyLocalizedProperty, Direction, toPx } from "@microsoft/fast-jss-utilities";
+import {
+    applyLocalizedProperty,
+    Direction,
+    format,
+    toPx,
+} from "@microsoft/fast-jss-utilities";
 import {
     neutralFillInputActive,
     neutralFillInputHover,
@@ -20,7 +25,6 @@ import {
 import { applyCornerRadius } from "../utilities/border";
 import { glyphSize, height, horizontalSpacing } from "../utilities/density";
 import { applyDisabledState } from "../utilities/disabled";
-import { format } from "../utilities/format";
 import { outlineWidth } from "../utilities/design-system";
 
 // Since MSFT button is already styled, we need to override in this way to alter button classes

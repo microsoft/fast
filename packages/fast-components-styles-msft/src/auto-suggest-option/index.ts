@@ -9,7 +9,7 @@ import {
     neutralFocus,
     neutralForegroundRest,
 } from "../utilities/color";
-import { applyFocusVisible } from "@microsoft/fast-jss-utilities";
+import { applyFocusVisible, format } from "@microsoft/fast-jss-utilities";
 import { applyScaledTypeRamp } from "../utilities/typography";
 import {
     applyLocalizedProperty,
@@ -20,7 +20,6 @@ import {
 import { applyCornerRadius, applyFocusPlaceholderBorder } from "../utilities/border";
 import { applyCursorDefault } from "../utilities/cursor";
 import { applyDisabledState } from "../utilities/disabled";
-import { format } from "../utilities/format";
 
 const styles: ComponentStyles<AutoSuggestOptionClassNameContract, DesignSystem> = (
     config: DesignSystem

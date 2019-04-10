@@ -1,6 +1,6 @@
 import { ContextMenuClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import { ComponentStyles, ComponentStyleSheet } from "@microsoft/fast-jss-manager";
-import { toPx } from "@microsoft/fast-jss-utilities";
+import { format, toPx } from "@microsoft/fast-jss-utilities";
 import {
     DesignSystem,
     ensureDesignSystemDefaults,
@@ -8,7 +8,6 @@ import {
 } from "../design-system";
 import { applyFloatingCornerRadius } from "../utilities/border";
 import { elevation, ElevationMultiplier } from "../utilities/elevation";
-import { format } from "../utilities/format";
 import { designUnit } from "../utilities/design-system";
 
 const styles: ComponentStyles<ContextMenuClassNameContract, DesignSystem> = {
