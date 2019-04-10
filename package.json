@@ -73,8 +73,8 @@
   },
   "lint-staged": {
     "*.{ts,tsx,js}": [
-      "lerna run prettier",
-      "git add ."
+      "prettier --write",
+      "git add"
     ]
   },
   "devDependencies": {
