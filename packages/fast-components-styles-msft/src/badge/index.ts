@@ -4,7 +4,7 @@ import {
     ComponentStyleSheet,
     CSSRules,
 } from "@microsoft/fast-jss-manager";
-import { ellipsis, toPx } from "@microsoft/fast-jss-utilities";
+import { ellipsis, format, toPx } from "@microsoft/fast-jss-utilities";
 import { DesignSystem, withDesignSystemDefaults } from "../design-system/index";
 import { applyCornerRadius } from "../utilities/border";
 import { accentForegroundCut, neutralForegroundRest } from "../utilities/color";
@@ -13,7 +13,6 @@ import { applyCursorDefault } from "../utilities/cursor";
 import { horizontalSpacing } from "../utilities/density";
 import { applyScaledTypeRamp } from "../utilities/typography";
 import { applyFontWeightNormal, applyFontWeightSemiBold } from "../utilities/fonts";
-import { format } from "../utilities/format";
 
 const styles: ComponentStyles<BadgeClassNameContract, DesignSystem> = (
     config: DesignSystem

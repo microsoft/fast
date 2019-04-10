@@ -17,13 +17,13 @@ import {
     applyFocusVisible,
     applyLocalizedProperty,
     Direction,
+    format,
     toPx,
 } from "@microsoft/fast-jss-utilities";
 import { ToggleClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import { applyDisabledState } from "../utilities/disabled";
 import { applyScaledTypeRamp } from "../utilities/typography";
 import { DensityCategory, getDensityCategory, heightNumber } from "../utilities/density";
-import { format } from "../utilities/format";
 import { outlineWidth } from "../utilities/design-system";
 
 const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = (
@@ -100,7 +100,7 @@ const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = (
                 borderColor: neutralOutlineActive,
             },
             ...applyFocusVisible({
-                boxShadow: format("0 0 0 1px {0} inset", neutralFocus),
+                boxShadow: format<DesignSystem>("0 0 0 1px {0} inset", neutralFocus),
                 borderColor: neutralFocus,
             }),
         },
@@ -109,7 +109,7 @@ const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = (
                 background: accentFillRest,
                 borderColor: accentFillRest,
                 ...applyFocusVisible({
-                    boxShadow: format("0 0 0 1px {0} inset", neutralFocus),
+                    boxShadow: format<DesignSystem>("0 0 0 1px {0} inset", neutralFocus),
                     borderColor: neutralFocus,
                 }),
             },

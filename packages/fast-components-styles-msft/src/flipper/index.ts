@@ -1,7 +1,12 @@
 import { DesignSystem, withDesignSystemDefaults } from "../design-system";
 import { ComponentStyles, ComponentStyleSheet } from "@microsoft/fast-jss-manager";
 import { FlipperClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
-import { applyFocusVisible, Direction, toPx } from "@microsoft/fast-jss-utilities";
+import {
+    applyFocusVisible,
+    Direction,
+    format,
+    toPx,
+} from "@microsoft/fast-jss-utilities";
 import {
     neutralFillStealthActive,
     neutralFillStealthHover,
@@ -13,7 +18,6 @@ import {
     neutralOutlineRest,
 } from "../utilities/color";
 import { glyphSize, height } from "../utilities/density";
-import { format } from "../utilities/format";
 import { outlineWidth } from "../utilities/design-system";
 
 const styles: ComponentStyles<FlipperClassNameContract, DesignSystem> = {
@@ -61,7 +65,7 @@ const styles: ComponentStyles<FlipperClassNameContract, DesignSystem> = {
         },
         ...applyFocusVisible({
             "&::before": {
-                boxShadow: format("0 0 0 1px {0} inset", neutralFocus),
+                boxShadow: format<DesignSystem>("0 0 0 1px {0} inset", neutralFocus),
                 border: neutralFocus,
             },
         }),

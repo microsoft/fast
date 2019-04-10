@@ -1,28 +1,20 @@
-import {
-    DesignSystem,
-    DesignSystemResolver,
-    ensureDesignSystemDefaults,
-} from "../design-system";
-
-export function format(
+export function format<T>(
     value: string,
-    ...args: Array<DesignSystemResolver<string>>
-): DesignSystemResolver<string> {
-    return ensureDesignSystemDefaults(
-        (designSystem: DesignSystem): string => {
-            return args.reduce(
-                (
-                    reducedValue: string,
-                    currentValue: DesignSystemResolver<string>,
-                    index: number
-                ): string => {
-                    return reducedValue.replace(
-                        new RegExp(`\\{${index}\\}`, "g"),
-                        currentValue(designSystem)
-                    );
-                },
-                value
-            );
-        }
-    );
+    ...args: Array<(designSystem: T) => string>
+): (designSystem: T) => string {
+    return (designSystem: T): string => {
+        return args.reduce(
+            (
+                reducedValue: string,
+                currentValue: (designSystem: T) => string,
+                index: number
+            ): string => {
+                return reducedValue.replace(
+                    new RegExp(`\\{${index}\\}`, "g"),
+                    currentValue(designSystem)
+                );
+            },
+            value
+        );
+    };
 }

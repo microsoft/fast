@@ -12,8 +12,7 @@ import {
     CSSRules,
 } from "@microsoft/fast-jss-manager";
 import { HypertextClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
-import { applyFocusVisible } from "@microsoft/fast-jss-utilities";
-import { format } from "../utilities/format";
+import { applyFocusVisible, format } from "@microsoft/fast-jss-utilities";
 
 const styles: ComponentStyles<HypertextClassNameContract, DesignSystem> = {
     hypertext: {
@@ -22,18 +21,24 @@ const styles: ComponentStyles<HypertextClassNameContract, DesignSystem> = {
         color: neutralForegroundRest,
         transition: "all 0.2s ease-in-out, border 0.03s ease-in-out",
         "&:link, &:visited": {
-            borderBottom: format("1px solid {0}", accentForegroundRest),
+            borderBottom: format<DesignSystem>("1px solid {0}", accentForegroundRest),
             color: accentForegroundRest,
             "&:hover": {
-                borderBottom: format("2px solid {0}", accentForegroundHover),
+                borderBottom: format<DesignSystem>(
+                    "2px solid {0}",
+                    accentForegroundHover
+                ),
                 color: accentForegroundHover,
             },
             "&:active": {
-                borderBottom: format("2px solid {0}", accentForegroundActive),
+                borderBottom: format<DesignSystem>(
+                    "2px solid {0}",
+                    accentForegroundActive
+                ),
                 color: accentForegroundActive,
             },
             ...applyFocusVisible({
-                borderBottom: format("2px solid {0}", neutralFocus),
+                borderBottom: format<DesignSystem>("2px solid {0}", neutralFocus),
             }),
         },
     },

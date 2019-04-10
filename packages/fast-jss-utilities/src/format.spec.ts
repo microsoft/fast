@@ -1,5 +1,12 @@
-import designSystemDefaults, { DesignSystem } from "../design-system";
 import { format } from "./format";
+
+interface DesignSystem {
+    value: string;
+}
+
+const designSystemDefaults: DesignSystem = {
+    value: "foo",
+};
 
 function formatter(designSystem: DesignSystem): string {
     return "%formatted%";
