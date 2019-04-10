@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.3.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-styles-msft@4.2.1...@microsoft/fast-components-styles-msft@4.3.0) (2019-04-10)
+
+
+### Features
+
+* adds format utility to fast-jss-utilities ([#1640](https://github.com/Microsoft/fast-dna/issues/1640)) ([afc9938](https://github.com/Microsoft/fast-dna/commit/afc9938))
+
+
+
+
+
 ## [4.2.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-styles-msft@4.2.0...@microsoft/fast-components-styles-msft@4.2.1) (2019-04-09)
 
 

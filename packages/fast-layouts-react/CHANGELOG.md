@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.1.3](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-layouts-react@4.1.2...@microsoft/fast-layouts-react@4.1.3) (2019-04-10)
+
+**Note:** Version bump only for package @microsoft/fast-layouts-react
+
+
+
+
+
 ## [4.1.2](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-layouts-react@4.1.1...@microsoft/fast-layouts-react@4.1.2) (2019-04-09)
 
 
