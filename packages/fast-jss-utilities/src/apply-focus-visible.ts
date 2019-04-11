@@ -13,7 +13,7 @@ export function applyFocusVisibleSelector(selector: string = ""): string {
  * Returns the selector for the focus-visible polyfill
  */
 export function applyFocusVisiblePolyfillSelector(selector: string = ""): string {
-    return `body:not(.js-focus-visible) &:focus${selector}, .js-focus-visible &.focus-visible${selector}, .js-focus-visible &[data-focus-visible-added]${selector}`;
+    return `body:not(.js-focus-visible) &:focus${selector}, .js-focus-visible &.focus-visible${selector}, .js-focus-visible [data-focus-visible-added]&${selector}`;
 }
 
 export function applyFocusVisible<T>(styles: CSSRules<T>): CSSRules<T>;
