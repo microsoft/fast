@@ -43,3 +43,22 @@ export function designUnit(arg: any): any {
 
     return withDesignSystemDefaults(arg).designUnit;
 }
+
+/**
+ * Retrieve the focusOutlineWidth when invoked with a DesignSystem
+ * When invoked with a multiplier, a function is returned that accepts the DesignSystem,
+ * which returns the focusOutlineWidth multiplied by the multiplier
+ */
+export function focusOutlineWidth(designSystem: DesignSystem): number;
+export function focusOutlineWidth(multiplier: number): DesignSystemResolver<number>;
+export function focusOutlineWidth(arg: any): any {
+    if (typeof arg === "number") {
+        return ensureDesignSystemDefaults(
+            (designSystem: DesignSystem): number => {
+                return designSystem.focusOutlineWidth * arg;
+            }
+        );
+    }
+
+    return withDesignSystemDefaults(arg).focusOutlineWidth;
+}

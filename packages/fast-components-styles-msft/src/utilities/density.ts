@@ -66,12 +66,15 @@ export function getDensityCategory(designSystem: DesignSystem): DensityCategory 
  * @param unit The unit of measurement; px by default.
  */
 export function horizontalSpacing(
-    adjustment: number = 0,
+    adjustment: number | DesignSystemResolver<number> = 0,
     unit?: string
 ): DesignSystemResolver<string> {
     return ensureDesignSystemDefaults(
         (designSystem: DesignSystem): string => {
-            const value: number = horizontalSpacingNumber(adjustment)(designSystem);
+            const value: number =
+                typeof adjustment === "function"
+                    ? horizontalSpacingNumber(adjustment(designSystem))(designSystem)
+                    : horizontalSpacingNumber(adjustment)(designSystem);
             return typeof unit === "string" ? `${value}${unit}` : toPx(value);
         }
     );
