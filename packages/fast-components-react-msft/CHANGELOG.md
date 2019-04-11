@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.3.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-msft@4.2.3...@microsoft/fast-components-react-msft@4.3.0) (2019-04-11)
+
+
+### Features
+
+* add stealth appearance to button appearance enum ([#1616](https://github.com/Microsoft/fast-dna/issues/1616)) ([771b651](https://github.com/Microsoft/fast-dna/commit/771b651))
+
+
+
+
+
 ## [4.2.3](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-msft@4.2.2...@microsoft/fast-components-react-msft@4.2.3) (2019-04-10)
 
 **Note:** Version bump only for package @microsoft/fast-components-react-msft

@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.4.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-styles-msft@4.3.0...@microsoft/fast-components-styles-msft@4.4.0) (2019-04-11)
+
+
+### Bug Fixes
+
+* refactor button component stylesheet ([#1647](https://github.com/Microsoft/fast-dna/issues/1647)) ([f1c2f74](https://github.com/Microsoft/fast-dna/commit/f1c2f74))
+
+
+### Features
+
+* add stealth appearance to button appearance enum ([#1616](https://github.com/Microsoft/fast-dna/issues/1616)) ([771b651](https://github.com/Microsoft/fast-dna/commit/771b651))
+
+
+
+
+
 # [4.3.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-styles-msft@4.2.1...@microsoft/fast-components-styles-msft@4.3.0) (2019-04-10)
 
 

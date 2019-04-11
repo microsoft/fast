@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.7](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-development-site-react@4.0.6...@microsoft/fast-development-site-react@4.0.7) (2019-04-11)
+
+**Note:** Version bump only for package @microsoft/fast-development-site-react
+
+
+
+
+
 ## [4.0.6](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-development-site-react@4.0.5...@microsoft/fast-development-site-react@4.0.6) (2019-04-10)
 
 **Note:** Version bump only for package @microsoft/fast-development-site-react
