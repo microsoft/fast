@@ -171,6 +171,17 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = {
             borderColor: neutralFocus,
         }),
     },
+    button__lightweight: {
+        ...applyTransparentBackplateStyles,
+    },
+    button__justified: {
+        ...applyTransparentBackplateStyles,
+        minWidth: "74px",
+        paddingLeft: "0",
+        paddingRight: "0",
+        borderWidth: "0",
+        justifyContent: "flex-start",
+    },
     button__stealth: {
         background: neutralFillStealthRest,
         "&:hover:enabled": {
@@ -183,17 +194,6 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = {
             borderColor: neutralFocus,
         }),
     },
-    button__lightweight: {
-        ...applyTransparentBackplateStyles,
-    },
-    button__justified: {
-        ...applyTransparentBackplateStyles,
-        minWidth: "74px",
-        paddingLeft: "0",
-        paddingRight: "0",
-        borderWidth: "0",
-        justifyContent: "flex-start",
-    },
     button_contentRegion: {
         position: "relative",
         "&::before": {
@@ -205,11 +205,11 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = {
             width: "100%",
             left: ensureDesignSystemDefaults(
                 (designSystem: DesignSystem): string =>
-                applyLocalizedProperty("0", "auto", designSystem.direction)
+                    applyLocalizedProperty("0", "auto", designSystem.direction)
             ),
             right: ensureDesignSystemDefaults(
                 (designSystem: DesignSystem): string =>
-                applyLocalizedProperty("auto", "0", designSystem.direction)
+                    applyLocalizedProperty("auto", "0", designSystem.direction)
             ),
         },
         "& svg": {
