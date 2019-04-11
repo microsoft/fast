@@ -21,7 +21,8 @@
                 "justified",
                 "lightweight",
                 "outline",
-                "primary"
+                "primary",
+                "stealth"
             ]
         }
     },
