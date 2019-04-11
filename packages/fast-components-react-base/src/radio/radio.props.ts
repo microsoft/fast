@@ -21,6 +21,11 @@ export interface RadioHandledProps extends RadioManagedClasses {
     disabled?: boolean;
 
     /**
+     * The name of the input
+     */
+    name?: string;
+
+    /**
      * The onChange event
      */
     onChange?: RadioOnChange;

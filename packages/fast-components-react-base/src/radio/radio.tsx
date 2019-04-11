@@ -52,6 +52,7 @@ class Radio extends Foundation<RadioHandledProps, RadioUnhandledProps, RadioStat
         checked: void 0,
         disabled: void 0,
         managedClasses: void 0,
+        name: void 0,
         onChange: void 0,
         children: void 0,
     };
@@ -71,6 +72,7 @@ class Radio extends Foundation<RadioHandledProps, RadioUnhandledProps, RadioStat
                     className={get(this.props, "managedClasses.radio_input")}
                     type="radio"
                     id={this.props.inputId}
+                    name={this.props.name}
                     onChange={this.handleRadioChange}
                     disabled={this.props.disabled || null}
                     checked={this.state.checked}

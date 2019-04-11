@@ -17,6 +17,11 @@
         "disabled": {
             "title": "Disabled",
             "type": "boolean"
+        },
+        "name": {
+            "title": "Name",
+            "type": "string",
+            "example": "name"
         }
     },
     "reactProperties": {
