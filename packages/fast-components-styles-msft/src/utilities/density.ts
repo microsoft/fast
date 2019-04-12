@@ -1,10 +1,15 @@
-import {
+import defaultDesignSystem, {
     DesignSystem,
     DesignSystemResolver,
     ensureDesignSystemDefaults,
     withDesignSystemDefaults,
 } from "../design-system";
 import { toPx } from "@microsoft/fast-jss-utilities";
+import {
+    baseHeightMultiplier,
+    baseHorizontalSpacingMultiplier,
+    designUnit,
+} from "../utilities/design-system";
 
 export enum DensityCategory {
     compact = "compact",
@@ -19,12 +24,10 @@ export enum DensityCategory {
  * @param unit The unit of measurement; px by default.
  */
 export function height(lines: number = 1, unit?: string): DesignSystemResolver<string> {
-    return ensureDesignSystemDefaults(
-        (designSystem: DesignSystem): string => {
-            const value: number = heightNumber(lines)(designSystem);
-            return typeof unit === "string" ? `${value}${unit}` : toPx(value);
-        }
-    );
+    return (designSystem: DesignSystem): string => {
+        const value: number = heightNumber(lines)(designSystem);
+        return typeof unit === "string" ? `${value}${unit}` : toPx(value);
+    };
 }
 
 /**
@@ -33,15 +36,14 @@ export function height(lines: number = 1, unit?: string): DesignSystemResolver<s
  * @param lines The logical number of lines the component takes, typically 1.
  */
 export function heightNumber(lines: number = 1): DesignSystemResolver<number> {
-    return ensureDesignSystemDefaults(
-        (designSystem: DesignSystem): number => {
-            const value: number =
-                (designSystem.baseHeightMultiplier + designSystem.density) *
-                designSystem.designUnit *
-                lines;
-            return value;
-        }
-    );
+    return (designSystem: DesignSystem): number => {
+        const value: number =
+            (baseHeightMultiplier(designSystem) +
+                ((designSystem && designSystem.density) || defaultDesignSystem.density)) *
+            designUnit(designSystem) *
+            lines;
+        return value;
+    };
 }
 
 /**
@@ -69,15 +71,13 @@ export function horizontalSpacing(
     adjustment: number | DesignSystemResolver<number> = 0,
     unit?: string
 ): DesignSystemResolver<string> {
-    return ensureDesignSystemDefaults(
-        (designSystem: DesignSystem): string => {
-            const value: number =
-                typeof adjustment === "function"
-                    ? horizontalSpacingNumber(adjustment(designSystem))(designSystem)
-                    : horizontalSpacingNumber(adjustment)(designSystem);
-            return typeof unit === "string" ? `${value}${unit}` : toPx(value);
-        }
-    );
+    return (designSystem: DesignSystem): string => {
+        const value: number =
+            typeof adjustment === "function"
+                ? horizontalSpacingNumber(adjustment(designSystem))(designSystem)
+                : horizontalSpacingNumber(adjustment)(designSystem);
+        return typeof unit === "string" ? `${value}${unit}` : toPx(value);
+    };
 }
 
 /**
@@ -88,22 +88,20 @@ export function horizontalSpacing(
 export function horizontalSpacingNumber(
     adjustment: number = 0
 ): DesignSystemResolver<number> {
-    return ensureDesignSystemDefaults(
-        (designSystem: DesignSystem): number => {
-            const category: DensityCategory = getDensityCategory(designSystem);
-            const densityOffset: number =
-                category === DensityCategory.compact
-                    ? -1
-                    : category === DensityCategory.spacious
-                        ? 1
-                        : 0;
-            const value: number =
-                (designSystem.baseHorizontalSpacingMultiplier + densityOffset) *
-                    designSystem.designUnit -
-                adjustment;
-            return value;
-        }
-    );
+    return (designSystem: DesignSystem): number => {
+        const category: DensityCategory = getDensityCategory(designSystem);
+        const densityOffset: number =
+            category === DensityCategory.compact
+                ? -1
+                : category === DensityCategory.spacious
+                    ? 1
+                    : 0;
+        const value: number =
+            (baseHorizontalSpacingMultiplier(designSystem) + densityOffset) *
+                designUnit(designSystem) -
+            adjustment;
+        return value;
+    };
 }
 
 /**
@@ -144,7 +142,7 @@ export function glyphSizeNumber(config: DesignSystem): number {
                 ? 2
                 : 0;
     const value: number =
-        (designSystem.baseHeightMultiplier / 2) * designSystem.designUnit + sizeOffset;
+        (baseHeightMultiplier(designSystem) / 2) * designUnit(designSystem) + sizeOffset;
     return value;
 }
 

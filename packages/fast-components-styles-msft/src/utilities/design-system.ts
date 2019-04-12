@@ -26,6 +26,13 @@ export const backgroundColor: DesignSystemResolver<string> = getDesignSystemValu
 );
 
 /**
+ * Retrieve the backgroundColor when invoked with a DesignSystem
+ */
+export const cornerRadius: DesignSystemResolver<number> = getDesignSystemValue(
+    "cornerRadius"
+);
+
+/**
  * Retrieve the neutral palette from the design system
  */
 export const neutralPalette: DesignSystemResolver<Palette> = getDesignSystemValue(
