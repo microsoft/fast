@@ -1,9 +1,15 @@
-import { DesignSystem, ensureDesignSystemDefaults } from "../../design-system";
+import defaultDesignSystem, {
+    DesignSystem,
+    ensureDesignSystemDefaults,
+} from "../../design-system";
 import { Swatch, SwatchResolver } from "./common";
 
 /**
  * Returns the current design-system background
  */
-export const backgroundColor: SwatchResolver = ensureDesignSystemDefaults(
-    (designSystem: DesignSystem): Swatch => designSystem.backgroundColor
-);
+export function backgroundColor(designSystem?: DesignSystem): string {
+    return (
+        (designSystem && designSystem.backgroundColor) ||
+        defaultDesignSystem.backgroundColor
+    );
+}

@@ -1,9 +1,4 @@
-import {
-    DesignSystem,
-    DesignSystemResolver,
-    ensureDesignSystemDefaults,
-    withDesignSystemDefaults,
-} from "../../design-system";
+import { DesignSystem, DesignSystemResolver } from "../../design-system";
 import {
     findClosestSwatchIndex,
     getSwatch,
@@ -56,18 +51,16 @@ export function neutralFillInput(
 ): (designSystem: DesignSystem) => FillSwatchFamily;
 export function neutralFillInput(arg: any): any {
     if (typeof arg === "function") {
-        return ensureDesignSystemDefaults(
-            (designSystem: DesignSystem): FillSwatchFamily => {
-                return neutralFillInputAlgorithm(
-                    Object.assign({}, designSystem, {
-                        backgroundColor: arg(designSystem),
-                    })
-                );
-            }
-        );
+        return (designSystem: DesignSystem): FillSwatchFamily => {
+            return neutralFillInputAlgorithm(
+                Object.assign({}, designSystem, {
+                    backgroundColor: arg(designSystem),
+                })
+            );
+        };
     }
 
-    return neutralFillInputAlgorithm(withDesignSystemDefaults(arg));
+    return neutralFillInputAlgorithm(arg);
 }
 
 export const neutralFillInputRest: SwatchRecipe = swatchFamilyToSwatchRecipeFactory<

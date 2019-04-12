@@ -1,5 +1,5 @@
 import { black, white } from "./color-constants";
-import { DesignSystem, ensureDesignSystemDefaults } from "../../design-system";
+import { DesignSystem } from "../../design-system";
 import { accentSwatch } from "./accent";
 import { contrast, Swatch, SwatchRecipe, SwatchResolver } from "./common";
 
@@ -23,14 +23,9 @@ function accentForegroundCutFactory(targetContrast: number): SwatchRecipe {
     ): SwatchResolver;
     function accentForegroundCutInternal(arg: any): any {
         if (typeof arg === "function") {
-            return ensureDesignSystemDefaults(
-                (designSystem: DesignSystem): Swatch => {
-                    return accentForegroundCutAlgorithm(
-                        arg(designSystem),
-                        targetContrast
-                    );
-                }
-            );
+            return (designSystem: DesignSystem): Swatch => {
+                return accentForegroundCutAlgorithm(arg(designSystem), targetContrast);
+            };
         } else {
             return accentForegroundCutAlgorithm(accentSwatch(arg), targetContrast);
         }

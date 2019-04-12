@@ -1,9 +1,4 @@
-import {
-    DesignSystem,
-    DesignSystemResolver,
-    ensureDesignSystemDefaults,
-    withDesignSystemDefaults,
-} from "../../design-system";
+import { DesignSystem, DesignSystemResolver } from "../../design-system";
 import {
     findClosestSwatchIndex,
     getSwatch,
@@ -69,17 +64,15 @@ export function neutralFillStealth(
 ): (designSystem: DesignSystem) => FillSwatchFamily;
 export function neutralFillStealth(arg: any): any {
     if (typeof arg === "function") {
-        return ensureDesignSystemDefaults(
-            (designSystem: DesignSystem): FillSwatchFamily => {
-                return neutralFillStealthAlgorithm(
-                    Object.assign({}, designSystem, {
-                        backgroundColor: arg(designSystem),
-                    })
-                );
-            }
-        );
+        return (designSystem: DesignSystem): FillSwatchFamily => {
+            return neutralFillStealthAlgorithm(
+                Object.assign({}, designSystem, {
+                    backgroundColor: arg(designSystem),
+                })
+            );
+        };
     } else {
-        return neutralFillStealthAlgorithm(withDesignSystemDefaults(arg));
+        return neutralFillStealthAlgorithm(arg);
     }
 }
 

@@ -1,8 +1,4 @@
-import {
-    DesignSystem,
-    ensureDesignSystemDefaults,
-    withDesignSystemDefaults,
-} from "../../design-system";
+import { DesignSystem } from "../../design-system";
 import { findSwatchIndex, Palette, palette, PaletteType } from "./palette";
 import { neutralForegroundRest } from "./neutral-foreground";
 import { inRange } from "lodash-es";
@@ -47,21 +43,16 @@ function neutralForegroundHintFactory(contrastTarget: number): SwatchRecipe {
     ): SwatchResolver;
     function neutralForegroundHintInternal(arg: any): any {
         if (typeof arg === "function") {
-            return ensureDesignSystemDefaults(
-                (designSystem: DesignSystem): Swatch => {
-                    return neutralForegroundHintAlgorithm(
-                        Object.assign({}, designSystem, {
-                            backgroundColor: arg(designSystem),
-                        }),
-                        contrastTarget
-                    );
-                }
-            );
+            return (designSystem: DesignSystem): Swatch => {
+                return neutralForegroundHintAlgorithm(
+                    Object.assign({}, designSystem, {
+                        backgroundColor: arg(designSystem),
+                    }),
+                    contrastTarget
+                );
+            };
         } else {
-            return neutralForegroundHintAlgorithm(
-                withDesignSystemDefaults(arg),
-                contrastTarget
-            );
+            return neutralForegroundHintAlgorithm(arg, contrastTarget);
         }
     }
 

@@ -8,11 +8,7 @@ import {
     SwatchRecipe,
     SwatchResolver,
 } from "./common";
-import {
-    DesignSystem,
-    ensureDesignSystemDefaults,
-    withDesignSystemDefaults,
-} from "../../design-system";
+import defaultDesignSystem, { DesignSystem } from "../../design-system";
 
 /**
  * Function to derive neutralForeground from color inputs.
@@ -45,26 +41,28 @@ const neutralForegroundAlgorithm: SwatchFamilyResolver = (
 /**
  * Retrieve light neutral-foreground color for use on dark backgrounds
  */
-export const neutralForegroundLight: SwatchResolver = ensureDesignSystemDefaults(
-    (designSystem: DesignSystem): Swatch => {
-        return getSwatch(
-            designSystem.neutralForegroundLightIndex,
-            palette(PaletteType.neutral)(designSystem)
-        );
-    }
-);
+export const neutralForegroundLight: SwatchResolver = (
+    designSystem: DesignSystem
+): Swatch => {
+    return getSwatch(
+        (designSystem && designSystem.neutralForegroundLightIndex) ||
+            defaultDesignSystem.neutralForegroundLightIndex,
+        palette(PaletteType.neutral)(designSystem)
+    );
+};
 
 /**
  * Retrieve dark neutral-foreground color for use on light backgrounds
  */
-export const neutralForegroundDark: SwatchResolver = ensureDesignSystemDefaults(
-    (designSystem: DesignSystem): Swatch => {
-        return getSwatch(
-            designSystem.neutralForegroundDarkIndex,
-            palette(PaletteType.neutral)(designSystem)
-        );
-    }
-);
+export const neutralForegroundDark: SwatchResolver = (
+    designSystem: DesignSystem
+): Swatch => {
+    return getSwatch(
+        (designSystem && designSystem.neutralForegroundDarkIndex) ||
+            defaultDesignSystem.neutralForegroundDarkIndex,
+        palette(PaletteType.neutral)(designSystem)
+    );
+};
 
 export function neutralForeground(designSystem: DesignSystem): SwatchFamily;
 export function neutralForeground(
@@ -72,18 +70,16 @@ export function neutralForeground(
 ): (designSystem: DesignSystem) => SwatchFamily;
 export function neutralForeground(arg: any): any {
     if (typeof arg === "function") {
-        return ensureDesignSystemDefaults(
-            (designSystem: DesignSystem): SwatchFamily => {
-                const backgroundColor: Swatch = arg(designSystem);
-                return neutralForegroundAlgorithm(
-                    Object.assign({}, designSystem, {
-                        backgroundColor,
-                    })
-                );
-            }
-        );
+        return (designSystem: DesignSystem): SwatchFamily => {
+            const backgroundColor: Swatch = arg(designSystem);
+            return neutralForegroundAlgorithm(
+                Object.assign({}, designSystem, {
+                    backgroundColor,
+                })
+            );
+        };
     } else {
-        return neutralForegroundAlgorithm(withDesignSystemDefaults(arg));
+        return neutralForegroundAlgorithm(arg);
     }
 }
 

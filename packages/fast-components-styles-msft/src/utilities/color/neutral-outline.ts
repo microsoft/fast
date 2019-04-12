@@ -1,8 +1,4 @@
-import {
-    DesignSystem,
-    ensureDesignSystemDefaults,
-    withDesignSystemDefaults,
-} from "../../design-system";
+import { DesignSystem } from "../../design-system";
 import {
     findClosestSwatchIndex,
     getSwatch,
@@ -52,17 +48,16 @@ export function neutralOutline(
 ): (designSystem: DesignSystem) => SwatchFamily;
 export function neutralOutline(arg: any): any {
     if (typeof arg === "function") {
-        return ensureDesignSystemDefaults(
-            (designSystem: DesignSystem): SwatchFamily => {
-                return neutralOutlineAlgorithm(
-                    Object.assign({}, designSystem, {
-                        backgroundColor: arg(designSystem),
-                    })
-                );
-            }
-        );
+        return;
+        (designSystem: DesignSystem): SwatchFamily => {
+            return neutralOutlineAlgorithm(
+                Object.assign({}, designSystem, {
+                    backgroundColor: arg(designSystem),
+                })
+            );
+        };
     } else {
-        return neutralOutlineAlgorithm(withDesignSystemDefaults(arg));
+        return neutralOutlineAlgorithm(arg);
     }
 }
 

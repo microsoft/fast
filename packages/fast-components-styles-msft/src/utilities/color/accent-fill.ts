@@ -1,9 +1,4 @@
-import {
-    DesignSystem,
-    DesignSystemResolver,
-    ensureDesignSystemDefaults,
-    withDesignSystemDefaults,
-} from "../../design-system";
+import { DesignSystem, DesignSystemResolver } from "../../design-system";
 import {
     FillSwatchFamily,
     Swatch,
@@ -67,18 +62,16 @@ function accentFillFactory(contrast: number): SwatchFamilyResolver<FillSwatchFam
     ): DesignSystemResolver<FillSwatchFamily>;
     function accentFillInternal(arg: any): any {
         if (typeof arg === "function") {
-            return ensureDesignSystemDefaults(
-                (designSystem: DesignSystem): FillSwatchFamily => {
-                    return accentFillAlgorithm(
-                        Object.assign({}, designSystem, {
-                            backgroundColor: arg(designSystem),
-                        }),
-                        contrast
-                    );
-                }
-            );
+            return (designSystem: DesignSystem): FillSwatchFamily => {
+                return accentFillAlgorithm(
+                    Object.assign({}, designSystem, {
+                        backgroundColor: arg(designSystem),
+                    }),
+                    contrast
+                );
+            };
         } else {
-            return accentFillAlgorithm(withDesignSystemDefaults(arg), contrast);
+            return accentFillAlgorithm(arg, contrast);
         }
     }
 
