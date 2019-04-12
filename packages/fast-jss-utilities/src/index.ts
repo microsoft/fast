@@ -11,3 +11,4 @@ export * from "./units";
 export * from "./focus";
 export * from "./with-defaults";
 export * from "./format";
+export * from "./math";

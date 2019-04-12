@@ -45,25 +45,11 @@ export const accentPalette: DesignSystemResolver<Palette> = getDesignSystemValue
 export const contrast: DesignSystemResolver<number> = getDesignSystemValue("contrast");
 
 /**
- * Retrieve the designUnit when invoked with a DesignSystem
- * When invoked with a multiplier, a function is returned that accepts the DesignSystem,
- * which returns the designUnit multiplied by the multiplier
+ * Retrieve the designUnit from the design system
  */
-export function designUnit(designSystem: DesignSystem): number;
-export function designUnit(multiplier: number): DesignSystemResolver<number>;
-export function designUnit(arg: any): any {
-    const getDesignUnit: DesignSystemResolver<number> = getDesignSystemValue(
-        "designUnit"
-    );
-
-    if (typeof arg === "number") {
-        return (designSystem: DesignSystem): number => {
-            return getDesignUnit(designSystem) * arg;
-        };
-    }
-
-    return getDesignUnit(arg);
-}
+export const designUnit: DesignSystemResolver<number> = getDesignSystemValue(
+    "designUnit"
+);
 
 /**
  * Retrieve the baseHeightMultiplier from the design system
@@ -87,43 +73,18 @@ export const direction: DesignSystemResolver<Direction> = getDesignSystemValue(
 );
 
 /**
- * Retrieve the outlineWidth when invoked with a DesignSystem
- * When invoked with a multiplier, a function is returned that accepts the DesignSystem,
- * which returns the outlineWidth multiplied by the multiplier
+ * Retrieve the outlineWidth from the design system
  */
-export function outlineWidth(designSystem: DesignSystem): number;
-export function outlineWidth(multiplier: number): DesignSystemResolver<number>;
-export function outlineWidth(arg: any): any {
-    if (typeof arg === "number") {
-        return ensureDesignSystemDefaults(
-            (designSystem: DesignSystem): number => {
-                return designSystem.outlineWidth * arg;
-            }
-        );
-    }
-
-    return withDesignSystemDefaults(arg).outlineWidth;
-}
+export const outlineWidth: DesignSystemResolver<number> = getDesignSystemValue(
+    "outlineWidth"
+);
 
 /**
- * Retrieve the focusOutlineWidth when invoked with a DesignSystem
- * When invoked with a multiplier, a function is returned that accepts the DesignSystem,
- * which returns the focusOutlineWidth multiplied by the multiplier
+ * Retrieve the focusOutlineWidth from the design system
  */
-export function focusOutlineWidth(designSystem: DesignSystem): number;
-export function focusOutlineWidth(multiplier: number): DesignSystemResolver<number>;
-export function focusOutlineWidth(arg: any): any {
-    if (typeof arg === "number") {
-        return ensureDesignSystemDefaults(
-            (designSystem: DesignSystem): number => {
-                return designSystem.focusOutlineWidth * arg;
-            }
-        );
-    }
-
-    return withDesignSystemDefaults(arg).focusOutlineWidth;
-}
-
+export const focusOutlineWidth: DesignSystemResolver<number> = getDesignSystemValue(
+    "focusOutlineWidth"
+);
 /**
  * Retrieve the direction from the design system
  */
