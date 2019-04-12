@@ -1,4 +1,7 @@
-import { DesignSystem, DesignSystemResolver } from "../../design-system";
+import defaultDesignSystem, {
+    DesignSystem,
+    DesignSystemResolver,
+} from "../../design-system";
 import { findAccessibleAccentSwatchIndexs } from "./accent";
 import { getSwatch, palette, Palette, PaletteType } from "./palette";
 import {
@@ -9,6 +12,12 @@ import {
     SwatchRecipe,
     SwatchResolver,
 } from "./common";
+import {
+    accentForegroundActiveDelta,
+    accentForegroundHoverDelta,
+    accentForegroundRestDelta,
+    backgroundColor,
+} from "../design-system";
 
 const accentForegroundAlgorithm: (
     designSystem: DesignSystem,
@@ -17,6 +26,8 @@ const accentForegroundAlgorithm: (
     designSystem: DesignSystem,
     contrastTarget: number
 ): SwatchFamily => {
+    designSystem = Boolean(designSystem) ? designSystem : defaultDesignSystem;
+
     const accentPalette: Palette = palette(PaletteType.accent)(designSystem);
     const indexes: {
         rest: number;
@@ -25,11 +36,11 @@ const accentForegroundAlgorithm: (
     } = findAccessibleAccentSwatchIndexs(
         designSystem,
         contrastTarget,
-        designSystem.backgroundColor,
+        backgroundColor(designSystem),
         {
-            rest: designSystem.accentForegroundRestDelta,
-            hover: designSystem.accentForegroundHoverDelta,
-            active: designSystem.accentForegroundActiveDelta,
+            rest: accentForegroundRestDelta(designSystem),
+            hover: accentForegroundHoverDelta(designSystem),
+            active: accentForegroundActiveDelta(designSystem),
         }
     );
 

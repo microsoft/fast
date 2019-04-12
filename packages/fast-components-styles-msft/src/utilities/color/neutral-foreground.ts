@@ -9,6 +9,12 @@ import {
     SwatchResolver,
 } from "./common";
 import defaultDesignSystem, { DesignSystem } from "../../design-system";
+import {
+    neutralForegroundActiveDelta,
+    neutralForegroundDarkIndex,
+    neutralForegroundHoverDelta,
+    neutralForegroundLightIndex,
+} from "../design-system";
 
 /**
  * Function to derive neutralForeground from color inputs.
@@ -27,9 +33,9 @@ const neutralForegroundAlgorithm: SwatchFamilyResolver = (
         : neutralForegroundDark(designSystem);
     const restIndex: number = neutralPalette.indexOf(restColor);
     const hoverIndex: number =
-        restIndex + designSystem.neutralForegroundHoverDelta * direction;
+        restIndex + neutralForegroundHoverDelta(designSystem) * direction;
     const activeIndex: number =
-        restIndex + designSystem.neutralForegroundActiveDelta * direction;
+        restIndex + neutralForegroundActiveDelta(designSystem) * direction;
 
     return {
         rest: restColor,
@@ -45,8 +51,7 @@ export const neutralForegroundLight: SwatchResolver = (
     designSystem: DesignSystem
 ): Swatch => {
     return getSwatch(
-        (designSystem && designSystem.neutralForegroundLightIndex) ||
-            defaultDesignSystem.neutralForegroundLightIndex,
+        neutralForegroundLightIndex(designSystem),
         palette(PaletteType.neutral)(designSystem)
     );
 };
@@ -58,8 +63,7 @@ export const neutralForegroundDark: SwatchResolver = (
     designSystem: DesignSystem
 ): Swatch => {
     return getSwatch(
-        (designSystem && designSystem.neutralForegroundDarkIndex) ||
-            defaultDesignSystem.neutralForegroundDarkIndex,
+        neutralForegroundDarkIndex(designSystem),
         palette(PaletteType.neutral)(designSystem)
     );
 };

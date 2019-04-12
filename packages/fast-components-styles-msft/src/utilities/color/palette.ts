@@ -6,6 +6,7 @@ import { clamp } from "lodash-es";
 import { colorMatches, contrast, luminance, Swatch } from "./common";
 import { neutralForegroundDark, neutralForegroundLight } from "./neutral-foreground";
 import { ColorPalette, ColorRGBA64 } from "@microsoft/fast-colors";
+import { accentPalette, neutralPalette } from "../design-system";
 
 /**
  * The named palettes of the MSFT design system
@@ -28,16 +29,10 @@ export function palette(paletteType: PaletteType): DesignSystemResolver<Palette>
     return (designSystem: DesignSystem | undefined): Palette => {
         switch (paletteType) {
             case PaletteType.accent:
-                return (
-                    (designSystem && designSystem.accentPalette) ||
-                    defaultDesignSystem.accentPalette
-                );
+                return accentPalette(designSystem);
             case PaletteType.neutral:
             default:
-                return (
-                    (designSystem && designSystem.neutralPalette) ||
-                    defaultDesignSystem.neutralPalette
-                );
+                return neutralPalette(designSystem);
         }
     };
 }

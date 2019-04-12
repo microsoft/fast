@@ -13,6 +13,13 @@ import {
     SwatchRecipe,
     SwatchResolver,
 } from "./common";
+import {
+    backgroundColor,
+    neutralFillInputActiveDelta,
+    neutralFillInputHoverDelta,
+    neutralFillInputRestDelta,
+    neutralFillInputSelectedDelta,
+} from "../design-system";
 
 /**
  * Algorithm for determining neutral backplate colors
@@ -23,23 +30,23 @@ const neutralFillInputAlgorithm: DesignSystemResolver<FillSwatchFamily> = (
     const neutralPalette: Palette = palette(PaletteType.neutral)(designSystem);
     const backgroundIndex: number = findClosestSwatchIndex(
         PaletteType.neutral,
-        designSystem.backgroundColor
+        backgroundColor(designSystem)
     )(designSystem);
     return {
         rest: getSwatch(
-            backgroundIndex - designSystem.neutralFillInputRestDelta,
+            backgroundIndex - neutralFillInputRestDelta(designSystem),
             neutralPalette
         ),
         hover: getSwatch(
-            backgroundIndex - designSystem.neutralFillInputHoverDelta,
+            backgroundIndex - neutralFillInputHoverDelta(designSystem),
             neutralPalette
         ),
         active: getSwatch(
-            backgroundIndex - designSystem.neutralFillInputActiveDelta,
+            backgroundIndex - neutralFillInputActiveDelta(designSystem),
             neutralPalette
         ),
         selected: getSwatch(
-            backgroundIndex - designSystem.neutralFillInputSelectedDelta,
+            backgroundIndex - neutralFillInputSelectedDelta(designSystem),
             neutralPalette
         ),
     };
