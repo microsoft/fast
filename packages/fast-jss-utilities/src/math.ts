@@ -1,8 +1,5 @@
-// Typescript chokes if we don't type alias this for some reason
-type Resolver<T> = (designSystem: T) => number;
-
 export function multiply<T>(
-    ...args: Array<number | Resolver<T>>
+    ...args: Array<number | ((designSystem: T) => number)>
 ): (designSystem: T) => number {
     return (designSystem: T): number => {
         let value: number = 1;
@@ -18,5 +15,3 @@ export function multiply<T>(
         return value;
     };
 }
-
-multiply(2, (d: any): number => 2);
