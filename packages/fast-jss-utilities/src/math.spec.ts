@@ -5,6 +5,10 @@ describe("multiply", (): void => {
         expect(typeof multiply(2, 4)).toBe("function");
     });
 
+    test("should return the argument if only supplied with one argument", (): void => {
+        expect(multiply(10)()).toBe(10);
+    });
+
     test("should multiply two numbers", (): void => {
         expect(multiply(2, 2)(undefined)).toBe(4);
     });
@@ -26,6 +30,10 @@ describe("multiply", (): void => {
 describe("divide", (): void => {
     test("should return a function", (): void => {
         expect(typeof divide(2, 4)).toBe("function");
+    });
+
+    test("should return the argument if only supplied with one argument", (): void => {
+        expect(divide(10)()).toBe(10);
     });
 
     test("should divide two numbers", (): void => {
@@ -51,6 +59,10 @@ describe("add", (): void => {
         expect(typeof add(2, 4)).toBe("function");
     });
 
+    test("should return the argument if only supplied with one argument", (): void => {
+        expect(add(10)()).toBe(10);
+    });
+
     test("should add two numbers", (): void => {
         expect(add(4, 2)(undefined)).toBe(6);
     });
@@ -72,6 +84,10 @@ describe("add", (): void => {
 describe("subtract", (): void => {
     test("should return a function", (): void => {
         expect(typeof subtract(2, 4)).toBe("function");
+    });
+
+    test("should return the argument if only supplied with one argument", (): void => {
+        expect(subtract(10)()).toBe(10);
     });
 
     test("should subtract two numbers", (): void => {

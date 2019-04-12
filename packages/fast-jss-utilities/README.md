@@ -195,8 +195,8 @@ function getMyColor(designSystem) {
 }
 ```
 
-### multiply
-the `multiply` function is used to multiply numbers or functions that accept design-systems and return numbers. It accepts any number of arguments and multiplies each input by the next, starting with the first argument.
+### add / subtract / multiply / divide
+the `add`, `subtract`, `multiply`, and `divide` functions is used to operate on numbers or functions that accept design-systems and return numbers. They accept any number of arguments and perform their operation on the previous argument.
 
 ```ts
 function fontSize(designSystem): number {
