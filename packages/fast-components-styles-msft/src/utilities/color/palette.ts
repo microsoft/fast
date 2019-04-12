@@ -7,6 +7,7 @@ import { colorMatches, contrast, luminance, Swatch } from "./common";
 import { neutralForegroundDark, neutralForegroundLight } from "./neutral-foreground";
 import { ColorPalette, ColorRGBA64 } from "@microsoft/fast-colors";
 import { accentPalette, neutralPalette } from "../design-system";
+import { backgroundColor } from "../../utilities/design-system";
 
 /**
  * The named palettes of the MSFT design system
@@ -113,13 +114,11 @@ export function findClosestSwatchIndex(
  * Determines if the design-system should be considered in "dark mode".
  */
 export function isDarkMode(designSystem: DesignSystem): boolean {
-    const backgroundColor: string =
-        (designSystem && designSystem.backgroundColor) ||
-        defaultDesignSystem.backgroundColor;
+    const bg: string = backgroundColor(designSystem);
 
     return (
-        contrast(neutralForegroundLight(designSystem), backgroundColor) >=
-        contrast(neutralForegroundDark(designSystem), backgroundColor)
+        contrast(neutralForegroundLight(designSystem), bg) >=
+        contrast(neutralForegroundDark(designSystem), bg)
     );
 }
 

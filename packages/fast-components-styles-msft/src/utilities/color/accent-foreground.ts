@@ -26,8 +26,6 @@ const accentForegroundAlgorithm: (
     designSystem: DesignSystem,
     contrastTarget: number
 ): SwatchFamily => {
-    designSystem = Boolean(designSystem) ? designSystem : defaultDesignSystem;
-
     const accentPalette: Palette = palette(PaletteType.accent)(designSystem);
     const indexes: {
         rest: number;
