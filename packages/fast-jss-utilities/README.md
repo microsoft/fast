@@ -194,3 +194,18 @@ function getMyColor(designSystem) {
     border: format("1px solid {0}", getMyColor)
 }
 ```
+
+### multiply
+the `multiply` function is used to multiply numbers or functions that accept design-systems and return numbers. It accepts any number of arguments and multiplies each input by the next, starting with the first argument.
+
+```ts
+function fontSize(designSystem): number {
+    return designSystem.fontSize;
+} 
+
+{
+   // ...other styles
+   fontSize: multiply(fontSize, 2)
+}
+
+```

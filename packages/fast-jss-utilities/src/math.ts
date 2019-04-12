@@ -1,7 +1,10 @@
+/**
+ * Multiplies numbers or functions that accept a design system and return a number.
+ */
 export function multiply<T>(
-    ...args: Array<number | ((designSystem: T) => number)>
-): (designSystem: T) => number {
-    return (designSystem: T): number => {
+    ...args: Array<number | ((designSystem?: T) => number)>
+): (designSystem?: T) => number {
+    return (designSystem?: T): number => {
         let value: number = 1;
 
         for (const currentValue of args) {
