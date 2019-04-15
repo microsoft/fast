@@ -1,10 +1,5 @@
-// export type MathUtilityArgumentList<T> = Array<number | ((designSystem: T) => number)>;
-export type MathUtilityFunction<T> = (
-    ...args: Array<number | ((designSystem: T) => number)>
-) => (designSystem?: T) => number;
-
 function performOperation<T>(
-    opperation: (a: number, b: number) => number
+    operation: (a: number, b: number) => number
 ): (
     ...args: Array<number | ((designSystem: T) => number)>
 ) => (designSystem?: T) => number {
@@ -18,7 +13,7 @@ function performOperation<T>(
 
             for (let i: number = 1; i < args.length; i++) {
                 const currentValue: number | ((designSystem: T) => number) = args[i];
-                value = opperation(
+                value = operation(
                     value,
                     typeof currentValue === "function"
                         ? currentValue(designSystem)
