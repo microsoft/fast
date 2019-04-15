@@ -1,9 +1,4 @@
-import {
-    DesignSystem,
-    DesignSystemResolver,
-    ensureDesignSystemDefaults,
-    withDesignSystemDefaults,
-} from "../../design-system";
+import { DesignSystem, DesignSystemResolver } from "../../design-system";
 import {
     findClosestSwatchIndex,
     getSwatch,
@@ -18,6 +13,13 @@ import {
     SwatchRecipe,
     SwatchResolver,
 } from "./common";
+import {
+    backgroundColor,
+    neutralFillInputActiveDelta,
+    neutralFillInputHoverDelta,
+    neutralFillInputRestDelta,
+    neutralFillInputSelectedDelta,
+} from "../design-system";
 
 /**
  * Algorithm for determining neutral backplate colors
@@ -28,23 +30,23 @@ const neutralFillInputAlgorithm: DesignSystemResolver<FillSwatchFamily> = (
     const neutralPalette: Palette = palette(PaletteType.neutral)(designSystem);
     const backgroundIndex: number = findClosestSwatchIndex(
         PaletteType.neutral,
-        designSystem.backgroundColor
+        backgroundColor(designSystem)
     )(designSystem);
     return {
         rest: getSwatch(
-            backgroundIndex - designSystem.neutralFillInputRestDelta,
+            backgroundIndex - neutralFillInputRestDelta(designSystem),
             neutralPalette
         ),
         hover: getSwatch(
-            backgroundIndex - designSystem.neutralFillInputHoverDelta,
+            backgroundIndex - neutralFillInputHoverDelta(designSystem),
             neutralPalette
         ),
         active: getSwatch(
-            backgroundIndex - designSystem.neutralFillInputActiveDelta,
+            backgroundIndex - neutralFillInputActiveDelta(designSystem),
             neutralPalette
         ),
         selected: getSwatch(
-            backgroundIndex - designSystem.neutralFillInputSelectedDelta,
+            backgroundIndex - neutralFillInputSelectedDelta(designSystem),
             neutralPalette
         ),
     };
@@ -56,18 +58,16 @@ export function neutralFillInput(
 ): (designSystem: DesignSystem) => FillSwatchFamily;
 export function neutralFillInput(arg: any): any {
     if (typeof arg === "function") {
-        return ensureDesignSystemDefaults(
-            (designSystem: DesignSystem): FillSwatchFamily => {
-                return neutralFillInputAlgorithm(
-                    Object.assign({}, designSystem, {
-                        backgroundColor: arg(designSystem),
-                    })
-                );
-            }
-        );
+        return (designSystem: DesignSystem): FillSwatchFamily => {
+            return neutralFillInputAlgorithm(
+                Object.assign({}, designSystem, {
+                    backgroundColor: arg(designSystem),
+                })
+            );
+        };
     }
 
-    return neutralFillInputAlgorithm(withDesignSystemDefaults(arg));
+    return neutralFillInputAlgorithm(arg);
 }
 
 export const neutralFillInputRest: SwatchRecipe = swatchFamilyToSwatchRecipeFactory<

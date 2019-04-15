@@ -1,8 +1,6 @@
-import {
+import defaultDesignSystem, {
     DesignSystem,
     DesignSystemResolver,
-    ensureDesignSystemDefaults,
-    withDesignSystemDefaults,
 } from "../../design-system";
 import { findAccessibleAccentSwatchIndexs } from "./accent";
 import { getSwatch, palette, Palette, PaletteType } from "./palette";
@@ -14,6 +12,12 @@ import {
     SwatchRecipe,
     SwatchResolver,
 } from "./common";
+import {
+    accentForegroundActiveDelta,
+    accentForegroundHoverDelta,
+    accentForegroundRestDelta,
+    backgroundColor,
+} from "../design-system";
 
 const accentForegroundAlgorithm: (
     designSystem: DesignSystem,
@@ -30,11 +34,11 @@ const accentForegroundAlgorithm: (
     } = findAccessibleAccentSwatchIndexs(
         designSystem,
         contrastTarget,
-        designSystem.backgroundColor,
+        backgroundColor(designSystem),
         {
-            rest: designSystem.accentForegroundRestDelta,
-            hover: designSystem.accentForegroundHoverDelta,
-            active: designSystem.accentForegroundActiveDelta,
+            rest: accentForegroundRestDelta(designSystem),
+            hover: accentForegroundHoverDelta(designSystem),
+            active: accentForegroundActiveDelta(designSystem),
         }
     );
 
@@ -52,18 +56,16 @@ function accentForegroundFactory(contrast: number): SwatchFamilyResolver {
     ): DesignSystemResolver<SwatchFamily>;
     function accentForegroundInternal(arg: any): any {
         if (typeof arg === "function") {
-            return ensureDesignSystemDefaults(
-                (designSystem: DesignSystem): SwatchFamily => {
-                    return accentForegroundAlgorithm(
-                        Object.assign({}, designSystem, {
-                            backgroundColor: arg(designSystem),
-                        }),
-                        contrast
-                    );
-                }
-            );
+            return (designSystem: DesignSystem): SwatchFamily => {
+                return accentForegroundAlgorithm(
+                    Object.assign({}, designSystem, {
+                        backgroundColor: arg(designSystem),
+                    }),
+                    contrast
+                );
+            };
         } else {
-            return accentForegroundAlgorithm(withDesignSystemDefaults(arg), contrast);
+            return accentForegroundAlgorithm(arg, contrast);
         }
     }
 

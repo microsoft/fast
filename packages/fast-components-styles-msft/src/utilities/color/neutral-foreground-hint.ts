@@ -1,12 +1,9 @@
-import {
-    DesignSystem,
-    ensureDesignSystemDefaults,
-    withDesignSystemDefaults,
-} from "../../design-system";
+import { DesignSystem } from "../../design-system";
 import { findSwatchIndex, Palette, palette, PaletteType } from "./palette";
 import { neutralForegroundRest } from "./neutral-foreground";
 import { inRange } from "lodash-es";
 import { contrast, Swatch, SwatchRecipe, SwatchResolver } from "./common";
+import { backgroundColor } from "../design-system";
 
 const neutralForegroundHintAlgorithm: (
     designSystem: DesignSystem,
@@ -21,7 +18,7 @@ const neutralForegroundHintAlgorithm: (
     )(designSystem);
     const direction: 1 | -1 =
         neutralForegroundIndex <= Math.floor(neutralPaletteLength / 2) ? 1 : -1;
-    const background: Swatch = designSystem.backgroundColor;
+    const background: Swatch = backgroundColor(designSystem);
 
     let neutralForegroundHintIndex: number =
         direction === 1 ? 0 : neutralPaletteLength - 1;
@@ -47,21 +44,16 @@ function neutralForegroundHintFactory(contrastTarget: number): SwatchRecipe {
     ): SwatchResolver;
     function neutralForegroundHintInternal(arg: any): any {
         if (typeof arg === "function") {
-            return ensureDesignSystemDefaults(
-                (designSystem: DesignSystem): Swatch => {
-                    return neutralForegroundHintAlgorithm(
-                        Object.assign({}, designSystem, {
-                            backgroundColor: arg(designSystem),
-                        }),
-                        contrastTarget
-                    );
-                }
-            );
+            return (designSystem: DesignSystem): Swatch => {
+                return neutralForegroundHintAlgorithm(
+                    Object.assign({}, designSystem, {
+                        backgroundColor: arg(designSystem),
+                    }),
+                    contrastTarget
+                );
+            };
         } else {
-            return neutralForegroundHintAlgorithm(
-                withDesignSystemDefaults(arg),
-                contrastTarget
-            );
+            return neutralForegroundHintAlgorithm(arg, contrastTarget);
         }
     }
 

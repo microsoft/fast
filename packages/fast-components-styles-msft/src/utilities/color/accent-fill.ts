@@ -1,9 +1,4 @@
-import {
-    DesignSystem,
-    DesignSystemResolver,
-    ensureDesignSystemDefaults,
-    withDesignSystemDefaults,
-} from "../../design-system";
+import { DesignSystem, DesignSystemResolver } from "../../design-system";
 import {
     FillSwatchFamily,
     Swatch,
@@ -15,6 +10,12 @@ import {
 import { accentSwatch, findAccessibleAccentSwatchIndexs } from "./accent";
 import { getSwatch, isDarkMode, Palette, palette, PaletteType } from "./palette";
 import { accentForegroundCut } from "./accent-foreground-cut";
+import {
+    accentFillActiveDelta,
+    accentFillHoverDelta,
+    accentFillRestDelta,
+    accentFillSelectedDelta,
+} from "../design-system";
 
 /**
  * Derives rest/hover/active active fill colors
@@ -38,9 +39,9 @@ export const accentFillAlgorithm: (
         hover: number;
         active: number;
     } = findAccessibleAccentSwatchIndexs(designSystem, contrastTarget, textColor, {
-        rest: designSystem.accentFillRestDelta,
-        hover: designSystem.accentFillHoverDelta,
-        active: designSystem.accentFillActiveDelta,
+        rest: accentFillRestDelta(designSystem),
+        hover: accentFillHoverDelta(designSystem),
+        active: accentFillActiveDelta(designSystem),
     });
 
     return {
@@ -50,8 +51,8 @@ export const accentFillAlgorithm: (
         selected: getSwatch(
             indexes.rest +
                 (isDarkMode(designSystem)
-                    ? designSystem.accentFillSelectedDelta * -1
-                    : designSystem.accentFillSelectedDelta),
+                    ? accentFillSelectedDelta(designSystem) * -1
+                    : accentFillSelectedDelta(designSystem)),
             accentPalette
         ),
     };
@@ -67,18 +68,16 @@ function accentFillFactory(contrast: number): SwatchFamilyResolver<FillSwatchFam
     ): DesignSystemResolver<FillSwatchFamily>;
     function accentFillInternal(arg: any): any {
         if (typeof arg === "function") {
-            return ensureDesignSystemDefaults(
-                (designSystem: DesignSystem): FillSwatchFamily => {
-                    return accentFillAlgorithm(
-                        Object.assign({}, designSystem, {
-                            backgroundColor: arg(designSystem),
-                        }),
-                        contrast
-                    );
-                }
-            );
+            return (designSystem: DesignSystem): FillSwatchFamily => {
+                return accentFillAlgorithm(
+                    Object.assign({}, designSystem, {
+                        backgroundColor: arg(designSystem),
+                    }),
+                    contrast
+                );
+            };
         } else {
-            return accentFillAlgorithm(withDesignSystemDefaults(arg), contrast);
+            return accentFillAlgorithm(arg, contrast);
         }
     }
 
