@@ -75,6 +75,19 @@ describe("checkbox", (): void => {
         expect(rendered.find(".input-class[disabled]").prop("disabled")).toBe(true);
     });
 
+    test("should add `name` attribute to the input element when the name prop is passed", () => {
+        const checkboxName: string = "checkbox-name";
+        const rendered: any = shallow(
+            <Checkbox
+                managedClasses={managedClasses}
+                name={checkboxName}
+                inputId={"id"}
+            />
+        );
+
+        expect(rendered.find(".input-class").prop("name")).toBe(checkboxName);
+    });
+
     test("should initialize as unchecked if the `checked` prop is not provided", () => {
         expect(
             shallow(<Checkbox managedClasses={managedClasses} inputId="id" />).state(

@@ -57,6 +57,7 @@ class Checkbox extends Foundation<
         inputId: void 0,
         indeterminate: void 0,
         managedClasses: void 0,
+        name: void 0,
         onChange: void 0,
     };
 
@@ -101,6 +102,7 @@ class Checkbox extends Foundation<
                 <input
                     className={get(this.props, "managedClasses.checkbox_input")}
                     id={this.props.inputId}
+                    name={this.props.name}
                     type="checkbox"
                     ref={this.inputRef}
                     onChange={this.handleCheckboxChange}

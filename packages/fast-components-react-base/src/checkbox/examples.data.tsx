@@ -37,6 +37,7 @@ const examples: ComponentFactoryExample<CheckboxHandledProps> = {
             ...classes,
             checked: true,
             inputId: "checkbox2",
+            name: "checkbox-name",
         },
         {
             ...classes,
