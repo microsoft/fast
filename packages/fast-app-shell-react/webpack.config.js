@@ -51,7 +51,7 @@ module.exports = (env, args) => {
         },
         plugins: [
             new HtmlWebpackPlugin({
-                title: "FAST Component explorer",
+                title: "FAST app shell react",
                 contentBase: outDir,
             }),
         ],
