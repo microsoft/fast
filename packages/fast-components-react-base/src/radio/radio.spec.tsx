@@ -63,6 +63,16 @@ describe("radio", (): void => {
         expect(rendered.find(inputSelector).prop("id")).toBe(testId);
     });
 
+    test("should render an input with an `name` prop when an `name` prop is passed", () => {
+        const testId: string = "radio";
+        const radioName: string = "radioName";
+        const rendered: any = shallow(
+            <Radio managedClasses={managedClasses} inputId={testId} name={radioName} />
+        );
+
+        expect(rendered.find(inputSelector).prop("name")).toBe(radioName);
+    });
+
     test("should render a child if one is passed as a child with the `label` slot prop", () => {
         const rendered: any = mount(
             <Radio managedClasses={managedClasses} inputId="radio03">
