@@ -61,6 +61,22 @@ export function getDensityCategory(designSystem: DesignSystem): DensityCategory 
     return category;
 }
 
+export function getOffsetForDensityCategory(
+    designSystem: DesignSystem,
+    compactOffset: number,
+    spaciousOffset: number,
+    normalOffset: number = 0
+): number {
+    const category: DensityCategory = getDensityCategory(designSystem);
+    const densityOffset: number =
+        category === DensityCategory.compact
+            ? compactOffset
+            : category === DensityCategory.spacious
+                ? spaciousOffset
+                : normalOffset;
+    return densityOffset;
+}
+
 /**
  * Returns the standard horizontal spacing for text and icons formatted in the provided unit or px by default.
  *

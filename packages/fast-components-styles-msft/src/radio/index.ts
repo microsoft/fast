@@ -1,5 +1,13 @@
-import { DesignSystem, withDesignSystemDefaults } from "../design-system";
-import { ComponentStyles, ComponentStyleSheet } from "@microsoft/fast-jss-manager";
+import {
+    DesignSystem,
+    DesignSystemResolver,
+    withDesignSystemDefaults,
+} from "../design-system";
+import {
+    ComponentStyles,
+    ComponentStyleSheet,
+    CSSRules,
+} from "@microsoft/fast-jss-manager";
 import { RadioClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import {
     applyFocusVisible,
@@ -18,8 +26,8 @@ import {
     neutralOutlineRest,
 } from "../utilities/color";
 import {
-    DensityCategory,
-    getDensityCategory,
+    getOffsetForDensityCategory,
+    height,
     heightNumber,
     horizontalSpacing,
 } from "../utilities/density";
@@ -33,14 +41,12 @@ const styles: ComponentStyles<RadioClassNameContract, DesignSystem> = (
     const direction: Direction = designSystem.direction;
     const size: string = toPx(heightNumber()(designSystem) / 2 + designSystem.designUnit);
 
-    const category: DensityCategory = getDensityCategory(designSystem);
-    const indicatorMarginOffset: number =
-        category === DensityCategory.compact
-            ? 0
-            : category === DensityCategory.spacious
-                ? 2
-                : 1;
-
+    const indicatorMarginOffset: number = getOffsetForDensityCategory(
+        designSystem,
+        0,
+        2,
+        1
+    );
     const indicatorMargin: string = toPx(designSystem.designUnit + indicatorMarginOffset);
 
     return {

@@ -1,13 +1,12 @@
 import { toPx } from "@microsoft/fast-jss-utilities";
-import { KeyOfToType } from "./keyof-to-type";
 import { CSSRules } from "@microsoft/fast-jss-manager";
 import {
     DesignSystem,
     DesignSystemResolver,
     ensureDesignSystemDefaults,
-    withDesignSystemDefaults,
 } from "../design-system";
-import { DensityCategory, getDensityCategory } from "./density";
+import { getOffsetForDensityCategory } from "./density";
+import { clamp } from "lodash-es";
 
 /**
  * The type ramp item config
@@ -86,15 +85,13 @@ export const typeRamp: TypeRamp = {
 function scaleTypeRampId(key: keyof TypeRamp): DesignSystemResolver<keyof TypeRamp> {
     return ensureDesignSystemDefaults(
         (designSystem: DesignSystem): keyof TypeRamp => {
-            const category: DensityCategory = getDensityCategory(designSystem);
-            const densityOffset: number =
-                category === DensityCategory.compact
-                    ? -1
-                    : category === DensityCategory.spacious
-                        ? 1
-                        : 0;
             const typeConfigNumber: number = parseInt(key.replace("t", ""), 10);
-            const size: number = typeConfigNumber - densityOffset;
+            const densityOffset: number = getOffsetForDensityCategory(
+                designSystem,
+                -1,
+                1
+            );
+            const size: number = clamp(typeConfigNumber - densityOffset, 1, 9);
             return sanitizeTypeRampId("t".concat(size.toString()) as keyof TypeRamp);
         }
     );
