@@ -3,6 +3,7 @@ import {
     Canvas,
     Container,
     ContainerClassNamesContract,
+    Pane,
     Row,
 } from "@microsoft/fast-layouts-react";
 import { AppShellColorModes, AppShellProps } from "./app-shell.props";
@@ -26,19 +27,38 @@ export class AppShell extends React.Component<AppShellProps, {}> {
     public render(): JSX.Element {
         return (
             <DesignSystemProvider designSystem={DesignSystemDefaults}>
-                <Background value={this.backgroundValue}>
+                <Background
+                    value={this.backgroundValue.L1}
+                    className={this.props.managedClasses.appShell}
+                >
                     <Container>
-                        <Row fill={true}>Hello world</Row>
+                        <Row fill={true}>
+                            <Pane
+                                minWidth={40}
+                                width={40}
+                                className={
+                                    this.props.managedClasses.appShell_navigationPane
+                                }
+                            >
+                                <Background
+                                    value={this.backgroundValue.L2}
+                                    style={{ width: "100%", height: "100%" }}
+                                />
+                            </Pane>
+                            Hello world
+                        </Row>
                     </Container>
                 </Background>
             </DesignSystemProvider>
         );
     }
 
-    private get backgroundValue(): LightModeBackgrounds | DarkModeBackgrounds {
+    private get backgroundValue():
+        | typeof LightModeBackgrounds
+        | typeof DarkModeBackgrounds {
         return this.props.colorMode === AppShellColorModes.light
-            ? LightModeBackgrounds.L1
-            : DarkModeBackgrounds.L1;
+            ? LightModeBackgrounds
+            : DarkModeBackgrounds;
     }
 }
 
