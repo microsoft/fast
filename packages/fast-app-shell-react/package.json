@@ -1,8 +1,8 @@
 {
-  "name": "@microsoft/fast-app-shell",
+  "name": "@microsoft/fast-app-shell-react",
   "description": "FAST Microsoft application shell",
   "sideEffects": false,
-  "version": "4.3.0",
+  "version": "0.0.0",
   "private": true,
   "author": {
     "name": "Microsoft",
@@ -38,7 +38,7 @@
     "coverageThreshold": {
       "global": {
         "statements": 95,
-        "branches": 89,
+        "branches": 95,
         "functions": 95,
         "lines": 95
       }
