@@ -1,3 +1,7 @@
+import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
+import { AppShellClassNamesContract } from "./app-shell.styles";
+
+export type AppShellManagedClasses = ManagedClasses<AppShellClassNamesContract>;
 /**
  * Defines the configuration for a single application registered to the app-shell
  */
@@ -32,7 +36,8 @@ export enum AppShellColorModes {
     light = "light",
     dark = "dark",
 }
-export interface AppShellProps {
+
+export interface AppShellProps extends AppShellManagedClasses {
     /**
      * The applications registered with the shell
      */
