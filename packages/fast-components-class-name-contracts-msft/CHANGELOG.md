@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.1.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-class-name-contracts-msft@4.0.1...@microsoft/fast-components-class-name-contracts-msft@4.1.0) (2019-04-11)
+
+
+### Features
+
+* add stealth appearance to button appearance enum ([#1616](https://github.com/Microsoft/fast-dna/issues/1616)) ([771b651](https://github.com/Microsoft/fast-dna/commit/771b651))
+
+
+
+
+
 ## [4.0.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-class-name-contracts-msft@4.0.0...@microsoft/fast-components-class-name-contracts-msft@4.0.1) (2019-04-09)
 
 **Note:** Version bump only for package @microsoft/fast-components-class-name-contracts-msft

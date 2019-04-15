@@ -28,6 +28,11 @@ export interface CheckboxHandledProps extends CheckboxManagedClasses {
     disabled?: boolean;
 
     /**
+     * The name of the input
+     */
+    name?: string;
+
+    /**
      * The indeterminate option
      */
     indeterminate?: boolean;

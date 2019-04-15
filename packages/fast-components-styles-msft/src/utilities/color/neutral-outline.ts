@@ -1,8 +1,4 @@
-import {
-    DesignSystem,
-    ensureDesignSystemDefaults,
-    withDesignSystemDefaults,
-} from "../../design-system";
+import { DesignSystem } from "../../design-system";
 import {
     findClosestSwatchIndex,
     getSwatch,
@@ -19,6 +15,12 @@ import {
     SwatchFamilyType,
     SwatchRecipe,
 } from "./common";
+import {
+    backgroundColor,
+    neutralOutlineActiveDelta,
+    neutralOutlineHoverDelta,
+    neutralOutlineRestDelta,
+} from "../design-system";
 
 const neutralOutlineAlgorithm: SwatchFamilyResolver = (
     designSystem: DesignSystem
@@ -26,21 +28,21 @@ const neutralOutlineAlgorithm: SwatchFamilyResolver = (
     const neutralPalette: Palette = palette(PaletteType.neutral)(designSystem);
     const backgroundIndex: number = findClosestSwatchIndex(
         PaletteType.neutral,
-        designSystem.backgroundColor
+        backgroundColor(designSystem)
     )(designSystem);
     const direction: 1 | -1 = isDarkMode(designSystem) ? -1 : 1;
 
     return {
         rest: getSwatch(
-            backgroundIndex + direction * designSystem.neutralOutlineRestDelta,
+            backgroundIndex + direction * neutralOutlineRestDelta(designSystem),
             neutralPalette
         ),
         hover: getSwatch(
-            backgroundIndex + direction * designSystem.neutralOutlineHoverDelta,
+            backgroundIndex + direction * neutralOutlineHoverDelta(designSystem),
             neutralPalette
         ),
         active: getSwatch(
-            backgroundIndex + direction * designSystem.neutralOutlineActiveDelta,
+            backgroundIndex + direction * neutralOutlineActiveDelta(designSystem),
             neutralPalette
         ),
     };
@@ -52,17 +54,15 @@ export function neutralOutline(
 ): (designSystem: DesignSystem) => SwatchFamily;
 export function neutralOutline(arg: any): any {
     if (typeof arg === "function") {
-        return ensureDesignSystemDefaults(
-            (designSystem: DesignSystem): SwatchFamily => {
-                return neutralOutlineAlgorithm(
-                    Object.assign({}, designSystem, {
-                        backgroundColor: arg(designSystem),
-                    })
-                );
-            }
-        );
+        return (designSystem: DesignSystem): SwatchFamily => {
+            return neutralOutlineAlgorithm(
+                Object.assign({}, designSystem, {
+                    backgroundColor: arg(designSystem),
+                })
+            );
+        };
     } else {
-        return neutralOutlineAlgorithm(withDesignSystemDefaults(arg));
+        return neutralOutlineAlgorithm(arg);
     }
 }
 

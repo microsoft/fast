@@ -194,3 +194,28 @@ function getMyColor(designSystem) {
     border: format("1px solid {0}", getMyColor)
 }
 ```
+
+### toString
+
+The `toString` function is used to convert the return value of a function that accepts the design system to a string.
+
+```ts
+{
+    opacity: toString((designSystem) => designSystem.disabledOpacity)
+}
+```
+
+### add / subtract / multiply / divide
+the `add`, `subtract`, `multiply`, and `divide` functions are used to operate on numbers or functions that accept design-systems and return numbers. They accept any number of arguments and perform their operations from left to right, starting with the first argument. eg, subtract(10, 2) => 10 - 2 => 8
+
+```ts
+function fontSize(designSystem): number {
+    return designSystem.fontSize;
+} 
+
+{
+   // ...other styles
+   fontSize: multiply(fontSize, 2)
+}
+
+```

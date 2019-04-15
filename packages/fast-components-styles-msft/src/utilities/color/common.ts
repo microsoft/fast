@@ -1,4 +1,5 @@
 import { DesignSystem, DesignSystemResolver } from "../../design-system";
+import { memoize } from "lodash-es";
 import {
     ColorRGBA64,
     contrastRatio,
@@ -147,12 +148,15 @@ export function colorMatches(a: string, b: string): boolean {
  * Returns the contrast value between two colors. If either value is not a color, -1 will be returned
  * Supports #RRGGBB and rgb(r, g, b) formats
  */
-export function contrast(a: string, b: string): number {
-    const alpha: ColorRGBA64 | null = parseColorString(a);
-    const beta: ColorRGBA64 | null = parseColorString(b);
+export const contrast: (a: string, b: string) => number = memoize(
+    (a: string, b: string): number => {
+        const alpha: ColorRGBA64 | null = parseColorString(a);
+        const beta: ColorRGBA64 | null = parseColorString(b);
 
-    return alpha === null || beta === null ? -1 : contrastRatio(alpha, beta);
-}
+        return alpha === null || beta === null ? -1 : contrastRatio(alpha, beta);
+    },
+    (a: string, b: string): string => a + b
+);
 
 /**
  * Returns the relative luminance of a color. If the value is not a color, -1 will be returned

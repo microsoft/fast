@@ -25,6 +25,11 @@ export interface ButtonClassNameContract extends BaseButtonClassNameContract {
     button__justified?: string;
 
     /**
+     * The stealth appearance modifier
+     */
+    button__stealth?: string;
+
+    /**
      * The button content region
      */
     button_contentRegion?: string;

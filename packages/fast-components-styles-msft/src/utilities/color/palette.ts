@@ -1,12 +1,13 @@
-import {
+import defaultDesignSystem, {
     DesignSystem,
     DesignSystemResolver,
-    ensureDesignSystemDefaults,
 } from "../../design-system";
 import { clamp } from "lodash-es";
 import { colorMatches, contrast, luminance, Swatch } from "./common";
 import { neutralForegroundDark, neutralForegroundLight } from "./neutral-foreground";
 import { ColorPalette, ColorRGBA64 } from "@microsoft/fast-colors";
+import { accentPalette, neutralPalette } from "../design-system";
+import { backgroundColor } from "../../utilities/design-system";
 
 /**
  * The named palettes of the MSFT design system
@@ -26,17 +27,15 @@ export type Palette = Swatch[];
  * a design system, returning a palette a palette or null
  */
 export function palette(paletteType: PaletteType): DesignSystemResolver<Palette> {
-    return ensureDesignSystemDefaults(
-        (designSystem: DesignSystem): Palette => {
-            switch (paletteType) {
-                case PaletteType.accent:
-                    return designSystem.accentPalette;
-                case PaletteType.neutral:
-                default:
-                    return designSystem.neutralPalette;
-            }
+    return (designSystem: DesignSystem | undefined): Palette => {
+        switch (paletteType) {
+            case PaletteType.accent:
+                return accentPalette(designSystem);
+            case PaletteType.neutral:
+            default:
+                return neutralPalette(designSystem);
         }
-    );
+    };
 }
 
 /**
@@ -70,56 +69,56 @@ export function findClosestSwatchIndex(
     paletteType: PaletteType,
     swatch: Swatch
 ): DesignSystemResolver<number> {
-    return ensureDesignSystemDefaults(
-        (designSystem: DesignSystem): number => {
-            const index: number = findSwatchIndex(paletteType, swatch)(designSystem);
+    return (designSystem: DesignSystem): number => {
+        const index: number = findSwatchIndex(paletteType, swatch)(designSystem);
 
-            if (index !== -1) {
-                return index;
-            }
-
-            const swatchLuminance: number = luminance(swatch);
-
-            if (swatchLuminance === -1) {
-                return 0;
-            }
-
-            interface LuminanceMap {
-                luminance: number;
-                index: number;
-            }
-
-            return palette(paletteType)(designSystem)
-                .map(
-                    (mappedSwatch: Swatch, mappedIndex: number): LuminanceMap => {
-                        return {
-                            luminance: luminance(mappedSwatch),
-                            index: mappedIndex,
-                        };
-                    }
-                )
-                .reduce(
-                    (
-                        previousValue: LuminanceMap,
-                        currentValue: LuminanceMap
-                    ): LuminanceMap => {
-                        return Math.abs(currentValue.luminance - swatchLuminance) <
-                            Math.abs(previousValue.luminance - swatchLuminance)
-                            ? currentValue
-                            : previousValue;
-                    }
-                ).index;
+        if (index !== -1) {
+            return index;
         }
-    );
+
+        const swatchLuminance: number = luminance(swatch);
+
+        if (swatchLuminance === -1) {
+            return 0;
+        }
+
+        interface LuminanceMap {
+            luminance: number;
+            index: number;
+        }
+
+        return palette(paletteType)(designSystem)
+            .map(
+                (mappedSwatch: Swatch, mappedIndex: number): LuminanceMap => {
+                    return {
+                        luminance: luminance(mappedSwatch),
+                        index: mappedIndex,
+                    };
+                }
+            )
+            .reduce(
+                (
+                    previousValue: LuminanceMap,
+                    currentValue: LuminanceMap
+                ): LuminanceMap => {
+                    return Math.abs(currentValue.luminance - swatchLuminance) <
+                        Math.abs(previousValue.luminance - swatchLuminance)
+                        ? currentValue
+                        : previousValue;
+                }
+            ).index;
+    };
 }
 
 /**
  * Determines if the design-system should be considered in "dark mode".
  */
 export function isDarkMode(designSystem: DesignSystem): boolean {
+    const bg: string = backgroundColor(designSystem);
+
     return (
-        contrast(neutralForegroundLight(designSystem), designSystem.backgroundColor) >=
-        contrast(neutralForegroundDark(designSystem), designSystem.backgroundColor)
+        contrast(neutralForegroundLight(designSystem), bg) >=
+        contrast(neutralForegroundDark(designSystem), bg)
     );
 }
 
@@ -145,12 +144,14 @@ export function swatchByMode(
         paletteName === PaletteType.accent ? "accentPalette" : "neutralPalette";
 
     return (valueA: number, valueB?: number): DesignSystemResolver<Swatch> => {
-        return ensureDesignSystemDefaults(
-            (designSystem: DesignSystem): Swatch => {
-                return isDarkMode(designSystem)
-                    ? getSwatch(valueB, designSystem[paletteKey])
-                    : getSwatch(valueA, designSystem[paletteKey]);
-            }
-        );
+        return (designSystem: DesignSystem): Swatch => {
+            const currentPalette: Palette =
+                (designSystem && designSystem[paletteKey]) ||
+                defaultDesignSystem[paletteKey];
+
+            return isDarkMode(designSystem)
+                ? getSwatch(valueB, currentPalette)
+                : getSwatch(valueA, currentPalette);
+        };
     };
 }

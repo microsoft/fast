@@ -21,6 +21,11 @@
         "inputId": {
             "title": "Input element ID",
             "type": "string"
+        },
+        "name": {
+            "title": "Name",
+            "type": "string",
+            "example": "name"
         }
     },
     "reactProperties": {

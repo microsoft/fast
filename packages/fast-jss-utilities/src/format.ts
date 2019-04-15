@@ -18,3 +18,9 @@ export function format<T>(
         );
     };
 }
+
+export function toString<T, S>(
+    resolver: (designSystem?: T) => any
+): (designSystem?: T) => string {
+    return (designSystem: T): string => String(resolver(designSystem));
+}

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.2.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-jss-utilities@4.2.0...@microsoft/fast-jss-utilities@4.2.1) (2019-04-11)
+
+
+### Bug Fixes
+
+* changes focus-visible polyfill selector so that it works in Edge ([#1644](https://github.com/Microsoft/fast-dna/issues/1644)) ([158ab29](https://github.com/Microsoft/fast-dna/commit/158ab29))
+
+
+
+
+
 # [4.2.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-jss-utilities@4.1.0...@microsoft/fast-jss-utilities@4.2.0) (2019-04-10)
 
 

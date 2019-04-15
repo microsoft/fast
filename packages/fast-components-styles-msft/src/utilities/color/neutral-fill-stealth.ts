@@ -1,9 +1,4 @@
-import {
-    DesignSystem,
-    DesignSystemResolver,
-    ensureDesignSystemDefaults,
-    withDesignSystemDefaults,
-} from "../../design-system";
+import { DesignSystem, DesignSystemResolver } from "../../design-system";
 import {
     findClosestSwatchIndex,
     getSwatch,
@@ -19,6 +14,16 @@ import {
     SwatchRecipe,
     SwatchResolver,
 } from "./common";
+import {
+    backgroundColor,
+    neutralFillActiveDelta,
+    neutralFillHoverDelta,
+    neutralFillRestDelta,
+    neutralFillStealthActiveDelta,
+    neutralFillStealthHoverDelta,
+    neutralFillStealthRestDelta,
+    neutralFillStealthSelectedDelta,
+} from "../design-system";
 
 /**
  * Algorithm for determining stealth fill colors
@@ -29,35 +34,35 @@ const neutralFillStealthAlgorithm: DesignSystemResolver<FillSwatchFamily> = (
     const neutralPalette: Palette = palette(PaletteType.neutral)(designSystem);
     const backgroundIndex: number = findClosestSwatchIndex(
         PaletteType.neutral,
-        designSystem.backgroundColor
+        backgroundColor(designSystem)
     )(designSystem);
     const swapThreshold: number = Math.max(
-        designSystem.neutralFillRestDelta,
-        designSystem.neutralFillHoverDelta,
-        designSystem.neutralFillActiveDelta,
-        designSystem.neutralFillStealthRestDelta,
-        designSystem.neutralFillStealthHoverDelta,
-        designSystem.neutralFillStealthActiveDelta
+        neutralFillRestDelta(designSystem),
+        neutralFillHoverDelta(designSystem),
+        neutralFillActiveDelta(designSystem),
+        neutralFillStealthRestDelta(designSystem),
+        neutralFillStealthHoverDelta(designSystem),
+        neutralFillStealthActiveDelta(designSystem)
     );
     const direction: number = backgroundIndex >= swapThreshold ? -1 : 1;
     const restIndex: number =
-        backgroundIndex + direction * designSystem.neutralFillStealthRestDelta;
+        backgroundIndex + direction * neutralFillStealthRestDelta(designSystem);
 
     return {
         rest: getSwatch(restIndex, neutralPalette),
         hover: getSwatch(
-            backgroundIndex + direction * designSystem.neutralFillStealthHoverDelta,
+            backgroundIndex + direction * neutralFillStealthHoverDelta(designSystem),
             neutralPalette
         ),
         active: getSwatch(
-            backgroundIndex + direction * designSystem.neutralFillStealthActiveDelta,
+            backgroundIndex + direction * neutralFillStealthActiveDelta(designSystem),
             neutralPalette
         ),
         selected: getSwatch(
             restIndex +
                 (isDarkMode(designSystem)
-                    ? designSystem.neutralFillStealthSelectedDelta * -1
-                    : designSystem.neutralFillStealthSelectedDelta),
+                    ? neutralFillStealthSelectedDelta(designSystem) * -1
+                    : neutralFillStealthSelectedDelta(designSystem)),
             neutralPalette
         ),
     };
@@ -69,17 +74,15 @@ export function neutralFillStealth(
 ): (designSystem: DesignSystem) => FillSwatchFamily;
 export function neutralFillStealth(arg: any): any {
     if (typeof arg === "function") {
-        return ensureDesignSystemDefaults(
-            (designSystem: DesignSystem): FillSwatchFamily => {
-                return neutralFillStealthAlgorithm(
-                    Object.assign({}, designSystem, {
-                        backgroundColor: arg(designSystem),
-                    })
-                );
-            }
-        );
+        return (designSystem: DesignSystem): FillSwatchFamily => {
+            return neutralFillStealthAlgorithm(
+                Object.assign({}, designSystem, {
+                    backgroundColor: arg(designSystem),
+                })
+            );
+        };
     } else {
-        return neutralFillStealthAlgorithm(withDesignSystemDefaults(arg));
+        return neutralFillStealthAlgorithm(arg);
     }
 }
 

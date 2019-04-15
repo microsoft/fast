@@ -1,4 +1,4 @@
-import { format } from "./format";
+import { format, toString } from "./format";
 
 interface DesignSystem {
     value: string;
@@ -58,5 +58,16 @@ describe("format", (): void => {
 
         expect(spy).toHaveBeenCalledWith(designSystem);
         expect(spy.mock.calls[0][0].backgroundColor).toBe("red");
+    });
+});
+
+describe("toString", (): void => {
+    test("should return a function that resolves to a string", (): void => {
+        expect(typeof toString(() => false)()).toBe("string");
+        expect(typeof toString(() => NaN)()).toBe("string");
+        expect(typeof toString(() => new Date())()).toBe("string");
+        expect(typeof toString(() => 12)()).toBe("string");
+        expect(typeof toString(() => ({ foo: "bar" }))()).toBe("string");
+        expect(typeof toString(() => [0, "foo"])()).toBe("string");
     });
 });

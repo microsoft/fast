@@ -41,6 +41,7 @@ const examples: ComponentFactoryExample<RadioHandledProps & RadioManagedClasses>
         },
         {
             inputId: "checked_none",
+            name: "radio-name",
             ...classes,
         },
         {
