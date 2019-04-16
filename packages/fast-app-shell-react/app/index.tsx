@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { AppShell, AppShellApp, AppShellColorModes } from "../src/app-shell";
+import { Heading } from "@microsoft/fast-components-react-msft";
 
 /**
  * Create the root node
@@ -28,7 +29,7 @@ const apps: AppShellApp[] = [
         name: "test",
         id: "test-id",
         rootPath: "/foobar",
-        render: (): string => "foobar",
+        render: (): JSX.Element => <Heading>Hello world!</Heading>,
         icon: testIcon,
     },
 ];

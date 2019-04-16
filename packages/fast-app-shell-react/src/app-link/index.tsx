@@ -25,6 +25,7 @@ export interface DasbhoardLinkClassNameContract {
 
 export interface AppLinkProps {
     href: string;
+    title: string;
     children: React.ReactNode;
 }
 
@@ -72,6 +73,7 @@ export default manageJss(styles)(
                 children={props.children}
                 className={get(props.managedClasses, "dashboardLink")}
                 activeClassName={get(props.managedClasses, "dasboardLink__active")}
+                aria-label={props.title}
             />
         );
     }

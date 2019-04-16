@@ -19,7 +19,7 @@ import {
 } from "@microsoft/fast-components-react-msft";
 import { DesignSystemDefaults } from "@microsoft/fast-components-styles-msft";
 import AppLink from "../app-link";
-import { BrowserRouter } from "react-router-dom";
+import { BrowserRouter, Route } from "react-router-dom";
 
 export class AppShell extends React.Component<AppShellProps, {}> {
     public static defaultProps: Partial<AppShellProps> = {
@@ -46,10 +46,10 @@ export class AppShell extends React.Component<AppShellProps, {}> {
                                     value={this.backgroundValue.L2}
                                     style={{ width: "100%", height: "100%" }}
                                 >
-                                    {this.renderAppLinks()}
+                                    {this.props.apps.map(this.renderAppLink)}
                                 </Background>
                             </Pane>
-                            Hello world
+                            <Canvas>{this.props.apps.map(this.renderAppRoute)}</Canvas>
                         </Row>
                     </Container>
                 </Background>
@@ -65,18 +65,25 @@ export class AppShell extends React.Component<AppShellProps, {}> {
             : DarkModeBackgrounds;
     }
 
-    private renderAppLinks(): JSX.Element[] {
-        return this.props.apps.map(
-            (appConfig: AppShellApp): JSX.Element => {
-                return (
-                    <AppLink
-                        key={appConfig.id}
-                        aria-label={appConfig.name}
-                        href={appConfig.rootPath}
-                        children={appConfig.icon}
-                    />
-                );
-            }
+    private renderAppLink(appConfig: AppShellApp): JSX.Element {
+        return (
+            <AppLink
+                key={appConfig.id}
+                aria-label={appConfig.name}
+                href={appConfig.rootPath}
+                children={appConfig.icon}
+                title={appConfig.name}
+            />
+        );
+    }
+
+    private renderAppRoute(appConfig: AppShellApp): JSX.Element {
+        return (
+            <Route
+                key={appConfig.id}
+                path={appConfig.rootPath}
+                render={appConfig.render}
+            />
         );
     }
 }
