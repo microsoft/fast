@@ -6,7 +6,7 @@ import {
     Pane,
     Row,
 } from "@microsoft/fast-layouts-react";
-import { AppShellColorModes, AppShellProps } from "./app-shell.props";
+import { AppShellApp, AppShellColorModes, AppShellProps } from "./app-shell.props";
 import { DesignSystem, neutralFillRest } from "@microsoft/fast-components-styles-msft";
 import {
     ComponentStyleSheet,
@@ -18,6 +18,8 @@ import {
     LightModeBackgrounds,
 } from "@microsoft/fast-components-react-msft";
 import { DesignSystemDefaults } from "@microsoft/fast-components-styles-msft";
+import AppLink from "../app-link";
+import { BrowserRouter } from "react-router-dom";
 
 export class AppShell extends React.Component<AppShellProps, {}> {
     public static defaultProps: Partial<AppShellProps> = {
@@ -26,7 +28,7 @@ export class AppShell extends React.Component<AppShellProps, {}> {
 
     public render(): JSX.Element {
         return (
-            <DesignSystemProvider designSystem={DesignSystemDefaults}>
+            <BrowserRouter>
                 <Background
                     value={this.backgroundValue.L1}
                     className={this.props.managedClasses.appShell}
@@ -43,13 +45,15 @@ export class AppShell extends React.Component<AppShellProps, {}> {
                                 <Background
                                     value={this.backgroundValue.L2}
                                     style={{ width: "100%", height: "100%" }}
-                                />
+                                >
+                                    {this.renderAppLinks()}
+                                </Background>
                             </Pane>
                             Hello world
                         </Row>
                     </Container>
                 </Background>
-            </DesignSystemProvider>
+            </BrowserRouter>
         );
     }
 
@@ -59,6 +63,21 @@ export class AppShell extends React.Component<AppShellProps, {}> {
         return this.props.colorMode === AppShellColorModes.light
             ? LightModeBackgrounds
             : DarkModeBackgrounds;
+    }
+
+    private renderAppLinks(): JSX.Element[] {
+        return this.props.apps.map(
+            (appConfig: AppShellApp): JSX.Element => {
+                return (
+                    <AppLink
+                        key={appConfig.id}
+                        aria-label={appConfig.name}
+                        href={appConfig.rootPath}
+                        children={appConfig.icon}
+                    />
+                );
+            }
+        );
     }
 }
 

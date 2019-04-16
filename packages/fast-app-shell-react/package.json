@@ -91,6 +91,7 @@
     "prettier": "1.14.3",
     "react": "^16.6.0",
     "react-dom": "^16.6.0",
+    "react-router-dom": "^5.0.0",
     "rimraf": "^2.6.2",
     "ts-jest": "^24.0.0",
     "ts-loader": "^4.0.1",
@@ -106,7 +107,8 @@
     "@microsoft/fast-jss-manager-react": "^3.1.13",
     "lodash-es": "^4.0.0",
     "react": "^16.6.0",
-    "react-dom": "^16.6.0"
+    "react-dom": "^16.6.0",
+    "react-router-dom": "^5.0.0"
   },
   "dependencies": {
     "@microsoft/fast-components-class-name-contracts-base": "^4.0.1",
