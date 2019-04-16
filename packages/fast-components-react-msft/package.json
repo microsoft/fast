@@ -77,9 +77,7 @@
     "@babel/preset-env": "^7.1.0",
     "@babel/preset-react": "^7.0.0",
     "@microsoft/fast-colors": "^4.0.1",
-    "@microsoft/fast-components-class-name-contracts-base": "^4.0.1",
     "@microsoft/fast-development-site-react": "^4.0.10",
-    "@microsoft/fast-jss-manager": "^4.0.1",
     "@microsoft/fast-jss-manager-react": "^4.2.1",
     "@microsoft/fast-sketch-library": "^4.0.1",
     "@microsoft/fast-tooling-react": "^1.2.5",
@@ -92,7 +90,6 @@
     "babel-jest": "^24.5.0",
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-16": "^1.1.1",
-    "exenv-es6": "^1.0.0",
     "eyes.images": "3.6.2",
     "favicons-webpack-plugin": "0.0.9",
     "file-loader": "^1.1.11",
@@ -112,7 +109,6 @@
     "tslint-loader": "^3.6.0",
     "tv4": "^1.3.0",
     "typescript": "3.3.3",
-    "utility-types": "^2.1.0",
     "webpack": "^4.1.0",
     "webpack-bundle-analyzer": "^2.13.1",
     "webpack-cli": "^3.1.1",
@@ -121,12 +117,10 @@
     "yargs": "^11.0.0"
   },
   "peerDependencies": {
-    "@microsoft/fast-jss-manager-react": "^3.1.13",
-    "exenv-es6": "^1.0.0",
+    "@microsoft/fast-jss-manager-react": "^3.1.13 || ^4.0.0",
     "lodash-es": "^4.0.0",
     "react": "^16.6.0",
-    "react-dom": "^16.6.0",
-    "utility-types": "^2.1.0"
+    "react-dom": "^16.6.0"
   },
   "dependencies": {
     "@microsoft/fast-components-class-name-contracts-msft": "^4.1.0",
@@ -135,6 +129,8 @@
     "@microsoft/fast-components-styles-msft": "^4.5.0",
     "@microsoft/fast-glyphs-msft": "^4.0.1",
     "@microsoft/fast-jss-utilities": "^4.3.0",
-    "@microsoft/fast-web-utilities": "^4.0.1"
+    "@microsoft/fast-web-utilities": "^4.0.1",
+    "exenv-es6": "^1.0.0",
+    "utility-types": "^2.1.0"
   }
 }
