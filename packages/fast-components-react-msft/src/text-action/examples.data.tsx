@@ -57,6 +57,27 @@ const examples: ComponentFactoryExample<TextActionProps> = {
             } as any,
         },
         {
+            button: {
+                id: buttonSchema.id,
+                props: {
+                    disabled: true,
+                    children: "Search",
+                },
+            } as any,
+            beforeGlyph: {
+                id: svgSchema.id,
+                props: {
+                    path: SVGGlyph.user,
+                },
+            } as any,
+            afterGlyph: {
+                id: svgSchema.id,
+                props: {
+                    path: SVGGlyph.robot,
+                },
+            } as any,
+        },
+        {
             disabled: true,
             button: {
                 id: buttonSchema.id,
