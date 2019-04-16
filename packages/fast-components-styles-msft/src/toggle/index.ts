@@ -34,11 +34,8 @@ const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = (
     const height: number = heightNumber()(designSystem) / 2 + designSystem.designUnit;
     const width: number = height * 2;
 
-    const indicatorMarginOffset: number = getOffsetForDensityCategory(
-        designSystem,
-        0,
-        2,
-        1
+    const indicatorMarginOffset: number = getOffsetForDensityCategory(0, 2, 1)(
+        designSystem
     );
     const indicatorMargin: number = designSystem.designUnit + indicatorMarginOffset;
     const indicatorSize: number = height - indicatorMargin * 2;

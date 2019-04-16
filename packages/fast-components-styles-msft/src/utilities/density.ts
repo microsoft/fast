@@ -62,19 +62,22 @@ export function getDensityCategory(designSystem: DesignSystem): DensityCategory 
 }
 
 export function getOffsetForDensityCategory(
-    designSystem: DesignSystem,
     compactOffset: number,
     spaciousOffset: number,
     normalOffset: number = 0
-): number {
-    const category: DensityCategory = getDensityCategory(designSystem);
-    const densityOffset: number =
-        category === DensityCategory.compact
-            ? compactOffset
-            : category === DensityCategory.spacious
-                ? spaciousOffset
-                : normalOffset;
-    return densityOffset;
+): DesignSystemResolver<number> {
+    return ensureDesignSystemDefaults(
+        (designSystem: DesignSystem): number => {
+            const category: DensityCategory = getDensityCategory(designSystem);
+            const densityOffset: number =
+                category === DensityCategory.compact
+                    ? compactOffset
+                    : category === DensityCategory.spacious
+                        ? spaciousOffset
+                        : normalOffset;
+            return densityOffset;
+        }
+    );
 }
 
 /**
