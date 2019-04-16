@@ -5,8 +5,10 @@ import manageJss, {
 } from "@microsoft/fast-jss-manager-react";
 import {
     accentFillRest,
-    accentForegroundCut,
+    cornerRadius,
     DesignSystem,
+    DesignSystemResolver,
+    designUnit,
     neutralFillStealthActive,
     neutralFillStealthHover,
     neutralFillStealthRest,
@@ -14,6 +16,7 @@ import {
 } from "@microsoft/fast-components-styles-msft";
 import { NavLink } from "react-router-dom";
 import { get } from "lodash-es";
+import { multiply, toPx } from "@microsoft/fast-jss-utilities";
 
 export interface DasbhoardLinkClassNameContract {
     dashboardLink: string;
@@ -29,8 +32,8 @@ const styles: ComponentStyles<DasbhoardLinkClassNameContract, DesignSystem> = {
     dashboardLink: {
         position: "relative",
         display: "flex",
-        width: "40px",
-        height: "40px",
+        width: toPx(multiply(designUnit, 10)),
+        height: toPx(multiply(designUnit, 10)),
         alignItems: "center",
         justifyContent: "center",
         background: neutralFillStealthRest,
@@ -53,11 +56,8 @@ const styles: ComponentStyles<DasbhoardLinkClassNameContract, DesignSystem> = {
             content: "''",
             height: "24px",
             width: "2px",
-            borderRadius: "2px",
+            borderRadius: toPx(cornerRadius),
             background: accentFillRest,
-        },
-        "& svg": {
-            stroke: accentForegroundCut(accentFillRest),
         },
     },
 };
