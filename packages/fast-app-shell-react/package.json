@@ -3,7 +3,6 @@
   "description": "FAST Microsoft application shell",
   "sideEffects": false,
   "version": "0.0.0",
-  "private": true,
   "author": {
     "name": "Microsoft",
     "url": "https://discord.gg/FcSNfg4"
