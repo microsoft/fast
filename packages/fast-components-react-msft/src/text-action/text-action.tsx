@@ -144,14 +144,9 @@ class TextAction extends Foundation<
      */
     private generateAfterGlyph(): React.ReactNode {
         if (typeof this.props.afterGlyph === "function") {
-            if (
-                !this.buttonExists() ||
-                this.props.buttonPosition !== TextActionButtonPosition.after
-            ) {
-                return this.props.afterGlyph(
-                    get(this.props, "managedClasses.textAction_afterGlyph", "")
-                );
-            }
+            return this.props.afterGlyph(
+                get(this.props, "managedClasses.textAction_afterGlyph", "")
+            );
         }
     }
 
@@ -160,14 +155,9 @@ class TextAction extends Foundation<
      */
     private generateBeforeGlyph(): React.ReactNode {
         if (typeof this.props.beforeGlyph === "function") {
-            if (
-                !this.buttonExists() ||
-                this.props.buttonPosition !== TextActionButtonPosition.before
-            ) {
-                return this.props.beforeGlyph(
-                    get(this.props, "managedClasses.textAction_beforeGlyph", "")
-                );
-            }
+            return this.props.beforeGlyph(
+                get(this.props, "managedClasses.textAction_beforeGlyph", "")
+            );
         }
     }
 }

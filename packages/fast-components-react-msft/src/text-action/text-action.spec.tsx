@@ -209,7 +209,7 @@ describe("text-action", (): void => {
         ).toEqual("svg");
     });
 
-    test("should render only a button if a glyph and button are passed in the same (after) position", () => {
+    test("should render a glyph and a button in the after position", () => {
         const handledProps: TextActionHandledProps = {
             managedClasses,
             button: (classname?: string, disabled?: boolean): React.ReactNode => {
@@ -238,12 +238,9 @@ describe("text-action", (): void => {
         const props: TextActionProps = { ...handledProps };
         const rendered: any = mount(<TextAction {...props} />);
 
-        expect(
-            rendered
-                .find(`.${managedClasses.textAction}`)
-                .find("svg")
-                .exists()
-        ).toBe(false);
+        expect(rendered.find(`.${managedClasses.textAction_afterGlyph}`).exists()).toBe(
+            true
+        );
         expect(
             rendered
                 .find(`.${managedClasses.textAction}`)
@@ -252,7 +249,7 @@ describe("text-action", (): void => {
         ).toBe(true);
     });
 
-    test("should render only a button if a glyph and button are passed in the same (before) position", () => {
+    test("should render a glyph and a button in the before position", () => {
         const handledProps: TextActionHandledProps = {
             managedClasses,
             buttonPosition: TextActionButtonPosition.before,
@@ -282,55 +279,9 @@ describe("text-action", (): void => {
         const props: TextActionProps = { ...handledProps };
         const rendered: any = mount(<TextAction {...props} />);
 
-        expect(
-            rendered
-                .find(`.${managedClasses.textAction}`)
-                .find("svg")
-                .exists()
-        ).toBe(false);
-        expect(
-            rendered
-                .find(`.${managedClasses.textAction}`)
-                .find("button")
-                .exists()
-        ).toBe(true);
-    });
-
-    test("should render a button and glyph if they are passed in different positions", () => {
-        const handledProps: TextActionHandledProps = {
-            managedClasses,
-            button: (classname?: string, disabled?: boolean): React.ReactNode => {
-                return (
-                    <Button type={"submit"} className={classname} disabled={disabled}>
-                        {"Text action"}
-                    </Button>
-                );
-            },
-            beforeGlyph: (classname?: string): React.ReactNode => {
-                return (
-                    <svg
-                        width="16"
-                        height="16"
-                        viewBox="0 0 16 16"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                        className={classname}
-                    >
-                        <path d="M10.3906 9.39844C11.099 9.64323" fill="black" />
-                    </svg>
-                );
-            },
-        };
-
-        const props: TextActionProps = { ...handledProps };
-        const rendered: any = mount(<TextAction {...props} />);
-
-        expect(
-            rendered
-                .find(`.${managedClasses.textAction}`)
-                .find("svg")
-                .exists()
-        ).toBe(true);
+        expect(rendered.find(`.${managedClasses.textAction_beforeGlyph}`).exists()).toBe(
+            true
+        );
         expect(
             rendered
                 .find(`.${managedClasses.textAction}`)
