@@ -209,11 +209,22 @@ export const withDesignSystemDefaults: (config: Partial<DesignSystem>) => Design
 
 /**
  * Safely retrieves a single property from a design system
+ * @deprecated Use getDesignSystemValue instead.
  */
 export function getDesignSystemProperty(key: string): DesignSystemResolver<string> {
     return function(config: DesignSystem): string {
         return withDesignSystemDefaults(config)[key];
     };
+}
+
+/**
+ * Safely retrieves the value from a key of the designSystem.
+ */
+export function getDesignSystemValue<T extends DesignSystem, K extends keyof T>(
+    key: K
+): (designSystem?: T) => T[K] {
+    return (designSystem?: T): T[K] =>
+        (designSystem && designSystem[key]) || (designSystemDefaults as T)[key];
 }
 
 /**

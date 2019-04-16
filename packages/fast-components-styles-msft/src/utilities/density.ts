@@ -1,7 +1,7 @@
-import defaultDesignSystem, {
+import {
     DesignSystem,
     DesignSystemResolver,
-    ensureDesignSystemDefaults,
+    getDesignSystemValue,
     withDesignSystemDefaults,
 } from "../design-system";
 import { toPx } from "@microsoft/fast-jss-utilities";
@@ -37,9 +37,9 @@ export function height(lines: number = 1, unit?: string): DesignSystemResolver<s
  */
 export function heightNumber(lines: number = 1): DesignSystemResolver<number> {
     return (designSystem: DesignSystem): number => {
+        const densityValue: number = getDesignSystemValue("density")(designSystem);
         const value: number =
-            (baseHeightMultiplier(designSystem) +
-                ((designSystem && designSystem.density) || defaultDesignSystem.density)) *
+            (baseHeightMultiplier(designSystem) + densityValue) *
             designUnit(designSystem) *
             lines;
         return value;
@@ -52,10 +52,11 @@ export function heightNumber(lines: number = 1): DesignSystemResolver<number> {
  * @param designSystem The design system config.
  */
 export function getDensityCategory(designSystem: DesignSystem): DensityCategory {
+    const densityValue: number = getDesignSystemValue("density")(designSystem);
     const category: DensityCategory =
-        designSystem.density >= 2
+        densityValue >= 2
             ? DensityCategory.spacious
-            : designSystem.density <= -2
+            : densityValue <= -2
                 ? DensityCategory.compact
                 : DensityCategory.normal;
     return category;
@@ -74,18 +75,16 @@ export function getOffsetForDensityCategory(
     spaciousOffset: number,
     normalOffset: number = 0
 ): DesignSystemResolver<number> {
-    return ensureDesignSystemDefaults(
-        (designSystem: DesignSystem): number => {
-            const category: DensityCategory = getDensityCategory(designSystem);
-            const densityOffset: number =
-                category === DensityCategory.compact
-                    ? compactOffset
-                    : category === DensityCategory.spacious
-                        ? spaciousOffset
-                        : normalOffset;
-            return densityOffset;
-        }
-    );
+    return (designSystem: DesignSystem): number => {
+        const category: DensityCategory = getDensityCategory(designSystem);
+        const densityOffset: number =
+            category === DensityCategory.compact
+                ? compactOffset
+                : category === DensityCategory.spacious
+                    ? spaciousOffset
+                    : normalOffset;
+        return densityOffset;
+    };
 }
 
 /**
@@ -116,13 +115,7 @@ export function horizontalSpacingNumber(
     adjustment: number = 0
 ): DesignSystemResolver<number> {
     return (designSystem: DesignSystem): number => {
-        const category: DensityCategory = getDensityCategory(designSystem);
-        const densityOffset: number =
-            category === DensityCategory.compact
-                ? -1
-                : category === DensityCategory.spacious
-                    ? 1
-                    : 0;
+        const densityOffset: number = getOffsetForDensityCategory(-1, 1)(designSystem);
         const value: number =
             (baseHorizontalSpacingMultiplier(designSystem) + densityOffset) *
                 designUnit(designSystem) -
@@ -161,13 +154,7 @@ export function glyphSize(arg: any): any {
  */
 export function glyphSizeNumber(config: DesignSystem): number {
     const designSystem: DesignSystem = withDesignSystemDefaults(config);
-    const category: DensityCategory = getDensityCategory(designSystem);
-    const sizeOffset: number =
-        category === DensityCategory.compact
-            ? -2
-            : category === DensityCategory.spacious
-                ? 2
-                : 0;
+    const sizeOffset: number = getOffsetForDensityCategory(-2, 2)(designSystem);
     const value: number =
         (baseHeightMultiplier(designSystem) / 2) * designUnit(designSystem) + sizeOffset;
     return value;
@@ -180,7 +167,6 @@ export function glyphSizeNumber(config: DesignSystem): number {
  */
 export function density(value: number, unit?: string): (config: DesignSystem) => string {
     return (config: DesignSystem): string => {
-        const designSystem: DesignSystem = withDesignSystemDefaults(config);
         const augmented: number = value * 1;
         return typeof unit === "string" ? `${augmented}${unit}` : toPx(augmented);
     };
