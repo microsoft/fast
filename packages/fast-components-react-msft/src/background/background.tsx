@@ -48,7 +48,8 @@ export default class Background extends Foundation<
                 ? background
                 : has(designSystem.neutralPalette, background)
                     ? get(designSystem.neutralPalette, background)
-                    : DesignSystemDefaults.neutralPalette[Background.defaultProps.value];
+                    : DesignSystemDefaults.neutralPalette[background] ||
+                      DesignSystemDefaults.neutralPalette[Background.defaultProps.value];
 
         const style: React.CSSProperties = Object.assign({}, this.props.style, {
             backgroundColor: color,
