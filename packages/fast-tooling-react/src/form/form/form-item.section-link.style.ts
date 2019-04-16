@@ -5,6 +5,7 @@ import {
     applyControlRegion,
     applyControlSingleLineWrapper,
     applyFormItemIndicator,
+    applyInteractiveFormItemIndicator,
     applyInvalidMessage,
     applySoftRemove,
     applySoftRemoveInput,
@@ -30,7 +31,7 @@ const styles: ComponentStyles<FormItemSectionLinkClassNameContract, {}> = {
         ...applyControlRegion(),
     },
     formItemSectionLink_defaultValueIndicator: {
-        ...applyFormItemIndicator(),
+        ...applyInteractiveFormItemIndicator(),
     },
     formItemSectionLink_invalidMessage: {
         ...applyInvalidMessage(),

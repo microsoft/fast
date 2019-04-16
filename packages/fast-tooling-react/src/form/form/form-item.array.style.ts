@@ -7,6 +7,7 @@ import {
     applyControlWrapper,
     applyFormItemIndicator,
     applyGlobalStyle,
+    applyInteractiveFormItemIndicator,
     applyInvalidMessage,
     applyLabelRegionStyle,
     applyLabelStyle,
@@ -89,7 +90,7 @@ const styles: ComponentStyles<FormItemArrayClassNameContract, {}> = {
         ...applyControlRegion(),
     },
     formItemArray_defaultValueIndicator: {
-        ...applyFormItemIndicator(),
+        ...applyInteractiveFormItemIndicator(),
     },
     formItemArray_existingItemList: {
         ...applyCleanListStyle(),

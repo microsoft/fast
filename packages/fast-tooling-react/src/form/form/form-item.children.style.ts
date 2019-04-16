@@ -9,6 +9,7 @@ import {
     applyFormItemIndicator,
     applyGlobalStyle,
     applyInputStyle,
+    applyInteractiveFormItemIndicator,
     applyLabelRegionStyle,
     applyLabelStyle,
     applyRemoveItemStyle,
@@ -42,7 +43,7 @@ const styles: ComponentStyles<FormItemChildrenClassNameContract, {}> = {
         ...applyLabelRegionStyle(),
     },
     formItemChildren_defaultValueIndicator: {
-        ...applyFormItemIndicator(),
+        ...applyInteractiveFormItemIndicator(),
     },
     formItemChildren_existingChildren: {
         ...applyCleanListStyle(),
