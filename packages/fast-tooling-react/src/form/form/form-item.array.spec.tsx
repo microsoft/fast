@@ -317,6 +317,31 @@ describe("Array", () => {
             rendered.find(`.${managedClasses.formItemArray_defaultValueIndicator}`)
         ).toHaveLength(0);
     });
+    test("should fire the onChange callback to update the data to the default value if the default value indicator is clicked", () => {
+        const defaultValue: string[] = [];
+        const callback: any = jest.fn();
+        const rendered: any = mount(
+            <FormItemArray
+                {...arrayProps}
+                onChange={callback}
+                data={undefined}
+                default={defaultValue}
+                managedClasses={managedClasses}
+            />
+        );
+
+        expect(callback).not.toHaveBeenCalled();
+
+        rendered
+            .find(`.${managedClasses.formItemArray_defaultValueIndicator}`)
+            .simulate("click");
+
+        expect(callback).toHaveBeenCalledTimes(1);
+        expect(callback.mock.calls[0][0]).toEqual("");
+        expect(callback.mock.calls[0][1]).toEqual(defaultValue);
+        expect(callback.mock.calls[0][2]).toEqual(undefined);
+        expect(callback.mock.calls[0][3]).toEqual(undefined);
+    });
     test("should show default values if they exist and no data is available", () => {
         const defaultArrayItem1: string = "foo";
         const defaultArrayItem2: string = "bar";
