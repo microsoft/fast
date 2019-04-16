@@ -61,6 +61,14 @@ export function getDensityCategory(designSystem: DesignSystem): DensityCategory 
     return category;
 }
 
+/**
+ * Returns an offset based on the higher-level category for the density setting.
+ * Used to adjust things like type size and sizing that is based on the category rather than individual density.
+ *
+ * @param compactOffset The adjustment when the category is "compact"
+ * @param spaciousOffset The adjustment when the category is "spacious"
+ * @param normalOffset The adjustment when the category is "normal"
+ */
 export function getOffsetForDensityCategory(
     compactOffset: number,
     spaciousOffset: number,
