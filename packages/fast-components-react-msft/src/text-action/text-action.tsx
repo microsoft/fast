@@ -98,20 +98,28 @@ class TextAction extends Foundation<
     }
 
     /**
-     * Adds focus state to outer wrapper
+     * Adds focus state to outer wrapper and fires callback if passed
      * In order to correctly focus the input and then the
      * possible button, a class must be added instead of using
      * focus-within via style
      */
-    private handleOnFocus = (): void => {
+    private handleOnFocus = (e: React.FocusEvent<HTMLInputElement>): void => {
         this.setState({ focused: true });
+
+        if (typeof this.props.onFocus === "function") {
+            this.props.onFocus(e);
+        }
     };
 
     /**
-     * Removes focus state
+     * Removes focus state and fires callback if passed
      */
-    private handleOnBlur = (): void => {
+    private handleOnBlur = (e: React.FocusEvent<HTMLInputElement>): void => {
         this.setState({ focused: false });
+
+        if (typeof this.props.onBlur === "function") {
+            this.props.onBlur(e);
+        }
     };
 
     /**

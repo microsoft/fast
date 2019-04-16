@@ -46,6 +46,16 @@ export interface TextActionHandledProps
      * The trailing glyph
      */
     afterGlyph?: (classname?: string) => React.ReactNode;
+
+    /**
+     * Callback for when text action input is focused
+     */
+    onFocus?: (e?: React.FocusEvent<HTMLInputElement>) => void;
+
+    /**
+     * Callback for when text action input is blurred
+     */
+    onBlur?: (e?: React.FocusEvent<HTMLInputElement>) => void;
 }
 
 export type TextActionProps = TextActionHandledProps & TextActionUnhandledProps;

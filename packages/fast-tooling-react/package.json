@@ -2,7 +2,7 @@
   "name": "@microsoft/fast-tooling-react",
   "description": "FAST Tooling React",
   "sideEffects": false,
-  "version": "1.2.2",
+  "version": "1.2.3",
   "author": {
     "name": "Microsoft",
     "url": "https://discord.gg/FcSNfg4"
@@ -68,7 +68,7 @@
     "@microsoft/fast-components-foundation-react": "^3.0.1",
     "@microsoft/fast-jss-manager": "^4.0.1",
     "@microsoft/fast-jss-manager-react": "^4.2.1",
-    "@microsoft/fast-jss-utilities": "^4.2.1",
+    "@microsoft/fast-jss-utilities": "^4.3.0",
     "@microsoft/fast-tslint-rules": "^3.0.3",
     "@microsoft/fast-web-utilities": "^4.0.1",
     "@types/jest": "^24.0.11",

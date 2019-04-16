@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.2.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-base@4.1.5...@microsoft/fast-components-react-base@4.2.0) (2019-04-15)
+
+
+### Features
+
+* add name attribute to radio component ([#1642](https://github.com/Microsoft/fast-dna/issues/1642)) ([cb8390e](https://github.com/Microsoft/fast-dna/commit/cb8390e))
+* add name prop to checkbox ([#1643](https://github.com/Microsoft/fast-dna/issues/1643)) ([913afaa](https://github.com/Microsoft/fast-dna/commit/913afaa))
+
+
+
+
+
 ## [4.1.5](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-base@4.1.4...@microsoft/fast-components-react-base@4.1.5) (2019-04-11)
 
 **Note:** Version bump only for package @microsoft/fast-components-react-base
