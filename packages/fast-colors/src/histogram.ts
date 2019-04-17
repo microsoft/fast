@@ -6,7 +6,8 @@ import { PixelBlob } from "./pixel-blob";
 // It needs a buffer which is 4*2^(3*signifigantBits) in size
 // EG: for 5 signifigant bits the histogram is 128K while for 8 it is 64 megs.
 // CPU time increases linearly as pixelSkipping is reduced
-// Pixels with an alpha value less than minAlpha are ignored
+// isHistoPixelValid is an optional predicate which can screen out unwanted pixels from the
+// source data. EG: ignoring transparent pixels.
 // If the image source has more than 2^32 pixels (eg: a square image 65536x65536 in size) of the same color this code will break
 
 export class Histogram {

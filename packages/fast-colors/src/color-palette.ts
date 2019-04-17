@@ -106,6 +106,9 @@ export class ColorPalette {
     }
 
     public generatePaletteColorScale(): ColorScale {
+        // Even when config.baseScalePosition is specified, using 0.5 for the baseColor
+        // in the baseScale gives better results. Otherwise very off-center palettes
+        // tend to go completely grey at the end furthest from the specified base color.
         const baseColorHSL: ColorHSL = rgbToHSL(this.config.baseColor);
         const baseScale: ColorScale = new ColorScale([
             { position: 0, color: this.config.scaleColorLight },
