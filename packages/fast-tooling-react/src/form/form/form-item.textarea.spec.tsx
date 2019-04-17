@@ -36,6 +36,7 @@ const textareaProps: FormItemTextareaProps = {
     label: "",
     onChange: jest.fn(),
     invalidMessage: "",
+    schema: {},
 };
 
 describe("Textarea", () => {
