@@ -48,11 +48,6 @@ export type ChildComponent = ChildComponentConfig | string;
 
 export interface FormItemChildrenProps extends FormItemCommon {
     /**
-     * The schema
-     */
-    schema: any;
-
-    /**
      * The onChange event
      */
     onChange: DataOnChange;

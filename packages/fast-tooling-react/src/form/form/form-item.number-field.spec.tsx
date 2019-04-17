@@ -35,6 +35,7 @@ const numberFieldProps: FormItemCommon = {
     label: "",
     onChange: jest.fn(),
     invalidMessage: "",
+    schema: {},
 };
 
 describe("NumberField", () => {

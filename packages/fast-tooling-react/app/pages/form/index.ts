@@ -33,6 +33,12 @@ export const oneOf: ExampleComponent = {
     schema: OneOfSchema,
 };
 
+import NestedOneOfSchema from "../../../src/__tests__/schemas/nested-one-of.schema.json";
+
+export const nestedOneOf: ExampleComponent = {
+    schema: NestedOneOfSchema,
+};
+
 import ObjectsSchema from "../../../src/__tests__/schemas/objects.schema.json";
 
 export const objects: ExampleComponent = {

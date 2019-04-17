@@ -8,6 +8,7 @@ import {
     FormItemSectionLinkProps,
 } from "./form-item.section-link.props";
 import FormItemBase from "./form-item.base";
+import { generateExampleData } from "../utilities";
 
 /**
  * Schema form component definition
@@ -66,7 +67,10 @@ class FormItemSectionLink extends FormItemBase<
 
     private handleUpdateSection = (e: React.MouseEvent<HTMLAnchorElement>): void => {
         if (this.props.data === undefined) {
-            this.props.onChange(this.props.dataLocation, {});
+            this.props.onChange(
+                this.props.dataLocation,
+                generateExampleData(this.props.schema, "")
+            );
         }
 
         this.props.onUpdateSection(this.props.schemaLocation, this.props.dataLocation);

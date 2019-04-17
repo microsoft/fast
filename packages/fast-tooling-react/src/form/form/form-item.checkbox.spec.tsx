@@ -34,6 +34,7 @@ const checkboxProps: FormItemCheckboxProps = {
     label: "",
     onChange: jest.fn(),
     invalidMessage: "",
+    schema: {},
 };
 
 describe("Checkbox", () => {
