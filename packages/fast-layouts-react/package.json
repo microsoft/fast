@@ -101,7 +101,7 @@
     "react": "^16.6.0"
   },
   "dependencies": {
-    "@microsoft/fast-components-foundation-react": "^2.0.0",
+    "@microsoft/fast-components-foundation-react": "^3.0.1",
     "@microsoft/fast-jss-utilities": "^4.3.0",
     "exenv-es6": "^1.0.0",
     "raf-throttle": "^2.0.3",
