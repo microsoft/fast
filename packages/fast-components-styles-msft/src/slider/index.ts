@@ -48,6 +48,7 @@ const styles: ComponentStyles<SliderClassNameContract, DesignSystem> = (
             border: "none",
             background: neutralForegroundRest,
             borderRadius: "50%",
+            transition: "all .04s linear",
             ...elevation(ElevationMultiplier.e2)(designSystem),
 
             "&:hover": {
@@ -67,6 +68,7 @@ const styles: ComponentStyles<SliderClassNameContract, DesignSystem> = (
         },
 
         slider_barFront: {
+            transition: "all .04s linear",
             borderRadius: "2px",
             background: neutralForegroundHint,
         },

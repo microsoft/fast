@@ -18,10 +18,7 @@ export interface SliderContextType {
 export const SliderContext: React.Context<SliderContextType> = React.createContext({
     sliderOrientation: SliderOrientation.horizontal,
     sliderMode: SliderMode.adustUpperValue,
-    sliderConstrainedRange: {
-        minValue: 0,
-        maxValue: 100,
-    },
+    sliderConstrainedRange: null,
     sliderUpperValue: 0,
     sliderLowerValue: 0,
     sliderIsDragging: false,

@@ -14,6 +14,8 @@ export enum SliderTrackItemAnchor {
     selectedRangeMax = "selectedRangeMax",
     totalRangeMin = "totalRangeMin",
     totalRangeMax = "totalRangeMax",
+    constrainedRangeMin = "constrainedRangeMin",
+    constrainedRangeMax = "constrainedRangeMax",
 }
 
 export interface SliderTrackItemHandledProps extends SliderTrackItemManagedClasses {

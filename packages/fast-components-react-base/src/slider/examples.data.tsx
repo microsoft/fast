@@ -14,6 +14,7 @@ const managedClasses: SliderManagedClasses = {
         slider__orientationHorizontal: "slider__orientationHorizontal",
         slider__orientationVertical: "slider__orientationVertical",
         slider_layoutPanel: "slider_layoutPanel",
+        slider_thumb: "slider__thumb",
         slider_thumb_upper: "slider__thumb_upper",
         slider_thumb_lower: "slider__thumb_lower",
         slider_barBack: "slider_barBack",

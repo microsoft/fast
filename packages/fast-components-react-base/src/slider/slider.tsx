@@ -47,9 +47,9 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
         step: 1,
     };
 
-    private static baseIncrementDelay: number = 250;
-    private static minIncrementDelay: number = 20;
-    private static incrementAcceleration: number = 50;
+    private static baseIncrementDelay: number = 300;
+    private static minIncrementDelay: number = 40;
+    private static incrementAcceleration: number = 40;
 
     protected handledProps: HandledProps<SliderHandledProps> = {
         disabled: void 0,

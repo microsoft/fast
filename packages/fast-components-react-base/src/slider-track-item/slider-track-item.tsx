@@ -136,6 +136,22 @@ class SliderTrackItem extends Foundation<
 
             case SliderTrackItemAnchor.totalRangeMin:
                 return 0;
+
+            case SliderTrackItemAnchor.constrainedRangeMax:
+                return (this.context as SliderContextType).sliderConstrainedRange !== null
+                    ? (this.context as SliderContextType).sliderValueAsPercent(
+                          (this.context as SliderContextType).sliderConstrainedRange
+                              .maxValue
+                      )
+                    : 100;
+
+            case SliderTrackItemAnchor.constrainedRangeMin:
+                return (this.context as SliderContextType).sliderConstrainedRange !== null
+                    ? (this.context as SliderContextType).sliderValueAsPercent(
+                          (this.context as SliderContextType).sliderConstrainedRange
+                              .minValue
+                      )
+                    : 0;
         }
     };
 }
