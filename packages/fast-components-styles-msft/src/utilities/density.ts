@@ -152,9 +152,12 @@ export function glyphSize(arg: any): any {
 /**
  * Returns the width and height for an icon as a number.
  */
-export function glyphSizeNumber(config: DesignSystem): number {
-    const designSystem: DesignSystem = withDesignSystemDefaults(config);
-    const sizeOffset: number = getOffsetForDensityCategory(-2, 2)(designSystem);
+export function glyphSizeNumber(designSystem: DesignSystem): number {
+    const halfDesignUnit: number = designUnit(designSystem) / 2;
+    const sizeOffset: number = getOffsetForDensityCategory(
+        halfDesignUnit * -1,
+        halfDesignUnit
+    )(designSystem);
     const value: number =
         (baseHeightMultiplier(designSystem) / 2) * designUnit(designSystem) + sizeOffset;
     return value;
