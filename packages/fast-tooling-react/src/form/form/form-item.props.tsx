@@ -16,6 +16,11 @@ export default interface FormItemCommon {
     dataLocation: string;
 
     /**
+     * The schema
+     */
+    schema: any;
+
+    /**
      * The data
      */
     data: any;
