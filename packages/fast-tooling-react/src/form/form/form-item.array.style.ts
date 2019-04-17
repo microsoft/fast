@@ -1,5 +1,5 @@
 import { ellipsis, focusVisible } from "@microsoft/fast-jss-utilities";
-import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager";
+import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager-react";
 import {
     accent,
     applyCleanListStyle,

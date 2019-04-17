@@ -1,4 +1,4 @@
-import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager";
+import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager-react";
 import { background200, background800, foreground300 } from "../../style";
 import { FormCategoryClassNameContract } from "./form-category.props";
 

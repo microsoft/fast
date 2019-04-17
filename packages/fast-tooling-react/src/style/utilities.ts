@@ -1,4 +1,4 @@
-import { CSSRules } from "@microsoft/fast-jss-manager";
+import { CSSRules } from "@microsoft/fast-jss-manager-react";
 import {
     Direction,
     ellipsis,

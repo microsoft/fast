@@ -1,4 +1,4 @@
-import { ManagedClasses } from "@microsoft/fast-jss-manager";
+import { ManagedClasses } from "@microsoft/fast-jss-manager-react";
 import { CSSEditorClassNameContract } from "./editor.style";
 import { CSSSpacingValues } from "./spacing";
 import { CSSPositionValues } from "./position";
