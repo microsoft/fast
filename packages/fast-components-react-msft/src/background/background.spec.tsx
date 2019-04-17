@@ -73,4 +73,18 @@ describe("Background", (): void => {
                 .prop("style").backgroundColor
         ).toBe("#888");
     });
+    test("should derive index values from the default design system if no design system is provided", (): void => {
+        expect(
+            mount(<Background value={8} />)
+                .find("div")
+                .prop("style").backgroundColor
+        ).toBe(DesignSystemDefaults.neutralPalette[8]);
+    });
+    test("should use default prop values from default design system if no design system and index is out of bounds", (): void => {
+        expect(
+            mount(<Background value={-1} />)
+                .find("div")
+                .prop("style").backgroundColor
+        ).toBe(DesignSystemDefaults.neutralPalette[Background.defaultProps.value]);
+    });
 });
