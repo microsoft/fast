@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.2.4](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-tooling-react@1.2.3...@microsoft/fast-tooling-react@1.2.4) (2019-04-17)
+
+
+### Bug Fixes
+
+* allow navigation in nested oneOf/anyOf objects when the form is uncontrolled ([#1670](https://github.com/Microsoft/fast-dna/issues/1670)) ([a80c7ac](https://github.com/Microsoft/fast-dna/commit/a80c7ac))
+
+
+
+
+
 ## [1.2.3](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-tooling-react@1.2.2...@microsoft/fast-tooling-react@1.2.3) (2019-04-15)
 
 **Note:** Version bump only for package @microsoft/fast-tooling-react
