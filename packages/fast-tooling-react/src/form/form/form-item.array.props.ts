@@ -38,11 +38,6 @@ export enum ArrayAction {
 
 export interface FormItemArrayProps extends FormItemCommon {
     /**
-     * The schema
-     */
-    schema: any;
-
-    /**
      * The location of the schema
      */
     schemaLocation: string;

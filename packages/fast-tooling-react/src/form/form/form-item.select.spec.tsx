@@ -37,6 +37,7 @@ const selectProps: FormItemSelectProps = {
     options: [],
     onChange: jest.fn(),
     invalidMessage: "",
+    schema: {},
 };
 
 describe("Select", () => {

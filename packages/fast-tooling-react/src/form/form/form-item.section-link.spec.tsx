@@ -34,6 +34,7 @@ const formItemSectionLinkProps: FormItemSectionLinkProps = {
     onChange: jest.fn(),
     onUpdateSection: jest.fn(),
     invalidMessage: "",
+    schema: {},
 };
 
 describe("NumberField", () => {
