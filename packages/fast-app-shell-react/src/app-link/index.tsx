@@ -18,9 +18,9 @@ import { NavLink } from "react-router-dom";
 import { get } from "lodash-es";
 import { multiply, toPx } from "@microsoft/fast-jss-utilities";
 
-export interface DasbhoardLinkClassNameContract {
-    dashboardLink: string;
-    dasboardLink__active: string;
+export interface AppLinkClassNameContract {
+    appLink: string;
+    appLink__active: string;
 }
 
 export interface AppLinkProps {
@@ -29,8 +29,8 @@ export interface AppLinkProps {
     children: React.ReactNode;
 }
 
-const styles: ComponentStyles<DasbhoardLinkClassNameContract, DesignSystem> = {
-    dashboardLink: {
+const styles: ComponentStyles<AppLinkClassNameContract, DesignSystem> = {
+    appLink: {
         position: "relative",
         display: "flex",
         width: toPx(multiply(designUnit, 10)),
@@ -49,7 +49,7 @@ const styles: ComponentStyles<DasbhoardLinkClassNameContract, DesignSystem> = {
             background: neutralFillStealthActive,
         },
     },
-    dasboardLink__active: {
+    appLink__active: {
         "&::before": {
             position: "absolute",
             top: "8px",
@@ -64,15 +64,13 @@ const styles: ComponentStyles<DasbhoardLinkClassNameContract, DesignSystem> = {
 };
 
 export default manageJss(styles)(
-    (
-        props: AppLinkProps & ManagedClasses<DasbhoardLinkClassNameContract>
-    ): JSX.Element => {
+    (props: AppLinkProps & ManagedClasses<AppLinkClassNameContract>): JSX.Element => {
         return (
             <NavLink
                 to={props.href}
                 children={props.children}
-                className={get(props.managedClasses, "dashboardLink")}
-                activeClassName={get(props.managedClasses, "dasboardLink__active")}
+                className={get(props.managedClasses, "appLink")}
+                activeClassName={get(props.managedClasses, "appLink__active")}
                 aria-label={props.title}
             />
         );
