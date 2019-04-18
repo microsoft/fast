@@ -1,8 +1,8 @@
 import {
+    checkDesignSystemResolver,
     DesignSystem,
     DesignSystemResolver,
     getDesignSystemValue,
-    withDesignSystemDefaults,
 } from "../design-system";
 import { toPx } from "@microsoft/fast-jss-utilities";
 import {
@@ -10,6 +10,7 @@ import {
     baseHorizontalSpacingMultiplier,
     designUnit,
 } from "../utilities/design-system";
+import { debug } from "util";
 
 export enum DensityCategory {
     compact = "compact",
@@ -63,27 +64,27 @@ export function getDensityCategory(designSystem: DesignSystem): DensityCategory 
 }
 
 /**
- * Returns an offset based on the higher-level category for the density setting.
+ * Returns a value based on the higher-level category for the density setting.
  * Used to adjust things like type size and sizing that is based on the category rather than individual density.
  *
- * @param compactOffset The adjustment when the category is "compact"
- * @param spaciousOffset The adjustment when the category is "spacious"
- * @param normalOffset The adjustment when the category is "normal"
+ * @param compactValue The adjustment when the category is "compact"
+ * @param spaciousValue The adjustment when the category is "spacious"
+ * @param normalValue The adjustment when the category is "normal"
  */
-export function getOffsetForDensityCategory(
-    compactOffset: number,
-    spaciousOffset: number,
-    normalOffset: number = 0
-): DesignSystemResolver<number> {
-    return (designSystem: DesignSystem): number => {
+export function densityCategorySwitch<T = number>(
+    compactValue: T | DesignSystemResolver<T>,
+    spaciousValue: T | DesignSystemResolver<T>,
+    normalValue: T | DesignSystemResolver<T>
+): DesignSystemResolver<T> {
+    return (designSystem: DesignSystem): T => {
         const category: DensityCategory = getDensityCategory(designSystem);
-        const densityOffset: number =
+        const value: T =
             category === DensityCategory.compact
-                ? compactOffset
+                ? checkDesignSystemResolver<T>(compactValue, designSystem)
                 : category === DensityCategory.spacious
-                    ? spaciousOffset
-                    : normalOffset;
-        return densityOffset;
+                    ? checkDesignSystemResolver<T>(spaciousValue, designSystem)
+                    : checkDesignSystemResolver<T>(normalValue, designSystem);
+        return value;
     };
 }
 
@@ -115,7 +116,7 @@ export function horizontalSpacingNumber(
     adjustment: number = 0
 ): DesignSystemResolver<number> {
     return (designSystem: DesignSystem): number => {
-        const densityOffset: number = getOffsetForDensityCategory(-1, 1)(designSystem);
+        const densityOffset: number = densityCategorySwitch(-1, 1, 0)(designSystem);
         const value: number =
             (baseHorizontalSpacingMultiplier(designSystem) + densityOffset) *
                 designUnit(designSystem) -
@@ -154,9 +155,10 @@ export function glyphSize(arg: any): any {
  */
 export function glyphSizeNumber(designSystem: DesignSystem): number {
     const halfDesignUnit: number = designUnit(designSystem) / 2;
-    const sizeOffset: number = getOffsetForDensityCategory(
+    const sizeOffset: number = densityCategorySwitch(
         halfDesignUnit * -1,
-        halfDesignUnit
+        halfDesignUnit,
+        0
     )(designSystem);
     const value: number =
         (baseHeightMultiplier(designSystem) / 2) * designUnit(designSystem) + sizeOffset;

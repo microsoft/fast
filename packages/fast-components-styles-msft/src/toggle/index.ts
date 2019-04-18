@@ -23,7 +23,7 @@ import {
 import { ToggleClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import { applyDisabledState } from "../utilities/disabled";
 import { applyScaledTypeRamp } from "../utilities/typography";
-import { getOffsetForDensityCategory, heightNumber } from "../utilities/density";
+import { densityCategorySwitch, heightNumber } from "../utilities/density";
 import { outlineWidth } from "../utilities/design-system";
 
 const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = (
@@ -34,9 +34,7 @@ const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = (
     const height: number = heightNumber()(designSystem) / 2 + designSystem.designUnit;
     const width: number = height * 2;
 
-    const indicatorMarginOffset: number = getOffsetForDensityCategory(0, 2, 1)(
-        designSystem
-    );
+    const indicatorMarginOffset: number = densityCategorySwitch(0, 2, 1)(designSystem);
     const indicatorMargin: number = designSystem.designUnit + indicatorMarginOffset;
     const indicatorSize: number = height - indicatorMargin * 2;
     const indicatorCheckedLeft: number = width - indicatorMargin - indicatorSize;

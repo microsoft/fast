@@ -26,7 +26,7 @@ import {
     neutralOutlineRest,
 } from "../utilities/color";
 import {
-    getOffsetForDensityCategory,
+    densityCategorySwitch,
     height,
     heightNumber,
     horizontalSpacing,
@@ -41,9 +41,7 @@ const styles: ComponentStyles<RadioClassNameContract, DesignSystem> = (
     const direction: Direction = designSystem.direction;
     const size: string = toPx(heightNumber()(designSystem) / 2 + designSystem.designUnit);
 
-    const indicatorMarginOffset: number = getOffsetForDensityCategory(0, 2, 1)(
-        designSystem
-    );
+    const indicatorMarginOffset: number = densityCategorySwitch(0, 2, 1)(designSystem);
     const indicatorMargin: string = toPx(designSystem.designUnit + indicatorMarginOffset);
 
     return {

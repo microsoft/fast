@@ -239,6 +239,21 @@ export function ensureDesignSystemDefaults<T>(
 }
 
 /**
+ * Returns the argument if basic, othwerwise calls the DesignSystemResolver function.
+ *
+ * @param arg A value or a DesignSystemResolver function
+ * @param designSystem The design system config.
+ */
+export function checkDesignSystemResolver<T>(
+    arg: T | DesignSystemResolver<T>,
+    designSystem: DesignSystem
+): T {
+    const value: T =
+        typeof arg === "function" ? (arg as DesignSystemResolver<T>)(designSystem) : arg;
+    return value;
+}
+
+/**
  * A function that accepts a design system and returns a generic type
  */
 export type DesignSystemResolver<T> = (designSystem: DesignSystem) => T;

@@ -20,7 +20,7 @@ import {
 } from "../utilities/color";
 import { applyCornerRadius } from "../utilities/border";
 import {
-    getOffsetForDensityCategory,
+    densityCategorySwitch,
     heightNumber,
     horizontalSpacing,
 } from "../utilities/density";
@@ -35,9 +35,7 @@ const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = (
     const direction: Direction = designSystem.direction;
     const size: number = heightNumber()(designSystem) / 2 + designSystem.designUnit;
 
-    const indicatorMarginOffset: number = getOffsetForDensityCategory(0, 2, 1)(
-        designSystem
-    );
+    const indicatorMarginOffset: number = densityCategorySwitch(0, 2, 1)(designSystem);
     const indeterminateIndicatorMargin: string = toPx(
         designSystem.designUnit + indicatorMarginOffset
     );
