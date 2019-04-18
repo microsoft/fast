@@ -2,6 +2,7 @@ import "jest";
 import {
     BreadcrumbItem,
     getBreadcrumbs,
+    getInitialOneOfAnyOfState,
     getNavigation,
     getSchemaByDataLocation,
     HandleBreadcrumbClick,
@@ -13,11 +14,13 @@ import arraysSchema from "../../__tests__/schemas/arrays.schema.json";
 import generalSchema from "../../__tests__/schemas/general.schema.json";
 import objectsSchema from "../../__tests__/schemas/objects.schema.json";
 import oneOfSchema from "../../__tests__/schemas/one-of.schema.json";
+import mergedOneOfSchema from "../../__tests__/schemas/merged-one-of.schema.json";
 import anyOfSchema from "../../__tests__/schemas/any-of.schema.json";
 import childrenSchema from "../../__tests__/schemas/children.schema.json";
 import textFieldSchema from "../../__tests__/schemas/textarea.schema.json";
 import deeplyNestedOneOfSchema from "../../__tests__/schemas/one-of-deeply-nested.schema.json";
 import { reactChildrenStringSchema } from "../form/form-item.children.text";
+import { InitialOneOfAnyOfState, oneOfAnyOfType } from "../form/form-section.props";
 
 /**
  * Gets the navigation
@@ -755,6 +758,9 @@ describe("getBreadcrumbs", () => {
     });
 });
 
+/**
+ * Gets a schema by data location (lodash path syntax)
+ */
 describe("getSchemaByDataLocation", () => {
     test("should return the schema given from data requiring no children", () => {
         const data: any = {
@@ -819,5 +825,41 @@ describe("getSchemaByDataLocation", () => {
             ]
         );
         expect(schema2.id).toBe(textFieldSchema.id);
+    });
+});
+
+/**
+ * Gets an initial oneOfAnyOf state
+ */
+describe("getInitialOneOfAnyOfState", () => {
+    test("should get the initial oneOf/anyOf activeIndex and oneOf/anyOf keyword", () => {
+        const initialOneOfAnyOfNoData: InitialOneOfAnyOfState = getInitialOneOfAnyOfState(
+            mergedOneOfSchema.properties.foo,
+            {}
+        );
+        const initialOneOfAnyOfWithData: InitialOneOfAnyOfState = getInitialOneOfAnyOfState(
+            mergedOneOfSchema.properties.foo,
+            {
+                a: 5,
+                b: "foo",
+            }
+        );
+
+        expect(initialOneOfAnyOfNoData.oneOfAnyOf).toEqual({
+            type: oneOfAnyOfType.oneOf,
+            activeIndex: 0,
+        });
+        expect(initialOneOfAnyOfWithData.oneOfAnyOf).toEqual({
+            type: oneOfAnyOfType.oneOf,
+            activeIndex: 1,
+        });
+    });
+    test("should correctly get the oneOf/anyOf schema and merge it with any definitions outside of the selected oneOf/anyOf item", () => {
+        const initialOneOfAnyOfNoData: InitialOneOfAnyOfState = getInitialOneOfAnyOfState(
+            mergedOneOfSchema.properties.foo,
+            {}
+        );
+
+        expect(initialOneOfAnyOfNoData.schema.required).toEqual(["a", "b"]);
     });
 });
