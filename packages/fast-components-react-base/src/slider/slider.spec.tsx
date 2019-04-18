@@ -35,6 +35,12 @@ const managedClasses: SliderClassNameContract = {
 };
 
 describe("Slider", (): void => {
+    const map: any = {};
+    // tslint:disable-next-line:no-shadowed-variable
+    window.addEventListener = jest.fn((event: string, callback: any) => {
+        map[event] = callback;
+    });
+
     test("should have a displayName that matches the component name", () => {
         expect(`${DisplayNamePrefix}${(Slider as any).name}`).toBe(Slider.displayName);
     });
@@ -363,17 +369,9 @@ describe("Slider", (): void => {
         const container: HTMLDivElement = document.createElement("div");
         document.body.appendChild(container);
 
-        const map: any = {};
-        // tslint:disable-next-line:no-shadowed-variable
-        window.addEventListener = jest.fn((event: string, callback: any) => {
-            map[event] = callback;
-        });
-
         const rendered: any = mount(<Slider managedClasses={managedClasses} />, {
             attachTo: container,
         });
-
-        const event: KeyboardEvent = new KeyboardEvent("keyup", { bubbles: true });
 
         const thumb: any = rendered.find(`.${managedClasses.slider_thumb_upper}`);
         expect(rendered.state("isIncrementing")).toBe(false);
@@ -403,10 +401,72 @@ describe("Slider", (): void => {
         expect(rendered.state("isIncrementing")).toBe(false);
 
         document.body.removeChild(container);
+    });
 
-        // tslint:disable-next-line:no-shadowed-variable
-        window.removeEventListener = jest.fn((event: string, callback: any) => {
-            map[event] = callback;
+    test("page up/down key presses don't have an effect when no page step is set", (): void => {
+        const container: HTMLDivElement = document.createElement("div");
+        document.body.appendChild(container);
+
+        const rendered: any = mount(<Slider managedClasses={managedClasses} />, {
+            attachTo: container,
         });
+
+        const thumb: any = rendered.find(`.${managedClasses.slider_thumb_upper}`);
+        expect(rendered.state("isIncrementing")).toBe(false);
+        expect(rendered.state("usePageStep")).toBe(false);
+        thumb.simulate("keydown", { keyCode: KeyCodes.pageDown });
+        expect(rendered.state("isIncrementing")).toBe(false);
+        expect(rendered.state("usePageStep")).toBe(false);
+        map.keyup({ keyCode: KeyCodes.pageDown });
+        expect(rendered.state("isIncrementing")).toBe(false);
+        expect(rendered.state("usePageStep")).toBe(false);
+
+        thumb.simulate("keydown", { keyCode: KeyCodes.pageUp });
+        expect(rendered.state("isIncrementing")).toBe(false);
+        expect(rendered.state("usePageStep")).toBe(false);
+        map.keyup({ keyCode: KeyCodes.pageUp });
+        expect(rendered.state("isIncrementing")).toBe(false);
+        expect(rendered.state("usePageStep")).toBe(false);
+
+        document.body.removeChild(container);
+    });
+
+    test("page up/down key presses start incrementing when page step is set", (): void => {
+        const container: HTMLDivElement = document.createElement("div");
+        document.body.appendChild(container);
+
+        const rendered: any = mount(
+            <Slider pageStep={10} managedClasses={managedClasses} />,
+            {
+                attachTo: container,
+            }
+        );
+
+        const thumb: any = rendered.find(`.${managedClasses.slider_thumb_upper}`);
+        expect(rendered.state("isIncrementing")).toBe(false);
+        expect(rendered.state("usePageStep")).toBe(false);
+
+        thumb.simulate("keydown", { keyCode: KeyCodes.pageDown });
+        expect(rendered.state("isIncrementing")).toBe(true);
+        expect(rendered.state("usePageStep")).toBe(true);
+        expect(rendered.state("incrementDirection")).toBe(-1);
+        map.keyup({ keyCode: KeyCodes.pageDown });
+        expect(rendered.state("isIncrementing")).toBe(false);
+        expect(rendered.state("usePageStep")).toBe(false);
+
+        thumb.simulate("keydown", { keyCode: KeyCodes.pageUp });
+        expect(rendered.state("isIncrementing")).toBe(true);
+        expect(rendered.state("usePageStep")).toBe(true);
+        expect(rendered.state("incrementDirection")).toBe(1);
+        map.keyup({ keyCode: KeyCodes.pageUp });
+        expect(rendered.state("isIncrementing")).toBe(false);
+        expect(rendered.state("usePageStep")).toBe(false);
+
+        document.body.removeChild(container);
+    });
+
+    // tslint:disable-next-line:no-shadowed-variable
+    window.removeEventListener = jest.fn((event: string, callback: any) => {
+        map[event] = callback;
     });
 });

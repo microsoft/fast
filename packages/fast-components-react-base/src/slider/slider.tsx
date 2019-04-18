@@ -32,6 +32,7 @@ export interface SliderState {
     activeThumb: SliderThumb;
     isIncrementing: boolean;
     incrementDirection: number;
+    usePageStep: boolean;
 }
 
 class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, SliderState> {
@@ -82,7 +83,6 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
     private barMinPixel: number = 0;
     private incrementTimer: NodeJS.Timer;
     private lastIncrementDelay: number = Slider.baseIncrementDelay;
-    private usePageStep: boolean = false;
     private direction: string = "ltr";
 
     /**
@@ -147,6 +147,7 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
             isDragging: false,
             isIncrementing: false,
             incrementDirection: 1,
+            usePageStep: false,
         };
     }
 
@@ -620,10 +621,10 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
         }
 
         this.updateSliderDimensions();
-        this.usePageStep = usePageStep;
 
         window.addEventListener("keyup", this.handleWindowKeyUp);
         this.setState({
+            usePageStep,
             activeThumb: thumb,
             isIncrementing: true,
             incrementDirection,
@@ -640,7 +641,7 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
      * of the component
      */
     private incrementValue = (): void => {
-        const step: number = this.usePageStep
+        const step: number = this.state.usePageStep
             ? this.props.pageStep
             : this.props.step !== 0
                 ? this.props.step
@@ -683,6 +684,7 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
         }
         window.removeEventListener("keyup", this.handleWindowKeyUp);
         this.setState({
+            usePageStep: false,
             isIncrementing: false,
         });
         clearTimeout(this.incrementTimer);
