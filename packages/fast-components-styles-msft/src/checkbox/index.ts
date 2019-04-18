@@ -35,7 +35,7 @@ const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = (
     const direction: Direction = designSystem.direction;
     const size: number = heightNumber()(designSystem) / 2 + designSystem.designUnit;
 
-    const indicatorMarginOffset: number = densityCategorySwitch(0, 2, 1)(designSystem);
+    const indicatorMarginOffset: number = densityCategorySwitch(0, 1, 2)(designSystem);
     const indeterminateIndicatorMargin: string = toPx(
         designSystem.designUnit + indicatorMarginOffset
     );

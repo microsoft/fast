@@ -41,7 +41,7 @@ const styles: ComponentStyles<RadioClassNameContract, DesignSystem> = (
     const direction: Direction = designSystem.direction;
     const size: string = toPx(heightNumber()(designSystem) / 2 + designSystem.designUnit);
 
-    const indicatorMarginOffset: number = densityCategorySwitch(0, 2, 1)(designSystem);
+    const indicatorMarginOffset: number = densityCategorySwitch(0, 1, 2)(designSystem);
     const indicatorMargin: string = toPx(designSystem.designUnit + indicatorMarginOffset);
 
     return {

@@ -1,14 +1,11 @@
-import {
-    checkDesignSystemResolver,
-    DesignSystem,
-    DesignSystemResolver,
-    getDesignSystemValue,
-} from "../design-system";
+import { DesignSystem, DesignSystemResolver } from "../design-system";
 import { toPx } from "@microsoft/fast-jss-utilities";
 import {
     baseHeightMultiplier,
     baseHorizontalSpacingMultiplier,
+    checkDesignSystemResolver,
     designUnit,
+    getDesignSystemValue,
 } from "../utilities/design-system";
 import { debug } from "util";
 
@@ -68,13 +65,13 @@ export function getDensityCategory(designSystem: DesignSystem): DensityCategory 
  * Used to adjust things like type size and sizing that is based on the category rather than individual density.
  *
  * @param compactValue The adjustment when the category is "compact"
- * @param spaciousValue The adjustment when the category is "spacious"
  * @param normalValue The adjustment when the category is "normal"
+ * @param spaciousValue The adjustment when the category is "spacious"
  */
 export function densityCategorySwitch<T = number>(
     compactValue: T | DesignSystemResolver<T>,
-    spaciousValue: T | DesignSystemResolver<T>,
-    normalValue: T | DesignSystemResolver<T>
+    normalValue: T | DesignSystemResolver<T>,
+    spaciousValue: T | DesignSystemResolver<T>
 ): DesignSystemResolver<T> {
     return (designSystem: DesignSystem): T => {
         const category: DensityCategory = getDensityCategory(designSystem);
@@ -116,7 +113,7 @@ export function horizontalSpacingNumber(
     adjustment: number = 0
 ): DesignSystemResolver<number> {
     return (designSystem: DesignSystem): number => {
-        const densityOffset: number = densityCategorySwitch(-1, 1, 0)(designSystem);
+        const densityOffset: number = densityCategorySwitch(-1, 0, 1)(designSystem);
         const value: number =
             (baseHorizontalSpacingMultiplier(designSystem) + densityOffset) *
                 designUnit(designSystem) -
@@ -157,8 +154,8 @@ export function glyphSizeNumber(designSystem: DesignSystem): number {
     const halfDesignUnit: number = designUnit(designSystem) / 2;
     const sizeOffset: number = densityCategorySwitch(
         halfDesignUnit * -1,
-        halfDesignUnit,
-        0
+        0,
+        halfDesignUnit
     )(designSystem);
     const value: number =
         (baseHeightMultiplier(designSystem) / 2) * designUnit(designSystem) + sizeOffset;

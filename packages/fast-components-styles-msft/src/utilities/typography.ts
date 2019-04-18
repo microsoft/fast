@@ -86,7 +86,7 @@ function scaleTypeRampId(key: keyof TypeRamp): DesignSystemResolver<keyof TypeRa
     return ensureDesignSystemDefaults(
         (designSystem: DesignSystem): keyof TypeRamp => {
             const typeConfigNumber: number = parseInt(key.replace("t", ""), 10);
-            const densityOffset: number = densityCategorySwitch(-1, 1, 0)(designSystem);
+            const densityOffset: number = densityCategorySwitch(-1, 0, 1)(designSystem);
             const size: number = clamp(typeConfigNumber - densityOffset, 1, 9);
             return sanitizeTypeRampId("t".concat(size.toString()) as keyof TypeRamp);
         }

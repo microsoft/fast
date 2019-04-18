@@ -209,22 +209,12 @@ export const withDesignSystemDefaults: (config: Partial<DesignSystem>) => Design
 
 /**
  * Safely retrieves a single property from a design system
- * @deprecated Use getDesignSystemValue instead.
+ * @deprecated Use getDesignSystemValue instead (utilities).
  */
 export function getDesignSystemProperty(key: string): DesignSystemResolver<string> {
     return function(config: DesignSystem): string {
         return withDesignSystemDefaults(config)[key];
     };
-}
-
-/**
- * Safely retrieves the value from a key of the designSystem.
- */
-export function getDesignSystemValue<T extends DesignSystem, K extends keyof T>(
-    key: K
-): (designSystem?: T) => T[K] {
-    return (designSystem?: T): T[K] =>
-        (designSystem && designSystem[key]) || (designSystemDefaults as T)[key];
 }
 
 /**
@@ -236,21 +226,6 @@ export function ensureDesignSystemDefaults<T>(
     return (designSystem: DesignSystem): T => {
         return callback(withDesignSystemDefaults(designSystem));
     };
-}
-
-/**
- * Returns the argument if basic, othwerwise calls the DesignSystemResolver function.
- *
- * @param arg A value or a DesignSystemResolver function
- * @param designSystem The design system config.
- */
-export function checkDesignSystemResolver<T>(
-    arg: T | DesignSystemResolver<T>,
-    designSystem: DesignSystem
-): T {
-    const value: T =
-        typeof arg === "function" ? (arg as DesignSystemResolver<T>)(designSystem) : arg;
-    return value;
 }
 
 /**
