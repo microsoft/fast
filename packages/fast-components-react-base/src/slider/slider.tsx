@@ -1048,7 +1048,10 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
             return value;
         }
 
-        return Math.floor(value / step) * step;
+        return (
+            Math.floor(((value - this.props.range.minValue) / step) * step) +
+            this.props.range.minValue
+        );
     };
 
     /**
