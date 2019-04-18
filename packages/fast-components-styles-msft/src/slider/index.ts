@@ -1,21 +1,13 @@
 import { DesignSystem, withDesignSystemDefaults } from "../design-system";
 import { ComponentStyles, ComponentStyleSheet } from "@microsoft/fast-jss-manager";
-import { toPx } from "@microsoft/fast-jss-utilities";
-import {
-    ButtonClassNameContract,
-    SliderClassNameContract,
-} from "@microsoft/fast-components-class-name-contracts-msft";
+import { SliderClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import { elevation, ElevationMultiplier } from "../utilities/elevation";
 import {
-    neutralFillStealthRest,
+    neutralForegroundHint,
     neutralForegroundHover,
     neutralForegroundRest,
     neutralOutlineRest,
-    neutralForegroundHint,
-    neutralOutlineHover,
 } from "../utilities/color";
-import { applyFloatingCornerRadius } from "../utilities/border";
-import { transform } from "@babel/core";
 
 const styles: ComponentStyles<SliderClassNameContract, DesignSystem> = (
     config: DesignSystem
@@ -27,15 +19,6 @@ const styles: ComponentStyles<SliderClassNameContract, DesignSystem> = (
             height: "100%",
             width: "100%",
             display: "inline-grid",
-            "&:hover": {
-                "& $slider_barBack": {
-                    background: neutralOutlineHover,
-                },
-
-                "& $slider_barFront": {
-                    background: neutralForegroundHover,
-                },
-            },
         },
 
         slider_layoutPanel: {
@@ -43,8 +26,8 @@ const styles: ComponentStyles<SliderClassNameContract, DesignSystem> = (
         },
 
         slider_thumb: {
-            height: "16px",
-            width: "16px",
+            height: "20px",
+            width: "20px",
             border: "none",
             background: neutralForegroundRest,
             borderRadius: "50%",
@@ -53,6 +36,7 @@ const styles: ComponentStyles<SliderClassNameContract, DesignSystem> = (
 
             "&:hover": {
                 cursor: "pointer",
+                background: neutralForegroundHover,
             },
         },
 
@@ -79,13 +63,13 @@ const styles: ComponentStyles<SliderClassNameContract, DesignSystem> = (
 
         slider__orientationHorizontal: {
             "&$slider": {
-                minHeight: "32px",
+                minHeight: "36px",
                 minWidth: "128px",
             },
 
             "& $slider_layoutPanel": {
                 margin: "0 10px 0 10px",
-                gridTemplateRows: "16px 1fr",
+                gridTemplateRows: "20px 1fr",
             },
 
             "& $slider_thumb": {
@@ -93,22 +77,22 @@ const styles: ComponentStyles<SliderClassNameContract, DesignSystem> = (
             },
 
             "& $slider_thumb_upper": {
-                transform: "translateX(8px)",
+                transform: "translateX(10px)",
             },
 
             "& $slider_thumb_lower": {
-                transform: "translateX(-8px)",
+                transform: "translateX(-10px)",
             },
 
             "& $slider_barTrack": {
-                marginTop: "6px",
+                marginTop: "8px",
                 alignSelf: "start",
                 height: "4px",
                 width: "100%",
             },
 
             "& $slider_barBack": {
-                marginTop: "6px",
+                marginTop: "8px",
                 alignSelf: "start",
                 height: "4px",
                 left: "-2px",
@@ -116,7 +100,7 @@ const styles: ComponentStyles<SliderClassNameContract, DesignSystem> = (
             },
 
             "& $slider_barFront": {
-                marginTop: "6px",
+                marginTop: "8px",
                 alignSelf: "start",
                 height: "4px",
             },
@@ -137,7 +121,7 @@ const styles: ComponentStyles<SliderClassNameContract, DesignSystem> = (
         slider__orientationVertical: {
             "&$slider": {
                 minHeight: "128px",
-                minWidth: "32px",
+                minWidth: "36px",
             },
 
             "& $slider_thumb": {
@@ -145,28 +129,28 @@ const styles: ComponentStyles<SliderClassNameContract, DesignSystem> = (
             },
 
             "& $slider_layoutPanel": {
-                margin: "8px 0 8px 0",
-                gridTemplateColumns: "16px 1fr",
+                margin: "10px 0 10px 0",
+                gridTemplateColumns: "20px 1fr",
             },
 
             "& $slider_thumb_upper": {
-                transform: "translateY(-8px)",
+                transform: "translateY(-10px)",
             },
 
             "& $slider_thumb_lower": {
-                transform: "translateY(8px)",
+                transform: "translateY(10px)",
             },
 
             "& $slider_barTrack": {
                 justifySelf: "start",
-                marginLeft: "6px",
+                marginLeft: "8px",
                 width: "4px",
                 height: "100%",
             },
 
             "& $slider_barBack": {
                 justifySelf: "start",
-                marginLeft: "6px",
+                marginLeft: "8px",
                 width: "4px",
                 top: "-2px",
                 bottom: "-2px",
@@ -174,7 +158,7 @@ const styles: ComponentStyles<SliderClassNameContract, DesignSystem> = (
 
             "& $slider_barFront": {
                 justifySelf: "start",
-                marginLeft: "6px",
+                marginLeft: "8px",
                 width: "4px",
             },
 
@@ -194,11 +178,11 @@ const styles: ComponentStyles<SliderClassNameContract, DesignSystem> = (
         slider__rtl: {
             "&$slider__orientationHorizontal": {
                 "& $slider_thumb_upper": {
-                    transform: "translateX(-8px)",
+                    transform: "translateX(-10px)",
                 },
 
                 "& $slider_thumb_lower": {
-                    transform: "translateX(8px)",
+                    transform: "translateX(10px)",
                 },
 
                 "&$slider__modeAdjustLower": {
@@ -218,12 +202,12 @@ const styles: ComponentStyles<SliderClassNameContract, DesignSystem> = (
 
             "&$slider__orientationVertical": {
                 "& $slider_barBack": {
-                    marginRight: "6px",
+                    marginRight: "8px",
                     marginLeft: "0",
                 },
 
                 "& $slider_barFront": {
-                    marginRight: "6px",
+                    marginRight: "8px",
                     marginLeft: "0",
                 },
             },
@@ -238,18 +222,18 @@ const styles: ComponentStyles<SliderClassNameContract, DesignSystem> = (
         slider__modeAdjustBoth: {
             "&$slider__orientationHorizontal": {
                 "& $slider_thumb_upper": {
-                    width: "8px",
-                    borderTopRightRadius: "8px",
-                    borderBottomRightRadius: "8px",
+                    width: "10px",
+                    borderTopRightRadius: "10px",
+                    borderBottomRightRadius: "10px",
                     borderTopLeftRadius: "0",
                     borderBottomLeftRadius: "0",
                 },
 
                 "& $slider_thumb_lower": {
-                    width: "8px",
+                    width: "10px",
                     borderTopRightRadius: "0",
                     borderBottomRightRadius: "0",
-                    borderTopLeftRadius: "8px",
+                    borderTopLeftRadius: "10px",
                     borderBottomLeftRadius: "8px",
                 },
 
@@ -257,13 +241,13 @@ const styles: ComponentStyles<SliderClassNameContract, DesignSystem> = (
                     "& $slider_thumb_upper": {
                         borderTopRightRadius: "0",
                         borderBottomRightRadius: "0",
-                        borderTopLeftRadius: "8px",
-                        borderBottomLeftRadius: "8px",
+                        borderTopLeftRadius: "10px",
+                        borderBottomLeftRadius: "10px",
                     },
 
                     "& $slider_thumb_lower": {
-                        borderTopRightRadius: "8px",
-                        borderBottomRightRadius: "8px",
+                        borderTopRightRadius: "10px",
+                        borderBottomRightRadius: "10px",
                         borderTopLeftRadius: "0",
                         borderBottomLeftRadius: "0",
                     },
@@ -272,19 +256,19 @@ const styles: ComponentStyles<SliderClassNameContract, DesignSystem> = (
 
             "&$slider__orientationVertical": {
                 "& $slider_thumb_upper": {
-                    height: "8px",
-                    borderTopRightRadius: "8px",
+                    height: "10px",
+                    borderTopRightRadius: "10px",
                     borderBottomRightRadius: "0",
-                    borderTopLeftRadius: "8px",
+                    borderTopLeftRadius: "10px",
                     borderBottomLeftRadius: "0",
                 },
 
                 "& $slider_thumb_lower": {
-                    height: "8px",
+                    height: "10px",
                     borderTopRightRadius: "0",
-                    borderBottomRightRadius: "8px",
+                    borderBottomRightRadius: "10px",
                     borderTopLeftRadius: "0",
-                    borderBottomLeftRadius: "8px",
+                    borderBottomLeftRadius: "10px",
                 },
             },
 

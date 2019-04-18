@@ -228,6 +228,61 @@ describe("Slider", (): void => {
         expect(input.prop("value")).toEqual("[24,42]");
     });
 
+    test("initial value respects step", (): void => {
+        const rendered: any = mount(<Slider mode={SliderMode.singleValue} step={20} />);
+
+        expect(rendered.state("upperValue")).toBe(40);
+        expect(rendered.state("lowerValue")).toBe(40);
+    });
+
+    test("one thumb is rendered in singleValue mode", (): void => {
+        const rendered: any = mount(
+            <Slider managedClasses={managedClasses} mode={SliderMode.singleValue} />
+        );
+
+        const upperThumb: any = rendered.find(`.${managedClasses.slider_thumb_upper}`);
+        expect(upperThumb).toHaveLength(1);
+
+        const lowerThumb: any = rendered.find(`.${managedClasses.slider_thumb_lower}`);
+        expect(lowerThumb).toHaveLength(0);
+    });
+
+    test("only upper thumb is rendered in adjust upper value mode", (): void => {
+        const rendered: any = mount(
+            <Slider managedClasses={managedClasses} mode={SliderMode.adustUpperValue} />
+        );
+
+        const upperThumb: any = rendered.find(`.${managedClasses.slider_thumb_upper}`);
+        expect(upperThumb).toHaveLength(1);
+
+        const lowerThumb: any = rendered.find(`.${managedClasses.slider_thumb_lower}`);
+        expect(lowerThumb).toHaveLength(0);
+    });
+
+    test("only lower thumb is rendered in adjust lower value mode", (): void => {
+        const rendered: any = mount(
+            <Slider managedClasses={managedClasses} mode={SliderMode.adustLowerValue} />
+        );
+
+        const upperThumb: any = rendered.find(`.${managedClasses.slider_thumb_upper}`);
+        expect(upperThumb).toHaveLength(0);
+
+        const lowerThumb: any = rendered.find(`.${managedClasses.slider_thumb_lower}`);
+        expect(lowerThumb).toHaveLength(1);
+    });
+
+    test("two thumbs are rendered in adjustBoth mode", (): void => {
+        const rendered: any = mount(
+            <Slider managedClasses={managedClasses} mode={SliderMode.adjustBoth} />
+        );
+
+        const upperThumb: any = rendered.find(`.${managedClasses.slider_thumb_upper}`);
+        expect(upperThumb).toHaveLength(1);
+
+        const lowerThumb: any = rendered.find(`.${managedClasses.slider_thumb_lower}`);
+        expect(lowerThumb).toHaveLength(1);
+    });
+
     test("custom thumb render function is called", (): void => {
         const thumbRenderFn: any = jest.fn();
         thumbRenderFn.mockReturnValue("Test");
