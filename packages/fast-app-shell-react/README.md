@@ -6,8 +6,8 @@
 
 The package exports a single `AppShell` react component that can be used to register applications under a root domain:
 
-```ts
-const myAppConfig: AppShellApp = {
+```js
+const myAppConfig = {
     name: "My application",
     id: "my-application",
     icon: <svg /*...*/ />
@@ -15,7 +15,7 @@ const myAppConfig: AppShellApp = {
     render: <MyApplication />
 }
 
-function render(): JSX.Element {
+function render() {
     return <AppShell apps={[myAppConfig]} />
 }
 ```
@@ -24,10 +24,10 @@ function render(): JSX.Element {
 
 The color mode of the app can be set to either a *light-mode* or *dark-mode* by supplying a `colorMode` property to the `AppShell`:
 
-```ts
+```js
 import { AppShell, AppShellColorModes } from "@microsoft/fast-app-shell-react";
 
-function render(): JSX.Element {
+function render() {
     return <AppShell apps={[/* ... */]} colorMode={AppShellColorModes.light} />
 }
 
