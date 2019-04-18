@@ -1,6 +1,6 @@
 import React from "react";
 import Foundation from "@microsoft/fast-components-foundation-react";
-import { ComponentStyles } from "@microsoft/fast-jss-manager";
+import { ComponentStyles } from "@microsoft/fast-jss-manager-react";
 import manageJss, { ManagedClasses } from "@microsoft/fast-jss-manager-react";
 import {
     ComponentViewerMessage,

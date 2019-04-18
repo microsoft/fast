@@ -74,8 +74,6 @@
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-16": "^1.1.1",
     "jest": "^24.5.0",
-    "jss": "^9.8.0",
-    "jss-preset-default": "^4.3.0",
     "lodash-es": "^4.0.0",
     "prettier": "1.14.3",
     "react": "^16.6.0",
@@ -88,13 +86,13 @@
     "watch": "^1.0.2"
   },
   "peerDependencies": {
-    "jss": "^9.8.0",
-    "jss-preset-default": "^4.3.0",
     "lodash-es": "^4.0.0",
     "react": "^16.6.0"
   },
   "dependencies": {
     "@microsoft/fast-jss-manager": "^4.0.1",
-    "hoist-non-react-statics": "^3.1.0"
+    "hoist-non-react-statics": "^3.1.0",
+    "jss-preset-default": "^4.3.0",
+    "jss": "^9.8.0"
   }
 }
