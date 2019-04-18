@@ -51,6 +51,12 @@ export const arrays: ExampleComponent = {
     schema: ArraysSchema,
 };
 
+import OneOfArraysSchema from "../../../src/__tests__/schemas/one-of-deeply-nested.schema.json";
+
+export const oneOfArrays: ExampleComponent = {
+    schema: OneOfArraysSchema,
+};
+
 import ChildrenSchema from "../../../src/__tests__/schemas/children.schema.json";
 
 export const children: ExampleComponent = {

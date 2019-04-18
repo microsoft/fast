@@ -16,6 +16,7 @@ import oneOfSchema from "../../__tests__/schemas/one-of.schema.json";
 import anyOfSchema from "../../__tests__/schemas/any-of.schema.json";
 import childrenSchema from "../../__tests__/schemas/children.schema.json";
 import textFieldSchema from "../../__tests__/schemas/textarea.schema.json";
+import deeplyNestedOneOfSchema from "../../__tests__/schemas/one-of-deeply-nested.schema.json";
 import { reactChildrenStringSchema } from "../form/form-item.children.text";
 
 /**
@@ -606,6 +607,28 @@ describe("getNavigation", () => {
         expect(navigation[3].data).toEqual({
             number: 47,
         });
+    });
+    test("should return navigational items for deeply nested oneOfs", () => {
+        const navigation: NavigationItem[] = getNavigation(
+            "propertyKey.propertyKey1.propertyKey2",
+            {
+                propertyKey: {
+                    propertyKey1: {
+                        propertyKey2: {},
+                    },
+                },
+            },
+            deeplyNestedOneOfSchema,
+            []
+        );
+
+        expect(navigation).toHaveLength(4);
+        expect(navigation[0].dataLocation).toEqual("");
+        expect(navigation[1].dataLocation).toEqual("propertyKey");
+        expect(navigation[2].dataLocation).toEqual("propertyKey.propertyKey1");
+        expect(navigation[3].dataLocation).toEqual(
+            "propertyKey.propertyKey1.propertyKey2"
+        );
     });
 });
 
