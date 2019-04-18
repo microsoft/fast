@@ -31,6 +31,7 @@ export interface SliderState {
     dragValue: number;
     activeThumb: SliderThumb;
     isIncrementing: boolean;
+    incrementDirection: number;
 }
 
 class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, SliderState> {
@@ -77,9 +78,8 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
         HTMLDivElement
     >();
 
-    private rangeInPixels: number = -1;
-    private barMinPixel: number = -1;
-    private incrementDirection: number = 1;
+    private rangeInPixels: number = 1;
+    private barMinPixel: number = 0;
     private incrementTimer: NodeJS.Timer;
     private lastIncrementDelay: number = Slider.baseIncrementDelay;
     private usePageStep: boolean = false;
@@ -146,6 +146,7 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
             activeThumb: null,
             isDragging: false,
             isIncrementing: false,
+            incrementDirection: 1,
         };
     }
 
@@ -207,12 +208,8 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
                     value={{
                         sliderOrientation: this.props.orientation,
                         sliderMode: this.props.mode,
-                        sliderUpperValue: this.state.upperValue,
-                        sliderLowerValue: this.state.lowerValue,
+                        sliderState: this.state,
                         sliderConstrainedRange: this.props.constrainedRange,
-                        sliderActiveThumb: this.state.activeThumb,
-                        sliderIsDragging: this.state.isDragging,
-                        sliderIsIncrementing: this.state.isIncrementing,
                         sliderValueAsPercent: this.valueAsPercent,
                         sliderDirection: this.direction,
                     }}
@@ -597,6 +594,10 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
             this.props.orientation === SliderOrientation.vertical
                 ? this.sliderTrackElement.current.clientHeight
                 : this.sliderTrackElement.current.clientWidth;
+        if (this.rangeInPixels === 0) {
+            this.rangeInPixels = 1;
+        }
+
         this.barMinPixel =
             this.props.orientation === SliderOrientation.vertical
                 ? this.sliderTrackElement.current.getBoundingClientRect().bottom
@@ -612,19 +613,20 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
         thumb: SliderThumb,
         event: React.KeyboardEvent<HTMLDivElement>
     ): void => {
+        event.preventDefault();
+
         if (this.state.isIncrementing) {
             return;
         }
 
-        event.preventDefault();
-
+        this.updateSliderDimensions();
         this.usePageStep = usePageStep;
-        this.incrementDirection = incrementDirection;
 
         window.addEventListener("keyup", this.handleWindowKeyUp);
         this.setState({
             activeThumb: thumb,
             isIncrementing: true,
+            incrementDirection,
         });
         this.lastIncrementDelay = Slider.baseIncrementDelay;
         this.incrementTimer = setTimeout((): void => {
@@ -634,17 +636,24 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
 
     /**
      * Increments the value by one step (or pageStep)
+     * when step is set to 0 we increment based on the current pixel width
+     * of the component
      */
     private incrementValue = (): void => {
-        const step: number = this.usePageStep ? this.props.pageStep : this.props.step;
+        const step: number = this.usePageStep
+            ? this.props.pageStep
+            : this.props.step !== 0
+                ? this.props.step
+                : (this.props.range.maxValue - this.props.range.minValue) /
+                  this.rangeInPixels;
         if (this.state.activeThumb === SliderThumb.upperThumb) {
             this.updateValues(
                 null,
-                this.state.upperValue + step * this.incrementDirection
+                this.state.upperValue + step * this.state.incrementDirection
             );
         } else {
             this.updateValues(
-                this.state.lowerValue + step * this.incrementDirection,
+                this.state.lowerValue + step * this.state.incrementDirection,
                 null
             );
         }
@@ -738,7 +747,7 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
 
         switch (event.keyCode) {
             case KeyCodes.arrowDown:
-                this.startIncrementing(1, false, thumb, event);
+                this.startIncrementing(-1, false, thumb, event);
                 break;
             case KeyCodes.arrowRight:
                 this.startIncrementing(
@@ -749,7 +758,7 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
                 );
                 break;
             case KeyCodes.arrowUp:
-                this.startIncrementing(-1, false, thumb, event);
+                this.startIncrementing(1, false, thumb, event);
                 break;
             case KeyCodes.arrowLeft:
                 this.startIncrementing(
@@ -761,12 +770,12 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
                 break;
             case KeyCodes.pageDown:
                 if (this.props.pageStep !== undefined) {
-                    this.startIncrementing(1, true, thumb, event);
+                    this.startIncrementing(-1, true, thumb, event);
                 }
                 break;
             case KeyCodes.pageUp:
                 if (this.props.pageStep !== undefined) {
-                    this.startIncrementing(-1, true, thumb, event);
+                    this.startIncrementing(1, true, thumb, event);
                 }
                 break;
         }

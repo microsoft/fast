@@ -16,6 +16,7 @@ import {
 } from "../slider";
 import { DisplayNamePrefix } from "../utilities";
 import { number } from "prop-types";
+import { SliderState } from "../slider/slider";
 
 /*
  * Configure Enzyme
@@ -23,6 +24,16 @@ import { number } from "prop-types";
 configure({ adapter: new Adapter() });
 
 describe("slider track item", (): void => {
+    const defaultSliderState: SliderState = {
+        dragValue: -1,
+        upperValue: 100,
+        lowerValue: 0,
+        activeThumb: null,
+        isDragging: false,
+        isIncrementing: false,
+        incrementDirection: 1,
+    };
+
     test("should have a displayName that matches the component name", () => {
         expect(`${DisplayNamePrefix}${(SliderTrackItem as any).name}`).toBe(
             SliderTrackItem.displayName
@@ -55,12 +66,8 @@ describe("slider track item", (): void => {
                 value={{
                     sliderOrientation: SliderOrientation.horizontal,
                     sliderMode: SliderMode.singleValue,
-                    sliderUpperValue: 100,
-                    sliderLowerValue: 0,
+                    sliderState: defaultSliderState,
                     sliderConstrainedRange: undefined,
-                    sliderActiveThumb: SliderThumb.upperThumb,
-                    sliderIsDragging: false,
-                    sliderIsIncrementing: false,
                     sliderValueAsPercent: getValueAsPercent,
                     sliderDirection: "ltr",
                 }}
@@ -89,12 +96,8 @@ describe("slider track item", (): void => {
                 value={{
                     sliderOrientation: SliderOrientation.horizontal,
                     sliderMode: SliderMode.singleValue,
-                    sliderUpperValue: 100,
-                    sliderLowerValue: 0,
+                    sliderState: defaultSliderState,
                     sliderConstrainedRange: undefined,
-                    sliderActiveThumb: SliderThumb.upperThumb,
-                    sliderIsDragging: false,
-                    sliderIsIncrementing: false,
                     sliderValueAsPercent: getValueAsPercent,
                     sliderDirection: "ltr",
                 }}
@@ -122,12 +125,8 @@ describe("slider track item", (): void => {
                 value={{
                     sliderOrientation: SliderOrientation.horizontal,
                     sliderMode: SliderMode.singleValue,
-                    sliderUpperValue: 100,
-                    sliderLowerValue: 0,
+                    sliderState: defaultSliderState,
                     sliderConstrainedRange: undefined,
-                    sliderActiveThumb: SliderThumb.upperThumb,
-                    sliderIsDragging: false,
-                    sliderIsIncrementing: false,
                     sliderValueAsPercent: getValueAsPercent,
                     sliderDirection: "ltr",
                 }}

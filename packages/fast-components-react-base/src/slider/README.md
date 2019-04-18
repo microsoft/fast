@@ -25,7 +25,7 @@ The constrained range prop allows authors to limit values to a subsection of the
 
 The "initialValue" prop allows authors to specify the initial selected range of the *slider*.  It defaults to a (step constrained) value at the midpoint on the *slider*'s total range for all modes except "adjustBoth" in which case the selected range starts at 40% to 60% of the total range.
 
-The "step" prop limits the values of the *slider* to incrments of the *step* value added to the minimum value of the *slider*'s total range.  The default value is 1. The minimum and maximum values of a *slider*'s range are always valid results regardless of the "step" prop.
+The "step" prop limits the values of the *slider* to incrments of the *step* value added to the minimum value of the *slider*'s total range.  The default value is 1. The minimum and maximum values of a *slider*'s range are always valid results regardless of the "step" prop. The "step" prop is used as the value for incrementing the thumb by pressing the arrow keys, if the step value is 0 the value used for incrementing is determined by dividing the total range by the pixel width of the slider.
 
 The "pageStep" prop specifies the amount the slider increments when the page up/down keys are pressed.  It is undefined by default.  The increment set for "pageStep" has no effect on constraining values, the slider will stil land on increments of the "step" prop regardless of what "pageStep" is set to.
 

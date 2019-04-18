@@ -111,7 +111,9 @@ class SliderTrackItem extends Foundation<
     ): number => {
         if (
             anchor === undefined ||
-            typeof (this.context as SliderContextType).sliderValueAsPercent !== "function"
+            typeof (this.context as SliderContextType).sliderValueAsPercent !==
+                "function" ||
+            (this.context as SliderContextType).sliderState === null
         ) {
             return undefined;
         }
@@ -123,12 +125,12 @@ class SliderTrackItem extends Foundation<
         switch (anchor) {
             case SliderTrackItemAnchor.selectedRangeMax:
                 return (this.context as SliderContextType).sliderValueAsPercent(
-                    (this.context as SliderContextType).sliderUpperValue
+                    (this.context as SliderContextType).sliderState.upperValue
                 );
 
             case SliderTrackItemAnchor.selectedRangeMin:
                 return (this.context as SliderContextType).sliderValueAsPercent(
-                    (this.context as SliderContextType).sliderLowerValue
+                    (this.context as SliderContextType).sliderState.lowerValue
                 );
 
             case SliderTrackItemAnchor.totalRangeMax:

@@ -1,7 +1,11 @@
 import React from "react";
 import Adapter from "enzyme-adapter-react-16";
 import { configure, mount, render, shallow } from "enzyme";
-import Slider, { SliderClassNameContract, SliderUnhandledProps } from "./slider";
+import Slider, {
+    SliderClassNameContract,
+    SliderThumb,
+    SliderUnhandledProps,
+} from "./slider";
 import { KeyCodes } from "@microsoft/fast-web-utilities";
 import { DisplayNamePrefix } from "../utilities";
 import { SliderMode, SliderOrientation } from "./slider.props";
@@ -320,21 +324,26 @@ describe("Slider", (): void => {
         expect(rendered.state("isIncrementing")).toBe(false);
         thumb.simulate("keydown", { keyCode: KeyCodes.arrowDown });
         expect(rendered.state("isIncrementing")).toBe(true);
+        expect(rendered.state("incrementDirection")).toBe(-1);
+        expect(rendered.state("activeThumb")).toBe(SliderThumb.upperThumb);
         map.keyup({ keyCode: KeyCodes.arrowDown });
         expect(rendered.state("isIncrementing")).toBe(false);
 
         thumb.simulate("keydown", { keyCode: KeyCodes.arrowRight });
         expect(rendered.state("isIncrementing")).toBe(true);
+        expect(rendered.state("incrementDirection")).toBe(1);
         map.keyup({ keyCode: KeyCodes.arrowRight });
         expect(rendered.state("isIncrementing")).toBe(false);
 
         thumb.simulate("keydown", { keyCode: KeyCodes.arrowUp });
         expect(rendered.state("isIncrementing")).toBe(true);
+        expect(rendered.state("incrementDirection")).toBe(1);
         map.keyup({ keyCode: KeyCodes.arrowUp });
         expect(rendered.state("isIncrementing")).toBe(false);
 
         thumb.simulate("keydown", { keyCode: KeyCodes.arrowLeft });
         expect(rendered.state("isIncrementing")).toBe(true);
+        expect(rendered.state("incrementDirection")).toBe(-1);
         map.keyup({ keyCode: KeyCodes.arrowLeft });
         expect(rendered.state("isIncrementing")).toBe(false);
 

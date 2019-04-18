@@ -1,16 +1,12 @@
 import React from "react";
 import { SliderMode, SliderOrientation, SliderRange } from "./slider.props";
-import { SliderThumb } from "./slider";
+import { SliderState, SliderThumb } from "./slider";
 
 export interface SliderContextType {
     sliderOrientation: SliderOrientation;
     sliderConstrainedRange: SliderRange;
     sliderMode: SliderMode;
-    sliderUpperValue: number;
-    sliderLowerValue: number;
-    sliderIsDragging: boolean;
-    sliderActiveThumb: SliderThumb;
-    sliderIsIncrementing: boolean;
+    sliderState: SliderState;
     sliderValueAsPercent: (value: number) => number;
     sliderDirection: string;
 }
@@ -19,11 +15,7 @@ export const SliderContext: React.Context<SliderContextType> = React.createConte
     sliderOrientation: SliderOrientation.horizontal,
     sliderMode: SliderMode.adustUpperValue,
     sliderConstrainedRange: null,
-    sliderUpperValue: 0,
-    sliderLowerValue: 0,
-    sliderIsDragging: false,
-    sliderActiveThumb: null,
-    sliderIsIncrementing: false,
+    sliderState: null,
     sliderValueAsPercent: null,
     sliderDirection: "ltr",
 });
