@@ -1,8 +1,12 @@
-import { DesignSystem, withDesignSystemDefaults } from "../design-system";
+import { toPx } from "@microsoft/fast-jss-utilities";
+import defaultDesignSystem, {
+    DesignSystem,
+    withDesignSystemDefaults,
+} from "../design-system";
 import {
     DensityCategory,
+    densityCategorySwitch,
     getDensityCategory,
-    getOffsetForDensityCategory,
     glyphSize,
     height,
     horizontalSpacing,
@@ -24,38 +28,142 @@ describe("density", (): void => {
     });
 
     test("should operate on design system defaults", (): void => {
-        expect(height()({} as DesignSystem)).toBe("32px");
-        expect(height(2)({} as DesignSystem)).toBe("64px");
-        expect(height(2, "em")({} as DesignSystem)).toBe("64em");
+        expect(height()({} as DesignSystem)).toBe(
+            toPx(
+                (defaultDesignSystem.baseHeightMultiplier + defaultDesignSystem.density) *
+                    defaultDesignSystem.designUnit *
+                    1
+            )
+        );
+        expect(height(2)({} as DesignSystem)).toBe(
+            toPx(
+                (defaultDesignSystem.baseHeightMultiplier + defaultDesignSystem.density) *
+                    defaultDesignSystem.designUnit *
+                    2
+            )
+        );
+        expect(height(2, "em")({} as DesignSystem)).toBe(
+            `${(defaultDesignSystem.baseHeightMultiplier + defaultDesignSystem.density) *
+                defaultDesignSystem.designUnit *
+                2}em`
+        );
         expect(getDensityCategory({} as DesignSystem)).toBe(DensityCategory.normal);
-        expect(getOffsetForDensityCategory(-1, 1)({} as DesignSystem)).toBe(0);
-        expect(getOffsetForDensityCategory(3, 2, 1)({} as DesignSystem)).toBe(1);
-        expect(horizontalSpacing()({} as DesignSystem)).toBe("12px");
-        expect(horizontalSpacing(2)({} as DesignSystem)).toBe("10px");
-        expect(horizontalSpacing(2, "em")({} as DesignSystem)).toBe("10em");
-        expect(glyphSize({} as DesignSystem)).toBe("16px");
-        expect(glyphSize("em")({} as DesignSystem)).toBe("16em");
+        expect(densityCategorySwitch(-1, 1, 0)({} as DesignSystem)).toBe(0);
+        expect(densityCategorySwitch(3, 2, 1)({} as DesignSystem)).toBe(1);
+        expect(horizontalSpacing()({} as DesignSystem)).toBe(
+            toPx(
+                (defaultDesignSystem.baseHorizontalSpacingMultiplier + 0) *
+                    defaultDesignSystem.designUnit -
+                    0
+            )
+        );
+        expect(horizontalSpacing(2)({} as DesignSystem)).toBe(
+            toPx(
+                (defaultDesignSystem.baseHorizontalSpacingMultiplier + 0) *
+                    defaultDesignSystem.designUnit -
+                    2
+            )
+        );
+        expect(horizontalSpacing(2, "em")({} as DesignSystem)).toBe(
+            `${(defaultDesignSystem.baseHorizontalSpacingMultiplier + 0) *
+                defaultDesignSystem.designUnit -
+                2}em`
+        );
+        expect(glyphSize({} as DesignSystem)).toBe(
+            toPx(
+                (defaultDesignSystem.baseHeightMultiplier / 2) *
+                    defaultDesignSystem.designUnit +
+                    0
+            )
+        );
+        expect(glyphSize("em")({} as DesignSystem)).toBe(
+            `${(defaultDesignSystem.baseHeightMultiplier / 2) *
+                defaultDesignSystem.designUnit +
+                0}em`
+        );
     });
 
     test("should operate on spacious design system", (): void => {
-        expect(height()(spaciousDesignSystem)).toBe("55px");
-        expect(height(2)(spaciousDesignSystem)).toBe("110px");
+        expect(height()(spaciousDesignSystem)).toBe(
+            toPx(
+                (spaciousDesignSystem.baseHeightMultiplier +
+                    spaciousDesignSystem.density) *
+                    spaciousDesignSystem.designUnit *
+                    1
+            )
+        );
+        expect(height(2)(spaciousDesignSystem)).toBe(
+            toPx(
+                (spaciousDesignSystem.baseHeightMultiplier +
+                    spaciousDesignSystem.density) *
+                    spaciousDesignSystem.designUnit *
+                    2
+            )
+        );
         expect(getDensityCategory(spaciousDesignSystem)).toBe(DensityCategory.spacious);
-        expect(getOffsetForDensityCategory(-1, 1)(spaciousDesignSystem)).toBe(1);
-        expect(getOffsetForDensityCategory(3, 2, 1)(spaciousDesignSystem)).toBe(2);
-        expect(horizontalSpacing()(spaciousDesignSystem)).toBe("25px");
-        expect(horizontalSpacing(2)(spaciousDesignSystem)).toBe("23px");
-        expect(glyphSize(spaciousDesignSystem)).toBe("25px");
+        expect(densityCategorySwitch(-1, 1, 0)(spaciousDesignSystem)).toBe(1);
+        expect(densityCategorySwitch(3, 2, 1)(spaciousDesignSystem)).toBe(2);
+        expect(horizontalSpacing()(spaciousDesignSystem)).toBe(
+            toPx(
+                (spaciousDesignSystem.baseHorizontalSpacingMultiplier + 1) *
+                    spaciousDesignSystem.designUnit -
+                    0
+            )
+        );
+        expect(horizontalSpacing(2)(spaciousDesignSystem)).toBe(
+            toPx(
+                (spaciousDesignSystem.baseHorizontalSpacingMultiplier + 1) *
+                    spaciousDesignSystem.designUnit -
+                    2
+            )
+        );
+        expect(glyphSize(spaciousDesignSystem)).toBe(
+            toPx(
+                (spaciousDesignSystem.baseHeightMultiplier / 2) *
+                    spaciousDesignSystem.designUnit +
+                    spaciousDesignSystem.designUnit / 2
+            )
+        );
     });
 
     test("should operate on compact design system", (): void => {
-        expect(height()(compactDesignSystem)).toBe("15px");
-        expect(height(2)(compactDesignSystem)).toBe("30px");
+        expect(height()(compactDesignSystem)).toBe(
+            toPx(
+                (compactDesignSystem.baseHeightMultiplier + compactDesignSystem.density) *
+                    compactDesignSystem.designUnit *
+                    1
+            )
+        );
+        expect(height(2)(compactDesignSystem)).toBe(
+            toPx(
+                (compactDesignSystem.baseHeightMultiplier + compactDesignSystem.density) *
+                    compactDesignSystem.designUnit *
+                    2
+            )
+        );
         expect(getDensityCategory(compactDesignSystem)).toBe(DensityCategory.compact);
-        expect(getOffsetForDensityCategory(-1, 1)(compactDesignSystem)).toBe(-1);
-        expect(getOffsetForDensityCategory(3, 2, 1)(compactDesignSystem)).toBe(3);
-        expect(horizontalSpacing()(compactDesignSystem)).toBe("3px");
-        expect(horizontalSpacing(2)(compactDesignSystem)).toBe("1px");
-        expect(glyphSize(compactDesignSystem)).toBe("9px");
+        expect(densityCategorySwitch(-1, 1, 0)(compactDesignSystem)).toBe(-1);
+        expect(densityCategorySwitch(3, 2, 1)(compactDesignSystem)).toBe(3);
+        expect(horizontalSpacing()(compactDesignSystem)).toBe(
+            toPx(
+                (compactDesignSystem.baseHorizontalSpacingMultiplier - 1) *
+                    compactDesignSystem.designUnit -
+                    0
+            )
+        );
+        expect(horizontalSpacing(2)(compactDesignSystem)).toBe(
+            toPx(
+                (compactDesignSystem.baseHorizontalSpacingMultiplier - 1) *
+                    compactDesignSystem.designUnit -
+                    2
+            )
+        );
+        expect(glyphSize(compactDesignSystem)).toBe(
+            toPx(
+                (compactDesignSystem.baseHeightMultiplier / 2) *
+                    compactDesignSystem.designUnit -
+                    compactDesignSystem.designUnit / 2
+            )
+        );
     });
 });
