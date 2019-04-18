@@ -7,7 +7,6 @@ import {
     designUnit,
     getDesignSystemValue,
 } from "../utilities/design-system";
-import { debug } from "util";
 
 export enum DensityCategory {
     compact = "compact",

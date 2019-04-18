@@ -1,13 +1,5 @@
-import {
-    DesignSystem,
-    DesignSystemResolver,
-    withDesignSystemDefaults,
-} from "../design-system";
-import {
-    ComponentStyles,
-    ComponentStyleSheet,
-    CSSRules,
-} from "@microsoft/fast-jss-manager";
+import { DesignSystem, withDesignSystemDefaults } from "../design-system";
+import { ComponentStyles, ComponentStyleSheet } from "@microsoft/fast-jss-manager";
 import { RadioClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import {
     applyFocusVisible,
@@ -27,7 +19,6 @@ import {
 } from "../utilities/color";
 import {
     densityCategorySwitch,
-    height,
     heightNumber,
     horizontalSpacing,
 } from "../utilities/density";
