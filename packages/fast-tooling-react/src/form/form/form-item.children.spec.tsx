@@ -518,6 +518,29 @@ describe("Children", () => {
             rendered.find(`.${managedClasses.formItemChildren_defaultValueIndicator}`)
         ).toHaveLength(0);
     });
+    test("should fire the onChange callback to update the data to the default value if the default value indicator is clicked", () => {
+        const defaultValue: string = "foo";
+        const callback: any = jest.fn();
+        const rendered: any = mount(
+            <FormItemChildren
+                {...childrenProps}
+                managedClasses={managedClasses}
+                data={undefined}
+                onChange={callback}
+                default={defaultValue}
+            />
+        );
+
+        expect(callback).not.toHaveBeenCalled();
+
+        rendered
+            .find(`.${managedClasses.formItemChildren_defaultValueIndicator}`)
+            .simulate("click");
+
+        expect(callback).toHaveBeenCalledTimes(1);
+        expect(callback.mock.calls[0][0]).toEqual("locationOfChildren");
+        expect(callback.mock.calls[0][1]).toEqual(defaultValue);
+    });
     test("should show default values if they exist and no data is available", () => {
         const children: string = "foo";
         const rendered: any = mount(

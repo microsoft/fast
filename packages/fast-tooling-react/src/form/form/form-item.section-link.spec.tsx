@@ -218,4 +218,27 @@ describe("NumberField", () => {
             rendered.find(`.${managedClasses.formItemSectionLink_defaultValueIndicator}`)
         ).toHaveLength(0);
     });
+    test("should fire the onChange callback to update the data to the default value if the default value indicator is clicked", () => {
+        const defaultValue: any = {};
+        const callback: any = jest.fn();
+        const rendered: any = mount(
+            <FormItemSectionLink
+                {...formItemSectionLinkProps}
+                managedClasses={managedClasses}
+                data={undefined}
+                onChange={callback}
+                default={defaultValue}
+            />
+        );
+
+        expect(callback).not.toHaveBeenCalled();
+
+        rendered
+            .find(`.${managedClasses.formItemSectionLink_defaultValueIndicator}`)
+            .simulate("click");
+
+        expect(callback).toHaveBeenCalledTimes(1);
+        expect(callback.mock.calls[0][0]).toEqual("");
+        expect(callback.mock.calls[0][1]).toEqual(defaultValue);
+    });
 });
