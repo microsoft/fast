@@ -51,6 +51,31 @@ export function applyTriggerStyle(color: string): CSSRules<{}> {
     };
 }
 
+export function applyInteractiveFormItemIndicator(): CSSRules<{}> {
+    return {
+        display: "flex",
+        padding: "0",
+        alignSelf: "center",
+        background: "transparent",
+        border: "1px solid transparent",
+        borderRadius: "2px",
+        "& svg": {
+            fill: foreground800,
+            minWidth: "14px",
+            padding: "1px 4px",
+        },
+        "&:hover": {
+            "& svg": {
+                fill: accent,
+            },
+        },
+        "&:focus": {
+            borderColor: accent,
+            outline: "none",
+        },
+    };
+}
+
 export function applyFormItemIndicator(): CSSRules<{}> {
     return {
         fill: foreground800,

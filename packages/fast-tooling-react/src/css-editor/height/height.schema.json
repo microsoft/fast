@@ -1,0 +1,19 @@
+{
+    "$schema": "http://json-schema.org/schema#",
+    "title": "CSS Height",
+    "description": "A CSS height component's schema definition.",
+    "id": "@microsoft/fast-tooling-react/css-height",
+    "type": "object",
+    "properties": {
+        "data": {
+            "title": "CSS Values",
+            "type": "object",
+            "properties": {
+                "height": {
+                    "title": "Height",
+                    "type": "string"
+                }
+            }
+        }
+    }
+}

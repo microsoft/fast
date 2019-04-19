@@ -6,6 +6,7 @@ import {
     applyFormItemDisabled,
     applyFormItemIndicator,
     applyInputStyle,
+    applyInteractiveFormItemIndicator,
     applyInvalidMessage,
     applyLabelRegionStyle,
     applyLabelStyle,
@@ -46,7 +47,7 @@ const styles: ComponentStyles<FormItemTextareaClassNameContract, {}> = {
         fontFamily: "inherit",
     },
     formItemTextarea_defaultValueIndicator: {
-        ...applyFormItemIndicator(),
+        ...applyInteractiveFormItemIndicator(),
     },
     formItemTextarea_softRemove: {
         ...applySoftRemove(),

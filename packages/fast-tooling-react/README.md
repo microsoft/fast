@@ -25,6 +25,8 @@ The tooling available in FAST Tooling React can be used together to create UI fo
 - [CSS Editor](#css-editor)
     - [Spacing](#spacing)
     - [Position](#position)
+    - [Width](#width)
+    - [Height](#height)
 - [Form](#form)
     - [Using form plugins](#using-form-plugins)
     - [React children as options](#react-children-as-options)
@@ -661,6 +663,80 @@ export class Example extends React.Component {
     handleCSSValueUpdate = (updatedPositionValues) => {
         this.setState({
             cssValues: updatedPositionValues
+        });
+    }
+}
+```
+
+### Width
+
+The `CSSWidth` component shows an input with a label and has a callback that will be fired when the value is updated.
+
+Example:
+```jsx
+import React from "react";
+import { CSSWidth } from "@microsoft/fast-tooling-react";
+
+export class Example extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            cssValues: {
+                width: "100px"
+            }
+        }
+    }
+
+    render() {
+        return (
+            <CSSWidth
+                data={this.state.cssValues}
+                onChange={this.handleCSSValueUpdate}
+            />
+        );
+    }
+
+    handleCSSValueUpdate = (updatedValues) => {
+        this.setState({
+            cssValues: updatedValues
+        });
+    }
+}
+```
+
+### Height
+
+The `CSSHeight` component shows an input with a label and has a callback that will be fired when the value is updated.
+
+Example:
+```jsx
+import React from "react";
+import { CSSHeight } from "@microsoft/fast-tooling-react";
+
+export class Example extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            cssValues: {
+                height: "100px"
+            }
+        }
+    }
+
+    render() {
+        return (
+            <CSSHeight
+                data={this.state.cssValues}
+                onChange={this.handleCSSValueUpdate}
+            />
+        );
+    }
+
+    handleCSSValueUpdate = (updatedValues) => {
+        this.setState({
+            cssValues: updatedValues
         });
     }
 }

@@ -11,7 +11,7 @@ const styles: ComponentStyles<CSSEditorClassNameContract, {}> = {
         background: background300,
         color: foreground300,
         height: "100%",
-        padding: "0 0 0 10px",
+        padding: "0 10px",
     },
 };
 

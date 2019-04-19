@@ -33,6 +33,7 @@ const managedClasses: FormItemArrayClassNameContract = {
     formItemArray_addItemLabel: "formItemArray_addItemLabel-class",
     formItemArray_addItemButton: "formItemArray_controlAddButton-class",
     formItemArray_controlLabel: "formItemArray_controlLabel-class",
+    formItemArray_controlLabel__invalid: "formItemArray_controlLabel__invalid-class",
     formItemArray_defaultValueIndicator: "formItemArray_defaultValueIndicator-class",
     formItemArray_existingItemList: "formItemArray_existingItemList-class",
     formItemArray_existingItemListItem: "formItemArray_existingItemListItem-class",
@@ -289,6 +290,34 @@ describe("Array", () => {
 
         expect(rendered.html().includes(invalidMessage2)).toBe(true);
     });
+    test("should add an invalid data class if there is an invalid message", () => {
+        const invalidMessage: string = "Foo";
+        const rendered: any = mount(
+            <FormItemArray
+                {...arrayProps}
+                managedClasses={managedClasses}
+                invalidMessage={invalidMessage}
+            />
+        );
+
+        expect(
+            rendered.find(`.${managedClasses.formItemArray_controlLabel__invalid}`)
+        ).toHaveLength(1);
+    });
+    test("should not add an invalid data class if an invalid message has not been passed", () => {
+        const invalidMessage: string = "";
+        const rendered: any = mount(
+            <FormItemArray
+                {...arrayProps}
+                managedClasses={managedClasses}
+                invalidMessage={invalidMessage}
+            />
+        );
+
+        expect(
+            rendered.find(`.${managedClasses.formItemArray_controlLabel__invalid}`)
+        ).toHaveLength(0);
+    });
     test("should show a default indicator if default values exist and no data is available", () => {
         const rendered: any = mount(
             <FormItemArray
@@ -316,6 +345,31 @@ describe("Array", () => {
         expect(
             rendered.find(`.${managedClasses.formItemArray_defaultValueIndicator}`)
         ).toHaveLength(0);
+    });
+    test("should fire the onChange callback to update the data to the default value if the default value indicator is clicked", () => {
+        const defaultValue: string[] = [];
+        const callback: any = jest.fn();
+        const rendered: any = mount(
+            <FormItemArray
+                {...arrayProps}
+                onChange={callback}
+                data={undefined}
+                default={defaultValue}
+                managedClasses={managedClasses}
+            />
+        );
+
+        expect(callback).not.toHaveBeenCalled();
+
+        rendered
+            .find(`.${managedClasses.formItemArray_defaultValueIndicator}`)
+            .simulate("click");
+
+        expect(callback).toHaveBeenCalledTimes(1);
+        expect(callback.mock.calls[0][0]).toEqual("");
+        expect(callback.mock.calls[0][1]).toEqual(defaultValue);
+        expect(callback.mock.calls[0][2]).toEqual(undefined);
+        expect(callback.mock.calls[0][3]).toEqual(undefined);
     });
     test("should show default values if they exist and no data is available", () => {
         const defaultArrayItem1: string = "foo";

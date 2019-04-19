@@ -4,6 +4,7 @@ import {
     applyControlSingleLineWrapper,
     applyFormItemDisabled,
     applyFormItemIndicator,
+    applyInteractiveFormItemIndicator,
     applyInvalidMessage,
     applyLabelStyle,
     applySoftRemove,
@@ -27,7 +28,7 @@ const styles: ComponentStyles<FormItemCheckboxClassNameContract, {}> = {
         ...applyFormItemIndicator(),
     },
     formItemCheckbox_defaultValueIndicator: {
-        ...applyFormItemIndicator(),
+        ...applyInteractiveFormItemIndicator(),
     },
     formItemCheckbox_label: {
         ...applyLabelStyle(),

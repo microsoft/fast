@@ -6,6 +6,7 @@ import {
     applyFormItemDisabled,
     applyFormItemIndicator,
     applyInputStyle,
+    applyInteractiveFormItemIndicator,
     applyInvalidMessage,
     applyLabelRegionStyle,
     applyLabelStyle,
@@ -41,7 +42,7 @@ const styles: ComponentStyles<FormItemNumberFieldClassNameContract, {}> = {
         width: "100%",
     },
     formItemNumberField_defaultValueIndicator: {
-        ...applyFormItemIndicator(),
+        ...applyInteractiveFormItemIndicator(),
     },
     formItemNumberField_softRemove: {
         ...applySoftRemove(),

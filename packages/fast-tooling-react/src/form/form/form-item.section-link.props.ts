@@ -6,6 +6,7 @@ import FormItemCommon from "./form-item.props";
 export interface FormItemSectionLinkClassNameContract {
     formItemSectionLink?: string;
     formItemSectionLink_anchor?: string;
+    formItemSectionLink_anchor__invalid?: string;
     formItemSectionLink_badge?: string;
     formItemSectionLink_controlRegion?: string;
     formItemSectionLink_defaultValueIndicator?: string;
