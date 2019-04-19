@@ -74,23 +74,6 @@ const pivotItem4: TabsItem = {
 
 const detailPivotItem: TabsItem[] = [pivotItem1, pivotItem2, pivotItem3, pivotItem4];
 
-const examplePivotItem1: TabsItem[] = [
-    {
-        tab: {
-            id: pivotItemTabSchema.id,
-            props: {},
-        } as any,
-        content: {
-            id: pivotItemContentSchema.id,
-            props: {},
-        } as any,
-        id: uniqueId(),
-    },
-    pivotItem2,
-    pivotItem3,
-    pivotItem4,
-];
-
 const examples: ComponentFactoryExample<PivotProps> = {
     name: "Pivot",
     component: Pivot,
@@ -104,10 +87,6 @@ const examples: ComponentFactoryExample<PivotProps> = {
         {
             label: "A set of example text content",
             items: detailPivotItem,
-        },
-        {
-            label: "A set of example text content",
-            items: examplePivotItem1,
         },
     ],
 };
