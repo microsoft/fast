@@ -31,7 +31,7 @@
         "children": {
             "title": "Children",
             "type": "children",
-            "formPluginId": "@microsoft/fast-components-react-base/listbox-item/children",
+            "formPluginId": "@microsoft/fast-components-react-base/slider-track-item/children",
             "defaults": [
                 "text"
             ]

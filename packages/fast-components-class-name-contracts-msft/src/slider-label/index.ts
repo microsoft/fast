@@ -13,7 +13,7 @@ export interface SliderLabelClassNameContract
     /**
      * The label portion of the slider label component
      */
-    sliderLabel_positioningPanel?: string;
+    sliderLabel_positioningRegion?: string;
 
     /**
      * The label portion of the slider label component
@@ -40,12 +40,12 @@ export interface SliderLabelClassNameContract
     /**
      * The horizontal orientation modifier
      */
-    sliderLabel__orientationHorizontal?: string;
+    sliderLabel__horizontal?: string;
 
     /**
      * The vertical orientation modifier
      */
-    sliderLabel__orientationVertical?: string;
+    sliderLabel__vertical?: string;
 
     /**
      * The rtl modifier

@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { Slider, SliderProps } from "./index";
 import { SliderLabelProps } from "../slider-label";
 import sliderLabelSchema from "../slider-label/slider-label.schema.json";

@@ -41,14 +41,14 @@ class SliderLabel extends Foundation<
                 maxValuePositionBinding={this.props.valuePositionBinding}
                 managedClasses={{
                     sliderTrackItem: get(this.props.managedClasses, "sliderLabel", ""),
-                    sliderTrackItem__orientationHorizontal: get(
+                    sliderTrackItem_horizontal: get(
                         this.props.managedClasses,
-                        "sliderLabel__orientationHorizontal",
+                        "sliderLabel__horizontal",
                         ""
                     ),
-                    sliderTrackItem__orientationVertical: get(
+                    sliderTrackItem_vertical: get(
                         this.props.managedClasses,
-                        "sliderLabel__orientationVertical",
+                        "sliderLabel__vertical",
                         ""
                     ),
                 }}
@@ -68,7 +68,7 @@ class SliderLabel extends Foundation<
     private generatePositioningPanelClassNames(): string {
         let classNames: string = get(
             this.props,
-            "managedClasses.sliderLabel_positioningPanel",
+            "managedClasses.sliderLabel_positioningRegion",
             ""
         );
 

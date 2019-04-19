@@ -25,7 +25,7 @@ const styles: ComponentStyles<SliderLabelClassNameContract, DesignSystem> = (
             display: "grid",
         },
 
-        sliderLabel_positioningPanel: {
+        sliderLabel_positioningRegion: {
             display: "grid",
         },
 
@@ -42,14 +42,14 @@ const styles: ComponentStyles<SliderLabelClassNameContract, DesignSystem> = (
 
         sliderLabel__positionMax: {},
 
-        sliderLabel__orientationHorizontal: {
+        sliderLabel__horizontal: {
             "&$sliderLabel": {
                 alignSelf: "start",
                 gridRow: "2",
                 marginTop: "-2px",
             },
 
-            "& $sliderLabel_positioningPanel": {
+            "& $sliderLabel_positioningRegion": {
                 gridTemplateColumns: "0",
                 gridTemplateRows: "auto auto",
                 width: "0",
@@ -82,13 +82,13 @@ const styles: ComponentStyles<SliderLabelClassNameContract, DesignSystem> = (
             },
         },
 
-        sliderLabel__orientationVertical: {
+        sliderLabel__vertical: {
             "&$sliderLabel": {
                 gridColumn: "2",
                 marginLeft: "-2px",
             },
 
-            "& $sliderLabel_positioningPanel": {
+            "& $sliderLabel_positioningRegion": {
                 gridTemplateColumns: "auto auto",
                 gridTemplateRows: "0",
                 height: "2px",
@@ -109,8 +109,8 @@ const styles: ComponentStyles<SliderLabelClassNameContract, DesignSystem> = (
         },
 
         sliderLabel__rtl: {
-            "&$sliderLabel__orientationHorizontal": {
-                "& $sliderLabel_positioningPanel": {
+            "&$sliderLabel__horizontal": {
+                "& $sliderLabel_positioningRegion": {
                     "&$sliderLabel__positionMin": {
                         "& $sliderLabel_label": {
                             marginRight: "0",

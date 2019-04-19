@@ -17,15 +17,15 @@ configure({ adapter: new Adapter() });
 
 const managedClasses: SliderClassNameContract = {
     slider: "slider",
-    slider_layoutPanel: "slider_layoutPanel",
-    slider_barTrack: "slider_barTrack",
-    slider_barBack: "slider_barBack",
-    slider_barFront: "slider_barFront",
-    slider__orientationHorizontal: "slider__orientationHorizontal",
-    slider__orientationVertical: "slider__orientationVertical",
+    slider_layoutRegion: "slider_layoutRegion",
+    slider_track: "slider_track",
+    slider_backgroundTrack: "slider_backgroundTrack",
+    slider_foregroundTrack: "slider_foregroundTrack",
+    slider__horizontal: "slider__horizontal",
+    slider__vertical: "slider__vertical",
     slider_thumb: "slider_thumb",
-    slider_thumb_upper: "slider_thumb_upper",
-    slider_thumb_lower: "slider_thumb_lower",
+    slider_thumb__upperValue: "slider_thumb__upperValue",
+    slider_thumb__lowerValue: "slider_thumb__lowerValue",
     slider__disabled: "slider__disabled",
     slider__rtl: "slider__rtl",
     slider__modeSingle: "slider__modeSingle",
@@ -246,10 +246,14 @@ describe("Slider", (): void => {
             <Slider managedClasses={managedClasses} mode={SliderMode.singleValue} />
         );
 
-        const upperThumb: any = rendered.find(`.${managedClasses.slider_thumb_upper}`);
+        const upperThumb: any = rendered.find(
+            `.${managedClasses.slider_thumb__upperValue}`
+        );
         expect(upperThumb).toHaveLength(1);
 
-        const lowerThumb: any = rendered.find(`.${managedClasses.slider_thumb_lower}`);
+        const lowerThumb: any = rendered.find(
+            `.${managedClasses.slider_thumb__lowerValue}`
+        );
         expect(lowerThumb).toHaveLength(0);
     });
 
@@ -258,10 +262,14 @@ describe("Slider", (): void => {
             <Slider managedClasses={managedClasses} mode={SliderMode.adustUpperValue} />
         );
 
-        const upperThumb: any = rendered.find(`.${managedClasses.slider_thumb_upper}`);
+        const upperThumb: any = rendered.find(
+            `.${managedClasses.slider_thumb__upperValue}`
+        );
         expect(upperThumb).toHaveLength(1);
 
-        const lowerThumb: any = rendered.find(`.${managedClasses.slider_thumb_lower}`);
+        const lowerThumb: any = rendered.find(
+            `.${managedClasses.slider_thumb__lowerValue}`
+        );
         expect(lowerThumb).toHaveLength(0);
     });
 
@@ -270,10 +278,14 @@ describe("Slider", (): void => {
             <Slider managedClasses={managedClasses} mode={SliderMode.adustLowerValue} />
         );
 
-        const upperThumb: any = rendered.find(`.${managedClasses.slider_thumb_upper}`);
+        const upperThumb: any = rendered.find(
+            `.${managedClasses.slider_thumb__upperValue}`
+        );
         expect(upperThumb).toHaveLength(0);
 
-        const lowerThumb: any = rendered.find(`.${managedClasses.slider_thumb_lower}`);
+        const lowerThumb: any = rendered.find(
+            `.${managedClasses.slider_thumb__lowerValue}`
+        );
         expect(lowerThumb).toHaveLength(1);
     });
 
@@ -282,10 +294,14 @@ describe("Slider", (): void => {
             <Slider managedClasses={managedClasses} mode={SliderMode.adjustBoth} />
         );
 
-        const upperThumb: any = rendered.find(`.${managedClasses.slider_thumb_upper}`);
+        const upperThumb: any = rendered.find(
+            `.${managedClasses.slider_thumb__upperValue}`
+        );
         expect(upperThumb).toHaveLength(1);
 
-        const lowerThumb: any = rendered.find(`.${managedClasses.slider_thumb_lower}`);
+        const lowerThumb: any = rendered.find(
+            `.${managedClasses.slider_thumb__lowerValue}`
+        );
         expect(lowerThumb).toHaveLength(1);
     });
 
@@ -303,9 +319,7 @@ describe("Slider", (): void => {
     test("horizontal orientation class applied by default", (): void => {
         const rendered: any = shallow(<Slider managedClasses={managedClasses} />);
 
-        expect(rendered.prop("className")).toContain(
-            managedClasses.slider__orientationHorizontal
-        );
+        expect(rendered.prop("className")).toContain(managedClasses.slider__horizontal);
     });
 
     test("vertical orientation class applied when orientation set to vertical", (): void => {
@@ -316,9 +330,7 @@ describe("Slider", (): void => {
             />
         );
 
-        expect(rendered.prop("className")).toContain(
-            managedClasses.slider__orientationVertical
-        );
+        expect(rendered.prop("className")).toContain(managedClasses.slider__vertical);
     });
 
     test("single value mode class applied by default", (): void => {
@@ -373,7 +385,7 @@ describe("Slider", (): void => {
             attachTo: container,
         });
 
-        const thumb: any = rendered.find(`.${managedClasses.slider_thumb_upper}`);
+        const thumb: any = rendered.find(`.${managedClasses.slider_thumb__upperValue}`);
         expect(rendered.state("isIncrementing")).toBe(false);
         thumb.simulate("keydown", { keyCode: KeyCodes.arrowDown });
         expect(rendered.state("isIncrementing")).toBe(true);
@@ -411,7 +423,7 @@ describe("Slider", (): void => {
             attachTo: container,
         });
 
-        const thumb: any = rendered.find(`.${managedClasses.slider_thumb_upper}`);
+        const thumb: any = rendered.find(`.${managedClasses.slider_thumb__upperValue}`);
         expect(rendered.state("isIncrementing")).toBe(false);
         expect(rendered.state("usePageStep")).toBe(false);
         thumb.simulate("keydown", { keyCode: KeyCodes.pageDown });
@@ -442,7 +454,7 @@ describe("Slider", (): void => {
             }
         );
 
-        const thumb: any = rendered.find(`.${managedClasses.slider_thumb_upper}`);
+        const thumb: any = rendered.find(`.${managedClasses.slider_thumb__upperValue}`);
         expect(rendered.state("isIncrementing")).toBe(false);
         expect(rendered.state("usePageStep")).toBe(false);
 

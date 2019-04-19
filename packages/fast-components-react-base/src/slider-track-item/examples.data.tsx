@@ -10,8 +10,8 @@ import Documentation from "./.tmp/documentation";
 const managedClasses: SliderTrackItemManagedClasses = {
     managedClasses: {
         sliderTrackItem: "sliderTrackItem",
-        sliderTrackItem__orientationHorizontal: "sliderTrackItem__orientationHorizontal",
-        sliderTrackItem__orientationVertical: "sliderTrackItem__orientationVertical",
+        sliderTrackItem_horizontal: "sliderTrackItem_horizontal",
+        sliderTrackItem_vertical: "sliderTrackItem_vertical",
     },
 };
 

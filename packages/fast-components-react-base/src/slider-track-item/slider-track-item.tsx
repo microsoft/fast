@@ -57,13 +57,13 @@ class SliderTrackItem extends Foundation<
         ) {
             classNames = `${classNames} ${get(
                 this.props,
-                "managedClasses.sliderTrackItem__orientationVertical",
+                "managedClasses.sliderTrackItem_vertical",
                 ""
             )}`;
         } else {
             classNames = `${classNames} ${get(
                 this.props,
-                "managedClasses.sliderTrackItem__orientationHorizontal",
+                "managedClasses.sliderTrackItem_horizontal",
                 ""
             )}`;
         }
@@ -75,10 +75,10 @@ class SliderTrackItem extends Foundation<
      * Gets the appropriate absolute positioning
      */
     private applyPositioningValues = (): any => {
-        const minValue: number = this.getPctValueFromPositionBinding(
+        const minValue: number = this.getPositionAsPercent(
             this.props.minValuePositionBinding
         );
-        const maxValue: number = this.getPctValueFromPositionBinding(
+        const maxValue: number = this.getPositionAsPercent(
             this.props.maxValuePositionBinding
         );
 
@@ -106,9 +106,7 @@ class SliderTrackItem extends Foundation<
     /**
      *  Returns a percent value to use for positioning based on the selected anchor type
      */
-    private getPctValueFromPositionBinding = (
-        anchor: SliderTrackItemAnchor | number
-    ): number => {
+    private getPositionAsPercent = (anchor: SliderTrackItemAnchor | number): number => {
         if (
             anchor === undefined ||
             typeof (this.context as SliderContextType).sliderValueAsPercent !==

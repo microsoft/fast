@@ -10,10 +10,10 @@ export interface SliderTrackItemClassNameContract {
     /**
      * The horizontal orientation modifier
      */
-    sliderTrackItem__orientationHorizontal?: string;
+    sliderTrackItem_horizontal?: string;
 
     /**
      * The vertical orientation modifier
      */
-    sliderTrackItem__orientationVertical?: string;
+    sliderTrackItem_vertical?: string;
 }

@@ -8,35 +8,35 @@ export interface SliderClassNameContract {
     slider?: string;
 
     /**
-     * The layout panel of the slider component. Slider children end up in this container.
+     * The layout region of the slider component. Slider children end up in this container.
      */
-    slider_layoutPanel?: string;
+    slider_layoutRegion?: string;
 
     /**
      * The fixed background track of the slider component
      * which determines click region and extent of the slider
      */
-    slider_barTrack?: string;
+    slider_track?: string;
 
     /**
      * The cosmetic background track of the slider component
      */
-    slider_barBack?: string;
+    slider_backgroundTrack?: string;
 
     /**
      * The cosmetic foreground bar of the slider component that tracks the thumb
      */
-    slider_barFront?: string;
+    slider_foregroundTrack?: string;
 
     /**
      * The horizontal orientation modifier
      */
-    slider__orientationHorizontal?: string;
+    slider__horizontal?: string;
 
     /**
      * The vertical orientation modifier
      */
-    slider__orientationVertical?: string;
+    slider__vertical?: string;
 
     /**
      * The base thumb class
@@ -44,14 +44,14 @@ export interface SliderClassNameContract {
     slider_thumb?: string;
 
     /**
-     * The low value thumb
-     */
-    slider_thumb_upper?: string;
-
-    /**
      * The high value thumb
      */
-    slider_thumb_lower?: string;
+    slider_thumb__upperValue?: string;
+
+    /**
+     * The low value thumb
+     */
+    slider_thumb__lowerValue?: string;
 
     /**
      * The disabled modifier

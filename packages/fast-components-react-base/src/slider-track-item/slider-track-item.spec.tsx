@@ -15,7 +15,6 @@ import {
     SliderThumb,
 } from "../slider";
 import { DisplayNamePrefix } from "../utilities";
-import { number } from "prop-types";
 import { SliderState } from "../slider/slider";
 
 /*
@@ -32,6 +31,7 @@ describe("slider track item", (): void => {
         isDragging: false,
         isIncrementing: false,
         incrementDirection: 1,
+        usePageStep: false,
     };
 
     test("should have a displayName that matches the component name", () => {

@@ -1,5 +1,5 @@
-import * as React from "react";
-import * as ReactDOM from "react-dom";
+import React from "react";
+import ReactDOM from "react-dom";
 import { get } from "lodash-es";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import { KeyCodes } from "@microsoft/fast-web-utilities";
@@ -218,7 +218,7 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
                     <div
                         className={get(
                             this.props.managedClasses,
-                            "slider_layoutPanel",
+                            "slider_layoutRegion",
                             ""
                         )}
                         style={{
@@ -228,7 +228,7 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
                         <div
                             className={get(
                                 this.props.managedClasses,
-                                "slider_barBack",
+                                "slider_backgroundTrack",
                                 ""
                             )}
                             style={{
@@ -238,7 +238,7 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
                         <SliderTrackItem
                             className={get(
                                 this.props.managedClasses,
-                                "slider_barFront",
+                                "slider_foregroundTrack",
                                 ""
                             )}
                             maxValuePositionBinding={
@@ -251,11 +251,7 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
                         <div
                             ref={this.sliderTrackElement}
                             onMouseDown={this.handleTrackMouseDown}
-                            className={get(
-                                this.props.managedClasses,
-                                "slider_barTrack",
-                                ""
-                            )}
+                            className={get(this.props.managedClasses, "slider_track", "")}
                             style={{
                                 position: "absolute",
                             }}
@@ -287,13 +283,13 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
         if (this.props.orientation === SliderOrientation.vertical) {
             classNames = `${classNames} ${get(
                 this.props,
-                "managedClasses.slider__orientationVertical",
+                "managedClasses.slider__vertical",
                 ""
             )}`;
         } else {
             classNames = `${classNames} ${get(
                 this.props,
-                "managedClasses.slider__orientationHorizontal",
+                "managedClasses.slider__horizontal",
                 ""
             )}`;
         }
@@ -354,20 +350,22 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
             managedClasses: {
                 sliderTrackItem:
                     thumb === SliderThumb.upperThumb
-                        ? get(this.props, "managedClasses.slider_thumb_upper", "").concat(
-                              " ",
-                              thumbBaseClass
-                          )
-                        : get(this.props, "managedClasses.slider_thumb_lower", "").concat(
-                              " ",
-                              thumbBaseClass
-                          ),
-                sliderTrackItem__orientationHorizontal: get(
+                        ? get(
+                              this.props,
+                              "managedClasses.slider_thumb__upperValue",
+                              ""
+                          ).concat(" ", thumbBaseClass)
+                        : get(
+                              this.props,
+                              "managedClasses.slider_thumb__lowerValue",
+                              ""
+                          ).concat(" ", thumbBaseClass),
+                sliderTrackItem_horizontal: get(
                     this.props,
-                    "managedClasses.slider_thumb__orientationHorizontal",
+                    "managedClasses.sliderTrackItem_vertical",
                     ""
                 ),
-                sliderTrackItem__orientationVertical: get(
+                sliderTrackItem_vertical: get(
                     this.props,
                     "managedClasses.slider_thumb__orientationVertical",
                     ""
