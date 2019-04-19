@@ -33,6 +33,7 @@ const managedClasses: FormItemArrayClassNameContract = {
     formItemArray_addItemLabel: "formItemArray_addItemLabel-class",
     formItemArray_addItemButton: "formItemArray_controlAddButton-class",
     formItemArray_controlLabel: "formItemArray_controlLabel-class",
+    formItemArray_controlLabel__invalid: "formItemArray_controlLabel__invalid-class",
     formItemArray_defaultValueIndicator: "formItemArray_defaultValueIndicator-class",
     formItemArray_existingItemList: "formItemArray_existingItemList-class",
     formItemArray_existingItemListItem: "formItemArray_existingItemListItem-class",
@@ -288,6 +289,34 @@ describe("Array", () => {
         rendered.setProps({ invalidMessage: invalidMessage2 });
 
         expect(rendered.html().includes(invalidMessage2)).toBe(true);
+    });
+    test("should add an invalid data class if there is an invalid message", () => {
+        const invalidMessage: string = "Foo";
+        const rendered: any = mount(
+            <FormItemArray
+                {...arrayProps}
+                managedClasses={managedClasses}
+                invalidMessage={invalidMessage}
+            />
+        );
+
+        expect(
+            rendered.find(`.${managedClasses.formItemArray_controlLabel__invalid}`)
+        ).toHaveLength(1);
+    });
+    test("should not add an invalid data class if an invalid message has not been passed", () => {
+        const invalidMessage: string = "";
+        const rendered: any = mount(
+            <FormItemArray
+                {...arrayProps}
+                managedClasses={managedClasses}
+                invalidMessage={invalidMessage}
+            />
+        );
+
+        expect(
+            rendered.find(`.${managedClasses.formItemArray_controlLabel__invalid}`)
+        ).toHaveLength(0);
     });
     test("should show a default indicator if default values exist and no data is available", () => {
         const rendered: any = mount(

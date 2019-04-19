@@ -81,6 +81,10 @@ const styles: ComponentStyles<FormItemArrayClassNameContract, {}> = {
     },
     formItemArray_controlLabel: {
         ...applyLabelStyle(),
+        borderBottom: "1px solid transparent",
+    },
+    formItemArray_controlLabel__invalid: {
+        borderColor: "red",
     },
     formItemArray_controlLabelRegion: {
         ...applyLabelRegionStyle(),

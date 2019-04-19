@@ -23,6 +23,10 @@ const styles: ComponentStyles<FormItemSectionLinkClassNameContract, {}> = {
         cursor: "pointer",
         fontSize: "12px",
         lineHeight: "23px",
+        borderBottom: "1px solid transparent",
+    },
+    formItemSectionLink_anchor__invalid: {
+        borderColor: "red",
     },
     formItemSectionLink_badge: {
         ...applyFormItemIndicator(),

@@ -34,7 +34,7 @@ class FormItemSectionLink extends FormItemBase<
                     )}
                 >
                     <a
-                        className={this.props.managedClasses.formItemSectionLink_anchor}
+                        className={this.getAnchorClassNames()}
                         onClick={this.handleUpdateSection}
                     >
                         {this.props.label}
@@ -75,6 +75,22 @@ class FormItemSectionLink extends FormItemBase<
 
         this.props.onUpdateSection(this.props.schemaLocation, this.props.dataLocation);
     };
+
+    private getAnchorClassNames(): string {
+        let classes: string = get(
+            this.props,
+            "managedClasses.formItemSectionLink_anchor"
+        );
+
+        if (this.props.invalidMessage !== "") {
+            classes += ` ${get(
+                this.props,
+                "managedClasses.formItemSectionLink_anchor__invalid"
+            )}`;
+        }
+
+        return classes;
+    }
 }
 
 export { FormItemSectionLink };
