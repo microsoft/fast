@@ -1,36 +1,38 @@
-import React from "react";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
-import {
-    DesignSystemConsumer,
-    DesignSystemProvider,
-} from "@microsoft/fast-jss-manager-react";
 import {
     DesignSystem,
     DesignSystemDefaults,
     DesignSystemResolver,
-    neutralFillCardRest,
 } from "@microsoft/fast-components-styles-msft";
 import {
+    DesignSystemConsumer,
+    DesignSystemProvider,
+} from "@microsoft/fast-jss-manager-react";
+import { get, has, memoize } from "lodash-es";
+import React from "react";
+import { Omit } from "utility-types";
+import {
     BackgroundHandledProps,
-    BackgroundProps,
     BackgroundUnhandledProps,
-    DarkModeBackgrounds,
     LightModeBackgrounds,
 } from "./background.props";
-import { get, has, memoize } from "lodash-es";
 
 export default class Background extends Foundation<
     BackgroundHandledProps,
     BackgroundUnhandledProps,
     {}
 > {
-    public static defaultProps: Partial<BackgroundProps> = {
+    public static defaultProps: Partial<
+        Omit<BackgroundHandledProps, "value"> & { value: LightModeBackgrounds }
+    > = {
         tag: "div",
         value: LightModeBackgrounds.L1,
+        drawBackground: true,
     };
     protected handledProps: HandledProps<Required<BackgroundHandledProps>> = {
         tag: void 0,
         value: void 0,
+        drawBackground: void 0,
     };
 
     private getDesignSystemOverrides: (color: string) => Partial<DesignSystem> = memoize(
@@ -55,12 +57,18 @@ export default class Background extends Foundation<
                         ? get(designSystem.neutralPalette, background)
                         : DesignSystemDefaults.neutralPalette[background] ||
                           DesignSystemDefaults.neutralPalette[
-                              Background.defaultProps.value as LightModeBackgrounds
+                              Background.defaultProps.value
                           ];
 
-        const style: React.CSSProperties = Object.assign({}, this.props.style, {
-            backgroundColor: color,
-        });
+        const style: React.CSSProperties = Object.assign(
+            {},
+            this.props.style,
+            this.props.drawBackground
+                ? {
+                      backgroundColor: color,
+                  }
+                : void 0
+        );
 
         return (
             <DesignSystemProvider designSystem={this.getDesignSystemOverrides(color)}>

@@ -3,7 +3,10 @@ import Background from "./background";
 import * as ShallowRenderer from "react-test-renderer/shallow";
 import Adapter from "enzyme-adapter-react-16/build";
 import { configure, mount, shallow } from "enzyme";
-import { DesignSystemDefaults } from "@microsoft/fast-components-styles-msft";
+import {
+    DesignSystem,
+    DesignSystemDefaults,
+} from "@microsoft/fast-components-styles-msft";
 import { DesignSystemProvider } from "@microsoft/fast-jss-manager-react";
 
 /*
@@ -53,6 +56,40 @@ describe("Background", (): void => {
                 .find("div")
                 .prop("style").backgroundColor
         ).toBe("#123");
+    });
+    test("should assign a background color resolved from a function", (): void => {
+        function resolver(): string {
+            return "#321";
+        }
+        expect(
+            mount(<Background value={resolver} />)
+                .find("div")
+                .prop("style").backgroundColor
+        ).toBe("#321");
+    });
+    test("should invoke a background resolver with a design system if one is provided", (): void => {
+        const designSystem: DesignSystem = Object.assign({}, DesignSystemDefaults);
+        const spy: jest.SpyInstance<any> = jest.fn();
+
+        mount(
+            <DesignSystemProvider designSystem={designSystem}>
+                <Background value={spy as any} />
+            </DesignSystemProvider>
+        );
+
+        expect(spy).toHaveBeenCalledWith(designSystem);
+    });
+    test("should not render the background color to css when drawBackground is false", (): void => {
+        expect(
+            mount(<Background value="#123" drawBackground={false} />)
+                .find("div")
+                .prop("style").backgroundColor
+        ).toBe(undefined);
+        expect(
+            mount(<Background value={10} drawBackground={false} />)
+                .find("div")
+                .prop("style").backgroundColor
+        ).toBe(undefined);
     });
     test("should derive index values from the current DesignSystem", (): void => {
         const neutralPalette: string[] = new Array(9)

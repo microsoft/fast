@@ -36,7 +36,7 @@ export interface BackgroundHandledProps {
     /**
      * The HTML element to create
      */
-    tag: keyof React.ReactHTML;
+    tag?: keyof React.ReactHTML;
 
     /**
      * The value of the background to set. When set to a number, the value will be
@@ -45,12 +45,17 @@ export interface BackgroundHandledProps {
      * is a function, it will be called with the input design-system and the result
      * will be treated as a color string.
      */
-    value:
+    value?:
         | number
         | string
         | LightModeBackgrounds
         | DarkModeBackgrounds
         | DesignSystemResolver<string>;
+
+    /**
+     * When true, the background color will be applied to the generated element via CSS's background-color property
+     */
+    drawBackground?: boolean;
 }
 
 export interface BackgroundUnhandledProps extends React.HTMLAttributes<HTMLElement> {}
