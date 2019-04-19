@@ -48,8 +48,8 @@ describe("density", (): void => {
                 2}em`
         );
         expect(getDensityCategory({} as DesignSystem)).toBe(DensityCategory.normal);
-        expect(densityCategorySwitch(-1, 1, 0)({} as DesignSystem)).toBe(0);
-        expect(densityCategorySwitch(3, 2, 1)({} as DesignSystem)).toBe(1);
+        expect(densityCategorySwitch(-1, 0, 1)({} as DesignSystem)).toBe(0);
+        expect(densityCategorySwitch(3, 2, 1)({} as DesignSystem)).toBe(2);
         expect(horizontalSpacing()({} as DesignSystem)).toBe(
             toPx(
                 (defaultDesignSystem.baseHorizontalSpacingMultiplier + 0) *
@@ -101,8 +101,8 @@ describe("density", (): void => {
             )
         );
         expect(getDensityCategory(spaciousDesignSystem)).toBe(DensityCategory.spacious);
-        expect(densityCategorySwitch(-1, 1, 0)(spaciousDesignSystem)).toBe(1);
-        expect(densityCategorySwitch(3, 2, 1)(spaciousDesignSystem)).toBe(2);
+        expect(densityCategorySwitch(-1, 0, 1)(spaciousDesignSystem)).toBe(1);
+        expect(densityCategorySwitch(3, 2, 1)(spaciousDesignSystem)).toBe(1);
         expect(horizontalSpacing()(spaciousDesignSystem)).toBe(
             toPx(
                 (spaciousDesignSystem.baseHorizontalSpacingMultiplier + 1) *
@@ -142,7 +142,7 @@ describe("density", (): void => {
             )
         );
         expect(getDensityCategory(compactDesignSystem)).toBe(DensityCategory.compact);
-        expect(densityCategorySwitch(-1, 1, 0)(compactDesignSystem)).toBe(-1);
+        expect(densityCategorySwitch(-1, 0, 1)(compactDesignSystem)).toBe(-1);
         expect(densityCategorySwitch(3, 2, 1)(compactDesignSystem)).toBe(3);
         expect(horizontalSpacing()(compactDesignSystem)).toBe(
             toPx(

@@ -1,34 +1,6 @@
-import defaultDesignSystem, {
-    DesignSystem,
-    DesignSystemResolver,
-} from "../design-system";
+import { DesignSystemResolver, getDesignSystemValue } from "../design-system";
 import { Palette } from "../utilities/color/palette";
 import { Direction } from "@microsoft/fast-web-utilities";
-
-/**
- * Safely retrieves the value from a key of the designSystem.
- */
-export function getDesignSystemValue<T extends DesignSystem, K extends keyof T>(
-    key: K
-): (designSystem?: T) => T[K] {
-    return (designSystem?: T): T[K] =>
-        (designSystem && designSystem[key]) || (defaultDesignSystem as T)[key];
-}
-
-/**
- * Returns the argument if basic, othwerwise calls the DesignSystemResolver function.
- *
- * @param arg A value or a DesignSystemResolver function
- * @param designSystem The design system config.
- */
-export function checkDesignSystemResolver<T>(
-    arg: T | DesignSystemResolver<T>,
-    designSystem: DesignSystem
-): T {
-    const value: T =
-        typeof arg === "function" ? (arg as DesignSystemResolver<T>)(designSystem) : arg;
-    return value;
-}
 
 /**
  * Retrieve the backgroundColor when invoked with a DesignSystem

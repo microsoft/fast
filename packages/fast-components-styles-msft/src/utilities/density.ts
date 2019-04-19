@@ -1,11 +1,14 @@
-import { DesignSystem, DesignSystemResolver } from "../design-system";
+import {
+    checkDesignSystemResolver,
+    DesignSystem,
+    DesignSystemResolver,
+    getDesignSystemValue,
+} from "../design-system";
 import { toPx } from "@microsoft/fast-jss-utilities";
 import {
     baseHeightMultiplier,
     baseHorizontalSpacingMultiplier,
-    checkDesignSystemResolver,
     designUnit,
-    getDesignSystemValue,
 } from "../utilities/design-system";
 
 export enum DensityCategory {
