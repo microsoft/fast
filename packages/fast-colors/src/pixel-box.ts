@@ -5,7 +5,10 @@
 import { Histogram } from "./histogram";
 import { ColorRGBA64 } from "./color-rgba-64";
 
-// higher sort priority puts the newItem closer to the start (index 0) of the list
+/**
+ * Adds a newItem to an already sorted list without needing to do a full re-sort.
+ * Higher sort priority puts the newItem closer to the start (index 0) of the list.
+ */
 export function insertIntoSortedList(
     list: PixelBox[],
     newItem: PixelBox,
@@ -36,6 +39,9 @@ export function insertIntoSortedList(
     list.splice(newIndex, 0, newItem);
 }
 
+/**
+ * Represents a range of colors in RGB color space.
+ */
 export class PixelBox {
     constructor(
         globalHistogram: Histogram,
@@ -63,7 +69,7 @@ export class PixelBox {
         let redSum: number = 0;
         let greenSum: number = 0;
         let blueSum: number = 0;
-        const factor: number = 1 << (8 - this.globalHistogram.signifigantBits);
+        const factor: number = 1 << (8 - this.globalHistogram.significantBits);
 
         for (let r: number = minRed; r <= maxRed; r++) {
             for (let g: number = minGreen; g <= maxGreen; g++) {
@@ -114,7 +120,11 @@ export class PixelBox {
 
     public readonly averageColor: ColorRGBA64;
 
-    // Based on the Modified Median Cut Quantization implementation from https://github.com/DanBloomberg/leptonica/blob/master/src/colorquant2.c
+    /**
+     * Attempts to divide the range of colors represented by this PixelBox into two smaller PixelBox objects.
+     * This does not actually cut directly at the median, rather it finds the median then cuts halfway through the larger box on either side of that median. The result is that small areas of color are better represented in the final output.
+     * Based on the Modified Median Cut Quantization implementation from https://github.com/DanBloomberg/leptonica/blob/master/src/colorquant2.c
+     */
     public modifiedMedianCut = (): [PixelBox | null, PixelBox | null] => {
         if (this.rangeRed === 1 && this.rangeGreen === 1 && this.rangeBlue === 1) {
             // This box is already sliced as finely as possible

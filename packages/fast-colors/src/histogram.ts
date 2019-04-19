@@ -2,30 +2,33 @@
 // tslint:disable:no-bitwise
 import { PixelBlob } from "./pixel-blob";
 
-// The memory needed for the histogram increases dramaticially if signifigantBits is increased
-// It needs a buffer which is 4*2^(3*signifigantBits) in size
-// EG: for 5 signifigant bits the histogram is 128K while for 8 it is 64 megs.
-// CPU time increases linearly as pixelSkipping is reduced
-// isHistoPixelValid is an optional predicate which can screen out unwanted pixels from the
-// source data. EG: ignoring transparent pixels.
-// If the image source has more than 2^32 pixels (eg: a square image 65536x65536 in size) of the same color this code will break
-
+/**
+ * For each possible color, this counts how many pixels in the source image match that color.
+ * If signifigantBits is less tahn 8, each channel (eg: red, green, blue) in each color is reduced to fit in significantBits. So for the default value of 5 significantBits colors are reduced from 8 bits per channel (0-255) to 5 (0-31). Colors that were previously distinct get combined together.
+ * If the image source has more than 2^32 pixels (eg: a square image 65536x65536 in size) of the same color this code will break.
+ */
 export class Histogram {
+    /**
+     * @param source
+     * @param significantBits The memory needed for the histogram increases dramaticially if significantBits is increased. It needs a buffer which is 4*2^(3*significantBits) in size. EG: for 5 significant bits the histogram is 128K while for 8 it is 64 megs.
+     * @param pixelSkipping CPU time increases linearly as pixelSkipping is reduced.
+     * @param isHistogramPixelValid isHistogramPixelValid is an optional predicate which can screen out unwanted pixels from the source data. EG: ignoring transparent pixels.
+     */
     constructor(
         source: PixelBlob,
-        signifigantBits: number = 5,
+        significantBits: number = 5,
         pixelSkipping: number = 5,
-        isHistoPixelValid: ((pixel: number[]) => boolean) | null = null
+        isHistogramPixelValid: ((pixel: number[]) => boolean) | null = null
     ) {
-        if (signifigantBits < 1 || signifigantBits > 8) {
-            throw new Error("signifigantBits must be in the range [1,8]");
+        if (significantBits < 1 || significantBits > 8) {
+            throw new Error("significantBits must be in the range [1,8]");
         }
         if (pixelSkipping < 0) {
             throw new Error("pixelSkipping must be >= 0");
         }
 
-        this.signifigantBits = signifigantBits;
-        const sigShift: number = 8 - this.signifigantBits;
+        this.significantBits = significantBits;
+        const sigShift: number = 8 - this.significantBits;
         this.minRed = 255 >>> sigShift;
         this.maxRed = 0;
         this.minGreen = 255 >>> sigShift;
@@ -33,7 +36,7 @@ export class Histogram {
         this.minBlue = 255 >>> sigShift;
         this.maxBlue = 0;
 
-        const histoSize: number = 1 << (signifigantBits * 3);
+        const histoSize: number = 1 << (significantBits * 3);
         this.data = new Uint32Array(histoSize);
         this.data.fill(0);
 
@@ -45,13 +48,13 @@ export class Histogram {
                     continue;
                 }
                 const rgba: number[] = source.getPixelRGBA(x, y);
-                if (isHistoPixelValid !== null) {
-                    if (!isHistoPixelValid(rgba)) {
+                if (isHistogramPixelValid !== null) {
+                    if (!isHistogramPixelValid(rgba)) {
                         continue;
                     }
                 }
 
-                // Shift the pixel data into the range determined by signifigantBits
+                // Shift the pixel data into the range determined by significantBits
                 // after checking minAlpha the alpha data is no longer needed
                 rgba[0] = rgba[0] >>> sigShift;
                 rgba[1] = rgba[1] >>> sigShift;
@@ -77,7 +80,7 @@ export class Histogram {
 
     public readonly data: Uint32Array;
 
-    public readonly signifigantBits: number;
+    public readonly significantBits: number;
     public readonly total: number;
     public readonly minRed: number;
     public readonly maxRed: number;
@@ -88,7 +91,7 @@ export class Histogram {
 
     public getHistogramIndex = (r: number, g: number, b: number): number => {
         const index: number =
-            (r << (2 * this.signifigantBits)) + (g << this.signifigantBits) + b;
+            (r << (2 * this.significantBits)) + (g << this.significantBits) + b;
         if (index >= this.data.length) {
             throw new Error("RGB value is outside the bounds of the histogram");
         }

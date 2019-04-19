@@ -128,7 +128,7 @@ describe("Generating a histogram from an image", (): void => {
         expect(histogram.getHistogramValue(0, 4, 5)).toBe(100);
     });
 
-    test("Color bounds for different signifigant bits", () => {
+    test("Color bounds for different significant bits", () => {
         const pixels: ArrayPixelBlob = new ArrayPixelBlob(test200ImageData, 200, 133);
 
         const histogram1: Histogram = new Histogram(pixels, 1);

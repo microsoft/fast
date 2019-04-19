@@ -134,7 +134,12 @@ describe("Palette generation", () => {
         const results2: {
             short: ColorRGBA64[];
             long: ColorRGBA64[];
-        } = generateScaledPalettes(parseColorHexRGB("#006699"), 11, 63, 5);
+        } = generateScaledPalettes(parseColorHexRGB("#006699"), 11, {
+            targetSize: 63,
+            spacing: 5,
+            scaleColorLight: ColorPalette.defaultPaletteConfig.scaleColorLight,
+            scaleColorDark: ColorPalette.defaultPaletteConfig.scaleColorDark,
+        });
 
         expect(results2.short.length).toBe(11);
         expect(results2.long.length).toBe(63);

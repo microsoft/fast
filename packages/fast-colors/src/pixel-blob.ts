@@ -6,10 +6,15 @@ export interface PixelBlob {
     height: number;
     totalPixels: number;
     getPixel(x: number, y: number): ColorRGBA64;
-    // Returns an array of 4 numbers in the range [0,255] in order RGBA
+    /**
+     * Returns an array of 4 numbers in the range [0,255] in order RGBA
+     */
     getPixelRGBA(x: number, y: number): number[];
 }
 
+/**
+ * Creates an HTMLImageElement and loads the source argument as its src. Then an HTMLCanvasElement is created and the image is copied into the canvas. The pixel data is then returned from the CanvasRenderingContext2D for that canvas.
+ */
 export function loadImageData(source: string): Promise<ImageData> {
     return new Promise<ImageData>(
         (
@@ -54,6 +59,9 @@ export function loadImageData(source: string): Promise<ImageData> {
     );
 }
 
+// Note that this class and the function loadImageData are not covered by unit tests
+// due to not being able to create a valid canvas rendering context or ImageData object
+// in the unit test framework. ArrayPixelBlob is used instead in tests needing a PixelBlob.
 export class ImageDataPixelBlob implements PixelBlob {
     constructor(image: ImageData) {
         this.image = image;
@@ -69,15 +77,12 @@ export class ImageDataPixelBlob implements PixelBlob {
     public readonly totalPixels: number;
 
     public getPixel = (x: number, y: number): ColorRGBA64 => {
-        if (x < 0 || x >= this.width || y < 0 || y >= this.height) {
-            throw new Error("Requested pixel is outside of the image bounds");
-        }
-        const offset: number = (y * this.width + x) * 4;
+        const rgba: number[] = this.getPixelRGBA(x, y);
         return new ColorRGBA64(
-            this.image.data[offset] / 255,
-            this.image.data[offset + 1] / 255,
-            this.image.data[offset + 2] / 255,
-            this.image.data[offset + 3] / 255
+            rgba[0] / 255,
+            rgba[1] / 255,
+            rgba[2] / 255,
+            rgba[3] / 255
         );
     };
 

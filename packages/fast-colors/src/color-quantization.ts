@@ -14,29 +14,39 @@ export interface QuantizedColor {
 }
 
 export interface QuantizeConfig {
-    // must be in the range [1,8]. Memory use increases as 4*2^(3*signifigantBits).
-    // setting signifigantBits to 8 requires a 64 megabyte histogram
-    signifigantBits: number;
-    // lowering this value increases the CPU load but includes more pixels in the calculation
+    /**
+     * Must be in the range [1,8]. Memory use increases as 4*2^(3*significantBits). Setting significantBits to 8 requires a 64 megabyte histogram.
+     */
+    significantBits: number;
+    /**
+     * Lowering this value increases the CPU load but includes more pixels in the calculation.
+     */
     pixelSkipping: number;
-    // desired output palette size. the actual output may vary in edge cases such as images with very few colors.
+    /**
+     * Desired output palette size. Actual output may vary in edge cases such as images with very few colors.
+     */
     targetPaletteSize: number;
-    // For a final palette of size targetPaletteSize, we determine the first fractionByPopulation*targetPaletteSize
-    // using population as the only factor when determening sort order. For the rest of the colors the
-    // sort order is population * colorVolume. This helps highly contrasting colors in a small area to show
-    // up in some of the final output.
+    /**
+     * For a final palette of size targetPaletteSize, we determine the first fractionByPopulation*targetPaletteSize using population as the only factor when determening sort order. For the rest of the colors the sort order is population*colorVolume. This helps highly contrasting colors in a small area to show up in some of the final output.
+     */
+
     fractionByPopulation: number;
-    // This predicate can be used to screen out undesirable colors from the final output
-    // eg: excluding colors with a pixelCount below a min value
+    /**
+     * This predicate can be used to screen out undesirable colors from the final output. EG: excluding colors with a pixelCount below a min value.
+     */
     isBoxValid: ((box: PixelBox) => boolean) | null;
-    // This predicate can be used to exlude pixels from the histogram.
-    // It is passed numbers in the range [0,255] in rgba order
-    // EG: excluding colors too close to pure white
-    isHistoPixelValid: ((pixel: number[]) => boolean) | null;
+    /**
+     * This predicate can be used to exlude pixels from the histogram. It is passed numbers in the range [0,255] in rgba order. EG: Excluding colors too close to pure white or ones which are transparent.
+     */
+    isHistogramPixelValid: ((pixel: number[]) => boolean) | null;
+    /**
+     * If the quantization process goes on for more iterations than maxIterations it is aborted and the current results are returned. Only likely to happen in extreme edge cases with strange input.
+     */
+    maxIterations: number;
 }
 
 export const defaultQuantizeConfig: QuantizeConfig = {
-    signifigantBits: 5,
+    significantBits: 5,
     pixelSkipping: 5,
     targetPaletteSize: 64,
     fractionByPopulation: 0.85,
@@ -47,26 +57,29 @@ export const defaultQuantizeConfig: QuantizeConfig = {
         }
         return true;
     },
-    isHistoPixelValid: (pixel: number[]): boolean => {
+    isHistogramPixelValid: (pixel: number[]): boolean => {
         if (pixel[3] < 128) {
             // Ignore pixels that are too transparent
             return false;
         }
         return true;
     },
+    maxIterations: 1000,
 };
 
-const maxIterations: number = 1000;
-
+/**
+ * The image stored in the source PixelBlob is reduced down to a small set of colors.
+ * Based on the Modified Median Cut Quantization implementation from https://github.com/DanBloomberg/leptonica/blob/master/src/colorquant2.c
+ */
 export function quantize(
     source: PixelBlob,
     config: QuantizeConfig = defaultQuantizeConfig
 ): QuantizedColor[] {
     const histogram: Histogram = new Histogram(
         source,
-        config.signifigantBits,
+        config.significantBits,
         config.pixelSkipping,
-        config.isHistoPixelValid
+        config.isHistogramPixelValid
     );
     const initialBox: PixelBox = new PixelBox(
         histogram,
@@ -93,7 +106,7 @@ export function quantize(
     };
 
     let iterationCount: number = 0;
-    while (iterationCount <= maxIterations) {
+    while (iterationCount <= config.maxIterations) {
         if (queue.length > 0) {
             const currentBox: PixelBox = queue.shift()!;
 
@@ -135,7 +148,7 @@ export function quantize(
         });
 
         iterationCount = 0;
-        while (iterationCount <= maxIterations) {
+        while (iterationCount <= config.maxIterations) {
             if (queue.length > 0) {
                 const currentBox: PixelBox = queue.shift()!;
 

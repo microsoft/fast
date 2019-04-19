@@ -2,10 +2,15 @@
 import { ColorRGBA64 } from "./color-rgba-64";
 import { PixelBlob } from "./pixel-blob";
 
-// Uses a massive, ineffecient number array for pixel data. Not recomended for production use but
-// comes in handy in unit tests or environments where creating a canvas drawing context isn't an option
+/**
+ * Implements the PixelBlob interfaces using a a massive, ineffecient number array for pixel data. Not recomended for production use but comes in handy in unit tests or environments where creating a canvas drawing context isn't an option.
+ */
 export class ArrayPixelBlob implements PixelBlob {
-    // This expects a linear array of pixel data in RGBA format. Each entry should be in the range [0,255]
+    /**
+     * @param image Expects a linear array of pixel data in RGBA format. Each entry should be in the range [0,255]
+     * @param width width * height * 4 must exactly equal the length of the image array
+     * @param height width * height * 4 must exactly equal the length of the image array
+     */
     constructor(image: number[], width: number, height: number) {
         if (image.length !== 4 * width * height) {
             throw new Error("Invalid image length for supplied width and height");
