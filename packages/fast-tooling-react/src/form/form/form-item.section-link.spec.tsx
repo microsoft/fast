@@ -15,6 +15,7 @@ configure({ adapter: new Adapter() });
 const managedClasses: FormItemSectionLinkClassNameContract = {
     formItemSectionLink: "formItemSectionLink-class",
     formItemSectionLink_anchor: "formItemSectionLink_anchor-class",
+    formItemSectionLink_anchor__invalid: "formItemSectionLink_anchor__invalid-class",
     formItemSectionLink_badge: "formItemSectionLink_badge-class",
     formItemSectionLink_controlRegion: "formItemSectionLink_controlRegion-class",
     formItemSectionLink_defaultValueIndicator:
@@ -34,6 +35,7 @@ const formItemSectionLinkProps: FormItemSectionLinkProps = {
     onChange: jest.fn(),
     onUpdateSection: jest.fn(),
     invalidMessage: "",
+    schema: {},
 };
 
 describe("NumberField", () => {
@@ -189,6 +191,34 @@ describe("NumberField", () => {
 
         expect(rendered.html().includes(invalidMessage2)).toBe(true);
     });
+    test("should add an invalid data class if there is an invalid message", () => {
+        const invalidMessage: string = "Foo";
+        const rendered: any = mount(
+            <FormItemSectionLink
+                {...formItemSectionLinkProps}
+                managedClasses={managedClasses}
+                invalidMessage={invalidMessage}
+            />
+        );
+
+        expect(
+            rendered.find(`.${managedClasses.formItemSectionLink_anchor__invalid}`)
+        ).toHaveLength(1);
+    });
+    test("should not add an invalid data class if an invalid message has not been passed", () => {
+        const invalidMessage: string = "";
+        const rendered: any = mount(
+            <FormItemSectionLink
+                {...formItemSectionLinkProps}
+                managedClasses={managedClasses}
+                invalidMessage={invalidMessage}
+            />
+        );
+
+        expect(
+            rendered.find(`.${managedClasses.formItemSectionLink_anchor__invalid}`)
+        ).toHaveLength(0);
+    });
     test("should show a default indicator if default values exist and no data is available", () => {
         const rendered: any = mount(
             <FormItemSectionLink
@@ -216,5 +246,28 @@ describe("NumberField", () => {
         expect(
             rendered.find(`.${managedClasses.formItemSectionLink_defaultValueIndicator}`)
         ).toHaveLength(0);
+    });
+    test("should fire the onChange callback to update the data to the default value if the default value indicator is clicked", () => {
+        const defaultValue: any = {};
+        const callback: any = jest.fn();
+        const rendered: any = mount(
+            <FormItemSectionLink
+                {...formItemSectionLinkProps}
+                managedClasses={managedClasses}
+                data={undefined}
+                onChange={callback}
+                default={defaultValue}
+            />
+        );
+
+        expect(callback).not.toHaveBeenCalled();
+
+        rendered
+            .find(`.${managedClasses.formItemSectionLink_defaultValueIndicator}`)
+            .simulate("click");
+
+        expect(callback).toHaveBeenCalledTimes(1);
+        expect(callback.mock.calls[0][0]).toEqual("");
+        expect(callback.mock.calls[0][1]).toEqual(defaultValue);
     });
 });

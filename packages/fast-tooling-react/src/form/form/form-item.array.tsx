@@ -53,13 +53,7 @@ class FormItemArray extends FormItemBase<
                             "managedClasses.formItemArray_controlLabelRegion"
                         )}
                     >
-                        <label
-                            className={
-                                this.props.managedClasses.formItemArray_controlLabel
-                            }
-                        >
-                            {label}
-                        </label>
+                        <label className={this.getLabelClassNames()}>{label}</label>
                         {this.renderDefaultValueIndicator(
                             get(
                                 this.props,
@@ -268,6 +262,22 @@ class FormItemArray extends FormItemBase<
             classes = `${classes} ${get(
                 this.props,
                 "managedClasses.formItemArray_existingItemListItemLink__default"
+            )}`;
+        }
+
+        return classes;
+    }
+
+    private getLabelClassNames(): string {
+        let classes: string = get(
+            this.props,
+            "managedClasses.formItemArray_controlLabel"
+        );
+
+        if (this.props.invalidMessage !== "") {
+            classes += ` ${get(
+                this.props,
+                "managedClasses.formItemArray_controlLabel__invalid"
             )}`;
         }
 

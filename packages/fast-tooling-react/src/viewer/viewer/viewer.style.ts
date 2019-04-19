@@ -2,7 +2,7 @@ import {
     ComponentStyles,
     ComponentStyleSheet,
     CSSRules,
-} from "@microsoft/fast-jss-manager";
+} from "@microsoft/fast-jss-manager-react";
 import { ViewerClassNameContract } from "./viewer.class-name-contract";
 
 /* tslint:disable:max-line-length */

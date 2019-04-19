@@ -37,6 +37,7 @@ const selectProps: FormItemSelectProps = {
     options: [],
     onChange: jest.fn(),
     invalidMessage: "",
+    schema: {},
 };
 
 describe("Select", () => {
@@ -309,6 +310,30 @@ describe("Select", () => {
         expect(
             rendered.find(`.${managedClasses.formItemSelect_defaultValueIndicator}`)
         ).toHaveLength(0);
+    });
+    test("should fire the onChange callback to update the data to the default value if the default value indicator is clicked", () => {
+        const defaultValue: string = "foo";
+        const callback: any = jest.fn();
+        const rendered: any = mount(
+            <FormItemSelect
+                {...selectProps}
+                managedClasses={managedClasses}
+                options={["foo", "bar"]}
+                data={undefined}
+                onChange={callback}
+                default={defaultValue}
+            />
+        );
+
+        expect(callback).not.toHaveBeenCalled();
+
+        rendered
+            .find(`.${managedClasses.formItemSelect_defaultValueIndicator}`)
+            .simulate("click");
+
+        expect(callback).toHaveBeenCalledTimes(1);
+        expect(callback.mock.calls[0][0]).toEqual("");
+        expect(callback.mock.calls[0][1]).toEqual(defaultValue);
     });
     test("should show default values if they exist and no data is available", () => {
         const defaultValue: string = "foo";

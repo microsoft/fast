@@ -8,42 +8,15 @@ import FormItemSelect from "./form-item.select";
 import FormItemChildren from "./form-item.children";
 import FormItemCheckbox from "./form-item.checkbox";
 import { FormControlProps, FormControlState } from "./form-control.props";
-import FormOneOfAnyOf from "./form-one-of-any-of";
 import FormItemCommon from "./form-item.props";
 import { FormChildOptionItem } from "./form.props";
-import {
-    checkIsDifferentSchema,
-    generateExampleData,
-    getInitialOneOfAnyOfState,
-    getOneOfAnyOfSelectOptions,
-    isSelect,
-} from "../utilities";
+import { isSelect } from "../utilities";
 
-class FormControl extends React.Component<FormControlProps, FormControlState> {
+class FormControl extends React.Component<FormControlProps, {}> {
     public static displayName: string = "FormControl";
 
-    constructor(props: FormControlProps) {
-        super(props);
-
-        this.state = getInitialOneOfAnyOfState(this.props.schema, this.props.data);
-    }
-
     public render(): React.ReactNode {
-        return (
-            <React.Fragment>
-                {this.renderAnyOfOneOfSelect()}
-                {this.renderFormItem()}
-            </React.Fragment>
-        );
-    }
-
-    /**
-     * React lifecycle hook
-     */
-    public componentWillUpdate(nextProps: FormControlProps): void {
-        if (checkIsDifferentSchema(this.props.schema, nextProps.schema)) {
-            this.setState(getInitialOneOfAnyOfState(nextProps.schema, nextProps.data));
-        }
+        return <React.Fragment>{this.renderFormItem()}</React.Fragment>;
     }
 
     /**
@@ -54,7 +27,11 @@ class FormControl extends React.Component<FormControlProps, FormControlState> {
             return this.renderSelect();
         }
 
-        switch (this.state.schema.type) {
+        if (this.props.schema.oneOf || this.props.schema.anyOf) {
+            return this.renderSectionLink();
+        }
+
+        switch (this.props.schema.type) {
             case "boolean":
                 return this.renderCheckbox();
             case "number":
@@ -75,7 +52,6 @@ class FormControl extends React.Component<FormControlProps, FormControlState> {
             <FormItemChildren
                 {...this.getFormItemCommonProps()}
                 required={false}
-                schema={this.props.schema}
                 defaultChildOptions={this.props.schema.defaults || null}
                 childOptions={this.getChildOptions()}
                 onUpdateActiveSection={this.props.onUpdateActiveSection}
@@ -89,7 +65,6 @@ class FormControl extends React.Component<FormControlProps, FormControlState> {
     private renderArray(): React.ReactNode {
         return (
             <FormItemArray
-                schema={this.state.schema}
                 schemaLocation={this.props.schemaLocation}
                 untitled={this.props.untitled}
                 onUpdateActiveSection={this.props.onUpdateActiveSection}
@@ -154,37 +129,6 @@ class FormControl extends React.Component<FormControlProps, FormControlState> {
     }
 
     /**
-     * Renders a select if the root level has a oneOf or anyOf
-     */
-    private renderAnyOfOneOfSelect(): React.ReactNode {
-        if (
-            typeof this.state.oneOfAnyOf !== "undefined" &&
-            this.props.schema[this.state.oneOfAnyOf.type]
-        ) {
-            const options: React.ReactNode = getOneOfAnyOfSelectOptions(
-                this.props.schema,
-                this.state
-            );
-
-            return (
-                <FormOneOfAnyOf
-                    label={
-                        this.props.schema.title ||
-                        this.props.schema.description ||
-                        this.props.untitled
-                    }
-                    activeIndex={this.state.oneOfAnyOf.activeIndex}
-                    onUpdate={this.handleAnyOfOneOfClick}
-                >
-                    {options}
-                </FormOneOfAnyOf>
-            );
-        }
-
-        return null;
-    }
-
-    /**
      * Handles updating to another active section
      */
     private handleUpdateSection(schemaLocation: string, dataLocation: string): void {
@@ -199,26 +143,6 @@ class FormControl extends React.Component<FormControlProps, FormControlState> {
         dataLocation: string
     ): void => {
         this.handleUpdateSection(schemaLocation, dataLocation);
-    };
-
-    /**
-     * Handles updating the schema to another active oneOf/anyOf schema
-     */
-    private handleAnyOfOneOfClick = (activeIndex: number): void => {
-        const updatedData: any = generateExampleData(
-            this.props.schema[this.state.oneOfAnyOf.type][activeIndex],
-            ""
-        );
-
-        this.props.onChange(this.props.dataLocation, updatedData);
-
-        this.setState({
-            schema: this.props.schema[this.state.oneOfAnyOf.type][activeIndex],
-            oneOfAnyOf: {
-                type: this.state.oneOfAnyOf.type,
-                activeIndex,
-            },
-        });
     };
 
     /**
@@ -254,6 +178,7 @@ class FormControl extends React.Component<FormControlProps, FormControlState> {
             invalidMessage: this.props.invalidMessage,
             displayValidationBrowserDefault: this.props.displayValidationBrowserDefault,
             displayValidationInline: this.props.displayValidationInline,
+            schema: this.props.schema,
         };
     }
 }

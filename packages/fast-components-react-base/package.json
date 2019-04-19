@@ -2,7 +2,7 @@
   "name": "@microsoft/fast-components-react-base",
   "description": "FAST base components implemented in React.",
   "sideEffects": false,
-  "version": "4.2.0",
+  "version": "4.2.2",
   "author": {
     "name": "Microsoft",
     "url": "https://discord.gg/FcSNfg4"
@@ -70,11 +70,9 @@
     "@babel/core": "^7.0.0",
     "@babel/preset-env": "^7.1.0",
     "@babel/preset-react": "^7.0.0",
-    "@microsoft/fast-components-foundation-react": "^3.0.1",
-    "@microsoft/fast-development-site-react": "^4.0.8",
-    "@microsoft/fast-tooling-react": "^1.2.3",
+    "@microsoft/fast-development-site-react": "^4.0.10",
+    "@microsoft/fast-tooling-react": "^1.2.5",
     "@microsoft/fast-tslint-rules": "^3.0.3",
-    "@microsoft/fast-web-utilities": "^4.0.1",
     "@types/enzyme": "^3.1.15",
     "@types/jest": "^24.0.11",
     "@types/lodash-es": "^4.17.0",
@@ -84,7 +82,6 @@
     "babel-jest": "^24.5.0",
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-16": "^1.1.1",
-    "exenv-es6": "^1.0.0",
     "glob": "^7.1.2",
     "html-webpack-plugin": "^3.0.4",
     "jest": "^24.5.0",
@@ -92,7 +89,6 @@
     "lodash-es": "^4.0.0",
     "prettier": "1.14.3",
     "raf-polyfill": "^1.0.0",
-    "raf-throttle": "^2.0.3",
     "react": "^16.3.0",
     "react-dom": "^16.3.0",
     "react-test-renderer": "^16.3.0",
@@ -114,16 +110,16 @@
     "yargs": "^11.0.0"
   },
   "peerDependencies": {
-    "@microsoft/fast-components-foundation-react": "^2.0.0",
-    "@microsoft/fast-web-utilities": "^3.0.0",
-    "exenv-es6": "^1.0.0",
     "lodash-es": "^4.0.0",
-    "raf-throttle": "^2.0.3",
     "react": "^16.3.0",
     "react-dom": "^16.3.0"
   },
   "dependencies": {
     "@microsoft/fast-components-class-name-contracts-base": "^4.0.1",
+    "@microsoft/fast-components-foundation-react": "^3.0.1",
+    "@microsoft/fast-web-utilities": "^4.0.1",
+    "exenv-es6": "^1.0.0",
+    "raf-throttle": "^2.0.3",
     "utility-types": "^2.1.0"
   }
 }

@@ -33,6 +33,12 @@ export const oneOf: ExampleComponent = {
     schema: OneOfSchema,
 };
 
+import NestedOneOfSchema from "../../../src/__tests__/schemas/nested-one-of.schema.json";
+
+export const nestedOneOf: ExampleComponent = {
+    schema: NestedOneOfSchema,
+};
+
 import ObjectsSchema from "../../../src/__tests__/schemas/objects.schema.json";
 
 export const objects: ExampleComponent = {
@@ -43,6 +49,12 @@ import ArraysSchema from "../../../src/__tests__/schemas/arrays.schema.json";
 
 export const arrays: ExampleComponent = {
     schema: ArraysSchema,
+};
+
+import OneOfArraysSchema from "../../../src/__tests__/schemas/one-of-deeply-nested.schema.json";
+
+export const oneOfArrays: ExampleComponent = {
+    schema: OneOfArraysSchema,
 };
 
 import ChildrenSchema from "../../../src/__tests__/schemas/children.schema.json";

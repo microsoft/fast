@@ -35,6 +35,7 @@ const numberFieldProps: FormItemCommon = {
     label: "",
     onChange: jest.fn(),
     invalidMessage: "",
+    schema: {},
 };
 
 describe("NumberField", () => {
@@ -257,6 +258,29 @@ describe("NumberField", () => {
         expect(
             rendered.find(`.${managedClasses.formItemNumberField_defaultValueIndicator}`)
         ).toHaveLength(0);
+    });
+    test("should fire the onChange callback to update the data to the default value if the default value indicator is clicked", () => {
+        const defaultValue: number = 5;
+        const callback: any = jest.fn();
+        const rendered: any = mount(
+            <FormItemNumberField
+                {...numberFieldProps}
+                managedClasses={managedClasses}
+                data={undefined}
+                onChange={callback}
+                default={defaultValue}
+            />
+        );
+
+        expect(callback).not.toHaveBeenCalled();
+
+        rendered
+            .find(`.${managedClasses.formItemNumberField_defaultValueIndicator}`)
+            .simulate("click");
+
+        expect(callback).toHaveBeenCalledTimes(1);
+        expect(callback.mock.calls[0][0]).toEqual("");
+        expect(callback.mock.calls[0][1]).toEqual(defaultValue);
     });
     test("should show default values if they exist and no data is available", () => {
         const defaultValue: number = 5;

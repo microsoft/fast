@@ -923,6 +923,13 @@ export function getErrorFromDataLocation(
                     ) {
                         error = validationError.message;
                     }
+                } else if (
+                    validationError.dataPath.slice(
+                        0,
+                        matchingDataLocationToDataPath.length
+                    ) === matchingDataLocationToDataPath
+                ) {
+                    error = "Contains invalid data";
                 }
             }
         );

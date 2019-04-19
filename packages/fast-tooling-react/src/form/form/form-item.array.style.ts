@@ -1,5 +1,5 @@
 import { ellipsis, focusVisible } from "@microsoft/fast-jss-utilities";
-import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager";
+import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager-react";
 import {
     accent,
     applyCleanListStyle,
@@ -7,6 +7,7 @@ import {
     applyControlWrapper,
     applyFormItemIndicator,
     applyGlobalStyle,
+    applyInteractiveFormItemIndicator,
     applyInvalidMessage,
     applyLabelRegionStyle,
     applyLabelStyle,
@@ -80,6 +81,10 @@ const styles: ComponentStyles<FormItemArrayClassNameContract, {}> = {
     },
     formItemArray_controlLabel: {
         ...applyLabelStyle(),
+        borderBottom: "1px solid transparent",
+    },
+    formItemArray_controlLabel__invalid: {
+        borderColor: "red",
     },
     formItemArray_controlLabelRegion: {
         ...applyLabelRegionStyle(),
@@ -89,7 +94,7 @@ const styles: ComponentStyles<FormItemArrayClassNameContract, {}> = {
         ...applyControlRegion(),
     },
     formItemArray_defaultValueIndicator: {
-        ...applyFormItemIndicator(),
+        ...applyInteractiveFormItemIndicator(),
     },
     formItemArray_existingItemList: {
         ...applyCleanListStyle(),

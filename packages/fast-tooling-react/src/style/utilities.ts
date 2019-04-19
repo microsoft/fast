@@ -1,4 +1,4 @@
-import { CSSRules } from "@microsoft/fast-jss-manager";
+import { CSSRules } from "@microsoft/fast-jss-manager-react";
 import {
     Direction,
     ellipsis,
@@ -48,6 +48,31 @@ export function applyTriggerStyle(color: string): CSSRules<{}> {
         boxSizing: "border-box",
         color,
         ...ellipsis(),
+    };
+}
+
+export function applyInteractiveFormItemIndicator(): CSSRules<{}> {
+    return {
+        display: "flex",
+        padding: "0",
+        alignSelf: "center",
+        background: "transparent",
+        border: "1px solid transparent",
+        borderRadius: "2px",
+        "& svg": {
+            fill: foreground800,
+            minWidth: "14px",
+            padding: "1px 4px",
+        },
+        "&:hover": {
+            "& svg": {
+                fill: accent,
+            },
+        },
+        "&:focus": {
+            borderColor: accent,
+            outline: "none",
+        },
     };
 }
 

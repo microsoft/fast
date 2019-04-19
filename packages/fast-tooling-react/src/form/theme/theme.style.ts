@@ -9,7 +9,7 @@ import {
     foreground200,
     foreground300,
 } from "../../style";
-import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager";
+import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager-react";
 import { ThemeClassNameContract } from "./theme.props";
 
 /**

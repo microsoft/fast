@@ -136,40 +136,6 @@ describe("FormControl", () => {
 
         expect(rendered.find("FormItemSelect")).toHaveLength(1);
     });
-    test("should render a oneOf/anyOf select when the keywords are available", () => {
-        const rendered: any = mount(
-            <FormControl
-                {...formControlProps}
-                schema={oneOfSchema}
-                schemaLocation={""}
-                dataLocation={""}
-                propertyName={""}
-                data={{}}
-            />
-        );
-
-        expect(rendered.find("FormOneOfAnyOf")).toHaveLength(1);
-    });
-    test("should handle the onChange of a oneOf/anyOf select", () => {
-        const callback: any = jest.fn();
-        const rendered: any = mount(
-            <FormControl
-                {...formControlProps}
-                schema={oneOfSchema}
-                schemaLocation={""}
-                dataLocation={""}
-                propertyName={""}
-                data={{}}
-                onChange={callback}
-            />
-        );
-
-        rendered.find("select").simulate("change", { target: { value: "1" } });
-
-        expect(callback).toHaveBeenCalled();
-        expect(callback.mock.calls[0][0]).toEqual("");
-        expect(typeof callback.mock.calls[0][1].number).toEqual("number");
-    });
     test("should restrict the child options if ids have been passed", () => {
         const renderedWithDefault: any = mount(
             <FormControl

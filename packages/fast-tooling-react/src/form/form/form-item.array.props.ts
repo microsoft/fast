@@ -12,6 +12,7 @@ export interface FormItemArrayClassNameContract {
     formItemArray_badge?: string;
     formItemArray_control?: string;
     formItemArray_controlLabel?: string;
+    formItemArray_controlLabel__invalid?: string;
     formItemArray_controlLabelRegion?: string;
     formItemArray_controlRegion?: string;
     formItemArray_defaultValueIndicator?: string;
@@ -37,11 +38,6 @@ export enum ArrayAction {
 }
 
 export interface FormItemArrayProps extends FormItemCommon {
-    /**
-     * The schema
-     */
-    schema: any;
-
     /**
      * The location of the schema
      */
