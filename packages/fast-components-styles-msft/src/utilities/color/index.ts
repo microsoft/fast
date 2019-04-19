@@ -64,6 +64,8 @@ export {
     accentFillLargeSelected,
 } from "./accent-fill";
 
+export { neutralFillCardRest } from "./neutral-fill-card";
+
 /**
  * Border exports
  */
