@@ -227,4 +227,23 @@ describe("context menu", (): void => {
 
         expect(spy).toHaveBeenCalledTimes(1);
     });
+
+    test("Should accept a custom onKeyDown callback", (): void => {
+        const spy: jest.SpyInstance = jest.fn();
+        const eventObject: any = {};
+
+        const rendered: any = mount(
+            <ContextMenu onKeyDown={spy as any}>
+                <div role="menuitem">One</div>
+                <div role="menuitem">two</div>
+                <div role="menuitem">three</div>
+                <div role="menuitem">four</div>
+            </ContextMenu>
+        );
+
+        rendered.simulate("keydown", eventObject);
+
+        expect(spy).toHaveBeenCalledTimes(1);
+        expect(spy).toHaveBeenCalledWith(eventObject);
+    });
 });
