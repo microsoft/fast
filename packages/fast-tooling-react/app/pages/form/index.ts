@@ -87,6 +87,12 @@ export const badge: ExampleComponent = {
     schema: BadgeSchema,
 };
 
+import ConstKeywordSchema from "../../../src/__tests__/schemas/const.schema.json";
+
+export const constKeyword: ExampleComponent = {
+    schema: ConstKeywordSchema,
+};
+
 import InvalidDataSchema from "../../../src/__tests__/schemas/invalid-data.schema.json";
 import InvalidDataDataSet from "../../../src/__tests__/datasets/invalid-data";
 
