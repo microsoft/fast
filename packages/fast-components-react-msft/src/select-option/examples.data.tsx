@@ -48,7 +48,7 @@ export default {
             } as any,
         },
         {
-            children: "html children",
+            children: "Hello world",
         },
     ],
 } as ComponentFactoryExample<SelectOptionProps>;
