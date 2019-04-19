@@ -1,4 +1,4 @@
-import { ComponentStyles } from "@microsoft/fast-jss-manager";
+import { ComponentStyles } from "@microsoft/fast-jss-manager-react";
 import { CSSPositionClassNameContract } from "./position/position.style";
 import { background300, foreground300 } from "../style";
 
@@ -11,7 +11,7 @@ const styles: ComponentStyles<CSSEditorClassNameContract, {}> = {
         background: background300,
         color: foreground300,
         height: "100%",
-        padding: "0 0 0 10px",
+        padding: "0 10px",
     },
 };
 

@@ -1,4 +1,4 @@
-import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager";
+import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager-react";
 import {
     applyControl,
     applyControlWrapper,

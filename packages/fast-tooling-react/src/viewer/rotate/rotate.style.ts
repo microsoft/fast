@@ -2,7 +2,7 @@ import {
     ComponentStyles,
     ComponentStyleSheet,
     CSSRules,
-} from "@microsoft/fast-jss-manager";
+} from "@microsoft/fast-jss-manager-react";
 import { RotateClassNameContract } from "./rotate.class-name-contract";
 import { accent, applyInputBackplateStyle, background800 } from "../../style";
 

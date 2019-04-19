@@ -1,5 +1,6 @@
-import { ComponentStyles } from "@microsoft/fast-jss-manager";
+import { ComponentStyles } from "@microsoft/fast-jss-manager-react";
 import {
+    applyControlWrapper,
     applyInputStyle,
     applySelectInputStyles,
     applySelectSpanStyles,
@@ -25,7 +26,7 @@ export interface CSSPositionClassNameContract {
 const styles: ComponentStyles<CSSPositionClassNameContract, {}> = {
     cssPosition: {
         fontSize: "11px",
-        paddingRight: "10px",
+        ...applyControlWrapper(),
     },
     cssPosition_control: {
         ...applySelectSpanStyles(),

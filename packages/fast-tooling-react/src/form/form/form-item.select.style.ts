@@ -1,10 +1,11 @@
-import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager";
+import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager-react";
 import {
     applyControl,
     applyControlRegion,
     applyControlWrapper,
     applyFormItemDisabled,
     applyFormItemIndicator,
+    applyInteractiveFormItemIndicator,
     applyInvalidMessage,
     applyLabelRegionStyle,
     applyLabelStyle,
@@ -44,7 +45,7 @@ const styles: ComponentStyles<FormItemSelectClassNameContract, {}> = {
         ...applySelectInputStyles(),
     },
     formItemSelect_defaultValueIndicator: {
-        ...applyFormItemIndicator(),
+        ...applyInteractiveFormItemIndicator(),
     },
     formItemSelect_invalidMessage: {
         ...applyInvalidMessage(),

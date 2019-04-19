@@ -459,9 +459,11 @@ function getSchemaOneOfAnyOfLocationSegments(schema: any, data: any): string[] {
  */
 function getValidAnyOfOneOfIndex(oneOfAnyOf: string, data: any, schema: any): number {
     const validation: ajv.Ajv = new ajv({ schemaId: "auto" });
-    return schema[oneOfAnyOf].findIndex(
+    const index: number = schema[oneOfAnyOf].findIndex(
         (item: any): boolean | PromiseLike<any> => validation.validate(item, data)
     );
+
+    return index === -1 ? 0 : index;
 }
 
 /**

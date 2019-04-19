@@ -65,7 +65,6 @@
     "@types/lodash-es": "^4.17.0",
     "babel-core": "^7.0.0-bridge.0",
     "babel-jest": "^24.5.0",
-    "exenv-es6": "^1.0.0",
     "jest": "^24.5.0",
     "lodash-es": "^4.17.10",
     "prettier": "1.14.3",
@@ -77,7 +76,9 @@
     "typescript": "3.3.3"
   },
   "peerDependencies": {
-    "exenv-es6": "^1.0.0",
     "lodash-es": "^4.17.10"
+  },
+  "dependencies": {
+    "exenv-es6": "^1.0.0"
   }
 }

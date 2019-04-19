@@ -1,4 +1,4 @@
-import { ManagedClasses } from "@microsoft/fast-jss-manager";
+import { ManagedClasses } from "@microsoft/fast-jss-manager-react";
 import { CSSPositionClassNameContract } from "./position.style";
 
 export enum PositionValue {

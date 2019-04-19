@@ -7,6 +7,8 @@ import Foundation, {
 import { CSSEditorHandledProps, CSSEditorUnhandledProps } from "./editor.props";
 import { CSSPosition, CSSPositionValues, Location, PositionValue } from "./position";
 import { CSSSpacing, CSSSpacingValues, SpacingProperty } from "./spacing";
+import { CSSWidth, CSSWidthValues } from "./width";
+import { CSSHeight, CSSHeightValues } from "./height";
 
 export default class CSSEditor extends Foundation<
     CSSEditorHandledProps,
@@ -41,6 +43,8 @@ export default class CSSEditor extends Foundation<
                     data={this.getPositionData()}
                     onChange={this.handleCSSUpdate}
                 />
+                <CSSWidth data={this.getWidthData()} onChange={this.handleCSSUpdate} />
+                <CSSHeight data={this.getHeightData()} onChange={this.handleCSSUpdate} />
             </React.Fragment>
         );
     }
@@ -70,6 +74,20 @@ export default class CSSEditor extends Foundation<
         ]);
 
         return positionData;
+    }
+
+    /**
+     * Gets the height value
+     */
+    private getHeightData(): CSSHeightValues {
+        return pick(this.props.data, ["height"]);
+    }
+
+    /**
+     * Gets the width value
+     */
+    private getWidthData(): CSSWidthValues {
+        return pick(this.props.data, ["width"]);
     }
 
     private handleCSSUpdate = <D extends {}>(updatedCSS: D): void => {

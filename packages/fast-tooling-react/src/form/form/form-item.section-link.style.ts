@@ -1,10 +1,11 @@
-import { ComponentStyles } from "@microsoft/fast-jss-manager";
+import { ComponentStyles } from "@microsoft/fast-jss-manager-react";
 import { ellipsis } from "@microsoft/fast-jss-utilities";
 import {
     applyControl,
     applyControlRegion,
     applyControlSingleLineWrapper,
     applyFormItemIndicator,
+    applyInteractiveFormItemIndicator,
     applyInvalidMessage,
     applySoftRemove,
     applySoftRemoveInput,
@@ -22,6 +23,10 @@ const styles: ComponentStyles<FormItemSectionLinkClassNameContract, {}> = {
         cursor: "pointer",
         fontSize: "12px",
         lineHeight: "23px",
+        borderBottom: "1px solid transparent",
+    },
+    formItemSectionLink_anchor__invalid: {
+        borderColor: "red",
     },
     formItemSectionLink_badge: {
         ...applyFormItemIndicator(),
@@ -30,7 +35,7 @@ const styles: ComponentStyles<FormItemSectionLinkClassNameContract, {}> = {
         ...applyControlRegion(),
     },
     formItemSectionLink_defaultValueIndicator: {
-        ...applyFormItemIndicator(),
+        ...applyInteractiveFormItemIndicator(),
     },
     formItemSectionLink_invalidMessage: {
         ...applyInvalidMessage(),
