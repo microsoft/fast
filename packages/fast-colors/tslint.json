@@ -6,6 +6,7 @@
     "linterOptions": {
         "exclude": [
             "node_modules/**",
+            "__test_images__/**",
             "dist/**"
         ]
     }
