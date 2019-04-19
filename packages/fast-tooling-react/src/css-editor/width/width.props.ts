@@ -1,4 +1,4 @@
-import { ManagedClasses } from "@microsoft/fast-jss-manager";
+import { ManagedClasses } from "@microsoft/fast-jss-manager-react";
 import { CSSWidthClassNameContract } from "./width.style";
 
 export interface CSSWidthValues {
