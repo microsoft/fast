@@ -7,6 +7,8 @@ import {
 import {
     DesignSystem,
     DesignSystemDefaults,
+    DesignSystemResolver,
+    neutralFillCardRest,
 } from "@microsoft/fast-components-styles-msft";
 import {
     BackgroundHandledProps,
@@ -42,14 +44,19 @@ export default class Background extends Foundation<
     }
 
     private withContext = (designSystem: DesignSystem): JSX.Element => {
-        const background: string | number = this.props.value;
+        const background: string | number | DesignSystemResolver<string> = this.props
+            .value;
         const color: string =
             typeof background === "string"
                 ? background
-                : has(designSystem.neutralPalette, background)
-                    ? get(designSystem.neutralPalette, background)
-                    : DesignSystemDefaults.neutralPalette[background] ||
-                      DesignSystemDefaults.neutralPalette[Background.defaultProps.value];
+                : typeof background === "function"
+                    ? background(designSystem)
+                    : has(designSystem.neutralPalette, background)
+                        ? get(designSystem.neutralPalette, background)
+                        : DesignSystemDefaults.neutralPalette[background] ||
+                          DesignSystemDefaults.neutralPalette[
+                              Background.defaultProps.value as LightModeBackgrounds
+                          ];
 
         const style: React.CSSProperties = Object.assign({}, this.props.style, {
             backgroundColor: color,
