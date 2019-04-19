@@ -6,28 +6,21 @@ import defaultDesignSystem, { DesignSystem } from "../../design-system";
 describe("neutralFillCard", (): void => {
     test("should opperate on design system defaults", (): void => {
         expect(neutralFillCardRest({} as DesignSystem)).toBe(
-            defaultDesignSystem.neutralPalette[0]
+            defaultDesignSystem.neutralPalette[defaultDesignSystem.neutralFillCardDelta]
         );
     });
-    test("should return the color at designSystem.neutralPalette[0] when background color is the first or second step in the neutral ramp", (): void => {
-        expect(
-            defaultDesignSystem.neutralPalette.indexOf(
-                neutralFillCardRest(
-                    Object.assign({}, defaultDesignSystem, {
-                        backgroundColor: defaultDesignSystem[0],
-                    })
+    test("should get darker when the index of the backgroundColor is lower than the offset index", (): void => {
+        for (let i: number = 0; i < defaultDesignSystem.neutralFillCardDelta; i++) {
+            expect(
+                defaultDesignSystem.neutralPalette.indexOf(
+                    neutralFillCardRest(
+                        Object.assign({}, defaultDesignSystem, {
+                            backgroundColor: defaultDesignSystem.neutralPalette[i],
+                        })
+                    )
                 )
-            )
-        ).toBe(0);
-        expect(
-            defaultDesignSystem.neutralPalette.indexOf(
-                neutralFillCardRest(
-                    Object.assign({}, defaultDesignSystem, {
-                        backgroundColor: defaultDesignSystem[1],
-                    })
-                )
-            )
-        ).toBe(0);
+            ).toBe(defaultDesignSystem.neutralFillCardDelta + i);
+        }
     });
     test("should return the color at two steps lower than the background color", (): void => {
         for (let i: number = 2; i < defaultDesignSystem.neutralPalette.length; i++) {
