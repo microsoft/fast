@@ -8,7 +8,8 @@
     "properties": {
         "inputId": {
             "title": "Unique Id",
-            "type": "string"
+            "type": "string",
+            "example": "radio01"
         },
         "checked": {
             "title": "Checked",
@@ -33,5 +34,8 @@
                 "text"
             ]
         }
-    }
+    },
+    "required": [
+        "inputId"
+    ]
 }
