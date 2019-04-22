@@ -1,6 +1,6 @@
 import React from "react";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
-import { get } from "lodash-es";
+import { get, isEqual } from "lodash-es";
 import { KeyCodes } from "@microsoft/fast-web-utilities";
 import { SelectClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import { SelectHandledProps, SelectProps, SelectUnhandledProps } from "./select.props";
@@ -57,11 +57,13 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
     constructor(props: SelectProps) {
         super(props);
 
-        let initialSelection: ListboxItemProps[] = Listbox.getListboxItemDataFromIds(
-            this.props.selectedItems !== undefined
-                ? this.props.selectedItems
-                : this.props.defaultSelection,
-            this.props.children
+        let initialSelection: ListboxItemProps[] = this.trimSelection(
+            Listbox.getListboxItemDataFromIds(
+                this.props.selectedItems !== undefined
+                    ? this.props.selectedItems
+                    : this.props.defaultSelection,
+                this.props.children
+            )
         );
 
         if (!this.props.multiselectable && initialSelection.length > 1) {
@@ -77,26 +79,11 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
     }
 
     public componentDidUpdate(prevProps: SelectProps): void {
-        let updatedSelection: ListboxItemProps[];
+        let shouldUpdateSelection: boolean = false;
         let updatedMenuVisibility: boolean = this.state.isMenuOpen;
 
-        if (prevProps.selectedItems !== this.props.selectedItems) {
-            updatedSelection = Listbox.getListboxItemDataFromIds(
-                this.props.selectedItems,
-                this.props.children
-            );
-        }
-
         if (prevProps.multiselectable !== this.props.multiselectable) {
-            // in the case that the multiselect is turned off but there are multiple items selected,
-            // choose the first item in the list of selected items
-            if (
-                this.props.multiselectable === false &&
-                this.state.selectedItems.length > 1
-            ) {
-                updatedSelection = [this.state.selectedItems[0]];
-            }
-
+            shouldUpdateSelection = true;
             updatedMenuVisibility = this.checkPropsForMenuState();
         }
 
@@ -104,12 +91,21 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
             updatedMenuVisibility = this.checkPropsForMenuState();
         }
 
-        if (updatedSelection !== undefined) {
-            this.updateSelection(updatedSelection);
-        }
-
         if (updatedMenuVisibility !== this.state.isMenuOpen) {
             this.toggleMenu(updatedMenuVisibility);
+        }
+
+        if (prevProps.selectedItems !== this.props.selectedItems) {
+            this.updateSelectionFromProps();
+            return;
+        }
+
+        if (shouldUpdateSelection) {
+            this.updateSelection(
+                this.state.selectedItems.map((thisItem: ListboxItemProps) => {
+                    return thisItem;
+                })
+            );
         }
     }
 
@@ -275,16 +271,50 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
      * Updates selection state and associated values
      */
     private updateSelection = (newSelection: ListboxItemProps[]): void => {
+        newSelection = this.trimSelection(newSelection);
+
         const newValue: string | string[] = this.getValueFromSelection(newSelection);
         const newDisplayString: string = this.getFormattedDisplayString(newSelection);
-        this.setState({
-            selectedItems: newSelection,
-            value: newValue,
-            displayString: newDisplayString,
-        });
-        if (typeof this.props.onValueChange === "function") {
+        if (
+            typeof this.props.onValueChange === "function" &&
+            !isEqual(newSelection, this.state.selectedItems)
+        ) {
             this.props.onValueChange(newValue, newSelection, newDisplayString);
         }
+
+        if (this.props.selectedItems === undefined) {
+            this.setState({
+                selectedItems: newSelection,
+                value: newValue,
+                displayString: newDisplayString,
+            });
+        }
+    };
+
+    /**
+     * Updates selection state and associated values from props
+     */
+    private updateSelectionFromProps = (): void => {
+        const controlledSelection: ListboxItemProps[] = this.trimSelection(
+            Listbox.getListboxItemDataFromIds(
+                this.props.selectedItems,
+                this.props.children
+            )
+        );
+        this.setState({
+            selectedItems: controlledSelection,
+            value: this.getValueFromSelection(controlledSelection),
+            displayString: this.getFormattedDisplayString(controlledSelection),
+        });
+    };
+
+    /**
+     * Trims the selection for single item mode
+     */
+    private trimSelection = (selection: ListboxItemProps[]): ListboxItemProps[] => {
+        return this.props.multiselectable === false && selection.length > 1
+            ? [this.state.selectedItems[0]]
+            : selection;
     };
 
     /**
