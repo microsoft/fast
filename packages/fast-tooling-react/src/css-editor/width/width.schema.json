@@ -1,0 +1,19 @@
+{
+    "$schema": "http://json-schema.org/schema#",
+    "title": "CSS Width",
+    "description": "A CSS width component's schema definition.",
+    "id": "@microsoft/fast-tooling-react/css-width",
+    "type": "object",
+    "properties": {
+        "data": {
+            "title": "CSS Values",
+            "type": "object",
+            "properties": {
+                "width": {
+                    "title": "Width",
+                    "type": "string"
+                }
+            }
+        }
+    }
+}
