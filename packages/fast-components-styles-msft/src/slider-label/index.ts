@@ -31,6 +31,7 @@ const styles: ComponentStyles<SliderLabelClassNameContract, DesignSystem> = (
 
         sliderLabel_label: {
             ...applyScaledTypeRamp("t9"),
+            whiteSpace: "nowrap",
             color: neutralForegroundActive,
         },
 

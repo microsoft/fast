@@ -12,6 +12,7 @@ import {
     SliderUnhandledProps,
 } from "./slider.props";
 import { SliderClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
+import { Direction } from "@microsoft/fast-web-utilities";
 import { DisplayNamePrefix } from "../utilities";
 import { SliderContext, SliderContextType } from "./slider-context";
 import SliderTrackItem, {
@@ -83,7 +84,7 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
     private barMinPixel: number = 0;
     private incrementTimer: NodeJS.Timer;
     private lastIncrementDelay: number = Slider.baseIncrementDelay;
-    private direction: string = "ltr";
+    private direction: Direction = Direction.ltr;
 
     /**
      * constructor
@@ -91,58 +92,65 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
     constructor(props: SliderProps) {
         super(props);
 
-        let initialLowerValue: number = 0;
-        let initialUpperValue: number = 0;
+        let initialValue: SliderRange = {
+            minValue: this.props.range.minValue,
+            maxValue: this.props.range.maxValue,
+        };
 
         if (this.props.value !== undefined) {
-            initialLowerValue = this.valueAsRange(this.props.value).minValue;
-            initialUpperValue = this.valueAsRange(this.props.value).maxValue;
+            initialValue = this.getConstrainedValue(
+                this.props.value,
+                this.props.constrainedRange,
+                this.props.step
+            );
         } else if (this.props.initialValue !== undefined) {
-            initialLowerValue = this.valueAsRange(this.props.initialValue).minValue;
-            initialUpperValue = this.valueAsRange(this.props.initialValue).maxValue;
+            initialValue = this.getConstrainedValue(
+                this.props.initialValue,
+                this.props.constrainedRange,
+                this.props.step
+            );
         } else {
+            let defaultValue: SliderRange = {
+                minValue: 0,
+                maxValue: 0,
+            };
             switch (this.props.mode) {
                 case SliderMode.singleValue:
-                    initialLowerValue = this.contstrainToStep(
-                        this.percentAsValue(50),
-                        this.props.step
-                    );
-                    initialUpperValue = this.contstrainToStep(
-                        this.percentAsValue(50),
-                        this.props.step
-                    );
+                    defaultValue = {
+                        minValue: this.percentAsValue(50),
+                        maxValue: this.percentAsValue(50),
+                    };
                     break;
                 case SliderMode.adjustBoth:
-                    initialLowerValue = this.contstrainToStep(
-                        this.percentAsValue(40),
-                        this.props.step
-                    );
-                    initialUpperValue = this.contstrainToStep(
-                        this.percentAsValue(60),
-                        this.props.step
-                    );
+                    defaultValue = {
+                        minValue: this.percentAsValue(40),
+                        maxValue: this.percentAsValue(60),
+                    };
                     break;
                 case SliderMode.adustLowerValue:
-                    initialLowerValue = this.contstrainToStep(
-                        this.percentAsValue(50),
-                        this.props.step
-                    );
-                    initialUpperValue = this.props.range.maxValue;
+                    defaultValue = {
+                        minValue: this.percentAsValue(50),
+                        maxValue: this.props.range.maxValue,
+                    };
                     break;
                 case SliderMode.adustUpperValue:
-                    initialLowerValue = this.props.range.minValue;
-                    initialUpperValue = this.contstrainToStep(
-                        this.percentAsValue(50),
-                        this.props.step
-                    );
+                    defaultValue = {
+                        minValue: this.props.range.minValue,
+                        maxValue: this.percentAsValue(50),
+                    };
                     break;
             }
+            initialValue = this.getConstrainedValue(
+                defaultValue,
+                this.props.constrainedRange,
+                this.props.step
+            );
         }
 
         this.state = {
             dragValue: -1,
-            upperValue: initialUpperValue,
-            lowerValue: initialLowerValue,
+            upperValue: initialValue.maxValue,
+            lowerValue: initialValue.minValue,
             activeThumb: null,
             isDragging: false,
             isIncrementing: false,
@@ -163,8 +171,17 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
             this.suspendActiveOperations();
         }
 
-        if (
-            prevProps.value !== this.props.value ||
+        if (prevProps.value !== this.props.value && this.props.value !== undefined) {
+            const newValue: SliderRange = this.getConstrainedValue(
+                this.props.value,
+                this.props.constrainedRange,
+                this.props.step
+            );
+            this.setState({
+                lowerValue: newValue.minValue,
+                upperValue: newValue.maxValue,
+            });
+        } else if (
             prevProps.constrainedRange !== this.props.constrainedRange ||
             prevProps.step !== this.props.step
         ) {
@@ -340,6 +357,32 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
     }
 
     /**
+     *  Constrains a value to be within the provided constraint range and step
+     */
+    private getConstrainedValue = (
+        baseValue: SliderRange | number,
+        constraint: SliderRange,
+        step: number
+    ): SliderRange => {
+        if (constraint === null || constraint === undefined) {
+            constraint = this.props.range;
+        }
+
+        const constrainedRange: SliderRange = {
+            minValue: this.constrainToRange(
+                this.constrainToStep(this.valueAsRange(baseValue).minValue, step),
+                constraint
+            ),
+            maxValue: this.constrainToRange(
+                this.constrainToStep(this.valueAsRange(baseValue).maxValue, step),
+                constraint
+            ),
+        };
+
+        return constrainedRange;
+    };
+
+    /**
      *  Maps the default thumb managed classes to the appropriate slider managed classes
      */
     private getThumbManagedClasses = (
@@ -462,8 +505,7 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
 
         switch (this.props.mode) {
             case SliderMode.adjustBoth:
-                formattedValue =
-                    "[" + this.state.lowerValue + "," + this.state.upperValue + "]";
+                formattedValue = `[${this.state.lowerValue},${this.state.upperValue}]`;
                 break;
 
             case SliderMode.adustUpperValue:
@@ -570,15 +612,14 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
         const closest: Element = this.rootElement.current.closest(`[dir]`);
 
         if (closest === null) {
-            this.direction = "ltr";
+            this.direction = Direction.ltr;
             return;
         }
 
         const foundDir: string = closest.getAttribute("dir");
 
-        if (foundDir === "ltr" || foundDir === "rtl") {
-            this.direction = foundDir;
-        }
+        this.direction =
+            closest.getAttribute("dir") === "rtl" ? Direction.rtl : Direction.ltr;
     };
 
     /**
@@ -751,7 +792,7 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
                 break;
             case KeyCodes.arrowRight:
                 this.startIncrementing(
-                    this.direction === "ltr" ? 1 : -1,
+                    this.direction === Direction.ltr ? 1 : -1,
                     false,
                     thumb,
                     event
@@ -762,7 +803,7 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
                 break;
             case KeyCodes.arrowLeft:
                 this.startIncrementing(
-                    this.direction === "ltr" ? -1 : 1,
+                    this.direction === Direction.ltr ? -1 : 1,
                     false,
                     thumb,
                     event
@@ -913,47 +954,48 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
     };
 
     /**
-     *  Apply value changes, only place this should happen outside of constructor
+     *  Apply value changes, only place this should happen outside of constructor and updated props
      */
     private updateValues = (lowerValue: number, upperValue: number): void => {
         let newLowerValue: number = this.state.lowerValue;
         let newUpperValue: number = this.state.upperValue;
 
-        if (this.props.value !== undefined) {
-            newLowerValue = this.valueAsRange(this.props.value).minValue;
-            newUpperValue = this.valueAsRange(this.props.value).maxValue;
-        } else {
-            if (lowerValue !== null) {
-                newLowerValue = this.constrainToRange(
-                    this.contstrainToStep(lowerValue, this.props.step),
-                    {
-                        minValue: this.props.range.minValue,
-                        maxValue:
-                            this.props.mode === SliderMode.adjustBoth
-                                ? this.state.upperValue
-                                : this.props.range.maxValue,
-                    }
-                );
-            }
+        if (lowerValue !== null) {
+            newLowerValue = this.constrainToRange(
+                this.constrainToStep(lowerValue, this.props.step),
+                {
+                    minValue: this.props.range.minValue,
+                    maxValue:
+                        this.props.mode === SliderMode.adjustBoth
+                            ? this.state.upperValue
+                            : this.props.range.maxValue,
+                }
+            );
+        }
 
-            if (upperValue !== null) {
-                newUpperValue = this.constrainToRange(
-                    this.contstrainToStep(upperValue, this.props.step),
-                    {
-                        minValue:
-                            this.props.mode === SliderMode.adjustBoth
-                                ? this.state.lowerValue
-                                : this.props.range.minValue,
-                        maxValue: this.props.range.maxValue,
-                    }
-                );
-            }
+        if (upperValue !== null) {
+            newUpperValue = this.constrainToRange(
+                this.constrainToStep(upperValue, this.props.step),
+                {
+                    minValue:
+                        this.props.mode === SliderMode.adjustBoth
+                            ? this.state.lowerValue
+                            : this.props.range.minValue,
+                    maxValue: this.props.range.maxValue,
+                }
+            );
         }
 
         if (
-            this.state.upperValue !== newUpperValue ||
-            this.state.lowerValue !== newLowerValue
+            this.state.upperValue === newUpperValue &&
+            this.state.lowerValue === newLowerValue
         ) {
+            return;
+        }
+
+        this.invokeValueChange(newLowerValue, newUpperValue);
+
+        if (this.props.value === undefined) {
             this.setState({
                 lowerValue:
                     this.props.mode === SliderMode.singleValue
@@ -961,8 +1003,6 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
                         : newLowerValue,
                 upperValue: newUpperValue,
             });
-
-            this.invokeValueChange(newLowerValue, newUpperValue);
         }
     };
 
@@ -1052,7 +1092,7 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
     /**
      * Ensures a value is an even multiple of the slider step increment
      */
-    private contstrainToStep = (value: number, step: number): number => {
+    private constrainToStep = (value: number, step: number): number => {
         if (step === 0) {
             return value;
         }

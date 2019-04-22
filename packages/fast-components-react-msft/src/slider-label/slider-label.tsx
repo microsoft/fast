@@ -11,6 +11,7 @@ import {
     SliderTrackItem as BaseSliderTrackItem,
     SliderTrackItemAnchor,
 } from "@microsoft/fast-components-react-base";
+import { Direction } from "@microsoft/fast-web-utilities";
 import { get } from "lodash-es";
 import { DisplayNamePrefix } from "../utilities";
 
@@ -88,7 +89,7 @@ class SliderLabel extends Foundation<
             )}`;
         }
 
-        if ((this.context as SliderContextType).sliderDirection === "rtl") {
+        if ((this.context as SliderContextType).sliderDirection === Direction.rtl) {
             classNames = `${classNames} ${get(
                 this.props,
                 "managedClasses.sliderLabel__rtl",

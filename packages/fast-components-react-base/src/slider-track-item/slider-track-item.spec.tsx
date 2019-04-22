@@ -16,6 +16,7 @@ import {
 } from "../slider";
 import { DisplayNamePrefix } from "../utilities";
 import { SliderState } from "../slider/slider";
+import { Direction } from "@microsoft/fast-web-utilities";
 
 /*
  * Configure Enzyme
@@ -69,7 +70,7 @@ describe("slider track item", (): void => {
                     sliderState: defaultSliderState,
                     sliderConstrainedRange: undefined,
                     sliderValueAsPercent: getValueAsPercent,
-                    sliderDirection: "ltr",
+                    sliderDirection: Direction.ltr,
                 }}
             >
                 <SliderTrackItem
@@ -99,7 +100,7 @@ describe("slider track item", (): void => {
                     sliderState: defaultSliderState,
                     sliderConstrainedRange: undefined,
                     sliderValueAsPercent: getValueAsPercent,
-                    sliderDirection: "ltr",
+                    sliderDirection: Direction.ltr,
                 }}
             >
                 <SliderTrackItem
@@ -128,7 +129,7 @@ describe("slider track item", (): void => {
                     sliderState: defaultSliderState,
                     sliderConstrainedRange: undefined,
                     sliderValueAsPercent: getValueAsPercent,
-                    sliderDirection: "ltr",
+                    sliderDirection: Direction.ltr,
                 }}
             >
                 <SliderTrackItem

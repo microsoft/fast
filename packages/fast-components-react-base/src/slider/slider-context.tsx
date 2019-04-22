@@ -1,6 +1,7 @@
 import React from "react";
 import { SliderMode, SliderOrientation, SliderRange } from "./slider.props";
-import { SliderState, SliderThumb } from "./slider";
+import { SliderState } from "./slider";
+import { Direction } from "@microsoft/fast-web-utilities";
 
 export interface SliderContextType {
     sliderOrientation: SliderOrientation;
@@ -8,7 +9,7 @@ export interface SliderContextType {
     sliderMode: SliderMode;
     sliderState: SliderState;
     sliderValueAsPercent: (value: number) => number;
-    sliderDirection: string;
+    sliderDirection: Direction;
 }
 
 export const SliderContext: React.Context<SliderContextType> = React.createContext({
@@ -17,5 +18,5 @@ export const SliderContext: React.Context<SliderContextType> = React.createConte
     sliderConstrainedRange: null,
     sliderState: null,
     sliderValueAsPercent: null,
-    sliderDirection: "ltr",
+    sliderDirection: Direction.ltr,
 });
