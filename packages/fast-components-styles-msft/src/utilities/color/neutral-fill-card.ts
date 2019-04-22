@@ -15,9 +15,9 @@ const neutralCardFillAlgorithm: SwatchResolver = (designSystem: DesignSystem): S
     );
 };
 
-export function neutralFillCardRest(designSystem: DesignSystem): Swatch;
-export function neutralFillCardRest(backgroundResolver: SwatchResolver): SwatchResolver;
-export function neutralFillCardRest(arg: any): any {
+export function neutralFillCard(designSystem: DesignSystem): Swatch;
+export function neutralFillCard(backgroundResolver: SwatchResolver): SwatchResolver;
+export function neutralFillCard(arg: any): any {
     if (typeof arg === "function") {
         return (designSystem: DesignSystem): Swatch => {
             return neutralCardFillAlgorithm(
