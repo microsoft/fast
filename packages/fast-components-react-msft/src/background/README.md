@@ -44,5 +44,4 @@ The *background* can also accept a `tag` property to customize the HTML element 
 
 ## drawBackground
 
-By default, the *background* component will write the resolved background-color as CSS onto the root element it creates. There are several
-cases where this is undesirable though. If `drawBackground` is set to `false`, the resolved background color will be applied to the `DesignSystemProvider` created by the component, but it will not apply the background color via CSS.
+By default, the *background* component will write the resolved background-color as CSS onto the root element it creates. There are several cases where this is undesirable though. If `drawBackground` is set to `false`, the resolved background color will be applied to the `DesignSystemProvider` created by the component, but it will not apply the background color via CSS.
