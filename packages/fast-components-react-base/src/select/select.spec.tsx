@@ -126,6 +126,31 @@ describe("select", (): void => {
             .find('[displayString="a"]')
             .simulate("keydown", { keyCode: KeyCodes.space });
         expect(rendered.state("selectedItems").length).toBe(1);
+        expect(rendered.state("value")).toBe("a");
+        expect(onValueChange).toHaveBeenCalledTimes(1);
+    });
+
+    test("provided callback function is called and value does not change when selection changes in controlled mode", (): void => {
+        const onValueChange: any = jest.fn();
+        const rendered: any = mount(
+            <Select onValueChange={onValueChange} selectedItems={["b"]}>
+                {itemA}
+                {itemB}
+                {itemC}
+            </Select>
+        );
+
+        expect(rendered.state("selectedItems").length).toBe(1);
+        expect(onValueChange).toHaveBeenCalledTimes(0);
+
+        rendered.simulate("click");
+        expect(rendered.state("isMenuOpen")).toBe(true);
+
+        rendered
+            .find('[displayString="a"]')
+            .simulate("keydown", { keyCode: KeyCodes.space });
+        expect(rendered.state("selectedItems").length).toBe(1);
+        expect(rendered.state("value")).toBe("b");
         expect(onValueChange).toHaveBeenCalledTimes(1);
     });
 
