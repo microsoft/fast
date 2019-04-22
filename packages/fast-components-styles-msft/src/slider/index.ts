@@ -219,45 +219,7 @@ const styles: ComponentStyles<SliderClassNameContract, DesignSystem> = (
 
         slider__modeAdjustUpper: {},
 
-        slider__modeAdjustBoth: {
-            "&$slider__horizontal": {
-                "& $slider_thumb__upperValue": {
-                    width: "10px",
-                    borderRadius: "0px 10px 10px 0px",
-                },
-
-                "& $slider_thumb__lowerValue": {
-                    width: "10px",
-                    borderRadius: "10px 0px 0px 10px",
-                },
-
-                "&$slider__rtl": {
-                    "& $slider_thumb__upperValue": {
-                        borderRadius: "10px 0px 0px 10px",
-                    },
-
-                    "& $slider_thumb__lowerValue": {
-                        borderRadius: "0px 10px 10px 0px",
-                    },
-                },
-            },
-
-            "&$slider__vertical": {
-                "& $slider_thumb__upperValue": {
-                    height: "10px",
-                    borderRadius: "10px 10px 0px 0px",
-                },
-
-                "& $slider_thumb__lowerValue": {
-                    height: "10px",
-                    borderRadius: "0px 0px 10px 10px",
-                },
-            },
-
-            "& $slider_foregroundTrack": {
-                borderRadius: "0",
-            },
-        },
+        slider__modeAdjustBoth: {},
     };
 };
 

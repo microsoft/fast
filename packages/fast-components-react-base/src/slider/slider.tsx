@@ -483,6 +483,7 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
                         : undefined
                 }
                 draggable={false}
+                role="slider"
                 tabIndex={0}
                 onKeyDown={keyDownCallback}
                 onMouseDown={mouseDownCallback}
@@ -686,16 +687,32 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
                 ? this.props.step
                 : (this.props.range.maxValue - this.props.range.minValue) /
                   this.rangeInPixels;
+
+        const newValue: number =
+            this.state.activeThumb === SliderThumb.upperThumb
+                ? this.state.upperValue + step * this.state.incrementDirection
+                : this.state.lowerValue + step * this.state.incrementDirection;
+
+        let moveThumbsTogether: boolean = false;
+
+        if (
+            this.props.mode === SliderMode.adjustBoth &&
+            newValue > this.state.upperValue &&
+            this.state.activeThumb !== SliderThumb.upperThumb
+        ) {
+            moveThumbsTogether = true;
+        } else if (
+            this.props.mode === SliderMode.adjustBoth &&
+            newValue < this.state.lowerValue &&
+            this.state.activeThumb !== SliderThumb.lowerThumb
+        ) {
+            moveThumbsTogether = true;
+        }
+
         if (this.state.activeThumb === SliderThumb.upperThumb) {
-            this.updateValues(
-                null,
-                this.state.upperValue + step * this.state.incrementDirection
-            );
+            this.updateValues(moveThumbsTogether ? newValue : null, newValue);
         } else {
-            this.updateValues(
-                this.state.lowerValue + step * this.state.incrementDirection,
-                null
-            );
+            this.updateValues(newValue, moveThumbsTogether ? newValue : null);
         }
     };
 
@@ -876,18 +893,39 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
      *  Updates the current drag value
      */
     private updateDragValue = (dragValue: number): void => {
-        const constrainedRange: SliderRange = this.getConstrainedRange(true);
+        const constrainedRange: SliderRange = this.getConstrainedRange(false);
 
         const newDragValue: number = this.constrainToRange(dragValue, constrainedRange);
 
+        let activeThumb: SliderThumb = this.state.activeThumb;
+
+        let swapThumbs: boolean = false;
+
+        if (
+            this.props.mode === SliderMode.adjustBoth &&
+            dragValue > this.state.upperValue &&
+            this.state.activeThumb !== SliderThumb.upperThumb
+        ) {
+            activeThumb = SliderThumb.upperThumb;
+            swapThumbs = true;
+        } else if (
+            this.props.mode === SliderMode.adjustBoth &&
+            dragValue < this.state.lowerValue &&
+            this.state.activeThumb !== SliderThumb.lowerThumb
+        ) {
+            activeThumb = SliderThumb.lowerThumb;
+            swapThumbs = true;
+        }
+
         this.setState({
+            activeThumb,
             dragValue: newDragValue,
         });
 
-        if (this.state.activeThumb === SliderThumb.lowerThumb) {
-            this.updateValues(newDragValue, null);
+        if (activeThumb === SliderThumb.lowerThumb) {
+            this.updateValues(newDragValue, swapThumbs ? this.state.lowerValue : null);
         } else {
-            this.updateValues(null, newDragValue);
+            this.updateValues(swapThumbs ? this.state.upperValue : null, newDragValue);
         }
     };
 
@@ -954,7 +992,7 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
     };
 
     /**
-     *  Apply value changes, only place this should happen outside of constructor and updated props
+     *  Apply value changes to state, only place this should happen outside of constructor and ComponentDidUpdate
      */
     private updateValues = (lowerValue: number, upperValue: number): void => {
         let newLowerValue: number = this.state.lowerValue;
@@ -963,26 +1001,14 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
         if (lowerValue !== null) {
             newLowerValue = this.constrainToRange(
                 this.constrainToStep(lowerValue, this.props.step),
-                {
-                    minValue: this.props.range.minValue,
-                    maxValue:
-                        this.props.mode === SliderMode.adjustBoth
-                            ? this.state.upperValue
-                            : this.props.range.maxValue,
-                }
+                this.props.range
             );
         }
 
         if (upperValue !== null) {
             newUpperValue = this.constrainToRange(
                 this.constrainToStep(upperValue, this.props.step),
-                {
-                    minValue:
-                        this.props.mode === SliderMode.adjustBoth
-                            ? this.state.lowerValue
-                            : this.props.range.minValue,
-                    maxValue: this.props.range.maxValue,
-                }
+                this.props.range
             );
         }
 
