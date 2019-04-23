@@ -224,6 +224,10 @@ class ContextMenu extends Foundation<
 
                 break;
         }
+
+        if (typeof this.props.onKeyDown === "function") {
+            this.props.onKeyDown(e);
+        }
     };
 
     private handleContextMenu = (e: React.MouseEvent<HTMLDivElement>): void => {
