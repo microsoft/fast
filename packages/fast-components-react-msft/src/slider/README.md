@@ -31,4 +31,4 @@ The "value" prop is used for controlled mode.
 The "thumb" prop allows authors to provide custom render functions for the thumb element(s).
 
 ### Accessibility
-*Slider* component thumbs can be moved with the arrow keys and expose a number of aria attributes for accessibility - "aria-valuemin", "aria-valuemax", "aria-valuenow" and "aria-labelledby" (associated with the slider's "labelledby" prop).
+*Slider* implements the recommended keyboard navigation scheme described [here](http://w3c.github.io/aria-practices/examples/slider/multithumb-slider.html).

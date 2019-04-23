@@ -51,10 +51,7 @@ class SliderTrackItem extends Foundation<
     protected generateClassNames(): string {
         let classNames: string = get(this.props, "managedClasses.sliderTrackItem", "");
 
-        if (
-            (this.context as SliderContextType).sliderOrientation ===
-            SliderOrientation.vertical
-        ) {
+        if (this.context.sliderOrientation === SliderOrientation.vertical) {
             classNames = `${classNames} ${get(
                 this.props,
                 "managedClasses.sliderTrackItem_vertical",
@@ -82,15 +79,12 @@ class SliderTrackItem extends Foundation<
             this.props.maxValuePositionBinding
         );
 
-        if (
-            (this.context as SliderContextType).sliderOrientation ===
-            SliderOrientation.vertical
-        ) {
+        if (this.context.sliderOrientation === SliderOrientation.vertical) {
             return {
                 top: `${100 - maxValue}%`,
                 bottom: `${minValue}%`,
             };
-        } else if ((this.context as SliderContextType).sliderDirection === "rtl") {
+        } else if (this.context.sliderDirection === "rtl") {
             return {
                 left: maxValue !== undefined ? `${100 - maxValue}%` : undefined,
                 right: minValue !== undefined ? `${minValue}%` : undefined,
@@ -109,26 +103,25 @@ class SliderTrackItem extends Foundation<
     private getPositionAsPercent = (anchor: SliderTrackItemAnchor | number): number => {
         if (
             anchor === undefined ||
-            typeof (this.context as SliderContextType).sliderValueAsPercent !==
-                "function" ||
-            (this.context as SliderContextType).sliderState === null
+            typeof this.context.sliderValueAsPercent !== "function" ||
+            this.context.sliderState === null
         ) {
             return undefined;
         }
 
         if (typeof anchor === "number") {
-            return (this.context as SliderContextType).sliderValueAsPercent(anchor);
+            return this.context.sliderValueAsPercent(anchor);
         }
 
         switch (anchor) {
             case SliderTrackItemAnchor.selectedRangeMax:
-                return (this.context as SliderContextType).sliderValueAsPercent(
-                    (this.context as SliderContextType).sliderState.upperValue
+                return this.context.sliderValueAsPercent(
+                    this.context.sliderState.upperValue
                 );
 
             case SliderTrackItemAnchor.selectedRangeMin:
-                return (this.context as SliderContextType).sliderValueAsPercent(
-                    (this.context as SliderContextType).sliderState.lowerValue
+                return this.context.sliderValueAsPercent(
+                    this.context.sliderState.lowerValue
                 );
 
             case SliderTrackItemAnchor.totalRangeMax:
@@ -138,18 +131,16 @@ class SliderTrackItem extends Foundation<
                 return 0;
 
             case SliderTrackItemAnchor.constrainedRangeMax:
-                return (this.context as SliderContextType).sliderConstrainedRange !== null
-                    ? (this.context as SliderContextType).sliderValueAsPercent(
-                          (this.context as SliderContextType).sliderConstrainedRange
-                              .maxValue
+                return this.context.sliderConstrainedRange !== null
+                    ? this.context.sliderValueAsPercent(
+                          this.context.sliderConstrainedRange.maxValue
                       )
                     : 100;
 
             case SliderTrackItemAnchor.constrainedRangeMin:
-                return (this.context as SliderContextType).sliderConstrainedRange !== null
-                    ? (this.context as SliderContextType).sliderValueAsPercent(
-                          (this.context as SliderContextType).sliderConstrainedRange
-                              .minValue
+                return this.context.sliderConstrainedRange !== null
+                    ? this.context.sliderValueAsPercent(
+                          this.context.sliderConstrainedRange.minValue
                       )
                     : 0;
         }

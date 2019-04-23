@@ -103,10 +103,23 @@ export interface SliderHandledProps extends SliderManagedClasses {
     form?: string;
 
     /**
-     * The aria-labelledby attribute to link the slider to an existing
-     * element that provides it an accessible name
+     * The aria-label attribute to apply to the high value thumb (also used in single value mode)
      */
-    labelledBy?: string;
+    maxThumbLabel?: string;
+
+    /**
+     * The aria-label attribute to apply to the low value thumb
+     */
+    minThumbLabel?: string;
+
+    /**
+     * Function which formats the string that populates the "aria-valuetext" attribute of a thumb
+     */
+    valuetextStringFormatter?: (
+        sliderProps: SliderHandledProps,
+        sliderState: SliderState,
+        thumb: SliderThumb
+    ) => string;
 }
 
 export type SliderProps = SliderUnhandledProps & SliderHandledProps;

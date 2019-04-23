@@ -38,8 +38,8 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, {}> {
                     }
                     return (
                         <BaseSlider
-                            dir={designSystemDirection || null}
                             {...this.unhandledProps()}
+                            dir={designSystemDirection || null}
                             managedClasses={this.props.managedClasses}
                         >
                             {this.props.children}

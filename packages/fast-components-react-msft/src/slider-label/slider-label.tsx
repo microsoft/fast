@@ -89,7 +89,7 @@ class SliderLabel extends Foundation<
             )}`;
         }
 
-        if ((this.context as SliderContextType).sliderDirection === Direction.rtl) {
+        if (this.context.sliderDirection === Direction.rtl) {
             classNames = `${classNames} ${get(
                 this.props,
                 "managedClasses.sliderLabel__rtl",

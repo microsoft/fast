@@ -69,7 +69,9 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
         name: void 0,
         form: void 0,
         thumb: void 0,
-        labelledBy: void 0,
+        minThumbLabel: void 0,
+        maxThumbLabel: void 0,
+        valuetextStringFormatter: void 0,
     };
 
     private rootElement: React.RefObject<HTMLDivElement> = React.createRef<
@@ -492,7 +494,16 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
                 aria-valuenow={
                     thumb === SliderThumb.lowerThumb ? state.lowerValue : state.upperValue
                 }
-                aria-labelledby={props.labelledBy || null}
+                aria-valuetext={
+                    typeof props.valuetextStringFormatter === "function"
+                        ? props.valuetextStringFormatter(props, state, thumb)
+                        : null
+                }
+                aria-label={
+                    thumb === SliderThumb.upperThumb
+                        ? props.maxThumbLabel || null
+                        : props.minThumbLabel || null
+                }
             />
         );
     }
@@ -688,31 +699,29 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
                 : (this.props.range.maxValue - this.props.range.minValue) /
                   this.rangeInPixels;
 
-        const newValue: number =
+        let newValue: number =
             this.state.activeThumb === SliderThumb.upperThumb
                 ? this.state.upperValue + step * this.state.incrementDirection
                 : this.state.lowerValue + step * this.state.incrementDirection;
-
-        let moveThumbsTogether: boolean = false;
 
         if (
             this.props.mode === SliderMode.adjustBoth &&
             newValue > this.state.upperValue &&
             this.state.activeThumb !== SliderThumb.upperThumb
         ) {
-            moveThumbsTogether = true;
+            newValue = this.state.upperValue;
         } else if (
             this.props.mode === SliderMode.adjustBoth &&
             newValue < this.state.lowerValue &&
             this.state.activeThumb !== SliderThumb.lowerThumb
         ) {
-            moveThumbsTogether = true;
+            newValue = this.state.lowerValue;
         }
 
         if (this.state.activeThumb === SliderThumb.upperThumb) {
-            this.updateValues(moveThumbsTogether ? newValue : null, newValue);
+            this.updateValues(null, newValue);
         } else {
-            this.updateValues(newValue, moveThumbsTogether ? newValue : null);
+            this.updateValues(newValue, null);
         }
     };
 
@@ -893,39 +902,18 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
      *  Updates the current drag value
      */
     private updateDragValue = (dragValue: number): void => {
-        const constrainedRange: SliderRange = this.getConstrainedRange(false);
+        const constrainedRange: SliderRange = this.getConstrainedRange(true);
 
         const newDragValue: number = this.constrainToRange(dragValue, constrainedRange);
 
-        let activeThumb: SliderThumb = this.state.activeThumb;
-
-        let swapThumbs: boolean = false;
-
-        if (
-            this.props.mode === SliderMode.adjustBoth &&
-            dragValue > this.state.upperValue &&
-            this.state.activeThumb !== SliderThumb.upperThumb
-        ) {
-            activeThumb = SliderThumb.upperThumb;
-            swapThumbs = true;
-        } else if (
-            this.props.mode === SliderMode.adjustBoth &&
-            dragValue < this.state.lowerValue &&
-            this.state.activeThumb !== SliderThumb.lowerThumb
-        ) {
-            activeThumb = SliderThumb.lowerThumb;
-            swapThumbs = true;
-        }
-
         this.setState({
-            activeThumb,
             dragValue: newDragValue,
         });
 
-        if (activeThumb === SliderThumb.lowerThumb) {
-            this.updateValues(newDragValue, swapThumbs ? this.state.lowerValue : null);
+        if (this.state.activeThumb === SliderThumb.lowerThumb) {
+            this.updateValues(newDragValue, null);
         } else {
-            this.updateValues(swapThumbs ? this.state.upperValue : null, newDragValue);
+            this.updateValues(null, newDragValue);
         }
     };
 
@@ -933,7 +921,7 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
      *  Gets the range of values the active thumb is actually allowed to traverse
      */
     private getConstrainedRange = (
-        constrainToOppositeEndOfRange: boolean
+        constrainToOppositeEndOfSelection: boolean
     ): SliderRange => {
         let rangeMin: number = this.props.range.minValue;
         let rangeMax: number = this.props.range.maxValue;
@@ -949,7 +937,10 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
                     : rangeMin;
         }
 
-        if (this.props.mode !== SliderMode.singleValue && constrainToOppositeEndOfRange) {
+        if (
+            this.props.mode !== SliderMode.singleValue &&
+            constrainToOppositeEndOfSelection
+        ) {
             if (this.state.activeThumb === SliderThumb.lowerThumb) {
                 rangeMax = this.state.upperValue;
             } else {
