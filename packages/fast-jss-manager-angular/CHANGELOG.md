@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.1.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-jss-manager-angular@4.0.1...@microsoft/fast-jss-manager-angular@4.1.0) (2019-04-23)
+
+
+### Features
+
+* reduce dependency on peer dependencies ([#1669](https://github.com/Microsoft/fast-dna/issues/1669)) ([cc06b10](https://github.com/Microsoft/fast-dna/commit/cc06b10))
+
+
+
+
+
 ## [4.0.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-jss-manager-angular@4.0.0...@microsoft/fast-jss-manager-angular@4.0.1) (2019-04-09)
 
 **Note:** Version bump only for package @microsoft/fast-jss-manager-angular

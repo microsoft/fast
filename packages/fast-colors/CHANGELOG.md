@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.1.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-colors@4.0.1...@microsoft/fast-colors@4.1.0) (2019-04-23)
+
+
+### Features
+
+* add image palette extractor and advanced palette generation routines ([#1675](https://github.com/Microsoft/fast-dna/issues/1675)) ([c9318c1](https://github.com/Microsoft/fast-dna/commit/c9318c1))
+
+
+
+
+
 ## [4.0.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-colors@4.0.0...@microsoft/fast-colors@4.0.1) (2019-04-09)
 
 **Note:** Version bump only for package @microsoft/fast-colors

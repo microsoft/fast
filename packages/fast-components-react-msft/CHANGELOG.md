@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.5.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-msft@4.4.4...@microsoft/fast-components-react-msft@4.5.0) (2019-04-23)
+
+
+### Bug Fixes
+
+* remove unnecessary pivot example ([#1697](https://github.com/Microsoft/fast-dna/issues/1697)) ([93cdf89](https://github.com/Microsoft/fast-dna/commit/93cdf89))
+* update background swatch resolution behavior ([#1658](https://github.com/Microsoft/fast-dna/issues/1658)) ([86c6e9c](https://github.com/Microsoft/fast-dna/commit/86c6e9c))
+
+
+### Features
+
+* adds solution for card backgrounds ([#1706](https://github.com/Microsoft/fast-dna/issues/1706)) ([c6c9ef9](https://github.com/Microsoft/fast-dna/commit/c6c9ef9))
+* reduce dependency on peer dependencies ([#1669](https://github.com/Microsoft/fast-dna/issues/1669)) ([cc06b10](https://github.com/Microsoft/fast-dna/commit/cc06b10))
+
+
+
+
+
 ## [4.4.4](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-msft@4.4.3...@microsoft/fast-components-react-msft@4.4.4) (2019-04-17)
 
 **Note:** Version bump only for package @microsoft/fast-components-react-msft
