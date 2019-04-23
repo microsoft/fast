@@ -161,6 +161,10 @@ export const neutralFillStealthSelectedDelta: DesignSystemResolver<
     number
 > = getDesignSystemValue("neutralFillStealthSelectedDelta");
 
+export const neutralFillCardDelta: DesignSystemResolver<number> = getDesignSystemValue(
+    "neutralFillCardDelta"
+);
+
 export const neutralForegroundDarkIndex: DesignSystemResolver<
     number
 > = getDesignSystemValue("neutralForegroundDarkIndex");
