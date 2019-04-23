@@ -1,8 +1,8 @@
-import defaultDesignSystem, {
+import {
+    checkDesignSystemResolver,
     DesignSystem,
     DesignSystemResolver,
-    ensureDesignSystemDefaults,
-    withDesignSystemDefaults,
+    getDesignSystemValue,
 } from "../design-system";
 import { toPx } from "@microsoft/fast-jss-utilities";
 import {
@@ -37,9 +37,9 @@ export function height(lines: number = 1, unit?: string): DesignSystemResolver<s
  */
 export function heightNumber(lines: number = 1): DesignSystemResolver<number> {
     return (designSystem: DesignSystem): number => {
+        const densityValue: number = getDesignSystemValue("density")(designSystem);
         const value: number =
-            (baseHeightMultiplier(designSystem) +
-                ((designSystem && designSystem.density) || defaultDesignSystem.density)) *
+            (baseHeightMultiplier(designSystem) + densityValue) *
             designUnit(designSystem) *
             lines;
         return value;
@@ -52,13 +52,39 @@ export function heightNumber(lines: number = 1): DesignSystemResolver<number> {
  * @param designSystem The design system config.
  */
 export function getDensityCategory(designSystem: DesignSystem): DensityCategory {
+    const densityValue: number = getDesignSystemValue("density")(designSystem);
     const category: DensityCategory =
-        designSystem.density >= 2
+        densityValue >= 2
             ? DensityCategory.spacious
-            : designSystem.density <= -2
+            : densityValue <= -2
                 ? DensityCategory.compact
                 : DensityCategory.normal;
     return category;
+}
+
+/**
+ * Returns a value based on the higher-level category for the density setting.
+ * Used to adjust things like type size and sizing that is based on the category rather than individual density.
+ *
+ * @param compactValue The adjustment when the category is "compact"
+ * @param normalValue The adjustment when the category is "normal"
+ * @param spaciousValue The adjustment when the category is "spacious"
+ */
+export function densityCategorySwitch<T = number>(
+    compactValue: T | DesignSystemResolver<T>,
+    normalValue: T | DesignSystemResolver<T>,
+    spaciousValue: T | DesignSystemResolver<T>
+): DesignSystemResolver<T> {
+    return (designSystem: DesignSystem): T => {
+        const category: DensityCategory = getDensityCategory(designSystem);
+        const value: T =
+            category === DensityCategory.compact
+                ? checkDesignSystemResolver<T>(compactValue, designSystem)
+                : category === DensityCategory.spacious
+                    ? checkDesignSystemResolver<T>(spaciousValue, designSystem)
+                    : checkDesignSystemResolver<T>(normalValue, designSystem);
+        return value;
+    };
 }
 
 /**
@@ -89,13 +115,7 @@ export function horizontalSpacingNumber(
     adjustment: number = 0
 ): DesignSystemResolver<number> {
     return (designSystem: DesignSystem): number => {
-        const category: DensityCategory = getDensityCategory(designSystem);
-        const densityOffset: number =
-            category === DensityCategory.compact
-                ? -1
-                : category === DensityCategory.spacious
-                    ? 1
-                    : 0;
+        const densityOffset: number = densityCategorySwitch(-1, 0, 1)(designSystem);
         const value: number =
             (baseHorizontalSpacingMultiplier(designSystem) + densityOffset) *
                 designUnit(designSystem) -
@@ -132,15 +152,13 @@ export function glyphSize(arg: any): any {
 /**
  * Returns the width and height for an icon as a number.
  */
-export function glyphSizeNumber(config: DesignSystem): number {
-    const designSystem: DesignSystem = withDesignSystemDefaults(config);
-    const category: DensityCategory = getDensityCategory(designSystem);
-    const sizeOffset: number =
-        category === DensityCategory.compact
-            ? -2
-            : category === DensityCategory.spacious
-                ? 2
-                : 0;
+export function glyphSizeNumber(designSystem: DesignSystem): number {
+    const halfDesignUnit: number = designUnit(designSystem) / 2;
+    const sizeOffset: number = densityCategorySwitch(
+        halfDesignUnit * -1,
+        0,
+        halfDesignUnit
+    )(designSystem);
     const value: number =
         (baseHeightMultiplier(designSystem) / 2) * designUnit(designSystem) + sizeOffset;
     return value;
@@ -153,7 +171,6 @@ export function glyphSizeNumber(config: DesignSystem): number {
  */
 export function density(value: number, unit?: string): (config: DesignSystem) => string {
     return (config: DesignSystem): string => {
-        const designSystem: DesignSystem = withDesignSystemDefaults(config);
         const augmented: number = value * 1;
         return typeof unit === "string" ? `${augmented}${unit}` : toPx(augmented);
     };
