@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.2.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-layouts-react@4.2.0...@microsoft/fast-layouts-react@4.2.1) (2019-04-23)
+
+
+### Bug Fixes
+
+* correct peer dependency version string ([#1709](https://github.com/Microsoft/fast-dna/issues/1709)) ([29d67c1](https://github.com/Microsoft/fast-dna/commit/29d67c1))
+
+
+
+
+
 # [4.2.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-layouts-react@4.1.5...@microsoft/fast-layouts-react@4.2.0) (2019-04-23)
 
 

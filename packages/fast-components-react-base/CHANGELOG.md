@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.3.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-base@4.3.0...@microsoft/fast-components-react-base@4.3.1) (2019-04-23)
+
+
+### Bug Fixes
+
+* correct radio schema to show inputId as required property ([#1703](https://github.com/Microsoft/fast-dna/issues/1703)) ([c4f4a4c](https://github.com/Microsoft/fast-dna/commit/c4f4a4c))
+
+
+
+
+
 # [4.3.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-base@4.2.2...@microsoft/fast-components-react-base@4.3.0) (2019-04-23)
 
 
