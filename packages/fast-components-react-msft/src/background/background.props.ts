@@ -1,5 +1,7 @@
 import React from "react";
 import {
+    DesignSystem,
+    DesignSystemResolver,
     NeutralPaletteDarkModeLayers,
     NeutralPaletteLightModeLayers,
 } from "@microsoft/fast-components-styles-msft";
@@ -34,14 +36,26 @@ export interface BackgroundHandledProps {
     /**
      * The HTML element to create
      */
-    tag: keyof React.ReactHTML;
+    tag?: keyof React.ReactHTML;
 
     /**
      * The value of the background to set. When set to a number, the value will be
      * treated as an index on the neutral ramp. When the value is a string,
-     * it will be treated as a color string and applied directly
+     * it will be treated as a color string and applied directly. When the value
+     * is a function, it will be called with the input design-system and the result
+     * will be treated as a color string.
      */
-    value: number | string | LightModeBackgrounds | DarkModeBackgrounds;
+    value?:
+        | number
+        | string
+        | LightModeBackgrounds
+        | DarkModeBackgrounds
+        | DesignSystemResolver<string>;
+
+    /**
+     * When true, the background color will be applied to the generated element via CSS's background-color property
+     */
+    drawBackground?: boolean;
 }
 
 export interface BackgroundUnhandledProps extends React.HTMLAttributes<HTMLElement> {}

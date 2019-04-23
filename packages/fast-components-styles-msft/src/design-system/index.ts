@@ -118,6 +118,11 @@ export interface DesignSystem {
     neutralFillStealthSelectedDelta: number;
 
     /**
+     * Color swatch deltas for neutral-fill-card recipe
+     */
+    neutralFillCardDelta: number;
+
+    /**
      * Color swatch deltas for neutral-foreground
      */
     neutralForegroundDarkIndex: number;
@@ -189,8 +194,11 @@ const designSystemDefaults: DesignSystem = {
     neutralFillStealthActiveDelta: 2,
     neutralFillStealthSelectedDelta: 12,
 
+    neutralFillCardDelta: 2,
+
     neutralForegroundDarkIndex: 58,
     neutralForegroundLightIndex: 0,
+
     neutralForegroundHoverDelta: 8,
     neutralForegroundActiveDelta: 16,
 
