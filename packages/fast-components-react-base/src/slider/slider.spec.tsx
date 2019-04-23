@@ -477,6 +477,39 @@ describe("Slider", (): void => {
         document.body.removeChild(container);
     });
 
+    test("correct aria labels are populated on thumbs", (): void => {
+        const valueStringFormatter: any = jest.fn();
+        valueStringFormatter.mockReturnValue("formatted valuetext");
+
+        const rendered: any = mount(
+            <Slider
+                mode={SliderMode.adjustBoth}
+                maxThumbLabel="max thumb"
+                minThumbLabel="min thumb"
+                valuetextStringFormatter={valueStringFormatter}
+                managedClasses={managedClasses}
+            />
+        );
+
+        const upperThumb: any = rendered.find(
+            `.${managedClasses.slider_thumb__upperValue}`
+        );
+        expect(upperThumb.prop("aria-valuemin")).toEqual(0);
+        expect(upperThumb.prop("aria-valuemax")).toEqual(100);
+        expect(upperThumb.prop("aria-valuenow")).toEqual(60);
+        expect(upperThumb.prop("aria-label")).toEqual("max thumb");
+        expect(upperThumb.prop("aria-valuetext")).toEqual("formatted valuetext");
+
+        const lowerThumb: any = rendered.find(
+            `.${managedClasses.slider_thumb__lowerValue}`
+        );
+        expect(lowerThumb.prop("aria-valuemin")).toEqual(0);
+        expect(lowerThumb.prop("aria-valuemax")).toEqual(100);
+        expect(lowerThumb.prop("aria-valuenow")).toEqual(40);
+        expect(lowerThumb.prop("aria-label")).toEqual("min thumb");
+        expect(lowerThumb.prop("aria-valuetext")).toEqual("formatted valuetext");
+    });
+
     // tslint:disable-next-line:no-shadowed-variable
     window.removeEventListener = jest.fn((event: string, callback: any) => {
         map[event] = callback;

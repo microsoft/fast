@@ -1,6 +1,6 @@
 ## Slider track item
 
-A component designed to position itself at positions that correspond to a specific value on a *slider*'s track.  This can be used to create labels, highlighted regions or other decorations on a *slider*.  By default a *slider track item* renders above the *slider*'s front and back bars and below the thumbs.
+*Slider track items* are components positioned at specific values on a slider's track to provide labels, highlight regions, and add other slider visual decorations.  By default a *slider track item* renders above the *slider*'s front and back bars and below the thumbs.
 
 ### Usage
 *Slider track item* exposes two "position binding" props which can either be a numerical value that falls within the parent *slider*'s range or a SliderTrackItemAnchor enum value.  
