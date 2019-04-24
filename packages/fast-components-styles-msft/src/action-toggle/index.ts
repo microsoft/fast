@@ -75,7 +75,7 @@ const styles: ComponentStyles<ActionToggleClassNameContract, DesignSystem> = (
                 },
             },
             "&$actionToggle__disabled $actionToggle_selectedGlyph, &$actionToggle__disabled $actionToggle_unselectedGlyph": {
-                fill: neutralForegroundRest,
+                fill: accentForegroundRest,
             },
         },
         actionToggle__justified: {
@@ -93,7 +93,7 @@ const styles: ComponentStyles<ActionToggleClassNameContract, DesignSystem> = (
                 },
             },
             "&$actionToggle__disabled $actionToggle_selectedGlyph, &$actionToggle__disabled $actionToggle_unselectedGlyph": {
-                fill: neutralForegroundRest,
+                fill: accentForegroundRest,
             },
         },
         actionToggle__outline: {
