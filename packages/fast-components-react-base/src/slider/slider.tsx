@@ -423,39 +423,34 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
      *  Renders the appropriate thumb
      */
     private renderThumb(thumb: SliderThumb): React.ReactNode {
-        if (
-            (this.props.mode === SliderMode.adustLowerValue &&
-                thumb === SliderThumb.upperThumb) ||
-            (this.props.mode === SliderMode.adustUpperValue &&
-                thumb === SliderThumb.lowerThumb) ||
-            (this.props.mode === SliderMode.singleValue &&
-                thumb === SliderThumb.lowerThumb)
-        ) {
+        if (!this.shouldRenderThumb(thumb)) {
             return;
         }
+
+        const mouseDownCallback: (event: React.MouseEvent) => void =
+            thumb === SliderThumb.upperThumb
+                ? this.handleUpperThumbMouseDown
+                : this.handleLowerThumbMouseDown;
+
+        const keyDownCallback: (event: React.KeyboardEvent) => void =
+            thumb === SliderThumb.upperThumb
+                ? this.handleUpperThumbKeyDown
+                : this.handleLowerThumbKeyDown;
 
         if (typeof this.props.thumb === "function") {
             return this.props.thumb(
                 this.props,
                 this.state,
-                thumb === SliderThumb.upperThumb
-                    ? this.handleUpperThumbMouseDown
-                    : this.handleLowerThumbMouseDown,
-                thumb === SliderThumb.upperThumb
-                    ? this.handleUpperThumbKeyDown
-                    : this.handleLowerThumbKeyDown,
+                mouseDownCallback,
+                keyDownCallback,
                 thumb
             );
         } else {
             return this.renderDefaultThumb(
                 this.props,
                 this.state,
-                thumb === SliderThumb.upperThumb
-                    ? this.handleUpperThumbMouseDown
-                    : this.handleLowerThumbMouseDown,
-                thumb === SliderThumb.upperThumb
-                    ? this.handleUpperThumbKeyDown
-                    : this.handleLowerThumbKeyDown,
+                mouseDownCallback,
+                keyDownCallback,
                 thumb
             );
         }
@@ -550,6 +545,24 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
      */
     private onInputValueChange = (event: React.ChangeEvent): void => {
         return null;
+    };
+
+    /**
+     *  Determines whether a particular thumb should render in the current mode
+     */
+    private shouldRenderThumb = (thumb: SliderThumb): boolean => {
+        if (
+            (this.props.mode === SliderMode.adustLowerValue &&
+                thumb === SliderThumb.upperThumb) ||
+            (this.props.mode === SliderMode.adustUpperValue &&
+                thumb === SliderThumb.lowerThumb) ||
+            (this.props.mode === SliderMode.singleValue &&
+                thumb === SliderThumb.lowerThumb)
+        ) {
+            return false;
+        }
+
+        return true;
     };
 
     /**
