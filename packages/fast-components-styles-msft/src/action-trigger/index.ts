@@ -73,7 +73,7 @@ const styles: ComponentStyles<ActionTriggerClassNameContract, DesignSystem> = (
                 },
             },
             "&$actionTrigger__disabled $actionTrigger_glyph": {
-                fill: neutralForegroundRest,
+                fill: accentForegroundRest,
             },
         },
         actionTrigger__justified: {
@@ -91,7 +91,7 @@ const styles: ComponentStyles<ActionTriggerClassNameContract, DesignSystem> = (
                 },
             },
             "&$actionTrigger__disabled $actionTrigger_glyph": {
-                fill: neutralForegroundRest,
+                fill: accentForegroundRest,
             },
         },
         actionTrigger__outline: {
