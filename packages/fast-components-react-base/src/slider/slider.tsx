@@ -193,23 +193,7 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
 
         if (prevProps.mode !== this.props.mode) {
             this.suspendActiveOperations();
-
-            switch (this.props.mode) {
-                case SliderMode.adjustBoth:
-                    break;
-
-                case SliderMode.adustLowerValue:
-                    this.updateValues(this.state.lowerValue, this.props.range.maxValue);
-                    break;
-
-                case SliderMode.adustUpperValue:
-                    this.updateValues(this.props.range.minValue, this.state.upperValue);
-                    break;
-
-                case SliderMode.singleValue:
-                    this.updateValues(this.state.upperValue, this.state.upperValue);
-                    break;
-            }
+            this.updateValuesForModeSwitch();
         }
     }
 
@@ -357,6 +341,28 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
 
         return super.generateClassNames(classNames);
     }
+
+    /**
+     * Updates values when mode is switched in props
+     */
+    private updateValuesForModeSwitch = (): void => {
+        switch (this.props.mode) {
+            case SliderMode.adjustBoth:
+                break;
+
+            case SliderMode.adustLowerValue:
+                this.updateValues(this.state.lowerValue, this.props.range.maxValue);
+                break;
+
+            case SliderMode.adustUpperValue:
+                this.updateValues(this.props.range.minValue, this.state.upperValue);
+                break;
+
+            case SliderMode.singleValue:
+                this.updateValues(this.state.upperValue, this.state.upperValue);
+                break;
+        }
+    };
 
     /**
      *  Constrains a value to be within the provided constraint range and step
@@ -569,12 +575,7 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
      * Handles track clicks
      */
     private handleTrackMouseDown = (event: React.MouseEvent): void => {
-        if (
-            this.props.disabled ||
-            event.defaultPrevented ||
-            this.state.isDragging ||
-            this.state.isIncrementing
-        ) {
+        if (event.defaultPrevented || this.isBusyOrDisabled()) {
             return;
         }
         event.preventDefault();
@@ -815,12 +816,8 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
         event: React.KeyboardEvent<HTMLDivElement>,
         thumb: SliderThumb
     ): void => {
-        if (
-            this.props.disabled ||
-            event.defaultPrevented ||
-            this.state.isDragging ||
-            this.state.isIncrementing
-        ) {
+        if (event.defaultPrevented || this.isBusyOrDisabled()) {
+            event.preventDefault();
             return;
         }
         this.updateDirection();
@@ -873,12 +870,7 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
     };
 
     private handleThumbMouseDown = (e: React.MouseEvent, thumb: SliderThumb): void => {
-        if (
-            this.props.disabled ||
-            e.defaultPrevented ||
-            this.state.isDragging ||
-            this.state.isIncrementing
-        ) {
+        if (event.defaultPrevented || this.isBusyOrDisabled()) {
             return;
         }
 
@@ -1152,6 +1144,16 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
             ((this.props.range.maxValue - this.props.range.minValue) / 100) * value +
             this.props.range.minValue
         );
+    };
+
+    /**
+     *  Checks if the component is busy with an active operation or disabled
+     */
+    private isBusyOrDisabled = (): boolean => {
+        if (this.props.disabled || this.state.isDragging || this.state.isIncrementing) {
+            return true;
+        }
+        return false;
     };
 }
 
