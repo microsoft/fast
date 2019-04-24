@@ -97,6 +97,14 @@ const styles: ComponentStyles<TextActionClassNameContract, DesignSystem> = (
         },
         textAction__disabled: {
             ...applyDisabledState(designSystem),
+            "&:hover": {
+                background: neutralFillInputRest,
+                borderColor: neutralOutlineRest,
+            },
+            "&:active": {
+                background: neutralFillInputRest,
+                borderColor: neutralOutlineRest,
+            },
         },
         textAction_button: {
             borderColor: "transparent",
