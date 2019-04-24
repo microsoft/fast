@@ -9,7 +9,7 @@ As the user moves the slider the resulting value changes can be used by develope
 - If the *slider* component is part of a form the results will be submitted along with the form. This is because the *slider* component maintains a hidden native HTML input element in the dom and updates the "value" attribute of the native component as selection changes.
 - Developers can hook up to the *select*'s onValueChange callback.
 
-Child components of the slider (labels, tick marks, highlighted bar regions) can use the *slider*'s constext to position themselves appropriately on the *slider*'s track and react to state changes.  The *slider track item* component is an example of this and can be used as a building block to create styled elements that position themselves on the slider track.
+Child components of the slider (labels, tick marks, highlighted bar regions) can use the *slider*'s context to position themselves appropriately on the *slider*'s track and react to state changes.  The *slider track item* component is an example of this and can be used as a building block to create styled elements that position themselves on the slider track.
 
 A *slider* can be oriented vertically or horizontally with the "orientation" prop.  Horizontal is the default
 
