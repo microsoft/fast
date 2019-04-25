@@ -182,7 +182,7 @@ const designSystemDefaults: DesignSystem = {
     neutralFillRestDelta: 4,
     neutralFillHoverDelta: 3,
     neutralFillActiveDelta: 2,
-    neutralFillSelectedDelta: 16,
+    neutralFillSelectedDelta: 8,
 
     neutralFillInputRestDelta: 4,
     neutralFillInputHoverDelta: 4,
@@ -192,7 +192,7 @@ const designSystemDefaults: DesignSystem = {
     neutralFillStealthRestDelta: 0,
     neutralFillStealthHoverDelta: 3,
     neutralFillStealthActiveDelta: 2,
-    neutralFillStealthSelectedDelta: 12,
+    neutralFillStealthSelectedDelta: 8,
 
     neutralFillCardDelta: 2,
 
