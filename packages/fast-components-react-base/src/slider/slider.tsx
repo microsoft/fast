@@ -642,8 +642,6 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
             return;
         }
 
-        const foundDir: string = closest.getAttribute("dir");
-
         this.direction =
             closest.getAttribute("dir") === "rtl" ? Direction.rtl : Direction.ltr;
     };
