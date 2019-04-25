@@ -53,9 +53,7 @@ const styles: ComponentStyles<SelectClassNameContract, DesignSystem> = {
             gridColumnStart: "2",
         },
 
-        select__disabled: {
-            ...applyDisabledState(),
-        },
+        select__disabled: {},
 
         select_menu: {
             background: neutralFillStealthRest,
