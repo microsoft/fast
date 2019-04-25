@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.7.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-styles-msft@4.6.0...@microsoft/fast-components-styles-msft@4.7.0) (2019-04-25)
+
+
+### Bug Fixes
+
+* styling for actionToggle, contextMenuItem & textAction ([#1712](https://github.com/Microsoft/fast-dna/issues/1712)) ([839c6ba](https://github.com/Microsoft/fast-dna/commit/839c6ba))
+
+
+### Features
+
+* update neutral-fill-input recipe ([#1711](https://github.com/Microsoft/fast-dna/issues/1711)) ([9e039ed](https://github.com/Microsoft/fast-dna/commit/9e039ed))
+
+
+
+
+
 # [4.6.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-styles-msft@4.5.0...@microsoft/fast-components-styles-msft@4.6.0) (2019-04-23)
 
 
