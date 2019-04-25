@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.8.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-styles-msft@4.7.0...@microsoft/fast-components-styles-msft@4.8.0) (2019-04-25)
+
+
+### Features
+
+* adjust deltas of neutralFill and neutralFillStealth ([#1714](https://github.com/Microsoft/fast-dna/issues/1714)) ([d763c3a](https://github.com/Microsoft/fast-dna/commit/d763c3a))
+
+
+
+
+
 # [4.7.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-styles-msft@4.6.0...@microsoft/fast-components-styles-msft@4.7.0) (2019-04-25)
 
 
