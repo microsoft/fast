@@ -9,7 +9,6 @@ import {
 } from "./select.props";
 import { Select as BaseSelect, SelectState } from "@microsoft/fast-components-react-base";
 import { Button, ButtonAppearance } from "../button";
-import { selectDisplayButtonOverrides } from "@microsoft/fast-components-styles-msft";
 import { DisplayNamePrefix } from "../utilities";
 
 class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, {}> {
@@ -51,17 +50,32 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, {}> {
             return null;
         }
         return (
-            <Button
-                jssStyleSheet={selectDisplayButtonOverrides}
+            <button
                 disabled={props.disabled}
+                className={get(this.props, "managedClasses.select_button", "")}
                 aria-labelledby={props.labelledBy || null}
                 aria-haspopup={true}
                 aria-expanded={state.isMenuOpen}
-                appearance={ButtonAppearance.outline}
-                afterContent={this.generateGlyph}
             >
-                {state.displayString}
-            </Button>
+                <span
+                    className={get(
+                        this.props,
+                        "managedClasses.select_button_contentRegion",
+                        ""
+                    )}
+                >
+                    <div
+                        className={get(
+                            this.props,
+                            "managedClasses.select_button_displayText",
+                            ""
+                        )}
+                    >
+                        {state.displayString}
+                    </div>
+                    {this.generateGlyph()}
+                </span>
+            </button>
         );
     };
 
