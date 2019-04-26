@@ -141,6 +141,18 @@ import SelectOptionStyles from "./select-option";
 export { SelectOptionStyles };
 
 /**
+ * Export slider styles
+ */
+import SliderStyles from "./slider";
+export { SliderStyles };
+
+/**
+ * Export slider styles
+ */
+import SliderLabelStyles from "./slider-label";
+export { SliderLabelStyles };
+
+/**
  * Export subheading styles
  */
 import SubheadingStyles from "./subheading";
