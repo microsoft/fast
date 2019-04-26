@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.5.3](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-msft@4.5.2...@microsoft/fast-components-react-msft@4.5.3) (2019-04-25)
+
+**Note:** Version bump only for package @microsoft/fast-components-react-msft
+
+
+
+
+
+## [4.5.2](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-msft@4.5.1...@microsoft/fast-components-react-msft@4.5.2) (2019-04-25)
+
+
+### Bug Fixes
+
+* reset viewbox to center default select arrow icon ([#1695](https://github.com/Microsoft/fast-dna/issues/1695)) ([eefb1d3](https://github.com/Microsoft/fast-dna/commit/eefb1d3))
+
+
+
+
+
 ## [4.5.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-msft@4.5.0...@microsoft/fast-components-react-msft@4.5.1) (2019-04-23)
 
 

@@ -76,11 +76,11 @@ const styles: ComponentStyles<TextActionClassNameContract, DesignSystem> = (
             display: "flex",
             flexDirection: "row",
             transition: "all 0.2s ease-in-out",
-            "&:hover:enabled": {
+            "&:hover": {
                 background: neutralFillInputHover,
                 borderColor: neutralOutlineHover,
             },
-            "&:active:enabled": {
+            "&:active": {
                 background: neutralFillInputActive,
                 borderColor: neutralOutlineActive,
             },
@@ -97,6 +97,14 @@ const styles: ComponentStyles<TextActionClassNameContract, DesignSystem> = (
         },
         textAction__disabled: {
             ...applyDisabledState(designSystem),
+            "&:hover": {
+                background: neutralFillInputRest,
+                borderColor: neutralOutlineRest,
+            },
+            "&:active": {
+                background: neutralFillInputRest,
+                borderColor: neutralOutlineRest,
+            },
         },
         textAction_button: {
             borderColor: "transparent",
