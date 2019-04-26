@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.6.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-msft@4.5.3...@microsoft/fast-components-react-msft@4.6.0) (2019-04-26)
+
+
+### Features
+
+* add slider component ([#1676](https://github.com/Microsoft/fast-dna/issues/1676)) ([6eded38](https://github.com/Microsoft/fast-dna/commit/6eded38))
+
+
+
+
+
 ## [4.5.3](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-msft@4.5.2...@microsoft/fast-components-react-msft@4.5.3) (2019-04-25)
 
 **Note:** Version bump only for package @microsoft/fast-components-react-msft
