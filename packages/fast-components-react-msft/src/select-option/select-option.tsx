@@ -26,7 +26,7 @@ class SelectOption extends Foundation<
         return (
             <BaseListboxItem
                 {...this.unhandledProps()}
-                id={this.props.id}
+                id={this.props.id || null}
                 displayString={this.props.displayString}
                 value={this.props.value}
                 managedClasses={{

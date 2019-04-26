@@ -25,8 +25,15 @@ export interface ListboxItemHandledProps extends ListboxItemManagedClasses {
 
     /**
      * The unique id for the item
+     * @deprecated - this prop will be removed, use itemId instead
      */
-    id: string;
+    id?: string;
+
+    /**
+     * The id of this item, must be unique in the context of a particular listbox
+     * (this does not get written to the html id attibute of the component)
+     */
+    itemId?: string;
 
     /**
      * Friendly string that may be used in UI display

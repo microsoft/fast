@@ -10,6 +10,7 @@ import {
 import { ListboxContext, ListboxContextType } from "../listbox/listbox-context";
 import { KeyCodes } from "@microsoft/fast-web-utilities";
 import { DisplayNamePrefix } from "../utilities";
+import { string } from "prop-types";
 
 class ListboxItem extends Foundation<
     ListboxItemHandledProps,
@@ -24,11 +25,52 @@ class ListboxItem extends Foundation<
         disabled: false,
     };
 
+    /**
+     * Gets the id to use for the item
+     * Authors who's items all have unique values can choose to
+     * not provide an itemId and the values of the items will be used as id's,
+     * otherwise use itemId.  All listbox items of a particular listbox should use the same
+     * approach with respect to using values or itemId or results could be unexpected.
+     * The "id" prop is being depracated and should not be used.
+     */
+    public static getItemId = (props: ListboxItemProps): string => {
+        return !ListboxItem.isNullOrUndefined(props.itemId)
+            ? props.itemId
+            : !ListboxItem.isNullOrUndefined(props.id)
+                ? props.id
+                : props.value;
+    };
+
+    /**
+     * Gets the id to use for an listbox item by examining the associated Element
+     */
+    public static getItemIdFromElement = (element: Element): string => {
+        let idToUse: string = element.getAttribute("itemId");
+        if (!ListboxItem.isNullOrUndefined(idToUse)) {
+            return idToUse;
+        }
+
+        idToUse = element.getAttribute("id");
+        if (!ListboxItem.isNullOrUndefined(idToUse)) {
+            return idToUse;
+        }
+
+        return element.getAttribute("value");
+    };
+
+    public static isNullOrUndefined = (value: string): boolean => {
+        if (value === undefined || value === null || value === "") {
+            return true;
+        }
+        return false;
+    };
+
     protected handledProps: HandledProps<ListboxItemHandledProps> = {
         disabled: void 0,
         displayString: void 0,
         managedClasses: void 0,
         id: void 0,
+        itemId: void 0,
         onInvoke: void 0,
         value: void 0,
     };
@@ -36,13 +78,14 @@ class ListboxItem extends Foundation<
     /**
      * Renders the component
      */
+
     public render(): React.ReactElement<HTMLDivElement> {
         return (
             <div
                 {...this.unhandledProps()}
                 className={this.generateClassNames()}
                 role="option"
-                id={this.props.id}
+                id={this.props.id || null}
                 aria-selected={this.isItemSelected()}
                 aria-disabled={this.props.disabled}
                 onClick={this.handleClick}
@@ -88,7 +131,10 @@ class ListboxItem extends Foundation<
             isSelected =
                 (this.context as ListboxContextType).listboxSelectedItems.filter(
                     (item: ListboxItemProps) => {
-                        return item.id === this.props.id;
+                        return (
+                            ListboxItem.getItemId(item) ===
+                            ListboxItem.getItemId(this.props)
+                        );
                     }
                 ).length === 1;
         }

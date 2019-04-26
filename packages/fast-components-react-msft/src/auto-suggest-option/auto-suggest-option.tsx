@@ -10,7 +10,7 @@ import {
     AutoSuggestContextType,
     ListboxItem as BaseListboxItem,
 } from "@microsoft/fast-components-react-base";
-import { get, slice } from "lodash-es";
+import { get } from "lodash-es";
 import { startsWith } from "@microsoft/fast-web-utilities";
 import { isNullOrUndefined } from "util";
 import { DisplayNamePrefix } from "../utilities";
@@ -40,7 +40,7 @@ class AutoSuggestOption extends Foundation<
         return (
             <BaseListboxItem
                 {...this.unhandledProps()}
-                id={this.props.id}
+                id={this.props.id || null}
                 value={this.props.value}
                 managedClasses={{
                     listboxItem: get(this.props.managedClasses, "autoSuggestOption", ""),

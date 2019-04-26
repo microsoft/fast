@@ -4,7 +4,7 @@ import { get, isEqual } from "lodash-es";
 import { KeyCodes } from "@microsoft/fast-web-utilities";
 import { SelectClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import { SelectHandledProps, SelectProps, SelectUnhandledProps } from "./select.props";
-import { ListboxItemProps } from "../listbox-item";
+import ListboxItem, { ListboxItemProps } from "../listbox-item";
 import Listbox from "../listbox";
 import Button from "../button";
 import { canUseDOM } from "exenv-es6";
@@ -433,7 +433,7 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
 
         if (this.state.selectedItems.length === 1) {
             const selectedItemIndex: number = Listbox.getItemIndexById(
-                this.state.selectedItems[0].id,
+                ListboxItem.getItemId(this.state.selectedItems[0]),
                 this.props.children
             );
             if (selectedItemIndex !== -1) {

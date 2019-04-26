@@ -11,8 +11,9 @@ import { KeyCodes, startsWith } from "@microsoft/fast-web-utilities";
 import { get, inRange, isEqual } from "lodash-es";
 import { canUseDOM } from "exenv-es6";
 import { ListboxContext, ListboxContextType } from "./listbox-context";
-import { ListboxItemProps } from "../listbox-item";
+import ListboxItem, { ListboxItemProps } from "../listbox-item";
 import { DisplayNamePrefix } from "../utilities";
+
 export interface ListboxState {
     /**
      * The index of the focusable child
@@ -77,10 +78,7 @@ class Listbox extends Foundation<
         const childrenAsArray: React.ReactNode[] = React.Children.toArray(children);
         return childrenAsArray.findIndex(
             (child: React.ReactElement<any>): boolean => {
-                if (
-                    child.props[Listbox.idPropertyKey] === undefined ||
-                    child.props[Listbox.idPropertyKey] !== itemId
-                ) {
+                if (ListboxItem.getItemId(child.props) !== itemId) {
                     return false;
                 }
                 return true;
@@ -122,10 +120,7 @@ class Listbox extends Foundation<
 
         const matchNode: React.ReactNode = childrenAsArray.find(
             (child: React.ReactElement<any>): boolean => {
-                if (
-                    child.props[Listbox.idPropertyKey] === undefined ||
-                    child.props[Listbox.idPropertyKey] !== itemId
-                ) {
+                if (ListboxItem.getItemId(child.props) !== itemId) {
                     return false;
                 }
                 return true;
@@ -167,7 +162,7 @@ class Listbox extends Foundation<
                 if (typeof item === "string") {
                     itemId = item;
                 } else {
-                    itemId = item.id;
+                    itemId = ListboxItem.getItemId(item);
                 }
 
                 const itemNode: React.ReactElement<any> = this.getNodeById(
@@ -353,7 +348,7 @@ class Listbox extends Foundation<
 
         while (inRange(focusIndex, children.length)) {
             const child: Element = children[focusIndex];
-            focusItemId = child.id;
+            focusItemId = ListboxItem.getItemIdFromElement(child);
             if (this.isFocusableElement(child)) {
                 if (!this.props.disabled) {
                     child.focus();
@@ -376,7 +371,10 @@ class Listbox extends Foundation<
 
         focusIndex =
             selection.length > 0
-                ? Listbox.getItemIndexById(selection[0].id, this.props.children)
+                ? Listbox.getItemIndexById(
+                      ListboxItem.getItemId(selection[0]),
+                      this.props.children
+                  )
                 : this.domChildren().findIndex(this.isFocusableElement);
 
         if (focusIndex !== -1) {
@@ -434,7 +432,7 @@ class Listbox extends Foundation<
 
         this.setState({
             focusIndex,
-            focussedItemId: item.id,
+            focussedItemId: ListboxItem.getItemId(item),
         });
 
         if (!this.props.multiselectable) {
@@ -609,7 +607,7 @@ class Listbox extends Foundation<
     private toggleItem = (item: ListboxItemProps): void => {
         const culledSelection: ListboxItemProps[] = this.state.selectedItems.filter(
             (listboxItem: ListboxItemProps) => {
-                return listboxItem.id !== item.id;
+                return ListboxItem.getItemId(listboxItem) !== ListboxItem.getItemId(item);
             }
         );
         if (culledSelection.length < this.state.selectedItems.length) {

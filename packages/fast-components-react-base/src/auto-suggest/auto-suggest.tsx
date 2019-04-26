@@ -8,7 +8,7 @@ import {
     AutoSuggestProps,
     AutoSuggestUnhandledProps,
 } from "./auto-suggest.props";
-import { ListboxItemProps } from "../listbox-item";
+import ListboxItem, { ListboxItemProps } from "../listbox-item";
 import Listbox from "../listbox";
 import TextField, { TextFieldType } from "../text-field";
 import { AutoSuggestContext, AutoSuggestContextType } from "./auto-suggest-context";
@@ -214,7 +214,7 @@ class AutoSuggest extends Foundation<
     ): React.ReactNode => {
         const listboxId: string = state.isMenuOpen ? props.listboxId : null;
         const activedescendantId: string =
-            state.focusedItem !== null ? state.focusedItem.id : null;
+            state.focusedItem !== null ? ListboxItem.getItemId(state.focusedItem) : null;
         return (
             <TextField
                 disabled={props.disabled}
@@ -397,7 +397,7 @@ class AutoSuggest extends Foundation<
         );
 
         const currentItemIndex: number = Listbox.getItemIndexById(
-            this.state.focusedItem.id,
+            ListboxItem.getItemId(this.state.focusedItem),
             this.props.children
         );
 
@@ -420,7 +420,8 @@ class AutoSuggest extends Foundation<
 
         if (
             nextFocusableItem === null ||
-            nextFocusableItem.id === this.state.focusedItem.id
+            ListboxItem.getItemId(nextFocusableItem) ===
+                ListboxItem.getItemId(this.state.focusedItem)
         ) {
             // at the end of the list, focus on input
             this.focusOnInput();

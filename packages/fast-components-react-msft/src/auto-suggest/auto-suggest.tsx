@@ -9,6 +9,7 @@ import {
 import {
     AutoSuggest as BaseAutoSuggest,
     AutoSuggestState,
+    ListboxItem,
 } from "@microsoft/fast-components-react-base";
 import { TextAction } from "../text-action";
 import { DisplayNamePrefix } from "../utilities";
@@ -60,7 +61,7 @@ class AutoSuggest extends Foundation<
     ): React.ReactNode => {
         const listboxId: string = state.isMenuOpen ? props.listboxId : null;
         const activedescendantId: string =
-            state.focusedItem !== null ? state.focusedItem.id : null;
+            state.focusedItem !== null ? ListboxItem.getItemId(state.focusedItem) : null;
         return (
             <TextAction
                 disabled={props.disabled}
