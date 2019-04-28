@@ -8,7 +8,10 @@ import {
     PaletteType,
 } from "./palette";
 import {
+    ColorRecipe,
+    colorRecipeFactory,
     FillSwatchFamily,
+    Swatch,
     swatchFamilyToSwatchRecipeFactory,
     SwatchFamilyType,
     SwatchRecipe,
@@ -62,23 +65,9 @@ const neutralFillAlgorithm: DesignSystemResolver<FillSwatchFamily> = (
     };
 };
 
-export function neutralFill(designSystem: DesignSystem): FillSwatchFamily;
-export function neutralFill(
-    backgroundResolver: SwatchResolver
-): (designSystem: DesignSystem) => FillSwatchFamily;
-export function neutralFill(arg: any): any {
-    if (typeof arg === "function") {
-        return (designSystem: DesignSystem): FillSwatchFamily => {
-            return neutralFillAlgorithm(
-                Object.assign({}, designSystem, {
-                    backgroundColor: arg(designSystem),
-                })
-            );
-        };
-    } else {
-        return neutralFillAlgorithm(arg);
-    }
-}
+export const neutralFill: ColorRecipe<FillSwatchFamily> = colorRecipeFactory(
+    neutralFillAlgorithm
+);
 
 export const neutralFillRest: SwatchRecipe = swatchFamilyToSwatchRecipeFactory<
     FillSwatchFamily

@@ -1,5 +1,7 @@
 import { getSwatch, isDarkMode, palette, Palette, PaletteType } from "./palette";
 import {
+    ColorRecipe,
+    colorRecipeFactory,
     Swatch,
     SwatchFamily,
     SwatchFamilyResolver,
@@ -68,25 +70,9 @@ export const neutralForegroundDark: SwatchResolver = (
     );
 };
 
-export function neutralForeground(designSystem: DesignSystem): SwatchFamily;
-export function neutralForeground(
-    backgroundResolver: SwatchResolver
-): (designSystem: DesignSystem) => SwatchFamily;
-export function neutralForeground(arg: any): any {
-    if (typeof arg === "function") {
-        return (designSystem: DesignSystem): SwatchFamily => {
-            const backgroundColor: Swatch = arg(designSystem);
-            return neutralForegroundAlgorithm(
-                Object.assign({}, designSystem, {
-                    backgroundColor,
-                })
-            );
-        };
-    } else {
-        return neutralForegroundAlgorithm(arg);
-    }
-}
-
+export const neutralForeground: ColorRecipe<SwatchFamily> = colorRecipeFactory(
+    neutralForegroundAlgorithm
+);
 export const neutralForegroundRest: SwatchRecipe = swatchFamilyToSwatchRecipeFactory(
     SwatchFamilyType.rest,
     neutralForeground

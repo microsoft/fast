@@ -1,5 +1,6 @@
 import { DesignSystem, DesignSystemResolver } from "../../design-system";
 import {
+    colorRecipeFactory,
     FillSwatchFamily,
     Swatch,
     SwatchFamilyResolver,
@@ -17,76 +18,45 @@ import {
     accentFillSelectedDelta,
 } from "../design-system";
 
-/**
- * Derives rest/hover/active active fill colors
- */
-export const accentFillAlgorithm: (
-    designSystem: DesignSystem,
-    contrastTarget: number
-) => FillSwatchFamily = (
-    designSystem: DesignSystem,
-    contrastTarget: number
-): FillSwatchFamily => {
-    const accentPalette: Palette = palette(PaletteType.accent)(designSystem);
-    const accent: Swatch = accentSwatch(designSystem);
-    const textColor: Swatch = accentForegroundCut(
-        Object.assign({}, designSystem, {
-            backgroundColor: accent,
-        })
-    );
-    const indexes: {
-        rest: number;
-        hover: number;
-        active: number;
-    } = findAccessibleAccentSwatchIndexs(designSystem, contrastTarget, textColor, {
-        rest: accentFillRestDelta(designSystem),
-        hover: accentFillHoverDelta(designSystem),
-        active: accentFillActiveDelta(designSystem),
-    });
+function accentFillAlgorithm(contrast: number): DesignSystemResolver<FillSwatchFamily> {
+    return (designSystem: DesignSystem): FillSwatchFamily => {
+        const accentPalette: Palette = palette(PaletteType.accent)(designSystem);
+        const accent: Swatch = accentSwatch(designSystem);
+        const textColor: Swatch = accentForegroundCut(
+            Object.assign({}, designSystem, {
+                backgroundColor: accent,
+            })
+        );
+        const indexes: {
+            rest: number;
+            hover: number;
+            active: number;
+        } = findAccessibleAccentSwatchIndexs(designSystem, contrast, textColor, {
+            rest: accentFillRestDelta(designSystem),
+            hover: accentFillHoverDelta(designSystem),
+            active: accentFillActiveDelta(designSystem),
+        });
 
-    return {
-        rest: getSwatch(indexes.rest, accentPalette),
-        hover: getSwatch(indexes.hover, accentPalette),
-        active: getSwatch(indexes.active, accentPalette),
-        selected: getSwatch(
-            indexes.rest +
-                (isDarkMode(designSystem)
-                    ? accentFillSelectedDelta(designSystem) * -1
-                    : accentFillSelectedDelta(designSystem)),
-            accentPalette
-        ),
+        return {
+            rest: getSwatch(indexes.rest, accentPalette),
+            hover: getSwatch(indexes.hover, accentPalette),
+            active: getSwatch(indexes.active, accentPalette),
+            selected: getSwatch(
+                indexes.rest +
+                    (isDarkMode(designSystem)
+                        ? accentFillSelectedDelta(designSystem) * -1
+                        : accentFillSelectedDelta(designSystem)),
+                accentPalette
+            ),
+        };
     };
-};
-
-/**
- * Factory to create accent-fill functions based on an input contrast target
- */
-function accentFillFactory(contrast: number): SwatchFamilyResolver<FillSwatchFamily> {
-    function accentFillInternal(designSystem: DesignSystem): FillSwatchFamily;
-    function accentFillInternal(
-        backgroundResolver: DesignSystemResolver<Swatch>
-    ): DesignSystemResolver<FillSwatchFamily>;
-    function accentFillInternal(arg: any): any {
-        if (typeof arg === "function") {
-            return (designSystem: DesignSystem): FillSwatchFamily => {
-                return accentFillAlgorithm(
-                    Object.assign({}, designSystem, {
-                        backgroundColor: arg(designSystem),
-                    }),
-                    contrast
-                );
-            };
-        } else {
-            return accentFillAlgorithm(arg, contrast);
-        }
-    }
-
-    return accentFillInternal;
 }
 
-export const accentFill: SwatchFamilyResolver<FillSwatchFamily> = accentFillFactory(4.5);
-export const accentFillLarge: SwatchFamilyResolver<FillSwatchFamily> = accentFillFactory(
-    3
+export const accentFill: SwatchFamilyResolver<FillSwatchFamily> = colorRecipeFactory(
+    accentFillAlgorithm(4.5)
+);
+export const accentFillLarge: SwatchFamilyResolver<FillSwatchFamily> = colorRecipeFactory(
+    accentFillAlgorithm(3)
 );
 
 export const accentFillRest: SwatchRecipe = swatchFamilyToSwatchRecipeFactory<

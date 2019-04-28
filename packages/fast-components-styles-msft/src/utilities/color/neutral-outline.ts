@@ -14,6 +14,8 @@ import {
     swatchFamilyToSwatchRecipeFactory,
     SwatchFamilyType,
     SwatchRecipe,
+    ColorRecipe,
+    colorRecipeFactory,
 } from "./common";
 import {
     backgroundColor,
@@ -48,24 +50,9 @@ const neutralOutlineAlgorithm: SwatchFamilyResolver = (
     };
 };
 
-export function neutralOutline(designSystem: DesignSystem): SwatchFamily;
-export function neutralOutline(
-    backgroundResolver: (designSystem: DesignSystem) => Swatch
-): (designSystem: DesignSystem) => SwatchFamily;
-export function neutralOutline(arg: any): any {
-    if (typeof arg === "function") {
-        return (designSystem: DesignSystem): SwatchFamily => {
-            return neutralOutlineAlgorithm(
-                Object.assign({}, designSystem, {
-                    backgroundColor: arg(designSystem),
-                })
-            );
-        };
-    } else {
-        return neutralOutlineAlgorithm(arg);
-    }
-}
-
+export const neutralOutline: ColorRecipe<SwatchFamily> = colorRecipeFactory(
+    neutralOutlineAlgorithm
+);
 export const neutralOutlineRest: SwatchRecipe = swatchFamilyToSwatchRecipeFactory(
     SwatchFamilyType.rest,
     neutralOutline

@@ -5,6 +5,7 @@ import defaultDesignSystem, {
 import { findAccessibleAccentSwatchIndexs } from "./accent";
 import { getSwatch, palette, Palette, PaletteType } from "./palette";
 import {
+    colorRecipeFactory,
     SwatchFamily,
     SwatchFamilyResolver,
     swatchFamilyToSwatchRecipeFactory,
@@ -19,61 +20,40 @@ import {
     backgroundColor,
 } from "../design-system";
 
-const accentForegroundAlgorithm: (
-    designSystem: DesignSystem,
+function accentForegroundAlgorithm(
     contrastTarget: number
-) => SwatchFamily = (
-    designSystem: DesignSystem,
-    contrastTarget: number
-): SwatchFamily => {
-    const accentPalette: Palette = palette(PaletteType.accent)(designSystem);
-    const indexes: {
-        rest: number;
-        hover: number;
-        active: number;
-    } = findAccessibleAccentSwatchIndexs(
-        designSystem,
-        contrastTarget,
-        backgroundColor(designSystem),
-        {
-            rest: accentForegroundRestDelta(designSystem),
-            hover: accentForegroundHoverDelta(designSystem),
-            active: accentForegroundActiveDelta(designSystem),
-        }
-    );
+): DesignSystemResolver<SwatchFamily> {
+    return (designSystem: DesignSystem): SwatchFamily => {
+        const accentPalette: Palette = palette(PaletteType.accent)(designSystem);
+        const indexes: {
+            rest: number;
+            hover: number;
+            active: number;
+        } = findAccessibleAccentSwatchIndexs(
+            designSystem,
+            contrastTarget,
+            backgroundColor(designSystem),
+            {
+                rest: accentForegroundRestDelta(designSystem),
+                hover: accentForegroundHoverDelta(designSystem),
+                active: accentForegroundActiveDelta(designSystem),
+            }
+        );
 
-    return {
-        rest: getSwatch(indexes.rest, accentPalette),
-        hover: getSwatch(indexes.hover, accentPalette),
-        active: getSwatch(indexes.active, accentPalette),
+        return {
+            rest: getSwatch(indexes.rest, accentPalette),
+            hover: getSwatch(indexes.hover, accentPalette),
+            active: getSwatch(indexes.active, accentPalette),
+        };
     };
-};
-
-function accentForegroundFactory(contrast: number): SwatchFamilyResolver {
-    function accentForegroundInternal(designSystem: DesignSystem): SwatchFamily;
-    function accentForegroundInternal(
-        backgroundResolver: SwatchResolver
-    ): DesignSystemResolver<SwatchFamily>;
-    function accentForegroundInternal(arg: any): any {
-        if (typeof arg === "function") {
-            return (designSystem: DesignSystem): SwatchFamily => {
-                return accentForegroundAlgorithm(
-                    Object.assign({}, designSystem, {
-                        backgroundColor: arg(designSystem),
-                    }),
-                    contrast
-                );
-            };
-        } else {
-            return accentForegroundAlgorithm(arg, contrast);
-        }
-    }
-
-    return accentForegroundInternal;
 }
 
-export const accentForeground: SwatchFamilyResolver = accentForegroundFactory(4.5);
-export const accentForegroundLarge: SwatchFamilyResolver = accentForegroundFactory(3);
+export const accentForeground: SwatchFamilyResolver = colorRecipeFactory(
+    accentForegroundAlgorithm(4.5)
+);
+export const accentForegroundLarge: SwatchFamilyResolver = colorRecipeFactory(
+    accentForegroundAlgorithm(3)
+);
 
 export const accentForegroundRest: SwatchRecipe = swatchFamilyToSwatchRecipeFactory(
     SwatchFamilyType.rest,
