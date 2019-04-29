@@ -331,7 +331,6 @@ class FormSection extends React.Component<
             typeof this.state.oneOfAnyOf !== "undefined" &&
             this.props.schema[this.state.oneOfAnyOf.type]
         ) {
-            const id: string = uniqueId();
             const options: React.ReactNode = getOneOfAnyOfSelectOptions(
                 this.props.schema,
                 this.state
@@ -339,7 +338,7 @@ class FormSection extends React.Component<
 
             return (
                 <FormOneOfAnyOf
-                    label={"Configuration"}
+                    label={get(this.props, "schema.title", "Configuration")}
                     activeIndex={this.state.oneOfAnyOf.activeIndex}
                     onUpdate={this.handleAnyOfOneOfClick}
                 >
