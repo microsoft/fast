@@ -1,5 +1,5 @@
 import React from "react";
-import { get, uniqueId } from "lodash-es";
+import { get, omit, uniqueId } from "lodash-es";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 import FormCategory from "./form-category";
@@ -26,6 +26,7 @@ import {
     FormSectionClassNameContract,
     FormSectionProps,
     FormSectionState,
+    InitialOneOfAnyOfState,
 } from "./form-section.props";
 import FormControl from "./form-control";
 import FormOneOfAnyOf from "./form-one-of-any-of";
@@ -55,7 +56,21 @@ class FormSection extends React.Component<
      */
     public componentWillUpdate(nextProps: FormSectionProps): void {
         if (checkIsDifferentSchema(this.props.schema, nextProps.schema)) {
-            this.setState(getInitialOneOfAnyOfState(nextProps.schema, nextProps.data));
+            const initialOneOfAnyOfState: InitialOneOfAnyOfState = getInitialOneOfAnyOfState(
+                nextProps.schema,
+                nextProps.data
+            );
+
+            this.setState(initialOneOfAnyOfState);
+
+            if (typeof nextProps.data === "undefined") {
+                const updatedData: any = generateExampleData(
+                    initialOneOfAnyOfState.schema,
+                    ""
+                );
+
+                nextProps.onChange(nextProps.dataLocation, updatedData);
+            }
         }
     }
 
@@ -63,15 +78,16 @@ class FormSection extends React.Component<
      * Handles updating the schema to another active oneOf/anyOf schema
      */
     private handleAnyOfOneOfClick = (activeIndex: number): void => {
-        const updatedData: any = generateExampleData(
-            this.props.schema[this.state.oneOfAnyOf.type][activeIndex],
-            ""
+        const updatedSchema: any = Object.assign(
+            omit(this.props.schema, [this.state.oneOfAnyOf.type]),
+            this.props.schema[this.state.oneOfAnyOf.type][activeIndex]
         );
+        const updatedData: any = generateExampleData(updatedSchema, "");
 
         this.props.onChange(this.props.dataLocation, updatedData);
 
         this.setState({
-            schema: this.props.schema[this.state.oneOfAnyOf.type][activeIndex],
+            schema: updatedSchema,
             oneOfAnyOf: {
                 type: this.state.oneOfAnyOf.type,
                 activeIndex,

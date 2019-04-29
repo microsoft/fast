@@ -1,5 +1,5 @@
 import React from "react";
-import { cloneDeep, get, mergeWith, set, unset } from "lodash-es";
+import { cloneDeep, get, mergeWith, omit, set, unset } from "lodash-es";
 import { getDataFromSchema } from "../../data-utilities";
 import {
     getChildOptionBySchemaId,
@@ -87,7 +87,10 @@ export function getInitialOneOfAnyOfState(
     if (schema.oneOf || schema.anyOf) {
         oneOfAnyOf = schema.oneOf ? oneOfAnyOfType.oneOf : oneOfAnyOfType.anyOf;
         activeIndex = getOneOfAnyOfActiveIndex(oneOfAnyOf, schema, data);
-        updatedSchema = schema[oneOfAnyOf][activeIndex];
+        updatedSchema = Object.assign(
+            omit(schema, [oneOfAnyOf]),
+            schema[oneOfAnyOf][activeIndex]
+        );
         oneOfAnyOfState = {
             type: oneOfAnyOf,
             activeIndex,
@@ -190,7 +193,12 @@ export function getOneOfAnyOfActiveIndex(type: string, schema: any, data: any): 
         const newData: any = removeUndefinedKeys(data);
 
         schema[type].forEach((oneOfAnyOfItem: any, index: number) => {
-            if (validateSchema(oneOfAnyOfItem, newData)) {
+            const updatedSchema: any = Object.assign(
+                omit(schema, [type]),
+                oneOfAnyOfItem
+            );
+
+            if (validateSchema(updatedSchema, newData)) {
                 activeIndex = index;
                 return;
             }
@@ -282,19 +290,28 @@ function checkIsObjectAndSetType(schemaSection: any): any {
     return schemaSection.type;
 }
 
+function getOneOfAnyOfType(schemaSection: any): oneOfAnyOfType | null {
+    return schemaSection.oneOf
+        ? oneOfAnyOfType.oneOf
+        : schemaSection.anyOf
+            ? oneOfAnyOfType.anyOf
+            : null;
+}
+
 /**
  * Generates example data for a newly added optional schema item
  */
 export function generateExampleData(schema: any, propertyLocation: string): any {
     let schemaSection: any =
         propertyLocation === "" ? schema : get(schema, propertyLocation);
+    const oneOfAnyOf: oneOfAnyOfType | null = getOneOfAnyOfType(schemaSection);
 
-    if (schemaSection.oneOf) {
-        schemaSection = schemaSection.oneOf[0];
-    }
-
-    if (schemaSection.anyOf) {
-        schemaSection = schemaSection.anyOf[0];
+    if (oneOfAnyOf !== null) {
+        schemaSection = Object.assign(
+            {},
+            omit(schemaSection, [oneOfAnyOf]),
+            schemaSection[oneOfAnyOf][0]
+        );
     }
 
     schemaSection.type = checkIsObjectAndSetType(schemaSection);
