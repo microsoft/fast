@@ -418,6 +418,10 @@ export function isSelect(property: any): boolean {
     return typeof property.enum !== "undefined" && property.enum.length > 0;
 }
 
+export function isConst(property: any): boolean {
+    return typeof property.const !== "undefined";
+}
+
 /**
  * Organizes the categories and items by weight
  */

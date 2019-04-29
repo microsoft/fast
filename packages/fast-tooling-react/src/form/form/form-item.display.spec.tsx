@@ -1,159 +1,143 @@
 import React from "react";
 import Adapter from "enzyme-adapter-react-16";
 import { configure, mount, shallow } from "enzyme";
-import { FormItemSelect } from "./form-item.select";
+import { FormItemDisplay } from "./form-item.display";
 import {
-    FormItemSelectClassNameContract,
-    FormItemSelectProps,
-} from "./form-item.select.props";
+    FormItemDisplayClassNameContract,
+    FormItemDisplayProps,
+} from "./form-item.display.props";
 
 /*
  * Configure Enzyme
  */
 configure({ adapter: new Adapter() });
 
-const managedClasses: FormItemSelectClassNameContract = {
-    formItemSelect: "formItemSelect-class",
-    formItemSelect__disabled: "formItemSelect__disabled-class",
-    formItemSelect_badge: "formItemSelect_badge-class",
-    formItemSelect_control: "formItemSelect_control-class",
-    formItemSelect_controlInput: "formItemSelect_controlInput-class",
-    formItemSelect_controlLabel: "formItemSelect_controlLabel-class",
-    formItemSelect_controlLabelRegion: "formItemSelect_controlLabelRegion-class",
-    formItemSelect_controlRegion: "formItemSelect_controlRegion-class",
-    formItemSelect_controlSpan: "formItemSelect_controlSpan-class",
-    formItemSelect_defaultValueIndicator: "formItemSelect_defaultValueIndicator-class",
-    formItemSelect_invalidMessage: "formItemSelect_invalidMessage-class",
-    formItemSelect_softRemove: "formItemSelect_softRemove-class",
-    formItemSelect_softRemoveInput: "formItemSelect_softRemoveInput-class",
+const managedClasses: FormItemDisplayClassNameContract = {
+    formItemDisplay: "formItemDisplay-class",
+    formItemDisplay__disabled: "formItemDisplay__disabled-class",
+    formItemDisplay_badge: "formItemDisplay_badge-class",
+    formItemDisplay_control: "formItemDisplay_control-class",
+    formItemDisplay_controlInput: "formItemDisplay_controlInput-class",
+    formItemDisplay_controlLabel: "formItemDisplay_controlLabel-class",
+    formItemDisplay_controlLabelRegion: "formItemDisplay_controlLabelRegion-class",
+    formItemDisplay_controlRegion: "formItemDisplay_controlRegion-class",
+    formItemDisplay_constValueIndicator: "formItemDisplay_constValueIndicator-class",
+    formItemDisplay_defaultValueIndicator: "formItemDisplay_defaultValueIndicator-class",
+    formItemDisplay_invalidMessage: "formItemDisplay_invalidMessage-class",
+    formItemDisplay_softRemove: "formItemDisplay_softRemove-class",
+    formItemDisplay_softRemoveInput: "formItemDisplay_softRemoveInput-class",
 };
 
-const selectProps: FormItemSelectProps = {
+const displayProps: FormItemDisplayProps = {
     index: 1,
     dataLocation: "",
     data: "",
     required: false,
     label: "",
-    options: [],
     onChange: jest.fn(),
     invalidMessage: "",
-    schema: {},
+    schema: {
+        const: "foo",
+    },
 };
 
-describe("Select", () => {
+describe("Display", () => {
     test("should not throw", () => {
         expect(() => {
-            shallow(<FormItemSelect {...selectProps} managedClasses={managedClasses} />);
+            shallow(
+                <FormItemDisplay {...displayProps} managedClasses={managedClasses} />
+            );
         }).not.toThrow();
     });
-    test("should generate an HTML select element", () => {
+    test("should generate an HTML input element", () => {
         const rendered: any = mount(
-            <FormItemSelect {...selectProps} managedClasses={managedClasses} />
+            <FormItemDisplay {...displayProps} managedClasses={managedClasses} />
         );
 
-        expect(rendered.find("select")).toHaveLength(1);
-    });
-    test("should generate an HTML select element when there is only one option and select is optional", () => {
-        const rendered: any = mount(
-            <FormItemSelect
-                {...selectProps}
-                options={["foo"]}
-                managedClasses={managedClasses}
-            />
-        );
-
-        expect(rendered.find("select")).toHaveLength(1);
-    });
-    test("should generate HTML options for each passed option", () => {
-        const renderedNoOptions: any = mount(
-            <FormItemSelect {...selectProps} managedClasses={managedClasses} />
-        );
-
-        expect(renderedNoOptions.find("option")).toHaveLength(0);
-
-        const renderedOptions: any = mount(
-            <FormItemSelect
-                {...selectProps}
-                options={["foo", "bar"]}
-                managedClasses={managedClasses}
-            />
-        );
-
-        expect(renderedOptions.find("option")).toHaveLength(2);
+        expect(rendered.find("input")).toHaveLength(2);
     });
     test("should generate an HTML label", () => {
         const rendered: any = mount(
-            <FormItemSelect {...selectProps} managedClasses={managedClasses} />
+            <FormItemDisplay {...displayProps} managedClasses={managedClasses} />
         );
 
         expect(rendered.find("label")).toHaveLength(1);
     });
-    test("should fire an `onChange` callback when a different option is selected", () => {
+    test("should fire an `onChange` callback when the const indicator has been clicked and a const value is available", () => {
         const handleChange: any = jest.fn();
 
         const rendered: any = mount(
-            <FormItemSelect
-                {...selectProps}
+            <FormItemDisplay
+                {...displayProps}
                 onChange={handleChange}
-                options={["foo", "bar"]}
                 managedClasses={managedClasses}
             />
         );
 
-        const selectElement: any = rendered.find("select");
+        const inputElement: any = rendered.find("button");
 
-        selectElement.simulate("change", { target: { value: "bar" } });
+        inputElement.simulate("click");
 
         expect(handleChange).toHaveBeenCalled();
         expect(handleChange.mock.calls[0][0]).toEqual("");
-        expect(handleChange.mock.calls[0][1]).toEqual("bar");
+        expect(handleChange.mock.calls[0][1]).toEqual("foo");
     });
-    test("should fire an `onChange` callback with numbers as values when a different option is selected", () => {
+    test("should fire an `onChange` callback when the const indicator has been clicked and a single enum value is available", () => {
         const handleChange: any = jest.fn();
+        const enumValue: string = "bar";
+        const schema: any = {
+            enum: [enumValue],
+        };
 
         const rendered: any = mount(
-            <FormItemSelect
-                {...selectProps}
+            <FormItemDisplay
+                {...displayProps}
                 onChange={handleChange}
-                options={[1, 2]}
                 managedClasses={managedClasses}
+                schema={schema}
             />
         );
 
-        const selectElement: any = rendered.find("select");
+        const inputElement: any = rendered.find("button");
 
-        selectElement.simulate("change", { target: { value: 2 } });
+        inputElement.simulate("click");
 
         expect(handleChange).toHaveBeenCalled();
         expect(handleChange.mock.calls[0][0]).toEqual("");
-        expect(handleChange.mock.calls[0][1]).toEqual(2);
+        expect(handleChange.mock.calls[0][1]).toEqual(enumValue);
     });
     test("should be disabled when disabled props is passed", () => {
         const rendered: any = mount(
-            <FormItemSelect
-                {...selectProps}
+            <FormItemDisplay
+                {...displayProps}
                 disabled={true}
-                options={[1, 2]}
                 managedClasses={managedClasses}
             />
         );
 
-        expect(rendered.find("select")).toHaveLength(1);
-        expect(rendered.find("select").prop("disabled")).toBeTruthy();
+        expect(rendered.find("input")).toHaveLength(2);
+        expect(
+            rendered
+                .find("input")
+                .at(0)
+                .prop("disabled")
+        ).toBeTruthy();
     });
     test("should remove the data if the soft remove is triggered", () => {
         const handleChange: any = jest.fn();
         const rendered: any = mount(
-            <FormItemSelect
-                {...selectProps}
+            <FormItemDisplay
+                {...displayProps}
                 managedClasses={managedClasses}
                 data={"foo"}
-                options={["foo", "bar"]}
                 onChange={handleChange}
             />
         );
 
-        rendered.find("input").simulate("change");
+        rendered
+            .find("input")
+            .at(1)
+            .simulate("change");
 
         expect(handleChange).toHaveBeenCalled();
         expect(handleChange.mock.calls[0][1]).toEqual(undefined);
@@ -162,20 +146,25 @@ describe("Select", () => {
         const handleChange: any = jest.fn();
         const data: string = "foo";
         const rendered: any = mount(
-            <FormItemSelect
-                {...selectProps}
+            <FormItemDisplay
+                {...displayProps}
                 managedClasses={managedClasses}
                 data={data}
-                options={["foo", "bar"]}
                 onChange={handleChange}
             />
         );
 
-        rendered.find("input").simulate("change");
+        rendered
+            .find("input")
+            .at(1)
+            .simulate("change");
 
         rendered.setProps({ data: handleChange.mock.calls[0][1] });
 
-        rendered.find("input").simulate("change");
+        rendered
+            .find("input")
+            .at(1)
+            .simulate("change");
 
         expect(handleChange).toHaveBeenCalledTimes(2);
         expect(handleChange.mock.calls[1][1]).toBe(data);
@@ -183,18 +172,17 @@ describe("Select", () => {
     test("should be invalid if an invalid message is passed", () => {
         const invalidMessage: string = "Foo";
         const rendered: any = mount(
-            <FormItemSelect
-                {...selectProps}
+            <FormItemDisplay
+                {...displayProps}
                 managedClasses={managedClasses}
                 data={"foo"}
-                options={["foo", "bar"]}
                 invalidMessage={invalidMessage}
             />
         );
 
         expect(
             rendered
-                .find("select")
+                .find("input")
                 .at(0)
                 .getDOMNode()
                 .checkValidity()
@@ -203,18 +191,17 @@ describe("Select", () => {
     test("should not be invalid if an invalid message is passed as an empty string", () => {
         const invalidMessage: string = "";
         const rendered: any = mount(
-            <FormItemSelect
-                {...selectProps}
+            <FormItemDisplay
+                {...displayProps}
                 managedClasses={managedClasses}
                 data={"foo"}
-                options={["foo", "bar"]}
                 invalidMessage={invalidMessage}
             />
         );
 
         expect(
             rendered
-                .find("select")
+                .find("input")
                 .at(0)
                 .getDOMNode()
                 .checkValidity()
@@ -223,11 +210,10 @@ describe("Select", () => {
     test("should not show an invalid message inline if `invalidMessage` is passed and `displayValidationInline` is undefined", () => {
         const invalidMessage: string = "Foo";
         const rendered: any = mount(
-            <FormItemSelect
-                {...selectProps}
+            <FormItemDisplay
+                {...displayProps}
                 managedClasses={managedClasses}
                 data={"foo"}
-                options={["foo", "bar"]}
                 invalidMessage={invalidMessage}
             />
         );
@@ -237,11 +223,10 @@ describe("Select", () => {
     test("should show an invalid message inline if `invalidMessage` is passed and `displayValidationInline` is true", () => {
         const invalidMessage: string = "Foo";
         const rendered: any = mount(
-            <FormItemSelect
-                {...selectProps}
+            <FormItemDisplay
+                {...displayProps}
                 managedClasses={managedClasses}
                 data={"foo"}
-                options={["foo", "bar"]}
                 invalidMessage={invalidMessage}
                 displayValidationInline={true}
             />
@@ -253,11 +238,10 @@ describe("Select", () => {
         const invalidMessage1: string = "Foo";
         const invalidMessage2: string = "Bar";
         const rendered: any = mount(
-            <FormItemSelect
-                {...selectProps}
+            <FormItemDisplay
+                {...displayProps}
                 managedClasses={managedClasses}
                 data={"foo"}
-                options={["foo", "bar"]}
                 invalidMessage={invalidMessage1}
                 displayValidationInline={true}
             />
@@ -271,42 +255,39 @@ describe("Select", () => {
     });
     test("should show a default indicator if default values exist and no data is available", () => {
         const rendered: any = mount(
-            <FormItemSelect
-                {...selectProps}
+            <FormItemDisplay
+                {...displayProps}
                 managedClasses={managedClasses}
-                options={["foo", "bar"]}
                 data={undefined}
                 default={"foo"}
             />
         );
 
         expect(
-            rendered.find(`.${managedClasses.formItemSelect_defaultValueIndicator}`)
+            rendered.find(`.${managedClasses.formItemDisplay_defaultValueIndicator}`)
         ).toHaveLength(1);
     });
     test("should not show a default indicator if data exists", () => {
         const rendered: any = mount(
-            <FormItemSelect
-                {...selectProps}
+            <FormItemDisplay
+                {...displayProps}
                 managedClasses={managedClasses}
-                options={["foo", "bar"]}
                 data={"foo"}
                 default={"bar"}
             />
         );
 
         expect(
-            rendered.find(`.${managedClasses.formItemSelect_defaultValueIndicator}`)
+            rendered.find(`.${managedClasses.formItemDisplay_defaultValueIndicator}`)
         ).toHaveLength(0);
     });
-    test("should fire the onChange callback to update the data to the default value if the default value indicator is clicked", () => {
+    test("should fire the `onChange` callback to update the data to the default value if the default value indicator is clicked", () => {
         const defaultValue: string = "foo";
         const callback: any = jest.fn();
         const rendered: any = mount(
-            <FormItemSelect
-                {...selectProps}
+            <FormItemDisplay
+                {...displayProps}
                 managedClasses={managedClasses}
-                options={["foo", "bar"]}
                 data={undefined}
                 onChange={callback}
                 default={defaultValue}
@@ -316,7 +297,7 @@ describe("Select", () => {
         expect(callback).not.toHaveBeenCalled();
 
         rendered
-            .find(`.${managedClasses.formItemSelect_defaultValueIndicator}`)
+            .find(`.${managedClasses.formItemDisplay_defaultValueIndicator}`)
             .simulate("click");
 
         expect(callback).toHaveBeenCalledTimes(1);
@@ -324,20 +305,23 @@ describe("Select", () => {
         expect(callback.mock.calls[0][1]).toEqual(defaultValue);
     });
     test("should show default values if they exist and no data is available", () => {
-        const defaultValue: string = "foo";
+        const defaultValue: string = "bar";
+        const schema: any = {
+            const: displayProps.schema.const,
+            default: defaultValue,
+        };
         const rendered: any = mount(
-            <FormItemSelect
-                {...selectProps}
+            <FormItemDisplay
+                {...displayProps}
                 managedClasses={managedClasses}
-                options={["foo", "bar"]}
                 data={undefined}
-                default={defaultValue}
+                schema={schema}
             />
         );
 
         expect(
             rendered
-                .find("select")
+                .find("input")
                 .at(0)
                 .prop("value")
         ).toBe(`\"${defaultValue}\"`);
@@ -346,8 +330,8 @@ describe("Select", () => {
         const value: string = "foo";
         const defaultValue: string = "bar";
         const rendered: any = mount(
-            <FormItemSelect
-                {...selectProps}
+            <FormItemDisplay
+                {...displayProps}
                 managedClasses={managedClasses}
                 data={value}
                 default={defaultValue}
@@ -355,7 +339,7 @@ describe("Select", () => {
         );
         expect(
             rendered
-                .find("select")
+                .find("input")
                 .at(0)
                 .prop("value")
         ).toBe(`\"${value}\"`);
