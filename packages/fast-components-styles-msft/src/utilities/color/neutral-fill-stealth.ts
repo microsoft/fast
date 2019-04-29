@@ -1,22 +1,5 @@
 import { DesignSystem, DesignSystemResolver } from "../../design-system";
 import {
-    findClosestSwatchIndex,
-    getSwatch,
-    isDarkMode,
-    palette,
-    Palette,
-    PaletteType,
-} from "./palette";
-import {
-    ColorRecipe,
-    colorRecipeFactory,
-    FillSwatchFamily,
-    swatchFamilyToSwatchRecipeFactory,
-    SwatchFamilyType,
-    SwatchRecipe,
-    SwatchResolver,
-} from "./common";
-import {
     backgroundColor,
     neutralFillActiveDelta,
     neutralFillHoverDelta,
@@ -25,63 +8,76 @@ import {
     neutralFillStealthHoverDelta,
     neutralFillStealthRestDelta,
     neutralFillStealthSelectedDelta,
+    neutralPalette,
 } from "../design-system";
+import {
+    ColorRecipe,
+    colorRecipeFactory,
+    designSystemResolverMax,
+    FillSwatchFamily,
+    Swatch,
+} from "./common";
+import {
+    findClosestBackgroundIndex,
+    getSwatch,
+    isDarkMode,
+    PaletteType,
+} from "./palette";
 
-/**
- * Algorithm for determining stealth fill colors
- */
-const neutralFillStealthAlgorithm: DesignSystemResolver<FillSwatchFamily> = (
-    designSystem: DesignSystem
-): FillSwatchFamily => {
-    const neutralPalette: Palette = palette(PaletteType.neutral)(designSystem);
-    const backgroundIndex: number = findClosestSwatchIndex(
-        PaletteType.neutral,
-        backgroundColor(designSystem)
-    )(designSystem);
-    const swapThreshold: number = Math.max(
-        neutralFillRestDelta(designSystem),
-        neutralFillHoverDelta(designSystem),
-        neutralFillActiveDelta(designSystem),
-        neutralFillStealthRestDelta(designSystem),
-        neutralFillStealthHoverDelta(designSystem),
-        neutralFillStealthActiveDelta(designSystem)
-    );
-    const direction: number = backgroundIndex >= swapThreshold ? -1 : 1;
-    const restIndex: number =
-        backgroundIndex + direction * neutralFillStealthRestDelta(designSystem);
+const neutralFillStealthSwapThreshold: DesignSystemResolver<
+    number
+> = designSystemResolverMax(
+    neutralFillRestDelta,
+    neutralFillHoverDelta,
+    neutralFillActiveDelta,
+    neutralFillStealthRestDelta,
+    neutralFillStealthHoverDelta,
+    neutralFillStealthActiveDelta
+);
 
-    return {
-        rest: getSwatch(restIndex, neutralPalette),
-        hover: getSwatch(
-            backgroundIndex + direction * neutralFillStealthHoverDelta(designSystem),
-            neutralPalette
-        ),
-        active: getSwatch(
-            backgroundIndex + direction * neutralFillStealthActiveDelta(designSystem),
-            neutralPalette
-        ),
-        selected: getSwatch(
-            restIndex +
-                (isDarkMode(designSystem)
-                    ? neutralFillStealthSelectedDelta(designSystem) * -1
-                    : neutralFillStealthSelectedDelta(designSystem)),
-            neutralPalette
-        ),
+function neutralFillStealthAlogrithm(
+    deltaResolver: DesignSystemResolver<number>
+): DesignSystemResolver<Swatch> {
+    return (designSystem: DesignSystem): Swatch => {
+        const backgroundIndex: number = findClosestBackgroundIndex(designSystem);
+        const direction: 1 | -1 =
+            backgroundIndex >= neutralFillStealthSwapThreshold(designSystem) ? -1 : 1;
+
+        return getSwatch(
+            backgroundIndex + direction * deltaResolver(designSystem),
+            neutralPalette(designSystem)
+        );
     };
-};
+}
 
 export const neutralFillStealth: ColorRecipe<FillSwatchFamily> = colorRecipeFactory(
-    neutralFillStealthAlgorithm
+    (designSystem: DesignSystem) => {
+        return {
+            rest: neutralFillStealthRest(designSystem),
+            hover: neutralFillStealthHover(designSystem),
+            active: neutralFillStealthActive(designSystem),
+            selected: neutralFillStealthSelected(designSystem),
+        };
+    }
 );
-export const neutralFillStealthRest: SwatchRecipe = swatchFamilyToSwatchRecipeFactory<
-    FillSwatchFamily
->(SwatchFamilyType.rest, neutralFillStealth);
-export const neutralFillStealthHover: SwatchRecipe = swatchFamilyToSwatchRecipeFactory<
-    FillSwatchFamily
->(SwatchFamilyType.hover, neutralFillStealth);
-export const neutralFillStealthActive: SwatchRecipe = swatchFamilyToSwatchRecipeFactory<
-    FillSwatchFamily
->(SwatchFamilyType.active, neutralFillStealth);
-export const neutralFillStealthSelected: SwatchRecipe = swatchFamilyToSwatchRecipeFactory<
-    FillSwatchFamily
->(SwatchFamilyType.selected, neutralFillStealth);
+
+export const neutralFillStealthRest: ColorRecipe<Swatch> = colorRecipeFactory(
+    neutralFillStealthAlogrithm(neutralFillStealthRestDelta)
+);
+export const neutralFillStealthHover: ColorRecipe<Swatch> = colorRecipeFactory(
+    neutralFillStealthAlogrithm(neutralFillStealthHoverDelta)
+);
+export const neutralFillStealthActive: ColorRecipe<Swatch> = colorRecipeFactory(
+    neutralFillStealthAlogrithm(neutralFillStealthActiveDelta)
+);
+export const neutralFillStealthSelected: ColorRecipe<Swatch> = colorRecipeFactory(
+    (designSystem: DesignSystem): Swatch => {
+        const delta: number = neutralFillStealthSelectedDelta(designSystem);
+
+        return getSwatch(
+            neutralPalette(designSystem).indexOf(neutralFillStealthRest(designSystem)) +
+                (isDarkMode(designSystem) ? delta * -1 : delta),
+            neutralPalette(designSystem)
+        );
+    }
+);

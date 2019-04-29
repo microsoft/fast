@@ -1,5 +1,13 @@
 import { DesignSystem, DesignSystemResolver } from "../../design-system";
 import {
+    accentFillActiveDelta,
+    accentFillHoverDelta,
+    accentFillRestDelta,
+    accentFillSelectedDelta,
+} from "../design-system";
+import { accentSwatch, findAccessibleAccentSwatchIndexs } from "./accent";
+import { accentForegroundCut } from "./accent-foreground-cut";
+import {
     colorRecipeFactory,
     FillSwatchFamily,
     Swatch,
@@ -8,15 +16,7 @@ import {
     SwatchFamilyType,
     SwatchRecipe,
 } from "./common";
-import { accentSwatch, findAccessibleAccentSwatchIndexs } from "./accent";
 import { getSwatch, isDarkMode, Palette, palette, PaletteType } from "./palette";
-import { accentForegroundCut } from "./accent-foreground-cut";
-import {
-    accentFillActiveDelta,
-    accentFillHoverDelta,
-    accentFillRestDelta,
-    accentFillSelectedDelta,
-} from "../design-system";
 
 function accentFillAlgorithm(contrast: number): DesignSystemResolver<FillSwatchFamily> {
     return (designSystem: DesignSystem): FillSwatchFamily => {

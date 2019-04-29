@@ -1,6 +1,6 @@
 import { DesignSystem, DesignSystemResolver } from "../../design-system";
 import {
-    findClosestSwatchIndex,
+    findClosestBackgroundIndex,
     getSwatch,
     isDarkMode,
     palette,
@@ -28,49 +28,38 @@ import {
 /**
  * Algorithm for determining neutral backplate colors
  */
-const neutralFillInputAlgorithm: DesignSystemResolver<FillSwatchFamily> = (
-    designSystem: DesignSystem
-): FillSwatchFamily => {
-    const neutralPalette: Palette = palette(PaletteType.neutral)(designSystem);
-    const backgroundIndex: number = findClosestSwatchIndex(
-        PaletteType.neutral,
-        backgroundColor(designSystem)
-    )(designSystem);
-    const direction: 1 | -1 = isDarkMode(designSystem) ? -1 : 1;
-
-    return {
-        rest: getSwatch(
-            backgroundIndex - neutralFillInputRestDelta(designSystem) * direction,
-            neutralPalette
-        ),
-        hover: getSwatch(
-            backgroundIndex - neutralFillInputHoverDelta(designSystem) * direction,
-            neutralPalette
-        ),
-        active: getSwatch(
-            backgroundIndex - neutralFillInputActiveDelta(designSystem) * direction,
-            neutralPalette
-        ),
-        selected: getSwatch(
-            backgroundIndex - neutralFillInputSelectedDelta(designSystem) * direction,
-            neutralPalette
-        ),
+function neutralFillInputAlgorithm(
+    indexResolver: DesignSystemResolver<number>
+): DesignSystemResolver<Swatch> {
+    return (designSystem: DesignSystem): Swatch => {
+        const direction: 1 | -1 = isDarkMode(designSystem) ? -1 : 1;
+        return getSwatch(
+            findClosestBackgroundIndex(designSystem) - indexResolver(designSystem) * direction,
+            palette(PaletteType.neutral)(designSystem)
+        );
     };
-};
+}
 
 export const neutralFillInput: ColorRecipe<FillSwatchFamily> = colorRecipeFactory(
-    neutralFillInputAlgorithm
+    (designSystem: DesignSystem): FillSwatchFamily => {
+        return {
+            rest: neutralFillInputRest(designSystem),
+            hover: neutralFillInputHover(designSystem),
+            active: neutralFillInputActive(designSystem),
+            selected: neutralFillInputSelected(designSystem),
+        };
+    }
 );
 
-export const neutralFillInputRest: SwatchRecipe = swatchFamilyToSwatchRecipeFactory<
-    FillSwatchFamily
->(SwatchFamilyType.rest, neutralFillInput);
-export const neutralFillInputHover: SwatchRecipe = swatchFamilyToSwatchRecipeFactory<
-    FillSwatchFamily
->(SwatchFamilyType.hover, neutralFillInput);
-export const neutralFillInputActive: SwatchRecipe = swatchFamilyToSwatchRecipeFactory<
-    FillSwatchFamily
->(SwatchFamilyType.active, neutralFillInput);
-export const neutralFillInputSelected: SwatchRecipe = swatchFamilyToSwatchRecipeFactory<
-    FillSwatchFamily
->(SwatchFamilyType.selected, neutralFillInput);
+export const neutralFillInputRest: SwatchRecipe = colorRecipeFactory(
+    neutralFillInputAlgorithm(neutralFillInputRestDelta)
+);
+export const neutralFillInputHover: SwatchRecipe = colorRecipeFactory(
+    neutralFillInputAlgorithm(neutralFillInputHoverDelta)
+);
+export const neutralFillInputActive: SwatchRecipe = colorRecipeFactory(
+    neutralFillInputAlgorithm(neutralFillInputActiveDelta)
+);
+export const neutralFillInputSelected: SwatchRecipe = colorRecipeFactory(
+    neutralFillInputAlgorithm(neutralFillInputSelectedDelta)
+);

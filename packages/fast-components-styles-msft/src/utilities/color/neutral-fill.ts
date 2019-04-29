@@ -1,83 +1,70 @@
 import { DesignSystem, DesignSystemResolver } from "../../design-system";
 import {
-    findClosestSwatchIndex,
-    getSwatch,
-    isDarkMode,
-    palette,
-    Palette,
-    PaletteType,
-} from "./palette";
-import {
-    ColorRecipe,
-    colorRecipeFactory,
-    FillSwatchFamily,
-    Swatch,
-    swatchFamilyToSwatchRecipeFactory,
-    SwatchFamilyType,
-    SwatchRecipe,
-    SwatchResolver,
-} from "./common";
-import {
-    backgroundColor,
     neutralFillActiveDelta,
     neutralFillHoverDelta,
     neutralFillRestDelta,
     neutralFillSelectedDelta,
+    neutralPalette,
 } from "../design-system";
+import {
+    ColorRecipe,
+    colorRecipeFactory,
+    designSystemResolverMax,
+    FillSwatchFamily,
+    Swatch,
+    SwatchRecipe,
+} from "./common";
+import { findClosestBackgroundIndex, getSwatch, isDarkMode } from "./palette";
 
-/**
- * Algorithm for determining neutral backplate colors
- */
-const neutralFillAlgorithm: DesignSystemResolver<FillSwatchFamily> = (
-    designSystem: DesignSystem
-): FillSwatchFamily => {
-    const neutralPalette: Palette = palette(PaletteType.neutral)(designSystem);
-    const backgroundIndex: number = findClosestSwatchIndex(
-        PaletteType.neutral,
-        backgroundColor(designSystem)
-    )(designSystem);
-    const swapThreshold: number = Math.max(
-        neutralFillRestDelta(designSystem),
-        neutralFillHoverDelta(designSystem),
-        neutralFillActiveDelta(designSystem)
-    );
-    const direction: number = backgroundIndex >= swapThreshold ? -1 : 1;
-    const restIndex: number =
-        backgroundIndex + direction * neutralFillRestDelta(designSystem);
-
-    return {
-        rest: getSwatch(restIndex, neutralPalette),
-        hover: getSwatch(
-            backgroundIndex + direction * neutralFillHoverDelta(designSystem),
-            neutralPalette
-        ),
-        active: getSwatch(
-            backgroundIndex + direction * neutralFillActiveDelta(designSystem),
-            neutralPalette
-        ),
-        selected: getSwatch(
-            restIndex +
-                (isDarkMode(designSystem)
-                    ? neutralFillSelectedDelta(designSystem) * -1
-                    : neutralFillSelectedDelta(designSystem)),
-            neutralPalette
-        ),
-    };
-};
-
-export const neutralFill: ColorRecipe<FillSwatchFamily> = colorRecipeFactory(
-    neutralFillAlgorithm
+const neutralFillThreshold: DesignSystemResolver<number> = designSystemResolverMax(
+    neutralFillRestDelta,
+    neutralFillHoverDelta,
+    neutralFillActiveDelta
 );
 
-export const neutralFillRest: SwatchRecipe = swatchFamilyToSwatchRecipeFactory<
-    FillSwatchFamily
->(SwatchFamilyType.rest, neutralFill);
-export const neutralFillHover: SwatchRecipe = swatchFamilyToSwatchRecipeFactory<
-    FillSwatchFamily
->(SwatchFamilyType.hover, neutralFill);
-export const neutralFillActive: SwatchRecipe = swatchFamilyToSwatchRecipeFactory<
-    FillSwatchFamily
->(SwatchFamilyType.active, neutralFill);
-export const neutralFillSelected: SwatchRecipe = swatchFamilyToSwatchRecipeFactory<
-    FillSwatchFamily
->(SwatchFamilyType.selected, neutralFill);
+function neutralFillAlgorithm(
+    indexResolver: DesignSystemResolver<number>
+): DesignSystemResolver<Swatch> {
+    return (designSystem: DesignSystem): Swatch => {
+        const backgroundIndex: number = findClosestBackgroundIndex(designSystem);
+        const swapThreshold: number = neutralFillThreshold(designSystem);
+        const direction: number = backgroundIndex >= swapThreshold ? -1 : 1;
+
+        return getSwatch(
+            backgroundIndex + direction * indexResolver(designSystem),
+            neutralPalette(designSystem)
+        );
+    };
+}
+
+export const neutralFill: ColorRecipe<FillSwatchFamily> = colorRecipeFactory(
+    (designSystem: DesignSystem): FillSwatchFamily => {
+        return {
+            rest: neutralFillRest(designSystem),
+            hover: neutralFillHover(designSystem),
+            active: neutralFillActive(designSystem),
+            selected: neutralFillSelected(designSystem),
+        };
+    }
+);
+
+export const neutralFillRest: SwatchRecipe = colorRecipeFactory(
+    neutralFillAlgorithm(neutralFillRestDelta)
+);
+export const neutralFillHover: SwatchRecipe = colorRecipeFactory(
+    neutralFillAlgorithm(neutralFillHoverDelta)
+);
+export const neutralFillActive: SwatchRecipe = colorRecipeFactory(
+    neutralFillAlgorithm(neutralFillActiveDelta)
+);
+export const neutralFillSelected: SwatchRecipe = colorRecipeFactory(
+    (designSystem: DesignSystem): Swatch => {
+        const delta: number = neutralFillSelectedDelta(designSystem);
+
+        return getSwatch(
+            neutralPalette(designSystem).indexOf(neutralFillRest(designSystem)) +
+                (isDarkMode(designSystem) ? delta * -1 : delta),
+            neutralPalette(designSystem)
+        );
+    }
+);

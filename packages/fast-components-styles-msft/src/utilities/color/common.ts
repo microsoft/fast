@@ -186,3 +186,13 @@ export const contrast: (a: string, b: string) => number = memoize(
 export function luminance(color: any): number {
     return rgbToLuminance(parseColorString(color));
 }
+
+export function designSystemResolverMax(
+    ...args: Array<DesignSystemResolver<number>>
+): DesignSystemResolver<number> {
+    return (designSystem: DesignSystem): number =>
+        Math.max.apply(
+            null,
+            args.map((fn: DesignSystemResolver<number>) => fn(designSystem))
+        );
+}

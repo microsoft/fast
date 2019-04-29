@@ -1,22 +1,20 @@
-import { getSwatch, isDarkMode, palette, Palette, PaletteType } from "./palette";
-import {
-    ColorRecipe,
-    colorRecipeFactory,
-    Swatch,
-    SwatchFamily,
-    SwatchFamilyResolver,
-    swatchFamilyToSwatchRecipeFactory,
-    SwatchFamilyType,
-    SwatchRecipe,
-    SwatchResolver,
-} from "./common";
-import defaultDesignSystem, { DesignSystem } from "../../design-system";
+import { DesignSystem, DesignSystemResolver } from "../../design-system";
 import {
     neutralForegroundActiveDelta,
     neutralForegroundDarkIndex,
     neutralForegroundHoverDelta,
     neutralForegroundLightIndex,
+    neutralPalette,
 } from "../design-system";
+import {
+    ColorRecipe,
+    colorRecipeFactory,
+    Swatch,
+    SwatchFamily,
+    SwatchRecipe,
+    SwatchResolver,
+} from "./common";
+import { getSwatch, isDarkMode, Palette } from "./palette";
 
 /**
  * Function to derive neutralForeground from color inputs.
@@ -24,27 +22,20 @@ import {
  * the color that has the most contrast against the background. If contrast
  * cannot be retrieved correctly, function returns black.
  */
-const neutralForegroundAlgorithm: SwatchFamilyResolver = (
-    designSystem: DesignSystem
-): SwatchFamily => {
-    const neutralPalette: Palette = palette(PaletteType.neutral)(designSystem);
-    const isDark: boolean = isDarkMode(designSystem);
-    const direction: 1 | -1 = isDark ? 1 : -1;
-    const restColor: Swatch = isDark
-        ? neutralForegroundLight(designSystem)
-        : neutralForegroundDark(designSystem);
-    const restIndex: number = neutralPalette.indexOf(restColor);
-    const hoverIndex: number =
-        restIndex + neutralForegroundHoverDelta(designSystem) * direction;
-    const activeIndex: number =
-        restIndex + neutralForegroundActiveDelta(designSystem) * direction;
-
-    return {
-        rest: restColor,
-        hover: getSwatch(hoverIndex, neutralPalette),
-        active: getSwatch(activeIndex, neutralPalette),
+function neutralForegroundAlgorithm(
+    deltaResolver: DesignSystemResolver<number>
+): DesignSystemResolver<Swatch> {
+    return (designSystem: DesignSystem): Swatch => {
+        const palette: Palette = neutralPalette(designSystem);
+        const isDark: boolean = isDarkMode(designSystem);
+        const direction: 1 | -1 = isDark ? 1 : -1;
+        const restColor: Swatch = isDark
+            ? neutralForegroundLight(designSystem)
+            : neutralForegroundDark(designSystem);
+        const restIndex: number = palette.indexOf(restColor);
+        return getSwatch(restIndex + deltaResolver(designSystem) * direction, palette);
     };
-};
+}
 
 /**
  * Retrieve light neutral-foreground color for use on dark backgrounds
@@ -54,7 +45,7 @@ export const neutralForegroundLight: SwatchResolver = (
 ): Swatch => {
     return getSwatch(
         neutralForegroundLightIndex(designSystem),
-        palette(PaletteType.neutral)(designSystem)
+        neutralPalette(designSystem)
     );
 };
 
@@ -66,22 +57,26 @@ export const neutralForegroundDark: SwatchResolver = (
 ): Swatch => {
     return getSwatch(
         neutralForegroundDarkIndex(designSystem),
-        palette(PaletteType.neutral)(designSystem)
+        neutralPalette(designSystem)
     );
 };
 
 export const neutralForeground: ColorRecipe<SwatchFamily> = colorRecipeFactory(
-    neutralForegroundAlgorithm
+    (designSystem: DesignSystem): SwatchFamily => {
+        return {
+            rest: neutralForegroundRest(designSystem),
+            hover: neutralForegroundHover(designSystem),
+            active: neutralForegroundActive(designSystem),
+        };
+    }
 );
-export const neutralForegroundRest: SwatchRecipe = swatchFamilyToSwatchRecipeFactory(
-    SwatchFamilyType.rest,
-    neutralForeground
+
+export const neutralForegroundRest: SwatchRecipe = colorRecipeFactory(
+    neutralForegroundAlgorithm(() => 0)
 );
-export const neutralForegroundHover: SwatchRecipe = swatchFamilyToSwatchRecipeFactory(
-    SwatchFamilyType.hover,
-    neutralForeground
+export const neutralForegroundHover: SwatchRecipe = colorRecipeFactory(
+    neutralForegroundAlgorithm(neutralForegroundHoverDelta)
 );
-export const neutralForegroundActive: SwatchRecipe = swatchFamilyToSwatchRecipeFactory(
-    SwatchFamilyType.active,
-    neutralForeground
+export const neutralForegroundActive: SwatchRecipe = colorRecipeFactory(
+    neutralForegroundAlgorithm(neutralForegroundActiveDelta)
 );
