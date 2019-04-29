@@ -1,6 +1,11 @@
 import { Direction } from "@microsoft/fast-web-utilities";
 import { white } from "../utilities/color/color-constants";
-import { ColorPalette, ColorRGBA64, parseColorHexRGB } from "@microsoft/fast-colors";
+import {
+    ColorPalette,
+    ColorRGBA64,
+    generateScaledPalettes,
+    parseColorHexRGB,
+} from "@microsoft/fast-colors";
 import { Palette } from "../utilities/color/palette";
 import { withDefaults } from "@microsoft/fast-jss-utilities";
 import { defaultFontWeights, FontWeight } from "../utilities/fonts";
@@ -139,16 +144,9 @@ export interface DesignSystem {
 }
 
 export function createColorPalette(baseColor: ColorRGBA64): Palette {
-    return new ColorPalette({
-        baseColor,
-        clipDark: 0,
-        clipLight: 0,
-        overlayDark: 0,
-        overlayLight: 0,
-        saturationDark: 0,
-        saturationLight: 0,
-        steps: 63,
-    }).palette.map((color: ColorRGBA64) => color.toStringHexRGB().toUpperCase());
+    return generateScaledPalettes(baseColor).long.map((color: ColorRGBA64) =>
+        color.toStringHexRGB().toUpperCase()
+    );
 }
 
 const designSystemDefaults: DesignSystem = {
