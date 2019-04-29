@@ -1,22 +1,6 @@
-import defaultDesignSystem, {
-    DesignSystem,
-    DesignSystemResolver,
-    ensureDesignSystemDefaults,
-    withDesignSystemDefaults,
-} from "../design-system";
+import { DesignSystemResolver, getDesignSystemValue } from "../design-system";
 import { Palette } from "../utilities/color/palette";
-import { toPx } from "@microsoft/fast-jss-utilities";
 import { Direction } from "@microsoft/fast-web-utilities";
-
-/**
- * Safely retrieves the value from a key of the designSystem.
- */
-function getDesignSystemValue<T extends DesignSystem, K extends keyof T>(
-    key: K
-): (designSystem?: T) => T[K] {
-    return (designSystem?: T): T[K] =>
-        (designSystem && designSystem[key]) || (defaultDesignSystem as T)[key];
-}
 
 /**
  * Retrieve the backgroundColor when invoked with a DesignSystem
@@ -160,6 +144,10 @@ export const neutralFillStealthActiveDelta: DesignSystemResolver<
 export const neutralFillStealthSelectedDelta: DesignSystemResolver<
     number
 > = getDesignSystemValue("neutralFillStealthSelectedDelta");
+
+export const neutralFillCardDelta: DesignSystemResolver<number> = getDesignSystemValue(
+    "neutralFillCardDelta"
+);
 
 export const neutralForegroundDarkIndex: DesignSystemResolver<
     number

@@ -19,6 +19,8 @@ export * from "./managed-classes";
 export * from "./progress";
 export * from "./radio";
 export * from "./select";
+export * from "./slider";
+export * from "./slider-track-item";
 export * from "./tabs";
 export * from "./text-area";
 export * from "./text-field";

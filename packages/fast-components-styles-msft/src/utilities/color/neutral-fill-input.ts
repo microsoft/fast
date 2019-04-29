@@ -2,6 +2,7 @@ import { DesignSystem, DesignSystemResolver } from "../../design-system";
 import {
     findClosestSwatchIndex,
     getSwatch,
+    isDarkMode,
     palette,
     Palette,
     PaletteType,
@@ -32,21 +33,23 @@ const neutralFillInputAlgorithm: DesignSystemResolver<FillSwatchFamily> = (
         PaletteType.neutral,
         backgroundColor(designSystem)
     )(designSystem);
+    const direction: 1 | -1 = isDarkMode(designSystem) ? -1 : 1;
+
     return {
         rest: getSwatch(
-            backgroundIndex - neutralFillInputRestDelta(designSystem),
+            backgroundIndex - neutralFillInputRestDelta(designSystem) * direction,
             neutralPalette
         ),
         hover: getSwatch(
-            backgroundIndex - neutralFillInputHoverDelta(designSystem),
+            backgroundIndex - neutralFillInputHoverDelta(designSystem) * direction,
             neutralPalette
         ),
         active: getSwatch(
-            backgroundIndex - neutralFillInputActiveDelta(designSystem),
+            backgroundIndex - neutralFillInputActiveDelta(designSystem) * direction,
             neutralPalette
         ),
         selected: getSwatch(
-            backgroundIndex - neutralFillInputSelectedDelta(designSystem),
+            backgroundIndex - neutralFillInputSelectedDelta(designSystem) * direction,
             neutralPalette
         ),
     };

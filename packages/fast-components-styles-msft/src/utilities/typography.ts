@@ -1,13 +1,12 @@
 import { toPx } from "@microsoft/fast-jss-utilities";
-import { KeyOfToType } from "./keyof-to-type";
 import { CSSRules } from "@microsoft/fast-jss-manager";
 import {
     DesignSystem,
     DesignSystemResolver,
     ensureDesignSystemDefaults,
-    withDesignSystemDefaults,
 } from "../design-system";
-import { DensityCategory, getDensityCategory } from "./density";
+import { densityCategorySwitch } from "./density";
+import { clamp } from "lodash-es";
 
 /**
  * The type ramp item config
@@ -86,15 +85,9 @@ export const typeRamp: TypeRamp = {
 function scaleTypeRampId(key: keyof TypeRamp): DesignSystemResolver<keyof TypeRamp> {
     return ensureDesignSystemDefaults(
         (designSystem: DesignSystem): keyof TypeRamp => {
-            const category: DensityCategory = getDensityCategory(designSystem);
-            const densityOffset: number =
-                category === DensityCategory.compact
-                    ? -1
-                    : category === DensityCategory.spacious
-                        ? 1
-                        : 0;
             const typeConfigNumber: number = parseInt(key.replace("t", ""), 10);
-            const size: number = typeConfigNumber - densityOffset;
+            const densityOffset: number = densityCategorySwitch(-1, 0, 1)(designSystem);
+            const size: number = clamp(typeConfigNumber - densityOffset, 1, 9);
             return sanitizeTypeRampId("t".concat(size.toString()) as keyof TypeRamp);
         }
     );
@@ -118,12 +111,26 @@ export function applyTypeRampConfig(typeConfig: keyof TypeRamp): CSSRules<Design
 /**
  * Retrieves the font-size from a TypeRamp ID
  */
+export function getFontSize(key: keyof TypeRamp): number {
+    return typeRamp[sanitizeTypeRampId(key)].fontSize;
+}
+
+/**
+ * Retrieves the line-height from a TypeRamp ID
+ */
+export function getLineHeight(key: keyof TypeRamp): number {
+    return typeRamp[sanitizeTypeRampId(key)].lineHeight;
+}
+
+/**
+ * Retrieves the formatted font-size from a TypeRamp ID
+ */
 export function applyFontSize(key: keyof TypeRamp): string {
     return toPx(typeRamp[sanitizeTypeRampId(key)].fontSize);
 }
 
 /**
- * Retrieves the line-height from a TypeRamp ID
+ * Retrieves the formatted line-height from a TypeRamp ID
  */
 export function applyLineHeight(key: keyof TypeRamp): string {
     return toPx(typeRamp[sanitizeTypeRampId(key)].lineHeight);
@@ -132,6 +139,24 @@ export function applyLineHeight(key: keyof TypeRamp): string {
 /**
  * Retrieves the font-size from a TypeRamp ID, scaled with the design-system density
  */
+export function getScaledFontSize(key: keyof TypeRamp): DesignSystemResolver<number> {
+    return (designSystem: DesignSystem): number => {
+        return getFontSize(scaleTypeRampId(key)(designSystem));
+    };
+}
+
+/**
+ * Retrieves the line-height from a TypeRamp ID, scaled with the design-system density
+ */
+export function getScaledLineHeight(key: keyof TypeRamp): DesignSystemResolver<number> {
+    return (designSystem: DesignSystem): number => {
+        return getLineHeight(scaleTypeRampId(key)(designSystem));
+    };
+}
+
+/**
+ * Retrieves the formatted font-size from a TypeRamp ID, scaled with the design-system density
+ */
 export function applyScaledFontSize(key: keyof TypeRamp): DesignSystemResolver<string> {
     return (designSystem: DesignSystem): string => {
         return applyFontSize(scaleTypeRampId(key)(designSystem));
@@ -139,7 +164,7 @@ export function applyScaledFontSize(key: keyof TypeRamp): DesignSystemResolver<s
 }
 
 /**
- * Retrieves the line-height from a TypeRamp ID, scaled with the design-system density
+ * Retrieves the formatted line-height from a TypeRamp ID, scaled with the design-system density
  */
 export function applyScaledLineHeight(key: keyof TypeRamp): DesignSystemResolver<string> {
     return (designSystem: DesignSystem): string => {

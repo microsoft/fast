@@ -139,6 +139,10 @@ function getDefaultOrExample(schema: any): any | void {
     if (hasEnum(schema)) {
         return schema.enum[0];
     }
+
+    if (hasConst(schema)) {
+        return schema.const;
+    }
 }
 
 function isObjectDataType(schema: any): boolean {
@@ -155,6 +159,10 @@ function hasRequired(schema: any): boolean {
 
 function hasEnum(schema: any): boolean {
     return Array.isArray(schema.enum);
+}
+
+function hasConst(schema: any): boolean {
+    return typeof schema.const !== "undefined";
 }
 
 export { getDataFromSchema };

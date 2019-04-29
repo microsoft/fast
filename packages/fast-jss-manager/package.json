@@ -2,7 +2,7 @@
   "name": "@microsoft/fast-jss-manager",
   "description": "Provides common code to all JSS manager implementations.",
   "sideEffects": false,
-  "version": "4.0.1",
+  "version": "4.1.1",
   "author": {
     "name": "Microsoft",
     "url": "https://discord.gg/FcSNfg4"
@@ -48,7 +48,7 @@
     "typescript": "3.3.3"
   },
   "dependencies": {
-    "@microsoft/fast-components-class-name-contracts-base": "^4.0.1",
+    "@microsoft/fast-components-class-name-contracts-base": "^4.1.0",
     "csstype": "^2.3.0"
   },
   "peerDependencies": {

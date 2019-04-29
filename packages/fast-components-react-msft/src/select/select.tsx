@@ -74,7 +74,7 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, {}> {
             <svg
                 width="16"
                 height="16"
-                viewBox="0 0 16 16"
+                viewBox="0 0 16 12"
                 className={get(this.props, "managedClasses.select_toggleGlyph", "")}
                 xmlns="http://www.w3.org/2000/svg"
             >

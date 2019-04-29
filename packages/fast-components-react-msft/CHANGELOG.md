@@ -3,6 +3,65 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.6.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-msft@4.5.3...@microsoft/fast-components-react-msft@4.6.0) (2019-04-26)
+
+
+### Features
+
+* add slider component ([#1676](https://github.com/Microsoft/fast-dna/issues/1676)) ([6eded38](https://github.com/Microsoft/fast-dna/commit/6eded38))
+
+
+
+
+
+## [4.5.3](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-msft@4.5.2...@microsoft/fast-components-react-msft@4.5.3) (2019-04-25)
+
+**Note:** Version bump only for package @microsoft/fast-components-react-msft
+
+
+
+
+
+## [4.5.2](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-msft@4.5.1...@microsoft/fast-components-react-msft@4.5.2) (2019-04-25)
+
+
+### Bug Fixes
+
+* reset viewbox to center default select arrow icon ([#1695](https://github.com/Microsoft/fast-dna/issues/1695)) ([eefb1d3](https://github.com/Microsoft/fast-dna/commit/eefb1d3))
+
+
+
+
+
+## [4.5.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-msft@4.5.0...@microsoft/fast-components-react-msft@4.5.1) (2019-04-23)
+
+
+### Bug Fixes
+
+* correct radio schema to show inputId as required property ([#1703](https://github.com/Microsoft/fast-dna/issues/1703)) ([c4f4a4c](https://github.com/Microsoft/fast-dna/commit/c4f4a4c))
+
+
+
+
+
+# [4.5.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-msft@4.4.4...@microsoft/fast-components-react-msft@4.5.0) (2019-04-23)
+
+
+### Bug Fixes
+
+* remove unnecessary pivot example ([#1697](https://github.com/Microsoft/fast-dna/issues/1697)) ([93cdf89](https://github.com/Microsoft/fast-dna/commit/93cdf89))
+* update background swatch resolution behavior ([#1658](https://github.com/Microsoft/fast-dna/issues/1658)) ([86c6e9c](https://github.com/Microsoft/fast-dna/commit/86c6e9c))
+
+
+### Features
+
+* adds solution for card backgrounds ([#1706](https://github.com/Microsoft/fast-dna/issues/1706)) ([c6c9ef9](https://github.com/Microsoft/fast-dna/commit/c6c9ef9))
+* reduce dependency on peer dependencies ([#1669](https://github.com/Microsoft/fast-dna/issues/1669)) ([cc06b10](https://github.com/Microsoft/fast-dna/commit/cc06b10))
+
+
+
+
+
 ## [4.4.4](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-msft@4.4.3...@microsoft/fast-components-react-msft@4.4.4) (2019-04-17)
 
 **Note:** Version bump only for package @microsoft/fast-components-react-msft

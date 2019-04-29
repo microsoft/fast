@@ -3,6 +3,33 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.3.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-tooling-react@1.3.0...@microsoft/fast-tooling-react@1.3.1) (2019-04-26)
+
+**Note:** Version bump only for package @microsoft/fast-tooling-react
+
+
+
+
+
+# [1.3.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-tooling-react@1.2.5...@microsoft/fast-tooling-react@1.3.0) (2019-04-23)
+
+
+### Bug Fixes
+
+* prevent a -1 on a oneOf/anyOf validation check ([#1682](https://github.com/Microsoft/fast-dna/issues/1682)) ([a718742](https://github.com/Microsoft/fast-dna/commit/a718742))
+
+
+### Features
+
+* add width and height components to the CSS Editor ([#1635](https://github.com/Microsoft/fast-dna/issues/1635)) ([1bf9ee5](https://github.com/Microsoft/fast-dna/commit/1bf9ee5))
+* allow defaults to be set as the current value ([#1662](https://github.com/Microsoft/fast-dna/issues/1662)) ([886b143](https://github.com/Microsoft/fast-dna/commit/886b143))
+* reduce dependency on peer dependencies ([#1669](https://github.com/Microsoft/fast-dna/issues/1669)) ([cc06b10](https://github.com/Microsoft/fast-dna/commit/cc06b10))
+* show a red underline for objects and arrays if they contain invalid data ([#1688](https://github.com/Microsoft/fast-dna/issues/1688)) ([9908152](https://github.com/Microsoft/fast-dna/commit/9908152))
+
+
+
+
+
 ## [1.2.5](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-tooling-react@1.2.4...@microsoft/fast-tooling-react@1.2.5) (2019-04-17)
 
 

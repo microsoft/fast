@@ -6,7 +6,7 @@ import {
     neutralFillInputSelected,
 } from "./neutral-fill-input";
 import designSystemDefaults, { DesignSystem } from "../../design-system";
-import { palette, Palette, PaletteType } from "./palette";
+import { isDarkMode, palette, Palette, PaletteType } from "./palette";
 import { FillSwatchFamily, Swatch } from "./common";
 import { clamp } from "lodash-es";
 
@@ -21,17 +21,19 @@ describe("neutralFillInput", (): void => {
         expect(neutralFillInputSelected({} as DesignSystem)).toBe(neutralPalette[0]);
     });
 
-    test("should always be lighter than the background by the delta", (): void => {
+    test("should always be lighter than the background by the delta in light mode and darker in dark mode", (): void => {
         neutralPalette.forEach(
             (swatch: Swatch, index: number): void => {
-                expect(
-                    neutralFillInputSelected({
-                        backgroundColor: neutralPalette[index],
-                    } as DesignSystem)
-                ).toBe(
+                const designSystem: DesignSystem = {
+                    backgroundColor: neutralPalette[index],
+                } as DesignSystem;
+
+                expect(neutralFillInputSelected(designSystem)).toBe(
                     neutralPalette[
                         clamp(
-                            index - designSystemDefaults.neutralFillInputRestDelta,
+                            index -
+                                designSystemDefaults.neutralFillInputRestDelta *
+                                    (isDarkMode(designSystem) ? -1 : 1),
                             0,
                             neutralPalette.length - 1
                         )

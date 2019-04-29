@@ -53,18 +53,6 @@ describe("Select", () => {
 
         expect(rendered.find("select")).toHaveLength(1);
     });
-    test("should not generate an HTML select element when there is only one option and select is required", () => {
-        const rendered: any = mount(
-            <FormItemSelect
-                {...selectProps}
-                options={["foo"]}
-                required={true}
-                managedClasses={managedClasses}
-            />
-        );
-
-        expect(rendered.find("select")).toHaveLength(0);
-    });
     test("should generate an HTML select element when there is only one option and select is optional", () => {
         const rendered: any = mount(
             <FormItemSelect

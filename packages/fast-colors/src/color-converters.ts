@@ -278,7 +278,7 @@ export function rgbToXYZ(rgb: ColorRGBA64): ColorXYZ {
     return new ColorXYZ(x, y, z);
 }
 
-// Note that the xyz color space is signifigantly larger than sRGB. As such, this can return colors rgb values greater than 1 or less than 0
+// Note that the xyz color space is significantly larger than sRGB. As such, this can return colors rgb values greater than 1 or less than 0
 export function xyzToRGB(xyz: ColorXYZ, alpha: number = 1): ColorRGBA64 {
     function xyzToRGBHelper(i: number): number {
         if (i <= 0.0031308) {
@@ -305,7 +305,7 @@ export function rgbToLAB(rgb: ColorRGBA64): ColorLAB {
     return xyzToLAB(rgbToXYZ(rgb));
 }
 
-// Note that the xyz color space (which the conversion from LAB uses) is signifigantly larger than sRGB. As such, this can return colors rgb values greater than 1 or less than 0
+// Note that the xyz color space (which the conversion from LAB uses) is significantly larger than sRGB. As such, this can return colors rgb values greater than 1 or less than 0
 export function labToRGB(lab: ColorLAB, alpha: number = 1): ColorRGBA64 {
     return xyzToRGB(labToXYZ(lab), alpha);
 }

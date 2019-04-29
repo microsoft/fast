@@ -18,8 +18,7 @@ import {
     neutralOutlineRest,
 } from "../utilities/color";
 import {
-    DensityCategory,
-    getDensityCategory,
+    densityCategorySwitch,
     heightNumber,
     horizontalSpacing,
 } from "../utilities/density";
@@ -33,14 +32,7 @@ const styles: ComponentStyles<RadioClassNameContract, DesignSystem> = (
     const direction: Direction = designSystem.direction;
     const size: string = toPx(heightNumber()(designSystem) / 2 + designSystem.designUnit);
 
-    const category: DensityCategory = getDensityCategory(designSystem);
-    const indicatorMarginOffset: number =
-        category === DensityCategory.compact
-            ? 0
-            : category === DensityCategory.spacious
-                ? 2
-                : 1;
-
+    const indicatorMarginOffset: number = densityCategorySwitch(0, 1, 2)(designSystem);
     const indicatorMargin: string = toPx(designSystem.designUnit + indicatorMarginOffset);
 
     return {

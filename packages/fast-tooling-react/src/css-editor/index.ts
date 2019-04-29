@@ -16,3 +16,5 @@ export { CSSEditor };
 export * from "./editor.props";
 export * from "./position";
 export * from "./spacing";
+export * from "./height";
+export * from "./width";

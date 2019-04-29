@@ -3,6 +3,44 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.4.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-base@4.3.1...@microsoft/fast-components-react-base@4.4.0) (2019-04-26)
+
+
+### Features
+
+* add slider component ([#1676](https://github.com/Microsoft/fast-dna/issues/1676)) ([6eded38](https://github.com/Microsoft/fast-dna/commit/6eded38))
+
+
+
+
+
+## [4.3.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-base@4.3.0...@microsoft/fast-components-react-base@4.3.1) (2019-04-23)
+
+
+### Bug Fixes
+
+* correct radio schema to show inputId as required property ([#1703](https://github.com/Microsoft/fast-dna/issues/1703)) ([c4f4a4c](https://github.com/Microsoft/fast-dna/commit/c4f4a4c))
+
+
+
+
+
+# [4.3.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-base@4.2.2...@microsoft/fast-components-react-base@4.3.0) (2019-04-23)
+
+
+### Bug Fixes
+
+* supplied onKeyDown prop not called by context menu ([#1702](https://github.com/Microsoft/fast-dna/issues/1702)) ([d676be6](https://github.com/Microsoft/fast-dna/commit/d676be6))
+
+
+### Features
+
+* reduce dependency on peer dependencies ([#1669](https://github.com/Microsoft/fast-dna/issues/1669)) ([cc06b10](https://github.com/Microsoft/fast-dna/commit/cc06b10))
+
+
+
+
+
 ## [4.2.2](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-base@4.2.1...@microsoft/fast-components-react-base@4.2.2) (2019-04-17)
 
 **Note:** Version bump only for package @microsoft/fast-components-react-base

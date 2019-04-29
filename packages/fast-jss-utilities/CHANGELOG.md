@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.4.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-jss-utilities@4.4.0...@microsoft/fast-jss-utilities@4.4.1) (2019-04-26)
+
+**Note:** Version bump only for package @microsoft/fast-jss-utilities
+
+
+
+
+
+# [4.4.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-jss-utilities@4.3.0...@microsoft/fast-jss-utilities@4.4.0) (2019-04-23)
+
+
+### Features
+
+* reduce dependency on peer dependencies ([#1669](https://github.com/Microsoft/fast-dna/issues/1669)) ([cc06b10](https://github.com/Microsoft/fast-dna/commit/cc06b10))
+
+
+
+
+
 # [4.3.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-jss-utilities@4.2.1...@microsoft/fast-jss-utilities@4.3.0) (2019-04-15)
 
 

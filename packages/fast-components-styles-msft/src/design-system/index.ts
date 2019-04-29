@@ -2,7 +2,6 @@ import { Direction } from "@microsoft/fast-web-utilities";
 import { white } from "../utilities/color/color-constants";
 import { ColorPalette, ColorRGBA64, parseColorHexRGB } from "@microsoft/fast-colors";
 import { Palette } from "../utilities/color/palette";
-import { TypeRamp } from "../utilities/typography";
 import { withDefaults } from "@microsoft/fast-jss-utilities";
 import { defaultFontWeights, FontWeight } from "../utilities/fonts";
 
@@ -119,6 +118,11 @@ export interface DesignSystem {
     neutralFillStealthSelectedDelta: number;
 
     /**
+     * Color swatch deltas for neutral-fill-card recipe
+     */
+    neutralFillCardDelta: number;
+
+    /**
      * Color swatch deltas for neutral-foreground
      */
     neutralForegroundDarkIndex: number;
@@ -178,7 +182,7 @@ const designSystemDefaults: DesignSystem = {
     neutralFillRestDelta: 4,
     neutralFillHoverDelta: 3,
     neutralFillActiveDelta: 2,
-    neutralFillSelectedDelta: 16,
+    neutralFillSelectedDelta: 8,
 
     neutralFillInputRestDelta: 4,
     neutralFillInputHoverDelta: 4,
@@ -188,10 +192,13 @@ const designSystemDefaults: DesignSystem = {
     neutralFillStealthRestDelta: 0,
     neutralFillStealthHoverDelta: 3,
     neutralFillStealthActiveDelta: 2,
-    neutralFillStealthSelectedDelta: 12,
+    neutralFillStealthSelectedDelta: 8,
+
+    neutralFillCardDelta: 2,
 
     neutralForegroundDarkIndex: 58,
     neutralForegroundLightIndex: 0,
+
     neutralForegroundHoverDelta: 8,
     neutralForegroundActiveDelta: 16,
 
@@ -209,11 +216,37 @@ export const withDesignSystemDefaults: (config: Partial<DesignSystem>) => Design
 
 /**
  * Safely retrieves a single property from a design system
+ * @deprecated Use getDesignSystemValue instead.
  */
 export function getDesignSystemProperty(key: string): DesignSystemResolver<string> {
     return function(config: DesignSystem): string {
         return withDesignSystemDefaults(config)[key];
     };
+}
+
+/**
+ * Safely retrieves the value from a key of the designSystem.
+ */
+export function getDesignSystemValue<T extends DesignSystem, K extends keyof T>(
+    key: K
+): (designSystem?: T) => T[K] {
+    return (designSystem?: T): T[K] =>
+        (designSystem && designSystem[key]) || (designSystemDefaults as T)[key];
+}
+
+/**
+ * Returns the argument if basic, othwerwise calls the DesignSystemResolver function.
+ *
+ * @param arg A value or a DesignSystemResolver function
+ * @param designSystem The design system config.
+ */
+export function checkDesignSystemResolver<T>(
+    arg: T | DesignSystemResolver<T>,
+    designSystem: DesignSystem
+): T {
+    const value: T =
+        typeof arg === "function" ? (arg as DesignSystemResolver<T>)(designSystem) : arg;
+    return value;
 }
 
 /**

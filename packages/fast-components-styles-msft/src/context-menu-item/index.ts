@@ -55,11 +55,9 @@ const styles: ComponentStyles<ContextMenuItemClassNameContract, DesignSystem> = 
             borderColor: neutralFocus,
         }),
         "&:hover": {
-            color: neutralForegroundHover,
             background: neutralFillStealthHover,
         },
         "&:active": {
-            color: neutralForegroundActive,
             background: neutralFillStealthActive,
         },
     },
