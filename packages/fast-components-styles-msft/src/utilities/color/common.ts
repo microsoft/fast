@@ -100,6 +100,7 @@ export function colorRecipeFactory<T>(recipe: DesignSystemResolver<T>): ColorRec
 
     return curryRecipe;
 }
+
 /**
  * A function to apply a named style or recipe. A ColorRecipe has several behaviors:
  * 1. When provided a callback function, the color Recipe returns a function that expects a design-system.
