@@ -12,7 +12,7 @@ export default {
     schema: schema as any,
     documentation: <Documentation />,
     detailData: {
-        children: "select option",
+        displayString: "Select option",
         glyph: {
             id: svgSchema.id,
             props: {
@@ -22,10 +22,10 @@ export default {
     },
     data: [
         {
-            children: "select option",
+            displayString: "Select option",
         },
         {
-            children: "select option",
+            displayString: "Select option",
             glyph: {
                 id: svgSchema.id,
                 props: {
@@ -34,11 +34,11 @@ export default {
             } as any,
         },
         {
-            children: "select option",
+            displayString: "Select option",
             disabled: true,
         },
         {
-            children: "select option",
+            displayString: "Select option",
             disabled: true,
             glyph: {
                 id: svgSchema.id,
@@ -46,6 +46,9 @@ export default {
                     path: SVGGlyph.user,
                 },
             } as any,
+        },
+        {
+            children: "Hello world",
         },
     ],
 } as ComponentFactoryExample<SelectOptionProps>;
