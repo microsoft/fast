@@ -1,6 +1,6 @@
 import React from "react";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
-import { get } from "lodash-es";
+import { get, isNil } from "lodash-es";
 import { ListboxItemClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import {
     ListboxItemHandledProps,
@@ -34,9 +34,9 @@ class ListboxItem extends Foundation<
      * The "id" prop is being depracated and should not be used.
      */
     public static getItemId = (props: ListboxItemProps): string => {
-        return !ListboxItem.isNullOrUndefined(props.itemId)
+        return !isNil(props.itemId)
             ? props.itemId
-            : !ListboxItem.isNullOrUndefined(props.id)
+            : !isNil(props.id)
                 ? props.id
                 : props.value;
     };
@@ -46,23 +46,16 @@ class ListboxItem extends Foundation<
      */
     public static getItemIdFromElement = (element: Element): string => {
         let idToUse: string = element.getAttribute("itemId");
-        if (!ListboxItem.isNullOrUndefined(idToUse)) {
+        if (!isNil(idToUse)) {
             return idToUse;
         }
 
         idToUse = element.getAttribute("id");
-        if (!ListboxItem.isNullOrUndefined(idToUse)) {
+        if (!isNil(idToUse)) {
             return idToUse;
         }
 
         return element.getAttribute("value");
-    };
-
-    public static isNullOrUndefined = (value: string): boolean => {
-        if (value === undefined || value === null || value === "") {
-            return true;
-        }
-        return false;
     };
 
     protected handledProps: HandledProps<ListboxItemHandledProps> = {
