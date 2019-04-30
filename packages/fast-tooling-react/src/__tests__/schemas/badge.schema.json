@@ -113,6 +113,22 @@
                 "foo",
                 "bar"
             ]
+        },
+        "constWithDefault": {
+            "title": "Display using const",
+            "badge": "locked",
+            "badgeDescription": "This field is locked",
+            "type": "string",
+            "const": "A",
+            "default": "B"
+        },
+        "selectWithSingleItemWithDefault": {
+            "title": "Display using single enum",
+            "badge": "locked",
+            "badgeDescription": "This field is locked",
+            "type": "string",
+            "enum": ["A"],
+            "default": "B"
         }
     },
     "reactProperties": {

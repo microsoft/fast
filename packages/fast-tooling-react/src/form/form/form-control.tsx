@@ -7,10 +7,11 @@ import FormItemTextarea from "./form-item.textarea";
 import FormItemSelect from "./form-item.select";
 import FormItemChildren from "./form-item.children";
 import FormItemCheckbox from "./form-item.checkbox";
+import FormItemDisplay from "./form-item.display";
 import { FormControlProps, FormControlState } from "./form-control.props";
 import FormItemCommon from "./form-item.props";
 import { FormChildOptionItem } from "./form.props";
-import { isSelect } from "../utilities";
+import { isConst, isSelect } from "../utilities";
 
 class FormControl extends React.Component<FormControlProps, {}> {
     public static displayName: string = "FormControl";
@@ -23,7 +24,16 @@ class FormControl extends React.Component<FormControlProps, {}> {
      * Renders form items
      */
     private renderFormItem(): React.ReactNode {
-        if (isSelect({ enum: this.props.schema.enum })) {
+        const hasEnum: boolean = isSelect({ enum: this.props.schema.enum });
+
+        if (
+            isConst(this.props.schema) ||
+            (hasEnum && this.props.schema.enum.length === 1)
+        ) {
+            return this.renderDisplay();
+        }
+
+        if (hasEnum) {
             return this.renderSelect();
         }
 
@@ -126,6 +136,13 @@ class FormControl extends React.Component<FormControlProps, {}> {
         }
 
         return <FormItemSelect options={options} {...this.getFormItemCommonProps()} />;
+    }
+
+    /**
+     * Renders the display form item
+     */
+    private renderDisplay(): React.ReactNode {
+        return <FormItemDisplay {...this.getFormItemCommonProps()} />;
     }
 
     /**

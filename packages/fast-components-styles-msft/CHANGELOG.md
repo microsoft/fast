@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.9.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-styles-msft@4.8.0...@microsoft/fast-components-styles-msft@4.9.0) (2019-04-26)
+
+
+### Features
+
+* add slider component ([#1676](https://github.com/Microsoft/fast-dna/issues/1676)) ([6eded38](https://github.com/Microsoft/fast-dna/commit/6eded38))
+
+
+
+
+
 # [4.8.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-styles-msft@4.7.0...@microsoft/fast-components-styles-msft@4.8.0) (2019-04-25)
 
 

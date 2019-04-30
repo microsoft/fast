@@ -222,7 +222,7 @@ class ConfigurationPanel extends React.Component<
 
     private renderCSSEditor(): React.ReactNode {
         if (!!this.props.styleEditing) {
-            return <CSSEditor onChange={this.handleStyleChange} {...this.getStyle()} />;
+            return <CSSEditor onChange={this.handleStyleChange} data={this.getStyle()} />;
         }
 
         return null;

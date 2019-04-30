@@ -2,7 +2,7 @@
   "name": "@microsoft/fast-jss-manager-angular",
   "description": "Angular directive and component for managing component JSS stylesheets",
   "sideEffects": false,
-  "version": "4.1.0",
+  "version": "4.1.1",
   "author": {
     "name": "Microsoft",
     "url": "https://discord.gg/FcSNfg4"
@@ -96,7 +96,7 @@
     "lodash-es": "^4.0.0"
   },
   "dependencies": {
-    "@microsoft/fast-jss-manager": "^4.1.0",
+    "@microsoft/fast-jss-manager": "^4.1.1",
     "core-js": "^2.4.1",
     "jss": "^9.8.0",
     "jss-preset-default": "^4.3.0",

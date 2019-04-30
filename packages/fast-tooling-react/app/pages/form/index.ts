@@ -39,6 +39,12 @@ export const nestedOneOf: ExampleComponent = {
     schema: NestedOneOfSchema,
 };
 
+import MergedOneOfSchema from "../../../src/__tests__/schemas/merged-one-of.schema.json";
+
+export const mergedOneOf: ExampleComponent = {
+    schema: MergedOneOfSchema,
+};
+
 import ObjectsSchema from "../../../src/__tests__/schemas/objects.schema.json";
 
 export const objects: ExampleComponent = {
@@ -79,6 +85,12 @@ import BadgeSchema from "../../../src/__tests__/schemas/badge.schema.json";
 
 export const badge: ExampleComponent = {
     schema: BadgeSchema,
+};
+
+import ConstKeywordSchema from "../../../src/__tests__/schemas/const.schema.json";
+
+export const constKeyword: ExampleComponent = {
+    schema: ConstKeywordSchema,
 };
 
 import InvalidDataSchema from "../../../src/__tests__/schemas/invalid-data.schema.json";
