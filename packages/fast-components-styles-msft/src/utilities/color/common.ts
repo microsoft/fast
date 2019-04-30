@@ -114,15 +114,19 @@ export function swatchFamilyToSwatchRecipeFactory<T extends SwatchFamily>(
 }
 
 /**
- * Converts a color string into a ColorRGBA64 instance. Returns null if the string cannot be converted.
+ * Converts a color string into a ColorRGBA64 instance.
  * Supports #RRGGBB and rgb(r, g, b) formats
  */
-export function parseColorString(color: string): ColorRGBA64 | null {
-    return isColorStringHexRGB(color)
-        ? parseColorHexRGB(color)
-        : isColorStringWebRGB(color)
-            ? parseColorWebRGB(color)
-            : null;
+export function parseColorString(color: string): ColorRGBA64 {
+    if (isColorStringHexRGB(color)) {
+        return parseColorHexRGB(color);
+    } else if (isColorStringWebRGB(color)) {
+        return parseColorWebRGB(color);
+    }
+
+    throw new Error(
+        `${color} cannot be converted to a ColorRGBA64. Color strings must be one of the following formats: "#RGB", "#RRGGBB", or "rgb(r, g, b)"`
+    );
 }
 
 /**
