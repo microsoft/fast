@@ -1,10 +1,12 @@
-import {
-    DesignSystem,
-    ensureDesignSystemDefaults,
-    withDesignSystemDefaults,
-} from "../design-system";
+import { DesignSystem, withDesignSystemDefaults } from "../design-system";
 import { ComponentStyles, ComponentStyleSheet } from "@microsoft/fast-jss-manager";
-import { applyLocalizedProperty, format, toPx } from "@microsoft/fast-jss-utilities";
+import {
+    applyLocalizedProperty,
+    Direction,
+    ellipsis,
+    format,
+    toPx,
+} from "@microsoft/fast-jss-utilities";
 import { SelectClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import { glyphSize, height, horizontalSpacing } from "../utilities/density";
 import { elevation, ElevationMultiplier } from "../utilities/elevation";
@@ -16,11 +18,12 @@ import {
 import { applyFloatingCornerRadius } from "../utilities/border";
 import { designUnit } from "../utilities/design-system";
 import { inputFieldStyles } from "../patterns/input-field";
-import { applyDisabledState } from "../utilities/disabled";
-import { focusOutlineWidth } from "../utilities/design-system";
 
 const styles: ComponentStyles<SelectClassNameContract, DesignSystem> = {
-    select: {
+    const designSystem: DesignSystem = withDesignSystemDefaults(config);
+    const direction: Direction = designSystem.direction;    
+
+select: {
         minWidth: "276px",
         maxWidth: "374px",
     },
@@ -39,14 +42,17 @@ const styles: ComponentStyles<SelectClassNameContract, DesignSystem> = {
         },
 
         select_button_displayText: {
-            whiteSpace: "nowrap",
-            overflow: "hidden",
-            textAlign: "left",
+            ...ellipsis(),
+            textAlign: applyLocalizedProperty("left", "right", direction),
             width: "100%",
         },
 
         select_toggleGlyph: {
-            margin: "0 0 0 10px",
+            [applyLocalizedProperty(
+                "margin-left",
+                "margin-right",
+                direction
+            )]: horizontalSpacing(),
             fill: neutralForegroundRest,
             width: glyphSize,
             height: glyphSize,
