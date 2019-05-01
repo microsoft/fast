@@ -33,12 +33,16 @@
         "level": {
             "title": "Level",
             "type": "number",
-            "example": 5
+            "examples": [
+                5
+            ]
         },
         "text": {
             "title": "Text",
             "type": "string",
-            "example": "Example text"
+            "examples": [
+                "Example text"
+            ]
         },
         "alignHorizontal": {
             "title": "Align horizontal",
@@ -61,7 +65,9 @@
         "level2": {
             "title": "Level",
             "type": "number",
-            "example": 100
+            "examples": [
+                100
+            ]
         },
         "objectNoRequired": {
             "title": "Object (no required items)",

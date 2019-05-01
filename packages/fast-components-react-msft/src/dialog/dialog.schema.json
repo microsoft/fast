@@ -9,27 +9,37 @@
         "describedBy": {
             "title": "HTML aria-describedby attribute",
             "type": "string",
-            "example": "exampleId01"
+            "examples": [
+                "exampleId01"
+            ]
         },
         "label": {
             "title": "HTML aria-label attribute",
             "type": "string",
-            "example": "Dialog label"
+            "examples": [
+                "Dialog label"
+            ]
         },
         "labelledBy": {
             "title": "HTML aria-labelledby attribute",
             "type": "string",
-            "example": "exampleId02"
+            "examples": [
+                "exampleId02"
+            ]
         },
         "contentHeight": {
             "title": "Content height",
             "type": "string",
-            "example": "300px"
+            "examples": [
+                "300px"
+            ]
         },
         "contentWidth": {
             "title": "Content width",
             "type": "string",
-            "example": "500px"
+            "examples": [
+                "500px"
+            ]
         },
         "modal": {
             "title": "Modal",

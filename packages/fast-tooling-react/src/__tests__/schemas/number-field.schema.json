@@ -19,7 +19,9 @@
         "quantity": {
             "title": "Quantity",
             "type": "number",
-            "example": 10,
+            "examples": [
+                10
+            ],
             "minimum": 0,
             "maximum": 50,
             "multipleOf": 5
