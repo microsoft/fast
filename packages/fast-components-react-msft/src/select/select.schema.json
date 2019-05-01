@@ -49,6 +49,10 @@
         "labelledBy": {
             "title":"Labelled by",
             "type":"string"
+        },
+        "enableViewportPositioning": {
+            "title":"Viewport aware positioning",
+            "type":"boolean"
         }
     },
     "reactProperties": {

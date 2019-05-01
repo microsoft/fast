@@ -13,6 +13,7 @@ import { canUseDOM } from "exenv-es6";
 import { ListboxContext, ListboxContextType } from "./listbox-context";
 import { ListboxItemProps } from "../listbox-item";
 import { DisplayNamePrefix } from "../utilities";
+
 export interface ListboxState {
     /**
      * The index of the focusable child

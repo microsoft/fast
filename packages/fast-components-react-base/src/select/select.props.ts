@@ -41,6 +41,12 @@ export interface SelectHandledProps extends SelectManagedClasses {
     isMenuOpen?: boolean;
 
     /**
+     * Whether to use viewport aware positioning
+     * (ie. can open above the trigger if it needs the room)
+     */
+    enableViewportPositioning?: boolean;
+
+    /**
      * Specifies that the control is disabled
      */
     disabled?: boolean;

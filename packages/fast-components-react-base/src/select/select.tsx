@@ -1,4 +1,4 @@
-import React from "react";
+import React, { RefObject } from "react";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import { get, isEqual } from "lodash-es";
 import { KeyCodes } from "@microsoft/fast-web-utilities";
@@ -6,7 +6,6 @@ import { SelectClassNameContract } from "@microsoft/fast-components-class-name-c
 import { SelectHandledProps, SelectProps, SelectUnhandledProps } from "./select.props";
 import { ListboxItemProps } from "../listbox-item";
 import Listbox from "../listbox";
-import Button from "../button";
 import { canUseDOM } from "exenv-es6";
 import { DisplayNamePrefix } from "../utilities";
 
@@ -25,6 +24,7 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
         disabled: false,
         defaultSelection: [],
         placeholder: "",
+        enableViewportPositioning: false,
     };
 
     /**
@@ -45,11 +45,10 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
         onValueChange: void 0,
         placeholder: void 0,
         autoFocus: void 0,
+        enableViewportPositioning: void 0,
     };
 
-    private rootElement: React.RefObject<HTMLDivElement> = React.createRef<
-        HTMLDivElement
-    >();
+    private rootElement: React.RefObject<HTMLDivElement> = React.createRef();
 
     /**
      * constructor
@@ -346,14 +345,14 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
             return null;
         }
         return (
-            <Button
+            <button
                 disabled={props.disabled}
                 aria-labelledby={props.labelledBy || null}
                 aria-haspopup={true}
                 aria-expanded={state.isMenuOpen}
             >
                 {state.displayString}
-            </Button>
+            </button>
         );
     };
 
