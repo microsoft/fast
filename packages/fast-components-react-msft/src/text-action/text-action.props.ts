@@ -24,11 +24,7 @@ export interface TextActionHandledProps
     /**
      * The text action button
      */
-    button?: (
-        classname?: string,
-        disabled?: boolean,
-        appearance?: ButtonAppearance
-    ) => React.ReactNode;
+    button?: (classname?: string) => React.ReactNode;
 
     /**
      * Text action button position
@@ -56,6 +52,11 @@ export interface TextActionHandledProps
      * Callback for when text action input is blurred
      */
     onBlur?: (e?: React.FocusEvent<HTMLInputElement>) => void;
+
+    /**
+     * Overall disabled attribute
+     */
+    disabled?: boolean;
 }
 
 export type TextActionProps = TextActionHandledProps & TextActionUnhandledProps;

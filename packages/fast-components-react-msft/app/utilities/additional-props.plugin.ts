@@ -13,10 +13,14 @@ export default class MapChildrenPropToCallbackPassingClassName extends Plugin<
             const callbackArguments: any = {
                 className,
             };
-            callbackArguments.disabled =
-                typeof disabled === "boolean" ? disabled : undefined;
-            callbackArguments.appearance =
-                typeof appearance === "string" ? appearance : undefined;
+
+            if (callbackArguments.disabled) {
+                callbackArguments.disabled = disabled;
+            }
+
+            if (callbackArguments.appearance) {
+                callbackArguments.appearance = appearance;
+            }
 
             return React.createElement(
                 childOption.component,
