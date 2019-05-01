@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.6.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-msft@4.6.0...@microsoft/fast-components-react-msft@4.6.1) (2019-05-01)
+
+
+### Bug Fixes
+
+* improved examples for select option ([#1679](https://github.com/Microsoft/fast-dna/issues/1679)) ([71ce59a](https://github.com/Microsoft/fast-dna/commit/71ce59a))
+
+
+
+
+
 # [4.6.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-msft@4.5.3...@microsoft/fast-components-react-msft@4.6.0) (2019-04-26)
 
 

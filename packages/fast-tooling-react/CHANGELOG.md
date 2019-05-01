@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.4.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-tooling-react@1.3.1...@microsoft/fast-tooling-react@1.4.0) (2019-05-01)
+
+
+### Bug Fixes
+
+* use a merge strategy for oneOf/anyOfs during validation ([#1685](https://github.com/Microsoft/fast-dna/issues/1685)) ([5c28382](https://github.com/Microsoft/fast-dna/commit/5c28382))
+
+
+### Features
+
+* labels for oneOf/anyOf use JSON schema title metadata ([#1687](https://github.com/Microsoft/fast-dna/issues/1687)) ([a5b1c00](https://github.com/Microsoft/fast-dna/commit/a5b1c00))
+* support added for JSON schema keyword 'const' ([#1698](https://github.com/Microsoft/fast-dna/issues/1698)) ([95deb0e](https://github.com/Microsoft/fast-dna/commit/95deb0e))
+
+
+
+
+
 ## [1.3.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-tooling-react@1.3.0...@microsoft/fast-tooling-react@1.3.1) (2019-04-26)
 
 **Note:** Version bump only for package @microsoft/fast-tooling-react

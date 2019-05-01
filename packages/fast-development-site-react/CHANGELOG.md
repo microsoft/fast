@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.1.3](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-development-site-react@4.1.2...@microsoft/fast-development-site-react@4.1.3) (2019-05-01)
+
+
+### Bug Fixes
+
+* updates the dev site to the new CSS Editor API ([#1701](https://github.com/Microsoft/fast-dna/issues/1701)) ([19c1a63](https://github.com/Microsoft/fast-dna/commit/19c1a63))
+
+
+
+
+
 ## [4.1.2](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-development-site-react@4.1.1...@microsoft/fast-development-site-react@4.1.2) (2019-04-26)
 
 **Note:** Version bump only for package @microsoft/fast-development-site-react
