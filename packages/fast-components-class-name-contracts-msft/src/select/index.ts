@@ -17,10 +17,10 @@ export interface SelectClassNameContract extends BaseSelectClassNameContract {
     /**
      * The select toggle button content region
      */
-    select_button_contentRegion?: string;
+    select_buttonContentRegion?: string;
 
     /**
      * The display text container
      */
-    select_button_displayText?: string;
+    select_buttonDisplayText?: string;
 }

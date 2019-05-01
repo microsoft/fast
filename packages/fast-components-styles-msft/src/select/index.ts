@@ -9,7 +9,7 @@ import {
 } from "@microsoft/fast-jss-utilities";
 import { SelectClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import { glyphSize, height, horizontalSpacing } from "../utilities/density";
-import { elevation, ElevationMultiplier } from "../utilities/elevation";
+import { applyElevation, ElevationMultiplier } from "../utilities/elevation";
 import {
     neutralFillStealthRest,
     neutralForegroundRest,
@@ -19,14 +19,17 @@ import { applyFloatingCornerRadius } from "../utilities/border";
 import { designUnit } from "../utilities/design-system";
 import { inputFieldStyles } from "../patterns/input-field";
 
-const styles: ComponentStyles<SelectClassNameContract, DesignSystem> = {
+const styles: ComponentStyles<SelectClassNameContract, DesignSystem> = (
+    config: DesignSystem
+): ComponentStyleSheet<SelectClassNameContract, DesignSystem> => {
     const designSystem: DesignSystem = withDesignSystemDefaults(config);
-    const direction: Direction = designSystem.direction;    
+    const direction: Direction = designSystem.direction;
 
-select: {
-        minWidth: "276px",
-        maxWidth: "374px",
-    },
+    return {
+        select: {
+            minWidth: "276px",
+            maxWidth: "374px",
+        },
 
         select_button: {
             height: height(),
@@ -34,14 +37,14 @@ select: {
             ...inputFieldStyles(),
         },
 
-        select_button_contentRegion: {
+        select_buttonContentRegion: {
             display: "grid",
             gridTemplateColumns: "1fr auto",
             alignItems: "center",
             justifyItems: "start",
         },
 
-        select_button_displayText: {
+        select_buttonDisplayText: {
             ...ellipsis(),
             textAlign: applyLocalizedProperty("left", "right", direction),
             width: "100%",
@@ -76,15 +79,16 @@ select: {
             overflow: "auto",
         },
 
-    select__multiSelectable: {
-        "& $select_menu": {
-            position: "static",
-            boxShadow: "none",
-            border: "1px solid",
-            borderColor: neutralOutlineRest,
+        select__multiSelectable: {
+            "& $select_menu": {
+                position: "static",
+                boxShadow: "none",
+                border: "1px solid",
+                borderColor: neutralOutlineRest,
+            },
         },
-    },
-    select_menu__open: {},
+        select_menu__open: {},
+    };
 };
 
 export default styles;

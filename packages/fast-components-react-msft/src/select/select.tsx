@@ -60,14 +60,14 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, {}> {
                 <span
                     className={get(
                         this.props,
-                        "managedClasses.select_button_contentRegion",
+                        "managedClasses.select_buttonContentRegion",
                         ""
                     )}
                 >
                     <div
                         className={get(
                             this.props,
-                            "managedClasses.select_button_displayText",
+                            "managedClasses.select_buttonDisplayText",
                             ""
                         )}
                     >
