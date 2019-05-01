@@ -11,13 +11,23 @@ import {
     keyCodeSpace,
 } from "@microsoft/fast-web-utilities";
 import { canUseDOM } from "exenv-es6";
-import { get, isEqual, isNil, uniqueId } from "lodash-es";
+import { clone, get, isEqual, isNil, uniqueId } from "lodash-es";
 import React from "react";
-import Button from "../button";
 import Listbox from "../listbox";
 import { ListboxItemProps } from "../listbox-item";
 import { DisplayNamePrefix } from "../utilities";
-import { SelectHandledProps, SelectProps, SelectUnhandledProps } from "./select.props";
+import {
+    SelectHandledProps,
+    SelectMenuFlyoutConfig,
+    SelectProps,
+    SelectUnhandledProps,
+} from "./select.props";
+import ViewportPositioner, {
+    AxisPositioningMode,
+    ViewportPositionerClassNameContract,
+    ViewportPositionerHorizontalPosition,
+    ViewportPositionerVerticalPosition,
+} from "../viewport-positioner";
 
 export interface SelectState {
     value: string | string[];
@@ -61,12 +71,11 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
         onValueChange: void 0,
         placeholder: void 0,
         autoFocus: void 0,
+        menuFlyoutConfig: void 0,
         onMenuSelectionChange: void 0,
     };
 
-    private rootElement: React.RefObject<HTMLDivElement> = React.createRef<
-        HTMLDivElement
-    >();
+    private rootElement: React.RefObject<HTMLDivElement> = React.createRef();
 
     private triggerId: string = uniqueId(Select.triggerUniqueIdPrefix);
 
@@ -287,11 +296,54 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
                 {this.props.children}
             </Listbox>
         );
+        <ViewportPositioner
+            anchor={this.rootElement}
+            {...this.getFlyoutMenuConfig()}
+            managedClasses={this.generateViewportPositionerClassNames()}
+        />
         if (typeof this.props.menu === "function") {
             return this.props.menu(this.props, this.state, defaultMenu);
         } else {
             return defaultMenu;
         }
+    }
+
+    /**
+     * Returns viewport positioner managedclasses for select
+     */
+    private generateViewportPositionerClassNames(): ViewportPositionerClassNameContract {
+        const {
+            select_viewportPositioner,
+            select_viewportPositioner__left,
+            select_viewportPositioner__right,
+            select_viewportPositioner__top,
+            select_viewportPositioner__bottom,
+            select_viewportPositioner__horizontalInset,
+            select_viewportPositioner__verticalInset,
+        }: SelectClassNameContract = this.props.managedClasses;
+
+        return {
+            viewportPositioner: select_viewportPositioner,
+            viewportPositioner__left: select_viewportPositioner__left,
+            viewportPositioner__right: select_viewportPositioner__right,
+            viewportPositioner__top: select_viewportPositioner__top,
+            viewportPositioner__bottom: select_viewportPositioner__bottom,
+            viewportPositioner__horizontalInset: select_viewportPositioner__horizontalInset,
+            viewportPositioner__verticalInset: select_viewportPositioner__verticalInset,
+        };
+    }
+
+    /**
+     * 
+     */
+    private getFlyoutMenuConfig = (): SelectMenuFlyoutConfig => {
+        if (isNil(this.props.menuFlyoutConfig)) {
+            return {
+                verticalPositioningMode: AxisPositioningMode.uncontrolled,
+                horizontalPositioningMode: AxisPositioningMode.uncontrolled,
+            }
+        }
+        return this.props.menuFlyoutConfig;
     }
 
     /**

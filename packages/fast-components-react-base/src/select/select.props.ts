@@ -5,9 +5,81 @@ import {
 } from "@microsoft/fast-components-class-name-contracts-base";
 import { ListboxItemProps } from "../listbox-item";
 import { SelectState } from "./select";
+import {
+    AxisPositioningMode,
+    ViewportPositionerHorizontalPosition,
+    ViewportPositionerVerticalPosition,
+} from "../viewport-positioner";
 
 export interface SelectManagedClasses extends ManagedClasses<SelectClassNameContract> {}
 export interface SelectUnhandledProps extends React.HTMLAttributes<HTMLDivElement> {}
+
+export interface SelectMenuFlyoutConfig {
+    /**
+     *  Ref to the viewport element
+     */
+    viewport?: React.RefObject<any>;
+
+    /**
+     *  The positioning mode for the horizontal axis, default is uncontrolled
+     */
+    horizontalPositioningMode?: AxisPositioningMode;
+
+    /**
+     *  The default horizontal position, layout favors the widest option if unset
+     */
+    defaultHorizontalPosition?: ViewportPositionerHorizontalPosition;
+
+    /**
+     *  The width at which the positioner switches from the default position to the widest one
+     */
+    horizontalThreshold?: number;
+
+    /**
+     *  Locks horizontal axis to default position
+     */
+    horizontalLockToDefault?: boolean;
+
+    /**
+     *  When enabled the positioner will not move out of the viewport on the horizontal axis
+     */
+    horizontalAlwaysInView?: boolean;
+
+    /**
+     *  The positioning mode for the vertical axis, default is uncontrolled
+     */
+    verticalPositioningMode?: AxisPositioningMode;
+
+    /**
+     * The default vertical position, layout favors the tallest option if unset
+     */
+    defaultVerticalPosition?: ViewportPositionerVerticalPosition;
+
+    /**
+     *  The height at which the positioner switches from the default position to the tallest one
+     */
+    verticalThreshold?: number;
+
+    /**
+     *  Locks vertical axis to default position
+     */
+    verticalLockToDefault?: boolean;
+
+    /**
+     *  When enabled the positioner will not move out of the viewport on the vertical axis
+     */
+    verticalAlwaysInView?: boolean;
+
+    /**
+     * The disabled state
+     */
+    disabled?: boolean;
+
+    /**
+     * When true the positioner remains fixed relative to it's anchor after the first render
+     */
+    fixedAfterInitialPlacement?: boolean;
+}
 
 export interface SelectHandledProps extends SelectManagedClasses {
     /**
@@ -52,6 +124,12 @@ export interface SelectHandledProps extends SelectManagedClasses {
      * Specifies that the drop-down list is open
      */
     isMenuOpen?: boolean;
+
+    /**
+     * Whether to use viewport aware positioning
+     * (ie. can open above the trigger if it needs the room)
+     */
+    enableViewportPositioning?: boolean;
 
     /**
      * Specifies that the control is disabled
@@ -108,6 +186,11 @@ export interface SelectHandledProps extends SelectManagedClasses {
      * element that provides it an accessible name
      */
     labelledBy?: string;
+
+    /**
+     * The onValueChange event handler
+     */
+    menuFlyoutConfig?: SelectMenuFlyoutConfig;
 }
 
 export type SelectProps = SelectHandledProps & SelectUnhandledProps;
