@@ -3,7 +3,7 @@ import defaultDesignSystem, {
     DesignSystemResolver,
 } from "../../design-system";
 import { clamp } from "lodash-es";
-import { colorMatches, contrast, luminance, Swatch } from "./common";
+import { colorMatches, contrast, isValidColor, luminance, Swatch } from "./common";
 import { neutralForegroundDark, neutralForegroundLight } from "./neutral-foreground";
 import { ColorPalette, ColorRGBA64 } from "@microsoft/fast-colors";
 import { accentPalette, neutralPalette } from "../design-system";
@@ -47,6 +47,10 @@ export function findSwatchIndex(
     swatch: Swatch
 ): DesignSystemResolver<number> {
     return (designSystem: DesignSystem): number => {
+        if (!isValidColor(swatch)) {
+            return -1;
+        }
+
         const colorPalette: Palette = palette(paletteType)(designSystem);
         const index: number = colorPalette.indexOf(swatch);
 
@@ -55,7 +59,10 @@ export function findSwatchIndex(
             ? index
             : colorPalette.findIndex(
                   (paletteSwatch: Swatch): boolean => {
-                      return colorMatches(swatch, paletteSwatch);
+                      return (
+                          isValidColor(paletteSwatch) &&
+                          colorMatches(swatch, paletteSwatch)
+                      );
                   }
               );
     };
@@ -71,12 +78,17 @@ export function findClosestSwatchIndex(
 ): DesignSystemResolver<number> {
     return (designSystem: DesignSystem): number => {
         const index: number = findSwatchIndex(paletteType, swatch)(designSystem);
+        let swatchLuminance: number;
 
         if (index !== -1) {
             return index;
         }
 
-        const swatchLuminance: number = luminance(swatch);
+        try {
+            swatchLuminance = luminance(swatch);
+        } catch (e) {
+            swatchLuminance = -1;
+        }
 
         if (swatchLuminance === -1) {
             return 0;
