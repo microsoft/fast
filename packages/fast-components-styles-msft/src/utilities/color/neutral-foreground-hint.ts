@@ -1,38 +1,43 @@
 import { DesignSystem } from "../../design-system";
-import { findSwatchIndex, Palette, palette, PaletteType } from "./palette";
+import {
+    findClosestSwatchIndex,
+    findSwatchIndex,
+    Palette,
+    palette,
+    PaletteType,
+    swatchByContrast,
+} from "./palette";
 import { neutralForegroundRest } from "./neutral-foreground";
 import { inRange } from "lodash-es";
 import { contrast, Swatch, SwatchRecipe, SwatchResolver } from "./common";
-import { backgroundColor } from "../design-system";
+import { backgroundColor, neutralPalette } from "../design-system";
 
-const neutralForegroundHintAlgorithm: (
-    designSystem: DesignSystem,
-    targetContrast: number
-) => Swatch = (designSystem: DesignSystem, targetContrast: number): Swatch => {
-    const contrastTarget: number = targetContrast;
-    const neutralPalette: Palette = palette(PaletteType.neutral)(designSystem);
-    const neutralPaletteLength: number = neutralPalette.length;
-    const neutralForegroundIndex: number = findSwatchIndex(
-        PaletteType.neutral,
-        neutralForegroundRest(designSystem)
-    )(designSystem);
-    const direction: 1 | -1 =
-        neutralForegroundIndex <= Math.floor(neutralPaletteLength / 2) ? 1 : -1;
-    const background: Swatch = backgroundColor(designSystem);
+/**
+ * Resolves the index that the contrast serach algorithm should start at
+ */
+function neutralForegroundHintInitialIndexResolver(
+    referenceColor: string,
+    sourcePalette: Palette,
+    designSystem: DesignSystem
+): number {
+    return findClosestSwatchIndex(PaletteType.neutral, referenceColor)(designSystem);
+}
 
-    let neutralForegroundHintIndex: number =
-        direction === 1 ? 0 : neutralPaletteLength - 1;
+/**
+ * resolves the direction to look for accessible swatches
+ */
+function neturalForegroundHintDirectionResolver(
+    referenceIndex: number,
+    sourcePalette: Palette
+): 1 | -1 {
+    return referenceIndex >= Math.floor(sourcePalette.length / 2) ? -1 : 1;
+}
 
-    while (
-        inRange(neutralForegroundHintIndex + direction, 0, neutralPaletteLength) &&
-        contrast(background, neutralPalette[neutralForegroundHintIndex + direction]) >
-            contrastTarget
-    ) {
-        neutralForegroundHintIndex = neutralForegroundHintIndex + direction;
-    }
-
-    return neutralPalette[neutralForegroundHintIndex];
-};
+const neutralForegroundHintAlgorithm: ReturnType<
+    ReturnType<ReturnType<ReturnType<typeof swatchByContrast>>>
+> = swatchByContrast(backgroundColor)(neutralPalette)(
+    neutralForegroundHintInitialIndexResolver
+)(neturalForegroundHintDirectionResolver);
 
 /**
  * Factory to create neutral-foreground-hint functions based on an input contrast target
@@ -43,17 +48,24 @@ function neutralForegroundHintFactory(contrastTarget: number): SwatchRecipe {
         backgroundResolver: SwatchResolver
     ): SwatchResolver;
     function neutralForegroundHintInternal(arg: any): any {
+        const algo: ReturnType<
+            typeof neutralForegroundHintAlgorithm
+        > = neutralForegroundHintAlgorithm(
+            (instanceContrast: number): boolean => {
+                return instanceContrast >= contrastTarget;
+            }
+        );
+
         if (typeof arg === "function") {
             return (designSystem: DesignSystem): Swatch => {
-                return neutralForegroundHintAlgorithm(
+                return algo(
                     Object.assign({}, designSystem, {
                         backgroundColor: arg(designSystem),
-                    }),
-                    contrastTarget
+                    })
                 );
             };
         } else {
-            return neutralForegroundHintAlgorithm(arg, contrastTarget);
+            return algo(arg);
         }
     }
 

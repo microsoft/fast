@@ -1,4 +1,4 @@
-import { clamp } from "lodash-es";
+import { clamp, inRange } from "lodash-es";
 import defaultDesignSystem, {
     DesignSystem,
     DesignSystemResolver,
@@ -186,22 +186,19 @@ type InitialIndexResolver = (referenceColor: Swatch, paletteType: Palette) => nu
  * passes an input condition. The direction to search in the palette is determined by an input condition.
  * The search for the palette will begin by another input function that should return the starting index.
  */
-export function swatchByContrast(
-    referenceColor: string | SwatchResolver
-): ReturnType<Foo> {
-    return (
-        paletteResolver: DesignSystemResolver<Palette>
-    ): ReturnType<ReturnType<Foo>> => {
+// disable type-defs because this a deeply curried function and the call-signature is pretty complicated
+// and typescript can work it out automatically for consumers
+/* tslint:disable:typedef */
+export function swatchByContrast(referenceColor: string | SwatchResolver) {
+    return (paletteResolver: DesignSystemResolver<Palette>) => {
         return (
             indexResolver: (
                 referenceColor: string,
                 palette: Palette,
                 designSystem: DesignSystem
             ) => number
-        ): ReturnType<ReturnType<ReturnType<Foo>>> => {
-            return (
-                directionResolver: DirectionResolver
-            ): ReturnType<ReturnType<ReturnType<ReturnType<Foo>>>> => {
+        ) => {
+            return (directionResolver: DirectionResolver) => {
                 return (
                     contrastCondition: (contrastRatio: number) => boolean
                 ): DesignSystemResolver<Swatch> => {
@@ -220,19 +217,21 @@ export function swatchByContrast(
                             initialSearchIndex,
                             sourcePalette
                         );
+                        const length: number = sourcePalette.length - 1;
+                        let index: number = initialSearchIndex;
+
+                        while (
+                            inRange(index + direction, 0, length) &&
+                            !contrastCondition(contrast(color, sourcePalette[index]))
+                        ) {
+                            index = index + direction;
+                        }
+
+                        return sourcePalette[index];
                     };
                 };
             };
         };
     };
 }
-
-type Foo = (
-    referenceColor: string | SwatchResolver
-) => (
-    paletteResolver: DesignSystemResolver<Palette>
-) => (
-    indexResolver: (referenceColor: string, palette: Palette) => number
-) => (
-    directionResolver: DirectionResolver
-) => (condition: (contrast: number) => boolean) => DesignSystemResolver<Swatch>;
+/* tslint:enable:typedef */
