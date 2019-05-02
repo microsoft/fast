@@ -114,15 +114,19 @@ export function swatchFamilyToSwatchRecipeFactory<T extends SwatchFamily>(
 }
 
 /**
- * Converts a color string into a ColorRGBA64 instance. Returns null if the string cannot be converted.
+ * Converts a color string into a ColorRGBA64 instance.
  * Supports #RRGGBB and rgb(r, g, b) formats
  */
-export function parseColorString(color: string): ColorRGBA64 | null {
-    return isColorStringHexRGB(color)
-        ? parseColorHexRGB(color)
-        : isColorStringWebRGB(color)
-            ? parseColorWebRGB(color)
-            : null;
+export function parseColorString(color: string): ColorRGBA64 {
+    if (isColorStringHexRGB(color)) {
+        return parseColorHexRGB(color);
+    } else if (isColorStringWebRGB(color)) {
+        return parseColorWebRGB(color);
+    }
+
+    throw new Error(
+        `${color} cannot be converted to a ColorRGBA64. Color strings must be one of the following formats: "#RGB", "#RRGGBB", or "rgb(r, g, b)"`
+    );
 }
 
 /**
@@ -138,10 +142,7 @@ export function isValidColor(color: string): boolean {
  * Supports #RRGGBB and rgb(r, g, b) formats
  */
 export function colorMatches(a: string, b: string): boolean {
-    const alpha: ColorRGBA64 | null = parseColorString(a);
-    const beta: ColorRGBA64 | null = parseColorString(b);
-
-    return alpha !== null && beta !== null && alpha.equalValue(beta);
+    return parseColorString(a).equalValue(parseColorString(b));
 }
 
 /**
@@ -150,10 +151,10 @@ export function colorMatches(a: string, b: string): boolean {
  */
 export const contrast: (a: string, b: string) => number = memoize(
     (a: string, b: string): number => {
-        const alpha: ColorRGBA64 | null = parseColorString(a);
-        const beta: ColorRGBA64 | null = parseColorString(b);
+        const alpha: ColorRGBA64 = parseColorString(a);
+        const beta: ColorRGBA64 = parseColorString(b);
 
-        return alpha === null || beta === null ? -1 : contrastRatio(alpha, beta);
+        return contrastRatio(alpha, beta);
     },
     (a: string, b: string): string => a + b
 );
@@ -163,7 +164,5 @@ export const contrast: (a: string, b: string) => number = memoize(
  * Supports #RRGGBB and rgb(r, g, b) formats
  */
 export function luminance(color: any): number {
-    const parsedColor: ColorRGBA64 | null = parseColorString(color);
-
-    return parsedColor === null ? -1 : rgbToLuminance(parsedColor);
+    return rgbToLuminance(parseColorString(color));
 }
