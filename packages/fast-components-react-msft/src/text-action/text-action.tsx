@@ -133,7 +133,10 @@ class TextAction extends Foundation<
      * Generate button
      */
     private generateButton(): React.ReactNode {
-        return this.props.button(get(this.props, "managedClasses.textAction_button", ""));
+        return this.props.button(
+            get(this.props, "managedClasses.textAction_button", ""),
+            this.props.disabled
+        );
     }
 
     /**

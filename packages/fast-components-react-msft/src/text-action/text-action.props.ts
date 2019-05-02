@@ -24,7 +24,7 @@ export interface TextActionHandledProps
     /**
      * The text action button
      */
-    button?: (classname?: string) => React.ReactNode;
+    button?: (classname?: string, disabled?: boolean) => React.ReactNode;
 
     /**
      * Text action button position
