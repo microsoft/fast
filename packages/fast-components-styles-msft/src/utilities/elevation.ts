@@ -1,6 +1,6 @@
 import { toPx } from "@microsoft/fast-jss-utilities";
 import { CSSRules } from "@microsoft/fast-jss-manager";
-import { DesignSystem } from "../design-system";
+import { DesignSystem, DesignSystemResolver } from "../design-system";
 import { black } from "../utilities/color/color-constants";
 import { parseColorString } from "../utilities/color/common";
 import { ColorRGBA64 } from "@microsoft/fast-colors";
@@ -59,8 +59,41 @@ export const directionalShadowConfig: ShadowConfig = {
 };
 
 /**
+ * Apply elevation shadow treatment to a component.
+ *
+ * @param elevationValue The number of pixels of depth or an ElevationMultiplier value.
+ */
+export function applyElevation(
+    elevationValue: ElevationMultiplier | number
+): CSSRules<DesignSystem> {
+    return { boxShadow: combinedShadow(elevationValue) };
+}
+
+function combinedShadow(
+    elevationValue: ElevationMultiplier | number,
+    color: string = black
+): DesignSystemResolver<string> {
+    return (designSystem: DesignSystem): string => {
+        const ambientShadow: string = elevationShadow(
+            elevationValue,
+            color,
+            ambientShadowConfig
+        )(designSystem);
+        const directionalShadow: string = elevationShadow(
+            elevationValue,
+            color,
+            directionalShadowConfig
+        )(designSystem);
+
+        return `${directionalShadow}, ${ambientShadow}`;
+    };
+}
+
+/**
  * Apply elevation
  * Used to apply elevation shadow treatment to a component
+ *
+ * @deprecated Use applyElevation.
  */
 export function elevation(
     elevationValue: ElevationMultiplier | number,

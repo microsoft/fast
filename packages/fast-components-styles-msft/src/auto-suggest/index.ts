@@ -5,7 +5,7 @@ import { toPx } from "@microsoft/fast-jss-utilities";
 import { applyFloatingCornerRadius } from "../utilities/border";
 import { neutralFillStealthRest } from "../utilities/color";
 import { heightNumber } from "../utilities/density";
-import { elevation, ElevationMultiplier } from "../utilities/elevation";
+import { applyElevation, ElevationMultiplier } from "../utilities/elevation";
 
 const styles: ComponentStyles<AutoSuggestClassNameContract, DesignSystem> = (
     config: DesignSystem
@@ -20,7 +20,7 @@ const styles: ComponentStyles<AutoSuggestClassNameContract, DesignSystem> = (
         },
 
         autoSuggest_menu: {
-            ...elevation(ElevationMultiplier.e11)(designSystem),
+            ...applyElevation(ElevationMultiplier.e11),
             background: neutralFillStealthRest,
             zIndex: "1",
             position: "absolute",

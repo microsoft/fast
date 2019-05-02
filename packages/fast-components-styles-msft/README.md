@@ -114,3 +114,29 @@ const StyleSheet = {
     }
 }
 ```
+
+## Utilities
+
+These utility functions help you write clean and manageable style sheets.
+
+### Elevation
+
+Apply drop-shadow to components and layers to signify elevation.
+
+#### ElevationMultiplier
+
+An enum with common elevation depths.
+
+#### applyElevation
+
+Used with `ElevationMultiplier` to apply elevation to a styled element.
+
+```JavaScript
+import { applyElevation, ElevationMultiplier } from "@microsoft/fast-components-styles-msft";
+
+const styles: ComponentStyles<ClassNameContract, DesignSystem> = {
+    styled_component: {
+        ...applyElevation(ElevationMultiplier.e11),
+    },
+};
+```
