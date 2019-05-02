@@ -36,10 +36,10 @@
     "collectCoverage": true,
     "coverageThreshold": {
       "global": {
-        "statements": 41,
+        "statements": 40,
         "branches": 0,
         "functions": 20,
-        "lines": 40
+        "lines": 39
       }
     },
     "moduleFileExtensions": [
