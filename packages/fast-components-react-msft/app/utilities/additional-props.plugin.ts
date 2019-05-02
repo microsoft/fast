@@ -14,11 +14,11 @@ export default class MapChildrenPropToCallbackPassingClassName extends Plugin<
                 className,
             };
 
-            if (callbackArguments.disabled) {
+            if (disabled) {
                 callbackArguments.disabled = disabled;
             }
 
-            if (callbackArguments.appearance) {
+            if (appearance) {
                 callbackArguments.appearance = appearance;
             }
 
