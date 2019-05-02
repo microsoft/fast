@@ -35,6 +35,15 @@ export interface CSSPropertyConfig {
     valueWidth: number;
 }
 
+export interface InputConfig {
+    className: string;
+    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
+    ref?: React.RefObject<HTMLInputElement>;
+    value: string;
+    style: CSSProperties;
+}
+
 export interface CSSProperties {
     [key: string]: string;
 }

@@ -12,8 +12,10 @@ import {
     CSSPropertyEditorProps,
     CSSPropertyEditorState,
     CSSPropertyEditorUnhandledProps,
+    InputConfig,
 } from "./property-editor.props";
 import { KeyCodes } from "@microsoft/fast-web-utilities";
+import { getCSSPropertyConfig } from "./property-editor.utilities";
 
 export default class CSSPropertyEditor extends Foundation<
     CSSPropertyEditorHandledProps,
@@ -21,6 +23,12 @@ export default class CSSPropertyEditor extends Foundation<
     CSSPropertyEditorState
 > {
     public static displayName: string = "CSSPropertyEditor";
+
+    public static getDerivedStateFromProps(
+        props: CSSPropertyEditorProps
+    ): Partial<CSSPropertyEditorState> | null {
+        return { data: getCSSPropertyConfig(props.data) };
+    }
 
     protected handledProps: HandledProps<CSSPropertyEditorHandledProps> = {
         data: void 0,
@@ -41,7 +49,7 @@ export default class CSSPropertyEditor extends Foundation<
         this.state = {
             key: "",
             value: "",
-            data: this.getCSSPropertyConfig(this.props.data),
+            data: getCSSPropertyConfig(this.props.data),
         };
     }
 
@@ -62,12 +70,6 @@ export default class CSSPropertyEditor extends Foundation<
         );
     }
 
-    public componentDidUpdate(prevProps: CSSPropertyEditorProps): void {
-        if (prevProps.data !== this.props.data) {
-            this.setState({ data: this.getCSSPropertyConfig(this.props.data) });
-        }
-    }
-
     private renderCurrentProperties(): React.ReactNode {
         if (!this.state.data) {
             return;
@@ -75,83 +77,69 @@ export default class CSSPropertyEditor extends Foundation<
 
         return Object.keys(this.state.data).map(
             (cssKey: string, index: number): React.ReactNode => {
-                return this.renderPropertyInput(
-                    cssKey,
-                    this.state.data[cssKey].value,
-                    this.state.data[cssKey].keyWidth,
-                    this.state.data[cssKey].valueWidth,
-                    index
-                );
+                return this.renderPropertyInput(cssKey, this.state.data[cssKey], index);
             }
         );
     }
 
     private renderNewProperty(): React.ReactNode {
-        const newPropertyConfig: CSSPropertiesConfig = this.getCSSPropertyConfig({
+        const newPropertyConfig: CSSPropertiesConfig = getCSSPropertyConfig({
             [this.state.key]: this.state.value,
         });
 
-        return this.renderNewPropertyInput(
-            newPropertyConfig[this.state.key].keyWidth,
-            newPropertyConfig[this.state.key].valueWidth
-        );
+        return this.renderNewPropertyInput(newPropertyConfig[this.state.key]);
     }
 
     private renderPropertyInput(
         key: string,
-        value: string,
-        keyWidth: number,
-        valueWidth: number,
+        config: CSSPropertyConfig,
         index: number
     ): React.ReactNode {
         return (
             <div key={index}>
-                <input
-                    type={"text"}
-                    className={this.generateKeyClassNames()}
-                    onChange={this.handlePropertyKeyChange(key)}
-                    value={key}
-                    style={{ width: `${keyWidth}px` }}
-                />
+                {this.renderInput({
+                    className: this.generateKeyClassNames(),
+                    onChange: this.handlePropertyKeyChange(key),
+                    value: key,
+                    style: { width: `${config.keyWidth}px` },
+                })}
                 :
-                <input
-                    type={"text"}
-                    className={this.generateValueClassNames()}
-                    onChange={this.handlePropertyValueChange(key)}
-                    value={value}
-                    style={{ width: `${valueWidth}px` }}
-                />
+                {this.renderInput({
+                    className: this.generateValueClassNames(),
+                    onChange: this.handlePropertyValueChange(key),
+                    value: config.value,
+                    style: { width: `${config.valueWidth}px` },
+                })}
                 ;
             </div>
         );
     }
 
-    private renderNewPropertyInput(
-        keyWidth: number,
-        valueWidth: number
-    ): React.ReactNode {
+    private renderNewPropertyInput(config: CSSPropertyConfig): React.ReactNode {
         return (
             <div>
-                <input
-                    type={"text"}
-                    className={this.generateKeyClassNames()}
-                    onChange={this.handleNewPropertyKeyChange}
-                    value={this.state.key}
-                    style={{ width: `${keyWidth}px` }}
-                    ref={this.keyInputRef}
-                />
+                {this.renderInput({
+                    className: this.generateKeyClassNames(),
+                    onChange: this.handleNewPropertyKeyChange,
+                    value: this.state.key,
+                    style: { width: `${config.keyWidth}px` },
+                    ref: this.keyInputRef,
+                })}
                 :
-                <input
-                    type={"text"}
-                    className={this.generateValueClassNames()}
-                    onChange={this.handleNewPropertyValueChange}
-                    onKeyDown={this.handleNewPropertyValueKeyDown}
-                    value={this.state.value}
-                    style={{ width: `${valueWidth}px` }}
-                />
+                {this.renderInput({
+                    className: this.generateValueClassNames(),
+                    onChange: this.handleNewPropertyValueChange,
+                    onKeyDown: this.handleNewPropertyValueKeyDown,
+                    value: this.state.value,
+                    style: { width: `${config.valueWidth}px` },
+                })}
                 ;
             </div>
         );
+    }
+
+    private renderInput(config: InputConfig): React.ReactNode {
+        return <input type={"text"} {...config} />;
     }
 
     private generateKeyClassNames(): string {
@@ -166,32 +154,10 @@ export default class CSSPropertyEditor extends Foundation<
         }`;
     }
 
-    private getCSSPropertyConfig(data: CSSProperties): CSSPropertiesConfig {
-        const dataConfig: CSSPropertiesConfig = {};
-
-        if (!data) {
-            return dataConfig;
-        }
-
-        Object.keys(data).map(
-            (dataKey: string): void => {
-                dataConfig[dataKey] = {
-                    value: data[dataKey],
-                    keyWidth: 6.6 * dataKey.length,
-                    valueWidth: 6.6 * data[dataKey].length,
-                };
-            }
-        );
-
-        return dataConfig;
-    }
-
     private handleClick = (e: React.MouseEvent<HTMLPreElement>): void => {
         if ((e.target as HTMLElement).nodeName !== "INPUT") {
             this.keyInputRef.current.focus();
         }
-
-        e.stopPropagation();
     };
 
     private handlePropertyKeyChange(
@@ -200,6 +166,8 @@ export default class CSSPropertyEditor extends Foundation<
         return (e: React.ChangeEvent<HTMLInputElement>): void => {
             const newData: CSSProperties = {};
 
+            // The reason this is iterated over in this manner is to preserve
+            // the location of keys in the CSS object
             Object.keys(this.props.data).forEach((key: string) => {
                 if (key === oldKey) {
                     newData[e.target.value] = this.props.data[key];
@@ -216,10 +184,7 @@ export default class CSSPropertyEditor extends Foundation<
         key: string
     ): (e: React.ChangeEvent<HTMLInputElement>) => void {
         return (e: React.ChangeEvent<HTMLInputElement>): void => {
-            const newData: CSSProperties = Object.assign({}, this.props.data);
-            newData[key] = e.target.value;
-
-            this.handleCSSUpdate(newData);
+            this.handleCSSUpdate({ ...this.props.data, ...{ [key]: e.target.value } });
         };
     }
 

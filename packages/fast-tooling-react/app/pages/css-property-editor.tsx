@@ -3,7 +3,7 @@ import React from "react";
 import { CSSPropertyEditor } from "../../src/css-property-editor";
 
 interface CSSPropertyEditorTestPageState {
-    css: any;
+    css: { [key: string]: string };
 }
 
 class CSSPropertyEditorTestPage extends React.Component<
