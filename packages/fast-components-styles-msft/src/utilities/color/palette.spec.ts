@@ -5,6 +5,7 @@ import {
     palette,
     Palette,
     PaletteType,
+    swatchByContrast,
     swatchByMode,
 } from "./palette";
 import designSystemDefaults, { DesignSystem } from "../../design-system";
@@ -171,5 +172,11 @@ describe("swatchByMode", (): void => {
                 backgroundColor: "#000",
             } as DesignSystem)
         ).toBe(designSystemDefaults.accentPalette[7]);
+    });
+});
+
+describe("swatchByContrast", (): void => {
+    test("should return a function", (): void => {
+        expect(typeof swatchByContrast()).toBe("function");
     });
 });

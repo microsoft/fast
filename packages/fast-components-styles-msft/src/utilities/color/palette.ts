@@ -1,13 +1,19 @@
+import { clamp } from "lodash-es";
 import defaultDesignSystem, {
     DesignSystem,
     DesignSystemResolver,
 } from "../../design-system";
-import { clamp } from "lodash-es";
-import { colorMatches, contrast, isValidColor, luminance, Swatch } from "./common";
-import { neutralForegroundDark, neutralForegroundLight } from "./neutral-foreground";
-import { ColorPalette, ColorRGBA64 } from "@microsoft/fast-colors";
-import { accentPalette, neutralPalette } from "../design-system";
 import { backgroundColor } from "../../utilities/design-system";
+import { accentPalette, neutralPalette } from "../design-system";
+import {
+    colorMatches,
+    contrast,
+    isValidColor,
+    luminance,
+    Swatch,
+    SwatchResolver,
+} from "./common";
+import { neutralForegroundDark, neutralForegroundLight } from "./neutral-foreground";
 
 /**
  * The named palettes of the MSFT design system
@@ -167,3 +173,66 @@ export function swatchByMode(
         };
     };
 }
+
+/**
+ * Function to determine the direction on the array we should search
+ */
+type DirectionResolver = (referenceIndex: number, palette: Palette) => 1 | -1;
+type ContrastCondition = (contrast: number) => boolean;
+type InitialIndexResolver = (referenceColor: Swatch, paletteType: Palette) => number;
+
+/**
+ * Retrieves a swatch from an input palette, where the swatch's contrast against the reference color
+ * passes an input condition. The direction to search in the palette is determined by an input condition.
+ * The search for the palette will begin by another input function that should return the starting index.
+ */
+export function swatchByContrast(
+    referenceColor: string | SwatchResolver
+): ReturnType<Foo> {
+    return (
+        paletteResolver: DesignSystemResolver<Palette>
+    ): ReturnType<ReturnType<Foo>> => {
+        return (
+            indexResolver: (
+                referenceColor: string,
+                palette: Palette,
+                designSystem: DesignSystem
+            ) => number
+        ): ReturnType<ReturnType<ReturnType<Foo>>> => {
+            return (
+                directionResolver: DirectionResolver
+            ): ReturnType<ReturnType<ReturnType<ReturnType<Foo>>>> => {
+                return (
+                    contrastCondition: (contrastRatio: number) => boolean
+                ): DesignSystemResolver<Swatch> => {
+                    return (designSystem: DesignSystem): Swatch => {
+                        const color: Swatch =
+                            typeof referenceColor === "function"
+                                ? referenceColor(designSystem)
+                                : referenceColor;
+                        const sourcePalette: Palette = paletteResolver(designSystem);
+                        const initialSearchIndex: number = indexResolver(
+                            color,
+                            sourcePalette,
+                            designSystem
+                        );
+                        const direction: 1 | -1 = directionResolver(
+                            initialSearchIndex,
+                            sourcePalette
+                        );
+                    };
+                };
+            };
+        };
+    };
+}
+
+type Foo = (
+    referenceColor: string | SwatchResolver
+) => (
+    paletteResolver: DesignSystemResolver<Palette>
+) => (
+    indexResolver: (referenceColor: string, palette: Palette) => number
+) => (
+    directionResolver: DirectionResolver
+) => (condition: (contrast: number) => boolean) => DesignSystemResolver<Swatch>;
