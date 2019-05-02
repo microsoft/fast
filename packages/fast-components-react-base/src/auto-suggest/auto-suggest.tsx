@@ -319,10 +319,12 @@ class AutoSuggest extends Foundation<
 
             case KeyCodes.arrowDown:
                 this.focusOnMenu(1);
+                e.preventDefault();
                 break;
 
             case KeyCodes.arrowUp:
                 this.focusOnMenu(-1);
+                e.preventDefault();
                 break;
 
             default:
