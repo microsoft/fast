@@ -8,7 +8,7 @@ import {
     neutralPaletteConfig,
 } from "@microsoft/fast-components-styles-msft";
 import { ColorRGBA64, parseColorHexRGB } from "@microsoft/fast-colors";
-import { AccentColors } from "./control-pane";
+import { AccentColors } from "./colors";
 
 /* tslint:disable-next-line */
 export interface ColorsDesignSystem extends DesignSystem {}

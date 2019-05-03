@@ -1,5 +1,5 @@
 import React from "react";
-import manageJss from "@microsoft/fast-jss-manager-react";
+import manageJss, { ComponentStyleSheet } from "@microsoft/fast-jss-manager-react";
 import { ComponentTypes } from "./state";
 import classnames from "classnames";
 import { elevation, ElevationMultiplier } from "@microsoft/fast-components-styles-msft";
@@ -16,14 +16,6 @@ export enum SwatchStates {
 
 interface SwatchClassNameContract {
     swatch: string;
-    swatch_tooltip: string;
-    swatch__default: string;
-    swatch__accent: string;
-    swatch__stealth: string;
-    swatch__ghost: string;
-    swatch__rest: string;
-    swatch__hover: string;
-    swatch__press: string;
 }
 
 interface SwatchManagedClasses {
@@ -67,7 +59,7 @@ interface SwatchProps extends SwatchManagedClasses {
     showTextContrast?: boolean;
 }
 
-const styles: any = {
+const styles: ComponentStyleSheet<SwatchClassNameContract, ColorsDesignSystem> = {
     swatch: {
         height: "36px",
         display: "flex",

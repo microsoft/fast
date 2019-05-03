@@ -1,5 +1,12 @@
+import {
+    Heading,
+    HeadingSize,
+    HeadingTag,
+    Label,
+    Select,
+    SelectOption,
+} from "@microsoft/fast-components-react-msft";
 import { get, values } from "lodash-es";
-import { ColorRGBA64, parseColorHexRGB } from "@microsoft/fast-colors";
 import {
     backgroundColor,
     cornerRadius,
@@ -17,14 +24,7 @@ import manageJss, {
 } from "@microsoft/fast-jss-manager-react";
 import { Pane } from "@microsoft/fast-layouts-react";
 import classnames from "classnames";
-import {
-    Heading,
-    HeadingSize,
-    HeadingTag,
-    Label,
-    Select,
-    SelectOption,
-} from "@microsoft/fast-components-react-msft";
+import { ColorRGBA64, parseColorHexRGB } from "@microsoft/fast-colors";
 import React from "react";
 import { SketchPicker } from "react-color";
 import { connect } from "react-redux";
@@ -37,6 +37,7 @@ import {
     setNeutralBaseColor,
 } from "./state";
 import { format, toPx } from "@microsoft/fast-jss-utilities";
+import { AccentColors, neutralColors } from "./colors";
 
 export interface ControlPaneClassNameContract {
     controlPane: string;
@@ -57,28 +58,6 @@ export interface ControlPaneState {
     accentColorBase: string;
     neutralColorBase: string;
 }
-
-export enum AccentColors {
-    black = "#000000",
-    white = "#FFFFFF",
-    blue = "#0078D4",
-    green = "#107C10",
-    purple = "#5C2D91",
-    orange = "#D83B01",
-    yellow = "#F2C812",
-}
-
-const neutralShortcuts: string[] = [
-    "#808080",
-    "#73818C",
-    "#718E71",
-    "#7F738C",
-    "#8C7A73",
-    "#0078D4",
-    "#107C10",
-    "#5C2D91",
-    "#D83B01",
-];
 
 const accentShortcuts: string[] = values(AccentColors);
 
@@ -184,7 +163,7 @@ class ControlPaneBase extends React.Component<ControlPaneProps, ControlPaneState
             neutralColorBase:
                 defaultNeutralBase instanceof ColorRGBA64
                     ? defaultNeutralBase.toStringHexRGB()
-                    : neutralShortcuts[0],
+                    : neutralColors[0],
         };
     }
 
@@ -276,7 +255,7 @@ class ControlPaneBase extends React.Component<ControlPaneProps, ControlPaneState
                         this.props.setNeutralBaseColor
                     )}
                     disableAlpha={true}
-                    presetColors={neutralShortcuts}
+                    presetColors={neutralColors}
                 />
             </React.Fragment>
         );
@@ -346,7 +325,7 @@ class ControlPaneBase extends React.Component<ControlPaneProps, ControlPaneState
         return (newColor: { hex: string }): void => {
             const color: ColorRGBA64 | null = parseColorHexRGB(newColor.hex);
 
-            if (color instanceof ColorRGBA64) {
+            if (color instanceof ColorRGBA64 && typeof callback === "function") {
                 callback(color);
             }
 
