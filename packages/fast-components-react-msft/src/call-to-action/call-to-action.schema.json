@@ -15,9 +15,11 @@
             "type": "string",
             "default": "primary",
             "enum": [
-                "primary",
                 "justified",
-                "lightweight"
+                "lightweight",
+                "outline",
+                "primary",
+                "stealth"
             ]
         },
         "disabled": {

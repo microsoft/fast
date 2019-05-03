@@ -19,11 +19,16 @@ export default {
     },
     data: [
         {
-            appearance: CallToActionAppearance.primary,
-            children: "Primary call to action",
+            children: "Default call to action",
             href: testDestination,
-            "data-sketch-symbol": "Call to action - primary",
+            "data-sketch-symbol": "Call to action - default",
         } as any, // TODO https://github.com/Microsoft/TypeScript/issues/6579
+        {
+            appearance: CallToActionAppearance.justified,
+            children: "Justified call to action",
+            href: testDestination,
+            "data-sketch-symbol": "Call to action - justified",
+        },
         {
             appearance: CallToActionAppearance.lightweight,
             children: "Lightweight call to action",
@@ -31,10 +36,22 @@ export default {
             "data-sketch-symbol": "Call to action - lightweight",
         },
         {
-            appearance: CallToActionAppearance.justified,
-            children: "Justified call to action",
+            appearance: CallToActionAppearance.outline,
+            children: "Outline call to action",
             href: testDestination,
-            "data-sketch-symbol": "Call to action - justified",
+            "data-sketch-symbol": "Call to action - outline",
+        },
+        {
+            appearance: CallToActionAppearance.primary,
+            children: "Primary call to action",
+            href: testDestination,
+            "data-sketch-symbol": "Call to action - primary",
+        },
+        {
+            appearance: CallToActionAppearance.stealth,
+            children: "Stealth call to action",
+            href: testDestination,
+            "data-sketch-symbol": "Call to action - stealth",
         },
     ],
 } as ComponentFactoryExample<CallToActionProps>;

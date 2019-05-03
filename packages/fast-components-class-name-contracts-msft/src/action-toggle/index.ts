@@ -23,9 +23,9 @@ export interface ActionToggleClassNameContract {
     actionToggle_unselectedGlyph?: string;
 
     /**
-     * The primary appearance modifier
+     * The justified appearance modifier
      */
-    actionToggle__primary?: string;
+    actionToggle__justified?: string;
 
     /**
      * The lightweight appearance modifier
@@ -33,14 +33,19 @@ export interface ActionToggleClassNameContract {
     actionToggle__lightweight?: string;
 
     /**
-     * The justified appearance modifier
-     */
-    actionToggle__justified?: string;
-
-    /**
      * The outline appearance modifier
      */
     actionToggle__outline?: string;
+
+    /**
+     * The primary appearance modifier
+     */
+    actionToggle__primary?: string;
+
+    /**
+     * The stealth appearance modifier
+     */
+    actionToggle__stealth?: string;
 
     /**
      * The disabled modifier

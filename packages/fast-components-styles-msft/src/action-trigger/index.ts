@@ -102,6 +102,14 @@ const styles: ComponentStyles<ActionTriggerClassNameContract, DesignSystem> = (
                 fill: neutralForegroundRest,
             },
         },
+        actionTrigger__stealth: {
+            "& $actionTrigger_glyph": {
+                fill: neutralForegroundRest,
+            },
+            "&$actionTrigger__disabled $actionTrigger_glyph": {
+                fill: neutralForegroundRest,
+            },
+        },
         actionTrigger__disabled: {},
     };
 };
