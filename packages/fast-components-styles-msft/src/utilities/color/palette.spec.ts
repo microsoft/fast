@@ -11,6 +11,8 @@ import {
 import designSystemDefaults, { DesignSystem } from "../../design-system";
 import { accent } from "./color-constants";
 import { Swatch } from "./common";
+import { neutralForeground } from "./neutral-foreground";
+import { neutralPalette } from "../design-system";
 
 describe("palette", (): void => {
     test("should return a function", (): void => {
@@ -177,6 +179,81 @@ describe("swatchByMode", (): void => {
 
 describe("swatchByContrast", (): void => {
     test("should return a function", (): void => {
-        expect(typeof swatchByContrast()).toBe("function");
+        expect(typeof swatchByContrast({} as any)).toBe("function");
+    });
+    describe("indexResolver", (): void => {
+        test("should pass a reference color as the first argument", (): void => {
+            const indexResolver: jest.SpyInstance = jest.fn(() => 0);
+            const directionResolver: jest.SpyInstance = jest.fn(() => 1);
+            const contrastCondition: jest.SpyInstance = jest.fn(() => false);
+
+            swatchByContrast("#FFF")(neutralPalette)(indexResolver as any)(
+                directionResolver as any
+            )(contrastCondition as any)({} as DesignSystem);
+            expect(indexResolver).toHaveBeenCalledTimes(1);
+            expect(indexResolver.mock.calls[0][0]).toBe("#FFF");
+        });
+        test("should pass the palette as the second argument", (): void => {
+            const indexResolver: jest.SpyInstance = jest.fn(() => 0);
+            const directionResolver: jest.SpyInstance = jest.fn(() => 1);
+            const contrastCondition: jest.SpyInstance = jest.fn(() => false);
+            const colorPalette: string[] = ["foo"];
+
+            swatchByContrast("#FFF")(() => colorPalette)(indexResolver as any)(
+                directionResolver as any
+            )(contrastCondition as any)({} as DesignSystem);
+            expect(indexResolver).toHaveBeenCalledTimes(1);
+            expect(indexResolver.mock.calls[0][1]).toBe(colorPalette);
+        });
+        test("should pass the designSystem as the third argument", (): void => {
+            const indexResolver: jest.SpyInstance = jest.fn(() => 0);
+            const directionResolver: jest.SpyInstance = jest.fn(() => 1);
+            const contrastCondition: jest.SpyInstance = jest.fn(() => false);
+            const designSystem: DesignSystem = {} as DesignSystem;
+
+            swatchByContrast("#FFF")(neutralPalette)(indexResolver as any)(
+                directionResolver as any
+            )(contrastCondition as any)(designSystem);
+            expect(indexResolver).toHaveBeenCalledTimes(1);
+            expect(indexResolver.mock.calls[0][2]).toBe(designSystem);
+        });
+    });
+    describe("directionResolver", (): void => {
+        test("should pass the reference index as the first argument", (): void => {
+            const index: number = 77;
+            const indexResolver: jest.SpyInstance = jest.fn(() => index);
+            const directionResolver: jest.SpyInstance = jest.fn(() => 1);
+            const contrastCondition: jest.SpyInstance = jest.fn(() => false);
+
+            swatchByContrast("#FFF")(neutralPalette)(indexResolver as any)(
+                directionResolver as any
+            )(contrastCondition as any)({} as DesignSystem);
+            expect(directionResolver).toHaveBeenCalledTimes(1);
+            expect(directionResolver.mock.calls[0][0]).toBe(index);
+        });
+        test("should pass the palette as the second argument", (): void => {
+            const indexResolver: jest.SpyInstance = jest.fn(() => 0);
+            const directionResolver: jest.SpyInstance = jest.fn(() => 1);
+            const contrastCondition: jest.SpyInstance = jest.fn(() => false);
+            const colorPalette: string[] = ["foo"];
+
+            swatchByContrast("#FFF")(() => colorPalette)(indexResolver as any)(
+                directionResolver as any
+            )(contrastCondition as any)({} as DesignSystem);
+            expect(directionResolver).toHaveBeenCalledTimes(1);
+            expect(directionResolver.mock.calls[0][1]).toBe(colorPalette);
+        });
+        test("should pass the designSystem as the third argument", (): void => {
+            const indexResolver: jest.SpyInstance = jest.fn(() => 0);
+            const directionResolver: jest.SpyInstance = jest.fn(() => 1);
+            const contrastCondition: jest.SpyInstance = jest.fn(() => false);
+            const designSystem: DesignSystem = {} as DesignSystem;
+
+            swatchByContrast("#FFF")(neutralPalette)(indexResolver as any)(
+                directionResolver as any
+            )(contrastCondition as any)(designSystem);
+            expect(directionResolver).toHaveBeenCalledTimes(1);
+            expect(directionResolver.mock.calls[0][2]).toBe(designSystem);
+        });
     });
 });

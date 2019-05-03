@@ -174,23 +174,23 @@ export function swatchByMode(
     };
 }
 
-/**
- * Function to determine the direction on the array we should search
- */
-type DirectionResolver = (referenceIndex: number, palette: Palette) => 1 | -1;
-type ContrastCondition = (contrast: number) => boolean;
-type InitialIndexResolver = (referenceColor: Swatch, paletteType: Palette) => number;
-
+// disable type-defs because this a deeply curried function and the call-signature is pretty complicated
+// and typescript can work it out automatically for consumers
+/* tslint:disable:typedef */
 /**
  * Retrieves a swatch from an input palette, where the swatch's contrast against the reference color
  * passes an input condition. The direction to search in the palette is determined by an input condition.
  * The search for the palette will begin by another input function that should return the starting index.
  */
-// disable type-defs because this a deeply curried function and the call-signature is pretty complicated
-// and typescript can work it out automatically for consumers
-/* tslint:disable:typedef */
 export function swatchByContrast(referenceColor: string | SwatchResolver) {
+    /**
+     * A function that expects a function that resolves a palette
+     */
     return (paletteResolver: DesignSystemResolver<Palette>) => {
+        /**
+         * A function that expects a function that resolves the index
+         * of the palette that the algorithm should begin looking for a swatch at
+         */
         return (
             indexResolver: (
                 referenceColor: string,
@@ -198,10 +198,30 @@ export function swatchByContrast(referenceColor: string | SwatchResolver) {
                 designSystem: DesignSystem
             ) => number
         ) => {
-            return (directionResolver: DirectionResolver) => {
+            /**
+             * A function that expects a function that determines which direction in the
+             * palette we should look for a swatch relative to the initial index
+             */
+            return (
+                directionResolver: (
+                    referenceIndex: number,
+                    palette: Palette,
+                    designSystem: DesignSystem
+                ) => 1 | -1
+            ) => {
+                /**
+                 * A function that expects a function that determines if the contrast
+                 * between the reference color and color from the palette are acceptable
+                 */
                 return (
                     contrastCondition: (contrastRatio: number) => boolean
                 ): DesignSystemResolver<Swatch> => {
+                    /**
+                     * A function that accepts a design-system. It resolves all of the curried arguments
+                     * and loops over the palette until we reach the bounds of the palette or the condition
+                     * is satisfied. Once either the condition is satisfied or we reach the end of the palette,
+                     * we return the color
+                     */
                     return (designSystem: DesignSystem): Swatch => {
                         const color: Swatch =
                             typeof referenceColor === "function"
@@ -215,7 +235,8 @@ export function swatchByContrast(referenceColor: string | SwatchResolver) {
                         );
                         const direction: 1 | -1 = directionResolver(
                             initialSearchIndex,
-                            sourcePalette
+                            sourcePalette,
+                            designSystem
                         );
                         const length: number = sourcePalette.length - 1;
                         let index: number = initialSearchIndex;

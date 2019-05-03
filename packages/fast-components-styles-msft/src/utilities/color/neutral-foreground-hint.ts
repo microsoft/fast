@@ -48,7 +48,7 @@ function neutralForegroundHintFactory(contrastTarget: number): SwatchRecipe {
         backgroundResolver: SwatchResolver
     ): SwatchResolver;
     function neutralForegroundHintInternal(arg: any): any {
-        const algo: ReturnType<
+        const algorithm: ReturnType<
             typeof neutralForegroundHintAlgorithm
         > = neutralForegroundHintAlgorithm(
             (instanceContrast: number): boolean => {
@@ -58,14 +58,14 @@ function neutralForegroundHintFactory(contrastTarget: number): SwatchRecipe {
 
         if (typeof arg === "function") {
             return (designSystem: DesignSystem): Swatch => {
-                return algo(
+                return algorithm(
                     Object.assign({}, designSystem, {
                         backgroundColor: arg(designSystem),
                     })
                 );
             };
         } else {
-            return algo(arg);
+            return algorithm(arg);
         }
     }
 
