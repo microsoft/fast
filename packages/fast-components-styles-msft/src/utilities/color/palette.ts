@@ -180,7 +180,20 @@ export function swatchByMode(
 /**
  * Retrieves a swatch from an input palette, where the swatch's contrast against the reference color
  * passes an input condition. The direction to search in the palette is determined by an input condition.
- * The search for the palette will begin by another input function that should return the starting index.
+ * Where to begin the search in the palette will be determined another input function that should return the starting index.
+ * example: swatchByContrast(
+ *              "#FFF" // compare swatches against "#FFF"
+ *          )(
+ *              neutralPalette // use the neutral palette from the DesignSystem - since this is a function, it will be evaluated with the DesignSystem
+ *          )(
+ *              () => 0 // begin searching for a swatch at the beginning of the neutral palette
+ *          )(
+ *              () => 1 // While searching, search in the direction toward the end of the array (-1 moves towards the beginning of the array)
+ *          )(
+ *              (contrast: number) => contrast >= 4.5 // A swatch is only valid if the contrast is greater than 4.5
+ *          )(
+ *              designSystem // Pass the design-system. The first swatch that passes the previous condition will be returned from this function
+ *          )
  */
 export function swatchByContrast(referenceColor: string | SwatchResolver) {
     /**
