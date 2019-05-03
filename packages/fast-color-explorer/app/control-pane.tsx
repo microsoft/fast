@@ -169,16 +169,11 @@ class ControlPaneBase extends React.Component<ControlPaneProps, ControlPaneState
     };
     constructor(props: ControlPaneProps) {
         super(props);
-        const defaultAccentBase: ColorRGBA64 | null = parseColorHexRGB(
-            this.props.designSystem.accentPalette[
-                Math.floor(this.props.designSystem.accentPalette.length) / 2
-            ]
+        const defaultAccentBase: ColorRGBA64 | null = this.getBaseColor(
+            this.props.designSystem.accentPalette
         );
-
-        const defaultNeutralBase: ColorRGBA64 | null = parseColorHexRGB(
-            this.props.designSystem.neutralPalette[
-                Math.floor(this.props.designSystem.neutralPalette.length) / 2
-            ]
+        const defaultNeutralBase: ColorRGBA64 | null = this.getBaseColor(
+            this.props.designSystem.neutralPalette
         );
 
         this.state = {
@@ -192,6 +187,7 @@ class ControlPaneBase extends React.Component<ControlPaneProps, ControlPaneState
                     : "#808080",
         };
     }
+
     public render(): React.ReactNode {
         return (
             <Pane className={get(this.props.managedClasses, "controlPane", "")}>
@@ -215,6 +211,10 @@ class ControlPaneBase extends React.Component<ControlPaneProps, ControlPaneState
                 </form>
             </Pane>
         );
+    }
+
+    private getBaseColor(palette: string[]): ColorRGBA64 | null {
+        return parseColorHexRGB(palette[Math.floor(palette.length / 2)]);
     }
 
     private handleFormSubmit(e: React.FormEvent<HTMLFormElement>): void {
@@ -254,7 +254,10 @@ class ControlPaneBase extends React.Component<ControlPaneProps, ControlPaneState
                 <Label style={this.labelStyles}>Accent base color</Label>
                 <SketchPicker
                     color={this.state.accentColorBase}
-                    onChange={this.handleAccentBaseColorChange}
+                    onChange={this.handleColorChange(
+                        "accentColorBase",
+                        this.props.setAccentBaseColor
+                    )}
                     disableAlpha={true}
                     presetColors={accentShortcuts}
                 />
@@ -268,7 +271,10 @@ class ControlPaneBase extends React.Component<ControlPaneProps, ControlPaneState
                 <Label style={this.labelStyles}>Neutral base color</Label>
                 <SketchPicker
                     color={this.state.neutralColorBase}
-                    onChange={this.handleNeutralBaseColorChange}
+                    onChange={this.handleColorChange(
+                        "neutralColorBase",
+                        this.props.setNeutralBaseColor
+                    )}
                     disableAlpha={true}
                     presetColors={neutralShortcuts}
                 />
@@ -333,36 +339,22 @@ class ControlPaneBase extends React.Component<ControlPaneProps, ControlPaneState
             </div>
         );
     }
+    private handleColorChange(
+        palette: "neutralColorBase" | "accentColorBase",
+        callback: (color: ColorRGBA64) => void
+    ): (color: { hex: string }) => void {
+        return (newColor: { hex: string }): void => {
+            const color: ColorRGBA64 | null = parseColorHexRGB(newColor.hex);
 
-    private handleNeutralBaseColorChange = (
-        c: any,
-        e: React.ChangeEvent<HTMLInputElement>
-    ): void => {
-        const color: ColorRGBA64 | null = parseColorHexRGB(c.hex);
+            if (color instanceof ColorRGBA64) {
+                callback(color);
+            }
 
-        if (color instanceof ColorRGBA64) {
-            this.props.setNeutralBaseColor(color);
-        }
-
-        this.setState({
-            neutralColorBase: c.hex,
-        });
-    };
-
-    private handleAccentBaseColorChange = (
-        c: any,
-        e: React.ChangeEvent<HTMLInputElement>
-    ): void => {
-        const color: ColorRGBA64 | null = parseColorHexRGB(c.hex);
-
-        if (color instanceof ColorRGBA64) {
-            this.props.setAccentBaseColor(color);
-        }
-
-        this.setState({
-            accentColorBase: c.hex,
-        });
-    };
+            this.setState({
+                [palette]: newColor.hex,
+            } as any);
+        };
+    }
 }
 
 function mapStateToProps(state: AppState): Partial<ControlPaneProps> {

@@ -2,8 +2,8 @@ import { Action, createStore } from "redux";
 import { ColorsDesignSystem, colorsDesignSystem } from "./design-system";
 import { ColorRGBA64 } from "@microsoft/fast-colors";
 import { merge } from "lodash-es";
-import { createColorPalette } from "./palette";
 import { Color } from "csstype";
+import { createColorPalette } from "@microsoft/fast-components-styles-msft";
 
 export enum ComponentTypes {
     neutral = "neutral",
@@ -36,24 +36,36 @@ export interface Action {
     type: symbol;
 }
 
+/**
+ * Re-assign a palette value based on an input color reference
+ */
+function setPalette(
+    palette: "accentPalette" | "neutralPalette"
+): (state: AppState, value: ColorRGBA64) => AppState {
+    return (state: AppState, value: ColorRGBA64): AppState => {
+        const designSystem: ColorsDesignSystem = {
+            ...state.designSystem,
+            [palette]: createColorPalette(value),
+        };
+
+        return {
+            ...state,
+            designSystem,
+        };
+    };
+}
+
+const setAccentPalette: ReturnType<typeof setPalette> = setPalette("accentPalette");
+const setNeutralPalette: ReturnType<typeof setPalette> = setPalette("neutralPalette");
+
 function rootReducer(state: AppState, action: any): AppState {
     switch (action.type) {
         case SET_COMPONENT_TYPE:
             return Object.assign({}, state, { componentType: action.value });
         case SET_NEUTRAL_BASE_COLOR:
-            const neutralDesignSystem: ColorsDesignSystem = Object.assign(
-                {},
-                state.designSystem
-            );
-            neutralDesignSystem.neutralPalette = createColorPalette(action.value);
-            return Object.assign({}, state, { designSystem: neutralDesignSystem });
+            return setNeutralPalette(state, action.value);
         case SET_ACCENT_BASE_COLOR:
-            const accentDesignSystem: ColorsDesignSystem = Object.assign(
-                {},
-                state.designSystem
-            );
-            accentDesignSystem.accentPalette = createColorPalette(action.value);
-            return Object.assign({}, state, { designSystem: accentDesignSystem });
+            return setAccentPalette(state, action.value);
     }
 
     return state;
@@ -77,12 +89,17 @@ export function setComponentType(
     return { type: SET_COMPONENT_TYPE, value };
 }
 
-export function setNeutralBaseColor(
-    value: ColorRGBA64
-): ColorExplorerAction<ColorRGBA64> {
-    return { type: SET_NEUTRAL_BASE_COLOR, value };
+function setColorActionCreator<T>(
+    type: T
+): (value: ColorRGBA64) => ColorExplorerAction<ColorRGBA64, T> {
+    return (value: ColorRGBA64): ColorExplorerAction<ColorRGBA64, T> => {
+        return { type, value };
+    };
 }
 
-export function setAccentBaseColor(value: ColorRGBA64): ColorExplorerAction<ColorRGBA64> {
-    return { type: SET_ACCENT_BASE_COLOR, value };
-}
+export const setNeutralBaseColor: ReturnType<
+    typeof setColorActionCreator
+> = setColorActionCreator(SET_NEUTRAL_BASE_COLOR);
+export const setAccentBaseColor: ReturnType<
+    typeof setColorActionCreator
+> = setColorActionCreator(SET_ACCENT_BASE_COLOR);

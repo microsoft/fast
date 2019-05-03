@@ -4,10 +4,10 @@ import {
 } from "@microsoft/fast-components-styles-msft";
 import {
     accentPaletteConfig,
+    createColorPalette,
     neutralPaletteConfig,
 } from "@microsoft/fast-components-styles-msft";
 import { ColorRGBA64, parseColorHexRGB } from "@microsoft/fast-colors";
-import { createColorPalette } from "./palette";
 
 export const accentColors: string[] = [
     "#0078d4",
