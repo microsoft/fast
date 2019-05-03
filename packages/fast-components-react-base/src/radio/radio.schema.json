@@ -9,7 +9,9 @@
         "inputId": {
             "title": "Unique Id",
             "type": "string",
-            "example": "radio01"
+            "examples": [
+                "radio01"
+            ]
         },
         "checked": {
             "title": "Checked",
@@ -22,7 +24,9 @@
         "name": {
             "title": "Name",
             "type": "string",
-            "example": "name"
+            "examples": [
+                "name"
+            ]
         }
     },
     "reactProperties": {

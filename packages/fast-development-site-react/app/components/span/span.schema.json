@@ -8,7 +8,9 @@
         "text": {
             "title": "Text",
             "type": "string",
-            "example": "Text"
+            "examples": [
+                "Text"
+            ]
         }
     }
 }

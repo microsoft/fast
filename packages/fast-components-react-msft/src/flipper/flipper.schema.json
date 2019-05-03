@@ -22,7 +22,9 @@
         "label": {
             "title": "HTML aria-label attribute",
             "type": "string",
-            "example": "See previous"
+            "examples": [
+                "See previous"
+            ]
         }
     },
     "reactProperties": {
