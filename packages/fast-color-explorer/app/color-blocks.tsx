@@ -1,14 +1,15 @@
+import { ColorsDesignSystem } from "./design-system";
 import {
     Background,
     Button,
     ButtonAppearance,
     Caption,
+    CaptionClassNameContract,
     Checkbox,
     Hypertext,
     Paragraph,
     TextField,
 } from "@microsoft/fast-components-react-msft";
-import React from "react";
 import manageJss, { ComponentStyleSheet } from "@microsoft/fast-jss-manager-react";
 import {
     accentFill,
@@ -24,7 +25,7 @@ import {
 } from "@microsoft/fast-components-styles-msft";
 import classnames from "classnames";
 import { Swatch, SwatchStates } from "./swatch";
-import { ColorsDesignSystem } from "./design-system";
+import React from "react";
 import { HintText } from "./hint-text";
 import { get, isEqual, uniqueId } from "lodash-es";
 import { AppState, ComponentTypes } from "./state";
@@ -35,11 +36,11 @@ import {
     SwatchFamily,
 } from "@microsoft/fast-components-styles-msft/dist/utilities/color/common";
 
-const styles: any = {
+const styles: ComponentStyleSheet<ColorBlocksClassNameContract, ColorsDesignSystem> = {
     colorBlocks: {
         display: "flex",
         flexDirection: "column",
-        flexGrow: 1,
+        flexGrow: "1",
         alignItems: "stretch",
         textAlign: "center",
         color: neutralForegroundRest,
@@ -116,7 +117,10 @@ class ColorBlocksBase extends React.Component<ColorBlocksProps, ColorBlocksState
         return null;
     }
 
-    private titleStyleOverrides: any = {
+    private titleStyleOverrides: ComponentStyleSheet<
+        CaptionClassNameContract,
+        ColorsDesignSystem
+    > = {
         caption: {
             margin: "20px 0 12px",
             color: neutralForegroundRest,

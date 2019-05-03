@@ -69,11 +69,11 @@ export enum AccentColors {
 }
 
 const neutralShortcuts: string[] = [
+    "#808080",
     "#73818C",
     "#718E71",
     "#7F738C",
     "#8C7A73",
-    "#808080",
     "#0078D4",
     "#107C10",
     "#5C2D91",
@@ -184,7 +184,7 @@ class ControlPaneBase extends React.Component<ControlPaneProps, ControlPaneState
             neutralColorBase:
                 defaultNeutralBase instanceof ColorRGBA64
                     ? defaultNeutralBase.toStringHexRGB()
-                    : "#808080",
+                    : neutralShortcuts[0],
         };
     }
 
@@ -358,10 +358,7 @@ class ControlPaneBase extends React.Component<ControlPaneProps, ControlPaneState
 }
 
 function mapStateToProps(state: AppState): Partial<ControlPaneProps> {
-    return {
-        componentType: state.componentType,
-        designSystem: state.designSystem,
-    };
+    return state;
 }
 
 /* tslint:disable-next-line */
