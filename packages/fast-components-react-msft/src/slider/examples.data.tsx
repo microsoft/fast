@@ -5,7 +5,11 @@ import sliderLabelSchema from "../slider-label/slider-label.schema.json";
 import schema from "./slider.schema.json";
 import Documentation from "./.tmp/documentation";
 import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
-import { SliderTrackItemAnchor } from "@microsoft/fast-components-react-base";
+import {
+    SliderMode,
+    SliderOrientation,
+    SliderTrackItemAnchor,
+} from "@microsoft/fast-components-react-base";
 
 function sliderLabelPropFactory(
     valuePositionBinding: SliderTrackItemAnchor | number,
@@ -65,6 +69,14 @@ const examples: ComponentFactoryExample<SliderProps> = {
     },
     data: [
         {
+            range: {
+                maxValue: 100,
+                minValue: 0,
+            },
+            initialValue: 0,
+        },
+        {
+            mode: SliderMode.adustUpperValue,
             children: [
                 {
                     id: sliderLabelSchema.id,
@@ -103,6 +115,98 @@ const examples: ComponentFactoryExample<SliderProps> = {
                     },
                 },
             ],
+        },
+        {
+            step: 25,
+            children: [
+                {
+                    id: sliderLabelSchema.id,
+                    props: {
+                        ...sliderLabelPropFactory(
+                            SliderTrackItemAnchor.totalRangeMin,
+                            "min"
+                        ),
+                    },
+                },
+                {
+                    id: sliderLabelSchema.id,
+                    props: {
+                        ...sliderLabelPropFactory(25, "25"),
+                    },
+                },
+                {
+                    id: sliderLabelSchema.id,
+                    props: {
+                        ...sliderLabelPropFactory(50, "50"),
+                    },
+                },
+                {
+                    id: sliderLabelSchema.id,
+                    props: {
+                        ...sliderLabelPropFactory(75, "75"),
+                    },
+                },
+                {
+                    id: sliderLabelSchema.id,
+                    props: {
+                        ...sliderLabelPropFactory(
+                            SliderTrackItemAnchor.totalRangeMax,
+                            "max"
+                        ),
+                    },
+                },
+            ],
+        },
+        {
+            mode: SliderMode.adjustBoth,
+        },
+        {
+            orientation: SliderOrientation.vertical,
+        },
+        {
+            orientation: SliderOrientation.vertical,
+            children: [
+                {
+                    id: sliderLabelSchema.id,
+                    props: {
+                        ...sliderLabelPropFactory(
+                            SliderTrackItemAnchor.totalRangeMin,
+                            "min"
+                        ),
+                    },
+                },
+                {
+                    id: sliderLabelSchema.id,
+                    props: {
+                        ...sliderLabelPropFactory(25, "25"),
+                    },
+                },
+                {
+                    id: sliderLabelSchema.id,
+                    props: {
+                        ...sliderLabelPropFactory(50, "50"),
+                    },
+                },
+                {
+                    id: sliderLabelSchema.id,
+                    props: {
+                        ...sliderLabelPropFactory(75, "75"),
+                    },
+                },
+                {
+                    id: sliderLabelSchema.id,
+                    props: {
+                        ...sliderLabelPropFactory(
+                            SliderTrackItemAnchor.totalRangeMax,
+                            "max"
+                        ),
+                    },
+                },
+            ],
+        },
+        {
+            disabled: true,
+            orientation: SliderOrientation.vertical,
         },
     ],
 };

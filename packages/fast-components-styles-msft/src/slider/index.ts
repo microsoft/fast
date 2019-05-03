@@ -1,264 +1,304 @@
-import { DesignSystem, withDesignSystemDefaults } from "../design-system";
-import { ComponentStyles, ComponentStyleSheet } from "@microsoft/fast-jss-manager";
 import { SliderClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
-import { elevation, ElevationMultiplier } from "../utilities/elevation";
+import { ComponentStyles } from "@microsoft/fast-jss-manager";
+import { applyFocusVisible, format, toPx, add } from "@microsoft/fast-jss-utilities";
+import { DesignSystem } from "../design-system";
+import { applyCornerRadius } from "../utilities/border";
 import {
+    neutralFocus,
+    neutralForegroundActive,
     neutralForegroundHint,
     neutralForegroundHover,
     neutralForegroundRest,
     neutralOutlineRest,
 } from "../utilities/color";
+import { applyCursorPointer } from "../utilities/cursor";
+import { heightNumber } from "../utilities/density";
+import {
+    backgroundColor,
+    designUnit,
+    focusOutlineWidth,
+} from "../utilities/design-system";
+import { applyDisabledState } from "../utilities/disabled";
+import { applyElevation, ElevationMultiplier } from "../utilities/elevation";
 
-const styles: ComponentStyles<SliderClassNameContract, DesignSystem> = (
-    config: DesignSystem
-): ComponentStyleSheet<SliderClassNameContract, DesignSystem> => {
-    const designSystem: DesignSystem = withDesignSystemDefaults(config);
+function thumbSize(config: DesignSystem): string {
+    return toPx(heightNumber()(config) / 2 + designUnit(config));
+}
 
-    return {
-        slider: {
-            height: "100%",
-            width: "100%",
-            display: "inline-grid",
+function halfThumbSize(config: DesignSystem): string {
+    return toPx((heightNumber()(config) / 2 + designUnit(config)) / 2);
+}
+
+function trackOffset(config: DesignSystem): string {
+    return toPx(heightNumber()(config) / 4);
+}
+
+function trackOverhang(config: DesignSystem): string {
+    return toPx((designUnit(config) / 2) * -1);
+}
+
+const minSize: string = "50px";
+
+const styles: ComponentStyles<SliderClassNameContract, DesignSystem> = {
+    slider: {
+        display: "inline-grid",
+        ...applyCursorPointer(),
+    },
+
+    slider_layoutRegion: {
+        display: "grid",
+    },
+
+    slider_thumb: {
+        height: thumbSize,
+        width: thumbSize,
+        border: "none",
+        background: neutralForegroundRest,
+        borderRadius: "50%",
+        transition: "all 0.1s ease",
+        ...applyElevation(ElevationMultiplier.e4),
+
+        ...applyFocusVisible<DesignSystem>({
+            boxShadow: format(
+                `0 0 0 2px {0}, 0 0 0 {2} {1}`,
+                backgroundColor,
+                neutralFocus,
+                toPx(add(focusOutlineWidth, 2))
+            ),
+        }),
+
+        "&:hover": {
+            background: neutralForegroundHover,
         },
-
-        slider_layoutRegion: {
-            display: "grid",
+        "&:active": {
+            background: neutralForegroundActive,
         },
+    },
 
-        slider_thumb: {
-            height: "20px",
-            width: "20px",
-            border: "none",
-            background: neutralForegroundRest,
-            borderRadius: "50%",
-            transition: "all .04s linear",
-            ...elevation(ElevationMultiplier.e2)(designSystem),
+    slider_thumb__lowerValue: {},
 
+    slider_thumb__upperValue: {},
+
+    slider_track: {},
+
+    slider_backgroundTrack: {
+        ...applyCornerRadius(),
+        background: neutralOutlineRest,
+    },
+
+    slider_foregroundTrack: {
+        ...applyCornerRadius(),
+        background: neutralForegroundHint,
+    },
+
+    slider__disabled: {
+        ...applyDisabledState(),
+
+        "& $slider_thumb": {
             "&:hover": {
-                cursor: "pointer",
-                background: neutralForegroundHover,
+                background: neutralForegroundRest,
+            },
+        },
+    },
+
+    slider__horizontal: {
+        "&$slider": {
+            width: "100%",
+            minHeight: thumbSize,
+            minWidth: minSize,
+        },
+
+        "& $slider_layoutRegion": {
+            margin: format(`0 {0}`, halfThumbSize),
+            gridTemplateRows: format(`{0} 1fr`, thumbSize),
+        },
+
+        "& $slider_thumb": {
+            alignSelf: "start",
+        },
+
+        "& $slider_thumb__upperValue": {
+            transform: format(`translateX({0})`, halfThumbSize),
+        },
+
+        "& $slider_thumb__lowerValue": {
+            transform: format(`translateX(-{0})`, halfThumbSize),
+        },
+
+        "& $slider_track": {
+            alignSelf: "start",
+            height: thumbSize,
+            width: "100%",
+        },
+
+        "& $slider_backgroundTrack": {
+            marginTop: trackOffset,
+            alignSelf: "start",
+            height: toPx(designUnit),
+            left: trackOverhang,
+            right: trackOverhang,
+        },
+
+        "& $slider_foregroundTrack": {
+            marginTop: trackOffset,
+            alignSelf: "start",
+            height: toPx(designUnit),
+        },
+
+        "&$slider__modeAdjustLower": {
+            "& $slider_foregroundTrack": {
+                marginRight: trackOverhang,
             },
         },
 
-        slider_thumb__lowerValue: {},
+        "&$slider__modeAdjustUpper": {
+            "& $slider_foregroundTrack": {
+                marginLeft: trackOverhang,
+            },
+        },
+    },
 
-        slider_thumb__upperValue: {},
-
-        slider_track: {},
-
-        slider_backgroundTrack: {
-            borderRadius: "2px",
-            background: neutralOutlineRest,
+    slider__vertical: {
+        "&$slider": {
+            height: "100%",
+            minHeight: minSize,
+            minWidth: thumbSize,
         },
 
-        slider_foregroundTrack: {
-            transition: "all .04s linear",
-            borderRadius: "2px",
-            background: neutralForegroundHint,
+        "& $slider_thumb": {
+            justifySelf: "start",
         },
 
-        slider__disabled: {
-            opacity: ".3",
+        "& $slider_layoutRegion": {
+            margin: format(`{0} 0`, halfThumbSize),
+            gridTemplateColumns: format(`{0} 1fr`, thumbSize),
         },
 
-        slider__horizontal: {
-            "&$slider": {
-                minHeight: "36px",
-                minWidth: "128px",
-            },
+        "& $slider_thumb__upperValue": {
+            transform: format(`translateY(-{0})`, halfThumbSize),
+        },
 
-            "& $slider_layoutRegion": {
-                margin: "0 10px 0 10px",
-                gridTemplateRows: "20px 1fr",
-            },
+        "& $slider_thumb__lowerValue": {
+            transform: format(`translateY({0})`, halfThumbSize),
+        },
 
-            "& $slider_thumb": {
-                alignSelf: "start",
-            },
+        "& $slider_track": {
+            justifySelf: "start",
+            marginLeft: trackOffset,
+            width: toPx(designUnit),
+            height: "100%",
+        },
 
+        "& $slider_backgroundTrack": {
+            justifySelf: "start",
+            marginLeft: trackOffset,
+            width: toPx(designUnit),
+            top: trackOverhang,
+            bottom: trackOverhang,
+        },
+
+        "& $slider_foregroundTrack": {
+            justifySelf: "start",
+            marginLeft: trackOffset,
+            width: toPx(designUnit),
+        },
+
+        "&$slider__modeAdjustLower": {
+            "& $slider_foregroundTrack": {
+                marginTop: trackOverhang,
+            },
+        },
+
+        "&$slider__modeAdjustUpper": {
+            "& $slider_foregroundTrack": {
+                marginBottom: trackOverhang,
+            },
+        },
+    },
+
+    slider__rtl: {
+        "&$slider__horizontal": {
             "& $slider_thumb__upperValue": {
-                transform: "translateX(10px)",
+                transform: format(`translateX(-{0})`, halfThumbSize),
             },
 
             "& $slider_thumb__lowerValue": {
-                transform: "translateX(-10px)",
-            },
-
-            "& $slider_track": {
-                marginTop: "8px",
-                alignSelf: "start",
-                height: "4px",
-                width: "100%",
-            },
-
-            "& $slider_backgroundTrack": {
-                marginTop: "8px",
-                alignSelf: "start",
-                height: "4px",
-                left: "-2px",
-                right: "-2px",
-            },
-
-            "& $slider_foregroundTrack": {
-                marginTop: "8px",
-                alignSelf: "start",
-                height: "4px",
+                transform: format(`translateX({0})`, halfThumbSize),
             },
 
             "&$slider__modeAdjustLower": {
                 "& $slider_foregroundTrack": {
-                    marginRight: "-2px",
+                    marginRight: "0",
+                    marginLeft: trackOverhang,
                 },
             },
 
             "&$slider__modeAdjustUpper": {
                 "& $slider_foregroundTrack": {
-                    marginLeft: "-2px",
+                    marginRight: trackOverhang,
+                    marginLeft: "0",
                 },
             },
         },
 
-        slider__vertical: {
-            "&$slider": {
-                minHeight: "128px",
-                minWidth: "36px",
+        "&$slider__vertical": {
+            "& $slider_backgroundTrack": {
+                marginRight: trackOffset,
+                marginLeft: "0",
             },
 
-            "& $slider_thumb": {
-                justifySelf: "start",
+            "& $slider_foregroundTrack": {
+                marginRight: trackOffset,
+                marginLeft: "0",
             },
+        },
+    },
 
-            "& $slider_layoutRegion": {
-                margin: "10px 0 10px 0",
-                gridTemplateColumns: "20px 1fr",
-            },
+    slider__modeSingle: {},
 
+    slider__modeAdjustLower: {},
+
+    slider__modeAdjustUpper: {},
+
+    slider__modeAdjustBoth: {
+        "&$slider__horizontal": {
             "& $slider_thumb__upperValue": {
-                transform: "translateY(-10px)",
+                width: halfThumbSize,
+                borderRadius: format(`0px {0} {0} 0px`, halfThumbSize),
             },
 
             "& $slider_thumb__lowerValue": {
-                transform: "translateY(10px)",
+                width: halfThumbSize,
+                borderRadius: format(`{0} 0px 0px {0}`, halfThumbSize),
             },
 
-            "& $slider_track": {
-                justifySelf: "start",
-                marginLeft: "8px",
-                width: "4px",
-                height: "100%",
-            },
-
-            "& $slider_backgroundTrack": {
-                justifySelf: "start",
-                marginLeft: "8px",
-                width: "4px",
-                top: "-2px",
-                bottom: "-2px",
-            },
-
-            "& $slider_foregroundTrack": {
-                justifySelf: "start",
-                marginLeft: "8px",
-                width: "4px",
-            },
-
-            "&$slider__modeAdjustLower": {
-                "& $slider_foregroundTrack": {
-                    marginTop: "-2px",
+            "&$slider__rtl": {
+                "& $slider_thumb__upperValue": {
+                    borderRadius: format(`{0} 0px 0px {0}`, halfThumbSize),
                 },
-            },
 
-            "&$slider__modeAdjustUpper": {
-                "& $slider_foregroundTrack": {
-                    marginBottom: "-2px",
+                "& $slider_thumb__lowerValue": {
+                    borderRadius: format(`0px {0} {0} 0px`, halfThumbSize),
                 },
             },
         },
 
-        slider__rtl: {
-            "&$slider__horizontal": {
-                "& $slider_thumb__upperValue": {
-                    transform: "translateX(-10px)",
-                },
-
-                "& $slider_thumb__lowerValue": {
-                    transform: "translateX(10px)",
-                },
-
-                "&$slider__modeAdjustLower": {
-                    "& $slider_foregroundTrack": {
-                        marginRight: "0",
-                        marginLeft: "-2px",
-                    },
-                },
-
-                "&$slider__modeAdjustUpper": {
-                    "& $slider_foregroundTrack": {
-                        marginRight: "-2px",
-                        marginLeft: "0",
-                    },
-                },
+        "&$slider__vertical": {
+            "& $slider_thumb__upperValue": {
+                height: halfThumbSize,
+                borderRadius: format(`{0} {0} 0px 0px`, halfThumbSize),
             },
 
-            "&$slider__vertical": {
-                "& $slider_backgroundTrack": {
-                    marginRight: "8px",
-                    marginLeft: "0",
-                },
-
-                "& $slider_foregroundTrack": {
-                    marginRight: "8px",
-                    marginLeft: "0",
-                },
+            "& $slider_thumb__lowerValue": {
+                height: halfThumbSize,
+                borderRadius: format(`0px 0px {0} {0}`, halfThumbSize),
             },
         },
 
-        slider__modeSingle: {},
-
-        slider__modeAdjustLower: {},
-
-        slider__modeAdjustUpper: {},
-
-        slider__modeAdjustBoth: {
-            "&$slider__horizontal": {
-                "& $slider_thumb__upperValue": {
-                    width: "10px",
-                    borderRadius: "0px 10px 10px 0px",
-                },
-
-                "& $slider_thumb__lowerValue": {
-                    width: "10px",
-                    borderRadius: "10px 0px 0px 10px",
-                },
-
-                "&$slider__rtl": {
-                    "& $slider_thumb__upperValue": {
-                        borderRadius: "10px 0px 0px 10px",
-                    },
-
-                    "& $slider_thumb__lowerValue": {
-                        borderRadius: "0px 10px 10px 0px",
-                    },
-                },
-            },
-
-            "&$slider__vertical": {
-                "& $slider_thumb__upperValue": {
-                    height: "10px",
-                    borderRadius: "10px 10px 0px 0px",
-                },
-
-                "& $slider_thumb__lowerValue": {
-                    height: "10px",
-                    borderRadius: "0px 0px 10px 10px",
-                },
-            },
-
-            "& $slider_foregroundTrack": {
-                borderRadius: "0",
-            },
+        "& $slider_foregroundTrack": {
+            borderRadius: "0",
         },
-    };
+    },
 };
 
 export default styles;

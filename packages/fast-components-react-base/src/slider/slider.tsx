@@ -487,7 +487,7 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
                 }
                 draggable={false}
                 role="slider"
-                tabIndex={0}
+                tabIndex={props.disabled === true ? null : 0}
                 onKeyDown={keyDownCallback}
                 onMouseDown={mouseDownCallback}
                 aria-valuemin={props.range.minValue}
