@@ -228,17 +228,17 @@ export function swatchByContrast(referenceColor: string | SwatchResolver) {
                                 ? referenceColor(designSystem)
                                 : referenceColor;
                         const sourcePalette: Palette = paletteResolver(designSystem);
-                        const initialSearchIndex: number = indexResolver(
-                            color,
-                            sourcePalette,
-                            designSystem
+                        const initialSearchIndex: number = clamp(
+                            indexResolver(color, sourcePalette, designSystem),
+                            0,
+                            sourcePalette.length - 1
                         );
                         const direction: 1 | -1 = directionResolver(
                             initialSearchIndex,
                             sourcePalette,
                             designSystem
                         );
-                        const length: number = sourcePalette.length - 1;
+                        const length: number = sourcePalette.length;
                         let index: number = initialSearchIndex;
 
                         while (

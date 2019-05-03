@@ -220,7 +220,7 @@ describe("swatchByContrast", (): void => {
     });
     describe("directionResolver", (): void => {
         test("should pass the reference index as the first argument", (): void => {
-            const index: number = 77;
+            const index: number = 20;
             const indexResolver: jest.SpyInstance = jest.fn(() => index);
             const directionResolver: jest.SpyInstance = jest.fn(() => 1);
             const contrastCondition: jest.SpyInstance = jest.fn(() => false);
@@ -230,6 +230,32 @@ describe("swatchByContrast", (): void => {
             )(contrastCondition as any)({} as DesignSystem);
             expect(directionResolver).toHaveBeenCalledTimes(1);
             expect(directionResolver.mock.calls[0][0]).toBe(index);
+        });
+        test("should recieve recieve the palette length - 1 if the resolved index is greater than the palette length", (): void => {
+            const index: number = 77;
+            const indexResolver: jest.SpyInstance = jest.fn(() => index);
+            const directionResolver: jest.SpyInstance = jest.fn(() => 1);
+            const contrastCondition: jest.SpyInstance = jest.fn(() => false);
+
+            swatchByContrast("#FFF")(neutralPalette)(indexResolver as any)(
+                directionResolver as any
+            )(contrastCondition as any)({} as DesignSystem);
+            expect(directionResolver).toHaveBeenCalledTimes(1);
+            expect(directionResolver.mock.calls[0][0]).toBe(
+                neutralPalette({} as DesignSystem).length - 1
+            );
+        });
+        test("should recieve recieve 0 if the resolved index is less than 0", (): void => {
+            const index: number = -20;
+            const indexResolver: jest.SpyInstance = jest.fn(() => index);
+            const directionResolver: jest.SpyInstance = jest.fn(() => 1);
+            const contrastCondition: jest.SpyInstance = jest.fn(() => false);
+
+            swatchByContrast("#FFF")(neutralPalette)(indexResolver as any)(
+                directionResolver as any
+            )(contrastCondition as any)({} as DesignSystem);
+            expect(directionResolver).toHaveBeenCalledTimes(1);
+            expect(directionResolver.mock.calls[0][0]).toBe(0);
         });
         test("should pass the palette as the second argument", (): void => {
             const indexResolver: jest.SpyInstance = jest.fn(() => 0);
@@ -255,5 +281,71 @@ describe("swatchByContrast", (): void => {
             expect(directionResolver).toHaveBeenCalledTimes(1);
             expect(directionResolver.mock.calls[0][2]).toBe(designSystem);
         });
+    });
+
+    test("should return the color at the inital index if it satisfies the predicate", (): void => {
+        const indexResolver: () => number = (): number => 0;
+        const directionResolver: () => 1 | -1 = (): 1 | -1 => 1;
+        const contrastCondition: () => boolean = (): boolean => true;
+        const designSystem: DesignSystem = {} as DesignSystem;
+        const sourcePalette: string[] = ["#111", "#222", "#333"];
+
+        expect(
+            swatchByContrast("#FFF")(() => sourcePalette)(indexResolver)(
+                directionResolver
+            )(contrastCondition)(designSystem)
+        ).toBe(sourcePalette[0]);
+    });
+    test("should return the color at the last index when direction is 1 and no value satisfies the predicate", (): void => {
+        const indexResolver: () => number = (): number => 0;
+        const directionResolver: () => 1 | -1 = (): 1 | -1 => 1;
+        const contrastCondition: () => boolean = (): boolean => false;
+        const designSystem: DesignSystem = {} as DesignSystem;
+        const sourcePalette: string[] = ["#111", "#222", "#333"];
+
+        expect(
+            swatchByContrast("#FFF")(() => sourcePalette)(indexResolver)(
+                directionResolver
+            )(contrastCondition)(designSystem)
+        ).toBe(sourcePalette[sourcePalette.length - 1]);
+    });
+    test("should return the color at the first index when direction is -1 and no value satisfies the predicate", (): void => {
+        const sourcePalette: string[] = ["#111", "#222", "#333"];
+        const indexResolver: () => number = (): number => sourcePalette.length - 1;
+        const directionResolver: () => 1 | -1 = (): 1 | -1 => 1;
+        const contrastCondition: () => boolean = (): boolean => false;
+        const designSystem: DesignSystem = {} as DesignSystem;
+
+        expect(
+            swatchByContrast("#FFF")(() => sourcePalette)(indexResolver)(
+                directionResolver
+            )(contrastCondition)(designSystem)
+        ).toBe(sourcePalette[sourcePalette.length - 1]);
+    });
+    test("should return the color at the last index when initialIndex is greater than the last index", (): void => {
+        const sourcePalette: string[] = ["#111", "#222", "#333"];
+        const indexResolver: () => number = (): number => sourcePalette.length;
+        const directionResolver: () => 1 | -1 = (): 1 | -1 => 1;
+        const contrastCondition: () => boolean = (): boolean => false;
+        const designSystem: DesignSystem = {} as DesignSystem;
+
+        expect(
+            swatchByContrast("#FFF")(() => sourcePalette)(indexResolver)(
+                directionResolver
+            )(contrastCondition)(designSystem)
+        ).toBe(sourcePalette[sourcePalette.length - 1]);
+    });
+    test("should return the color at the first index when initialIndex is less than 0", (): void => {
+        const sourcePalette: string[] = ["#111", "#222", "#333"];
+        const indexResolver: () => number = (): number => sourcePalette.length;
+        const directionResolver: () => 1 | -1 = (): 1 | -1 => -1;
+        const contrastCondition: () => boolean = (): boolean => false;
+        const designSystem: DesignSystem = {} as DesignSystem;
+
+        expect(
+            swatchByContrast("#FFF")(() => sourcePalette)(indexResolver)(
+                directionResolver
+            )(contrastCondition)(designSystem)
+        ).toBe(sourcePalette[0]);
     });
 });
