@@ -107,7 +107,6 @@ const styles: ComponentStyles<TextActionClassNameContract, DesignSystem> = (
             },
         },
         textAction_button: {
-            borderColor: "transparent",
             height: `calc(${height()(designSystem)} - 6px)`,
             minWidth: "fit-content",
             margin: "2px",
