@@ -17,7 +17,9 @@
         "text": {
             "title": "Text",
             "type": "string",
-            "example": "Example text"
+            "examples": [
+                "Example text"
+            ]
         }
     },
     "required": [

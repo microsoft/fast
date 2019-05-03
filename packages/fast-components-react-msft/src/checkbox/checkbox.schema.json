@@ -25,7 +25,9 @@
         "name": {
             "title": "Name",
             "type": "string",
-            "example": "name"
+            "examples": [
+                "name"
+            ]
         }
     },
     "reactProperties": {

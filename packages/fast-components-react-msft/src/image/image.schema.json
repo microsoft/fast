@@ -9,7 +9,9 @@
         "alt": {
             "title": "HTML alt attribute",
             "type": "string",
-            "example": "HTML alt attribute example text"
+            "examples": [
+                "HTML alt attribute example text"
+            ]
         },
         "sizes": {
             "title": "HTML sizes attribute",
@@ -18,7 +20,9 @@
         "src": {
             "title": "HTML src attribute",
             "type": "string",
-            "example": "https://placehold.it/80x80"
+            "examples": [
+                "https://placehold.it/80x80"
+            ]
         },
         "srcSet": {
             "title": "HTML srcSet attribute",
