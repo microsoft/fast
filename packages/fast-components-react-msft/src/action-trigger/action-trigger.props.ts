@@ -16,6 +16,7 @@ export enum ActionTriggerAppearance {
     lightweight = ButtonAppearance.lightweight,
     outline = ButtonAppearance.outline,
     primary = ButtonAppearance.primary,
+    stealth = ButtonAppearance.stealth,
 }
 
 export interface ActionTriggerManagedClasses

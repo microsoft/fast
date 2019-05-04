@@ -59,28 +59,12 @@ class CallToAction extends Foundation<
             )}`;
         }
 
-        switch (this.props.appearance) {
-            case CallToActionAppearance.primary:
-                classNames = `${classNames} ${get(
-                    this.props,
-                    "managedClasses.callToAction__primary",
-                    ""
-                )}`;
-                break;
-            case CallToActionAppearance.lightweight:
-                classNames = `${classNames} ${get(
-                    this.props,
-                    "managedClasses.callToAction__lightweight",
-                    ""
-                )}`;
-                break;
-            case CallToActionAppearance.justified:
-                classNames = `${classNames} ${get(
-                    this.props,
-                    "managedClasses.callToAction__justified",
-                    ""
-                )}`;
-                break;
+        if (this.props.appearance) {
+            classNames = `${classNames} ${get(
+                this.props,
+                `managedClasses.callToAction__${this.props.appearance}`,
+                ""
+            )}`;
         }
 
         return super.generateClassNames(classNames);

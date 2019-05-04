@@ -14,7 +14,9 @@ import {
 export enum CallToActionAppearance {
     justified = ButtonAppearance.justified,
     lightweight = ButtonAppearance.lightweight,
+    outline = ButtonAppearance.outline,
     primary = ButtonAppearance.primary,
+    stealth = ButtonAppearance.stealth,
 }
 
 export interface CallToActionManagedClasses

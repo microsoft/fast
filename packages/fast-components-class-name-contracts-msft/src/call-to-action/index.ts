@@ -13,9 +13,9 @@ export interface CallToActionClassNameContract {
     callToAction_glyph?: string;
 
     /**
-     * The primary appearance modifier
+     * The justified appearance modifier
      */
-    callToAction__primary?: string;
+    callToAction__justified?: string;
 
     /**
      * The lightweight appearance modifier
@@ -23,9 +23,19 @@ export interface CallToActionClassNameContract {
     callToAction__lightweight?: string;
 
     /**
-     * The justified appearance modifier
+     * The outline appearance modifier
      */
-    callToAction__justified?: string;
+    callToAction__outline?: string;
+
+    /**
+     * The primary appearance modifier
+     */
+    callToAction__primary?: string;
+
+    /**
+     * The stealth appearance modifier
+     */
+    callToAction__stealth?: string;
 
     /**
      * The disabled modifier

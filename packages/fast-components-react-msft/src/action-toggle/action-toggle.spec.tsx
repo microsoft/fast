@@ -23,10 +23,11 @@ describe("action toggle", (): void => {
     const href: string = "#";
     const classes: ActionToggleClassNameContract = {
         actionToggle: "actionToggle",
-        actionToggle__primary: "actionToggle__primary",
-        actionToggle__lightweight: "actionToggle__lightweight",
         actionToggle__justified: "actionToggle__justified",
+        actionToggle__lightweight: "actionToggle__lightweight",
         actionToggle__outline: "actionToggle__outline",
+        actionToggle__primary: "actionToggle__primary",
+        actionToggle__stealth: "actionToggle__stealth",
         actionToggle__disabled: "actionToggle__disabled",
     };
 
@@ -125,19 +126,19 @@ describe("action toggle", (): void => {
         );
     });
 
-    test("should apply a 'primary' html class when appearance is primary", () => {
+    test("should apply a 'justified' html class when appearance is justified", () => {
         const props: ActionToggleHandledProps = {
             selectedLabel: "selected",
             unselectedLabel: "unselected",
             selected: true,
-            appearance: ActionToggleAppearance.primary,
+            appearance: ActionToggleAppearance.justified,
             managedClasses: classes,
         };
 
         const rendered: any = mount(<MSFTActionToggle {...props} />);
 
         expect(rendered.find("button").prop("className")).toContain(
-            "actionToggle__primary"
+            "actionToggle__justified"
         );
     });
 
@@ -157,22 +158,6 @@ describe("action toggle", (): void => {
         );
     });
 
-    test("should apply a 'justified' html class when appearance is justified", () => {
-        const props: ActionToggleHandledProps = {
-            selectedLabel: "selected",
-            unselectedLabel: "unselected",
-            selected: true,
-            appearance: ActionToggleAppearance.justified,
-            managedClasses: classes,
-        };
-
-        const rendered: any = mount(<MSFTActionToggle {...props} />);
-
-        expect(rendered.find("button").prop("className")).toContain(
-            "actionToggle__justified"
-        );
-    });
-
     test("should apply a 'outline' html class when appearance is outline", () => {
         const props: ActionToggleHandledProps = {
             selectedLabel: "selected",
@@ -186,6 +171,38 @@ describe("action toggle", (): void => {
 
         expect(rendered.find("button").prop("className")).toContain(
             "actionToggle__outline"
+        );
+    });
+
+    test("should apply a 'primary' html class when appearance is primary", () => {
+        const props: ActionToggleHandledProps = {
+            selectedLabel: "selected",
+            unselectedLabel: "unselected",
+            selected: true,
+            appearance: ActionToggleAppearance.primary,
+            managedClasses: classes,
+        };
+
+        const rendered: any = mount(<MSFTActionToggle {...props} />);
+
+        expect(rendered.find("button").prop("className")).toContain(
+            "actionToggle__primary"
+        );
+    });
+
+    test("should apply a 'stealth' html class when appearance is stealth", () => {
+        const props: ActionToggleHandledProps = {
+            selectedLabel: "selected",
+            unselectedLabel: "unselected",
+            selected: true,
+            appearance: ActionToggleAppearance.stealth,
+            managedClasses: classes,
+        };
+
+        const rendered: any = mount(<MSFTActionToggle {...props} />);
+
+        expect(rendered.find("button").prop("className")).toContain(
+            "actionToggle__stealth"
         );
     });
 

@@ -36,8 +36,8 @@ const examples: ComponentFactoryExample<ButtonProps> = {
     },
     data: [
         {
-            children: "Secondary button",
-            "data-sketch-symbol": "Button - secondary",
+            children: "Default button",
+            "data-sketch-symbol": "Button - default",
         } as any,
         {
             appearance: ButtonAppearance.primary,
@@ -218,8 +218,8 @@ const examples: ComponentFactoryExample<ButtonProps> = {
         },
         {
             disabled: true,
-            children: "Secondary button (disabled)",
-            "data-sketch-symbol": "Button - secondary disabled",
+            children: "Default button (disabled)",
+            "data-sketch-symbol": "Button - default disabled",
         },
         {
             disabled: true,
@@ -243,6 +243,11 @@ const examples: ComponentFactoryExample<ButtonProps> = {
             disabled: true,
             appearance: ButtonAppearance.justified,
             children: "Justified button (disabled)",
+        },
+        {
+            disabled: true,
+            appearance: ButtonAppearance.stealth,
+            children: "Stealth button (disabled)",
         },
         {
             disabled: true,

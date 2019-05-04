@@ -104,6 +104,14 @@ const styles: ComponentStyles<ActionToggleClassNameContract, DesignSystem> = (
                 fill: neutralForegroundRest,
             },
         },
+        actionToggle__stealth: {
+            "& $actionToggle_selectedGlyph, & $actionToggle_unselectedGlyph": {
+                fill: neutralForegroundRest,
+            },
+            "&$actionToggle__disabled $actionToggle_selectedGlyph, &$actionToggle__disabled $actionToggle_unselectedGlyph": {
+                fill: neutralForegroundRest,
+            },
+        },
         actionToggle__disabled: {},
         actionToggle__hasGlyphAndContent: {
             "& $actionToggle_selectedGlyph, & $actionToggle_unselectedGlyph": {
