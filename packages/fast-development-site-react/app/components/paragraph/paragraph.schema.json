@@ -9,7 +9,9 @@
             "title": "Text",
             "type": "string",
             "pluginId": "text-plugin",
-            "example": "Submit"
+            "examples": [
+                "Submit"
+            ]
         }
     }
 }

@@ -474,7 +474,7 @@ class Listbox extends Foundation<
                         this.toggleItem(itemProps);
                     }
                 }
-
+                event.preventDefault();
                 break;
 
             case KeyCodes.arrowUp:
@@ -489,6 +489,7 @@ class Listbox extends Foundation<
                         this.toggleItem(itemData);
                     }
                 }
+                event.preventDefault();
                 break;
 
             case KeyCodes.end:
