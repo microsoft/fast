@@ -3,7 +3,11 @@ import {
     ActionTriggerClassNameContract,
     ButtonClassNameContract,
 } from "@microsoft/fast-components-class-name-contracts-msft";
-import { applyLocalizedProperty, Direction } from "@microsoft/fast-jss-utilities";
+import {
+    applyLocalizedProperty,
+    Direction,
+    directionSwitch,
+} from "@microsoft/fast-jss-utilities";
 import { DesignSystem, withDesignSystemDefaults } from "../design-system/index";
 import {
     accentForegroundActive,
@@ -30,76 +34,55 @@ export const actionTriggerButtonOverrides: ComponentStyles<
     },
 };
 
-const styles: ComponentStyles<ActionTriggerClassNameContract, DesignSystem> = (
-    config: DesignSystem
-): ComponentStyleSheet<ActionTriggerClassNameContract, DesignSystem> => {
-    const designSystem: DesignSystem = withDesignSystemDefaults(config);
-    const direction: Direction = designSystem.direction;
-
-    return {
-        actionTrigger: {},
-        actionTrigger_glyph: {
-            display: "inline-block",
-            position: "relative",
-            width: glyphSize,
-            height: glyphSize,
-            flexShrink: "0",
-            [applyLocalizedProperty(
-                "marginRight",
-                "marginLeft",
-                direction
-            )]: horizontalSpacing(),
+const styles: ComponentStyles<ActionTriggerClassNameContract, DesignSystem> = {
+    actionTrigger: {},
+    actionTrigger_glyph: {
+        display: "inline-block",
+        position: "relative",
+        width: glyphSize,
+        height: glyphSize,
+        flexShrink: "0",
+        marginRight: directionSwitch(horizontalSpacing(), ""),
+        marginLeft: directionSwitch("", horizontalSpacing()),
+    },
+    actionTrigger__primary: {
+        "& $actionTrigger_glyph": {
+            fill: accentForegroundCut,
         },
-        actionTrigger__primary: {
-            "& $actionTrigger_glyph": {
-                fill: accentForegroundCut,
-            },
-            "&$actionTrigger__disabled $actionTrigger_glyph": {
-                fill: accentForegroundCut,
-            },
+        "&$actionTrigger__disabled $actionTrigger_glyph": {
+            fill: accentForegroundCut,
         },
-        actionTrigger__lightweight: {
+    },
+    actionTrigger__lightweight: {
+        "& $actionTrigger_glyph": {
+            fill: accentForegroundRest,
+        },
+        "&:hover": {
             "& $actionTrigger_glyph": {
-                fill: accentForegroundRest,
-            },
-            "&:hover": {
-                "& $actionTrigger_glyph": {
-                    fill: accentForegroundHover,
-                },
-            },
-            "&:active": {
-                "& $actionTrigger_glyph": {
-                    fill: accentForegroundActive,
-                },
-            },
-            "&$actionTrigger__disabled $actionTrigger_glyph": {
-                fill: accentForegroundRest,
+                fill: accentForegroundHover,
             },
         },
-        actionTrigger__justified: {
+        "&:active": {
             "& $actionTrigger_glyph": {
-                fill: accentForegroundRest,
-            },
-            "&:hover": {
-                "& $actionTrigger_glyph": {
-                    fill: accentForegroundHover,
-                },
-            },
-            "&:active": {
-                "& $actionTrigger_glyph": {
-                    fill: accentForegroundActive,
-                },
-            },
-            "&$actionTrigger__disabled $actionTrigger_glyph": {
-                fill: accentForegroundRest,
+                fill: accentForegroundActive,
             },
         },
-        actionTrigger__outline: {
+        "&$actionTrigger__disabled $actionTrigger_glyph": {
+            fill: accentForegroundRest,
+        },
+    },
+    actionTrigger__justified: {
+        "& $actionTrigger_glyph": {
+            fill: accentForegroundRest,
+        },
+        "&:hover": {
             "& $actionTrigger_glyph": {
-                fill: neutralForegroundRest,
+                fill: accentForegroundHover,
             },
-            "&$actionTrigger__disabled $actionTrigger_glyph": {
-                fill: neutralForegroundRest,
+        },
+        "&:active": {
+            "& $actionTrigger_glyph": {
+                fill: accentForegroundActive,
             },
         },
         actionTrigger__stealth: {

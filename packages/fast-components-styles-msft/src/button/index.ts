@@ -1,23 +1,4 @@
 import {
-    applyFocusVisible,
-    applyLocalizedProperty,
-    Direction,
-    format,
-    toPx,
-} from "@microsoft/fast-jss-utilities";
-import { applyCursorPointer } from "../utilities/cursor";
-import {
-    DesignSystem,
-    ensureDesignSystemDefaults,
-    withDesignSystemDefaults,
-} from "../design-system";
-import {
-    ComponentStyles,
-    ComponentStyleSheet,
-    CSSRules,
-} from "@microsoft/fast-jss-manager";
-import { glyphSize, height, horizontalSpacing } from "../utilities/density";
-import {
     accentFillActive,
     accentFillHover,
     accentFillRest,
@@ -37,6 +18,25 @@ import {
     neutralOutlineHover,
     neutralOutlineRest,
 } from "../utilities/color";
+import {
+    applyFocusVisible,
+    Direction,
+    directionSwitch,
+    format,
+    toPx,
+} from "@microsoft/fast-jss-utilities";
+import {
+    DesignSystem,
+    ensureDesignSystemDefaults,
+    withDesignSystemDefaults,
+} from "../design-system";
+import {
+    ComponentStyles,
+    ComponentStyleSheet,
+    CSSRules,
+} from "@microsoft/fast-jss-manager";
+import { glyphSize, height, horizontalSpacing } from "../utilities/density";
+import { applyCursorPointer } from "../utilities/cursor";
 import { ButtonClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import { applyCornerRadius, applyFocusPlaceholderBorder } from "../utilities/border";
 import { applyDisabledState } from "../utilities/disabled";
@@ -203,14 +203,8 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = {
             position: "absolute",
             bottom: "-3px",
             width: "100%",
-            left: ensureDesignSystemDefaults(
-                (designSystem: DesignSystem): string =>
-                    applyLocalizedProperty("0", "auto", designSystem.direction)
-            ),
-            right: ensureDesignSystemDefaults(
-                (designSystem: DesignSystem): string =>
-                    applyLocalizedProperty("auto", "0", designSystem.direction)
-            ),
+            left: directionSwitch("0", "unset"),
+            right: directionSwitch("unset", "0"),
         },
         "& svg": {
             width: glyphSize,

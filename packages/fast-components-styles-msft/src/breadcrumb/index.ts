@@ -1,6 +1,6 @@
 import { DesignSystem, withDesignSystemDefaults } from "../design-system";
 import { ComponentStyles, ComponentStyleSheet } from "@microsoft/fast-jss-manager";
-import { applyLocalizedProperty, Direction } from "@microsoft/fast-jss-utilities";
+import { Direction, directionSwitch } from "@microsoft/fast-jss-utilities";
 import {
     accentForegroundRest,
     neutralForegroundHint,
@@ -34,7 +34,8 @@ const styles: ComponentStyles<BreadcrumbClassNameContract, DesignSystem> = (
         },
         breadcrumb_itemsContainer: {
             listStyle: "none",
-            [applyLocalizedProperty("paddingLeft", "paddingRight", direction)]: "0",
+            paddingLeft: directionSwitch("0", "unset"),
+            paddingRight: directionSwitch("unset", "0"),
             margin: "0",
             display: "flex",
             flexWrap: "wrap",

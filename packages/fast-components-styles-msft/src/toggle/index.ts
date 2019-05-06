@@ -15,8 +15,8 @@ import {
 import { ComponentStyles, ComponentStyleSheet } from "@microsoft/fast-jss-manager";
 import {
     applyFocusVisible,
-    applyLocalizedProperty,
     Direction,
+    directionSwitch,
     format,
     toPx,
 } from "@microsoft/fast-jss-utilities";
@@ -54,7 +54,7 @@ const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = (
         toggle_toggleButton: {
             position: "relative",
             marginTop: "0",
-            float: applyLocalizedProperty("left", "right", direction),
+            float: directionSwitch("left", "right"),
         },
         toggle_stateIndicator: {
             position: "absolute",
@@ -127,8 +127,9 @@ const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = (
         toggle_statusMessage: {
             ...applyScaledTypeRamp("t7"),
             lineHeight: toPx(height),
-            float: applyLocalizedProperty("left", "right", direction),
-            [applyLocalizedProperty("padding-left", "padding-right", direction)]: "5px",
+            float: directionSwitch("left", "right"),
+            paddingLeft: directionSwitch("5px", "0"),
+            paddingRight: directionSwitch("0", "5px"),
             userSelect: "none",
             marginTop: "0",
             paddingBottom: "0",

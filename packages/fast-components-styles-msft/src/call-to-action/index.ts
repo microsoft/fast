@@ -9,8 +9,10 @@ import {
 } from "@microsoft/fast-components-class-name-contracts-msft";
 import {
     applyFocusVisible,
-    applyLocalizedProperty,
     Direction,
+    directionSwitch,
+    format,
+    multiply,
     toPx,
 } from "@microsoft/fast-jss-utilities";
 import {
@@ -26,33 +28,22 @@ import {
     neutralForegroundRest,
 } from "../utilities/color";
 import { glyphSize } from "../utilities/density";
+import { designUnit } from "../utilities/design-system";
 
 function applyContentRegionTransform(): CSSRules<DesignSystem> {
     return {
-        transform: ensureDesignSystemDefaults(
-            (designSystem: DesignSystem): string => {
-                const translateXValue: string = toPx(designSystem.designUnit);
-                return applyLocalizedProperty(
-                    `translateX(-${translateXValue})`,
-                    `translateX(${translateXValue})`,
-                    designSystem.direction
-                );
-            }
+        transform: format(
+            "translateX({0})",
+            toPx(multiply(designUnit, directionSwitch(-1, 1)))
         ),
     };
 }
 
 function applyGlyphTransform(): CSSRules<DesignSystem> {
     return {
-        transform: ensureDesignSystemDefaults(
-            (designSystem: DesignSystem): string => {
-                const translateXValue: string = toPx(designSystem.designUnit);
-                return applyLocalizedProperty(
-                    `translateX(${translateXValue})`,
-                    `rotate(180deg) translateX(${translateXValue})`,
-                    designSystem.direction
-                );
-            }
+        transform: directionSwitch(
+            format("translateX({0})", toPx(designUnit)),
+            format("rotate(180deg) translateX({})", toPx(designUnit))
         ),
         position: "relative",
     };
@@ -120,8 +111,9 @@ const styles: ComponentStyles<CallToActionClassNameContract, DesignSystem> = (
             position: "relative",
             width: glyphSize,
             height: glyphSize,
-            [applyLocalizedProperty("marginLeft", "marginRight", direction)]: "6px",
-            transform: direction === Direction.ltr ? "none" : "rotate(180deg)",
+            marginLeft: directionSwitch("6px", ""),
+            marginRight: directionSwitch("", "6px"),
+            transform: directionSwitch("none", "rotate(180deg)"),
             transition: "all 600ms cubic-bezier(0.19, 1, 0.22, 1)",
         },
         callToAction__primary: {
@@ -145,11 +137,8 @@ const styles: ComponentStyles<CallToActionClassNameContract, DesignSystem> = (
             },
         },
         callToAction__justified: {
-            [applyLocalizedProperty(
-                "paddingRight",
-                "paddingLeft",
-                direction
-            )]: translateXValue,
+            paddingRight: directionSwitch(translateXValue, ""),
+            paddingLeft: directionSwitch("", translateXValue),
             "& $callToAction_glyph": {
                 fill: accentForegroundRest,
             },
