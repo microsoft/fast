@@ -23,10 +23,11 @@ describe("action trigger", (): void => {
     const managedClasses: ActionTriggerClassNameContract = {
         actionTrigger: "action-trigger",
         actionTrigger_glyph: "glyph",
-        actionTrigger__primary: "action-trigger-primary",
-        actionTrigger__outline: "action-trigger-outline",
-        actionTrigger__lightweight: "action-trigger-lightweight",
         actionTrigger__justified: "action-trigger-justified",
+        actionTrigger__lightweight: "action-trigger-lightweight",
+        actionTrigger__outline: "action-trigger-outline",
+        actionTrigger__primary: "action-trigger-primary",
+        actionTrigger__stealth: "action-trigger-stealth",
         actionTrigger__disabled: "action-trigger-disabled",
     };
     const href: string = "#";
@@ -90,18 +91,18 @@ describe("action trigger", (): void => {
         expect(rendered.first().prop("aria-label")).toEqual("label");
     });
 
-    test("should apply a 'primary' html class when appearance is primary", () => {
+    test("should apply a 'justified' html class when appearance is justified", () => {
         const props: ActionTriggerHandledProps = {
             glyph: (className?: string): React.ReactNode => {
                 return <div>X</div>;
             },
-            appearance: ActionTriggerAppearance.primary,
+            appearance: ActionTriggerAppearance.justified,
         };
 
         const rendered: any = mount(<ActionTrigger {...props} />);
 
         expect(rendered.find("button").prop("className")).toContain(
-            "actionTrigger__primary"
+            "actionTrigger__justified"
         );
     });
 
@@ -120,21 +121,6 @@ describe("action trigger", (): void => {
         );
     });
 
-    test("should apply a 'justified' html class when appearance is justified", () => {
-        const props: ActionTriggerHandledProps = {
-            glyph: (className?: string): React.ReactNode => {
-                return <div>X</div>;
-            },
-            appearance: ActionTriggerAppearance.justified,
-        };
-
-        const rendered: any = mount(<ActionTrigger {...props} />);
-
-        expect(rendered.find("button").prop("className")).toContain(
-            "actionTrigger__justified"
-        );
-    });
-
     test("should apply a 'outline' html class when appearance is outline", () => {
         const props: ActionTriggerHandledProps = {
             glyph: (className?: string): React.ReactNode => {
@@ -147,6 +133,36 @@ describe("action trigger", (): void => {
 
         expect(rendered.find("button").prop("className")).toContain(
             "actionTrigger__outline"
+        );
+    });
+
+    test("should apply a 'primary' html class when appearance is primary", () => {
+        const props: ActionTriggerHandledProps = {
+            glyph: (className?: string): React.ReactNode => {
+                return <div>X</div>;
+            },
+            appearance: ActionTriggerAppearance.primary,
+        };
+
+        const rendered: any = mount(<ActionTrigger {...props} />);
+
+        expect(rendered.find("button").prop("className")).toContain(
+            "actionTrigger__primary"
+        );
+    });
+
+    test("should apply a 'stealth' html class when appearance is stealth", () => {
+        const props: ActionTriggerHandledProps = {
+            glyph: (className?: string): React.ReactNode => {
+                return <div>X</div>;
+            },
+            appearance: ActionTriggerAppearance.stealth,
+        };
+
+        const rendered: any = mount(<ActionTrigger {...props} />);
+
+        expect(rendered.find("button").prop("className")).toContain(
+            "actionTrigger__stealth"
         );
     });
 

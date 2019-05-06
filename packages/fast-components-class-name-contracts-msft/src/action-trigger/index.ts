@@ -12,14 +12,9 @@ export interface ActionTriggerClassNameContract {
     actionTrigger_glyph?: string;
 
     /**
-     * The primary appearance modifier
+     * The justified appearance modifier
      */
-    actionTrigger__primary?: string;
-
-    /**
-     * The outline appearance modifier
-     */
-    actionTrigger__outline?: string;
+    actionTrigger__justified?: string;
 
     /**
      * The lightweight appearance modifier
@@ -27,9 +22,19 @@ export interface ActionTriggerClassNameContract {
     actionTrigger__lightweight?: string;
 
     /**
-     * The justified appearance modifier
+     * The outline appearance modifier
      */
-    actionTrigger__justified?: string;
+    actionTrigger__outline?: string;
+
+    /**
+     * The primary appearance modifier
+     */
+    actionTrigger__primary?: string;
+
+    /**
+     * The stealth appearance modifier
+     */
+    actionTrigger__stealth?: string;
 
     /**
      * The disabled modifier

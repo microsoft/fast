@@ -23,25 +23,14 @@ const examples: ComponentFactoryExample<ActionTriggerProps> = {
     },
     data: [
         {
-            appearance: ActionTriggerAppearance.primary,
-            children: "Primary action trigger",
+            children: "Default action trigger",
             href: testDestination,
             glyph: {
                 id: svgSchema.id,
                 props: {},
             },
-            "data-sketch-symbol": "Action trigger - primary",
+            "data-sketch-symbol": "Action trigger - default",
         } as any,
-        {
-            appearance: ActionTriggerAppearance.lightweight,
-            children: "Lightweight action trigger",
-            href: testDestination,
-            glyph: {
-                id: svgSchema.id,
-                props: {},
-            },
-            "data-sketch-symbol": "Action trigger - lightweight",
-        },
         {
             appearance: ActionTriggerAppearance.justified,
             children: "Justified action trigger",
@@ -53,6 +42,16 @@ const examples: ComponentFactoryExample<ActionTriggerProps> = {
             "data-sketch-symbol": "Action trigger - justified",
         },
         {
+            appearance: ActionTriggerAppearance.lightweight,
+            children: "Lightweight action trigger",
+            href: testDestination,
+            glyph: {
+                id: svgSchema.id,
+                props: {},
+            },
+            "data-sketch-symbol": "Action trigger - lightweight",
+        },
+        {
             appearance: ActionTriggerAppearance.outline,
             children: "Outlined action trigger",
             href: testDestination,
@@ -62,6 +61,26 @@ const examples: ComponentFactoryExample<ActionTriggerProps> = {
             },
             "data-sketch-symbol": "Action trigger - outlined",
         },
+        {
+            appearance: ActionTriggerAppearance.primary,
+            children: "Primary action trigger",
+            href: testDestination,
+            glyph: {
+                id: svgSchema.id,
+                props: {},
+            },
+            "data-sketch-symbol": "Action trigger - primary",
+        } as any,
+        {
+            appearance: ActionTriggerAppearance.stealth,
+            children: "Stealth action trigger",
+            href: testDestination,
+            glyph: {
+                id: svgSchema.id,
+                props: {},
+            },
+            "data-sketch-symbol": "Action trigger - stealth",
+        } as any,
     ],
 };
 

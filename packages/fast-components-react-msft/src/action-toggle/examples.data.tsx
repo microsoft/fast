@@ -51,6 +51,26 @@ const examples: ComponentFactoryExample<ActionToggleProps> = {
             "data-sketch-symbol": "Action toggle",
         },
         {
+            appearance: ActionToggleAppearance.justified,
+            selectedContent: "Pause",
+            unselectedContent: "Play",
+            selectedLabel: "Pause",
+            unselectedLabel: "Play",
+            selectedGlyph: {
+                id: svgSchema.id,
+                props: {
+                    path: SVGGlyph.pause,
+                },
+            } as any,
+            unselectedGlyph: {
+                id: svgSchema.id,
+                props: {
+                    path: SVGGlyph.play,
+                },
+            } as any,
+            "data-sketch-symbol": "Action toggle - justified",
+        } as any,
+        {
             appearance: ActionToggleAppearance.lightweight,
             selectedContent: "Pause",
             unselectedContent: "Play",
@@ -91,7 +111,7 @@ const examples: ComponentFactoryExample<ActionToggleProps> = {
             "data-sketch-symbol": "Action toggle - outline",
         } as any,
         {
-            appearance: ActionToggleAppearance.justified,
+            appearance: ActionToggleAppearance.primary,
             selectedContent: "Pause",
             unselectedContent: "Play",
             selectedLabel: "Pause",
@@ -108,7 +128,27 @@ const examples: ComponentFactoryExample<ActionToggleProps> = {
                     path: SVGGlyph.play,
                 },
             } as any,
-            "data-sketch-symbol": "Action toggle - justified",
+            "data-sketch-symbol": "Action toggle - primary",
+        } as any,
+        {
+            appearance: ActionToggleAppearance.stealth,
+            selectedContent: "Pause",
+            unselectedContent: "Play",
+            selectedLabel: "Pause",
+            unselectedLabel: "Play",
+            selectedGlyph: {
+                id: svgSchema.id,
+                props: {
+                    path: SVGGlyph.pause,
+                },
+            } as any,
+            unselectedGlyph: {
+                id: svgSchema.id,
+                props: {
+                    path: SVGGlyph.play,
+                },
+            } as any,
+            "data-sketch-symbol": "Action toggle - stealth",
         } as any,
     ],
 };

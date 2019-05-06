@@ -60,35 +60,12 @@ class ActionTrigger extends Foundation<
             )}`;
         }
 
-        switch (this.props.appearance) {
-            case ActionTriggerAppearance.primary:
-                classNames = `${classNames} ${get(
-                    this.props,
-                    "managedClasses.actionTrigger__primary",
-                    ""
-                )}`;
-                break;
-            case ActionTriggerAppearance.lightweight:
-                classNames = `${classNames} ${get(
-                    this.props,
-                    "managedClasses.actionTrigger__lightweight",
-                    ""
-                )}`;
-                break;
-            case ActionTriggerAppearance.justified:
-                classNames = `${classNames} ${get(
-                    this.props,
-                    "managedClasses.actionTrigger__justified",
-                    ""
-                )}`;
-                break;
-            case ActionTriggerAppearance.outline:
-                classNames = `${classNames} ${get(
-                    this.props,
-                    "managedClasses.actionTrigger__outline",
-                    ""
-                )}`;
-                break;
+        if (this.props.appearance) {
+            classNames = `${classNames} ${get(
+                this.props,
+                `managedClasses.actionTrigger__${this.props.appearance}`,
+                ""
+            )}`;
         }
 
         return super.generateClassNames(classNames);

@@ -19,10 +19,11 @@
             "type": "string",
             "default": "primary",
             "enum": [
-                "primary",
                 "justified",
                 "lightweight",
-                "outline"
+                "outline",
+                "primary",
+                "stealth"
             ]
         }
     },

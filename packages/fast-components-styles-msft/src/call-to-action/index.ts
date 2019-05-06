@@ -18,7 +18,13 @@ import {
     ensureDesignSystemDefaults,
     withDesignSystemDefaults,
 } from "../design-system";
-import { accentFillRest, accentForegroundCut } from "../utilities/color";
+import {
+    accentForegroundActive,
+    accentForegroundCut,
+    accentForegroundHover,
+    accentForegroundRest,
+    neutralForegroundRest,
+} from "../utilities/color";
 import { glyphSize } from "../utilities/density";
 
 function applyContentRegionTransform(): CSSRules<DesignSystem> {
@@ -59,21 +65,19 @@ export const callToActionButtonOverrides: ComponentStyles<
 > = {
     button: {
         maxWidth: "100%",
-    },
-    button_contentRegion: {
-        transition: "all 600ms cubic-bezier(0.19, 1, 0.22, 1)",
-    },
-    button__primary: {
         "&:hover": {
             "& $button_contentRegion": {
                 ...applyContentRegionTransform(),
             },
         },
     },
-    button__lightweight: {
+    button_contentRegion: {
+        transition: "all 600ms cubic-bezier(0.19, 1, 0.22, 1)",
+    },
+    button__justified: {
         "&:hover": {
             "& $button_contentRegion": {
-                ...applyContentRegionTransform(),
+                transform: "none",
             },
         },
     },
@@ -111,7 +115,7 @@ const styles: ComponentStyles<CallToActionClassNameContract, DesignSystem> = (
             }),
         },
         callToAction_glyph: {
-            fill: accentForegroundCut,
+            fill: neutralForegroundRest,
             display: "inline-block",
             position: "relative",
             width: glyphSize,
@@ -127,7 +131,17 @@ const styles: ComponentStyles<CallToActionClassNameContract, DesignSystem> = (
         },
         callToAction__lightweight: {
             "& $callToAction_glyph": {
-                fill: accentFillRest,
+                fill: accentForegroundRest,
+            },
+            "&:hover": {
+                "& $callToAction_glyph": {
+                    fill: accentForegroundHover,
+                },
+            },
+            "&:active": {
+                "& $callToAction_glyph": {
+                    fill: accentForegroundActive,
+                },
             },
         },
         callToAction__justified: {
@@ -137,9 +151,21 @@ const styles: ComponentStyles<CallToActionClassNameContract, DesignSystem> = (
                 direction
             )]: translateXValue,
             "& $callToAction_glyph": {
-                fill: accentFillRest,
+                fill: accentForegroundRest,
+            },
+            "&:hover": {
+                "& $callToAction_glyph": {
+                    fill: accentForegroundHover,
+                },
+            },
+            "&:active": {
+                "& $callToAction_glyph": {
+                    fill: accentForegroundActive,
+                },
             },
         },
+        callToAction__outline: {},
+        callToAction__stealth: {},
         callToAction__disabled: {
             "&:hover": {
                 "& $callToAction_glyph": {
