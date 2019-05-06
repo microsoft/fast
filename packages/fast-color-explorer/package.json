@@ -1,0 +1,78 @@
+{
+  "name": "@microsoft/fast-color-explorer",
+  "version": "1.0.0",
+  "description": "Color explorations",
+  "sideEffects": false,
+  "private": true,
+  "scripts": {
+    "build": "webpack --progress --mode=production",
+    "prettier": "prettier --config ./.prettierrc --write \"**/*.{ts,tsx}\"",
+    "start": "webpack-dev-server",
+    "test": "npm run tslint && npm run build",
+    "tslint": "tslint -c ./tslint.json '**/*.ts{,x}'",
+    "tslint:fix": "tslint -c ./tslint.json --fix '**/*.ts{,x}'"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Microsoft/fast-dna.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Microsoft/fast-dna/issues/new/choose"
+  },
+  "author": {
+    "name": "Microsoft",
+    "url": "https://discord.gg/FcSNfg4"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "@babel/core": "^7.2.0",
+    "@babel/preset-env": "^7.2.0",
+    "@babel/preset-react": "^7.0.0",
+    "@types/lodash": "^4.14.120",
+    "@types/node": "^10.12.12",
+    "@types/react": "^16.7.17",
+    "@types/react-dom": "^16.0.11",
+    "@types/react-redux": "^6.0.12",
+    "classnames": "^2.2.6",
+    "clean-webpack-plugin": "^1.0.0",
+    "csstype": "^2.5.8",
+    "exenv-es6": "^1.0.0",
+    "favicons-webpack-plugin": "0.0.9",
+    "focus-visible": "^4.1.5",
+    "html-webpack-plugin": "^3.2.0",
+    "jss": "^9.8.7",
+    "jss-preset-default": "^4.5.0",
+    "lint-staged": "^8.1.0",
+    "lodash-es": "^4.17.11",
+    "prettier": "^1.15.3",
+    "react": "^16.6.3",
+    "react-color": "^2.17.1",
+    "react-dom": "^16.6.3",
+    "react-redux": "^6.0.1",
+    "react-router-dom": "^4.3.1",
+    "react-sortable-hoc": "^1.4.0",
+    "react-virtualized-auto-sizer": "^1.0.2",
+    "react-window": "^1.8.1",
+    "redux": "^4.0.1",
+    "ts-loader": "^5.3.1",
+    "tslint": "^5.11.0",
+    "tslint-config-prettier": "^1.18.0",
+    "typescript": "^3.2.2",
+    "webpack": "^4.27.1",
+    "webpack-bundle-analyzer": "^3.0.3",
+    "webpack-cli": "^3.1.2",
+    "webpack-dev-server": "^3.1.10",
+    "workbox-webpack-plugin": "^3.6.3"
+  },
+  "dependencies": {
+    "@microsoft/fast-colors": "^4.1.0",
+    "@microsoft/fast-components-react-base": "^4.3.1",
+    "@microsoft/fast-components-react-msft": "^4.5.2",
+    "@microsoft/fast-components-styles-msft": "^4.7.0",
+    "@microsoft/fast-jss-manager-react": "^4.3.0",
+    "@microsoft/fast-jss-utilities": "^4.4.0",
+    "@microsoft/fast-layouts-react": "^4.2.1",
+    "@microsoft/fast-tslint-rules": "^3.0.3",
+    "@microsoft/fast-web-utilities": "^4.1.0"
+  }
+}
