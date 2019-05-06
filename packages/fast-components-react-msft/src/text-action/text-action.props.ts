@@ -54,7 +54,7 @@ export interface TextActionHandledProps
     onBlur?: (e?: React.FocusEvent<HTMLInputElement>) => void;
 
     /**
-     * Overall disabled attribute
+     * Overall disabled attribute that controls both the input and button disabled states
      */
     disabled?: boolean;
 }
