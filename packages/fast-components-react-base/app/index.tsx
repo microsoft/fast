@@ -64,6 +64,7 @@ function render(): void {
             formPlugins={formPlugins}
             showTransparencyToggle={true}
             styleEditing={true}
+            stylePropertyEditing={true}
         >
             <SiteTitle slot={"title"}>
                 <SiteTitleBrand>FAST</SiteTitleBrand> base component documentation

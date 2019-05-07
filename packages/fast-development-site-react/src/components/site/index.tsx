@@ -76,6 +76,7 @@ export interface SiteProps {
     onUpdateDirection?: (ltr: Direction) => void;
     onUpdateTheme?: (theme: string) => void;
     styleEditing?: boolean;
+    stylePropertyEditing?: boolean;
     locales?: string[];
     themes?: Theme[];
     activeTheme?: Theme;
@@ -939,6 +940,7 @@ class Site extends React.Component<
                     formChildOptions={this.props.formChildOptions}
                     onLocationUpdate={this.handleLocationUpdate}
                     styleEditing={this.props.styleEditing}
+                    stylePropertyEditing={this.props.stylePropertyEditing}
                 />
             );
         }
