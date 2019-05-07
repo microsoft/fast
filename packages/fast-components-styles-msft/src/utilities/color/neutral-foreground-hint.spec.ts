@@ -45,7 +45,7 @@ describe("neutralForegroundHint", (): void => {
         );
     });
 
-    xtest("should always return a color that has at least 4.5 : 1 against the background", (): void => {
+    test("should always return a color that has at least 4.5 : 1 against the background", (): void => {
         neutralPalette.concat(accentPalette).forEach(
             (swatch: Swatch): void => {
                 function retrieveContrast(
