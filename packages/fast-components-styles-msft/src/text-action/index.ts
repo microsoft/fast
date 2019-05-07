@@ -104,8 +104,8 @@ const styles: ComponentStyles<TextActionClassNameContract, DesignSystem> = {
         minWidth: "fit-content",
         margin: "2px",
         padding: `0 5px`,
-        left: directionSwitch("0", "unset"),
-        right: directionSwitch("unset", "0"),
+        left: directionSwitch("0", ""),
+        right: directionSwitch("", "0"),
         top: "0",
         transition: "color .1s, background-color .1s, border-color 0.2s ease-in-out",
         flex: "0 0 auto",
@@ -113,13 +113,13 @@ const styles: ComponentStyles<TextActionClassNameContract, DesignSystem> = {
     },
     textAction_beforeGlyph: {
         ...glyphStyles,
-        marginLeft: directionSwitch(horizontalSpacing(1), "unset"),
-        marginRight: directionSwitch("unset", horizontalSpacing(1)),
+        marginLeft: directionSwitch(horizontalSpacing(1), ""),
+        marginRight: directionSwitch("", horizontalSpacing(1)),
     },
     textAction_afterGlyph: {
         ...glyphStyles,
-        marginLeft: directionSwitch(horizontalSpacing(1), "unset"),
-        marginRight: directionSwitch("unset", horizontalSpacing(1)),
+        marginLeft: directionSwitch(horizontalSpacing(1), ""),
+        marginRight: directionSwitch("", horizontalSpacing(1)),
     },
 };
 

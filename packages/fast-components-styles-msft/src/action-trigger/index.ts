@@ -94,7 +94,7 @@ const styles: ComponentStyles<ActionTriggerClassNameContract, DesignSystem> = {
             },
         },
         actionTrigger__disabled: {},
-    };
+    },
 };
 
 export default styles;

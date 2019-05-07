@@ -203,8 +203,8 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = {
             position: "absolute",
             bottom: "-3px",
             width: "100%",
-            left: directionSwitch("0", "unset"),
-            right: directionSwitch("unset", "0"),
+            left: directionSwitch("0", ""),
+            right: directionSwitch("", "0"),
         },
         "& svg": {
             width: glyphSize,

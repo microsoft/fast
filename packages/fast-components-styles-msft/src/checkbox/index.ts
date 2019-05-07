@@ -57,8 +57,8 @@ const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = {
         alignItems: "center",
         transition: "all 0.2s ease-in-out",
         "& $checkbox_label": {
-            paddingLeft: directionSwitch(horizontalSpacing(2), "unset"),
-            paddingRight: directionSwitch("unset", horizontalSpacing(2)),
+            paddingLeft: directionSwitch(horizontalSpacing(2), ""),
+            paddingRight: directionSwitch("", horizontalSpacing(2)),
         },
     },
     checkbox_input: {

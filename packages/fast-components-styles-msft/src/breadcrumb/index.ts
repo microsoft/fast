@@ -34,8 +34,8 @@ const styles: ComponentStyles<BreadcrumbClassNameContract, DesignSystem> = (
         },
         breadcrumb_itemsContainer: {
             listStyle: "none",
-            paddingLeft: directionSwitch("0", "unset"),
-            paddingRight: directionSwitch("unset", "0"),
+            paddingLeft: directionSwitch("0", ""),
+            paddingRight: directionSwitch("", "0"),
             margin: "0",
             display: "flex",
             flexWrap: "wrap",

@@ -97,8 +97,8 @@ const styles: ComponentStyles<RadioClassNameContract, DesignSystem> = {
     radio_label: {
         color: neutralForegroundRest,
         ...applyScaledTypeRamp("t7"),
-        marginLeft: directionSwitch(horizontalSpacing(2), "unset"),
-        marginRight: directionSwitch("unset", horizontalSpacing(2)),
+        marginLeft: directionSwitch(horizontalSpacing(2), ""),
+        marginRight: directionSwitch("", horizontalSpacing(2)),
     },
     radio__checked: {
         "& $radio_stateIndicator": {

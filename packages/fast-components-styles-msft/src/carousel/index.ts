@@ -118,13 +118,13 @@ const styles: ComponentStyles<CarouselClassNameContract, DesignSystem> = {
     carousel_tabPanelContent: {},
     carousel_flipperPrevious: {
         ...flipperStyles(),
-        left: directionSwitch("6px", "unset"),
-        right: directionSwitch("6px", "unset"),
+        left: directionSwitch("6px", ""),
+        right: directionSwitch("", "6px"),
     },
     carousel_flipperNext: {
         ...flipperStyles(),
-        right: directionSwitch("6px", "unset"),
-        left: directionSwitch("6px", "unset"),
+        right: directionSwitch("6px", ""),
+        left: directionSwitch("", "6px"),
     },
     carousel__themeDark: {
         "& $carousel_flipperPrevious, & $carousel_flipperNext": {

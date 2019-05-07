@@ -15,11 +15,7 @@ import {
     multiply,
     toPx,
 } from "@microsoft/fast-jss-utilities";
-import {
-    DesignSystem,
-    ensureDesignSystemDefaults,
-    withDesignSystemDefaults,
-} from "../design-system";
+import { DesignSystem, DesignSystemResolver } from "../design-system";
 import {
     accentForegroundActive,
     accentForegroundCut,
@@ -81,88 +77,81 @@ export const callToActionButtonOverrides: ComponentStyles<
     },
 };
 
-const styles: ComponentStyles<CallToActionClassNameContract, DesignSystem> = (
-    config: DesignSystem
-): ComponentStyleSheet<CallToActionClassNameContract, DesignSystem> => {
-    const designSystem: DesignSystem = withDesignSystemDefaults(config);
-    const direction: Direction = designSystem.direction;
-    const translateXValue: string = toPx(designSystem.designUnit);
-
-    return {
-        callToAction: {
-            transition: "all 0.2s ease-in-out",
-            display: "inline-flex",
-            maxWidth: "100%",
-            lineHeight: "1",
-            textDecoration: "none",
-            whiteSpace: "nowrap",
-            "&:hover": {
-                "& $callToAction_glyph": {
-                    ...applyGlyphTransform(),
-                },
-            },
-            ...applyFocusVisible("& $callToAction_glyph", {
+const translateXValue: DesignSystemResolver<string> = toPx(designUnit);
+const styles: ComponentStyles<CallToActionClassNameContract, DesignSystem> = {
+    callToAction: {
+        transition: "all 0.2s ease-in-out",
+        display: "inline-flex",
+        maxWidth: "100%",
+        lineHeight: "1",
+        textDecoration: "none",
+        whiteSpace: "nowrap",
+        "&:hover": {
+            "& $callToAction_glyph": {
                 ...applyGlyphTransform(),
-            }),
+            },
         },
-        callToAction_glyph: {
-            fill: neutralForegroundRest,
-            display: "inline-block",
-            position: "relative",
-            width: glyphSize,
-            height: glyphSize,
-            marginLeft: directionSwitch("6px", ""),
-            marginRight: directionSwitch("", "6px"),
-            transform: directionSwitch("none", "rotate(180deg)"),
-            transition: "all 600ms cubic-bezier(0.19, 1, 0.22, 1)",
+        ...applyFocusVisible("& $callToAction_glyph", {
+            ...applyGlyphTransform(),
+        }),
+    },
+    callToAction_glyph: {
+        fill: neutralForegroundRest,
+        display: "inline-block",
+        position: "relative",
+        width: glyphSize,
+        height: glyphSize,
+        marginLeft: directionSwitch("6px", ""),
+        marginRight: directionSwitch("", "6px"),
+        transform: directionSwitch("none", "rotate(180deg)"),
+        transition: "all 600ms cubic-bezier(0.19, 1, 0.22, 1)",
+    },
+    callToAction__primary: {
+        "& $callToAction_glyph": {
+            fill: accentForegroundCut,
         },
-        callToAction__primary: {
+    },
+    callToAction__lightweight: {
+        "& $callToAction_glyph": {
+            fill: accentForegroundRest,
+        },
+        "&:hover": {
             "& $callToAction_glyph": {
-                fill: accentForegroundCut,
+                fill: accentForegroundHover,
             },
         },
-        callToAction__lightweight: {
+        "&:active": {
             "& $callToAction_glyph": {
-                fill: accentForegroundRest,
-            },
-            "&:hover": {
-                "& $callToAction_glyph": {
-                    fill: accentForegroundHover,
-                },
-            },
-            "&:active": {
-                "& $callToAction_glyph": {
-                    fill: accentForegroundActive,
-                },
+                fill: accentForegroundActive,
             },
         },
-        callToAction__justified: {
-            paddingRight: directionSwitch(translateXValue, ""),
-            paddingLeft: directionSwitch("", translateXValue),
+    },
+    callToAction__justified: {
+        paddingRight: directionSwitch(translateXValue, ""),
+        paddingLeft: directionSwitch("", translateXValue),
+        "& $callToAction_glyph": {
+            fill: accentForegroundRest,
+        },
+        "&:hover": {
             "& $callToAction_glyph": {
-                fill: accentForegroundRest,
-            },
-            "&:hover": {
-                "& $callToAction_glyph": {
-                    fill: accentForegroundHover,
-                },
-            },
-            "&:active": {
-                "& $callToAction_glyph": {
-                    fill: accentForegroundActive,
-                },
+                fill: accentForegroundHover,
             },
         },
-        callToAction__outline: {},
-        callToAction__stealth: {},
-        callToAction__disabled: {
-            "&:hover": {
-                "& $callToAction_glyph": {
-                    transform: "none",
-                },
+        "&:active": {
+            "& $callToAction_glyph": {
+                fill: accentForegroundActive,
             },
         },
-    };
+    },
+    callToAction__outline: {},
+    callToAction__stealth: {},
+    callToAction__disabled: {
+        "&:hover": {
+            "& $callToAction_glyph": {
+                transform: "none",
+            },
+        },
+    },
 };
 
 export default styles;
