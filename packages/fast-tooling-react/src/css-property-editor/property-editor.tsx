@@ -167,7 +167,7 @@ export default class CSSPropertyEditor extends Foundation<
             const newData: CSSProperties = {};
 
             // The reason this is iterated over in this manner is to preserve
-            // the location of keys in the CSS object
+            // the order of keys in the CSS object
             Object.keys(this.props.data).forEach((key: string) => {
                 if (key === oldKey) {
                     newData[e.target.value] = this.props.data[key];
