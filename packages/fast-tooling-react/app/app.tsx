@@ -11,6 +11,7 @@ import UpdatePropsPage from "./pages/viewer/update-props-page";
 import UpdatePropsViewerContent from "./pages/viewer/update-props-page.viewer-content";
 import { CSSEditorTestPage } from "./pages/css-editor";
 import { FormTestPage } from "./pages/form";
+import { CSSPropertyEditorTestPage } from "./pages/css-property-editor";
 
 class App extends React.Component<{}, {}> {
     public render(): React.ReactNode {
@@ -23,6 +24,11 @@ class App extends React.Component<{}, {}> {
                             exact={true}
                             path={"/css-editor"}
                             component={CSSEditorTestPage}
+                        />
+                        <Route
+                            exact={true}
+                            path={"/css-property-editor"}
+                            component={CSSPropertyEditorTestPage}
                         />
                         <Route
                             exact={true}
@@ -86,6 +92,9 @@ class App extends React.Component<{}, {}> {
                     <ul>
                         <li>
                             <Link to="/css-editor">CSS Editor</Link>
+                        </li>
+                        <li>
+                            <Link to="/css-property-editor">CSS Property Editor</Link>
                         </li>
                         <li>
                             <Link to="/form">Form</Link>

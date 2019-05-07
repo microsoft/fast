@@ -9,5 +9,7 @@ export const foreground300: string = "#F2F2F2";
 export const foreground800: string = "#D5D5D5";
 export const accent: string = "#FB356D";
 export const error: string = "red";
+export const cssKey: string = "#9CDCFE";
+export const cssValue: string = "#D4D4D4";
 
 export const disabledOpacity: number = 0.3;
