@@ -1,7 +1,14 @@
 import { SliderClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import { ComponentStyles } from "@microsoft/fast-jss-manager";
-import { applyFocusVisible, format, toPx, add } from "@microsoft/fast-jss-utilities";
-import { DesignSystem } from "../design-system";
+import {
+    add,
+    applyFocusVisible,
+    divide,
+    format,
+    multiply,
+    toPx,
+} from "@microsoft/fast-jss-utilities";
+import { DesignSystem, DesignSystemResolver } from "../design-system";
 import { applyCornerRadius } from "../utilities/border";
 import {
     neutralFocus,
@@ -21,22 +28,16 @@ import {
 import { applyDisabledState } from "../utilities/disabled";
 import { applyElevation, ElevationMultiplier } from "../utilities/elevation";
 
-function thumbSize(config: DesignSystem): string {
-    return toPx(heightNumber()(config) / 2 + designUnit(config));
-}
-
-function halfThumbSize(config: DesignSystem): string {
-    return toPx((heightNumber()(config) / 2 + designUnit(config)) / 2);
-}
-
-function trackOffset(config: DesignSystem): string {
-    return toPx(heightNumber()(config) / 4);
-}
-
-function trackOverhang(config: DesignSystem): string {
-    return toPx((designUnit(config) / 2) * -1);
-}
-
+const thumbSizeValue: DesignSystemResolver<number> = add(
+    divide(heightNumber(), 2),
+    designUnit
+);
+const thumbSize: DesignSystemResolver<string> = toPx(thumbSizeValue);
+const halfThumbSize: DesignSystemResolver<string> = toPx(divide(thumbSizeValue, 2));
+const trackOffset: DesignSystemResolver<string> = toPx(divide(heightNumber(), 4));
+const trackOverhang: DesignSystemResolver<string> = toPx(
+    multiply(divide(designUnit, 2), -1)
+);
 const minSize: string = "50px";
 
 const styles: ComponentStyles<SliderClassNameContract, DesignSystem> = {

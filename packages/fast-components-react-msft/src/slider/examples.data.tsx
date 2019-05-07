@@ -69,10 +69,6 @@ const examples: ComponentFactoryExample<SliderProps> = {
     },
     data: [
         {
-            range: {
-                maxValue: 100,
-                minValue: 0,
-            },
             initialValue: 0,
         },
         {
