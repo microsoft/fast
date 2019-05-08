@@ -1,3 +1,9 @@
+import { TextFieldClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
+import { TextActionClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
+import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager";
+import { directionSwitch, format, subtract, toPx } from "@microsoft/fast-jss-utilities";
+import { DesignSystem } from "../design-system";
+import { applyCornerRadius } from "../utilities/border";
 import {
     neutralFillInputActive,
     neutralFillInputHover,
@@ -8,20 +14,9 @@ import {
     neutralOutlineHover,
     neutralOutlineRest,
 } from "../utilities/color";
-import { DesignSystem, withDesignSystemDefaults } from "../design-system";
-import { TextActionClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
-import { TextFieldClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
-import { directionSwitch, format, subtract, toPx } from "@microsoft/fast-jss-utilities";
-import {
-    ComponentStyles,
-    ComponentStyleSheet,
-    CSSRules,
-} from "@microsoft/fast-jss-manager";
-import { applyCornerRadius } from "../utilities/border";
 import { glyphSize, height, horizontalSpacing } from "../utilities/density";
-import { applyDisabledState } from "../utilities/disabled";
 import { focusOutlineWidth, outlineWidth } from "../utilities/design-system";
-import {} from "lodash-es";
+import { applyDisabledState } from "../utilities/disabled";
 
 // Since MSFT button is already styled, we need to override in this way to alter button classes
 export const textFieldOverrides: ComponentStyles<

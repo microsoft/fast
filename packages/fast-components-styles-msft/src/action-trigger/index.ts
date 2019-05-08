@@ -1,14 +1,10 @@
-import { ComponentStyles, ComponentStyleSheet } from "@microsoft/fast-jss-manager";
+import { ComponentStyles } from "@microsoft/fast-jss-manager";
 import {
     ActionTriggerClassNameContract,
     ButtonClassNameContract,
 } from "@microsoft/fast-components-class-name-contracts-msft";
-import {
-    applyLocalizedProperty,
-    Direction,
-    directionSwitch,
-} from "@microsoft/fast-jss-utilities";
-import { DesignSystem, withDesignSystemDefaults } from "../design-system/index";
+import { directionSwitch } from "@microsoft/fast-jss-utilities";
+import { DesignSystem } from "../design-system/index";
 import {
     accentForegroundActive,
     accentForegroundCut,
@@ -85,16 +81,27 @@ const styles: ComponentStyles<ActionTriggerClassNameContract, DesignSystem> = {
                 fill: accentForegroundActive,
             },
         },
-        actionTrigger__stealth: {
-            "& $actionTrigger_glyph": {
-                fill: neutralForegroundRest,
-            },
-            "&$actionTrigger__disabled $actionTrigger_glyph": {
-                fill: neutralForegroundRest,
-            },
+        "&$actionTrigger__disabled $actionTrigger_glyph": {
+            fill: accentForegroundRest,
         },
-        actionTrigger__disabled: {},
     },
+    actionTrigger__outline: {
+        "& $actionTrigger_glyph": {
+            fill: neutralForegroundRest,
+        },
+        "&$actionTrigger__disabled $actionTrigger_glyph": {
+            fill: neutralForegroundRest,
+        },
+    },
+    actionTrigger__stealth: {
+        "& $actionTrigger_glyph": {
+            fill: neutralForegroundRest,
+        },
+        "&$actionTrigger__disabled $actionTrigger_glyph": {
+            fill: neutralForegroundRest,
+        },
+    },
+    actionTrigger__disabled: {},
 };
 
 export default styles;
