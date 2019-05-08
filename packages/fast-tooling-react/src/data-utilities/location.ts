@@ -283,10 +283,10 @@ export function mapSchemaLocationFromDataLocation(
 }
 
 /**
- * Determines from a single dataLocation segment what the resulting schemaLocation
- * should be
+ * Determines from a single dataLocation segment
+ * what the resulting schemaLocation should be
  */
-export function mapSchemaLocationSegmentFromDataLocationSegment(
+function mapSchemaLocationSegmentFromDataLocationSegment(
     schema: any,
     dataLocationSegment: string,
     schemaLocation: string,
