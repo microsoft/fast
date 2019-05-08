@@ -24,6 +24,8 @@ export interface ConfigurationPanelProps {
 export interface ConfigurationPanelManagedClasses {
     configurationPanel: string;
     configurationPanel_categoryTitle: string;
+    configurationPanel_categorySubTitle: string;
+    configurationPanel_cssPropertyEditorRegion: string;
 }
 
 const style: ComponentStyles<ConfigurationPanelManagedClasses, DevSiteDesignSystem> = {
@@ -44,6 +46,14 @@ const style: ComponentStyles<ConfigurationPanelManagedClasses, DevSiteDesignSyst
         margin: "0 0 10px",
         borderBottom: "1px solid rgba(213, 213, 213, 0.3)",
         borderTop: "2px solid rgba(213, 213, 213, 0.3)",
+    },
+    configurationPanel_categorySubTitle: {
+        fontSize: "12px",
+        fontWeight: "400",
+        margin: "6px 0",
+    },
+    configurationPanel_cssPropertyEditorRegion: {
+        padding: "0 10px",
     },
 };
 
@@ -101,8 +111,17 @@ class ConfigurationPanel extends React.Component<
     private renderCSSPropertyEditor(): React.ReactNode {
         if (!!this.props.styleEditing) {
             return (
-                <div style={{ padding: "0 10px" }}>
-                    <h5 style={{ fontSize: "12px", fontWeight: 400, margin: "6px 0" }}>
+                <div
+                    className={
+                        this.props.managedClasses
+                            .configurationPanel_cssPropertyEditorRegion
+                    }
+                >
+                    <h5
+                        className={
+                            this.props.managedClasses.configurationPanel_categorySubTitle
+                        }
+                    >
                         Additional properties
                     </h5>
                     <CSSPropertyEditor
