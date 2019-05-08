@@ -19,7 +19,6 @@ export interface ConfigurationPanelProps {
     onChange: any;
     onLocationUpdate: (dataLocation: string) => void;
     styleEditing?: boolean;
-    stylePropertyEditing?: boolean;
 }
 
 export interface ConfigurationPanelManagedClasses {
@@ -100,7 +99,7 @@ class ConfigurationPanel extends React.Component<
     }
 
     private renderCSSPropertyEditor(): React.ReactNode {
-        if (!!this.props.stylePropertyEditing) {
+        if (!!this.props.styleEditing) {
             return (
                 <div style={{ padding: "0 10px" }}>
                     <h5 style={{ fontSize: "12px", fontWeight: 400, margin: "6px 0" }}>
