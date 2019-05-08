@@ -18,7 +18,6 @@ const examples: ComponentFactoryExample<TextActionProps> = {
         button: {
             id: buttonSchema.id,
             props: {
-                disabled: true,
                 children: {
                     id: svgSchema.id,
                     props: {
@@ -40,7 +39,6 @@ const examples: ComponentFactoryExample<TextActionProps> = {
             button: {
                 id: buttonSchema.id,
                 props: {
-                    disabled: true,
                     children: {
                         id: svgSchema.id,
                         props: {
@@ -60,7 +58,6 @@ const examples: ComponentFactoryExample<TextActionProps> = {
             button: {
                 id: buttonSchema.id,
                 props: {
-                    disabled: true,
                     children: "Search",
                 },
             } as any,
@@ -82,7 +79,6 @@ const examples: ComponentFactoryExample<TextActionProps> = {
             button: {
                 id: buttonSchema.id,
                 props: {
-                    disabled: true,
                     children: {
                         id: svgSchema.id,
                         props: {
@@ -103,7 +99,6 @@ const examples: ComponentFactoryExample<TextActionProps> = {
             button: {
                 id: buttonSchema.id,
                 props: {
-                    disabled: true,
                     children: {
                         id: svgSchema.id,
                         props: {
@@ -146,7 +141,6 @@ const examples: ComponentFactoryExample<TextActionProps> = {
             button: {
                 id: buttonSchema.id,
                 props: {
-                    disabled: true,
                     children: {
                         id: svgSchema.id,
                         props: {
@@ -169,7 +163,6 @@ const examples: ComponentFactoryExample<TextActionProps> = {
             button: {
                 id: buttonSchema.id,
                 props: {
-                    disabled: true,
                     children: {
                         id: svgSchema.id,
                         props: {
