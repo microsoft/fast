@@ -1,68 +1,52 @@
-import React from "react";
-import { ColorsDesignSystem } from "./design-system";
+import { ButtonClassNameContract } from "@microsoft/fast-components-react-base";
 import {
     Background,
     Button,
     ButtonAppearance,
     Caption,
     CaptionClassNameContract,
-    Checkbox,
     Hypertext,
     Paragraph,
     TextField,
 } from "@microsoft/fast-components-react-msft";
-import manageJss, { ComponentStyleSheet } from "@microsoft/fast-jss-manager-react";
 import {
-    accentFill,
     accentFillActive,
     accentFillHover,
     accentFillRest,
     accentFillSelected,
-    accentForeground,
     accentForegroundActive,
     accentForegroundCut,
     accentForegroundHover,
     accentForegroundRest,
     backgroundColor,
     fontWeight,
-    neutralFill,
     neutralFillActive,
     neutralFillHover,
+    neutralFillInputRest,
     neutralFillRest,
     neutralFillSelected,
-    neutralFillStealth,
     neutralFillStealthActive,
     neutralFillStealthHover,
     neutralFillStealthRest,
     neutralFillStealthSelected,
+    neutralFocus,
     neutralForegroundHint,
     neutralForegroundHintLarge,
     neutralForegroundRest,
-    neutralOutline,
     neutralOutlineActive,
     neutralOutlineHover,
     neutralOutlineRest,
 } from "@microsoft/fast-components-styles-msft";
+import manageJss, { ComponentStyleSheet } from "@microsoft/fast-jss-manager-react";
 import classnames from "classnames";
-import {
-    Swatch,
-    SwatchStates,
-    SwatchTwo,
-    SwatchTwoProps,
-    SwatchTwoTypes,
-} from "./swatch";
-import { Omit } from "utility-types";
-import { HintText } from "./hint-text";
-import { get, isEqual, uniqueId } from "lodash-es";
-import { AppState, ComponentTypes } from "./state";
+import { get, isEqual } from "lodash-es";
+import React from "react";
 import { connect } from "react-redux";
-import { ButtonClassNameContract } from "@microsoft/fast-components-react-base";
-import {
-    FillSwatchFamily,
-    SwatchFamily,
-} from "@microsoft/fast-components-styles-msft/dist/utilities/color/common";
+import { Omit } from "utility-types";
+import { ColorsDesignSystem } from "./design-system";
 import { StealthIcon } from "./icons";
-import { format } from "@microsoft/fast-jss-utilities";
+import { AppState, ComponentTypes } from "./state";
+import { Swatch, SwatchProps, SwatchTypes } from "./swatch";
 
 const styles: ComponentStyleSheet<ColorBlocksClassNameContract, ColorsDesignSystem> = {
     colorBlocks: {
@@ -129,25 +113,39 @@ interface ColorBlocksState {
 }
 
 function NeutralFillSwatch(
-    props: Omit<SwatchTwoProps, "type" | "foregroundRecipe">
+    props: Omit<SwatchProps, "type" | "foregroundRecipe">
 ): JSX.Element {
     return (
-        <SwatchTwo
+        <Swatch
             {...props}
-            type={SwatchTwoTypes.fill}
+            type={SwatchTypes.fill}
             foregroundRecipe={neutralForegroundRest}
         />
     );
 }
 
 function AccentFillSwatch(
-    props: Omit<SwatchTwoProps, "type" | "foregroundRecipe">
+    props: Omit<SwatchProps, "type" | "foregroundRecipe">
 ): JSX.Element {
     return (
-        <SwatchTwo
+        <Swatch
             {...props}
-            type={SwatchTwoTypes.fill}
+            type={SwatchTypes.fill}
             foregroundRecipe={accentForegroundCut}
+        />
+    );
+}
+
+function FocusSwatch(
+    props: Omit<SwatchProps, "type" | "foregroundRecipe" | "recipeName">
+): JSX.Element {
+    return (
+        <Swatch
+            {...props}
+            type={SwatchTypes.outline}
+            foregroundRecipe={neutralFocus}
+            outlineRecipe={neutralFocus}
+            recipeName="neutralFocus"
         />
     );
 }
@@ -251,22 +249,19 @@ class ColorBlocksBase extends React.Component<ColorBlocksProps, ColorBlocksState
 
     private renderComponent(): React.ReactNode {
         switch (this.props.component) {
-            case ComponentTypes.neutral:
-                return this.renderNeutralComponent();
-            case ComponentTypes.accent:
-                return this.renderAccentComponent();
-            case ComponentTypes.stealth:
-                return this.renderStealthComponent();
-            case ComponentTypes.ghost:
-                return this.renderGhostComponent();
+            case ComponentTypes.backplate:
+                return this.renderBackplateComponents();
             case ComponentTypes.text:
-                return this.renderTextComponent();
+                return this.renderTextComponents();
+            case ComponentTypes.form:
+                return this.renderFormComponents();
         }
     }
 
-    private renderAccentComponent(): React.ReactNode {
+    private renderBackplateComponents(): React.ReactNode {
         return (
             <React.Fragment>
+                {/* Accent component */}
                 {this.renderExample(
                     <Button appearance={ButtonAppearance.primary}>Accent</Button>
                 )}
@@ -287,19 +282,15 @@ class ColorBlocksBase extends React.Component<ColorBlocksProps, ColorBlocksState
                     fillRecipe={accentFillSelected}
                     recipeName="accentFillSelected"
                 />
-                <SwatchTwo
-                    type={SwatchTwoTypes.foreground}
+                <Swatch
+                    type={SwatchTypes.foreground}
                     fillRecipe={accentFillRest}
                     foregroundRecipe={accentForegroundCut}
                     recipeName="accentForegroundCut"
                 />
-            </React.Fragment>
-        );
-    }
-    private renderNeutralComponent(): React.ReactNode {
-        return (
-            <React.Fragment>
-                {this.renderAccentComponent()}
+                <FocusSwatch fillRecipe={accentFillRest} />
+
+                {/* Neutral component */}
                 {this.renderExample(<Button>Neutral</Button>)}
                 <NeutralFillSwatch
                     fillRecipe={neutralFillRest}
@@ -317,26 +308,64 @@ class ColorBlocksBase extends React.Component<ColorBlocksProps, ColorBlocksState
                     fillRecipe={neutralFillSelected}
                     recipeName="neutralFillSelected"
                 />
-                <SwatchTwo
-                    type={SwatchTwoTypes.foreground}
+                <Swatch
+                    type={SwatchTypes.foreground}
                     fillRecipe={backgroundColor}
                     foregroundRecipe={neutralForegroundRest}
                     recipeName="neutralForegroundRest"
                 />
+                <FocusSwatch fillRecipe={accentFillRest} />
 
-                {this.renderGhostComponent()}
-                {this.renderStealthComponent()}
-            </React.Fragment>
-        );
-    }
-    private renderStealthComponent(): React.ReactNode {
-        const backgroundColors: FillSwatchFamily = neutralFillStealth(
-            this.state.designSystem
-        );
-        const textColor: string = neutralForegroundRest(this.state.designSystem);
+                {/* Outline component */}
+                {this.renderExample(
+                    <Button appearance={ButtonAppearance.outline}>Outline</Button>
+                )}
+                <NeutralFillSwatch
+                    fillRecipe={neutralFillStealthRest}
+                    recipeName="neutralFillStealthRest"
+                />
+                <NeutralFillSwatch
+                    fillRecipe={neutralFillStealthHover}
+                    recipeName="neutralFillStealthHover"
+                />
+                <NeutralFillSwatch
+                    fillRecipe={neutralFillStealthActive}
+                    recipeName="neutralFillStealthActive"
+                />
+                <NeutralFillSwatch
+                    fillRecipe={neutralFillStealthSelected}
+                    recipeName="neutralFillStealthSelected"
+                />
+                <Swatch
+                    type={SwatchTypes.outline}
+                    fillRecipe={backgroundColor}
+                    foregroundRecipe={neutralForegroundRest}
+                    outlineRecipe={neutralOutlineRest}
+                    recipeName="neutralOutlineRest"
+                />
+                <Swatch
+                    type={SwatchTypes.outline}
+                    fillRecipe={backgroundColor}
+                    foregroundRecipe={neutralForegroundRest}
+                    outlineRecipe={neutralOutlineHover}
+                    recipeName="neutralOutlineHover"
+                />
+                <Swatch
+                    type={SwatchTypes.outline}
+                    fillRecipe={backgroundColor}
+                    foregroundRecipe={neutralForegroundRest}
+                    outlineRecipe={neutralOutlineActive}
+                    recipeName="neutralOutlineActive"
+                />
+                <Swatch
+                    type={SwatchTypes.foreground}
+                    fillRecipe={backgroundColor}
+                    foregroundRecipe={neutralForegroundRest}
+                    recipeName="neutralForegroundRest"
+                />
+                <FocusSwatch fillRecipe={accentFillRest} />
 
-        return (
-            <React.Fragment>
+                {/* Outline component */}
                 {this.renderExample(
                     <Button
                         appearance={ButtonAppearance.stealth}
@@ -363,171 +392,23 @@ class ColorBlocksBase extends React.Component<ColorBlocksProps, ColorBlocksState
                     fillRecipe={neutralFillStealthSelected}
                     recipeName="neutralFillStealthSelected"
                 />
-                <SwatchTwo
-                    type={SwatchTwoTypes.foreground}
+                <Swatch
+                    type={SwatchTypes.foreground}
                     fillRecipe={backgroundColor}
                     foregroundRecipe={neutralForegroundRest}
                     recipeName="neutralForegroundRest"
                 />
+                <FocusSwatch fillRecipe={accentFillRest} />
             </React.Fragment>
         );
     }
 
-    private renderGhostComponent(): React.ReactNode {
-        return (
-            <React.Fragment>
-                {this.renderExample(
-                    <Button appearance={ButtonAppearance.outline}>Outline</Button>
-                )}
-                <NeutralFillSwatch
-                    fillRecipe={neutralFillStealthRest}
-                    recipeName="neutralFillStealthRest"
-                />
-                <NeutralFillSwatch
-                    fillRecipe={neutralFillStealthHover}
-                    recipeName="neutralFillStealthHover"
-                />
-                <NeutralFillSwatch
-                    fillRecipe={neutralFillStealthActive}
-                    recipeName="neutralFillStealthActive"
-                />
-                <NeutralFillSwatch
-                    fillRecipe={neutralFillStealthSelected}
-                    recipeName="neutralFillStealthSelected"
-                />
-                <SwatchTwo
-                    type={SwatchTwoTypes.outline}
-                    fillRecipe={backgroundColor}
-                    foregroundRecipe={neutralForegroundRest}
-                    outlineRecipe={neutralOutlineRest}
-                    recipeName="neutralOutlineRest"
-                />
-                <SwatchTwo
-                    type={SwatchTwoTypes.outline}
-                    fillRecipe={backgroundColor}
-                    foregroundRecipe={neutralForegroundRest}
-                    outlineRecipe={neutralOutlineHover}
-                    recipeName="neutralOutlineHover"
-                />
-                <SwatchTwo
-                    type={SwatchTwoTypes.outline}
-                    fillRecipe={backgroundColor}
-                    foregroundRecipe={neutralForegroundRest}
-                    outlineRecipe={neutralOutlineActive}
-                    recipeName="neutralOutlineActive"
-                />
-                <SwatchTwo
-                    type={SwatchTwoTypes.foreground}
-                    fillRecipe={backgroundColor}
-                    foregroundRecipe={neutralForegroundRest}
-                    recipeName="neutralForegroundRest"
-                />
-            </React.Fragment>
-        );
-        //         return (
-        //             <React.Fragment>
-        //                 {this.renderExample(
-        //                     <Button appearance={ButtonAppearance.outline}>Ghost</Button>
-        //                 )}
-        //                 {this.renderExample(<TextField placeholder="jerry@microsoft.com" />)}
-        //                 {this.renderExample(
-        //                     <Checkbox inputId={uniqueId()}>
-        //                         <label slot="label">Checkbox</label>
-        //                     </Checkbox>
-        //                 )}
-        //
-        //                 <Caption jssStyleSheet={this.titleStyleOverrides}>
-        //                     NEUTRAL / FILL / STEALTH
-        //                 </Caption>
-        //                 <Swatch
-        //                     color={backgroundColors.rest}
-        //                     backgroundColor={this.state.designSystem.backgroundColor}
-        //                     textColor={textColor}
-        //                     state={SwatchStates.rest}
-        //                 />
-        //                 <Swatch
-        //                     color={backgroundColors.hover}
-        //                     backgroundColor={this.state.designSystem.backgroundColor}
-        //                     textColor={textColor}
-        //                     state={SwatchStates.hover}
-        //                 />
-        //                 <Swatch
-        //                     color={backgroundColors.active}
-        //                     backgroundColor={this.state.designSystem.backgroundColor}
-        //                     textColor={textColor}
-        //                     state={SwatchStates.active}
-        //                 />
-        //                 <Swatch
-        //                     color={backgroundColors.selected}
-        //                     backgroundColor={this.state.designSystem.backgroundColor}
-        //                     textColor={neutralForegroundRest(() => backgroundColors.selected)(
-        //                         {} as ColorsDesignSystem
-        //                     )}
-        //                     state={SwatchStates.selected}
-        //                 />
-        //                 <Caption jssStyleSheet={this.titleStyleOverrides}>
-        //                     NEUTRAL / OUTLINE
-        //                 </Caption>
-        //                 <Swatch
-        //                     color={borderColors.rest}
-        //                     backgroundColor={this.state.designSystem.backgroundColor}
-        //                     textColor={neutralForegroundRest(
-        //                         Object.assign({}, this.state.designSystem, {
-        //                             backgroundColor: borderColors.hover,
-        //                         })
-        //                     )}
-        //                     state={SwatchStates.rest}
-        //                     showTextContrast={false}
-        //                     showBackgroundContrast={false}
-        //                 />
-        //                 <Swatch
-        //                     color={borderColors.hover}
-        //                     backgroundColor={this.state.designSystem.backgroundColor}
-        //                     textColor={neutralForegroundRest(
-        //                         Object.assign({}, this.state.designSystem, {
-        //                             backgroundColor: borderColors.hover,
-        //                         })
-        //                     )}
-        //                     state={SwatchStates.hover}
-        //                     showTextContrast={false}
-        //                     showBackgroundContrast={false}
-        //                 />
-        //                 <Swatch
-        //                     color={borderColors.active}
-        //                     backgroundColor={this.state.designSystem.backgroundColor}
-        //                     textColor={neutralForegroundRest(
-        //                         Object.assign({}, this.state.designSystem, {
-        //                             backgroundColor: borderColors.active,
-        //                         })
-        //                     )}
-        //                     state={SwatchStates.active}
-        //                     showTextContrast={false}
-        //                     showBackgroundContrast={false}
-        //                 />
-        //                 <Caption jssStyleSheet={this.titleStyleOverrides}>
-        //                     NEUTRAL / FOREGROUND
-        //                 </Caption>
-        //                 <Swatch
-        //                     color={textColor}
-        //                     backgroundColor={this.state.designSystem.backgroundColor}
-        //                     showTextContrast={false}
-        //                     showBackgroundContrast={false}
-        //                     textColor={neutralForegroundRest(
-        //                         Object.assign({}, this.state.designSystem, {
-        //                             backgroundColor: textColor,
-        //                         })
-        //                     )}
-        //                 />
-        //             </React.Fragment>
-        //         );
-    }
-
-    private renderTextComponent(): React.ReactNode {
+    private renderTextComponents(): React.ReactNode {
         return (
             <React.Fragment>
                 {this.renderExample(<Paragraph>Neutral</Paragraph>)}
-                <SwatchTwo
-                    type={SwatchTwoTypes.foreground}
+                <Swatch
+                    type={SwatchTypes.foreground}
                     fillRecipe={backgroundColor}
                     foregroundRecipe={neutralForegroundRest}
                     recipeName="neutralForegroundRest"
@@ -536,8 +417,8 @@ class ColorBlocksBase extends React.Component<ColorBlocksProps, ColorBlocksState
                 {this.renderExample(
                     <Caption jssStyleSheet={this.hintTextStyleOverries}>Hint</Caption>
                 )}
-                <SwatchTwo
-                    type={SwatchTwoTypes.foreground}
+                <Swatch
+                    type={SwatchTypes.foreground}
                     fillRecipe={backgroundColor}
                     foregroundRecipe={neutralForegroundHint}
                     recipeName="neutralForegroundHint"
@@ -545,24 +426,66 @@ class ColorBlocksBase extends React.Component<ColorBlocksProps, ColorBlocksState
 
                 {this.renderExample(<Hypertext href={"#"}>Accent</Hypertext>)}
 
-                <SwatchTwo
-                    type={SwatchTwoTypes.foreground}
+                <Swatch
+                    type={SwatchTypes.foreground}
                     fillRecipe={backgroundColor}
                     foregroundRecipe={accentForegroundRest}
                     recipeName="accentForegroundRest"
                 />
-                <SwatchTwo
-                    type={SwatchTwoTypes.foreground}
+                <Swatch
+                    type={SwatchTypes.foreground}
                     fillRecipe={backgroundColor}
                     foregroundRecipe={accentForegroundHover}
                     recipeName="accentForegroundHover"
                 />
-                <SwatchTwo
-                    type={SwatchTwoTypes.foreground}
+                <Swatch
+                    type={SwatchTypes.foreground}
                     fillRecipe={backgroundColor}
                     foregroundRecipe={accentForegroundActive}
                     recipeName="accentForegroundActive"
                 />
+                <FocusSwatch fillRecipe={accentFillRest} />
+            </React.Fragment>
+        );
+    }
+
+    private renderFormComponents(): React.ReactNode {
+        return (
+            <React.Fragment>
+                {this.renderExample(<TextField placeholder="jerry@microsoft.com" />)}
+                <Swatch
+                    type={SwatchTypes.fill}
+                    fillRecipe={neutralFillInputRest}
+                    recipeName="neutralFillInputRest"
+                    foregroundRecipe={neutralForegroundRest}
+                />
+                <Swatch
+                    type={SwatchTypes.foreground}
+                    fillRecipe={neutralFillInputRest}
+                    foregroundRecipe={neutralForegroundHint}
+                    recipeName="neutralForegroundHint"
+                />
+                <Swatch
+                    type={SwatchTypes.foreground}
+                    fillRecipe={neutralFillInputRest}
+                    foregroundRecipe={neutralForegroundRest}
+                    recipeName="neutralForegroundRest"
+                />
+                <Swatch
+                    type={SwatchTypes.outline}
+                    fillRecipe={backgroundColor}
+                    foregroundRecipe={neutralForegroundRest}
+                    outlineRecipe={neutralOutlineRest}
+                    recipeName="neutralOutlineRest"
+                />
+                <Swatch
+                    type={SwatchTypes.outline}
+                    fillRecipe={backgroundColor}
+                    foregroundRecipe={neutralForegroundRest}
+                    outlineRecipe={neutralOutlineHover}
+                    recipeName="neutralOutlineHover"
+                />
+                <FocusSwatch fillRecipe={accentFillRest} />
             </React.Fragment>
         );
     }

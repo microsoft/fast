@@ -26,144 +26,13 @@ import {
 } from "@microsoft/fast-components-styles-msft/dist/utilities/color/common";
 import { format } from "@microsoft/fast-jss-utilities";
 
-export enum SwatchStates {
-    rest = "rest",
-    hover = "hover",
-    active = "active",
-    disabled = "disabled",
-    selected = "selected",
-}
-
-interface SwatchClassNameContract {
-    swatch: string;
-}
-
-interface SwatchManagedClasses {
-    managedClasses: SwatchClassNameContract;
-}
-
-interface SwatchProps extends SwatchManagedClasses {
-    /**
-     * The color of the swatch
-     */
-    color: string;
-
-    /**
-     * The background color that the swatch is relative to
-     */
-    backgroundColor: string;
-
-    /**
-     * The color of text against the swatch
-     */
-    textColor: string;
-
-    /**
-     * The type of component the swatch maps to
-     */
-    component?: ComponentTypes;
-
-    /**
-     * The UI state the swatch maps to
-     */
-    state?: SwatchStates;
-
-    /**
-     * Show contrast between color and background color
-     */
-    showBackgroundContrast?: boolean;
-
-    /**
-     * Show contrast between color and background color
-     */
-    showTextContrast?: boolean;
-}
-
-const styles: ComponentStyleSheet<SwatchClassNameContract, ColorsDesignSystem> = {
-    swatch: {
-        height: "36px",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        margin: "4px 0",
-        transition: "background-color .05s ease-in",
-        width: "180px",
-        fontSize: "12px",
-        borderRadius: "18px",
-        boxShadow: (elevation(ElevationMultiplier.e2, "#000")(undefined as any) as any)
-            .boxShadow,
-    },
-};
-
-function SwatchBase(props: SwatchProps): JSX.Element {
-    const showBackgroundContrast: boolean =
-        props.showBackgroundContrast === false ? false : true;
-    const showTextContrast: boolean = props.showTextContrast === false ? false : true;
-
-    const backgroundContrast: string = contrastRatio(
-        parseColorHexRGB(props.backgroundColor) as any,
-        parseColorHexRGB(props.color) as any
-    ).toFixed(2);
-    const textContrast: string = contrastRatio(
-        parseColorHexRGB(props.color) as any,
-        parseColorHexRGB(props.textColor) as any
-    ).toFixed(2);
-    const id: string = `${props.component}-${props.state}`;
-    const classNames: string = classnames(props.managedClasses.swatch);
-
-    const backgroundContrastMessage: string = showBackgroundContrast
-        ? `BG Contrast: ${backgroundContrast}:1`
-        : "";
-
-    const textContrastMessage: string = showTextContrast
-        ? `Text contrast: ${textContrast}:1`
-        : "";
-
-    const title: string | undefined =
-        backgroundContrastMessage.length > 0 && textContrastMessage.length > 0
-            ? backgroundContrastMessage.concat("\n", textContrastMessage)
-            : backgroundContrastMessage.length > 0
-                ? backgroundContrastMessage
-                : textContrastMessage.length > 0
-                    ? textContrastMessage
-                    : undefined;
-
-    const color: string = props.color.toUpperCase();
-    const text: string =
-        typeof props.state === "string"
-            ? props.state.toUpperCase().concat(": ", color)
-            : color;
-
-    const stylesOverrides: any = {
-        backgroundColor: props.color,
-        color: props.textColor,
-    };
-
-    return (
-        <div
-            className={classNames}
-            aria-describedby={id}
-            style={!props.component ? stylesOverrides : null}
-            title={title}
-        >
-            <span>{text}</span>
-        </div>
-    );
-}
-
-/* tslint:disable-next-line */
-const Swatch = manageJss(styles)(SwatchBase);
-type Swatch = InstanceType<typeof Swatch>;
-
-export { Swatch };
-
-export enum SwatchTwoTypes {
+export enum SwatchTypes {
     fill = "fill",
     foreground = "foreground",
     outline = "outline",
 }
 
-export interface SwatchTwoClassNameContract {
+export interface SwatchClassNameContract {
     swatch: string;
     swatch_icon: string;
     swatch_recipeName: string;
@@ -173,15 +42,15 @@ export interface SwatchTwoClassNameContract {
     swatch__outline: string;
 }
 
-export interface SwatchTwoManagedClasses {
-    managedClasses: SwatchTwoClassNameContract;
+export interface SwatchManagedClasses {
+    managedClasses: SwatchClassNameContract;
 }
 
-interface SwatchTwoBaseProps extends SwatchTwoManagedClasses {
+interface SwatchBaseProps extends SwatchManagedClasses {
     /**
      * The type of recipe the swatch represents
      */
-    type: SwatchTwoTypes;
+    type: SwatchTypes;
 
     /**
      * Recipe name - we can't always pull this from the function name
@@ -205,7 +74,7 @@ interface SwatchTwoBaseProps extends SwatchTwoManagedClasses {
 }
 
 const swatchTwoStyles: ComponentStyleSheet<
-    SwatchTwoClassNameContract,
+    SwatchClassNameContract,
     ColorsDesignSystem
 > = {
     swatch: {
@@ -257,7 +126,7 @@ type SwatchIconFactory = (
 ) => DesignSystemResolver<JSX.Element>;
 
 function iconStyleOverrides(
-    type: SwatchTwoTypes
+    type: SwatchTypes
 ): (
     designSystem: ColorsDesignSystem,
     fillRecipe: ColorRecipe<string>,
@@ -270,7 +139,7 @@ function iconStyleOverrides(
         foregroundRecipe: ColorRecipe<string>,
         outlineRecipe?: ColorRecipe<string>
     ): React.CSSProperties => {
-        return type === SwatchTwoTypes.outline
+        return type === SwatchTypes.outline
             ? {
                   border: `4px solid ${
                       typeof outlineRecipe === "function"
@@ -279,7 +148,7 @@ function iconStyleOverrides(
                   }`,
                   backgroundColor: "transparent",
               }
-            : type === SwatchTwoTypes.foreground
+            : type === SwatchTypes.foreground
                 ? {
                       color: foregroundRecipe(designSystem),
                       background: fillRecipe(designSystem),
@@ -318,7 +187,7 @@ const formatTextContrast: ReturnType<typeof formatContrast> = formatContrast(
     "Text contrast: {0} : 1\n"
 );
 
-function iconFactoryByType(type: SwatchTwoTypes): SwatchIconFactory {
+function iconFactoryByType(type: SwatchTypes): SwatchIconFactory {
     return (
         className: string,
         fillRecipe: ColorRecipe<string>,
@@ -327,16 +196,15 @@ function iconFactoryByType(type: SwatchTwoTypes): SwatchIconFactory {
     ): DesignSystemResolver<JSX.Element> => {
         return (designSystem: ColorsDesignSystem): JSX.Element => {
             const backgroundContrastMessage: string = formatBackgroundContrast(
-                type === SwatchTwoTypes.foreground
+                type === SwatchTypes.foreground
                     ? foregroundRecipe
-                    : type === SwatchTwoTypes.outline &&
-                      typeof outlineRecipe === "function"
+                    : type === SwatchTypes.outline && typeof outlineRecipe === "function"
                         ? outlineRecipe
                         : fillRecipe,
                 backgroundColor
             )(designSystem);
             const tooltip: string =
-                type === SwatchTwoTypes.fill && typeof foregroundRecipe === "function"
+                type === SwatchTypes.fill && typeof foregroundRecipe === "function"
                     ? backgroundContrastMessage.concat(
                           formatTextContrast(fillRecipe, foregroundRecipe)(designSystem)
                       )
@@ -359,7 +227,7 @@ function iconFactoryByType(type: SwatchTwoTypes): SwatchIconFactory {
 }
 
 function colorByType(
-    type: SwatchTwoTypes
+    type: SwatchTypes
 ): (
     fillRecipe: DesignSystemResolver<string>,
     foregroundRecipe: DesignSystemResolver<string>,
@@ -370,20 +238,19 @@ function colorByType(
         foregroundRecipe: DesignSystemResolver<string>,
         outlineRecipe?: DesignSystemResolver<string>
     ): DesignSystemResolver<string> => {
-        return type === SwatchTwoTypes.outline && typeof outlineRecipe === "function"
+        return type === SwatchTypes.outline && typeof outlineRecipe === "function"
             ? outlineRecipe
-            : type === SwatchTwoTypes.foreground
+            : type === SwatchTypes.foreground
                 ? foregroundRecipe
                 : fillRecipe;
     };
 }
 
-function SwatchTwoBase(props: SwatchTwoBaseProps): JSX.Element {
+function SwatchBase(props: SwatchBaseProps): JSX.Element {
     const className: string = classnames(props.managedClasses.swatch, {
-        [props.managedClasses.swatch__fill]: props.type === SwatchTwoTypes.fill,
-        [props.managedClasses.swatch__foreground]:
-            props.type === SwatchTwoTypes.foreground,
-        [props.managedClasses.swatch__outline]: props.type === SwatchTwoTypes.outline,
+        [props.managedClasses.swatch__fill]: props.type === SwatchTypes.fill,
+        [props.managedClasses.swatch__foreground]: props.type === SwatchTypes.foreground,
+        [props.managedClasses.swatch__outline]: props.type === SwatchTypes.outline,
     });
 
     return (
@@ -413,8 +280,8 @@ function SwatchTwoBase(props: SwatchTwoBaseProps): JSX.Element {
 }
 
 /* tslint:disable-next-line */
-const SwatchTwo = manageJss(swatchTwoStyles)(SwatchTwoBase);
-type SwatchTwo = InstanceType<typeof SwatchTwo>;
-export type SwatchTwoProps = Omit<SwatchTwoBaseProps, "managedClasses">;
+const Swatch = manageJss(swatchTwoStyles)(SwatchBase);
+type Swatch = InstanceType<typeof Swatch>;
+export type SwatchProps = Omit<SwatchBaseProps, "managedClasses">;
 
-export { SwatchTwo };
+export { Swatch };
