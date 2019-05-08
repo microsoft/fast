@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.5.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-tooling-react@1.4.0...@microsoft/fast-tooling-react@1.5.0) (2019-05-08)
+
+
+### Bug Fixes
+
+* schemas should use examples as arrays ([#1726](https://github.com/Microsoft/fast-dna/issues/1726)) ([2fa0392](https://github.com/Microsoft/fast-dna/commit/2fa0392))
+
+
+### Features
+
+* add an ad-hoc css property editor ([#1729](https://github.com/Microsoft/fast-dna/issues/1729)) ([d42339a](https://github.com/Microsoft/fast-dna/commit/d42339a))
+
+
+
+
+
 # [1.4.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-tooling-react@1.3.1...@microsoft/fast-tooling-react@1.4.0) (2019-05-01)
 
 

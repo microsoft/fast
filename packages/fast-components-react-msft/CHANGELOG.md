@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.6.2](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-msft@4.6.1...@microsoft/fast-components-react-msft@4.6.2) (2019-05-08)
+
+
+### Bug Fixes
+
+* addresses data issues with input button in text action ([#1728](https://github.com/Microsoft/fast-dna/issues/1728)) ([807a3ad](https://github.com/Microsoft/fast-dna/commit/807a3ad))
+* schemas should use examples as arrays ([#1726](https://github.com/Microsoft/fast-dna/issues/1726)) ([2fa0392](https://github.com/Microsoft/fast-dna/commit/2fa0392))
+
+
+
+
+
 ## [4.6.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-msft@4.6.0...@microsoft/fast-components-react-msft@4.6.1) (2019-05-01)
 
 
