@@ -45,21 +45,17 @@ describe("neutralForegroundHint", (): void => {
         );
     });
 
-    test("should always return a color that has at least 4.5 : 1 against the background", (): void => {
-        neutralPalette.concat(accentPalette).forEach(
-            (swatch: Swatch): void => {
-                function retrieveContrast(
-                    resolvedSwatch: Swatch,
-                    fn: SwatchRecipe
-                ): number {
-                    return parseFloat(
-                        contrast(
-                            fn(() => resolvedSwatch)(designSystemDefaults),
-                            resolvedSwatch
-                        ).toPrecision(3)
-                    );
-                }
-
+    function retrieveContrast(resolvedSwatch: Swatch, fn: SwatchRecipe): number {
+        return parseFloat(
+            contrast(
+                fn(() => resolvedSwatch)(designSystemDefaults),
+                resolvedSwatch
+            ).toPrecision(3)
+        );
+    }
+    neutralPalette.concat(accentPalette).forEach(
+        (swatch: Swatch): void => {
+            test(`${swatch} should always be at least 4.5 : 1 against the background`, (): void => {
                 expect(
                     retrieveContrast(swatch, neutralForegroundHint)
                     // Because neutralForegroundHint follows the direction patterns of neutralForeground,
@@ -72,7 +68,7 @@ describe("neutralForegroundHint", (): void => {
                 expect(retrieveContrast(swatch, neutralForegroundHintLarge)).toBeLessThan(
                     3.3
                 );
-            }
-        );
-    });
+            });
+        }
+    );
 });

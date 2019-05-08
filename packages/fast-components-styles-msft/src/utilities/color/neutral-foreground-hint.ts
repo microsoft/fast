@@ -2,6 +2,7 @@ import { DesignSystem } from "../../design-system";
 import {
     findClosestSwatchIndex,
     findSwatchIndex,
+    isDarkMode,
     Palette,
     palette,
     PaletteType,
@@ -30,7 +31,7 @@ function neturalForegroundHintDirectionResolver(
     referenceIndex: number,
     sourcePalette: Palette
 ): 1 | -1 {
-    return referenceIndex >= Math.floor(sourcePalette.length / 2) ? -1 : 1;
+    return referenceIndex > Math.ceil(sourcePalette.length / 2) ? -1 : 1;
 }
 
 const neutralForegroundHintAlgorithm: ReturnType<
