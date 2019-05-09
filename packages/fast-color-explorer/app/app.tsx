@@ -104,7 +104,11 @@ class App extends React.Component<AppProps, {}> {
 
         return (
             <div style={props.style} key={color}>
-                <ColorBlocks {...{ backgroundColor: color, index: props.index } as any} />
+                <Background value={color} style={{ minHeight: "100%" }}>
+                    <ColorBlocks
+                        {...{ backgroundColor: color, index: props.index } as any}
+                    />
+                </Background>
             </div>
         );
     };

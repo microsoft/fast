@@ -58,7 +58,6 @@ const styles: ComponentStyleSheet<ColorBlocksClassNameContract, ColorsDesignSyst
         color: neutralForegroundRest,
         position: "relative",
         transition: "opacity .1s linear",
-        background: backgroundColor,
         height: "100%",
     },
     colorBlocks_title: {
@@ -76,7 +75,7 @@ const styles: ComponentStyleSheet<ColorBlocksClassNameContract, ColorsDesignSyst
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        padding: "0 48px",
+        padding: "0 48px 36px",
     },
     colorBlocks_example: {
         height: "60px",
