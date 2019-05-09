@@ -1,14 +1,5 @@
+import React from "react";
 import { ButtonClassNameContract } from "@microsoft/fast-components-react-base";
-import {
-    Background,
-    Button,
-    ButtonAppearance,
-    Caption,
-    CaptionClassNameContract,
-    Hypertext,
-    Paragraph,
-    TextField,
-} from "@microsoft/fast-components-react-msft";
 import {
     accentFillActive,
     accentFillHover,
@@ -39,8 +30,18 @@ import {
 } from "@microsoft/fast-components-styles-msft";
 import manageJss, { ComponentStyleSheet } from "@microsoft/fast-jss-manager-react";
 import classnames from "classnames";
-import { get, isEqual } from "lodash-es";
-import React from "react";
+import { get, isEqual, uniqueId } from "lodash-es";
+import {
+    Background,
+    Button,
+    ButtonAppearance,
+    Caption,
+    CaptionClassNameContract,
+    Checkbox,
+    Hypertext,
+    Paragraph,
+    TextField,
+} from "@microsoft/fast-components-react-msft";
 import { connect } from "react-redux";
 import { Omit } from "utility-types";
 import { ColorsDesignSystem } from "./design-system";
@@ -463,6 +464,38 @@ class ColorBlocksBase extends React.Component<ColorBlocksProps, ColorBlocksState
                     fillRecipe={neutralFillInputRest}
                     foregroundRecipe={neutralForegroundHint}
                     recipeName="neutralForegroundHint"
+                />
+                <Swatch
+                    type={SwatchTypes.foreground}
+                    fillRecipe={neutralFillInputRest}
+                    foregroundRecipe={neutralForegroundRest}
+                    recipeName="neutralForegroundRest"
+                />
+                <Swatch
+                    type={SwatchTypes.outline}
+                    fillRecipe={backgroundColor}
+                    foregroundRecipe={neutralForegroundRest}
+                    outlineRecipe={neutralOutlineRest}
+                    recipeName="neutralOutlineRest"
+                />
+                <Swatch
+                    type={SwatchTypes.outline}
+                    fillRecipe={backgroundColor}
+                    foregroundRecipe={neutralForegroundRest}
+                    outlineRecipe={neutralOutlineHover}
+                    recipeName="neutralOutlineHover"
+                />
+                <FocusSwatch fillRecipe={accentFillRest} />
+                {this.renderExample(
+                    <Checkbox inputId={uniqueId()}>
+                        <label slot="label">Checkbox</label>
+                    </Checkbox>
+                )}
+                <Swatch
+                    type={SwatchTypes.fill}
+                    fillRecipe={neutralFillInputRest}
+                    recipeName="neutralFillInputRest"
+                    foregroundRecipe={neutralForegroundRest}
                 />
                 <Swatch
                     type={SwatchTypes.foreground}
