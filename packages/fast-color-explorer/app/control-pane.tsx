@@ -1,12 +1,13 @@
+import { ColorRGBA64, parseColorHexRGB } from "@microsoft/fast-colors";
 import {
     Heading,
     HeadingSize,
     HeadingTag,
     Label,
-    Select,
+    Radio,
+    RadioSlot,
     SelectOption,
 } from "@microsoft/fast-components-react-msft";
-import { get, values } from "lodash-es";
 import {
     backgroundColor,
     cornerRadius,
@@ -22,12 +23,14 @@ import manageJss, {
     ComponentStyleSheet,
     ManagedClasses,
 } from "@microsoft/fast-jss-manager-react";
+import { format, toPx } from "@microsoft/fast-jss-utilities";
 import { Pane } from "@microsoft/fast-layouts-react";
 import classnames from "classnames";
-import { ColorRGBA64, parseColorHexRGB } from "@microsoft/fast-colors";
+import { get, values } from "lodash-es";
 import React from "react";
 import { SketchPicker } from "react-color";
 import { connect } from "react-redux";
+import { AccentColors, neutralColors } from "./colors";
 import { ColorsDesignSystem } from "./design-system";
 import {
     AppState,
@@ -36,8 +39,6 @@ import {
     setComponentType,
     setNeutralBaseColor,
 } from "./state";
-import { format, toPx } from "@microsoft/fast-jss-utilities";
-import { AccentColors, neutralColors } from "./colors";
 
 export interface ControlPaneClassNameContract {
     controlPane: string;
@@ -137,6 +138,13 @@ const styles: any = (
     };
 };
 
+function titleCase(str: string): string {
+    return str
+        .split("")
+        .reduce((accumulated: string, value: string, index: number): string => {
+            return accumulated.concat(index === 0 ? value.toUpperCase() : value);
+        }, "");
+}
 class ControlPaneBase extends React.Component<ControlPaneProps, ControlPaneState> {
     private labelStyles: React.CSSProperties = {
         marginBottom: "8px",
@@ -200,6 +208,23 @@ class ControlPaneBase extends React.Component<ControlPaneProps, ControlPaneState
         e.preventDefault();
     }
 
+    private generateComponentSelectionRadio = (type: ComponentTypes): JSX.Element => {
+        return (
+            <div key={type}>
+                <Radio
+                    inputId={type}
+                    checked={type === this.props.componentType}
+                    name="component"
+                    onChange={this.handleComponentValueChange}
+                    value={type}
+                >
+                    <Label htmlFor={type} slot={RadioSlot.label}>
+                        {titleCase(type)}
+                    </Label>
+                </Radio>
+            </div>
+        );
+    };
     private renderComponentSelector(): JSX.Element {
         const items: JSX.Element[] = Object.keys(ComponentTypes).map(
             (key: string): JSX.Element => {
@@ -212,19 +237,19 @@ class ControlPaneBase extends React.Component<ControlPaneProps, ControlPaneState
         return (
             <React.Fragment>
                 <Label style={this.labelStyles}>Component type</Label>
-                <Select
-                    selectedItems={[this.props.componentType]}
-                    onValueChange={this.handleComponentValueChange}
-                    style={this.inputStyles}
-                >
-                    {items}
-                </Select>
+                <div style={{ marginBottom: "12px" }}>
+                    {Object.keys(ComponentTypes).map(
+                        this.generateComponentSelectionRadio
+                    )}
+                </div>
             </React.Fragment>
         );
     }
 
-    private handleComponentValueChange = (newValue: string): void => {
-        this.props.setComponentType(newValue);
+    private handleComponentValueChange = (
+        e: React.ChangeEvent<HTMLInputElement>
+    ): void => {
+        this.props.setComponentType(e.target.value);
     };
 
     private renderAccentBaseColorInput(): JSX.Element {
