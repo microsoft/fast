@@ -161,6 +161,14 @@ describe("checkbox", (): void => {
         );
     });
 
+    test("should apply a value prop to the input element", (): void => {
+        const rendered: any = mount(
+            <Checkbox managedClasses={managedClasses} inputId="id" value="myValue" />
+        );
+
+        expect(rendered.find("input").prop("value")).toBe("myValue");
+    });
+
     // parametrized checkbox class name tests
     [
         {

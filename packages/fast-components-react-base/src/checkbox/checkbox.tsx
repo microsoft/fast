@@ -59,6 +59,7 @@ class Checkbox extends Foundation<
         managedClasses: void 0,
         name: void 0,
         onChange: void 0,
+        value: void 0,
     };
 
     /**
@@ -108,6 +109,7 @@ class Checkbox extends Foundation<
                     onChange={this.handleCheckboxChange}
                     disabled={this.props.disabled || null}
                     checked={this.state.checked}
+                    value={this.props.value}
                 />
                 <span
                     className={get(this.props, "managedClasses.checkbox_stateIndicator")}
