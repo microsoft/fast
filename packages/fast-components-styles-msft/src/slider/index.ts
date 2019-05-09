@@ -89,6 +89,9 @@ const styles: ComponentStyles<SliderClassNameContract, DesignSystem> = {
             "&:hover": {
                 background: neutralForegroundRest,
             },
+            "&:active": {
+                background: neutralForegroundRest,
+            },
         },
     },
     slider__horizontal: {
