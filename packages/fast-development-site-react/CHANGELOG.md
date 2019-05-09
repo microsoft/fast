@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.2.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-development-site-react@4.1.3...@microsoft/fast-development-site-react@4.2.0) (2019-05-08)
+
+
+### Bug Fixes
+
+* schemas should use examples as arrays ([#1726](https://github.com/Microsoft/fast-dna/issues/1726)) ([2fa0392](https://github.com/Microsoft/fast-dna/commit/2fa0392))
+
+
+### Features
+
+* add a CSS property component to the configuration pane ([#1742](https://github.com/Microsoft/fast-dna/issues/1742)) ([e1077a4](https://github.com/Microsoft/fast-dna/commit/e1077a4))
+
+
+
+
+
 ## [4.1.3](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-development-site-react@4.1.2...@microsoft/fast-development-site-react@4.1.3) (2019-05-01)
 
 
