@@ -1,15 +1,12 @@
 {
     "compilerOptions": {
-        "esModuleInterop": true,
-        "moduleResolution": "node",
-        "module": "ES6",
-        "target": "ES6",
         "baseUrl": ".",
         "declaration": true,
-        "esModuleInterop": true
-    },
-    "exclude": [
-        "node_modules",
-        "**/*.spec.ts"
-    ]
+        "esModuleInterop": true,
+        "esModuleInterop": true,
+        "jsx": "react",
+        "module": "ES6",
+        "moduleResolution": "node",
+        "target": "ES6"
+    }
 }
