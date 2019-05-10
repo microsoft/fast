@@ -36,7 +36,7 @@ import SiteCategoryIcon from "./category-icon";
 import SiteCategoryItem from "./category-item";
 import ActionBar from "./action-bar";
 import DevTools, { Framework } from "./dev-tools";
-import ConfigurationPanel from "./configuration-panel";
+import ConfigurationPanel, { DesignSystemEditingConfig } from "./configuration-panel";
 import NotFound from "./not-found";
 import ComponentView, { ComponentViewTypes } from "./component-view";
 import {
@@ -76,6 +76,7 @@ export interface SiteProps {
     onUpdateDirection?: (ltr: Direction) => void;
     onUpdateTheme?: (theme: string) => void;
     styleEditing?: boolean;
+    designSystemEditing?: DesignSystemEditingConfig;
     locales?: string[];
     themes?: Theme[];
     activeTheme?: Theme;
@@ -130,6 +131,7 @@ export interface SiteState {
     locale: string;
     theme: Theme;
     navigationLevel: NavigationLevel;
+    designSystem: any;
 }
 
 export enum SiteSlot {
@@ -411,6 +413,7 @@ class Site extends React.Component<
             locale: "en",
             theme: this.props.activeTheme || this.getInitialTheme(),
             navigationLevel: NavigationLevel.catalog,
+            designSystem: this.props.designSystemEditing.data,
         };
     }
 
@@ -798,6 +801,12 @@ class Site extends React.Component<
         }
     };
 
+    private handleDesignSystemDataChange = (data: any): void => {
+        this.setState({
+            designSystem: data,
+        });
+    };
+
     private handleToggleDevToolsView = (): void => {
         this.setState({
             devToolsView: !this.state.devToolsView,
@@ -939,6 +948,11 @@ class Site extends React.Component<
                     formChildOptions={this.props.formChildOptions}
                     onLocationUpdate={this.handleLocationUpdate}
                     styleEditing={this.props.styleEditing}
+                    designSystemEditing={{
+                        schema: this.props.designSystemEditing.schema,
+                        data: this.state.designSystem,
+                    }}
+                    designSystemOnChange={this.handleDesignSystemDataChange}
                 />
             );
         }
@@ -971,7 +985,10 @@ class Site extends React.Component<
                             transparentBackground={
                                 this.state.componentBackgroundTransparent
                             }
-                            designSystem={componentItem.props.designSystem}
+                            designSystem={
+                                this.state.designSystem ||
+                                componentItem.props.designSystem
+                            }
                             active={index === this.state.activeComponentIndex}
                             view={this.state.componentView}
                         >
@@ -1018,7 +1035,7 @@ class Site extends React.Component<
                     background={this.generateComponentWrapperBackground()}
                     dir={isRTL(this.state.locale) ? Direction.rtl : Direction.ltr}
                     transparentBackground={this.state.componentBackgroundTransparent}
-                    designSystem={component.props.designSystem}
+                    designSystem={this.state.designSystem || component.props.designSystem}
                     active={true}
                     view={this.state.componentView}
                 >
