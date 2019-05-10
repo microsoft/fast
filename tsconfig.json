@@ -1,8 +1,6 @@
 {
     "compilerOptions": {
-        "baseUrl": ".",
         "declaration": true,
-        "esModuleInterop": true,
         "esModuleInterop": true,
         "jsx": "react",
         "module": "ES6",
