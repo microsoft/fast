@@ -189,7 +189,7 @@ class FormControl extends React.Component<FormControlProps, {}> {
             label: get(this.props, "schema.title"),
             disabled: get(this.props, "schema.disabled"),
             onChange: this.props.onChange,
-            default: get(this.props, "schema.default"),
+            default: get(this.props, "schema.default") || this.props.default,
             badge: get(this.props, "schema.badge"),
             badgeDescription: get(this.props, "schema.badgeDescription"),
             invalidMessage: this.props.invalidMessage,

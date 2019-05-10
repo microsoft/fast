@@ -115,11 +115,12 @@ describe("Display", () => {
             />
         );
 
-        expect(rendered.find("input")).toHaveLength(2);
+        expect(
+            rendered.find(`.${managedClasses.formItemDisplay__disabled}`)
+        ).toHaveLength(1);
         expect(
             rendered
-                .find("input")
-                .at(0)
+                .find(`.${managedClasses.formItemDisplay_controlInput}`)
                 .prop("disabled")
         ).toBeTruthy();
     });
@@ -182,8 +183,7 @@ describe("Display", () => {
 
         expect(
             rendered
-                .find("input")
-                .at(0)
+                .find(`.${managedClasses.formItemDisplay_controlInput}`)
                 .getDOMNode()
                 .checkValidity()
         ).toBe(false);
@@ -201,8 +201,7 @@ describe("Display", () => {
 
         expect(
             rendered
-                .find("input")
-                .at(0)
+                .find(`.${managedClasses.formItemDisplay_controlInput}`)
                 .getDOMNode()
                 .checkValidity()
         ).toBe(true);
@@ -308,7 +307,6 @@ describe("Display", () => {
         const defaultValue: string = "bar";
         const schema: any = {
             const: displayProps.schema.const,
-            default: defaultValue,
         };
         const rendered: any = mount(
             <FormItemDisplay
@@ -316,14 +314,12 @@ describe("Display", () => {
                 managedClasses={managedClasses}
                 data={undefined}
                 schema={schema}
+                default={defaultValue}
             />
         );
 
         expect(
-            rendered
-                .find("input")
-                .at(0)
-                .prop("value")
+            rendered.find(`.${managedClasses.formItemDisplay_controlInput}`).prop("value")
         ).toBe(`\"${defaultValue}\"`);
     });
     test("should not show default values if data exists", () => {
@@ -338,10 +334,7 @@ describe("Display", () => {
             />
         );
         expect(
-            rendered
-                .find("input")
-                .at(0)
-                .prop("value")
+            rendered.find(`.${managedClasses.formItemDisplay_controlInput}`).prop("value")
         ).toBe(`\"${value}\"`);
     });
 });

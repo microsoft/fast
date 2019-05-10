@@ -20,6 +20,7 @@ const formSectionProps: FormSectionProps = {
     onChange: jest.fn(),
     onUpdateActiveSection: jest.fn(),
     validationErrors: null,
+    default: {},
 };
 
 describe("FormSection", () => {
