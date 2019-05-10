@@ -1,16 +1,8 @@
 {
+    "extends": "../../tsconfig.json",
     "compilerOptions": {
-        "esModuleInterop": true,
-        "moduleResolution": "node",
         "module": "commonjs",
-        "target": "ES6",
         "baseUrl": ".",
-        "declaration": true,
-        "jsx": "react",
         "outDir": "./dist"
-    },
-    "include": [
-        "src/**/*",
-        "**/*.spec.ts"
-    ]
+    }
 }
