@@ -62,15 +62,6 @@ class FormSection extends React.Component<
             );
 
             this.setState(initialOneOfAnyOfState);
-
-            if (typeof nextProps.data === "undefined") {
-                const updatedData: any = generateExampleData(
-                    initialOneOfAnyOfState.schema,
-                    ""
-                );
-
-                nextProps.onChange(nextProps.dataLocation, updatedData);
-            }
         }
     }
 

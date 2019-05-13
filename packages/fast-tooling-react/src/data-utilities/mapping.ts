@@ -179,9 +179,9 @@ function mapPluginToData(
 ): any {
     const mappedData: any = cloneDeep(data);
     const pluginModifiedSchemaLocation: string = mapSchemaLocationFromDataLocation(
-        pluginModifiedDataLocation.relativeDataLocation,
-        data,
-        pluginModifiedDataLocation.schema
+        pluginModifiedDataLocation.relativeDataLocation.replace(/(\[\d+\])/g, ""),
+        pluginModifiedDataLocation.schema,
+        data
     );
     const pluginId: string = get(
         pluginModifiedDataLocation.schema,

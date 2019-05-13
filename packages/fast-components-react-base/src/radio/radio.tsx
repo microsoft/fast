@@ -55,6 +55,7 @@ class Radio extends Foundation<RadioHandledProps, RadioUnhandledProps, RadioStat
         name: void 0,
         onChange: void 0,
         children: void 0,
+        value: void 0,
     };
 
     constructor(props: RadioProps) {
@@ -76,6 +77,7 @@ class Radio extends Foundation<RadioHandledProps, RadioUnhandledProps, RadioStat
                     onChange={this.handleRadioChange}
                     disabled={this.props.disabled || null}
                     checked={this.state.checked}
+                    value={this.props.value}
                 />
                 <span
                     className={get(this.props, "managedClasses.radio_stateIndicator")}

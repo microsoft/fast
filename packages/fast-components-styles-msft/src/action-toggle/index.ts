@@ -3,7 +3,11 @@ import {
     ActionToggleClassNameContract,
     ButtonClassNameContract,
 } from "@microsoft/fast-components-class-name-contracts-msft";
-import { applyLocalizedProperty, Direction } from "@microsoft/fast-jss-utilities";
+import {
+    applyLocalizedProperty,
+    Direction,
+    directionSwitch,
+} from "@microsoft/fast-jss-utilities";
 import { DesignSystem, withDesignSystemDefaults } from "../design-system/index";
 import {
     accentForegroundActive,
@@ -27,81 +31,57 @@ export const actionToggleButtonOverrides: ComponentStyles<
         alignItems: "center",
         display: "flex",
         transition: "all 600ms cubic-bezier(0.19, 1, 0.22, 1)",
-        [applyLocalizedProperty("left", "right", Direction.ltr)]: "0",
     },
 };
 
-const styles: ComponentStyles<ActionToggleClassNameContract, DesignSystem> = (
-    config: DesignSystem
-): ComponentStyleSheet<ActionToggleClassNameContract, DesignSystem> => {
-    const designSystem: DesignSystem = withDesignSystemDefaults(config);
-    const direction: Direction = designSystem.direction;
-
-    return {
-        actionToggle: {},
-        actionToggle__selected: {},
-        actionToggle_selectedGlyph: {
-            display: "inline-block",
-            position: "relative",
-            width: glyphSize,
-            height: glyphSize,
+const styles: ComponentStyles<ActionToggleClassNameContract, DesignSystem> = {
+    actionToggle: {},
+    actionToggle__selected: {},
+    actionToggle_selectedGlyph: {
+        display: "inline-block",
+        position: "relative",
+        width: glyphSize,
+        height: glyphSize,
+    },
+    actionToggle_unselectedGlyph: {
+        display: "inline-block",
+        position: "relative",
+        width: glyphSize,
+        height: glyphSize,
+    },
+    actionToggle__primary: {
+        "& $actionToggle_selectedGlyph, & $actionToggle_unselectedGlyph": {
+            fill: accentForegroundCut,
         },
-        actionToggle_unselectedGlyph: {
-            display: "inline-block",
-            position: "relative",
-            width: glyphSize,
-            height: glyphSize,
+        "&$actionToggle__disabled $actionToggle_selectedGlyph, &$actionToggle__disabled $actionToggle_unselectedGlyph": {
+            fill: accentForegroundCut,
         },
-        actionToggle__primary: {
+    },
+    actionToggle__lightweight: {
+        "& $actionToggle_selectedGlyph, & $actionToggle_unselectedGlyph": {
+            fill: accentForegroundRest,
+        },
+        "&:hover": {
             "& $actionToggle_selectedGlyph, & $actionToggle_unselectedGlyph": {
-                fill: accentForegroundCut,
-            },
-            "&$actionToggle__disabled $actionToggle_selectedGlyph, &$actionToggle__disabled $actionToggle_unselectedGlyph": {
-                fill: accentForegroundCut,
+                fill: accentForegroundHover,
             },
         },
-        actionToggle__lightweight: {
+        "&:active": {
             "& $actionToggle_selectedGlyph, & $actionToggle_unselectedGlyph": {
-                fill: accentForegroundRest,
-            },
-            "&:hover": {
-                "& $actionToggle_selectedGlyph, & $actionToggle_unselectedGlyph": {
-                    fill: accentForegroundHover,
-                },
-            },
-            "&:active": {
-                "& $actionToggle_selectedGlyph, & $actionToggle_unselectedGlyph": {
-                    fill: accentForegroundActive,
-                },
-            },
-            "&$actionToggle__disabled $actionToggle_selectedGlyph, &$actionToggle__disabled $actionToggle_unselectedGlyph": {
-                fill: accentForegroundRest,
+                fill: accentForegroundActive,
             },
         },
-        actionToggle__justified: {
-            "& $actionToggle_selectedGlyph, & $actionToggle_unselectedGlyph": {
-                fill: accentForegroundRest,
-            },
-            "&:hover": {
-                "& $actionToggle_selectedGlyph, & $actionToggle_unselectedGlyph": {
-                    fill: accentForegroundHover,
-                },
-            },
-            "&:active": {
-                "& $actionToggle_selectedGlyph, & $actionToggle_unselectedGlyph": {
-                    fill: accentForegroundActive,
-                },
-            },
-            "&$actionToggle__disabled $actionToggle_selectedGlyph, &$actionToggle__disabled $actionToggle_unselectedGlyph": {
-                fill: accentForegroundRest,
-            },
+        "&$actionToggle__disabled $actionToggle_selectedGlyph, &$actionToggle__disabled $actionToggle_unselectedGlyph": {
+            fill: accentForegroundRest,
         },
-        actionToggle__outline: {
+    },
+    actionToggle__justified: {
+        "& $actionToggle_selectedGlyph, & $actionToggle_unselectedGlyph": {
+            fill: accentForegroundRest,
+        },
+        "&:hover": {
             "& $actionToggle_selectedGlyph, & $actionToggle_unselectedGlyph": {
-                fill: neutralForegroundRest,
-            },
-            "&$actionToggle__disabled $actionToggle_selectedGlyph, &$actionToggle__disabled $actionToggle_unselectedGlyph": {
-                fill: neutralForegroundRest,
+                fill: accentForegroundHover,
             },
         },
         actionToggle__stealth: {
@@ -115,14 +95,28 @@ const styles: ComponentStyles<ActionToggleClassNameContract, DesignSystem> = (
         actionToggle__disabled: {},
         actionToggle__hasGlyphAndContent: {
             "& $actionToggle_selectedGlyph, & $actionToggle_unselectedGlyph": {
-                [applyLocalizedProperty(
-                    "marginRight",
-                    "marginLeft",
-                    direction
-                )]: horizontalSpacing(),
+                fill: accentForegroundActive,
             },
         },
-    };
+        "&$actionToggle__disabled $actionToggle_selectedGlyph, &$actionToggle__disabled $actionToggle_unselectedGlyph": {
+            fill: accentForegroundRest,
+        },
+    },
+    actionToggle__outline: {
+        "& $actionToggle_selectedGlyph, & $actionToggle_unselectedGlyph": {
+            fill: neutralForegroundRest,
+        },
+        "&$actionToggle__disabled $actionToggle_selectedGlyph, &$actionToggle__disabled $actionToggle_unselectedGlyph": {
+            fill: neutralForegroundRest,
+        },
+    },
+    actionToggle__disabled: {},
+    actionToggle__hasGlyphAndContent: {
+        "& $actionToggle_selectedGlyph, & $actionToggle_unselectedGlyph": {
+            marginRight: directionSwitch(horizontalSpacing(), ""),
+            marginLeft: directionSwitch("", horizontalSpacing()),
+        },
+    },
 };
 
 export default styles;

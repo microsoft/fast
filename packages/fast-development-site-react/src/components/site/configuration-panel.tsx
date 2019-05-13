@@ -4,15 +4,12 @@ import { get, set } from "lodash-es";
 import devSiteDesignSystemDefaults, { DevSiteDesignSystem } from "../design-system";
 import { applyScrollbarStyle } from "../../utilities";
 import { CSSEditor, Form } from "@microsoft/fast-tooling-react";
+import { CSSPropertyEditor } from "@microsoft/fast-tooling-react/dist/css-property-editor";
 import manageJss, {
     ComponentStyles,
     ManagedClasses,
     ManagedJSSProps,
 } from "@microsoft/fast-jss-manager-react";
-
-export enum TabType {
-    presets = "Presets",
-}
 
 export interface ConfigurationPanelProps {
     formChildOptions: any;
@@ -21,191 +18,66 @@ export interface ConfigurationPanelProps {
     dataLocation: string;
     onChange: any;
     onLocationUpdate: (dataLocation: string) => void;
-    activeTab?: TabType;
     styleEditing?: boolean;
-}
-
-export interface ConfigurationPanelState {
-    activeTab: TabType;
 }
 
 export interface ConfigurationPanelManagedClasses {
     configurationPanel: string;
-    configurationPanel_controls: string;
-    configurationPanel_controlsTabs: string;
-    configurationPanel_tab: string;
-    configurationPanel_tab__active: string;
-    configurationPanel_tabPanel: string;
-    configurationPanel_paneForm: string;
+    configurationPanel_categoryTitle: string;
+    configurationPanel_categorySubTitle: string;
+    configurationPanel_cssPropertyEditorRegion: string;
 }
 
 const style: ComponentStyles<ConfigurationPanelManagedClasses, DevSiteDesignSystem> = {
     configurationPanel: {
         width: "100%",
         height: "100%",
-        overflowY: "scroll",
+        overflowY: "auto",
         overflowX: "auto",
         color: (config: DevSiteDesignSystem): string => {
             return config.foreground300 || devSiteDesignSystemDefaults.foreground300;
         },
         ...applyScrollbarStyle(),
     },
-    configurationPanel_controls: {
-        display: "flex",
-        padding: `0 ${toPx(4)}`,
-        "& ul": {
-            margin: "0",
-            padding: "0",
-            listStyleType: "none",
-            "& li": {
-                display: "inline-block",
-            },
-        },
-        "& button": {
-            color: (config: DevSiteDesignSystem): string => {
-                return config.foreground300 || devSiteDesignSystemDefaults.foreground300;
-            },
-            border: "1px solid transparent",
-            height: "30px",
-            padding: "0 8px",
-            minWidth: "25px",
-            backgroundPosition: "center",
-            "&:hover": {
-                cursor: "pointer",
-                background: "rgba(255, 255, 255, 0.04)",
-            },
-            "&:focus": {
-                outline: "none",
-                border: (config: DevSiteDesignSystem): string => {
-                    return `1px solid ${config.brandColor ||
-                        devSiteDesignSystemDefaults.brandColor}`;
-                },
-            },
-        },
+    configurationPanel_categoryTitle: {
+        fontSize: "12px",
+        fontWeight: "400",
+        padding: "5px 10px 6px",
+        margin: "0 0 10px",
+        borderBottom: "1px solid rgba(213, 213, 213, 0.3)",
+        borderTop: "2px solid rgba(213, 213, 213, 0.3)",
     },
-    configurationPanel_controlsTabs: {
-        flexGrow: "1",
+    configurationPanel_categorySubTitle: {
+        fontSize: "12px",
+        fontWeight: "400",
+        margin: "6px 0",
     },
-    configurationPanel_tab: {
-        "& button": {
-            fontFamily: "inherit",
-            fontSize: "inherit",
-            background: "none",
-            borderRadius: toPx(2),
-            position: "relative",
-            "&:focus": {
-                outline: "none",
-            },
-        },
-    },
-    configurationPanel_tab__active: {
-        "& button": {
-            borderRadius: toPx(3),
-            position: "relative",
-            "&:after": {
-                position: "absolute",
-                bottom: toPx(-1),
-                left: toPx(4),
-                right: toPx(4),
-                content: "''",
-                height: toPx(2),
-                borderRadius: `${toPx(2)} ${toPx(2)} 0 0`,
-                background: (config: DevSiteDesignSystem): string => {
-                    return config.brandColor || devSiteDesignSystemDefaults.brandColor;
-                },
-            },
-        },
-    },
-    configurationPanel_tabPanel: {
-        '&[aria-hidden="true"]': {
-            display: "none",
-        },
-    },
-    configurationPanel_paneForm: {
-        paddingLeft: "10px",
+    configurationPanel_cssPropertyEditorRegion: {
+        padding: "0 10px",
     },
 };
 
 /* tslint:disable-next-line */
 class ConfigurationPanel extends React.Component<
     ConfigurationPanelProps & ManagedClasses<ConfigurationPanelManagedClasses>,
-    ConfigurationPanelState
+    {}
 > {
-    private tabs: TabType[];
-
-    constructor(
-        props: ConfigurationPanelProps & ManagedClasses<ConfigurationPanelManagedClasses>
-    ) {
-        super(props);
-
-        this.tabs = [TabType.presets];
-
-        this.state = {
-            activeTab: this.props.activeTab || TabType.presets,
-        };
-    }
-
     public render(): JSX.Element {
         return (
             <div className={this.props.managedClasses.configurationPanel}>
-                <div className={this.props.managedClasses.configurationPanel_controls}>
-                    {this.renderTabs()}
-                </div>
-                {this.renderTabPanels()}
+                {this.renderForm()}
+                {this.renderCSSEditor()}
+                {this.renderCSSPropertyEditor()}
             </div>
         );
     }
 
-    private renderTabs(): JSX.Element {
-        return (
-            <ul className={this.props.managedClasses.configurationPanel_controlsTabs}>
-                {this.renderTabItems()}
-            </ul>
-        );
-    }
-
-    private renderTabItems(): React.ReactNode {
-        return this.tabs.map((tabItem: TabType, index: number) => {
-            return (
-                <li key={index} className={this.getTabClassNames(tabItem)}>
-                    <button onClick={this.handleChangeTab(tabItem)}>{tabItem}</button>
-                </li>
-            );
-        });
-    }
-
-    private renderTabPanels(): JSX.Element {
-        return <div>{this.renderTabPanelItems()}</div>;
-    }
-
-    private renderTabPanelItems(): JSX.Element[] {
-        return this.tabs.map((tabItem: TabType, index: number) => {
-            return (
-                <div
-                    key={index}
-                    aria-hidden={this.state.activeTab !== tabItem}
-                    className={this.props.managedClasses.configurationPanel_tabPanel}
-                >
-                    {this.renderTabPanelContent(tabItem)}
-                </div>
-            );
-        });
-    }
-
-    private renderTabPanelContent(tabItem: TabType): React.ReactNode {
-        switch (tabItem) {
-            case TabType.presets:
-                return this.renderPresets();
-            default:
-                return null;
-        }
-    }
-
-    private renderPresets(): React.ReactNode {
+    private renderForm(): React.ReactNode {
         return (
             <React.Fragment>
+                {this.renderCategoryTitle("Properties")}
                 <Form
-                    className={this.props.managedClasses.configurationPanel_paneForm}
+                    jssStyleSheet={{ form: { height: "unset" } }}
                     schema={this.props.schema}
                     data={this.props.data}
                     onChange={this.props.onChange}
@@ -215,27 +87,59 @@ class ConfigurationPanel extends React.Component<
                         onChange: this.handleLocationUpdate,
                     }}
                 />
-                {this.renderCSSEditor()}
             </React.Fragment>
         );
     }
 
     private renderCSSEditor(): React.ReactNode {
         if (!!this.props.styleEditing) {
-            return <CSSEditor onChange={this.handleStyleChange} data={this.getStyle()} />;
+            return (
+                <React.Fragment>
+                    {this.renderCategoryTitle("CSS")}
+                    <CSSEditor
+                        jssStyleSheet={{ cssEditor: { height: "unset" } }}
+                        onChange={this.handleStyleChange}
+                        data={this.getStyle()}
+                    />
+                </React.Fragment>
+            );
         }
 
         return null;
     }
 
-    private getTabClassNames(tabItem: TabType): string {
-        if (tabItem === this.state.activeTab) {
-            return `${this.props.managedClasses.configurationPanel_tab} ${
-                this.props.managedClasses.configurationPanel_tab__active
-            }`;
+    private renderCSSPropertyEditor(): React.ReactNode {
+        if (!!this.props.styleEditing) {
+            return (
+                <div
+                    className={
+                        this.props.managedClasses
+                            .configurationPanel_cssPropertyEditorRegion
+                    }
+                >
+                    <h5
+                        className={
+                            this.props.managedClasses.configurationPanel_categorySubTitle
+                        }
+                    >
+                        Additional properties
+                    </h5>
+                    <CSSPropertyEditor
+                        jssStyleSheet={{ cssPropertyEditor: { marginBottom: "20px" } }}
+                        onChange={this.handleStyleChange}
+                        data={this.getStyle()}
+                    />
+                </div>
+            );
         }
+    }
 
-        return this.props.managedClasses.configurationPanel_tab;
+    private renderCategoryTitle(text: string): React.ReactNode {
+        return (
+            <h2 className={this.props.managedClasses.configurationPanel_categoryTitle}>
+                {text}
+            </h2>
+        );
     }
 
     private getStyle(): any {
@@ -260,16 +164,6 @@ class ConfigurationPanel extends React.Component<
     private handleLocationUpdate = (dataLocation: string): void => {
         this.props.onLocationUpdate(dataLocation);
     };
-
-    private handleChangeTab(
-        tab: TabType
-    ): (e: React.MouseEvent<HTMLButtonElement>) => void {
-        return (e: React.MouseEvent<HTMLButtonElement>): void => {
-            this.setState({
-                activeTab: tab,
-            });
-        };
-    }
 }
 
 export default manageJss(style)(ConfigurationPanel);

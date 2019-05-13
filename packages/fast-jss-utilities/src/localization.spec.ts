@@ -1,4 +1,9 @@
-import { applyLocalizedProperty, Direction, localizeSpacing } from "./localization";
+import {
+    applyLocalizedProperty,
+    Direction,
+    directionSwitch,
+    localizeSpacing,
+} from "./localization";
 
 describe("localizeSpacing", (): void => {
     test("should return an empty string if no arguments are passed", (): void => {
@@ -36,5 +41,41 @@ describe("applyLocalizedProperty", (): void => {
     });
     test("should return the second argument when dir='rtl'", (): void => {
         expect(applyLocalizedProperty("left", "right", Direction.rtl)).toBe("right");
+    });
+});
+
+describe("directionSwitch", (): void => {
+    const ltrDesignSystem: { direction: Direction } = {
+        direction: Direction.ltr,
+    };
+    const rtlDesignSystem: { direction: Direction } = {
+        direction: Direction.rtl,
+    };
+
+    test("should return a function", (): void => {
+        expect(typeof directionSwitch("ltr", "rtl")).toBe("function");
+    });
+    test("returned function should return the first argument when executed with a design-system that does not have a direction", (): void => {
+        expect(directionSwitch("ltr", "rtl")({} as any)).toBe("ltr");
+    });
+    test("returned function should return the first argument when executed with a design-system that is ltr", (): void => {
+        expect(directionSwitch("ltr", "rtl")(ltrDesignSystem)).toBe("ltr");
+    });
+    test("returned function should return the second argument when executed with a design-system that is rtl", (): void => {
+        expect(directionSwitch("ltr", "rtl")(rtlDesignSystem)).toBe("rtl");
+    });
+    test("returned function should return the resolved first argument when executed with a design-system that is ltr", (): void => {
+        const spy: jest.SpyInstance = jest.fn((): string => "resolvedLtr");
+
+        expect(directionSwitch(spy as any, "rtl")(ltrDesignSystem)).toBe("resolvedLtr");
+        expect(spy).toHaveBeenCalledTimes(1);
+        expect(spy).toHaveBeenCalledWith(ltrDesignSystem);
+    });
+    test("returned function should return the second argument when executed with a design-system that is rtl", (): void => {
+        const spy: jest.SpyInstance = jest.fn((): string => "resolvedRtl");
+
+        expect(directionSwitch("ltr", spy as any)(rtlDesignSystem)).toBe("resolvedRtl");
+        expect(spy).toHaveBeenCalledTimes(1);
+        expect(spy).toHaveBeenCalledWith(rtlDesignSystem);
     });
 });

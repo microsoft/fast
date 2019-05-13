@@ -161,6 +161,13 @@ describe("radio", (): void => {
         expect(onChange).toHaveBeenCalledTimes(2);
     });
 
+    test("should apply a value prop to the input element", (): void => {
+        const rendered: any = mount(
+            <Radio managedClasses={managedClasses} inputId="id" value="myValue" />
+        );
+
+        expect(rendered.find("input").prop("value")).toBe("myValue");
+    });
     // parametrized radio class name tests
     [
         {

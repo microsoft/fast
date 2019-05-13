@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.9.2](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-styles-msft@4.9.1...@microsoft/fast-components-styles-msft@4.9.2) (2019-05-08)
+
+
+### Bug Fixes
+
+* adding error message to color-parsing function ([#1724](https://github.com/Microsoft/fast-dna/issues/1724)) ([25f04ba](https://github.com/Microsoft/fast-dna/commit/25f04ba))
+* addresses data issues with input button in text action ([#1728](https://github.com/Microsoft/fast-dna/issues/1728)) ([807a3ad](https://github.com/Microsoft/fast-dna/commit/807a3ad))
+
+
+
+
+
 ## [4.9.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-styles-msft@4.9.0...@microsoft/fast-components-styles-msft@4.9.1) (2019-05-01)
 
 **Note:** Version bump only for package @microsoft/fast-components-styles-msft

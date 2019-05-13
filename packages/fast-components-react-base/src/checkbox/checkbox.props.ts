@@ -46,6 +46,11 @@ export interface CheckboxHandledProps extends CheckboxManagedClasses {
      * The checkbox content
      */
     children?: React.ReactNode;
+
+    /**
+     * The value of the checkbox
+     */
+    value?: string;
 }
 
 export type CheckboxProps = CheckboxHandledProps & CheckboxUnhandledProps;

@@ -38,3 +38,26 @@ export function applyLocalizedProperty(
 ): string {
     return dir === Direction.ltr ? ltrProperty : rtlProperty;
 }
+
+/**
+ * Utility for returning one of two values, where the predicate is the
+ * direction property on the design-system. If provided values are functions,
+ * the function will return the return value of the function invoked with
+ * the design system
+ */
+export function directionSwitch<T extends { direction: Direction }, S>(
+    ltr: S | ((designSystem: T) => S),
+    rtl: S | ((designSystem: T) => S)
+): (designSystem: T) => S {
+    return (designSystem: T): S => {
+        const dir: Direction =
+            designSystem && designSystem.direction
+                ? designSystem.direction
+                : Direction.ltr;
+        const value: S | ((designSystem: T) => S) = dir === Direction.rtl ? rtl : ltr;
+
+        return typeof value === "function"
+            ? (value as (designSystem: T) => S)(designSystem)
+            : value;
+    };
+}

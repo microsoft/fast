@@ -327,8 +327,8 @@ class Form extends React.Component<
                 dataCache={this.getData("dataCache", "state")}
                 schemaLocation={mapSchemaLocationFromDataLocation(
                     this.state.activeDataLocation,
-                    this.props.data,
-                    this.props.schema
+                    this.props.schema,
+                    this.props.data
                 )}
                 dataLocation={this.state.activeDataLocation}
                 untitled={this.untitled}

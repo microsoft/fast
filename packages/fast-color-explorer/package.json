@@ -1,6 +1,6 @@
 {
   "name": "@microsoft/fast-color-explorer",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Color explorations",
   "sideEffects": false,
   "private": true,
@@ -66,12 +66,12 @@
   },
   "dependencies": {
     "@microsoft/fast-colors": "^4.1.0",
-    "@microsoft/fast-components-react-base": "^4.3.1",
-    "@microsoft/fast-components-react-msft": "^4.5.2",
-    "@microsoft/fast-components-styles-msft": "^4.7.0",
+    "@microsoft/fast-components-react-base": "^4.4.2",
+    "@microsoft/fast-components-react-msft": "^4.6.2",
+    "@microsoft/fast-components-styles-msft": "^4.9.2",
     "@microsoft/fast-jss-manager-react": "^4.3.0",
     "@microsoft/fast-jss-utilities": "^4.4.0",
-    "@microsoft/fast-layouts-react": "^4.2.1",
+    "@microsoft/fast-layouts-react": "^4.2.3",
     "@microsoft/fast-tslint-rules": "^3.0.3",
     "@microsoft/fast-web-utilities": "^4.1.0"
   }

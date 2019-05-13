@@ -57,6 +57,19 @@ describe("getNavigation", () => {
             alignHorizontal: "left",
         });
     });
+    test("should return a single navigation item when the location is at the root when data has been added", () => {
+        const navigation: NavigationItem[] = getNavigation(
+            "",
+            void 0,
+            generalSchema,
+            childOptions
+        );
+
+        expect(navigation.length).toBe(1);
+        expect(navigation[0].dataLocation).toBe("");
+        expect(navigation[0].schema).toEqual(generalSchema);
+        expect(navigation[0].data).toEqual(void 0);
+    });
     test("should return navigation items for a nested property", () => {
         const navigation: NavigationItem[] = getNavigation(
             "optionalObjectWithNestedObject.nestedObject",
@@ -100,6 +113,32 @@ describe("getNavigation", () => {
         expect(navigation[2].data).toEqual({
             boolean: true,
         });
+    });
+    test("should return navigation items for a nested property when no data has been provided", () => {
+        const navigation: NavigationItem[] = getNavigation(
+            "optionalObjectWithNestedObject.nestedObject",
+            void 0,
+            objectsSchema,
+            childOptions
+        );
+
+        expect(navigation.length).toBe(3);
+        expect(navigation[0].dataLocation).toBe("");
+        expect(navigation[0].schema).toEqual(objectsSchema);
+        expect(navigation[0].data).toEqual(void 0);
+        expect(navigation[1].dataLocation).toBe("optionalObjectWithNestedObject");
+        expect(navigation[1].schema).toEqual(
+            objectsSchema.properties.optionalObjectWithNestedObject
+        );
+        expect(navigation[1].data).toEqual(void 0);
+        expect(navigation[2].dataLocation).toBe(
+            "optionalObjectWithNestedObject.nestedObject"
+        );
+        expect(navigation[2].schema).toEqual(
+            objectsSchema.properties.optionalObjectWithNestedObject.properties
+                .nestedObject
+        );
+        expect(navigation[2].data).toEqual(void 0);
     });
     test("should return navigation items for an array", () => {
         const objectNavigation: NavigationItem[] = getNavigation(

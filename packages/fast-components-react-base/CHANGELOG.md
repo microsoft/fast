@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.4.2](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-base@4.4.1...@microsoft/fast-components-react-base@4.4.2) (2019-05-08)
+
+
+### Bug Fixes
+
+* schemas should use examples as arrays ([#1726](https://github.com/Microsoft/fast-dna/issues/1726)) ([2fa0392](https://github.com/Microsoft/fast-dna/commit/2fa0392))
+
+
+
+
+
 ## [4.4.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-base@4.4.0...@microsoft/fast-components-react-base@4.4.1) (2019-05-01)
 
 **Note:** Version bump only for package @microsoft/fast-components-react-base

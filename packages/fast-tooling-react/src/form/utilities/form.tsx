@@ -689,7 +689,7 @@ export function getLocationsFromSegments(segments: string[]): string[] {
  */
 export function getNavigation(
     dataLocation: string,
-    data: any,
+    data: any | void,
     schema: any,
     childOptions: FormChildOptionItem[],
     schemaLocation?: string
@@ -751,8 +751,8 @@ export function getNavigation(
                 schemaLocation ||
                 mapSchemaLocationFromDataLocation(
                     isRoot ? dataLocationItem : dataLocationFromLastComponent,
-                    isRoot ? data : get(data, rootLocationOfComponent),
-                    currentComponentSchema
+                    currentComponentSchema,
+                    isRoot ? data : get(data, rootLocationOfComponent)
                 );
             const currentSchemaLocationSegments: string[] = currentSchemaLocation.split(
                 "."
@@ -811,7 +811,7 @@ export function getNavigationItem(
     return {
         dataLocation,
         schemaLocation,
-        title: schema.title || "Untitled",
+        title: get(schema, "title") || "Untitled",
         data: getPartialData(dataLocation, data),
         schema,
     };
