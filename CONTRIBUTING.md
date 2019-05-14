@@ -40,6 +40,21 @@ Before submitting a pull request, [rebase](https://www.atlassian.com/git/tutoria
 
 Learn more about [submitting pull requests](https://microsoft.github.io/fast-dna/docs/en/contributing/working).
 
+### Documenting breaking changes
+
+Make sure to document the migration strategy in a `MIGRATION.md` file in the package(s) that has breaking changes.
+
+Example of how to format `MIGRATION.md`:
+
+```md
+# Migrating from previous versions
+
+## v1 to v2
+
+- Export `Foo` has been renamed to `Bar`.
+- `Bat` has been updated to use the new API [`BatConfig`](link/to/api).
+```
+
 ---
 
 ## Contribution policy
