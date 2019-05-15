@@ -5,9 +5,71 @@ import {
 } from "@microsoft/fast-components-class-name-contracts-base";
 import { ListboxItemProps } from "../listbox-item";
 import { SelectState } from "./select";
+import {
+    AxisPositioningMode,
+    HorizontalPosition,
+    VerticalPosition,
+} from "../viewport-positioner";
 
 export interface SelectManagedClasses extends ManagedClasses<SelectClassNameContract> {}
 export interface SelectUnhandledProps extends React.HTMLAttributes<HTMLDivElement> {}
+
+export interface SelectMenuFlyoutConfig {
+    /**
+     *  Ref to the element the positioner is anchored to
+     */
+    viewPort?: React.RefObject<any>;
+
+    /**
+     *  The positioning mode for the horizontal axis, default is uncontrolled
+     */
+    horizontalPositioningMode?: AxisPositioningMode;
+
+    /**
+     *  The default horizontal position, layout favors the widest option if unset
+     */
+    defaultHorizontalPosition?: HorizontalPosition;
+
+    /**
+     *  The width at which the positioner switches from the default position to the widest one
+     */
+    horizontalThreshold?: number;
+
+    /**
+     *  When enabled the positioner will not move out of the viewport on the horizontal axis
+     */
+    horizontalAlwaysInView?: boolean;
+
+    /**
+     *  The positioning mode for the vertical axis, default is uncontrolled
+     */
+    verticalPositioningMode?: AxisPositioningMode;
+
+    /**
+     * The default vertical position, layout favors the tallest option if unset
+     */
+    defaultVerticalPosition?: VerticalPosition;
+
+    /**
+     *  The height at which the positioner switches from the default position to the tallest one
+     */
+    verticalThreshold?: number;
+
+    /**
+     *  When enabled the positioner will not move out of the viewport on the vertical axis
+     */
+    verticalAlwaysInView?: boolean;
+
+    /**
+     * The disabled state
+     */
+    disabled?: boolean;
+
+    /**
+     * When true the positioner remains fixed relative to it's anchor after the first render
+     */
+    fixedAfterInitialPlacement?: boolean;
+}
 
 export interface SelectHandledProps extends SelectManagedClasses {
     /**
@@ -96,6 +158,11 @@ export interface SelectHandledProps extends SelectManagedClasses {
      * element that provides it an accessible name
      */
     labelledBy?: string;
+
+    /**
+     * The onValueChange event handler
+     */
+    menuFlyoutConfig?: SelectMenuFlyoutConfig;
 }
 
 export type SelectProps = SelectHandledProps & SelectUnhandledProps;

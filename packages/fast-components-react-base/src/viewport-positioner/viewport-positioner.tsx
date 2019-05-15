@@ -221,7 +221,8 @@ class ViewportPositioner extends Foundation<
         if (this.state.disabled) {
             if (
                 (this.props.disabled === undefined || this.props.disabled === false) &&
-                isNil(this.positionerRect)
+                isNil(this.positionerRect) &&
+                !isNil(this.props.anchor)
             ) {
                 return {
                     position: "relative",
@@ -247,7 +248,6 @@ class ViewportPositioner extends Foundation<
             right: this.state.right === null ? null : `${this.state.right}px`,
             bottom: this.state.bottom === null ? null : `${this.state.bottom}px`,
             left: this.state.left === null ? null : `${this.state.left}px`,
-            background: "red",
         };
     };
 
