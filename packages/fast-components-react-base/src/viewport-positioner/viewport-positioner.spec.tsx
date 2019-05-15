@@ -2,17 +2,29 @@ import React from "react";
 import Adapter from "enzyme-adapter-react-16";
 import { configure, mount, shallow } from "enzyme";
 import ViewportPositioner, {
+    ViewportPositionerClassNameContract,
     ViewportPositionerHandledProps,
     ViewportPositionerProps,
     ViewportPositionerUnhandledProps,
 } from "./viewport-positioner";
 import { DisplayNamePrefix } from "../utilities";
-import { Direction } from "@microsoft/fast-web-utilities";
 
 /*
  * Configure Enzyme
  */
 configure({ adapter: new Adapter() });
+
+const managedClasses: ViewportPositionerClassNameContract = {
+    viewportPositioner: "viewportPositioner",
+    viewportPositioner__left: "viewportPositioner__left",
+    viewportPositioner__centerLeft: "viewportPositioner__centerLeft",
+    viewportPositioner__right: "viewportPositioner__right",
+    viewportPositioner__centerRight: "viewportPositioner__centerRight",
+    viewportPositioner__top: "viewportPositioner__top",
+    viewportPositioner__middleTop: "viewportPositioner",
+    viewportPositioner__bottom: "viewportPositioner__bottom",
+    viewportPositioner__middleBottom: "viewportPositioner__middleBottom",
+};
 
 describe("viewport positioner", (): void => {
     test("should have a displayName that matches the component name", () => {

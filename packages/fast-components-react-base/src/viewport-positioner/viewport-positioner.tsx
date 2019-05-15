@@ -10,8 +10,12 @@ import {
     ViewportPositionerProps,
     ViewportPositionerUnhandledProps,
 } from "./viewport-positioner.props";
-import { ResizeObserverClassDefinition } from "../horizontal-overflow/resize-observer";
-import { ResizeObserverEntry } from "../horizontal-overflow/resize-observer-entry";
+import {
+    IntersectionObserverClassDefinition,
+    IntersectionObserverEntry,
+    ResizeObserverClassDefinition,
+    ResizeObserverEntry,
+} from "../utilities";
 import { DisplayNamePrefix } from "../utilities";
 import { canUseDOM } from "exenv-es6";
 
@@ -340,17 +344,22 @@ class ViewportPositioner extends Foundation<
             disabled: false,
         });
 
-        this.collisionDetector = new IntersectionObserver(this.handleCollision, {
-            root:
-                this.props.viewport !== undefined && this.props.viewport.current !== null
-                    ? this.props.viewport.current
-                    : null,
-            rootMargin: "0px",
-            threshold: [0, 1],
-        });
-
-        this.collisionDetector.observe(this.rootElement.current);
-        this.collisionDetector.observe(this.props.anchor.current);
+        if ((window as WindowWithIntersectionObserver).IntersectionObserver) {
+            this.collisionDetector = new (window as WindowWithIntersectionObserver).IntersectionObserver(
+                this.handleCollision,
+                {
+                    root:
+                        this.props.viewport !== undefined &&
+                        this.props.viewport.current !== null
+                            ? this.props.viewport.current
+                            : null,
+                    rootMargin: "0px",
+                    threshold: [0, 1],
+                }
+            );
+            this.collisionDetector.observe(this.rootElement.current);
+            this.collisionDetector.observe(this.props.anchor.current);
+        }
 
         if ((window as WindowWithResizeObserver).ResizeObserver) {
             this.resizeDetector = new (window as WindowWithResizeObserver).ResizeObserver(
@@ -379,10 +388,15 @@ class ViewportPositioner extends Foundation<
             this.openRequestAnimationFrame = null;
         }
 
-        this.collisionDetector.unobserve(this.rootElement.current);
-        this.collisionDetector.unobserve(this.props.anchor.current);
-        this.collisionDetector.disconnect();
-        this.collisionDetector = null;
+        if (
+            this.collisionDetector &&
+            typeof this.collisionDetector.disconnect === "function"
+        ) {
+            this.collisionDetector.unobserve(this.rootElement.current);
+            this.collisionDetector.unobserve(this.props.anchor.current);
+            this.collisionDetector.disconnect();
+            this.collisionDetector = null;
+        }
 
         // TODO #1142 https://github.com/Microsoft/fast-dna/issues/1142
         // Full browser support imminent
