@@ -15,11 +15,7 @@ import {
     PositionChange,
 } from "./horizontal-overflow.props";
 import throttle from "raf-throttle";
-import {
-    ConstructableResizeObserver,
-    ResizeObserverClassDefinition,
-} from "./resize-observer";
-import { ResizeObserverEntry } from "./resize-observer-entry";
+import { ResizeObserverClassDefinition, ResizeObserverEntry } from "../utilities";
 import { DisplayNamePrefix } from "../utilities";
 
 export enum ButtonDirection {
@@ -29,12 +25,6 @@ export enum ButtonDirection {
 
 export interface HorizontalOverflowState {
     itemsHeight: number;
-}
-
-declare global {
-    interface WindowWithResizeObserver extends Window {
-        ResizeObserver: ConstructableResizeObserver;
-    }
 }
 
 class HorizontalOverflow extends Foundation<

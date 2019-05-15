@@ -6,8 +6,7 @@ import HorizontalOverflow, {
     HorizontalOverflowClassNameContract,
 } from "./";
 import "raf/polyfill";
-import { ConstructableResizeObserver } from "./resize-observer";
-import { DisplayNamePrefix } from "../utilities";
+import { ConstructableResizeObserver, DisplayNamePrefix } from "../utilities";
 
 /*
  * Configure Enzyme
