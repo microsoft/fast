@@ -23,6 +23,7 @@ class Typography extends Foundation<
 > {
     public static defaultProps: Partial<TypographyProps> = {
         tag: TypographyTag.p,
+        scalable: false,
     };
 
     public static displayName: string = `${DisplayNamePrefix}Typography`;
@@ -31,6 +32,7 @@ class Typography extends Foundation<
         managedClasses: void 0,
         tag: void 0,
         size: void 0,
+        scalable: void 0,
     };
 
     /**
@@ -60,9 +62,13 @@ class Typography extends Foundation<
      * Generates class names based on props
      */
     protected generateClassNames(): string {
-        const classes: string = this.props.size
+        let classes: string = this.props.size
             ? get(this.props, `managedClasses.typography__${this.props.size}`, "")
             : get(this.props, "managedClasses.typography__1", "");
+
+        classes = this.props.scalable
+            ? `${classes} ${get(this.props, "managedClasses.typography__scaled", "")}`
+            : classes;
 
         return super.generateClassNames(
             `${get(this.props, "managedClasses.typography", "")} ${classes}`

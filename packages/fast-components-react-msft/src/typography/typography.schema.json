@@ -22,6 +22,10 @@
                 "figcaption"
             ]
         },
+        "scalable": {
+            "title": "Scalable",
+            "type": "boolean"
+        },
         "size": {
             "title": "Type size",
             "type": "number",

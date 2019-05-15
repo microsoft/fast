@@ -53,6 +53,11 @@ export interface TypographyHandledProps extends TypographyManagedClasses {
      * The visual size (type level) which aligns to a type ramp instance
      */
     size?: TypographySize;
+
+    /**
+     * The visual size (type level) which aligns to a type ramp instance
+     */
+    scalable?: boolean;
 }
 
 export type TypographyProps = TypographyHandledProps & TypographyUnhandledProps;

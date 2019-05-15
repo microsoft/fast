@@ -25,9 +25,23 @@ export default {
             "data-sketch-symbol": "Typographic size 1",
         },
         {
+            tag: TypographyTag.h1,
+            size: TypographySize._1,
+            children: testString,
+            scalable: true,
+            "data-sketch-symbol": "Typographic size 1",
+        },
+        {
             tag: TypographyTag.h2,
             size: TypographySize._2,
             children: testString,
+            "data-sketch-symbol": "Typographic size 2",
+        },
+        {
+            tag: TypographyTag.h2,
+            size: TypographySize._2,
+            children: testString,
+            scalable: true,
             "data-sketch-symbol": "Typographic size 2",
         },
         {
@@ -37,9 +51,23 @@ export default {
             "data-sketch-symbol": "Typographic size 3",
         },
         {
+            tag: TypographyTag.h3,
+            size: TypographySize._3,
+            children: testString,
+            scalable: true,
+            "data-sketch-symbol": "Typographic size 3",
+        },
+        {
             tag: TypographyTag.h4,
             size: TypographySize._4,
             children: testString,
+            "data-sketch-symbol": "Typographic size 4",
+        },
+        {
+            tag: TypographyTag.h4,
+            size: TypographySize._4,
+            children: testString,
+            scalable: true,
             "data-sketch-symbol": "Typographic size 4",
         },
         {
@@ -49,9 +77,23 @@ export default {
             "data-sketch-symbol": "Typographic size 5",
         },
         {
+            tag: TypographyTag.h5,
+            size: TypographySize._5,
+            children: testString,
+            scalable: true,
+            "data-sketch-symbol": "Typographic size 5",
+        },
+        {
             tag: TypographyTag.h6,
             size: TypographySize._6,
             children: testString,
+            "data-sketch-symbol": "Typographic size 6",
+        },
+        {
+            tag: TypographyTag.h6,
+            size: TypographySize._6,
+            children: testString,
+            scalable: true,
             "data-sketch-symbol": "Typographic size 6",
         },
         {
@@ -61,15 +103,36 @@ export default {
             "data-sketch-symbol": "Typographic size 7",
         },
         {
+            tag: TypographyTag.span,
+            size: TypographySize._7,
+            children: testString,
+            scalable: true,
+            "data-sketch-symbol": "Typographic size 7",
+        },
+        {
             tag: TypographyTag.caption,
             size: TypographySize._8,
             children: testString,
             "data-sketch-symbol": "Typographic size 8",
         },
         {
+            tag: TypographyTag.caption,
+            size: TypographySize._8,
+            children: testString,
+            scalable: true,
+            "data-sketch-symbol": "Typographic size 8",
+        },
+        {
             tag: TypographyTag.p,
             size: TypographySize._9,
             children: testString,
+            "data-sketch-symbol": "Typographic size 9",
+        },
+        {
+            tag: TypographyTag.p,
+            size: TypographySize._9,
+            children: testString,
+            scalable: true,
             "data-sketch-symbol": "Typographic size 9",
         },
     ],

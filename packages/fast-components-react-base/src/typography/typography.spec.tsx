@@ -21,6 +21,7 @@ configure({ adapter: new Adapter() });
 
 describe("typography", (): void => {
     const managedClasses: TypographyClassNameContract = {
+        typography__scaled: "typography__scaled-class",
         typography__1: "typography-1-class",
         typography__2: "typography-2-class",
         typography__3: "typography-3-class",
@@ -198,6 +199,20 @@ describe("typography", (): void => {
             } as TypographyHandledProps,
             className: "",
             expectedClassName: "typography-class",
+        },
+        {
+            name:
+                "should correctly assign className when is scalable prop is true and managed class given",
+            typographyHandledProps: {
+                size: 1,
+                scalable: true,
+                managedClasses: {
+                    typography: "typography-class",
+                    typography__scaled: "typography__scaled-class",
+                },
+            } as TypographyHandledProps,
+            className: "",
+            expectedClassName: "typography-class typography__scaled-class",
         },
         {
             name:

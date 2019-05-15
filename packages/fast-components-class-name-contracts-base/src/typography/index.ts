@@ -8,6 +8,11 @@ export interface TypographyClassNameContract {
     typography?: string;
 
     /**
+     * The type scaled modifier
+     */
+    typography__scaled?: string;
+
+    /**
      * The type ramp 1 modifier
      */
     typography__1?: string;
