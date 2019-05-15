@@ -650,7 +650,7 @@ describe("getNavigation", () => {
             number: 47,
         });
     });
-    test("should return navigational items for deeply nested oneOfs", () => {
+    test("should return navigation items for deeply nested oneOfs", () => {
         const navigation: NavigationItem[] = getNavigation(
             "propertyKey.propertyKey1.propertyKey2",
             {
@@ -671,6 +671,126 @@ describe("getNavigation", () => {
         expect(navigation[3].dataLocation).toEqual(
             "propertyKey.propertyKey1.propertyKey2"
         );
+    });
+    test("should return navigation items with default values", () => {
+        const defaultValue: string = "bar";
+        const navigation: NavigationItem[] = getNavigation(
+            "foo",
+            {},
+            {
+                properties: {
+                    foo: {
+                        type: "string",
+                        default: defaultValue,
+                    },
+                },
+            },
+            []
+        );
+
+        expect(navigation).toHaveLength(2);
+        expect(navigation[0].default).toEqual(undefined);
+        expect(navigation[1].default).toEqual(defaultValue);
+    });
+    test("should return navigation items of objects with inherited default values", () => {
+        const defaultValue1: string = "a";
+        const navigation: NavigationItem[] = getNavigation(
+            "foo",
+            {},
+            {
+                properties: {
+                    foo: {
+                        type: "string",
+                    },
+                },
+                default: {
+                    foo: defaultValue1,
+                },
+            },
+            []
+        );
+
+        expect(navigation).toHaveLength(2);
+        expect(navigation[0].default).toEqual({ foo: defaultValue1 });
+        expect(navigation[1].default).toEqual(defaultValue1);
+    });
+    test("should return navigation items of objects with scoped default value", () => {
+        const defaultValue1: string = "a";
+        const defaultValue2: string = "b";
+        const navigation: NavigationItem[] = getNavigation(
+            "foo",
+            {},
+            {
+                properties: {
+                    foo: {
+                        type: "string",
+                        default: defaultValue2,
+                    },
+                },
+                default: {
+                    foo: defaultValue1,
+                },
+            },
+            []
+        );
+
+        expect(navigation).toHaveLength(2);
+        expect(navigation[0].default).toEqual({ foo: defaultValue1 });
+        expect(navigation[1].default).toEqual(defaultValue2);
+    });
+    test("should return navigation items of arrays with inherited default values", () => {
+        const defaultValue1: string = "a";
+        const navigation: NavigationItem[] = getNavigation(
+            "foo.0",
+            {},
+            {
+                properties: {
+                    foo: {
+                        type: "array",
+                        items: {
+                            type: "string",
+                        },
+                    },
+                },
+                default: {
+                    foo: [defaultValue1],
+                },
+            },
+            []
+        );
+
+        expect(navigation).toHaveLength(3);
+        expect(navigation[0].default).toEqual({ foo: [defaultValue1] });
+        expect(navigation[1].default).toEqual([defaultValue1]);
+        expect(navigation[2].default).toEqual(defaultValue1);
+    });
+    test("should return navigation items of arrays with scoped default values", () => {
+        const defaultValue1: string = "a";
+        const defaultValue2: string = "b";
+        const navigation: NavigationItem[] = getNavigation(
+            "foo.0",
+            {},
+            {
+                properties: {
+                    foo: {
+                        type: "array",
+                        items: {
+                            type: "string",
+                            default: defaultValue2,
+                        },
+                    },
+                },
+                default: {
+                    foo: [defaultValue1],
+                },
+            },
+            []
+        );
+
+        expect(navigation).toHaveLength(3);
+        expect(navigation[0].default).toEqual({ foo: [defaultValue1] });
+        expect(navigation[1].default).toEqual([defaultValue1]);
+        expect(navigation[2].default).toEqual(defaultValue2);
     });
 });
 

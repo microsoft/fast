@@ -330,6 +330,7 @@ class Form extends React.Component<
                     this.props.schema,
                     this.props.data
                 )}
+                default={this.state.navigation[this.state.navigation.length - 1].default}
                 dataLocation={this.state.activeDataLocation}
                 untitled={this.untitled}
                 childOptions={this.props.childOptions}

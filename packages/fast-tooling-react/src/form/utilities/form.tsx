@@ -602,12 +602,15 @@ export interface NavigationItem {
     data: any;
     schema: any;
     invalidMessage?: ValidationError;
+    default: any;
 }
 
-export interface NavigationItem {
+export interface NavigationItemConfig {
     dataLocation: string;
-    data: any;
+    schemaLocation: string;
     schema: any;
+    data: any;
+    default: any;
 }
 
 export interface BreadcrumbItem {
@@ -730,12 +733,13 @@ export function getNavigation(
 
             if (isChildString) {
                 navigationItems.push(
-                    getNavigationItem(
-                        dataLocationItem,
-                        "",
-                        reactChildrenStringSchema,
-                        data
-                    )
+                    getNavigationItem({
+                        dataLocation: dataLocationItem,
+                        schemaLocation: "",
+                        schema: reactChildrenStringSchema,
+                        data,
+                        default: get(schema, "default"),
+                    })
                 );
             }
         } else {
@@ -786,12 +790,15 @@ export function getNavigation(
                     : get(currentComponentSchema, currentSchemaLocation);
 
             navigationItems.push(
-                getNavigationItem(
-                    dataLocationItem,
-                    currentSchemaLocation,
-                    currentSchema,
-                    data
-                )
+                getNavigationItem({
+                    dataLocation: dataLocationItem,
+                    schemaLocation: currentSchemaLocation,
+                    schema: currentSchema,
+                    data,
+                    default:
+                        get(currentSchema, "default") ||
+                        getInheritedDefaultValue(navigationItems, dataLocationItem),
+                })
             );
         }
     });
@@ -799,21 +806,40 @@ export function getNavigation(
     return navigationItems;
 }
 
+function getInheritedDefaultValue(
+    navigationItems: NavigationItem[],
+    dataLocation: string
+): any {
+    for (let i: number = navigationItems.length; i--; ) {
+        if (typeof navigationItems[i].default !== "undefined") {
+            const navigationItemDataLocationLength: number =
+                navigationItems[i].dataLocation.length;
+
+            return get(
+                navigationItems[i].default,
+                dataLocation.slice(
+                    navigationItems[i].dataLocation === ""
+                        ? navigationItemDataLocationLength
+                        : navigationItemDataLocationLength + 1
+                )
+            );
+        }
+    }
+
+    return void 0;
+}
+
 /**
  * Get a single navigation item
  */
-export function getNavigationItem(
-    dataLocation: string,
-    schemaLocation: string,
-    schema: any,
-    data: any
-): NavigationItem {
+export function getNavigationItem(config: NavigationItemConfig): NavigationItem {
     return {
-        dataLocation,
-        schemaLocation,
-        title: get(schema, "title") || "Untitled",
-        data: getPartialData(dataLocation, data),
-        schema,
+        dataLocation: config.dataLocation,
+        schemaLocation: config.schemaLocation,
+        title: get(config, "schema.title") || "Untitled",
+        data: getPartialData(config.dataLocation, config.data),
+        schema: config.schema,
+        default: config.default,
     };
 }
 

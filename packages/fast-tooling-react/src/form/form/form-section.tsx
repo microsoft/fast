@@ -124,7 +124,7 @@ class FormSection extends React.Component<
                 index={index}
                 untitled={this.props.untitled}
                 required={required}
-                default={schema.default || void 0}
+                default={get(this.props.default, propertyName)}
                 label={getLabel(label, this.state.schema.title)}
                 data={getData(propertyName, this.props.data)}
                 dataLocation={dataLocation}
