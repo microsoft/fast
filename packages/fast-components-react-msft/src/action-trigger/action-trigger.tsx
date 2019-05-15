@@ -8,6 +8,7 @@ import {
     ActionTriggerUnhandledProps,
 } from "./action-trigger.props";
 import { actionTriggerButtonOverrides } from "@microsoft/fast-components-styles-msft";
+import { isNullOrUndefined } from "util";
 import { DisplayNamePrefix } from "../utilities";
 
 class ActionTrigger extends Foundation<
@@ -68,12 +69,30 @@ class ActionTrigger extends Foundation<
             )}`;
         }
 
+        if (this.hasGlyphAndContent()) {
+            classNames = `${classNames} ${get(
+                this.props,
+                "managedClasses.actionTrigger__hasGlyphAndContent",
+                ""
+            )}`;
+        }
+
         return super.generateClassNames(classNames);
     }
 
     private generateGlyph = (): React.ReactNode => {
         return this.props.glyph(get(this.props, "managedClasses.actionTrigger_glyph"));
     };
+
+    /**
+     * Checks to see if action trigger is displaying both glyph and content or not
+     */
+    private hasGlyphAndContent(): boolean {
+        return (
+            !isNullOrUndefined(this.props.glyph) &&
+            !isNullOrUndefined(this.props.children)
+        );
+    }
 }
 
 export default ActionTrigger;

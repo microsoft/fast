@@ -38,8 +38,6 @@ const styles: ComponentStyles<ActionTriggerClassNameContract, DesignSystem> = {
         width: glyphSize,
         height: glyphSize,
         flexShrink: "0",
-        marginRight: directionSwitch(horizontalSpacing(), ""),
-        marginLeft: directionSwitch("", horizontalSpacing()),
     },
     actionTrigger__primary: {
         "& $actionTrigger_glyph": {
@@ -102,6 +100,12 @@ const styles: ComponentStyles<ActionTriggerClassNameContract, DesignSystem> = {
         },
     },
     actionTrigger__disabled: {},
+    actionTrigger__hasGlyphAndContent: {
+        "& $actionTrigger_glyph": {
+            marginRight: directionSwitch(horizontalSpacing(), ""),
+            marginLeft: directionSwitch("", horizontalSpacing()),
+        },
+    },
 };
 
 export default styles;

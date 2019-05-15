@@ -40,4 +40,9 @@ export interface ActionTriggerClassNameContract {
      * The disabled modifier
      */
     actionTrigger__disabled?: string;
+
+    /**
+     * Action trigger class name used when checking glyph and content
+     */
+    actionTrigger__hasGlyphAndContent?: string;
 }
