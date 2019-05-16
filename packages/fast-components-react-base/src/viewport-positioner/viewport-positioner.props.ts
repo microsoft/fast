@@ -80,7 +80,7 @@ export interface ViewportPositionerHandledProps extends ViewportPositionerManage
     /**
      *  When enabled the positioner will not move out of the viewport on the vertical axis
      */
-    vericalAlwaysInView?: boolean;
+    verticalAlwaysInView?: boolean;
 
     /**
      * The disabled state

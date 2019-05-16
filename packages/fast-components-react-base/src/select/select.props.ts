@@ -18,7 +18,7 @@ export interface SelectMenuFlyoutConfig {
     /**
      *  Ref to the element the positioner is anchored to
      */
-    viewPort?: React.RefObject<any>;
+    viewport?: React.RefObject<any>;
 
     /**
      *  The positioning mode for the horizontal axis, default is uncontrolled
