@@ -36,7 +36,10 @@ import SiteCategoryIcon from "./category-icon";
 import SiteCategoryItem from "./category-item";
 import ActionBar from "./action-bar";
 import DevTools, { Framework } from "./dev-tools";
-import ConfigurationPanel, { DesignSystemEditingConfig } from "./configuration-panel";
+import ConfigurationPanel, {
+    DesignSystemEditingConfig,
+    ConfigurationPanelProps,
+} from "./configuration-panel";
 import NotFound from "./not-found";
 import ComponentView, { ComponentViewTypes } from "./component-view";
 import {
@@ -413,7 +416,7 @@ class Site extends React.Component<
             locale: "en",
             theme: this.props.activeTheme || this.getInitialTheme(),
             navigationLevel: NavigationLevel.catalog,
-            designSystem: this.props.designSystemEditing.data,
+            designSystem: get(this.props, "designSystemEditing.data"),
         };
     }
 
@@ -941,21 +944,38 @@ class Site extends React.Component<
 
             return (
                 <ConfigurationPanel
-                    schema={schema}
-                    data={componentData}
-                    dataLocation={this.state.componentDataLocation}
-                    onChange={this.handleComponentDataChange.bind(route)}
-                    formChildOptions={this.props.formChildOptions}
-                    onLocationUpdate={this.handleLocationUpdate}
-                    styleEditing={this.props.styleEditing}
-                    designSystemEditing={{
-                        schema: this.props.designSystemEditing.schema,
-                        data: this.state.designSystem,
-                    }}
-                    designSystemOnChange={this.handleDesignSystemDataChange}
+                    {...this.getConfigurationPanelProps(schema, componentData, route)}
                 />
             );
         }
+    }
+
+    private getConfigurationPanelProps(
+        schema: any,
+        componentData: any,
+        route: any
+    ): ConfigurationPanelProps {
+        const props: ConfigurationPanelProps = {
+            schema,
+            data: componentData,
+            dataLocation: this.state.componentDataLocation,
+            onChange: this.handleComponentDataChange.bind(route),
+            formChildOptions: this.props.formChildOptions,
+            onLocationUpdate: this.handleLocationUpdate,
+            styleEditing: this.props.styleEditing,
+            designSystemEditing: void 0,
+            designSystemOnChange: void 0,
+        };
+
+        if (!!this.props.designSystemEditing) {
+            props.designSystemEditing = {
+                schema: this.props.designSystemEditing.schema,
+                data: this.state.designSystem,
+            };
+            props.designSystemOnChange = this.handleDesignSystemDataChange;
+        }
+
+        return props;
     }
 
     private generateComponentWrapperBackground(): string {
