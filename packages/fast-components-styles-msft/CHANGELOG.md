@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.10.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-styles-msft@4.9.2...@microsoft/fast-components-styles-msft@4.10.0) (2019-05-17)
+
+
+### Bug Fixes
+
+* base select trigger on input field styles and not button styles ([#1716](https://github.com/Microsoft/fast-dna/issues/1716)) ([07aeb2b](https://github.com/Microsoft/fast-dna/commit/07aeb2b))
+* update slider to support density and other minor style polish ([#1739](https://github.com/Microsoft/fast-dna/issues/1739)) ([f3a1ba0](https://github.com/Microsoft/fast-dna/commit/f3a1ba0))
+
+
+### Features
+
+* add directionSwitch for better localization composition ([#1740](https://github.com/Microsoft/fast-dna/issues/1740)) ([164de23](https://github.com/Microsoft/fast-dna/commit/164de23))
+* add optional design system to the development site ([#1749](https://github.com/Microsoft/fast-dna/issues/1749)) ([187c404](https://github.com/Microsoft/fast-dna/commit/187c404))
+
+
+
+
+
 ## [4.9.2](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-styles-msft@4.9.1...@microsoft/fast-components-styles-msft@4.9.2) (2019-05-08)
 
 

@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.7.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-msft@4.6.2...@microsoft/fast-components-react-msft@4.7.0) (2019-05-17)
+
+
+### Bug Fixes
+
+* base select trigger on input field styles and not button styles ([#1716](https://github.com/Microsoft/fast-dna/issues/1716)) ([07aeb2b](https://github.com/Microsoft/fast-dna/commit/07aeb2b))
+* update slider to support density and other minor style polish ([#1739](https://github.com/Microsoft/fast-dna/issues/1739)) ([f3a1ba0](https://github.com/Microsoft/fast-dna/commit/f3a1ba0))
+
+
+### Features
+
+* add optional design system to the development site ([#1749](https://github.com/Microsoft/fast-dna/issues/1749)) ([187c404](https://github.com/Microsoft/fast-dna/commit/187c404))
+
+
+
+
+
 ## [4.6.2](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-msft@4.6.1...@microsoft/fast-components-react-msft@4.6.2) (2019-05-08)
 
 

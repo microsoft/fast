@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.5.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-jss-utilities@4.4.1...@microsoft/fast-jss-utilities@4.5.0) (2019-05-17)
+
+
+### Features
+
+* add directionSwitch for better localization composition ([#1740](https://github.com/Microsoft/fast-dna/issues/1740)) ([164de23](https://github.com/Microsoft/fast-dna/commit/164de23))
+
+
+
+
+
 ## [4.4.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-jss-utilities@4.4.0...@microsoft/fast-jss-utilities@4.4.1) (2019-04-26)
 
 **Note:** Version bump only for package @microsoft/fast-jss-utilities
