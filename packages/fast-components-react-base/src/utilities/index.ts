@@ -1,15 +1,15 @@
-import { ConstructableResizeObserver } from "./resize-observer";
-import { ConstructableIntersectionObserver } from "./intersection-observer";
+import { ConstructibleResizeObserver } from "./resize-observer";
+import { ConstructibleIntersectionObserver } from "./intersection-observer";
 
 const DisplayNamePrefix: string = "Base";
 
 declare global {
     interface WindowWithResizeObserver extends Window {
-        ResizeObserver: ConstructableResizeObserver;
+        ResizeObserver: ConstructibleResizeObserver;
     }
 
     interface WindowWithIntersectionObserver extends Window {
-        IntersectionObserver: ConstructableIntersectionObserver;
+        IntersectionObserver: ConstructibleIntersectionObserver;
     }
 }
 

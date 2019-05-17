@@ -1,6 +1,6 @@
 import { IntersectionObserverEntry } from "./intersection-observer-entry";
 
-export type ConstructableIntersectionObserver = new (
+export type ConstructibleIntersectionObserver = new (
     callback: IntersectionObserverCallback,
     options: IntersectionObserverOptions
 ) => IntersectionObserverClassDefinition;
