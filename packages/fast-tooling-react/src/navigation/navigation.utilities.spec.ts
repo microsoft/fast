@@ -1,6 +1,6 @@
 import "jest";
 import { getNavigationFromData } from "./navigation.utilities";
-import { ItemType, TreeNavigation } from "./navigation.props";
+import { NavigationDataType, TreeNavigation } from "./navigation.props";
 import { ChildOptionItem } from "../data-utilities";
 
 import noChildrenSchema from "../../app/configs/no-children.schema.json";
@@ -24,9 +24,9 @@ describe("getNavigationFromData", () => {
     test("should return a single item if no data is passed", () => {
         expect(getNavigationFromData({}, {}, [])).toEqual({
             dataLocation: "",
-            items: [],
+            items: void 0,
             text: "Undefined",
-            type: "children",
+            type: NavigationDataType.object,
         });
     });
     test("should return a single item if a single string child has been passed", () => {
@@ -40,10 +40,18 @@ describe("getNavigationFromData", () => {
             childOptions
         ).items;
         expect(navigationFromData).toHaveLength(1);
-        expect(navigationFromData[0].items).toEqual(undefined);
+        expect(navigationFromData[0].items).toHaveLength(1);
         expect(navigationFromData[0].dataLocation).toEqual("children");
-        expect(navigationFromData[0].text).toEqual(childrenText);
-        expect(navigationFromData[0].type).toEqual(ItemType.children);
+        expect(navigationFromData[0].text).toEqual(
+            childrenSchema.reactProperties.children.title
+        );
+        expect(navigationFromData[0].type).toEqual(NavigationDataType.children);
+        expect(navigationFromData[0].items[0].items).toEqual(void 0);
+        expect(navigationFromData[0].items[0].dataLocation).toEqual("children");
+        expect(navigationFromData[0].items[0].text).toEqual(childrenText);
+        expect(navigationFromData[0].items[0].type).toEqual(
+            NavigationDataType.childrenItem
+        );
     });
     test("should return a single item if a single child has been passed", () => {
         const data: any = {
@@ -59,10 +67,18 @@ describe("getNavigationFromData", () => {
             childOptions
         ).items;
         expect(navigationFromData).toHaveLength(1);
-        expect(navigationFromData[0].items).toEqual(undefined);
-        expect(navigationFromData[0].dataLocation).toEqual("children.props");
-        expect(navigationFromData[0].text).toEqual(childOptions[0].schema.title);
-        expect(navigationFromData[0].type).toEqual(ItemType.children);
+        expect(navigationFromData[0].items).toHaveLength(1);
+        expect(navigationFromData[0].dataLocation).toEqual("children");
+        expect(navigationFromData[0].text).toEqual(
+            childrenSchema.reactProperties.children.title
+        );
+        expect(navigationFromData[0].type).toEqual(NavigationDataType.children);
+        expect(navigationFromData[0].items[0].items).toEqual(void 0);
+        expect(navigationFromData[0].items[0].dataLocation).toEqual("children.props");
+        expect(navigationFromData[0].items[0].text).toEqual(childOptions[0].schema.title);
+        expect(navigationFromData[0].items[0].type).toEqual(
+            NavigationDataType.childrenItem
+        );
     });
     test("should return multiple items if multiple children have been passed", () => {
         const childrenText: string = "Bar";
@@ -86,19 +102,31 @@ describe("getNavigationFromData", () => {
             childOptions
         ).items;
 
-        expect(navigationFromData).toHaveLength(3);
-        expect(navigationFromData[0].items).toEqual(undefined);
-        expect(navigationFromData[0].dataLocation).toEqual("children[0].props");
-        expect(navigationFromData[0].text).toEqual(childOptions[0].schema.title);
-        expect(navigationFromData[0].type).toEqual(ItemType.children);
-        expect(navigationFromData[1].items).toEqual(undefined);
-        expect(navigationFromData[1].dataLocation).toEqual("children[1].props");
-        expect(navigationFromData[1].text).toEqual(childOptions[0].schema.title);
-        expect(navigationFromData[1].type).toEqual(ItemType.children);
-        expect(navigationFromData[2].items).toEqual(undefined);
-        expect(navigationFromData[2].dataLocation).toEqual("children[2]");
-        expect(navigationFromData[2].text).toEqual(childrenText);
-        expect(navigationFromData[2].type).toEqual(ItemType.children);
+        expect(navigationFromData).toHaveLength(1);
+        expect(navigationFromData[0].text).toEqual(
+            childrenSchema.reactProperties.children.title
+        );
+        expect(navigationFromData[0].type).toEqual(NavigationDataType.children);
+        expect(navigationFromData[0].dataLocation).toEqual("children");
+        expect(navigationFromData[0].items).toHaveLength(3);
+        expect(navigationFromData[0].items[0].text).toEqual(childOptions[0].schema.title);
+        expect(navigationFromData[0].items[0].type).toEqual(
+            NavigationDataType.childrenItem
+        );
+        expect(navigationFromData[0].items[0].dataLocation).toEqual("children.0.props");
+        expect(navigationFromData[0].items[0].items).toEqual(void 0);
+        expect(navigationFromData[0].items[1].text).toEqual(childOptions[0].schema.title);
+        expect(navigationFromData[0].items[1].type).toEqual(
+            NavigationDataType.childrenItem
+        );
+        expect(navigationFromData[0].items[1].dataLocation).toEqual("children.1.props");
+        expect(navigationFromData[0].items[1].items).toEqual(void 0);
+        expect(navigationFromData[0].items[2].text).toEqual(childrenText);
+        expect(navigationFromData[0].items[2].type).toEqual(
+            NavigationDataType.childrenItem
+        );
+        expect(navigationFromData[0].items[2].dataLocation).toEqual("children.2");
+        expect(navigationFromData[0].items[2].items).toEqual(undefined);
     });
     test("should return a nested item if nested children have been passed", () => {
         const data: any = {
@@ -119,17 +147,38 @@ describe("getNavigationFromData", () => {
             childOptions
         ).items;
         expect(navigationFromData).toHaveLength(1);
-        expect(navigationFromData[0].dataLocation).toEqual("children.props");
-        expect(navigationFromData[0].text).toEqual(childOptions[1].schema.title);
-        expect(navigationFromData[0].type).toEqual(ItemType.children);
-        expect(navigationFromData[0].items).toHaveProperty("length");
+        expect(navigationFromData[0].dataLocation).toEqual("children");
+        expect(navigationFromData[0].text).toEqual(
+            childrenSchema.reactProperties.children.title
+        );
+        expect(navigationFromData[0].type).toEqual(NavigationDataType.children);
         expect(navigationFromData[0].items).toHaveLength(1);
-        expect(navigationFromData[0].items[0].dataLocation).toEqual(
+        expect(navigationFromData[0].items[0].dataLocation).toEqual("children.props");
+        expect(navigationFromData[0].items[0].text).toEqual(childOptions[1].schema.title);
+        expect(navigationFromData[0].items[0].type).toEqual(
+            NavigationDataType.childrenItem
+        );
+        expect(navigationFromData[0].items[0].items).toHaveLength(1);
+        expect(navigationFromData[0].items[0].items[0].dataLocation).toEqual(
+            "children.props.children"
+        );
+        expect(navigationFromData[0].items[0].items[0].text).toEqual(
+            childOptions[1].schema.reactProperties.children.title
+        );
+        expect(navigationFromData[0].items[0].items[0].type).toEqual(
+            NavigationDataType.children
+        );
+        expect(navigationFromData[0].items[0].items[0].items).toHaveLength(1);
+        expect(navigationFromData[0].items[0].items[0].items[0].dataLocation).toEqual(
             "children.props.children.props"
         );
-        expect(navigationFromData[0].items[0].text).toEqual(childOptions[0].schema.title);
-        expect(navigationFromData[0].items[0].type).toEqual(ItemType.children);
-        expect(navigationFromData[0].items[0].items).toEqual(undefined);
+        expect(navigationFromData[0].items[0].items[0].items[0].text).toEqual(
+            childOptions[0].schema.title
+        );
+        expect(navigationFromData[0].items[0].items[0].items[0].type).toEqual(
+            NavigationDataType.childrenItem
+        );
+        expect(navigationFromData[0].items[0].items[0].items[0].items).toEqual(void 0);
     });
     test("should return multiple nested items if multiple nested children have been passed", () => {
         const data: any = {
@@ -156,87 +205,102 @@ describe("getNavigationFromData", () => {
             childOptions
         ).items;
         expect(navigationFromData).toHaveLength(1);
-        expect(navigationFromData[0].dataLocation).toEqual("children.props");
-        expect(navigationFromData[0].text).toEqual(childOptions[1].schema.title);
-        expect(navigationFromData[0].type).toEqual(ItemType.children);
-        expect(navigationFromData[0].items).toHaveProperty("length");
-        expect(navigationFromData[0].items).toHaveLength(2);
-        expect(navigationFromData[0].items[0].dataLocation).toEqual(
-            "children.props.children[0].props"
+        expect(navigationFromData[0].dataLocation).toEqual("children");
+        expect(navigationFromData[0].text).toEqual(
+            childrenSchema.reactProperties.children.title
         );
-        expect(navigationFromData[0].items[0].text).toEqual(childOptions[0].schema.title);
-        expect(navigationFromData[0].items[0].type).toEqual(ItemType.children);
-        expect(navigationFromData[0].items[0].items).toEqual(undefined);
-        expect(navigationFromData[0].items[1].dataLocation).toEqual(
-            "children.props.children[1].props"
+        expect(navigationFromData[0].type).toEqual(NavigationDataType.children);
+        expect(navigationFromData[0].items).toHaveLength(1);
+        expect(navigationFromData[0].items[0].dataLocation).toEqual("children.props");
+        expect(navigationFromData[0].items[0].text).toEqual(childOptions[1].schema.title);
+        expect(navigationFromData[0].items[0].type).toEqual(
+            NavigationDataType.childrenItem
         );
-        expect(navigationFromData[0].items[1].text).toEqual(childOptions[0].schema.title);
-        expect(navigationFromData[0].items[1].type).toEqual(ItemType.children);
-        expect(navigationFromData[0].items[1].items).toEqual(undefined);
+        expect(navigationFromData[0].items[0].items).toHaveLength(1);
+        expect(navigationFromData[0].items[0].items[0].dataLocation).toEqual(
+            "children.props.children"
+        );
+        expect(navigationFromData[0].items[0].items[0].text).toEqual(
+            childrenSchema.reactProperties.children.title
+        );
+        expect(navigationFromData[0].items[0].items[0].type).toEqual(
+            NavigationDataType.children
+        );
+        expect(navigationFromData[0].items[0].items[0].items).toHaveLength(2);
+        expect(navigationFromData[0].items[0].items[0].items[0].dataLocation).toEqual(
+            "children.props.children.0.props"
+        );
+        expect(navigationFromData[0].items[0].items[0].items[0].text).toEqual(
+            childOptions[0].schema.title
+        );
+        expect(navigationFromData[0].items[0].items[0].items[0].type).toEqual(
+            NavigationDataType.childrenItem
+        );
+        expect(navigationFromData[0].items[0].items[0].items[0].items).toEqual(void 0);
+        expect(navigationFromData[0].items[0].items[0].items[1].dataLocation).toEqual(
+            "children.props.children.1.props"
+        );
+        expect(navigationFromData[0].items[0].items[0].items[1].text).toEqual(
+            childOptions[0].schema.title
+        );
+        expect(navigationFromData[0].items[0].items[0].items[1].type).toEqual(
+            NavigationDataType.childrenItem
+        );
+        expect(navigationFromData[0].items[0].items[0].items[1].items).toEqual(void 0);
     });
-    test("should return multiple items if multiple children with nested children have been passed", () => {
+    test("should return an object if an object is passed", () => {
         const data: any = {
-            children: [
-                {
-                    id: childOptions[1].schema.id,
-                    props: {
-                        children: [
-                            {
-                                id: childOptions[0].schema.id,
-                                props: {},
-                            },
-                            {
-                                id: childOptions[0].schema.id,
-                                props: {},
-                            },
-                        ],
-                    },
-                },
-                {
-                    id: childOptions[1].schema.id,
-                    props: {
-                        children: {
-                            id: childOptions[0].schema.id,
-                            props: {},
-                        },
-                    },
-                },
-            ],
+            testObject: {
+                foo: "bar",
+            },
         };
 
         const navigationFromData: TreeNavigation[] = getNavigationFromData(
             data,
-            childrenSchema,
+            {
+                title: "root title",
+                type: "object",
+                properties: {
+                    testObject: {
+                        title: "testObject title",
+                        type: "object",
+                        properties: {
+                            foo: {
+                                title: "foo title",
+                                type: "string",
+                            },
+                        },
+                    },
+                },
+            },
             childOptions
         ).items;
-        expect(navigationFromData).toHaveLength(2);
-        expect(navigationFromData[0].dataLocation).toEqual("children[0].props");
-        expect(navigationFromData[0].text).toEqual(childOptions[1].schema.title);
-        expect(navigationFromData[0].type).toEqual(ItemType.children);
-        expect(navigationFromData[0].items).toHaveProperty("length");
-        expect(navigationFromData[0].items).toHaveLength(2);
-        expect(navigationFromData[0].items[0].dataLocation).toEqual(
-            "children[0].props.children[0].props"
+
+        expect(navigationFromData).toHaveLength(1);
+        expect(navigationFromData[0].text).toEqual("testObject title");
+        expect(navigationFromData[0].dataLocation).toEqual("testObject");
+        expect(navigationFromData[0].type).toEqual(NavigationDataType.object);
+        expect(navigationFromData[0].items).toEqual(void 0);
+    });
+    test("should return an array if an array is passed", () => {
+        const data: any = ["bar"];
+
+        const navigationFromData: TreeNavigation = getNavigationFromData(
+            data,
+            {
+                title: "root title",
+                type: "array",
+                items: {
+                    title: "foo title",
+                    type: "string",
+                },
+            },
+            childOptions
         );
-        expect(navigationFromData[0].items[0].text).toEqual(childOptions[0].schema.title);
-        expect(navigationFromData[0].items[0].type).toEqual(ItemType.children);
-        expect(navigationFromData[0].items[0].items).toEqual(undefined);
-        expect(navigationFromData[0].items[1].dataLocation).toEqual(
-            "children[0].props.children[1].props"
-        );
-        expect(navigationFromData[0].items[1].text).toEqual(childOptions[0].schema.title);
-        expect(navigationFromData[0].items[1].type).toEqual(ItemType.children);
-        expect(navigationFromData[0].items[1].items).toEqual(undefined);
-        expect(navigationFromData[1].dataLocation).toEqual("children[1].props");
-        expect(navigationFromData[1].text).toEqual(childOptions[1].schema.title);
-        expect(navigationFromData[1].type).toEqual(ItemType.children);
-        expect(navigationFromData[1].items).toHaveProperty("length");
-        expect(navigationFromData[1].items).toHaveLength(1);
-        expect(navigationFromData[1].items[0].dataLocation).toEqual(
-            "children[1].props.children.props"
-        );
-        expect(navigationFromData[1].items[0].text).toEqual(childOptions[0].schema.title);
-        expect(navigationFromData[1].items[0].type).toEqual(ItemType.children);
-        expect(navigationFromData[1].items[0].items).toEqual(undefined);
+
+        expect(navigationFromData.text).toEqual("root title");
+        expect(navigationFromData.dataLocation).toEqual("");
+        expect(navigationFromData.type).toEqual(NavigationDataType.array);
+        expect(navigationFromData.items).toEqual(void 0);
     });
 });
