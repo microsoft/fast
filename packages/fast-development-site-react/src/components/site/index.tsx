@@ -1,5 +1,5 @@
+import Toc, { TocItem } from "../toc";
 import React from "react";
-import SiteTitle from "./title";
 import manageJss, {
     ComponentStyles,
     DesignSystemProvider,
@@ -27,7 +27,7 @@ import { ellipsis, localizeSpacing, toPx } from "@microsoft/fast-jss-utilities";
 import ComponentWrapper from "./component-wrapper";
 import CategoryList from "./category-list";
 import SiteTitleBrand from "./title-brand";
-import Toc, { TocItem } from "../toc";
+import SiteTitle from "./title";
 import SiteMenu from "./menu";
 import SiteMenuItem from "./menu-item";
 import SiteCategory, { Status } from "./category";
@@ -37,8 +37,8 @@ import SiteCategoryItem from "./category-item";
 import ActionBar from "./action-bar";
 import DevTools, { Framework } from "./dev-tools";
 import ConfigurationPanel, {
-    DesignSystemEditingConfig,
     ConfigurationPanelProps,
+    DesignSystemEditingConfig,
 } from "./configuration-panel";
 import NotFound from "./not-found";
 import ComponentView, { ComponentViewTypes } from "./component-view";
