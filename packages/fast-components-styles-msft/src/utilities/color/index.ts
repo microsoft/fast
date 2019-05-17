@@ -98,4 +98,4 @@ export { neutralFocus } from "./neutral-focus";
  * Export supporting types
  */
 export { neutralPaletteConfig, accentPaletteConfig } from "./color-constants";
-export { palette, PaletteType, Palette } from "./palette";
+export { isDarkMode, palette, PaletteType, Palette } from "./palette";
