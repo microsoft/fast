@@ -15,7 +15,11 @@ import {
     InputConfig,
 } from "./property-editor.props";
 import { KeyCodes } from "@microsoft/fast-web-utilities";
-import { getCSSPropertyConfig } from "./property-editor.utilities";
+import {
+    filterPropertyKeyToCamelCase,
+    filterPropertyKeyToDashSeparated,
+    getCSSPropertyConfig,
+} from "./property-editor.utilities";
 
 export default class CSSPropertyEditor extends Foundation<
     CSSPropertyEditorHandledProps,
@@ -100,7 +104,7 @@ export default class CSSPropertyEditor extends Foundation<
                 {this.renderInput({
                     className: this.generateKeyClassNames(),
                     onChange: this.handlePropertyKeyChange(key),
-                    value: key,
+                    value: filterPropertyKeyToDashSeparated(key),
                     style: { width: `${config.keyWidth}px` },
                 })}
                 :
@@ -121,7 +125,7 @@ export default class CSSPropertyEditor extends Foundation<
                 {this.renderInput({
                     className: this.generateKeyClassNames(),
                     onChange: this.handleNewPropertyKeyChange,
-                    value: this.state.key,
+                    value: filterPropertyKeyToDashSeparated(this.state.key),
                     style: { width: `${config.keyWidth}px` },
                     ref: this.keyInputRef,
                 })}
@@ -170,7 +174,9 @@ export default class CSSPropertyEditor extends Foundation<
             // the order of keys in the CSS object
             Object.keys(this.props.data).forEach((key: string) => {
                 if (key === oldKey) {
-                    newData[e.target.value] = this.props.data[key];
+                    newData[
+                        filterPropertyKeyToCamelCase(e.target.value)
+                    ] = this.props.data[key];
                 } else {
                     newData[key] = this.props.data[key];
                 }
@@ -184,7 +190,10 @@ export default class CSSPropertyEditor extends Foundation<
         key: string
     ): (e: React.ChangeEvent<HTMLInputElement>) => void {
         return (e: React.ChangeEvent<HTMLInputElement>): void => {
-            this.handleCSSUpdate({ ...this.props.data, ...{ [key]: e.target.value } });
+            this.handleCSSUpdate({
+                ...this.props.data,
+                ...{ [filterPropertyKeyToCamelCase(key)]: e.target.value },
+            });
         };
     }
 
@@ -213,7 +222,7 @@ export default class CSSPropertyEditor extends Foundation<
 
                 this.handleCSSUpdate(
                     Object.assign({}, this.props.data, {
-                        [this.state.key]: this.state.value,
+                        [filterPropertyKeyToCamelCase(this.state.key)]: this.state.value,
                     })
                 );
 
