@@ -34,6 +34,8 @@ const managedClasses: SliderClassNameContract = {
     slider__modeAdjustBoth: "slider__modeAdjustBoth",
 };
 
+/* tslint:disable:no-string-literal */
+
 describe("Slider", (): void => {
     const map: any = {};
     // tslint:disable-next-line:no-shadowed-variable
@@ -477,37 +479,114 @@ describe("Slider", (): void => {
         document.body.removeChild(container);
     });
 
-    test("correct aria labels are populated on thumbs", (): void => {
-        const valueStringFormatter: any = jest.fn();
-        valueStringFormatter.mockReturnValue("formatted valuetext");
-
+    test("convertPixelToPercent function test - horizontal", (): void => {
         const rendered: any = mount(
             <Slider
+                orientation={SliderOrientation.horizontal}
                 mode={SliderMode.adjustBoth}
-                maxThumbLabel="max thumb"
-                minThumbLabel="min thumb"
-                valuetextStringFormatter={valueStringFormatter}
                 managedClasses={managedClasses}
             />
         );
 
-        const upperThumb: any = rendered.find(
-            `.${managedClasses.slider_thumb__upperValue}`
-        );
-        expect(upperThumb.prop("aria-valuemin")).toEqual(0);
-        expect(upperThumb.prop("aria-valuemax")).toEqual(100);
-        expect(upperThumb.prop("aria-valuenow")).toEqual(60);
-        expect(upperThumb.prop("aria-label")).toEqual("max thumb");
-        expect(upperThumb.prop("aria-valuetext")).toEqual("formatted valuetext");
+        rendered.instance().barMinPixel = 0;
+        rendered.instance().rangeInPixels = 1000;
 
-        const lowerThumb: any = rendered.find(
-            `.${managedClasses.slider_thumb__lowerValue}`
+        expect(rendered.instance()["convertPixelToPercent"](0)).toBe(0);
+        expect(rendered.instance()["convertPixelToPercent"](100)).toBe(0.1);
+        expect(rendered.instance()["convertPixelToPercent"](1000)).toBe(1);
+    });
+
+    test("convertPixelToPercent function test - vertical", (): void => {
+        const rendered: any = mount(
+            <Slider
+                orientation={SliderOrientation.vertical}
+                mode={SliderMode.adjustBoth}
+                managedClasses={managedClasses}
+            />
         );
-        expect(lowerThumb.prop("aria-valuemin")).toEqual(0);
-        expect(lowerThumb.prop("aria-valuemax")).toEqual(100);
-        expect(lowerThumb.prop("aria-valuenow")).toEqual(40);
-        expect(lowerThumb.prop("aria-label")).toEqual("min thumb");
-        expect(lowerThumb.prop("aria-valuetext")).toEqual("formatted valuetext");
+
+        rendered.instance().barMinPixel = 1000;
+        rendered.instance().rangeInPixels = 1000;
+
+        expect(rendered.instance()["convertPixelToPercent"](0)).toBe(1);
+        expect(rendered.instance()["convertPixelToPercent"](100)).toBe(0.9);
+        expect(rendered.instance()["convertPixelToPercent"](1000)).toBe(0);
+    });
+
+    test("getConstrainedRange function test", (): void => {
+        const rendered: any = mount(
+            <Slider
+                range={{
+                    minValue: 0,
+                    maxValue: 100,
+                }}
+                constrainedRange={{
+                    minValue: 10,
+                    maxValue: 90,
+                }}
+                mode={SliderMode.singleValue}
+                managedClasses={managedClasses}
+            />
+        );
+
+        expect(rendered.instance()["getConstrainedRange"](false)).toStrictEqual({
+            minValue: 10,
+            maxValue: 90,
+        });
+    });
+
+    test("valueAsRange function test - singleValue", (): void => {
+        const rendered: any = mount(
+            <Slider
+                range={{
+                    minValue: 0,
+                    maxValue: 100,
+                }}
+                mode={SliderMode.singleValue}
+                managedClasses={managedClasses}
+            />
+        );
+
+        expect(rendered.instance()["valueAsRange"](50)).toStrictEqual({
+            minValue: 50,
+            maxValue: 50,
+        });
+    });
+
+    test("valueAsRange function test - lowerValue", (): void => {
+        const rendered: any = mount(
+            <Slider
+                range={{
+                    minValue: 0,
+                    maxValue: 100,
+                }}
+                mode={SliderMode.adustLowerValue}
+                managedClasses={managedClasses}
+            />
+        );
+
+        expect(rendered.instance()["valueAsRange"](50)).toStrictEqual({
+            minValue: 50,
+            maxValue: 100,
+        });
+    });
+
+    test("valueAsRange function test - upperValue", (): void => {
+        const rendered: any = mount(
+            <Slider
+                range={{
+                    minValue: 0,
+                    maxValue: 100,
+                }}
+                mode={SliderMode.adustUpperValue}
+                managedClasses={managedClasses}
+            />
+        );
+
+        expect(rendered.instance()["valueAsRange"](50)).toStrictEqual({
+            minValue: 0,
+            maxValue: 50,
+        });
     });
 
     // tslint:disable-next-line:no-shadowed-variable
