@@ -67,7 +67,7 @@ const styles: ComponentStyles<SelectClassNameContract, DesignSystem> = {
         ...applyFloatingCornerRadius(),
         ...applyElevation(ElevationMultiplier.e11),
         zIndex: "1",
-        position: "absolute",
+        position: "relative",
         width: "100%",
         margin: "0",
         padding: format("{0} 0", toPx<DesignSystem>(designUnit)),
