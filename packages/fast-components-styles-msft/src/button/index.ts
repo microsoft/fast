@@ -1,3 +1,17 @@
+import { ButtonClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
+import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager";
+import {
+    applyFocusVisible,
+    directionSwitch,
+    format,
+    toPx,
+} from "@microsoft/fast-jss-utilities";
+import {
+    DesignSystem,
+    DesignSystemResolver,
+    ensureDesignSystemDefaults,
+} from "../design-system";
+import { applyCornerRadius, applyFocusPlaceholderBorder } from "../utilities/border";
 import {
     accentFillActive,
     accentFillHover,
@@ -18,30 +32,16 @@ import {
     neutralOutlineHover,
     neutralOutlineRest,
 } from "../utilities/color";
-import {
-    applyFocusVisible,
-    Direction,
-    directionSwitch,
-    format,
-    toPx,
-} from "@microsoft/fast-jss-utilities";
-import {
-    DesignSystem,
-    ensureDesignSystemDefaults,
-    withDesignSystemDefaults,
-} from "../design-system";
-import {
-    ComponentStyles,
-    ComponentStyleSheet,
-    CSSRules,
-} from "@microsoft/fast-jss-manager";
-import { glyphSize, height, horizontalSpacing } from "../utilities/density";
+import { isDarkMode, Palette, swatchByContrast } from "../utilities/color/palette";
 import { applyCursorPointer } from "../utilities/cursor";
-import { ButtonClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
-import { applyCornerRadius, applyFocusPlaceholderBorder } from "../utilities/border";
+import { glyphSize, height, horizontalSpacing } from "../utilities/density";
+import {
+    accentPalette,
+    focusOutlineWidth,
+    outlineWidth,
+} from "../utilities/design-system";
 import { applyDisabledState } from "../utilities/disabled";
 import { applyScaledTypeRamp } from "../utilities/typography";
-import { focusOutlineWidth, outlineWidth } from "../utilities/design-system";
 
 const transparentBackground: CSSRules<DesignSystem> = {
     backgroundColor: "transparent",
@@ -79,6 +79,27 @@ const applyTransparentBackplateStyles: CSSRules<DesignSystem> = {
         ...transparentBackground,
     },
 };
+
+const primaryButtonInnerFocusRect: DesignSystemResolver<string> = swatchByContrast(
+    neutralFocus
+)(accentPalette)(
+    (
+        referenceColor: string,
+        sourcePalette: Palette,
+        designSystem: DesignSystem
+    ): number => {
+        return sourcePalette.indexOf(accentFillRest(designSystem));
+    }
+)(
+    (referenceIndex: number, palette: string[], designSystem: DesignSystem): 1 | -1 => {
+        return isDarkMode({
+            ...designSystem,
+            backgroundColor: neutralFocus(designSystem),
+        })
+            ? -1
+            : 1;
+    }
+)((contrastRatio: number): boolean => contrastRatio >= 4.5);
 
 const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = {
     button: {
@@ -131,6 +152,7 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = {
         },
         ...applyFocusVisible<DesignSystem>({
             borderColor: neutralFocus,
+            boxShadow: format("0 0 0 2px inset {0}", primaryButtonInnerFocusRect),
         }),
         "& $button_beforeContent, & $button_afterContent": {
             fill: accentForegroundCut,
