@@ -41,7 +41,7 @@ function getNavigationFromDataLocations(
     childOptions: ChildOptionItem[],
     dataLocation: string = "",
     relativeDataLocation: string = "" // This data location is relative to the current schema
-): TreeNavigation[] {
+): TreeNavigation[] | void {
     if (typeof data !== "object" && data !== null) {
         return void 0;
     }
@@ -185,7 +185,7 @@ export function getNavigationFromData(
     schema: any,
     childOptions: ChildOptionItem[]
 ): TreeNavigation {
-    const navigation: TreeNavigation[] = getNavigationFromDataLocations(
+    const navigation: TreeNavigation[] | void = getNavigationFromDataLocations(
         data,
         schema,
         childOptions

@@ -34,7 +34,7 @@ describe("getNavigationFromData", () => {
         const data: any = {
             children: childrenText,
         };
-        const navigationFromData: TreeNavigation[] = getNavigationFromData(
+        const navigationFromData: TreeNavigation[] | void = getNavigationFromData(
             data,
             childrenSchema,
             childOptions
@@ -61,7 +61,7 @@ describe("getNavigationFromData", () => {
             },
         };
 
-        const navigationFromData: TreeNavigation[] = getNavigationFromData(
+        const navigationFromData: TreeNavigation[] | void = getNavigationFromData(
             data,
             childrenSchema,
             childOptions
@@ -96,7 +96,7 @@ describe("getNavigationFromData", () => {
             ],
         };
 
-        const navigationFromData: TreeNavigation[] = getNavigationFromData(
+        const navigationFromData: TreeNavigation[] | void = getNavigationFromData(
             data,
             childrenSchema,
             childOptions
@@ -141,7 +141,7 @@ describe("getNavigationFromData", () => {
             },
         };
 
-        const navigationFromData: TreeNavigation[] = getNavigationFromData(
+        const navigationFromData: TreeNavigation[] | void = getNavigationFromData(
             data,
             childrenSchema,
             childOptions
@@ -199,7 +199,7 @@ describe("getNavigationFromData", () => {
             },
         };
 
-        const navigationFromData: TreeNavigation[] = getNavigationFromData(
+        const navigationFromData: TreeNavigation[] | void = getNavigationFromData(
             data,
             childrenSchema,
             childOptions
@@ -255,7 +255,7 @@ describe("getNavigationFromData", () => {
             },
         };
 
-        const navigationFromData: TreeNavigation[] = getNavigationFromData(
+        const navigationFromData: TreeNavigation[] | void = getNavigationFromData(
             data,
             {
                 title: "root title",

@@ -46,7 +46,7 @@ export interface TreeNavigation {
     /**
      * The items belonging to the text as a dropdown
      */
-    items?: TreeNavigation[];
+    items?: TreeNavigation[] | void;
 }
 
 export interface NavigationUnhandledProps extends React.HTMLAttributes<HTMLDivElement> {}
