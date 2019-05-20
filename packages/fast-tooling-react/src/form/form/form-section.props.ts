@@ -62,6 +62,11 @@ export interface FormSectionProps {
     dataLocation: string;
 
     /**
+     * The default values
+     */
+    default: any;
+
+    /**
      * The location in the schema
      */
     schemaLocation: string;

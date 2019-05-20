@@ -1,5 +1,5 @@
+import Toc, { TocItem } from "../toc";
 import React from "react";
-import SiteTitle from "./title";
 import manageJss, {
     ComponentStyles,
     DesignSystemProvider,
@@ -27,7 +27,7 @@ import { ellipsis, localizeSpacing, toPx } from "@microsoft/fast-jss-utilities";
 import ComponentWrapper from "./component-wrapper";
 import CategoryList from "./category-list";
 import SiteTitleBrand from "./title-brand";
-import Toc, { TocItem } from "../toc";
+import SiteTitle from "./title";
 import SiteMenu from "./menu";
 import SiteMenuItem from "./menu-item";
 import SiteCategory, { Status } from "./category";
@@ -36,7 +36,10 @@ import SiteCategoryIcon from "./category-icon";
 import SiteCategoryItem from "./category-item";
 import ActionBar from "./action-bar";
 import DevTools, { Framework } from "./dev-tools";
-import ConfigurationPanel from "./configuration-panel";
+import ConfigurationPanel, {
+    ConfigurationPanelProps,
+    DesignSystemEditingConfig,
+} from "./configuration-panel";
 import NotFound from "./not-found";
 import ComponentView, { ComponentViewTypes } from "./component-view";
 import {
@@ -76,6 +79,7 @@ export interface SiteProps {
     onUpdateDirection?: (ltr: Direction) => void;
     onUpdateTheme?: (theme: string) => void;
     styleEditing?: boolean;
+    designSystemEditing?: DesignSystemEditingConfig;
     locales?: string[];
     themes?: Theme[];
     activeTheme?: Theme;
@@ -130,6 +134,7 @@ export interface SiteState {
     locale: string;
     theme: Theme;
     navigationLevel: NavigationLevel;
+    designSystem: any;
 }
 
 export enum SiteSlot {
@@ -411,6 +416,7 @@ class Site extends React.Component<
             locale: "en",
             theme: this.props.activeTheme || this.getInitialTheme(),
             navigationLevel: NavigationLevel.catalog,
+            designSystem: get(this.props, "designSystemEditing.data"),
         };
     }
 
@@ -798,6 +804,12 @@ class Site extends React.Component<
         }
     };
 
+    private handleDesignSystemDataChange = (data: any): void => {
+        this.setState({
+            designSystem: data,
+        });
+    };
+
     private handleToggleDevToolsView = (): void => {
         this.setState({
             devToolsView: !this.state.devToolsView,
@@ -932,16 +944,38 @@ class Site extends React.Component<
 
             return (
                 <ConfigurationPanel
-                    schema={schema}
-                    data={componentData}
-                    dataLocation={this.state.componentDataLocation}
-                    onChange={this.handleComponentDataChange.bind(route)}
-                    formChildOptions={this.props.formChildOptions}
-                    onLocationUpdate={this.handleLocationUpdate}
-                    styleEditing={this.props.styleEditing}
+                    {...this.getConfigurationPanelProps(schema, componentData, route)}
                 />
             );
         }
+    }
+
+    private getConfigurationPanelProps(
+        schema: any,
+        componentData: any,
+        route: any
+    ): ConfigurationPanelProps {
+        const props: ConfigurationPanelProps = {
+            schema,
+            data: componentData,
+            dataLocation: this.state.componentDataLocation,
+            onChange: this.handleComponentDataChange.bind(route),
+            formChildOptions: this.props.formChildOptions,
+            onLocationUpdate: this.handleLocationUpdate,
+            styleEditing: this.props.styleEditing,
+            designSystemEditing: void 0,
+            designSystemOnChange: void 0,
+        };
+
+        if (!!this.props.designSystemEditing) {
+            props.designSystemEditing = {
+                schema: this.props.designSystemEditing.schema,
+                data: this.state.designSystem,
+            };
+            props.designSystemOnChange = this.handleDesignSystemDataChange;
+        }
+
+        return props;
     }
 
     private generateComponentWrapperBackground(): string {
@@ -971,7 +1005,10 @@ class Site extends React.Component<
                             transparentBackground={
                                 this.state.componentBackgroundTransparent
                             }
-                            designSystem={componentItem.props.designSystem}
+                            designSystem={
+                                this.state.designSystem ||
+                                componentItem.props.designSystem
+                            }
                             active={index === this.state.activeComponentIndex}
                             view={this.state.componentView}
                         >
@@ -1018,7 +1055,7 @@ class Site extends React.Component<
                     background={this.generateComponentWrapperBackground()}
                     dir={isRTL(this.state.locale) ? Direction.rtl : Direction.ltr}
                     transparentBackground={this.state.componentBackgroundTransparent}
-                    designSystem={component.props.designSystem}
+                    designSystem={this.state.designSystem || component.props.designSystem}
                     active={true}
                     view={this.state.componentView}
                 >

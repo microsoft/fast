@@ -3,6 +3,28 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.3.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-development-site-react@4.3.0...@microsoft/fast-development-site-react@4.3.1) (2019-05-17)
+
+
+### Bug Fixes
+
+* removes the requirement for design system editing in the configuration panel ([#1764](https://github.com/Microsoft/fast-dna/issues/1764)) ([821ecb2](https://github.com/Microsoft/fast-dna/commit/821ecb2))
+
+
+
+
+
+# [4.3.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-development-site-react@4.2.0...@microsoft/fast-development-site-react@4.3.0) (2019-05-17)
+
+
+### Features
+
+* add optional design system to the development site ([#1749](https://github.com/Microsoft/fast-dna/issues/1749)) ([187c404](https://github.com/Microsoft/fast-dna/commit/187c404))
+
+
+
+
+
 # [4.2.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-development-site-react@4.1.3...@microsoft/fast-development-site-react@4.2.0) (2019-05-08)
 
 

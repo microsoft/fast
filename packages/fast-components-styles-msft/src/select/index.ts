@@ -1,10 +1,17 @@
-import { DesignSystem } from "../design-system";
+import DesignSystemDefaults, {
+    DesignSystem,
+    ensureDesignSystemDefaults,
+} from "../design-system";
 import { ComponentStyles } from "@microsoft/fast-jss-manager";
-import { format, toPx } from "@microsoft/fast-jss-utilities";
 import {
-    ButtonClassNameContract,
-    SelectClassNameContract,
-} from "@microsoft/fast-components-class-name-contracts-msft";
+    applyLocalizedProperty,
+    ellipsis,
+    format,
+    localizeSpacing,
+    toPx,
+} from "@microsoft/fast-jss-utilities";
+import { SelectClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
+import { glyphSize, height, horizontalSpacing } from "../utilities/density";
 import { applyElevation, ElevationMultiplier } from "../utilities/elevation";
 import {
     neutralFillStealthRest,
@@ -13,20 +20,7 @@ import {
 } from "../utilities/color";
 import { applyFloatingCornerRadius } from "../utilities/border";
 import { designUnit } from "../utilities/design-system";
-
-export const selectDisplayButtonOverrides: ComponentStyles<
-    Partial<ButtonClassNameContract>,
-    DesignSystem
-> = {
-    button: {
-        width: "100%",
-        padding: "0 10px",
-    },
-    button_contentRegion: {
-        width: "100%",
-        display: "inline-flex",
-    },
-};
+import { inputFieldStyles } from "../patterns/input-field";
 
 const styles: ComponentStyles<SelectClassNameContract, DesignSystem> = {
     select: {
@@ -34,12 +28,38 @@ const styles: ComponentStyles<SelectClassNameContract, DesignSystem> = {
         maxWidth: "374px",
     },
 
-    select_toggleGlyph: {
-        fill: neutralForegroundRest,
+    select_button: {
+        height: height(),
+        width: "100%",
+        ...inputFieldStyles(),
     },
 
-    select__disabled: {
-        opacity: ".3",
+    select_buttonContentRegion: {
+        display: "grid",
+        gridTemplateColumns: "1fr auto",
+        alignItems: "center",
+        justifyItems: "start",
+    },
+
+    select_buttonDisplayText: {
+        ...ellipsis(),
+        textAlign: ensureDesignSystemDefaults(
+            (designSystem: DesignSystem): string =>
+                applyLocalizedProperty("left", "right", designSystem.direction)
+        ),
+        width: "100%",
+    },
+
+    select_toggleGlyph: {
+        margin: (designSystem: DesignSystem): string => {
+            return localizeSpacing(
+                (designSystem && designSystem.direction) || DesignSystemDefaults.direction
+            )(format("0 0 0 {0}", horizontalSpacing())(designSystem));
+        },
+        fill: neutralForegroundRest,
+        width: glyphSize,
+        height: glyphSize,
+        gridColumnStart: "2",
     },
 
     select_menu: {
@@ -65,7 +85,6 @@ const styles: ComponentStyles<SelectClassNameContract, DesignSystem> = {
             borderColor: neutralOutlineRest,
         },
     },
-    select_menu__open: {},
 };
 
 export default styles;
