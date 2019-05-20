@@ -42,7 +42,7 @@ Learn more about [submitting pull requests](https://microsoft.github.io/fast-dna
 
 ### Documenting breaking changes
 
-Make sure to document the migration strategy in a `MIGRATION.md` file in the package(s) that has breaking changes.
+Make sure to document the migration strategy in a `MIGRATION.md` file in the package(s) that has breaking changes, eg. `packages/fast-components-styles-msft/MIGRATION.md`.
 
 Example of how to format `MIGRATION.md`:
 
