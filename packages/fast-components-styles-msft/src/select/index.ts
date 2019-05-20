@@ -26,6 +26,7 @@ const styles: ComponentStyles<SelectClassNameContract, DesignSystem> = {
     select: {
         minWidth: "276px",
         maxWidth: "374px",
+        height: height(),
     },
 
     select_button: {
