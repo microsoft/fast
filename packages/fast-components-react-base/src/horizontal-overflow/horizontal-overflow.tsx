@@ -15,11 +15,7 @@ import {
     PositionChange,
 } from "./horizontal-overflow.props";
 import throttle from "raf-throttle";
-import {
-    ConstructableResizeObserver,
-    ResizeObserverClassDefinition,
-    ResizeObserverEntry,
-} from "../utilities";
+import { ResizeObserverClassDefinition, ResizeObserverEntry } from "../utilities";
 import { DisplayNamePrefix } from "../utilities";
 
 export enum ButtonDirection {
