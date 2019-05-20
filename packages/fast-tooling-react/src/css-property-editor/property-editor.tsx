@@ -1,5 +1,5 @@
 import React from "react";
-import { get, pick } from "lodash-es";
+import { camelCase } from "lodash-es";
 import Foundation, {
     FoundationProps,
     HandledProps,
@@ -14,12 +14,8 @@ import {
     CSSPropertyEditorUnhandledProps,
     InputConfig,
 } from "./property-editor.props";
-import { KeyCodes } from "@microsoft/fast-web-utilities";
-import {
-    filterPropertyKeyToCamelCase,
-    filterPropertyKeyToDashSeparated,
-    getCSSPropertyConfig,
-} from "./property-editor.utilities";
+import { KeyCodes, spinalCase } from "@microsoft/fast-web-utilities";
+import { getCSSPropertyConfig } from "./property-editor.utilities";
 
 export default class CSSPropertyEditor extends Foundation<
     CSSPropertyEditorHandledProps,
@@ -104,7 +100,7 @@ export default class CSSPropertyEditor extends Foundation<
                 {this.renderInput({
                     className: this.generateKeyClassNames(),
                     onChange: this.handlePropertyKeyChange(key),
-                    value: filterPropertyKeyToDashSeparated(key),
+                    value: spinalCase(key),
                     style: { width: `${config.keyWidth}px` },
                 })}
                 :
@@ -125,7 +121,7 @@ export default class CSSPropertyEditor extends Foundation<
                 {this.renderInput({
                     className: this.generateKeyClassNames(),
                     onChange: this.handleNewPropertyKeyChange,
-                    value: filterPropertyKeyToDashSeparated(this.state.key),
+                    value: spinalCase(this.state.key),
                     style: { width: `${config.keyWidth}px` },
                     ref: this.keyInputRef,
                 })}
@@ -174,9 +170,7 @@ export default class CSSPropertyEditor extends Foundation<
             // the order of keys in the CSS object
             Object.keys(this.props.data).forEach((key: string) => {
                 if (key === oldKey) {
-                    newData[
-                        filterPropertyKeyToCamelCase(e.target.value)
-                    ] = this.props.data[key];
+                    newData[camelCase(e.target.value)] = this.props.data[key];
                 } else {
                     newData[key] = this.props.data[key];
                 }
@@ -192,7 +186,7 @@ export default class CSSPropertyEditor extends Foundation<
         return (e: React.ChangeEvent<HTMLInputElement>): void => {
             this.handleCSSUpdate({
                 ...this.props.data,
-                ...{ [filterPropertyKeyToCamelCase(key)]: e.target.value },
+                ...{ [camelCase(key)]: e.target.value },
             });
         };
     }
@@ -222,7 +216,7 @@ export default class CSSPropertyEditor extends Foundation<
 
                 this.handleCSSUpdate(
                     Object.assign({}, this.props.data, {
-                        [filterPropertyKeyToCamelCase(this.state.key)]: this.state.value,
+                        [camelCase(this.state.key)]: this.state.value,
                     })
                 );
 

@@ -53,3 +53,19 @@ export function pascalCase(value: string): string {
 
     return `${camelCased.charAt(0).toUpperCase()}${camelCased.slice(1)}`;
 }
+
+/**
+ * converts a string from camelCase or pascalCase to spinal case
+ */
+export function spinalCase(value: string): string {
+    const valueWithLowerCaseFirstLetter: string = `${value
+        .charAt(0)
+        .toLowerCase()}${value.slice(1)}`;
+
+    return valueWithLowerCaseFirstLetter.replace(/([A-Z])/g, function(
+        match: string,
+        group1: string
+    ): string {
+        return `-${group1.toLowerCase()}`;
+    });
+}
