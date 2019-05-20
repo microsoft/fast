@@ -315,16 +315,16 @@ describe("action toggle", (): void => {
 
         const rendered: any = mount(<ActionToggle {...props} />);
         expect(rendered.find("button").prop("className")).not.toContain(
-            "actionToggle__hasGlyphandContent"
+            "actionToggle__hasGlyphAndContent"
         );
 
         rendered.find("button").simulate("click");
         expect(rendered.find("button").prop("className")).not.toContain(
-            "actionToggle__hasGlyphandContent"
+            "actionToggle__hasGlyphAndContent"
         );
     });
 
-    test("should apply a hasGlyphandContent class when display includes content and glyph", () => {
+    test("should apply a hasGlyphAndContent class when display includes content and glyph", () => {
         const props: ActionToggleHandledProps = {
             selectedLabel: "selected",
             unselectedLabel: "unselected",
