@@ -181,10 +181,10 @@ function formatContrast(
 }
 
 const formatBackgroundContrast: ReturnType<typeof formatContrast> = formatContrast(
-    "BG contrast: {0} : 1\n"
+    "BG contrast: {0} : 1"
 );
 const formatTextContrast: ReturnType<typeof formatContrast> = formatContrast(
-    "Text contrast: {0} : 1\n"
+    "Text contrast: {0} : 1"
 );
 
 function iconFactoryByType(type: SwatchTypes): SwatchIconFactory {
@@ -201,11 +201,12 @@ function iconFactoryByType(type: SwatchTypes): SwatchIconFactory {
                     : type === SwatchTypes.outline && typeof outlineRecipe === "function"
                         ? outlineRecipe
                         : fillRecipe,
-                backgroundColor
+                type === SwatchTypes.foreground ? fillRecipe : backgroundColor
             )(designSystem);
             const tooltip: string =
                 type === SwatchTypes.fill && typeof foregroundRecipe === "function"
                     ? backgroundContrastMessage.concat(
+                          "\n",
                           formatTextContrast(fillRecipe, foregroundRecipe)(designSystem)
                       )
                     : backgroundContrastMessage;
