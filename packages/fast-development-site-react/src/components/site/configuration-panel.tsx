@@ -100,7 +100,7 @@ class ConfigurationPanel extends React.Component<
     }
 
     private renderCSSEditor(): React.ReactNode {
-        if (!!this.props.styleEditing) {
+        if (!!this.props.styleEditing && this.isChildComponent()) {
             return (
                 <React.Fragment>
                     {this.renderCategoryTitle("CSS")}
@@ -117,7 +117,7 @@ class ConfigurationPanel extends React.Component<
     }
 
     private renderCSSPropertyEditor(): React.ReactNode {
-        if (!!this.props.styleEditing) {
+        if (!!this.props.styleEditing && this.isChildComponent()) {
             return (
                 <div
                     className={
@@ -170,6 +170,12 @@ class ConfigurationPanel extends React.Component<
         return get(
             this.props.data,
             `${this.props.dataLocation}${this.props.dataLocation === "" ? "" : "."}style`
+        );
+    }
+
+    private isChildComponent(): boolean {
+        return (
+            this.props.dataLocation === "" || this.props.dataLocation.endsWith("props")
         );
     }
 
