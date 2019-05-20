@@ -8,8 +8,7 @@ import {
     ActionTriggerUnhandledProps,
 } from "./action-trigger.props";
 import { actionTriggerButtonOverrides } from "@microsoft/fast-components-styles-msft";
-import { isNullOrUndefined } from "util";
-import { DisplayNamePrefix } from "../utilities";
+import { DisplayNamePrefix, isNullOrUndefined } from "../utilities";
 
 class ActionTrigger extends Foundation<
     ActionTriggerHandledProps,

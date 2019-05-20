@@ -12,8 +12,7 @@ import {
 } from "@microsoft/fast-components-react-base";
 import { get, slice } from "lodash-es";
 import { startsWith } from "@microsoft/fast-web-utilities";
-import { isNullOrUndefined } from "util";
-import { DisplayNamePrefix } from "../utilities";
+import { DisplayNamePrefix, isNullOrUndefined } from "../utilities";
 
 class AutoSuggestOption extends Foundation<
     AutoSuggestOptionHandledProps,

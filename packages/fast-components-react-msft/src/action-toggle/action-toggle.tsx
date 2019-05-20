@@ -9,8 +9,7 @@ import {
     ActionToggleUnhandledProps,
 } from "./action-toggle.props";
 import { actionToggleButtonOverrides } from "@microsoft/fast-components-styles-msft";
-import { isNullOrUndefined } from "util";
-import { DisplayNamePrefix } from "../utilities";
+import { DisplayNamePrefix, isNullOrUndefined } from "../utilities";
 
 export interface ActionToggleState {
     selected: boolean;
