@@ -249,7 +249,57 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
             shouldFocusOnMount = this.props.multiselectable;
         }
         return (
-            <ViewportPostioner anchor={this.rootElement} {...this.getFlyoutConfig()}>
+            <ViewportPostioner
+                anchor={this.rootElement}
+                {...this.getFlyoutConfig()}
+                managedClasses={{
+                    viewportPositioner: get(
+                        this.props.managedClasses,
+                        "select_viewportPositioner",
+                        ""
+                    ),
+                    viewportPositioner__left: get(
+                        this.props.managedClasses,
+                        "select_viewportPositioner__left",
+                        ""
+                    ),
+                    viewportPositioner__centerLeft: get(
+                        this.props.managedClasses,
+                        "select_viewportPositioner__centerLeft",
+                        ""
+                    ),
+                    viewportPositioner__centerRight: get(
+                        this.props.managedClasses,
+                        "select_viewportPositioner__centerRight",
+                        ""
+                    ),
+                    viewportPositioner__right: get(
+                        this.props.managedClasses,
+                        "select_viewportPositioner__right",
+                        ""
+                    ),
+                    viewportPositioner__top: get(
+                        this.props.managedClasses,
+                        "select_viewportPositioner__top",
+                        ""
+                    ),
+                    viewportPositioner__middleTop: get(
+                        this.props.managedClasses,
+                        "select_viewportPositioner__middleTop",
+                        ""
+                    ),
+                    viewportPositioner__middleBottom: get(
+                        this.props.managedClasses,
+                        "select_viewportPositioner__middleBottom",
+                        ""
+                    ),
+                    viewportPositioner__bottom: get(
+                        this.props.managedClasses,
+                        "select_viewportPositioner__bottom",
+                        ""
+                    ),
+                }}
+            >
                 <Listbox
                     labelledBy={this.props.labelledBy}
                     disabled={this.props.disabled}
