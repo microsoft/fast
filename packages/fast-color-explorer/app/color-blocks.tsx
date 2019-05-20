@@ -186,7 +186,7 @@ class ColorBlocksBase extends React.Component<ColorBlocksProps, ColorBlocksState
         button: {},
     };
 
-    private hintTextStyleOverries: ComponentStyleSheet<
+    private hintTextStyleOverrides: ComponentStyleSheet<
         CaptionClassNameContract,
         ColorsDesignSystem
     > = {
@@ -415,7 +415,7 @@ class ColorBlocksBase extends React.Component<ColorBlocksProps, ColorBlocksState
                 />
 
                 {this.renderExample(
-                    <Caption jssStyleSheet={this.hintTextStyleOverries}>Hint</Caption>
+                    <Caption jssStyleSheet={this.hintTextStyleOverrides}>Hint</Caption>
                 )}
                 <Swatch
                     type={SwatchTypes.foreground}

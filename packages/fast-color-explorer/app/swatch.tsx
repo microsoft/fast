@@ -79,7 +79,7 @@ const swatchTwoStyles: ComponentStyleSheet<
 > = {
     swatch: {
         display: "grid",
-        gridTemplateColumns: "auto auto 1fr auto",
+        gridTemplateColumns: "auto 1fr auto",
         gridTemplateRows: "auto",
         alignItems: "center",
         width: "100%",
@@ -87,11 +87,12 @@ const swatchTwoStyles: ComponentStyleSheet<
         boxSizing: "border-box",
         color: neutralForegroundHint,
         fontSize: "12px",
+        gridColumnGap: "16px",
+        justifyItems: "start",
     },
     swatch_icon: {
         width: "20px",
         height: "20px",
-        marginRight: "16px",
         borderRadius: "2px",
         boxSizing: "border-box",
         ...applyElevation(4),
@@ -101,7 +102,7 @@ const swatchTwoStyles: ComponentStyleSheet<
         gridRow: "1",
     },
     swatch_hexCode: {
-        gridColumn: "4",
+        gridColumn: "3",
         gridRow: "1",
     },
     swatch__foreground: {
