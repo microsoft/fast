@@ -11,14 +11,21 @@ import manageJss, {
     ManagedJSSProps,
 } from "@microsoft/fast-jss-manager-react";
 
+export interface DesignSystemEditingConfig {
+    data: any;
+    schema: any;
+}
+
 export interface ConfigurationPanelProps {
     formChildOptions: any;
     schema: any;
     data: any;
     dataLocation: string;
     onChange: any;
+    designSystemOnChange: (data: any) => void;
     onLocationUpdate: (dataLocation: string) => void;
     styleEditing?: boolean;
+    designSystemEditing?: DesignSystemEditingConfig;
 }
 
 export interface ConfigurationPanelManagedClasses {
@@ -68,6 +75,7 @@ class ConfigurationPanel extends React.Component<
                 {this.renderForm()}
                 {this.renderCSSEditor()}
                 {this.renderCSSPropertyEditor()}
+                {this.renderDesignSystemEditor()}
             </div>
         );
     }
@@ -130,6 +138,22 @@ class ConfigurationPanel extends React.Component<
                         data={this.getStyle()}
                     />
                 </div>
+            );
+        }
+    }
+
+    private renderDesignSystemEditor(): React.ReactNode {
+        if (!!this.props.designSystemEditing) {
+            return (
+                <React.Fragment>
+                    {this.renderCategoryTitle("Design System")}
+                    <Form
+                        jssStyleSheet={{ form: { height: "unset" } }}
+                        schema={this.props.designSystemEditing.schema}
+                        data={this.props.designSystemEditing.data}
+                        onChange={this.props.designSystemOnChange}
+                    />
+                </React.Fragment>
             );
         }
     }

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.2.2](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-class-name-contracts-msft@4.2.1...@microsoft/fast-components-class-name-contracts-msft@4.2.2) (2019-05-17)
+
+
+### Bug Fixes
+
+* base select trigger on input field styles and not button styles ([#1716](https://github.com/Microsoft/fast-dna/issues/1716)) ([07aeb2b](https://github.com/Microsoft/fast-dna/commit/07aeb2b))
+
+
+
+
+
 ## [4.2.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-class-name-contracts-msft@4.2.0...@microsoft/fast-components-class-name-contracts-msft@4.2.1) (2019-05-08)
 
 **Note:** Version bump only for package @microsoft/fast-components-class-name-contracts-msft

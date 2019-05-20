@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.6.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-tooling-react@1.5.0...@microsoft/fast-tooling-react@1.6.0) (2019-05-17)
+
+
+### Features
+
+* add ability to traverse form without data ([#1741](https://github.com/Microsoft/fast-dna/issues/1741)) ([1f48d7a](https://github.com/Microsoft/fast-dna/commit/1f48d7a))
+* allow defaults to be inherited ([#1747](https://github.com/Microsoft/fast-dna/issues/1747)) ([9a86655](https://github.com/Microsoft/fast-dna/commit/9a86655))
+
+
+
+
+
 # [1.5.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-tooling-react@1.4.0...@microsoft/fast-tooling-react@1.5.0) (2019-05-08)
 
 

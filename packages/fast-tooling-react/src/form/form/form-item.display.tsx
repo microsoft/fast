@@ -140,13 +140,10 @@ class FormItemDisplay extends FormItemBase<
     private handleInputChange = (): void => {};
 
     private generateClassNames(): string {
-        let classes: string = get(this.props, "managedClasses.formItemNumberField");
+        let classes: string = get(this.props, "managedClasses.formItemDisplay");
 
         if (this.props.disabled) {
-            classes += ` ${get(
-                this.props,
-                "managedClasses.formItemNumberField__disabled"
-            )}`;
+            classes += ` ${get(this.props, "managedClasses.formItemDisplay__disabled")}`;
         }
 
         return classes;
@@ -163,7 +160,7 @@ class FormItemDisplay extends FormItemBase<
     private getDisplayValue(): string {
         return typeof this.props.data !== "undefined"
             ? JSON.stringify(this.props.data, null, 2)
-            : JSON.stringify(get(this.props.schema, "default", ""), null, 2);
+            : JSON.stringify(get(this.props, "default", ""), null, 2);
     }
 }
 
