@@ -174,11 +174,8 @@ class ConfigurationPanel extends React.Component<
     }
 
     private isChildComponent(): boolean {
-        const dataLocationSegments: string[] = this.props.dataLocation.split(".");
-
         return (
-            this.props.dataLocation === "" ||
-            dataLocationSegments[dataLocationSegments.length - 1] === "props"
+            this.props.dataLocation === "" || this.props.dataLocation.endsWith("props")
         );
     }
 
