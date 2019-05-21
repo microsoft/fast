@@ -1,4 +1,10 @@
-import { format, isNullOrWhiteSpace, pascalCase, startsWith } from "./strings";
+import {
+    format,
+    isNullOrWhiteSpace,
+    pascalCase,
+    spinalCase,
+    startsWith,
+} from "./strings";
 
 describe("format", (): void => {
     test("should correctly manage undefined by returning an unformatted string", (): void => {
@@ -82,6 +88,15 @@ describe("pascalCase", (): void => {
 
     test("should correctly manage all caps strings", (): void => {
         expect(pascalCase("STRING EXTENSIONS")).toBe("StringExtensions");
+    });
+});
+
+describe("spinalCase", () => {
+    test("should convert pascalCase strings", (): void => {
+        expect(spinalCase("stringExtensions")).toBe("string-extensions");
+    });
+    test("should convert CamelCase strings", (): void => {
+        expect(spinalCase("StringExtensions")).toBe("string-extensions");
     });
 });
 
