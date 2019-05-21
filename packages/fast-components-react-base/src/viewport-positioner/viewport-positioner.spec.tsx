@@ -702,7 +702,7 @@ describe("viewport positioner", (): void => {
         ).toBe(201);
     });
 
-    test("Positioner moves on updateLayout() when spacing changes", (): void => {
+    test("Positioner moves to biggest area on updateLayout() when spacing changes", (): void => {
         const anchorElement: React.RefObject<HTMLDivElement> = React.createRef<
             HTMLDivElement
         >();
@@ -747,6 +747,94 @@ describe("viewport positioner", (): void => {
         positioner.instance().anchorHeight = 10;
         positioner.instance().scrollTop = 0;
         positioner.instance().scrollLeft = 0;
+
+        positioner.instance()["updateLayout"]();
+
+        expect(positioner.instance().state.currentHorizontalPosition).toBe(
+            HorizontalPosition.left
+        );
+        expect(positioner.instance().state.currentVerticalPosition).toBe(
+            VerticalPosition.top
+        );
+
+        positioner.instance().anchorTop = 10;
+        positioner.instance().anchorRight = 20;
+        positioner.instance().anchorBottom = 20;
+        positioner.instance().anchorLeft = 10;
+
+        positioner.instance()["updateLayout"]();
+
+        expect(positioner.instance().state.currentHorizontalPosition).toBe(
+            HorizontalPosition.right
+        );
+        expect(positioner.instance().state.currentVerticalPosition).toBe(
+            VerticalPosition.bottom
+        );
+    });
+
+    test("Positioner prefers default position until threshold is passed", (): void => {
+        const anchorElement: React.RefObject<HTMLDivElement> = React.createRef<
+            HTMLDivElement
+        >();
+        const viewportElement: React.RefObject<HTMLDivElement> = React.createRef<
+            HTMLDivElement
+        >();
+
+        const rendered: any = mount(
+            <div
+                style={{
+                    height: "100px",
+                    width: "100px",
+                }}
+                ref={viewportElement}
+            >
+                <div
+                    style={{
+                        height: "10px",
+                        width: "10px",
+                    }}
+                    ref={anchorElement}
+                />
+                <ViewportPositioner
+                    horizontalPositioningMode={AxisPositioningMode.flipOutward}
+                    defaultHorizontalPosition={HorizontalPosition.left}
+                    horizontalThreshold={20}
+                    verticalPositioningMode={AxisPositioningMode.flipOutward}
+                    defaultVerticalPosition={VerticalPosition.top}
+                    verticalThreshold={20}
+                    anchor={anchorElement}
+                    viewport={viewportElement}
+                    managedClasses={managedClasses}
+                />
+            </div>
+        );
+
+        const positioner: any = rendered.find("BaseViewportPositioner");
+
+        positioner.instance().viewportRect = viewportRect;
+        positioner.instance().positionerRect = positionerRectX70Y70;
+        positioner.instance().anchorTop = 80;
+        positioner.instance().anchorRight = 90;
+        positioner.instance().anchorBottom = 90;
+        positioner.instance().anchorLeft = 80;
+        positioner.instance().anchorWidth = 10;
+        positioner.instance().anchorHeight = 10;
+        positioner.instance().scrollTop = 0;
+        positioner.instance().scrollLeft = 0;
+
+        positioner.instance()["updateLayout"]();
+
+        expect(positioner.instance().state.currentHorizontalPosition).toBe(
+            HorizontalPosition.left
+        );
+        expect(positioner.instance().state.currentVerticalPosition).toBe(
+            VerticalPosition.top
+        );
+
+        positioner.instance().anchorTop = 20;
+        positioner.instance().anchorRight = 30;
+        positioner.instance().anchorBottom = 30;
+        positioner.instance().anchorLeft = 20;
 
         positioner.instance()["updateLayout"]();
 
