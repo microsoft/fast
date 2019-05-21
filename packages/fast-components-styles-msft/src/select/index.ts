@@ -72,8 +72,6 @@ const styles: ComponentStyles<SelectClassNameContract, DesignSystem> = {
         width: "100%",
         margin: "0",
         padding: format("{0} 0", toPx<DesignSystem>(designUnit)),
-        maxWidth: "374px",
-        minWidth: "276px",
         maxHeight: "328px",
         overflow: "auto",
     },
