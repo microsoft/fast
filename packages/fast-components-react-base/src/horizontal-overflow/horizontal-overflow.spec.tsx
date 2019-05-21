@@ -6,8 +6,7 @@ import HorizontalOverflow, {
     HorizontalOverflowClassNameContract,
 } from "./";
 import "raf/polyfill";
-import { ConstructableResizeObserver } from "./resize-observer";
-import { DisplayNamePrefix } from "../utilities";
+import { ConstructibleResizeObserver, DisplayNamePrefix } from "../utilities";
 
 /*
  * Configure Enzyme
@@ -532,7 +531,7 @@ describe("horizontal overflow", (): void => {
         expect(resizeCallback.mock.calls[0][0]).not.toBe("resize");
     });
     test("should create a resize observer if it is available", (): void => {
-        const ActualObserver: ConstructableResizeObserver = (window as WindowWithResizeObserver)
+        const ActualObserver: ConstructibleResizeObserver = (window as WindowWithResizeObserver)
             .ResizeObserver;
         const construct: jest.Mock<any, any> = jest.fn();
         // Mock the resize observer
@@ -558,7 +557,7 @@ describe("horizontal overflow", (): void => {
         (window as WindowWithResizeObserver).ResizeObserver = ActualObserver;
     });
     test("should disconnect the resize observer when unmounted", (): void => {
-        const ActualObserver: ConstructableResizeObserver = (window as WindowWithResizeObserver)
+        const ActualObserver: ConstructibleResizeObserver = (window as WindowWithResizeObserver)
             .ResizeObserver;
         const disconnect: jest.Mock<any, any> = jest.fn();
         // Mock the resize observer
