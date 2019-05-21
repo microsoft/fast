@@ -10,9 +10,14 @@ import {
 } from "./palette";
 import { neutralForegroundRest } from "./neutral-foreground";
 import { inRange } from "lodash-es";
-import { colorRecipeFactory, contrast, Swatch, SwatchRecipe, SwatchResolver,  } from "./common";
+import {
+    colorRecipeFactory,
+    contrast,
+    Swatch,
+    SwatchRecipe,
+    SwatchResolver,
+} from "./common";
 import { backgroundColor, neutralPalette } from "../design-system";
-
 
 /**
  * Resolves the index that the contrast serach algorithm should start at
@@ -41,8 +46,9 @@ const neutralForegroundHintAlgorithm: ReturnType<
     neutralForegroundHintInitialIndexResolver
 )(neturalForegroundHintDirectionResolver);
 
-
-function contrastTargetFactory(targetContrast: number): (instanceContrast: number) => boolean {
+function contrastTargetFactory(
+    targetContrast: number
+): (instanceContrast: number) => boolean {
     return (instanceContrast: number): boolean => instanceContrast >= targetContrast;
 }
 
@@ -57,5 +63,5 @@ export const neutralForegroundHint: SwatchRecipe = colorRecipeFactory(
  * Hint text for large sized text, greater than 18pt or 16pt and bold
  */
 export const neutralForegroundHintLarge: SwatchRecipe = colorRecipeFactory(
-    neutralForegroundHintAlgorithm(contrastTargetFactory(4.5))
+    neutralForegroundHintAlgorithm(contrastTargetFactory(3))
 );
