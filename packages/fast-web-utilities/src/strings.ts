@@ -55,7 +55,10 @@ export function pascalCase(value: string): string {
 }
 
 /**
- * converts a string from camelCase or pascalCase to spinal case
+ * converts a string from camelCase or pascalCase to spinal-case
+ * which is an lowercase dash separated naming style.
+ *
+ * An example of spinal case: foo-bar-bat
  */
 export function spinalCase(value: string): string {
     const valueWithLowerCaseFirstLetter: string = `${value
