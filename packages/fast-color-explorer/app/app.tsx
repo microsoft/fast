@@ -36,16 +36,7 @@ class App extends React.Component<AppProps, {}> {
                     <Row fill={true}>
                         <Canvas>
                             <Container jssStyleSheet={this.containerStyleOverrides}>
-                                <Row fill={true}>
-                                    <AutoSizer
-                                        onResize={
-                                            /* this lambda is intentional - it forces the pure component to re-render */ (): void => {}
-                                        }
-                                    >
-                                        {this.renderColorBlockList}
-                                    </AutoSizer>
-                                </Row>
-                                <Row>
+                                <Row height={20} minHeight={20}>
                                     <Gradient
                                         colors={palette(PaletteType.neutral)(
                                             this.props.designSystem
@@ -54,13 +45,22 @@ class App extends React.Component<AppProps, {}> {
                                         scrollToItem={this.handleGradientScroll}
                                     />
                                 </Row>
-                                <Row>
+                                <Row height={20} minHeight={20}>
                                     <Gradient
                                         colors={palette(PaletteType.accent)(
                                             this.props.designSystem
                                         )}
                                         createAnchors={false}
                                     />
+                                </Row>
+                                <Row fill={true}>
+                                    <AutoSizer
+                                        onResize={
+                                            /* this lambda is intentional - it forces the pure component to re-render */ (): void => {}
+                                        }
+                                    >
+                                        {this.renderColorBlockList}
+                                    </AutoSizer>
                                 </Row>
                             </Container>
                         </Canvas>
@@ -104,7 +104,11 @@ class App extends React.Component<AppProps, {}> {
 
         return (
             <div style={props.style} key={color}>
-                <ColorBlocks {...{ backgroundColor: color, index: props.index } as any} />
+                <Background value={color} style={{ minHeight: "100%" }}>
+                    <ColorBlocks
+                        {...{ backgroundColor: color, index: props.index } as any}
+                    />
+                </Background>
             </div>
         );
     };
