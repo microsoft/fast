@@ -148,7 +148,7 @@ const examples: ComponentFactoryExample<ActionToggleProps> = {
                     path: SVGGlyph.play,
                 },
             } as any,
-            "data-sketch-symbol": "Action toggle - stealth - only icon",
+            "data-sketch-symbol": "Action toggle - stealth",
         } as any,
     ],
 };

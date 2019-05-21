@@ -88,7 +88,7 @@ const examples: ComponentFactoryExample<ActionTriggerProps> = {
                 id: svgSchema.id,
                 props: {},
             },
-            "data-sketch-symbol": "Action trigger - stealth",
+            "data-sketch-symbol": "Action trigger - stealth - only icon",
         } as any,
     ],
 };
