@@ -6,11 +6,9 @@ import { Color } from "csstype";
 import { createColorPalette } from "@microsoft/fast-components-styles-msft";
 
 export enum ComponentTypes {
-    neutral = "neutral",
-    accent = "accent",
-    stealth = "stealth",
-    ghost = "ghost",
+    backplate = "backplate",
     text = "text",
+    form = "form",
 }
 
 /**
@@ -73,7 +71,7 @@ function rootReducer(state: AppState, action: any): AppState {
 
 export const store: any = createStore(rootReducer, {
     designSystem: colorsDesignSystem,
-    componentType: ComponentTypes.neutral,
+    componentType: ComponentTypes.backplate,
 });
 
 interface ColorExplorerAction<S, T = any> extends Action<T> {

@@ -12,7 +12,7 @@ const styles: any = (designSystem: ColorsDesignSystem): any => {
         gradient_item: {
             display: "block",
             flex: "1",
-            height: "40px",
+            height: "100%",
         },
     };
 };
