@@ -38,13 +38,19 @@ export function findAccessibleAccentSwatchIndexs(
     const darkTheme: boolean = isDarkMode(designSystem);
     const stateDirection: 1 | -1 = darkTheme ? 1 : -1;
     const accessibleTextDirection: 1 | -1 = darkTheme ? -1 : 1;
-    const maxIndex: number = accentPalette.length - 1;
+    const paletteLength: number = accentPalette.length;
+    const maxIndex: number = paletteLength - 1;
     let accessibleAccentIndex: number = findClosestSwatchIndex(
         PaletteType.accent,
         accentColor
     )(designSystem);
 
     while (
+        inRange(
+            accessibleAccentIndex + stateDirection * stateDeltas.hover,
+            0,
+            paletteLength
+        ) &&
         contrast(
             accentPalette[accessibleAccentIndex + stateDirection * stateDeltas.hover],
             referenceColor
