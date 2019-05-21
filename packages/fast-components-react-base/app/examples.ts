@@ -78,3 +78,6 @@ export { ToggleExamples };
 
 import TypographyExamples from "../src/typography/examples.data";
 export { TypographyExamples };
+
+import ViewportPositionerExamples from "../src/viewport-positioner/examples.data";
+export { ViewportPositionerExamples };
