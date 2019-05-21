@@ -18,8 +18,9 @@
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "scripts": {
-    "build": "tsc -p ./tsconfig.json",
-    "prepare": "npm run build",
+    "build": "tsc -p ./tsconfig.build.json",
+    "clean:dist": "node ../../build/clean.js dist",
+    "prepare": "npm run clean:dist && npm run build",
     "prettier": "prettier --config ../../.prettierrc --write \"**/*.{ts,tsx}\"",
     "prettier:diff": "prettier --config ../../.prettierrc \"**/*.{ts,tsx}\" --list-different",
     "start": "webpack-dev-server",

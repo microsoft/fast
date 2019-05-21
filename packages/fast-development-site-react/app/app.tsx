@@ -1,7 +1,8 @@
-import React from "react";
-import ReactDOM from "react-dom";
 import { glyphBuildingblocks } from "@microsoft/fast-glyphs-msft";
+import { Plugin, PluginProps } from "@microsoft/fast-tooling-react";
+import React from "react";
 import Site, {
+    ComponentViewSlot,
     FormChildOption,
     SiteCategory,
     SiteCategoryDocumentation,
@@ -13,17 +14,18 @@ import Site, {
     SiteTitleBrand,
     Theme,
 } from "../src";
-import designSystemDefaults, { Direction } from "./design-system";
-import { Button, Paragraph, Span } from "./components";
-import ButtonSchema from "./components/button/button.schema.json";
-import ParagraphSchema from "./components/paragraph/paragraph.schema.json";
-import SpanSchema from "./components/paragraph/paragraph.schema.json";
 import { SiteCategoryProps, Status } from "../src/components/site/category";
-import ParagraphDocs from "./components/paragraph/.tmp/documentation";
-import ButtonDocs from "./components/button/.tmp/documentation";
 import { Framework } from "../src/components/site/dev-tools";
+import { Button, Paragraph, Span } from "./components";
+import ButtonDocs from "./components/button/.tmp/documentation";
+import ButtonSchema from "./components/button/button.schema.json";
+import ParagraphDocs from "./components/paragraph/.tmp/documentation";
+import {
+    default as ParagraphSchema,
+    default as SpanSchema,
+} from "./components/paragraph/paragraph.schema.json";
+import { Direction } from "./design-system";
 import TextPlugin from "./plugins/text-plugin";
-import { Plugin, PluginProps } from "@microsoft/fast-data-utilities-react";
 
 export interface AppState {
     direction: Direction;
@@ -243,7 +245,9 @@ export default class App extends React.Component<{}, AppState> {
             return (
                 <SiteCategoryItem
                     slot={
-                        index === 0 ? "canvas-detail-view-example" : "canvas-example-view"
+                        index === 0
+                            ? ComponentViewSlot.detailDocumentation
+                            : ComponentViewSlot.example
                     }
                     key={index}
                     data={componentDataItem}
