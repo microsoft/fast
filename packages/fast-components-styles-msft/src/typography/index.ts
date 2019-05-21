@@ -1,7 +1,7 @@
 import { DesignSystem } from "../design-system";
 import { ComponentStyles } from "@microsoft/fast-jss-manager";
 import { TypographyClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
-import { applyTypeRampConfig } from "../utilities/typography";
+import { applyScaledTypeRamp } from "../utilities/typography";
 import { neutralForegroundRest } from "../utilities/color";
 import { applyCursorDefault } from "../utilities/cursor";
 
@@ -14,31 +14,31 @@ const styles: ComponentStyles<TypographyClassNameContract, DesignSystem> = {
         transition: "all 0.2s ease-in-out",
     },
     typography__1: {
-        ...applyTypeRampConfig("t1"),
+        ...applyScaledTypeRamp("t1"),
     },
     typography__2: {
-        ...applyTypeRampConfig("t2"),
+        ...applyScaledTypeRamp("t2"),
     },
     typography__3: {
-        ...applyTypeRampConfig("t3"),
+        ...applyScaledTypeRamp("t3"),
     },
     typography__4: {
-        ...applyTypeRampConfig("t4"),
+        ...applyScaledTypeRamp("t4"),
     },
     typography__5: {
-        ...applyTypeRampConfig("t5"),
+        ...applyScaledTypeRamp("t5"),
     },
     typography__6: {
-        ...applyTypeRampConfig("t6"),
+        ...applyScaledTypeRamp("t6"),
     },
     typography__7: {
-        ...applyTypeRampConfig("t7"),
+        ...applyScaledTypeRamp("t7"),
     },
     typography__8: {
-        ...applyTypeRampConfig("t8"),
+        ...applyScaledTypeRamp("t8"),
     },
     typography__9: {
-        ...applyTypeRampConfig("t9"),
+        ...applyScaledTypeRamp("t9"),
     },
 };
 
