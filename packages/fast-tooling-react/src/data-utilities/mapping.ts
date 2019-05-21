@@ -19,6 +19,7 @@ import {
     getDataLocationsOfPlugins,
     mapSchemaLocationFromDataLocation,
     pluginFindIndexCallback,
+    squareBracketsRegex,
 } from "./location";
 
 /**
@@ -179,7 +180,7 @@ function mapPluginToData(
 ): any {
     const mappedData: any = cloneDeep(data);
     const pluginModifiedSchemaLocation: string = mapSchemaLocationFromDataLocation(
-        pluginModifiedDataLocation.relativeDataLocation.replace(/(\[\d+\])/g, ""),
+        pluginModifiedDataLocation.relativeDataLocation.replace(squareBracketsRegex, ""),
         pluginModifiedDataLocation.schema,
         data
     );

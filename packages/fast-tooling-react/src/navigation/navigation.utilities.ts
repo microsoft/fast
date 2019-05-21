@@ -1,130 +1,193 @@
 import { get } from "lodash-es";
 import { ChildOptionItem } from "../data-utilities";
-import { getDataLocationsOfChildren } from "../data-utilities/location";
-import { ItemType, TreeNavigation } from "./navigation.props";
+import { mapSchemaLocationFromDataLocation } from "../data-utilities/location";
+import { NavigationDataType, TreeNavigation } from "./navigation.props";
+import {
+    idKeyword,
+    itemsKeyword,
+    PropertyKeyword,
+    typeKeyword,
+} from "../data-utilities/types";
 
 const propsKeyword: string = "props";
 
-function getDataLocationParentLocation(
-    dataLocations: string[],
-    dataLocation: string
-): string | void {
-    const dataLocationsWithoutDataLocation: string[] = dataLocations.filter(
-        (dataLocationItem: string) => dataLocationItem !== dataLocation
-    );
-    const dataLocationParentLocations: string[] = dataLocationsWithoutDataLocation.filter(
-        (dataLocationsItem: string) =>
-            dataLocationsItem.length < dataLocation.length &&
-            dataLocation.slice(0, dataLocationsItem.length) === dataLocationsItem
-    );
-
-    return dataLocationParentLocations.sort(
-        (a: string, b: string) => (a.length > b.length ? -1 : 1)
-    )[0];
+export interface NavigationFromChildrenConfig {
+    data: any;
+    schema: any;
+    dataLocation: string;
+    childOptions: ChildOptionItem[];
 }
 
-function getNavigationFromChildLocations(
-    navigation: TreeNavigation[],
-    childrenDataLocations: string[],
+/**
+ * Gets the data type from a navigation item
+ */
+function getNavigationDataType(schema: any): NavigationDataType {
+    return schema[typeKeyword]
+        ? schema[typeKeyword]
+        : schema[PropertyKeyword.properties] || schema[PropertyKeyword.reactProperties]
+            ? NavigationDataType.object
+            : schema[itemsKeyword]
+                ? NavigationDataType.array
+                : NavigationDataType.object;
+}
+
+/**
+ * Gets navigation from a data location which follows
+ * lodash path syntax
+ */
+function getNavigationFromDataLocations(
     data: any,
-    childOptions: ChildOptionItem[]
-): TreeNavigation[] {
-    const updatedNavigation: TreeNavigation[] = [].concat(navigation);
+    schema: any,
+    childOptions: ChildOptionItem[],
+    dataLocation: string = "",
+    relativeDataLocation: string = "" // This data location is relative to the current schema
+): TreeNavigation[] | void {
+    if (typeof data !== "object" && data !== null) {
+        return void 0;
+    }
 
-    childrenDataLocations.forEach(
-        (childrenDataLocation: string): void => {
-            const parentLocation: string | void = getDataLocationParentLocation(
-                childrenDataLocations,
-                childrenDataLocation
-            );
+    const dataPropertyKeys: string[] = Object.keys(data);
+    const propertyKeyLength: number = dataPropertyKeys.length;
+    const navigationItems: TreeNavigation[] = [];
 
-            // check against other data locations to determine where this item should be set
-            if (parentLocation !== undefined) {
-                const parentPropLocation: string = `${parentLocation}.${propsKeyword}`;
+    for (let i: number = 0; i < propertyKeyLength; i++) {
+        const updatedRelativeDataLocation: string =
+            relativeDataLocation === ""
+                ? dataPropertyKeys[i]
+                : [relativeDataLocation, dataPropertyKeys[i]].join(".");
+        const updatedDataLocation: string =
+            dataLocation === ""
+                ? dataPropertyKeys[i]
+                : [dataLocation, dataPropertyKeys[i]].join(".");
+        const schemaLocation: string = mapSchemaLocationFromDataLocation(
+            updatedRelativeDataLocation,
+            schema,
+            data
+        );
+        const subSchema: any = get(schema, schemaLocation);
+        const dataType: NavigationDataType = getNavigationDataType(subSchema);
+        const dataFromDataLocation: any = get(data, updatedRelativeDataLocation);
+        let text: string;
 
-                updatedNavigation.forEach(
-                    (navigationItem: TreeNavigation): void => {
-                        if (navigationItem.dataLocation === parentPropLocation) {
-                            navigationItem.items = Array.isArray(navigationItem.items)
-                                ? navigationItem.items
-                                : [];
-
-                            // slice out all childrenDataLocations that no longer match
-                            const matchingChildren: string[] = childrenDataLocations.filter(
-                                (childrenDataLocationItem: string) => {
-                                    return (
-                                        childrenDataLocationItem.slice(
-                                            0,
-                                            parentPropLocation.length
-                                        ) === parentPropLocation &&
-                                        childrenDataLocationItem !== parentPropLocation
-                                    );
-                                }
-                            );
-
-                            navigationItem.items = getNavigationFromChildLocations(
-                                navigationItem.items,
-                                matchingChildren,
-                                data,
-                                childOptions
-                            );
-                        }
-                    }
-                );
-            } else {
-                // make sure the item hasn't already been added to the items array
-                const itemAdded: TreeNavigation = updatedNavigation.find(
-                    (updatedNavigationItem: TreeNavigation) => {
-                        return (
-                            updatedNavigationItem.dataLocation === childrenDataLocation ||
-                            updatedNavigationItem.dataLocation ===
-                                `${childrenDataLocation}.${propsKeyword}`
-                        );
-                    }
+        switch (dataType) {
+            case NavigationDataType.children:
+                navigationItems.push(
+                    getNavigationFromChildren({
+                        data: dataFromDataLocation,
+                        schema: subSchema,
+                        dataLocation: updatedDataLocation,
+                        childOptions,
+                    })
                 );
 
-                if (!!!itemAdded) {
-                    const subSchema: any = childOptions.find(
-                        (childOption: ChildOptionItem) =>
-                            get(data, childrenDataLocation).id === childOption.schema.id
-                    );
-                    const isString: boolean =
-                        typeof get(data, childrenDataLocation) === "string";
-
-                    updatedNavigation.push({
-                        text: get(subSchema, "schema.title")
-                            ? subSchema.schema.title
-                            : isString
-                                ? get(data, childrenDataLocation)
-                                : "Undefined",
-                        dataLocation: isString
-                            ? childrenDataLocation
-                            : `${childrenDataLocation}.${propsKeyword}`,
-                        type: ItemType.children,
-                    });
-                }
-            }
+                break;
+            case NavigationDataType.object:
+            case NavigationDataType.array:
+                text = get(subSchema, "title") ? subSchema.title : "Undefined";
+                navigationItems.push({
+                    text,
+                    dataLocation: updatedDataLocation,
+                    type: dataType,
+                    items: getNavigationFromDataLocations(
+                        get(data, updatedRelativeDataLocation),
+                        get(schema, schemaLocation),
+                        childOptions,
+                        updatedDataLocation
+                    ),
+                });
+                break;
+            default:
+                break;
         }
-    );
+    }
 
-    return updatedNavigation;
+    return navigationItems.length > 0 ? navigationItems : void 0;
 }
 
+/**
+ * gets navigation from react children
+ */
+function getNavigationFromChildren(config: NavigationFromChildrenConfig): TreeNavigation {
+    const childrenTreeNavigation: TreeNavigation = {
+        text: get(config.schema, "title") ? config.schema.title : "Undefined",
+        dataLocation: config.dataLocation,
+        type: NavigationDataType.children,
+    };
+
+    if (Array.isArray(config.data) && config.data.length !== 0) {
+        const dataLength: number = config.data.length;
+        childrenTreeNavigation.items = [];
+
+        for (let i: number = 0; i < dataLength; i++) {
+            childrenTreeNavigation.items.push(
+                getNavigationFromChildrenItem({
+                    data: config.data[i],
+                    schema: config.schema,
+                    dataLocation: `${config.dataLocation}${
+                        config.dataLocation !== "" ? "." : ""
+                    }${i}`,
+                    childOptions: config.childOptions,
+                })
+            );
+        }
+    } else {
+        childrenTreeNavigation.items = [getNavigationFromChildrenItem(config)];
+    }
+
+    return childrenTreeNavigation;
+}
+
+/**
+ * gets navigation from a single react child
+ */
+function getNavigationFromChildrenItem(
+    config: NavigationFromChildrenConfig
+): TreeNavigation {
+    const childSchema: any = get(
+        config.childOptions.find(
+            (childOption: ChildOptionItem) =>
+                get(config.data, idKeyword) === get(childOption, "schema.id")
+        ),
+        "schema"
+    );
+    const isString: boolean = typeof config.data === "string";
+    const text: string = isString
+        ? config.data
+        : get(childSchema, "title")
+            ? childSchema.title
+            : "Undefined";
+    const updatedDataLocation: string = `${config.dataLocation}${
+        config.dataLocation === "" || isString ? "" : "."
+    }${isString ? "" : propsKeyword}`;
+    const childTreeNavigation: TreeNavigation = {
+        text,
+        dataLocation: updatedDataLocation,
+        type: NavigationDataType.childrenItem,
+    };
+
+    if (!!childSchema && !isString) {
+        childTreeNavigation.items = getNavigationFromDataLocations(
+            get(config.data, propsKeyword),
+            childSchema,
+            config.childOptions,
+            updatedDataLocation
+        );
+    }
+
+    return childTreeNavigation;
+}
+
+/**
+ * Gets tree navigation data
+ */
 export function getNavigationFromData(
     data: any,
     schema: any,
     childOptions: ChildOptionItem[]
 ): TreeNavigation {
-    const childrenDataLocations: string[] = getDataLocationsOfChildren(
+    const navigation: TreeNavigation[] | void = getNavigationFromDataLocations(
+        data,
         schema,
-        data,
-        childOptions
-    );
-
-    const navigation: TreeNavigation[] = getNavigationFromChildLocations(
-        [],
-        childrenDataLocations,
-        data,
         childOptions
     );
 
@@ -132,6 +195,6 @@ export function getNavigationFromData(
         text: schema.title ? schema.title : "Undefined",
         dataLocation: "",
         items: navigation,
-        type: ItemType.children,
+        type: getNavigationDataType(schema),
     };
 }

@@ -18,7 +18,7 @@ import { oneOfAnyOfType } from "../form/form/form-section.props";
  * This file contains all functionality for the manipulation of lodash paths
  */
 
-const squareBracketsRegex: RegExp = /\[(\d+?)\]/g;
+export const squareBracketsRegex: RegExp = /\[(\d+)\]/g;
 
 /**
  * Finds the child option using the schema id
@@ -248,7 +248,10 @@ export function mapSchemaLocationFromDataLocation(
     }
 
     const schemaLocations: string[] = [];
-    const dataLocationAsDotNotation: string = dataLocation.replace(/\[(\d+)\]/g, ".$1");
+    const dataLocationAsDotNotation: string = dataLocation.replace(
+        squareBracketsRegex,
+        ".$1"
+    );
     const dataLocationSegments: string[] = dataLocationAsDotNotation.split(".");
     const dataLocationSegmentsLength: number = dataLocationSegments.length;
 

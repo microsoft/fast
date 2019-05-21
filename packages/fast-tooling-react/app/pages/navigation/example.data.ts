@@ -1,8 +1,8 @@
 import {
     NavigationDataType,
     TreeNavigation,
-} from "../../src/navigation/navigation.props";
-import { ChildOptionItem } from "../../src";
+} from "../../../src/navigation/navigation.props";
+import { ChildOptionItem } from "../../../src";
 import { get } from "lodash-es";
 
 import noChildrenSchema from "./no-children.schema.json";
@@ -91,6 +91,26 @@ const children: any = {
                     },
                 ],
             },
+        },
+    ],
+    object: {
+        children: [
+            {
+                id: get(noChildrenSchema, "id"),
+                props: noChildren,
+            },
+            "Foo",
+        ],
+    },
+    array: [
+        {
+            children: [
+                {
+                    id: get(noChildrenSchema, "id"),
+                    props: noChildren,
+                },
+                "Bar",
+            ],
         },
     ],
 };
