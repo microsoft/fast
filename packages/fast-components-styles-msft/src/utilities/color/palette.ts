@@ -269,3 +269,8 @@ export function swatchByContrast(referenceColor: string | SwatchResolver) {
     };
 }
 /* tslint:enable:typedef */
+export function findClosestBackgroundIndex(designSystem: DesignSystem): number {
+    return findClosestSwatchIndex(PaletteType.neutral, backgroundColor(designSystem))(
+        designSystem
+    );
+}

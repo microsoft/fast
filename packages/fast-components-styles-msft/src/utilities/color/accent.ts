@@ -19,7 +19,7 @@ export const accentSwatch: SwatchResolver = (designSystem: DesignSystem): Swatch
 /**
  * Returns indexes for accent UI states that are accessible against an input reference color.
  */
-export function findAccessibleAccentSwatchIndexs(
+export function findAccessibleAccentSwatchIndexes(
     designSystem: DesignSystem,
     contrastTarget: number,
     referenceColor: Swatch,
@@ -72,3 +72,7 @@ export function findAccessibleAccentSwatchIndexs(
         ),
     };
 }
+/**
+ * @deprecated - please use findAccessibleAccentSwatchIndexes
+ */
+export const findAccessibleAccentSwatchIndexs: typeof findAccessibleAccentSwatchIndexes = findAccessibleAccentSwatchIndexes;
