@@ -25,7 +25,7 @@ describe("CSSWidth", () => {
     test("should have a displayName that matches the component name", () => {
         expect((CSSWidth as any).name).toBe(CSSWidth.displayName);
     });
-    test("should use the `width` prop as the input value if the `width` is provided", () => {
+    test("should use the `data` prop as the input value if the `width` is provided", () => {
         const widthValue: string = "12px";
         const rendered: any = mount(
             <CSSWidth
@@ -59,5 +59,32 @@ describe("CSSWidth", () => {
 
         expect(callback).toHaveBeenCalledTimes(1);
         expect(callback.mock.calls[0][0]).toEqual({ width: newWidthValue });
+    });
+    test("should not change the input from controlled to uncontrolled", () => {
+        const widthValue: string = "12px";
+        const newWidthValue: string = void 0;
+        const callback: any = jest.fn();
+        const rendered: any = mount(
+            <CSSWidth
+                data={{ width: widthValue }}
+                managedClasses={managedClasses}
+                onChange={callback}
+            />
+        );
+
+        expect(callback).toHaveBeenCalledTimes(0);
+
+        rendered
+            .find(`.${managedClasses.cssWidth_input}`)
+            .simulate("change", { target: { value: newWidthValue } });
+
+        expect(callback).toHaveBeenCalledTimes(1);
+        expect(callback.mock.calls[0][0]).toEqual({ width: newWidthValue });
+
+        rendered.setProps({
+            data: {},
+        });
+
+        expect(rendered.find(`.${managedClasses.cssWidth_input}`).prop("value")).toBe("");
     });
 });
