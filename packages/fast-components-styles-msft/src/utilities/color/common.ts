@@ -76,9 +76,30 @@ export enum SwatchFamilyType {
     selected = "selected",
 }
 
-export type ColorRecipe<
-    T extends Swatch | SwatchFamily | FillSwatchFamily
-> = DesignSystemResolver<T> & DesignSystemResolverFromSwatchResolver<T>;
+export type ColorRecipe<T> = DesignSystemResolver<T> &
+    DesignSystemResolverFromSwatchResolver<T>;
+
+export function colorRecipeFactory<T>(recipe: DesignSystemResolver<T>): ColorRecipe<T> {
+    function curryRecipe(designSystem: DesignSystem): T;
+    function curryRecipe(
+        backgroundResolver: SwatchResolver
+    ): (designSystem: DesignSystem) => T;
+    function curryRecipe(arg: any): any {
+        if (typeof arg === "function") {
+            return (designSystem: DesignSystem): T => {
+                return recipe(
+                    Object.assign({}, designSystem, {
+                        backgroundColor: arg(designSystem),
+                    })
+                );
+            };
+        } else {
+            return recipe(arg);
+        }
+    }
+
+    return curryRecipe;
+}
 
 /**
  * A function to apply a named style or recipe. A ColorRecipe has several behaviors:
@@ -165,4 +186,14 @@ export const contrast: (a: string, b: string) => number = memoize(
  */
 export function luminance(color: any): number {
     return rgbToLuminance(parseColorString(color));
+}
+
+export function designSystemResolverMax(
+    ...args: Array<DesignSystemResolver<number>>
+): DesignSystemResolver<number> {
+    return (designSystem: DesignSystem): number =>
+        Math.max.apply(
+            null,
+            args.map((fn: DesignSystemResolver<number>) => fn(designSystem))
+        );
 }
