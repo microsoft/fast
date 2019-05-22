@@ -1,12 +1,18 @@
 import React from "react";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import {
+    TextActionAppearance,
     TextActionButtonPosition,
     TextActionHandledProps,
     TextActionProps,
     TextActionUnhandledProps,
 } from "./text-action.props";
-import { textFieldOverrides } from "@microsoft/fast-components-styles-msft";
+import {
+    DesignSystemResolver,
+    neutralFillInputRest,
+    neutralFillRest,
+    textFieldOverrides,
+} from "@microsoft/fast-components-styles-msft";
 import { TextField } from "../text-field";
 import { get } from "lodash-es";
 import { DisplayNamePrefix } from "../utilities";
@@ -29,6 +35,7 @@ class TextAction extends Foundation<
     };
 
     protected handledProps: HandledProps<TextActionHandledProps> = {
+        appearance: void 0,
         afterGlyph: void 0,
         beforeGlyph: void 0,
         button: void 0,
@@ -77,6 +84,15 @@ class TextAction extends Foundation<
      */
     protected generateClassNames(): string {
         let classNames: string = get(this.props, "managedClasses.textAction", "");
+
+        if (this.props.appearance) {
+            classNames = `${classNames} ${get(
+                this.props,
+                `managedClasses.textAction__${
+                    TextActionAppearance[this.props.appearance]
+                }`
+            )}`;
+        }
 
         if (this.props.disabled) {
             classNames = `${classNames} ${get(

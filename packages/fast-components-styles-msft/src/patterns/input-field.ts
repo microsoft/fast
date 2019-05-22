@@ -1,11 +1,14 @@
 import { horizontalSpacing } from "../utilities/density";
 import { CSSRules } from "@microsoft/fast-jss-manager";
-import { DesignSystem, ensureDesignSystemDefaults } from "../design-system";
+import { DesignSystem } from "../design-system";
 import { format, toPx } from "@microsoft/fast-jss-utilities";
 import {
+    neutralFillActive,
+    neutralFillHover,
     neutralFillInputActive,
     neutralFillInputHover,
     neutralFillInputRest,
+    neutralFillRest,
     neutralFocus,
     neutralForegroundHint,
     neutralForegroundRest,
@@ -37,12 +40,7 @@ export function inputFieldStyles(
         color: neutralForegroundRest,
         fontFamily: "inherit",
         boxSizing: "border-box",
-        padding: ensureDesignSystemDefaults(
-            (designSystem: DesignSystem): string =>
-                format("0 {0}", horizontalSpacing(designSystem.outlineWidth))(
-                    designSystem
-                )
-        ),
+        padding: format("0 {0}", horizontalSpacing(outlineWidth)),
         ...applyCornerRadius(),
         margin: "0",
         transition: "all 0.2s ease-in-out",
@@ -54,7 +52,7 @@ export function inputFieldStyles(
             background: neutralFillInputActive,
             borderColor: neutralOutlineActive,
         },
-        "&:focus": {
+        "&:focus:enabled": {
             boxShadow: format<DesignSystem>("0 0 0 1px {0} inset", neutralFocus),
             borderColor: neutralFocus,
             outline: "none",
@@ -63,7 +61,26 @@ export function inputFieldStyles(
             ...applyDisabledState(),
         },
         "&::placeholder": {
-            color: neutralForegroundHint,
+            color: neutralForegroundHint(neutralFillInputRest),
+        },
+    };
+}
+
+export function filledInputFieldStyles(): CSSRules<{}> {
+    return {
+        ...inputFieldStyles(),
+        background: neutralFillRest,
+        border: format("{0} solid transparent", toPx(outlineWidth)),
+        "&:hover:enabled": {
+            background: neutralFillHover,
+            borderColor: "transparent",
+        },
+        "&:active:enabled": {
+            background: neutralFillActive,
+            borderColor: "transparent",
+        },
+        "&::placeholder": {
+            color: neutralForegroundHint(neutralFillRest),
         },
     };
 }

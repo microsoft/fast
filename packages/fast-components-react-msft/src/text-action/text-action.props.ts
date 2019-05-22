@@ -6,7 +6,11 @@ import {
     TextFieldManagedClasses,
 } from "@microsoft/fast-components-react-base";
 import { Omit, Subtract } from "utility-types";
-import { ButtonAppearance } from "../button/button.props";
+
+export enum TextActionAppearance {
+    filled = "filled",
+    outline = "outline",
+}
 
 export enum TextActionButtonPosition {
     before = "before",
@@ -21,6 +25,11 @@ export interface TextActionUnhandledProps
 export interface TextActionHandledProps
     extends Subtract<TextFieldHandledProps, TextFieldManagedClasses>,
         TextActionManagedClasses {
+    /**
+     * The text action appearance
+     */
+    appearance?: TextActionAppearance;
+
     /**
      * The text action button
      */

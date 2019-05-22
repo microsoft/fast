@@ -5,9 +5,12 @@ import { directionSwitch, format, subtract, toPx } from "@microsoft/fast-jss-uti
 import { DesignSystem } from "../design-system";
 import { applyCornerRadius } from "../utilities/border";
 import {
+    neutralFillActive,
+    neutralFillHover,
     neutralFillInputActive,
     neutralFillInputHover,
     neutralFillInputRest,
+    neutralFillRest,
     neutralFocus,
     neutralForegroundRest,
     neutralOutlineActive,
@@ -18,7 +21,7 @@ import { glyphSize, height, horizontalSpacing } from "../utilities/density";
 import { focusOutlineWidth, outlineWidth } from "../utilities/design-system";
 import { applyDisabledState } from "../utilities/disabled";
 
-// Since MSFT button is already styled, we need to override in this way to alter button classes
+// Since MSFT text field is already styled, we need to override in this way to alter text field classes
 export const textFieldOverrides: ComponentStyles<
     Partial<TextFieldClassNameContract>,
     DesignSystem
@@ -30,7 +33,8 @@ export const textFieldOverrides: ComponentStyles<
         flex: "1 0 0",
         background: "transparent",
         minWidth: "inherit",
-        "&:hover, &:disabled, &:active, &:focus": {
+        "&:hover, &:hover:enabled, &:disabled, &:active, &:active:enabled, &:focus, &:focus:enabled": {
+            background: "none",
             border: "none",
             boxShadow: "none",
         },
@@ -70,14 +74,31 @@ const styles: ComponentStyles<TextActionClassNameContract, DesignSystem> = {
             borderColor: neutralOutlineActive,
         },
     },
+    textAction__filled: {
+        background: neutralFillRest,
+        border: format("{0} solid transparent", toPx<DesignSystem>(outlineWidth)),
+        "&:hover": {
+            background: neutralFillHover,
+            borderColor: "transparent",
+        },
+        "&:active": {
+            background: neutralFillActive,
+            borderColor: "transparent",
+        },
+    },
+    textAction__outline: {},
     textAction__focus: {
         "&, &:hover": {
             boxShadow: format(
                 "0 0 0 {0} {1} inset",
-                toPx(subtract(focusOutlineWidth, outlineWidth)),
+                toPx<DesignSystem>(subtract(focusOutlineWidth, outlineWidth)),
                 neutralFocus
             ),
-            border: format("{0} solid {1}", toPx(outlineWidth), neutralFocus),
+            border: format(
+                "{0} solid {1}",
+                toPx<DesignSystem>(outlineWidth),
+                neutralFocus
+            ),
         },
     },
     textAction__disabled: {
