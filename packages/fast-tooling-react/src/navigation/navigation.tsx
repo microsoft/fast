@@ -116,7 +116,7 @@ export default class Navigation extends Foundation<
         positionInNavigation: number,
         index: number
     ): React.ReactNode {
-        if (Array.isArray(navigation.items)) {
+        if (Array.isArray(navigation.items) && navigationLength > 0) {
             return (
                 <div
                     className={this.props.managedClasses.navigation_item}

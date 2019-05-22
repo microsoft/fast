@@ -1,4 +1,7 @@
-import { ItemType, TreeNavigation } from "../../src/navigation/navigation.props";
+import {
+    NavigationDataType,
+    TreeNavigation,
+} from "../../src/navigation/navigation.props";
 import { ChildOptionItem } from "../../src";
 import { get } from "lodash-es";
 
@@ -95,22 +98,22 @@ const children: any = {
 const navigationData: TreeNavigation[] = [
     {
         text: "Child A",
-        type: ItemType.children,
+        type: NavigationDataType.children,
         dataLocation: "children[0]",
         items: [
             {
                 text: "Child B",
-                type: ItemType.children,
+                type: NavigationDataType.children,
                 dataLocation: "children[0].props.children[0]",
             },
             {
                 text: "Child C",
-                type: ItemType.children,
+                type: NavigationDataType.children,
                 dataLocation: "children[0].props.children[1]",
                 items: [
                     {
                         text: "Child D",
-                        type: ItemType.children,
+                        type: NavigationDataType.children,
                         dataLocation: "children[0].props.children[1].props.children",
                     },
                 ],
@@ -119,7 +122,7 @@ const navigationData: TreeNavigation[] = [
     },
     {
         text: "Child E",
-        type: ItemType.children,
+        type: NavigationDataType.children,
         dataLocation: "children[1]",
     },
 ];
