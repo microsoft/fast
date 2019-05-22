@@ -184,10 +184,10 @@ const designSystemDefaults: DesignSystem = {
     neutralFillActiveDelta: 2,
     neutralFillSelectedDelta: 8,
 
-    neutralFillInputRestDelta: 4,
-    neutralFillInputHoverDelta: 4,
-    neutralFillInputActiveDelta: 4,
-    neutralFillInputSelectedDelta: 4,
+    neutralFillInputRestDelta: 0,
+    neutralFillInputHoverDelta: 0,
+    neutralFillInputActiveDelta: 0,
+    neutralFillInputSelectedDelta: 0,
 
     neutralFillStealthRestDelta: 0,
     neutralFillStealthHoverDelta: 3,
