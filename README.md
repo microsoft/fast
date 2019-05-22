@@ -62,5 +62,5 @@ Experiencing problems? Check our infrastructure [health status](https://microsof
 
 * Join the community on [Discord](https://discord.gg/FcSNfg4).
 * Ask for help on [Stack Overflow](https://stackoverflow.com/questions/tagged/fast-dna).
-* Submit reqests and issues on [Github](https://github.com/Microsoft/fast-dna/issues/new/choose).
+* Submit requests and issues on [Github](https://github.com/Microsoft/fast-dna/issues/new/choose).
 * Contributors, find good first issues on [Github](https://github.com/Microsoft/fast-dna/labels/good%20first%20issue).
