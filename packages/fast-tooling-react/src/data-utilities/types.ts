@@ -4,6 +4,7 @@ export const typeKeyword: string = "type";
 export const pluginIdKeyword: string = "pluginId";
 export const propsKeyword: string = "props";
 export const idKeyword: string = "id";
+export const itemsKeyword: string = "items";
 
 export enum DataResolverType {
     plugin = "plugin",

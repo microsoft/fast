@@ -2,6 +2,13 @@ import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-
 import { ChildOptionItem } from "../data-utilities";
 import { NavigationClassNameContract } from "./navigation.style";
 
+export enum NavigationDataType {
+    object = "object",
+    array = "array",
+    children = "children",
+    childrenItem = "childrenItem",
+}
+
 export interface NavigationState {
     /**
      * The navigation data
@@ -19,13 +26,6 @@ export interface NavigationState {
     activeItem: null | string;
 }
 
-/**
- * The type of item for the list item icon
- */
-export enum ItemType {
-    children = "children",
-}
-
 export interface TreeNavigation {
     /**
      * The navigation item text
@@ -41,12 +41,12 @@ export interface TreeNavigation {
      * The data type, this will result in a different
      * icons used
      */
-    type: ItemType;
+    type: NavigationDataType;
 
     /**
      * The items belonging to the text as a dropdown
      */
-    items?: TreeNavigation[];
+    items?: TreeNavigation[] | void;
 }
 
 export interface NavigationUnhandledProps extends React.HTMLAttributes<HTMLDivElement> {}
