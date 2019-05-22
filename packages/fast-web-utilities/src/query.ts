@@ -4,7 +4,7 @@
  */
 export function parseQueryStringParams(input: string): Map<string, string> {
     const retVal: Map<string, string> = new Map<string, string>();
-    if (input === undefined || input.length <= 0) {
+    if (typeof input !== "string" || input.length <= 0) {
         return retVal;
     }
     const splitLocation: string[] = input.split("?");
