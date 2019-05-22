@@ -26,6 +26,7 @@ const styles: ComponentStyles<SelectClassNameContract, DesignSystem> = {
     select: {
         minWidth: "276px",
         maxWidth: "374px",
+        height: height(),
     },
 
     select_button: {
@@ -67,12 +68,10 @@ const styles: ComponentStyles<SelectClassNameContract, DesignSystem> = {
         ...applyFloatingCornerRadius(),
         ...applyElevation(ElevationMultiplier.e11),
         zIndex: "1",
-        position: "absolute",
+        position: "relative",
         width: "100%",
         margin: "0",
         padding: format("{0} 0", toPx<DesignSystem>(designUnit)),
-        maxWidth: "374px",
-        minWidth: "276px",
         maxHeight: "328px",
         overflow: "auto",
     },
