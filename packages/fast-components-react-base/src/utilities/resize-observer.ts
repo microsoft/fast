@@ -1,6 +1,6 @@
 import { ResizeObserverEntry } from "./resize-observer-entry";
 
-export type ConstructableResizeObserver = new (
+export type ConstructibleResizeObserver = new (
     callback: ResizeObserverCallback
 ) => ResizeObserverClassDefinition;
 

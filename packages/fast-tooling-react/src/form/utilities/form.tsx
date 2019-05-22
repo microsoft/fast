@@ -7,6 +7,7 @@ import {
     getPartialData,
     mapSchemaLocationFromDataLocation,
     normalizeDataLocation,
+    squareBracketsRegex,
 } from "../../data-utilities/location";
 import ajv, { ErrorObject, ValidationError } from "ajv";
 import {
@@ -587,7 +588,6 @@ export function getLabel(label: string, title: string): string {
     return label === "" && title !== void 0 ? title : label;
 }
 
-const squareBracketsRegex: RegExp = /\[(\d+?)\]/g;
 const propsKeyword: string = "props";
 
 export enum PropertyKeyword {

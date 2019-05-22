@@ -23,6 +23,8 @@ import { Direction } from "@microsoft/fast-web-utilities";
  */
 configure({ adapter: new Adapter() });
 
+/* tslint:disable:no-string-literal */
+
 describe("slider track item", (): void => {
     const defaultSliderState: SliderState = {
         dragValue: -1,
@@ -141,6 +143,74 @@ describe("slider track item", (): void => {
         );
 
         expect(getValueAsPercent).toHaveBeenCalledTimes(2);
+        document.body.removeChild(container);
+    });
+
+    test("getPositonAsPercent() returns correct values for anchors", (): void => {
+        const container: HTMLDivElement = document.createElement("div");
+        document.body.appendChild(container);
+        const getValueAsPercent: any = jest.fn();
+        getValueAsPercent.mockReturnValueOnce(20);
+        getValueAsPercent.mockReturnValueOnce(80);
+        getValueAsPercent.mockReturnValueOnce(20);
+        getValueAsPercent.mockReturnValueOnce(80);
+        getValueAsPercent.mockReturnValueOnce(10);
+        getValueAsPercent.mockReturnValueOnce(90);
+
+        const rendered: any = mount(
+            <SliderContext.Provider
+                value={{
+                    sliderOrientation: SliderOrientation.horizontal,
+                    sliderMode: SliderMode.singleValue,
+                    sliderState: defaultSliderState,
+                    sliderConstrainedRange: { minValue: 20, maxValue: 80 },
+                    sliderValueAsPercent: getValueAsPercent,
+                    sliderDirection: Direction.ltr,
+                }}
+            >
+                <SliderTrackItem
+                    maxValuePositionBinding={SliderTrackItemAnchor.selectedRangeMax}
+                    minValuePositionBinding={SliderTrackItemAnchor.selectedRangeMin}
+                />
+            </SliderContext.Provider>,
+            { attachTo: container }
+        );
+
+        const trackItem: any = rendered.find("BaseSliderTrackItem");
+
+        expect(
+            trackItem
+                .instance()
+                ["getPositionAsPercent"](SliderTrackItemAnchor.totalRangeMin)
+        ).toBe(0);
+        expect(
+            trackItem
+                .instance()
+                ["getPositionAsPercent"](SliderTrackItemAnchor.totalRangeMax)
+        ).toBe(100);
+
+        expect(
+            trackItem
+                .instance()
+                ["getPositionAsPercent"](SliderTrackItemAnchor.constrainedRangeMin)
+        ).toBe(20);
+        expect(
+            trackItem
+                .instance()
+                ["getPositionAsPercent"](SliderTrackItemAnchor.constrainedRangeMax)
+        ).toBe(80);
+
+        expect(
+            trackItem
+                .instance()
+                ["getPositionAsPercent"](SliderTrackItemAnchor.selectedRangeMin)
+        ).toBe(10);
+        expect(
+            trackItem
+                .instance()
+                ["getPositionAsPercent"](SliderTrackItemAnchor.selectedRangeMax)
+        ).toBe(90);
+
         document.body.removeChild(container);
     });
 });
