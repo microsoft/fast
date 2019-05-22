@@ -25,7 +25,7 @@ describe("CSSHeight", () => {
     test("should have a displayName that matches the component name", () => {
         expect((CSSHeight as any).name).toBe(CSSHeight.displayName);
     });
-    test("should use the `height` prop as the input value if the `height` is provided", () => {
+    test("should use the `data` prop as the input value if the `height` is provided", () => {
         const heightValue: string = "12px";
         const rendered: any = mount(
             <CSSHeight
@@ -59,5 +59,34 @@ describe("CSSHeight", () => {
 
         expect(callback).toHaveBeenCalledTimes(1);
         expect(callback.mock.calls[0][0]).toEqual({ height: newHeightValue });
+    });
+    test("should not change the input from controlled to uncontrolled", () => {
+        const heightValue: string = "12px";
+        const newHeightValue: string = void 0;
+        const callback: any = jest.fn();
+        const rendered: any = mount(
+            <CSSHeight
+                data={{ height: heightValue }}
+                managedClasses={managedClasses}
+                onChange={callback}
+            />
+        );
+
+        expect(callback).toHaveBeenCalledTimes(0);
+
+        rendered
+            .find(`.${managedClasses.cssHeight_input}`)
+            .simulate("change", { target: { value: newHeightValue } });
+
+        expect(callback).toHaveBeenCalledTimes(1);
+        expect(callback.mock.calls[0][0]).toEqual({ height: newHeightValue });
+
+        rendered.setProps({
+            data: {},
+        });
+
+        expect(rendered.find(`.${managedClasses.cssHeight_input}`).prop("value")).toBe(
+            ""
+        );
     });
 });

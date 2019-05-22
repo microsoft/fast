@@ -29,7 +29,7 @@ export default class CSSWidth extends Foundation<
                     <input
                         className={get(this.props, "managedClasses.cssWidth_input")}
                         type={"text"}
-                        value={get(this.props.data, "width")}
+                        value={get(this.props.data, "width", "")}
                         onChange={this.handleWidthOnChange}
                     />
                 </div>
