@@ -5,7 +5,7 @@ import {
     accentFillRestDelta,
     accentFillSelectedDelta,
 } from "../design-system";
-import { accentSwatch, findAccessibleAccentSwatchIndexs } from "./accent";
+import { accentSwatch, findAccessibleAccentSwatchIndexes } from "./accent";
 import { accentForegroundCut } from "./accent-foreground-cut";
 import {
     colorRecipeFactory,
@@ -31,7 +31,7 @@ function accentFillAlgorithm(contrast: number): DesignSystemResolver<FillSwatchF
             rest: number;
             hover: number;
             active: number;
-        } = findAccessibleAccentSwatchIndexs(designSystem, contrast, textColor, {
+        } = findAccessibleAccentSwatchIndexes(designSystem, contrast, textColor, {
             rest: accentFillRestDelta(designSystem),
             hover: accentFillHoverDelta(designSystem),
             active: accentFillActiveDelta(designSystem),
@@ -55,6 +55,7 @@ function accentFillAlgorithm(contrast: number): DesignSystemResolver<FillSwatchF
 export const accentFill: SwatchFamilyResolver<FillSwatchFamily> = colorRecipeFactory(
     accentFillAlgorithm(4.5)
 );
+
 export const accentFillLarge: SwatchFamilyResolver<FillSwatchFamily> = colorRecipeFactory(
     accentFillAlgorithm(3)
 );

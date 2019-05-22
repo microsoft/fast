@@ -2,7 +2,7 @@ import defaultDesignSystem, {
     DesignSystem,
     DesignSystemResolver,
 } from "../../design-system";
-import { findAccessibleAccentSwatchIndexs } from "./accent";
+import { findAccessibleAccentSwatchIndexes } from "./accent";
 import { getSwatch, palette, Palette, PaletteType } from "./palette";
 import {
     colorRecipeFactory,
@@ -29,7 +29,7 @@ function accentForegroundAlgorithm(
             rest: number;
             hover: number;
             active: number;
-        } = findAccessibleAccentSwatchIndexs(
+        } = findAccessibleAccentSwatchIndexes(
             designSystem,
             contrastTarget,
             backgroundColor(designSystem),
