@@ -34,7 +34,8 @@ function neutralFillInputAlgorithm(
     return (designSystem: DesignSystem): Swatch => {
         const direction: 1 | -1 = isDarkMode(designSystem) ? -1 : 1;
         return getSwatch(
-            findClosestBackgroundIndex(designSystem) - indexResolver(designSystem) * direction,
+            findClosestBackgroundIndex(designSystem) -
+                indexResolver(designSystem) * direction,
             palette(PaletteType.neutral)(designSystem)
         );
     };
