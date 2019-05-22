@@ -1,4 +1,5 @@
 import { CSSProperties, CSSPropertiesConfig } from "./property-editor.props";
+import { spinalCase } from "@microsoft/fast-web-utilities";
 
 const monospaceFontWidthMultiplier: number = 6.6;
 
@@ -13,7 +14,7 @@ export function getCSSPropertyConfig(data: CSSProperties): CSSPropertiesConfig {
         (dataKey: string): void => {
             dataConfig[dataKey] = {
                 value: data[dataKey],
-                keyWidth: monospaceFontWidthMultiplier * dataKey.length,
+                keyWidth: monospaceFontWidthMultiplier * spinalCase(dataKey).length,
                 valueWidth: monospaceFontWidthMultiplier * data[dataKey].length,
             };
         }
