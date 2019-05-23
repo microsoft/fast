@@ -29,11 +29,6 @@ export interface FormTestPageState {
     inlineErrors?: boolean;
 }
 
-export interface Option {
-    Schema: any;
-    Data: any;
-}
-
 export interface GroupItem {
     items: any;
     type: string;
@@ -65,7 +60,6 @@ class FormAndNavigationTestPage extends React.Component<{}, FormTestPageState> {
         super(props);
 
         this.childOptions = this.getChildOptions();
-        this.onChange = this.onChange.bind(this);
 
         this.plugins = [
             new StringUpdateSchemaPlugin({
