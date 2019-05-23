@@ -705,7 +705,7 @@ function findChildrenFromArray(
 /**
  * Find children in an object
  */
-export function findChildrenFromObject(
+function findChildrenFromObject(
     data: any,
     location: string,
     childLocations: string[]
