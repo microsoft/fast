@@ -36,7 +36,7 @@ class CodePreviewTestPage extends React.Component<{}, CodePreviewTestPageState> 
         this.state = {
             data: {
                 componentName: exampleData[0].componentName,
-                childNames: codePreviewChildOptions,
+                childOptions: codePreviewChildOptions,
                 data: exampleData[0].componentData,
             },
         };
@@ -71,7 +71,7 @@ class CodePreviewTestPage extends React.Component<{}, CodePreviewTestPageState> 
         this.setState({
             data: {
                 componentName: exampleData[e.target.selectedIndex].componentName,
-                childNames: codePreviewChildOptions,
+                childOptions: codePreviewChildOptions,
                 data: exampleData[e.target.selectedIndex].componentData,
             },
         });

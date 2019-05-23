@@ -27,7 +27,7 @@ import {
  */
 export interface CodePreview {
     componentName: string;
-    childNames: CodePreviewChildOption[];
+    childOptions: CodePreviewChildOption[];
     data: any;
 }
 
@@ -658,7 +658,7 @@ function replaceReactPropertyChildren(
 function getComponentName(component: any, codePreview: CodePreview): string {
     let name: string = "Undefined";
 
-    codePreview.childNames.forEach(
+    codePreview.childOptions.forEach(
         (item: any): void => {
             if (item.schema.id === component.id) {
                 name = item.name;

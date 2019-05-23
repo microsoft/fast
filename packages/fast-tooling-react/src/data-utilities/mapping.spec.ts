@@ -306,7 +306,7 @@ describe("mapDataToCodePreview", () => {
 
     const withChildrenData: any = {
         componentName: "WithChildrenComponent",
-        childNames: codePreviewChildOptions,
+        childOptions: codePreviewChildOptions,
         data: {
             children: [
                 {
@@ -318,7 +318,7 @@ describe("mapDataToCodePreview", () => {
 
     const withChildObjectData: any = {
         componentName: "WithChildObjectComponent",
-        childNames: codePreviewChildOptions,
+        childOptions: codePreviewChildOptions,
         data: {
             badge: {
                 id: badgeSchema.id,
@@ -328,7 +328,7 @@ describe("mapDataToCodePreview", () => {
 
     const childrenwithObjectsData: any = {
         componentName: "ChildrenwithObjectsComponent",
-        childNames: codePreviewChildOptions,
+        childOptions: codePreviewChildOptions,
         data: {
             children: [
                 {
@@ -359,7 +359,7 @@ describe("mapDataToCodePreview", () => {
 
     const childrenWithReactPropertiesData: any = {
         componentName: "childrenWithReactPropertiesComponent",
-        childNames: codePreviewChildOptions,
+        childOptions: codePreviewChildOptions,
         data: {
             children: [
                 {
@@ -380,7 +380,7 @@ describe("mapDataToCodePreview", () => {
 
     const objectsWithChildrenData: any = {
         componentName: "objectsWithChildrenComponent",
-        childNames: codePreviewChildOptions,
+        childOptions: codePreviewChildOptions,
         data: {
             children: [
                 {
