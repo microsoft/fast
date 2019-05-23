@@ -14,6 +14,7 @@ import manageJss, {
 export interface DesignSystemEditingConfig {
     data: any;
     schema: any;
+    onChange?: (data: any) => void;
 }
 
 export interface ConfigurationPanelProps {

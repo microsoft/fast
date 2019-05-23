@@ -39,6 +39,7 @@ import {
     parseColor,
     rgbToHSL,
 } from "@microsoft/fast-colors";
+import { clone, merge } from "lodash-es";
 
 /* tslint:disable-next-line */
 const sketchDesignKit = require("./fast-dna-msft-design-kit.sketch");
@@ -141,8 +142,14 @@ export default class App extends React.Component<{}, AppState> {
                 showTransparencyToggle={true}
                 styleEditing={true}
                 designSystemEditing={{
-                    data: DesignSystemDefaults,
+                    data: clone(
+                        merge({}, DesignSystemDefaults, {
+                            density: this.state.density,
+                            backgroundColor: this.state.backgroundColor,
+                        })
+                    ),
                     schema: designSystemSchema,
+                    onChange: this.handleDesignSystemUpdate,
                 }}
             >
                 <SiteTitle slot={"title"}>
@@ -158,11 +165,7 @@ export default class App extends React.Component<{}, AppState> {
                     </SiteCategoryIcon>
                 </SiteCategory>
                 <SiteCategory slot={"category"} name={"Components"}>
-                    {this.sortExamples(
-                        componentFactory(examples, {
-                            ...this.generateDesignSystem(),
-                        })
-                    )}
+                    {this.sortExamples(componentFactory(examples))}
                 </SiteCategory>
                 <div slot={ShellSlot.infoBar}>
                     <div
@@ -238,6 +241,14 @@ export default class App extends React.Component<{}, AppState> {
             });
         }
     };
+
+    private handleDesignSystemUpdate(data: any): void {
+        if (data.density !== this.state.density) {
+            this.setState({
+                density: data.density,
+            });
+        }
+    }
 
     /**
      * Handles any changes made by the user to the color picker inputs
