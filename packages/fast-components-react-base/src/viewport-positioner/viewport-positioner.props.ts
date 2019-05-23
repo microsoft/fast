@@ -9,7 +9,7 @@ export interface ViewportPositionerManagedClasses
 export interface ViewportPositionerUnhandledProps
     extends React.HTMLAttributes<HTMLDivElement> {}
 
-export enum HorizontalPosition {
+export enum ViewportPositionerHorizontalPosition {
     left = "left",
     centerLeft = "centerLeft",
     centerRight = "centerRight",
@@ -17,10 +17,10 @@ export enum HorizontalPosition {
     uncontrolled = "uncontrolled",
 }
 
-export enum VerticalPosition {
+export enum ViewportPositionerVerticalPosition {
     top = "top",
-    middleTop = "middleTop",
-    middleBottom = "middleBottom",
+    centerTop = "centerTop",
+    centerBottom = "centerBottom",
     bottom = "bottom",
     uncontrolled = "uncontrolled",
 }
@@ -50,7 +50,7 @@ export interface ViewportPositionerHandledProps extends ViewportPositionerManage
     /**
      *  The default horizontal position, layout favors the widest option if unset
      */
-    defaultHorizontalPosition?: HorizontalPosition;
+    defaultHorizontalPosition?: ViewportPositionerHorizontalPosition;
 
     /**
      *  The width at which the positioner switches from the default position to the widest one
@@ -70,7 +70,7 @@ export interface ViewportPositionerHandledProps extends ViewportPositionerManage
     /**
      * The default vertical position, layout favors the tallest option if unset
      */
-    defaultVerticalPosition?: VerticalPosition;
+    defaultVerticalPosition?: ViewportPositionerVerticalPosition;
 
     /**
      *  The height at which the positioner switches from the default position to the tallest one

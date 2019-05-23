@@ -33,9 +33,9 @@ export interface ViewportPositionerClassNameContract {
     viewportPositioner__top?: string;
 
     /**
-     * middle top positioner vertical state
+     * center top positioner vertical state
      */
-    viewportPositioner__middleTop?: string;
+    viewportPositioner__centerTop?: string;
 
     /**
      * bottom positioner vertical state
@@ -43,7 +43,7 @@ export interface ViewportPositionerClassNameContract {
     viewportPositioner__bottom?: string;
 
     /**
-     * middle bottom positioner vertical state
+     * center bottom positioner vertical state
      */
-    viewportPositioner__middleBottom?: string;
+    viewportPositioner__centerBottom?: string;
 }

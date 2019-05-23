@@ -15,8 +15,9 @@ const managedClasses: ViewportPositionerManagedClasses = {
         viewportPositioner__right: "viewportPositioner__right",
         viewportPositioner__centerRight: "viewportPositioner__centerRight",
         viewportPositioner__top: "viewportPositioner__top",
-        viewportPositioner__middleTop: "viewportPositioner__middleTop",
+        viewportPositioner__centerTop: "viewportPositioner__centerTop",
         viewportPositioner__bottom: "viewportPositioner__bottom",
+        viewportPositioner__centerBottom: "viewportPositioner__centerBottom",
     },
 };
 

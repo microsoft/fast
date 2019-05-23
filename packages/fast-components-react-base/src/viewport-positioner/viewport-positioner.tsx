@@ -4,11 +4,11 @@ import { get, isNil } from "lodash-es";
 import { ViewportPositionerClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import {
     AxisPositioningMode,
-    HorizontalPosition,
-    VerticalPosition,
     ViewportPositionerHandledProps,
+    ViewportPositionerHorizontalPosition,
     ViewportPositionerProps,
     ViewportPositionerUnhandledProps,
+    ViewportPositionerVerticalPosition,
 } from "./viewport-positioner.props";
 import {
     IntersectionObserverClassDefinition,
@@ -30,8 +30,8 @@ export interface ViewportPositionerState {
     right: number;
     bottom: number;
     left: number;
-    currentVerticalPosition: VerticalPosition;
-    currentHorizontalPosition: HorizontalPosition;
+    currentVerticalPosition: ViewportPositionerVerticalPosition;
+    currentHorizontalPosition: ViewportPositionerHorizontalPosition;
 
     initialLayoutComplete: boolean;
 }
@@ -45,9 +45,9 @@ class ViewportPositioner extends Foundation<
 
     public static defaultProps: Partial<ViewportPositionerProps> = {
         horizontalPositioningMode: AxisPositioningMode.uncontrolled,
-        defaultHorizontalPosition: HorizontalPosition.uncontrolled,
+        defaultHorizontalPosition: ViewportPositionerHorizontalPosition.uncontrolled,
         verticalPositioningMode: AxisPositioningMode.uncontrolled,
-        defaultVerticalPosition: VerticalPosition.uncontrolled,
+        defaultVerticalPosition: ViewportPositionerVerticalPosition.uncontrolled,
         horizontalAlwaysInView: false,
         verticalAlwaysInView: false,
         fixedAfterInitialPlacement: false,
@@ -74,11 +74,6 @@ class ViewportPositioner extends Foundation<
     >();
 
     private openRequestAnimationFrame: number = null;
-
-    /**
-     * Throttle resize request animation frame usage
-     */
-    // private throttledResize: throttle;
 
     private collisionDetector: IntersectionObserver;
     private resizeDetector: ResizeObserverClassDefinition;
@@ -112,8 +107,8 @@ class ViewportPositioner extends Foundation<
             right: null,
             bottom: null,
             left: null,
-            currentHorizontalPosition: HorizontalPosition.uncontrolled,
-            currentVerticalPosition: VerticalPosition.uncontrolled,
+            currentHorizontalPosition: ViewportPositionerHorizontalPosition.uncontrolled,
+            currentVerticalPosition: ViewportPositionerVerticalPosition.uncontrolled,
             initialLayoutComplete: false,
         };
     }
@@ -160,28 +155,28 @@ class ViewportPositioner extends Foundation<
         let classNames: string = get(this.props, "managedClasses.viewportPositioner", "");
 
         switch (this.state.currentHorizontalPosition) {
-            case HorizontalPosition.left:
+            case ViewportPositionerHorizontalPosition.left:
                 classNames = classNames.concat(
                     " ",
                     get(this.props.managedClasses, "viewportPositioner__left", "")
                 );
                 break;
 
-            case HorizontalPosition.centerLeft:
+            case ViewportPositionerHorizontalPosition.centerLeft:
                 classNames = classNames.concat(
                     " ",
                     get(this.props.managedClasses, "viewportPositioner__centerLeft", "")
                 );
                 break;
 
-            case HorizontalPosition.centerRight:
+            case ViewportPositionerHorizontalPosition.centerRight:
                 classNames = classNames.concat(
                     " ",
                     get(this.props.managedClasses, "viewportPositioner__centerRight", "")
                 );
                 break;
 
-            case HorizontalPosition.right:
+            case ViewportPositionerHorizontalPosition.right:
                 classNames = classNames.concat(
                     " ",
                     get(this.props.managedClasses, "viewportPositioner__right", "")
@@ -190,28 +185,28 @@ class ViewportPositioner extends Foundation<
         }
 
         switch (this.state.currentVerticalPosition) {
-            case VerticalPosition.top:
+            case ViewportPositionerVerticalPosition.top:
                 classNames = classNames.concat(
                     " ",
                     get(this.props.managedClasses, "viewportPositioner__top", "")
                 );
                 break;
 
-            case VerticalPosition.middleTop:
+            case ViewportPositionerVerticalPosition.centerTop:
                 classNames = classNames.concat(
                     " ",
-                    get(this.props.managedClasses, "viewportPositioner__middleTop", "")
+                    get(this.props.managedClasses, "viewportPositioner__centerTop", "")
                 );
                 break;
 
-            case VerticalPosition.middleBottom:
+            case ViewportPositionerVerticalPosition.centerBottom:
                 classNames = classNames.concat(
                     " ",
-                    get(this.props.managedClasses, "viewportPositioner__middleBottom", "")
+                    get(this.props.managedClasses, "viewportPositioner__centerBottom", "")
                 );
                 break;
 
-            case VerticalPosition.bottom:
+            case ViewportPositionerVerticalPosition.bottom:
                 classNames = classNames.concat(
                     " ",
                     get(this.props.managedClasses, "viewportPositioner__bottom", "")
@@ -335,7 +330,7 @@ class ViewportPositioner extends Foundation<
         };
 
         if (this.props.horizontalPositioningMode !== AxisPositioningMode.uncontrolled) {
-            const horizontalPositions: HorizontalPosition[] = this.getHorizontalPositioningOptions();
+            const horizontalPositions: ViewportPositionerHorizontalPosition[] = this.getHorizontalPositioningOptions();
             if (
                 this.props.defaultHorizontalPosition !== undefined &&
                 horizontalPositions.indexOf(this.props.defaultHorizontalPosition) !== -1
@@ -349,7 +344,7 @@ class ViewportPositioner extends Foundation<
         }
 
         if (this.props.verticalPositioningMode !== AxisPositioningMode.uncontrolled) {
-            const verticalPositions: VerticalPosition[] = this.getVerticalPositioningOptions();
+            const verticalPositions: ViewportPositionerVerticalPosition[] = this.getVerticalPositioningOptions();
             if (
                 this.props.defaultVerticalPosition !== undefined &&
                 verticalPositions.indexOf(this.props.defaultVerticalPosition) !== -1
@@ -416,45 +411,59 @@ class ViewportPositioner extends Foundation<
     /**
      *  Get available Horizontal positions based on positioning mode
      */
-    private getHorizontalPositioningOptions = (): HorizontalPosition[] => {
+    private getHorizontalPositioningOptions = (): ViewportPositionerHorizontalPosition[] => {
         switch (this.props.horizontalPositioningMode) {
             case AxisPositioningMode.flipInward:
-                return [HorizontalPosition.centerLeft, HorizontalPosition.centerRight];
+                return [
+                    ViewportPositionerHorizontalPosition.centerLeft,
+                    ViewportPositionerHorizontalPosition.centerRight,
+                ];
 
             case AxisPositioningMode.flipOutward:
-                return [HorizontalPosition.left, HorizontalPosition.right];
+                return [
+                    ViewportPositionerHorizontalPosition.left,
+                    ViewportPositionerHorizontalPosition.right,
+                ];
         }
     };
 
     /**
      * Get available Vertical positions based on positioning mode
      */
-    private getVerticalPositioningOptions = (): VerticalPosition[] => {
+    private getVerticalPositioningOptions = (): ViewportPositionerVerticalPosition[] => {
         switch (this.props.verticalPositioningMode) {
             case AxisPositioningMode.flipInward:
-                return [VerticalPosition.middleTop, VerticalPosition.middleBottom];
+                return [
+                    ViewportPositionerVerticalPosition.centerTop,
+                    ViewportPositionerVerticalPosition.centerBottom,
+                ];
 
             case AxisPositioningMode.flipOutward:
-                return [VerticalPosition.top, VerticalPosition.bottom];
+                return [
+                    ViewportPositionerVerticalPosition.top,
+                    ViewportPositionerVerticalPosition.bottom,
+                ];
         }
     };
 
     /**
      *  Get the width available for a particular horizontal position
      */
-    private getOptionWidth = (positionOption: HorizontalPosition): number => {
+    private getOptionWidth = (
+        positionOption: ViewportPositionerHorizontalPosition
+    ): number => {
         const spaceLeft: number = this.anchorLeft - this.viewportRect.left;
         const spaceRight: number =
             this.viewportRect.right - (this.anchorLeft + this.anchorWidth);
 
         switch (positionOption) {
-            case HorizontalPosition.left:
+            case ViewportPositionerHorizontalPosition.left:
                 return spaceLeft;
-            case HorizontalPosition.centerLeft:
+            case ViewportPositionerHorizontalPosition.centerLeft:
                 return spaceLeft + this.anchorWidth;
-            case HorizontalPosition.centerRight:
+            case ViewportPositionerHorizontalPosition.centerRight:
                 return spaceRight + this.anchorWidth;
-            case HorizontalPosition.right:
+            case ViewportPositionerHorizontalPosition.right:
                 return spaceRight;
         }
     };
@@ -462,19 +471,21 @@ class ViewportPositioner extends Foundation<
     /**
      *  Get the height available for a particular vertical position
      */
-    private getOptionHeight = (positionOption: VerticalPosition): number => {
+    private getOptionHeight = (
+        positionOption: ViewportPositionerVerticalPosition
+    ): number => {
         const spaceAbove: number = this.anchorTop - this.viewportRect.top;
         const spaceBelow: number =
             this.viewportRect.bottom - (this.anchorTop + this.anchorHeight);
 
         switch (positionOption) {
-            case VerticalPosition.top:
+            case ViewportPositionerVerticalPosition.top:
                 return spaceAbove;
-            case VerticalPosition.middleTop:
+            case ViewportPositionerVerticalPosition.centerTop:
                 return spaceAbove + this.anchorHeight;
-            case VerticalPosition.middleBottom:
+            case ViewportPositionerVerticalPosition.centerBottom:
                 return spaceBelow + this.anchorHeight;
-            case VerticalPosition.bottom:
+            case ViewportPositionerVerticalPosition.bottom:
                 return spaceBelow;
         }
     };
@@ -494,13 +505,18 @@ class ViewportPositioner extends Foundation<
         this.anchorHeight = entry.contentRect.height;
         this.anchorWidth = entry.contentRect.width;
 
-        if (this.state.currentVerticalPosition === VerticalPosition.top) {
+        if (
+            this.state.currentVerticalPosition === ViewportPositionerVerticalPosition.top
+        ) {
             this.anchorBottom = this.anchorTop + this.anchorHeight;
         } else {
             this.anchorTop = this.anchorBottom - this.anchorHeight;
         }
 
-        if (this.state.currentHorizontalPosition === HorizontalPosition.left) {
+        if (
+            this.state.currentHorizontalPosition ===
+            ViewportPositionerHorizontalPosition.left
+        ) {
             this.anchorRight = this.anchorLeft + this.anchorWidth;
         } else {
             this.anchorLeft = this.anchorRight - this.anchorWidth;
@@ -559,44 +575,44 @@ class ViewportPositioner extends Foundation<
         this.positionerRect = positionerEntry.boundingClientRect;
 
         switch (this.state.currentVerticalPosition) {
-            case VerticalPosition.top:
+            case ViewportPositionerVerticalPosition.top:
                 this.anchorTop = this.positionerRect.bottom - this.state.yTranslate;
                 this.anchorBottom = this.anchorTop + this.anchorHeight;
                 break;
 
-            case VerticalPosition.middleTop:
+            case ViewportPositionerVerticalPosition.centerTop:
                 this.anchorBottom = this.positionerRect.bottom - this.state.yTranslate;
                 this.anchorTop = this.anchorBottom - this.anchorHeight;
                 break;
 
-            case VerticalPosition.middleBottom:
+            case ViewportPositionerVerticalPosition.centerBottom:
                 this.anchorTop = this.positionerRect.top - this.state.yTranslate;
                 this.anchorBottom = this.anchorTop + this.anchorHeight;
                 break;
 
-            case VerticalPosition.bottom:
+            case ViewportPositionerVerticalPosition.bottom:
                 this.anchorBottom = this.positionerRect.top - this.state.yTranslate;
                 this.anchorTop = this.anchorBottom - this.anchorHeight;
                 break;
         }
 
         switch (this.state.currentHorizontalPosition) {
-            case HorizontalPosition.left:
+            case ViewportPositionerHorizontalPosition.left:
                 this.anchorLeft = this.positionerRect.right - this.state.xTranslate;
                 this.anchorRight = this.anchorLeft + this.anchorWidth;
                 break;
 
-            case HorizontalPosition.centerLeft:
+            case ViewportPositionerHorizontalPosition.centerLeft:
                 this.anchorRight = this.positionerRect.right - this.state.xTranslate;
                 this.anchorLeft = this.anchorRight - this.anchorWidth;
                 break;
 
-            case HorizontalPosition.centerRight:
+            case ViewportPositionerHorizontalPosition.centerRight:
                 this.anchorLeft = this.positionerRect.left - this.state.xTranslate;
                 this.anchorRight = this.anchorLeft + this.anchorWidth;
                 break;
 
-            case HorizontalPosition.right:
+            case ViewportPositionerHorizontalPosition.right:
                 this.anchorRight = this.positionerRect.left - this.state.xTranslate;
                 this.anchorLeft = this.anchorRight - this.anchorWidth;
                 break;
@@ -649,12 +665,13 @@ class ViewportPositioner extends Foundation<
 
         this.updateForScrolling();
 
-        let desiredVerticalPosition: VerticalPosition = VerticalPosition.uncontrolled;
-        let desiredHorizontalPosition: HorizontalPosition =
-            HorizontalPosition.uncontrolled;
+        let desiredVerticalPosition: ViewportPositionerVerticalPosition =
+            ViewportPositionerVerticalPosition.uncontrolled;
+        let desiredHorizontalPosition: ViewportPositionerHorizontalPosition =
+            ViewportPositionerHorizontalPosition.uncontrolled;
 
         if (this.props.horizontalPositioningMode !== AxisPositioningMode.uncontrolled) {
-            const horizontalOptions: HorizontalPosition[] = this.getHorizontalPositioningOptions();
+            const horizontalOptions: ViewportPositionerHorizontalPosition[] = this.getHorizontalPositioningOptions();
 
             if (horizontalOptions.indexOf(this.props.defaultHorizontalPosition) !== -1) {
                 desiredHorizontalPosition = this.props.defaultHorizontalPosition;
@@ -666,7 +683,8 @@ class ViewportPositioner extends Foundation<
                     : this.positionerRect.width;
 
             if (
-                desiredHorizontalPosition === HorizontalPosition.uncontrolled ||
+                desiredHorizontalPosition ===
+                    ViewportPositionerHorizontalPosition.uncontrolled ||
                 this.getOptionWidth(desiredHorizontalPosition) < horizontalThreshold
             ) {
                 desiredHorizontalPosition =
@@ -680,7 +698,7 @@ class ViewportPositioner extends Foundation<
         }
 
         if (this.props.verticalPositioningMode !== AxisPositioningMode.uncontrolled) {
-            const verticalOptions: VerticalPosition[] = this.getVerticalPositioningOptions();
+            const verticalOptions: ViewportPositionerVerticalPosition[] = this.getVerticalPositioningOptions();
 
             if (verticalOptions.indexOf(this.props.defaultVerticalPosition) !== -1) {
                 desiredVerticalPosition = this.props.defaultVerticalPosition;
@@ -692,7 +710,8 @@ class ViewportPositioner extends Foundation<
                     : this.positionerRect.height;
 
             if (
-                desiredVerticalPosition === VerticalPosition.uncontrolled ||
+                desiredVerticalPosition ===
+                    ViewportPositionerVerticalPosition.uncontrolled ||
                 this.getOptionHeight(desiredVerticalPosition) < verticalThreshold
             ) {
                 desiredVerticalPosition =
@@ -716,29 +735,29 @@ class ViewportPositioner extends Foundation<
      * Apply base horizontal positioning state based on desired position
      */
     private applyBaseHorizontalPositioningState = (
-        desiredHorizontalPosition: HorizontalPosition
+        desiredHorizontalPosition: ViewportPositionerHorizontalPosition
     ): void => {
         let right: number = null;
         let left: number = null;
         let xTransformOrigin: string = "left";
 
         switch (desiredHorizontalPosition) {
-            case HorizontalPosition.left:
+            case ViewportPositionerHorizontalPosition.left:
                 xTransformOrigin = "right";
                 right = this.positionerRect.width;
                 break;
 
-            case HorizontalPosition.centerLeft:
+            case ViewportPositionerHorizontalPosition.centerLeft:
                 xTransformOrigin = "right";
                 right = 0;
                 break;
 
-            case HorizontalPosition.centerRight:
+            case ViewportPositionerHorizontalPosition.centerRight:
                 xTransformOrigin = "left";
                 left = 0;
                 break;
 
-            case HorizontalPosition.right:
+            case ViewportPositionerHorizontalPosition.right:
                 xTransformOrigin = "left";
                 left = this.anchorWidth;
                 break;
@@ -756,29 +775,29 @@ class ViewportPositioner extends Foundation<
      * Apply base vertical positioning state based on desired position
      */
     private applyBaseVerticalPositioningState = (
-        desiredVerticalPosition: VerticalPosition
+        desiredVerticalPosition: ViewportPositionerVerticalPosition
     ): void => {
         let top: number = null;
         let bottom: number = null;
         let yTransformOrigin: string = "top";
 
         switch (desiredVerticalPosition) {
-            case VerticalPosition.top:
+            case ViewportPositionerVerticalPosition.top:
                 yTransformOrigin = "bottom";
                 bottom = this.positionerRect.height + this.anchorHeight;
                 break;
 
-            case VerticalPosition.middleTop:
+            case ViewportPositionerVerticalPosition.centerTop:
                 yTransformOrigin = "bottom";
                 bottom = this.positionerRect.height;
                 break;
 
-            case VerticalPosition.middleBottom:
+            case ViewportPositionerVerticalPosition.centerBottom:
                 yTransformOrigin = "top";
                 top = -this.anchorHeight;
                 break;
 
-            case VerticalPosition.bottom:
+            case ViewportPositionerVerticalPosition.bottom:
                 yTransformOrigin = "top";
                 top = 0;
                 break;
@@ -795,7 +814,7 @@ class ViewportPositioner extends Foundation<
      *  Calculate horizontal tranlation to keep positioner in view
      */
     private calculateHorizontalTranslate = (
-        horizontalPosition: HorizontalPosition
+        horizontalPosition: ViewportPositionerHorizontalPosition
     ): number => {
         if (!this.props.horizontalAlwaysInView) {
             return 0;
@@ -804,22 +823,22 @@ class ViewportPositioner extends Foundation<
         let translate: number = 0;
 
         switch (horizontalPosition) {
-            case HorizontalPosition.left:
+            case ViewportPositionerHorizontalPosition.left:
                 translate = this.viewportRect.right - this.anchorLeft;
                 translate = translate < 0 ? translate - 1 : 0;
                 break;
 
-            case HorizontalPosition.centerLeft:
+            case ViewportPositionerHorizontalPosition.centerLeft:
                 translate = this.viewportRect.right - this.anchorRight;
                 translate = translate < 0 ? translate - 1 : 0;
                 break;
 
-            case HorizontalPosition.centerRight:
+            case ViewportPositionerHorizontalPosition.centerRight:
                 translate = this.viewportRect.left - this.anchorLeft;
                 translate = translate > 0 ? translate + 1 : 0;
                 break;
 
-            case HorizontalPosition.right:
+            case ViewportPositionerHorizontalPosition.right:
                 translate = this.viewportRect.left - this.anchorRight;
                 translate = translate > 0 ? translate + 1 : 0;
                 break;
@@ -830,7 +849,9 @@ class ViewportPositioner extends Foundation<
     /**
      *  Calculate vertical tranlation to keep positioner in view
      */
-    private calculateVerticalTranslate = (verticalPosition: VerticalPosition): number => {
+    private calculateVerticalTranslate = (
+        verticalPosition: ViewportPositionerVerticalPosition
+    ): number => {
         if (!this.props.verticalAlwaysInView) {
             return 0;
         }
@@ -838,22 +859,22 @@ class ViewportPositioner extends Foundation<
         let translate: number = 0;
 
         switch (verticalPosition) {
-            case VerticalPosition.top:
+            case ViewportPositionerVerticalPosition.top:
                 translate = this.viewportRect.bottom - this.anchorTop;
                 translate = translate < 0 ? translate - 1 : 0;
                 break;
 
-            case VerticalPosition.middleTop:
+            case ViewportPositionerVerticalPosition.centerTop:
                 translate = this.viewportRect.bottom - this.anchorBottom;
                 translate = translate < 0 ? translate - 1 : 0;
                 break;
 
-            case VerticalPosition.middleBottom:
+            case ViewportPositionerVerticalPosition.centerBottom:
                 translate = this.viewportRect.top - this.anchorTop;
                 translate = translate < 0 ? 0 : translate + 1;
                 break;
 
-            case VerticalPosition.bottom:
+            case ViewportPositionerVerticalPosition.bottom:
                 translate = this.viewportRect.top - this.anchorBottom;
                 translate = translate < 0 ? 0 : translate + 1;
                 break;

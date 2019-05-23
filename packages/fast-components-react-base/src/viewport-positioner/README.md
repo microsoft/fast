@@ -8,7 +8,7 @@ The *viewport positioner* and the anchor element it is attached to must both be 
 
 If no "anchor" is specified the component will be disabled and not attempt to adjust layout. If no viewport is specified the component will assume the viewport is the root document element of the page.
 
-Authors can specify a positioning mode for each axis or leave it "uncontrolled" and use other means (ie. their own css) to manage the positioner's layout on that axis.  The "flipOutward" positioning mode ensures that the positioner does not overlap with the anchor on that axis and butts up against the outer edges of the anchor element.  With the "flipInward" positioning mode set the positioner will overlap with the anchor on the axis specified but will only extend beyond the anchor on the side with the most available space.
+Authors can specify a positioning mode for each axis or leave it "uncontrolled" and use other means (i.e. their own css) to manage the positioner's layout on that axis.  The "flipOutward" positioning mode ensures that the positioner does not overlap with the anchor on that axis and butts up against the outer edges of the anchor element.  With the "flipInward" positioning mode set the positioner will overlap with the anchor on the axis specified but will only extend beyond the anchor on the side with the most available space.
 
 FlipOutward:
 
@@ -36,9 +36,9 @@ Anchor
 
 The chosen position determines which side of the positioner is fixed to the anchor.  For example if the chosen position for the horizontal axis is "left" the positioner will have its "right" property set to a value corresponding to the left edge of the anchor and the "left" propertly will be unset.
 
-The *viewport positioner* adds css classes to itself based on the chosen positions (ie. "viewportPositioner__left", "viewportPositioner__right", etc...) to enable authors to style the positioner and its contents based on relative position.
+The *viewport positioner* adds css classes to itself based on the chosen positions (i.e. "viewportPositioner__left", "viewportPositioner__right", etc.) to enable authors to style the positioner and its contents based on relative position.
 
-The "AlwaysInView" props for each axis allows authors to specify whether the positioner should remain on screen when the anchor element is scrolled off.  The *viewport positioner* accomplishes this by setting the translate transform and translate origin properties of the component.
+The "AlwaysInView" props (i.e. "horizontalAlwaysInView" and "verticalAlwaysInView") for each axis allows authors to specify whether the positioner should remain on screen when the anchor element is scrolled off.  The *viewport positioner* accomplishes this by setting the translate transform and translate origin properties of the component.
 
 The "fixedAfterInitialPlacement" prop is set the component will not adjust positioning after the initial render.
 
