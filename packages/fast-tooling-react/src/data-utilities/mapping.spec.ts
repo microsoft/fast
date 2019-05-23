@@ -1,11 +1,7 @@
 import "jest";
 import { get } from "lodash-es";
-import {
-    ChildOptionItem,
-    CodePreviewChildOption,
-    mapDataToCodePreview,
-    mapDataToComponent,
-} from "./";
+import { ChildOptionItem, mapDataToComponent } from "./";
+import { CodePreviewChildOption, mapDataToCodePreview } from "./mapping";
 
 import ChildrenWithRenderProp from "./__tests__/components/children-plugin";
 import Children from "./__tests__/components/children";

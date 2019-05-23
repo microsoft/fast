@@ -1,7 +1,11 @@
 import React from "react";
 import { DesignSystemProvider } from "@microsoft/fast-jss-manager-react";
 import * as testConfigs from "../form/";
-import { CodePreview, CodePreviewChildOption, mapDataToCodePreview } from "../../../src";
+import {
+    CodePreview,
+    CodePreviewChildOption,
+    mapDataToCodePreview,
+} from "../../../src/data-utilities/mapping";
 import exampleData from "./examples.data";
 
 export interface CodePreviewTestPageState {
@@ -67,7 +71,7 @@ class CodePreviewTestPage extends React.Component<{}, CodePreviewTestPageState> 
         this.setState({
             data: {
                 componentName: exampleData[e.target.selectedIndex].componentName,
-                childNames: formChildOptions,
+                childNames: codePreviewChildOptions,
                 data: exampleData[e.target.selectedIndex].componentData,
             },
         });
