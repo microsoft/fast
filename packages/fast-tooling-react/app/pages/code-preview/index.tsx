@@ -8,7 +8,7 @@ export interface CodePreviewTestPageState {
     data: CodePreview;
 }
 
-const formChildOptions: CodePreviewChildOption[] = [
+const codePreviewChildOptions: CodePreviewChildOption[] = [
     {
         name: "TextField",
         schema: testConfigs.textField.schema,
@@ -32,7 +32,7 @@ class CodePreviewTestPage extends React.Component<{}, CodePreviewTestPageState> 
         this.state = {
             data: {
                 componentName: exampleData[0].componentName,
-                childNames: formChildOptions,
+                childNames: codePreviewChildOptions,
                 data: exampleData[0].componentData,
             },
         };
