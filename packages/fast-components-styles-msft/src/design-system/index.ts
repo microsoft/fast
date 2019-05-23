@@ -231,7 +231,7 @@ export function getDesignSystemValue<T extends DesignSystem, K extends keyof T>(
     key: K
 ): (designSystem?: T) => T[K] {
     return (designSystem?: T): T[K] => {
-        return designSystem && designSystem.hasOwnProperty(key)
+        return designSystem && designSystem[key] !== undefined
             ? designSystem[key]
             : (designSystemDefaults as T)[key];
     };
