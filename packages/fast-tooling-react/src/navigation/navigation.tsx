@@ -7,6 +7,7 @@ import Foundation, {
 import { get } from "lodash-es";
 import { canUseDOM } from "exenv-es6";
 import {
+    NavigationDataType,
     NavigationHandledProps,
     NavigationProps,
     NavigationState,
@@ -126,13 +127,25 @@ export default class Navigation extends Foundation<
                     aria-setsize={navigationLength}
                     aria-posinset={positionInNavigation}
                     aria-expanded={this.isExpanded(navigation.dataLocation)}
-                    onClick={this.handleTreeItemClick(navigation.dataLocation)}
-                    onKeyUp={this.handleTreeItemKeyUp(navigation.dataLocation)}
+                    onClick={this.handleTreeItemClick(
+                        navigation.dataLocation,
+                        navigation.type
+                    )}
+                    onKeyUp={this.handleTreeItemKeyUp(
+                        navigation.dataLocation,
+                        navigation.type
+                    )}
                 >
                     <span
                         className={this.getTriggerClassNames(navigation.dataLocation)}
-                        onClick={this.handleTreeItemClick(navigation.dataLocation)}
-                        onKeyUp={this.handleTreeItemKeyUp(navigation.dataLocation)}
+                        onClick={this.handleTreeItemClick(
+                            navigation.dataLocation,
+                            navigation.type
+                        )}
+                        onKeyUp={this.handleTreeItemKeyUp(
+                            navigation.dataLocation,
+                            navigation.type
+                        )}
                         tabIndex={0}
                         data-location={navigation.dataLocation}
                     >
@@ -157,8 +170,14 @@ export default class Navigation extends Foundation<
                     aria-setsize={navigationLength}
                     aria-posinset={positionInNavigation}
                     href={"#"}
-                    onClick={this.handleTreeItemClick(navigation.dataLocation)}
-                    onKeyUp={this.handleTreeItemKeyUp(navigation.dataLocation)}
+                    onClick={this.handleTreeItemClick(
+                        navigation.dataLocation,
+                        navigation.type
+                    )}
+                    onKeyUp={this.handleTreeItemKeyUp(
+                        navigation.dataLocation,
+                        navigation.type
+                    )}
                     tabIndex={0}
                 >
                     {navigation.text}
@@ -238,7 +257,7 @@ export default class Navigation extends Foundation<
         }
     }
 
-    private focusAndOpenTreeItems(dataLocation: string): void {
+    private focusAndOpenTreeItems(dataLocation: string, type: NavigationDataType): void {
         if (canUseDOM()) {
             const nodes: HTMLElement[] = this.getTreeItemNodes();
             const currentIndex: number = this.findCurrentTreeItemIndex(
@@ -253,12 +272,12 @@ export default class Navigation extends Foundation<
             if (ariaExpanded === "true" && nodes[currentIndex + 1]) {
                 nodes[currentIndex + 1].focus();
             } else if (ariaExpanded === "false") {
-                this.toggleItems(dataLocation);
+                this.toggleItems(dataLocation, type);
             }
         }
     }
 
-    private focusAndCloseTreeItems(dataLocation: string): void {
+    private focusAndCloseTreeItems(dataLocation: string, type: NavigationDataType): void {
         if (canUseDOM()) {
             const nodes: HTMLElement[] = this.getTreeItemNodes();
             const currentIndex: number = this.findCurrentTreeItemIndex(
@@ -282,7 +301,7 @@ export default class Navigation extends Foundation<
             ) {
                 nodes[currentIndex - 1].focus();
             } else if (ariaExpanded === "true") {
-                this.toggleItems(dataLocation);
+                this.toggleItems(dataLocation, type);
             } else if (ariaExpanded === undefined && nodes[currentIndex - 1]) {
                 nodes[currentIndex - 1].focus();
             }
@@ -330,7 +349,8 @@ export default class Navigation extends Foundation<
      * Handles key up on a tree item
      */
     private handleTreeItemKeyUp = (
-        dataLocation: string
+        dataLocation: string,
+        type: NavigationDataType
     ): ((e: React.KeyboardEvent<HTMLDivElement | HTMLAnchorElement>) => void) => {
         return (e: React.KeyboardEvent<HTMLDivElement | HTMLAnchorElement>): void => {
             e.preventDefault();
@@ -340,7 +360,7 @@ export default class Navigation extends Foundation<
                     case KeyCodes.enter:
                     case KeyCodes.space:
                         if (e.target === e.currentTarget) {
-                            this.toggleItems(dataLocation);
+                            this.toggleItems(dataLocation, type);
                         }
                         break;
                     case KeyCodes.arrowDown:
@@ -350,10 +370,10 @@ export default class Navigation extends Foundation<
                         this.focusPreviousTreeItem(dataLocation);
                         break;
                     case KeyCodes.arrowRight:
-                        this.focusAndOpenTreeItems(dataLocation);
+                        this.focusAndOpenTreeItems(dataLocation, type);
                         break;
                     case KeyCodes.arrowLeft:
-                        this.focusAndCloseTreeItems(dataLocation);
+                        this.focusAndCloseTreeItems(dataLocation, type);
                         break;
                     case KeyCodes.home:
                         this.focusFirstTreeItem();
@@ -372,13 +392,14 @@ export default class Navigation extends Foundation<
      * Handles clicking on a tree item
      */
     private handleTreeItemClick = (
-        dataLocation: string
+        dataLocation: string,
+        type: NavigationDataType
     ): ((e: React.MouseEvent<HTMLAnchorElement | HTMLDivElement>) => void) => {
         return (e: React.MouseEvent<HTMLAnchorElement>): void => {
             e.preventDefault();
 
             if (e.target === e.currentTarget) {
-                this.toggleItems(dataLocation);
+                this.toggleItems(dataLocation, type);
             }
         };
     };
@@ -386,7 +407,7 @@ export default class Navigation extends Foundation<
     /**
      * Toggles the items by adding/removing them from the openItems array
      */
-    private toggleItems(dataLocation: string): void {
+    private toggleItems(dataLocation: string, type: NavigationDataType): void {
         const isExpanded: boolean = this.isExpanded(dataLocation);
         const updatedState: Partial<NavigationState> = {};
 
@@ -404,7 +425,10 @@ export default class Navigation extends Foundation<
 
         this.setState(updatedState as NavigationState);
 
-        if (typeof this.props.onLocationUpdate === "function") {
+        if (
+            typeof this.props.onLocationUpdate === "function" &&
+            type !== NavigationDataType.children
+        ) {
             this.props.onLocationUpdate(dataLocation);
         }
     }

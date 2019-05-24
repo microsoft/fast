@@ -434,6 +434,21 @@ describe("Navigation", () => {
             triggerItem.at(0).props()["data-location"]
         );
     });
+    test("should not fire a callback when a children data type is clicked", () => {
+        const onLocationUpdate: any = jest.fn();
+        const props: any = {
+            ...navigationProps,
+            data: standardData,
+            managedClasses,
+            onLocationUpdate,
+        };
+        const rendered: any = mount(<Navigation {...props} />);
+        const triggerItem: any = rendered.find(treeItemExpandListTriggerSelector);
+
+        triggerItem.at(1).simulate("click");
+
+        expect(onLocationUpdate).not.toHaveBeenCalled();
+    });
     test("should add an active class on a link when it has been clicked", () => {
         const props: any = {
             ...navigationProps,
