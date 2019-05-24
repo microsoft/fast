@@ -29,7 +29,7 @@ export default class CSSHeight extends Foundation<
                     <input
                         className={get(this.props, "managedClasses.cssHeight_input")}
                         type={"text"}
-                        value={get(this.props.data, "height")}
+                        value={get(this.props.data, "height", "")}
                         onChange={this.handleHeightOnChange}
                     />
                 </div>

@@ -11,6 +11,7 @@ import UpdatePropsPage from "./pages/viewer/update-props-page";
 import UpdatePropsViewerContent from "./pages/viewer/update-props-page.viewer-content";
 import { CSSEditorTestPage } from "./pages/css-editor";
 import { FormTestPage } from "./pages/form";
+import { FormAndNavigationTestPage } from "./pages/form-and-navigation";
 import { CSSPropertyEditorTestPage } from "./pages/css-property-editor";
 
 class App extends React.Component<{}, {}> {
@@ -76,6 +77,11 @@ class App extends React.Component<{}, {}> {
                             component={UpdatePropsViewerContent}
                         />
                         <Route exact={true} path={"/form"} component={FormTestPage} />
+                        <Route
+                            exact={true}
+                            path={"/form-and-navigation"}
+                            component={FormAndNavigationTestPage}
+                        />
                         <Route exact={true} path={"/"}>
                             <Redirect to={"/navigation"} />
                         </Route>
@@ -101,6 +107,9 @@ class App extends React.Component<{}, {}> {
                         </li>
                         <li>
                             <Link to="/navigation">Navigation</Link>
+                        </li>
+                        <li>
+                            <Link to="/form-and-navigation">Form and Navigation</Link>
                         </li>
                         <li>
                             <span>Viewer</span>

@@ -10,7 +10,13 @@ import {
 } from "./palette";
 import { neutralForegroundRest } from "./neutral-foreground";
 import { inRange } from "lodash-es";
-import { contrast, Swatch, SwatchRecipe, SwatchResolver } from "./common";
+import {
+    colorRecipeFactory,
+    contrast,
+    Swatch,
+    SwatchRecipe,
+    SwatchResolver,
+} from "./common";
 import { backgroundColor, neutralPalette } from "../design-system";
 
 /**
@@ -40,45 +46,22 @@ const neutralForegroundHintAlgorithm: ReturnType<
     neutralForegroundHintInitialIndexResolver
 )(neturalForegroundHintDirectionResolver);
 
-/**
- * Factory to create neutral-foreground-hint functions based on an input contrast target
- */
-function neutralForegroundHintFactory(contrastTarget: number): SwatchRecipe {
-    function neutralForegroundHintInternal(designSystem: DesignSystem): Swatch;
-    function neutralForegroundHintInternal(
-        backgroundResolver: SwatchResolver
-    ): SwatchResolver;
-    function neutralForegroundHintInternal(arg: any): any {
-        const algorithm: ReturnType<
-            typeof neutralForegroundHintAlgorithm
-        > = neutralForegroundHintAlgorithm(
-            (instanceContrast: number): boolean => {
-                return instanceContrast >= contrastTarget;
-            }
-        );
-
-        if (typeof arg === "function") {
-            return (designSystem: DesignSystem): Swatch => {
-                return algorithm(
-                    Object.assign({}, designSystem, {
-                        backgroundColor: arg(designSystem),
-                    })
-                );
-            };
-        } else {
-            return algorithm(arg);
-        }
-    }
-
-    return neutralForegroundHintInternal;
+function contrastTargetFactory(
+    targetContrast: number
+): (instanceContrast: number) => boolean {
+    return (instanceContrast: number): boolean => instanceContrast >= targetContrast;
 }
 
 /**
  * Hint text for normal sized text, less than 18pt normal weight
  */
-export const neutralForegroundHint: SwatchRecipe = neutralForegroundHintFactory(4.5);
+export const neutralForegroundHint: SwatchRecipe = colorRecipeFactory(
+    neutralForegroundHintAlgorithm(contrastTargetFactory(4.5))
+);
 
 /**
  * Hint text for large sized text, greater than 18pt or 16pt and bold
  */
-export const neutralForegroundHintLarge: SwatchRecipe = neutralForegroundHintFactory(3);
+export const neutralForegroundHintLarge: SwatchRecipe = colorRecipeFactory(
+    neutralForegroundHintAlgorithm(contrastTargetFactory(3))
+);
