@@ -1,7 +1,7 @@
 import React from "react";
 import { DesignSystemProvider } from "@microsoft/fast-jss-manager-react";
 import { getDataFromSchema } from "../../src/data-utilities";
-import { Form, FormPlugin, FormPluginProps } from "../../src";
+import { Form, FormPlugin, FormPluginProps, Navigation } from "../../src";
 import {
     FormAttributeSettingsMappingToPropertyNames,
     FormChildOptionItem,
@@ -45,7 +45,7 @@ const designSystemDefaults: any = {
     brandColor: "#0078D4",
 };
 
-class FormTestPage extends React.Component<{}, FormTestPageState> {
+class FormAndNavigationTestPage extends React.Component<{}, FormTestPageState> {
     /**
      * These are the children that can be added
      */
@@ -94,7 +94,7 @@ class FormTestPage extends React.Component<{}, FormTestPageState> {
                                 "Segoe UI, SegoeUI, Helvetica Neue, Helvetica, Arial, sans-serif",
                         }}
                     >
-                        <Form {...this.coerceFormProps()} />
+                        {this.renderNavigation()}
                     </div>
                     <div
                         style={{
@@ -153,8 +153,30 @@ class FormTestPage extends React.Component<{}, FormTestPageState> {
                             {JSON.stringify(this.state.data, null, 2)}
                         </pre>
                     </div>
+                    <div
+                        style={{
+                            width: "250px",
+                            height: "100vh",
+                            float: "left",
+                            fontFamily:
+                                "Segoe UI, SegoeUI, Helvetica Neue, Helvetica, Arial, sans-serif",
+                        }}
+                    >
+                        <Form {...this.coerceFormProps()} />
+                    </div>
                 </div>
             </DesignSystemProvider>
+        );
+    }
+
+    private renderNavigation(): React.ReactNode {
+        return (
+            <Navigation
+                data={this.state.data}
+                schema={this.state.schema}
+                childOptions={this.getChildOptions()}
+                onLocationUpdate={this.handleLocationOnChange}
+            />
         );
     }
 
@@ -309,4 +331,4 @@ class FormTestPage extends React.Component<{}, FormTestPageState> {
     }
 }
 
-export { FormTestPage };
+export { FormAndNavigationTestPage };
