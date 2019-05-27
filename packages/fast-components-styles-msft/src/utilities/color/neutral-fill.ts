@@ -22,16 +22,63 @@ const neutralFillThreshold: DesignSystemResolver<number> = designSystemResolverM
     neutralFillActiveDelta
 );
 
+enum FillType {
+    rest = "rest",
+    hover = "hover",
+    active = "active",
+    selected = "selected",
+}
+
+////////////////////
+// Any portion of the code referencing newRecipeOffset is considered experimental
+// and will be incorporated permanently or removed upon review. DO NOT use values
+// in this range unless you are temporarily evaluation this feature as they will
+// no longer produce predictable results once removed.
+////////////////////
+const newRecipeOffset: number = 100;
+
 function neutralFillAlgorithm(
-    indexResolver: DesignSystemResolver<number>
+    deltaResolver: DesignSystemResolver<number>,
+    fillType: FillType
 ): DesignSystemResolver<Swatch> {
     return (designSystem: DesignSystem): Swatch => {
         const backgroundIndex: number = findClosestBackgroundIndex(designSystem);
-        const swapThreshold: number = neutralFillThreshold(designSystem);
-        const direction: number = backgroundIndex >= swapThreshold ? -1 : 1;
+        let swapThreshold: number = neutralFillThreshold(designSystem);
+
+        if (swapThreshold >= newRecipeOffset) {
+            swapThreshold -= newRecipeOffset;
+        }
+
+        const direction: 1 | -1 = backgroundIndex >= swapThreshold ? -1 : 1;
+
+        const value: number = deltaResolver(designSystem);
+
+        if (value >= newRecipeOffset) {
+            const restDelta: number =
+                neutralFillRestDelta(designSystem) - newRecipeOffset;
+            const restIndex: number = backgroundIndex + direction * restDelta;
+            switch (fillType) {
+                case FillType.rest:
+                    return getSwatch(restIndex, neutralPalette(designSystem));
+                case FillType.hover:
+                    const hoverDelta: number =
+                        neutralFillHoverDelta(designSystem) - newRecipeOffset;
+                    const hoverIndex: number = restIndex + hoverDelta - restDelta;
+                    return getSwatch(hoverIndex, neutralPalette(designSystem));
+                case FillType.active:
+                    const activeDelta: number =
+                        neutralFillActiveDelta(designSystem) - newRecipeOffset;
+                    const activeIndex: number = restIndex + activeDelta - restDelta;
+                    return getSwatch(activeIndex, neutralPalette(designSystem));
+                case FillType.selected:
+                    const selectedIndex: number =
+                        backgroundIndex + direction * (value - newRecipeOffset);
+                    return getSwatch(selectedIndex, neutralPalette(designSystem));
+            }
+        }
 
         return getSwatch(
-            backgroundIndex + direction * indexResolver(designSystem),
+            backgroundIndex + direction * value,
             neutralPalette(designSystem)
         );
     };
@@ -49,17 +96,23 @@ export const neutralFill: ColorRecipe<FillSwatchFamily> = colorRecipeFactory(
 );
 
 export const neutralFillRest: SwatchRecipe = colorRecipeFactory(
-    neutralFillAlgorithm(neutralFillRestDelta)
+    neutralFillAlgorithm(neutralFillRestDelta, FillType.rest)
 );
 export const neutralFillHover: SwatchRecipe = colorRecipeFactory(
-    neutralFillAlgorithm(neutralFillHoverDelta)
+    neutralFillAlgorithm(neutralFillHoverDelta, FillType.hover)
 );
 export const neutralFillActive: SwatchRecipe = colorRecipeFactory(
-    neutralFillAlgorithm(neutralFillActiveDelta)
+    neutralFillAlgorithm(neutralFillActiveDelta, FillType.active)
 );
 export const neutralFillSelected: SwatchRecipe = colorRecipeFactory(
     (designSystem: DesignSystem): Swatch => {
         const delta: number = neutralFillSelectedDelta(designSystem);
+
+        if (delta >= newRecipeOffset) {
+            return neutralFillAlgorithm(neutralFillSelectedDelta, FillType.selected)(
+                designSystem
+            );
+        }
 
         return getSwatch(
             neutralPalette(designSystem).indexOf(neutralFillRest(designSystem)) +
