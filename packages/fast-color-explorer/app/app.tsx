@@ -41,6 +41,9 @@ class App extends React.Component<AppProps, {}> {
                                         colors={palette(PaletteType.neutral)(
                                             this.props.designSystem
                                         )}
+                                        markedColor={
+                                            this.props.designSystem.neutralBaseColor
+                                        }
                                         createAnchors={true}
                                         scrollToItem={this.handleGradientScroll}
                                     />
@@ -50,6 +53,9 @@ class App extends React.Component<AppProps, {}> {
                                         colors={palette(PaletteType.accent)(
                                             this.props.designSystem
                                         )}
+                                        markedColor={
+                                            this.props.designSystem.accentBaseColor
+                                        }
                                         createAnchors={false}
                                     />
                                 </Row>

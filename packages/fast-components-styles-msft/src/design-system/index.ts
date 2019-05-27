@@ -14,6 +14,16 @@ export interface DesignSystem {
     backgroundColor: string;
 
     /**
+     * The neutral color, which the neutralPalette is based on
+     */
+    neutralBaseColor: string;
+
+    /**
+     * The accent color, which the accentPalette is based on
+     */
+    accentBaseColor: string;
+
+    /**
      * Configuration object to derive the neutral palette. Expects a ColorPaletteConfig from @microsoft/fast-colors
      */
     neutralPalette: Palette;
@@ -153,6 +163,8 @@ export function createColorPalette(baseColor: ColorRGBA64): Palette {
 
 const designSystemDefaults: DesignSystem = {
     backgroundColor: white,
+    neutralBaseColor: "#808080",
+    accentBaseColor: "#0078D4",
     contrast: 0,
     density: 0,
     designUnit: 4,
