@@ -256,6 +256,7 @@ export function swatchByContrast(referenceColor: string | SwatchResolver) {
 
                         while (
                             inRange(index + direction, 0, length) &&
+                            inRange(index, 0, length) &&
                             !contrastCondition(contrast(color, sourcePalette[index]))
                         ) {
                             index = index + direction;
