@@ -230,8 +230,11 @@ export function getDesignSystemProperty(key: string): DesignSystemResolver<strin
 export function getDesignSystemValue<T extends DesignSystem, K extends keyof T>(
     key: K
 ): (designSystem?: T) => T[K] {
-    return (designSystem?: T): T[K] =>
-        (designSystem && designSystem[key]) || (designSystemDefaults as T)[key];
+    return (designSystem?: T): T[K] => {
+        return designSystem && designSystem[key] !== undefined
+            ? designSystem[key]
+            : (designSystemDefaults as T)[key];
+    };
 }
 
 /**
