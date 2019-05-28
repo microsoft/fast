@@ -9,17 +9,33 @@ export type DensityOffset = -3 | -2 | -1 | 0 | 1 | 2 | 3;
 
 export interface DesignSystem {
     /**
-     * The value typically used for backgrounds of elements
+     * The value typically used for backgrounds of elements.
      */
     backgroundColor: string;
 
     /**
-     * Configuration object to derive the neutral palette. Expects a ColorPaletteConfig from @microsoft/fast-colors
+     * The neutral color, which the neutralPalette is based on.
+     * Keep this value in sync with neutralPalette.
+     */
+    neutralBaseColor: string;
+
+    /**
+     * The accent color, which the accentPalette is based on.
+     * Keep this value in sync with accentPalette.
+     */
+    accentBaseColor: string;
+
+    /**
+     * An array of colors in a ramp from light to dark, used to lookup values for neutral color recipes.
+     * Keep this value in sync with neutralBaseColor.
+     * Typically generated using color-palette in @microsoft/fast-colors.
      */
     neutralPalette: Palette;
 
     /**
-     * Configuration object to derive the accent palette. Expects a ColorPaletteConfig from @microsoft/fast-colors
+     * An array of colors in a ramp from light to dark, used to lookup values for neutral color recipes.
+     * Keep this value in sync with accentBaseColor.
+     * Typically generated using color-palette in @microsoft/fast-colors.
      */
     accentPalette: Palette;
 
@@ -54,7 +70,7 @@ export interface DesignSystem {
     direction: Direction;
 
     /**
-     * An object representing the supported font weights
+     * An object representing the supported font weights.
      */
     fontWeight?: FontWeight;
 
@@ -79,7 +95,7 @@ export interface DesignSystem {
     disabledOpacity: number;
 
     /**
-     * Color swatch deltas for accent-fill recipe
+     * Color swatch deltas for accent-fill recipe.
      */
     accentFillRestDelta: number;
     accentFillHoverDelta: number;
@@ -87,14 +103,14 @@ export interface DesignSystem {
     accentFillSelectedDelta: number;
 
     /**
-     * Color swatch deltas for accent-foreground recipe
+     * Color swatch deltas for accent-foreground recipe.
      */
     accentForegroundRestDelta: number;
     accentForegroundHoverDelta: number;
     accentForegroundActiveDelta: number;
 
     /*
-     * Color swatch deltas for neutral-fill recipe
+     * Color swatch deltas for neutral-fill recipe.
      */
     neutralFillRestDelta: number;
     neutralFillHoverDelta: number;
@@ -102,7 +118,7 @@ export interface DesignSystem {
     neutralFillSelectedDelta: number;
 
     /**
-     * Color swatch deltas for neutral-fill-input recipe
+     * Color swatch deltas for neutral-fill-input recipe.
      */
     neutralFillInputRestDelta: number;
     neutralFillInputHoverDelta: number;
@@ -110,7 +126,7 @@ export interface DesignSystem {
     neutralFillInputSelectedDelta: number;
 
     /**
-     * Color swatch deltas for neutral-fill-stealth recipe
+     * Color swatch deltas for neutral-fill-stealth recipe.
      */
     neutralFillStealthRestDelta: number;
     neutralFillStealthHoverDelta: number;
@@ -118,12 +134,12 @@ export interface DesignSystem {
     neutralFillStealthSelectedDelta: number;
 
     /**
-     * Color swatch deltas for neutral-fill-card recipe
+     * Color swatch deltas for neutral-fill-card recipe.
      */
     neutralFillCardDelta: number;
 
     /**
-     * Color swatch deltas for neutral-foreground
+     * Color swatch deltas for neutral-foreground recipe.
      */
     neutralForegroundDarkIndex: number;
     neutralForegroundLightIndex: number;
@@ -131,7 +147,7 @@ export interface DesignSystem {
     neutralForegroundActiveDelta: number;
 
     /**
-     * Color swatch deltas for neutral-outline
+     * Color swatch deltas for neutral-outline recipe.
      */
     neutralOutlineRestDelta: number;
     neutralOutlineHoverDelta: number;
@@ -153,6 +169,8 @@ export function createColorPalette(baseColor: ColorRGBA64): Palette {
 
 const designSystemDefaults: DesignSystem = {
     backgroundColor: white,
+    neutralBaseColor: "#808080",
+    accentBaseColor: "#0078D4",
     contrast: 0,
     density: 0,
     designUnit: 4,

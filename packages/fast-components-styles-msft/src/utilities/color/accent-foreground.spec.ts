@@ -6,11 +6,12 @@ import {
     accentForegroundLargeRest,
     accentForegroundRest,
 } from "./accent-foreground";
-import designSystemDefaults, { DesignSystem } from "../../design-system";
+import designSystemDefaults, {
+    createColorPalette,
+    DesignSystem,
+} from "../../design-system";
 import { palette, Palette, PaletteType } from "./palette";
-import { contrast, Swatch } from "./common";
-import { accentPaletteConfig } from "./color-constants";
-import { parseColorHexRGB } from "@microsoft/fast-colors";
+import { contrast, parseColorString, Swatch } from "./common";
 
 describe("accentForeground", (): void => {
     const neutralPalette: Palette = palette(PaletteType.neutral)(designSystemDefaults);
@@ -89,33 +90,32 @@ describe("accentForeground", (): void => {
         accentColors.forEach(
             (accent: Swatch): void => {
                 neutralPalette.forEach(
-                    (swatch: Swatch): void => {
+                    (neutral: Swatch): void => {
                         const designSystem: DesignSystem = Object.assign(
                             {},
                             designSystemDefaults,
                             {
-                                backgroundColor: swatch,
-                                accentPaletteConfig: Object.assign(
-                                    {},
-                                    accentPaletteConfig,
-                                    { baseColor: parseColorHexRGB(swatch) }
+                                backgroundColor: neutral,
+                                accentBaseColor: accent,
+                                accentPalette: createColorPalette(
+                                    parseColorString(accent)
                                 ),
-                            }
+                            } as DesignSystem
                         );
 
                         expect(
-                            contrast(swatch, accentForegroundRest(designSystem))
+                            contrast(neutral, accentForegroundRest(designSystem))
                             // There are a few states that are impossible to meet contrast on
                         ).toBeGreaterThanOrEqual(4.47);
                         expect(
-                            contrast(swatch, accentForegroundHover(designSystem))
+                            contrast(neutral, accentForegroundHover(designSystem))
                             // There are a few states that are impossible to meet contrast on
-                        ).toBeGreaterThanOrEqual(3.7);
+                        ).toBeGreaterThanOrEqual(3.5);
                         expect(
-                            contrast(swatch, accentForegroundLargeRest(designSystem))
+                            contrast(neutral, accentForegroundLargeRest(designSystem))
                         ).toBeGreaterThanOrEqual(3);
                         expect(
-                            contrast(swatch, accentForegroundLargeHover(designSystem))
+                            contrast(neutral, accentForegroundLargeHover(designSystem))
                         ).toBeGreaterThanOrEqual(3);
                     }
                 );
