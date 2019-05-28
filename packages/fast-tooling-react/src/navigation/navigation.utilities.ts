@@ -65,7 +65,8 @@ function getNavigationFromDataLocations(
             data
         );
         const subSchema: any = get(schema, schemaLocation);
-        const dataType: NavigationDataType = getNavigationDataType(subSchema);
+        const dataType: NavigationDataType | null =
+            typeof subSchema !== "undefined" ? getNavigationDataType(subSchema) : null;
         const dataFromDataLocation: any = get(data, updatedRelativeDataLocation);
         let text: string;
 
