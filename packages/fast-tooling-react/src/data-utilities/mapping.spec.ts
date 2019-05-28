@@ -1,7 +1,11 @@
 import "jest";
 import { get } from "lodash-es";
 import { ChildOptionItem, mapDataToComponent } from "./";
-import { CodePreviewChildOption, mapDataToCodePreview } from "./mapping";
+import {
+    CodePreviewChildOption,
+    CodePreviewConfig,
+    mapDataToCodePreview,
+} from "./mapping";
 
 import ChildrenWithRenderProp from "./__tests__/components/children-plugin";
 import Children from "./__tests__/components/children";
@@ -275,186 +279,199 @@ describe("mapDataToComponent", () => {
 });
 
 describe("mapDataToCodePreview", () => {
-    const codePreviewChildOptions: CodePreviewChildOption[] = [
+    const textFieldJSXName: string = "TextField";
+    const childrenJSXName: string = "Children";
+    const badgeJSXName: string = "Badge";
+    const tabIndent: string = "    ";
+    const childOptions: CodePreviewChildOption[] = [
         {
-            name: "TextField",
+            name: textFieldJSXName,
             schema: textFieldSchema,
         },
         {
-            name: "Children",
+            name: childrenJSXName,
             schema: childrenSchema,
         },
         {
-            name: "Badge",
+            name: badgeJSXName,
             schema: badgeSchema,
         },
     ];
 
-    const simpleData: any = {
-        componentName: "SimpleComponent",
-        data: {
-            children: "foo",
-        },
-    };
-
-    const withPropertiesData: any = {
-        componentName: "WithPropertiesComponent",
-        data: {
-            property: "Property Value",
-        },
-    };
-
-    const withChildrenData: any = {
-        componentName: "WithChildrenComponent",
-        childOptions: codePreviewChildOptions,
-        data: {
-            children: [
-                {
-                    id: childrenSchema.id,
-                },
-            ],
-        },
-    };
-
-    const withChildObjectData: any = {
-        componentName: "WithChildObjectComponent",
-        childOptions: codePreviewChildOptions,
-        data: {
-            badge: {
+    test("should return a string", () => {
+        const mappedData: string = mapDataToCodePreview({
+            data: {
                 id: badgeSchema.id,
             },
-        },
-    };
+            childOptions,
+        });
 
-    const childrenwithObjectsData: any = {
-        componentName: "ChildrenwithObjectsComponent",
-        childOptions: codePreviewChildOptions,
-        data: {
-            children: [
-                {
-                    id: childrenSchema.id,
-                    props: {
-                        objectContainingNestedChildren: {},
-                        arrayContainingNestedChildren: [
-                            {
-                                id: textFieldSchema.id,
-                                props: {
-                                    tag: "span",
-                                    text: "FooBar",
-                                },
-                            },
-                            {
-                                id: textFieldSchema.id,
-                                props: {
-                                    tag: "span",
-                                    text: "FooBar",
-                                },
-                            },
-                        ],
+        expect(typeof mappedData).toBe("string");
+    });
+    test("should return a string containing a self closing JSX element", () => {
+        const mappedData: string = mapDataToCodePreview({
+            data: {
+                id: badgeSchema.id,
+            },
+            childOptions,
+        });
+
+        expect(mappedData).toEqual(`<${badgeJSXName} />`);
+    });
+    test("should return a string containing a self closing JSX element with props", () => {
+        const mappedData: string = mapDataToCodePreview({
+            data: {
+                id: badgeSchema.id,
+                props: {
+                    string: "Foo",
+                    boolean: true,
+                    number: 42,
+                },
+            },
+            childOptions,
+        });
+
+        expect(mappedData).toEqual(
+            `<${badgeJSXName}\n${tabIndent}string={"Foo"}\n${tabIndent}boolean={true}\n${tabIndent}number={42}\n/>`
+        );
+    });
+    test("should return a string containing a JSX element with a string children", () => {
+        const mappedData: string = mapDataToCodePreview({
+            data: {
+                id: badgeSchema.id,
+                props: {
+                    children: "foo",
+                },
+            },
+            childOptions,
+        });
+
+        expect(mappedData).toEqual(
+            `<${badgeJSXName}>\n${tabIndent}foo\n</${badgeJSXName}>`
+        );
+    });
+    test("should return a string containing a JSX element with multiple string children", () => {
+        const mappedData: string = mapDataToCodePreview({
+            data: {
+                id: badgeSchema.id,
+                props: {
+                    children: ["foo", "bar"],
+                },
+            },
+            childOptions,
+        });
+
+        expect(mappedData).toEqual(
+            `<${badgeJSXName}>\n${tabIndent}foobar\n</${badgeJSXName}>`
+        );
+    });
+    test("should return a string containing a JSX element with component children", () => {
+        const mappedData: string = mapDataToCodePreview({
+            data: {
+                id: childrenSchema.id,
+                props: {
+                    children: {
+                        id: badgeSchema.id,
+                        props: {
+                            children: "foo",
+                        },
                     },
                 },
-            ],
-        },
-    };
+            },
+            childOptions,
+        });
 
-    const childrenWithReactPropertiesData: any = {
-        componentName: "childrenWithReactPropertiesComponent",
-        childOptions: codePreviewChildOptions,
-        data: {
-            children: [
-                {
-                    id: badgeSchema.id,
-                    props: {
-                        childrenWithDefault: {
-                            id: textFieldSchema.id,
-                            props: {
-                                tag: "span",
-                                text: "FooBar",
+        expect(mappedData).toEqual(
+            `<${childrenJSXName}>\n${tabIndent}<${badgeJSXName}>\n${tabIndent +
+                tabIndent}foo\n${tabIndent}</${badgeJSXName}>\n</${childrenJSXName}>`
+        );
+    });
+    test("should return a string containing a JSX element with component children containing attributes", () => {
+        const mappedData: string = mapDataToCodePreview({
+            data: {
+                id: badgeSchema.id,
+                props: {
+                    string: "foo",
+                    children: {
+                        id: badgeSchema.id,
+                        props: {
+                            string: "bar",
+                            children: "bat",
+                        },
+                    },
+                },
+            },
+            childOptions,
+        });
+
+        expect(mappedData).toEqual(
+            `<${badgeJSXName}\n${tabIndent}string={"foo"}\n>\n${tabIndent}<${badgeJSXName}\n${tabIndent +
+                tabIndent}string={"bar"}\n${tabIndent}>\n${tabIndent +
+                tabIndent}bat\n${tabIndent}</${badgeJSXName}>\n</${badgeJSXName}>`
+        );
+    });
+    test("should return a string containing a JSX element with variables assigned to attributes", () => {
+        const mappedData: string = mapDataToCodePreview({
+            data: {
+                id: badgeSchema.id,
+                props: {
+                    object: {
+                        number: 42,
+                    },
+                },
+            },
+            childOptions,
+        });
+
+        expect(mappedData).toEqual(
+            `const object13 = {\n  "number": 42\n};\n\n<${badgeJSXName}\n${tabIndent}object={object13}\n/>`
+        );
+    });
+    test("should return a string containing nested JSX elements with variables assigned to attributes", () => {
+        const mappedData: string = mapDataToCodePreview({
+            data: {
+                id: badgeSchema.id,
+                props: {
+                    object: {
+                        number: 42,
+                    },
+                    children: {
+                        id: badgeSchema.id,
+                        props: {
+                            object: {
+                                number: 24,
                             },
                         },
                     },
                 },
-            ],
-        },
-    };
+            },
+            childOptions,
+        });
 
-    const objectsWithChildrenData: any = {
-        componentName: "objectsWithChildrenComponent",
-        childOptions: codePreviewChildOptions,
-        data: {
-            children: [
-                {
-                    id: childrenSchema.id,
-                    props: {
-                        arrayContainingNestedChildren: [
-                            {
-                                id: textFieldSchema.id,
-                                props: {
-                                    tag: "span",
-                                    text: "FooBar",
-                                    children: ["test"],
-                                },
-                            },
-                        ],
+        expect(mappedData).toEqual(
+            `const object14 = {\n  "number": 42\n};\n\nconst object15 = {\n  "number": 24\n};\n\n<${badgeJSXName}\n${tabIndent}object={object14}\n>\n${tabIndent}<${badgeJSXName}\n${tabIndent +
+                tabIndent}object={object15}\n${tabIndent}/>\n</${badgeJSXName}>`
+        );
+    });
+    test("should return a string containing JSX elements with variables assigned to attributes", () => {
+        const mappedData: string = mapDataToCodePreview({
+            data: {
+                id: childrenSchema.id,
+                props: {
+                    restrictedWithChildren: {
+                        id: childrenSchema.id,
+                        props: {
+                            restrictedWithChildren: "foo",
+                        },
                     },
                 },
-            ],
-        },
-    };
+            },
+            childOptions,
+        });
 
-    test("should return a string", () => {
-        const mappedData: any = mapDataToCodePreview(simpleData);
-
-        expect(typeof mappedData).toBe("string");
-    });
-
-    test("should return a string containing a a component name as a JSX tag", () => {
-        const mappedData: any = mapDataToCodePreview(simpleData);
-
-        expect(mappedData).toContain("<SimpleComponent>");
-        expect(mappedData).toContain("</SimpleComponent>");
-    });
-
-    test("should add a property on a JSX tag if a property has been passed", () => {
-        const mappedData: any = mapDataToCodePreview(withPropertiesData);
-
-        expect(mappedData).toContain('property="Property Value"');
-    });
-
-    test("should return a string containing children", () => {
-        const mappedData: any = mapDataToCodePreview(withChildrenData);
-
-        expect(mappedData).toContain("<Children />");
-    });
-
-    test("should create a const and assign to property if property is an object", () => {
-        const mappedData: any = mapDataToCodePreview(withChildObjectData);
-
-        expect(mappedData).toContain("const badge");
-        expect(mappedData).toContain("badge={badge}");
-    });
-
-    test("should create a const and assign to property if property on child is an object", () => {
-        const mappedData: any = mapDataToCodePreview(childrenwithObjectsData);
-
-        expect(mappedData).toContain(
-            "const childrenwithObjectsComponent0ObjectContainingNestedChildren"
+        expect(mappedData).toEqual(
+            `const restrictedWithChildren17 = (\n${tabIndent}foo\n);\n\nconst restrictedWithChildren16 = (\n${tabIndent}<${childrenJSXName}\n${tabIndent +
+                tabIndent}restrictedWithChildren={restrictedWithChildren17}\n${tabIndent}/>\n);\n\n<${childrenJSXName}\n${tabIndent}restrictedWithChildren={restrictedWithChildren16}\n/>`
         );
-        expect(mappedData).toContain(
-            "objectContainingNestedChildren={childrenwithObjectsComponent0ObjectContainingNestedChildren}"
-        );
-    });
-
-    test("should add a property on child JSX tag if a child property has been passed", () => {
-        const mappedData: any = mapDataToCodePreview(childrenWithReactPropertiesData);
-
-        expect(mappedData).toContain("childrenWithDefault={");
-    });
-
-    test("should add children when children are passed to child object", () => {
-        const mappedData: any = mapDataToCodePreview(objectsWithChildrenData);
-
-        expect(mappedData).toContain('"children": [');
-        expect(mappedData).toContain('"test');
     });
 });

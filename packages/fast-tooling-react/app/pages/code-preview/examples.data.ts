@@ -1,89 +1,86 @@
-import * as testConfigs from "../form/";
+import { CodePreviewChildOption } from "../../../src/data-utilities/mapping";
+
+import badgeSchema from "../../../src/__tests__/schemas/badge.schema.json";
+import childrenSchema from "../../../src/__tests__/schemas/children.schema.json";
+import textFieldSchema from "../../../src/__tests__/schemas/text-field.schema.json";
+
+const textFieldJSXName: string = "TextField";
+const childrenJSXName: string = "Children";
+const badgeJSXName: string = "Badge";
+
+export const childOptions: CodePreviewChildOption[] = [
+    {
+        name: textFieldJSXName,
+        schema: textFieldSchema,
+    },
+    {
+        name: childrenJSXName,
+        schema: childrenSchema,
+    },
+    {
+        name: badgeJSXName,
+        schema: badgeSchema,
+    },
+];
 
 const exampleData: any[] = [
     {
         exampleName: "Basic",
-        componentName: "MyComponent",
-        componentData: {
-            children: "foo",
-        },
-    },
-    {
-        exampleName: "Children",
-        componentName: "MyComponent",
-        componentData: {
-            children: [
-                {
-                    id: testConfigs.textField.schema.id,
-                    props: {
-                        tag: "span",
-                        text: "FooBar",
-                    },
-                },
-                "Text",
-                {
-                    id: testConfigs.children.schema.id,
-                },
-                {
-                    id: testConfigs.children.schema.id,
-                },
-            ],
-        },
-    },
-    {
-        exampleName: "Child Object",
-        componentName: "MyComponent",
-        componentData: {
-            children: [
-                {
-                    id: testConfigs.textField.schema.id,
-                    props: {
-                        tag: "span",
-                        text: "FooBar",
-                    },
-                },
-            ],
-            badge: {
-                id: testConfigs.badge.schema.id,
+        config: {
+            data: {
+                id: badgeSchema.id,
             },
+            childOptions,
         },
     },
     {
-        exampleName: "Children with Objects",
-        componentName: "MyComponent",
-        componentData: {
-            children: [
-                {
-                    id: testConfigs.textField.schema.id,
-                    props: {
-                        tag: "span",
-                        text: "FooBar",
+        exampleName: "Nested",
+        config: {
+            data: {
+                id: childrenSchema.id,
+                props: {
+                    children: {
+                        id: badgeSchema.id,
+                        props: {
+                            children: "foo",
+                        },
                     },
                 },
-                "Text",
-                {
-                    id: testConfigs.children.schema.id,
-                    props: {
-                        objectContainingNestedChildren: {},
-                        arrayContainingNestedChildren: [
-                            {
-                                id: testConfigs.textField.schema.id,
-                                props: {
-                                    tag: "span",
-                                    text: "FooBar",
-                                },
-                            },
-                            {
-                                id: testConfigs.textField.schema.id,
-                                props: {
-                                    tag: "span",
-                                    text: "FooBar",
-                                },
-                            },
-                        ],
+            },
+            childOptions,
+        },
+    },
+    {
+        exampleName: "Attributes",
+        config: {
+            data: {
+                id: badgeSchema.id,
+                props: {
+                    string: "foo",
+                    children: {
+                        id: badgeSchema.id,
+                        props: {
+                            string: "bar",
+                            children: "bat",
+                        },
                     },
                 },
-            ],
+            },
+            childOptions,
+        },
+    },
+    {
+        exampleName: "Variables",
+        config: {
+            data: {
+                id: badgeSchema.id,
+                props: {
+                    object: {
+                        number: 42,
+                    },
+                },
+            },
+            childOptions,
         },
     },
 ];
