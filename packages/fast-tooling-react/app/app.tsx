@@ -11,6 +11,7 @@ import UpdatePropsPage from "./pages/viewer/update-props-page";
 import UpdatePropsViewerContent from "./pages/viewer/update-props-page.viewer-content";
 import { CSSEditorTestPage } from "./pages/css-editor";
 import { FormTestPage } from "./pages/form";
+import { CodePreviewTestPage } from "./pages/code-preview/";
 import { FormAndNavigationTestPage } from "./pages/form-and-navigation";
 import { CSSPropertyEditorTestPage } from "./pages/css-property-editor";
 
@@ -79,11 +80,16 @@ class App extends React.Component<{}, {}> {
                         <Route exact={true} path={"/form"} component={FormTestPage} />
                         <Route
                             exact={true}
+                            path={"/code-preview"}
+                            component={CodePreviewTestPage}
+                        />
+                        <Route
+                            exact={true}
                             path={"/form-and-navigation"}
                             component={FormAndNavigationTestPage}
                         />
                         <Route exact={true} path={"/"}>
-                            <Redirect to={"/navigation"} />
+                            <Redirect to={"/code-preview"} />
                         </Route>
                     </Switch>
                 </div>
@@ -96,6 +102,9 @@ class App extends React.Component<{}, {}> {
             return (
                 <React.Fragment>
                     <ul>
+                        <li>
+                            <Link to="/code-preview">Code Preview</Link>
+                        </li>
                         <li>
                             <Link to="/css-editor">CSS Editor</Link>
                         </li>

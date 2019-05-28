@@ -1,11 +1,12 @@
 import "jest";
 import { get } from "lodash-es";
 import { ChildOptionItem, mapDataToComponent } from "./";
+import { CodePreviewChildOption, mapDataToCodePreview } from "./mapping";
 
 import ChildrenWithRenderProp from "./__tests__/components/children-plugin";
 import Children from "./__tests__/components/children";
 import TextField from "./__tests__/components/text-field";
-
+import badgeSchema from "../__tests__/schemas/badge.schema.json";
 import childrenSchema from "../__tests__/schemas/children.schema.json";
 import childrenWithPluginPropsSchema from "../__tests__/schemas/children-plugin.schema.json";
 import textFieldSchema from "../__tests__/schemas/text-field.schema.json";
@@ -270,5 +271,190 @@ describe("mapDataToComponent", () => {
         expect(typeof mappedData.boolean).toBe("string");
         expect(Array.isArray(mappedData.array)).toBe(true);
         expect(mappedData.render[0].props).toEqual({});
+    });
+});
+
+describe("mapDataToCodePreview", () => {
+    const codePreviewChildOptions: CodePreviewChildOption[] = [
+        {
+            name: "TextField",
+            schema: textFieldSchema,
+        },
+        {
+            name: "Children",
+            schema: childrenSchema,
+        },
+        {
+            name: "Badge",
+            schema: badgeSchema,
+        },
+    ];
+
+    const simpleData: any = {
+        componentName: "SimpleComponent",
+        data: {
+            children: "foo",
+        },
+    };
+
+    const withPropertiesData: any = {
+        componentName: "WithPropertiesComponent",
+        data: {
+            property: "Property Value",
+        },
+    };
+
+    const withChildrenData: any = {
+        componentName: "WithChildrenComponent",
+        childOptions: codePreviewChildOptions,
+        data: {
+            children: [
+                {
+                    id: childrenSchema.id,
+                },
+            ],
+        },
+    };
+
+    const withChildObjectData: any = {
+        componentName: "WithChildObjectComponent",
+        childOptions: codePreviewChildOptions,
+        data: {
+            badge: {
+                id: badgeSchema.id,
+            },
+        },
+    };
+
+    const childrenwithObjectsData: any = {
+        componentName: "ChildrenwithObjectsComponent",
+        childOptions: codePreviewChildOptions,
+        data: {
+            children: [
+                {
+                    id: childrenSchema.id,
+                    props: {
+                        objectContainingNestedChildren: {},
+                        arrayContainingNestedChildren: [
+                            {
+                                id: textFieldSchema.id,
+                                props: {
+                                    tag: "span",
+                                    text: "FooBar",
+                                },
+                            },
+                            {
+                                id: textFieldSchema.id,
+                                props: {
+                                    tag: "span",
+                                    text: "FooBar",
+                                },
+                            },
+                        ],
+                    },
+                },
+            ],
+        },
+    };
+
+    const childrenWithReactPropertiesData: any = {
+        componentName: "childrenWithReactPropertiesComponent",
+        childOptions: codePreviewChildOptions,
+        data: {
+            children: [
+                {
+                    id: badgeSchema.id,
+                    props: {
+                        childrenWithDefault: {
+                            id: textFieldSchema.id,
+                            props: {
+                                tag: "span",
+                                text: "FooBar",
+                            },
+                        },
+                    },
+                },
+            ],
+        },
+    };
+
+    const objectsWithChildrenData: any = {
+        componentName: "objectsWithChildrenComponent",
+        childOptions: codePreviewChildOptions,
+        data: {
+            children: [
+                {
+                    id: childrenSchema.id,
+                    props: {
+                        arrayContainingNestedChildren: [
+                            {
+                                id: textFieldSchema.id,
+                                props: {
+                                    tag: "span",
+                                    text: "FooBar",
+                                    children: ["test"],
+                                },
+                            },
+                        ],
+                    },
+                },
+            ],
+        },
+    };
+
+    test("should return a string", () => {
+        const mappedData: any = mapDataToCodePreview(simpleData);
+
+        expect(typeof mappedData).toBe("string");
+    });
+
+    test("should return a string containing a a component name as a JSX tag", () => {
+        const mappedData: any = mapDataToCodePreview(simpleData);
+
+        expect(mappedData).toContain("<SimpleComponent>");
+        expect(mappedData).toContain("</SimpleComponent>");
+    });
+
+    test("should add a property on a JSX tag if a property has been passed", () => {
+        const mappedData: any = mapDataToCodePreview(withPropertiesData);
+
+        expect(mappedData).toContain('property="Property Value"');
+    });
+
+    test("should return a string containing children", () => {
+        const mappedData: any = mapDataToCodePreview(withChildrenData);
+
+        expect(mappedData).toContain("<Children />");
+    });
+
+    test("should create a const and assign to property if property is an object", () => {
+        const mappedData: any = mapDataToCodePreview(withChildObjectData);
+
+        expect(mappedData).toContain("const badge");
+        expect(mappedData).toContain("badge={badge}");
+    });
+
+    test("should create a const and assign to property if property on child is an object", () => {
+        const mappedData: any = mapDataToCodePreview(childrenwithObjectsData);
+
+        expect(mappedData).toContain(
+            "const childrenwithObjectsComponent0ObjectContainingNestedChildren"
+        );
+        expect(mappedData).toContain(
+            "objectContainingNestedChildren={childrenwithObjectsComponent0ObjectContainingNestedChildren}"
+        );
+    });
+
+    test("should add a property on child JSX tag if a child property has been passed", () => {
+        const mappedData: any = mapDataToCodePreview(childrenWithReactPropertiesData);
+
+        expect(mappedData).toContain("childrenWithDefault={");
+    });
+
+    test("should add children when children are passed to child object", () => {
+        const mappedData: any = mapDataToCodePreview(objectsWithChildrenData);
+
+        expect(mappedData).toContain('"children": [');
+        expect(mappedData).toContain('"test');
     });
 });
