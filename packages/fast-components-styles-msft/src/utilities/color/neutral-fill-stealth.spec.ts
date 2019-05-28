@@ -49,6 +49,60 @@ describe("neutralFillStealth", (): void => {
         ).toBe(neutralPalette[4 - designSystemDefaults.neutralFillStealthHoverDelta]);
     });
 
+    // TODO: Needed for code coverage settings. Replace tests above if/when experimental mode is permanent
+    test("should switch from dark to light after 5 swatches in experimental mode", (): void => {
+        const experimentalDesignSystem: DesignSystem = Object.assign(
+            {},
+            designSystemDefaults,
+            {
+                neutralFillRestDelta: 104,
+                neutralFillHoverDelta: 103,
+                neutralFillActiveDelta: 105,
+                neutralFillStealthRestDelta: 100,
+                neutralFillStealthHoverDelta: 103,
+                neutralFillStealthActiveDelta: 105,
+            }
+        );
+        expect(neutralFillStealthHover(experimentalDesignSystem)).toBe(
+            neutralPalette[experimentalDesignSystem.neutralFillStealthHoverDelta - 100]
+        );
+        expect(
+            neutralFillStealthHover(() => neutralPalette[1])(experimentalDesignSystem)
+        ).toBe(
+            neutralPalette[
+                experimentalDesignSystem.neutralFillStealthHoverDelta - 100 + 1
+            ]
+        );
+        expect(
+            neutralFillStealthHover(() => neutralPalette[2])(experimentalDesignSystem)
+        ).toBe(
+            neutralPalette[
+                experimentalDesignSystem.neutralFillStealthHoverDelta - 100 + 2
+            ]
+        );
+        expect(
+            neutralFillStealthHover(() => neutralPalette[3])(experimentalDesignSystem)
+        ).toBe(
+            neutralPalette[
+                experimentalDesignSystem.neutralFillStealthHoverDelta - 100 + 3
+            ]
+        );
+        expect(
+            neutralFillStealthHover(() => neutralPalette[4])(experimentalDesignSystem)
+        ).toBe(
+            neutralPalette[
+                experimentalDesignSystem.neutralFillStealthHoverDelta - 100 + 4
+            ]
+        );
+        expect(
+            neutralFillStealthHover(() => neutralPalette[5])(experimentalDesignSystem)
+        ).toBe(
+            neutralPalette[
+                3 - (experimentalDesignSystem.neutralFillStealthHoverDelta - 100)
+            ]
+        );
+    });
+
     test("should return the same color from both implementations", (): void => {
         neutralPalette.concat(accentPalette).forEach(
             (swatch: Swatch): void => {

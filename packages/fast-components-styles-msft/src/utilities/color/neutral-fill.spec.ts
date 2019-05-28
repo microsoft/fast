@@ -55,6 +55,43 @@ describe("neutralFill", (): void => {
         );
     });
 
+    // TODO: Needed for code coverage settings. Replace tests above if/when experimental mode is permanent
+    test("should switch from dark to light after 5 swatches", (): void => {
+        const experimentalDesignSystem: DesignSystem = Object.assign(
+            {},
+            designSystemDefaults,
+            {
+                neutralFillRestDelta: 104,
+                neutralFillHoverDelta: 103,
+                neutralFillActiveDelta: 105,
+            }
+        );
+        expect(neutralFillRest(experimentalDesignSystem)).toBe(
+            neutralPalette[experimentalDesignSystem.neutralFillRestDelta - 100]
+        );
+        expect(neutralFillHover(experimentalDesignSystem)).toBe(
+            neutralPalette[experimentalDesignSystem.neutralFillHoverDelta - 100]
+        );
+        expect(neutralFillActive(experimentalDesignSystem)).toBe(
+            neutralPalette[experimentalDesignSystem.neutralFillActiveDelta - 100]
+        );
+        expect(neutralFillRest(() => neutralPalette[1])(experimentalDesignSystem)).toBe(
+            neutralPalette[experimentalDesignSystem.neutralFillRestDelta - 100 + 1]
+        );
+        expect(neutralFillRest(() => neutralPalette[2])(experimentalDesignSystem)).toBe(
+            neutralPalette[experimentalDesignSystem.neutralFillRestDelta - 100 + 2]
+        );
+        expect(neutralFillRest(() => neutralPalette[3])(experimentalDesignSystem)).toBe(
+            neutralPalette[experimentalDesignSystem.neutralFillRestDelta - 100 + 3]
+        );
+        expect(neutralFillRest(() => neutralPalette[4])(experimentalDesignSystem)).toBe(
+            neutralPalette[experimentalDesignSystem.neutralFillRestDelta - 100 + 4]
+        );
+        expect(neutralFillRest(() => neutralPalette[5])(experimentalDesignSystem)).toBe(
+            neutralPalette[1]
+        );
+    });
+
     test("should return the same color from both implementations", (): void => {
         neutralPalette.concat(accentPalette).forEach(
             (swatch: Swatch): void => {

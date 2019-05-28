@@ -25,6 +25,31 @@ describe("accentForeground", (): void => {
         expect(accentForegroundLargeActive({} as DesignSystem)).toBe(accentPalette[23]);
     });
 
+    // TODO: Needed for code coverage settings. Replace tests above if/when experimental mode is permanent
+    test("should opperate on experimental design system defaults", (): void => {
+        const experimentalDesignSystem: DesignSystem = Object.assign(
+            {},
+            designSystemDefaults,
+            {
+                accentForegroundRestDelta: 100,
+                accentForegroundHoverDelta: -102,
+                accentForegroundActiveDelta: 102,
+            }
+        );
+        expect(accentForegroundRest(experimentalDesignSystem)).toBe(accentPalette[33]);
+        expect(accentForegroundHover(experimentalDesignSystem)).toBe(accentPalette[31]);
+        expect(accentForegroundActive(experimentalDesignSystem)).toBe(accentPalette[35]);
+        expect(accentForegroundLargeRest(experimentalDesignSystem)).toBe(
+            accentPalette[31]
+        );
+        expect(accentForegroundLargeHover(experimentalDesignSystem)).toBe(
+            accentPalette[29]
+        );
+        expect(accentForegroundLargeActive(experimentalDesignSystem)).toBe(
+            accentPalette[33]
+        );
+    });
+
     test("should accept a function that resolves a background swatch", (): void => {
         expect(typeof accentForegroundRest(() => "#FFF")).toBe("function");
         expect(accentForegroundRest(() => "#000")({} as DesignSystem)).toBe(
