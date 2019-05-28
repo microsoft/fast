@@ -7,6 +7,5 @@ import {
 export interface ColorsDesignSystem extends DesignSystem {}
 export const colorsDesignSystem: ColorsDesignSystem = Object.assign(
     {},
-    DesignSystemDefaults,
-    {}
+    DesignSystemDefaults
 );
