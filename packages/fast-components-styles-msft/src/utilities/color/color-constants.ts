@@ -11,6 +11,7 @@ export const paletteConstants: Partial<ColorPaletteConfig> = {
 
 /**
  * Default palette sources
+ * @deprecated
  */
 export const neutralPaletteConfig: ColorPaletteConfig = {
     ...paletteConstants,
