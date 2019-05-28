@@ -6,8 +6,8 @@ import {
     TextFieldUnhandledProps as BaseTextFieldUnhandledProps,
 } from "@microsoft/fast-components-react-base";
 import {
-    TextFieldClassNameContract,
     ManagedClasses,
+    TextFieldClassNameContract,
 } from "@microsoft/fast-components-class-name-contracts-msft";
 
 export enum TextFieldAppearance {
