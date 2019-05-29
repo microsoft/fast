@@ -8,7 +8,8 @@
         "backgroundColor": {
             "title": "Background color",
             "type": "string",
-            "default": "#FFFFFF"
+            "default": "#FFFFFF",
+            "disabled": "true"
         },
         "contrast": {
             "title": "Contrast",
@@ -18,6 +19,7 @@
         "density": {
             "title": "Density",
             "type": "number",
+            "disabled": "true",
             "enum": [
                 -3,
                 -2,
@@ -51,7 +53,8 @@
                 "ltr",
                 "rtl"
             ],
-            "default": "ltr"
+            "default": "ltr",
+            "disabled": "true"
         },
         "fontWeight": {
             "title": "Font weight",

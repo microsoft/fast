@@ -19,7 +19,7 @@ import {
     PluginProps,
 } from "@microsoft/fast-tooling-react";
 import { applyScrollbarStyle } from "../../utilities";
-import { get, merge, uniqueId } from "lodash-es";
+import { get, merge, pick, uniqueId } from "lodash-es";
 import devSiteDesignSystemDefaults, { DevSiteDesignSystem } from "../design-system";
 import Shell, { ShellHeader, ShellInfoBar, ShellPaneCollapse, ShellSlot } from "../shell";
 import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
@@ -805,14 +805,6 @@ class Site extends React.Component<
         }
     };
 
-    private handleDesignSystemDataChange = (data: any): void => {
-        //console.log("In Dev site", data.density, get(this.props, "designSystemEditing.data.density"));
-        // this.setState({
-        //     designSystem: data,
-        // });
-        this.props.designSystemEditing.onChange(data);
-    };
-
     private handleToggleDevToolsView = (): void => {
         this.setState({
             devToolsView: !this.state.devToolsView,
@@ -967,23 +959,14 @@ class Site extends React.Component<
             onLocationUpdate: this.handleLocationUpdate,
             styleEditing: this.props.styleEditing,
             designSystemEditing: void 0,
-            designSystemOnChange: void 0,
         };
 
         if (!!this.props.designSystemEditing) {
-            console.log(get(this.props, "designSystemEditing.data.density"));
             props.designSystemEditing = {
                 schema: this.props.designSystemEditing.schema,
-                data: merge({}, this.state.designSystem, {
-                    density: get(this.props, "designSystemEditing.data.density"),
-                    backgroundColor: get(
-                        this.props,
-                        "designSystemEditing.data.backgroundColor"
-                    ),
-                }),
-                onChange: this.handleDesignSystemDataChange,
+                data: this.props.designSystemEditing.data,
+                designSystemOnChange: this.props.designSystemEditing.designSystemOnChange,
             };
-            props.designSystemOnChange = this.handleDesignSystemDataChange;
         }
 
         return props;
@@ -1016,16 +999,7 @@ class Site extends React.Component<
                             transparentBackground={
                                 this.state.componentBackgroundTransparent
                             }
-                            designSystem={merge({}, this.state.designSystem, {
-                                density: get(
-                                    this.props,
-                                    "designSystemEditing.data.density"
-                                ),
-                                backgroundColor: get(
-                                    this.props,
-                                    "designSystemEditing.data.backgroundColor"
-                                ),
-                            })}
+                            designSystem={this.state.designSystem}
                             active={index === this.state.activeComponentIndex}
                             view={this.state.componentView}
                         >

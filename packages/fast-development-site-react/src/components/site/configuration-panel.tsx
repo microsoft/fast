@@ -14,7 +14,7 @@ import manageJss, {
 export interface DesignSystemEditingConfig {
     data: any;
     schema: any;
-    onChange?: (data: any) => void;
+    designSystemOnChange?: (data: any) => void;
 }
 
 export interface ConfigurationPanelProps {
@@ -23,7 +23,6 @@ export interface ConfigurationPanelProps {
     data: any;
     dataLocation: string;
     onChange: any;
-    designSystemOnChange: (data: any) => void;
     onLocationUpdate: (dataLocation: string) => void;
     styleEditing?: boolean;
     designSystemEditing?: DesignSystemEditingConfig;
@@ -152,7 +151,7 @@ class ConfigurationPanel extends React.Component<
                         jssStyleSheet={{ form: { height: "unset" } }}
                         schema={this.props.designSystemEditing.schema}
                         data={this.props.designSystemEditing.data}
-                        onChange={this.props.designSystemOnChange}
+                        onChange={this.props.designSystemEditing.designSystemOnChange}
                     />
                 </React.Fragment>
             );

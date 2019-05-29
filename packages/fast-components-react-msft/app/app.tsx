@@ -99,6 +99,7 @@ export interface AppState extends ColorConfig {
     theme: ThemeName;
     direction: Direction;
     density: DensityOffset;
+    designSystem: DesignSystem;
 }
 
 export default class App extends React.Component<{}, AppState> {
@@ -123,6 +124,7 @@ export default class App extends React.Component<{}, AppState> {
             accentColor: accent,
             accentPalette: this.createColorPalette(parseColor(accent)),
             neutralPalette: this.createColorPalette(new ColorRGBA64(0.5, 0.5, 0.5, 1)),
+            designSystem: DesignSystemDefaults,
             direction: Direction.ltr,
             backgroundColor: DesignSystemDefaults.backgroundColor,
             theme: ThemeName.light,
@@ -142,14 +144,9 @@ export default class App extends React.Component<{}, AppState> {
                 showTransparencyToggle={true}
                 styleEditing={true}
                 designSystemEditing={{
-                    data: clone(
-                        merge({}, DesignSystemDefaults, {
-                            density: this.state.density,
-                            backgroundColor: this.state.backgroundColor,
-                        })
-                    ),
+                    data: this.getDesignSystem(),
                     schema: designSystemSchema,
-                    onChange: this.handleDesignSystemUpdate,
+                    designSystemOnChange: this.handleDesignSystemUpdate,
                 }}
             >
                 <SiteTitle slot={"title"}>
@@ -195,24 +192,24 @@ export default class App extends React.Component<{}, AppState> {
         );
     }
 
+    private getDesignSystem(): DesignSystem {
+        return clone(
+            merge({}, this.state.designSystem, {
+                accentPalette: this.state.accentPalette,
+                neutralPalette: this.state.neutralPalette,
+                direction: this.state.direction,
+                backgroundColor: this.state.backgroundColor,
+                density: this.state.density,
+            })
+        );
+    }
+
     private getThemeById(id: ThemeName): Theme {
         return this.themes.find(
             (theme: Theme): boolean => {
                 return theme.id === id;
             }
         );
-    }
-
-    private generateDesignSystem(): DesignSystem {
-        const designSystem: Partial<DesignSystem> = {
-            accentPalette: this.state.accentPalette,
-            neutralPalette: this.state.neutralPalette,
-            direction: this.state.direction,
-            backgroundColor: this.state.backgroundColor,
-            density: this.state.density,
-        };
-
-        return Object.assign({}, DesignSystemDefaults, designSystem);
     }
 
     private handleUpdateDirection = (direction: Direction): void => {
@@ -242,13 +239,13 @@ export default class App extends React.Component<{}, AppState> {
         }
     };
 
-    private handleDesignSystemUpdate(data: any): void {
-        if (data.density !== this.state.density) {
+    private handleDesignSystemUpdate = (data: any): void => {
+        if (data !== this.state.designSystem) {
             this.setState({
-                density: data.density,
+                designSystem: data,
             });
         }
-    }
+    };
 
     /**
      * Handles any changes made by the user to the color picker inputs
