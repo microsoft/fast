@@ -6,14 +6,13 @@ import { contrast, Swatch, SwatchResolver } from "./common";
 import { clamp, inRange } from "lodash-es";
 
 /**
- * Returns a swatch from the middle of the accent palette
+ * Returns the design system accentBaseColor or the swatch from the middle of the accent palette if not configured.
  */
 export const accentSwatch: SwatchResolver = (designSystem: DesignSystem): Swatch => {
+    const accent: Swatch = accentBaseColor(designSystem);
     const accentPalette: Palette | null = palette(PaletteType.accent)(designSystem);
 
-    return accentPalette === null
-        ? accentBaseColor(designSystem)
-        : accentPalette[Math.floor(accentPalette.length / 2)];
+    return accent === null ? accentPalette[Math.floor(accentPalette.length / 2)] : accent;
 };
 
 /**
