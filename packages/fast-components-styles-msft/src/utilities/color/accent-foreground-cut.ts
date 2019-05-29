@@ -1,14 +1,7 @@
 import { black, white } from "./color-constants";
 import { DesignSystem } from "../../design-system";
-import { accentSwatch } from "./accent";
-import {
-    ColorRecipe,
-    colorRecipeFactory,
-    contrast,
-    Swatch,
-    SwatchRecipe,
-    SwatchResolver,
-} from "./common";
+import { contrast, Swatch, SwatchRecipe, SwatchResolver } from "./common";
+import { accentBaseColor } from "../design-system";
 
 /**
  * Function to derive accentForegroundCut from an input background and target contrast ratio
@@ -33,7 +26,7 @@ function accentForegroundCutFactory(targetContrast: number): SwatchRecipe {
             ? (designSystem: DesignSystem): Swatch => {
                   return accentForegroundCutAlgorithm(arg(designSystem), targetContrast);
               }
-            : accentForegroundCutAlgorithm(accentSwatch(arg), targetContrast);
+            : accentForegroundCutAlgorithm(accentBaseColor(arg), targetContrast);
     }
 
     return accentForegroundCutInternal;
