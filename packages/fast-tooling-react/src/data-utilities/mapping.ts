@@ -325,6 +325,10 @@ export function mapDataToCodePreview(codePreviewConfig: MapCodePreviewConfig): s
     return codePreview.render();
 }
 
+/**
+ * A class which creates a code preview when initialized
+ * and provides methods for retrieving that preview
+ */
 class ComponentCodePreview {
     /**
      * Tab spaces
@@ -332,7 +336,8 @@ class ComponentCodePreview {
     private tabIndent: string = "    ";
 
     /**
-     * The variables as a string
+     * The component variables, used for data too complex for
+     * inline JSX attributes
      */
     private variables: string[];
 
@@ -373,7 +378,7 @@ class ComponentCodePreview {
     private getComponentCodePreview(
         codePreviewConfig: ComponentCodePreviewConfig
     ): string {
-        const component: CodePreviewChildOption = this.getCodePreviewChildOption(
+        const component: CodePreviewChildOption = this.getChildOptionById(
             get(codePreviewConfig, "data.id"),
             this.childOptions
         );
@@ -465,7 +470,7 @@ class ComponentCodePreview {
                 ) {
                     return accumulatedChildrenValue + childrenValue;
                 } else {
-                    const component: CodePreviewChildOption = this.getCodePreviewChildOption(
+                    const component: CodePreviewChildOption = this.getChildOptionById(
                         get(value, "id"),
                         this.childOptions
                     );
@@ -532,7 +537,10 @@ class ComponentCodePreview {
         }
     }
 
-    private getCodePreviewChildOption(
+    /**
+     * Get the component by schema id
+     */
+    private getChildOptionById(
         id: string,
         childOptions: CodePreviewChildOption[]
     ): CodePreviewChildOption {
