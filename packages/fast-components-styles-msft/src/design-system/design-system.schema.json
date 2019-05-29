@@ -11,6 +11,12 @@
             "default": "#FFFFFF",
             "disabled": "true"
         },
+        "accentBaseColor": {
+            "title": "Accent color",
+            "type": "string",
+            "default": "#0078D4",
+            "disabled": "true"
+        },
         "contrast": {
             "title": "Contrast",
             "type": "number",

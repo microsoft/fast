@@ -121,7 +121,7 @@ export default class App extends React.Component<{}, AppState> {
         super(props);
 
         this.state = {
-            accentColor: accent,
+            accentColor: DesignSystemDefaults.accentBaseColor,
             accentPalette: this.createColorPalette(parseColor(accent)),
             neutralPalette: this.createColorPalette(new ColorRGBA64(0.5, 0.5, 0.5, 1)),
             designSystem: DesignSystemDefaults,
@@ -196,6 +196,7 @@ export default class App extends React.Component<{}, AppState> {
         return clone(
             merge({}, this.state.designSystem, {
                 accentPalette: this.state.accentPalette,
+                accentBaseColor: this.state.accentColor,
                 neutralPalette: this.state.neutralPalette,
                 direction: this.state.direction,
                 backgroundColor: this.state.backgroundColor,
