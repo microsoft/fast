@@ -19,7 +19,7 @@ import {
     PluginProps,
 } from "@microsoft/fast-tooling-react";
 import { applyScrollbarStyle } from "../../utilities";
-import { get, merge, pick, uniqueId } from "lodash-es";
+import { get, uniqueId } from "lodash-es";
 import devSiteDesignSystemDefaults, { DevSiteDesignSystem } from "../design-system";
 import Shell, { ShellHeader, ShellInfoBar, ShellPaneCollapse, ShellSlot } from "../shell";
 import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
@@ -53,7 +53,6 @@ import {
     RowResizeDirection,
 } from "@microsoft/fast-layouts-react";
 import { Direction } from "@microsoft/fast-web-utilities";
-import { continueStatement } from "@babel/types";
 
 export const localeDirectionMapping: { [key: string]: Direction } = {
     en: Direction.ltr,
