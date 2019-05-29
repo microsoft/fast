@@ -171,18 +171,18 @@ const designSystemDefaults: DesignSystem = {
      * Recipe Deltas
      */
     accentFillRestDelta: 0,
-    accentFillHoverDelta: 2,
-    accentFillActiveDelta: 4,
+    accentFillHoverDelta: -2,
+    accentFillActiveDelta: 2,
     accentFillSelectedDelta: 12,
 
     accentForegroundRestDelta: 0,
-    accentForegroundHoverDelta: 4,
-    accentForegroundActiveDelta: 8,
+    accentForegroundHoverDelta: -2,
+    accentForegroundActiveDelta: 2,
 
     neutralFillRestDelta: 4,
     neutralFillHoverDelta: 3,
-    neutralFillActiveDelta: 2,
-    neutralFillSelectedDelta: 8,
+    neutralFillActiveDelta: 5,
+    neutralFillSelectedDelta: 4,
 
     neutralFillInputRestDelta: 4,
     neutralFillInputHoverDelta: 4,
@@ -191,8 +191,8 @@ const designSystemDefaults: DesignSystem = {
 
     neutralFillStealthRestDelta: 0,
     neutralFillStealthHoverDelta: 3,
-    neutralFillStealthActiveDelta: 2,
-    neutralFillStealthSelectedDelta: 8,
+    neutralFillStealthActiveDelta: 5,
+    neutralFillStealthSelectedDelta: 4,
 
     neutralFillCardDelta: 2,
 
@@ -202,9 +202,9 @@ const designSystemDefaults: DesignSystem = {
     neutralForegroundHoverDelta: 8,
     neutralForegroundActiveDelta: 16,
 
-    neutralOutlineRestDelta: 12,
-    neutralOutlineHoverDelta: 24,
-    neutralOutlineActiveDelta: 18,
+    neutralOutlineRestDelta: 18,
+    neutralOutlineHoverDelta: 12,
+    neutralOutlineActiveDelta: 24,
 };
 
 /**

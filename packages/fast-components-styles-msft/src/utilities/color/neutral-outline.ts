@@ -10,7 +10,6 @@ import {
 import {
     ColorRecipe,
     colorRecipeFactory,
-    Swatch,
     SwatchFamily,
     SwatchFamilyResolver,
     swatchFamilyToSwatchRecipeFactory,
@@ -24,14 +23,6 @@ import {
     neutralOutlineRestDelta,
 } from "../design-system";
 
-////////////////////
-// Any portion of the code referencing newRecipeOffset is considered experimental
-// and will be incorporated permanently or removed upon review. DO NOT use values
-// in this range unless you are temporarily evaluation this feature as they will
-// no longer produce predictable results once removed.
-////////////////////
-const newRecipeOffset: number = 100;
-
 const neutralOutlineAlgorithm: SwatchFamilyResolver = (
     designSystem: DesignSystem
 ): SwatchFamily => {
@@ -42,35 +33,14 @@ const neutralOutlineAlgorithm: SwatchFamilyResolver = (
     )(designSystem);
     const direction: 1 | -1 = isDarkMode(designSystem) ? -1 : 1;
 
-    let restDelta: number = neutralOutlineRestDelta(designSystem);
-
-    if (restDelta >= newRecipeOffset) {
-        restDelta -= newRecipeOffset;
-        const hoverDelta: number =
-            neutralOutlineHoverDelta(designSystem) - newRecipeOffset;
-        const activeDelta: number =
-            neutralOutlineActiveDelta(designSystem) - newRecipeOffset;
-        const restIndex: number = backgroundIndex + direction * restDelta;
-        return {
-            rest: getSwatch(restIndex, neutralPalette),
-            hover: getSwatch(restIndex + hoverDelta - restDelta, neutralPalette),
-            active: getSwatch(restIndex + activeDelta - restDelta, neutralPalette),
-        };
-    }
-
+    const restDelta: number = neutralOutlineRestDelta(designSystem);
+    const hoverDelta: number = neutralOutlineHoverDelta(designSystem);
+    const activeDelta: number = neutralOutlineActiveDelta(designSystem);
+    const restIndex: number = backgroundIndex + direction * restDelta;
     return {
-        rest: getSwatch(
-            backgroundIndex + direction * neutralOutlineRestDelta(designSystem),
-            neutralPalette
-        ),
-        hover: getSwatch(
-            backgroundIndex + direction * neutralOutlineHoverDelta(designSystem),
-            neutralPalette
-        ),
-        active: getSwatch(
-            backgroundIndex + direction * neutralOutlineActiveDelta(designSystem),
-            neutralPalette
-        ),
+        rest: getSwatch(restIndex, neutralPalette),
+        hover: getSwatch(restIndex + hoverDelta - restDelta, neutralPalette),
+        active: getSwatch(restIndex + activeDelta - restDelta, neutralPalette),
     };
 };
 
