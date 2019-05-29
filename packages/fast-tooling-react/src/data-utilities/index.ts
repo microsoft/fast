@@ -1,6 +1,6 @@
 import { ChildOptionItem } from "./types";
 import { getDataFromSchema } from "./generate";
-import { mapDataToComponent, mapDataToCodePreview } from "./mapping";
+import { mapDataToCodePreview, mapDataToComponent } from "./mapping";
 import { Plugin, PluginProps } from "./plugin";
 
 export {
