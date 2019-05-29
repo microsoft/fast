@@ -2,6 +2,7 @@ import React from "react";
 import Adapter from "enzyme-adapter-react-16";
 import { configure, mount, shallow } from "enzyme";
 import TextAction, {
+    TextActionAppearance,
     TextActionButtonPosition,
     TextActionHandledProps,
     TextActionProps,
@@ -13,6 +14,8 @@ import { DisplayNamePrefix } from "../utilities";
 
 const managedClasses: TextActionClassNameContract = {
     textAction: "text-action",
+    textAction__filled: "text-action--filled",
+    textAction__outline: "text-action--outline",
     textAction__disabled: "text-action--disabled",
     textAction__focus: "text-action--focus",
     textAction_button: "text-action-button",
@@ -35,7 +38,35 @@ describe("text-action", (): void => {
     test("should not throw if managedClasses are not provided", () => {
         expect(() => {
             shallow(<TextAction />);
+            shallow(<TextAction appearance={TextActionAppearance.filled} />);
+            shallow(<TextAction appearance={TextActionAppearance.outline} />);
         }).not.toThrow();
+    });
+
+    test("should apply a 'filled' html class when appearance is filled", () => {
+        const rendered: any = mount(
+            <TextAction
+                appearance={TextActionAppearance.filled}
+                managedClasses={managedClasses}
+            />
+        );
+
+        expect(rendered.find("div").prop("className")).toContain(
+            managedClasses.textAction__filled
+        );
+    });
+
+    test("should apply an 'outline' html class when appearance is outline", () => {
+        const rendered: any = mount(
+            <TextAction
+                appearance={TextActionAppearance.outline}
+                managedClasses={managedClasses}
+            />
+        );
+
+        expect(rendered.find("div").prop("className")).toContain(
+            managedClasses.textAction__outline
+        );
     });
 
     test("should return an object that includes all valid props which are not enumerated as handledProps", () => {
