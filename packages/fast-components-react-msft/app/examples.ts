@@ -1,3 +1,6 @@
+import AccentButtonExamples from "../src/accent-button/examples.data";
+export { AccentButtonExamples };
+
 import ActionToggleExamples from "../src/action-toggle/examples.data";
 export { ActionToggleExamples };
 

@@ -60,6 +60,8 @@ const accent: string = "#0078D4";
 const formPlugins: Array<Plugin<PluginProps>> = [
     new AdditionalPropsPlugin({
         id: [
+            "@microsoft/fast-components-react-msft/accent-button/beforeContent",
+            "@microsoft/fast-components-react-msft/accent-button/afterContent",
             "@microsoft/fast-components-react-msft/action-toggle/selectedGlyph",
             "@microsoft/fast-components-react-msft/action-toggle/unselectedGlyph",
             "@microsoft/fast-components-react-msft/action-trigger/glyph",

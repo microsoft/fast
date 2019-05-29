@@ -1,6 +1,6 @@
-/**
- * Export button styles
- */
+import AccentButtonStyles from "./accent-button";
+export { AccentButtonStyles };
+
 import ActionToggleStyles from "./action-toggle";
 export { ActionToggleStyles };
 export * from "./action-toggle";
