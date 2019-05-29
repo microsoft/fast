@@ -10,20 +10,6 @@ export const backgroundColor: DesignSystemResolver<string> = getDesignSystemValu
 );
 
 /**
- * Retrieve the base neutral color from the design system
- */
-export const neutralBaseColor: DesignSystemResolver<string> = getDesignSystemValue(
-    "neutralBaseColor"
-);
-
-/**
- * Retrieve the base accent color from the design system
- */
-export const accentBaseColor: DesignSystemResolver<string> = getDesignSystemValue(
-    "accentBaseColor"
-);
-
-/**
  * Retrieve the backgroundColor when invoked with a DesignSystem
  */
 export const cornerRadius: DesignSystemResolver<number> = getDesignSystemValue(
@@ -38,7 +24,7 @@ export const neutralPalette: DesignSystemResolver<Palette> = getDesignSystemValu
 );
 
 /**
- * Retrieve the accent palette from the design system
+ * Retrieve the accent  palette from the design system
  */
 export const accentPalette: DesignSystemResolver<Palette> = getDesignSystemValue(
     "accentPalette"

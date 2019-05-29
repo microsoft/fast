@@ -1,5 +1,10 @@
 import { accentSwatch } from "./accent";
-import designSystemDefaults, { DesignSystem } from "../../design-system";
+import designSystemDefaults, {
+    DesignSystem,
+    ensureDesignSystemDefaults,
+} from "../../design-system";
+import { accentPaletteConfig } from "./color-constants";
+import { parseColorHexRGB } from "@microsoft/fast-colors";
 
 describe("accentSwatch", (): void => {
     test("should return #0078D4 by default", (): void => {
