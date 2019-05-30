@@ -10,8 +10,7 @@ import {
 import { ColorRGBA64, parseColorHexRGB } from "@microsoft/fast-colors";
 import { AccentColors } from "./colors";
 
-/* tslint:disable-next-line */
-export interface ColorsDesignSystem extends DesignSystem {}
+export type ColorsDesignSystem = DesignSystem;
 export const colorsDesignSystem: ColorsDesignSystem = Object.assign(
     {},
     DesignSystemDefaults,
