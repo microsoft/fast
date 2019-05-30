@@ -11,13 +11,16 @@ import {
     mergeDesignSystem,
 } from "@microsoft/fast-jss-manager";
 
-export type DesignSystem<T> = T extends { [key: string]: unknown } ? T : never;
+/**
+ * @deprecated
+ */
+export type DesignSystem<T> = T;
 /**
  * Describes the props that the DesignSystemProvider uses. It accepts a single prop "designSystem"
  * that gets exposed to all downstream components of the DesignSystemProvider
  */
 export interface DesignSystemProviderProps<T> {
-    designSystem: DesignSystem<T>;
+    designSystem: T;
     designSystemMergingFunction?: DesignSystemMergingFunction<T>;
 }
 
