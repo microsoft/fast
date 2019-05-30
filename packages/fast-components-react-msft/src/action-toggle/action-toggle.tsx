@@ -1,5 +1,5 @@
 import React from "react";
-import { get } from "lodash-es";
+import { get, isNil } from "lodash-es";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import { Button, ButtonAppearance } from "../button";
 import {
@@ -9,7 +9,7 @@ import {
     ActionToggleUnhandledProps,
 } from "./action-toggle.props";
 import { actionToggleButtonOverrides } from "@microsoft/fast-components-styles-msft";
-import { DisplayNamePrefix, isNullOrUndefined } from "../utilities";
+import { DisplayNamePrefix } from "../utilities";
 
 export interface ActionToggleState {
     selected: boolean;
@@ -184,10 +184,8 @@ class ActionToggle extends Foundation<
      */
     private hasGlyphAndContent(): boolean {
         return this.state.selected
-            ? !isNullOrUndefined(this.props.selectedGlyph) &&
-                  !isNullOrUndefined(this.props.selectedContent)
-            : !isNullOrUndefined(this.props.unselectedGlyph) &&
-                  !isNullOrUndefined(this.props.unselectedContent);
+            ? !isNil(this.props.selectedGlyph) && !isNil(this.props.selectedContent)
+            : !isNil(this.props.unselectedGlyph) && !isNil(this.props.unselectedContent);
     }
 
     /**

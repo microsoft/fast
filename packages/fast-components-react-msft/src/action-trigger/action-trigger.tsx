@@ -1,5 +1,5 @@
 import React from "react";
-import { get } from "lodash-es";
+import { get, isNil } from "lodash-es";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import { Button, ButtonAppearance } from "../button";
 import {
@@ -8,7 +8,7 @@ import {
     ActionTriggerUnhandledProps,
 } from "./action-trigger.props";
 import { actionTriggerButtonOverrides } from "@microsoft/fast-components-styles-msft";
-import { DisplayNamePrefix, isNullOrUndefined } from "../utilities";
+import { DisplayNamePrefix } from "../utilities";
 
 class ActionTrigger extends Foundation<
     ActionTriggerHandledProps,
@@ -87,10 +87,7 @@ class ActionTrigger extends Foundation<
      * Checks to see if action trigger is displaying both glyph and content or not
      */
     private hasGlyphAndContent(): boolean {
-        return (
-            !isNullOrUndefined(this.props.glyph) &&
-            !isNullOrUndefined(this.props.children)
-        );
+        return !isNil(this.props.glyph) && !isNil(this.props.children);
     }
 }
 
