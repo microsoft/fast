@@ -1,6 +1,8 @@
 import { Action, createStore } from "redux";
 import { ColorsDesignSystem, colorsDesignSystem } from "./design-system";
 import { ColorRGBA64 } from "@microsoft/fast-colors";
+import { merge } from "lodash-es";
+import { Color } from "csstype";
 import { createColorPalette } from "@microsoft/fast-components-styles-msft";
 
 export enum ComponentTypes {
@@ -36,15 +38,12 @@ export interface Action {
  * Re-assign a palette value based on an input color reference
  */
 function setPalette(
-    palette: "accent" | "neutral"
+    palette: "accentPalette" | "neutralPalette"
 ): (state: AppState, value: ColorRGBA64) => AppState {
-    const paletteKey: string = palette + "Palette";
-    const baseColorKey: string = palette + "BaseColor";
     return (state: AppState, value: ColorRGBA64): AppState => {
         const designSystem: ColorsDesignSystem = {
             ...state.designSystem,
-            [paletteKey]: createColorPalette(value),
-            [baseColorKey]: value.toStringHexRGB(),
+            [palette]: createColorPalette(value),
         };
 
         return {
@@ -54,8 +53,8 @@ function setPalette(
     };
 }
 
-const setAccentPalette: ReturnType<typeof setPalette> = setPalette("accent");
-const setNeutralPalette: ReturnType<typeof setPalette> = setPalette("neutral");
+const setAccentPalette: ReturnType<typeof setPalette> = setPalette("accentPalette");
+const setNeutralPalette: ReturnType<typeof setPalette> = setPalette("neutralPalette");
 
 function rootReducer(state: AppState, action: any): AppState {
     switch (action.type) {

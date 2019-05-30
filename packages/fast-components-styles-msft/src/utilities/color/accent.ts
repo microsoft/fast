@@ -1,6 +1,6 @@
 import { DesignSystem } from "../../design-system";
-import { accentBaseColor } from "../design-system";
 import { Palette, palette, PaletteType } from "./palette";
+import { accent } from "./color-constants";
 import { findClosestSwatchIndex, isDarkMode } from "./palette";
 import { contrast, Swatch, SwatchResolver } from "./common";
 import { clamp, inRange } from "lodash-es";
@@ -12,7 +12,7 @@ export const accentSwatch: SwatchResolver = (designSystem: DesignSystem): Swatch
     const accentPalette: Palette | null = palette(PaletteType.accent)(designSystem);
 
     return accentPalette === null
-        ? accentBaseColor(designSystem)
+        ? accent
         : accentPalette[Math.floor(accentPalette.length / 2)];
 };
 
