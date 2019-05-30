@@ -9,8 +9,10 @@ import {
     swatchByMode,
 } from "./palette";
 import designSystemDefaults, { DesignSystem } from "../../design-system";
+import { accent } from "./color-constants";
 import { Swatch } from "./common";
-import { accentBaseColor, neutralPalette } from "../design-system";
+import { neutralForeground } from "./neutral-foreground";
+import { neutralPalette } from "../design-system";
 
 describe("palette", (): void => {
     test("should return a function", (): void => {
@@ -59,11 +61,7 @@ describe("palette", (): void => {
 describe("findSwatchIndex", (): void => {
     test("should impelment design-system defaults", (): void => {
         expect(findSwatchIndex(PaletteType.neutral, "#FFF")({} as DesignSystem)).toBe(0);
-        expect(
-            findSwatchIndex(PaletteType.accent, accentBaseColor({} as DesignSystem))(
-                {} as DesignSystem
-            )
-        ).toBe(31);
+        expect(findSwatchIndex(PaletteType.accent, accent)({} as DesignSystem)).toBe(31);
     });
 
     test("should return -1 if the color is not found", (): void => {
@@ -102,11 +100,9 @@ describe("findSwatchIndex", (): void => {
     });
 
     test("should find accent", (): void => {
-        expect(
-            findSwatchIndex(PaletteType.accent, accentBaseColor(designSystemDefaults))(
-                designSystemDefaults
-            )
-        ).toBe(31);
+        expect(findSwatchIndex(PaletteType.accent, accent)(designSystemDefaults)).toBe(
+            31
+        );
         expect(
             findSwatchIndex(PaletteType.accent, "rgb(0, 120, 212)")(designSystemDefaults)
         ).toBe(31);

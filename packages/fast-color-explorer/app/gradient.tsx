@@ -10,24 +10,9 @@ const styles: any = (designSystem: ColorsDesignSystem): any => {
             width: "100%",
         },
         gradient_item: {
-            display: "flex",
+            display: "block",
             flex: "1",
             height: "100%",
-        },
-        gradient_item__marked: {
-            position: "relative",
-            "&::before": {
-                width: "6px",
-                height: "6px",
-                margin: "0 auto",
-                content: "''",
-                opacity: "0.5",
-                position: "relative",
-                border: "solid 1px white",
-                borderRadius: "50%",
-                display: "block",
-                alignSelf: "center",
-            },
         },
     };
 };
@@ -35,7 +20,6 @@ const styles: any = (designSystem: ColorsDesignSystem): any => {
 interface GradientProps {
     managedClasses: any;
     colors: string[];
-    markedColor?: string;
     createAnchors?: boolean;
     scrollToItem?: (index: number, align: string) => void;
 }
@@ -54,21 +38,10 @@ class BaseGradient extends React.Component<GradientProps, {}> {
 
     private createItems(): React.ReactNode {
         return this.props.colors.map((item: string, index: number) => {
-            let classNames: string = this.props.managedClasses.gradient_item;
-
-            if (
-                this.props.markedColor !== undefined &&
-                item.toUpperCase() === this.props.markedColor.toUpperCase()
-            ) {
-                classNames = `${classNames} ${
-                    this.props.managedClasses.gradient_item__marked
-                }`;
-            }
-
             return (
                 <a
                     key={index}
-                    className={classNames}
+                    className={this.props.managedClasses.gradient_item}
                     style={{
                         background: this.props.colors[index],
                     }}
