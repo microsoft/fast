@@ -1,14 +1,8 @@
+import { ComponentStyles, ManagedClasses } from "@microsoft/fast-jss-manager";
+import { mergeWith } from "lodash-es";
 import React from "react";
-import { jss, stylesheetManager, stylesheetRegistry } from "./jss";
-import SheetManager from "./sheet-manager";
-import { DesignSystem } from "./design-system-provider";
-import {
-    ComponentStyles,
-    ComponentStyleSheet,
-    ManagedClasses,
-} from "@microsoft/fast-jss-manager";
-import { isEqual, mergeWith } from "lodash-es";
 import { designSystemContext } from "./context";
+import SheetManager from "./sheet-manager";
 
 /**
  * Describes an interface for adjusting a styled component
