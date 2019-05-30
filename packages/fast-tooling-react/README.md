@@ -13,6 +13,7 @@ The tooling available in FAST Tooling React can be used together to create UI fo
     - [Mapping data to a React component](#mapping-data-to-a-react-component)
         - [Child options](#child-options)
         - [Using plugins](#using-plugins)
+    - [Mapping data to a code preview](#mapping-data-to-a-code-preview)
     - [Generating data from a JSON schema](#generating-data-from-a-json-schema)
 - [Navigation](#navigation)
 - [Viewer](#viewer)
@@ -234,6 +235,31 @@ const plugins = [
 ];
 
 mapDataToComponent(schema, data, childOptions, plugins);
+```
+
+### Mapping data to a code preview
+
+The `mapDataToCodePreview` function can be used to map data to a code preview, a string which represents the data in JSX format.
+
+An example of mapping data to a code preview from the `@microsoft/fast-tooling-react` package:
+
+```js
+import * as headingSchema from "@microsoft/fast-components-react-msft/dist/heading/heading.schema.json";
+import { mapDataToCodePreview } from "@microsoft/fast-tooling-react";
+
+const childOptions = [
+    {
+        name: "Heading", // This name is used as a JSX element tag
+        schema: headingSchema,
+    },
+];
+
+const codePreview = mapDataToCodePreview({
+    data: {
+        id: headingSchema.id,
+    },
+    childOptions
+});
 ```
 
 ### Generating data from a JSON schema

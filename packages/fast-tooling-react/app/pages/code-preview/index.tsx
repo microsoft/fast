@@ -2,14 +2,14 @@ import React from "react";
 import { DesignSystemProvider } from "@microsoft/fast-jss-manager-react";
 import * as testConfigs from "../form/";
 import {
-    CodePreview,
     CodePreviewChildOption,
+    MapCodePreviewConfig,
     mapDataToCodePreview,
 } from "../../../src/data-utilities/mapping";
-import exampleData from "./examples.data";
+import exampleData, { childOptions } from "./examples.data";
 
 export interface CodePreviewTestPageState {
-    data: CodePreview;
+    config: MapCodePreviewConfig;
 }
 
 const codePreviewChildOptions: CodePreviewChildOption[] = [
@@ -34,10 +34,9 @@ class CodePreviewTestPage extends React.Component<{}, CodePreviewTestPageState> 
         super(props);
 
         this.state = {
-            data: {
-                componentName: exampleData[0].componentName,
-                childOptions: codePreviewChildOptions,
-                data: exampleData[0].componentData,
+            config: {
+                childOptions,
+                data: exampleData[0].config.data,
             },
         };
     }
@@ -59,7 +58,7 @@ class CodePreviewTestPage extends React.Component<{}, CodePreviewTestPageState> 
                             borderRadius: "4px",
                         }}
                     >
-                        {mapDataToCodePreview(this.state.data)}
+                        {mapDataToCodePreview(this.state.config)}
                     </pre>
                     `
                 </div>
@@ -69,10 +68,9 @@ class CodePreviewTestPage extends React.Component<{}, CodePreviewTestPageState> 
 
     private handleComponentUpdate = (e: React.ChangeEvent<HTMLSelectElement>): void => {
         this.setState({
-            data: {
-                componentName: exampleData[e.target.selectedIndex].componentName,
-                childOptions: codePreviewChildOptions,
-                data: exampleData[e.target.selectedIndex].componentData,
+            config: {
+                childOptions,
+                data: exampleData[e.target.selectedIndex].config.data,
             },
         });
     };
