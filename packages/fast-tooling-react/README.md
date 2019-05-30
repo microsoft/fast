@@ -419,6 +419,31 @@ export class Example extends React.Component {
 }
 ```
 
+### Drag and drop
+
+Using the `dragAndDropReordering` option allows React children to be re-arranged from the navigation, this requires the `onChange` callback.
+
+Example:
+
+```jsx
+render() {
+    return (
+        <Navigation
+            {...props}
+            data={this.state.data}
+            onChange={this.handleChange}
+            dragAndDropReordering={true}
+        />
+    );
+}
+
+handleChange = (data) => {
+    this.setState({
+        data
+    });
+}
+```
+
 ## Viewer
 
 The `Viewer` component creates an iframe, it can pass props to a communication system and listen for any messages posted to the iframe window. It can have a fixed or adjustable width and height and can be used independently or as a set with the `ViewerContent`, `SelectDevice` and `Rotate` components.

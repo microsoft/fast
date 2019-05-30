@@ -13,6 +13,7 @@ const noChildren: any = {
 };
 
 const children: any = {
+    foo: "Bar",
     children: [
         "Foo",
         {

@@ -5,17 +5,26 @@
     "type": "object",
     "id": "children",
     "reactProperties": {
+        "foo": {
+            "title": "Foo",
+            "type": "children",
+            "defaults": [
+                "text"
+            ]
+        },
         "children": {
             "title": "Children",
             "type": "children",
             "defaults": [
                 "text"
             ]
-        },
+        }
+    },
+    "properties": {
         "object": {
             "title": "Object",
             "type": "object",
-            "properties": {
+            "reactProperties": {
                 "children": {
                     "title": "Object Children",
                     "type": "children",
@@ -31,7 +40,7 @@
             "items": {
                 "title": "Object",
                 "type": "object",
-                "properties": {
+                "reactProperties": {
                     "children": {
                         "title": "Array Children",
                         "type": "children",
