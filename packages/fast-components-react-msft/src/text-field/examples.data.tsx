@@ -1,6 +1,6 @@
 import React from "react";
 import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
-import { TextField, TextFieldProps, TextFieldType } from "./index";
+import { TextField, TextFieldAppearance, TextFieldProps, TextFieldType } from "./index";
 import schema from "./text-field.schema.json";
 import Documentation from "./.tmp/documentation";
 
@@ -43,6 +43,11 @@ export default {
         {
             placeholder: "Enter Password",
             type: TextFieldType.password,
+        },
+        {
+            placeholder: "Placeholder",
+            type: TextFieldType.text,
+            appearance: TextFieldAppearance.filled,
         },
     ],
 } as ComponentFactoryExample<TextFieldProps>;

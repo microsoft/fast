@@ -3,7 +3,7 @@ import { TextAction, TextActionProps } from "./index";
 import schema from "./text-action.schema.json";
 import Documentation from "./.tmp/documentation";
 import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
-import { TextActionButtonPosition } from "./text-action.props";
+import { TextActionAppearance, TextActionButtonPosition } from "./text-action.props";
 import { SVGGlyph } from "../../app/components/svg-svg-element";
 import svgSchema from "../../app/components/svg-svg-element.schema.json";
 import buttonSchema from "../button/button.schema.json";
@@ -36,6 +36,7 @@ const examples: ComponentFactoryExample<TextActionProps> = {
     data: [
         {
             title: "Search",
+            placeholder: "Search",
             button: {
                 id: buttonSchema.id,
                 props: {
@@ -171,6 +172,17 @@ const examples: ComponentFactoryExample<TextActionProps> = {
                     },
                 },
             } as any,
+            beforeGlyph: {
+                id: svgSchema.id,
+                props: {
+                    path: SVGGlyph.user,
+                },
+            } as any,
+        },
+        {
+            title: "Search",
+            placeholder: "Search",
+            appearance: TextActionAppearance.filled,
             beforeGlyph: {
                 id: svgSchema.id,
                 props: {

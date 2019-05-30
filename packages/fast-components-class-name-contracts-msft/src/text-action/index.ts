@@ -8,6 +8,16 @@ export interface TextActionClassNameContract {
     textAction: string;
 
     /**
+     * The filled appearance modifier
+     */
+    textAction__filled?: string;
+
+    /**
+     * The outline appearance modifier
+     */
+    textAction__outline?: string;
+
+    /**
      * The disabled state
      */
     textAction__disabled: string;

@@ -13,6 +13,14 @@
         "placeholder": {
             "title": "Placeholder",
             "type": "string"
+        },
+        "appearance": {
+            "title": "Appearance",
+            "type": "string",
+            "enum": [
+                "filled",
+                "outline"
+            ]
         }
     },
     "reactProperties": {

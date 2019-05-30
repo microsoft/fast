@@ -21,3 +21,4 @@ export * from "./slider";
 export * from "./slider-label";
 export * from "./subheading";
 export * from "./text-action";
+export * from "./text-field";
