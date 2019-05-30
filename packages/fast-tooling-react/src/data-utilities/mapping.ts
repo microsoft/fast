@@ -317,7 +317,7 @@ export interface ComponentCodePreviewConfig extends CodePreviewConfig {
 }
 
 /**
- * Maps data returned from the form generator to the code Preview
+ * Maps data to the code preview, a string that conforms to JSX syntax
  */
 export function mapDataToCodePreview(codePreviewConfig: MapCodePreviewConfig): string {
     const codePreview: ComponentCodePreview = new ComponentCodePreview(codePreviewConfig);
@@ -326,12 +326,12 @@ export function mapDataToCodePreview(codePreviewConfig: MapCodePreviewConfig): s
 }
 
 /**
- * A class which creates a code preview when initialized
+ * A class which creates a formatted code preview when initialized
  * and provides methods for retrieving that preview
  */
 class ComponentCodePreview {
     /**
-     * Tab spaces
+     * Tab spacing
      */
     private tabIndent: string = "    ";
 
@@ -342,7 +342,7 @@ class ComponentCodePreview {
     private variables: string[];
 
     /**
-     * The JSX as a string
+     * The JSX element as a string
      */
     private jsx: string = "";
 
@@ -400,7 +400,7 @@ class ComponentCodePreview {
 
             Object.keys(componentProps).forEach(
                 (componentPropKey: string): any => {
-                    // Check to see if any prop keys are children
+                    // Check to see if any prop keys are React children
                     if (
                         childrenLocations.find(
                             (childrenLocation: string) =>
@@ -408,7 +408,7 @@ class ComponentCodePreview {
                                 componentPropKey
                         )
                     ) {
-                        // If the key contains the word "children" use a nesting pattern
+                        // The property key contains the word "children", use a nesting pattern
                         if (componentPropKey.match(/children(\[\d*\])?/) !== null) {
                             nestedChildren = this.getChildren(
                                 componentProps[componentPropKey],
@@ -416,8 +416,9 @@ class ComponentCodePreview {
                             );
 
                             hasNestedChildren = true;
+                            // The property key is not nested but should be used as an attribute
                         } else {
-                            componentAttributes += this.getComponentAttributes(
+                            componentAttributes += this.getComponentAttribute(
                                 componentPropKey,
                                 componentProps[componentPropKey],
                                 codePreviewConfig.tabIndent,
@@ -425,7 +426,7 @@ class ComponentCodePreview {
                             );
                         }
                     } else {
-                        componentAttributes += this.getComponentAttributes(
+                        componentAttributes += this.getComponentAttribute(
                             componentPropKey,
                             componentProps[componentPropKey],
                             codePreviewConfig.tabIndent,
@@ -435,12 +436,14 @@ class ComponentCodePreview {
                 }
             );
 
+            // Add attributes to the component
             componentJSX +=
                 componentAttributes !== ""
                     ? `\n${componentAttributes}`
                     : hasNestedChildren
                         ? ""
                         : " ";
+            // Add nested children and the end tag (or self closing) to the component
             componentJSX += hasNestedChildren
                 ? `${componentAttributes !== "" ? codePreviewConfig.tabIndent : ""}>\n${
                       this.tabIndent
@@ -454,7 +457,7 @@ class ComponentCodePreview {
     }
 
     /**
-     * Gets children components
+     * Gets children components or primitives
      */
     private getChildren(value: any, tabIndent: string): string {
         const componentPropValue: any = Array.isArray(value) ? value : [value];
@@ -469,21 +472,21 @@ class ComponentCodePreview {
                     )
                 ) {
                     return accumulatedChildrenValue + childrenValue;
-                } else {
-                    const component: CodePreviewChildOption = this.getChildOptionById(
-                        get(value, "id"),
-                        this.childOptions
-                    );
+                }
 
-                    if (component) {
-                        return (
-                            accumulatedChildrenValue +
-                            this.getComponentCodePreview({
-                                data: value,
-                                tabIndent: tabIndent + this.tabIndent,
-                            })
-                        );
-                    }
+                const component: CodePreviewChildOption = this.getChildOptionById(
+                    get(value, "id"),
+                    this.childOptions
+                );
+
+                if (component) {
+                    return (
+                        accumulatedChildrenValue +
+                        this.getComponentCodePreview({
+                            data: value,
+                            tabIndent: tabIndent + this.tabIndent,
+                        })
+                    );
                 }
 
                 return accumulatedChildrenValue;
@@ -493,10 +496,18 @@ class ComponentCodePreview {
     }
 
     /**
-     * Gets a components attributes, these should be indented if they are simple data types
-     * and assigned as variables if they are complex data types
+     * Gets a components attribute to be applied to the JSX element.
+     * These should be indented if they are simple data types
+     * and assigned as variables if they are a complex data type such as object or array.
+     *
+     * Example 1 (string):
+     *     a={"foo"}
+     * Example 2 (number):
+     *     b={42}
+     * Example 3 (object):
+     *     c={foo}
      */
-    private getComponentAttributes(
+    private getComponentAttribute(
         propKey: string,
         propValue: any,
         tabIndent: string,
