@@ -3,6 +3,29 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.11.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-styles-msft@4.10.0...@microsoft/fast-components-styles-msft@4.11.0) (2019-05-31)
+
+
+### Bug Fixes
+
+* adds utility to retrieve swatch based on contrast comparisons ([#1737](https://github.com/Microsoft/fast-dna/issues/1737)) ([098f845](https://github.com/Microsoft/fast-dna/commit/098f845))
+* design system functions should be able to return falsey values ([#1792](https://github.com/Microsoft/fast-dna/issues/1792)) ([c86fc3c](https://github.com/Microsoft/fast-dna/commit/c86fc3c))
+* ensure safe calling of contrast function ([24d2625](https://github.com/Microsoft/fast-dna/commit/24d2625))
+* reduce color utility footprint ([#1718](https://github.com/Microsoft/fast-dna/issues/1718)) ([8cdc39d](https://github.com/Microsoft/fast-dna/commit/8cdc39d))
+* select menu should match base select width ([#1775](https://github.com/Microsoft/fast-dna/issues/1775)) ([1d337de](https://github.com/Microsoft/fast-dna/commit/1d337de))
+* track base colors in design system ([#1799](https://github.com/Microsoft/fast-dna/issues/1799)) ([d5000ea](https://github.com/Microsoft/fast-dna/commit/d5000ea))
+
+
+### Features
+
+* add scaled type ramp to typography ([#1777](https://github.com/Microsoft/fast-dna/issues/1777)) ([fd6ed9f](https://github.com/Microsoft/fast-dna/commit/fd6ed9f))
+* export isDarkMode as a new named function ([#1752](https://github.com/Microsoft/fast-dna/issues/1752)) ([0167d60](https://github.com/Microsoft/fast-dna/commit/0167d60))
+* update the text input components to add 'filled' appearance ([#1782](https://github.com/Microsoft/fast-dna/issues/1782)) ([2249848](https://github.com/Microsoft/fast-dna/commit/2249848))
+
+
+
+
+
 # [4.10.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-styles-msft@4.9.2...@microsoft/fast-components-styles-msft@4.10.0) (2019-05-17)
 
 
