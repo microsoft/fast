@@ -61,7 +61,7 @@ const styles: ComponentStyles<RadioClassNameContract, DesignSystem> = {
         background: neutralFillInputRest,
         transition: "all 0.2s ease-in-out",
         border: format("{0} solid {1}", toPx(outlineWidth), neutralOutlineRest),
-        "&:hover": {
+        "&:hover:enabled": {
             background: neutralFillInputHover,
             borderColor: neutralOutlineHover,
         },

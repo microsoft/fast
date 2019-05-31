@@ -77,7 +77,7 @@ const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = {
             toPx<DesignSystem>(outlineWidth),
             neutralOutlineRest
         ),
-        "&:hover": {
+        "&:hover:enabled": {
             background: neutralFillInputHover,
             borderColor: neutralOutlineHover,
         },
