@@ -10,7 +10,7 @@
 
 ### Create a react component
 
-`manageJss` is a HOC that handles stylesheet management for a component. When the HOC renders, it will generate class-names for the managed component and pass them to the wrapped component as a `managedClasses` prop. For every top level property of your stylesheet, the `managedClasses` prop of the wrapped component will have a generated class-name at a key by the same name.
+`manageJss` is a HOC that handles stylesheet management for a component. When the HOC renders, it will generate class names for the managed component and pass them to the wrapped component as a `managedClasses` prop. For every top level property of your stylesheet, the `managedClasses` prop of the wrapped component will have a generated class name at a key by the same name.
 
 ```jsx
 // button.jsx
@@ -109,7 +109,7 @@ const designSystemOverrides = {
 };
 
 // Each StyledButton here is generated with a different backgroundColor property, but both of them
-// see a fontFamily property of "Comic Sans"
+// see a fontFamily property of "Comic Sans".
 
 <DesignSystemProvider designSystem={designSystem}>
     <StyledButton>
@@ -152,11 +152,11 @@ const serverSideCss = stylesheetRegistry.toString();
 
 To improve performance of rendering a component multiple times, the `manageJss` HOC implements a mechanism for memoizing stylesheets - only generating the stylesheet once and providing subsequent instances with class names from the first instance of the component. This makes subsequent component instances render much more quickly.
  
-To determine if a stylesheet can be re-used by a subsequent component, the HOC determines if a given style object provided to the HOC has been previously generated *with it's given design system*. It is important to note that the HOC compares both the style object and the design system object *by identity* - if both the style object and the design system object share identity with objects previously used to generate a stylesheet, then the HOC will **not** generate a new stylesheet.
+To determine if a stylesheet can be re-used by a subsequent component, the HOC determines if a given style object provided to the HOC has been previously generated *with its given design system*. It is important to note that the HOC compares both the style object and the design system object *by identity* - if both the style object and the design system object share identity with objects previously used to generate a stylesheet, then the HOC will **not** generate a new stylesheet.
 
 ```jsx
 // These two components use the same style object and are genereated in the same design system context.
-// This means the manageJss HOC will only generate the componet stylesheet once
+// This means the manageJss HOC will only generate the componet stylesheet once.
 
 <DesignSystemProvider designSystem={designSystem}>
     <FancyButton />
@@ -167,7 +167,7 @@ To determine if a stylesheet can be re-used by a subsequent component, the HOC d
 ```jsx
 // These two components use the same style object but are genereated in different design system contexts.
 // Becase the design systems are different, the resulting styles could be different and the stylesheet
-// cannot safely be re-used - this means these components will have different stylesheets and different class names
+// cannot safely be re-used - this means these components will have different stylesheets and different class names.
 
 <DesignSystemProvider designSystem={designSystem}>
     <FancyButton />
