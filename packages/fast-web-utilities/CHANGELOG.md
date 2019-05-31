@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.2.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-web-utilities@4.1.0...@microsoft/fast-web-utilities@4.2.0) (2019-05-31)
+
+
+### Features
+
+* add query string parser ([#1784](https://github.com/Microsoft/fast-dna/issues/1784)) ([de20112](https://github.com/Microsoft/fast-dna/commit/de20112))
+* show values as dash separated and send camelCase values in the CSS property editor callback ([#1772](https://github.com/Microsoft/fast-dna/issues/1772)) ([93d6223](https://github.com/Microsoft/fast-dna/commit/93d6223))
+
+
+
+
+
 # [4.1.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-web-utilities@4.0.1...@microsoft/fast-web-utilities@4.1.0) (2019-04-23)
 
 

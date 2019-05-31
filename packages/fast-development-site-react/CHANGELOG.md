@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.3.2](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-development-site-react@4.3.1...@microsoft/fast-development-site-react@4.3.2) (2019-05-31)
+
+
+### Bug Fixes
+
+* prevent non-children from showing the style editing in the configuration panel ([#1771](https://github.com/Microsoft/fast-dna/issues/1771)) ([64d0f93](https://github.com/Microsoft/fast-dna/commit/64d0f93))
+
+
+
+
+
 ## [4.3.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-development-site-react@4.3.0...@microsoft/fast-development-site-react@4.3.1) (2019-05-17)
 
 

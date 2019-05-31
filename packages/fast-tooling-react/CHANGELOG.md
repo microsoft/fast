@@ -3,6 +3,26 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.7.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-tooling-react@1.6.0...@microsoft/fast-tooling-react@1.7.0) (2019-05-31)
+
+
+### Bug Fixes
+
+* add check for data type to make sure children don't fire a location update callback ([#1794](https://github.com/Microsoft/fast-dna/issues/1794)) ([8537249](https://github.com/Microsoft/fast-dna/commit/8537249))
+* resolves an issue where height and width can go from controlled to uncontrolled state ([#1770](https://github.com/Microsoft/fast-dna/issues/1770)) ([359a927](https://github.com/Microsoft/fast-dna/commit/359a927))
+
+
+### Features
+
+* add data mapping to a code preview ([#1787](https://github.com/Microsoft/fast-dna/issues/1787)) ([4c91a21](https://github.com/Microsoft/fast-dna/commit/4c91a21))
+* allow complex object and array nesting in the navigation ([#1767](https://github.com/Microsoft/fast-dna/issues/1767)) ([d25824c](https://github.com/Microsoft/fast-dna/commit/d25824c))
+* refactor and export data mapping to code preview ([#1802](https://github.com/Microsoft/fast-dna/issues/1802)) ([0ee0bdd](https://github.com/Microsoft/fast-dna/commit/0ee0bdd))
+* show values as dash separated and send camelCase values in the CSS property editor callback ([#1772](https://github.com/Microsoft/fast-dna/issues/1772)) ([93d6223](https://github.com/Microsoft/fast-dna/commit/93d6223))
+
+
+
+
+
 # [1.6.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-tooling-react@1.5.0...@microsoft/fast-tooling-react@1.6.0) (2019-05-17)
 
 

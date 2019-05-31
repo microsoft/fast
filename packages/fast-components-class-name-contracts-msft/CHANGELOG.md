@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.3.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-class-name-contracts-msft@4.2.2...@microsoft/fast-components-class-name-contracts-msft@4.3.0) (2019-05-31)
+
+
+### Features
+
+* update the text input components to add 'filled' appearance ([#1782](https://github.com/Microsoft/fast-dna/issues/1782)) ([2249848](https://github.com/Microsoft/fast-dna/commit/2249848))
+
+
+
+
+
 ## [4.2.2](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-class-name-contracts-msft@4.2.1...@microsoft/fast-components-class-name-contracts-msft@4.2.2) (2019-05-17)
 
 
