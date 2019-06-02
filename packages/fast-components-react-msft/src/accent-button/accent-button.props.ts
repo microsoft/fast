@@ -12,10 +12,12 @@ import {
 
 export interface AccentButtonManagedClasses
     extends ManagedClasses<AccentButtonClassNameContract> {}
+
 export interface AccentButtonHandledProps
     extends AccentButtonManagedClasses,
         Subtract<ButtonBaseHandledProps, ButtonBaseManagedClasses> {}
 
 /* tslint:disable-next-line:no-empty-interface */
 export interface AccentButtonUnhandledProps extends ButtonBaseUnhandledProps {}
+
 export type AccentButtonProps = AccentButtonHandledProps & AccentButtonUnhandledProps;
