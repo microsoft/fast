@@ -35,12 +35,12 @@ export interface ViewportPositionerHandledProps extends ViewportPositionerManage
     /**
      *  Ref to the element the positioner is anchored to
      */
-    anchor?: React.RefObject<any>;
+    anchor?: React.RefObject<any> | HTMLElement;
 
     /**
      *  Ref to the viewport the positioner is constrained to
      */
-    viewport?: React.RefObject<any>;
+    viewport?: React.RefObject<any> | HTMLElement;
 
     /**
      *  The positioning mode for the horizontal axis, default is uncontrolled

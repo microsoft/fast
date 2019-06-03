@@ -533,7 +533,13 @@ describe("viewport positioner", (): void => {
                 />
                 <ViewportPositioner
                     horizontalPositioningMode={AxisPositioningMode.flipOutward}
+                    defaultHorizontalPosition={
+                        ViewportPositionerHorizontalPosition.uncontrolled
+                    }
                     verticalPositioningMode={AxisPositioningMode.flipOutward}
+                    defaultVerticalPosition={
+                        ViewportPositionerVerticalPosition.uncontrolled
+                    }
                     anchor={anchorElement}
                     viewport={viewportElement}
                     managedClasses={managedClasses}
@@ -787,7 +793,13 @@ describe("viewport positioner", (): void => {
                 />
                 <ViewportPositioner
                     horizontalPositioningMode={AxisPositioningMode.flipOutward}
+                    defaultHorizontalPosition={
+                        ViewportPositionerHorizontalPosition.uncontrolled
+                    }
                     verticalPositioningMode={AxisPositioningMode.flipOutward}
+                    defaultVerticalPosition={
+                        ViewportPositionerVerticalPosition.uncontrolled
+                    }
                     anchor={anchorElement}
                     viewport={viewportElement}
                     managedClasses={managedClasses}

@@ -11,7 +11,6 @@ import {
     ViewportPositionerVerticalPosition,
 } from "./viewport-positioner.props";
 import {
-    IntersectionObserverClassDefinition,
     IntersectionObserverEntry,
     ResizeObserverClassDefinition,
     ResizeObserverEntry,
@@ -32,7 +31,6 @@ export interface ViewportPositionerState {
     left: number;
     currentVerticalPosition: ViewportPositionerVerticalPosition;
     currentHorizontalPosition: ViewportPositionerHorizontalPosition;
-
     initialLayoutComplete: boolean;
 }
 
@@ -46,8 +44,8 @@ class ViewportPositioner extends Foundation<
     public static defaultProps: Partial<ViewportPositionerProps> = {
         horizontalPositioningMode: AxisPositioningMode.uncontrolled,
         defaultHorizontalPosition: ViewportPositionerHorizontalPosition.uncontrolled,
-        verticalPositioningMode: AxisPositioningMode.uncontrolled,
-        defaultVerticalPosition: ViewportPositionerVerticalPosition.uncontrolled,
+        verticalPositioningMode: AxisPositioningMode.flipOutward,
+        defaultVerticalPosition: ViewportPositionerVerticalPosition.bottom,
         horizontalAlwaysInView: false,
         verticalAlwaysInView: false,
         fixedAfterInitialPlacement: false,
@@ -124,8 +122,8 @@ class ViewportPositioner extends Foundation<
 
     public componentDidUpdate(prevProps: ViewportPositionerProps): void {
         if (
-            isNil(prevProps.anchor) !== isNil(this.props.anchor) ||
-            isNil(prevProps.viewport) !== isNil(this.props.viewport) ||
+            prevProps.viewport !== this.props.viewport ||
+            prevProps.anchor !== this.props.anchor ||
             prevProps.disabled !== this.props.disabled
         ) {
             this.checkComponentConfig();
@@ -228,7 +226,7 @@ class ViewportPositioner extends Foundation<
             if (
                 (this.props.disabled === undefined || this.props.disabled === false) &&
                 isNil(this.positionerRect) &&
-                !isNil(this.props.anchor)
+                this.getAnchorElement() !== null
             ) {
                 shouldHide = true;
             }
@@ -257,7 +255,11 @@ class ViewportPositioner extends Foundation<
      *  Checks whether component should be disabled or not
      */
     private checkComponentConfig = (): void => {
-        if (!canUseDOM() || this.props.disabled === true || isNil(this.props.anchor)) {
+        if (
+            !canUseDOM() ||
+            this.props.disabled === true ||
+            this.getAnchorElement() === null
+        ) {
             this.disableComponent();
             return;
         }
@@ -271,7 +273,7 @@ class ViewportPositioner extends Foundation<
         if (
             !this.state.disabled ||
             this.props.disabled ||
-            this.props.anchor === undefined ||
+            this.getAnchorElement() === null ||
             isNil(this.rootElement.current)
         ) {
             return;
@@ -293,26 +295,20 @@ class ViewportPositioner extends Foundation<
         this.collisionDetector = new (window as WindowWithIntersectionObserver).IntersectionObserver(
             this.handleCollision,
             {
-                root:
-                    this.props.viewport !== undefined &&
-                    this.props.viewport.current !== null
-                        ? this.props.viewport.current
-                        : null,
+                root: this.getViewportElement(),
                 rootMargin: "0px",
                 threshold: [0, 1],
             }
         );
         this.collisionDetector.observe(this.rootElement.current);
-        this.collisionDetector.observe(this.props.anchor.current);
+        this.collisionDetector.observe(this.getAnchorElement());
 
         this.resizeDetector = new (window as WindowWithResizeObserver).ResizeObserver(
             this.handleAnchorResize
         );
-        this.resizeDetector.observe(this.props.anchor.current);
+        this.resizeDetector.observe(this.getAnchorElement());
 
-        this.props.viewport !== undefined && this.props.viewport.current !== null
-            ? this.props.viewport.current.addEventListener("scroll", this.handleScroll)
-            : document.addEventListener("scroll", this.handleScroll);
+        this.getViewportElement().addEventListener("scroll", this.handleScroll);
     };
 
     /**
@@ -380,7 +376,7 @@ class ViewportPositioner extends Foundation<
                 typeof this.collisionDetector.disconnect === "function"
             ) {
                 this.collisionDetector.unobserve(this.rootElement.current);
-                this.collisionDetector.unobserve(this.props.anchor.current);
+                this.collisionDetector.unobserve(this.getAnchorElement());
                 this.collisionDetector.disconnect();
                 this.collisionDetector = null;
             }
@@ -394,17 +390,12 @@ class ViewportPositioner extends Foundation<
                 this.resizeDetector &&
                 typeof this.resizeDetector.disconnect === "function"
             ) {
-                this.resizeDetector.unobserve(this.props.anchor.current);
+                this.resizeDetector.unobserve(this.getAnchorElement());
                 this.resizeDetector.disconnect();
                 this.resizeDetector = null;
             }
 
-            this.props.viewport !== undefined && this.props.viewport.current !== null
-                ? this.props.viewport.current.addEventListener(
-                      "scroll",
-                      this.handleScroll
-                  )
-                : document.addEventListener("scroll", this.handleScroll);
+            this.getViewportElement().addEventListener("scroll", this.handleScroll);
         }
     };
 
@@ -540,15 +531,9 @@ class ViewportPositioner extends Foundation<
             }
         });
 
-        this.scrollTop =
-            this.props.viewport !== undefined
-                ? this.props.viewport.current.scrollTop
-                : document.scrollingElement.scrollTop;
+        this.scrollTop = this.getViewportElement().scrollTop;
 
-        this.scrollLeft =
-            this.props.viewport !== undefined
-                ? this.props.viewport.current.scrollLeft
-                : document.scrollingElement.scrollLeft;
+        this.scrollLeft = this.getViewportElement().scrollLeft;
 
         this.requestFrame();
     };
@@ -623,9 +608,7 @@ class ViewportPositioner extends Foundation<
      * Check for scroll changes in viewport and adjust position data
      */
     private updateForScrolling = (): void => {
-        const scrollingContainer: Element = !isNil(this.props.viewport)
-            ? this.props.viewport.current
-            : document.scrollingElement;
+        const scrollingContainer: Element = this.getViewportElement();
 
         if (isNil(scrollingContainer) || isNaN(scrollingContainer.scrollTop)) {
             return;
@@ -891,6 +874,36 @@ class ViewportPositioner extends Foundation<
             this.openRequestAnimationFrame = window.requestAnimationFrame(
                 this.updateLayout
             );
+        }
+    };
+
+    /**
+     * get the anchor element
+     */
+    private getAnchorElement = (): HTMLElement => {
+        if (isNil(this.props.anchor)) {
+            return null;
+        }
+
+        if (this.props.anchor instanceof HTMLElement) {
+            return this.props.anchor;
+        } else {
+            return this.props.anchor.current;
+        }
+    };
+
+    /**
+     * get the viewport element
+     */
+    private getViewportElement = (): HTMLElement => {
+        if (isNil(this.props.viewport)) {
+            return document.scrollingElement as HTMLElement;
+        }
+
+        if (this.props.viewport instanceof HTMLElement) {
+            return this.props.viewport;
+        } else {
+            return this.props.viewport.current;
         }
     };
 }
