@@ -61,12 +61,22 @@ const applyTransparentBackplateStyles: CSSRules<DesignSystem> = {
     // Underline
     "&:hover $button_contentRegion::before": {
         background: accentForegroundHover,
+        "@media (-ms-high-contrast:active)": {
+            background: "ButtonHighlight",
+        },
+    },
+    "&:hover$button__disabled $button_contentRegion::before": {
+        display: "none",
     },
     "&:active $button_contentRegion::before": {
         background: accentForegroundActive,
     },
     "&$button__disabled, &$button__disabled $button_contentRegion::before": {
         ...transparentBackground,
+    },
+    "@media (-ms-high-contrast:active)": {
+        border: "none",
+        fill: "ButtonHighlight",
     },
     "&:hover:enabled": {
         color: accentForegroundHover,
@@ -138,6 +148,9 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = {
         }),
         "&::-moz-focus-inner": {
             border: "0",
+        },
+        "@media (-ms-high-contrast:active)": {
+            fill: "ButtonHighlight",
         },
     },
     button__primary: {
@@ -235,6 +248,11 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = {
     },
     button__disabled: {
         ...applyDisabledState(),
+        "& $button_beforeContent, & $button_afterContent": {
+            "@media (-ms-high-contrast:active)": {
+                fill: "white", // ButtonHighlight cannot be passed to -ms-high-contrast but white is safe in this context
+            },
+        },
     },
     button_beforeContent: {
         width: glyphSize,
