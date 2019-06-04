@@ -10,7 +10,7 @@ A collection of JSS (JavaScript Style Sheets) objects and style utilities that p
 
 An example of using the `manageJss` from `@microsoft/fast-jss-manager-react` higher order component to export a component with a JSS style using the package.
 
-```
+```jsx
 import React from "react";
 import { ButtonStyles } from "@microsoft/fast-components-styles-msft";
 import manageJss from "@microsoft/fast-jss-manager-react";
@@ -119,6 +119,294 @@ const StyleSheet = {
 
 These utility functions help you write clean and manageable style sheets.
 
+- [Acrylic](#acrylic)
+    - [applyAcrylicMaterial](#applyacrylicmaterial)
+- [Border](#border)
+    - [applyCornerRadius](#applycornerradius)
+    - [applyFloatingCornerRadius](#applyfloatingcornerradius)
+    - [applyFocusPlaceholderBorder](#applyfocusplaceholderborder)
+- [Cursor](#cursor)
+    - [applyCursorDefault](#applycursordefault)
+    - [applyCursorDisabled](#applycursordisabled)
+    - [applyCursorPointer](#applycursorpointer)
+- [Density](#density)
+    - [DensityCategory](#densitycategory)
+    - [height](#height)
+    - [heightNumber](#heightnumber)
+    - [densityCategorySwitch](#densitycategoryswitch)
+    - [horizontalSpacing](#horizontalspacing)
+    - [horizontalSpacingNumber](#horizontalspacingnumber)
+    - [glyphSize](#glyphsize)
+- [Disabled](#disabled)
+    - [applyDisabledState](#applydisabledstate)
+- [Elevation](#elevation)
+    - [ElevationMultiplier](#elevationmultiplier)
+    - [applyElevation](#applyelevation)
+- [Fonts](#fonts)
+    - [applyFontWeightLight](#applyfontweightlight)
+    - [applyFontWeightSemiLight](#applyfontweightsemilight)
+    - [applyFontWeightNormal](#applyfontweightnormal)
+    - [applyFontWeightSemiBold](#applyfontweightsemibold)
+    - [applyFontWeightBold](#applyfontweightbold)
+- [Typography](#typography)
+    - [applyScaledTypeRamp](#applyscaledtyperamp)
+    - [applyTypeRamp](#applytyperamp)
+    - [applyScaledFontSize](#applyscaledfontsize)
+    - [applyScaledLineHeight](#applyscaledlineheight)
+    - [applyFontSize](#applyfontsize)
+    - [applyLineHeight](#applylineheight)
+
+### Acrylic
+
+Acrylic is a visual treatment that creates a translucent texture which can be added to element surfaces to add depth and help establish a visual hierarchy.
+
+#### applyAcrylicMaterial
+
+Apply a Microsoft implementation of acrylic to a styled element.
+
+**Parameters**:
+- `backgroundColor`: This should be an RGBa color value to achieve the acrylic effect
+- `opacity`: The opacity of the background
+- `fallbackOpacity?`: Applied in the event that backdrop-filter is not supported in the current browser, defaults to 0.9
+- `topHighlight?`: The option to highlight the top border of the surface acrylic is applied to, defaults to false
+
+```TypeScript
+import { applyAcrylicMaterial } from "@microsoft/fast-components-styles-msft";
+
+const styles: ComponentStyles<ClassNameContract, DesignSystem> = {
+    styled_component: {
+        ...applyAcrylicMaterial("#000", 0.6, 0.9, true),
+    },
+};
+```
+
+### Border
+
+#### applyCornerRadius
+
+Applies the design system value for `cornerRadius`.
+
+```TypeScript
+import { applyCornerRadius } from "@microsoft/fast-components-styles-msft";
+
+const styles: ComponentStyles<ClassNameContract, DesignSystem> = {
+    styled_component: {
+        ...applyCornerRadius(),
+    },
+};
+```
+
+#### applyFloatingCornerRadius
+
+Applies a `cornerRadius` for UI elements which are elevated or outside the normal document flow.
+
+```TypeScript
+import { applyFloatingCornerRadius } from "@microsoft/fast-components-styles-msft";
+
+const styles: ComponentStyles<ClassNameContract, DesignSystem> = {
+    styled_component: {
+        ...applyFloatingCornerRadius(),
+    },
+};
+```
+
+#### applyFocusPlaceholderBorder
+
+Applies a border width, style, and color to reserve the space for a visual focus indicator.
+
+```TypeScript
+import { applyFocusPlaceholderBorder } from "@microsoft/fast-components-styles-msft";
+
+const styles: ComponentStyles<ClassNameContract, DesignSystem> = {
+    styled_component: {
+        ...applyFocusPlaceholderBorder(),
+    },
+};
+```
+
+### Cursor
+
+#### applyCursorDefault
+
+Applies styles for a default cursor.
+
+```TypeScript
+import { applyCursorDefault } from "@microsoft/fast-components-styles-msft";
+
+const styles: ComponentStyles<ClassNameContract, DesignSystem> = {
+    styled_component: {
+        ...applyCursorDefault(),
+    },
+};
+```
+
+#### applyCursorDisabled
+
+Applies styles for a disabled cursor.
+
+```TypeScript
+import { applyCursorDisabled } from "@microsoft/fast-components-styles-msft";
+
+const styles: ComponentStyles<ClassNameContract, DesignSystem> = {
+    styled_component__disabled: {
+        ...applyCursorDisabled(),
+    },
+};
+```
+
+#### applyCursorPointer
+
+Applies styles for a "pointer" cursor.
+
+```TypeScript
+import { applyCursorPointer } from "@microsoft/fast-components-styles-msft";
+
+const styles: ComponentStyles<ClassNameContract, DesignSystem> = {
+    styled_component: {
+        ...applyCursorPointer(),
+    },
+};
+```
+
+### Density
+
+#### DensityCategory
+
+An enum representing the three density categories:
+- `compact`
+- `normal`
+- `spacious`
+
+#### height
+
+Returns the component height formatted in the provided unit or px by default.
+
+**Parameters**:
+- `lines`: The logical number of lines the component takes, 1 by default
+- `unit`: The optional unit of measurement; px by default
+
+```TypeScript
+import { height } from "@microsoft/fast-components-styles-msft";
+
+const styles: ComponentStyles<ClassNameContract, DesignSystem> = {
+    styled_component: {
+        height: height(),
+    },
+};
+```
+
+#### heightNumber
+
+Returns the component height as a number.
+
+**Parameters**:
+- `lines`: The logical number of lines the component takes, 1 by default
+
+```TypeScript
+import { heightNumber } from "@microsoft/fast-components-styles-msft";
+
+const inputSize: DesignSystemResolver<string> = `${heightNumber() / 2}`
+);
+
+const styles: ComponentStyles<ClassNameContract, DesignSystem> = {
+    styled_component: {
+        width: inputSize,
+        height: inputSize
+    },
+};
+```
+
+#### densityCategorySwitch
+
+Returns a value based on the higher-level category for the density setting. Use this function to adjust things like type size and sizing that is based on a category rather than individual density.
+
+**Parameters**:
+- `compactValue`: The adjustment when the category is "compact"
+- `normalValue`: The adjustment when the category is "normal"
+- `spaciousValue`: The adjustment when the category is "spacious"
+
+```TypeScript
+import { densityCategorySwitch } from "@microsoft/fast-components-styles-msft";
+
+const styles: ComponentStyles<ClassNameContract, DesignSystem> = {
+    styled_component: {
+        marginRight: `${densityCategorySwitch(4, 8, 12)}px`
+    },
+};
+```
+
+#### horizontalSpacing
+
+Returns the standard horizontal spacing typically used for text and icons formatted in the provided unit or px by default.
+
+**Parameters**:
+- `adjustment`: Any border that should be removed from the overall content spacing; 0 by default
+- `unit`: The optional unit of measurement; px by default
+
+```TypeScript
+import { horizontalSpacing } from "@microsoft/fast-components-styles-msft";
+
+const styles: ComponentStyles<ClassNameContract, DesignSystem> = {
+    styled_component: {
+        paddingLeft: horizontalSpacing(2),
+        paddingRight: horizontalSpacing(2),
+    },
+};
+```
+
+#### horizontalSpacingNumber
+
+Returns the standard horizontal spacing for text and icons as a number.
+
+**Parameters**:
+- `adjustment`: Any border that should be removed from the overall content spacing; 0 by default
+
+```TypeScript
+import { horizontalSpacingNumber } from "@microsoft/fast-components-styles-msft";
+
+const glyphWidth: number = 16;
+
+const styles: ComponentStyles<ClassNameContract, DesignSystem> = {
+    styled_component: {
+        marginRight: `${horizontalSpacingNumber(-2) + glyphWidth}px`
+    },
+};
+```
+
+#### glyphSize
+
+Returns the width and height for a glyph formatted in pixels.
+
+**Parameters**:
+- `designSystem` | `unit`: Accepts either a design system configuration or a string
+
+```TypeScript
+import { glyphSize } from "@microsoft/fast-components-styles-msft";
+
+const styles: ComponentStyles<ClassNameContract, DesignSystem> = {
+    styled_component: {
+        width: glyphSize,
+        height: glyphSize,
+    },
+};
+```
+
+### Disabled
+
+#### applyDisabledState
+
+Used to apply disabled styles to an element.
+
+```TypeScript
+import { applyDisabledState } from "@microsoft/fast-components-styles-msft";
+
+const styles: ComponentStyles<ClassNameContract, DesignSystem> = {
+    styled_component__disabled: {
+        ...applyDisabledState(),
+    },
+};
+```
+
 ### Elevation
 
 Apply drop-shadow to components and layers to signify elevation.
@@ -131,12 +419,188 @@ An enum with common elevation depths.
 
 Used with `ElevationMultiplier` to apply elevation to a styled element.
 
-```JavaScript
+```TypeScript
 import { applyElevation, ElevationMultiplier } from "@microsoft/fast-components-styles-msft";
 
 const styles: ComponentStyles<ClassNameContract, DesignSystem> = {
     styled_component: {
         ...applyElevation(ElevationMultiplier.e11),
+    },
+};
+```
+
+### Fonts
+
+#### applyFontWeightLight
+
+Applies the `light` font weight value from the design system.
+
+```TypeScript
+import { applyFontWeightLight } from "@microsoft/fast-components-styles-msft";
+
+const styles: ComponentStyles<ClassNameContract, DesignSystem> = {
+    styled_component: {
+        ...applyFontWeightLight(),
+    },
+};
+```
+
+#### applyFontWeightSemiLight
+
+Applies the `semilight` font weight value from the design system.
+
+```TypeScript
+import { applyFontWeightSemiLight } from "@microsoft/fast-components-styles-msft";
+
+const styles: ComponentStyles<ClassNameContract, DesignSystem> = {
+    styled_component: {
+        ...applyFontWeightSemiLight(),
+    },
+};
+```
+
+#### applyFontWeightNormal
+
+Applies the `normal` font weight value from the design system.
+
+```TypeScript
+import { applyFontWeightNormal } from "@microsoft/fast-components-styles-msft";
+
+const styles: ComponentStyles<ClassNameContract, DesignSystem> = {
+    styled_component: {
+        ...applyFontWeightNormal(),
+    },
+};
+```
+
+#### applyFontWeightSemiBold
+
+Applies the `semibold` font weight value from the design system.
+
+```TypeScript
+import { applyFontWeightSemiBold } from "@microsoft/fast-components-styles-msft";
+
+const styles: ComponentStyles<ClassNameContract, DesignSystem> = {
+    styled_component: {
+        ...applyFontWeightSemiBold(),
+    },
+};
+```
+
+#### applyFontWeightBold
+
+Applies the `bold` font weight value from the design system.
+
+```TypeScript
+import { applyFontWeightBold } from "@microsoft/fast-components-styles-msft";
+
+const styles: ComponentStyles<ClassNameContract, DesignSystem> = {
+    styled_component: {
+        ...applyFontWeightBold(),
+    },
+};
+```
+
+### Typography
+
+#### applyScaledTypeRamp
+
+Applies font-size and line-height CSS properties from a given TypeRamp ID, scaled with design system density.
+
+**Parameters**:
+- `key`: keyof TypeRamp
+
+```TypeScript
+import { applyScaledTypeRamp } from "@microsoft/fast-components-styles-msft";
+
+const styles: ComponentStyles<ClassNameContract, DesignSystem> = {
+    styled_component: {
+        ...applyScaledTypeRamp("t8"),
+    },
+};
+```
+
+#### applyTypeRamp
+
+Applies font-size and line-height CSS properties from a given TypeRamp ID.
+
+**Parameters**:
+- `typeConfig`: keyof TypeRamp
+
+```TypeScript
+import { applyTypeRamp } from "@microsoft/fast-components-styles-msft";
+
+const styles: ComponentStyles<ClassNameContract, DesignSystem> = {
+    styled_component: {
+        ...applyTypeRamp("t8"),
+    },
+};
+```
+
+#### applyScaledFontSize
+
+Retrieves the formatted font-size from a TypeRamp ID, scaled with the design-system density.
+
+**Parameters**:
+- `key`: keyof TypeRamp
+
+```TypeScript
+import { applyScaledFontSize } from "@microsoft/fast-components-styles-msft";
+
+const styles: ComponentStyles<ClassNameContract, DesignSystem> = {
+    styled_component: {
+        fontSize: applyScaledFontSize("t4"),
+    },
+};
+```
+
+#### applyScaledLineHeight
+
+Retrieves the formatted line-height from a TypeRamp ID, scaled with the design-system density.
+
+**Parameters**:
+- `key`: keyof TypeRamp
+
+```TypeScript
+import { applyScaledLineHeight } from "@microsoft/fast-components-styles-msft";
+
+const styles: ComponentStyles<ClassNameContract, DesignSystem> = {
+    styled_component: {
+        lineHeight: applyScaledLineHeight("t4"),
+    },
+};
+```
+
+#### applyFontSize
+
+Retrieves the font-size formatted in pixels from a given TypeRamp ID.
+
+**Parameters**:
+- `key`: keyof TypeRamp
+
+```TypeScript
+import { applyFontSize } from "@microsoft/fast-components-styles-msft";
+
+const styles: ComponentStyles<ClassNameContract, DesignSystem> = {
+    styled_component: {
+        ...applyFontSize("t8"),
+    },
+};
+```
+
+#### applyLineHeight
+
+Retrieves the line-height formatted in pixels from a given TypeRamp ID.
+
+**Parameters**:
+- `key`: keyof TypeRamp
+
+```TypeScript
+import { applyLineHeight } from "@microsoft/fast-components-styles-msft";
+
+const styles: ComponentStyles<ClassNameContract, DesignSystem> = {
+    styled_component: {
+        ...applyLineHeight("t8"),
     },
 };
 ```
