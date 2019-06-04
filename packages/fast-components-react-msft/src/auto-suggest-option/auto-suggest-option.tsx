@@ -10,8 +10,9 @@ import {
     AutoSuggestContextType,
     ListboxItem as BaseListboxItem,
 } from "@microsoft/fast-components-react-base";
-import { get, isNil, slice } from "lodash-es";
+import { get, slice } from "lodash-es";
 import { startsWith } from "@microsoft/fast-web-utilities";
+import { isNullOrUndefined } from "util";
 import { DisplayNamePrefix } from "../utilities";
 
 class AutoSuggestOption extends Foundation<
@@ -99,8 +100,8 @@ class AutoSuggestOption extends Foundation<
         searchString: string
     ): React.ReactNode => {
         if (
-            !isNil(displayString) &&
-            !isNil(searchString) &&
+            !isNullOrUndefined(displayString) &&
+            !isNullOrUndefined(searchString) &&
             startsWith(displayString.toLowerCase(), searchString.toLowerCase())
         ) {
             return (
