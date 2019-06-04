@@ -3,7 +3,7 @@ import { ComponentStyles, ComponentStyleSheet } from "@microsoft/fast-jss-manage
 import { FlipperClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import {
     applyFocusVisible,
-    Direction,
+    directionSwitch,
     format,
     toPx,
 } from "@microsoft/fast-jss-utilities";
@@ -75,6 +75,7 @@ const styles: ComponentStyles<FlipperClassNameContract, DesignSystem> = {
     },
     flipper_glyph: {
         position: "relative",
+        transform: directionSwitch("none", "rotate(180deg)"),
         width: glyphSize,
         height: glyphSize,
     },
