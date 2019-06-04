@@ -122,7 +122,6 @@ export default class App extends React.Component<{}, AppState> {
     }
 
     public render(): JSX.Element {
-        console.log("Rendering!");
         return (
             <Site
                 formChildOptions={formChildOptions}
@@ -134,7 +133,7 @@ export default class App extends React.Component<{}, AppState> {
                 showTransparencyToggle={true}
                 styleEditing={true}
                 designSystemEditing={{
-                    data: this.getDesignSystem(),
+                    data: this.state.designSystem,
                     schema: designSystemSchema,
                     designSystemOnChange: this.handleDesignSystemUpdate,
                 }}
@@ -166,7 +165,7 @@ export default class App extends React.Component<{}, AppState> {
                         <input
                             type="range"
                             name="density"
-                            defaultValue="0"
+                            value={this.state.designSystem.density}
                             min="-3"
                             max="3"
                             onChange={this.handleDensityUpdate}
@@ -182,30 +181,6 @@ export default class App extends React.Component<{}, AppState> {
         );
     }
 
-    private getDesignSystem(): DesignSystem {
-        console.log(
-            "get deisgn system",
-            clone(
-                merge({}, this.state.designSystem, {
-                    accentPalette: this.state.designSystem.accentPalette,
-                    neutralPalette: this.state.designSystem.neutralPalette,
-                    direction: this.state.designSystem.direction,
-                    backgroundColor: this.state.backgroundColor,
-                    density: this.state.designSystem.density,
-                })
-            )
-        );
-        return clone(
-            merge({}, this.state.designSystem, {
-                accentPalette: this.state.designSystem.accentPalette,
-                neutralPalette: this.state.designSystem.neutralPalette,
-                direction: this.state.designSystem.direction,
-                backgroundColor: this.state.backgroundColor,
-                density: this.state.designSystem.density,
-            })
-        );
-    }
-
     private getThemeById(id: ThemeName): Theme {
         return this.themes.find(
             (theme: Theme): boolean => {
@@ -216,9 +191,7 @@ export default class App extends React.Component<{}, AppState> {
 
     private handleUpdateDirection = (direction: Direction): void => {
         const newDir: Direction =
-            this.state.designSystem.direction === Direction.ltr
-                ? Direction.rtl
-                : Direction.ltr;
+            direction === Direction.ltr ? Direction.rtl : Direction.ltr;
 
         if (this.state.designSystem.direction === newDir) {
             return;

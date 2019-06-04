@@ -455,6 +455,7 @@ class Site extends React.Component<
             this.setState({
                 componentData: this.getComponentData(),
                 detailViewComponentData: this.getDetailViewComponentData(),
+                designSystem: get(this.props, "designSystemEditing.data"),
             });
         }
     }
@@ -959,8 +960,6 @@ class Site extends React.Component<
             styleEditing: this.props.styleEditing,
             designSystemEditing: void 0,
         };
-
-        console.log("In dev site", this.props.designSystemEditing.data);
 
         if (!!this.props.designSystemEditing) {
             props.designSystemEditing = {
