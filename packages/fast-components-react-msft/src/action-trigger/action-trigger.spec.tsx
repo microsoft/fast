@@ -29,6 +29,7 @@ describe("action trigger", (): void => {
         actionTrigger__primary: "action-trigger-primary",
         actionTrigger__stealth: "action-trigger-stealth",
         actionTrigger__disabled: "action-trigger-disabled",
+        actionTrigger__hasGlyphAndContent: "action-trigger-has-glyph-and-content",
     };
     const href: string = "#";
 
@@ -211,5 +212,34 @@ describe("action trigger", (): void => {
         );
 
         expect(rendered.find("button").prop("className")).toContain("custom-class-name");
+    });
+
+    test("should apply 'hasGlyphandContent' class when display includes content and glyph", () => {
+        const props: ActionTriggerHandledProps = {
+            glyph: (className?: string): React.ReactNode => {
+                return <div>X</div>;
+            },
+            children: "text",
+        };
+
+        const rendered: any = mount(<ActionTrigger {...props} />);
+
+        expect(rendered.find("button").prop("className")).toContain(
+            "actionTrigger__hasGlyphAndContent"
+        );
+    });
+
+    test("should not apply 'hasGlyphandContent' class when displaying only glyph", () => {
+        const props: ActionTriggerHandledProps = {
+            glyph: (className?: string): React.ReactNode => {
+                return <div>X</div>;
+            },
+        };
+
+        const rendered: any = mount(<ActionTrigger {...props} />);
+
+        expect(rendered.find("button").prop("className")).not.toContain(
+            "actionTrigger__hasGlyphAndContent"
+        );
     });
 });
