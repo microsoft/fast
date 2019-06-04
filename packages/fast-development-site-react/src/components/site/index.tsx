@@ -960,6 +960,8 @@ class Site extends React.Component<
             designSystemEditing: void 0,
         };
 
+        console.log("In dev site", this.props.designSystemEditing.data);
+
         if (!!this.props.designSystemEditing) {
             props.designSystemEditing = {
                 schema: this.props.designSystemEditing.schema,

@@ -85,11 +85,7 @@ enum ThemeName {
 }
 
 export interface AppState extends ColorConfig {
-    accentPalette: string[];
-    neutralPalette: string[];
     theme: ThemeName;
-    direction: Direction;
-    density: DensityOffset;
     designSystem: DesignSystem;
 }
 
@@ -113,17 +109,20 @@ export default class App extends React.Component<{}, AppState> {
 
         this.state = {
             accentColor: accent,
-            accentPalette: this.createColorPalette(parseColor(accent)),
-            neutralPalette: this.createColorPalette(new ColorRGBA64(0.5, 0.5, 0.5, 1)),
-            designSystem: DesignSystemDefaults,
-            direction: Direction.ltr,
+            designSystem: Object.assign({}, DesignSystemDefaults, {
+                accentPalette: this.createColorPalette(parseColor(accent)),
+                neutralPalette: this.createColorPalette(
+                    new ColorRGBA64(0.5, 0.5, 0.5, 1)
+                ),
+                direction: Direction.ltr,
+            }),
             backgroundColor: DesignSystemDefaults.backgroundColor,
             theme: ThemeName.light,
-            density: DesignSystemDefaults.density,
         };
     }
 
     public render(): JSX.Element {
+        console.log("Rendering!");
         return (
             <Site
                 formChildOptions={formChildOptions}
@@ -184,13 +183,25 @@ export default class App extends React.Component<{}, AppState> {
     }
 
     private getDesignSystem(): DesignSystem {
+        console.log(
+            "get deisgn system",
+            clone(
+                merge({}, this.state.designSystem, {
+                    accentPalette: this.state.designSystem.accentPalette,
+                    neutralPalette: this.state.designSystem.neutralPalette,
+                    direction: this.state.designSystem.direction,
+                    backgroundColor: this.state.backgroundColor,
+                    density: this.state.designSystem.density,
+                })
+            )
+        );
         return clone(
             merge({}, this.state.designSystem, {
-                accentPalette: this.state.accentPalette,
-                neutralPalette: this.state.neutralPalette,
-                direction: this.state.direction,
+                accentPalette: this.state.designSystem.accentPalette,
+                neutralPalette: this.state.designSystem.neutralPalette,
+                direction: this.state.designSystem.direction,
                 backgroundColor: this.state.backgroundColor,
-                density: this.state.density,
+                density: this.state.designSystem.density,
             })
         );
     }
@@ -205,14 +216,20 @@ export default class App extends React.Component<{}, AppState> {
 
     private handleUpdateDirection = (direction: Direction): void => {
         const newDir: Direction =
-            this.state.direction === Direction.ltr ? Direction.rtl : Direction.ltr;
+            this.state.designSystem.direction === Direction.ltr
+                ? Direction.rtl
+                : Direction.ltr;
 
-        if (this.state.direction === newDir) {
+        if (this.state.designSystem.direction === newDir) {
             return;
         }
 
         this.setState({
-            direction: newDir,
+            designSystem: clone(
+                merge({}, this.state.designSystem, {
+                    direction: newDir,
+                })
+            ),
         });
     };
 
@@ -257,11 +274,13 @@ export default class App extends React.Component<{}, AppState> {
                 s: hslColor.s,
                 l: 0.5,
             });
-            updates.neutralPalette = this.createColorPalette(hslToRGB(augmentedHSLColor));
+            updates.designSystem.neutralPalette = this.createColorPalette(
+                hslToRGB(augmentedHSLColor)
+            );
         }
 
         if (config.accentColor !== this.state.accentColor) {
-            updates.accentPalette = this.createColorPalette(
+            updates.designSystem.accentPalette = this.createColorPalette(
                 parseColor(config.accentColor)
             );
         }
@@ -280,7 +299,11 @@ export default class App extends React.Component<{}, AppState> {
 
     private handleDensityUpdate = (e: React.ChangeEvent<HTMLInputElement>): void => {
         this.setState({
-            density: parseInt(e.target.value, 10) as DensityOffset,
+            designSystem: clone(
+                merge({}, this.state.designSystem, {
+                    density: parseInt(e.target.value, 10) as DensityOffset,
+                })
+            ),
         });
     };
     /**
