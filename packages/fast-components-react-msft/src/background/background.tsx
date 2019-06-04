@@ -72,12 +72,16 @@ export default class Background extends Foundation<
 
         return (
             <DesignSystemProvider designSystem={this.getDesignSystemOverrides(color)}>
-                <this.props.tag {...this.unhandledProps()} style={style}>
+                <this.tag {...this.unhandledProps()} style={style}>
                     {this.props.children}
-                </this.props.tag>
+                </this.tag>
             </DesignSystemProvider>
         );
     };
+
+    private get tag(): any {
+        return this.props.tag;
+    }
 }
 
 export * from "./background.props";
