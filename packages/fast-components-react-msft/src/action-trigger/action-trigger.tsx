@@ -1,5 +1,5 @@
 import React from "react";
-import { get } from "lodash-es";
+import { get, isNil } from "lodash-es";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import { Button, ButtonAppearance } from "../button";
 import {
@@ -68,12 +68,27 @@ class ActionTrigger extends Foundation<
             )}`;
         }
 
+        if (this.hasGlyphAndContent()) {
+            classNames = `${classNames} ${get(
+                this.props,
+                "managedClasses.actionTrigger__hasGlyphAndContent",
+                ""
+            )}`;
+        }
+
         return super.generateClassNames(classNames);
     }
 
     private generateGlyph = (): React.ReactNode => {
         return this.props.glyph(get(this.props, "managedClasses.actionTrigger_glyph"));
     };
+
+    /**
+     * Checks to see if action trigger is displaying both glyph and content or not
+     */
+    private hasGlyphAndContent(): boolean {
+        return !isNil(this.props.glyph) && !isNil(this.props.children);
+    }
 }
 
 export default ActionTrigger;
