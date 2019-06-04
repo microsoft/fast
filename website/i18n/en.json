@@ -160,6 +160,10 @@
         "title": "FAST Browser extensions",
         "sidebar_label": "Browser extensions"
       },
+      "en/packages/fast-color-explorer/index": {
+        "title": "FAST Introduction",
+        "sidebar_label": "Introduction"
+      },
       "en/packages/fast-colors/api/classes/_color_hsl_.colorhsl": {
         "title": "en/packages/fast-colors/api/classes/_color_hsl_.colorhsl"
       },
@@ -184,17 +188,47 @@
       "en/packages/fast-colors/api/classes/_color_xyz_.colorxyz": {
         "title": "en/packages/fast-colors/api/classes/_color_xyz_.colorxyz"
       },
+      "en/packages/fast-colors/api/classes/_histogram_.histogram": {
+        "title": "en/packages/fast-colors/api/classes/_histogram_.histogram"
+      },
+      "en/packages/fast-colors/api/classes/_pixel_blob_.imagedatapixelblob": {
+        "title": "en/packages/fast-colors/api/classes/_pixel_blob_.imagedatapixelblob"
+      },
+      "en/packages/fast-colors/api/classes/_pixel_box_.pixelbox": {
+        "title": "en/packages/fast-colors/api/classes/_pixel_box_.pixelbox"
+      },
       "en/packages/fast-colors/api/enums/_color_blending_.colorblendmode": {
         "title": "en/packages/fast-colors/api/enums/_color_blending_.colorblendmode"
       },
       "en/packages/fast-colors/api/enums/_color_interpolation_.colorinterpolationspace": {
         "title": "en/packages/fast-colors/api/enums/_color_interpolation_.colorinterpolationspace"
       },
+      "en/packages/fast-colors/api/interfaces/_color_palette_.centeredrescaleconfig": {
+        "title": "en/packages/fast-colors/api/interfaces/_color_palette_.centeredrescaleconfig"
+      },
       "en/packages/fast-colors/api/interfaces/_color_palette_.colorpaletteconfig": {
         "title": "en/packages/fast-colors/api/interfaces/_color_palette_.colorpaletteconfig"
       },
+      "en/packages/fast-colors/api/interfaces/_color_quantization_.quantizeconfig": {
+        "title": "en/packages/fast-colors/api/interfaces/_color_quantization_.quantizeconfig"
+      },
+      "en/packages/fast-colors/api/interfaces/_color_quantization_.quantizedcolor": {
+        "title": "en/packages/fast-colors/api/interfaces/_color_quantization_.quantizedcolor"
+      },
       "en/packages/fast-colors/api/interfaces/_color_scale_.colorscalestop": {
         "title": "en/packages/fast-colors/api/interfaces/_color_scale_.colorscalestop"
+      },
+      "en/packages/fast-colors/api/interfaces/_palette_extractor_.paletteentry": {
+        "title": "en/packages/fast-colors/api/interfaces/_palette_extractor_.paletteentry"
+      },
+      "en/packages/fast-colors/api/interfaces/_palette_extractor_.paletteentryconstraint": {
+        "title": "en/packages/fast-colors/api/interfaces/_palette_extractor_.paletteentryconstraint"
+      },
+      "en/packages/fast-colors/api/interfaces/_palette_extractor_.paletteextractionconfig": {
+        "title": "en/packages/fast-colors/api/interfaces/_palette_extractor_.paletteextractionconfig"
+      },
+      "en/packages/fast-colors/api/interfaces/_pixel_blob_.pixelblob": {
+        "title": "en/packages/fast-colors/api/interfaces/_pixel_blob_.pixelblob"
       },
       "en/packages/fast-colors/api/modules/_color_blending_": {
         "title": "en/packages/fast-colors/api/modules/_color_blending_"
@@ -220,6 +254,9 @@
       "en/packages/fast-colors/api/modules/_color_palette_": {
         "title": "en/packages/fast-colors/api/modules/_color_palette_"
       },
+      "en/packages/fast-colors/api/modules/_color_quantization_": {
+        "title": "en/packages/fast-colors/api/modules/_color_quantization_"
+      },
       "en/packages/fast-colors/api/modules/_color_rgba_64_": {
         "title": "en/packages/fast-colors/api/modules/_color_rgba_64_"
       },
@@ -229,14 +266,26 @@
       "en/packages/fast-colors/api/modules/_color_xyz_": {
         "title": "en/packages/fast-colors/api/modules/_color_xyz_"
       },
+      "en/packages/fast-colors/api/modules/_histogram_": {
+        "title": "en/packages/fast-colors/api/modules/_histogram_"
+      },
       "en/packages/fast-colors/api/modules/_index_": {
         "title": "en/packages/fast-colors/api/modules/_index_"
       },
       "en/packages/fast-colors/api/modules/_math_utilities_": {
         "title": "en/packages/fast-colors/api/modules/_math_utilities_"
       },
+      "en/packages/fast-colors/api/modules/_palette_extractor_": {
+        "title": "en/packages/fast-colors/api/modules/_palette_extractor_"
+      },
       "en/packages/fast-colors/api/modules/_parse_color_": {
         "title": "en/packages/fast-colors/api/modules/_parse_color_"
+      },
+      "en/packages/fast-colors/api/modules/_pixel_blob_": {
+        "title": "en/packages/fast-colors/api/modules/_pixel_blob_"
+      },
+      "en/packages/fast-colors/api/modules/_pixel_box_": {
+        "title": "en/packages/fast-colors/api/modules/_pixel_box_"
       },
       "en/packages/fast-colors/api/index": {
         "title": "en/packages/fast-colors/api/index"
@@ -307,6 +356,12 @@
       },
       "en/packages/fast-components-class-name-contracts-base/api/interfaces/_select_index_.selectclassnamecontract": {
         "title": "en/packages/fast-components-class-name-contracts-base/api/interfaces/_select_index_.selectclassnamecontract"
+      },
+      "en/packages/fast-components-class-name-contracts-base/api/interfaces/_slider_index_.sliderclassnamecontract": {
+        "title": "en/packages/fast-components-class-name-contracts-base/api/interfaces/_slider_index_.sliderclassnamecontract"
+      },
+      "en/packages/fast-components-class-name-contracts-base/api/interfaces/_slider_track_item_index_.slidertrackitemclassnamecontract": {
+        "title": "en/packages/fast-components-class-name-contracts-base/api/interfaces/_slider_track_item_index_.slidertrackitemclassnamecontract"
       },
       "en/packages/fast-components-class-name-contracts-base/api/interfaces/_tabs_index_.tabclassnamecontract": {
         "title": "en/packages/fast-components-class-name-contracts-base/api/interfaces/_tabs_index_.tabclassnamecontract"
@@ -395,6 +450,12 @@
       "en/packages/fast-components-class-name-contracts-base/api/modules/_select_index_": {
         "title": "en/packages/fast-components-class-name-contracts-base/api/modules/_select_index_"
       },
+      "en/packages/fast-components-class-name-contracts-base/api/modules/_slider_index_": {
+        "title": "en/packages/fast-components-class-name-contracts-base/api/modules/_slider_index_"
+      },
+      "en/packages/fast-components-class-name-contracts-base/api/modules/_slider_track_item_index_": {
+        "title": "en/packages/fast-components-class-name-contracts-base/api/modules/_slider_track_item_index_"
+      },
       "en/packages/fast-components-class-name-contracts-base/api/modules/_tabs_index_": {
         "title": "en/packages/fast-components-class-name-contracts-base/api/modules/_tabs_index_"
       },
@@ -471,11 +532,20 @@
       "en/packages/fast-components-class-name-contracts-msft/api/interfaces/_select_option_index_.selectoptionclassnamecontract": {
         "title": "en/packages/fast-components-class-name-contracts-msft/api/interfaces/_select_option_index_.selectoptionclassnamecontract"
       },
+      "en/packages/fast-components-class-name-contracts-msft/api/interfaces/_slider_index_.sliderclassnamecontract": {
+        "title": "en/packages/fast-components-class-name-contracts-msft/api/interfaces/_slider_index_.sliderclassnamecontract"
+      },
+      "en/packages/fast-components-class-name-contracts-msft/api/interfaces/_slider_label_index_.sliderlabelclassnamecontract": {
+        "title": "en/packages/fast-components-class-name-contracts-msft/api/interfaces/_slider_label_index_.sliderlabelclassnamecontract"
+      },
       "en/packages/fast-components-class-name-contracts-msft/api/interfaces/_subheading_index_.subheadingclassnamecontract": {
         "title": "en/packages/fast-components-class-name-contracts-msft/api/interfaces/_subheading_index_.subheadingclassnamecontract"
       },
       "en/packages/fast-components-class-name-contracts-msft/api/interfaces/_text_action_index_.textactionclassnamecontract": {
         "title": "en/packages/fast-components-class-name-contracts-msft/api/interfaces/_text_action_index_.textactionclassnamecontract"
+      },
+      "en/packages/fast-components-class-name-contracts-msft/api/interfaces/_text_field_index_.textfieldclassnamecontract": {
+        "title": "en/packages/fast-components-class-name-contracts-msft/api/interfaces/_text_field_index_.textfieldclassnamecontract"
       },
       "en/packages/fast-components-class-name-contracts-msft/api/modules/_action_toggle_index_": {
         "title": "en/packages/fast-components-class-name-contracts-msft/api/modules/_action_toggle_index_"
@@ -537,11 +607,20 @@
       "en/packages/fast-components-class-name-contracts-msft/api/modules/_select_option_index_": {
         "title": "en/packages/fast-components-class-name-contracts-msft/api/modules/_select_option_index_"
       },
+      "en/packages/fast-components-class-name-contracts-msft/api/modules/_slider_index_": {
+        "title": "en/packages/fast-components-class-name-contracts-msft/api/modules/_slider_index_"
+      },
+      "en/packages/fast-components-class-name-contracts-msft/api/modules/_slider_label_index_": {
+        "title": "en/packages/fast-components-class-name-contracts-msft/api/modules/_slider_label_index_"
+      },
       "en/packages/fast-components-class-name-contracts-msft/api/modules/_subheading_index_": {
         "title": "en/packages/fast-components-class-name-contracts-msft/api/modules/_subheading_index_"
       },
       "en/packages/fast-components-class-name-contracts-msft/api/modules/_text_action_index_": {
         "title": "en/packages/fast-components-class-name-contracts-msft/api/modules/_text_action_index_"
+      },
+      "en/packages/fast-components-class-name-contracts-msft/api/modules/_text_field_index_": {
+        "title": "en/packages/fast-components-class-name-contracts-msft/api/modules/_text_field_index_"
       },
       "en/packages/fast-components-class-name-contracts-msft/api/index": {
         "title": "en/packages/fast-components-class-name-contracts-msft/api/index"
@@ -578,11 +657,17 @@
         "title": "FAST Components foundation React",
         "sidebar_label": "Components foundation React"
       },
-      "en/packages/fast-components-react-base/api/classes/_horizontal_overflow_resize_observer_.resizeobserverclassdefinition": {
-        "title": "en/packages/fast-components-react-base/api/classes/_horizontal_overflow_resize_observer_.resizeobserverclassdefinition"
+      "en/packages/fast-components-react-base/api/classes/_utilities_intersection_observer_.intersectionobserverclassdefinition": {
+        "title": "en/packages/fast-components-react-base/api/classes/_utilities_intersection_observer_.intersectionobserverclassdefinition"
       },
-      "en/packages/fast-components-react-base/api/classes/_horizontal_overflow_resize_observer_entry_.resizeobserverentry": {
-        "title": "en/packages/fast-components-react-base/api/classes/_horizontal_overflow_resize_observer_entry_.resizeobserverentry"
+      "en/packages/fast-components-react-base/api/classes/_utilities_intersection_observer_entry_.intersectionobserverentry": {
+        "title": "en/packages/fast-components-react-base/api/classes/_utilities_intersection_observer_entry_.intersectionobserverentry"
+      },
+      "en/packages/fast-components-react-base/api/classes/_utilities_resize_observer_.resizeobserverclassdefinition": {
+        "title": "en/packages/fast-components-react-base/api/classes/_utilities_resize_observer_.resizeobserverclassdefinition"
+      },
+      "en/packages/fast-components-react-base/api/classes/_utilities_resize_observer_entry_.resizeobserverentry": {
+        "title": "en/packages/fast-components-react-base/api/classes/_utilities_resize_observer_entry_.resizeobserverentry"
       },
       "en/packages/fast-components-react-base/api/enums/_button_button_.buttonhtmltags": {
         "title": "en/packages/fast-components-react-base/api/enums/_button_button_.buttonhtmltags"
@@ -613,6 +698,18 @@
       },
       "en/packages/fast-components-react-base/api/enums/_radio_radio_.radioslot": {
         "title": "en/packages/fast-components-react-base/api/enums/_radio_radio_.radioslot"
+      },
+      "en/packages/fast-components-react-base/api/enums/_slider_slider_.sliderthumb": {
+        "title": "en/packages/fast-components-react-base/api/enums/_slider_slider_.sliderthumb"
+      },
+      "en/packages/fast-components-react-base/api/enums/_slider_slider_props_.slidermode": {
+        "title": "en/packages/fast-components-react-base/api/enums/_slider_slider_props_.slidermode"
+      },
+      "en/packages/fast-components-react-base/api/enums/_slider_slider_props_.sliderorientation": {
+        "title": "en/packages/fast-components-react-base/api/enums/_slider_slider_props_.sliderorientation"
+      },
+      "en/packages/fast-components-react-base/api/enums/_slider_track_item_slider_track_item_props_.slidertrackitemanchor": {
+        "title": "en/packages/fast-components-react-base/api/enums/_slider_track_item_slider_track_item_props_.slidertrackitemanchor"
       },
       "en/packages/fast-components-react-base/api/enums/_tabs_tabs_.tablocation": {
         "title": "en/packages/fast-components-react-base/api/enums/_tabs_tabs_.tablocation"
@@ -752,9 +849,6 @@
       "en/packages/fast-components-react-base/api/interfaces/_horizontal_overflow_horizontal_overflow_props_.scrollchange": {
         "title": "en/packages/fast-components-react-base/api/interfaces/_horizontal_overflow_horizontal_overflow_props_.scrollchange"
       },
-      "en/packages/fast-components-react-base/api/interfaces/_horizontal_overflow_resize_observer_entry_.contentrect": {
-        "title": "en/packages/fast-components-react-base/api/interfaces/_horizontal_overflow_resize_observer_entry_.contentrect"
-      },
       "en/packages/fast-components-react-base/api/interfaces/_hypertext_hypertext_props_.hypertexthandledprops": {
         "title": "en/packages/fast-components-react-base/api/interfaces/_hypertext_hypertext_props_.hypertexthandledprops"
       },
@@ -845,6 +939,33 @@
       "en/packages/fast-components-react-base/api/interfaces/_select_select_props_.selectunhandledprops": {
         "title": "en/packages/fast-components-react-base/api/interfaces/_select_select_props_.selectunhandledprops"
       },
+      "en/packages/fast-components-react-base/api/interfaces/_slider_slider_.sliderstate": {
+        "title": "en/packages/fast-components-react-base/api/interfaces/_slider_slider_.sliderstate"
+      },
+      "en/packages/fast-components-react-base/api/interfaces/_slider_slider_context_.slidercontexttype": {
+        "title": "en/packages/fast-components-react-base/api/interfaces/_slider_slider_context_.slidercontexttype"
+      },
+      "en/packages/fast-components-react-base/api/interfaces/_slider_slider_props_.sliderhandledprops": {
+        "title": "en/packages/fast-components-react-base/api/interfaces/_slider_slider_props_.sliderhandledprops"
+      },
+      "en/packages/fast-components-react-base/api/interfaces/_slider_slider_props_.slidermanagedclasses": {
+        "title": "en/packages/fast-components-react-base/api/interfaces/_slider_slider_props_.slidermanagedclasses"
+      },
+      "en/packages/fast-components-react-base/api/interfaces/_slider_slider_props_.sliderrange": {
+        "title": "en/packages/fast-components-react-base/api/interfaces/_slider_slider_props_.sliderrange"
+      },
+      "en/packages/fast-components-react-base/api/interfaces/_slider_slider_props_.sliderunhandledprops": {
+        "title": "en/packages/fast-components-react-base/api/interfaces/_slider_slider_props_.sliderunhandledprops"
+      },
+      "en/packages/fast-components-react-base/api/interfaces/_slider_track_item_slider_track_item_props_.slidertrackitemhandledprops": {
+        "title": "en/packages/fast-components-react-base/api/interfaces/_slider_track_item_slider_track_item_props_.slidertrackitemhandledprops"
+      },
+      "en/packages/fast-components-react-base/api/interfaces/_slider_track_item_slider_track_item_props_.slidertrackitemmanagedclasses": {
+        "title": "en/packages/fast-components-react-base/api/interfaces/_slider_track_item_slider_track_item_props_.slidertrackitemmanagedclasses"
+      },
+      "en/packages/fast-components-react-base/api/interfaces/_slider_track_item_slider_track_item_props_.slidertrackitemunhandledprops": {
+        "title": "en/packages/fast-components-react-base/api/interfaces/_slider_track_item_slider_track_item_props_.slidertrackitemunhandledprops"
+      },
       "en/packages/fast-components-react-base/api/interfaces/_tabs_tab_item_props_.tabitemhandledprops": {
         "title": "en/packages/fast-components-react-base/api/interfaces/_tabs_tab_item_props_.tabitemhandledprops"
       },
@@ -922,6 +1043,12 @@
       },
       "en/packages/fast-components-react-base/api/interfaces/_typography_typography_props_.typographyunhandledprops": {
         "title": "en/packages/fast-components-react-base/api/interfaces/_typography_typography_props_.typographyunhandledprops"
+      },
+      "en/packages/fast-components-react-base/api/interfaces/_utilities_intersection_observer_.intersectionobserveroptions": {
+        "title": "en/packages/fast-components-react-base/api/interfaces/_utilities_intersection_observer_.intersectionobserveroptions"
+      },
+      "en/packages/fast-components-react-base/api/interfaces/_utilities_resize_observer_entry_.contentrect": {
+        "title": "en/packages/fast-components-react-base/api/interfaces/_utilities_resize_observer_entry_.contentrect"
       },
       "en/packages/fast-components-react-base/api/modules/_auto_suggest_auto_suggest_": {
         "title": "en/packages/fast-components-react-base/api/modules/_auto_suggest_auto_suggest_"
@@ -1025,12 +1152,6 @@
       "en/packages/fast-components-react-base/api/modules/_horizontal_overflow_index_": {
         "title": "en/packages/fast-components-react-base/api/modules/_horizontal_overflow_index_"
       },
-      "en/packages/fast-components-react-base/api/modules/_horizontal_overflow_resize_observer_": {
-        "title": "en/packages/fast-components-react-base/api/modules/_horizontal_overflow_resize_observer_"
-      },
-      "en/packages/fast-components-react-base/api/modules/_horizontal_overflow_resize_observer_entry_": {
-        "title": "en/packages/fast-components-react-base/api/modules/_horizontal_overflow_resize_observer_entry_"
-      },
       "en/packages/fast-components-react-base/api/modules/_hypertext_hypertext_": {
         "title": "en/packages/fast-components-react-base/api/modules/_hypertext_hypertext_"
       },
@@ -1118,6 +1239,27 @@
       "en/packages/fast-components-react-base/api/modules/_select_select_props_": {
         "title": "en/packages/fast-components-react-base/api/modules/_select_select_props_"
       },
+      "en/packages/fast-components-react-base/api/modules/_slider_index_": {
+        "title": "en/packages/fast-components-react-base/api/modules/_slider_index_"
+      },
+      "en/packages/fast-components-react-base/api/modules/_slider_slider_": {
+        "title": "en/packages/fast-components-react-base/api/modules/_slider_slider_"
+      },
+      "en/packages/fast-components-react-base/api/modules/_slider_slider_context_": {
+        "title": "en/packages/fast-components-react-base/api/modules/_slider_slider_context_"
+      },
+      "en/packages/fast-components-react-base/api/modules/_slider_slider_props_": {
+        "title": "en/packages/fast-components-react-base/api/modules/_slider_slider_props_"
+      },
+      "en/packages/fast-components-react-base/api/modules/_slider_track_item_index_": {
+        "title": "en/packages/fast-components-react-base/api/modules/_slider_track_item_index_"
+      },
+      "en/packages/fast-components-react-base/api/modules/_slider_track_item_slider_track_item_": {
+        "title": "en/packages/fast-components-react-base/api/modules/_slider_track_item_slider_track_item_"
+      },
+      "en/packages/fast-components-react-base/api/modules/_slider_track_item_slider_track_item_props_": {
+        "title": "en/packages/fast-components-react-base/api/modules/_slider_track_item_slider_track_item_props_"
+      },
       "en/packages/fast-components-react-base/api/modules/_tabs_index_": {
         "title": "en/packages/fast-components-react-base/api/modules/_tabs_index_"
       },
@@ -1184,6 +1326,18 @@
       "en/packages/fast-components-react-base/api/modules/_utilities_index_": {
         "title": "en/packages/fast-components-react-base/api/modules/_utilities_index_"
       },
+      "en/packages/fast-components-react-base/api/modules/_utilities_intersection_observer_": {
+        "title": "en/packages/fast-components-react-base/api/modules/_utilities_intersection_observer_"
+      },
+      "en/packages/fast-components-react-base/api/modules/_utilities_intersection_observer_entry_": {
+        "title": "en/packages/fast-components-react-base/api/modules/_utilities_intersection_observer_entry_"
+      },
+      "en/packages/fast-components-react-base/api/modules/_utilities_resize_observer_": {
+        "title": "en/packages/fast-components-react-base/api/modules/_utilities_resize_observer_"
+      },
+      "en/packages/fast-components-react-base/api/modules/_utilities_resize_observer_entry_": {
+        "title": "en/packages/fast-components-react-base/api/modules/_utilities_resize_observer_entry_"
+      },
       "en/packages/fast-components-react-base/api/index": {
         "title": "en/packages/fast-components-react-base/api/index"
       },
@@ -1191,11 +1345,20 @@
         "title": "FAST Components React base",
         "sidebar_label": "Components React base"
       },
+      "en/packages/fast-components-react-msft/api/classes/_background_background_.background": {
+        "title": "en/packages/fast-components-react-msft/api/classes/_background_background_.background"
+      },
       "en/packages/fast-components-react-msft/api/enums/_action_toggle_action_toggle_props_.actiontoggleappearance": {
         "title": "en/packages/fast-components-react-msft/api/enums/_action_toggle_action_toggle_props_.actiontoggleappearance"
       },
       "en/packages/fast-components-react-msft/api/enums/_action_trigger_action_trigger_props_.actiontriggerappearance": {
         "title": "en/packages/fast-components-react-msft/api/enums/_action_trigger_action_trigger_props_.actiontriggerappearance"
+      },
+      "en/packages/fast-components-react-msft/api/enums/_background_background_props_.darkmodebackgrounds": {
+        "title": "en/packages/fast-components-react-msft/api/enums/_background_background_props_.darkmodebackgrounds"
+      },
+      "en/packages/fast-components-react-msft/api/enums/_background_background_props_.lightmodebackgrounds": {
+        "title": "en/packages/fast-components-react-msft/api/enums/_background_background_props_.lightmodebackgrounds"
       },
       "en/packages/fast-components-react-msft/api/enums/_badge_badge_props_.badgesize": {
         "title": "en/packages/fast-components-react-msft/api/enums/_badge_badge_props_.badgesize"
@@ -1242,8 +1405,14 @@
       "en/packages/fast-components-react-msft/api/enums/_subheading_subheading_props_.subheadingtag": {
         "title": "en/packages/fast-components-react-msft/api/enums/_subheading_subheading_props_.subheadingtag"
       },
+      "en/packages/fast-components-react-msft/api/enums/_text_action_text_action_props_.textactionappearance": {
+        "title": "en/packages/fast-components-react-msft/api/enums/_text_action_text_action_props_.textactionappearance"
+      },
       "en/packages/fast-components-react-msft/api/enums/_text_action_text_action_props_.textactionbuttonposition": {
         "title": "en/packages/fast-components-react-msft/api/enums/_text_action_text_action_props_.textactionbuttonposition"
+      },
+      "en/packages/fast-components-react-msft/api/enums/_text_field_text_field_props_.textfieldappearance": {
+        "title": "en/packages/fast-components-react-msft/api/enums/_text_field_text_field_props_.textfieldappearance"
       },
       "en/packages/fast-components-react-msft/api/interfaces/_action_toggle_action_toggle_.actiontogglestate": {
         "title": "en/packages/fast-components-react-msft/api/interfaces/_action_toggle_action_toggle_.actiontogglestate"
@@ -1283,6 +1452,12 @@
       },
       "en/packages/fast-components-react-msft/api/interfaces/_auto_suggest_option_auto_suggest_option_props_.autosuggestoptionunhandledprops": {
         "title": "en/packages/fast-components-react-msft/api/interfaces/_auto_suggest_option_auto_suggest_option_props_.autosuggestoptionunhandledprops"
+      },
+      "en/packages/fast-components-react-msft/api/interfaces/_background_background_props_.backgroundhandledprops": {
+        "title": "en/packages/fast-components-react-msft/api/interfaces/_background_background_props_.backgroundhandledprops"
+      },
+      "en/packages/fast-components-react-msft/api/interfaces/_background_background_props_.backgroundunhandledprops": {
+        "title": "en/packages/fast-components-react-msft/api/interfaces/_background_background_props_.backgroundunhandledprops"
       },
       "en/packages/fast-components-react-msft/api/interfaces/_badge_badge_props_.badgehandledprops": {
         "title": "en/packages/fast-components-react-msft/api/interfaces/_badge_badge_props_.badgehandledprops"
@@ -1419,6 +1594,24 @@
       "en/packages/fast-components-react-msft/api/interfaces/_select_select_props_.selectunhandledprops": {
         "title": "en/packages/fast-components-react-msft/api/interfaces/_select_select_props_.selectunhandledprops"
       },
+      "en/packages/fast-components-react-msft/api/interfaces/_slider_label_slider_label_props_.sliderlabelhandledprops": {
+        "title": "en/packages/fast-components-react-msft/api/interfaces/_slider_label_slider_label_props_.sliderlabelhandledprops"
+      },
+      "en/packages/fast-components-react-msft/api/interfaces/_slider_label_slider_label_props_.sliderlabelmanagedclasses": {
+        "title": "en/packages/fast-components-react-msft/api/interfaces/_slider_label_slider_label_props_.sliderlabelmanagedclasses"
+      },
+      "en/packages/fast-components-react-msft/api/interfaces/_slider_label_slider_label_props_.sliderlabelunhandledprops": {
+        "title": "en/packages/fast-components-react-msft/api/interfaces/_slider_label_slider_label_props_.sliderlabelunhandledprops"
+      },
+      "en/packages/fast-components-react-msft/api/interfaces/_slider_slider_props_.sliderhandledprops": {
+        "title": "en/packages/fast-components-react-msft/api/interfaces/_slider_slider_props_.sliderhandledprops"
+      },
+      "en/packages/fast-components-react-msft/api/interfaces/_slider_slider_props_.slidermanagedclasses": {
+        "title": "en/packages/fast-components-react-msft/api/interfaces/_slider_slider_props_.slidermanagedclasses"
+      },
+      "en/packages/fast-components-react-msft/api/interfaces/_slider_slider_props_.sliderunhandledprops": {
+        "title": "en/packages/fast-components-react-msft/api/interfaces/_slider_slider_props_.sliderunhandledprops"
+      },
       "en/packages/fast-components-react-msft/api/interfaces/_subheading_subheading_props_.subheadinghandledprops": {
         "title": "en/packages/fast-components-react-msft/api/interfaces/_subheading_subheading_props_.subheadinghandledprops"
       },
@@ -1439,6 +1632,15 @@
       },
       "en/packages/fast-components-react-msft/api/interfaces/_text_action_text_action_props_.textactionunhandledprops": {
         "title": "en/packages/fast-components-react-msft/api/interfaces/_text_action_text_action_props_.textactionunhandledprops"
+      },
+      "en/packages/fast-components-react-msft/api/interfaces/_text_field_text_field_props_.textfieldhandledprops": {
+        "title": "en/packages/fast-components-react-msft/api/interfaces/_text_field_text_field_props_.textfieldhandledprops"
+      },
+      "en/packages/fast-components-react-msft/api/interfaces/_text_field_text_field_props_.textfieldmanagedclasses": {
+        "title": "en/packages/fast-components-react-msft/api/interfaces/_text_field_text_field_props_.textfieldmanagedclasses"
+      },
+      "en/packages/fast-components-react-msft/api/interfaces/_text_field_text_field_props_.textfieldunhandledprops": {
+        "title": "en/packages/fast-components-react-msft/api/interfaces/_text_field_text_field_props_.textfieldunhandledprops"
       },
       "en/packages/fast-components-react-msft/api/modules/_action_toggle_action_toggle_": {
         "title": "en/packages/fast-components-react-msft/api/modules/_action_toggle_action_toggle_"
@@ -1475,6 +1677,15 @@
       },
       "en/packages/fast-components-react-msft/api/modules/_auto_suggest_option_index_": {
         "title": "en/packages/fast-components-react-msft/api/modules/_auto_suggest_option_index_"
+      },
+      "en/packages/fast-components-react-msft/api/modules/_background_background_": {
+        "title": "en/packages/fast-components-react-msft/api/modules/_background_background_"
+      },
+      "en/packages/fast-components-react-msft/api/modules/_background_background_props_": {
+        "title": "en/packages/fast-components-react-msft/api/modules/_background_background_props_"
+      },
+      "en/packages/fast-components-react-msft/api/modules/_background_index_": {
+        "title": "en/packages/fast-components-react-msft/api/modules/_background_index_"
       },
       "en/packages/fast-components-react-msft/api/modules/_badge_badge_": {
         "title": "en/packages/fast-components-react-msft/api/modules/_badge_badge_"
@@ -1638,6 +1849,24 @@
       "en/packages/fast-components-react-msft/api/modules/_select_select_props_": {
         "title": "en/packages/fast-components-react-msft/api/modules/_select_select_props_"
       },
+      "en/packages/fast-components-react-msft/api/modules/_slider_index_": {
+        "title": "en/packages/fast-components-react-msft/api/modules/_slider_index_"
+      },
+      "en/packages/fast-components-react-msft/api/modules/_slider_label_index_": {
+        "title": "en/packages/fast-components-react-msft/api/modules/_slider_label_index_"
+      },
+      "en/packages/fast-components-react-msft/api/modules/_slider_label_slider_label_": {
+        "title": "en/packages/fast-components-react-msft/api/modules/_slider_label_slider_label_"
+      },
+      "en/packages/fast-components-react-msft/api/modules/_slider_label_slider_label_props_": {
+        "title": "en/packages/fast-components-react-msft/api/modules/_slider_label_slider_label_props_"
+      },
+      "en/packages/fast-components-react-msft/api/modules/_slider_slider_": {
+        "title": "en/packages/fast-components-react-msft/api/modules/_slider_slider_"
+      },
+      "en/packages/fast-components-react-msft/api/modules/_slider_slider_props_": {
+        "title": "en/packages/fast-components-react-msft/api/modules/_slider_slider_props_"
+      },
       "en/packages/fast-components-react-msft/api/modules/_subheading_index_": {
         "title": "en/packages/fast-components-react-msft/api/modules/_subheading_index_"
       },
@@ -1662,6 +1891,12 @@
       "en/packages/fast-components-react-msft/api/modules/_text_field_index_": {
         "title": "en/packages/fast-components-react-msft/api/modules/_text_field_index_"
       },
+      "en/packages/fast-components-react-msft/api/modules/_text_field_text_field_": {
+        "title": "en/packages/fast-components-react-msft/api/modules/_text_field_text_field_"
+      },
+      "en/packages/fast-components-react-msft/api/modules/_text_field_text_field_props_": {
+        "title": "en/packages/fast-components-react-msft/api/modules/_text_field_text_field_props_"
+      },
       "en/packages/fast-components-react-msft/api/modules/_toggle_index_": {
         "title": "en/packages/fast-components-react-msft/api/modules/_toggle_index_"
       },
@@ -1680,6 +1915,12 @@
       },
       "en/packages/fast-components-styles-msft/api/enums/_utilities_color_common_.swatchfamilytype": {
         "title": "en/packages/fast-components-styles-msft/api/enums/_utilities_color_common_.swatchfamilytype"
+      },
+      "en/packages/fast-components-styles-msft/api/enums/_utilities_color_neutral_layer_.neutralpalettedarkmodelayers": {
+        "title": "en/packages/fast-components-styles-msft/api/enums/_utilities_color_neutral_layer_.neutralpalettedarkmodelayers"
+      },
+      "en/packages/fast-components-styles-msft/api/enums/_utilities_color_neutral_layer_.neutralpalettelightmodelayers": {
+        "title": "en/packages/fast-components-styles-msft/api/enums/_utilities_color_neutral_layer_.neutralpalettelightmodelayers"
       },
       "en/packages/fast-components-styles-msft/api/enums/_utilities_color_palette_.palettetype": {
         "title": "en/packages/fast-components-styles-msft/api/enums/_utilities_color_palette_.palettetype"
@@ -1807,6 +2048,12 @@
       "en/packages/fast-components-styles-msft/api/modules/_select_option_index_": {
         "title": "en/packages/fast-components-styles-msft/api/modules/_select_option_index_"
       },
+      "en/packages/fast-components-styles-msft/api/modules/_slider_index_": {
+        "title": "en/packages/fast-components-styles-msft/api/modules/_slider_index_"
+      },
+      "en/packages/fast-components-styles-msft/api/modules/_slider_label_index_": {
+        "title": "en/packages/fast-components-styles-msft/api/modules/_slider_label_index_"
+      },
       "en/packages/fast-components-styles-msft/api/modules/_subheading_index_": {
         "title": "en/packages/fast-components-styles-msft/api/modules/_subheading_index_"
       },
@@ -1855,6 +2102,9 @@
       "en/packages/fast-components-styles-msft/api/modules/_utilities_color_neutral_fill_": {
         "title": "en/packages/fast-components-styles-msft/api/modules/_utilities_color_neutral_fill_"
       },
+      "en/packages/fast-components-styles-msft/api/modules/_utilities_color_neutral_fill_card_": {
+        "title": "en/packages/fast-components-styles-msft/api/modules/_utilities_color_neutral_fill_card_"
+      },
       "en/packages/fast-components-styles-msft/api/modules/_utilities_color_neutral_fill_input_": {
         "title": "en/packages/fast-components-styles-msft/api/modules/_utilities_color_neutral_fill_input_"
       },
@@ -1870,6 +2120,9 @@
       "en/packages/fast-components-styles-msft/api/modules/_utilities_color_neutral_foreground_hint_": {
         "title": "en/packages/fast-components-styles-msft/api/modules/_utilities_color_neutral_foreground_hint_"
       },
+      "en/packages/fast-components-styles-msft/api/modules/_utilities_color_neutral_layer_": {
+        "title": "en/packages/fast-components-styles-msft/api/modules/_utilities_color_neutral_layer_"
+      },
       "en/packages/fast-components-styles-msft/api/modules/_utilities_color_neutral_outline_": {
         "title": "en/packages/fast-components-styles-msft/api/modules/_utilities_color_neutral_outline_"
       },
@@ -1881,6 +2134,9 @@
       },
       "en/packages/fast-components-styles-msft/api/modules/_utilities_density_": {
         "title": "en/packages/fast-components-styles-msft/api/modules/_utilities_density_"
+      },
+      "en/packages/fast-components-styles-msft/api/modules/_utilities_design_system_": {
+        "title": "en/packages/fast-components-styles-msft/api/modules/_utilities_design_system_"
       },
       "en/packages/fast-components-styles-msft/api/modules/_utilities_disabled_": {
         "title": "en/packages/fast-components-styles-msft/api/modules/_utilities_disabled_"
@@ -2054,11 +2310,17 @@
       "en/packages/fast-jss-utilities/api/modules/_focus_": {
         "title": "en/packages/fast-jss-utilities/api/modules/_focus_"
       },
+      "en/packages/fast-jss-utilities/api/modules/_format_": {
+        "title": "en/packages/fast-jss-utilities/api/modules/_format_"
+      },
       "en/packages/fast-jss-utilities/api/modules/_index_": {
         "title": "en/packages/fast-jss-utilities/api/modules/_index_"
       },
       "en/packages/fast-jss-utilities/api/modules/_localization_": {
         "title": "en/packages/fast-jss-utilities/api/modules/_localization_"
+      },
+      "en/packages/fast-jss-utilities/api/modules/_math_": {
+        "title": "en/packages/fast-jss-utilities/api/modules/_math_"
       },
       "en/packages/fast-jss-utilities/api/modules/_max_lines_": {
         "title": "en/packages/fast-jss-utilities/api/modules/_max_lines_"
@@ -2334,11 +2596,17 @@
       "en/packages/fast-tooling-react/api/classes/_css_editor_editor_.csseditor": {
         "title": "en/packages/fast-tooling-react/api/classes/_css_editor_editor_.csseditor"
       },
+      "en/packages/fast-tooling-react/api/classes/_css_editor_height_height_.cssheight": {
+        "title": "en/packages/fast-tooling-react/api/classes/_css_editor_height_height_.cssheight"
+      },
       "en/packages/fast-tooling-react/api/classes/_css_editor_position_position_.cssposition": {
         "title": "en/packages/fast-tooling-react/api/classes/_css_editor_position_position_.cssposition"
       },
       "en/packages/fast-tooling-react/api/classes/_css_editor_spacing_spacing_.cssspacing": {
         "title": "en/packages/fast-tooling-react/api/classes/_css_editor_spacing_spacing_.cssspacing"
+      },
+      "en/packages/fast-tooling-react/api/classes/_css_editor_width_width_.csswidth": {
+        "title": "en/packages/fast-tooling-react/api/classes/_css_editor_width_width_.csswidth"
       },
       "en/packages/fast-tooling-react/api/classes/_data_utilities_plugin_.plugin": {
         "title": "en/packages/fast-tooling-react/api/classes/_data_utilities_plugin_.plugin"
@@ -2412,8 +2680,8 @@
       "en/packages/fast-tooling-react/api/enums/_form_utilities_form_.propertykeyword": {
         "title": "en/packages/fast-tooling-react/api/enums/_form_utilities_form_.propertykeyword"
       },
-      "en/packages/fast-tooling-react/api/enums/_navigation_navigation_props_.itemtype": {
-        "title": "en/packages/fast-tooling-react/api/enums/_navigation_navigation_props_.itemtype"
+      "en/packages/fast-tooling-react/api/enums/_navigation_navigation_props_.navigationdatatype": {
+        "title": "en/packages/fast-tooling-react/api/enums/_navigation_navigation_props_.navigationdatatype"
       },
       "en/packages/fast-tooling-react/api/enums/_viewer_rotate_rotate_props_.orientation": {
         "title": "en/packages/fast-tooling-react/api/enums/_viewer_rotate_rotate_props_.orientation"
@@ -2441,6 +2709,18 @@
       },
       "en/packages/fast-tooling-react/api/interfaces/_css_editor_editor_style_.csseditorclassnamecontract": {
         "title": "en/packages/fast-tooling-react/api/interfaces/_css_editor_editor_style_.csseditorclassnamecontract"
+      },
+      "en/packages/fast-tooling-react/api/interfaces/_css_editor_height_height_props_.cssheighthandledprops": {
+        "title": "en/packages/fast-tooling-react/api/interfaces/_css_editor_height_height_props_.cssheighthandledprops"
+      },
+      "en/packages/fast-tooling-react/api/interfaces/_css_editor_height_height_props_.cssheightunhandledprops": {
+        "title": "en/packages/fast-tooling-react/api/interfaces/_css_editor_height_height_props_.cssheightunhandledprops"
+      },
+      "en/packages/fast-tooling-react/api/interfaces/_css_editor_height_height_props_.cssheightvalues": {
+        "title": "en/packages/fast-tooling-react/api/interfaces/_css_editor_height_height_props_.cssheightvalues"
+      },
+      "en/packages/fast-tooling-react/api/interfaces/_css_editor_height_height_style_.cssheightclassnamecontract": {
+        "title": "en/packages/fast-tooling-react/api/interfaces/_css_editor_height_height_style_.cssheightclassnamecontract"
       },
       "en/packages/fast-tooling-react/api/interfaces/_css_editor_position_position_props_.csspositionhandledprops": {
         "title": "en/packages/fast-tooling-react/api/interfaces/_css_editor_position_position_props_.csspositionhandledprops"
@@ -2471,6 +2751,30 @@
       },
       "en/packages/fast-tooling-react/api/interfaces/_css_editor_spacing_spacing_style_.cssspacingclassnamecontract": {
         "title": "en/packages/fast-tooling-react/api/interfaces/_css_editor_spacing_spacing_style_.cssspacingclassnamecontract"
+      },
+      "en/packages/fast-tooling-react/api/interfaces/_css_editor_width_width_props_.csswidthhandledprops": {
+        "title": "en/packages/fast-tooling-react/api/interfaces/_css_editor_width_width_props_.csswidthhandledprops"
+      },
+      "en/packages/fast-tooling-react/api/interfaces/_css_editor_width_width_props_.csswidthunhandledprops": {
+        "title": "en/packages/fast-tooling-react/api/interfaces/_css_editor_width_width_props_.csswidthunhandledprops"
+      },
+      "en/packages/fast-tooling-react/api/interfaces/_css_editor_width_width_props_.csswidthvalues": {
+        "title": "en/packages/fast-tooling-react/api/interfaces/_css_editor_width_width_props_.csswidthvalues"
+      },
+      "en/packages/fast-tooling-react/api/interfaces/_css_editor_width_width_style_.csswidthclassnamecontract": {
+        "title": "en/packages/fast-tooling-react/api/interfaces/_css_editor_width_width_style_.csswidthclassnamecontract"
+      },
+      "en/packages/fast-tooling-react/api/interfaces/_data_utilities_mapping_.codepreviewchildoption": {
+        "title": "en/packages/fast-tooling-react/api/interfaces/_data_utilities_mapping_.codepreviewchildoption"
+      },
+      "en/packages/fast-tooling-react/api/interfaces/_data_utilities_mapping_.codepreviewconfig": {
+        "title": "en/packages/fast-tooling-react/api/interfaces/_data_utilities_mapping_.codepreviewconfig"
+      },
+      "en/packages/fast-tooling-react/api/interfaces/_data_utilities_mapping_.componentcodepreviewconfig": {
+        "title": "en/packages/fast-tooling-react/api/interfaces/_data_utilities_mapping_.componentcodepreviewconfig"
+      },
+      "en/packages/fast-tooling-react/api/interfaces/_data_utilities_mapping_.mapcodepreviewconfig": {
+        "title": "en/packages/fast-tooling-react/api/interfaces/_data_utilities_mapping_.mapcodepreviewconfig"
       },
       "en/packages/fast-tooling-react/api/interfaces/_data_utilities_plugin_.pluginprops": {
         "title": "en/packages/fast-tooling-react/api/interfaces/_data_utilities_plugin_.pluginprops"
@@ -2517,6 +2821,9 @@
       "en/packages/fast-tooling-react/api/interfaces/_form_form_form_item_checkbox_props_.formitemcheckboxclassnamecontract": {
         "title": "en/packages/fast-tooling-react/api/interfaces/_form_form_form_item_checkbox_props_.formitemcheckboxclassnamecontract"
       },
+      "en/packages/fast-tooling-react/api/interfaces/_form_form_form_item_checkbox_props_.formitemcheckboxprops": {
+        "title": "en/packages/fast-tooling-react/api/interfaces/_form_form_form_item_checkbox_props_.formitemcheckboxprops"
+      },
       "en/packages/fast-tooling-react/api/interfaces/_form_form_form_item_children_props_.childcomponentconfig": {
         "title": "en/packages/fast-tooling-react/api/interfaces/_form_form_form_item_children_props_.childcomponentconfig"
       },
@@ -2531,6 +2838,12 @@
       },
       "en/packages/fast-tooling-react/api/interfaces/_form_form_form_item_children_props_.formitemchildrenstate": {
         "title": "en/packages/fast-tooling-react/api/interfaces/_form_form_form_item_children_props_.formitemchildrenstate"
+      },
+      "en/packages/fast-tooling-react/api/interfaces/_form_form_form_item_display_props_.formitemdisplayclassnamecontract": {
+        "title": "en/packages/fast-tooling-react/api/interfaces/_form_form_form_item_display_props_.formitemdisplayclassnamecontract"
+      },
+      "en/packages/fast-tooling-react/api/interfaces/_form_form_form_item_display_props_.formitemdisplayprops": {
+        "title": "en/packages/fast-tooling-react/api/interfaces/_form_form_form_item_display_props_.formitemdisplayprops"
       },
       "en/packages/fast-tooling-react/api/interfaces/_form_form_form_item_number_field_props_.formitemnumberfieldclassnamecontract": {
         "title": "en/packages/fast-tooling-react/api/interfaces/_form_form_form_item_number_field_props_.formitemnumberfieldclassnamecontract"
@@ -2670,6 +2983,9 @@
       "en/packages/fast-tooling-react/api/interfaces/_form_utilities_form_.navigationitem": {
         "title": "en/packages/fast-tooling-react/api/interfaces/_form_utilities_form_.navigationitem"
       },
+      "en/packages/fast-tooling-react/api/interfaces/_form_utilities_form_.navigationitemconfig": {
+        "title": "en/packages/fast-tooling-react/api/interfaces/_form_utilities_form_.navigationitemconfig"
+      },
       "en/packages/fast-tooling-react/api/interfaces/_form_utilities_plugin_.formpluginlocation": {
         "title": "en/packages/fast-tooling-react/api/interfaces/_form_utilities_plugin_.formpluginlocation"
       },
@@ -2687,6 +3003,9 @@
       },
       "en/packages/fast-tooling-react/api/interfaces/_navigation_navigation_style_.navigationclassnamecontract": {
         "title": "en/packages/fast-tooling-react/api/interfaces/_navigation_navigation_style_.navigationclassnamecontract"
+      },
+      "en/packages/fast-tooling-react/api/interfaces/_navigation_navigation_utilities_.navigationfromchildrenconfig": {
+        "title": "en/packages/fast-tooling-react/api/interfaces/_navigation_navigation_utilities_.navigationfromchildrenconfig"
       },
       "en/packages/fast-tooling-react/api/interfaces/_style_design_system_.designsystem": {
         "title": "en/packages/fast-tooling-react/api/interfaces/_style_design_system_.designsystem"
@@ -2763,6 +3082,18 @@
       "en/packages/fast-tooling-react/api/modules/_css_editor_editor_style_": {
         "title": "en/packages/fast-tooling-react/api/modules/_css_editor_editor_style_"
       },
+      "en/packages/fast-tooling-react/api/modules/_css_editor_height_height_": {
+        "title": "en/packages/fast-tooling-react/api/modules/_css_editor_height_height_"
+      },
+      "en/packages/fast-tooling-react/api/modules/_css_editor_height_height_props_": {
+        "title": "en/packages/fast-tooling-react/api/modules/_css_editor_height_height_props_"
+      },
+      "en/packages/fast-tooling-react/api/modules/_css_editor_height_height_style_": {
+        "title": "en/packages/fast-tooling-react/api/modules/_css_editor_height_height_style_"
+      },
+      "en/packages/fast-tooling-react/api/modules/_css_editor_height_index_": {
+        "title": "en/packages/fast-tooling-react/api/modules/_css_editor_height_index_"
+      },
       "en/packages/fast-tooling-react/api/modules/_css_editor_index_": {
         "title": "en/packages/fast-tooling-react/api/modules/_css_editor_index_"
       },
@@ -2789,6 +3120,18 @@
       },
       "en/packages/fast-tooling-react/api/modules/_css_editor_spacing_spacing_style_": {
         "title": "en/packages/fast-tooling-react/api/modules/_css_editor_spacing_spacing_style_"
+      },
+      "en/packages/fast-tooling-react/api/modules/_css_editor_width_index_": {
+        "title": "en/packages/fast-tooling-react/api/modules/_css_editor_width_index_"
+      },
+      "en/packages/fast-tooling-react/api/modules/_css_editor_width_width_": {
+        "title": "en/packages/fast-tooling-react/api/modules/_css_editor_width_width_"
+      },
+      "en/packages/fast-tooling-react/api/modules/_css_editor_width_width_props_": {
+        "title": "en/packages/fast-tooling-react/api/modules/_css_editor_width_width_props_"
+      },
+      "en/packages/fast-tooling-react/api/modules/_css_editor_width_width_style_": {
+        "title": "en/packages/fast-tooling-react/api/modules/_css_editor_width_width_style_"
       },
       "en/packages/fast-tooling-react/api/modules/_data_utilities_generate_": {
         "title": "en/packages/fast-tooling-react/api/modules/_data_utilities_generate_"
@@ -2864,6 +3207,15 @@
       },
       "en/packages/fast-tooling-react/api/modules/_form_form_form_item_children_text_": {
         "title": "en/packages/fast-tooling-react/api/modules/_form_form_form_item_children_text_"
+      },
+      "en/packages/fast-tooling-react/api/modules/_form_form_form_item_display_": {
+        "title": "en/packages/fast-tooling-react/api/modules/_form_form_form_item_display_"
+      },
+      "en/packages/fast-tooling-react/api/modules/_form_form_form_item_display_props_": {
+        "title": "en/packages/fast-tooling-react/api/modules/_form_form_form_item_display_props_"
+      },
+      "en/packages/fast-tooling-react/api/modules/_form_form_form_item_display_style_": {
+        "title": "en/packages/fast-tooling-react/api/modules/_form_form_form_item_display_style_"
       },
       "en/packages/fast-tooling-react/api/modules/_form_form_form_item_number_field_": {
         "title": "en/packages/fast-tooling-react/api/modules/_form_form_form_item_number_field_"
@@ -3106,6 +3458,9 @@
       },
       "en/packages/fast-web-utilities/api/modules/_numbers_": {
         "title": "en/packages/fast-web-utilities/api/modules/_numbers_"
+      },
+      "en/packages/fast-web-utilities/api/modules/_query_": {
+        "title": "en/packages/fast-web-utilities/api/modules/_query_"
       },
       "en/packages/fast-web-utilities/api/modules/_strings_": {
         "title": "en/packages/fast-web-utilities/api/modules/_strings_"
