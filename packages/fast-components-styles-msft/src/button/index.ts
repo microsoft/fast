@@ -248,10 +248,11 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = {
     },
     button__disabled: {
         ...applyDisabledState(),
-        "& $button_beforeContent, & $button_afterContent": {
-            "@media (-ms-high-contrast:active)": {
-                fill: "white", // ButtonHighlight cannot be passed to -ms-high-contrast but white is safe in this context
-            },
+        "& $button_beforeContent": {
+            fill: "ButtonHighlight",
+        },
+        "& $button_afterContent": {
+            fill: "ButtonHighlight",
         },
     },
     button_beforeContent: {
