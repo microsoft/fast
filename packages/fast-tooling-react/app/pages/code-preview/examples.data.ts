@@ -41,10 +41,51 @@ const exampleData: any[] = [
                 props: {
                     children: {
                         id: badgeSchema.id,
+                        props: {},
+                    },
+                },
+            },
+            childOptions,
+        },
+    },
+    {
+        exampleName: "Nested with props",
+        config: {
+            data: {
+                id: childrenSchema.id,
+                props: {
+                    children: {
+                        id: badgeSchema.id,
                         props: {
+                            string: "bar",
                             children: "foo",
                         },
                     },
+                },
+            },
+            childOptions,
+        },
+    },
+    {
+        exampleName: "Nested with multiple",
+        config: {
+            data: {
+                id: childrenSchema.id,
+                props: {
+                    children: [
+                        {
+                            id: badgeSchema.id,
+                            props: {
+                                children: "foo",
+                            },
+                        },
+                        {
+                            id: badgeSchema.id,
+                            props: {
+                                children: "bar",
+                            },
+                        },
+                    ],
                 },
             },
             childOptions,
