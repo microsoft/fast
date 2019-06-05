@@ -248,10 +248,7 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = {
     },
     button__disabled: {
         ...applyDisabledState(),
-        "& $button_beforeContent": {
-            fill: "ButtonHighlight",
-        },
-        "& $button_afterContent": {
+        "& $button_beforeContent, & $button_afterContent": {
             fill: "ButtonHighlight",
         },
     },
