@@ -39,7 +39,6 @@ import {
     parseColor,
     rgbToHSL,
 } from "@microsoft/fast-colors";
-import { clone, merge } from "lodash-es";
 
 /* tslint:disable-next-line */
 const sketchDesignKit = require("./fast-dna-msft-design-kit.sketch");
@@ -198,11 +197,9 @@ export default class App extends React.Component<{}, AppState> {
         }
 
         this.setState({
-            designSystem: clone(
-                merge({}, this.state.designSystem, {
-                    direction: newDir,
-                })
-            ),
+            designSystem: Object.assign({}, this.state.designSystem, {
+                direction: newDir,
+            }),
         });
     };
 
@@ -222,14 +219,12 @@ export default class App extends React.Component<{}, AppState> {
             this.setState({
                 theme,
                 backgroundColor: theme === ThemeName.dark ? dark : light,
-                designSystem: clone(
-                    merge({}, this.state.designSystem, {
-                        backgroundColor: theme === ThemeName.dark ? dark : light,
-                        neutralPalette: this.getNeutralPallete(
-                            theme === ThemeName.dark ? dark : light
-                        ),
-                    })
-                ),
+                designSystem: Object.assign({}, this.state.designSystem, {
+                    backgroundColor: theme === ThemeName.dark ? dark : light,
+                    neutralPalette: this.getNeutralPallete(
+                        theme === ThemeName.dark ? dark : light
+                    ),
+                }),
             });
         } else {
             this.setCustomThemeBackground(this.state.designSystem.backgroundColor);
@@ -259,22 +254,16 @@ export default class App extends React.Component<{}, AppState> {
                 updates.theme = ThemeName.custom;
             }
 
-            updates.designSystem = clone(
-                merge({}, this.state.designSystem, {
-                    neutralPalette: this.getNeutralPallete(config.backgroundColor),
-                })
-            );
+            updates.designSystem = Object.assign({}, this.state.designSystem, {
+                neutralPalette: this.getNeutralPallete(config.backgroundColor),
+            });
             updates.designSystem.backgroundColor = config.backgroundColor;
         }
 
         if (config.accentColor !== this.state.accentColor) {
-            updates.designSystem = clone(
-                merge({}, this.state.designSystem, {
-                    accentPalette: this.createColorPalette(
-                        parseColor(config.accentColor)
-                    ),
-                })
-            );
+            updates.designSystem = Object.assign({}, this.state.designSystem, {
+                accentPalette: this.createColorPalette(parseColor(config.accentColor)),
+            });
         }
 
         this.setState(updates as AppState);
@@ -291,11 +280,9 @@ export default class App extends React.Component<{}, AppState> {
 
     private handleDensityUpdate = (e: React.ChangeEvent<HTMLInputElement>): void => {
         this.setState({
-            designSystem: clone(
-                merge({}, this.state.designSystem, {
-                    density: parseInt(e.target.value, 10) as DensityOffset,
-                })
-            ),
+            designSystem: Object.assign({}, this.state.designSystem, {
+                density: parseInt(e.target.value, 10) as DensityOffset,
+            }),
         });
     };
     /**
