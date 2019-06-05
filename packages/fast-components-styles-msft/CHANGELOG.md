@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.11.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-styles-msft@4.11.0...@microsoft/fast-components-styles-msft@4.11.1) (2019-06-05)
+
+
+### Bug Fixes
+
+* remove hover styling from radios and checkboxes when disabled ([#1807](https://github.com/Microsoft/fast-dna/issues/1807)) ([ad2f4f2](https://github.com/Microsoft/fast-dna/commit/ad2f4f2))
+* remove margin on glyph when there is no label ([#1757](https://github.com/Microsoft/fast-dna/issues/1757)) ([4179abf](https://github.com/Microsoft/fast-dna/commit/4179abf))
+
+
+
+
+
 # [4.11.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-styles-msft@4.10.0...@microsoft/fast-components-styles-msft@4.11.0) (2019-05-31)
 
 

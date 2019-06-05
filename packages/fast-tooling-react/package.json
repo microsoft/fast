@@ -2,7 +2,7 @@
   "name": "@microsoft/fast-tooling-react",
   "description": "FAST Tooling React",
   "sideEffects": false,
-  "version": "1.7.0",
+  "version": "1.8.0",
   "author": {
     "name": "Microsoft",
     "url": "https://discord.gg/FcSNfg4"
@@ -80,9 +80,9 @@
     "lodash-es": "^4.0.0",
     "prettier": "1.14.3",
     "react": "^16.3.0",
-    "react-dom": "^16.6.0",
     "react-dnd": "^7.4.5",
     "react-dnd-html5-backend": "^7.4.4",
+    "react-dom": "^16.6.0",
     "react-redux": "^5.0.7",
     "react-router-dom": "^4.2.2",
     "react-sortable-hoc": "^0.6.8",
@@ -108,7 +108,7 @@
   "dependencies": {
     "@microsoft/fast-components-class-name-contracts-base": "^4.1.1",
     "@microsoft/fast-components-foundation-react": "^3.1.1",
-    "@microsoft/fast-jss-manager-react": "^4.3.2",
+    "@microsoft/fast-jss-manager-react": "^4.3.3",
     "@microsoft/fast-jss-utilities": "^4.5.1",
     "@microsoft/fast-web-utilities": "^4.2.0",
     "ajv": "^6.10.0",

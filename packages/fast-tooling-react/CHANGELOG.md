@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.8.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-tooling-react@1.7.0...@microsoft/fast-tooling-react@1.8.0) (2019-06-05)
+
+
+### Bug Fixes
+
+* address a memory leak in the mapDataToComponent utility ([#1819](https://github.com/Microsoft/fast-dna/issues/1819)) ([4907deb](https://github.com/Microsoft/fast-dna/commit/4907deb))
+
+
+### Features
+
+* add drag and drop functionality to Navigation ([#1808](https://github.com/Microsoft/fast-dna/issues/1808)) ([1f0afe5](https://github.com/Microsoft/fast-dna/commit/1f0afe5))
+
+
+
+
+
 # [1.7.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-tooling-react@1.6.0...@microsoft/fast-tooling-react@1.7.0) (2019-05-31)
 
 

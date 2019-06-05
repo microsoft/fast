@@ -174,7 +174,7 @@ function mapPluginToData(
     plugins: Array<Plugin<PluginProps>>,
     childOptions: ChildOptionItem[]
 ): any {
-    const mappedData: any = cloneDeep(data);
+    const mappedData: any = data;
     const pluginModifiedSchemaLocation: string = mapSchemaLocationFromDataLocation(
         pluginModifiedDataLocation.relativeDataLocation.replace(squareBracketsRegex, ""),
         pluginModifiedDataLocation.schema,
@@ -217,7 +217,7 @@ function mapDataToChildren(
     reactChildrenDataLocation: string,
     childOptions: ChildOptionItem[]
 ): any {
-    const mappedData: any = cloneDeep(data);
+    const mappedData: any = data;
     const subSchemaId: string = get(
         mappedData,
         `${reactChildrenDataLocation}.${idKeyword}`
