@@ -67,7 +67,9 @@ export default class Navigation extends Foundation<
     protected handledProps: HandledProps<NavigationHandledProps> = {
         schema: void 0,
         data: void 0,
+        dragAndDropReordering: void 0,
         childOptions: void 0,
+        onChange: void 0,
         onLocationUpdate: void 0,
         dataLocation: void 0,
         managedClasses: void 0,
