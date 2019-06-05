@@ -11,13 +11,16 @@ const managedClasses: ViewportPositionerManagedClasses = {
     managedClasses: {
         viewportPositioner: "viewportPositioner",
         viewportPositioner__left: "viewportPositioner__left",
-        viewportPositioner__centerLeft: "viewportPositioner__centerLeft",
         viewportPositioner__right: "viewportPositioner__right",
-        viewportPositioner__centerRight: "viewportPositioner__centerRight",
         viewportPositioner__top: "viewportPositioner__top",
-        viewportPositioner__centerTop: "viewportPositioner__centerTop",
         viewportPositioner__bottom: "viewportPositioner__bottom",
-        viewportPositioner__centerBottom: "viewportPositioner__centerBottom",
+        viewportPositioner__horizontalFlipOutward:
+            "viewportPositioner__horizontalFlipOutward",
+        viewportPositioner__horizontalFlipInward:
+            "viewportPositioner__horizontalFlipInward",
+        viewportPositioner__verticalFlipOutward:
+            "viewportPositioner__verticalFlipOutward",
+        viewportPositioner__verticalFlipInward: "viewportPositioner__verticalFlipInward",
     },
 };
 

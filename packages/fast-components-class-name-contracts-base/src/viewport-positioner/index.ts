@@ -13,19 +13,9 @@ export interface ViewportPositionerClassNameContract {
     viewportPositioner__left?: string;
 
     /**
-     * center left positioner horizontal state
-     */
-    viewportPositioner__centerLeft?: string;
-
-    /**
      * right positioner horizontal state
      */
     viewportPositioner__right?: string;
-
-    /**
-     * center right positioner horizontal state
-     */
-    viewportPositioner__centerRight?: string;
 
     /**
      * top positioner vertical state
@@ -33,17 +23,27 @@ export interface ViewportPositionerClassNameContract {
     viewportPositioner__top?: string;
 
     /**
-     * center top positioner vertical state
-     */
-    viewportPositioner__centerTop?: string;
-
-    /**
      * bottom positioner vertical state
      */
     viewportPositioner__bottom?: string;
 
     /**
-     * center bottom positioner vertical state
+     * horizontal flip outward state
      */
-    viewportPositioner__centerBottom?: string;
+    viewportPositioner__horizontalFlipOutward?: string;
+
+    /**
+     * horizontal flip inward state
+     */
+    viewportPositioner__horizontalFlipInward?: string;
+
+    /**
+     * vertical flip outward state
+     */
+    viewportPositioner__verticalFlipOutward?: string;
+
+    /**
+     * vertical flip inwarward state
+     */
+    viewportPositioner__verticalFlipInward?: string;
 }

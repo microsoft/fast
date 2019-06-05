@@ -4,8 +4,10 @@ import { configure, mount, shallow } from "enzyme";
 import ViewportPositioner, {
     ViewportPositionerClassNameContract,
     ViewportPositionerHandledProps,
+    ViewportPositionerHorizontalPositionLabel,
     ViewportPositionerProps,
     ViewportPositionerUnhandledProps,
+    ViewportPositionerVerticalPositionLabel,
 } from "./viewport-positioner";
 import { DisplayNamePrefix } from "../utilities";
 import {
@@ -50,13 +52,14 @@ const positionerRectX70Y70: ClientRect = {
 const managedClasses: ViewportPositionerClassNameContract = {
     viewportPositioner: "viewportPositioner",
     viewportPositioner__left: "viewportPositioner__left",
-    viewportPositioner__centerLeft: "viewportPositioner__centerLeft",
     viewportPositioner__right: "viewportPositioner__right",
-    viewportPositioner__centerRight: "viewportPositioner__centerRight",
     viewportPositioner__top: "viewportPositioner__top",
-    viewportPositioner__centerTop: "viewportPositioner__centerTop",
     viewportPositioner__bottom: "viewportPositioner__bottom",
-    viewportPositioner__centerBottom: "viewportPositioner__centerBottom",
+    viewportPositioner__horizontalFlipOutward:
+        "viewportPositioner__horizontalFlipOutward",
+    viewportPositioner__horizontalFlipInward: "viewportPositioner__horizontalFlipInward",
+    viewportPositioner__verticalFlipOutward: "viewportPositioner__verticalFlipOutward",
+    viewportPositioner__verticalFlipInward: "viewportPositioner__verticalFlipInward",
 };
 
 /* tslint:disable:no-string-literal */
@@ -165,6 +168,9 @@ describe("viewport positioner", (): void => {
         expect(positioner.instance().rootElement.current.className).toContain(
             managedClasses.viewportPositioner__left
         );
+        expect(positioner.instance().rootElement.current.className).toContain(
+            managedClasses.viewportPositioner__horizontalFlipOutward
+        );
 
         expect(positioner.instance().state.currentVerticalPosition).toBe(
             ViewportPositionerVerticalPosition.top
@@ -174,6 +180,9 @@ describe("viewport positioner", (): void => {
         expect(positioner.instance().state.yTransformOrigin).toBe("bottom");
         expect(positioner.instance().rootElement.current.className).toContain(
             managedClasses.viewportPositioner__top
+        );
+        expect(positioner.instance().rootElement.current.className).toContain(
+            managedClasses.viewportPositioner__verticalFlipOutward
         );
     });
 
@@ -206,6 +215,9 @@ describe("viewport positioner", (): void => {
         expect(positioner.instance().rootElement.current.className).toContain(
             managedClasses.viewportPositioner__right
         );
+        expect(positioner.instance().rootElement.current.className).toContain(
+            managedClasses.viewportPositioner__horizontalFlipOutward
+        );
 
         expect(positioner.instance().state.currentVerticalPosition).toBe(
             ViewportPositionerVerticalPosition.bottom
@@ -215,6 +227,9 @@ describe("viewport positioner", (): void => {
         expect(positioner.instance().state.yTransformOrigin).toBe("top");
         expect(positioner.instance().rootElement.current.className).toContain(
             managedClasses.viewportPositioner__bottom
+        );
+        expect(positioner.instance().rootElement.current.className).toContain(
+            managedClasses.viewportPositioner__verticalFlipOutward
         );
     });
 
@@ -228,11 +243,9 @@ describe("viewport positioner", (): void => {
                 <div ref={anchorElement} />
                 <ViewportPositioner
                     horizontalPositioningMode={AxisPositioningMode.flipInward}
-                    defaultHorizontalPosition={
-                        ViewportPositionerHorizontalPosition.centerLeft
-                    }
+                    defaultHorizontalPosition={ViewportPositionerHorizontalPosition.left}
                     verticalPositioningMode={AxisPositioningMode.flipInward}
-                    defaultVerticalPosition={ViewportPositionerVerticalPosition.centerTop}
+                    defaultVerticalPosition={ViewportPositionerVerticalPosition.top}
                     anchor={anchorElement}
                     managedClasses={managedClasses}
                 />
@@ -241,23 +254,29 @@ describe("viewport positioner", (): void => {
 
         const positioner: any = rendered.find("BaseViewportPositioner");
         expect(positioner.instance().state.currentHorizontalPosition).toBe(
-            ViewportPositionerHorizontalPosition.centerLeft
+            ViewportPositionerHorizontalPositionLabel.centerLeft
         );
         expect(positioner.instance().state.right).not.toBe(null);
         expect(positioner.instance().state.left).toBe(null);
         expect(positioner.instance().state.xTransformOrigin).toBe("right");
         expect(positioner.instance().rootElement.current.className).toContain(
-            managedClasses.viewportPositioner__centerLeft
+            managedClasses.viewportPositioner__left
+        );
+        expect(positioner.instance().rootElement.current.className).toContain(
+            managedClasses.viewportPositioner__horizontalFlipInward
         );
 
         expect(positioner.instance().state.currentVerticalPosition).toBe(
-            ViewportPositionerVerticalPosition.centerTop
+            ViewportPositionerVerticalPositionLabel.centerTop
         );
         expect(positioner.instance().state.bottom).not.toBe(null);
         expect(positioner.instance().state.top).toBe(null);
         expect(positioner.instance().state.yTransformOrigin).toBe("bottom");
         expect(positioner.instance().rootElement.current.className).toContain(
-            managedClasses.viewportPositioner__centerTop
+            managedClasses.viewportPositioner__top
+        );
+        expect(positioner.instance().rootElement.current.className).toContain(
+            managedClasses.viewportPositioner__verticalFlipInward
         );
     });
 
@@ -271,13 +290,9 @@ describe("viewport positioner", (): void => {
                 <div ref={anchorElement} />
                 <ViewportPositioner
                     horizontalPositioningMode={AxisPositioningMode.flipInward}
-                    defaultHorizontalPosition={
-                        ViewportPositionerHorizontalPosition.centerRight
-                    }
+                    defaultHorizontalPosition={ViewportPositionerHorizontalPosition.right}
                     verticalPositioningMode={AxisPositioningMode.flipInward}
-                    defaultVerticalPosition={
-                        ViewportPositionerVerticalPosition.centerBottom
-                    }
+                    defaultVerticalPosition={ViewportPositionerVerticalPosition.bottom}
                     anchor={anchorElement}
                     managedClasses={managedClasses}
                 />
@@ -286,23 +301,29 @@ describe("viewport positioner", (): void => {
 
         const positioner: any = rendered.find("BaseViewportPositioner");
         expect(positioner.instance().state.currentHorizontalPosition).toBe(
-            ViewportPositionerHorizontalPosition.centerRight
+            ViewportPositionerHorizontalPositionLabel.centerRight
         );
         expect(positioner.instance().state.right).toBe(null);
         expect(positioner.instance().state.left).not.toBe(null);
         expect(positioner.instance().state.xTransformOrigin).toBe("left");
         expect(positioner.instance().rootElement.current.className).toContain(
-            managedClasses.viewportPositioner__centerRight
+            managedClasses.viewportPositioner__right
+        );
+        expect(positioner.instance().rootElement.current.className).toContain(
+            managedClasses.viewportPositioner__horizontalFlipInward
         );
 
         expect(positioner.instance().state.currentVerticalPosition).toBe(
-            ViewportPositionerVerticalPosition.centerBottom
+            ViewportPositionerVerticalPositionLabel.centerBottom
         );
         expect(positioner.instance().state.bottom).toBe(null);
         expect(positioner.instance().state.top).not.toBe(null);
         expect(positioner.instance().state.yTransformOrigin).toBe("top");
         expect(positioner.instance().rootElement.current.className).toContain(
-            managedClasses.viewportPositioner__centerBottom
+            managedClasses.viewportPositioner__bottom
+        );
+        expect(positioner.instance().rootElement.current.className).toContain(
+            managedClasses.viewportPositioner__verticalFlipInward
         );
     });
 
@@ -423,22 +444,22 @@ describe("viewport positioner", (): void => {
         expect(
             positioner
                 .instance()
-                ["getOptionWidth"](ViewportPositionerHorizontalPosition.centerLeft)
+                ["getOptionWidth"](ViewportPositionerHorizontalPositionLabel.centerLeft)
         ).toBe(90);
         expect(
             positioner
                 .instance()
-                ["getOptionWidth"](ViewportPositionerHorizontalPosition.centerRight)
+                ["getOptionWidth"](ViewportPositionerHorizontalPositionLabel.centerRight)
         ).toBe(20);
         expect(
             positioner
                 .instance()
-                ["getOptionHeight"](ViewportPositionerVerticalPosition.centerTop)
+                ["getOptionHeight"](ViewportPositionerVerticalPositionLabel.centerTop)
         ).toBe(90);
         expect(
             positioner
                 .instance()
-                ["getOptionHeight"](ViewportPositionerVerticalPosition.centerBottom)
+                ["getOptionHeight"](ViewportPositionerVerticalPositionLabel.centerBottom)
         ).toBe(20);
     });
 
@@ -452,26 +473,32 @@ describe("viewport positioner", (): void => {
 
         const positioner: any = rendered.find("BaseViewportPositioner");
 
-        const horizontalPositions: ViewportPositionerHorizontalPosition[] = positioner
+        const horizontalPositions: ViewportPositionerHorizontalPositionLabel[] = positioner
             .instance()
             ["getHorizontalPositioningOptions"]();
-        const verticalPositions: ViewportPositionerVerticalPosition[] = positioner
+        const verticalPositions: ViewportPositionerVerticalPositionLabel[] = positioner
             .instance()
             ["getVerticalPositioningOptions"]();
 
         expect(horizontalPositions.length).toBe(2);
         expect(
-            horizontalPositions.indexOf(ViewportPositionerHorizontalPosition.centerLeft)
+            horizontalPositions.indexOf(
+                ViewportPositionerHorizontalPositionLabel.centerLeft
+            )
         ).not.toBe(-1);
         expect(
-            horizontalPositions.indexOf(ViewportPositionerHorizontalPosition.centerRight)
+            horizontalPositions.indexOf(
+                ViewportPositionerHorizontalPositionLabel.centerRight
+            )
         ).not.toBe(-1);
         expect(verticalPositions.length).toBe(2);
         expect(
-            verticalPositions.indexOf(ViewportPositionerVerticalPosition.centerTop)
+            verticalPositions.indexOf(ViewportPositionerVerticalPositionLabel.centerTop)
         ).not.toBe(-1);
         expect(
-            verticalPositions.indexOf(ViewportPositionerVerticalPosition.centerBottom)
+            verticalPositions.indexOf(
+                ViewportPositionerVerticalPositionLabel.centerBottom
+            )
         ).not.toBe(-1);
     });
 
@@ -673,7 +700,7 @@ describe("viewport positioner", (): void => {
             positioner
                 .instance()
                 ["calculateHorizontalTranslate"](
-                    ViewportPositionerHorizontalPosition.centerLeft
+                    ViewportPositionerHorizontalPositionLabel.centerLeft
                 )
         ).toBe(-111);
         expect(
@@ -687,7 +714,7 @@ describe("viewport positioner", (): void => {
             positioner
                 .instance()
                 ["calculateVerticalTranslate"](
-                    ViewportPositionerVerticalPosition.centerTop
+                    ViewportPositionerVerticalPositionLabel.centerTop
                 )
         ).toBe(-111);
         expect(
@@ -744,7 +771,7 @@ describe("viewport positioner", (): void => {
             positioner
                 .instance()
                 ["calculateHorizontalTranslate"](
-                    ViewportPositionerHorizontalPosition.centerRight
+                    ViewportPositionerHorizontalPositionLabel.centerRight
                 )
         ).toBe(211);
         expect(
@@ -758,7 +785,7 @@ describe("viewport positioner", (): void => {
             positioner
                 .instance()
                 ["calculateVerticalTranslate"](
-                    ViewportPositionerVerticalPosition.centerBottom
+                    ViewportPositionerVerticalPositionLabel.centerBottom
                 )
         ).toBe(211);
         expect(

@@ -11,16 +11,12 @@ export interface ViewportPositionerUnhandledProps
 
 export enum ViewportPositionerHorizontalPosition {
     left = "left",
-    centerLeft = "centerLeft",
-    centerRight = "centerRight",
     right = "right",
     uncontrolled = "uncontrolled",
 }
 
 export enum ViewportPositionerVerticalPosition {
     top = "top",
-    centerTop = "centerTop",
-    centerBottom = "centerBottom",
     bottom = "bottom",
     uncontrolled = "uncontrolled",
 }
