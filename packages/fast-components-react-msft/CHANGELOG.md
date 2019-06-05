@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.8.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-msft@4.8.0...@microsoft/fast-components-react-msft@4.8.1) (2019-06-05)
+
+
+### Bug Fixes
+
+* remove margin on glyph when there is no label ([#1757](https://github.com/Microsoft/fast-dna/issues/1757)) ([4179abf](https://github.com/Microsoft/fast-dna/commit/4179abf))
+* updates documentation site with latest master ([#1818](https://github.com/Microsoft/fast-dna/issues/1818)) ([9b8480a](https://github.com/Microsoft/fast-dna/commit/9b8480a))
+
+
+
+
+
 # [4.8.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-msft@4.7.1...@microsoft/fast-components-react-msft@4.8.0) (2019-05-31)
 
 

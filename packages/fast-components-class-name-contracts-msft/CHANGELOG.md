@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.3.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-class-name-contracts-msft@4.3.0...@microsoft/fast-components-class-name-contracts-msft@4.3.1) (2019-06-05)
+
+
+### Bug Fixes
+
+* remove margin on glyph when there is no label ([#1757](https://github.com/Microsoft/fast-dna/issues/1757)) ([4179abf](https://github.com/Microsoft/fast-dna/commit/4179abf))
+
+
+
+
+
 # [4.3.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-class-name-contracts-msft@4.2.2...@microsoft/fast-components-class-name-contracts-msft@4.3.0) (2019-05-31)
 
 
