@@ -40,6 +40,8 @@ export default class CSSPropertyEditor extends Foundation<
 
     private keyInputRef: React.RefObject<HTMLInputElement>;
 
+    private openRequestAnimationFrame: number = null;
+
     constructor(props: CSSPropertyEditorProps) {
         super(props);
 
@@ -96,7 +98,12 @@ export default class CSSPropertyEditor extends Foundation<
         index: number
     ): React.ReactNode {
         return (
-            <div key={index}>
+            <div
+                key={index}
+                onFocus={this.handleInputFocus(index)}
+                onBlur={this.handleInputBlur}
+                onKeyDown={this.handleInputKeyDown(index)}
+            >
                 {this.renderInput({
                     className: this.generateKeyClassNames(),
                     onChange: this.handlePropertyKeyChange(key),
@@ -207,6 +214,44 @@ export default class CSSPropertyEditor extends Foundation<
         });
     };
 
+    private handleInputKeyDown(
+        index: number
+    ): (e: React.KeyboardEvent<HTMLDivElement>) => void {
+        return (e: React.KeyboardEvent<HTMLDivElement>): void => {
+            if (e.keyCode === KeyCodes.tab && !e.shiftKey) {
+                const inputs: Element = e.currentTarget.parentElement;
+                if (
+                    index <= Object.keys(this.props.data).length - 1 &&
+                    ((inputs.children[0] as HTMLInputElement).value === "" ||
+                        (inputs.children[1] as HTMLInputElement).value === "")
+                ) {
+                    this.keyInputRef.current.focus();
+                }
+            }
+        };
+    }
+
+    private handleInputFocus(
+        index: number
+    ): (e: React.FocusEvent<HTMLDivElement>) => void {
+        return (e: React.FocusEvent<HTMLDivElement>): void => {
+            const inputs: Element = e.target.parentElement;
+            if (
+                index === Object.keys(this.props.data).length - 1 &&
+                ((inputs.children[0] as HTMLInputElement).value === "" ||
+                    (inputs.children[1] as HTMLInputElement).value === "")
+            ) {
+                this.dataCheck();
+            }
+        };
+    }
+
+    private handleInputBlur = (e: React.FocusEvent<HTMLDivElement>): void => {
+        if (this.openRequestAnimationFrame === null) {
+            this.openRequestAnimationFrame = window.requestAnimationFrame(this.dataCheck);
+        }
+    };
+
     private handleNewPropertyValueKeyDown = (
         e: React.KeyboardEvent<HTMLInputElement>
     ): void => {
@@ -234,5 +279,20 @@ export default class CSSPropertyEditor extends Foundation<
         if (typeof this.props.onChange === "function") {
             this.props.onChange(updatedCSS);
         }
+    };
+
+    private dataCheck = (): void => {
+        this.openRequestAnimationFrame = null;
+        const newData: CSSProperties = {};
+
+        // The reason this is iterated over in this manner is to preserve
+        // the order of keys in the CSS object
+        Object.keys(this.props.data).forEach((key: string) => {
+            if (key !== "" && this.props.data[key] !== "") {
+                newData[key] = this.props.data[key];
+            }
+        });
+
+        this.handleCSSUpdate(newData);
     };
 }

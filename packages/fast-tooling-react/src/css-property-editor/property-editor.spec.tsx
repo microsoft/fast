@@ -1,7 +1,8 @@
 import React from "react";
 import Adapter from "enzyme-adapter-react-16";
-import { configure, mount, shallow } from "enzyme";
+import { configure, mount, ReactWrapper, shallow } from "enzyme";
 import { CSSPropertyEditor } from "./";
+import { CSSPropertyEditorClassNameContract } from "./property-editor.style";
 import { KeyCodes } from "@microsoft/fast-web-utilities";
 
 /**
@@ -9,6 +10,7 @@ import { KeyCodes } from "@microsoft/fast-web-utilities";
  */
 configure({ adapter: new Adapter() });
 
+/* tslint:disable:no-string-literal */
 describe("CSSPropertyEditor", () => {
     test("should not throw", () => {
         expect(() => {
@@ -136,6 +138,63 @@ describe("CSSPropertyEditor", () => {
 
         expect(updatedDataKeys[0]).toEqual("paddingTop");
     });
+    test("datacheck removes entries with empty values", () => {
+        const callback: any = jest.fn();
+        const data: { [key: string]: string } = {
+            padding: "",
+            background: "red",
+            margin: "10px",
+        };
+        const rendered: ReactWrapper = mount(
+            <CSSPropertyEditor onChange={callback} data={data} />
+        );
+
+        expect(rendered.find("input")).toHaveLength(8);
+        rendered
+            .children()
+            .instance()
+            ["dataCheck"]();
+        expect(callback).toBeCalledTimes(1);
+        const updatedDataKeys: string[] = Object.keys(callback.mock.calls[0][0]);
+        expect(updatedDataKeys.length).toBe(2);
+    });
+    // test("focusing on a row with empty values provokes datacheck and removes entries with empty values", () => {
+    //     const container: HTMLDivElement = document.createElement("div");
+    //     document.body.appendChild(container);
+
+    //     const callback: any = jest.fn();
+    //     const data: { [key: string]: string } = {
+    //         padding: "",
+    //         background: "red",
+    //         margin: "10px"
+    //     };
+    //     const rendered: ReactWrapper = mount(
+    //         <CSSPropertyEditor
+    //             onChange = {callback}
+    //             data = {data}
+    //         />,
+    //         {
+    //             attachTo: container,
+    //         }
+    //     );
+
+    //     let inputs: any = rendered.find("input");
+    //     expect(inputs).toHaveLength(8);
+    //     expect(inputs.at(0).prop("value")).toEqual("padding");
+    //     expect(rendered.children().instance()["openRequestAnimationFrame"]).toBe(null);
+    //     expect(document.activeElement).toBe(inputs.at(0).getDOMNode());
+    //     inputs.at(0).getDOMNode().focus();
+    //     expect(document.activeElement).toBe(inputs.at(0).getDOMNode());
+    //     expect(rendered.children().instance()["openRequestAnimationFrame"]).not.toBe(null);
+    //     rendered.children().instance()["dataCheck"]();
+    //     expect(callback).toBeCalledTimes(1);
+    //     const updatedDataKeys: string[] = Object.keys(callback.mock.calls[0][0]);
+    //     expect(updatedDataKeys.length).toBe(2);
+    //     inputs = rendered.find("input");
+    //     expect(inputs).toHaveLength(6);
+
+    //     document.body.removeChild(container);
+    // });
     test("should not throw an error of a property value is undefined", () => {
         const data: { [key: string]: string } = {
             padding: void 0,
