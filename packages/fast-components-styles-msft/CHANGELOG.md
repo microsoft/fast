@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.11.2](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-styles-msft@4.11.1...@microsoft/fast-components-styles-msft@4.11.2) (2019-06-05)
+
+
+### Bug Fixes
+
+* enable RTL directionality in Flipper component ([#1815](https://github.com/Microsoft/fast-dna/issues/1815)) ([32d177a](https://github.com/Microsoft/fast-dna/commit/32d177a))
+
+
+
+
+
 ## [4.11.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-styles-msft@4.11.0...@microsoft/fast-components-styles-msft@4.11.1) (2019-06-05)
 
 
