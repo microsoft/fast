@@ -77,15 +77,6 @@ const formPlugins: Array<Plugin<PluginProps>> = [
     }),
 ];
 
-const hypertextStyles: ComponentStyles<HypertextClassNameContract, undefined> = {
-    hypertext: {
-        margin: "0 8px",
-        display: "inline-block",
-        lineHeight: "1",
-        whiteSpace: "nowrap",
-    },
-};
-
 enum ThemeName {
     dark = "dark",
     light = "light",
@@ -93,11 +84,8 @@ enum ThemeName {
 }
 
 export interface AppState extends ColorConfig {
-    accentPalette: string[];
-    neutralPalette: string[];
     theme: ThemeName;
-    direction: Direction;
-    density: DensityOffset;
+    designSystem: DesignSystem;
 }
 
 export default class App extends React.Component<{}, AppState> {
@@ -120,12 +108,15 @@ export default class App extends React.Component<{}, AppState> {
 
         this.state = {
             accentColor: accent,
-            accentPalette: this.createColorPalette(parseColor(accent)),
-            neutralPalette: this.createColorPalette(new ColorRGBA64(0.5, 0.5, 0.5, 1)),
-            direction: Direction.ltr,
+            designSystem: Object.assign({}, DesignSystemDefaults, {
+                accentPalette: this.createColorPalette(parseColor(accent)),
+                neutralPalette: this.createColorPalette(
+                    new ColorRGBA64(0.5, 0.5, 0.5, 1)
+                ),
+                direction: Direction.ltr,
+            }),
             backgroundColor: DesignSystemDefaults.backgroundColor,
             theme: ThemeName.light,
-            density: DesignSystemDefaults.density,
         };
     }
 
@@ -141,8 +132,9 @@ export default class App extends React.Component<{}, AppState> {
                 showTransparencyToggle={true}
                 styleEditing={true}
                 designSystemEditing={{
-                    data: DesignSystemDefaults,
+                    data: this.state.designSystem,
                     schema: designSystemSchema,
+                    designSystemOnChange: this.handleDesignSystemUpdate,
                 }}
             >
                 <SiteTitle slot={"title"}>
@@ -158,11 +150,7 @@ export default class App extends React.Component<{}, AppState> {
                     </SiteCategoryIcon>
                 </SiteCategory>
                 <SiteCategory slot={"category"} name={"Components"}>
-                    {this.sortExamples(
-                        componentFactory(examples, {
-                            ...this.generateDesignSystem(),
-                        })
-                    )}
+                    {this.sortExamples(componentFactory(examples))}
                 </SiteCategory>
                 <div slot={ShellSlot.infoBar}>
                     <div
@@ -176,7 +164,7 @@ export default class App extends React.Component<{}, AppState> {
                         <input
                             type="range"
                             name="density"
-                            defaultValue="0"
+                            value={this.state.designSystem.density}
                             min="-3"
                             max="3"
                             onChange={this.handleDensityUpdate}
@@ -200,41 +188,56 @@ export default class App extends React.Component<{}, AppState> {
         );
     }
 
-    private generateDesignSystem(): DesignSystem {
-        const designSystem: Partial<DesignSystem> = {
-            accentPalette: this.state.accentPalette,
-            neutralPalette: this.state.neutralPalette,
-            direction: this.state.direction,
-            backgroundColor: this.state.backgroundColor,
-            density: this.state.density,
-        };
-
-        return Object.assign({}, DesignSystemDefaults, designSystem);
-    }
-
     private handleUpdateDirection = (direction: Direction): void => {
         const newDir: Direction =
-            this.state.direction === Direction.ltr ? Direction.rtl : Direction.ltr;
+            direction === Direction.ltr ? Direction.rtl : Direction.ltr;
 
-        if (this.state.direction === newDir) {
+        if (this.state.designSystem.direction === newDir) {
             return;
         }
 
         this.setState({
-            direction: newDir,
+            designSystem: Object.assign({}, this.state.designSystem, {
+                direction: newDir,
+            }),
         });
     };
+
+    private getNeutralPallete(colorSource: string): string[] {
+        const color: ColorRGBA64 = parseColor(colorSource);
+        const hslColor: ColorHSL = rgbToHSL(color);
+        const augmentedHSLColor: ColorHSL = ColorHSL.fromObject({
+            h: hslColor.h,
+            s: hslColor.s,
+            l: 0.5,
+        });
+        return this.createColorPalette(hslToRGB(augmentedHSLColor));
+    }
 
     private handleUpdateTheme = (theme: ThemeName): void => {
         if (theme !== ThemeName.custom) {
             this.setState({
                 theme,
                 backgroundColor: theme === ThemeName.dark ? dark : light,
+                designSystem: Object.assign({}, this.state.designSystem, {
+                    backgroundColor: theme === ThemeName.dark ? dark : light,
+                    neutralPalette: this.getNeutralPallete(
+                        theme === ThemeName.dark ? dark : light
+                    ),
+                }),
             });
         } else {
-            this.setCustomThemeBackground(this.state.backgroundColor);
+            this.setCustomThemeBackground(this.state.designSystem.backgroundColor);
             this.setState({
                 theme,
+            });
+        }
+    };
+
+    private handleDesignSystemUpdate = (data: any): void => {
+        if (data !== this.state.designSystem) {
+            this.setState({
+                designSystem: data,
             });
         }
     };
@@ -251,20 +254,16 @@ export default class App extends React.Component<{}, AppState> {
                 updates.theme = ThemeName.custom;
             }
 
-            const color: ColorRGBA64 = parseColor(config.backgroundColor);
-            const hslColor: ColorHSL = rgbToHSL(color);
-            const augmentedHSLColor: ColorHSL = ColorHSL.fromObject({
-                h: hslColor.h,
-                s: hslColor.s,
-                l: 0.5,
+            updates.designSystem = Object.assign({}, this.state.designSystem, {
+                neutralPalette: this.getNeutralPallete(config.backgroundColor),
             });
-            updates.neutralPalette = this.createColorPalette(hslToRGB(augmentedHSLColor));
+            updates.designSystem.backgroundColor = config.backgroundColor;
         }
 
         if (config.accentColor !== this.state.accentColor) {
-            updates.accentPalette = this.createColorPalette(
-                parseColor(config.accentColor)
-            );
+            updates.designSystem = Object.assign({}, this.state.designSystem, {
+                accentPalette: this.createColorPalette(parseColor(config.accentColor)),
+            });
         }
 
         this.setState(updates as AppState);
@@ -281,7 +280,9 @@ export default class App extends React.Component<{}, AppState> {
 
     private handleDensityUpdate = (e: React.ChangeEvent<HTMLInputElement>): void => {
         this.setState({
-            density: parseInt(e.target.value, 10) as DensityOffset,
+            designSystem: Object.assign({}, this.state.designSystem, {
+                density: parseInt(e.target.value, 10) as DensityOffset,
+            }),
         });
     };
     /**
