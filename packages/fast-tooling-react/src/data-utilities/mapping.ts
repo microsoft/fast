@@ -450,7 +450,7 @@ class ComponentCodePreview {
                   }${codePreviewConfig.tabIndent}${nestedChildren}\n${
                       codePreviewConfig.tabIndent
                   }</${component.name}>`
-                : `${codePreviewConfig.tabIndent}/>`;
+                : `${componentAttributes !== "" ? codePreviewConfig.tabIndent : ""}/>`;
         }
 
         return componentJSX;
@@ -463,7 +463,7 @@ class ComponentCodePreview {
         const componentPropValue: any = Array.isArray(value) ? value : [value];
 
         return componentPropValue.reduce(
-            (accumulatedChildrenValue: any, childrenValue: any): any => {
+            (accumulatedChildrenValue: any, childrenValue: any): string => {
                 const childrenDataType: string = typeof childrenValue;
 
                 if (
@@ -475,15 +475,20 @@ class ComponentCodePreview {
                 }
 
                 const component: CodePreviewChildOption = this.getChildOptionById(
-                    get(value, "id"),
+                    get(childrenValue, "id"),
                     this.childOptions
                 );
 
                 if (component) {
                     return (
                         accumulatedChildrenValue +
+                        `${
+                            accumulatedChildrenValue !== ""
+                                ? `\n${tabIndent + this.tabIndent}`
+                                : ""
+                        }` +
                         this.getComponentCodePreview({
-                            data: value,
+                            data: childrenValue,
                             tabIndent: tabIndent + this.tabIndent,
                         })
                     );

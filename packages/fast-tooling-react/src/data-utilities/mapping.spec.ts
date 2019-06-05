@@ -365,6 +365,54 @@ describe("mapDataToCodePreview", () => {
             `<${badgeJSXName}>\n${tabIndent}foobar\n</${badgeJSXName}>`
         );
     });
+    test("should return a string containing a JSX element with multiple component children", () => {
+        const mappedData: string = mapDataToCodePreview({
+            data: {
+                id: badgeSchema.id,
+                props: {
+                    children: [
+                        {
+                            id: badgeSchema.id,
+                            props: {
+                                children: "foo",
+                            },
+                        },
+                        {
+                            id: badgeSchema.id,
+                            props: {
+                                children: "bar",
+                            },
+                        },
+                    ],
+                },
+            },
+            childOptions,
+        });
+
+        expect(mappedData).toEqual(
+            `<${badgeJSXName}>\n${tabIndent}<${badgeJSXName}>\n${tabIndent +
+                tabIndent}foo\n${tabIndent}</${badgeJSXName}>\n${tabIndent}<${badgeJSXName}>\n${tabIndent +
+                tabIndent}bar\n${tabIndent}</${badgeJSXName}>\n</${badgeJSXName}>`
+        );
+    });
+    test("should return a string containing a JSX element with a self closing component child", () => {
+        const mappedData: string = mapDataToCodePreview({
+            data: {
+                id: childrenSchema.id,
+                props: {
+                    children: {
+                        id: badgeSchema.id,
+                        props: {},
+                    },
+                },
+            },
+            childOptions,
+        });
+
+        expect(mappedData).toEqual(
+            `<${childrenJSXName}>\n${tabIndent}<${badgeJSXName} />\n</${childrenJSXName}>`
+        );
+    });
     test("should return a string containing a JSX element with component children", () => {
         const mappedData: string = mapDataToCodePreview({
             data: {
