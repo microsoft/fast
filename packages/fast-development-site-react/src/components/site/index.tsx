@@ -455,6 +455,7 @@ class Site extends React.Component<
             this.setState({
                 componentData: this.getComponentData(),
                 detailViewComponentData: this.getDetailViewComponentData(),
+                designSystem: get(this.props, "designSystemEditing.data"),
             });
         }
     }
@@ -804,12 +805,6 @@ class Site extends React.Component<
         }
     };
 
-    private handleDesignSystemDataChange = (data: any): void => {
-        this.setState({
-            designSystem: data,
-        });
-    };
-
     private handleToggleDevToolsView = (): void => {
         this.setState({
             devToolsView: !this.state.devToolsView,
@@ -964,15 +959,14 @@ class Site extends React.Component<
             onLocationUpdate: this.handleLocationUpdate,
             styleEditing: this.props.styleEditing,
             designSystemEditing: void 0,
-            designSystemOnChange: void 0,
         };
 
         if (!!this.props.designSystemEditing) {
             props.designSystemEditing = {
                 schema: this.props.designSystemEditing.schema,
-                data: this.state.designSystem,
+                data: this.props.designSystemEditing.data,
+                designSystemOnChange: this.props.designSystemEditing.designSystemOnChange,
             };
-            props.designSystemOnChange = this.handleDesignSystemDataChange;
         }
 
         return props;
@@ -1005,10 +999,7 @@ class Site extends React.Component<
                             transparentBackground={
                                 this.state.componentBackgroundTransparent
                             }
-                            designSystem={
-                                this.state.designSystem ||
-                                componentItem.props.designSystem
-                            }
+                            designSystem={this.state.designSystem}
                             active={index === this.state.activeComponentIndex}
                             view={this.state.componentView}
                         >
