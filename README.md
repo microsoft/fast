@@ -7,8 +7,8 @@ An unopinionated system of components, development tools, and utilities used à 
 
 [![Maintainability](https://api.codeclimate.com/v1/badges/8a74621e634a6e9b9561/maintainability)](https://codeclimate.com/github/Microsoft/fast-dna/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/8a74621e634a6e9b9561/test_coverage)](https://codeclimate.com/github/Microsoft/fast-dna/test_coverage)
-[![CircleCI](https://circleci.com/gh/Microsoft/fast-dna/tree/master.svg?style=shield&circle-token=d159a8b24ccb8046e07138c98717c32cb92589d6)](https://circleci.com/gh/Microsoft/fast-dna/tree/master)
-[![lerna](https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg)](https://lernajs.io/)
+[![CircleCI](https://circleci.com/gh/microsoft/fast-dna/tree/master.svg?style=shield&circle-token=d159a8b24ccb8046e07138c98717c32cb92589d6)](https://circleci.com/gh/microsoft/fast-dna/tree/master)
+[![lerna](https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg)](https://lerna.js.org/)
 [![Discord](https://img.shields.io/badge/support%20with-discord-cc00ff.svg)](https://discord.gg/FcSNfg4)
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
 ![license](https://img.shields.io/github/license/mashape/apistatus.svg)
@@ -30,7 +30,7 @@ This principle of being unopinionated manifests in several important ways includ
 
 ### UI development and style guide tools
 
-When developing components and views, excellent development tooling can make all the difference. FAST-DNA offers development and style guide tools that work with FAST components, components from other frameworks, or your components. 
+When developing components and views, excellent development tooling can make all the difference. FAST-DNA offers development and style guide tools that work with FAST components, components from other frameworks, or your components.
 
 Try out component properties with an auto-generated props UI, get a live preview of the code based on any property’s configuration, preview localization (RTL/LTR) and themes, and preview component compositing with a transparency grid.
 
