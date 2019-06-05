@@ -1,7 +1,6 @@
 {
     "extends": "../../tsconfig.json",
     "compilerOptions": {
-        "lib": [ "es2016", "dom"],
         "baseUrl": ".",
         "outDir": "./dist",
         "resolveJsonModule": true

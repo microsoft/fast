@@ -4,7 +4,7 @@ import Foundation, {
     FoundationProps,
     HandledProps,
 } from "@microsoft/fast-components-foundation-react";
-import { get } from "lodash-es";
+import { cloneDeep, get, set, unset } from "lodash-es";
 import { canUseDOM } from "exenv-es6";
 import {
     NavigationDataType,
@@ -14,7 +14,17 @@ import {
     NavigationUnhandledProps,
     TreeNavigation,
 } from "./navigation.props";
-import { getNavigationFromData } from "./navigation.utilities";
+import {
+    getDataLocationNormalized,
+    getNavigationFromData,
+    getUpdatedDataWithoutSourceData,
+    getUpdatedDataWithTargetData,
+} from "./navigation.utilities";
+import { DraggableNavigationTreeItem, NavigationTreeItem } from "./navigation-tree-item";
+import {
+    NavigationTreeItemProps,
+    VerticalDragDirection,
+} from "./navigation-tree-item.props";
 
 export default class Navigation extends Foundation<
     NavigationHandledProps,
@@ -78,6 +88,9 @@ export default class Navigation extends Foundation<
                 this.props.dataLocation !== undefined ? [this.props.dataLocation] : [],
             activeItem:
                 this.props.dataLocation !== undefined ? this.props.dataLocation : null,
+            dragHoverDataLocation: null,
+            dragHoverAfterDataLocation: null,
+            dragHoverBeforeDataLocation: null,
         };
 
         this.rootElement = React.createRef();
@@ -110,6 +123,9 @@ export default class Navigation extends Foundation<
         );
     }
 
+    /**
+     * Renders a tree item
+     */
     private renderTreeItem(
         navigation: TreeNavigation,
         level: number,
@@ -117,74 +133,103 @@ export default class Navigation extends Foundation<
         positionInNavigation: number,
         index: number
     ): React.ReactNode {
-        if (Array.isArray(navigation.items) && navigationLength > 0) {
+        const dataLocation: string = navigation.dataLocation;
+        const dataType: NavigationDataType = navigation.type;
+        const props: NavigationTreeItemProps = {
+            className: this.props.managedClasses.navigation_item,
+            contentClassName: this.getItemContentClassName(dataLocation),
+            getContentDragHoverClassName: this.getItemContentDragHoverClassName,
+            dataLocation,
+            dragHover: dataLocation === this.state.dragHoverDataLocation,
+            dragHoverBefore: dataLocation === this.state.dragHoverBeforeDataLocation,
+            dragHoverAfter: dataLocation === this.state.dragHoverAfterDataLocation,
+            expanded: this.isExpanded(dataLocation),
+            handleClick: this.handleTreeItemClick(dataLocation, dataType),
+            handleKeyUp: this.handleTreeItemKeyUp(dataLocation, dataType),
+            level,
+            navigationLength,
+            positionInNavigation,
+            text: navigation.text,
+            type: dataType,
+            onChange: this.handleChange,
+            onDragHover: this.handleDragHover,
+        };
+        const children: React.ReactNode =
+            Array.isArray(navigation.items) && navigationLength > 0
+                ? this.renderTreeItemContainer(navigation.items, level)
+                : void 0;
+
+        if (this.props.dragAndDropReordering) {
             return (
-                <div
-                    className={this.props.managedClasses.navigation_item}
-                    key={index}
-                    role={"treeitem"}
-                    aria-level={level}
-                    aria-setsize={navigationLength}
-                    aria-posinset={positionInNavigation}
-                    aria-expanded={this.isExpanded(navigation.dataLocation)}
-                    onClick={this.handleTreeItemClick(
-                        navigation.dataLocation,
-                        navigation.type
-                    )}
-                    onKeyUp={this.handleTreeItemKeyUp(
-                        navigation.dataLocation,
-                        navigation.type
-                    )}
-                >
-                    <span
-                        className={this.getTriggerClassNames(navigation.dataLocation)}
-                        onClick={this.handleTreeItemClick(
-                            navigation.dataLocation,
-                            navigation.type
-                        )}
-                        onKeyUp={this.handleTreeItemKeyUp(
-                            navigation.dataLocation,
-                            navigation.type
-                        )}
-                        tabIndex={0}
-                        data-location={navigation.dataLocation}
-                    >
-                        {navigation.text}
-                    </span>
-                    {this.renderTreeItemContainer(navigation.items, level)}
-                </div>
+                <DraggableNavigationTreeItem {...props} key={index}>
+                    {children}
+                </DraggableNavigationTreeItem>
             );
         }
 
         return (
-            <div
-                className={this.props.managedClasses.navigation_item}
-                key={index}
-                role={"none"}
-            >
-                <a
-                    className={this.getLinkClassNames(navigation.dataLocation)}
-                    role={"treeitem"}
-                    data-location={navigation.dataLocation}
-                    aria-level={level}
-                    aria-setsize={navigationLength}
-                    aria-posinset={positionInNavigation}
-                    href={"#"}
-                    onClick={this.handleTreeItemClick(
-                        navigation.dataLocation,
-                        navigation.type
-                    )}
-                    onKeyUp={this.handleTreeItemKeyUp(
-                        navigation.dataLocation,
-                        navigation.type
-                    )}
-                    tabIndex={0}
-                >
-                    {navigation.text}
-                </a>
-            </div>
+            <NavigationTreeItem {...props} key={index}>
+                {children}
+            </NavigationTreeItem>
         );
     }
+
+    /**
+     * Handles a data update from dragging
+     */
+    private handleChange = (
+        sourceDataLocation: string,
+        targetDataLocation: string,
+        type: NavigationDataType,
+        direction?: VerticalDragDirection
+    ): void => {
+        if (typeof this.props.onChange === "function") {
+            let updatedData: any = cloneDeep(this.props.data);
+            const sourceDataLocationNormalized: string = getDataLocationNormalized(
+                sourceDataLocation
+            );
+            const updatedSourceData: any = get(updatedData, sourceDataLocationNormalized);
+
+            updatedData = getUpdatedDataWithoutSourceData(
+                updatedData,
+                sourceDataLocation
+            );
+            updatedData = getUpdatedDataWithTargetData({
+                data: updatedData,
+                updatedSourceData,
+                targetDataLocation,
+                sourceDataLocation,
+                type,
+                direction,
+            });
+
+            this.props.onChange(updatedData);
+        }
+    };
+
+    /**
+     * Handles the hovering of an element when dragging
+     */
+    private handleDragHover = (
+        dragHoverDataLocation: string,
+        direction?: VerticalDragDirection
+    ): void => {
+        const state: Partial<NavigationState> = {
+            dragHoverDataLocation,
+            dragHoverBeforeDataLocation:
+                direction === VerticalDragDirection.up ? dragHoverDataLocation : null,
+            dragHoverAfterDataLocation:
+                direction === VerticalDragDirection.down ? dragHoverDataLocation : null,
+        };
+
+        if (
+            this.state.dragHoverDataLocation !== state.dragHoverDataLocation ||
+            this.state.dragHoverAfterDataLocation !== state.dragHoverAfterDataLocation ||
+            this.state.dragHoverBeforeDataLocation !== state.dragHoverBeforeDataLocation
+        ) {
+            this.setState(state as NavigationState);
+        }
+    };
 
     /**
      * Renders tree items
@@ -308,13 +353,13 @@ export default class Navigation extends Foundation<
         }
     }
 
-    private getLinkClassNames(dataLocation: string): string {
-        let classes: string = get(this.props, "managedClasses.navigation_itemLink", "");
+    private getItemContentClassName(dataLocation: string): string {
+        let classes: string = this.props.managedClasses.navigation_itemContent;
 
         if (dataLocation === this.state.activeItem) {
             classes = `${classes} ${get(
                 this.props,
-                "managedClasses.navigation_itemLink__active",
+                "managedClasses.navigation_itemContent__active",
                 ""
             )}`;
         }
@@ -322,19 +367,52 @@ export default class Navigation extends Foundation<
         return classes;
     }
 
-    private getTriggerClassNames(dataLocation: string): string {
-        let classes: string = this.props.managedClasses.navigation_itemExpandListTrigger;
+    private getItemContentDragHoverClassName = (
+        type: NavigationDataType,
+        verticalDragDirection?: VerticalDragDirection
+    ): string => {
+        let classNames: string = "";
 
-        if (dataLocation === this.state.activeItem) {
-            classes = `${classes} ${get(
+        if (
+            type === NavigationDataType.children &&
+            typeof verticalDragDirection === "undefined"
+        ) {
+            classNames += `${get(
                 this.props,
-                "managedClasses.navigation_itemExpandListTrigger__active",
+                "managedClasses.navigation_itemContent__dragHover",
                 ""
             )}`;
         }
 
-        return classes;
-    }
+        if (
+            typeof verticalDragDirection !== "undefined" &&
+            type !== NavigationDataType.children
+        ) {
+            classNames += ` ${
+                verticalDragDirection === VerticalDragDirection.up
+                    ? this.getItemContentDragHoverBeforeClassName()
+                    : this.getItemContentDragHoverAfterClassName()
+            }`;
+        }
+
+        return classNames;
+    };
+
+    private getItemContentDragHoverBeforeClassName = (): string => {
+        return `${get(
+            this.props,
+            "managedClasses.navigation_itemContent__dragHoverBefore",
+            ""
+        )}`;
+    };
+
+    private getItemContentDragHoverAfterClassName = (): string => {
+        return `${get(
+            this.props,
+            "managedClasses.navigation_itemContent__dragHoverAfter",
+            ""
+        )}`;
+    };
 
     private getTreeItemNodes(): HTMLElement[] {
         const nodes: HTMLElement[] = Array.from(
