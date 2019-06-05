@@ -1,6 +1,8 @@
 import React from "react";
 import Adapter from "enzyme-adapter-react-16";
 import { configure, mount, render, shallow } from "enzyme";
+import { DragDropContext } from "react-dnd";
+import HTML5Backend from "react-dnd-html5-backend";
 import { NavigationProps } from "./navigation.props";
 import Navigation from "./navigation";
 import { ChildOptionItem } from "../data-utilities";
@@ -69,16 +71,29 @@ const navigationProps: NavigationProps = {
 const managedClasses: NavigationClassNameContract = {
     navigation: "navigation-class",
     navigation_item: "navigation_item-class",
-    navigation_itemLink: "navigation_itemLink-class",
-    navigation_itemLink__active: "navigation_itemLink__active-class",
-    navigation_itemExpandListTrigger: "navigation_itemExpandListTrigger-class",
-    navigation_itemExpandListTrigger__active:
-        "navigation_itemExpandListTrigger__active-class",
+    navigation_itemContent: "navigation_itemContent-class",
+    navigation_itemContent__active: "navigation_itemContent__active-class",
     navigation_itemList: "navigation_itemList-class",
 };
 const treeItemSelector: string = "[role='treeitem']";
 const treeItemEndPointSelector: string = `a${treeItemSelector}`;
 const treeItemExpandListTriggerSelector: string = `div${treeItemSelector} > span`;
+
+// context singleton
+let context: any;
+
+export function withDragDropContext<P>(
+    Component: React.ComponentClass<P> | React.StatelessComponent<P>
+): React.ComponentClass<P> {
+    // ensure a singleton instance of the context exists
+    if (!context) {
+        context = DragDropContext(HTML5Backend);
+    }
+
+    return context(Component);
+}
+
+const DragDropNavigation: any = withDragDropContext<NavigationProps>(Navigation);
 
 describe("Navigation", () => {
     test("should not throw", () => {
@@ -98,12 +113,12 @@ describe("Navigation", () => {
             managedClasses,
         };
 
-        const rendered: any = shallow(<Navigation {...props} />);
+        const rendered: any = mount(<DragDropNavigation {...props} />);
         const item: any = rendered.find(treeItemEndPointSelector);
         expect(item).toHaveLength(1);
         const triggerItem: any = rendered.find(treeItemExpandListTriggerSelector);
         expect(triggerItem).toHaveLength(2);
-        expect(item.props().className).toEqual(managedClasses.navigation_itemLink);
+        expect(item.props().className).toEqual(managedClasses.navigation_itemContent);
         expect(item.props()["aria-level"]).toEqual(3);
         expect(item.props()["aria-setsize"]).toEqual(1);
         expect(item.props()["aria-posinset"]).toEqual(1);
@@ -162,16 +177,20 @@ describe("Navigation", () => {
             managedClasses,
         };
 
-        const rendered: any = shallow(<Navigation {...props} />);
+        const rendered: any = mount(<DragDropNavigation {...props} />);
         const item: any = rendered.find(treeItemEndPointSelector);
         const itemTriggers: any = rendered.find(treeItemExpandListTriggerSelector);
         expect(item).toHaveLength(2);
         expect(itemTriggers).toHaveLength(2);
-        expect(item.at(0).props().className).toEqual(managedClasses.navigation_itemLink);
+        expect(item.at(0).props().className).toEqual(
+            managedClasses.navigation_itemContent
+        );
         expect(item.at(0).props()["aria-level"]).toEqual(3);
         expect(item.at(0).props()["aria-setsize"]).toEqual(2);
         expect(item.at(0).props()["aria-posinset"]).toEqual(1);
-        expect(item.at(1).props().className).toEqual(managedClasses.navigation_itemLink);
+        expect(item.at(1).props().className).toEqual(
+            managedClasses.navigation_itemContent
+        );
         expect(item.at(1).props()["aria-level"]).toEqual(3);
         expect(item.at(1).props()["aria-setsize"]).toEqual(2);
         expect(item.at(1).props()["aria-posinset"]).toEqual(2);
@@ -193,19 +212,19 @@ describe("Navigation", () => {
             managedClasses,
         };
 
-        const rendered: any = shallow(<Navigation {...props} />);
+        const rendered: any = mount(<DragDropNavigation {...props} />);
         const linkItem: any = rendered.find(treeItemEndPointSelector);
         const triggerItem: any = rendered.find(treeItemExpandListTriggerSelector).at(1);
 
         expect(triggerItem).toHaveLength(1);
         expect(triggerItem.props().className).toEqual(
-            managedClasses.navigation_itemExpandListTrigger
+            managedClasses.navigation_itemContent
         );
         expect(triggerItem.parent().props()["aria-level"]).toEqual(2);
         expect(triggerItem.parent().props()["aria-setsize"]).toEqual(1);
         expect(triggerItem.parent().props()["aria-posinset"]).toEqual(1);
         expect(linkItem).toHaveLength(1);
-        expect(linkItem.props().className).toEqual(managedClasses.navigation_itemLink);
+        expect(linkItem.props().className).toEqual(managedClasses.navigation_itemContent);
         expect(linkItem.props()["aria-level"]).toEqual(5);
         expect(linkItem.props()["aria-setsize"]).toEqual(1);
         expect(linkItem.props()["aria-posinset"]).toEqual(1);
@@ -233,26 +252,26 @@ describe("Navigation", () => {
             managedClasses,
         };
 
-        const rendered: any = shallow(<Navigation {...props} />);
+        const rendered: any = mount(<DragDropNavigation {...props} />);
         const linkItem: any = rendered.find(treeItemEndPointSelector);
         const triggerItem: any = rendered.find(treeItemExpandListTriggerSelector).at(1);
 
         expect(triggerItem).toHaveLength(1);
         expect(triggerItem.props().className).toEqual(
-            managedClasses.navigation_itemExpandListTrigger
+            managedClasses.navigation_itemContent
         );
         expect(triggerItem.parent().props()["aria-level"]).toEqual(2);
         expect(triggerItem.parent().props()["aria-setsize"]).toEqual(1);
         expect(triggerItem.parent().props()["aria-posinset"]).toEqual(1);
         expect(linkItem).toHaveLength(2);
         expect(linkItem.at(0).props().className).toEqual(
-            managedClasses.navigation_itemLink
+            managedClasses.navigation_itemContent
         );
         expect(linkItem.at(0).props()["aria-level"]).toEqual(5);
         expect(linkItem.at(0).props()["aria-setsize"]).toEqual(2);
         expect(linkItem.at(0).props()["aria-posinset"]).toEqual(1);
         expect(linkItem.at(1).props().className).toEqual(
-            managedClasses.navigation_itemLink
+            managedClasses.navigation_itemContent
         );
         expect(linkItem.at(1).props()["aria-level"]).toEqual(5);
         expect(linkItem.at(1).props()["aria-setsize"]).toEqual(2);
@@ -292,7 +311,7 @@ describe("Navigation", () => {
             managedClasses,
         };
 
-        const rendered: any = shallow(<Navigation {...props} />);
+        const rendered: any = mount(<DragDropNavigation {...props} />);
         const linkItem: any = rendered.find(treeItemEndPointSelector);
         const triggerItem: any = rendered.find(treeItemExpandListTriggerSelector);
 
@@ -406,7 +425,7 @@ describe("Navigation", () => {
             managedClasses,
             onLocationUpdate,
         };
-        const rendered: any = mount(<Navigation {...props} />);
+        const rendered: any = mount(<DragDropNavigation {...props} />);
         const linkItem: any = rendered.find(treeItemEndPointSelector);
 
         linkItem.at(0).simulate("click");
@@ -424,7 +443,7 @@ describe("Navigation", () => {
             managedClasses,
             onLocationUpdate,
         };
-        const rendered: any = mount(<Navigation {...props} />);
+        const rendered: any = mount(<DragDropNavigation {...props} />);
         const triggerItem: any = rendered.find(treeItemExpandListTriggerSelector);
 
         triggerItem.at(0).simulate("click");
@@ -442,7 +461,7 @@ describe("Navigation", () => {
             managedClasses,
             onLocationUpdate,
         };
-        const rendered: any = mount(<Navigation {...props} />);
+        const rendered: any = mount(<DragDropNavigation {...props} />);
         const triggerItem: any = rendered.find(treeItemExpandListTriggerSelector);
 
         triggerItem.at(1).simulate("click");
@@ -455,11 +474,11 @@ describe("Navigation", () => {
             data: standardData,
             managedClasses,
         };
-        const rendered: any = mount(<Navigation {...props} />);
+        const rendered: any = mount(<DragDropNavigation {...props} />);
         const linkItem: any = rendered.find(treeItemEndPointSelector);
 
         expect(linkItem.at(0).props().className).toEqual(
-            managedClasses.navigation_itemLink
+            managedClasses.navigation_itemContent
         );
 
         linkItem.at(0).simulate("click");
@@ -470,8 +489,8 @@ describe("Navigation", () => {
                 .at(0)
                 .props().className
         ).toEqual(
-            `${managedClasses.navigation_itemLink} ${
-                managedClasses.navigation_itemLink__active
+            `${managedClasses.navigation_itemContent} ${
+                managedClasses.navigation_itemContent__active
             }`
         );
     });
@@ -481,11 +500,11 @@ describe("Navigation", () => {
             data: standardData,
             managedClasses,
         };
-        const rendered: any = mount(<Navigation {...props} />);
+        const rendered: any = mount(<DragDropNavigation {...props} />);
         const triggerItem: any = rendered.find(treeItemExpandListTriggerSelector);
 
         expect(triggerItem.at(0).props().className).toEqual(
-            managedClasses.navigation_itemExpandListTrigger
+            managedClasses.navigation_itemContent
         );
 
         triggerItem.at(0).simulate("click");
@@ -496,8 +515,8 @@ describe("Navigation", () => {
                 .at(0)
                 .props().className
         ).toEqual(
-            `${managedClasses.navigation_itemExpandListTrigger} ${
-                managedClasses.navigation_itemExpandListTrigger__active
+            `${managedClasses.navigation_itemContent} ${
+                managedClasses.navigation_itemContent__active
             }`
         );
     });
@@ -507,7 +526,7 @@ describe("Navigation", () => {
             data: standardData,
             managedClasses,
         };
-        const rendered: any = mount(<Navigation {...props} />);
+        const rendered: any = mount(<DragDropNavigation {...props} />);
         const triggerItem: any = rendered.find(treeItemExpandListTriggerSelector);
 
         expect(
@@ -533,7 +552,7 @@ describe("Navigation", () => {
             data: standardData,
             managedClasses,
         };
-        const rendered: any = mount(<Navigation {...props} />);
+        const rendered: any = mount(<DragDropNavigation {...props} />);
         const triggerItem: any = rendered.find(treeItemExpandListTriggerSelector);
 
         triggerItem.at(0).simulate("click");
@@ -562,7 +581,7 @@ describe("Navigation", () => {
             data: standardData,
             managedClasses,
         };
-        const rendered: any = mount(<Navigation {...props} />);
+        const rendered: any = mount(<DragDropNavigation {...props} />);
         const triggerItem: any = rendered.find(treeItemExpandListTriggerSelector);
 
         expect(
@@ -588,7 +607,7 @@ describe("Navigation", () => {
             data: standardData,
             managedClasses,
         };
-        const rendered: any = mount(<Navigation {...props} />);
+        const rendered: any = mount(<DragDropNavigation {...props} />);
         const triggerItem: any = rendered.find(treeItemExpandListTriggerSelector);
 
         triggerItem.at(0).simulate("keyup", { keyCode: KeyCodes.enter });
@@ -617,7 +636,7 @@ describe("Navigation", () => {
             data: standardData,
             managedClasses,
         };
-        const rendered: any = mount(<Navigation {...props} />);
+        const rendered: any = mount(<DragDropNavigation {...props} />);
         const triggerItem: any = rendered.find(treeItemExpandListTriggerSelector);
 
         expect(
@@ -643,7 +662,7 @@ describe("Navigation", () => {
             data: standardData,
             managedClasses,
         };
-        const rendered: any = mount(<Navigation {...props} />);
+        const rendered: any = mount(<DragDropNavigation {...props} />);
         const triggerItem: any = rendered.find(treeItemExpandListTriggerSelector);
 
         triggerItem.at(0).simulate("keyup", { keyCode: KeyCodes.space });
@@ -679,10 +698,10 @@ describe("Navigation", () => {
             managedClasses,
         };
 
-        const rendered: any = shallow(<Navigation {...props} />);
-        expect(rendered.state().activeItem).toEqual("");
+        const rendered: any = mount(<DragDropNavigation {...props} />);
+        expect(rendered.find("Navigation").state().activeItem).toEqual("");
         rendered.setProps({ ...props, dataLocation: "children" });
-        expect(rendered.state().activeItem).toEqual("children");
+        expect(rendered.find("Navigation").state().activeItem).toEqual("children");
     });
     test("should update the state with the openItems if the `dataLocation` prop is updated", () => {
         const props: NavigationProps = {
@@ -697,10 +716,10 @@ describe("Navigation", () => {
             managedClasses,
         };
 
-        const rendered: any = shallow(<Navigation {...props} />);
-        expect(rendered.state().openItems).toEqual([""]);
+        const rendered: any = mount(<DragDropNavigation {...props} />);
+        expect(rendered.find("Navigation").state().openItems).toEqual([""]);
         rendered.setProps({ ...props, dataLocation: "children" });
-        expect(rendered.state().openItems).toEqual(["", "children"]);
+        expect(rendered.find("Navigation").state().openItems).toEqual(["", "children"]);
     });
     test("should update the navigation if the `data` prop has been updated", () => {
         const props: NavigationProps = {
@@ -714,8 +733,9 @@ describe("Navigation", () => {
             managedClasses,
         };
 
-        const rendered: any = shallow(<Navigation {...props} />);
-        const initialNavigation: TreeNavigation = rendered.state().navigation;
+        const rendered: any = mount(<DragDropNavigation {...props} />);
+        const initialNavigation: TreeNavigation = rendered.find("Navigation").state()
+            .navigation;
         rendered.setProps({
             ...props,
             data: {
@@ -728,7 +748,8 @@ describe("Navigation", () => {
                 ],
             },
         });
-        const updatedNavigation: TreeNavigation = rendered.state().navigation;
+        const updatedNavigation: TreeNavigation = rendered.find("Navigation").state()
+            .navigation;
         expect(updatedNavigation).not.toEqual(initialNavigation);
     });
 });

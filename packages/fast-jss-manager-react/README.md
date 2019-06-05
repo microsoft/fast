@@ -29,7 +29,7 @@ class Button extends React.Component {
 
 ### Create a JSS stylesheet
 
-You should also create a JSS stylesheet - for detailed information please reference [https://github.com/cssinjs/jss]. The JSS instance used by the manager uses (jss-preset-default)[https://github.com/cssinjs/jss-preset-default] so feel free to use any syntaxes supported by those plugins.
+You should also create a JSS stylesheet - for detailed information please reference [https://github.com/cssinjs/jss](https://github.com/cssinjs/jss). The JSS instance used by the manager uses [jss-preset-default](https://github.com/cssinjs/jss-preset-default) so feel free to use any syntaxes supported by those plugins.
 
 ```js
 // buttonSyles.js

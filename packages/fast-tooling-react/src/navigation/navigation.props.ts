@@ -24,6 +24,21 @@ export interface NavigationState {
      * The current active item
      */
     activeItem: null | string;
+
+    /**
+     * The hovered tree item
+     */
+    dragHoverDataLocation: null | string;
+
+    /**
+     * The hovered location before
+     */
+    dragHoverBeforeDataLocation: null | string;
+
+    /**
+     * The hovered location after
+     */
+    dragHoverAfterDataLocation: null | string;
 }
 
 export interface TreeNavigation {
@@ -77,6 +92,19 @@ export interface NavigationHandledProps
      * The location update
      */
     onLocationUpdate?: (dataLocation: string) => void;
+
+    /**
+     * If navigation items should enable drag to re-order. For this to work,
+     * the parent application will need to ensure the Navigation component is
+     * wrapped with a react-dnd backend. For more information on react-dnd backends,
+     * see http://react-dnd.github.io/react-dnd/docs/overview
+     */
+    dragAndDropReordering?: boolean;
+
+    /**
+     * The onChange callback for updating the data
+     */
+    onChange?: (data: any) => void;
 }
 
 export type NavigationProps = NavigationHandledProps & NavigationUnhandledProps;
