@@ -206,14 +206,33 @@ export default class App extends React.Component<{}, AppState> {
         });
     };
 
+    private getNuetralPallete(colorSource: string): string[] {
+        const color: ColorRGBA64 = parseColor(colorSource);
+        const hslColor: ColorHSL = rgbToHSL(color);
+        const augmentedHSLColor: ColorHSL = ColorHSL.fromObject({
+            h: hslColor.h,
+            s: hslColor.s,
+            l: 0.5,
+        });
+        return this.createColorPalette(hslToRGB(augmentedHSLColor));
+    }
+
     private handleUpdateTheme = (theme: ThemeName): void => {
         if (theme !== ThemeName.custom) {
             this.setState({
                 theme,
                 backgroundColor: theme === ThemeName.dark ? dark : light,
+                designSystem: clone(
+                    merge({}, this.state.designSystem, {
+                        backgroundColor: theme === ThemeName.dark ? dark : light,
+                        neutralPalette: this.getNuetralPallete(
+                            theme === ThemeName.dark ? dark : light
+                        ),
+                    })
+                ),
             });
         } else {
-            this.setCustomThemeBackground(this.state.backgroundColor);
+            this.setCustomThemeBackground(this.state.designSystem.backgroundColor);
             this.setState({
                 theme,
             });
@@ -240,21 +259,21 @@ export default class App extends React.Component<{}, AppState> {
                 updates.theme = ThemeName.custom;
             }
 
-            const color: ColorRGBA64 = parseColor(config.backgroundColor);
-            const hslColor: ColorHSL = rgbToHSL(color);
-            const augmentedHSLColor: ColorHSL = ColorHSL.fromObject({
-                h: hslColor.h,
-                s: hslColor.s,
-                l: 0.5,
-            });
-            updates.designSystem.neutralPalette = this.createColorPalette(
-                hslToRGB(augmentedHSLColor)
+            updates.designSystem = clone(
+                merge({}, this.state.designSystem, {
+                    neutralPalette: this.getNuetralPallete(config.backgroundColor),
+                })
             );
+            updates.designSystem.backgroundColor = config.backgroundColor;
         }
 
         if (config.accentColor !== this.state.accentColor) {
-            updates.designSystem.accentPalette = this.createColorPalette(
-                parseColor(config.accentColor)
+            updates.designSystem = clone(
+                merge({}, this.state.designSystem, {
+                    accentPalette: this.createColorPalette(
+                        parseColor(config.accentColor)
+                    ),
+                })
             );
         }
 
