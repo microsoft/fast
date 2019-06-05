@@ -206,7 +206,7 @@ export default class App extends React.Component<{}, AppState> {
         });
     };
 
-    private getNuetralPallete(colorSource: string): string[] {
+    private getNeutralPallete(colorSource: string): string[] {
         const color: ColorRGBA64 = parseColor(colorSource);
         const hslColor: ColorHSL = rgbToHSL(color);
         const augmentedHSLColor: ColorHSL = ColorHSL.fromObject({
@@ -225,7 +225,7 @@ export default class App extends React.Component<{}, AppState> {
                 designSystem: clone(
                     merge({}, this.state.designSystem, {
                         backgroundColor: theme === ThemeName.dark ? dark : light,
-                        neutralPalette: this.getNuetralPallete(
+                        neutralPalette: this.getNeutralPallete(
                             theme === ThemeName.dark ? dark : light
                         ),
                     })
@@ -261,7 +261,7 @@ export default class App extends React.Component<{}, AppState> {
 
             updates.designSystem = clone(
                 merge({}, this.state.designSystem, {
-                    neutralPalette: this.getNuetralPallete(config.backgroundColor),
+                    neutralPalette: this.getNeutralPallete(config.backgroundColor),
                 })
             );
             updates.designSystem.backgroundColor = config.backgroundColor;
