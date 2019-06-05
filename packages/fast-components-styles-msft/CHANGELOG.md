@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.11.3](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-styles-msft@4.11.2...@microsoft/fast-components-styles-msft@4.11.3) (2019-06-05)
+
+
+### Bug Fixes
+
+* density slider and color pickers in component explorer ([#1804](https://github.com/Microsoft/fast-dna/issues/1804)) ([32a62d2](https://github.com/Microsoft/fast-dna/commit/32a62d2))
+
+
+
+
+
 ## [4.11.2](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-styles-msft@4.11.1...@microsoft/fast-components-styles-msft@4.11.2) (2019-06-05)
 
 

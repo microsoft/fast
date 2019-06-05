@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.8.2](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-tooling-react@1.8.1...@microsoft/fast-tooling-react@1.8.2) (2019-06-05)
+
+
+### Bug Fixes
+
+* address formatting issue with self closing children and multiple children components ([#1823](https://github.com/Microsoft/fast-dna/issues/1823)) ([c447bce](https://github.com/Microsoft/fast-dna/commit/c447bce))
+
+
+
+
+
 ## [1.8.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-tooling-react@1.8.0...@microsoft/fast-tooling-react@1.8.1) (2019-06-05)
 
 
