@@ -87,7 +87,7 @@
     "babel-jest": "^24.5.0",
     "babel-preset-env": "^1.6.1",
     "chalk": "^2.4.2",
-    "docusaurus-init": "^1.0.2",
+    "docusaurus-init": "^1.11.0",
     "dotenv": "^6.0.0",
     "eyes.selenium": "3.6.2",
     "glob": "^7.1.2",
