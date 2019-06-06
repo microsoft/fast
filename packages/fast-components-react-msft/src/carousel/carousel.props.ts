@@ -4,15 +4,15 @@ import {
     ManagedClasses,
 } from "@microsoft/fast-components-class-name-contracts-msft";
 
-export enum SlideTheme {
+export enum CarouselSlideTheme {
     light = "light",
     dark = "dark",
 }
 
-export interface Slide {
+export interface CarouselSlide {
     content: (className?: string) => React.ReactNode;
     id: string;
-    theme?: SlideTheme;
+    theme?: CarouselSlideTheme;
 }
 
 export interface CarouselManagedClasses
@@ -20,7 +20,7 @@ export interface CarouselManagedClasses
 export interface CarouselHandledProps extends CarouselManagedClasses {
     label: string;
     activeId?: string;
-    items: Slide[];
+    items: CarouselSlide[];
 }
 
 export interface CarouselUnhandledProps extends React.HTMLAttributes<HTMLDivElement> {}

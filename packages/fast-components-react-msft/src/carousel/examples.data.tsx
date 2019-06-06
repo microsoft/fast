@@ -2,7 +2,7 @@ import React from "react";
 import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
 import { Carousel, CarouselProps } from "./index";
 import Documentation from "./.tmp/documentation";
-import { Slide, SlideTheme } from "./carousel.props";
+import { CarouselSlide, CarouselSlideTheme } from "./carousel.props";
 import { CallToActionAppearance } from "../call-to-action";
 import { uniqueId } from "lodash-es";
 import schema from "./carousel.schema.json";
@@ -39,14 +39,14 @@ const darkImageProps: object = {
     },
 };
 
-const detailTabItem: Slide[] = [
+const detailTabItem: CarouselSlide[] = [
     {
         content: {
             id: carouselHeroContentSchema.id,
             ...heroContentProps,
         } as any,
         id: uniqueId(),
-        theme: SlideTheme.dark,
+        theme: CarouselSlideTheme.dark,
     },
     {
         content: {
@@ -54,7 +54,7 @@ const detailTabItem: Slide[] = [
             ...darkImageProps,
         } as any,
         id: uniqueId(),
-        theme: SlideTheme.dark,
+        theme: CarouselSlideTheme.dark,
     },
     {
         content: {
@@ -67,7 +67,7 @@ const detailTabItem: Slide[] = [
             },
         } as any,
         id: uniqueId(),
-        theme: SlideTheme.light,
+        theme: CarouselSlideTheme.light,
     },
     {
         content: {
@@ -75,7 +75,7 @@ const detailTabItem: Slide[] = [
             ...darkImageProps,
         } as any,
         id: uniqueId(),
-        theme: SlideTheme.dark,
+        theme: CarouselSlideTheme.dark,
     },
     {
         content: {
@@ -83,11 +83,11 @@ const detailTabItem: Slide[] = [
             ...heroContentProps,
         } as any,
         id: uniqueId(),
-        theme: SlideTheme.dark,
+        theme: CarouselSlideTheme.dark,
     },
 ];
 
-const singleTabItem: Slide[] = [
+const singleTabItem: CarouselSlide[] = [
     {
         content: {
             id: carouselDarkImageContentSchema.id,

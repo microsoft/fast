@@ -4,9 +4,9 @@ import { configure, mount, shallow } from "enzyme";
 import MSFTCarousel, {
     CarouselHandledProps,
     CarouselManagedClasses,
+    CarouselSlide,
+    CarouselSlideTheme,
     CarouselUnhandledProps,
-    Slide,
-    SlideTheme,
 } from "./carousel";
 import {
     CallToAction,
@@ -83,7 +83,7 @@ function mockHero(): (className?: string) => React.ReactNode {
     );
 }
 
-const detailTabItem: Slide[] = [
+const detailTabItem: CarouselSlide[] = [
     {
         content: contentOne(),
         id: "id01",
@@ -91,16 +91,16 @@ const detailTabItem: Slide[] = [
     {
         content: mockHero(),
         id: "id02",
-        theme: SlideTheme.dark,
+        theme: CarouselSlideTheme.dark,
     },
     {
         content: mockHero(),
         id: "id03",
-        theme: SlideTheme.light,
+        theme: CarouselSlideTheme.light,
     },
 ];
 
-const detailNull: Slide[] = [
+const detailNull: CarouselSlide[] = [
     {
         content: null,
         id: "id01",
@@ -108,7 +108,7 @@ const detailNull: Slide[] = [
     {
         content: null,
         id: "id02",
-        theme: SlideTheme.dark,
+        theme: CarouselSlideTheme.dark,
     },
 ];
 
