@@ -3,6 +3,8 @@ import MSFTCarousel, {
     CarouselHandledProps as MSFTCarouselHandledProps,
     CarouselManagedClasses,
     CarouselProps as MSFTCarouselProps,
+    CarouselSlide,
+    CarouselSlideTheme,
     CarouselUnhandledProps,
 } from "./carousel";
 import { CarouselClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
@@ -31,5 +33,7 @@ export {
     CarouselProps,
     CarouselClassNameContract,
     CarouselHandledProps,
+    CarouselSlide,
+    CarouselSlideTheme,
     CarouselUnhandledProps,
 };

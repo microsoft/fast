@@ -3,9 +3,9 @@ import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-
 import {
     CarouselHandledProps,
     CarouselProps,
+    CarouselSlide,
+    CarouselSlideTheme,
     CarouselUnhandledProps,
-    Slide,
-    SlideTheme,
 } from "./carousel.props";
 import { Flipper, FlipperDirection } from "../flipper";
 import { Tabs, TabsItem } from "@microsoft/fast-components-react-base";
@@ -133,7 +133,7 @@ class Carousel extends Foundation<
      * Get an array of slides
      * Coerce tab shape
      */
-    private get slides(): Slide[] {
+    private get slides(): CarouselSlide[] {
         if (Array.isArray(this.props.items)) {
             return this.props.items.map((slide: any) =>
                 Object.assign({}, slide, {
@@ -156,7 +156,9 @@ class Carousel extends Foundation<
      * Get the active slide index
      */
     private getActiveIndex(): number {
-        return this.slides.map((slide: Slide) => slide.id).indexOf(this.state.activeId);
+        return this.slides
+            .map((slide: CarouselSlide) => slide.id)
+            .indexOf(this.state.activeId);
     }
 
     /**
@@ -169,7 +171,7 @@ class Carousel extends Foundation<
 
         return this.slides[this.getActiveIndex()].theme
             ? this.slides[this.getActiveIndex()].theme
-            : SlideTheme.dark;
+            : CarouselSlideTheme.dark;
     }
 
     /**
@@ -200,7 +202,7 @@ class Carousel extends Foundation<
      */
     private assignSlideThemeClassName(): string {
         const theme: string =
-            this.getSlideTheme() === SlideTheme.light
+            this.getSlideTheme() === CarouselSlideTheme.light
                 ? get(this.props, "managedClasses.carousel__themeLight", "")
                 : get(this.props, "managedClasses.carousel__themeDark", "");
 
@@ -250,7 +252,7 @@ class Carousel extends Foundation<
         });
 
         const activeTabIndex: number = this.slides
-            .map((slide: Slide) => slide.id)
+            .map((slide: CarouselSlide) => slide.id)
             .indexOf(activeTab);
 
         this.setTransitionDirection(activeTabIndex);
