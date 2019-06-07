@@ -4,10 +4,8 @@ import { Button, ButtonAppearance } from "./";
 import { DesignSystemProvider } from "@microsoft/fast-jss-manager-react";
 import { DesignSystemDefaults } from "@microsoft/fast-components-styles-msft";
 import { Background, DarkModeBackgrounds } from "../background";
-import withDesignSystem from "../../design-system-provider-addon";
 
 storiesOf("Button", module)
-    .addDecorator(withDesignSystem)
     .add(
         "Primary",
         () => <Button appearance={ButtonAppearance.primary}>Primary button</Button>,
