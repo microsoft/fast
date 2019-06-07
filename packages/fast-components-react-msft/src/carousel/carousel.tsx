@@ -31,6 +31,22 @@ class Carousel extends Foundation<
     public static displayName: string = `${DisplayNamePrefix}Carousel`;
 
     /**
+     * React life-cycle method
+     */
+    public static getDerivedStateFromProps(
+        nextProps: CarouselProps,
+        prevState: CarouselState
+    ): null | CarouselState {
+        if (nextProps.activeId && nextProps.activeId !== prevState.activeId) {
+            return {
+                activeId: nextProps.activeId,
+            };
+        }
+
+        return null;
+    }
+
+    /**
      * Handled props
      */
     protected handledProps: HandledProps<CarouselHandledProps> = {
