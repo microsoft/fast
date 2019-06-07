@@ -1,6 +1,7 @@
 import React from "react";
 import { addons, types, RouteOptions, MatchOptions } from "@storybook/addons";
-import { API } from "@storybook/api";
+import { API, Consumer } from "@storybook/api";
+import { Global, Theme } from "@storybook/theming";
 import { ADDON_ID, PANEL_ID, ADDON_EVENT } from "./constants";
 import { RenderOptions } from "@storybook/api/dist/modules/addons";
 import {
@@ -15,19 +16,29 @@ interface DesignSystemPanelProps {
 }
 
 class DesignSystemPanel extends React.Component<DesignSystemPanelProps, {}> {
-    constructor(props: DesignSystemPanelProps) {
-        super(props);
-    }
     public render() {
-        return this.props.active ? this.renderForm() : null;
-    }
-
-    private renderForm(): JSX.Element {
         const designSystem: DesignSystem = designSystemManager.get();
 
         return (
-            <div>
+            <React.Fragment>
+                <Global
+                    styles={(theme: Theme) => ({
+                        [`#storybook-preview-background`]: {
+                            background: `${designSystem.backgroundColor}`,
+                        },
+                    })}
+                />
+                {this.props.active ? this.renderForm(designSystem) : null}
+            </React.Fragment>
+        );
+        return;
+    }
+
+    private renderForm(designSystem: DesignSystem): JSX.Element {
+        return (
+            <div style={{ padding: "12px" }}>
                 <label>
+                    Background-color&nbsp;
                     <input
                         type="color"
                         onChange={this.handleColorChange}
@@ -41,6 +52,7 @@ class DesignSystemPanel extends React.Component<DesignSystemPanelProps, {}> {
     private handleColorChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
         designSystemManager.update({ backgroundColor: e.target.value });
         this.props.api.emit(ADDON_EVENT);
+        this.forceUpdate();
     };
 }
 
