@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.8.4](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-msft@4.8.3...@microsoft/fast-components-react-msft@4.8.4) (2019-06-07)
+
+
+### Bug Fixes
+
+* add lifecycle hook to update carousel activeId when props change ([#1836](https://github.com/Microsoft/fast-dna/issues/1836)) ([17667a8](https://github.com/Microsoft/fast-dna/commit/17667a8))
+* export carousel slide theme and carousel slide interfaces ([#1827](https://github.com/Microsoft/fast-dna/issues/1827)) ([8ad1bff](https://github.com/Microsoft/fast-dna/commit/8ad1bff))
+
+
+
+
+
 ## [4.8.3](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-msft@4.8.2...@microsoft/fast-components-react-msft@4.8.3) (2019-06-05)
 
 

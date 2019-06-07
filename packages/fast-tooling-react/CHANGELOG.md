@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.8.3](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-tooling-react@1.8.2...@microsoft/fast-tooling-react@1.8.3) (2019-06-07)
+
+
+### Bug Fixes
+
+* allow undefined values for properties in the CSS property editor ([#1824](https://github.com/Microsoft/fast-dna/issues/1824)) ([9d28a85](https://github.com/Microsoft/fast-dna/commit/9d28a85))
+* removed an unnecessary type assigned to the navigation items in Navigation ([#1835](https://github.com/Microsoft/fast-dna/issues/1835)) ([84bf5ea](https://github.com/Microsoft/fast-dna/commit/84bf5ea))
+
+
+
+
+
 ## [1.8.2](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-tooling-react@1.8.1...@microsoft/fast-tooling-react@1.8.2) (2019-06-05)
 
 
