@@ -41,7 +41,7 @@ export enum ViewportPositionerHorizontalPositionLabel {
     insetLeft = "insetLeft",
     insetRight = "insetRight",
     right = "right",
-    uncontrolled = "uncontrolled",
+    undefined = "undefined",
 }
 
 export enum ViewportPositionerVerticalPositionLabel {
@@ -49,7 +49,7 @@ export enum ViewportPositionerVerticalPositionLabel {
     insetTop = "insetTop",
     insetBottom = "insetBottom",
     bottom = "bottom",
-    uncontrolled = "uncontrolled",
+    undefined = "undefined",
 }
 
 class ViewportPositioner extends Foundation<
@@ -124,8 +124,8 @@ class ViewportPositioner extends Foundation<
             bottom: null,
             left: null,
             currentHorizontalPosition:
-                ViewportPositionerHorizontalPositionLabel.uncontrolled,
-            currentVerticalPosition: ViewportPositionerVerticalPositionLabel.uncontrolled,
+                ViewportPositionerHorizontalPositionLabel.undefined,
+            currentVerticalPosition: ViewportPositionerVerticalPositionLabel.undefined,
             defaultHorizontalPosition: this.ConvertHorizontalPositionToLabel(
                 this.props.horizontalPositioningMode,
                 this.props.defaultHorizontalPosition
@@ -280,7 +280,6 @@ class ViewportPositioner extends Foundation<
     private getPositioningStyles = (): {} => {
         // determine if we should hide the positioner because we don't have data to position it yet
         // (avoiding flicker)
-
         const shouldHide: boolean =
             (this.state.disabled &&
                 ((this.props.disabled === undefined || this.props.disabled === false) &&
@@ -379,38 +378,36 @@ class ViewportPositioner extends Foundation<
             width: this.rootElement.current.clientHeight,
         };
 
-        if (this.props.horizontalPositioningMode !== AxisPositioningMode.uncontrolled) {
-            const horizontalPositions: ViewportPositionerHorizontalPositionLabel[] = this.getHorizontalPositioningOptions();
-            if (
-                this.state.defaultHorizontalPosition !== undefined &&
-                horizontalPositions.indexOf(this.state.defaultHorizontalPosition) !== -1
-            ) {
-                this.applyBaseHorizontalPositioningState(
-                    this.state.defaultHorizontalPosition
-                );
-            } else {
-                this.applyBaseHorizontalPositioningState(horizontalPositions[0]);
-            }
+        let desiredHorizontalPosition: ViewportPositionerHorizontalPositionLabel = this
+            .state.defaultHorizontalPosition;
+
+        if (
+            this.props.horizontalPositioningMode !== AxisPositioningMode.uncontrolled &&
+            this.state.defaultHorizontalPosition ===
+                ViewportPositionerHorizontalPositionLabel.undefined
+        ) {
+            desiredHorizontalPosition = this.getHorizontalPositioningOptions()[0];
         }
 
-        if (this.props.verticalPositioningMode !== AxisPositioningMode.uncontrolled) {
-            const verticalPositions: ViewportPositionerVerticalPositionLabel[] = this.getVerticalPositioningOptions();
-            if (
-                this.state.defaultVerticalPosition !== undefined &&
-                verticalPositions.indexOf(this.state.defaultVerticalPosition) !== -1
-            ) {
-                this.applyBaseVerticalPositioningState(
-                    this.state.defaultVerticalPosition
-                );
-            } else {
-                this.applyBaseVerticalPositioningState(verticalPositions[0]);
-            }
+        let desiredVerticalPosition: ViewportPositionerVerticalPositionLabel = this.state
+            .defaultVerticalPosition;
+
+        if (
+            this.props.verticalPositioningMode !== AxisPositioningMode.uncontrolled &&
+            this.state.defaultVerticalPosition ===
+                ViewportPositionerVerticalPositionLabel.undefined
+        ) {
+            desiredVerticalPosition = this.getVerticalPositioningOptions()[0];
         }
 
-        this.setState({
-            disabled: false,
-            noOberverMode: true,
-        });
+        this.setState(Object.assign(
+            {
+                disabled: false,
+                noOberverMode: true,
+            },
+            this.getBaseHorizontalPositioningState(desiredHorizontalPosition),
+            this.getBaseVerticalPositioningState(desiredVerticalPosition)
+        ) as ViewportPositionerState);
     };
 
     /**
@@ -704,16 +701,13 @@ class ViewportPositioner extends Foundation<
         this.updateForScrolling();
 
         let desiredVerticalPosition: ViewportPositionerVerticalPositionLabel =
-            ViewportPositionerVerticalPositionLabel.uncontrolled;
+            ViewportPositionerVerticalPositionLabel.undefined;
         let desiredHorizontalPosition: ViewportPositionerHorizontalPositionLabel =
-            ViewportPositionerHorizontalPositionLabel.uncontrolled;
+            ViewportPositionerHorizontalPositionLabel.undefined;
 
         if (this.props.horizontalPositioningMode !== AxisPositioningMode.uncontrolled) {
             const horizontalOptions: ViewportPositionerHorizontalPositionLabel[] = this.getHorizontalPositioningOptions();
-
-            if (horizontalOptions.indexOf(this.state.defaultHorizontalPosition) !== -1) {
-                desiredHorizontalPosition = this.state.defaultHorizontalPosition;
-            }
+            desiredHorizontalPosition = this.state.defaultHorizontalPosition;
 
             const horizontalThreshold: number =
                 this.props.horizontalThreshold !== undefined
@@ -722,7 +716,7 @@ class ViewportPositioner extends Foundation<
 
             if (
                 desiredHorizontalPosition ===
-                    ViewportPositionerHorizontalPositionLabel.uncontrolled ||
+                    ViewportPositionerHorizontalPositionLabel.undefined ||
                 this.getOptionWidth(desiredHorizontalPosition) < horizontalThreshold
             ) {
                 desiredHorizontalPosition =
@@ -731,16 +725,11 @@ class ViewportPositioner extends Foundation<
                         ? horizontalOptions[0]
                         : horizontalOptions[1];
             }
-
-            this.applyBaseHorizontalPositioningState(desiredHorizontalPosition);
         }
 
         if (this.props.verticalPositioningMode !== AxisPositioningMode.uncontrolled) {
             const verticalOptions: ViewportPositionerVerticalPositionLabel[] = this.getVerticalPositioningOptions();
-
-            if (verticalOptions.indexOf(this.state.defaultVerticalPosition) !== -1) {
-                desiredVerticalPosition = this.state.defaultVerticalPosition;
-            }
+            desiredVerticalPosition = this.state.defaultVerticalPosition;
 
             const verticalThreshold: number =
                 this.props.verticalThreshold !== undefined
@@ -749,7 +738,7 @@ class ViewportPositioner extends Foundation<
 
             if (
                 desiredVerticalPosition ===
-                    ViewportPositionerVerticalPositionLabel.uncontrolled ||
+                    ViewportPositionerVerticalPositionLabel.undefined ||
                 this.getOptionHeight(desiredVerticalPosition) < verticalThreshold
             ) {
                 desiredVerticalPosition =
@@ -758,23 +747,25 @@ class ViewportPositioner extends Foundation<
                         ? verticalOptions[0]
                         : verticalOptions[1];
             }
-
-            this.applyBaseVerticalPositioningState(desiredVerticalPosition);
         }
 
-        this.setState({
-            xTranslate: this.calculateHorizontalTranslate(desiredHorizontalPosition),
-            yTranslate: this.calculateVerticalTranslate(desiredVerticalPosition),
-            initialLayoutComplete: true,
-        });
+        this.setState(Object.assign(
+            {
+                xTranslate: this.calculateHorizontalTranslate(desiredHorizontalPosition),
+                yTranslate: this.calculateVerticalTranslate(desiredVerticalPosition),
+                initialLayoutComplete: true,
+            },
+            this.getBaseHorizontalPositioningState(desiredHorizontalPosition),
+            this.getBaseVerticalPositioningState(desiredVerticalPosition)
+        ) as ViewportPositionerState);
     };
 
     /**
-     * Apply base horizontal positioning state based on desired position
+     * Get base horizontal positioning state based on desired position
      */
-    private applyBaseHorizontalPositioningState = (
+    private getBaseHorizontalPositioningState = (
         desiredHorizontalPosition: ViewportPositionerHorizontalPositionLabel
-    ): void => {
+    ): Partial<ViewportPositionerState> => {
         let right: number = null;
         let left: number = null;
         let xTransformOrigin: string = "left";
@@ -801,20 +792,20 @@ class ViewportPositioner extends Foundation<
                 break;
         }
 
-        this.setState({
+        return {
             xTransformOrigin,
             right,
             left,
             currentHorizontalPosition: desiredHorizontalPosition,
-        });
+        };
     };
 
     /**
-     * Apply base vertical positioning state based on desired position
+     * Get base vertical positioning state based on desired position
      */
-    private applyBaseVerticalPositioningState = (
+    private getBaseVerticalPositioningState = (
         desiredVerticalPosition: ViewportPositionerVerticalPositionLabel
-    ): void => {
+    ): Partial<ViewportPositionerState> => {
         let top: number = null;
         let bottom: number = null;
         let yTransformOrigin: string = "top";
@@ -840,12 +831,12 @@ class ViewportPositioner extends Foundation<
                 top = 0;
                 break;
         }
-        this.setState({
+        return {
             yTransformOrigin,
             top,
             bottom,
             currentVerticalPosition: desiredVerticalPosition,
-        });
+        };
     };
 
     /**
@@ -984,7 +975,7 @@ class ViewportPositioner extends Foundation<
                     return ViewportPositionerHorizontalPositionLabel.right;
                 }
             case AxisPositioningMode.uncontrolled:
-                return ViewportPositionerHorizontalPositionLabel.uncontrolled;
+                return ViewportPositionerHorizontalPositionLabel.undefined;
         }
     };
 
@@ -1010,7 +1001,7 @@ class ViewportPositioner extends Foundation<
                     return ViewportPositionerVerticalPositionLabel.bottom;
                 }
             case AxisPositioningMode.uncontrolled:
-                return ViewportPositionerVerticalPositionLabel.uncontrolled;
+                return ViewportPositionerVerticalPositionLabel.undefined;
         }
     };
 }
