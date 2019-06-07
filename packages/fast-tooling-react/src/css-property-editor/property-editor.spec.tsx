@@ -136,4 +136,12 @@ describe("CSSPropertyEditor", () => {
 
         expect(updatedDataKeys[0]).toEqual("paddingTop");
     });
+    test("should not throw an error of a property value is undefined", () => {
+        const data: { [key: string]: string } = {
+            padding: void 0,
+        };
+        expect(() => {
+            shallow(<CSSPropertyEditor data={data} />);
+        }).not.toThrow();
+    });
 });

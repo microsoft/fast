@@ -14,8 +14,14 @@ export function getCSSPropertyConfig(data: CSSProperties): CSSPropertiesConfig {
         (dataKey: string): void => {
             dataConfig[dataKey] = {
                 value: data[dataKey],
-                keyWidth: monospaceFontWidthMultiplier * spinalCase(dataKey).length,
-                valueWidth: monospaceFontWidthMultiplier * data[dataKey].length,
+                keyWidth:
+                    typeof spinalCase(dataKey) === "string"
+                        ? monospaceFontWidthMultiplier * spinalCase(dataKey).length
+                        : 0,
+                valueWidth:
+                    typeof data[dataKey] === "string"
+                        ? monospaceFontWidthMultiplier * data[dataKey].length
+                        : 0,
             };
         }
     );
