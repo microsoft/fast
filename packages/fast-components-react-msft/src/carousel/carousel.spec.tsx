@@ -164,6 +164,16 @@ describe("carousel", (): void => {
         expect(rendered.state("activeId")).toBe("id02");
     });
 
+    test("should update the active id when new props are passed", () => {
+        const rendered: any = mount(<MSFTCarousel label={"foo"} items={detailTabItem} />);
+
+        expect(rendered.state("activeId")).toBe("id01");
+
+        rendered.setProps({ activeId: "id03" });
+
+        expect(rendered.state("activeId")).toBe("id03");
+    });
+
     test("should not throw if items return no functions", () => {
         expect(() => {
             shallow(<MSFTCarousel label={"foo"} items={detailNull} />);
