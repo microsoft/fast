@@ -38,5 +38,5 @@ extractSymbolLibrary(config).then((value) => {
 - *pageWidth*: `number` - the width of the created sketch page
 - *pageHeight*: `number` - the width of the created sketch page
 - *sources*: `object | array` a single object or array of:
-    -- *url*: `string` - the url to extract symbols from
-    -- *selectors*: `string | string[]` - CSS selectors to source symbols from
+  - *url*: `string` - the url to extract symbols from
+  - *selectors*: `string | string[]` - CSS selectors to source symbols from
