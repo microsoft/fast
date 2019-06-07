@@ -1,0 +1,33 @@
+{
+  "name": "@microsoft/fast-storybook-design-system-addon",
+  "version": "1.0.0",
+  "description": "Storybook add-on for FAST MSFT DesignSystem",
+  "main": "dist/index.js",
+  "scripts": {
+    "clean:dist": "node ../../build/clean.js dist",
+    "prepare": "npm run clean:dist && npm run build",
+    "build": "tsc -p ./tsconfig.json",
+    "prettier": "prettier --config ../../.prettierrc --write \"**/*.{ts,tsx}\"",
+    "prettier:diff": "prettier --config ../../.prettierrc \"**/*.{ts,tsx}\" --list-different",
+    "watch": "tsc -p ./tsconfig.json -w --preserveWatchOutput"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@storybook/addons": "^5.1.3",
+    "@storybook/api": "^5.1.3",
+    "@storybook/client-logger": "^5.1.3",
+    "@storybook/components": "^5.1.3",
+    "@storybook/core-events": "^5.1.3",
+    "@storybook/router": "^5.1.3",
+    "@storybook/theming": "^5.1.3"
+  },
+  "devDependencies": {
+    "@types/react": "^16.8.19",
+    "prettier": "^1.18.0",
+    "typescript": "^3.5.1"
+  },
+  "peerDependencies": {
+    "react": "^16.6.0"
+  }
+}
