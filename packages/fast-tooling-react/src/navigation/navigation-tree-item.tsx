@@ -218,7 +218,12 @@ const NavigationTreeItem: React.RefForwardingComponent<
 
 export { NavigationTreeItem };
 
-export const DraggableNavigationTreeItem: typeof NavigationTreeItem = DropTarget(
+/*
+ * The type returned by DropTarget is very complicated so we'll let the
+ * compiler infer the type instead of re-declaring just for the package export
+ */
+/* tslint:disable-next-line:typedef */
+export const DraggableNavigationTreeItem = DropTarget(
     NavigationTreeItemDragID,
     navigationTreeItemDropSource,
     navigationTreeItemDropTargetCollect
@@ -229,3 +234,4 @@ export const DraggableNavigationTreeItem: typeof NavigationTreeItem = DropTarget
         navigationTreeItemDragSourceCollect
     )(NavigationTreeItem)
 );
+type DraggableNavigationTreeItem = InstanceType<typeof DraggableNavigationTreeItem>;
