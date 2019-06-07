@@ -1,4 +1,5 @@
-import { configure, addParameters } from "@storybook/react";
+import { configure, addParameters, addDecorator } from "@storybook/react";
+import { setup } from "@microsoft/fast-storybook-design-system-addon";
 
 addParameters({
     backgrounds: [
@@ -6,6 +7,8 @@ addParameters({
         { name: "dark", value: "#111" },
     ],
 });
+
+setup();
 
 configure(() => {
     const req = require.context("../src", true, /\.stories\.tsx$/);

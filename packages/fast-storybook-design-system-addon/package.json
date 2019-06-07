@@ -14,6 +14,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@microsoft/fast-components-styles-msft": "^4.11.3",
     "@storybook/addons": "^5.1.3",
     "@storybook/api": "^5.1.3",
     "@storybook/client-logger": "^5.1.3",
@@ -23,11 +24,14 @@
     "@storybook/theming": "^5.1.3"
   },
   "devDependencies": {
+    "@microsoft/fast-jss-manager-react": "^4.3.3",
+    "@storybook/react": "^5.1.3",
     "@types/react": "^16.8.19",
     "prettier": "^1.18.0",
     "typescript": "^3.5.1"
   },
   "peerDependencies": {
-    "react": "^16.6.0"
+    "react": "^16.6.0",
+    "@microsoft/fast-jss-manager-react": "^4.3.3"
   }
 }
