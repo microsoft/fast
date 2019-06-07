@@ -38,16 +38,16 @@ export interface ViewportPositionerState {
 
 export enum ViewportPositionerHorizontalPositionLabel {
     left = "left",
-    centerLeft = "centerLeft",
-    centerRight = "centerRight",
+    insetLeft = "insetLeft",
+    insetRight = "insetRight",
     right = "right",
     uncontrolled = "uncontrolled",
 }
 
 export enum ViewportPositionerVerticalPositionLabel {
     top = "top",
-    centerTop = "centerTop",
-    centerBottom = "centerBottom",
+    insetTop = "insetTop",
+    insetBottom = "insetBottom",
     bottom = "bottom",
     uncontrolled = "uncontrolled",
 }
@@ -164,9 +164,9 @@ class ViewportPositioner extends Foundation<
         return (
             <div
                 ref={this.rootElement}
-                {...this.unhandledProps()}
                 className={this.generateClassNames()}
                 style={this.getPositioningStyles()}
+                {...this.unhandledProps()}
             >
                 {this.props.children}
             </div>
@@ -185,17 +185,9 @@ class ViewportPositioner extends Foundation<
                     " ",
                     get(this.props.managedClasses, "viewportPositioner__left", "")
                 );
-                classNames = classNames.concat(
-                    " ",
-                    get(
-                        this.props.managedClasses,
-                        "viewportPositioner__horizontalFlipOutward",
-                        ""
-                    )
-                );
                 break;
 
-            case ViewportPositionerHorizontalPositionLabel.centerLeft:
+            case ViewportPositionerHorizontalPositionLabel.insetLeft:
                 classNames = classNames.concat(
                     " ",
                     get(this.props.managedClasses, "viewportPositioner__left", "")
@@ -204,13 +196,13 @@ class ViewportPositioner extends Foundation<
                     " ",
                     get(
                         this.props.managedClasses,
-                        "viewportPositioner__horizontalFlipInward",
+                        "viewportPositioner__horizontalInset",
                         ""
                     )
                 );
                 break;
 
-            case ViewportPositionerHorizontalPositionLabel.centerRight:
+            case ViewportPositionerHorizontalPositionLabel.insetRight:
                 classNames = classNames.concat(
                     " ",
                     get(this.props.managedClasses, "viewportPositioner__right", "")
@@ -219,7 +211,7 @@ class ViewportPositioner extends Foundation<
                     " ",
                     get(
                         this.props.managedClasses,
-                        "viewportPositioner__horizontalFlipInward",
+                        "viewportPositioner__horizontalInset",
                         ""
                     )
                 );
@@ -230,14 +222,6 @@ class ViewportPositioner extends Foundation<
                     " ",
                     get(this.props.managedClasses, "viewportPositioner__right", "")
                 );
-                classNames = classNames.concat(
-                    " ",
-                    get(
-                        this.props.managedClasses,
-                        "viewportPositioner__horizontalFlipOutward",
-                        ""
-                    )
-                );
                 break;
         }
 
@@ -247,17 +231,9 @@ class ViewportPositioner extends Foundation<
                     " ",
                     get(this.props.managedClasses, "viewportPositioner__top", "")
                 );
-                classNames = classNames.concat(
-                    " ",
-                    get(
-                        this.props.managedClasses,
-                        "viewportPositioner__verticalFlipOutward",
-                        ""
-                    )
-                );
                 break;
 
-            case ViewportPositionerVerticalPositionLabel.centerTop:
+            case ViewportPositionerVerticalPositionLabel.insetTop:
                 classNames = classNames.concat(
                     " ",
                     get(this.props.managedClasses, "viewportPositioner__top", "")
@@ -266,13 +242,13 @@ class ViewportPositioner extends Foundation<
                     " ",
                     get(
                         this.props.managedClasses,
-                        "viewportPositioner__verticalFlipInward",
+                        "viewportPositioner__verticalInset",
                         ""
                     )
                 );
                 break;
 
-            case ViewportPositionerVerticalPositionLabel.centerBottom:
+            case ViewportPositionerVerticalPositionLabel.insetBottom:
                 classNames = classNames.concat(
                     " ",
                     get(this.props.managedClasses, "viewportPositioner__bottom", "")
@@ -281,7 +257,7 @@ class ViewportPositioner extends Foundation<
                     " ",
                     get(
                         this.props.managedClasses,
-                        "viewportPositioner__verticalFlipInward",
+                        "viewportPositioner__verticalInset",
                         ""
                     )
                 );
@@ -291,14 +267,6 @@ class ViewportPositioner extends Foundation<
                 classNames = classNames.concat(
                     " ",
                     get(this.props.managedClasses, "viewportPositioner__bottom", "")
-                );
-                classNames = classNames.concat(
-                    " ",
-                    get(
-                        this.props.managedClasses,
-                        "viewportPositioner__verticalFlipOutward",
-                        ""
-                    )
                 );
                 break;
         }
@@ -312,18 +280,13 @@ class ViewportPositioner extends Foundation<
     private getPositioningStyles = (): {} => {
         // determine if we should hide the positioner because we don't have data to position it yet
         // (avoiding flicker)
-        let shouldHide: boolean = false;
-        if (this.state.disabled) {
-            if (
-                (this.props.disabled === undefined || this.props.disabled === false) &&
-                isNil(this.positionerRect) &&
-                this.getAnchorElement() !== null
-            ) {
-                shouldHide = true;
-            }
-        } else if (isNil(this.positionerRect) && !this.state.noOberverMode) {
-            shouldHide = true;
-        }
+
+        const shouldHide: boolean =
+            (this.state.disabled &&
+                ((this.props.disabled === undefined || this.props.disabled === false) &&
+                    isNil(this.positionerRect) &&
+                    this.getAnchorElement() !== null)) ||
+            (isNil(this.positionerRect) && !this.state.noOberverMode);
 
         return {
             opacity: shouldHide ? 0 : undefined,
@@ -495,10 +458,10 @@ class ViewportPositioner extends Foundation<
      */
     private getHorizontalPositioningOptions = (): ViewportPositionerHorizontalPositionLabel[] => {
         switch (this.props.horizontalPositioningMode) {
-            case AxisPositioningMode.flipInward:
+            case AxisPositioningMode.inset:
                 return [
-                    ViewportPositionerHorizontalPositionLabel.centerLeft,
-                    ViewportPositionerHorizontalPositionLabel.centerRight,
+                    ViewportPositionerHorizontalPositionLabel.insetLeft,
+                    ViewportPositionerHorizontalPositionLabel.insetRight,
                 ];
 
             case AxisPositioningMode.flipOutward:
@@ -514,10 +477,10 @@ class ViewportPositioner extends Foundation<
      */
     private getVerticalPositioningOptions = (): ViewportPositionerVerticalPositionLabel[] => {
         switch (this.props.verticalPositioningMode) {
-            case AxisPositioningMode.flipInward:
+            case AxisPositioningMode.inset:
                 return [
-                    ViewportPositionerVerticalPositionLabel.centerTop,
-                    ViewportPositionerVerticalPositionLabel.centerBottom,
+                    ViewportPositionerVerticalPositionLabel.insetTop,
+                    ViewportPositionerVerticalPositionLabel.insetBottom,
                 ];
 
             case AxisPositioningMode.flipOutward:
@@ -541,9 +504,9 @@ class ViewportPositioner extends Foundation<
         switch (positionOption) {
             case ViewportPositionerHorizontalPositionLabel.left:
                 return spaceLeft;
-            case ViewportPositionerHorizontalPositionLabel.centerLeft:
+            case ViewportPositionerHorizontalPositionLabel.insetLeft:
                 return spaceLeft + this.anchorWidth;
-            case ViewportPositionerHorizontalPositionLabel.centerRight:
+            case ViewportPositionerHorizontalPositionLabel.insetRight:
                 return spaceRight + this.anchorWidth;
             case ViewportPositionerHorizontalPositionLabel.right:
                 return spaceRight;
@@ -563,9 +526,9 @@ class ViewportPositioner extends Foundation<
         switch (positionOption) {
             case ViewportPositionerVerticalPositionLabel.top:
                 return spaceAbove;
-            case ViewportPositionerVerticalPositionLabel.centerTop:
+            case ViewportPositionerVerticalPositionLabel.insetTop:
                 return spaceAbove + this.anchorHeight;
-            case ViewportPositionerVerticalPositionLabel.centerBottom:
+            case ViewportPositionerVerticalPositionLabel.insetBottom:
                 return spaceBelow + this.anchorHeight;
             case ViewportPositionerVerticalPositionLabel.bottom:
                 return spaceBelow;
@@ -657,12 +620,12 @@ class ViewportPositioner extends Foundation<
                 this.anchorBottom = this.anchorTop + this.anchorHeight;
                 break;
 
-            case ViewportPositionerVerticalPositionLabel.centerTop:
+            case ViewportPositionerVerticalPositionLabel.insetTop:
                 this.anchorBottom = this.positionerRect.bottom - this.state.yTranslate;
                 this.anchorTop = this.anchorBottom - this.anchorHeight;
                 break;
 
-            case ViewportPositionerVerticalPositionLabel.centerBottom:
+            case ViewportPositionerVerticalPositionLabel.insetBottom:
                 this.anchorTop = this.positionerRect.top - this.state.yTranslate;
                 this.anchorBottom = this.anchorTop + this.anchorHeight;
                 break;
@@ -679,12 +642,12 @@ class ViewportPositioner extends Foundation<
                 this.anchorRight = this.anchorLeft + this.anchorWidth;
                 break;
 
-            case ViewportPositionerHorizontalPositionLabel.centerLeft:
+            case ViewportPositionerHorizontalPositionLabel.insetLeft:
                 this.anchorRight = this.positionerRect.right - this.state.xTranslate;
                 this.anchorLeft = this.anchorRight - this.anchorWidth;
                 break;
 
-            case ViewportPositionerHorizontalPositionLabel.centerRight:
+            case ViewportPositionerHorizontalPositionLabel.insetRight:
                 this.anchorLeft = this.positionerRect.left - this.state.xTranslate;
                 this.anchorRight = this.anchorLeft + this.anchorWidth;
                 break;
@@ -822,12 +785,12 @@ class ViewportPositioner extends Foundation<
                 right = this.positionerRect.width;
                 break;
 
-            case ViewportPositionerHorizontalPositionLabel.centerLeft:
+            case ViewportPositionerHorizontalPositionLabel.insetLeft:
                 xTransformOrigin = "right";
                 right = 0;
                 break;
 
-            case ViewportPositionerHorizontalPositionLabel.centerRight:
+            case ViewportPositionerHorizontalPositionLabel.insetRight:
                 xTransformOrigin = "left";
                 left = 0;
                 break;
@@ -862,12 +825,12 @@ class ViewportPositioner extends Foundation<
                 bottom = this.positionerRect.height + this.anchorHeight;
                 break;
 
-            case ViewportPositionerVerticalPositionLabel.centerTop:
+            case ViewportPositionerVerticalPositionLabel.insetTop:
                 yTransformOrigin = "bottom";
                 bottom = this.positionerRect.height;
                 break;
 
-            case ViewportPositionerVerticalPositionLabel.centerBottom:
+            case ViewportPositionerVerticalPositionLabel.insetBottom:
                 yTransformOrigin = "top";
                 top = -this.anchorHeight;
                 break;
@@ -903,12 +866,12 @@ class ViewportPositioner extends Foundation<
                 translate = translate < 0 ? translate - 1 : 0;
                 break;
 
-            case ViewportPositionerHorizontalPositionLabel.centerLeft:
+            case ViewportPositionerHorizontalPositionLabel.insetLeft:
                 translate = this.viewportRect.right - this.anchorRight;
                 translate = translate < 0 ? translate - 1 : 0;
                 break;
 
-            case ViewportPositionerHorizontalPositionLabel.centerRight:
+            case ViewportPositionerHorizontalPositionLabel.insetRight:
                 translate = this.viewportRect.left - this.anchorLeft;
                 translate = translate > 0 ? translate + 1 : 0;
                 break;
@@ -939,12 +902,12 @@ class ViewportPositioner extends Foundation<
                 translate = translate < 0 ? translate - 1 : 0;
                 break;
 
-            case ViewportPositionerVerticalPositionLabel.centerTop:
+            case ViewportPositionerVerticalPositionLabel.insetTop:
                 translate = this.viewportRect.bottom - this.anchorBottom;
                 translate = translate < 0 ? translate - 1 : 0;
                 break;
 
-            case ViewportPositionerVerticalPositionLabel.centerBottom:
+            case ViewportPositionerVerticalPositionLabel.insetBottom:
                 translate = this.viewportRect.top - this.anchorTop;
                 translate = translate < 0 ? 0 : translate + 1;
                 break;
@@ -1007,11 +970,11 @@ class ViewportPositioner extends Foundation<
         position: ViewportPositionerHorizontalPosition
     ): ViewportPositionerHorizontalPositionLabel => {
         switch (positioningMode) {
-            case AxisPositioningMode.flipInward:
+            case AxisPositioningMode.inset:
                 if (position === ViewportPositionerHorizontalPosition.left) {
-                    return ViewportPositionerHorizontalPositionLabel.centerLeft;
+                    return ViewportPositionerHorizontalPositionLabel.insetLeft;
                 } else if (position === ViewportPositionerHorizontalPosition.right) {
-                    return ViewportPositionerHorizontalPositionLabel.centerRight;
+                    return ViewportPositionerHorizontalPositionLabel.insetRight;
                 }
 
             case AxisPositioningMode.flipOutward:
@@ -1033,11 +996,11 @@ class ViewportPositioner extends Foundation<
         position: ViewportPositionerVerticalPosition
     ): ViewportPositionerVerticalPositionLabel => {
         switch (positioningMode) {
-            case AxisPositioningMode.flipInward:
+            case AxisPositioningMode.inset:
                 if (position === ViewportPositionerVerticalPosition.top) {
-                    return ViewportPositionerVerticalPositionLabel.centerTop;
+                    return ViewportPositionerVerticalPositionLabel.insetTop;
                 } else if (position === ViewportPositionerVerticalPosition.bottom) {
-                    return ViewportPositionerVerticalPositionLabel.centerBottom;
+                    return ViewportPositionerVerticalPositionLabel.insetBottom;
                 }
 
             case AxisPositioningMode.flipOutward:

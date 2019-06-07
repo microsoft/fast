@@ -16,7 +16,7 @@
             "enum": [
                 "uncontrolled",
                 "flipOutward",
-                "flipInward"
+                "Inset"
             ]
         },
         "defaultHorizontalPosition": {
@@ -25,9 +25,8 @@
             "default": "uncontrolled",
             "enum": [
                 "left",
-                "centerLeft",
-                "centerRight",
-                "right"
+                "right",
+                "uncontrolled"
             ]
         },
         "horizontalThreshold": {
@@ -45,7 +44,7 @@
             "enum": [
                 "uncontrolled",
                 "flipOutward",
-                "flipInward"
+                "Inset"
             ]
         },
         "defaultVerticalPosition": {
@@ -54,9 +53,8 @@
             "default": "uncontrolled",
             "enum": [
                 "top",
-                "centerTop",
-                "centerBottom",
-                "bottom"
+                "bottom",
+                "uncontrolled"
             ]
         },
         "verticalThreshold": {

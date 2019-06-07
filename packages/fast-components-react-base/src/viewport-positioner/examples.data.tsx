@@ -14,13 +14,8 @@ const managedClasses: ViewportPositionerManagedClasses = {
         viewportPositioner__right: "viewportPositioner__right",
         viewportPositioner__top: "viewportPositioner__top",
         viewportPositioner__bottom: "viewportPositioner__bottom",
-        viewportPositioner__horizontalFlipOutward:
-            "viewportPositioner__horizontalFlipOutward",
-        viewportPositioner__horizontalFlipInward:
-            "viewportPositioner__horizontalFlipInward",
-        viewportPositioner__verticalFlipOutward:
-            "viewportPositioner__verticalFlipOutward",
-        viewportPositioner__verticalFlipInward: "viewportPositioner__verticalFlipInward",
+        viewportPositioner__horizontalInset: "viewportPositioner__horizontalInset",
+        viewportPositioner__verticalInset: "viewportPositioner__verticalInset",
     },
 };
 

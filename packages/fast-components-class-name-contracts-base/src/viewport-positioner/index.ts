@@ -28,22 +28,12 @@ export interface ViewportPositionerClassNameContract {
     viewportPositioner__bottom?: string;
 
     /**
-     * horizontal flip outward state
-     */
-    viewportPositioner__horizontalFlipOutward?: string;
-
-    /**
      * horizontal flip inward state
      */
-    viewportPositioner__horizontalFlipInward?: string;
+    viewportPositioner__horizontalInset?: string;
 
     /**
-     * vertical flip outward state
+     * vertical flip inward state
      */
-    viewportPositioner__verticalFlipOutward?: string;
-
-    /**
-     * vertical flip inwarward state
-     */
-    viewportPositioner__verticalFlipInward?: string;
+    viewportPositioner__verticalInset?: string;
 }
