@@ -16,6 +16,12 @@ interface DesignSystemPanelProps {
 }
 
 class DesignSystemPanel extends React.Component<DesignSystemPanelProps, {}> {
+    public componentDidMount() {
+        window.setTimeout(() => {
+            this.setIframeDirection(designSystemManager.get().direction);
+        }, 400); // This is hacky - not sure why it doesn't just work immediately
+    }
+
     public render() {
         const designSystem: DesignSystem = designSystemManager.get();
 
@@ -37,23 +43,80 @@ class DesignSystemPanel extends React.Component<DesignSystemPanelProps, {}> {
     private renderForm(designSystem: DesignSystem): JSX.Element {
         return (
             <div style={{ padding: "12px" }}>
-                <label>
-                    Background-color&nbsp;
-                    <input
-                        type="color"
-                        onChange={this.handleColorChange}
-                        defaultValue={designSystem.backgroundColor}
-                    />
-                </label>
+                <div>
+                    <label>
+                        Background-color&nbsp;
+                        <input
+                            type="color"
+                            onChange={this.createChangeHandler(this.handleColorChange)}
+                            defaultValue={designSystem.backgroundColor}
+                        />
+                    </label>
+                </div>
+
+                <div>
+                    <label>
+                        ltr&nbsp;
+                        <input
+                            type="radio"
+                            name="direction"
+                            value="ltr"
+                            defaultChecked={designSystem.direction === "ltr"}
+                            onChange={this.createChangeHandler(
+                                this.handleDirectioinChange
+                            )}
+                        />
+                    </label>
+                </div>
+                <div>
+                    <label>
+                        rtl&nbsp;
+                        <input
+                            type="radio"
+                            name="direction"
+                            value="rtl"
+                            defaultChecked={designSystem.direction === "rtl"}
+                            onChange={this.createChangeHandler(
+                                this.handleDirectioinChange
+                            )}
+                        />
+                    </label>
+                </div>
             </div>
         );
     }
 
+    private createChangeHandler<T>(fn: (e: T) => void): (e: T) => void {
+        return (e: T): void => {
+            const event: T = e;
+            fn(event);
+
+            this.props.api.emit(ADDON_EVENT);
+            this.forceUpdate();
+        };
+    }
+
     private handleColorChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
         designSystemManager.update({ backgroundColor: e.target.value });
-        this.props.api.emit(ADDON_EVENT);
-        this.forceUpdate();
     };
+
+    private handleDirectioinChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+        designSystemManager.update({ direction: e.target.value as any });
+
+        this.setIframeDirection(e.target.value);
+    };
+
+    /**
+     * Set the dir attribute of the parent iframe
+     */
+    private setIframeDirection(direction: string): void {
+        const frame: HTMLIFrameElement = document.getElementById(
+            "storybook-preview-iframe"
+        ) as HTMLIFrameElement;
+        frame.contentDocument
+            .getElementsByTagName("html")[0]
+            .setAttribute("dir", direction);
+    }
 }
 
 addons.register(
