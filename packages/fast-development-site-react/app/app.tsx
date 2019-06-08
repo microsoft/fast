@@ -92,8 +92,7 @@ export default class App extends React.Component<{}, AppState> {
                 {this.renderSiteTitle()}
                 {this.renderSiteMenu()}
                 {this.renderBuildingBlocks()}
-                {this.renderComponents1()}
-                {this.renderComponents2()}
+                {this.renderComponents()}
             </Site>
         );
     }
@@ -106,63 +105,7 @@ export default class App extends React.Component<{}, AppState> {
         );
     }
 
-    private renderComponents2Nested(): JSX.Element {
-        const componentObj: any[] = [
-            { text: "fee" },
-            { text: "fi" },
-            { text: "fo" },
-            { text: "fum" },
-        ];
-        const categoryObj: SiteCategoryProps = {
-            slot: "category",
-            name: "Paragraph Nested",
-            schema: ParagraphSchema,
-            component: Paragraph,
-        };
-
-        return (
-            <SiteCategory slot={"category"} name={"Components 2 nested"}>
-                {this.renderCategory(componentObj, categoryObj)}
-            </SiteCategory>
-        );
-    }
-
-    private renderComponents2(): JSX.Element {
-        const paragraphTestComponents: any[] = [
-            { text: "itsy" },
-            { text: "bitsy" },
-            { text: "spider" },
-        ];
-        const paragraphTestCategory: SiteCategoryProps = {
-            slot: "category",
-            name: "Paragraph",
-            schema: ParagraphSchema,
-            component: Paragraph,
-            status: Status.alpha,
-        };
-        const spanTestComponents: any[] = [
-            { text: "uno" },
-            { text: "due" },
-            { text: "tre" },
-        ];
-        const spanTestCategory: SiteCategoryProps = {
-            slot: "category",
-            name: "Span",
-            schema: SpanSchema,
-            component: Span,
-            status: Status.alpha,
-        };
-
-        return (
-            <SiteCategory slot={"category"} name={"Components 2"}>
-                {this.renderCategory(paragraphTestComponents, paragraphTestCategory)}
-                {this.renderCategory(spanTestComponents, spanTestCategory)}
-                {this.renderComponents2Nested()}
-            </SiteCategory>
-        );
-    }
-
-    private renderComponents1(): JSX.Element {
+    private renderComponents(): JSX.Element {
         const buttonTestCategoryBase: Partial<SiteCategoryProps> = {
             slot: "category",
             schema: ButtonSchema,
@@ -186,6 +129,18 @@ export default class App extends React.Component<{}, AppState> {
             ...buttonTestCategoryBase,
             name: "Other Button",
         };
+        const paragraphTestComponents: any[] = [
+            { text: "itsy" },
+            { text: "bitsy" },
+            { text: "spider" },
+        ];
+        const paragraphTestCategory: SiteCategoryProps = {
+            slot: "category",
+            name: "Paragraph",
+            schema: ParagraphSchema,
+            component: Paragraph,
+            status: Status.alpha,
+        };
 
         return (
             <SiteCategory slot={"category"} name={"Components"}>
@@ -197,6 +152,7 @@ export default class App extends React.Component<{}, AppState> {
                     otherButtonTestComponents,
                     otherButtonTestCategory as SiteCategoryProps
                 )}
+                {this.renderCategory(paragraphTestComponents, paragraphTestCategory)}
             </SiteCategory>
         );
     }
@@ -246,7 +202,7 @@ export default class App extends React.Component<{}, AppState> {
                 <SiteCategoryItem
                     slot={
                         index === 0
-                            ? ComponentViewSlot.detailDocumentation
+                            ? ComponentViewSlot.detailExample
                             : ComponentViewSlot.example
                     }
                     key={index}
