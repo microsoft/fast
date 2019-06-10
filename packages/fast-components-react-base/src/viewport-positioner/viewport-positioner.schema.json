@@ -15,8 +15,8 @@
             "default": "uncontrolled",
             "enum": [
                 "uncontrolled",
-                "flipOutward",
-                "Inset"
+                "adjacent",
+                "inset"
             ]
         },
         "defaultHorizontalPosition": {
@@ -43,8 +43,8 @@
             "default": "uncontrolled",
             "enum": [
                 "uncontrolled",
-                "flipOutward",
-                "Inset"
+                "adjacent",
+                "inset"
             ]
         },
         "defaultVerticalPosition": {

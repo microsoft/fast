@@ -8,9 +8,9 @@ The *viewport positioner* and the anchor element it is attached to must both be 
 
 If no "anchor" is specified the component will be disabled and not attempt to adjust layout. If no viewport is specified the component will assume the viewport is the root document element of the page.
 
-Authors can specify a positioning mode for each axis or leave it "uncontrolled" and use other means (i.e. their own css) to manage the positioner's layout on that axis.  The "flipOutward" positioning mode ensures that the positioner does not overlap with the anchor on that axis and butts up against the outer edges of the anchor element.  With the "inset" positioning mode set the positioner will overlap with the anchor on the axis specified but will only extend beyond the anchor on the side with the most available space.
+Authors can specify a positioning mode for each axis or leave it "uncontrolled" and use other means (i.e. their own css) to manage the positioner's layout on that axis.  The "adjacent" positioning mode ensures that the positioner does not overlap with the anchor on that axis and butts up against the outer edges of the anchor element.  With the "inset" positioning mode set the positioner will overlap with the anchor on the axis specified but will only extend beyond the anchor on the side with the most available space.
 
-FlipOutward:
+Adjacent:
 
 Anchor
        |Positioner

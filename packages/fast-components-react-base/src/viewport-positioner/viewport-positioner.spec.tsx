@@ -145,9 +145,9 @@ describe("viewport positioner", (): void => {
             <div>
                 <div ref={anchorElement} />
                 <ViewportPositioner
-                    horizontalPositioningMode={AxisPositioningMode.flipOutward}
+                    horizontalPositioningMode={AxisPositioningMode.adjacent}
                     defaultHorizontalPosition={ViewportPositionerHorizontalPosition.left}
-                    verticalPositioningMode={AxisPositioningMode.flipOutward}
+                    verticalPositioningMode={AxisPositioningMode.adjacent}
                     defaultVerticalPosition={ViewportPositionerVerticalPosition.top}
                     anchor={anchorElement}
                     managedClasses={managedClasses}
@@ -186,9 +186,9 @@ describe("viewport positioner", (): void => {
             <div>
                 <div ref={anchorElement} />
                 <ViewportPositioner
-                    horizontalPositioningMode={AxisPositioningMode.flipOutward}
+                    horizontalPositioningMode={AxisPositioningMode.adjacent}
                     defaultHorizontalPosition={ViewportPositionerHorizontalPosition.right}
-                    verticalPositioningMode={AxisPositioningMode.flipOutward}
+                    verticalPositioningMode={AxisPositioningMode.adjacent}
                     defaultVerticalPosition={ViewportPositionerVerticalPosition.bottom}
                     anchor={anchorElement}
                     managedClasses={managedClasses}
@@ -312,7 +312,7 @@ describe("viewport positioner", (): void => {
         );
     });
 
-    test("Option sizes calculated correctly - flipOutward", (): void => {
+    test("Option sizes calculated correctly - adjacent", (): void => {
         const anchorElement: React.RefObject<HTMLDivElement> = React.createRef<
             HTMLDivElement
         >();
@@ -336,8 +336,8 @@ describe("viewport positioner", (): void => {
                     ref={anchorElement}
                 />
                 <ViewportPositioner
-                    horizontalPositioningMode={AxisPositioningMode.flipOutward}
-                    verticalPositioningMode={AxisPositioningMode.flipOutward}
+                    horizontalPositioningMode={AxisPositioningMode.adjacent}
+                    verticalPositioningMode={AxisPositioningMode.adjacent}
                     anchor={anchorElement}
                     viewport={viewportElement}
                     managedClasses={managedClasses}
@@ -361,22 +361,30 @@ describe("viewport positioner", (): void => {
         expect(
             positioner
                 .instance()
-                ["getOptionWidth"](ViewportPositionerHorizontalPosition.left)
+                ["getHorizontalPositionAvailableWidth"](
+                    ViewportPositionerHorizontalPosition.left
+                )
         ).toBe(80);
         expect(
             positioner
                 .instance()
-                ["getOptionWidth"](ViewportPositionerHorizontalPosition.right)
+                ["getHorizontalPositionAvailableWidth"](
+                    ViewportPositionerHorizontalPosition.right
+                )
         ).toBe(10);
         expect(
             positioner
                 .instance()
-                ["getOptionHeight"](ViewportPositionerVerticalPosition.top)
+                ["getVerticalPositionAvailableHeight"](
+                    ViewportPositionerVerticalPosition.top
+                )
         ).toBe(80);
         expect(
             positioner
                 .instance()
-                ["getOptionHeight"](ViewportPositionerVerticalPosition.bottom)
+                ["getVerticalPositionAvailableHeight"](
+                    ViewportPositionerVerticalPosition.bottom
+                )
         ).toBe(10);
     });
 
@@ -429,22 +437,30 @@ describe("viewport positioner", (): void => {
         expect(
             positioner
                 .instance()
-                ["getOptionWidth"](ViewportPositionerHorizontalPositionLabel.insetLeft)
+                ["getHorizontalPositionAvailableWidth"](
+                    ViewportPositionerHorizontalPositionLabel.insetLeft
+                )
         ).toBe(90);
         expect(
             positioner
                 .instance()
-                ["getOptionWidth"](ViewportPositionerHorizontalPositionLabel.insetRight)
+                ["getHorizontalPositionAvailableWidth"](
+                    ViewportPositionerHorizontalPositionLabel.insetRight
+                )
         ).toBe(20);
         expect(
             positioner
                 .instance()
-                ["getOptionHeight"](ViewportPositionerVerticalPositionLabel.insetTop)
+                ["getVerticalPositionAvailableHeight"](
+                    ViewportPositionerVerticalPositionLabel.insetTop
+                )
         ).toBe(90);
         expect(
             positioner
                 .instance()
-                ["getOptionHeight"](ViewportPositionerVerticalPositionLabel.insetBottom)
+                ["getVerticalPositionAvailableHeight"](
+                    ViewportPositionerVerticalPositionLabel.insetBottom
+                )
         ).toBe(20);
     });
 
@@ -485,11 +501,11 @@ describe("viewport positioner", (): void => {
         ).not.toBe(-1);
     });
 
-    test("Correct options returned for a specified positioning mode - flipOutwards", (): void => {
+    test("Correct options returned for a specified positioning mode - adjacent", (): void => {
         const rendered: any = mount(
             <ViewportPositioner
-                horizontalPositioningMode={AxisPositioningMode.flipOutward}
-                verticalPositioningMode={AxisPositioningMode.flipOutward}
+                horizontalPositioningMode={AxisPositioningMode.adjacent}
+                verticalPositioningMode={AxisPositioningMode.adjacent}
             />
         );
 
@@ -542,11 +558,11 @@ describe("viewport positioner", (): void => {
                     ref={anchorElement}
                 />
                 <ViewportPositioner
-                    horizontalPositioningMode={AxisPositioningMode.flipOutward}
+                    horizontalPositioningMode={AxisPositioningMode.adjacent}
                     defaultHorizontalPosition={
                         ViewportPositionerHorizontalPosition.uncontrolled
                     }
-                    verticalPositioningMode={AxisPositioningMode.flipOutward}
+                    verticalPositioningMode={AxisPositioningMode.adjacent}
                     defaultVerticalPosition={
                         ViewportPositionerVerticalPosition.uncontrolled
                     }
@@ -604,8 +620,8 @@ describe("viewport positioner", (): void => {
                     ref={anchorElement}
                 />
                 <ViewportPositioner
-                    horizontalPositioningMode={AxisPositioningMode.flipOutward}
-                    verticalPositioningMode={AxisPositioningMode.flipOutward}
+                    horizontalPositioningMode={AxisPositioningMode.adjacent}
+                    verticalPositioningMode={AxisPositioningMode.adjacent}
                     anchor={anchorElement}
                     viewport={viewportElement}
                     managedClasses={managedClasses}
@@ -796,11 +812,11 @@ describe("viewport positioner", (): void => {
                     ref={anchorElement}
                 />
                 <ViewportPositioner
-                    horizontalPositioningMode={AxisPositioningMode.flipOutward}
+                    horizontalPositioningMode={AxisPositioningMode.adjacent}
                     defaultHorizontalPosition={
                         ViewportPositionerHorizontalPosition.uncontrolled
                     }
-                    verticalPositioningMode={AxisPositioningMode.flipOutward}
+                    verticalPositioningMode={AxisPositioningMode.adjacent}
                     defaultVerticalPosition={
                         ViewportPositionerVerticalPosition.uncontrolled
                     }
@@ -872,10 +888,10 @@ describe("viewport positioner", (): void => {
                     ref={anchorElement}
                 />
                 <ViewportPositioner
-                    horizontalPositioningMode={AxisPositioningMode.flipOutward}
+                    horizontalPositioningMode={AxisPositioningMode.adjacent}
                     defaultHorizontalPosition={ViewportPositionerHorizontalPosition.left}
                     horizontalThreshold={20}
-                    verticalPositioningMode={AxisPositioningMode.flipOutward}
+                    verticalPositioningMode={AxisPositioningMode.adjacent}
                     defaultVerticalPosition={ViewportPositionerVerticalPosition.top}
                     verticalThreshold={20}
                     anchor={anchorElement}

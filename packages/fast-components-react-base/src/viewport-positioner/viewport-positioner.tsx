@@ -101,7 +101,7 @@ class ViewportPositioner extends Foundation<
     public static defaultProps: Partial<ViewportPositionerProps> = {
         horizontalPositioningMode: AxisPositioningMode.uncontrolled,
         defaultHorizontalPosition: ViewportPositionerHorizontalPosition.uncontrolled,
-        verticalPositioningMode: AxisPositioningMode.flipOutward,
+        verticalPositioningMode: AxisPositioningMode.adjacent,
         defaultVerticalPosition: ViewportPositionerVerticalPosition.bottom,
         horizontalAlwaysInView: false,
         verticalAlwaysInView: false,
@@ -165,11 +165,11 @@ class ViewportPositioner extends Foundation<
             currentHorizontalPosition:
                 ViewportPositionerHorizontalPositionLabel.undefined,
             currentVerticalPosition: ViewportPositionerVerticalPositionLabel.undefined,
-            defaultHorizontalPosition: this.ConvertHorizontalPositionToLabel(
+            defaultHorizontalPosition: this.getHorizontalPositionToLabel(
                 this.props.horizontalPositioningMode,
                 this.props.defaultHorizontalPosition
             ),
-            defaultVerticalPosition: this.ConvertVerticalPositionToLabel(
+            defaultVerticalPosition: this.getVerticalPositionToLabel(
                 this.props.verticalPositioningMode,
                 this.props.defaultVerticalPosition
             ),
@@ -178,7 +178,7 @@ class ViewportPositioner extends Foundation<
     }
 
     public componentDidMount(): void {
-        this.checkComponentConfig();
+        this.updateDisabledState();
         this.requestFrame();
     }
 
@@ -192,7 +192,7 @@ class ViewportPositioner extends Foundation<
             prevProps.anchor !== this.props.anchor ||
             prevProps.disabled !== this.props.disabled
         ) {
-            this.checkComponentConfig();
+            this.updateDisabledState();
         }
     }
 
@@ -346,7 +346,7 @@ class ViewportPositioner extends Foundation<
     /**
      *  Checks whether component should be disabled or not
      */
-    private checkComponentConfig = (): void => {
+    private updateDisabledState = (): void => {
         if (
             !canUseDOM() ||
             this.props.disabled === true ||
@@ -500,7 +500,7 @@ class ViewportPositioner extends Foundation<
                     ViewportPositionerHorizontalPositionLabel.insetRight,
                 ];
 
-            case AxisPositioningMode.flipOutward:
+            case AxisPositioningMode.adjacent:
                 return [
                     ViewportPositionerHorizontalPositionLabel.left,
                     ViewportPositionerHorizontalPositionLabel.right,
@@ -519,7 +519,7 @@ class ViewportPositioner extends Foundation<
                     ViewportPositionerVerticalPositionLabel.insetBottom,
                 ];
 
-            case AxisPositioningMode.flipOutward:
+            case AxisPositioningMode.adjacent:
                 return [
                     ViewportPositionerVerticalPositionLabel.top,
                     ViewportPositionerVerticalPositionLabel.bottom,
@@ -530,7 +530,7 @@ class ViewportPositioner extends Foundation<
     /**
      *  Get the width available for a particular horizontal position
      */
-    private getOptionWidth = (
+    private getHorizontalPositionAvailableWidth = (
         positionOption: ViewportPositionerHorizontalPositionLabel
     ): number => {
         const spaceLeft: number = this.anchorLeft - this.viewportRect.left;
@@ -552,7 +552,7 @@ class ViewportPositioner extends Foundation<
     /**
      *  Get the height available for a particular vertical position
      */
-    private getOptionHeight = (
+    private getVerticalPositionAvailableHeight = (
         positionOption: ViewportPositionerVerticalPositionLabel
     ): number => {
         const spaceAbove: number = this.anchorTop - this.viewportRect.top;
@@ -756,11 +756,12 @@ class ViewportPositioner extends Foundation<
             if (
                 desiredHorizontalPosition ===
                     ViewportPositionerHorizontalPositionLabel.undefined ||
-                this.getOptionWidth(desiredHorizontalPosition) < horizontalThreshold
+                this.getHorizontalPositionAvailableWidth(desiredHorizontalPosition) <
+                    horizontalThreshold
             ) {
                 desiredHorizontalPosition =
-                    this.getOptionWidth(horizontalOptions[0]) >
-                    this.getOptionWidth(horizontalOptions[1])
+                    this.getHorizontalPositionAvailableWidth(horizontalOptions[0]) >
+                    this.getHorizontalPositionAvailableWidth(horizontalOptions[1])
                         ? horizontalOptions[0]
                         : horizontalOptions[1];
             }
@@ -778,11 +779,12 @@ class ViewportPositioner extends Foundation<
             if (
                 desiredVerticalPosition ===
                     ViewportPositionerVerticalPositionLabel.undefined ||
-                this.getOptionHeight(desiredVerticalPosition) < verticalThreshold
+                this.getVerticalPositionAvailableHeight(desiredVerticalPosition) <
+                    verticalThreshold
             ) {
                 desiredVerticalPosition =
-                    this.getOptionHeight(verticalOptions[0]) >
-                    this.getOptionHeight(verticalOptions[1])
+                    this.getVerticalPositionAvailableHeight(verticalOptions[0]) >
+                    this.getVerticalPositionAvailableHeight(verticalOptions[1])
                         ? verticalOptions[0]
                         : verticalOptions[1];
             }
@@ -879,7 +881,7 @@ class ViewportPositioner extends Foundation<
     };
 
     /**
-     *  Calculate horizontal tranlation to keep positioner in view
+     *  Calculate horizontal translation to keep positioner in view
      */
     private getHorizontalTranslate = (
         horizontalPosition: ViewportPositionerHorizontalPositionLabel
@@ -915,7 +917,7 @@ class ViewportPositioner extends Foundation<
     };
 
     /**
-     *  Calculate vertical tranlation to keep positioner in view
+     *  Calculate vertical translation to keep positioner in view
      */
     private getVerticalTranslate = (
         verticalPosition: ViewportPositionerVerticalPositionLabel
@@ -995,7 +997,7 @@ class ViewportPositioner extends Foundation<
     /**
      * Converts simple horizontal position to a position label based on AxisPositioningMode
      */
-    private ConvertHorizontalPositionToLabel = (
+    private getHorizontalPositionToLabel = (
         positioningMode: AxisPositioningMode,
         position: ViewportPositionerHorizontalPosition
     ): ViewportPositionerHorizontalPositionLabel => {
@@ -1007,7 +1009,7 @@ class ViewportPositioner extends Foundation<
                     return ViewportPositionerHorizontalPositionLabel.insetRight;
                 }
 
-            case AxisPositioningMode.flipOutward:
+            case AxisPositioningMode.adjacent:
                 if (position === ViewportPositionerHorizontalPosition.left) {
                     return ViewportPositionerHorizontalPositionLabel.left;
                 } else if (position === ViewportPositionerHorizontalPosition.right) {
@@ -1021,7 +1023,7 @@ class ViewportPositioner extends Foundation<
     /**
      * Converts simple vertical position to a position label based on AxisPositioningMode
      */
-    private ConvertVerticalPositionToLabel = (
+    private getVerticalPositionToLabel = (
         positioningMode: AxisPositioningMode,
         position: ViewportPositionerVerticalPosition
     ): ViewportPositionerVerticalPositionLabel => {
@@ -1033,7 +1035,7 @@ class ViewportPositioner extends Foundation<
                     return ViewportPositionerVerticalPositionLabel.insetBottom;
                 }
 
-            case AxisPositioningMode.flipOutward:
+            case AxisPositioningMode.adjacent:
                 if (position === ViewportPositionerVerticalPosition.top) {
                     return ViewportPositionerVerticalPositionLabel.top;
                 } else if (position === ViewportPositionerVerticalPosition.bottom) {

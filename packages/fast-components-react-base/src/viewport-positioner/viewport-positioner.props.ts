@@ -23,7 +23,7 @@ export enum ViewportPositionerVerticalPosition {
 
 export enum AxisPositioningMode {
     uncontrolled = "uncontrolled",
-    flipOutward = "flipOutward",
+    adjacent = "adjacent",
     inset = "inset",
 }
 
