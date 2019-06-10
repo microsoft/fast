@@ -6,11 +6,9 @@ import { DesignSystemDefaults } from "@microsoft/fast-components-styles-msft";
 import { Background, DarkModeBackgrounds } from "../background";
 
 storiesOf("Button", module)
-    .add(
-        "Primary",
-        () => <Button appearance={ButtonAppearance.primary}>Primary button</Button>,
-        { foo: { data: "awesome" } }
-    )
+    .add("Primary", () => (
+        <Button appearance={ButtonAppearance.primary}>Primary button</Button>
+    ))
     .add("Secondary", () => <Button>Secondary button</Button>)
     .add("Stealth", () => (
         <Button appearance={ButtonAppearance.stealth}>Stealth button</Button>
