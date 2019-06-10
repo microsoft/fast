@@ -1,0 +1,19 @@
+{
+  "name": "@microsoft/fast-storybook-presets",
+  "version": "1.0.0",
+  "description": "Storybook presets for FAST integration",
+  "main": "dist/index.js",
+  "scripts": {
+    "prepare": "tsc -p ./tsconfig.json",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@microsoft/fast-storybook-design-system-addon": "^1.0.0"
+  },
+  "peerDependencies": {
+    "react": "^16.6.0",
+    "@microsoft/fast-jss-manager-react": "^4.3.3"
+  }
+}
