@@ -11,4 +11,7 @@ module.exports = [
             },
         },
     },
+    {
+        name: "@microsoft/fast-storybook-presets",
+    },
 ];
