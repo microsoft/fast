@@ -682,28 +682,24 @@ describe("viewport positioner", (): void => {
         expect(
             positioner
                 .instance()
-                ["calculateHorizontalTranslate"](
+                ["getHorizontalTranslate"](
                     ViewportPositionerHorizontalPositionLabel.insetLeft
                 )
         ).toBe(-111);
         expect(
             positioner
                 .instance()
-                ["calculateHorizontalTranslate"](
-                    ViewportPositionerHorizontalPosition.left
-                )
+                ["getHorizontalTranslate"](ViewportPositionerHorizontalPosition.left)
         ).toBe(-101);
         expect(
             positioner
                 .instance()
-                ["calculateVerticalTranslate"](
-                    ViewportPositionerVerticalPositionLabel.insetTop
-                )
+                ["getVerticalTranslate"](ViewportPositionerVerticalPositionLabel.insetTop)
         ).toBe(-111);
         expect(
             positioner
                 .instance()
-                ["calculateVerticalTranslate"](ViewportPositionerVerticalPosition.top)
+                ["getVerticalTranslate"](ViewportPositionerVerticalPosition.top)
         ).toBe(-101);
     });
 
@@ -753,28 +749,26 @@ describe("viewport positioner", (): void => {
         expect(
             positioner
                 .instance()
-                ["calculateHorizontalTranslate"](
+                ["getHorizontalTranslate"](
                     ViewportPositionerHorizontalPositionLabel.insetRight
                 )
         ).toBe(211);
         expect(
             positioner
                 .instance()
-                ["calculateHorizontalTranslate"](
-                    ViewportPositionerHorizontalPosition.right
-                )
+                ["getHorizontalTranslate"](ViewportPositionerHorizontalPosition.right)
         ).toBe(201);
         expect(
             positioner
                 .instance()
-                ["calculateVerticalTranslate"](
+                ["getVerticalTranslate"](
                     ViewportPositionerVerticalPositionLabel.insetBottom
                 )
         ).toBe(211);
         expect(
             positioner
                 .instance()
-                ["calculateVerticalTranslate"](ViewportPositionerVerticalPosition.bottom)
+                ["getVerticalTranslate"](ViewportPositionerVerticalPosition.bottom)
         ).toBe(201);
     });
 

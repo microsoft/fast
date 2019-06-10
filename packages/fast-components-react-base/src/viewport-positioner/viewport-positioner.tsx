@@ -20,19 +20,48 @@ import { canUseDOM } from "exenv-es6";
 
 export interface ViewportPositionerState {
     disabled: boolean;
+
+    /**
+     * Indicates that the component is unable to react to viewport changes and only places the
+     * positioner in the default position on mount.
+     */
     noOberverMode: boolean;
+
+    /**
+     * values to be applied to the component's transform origin attribute on render
+     */
     xTransformOrigin: string;
     yTransformOrigin: string;
+
+    /**
+     * values to be applied to the component's translate transform attribute on render
+     */
     xTranslate: number;
     yTranslate: number;
+
+    /**
+     * values to be applied to the component's positioning attributes on render
+     */
     top: number;
     right: number;
     bottom: number;
     left: number;
+
+    /**
+     * the positions currently being applied to layout
+     */
     currentVerticalPosition: ViewportPositionerVerticalPositionLabel;
     currentHorizontalPosition: ViewportPositionerHorizontalPositionLabel;
+
+    /**
+     * the default positions based on default position and positioning mode props
+     */
     defaultVerticalPosition: ViewportPositionerVerticalPositionLabel;
     defaultHorizontalPosition: ViewportPositionerHorizontalPositionLabel;
+
+    /**
+     * indicates that an initial positioning pass on layout has completed
+     */
     initialLayoutComplete: boolean;
 }
 
@@ -50,6 +79,16 @@ export enum ViewportPositionerVerticalPositionLabel {
     insetBottom = "insetBottom",
     bottom = "bottom",
     undefined = "undefined",
+}
+
+/**
+ * location enum for transform origin settings
+ */
+export enum Location {
+    top = "top",
+    left = "left",
+    right = "right",
+    bottom = "bottom",
 }
 
 class ViewportPositioner extends Foundation<
@@ -115,8 +154,8 @@ class ViewportPositioner extends Foundation<
         this.state = {
             disabled: true,
             noOberverMode: false,
-            xTransformOrigin: "left",
-            yTransformOrigin: "top",
+            xTransformOrigin: Location.left,
+            yTransformOrigin: Location.top,
             xTranslate: 0,
             yTranslate: 0,
             top: null,
@@ -144,7 +183,7 @@ class ViewportPositioner extends Foundation<
     }
 
     public componentWillUnmount(): void {
-        this.disableComponent();
+        this.disable();
     }
 
     public componentDidUpdate(prevProps: ViewportPositionerProps): void {
@@ -277,7 +316,7 @@ class ViewportPositioner extends Foundation<
     /**
      *  gets the CSS classes to be programmatically applied to the component
      */
-    private getPositioningStyles = (): {} => {
+    private getPositioningStyles = (): React.CSSProperties => {
         // determine if we should hide the positioner because we don't have data to position it yet
         // (avoiding flicker)
         const shouldHide: boolean =
@@ -313,7 +352,7 @@ class ViewportPositioner extends Foundation<
             this.props.disabled === true ||
             this.getAnchorElement() === null
         ) {
-            this.disableComponent();
+            this.disable();
             return;
         }
         this.enableComponent();
@@ -405,15 +444,15 @@ class ViewportPositioner extends Foundation<
                 disabled: false,
                 noOberverMode: true,
             },
-            this.getBaseHorizontalPositioningState(desiredHorizontalPosition),
-            this.getBaseVerticalPositioningState(desiredVerticalPosition)
+            this.getHorizontalPositioningState(desiredHorizontalPosition),
+            this.getVerticalPositioningState(desiredVerticalPosition)
         ) as ViewportPositionerState);
     };
 
     /**
      *  Disable the component
      */
-    private disableComponent = (): void => {
+    private disable = (): void => {
         if (this.state.disabled) {
             return;
         }
@@ -577,9 +616,9 @@ class ViewportPositioner extends Foundation<
     ): void => {
         entries.forEach((entry: IntersectionObserverEntry) => {
             if (entry.target === this.rootElement.current) {
-                this.processPositionerCollision(entry);
+                this.handlePositionerCollision(entry);
             } else {
-                this.processAnchorCollision(entry);
+                this.handleAnchorCollision(entry);
             }
         });
 
@@ -593,7 +632,7 @@ class ViewportPositioner extends Foundation<
     /**
      *  Update data based on anchor collisions
      */
-    private processAnchorCollision = (anchorEntry: IntersectionObserverEntry): void => {
+    private handleAnchorCollision = (anchorEntry: IntersectionObserverEntry): void => {
         this.viewportRect = anchorEntry.rootBounds;
         this.anchorTop = anchorEntry.boundingClientRect.top;
         this.anchorRight = anchorEntry.boundingClientRect.right;
@@ -605,7 +644,7 @@ class ViewportPositioner extends Foundation<
     /**
      *  Update data based on positioner collisions
      */
-    private processPositionerCollision = (
+    private handlePositionerCollision = (
         positionerEntry: IntersectionObserverEntry
     ): void => {
         this.viewportRect = positionerEntry.rootBounds;
@@ -751,43 +790,43 @@ class ViewportPositioner extends Foundation<
 
         this.setState(Object.assign(
             {
-                xTranslate: this.calculateHorizontalTranslate(desiredHorizontalPosition),
-                yTranslate: this.calculateVerticalTranslate(desiredVerticalPosition),
+                xTranslate: this.getHorizontalTranslate(desiredHorizontalPosition),
+                yTranslate: this.getVerticalTranslate(desiredVerticalPosition),
                 initialLayoutComplete: true,
             },
-            this.getBaseHorizontalPositioningState(desiredHorizontalPosition),
-            this.getBaseVerticalPositioningState(desiredVerticalPosition)
+            this.getHorizontalPositioningState(desiredHorizontalPosition),
+            this.getVerticalPositioningState(desiredVerticalPosition)
         ) as ViewportPositionerState);
     };
 
     /**
-     * Get base horizontal positioning state based on desired position
+     * Get horizontal positioning state based on desired position
      */
-    private getBaseHorizontalPositioningState = (
+    private getHorizontalPositioningState = (
         desiredHorizontalPosition: ViewportPositionerHorizontalPositionLabel
     ): Partial<ViewportPositionerState> => {
         let right: number = null;
         let left: number = null;
-        let xTransformOrigin: string = "left";
+        let xTransformOrigin: string = Location.left;
 
         switch (desiredHorizontalPosition) {
             case ViewportPositionerHorizontalPositionLabel.left:
-                xTransformOrigin = "right";
+                xTransformOrigin = Location.right;
                 right = this.positionerRect.width;
                 break;
 
             case ViewportPositionerHorizontalPositionLabel.insetLeft:
-                xTransformOrigin = "right";
+                xTransformOrigin = Location.right;
                 right = 0;
                 break;
 
             case ViewportPositionerHorizontalPositionLabel.insetRight:
-                xTransformOrigin = "left";
+                xTransformOrigin = Location.left;
                 left = 0;
                 break;
 
             case ViewportPositionerHorizontalPositionLabel.right:
-                xTransformOrigin = "left";
+                xTransformOrigin = Location.left;
                 left = this.anchorWidth;
                 break;
         }
@@ -801,33 +840,33 @@ class ViewportPositioner extends Foundation<
     };
 
     /**
-     * Get base vertical positioning state based on desired position
+     * Get vertical positioning state based on desired position
      */
-    private getBaseVerticalPositioningState = (
+    private getVerticalPositioningState = (
         desiredVerticalPosition: ViewportPositionerVerticalPositionLabel
     ): Partial<ViewportPositionerState> => {
         let top: number = null;
         let bottom: number = null;
-        let yTransformOrigin: string = "top";
+        let yTransformOrigin: string = Location.top;
 
         switch (desiredVerticalPosition) {
             case ViewportPositionerVerticalPositionLabel.top:
-                yTransformOrigin = "bottom";
+                yTransformOrigin = Location.bottom;
                 bottom = this.positionerRect.height + this.anchorHeight;
                 break;
 
             case ViewportPositionerVerticalPositionLabel.insetTop:
-                yTransformOrigin = "bottom";
+                yTransformOrigin = Location.bottom;
                 bottom = this.positionerRect.height;
                 break;
 
             case ViewportPositionerVerticalPositionLabel.insetBottom:
-                yTransformOrigin = "top";
+                yTransformOrigin = Location.top;
                 top = -this.anchorHeight;
                 break;
 
             case ViewportPositionerVerticalPositionLabel.bottom:
-                yTransformOrigin = "top";
+                yTransformOrigin = Location.top;
                 top = 0;
                 break;
         }
@@ -842,7 +881,7 @@ class ViewportPositioner extends Foundation<
     /**
      *  Calculate horizontal tranlation to keep positioner in view
      */
-    private calculateHorizontalTranslate = (
+    private getHorizontalTranslate = (
         horizontalPosition: ViewportPositionerHorizontalPositionLabel
     ): number => {
         if (!this.props.horizontalAlwaysInView) {
@@ -878,7 +917,7 @@ class ViewportPositioner extends Foundation<
     /**
      *  Calculate vertical tranlation to keep positioner in view
      */
-    private calculateVerticalTranslate = (
+    private getVerticalTranslate = (
         verticalPosition: ViewportPositionerVerticalPositionLabel
     ): number => {
         if (!this.props.verticalAlwaysInView) {

@@ -8,7 +8,7 @@ The *viewport positioner* and the anchor element it is attached to must both be 
 
 If no "anchor" is specified the component will be disabled and not attempt to adjust layout. If no viewport is specified the component will assume the viewport is the root document element of the page.
 
-Authors can specify a positioning mode for each axis or leave it "uncontrolled" and use other means (i.e. their own css) to manage the positioner's layout on that axis.  The "flipOutward" positioning mode ensures that the positioner does not overlap with the anchor on that axis and butts up against the outer edges of the anchor element.  With the "flipInward" positioning mode set the positioner will overlap with the anchor on the axis specified but will only extend beyond the anchor on the side with the most available space.
+Authors can specify a positioning mode for each axis or leave it "uncontrolled" and use other means (i.e. their own css) to manage the positioner's layout on that axis.  The "flipOutward" positioning mode ensures that the positioner does not overlap with the anchor on that axis and butts up against the outer edges of the anchor element.  With the "inset" positioning mode set the positioner will overlap with the anchor on the axis specified but will only extend beyond the anchor on the side with the most available space.
 
 FlipOutward:
 
@@ -20,7 +20,7 @@ Anchor
              Anchor
  Positioner|
 
- FlipInward:
+Inset:
 
  Anchor
  |Positioner
@@ -29,8 +29,6 @@ Anchor
 
       Anchor
  Positioner|
-
- The positioning mode chosen determines the positions that can be chosen.  The "flipOutward" mode allows the "left" and "right" positions only on the horizontal axis, while the "flipInward" mode allows the "centerLeft" and "centerRight" positions. The vertical axis behaves similarly though the positions are named differently.  
  
  If a default position is specified for a particular axis and there is enough space that position will be set.  Whether there is enough space is determined by comparing the threshold size for the axis (or the height/width of the positioner if no threshold specified) to the available space for that position. If there is not enough space, or if no default position is specified, the positioner chooses the position with the most available space.
 
