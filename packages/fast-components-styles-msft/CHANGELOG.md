@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.11.4](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-styles-msft@4.11.3...@microsoft/fast-components-styles-msft@4.11.4) (2019-06-11)
+
+
+### Bug Fixes
+
+* update button style to support ms-high-contrast ([#1812](https://github.com/Microsoft/fast-dna/issues/1812)) ([a5fbf90](https://github.com/Microsoft/fast-dna/commit/a5fbf90))
+
+
+
+
+
 ## [4.11.3](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-styles-msft@4.11.2...@microsoft/fast-components-styles-msft@4.11.3) (2019-06-05)
 
 

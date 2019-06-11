@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.2.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-class-name-contracts-base@4.1.1...@microsoft/fast-components-class-name-contracts-base@4.2.0) (2019-06-11)
+
+
+### Features
+
+* add viewport positioner component ([#1781](https://github.com/Microsoft/fast-dna/issues/1781)) ([a45dda6](https://github.com/Microsoft/fast-dna/commit/a45dda6))
+
+
+
+
+
 ## [4.1.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-class-name-contracts-base@4.1.0...@microsoft/fast-components-class-name-contracts-base@4.1.1) (2019-05-31)
 
 **Note:** Version bump only for package @microsoft/fast-components-class-name-contracts-base
