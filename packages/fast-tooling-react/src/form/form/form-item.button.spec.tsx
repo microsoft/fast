@@ -89,7 +89,10 @@ describe("Button", () => {
             />
         );
 
-        rendered.find("input").simulate("change");
+        rendered
+            .find("input")
+            .at(1)
+            .simulate("change");
 
         expect(handleChange).toHaveBeenCalled();
         expect(handleChange.mock.calls[0][1]).toEqual(undefined);
@@ -106,11 +109,17 @@ describe("Button", () => {
             />
         );
 
-        rendered.find("input").simulate("change");
+        rendered
+            .find("input")
+            .at(1)
+            .simulate("change");
 
         rendered.setProps({ data: handleChange.mock.calls[0][1] });
 
-        rendered.find("input").simulate("change");
+        rendered
+            .find("input")
+            .at(1)
+            .simulate("change");
 
         expect(handleChange).toHaveBeenCalledTimes(2);
         expect(handleChange.mock.calls[1][1]).toBe(data);
@@ -265,7 +274,7 @@ describe("Button", () => {
 
         expect(
             rendered.find(`.${managedClasses.formItemButton_controlInput}`).text()
-        ).toBe("Set null");
+        ).toBe("Set to null");
     });
     test("should fire the onChange event when the button is clicked", () => {
         const schema: any = {

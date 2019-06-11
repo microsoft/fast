@@ -75,8 +75,14 @@ class FormItemButton extends FormItemBase<
                             onClick={this.handleButtonClick}
                             disabled={this.props.disabled}
                         >
-                            Set null
+                            Set to null
                         </button>
+                        <input
+                            id={this.props.dataLocation}
+                            hidden={true}
+                            value={this.getValue()}
+                            onChange={this.handleInputChange}
+                        />
                     </div>
                     <div
                         className={get(
@@ -102,6 +108,26 @@ class FormItemButton extends FormItemBase<
     private handleButtonClick = (): void => {
         this.props.onChange(this.props.dataLocation, null);
     };
+
+    /**
+     * Dummy onChange handler
+     *
+     * Form elements will not validate against read-only form items
+     * therefore a value and onChange handler must still be supplied
+     * even if there is no intention to update the value.
+     */
+    /* tslint:disable-next-line */
+    private handleInputChange = (): void => {};
+
+    private getValue(): string {
+        if (this.props.data === null) {
+            return JSON.stringify(this.props.data);
+        } else if (typeof this.props.data !== "undefined") {
+            return this.props.data;
+        }
+
+        return "";
+    }
 
     private generateClassNames(): string {
         let classes: string = get(this.props, "managedClasses.formItemButton");
