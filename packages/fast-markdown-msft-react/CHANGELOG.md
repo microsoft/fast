@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.1.14](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-markdown-msft-react@4.1.13...@microsoft/fast-markdown-msft-react@4.1.14) (2019-06-11)
+
+**Note:** Version bump only for package @microsoft/fast-markdown-msft-react
+
+
+
+
+
 ## [4.1.13](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-markdown-msft-react@4.1.12...@microsoft/fast-markdown-msft-react@4.1.13) (2019-06-07)
 
 **Note:** Version bump only for package @microsoft/fast-markdown-msft-react

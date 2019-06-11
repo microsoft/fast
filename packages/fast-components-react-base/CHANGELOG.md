@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.6.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-base@4.5.6...@microsoft/fast-components-react-base@4.6.0) (2019-06-11)
+
+
+### Bug Fixes
+
+* add missing viewport positioner export ([#1844](https://github.com/Microsoft/fast-dna/issues/1844)) ([c0b10dc](https://github.com/Microsoft/fast-dna/commit/c0b10dc))
+
+
+### Features
+
+* add viewport positioner component ([#1781](https://github.com/Microsoft/fast-dna/issues/1781)) ([a45dda6](https://github.com/Microsoft/fast-dna/commit/a45dda6))
+
+
+
+
+
 ## [4.5.6](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-base@4.5.5...@microsoft/fast-components-react-base@4.5.6) (2019-06-07)
 
 **Note:** Version bump only for package @microsoft/fast-components-react-base
