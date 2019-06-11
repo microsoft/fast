@@ -84,7 +84,7 @@ export enum ViewportPositionerVerticalPositionLabel {
 /**
  * location enum for transform origin settings
  */
-export enum Location {
+const enum Location {
     top = "top",
     left = "left",
     right = "right",
