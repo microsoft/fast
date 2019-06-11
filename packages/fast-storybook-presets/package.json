@@ -10,10 +10,18 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@microsoft/fast-storybook-design-system-addon": "^1.0.0"
+    "@microsoft/fast-storybook-design-system-addon": "^1.0.0",
+    "glob": "^7.1.4"
   },
   "peerDependencies": {
-    "react": "^16.6.0",
-    "@microsoft/fast-jss-manager-react": "^4.3.3"
+    "@microsoft/fast-jss-manager-react": "^4.3.3",
+    "@storybook/react": "^5.1.3",
+    "react": "^16.6.0"
+  },
+  "devDependencies": {
+    "@storybook/react": "^5.1.3",
+    "@storybook/theming": "^5.1.3",
+    "@types/react": "^16.8.19",
+    "react": "^16.8.6"
   }
 }

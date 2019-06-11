@@ -1,3 +1,6 @@
+import path from "path";
+import glob from "glob";
+
 /**
  * Options object to configure the FAST DNA presets
  */
@@ -21,4 +24,13 @@ export function addons(entry = [], options: FASTDNAPresetOptions): string[] {
               require.resolve("@microsoft/fast-storybook-design-system-addon/register"),
           ])
         : entry;
+}
+
+export function entries(entries: any): any {
+    return [
+        ...entries,
+        ...glob.sync("./src/**/*.stories.tsx"),
+        path.resolve(__dirname, "./fast-storybook-design-system-addon-setup.js"),
+        path.resolve(__dirname, "./global-styles.js"),
+    ];
 }
