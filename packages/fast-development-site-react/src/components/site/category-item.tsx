@@ -21,6 +21,10 @@ export interface SiteCategoryItemProps {
     type?: string;
 }
 
-class SiteCategoryItem extends React.Component<SiteCategoryItemProps, {}> {}
+class SiteCategoryItem extends React.Component<SiteCategoryItemProps, {}> {
+    public render(): React.ReactNode {
+        return null;
+    }
+}
 
 export default SiteCategoryItem;

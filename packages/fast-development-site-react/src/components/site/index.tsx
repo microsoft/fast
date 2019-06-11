@@ -453,8 +453,6 @@ class Site extends React.Component<
     public componentDidUpdate(prevProps: SiteProps): void {
         if (prevProps !== this.props) {
             this.setState({
-                componentData: this.getComponentData(),
-                detailViewComponentData: this.getDetailViewComponentData(),
                 designSystem: get(this.props, "designSystemEditing.data"),
             });
         }
