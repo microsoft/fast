@@ -8,6 +8,7 @@ import FormItemSelect from "./form-item.select";
 import FormItemChildren from "./form-item.children";
 import FormItemCheckbox from "./form-item.checkbox";
 import FormItemDisplay from "./form-item.display";
+import FormItemButton from "./form-item.button";
 import { FormControlProps, FormControlState } from "./form-control.props";
 import FormItemCommon from "./form-item.props";
 import { FormChildOptionItem } from "./form.props";
@@ -52,6 +53,8 @@ class FormControl extends React.Component<FormControlProps, {}> {
                 return this.renderArray();
             case "children":
                 return this.renderChildren();
+            case "null":
+                return this.renderButton();
             default:
                 return this.renderSectionLink();
         }
@@ -143,6 +146,10 @@ class FormControl extends React.Component<FormControlProps, {}> {
      */
     private renderDisplay(): React.ReactNode {
         return <FormItemDisplay {...this.getFormItemCommonProps()} />;
+    }
+
+    private renderButton(): React.ReactNode {
+        return <FormItemButton {...this.getFormItemCommonProps()} />;
     }
 
     /**

@@ -106,3 +106,9 @@ import DefaultsSchema from "../../../src/__tests__/schemas/defaults.schema.json"
 export const defaults: ExampleComponent = {
     schema: DefaultsSchema,
 };
+
+import NullKeywordSchema from "../../../src/__tests__/schemas/null.schema.json";
+
+export const nullKeyword: ExampleComponent = {
+    schema: NullKeywordSchema,
+};
