@@ -190,7 +190,7 @@ export default class App extends React.Component<{}, AppState> {
 
     private handleUpdateDirection = (direction: Direction): void => {
         const newDir: Direction =
-            direction === Direction.ltr ? Direction.rtl : Direction.ltr;
+            direction === Direction.ltr ? Direction.ltr : Direction.rtl;
 
         if (this.state.designSystem.direction === newDir) {
             return;
