@@ -4,6 +4,9 @@ import { ColorPalette, ColorRGBA64, parseColorHexRGB } from "@microsoft/fast-col
 import { Palette } from "../utilities/color/palette";
 import { withDefaults } from "@microsoft/fast-jss-utilities";
 import { defaultFontWeights, FontWeight } from "../utilities/fonts";
+import designSystemSchema from "./design-system.schema";
+
+export { designSystemSchema };
 
 export type DensityOffset = -3 | -2 | -1 | 0 | 1 | 2 | 3;
 
