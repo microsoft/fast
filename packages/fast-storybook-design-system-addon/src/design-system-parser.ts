@@ -12,6 +12,19 @@ export enum InputTypes {
     number,
 }
 
+export interface Options {
+    /**
+     * An array of data-paths to exclude
+     * eg. "root.someDataObject"
+     */
+    exclude?: string[];
+
+    /**
+     * An array of data-paths to include. If this option is provided, exclude paths will be ignored
+     */
+    include?: string[];
+}
+
 type ConvertAbleTypes = string | number | boolean;
 
 interface ConvertableData {
@@ -37,7 +50,7 @@ function isBoolean(value: ConvertAbleTypes): value is boolean {
 function isConvertableData(
     value: ConvertAbleTypes | ConvertableData
 ): value is ConvertableData {
-    return typeof value === "object" && value !== null;
+    return typeof value === "object" && value !== null && !Array.isArray(value);
 }
 
 function dataTypeToInputType(value: ConvertAbleTypes): InputTypes | null {
@@ -52,29 +65,56 @@ function dataTypeToInputType(value: ConvertAbleTypes): InputTypes | null {
     return null;
 }
 
-export function parseToInputTypes<T extends ConvertableData>(data: T): ConvertedData<T> {
-    return Object.keys(data).reduce(
-        (accum: ConvertedData<T>, key: keyof typeof data): ConvertedData<T> => {
-            const value: typeof data[typeof key] = data[key];
+export function parseToInputTypes<T extends ConvertableData>(
+    data: T,
+    options: Options = {}
+): ConvertedData<T> {
+    const includes: string[] = Array.isArray(options.include) ? options.include : [];
+    const excludes: string[] = Array.isArray(options.exclude) ? options.exclude : [];
 
-            const parsed:
-                | InputTypes
-                | ConvertedData<typeof data[typeof key]>
-                | null = isConvertableData(value)
-                ? parseToInputTypes(value)
-                : dataTypeToInputType(value as ConvertAbleTypes);
+    function inner<I extends ConvertableData>(data: I, accumulatedPath: string) {
+        return Object.keys(data).reduce(
+            (accum: ConvertedData<I>, key: keyof typeof data): ConvertedData<I> => {
+                const dataPath: string = [accumulatedPath, key]
+                    .filter((key: string) => key.length > 0)
+                    .join(".");
 
-            if (parsed === null) {
-                throw new Error(
-                    `The value '${parsed}' at the key of '${key}' could not be converted to an input type`
-                );
-            }
+                if (includes.length === 0 && excludes.includes(dataPath)) {
+                    return accum;
+                }
 
-            return {
-                ...accum,
-                [key]: parsed,
-            };
-        },
-        {} as ConvertedData<T>
-    );
+                const value: typeof data[typeof key] = data[key];
+
+                if (
+                    includes.length > 0 &&
+                    !includes.includes(dataPath) &&
+                    !isConvertableData(value)
+                ) {
+                    return accum;
+                } else {
+                    const parsed:
+                        | InputTypes
+                        | ConvertedData<typeof data[typeof key]>
+                        | null = isConvertableData(value)
+                        ? inner(value, dataPath)
+                        : dataTypeToInputType(value as ConvertAbleTypes);
+
+                    if (parsed === null) {
+                        console.log("throwing an error");
+                        throw new Error(
+                            `The value '${parsed}' at the key of '${key}' could not be converted to an input type`
+                        );
+                    }
+
+                    return {
+                        ...accum,
+                        [key]: parsed,
+                    };
+                }
+            },
+            {} as ConvertedData<I>
+        );
+    }
+
+    return inner(data, "");
 }
