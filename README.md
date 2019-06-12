@@ -48,15 +48,15 @@ FAST-DNA is a mono repository managed with [Lerna](https://github.com/lerna/lern
 
 ### Component Explorer
 
-Launch our [Component Explorer](https://explore.fastdna.net/) to experience our [Microsoft React Components](https://github.com/Microsoft/fast-dna/tree/master/packages/fast-components-react-msft) package and development tools.
+Launch our [Component Explorer](https://explore.fastdna.net/) to experience our [Microsoft React Components](https://github.com/microsoft/fast-dna/tree/master/packages/fast-components-react-msft) package and development tools.
 
 ## Documentation
 
-Visit our [developer documentation](https://microsoft.github.io/fast-dna/docs/en/contributing/install) to get started.
+Visit our [developer documentation](https://www.fast.design/docs/en/contributing/install) to get started.
 
 ## Troubleshooting
 
-Experiencing problems? Check our infrastructure [health status](https://microsoft.github.io/fast-dna/docs/en/contributing/status).
+Experiencing problems? Check our infrastructure [health status](https://www.fast.design/docs/en/contributing/status).
 
 ## Contact
 

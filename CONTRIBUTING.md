@@ -22,7 +22,7 @@ Install dependencies for packages within the project:
 lerna bootstrap
 ```
 
-Learn more about [installing](https://microsoft.github.io/fast-dna/docs/en/contributing/install).
+Learn more about [installing](https://www.fast.design/docs/en/contributing/install).
 
 ### Testing
 
@@ -32,13 +32,13 @@ Run all tests for all packages:
 lerna run test
 ```
 
-Learn more about [testing](https://microsoft.github.io/fast-dna/docs/en/contributing/testing).
+Learn more about [testing](https://www.fast.design/docs/en/contributing/testing).
 
 ### Submitting a pull request
 
 Before submitting a pull request, [rebase](https://www.atlassian.com/git/tutorials/merging-vs-rebasing) your branch from master. Do not use ``git merge`` or the *merge* button provided by Github.
 
-Learn more about [submitting pull requests](https://microsoft.github.io/fast-dna/docs/en/contributing/working).
+Learn more about [submitting pull requests](https://www.fast.design/docs/en/contributing/working).
 
 ### Documenting breaking changes
 
