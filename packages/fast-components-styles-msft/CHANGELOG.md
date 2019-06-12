@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.12.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-styles-msft@4.11.4...@microsoft/fast-components-styles-msft@4.12.0) (2019-06-12)
+
+
+### Features
+
+* make designSystemSchema exportable ([#1850](https://github.com/Microsoft/fast-dna/issues/1850)) ([315ad4c](https://github.com/Microsoft/fast-dna/commit/315ad4c))
+
+
+
+
+
 ## [4.11.4](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-styles-msft@4.11.3...@microsoft/fast-components-styles-msft@4.11.4) (2019-06-11)
 
 

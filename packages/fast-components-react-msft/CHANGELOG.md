@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.9.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-msft@4.8.5...@microsoft/fast-components-react-msft@4.9.0) (2019-06-12)
+
+
+### Bug Fixes
+
+* localization issue in msft app ([#1846](https://github.com/Microsoft/fast-dna/issues/1846)) ([fc1902b](https://github.com/Microsoft/fast-dna/commit/fc1902b))
+
+
+### Features
+
+* make designSystemSchema exportable ([#1850](https://github.com/Microsoft/fast-dna/issues/1850)) ([315ad4c](https://github.com/Microsoft/fast-dna/commit/315ad4c))
+
+
+
+
+
 ## [4.8.5](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-msft@4.8.4...@microsoft/fast-components-react-msft@4.8.5) (2019-06-11)
 
 **Note:** Version bump only for package @microsoft/fast-components-react-msft
