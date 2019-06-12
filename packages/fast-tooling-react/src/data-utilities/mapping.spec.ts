@@ -470,10 +470,15 @@ describe("mapDataToCodePreview", () => {
             },
             childOptions,
         });
-
-        expect(mappedData).toEqual(
-            `const object13 = {\n  "number": 42\n};\n\n<${badgeJSXName}\n${tabIndent}object={object13}\n/>`
+        const regex: RegExp = new RegExp(
+            `const\\s(\\w+)\\s\\=\\s{\\n\\s\\s"number":\\s42\\n};\\n\\n<${badgeJSXName}\\n${tabIndent}object\\={(\\w+)}\\n\\/>`
         );
+        expect(mappedData.match(regex)).not.toEqual(null);
+
+        const id1: string = typeof mappedData.match(regex)[1];
+        const id2: string = typeof mappedData.match(regex)[2];
+
+        expect(id1).toEqual(id2);
     });
     test("should return a string containing nested JSX elements with variables assigned to attributes", () => {
         const mappedData: string = mapDataToCodePreview({
@@ -496,10 +501,19 @@ describe("mapDataToCodePreview", () => {
             childOptions,
         });
 
-        expect(mappedData).toEqual(
-            `const object14 = {\n  "number": 42\n};\n\nconst object15 = {\n  "number": 24\n};\n\n<${badgeJSXName}\n${tabIndent}object={object14}\n>\n${tabIndent}<${badgeJSXName}\n${tabIndent +
-                tabIndent}object={object15}\n${tabIndent}/>\n</${badgeJSXName}>`
+        const regex: RegExp = new RegExp(
+            `const\\s(\\w+)\\s\\=\\s{\\n\\s\\s"number":\\s42\\n};\\n\\nconst\\s(\\w+)\\s\\=\\s{\\n\\s\\s"number":\\s24\\n};\\n\\n<${badgeJSXName}\\n${tabIndent}object={(\\w+)}\\n>\\n${tabIndent}<${badgeJSXName}\\n${tabIndent +
+                tabIndent}object\\={(\\w+)}\\n${tabIndent}\\/>\\n<\\/${badgeJSXName}>`
         );
+        expect(mappedData.match(regex)).not.toBe(null);
+
+        const id1: string = typeof mappedData.match(regex)[1];
+        const id2: string = typeof mappedData.match(regex)[2];
+        const id3: string = typeof mappedData.match(regex)[3];
+        const id4: string = typeof mappedData.match(regex)[4];
+
+        expect(id1).toEqual(id3);
+        expect(id2).toEqual(id4);
     });
     test("should return a string containing JSX elements with variables assigned to attributes", () => {
         const mappedData: string = mapDataToCodePreview({
@@ -517,9 +531,19 @@ describe("mapDataToCodePreview", () => {
             childOptions,
         });
 
-        expect(mappedData).toEqual(
-            `const restrictedWithChildren17 = (\n${tabIndent}foo\n);\n\nconst restrictedWithChildren16 = (\n${tabIndent}<${childrenJSXName}\n${tabIndent +
-                tabIndent}restrictedWithChildren={restrictedWithChildren17}\n${tabIndent}/>\n);\n\n<${childrenJSXName}\n${tabIndent}restrictedWithChildren={restrictedWithChildren16}\n/>`
+        const regex: RegExp = new RegExp(
+            `const\\s(\\w+)\\s\\=\\s\\(\\n${tabIndent}foo\\n\\);\\n\\nconst\\s(\\w+)\\s\\=\\s\\(\\n${tabIndent}<${childrenJSXName}\\n${tabIndent +
+                tabIndent}restrictedWithChildren\\={(\\w+)}\\n${tabIndent}\\/>\\n\\);\\n\\n<${childrenJSXName}\\n${tabIndent}restrictedWithChildren={(\\w+)}\\n\\/>`
         );
+
+        expect(mappedData.match(regex)).not.toBe(null);
+
+        const id1: string = typeof mappedData.match(regex)[1];
+        const id2: string = typeof mappedData.match(regex)[2];
+        const id3: string = typeof mappedData.match(regex)[3];
+        const id4: string = typeof mappedData.match(regex)[4];
+
+        expect(id1).toEqual(id3);
+        expect(id2).toEqual(id4);
     });
 });
