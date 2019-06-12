@@ -14,7 +14,7 @@ import Site, {
 import * as examples from "./examples";
 import reactHTMLElementExamples from "./components/examples.data";
 
-import { Tab, TabItem, TabPanel } from "../src";
+import { Tab, TabItem, TabPanel } from "../src/index";
 import { tabItemSchema, tabPanelSchema, tabSchema } from "../src";
 import { Plugin, PluginProps } from "@microsoft/fast-tooling-react";
 import ClassNamePlugin from "./utilities/class-name.plugin";
