@@ -1,13 +1,12 @@
 import React from "react";
 import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
-import { NumberField, NumberFieldProps } from "./index";
-import schema from "./number-field.schema.json";
+import { NumberField, NumberFieldProps, numberFieldSchema } from "./index";
 import Documentation from "./.tmp/documentation";
 
 export default {
     name: "Number field",
     component: NumberField,
-    schema: schema as any,
+    schema: numberFieldSchema as any,
     documentation: <Documentation />,
     detailData: {
         name: "Number field",

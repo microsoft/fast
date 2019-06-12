@@ -1,7 +1,6 @@
 import React from "react";
 import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
-import { Metatext, MetatextProps, MetatextTag } from "./index";
-import schema from "./metatext.schema.json";
+import { Metatext, MetatextProps, metatextSchema, MetatextTag } from "./index";
 import Documentation from "./.tmp/documentation";
 
 const testString: string = "Metatext test string";
@@ -9,7 +8,7 @@ const testString: string = "Metatext test string";
 export default {
     name: "Metatext",
     component: Metatext,
-    schema: schema as any,
+    schema: metatextSchema as any,
     documentation: <Documentation />,
     detailData: {
         children: "Metatext",

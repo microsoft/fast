@@ -1,10 +1,9 @@
 import React from "react";
 import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
-import { Pivot, PivotHandledProps, PivotProps } from "./index";
+import { Pivot, PivotHandledProps, PivotProps, pivotSchema } from "./index";
 import Documentation from "./.tmp/documentation";
 import { TabsItem } from "@microsoft/fast-components-react-base";
 import { uniqueId } from "lodash-es";
-import schema from "./pivot.schema.json";
 import pivotItemContentSchema from "../../app/components/pivot-item-content.schema.json";
 import pivotItemTabSchema from "../../app/components/pivot-item-tab.schema.json";
 
@@ -77,7 +76,7 @@ const detailPivotItem: TabsItem[] = [pivotItem1, pivotItem2, pivotItem3, pivotIt
 const examples: ComponentFactoryExample<PivotProps> = {
     name: "Pivot",
     component: Pivot,
-    schema: schema as any,
+    schema: pivotSchema as any,
     documentation: <Documentation />,
     detailData: {
         label: "A set of example text content",

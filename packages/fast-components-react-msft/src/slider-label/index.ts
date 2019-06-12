@@ -5,6 +5,7 @@ import MSFTSliderLabel, {
     SliderLabelProps as MSFTSliderLabelProps,
     SliderLabelUnhandledProps,
 } from "./slider-label";
+import sliderLabelSchema from "./slider-label.schema";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { SliderLabelClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import { DesignSystem, SliderLabelStyles } from "@microsoft/fast-components-styles-msft";
@@ -27,5 +28,6 @@ export {
     SliderLabelProps,
     SliderLabelClassNameContract,
     SliderLabelHandledProps,
+    sliderLabelSchema,
     SliderLabelUnhandledProps,
 };

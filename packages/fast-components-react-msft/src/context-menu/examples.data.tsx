@@ -1,9 +1,7 @@
 import React from "react";
-import { ContextMenu, ContextMenuHandledProps } from "./index";
+import { ContextMenu, ContextMenuHandledProps, contextMenuSchema } from "./index";
 import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
-import schema from "./context-menu.schema.json";
-import contextMenuItemSchema from "../context-menu-item/context-menu-item.schema.json";
-import dividerSchema from "../divider/divider.schema.json";
+import { contextMenuItemSchema, dividerSchema } from "../index";
 import Documentation from "./.tmp/documentation";
 
 const divider: any = {
@@ -19,7 +17,7 @@ const divider: any = {
 export default {
     name: "Context menu",
     component: ContextMenu,
-    schema: schema as any,
+    schema: contextMenuSchema as any,
     documentation: <Documentation />,
     detailData: {
         children: [

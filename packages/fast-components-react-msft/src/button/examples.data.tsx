@@ -1,8 +1,7 @@
 import React from "react";
 import { ManagedClasses } from "@microsoft/fast-jss-manager-react";
-import { Button, ButtonAppearance, ButtonProps } from "./index";
+import { Button, ButtonAppearance, ButtonProps, buttonSchema } from "./index";
 import { ButtonHandledProps as BaseButtonHandledProps } from "@microsoft/fast-components-react-base";
-import schema from "./button.schema.json";
 import Documentation from "./.tmp/documentation";
 import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
 import ReactHTMLElementSchema from "../../app/components/react-html-element.schema.json";
@@ -29,7 +28,7 @@ const afterSlotExample: any = {
 const examples: ComponentFactoryExample<ButtonProps> = {
     name: "Button",
     component: Button,
-    schema: schema as any,
+    schema: buttonSchema as any,
     documentation: <Documentation />,
     detailData: {
         children: "Button",

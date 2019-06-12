@@ -1,6 +1,10 @@
 import React from "react";
-import { CallToAction, CallToActionAppearance, CallToActionProps } from "./index";
-import schema from "./call-to-action.schema.json";
+import {
+    CallToAction,
+    CallToActionAppearance,
+    CallToActionProps,
+    callToActionSchema,
+} from "./index";
 import Documentation from "./.tmp/documentation";
 import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
 
@@ -10,7 +14,7 @@ const testDestination: string = "https://www.microsoft.com/en-us/";
 export default {
     name: "Call to action",
     component: CallToAction,
-    schema: schema as any,
+    schema: callToActionSchema as any,
     documentation: <Documentation />,
     detailData: {
         children: testString,

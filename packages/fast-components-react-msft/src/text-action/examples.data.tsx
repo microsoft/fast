@@ -1,17 +1,16 @@
 import React from "react";
-import { TextAction, TextActionProps } from "./index";
-import schema from "./text-action.schema.json";
+import { TextAction, TextActionProps, textActionSchema } from "./index";
 import Documentation from "./.tmp/documentation";
 import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
 import { TextActionAppearance, TextActionButtonPosition } from "./text-action.props";
 import { SVGGlyph } from "../../app/components/svg-svg-element";
 import svgSchema from "../../app/components/svg-svg-element.schema.json";
-import buttonSchema from "../button/button.schema.json";
+import { buttonSchema } from "../index";
 
 const examples: ComponentFactoryExample<TextActionProps> = {
     name: "Text action",
     component: TextAction,
-    schema: schema as any,
+    schema: textActionSchema as any,
     documentation: <Documentation />,
     detailData: {
         placeholder: "Placeholder",

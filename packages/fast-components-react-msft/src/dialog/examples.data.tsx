@@ -1,13 +1,12 @@
 import React from "react";
 import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
-import { Dialog, DialogProps } from "./index";
-import schema from "./dialog.schema.json";
+import { Dialog, DialogProps, dialogSchema } from "./index";
 import Documentation from "./.tmp/documentation";
 
 export default {
     name: "Dialog",
     component: Dialog,
-    schema: schema as any,
+    schema: dialogSchema as any,
     documentation: <Documentation />,
     detailData: {
         contentHeight: "300px",

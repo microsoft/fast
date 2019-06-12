@@ -1,11 +1,10 @@
 import React from "react";
 import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
-import { Carousel, CarouselProps } from "./index";
+import { Carousel, CarouselProps, carouselSchema } from "./index";
 import Documentation from "./.tmp/documentation";
 import { CarouselSlide, CarouselSlideTheme } from "./carousel.props";
 import { CallToActionAppearance } from "../call-to-action";
 import { uniqueId } from "lodash-es";
-import schema from "./carousel.schema.json";
 import carouselHeroContentSchema from "../../app/components/carousel-hero-content.schema.json";
 import carouselDarkImageContentSchema from "../../app/components/carousel-dark-image-content.schema.json";
 import carouselLightImageContentSchema from "../../app/components/carousel-light-image-content.schema.json";
@@ -100,7 +99,7 @@ const singleTabItem: CarouselSlide[] = [
 export default {
     name: "Carousel",
     component: Carousel,
-    schema: schema as any,
+    schema: carouselSchema as any,
     documentation: <Documentation />,
     detailData: {
         label: "A carousel of items",

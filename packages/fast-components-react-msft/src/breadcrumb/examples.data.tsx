@@ -1,8 +1,7 @@
 import React from "react";
-import { Breadcrumb, BreadcrumbHandledProps } from "./index";
+import { Breadcrumb, BreadcrumbHandledProps, breadcrumbSchema } from "./index";
 import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
-import schema from "./breadcrumb.schema.json";
-import hypertextSchema from "../hypertext/hypertext.schema.json";
+import { hypertextSchema } from "../index";
 import Documentation from "./.tmp/documentation";
 import ReactHTMLElementSchema from "../../app/components/react-html-element.schema.json";
 
@@ -17,7 +16,7 @@ function renderSeparator(): (className?: string) => React.ReactNode {
 export default {
     name: "Breadcrumb",
     component: Breadcrumb,
-    schema: schema as any,
+    schema: breadcrumbSchema as any,
     documentation: <Documentation />,
     detailData: {
         ...label,

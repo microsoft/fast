@@ -8,6 +8,7 @@ import MSFTSelect, {
     SelectProps as MSFTSelectProps,
     SelectUnhandledProps,
 } from "./select";
+import selectSchema from "./select.schema";
 import { Subtract } from "utility-types";
 
 /*
@@ -31,5 +32,6 @@ export {
     SelectProps,
     SelectClassNameContract,
     SelectHandledProps,
+    selectSchema,
     SelectUnhandledProps,
 };

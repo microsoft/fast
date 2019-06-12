@@ -1,7 +1,12 @@
 import React from "react";
 import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
-import { Subheading, SubheadingProps, SubheadingSize, SubheadingTag } from "./index";
-import schema from "./subheading.schema.json";
+import {
+    Subheading,
+    SubheadingProps,
+    subheadingSchema,
+    SubheadingSize,
+    SubheadingTag,
+} from "./index";
 import Documentation from "./.tmp/documentation";
 
 const testString: string = "Subheading test string";
@@ -9,7 +14,7 @@ const testString: string = "Subheading test string";
 export default {
     name: "Subheading",
     component: Subheading,
-    schema: schema as any,
+    schema: subheadingSchema as any,
     documentation: <Documentation />,
     detailData: {
         children: "Subheading",

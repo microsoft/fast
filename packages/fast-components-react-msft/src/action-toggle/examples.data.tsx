@@ -1,6 +1,10 @@
 import React from "react";
-import { ActionToggle, ActionToggleAppearance, ActionToggleProps } from "./index";
-import schema from "./action-toggle.schema.json";
+import {
+    ActionToggle,
+    ActionToggleAppearance,
+    ActionToggleProps,
+    actionToggleSchema,
+} from "./index";
 import Documentation from "./.tmp/documentation";
 import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
 import { SVGGlyph } from "../../app/components/svg-svg-element";
@@ -9,7 +13,7 @@ import svgSchema from "../../app/components/svg-svg-element.schema.json";
 const examples: ComponentFactoryExample<ActionToggleProps> = {
     name: "Action toggle",
     component: ActionToggle,
-    schema: schema as any,
+    schema: actionToggleSchema as any,
     documentation: <Documentation />,
     detailData: {
         appearance: ActionToggleAppearance.primary,

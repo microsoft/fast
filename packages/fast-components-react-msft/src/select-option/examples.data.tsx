@@ -1,7 +1,6 @@
 import React from "react";
-import { SelectOption, SelectOptionProps } from "./index";
+import { SelectOption, SelectOptionProps, selectOptionSchema } from "./index";
 import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
-import schema from "./select-option.schema.json";
 import Documentation from "./.tmp/documentation";
 import { SVGGlyph } from "../../app/components/svg-svg-element";
 import svgSchema from "../../app/components/svg-svg-element.schema.json";
@@ -9,7 +8,7 @@ import svgSchema from "../../app/components/svg-svg-element.schema.json";
 export default {
     name: "Select option",
     component: SelectOption,
-    schema: schema as any,
+    schema: selectOptionSchema as any,
     documentation: <Documentation />,
     detailData: {
         displayString: "Select option",

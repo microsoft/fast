@@ -1,13 +1,12 @@
 import React from "react";
 import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
-import { Flipper, FlipperDirection, FlipperProps } from "./index";
-import schema from "./flipper.schema.json";
+import { Flipper, FlipperDirection, FlipperProps, flipperSchema } from "./index";
 import Documentation from "./.tmp/documentation";
 
 export default {
     name: "Flipper",
     component: Flipper,
-    schema: schema as any,
+    schema: flipperSchema as any,
     documentation: <Documentation />,
     detailData: {
         "aria-hidden": true,

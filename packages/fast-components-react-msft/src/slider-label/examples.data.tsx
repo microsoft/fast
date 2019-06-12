@@ -1,13 +1,12 @@
 import React from "react";
 import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
-import schema from "./slider-label.schema.json";
-import { SliderLabel, SliderLabelHandledProps } from "./index";
+import { SliderLabel, SliderLabelHandledProps, sliderLabelSchema } from "./index";
 import Documentation from "./.tmp/documentation";
 
 const examples: ComponentFactoryExample<SliderLabelHandledProps> = {
     name: "Slider label",
     component: SliderLabel,
-    schema: schema as any,
+    schema: sliderLabelSchema as any,
     documentation: <Documentation />,
     detailData: {
         label: "sample label",

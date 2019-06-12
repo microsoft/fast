@@ -1,11 +1,9 @@
 import React from "react";
 import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
-import { Radio, RadioProps } from "./index";
-import schema from "./radio.schema.json";
+import { Radio, RadioProps, radioSchema } from "./index";
 import Documentation from "./.tmp/documentation";
-import { Label } from "../label";
+import { labelSchema } from "../";
 import { noop } from "lodash-es";
-import labelSchema from "../label/label.schema.json";
 
 const slotRadioExample: any = {
     id: labelSchema.id,
@@ -37,7 +35,7 @@ const slotDisabledExample: any = {
 export default {
     name: "Radio",
     component: Radio,
-    schema: schema as any,
+    schema: radioSchema as any,
     documentation: <Documentation />,
     detailData: {
         children: slotRadioExample,

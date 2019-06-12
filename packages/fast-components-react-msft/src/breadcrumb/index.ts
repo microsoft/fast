@@ -7,6 +7,7 @@ import {
     BreadcrumbProps as BaseBreadcrumbProps,
     BreadcrumbUnhandledProps,
 } from "@microsoft/fast-components-react-base";
+import breadcrumbSchema from "./breadcrumb.schema";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { BreadcrumbStyles, DesignSystem } from "@microsoft/fast-components-styles-msft";
 import { Subtract } from "utility-types";
@@ -28,5 +29,6 @@ export {
     BreadcrumbProps,
     BreadcrumbClassNameContract,
     BreadcrumbHandledProps,
+    breadcrumbSchema,
     BreadcrumbUnhandledProps,
 };

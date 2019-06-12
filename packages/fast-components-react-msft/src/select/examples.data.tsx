@@ -1,8 +1,7 @@
 import React from "react";
 import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
-import schema from "./select.schema.json";
-import selectOptionSchema from "../select-option/select-option.schema.json";
-import { Select, SelectProps } from "./index";
+import { selectOptionSchema } from "../index";
+import { Select, SelectProps, selectSchema } from "./index";
 import { SelectOptionProps } from "../select-option";
 import Documentation from "./.tmp/documentation";
 
@@ -18,7 +17,7 @@ function selectOptionPropFactory(id: string): SelectOptionProps {
 const examples: ComponentFactoryExample<SelectProps> = {
     name: "Select",
     component: Select,
-    schema: schema as any,
+    schema: selectSchema as any,
     documentation: <Documentation />,
     detailData: {
         placeholder: "Select an option",
