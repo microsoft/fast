@@ -4,12 +4,45 @@
   "description": "Storybook add-on for FAST MSFT DesignSystem",
   "main": "dist/index.js",
   "scripts": {
+    "build": "tsc -p ./tsconfig.json",
     "clean:dist": "node ../../build/clean.js dist",
     "prepare": "npm run clean:dist && npm run build",
-    "build": "tsc -p ./tsconfig.json",
     "prettier": "prettier --config ../../.prettierrc --write \"**/*.{ts,tsx}\"",
     "prettier:diff": "prettier --config ../../.prettierrc \"**/*.{ts,tsx}\" --list-different",
+    "test": "npm run unit-tests",
+    "unit-tests": "jest --maxWorkers=2",
+    "unit-tests:watch": "jest --watch",
     "watch": "tsc -p ./tsconfig.json -w --preserveWatchOutput"
+  },
+  "jest": {
+    "collectCoverage": true,
+    "coverageThreshold": {
+      "global": {
+        "statements": 95,
+        "branches": 84,
+        "functions": 95,
+        "lines": 95
+      }
+    },
+    "testURL": "http://localhost",
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest",
+      "^.+\\.jsx?$": "babel-jest"
+    },
+    "transformIgnorePatterns": [
+      "!<rootDir>/node_modules/lodash-es"
+    ],
+    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx"
+    ],
+    "moduleDirectories": [
+      "node_modules",
+      "src"
+    ]
   },
   "author": "",
   "license": "ISC",
@@ -26,8 +59,12 @@
   "devDependencies": {
     "@microsoft/fast-jss-manager-react": "^4.3.3",
     "@storybook/react": "^5.1.3",
+    "@types/jest": "^24.0.13",
     "@types/react": "^16.8.19",
+    "babel-jest": "^24.8.0",
+    "jest": "^24.8.0",
     "prettier": "^1.18.0",
+    "ts-jest": "^24.0.2",
     "typescript": "^3.5.1"
   },
   "peerDependencies": {
