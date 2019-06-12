@@ -1,6 +1,6 @@
 import React from "react";
 import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
-import schema from "./listbox-item.schema.json";
+import { listboxItemSchema } from "../index";
 import ListboxItem, {
     ListboxItemHandledProps,
     ListboxItemManagedClasses,
@@ -18,7 +18,7 @@ const managedClasses: ListboxItemManagedClasses = {
 const examples: ComponentFactoryExample<ListboxItemHandledProps> = {
     name: "Listbox item",
     component: ListboxItem,
-    schema: schema as any,
+    schema: listboxItemSchema as any,
     documentation: <Documentation />,
     detailData: {
         ...managedClasses,

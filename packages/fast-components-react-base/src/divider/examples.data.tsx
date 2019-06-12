@@ -5,14 +5,14 @@ import Divider, {
     DividerManagedClasses,
     DividerUnhandledProps,
 } from "./divider";
-import schema from "./divider.schema.json";
+import { dividerSchema } from "../index";
 import Documentation from "./.tmp/documentation";
 import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
 
 const examples: ComponentFactoryExample<DividerHandledProps> = {
     name: "Divider",
     component: Divider,
-    schema: schema as any,
+    schema: dividerSchema as any,
     documentation: <Documentation />,
     detailData: {
         managedClasses: {

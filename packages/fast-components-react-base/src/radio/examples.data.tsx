@@ -4,7 +4,7 @@ import Radio, {
     RadioManagedClasses,
     RadioUnhandledProps,
 } from "./radio";
-import schema from "./radio.schema.json";
+import { radioSchema } from "../index";
 import Documentation from "./.tmp/documentation";
 import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
 
@@ -21,7 +21,7 @@ const classes: RadioManagedClasses = {
 const examples: ComponentFactoryExample<RadioHandledProps & RadioManagedClasses> = {
     name: "Radio",
     component: Radio,
-    schema: schema as any,
+    schema: radioSchema as any,
     documentation: <Documentation />,
     detailData: {
         inputId: "radio01",

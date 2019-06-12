@@ -5,14 +5,14 @@ import Hypertext, {
     HypertextProps,
     HypertextUnhandledProps,
 } from "./hypertext";
-import schema from "./hypertext.schema.json";
+import { hypertextSchema } from "../index";
 import Documentation from "./.tmp/documentation";
 import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
 
 const examples: ComponentFactoryExample<HypertextProps> = {
     name: "Hypertext",
     component: Hypertext,
-    schema: schema as any,
+    schema: hypertextSchema as any,
     documentation: <Documentation />,
     detailData: {
         managedClasses: {

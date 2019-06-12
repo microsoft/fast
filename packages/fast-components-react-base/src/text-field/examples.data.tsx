@@ -4,7 +4,7 @@ import TextField, {
     TextFieldType,
     TextFieldUnhandledProps,
 } from "./text-field";
-import schema from "./text-field.schema.json";
+import { textFieldSchema } from "../index";
 import React from "react";
 import Documentation from "./.tmp/documentation";
 import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
@@ -12,7 +12,7 @@ import { ComponentFactoryExample } from "@microsoft/fast-development-site-react"
 const examples: ComponentFactoryExample<TextFieldHandledProps> = {
     name: "Text field",
     component: TextField,
-    schema: schema as any,
+    schema: textFieldSchema as any,
     documentation: <Documentation />,
     detailData: {
         managedClasses: {

@@ -4,7 +4,7 @@ import TextArea, {
     TextAreaProps,
     TextAreaUnhandledProps,
 } from "./text-area";
-import schema from "./text-area.schema.json";
+import { textAreaSchema } from "../index";
 import React from "react";
 import Documentation from "./.tmp/documentation";
 import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
@@ -18,7 +18,7 @@ const managedClasses: TextAreaManagedClasses = {
 const examples: ComponentFactoryExample<TextAreaProps> = {
     name: "Text area",
     component: TextArea,
-    schema: schema as any,
+    schema: textAreaSchema as any,
     documentation: <Documentation />,
     detailData: {
         ...managedClasses,

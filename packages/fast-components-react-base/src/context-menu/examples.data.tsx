@@ -1,8 +1,6 @@
 import React from "react";
 import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
-import schema from "./context-menu.schema.json";
-import contextMenuItemSchema from "../context-menu-item/context-menu-item.schema.json";
-import dividerSchema from "../divider/divider.schema.json";
+import { contextMenuItemSchema, contextMenuSchema, dividerSchema } from "../index";
 import ContextMenu, { ContextMenuManagedClasses, ContextMenuProps } from "./context-menu";
 import { ContextMenuItemProps } from "../context-menu-item";
 import { noop } from "lodash-es";
@@ -26,7 +24,7 @@ const managedClasses: ContextMenuManagedClasses = {
 const examples: ComponentFactoryExample<ContextMenuProps> = {
     name: "Context menu",
     component: ContextMenu,
-    schema: schema as any,
+    schema: contextMenuSchema as any,
     documentation: <Documentation />,
     detailData: {
         ...managedClasses,

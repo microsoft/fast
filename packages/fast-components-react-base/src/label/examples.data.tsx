@@ -6,14 +6,14 @@ import Label, {
     LabelTag,
     LabelUnhandledProps,
 } from "./label";
-import schema from "./label.schema.json";
+import { labelSchema } from "../index";
 import Documentation from "./.tmp/documentation";
 import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
 
 const examples: ComponentFactoryExample<LabelProps> = {
     name: "Label",
     component: Label,
-    schema: schema as any,
+    schema: labelSchema as any,
     documentation: <Documentation />,
     detailData: {
         managedClasses: {
