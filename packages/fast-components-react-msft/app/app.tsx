@@ -14,8 +14,8 @@ import {
     DensityOffset,
     DesignSystem,
     DesignSystemDefaults,
+    designSystemSchema,
 } from "@microsoft/fast-components-styles-msft";
-import designSystemSchema from "../../fast-components-styles-msft/src/design-system/design-system.schema.json";
 import { Plugin, PluginProps } from "@microsoft/fast-tooling-react";
 import { HypertextClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import { glyphBuildingblocks } from "@microsoft/fast-glyphs-msft";
