@@ -1,7 +1,6 @@
 import React from "react";
 import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
-import schema from "./select.schema.json";
-import listboxItemSchema from "../listbox-item/listbox-item.schema.json";
+import { listboxItemSchema, selectSchema } from "../index";
 import Select, { SelectManagedClasses, SelectProps } from "./select";
 import { ListboxItemProps } from "../listbox-item";
 import Documentation from "./.tmp/documentation";
@@ -34,7 +33,7 @@ const managedClasses: SelectManagedClasses = {
 const examples: ComponentFactoryExample<SelectProps> = {
     name: "Select",
     component: Select,
-    schema: schema as any,
+    schema: selectSchema as any,
     documentation: <Documentation />,
     detailData: {
         ...managedClasses,

@@ -5,7 +5,7 @@ import Image, {
     ImageSlot,
     ImageUnhandledProps,
 } from "./image";
-import schema from "./image.schema.json";
+import { imageSchema } from "../index";
 import Documentation from "./.tmp/documentation";
 import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
 
@@ -53,7 +53,7 @@ const sourceElements: JSX.Element[] = [
 const examples: ComponentFactoryExample<ImageHandledProps> = {
     name: "Image",
     component: Image,
-    schema: schema as any,
+    schema: imageSchema as any,
     documentation: <Documentation />,
     detailData: {
         ...classes,

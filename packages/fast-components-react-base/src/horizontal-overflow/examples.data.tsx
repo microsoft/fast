@@ -3,10 +3,8 @@ import HorizontalOverflow, {
     HorizontalOverflowHandledProps,
     HorizontalOverflowManagedClasses,
 } from "./horizontal-overflow";
-import schema from "./horizontal-overflow.schema.json";
+import { buttonSchema, horizontalOverflowSchema, imageSchema } from "../index";
 import Documentation from "./.tmp/documentation";
-import ButtonSchema from "../button/button.schema.json";
-import ImageSchema from "../image/image.schema.json";
 import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
 
 const classes: HorizontalOverflowManagedClasses = {
@@ -21,7 +19,7 @@ const classes: HorizontalOverflowManagedClasses = {
 
 const images: any[] = [
     {
-        id: ImageSchema.id,
+        id: imageSchema.id,
         props: {
             managedClasses: {
                 image: "image",
@@ -31,7 +29,7 @@ const images: any[] = [
         },
     },
     {
-        id: ImageSchema.id,
+        id: imageSchema.id,
         props: {
             managedClasses: {
                 image: "image",
@@ -41,7 +39,7 @@ const images: any[] = [
         },
     },
     {
-        id: ImageSchema.id,
+        id: imageSchema.id,
         props: {
             managedClasses: {
                 image: "image",
@@ -51,7 +49,7 @@ const images: any[] = [
         },
     },
     {
-        id: ImageSchema.id,
+        id: imageSchema.id,
         props: {
             managedClasses: {
                 image: "image",
@@ -61,7 +59,7 @@ const images: any[] = [
         },
     },
     {
-        id: ImageSchema.id,
+        id: imageSchema.id,
         props: {
             managedClasses: {
                 image: "image",
@@ -71,7 +69,7 @@ const images: any[] = [
         },
     },
     {
-        id: ImageSchema.id,
+        id: imageSchema.id,
         props: {
             managedClasses: {
                 image: "image",
@@ -81,7 +79,7 @@ const images: any[] = [
         },
     },
     {
-        id: ImageSchema.id,
+        id: imageSchema.id,
         props: {
             managedClasses: {
                 image: "image",
@@ -91,7 +89,7 @@ const images: any[] = [
         },
     },
     {
-        id: ImageSchema.id,
+        id: imageSchema.id,
         props: {
             managedClasses: {
                 image: "image",
@@ -101,7 +99,7 @@ const images: any[] = [
         },
     },
     {
-        id: ImageSchema.id,
+        id: imageSchema.id,
         props: {
             managedClasses: {
                 image: "image",
@@ -111,7 +109,7 @@ const images: any[] = [
         },
     },
     {
-        id: ImageSchema.id,
+        id: imageSchema.id,
         props: {
             managedClasses: {
                 image: "image",
@@ -121,7 +119,7 @@ const images: any[] = [
         },
     },
     {
-        id: ImageSchema.id,
+        id: imageSchema.id,
         props: {
             managedClasses: {
                 image: "image",
@@ -131,7 +129,7 @@ const images: any[] = [
         },
     },
     {
-        id: ImageSchema.id,
+        id: imageSchema.id,
         props: {
             managedClasses: {
                 image: "image",
@@ -141,7 +139,7 @@ const images: any[] = [
         },
     },
     {
-        id: ImageSchema.id,
+        id: imageSchema.id,
         props: {
             managedClasses: {
                 image: "image",
@@ -155,12 +153,12 @@ const images: any[] = [
 const examples: ComponentFactoryExample<HorizontalOverflowHandledProps> = {
     name: "Horizontal overflow",
     component: HorizontalOverflow,
-    schema: schema as any,
+    schema: horizontalOverflowSchema as any,
     documentation: <Documentation />,
     detailData: {
         children: [
             {
-                id: ButtonSchema.id,
+                id: buttonSchema.id,
                 props: {
                     managedClasses: {
                         button: "button",
@@ -170,7 +168,7 @@ const examples: ComponentFactoryExample<HorizontalOverflowHandledProps> = {
                 },
             },
             {
-                id: ButtonSchema.id,
+                id: buttonSchema.id,
                 props: {
                     managedClasses: {
                         button: "button",
@@ -187,7 +185,7 @@ const examples: ComponentFactoryExample<HorizontalOverflowHandledProps> = {
             ...classes,
             children: [
                 {
-                    id: ButtonSchema.id,
+                    id: buttonSchema.id,
                     props: {
                         managedClasses: {
                             button: "button",
@@ -197,7 +195,7 @@ const examples: ComponentFactoryExample<HorizontalOverflowHandledProps> = {
                     },
                 },
                 {
-                    id: ButtonSchema.id,
+                    id: buttonSchema.id,
                     props: {
                         managedClasses: {
                             button: "button",
@@ -213,7 +211,7 @@ const examples: ComponentFactoryExample<HorizontalOverflowHandledProps> = {
             ...classes,
             children: [
                 {
-                    id: ButtonSchema.id,
+                    id: buttonSchema.id,
                     props: {
                         managedClasses: {
                             button: "button",
@@ -229,7 +227,7 @@ const examples: ComponentFactoryExample<HorizontalOverflowHandledProps> = {
             ...classes,
             children: [
                 {
-                    id: ButtonSchema.id,
+                    id: buttonSchema.id,
                     props: {
                         managedClasses: {
                             button: "button",

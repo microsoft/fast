@@ -4,7 +4,7 @@ import ContextMenuItem, {
     ContextMenuItemHandledProps,
     ContextMenuItemManagedClasses,
 } from "./context-menu-item";
-import schema from "./context-menu-item.schema.json";
+import { contextMenuItemSchema } from "../index";
 import Documentation from "./.tmp/documentation";
 
 const managedClasses: ContextMenuItemManagedClasses = {
@@ -16,7 +16,7 @@ const managedClasses: ContextMenuItemManagedClasses = {
 const examples: ComponentFactoryExample<ContextMenuItemHandledProps> = {
     name: "Context menu item",
     component: ContextMenuItem,
-    schema: schema as any,
+    schema: contextMenuItemSchema as any,
     documentation: <Documentation />,
     detailData: {
         ...managedClasses,

@@ -5,7 +5,7 @@ import NumberField, {
     NumberFieldProps,
     NumberFieldUnhandledProps,
 } from "./number-field";
-import schema from "./number-field.schema.json";
+import { numberFieldSchema } from "../index";
 import Documentation from "./.tmp/documentation";
 import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
 
@@ -18,7 +18,7 @@ const classes: NumberFieldManagedClasses = {
 const examples: ComponentFactoryExample<NumberFieldProps> = {
     name: "Number field",
     component: NumberField,
-    schema: schema as any,
+    schema: numberFieldSchema as any,
     documentation: <Documentation />,
     detailData: {
         ...classes,

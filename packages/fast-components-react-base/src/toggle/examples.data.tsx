@@ -4,14 +4,14 @@ import Toggle, {
     ToggleManagedClasses,
     ToggleUnhandledProps,
 } from "./toggle";
-import schema from "./toggle.schema.json";
+import { toggleSchema } from "../index";
 import Documentation from "./.tmp/documentation";
 import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
 
 const examples: ComponentFactoryExample<ToggleHandledProps> = {
     name: "Toggle",
     component: Toggle,
-    schema: schema as any,
+    schema: toggleSchema as any,
     documentation: <Documentation />,
     detailData: {
         managedClasses: {

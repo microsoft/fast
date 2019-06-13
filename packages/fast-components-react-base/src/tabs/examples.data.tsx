@@ -16,10 +16,7 @@ import Tabs, {
     TabsSlot,
     TabsUnhandledProps,
 } from "./index";
-import schema from "./tabs.schema.json";
-import tabItemSchema from "./tab-item.schema.json";
-import tabPanelSchema from "./tab-panel.schema.json";
-import tabSchema from "./tab.schema.json";
+import { tabItemSchema, tabPanelSchema, tabSchema, tabsSchema } from "../index";
 import Documentation from "./.tmp/documentation";
 import { Orientation } from "@microsoft/fast-web-utilities";
 import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
@@ -318,7 +315,7 @@ const exampleTabItem1: TabsItem[] = [
 const examples: ComponentFactoryExample<TabsHandledProps> = {
     name: "Tabs",
     component: Tabs,
-    schema: schema as any,
+    schema: tabsSchema as any,
     documentation: <Documentation />,
     detailData: {
         ...tabsManagedClasses,

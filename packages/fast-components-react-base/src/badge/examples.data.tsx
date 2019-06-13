@@ -1,6 +1,6 @@
 import React from "react";
 import Badge, { BadgeProps } from "./index";
-import schema from "./badge.schema.json";
+import { badgeSchema } from "../index";
 import Documentation from "./.tmp/documentation";
 import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
 import { BadgeManagedClasses } from "./badge.props";
@@ -14,7 +14,7 @@ const managedClasses: BadgeManagedClasses = {
 export default {
     name: "Badge",
     component: Badge,
-    schema: schema as any,
+    schema: badgeSchema as any,
     documentation: <Documentation />,
     detailData: {
         ...managedClasses,
