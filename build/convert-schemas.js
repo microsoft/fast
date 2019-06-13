@@ -33,6 +33,9 @@ function copySchemaFiles() {
         );
 
         try {
+            if (!fs.existsSync(path.dirname(tempPath))) {
+                fs.mkdirSync(path.dirname(tempPath));
+            }
             fs.writeFileSync(tempPath, commonJS);
             const schemaData = require(tempPath);
             const json = JSON.stringify(schemaData, null, 2);
