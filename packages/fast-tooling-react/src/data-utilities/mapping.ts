@@ -176,9 +176,9 @@ function mapPluginToData(
 ): any {
     const mappedData: any = data;
     const pluginModifiedSchemaLocation: string = mapSchemaLocationFromDataLocation(
-        pluginModifiedDataLocation.relativeDataLocation.replace(squareBracketsRegex, ""),
+        pluginModifiedDataLocation.relativeDataLocation,
         pluginModifiedDataLocation.schema,
-        data
+        mappedData
     );
     const pluginId: string = get(
         pluginModifiedDataLocation.schema,
@@ -189,7 +189,7 @@ function mapPluginToData(
             return plugin.matches(pluginId);
         }
     );
-    const pluginData: any = get(data, pluginModifiedDataLocation.dataLocation);
+    const pluginData: any = get(mappedData, pluginModifiedDataLocation.dataLocation);
 
     if (pluginResolver !== undefined) {
         getPluginResolverDataMap({
