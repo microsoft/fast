@@ -13,6 +13,14 @@
             "title": "Invalid boolean required",
             "type": "boolean"
         },
+        "invalidNullWrongType": {
+            "title": "Invalid null wrong type",
+            "type": "null"
+        },
+        "invalidNullRequired": {
+            "title": "Invalid null required",
+            "type": "null"
+        },
         "invalidStringWrongType": {
             "title": "Invalid string wrong type",
             "type": "string"
@@ -62,6 +70,7 @@
         }
     },
     "required": [
-        "invalidBooleanRequired"
+        "invalidBooleanRequired",
+        "invalidNullRequired"
     ]
 }
