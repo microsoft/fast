@@ -110,8 +110,6 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
     }
 
     public componentDidMount(): void {
-        window.addEventListener("click", this.handleWindowClick);
-
         this.toggleMenu(this.checkPropsForMenuState());
         if (
             this.props.autoFocus &&
@@ -120,10 +118,6 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
         ) {
             this.focusTriggerElement();
         }
-    }
-
-    public componentWillUnmount(): void {
-        window.removeEventListener("click", this.handleWindowClick);
     }
 
     /**
@@ -253,6 +247,7 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
                 defaultSelection={this.state.selectedItems}
                 selectedItems={this.props.selectedItems}
                 onSelectedItemsChanged={this.updateSelection}
+                onBlur={this.handleMenuBlur}
                 managedClasses={{
                     listbox: get(this.props.managedClasses, "select_menu", ""),
                     listbox__disabled: get(
@@ -500,13 +495,14 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
     };
 
     /**
-     * Close the menu when when there are clicks outside
+     * handle menu blur
      */
-    private handleWindowClick = (event: MouseEvent): void => {
+    private handleMenuBlur = (event: React.FocusEvent): void => {
         if (
             this.state.isMenuOpen &&
+            !this.props.multiselectable &&
             this.rootElement.current !== null &&
-            !this.rootElement.current.contains(event.target as Element)
+            !this.rootElement.current.contains(event.relatedTarget as Element)
         ) {
             this.toggleMenu(false);
         }
