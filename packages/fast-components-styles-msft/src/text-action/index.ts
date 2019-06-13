@@ -134,8 +134,8 @@ const styles: ComponentStyles<TextActionClassNameContract, DesignSystem> = {
     },
     textAction_afterGlyph: {
         ...glyphStyles,
-        marginLeft: directionSwitch(horizontalSpacing(1), ""),
-        marginRight: directionSwitch("", horizontalSpacing(1)),
+        marginLeft: directionSwitch("", horizontalSpacing(1)),
+        marginRight: directionSwitch(horizontalSpacing(1), ""),
     },
 };
 

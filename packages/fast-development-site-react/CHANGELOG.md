@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.3.8](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-development-site-react@4.3.7...@microsoft/fast-development-site-react@4.3.8) (2019-06-12)
+
+
+### Bug Fixes
+
+* remove an issue where the design system would cause component data to be reset ([#1839](https://github.com/Microsoft/fast-dna/issues/1839)) ([7f98b5b](https://github.com/Microsoft/fast-dna/commit/7f98b5b))
+
+
+
+
+
 ## [4.3.7](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-development-site-react@4.3.6...@microsoft/fast-development-site-react@4.3.7) (2019-06-11)
 
 **Note:** Version bump only for package @microsoft/fast-development-site-react

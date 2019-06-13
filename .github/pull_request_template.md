@@ -29,7 +29,7 @@
 - [ ] I have added tests for my changes.
 - [ ] I have tested my changes.
 - [ ] I have updated the project documentation to reflect my changes.
-- [ ] I have read the [CONTRIBUTING](https://github.com/Microsoft/fast-dna/blob/master/CONTRIBUTING.md) documentation and followed the [standards](https://microsoft.github.io/fast-dna/docs/en/contributing/standards) for this project.
+- [ ] I have read the [CONTRIBUTING](https://github.com/Microsoft/fast-dna/blob/master/CONTRIBUTING.md) documentation and followed the [standards](https://www.fast.design/docs/en/contributing/standards) for this project.
 
 <!---
 Formatting guidelines:
@@ -57,5 +57,5 @@ Example titles:
         - Avoid redundant words.
 
 For additional information regarding working on FAST-DNA, check out our documentation site:
-https://microsoft.github.io/fast-dna/docs/en/contributing/working
+https://www.fast.design/docs/en/contributing/working
 -->
