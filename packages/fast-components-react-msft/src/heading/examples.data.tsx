@@ -1,7 +1,6 @@
 import React from "react";
 import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
-import { Heading, HeadingProps, HeadingSize, HeadingTag } from "./index";
-import schema from "./heading.schema.json";
+import { Heading, HeadingProps, headingSchema, HeadingSize, HeadingTag } from "./index";
 import Documentation from "./.tmp/documentation";
 
 const testString: string = "Heading test string";
@@ -9,7 +8,7 @@ const testString: string = "Heading test string";
 export default {
     name: "Heading",
     component: Heading,
-    schema: schema as any,
+    schema: headingSchema as any,
     documentation: <Documentation />,
     detailData: {
         children: "Heading",

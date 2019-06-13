@@ -1,6 +1,10 @@
 import React from "react";
-import { ActionTrigger, ActionTriggerAppearance, ActionTriggerProps } from "./index";
-import schema from "./action-trigger.schema.json";
+import {
+    ActionTrigger,
+    ActionTriggerAppearance,
+    ActionTriggerProps,
+    actionTriggerSchema,
+} from "./index";
 import Documentation from "./.tmp/documentation";
 import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
 import svgSchema from "../../app/components/svg-svg-element.schema.json";
@@ -10,7 +14,7 @@ const testDestination: string = "https://www.microsoft.com/en-us/";
 const examples: ComponentFactoryExample<ActionTriggerProps> = {
     name: "Action trigger",
     component: ActionTrigger,
-    schema: schema as any,
+    schema: actionTriggerSchema as any,
     documentation: <Documentation />,
     detailData: {
         children: "Action Trigger",

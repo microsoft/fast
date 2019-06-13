@@ -14,6 +14,7 @@ import MSFTFlipper, {
     FlipperProps as MSFTFlipperProps,
     FlipperUnhandledProps,
 } from "./flipper";
+import flipperSchema from "./flipper.schema";
 import { Subtract } from "utility-types";
 
 /*
@@ -37,6 +38,7 @@ export {
     FlipperProps,
     FlipperDirection,
     FlipperHandledProps,
+    flipperSchema,
     FlipperUnhandledProps,
     FlipperClassNameContract,
 };

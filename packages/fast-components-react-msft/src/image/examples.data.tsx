@@ -1,13 +1,12 @@
 import React from "react";
 import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
-import { Image, ImageProps, ImageSlot } from "./index";
-import schema from "./image.schema.json";
+import { Image, ImageProps, imageSchema, ImageSlot } from "./index";
 import Documentation from "./.tmp/documentation";
 
 export default {
     name: "Image",
     component: Image,
-    schema: schema as any,
+    schema: imageSchema as any,
     documentation: <Documentation />,
     detailData: {
         src: "https://placehold.it/300x300/3E3E3E/171717",

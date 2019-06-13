@@ -1,13 +1,12 @@
 import React from "react";
 import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
-import { Divider, DividerProps, DividerRoles } from "./index";
-import schema from "./divider.schema.json";
+import { Divider, DividerProps, DividerRoles, dividerSchema } from "./index";
 import Documentation from "./.tmp/documentation";
 
 export default {
     name: "Divider",
     component: Divider,
-    schema: schema as any,
+    schema: dividerSchema as any,
     documentation: <Documentation />,
     detailData: {
         role: void 0,

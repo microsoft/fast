@@ -9,6 +9,7 @@ import MSFTActionToggle, {
     ActionToggleProps as MSFTActionToggleProps,
     ActionToggleUnhandledProps,
 } from "./action-toggle";
+import actionToggleSchema from "./action-toggle.schema";
 import { Subtract } from "utility-types";
 
 /*
@@ -33,5 +34,6 @@ export {
     ActionToggleProps,
     ActionToggleClassNameContract,
     ActionToggleHandledProps,
+    actionToggleSchema,
     ActionToggleUnhandledProps,
 };

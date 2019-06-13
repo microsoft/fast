@@ -1,8 +1,7 @@
 import React from "react";
-import { Slider, SliderProps } from "./index";
+import { Slider, SliderProps, sliderSchema } from "./index";
 import { SliderLabelProps } from "../slider-label";
-import sliderLabelSchema from "../slider-label/slider-label.schema.json";
-import schema from "./slider.schema.json";
+import { sliderLabelSchema } from "../index";
 import Documentation from "./.tmp/documentation";
 import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
 import {
@@ -24,7 +23,7 @@ function sliderLabelPropFactory(
 const examples: ComponentFactoryExample<SliderProps> = {
     name: "Slider",
     component: Slider,
-    schema: schema as any,
+    schema: sliderSchema as any,
     documentation: <Documentation />,
     detailData: {
         range: {

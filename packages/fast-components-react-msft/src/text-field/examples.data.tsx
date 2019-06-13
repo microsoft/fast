@@ -1,13 +1,18 @@
 import React from "react";
 import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
-import { TextField, TextFieldAppearance, TextFieldProps, TextFieldType } from "./index";
-import schema from "./text-field.schema.json";
+import {
+    TextField,
+    TextFieldAppearance,
+    TextFieldProps,
+    textFieldSchema,
+    TextFieldType,
+} from "./index";
 import Documentation from "./.tmp/documentation";
 
 export default {
     name: "Text field",
     component: TextField,
-    schema: schema as any,
+    schema: textFieldSchema as any,
     documentation: <Documentation />,
     detailData: {
         type: TextFieldType.email,

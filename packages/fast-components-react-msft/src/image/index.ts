@@ -9,6 +9,7 @@ import {
     ImageSlot,
     ImageUnhandledProps,
 } from "@microsoft/fast-components-react-base";
+import imageSchema from "./image.schema";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { DesignSystem, ImageStyles } from "@microsoft/fast-components-styles-msft";
 import { Subtract } from "utility-types";
@@ -31,5 +32,6 @@ export {
     ImageUnhandledProps,
     Image,
     ImageProps,
+    imageSchema,
     ImageSlot,
 };

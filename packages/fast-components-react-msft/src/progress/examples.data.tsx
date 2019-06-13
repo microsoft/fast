@@ -1,14 +1,13 @@
 import React from "react";
 import { ManagedClasses } from "@microsoft/fast-jss-manager-react";
-import { Progress, ProgressProps } from "./index";
-import schema from "./progress.schema.json";
+import { Progress, ProgressProps, progressSchema } from "./index";
 import Documentation from "./.tmp/documentation";
 import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
 
 export default {
     name: "Progress",
     component: Progress,
-    schema: schema as any,
+    schema: progressSchema as any,
     documentation: <Documentation />,
     detailData: {
         children: "Progress",

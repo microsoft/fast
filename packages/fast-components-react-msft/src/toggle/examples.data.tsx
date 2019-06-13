@@ -1,13 +1,12 @@
 import React from "react";
 import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
-import { Toggle, ToggleProps } from "./index";
-import schema from "./toggle.schema.json";
+import { Toggle, ToggleProps, toggleSchema } from "./index";
 import Documentation from "./.tmp/documentation";
 
 export default {
     name: "Toggle",
     component: Toggle,
-    schema: schema as any,
+    schema: toggleSchema as any,
     documentation: <Documentation />,
     detailData: {
         children: "Toggle label default on",

@@ -8,6 +8,7 @@ import {
     NumberFieldProps as BaseNumberFieldProps,
     NumberFieldUnhandledProps,
 } from "@microsoft/fast-components-react-base";
+import numberFieldSchema from "./number-field.schema";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { DesignSystem, NumberFieldStyles } from "@microsoft/fast-components-styles-msft";
 import { Subtract } from "utility-types";
@@ -34,4 +35,5 @@ export {
     NumberFieldUnhandledProps,
     NumberField,
     NumberFieldProps,
+    numberFieldSchema,
 };

@@ -8,6 +8,7 @@ import {
     TextAreaProps as BaseTextAreaProps,
     TextAreaUnhandledProps,
 } from "@microsoft/fast-components-react-base";
+import textAreaSchema from "./text-area.schema";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { DesignSystem, TextAreaStyles } from "@microsoft/fast-components-styles-msft";
 import { Subtract } from "utility-types";
@@ -34,4 +35,5 @@ export {
     TextAreaUnhandledProps,
     TextArea,
     TextAreaProps,
+    textAreaSchema,
 };
