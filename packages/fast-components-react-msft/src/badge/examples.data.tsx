@@ -1,13 +1,12 @@
 import React from "react";
-import { Badge, BadgeProps, BadgeSize } from "./index";
-import schema from "./badge.schema.json";
+import { Badge, BadgeProps, badgeSchema, BadgeSize } from "./index";
 import Documentation from "./.tmp/documentation";
 import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
 
 export default {
     name: "Badge",
     component: Badge,
-    schema: schema as any,
+    schema: badgeSchema as any,
     documentation: <Documentation />,
     detailData: {
         children: "Badge",

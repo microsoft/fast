@@ -1,7 +1,6 @@
 import React from "react";
 import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
-import schema from "./auto-suggest.schema.json";
-import listboxItemSchema from "../listbox-item/listbox-item.schema.json";
+import { autoSuggestSchema, listboxItemSchema } from "../index";
 import AutoSuggest, { AutoSuggestManagedClasses, AutoSuggestProps } from "./auto-suggest";
 import { ListboxItemProps } from "../listbox-item";
 import Documentation from "./.tmp/documentation";
@@ -33,7 +32,7 @@ const managedClasses: AutoSuggestManagedClasses = {
 const examples: ComponentFactoryExample<AutoSuggestProps> = {
     name: "Auto Suggest",
     component: AutoSuggest,
-    schema: schema as any,
+    schema: autoSuggestSchema as any,
     documentation: <Documentation />,
     detailData: {
         ...managedClasses,

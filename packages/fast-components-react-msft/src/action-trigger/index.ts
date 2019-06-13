@@ -12,6 +12,7 @@ import MSFTActionTrigger, {
     ActionTriggerProps as MSFTActionTriggerProps,
     ActionTriggerUnhandledProps,
 } from "./action-trigger";
+import actionTriggerSchema from "./action-trigger.schema";
 import { Subtract } from "utility-types";
 
 /*
@@ -36,5 +37,6 @@ export {
     ActionTriggerProps,
     ActionTriggerClassNameContract,
     ActionTriggerHandledProps,
+    actionTriggerSchema,
     ActionTriggerUnhandledProps,
 };

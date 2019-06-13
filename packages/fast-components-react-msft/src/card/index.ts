@@ -8,6 +8,7 @@ import {
     CardTag,
     CardUnhandledProps,
 } from "@microsoft/fast-components-react-base";
+import cardSchema from "./card.schema";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { CardStyles, DesignSystem } from "@microsoft/fast-components-styles-msft";
 import { Subtract } from "utility-types";
@@ -25,5 +26,6 @@ export {
     CardTag,
     CardClassNameContract,
     CardHandledProps,
+    cardSchema,
     CardUnhandledProps,
 };

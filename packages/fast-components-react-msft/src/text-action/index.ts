@@ -10,6 +10,7 @@ import {
     TextActionProps as MSFTTextActionProps,
     TextActionUnhandledProps,
 } from "./text-action.props";
+import textActionSchema from "./text-action.schema";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { DesignSystem, TextActionStyles } from "@microsoft/fast-components-styles-msft";
 import { Subtract } from "utility-types";
@@ -38,4 +39,5 @@ export {
     TextActionManagedClasses,
     TextActionProps,
     TextActionUnhandledProps,
+    textActionSchema,
 };

@@ -4,14 +4,14 @@ import Dialog, {
     DialogManagedClasses,
     DialogUnhandledProps,
 } from "./dialog";
-import schema from "./dialog.schema.json";
+import { dialogSchema } from "../index";
 import Documentation from "./.tmp/documentation";
 import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
 
 const examples: ComponentFactoryExample<DialogHandledProps> = {
     name: "Dialog",
     component: Dialog,
-    schema: schema as any,
+    schema: dialogSchema as any,
     documentation: <Documentation />,
     detailData: {
         modal: true,

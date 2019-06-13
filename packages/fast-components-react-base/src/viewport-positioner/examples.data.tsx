@@ -1,6 +1,6 @@
 import React from "react";
 import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
-import schema from "./viewport-positioner.schema.json";
+import { viewportPositionerSchema } from "../index";
 import ViewportPositioner, {
     ViewportPositionerHandledProps,
     ViewportPositionerManagedClasses,
@@ -22,7 +22,7 @@ const managedClasses: ViewportPositionerManagedClasses = {
 const examples: ComponentFactoryExample<ViewportPositionerHandledProps> = {
     name: "Viewport positioner",
     component: ViewportPositioner,
-    schema: schema as any,
+    schema: viewportPositionerSchema as any,
     documentation: <Documentation />,
     detailData: {
         ...managedClasses,

@@ -1,7 +1,12 @@
 import React from "react";
 import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
-import { Typography, TypographyProps, TypographySize, TypographyTag } from "./index";
-import schema from "./typography.schema.json";
+import {
+    typograophySchema,
+    Typography,
+    TypographyProps,
+    TypographySize,
+    TypographyTag,
+} from "./index";
 import Documentation from "./.tmp/documentation";
 
 const testString: string = "Typography example string";
@@ -9,7 +14,7 @@ const testString: string = "Typography example string";
 export default {
     name: "Typography",
     component: Typography,
-    schema: schema as any,
+    schema: typograophySchema as any,
     documentation: <Documentation />,
     detailData: {
         children: "Typography",

@@ -1,7 +1,6 @@
 import React from "react";
 import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
-import { Paragraph, ParagraphProps, ParagraphSize } from "./index";
-import schema from "./paragraph.schema.json";
+import { Paragraph, ParagraphProps, paragraphSchema, ParagraphSize } from "./index";
 import Documentation from "./.tmp/documentation";
 
 const testString: string = "Paragraph test string";
@@ -9,7 +8,7 @@ const testString: string = "Paragraph test string";
 export default {
     name: "Paragraph",
     component: Paragraph,
-    schema: schema as any,
+    schema: paragraphSchema as any,
     documentation: <Documentation />,
     detailData: {
         children: "Paragraph",

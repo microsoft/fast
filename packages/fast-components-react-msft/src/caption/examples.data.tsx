@@ -1,7 +1,6 @@
 import React from "react";
 import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
-import { Caption, CaptionProps, CaptionSize, CaptionTag } from "./index";
-import schema from "./caption.schema.json";
+import { Caption, CaptionProps, captionSchema, CaptionSize, CaptionTag } from "./index";
 import Documentation from "./.tmp/documentation";
 
 const testString: string = "Caption test string default";
@@ -14,7 +13,7 @@ const testStringFigCaption: string = "figcaption tag test string";
 export default {
     name: "Caption",
     component: Caption,
-    schema: schema as any,
+    schema: captionSchema as any,
     documentation: <Documentation />,
     detailData: {
         children: "Caption",

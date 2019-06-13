@@ -8,6 +8,7 @@ import MSFTParagraph, {
     ParagraphSize,
     ParagraphUnhandledProps,
 } from "./paragraph";
+import paragraphSchema from "./paragraph.schema";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { DesignSystem, ParagraphStyles } from "@microsoft/fast-components-styles-msft";
 import { Subtract } from "utility-types";
@@ -33,6 +34,7 @@ export {
     ParagraphSize,
     ParagraphProps,
     ParagraphHandledProps,
+    paragraphSchema,
     ParagraphUnhandledProps,
     ParagraphClassNameContract,
 };

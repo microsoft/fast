@@ -5,10 +5,10 @@ import Progress, {
     ProgressType,
     ProgressUnhandledProps,
 } from "./progress";
-import schema from "./progress.schema.json";
+import { progressSchema } from "../index";
 import Documentation from "./.tmp/documentation";
 import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
-import reactHTMLElementSchema from "../../app/components/react-html-element.schema.json";
+import reactHTMLElementSchema from "../../app/components/react-html-element.schema";
 
 const classes: ProgressManagedClasses = {
     managedClasses: {
@@ -19,7 +19,7 @@ const classes: ProgressManagedClasses = {
 const examples: ComponentFactoryExample<ProgressHandledProps> = {
     name: "Progress",
     component: Progress,
-    schema: schema as any,
+    schema: progressSchema as any,
     documentation: <Documentation />,
     detailData: {
         ...classes,

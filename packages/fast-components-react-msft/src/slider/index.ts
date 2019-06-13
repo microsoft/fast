@@ -8,6 +8,7 @@ import MSFTSlider, {
     SliderProps as MSFTSliderProps,
     SliderUnhandledProps,
 } from "./slider";
+import sliderSchema from "./slider.schema";
 import { Subtract } from "utility-types";
 
 /*
@@ -31,5 +32,6 @@ export {
     SliderProps,
     SliderClassNameContract,
     SliderHandledProps,
+    sliderSchema,
     SliderUnhandledProps,
 };

@@ -14,10 +14,8 @@ import Site, {
 import * as examples from "./examples";
 import reactHTMLElementExamples from "./components/examples.data";
 
-import { Tab, TabItem, TabPanel } from "../src";
-import TabSchema from "../src/tabs/tab.schema.json";
-import TabItemSchema from "../src/tabs/tab-item.schema.json";
-import TabPanelSchema from "../src/tabs/tab-panel.schema.json";
+import { Tab, TabItem, TabPanel } from "../src/index";
+import { tabItemSchema, tabPanelSchema, tabSchema } from "../src";
 import { Plugin, PluginProps } from "@microsoft/fast-tooling-react";
 import ClassNamePlugin from "./utilities/class-name.plugin";
 
@@ -36,17 +34,17 @@ formChildOptions = formChildOptions.concat([
     {
         name: "Tab",
         component: Tab,
-        schema: TabSchema,
+        schema: tabSchema,
     },
     {
         name: "TabItem",
         component: TabItem,
-        schema: TabItemSchema,
+        schema: tabItemSchema,
     },
     {
         name: "TabPanel",
         component: TabPanel,
-        schema: TabPanelSchema,
+        schema: tabPanelSchema,
     },
 ]);
 

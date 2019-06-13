@@ -1,13 +1,12 @@
 import React from "react";
 import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
-import { Hypertext, HypertextProps } from "./index";
-import schema from "./hypertext.schema.json";
+import { Hypertext, HypertextProps, hypertextSchema } from "./index";
 import Documentation from "./.tmp/documentation";
 
 export default {
     name: "Hypertext",
     component: Hypertext,
-    schema: schema as any,
+    schema: hypertextSchema as any,
     documentation: <Documentation />,
     detailData: {
         href: "https://www.microsoft.com/en-us/",

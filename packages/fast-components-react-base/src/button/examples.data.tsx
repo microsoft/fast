@@ -4,14 +4,14 @@ import Button, {
     ButtonManagedClasses,
     ButtonUnhandledProps,
 } from "./button";
-import schema from "./button.schema.json";
+import { buttonSchema } from "../index";
 import Documentation from "./.tmp/documentation";
 import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
 
 const examples: ComponentFactoryExample<ButtonHandledProps> = {
     name: "Button",
     component: Button,
-    schema: schema as any,
+    schema: buttonSchema as any,
     documentation: <Documentation />,
     detailData: {
         managedClasses: {

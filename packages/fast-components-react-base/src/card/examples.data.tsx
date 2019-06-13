@@ -5,8 +5,7 @@ import Card, {
     CardProps,
     CardUnhandledProps,
 } from "./card";
-import schema from "./card.schema.json";
-import ImageSchema from "../image/image.schema.json";
+import { cardSchema, imageSchema } from "../index";
 import Documentation from "./.tmp/documentation";
 import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
 
@@ -19,13 +18,13 @@ const managedClasses: CardManagedClasses = {
 const examples: ComponentFactoryExample<CardProps> = {
     name: "Card",
     component: Card,
-    schema: schema as any,
+    schema: cardSchema as any,
     documentation: <Documentation />,
     detailData: {
         ...managedClasses,
         children: [
             {
-                id: ImageSchema.id,
+                id: imageSchema.id,
                 props: {
                     managedClasses: {
                         image: "image",
@@ -41,7 +40,7 @@ const examples: ComponentFactoryExample<CardProps> = {
             ...managedClasses,
             children: [
                 {
-                    id: ImageSchema.id,
+                    id: imageSchema.id,
                     props: {
                         managedClasses: {
                             image: "image",

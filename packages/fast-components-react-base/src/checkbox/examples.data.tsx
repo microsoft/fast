@@ -4,7 +4,7 @@ import Checkbox, {
     CheckboxManagedClasses,
     CheckboxUnhandledProps,
 } from "./checkbox";
-import schema from "./checkbox.schema.json";
+import { checkboxSchema } from "../index";
 import Documentation from "./.tmp/documentation";
 import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
 
@@ -21,7 +21,7 @@ const classes: CheckboxManagedClasses = {
 const examples: ComponentFactoryExample<CheckboxHandledProps> = {
     name: "Checkbox",
     component: Checkbox,
-    schema: schema as any,
+    schema: checkboxSchema,
     documentation: <Documentation />,
     detailData: {
         ...classes,

@@ -1,13 +1,12 @@
 import React from "react";
 import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
-import { Label, LabelProps, LabelTag } from "./index";
-import schema from "./label.schema.json";
+import { Label, LabelProps, labelSchema, LabelTag } from "./index";
 import Documentation from "./.tmp/documentation";
 
 export default {
     name: "Label",
     component: Label,
-    schema: schema as any,
+    schema: labelSchema as any,
     documentation: <Documentation />,
     detailData: {
         tag: LabelTag.label,

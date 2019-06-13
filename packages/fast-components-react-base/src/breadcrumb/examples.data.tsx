@@ -1,10 +1,9 @@
 import React from "react";
 import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
-import schema from "./breadcrumb.schema.json";
+import { breadcrumbSchema, hypertextSchema } from "../index";
 import Breadcrumb, { BreadcrumbManagedClasses, BreadcrumbProps } from "./breadcrumb";
 import Documentation from "./.tmp/documentation";
-import hypertextSchema from "../hypertext/hypertext.schema.json";
-import reactHTMLElementSchema from "../../app/components/react-html-element.schema.json";
+import reactHTMLElementSchema from "../../app/components/react-html-element.schema";
 
 const managedClasses: BreadcrumbManagedClasses = {
     managedClasses: {
@@ -32,7 +31,7 @@ function separator(): any {
 const examples: ComponentFactoryExample<BreadcrumbProps> = {
     name: "Breadcrumb",
     component: Breadcrumb,
-    schema: schema as any,
+    schema: breadcrumbSchema as any,
     documentation: <Documentation />,
     detailData: {
         ...managedClasses,

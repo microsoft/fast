@@ -1,15 +1,13 @@
 import React from "react";
 import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
-import { Checkbox, CheckboxProps, CheckboxSlot } from "./index";
-import schema from "./checkbox.schema.json";
-import labelSchema from "../label/label.schema.json";
+import { Checkbox, CheckboxProps, checkboxSchema, CheckboxSlot } from "./index";
+import { Label, labelSchema } from "../index";
 import Documentation from "./.tmp/documentation";
-import { Label } from "../label";
 
 export default {
     name: "Checkbox",
     component: Checkbox,
-    schema: schema as any,
+    schema: checkboxSchema as any,
     documentation: <Documentation />,
     detailData: {
         inputId: "checkbox",

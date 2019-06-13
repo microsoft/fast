@@ -1,6 +1,6 @@
 import React from "react";
 import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
-import schema from "./slider-track-item.schema.json";
+import { sliderTrackItemSchema } from "../index";
 import SliderTrackItem, {
     SliderTrackItemHandledProps,
     SliderTrackItemManagedClasses,
@@ -18,7 +18,7 @@ const managedClasses: SliderTrackItemManagedClasses = {
 const examples: ComponentFactoryExample<SliderTrackItemHandledProps> = {
     name: "Slider track item",
     component: SliderTrackItem,
-    schema: schema as any,
+    schema: sliderTrackItemSchema as any,
     documentation: <Documentation />,
     detailData: {
         ...managedClasses,

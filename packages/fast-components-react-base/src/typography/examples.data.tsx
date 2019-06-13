@@ -6,7 +6,7 @@ import Typography, {
     TypographyTag,
     TypographyUnhandledProps,
 } from "./typography";
-import schema from "./typography.schema.json";
+import { typographySchema } from "../index";
 import Documentation from "./.tmp/documentation";
 import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
 
@@ -29,7 +29,7 @@ const examples: ComponentFactoryExample<
 > = {
     name: "Typography",
     component: Typography,
-    schema: schema as any,
+    schema: typographySchema as any,
     documentation: <Documentation />,
     detailData: {
         managedClasses: managedClassExamples,
