@@ -73,30 +73,31 @@ export function getDataLocationsOfChildren(
     );
 
     const dataLocationsOfChildren: string[] = [];
+    const addedDataLocations: string[] = [];
 
     // get all child locations as data locations
     dataLocations.forEach((dataLocation: string) => {
+        const schemaLocation: string = mapSchemaLocationFromDataLocation(
+            dataLocation,
+            schema,
+            data
+        );
+        const dataFromDataLocation: string = get(data, dataLocation);
+
         if (
             !!reactChildrenLocationsAsSchemaLocations.find(
                 (reactChildrenLocationsAsSchemaLocation: string) => {
-                    return (
-                        mapSchemaLocationFromDataLocation(dataLocation, schema, data) ===
-                        reactChildrenLocationsAsSchemaLocation
-                    );
+                    return schemaLocation === reactChildrenLocationsAsSchemaLocation;
                 }
-            )
+            ) &&
+            typeof addedDataLocations.find((addedDataLocation: string) => {
+                return addedDataLocation === dataLocation;
+            }) === "undefined" &&
+            !Array.isArray(dataFromDataLocation)
         ) {
-            const dataFromDataLocation: string = get(data, dataLocation);
+            addedDataLocations.push(dataLocation);
 
-            if (!Array.isArray(dataFromDataLocation)) {
-                dataLocationsOfChildren.push(dataLocation);
-            } else {
-                const childrenLength: number = dataFromDataLocation.length;
-
-                for (let i: number = 0; i < childrenLength; i++) {
-                    dataLocationsOfChildren.push(`${dataLocation}[${i}]`);
-                }
-            }
+            dataLocationsOfChildren.push(dataLocation);
         }
     });
 
@@ -272,14 +273,18 @@ export function mapSchemaLocationFromDataLocation(
             break;
         }
 
-        schemaLocations.push(
-            mapSchemaLocationSegmentFromDataLocationSegment(
-                currentSchema,
-                dataLocationSegments[i],
-                "",
-                currentData
-            )
+        const schemaLocation:
+            | string
+            | void = mapSchemaLocationSegmentFromDataLocationSegment(
+            currentSchema,
+            dataLocationSegments[i],
+            "",
+            currentData
         );
+
+        if (typeof schemaLocation === "string") {
+            schemaLocations.push(schemaLocation);
+        }
     }
 
     return schemaLocations.join(".");
@@ -294,7 +299,7 @@ function mapSchemaLocationSegmentFromDataLocationSegment(
     dataLocationSegment: string,
     schemaLocation: string,
     data: any
-): string {
+): string | void {
     const modifier: string = schemaLocation === "" ? "" : ".";
     const propertyLocationModifier: string = dataLocationSegment === "" ? "" : ".";
 
@@ -326,6 +331,11 @@ function mapSchemaLocationSegmentFromDataLocationSegment(
         }${propertyLocationModifier}${dataLocationSegment}`;
     } else if (schema.items) {
         return `${schemaLocation}${modifier}items`;
+    } else if (
+        get(schema, `${schemaLocation}${modifier}${typeKeyword}`) === DataType.children &&
+        !isNaN(parseInt(dataLocationSegment, 10))
+    ) {
+        return void 0;
     }
 
     return `${schemaLocation}${modifier}${dataLocationSegment}`;

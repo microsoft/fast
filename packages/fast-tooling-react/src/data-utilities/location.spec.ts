@@ -205,7 +205,7 @@ describe("mapSchemaLocationFromDataLocation", () => {
             "properties.propertyKey.oneOf.0.properties.propertyKey1.properties.propertyKey2.oneOf.1.properties.foo"
         );
     });
-    test("should return a schema location from a child location", () => {
+    test("should return a schema location from a child location when the child is a component", () => {
         const schemaLocation: string = mapSchemaLocationFromDataLocation(
             "children",
             childrenSchema,
@@ -214,22 +214,16 @@ describe("mapSchemaLocationFromDataLocation", () => {
 
         expect(schemaLocation).toBe("reactProperties.children");
     });
-    test("should return a schema location from a child location", () => {
-        const schemaLocationComponent: string = mapSchemaLocationFromDataLocation(
-            "children",
-            childrenSchema,
-            { children: { id: childrenSchema.id, props: {} } }
-        );
+    test("should return a schema location from a child location when the child is a string", () => {
         const schemaLocationString: string = mapSchemaLocationFromDataLocation(
             "children",
             childrenSchema,
             { children: "Hello world" }
         );
 
-        expect(schemaLocationComponent).toBe("reactProperties.children");
         expect(schemaLocationString).toBe("reactProperties.children");
     });
-    test("should return a schema location from children locations", () => {
+    test("should return a schema location from multiple children locations", () => {
         const schemaLocationComponent: string = mapSchemaLocationFromDataLocation(
             "children[0]",
             childrenSchema,
@@ -241,8 +235,47 @@ describe("mapSchemaLocationFromDataLocation", () => {
             { children: [{ id: childrenSchema.id, props: {} }, "Hello world"] }
         );
 
-        expect(schemaLocationComponent).toBe("reactProperties.children.0");
-        expect(schemaLocationString).toBe("reactProperties.children.1");
+        expect(schemaLocationComponent).toBe("reactProperties.children");
+        expect(schemaLocationString).toBe("reactProperties.children");
+    });
+    test("should return a schema location from children in a nested array item", () => {
+        const schema: any = {
+            type: "object",
+            properties: {
+                render: {
+                    type: "array",
+                    items: {
+                        type: "object",
+                        reactProperties: {
+                            children: {
+                                type: "children",
+                            },
+                        },
+                    },
+                },
+            },
+        };
+        const schemaLocation: string = mapSchemaLocationFromDataLocation(
+            "render[0].children[0]",
+            schema,
+            {
+                render: [
+                    {
+                        children: [
+                            {
+                                id: "textField",
+                                props: {},
+                            },
+                            {
+                                id: "children",
+                                props: {},
+                            },
+                        ],
+                    },
+                ],
+            }
+        );
+        expect(schemaLocation).toBe("properties.render.items.reactProperties.children");
     });
     test("should return a schema location early if a malformed segment has been discovered", () => {
         const schemaLocation: string = mapSchemaLocationFromDataLocation(
@@ -642,6 +675,15 @@ describe("getDataLocationsOfChildren", () => {
         );
     });
     test("should return the data locations of multiple children", () => {
+        const schema: any = {
+            id: "foo",
+            type: "object",
+            reactProperties: {
+                children: {
+                    type: "children",
+                },
+            },
+        };
         const data: any = {
             children: [
                 {
@@ -666,7 +708,7 @@ describe("getDataLocationsOfChildren", () => {
         };
 
         const dataLocationsOfReactChildren: string[] = getDataLocationsOfChildren(
-            childrenSchema,
+            schema,
             data,
             childOptions
         );
@@ -678,6 +720,57 @@ describe("getDataLocationsOfChildren", () => {
         expect(dataLocationsOfReactChildren[3]).toBe(
             "children[0].props.children.props.children"
         );
+    });
+    test("should return the data locations of children nested in arrays", () => {
+        const schema: any = {
+            id: "foo",
+            type: "object",
+            properties: {
+                items: {
+                    type: "array",
+                    items: {
+                        type: "object",
+                        reactProperties: {
+                            children: {
+                                type: "children",
+                            },
+                        },
+                    },
+                },
+            },
+        };
+        const data: any = {
+            items: [
+                {
+                    children: {
+                        id: childrenSchema.id,
+                        props: {},
+                    },
+                },
+                {
+                    children: [
+                        {
+                            id: childrenSchema.id,
+                            props: {},
+                        },
+                        {
+                            id: childrenSchema.id,
+                            props: {},
+                        },
+                    ],
+                },
+            ],
+        };
+        const dataLocationsOfReactChildren: string[] = getDataLocationsOfChildren(
+            schema,
+            data,
+            childOptions
+        );
+
+        expect(dataLocationsOfReactChildren.length).toBe(3);
+        expect(dataLocationsOfReactChildren[0]).toBe("items[0].children");
+        expect(dataLocationsOfReactChildren[1]).toBe("items[1].children[0]");
+        expect(dataLocationsOfReactChildren[2]).toBe("items[1].children[1]");
     });
     test("should return data locations of nested react child with multiple children", () => {
         const data: any = {

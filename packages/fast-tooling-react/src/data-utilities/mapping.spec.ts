@@ -188,6 +188,66 @@ describe("mapDataToComponent", () => {
         expect(mappedData.render[1](testClass2).type.displayName).toEqual("Children");
         expect(mappedData.render[1](testClass2).props.className).toBe(testClass2);
     });
+    test("should map children in arrays to plugins", () => {
+        const data: any = {
+            render: [
+                {
+                    children: [
+                        {
+                            id: textFieldSchema.id,
+                            props: {},
+                        },
+                        {
+                            id: childrenSchema.id,
+                            props: {},
+                        },
+                    ],
+                },
+            ],
+        };
+        const arrayPropertyPluginId: string = "myPluginId";
+        const schema: any = {
+            type: "object",
+            properties: {
+                render: {
+                    type: "array",
+                    items: {
+                        type: "object",
+                        reactProperties: {
+                            children: {
+                                type: "children",
+                                pluginId: arrayPropertyPluginId,
+                            },
+                        },
+                    },
+                },
+            },
+        };
+
+        const testClass1: string = "Foo";
+        const testClass2: string = "Bar";
+
+        const mappedData: any = mapDataToComponent(schema, data, childOptions, [
+            new MapChildrenPropToCallbackPassingClassName({
+                id: arrayPropertyPluginId,
+            }),
+        ]);
+        expect(mappedData.render[0].children).toHaveLength(2);
+        expect(typeof mappedData.render[0].children[0]).toBe("function");
+        expect(mappedData.render[0].children[0](testClass1).type.displayName).toEqual(
+            "Text field"
+        );
+        expect(mappedData.render[0].children[0](testClass1).props.className).toBe(
+            testClass1
+        );
+        expect(typeof mappedData.render[0].children[1]).toBe("function");
+        expect(mappedData.render[0].children[1](testClass2).type.displayName).toEqual(
+            "Children"
+        );
+        expect(mappedData.render[0].children[1](testClass2).props.className).toBe(
+            testClass2
+        );
+    });
     test("should map children to a plugin nested inside a child", () => {
         const data: any = {
             children: {
