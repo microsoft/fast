@@ -1,58 +1,26 @@
 import { ManagedClasses } from "@microsoft/fast-jss-manager-react";
-import { CSSPropertyEditorClassNameContract } from "./property-editor.style";
 
-export interface CSSPropertyEditorState {
-    /**
-     * The currently editing property key
-     */
-    key: string;
-
-    /**
-     * The currently editing property value
-     */
-    value: string;
-
-    /**
-     * The data
-     */
-    data: CSSPropertiesConfig;
-}
-
-export interface CSSPropertyConfig {
-    /**
-     * The property value
-     */
-    value: string;
-
-    /**
-     * The property key width
-     */
-    keyWidth: number;
-
-    /**
-     * The property value width
-     */
-    valueWidth: number;
-}
-
-export interface InputConfig {
-    className: string;
-    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-    onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
-    ref?: React.RefObject<HTMLInputElement>;
-    value: string;
-    style: CSSProperties;
+export interface CSSPropertyEditorClassNameContract {
+    cssPropertyEditor?: string;
+    cssPropertyEditor_propertyRegion?: string;
+    cssPropertyEditor_row?: string;
+    cssPropertyEditor_input?: string;
+    cssPropertyEditor_inputKey?: string;
+    cssPropertyEditor_inputValue?: string;
 }
 
 export interface CSSProperties {
     [key: string]: string;
 }
 
-export interface CSSPropertiesConfig {
-    [key: string]: CSSPropertyConfig;
-}
-
 export type CSSPropertiesOnChange = (CSS: CSSProperties) => void;
+
+export interface CSSPropertyEditorState {
+    /**
+     *  The uncommitted string for the key of the row currently being edited
+     */
+    currentEditRowUncommittedCSSPropertyKey: string;
+}
 
 export interface CSSPropertyEditorUnhandledProps
     extends React.HTMLAttributes<HTMLDivElement> {}

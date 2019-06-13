@@ -2,7 +2,7 @@ import React from "react";
 import Adapter from "enzyme-adapter-react-16";
 import { configure, mount, ReactWrapper, shallow } from "enzyme";
 import { CSSPropertyEditor } from "./";
-import { CSSPropertyEditorClassNameContract } from "./property-editor.style";
+import { CSSPropertyEditorClassNameContract } from "./property-editor.props";
 import { KeyCodes } from "@microsoft/fast-web-utilities";
 
 /**
@@ -17,27 +17,32 @@ describe("CSSPropertyEditor", () => {
             shallow(<CSSPropertyEditor />);
         }).not.toThrow();
     });
-    test("should show two inputs", () => {
+
+    test("should show no inputs by default", () => {
         const rendered: any = mount(<CSSPropertyEditor />);
 
+        expect(rendered.find("input")).toHaveLength(0);
+        rendered.first().simulate("focus");
         expect(rendered.find("input")).toHaveLength(2);
     });
-    test("should fire the onChange callback when the value input has been tabbed away from and there is data available", () => {
+
+    test("should fire the onChange callback on loss of focus and there is data available", () => {
         const callback: any = jest.fn();
         const key: string = "padding";
         const value: string = "10px";
         const rendered: any = mount(<CSSPropertyEditor onChange={callback} />);
 
         expect(callback).toBeCalledTimes(0);
-
+        rendered.first().simulate("focus");
         const inputs: any = rendered.find("input");
         inputs.at(0).simulate("change", { target: { value: key } });
         inputs.at(1).simulate("change", { target: { value } });
-        inputs.at(1).simulate("keydown", { keyCode: KeyCodes.tab });
-
         expect(callback).toBeCalledTimes(1);
-        expect(callback.mock.calls[0][0]).toEqual({ [key]: value });
+        inputs.at(0).simulate("blur");
+        expect(callback).toBeCalledTimes(2);
+        expect(callback.mock.calls[1][0]).toEqual({ [key]: value });
     });
+
     test("should focus the key input when the containing div has been clicked", () => {
         const rendered: any = mount(<CSSPropertyEditor />);
 
@@ -53,23 +58,7 @@ describe("CSSPropertyEditor", () => {
                 .getDOMNode()
         ).toEqual(document.activeElement);
     });
-    test("should focus the key input when the value input has been tabbed and both the key and value contain non-empty strings", () => {
-        const key: string = "padding";
-        const value: string = "10px";
-        const rendered: any = mount(<CSSPropertyEditor />);
 
-        const inputs: any = rendered.find("input");
-        inputs.at(0).simulate("change", { target: { value: key } });
-        inputs.at(1).simulate("change", { target: { value } });
-        inputs.at(1).simulate("keydown", { keyCode: KeyCodes.tab });
-
-        expect(
-            rendered
-                .find("input")
-                .at(0)
-                .getDOMNode()
-        ).toEqual(document.activeElement);
-    });
     test("should show data key/value pairs as inputs using the key and value as input values", () => {
         const data: { [key: string]: string } = {
             padding: "10px",
@@ -79,12 +68,13 @@ describe("CSSPropertyEditor", () => {
         const inputs: any = rendered.find("input");
         const dataKeys: string[] = Object.keys(data);
 
-        expect(inputs).toHaveLength(6);
+        expect(inputs).toHaveLength(4);
         expect(inputs.at(0).prop("value")).toEqual(dataKeys[0]);
         expect(inputs.at(1).prop("value")).toEqual(data[dataKeys[0]]);
         expect(inputs.at(2).prop("value")).toEqual(dataKeys[1]);
         expect(inputs.at(3).prop("value")).toEqual(data[dataKeys[1]]);
     });
+
     test("should allow updates to key/value pairs in the same order they appear in the object", () => {
         const callback: any = jest.fn();
         const data: { [key: string]: string } = {
@@ -97,18 +87,16 @@ describe("CSSPropertyEditor", () => {
         const inputs: any = rendered.find("input");
         const dataKeys: string[] = Object.keys(data);
 
+        inputs.at(0).simulate("focus");
         inputs.at(0).simulate("change", { target: { value: "padding-top" } });
+        inputs.at(0).simulate("blur");
 
         const updatedDataKeys: string[] = Object.keys(callback.mock.calls[0][0]);
 
         expect(dataKeys[0]).not.toEqual(updatedDataKeys[0]);
         expect(dataKeys[1]).toEqual(updatedDataKeys[1]);
     });
-    test("should contain a ':' and a ';'", () => {
-        const rendered: any = mount(<CSSPropertyEditor />);
 
-        expect(rendered.text()).toEqual(":;");
-    });
     test("should convert a camelCased property key into a dash separated key in the input value", () => {
         const callback: any = jest.fn();
         const data: { [key: string]: string } = {
@@ -121,6 +109,7 @@ describe("CSSPropertyEditor", () => {
 
         expect(inputs.at(0).prop("value")).toEqual("padding-top");
     });
+
     test("should convert a dash separated key into a camelCased key when the onChange callback is fired", () => {
         const callback: any = jest.fn();
         const data: { [key: string]: string } = {
@@ -131,70 +120,15 @@ describe("CSSPropertyEditor", () => {
         );
         const inputs: any = rendered.find("input");
 
+        inputs.at(0).simulate("focus");
         inputs.at(0).simulate("change", { target: { value: "padding-top" } });
-        inputs.at(1).simulate("keydown", { keyCode: KeyCodes.tab });
+        inputs.at(0).simulate("blur");
 
         const updatedDataKeys: string[] = Object.keys(callback.mock.calls[0][0]);
 
         expect(updatedDataKeys[0]).toEqual("paddingTop");
     });
-    test("datacheck removes entries with empty values", () => {
-        const callback: any = jest.fn();
-        const data: { [key: string]: string } = {
-            padding: "",
-            background: "red",
-            margin: "10px",
-        };
-        const rendered: ReactWrapper = mount(
-            <CSSPropertyEditor onChange={callback} data={data} />
-        );
 
-        expect(rendered.find("input")).toHaveLength(8);
-        rendered
-            .children()
-            .instance()
-            ["dataCheck"]();
-        expect(callback).toBeCalledTimes(1);
-        const updatedDataKeys: string[] = Object.keys(callback.mock.calls[0][0]);
-        expect(updatedDataKeys.length).toBe(2);
-    });
-    // test("focusing on a row with empty values provokes datacheck and removes entries with empty values", () => {
-    //     const container: HTMLDivElement = document.createElement("div");
-    //     document.body.appendChild(container);
-
-    //     const callback: any = jest.fn();
-    //     const data: { [key: string]: string } = {
-    //         padding: "",
-    //         background: "red",
-    //         margin: "10px"
-    //     };
-    //     const rendered: ReactWrapper = mount(
-    //         <CSSPropertyEditor
-    //             onChange = {callback}
-    //             data = {data}
-    //         />,
-    //         {
-    //             attachTo: container,
-    //         }
-    //     );
-
-    //     let inputs: any = rendered.find("input");
-    //     expect(inputs).toHaveLength(8);
-    //     expect(inputs.at(0).prop("value")).toEqual("padding");
-    //     expect(rendered.children().instance()["openRequestAnimationFrame"]).toBe(null);
-    //     expect(document.activeElement).toBe(inputs.at(0).getDOMNode());
-    //     inputs.at(0).getDOMNode().focus();
-    //     expect(document.activeElement).toBe(inputs.at(0).getDOMNode());
-    //     expect(rendered.children().instance()["openRequestAnimationFrame"]).not.toBe(null);
-    //     rendered.children().instance()["dataCheck"]();
-    //     expect(callback).toBeCalledTimes(1);
-    //     const updatedDataKeys: string[] = Object.keys(callback.mock.calls[0][0]);
-    //     expect(updatedDataKeys.length).toBe(2);
-    //     inputs = rendered.find("input");
-    //     expect(inputs).toHaveLength(6);
-
-    //     document.body.removeChild(container);
-    // });
     test("should not throw an error of a property value is undefined", () => {
         const data: { [key: string]: string } = {
             padding: void 0,
@@ -202,5 +136,22 @@ describe("CSSPropertyEditor", () => {
         expect(() => {
             shallow(<CSSPropertyEditor data={data} />);
         }).not.toThrow();
+    });
+
+    test("row with empty key gets delected on input blur", () => {
+        const data: { [key: string]: string } = {
+            padding: "10px",
+            margin: "30px",
+        };
+        const emptyKey: string = "";
+        const rendered: any = mount(<CSSPropertyEditor data={data} />);
+        let inputs: any = rendered.find("input");
+        expect(inputs).toHaveLength(4);
+        inputs.at(0).simulate("focus");
+        inputs.at(0).simulate("change", { target: { value: emptyKey } });
+        inputs.at(0).simulate("blur");
+
+        inputs = rendered.find("input");
+        expect(inputs).toHaveLength(2);
     });
 });
