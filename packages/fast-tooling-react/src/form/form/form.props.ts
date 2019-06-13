@@ -116,11 +116,6 @@ export interface FormState {
     titleProps: string;
 
     /**
-     * The current schema being edited
-     */
-    schema: any;
-
-    /**
      * Current active data location
      */
     activeDataLocation: string;

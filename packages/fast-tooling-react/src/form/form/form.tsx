@@ -49,26 +49,38 @@ class Form extends React.Component<
      */
     private validator: Ajv;
 
+    /**
+     * The schema
+     */
+    private _schema: any;
+    get schema(): any {
+        return this._schema;
+    }
+    set schema(updatedSchema: any) {
+        this._schema = updatedSchema;
+    }
+
     constructor(props: FormProps & ManagedClasses<FormClassNameContract>) {
         super(props);
 
         this.untitled = "Untitled";
         this.validator = new ajv({ schemaId: "auto", allErrors: true });
-
-        const schema: any = mapPluginsToSchema(
+        this.schema = mapPluginsToSchema(
             this.props.schema,
             this.props.data,
             this.props.plugins
         );
 
-        if (JSON.stringify(schema) !== JSON.stringify(this.props.schema)) {
-            this.props.onSchemaChange(schema);
+        if (
+            typeof this.props.onSchemaChange === "function" &&
+            JSON.stringify(this.schema) !== JSON.stringify(this.props.schema)
+        ) {
+            this.props.onSchemaChange(this.schema);
         }
 
         this.state = {
-            titleProps: schema && schema.title ? schema.title : this.untitled,
-            schema:
-                typeof this.props.plugins !== "undefined" ? schema : this.props.schema,
+            titleProps:
+                this.schema && this.schema.title ? this.schema.title : this.untitled,
             activeDataLocation:
                 props.location && typeof props.location === "string"
                     ? props.location
@@ -79,10 +91,15 @@ class Form extends React.Component<
                     ? getNavigation(
                           this.props.location.dataLocation,
                           this.props.data,
-                          schema,
+                          this.schema,
                           this.props.childOptions
                       )
-                    : getNavigation("", this.props.data, schema, this.props.childOptions),
+                    : getNavigation(
+                          "",
+                          this.props.data,
+                          this.schema,
+                          this.props.childOptions
+                      ),
             validationErrors: void 0,
         };
     }
@@ -128,8 +145,8 @@ class Form extends React.Component<
      * Gets the validation errors
      */
     private getValidationErrors(props: FormProps): ErrorObject[] | void {
-        this.validator.removeSchema(props.schema.id);
-        const validate: ValidateFunction = this.validator.compile(props.schema);
+        this.validator.removeSchema(this.schema.id);
+        const validate: ValidateFunction = this.validator.compile(this.schema);
         const isValid: boolean | PromiseLike<any> = validate(props.data);
 
         if (!!!isValid) {
@@ -148,6 +165,21 @@ class Form extends React.Component<
         updateLocation: boolean
     ): Partial<FormState> {
         let state: Partial<FormState> = {};
+        const updatedSchema: any = mapPluginsToSchema(
+            props.schema,
+            props.data,
+            props.plugins
+        );
+
+        if (JSON.stringify(this.schema) !== JSON.stringify(updatedSchema)) {
+            // The schema must be set before any other state updates occur so that
+            // the correct schema is used for state navigation
+            this.schema = updatedSchema;
+
+            if (typeof props.onSchemaChange === "function") {
+                props.onSchemaChange(this.schema);
+            }
+        }
 
         if (updateData) {
             state = this.getStateWithUpdatedDataCache(props, state);
@@ -169,22 +201,6 @@ class Form extends React.Component<
             );
         }
 
-        if (
-            typeof props.plugins !== "undefined" &&
-            typeof props.onSchemaChange === "function" &&
-            (updateData || updateSchema)
-        ) {
-            const updatedSchema: any = mapPluginsToSchema(
-                props.schema,
-                props.data,
-                props.plugins
-            );
-
-            if (JSON.stringify(updatedSchema) !== JSON.stringify(props.schema)) {
-                props.onSchemaChange(updatedSchema);
-            }
-        }
-
         if (updateData || updateSchema || updateLocation) {
             return state;
         }
@@ -203,12 +219,15 @@ class Form extends React.Component<
                 ? this.state.dataCache
                 : void 0;
 
-        const schemaState: Partial<FormState> = {
+        const updatedState: Partial<FormState> = {
             dataCache: getDataCache(dataCache, props.data),
             validationErrors: this.getValidationErrors(props),
+            // schemas are stored in the navigation so this must be refreshed
+            // in case a plugin has updated one of the internal schemas
+            navigation: this.getUpdatedNavigation(props, state),
         };
 
-        return Object.assign({}, state, schemaState);
+        return Object.assign({}, state, updatedState);
     }
 
     /**
@@ -218,16 +237,15 @@ class Form extends React.Component<
         props: FormProps,
         state: Partial<FormState>
     ): Partial<FormState> {
-        const schemaState: Partial<FormState> = {
+        const updatedState: Partial<FormState> = {
             titleProps:
-                props.schema && props.schema.title ? props.schema.title : this.untitled,
-            schema: props.schema,
+                this.schema && this.schema.title ? this.schema.title : this.untitled,
             activeDataLocation: "",
             dataCache: cloneDeep(props.data),
             navigation: this.getUpdatedNavigation(props, state),
         };
 
-        return Object.assign({}, state, schemaState) as Partial<FormState>;
+        return Object.assign({}, state, updatedState) as Partial<FormState>;
     }
 
     /**
@@ -248,7 +266,6 @@ class Form extends React.Component<
                 props.location && props.location.dataLocation
                     ? props.location.dataLocation
                     : "",
-            schema: props.schema,
             location,
             navigation: this.getUpdatedNavigation(props, state),
         };
@@ -263,7 +280,7 @@ class Form extends React.Component<
         return getNavigation(
             props.location ? props.location.dataLocation : state.activeDataLocation || "",
             props.data,
-            props.schema,
+            this.schema,
             props.childOptions
         );
     }
@@ -327,7 +344,7 @@ class Form extends React.Component<
                 dataCache={this.getData("dataCache", "state")}
                 schemaLocation={mapSchemaLocationFromDataLocation(
                     this.state.activeDataLocation,
-                    this.props.schema,
+                    this.schema,
                     this.props.data
                 )}
                 default={this.state.navigation[this.state.navigation.length - 1].default}
@@ -424,7 +441,7 @@ class Form extends React.Component<
             state.navigation = getNavigation(
                 dataLocation || "",
                 this.props.data,
-                this.props.schema,
+                this.schema,
                 this.props.childOptions
             );
 
