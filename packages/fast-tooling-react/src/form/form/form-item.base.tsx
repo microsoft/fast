@@ -10,6 +10,8 @@ import FormItemCommon from "./form-item.props";
  * @extends React.Component
  */
 abstract class FormItemBase<P, S> extends React.Component<P & FormItemCommon, S> {
+    public buttonRef: React.RefObject<HTMLButtonElement>;
+
     public inputRef: React.RefObject<HTMLInputElement>;
 
     public textAreaRef: React.RefObject<HTMLTextAreaElement>;
@@ -18,6 +20,7 @@ abstract class FormItemBase<P, S> extends React.Component<P & FormItemCommon, S>
     private cache: string;
 
     private formItemRef:
+        | React.RefObject<HTMLButtonElement>
         | React.RefObject<HTMLInputElement>
         | React.RefObject<HTMLTextAreaElement>
         | React.RefObject<HTMLSelectElement>;
@@ -25,6 +28,7 @@ abstract class FormItemBase<P, S> extends React.Component<P & FormItemCommon, S>
     constructor(props: P & FormItemCommon) {
         super(props);
 
+        this.buttonRef = React.createRef();
         this.inputRef = React.createRef();
         this.textAreaRef = React.createRef();
         this.selectRef = React.createRef();
@@ -38,7 +42,9 @@ abstract class FormItemBase<P, S> extends React.Component<P & FormItemCommon, S>
                     ? this.textAreaRef
                     : this.selectRef.current !== null
                         ? this.selectRef
-                        : null;
+                        : this.buttonRef.current !== null
+                            ? this.buttonRef
+                            : null;
 
         this.updateValidity();
     }
