@@ -7,26 +7,18 @@ import {
     DesignSystem,
 } from "@microsoft/fast-components-styles-msft";
 import { ADDON_EVENT } from "./constants";
-import DesignSystemManager from "./design-system";
-
-export const designSystemManager: DesignSystemManager<
-    DesignSystem
-> = new DesignSystemManager(DesignSystemDefaults);
+import designSystemManager from "./design-system";
 
 interface DesignSystemDecoratorProps {
     channel: any;
 }
 
-class DesignSystemDecorator extends React.Component<
+class DesignSystemDecorator<T> extends React.Component<
     DesignSystemDecoratorProps,
-    { designSystem: DesignSystem }
+    { designSystem: unknown }
 > {
     constructor(props: DesignSystemDecoratorProps) {
         super(props);
-
-        const designSystem: DesignSystem = JSON.parse(
-            window.localStorage.getItem("design-system")
-        );
 
         this.state = {
             designSystem: designSystemManager.get(),
@@ -69,5 +61,8 @@ const decorator = makeDecorator({
 });
 
 export function setup() {
+    designSystemManager.set(DesignSystemDefaults);
+
+    console.log("SETUP");
     addDecorator(decorator);
 }

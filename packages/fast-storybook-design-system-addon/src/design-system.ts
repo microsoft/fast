@@ -1,26 +1,9 @@
-import {
-    DesignSystemDefaults,
-    DesignSystem,
-} from "@microsoft/fast-components-styles-msft";
-
-export default class DesignSystemManager<T> {
-    constructor(defaultValue: T) {
-        this.defaultValue = defaultValue;
-    }
-
-    private designSystem: DesignSystem;
+class DesignSystemManager<T> {
     private storagekey: string = "design-system";
     private defaultValue: T;
 
     public get(): T {
-        let stored: string = this.readStorage();
-
-        if (!stored) {
-            this.set(this.defaultValue);
-            stored = this.readStorage();
-        }
-
-        return JSON.parse(stored);
+        return JSON.parse(this.readStorage());
     }
 
     public update(updates: Partial<T>): void {
@@ -35,3 +18,5 @@ export default class DesignSystemManager<T> {
         return window.localStorage.getItem(this.storagekey);
     }
 }
+
+export default new DesignSystemManager();

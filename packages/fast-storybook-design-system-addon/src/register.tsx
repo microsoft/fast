@@ -8,7 +8,9 @@ import {
     DesignSystemDefaults,
     DesignSystem,
 } from "@microsoft/fast-components-styles-msft";
-import { designSystemManager } from "./index";
+import designSystemManager from "./design-system";
+
+designSystemManager.set(DesignSystemDefaults); // TODO not sure why this code is executed before "setup" but it is
 
 interface DesignSystemPanelProps {
     api: API;
@@ -18,12 +20,12 @@ interface DesignSystemPanelProps {
 class DesignSystemPanel extends React.Component<DesignSystemPanelProps, {}> {
     public componentDidMount() {
         window.setTimeout(() => {
-            this.setIframeDirection(designSystemManager.get().direction);
+            this.setIframeDirection((designSystemManager.get() as any).direction);
         }, 400); // This is hacky - not sure why it doesn't just work immediately
     }
 
     public render() {
-        const designSystem: DesignSystem = designSystemManager.get();
+        const designSystem: any = designSystemManager.get();
 
         return (
             <React.Fragment>
@@ -34,7 +36,7 @@ class DesignSystemPanel extends React.Component<DesignSystemPanelProps, {}> {
                         },
                     })}
                 />
-                {this.props.active ? this.renderForm(designSystem) : null}
+                {this.props.active ? this.renderForm(designSystem as any) : null}
             </React.Fragment>
         );
         return;
