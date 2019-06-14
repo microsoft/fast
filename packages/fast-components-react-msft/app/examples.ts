@@ -76,6 +76,9 @@ export { MetatextExamples };
 import NumberFieldExamples from "../src/number-field/examples.data";
 export { NumberFieldExamples };
 
+import NeutralButtonExamples from "../src/neutral-button/examples.data";
+export { NeutralButtonExamples };
+
 import OutlineButtonExamples from "../src/outline-button/examples.data";
 export { OutlineButtonExamples };
 
