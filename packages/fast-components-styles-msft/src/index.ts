@@ -86,10 +86,22 @@ import ImageStyles from "./image";
 export { ImageStyles };
 
 /**
+ * Export justified button styles
+ */
+import JustifiedButtonStyles from "./justified-button";
+export { JustifiedButtonStyles };
+
+/**
  * Export label styles
  */
 import LabelStyles from "./label";
 export { LabelStyles };
+
+/**
+ * Export lightweight button styles
+ */
+import LightweightButtonStyles from "./lightweight-button";
+export { LightweightButtonStyles };
 
 /**
  * Export metatext styles
@@ -151,6 +163,12 @@ export { SliderStyles };
  */
 import SliderLabelStyles from "./slider-label";
 export { SliderLabelStyles };
+
+/**
+ * Export stealth button styles
+ */
+import StealthButtonStyles from "./stealth-button";
+export { StealthButtonStyles };
 
 /**
  * Export subheading styles

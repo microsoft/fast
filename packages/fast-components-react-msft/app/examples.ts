@@ -61,8 +61,14 @@ export { HypertextExamples };
 import ImageExamples from "../src/image/examples.data";
 export { ImageExamples };
 
+import JustifiedButtonExamples from "../src/justified-button/examples.data";
+export { JustifiedButtonExamples };
+
 import LabelExamples from "../src/label/examples.data";
 export { LabelExamples };
+
+import LightweightButtonExamples from "../src/lightweight-button/examples.data";
+export { LightweightButtonExamples };
 
 import MetatextExamples from "../src/metatext/examples.data";
 export { MetatextExamples };
@@ -93,6 +99,9 @@ export { Slider };
 
 import SliderLabel from "../src/slider-label/examples.data";
 export { SliderLabel };
+
+import StealthButtonExamples from "../src/stealth-button/examples.data";
+export { StealthButtonExamples };
 
 import SubheadingExamples from "../src/subheading/examples.data";
 export { SubheadingExamples };

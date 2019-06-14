@@ -1,1 +1,1 @@
-# Accent button
+# Stealth button

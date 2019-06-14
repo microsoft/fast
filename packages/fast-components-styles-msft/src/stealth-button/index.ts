@@ -19,35 +19,14 @@ import {
     neutralFocus,
     neutralForegroundRest,
 } from "../utilities/color";
-import { applyCursorPointer } from "../utilities/cursor";
-import { glyphSize, height, horizontalSpacing } from "../utilities/density";
+import { buttonStyles } from "../patterns/button";
+import { glyphSize } from "../utilities/density";
 import { focusOutlineWidth } from "../utilities/design-system";
 import { applyDisabledState } from "../utilities/disabled";
-import { applyScaledTypeRamp } from "../utilities/typography";
 
 const styles: ComponentStyles<AccentButtonClassNameContract, DesignSystem> = {
     button: {
-        ...applyScaledTypeRamp("t7"),
-        ...applyCursorPointer(),
-        ...applyFocusPlaceholderBorder(),
-        ...applyCornerRadius(),
-        fontFamily: "inherit",
-        boxSizing: "border-box",
-        maxWidth: "374px",
-        minWidth: ensureDesignSystemDefaults(
-            (designSystem: DesignSystem): string =>
-                designSystem.density <= -2 ? "28px" : "32px"
-        ),
-        padding: format("0 {0}", horizontalSpacing(focusOutlineWidth)),
-        display: "inline-flex",
-        justifyContent: "center",
-        alignItems: "center",
-        height: height(),
-        lineHeight: "1",
-        overflow: "hidden",
-        textDecoration: "none",
-        whiteSpace: "nowrap",
-        transition: "all 0.1s ease-in-out",
+        ...buttonStyles(),
         color: neutralForegroundRest,
         fill: neutralForegroundRest,
         background: neutralFillStealthRest,
@@ -60,9 +39,6 @@ const styles: ComponentStyles<AccentButtonClassNameContract, DesignSystem> = {
         ...applyFocusVisible<DesignSystem>({
             borderColor: neutralFocus,
         }),
-        "&::-moz-focus-inner": {
-            border: "0",
-        },
     },
     button_contentRegion: {
         position: "relative",
