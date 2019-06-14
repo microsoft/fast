@@ -1,13 +1,8 @@
 import { ButtonBaseClassNameContract as AccentButtonClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import { ComponentStyles } from "@microsoft/fast-jss-manager";
-import {
-    applyFocusVisible,
-    directionSwitch,
-    format,
-    toPx,
-} from "@microsoft/fast-jss-utilities";
+import { applyFocusVisible, format } from "@microsoft/fast-jss-utilities";
 import { DesignSystem, DesignSystemResolver } from "../design-system";
-import { buttonStyles } from "../patterns/button";
+import { baseButton, buttonStyles } from "../patterns/button";
 import {
     accentFillActive,
     accentFillHover,
@@ -16,9 +11,7 @@ import {
     neutralFocus,
 } from "../utilities/color";
 import { isDarkMode, Palette, swatchByContrast } from "../utilities/color/palette";
-import { glyphSize } from "../utilities/density";
-import { accentPalette, focusOutlineWidth } from "../utilities/design-system";
-import { applyDisabledState } from "../utilities/disabled";
+import { accentPalette } from "../utilities/design-system";
 
 const accentButtonInnerFocusRect: DesignSystemResolver<string> = swatchByContrast(
     neutralFocus
@@ -42,6 +35,7 @@ const accentButtonInnerFocusRect: DesignSystemResolver<string> = swatchByContras
 )((contrastRatio: number): boolean => contrastRatio >= 4.5);
 
 const styles: ComponentStyles<AccentButtonClassNameContract, DesignSystem> = {
+    ...baseButton,
     button: {
         ...buttonStyles(),
         color: accentForegroundCut,
@@ -60,34 +54,6 @@ const styles: ComponentStyles<AccentButtonClassNameContract, DesignSystem> = {
         "& $button_beforeContent, & $button_afterContent": {
             fill: accentForegroundCut,
         },
-    },
-    button_contentRegion: {
-        position: "relative",
-        "&::before": {
-            content: "''",
-            display: "block",
-            height: toPx<DesignSystem>(focusOutlineWidth),
-            position: "absolute",
-            bottom: "-3px",
-            width: "100%",
-            left: directionSwitch("0", ""),
-            right: directionSwitch("", "0"),
-        },
-        "& svg": {
-            width: glyphSize,
-            height: glyphSize,
-        },
-    },
-    button__disabled: {
-        ...applyDisabledState(),
-    },
-    button_beforeContent: {
-        width: glyphSize,
-        height: glyphSize,
-    },
-    button_afterContent: {
-        width: glyphSize,
-        height: glyphSize,
     },
 };
 
