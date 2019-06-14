@@ -110,10 +110,16 @@ import MetatextStyles from "./metatext";
 export { MetatextStyles };
 
 /**
- * Export metatext styles
+ * Export number field styles
  */
 import NumberFieldStyles from "./number-field";
 export { NumberFieldStyles };
+
+/**
+ * Export outline button styles
+ */
+import OutlineButtonStyles from "./outline-button";
+export { OutlineButtonStyles };
 
 /**
  * Export paragraph styles

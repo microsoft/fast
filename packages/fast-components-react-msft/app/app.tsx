@@ -72,6 +72,8 @@ const formPlugins: Array<Plugin<PluginProps>> = [
             "@microsoft/fast-components-react-msft/justified-button/afterContent",
             "@microsoft/fast-components-react-msft/lightweight-button/beforeContent",
             "@microsoft/fast-components-react-msft/lightweight-button/afterContent",
+            "@microsoft/fast-components-react-msft/outline-button/beforeContent",
+            "@microsoft/fast-components-react-msft/outline-button/afterContent",
             "@microsoft/fast-components-react-msft/pivot/items/content",
             "@microsoft/fast-components-react-msft/pivot/items/tab",
             "@microsoft/fast-components-react-msft/select-option/glyph",

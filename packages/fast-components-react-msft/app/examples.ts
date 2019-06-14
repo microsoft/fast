@@ -76,6 +76,9 @@ export { MetatextExamples };
 import NumberFieldExamples from "../src/number-field/examples.data";
 export { NumberFieldExamples };
 
+import OutlineButtonExamples from "../src/outline-button/examples.data";
+export { OutlineButtonExamples };
+
 import ParagraphExamples from "../src/paragraph/examples.data";
 export { ParagraphExamples };
 
