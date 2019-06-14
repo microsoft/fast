@@ -1,13 +1,15 @@
 import React from "react";
-import { AccentButtonClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
+import { ButtonBaseClassNameContract as AccentButtonClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { AccentButtonStyles, DesignSystem } from "@microsoft/fast-components-styles-msft";
-import MSFTAccentButton, {
-    AccentButtonHandledProps as MSFTAccentButtonHandledProps,
-    AccentButtonManagedClasses,
-    AccentButtonProps as MSFTAccentButtonProps,
-    AccentButtonUnhandledProps,
-} from "./accent-button";
+import {
+    ButtonBase,
+    ButtonBaseHandledProps,
+    ButtonBaseManagedClasses,
+    ButtonBaseProps,
+    ButtonBaseUnhandledProps as AccentButtonUnhandledProps,
+} from "../button-base";
+import accentButtonSchema from "./accent-button.schema";
 import { Subtract } from "utility-types";
 
 /*
@@ -15,13 +17,13 @@ import { Subtract } from "utility-types";
  * compiler infer the type instead of re-declaring just for the package export
  */
 /* tslint:disable-next-line:typedef */
-const AccentButton = manageJss(AccentButtonStyles)(MSFTAccentButton);
+const AccentButton = manageJss(AccentButtonStyles)(ButtonBase);
 type AccentButton = InstanceType<typeof AccentButton>;
 
 interface AccentButtonHandledProps
-    extends Subtract<MSFTAccentButtonHandledProps, AccentButtonManagedClasses> {}
+    extends Subtract<ButtonBaseHandledProps, ButtonBaseManagedClasses> {}
 type AccentButtonProps = ManagedJSSProps<
-    MSFTAccentButtonProps,
+    ButtonBaseProps,
     AccentButtonClassNameContract,
     DesignSystem
 >;
@@ -32,4 +34,5 @@ export {
     AccentButtonClassNameContract,
     AccentButtonHandledProps,
     AccentButtonUnhandledProps,
+    accentButtonSchema,
 };

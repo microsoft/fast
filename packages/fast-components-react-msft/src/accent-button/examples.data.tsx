@@ -1,7 +1,6 @@
 import React from "react";
 import { ManagedClasses } from "@microsoft/fast-jss-manager-react";
-import { AccentButton, AccentButtonProps } from "./index";
-import schema from "./accent-button.schema.json";
+import { AccentButton, AccentButtonProps, accentButtonSchema } from "./index";
 import Documentation from "./.tmp/documentation";
 import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
 import { SVGGlyph } from "../../app/components/svg-svg-element";
@@ -10,7 +9,7 @@ import svgSchema from "../../app/components/svg-svg-element.schema.json";
 const examples: ComponentFactoryExample<AccentButtonProps> = {
     name: "Accent button",
     component: AccentButton,
-    schema: schema as any,
+    schema: accentButtonSchema,
     documentation: <Documentation />,
     detailData: {
         children: "Button",
@@ -29,14 +28,14 @@ const examples: ComponentFactoryExample<AccentButtonProps> = {
                 props: {
                     path: SVGGlyph.robot,
                 },
-            },
+            } as any,
             children: "Mutliple both render props",
             afterContent: {
                 id: svgSchema.id,
                 props: {
                     path: SVGGlyph.robot,
                 },
-            },
+            } as any,
         },
         {
             beforeContent: {
@@ -44,7 +43,7 @@ const examples: ComponentFactoryExample<AccentButtonProps> = {
                 props: {
                     path: SVGGlyph.robot,
                 },
-            },
+            } as any,
             children: "Before render prop",
         },
         {
@@ -54,7 +53,7 @@ const examples: ComponentFactoryExample<AccentButtonProps> = {
                 props: {
                     path: SVGGlyph.robot,
                 },
-            },
+            } as any,
         },
         {
             children: "Disabled after render prop",
@@ -63,7 +62,7 @@ const examples: ComponentFactoryExample<AccentButtonProps> = {
                 props: {
                     path: SVGGlyph.robot,
                 },
-            },
+            } as any,
             disabled: true,
         },
         {
@@ -72,7 +71,7 @@ const examples: ComponentFactoryExample<AccentButtonProps> = {
                 props: {
                     path: SVGGlyph.robot,
                 },
-            },
+            } as any,
         },
         {
             afterContent: {
@@ -80,7 +79,7 @@ const examples: ComponentFactoryExample<AccentButtonProps> = {
                 props: {
                     path: SVGGlyph.robot,
                 },
-            },
+            } as any,
         },
     ],
 };

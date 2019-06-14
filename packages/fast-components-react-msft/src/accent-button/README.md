@@ -1,1 +1,1 @@
-# Button - Accent
+# Accent button

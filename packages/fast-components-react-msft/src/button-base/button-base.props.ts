@@ -18,12 +18,12 @@ export interface ButtonBaseHandledProps
     /**
      * The preceding content
      */
-    beforeContent?: (classname?: string) => React.ReactNode;
+    beforeContent?: (className?: string) => React.ReactNode;
 
     /**
      * The trailing content
      */
-    afterContent?: (classname?: string) => React.ReactNode;
+    afterContent?: (className?: string) => React.ReactNode;
 }
 
 /* tslint:disable-next-line:no-empty-interface */

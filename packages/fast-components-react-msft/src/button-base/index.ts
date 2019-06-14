@@ -5,6 +5,7 @@ import ButtonBase, {
     ButtonBaseProps,
     ButtonBaseUnhandledProps,
 } from "./button-base";
+import buttonBaseSchema from "./button-base.schema";
 
 export {
     ButtonBase,
@@ -13,4 +14,5 @@ export {
     ButtonBaseHandledProps,
     ButtonBaseManagedClasses,
     ButtonBaseUnhandledProps,
+    buttonBaseSchema,
 };

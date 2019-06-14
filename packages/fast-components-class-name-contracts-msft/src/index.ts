@@ -1,4 +1,3 @@
-export * from "./accent-button";
 export * from "./action-toggle";
 export * from "./action-trigger";
 export * from "./auto-suggest";
