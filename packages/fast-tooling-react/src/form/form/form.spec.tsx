@@ -237,8 +237,25 @@ describe("Form", () => {
         expect(locationCallback).toHaveBeenCalled();
         expect(locationCallback.mock.calls[0][0]).toEqual("");
     });
-    test("should not trigger the `onSchemaChange` if the schema does not have plugins", () => {
-        const callback: any = jest.fn();
+    test("should not throw if the `onSchemaChange` is not provided and a plugin modifies the schema", () => {
+        const plugins: any = [
+            new StringUpdateSchemaPlugin({
+                id: "plugins/pluginModifiedString",
+            }),
+        ];
+
+        expect(() => {
+            mount(
+                <Form
+                    schema={pluginSchema}
+                    data={{}}
+                    onChange={jest.fn()}
+                    plugins={plugins}
+                />
+            );
+        }).not.toThrow();
+    });
+    test("should not throw if the `onSchemaChange` is not provided and data is updated that modifies the schema", () => {
         const plugins: any = [
             new StringUpdateSchemaPlugin({
                 id: "plugins/pluginModifiedString",
@@ -250,13 +267,31 @@ describe("Form", () => {
                 data={{}}
                 onChange={jest.fn()}
                 plugins={plugins}
+            />
+        );
+
+        expect(() => rendered.setProps({ schema: pluginSchema })).not.toThrow();
+    });
+    test("should not trigger the `onSchemaChange` if the schema has plugins that do not modify the schema", () => {
+        const callback: any = jest.fn();
+        const plugins: any = [
+            new StringUpdateSchemaPlugin({
+                id: "unmatchedPluginIdentifier",
+            }),
+        ];
+        const rendered: any = mount(
+            <Form
+                schema={pluginSchema}
+                data={{}}
+                onChange={jest.fn()}
+                plugins={plugins}
                 onSchemaChange={callback}
             />
         );
 
         expect(callback).toHaveBeenCalledTimes(0);
     });
-    test("should trigger the `onSchemaChange`if the schema has plugins", () => {
+    test("should trigger the `onSchemaChange` if the schema has plugins that modify the schema", () => {
         const callback: any = jest.fn();
         const plugins: any = [
             new StringUpdateSchemaPlugin({
@@ -275,7 +310,7 @@ describe("Form", () => {
 
         expect(callback).toHaveBeenCalledTimes(1);
     });
-    test("should not trigger the `onSchemaChange` if the schema has been changed and the schema does not have plugins", () => {
+    test("should trigger the `onSchemaChange` if the schema has plugins that modify the schema when data has been updated and this affects the way the schema is rendered", () => {
         const callback: any = jest.fn();
         const plugins: any = [
             new StringUpdateSchemaPlugin({
@@ -292,13 +327,38 @@ describe("Form", () => {
             />
         );
 
-        expect(callback).toHaveBeenCalledTimes(1);
+        expect(callback.mock.calls[0][0].properties.pluginModifiedString.enum).toEqual([
+            undefined,
+            "red",
+            "green",
+            "blue",
+        ]);
+
+        rendered.setProps({ data: { pluginModifiedNumber: 2 } });
+
+        expect(callback).toHaveBeenCalledTimes(2);
+        expect(callback.mock.calls[1][0].properties.pluginModifiedString.enum).toEqual([
+            "bar",
+        ]);
+    });
+    test("should trigger the `onSchemaChange` if the schema has been updated and plugins have not updated the schema", () => {
+        const callback: any = jest.fn();
+        const rendered: any = mount(
+            <Form
+                schema={pluginSchema}
+                data={{}}
+                onChange={jest.fn()}
+                onSchemaChange={callback}
+            />
+        );
+
+        expect(callback).toHaveBeenCalledTimes(0);
 
         rendered.setProps({ schema: objectSchema });
 
         expect(callback).toHaveBeenCalledTimes(1);
     });
-    test("should trigger the `onSchemaChange` if the schema has been changed and the schema has plugins", () => {
+    test("should trigger the `onSchemaChange` if the schema has been changed and plugins have updated the schema", () => {
         const callback: any = jest.fn();
         const plugins: any = [
             new StringUpdateSchemaPlugin({
@@ -320,5 +380,51 @@ describe("Form", () => {
         rendered.setProps({ schema: pluginSchema });
 
         expect(callback).toHaveBeenCalledTimes(1);
+    });
+    test("should show an updated schema form item if the schema has been changed by plugins and `onSchemaChange` has been provided", () => {
+        const callback: any = jest.fn();
+        const plugins: any = [
+            new StringUpdateSchemaPlugin({
+                id: "plugins/pluginModifiedString",
+            }),
+        ];
+        const rendered: any = mount(
+            <Form
+                schema={pluginSchema}
+                data={{}}
+                onChange={jest.fn()}
+                plugins={plugins}
+                onSchemaChange={callback}
+            />
+        );
+
+        expect(rendered.find("FormItemSelect")).toHaveLength(2);
+
+        rendered.setProps({ data: { pluginModifiedNumber: 2 } });
+        rendered.update();
+
+        expect(rendered.find("FormItemSelect")).toHaveLength(1);
+    });
+    test("should show an updated schema form item if the schema has been changed by plugins and `onSchemaChange` has not been provided", () => {
+        const plugins: any = [
+            new StringUpdateSchemaPlugin({
+                id: "plugins/pluginModifiedString",
+            }),
+        ];
+        const rendered: any = mount(
+            <Form
+                schema={pluginSchema}
+                data={{}}
+                onChange={jest.fn()}
+                plugins={plugins}
+            />
+        );
+
+        expect(rendered.find("FormItemSelect")).toHaveLength(2);
+
+        rendered.setProps({ data: { pluginModifiedNumber: 2 } });
+        rendered.update();
+
+        expect(rendered.find("FormItemSelect")).toHaveLength(1);
     });
 });

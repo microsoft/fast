@@ -877,7 +877,7 @@ export class MyCustomSchemaPlugin extends FormPlugin {
 
 Example implementation with the `Form`:
 
-*Note: When the plugins are used the schema tied to the `Form` should be set to a state so that it can be kept up-to-date, you will need to use the `onSchemaChange` callback which will return the newly updated schema.*
+*Note: When the plugins are used the schema used to render the `Form` is internally updated. To get the plugin-modified schema, you can optionally add the `onSchemaChange` callback which will return the newly updated schema.*
 
 ```jsx
 import Form from "@microsoft/fast-tooling-react";
@@ -888,7 +888,6 @@ import { MyCustomSchemaPlugin } from "./my-custom-schema-plugin";
     data={this.state.currentComponentData}
     schema={this.state.currentComponentSchema}
     onChange={handleChange}
-    onSchemaChange={handleSchemaChange}
     plugins={[
         new MyCustomSchemaPlugin({
             id: ["my-custom-plugin-identifier"]
