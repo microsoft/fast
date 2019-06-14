@@ -1,8 +1,6 @@
 import React from "react";
 import Adapter from "enzyme-adapter-react-16";
 import { configure, mount, shallow } from "enzyme";
-import { ButtonHTMLTags } from "@microsoft/fast-components-react-base";
-import { ButtonClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import ButtonBase from "./button-base";
 import {
     ButtonBaseHandledProps,
@@ -45,13 +43,6 @@ describe("button", (): void => {
         const rendered: any = mount(<ButtonBase {...props} />);
 
         expect(rendered.find("a").prop("aria-hidden")).toEqual(true);
-    });
-
-    /* tslint:disable-next-line */
-    test("should apply a 'primary' html class when appearance is primary", () => {
-        const rendered: any = mount(<Button appearance={ButtonAppearance.primary} />);
-
-        expect(rendered.find("button").prop("className")).toContain("button__primary");
     });
 
     test("should set a custom class name when passed", () => {
