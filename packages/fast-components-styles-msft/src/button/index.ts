@@ -65,41 +65,7 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = {
         },
     },
     button__primary: {},
-    button__outline: {
-        background: neutralFillStealthRest,
-        border: format(
-            "{0} solid {1}",
-            toPx<DesignSystem>(outlineWidth),
-            neutralOutlineRest
-        ),
-        padding: format("0 {0}", horizontalSpacing(outlineWidth)),
-        "&:hover:enabled": {
-            background: neutralFillStealthHover,
-            border: format(
-                "{0} solid {1}",
-                toPx<DesignSystem>(outlineWidth),
-                neutralOutlineHover
-            ),
-        },
-        "&:active:enabled": {
-            background: neutralFillStealthActive,
-            border: format(
-                "{0} solid {1}",
-                toPx<DesignSystem>(outlineWidth),
-                neutralOutlineActive
-            ),
-        },
-        ...applyFocusVisible<DesignSystem>({
-            boxShadow: ensureDesignSystemDefaults(
-                (designSystem: DesignSystem): string => {
-                    return `0 0 0 ${toPx(
-                        designSystem.focusOutlineWidth - designSystem.outlineWidth
-                    )} ${neutralFocus(designSystem)} inset`;
-                }
-            ),
-            borderColor: neutralFocus,
-        }),
-    },
+    button__outline: {},
     button__lightweight: {},
     button__justified: {},
     button__stealth: {},

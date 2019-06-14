@@ -14,6 +14,7 @@ import {
 } from "../button-base";
 import outlineButtonSchema from "./outline-button.schema";
 import { Subtract } from "utility-types";
+import { DisplayNamePrefix } from "../utilities";
 
 /*
  * The type returned by manageJss type is very complicated so we'll let the
@@ -30,6 +31,11 @@ type OutlineButtonProps = ManagedJSSProps<
     OutlineButtonClassNameContract,
     DesignSystem
 >;
+
+/**
+ * Set the display name for the outline button
+ */
+OutlineButton.displayName = `${DisplayNamePrefix}OutlineButton`;
 
 export {
     OutlineButton,

@@ -14,6 +14,7 @@ import {
 } from "../button-base";
 import lightweightButtonSchema from "./lightweight-button.schema";
 import { Subtract } from "utility-types";
+import { DisplayNamePrefix } from "../utilities";
 
 /*
  * The type returned by manageJss type is very complicated so we'll let the
@@ -30,6 +31,11 @@ type LightweightButtonProps = ManagedJSSProps<
     LightweightButtonClassNameContract,
     DesignSystem
 >;
+
+/**
+ * Set the display name for the lightweight button
+ */
+LightweightButton.displayName = `${DisplayNamePrefix}LightweightButton`;
 
 export {
     LightweightButton,

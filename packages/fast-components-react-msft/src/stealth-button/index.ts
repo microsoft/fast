@@ -14,6 +14,7 @@ import {
 } from "../button-base";
 import stealthButtonSchema from "./stealth-button.schema";
 import { Subtract } from "utility-types";
+import { DisplayNamePrefix } from "../utilities";
 
 /*
  * The type returned by manageJss type is very complicated so we'll let the
@@ -30,6 +31,11 @@ type StealthButtonProps = ManagedJSSProps<
     StealthButtonClassNameContract,
     DesignSystem
 >;
+
+/**
+ * Set the display name for the stealth button
+ */
+StealthButton.displayName = `${DisplayNamePrefix}StealthButton`;
 
 export {
     StealthButton,

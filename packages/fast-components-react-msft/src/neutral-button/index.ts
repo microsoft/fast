@@ -14,6 +14,7 @@ import {
 } from "../button-base";
 import neutralButtonSchema from "./neutral-button.schema";
 import { Subtract } from "utility-types";
+import { DisplayNamePrefix } from "../utilities";
 
 /*
  * The type returned by manageJss type is very complicated so we'll let the
@@ -30,6 +31,11 @@ type NeutralButtonProps = ManagedJSSProps<
     NeutralButtonClassNameContract,
     DesignSystem
 >;
+
+/**
+ * Set the display name for the neutral button
+ */
+NeutralButton.displayName = `${DisplayNamePrefix}NeutralButton`;
 
 export {
     NeutralButton,

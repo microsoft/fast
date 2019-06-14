@@ -11,6 +11,7 @@ import {
 } from "../button-base";
 import accentButtonSchema from "./accent-button.schema";
 import { Subtract } from "utility-types";
+import { DisplayNamePrefix } from "../utilities";
 
 /*
  * The type returned by manageJss type is very complicated so we'll let the
@@ -27,6 +28,11 @@ type AccentButtonProps = ManagedJSSProps<
     AccentButtonClassNameContract,
     DesignSystem
 >;
+
+/**
+ * Set the display name for the accent button
+ */
+AccentButton.displayName = `${DisplayNamePrefix}AccentButton`;
 
 export {
     AccentButton,
