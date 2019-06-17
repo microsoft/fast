@@ -1,7 +1,7 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const WebpackShellPlugin = require("webpack-shell-plugin");
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 
 const appDir = path.resolve(__dirname, "./app");
 const outDir = path.resolve(__dirname, "./www");
@@ -10,11 +10,12 @@ module.exports = (env, args) => {
     const isProduction = args.mode === "production";
 
     return {
+        devtool: isProduction ? "none" : "inline-source-map",
         entry: path.resolve(appDir, "index.tsx"),
         output: {
             path: outDir,
             publicPath: "/",
-            filename: isProduction ? "[name]-[contenthash].js" : "[name].js"
+            filename: isProduction ? "[name]-[contenthash].js" : "[name].js",
         },
         mode: args.mode || "development",
         optimization: {
@@ -25,10 +26,15 @@ module.exports = (env, args) => {
                         test: /[\\/]node_modules[\\/]/,
                     },
                 },
-            }
+            },
         },
         resolve: {
-            extensions: ['.js', '.ts', '.tsx'],
+            extensions: [".js", ".ts", ".tsx"],
+            alias: {
+                "lodash-es": path.resolve("./node_modules/lodash-es"),
+                react: path.resolve("./node_modules/react"),
+                "react-dom": path.resolve("./node_modules/react-dom"),
+            },
         },
         module: {
             rules: [
@@ -36,26 +42,28 @@ module.exports = (env, args) => {
                     test: /.tsx?$/,
                     use: [
                         {
-                            loader: "ts-loader"
-                        }
+                            loader: "ts-loader",
+                            options: {
+                                compilerOptions: {
+                                    declaration: false,
+                                },
+                            },
+                        },
                     ],
-                    exclude: /node_modules/
-                }
-            ]
+                },
+            ],
         },
         plugins: [
             new HtmlWebpackPlugin({
                 contentBase: outDir,
             }),
             new WebpackShellPlugin({
-                onBuildStart: [
-                    `npm run convert:readme`
-                ]
+                onBuildStart: [`npm run convert:readme`],
             }),
             new BundleAnalyzerPlugin({
                 // Remove this to inspect bundle sizes.
-                analyzerMode: "disabled"
-            })
+                analyzerMode: "disabled",
+            }),
         ],
         devServer: {
             compress: false,
@@ -63,6 +71,6 @@ module.exports = (env, args) => {
             open: true,
             overlay: true,
             port: 7000,
-        }
-    }
-}
+        },
+    };
+};
