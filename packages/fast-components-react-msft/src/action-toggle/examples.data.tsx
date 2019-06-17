@@ -154,22 +154,6 @@ const examples: ComponentFactoryExample<ActionToggleProps> = {
             } as any,
             "data-sketch-symbol": "Action toggle - stealth",
         } as any,
-        {
-            appearance: ActionToggleAppearance.stealth,
-            selectedGlyph: {
-                id: svgSchema.id,
-                props: {
-                    path: SVGGlyph.pause,
-                },
-            } as any,
-            unselectedGlyph: {
-                id: svgSchema.id,
-                props: {
-                    path: SVGGlyph.play,
-                },
-            } as any,
-            "data-sketch-symbol": "Action toggle - stealth - only icon",
-        } as any,
     ],
 };
 
