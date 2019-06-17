@@ -1,0 +1,63 @@
+export default {
+    $schema: "http://json-schema.org/schema#",
+    title: "Carousel Hero Content Test Element",
+    description: "A carousel hero content component's schema definition.",
+    id: "carousel-hero-content",
+    type: "object",
+    properties: {
+        heading: {
+            title: "Heading",
+            type: "object",
+            properties: {
+                children: {
+                    title: "Heading text",
+                    type: "string",
+                },
+            },
+        },
+        paragraph: {
+            title: "Paragraph",
+            type: "object",
+            properties: {
+                children: {
+                    title: "Hero paragraph test text",
+                    type: "string",
+                },
+            },
+        },
+        callToAction: {
+            title: "Call to action",
+            type: "object",
+            properties: {
+                children: {
+                    title: "Call to action",
+                    type: "string",
+                },
+                href: {
+                    title: "HTML href attribute",
+                    type: "string",
+                },
+                appearance: {
+                    title: "Appearance",
+                    type: "string",
+                    default: "primary",
+                    enum: ["primary", "justified", "lightweight"],
+                },
+            },
+        },
+        image: {
+            title: "Image",
+            type: "object",
+            properties: {
+                src: {
+                    title: "HTML src attribute",
+                    type: "string",
+                },
+                alt: {
+                    title: "HTML alt attribute",
+                    type: "string",
+                },
+            },
+        },
+    },
+};

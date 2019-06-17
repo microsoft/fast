@@ -1,4 +1,4 @@
-import PivotItemContentSchema from "./pivot-item-content.schema.json";
+import PivotItemContentSchema from "./pivot-item-content.schema";
 import PivotItemContent from "./pivot-item-content";
 export default {
     name: "Pivot item content",
