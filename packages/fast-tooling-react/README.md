@@ -16,6 +16,10 @@ The tooling available in FAST Tooling React can be used together to create UI fo
     - [Mapping data to a code preview](#mapping-data-to-a-code-preview)
     - [Generating data from a JSON schema](#generating-data-from-a-json-schema)
 - [Navigation](#navigation)
+- [Navigation Menu](#navigation-menu)
+    - [Menu structure](#menu-structure)
+    - [Expanding and Collapsing](#expanding-and-collapsing)
+    - [Controlling the location](#controlling-the-location)
 - [Viewer](#viewer)
     - [Setting width and height](#setting-width-and-height)
     - [Custom messaging](#custom-messaging)
@@ -441,6 +445,90 @@ handleChange = (data) => {
     this.setState({
         data
     });
+}
+```
+
+## Navigation Menu
+
+The `NavigationMenu` component creates a navigational menu from a provided data structure. This component is meant to serve as location routing in an application.
+
+### Menu structure
+Example menu structure:
+```js
+const menu = [
+    {
+        displayName: "red",
+        location: "/red"
+    },
+    {
+        displayName: "green",
+        items: [
+            {
+                displayName: "blue",
+                location: "/blue"
+            }
+        ]
+    }
+]
+```
+
+Each menu item requires a `displayName` to use in the generated UI.
+
+Simple example:
+
+```jsx
+render() {
+    return (
+        <NavigationMenu
+            menu={menu}
+        />
+    );
+}
+```
+
+### Expanding and collapsing
+
+An optional `expanded` prop may be provided which can either expand or collapse all expandable items. If there is a need to trigger this initially or after an action such as a button click.
+
+Example:
+```jsx
+private handleExpandClick = (): void => {
+    this.setState(
+        {
+            expanded: true,
+        },
+        () => {
+            this.setState({
+                expanded: void 0,
+            });
+        }
+    );
+};
+```
+
+### Controlling the location
+
+A `location` may optionally be provided in the menu data, if this is not accompanied by a `onLocationUpdate` callback, the generated UI for that menu item will be an anchor. If an `onLocationUpdate` callback is provided this results in a span, which when clicked will fire the callback with the associated location.
+
+Example:
+
+```jsx
+render() {
+    return (
+        <NavigationMenu
+            menu={menu}
+            activeLocation={this.state.activeLocation}
+            onLocationUpdate={this.handleLocationUpdate}
+        />
+    );
+}
+
+handleLocationUpdate = (location) => {
+    this.setState({
+        activeLocation: location
+    });
+
+    // do some route manipulation
 }
 ```
 
