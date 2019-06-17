@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.10.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-msft@4.9.0...@microsoft/fast-components-react-msft@4.10.0) (2019-06-17)
+
+
+### Features
+
+* convert schema files to .ts in msft component package ([#1856](https://github.com/Microsoft/fast-dna/issues/1856)) ([2293948](https://github.com/Microsoft/fast-dna/commit/2293948))
+
+
+
+
+
 # [4.9.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-msft@4.8.5...@microsoft/fast-components-react-msft@4.9.0) (2019-06-12)
 
 

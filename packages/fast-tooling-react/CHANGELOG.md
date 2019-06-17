@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.9.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-tooling-react@1.8.5...@microsoft/fast-tooling-react@1.9.0) (2019-06-17)
+
+
+### Bug Fixes
+
+* addresses an issue in the mapDataToComponent utility where plugins and children would not work on objects inside arrays ([#1857](https://github.com/Microsoft/fast-dna/issues/1857)) ([6c3c8fa](https://github.com/Microsoft/fast-dna/commit/6c3c8fa))
+
+
+### Features
+
+* allow any use of plugins to not require the onSchemaChange callback ([#1861](https://github.com/Microsoft/fast-dna/issues/1861)) ([4f8e27e](https://github.com/Microsoft/fast-dna/commit/4f8e27e))
+* enable setting null values in the Form ([#1845](https://github.com/Microsoft/fast-dna/issues/1845)) ([cd013d6](https://github.com/Microsoft/fast-dna/commit/cd013d6))
+
+
+
+
+
 ## [1.8.5](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-tooling-react@1.8.4...@microsoft/fast-tooling-react@1.8.5) (2019-06-12)
 
 **Note:** Version bump only for package @microsoft/fast-tooling-react

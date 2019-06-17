@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.7.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-base@4.6.1...@microsoft/fast-components-react-base@4.7.0) (2019-06-17)
+
+
+### Features
+
+* convert schema files to .ts in base component package ([#1851](https://github.com/Microsoft/fast-dna/issues/1851)) ([2029e89](https://github.com/Microsoft/fast-dna/commit/2029e89))
+
+
+
+
+
 ## [4.6.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-base@4.6.0...@microsoft/fast-components-react-base@4.6.1) (2019-06-12)
 
 **Note:** Version bump only for package @microsoft/fast-components-react-base
