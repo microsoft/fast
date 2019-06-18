@@ -23,7 +23,6 @@
     "clean:dist": "node ../../build/clean.js dist",
     "convert:readme": "node ../../build/convert-readme.js .tmp",
     "copy:all": "npm run convert:json-schema && npm run copy:readme",
-    "copy:json-schema": "node ../../build/copy-schemas.js",
     "convert:json-schema": "node ../../build/convert-schemas.js",
     "copy:readme": "node ../../build/copy-readme.js",
     "prepare": "npm run clean:dist && npm run build",

@@ -4,8 +4,8 @@ import { Pivot, PivotHandledProps, PivotProps, pivotSchema } from "./index";
 import Documentation from "./.tmp/documentation";
 import { TabsItem } from "@microsoft/fast-components-react-base";
 import { uniqueId } from "lodash-es";
-import pivotItemContentSchema from "../../app/components/pivot-item-content.schema.json";
-import pivotItemTabSchema from "../../app/components/pivot-item-tab.schema.json";
+import pivotItemContentSchema from "../../app/components/pivot-item-content.schema";
+import pivotItemTabSchema from "../../app/components/pivot-item-tab.schema";
 
 const pivotItem1: TabsItem = {
     tab: {

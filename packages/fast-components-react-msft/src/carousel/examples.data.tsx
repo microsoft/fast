@@ -5,9 +5,9 @@ import Documentation from "./.tmp/documentation";
 import { CarouselSlide, CarouselSlideTheme } from "./carousel.props";
 import { CallToActionAppearance } from "../call-to-action";
 import { uniqueId } from "lodash-es";
-import carouselHeroContentSchema from "../../app/components/carousel-hero-content.schema.json";
-import carouselDarkImageContentSchema from "../../app/components/carousel-dark-image-content.schema.json";
-import carouselLightImageContentSchema from "../../app/components/carousel-light-image-content.schema.json";
+import carouselHeroContentSchema from "../../app/components/carousel-hero-content.schema";
+import carouselDarkImageContentSchema from "../../app/components/carousel-dark-image-content.schema";
+import carouselLightImageContentSchema from "../../app/components/carousel-light-image-content.schema";
 
 const heroContentProps: object = {
     props: {

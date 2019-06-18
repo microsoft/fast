@@ -7,7 +7,7 @@ import {
 } from "./index";
 import Documentation from "./.tmp/documentation";
 import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
-import svgSchema from "../../app/components/svg-svg-element.schema.json";
+import svgSchema from "../../app/components/svg-svg-element.schema";
 
 const testDestination: string = "https://www.microsoft.com/en-us/";
 

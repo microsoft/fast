@@ -3,7 +3,7 @@ import { Breadcrumb, BreadcrumbHandledProps, breadcrumbSchema } from "./index";
 import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
 import { hypertextSchema } from "../index";
 import Documentation from "./.tmp/documentation";
-import ReactHTMLElementSchema from "../../app/components/react-html-element.schema.json";
+import ReactHTMLElementSchema from "../../app/components/react-html-element.schema";
 
 const label: any = {
     label: "breadcrumb",

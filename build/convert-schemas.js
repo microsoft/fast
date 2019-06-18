@@ -1,6 +1,6 @@
 /**
  * Utility for copying schemas to their dist folders.
- * Usage: node build/copy-schemas.js
+ * Usage: node build/convert-schemas.js
  */
 const path = require("path");
 const fs = require("fs");

@@ -4,7 +4,7 @@ import Documentation from "./.tmp/documentation";
 import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
 import { TextActionAppearance, TextActionButtonPosition } from "./text-action.props";
 import { SVGGlyph } from "../../app/components/svg-svg-element";
-import svgSchema from "../../app/components/svg-svg-element.schema.json";
+import svgSchema from "../../app/components/svg-svg-element.schema";
 import { buttonSchema } from "../index";
 
 const examples: ComponentFactoryExample<TextActionProps> = {

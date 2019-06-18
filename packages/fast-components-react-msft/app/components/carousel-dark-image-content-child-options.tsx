@@ -1,4 +1,4 @@
-import CarouselDarkImageContentSchema from "./carousel-dark-image-content.schema.json";
+import CarouselDarkImageContentSchema from "./carousel-dark-image-content.schema";
 import CarouselDarkImageContent from "./carousel-dark-image-content";
 export default {
     name: "Dark image slide",
