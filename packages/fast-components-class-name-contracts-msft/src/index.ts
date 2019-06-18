@@ -4,6 +4,7 @@ export * from "./auto-suggest";
 export * from "./auto-suggest-option";
 export * from "./badge";
 export * from "./button";
+export * from "./button-base";
 export * from "./call-to-action";
 export * from "./caption";
 export * from "./carousel";
