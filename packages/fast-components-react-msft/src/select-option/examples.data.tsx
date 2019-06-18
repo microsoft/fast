@@ -3,7 +3,7 @@ import { SelectOption, SelectOptionProps, selectOptionSchema } from "./index";
 import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
 import Documentation from "./.tmp/documentation";
 import { SVGGlyph } from "../../app/components/svg-svg-element";
-import svgSchema from "../../app/components/svg-svg-element.schema.json";
+import svgSchema from "../../app/components/svg-svg-element.schema";
 
 export default {
     name: "Select option",

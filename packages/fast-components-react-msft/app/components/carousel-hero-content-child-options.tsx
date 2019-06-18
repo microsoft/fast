@@ -1,4 +1,4 @@
-import CarouselHeroContentSchema from "./carousel-hero-content.schema.json";
+import CarouselHeroContentSchema from "./carousel-hero-content.schema";
 import CarouselHeroContent from "./carousel-hero-content";
 export default {
     name: "Hero slide",

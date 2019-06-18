@@ -4,10 +4,10 @@ import { Button, ButtonAppearance, ButtonProps, buttonSchema } from "./index";
 import { ButtonHandledProps as BaseButtonHandledProps } from "@microsoft/fast-components-react-base";
 import Documentation from "./.tmp/documentation";
 import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
-import ReactHTMLElementSchema from "../../app/components/react-html-element.schema.json";
+import ReactHTMLElementSchema from "../../app/components/react-html-element.schema";
 import { ButtonSlot } from "./button";
 import { SVGGlyph } from "../../app/components/svg-svg-element";
-import svgSchema from "../../app/components/svg-svg-element.schema.json";
+import svgSchema from "../../app/components/svg-svg-element.schema";
 
 const beforeSlotExample: any = {
     id: ReactHTMLElementSchema.id,

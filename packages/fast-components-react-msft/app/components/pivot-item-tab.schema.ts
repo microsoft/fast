@@ -1,0 +1,15 @@
+export default {
+    $schema: "http://json-schema.org/schema#",
+    title: "Pivot Item Tab",
+    description: "A pivot item tab component's schema definition.",
+    id: "pivot-item-tab",
+    type: "object",
+    properties: {},
+    reactProperties: {
+        children: {
+            title: "Children",
+            type: "children",
+            defaults: ["text"],
+        },
+    },
+};

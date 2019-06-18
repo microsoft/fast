@@ -17,7 +17,6 @@ import {
     designSystemSchema,
 } from "@microsoft/fast-components-styles-msft";
 import { Plugin, PluginProps } from "@microsoft/fast-tooling-react";
-import { HypertextClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import { glyphBuildingblocks } from "@microsoft/fast-glyphs-msft";
 import React from "react";
 import { Direction } from "@microsoft/fast-web-utilities";
@@ -60,6 +59,8 @@ const accent: string = "#0078D4";
 const formPlugins: Array<Plugin<PluginProps>> = [
     new AdditionalPropsPlugin({
         id: [
+            "@microsoft/fast-components-react-msft/accent-button/beforeContent",
+            "@microsoft/fast-components-react-msft/accent-button/afterContent",
             "@microsoft/fast-components-react-msft/action-toggle/selectedGlyph",
             "@microsoft/fast-components-react-msft/action-toggle/unselectedGlyph",
             "@microsoft/fast-components-react-msft/action-trigger/glyph",
@@ -67,9 +68,19 @@ const formPlugins: Array<Plugin<PluginProps>> = [
             "@microsoft/fast-components-react-msft/button/beforeContent",
             "@microsoft/fast-components-react-msft/button/afterContent",
             "@microsoft/fast-components-react-msft/carousel/items/content",
-            "@microsoft/fast-components-react-msft/select-option/glyph",
+            "@microsoft/fast-components-react-msft/justified-button/beforeContent",
+            "@microsoft/fast-components-react-msft/justified-button/afterContent",
+            "@microsoft/fast-components-react-msft/lightweight-button/beforeContent",
+            "@microsoft/fast-components-react-msft/lightweight-button/afterContent",
+            "@microsoft/fast-components-react-msft/neutral-button/beforeContent",
+            "@microsoft/fast-components-react-msft/neutral-button/afterContent",
+            "@microsoft/fast-components-react-msft/outline-button/beforeContent",
+            "@microsoft/fast-components-react-msft/outline-button/afterContent",
             "@microsoft/fast-components-react-msft/pivot/items/content",
             "@microsoft/fast-components-react-msft/pivot/items/tab",
+            "@microsoft/fast-components-react-msft/select-option/glyph",
+            "@microsoft/fast-components-react-msft/stealth-button/beforeContent",
+            "@microsoft/fast-components-react-msft/stealth-button/afterContent",
             "@microsoft/fast-components-react-msft/text-action/afterGlyph",
             "@microsoft/fast-components-react-msft/text-action/beforeGlyph",
             "@microsoft/fast-components-react-msft/text-action/button",
