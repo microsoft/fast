@@ -35,11 +35,6 @@ export interface ButtonClassNameContract extends BaseButtonClassNameContract {
     button_contentRegion?: string;
 
     /**
-     * The disabled modifier
-     */
-    button__disabled?: string;
-
-    /**
      * The before content
      */
     button_beforeContent?: string;

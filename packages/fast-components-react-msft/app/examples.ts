@@ -1,3 +1,6 @@
+import AccentButtonExamples from "../src/accent-button/examples.data";
+export { AccentButtonExamples };
+
 import ActionToggleExamples from "../src/action-toggle/examples.data";
 export { ActionToggleExamples };
 
@@ -58,14 +61,26 @@ export { HypertextExamples };
 import ImageExamples from "../src/image/examples.data";
 export { ImageExamples };
 
+import JustifiedButtonExamples from "../src/justified-button/examples.data";
+export { JustifiedButtonExamples };
+
 import LabelExamples from "../src/label/examples.data";
 export { LabelExamples };
+
+import LightweightButtonExamples from "../src/lightweight-button/examples.data";
+export { LightweightButtonExamples };
 
 import MetatextExamples from "../src/metatext/examples.data";
 export { MetatextExamples };
 
 import NumberFieldExamples from "../src/number-field/examples.data";
 export { NumberFieldExamples };
+
+import NeutralButtonExamples from "../src/neutral-button/examples.data";
+export { NeutralButtonExamples };
+
+import OutlineButtonExamples from "../src/outline-button/examples.data";
+export { OutlineButtonExamples };
 
 import ParagraphExamples from "../src/paragraph/examples.data";
 export { ParagraphExamples };
@@ -90,6 +105,9 @@ export { Slider };
 
 import SliderLabel from "../src/slider-label/examples.data";
 export { SliderLabel };
+
+import StealthButtonExamples from "../src/stealth-button/examples.data";
+export { StealthButtonExamples };
 
 import SubheadingExamples from "../src/subheading/examples.data";
 export { SubheadingExamples };
