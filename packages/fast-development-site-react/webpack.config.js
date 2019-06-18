@@ -1,20 +1,25 @@
-const webpack = require('webpack');
-const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
-const WebpackShellPlugin = require('webpack-shell-plugin');
+const webpack = require("webpack");
+const path = require("path");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
+const WebpackShellPlugin = require("webpack-shell-plugin");
 
 module.exports = {
-    devtool: 'inline-source-map',
-    entry: './app',
-    mode: 'development',
+    devtool: "inline-source-map",
+    entry: "./app",
+    mode: "development",
     output: {
-        path: path.resolve('www'),
-        publicPath: '/',
-        filename: 'app.js'
+        path: path.resolve("www"),
+        publicPath: "/",
+        filename: "app.js",
     },
     resolve: {
-        extensions: ['.js', '.ts', '.tsx'],
+        extensions: [".js", ".ts", ".tsx"],
+        alias: {
+            "lodash-es": path.resolve("./node_modules/lodash-es"),
+            react: path.resolve("./node_modules/react"),
+            "react-dom": path.resolve("./node_modules/react-dom"),
+        },
     },
     module: {
         rules: [
@@ -22,32 +27,30 @@ module.exports = {
                 test: /\.tsx?$/,
                 use: [
                     {
-                        loader: 'ts-loader',
+                        loader: "ts-loader",
                         options: {
-                            transpileOnly: true
-                        }
-                    }
-                ]
-            }
-        ]
+                            transpileOnly: true,
+                        },
+                    },
+                ],
+            },
+        ],
     },
     plugins: [
         new ForkTsCheckerWebpackPlugin({
-            tslint: path.resolve(__dirname, "./tslint.json")
+            tslint: path.resolve(__dirname, "./tslint.json"),
         }),
         new HtmlWebpackPlugin({
-            title: 'Test',
-            template: path.resolve(__dirname, './app/index.html')
+            title: "Test",
+            template: path.resolve(__dirname, "./app/index.html"),
         }),
         new WebpackShellPlugin({
-            onBuildStart: [
-                `npm run convert:readme`
-            ]
-        })
+            onBuildStart: [`npm run convert:readme`],
+        }),
     ],
     devServer: {
         compress: false,
         historyApiFallback: true,
-        port: 3000
-    }
+        port: 3000,
+    },
 };
