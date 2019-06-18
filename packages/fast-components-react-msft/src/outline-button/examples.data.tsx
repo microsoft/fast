@@ -4,7 +4,7 @@ import { OutlineButton, OutlineButtonProps, outlineButtonSchema } from "./index"
 import Documentation from "./.tmp/documentation";
 import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
 import { SVGGlyph } from "../../app/components/svg-svg-element";
-import svgSchema from "../../app/components/svg-svg-element.schema.json";
+import svgSchema from "../../app/components/svg-svg-element.schema";
 
 const examples: ComponentFactoryExample<OutlineButtonProps> = {
     name: "Outline button",
