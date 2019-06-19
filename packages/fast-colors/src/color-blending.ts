@@ -1,4 +1,12 @@
-import { labToRGB, lchToRGB, rgbToLAB, rgbToLCH } from "./color-converters";
+import {
+    hslToRGB,
+    labToRGB,
+    lchToRGB,
+    rgbToHSL,
+    rgbToLAB,
+    rgbToLCH,
+} from "./color-converters";
+import { ColorHSL } from "./color-hsl";
 import { ColorLAB } from "./color-lab";
 import { ColorLCH } from "./color-lch";
 import { ColorRGBA64 } from "./color-rgba-64";
@@ -63,6 +71,18 @@ export function blendBurn(bottom: ColorRGBA64, top: ColorRGBA64): ColorRGBA64 {
         blendBurnChannel(bottom.b, top.b),
         1
     );
+}
+
+// The alpha channel of the input is ignored
+export function blendColor(bottom: ColorRGBA64, top: ColorRGBA64): ColorRGBA64 {
+    const bottomHSL: ColorHSL = rgbToHSL(bottom);
+    const topHSL: ColorHSL = rgbToHSL(top);
+
+    if (topHSL.s === 0) {
+        return new ColorRGBA64(bottomHSL.l, bottomHSL.l, bottomHSL.l, 1);
+    }
+
+    return hslToRGB(new ColorHSL(topHSL.h, topHSL.s, bottomHSL.l));
 }
 
 export function blendDarkenChannel(bottom: number, top: number): number {
@@ -161,6 +181,7 @@ export function blendScreen(bottom: ColorRGBA64, top: ColorRGBA64): ColorRGBA64 
 
 export enum ColorBlendMode {
     Burn,
+    Color,
     Darken,
     Dodge,
     Lighten,
@@ -178,6 +199,8 @@ export function blend(
     switch (mode) {
         case ColorBlendMode.Burn:
             return blendBurn(bottom, top);
+        case ColorBlendMode.Color:
+            return blendColor(bottom, top);
         case ColorBlendMode.Darken:
             return blendDarken(bottom, top);
         case ColorBlendMode.Dodge:
