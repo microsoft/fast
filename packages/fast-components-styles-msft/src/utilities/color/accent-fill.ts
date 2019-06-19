@@ -1,11 +1,12 @@
 import { DesignSystem, DesignSystemResolver } from "../../design-system";
 import {
+    accentBaseColor,
     accentFillActiveDelta,
     accentFillHoverDelta,
     accentFillRestDelta,
     accentFillSelectedDelta,
 } from "../design-system";
-import { accentSwatch, findAccessibleAccentSwatchIndexes } from "./accent";
+import { findAccessibleAccentSwatchIndexes } from "./accent";
 import { accentForegroundCut } from "./accent-foreground-cut";
 import {
     colorRecipeFactory,
@@ -21,7 +22,7 @@ import { getSwatch, isDarkMode, Palette, palette, PaletteType } from "./palette"
 function accentFillAlgorithm(contrast: number): DesignSystemResolver<FillSwatchFamily> {
     return (designSystem: DesignSystem): FillSwatchFamily => {
         const accentPalette: Palette = palette(PaletteType.accent)(designSystem);
-        const accent: Swatch = accentSwatch(designSystem);
+        const accent: Swatch = accentBaseColor(designSystem);
         const textColor: Swatch = accentForegroundCut(
             Object.assign({}, designSystem, {
                 backgroundColor: accent,
