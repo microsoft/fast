@@ -86,12 +86,6 @@ import ImageStyles from "./image";
 export { ImageStyles };
 
 /**
- * Export justified button styles
- */
-import JustifiedButtonStyles from "./justified-button";
-export { JustifiedButtonStyles };
-
-/**
  * Export label styles
  */
 import LabelStyles from "./label";

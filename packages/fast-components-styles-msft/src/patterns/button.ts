@@ -1,11 +1,6 @@
 import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager";
 import { DesignSystem, ensureDesignSystemDefaults } from "../design-system";
-import {
-    applyFocusVisible,
-    directionSwitch,
-    format,
-    toPx,
-} from "@microsoft/fast-jss-utilities";
+import { directionSwitch, format, toPx } from "@microsoft/fast-jss-utilities";
 import { applyCornerRadius, applyFocusPlaceholderBorder } from "../utilities/border";
 import { applyCursorPointer } from "../utilities/cursor";
 import { focusOutlineWidth } from "../utilities/design-system";
@@ -13,12 +8,6 @@ import { applyScaledTypeRamp } from "../utilities/typography";
 import { glyphSize, height, horizontalSpacing } from "../utilities/density";
 import { applyDisabledState } from "../utilities/disabled";
 import { ButtonBaseClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
-import {
-    accentForegroundActive,
-    accentForegroundHover,
-    accentForegroundRest,
-    neutralForegroundRest,
-} from "../utilities/color";
 
 export function buttonStyles(): CSSRules<{}> {
     return {
@@ -81,49 +70,3 @@ export const baseButton: ComponentStyles<ButtonBaseClassNameContract, DesignSyst
         height: glyphSize,
     },
 };
-
-export function lightweightButtonStyles(): CSSRules<{}> {
-    return {
-        ...buttonStyles(),
-        backgroundColor: "transparent",
-        color: accentForegroundRest,
-        fill: accentForegroundRest,
-        ...applyFocusVisible({
-            borderColor: "transparent",
-            boxShadow: "none",
-            "& $button_contentRegion::before": {
-                background: neutralForegroundRest,
-            },
-        }),
-        // Underline
-        "&:hover $button_contentRegion::before": {
-            background: accentForegroundHover,
-            "@media (-ms-high-contrast:active)": {
-                background: "ButtonHighlight",
-            },
-        },
-        "&:hover$button__disabled $button_contentRegion::before": {
-            display: "none",
-        },
-        "&:active $button_contentRegion::before": {
-            background: accentForegroundActive,
-        },
-        "&$button__disabled, &$button__disabled $button_contentRegion::before": {
-            backgroundColor: "transparent",
-        },
-        "@media (-ms-high-contrast:active)": {
-            border: "none",
-            fill: "ButtonHighlight",
-        },
-        "&:hover:enabled": {
-            color: accentForegroundHover,
-            fill: accentForegroundHover,
-            backgroundColor: "transparent",
-        },
-        "&:active:enabled": {
-            color: accentForegroundActive,
-            fill: accentForegroundActive,
-            backgroundColor: "transparent",
-        },
-    };
-}

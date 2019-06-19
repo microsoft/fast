@@ -20,7 +20,6 @@ export * from "./flipper";
 export * from "./heading";
 export * from "./hypertext";
 export * from "./image";
-export * from "./justified-button";
 export * from "./label";
 export * from "./lightweight-button";
 export * from "./metatext";

@@ -61,9 +61,6 @@ export { HypertextExamples };
 import ImageExamples from "../src/image/examples.data";
 export { ImageExamples };
 
-import JustifiedButtonExamples from "../src/justified-button/examples.data";
-export { JustifiedButtonExamples };
-
 import LabelExamples from "../src/label/examples.data";
 export { LabelExamples };
 
