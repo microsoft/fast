@@ -24,24 +24,20 @@ import { inputFieldStyles } from "../patterns/input-field";
 
 const styles: ComponentStyles<SelectClassNameContract, DesignSystem> = {
     select: {
-        minWidth: "276px",
         maxWidth: "374px",
         height: height(),
     },
-
     select_button: {
         height: height(),
         width: "100%",
         ...inputFieldStyles(),
     },
-
     select_buttonContentRegion: {
         display: "grid",
         gridTemplateColumns: "1fr auto",
         alignItems: "center",
         justifyItems: "start",
     },
-
     select_buttonDisplayText: {
         ...ellipsis(),
         textAlign: ensureDesignSystemDefaults(
@@ -50,7 +46,6 @@ const styles: ComponentStyles<SelectClassNameContract, DesignSystem> = {
         ),
         width: "100%",
     },
-
     select_toggleGlyph: {
         margin: (designSystem: DesignSystem): string => {
             return localizeSpacing(
@@ -62,7 +57,6 @@ const styles: ComponentStyles<SelectClassNameContract, DesignSystem> = {
         height: glyphSize,
         gridColumnStart: "2",
     },
-
     select_menu: {
         background: neutralFillStealthRest,
         ...applyFloatingCornerRadius(),
@@ -75,7 +69,6 @@ const styles: ComponentStyles<SelectClassNameContract, DesignSystem> = {
         maxHeight: "328px",
         overflow: "auto",
     },
-
     select__multiSelectable: {
         "& $select_menu": {
             position: "static",

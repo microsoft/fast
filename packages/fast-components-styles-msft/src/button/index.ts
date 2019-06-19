@@ -120,7 +120,7 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = {
         maxWidth: "374px",
         minWidth: ensureDesignSystemDefaults(
             (designSystem: DesignSystem): string =>
-                designSystem.density <= -2 ? "100px" : "120px"
+                designSystem.density <= -2 ? "28px" : "32px"
         ),
         padding: format("0 {0}", horizontalSpacing(focusOutlineWidth)),
         display: "inline-flex",
