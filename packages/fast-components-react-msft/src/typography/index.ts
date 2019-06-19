@@ -10,7 +10,7 @@ import {
     TypographyTag,
     TypographyUnhandledProps,
 } from "@microsoft/fast-components-react-base";
-import typograophySchema from "./typography.schema";
+import typographySchema from "./typography.schema";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { DesignSystem, TypographyStyles } from "@microsoft/fast-components-styles-msft";
 import { Subtract } from "utility-types";
@@ -37,7 +37,11 @@ export {
     TypographyUnhandledProps,
     Typography,
     TypographyProps,
-    typograophySchema,
+    typographySchema,
+    /**
+     * @deprecated
+     */
+    typographySchema as typograophySchema,
     TypographySize,
     TypographyTag,
 };
