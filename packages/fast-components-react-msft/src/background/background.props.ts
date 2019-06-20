@@ -5,6 +5,7 @@ import {
     NeutralPaletteDarkModeLayers,
     NeutralPaletteLightModeLayers,
 } from "@microsoft/fast-components-styles-msft";
+import { DesignSystemMergingFunction } from "@microsoft/fast-jss-manager-react";
 
 /**
  * Friendly names for the indexes of light mode backgrounds
@@ -56,6 +57,11 @@ export interface BackgroundHandledProps {
      * When true, the background color will be applied to the generated element via CSS's background-color property
      */
     drawBackground?: boolean;
+
+    /**
+     * A custom merging function to pass along to the rendered DesignSystemProvider
+     */
+    designSystemMergingFunction?: DesignSystemMergingFunction<DesignSystem>;
 }
 
 export interface BackgroundUnhandledProps extends React.HTMLAttributes<HTMLElement> {}
