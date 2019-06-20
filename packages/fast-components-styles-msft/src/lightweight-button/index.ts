@@ -8,7 +8,8 @@ import {
     accentForegroundRest,
     neutralForegroundRest,
 } from "../utilities/color";
-import { applyFocusVisible } from "@microsoft/fast-jss-utilities";
+import { applyFocusVisible, toPx } from "@microsoft/fast-jss-utilities";
+import { focusOutlineWidth } from "../utilities/design-system";
 
 const styles: ComponentStyles<LightweightButtonClassNameContract, DesignSystem> = {
     ...baseButton,
@@ -25,6 +26,7 @@ const styles: ComponentStyles<LightweightButtonClassNameContract, DesignSystem> 
             boxShadow: "none",
             "& $button_contentRegion::before": {
                 background: neutralForegroundRest,
+                height: toPx<DesignSystem>(focusOutlineWidth),
             },
         }),
         "a&, button&": {},

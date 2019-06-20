@@ -3,7 +3,7 @@ import { DesignSystem, ensureDesignSystemDefaults } from "../design-system";
 import { directionSwitch, format, toPx } from "@microsoft/fast-jss-utilities";
 import { applyCornerRadius, applyFocusPlaceholderBorder } from "../utilities/border";
 import { applyCursorPointer } from "../utilities/cursor";
-import { focusOutlineWidth } from "../utilities/design-system";
+import { focusOutlineWidth, outlineWidth } from "../utilities/design-system";
 import { applyScaledTypeRamp } from "../utilities/typography";
 import { glyphSize, height, horizontalSpacing } from "../utilities/density";
 import { applyDisabledState } from "../utilities/disabled";
@@ -46,7 +46,7 @@ export const baseButton: ComponentStyles<ButtonBaseClassNameContract, DesignSyst
         "&::before": {
             content: "''",
             display: "block",
-            height: toPx<DesignSystem>(focusOutlineWidth),
+            height: toPx<DesignSystem>(outlineWidth),
             position: "absolute",
             bottom: "-3px",
             width: "100%",
