@@ -124,4 +124,13 @@ describe("Background", (): void => {
                 .prop("style").backgroundColor
         ).toBe(DesignSystemDefaults.neutralPalette[Background.defaultProps.value]);
     });
+    test("should use a custom desgin system merging function if provided", (): void => {
+        const spy: jest.SpyInstance = jest.fn();
+        const designSystem: any = { a: true };
+
+        mount(<Background value="#123" designSystemMergingFunction={spy as any} />);
+
+        expect(spy).toHaveBeenCalled();
+        expect(spy.mock.calls[0][1]).toEqual({ backgroundColor: "#123" });
+    });
 });
