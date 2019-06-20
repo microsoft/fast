@@ -1,5 +1,5 @@
 import React from "react";
-import { get } from "lodash-es";
+import { get, isNil } from "lodash-es";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import {
     ButtonBaseHandledProps,
@@ -32,6 +32,7 @@ class ButtonBase extends Foundation<
             <BaseButton
                 {...this.unhandledProps()}
                 managedClasses={this.props.managedClasses}
+                className={this.generateClassNames()}
                 href={this.props.href}
                 disabled={this.props.disabled}
             >
@@ -42,6 +43,20 @@ class ButtonBase extends Foundation<
                 {this.generateAfterContent()}
             </BaseButton>
         );
+    }
+
+    protected generateClassNames(): string {
+        let className: string = "";
+
+        if (this.hasBeforeOrAfterAndChildren()) {
+            className = get(
+                this.props.managedClasses,
+                "button__hasBeforeOrAfterAndChildren",
+                ""
+            );
+        }
+
+        return super.generateClassNames(className);
     }
 
     private generateBeforeContent(): React.ReactNode {
@@ -58,6 +73,13 @@ class ButtonBase extends Foundation<
                 get(this.props, "managedClasses.button_afterContent", "")
             );
         }
+    }
+
+    private hasBeforeOrAfterAndChildren(): boolean {
+        return (
+            !isNil(this.props.children) &&
+            (!isNil(this.props.beforeContent) || !isNil(this.props.afterContent))
+        );
     }
 }
 

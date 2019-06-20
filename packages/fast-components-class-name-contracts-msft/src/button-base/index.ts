@@ -18,4 +18,9 @@ export interface ButtonBaseClassNameContract extends ButtonClassNameContract {
      * The after content
      */
     button_afterContent?: string;
+
+    /**
+     * Class name used when button has either beforeContent or afterContent and children
+     */
+    button__hasBeforeOrAfterAndChildren?: string;
 }
