@@ -1,5 +1,5 @@
 import React from "react";
-import { MenuItem, NavigationMenu } from "../../src/navigation-menu";
+import { MenuItem, NavigationMenu } from "../../src";
 
 const menu: MenuItem[] = [
     {
