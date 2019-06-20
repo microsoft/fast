@@ -1,15 +1,9 @@
-import {
-    DesignSystem,
-    DesignSystemResolver,
-    withDesignSystemDefaults,
-} from "../design-system";
-import { ComponentStyles, ComponentStyleSheet } from "@microsoft/fast-jss-manager";
+import { DesignSystem, DesignSystemResolver } from "../design-system";
+import { ComponentStyles } from "@microsoft/fast-jss-manager";
 import { CheckboxClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import {
     add,
     applyFocusVisible,
-    applyLocalizedProperty,
-    Direction,
     directionSwitch,
     divide,
     format,
@@ -34,6 +28,7 @@ import {
 import { applyDisabledState } from "../utilities/disabled";
 import { applyScaledTypeRamp } from "../utilities/typography";
 import { designUnit, outlineWidth } from "../utilities/design-system";
+import { applyCursorDefault, applyCursorPointer } from "../utilities/cursor";
 
 const inputSize: DesignSystemResolver<string> = toPx(
     add(divide(heightNumber(), 2), designUnit)
@@ -77,11 +72,14 @@ const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = {
             toPx<DesignSystem>(outlineWidth),
             neutralOutlineRest
         ),
+        "&:enabled": {
+            ...applyCursorPointer(),
+        },
         "&:hover:enabled": {
             background: neutralFillInputHover,
             borderColor: neutralOutlineHover,
         },
-        "&:active": {
+        "&:active:enabled": {
             background: neutralFillInputActive,
             borderColor: neutralOutlineActive,
         },
@@ -109,6 +107,7 @@ const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = {
         },
     },
     checkbox_label: {
+        ...applyCursorPointer(),
         color: neutralForegroundRest,
         ...applyScaledTypeRamp("t7"),
     },
@@ -142,6 +141,9 @@ const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = {
     },
     checkbox__disabled: {
         ...applyDisabledState(),
+        "& $checkbox_label": {
+            ...applyCursorDefault(),
+        },
     },
 };
 
