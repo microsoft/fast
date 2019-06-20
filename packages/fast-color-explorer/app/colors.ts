@@ -19,3 +19,6 @@ export const neutralColors: string[] = [
     "#5C2D91",
     "#D83B01",
 ];
+
+export const defaultAccentColor: string = AccentColors.blue;
+export const defaultNeutralColor: string = neutralColors[0];

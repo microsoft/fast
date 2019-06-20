@@ -1,5 +1,5 @@
 import React from "react";
-import { Canvas, Container, Pane, Row } from "@microsoft/fast-layouts-react";
+import { Canvas, Container, Row } from "@microsoft/fast-layouts-react";
 import { DesignSystemProvider } from "@microsoft/fast-jss-manager-react";
 import { ColorsDesignSystem } from "./design-system";
 import { Gradient } from "./gradient";
@@ -11,9 +11,12 @@ import { connect } from "react-redux";
 import { Background, DarkModeBackgrounds } from "@microsoft/fast-components-react-msft";
 import { FixedSizeList } from "react-window";
 import AutoSizer from "react-virtualized-auto-sizer";
+import { Swatch } from "@microsoft/fast-components-styles-msft/dist/utilities/color/common";
 
 interface AppProps {
     designSystem: ColorsDesignSystem;
+    neutralBaseColor: Swatch;
+    accentBaseColor: Swatch;
 }
 /* tslint:disable:jsx-no-lambda */
 /* tslint:disable:no-empty */
@@ -41,6 +44,7 @@ class App extends React.Component<AppProps, {}> {
                                         colors={palette(PaletteType.neutral)(
                                             this.props.designSystem
                                         )}
+                                        markedColor={this.props.neutralBaseColor}
                                         createAnchors={true}
                                         scrollToItem={this.handleGradientScroll}
                                     />
@@ -50,6 +54,7 @@ class App extends React.Component<AppProps, {}> {
                                         colors={palette(PaletteType.accent)(
                                             this.props.designSystem
                                         )}
+                                        markedColor={this.props.accentBaseColor}
                                         createAnchors={false}
                                     />
                                 </Row>
@@ -117,6 +122,8 @@ class App extends React.Component<AppProps, {}> {
 function mapStateToProps(state: AppState): Partial<AppProps> {
     return {
         designSystem: state.designSystem,
+        neutralBaseColor: state.neutralBaseColor,
+        accentBaseColor: state.accentBaseColor,
     };
 }
 
