@@ -1,20 +1,9 @@
 import { DesignSystem } from "../../design-system";
 import { Palette, palette, PaletteType } from "./palette";
-import { accent } from "./color-constants";
 import { findClosestSwatchIndex, isDarkMode } from "./palette";
 import { contrast, Swatch, SwatchResolver } from "./common";
 import { clamp, inRange } from "lodash-es";
-
-/**
- * Returns a swatch from the middle of the accent palette
- */
-export const accentSwatch: SwatchResolver = (designSystem: DesignSystem): Swatch => {
-    const accentPalette: Palette | null = palette(PaletteType.accent)(designSystem);
-
-    return accentPalette === null
-        ? accent
-        : accentPalette[Math.floor(accentPalette.length / 2)];
-};
+import { accentBaseColor } from "../design-system";
 
 /**
  * Returns indexes for accent UI states that are accessible against an input reference color.
@@ -33,7 +22,7 @@ export function findAccessibleAccentSwatchIndexes(
     hover: number;
     active: number;
 } {
-    const accentColor: Swatch = accentSwatch(designSystem);
+    const accentColor: Swatch = accentBaseColor(designSystem);
     const accentPalette: Palette = palette(PaletteType.accent)(designSystem);
     const darkTheme: boolean = isDarkMode(designSystem);
     const stateDirection: 1 | -1 = darkTheme ? 1 : -1;

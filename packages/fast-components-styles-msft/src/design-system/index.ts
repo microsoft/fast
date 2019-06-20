@@ -17,6 +17,11 @@ export interface DesignSystem {
     backgroundColor: string;
 
     /**
+     * The accent color, which the accentPalette is based on
+     */
+    accentBaseColor: string;
+
+    /**
      * Configuration object to derive the neutral palette. Expects a ColorPaletteConfig from @microsoft/fast-colors
      */
     neutralPalette: Palette;
@@ -169,6 +174,7 @@ const designSystemDefaults: DesignSystem = {
     outlineWidth: 1,
     neutralPalette: createColorPalette(new ColorRGBA64(0.5, 0.5, 0.5, 1)),
     accentPalette: createColorPalette(parseColorHexRGB("#0078D4")),
+    accentBaseColor: "#0078D4",
 
     /**
      * Recipe Deltas
