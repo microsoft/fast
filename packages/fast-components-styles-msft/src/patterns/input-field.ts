@@ -76,7 +76,6 @@ export function filledInputFieldStyles(): CSSRules<{}> {
             borderColor: "transparent",
         },
         "&:active:enabled": {
-            background: neutralFillHover, // Don't change on press.
             borderColor: "transparent",
         },
         "&:focus:enabled": {
