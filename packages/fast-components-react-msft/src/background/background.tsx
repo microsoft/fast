@@ -33,6 +33,7 @@ export default class Background extends Foundation<
         tag: void 0,
         value: void 0,
         drawBackground: void 0,
+        designSystemMergingFunction: void 0,
     };
 
     private getDesignSystemOverrides: (color: string) => Partial<DesignSystem> = memoize(
@@ -71,7 +72,10 @@ export default class Background extends Foundation<
         );
 
         return (
-            <DesignSystemProvider designSystem={this.getDesignSystemOverrides(color)}>
+            <DesignSystemProvider
+                designSystem={this.getDesignSystemOverrides(color)}
+                designSystemMergingFunction={this.props.designSystemMergingFunction}
+            >
                 <this.tag {...this.unhandledProps()} style={style}>
                     {this.props.children}
                 </this.tag>

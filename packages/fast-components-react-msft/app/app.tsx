@@ -11,6 +11,7 @@ import Site, {
     Theme,
 } from "@microsoft/fast-development-site-react";
 import {
+    createColorPalette,
     DensityOffset,
     DesignSystem,
     DesignSystemDefaults,
@@ -120,10 +121,9 @@ export default class App extends React.Component<{}, AppState> {
         this.state = {
             accentColor: accent,
             designSystem: Object.assign({}, DesignSystemDefaults, {
-                accentPalette: this.createColorPalette(parseColor(accent)),
-                neutralPalette: this.createColorPalette(
-                    new ColorRGBA64(0.5, 0.5, 0.5, 1)
-                ),
+                accentPalette: createColorPalette(parseColor(accent)),
+                accentBaseColor: accent,
+                neutralPalette: createColorPalette(new ColorRGBA64(0.5, 0.5, 0.5, 1)),
                 direction: Direction.ltr,
             }),
             backgroundColor: DesignSystemDefaults.backgroundColor,
@@ -222,7 +222,7 @@ export default class App extends React.Component<{}, AppState> {
             s: hslColor.s,
             l: 0.5,
         });
-        return this.createColorPalette(hslToRGB(augmentedHSLColor));
+        return createColorPalette(hslToRGB(augmentedHSLColor));
     }
 
     private handleUpdateTheme = (theme: ThemeName): void => {
@@ -273,21 +273,13 @@ export default class App extends React.Component<{}, AppState> {
 
         if (config.accentColor !== this.state.accentColor) {
             updates.designSystem = Object.assign({}, this.state.designSystem, {
-                accentPalette: this.createColorPalette(parseColor(config.accentColor)),
+                accentPalette: createColorPalette(parseColor(config.accentColor)),
+                accentBaseColor: config.accentColor,
             });
         }
 
         this.setState(updates as AppState);
     };
-
-    private createColorPalette(baseColor: ColorRGBA64): string[] {
-        return new ColorPalette({
-            baseColor,
-            steps: 63,
-            clipLight: 0,
-            clipDark: 0,
-        }).palette.map((color: ColorRGBA64): string => color.toStringHexRGB());
-    }
 
     private handleDensityUpdate = (e: React.ChangeEvent<HTMLInputElement>): void => {
         this.setState({
