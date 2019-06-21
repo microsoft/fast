@@ -9,10 +9,8 @@ import {
     swatchByMode,
 } from "./palette";
 import designSystemDefaults, { DesignSystem } from "../../design-system";
-import { accent } from "./color-constants";
 import { Swatch } from "./common";
-import { neutralForeground } from "./neutral-foreground";
-import { neutralPalette } from "../design-system";
+import { accentBaseColor, neutralPalette } from "../design-system";
 
 describe("palette", (): void => {
     test("should return a function", (): void => {
@@ -59,6 +57,8 @@ describe("palette", (): void => {
 });
 
 describe("findSwatchIndex", (): void => {
+    const accent: string = accentBaseColor(designSystemDefaults);
+
     test("should impelment design-system defaults", (): void => {
         expect(findSwatchIndex(PaletteType.neutral, "#FFF")({} as DesignSystem)).toBe(0);
         expect(findSwatchIndex(PaletteType.accent, accent)({} as DesignSystem)).toBe(31);

@@ -10,6 +10,13 @@ export const backgroundColor: DesignSystemResolver<string> = getDesignSystemValu
 );
 
 /**
+ * Retrieve the accentBaseColor when invoked with a DesignSystem
+ */
+export const accentBaseColor: DesignSystemResolver<string> = getDesignSystemValue(
+    "accentBaseColor"
+);
+
+/**
  * Retrieve the backgroundColor when invoked with a DesignSystem
  */
 export const cornerRadius: DesignSystemResolver<number> = getDesignSystemValue(

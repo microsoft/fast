@@ -190,7 +190,7 @@ export default class SheetManager {
             ...options,
         });
 
-        sheet.attach().update(designSystem);
+        sheet.update(designSystem).attach();
         stylesheetRegistry.add(sheet);
 
         return sheet;

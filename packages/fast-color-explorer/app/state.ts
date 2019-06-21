@@ -45,6 +45,9 @@ function setPalette(
             ...state.designSystem,
             [palette]: createColorPalette(value),
         };
+        if (palette === "accentPalette") {
+            designSystem.accentBaseColor = value.toStringHexRGB();
+        }
 
         return {
             ...state,
