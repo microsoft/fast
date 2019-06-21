@@ -173,7 +173,7 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = {
         },
     },
     button__outline: {
-        background: neutralFillStealthRest,
+        background: "transparent",
         border: format(
             "{0} solid {1}",
             toPx<DesignSystem>(outlineWidth),
@@ -181,7 +181,7 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = {
         ),
         padding: format("0 {0}", horizontalSpacing(outlineWidth)),
         "&:hover:enabled": {
-            background: neutralFillStealthHover,
+            background: "transparent",
             border: format(
                 "{0} solid {1}",
                 toPx<DesignSystem>(outlineWidth),
@@ -189,7 +189,7 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = {
             ),
         },
         "&:active:enabled": {
-            background: neutralFillStealthActive,
+            background: "transparent",
             border: format(
                 "{0} solid {1}",
                 toPx<DesignSystem>(outlineWidth),
