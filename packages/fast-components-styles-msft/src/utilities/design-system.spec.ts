@@ -9,7 +9,7 @@ Object.keys(designSystemUtils).forEach(
         describe(
             key,
             (): void => {
-                test("should opperate on designSystemDefaults", (): void => {
+                test("should operate on design system defaults", (): void => {
                     expect(designSystemUtils[key]({} as DesignSystem)).toBe(
                         defaultDesignSystem[key]
                     );

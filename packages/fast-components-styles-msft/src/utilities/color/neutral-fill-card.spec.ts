@@ -4,7 +4,7 @@ import { neutralFillCard } from "./neutral-fill-card";
 import defaultDesignSystem, { DesignSystem } from "../../design-system";
 
 describe("neutralFillCard", (): void => {
-    test("should opperate on design system defaults", (): void => {
+    test("should operate on design system defaults", (): void => {
         expect(neutralFillCard({} as DesignSystem)).toBe(
             defaultDesignSystem.neutralPalette[defaultDesignSystem.neutralFillCardDelta]
         );

@@ -30,7 +30,12 @@ import { get, values } from "lodash-es";
 import React from "react";
 import { SketchPicker } from "react-color";
 import { connect } from "react-redux";
-import { AccentColors, neutralColors } from "./colors";
+import {
+    AccentColors,
+    defaultAccentColor,
+    defaultNeutralColor,
+    neutralColors,
+} from "./colors";
 import { ColorsDesignSystem } from "./design-system";
 import {
     AppState,
@@ -154,24 +159,13 @@ class ControlPaneBase extends React.Component<ControlPaneProps, ControlPaneState
         marginBottom: "18px",
         width: "100%",
     };
+
     constructor(props: ControlPaneProps) {
         super(props);
-        const defaultAccentBase: ColorRGBA64 | null = this.getBaseColor(
-            this.props.designSystem.accentPalette
-        );
-        const defaultNeutralBase: ColorRGBA64 | null = this.getBaseColor(
-            this.props.designSystem.neutralPalette
-        );
 
         this.state = {
-            accentColorBase:
-                defaultAccentBase instanceof ColorRGBA64
-                    ? defaultAccentBase.toStringHexRGB()
-                    : AccentColors.blue,
-            neutralColorBase:
-                defaultNeutralBase instanceof ColorRGBA64
-                    ? defaultNeutralBase.toStringHexRGB()
-                    : neutralColors[0],
+            accentColorBase: defaultAccentColor,
+            neutralColorBase: defaultNeutralColor,
         };
     }
 
@@ -200,10 +194,6 @@ class ControlPaneBase extends React.Component<ControlPaneProps, ControlPaneState
         );
     }
 
-    private getBaseColor(palette: string[]): ColorRGBA64 | null {
-        return parseColorHexRGB(palette[Math.floor(palette.length / 2)]);
-    }
-
     private handleFormSubmit(e: React.FormEvent<HTMLFormElement>): void {
         e.preventDefault();
     }
@@ -225,6 +215,7 @@ class ControlPaneBase extends React.Component<ControlPaneProps, ControlPaneState
             </div>
         );
     };
+
     private renderComponentSelector(): JSX.Element {
         const items: JSX.Element[] = Object.keys(ComponentTypes).map(
             (key: string): JSX.Element => {
@@ -343,6 +334,7 @@ class ControlPaneBase extends React.Component<ControlPaneProps, ControlPaneState
             </div>
         );
     }
+
     private handleColorChange(
         palette: "neutralColorBase" | "accentColorBase",
         callback: (color: ColorRGBA64) => void

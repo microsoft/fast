@@ -3,9 +3,6 @@ import { ComponentStyles } from "@microsoft/fast-jss-manager";
 import { DesignSystem, ensureDesignSystemDefaults } from "../design-system";
 import { baseButton, buttonStyles } from "../patterns/button";
 import {
-    neutralFillStealthActive,
-    neutralFillStealthHover,
-    neutralFillStealthRest,
     neutralFocus,
     neutralForegroundRest,
     neutralOutlineActive,
@@ -22,7 +19,7 @@ const styles: ComponentStyles<LightweightButtonClassNameContract, DesignSystem> 
         ...buttonStyles(),
         color: neutralForegroundRest,
         fill: neutralForegroundRest,
-        background: neutralFillStealthRest,
+        background: "transparent",
         border: format(
             "{0} solid {1}",
             toPx<DesignSystem>(outlineWidth),
@@ -30,7 +27,7 @@ const styles: ComponentStyles<LightweightButtonClassNameContract, DesignSystem> 
         ),
         padding: format("0 {0}", horizontalSpacing(outlineWidth)),
         "&:hover:enabled": {
-            background: neutralFillStealthHover,
+            background: "transparent",
             border: format(
                 "{0} solid {1}",
                 toPx<DesignSystem>(outlineWidth),
@@ -38,7 +35,7 @@ const styles: ComponentStyles<LightweightButtonClassNameContract, DesignSystem> 
             ),
         },
         "&:active:enabled": {
-            background: neutralFillStealthActive,
+            background: "transparent",
             border: format(
                 "{0} solid {1}",
                 toPx<DesignSystem>(outlineWidth),
