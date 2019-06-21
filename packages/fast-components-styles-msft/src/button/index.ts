@@ -56,6 +56,7 @@ const applyTransparentBackplateStyles: CSSRules<DesignSystem> = {
         boxShadow: "none",
         "& $button_contentRegion::before": {
             background: neutralForegroundRest,
+            height: toPx<DesignSystem>(focusOutlineWidth),
         },
     }),
     // Underline
@@ -234,7 +235,7 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = {
         "&::before": {
             content: "''",
             display: "block",
-            height: toPx<DesignSystem>(focusOutlineWidth),
+            height: toPx<DesignSystem>(outlineWidth),
             position: "absolute",
             bottom: "-3px",
             width: "100%",
