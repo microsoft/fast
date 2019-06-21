@@ -1,9 +1,9 @@
 import { Action, createStore } from "redux";
 import { ColorsDesignSystem, colorsDesignSystem } from "./design-system";
 import { ColorRGBA64 } from "@microsoft/fast-colors";
-import { merge } from "lodash-es";
-import { Color } from "csstype";
 import { createColorPalette } from "@microsoft/fast-components-styles-msft";
+import { Swatch } from "@microsoft/fast-components-styles-msft/dist/utilities/color/common";
+import { defaultNeutralColor } from "./colors";
 
 export enum ComponentTypes {
     backplate = "backplate",
@@ -28,6 +28,10 @@ export interface AppState {
      * The component type being displayed
      */
     componentType: ComponentTypes;
+
+    neutralBaseColor: Swatch;
+
+    accentBaseColor: Swatch;
 }
 
 export interface Action {
@@ -40,6 +44,8 @@ export interface Action {
 function setPalette(
     palette: "accentPalette" | "neutralPalette"
 ): (state: AppState, value: ColorRGBA64) => AppState {
+    const baseColor: string =
+        palette === "accentPalette" ? "accentBaseColor" : "neutralBaseColor";
     return (state: AppState, value: ColorRGBA64): AppState => {
         const designSystem: ColorsDesignSystem = {
             ...state.designSystem,
@@ -52,6 +58,7 @@ function setPalette(
         return {
             ...state,
             designSystem,
+            [baseColor]: value.toStringHexRGB(),
         };
     };
 }
@@ -75,6 +82,8 @@ function rootReducer(state: AppState, action: any): AppState {
 export const store: any = createStore(rootReducer, {
     designSystem: colorsDesignSystem,
     componentType: ComponentTypes.backplate,
+    neutralBaseColor: defaultNeutralColor,
+    accentBaseColor: colorsDesignSystem.accentBaseColor,
 });
 
 interface ColorExplorerAction<S, T = any> extends Action<T> {

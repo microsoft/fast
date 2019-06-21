@@ -1,4 +1,4 @@
-import { DesignSystem, withDesignSystemDefaults } from "../design-system";
+import { DesignSystem } from "../design-system";
 import {
     accentForegroundActive,
     accentForegroundHover,
@@ -6,13 +6,10 @@ import {
     neutralFocus,
     neutralForegroundRest,
 } from "../utilities/color";
-import {
-    ComponentStyles,
-    ComponentStyleSheet,
-    CSSRules,
-} from "@microsoft/fast-jss-manager";
+import { ComponentStyles } from "@microsoft/fast-jss-manager";
 import { HypertextClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
-import { applyFocusVisible, format } from "@microsoft/fast-jss-utilities";
+import { applyFocusVisible, format, toPx } from "@microsoft/fast-jss-utilities";
+import { focusOutlineWidth, outlineWidth } from "../utilities/design-system";
 
 const styles: ComponentStyles<HypertextClassNameContract, DesignSystem> = {
     hypertext: {
@@ -21,24 +18,26 @@ const styles: ComponentStyles<HypertextClassNameContract, DesignSystem> = {
         color: neutralForegroundRest,
         transition: "all 0.2s ease-in-out, border 0.03s ease-in-out",
         "&:link, &:visited": {
-            borderBottom: format<DesignSystem>("1px solid {0}", accentForegroundRest),
+            borderBottom: format<DesignSystem>(
+                "{0} solid {1}",
+                toPx(outlineWidth),
+                accentForegroundRest
+            ),
             color: accentForegroundRest,
             "&:hover": {
-                borderBottom: format<DesignSystem>(
-                    "2px solid {0}",
-                    accentForegroundHover
-                ),
+                borderBottomColor: accentForegroundHover,
                 color: accentForegroundHover,
             },
             "&:active": {
-                borderBottom: format<DesignSystem>(
-                    "2px solid {0}",
-                    accentForegroundActive
-                ),
+                borderBottomColor: accentForegroundActive,
                 color: accentForegroundActive,
             },
             ...applyFocusVisible({
-                borderBottom: format<DesignSystem>("2px solid {0}", neutralFocus),
+                borderBottom: format<DesignSystem>(
+                    "{0} solid {1}",
+                    toPx(focusOutlineWidth),
+                    neutralFocus
+                ),
             }),
         },
     },

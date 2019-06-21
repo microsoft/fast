@@ -21,8 +21,10 @@ import {
     neutralFillStealthRest,
     neutralFillStealthSelected,
     neutralFocus,
+    neutralForegroundActive,
     neutralForegroundHint,
     neutralForegroundHintLarge,
+    neutralForegroundHover,
     neutralForegroundRest,
     neutralOutlineActive,
     neutralOutlineHover,
@@ -40,6 +42,7 @@ import {
     Checkbox,
     Hypertext,
     Paragraph,
+    ParagraphClassNameContract,
     TextField,
 } from "@microsoft/fast-components-react-msft";
 import { connect } from "react-redux";
@@ -184,6 +187,21 @@ class ColorBlocksBase extends React.Component<ColorBlocksProps, ColorBlocksState
         ColorsDesignSystem
     > = {
         button: {},
+    };
+
+    private neutralTextStyleOverrides: ComponentStyleSheet<
+        ParagraphClassNameContract,
+        ColorsDesignSystem
+    > = {
+        paragraph: {
+            cursor: "pointer !important",
+            "&:hover": {
+                color: neutralForegroundHover,
+            },
+            "&:active": {
+                color: neutralForegroundActive,
+            },
+        },
     };
 
     private hintTextStyleOverrides: ComponentStyleSheet<
@@ -406,12 +424,28 @@ class ColorBlocksBase extends React.Component<ColorBlocksProps, ColorBlocksState
     private renderTextComponents(): React.ReactNode {
         return (
             <React.Fragment>
-                {this.renderExample(<Paragraph>Neutral</Paragraph>)}
+                {this.renderExample(
+                    <Paragraph jssStyleSheet={this.neutralTextStyleOverrides}>
+                        Neutral
+                    </Paragraph>
+                )}
                 <Swatch
                     type={SwatchTypes.foreground}
                     fillRecipe={backgroundColor}
                     foregroundRecipe={neutralForegroundRest}
                     recipeName="neutralForegroundRest"
+                />
+                <Swatch
+                    type={SwatchTypes.foreground}
+                    fillRecipe={backgroundColor}
+                    foregroundRecipe={neutralForegroundHover}
+                    recipeName="neutralForegroundHover"
+                />
+                <Swatch
+                    type={SwatchTypes.foreground}
+                    fillRecipe={backgroundColor}
+                    foregroundRecipe={neutralForegroundActive}
+                    recipeName="neutralForegroundActive"
                 />
 
                 {this.renderExample(
