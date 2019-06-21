@@ -13,7 +13,7 @@ describe("neutralFill", (): void => {
     const neutralPalette: Palette = palette(PaletteType.neutral)(designSystemDefaults);
     const accentPalette: Palette = palette(PaletteType.accent)(designSystemDefaults);
 
-    test("should opperate on design system defaults", (): void => {
+    test("should operate on design system defaults", (): void => {
         expect(neutralFillRest({} as DesignSystem)).toBe(
             neutralPalette[designSystemDefaults.neutralFillRestDelta]
         );

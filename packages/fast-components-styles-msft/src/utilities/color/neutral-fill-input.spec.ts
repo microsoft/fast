@@ -14,7 +14,7 @@ describe("neutralFillInput", (): void => {
     const neutralPalette: Palette = palette(PaletteType.neutral)(designSystemDefaults);
     const accentPalette: Palette = palette(PaletteType.accent)(designSystemDefaults);
 
-    test("should opperate on design system defaults", (): void => {
+    test("should operate on design system defaults", (): void => {
         expect(neutralFillInputRest({} as DesignSystem)).toBe(neutralPalette[0]);
         expect(neutralFillInputHover({} as DesignSystem)).toBe(neutralPalette[0]);
         expect(neutralFillInputActive({} as DesignSystem)).toBe(neutralPalette[0]);
