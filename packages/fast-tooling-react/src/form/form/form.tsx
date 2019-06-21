@@ -157,14 +157,18 @@ class Form extends React.Component<
     /**
      * Update the state when a new schema is given
      */
-    /* tslint:disable-next-line */
     private updateStateForNewProps(
         props: FormProps,
         updateData: boolean,
         updateSchema: boolean,
         updateLocation: boolean
     ): Partial<FormState> {
-        let state: Partial<FormState> = {};
+        let state: Partial<FormState> = Object.assign(
+            {},
+            {
+                activeDataLocation: updateSchema ? "" : this.state.activeDataLocation,
+            }
+        );
         const updatedSchema: any = mapPluginsToSchema(
             props.schema,
             props.data,
