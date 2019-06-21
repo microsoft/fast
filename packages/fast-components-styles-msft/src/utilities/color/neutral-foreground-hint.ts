@@ -1,22 +1,12 @@
 import { DesignSystem } from "../../design-system";
 import {
     findClosestSwatchIndex,
-    findSwatchIndex,
     isDarkMode,
     Palette,
-    palette,
     PaletteType,
     swatchByContrast,
 } from "./palette";
-import { neutralForegroundRest } from "./neutral-foreground";
-import { inRange } from "lodash-es";
-import {
-    colorRecipeFactory,
-    contrast,
-    Swatch,
-    SwatchRecipe,
-    SwatchResolver,
-} from "./common";
+import { colorRecipeFactory, SwatchRecipe } from "./common";
 import { backgroundColor, neutralPalette } from "../design-system";
 
 /**
@@ -35,9 +25,10 @@ function neutralForegroundHintInitialIndexResolver(
  */
 function neturalForegroundHintDirectionResolver(
     referenceIndex: number,
-    sourcePalette: Palette
+    sourcePalette: Palette,
+    designSystem: DesignSystem
 ): 1 | -1 {
-    return referenceIndex > Math.ceil(sourcePalette.length / 2) ? -1 : 1;
+    return isDarkMode(designSystem) ? -1 : 1;
 }
 
 const neutralForegroundHintAlgorithm: ReturnType<

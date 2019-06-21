@@ -133,7 +133,13 @@ export interface DesignSystem {
     /**
      * Color swatch deltas for neutral-foreground
      */
+    /**
+     * @deprecated Neutral foreground is now based on contrast and this is no longer used.
+     */
     neutralForegroundDarkIndex: number;
+    /**
+     * @deprecated Neutral foreground is now based on contrast and this is no longer used.
+     */
     neutralForegroundLightIndex: number;
     neutralForegroundHoverDelta: number;
     neutralForegroundActiveDelta: number;

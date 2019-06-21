@@ -1,20 +1,46 @@
 import { DesignSystem, DesignSystemResolver } from "../../design-system";
 import {
+    backgroundColor,
     neutralForegroundActiveDelta,
-    neutralForegroundDarkIndex,
     neutralForegroundHoverDelta,
-    neutralForegroundLightIndex,
-    neutralPalette,
 } from "../design-system";
 import {
-    ColorRecipe,
     colorRecipeFactory,
     Swatch,
     SwatchFamily,
+    SwatchFamilyResolver,
+    swatchFamilyToSwatchRecipeFactory,
+    SwatchFamilyType,
     SwatchRecipe,
-    SwatchResolver,
 } from "./common";
-import { getSwatch, isDarkMode, Palette } from "./palette";
+import {
+    findClosestSwatchIndex,
+    findSwatchIndex,
+    getSwatch,
+    isDarkMode,
+    Palette,
+    palette,
+    PaletteType,
+    swatchByContrast,
+} from "./palette";
+import { clamp } from "@microsoft/fast-colors";
+
+/**
+ * Resolves the index that the contrast serach algorithm should start at
+ */
+function neutralForegroundInitialIndexResolver(
+    referenceColor: string,
+    sourcePalette: Palette,
+    designSystem: DesignSystem
+): number {
+    return findClosestSwatchIndex(PaletteType.neutral, referenceColor)(designSystem);
+}
+
+function contrastTargetFactory(
+    targetContrast: number
+): (instanceContrast: number) => boolean {
+    return (instanceContrast: number): boolean => instanceContrast >= targetContrast;
+}
 
 /**
  * Function to derive neutralForeground from color inputs.
@@ -22,61 +48,83 @@ import { getSwatch, isDarkMode, Palette } from "./palette";
  * the color that has the most contrast against the background. If contrast
  * cannot be retrieved correctly, function returns black.
  */
-function neutralForegroundAlgorithm(
-    deltaResolver: DesignSystemResolver<number>
-): DesignSystemResolver<Swatch> {
-    return (designSystem: DesignSystem): Swatch => {
-        const palette: Palette = neutralPalette(designSystem);
-        const isDark: boolean = isDarkMode(designSystem);
-        const direction: 1 | -1 = isDark ? 1 : -1;
-        const restColor: Swatch = isDark
-            ? neutralForegroundLight(designSystem)
-            : neutralForegroundDark(designSystem);
-        const restIndex: number = palette.indexOf(restColor);
-        return getSwatch(restIndex + deltaResolver(designSystem) * direction, palette);
+function neutralForegroundAlgorithm(): DesignSystemResolver<SwatchFamily> {
+    return (designSystem: DesignSystem): SwatchFamily => {
+        const neutralPalette: Palette = palette(PaletteType.neutral)(designSystem);
+        const paletteLength: number = neutralPalette.length;
+        const maxIndex: number = paletteLength - 1;
+
+        const stateDeltas: any = {
+            rest: 0,
+            hover: neutralForegroundHoverDelta(designSystem),
+            active: neutralForegroundActiveDelta(designSystem),
+        };
+
+        const direction: 1 | -1 = isDarkMode(designSystem) ? -1 : 1;
+
+        const accessibleSwatch: Swatch = swatchByContrast(
+            backgroundColor // Compare swatches against the background
+        )(
+            palette(PaletteType.neutral) // Use the neutral palette
+        )(
+            neutralForegroundInitialIndexResolver // Begin searching based on neutral index, direction, and deltas
+        )(
+            () => direction // Search direction based on light/dark mode
+        )(
+            contrastTargetFactory(14) // A swatch is only valid if the contrast is greater than indicated
+        )(
+            designSystem // Pass the design system
+        );
+
+        // One of these will be rest, the other will be hover. Depends on the offsets and the direction.
+        const accessibleIndex1: number = findSwatchIndex(
+            PaletteType.neutral,
+            accessibleSwatch
+        )(designSystem);
+        const accessibleIndex2: number =
+            accessibleIndex1 + direction * Math.abs(stateDeltas.rest - stateDeltas.hover);
+
+        const indexOneIsRestState: boolean =
+            direction === 1
+                ? stateDeltas.rest < stateDeltas.hover
+                : direction * stateDeltas.rest > direction * stateDeltas.hover;
+
+        const restIndex: number = indexOneIsRestState
+            ? accessibleIndex1
+            : accessibleIndex2;
+        const hoverIndex: number = indexOneIsRestState
+            ? accessibleIndex2
+            : accessibleIndex1;
+
+        const restClamped: number = clamp(restIndex, 0, maxIndex);
+        const hoverClamped: number = clamp(hoverIndex, 0, maxIndex);
+        const activeIndex: number = clamp(
+            restIndex + direction * stateDeltas.active,
+            0,
+            maxIndex
+        );
+
+        return {
+            rest: getSwatch(restClamped, neutralPalette),
+            hover: getSwatch(hoverClamped, neutralPalette),
+            active: getSwatch(activeIndex, neutralPalette),
+        };
     };
 }
 
-/**
- * Retrieve light neutral-foreground color for use on dark backgrounds
- */
-export const neutralForegroundLight: SwatchResolver = (
-    designSystem: DesignSystem
-): Swatch => {
-    return getSwatch(
-        neutralForegroundLightIndex(designSystem),
-        neutralPalette(designSystem)
-    );
-};
-
-/**
- * Retrieve dark neutral-foreground color for use on light backgrounds
- */
-export const neutralForegroundDark: SwatchResolver = (
-    designSystem: DesignSystem
-): Swatch => {
-    return getSwatch(
-        neutralForegroundDarkIndex(designSystem),
-        neutralPalette(designSystem)
-    );
-};
-
-export const neutralForeground: ColorRecipe<SwatchFamily> = colorRecipeFactory(
-    (designSystem: DesignSystem): SwatchFamily => {
-        return {
-            rest: neutralForegroundRest(designSystem),
-            hover: neutralForegroundHover(designSystem),
-            active: neutralForegroundActive(designSystem),
-        };
-    }
+export const neutralForeground: SwatchFamilyResolver = colorRecipeFactory(
+    neutralForegroundAlgorithm()
 );
 
-export const neutralForegroundRest: SwatchRecipe = colorRecipeFactory(
-    neutralForegroundAlgorithm(() => 0)
+export const neutralForegroundRest: SwatchRecipe = swatchFamilyToSwatchRecipeFactory(
+    SwatchFamilyType.rest,
+    neutralForeground
 );
-export const neutralForegroundHover: SwatchRecipe = colorRecipeFactory(
-    neutralForegroundAlgorithm(neutralForegroundHoverDelta)
+export const neutralForegroundHover: SwatchRecipe = swatchFamilyToSwatchRecipeFactory(
+    SwatchFamilyType.hover,
+    neutralForeground
 );
-export const neutralForegroundActive: SwatchRecipe = colorRecipeFactory(
-    neutralForegroundAlgorithm(neutralForegroundActiveDelta)
+export const neutralForegroundActive: SwatchRecipe = swatchFamilyToSwatchRecipeFactory(
+    SwatchFamilyType.active,
+    neutralForeground
 );

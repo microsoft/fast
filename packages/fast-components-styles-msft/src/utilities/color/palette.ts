@@ -13,7 +13,7 @@ import {
     Swatch,
     SwatchResolver,
 } from "./common";
-import { neutralForegroundDark, neutralForegroundLight } from "./neutral-foreground";
+import { black, white } from "./color-constants";
 
 /**
  * The named palettes of the MSFT design system
@@ -134,10 +134,7 @@ export function findClosestSwatchIndex(
 export function isDarkMode(designSystem: DesignSystem): boolean {
     const bg: string = backgroundColor(designSystem);
 
-    return (
-        contrast(neutralForegroundLight(designSystem), bg) >=
-        contrast(neutralForegroundDark(designSystem), bg)
-    );
+    return contrast(white, bg) >= contrast(black, bg);
 }
 
 /**
