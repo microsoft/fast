@@ -18,6 +18,8 @@ import {
     getBreadcrumbs,
     getDataCache,
     getNavigation,
+    isDifferentSchema,
+    isModifiedSchema,
     isRootLocation,
     NavigationItem,
 } from "../utilities";
@@ -73,7 +75,7 @@ class Form extends React.Component<
 
         if (
             typeof this.props.onSchemaChange === "function" &&
-            JSON.stringify(this.schema) !== JSON.stringify(this.props.schema)
+            isModifiedSchema(this.schema, this.props.schema)
         ) {
             this.props.onSchemaChange(this.schema);
         }
@@ -122,7 +124,7 @@ class Form extends React.Component<
         const state: Partial<FormState> = this.updateStateForNewProps(
             nextProps,
             this.props.data !== nextProps.data,
-            JSON.stringify(this.props.schema) !== JSON.stringify(nextProps.schema),
+            isDifferentSchema(this.props.schema, nextProps.schema),
             this.props.location !== nextProps.location
         );
 
@@ -171,7 +173,7 @@ class Form extends React.Component<
             props.plugins
         );
 
-        if (JSON.stringify(this.schema) !== JSON.stringify(updatedSchema)) {
+        if (isModifiedSchema(this.schema, updatedSchema)) {
             // The schema must be set before any other state updates occur so that
             // the correct schema is used for state navigation
             this.schema = updatedSchema;
