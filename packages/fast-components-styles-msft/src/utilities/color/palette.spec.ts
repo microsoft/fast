@@ -115,7 +115,7 @@ describe("findClosestSwatchIndex", (): void => {
             findClosestSwatchIndex(PaletteType.neutral, "pewpewpew")({} as DesignSystem)
         ).toBe(0);
     });
-    test("should opperate with designSystemDefaults", (): void => {
+    test("should operate on design system defaults", (): void => {
         expect(
             findClosestSwatchIndex(PaletteType.neutral, "#FFFFFF")({} as DesignSystem)
         ).toBe(0);
@@ -155,7 +155,7 @@ describe("getSwatch", (): void => {
 });
 
 describe("swatchByMode", (): void => {
-    test("should opperate on designSystemDefaults", (): void => {
+    test("should operate on designSystemDefaults", (): void => {
         expect(swatchByMode(PaletteType.neutral)(0, 0)({} as DesignSystem)).toBe(
             designSystemDefaults.neutralPalette[0]
         );
