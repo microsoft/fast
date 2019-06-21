@@ -1,25 +1,38 @@
 import React from "react";
 import manageJss from "@microsoft/fast-jss-manager-react";
-import { ColorsDesignSystem } from "./design-system";
 import { isEqual } from "lodash-es";
 
-const styles: any = (designSystem: ColorsDesignSystem): any => {
-    return {
-        gradient: {
-            display: "flex",
-            width: "100%",
-        },
-        gradient_item: {
+const styles: any = {
+    gradient: {
+        display: "flex",
+        width: "100%",
+    },
+    gradient_item: {
+        display: "flex",
+        flex: "1",
+        height: "100%",
+    },
+    gradient_item__marked: {
+        position: "relative",
+        "&::before": {
+            width: "6px",
+            height: "6px",
+            margin: "0 auto",
+            content: "''",
+            opacity: "0.5",
+            position: "relative",
+            border: "solid 1px white",
+            borderRadius: "50%",
             display: "block",
-            flex: "1",
-            height: "100%",
+            alignSelf: "center",
         },
-    };
+    },
 };
 
 interface GradientProps {
     managedClasses: any;
     colors: string[];
+    markedColor?: string;
     createAnchors?: boolean;
     scrollToItem?: (index: number, align: string) => void;
 }
@@ -38,10 +51,21 @@ class BaseGradient extends React.Component<GradientProps, {}> {
 
     private createItems(): React.ReactNode {
         return this.props.colors.map((item: string, index: number) => {
+            let classNames: string = this.props.managedClasses.gradient_item;
+
+            if (
+                this.props.markedColor !== undefined &&
+                item.toUpperCase() === this.props.markedColor.toUpperCase()
+            ) {
+                classNames = `${classNames} ${
+                    this.props.managedClasses.gradient_item__marked
+                }`;
+            }
+
             return (
                 <a
                     key={index}
-                    className={this.props.managedClasses.gradient_item}
+                    className={classNames}
                     style={{
                         background: this.props.colors[index],
                     }}
