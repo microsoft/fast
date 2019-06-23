@@ -154,4 +154,26 @@ describe("CSSPropertyEditor", () => {
         inputs = rendered.find("input");
         expect(inputs).toHaveLength(2);
     });
+
+    test("edited key values get committed on enter key press", () => {
+        const data: { [key: string]: string } = {
+            padding: "10px",
+            margin: "30px",
+        };
+        const callback: any = jest.fn();
+        const newKey: string = "padding-top";
+
+        const rendered: any = mount(
+            <CSSPropertyEditor data={data} onChange={callback} />
+        );
+
+        const inputs: any = rendered.find("input");
+        expect(inputs).toHaveLength(4);
+        inputs.at(0).simulate("focus");
+        inputs.at(0).simulate("change", { target: { value: newKey } });
+        inputs.at(0).simulate("keydown", { keyCode: KeyCodes.enter });
+
+        const updatedDataKeys: string[] = Object.keys(callback.mock.calls[0][0]);
+        expect(updatedDataKeys[0]).toEqual("paddingTop");
+    });
 });

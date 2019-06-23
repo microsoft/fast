@@ -8,7 +8,7 @@ import {
     CSSPropertyEditorRowHandledProps,
     CSSPropertyEditorRowUnhandledProps,
 } from "./property-editor-row.props";
-import { spinalCase } from "@microsoft/fast-web-utilities";
+import { KeyCodes, spinalCase } from "@microsoft/fast-web-utilities";
 
 export default class CSSPropertyEditorRow extends Foundation<
     CSSPropertyEditorRowHandledProps,
@@ -24,7 +24,7 @@ export default class CSSPropertyEditorRow extends Foundation<
         onKeyChange: void 0,
         onValueChange: void 0,
         onClickToInsert: void 0,
-        onKeyInputBlur: void 0,
+        onCommitKeyEdit: void 0,
         onRowFocus: void 0,
         onRowBlur: void 0,
         managedClasses: void 0,
@@ -76,6 +76,7 @@ export default class CSSPropertyEditorRow extends Foundation<
                     onChange={this.handleKeyInputChange}
                     onBlur={this.handleKeyInputBlur}
                     onFocus={this.handleFocus}
+                    onKeyDown={this.handleKeyInputKeyDown}
                     value={spinalCase(this.props.cssKey)}
                     style={{
                         width: `${this.getMonospaceInputWidth(this.props.cssKey)}px`,
@@ -174,8 +175,8 @@ export default class CSSPropertyEditorRow extends Foundation<
      *  key input has lost focus
      */
     private handleKeyInputBlur = (e: React.FocusEvent<HTMLInputElement>): void => {
-        if (typeof this.props.onKeyInputBlur === "function") {
-            this.props.onKeyInputBlur(this.props.cssKey, this.props.rowIndex);
+        if (typeof this.props.onCommitKeyEdit === "function") {
+            this.props.onCommitKeyEdit(this.props.cssKey, this.props.rowIndex);
         }
 
         this.checkForRowBlur(e);
@@ -212,5 +213,18 @@ export default class CSSPropertyEditorRow extends Foundation<
             this.props.onClickToInsert(this.props.cssKey, this.props.rowIndex);
         }
         e.preventDefault();
+    };
+
+    /**
+     * Handle key presses on key input
+     */
+    private handleKeyInputKeyDown = (e: React.KeyboardEvent): void => {
+        if (e.keyCode !== KeyCodes.enter) {
+            return;
+        }
+        e.preventDefault();
+        if (typeof this.props.onCommitKeyEdit === "function") {
+            this.props.onCommitKeyEdit(this.props.cssKey, this.props.rowIndex);
+        }
     };
 }

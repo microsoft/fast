@@ -40,7 +40,7 @@ export interface CSSPropertyEditorRowHandledProps
     /**
      * Key input has lost focus
      */
-    onKeyInputBlur: (rowKey: string, rowIndex: number) => void;
+    onCommitKeyEdit: (rowKey: string, rowIndex: number) => void;
 
     /**
      * Called when mouse click outside the inputs

@@ -131,7 +131,7 @@ export default class CSSPropertyEditor extends Foundation<
                 onValueChange={this.handleValueChange}
                 onKeyChange={this.handleKeyChange}
                 onClickToInsert={this.handleClickToInsert}
-                onKeyInputBlur={this.handleKeyInputBlur}
+                onCommitKeyEdit={this.handleCommitKeyEdit}
                 onRowBlur={this.handleRowBlur}
                 onRowFocus={this.handleRowFocus}
                 managedClasses={{
@@ -254,7 +254,7 @@ export default class CSSPropertyEditor extends Foundation<
     /**
      * Key input has lost focus
      */
-    private handleKeyInputBlur = (rowKey: string, rowIndex: number): void => {
+    private handleCommitKeyEdit = (rowKey: string, rowIndex: number): void => {
         if (this.state.currentEditRowUncommittedCSSPropertyKey !== null) {
             if (this.state.currentEditRowUncommittedCSSPropertyKey === "") {
                 this.deleteRow(rowIndex);
