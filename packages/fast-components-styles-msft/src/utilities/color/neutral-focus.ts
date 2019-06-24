@@ -9,7 +9,7 @@ export const neutralFocus: ColorRecipe<Swatch> = colorRecipeFactory(
         const neutralPalette: Palette = palette(PaletteType.neutral)(designSystem);
 
         return isDarkMode(designSystem)
-            ? getSwatch(neutralPalette.length - 5, neutralPalette)
-            : getSwatch(0, neutralPalette);
+            ? getSwatch(0, neutralPalette)
+            : getSwatch(neutralPalette.length - 5, neutralPalette);
     }
 );
