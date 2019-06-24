@@ -11,7 +11,7 @@ import {
     FormProps,
 } from "../../src/form/form/form.props";
 import * as testConfigs from "./form/";
-import { StringUpdateSchemaPlugin } from "./form/plugin/plugin";
+import { OneOfUpdateSchemaPlugin, StringUpdateSchemaPlugin } from "./form/plugin/plugin";
 
 export type componentDataOnChange = (e: React.ChangeEvent<HTMLFormElement>) => void;
 
@@ -64,6 +64,9 @@ class FormTestPage extends React.Component<{}, FormTestPageState> {
         this.plugins = [
             new StringUpdateSchemaPlugin({
                 id: "plugins/pluginModifiedString",
+            }),
+            new OneOfUpdateSchemaPlugin({
+                id: "oneOfs/plugins/pluginModifiedString",
             }),
         ];
 

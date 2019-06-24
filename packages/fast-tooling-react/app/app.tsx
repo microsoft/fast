@@ -14,6 +14,7 @@ import { FormTestPage } from "./pages/form";
 import { CodePreviewTestPage } from "./pages/code-preview/";
 import { FormAndNavigationTestPage } from "./pages/form-and-navigation";
 import { CSSPropertyEditorTestPage } from "./pages/css-property-editor";
+import { NavigationMenuTestPage } from "./pages/navigation-menu";
 
 class App extends React.Component<{}, {}> {
     public render(): React.ReactNode {
@@ -22,6 +23,11 @@ class App extends React.Component<{}, {}> {
                 <div>
                     {this.renderLinks()}
                     <Switch>
+                        <Route
+                            exact={true}
+                            path={"/navigation-menu"}
+                            component={NavigationMenuTestPage}
+                        />
                         <Route
                             exact={true}
                             path={"/css-editor"}
@@ -89,7 +95,7 @@ class App extends React.Component<{}, {}> {
                             component={FormAndNavigationTestPage}
                         />
                         <Route exact={true} path={"/"}>
-                            <Redirect to={"/code-preview"} />
+                            <Redirect to={"/navigation-menu"} />
                         </Route>
                     </Switch>
                 </div>
@@ -102,6 +108,9 @@ class App extends React.Component<{}, {}> {
             return (
                 <React.Fragment>
                     <ul>
+                        <li>
+                            <Link to="/navigation-menu">Navigation Menu</Link>
+                        </li>
                         <li>
                             <Link to="/code-preview">Code Preview</Link>
                         </li>
