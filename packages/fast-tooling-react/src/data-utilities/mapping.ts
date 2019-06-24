@@ -32,20 +32,26 @@ export function mapDataToComponent(
     plugins: Array<Plugin<PluginProps>> = []
 ): MappedDataLocation[] {
     const mappedData: any = cloneDeep(data);
+    let reactChildrenDataLocations: string[] = [];
+    let pluginModifiedDataLocations: PluginLocation[] = [];
 
-    // find locations of all items of data that are react children
-    let reactChildrenDataLocations: string[] = getDataLocationsOfChildren(
-        schema,
-        mappedData,
-        childOptions
-    );
+    if (childOptions.length > 0) {
+        // find locations of all items of data that are react children
+        reactChildrenDataLocations = getDataLocationsOfChildren(
+            schema,
+            mappedData,
+            childOptions
+        );
+    }
 
-    // find locations of all items of data that are overridden by mappings
-    const pluginModifiedDataLocations: PluginLocation[] = getDataLocationsOfPlugins(
-        schema,
-        mappedData,
-        childOptions
-    );
+    if (plugins.length > 0) {
+        // find locations of all items of data that are overridden by mappings
+        pluginModifiedDataLocations = getDataLocationsOfPlugins(
+            schema,
+            mappedData,
+            childOptions
+        );
+    }
 
     // remove any children data locations from plugin modified locations
     reactChildrenDataLocations = reactChildrenDataLocations.filter(
