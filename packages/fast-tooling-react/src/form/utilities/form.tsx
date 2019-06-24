@@ -881,6 +881,23 @@ export function isRootLocation(location: string): boolean {
 }
 
 /**
+ * Check to see if this schema is the same as another schema
+ */
+export function isDifferentSchema(oldSchema: any, newSchema: any): boolean {
+    const oldSchemaId: string = get(oldSchema, "id", get(oldSchema, "$id"));
+    const newSchemaId: string = get(newSchema, "id", get(newSchema, "$id"));
+
+    return oldSchemaId !== newSchemaId;
+}
+
+/**
+ * Check to see if this schema has been modified
+ */
+export function isModifiedSchema(oldSchema: any, newSchema: any): boolean {
+    return JSON.stringify(oldSchema) !== JSON.stringify(newSchema);
+}
+
+/**
  * Gets breadcrumbs from navigation items
  */
 export function getBreadcrumbs(
