@@ -233,7 +233,7 @@ class ColorBlocksBase extends React.Component<ColorBlocksProps, ColorBlocksState
             >
                 <Caption
                     className={this.props.managedClasses.colorBlocks_backgroundColor}
-                    jssStyleSheet={{ caption: { color: neutralForegroundHintLarge } }}
+                    jssStyleSheet={{ caption: { color: neutralForegroundHint } }}
                 >
                     BACKGROUND {this.props.index} -{" "}
                     {this.state.designSystem.backgroundColor.toUpperCase()}

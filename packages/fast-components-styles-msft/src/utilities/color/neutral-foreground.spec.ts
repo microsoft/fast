@@ -1,11 +1,10 @@
 import {
     neutralForegroundActive,
-    neutralForegroundDark,
     neutralForegroundHover,
     neutralForegroundRest,
 } from "./neutral-foreground";
-import { palette, Palette, PaletteType } from "./palette";
 import designSystemDefaults from "../../design-system";
+import { contrast } from "./common";
 
 describe("neutralForeground", (): void => {
     test("should return a string when invoked with an object", (): void => {
@@ -21,85 +20,71 @@ describe("neutralForeground", (): void => {
     });
 
     test("should operate on default design system if no design system is supplied", (): void => {
-        const neutralPalette: Palette = palette(PaletteType.neutral)(
-            designSystemDefaults
-        );
-        expect(neutralForegroundRest(undefined as any)).toBe(
-            neutralForegroundDark(undefined)
-        );
-        expect(neutralForegroundRest(() => undefined as any)(undefined as any)).toBe(
-            neutralForegroundDark(undefined)
-        );
-        expect(neutralForegroundRest(() => "#FFF")(undefined as any)).toBe(
-            neutralForegroundDark(undefined)
-        );
-        expect(neutralForegroundRest(() => "#FFFFFF")(undefined as any)).toBe(
-            neutralForegroundDark(undefined)
-        );
+        expect(
+            contrast(neutralForegroundRest(undefined as any), "#FFF")
+        ).toBeGreaterThanOrEqual(14);
+        expect(
+            contrast(
+                neutralForegroundRest(() => undefined as any)(undefined as any),
+                "#FFF"
+            )
+        ).toBeGreaterThanOrEqual(14);
+        expect(
+            contrast(neutralForegroundRest(() => "#FFF")(undefined as any), "#FFF")
+        ).toBeGreaterThanOrEqual(14);
+        expect(
+            contrast(neutralForegroundRest(() => "#FFFFFF")(undefined as any), "#FFF")
+        ).toBeGreaterThanOrEqual(14);
 
-        expect(neutralForegroundHover(undefined! as any)).toBe(
-            neutralPalette[
-                neutralPalette.indexOf(neutralForegroundDark(undefined)) -
-                    designSystemDefaults.neutralForegroundHoverDelta
-            ]
-        );
-        expect(neutralForegroundHover(() => undefined as any)(undefined as any)).toBe(
-            neutralPalette[
-                neutralPalette.indexOf(neutralForegroundDark(undefined)) -
-                    designSystemDefaults.neutralForegroundHoverDelta
-            ]
-        );
-        expect(neutralForegroundHover(() => "#FFF")(undefined as any)).toBe(
-            neutralPalette[
-                neutralPalette.indexOf(neutralForegroundDark(undefined)) -
-                    designSystemDefaults.neutralForegroundHoverDelta
-            ]
-        );
-        expect(neutralForegroundHover(() => "#FFFFFF")(undefined as any)).toBe(
-            neutralPalette[
-                neutralPalette.indexOf(neutralForegroundDark(undefined)) -
-                    designSystemDefaults.neutralForegroundHoverDelta
-            ]
-        );
-        expect(neutralForegroundActive(undefined! as any)).toBe(
-            neutralPalette[
-                neutralPalette.indexOf(neutralForegroundDark(undefined)) -
-                    designSystemDefaults.neutralForegroundActiveDelta
-            ]
-        );
-        expect(neutralForegroundActive(() => undefined as any)(undefined as any)).toBe(
-            neutralPalette[
-                neutralPalette.indexOf(neutralForegroundDark(undefined)) -
-                    designSystemDefaults.neutralForegroundActiveDelta
-            ]
-        );
-        expect(neutralForegroundActive(() => "#FFF")(undefined as any)).toBe(
-            neutralPalette[
-                neutralPalette.indexOf(neutralForegroundDark(undefined)) -
-                    designSystemDefaults.neutralForegroundActiveDelta
-            ]
-        );
-        expect(neutralForegroundActive(() => "#FFFFFF")(undefined as any)).toBe(
-            neutralPalette[
-                neutralPalette.indexOf(neutralForegroundDark(undefined)) -
-                    designSystemDefaults.neutralForegroundActiveDelta
-            ]
-        );
+        expect(
+            contrast(neutralForegroundHover(undefined as any), "#FFF")
+        ).toBeGreaterThanOrEqual(14);
+        expect(
+            contrast(
+                neutralForegroundHover(() => undefined as any)(undefined as any),
+                "#FFF"
+            )
+        ).toBeGreaterThanOrEqual(14);
+        expect(
+            contrast(neutralForegroundHover(() => "#FFF")(undefined as any), "#FFF")
+        ).toBeGreaterThanOrEqual(14);
+        expect(
+            contrast(neutralForegroundHover(() => "#FFFFFF")(undefined as any), "#FFF")
+        ).toBeGreaterThanOrEqual(14);
+
+        expect(
+            contrast(neutralForegroundActive(undefined as any), "#FFF")
+        ).toBeGreaterThanOrEqual(14);
+        expect(
+            contrast(
+                neutralForegroundActive(() => undefined as any)(undefined as any),
+                "#FFF"
+            )
+        ).toBeGreaterThanOrEqual(14);
+        expect(
+            contrast(neutralForegroundActive(() => "#FFF")(undefined as any), "#FFF")
+        ).toBeGreaterThanOrEqual(14);
+        expect(
+            contrast(neutralForegroundActive(() => "#FFFFFF")(undefined as any), "#FFF")
+        ).toBeGreaterThanOrEqual(14);
     });
 
-    test("should return #101010 with default design system values", (): void => {
-        expect(neutralForegroundRest(designSystemDefaults)).toBe(
-            neutralForegroundDark(undefined)
-        );
+    test("should return correct result with default design system values", (): void => {
+        expect(
+            contrast(neutralForegroundRest(designSystemDefaults), "#FFF")
+        ).toBeGreaterThanOrEqual(14);
     });
 
     test("should return #FFFFFF with a dark background", (): void => {
         expect(
-            neutralForegroundRest(
-                Object.assign({}, designSystemDefaults, {
-                    backgroundColor: "#000",
-                })
+            contrast(
+                neutralForegroundRest(
+                    Object.assign({}, designSystemDefaults, {
+                        backgroundColor: "#000",
+                    })
+                ),
+                "#000"
             )
-        ).toBe("#FFFFFF");
+        ).toBeGreaterThanOrEqual(14);
     });
 });
