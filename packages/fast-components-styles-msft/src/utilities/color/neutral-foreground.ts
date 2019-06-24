@@ -23,7 +23,6 @@ import {
     PaletteType,
     swatchByContrast,
 } from "./palette";
-import { clamp } from "@microsoft/fast-colors";
 
 /**
  * Resolves the index that the contrast serach algorithm should start at
@@ -51,8 +50,6 @@ function contrastTargetFactory(
 function neutralForegroundAlgorithm(): DesignSystemResolver<SwatchFamily> {
     return (designSystem: DesignSystem): SwatchFamily => {
         const neutralPalette: Palette = palette(PaletteType.neutral)(designSystem);
-        const paletteLength: number = neutralPalette.length;
-        const maxIndex: number = paletteLength - 1;
 
         const stateDeltas: any = {
             rest: 0,
@@ -96,17 +93,11 @@ function neutralForegroundAlgorithm(): DesignSystemResolver<SwatchFamily> {
             ? accessibleIndex2
             : accessibleIndex1;
 
-        const restClamped: number = clamp(restIndex, 0, maxIndex);
-        const hoverClamped: number = clamp(hoverIndex, 0, maxIndex);
-        const activeIndex: number = clamp(
-            restIndex + direction * stateDeltas.active,
-            0,
-            maxIndex
-        );
+        const activeIndex: number = restIndex + direction * stateDeltas.active;
 
         return {
-            rest: getSwatch(restClamped, neutralPalette),
-            hover: getSwatch(hoverClamped, neutralPalette),
+            rest: getSwatch(restIndex, neutralPalette),
+            hover: getSwatch(hoverIndex, neutralPalette),
             active: getSwatch(activeIndex, neutralPalette),
         };
     };
