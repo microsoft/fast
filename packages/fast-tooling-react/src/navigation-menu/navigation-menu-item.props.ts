@@ -17,12 +17,7 @@ export interface NavigationMenuItemUnhandledProps
     extends React.HTMLAttributes<HTMLElement> {}
 
 export interface NavigationMenuItemHandledProps
-    extends ManagedClasses<NavigationMenuItemClassNameContract> {
-    /**
-     * The menu item
-     */
-    menuItem: MenuItem;
-
+    extends ManagedClasses<NavigationMenuItemClassNameContract>, MenuItem {
     /**
      * The expanded option that will determine
      * if the sub menus can be controlled

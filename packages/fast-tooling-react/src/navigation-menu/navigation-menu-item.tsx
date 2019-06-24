@@ -20,8 +20,12 @@ export default class NavigationMenuItem extends Foundation<
     public static displayName: string = "NavigationMenuItem";
 
     public static defaultProps: NavigationMenuItemHandledProps = {
+        activeLocation: void 0,
         expanded: void 0,
-        menuItem: void 0,
+        displayName: void 0,
+        items: void 0,
+        location: void 0,
+        onLocationUpdate: void 0,
     };
 
     public static getDerivedStateFromProps(
@@ -52,7 +56,7 @@ export default class NavigationMenuItem extends Foundation<
 
     public render(): React.ReactNode {
         return (
-            <div role={"none"} className={this.generateClassNames()}>
+            <div className={this.generateClassNames()}>
                 {this.renderMenuItemDisplayName()}
                 {this.renderMenu()}
             </div>
@@ -66,7 +70,7 @@ export default class NavigationMenuItem extends Foundation<
     }
 
     private renderMenuItemDisplayName(): React.ReactNode {
-        const items: MenuItem[] | void = get(this.props, "menuItem.items");
+        const items: MenuItem[] | void = this.props.items;
 
         if (Array.isArray(items) && items.length > 0) {
             return (
@@ -76,7 +80,7 @@ export default class NavigationMenuItem extends Foundation<
                     aria-controls={this.id}
                     className={this.generateListItemClassNames()}
                 >
-                    {get(this.props, "menuItem.displayName")}
+                    {this.props.displayName}
                 </button>
             );
         } else if (typeof this.props.onLocationUpdate === "function") {
@@ -88,24 +92,24 @@ export default class NavigationMenuItem extends Foundation<
                     tabIndex={0}
                     className={this.generateListItemClassNames()}
                 >
-                    {get(this.props, "menuItem.displayName")}
+                    {this.props.displayName}
                 </span>
             );
         }
 
         return (
             <a
-                href={get(this.props, "menuItem.location")}
+                href={this.props.location}
                 role={"menuitem"}
                 className={this.generateListItemClassNames()}
             >
-                {get(this.props, "menuItem.displayName")}
+                {this.props.displayName}
             </a>
         );
     }
 
     private renderMenu(): React.ReactNode {
-        const items: MenuItem[] | void = get(this.props, "menuItem.items");
+        const items: MenuItem[] | void = this.props.items;
 
         if (Array.isArray(items) && items.length > 0) {
             return (
@@ -127,10 +131,10 @@ export default class NavigationMenuItem extends Foundation<
                     <NavigationMenuItem
                         key={index}
                         managedClasses={this.props.managedClasses}
-                        menuItem={menuItem}
                         expanded={this.props.expanded}
                         activeLocation={this.props.activeLocation}
                         onLocationUpdate={this.props.onLocationUpdate}
+                        {...menuItem}
                     />
                 );
             }
@@ -143,7 +147,7 @@ export default class NavigationMenuItem extends Foundation<
             "managedClasses.navigationMenuItem_listItem",
             ""
         );
-        const location: string = get(this.props, "menuItem.location");
+        const location: string = this.props.location;
 
         if (
             typeof this.props.activeLocation !== "undefined" &&
@@ -182,7 +186,7 @@ export default class NavigationMenuItem extends Foundation<
             expanded: !this.state.expanded,
         });
 
-        const location: string | void = get(this.props, "menuItem.location");
+        const location: string | void = this.props.location;
 
         if (
             typeof location === "string" &&
@@ -193,7 +197,7 @@ export default class NavigationMenuItem extends Foundation<
     };
 
     private handleLocationUpdate = (): void => {
-        this.props.onLocationUpdate(get(this.props, "menuItem.location"));
+        this.props.onLocationUpdate(this.props.location);
     };
 }
 

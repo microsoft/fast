@@ -40,9 +40,9 @@ export default class NavigationMenu extends Foundation<
                     key={index}
                     managedClasses={this.props.managedClasses}
                     expanded={this.props.expanded}
-                    menuItem={menuItem}
                     onLocationUpdate={this.props.onLocationUpdate}
                     activeLocation={this.props.activeLocation}
+                    {...menuItem}
                 />
             );
         });
