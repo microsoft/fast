@@ -156,12 +156,19 @@ export const neutralFillCardDelta: DesignSystemResolver<number> = getDesignSyste
     "neutralFillCardDelta"
 );
 
+/**
+ * @deprecated Neutral foreground is now based on contrast and this is no longer used.
+ */
 export const neutralForegroundDarkIndex: DesignSystemResolver<
     number
 > = getDesignSystemValue("neutralForegroundDarkIndex");
+/**
+ * @deprecated Neutral foreground is now based on contrast and this is no longer used.
+ */
 export const neutralForegroundLightIndex: DesignSystemResolver<
     number
 > = getDesignSystemValue("neutralForegroundLightIndex");
+
 export const neutralForegroundHoverDelta: DesignSystemResolver<
     number
 > = getDesignSystemValue("neutralForegroundHoverDelta");

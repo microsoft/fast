@@ -196,16 +196,6 @@ export default {
             type: "number",
             default: 2,
         },
-        neutralForegroundDarkIndex: {
-            title: "Neutral foreground dark index",
-            type: "number",
-            default: 58,
-        },
-        neutralForegroundLightIndex: {
-            title: "Neutral foreground light index",
-            type: "number",
-            default: 0,
-        },
         neutralForegroundHoverDelta: {
             title: "Neutral foreground hover delta",
             type: "number",
