@@ -1,5 +1,6 @@
 import designSystemDefaults, { DesignSystem } from "../../design-system";
 import { neutralFocus } from "./neutral-focus";
+import { contrast } from "./common";
 
 describe("neutralFocus", (): void => {
     test("should return a string when invoked with an object", (): void => {
@@ -11,6 +12,8 @@ describe("neutralFocus", (): void => {
     });
 
     test("should operate on default design system if no design system is supplied", (): void => {
-        expect(neutralFocus({} as DesignSystem)).toBe("#101010");
+        expect(contrast(neutralFocus({} as DesignSystem), "#FFF")).toBeGreaterThanOrEqual(
+            3.5
+        );
     });
 });

@@ -1,15 +1,92 @@
-import { getSwatch, isDarkMode, Palette, palette, PaletteType } from "./palette";
-import { ColorRecipe, colorRecipeFactory, Swatch } from "./common";
-import { DesignSystem } from "../../design-system";
+import {
+    findClosestSwatchIndex,
+    isDarkMode,
+    Palette,
+    PaletteType,
+    swatchByContrast,
+} from "./palette";
+import { Swatch, SwatchResolver } from "./common";
+import { DesignSystem, DesignSystemResolver } from "../../design-system";
+import { accentPalette, backgroundColor, neutralPalette } from "../design-system";
 
-// These literal values are to remove the dependency on neutralForegroundLight and Dark,
-// and are very temporary as focus is being updated to contrast-based as well.
-export const neutralFocus: ColorRecipe<Swatch> = colorRecipeFactory(
-    (designSystem: DesignSystem): Swatch => {
-        const neutralPalette: Palette = palette(PaletteType.neutral)(designSystem);
+const targetRatio: number = 3.5;
 
-        return isDarkMode(designSystem)
-            ? getSwatch(0, neutralPalette)
-            : getSwatch(neutralPalette.length - 5, neutralPalette);
-    }
+function neutralFocusIndexResolver(
+    referenceColor: string,
+    palette: Palette,
+    designSystem: DesignSystem
+): number {
+    return findClosestSwatchIndex(PaletteType.neutral, referenceColor)(designSystem);
+}
+
+function neutralFocusDirectionResolver(
+    index: number,
+    palette: Palette,
+    designSystem: DesignSystem
+): 1 | -1 {
+    return isDarkMode(designSystem) ? -1 : 1;
+}
+
+function neutralFocusContrastCondition(contrastRatio: number): boolean {
+    return contrastRatio > targetRatio;
+}
+
+const neutralFocusAlgorithm: SwatchResolver = swatchByContrast(backgroundColor)(
+    neutralPalette
+)(neutralFocusIndexResolver)(neutralFocusDirectionResolver)(
+    neutralFocusContrastCondition
 );
+
+export function neutralFocus(designSystem: DesignSystem): Swatch;
+export function neutralFocus(backgroundResolver: SwatchResolver): SwatchResolver;
+export function neutralFocus(arg: any): any {
+    if (typeof arg === "function") {
+        return (designSystem: DesignSystem): Swatch => {
+            const bgColor: Swatch = arg(designSystem);
+            return neutralFocusAlgorithm(
+                Object.assign({}, designSystem, {
+                    backgroundColor: bgColor,
+                })
+            );
+        };
+    } else {
+        return neutralFocusAlgorithm(arg);
+    }
+}
+
+function neutralFocusInnerAccentIndexResolver(
+    accentFillColor: DesignSystemResolver<string>
+): (
+    referenceColor: string,
+    sourcePalette: Palette,
+    designSystem: DesignSystem
+) => number {
+    return (
+        referenceColor: string,
+        sourcePalette: Palette,
+        designSystem: DesignSystem
+    ): number => {
+        return sourcePalette.indexOf(accentFillColor(designSystem));
+    };
+}
+
+function neutralFocusInnerAccentDirectionResolver(
+    referenceIndex: number,
+    palette: string[],
+    designSystem: DesignSystem
+): 1 | -1 {
+    return isDarkMode({
+        ...designSystem,
+        backgroundColor: palette[referenceIndex],
+    })
+        ? -1
+        : 1;
+}
+
+export function neutralFocusInnerAccent(
+    accentFillColor: DesignSystemResolver<string>
+): DesignSystemResolver<string> {
+    return swatchByContrast(neutralFocus)(accentPalette)(
+        neutralFocusInnerAccentIndexResolver(accentFillColor)
+    )(neutralFocusInnerAccentDirectionResolver)(neutralFocusContrastCondition);
+}
