@@ -143,6 +143,7 @@
             "title": "oneOfs",
             "oneOf": [
                 {
+                    "title": "Contains a nested plugin oneOf",
                     "type": "object",
                     "properties": {
                         "pluginModifiedString": {
@@ -161,12 +162,13 @@
                     ]
                 },
                 {
+                    "title": "Contains a plugin modified number",
                     "type": "object",
                     "properties": {
                         "pluginModifiedNumber": {
                             "title": "Plugin modified number",
                             "type": "number",
-                            "formPluginId": "plugins/pluginModifiedNumber"
+                            "formPluginId": "oneOfs/plugins/pluginModifiedNumber"
                         },
                         "object": {
                             "title": "Object",

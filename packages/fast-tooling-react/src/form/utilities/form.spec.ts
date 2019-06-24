@@ -672,6 +672,44 @@ describe("getNavigation", () => {
             "propertyKey.propertyKey1.propertyKey2"
         );
     });
+    test("should return navigation items for directly nested oneOfs", () => {
+        const navigation: NavigationItem[] = getNavigation(
+            "propertyKey",
+            {
+                propertyKey: 42,
+            },
+            {
+                type: "object",
+                oneOf: [
+                    {
+                        oneOf: [
+                            {
+                                properties: {
+                                    propertyKey: {
+                                        type: "string",
+                                    },
+                                },
+                                required: ["propertyKey"],
+                            },
+                            {
+                                properties: {
+                                    propertyKey: {
+                                        type: "number",
+                                    },
+                                },
+                                required: ["propertyKey"],
+                            },
+                        ],
+                    },
+                ],
+            },
+            []
+        );
+
+        expect(navigation).toHaveLength(2);
+        expect(navigation[0].dataLocation).toEqual("");
+        expect(navigation[1].dataLocation).toEqual("propertyKey");
+    });
     test("should return navigation items with default values", () => {
         const defaultValue: string = "bar";
         const navigation: NavigationItem[] = getNavigation(
