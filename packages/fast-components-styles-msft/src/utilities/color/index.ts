@@ -92,7 +92,7 @@ export {
 /**
  * Focus colors
  */
-export { neutralFocus } from "./neutral-focus";
+export { neutralFocus, neutralFocusInnerAccent } from "./neutral-focus";
 
 /**
  * Export supporting types
