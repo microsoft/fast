@@ -3,6 +3,26 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.11.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-msft@4.10.0...@microsoft/fast-components-react-msft@4.11.0) (2019-06-25)
+
+
+### Bug Fixes
+
+* correcting typography schema export name ([#1873](https://github.com/Microsoft/fast-dna/issues/1873)) ([d2bc7a8](https://github.com/Microsoft/fast-dna/commit/d2bc7a8))
+
+
+### Features
+
+* add classname to MSFT button for when either before or after content and children exist ([#1877](https://github.com/Microsoft/fast-dna/issues/1877)) ([dae29d6](https://github.com/Microsoft/fast-dna/commit/dae29d6))
+* add design system merging function to background component ([#1882](https://github.com/Microsoft/fast-dna/issues/1882)) ([2488879](https://github.com/Microsoft/fast-dna/commit/2488879))
+* add new components for each button appearance style ([#1865](https://github.com/Microsoft/fast-dna/issues/1865)) ([b64d29c](https://github.com/Microsoft/fast-dna/commit/b64d29c))
+* converted the app schemas to typescript, removed typings file and related schema scripts. ([#1869](https://github.com/Microsoft/fast-dna/issues/1869)) ([f7c29da](https://github.com/Microsoft/fast-dna/commit/f7c29da))
+* track accentBaseColor in the design system ([#1878](https://github.com/Microsoft/fast-dna/issues/1878)) ([044caaa](https://github.com/Microsoft/fast-dna/commit/044caaa))
+
+
+
+
+
 # [4.10.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-msft@4.9.0...@microsoft/fast-components-react-msft@4.10.0) (2019-06-17)
 
 

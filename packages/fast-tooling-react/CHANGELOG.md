@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.10.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-tooling-react@1.9.0...@microsoft/fast-tooling-react@1.10.0) (2019-06-25)
+
+
+### Bug Fixes
+
+* allows the navigation to update using the active location when new props are passed ([#1890](https://github.com/Microsoft/fast-dna/issues/1890)) ([31cf014](https://github.com/Microsoft/fast-dna/commit/31cf014))
+* check to see if any child options or plugins have been passed before attempting to map their locations ([#1894](https://github.com/Microsoft/fast-dna/issues/1894)) ([0ee5c2e](https://github.com/Microsoft/fast-dna/commit/0ee5c2e))
+* only check for a modified schema when the onSchemaChange callback is expected to be called ([#1891](https://github.com/Microsoft/fast-dna/issues/1891)) ([eea54d6](https://github.com/Microsoft/fast-dna/commit/eea54d6))
+
+
+### Features
+
+* add a navigation menu ([#1883](https://github.com/Microsoft/fast-dna/issues/1883)) ([11f569c](https://github.com/Microsoft/fast-dna/commit/11f569c))
+
+
+
+
+
 # [1.9.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-tooling-react@1.8.5...@microsoft/fast-tooling-react@1.9.0) (2019-06-17)
 
 

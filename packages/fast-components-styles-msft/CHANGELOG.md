@@ -3,6 +3,29 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.13.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-styles-msft@4.12.0...@microsoft/fast-components-styles-msft@4.13.0) (2019-06-25)
+
+
+### Bug Fixes
+
+* remove incorrect min-width values from select and button components ([#1874](https://github.com/Microsoft/fast-dna/issues/1874)) ([3406151](https://github.com/Microsoft/fast-dna/commit/3406151))
+* set checkbox cursor to pointer on hover ([#1876](https://github.com/Microsoft/fast-dna/issues/1876)) ([8b14bba](https://github.com/Microsoft/fast-dna/commit/8b14bba))
+
+
+### Features
+
+* add new components for each button appearance style ([#1865](https://github.com/Microsoft/fast-dna/issues/1865)) ([b64d29c](https://github.com/Microsoft/fast-dna/commit/b64d29c))
+* remove background from outline button appearance style ([#1884](https://github.com/Microsoft/fast-dna/issues/1884)) ([707ced7](https://github.com/Microsoft/fast-dna/commit/707ced7))
+* track accentBaseColor in the design system ([#1878](https://github.com/Microsoft/fast-dna/issues/1878)) ([044caaa](https://github.com/Microsoft/fast-dna/commit/044caaa))
+* update lightweight button and hyperlink underline size ([#1887](https://github.com/Microsoft/fast-dna/issues/1887)) ([99ab4fd](https://github.com/Microsoft/fast-dna/commit/99ab4fd))
+* update neutral focus recipe to be based on contrast ([#1896](https://github.com/Microsoft/fast-dna/issues/1896)) ([c43dace](https://github.com/Microsoft/fast-dna/commit/c43dace))
+* update neutral foreground recipes to be based on contrast ([#1889](https://github.com/Microsoft/fast-dna/issues/1889)) ([fb8a7e4](https://github.com/Microsoft/fast-dna/commit/fb8a7e4))
+* update outline field style ([#1880](https://github.com/Microsoft/fast-dna/issues/1880)) ([5699bd8](https://github.com/Microsoft/fast-dna/commit/5699bd8))
+
+
+
+
+
 # [4.12.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-styles-msft@4.11.4...@microsoft/fast-components-styles-msft@4.12.0) (2019-06-12)
 
 

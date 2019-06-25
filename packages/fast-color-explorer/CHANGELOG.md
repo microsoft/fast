@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-color-explorer@1.0.11...@microsoft/fast-color-explorer@1.1.0) (2019-06-25)
+
+
+### Features
+
+* track accentBaseColor in the design system ([#1878](https://github.com/Microsoft/fast-dna/issues/1878)) ([044caaa](https://github.com/Microsoft/fast-dna/commit/044caaa))
+* update neutral foreground recipes to be based on contrast ([#1889](https://github.com/Microsoft/fast-dna/issues/1889)) ([fb8a7e4](https://github.com/Microsoft/fast-dna/commit/fb8a7e4))
+
+
+
+
+
 ## [1.0.11](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-color-explorer@1.0.10...@microsoft/fast-color-explorer@1.0.11) (2019-06-17)
 
 **Note:** Version bump only for package @microsoft/fast-color-explorer

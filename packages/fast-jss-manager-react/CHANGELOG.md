@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.3.5](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-jss-manager-react@4.3.4...@microsoft/fast-jss-manager-react@4.3.5) (2019-06-25)
+
+
+### Bug Fixes
+
+* update style sheet with Design System before attaching it to the DOM ([#1885](https://github.com/Microsoft/fast-dna/issues/1885)) ([1898edc](https://github.com/Microsoft/fast-dna/commit/1898edc))
+
+
+
+
+
 ## [4.3.4](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-jss-manager-react@4.3.3...@microsoft/fast-jss-manager-react@4.3.4) (2019-06-11)
 
 **Note:** Version bump only for package @microsoft/fast-jss-manager-react

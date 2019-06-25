@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.3.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-class-name-contracts-base@4.2.0...@microsoft/fast-components-class-name-contracts-base@4.3.0) (2019-06-25)
+
+
+### Features
+
+* add new components for each button appearance style ([#1865](https://github.com/Microsoft/fast-dna/issues/1865)) ([b64d29c](https://github.com/Microsoft/fast-dna/commit/b64d29c))
+
+
+
+
+
 # [4.2.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-class-name-contracts-base@4.1.1...@microsoft/fast-components-class-name-contracts-base@4.2.0) (2019-06-11)
 
 

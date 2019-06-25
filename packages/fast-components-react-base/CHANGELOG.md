@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.8.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-base@4.7.0...@microsoft/fast-components-react-base@4.8.0) (2019-06-25)
+
+
+### Features
+
+* converted the app schemas to typescript, removed typings file and related schema scripts. ([#1869](https://github.com/Microsoft/fast-dna/issues/1869)) ([f7c29da](https://github.com/Microsoft/fast-dna/commit/f7c29da))
+
+
+
+
+
 # [4.7.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-base@4.6.1...@microsoft/fast-components-react-base@4.7.0) (2019-06-17)
 
 

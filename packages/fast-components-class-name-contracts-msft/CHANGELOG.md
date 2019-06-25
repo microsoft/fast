@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.4.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-class-name-contracts-msft@4.3.2...@microsoft/fast-components-class-name-contracts-msft@4.4.0) (2019-06-25)
+
+
+### Features
+
+* add classname to MSFT button for when either before or after content and children exist ([#1877](https://github.com/Microsoft/fast-dna/issues/1877)) ([dae29d6](https://github.com/Microsoft/fast-dna/commit/dae29d6))
+* add new components for each button appearance style ([#1865](https://github.com/Microsoft/fast-dna/issues/1865)) ([b64d29c](https://github.com/Microsoft/fast-dna/commit/b64d29c))
+
+
+
+
+
 ## [4.3.2](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-class-name-contracts-msft@4.3.1...@microsoft/fast-components-class-name-contracts-msft@4.3.2) (2019-06-11)
 
 **Note:** Version bump only for package @microsoft/fast-components-class-name-contracts-msft
