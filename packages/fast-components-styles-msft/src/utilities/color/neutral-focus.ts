@@ -5,7 +5,7 @@ import {
     PaletteType,
     swatchByContrast,
 } from "./palette";
-import { Swatch, SwatchResolver } from "./common";
+import { ColorRecipe, colorRecipeFactory, Swatch, SwatchResolver } from "./common";
 import { DesignSystem, DesignSystemResolver } from "../../design-system";
 import { accentPalette, backgroundColor, neutralPalette } from "../design-system";
 
@@ -37,22 +37,9 @@ const neutralFocusAlgorithm: SwatchResolver = swatchByContrast(backgroundColor)(
     neutralFocusContrastCondition
 );
 
-export function neutralFocus(designSystem: DesignSystem): Swatch;
-export function neutralFocus(backgroundResolver: SwatchResolver): SwatchResolver;
-export function neutralFocus(arg: any): any {
-    if (typeof arg === "function") {
-        return (designSystem: DesignSystem): Swatch => {
-            const bgColor: Swatch = arg(designSystem);
-            return neutralFocusAlgorithm(
-                Object.assign({}, designSystem, {
-                    backgroundColor: bgColor,
-                })
-            );
-        };
-    } else {
-        return neutralFocusAlgorithm(arg);
-    }
-}
+export const neutralFocus: ColorRecipe<Swatch> = colorRecipeFactory(
+    neutralFocusAlgorithm
+);
 
 function neutralFocusInnerAccentIndexResolver(
     accentFillColor: DesignSystemResolver<string>
