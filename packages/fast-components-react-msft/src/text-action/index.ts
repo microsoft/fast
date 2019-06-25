@@ -35,6 +35,7 @@ export {
     TextAction,
     TextActionAppearance,
     TextActionButtonPosition,
+    TextActionClassNameContract,
     TextActionHandledProps,
     TextActionManagedClasses,
     TextActionProps,
