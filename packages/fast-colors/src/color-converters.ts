@@ -16,7 +16,12 @@ import { degreesToRadians, radiansToDegrees } from "./math-utilities";
 // https://web.stanford.edu/~sujason/ColorBalancing/adaptation.html
 // http://brucelindbloom.com/index.html
 
-// The alpha channel of the input is ignored
+/**
+ * Get the relative luminance of a color.
+ * Adjusts the color to sRGB space, which is necessary for the WCAG contrast spec.
+ * The alpha channel of the input is ignored.
+ * @param rgb The input color
+ */
 export function rgbToLuminance(rgb: ColorRGBA64): number {
     function luminanceHelper(i: number): number {
         if (i <= 0.03928) {
@@ -40,6 +45,19 @@ export function contrastRatio(a: ColorRGBA64, b: ColorRGBA64): number {
         return (luminanceA + 0.05) / (luminanceB + 0.05);
     }
     return (luminanceB + 0.05) / (luminanceA + 0.05);
+}
+
+/**
+ * Get the luminance of a color in the linear RGB space.
+ * This is not the same as the relative luminance in the sRGB space for WCAG contrast calculations. Use rgbToLuminance instead.
+ * @param rgb The input color
+ */
+export function rgbToLuminanceLinear(rgb: ColorRGBA64): number {
+    const r: number = rgb.r;
+    const g: number = rgb.g;
+    const b: number = rgb.b;
+
+    return r * 0.2126 + g * 0.7152 + b * 0.0722;
 }
 
 // The alpha channel of the input is ignored

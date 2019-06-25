@@ -38,7 +38,7 @@ export const neutralPalette: DesignSystemResolver<Palette> = getDesignSystemValu
 );
 
 /**
- * Retrieve the accent  palette from the design system
+ * Retrieve the accent palette from the design system
  */
 export const accentPalette: DesignSystemResolver<Palette> = getDesignSystemValue(
     "accentPalette"

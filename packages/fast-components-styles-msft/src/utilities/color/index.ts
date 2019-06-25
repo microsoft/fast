@@ -7,7 +7,9 @@ export {
     neutralForegroundHover,
     neutralForegroundActive,
 } from "./neutral-foreground";
+
 export { accentForegroundCut, accentForegroundCutLarge } from "./accent-foreground-cut";
+
 export {
     neutralForegroundHint,
     neutralForegroundHintLarge,

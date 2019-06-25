@@ -24,14 +24,11 @@ describe("neutralFill", (): void => {
             neutralPalette[designSystemDefaults.neutralFillActiveDelta]
         );
         expect(neutralFillSelected({} as DesignSystem)).toBe(
-            neutralPalette[
-                designSystemDefaults.neutralFillRestDelta +
-                    designSystemDefaults.neutralFillSelectedDelta
-            ]
+            neutralPalette[designSystemDefaults.neutralFillSelectedDelta]
         );
     });
 
-    test("should switch from dark to light after 4 swatches", (): void => {
+    test("should switch from dark to light after 10 swatches", (): void => {
         expect(neutralFillRest(designSystemDefaults)).toBe(
             neutralPalette[designSystemDefaults.neutralFillRestDelta]
         );
@@ -47,11 +44,11 @@ describe("neutralFill", (): void => {
         expect(neutralFillRest(() => neutralPalette[2])(designSystemDefaults)).toBe(
             neutralPalette[designSystemDefaults.neutralFillRestDelta + 2]
         );
-        expect(neutralFillRest(() => neutralPalette[3])(designSystemDefaults)).toBe(
-            neutralPalette[designSystemDefaults.neutralFillRestDelta + 3]
+        expect(neutralFillRest(() => neutralPalette[9])(designSystemDefaults)).toBe(
+            neutralPalette[designSystemDefaults.neutralFillRestDelta + 9]
         );
-        expect(neutralFillRest(() => neutralPalette[4])(designSystemDefaults)).toBe(
-            neutralPalette[0]
+        expect(neutralFillRest(() => neutralPalette[10])(designSystemDefaults)).toBe(
+            neutralPalette[3]
         );
     });
 

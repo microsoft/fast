@@ -22,8 +22,8 @@ describe("neutralFillCard", (): void => {
             ).toBe(defaultDesignSystem.neutralFillCardDelta + i);
         }
     });
-    test("should return the color at two steps lower than the background color", (): void => {
-        for (let i: number = 2; i < defaultDesignSystem.neutralPalette.length; i++) {
+    test("should return the color at three steps lower than the background color", (): void => {
+        for (let i: number = 3; i < defaultDesignSystem.neutralPalette.length; i++) {
             expect(
                 defaultDesignSystem.neutralPalette.indexOf(
                     neutralFillCard(
@@ -32,7 +32,7 @@ describe("neutralFillCard", (): void => {
                         })
                     )
                 )
-            ).toBe(i - 2);
+            ).toBe(i - 3);
         }
     });
     test("should generate a color based on the background color returned by a provided callback", (): void => {
@@ -40,6 +40,6 @@ describe("neutralFillCard", (): void => {
             neutralFillCard(() => defaultDesignSystem.neutralPalette[4])(
                 defaultDesignSystem
             )
-        ).toBe(defaultDesignSystem.neutralPalette[2]);
+        ).toBe(defaultDesignSystem.neutralPalette[1]);
     });
 });
