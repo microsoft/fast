@@ -22,6 +22,7 @@ import {
     SelectDevice,
     Viewer,
     CSSEditor,
+    NavigationMenu,
 } from "@microsoft/fast-tooling-react";
 import { CSSPropertyEditor } from "@microsoft/fast-tooling-react/dist/css-property-editor";
 import manageJss, {
@@ -40,6 +41,7 @@ import {
     DarkModeBackgrounds,
     LightModeBackgrounds,
 } from "@microsoft/fast-components-react-msft";
+import { menu } from "./config";
 import { CodePreviewChildOption } from "@microsoft/fast-tooling-react/dist/data-utilities/mapping";
 import { ViewerManagedClasses } from "@microsoft/fast-tooling-react/dist/viewer/viewer/viewer.props";
 import { FormClassNameContract } from "@microsoft/fast-tooling-react/dist/form/form";
@@ -108,6 +110,9 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
                 <Background value={this.backgrounds.L1}>
                     <Container className={get(this.props, "managedClasses.creator")}>
                         <Row style={{ flex: "1" }}>
+                            <Pane>
+                                <NavigationMenu menu={menu} expanded={true} />
+                            </Pane>
                             <Pane
                                 style={{
                                     overflowY: "auto",
