@@ -6,7 +6,7 @@ import {
     DesignSystemDefaults,
     DesignSystem,
 } from "@microsoft/fast-components-styles-msft";
-import { ADDON_EVENT } from "./constants";
+import { UPDATE_DESIGN_SYSTEM_EVENT, REQUEST_DESIGN_SYSTEM_EVENT } from "./constants";
 import designSystemManager from "./design-system";
 
 interface DesignSystemDecoratorProps {
@@ -26,17 +26,23 @@ class DesignSystemDecorator<T> extends React.Component<
     }
 
     public componentDidMount(): void {
-        this.props.channel.on(ADDON_EVENT, this.updateDesignSystem);
+        this.props.channel.addListener(
+            UPDATE_DESIGN_SYSTEM_EVENT,
+            this.updateDesignSystem
+        );
     }
 
     public componentWillUnmount(): void {
-        this.props.channel.removeListener(ADDON_EVENT, this.updateDesignSystem);
+        this.props.channel.removeListener(
+            UPDATE_DESIGN_SYSTEM_EVENT,
+            this.updateDesignSystem
+        );
     }
 
     public render(): React.ReactNode {
         if (this.state.designSystem === null) {
-            console.log("Rendering without a design system");
-            return this.props.children;
+            this.props.channel.emit(REQUEST_DESIGN_SYSTEM_EVENT);
+            return null;
         }
 
         // Make sure body dir is set correctly
@@ -50,7 +56,6 @@ class DesignSystemDecorator<T> extends React.Component<
     }
 
     private updateDesignSystem = (designSystem: DesignSystem) => {
-        console.log("Updating design system in preview");
         this.setState({
             designSystem: Object.assign({}, designSystem),
         });
