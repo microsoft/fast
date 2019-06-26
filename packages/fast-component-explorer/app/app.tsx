@@ -4,6 +4,11 @@ import Preview from "./preview";
 import { history } from "./config";
 import { BrowserRouter, Route } from "react-router-dom";
 
+/**
+ * The root level app
+ *
+ * This is where the routes are declared
+ */
 export default class App extends React.Component<{}, {}> {
     public render(): React.ReactNode {
         return (
