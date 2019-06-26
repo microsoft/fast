@@ -1,5 +1,6 @@
 import path from "path";
 import glob from "glob";
+import { merge } from "lodash";
 
 /**
  * Options object to configure the FAST DNA presets
@@ -16,14 +17,16 @@ const optionDefaults: FASTDNAPresetOptions = {
     },
 };
 
-export function addons(entry = [], options: FASTDNAPresetOptions): string[] {
-    const withDefaults: FASTDNAPresetOptions = { ...optionDefaults, ...options };
+export function addons(entry = [], options?: FASTDNAPresetOptions): string[] {
+    const withDefaults: FASTDNAPresetOptions = merge({}, optionDefaults, options);
 
-    return withDefaults.designSystemAddon.enabled
-        ? entry.concat([
-              require.resolve("@microsoft/fast-storybook-design-system-addon/register"),
-          ])
-        : entry;
+    if (withDefaults.designSystemAddon.enabled) {
+        entry = entry.concat([
+            require.resolve("@microsoft/fast-storybook-design-system-addon/register"),
+        ]);
+    }
+
+    return entry;
 }
 
 export function entries(entries: any): any {

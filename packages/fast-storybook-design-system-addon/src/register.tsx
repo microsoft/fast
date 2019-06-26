@@ -2,6 +2,7 @@ import React from "react";
 import { addons, types, RouteOptions, MatchOptions } from "@storybook/addons";
 import { API, Consumer } from "@storybook/api";
 import { Global, Theme } from "@storybook/theming";
+import { STORY_CHANGED } from "@storybook/core-events";
 import { ADDON_ID, PANEL_ID, ADDON_EVENT } from "./constants";
 import { RenderOptions } from "@storybook/api/dist/modules/addons";
 import {
@@ -9,40 +10,53 @@ import {
     DesignSystem,
 } from "@microsoft/fast-components-styles-msft";
 import designSystemManager from "./design-system";
-
-designSystemManager.set(DesignSystemDefaults); // TODO not sure why this code is executed before "setup" but it is
+import { parseToInputTypes } from "./design-system-parser";
+import { merge } from "lodash-es";
 
 interface DesignSystemPanelProps {
     api: API;
     active: boolean;
 }
 
-class DesignSystemPanel extends React.Component<DesignSystemPanelProps, {}> {
-    public componentDidMount() {
-        window.setTimeout(() => {
-            this.setIframeDirection((designSystemManager.get() as any).direction);
-        }, 400); // This is hacky - not sure why it doesn't just work immediately
+enum ColorModes {
+    light = "light",
+    dark = "dark",
+}
+
+interface DesignSystemPanelState {
+    colorMode: ColorModes;
+    designSystem: DesignSystem;
+}
+
+class DesignSystemPanel extends React.Component<
+    DesignSystemPanelProps,
+    DesignSystemPanelState
+> {
+    constructor(props: DesignSystemPanelProps) {
+        super(props);
+
+        this.state = {
+            colorMode: ColorModes.light,
+            designSystem: DesignSystemDefaults,
+        };
     }
 
     public render() {
-        const designSystem: any = designSystemManager.get();
-
         return (
             <React.Fragment>
                 <Global
                     styles={(theme: Theme) => ({
                         [`#storybook-preview-background`]: {
-                            background: `${designSystem.backgroundColor}`,
+                            background: `${this.state.designSystem.backgroundColor}`,
                         },
                     })}
                 />
-                {this.props.active ? this.renderForm(designSystem as any) : null}
+                {this.props.active ? this.renderForm() : null}
             </React.Fragment>
         );
-        return;
     }
 
-    private renderForm(designSystem: DesignSystem): JSX.Element {
+    private renderForm(): JSX.Element {
         return (
             <div style={{ padding: "12px" }}>
                 <div>
@@ -51,74 +65,99 @@ class DesignSystemPanel extends React.Component<DesignSystemPanelProps, {}> {
                         <input
                             type="color"
                             onChange={this.createChangeHandler(this.handleColorChange)}
-                            defaultValue={designSystem.backgroundColor}
+                            defaultValue={this.state.designSystem.backgroundColor}
                         />
                     </label>
                 </div>
 
-                <div>
+                <fieldset>
+                    <legend>Mode</legend>
+                    <label>
+                        light&nbsp;
+                        <input
+                            type="radio"
+                            name="colorMode"
+                            value={ColorModes.light}
+                            defaultChecked={this.state.colorMode === ColorModes.light}
+                        />
+                    </label>
+                    <label>
+                        dark&nbsp;
+                        <input
+                            type="radio"
+                            name="colorMode"
+                            value={ColorModes.dark}
+                            defaultChecked={this.state.colorMode === ColorModes.dark}
+                        />
+                    </label>
+                </fieldset>
+                <fieldset>
+                    <legend>Document direction</legend>
                     <label>
                         ltr&nbsp;
                         <input
                             type="radio"
                             name="direction"
                             value="ltr"
-                            defaultChecked={designSystem.direction === "ltr"}
+                            defaultChecked={this.state.designSystem.direction === "ltr"}
                             onChange={this.createChangeHandler(
-                                this.handleDirectioinChange
+                                this.handleDirectionChange
                             )}
                         />
                     </label>
-                </div>
-                <div>
                     <label>
                         rtl&nbsp;
                         <input
                             type="radio"
                             name="direction"
                             value="rtl"
-                            defaultChecked={designSystem.direction === "rtl"}
+                            defaultChecked={this.state.designSystem.direction === "rtl"}
                             onChange={this.createChangeHandler(
-                                this.handleDirectioinChange
+                                this.handleDirectionChange
                             )}
                         />
                     </label>
-                </div>
+                </fieldset>
             </div>
         );
     }
 
-    private createChangeHandler<T>(fn: (e: T) => void): (e: T) => void {
+    public componentDidMount(): void {
+        // Doesn't seem to get called initially
+        this.props.api.on(STORY_CHANGED, () => {
+            console.log("on story called from register!");
+
+            this.props.api.emit(ADDON_EVENT, this.state.designSystem);
+        });
+    }
+
+    private createChangeHandler<T>(fn: (e: T) => Partial<DesignSystem>): (e: T) => void {
         return (e: T): void => {
             const event: T = e;
-            fn(event);
+            const updates: Partial<DesignSystem> = fn(event);
 
-            this.props.api.emit(ADDON_EVENT);
-            this.forceUpdate();
+            this.setState(
+                {
+                    designSystem: merge({}, this.state.designSystem, updates),
+                },
+                () => {
+                    this.props.api.emit(ADDON_EVENT, this.state.designSystem);
+                }
+            );
         };
     }
 
-    private handleColorChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
-        designSystemManager.update({ backgroundColor: e.target.value });
+    private handleColorChange = (
+        e: React.ChangeEvent<HTMLInputElement>
+    ): Partial<DesignSystem> => {
+        return { backgroundColor: e.target.value };
     };
 
-    private handleDirectioinChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
-        designSystemManager.update({ direction: e.target.value as any });
-
-        this.setIframeDirection(e.target.value);
+    private handleDirectionChange = (
+        e: React.ChangeEvent<HTMLInputElement>
+    ): Partial<DesignSystem> => {
+        return { direction: e.target.value as any };
     };
-
-    /**
-     * Set the dir attribute of the parent iframe
-     */
-    private setIframeDirection(direction: string): void {
-        const frame: HTMLIFrameElement = document.getElementById(
-            "storybook-preview-iframe"
-        ) as HTMLIFrameElement;
-        frame.contentDocument
-            .getElementsByTagName("html")[0]
-            .setAttribute("dir", direction);
-    }
 }
 
 addons.register(

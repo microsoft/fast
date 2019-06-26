@@ -31,7 +31,7 @@ interface ConvertableData {
     [key: string]: ConvertAbleTypes | ConvertableData;
 }
 
-type ConvertedData<T> = {
+export type ConvertedData<T> = {
     [P in keyof T]: T[P] extends ConvertAbleTypes ? InputTypes : ConvertedData<T[P]>
 };
 

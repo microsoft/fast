@@ -13,7 +13,8 @@
   "dependencies": {
     "@microsoft/fast-components-styles-msft": "^4.12.0",
     "@microsoft/fast-storybook-design-system-addon": "^1.0.0",
-    "glob": "^7.1.4"
+    "glob": "^7.1.4",
+    "lodash": "^4.17.11"
   },
   "peerDependencies": {
     "@microsoft/fast-jss-manager-react": "^4.3.3",

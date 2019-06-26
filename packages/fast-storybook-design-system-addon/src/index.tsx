@@ -1,6 +1,6 @@
 import React from "react";
 import addons, { makeDecorator, StoryContext, StoryGetter } from "@storybook/addons";
-import { addDecorator, forceReRender } from "@storybook/react";
+import { addDecorator, forceReRender, Channel } from "@storybook/react";
 import { DesignSystemProvider } from "@microsoft/fast-jss-manager-react";
 import {
     DesignSystemDefaults,
@@ -10,30 +10,38 @@ import { ADDON_EVENT } from "./constants";
 import designSystemManager from "./design-system";
 
 interface DesignSystemDecoratorProps {
-    channel: any;
+    channel: ReturnType<typeof addons.getChannel>;
 }
 
 class DesignSystemDecorator<T> extends React.Component<
     DesignSystemDecoratorProps,
-    { designSystem: unknown }
+    { designSystem: DesignSystem | null }
 > {
     constructor(props: DesignSystemDecoratorProps) {
         super(props);
 
         this.state = {
-            designSystem: designSystemManager.get(),
+            designSystem: null,
         };
     }
 
     public componentDidMount(): void {
-        this.props.channel.on(ADDON_EVENT, () => {
-            this.setState({
-                designSystem: designSystemManager.get(),
-            });
-        });
+        this.props.channel.on(ADDON_EVENT, this.updateDesignSystem);
     }
 
-    public render(): JSX.Element {
+    public componentWillUnmount(): void {
+        this.props.channel.removeListener(ADDON_EVENT, this.updateDesignSystem);
+    }
+
+    public render(): React.ReactNode {
+        if (this.state.designSystem === null) {
+            console.log("Rendering without a design system");
+            return this.props.children;
+        }
+
+        // Make sure body dir is set correctly
+        document.body.dir = this.state.designSystem.direction;
+
         return (
             <DesignSystemProvider designSystem={this.state.designSystem}>
                 {this.props.children}
@@ -41,9 +49,12 @@ class DesignSystemDecorator<T> extends React.Component<
         );
     }
 
-    private get designSystem(): DesignSystem {
-        return JSON.parse(window.localStorage.getItem("design-system"));
-    }
+    private updateDesignSystem = (designSystem: DesignSystem) => {
+        console.log("Updating design system in preview");
+        this.setState({
+            designSystem: Object.assign({}, designSystem),
+        });
+    };
 }
 
 const decorator = makeDecorator({
@@ -61,8 +72,5 @@ const decorator = makeDecorator({
 });
 
 export function setup() {
-    designSystemManager.set(DesignSystemDefaults);
-
-    console.log("SETUP");
     addDecorator(decorator);
 }

@@ -52,7 +52,7 @@
     "@storybook/api": "^5.1.3",
     "@storybook/client-logger": "^5.1.3",
     "@storybook/components": "^5.1.3",
-    "@storybook/core-events": "^5.1.3",
+    "@storybook/core-events": "^5.1.9",
     "@storybook/router": "^5.1.3",
     "@storybook/theming": "^5.1.3"
   },
