@@ -63,7 +63,10 @@ export class ComponentStateColorPalette {
         const referencePalette: ColorRGBA64[] = r.palette;
 
         // Find the requested base color on the adjusted luminance reference ramp.
-        const baseColorLum: number = rgbToLuminanceLinear(this.config.baseColor);
+        // There is no _right_ way to desaturate a color, and both methods we've tested have value, so average them out.
+        const baseColorLum1: number = rgbToLuminanceLinear(this.config.baseColor);
+        const baseColorLum2: number = rgbToHSL(this.config.baseColor).l;
+        const baseColorLum: number = (baseColorLum1 + baseColorLum2) / 2;
         const baseColorRefIndex: number = this.matchRelativeLuminanceIndex(
             baseColorLum,
             referencePalette
