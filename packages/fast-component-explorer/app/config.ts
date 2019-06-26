@@ -40,8 +40,6 @@ import {
 } from "@microsoft/fast-components-react-msft";
 import { createBrowserHistory } from "history";
 
-const history = createBrowserHistory();
-
 const schemas: any[] = [
     actionToggleSchema,
     actionTriggerSchema,
@@ -103,6 +101,7 @@ function generateMenu(schemas: any[]): MenuItem[] {
     ];
 }
 
+const history = createBrowserHistory();
 const menu: MenuItem[] = generateMenu(schemas);
 
 export { history, menu };
