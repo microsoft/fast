@@ -49,6 +49,7 @@ import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import jsx from "react-syntax-highlighter/dist/esm/languages/prism/jsx";
 import syntaxHighlighterStyles from "./syntax-highlighting-style";
 import { merge } from "lodash-es";
+import { history } from "./config";
 
 class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
     public static displayName: string = "Explorer";
@@ -111,7 +112,11 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
                     <Container className={get(this.props, "managedClasses.creator")}>
                         <Row style={{ flex: "1" }}>
                             <Pane>
-                                <NavigationMenu menu={menu} expanded={true} />
+                                <NavigationMenu
+                                    menu={menu}
+                                    expanded={true}
+                                    onLocationUpdate={this.handleUpdateRoute}
+                                />
                             </Pane>
                             <Pane
                                 style={{
@@ -383,6 +388,11 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
         this.setState({
             dataLocation,
         });
+    };
+
+    private handleUpdateRoute = (route: string): void => {
+        console.log("update to new route", route);
+        history.push(route);
     };
 
     private get backgrounds(): typeof DarkModeBackgrounds | typeof LightModeBackgrounds {

@@ -38,29 +38,11 @@ import {
     toggleSchema,
     typographySchema,
 } from "@microsoft/fast-components-react-msft";
+import { createBrowserHistory } from "history";
 
-function getRouteFromSchemaId(schemaId: string): string {
-    const matchedRegex: RegExpMatchArray | null = schemaId.match(/\/(?:.(?!\/))+$/);
-    return Array.isArray(matchedRegex) ? matchedRegex[0] : "";
-}
+const history = createBrowserHistory();
 
-function generateMenu(schema: any[]): MenuItem[] {
-    return [
-        {
-            displayName: "Components",
-            items: schema.map(
-                (schema: any): MenuItem => {
-                    return {
-                        displayName: schema.title,
-                        location: getRouteFromSchemaId(schema.id),
-                    };
-                }
-            ),
-        },
-    ];
-}
-
-const menu: MenuItem[] = generateMenu([
+const schemas: any[] = [
     actionToggleSchema,
     actionTriggerSchema,
     autoSuggestSchema,
@@ -98,6 +80,29 @@ const menu: MenuItem[] = generateMenu([
     textFieldSchema,
     toggleSchema,
     typographySchema,
-]);
+];
 
-export { menu };
+function getRouteFromSchemaId(schemaId: string): string {
+    const matchedRegex: RegExpMatchArray | null = schemaId.match(/\/(?:.(?!\/))+$/);
+    return Array.isArray(matchedRegex) ? `/components${matchedRegex[0]}` : "";
+}
+
+function generateMenu(schemas: any[]): MenuItem[] {
+    return [
+        {
+            displayName: "Components",
+            items: schemas.map(
+                (schema: any): MenuItem => {
+                    return {
+                        displayName: schema.title,
+                        location: getRouteFromSchemaId(schema.id),
+                    };
+                }
+            ),
+        },
+    ];
+}
+
+const menu: MenuItem[] = generateMenu(schemas);
+
+export { history, menu };
