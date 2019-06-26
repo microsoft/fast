@@ -43,7 +43,7 @@ export default class CSSPropertyEditor extends Foundation<
         this.currentEditRowReactKey = null;
         this.editData = isNil(this.props.data) ? {} : Object.assign({}, this.props.data);
         this.state = {
-            currentEditRowUncommittedCSSPropertyKey: null,
+            activeRowUncommittedCSSName: null,
         };
     }
 
@@ -57,7 +57,7 @@ export default class CSSPropertyEditor extends Foundation<
                 ? {}
                 : Object.assign({}, this.props.data);
             this.setState({
-                currentEditRowUncommittedCSSPropertyKey: null,
+                activeRowUncommittedCSSName: null,
             });
         }
     }
@@ -118,20 +118,20 @@ export default class CSSPropertyEditor extends Foundation<
 
         const editKey: string =
             this.currentEditRowIndex === index &&
-            this.state.currentEditRowUncommittedCSSPropertyKey !== null
-                ? this.state.currentEditRowUncommittedCSSPropertyKey
+            this.state.activeRowUncommittedCSSName !== null
+                ? this.state.activeRowUncommittedCSSName
                 : cssKey;
 
         return (
             <PropertyEditorRow
                 key={itemKey}
-                cssKey={editKey}
+                cssPropertyName={editKey}
                 value={this.editData[cssKey]}
                 rowIndex={index}
                 onValueChange={this.handleValueChange}
-                onKeyChange={this.handleKeyChange}
-                onClickToInsert={this.handleClickToInsert}
-                onCommitKeyEdit={this.handleCommitKeyEdit}
+                onPropertyNameChange={this.handleKeyChange}
+                onClickOutside={this.handleClickToInsert}
+                onCommitPropertyNameEdit={this.handleCommitKeyEdit}
                 onRowBlur={this.handleRowBlur}
                 onRowFocus={this.handleRowFocus}
                 managedClasses={{
@@ -183,7 +183,7 @@ export default class CSSPropertyEditor extends Foundation<
         rowIndex: number
     ): void => {
         this.setState({
-            currentEditRowUncommittedCSSPropertyKey: newkey,
+            activeRowUncommittedCSSName: newkey,
         });
     };
 
@@ -216,7 +216,7 @@ export default class CSSPropertyEditor extends Foundation<
      * Commits a key change to data
      */
     private commitCSSKeyEdit = (): void => {
-        if (this.state.currentEditRowUncommittedCSSPropertyKey === null) {
+        if (this.state.activeRowUncommittedCSSName === null) {
             return;
         }
         const newData: CSSProperties = {};
@@ -225,9 +225,7 @@ export default class CSSPropertyEditor extends Foundation<
         // the order of keys in the CSS object
         Object.keys(this.editData).forEach((key: string, index: number) => {
             if (index === this.currentEditRowIndex) {
-                newData[
-                    this.state.currentEditRowUncommittedCSSPropertyKey
-                ] = this.editData[key];
+                newData[this.state.activeRowUncommittedCSSName] = this.editData[key];
             } else {
                 newData[key] = this.editData[key];
             }
@@ -235,7 +233,7 @@ export default class CSSPropertyEditor extends Foundation<
 
         this.editData = newData;
         this.setState({
-            currentEditRowUncommittedCSSPropertyKey: null,
+            activeRowUncommittedCSSName: null,
         });
 
         this.handleCSSUpdate(newData);
@@ -255,8 +253,8 @@ export default class CSSPropertyEditor extends Foundation<
      * Key input has lost focus
      */
     private handleCommitKeyEdit = (rowKey: string, rowIndex: number): void => {
-        if (this.state.currentEditRowUncommittedCSSPropertyKey !== null) {
-            if (this.state.currentEditRowUncommittedCSSPropertyKey === "") {
+        if (this.state.activeRowUncommittedCSSName !== null) {
+            if (this.state.activeRowUncommittedCSSName === "") {
                 this.deleteRow(rowIndex);
             } else {
                 this.commitCSSKeyEdit();
@@ -275,7 +273,7 @@ export default class CSSPropertyEditor extends Foundation<
         }
         this.currentEditRowReactKey = null;
         this.setState({
-            currentEditRowUncommittedCSSPropertyKey: null,
+            activeRowUncommittedCSSName: null,
         });
     };
 
@@ -344,7 +342,7 @@ export default class CSSPropertyEditor extends Foundation<
 
         if (deletionIndex === this.currentEditRowIndex) {
             this.setState({
-                currentEditRowUncommittedCSSPropertyKey: null,
+                activeRowUncommittedCSSName: null,
             });
             this.currentEditRowIndex = -1;
         }

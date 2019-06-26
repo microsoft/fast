@@ -13,14 +13,14 @@ export interface CSSPropertyEditorRowUnhandledProps
 export interface CSSPropertyEditorRowHandledProps
     extends ManagedClasses<CSSPropertyEditorRowClassNameContract> {
     /**
-     * The key associated with the value being edited
+     * The index of the row
      */
     rowIndex: number;
 
     /**
-     * The key associated with the value being edited
+     * The name associated with the value being edited
      */
-    cssKey: string;
+    cssPropertyName: string;
 
     /**
      * The value for the property being edited
@@ -35,17 +35,17 @@ export interface CSSPropertyEditorRowHandledProps
     /**
      * Called when the key value changes
      */
-    onKeyChange: (newkey: string, oldKey: string, rowIndex: number) => void;
+    onPropertyNameChange: (newkey: string, oldKey: string, rowIndex: number) => void;
 
     /**
-     * Key input has lost focus
+     * Property name should be committed (name input loses focus, user hits enter)
      */
-    onCommitKeyEdit: (rowKey: string, rowIndex: number) => void;
+    onCommitPropertyNameEdit: (rowKey: string, rowIndex: number) => void;
 
     /**
      * Called when mouse click outside the inputs
      */
-    onClickToInsert: (rowKey: string, rowIndex: number) => void;
+    onClickOutside: (rowKey: string, rowIndex: number) => void;
 
     /**
      *  Called when row gains focus

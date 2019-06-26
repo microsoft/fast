@@ -19,7 +19,7 @@ export interface CSSPropertyEditorState {
     /**
      *  The uncommitted string for the key of the row currently being edited
      */
-    currentEditRowUncommittedCSSPropertyKey: string;
+    activeRowUncommittedCSSName: string;
 }
 
 export interface CSSPropertyEditorUnhandledProps
