@@ -13,6 +13,7 @@
   "dependencies": {
     "@microsoft/fast-components-styles-msft": "^4.12.0",
     "@microsoft/fast-storybook-design-system-addon": "^1.0.0",
+    "@storybook/addon-a11y": "^5.1.9",
     "glob": "^7.1.4",
     "lodash": "^4.17.11"
   },

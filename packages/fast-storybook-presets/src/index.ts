@@ -26,6 +26,8 @@ export function addons(entry = [], options?: FASTDNAPresetOptions): string[] {
         ]);
     }
 
+    entry = entry.concat([require.resolve("@storybook/addon-a11y/register")]);
+
     return entry;
 }
 
@@ -34,6 +36,7 @@ export function entries(entries: any): any {
         ...entries,
         ...glob.sync("./src/**/*.stories.tsx"),
         path.resolve(__dirname, "./fast-storybook-design-system-addon-setup.js"),
+        path.resolve(__dirname, "./a11y-setup.js"),
         path.resolve(__dirname, "./global-styles.js"),
     ];
 }
