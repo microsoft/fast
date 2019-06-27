@@ -5,7 +5,7 @@ import {
     ProjectFileView,
 } from "./explorer.props";
 import style from "./explorer.style";
-import { camelCase, cloneDeep, get, set, memoize, uniqueId } from "lodash-es";
+import { camelCase, cloneDeep, get, memoize, merge, uniqueId } from "lodash-es";
 import {
     Canvas,
     CanvasClassNamesContract,
@@ -17,19 +17,11 @@ import {
 } from "@microsoft/fast-layouts-react";
 import {
     defaultDevices,
-    Device,
-    Display,
     Form,
     mapDataToCodePreview,
-    Navigation,
-    Orientation,
-    Rotate,
-    SelectDevice,
     Viewer,
-    CSSEditor,
     NavigationMenu,
 } from "@microsoft/fast-tooling-react";
-import { CSSPropertyEditor } from "@microsoft/fast-tooling-react/dist/css-property-editor";
 import manageJss, {
     ComponentStyleSheet,
     DesignSystemProvider,
@@ -37,7 +29,6 @@ import manageJss, {
 import ReactDOM from "react-dom";
 import React from "react";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
-import { getChildrenOptions } from "./utilities/views";
 import designSystemDefaults, {
     DesignSystem,
 } from "@microsoft/fast-components-styles-msft/dist/design-system";
@@ -48,15 +39,13 @@ import {
     LightModeBackgrounds,
     Pivot,
 } from "@microsoft/fast-components-react-msft";
-import { menu } from "./config";
 import { CodePreviewChildOption } from "@microsoft/fast-tooling-react/dist/data-utilities/mapping";
 import { ViewerManagedClasses } from "@microsoft/fast-tooling-react/dist/viewer/viewer/viewer.props";
 import { FormClassNameContract } from "@microsoft/fast-tooling-react/dist/form/form";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import jsx from "react-syntax-highlighter/dist/esm/languages/prism/jsx";
 import syntaxHighlighterStyles from "./syntax-highlighting-style";
-import { merge } from "lodash-es";
-import { history } from "./config";
+import { childOptions, history, menu } from "./config";
 import * as componentViewConfigs from "./utilities/configs";
 import { Scenario } from "./utilities/configs/data.props";
 import { MemoizedFunction } from "lodash";
@@ -203,7 +192,7 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
                                             onChange: this.handleUpdateLocation,
                                             dataLocation: this.state.dataLocation,
                                         }}
-                                        childOptions={getChildrenOptions()}
+                                        childOptions={childOptions}
                                         jssStyleSheet={this.formStyleOverrides}
                                     />
                                 </div>
@@ -228,7 +217,7 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
                             >
                                 {mapDataToCodePreview({
                                     data: this.state.views[this.state.activeView].data,
-                                    childOptions: getChildrenOptions() as CodePreviewChildOption[],
+                                    childOptions: childOptions as CodePreviewChildOption[],
                                 })}
                             </SyntaxHighlighter>
                         </div>
@@ -272,14 +261,18 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
             componentViewConfigs[`${camelCase(paths[paths.length - 1])}Config`].scenarios;
 
         if (Array.isArray(scenarioOptions)) {
-            return <select>{this.renderScenarioOptions(scenarioOptions)}</select>;
+            return (
+                <select onChange={this.handleUpdateScenario}>
+                    {this.renderScenarioOptions(scenarioOptions)}
+                </select>
+            );
         }
     }
 
     private renderScenarioOptions(scenarioOptions: Scenario<any>[]): React.ReactNode {
-        return scenarioOptions.map((scenarioOption: Scenario<any>) => {
+        return scenarioOptions.map((scenarioOption: Scenario<any>, index: number) => {
             return (
-                <option key={scenarioOption.displayName}>
+                <option key={scenarioOption.displayName} value={index}>
                     {scenarioOption.displayName}
                 </option>
             );
@@ -288,7 +281,7 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
 
     private getSchemaById(id: string): any {
         return get(
-            getChildrenOptions().find((componentOption: any): any => {
+            childOptions.find((componentOption: any): any => {
                 return componentOption.schema.id === id;
             }),
             "schema"
@@ -316,6 +309,18 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
             },
         };
     }
+
+    private handleUpdateScenario = (e: React.ChangeEvent<HTMLSelectElement>): void => {
+        this.setState(
+            merge({}, this.state.views, {
+                views: {
+                    [this.state.activeView]: {
+                        ...this.getScenarioData(parseInt(e.target.value, 10)),
+                    },
+                },
+            } as any)
+        );
+    };
 
     private handleUpdateData = (data: any): void => {
         this.setState(

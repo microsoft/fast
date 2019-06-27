@@ -17,6 +17,11 @@ export interface ComponentViewConfig<D> {
     schema: any;
 
     /**
+     * The React component class
+     */
+    component: React.ComponentClass;
+
+    /**
      * The scenarios associated with the component
      */
     scenarios: Scenario<D>[];

@@ -1,84 +1,8 @@
 import { MenuItem } from "@microsoft/fast-tooling-react";
-import {
-    actionToggleSchema,
-    actionTriggerSchema,
-    autoSuggestSchema,
-    autoSuggestOptionSchema,
-    badgeSchema,
-    breadcrumbSchema,
-    buttonSchema,
-    callToActionSchema,
-    captionSchema,
-    cardSchema,
-    carouselSchema,
-    checkboxSchema,
-    contextMenuSchema,
-    contextMenuItemSchema,
-    dialogSchema,
-    dividerSchema,
-    flipperSchema,
-    headingSchema,
-    hypertextSchema,
-    imageSchema,
-    labelSchema,
-    metatextSchema,
-    numberFieldSchema,
-    paragraphSchema,
-    pivotSchema,
-    progressSchema,
-    radioSchema,
-    selectSchema,
-    selectOptionSchema,
-    sliderSchema,
-    sliderLabelSchema,
-    subheadingSchema,
-    textActionSchema,
-    textAreaSchema,
-    textFieldSchema,
-    toggleSchema,
-    typographySchema,
-} from "@microsoft/fast-components-react-msft";
+import { FormChildOptionItem } from "@microsoft/fast-tooling-react/dist/form/form";
+import { pascalCase } from "@microsoft/fast-web-utilities";
+import * as componentViewConfigs from "./utilities/configs";
 import { createBrowserHistory } from "history";
-
-const schemas: any[] = [
-    actionToggleSchema,
-    actionTriggerSchema,
-    autoSuggestSchema,
-    autoSuggestOptionSchema,
-    badgeSchema,
-    breadcrumbSchema,
-    buttonSchema,
-    callToActionSchema,
-    captionSchema,
-    cardSchema,
-    carouselSchema,
-    checkboxSchema,
-    contextMenuSchema,
-    contextMenuItemSchema,
-    dialogSchema,
-    dividerSchema,
-    flipperSchema,
-    headingSchema,
-    hypertextSchema,
-    imageSchema,
-    labelSchema,
-    metatextSchema,
-    numberFieldSchema,
-    paragraphSchema,
-    pivotSchema,
-    progressSchema,
-    radioSchema,
-    selectSchema,
-    selectOptionSchema,
-    sliderSchema,
-    sliderLabelSchema,
-    subheadingSchema,
-    textActionSchema,
-    textAreaSchema,
-    textFieldSchema,
-    toggleSchema,
-    typographySchema,
-];
 
 function getRouteFromSchemaId(schemaId: string): string {
     const matchedRegex: RegExpMatchArray | null = schemaId.match(/\/(?:.(?!\/))+$/);
@@ -101,7 +25,26 @@ function generateMenu(schemas: any[]): MenuItem[] {
     ];
 }
 
+function getChildrenOptions(): FormChildOptionItem[] {
+    return Object.keys(componentViewConfigs).map(
+        (componentViewKey: string): FormChildOptionItem => {
+            return {
+                name: pascalCase(componentViewConfigs[componentViewKey].schema.title),
+                component: componentViewConfigs[componentViewKey].component,
+                schema: componentViewConfigs[componentViewKey].schema,
+            };
+        }
+    );
+}
+
+const schemas: any[] = [];
+
+Object.keys(componentViewConfigs).forEach((componentViewConfigKey: string) => {
+    schemas.push(componentViewConfigs[componentViewConfigKey].schema);
+});
+
 const history = createBrowserHistory();
 const menu: MenuItem[] = generateMenu(schemas);
+const childOptions: FormChildOptionItem[] = getChildrenOptions();
 
-export { history, menu };
+export { childOptions, history, menu };

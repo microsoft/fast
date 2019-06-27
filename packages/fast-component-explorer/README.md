@@ -21,5 +21,4 @@ Follow setup instructions in [contributing](https://github.com/Microsoft/fast-dn
 
 If you are adding a component to the documentation site, you will need to:
 
-- Add the component schema to the `./app/config.ts` file
 - Add curated component configs to the `./app/utilities/configs/` folder. See the `./app/utilities/configs/README.md` for details.
