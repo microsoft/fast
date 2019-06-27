@@ -1,6 +1,6 @@
 import { ExplorerHandledProps, ExplorerProps, ExplorerState } from "./explorer.props";
 import style from "./explorer.style";
-import { camelCase, cloneDeep, get, set, uniqueId } from "lodash-es";
+import { camelCase, cloneDeep, get, set, memoize, uniqueId } from "lodash-es";
 import {
     Canvas,
     CanvasClassNamesContract,
@@ -54,6 +54,7 @@ import { merge } from "lodash-es";
 import { history } from "./config";
 import * as scenarios from "./utilities/scenarios";
 import { Scenario } from "./utilities/scenarios/data.props";
+import { MemoizedFunction } from "lodash";
 
 class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
     public static displayName: string = "Explorer";
@@ -90,10 +91,13 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
         },
     };
 
+    private resolveSchemaById: ((id: string) => any) & MemoizedFunction;
+
     constructor(props: ExplorerProps) {
         super(props);
 
         const initialViewId: string = uniqueId("view");
+        this.resolveSchemaById = memoize(this.getSchemaById);
         this.state = {
             xCoord: 0,
             yCoord: 0,
@@ -184,7 +188,7 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
                                                 .props
                                         }
                                         onChange={this.handleUpdateData}
-                                        schema={this.getSchemaById(
+                                        schema={this.resolveSchemaById(
                                             get(
                                                 this.state.views[this.state.activeView],
                                                 "data.id"
@@ -239,7 +243,7 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
                         <div className={className}>
                             <pre>
                                 {JSON.stringify(
-                                    this.getSchemaById(
+                                    this.resolveSchemaById(
                                         get(
                                             this.state.views[this.state.activeView],
                                             "data.id"

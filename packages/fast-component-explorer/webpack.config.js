@@ -78,6 +78,7 @@ module.exports = (env, args) => {
         resolve: {
             extensions: [".js", ".tsx", ".ts", ".json"],
             alias: {
+                lodash: path.resolve("./node_modules/lodash-es"),
                 "lodash-es": path.resolve("./node_modules/lodash-es"),
                 react: path.resolve("./node_modules/react"),
                 "react-dom": path.resolve("./node_modules/react-dom"),
