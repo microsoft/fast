@@ -1,8 +1,8 @@
 import {
+    ComponentProps,
     ExplorerHandledProps,
     ExplorerProps,
     ExplorerState,
-    ProjectFileView,
 } from "./explorer.props";
 import style from "./explorer.style";
 import { camelCase, cloneDeep, get, memoize, merge, uniqueId } from "lodash-es";
@@ -90,7 +90,6 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
     constructor(props: ExplorerProps) {
         super(props);
 
-        const initialViewId: string = uniqueId("view");
         this.resolveSchemaById = memoize(this.getSchemaById);
         this.state = {
             xCoord: 0,
@@ -98,10 +97,7 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
             dataLocation: "",
             width: defaultDevices[0].width ? defaultDevices[0].width : 500,
             height: defaultDevices[0].height ? defaultDevices[0].height : 500,
-            activeView: initialViewId,
-            views: {
-                [initialViewId]: this.getScenarioData(),
-            },
+            scenario: this.getScenarioData(),
         };
     }
 
@@ -132,11 +128,7 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
                                             onUpdateWidth={this.handleUpdateWidth}
                                             viewerContentProps={
                                                 /* Bug here - we shouldn't need to cloneDeep but somewhere the state data is mutating */
-                                                cloneDeep(
-                                                    this.state.views[
-                                                        this.state.activeView
-                                                    ].data
-                                                )
+                                                cloneDeep(this.state.scenario)
                                             }
                                             responsive={true}
                                             jssStyleSheet={this.viewerStyleOverrides}
@@ -177,16 +169,10 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
                                     }}
                                 >
                                     <Form
-                                        data={
-                                            this.state.views[this.state.activeView].data
-                                                .props
-                                        }
+                                        data={this.state.scenario.props}
                                         onChange={this.handleUpdateData}
                                         schema={this.resolveSchemaById(
-                                            get(
-                                                this.state.views[this.state.activeView],
-                                                "data.id"
-                                            )
+                                            get(this.state.scenario, "id")
                                         )}
                                         location={{
                                             onChange: this.handleUpdateLocation,
@@ -216,7 +202,7 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
                                 style={syntaxHighlighterStyles}
                             >
                                 {mapDataToCodePreview({
-                                    data: this.state.views[this.state.activeView].data,
+                                    data: this.state.scenario,
                                     childOptions: childOptions as CodePreviewChildOption[],
                                 })}
                             </SyntaxHighlighter>
@@ -238,10 +224,7 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
                             <pre>
                                 {JSON.stringify(
                                     this.resolveSchemaById(
-                                        get(
-                                            this.state.views[this.state.activeView],
-                                            "data.id"
-                                        )
+                                        get(this.state.scenario, "id")
                                     ),
                                     null,
                                     2
@@ -288,53 +271,38 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
         );
     }
 
-    private getScenarioData(index?: number): ProjectFileView {
+    private getScenarioData(index?: number): ComponentProps {
         const paths: string[] = get(this.props, "location.pathname").split("/");
         const currentComponentIndex: number = paths.length - 1;
 
         return {
-            data: {
-                id:
-                    componentViewConfigs[
-                        `${camelCase(paths[currentComponentIndex])}Config`
-                    ].schema.id,
-                props:
-                    typeof index === "number"
-                        ? componentViewConfigs[
-                              `${camelCase(paths[currentComponentIndex])}Config`
-                          ].scenarios[index].data
-                        : componentViewConfigs[
-                              `${camelCase(paths[currentComponentIndex])}Config`
-                          ].scenarios[0].data,
-            },
+            id:
+                componentViewConfigs[`${camelCase(paths[currentComponentIndex])}Config`]
+                    .schema.id,
+            props:
+                typeof index === "number"
+                    ? componentViewConfigs[
+                          `${camelCase(paths[currentComponentIndex])}Config`
+                      ].scenarios[index].data
+                    : componentViewConfigs[
+                          `${camelCase(paths[currentComponentIndex])}Config`
+                      ].scenarios[0].data,
         };
     }
 
     private handleUpdateScenario = (e: React.ChangeEvent<HTMLSelectElement>): void => {
-        this.setState(
-            merge({}, this.state.views, {
-                views: {
-                    [this.state.activeView]: {
-                        ...this.getScenarioData(parseInt(e.target.value, 10)),
-                    },
-                },
-            } as any)
-        );
+        this.setState({
+            scenario: this.getScenarioData(parseInt(e.target.value, 10)),
+        });
     };
 
     private handleUpdateData = (data: any): void => {
-        this.setState(
-            merge({}, this.state.views, {
-                views: {
-                    [this.state.activeView]: {
-                        data: {
-                            id: this.state.views[this.state.activeView].data.id,
-                            props: data,
-                        },
-                    },
-                },
-            } as any)
-        );
+        this.setState({
+            scenario: {
+                id: this.state.scenario.id,
+                props: data,
+            },
+        });
     };
 
     private handleUpdateHeight = (height: number): void => {

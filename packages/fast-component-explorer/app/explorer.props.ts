@@ -11,21 +11,9 @@ export interface ComponentProps {
 }
 
 /**
- * Data for a single view
- */
-export interface ProjectFileView {
-    data: ComponentProps;
-}
-
-/**
  * A project file is a culmination of all views which should contain the data for that view
  */
 export interface ProjectFile {
-    /**
-     * The active view
-     */
-    activeView: string;
-
     /**
      * The current data location
      */
@@ -52,11 +40,9 @@ export interface ProjectFile {
     height: number;
 
     /**
-     * The views
+     * The scenario
      */
-    views: {
-        [key: string]: ProjectFileView;
-    };
+    scenario: ComponentProps;
 }
 
 export interface ExplorerManagedClasses
