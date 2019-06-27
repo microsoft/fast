@@ -46,13 +46,13 @@ interface SwatchProps {
     selected: boolean;
     value: Background;
     onClick: React.MouseEventHandler<HTMLDivElement>;
-    labeledby: string;
+    labelledby: string;
 }
 
 class Swatch extends React.Component<SwatchProps> {
     render(): JSX.Element {
         const shadow: string = `0 0 .8px 0px #000`;
-        const Inner = styled.div(({ theme }) => ({
+        const Inner: any = styled.div(({ theme }) => ({
             width: 36,
             height: 36,
             backgroundColor: this.props.color,
@@ -70,10 +70,21 @@ class Swatch extends React.Component<SwatchProps> {
                 data-value={this.props.value}
                 onClick={this.props.onClick}
                 aria-checked={this.props.selected}
-                aria-labeledby={this.props.labeledby}
+                aria-labelledby={this.props.labelledby}
             />
         );
     }
+}
+
+function Radio(props: React.InputHTMLAttributes<HTMLInputElement>): React.ReactElement {
+    const inner: React.ReactNode = styled.input(({ theme }) => ({
+        width: 16,
+        height: 16,
+        marginRight: 20,
+        verticalAlign: "bottom",
+    }));
+
+    return React.createElement(inner as any, Object.assign({}, props, { type: "radio" }));
 }
 
 export class DesignSystemPanel extends React.Component<
@@ -109,30 +120,33 @@ export class DesignSystemPanel extends React.Component<
     private renderForm(): JSX.Element {
         return (
             <div style={{ padding: "12px" }}>
-                <p id={this.backgroundLabel}>Background</p>
-                {this.renderSwatch(Background.L1)}
-                {this.renderSwatch(Background.L1Alt)}
-                {this.renderSwatch(Background.L2)}
-                {this.renderSwatch(Background.L3)}
-                {this.renderSwatch(Background.L4)}
-                <div>
-                    <label>
+                <fieldset>
+                    <legend>Colors</legend>
+                    <p id={this.backgroundLabel} style={{ margin: "0 0 8px" }}>
+                        Background
+                    </p>
+                    {this.renderSwatch(Background.L1)}
+                    {this.renderSwatch(Background.L1Alt)}
+                    {this.renderSwatch(Background.L2)}
+                    {this.renderSwatch(Background.L3)}
+                    {this.renderSwatch(Background.L4)}
+                    <label style={{ display: "block" }}>
                         Accent base color
                         <input
                             type="color"
                             defaultValue={this.state.designSystem.accentBaseColor}
+                            style={{ marginLeft: 8 }}
                             onChange={this.createChangeHandler(
                                 this.handleAccentBaseChange
                             )}
                         />
                     </label>
-                </div>
+                </fieldset>
                 <fieldset>
                     <legend>Mode</legend>
                     <label>
                         light&nbsp;
-                        <input
-                            type="radio"
+                        <Radio
                             name="colorMode"
                             value={ColorModes.light}
                             defaultChecked={this.state.colorMode === ColorModes.light}
@@ -141,8 +155,7 @@ export class DesignSystemPanel extends React.Component<
                     </label>
                     <label>
                         dark&nbsp;
-                        <input
-                            type="radio"
+                        <Radio
                             name="colorMode"
                             value={ColorModes.dark}
                             onChange={this.createChangeHandler(this.handleThemeChange)}
@@ -154,8 +167,7 @@ export class DesignSystemPanel extends React.Component<
                     <legend>Document direction</legend>
                     <label>
                         ltr&nbsp;
-                        <input
-                            type="radio"
+                        <Radio
                             name="direction"
                             value="ltr"
                             defaultChecked={this.state.designSystem.direction === "ltr"}
@@ -166,8 +178,7 @@ export class DesignSystemPanel extends React.Component<
                     </label>
                     <label>
                         rtl&nbsp;
-                        <input
-                            type="radio"
+                        <Radio
                             name="direction"
                             value="rtl"
                             defaultChecked={this.state.designSystem.direction === "rtl"}
@@ -206,7 +217,7 @@ export class DesignSystemPanel extends React.Component<
                     ]
                 }
                 onClick={this.createChangeHandler(this.handleBackgroundChange)}
-                labeledby={this.backgroundLabel}
+                labelledby={this.backgroundLabel}
             />
         );
     }
@@ -288,8 +299,13 @@ export class DesignSystemPanel extends React.Component<
         e: React.ChangeEvent<HTMLInputElement>
     ): Partial<DesignSystem> {
         const value: string = e.target.value;
+        const parsed: ColorRGBA64 | null = parseColor(value);
 
-        console.log(value);
-        return {};
+        return parsed !== null
+            ? {
+                  accentBaseColor: value,
+                  accentPalette: createColorPalette(parsed),
+              }
+            : {};
     }
 }
