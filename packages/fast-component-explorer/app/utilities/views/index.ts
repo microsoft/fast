@@ -2,7 +2,6 @@ import { ProjectFileView } from "../../explorer.props";
 import designSystemSchema from "../../msft-component-helpers/design-system.schema.json";
 import groupSchema from "../../components/group/group.schema.json";
 import { FormChildOptionItem } from "@microsoft/fast-tooling-react/dist/form/form";
-import { Group } from "../../components";
 import { DesignSystemProvider } from "@microsoft/fast-jss-manager-react";
 import { pascalCase } from "@microsoft/fast-web-utilities";
 import {
@@ -82,29 +81,8 @@ import {
     typographySchema,
 } from "@microsoft/fast-components-react-msft";
 
-export function getInitialView(): ProjectFileView {
-    const projectFileView: ProjectFileView = {
-        data: {
-            id: designSystemSchema.id,
-            props: {
-                children: {
-                    id: groupSchema.id,
-                    props: {},
-                },
-            },
-        },
-    };
-
-    return projectFileView;
-}
-
 export function getChildrenOptions(): FormChildOptionItem[] {
     return [
-        {
-            name: groupSchema.title,
-            component: Group,
-            schema: groupSchema,
-        },
         {
             name: pascalCase(designSystemSchema.title),
             component: DesignSystemProvider,

@@ -1,4 +1,9 @@
-import { ExplorerHandledProps, ExplorerProps, ExplorerState } from "./explorer.props";
+import {
+    ExplorerHandledProps,
+    ExplorerProps,
+    ExplorerState,
+    ProjectFileView,
+} from "./explorer.props";
 import style from "./explorer.style";
 import { camelCase, cloneDeep, get, set, memoize, uniqueId } from "lodash-es";
 import {
@@ -32,7 +37,7 @@ import manageJss, {
 import ReactDOM from "react-dom";
 import React from "react";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
-import { getChildrenOptions, getInitialView } from "./utilities/views";
+import { getChildrenOptions } from "./utilities/views";
 import designSystemDefaults, {
     DesignSystem,
 } from "@microsoft/fast-components-styles-msft/dist/design-system";
@@ -52,8 +57,8 @@ import jsx from "react-syntax-highlighter/dist/esm/languages/prism/jsx";
 import syntaxHighlighterStyles from "./syntax-highlighting-style";
 import { merge } from "lodash-es";
 import { history } from "./config";
-import * as scenarios from "./utilities/scenarios";
-import { Scenario } from "./utilities/scenarios/data.props";
+import * as componentViewConfigs from "./utilities/configs";
+import { Scenario } from "./utilities/configs/data.props";
 import { MemoizedFunction } from "lodash";
 
 class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
@@ -106,7 +111,7 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
             height: defaultDevices[0].height ? defaultDevices[0].height : 500,
             activeView: initialViewId,
             views: {
-                [initialViewId]: getInitialView(),
+                [initialViewId]: this.getScenarioData(),
             },
         };
     }
@@ -264,7 +269,7 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
     private renderScenarioSelect(): React.ReactNode {
         const paths: string[] = get(this.props, "location.pathname").split("/");
         const scenarioOptions: Scenario<any>[] =
-            scenarios[`${camelCase(paths[paths.length - 1])}Scenarios`];
+            componentViewConfigs[`${camelCase(paths[paths.length - 1])}Config`].scenarios;
 
         if (Array.isArray(scenarioOptions)) {
             return <select>{this.renderScenarioOptions(scenarioOptions)}</select>;
@@ -273,7 +278,11 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
 
     private renderScenarioOptions(scenarioOptions: Scenario<any>[]): React.ReactNode {
         return scenarioOptions.map((scenarioOption: Scenario<any>) => {
-            return <option>{scenarioOption.displayName}</option>;
+            return (
+                <option key={scenarioOption.displayName}>
+                    {scenarioOption.displayName}
+                </option>
+            );
         });
     }
 
@@ -284,6 +293,28 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
             }),
             "schema"
         );
+    }
+
+    private getScenarioData(index?: number): ProjectFileView {
+        const paths: string[] = get(this.props, "location.pathname").split("/");
+        const currentComponentIndex: number = paths.length - 1;
+
+        return {
+            data: {
+                id:
+                    componentViewConfigs[
+                        `${camelCase(paths[currentComponentIndex])}Config`
+                    ].schema.id,
+                props:
+                    typeof index === "number"
+                        ? componentViewConfigs[
+                              `${camelCase(paths[currentComponentIndex])}Config`
+                          ].scenarios[index].data
+                        : componentViewConfigs[
+                              `${camelCase(paths[currentComponentIndex])}Config`
+                          ].scenarios[0].data,
+            },
+        };
     }
 
     private handleUpdateData = (data: any): void => {

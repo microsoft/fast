@@ -1,6 +1,6 @@
-# Scenarios
+# Configs
 
-This folder contains initial data for components within the FAST explorer documentation site.
+This folder contains initial configs and data for components within the FAST explorer documentation site.
 
 ## Adding a new component
 
