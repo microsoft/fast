@@ -26,7 +26,10 @@ export function addons(entry = [], options?: FASTDNAPresetOptions): string[] {
         ]);
     }
 
-    entry = entry.concat([require.resolve("@storybook/addon-a11y/register")]);
+    entry = entry.concat([
+        require.resolve("@storybook/addon-a11y/register"),
+        require.resolve("@storybook/addon-viewport/register"),
+    ]);
 
     return entry;
 }
