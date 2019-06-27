@@ -36,10 +36,12 @@ import { getChildrenOptions, getInitialView } from "./utilities/views";
 import designSystemDefaults, {
     DesignSystem,
 } from "@microsoft/fast-components-styles-msft/dist/design-system";
+import { TabsItem } from "@microsoft/fast-components-react-base";
 import {
     Background,
     DarkModeBackgrounds,
     LightModeBackgrounds,
+    Pivot,
 } from "@microsoft/fast-components-react-msft";
 import { menu } from "./config";
 import { CodePreviewChildOption } from "@microsoft/fast-tooling-react/dist/data-utilities/mapping";
@@ -152,17 +154,19 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
                                         value={this.backgrounds.L4}
                                         style={{ width: "100%" }}
                                     >
-                                        <SyntaxHighlighter
-                                            language="jsx"
-                                            style={syntaxHighlighterStyles}
-                                        >
-                                            {mapDataToCodePreview({
-                                                data: this.state.views[
-                                                    this.state.activeView
-                                                ].data,
-                                                childOptions: getChildrenOptions() as CodePreviewChildOption[],
-                                            })}
-                                        </SyntaxHighlighter>
+                                        <Pivot
+                                            label={"documentation"}
+                                            items={this.renderPivotItems()}
+                                            jssStyleSheet={{
+                                                pivot: {
+                                                    height: "100%",
+                                                },
+                                                pivot_tabPanels: {
+                                                    height: "100%",
+                                                    overflow: "auto",
+                                                },
+                                            }}
+                                        />
                                     </Background>
                                 </Row>
                             </Canvas>
@@ -193,7 +197,6 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
                                         childOptions={getChildrenOptions()}
                                         jssStyleSheet={this.formStyleOverrides}
                                     />
-                                    {this.renderCSSEditingTools()}
                                 </div>
                             </Pane>
                         </Row>
@@ -203,46 +206,55 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
         );
     }
 
-    private renderCSSEditingTools(): React.ReactNode {
-        if (this.state.dataLocation.endsWith(".props")) {
-            return (
-                <React.Fragment>
-                    {this.renderCSSEditor()}
-                    {this.renderCSSPropertyEditor()}
-                </React.Fragment>
-            );
-        }
-    }
-
-    private renderCSSEditor(): React.ReactNode {
-        return (
-            <CSSEditor
-                jssStyleSheet={{ cssEditor: { height: "unset" } }}
-                data={
-                    get(
-                        this.state.views,
-                        `${this.state.activeView}.data.props.${this.state.dataLocation}.style`
-                    ) as any
-                }
-                onChange={this.handleCSSUpdate}
-            />
-        );
-    }
-
-    private renderCSSPropertyEditor(): React.ReactNode {
-        return (
-            <div style={{ padding: "7px 10px" }}>
-                <CSSPropertyEditor
-                    data={
-                        get(
-                            this.state.views,
-                            `${this.state.activeView}.data.props.${this.state.dataLocation}.style`
-                        ) as any
-                    }
-                    onChange={this.handleCSSUpdate}
-                />
-            </div>
-        );
+    private renderPivotItems(): TabsItem[] {
+        return [
+            {
+                tab: (className: string): React.ReactNode => "Code Preview",
+                content: (className: string): React.ReactNode => {
+                    return (
+                        <div className={className}>
+                            <SyntaxHighlighter
+                                language="jsx"
+                                style={syntaxHighlighterStyles}
+                            >
+                                {mapDataToCodePreview({
+                                    data: this.state.views[this.state.activeView].data,
+                                    childOptions: getChildrenOptions() as CodePreviewChildOption[],
+                                })}
+                            </SyntaxHighlighter>
+                        </div>
+                    );
+                },
+                id: "codePreview",
+            },
+            {
+                tab: (className: string): React.ReactNode => "Guidance",
+                content: (className: string): React.ReactNode => "world 2",
+                id: "documentation",
+            },
+            {
+                tab: (className: string): React.ReactNode => "Schema",
+                content: (className: string): React.ReactNode => {
+                    return (
+                        <div className={className}>
+                            <pre>
+                                {JSON.stringify(
+                                    this.getSchemaById(
+                                        get(
+                                            this.state.views[this.state.activeView],
+                                            "data.id"
+                                        )
+                                    ),
+                                    null,
+                                    2
+                                )}
+                            </pre>
+                        </div>
+                    );
+                },
+                id: "schema",
+            },
+        ];
     }
 
     private renderScenarioSelect(): React.ReactNode {
@@ -269,30 +281,6 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
             "schema"
         );
     }
-
-    private getDeviceById(id: string): Device | void {
-        return defaultDevices.find((device: Device): boolean => {
-            return device.id === id;
-        });
-    }
-
-    private handleCSSUpdate = (styles: any): void => {
-        const updatedData: any = cloneDeep(
-            get(this.state.views, `${this.state.activeView}.data.props`)
-        );
-        set(updatedData, `${this.state.dataLocation}.style`, styles);
-
-        this.setState({
-            views: {
-                [this.state.activeView]: {
-                    data: {
-                        id: this.state.views[this.state.activeView].data.id,
-                        props: updatedData,
-                    },
-                },
-            },
-        });
-    };
 
     private handleUpdateData = (data: any): void => {
         this.setState(

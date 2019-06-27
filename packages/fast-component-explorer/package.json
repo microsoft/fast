@@ -118,6 +118,7 @@
     "workbox-webpack-plugin": "^3.6.3"
   },
   "dependencies": {
+    "@microsoft/fast-components-react-base": "^4.8.0",
     "@microsoft/fast-components-react-msft": "^4.8.0",
     "@microsoft/fast-components-styles-msft": "^4.12.0",
     "@microsoft/fast-tooling-react": "^1.8.2",
