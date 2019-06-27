@@ -5,17 +5,20 @@ import { FormChildOptionItem } from "@microsoft/fast-tooling-react/dist/form/for
 import { Group } from "../../components";
 import { DesignSystemProvider } from "@microsoft/fast-jss-manager-react";
 import { pascalCase } from "@microsoft/fast-web-utilities";
-
 import {
     ActionToggle,
     ActionTrigger,
+    AutoSuggest,
     Badge,
     Breadcrumb,
     Button,
     CallToAction,
     Caption,
     Card,
+    Carousel,
     Checkbox,
+    ContextMenu,
+    ContextMenuItem,
     Dialog,
     Divider,
     Flipper,
@@ -26,8 +29,12 @@ import {
     Metatext,
     NumberField,
     Paragraph,
+    Pivot,
     Progress,
     Radio,
+    Select,
+    Slider,
+    SliderLabel,
     Subheading,
     TextAction,
     TextArea,
@@ -35,34 +42,45 @@ import {
     Toggle,
     Typography,
 } from "@microsoft/fast-components-react-msft";
-
-import actionToggleSchema from "@microsoft/fast-components-react-msft/dist/action-toggle/action-toggle.schema.json";
-import actionTriggerSchema from "@microsoft/fast-components-react-msft/dist/action-trigger/action-trigger.schema.json";
-import badgeSchema from "@microsoft/fast-components-react-msft/dist/badge/badge.schema.json";
-import breadcrumbSchema from "@microsoft/fast-components-react-msft/dist/breadcrumb/breadcrumb.schema.json";
-import buttonSchema from "@microsoft/fast-components-react-msft/dist/button/button.schema.json";
-import callToActionSchema from "@microsoft/fast-components-react-msft/dist/call-to-action/call-to-action.schema.json";
-import captionSchema from "@microsoft/fast-components-react-msft/dist/caption/caption.schema.json";
-import cardSchema from "@microsoft/fast-components-react-msft/dist/card/card.schema.json";
-import checkboxSchema from "@microsoft/fast-components-react-msft/dist/checkbox/checkbox.schema.json";
-import dialogSchema from "@microsoft/fast-components-react-msft/dist/dialog/dialog.schema.json";
-import dividerSchema from "@microsoft/fast-components-react-msft/dist/divider/divider.schema.json";
-import flipperSchema from "@microsoft/fast-components-react-msft/dist/flipper/flipper.schema.json";
-import headingSchema from "@microsoft/fast-components-react-msft/dist/heading/heading.schema.json";
-import hypertextSchema from "@microsoft/fast-components-react-msft/dist/hypertext/hypertext.schema.json";
-import imageSchema from "@microsoft/fast-components-react-msft/dist/image/image.schema.json";
-import labelSchema from "@microsoft/fast-components-react-msft/dist/label/label.schema.json";
-import metatextSchema from "@microsoft/fast-components-react-msft/dist/metatext/metatext.schema.json";
-import numberFieldSchema from "@microsoft/fast-components-react-msft/dist/number-field/number-field.schema.json";
-import paragraphSchema from "@microsoft/fast-components-react-msft/dist/paragraph/paragraph.schema.json";
-import progressSchema from "@microsoft/fast-components-react-msft/dist/progress/progress.schema.json";
-import radioSchema from "@microsoft/fast-components-react-msft/dist/radio/radio.schema.json";
-import subheadingSchema from "@microsoft/fast-components-react-msft/dist/subheading/subheading.schema.json";
-import textActionSchema from "@microsoft/fast-components-react-msft/dist/text-action/text-action.schema.json";
-import textAreaSchema from "@microsoft/fast-components-react-msft/dist/text-area/text-area.schema.json";
-import textFieldSchema from "@microsoft/fast-components-react-msft/dist/text-field/text-field.schema.json";
-import toggleSchema from "@microsoft/fast-components-react-msft/dist/toggle/toggle.schema.json";
-import typographySchema from "@microsoft/fast-components-react-msft/dist/typography/typography.schema.json";
+import {
+    actionToggleSchema,
+    actionTriggerSchema,
+    autoSuggestSchema,
+    autoSuggestOptionSchema,
+    badgeSchema,
+    breadcrumbSchema,
+    buttonSchema,
+    callToActionSchema,
+    captionSchema,
+    cardSchema,
+    carouselSchema,
+    checkboxSchema,
+    contextMenuSchema,
+    contextMenuItemSchema,
+    dialogSchema,
+    dividerSchema,
+    flipperSchema,
+    headingSchema,
+    hypertextSchema,
+    imageSchema,
+    labelSchema,
+    metatextSchema,
+    numberFieldSchema,
+    paragraphSchema,
+    pivotSchema,
+    progressSchema,
+    radioSchema,
+    selectSchema,
+    selectOptionSchema,
+    sliderSchema,
+    sliderLabelSchema,
+    subheadingSchema,
+    textActionSchema,
+    textAreaSchema,
+    textFieldSchema,
+    toggleSchema,
+    typographySchema,
+} from "@microsoft/fast-components-react-msft";
 
 export function getInitialView(): ProjectFileView {
     const projectFileView: ProjectFileView = {

@@ -2,7 +2,7 @@ import { ComponentStyles, ManagedClasses } from "@microsoft/fast-jss-manager-rea
 import { ExplorerDesignSystem } from "./design-system";
 
 export interface ExplorerClassNameContract {
-    creator?: string;
+    explorer?: string;
 }
 
 const style: ComponentStyles<ExplorerClassNameContract, ExplorerDesignSystem> = {
@@ -19,7 +19,7 @@ const style: ComponentStyles<ExplorerClassNameContract, ExplorerDesignSystem> = 
             margin: "0",
         },
     },
-    creator: {},
+    explorer: {},
 };
 
 export default style;

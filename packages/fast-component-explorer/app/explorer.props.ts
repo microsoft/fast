@@ -52,16 +52,6 @@ export interface ProjectFile {
     height: number;
 
     /**
-     * The selected device for the preview
-     */
-    deviceId: string;
-
-    /**
-     * The view orientation
-     */
-    orientation: Orientation;
-
-    /**
      * The views
      */
     views: {

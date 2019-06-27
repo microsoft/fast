@@ -1,6 +1,6 @@
 import { ExplorerHandledProps, ExplorerProps, ExplorerState } from "./explorer.props";
 import style from "./explorer.style";
-import { cloneDeep, get, set, uniqueId } from "lodash-es";
+import { camelCase, cloneDeep, get, set, uniqueId } from "lodash-es";
 import {
     Canvas,
     CanvasClassNamesContract,
@@ -50,6 +50,8 @@ import jsx from "react-syntax-highlighter/dist/esm/languages/prism/jsx";
 import syntaxHighlighterStyles from "./syntax-highlighting-style";
 import { merge } from "lodash-es";
 import { history } from "./config";
+import * as scenarios from "./utilities/scenarios";
+import { Scenario } from "./utilities/scenarios/data.props";
 
 class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
     public static displayName: string = "Explorer";
@@ -96,8 +98,6 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
             dataLocation: "",
             width: defaultDevices[0].width ? defaultDevices[0].width : 500,
             height: defaultDevices[0].height ? defaultDevices[0].height : 500,
-            deviceId: defaultDevices[0].id,
-            orientation: Orientation.portrait,
             activeView: initialViewId,
             views: {
                 [initialViewId]: getInitialView(),
@@ -109,7 +109,7 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
         return (
             <DesignSystemProvider designSystem={designSystemDefaults}>
                 <Background value={this.backgrounds.L1}>
-                    <Container className={get(this.props, "managedClasses.creator")}>
+                    <Container className={get(this.props, "managedClasses.explorer")}>
                         <Row style={{ flex: "1" }}>
                             <Pane>
                                 <NavigationMenu
@@ -118,46 +118,11 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
                                     onLocationUpdate={this.handleUpdateRoute}
                                 />
                             </Pane>
-                            <Pane
-                                style={{
-                                    overflowY: "auto",
-                                    overflowX: "hidden",
-                                    paddingTop: "4px",
-                                    background: "#212121",
-                                }}
-                                resizable={true}
-                                resizeFrom={PaneResizeDirection.east}
-                            >
-                                <Navigation
-                                    data={
-                                        this.state.views[this.state.activeView].data.props
-                                    }
-                                    schema={this.getSchemaById(
-                                        this.state.views[this.state.activeView].data.id
-                                    )}
-                                    childOptions={getChildrenOptions()}
-                                    onLocationUpdate={this.handleUpdateLocation}
-                                    dataLocation={this.state.dataLocation}
-                                    dragAndDropReordering={true}
-                                    onChange={this.handleUpdateData}
-                                />
-                            </Pane>
                             <Canvas jssStyleSheet={this.canvasStyleOverrides}>
                                 <Row fill={true}>
                                     <div style={{ width: "100%" }}>
                                         <div style={{ padding: "7px 10px" }}>
-                                            <SelectDevice
-                                                devices={defaultDevices}
-                                                activeDeviceId={this.state.deviceId}
-                                                onUpdateDevice={this.handleUpdateDevice}
-                                            />
-                                            &nbsp;
-                                            <Rotate
-                                                orientation={this.state.orientation}
-                                                onUpdateOrientation={
-                                                    this.handleUpdateOrientation
-                                                }
-                                            />
+                                            {this.renderScenarioSelect()}
                                         </div>
                                         <Viewer
                                             iframeSrc={"/preview"}
@@ -173,14 +138,7 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
                                                     ].data
                                                 )
                                             }
-                                            responsive={
-                                                get(
-                                                    this.getDeviceById(
-                                                        this.state.deviceId
-                                                    ),
-                                                    "display"
-                                                ) === Display.responsive
-                                            }
+                                            responsive={true}
                                             jssStyleSheet={this.viewerStyleOverrides}
                                         />
                                     </div>
@@ -287,6 +245,22 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
         );
     }
 
+    private renderScenarioSelect(): React.ReactNode {
+        const paths: string[] = get(this.props, "location.pathname").split("/");
+        const scenarioOptions: Scenario<any>[] =
+            scenarios[`${camelCase(paths[paths.length - 1])}Scenarios`];
+
+        if (Array.isArray(scenarioOptions)) {
+            return <select>{this.renderScenarioOptions(scenarioOptions)}</select>;
+        }
+    }
+
+    private renderScenarioOptions(scenarioOptions: Scenario<any>[]): React.ReactNode {
+        return scenarioOptions.map((scenarioOption: Scenario<any>) => {
+            return <option>{scenarioOption.displayName}</option>;
+        });
+    }
+
     private getSchemaById(id: string): any {
         return get(
             getChildrenOptions().find((componentOption: any): any => {
@@ -320,35 +294,6 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
         });
     };
 
-    private handleUpdateDevice = (deviceId: string): void => {
-        const device: Device | void = this.getDeviceById(deviceId);
-        let height: number = this.state.height;
-        let width: number = this.state.width;
-
-        if (device) {
-            height =
-                device.display === Display.responsive
-                    ? this.state.height
-                    : device.display === Display.fixed &&
-                      this.state.orientation === Orientation.portrait
-                    ? (device.height as number)
-                    : (device.width as number);
-            width =
-                device.display === Display.responsive
-                    ? this.state.width
-                    : device.display === Display.fixed &&
-                      this.state.orientation === Orientation.portrait
-                    ? (device.width as number)
-                    : (device.height as number);
-        }
-
-        this.setState({
-            deviceId,
-            height,
-            width,
-        });
-    };
-
     private handleUpdateData = (data: any): void => {
         this.setState(
             merge({}, this.state.views, {
@@ -362,14 +307,6 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
                 },
             } as any)
         );
-    };
-
-    private handleUpdateOrientation = (orientation: Orientation): void => {
-        this.setState({
-            orientation,
-            width: this.state.height,
-            height: this.state.width,
-        });
     };
 
     private handleUpdateHeight = (height: number): void => {
@@ -391,7 +328,6 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
     };
 
     private handleUpdateRoute = (route: string): void => {
-        console.log("update to new route", route);
         history.push(route);
     };
 
