@@ -35,8 +35,6 @@ export function entries(entries: any): any {
     return [
         ...entries,
         ...glob.sync("./src/**/*.stories.tsx"),
-        path.resolve(__dirname, "./fast-storybook-design-system-addon-setup.js"),
-        path.resolve(__dirname, "./a11y-setup.js"),
-        path.resolve(__dirname, "./global-styles.js"),
+        path.resolve(__dirname, "./setup.js"),
     ];
 }

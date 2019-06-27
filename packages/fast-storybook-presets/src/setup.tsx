@@ -1,6 +1,11 @@
-import React from "react";
-import { addParameters, addDecorator } from "@storybook/react";
+import { setup } from "@microsoft/fast-storybook-design-system-addon";
+import { withA11y } from "@storybook/addon-a11y";
+import { addDecorator } from "@storybook/react";
 import { create, Global } from "@storybook/theming";
+import React from "react";
+
+// Setup fast-storybook-design-system-addon
+setup();
 
 function GlobalStyles(fn) {
     return (
@@ -17,4 +22,5 @@ function GlobalStyles(fn) {
     );
 }
 
+addDecorator(withA11y);
 addDecorator(GlobalStyles);
