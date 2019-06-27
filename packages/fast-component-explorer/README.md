@@ -22,4 +22,4 @@ Follow setup instructions in [contributing](https://github.com/Microsoft/fast-dn
 If you are adding a component to the documentation site, you will need to:
 
 - Add the component schema to the `./app/config.ts` file
-- Add a curated scenario to the `./app/utilities/scenarios/` folder. See the `./app/utilities/scenarios/README.md` for details.
+- Add curated scenarios to the `./app/utilities/scenarios/` folder. See the `./app/utilities/scenarios/README.md` for details.
