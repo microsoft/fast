@@ -81,6 +81,11 @@ export default {
             type: "number",
             default: 2,
         },
+        elevatedCornerRadius: {
+            title: "Elevated corner radius",
+            type: "number",
+            default: 4,
+        },
         outlineWidth: {
             title: "Outline width",
             type: "number",

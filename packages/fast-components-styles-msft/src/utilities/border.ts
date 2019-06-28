@@ -6,14 +6,14 @@ import {
     ensureDesignSystemDefaults,
     withDesignSystemDefaults,
 } from "../design-system";
-import { cornerRadius } from "../utilities/design-system";
+import { cornerRadius, elevatedCornerRadius } from "../utilities/design-system";
 
 export function applyCornerRadius(): CSSRules<DesignSystem> {
     return { borderRadius: toPx(cornerRadius) };
 }
 
 export function applyFloatingCornerRadius(): CSSRules<DesignSystem> {
-    return { borderRadius: toPx(multiply(cornerRadius, 2)) };
+    return { borderRadius: toPx(elevatedCornerRadius) };
 }
 
 /**
