@@ -1,9 +1,6 @@
+import { storiesOf } from "@storybook/react";
 import React from "react";
-import { addDecorator, storiesOf } from "@storybook/react";
 import { Button, ButtonAppearance } from "./";
-import { DesignSystemProvider } from "@microsoft/fast-jss-manager-react";
-import { DesignSystemDefaults } from "@microsoft/fast-components-styles-msft";
-import { Background, DarkModeBackgrounds } from "../background";
 
 storiesOf("Button", module)
     .add("Primary", () => (
