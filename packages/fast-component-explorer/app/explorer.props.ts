@@ -1,6 +1,6 @@
 import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 import { ExplorerClassNameContract } from "./explorer.style";
-import { Orientation } from "@microsoft/fast-tooling-react";
+import { Direction } from "@microsoft/fast-web-utilities";
 
 /**
  * The properties of a component
@@ -8,6 +8,13 @@ import { Orientation } from "@microsoft/fast-tooling-react";
 export interface ComponentProps {
     id: string;
     props: any;
+}
+
+/**
+ * The view config
+ */
+export interface ViewConfig {
+    direction: Direction;
 }
 
 /**
@@ -43,6 +50,11 @@ export interface ProjectFile {
      * The scenario
      */
     scenario: ComponentProps;
+
+    /**
+     * The configuration for the view
+     */
+    viewConfig: ViewConfig;
 }
 
 export interface ExplorerManagedClasses

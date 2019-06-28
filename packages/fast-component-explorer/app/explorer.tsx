@@ -5,7 +5,7 @@ import {
     ExplorerState,
 } from "./explorer.props";
 import style from "./explorer.style";
-import { camelCase, cloneDeep, get, memoize, merge, uniqueId } from "lodash-es";
+import { camelCase, cloneDeep, get, memoize } from "lodash-es";
 import {
     Canvas,
     CanvasClassNamesContract,
@@ -49,6 +49,7 @@ import { childOptions, history, menu } from "./config";
 import * as componentViewConfigs from "./utilities/configs";
 import { Scenario } from "./utilities/configs/data.props";
 import { MemoizedFunction } from "lodash";
+import { Direction } from "@microsoft/fast-web-utilities";
 
 class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
     public static displayName: string = "Explorer";
@@ -98,6 +99,9 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
             width: defaultDevices[0].width ? defaultDevices[0].width : 500,
             height: defaultDevices[0].height ? defaultDevices[0].height : 500,
             scenario: this.getScenarioData(),
+            viewConfig: {
+                direction: Direction.ltr,
+            },
         };
     }
 
@@ -119,17 +123,16 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
                                     <div style={{ width: "100%" }}>
                                         <div style={{ padding: "7px 10px" }}>
                                             {this.renderScenarioSelect()}
+                                            {this.renderDirectionToggle()}
                                         </div>
                                         <Viewer
                                             iframeSrc={"/preview"}
+                                            iframePostMessage={this.state.viewConfig}
                                             width={this.state.width}
                                             height={this.state.height}
                                             onUpdateHeight={this.handleUpdateHeight}
                                             onUpdateWidth={this.handleUpdateWidth}
-                                            viewerContentProps={
-                                                /* Bug here - we shouldn't need to cloneDeep but somewhere the state data is mutating */
-                                                cloneDeep(this.state.scenario)
-                                            }
+                                            viewerContentProps={this.state.scenario}
                                             responsive={true}
                                             jssStyleSheet={this.viewerStyleOverrides}
                                         />
@@ -190,6 +193,14 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
         );
     }
 
+    private renderDirectionToggle(): React.ReactNode {
+        return (
+            <button onClick={this.handleUpdateDirection}>
+                {this.state.viewConfig.direction}
+            </button>
+        );
+    }
+
     private renderPivotItems(): TabsItem[] {
         return [
             {
@@ -214,7 +225,7 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
             {
                 tab: (className: string): React.ReactNode => "Guidance",
                 content: (className: string): React.ReactNode => "world 2",
-                id: "documentation",
+                id: "guidance",
             },
             {
                 tab: (className: string): React.ReactNode => "Schema",
@@ -275,20 +286,45 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
         const paths: string[] = get(this.props, "location.pathname").split("/");
         const currentComponentIndex: number = paths.length - 1;
 
+        // cloning when the scenario data is fetched as there appears to be
+        // a mutation happening in one of the Form
         return {
             id:
                 componentViewConfigs[`${camelCase(paths[currentComponentIndex])}Config`]
                     .schema.id,
             props:
                 typeof index === "number"
-                    ? componentViewConfigs[
-                          `${camelCase(paths[currentComponentIndex])}Config`
-                      ].scenarios[index].data
-                    : componentViewConfigs[
-                          `${camelCase(paths[currentComponentIndex])}Config`
-                      ].scenarios[0].data,
+                    ? cloneDeep(
+                          get(
+                              componentViewConfigs,
+                              `${camelCase(
+                                  paths[currentComponentIndex]
+                              )}Config.scenarios[${index}].data`,
+                              {}
+                          )
+                      )
+                    : cloneDeep(
+                          get(
+                              componentViewConfigs,
+                              `${camelCase(
+                                  paths[currentComponentIndex]
+                              )}Config.scenarios[0].data`,
+                              {}
+                          )
+                      ),
         };
     }
+
+    private handleUpdateDirection = (): void => {
+        this.setState({
+            viewConfig: {
+                direction:
+                    this.state.viewConfig.direction === Direction.ltr
+                        ? Direction.rtl
+                        : Direction.ltr,
+            },
+        });
+    };
 
     private handleUpdateScenario = (e: React.ChangeEvent<HTMLSelectElement>): void => {
         this.setState({
