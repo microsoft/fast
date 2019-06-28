@@ -67,9 +67,14 @@ export interface DesignSystem {
     fontWeight?: FontWeight;
 
     /**
-     * The corner default radius applied to controls.
+     * The corner radius applied to controls.
      */
     cornerRadius?: number;
+
+    /**
+     * The corner radius applied to elevated surfaces or controls.
+     */
+    elevatedCornerRadius?: number;
 
     /**
      * The width of the outline in pixels applied to outline components.
@@ -174,6 +179,7 @@ const designSystemDefaults: DesignSystem = {
     baseHorizontalSpacingMultiplier: 3,
     direction: Direction.ltr,
     cornerRadius: 2,
+    elevatedCornerRadius: 4,
     focusOutlineWidth: 2,
     fontWeight: defaultFontWeights,
     disabledOpacity: 0.3,
