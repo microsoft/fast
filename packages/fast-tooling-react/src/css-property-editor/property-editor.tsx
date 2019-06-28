@@ -30,17 +30,17 @@ export default class CSSPropertyEditor extends Foundation<
     // private newEditRowKeyName: string = "newCssPropertyEditorEditRow";
     private propertyEditorRef: React.RefObject<HTMLDivElement>;
     private editData: CSSProperties;
-    private currentEditRowReactKey: string;
-    private currentEditRowIndex: number;
+    private activeEditRowReactKey: string;
+    private activeEditRowIndex: number;
     private newRowKeyCounter: number;
 
     constructor(props: CSSPropertyEditorProps) {
         super(props);
 
         this.propertyEditorRef = React.createRef();
-        this.currentEditRowIndex = -1;
+        this.activeEditRowIndex = -1;
         this.newRowKeyCounter = 0;
-        this.currentEditRowReactKey = null;
+        this.activeEditRowReactKey = null;
         this.editData = isNil(this.props.data) ? {} : Object.assign({}, this.props.data);
         this.state = {
             activeRowUncommittedCSSName: null,
@@ -104,20 +104,10 @@ export default class CSSPropertyEditor extends Foundation<
      * Render a single row
      */
     private renderRow = (cssKey: string, index: number): React.ReactNode => {
-        let itemKey: string = cssKey;
-
-        if (this.currentEditRowIndex === index) {
-            if (this.currentEditRowReactKey !== null) {
-                itemKey = this.currentEditRowReactKey;
-            } else if (cssKey === "") {
-                itemKey = this.generateItemKey();
-            } else {
-                this.currentEditRowReactKey = cssKey;
-            }
-        }
+        const itemKey: string = this.getItemKey(cssKey, index);
 
         const editKey: string =
-            this.currentEditRowIndex === index &&
+            this.activeEditRowIndex === index &&
             this.state.activeRowUncommittedCSSName !== null
                 ? this.state.activeRowUncommittedCSSName
                 : cssKey;
@@ -161,6 +151,23 @@ export default class CSSPropertyEditor extends Foundation<
     };
 
     /**
+     * get an item key
+     */
+    private getItemKey = (cssKey: string, index: number): string => {
+        let editKey: string = cssKey;
+        if (this.activeEditRowIndex === index) {
+            if (this.activeEditRowReactKey !== null) {
+                editKey = this.activeEditRowReactKey;
+            } else if (cssKey === "") {
+                editKey = this.generateItemKey();
+            } else {
+                this.activeEditRowReactKey = cssKey;
+            }
+        }
+        return editKey;
+    };
+
+    /**
      * generate a new item key
      */
     private generateItemKey = (): string => {
@@ -168,10 +175,10 @@ export default class CSSPropertyEditor extends Foundation<
         if (this.newRowKeyCounter > 100) {
             this.newRowKeyCounter = 1;
         }
-        this.currentEditRowReactKey = `${CSSPropertyEditor.newRowKey}${
+        this.activeEditRowReactKey = `${CSSPropertyEditor.newRowKey}${
             this.newRowKeyCounter
         }`;
-        return this.currentEditRowReactKey;
+        return this.activeEditRowReactKey;
     };
 
     /**
@@ -200,15 +207,11 @@ export default class CSSPropertyEditor extends Foundation<
         // The reason this is iterated over in this manner is to preserve
         // the order of keys in the CSS object
         Object.keys(this.editData).forEach((key: string, index: number) => {
-            if (index === rowIndex) {
-                newData[key] = newValue;
-            } else {
-                newData[key] = this.editData[key];
-            }
+            newData[key] = index === rowIndex ? newValue : this.editData[key];
         });
 
         this.editData = newData;
-        this.currentEditRowIndex = rowIndex;
+        this.activeEditRowIndex = rowIndex;
         this.handleCSSUpdate(newData);
     };
 
@@ -224,7 +227,7 @@ export default class CSSPropertyEditor extends Foundation<
         // The reason this is iterated over in this manner is to preserve
         // the order of keys in the CSS object
         Object.keys(this.editData).forEach((key: string, index: number) => {
-            if (index === this.currentEditRowIndex) {
+            if (index === this.activeEditRowIndex) {
                 newData[this.state.activeRowUncommittedCSSName] = this.editData[key];
             } else {
                 newData[key] = this.editData[key];
@@ -243,9 +246,9 @@ export default class CSSPropertyEditor extends Foundation<
      * Row gained focus
      */
     private handleRowFocus = (rowKey: string, rowIndex: number): void => {
-        if (this.currentEditRowIndex !== rowIndex) {
-            this.currentEditRowReactKey = null;
-            this.currentEditRowIndex = rowIndex;
+        if (this.activeEditRowIndex !== rowIndex) {
+            this.activeEditRowReactKey = null;
+            this.activeEditRowIndex = rowIndex;
         }
     };
 
@@ -268,10 +271,10 @@ export default class CSSPropertyEditor extends Foundation<
      * Row has lost focus
      */
     private handleRowBlur = (rowKey: string, rowIndex: number): void => {
-        if (this.currentEditRowIndex !== -1 && this.editData[rowKey] === "") {
+        if (this.activeEditRowIndex !== -1 && this.editData[rowKey] === "") {
             this.deleteRow(rowIndex);
         }
-        this.currentEditRowReactKey = null;
+        this.activeEditRowReactKey = null;
         this.setState({
             activeRowUncommittedCSSName: null,
         });
@@ -303,12 +306,13 @@ export default class CSSPropertyEditor extends Foundation<
 
     /**
      * Create a new row at the insertion index
+     * Retains keys for existing elements
      */
     private createRow = (insertionIndex: number): void => {
         const newData: CSSProperties = {};
         const keys: string[] = Object.keys(this.editData);
 
-        for (let i: number = 0; i <= keys.length; i = i + 1) {
+        for (let i: number = 0, keysLength: number = keys.length; i <= keysLength; i++) {
             if (i === insertionIndex) {
                 newData[""] = "";
             } else if (i < insertionIndex) {
@@ -320,8 +324,8 @@ export default class CSSPropertyEditor extends Foundation<
             }
         }
 
-        this.currentEditRowIndex = insertionIndex;
-        this.currentEditRowReactKey = null;
+        this.activeEditRowIndex = insertionIndex;
+        this.activeEditRowReactKey = null;
         this.editData = newData;
         this.forceUpdate();
     };
@@ -340,11 +344,11 @@ export default class CSSPropertyEditor extends Foundation<
 
         this.editData = newData;
 
-        if (deletionIndex === this.currentEditRowIndex) {
+        if (deletionIndex === this.activeEditRowIndex) {
             this.setState({
                 activeRowUncommittedCSSName: null,
             });
-            this.currentEditRowIndex = -1;
+            this.activeEditRowIndex = -1;
         }
 
         this.handleCSSUpdate(newData);

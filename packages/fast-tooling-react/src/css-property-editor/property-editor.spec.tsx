@@ -10,7 +10,6 @@ import { KeyCodes } from "@microsoft/fast-web-utilities";
  */
 configure({ adapter: new Adapter() });
 
-/* tslint:disable:no-string-literal */
 describe("CSSPropertyEditor", () => {
     test("should not throw", () => {
         expect(() => {
@@ -138,7 +137,7 @@ describe("CSSPropertyEditor", () => {
         }).not.toThrow();
     });
 
-    test("row with empty key gets delected on input blur", () => {
+    test("should remove the active row with empty key on input blur", () => {
         const data: { [key: string]: string } = {
             padding: "10px",
             margin: "30px",
@@ -155,7 +154,7 @@ describe("CSSPropertyEditor", () => {
         expect(inputs).toHaveLength(2);
     });
 
-    test("edited key values get committed on enter key press", () => {
+    test("should fire the onChange callback to add new key values when the enter key is pressed", () => {
         const data: { [key: string]: string } = {
             padding: "10px",
             margin: "30px",
