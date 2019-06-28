@@ -26,6 +26,7 @@ export class ViewerContent extends Foundation<
     protected handledProps: HandledProps<ViewerContentHandledProps> = {
         managedClasses: void 0,
         components: void 0,
+        plugins: void 0
     };
 
     constructor(props: ViewerContentHandledProps) {
@@ -77,7 +78,8 @@ export class ViewerContent extends Foundation<
                     {...mapDataToComponent(
                         mappedComponent.schema,
                         propsItem.props,
-                        this.props.components
+                        this.props.components,
+                        this.props.plugins
                     )}
                 />
             );

@@ -606,7 +606,9 @@ A custom post message may be sent through the viewer to the iframe via the `view
 
 ### Viewer content
 
-Using the `Viewer` when the provided `iframeSrc` is pointing to a route that contains the `ViewerContent` component.
+A `ViewerContent` component is available to provide some basic functionality in conjunction with the `Viewer`.
+
+Using the `Viewer` prop `iframeSrc` and pointing it to a route that contains the `ViewerContent` component will allow the automatic generation of components.
 
 Example:
 
@@ -616,8 +618,6 @@ Example:
     viewerContentProps={[{id: "example", props: {}}]}
 />
 ```
-
-Using the `ViewerContent` on the route provided to the `Viewer` will allow for the dynamic creation of provided components.
 
 Example component provided in the "/example-content" route for the `Viewer` impplementation example:
 
@@ -634,6 +634,10 @@ class ExampleContent extends React.Component<{}, {}> {
 
 export default UpdatePropsViewerContent;
 ```
+
+**components** - Provide an array of components with an `id` that corresponds to a JSON schema id and these components will be rendered via the postMessage system used with the `Viewer`.
+
+**plugins** The `ViewerContent` also accepts a plugins and passes them to the `mapDataToComponent` utility, see the `mapDataToComponent` utility section for information on how they can be used.
 
 ### Select device
 
