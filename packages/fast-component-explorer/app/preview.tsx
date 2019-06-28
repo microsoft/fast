@@ -5,6 +5,7 @@ import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-
 import { ViewerContent } from "@microsoft/fast-tooling-react";
 import { childOptions } from "./config";
 import { Direction } from "@microsoft/fast-web-utilities";
+import initializedPlugins from "./utilities/plugins"; // TODO: add this to Viewer Content
 
 export interface PreviewState {
     direction: Direction;
