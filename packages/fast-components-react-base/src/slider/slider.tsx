@@ -868,7 +868,7 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
     };
 
     private handleThumbMouseDown = (e: React.MouseEvent, thumb: SliderThumb): void => {
-        if (event.defaultPrevented || this.isBusyOrDisabled()) {
+        if (e.defaultPrevented || this.isBusyOrDisabled()) {
             return;
         }
 
