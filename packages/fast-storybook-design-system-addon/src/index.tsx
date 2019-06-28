@@ -1,13 +1,9 @@
-import React from "react";
-import addons, { makeDecorator, StoryContext, StoryGetter } from "@storybook/addons";
-import { addDecorator, forceReRender, Channel } from "@storybook/react";
+import { DesignSystem } from "@microsoft/fast-components-styles-msft";
 import { DesignSystemProvider } from "@microsoft/fast-jss-manager-react";
-import {
-    DesignSystemDefaults,
-    DesignSystem,
-} from "@microsoft/fast-components-styles-msft";
-import { UPDATE_DESIGN_SYSTEM_EVENT, REQUEST_DESIGN_SYSTEM_EVENT } from "./constants";
-import designSystemManager from "./design-system";
+import addons, { makeDecorator, StoryContext, StoryGetter } from "@storybook/addons";
+import { addDecorator } from "@storybook/react";
+import React from "react";
+import { REQUEST_DESIGN_SYSTEM_EVENT, UPDATE_DESIGN_SYSTEM_EVENT } from "./constants";
 
 interface DesignSystemDecoratorProps {
     channel: ReturnType<typeof addons.getChannel>;

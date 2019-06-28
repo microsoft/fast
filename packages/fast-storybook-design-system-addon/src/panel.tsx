@@ -1,21 +1,16 @@
+import { ColorRGBA64, parseColor } from "@microsoft/fast-colors";
 import {
+    createColorPalette,
     DesignSystem,
     DesignSystemDefaults,
-    neutralLayerL1,
-    neutralLayerL1Alt,
-    neutralLayerL2,
-    neutralLayerL3,
-    neutralLayerL4,
     NeutralPaletteDarkModeLayers,
     NeutralPaletteLightModeLayers,
-    createColorPalette,
 } from "@microsoft/fast-components-styles-msft";
 import { API } from "@storybook/api";
-import { Global, Theme, styled, css } from "@storybook/theming";
+import { Global, styled, Theme } from "@storybook/theming";
 import { merge } from "lodash-es";
 import React from "react";
 import { REQUEST_DESIGN_SYSTEM_EVENT, UPDATE_DESIGN_SYSTEM_EVENT } from "./constants";
-import { ColorRGBA64, parseColor } from "@microsoft/fast-colors";
 
 interface DesignSystemPanelProps {
     api: API;
