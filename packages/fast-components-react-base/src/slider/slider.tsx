@@ -873,6 +873,7 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
         }
 
         e.preventDefault();
+        (e.target as HTMLElement).focus();
         window.addEventListener("mouseup", this.handleWindowMouseUp);
         window.addEventListener("mousemove", this.handleMouseMove);
         this.setState({
