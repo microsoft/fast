@@ -17,22 +17,22 @@ describe("accentForeground", (): void => {
     const accentPalette: Palette = palette(PaletteType.accent)(designSystemDefaults);
 
     test("should operate on design system defaults", (): void => {
-        expect(accentForegroundRest({} as DesignSystem)).toBe(accentPalette[60]);
-        expect(accentForegroundHover({} as DesignSystem)).toBe(accentPalette[66]);
-        expect(accentForegroundActive({} as DesignSystem)).toBe(accentPalette[56]);
-        expect(accentForegroundLargeRest({} as DesignSystem)).toBe(accentPalette[60]);
-        expect(accentForegroundLargeHover({} as DesignSystem)).toBe(accentPalette[66]);
-        expect(accentForegroundLargeActive({} as DesignSystem)).toBe(accentPalette[56]);
+        expect(accentForegroundRest({} as DesignSystem)).toBe(accentPalette[59]);
+        expect(accentForegroundHover({} as DesignSystem)).toBe(accentPalette[65]);
+        expect(accentForegroundActive({} as DesignSystem)).toBe(accentPalette[55]);
+        expect(accentForegroundLargeRest({} as DesignSystem)).toBe(accentPalette[59]);
+        expect(accentForegroundLargeHover({} as DesignSystem)).toBe(accentPalette[65]);
+        expect(accentForegroundLargeActive({} as DesignSystem)).toBe(accentPalette[55]);
     });
 
     test("should accept a function that resolves a background swatch", (): void => {
         expect(typeof accentForegroundRest(() => "#FFF")).toBe("function");
         expect(accentForegroundRest(() => "#000")({} as DesignSystem)).toBe(
-            accentPalette[60]
+            accentPalette[59]
         );
         expect(typeof accentForegroundRest(() => "#FFFFFF")).toBe("function");
         expect(accentForegroundRest(() => "#000000")({} as DesignSystem)).toBe(
-            accentPalette[60]
+            accentPalette[59]
         );
     });
 

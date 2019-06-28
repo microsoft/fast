@@ -52,7 +52,7 @@ describe("accentFill", (): void => {
 
     test("should accept a function that resolves a background swatch", (): void => {
         expect(typeof accentFillRest(() => "#FFF")).toBe("function");
-        expect(accentFillRest(() => "#000")({} as DesignSystem)).toBe(accentPalette[64]);
+        expect(accentFillRest(() => "#000")({} as DesignSystem)).toBe(accentPalette[63]);
     });
 
     test("should have accessible rest and hover colors against accentForegroundCut", (): void => {

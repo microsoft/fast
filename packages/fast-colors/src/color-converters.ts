@@ -21,8 +21,20 @@ import { degreesToRadians, radiansToDegrees } from "./math-utilities";
  * Adjusts the color to sRGB space, which is necessary for the WCAG contrast spec.
  * The alpha channel of the input is ignored.
  * @param rgb The input color
+ *
+ * @deprecated Use rgbToRelativeLuminance instead.
  */
 export function rgbToLuminance(rgb: ColorRGBA64): number {
+    return rgbToRelativeLuminance(rgb);
+}
+
+/**
+ * Get the relative luminance of a color.
+ * Adjusts the color to sRGB space, which is necessary for the WCAG contrast spec.
+ * The alpha channel of the input is ignored.
+ * @param rgb The input color
+ */
+export function rgbToRelativeLuminance(rgb: ColorRGBA64): number {
     function luminanceHelper(i: number): number {
         if (i <= 0.03928) {
             return i / 12.92;
@@ -39,8 +51,8 @@ export function rgbToLuminance(rgb: ColorRGBA64): number {
 
 // The alpha channel of the input is ignored
 export function contrastRatio(a: ColorRGBA64, b: ColorRGBA64): number {
-    const luminanceA: number = rgbToLuminance(a);
-    const luminanceB: number = rgbToLuminance(b);
+    const luminanceA: number = rgbToRelativeLuminance(a);
+    const luminanceB: number = rgbToRelativeLuminance(b);
     if (luminanceA > luminanceB) {
         return (luminanceA + 0.05) / (luminanceB + 0.05);
     }
@@ -49,15 +61,11 @@ export function contrastRatio(a: ColorRGBA64, b: ColorRGBA64): number {
 
 /**
  * Get the luminance of a color in the linear RGB space.
- * This is not the same as the relative luminance in the sRGB space for WCAG contrast calculations. Use rgbToLuminance instead.
+ * This is not the same as the relative luminance in the sRGB space for WCAG contrast calculations. Use rgbToRelativeLuminance instead.
  * @param rgb The input color
  */
-export function rgbToLuminanceLinear(rgb: ColorRGBA64): number {
-    const r: number = rgb.r;
-    const g: number = rgb.g;
-    const b: number = rgb.b;
-
-    return r * 0.2126 + g * 0.7152 + b * 0.0722;
+export function rgbToLinearLuminance(rgb: ColorRGBA64): number {
+    return rgb.r * 0.2126 + rgb.g * 0.7152 + rgb.b * 0.0722;
 }
 
 // The alpha channel of the input is ignored

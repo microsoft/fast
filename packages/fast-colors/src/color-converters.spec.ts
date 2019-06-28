@@ -20,7 +20,7 @@ import {
     rgbToHSV,
     rgbToLAB,
     rgbToLCH,
-    rgbToLuminance,
+    rgbToRelativeLuminance,
     rgbToTemperature,
     rgbToXYZ,
     temperatureToRGB,
@@ -33,7 +33,7 @@ import { testData } from "../testData";
 const testPrecision: number = 4;
 
 describe("Color converter functions", () => {
-    test("rgbToLuminance", () => {
+    test("rgbToRelativeLuminance", () => {
         function testColor(data: any): void {
             const rgb: ColorRGBA64 = new ColorRGBA64(
                 data.rgba.r,
@@ -41,7 +41,7 @@ describe("Color converter functions", () => {
                 data.rgba.b,
                 data.rgba.a
             );
-            expect(rgbToLuminance(rgb)).toBeCloseTo(data.lum, testPrecision);
+            expect(rgbToRelativeLuminance(rgb)).toBeCloseTo(data.lum, testPrecision);
         }
         for (const data of testData.namedColors) {
             testColor(data);

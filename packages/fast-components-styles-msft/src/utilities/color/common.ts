@@ -7,7 +7,7 @@ import {
     isColorStringWebRGB,
     parseColorHexRGB,
     parseColorWebRGB,
-    rgbToLuminance,
+    rgbToRelativeLuminance,
 } from "@microsoft/fast-colors";
 
 /**
@@ -185,7 +185,7 @@ export const contrast: (a: string, b: string) => number = memoize(
  * Supports #RRGGBB and rgb(r, g, b) formats
  */
 export function luminance(color: any): number {
-    return rgbToLuminance(parseColorString(color));
+    return rgbToRelativeLuminance(parseColorString(color));
 }
 
 export function designSystemResolverMax(

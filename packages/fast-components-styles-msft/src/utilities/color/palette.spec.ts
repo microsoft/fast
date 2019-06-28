@@ -65,7 +65,7 @@ describe("findSwatchIndex", (): void => {
             findSwatchIndex(PaletteType.accent, accentBaseColor({} as DesignSystem))(
                 {} as DesignSystem
             )
-        ).toBe(60);
+        ).toBe(59);
     });
 
     test("should return -1 if the color is not found", (): void => {
@@ -108,10 +108,10 @@ describe("findSwatchIndex", (): void => {
             findSwatchIndex(PaletteType.accent, accentBaseColor(designSystemDefaults))(
                 designSystemDefaults
             )
-        ).toBe(60);
+        ).toBe(59);
         expect(
             findSwatchIndex(PaletteType.accent, "rgb(0, 120, 212)")(designSystemDefaults)
-        ).toBe(60);
+        ).toBe(59);
     });
 });
 
