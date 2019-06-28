@@ -139,9 +139,10 @@ export class ComponentStateColorPalette {
     private matchRelativeLuminanceIndex(input: number, reference: ColorRGBA64[]): number {
         let bestFitValue: number = Number.MAX_VALUE;
         let bestFitIndex: number = 0;
-        for (let i: number = 0; i < reference.length; i++) {
-            const iLum: number = rgbToLinearLuminance(reference[i]);
-            const fitValue: number = Math.abs(iLum - input);
+        let i: number = 0;
+        const referenceLength: number = reference.length;
+        for (; i < referenceLength; i++) {
+            const fitValue: number = Math.abs(rgbToLinearLuminance(reference[i]) - input);
             if (fitValue < bestFitValue) {
                 bestFitValue = fitValue;
                 bestFitIndex = i;
