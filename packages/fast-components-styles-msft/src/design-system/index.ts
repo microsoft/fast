@@ -1,6 +1,10 @@
 import { Direction } from "@microsoft/fast-web-utilities";
 import { white } from "../utilities/color/color-constants";
-import { ColorPalette, ColorRGBA64, parseColorHexRGB } from "@microsoft/fast-colors";
+import {
+    ColorRGBA64,
+    ComponentStateColorPalette,
+    parseColorHexRGB,
+} from "@microsoft/fast-colors";
 import { Palette } from "../utilities/color/palette";
 import { withDefaults } from "@microsoft/fast-jss-utilities";
 import { defaultFontWeights, FontWeight } from "../utilities/fonts";
@@ -146,6 +150,7 @@ export interface DesignSystem {
      * @deprecated Neutral foreground is now based on contrast and this is no longer used.
      */
     neutralForegroundLightIndex: number;
+
     neutralForegroundHoverDelta: number;
     neutralForegroundActiveDelta: number;
 
@@ -158,15 +163,8 @@ export interface DesignSystem {
 }
 
 export function createColorPalette(baseColor: ColorRGBA64): Palette {
-    return new ColorPalette({
+    return new ComponentStateColorPalette({
         baseColor,
-        clipDark: 0,
-        clipLight: 0,
-        overlayDark: 0,
-        overlayLight: 0,
-        saturationDark: 0,
-        saturationLight: 0,
-        steps: 63,
     }).palette.map((color: ColorRGBA64) => color.toStringHexRGB().toUpperCase());
 }
 
@@ -184,7 +182,7 @@ const designSystemDefaults: DesignSystem = {
     fontWeight: defaultFontWeights,
     disabledOpacity: 0.3,
     outlineWidth: 1,
-    neutralPalette: createColorPalette(new ColorRGBA64(0.5, 0.5, 0.5, 1)),
+    neutralPalette: createColorPalette(parseColorHexRGB("#808080")),
     accentPalette: createColorPalette(parseColorHexRGB("#0078D4")),
     accentBaseColor: "#0078D4",
 
@@ -192,40 +190,40 @@ const designSystemDefaults: DesignSystem = {
      * Recipe Deltas
      */
     accentFillRestDelta: 0,
-    accentFillHoverDelta: 2,
-    accentFillActiveDelta: 4,
+    accentFillHoverDelta: 4,
+    accentFillActiveDelta: -5,
     accentFillSelectedDelta: 12,
 
     accentForegroundRestDelta: 0,
-    accentForegroundHoverDelta: 4,
-    accentForegroundActiveDelta: 8,
+    accentForegroundHoverDelta: 6,
+    accentForegroundActiveDelta: -4,
 
-    neutralFillRestDelta: 4,
-    neutralFillHoverDelta: 3,
-    neutralFillActiveDelta: 2,
-    neutralFillSelectedDelta: 8,
+    neutralFillRestDelta: 7,
+    neutralFillHoverDelta: 10,
+    neutralFillActiveDelta: 5,
+    neutralFillSelectedDelta: 7,
 
-    neutralFillInputRestDelta: 4,
-    neutralFillInputHoverDelta: 4,
-    neutralFillInputActiveDelta: 4,
-    neutralFillInputSelectedDelta: 4,
+    neutralFillInputRestDelta: 0,
+    neutralFillInputHoverDelta: 0,
+    neutralFillInputActiveDelta: 0,
+    neutralFillInputSelectedDelta: 0,
 
     neutralFillStealthRestDelta: 0,
-    neutralFillStealthHoverDelta: 3,
-    neutralFillStealthActiveDelta: 2,
-    neutralFillStealthSelectedDelta: 8,
+    neutralFillStealthHoverDelta: 5,
+    neutralFillStealthActiveDelta: 3,
+    neutralFillStealthSelectedDelta: 7,
 
-    neutralFillCardDelta: 2,
+    neutralFillCardDelta: 3,
 
-    neutralForegroundDarkIndex: 58,
+    neutralForegroundDarkIndex: 93,
     neutralForegroundLightIndex: 0,
 
-    neutralForegroundHoverDelta: 8,
-    neutralForegroundActiveDelta: 16,
+    neutralForegroundHoverDelta: 0,
+    neutralForegroundActiveDelta: 0,
 
-    neutralOutlineRestDelta: 12,
-    neutralOutlineHoverDelta: 24,
-    neutralOutlineActiveDelta: 18,
+    neutralOutlineRestDelta: 25,
+    neutralOutlineHoverDelta: 40,
+    neutralOutlineActiveDelta: 16,
 };
 
 /**

@@ -14,7 +14,7 @@ import {
     Swatch,
     SwatchRecipe,
 } from "./common";
-import { findClosestBackgroundIndex, getSwatch, isDarkMode } from "./palette";
+import { findClosestBackgroundIndex, getSwatch } from "./palette";
 
 const neutralFillThreshold: DesignSystemResolver<number> = designSystemResolverMax(
     neutralFillRestDelta,
@@ -23,15 +23,15 @@ const neutralFillThreshold: DesignSystemResolver<number> = designSystemResolverM
 );
 
 function neutralFillAlgorithm(
-    indexResolver: DesignSystemResolver<number>
+    deltaResolver: DesignSystemResolver<number>
 ): DesignSystemResolver<Swatch> {
     return (designSystem: DesignSystem): Swatch => {
         const backgroundIndex: number = findClosestBackgroundIndex(designSystem);
         const swapThreshold: number = neutralFillThreshold(designSystem);
-        const direction: number = backgroundIndex >= swapThreshold ? -1 : 1;
+        const direction: 1 | -1 = backgroundIndex >= swapThreshold ? -1 : 1;
 
         return getSwatch(
-            backgroundIndex + direction * indexResolver(designSystem),
+            backgroundIndex + direction * deltaResolver(designSystem),
             neutralPalette(designSystem)
         );
     };
@@ -58,13 +58,5 @@ export const neutralFillActive: SwatchRecipe = colorRecipeFactory(
     neutralFillAlgorithm(neutralFillActiveDelta)
 );
 export const neutralFillSelected: SwatchRecipe = colorRecipeFactory(
-    (designSystem: DesignSystem): Swatch => {
-        const delta: number = neutralFillSelectedDelta(designSystem);
-
-        return getSwatch(
-            neutralPalette(designSystem).indexOf(neutralFillRest(designSystem)) +
-                (isDarkMode(designSystem) ? delta * -1 : delta),
-            neutralPalette(designSystem)
-        );
-    }
+    neutralFillAlgorithm(neutralFillSelectedDelta)
 );

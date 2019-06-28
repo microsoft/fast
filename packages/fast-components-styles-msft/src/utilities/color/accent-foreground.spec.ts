@@ -17,64 +17,44 @@ describe("accentForeground", (): void => {
     const accentPalette: Palette = palette(PaletteType.accent)(designSystemDefaults);
 
     test("should operate on design system defaults", (): void => {
-        expect(accentForegroundRest({} as DesignSystem)).toBe(accentPalette[35]);
-        expect(accentForegroundHover({} as DesignSystem)).toBe(accentPalette[31]);
-        expect(accentForegroundActive({} as DesignSystem)).toBe(accentPalette[27]);
-        expect(accentForegroundLargeRest({} as DesignSystem)).toBe(accentPalette[31]);
-        expect(accentForegroundLargeHover({} as DesignSystem)).toBe(accentPalette[27]);
-        expect(accentForegroundLargeActive({} as DesignSystem)).toBe(accentPalette[23]);
+        expect(accentForegroundRest({} as DesignSystem)).toBe(accentPalette[59]);
+        expect(accentForegroundHover({} as DesignSystem)).toBe(accentPalette[65]);
+        expect(accentForegroundActive({} as DesignSystem)).toBe(accentPalette[55]);
+        expect(accentForegroundLargeRest({} as DesignSystem)).toBe(accentPalette[59]);
+        expect(accentForegroundLargeHover({} as DesignSystem)).toBe(accentPalette[65]);
+        expect(accentForegroundLargeActive({} as DesignSystem)).toBe(accentPalette[55]);
     });
 
     test("should accept a function that resolves a background swatch", (): void => {
         expect(typeof accentForegroundRest(() => "#FFF")).toBe("function");
         expect(accentForegroundRest(() => "#000")({} as DesignSystem)).toBe(
-            accentPalette[27]
+            accentPalette[59]
         );
         expect(typeof accentForegroundRest(() => "#FFFFFF")).toBe("function");
         expect(accentForegroundRest(() => "#000000")({} as DesignSystem)).toBe(
-            accentPalette[27]
+            accentPalette[59]
         );
     });
 
-    test("should have states that get lighter in light theme and darker in dark theme", (): void => {
+    test("should increase contrast on hover state and decrease contrast on active state in either mode", (): void => {
         expect(
             accentPalette.indexOf(accentForegroundHover(designSystemDefaults))
-        ).toBeLessThanOrEqual(
-            accentPalette.indexOf(
-                accentForegroundHover(
-                    Object.assign({}, designSystemDefaults, {
-                        backgroundColor: "#000000",
-                    })
-                )
-            )
-        );
-        expect(
-            accentPalette.indexOf(accentForegroundHover(designSystemDefaults))
-        ).toBeLessThanOrEqual(
-            accentPalette.indexOf(
-                accentForegroundHover(
-                    Object.assign({}, designSystemDefaults, { backgroundColor: "#000" })
-                )
-            )
+        ).toBeGreaterThan(
+            accentPalette.indexOf(accentForegroundRest(designSystemDefaults))
         );
         expect(
             accentPalette.indexOf(accentForegroundActive(designSystemDefaults))
-        ).toBeLessThan(
-            accentPalette.indexOf(
-                accentForegroundActive(
-                    Object.assign({}, designSystemDefaults, { backgroundColor: "#000" })
-                )
-            )
-        );
+        ).toBeLessThan(accentPalette.indexOf(accentForegroundRest(designSystemDefaults)));
+
+        const darkDesignSystem: DesignSystem = Object.assign({}, designSystemDefaults, {
+            backgroundColor: "#000",
+        });
         expect(
-            accentPalette.indexOf(accentForegroundActive(designSystemDefaults))
-        ).toBeLessThan(
-            accentPalette.indexOf(
-                accentForegroundActive(
-                    Object.assign({}, designSystemDefaults, { backgroundColor: "#000" })
-                )
-            )
-        );
+            accentPalette.indexOf(accentForegroundHover(darkDesignSystem))
+        ).toBeLessThan(accentPalette.indexOf(accentForegroundRest(darkDesignSystem)));
+        expect(
+            accentPalette.indexOf(accentForegroundActive(darkDesignSystem))
+        ).toBeGreaterThan(accentPalette.indexOf(accentForegroundRest(darkDesignSystem)));
     });
 
     test("should have accessible rest and hover colors against the background color", (): void => {

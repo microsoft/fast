@@ -9,68 +9,50 @@ import {
     accentFillSelected,
 } from "./accent-fill";
 import designSystemDefaults, { DesignSystem } from "../../design-system";
-import { palette, Palette, PaletteType } from "./palette";
+import { findClosestSwatchIndex, palette, Palette, PaletteType } from "./palette";
 import { contrast, Swatch } from "./common";
 import { accentForegroundCut } from "./accent-foreground-cut";
+import { accentBaseColor } from "../design-system";
 
 describe("accentFill", (): void => {
     const neutralPalette: Palette = palette(PaletteType.neutral)(designSystemDefaults);
     const accentPalette: Palette = palette(PaletteType.accent)(designSystemDefaults);
 
-    const accentIndex: number =
-        Math.floor(accentPalette.length / 2) + designSystemDefaults.accentFillHoverDelta;
-    const largeAccentIndex: number =
-        accentIndex - designSystemDefaults.accentFillHoverDelta;
+    const accentIndex: number = findClosestSwatchIndex(
+        PaletteType.accent,
+        accentBaseColor(designSystemDefaults)
+    )(designSystemDefaults);
 
     test("should operate on design system defaults", (): void => {
         expect(accentFillRest({} as DesignSystem)).toBe(
-            accentPalette[accentIndex - designSystemDefaults.accentFillRestDelta]
+            accentPalette[accentIndex + designSystemDefaults.accentFillRestDelta]
         );
         expect(accentFillHover({} as DesignSystem)).toBe(
-            accentPalette[accentIndex - designSystemDefaults.accentFillHoverDelta]
+            accentPalette[accentIndex + designSystemDefaults.accentFillHoverDelta]
         );
         expect(accentFillActive({} as DesignSystem)).toBe(
-            accentPalette[accentIndex - designSystemDefaults.accentFillActiveDelta]
+            accentPalette[accentIndex + designSystemDefaults.accentFillActiveDelta]
         );
         expect(accentFillSelected({} as DesignSystem)).toBe(
             accentPalette[accentIndex + designSystemDefaults.accentFillSelectedDelta]
         );
         expect(accentFillLargeRest({} as DesignSystem)).toBe(
-            accentPalette[largeAccentIndex - designSystemDefaults.accentFillRestDelta]
+            accentPalette[accentIndex + designSystemDefaults.accentFillRestDelta]
         );
         expect(accentFillLargeHover({} as DesignSystem)).toBe(
-            accentPalette[largeAccentIndex - designSystemDefaults.accentFillHoverDelta]
+            accentPalette[accentIndex + designSystemDefaults.accentFillHoverDelta]
         );
         expect(accentFillLargeActive({} as DesignSystem)).toBe(
-            accentPalette[largeAccentIndex - designSystemDefaults.accentFillActiveDelta]
+            accentPalette[accentIndex + designSystemDefaults.accentFillActiveDelta]
         );
         expect(accentFillLargeSelected({} as DesignSystem)).toBe(
-            accentPalette[largeAccentIndex + designSystemDefaults.accentFillSelectedDelta]
+            accentPalette[accentIndex + designSystemDefaults.accentFillSelectedDelta]
         );
     });
 
     test("should accept a function that resolves a background swatch", (): void => {
         expect(typeof accentFillRest(() => "#FFF")).toBe("function");
-        expect(accentFillRest(() => "#000")({} as DesignSystem)).toBe(accentPalette[31]);
-    });
-
-    test("should have states that get lighter in light theme and darker in dark theme", (): void => {
-        expect(accentPalette.indexOf(accentFillHover(designSystemDefaults))).toBeLessThan(
-            accentPalette.indexOf(
-                accentFillHover(
-                    Object.assign({}, designSystemDefaults, { backgroundColor: "#000" })
-                )
-            )
-        );
-        expect(
-            accentPalette.indexOf(accentFillActive(designSystemDefaults))
-        ).toBeLessThan(
-            accentPalette.indexOf(
-                accentFillActive(
-                    Object.assign({}, designSystemDefaults, { backgroundColor: "#000" })
-                )
-            )
-        );
+        expect(accentFillRest(() => "#000")({} as DesignSystem)).toBe(accentPalette[63]);
     });
 
     test("should have accessible rest and hover colors against accentForegroundCut", (): void => {

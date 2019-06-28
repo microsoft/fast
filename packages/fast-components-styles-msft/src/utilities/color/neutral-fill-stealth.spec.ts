@@ -31,7 +31,7 @@ describe("neutralFillStealth", (): void => {
         );
     });
 
-    test("should switch from dark to light after 4 swatches", (): void => {
+    test("should switch from dark to light after 10 swatches", (): void => {
         expect(neutralFillStealthHover(designSystemDefaults)).toBe(
             neutralPalette[designSystemDefaults.neutralFillStealthHoverDelta]
         );
@@ -42,11 +42,11 @@ describe("neutralFillStealth", (): void => {
             neutralFillStealthHover(() => neutralPalette[2])(designSystemDefaults)
         ).toBe(neutralPalette[designSystemDefaults.neutralFillStealthHoverDelta + 2]);
         expect(
-            neutralFillStealthHover(() => neutralPalette[3])(designSystemDefaults)
-        ).toBe(neutralPalette[designSystemDefaults.neutralFillStealthHoverDelta + 3]);
+            neutralFillStealthHover(() => neutralPalette[9])(designSystemDefaults)
+        ).toBe(neutralPalette[designSystemDefaults.neutralFillStealthHoverDelta + 9]);
         expect(
-            neutralFillStealthHover(() => neutralPalette[4])(designSystemDefaults)
-        ).toBe(neutralPalette[4 - designSystemDefaults.neutralFillStealthHoverDelta]);
+            neutralFillStealthHover(() => neutralPalette[10])(designSystemDefaults)
+        ).toBe(neutralPalette[10 - designSystemDefaults.neutralFillStealthHoverDelta]);
     });
 
     test("should return the same color from both implementations", (): void => {
