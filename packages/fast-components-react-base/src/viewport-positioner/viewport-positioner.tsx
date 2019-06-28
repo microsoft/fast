@@ -105,8 +105,8 @@ class ViewportPositioner extends Foundation<
         defaultVerticalPosition: ViewportPositionerVerticalPosition.bottom,
         horizontalAlwaysInView: false,
         verticalAlwaysInView: false,
-        verticalLocktoDefault: false,
-        horizontalLocktoDefault: false,
+        verticalLockToDefault: false,
+        horizontalLockToDefault: false,
         fixedAfterInitialPlacement: false,
     };
 
@@ -118,12 +118,12 @@ class ViewportPositioner extends Foundation<
         defaultHorizontalPosition: void 0,
         horizontalThreshold: void 0,
         horizontalAlwaysInView: void 0,
-        horizontalLocktoDefault: void 0,
+        horizontalLockToDefault: void 0,
         verticalPositioningMode: void 0,
         defaultVerticalPosition: void 0,
         verticalThreshold: void 0,
         verticalAlwaysInView: void 0,
-        verticalLocktoDefault: void 0,
+        verticalLockToDefault: void 0,
         fixedAfterInitialPlacement: void 0,
         disabled: void 0,
     };
@@ -784,7 +784,7 @@ class ViewportPositioner extends Foundation<
             if (
                 desiredHorizontalPosition ===
                     ViewportPositionerHorizontalPositionLabel.undefined ||
-                (!this.props.horizontalLocktoDefault &&
+                (!this.props.horizontalLockToDefault &&
                     this.getHorizontalPositionAvailableWidth(desiredHorizontalPosition) <
                         horizontalThreshold)
             ) {
@@ -808,7 +808,7 @@ class ViewportPositioner extends Foundation<
             if (
                 desiredVerticalPosition ===
                     ViewportPositionerVerticalPositionLabel.undefined ||
-                (!this.props.verticalLocktoDefault &&
+                (!this.props.verticalLockToDefault &&
                     this.getVerticalPositionAvailableHeight(desiredVerticalPosition) <
                         verticalThreshold)
             ) {

@@ -6,9 +6,7 @@ The *viewport positioner* component is a container that positions itself relativ
 
 The *viewport positioner* and the anchor element it is attached to must both be children of the specified viewport element. There should also be no other scrollable elements in the DOM hierarchy between these elements and the viewport.  The *viewport positioner* element will have its position attribute programmatically set to "relative" and the component also writes in values for the top, right, bottom, left, transform-origin and tranform attributes. 
 
-If no "anchor" is specified the component will be disabled and not attempt to adjust layout. If no viewport is specified the component will assume the viewport is the root document element of the page.
-
-Authors should ensure that the positioner element has fixed dimensions, most likely coming from css styles, sizing forced by a parent element (i.e. grid cell), etc....  
+If no "anchor" is specified the component will be disabled and not attempt to adjust layout. If no viewport is specified the component will assume the viewport is the root document element of the page. 
 
 Authors can specify a positioning mode for each axis or leave it "uncontrolled" and use other means (i.e. their own css) to manage the positioner's layout on that axis.  The "adjacent" positioning mode ensures that the positioner does not overlap with the anchor on that axis and butts up against the outer edges of the anchor element.  With the "inset" positioning mode set the positioner will overlap with the anchor on the axis specified but will only extend beyond the anchor on the side with the most available space.
 
@@ -43,6 +41,10 @@ The *viewport positioner* adds css classes to itself based on the chosen positio
 The "AlwaysInView" props (i.e. "horizontalAlwaysInView" and "verticalAlwaysInView") for each axis allows authors to specify whether the positioner should remain on screen when the anchor element is scrolled off.  The *viewport positioner* accomplishes this by setting the translate transform and translate origin properties of the component.
 
 The "fixedAfterInitialPlacement" prop is set the component will not adjust positioning after the initial render.
+
+Authors should be mindful that instanciating a flyout positioner can cause layout changes as it is actually inserted into the dom and can cause parent containers to expand, move siblings down the page, etc...  It is up to authors to place the component such that it does not cause unwanted layout changes.  
+
+Authors should ensure that the positioner element has fixed dimensions. If these are dynamic this can cause incorrect positioning to be calculated.   
 
 The not fully supported [ResizeObserver](https://developers.google.com/web/updates/2016/10/resizeobserver) and [IntersectionObserver](https://developers.google.com/web/updates/2016/04/intersectionobserver) are used (supported in Chrome), so it is necessary to apply a polyfill if more thorough browser support is needed (Safari and Firefox). Full adaptation is expected soon.
 
