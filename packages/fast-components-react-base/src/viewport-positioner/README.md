@@ -40,6 +40,8 @@ The "AlwaysInView" props (i.e. "horizontalAlwaysInView" and "verticalAlwaysInVie
 
 The "fixedAfterInitialPlacement" prop is set the component will not adjust positioning after the initial render.
 
+The "verticalLocktoDefault" and "horizontalLocktoDefault" properties force placement to specified default positions regardless of available space.  Note that this has no effect when an axis is in "uncontrolled" mode.
+
 The not fully supported [ResizeObserver](https://developers.google.com/web/updates/2016/10/resizeobserver) and [IntersectionObserver](https://developers.google.com/web/updates/2016/04/intersectionobserver) are used (supported in Chrome), so it is necessary to apply a polyfill if more thorough browser support is needed (Safari and Firefox). Full adaptation is expected soon.
 
 

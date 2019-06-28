@@ -59,6 +59,11 @@ export interface ViewportPositionerHandledProps extends ViewportPositionerManage
     horizontalAlwaysInView?: boolean;
 
     /**
+     *  Locks horizontal axis to default position
+     */
+    horizontalLocktoDefault?: boolean;
+
+    /**
      *  The positioning mode for the vertical axis, default is uncontrolled
      */
     verticalPositioningMode?: AxisPositioningMode;
@@ -77,6 +82,11 @@ export interface ViewportPositionerHandledProps extends ViewportPositionerManage
      *  When enabled the positioner will not move out of the viewport on the vertical axis
      */
     verticalAlwaysInView?: boolean;
+
+    /**
+     *  Locks vertical axis to default position
+     */
+    verticalLocktoDefault?: boolean;
 
     /**
      * The disabled state
