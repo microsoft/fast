@@ -1,17 +1,29 @@
 import { CSSRules } from "@microsoft/fast-jss-manager";
-import { multiply, toPx } from "@microsoft/fast-jss-utilities";
+import { format, toPx } from "@microsoft/fast-jss-utilities";
+import { DesignSystem } from "../design-system";
 import {
-    DesignSystem,
-    DesignSystemResolver,
-    ensureDesignSystemDefaults,
-    withDesignSystemDefaults,
-} from "../design-system";
-import { cornerRadius, elevatedCornerRadius } from "../utilities/design-system";
+    cornerRadius,
+    elevatedCornerRadius,
+    focusOutlineWidth,
+} from "../utilities/design-system";
 
+/**
+ * Sets the border radius for controls.
+ */
 export function applyCornerRadius(): CSSRules<DesignSystem> {
     return { borderRadius: toPx(cornerRadius) };
 }
 
+/**
+ * Sets the border radius for elevated surfaces or controls.
+ */
+export function applyElevatedCornerRadius(): CSSRules<DesignSystem> {
+    return applyFloatingCornerRadius();
+}
+
+/**
+ * @deprecated Use applyElevatedCornerRadius instead.
+ */
 export function applyFloatingCornerRadius(): CSSRules<DesignSystem> {
     return { borderRadius: toPx(elevatedCornerRadius) };
 }
@@ -23,9 +35,6 @@ export function applyFocusPlaceholderBorder(
     config?: DesignSystem /* @deprecated - this function doesn't need an argument */
 ): CSSRules<DesignSystem> {
     return {
-        border: ensureDesignSystemDefaults(
-            (designSystem: DesignSystem): string =>
-                `${toPx(designSystem.focusOutlineWidth)} solid transparent`
-        ),
+        border: format("{0} solid transparent", toPx(focusOutlineWidth)),
     };
 }

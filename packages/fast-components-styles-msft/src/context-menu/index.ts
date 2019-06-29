@@ -2,14 +2,14 @@ import { ContextMenuClassNameContract } from "@microsoft/fast-components-class-n
 import { ComponentStyles } from "@microsoft/fast-jss-manager";
 import { format, toPx } from "@microsoft/fast-jss-utilities";
 import { DesignSystem } from "../design-system";
-import { applyFloatingCornerRadius } from "../utilities/border";
+import { applyElevatedCornerRadius } from "../utilities/border";
 import { backgroundColor, designUnit } from "../utilities/design-system";
 import { applyElevation, ElevationMultiplier } from "../utilities/elevation";
 
 const styles: ComponentStyles<ContextMenuClassNameContract, DesignSystem> = {
     contextMenu: {
         background: backgroundColor,
-        ...applyFloatingCornerRadius(),
+        ...applyElevatedCornerRadius(),
         ...applyElevation(ElevationMultiplier.e11),
         margin: "0",
         padding: format("{0} 0", toPx<DesignSystem>(designUnit)),
