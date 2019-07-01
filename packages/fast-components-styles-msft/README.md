@@ -123,7 +123,7 @@ These utility functions help you write clean and manageable style sheets.
     - [applyAcrylicMaterial](#applyacrylicmaterial)
 - [Border](#border)
     - [applyCornerRadius](#applycornerradius)
-    - [applyElevatedCornerRadius](#applyElevatedCornerRadius)
+    - [applyElevatedCornerRadius](#applyelevatedcornerradius)
     - [applyFocusPlaceholderBorder](#applyfocusplaceholderborder)
 - [Cursor](#cursor)
     - [applyCursorDefault](#applycursordefault)
