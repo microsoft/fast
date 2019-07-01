@@ -1041,4 +1041,117 @@ describe("viewport positioner", (): void => {
             ViewportPositionerVerticalPosition.top
         );
     });
+
+    test("Positioner base position offset from anchor is accounted for", (): void => {
+        const anchorElement: React.RefObject<HTMLDivElement> = React.createRef<
+            HTMLDivElement
+        >();
+        const viewportElement: React.RefObject<HTMLDivElement> = React.createRef<
+            HTMLDivElement
+        >();
+
+        const rendered: any = mount(
+            <div
+                style={{
+                    height: "100px",
+                    width: "100px",
+                }}
+                ref={viewportElement}
+            >
+                <div
+                    style={{
+                        height: "10px",
+                        width: "10px",
+                    }}
+                    ref={anchorElement}
+                />
+                <ViewportPositioner
+                    horizontalPositioningMode={AxisPositioningMode.adjacent}
+                    verticalPositioningMode={AxisPositioningMode.adjacent}
+                    anchor={anchorElement}
+                    viewport={viewportElement}
+                    managedClasses={managedClasses}
+                />
+            </div>
+        );
+
+        const positioner: any = rendered.find("BaseViewportPositioner");
+
+        positioner.instance().viewportRect = viewportRect;
+        positioner.instance().positionerRect = positionerRectX70Y70;
+        positioner.instance().anchorTop = 80;
+        positioner.instance().anchorRight = 90;
+        positioner.instance().anchorBottom = 90;
+        positioner.instance().anchorLeft = 80;
+        positioner.instance().anchorWidth = 10;
+        positioner.instance().anchorHeight = 10;
+        positioner.instance().scrollTop = 0;
+        positioner.instance().scrollLeft = 0;
+        positioner.instance().baseHorizontalOffset = 10;
+        positioner.instance().baseVerticalOffset = 10;
+
+        expect(
+            positioner
+                .instance()
+                ["getHorizontalPositioningState"](
+                    ViewportPositionerHorizontalPositionLabel.right
+                )["left"]
+        ).toBe(20);
+
+        expect(
+            positioner
+                .instance()
+                ["getHorizontalPositioningState"](
+                    ViewportPositionerHorizontalPositionLabel.left
+                )["right"]
+        ).toBe(0);
+
+        expect(
+            positioner
+                .instance()
+                ["getHorizontalPositioningState"](
+                    ViewportPositionerHorizontalPositionLabel.insetRight
+                )["left"]
+        ).toBe(10);
+
+        expect(
+            positioner
+                .instance()
+                ["getHorizontalPositioningState"](
+                    ViewportPositionerHorizontalPositionLabel.insetLeft
+                )["right"]
+        ).toBe(-10);
+
+        expect(
+            positioner
+                .instance()
+                ["getVerticalPositioningState"](
+                    ViewportPositionerVerticalPositionLabel.top
+                )["bottom"]
+        ).toBe(10);
+
+        expect(
+            positioner
+                .instance()
+                ["getVerticalPositioningState"](
+                    ViewportPositionerVerticalPositionLabel.bottom
+                )["top"]
+        ).toBe(10);
+
+        expect(
+            positioner
+                .instance()
+                ["getVerticalPositioningState"](
+                    ViewportPositionerVerticalPositionLabel.insetTop
+                )["bottom"]
+        ).toBe(0);
+
+        expect(
+            positioner
+                .instance()
+                ["getVerticalPositioningState"](
+                    ViewportPositionerVerticalPositionLabel.insetBottom
+                )["top"]
+        ).toBe(0);
+    });
 });
