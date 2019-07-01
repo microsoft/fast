@@ -637,7 +637,7 @@ export default UpdatePropsViewerContent;
 
 **components** - Provide an array of components with an `id` that corresponds to a JSON schema id and these components will be rendered via the postMessage system used with the `Viewer`.
 
-**plugins** The `ViewerContent` also accepts a plugins and passes them to the `mapDataToComponent` utility, see the `mapDataToComponent` utility section for information on how they can be used.
+**plugins** The `ViewerContent` also accepts plugin(s) and passes them to the `mapDataToComponent` utility, see the `mapDataToComponent` utility section for information on how they can be used.
 
 ### Select device
 
