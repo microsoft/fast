@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.2.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-colors@4.1.2...@microsoft/fast-colors@4.2.0) (2019-07-01)
+
+
+### Features
+
+* color algorithm and recipe updates ([#1899](https://github.com/Microsoft/fast-dna/issues/1899)) ([84d6b19](https://github.com/Microsoft/fast-dna/commit/84d6b19))
+
+
+
+
+
 ## [4.1.2](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-colors@4.1.1...@microsoft/fast-colors@4.1.2) (2019-06-25)
 
 **Note:** Version bump only for package @microsoft/fast-colors
