@@ -26,7 +26,7 @@ export class ViewerContent extends Foundation<
     protected handledProps: HandledProps<ViewerContentHandledProps> = {
         managedClasses: void 0,
         components: void 0,
-        plugins: void 0
+        plugins: void 0,
     };
 
     constructor(props: ViewerContentHandledProps) {
