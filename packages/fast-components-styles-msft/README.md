@@ -123,7 +123,7 @@ These utility functions help you write clean and manageable style sheets.
     - [applyAcrylicMaterial](#applyacrylicmaterial)
 - [Border](#border)
     - [applyCornerRadius](#applycornerradius)
-    - [applyFloatingCornerRadius](#applyfloatingcornerradius)
+    - [applyElevatedCornerRadius](#applyelevatedcornerradius)
     - [applyFocusPlaceholderBorder](#applyfocusplaceholderborder)
 - [Cursor](#cursor)
     - [applyCursorDefault](#applycursordefault)
@@ -196,16 +196,16 @@ const styles: ComponentStyles<ClassNameContract, DesignSystem> = {
 };
 ```
 
-#### applyFloatingCornerRadius
+#### applyElevatedCornerRadius
 
-Applies a `cornerRadius` for UI elements which are elevated or outside the normal document flow.
+Applies the design system value for `elevatedCornerRadius` for UI elements which are elevated or outside the normal document flow.
 
 ```TypeScript
-import { applyFloatingCornerRadius } from "@microsoft/fast-components-styles-msft";
+import { applyElevatedCornerRadius } from "@microsoft/fast-components-styles-msft";
 
 const styles: ComponentStyles<ClassNameContract, DesignSystem> = {
     styled_component: {
-        ...applyFloatingCornerRadius(),
+        ...applyElevatedCornerRadius(),
     },
 };
 ```
