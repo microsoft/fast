@@ -17,10 +17,17 @@ export const accentBaseColor: DesignSystemResolver<string> = getDesignSystemValu
 );
 
 /**
- * Retrieve the backgroundColor when invoked with a DesignSystem
+ * Retrieve the cornerRadius when invoked with a DesignSystem
  */
 export const cornerRadius: DesignSystemResolver<number> = getDesignSystemValue(
     "cornerRadius"
+);
+
+/**
+ * Retrieve the elevatedCornerRadius when invoked with a DesignSystem
+ */
+export const elevatedCornerRadius: DesignSystemResolver<number> = getDesignSystemValue(
+    "elevatedCornerRadius"
 );
 
 /**
@@ -31,7 +38,7 @@ export const neutralPalette: DesignSystemResolver<Palette> = getDesignSystemValu
 );
 
 /**
- * Retrieve the accent  palette from the design system
+ * Retrieve the accent palette from the design system
  */
 export const accentPalette: DesignSystemResolver<Palette> = getDesignSystemValue(
     "accentPalette"

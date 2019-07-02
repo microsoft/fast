@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.8.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-base@4.8.0...@microsoft/fast-components-react-base@4.8.1) (2019-07-01)
+
+
+### Bug Fixes
+
+* enable viewport postioner to correct for base position offset from anchor ([#1903](https://github.com/Microsoft/fast-dna/issues/1903)) ([cca9871](https://github.com/Microsoft/fast-dna/commit/cca9871))
+
+
+
+
+
 # [4.8.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-base@4.7.0...@microsoft/fast-components-react-base@4.8.0) (2019-06-25)
 
 

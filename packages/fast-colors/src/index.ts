@@ -10,6 +10,7 @@ export * from "./color-quantization";
 export * from "./color-rgba-64";
 export * from "./color-scale";
 export * from "./color-xyz";
+export * from "./component-state-color-palette";
 export * from "./histogram";
 export * from "./math-utilities";
 export * from "./palette-extractor";

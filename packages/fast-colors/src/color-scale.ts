@@ -38,7 +38,7 @@ export class ColorScale {
         if (stops == null || stops.length === 0) {
             throw new Error("The stops argument must be non-empty");
         } else {
-            this.stops = stops;
+            this.stops = this.sortColorScaleStops(stops);
         }
     }
 
@@ -198,5 +198,22 @@ export class ColorScale {
             };
         }
         return new ColorScale(newStops);
+    }
+
+    private sortColorScaleStops(stops: ColorScaleStop[]): ColorScaleStop[] {
+        return stops.sort(
+            (a: ColorScaleStop, b: ColorScaleStop): number => {
+                const A: number = a.position;
+                const B: number = b.position;
+
+                if (A < B) {
+                    return -1;
+                } else if (A > B) {
+                    return 1;
+                } else {
+                    return 0;
+                }
+            }
+        );
     }
 }

@@ -18,7 +18,7 @@ import {
     neutralForegroundRest,
     neutralOutlineRest,
 } from "../utilities/color";
-import { applyFloatingCornerRadius } from "../utilities/border";
+import { applyElevatedCornerRadius } from "../utilities/border";
 import { designUnit } from "../utilities/design-system";
 import { inputFieldStyles } from "../patterns/input-field";
 
@@ -59,7 +59,7 @@ const styles: ComponentStyles<SelectClassNameContract, DesignSystem> = {
     },
     select_menu: {
         background: neutralFillStealthRest,
-        ...applyFloatingCornerRadius(),
+        ...applyElevatedCornerRadius(),
         ...applyElevation(ElevationMultiplier.e11),
         zIndex: "1",
         position: "relative",

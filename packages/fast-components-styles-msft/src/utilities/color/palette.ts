@@ -154,19 +154,29 @@ export function getSwatch(index: number, colorPalette: Palette): Swatch {
 
 export function swatchByMode(
     paletteName: PaletteType
-): (a: number, b: number) => DesignSystemResolver<Swatch> {
+): (
+    a: number | DesignSystemResolver<number>,
+    b: number | DesignSystemResolver<number>
+) => DesignSystemResolver<Swatch> {
     const paletteKey: keyof DesignSystem =
         paletteName === PaletteType.accent ? "accentPalette" : "neutralPalette";
 
-    return (valueA: number, valueB?: number): DesignSystemResolver<Swatch> => {
+    return (
+        valueA: number | DesignSystemResolver<number>,
+        valueB?: number | DesignSystemResolver<number>
+    ): DesignSystemResolver<Swatch> => {
         return (designSystem: DesignSystem): Swatch => {
             const currentPalette: Palette =
                 (designSystem && designSystem[paletteKey]) ||
                 defaultDesignSystem[paletteKey];
 
+            const bEval: number =
+                typeof valueB === "function" ? valueB(designSystem) : valueB;
+            const aEval: number =
+                typeof valueA === "function" ? valueA(designSystem) : valueA;
             return isDarkMode(designSystem)
-                ? getSwatch(valueB, currentPalette)
-                : getSwatch(valueA, currentPalette);
+                ? getSwatch(bEval, currentPalette)
+                : getSwatch(aEval, currentPalette);
         };
     };
 }
@@ -266,6 +276,7 @@ export function swatchByContrast(referenceColor: string | SwatchResolver) {
         };
     };
 }
+
 /* tslint:enable:typedef */
 export function findClosestBackgroundIndex(designSystem: DesignSystem): number {
     return findClosestSwatchIndex(PaletteType.neutral, backgroundColor(designSystem))(

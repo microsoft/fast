@@ -123,7 +123,7 @@ export default class App extends React.Component<{}, AppState> {
             designSystem: Object.assign({}, DesignSystemDefaults, {
                 accentPalette: createColorPalette(parseColor(accent)),
                 accentBaseColor: accent,
-                neutralPalette: createColorPalette(new ColorRGBA64(0.5, 0.5, 0.5, 1)),
+                neutralPalette: createColorPalette(parseColor("#808080")),
                 direction: Direction.ltr,
             }),
             backgroundColor: DesignSystemDefaults.backgroundColor,

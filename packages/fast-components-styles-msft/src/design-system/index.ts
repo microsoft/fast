@@ -1,6 +1,10 @@
 import { Direction } from "@microsoft/fast-web-utilities";
 import { white } from "../utilities/color/color-constants";
-import { ColorPalette, ColorRGBA64, parseColorHexRGB } from "@microsoft/fast-colors";
+import {
+    ColorRGBA64,
+    ComponentStateColorPalette,
+    parseColorHexRGB,
+} from "@microsoft/fast-colors";
 import { Palette } from "../utilities/color/palette";
 import { withDefaults } from "@microsoft/fast-jss-utilities";
 import { defaultFontWeights, FontWeight } from "../utilities/fonts";
@@ -12,22 +16,27 @@ export type DensityOffset = -3 | -2 | -1 | 0 | 1 | 2 | 3;
 
 export interface DesignSystem {
     /**
-     * The value typically used for backgrounds of elements
+     * The background color of the current context.
+     * May be used to draw an actual background or not. Color recipes evaluated within this context will use this as their basis.
      */
     backgroundColor: string;
 
     /**
-     * The accent color, which the accentPalette is based on
+     * The accent color, which the accent palette is based on.
+     * Keep this value in sync with accentPalette.
      */
     accentBaseColor: string;
 
     /**
-     * Configuration object to derive the neutral palette. Expects a ColorPaletteConfig from @microsoft/fast-colors
+     * An array of colors in a ramp from light to dark, used to look up values for neutral color recipes.
+     * Generate by calling createColorPalette.
      */
     neutralPalette: Palette;
 
     /**
-     * Configuration object to derive the accent palette. Expects a ColorPaletteConfig from @microsoft/fast-colors
+     * An array of colors in a ramp from light to dark, used to lookup values for accent color recipes.
+     * Keep this value in sync with accentBaseColor.
+     * Generate by calling createColorPalette.
      */
     accentPalette: Palette;
 
@@ -62,17 +71,22 @@ export interface DesignSystem {
     direction: Direction;
 
     /**
-     * An object representing the supported font weights
+     * An object representing the supported font weights.
      */
     fontWeight?: FontWeight;
 
     /**
-     * The corner default radius applied to controls.
+     * The corner radius applied to controls.
      */
     cornerRadius?: number;
 
     /**
-     * The width of the outline in pixels applied to outline components.
+     * The corner radius applied to elevated surfaces or controls.
+     */
+    elevatedCornerRadius?: number;
+
+    /**
+     * The width of the outline applied to outline components in pixels.
      */
     outlineWidth?: number;
 
@@ -87,7 +101,7 @@ export interface DesignSystem {
     disabledOpacity: number;
 
     /**
-     * Color swatch deltas for accent-fill recipe
+     * Color swatch deltas for the accent-fill recipe.
      */
     accentFillRestDelta: number;
     accentFillHoverDelta: number;
@@ -95,14 +109,14 @@ export interface DesignSystem {
     accentFillSelectedDelta: number;
 
     /**
-     * Color swatch deltas for accent-foreground recipe
+     * Color swatch deltas for the accent-foreground recipe.
      */
     accentForegroundRestDelta: number;
     accentForegroundHoverDelta: number;
     accentForegroundActiveDelta: number;
 
     /*
-     * Color swatch deltas for neutral-fill recipe
+     * Color swatch deltas for the neutral-fill recipe.
      */
     neutralFillRestDelta: number;
     neutralFillHoverDelta: number;
@@ -110,7 +124,7 @@ export interface DesignSystem {
     neutralFillSelectedDelta: number;
 
     /**
-     * Color swatch deltas for neutral-fill-input recipe
+     * Color swatch deltas for the neutral-fill-input recipe.
      */
     neutralFillInputRestDelta: number;
     neutralFillInputHoverDelta: number;
@@ -118,7 +132,7 @@ export interface DesignSystem {
     neutralFillInputSelectedDelta: number;
 
     /**
-     * Color swatch deltas for neutral-fill-stealth recipe
+     * Color swatch deltas for the neutral-fill-stealth recipe.
      */
     neutralFillStealthRestDelta: number;
     neutralFillStealthHoverDelta: number;
@@ -126,12 +140,12 @@ export interface DesignSystem {
     neutralFillStealthSelectedDelta: number;
 
     /**
-     * Color swatch deltas for neutral-fill-card recipe
+     * Color swatch deltas for the neutral-fill-card recipe.
      */
     neutralFillCardDelta: number;
 
     /**
-     * Color swatch deltas for neutral-foreground
+     * Color swatch deltas for the neutral-foreground recipe.
      */
     /**
      * @deprecated Neutral foreground is now based on contrast and this is no longer used.
@@ -141,11 +155,12 @@ export interface DesignSystem {
      * @deprecated Neutral foreground is now based on contrast and this is no longer used.
      */
     neutralForegroundLightIndex: number;
+
     neutralForegroundHoverDelta: number;
     neutralForegroundActiveDelta: number;
 
     /**
-     * Color swatch deltas for neutral-outline
+     * Color swatch deltas for the neutral-outline recipe.
      */
     neutralOutlineRestDelta: number;
     neutralOutlineHoverDelta: number;
@@ -153,15 +168,8 @@ export interface DesignSystem {
 }
 
 export function createColorPalette(baseColor: ColorRGBA64): Palette {
-    return new ColorPalette({
+    return new ComponentStateColorPalette({
         baseColor,
-        clipDark: 0,
-        clipLight: 0,
-        overlayDark: 0,
-        overlayLight: 0,
-        saturationDark: 0,
-        saturationLight: 0,
-        steps: 63,
     }).palette.map((color: ColorRGBA64) => color.toStringHexRGB().toUpperCase());
 }
 
@@ -174,11 +182,12 @@ const designSystemDefaults: DesignSystem = {
     baseHorizontalSpacingMultiplier: 3,
     direction: Direction.ltr,
     cornerRadius: 2,
+    elevatedCornerRadius: 4,
     focusOutlineWidth: 2,
     fontWeight: defaultFontWeights,
     disabledOpacity: 0.3,
     outlineWidth: 1,
-    neutralPalette: createColorPalette(new ColorRGBA64(0.5, 0.5, 0.5, 1)),
+    neutralPalette: createColorPalette(parseColorHexRGB("#808080")),
     accentPalette: createColorPalette(parseColorHexRGB("#0078D4")),
     accentBaseColor: "#0078D4",
 
@@ -186,51 +195,51 @@ const designSystemDefaults: DesignSystem = {
      * Recipe Deltas
      */
     accentFillRestDelta: 0,
-    accentFillHoverDelta: 2,
-    accentFillActiveDelta: 4,
+    accentFillHoverDelta: 4,
+    accentFillActiveDelta: -5,
     accentFillSelectedDelta: 12,
 
     accentForegroundRestDelta: 0,
-    accentForegroundHoverDelta: 4,
-    accentForegroundActiveDelta: 8,
+    accentForegroundHoverDelta: 6,
+    accentForegroundActiveDelta: -4,
 
-    neutralFillRestDelta: 4,
-    neutralFillHoverDelta: 3,
-    neutralFillActiveDelta: 2,
-    neutralFillSelectedDelta: 8,
+    neutralFillRestDelta: 7,
+    neutralFillHoverDelta: 10,
+    neutralFillActiveDelta: 5,
+    neutralFillSelectedDelta: 7,
 
-    neutralFillInputRestDelta: 4,
-    neutralFillInputHoverDelta: 4,
-    neutralFillInputActiveDelta: 4,
-    neutralFillInputSelectedDelta: 4,
+    neutralFillInputRestDelta: 0,
+    neutralFillInputHoverDelta: 0,
+    neutralFillInputActiveDelta: 0,
+    neutralFillInputSelectedDelta: 0,
 
     neutralFillStealthRestDelta: 0,
-    neutralFillStealthHoverDelta: 3,
-    neutralFillStealthActiveDelta: 2,
-    neutralFillStealthSelectedDelta: 8,
+    neutralFillStealthHoverDelta: 5,
+    neutralFillStealthActiveDelta: 3,
+    neutralFillStealthSelectedDelta: 7,
 
-    neutralFillCardDelta: 2,
+    neutralFillCardDelta: 3,
 
-    neutralForegroundDarkIndex: 58,
+    neutralForegroundDarkIndex: 93,
     neutralForegroundLightIndex: 0,
 
-    neutralForegroundHoverDelta: 8,
-    neutralForegroundActiveDelta: 16,
+    neutralForegroundHoverDelta: 0,
+    neutralForegroundActiveDelta: 0,
 
-    neutralOutlineRestDelta: 12,
-    neutralOutlineHoverDelta: 24,
-    neutralOutlineActiveDelta: 18,
+    neutralOutlineRestDelta: 25,
+    neutralOutlineHoverDelta: 40,
+    neutralOutlineActiveDelta: 16,
 };
 
 /**
- * Ensure that all properties of the design system are assigned
+ * Ensure that all properties of the DesignSystem are assigned.
  */
 export const withDesignSystemDefaults: (config: Partial<DesignSystem>) => DesignSystem = (
     config: Partial<DesignSystem>
 ): DesignSystem => withDefaults(designSystemDefaults)(config);
 
 /**
- * Safely retrieves a single property from a design system
+ * Safely retrieves a single property from a DesignSystem.
  * @deprecated Use getDesignSystemValue instead.
  */
 export function getDesignSystemProperty(key: string): DesignSystemResolver<string> {
@@ -240,7 +249,7 @@ export function getDesignSystemProperty(key: string): DesignSystemResolver<strin
 }
 
 /**
- * Safely retrieves the value from a key of the designSystem.
+ * Safely retrieves the value from a key of the DesignSystem.
  */
 export function getDesignSystemValue<T extends DesignSystem, K extends keyof T>(
     key: K
@@ -253,7 +262,7 @@ export function getDesignSystemValue<T extends DesignSystem, K extends keyof T>(
 }
 
 /**
- * Returns the argument if basic, othwerwise calls the DesignSystemResolver function.
+ * Returns the argument if basic, otherwise calls the DesignSystemResolver function.
  *
  * @param arg A value or a DesignSystemResolver function
  * @param designSystem The design system config.
@@ -279,7 +288,7 @@ export function ensureDesignSystemDefaults<T>(
 }
 
 /**
- * A function that accepts a design system and returns a generic type
+ * A function that accepts a DesignSystem and returns a generic type.
  */
 export type DesignSystemResolver<T> = (designSystem: DesignSystem) => T;
 
