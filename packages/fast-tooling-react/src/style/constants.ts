@@ -3,6 +3,7 @@ export const background100: string = "#1A1A1A";
 export const background200: string = "#1E1E1E";
 export const background300: string = "#212121";
 export const background800: string = "#303030";
+export const background900: string = "#414141";
 export const foreground000: string = "#FFF";
 export const foreground200: string = "#F6F6F6";
 export const foreground300: string = "#F2F2F2";

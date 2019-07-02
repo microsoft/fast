@@ -1,6 +1,6 @@
 import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager-react";
 import { applyTriggerStyle, insetStrongBoxShadow } from "../style";
-import { accent, background300, background800, foreground300 } from "../style/constants";
+import { accent, background300, background800, foreground300, background900 } from "../style/constants";
 
 export interface NavigationClassNameContract {
     navigation?: string;
@@ -25,6 +25,14 @@ const styles: ComponentStyles<NavigationClassNameContract, {}> = {
         display: "flex",
         flexFlow: "column",
         textIndent: "1em",
+        position: "relative",
+        "& $navigation_item::after": {
+            content: "''",
+            height: "100%",
+            position: "absolute",
+            left: "calc(1em - 13px)",
+            borderRight: `1px solid ${background900}`
+        },
         '&[aria-expanded="true"] > $navigation_itemList': {
             display: "block",
         },
@@ -58,7 +66,7 @@ const styles: ComponentStyles<NavigationClassNameContract, {}> = {
         fontStyle: "italic",
         "&:focus": {
             ...insetStrongBoxShadow(accent),
-        },
+        }
     },
     navigation_itemContent__active: {
         background: background800,
