@@ -5,6 +5,7 @@ import { accent, background300, background800, foreground300 } from "../style/co
 export interface NavigationClassNameContract {
     navigation?: string;
     navigation_item?: string;
+    navigation_item__childItem?: string;
     navigation_itemContent?: string;
     navigation_itemContent__active?: string;
     navigation_itemContent__dragHover?: string;
@@ -46,9 +47,15 @@ const styles: ComponentStyles<NavigationClassNameContract, {}> = {
             borderBottom: "3px solid transparent",
         },
     },
+    navigation_item__childItem: {
+        "& > $navigation_itemContent": {
+            fontStyle: "normal"
+        }
+    },
     navigation_itemContent: {
         ...applyTriggerStyle(foreground300),
         textDecoration: "none",
+        fontStyle: "italic",
         "&:focus": {
             ...insetStrongBoxShadow(accent),
         },

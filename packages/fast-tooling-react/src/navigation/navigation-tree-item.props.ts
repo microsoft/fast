@@ -44,21 +44,6 @@ export interface NavigationTreeItemProps
     handleKeyUp: React.KeyboardEventHandler<HTMLElement>;
 
     /**
-     * The level, used for the tree items aria-level
-     */
-    level: number;
-
-    /**
-     * The length of the navigation, used for the tree items aria-setsize
-     */
-    navigationLength: number;
-
-    /**
-     * The position of the tree item in the navigation, used for the tree items aria-posinset
-     */
-    positionInNavigation: number;
-
-    /**
      * The text used for the tree item
      */
     text: string;
