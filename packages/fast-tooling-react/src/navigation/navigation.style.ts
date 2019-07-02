@@ -12,6 +12,7 @@ export interface NavigationClassNameContract {
     navigation?: string;
     navigation_item?: string;
     navigation_item__childItem?: string;
+    navigation_item__draggable?: string;
     navigation_itemContent?: string;
     navigation_itemContent__active?: string;
     navigation_itemContent__dragHover?: string;
@@ -32,6 +33,7 @@ const styles: ComponentStyles<NavigationClassNameContract, {}> = {
         flexFlow: "column",
         textIndent: "1em",
         position: "relative",
+        cursor: "pointer",
         "& $navigation_item::after": {
             content: "''",
             height: "100%",
@@ -66,8 +68,12 @@ const styles: ComponentStyles<NavigationClassNameContract, {}> = {
             fontStyle: "normal",
         },
     },
+    navigation_item__draggable: {
+        cursor: "grab"
+    },
     navigation_itemContent: {
         ...applyTriggerStyle(foreground300),
+        cursor: "inherit",
         textDecoration: "none",
         fontStyle: "italic",
         "&:focus": {

@@ -375,6 +375,14 @@ export default class Navigation extends Foundation<
                 "managedClasses.navigation_item__childItem",
                 ""
             )}`;
+
+            if (this.props.dragAndDropReordering) {
+                classes = `${classes} ${get(
+                    this.props,
+                    "managedClasses.navigation_item__draggable",
+                    ""
+                )}`;
+            }
         }
 
         return classes;
