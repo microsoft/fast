@@ -35,7 +35,7 @@ const favoriteAnimalProps: Pick<
     label: "Select your favorite animal",
 };
 
-storiesOf("AutoSuggest", module)
+storiesOf("Auto suggest", module)
     .add("Uncontrolled", () => (
         <AutoSuggest
             {...favoriteAnimalProps}
