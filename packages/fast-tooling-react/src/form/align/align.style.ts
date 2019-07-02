@@ -7,7 +7,7 @@ import {
     applyLabelStyle,
     applySoftRemove,
     applySoftRemoveInput,
-    background300,
+    neutralLayerL4,
 } from "../../style";
 import { AlignClassNameContract } from "./align.props";
 
@@ -44,8 +44,8 @@ const styles: ComponentStyles<AlignClassNameContract, {}> = {
     },
     align_controlInput__center: {
         ...applyInputBackplateStyle(),
-        borderRight: `1px solid ${background300}`,
-        borderLeft: `1px solid ${background300}`,
+        borderRight: `1px solid ${neutralLayerL4}`,
+        borderLeft: `1px solid ${neutralLayerL4}`,
         background: centerLight,
         "&:checked": {
             backgroundColor: accent,
