@@ -335,7 +335,7 @@ describe("Navigation", () => {
                     {
                         id: childOptions[0].schema.id,
                         props: {},
-                    }
+                    },
                 ],
             },
             managedClasses,

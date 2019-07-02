@@ -245,9 +245,11 @@ export default class Navigation extends Foundation<
         level: number
     ): React.ReactNode {
         // Sort items so that childrenItems are weighted towards the top
-        const sortedNavigation: TreeNavigation[] = navigation.sort((a: TreeNavigation) => {
-            return a.type === NavigationDataType.children ? 1 : -1;
-        });
+        const sortedNavigation: TreeNavigation[] = navigation.sort(
+            (a: TreeNavigation) => {
+                return a.type === NavigationDataType.children ? 1 : -1;
+            }
+        );
 
         return sortedNavigation.map((navigationItem: TreeNavigation, index: number) => {
             const navigationLength: number = navigation.length;

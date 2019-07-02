@@ -183,10 +183,7 @@ const NavigationTreeItem: React.RefForwardingComponent<
                     {props.children}
                 </div>
             ) : (
-                <div
-                    className={props.className}
-                    ref={elementRef}
-                >
+                <div className={props.className} ref={elementRef}>
                     <a
                         className={`${props.contentClassName}${getDragHoverClassName()}`}
                         role={"treeitem"}

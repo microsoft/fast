@@ -49,8 +49,8 @@ const styles: ComponentStyles<NavigationClassNameContract, {}> = {
     },
     navigation_item__childItem: {
         "& > $navigation_itemContent": {
-            fontStyle: "normal"
-        }
+            fontStyle: "normal",
+        },
     },
     navigation_itemContent: {
         ...applyTriggerStyle(foreground300),
