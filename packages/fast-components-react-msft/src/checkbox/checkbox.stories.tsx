@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { Checkbox } from "./";
 import { uniqueId } from "lodash-es";
 import { Label } from "../label";
+import { action } from "@storybook/addon-actions";
 
 /**
  * Simple state manager to track and update checked properties
@@ -20,13 +21,16 @@ function CheckboxStateHandler(props: {
 
     function handleChange(e: React.ChangeEvent<HTMLInputElement>): void {
         setChecked(e.target.checked);
+        action("onChange")(e);
     }
 
     return props.children(checked, handleChange);
 }
 
 storiesOf("Checkbox", module)
-    .add("Unhandled", () => <Checkbox inputId={uniqueId()} />)
+    .add("Unhandled", () => (
+        <Checkbox inputId={uniqueId()} onChange={action("onChange")} />
+    ))
     .add("Handled", () => {
         function render(
             checked: boolean,
@@ -41,7 +45,7 @@ storiesOf("Checkbox", module)
     .add("With label", () => {
         const id: string = uniqueId();
         return (
-            <Checkbox inputId={id}>
+            <Checkbox inputId={id} onChange={action("onChange")}>
                 <Label slot="label" htmlFor={id}>
                     Hello world
                 </Label>
