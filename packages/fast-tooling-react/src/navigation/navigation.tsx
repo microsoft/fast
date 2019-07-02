@@ -138,7 +138,7 @@ export default class Navigation extends Foundation<
         const dataLocation: string = navigation.dataLocation;
         const dataType: NavigationDataType = navigation.type;
         const props: NavigationTreeItemProps = {
-            className: this.props.managedClasses.navigation_item,
+            className: this.getItemClassName(dataType),
             contentClassName: this.getItemContentClassName(dataLocation),
             getContentDragHoverClassName: this.getItemContentDragHoverClassName,
             dataLocation,
@@ -148,9 +148,6 @@ export default class Navigation extends Foundation<
             expanded: this.isExpanded(dataLocation),
             handleClick: this.handleTreeItemClick(dataLocation, dataType),
             handleKeyUp: this.handleTreeItemKeyUp(dataLocation, dataType),
-            level,
-            navigationLength,
-            positionInNavigation,
             text: navigation.text,
             type: dataType,
             onChange: this.handleChange,
@@ -160,6 +157,13 @@ export default class Navigation extends Foundation<
             Array.isArray(navigation.items) && navigationLength > 0
                 ? this.renderTreeItemContainer(navigation.items, level)
                 : void 0;
+
+        // Directly nest React children which use the "children" property
+        if (dataLocation === "children" || dataLocation.endsWith("props.children")) {
+            if (Array.isArray(navigation.items) && navigationLength > 0) {
+                return this.renderTreeItems(navigation.items, level + 1);
+            }
+        }
 
         if (this.props.dragAndDropReordering) {
             return (
@@ -240,7 +244,14 @@ export default class Navigation extends Foundation<
         navigation: TreeNavigation[],
         level: number
     ): React.ReactNode {
-        return navigation.map((navigationItem: TreeNavigation, index: number) => {
+        // Sort items so that childrenItems are weighted towards the top
+        const sortedNavigation: TreeNavigation[] = navigation.sort(
+            (a: TreeNavigation) => {
+                return a.type === NavigationDataType.children ? 1 : -1;
+            }
+        );
+
+        return sortedNavigation.map((navigationItem: TreeNavigation, index: number) => {
             const navigationLength: number = navigation.length;
             const positionInNavigation: number = index + 1;
 
@@ -353,6 +364,20 @@ export default class Navigation extends Foundation<
                 nodes[currentIndex - 1].focus();
             }
         }
+    }
+
+    private getItemClassName(dataType: NavigationDataType): string {
+        let classes: string = this.props.managedClasses.navigation_item;
+
+        if (dataType === NavigationDataType.childrenItem) {
+            classes = `${classes} ${get(
+                this.props,
+                "managedClasses.navigation_item__childItem",
+                ""
+            )}`;
+        }
+
+        return classes;
     }
 
     private getItemContentClassName(dataLocation: string): string {

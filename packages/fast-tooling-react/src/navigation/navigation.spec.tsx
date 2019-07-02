@@ -117,47 +117,8 @@ describe("Navigation", () => {
         const item: any = rendered.find(treeItemEndPointSelector);
         expect(item).toHaveLength(1);
         const triggerItem: any = rendered.find(treeItemExpandListTriggerSelector);
-        expect(triggerItem).toHaveLength(2);
+        expect(triggerItem).toHaveLength(1);
         expect(item.props().className).toEqual(managedClasses.navigation_itemContent);
-        expect(item.props()["aria-level"]).toEqual(3);
-        expect(item.props()["aria-setsize"]).toEqual(1);
-        expect(item.props()["aria-posinset"]).toEqual(1);
-        expect(
-            triggerItem
-                .at(0)
-                .parent()
-                .props()["aria-level"]
-        ).toEqual(1);
-        expect(
-            triggerItem
-                .at(0)
-                .parent()
-                .props()["aria-setsize"]
-        ).toEqual(1);
-        expect(
-            triggerItem
-                .at(0)
-                .parent()
-                .props()["aria-posinset"]
-        ).toEqual(1);
-        expect(
-            triggerItem
-                .at(1)
-                .parent()
-                .props()["aria-level"]
-        ).toEqual(2);
-        expect(
-            triggerItem
-                .at(1)
-                .parent()
-                .props()["aria-setsize"]
-        ).toEqual(1);
-        expect(
-            triggerItem
-                .at(1)
-                .parent()
-                .props()["aria-posinset"]
-        ).toEqual(1);
     });
     test("should render multiple items if multiple children have been passed", () => {
         const props: NavigationProps = {
@@ -181,19 +142,45 @@ describe("Navigation", () => {
         const item: any = rendered.find(treeItemEndPointSelector);
         const itemTriggers: any = rendered.find(treeItemExpandListTriggerSelector);
         expect(item).toHaveLength(2);
-        expect(itemTriggers).toHaveLength(2);
+        expect(itemTriggers).toHaveLength(1);
         expect(item.at(0).props().className).toEqual(
             managedClasses.navigation_itemContent
         );
-        expect(item.at(0).props()["aria-level"]).toEqual(3);
-        expect(item.at(0).props()["aria-setsize"]).toEqual(2);
-        expect(item.at(0).props()["aria-posinset"]).toEqual(1);
         expect(item.at(1).props().className).toEqual(
             managedClasses.navigation_itemContent
         );
-        expect(item.at(1).props()["aria-level"]).toEqual(3);
-        expect(item.at(1).props()["aria-setsize"]).toEqual(2);
-        expect(item.at(1).props()["aria-posinset"]).toEqual(2);
+    });
+    test("should not render a children data type for props using the React default children prop", () => {
+        const props: NavigationProps = {
+            ...navigationProps,
+            data: {
+                children: {
+                    id: childOptions[0].schema.id,
+                    props: {},
+                },
+            },
+            managedClasses,
+        };
+
+        const rendered: any = mount(<DragDropNavigation {...props} />);
+        const triggerItem: any = rendered.find(treeItemExpandListTriggerSelector);
+        expect(triggerItem).toHaveLength(1);
+    });
+    test("should render a children data type for props not using the React default children prop", () => {
+        const props: NavigationProps = {
+            ...navigationProps,
+            data: {
+                otherChildren: {
+                    id: childOptions[0].schema.id,
+                    props: {},
+                },
+            },
+            managedClasses,
+        };
+
+        const rendered: any = mount(<DragDropNavigation {...props} />);
+        const triggerItem: any = rendered.find(treeItemExpandListTriggerSelector);
+        expect(triggerItem).toHaveLength(2);
     });
     test("should render a nested item if nested children have been passed", () => {
         const props: NavigationProps = {
@@ -220,14 +207,8 @@ describe("Navigation", () => {
         expect(triggerItem.props().className).toEqual(
             managedClasses.navigation_itemContent
         );
-        expect(triggerItem.parent().props()["aria-level"]).toEqual(2);
-        expect(triggerItem.parent().props()["aria-setsize"]).toEqual(1);
-        expect(triggerItem.parent().props()["aria-posinset"]).toEqual(1);
         expect(linkItem).toHaveLength(1);
         expect(linkItem.props().className).toEqual(managedClasses.navigation_itemContent);
-        expect(linkItem.props()["aria-level"]).toEqual(5);
-        expect(linkItem.props()["aria-setsize"]).toEqual(1);
-        expect(linkItem.props()["aria-posinset"]).toEqual(1);
     });
     test("should render multiple nested items if multiple nested children have been passed", () => {
         const props: NavigationProps = {
@@ -260,22 +241,13 @@ describe("Navigation", () => {
         expect(triggerItem.props().className).toEqual(
             managedClasses.navigation_itemContent
         );
-        expect(triggerItem.parent().props()["aria-level"]).toEqual(2);
-        expect(triggerItem.parent().props()["aria-setsize"]).toEqual(1);
-        expect(triggerItem.parent().props()["aria-posinset"]).toEqual(1);
         expect(linkItem).toHaveLength(2);
         expect(linkItem.at(0).props().className).toEqual(
             managedClasses.navigation_itemContent
         );
-        expect(linkItem.at(0).props()["aria-level"]).toEqual(5);
-        expect(linkItem.at(0).props()["aria-setsize"]).toEqual(2);
-        expect(linkItem.at(0).props()["aria-posinset"]).toEqual(1);
         expect(linkItem.at(1).props().className).toEqual(
             managedClasses.navigation_itemContent
         );
-        expect(linkItem.at(1).props()["aria-level"]).toEqual(5);
-        expect(linkItem.at(1).props()["aria-setsize"]).toEqual(2);
-        expect(linkItem.at(1).props()["aria-posinset"]).toEqual(2);
     });
     test("should render multiple items if multiple children with nested children have been passed", () => {
         const props: NavigationProps = {
@@ -315,107 +287,8 @@ describe("Navigation", () => {
         const linkItem: any = rendered.find(treeItemEndPointSelector);
         const triggerItem: any = rendered.find(treeItemExpandListTriggerSelector);
 
-        expect(triggerItem).toHaveLength(6);
-        expect(
-            triggerItem
-                .at(1)
-                .parent()
-                .props()["aria-level"]
-        ).toEqual(2);
-        expect(
-            triggerItem
-                .at(1)
-                .parent()
-                .props()["aria-setsize"]
-        ).toEqual(1);
-        expect(
-            triggerItem
-                .at(1)
-                .parent()
-                .props()["aria-posinset"]
-        ).toEqual(1);
-        expect(
-            triggerItem
-                .at(2)
-                .parent()
-                .props()["aria-level"]
-        ).toEqual(3);
-        expect(
-            triggerItem
-                .at(2)
-                .parent()
-                .props()["aria-setsize"]
-        ).toEqual(2);
-        expect(
-            triggerItem
-                .at(2)
-                .parent()
-                .props()["aria-posinset"]
-        ).toEqual(1);
-        expect(
-            triggerItem
-                .at(3)
-                .parent()
-                .props()["aria-level"]
-        ).toEqual(4);
-        expect(
-            triggerItem
-                .at(3)
-                .parent()
-                .props()["aria-setsize"]
-        ).toEqual(1);
-        expect(
-            triggerItem
-                .at(3)
-                .parent()
-                .props()["aria-posinset"]
-        ).toEqual(1);
-        expect(
-            triggerItem
-                .at(4)
-                .parent()
-                .props()["aria-level"]
-        ).toEqual(3);
-        expect(
-            triggerItem
-                .at(4)
-                .parent()
-                .props()["aria-setsize"]
-        ).toEqual(2);
-        expect(
-            triggerItem
-                .at(4)
-                .parent()
-                .props()["aria-posinset"]
-        ).toEqual(2);
-        expect(
-            triggerItem
-                .at(5)
-                .parent()
-                .props()["aria-level"]
-        ).toEqual(4);
-        expect(
-            triggerItem
-                .at(5)
-                .parent()
-                .props()["aria-setsize"]
-        ).toEqual(1);
-        expect(
-            triggerItem
-                .at(5)
-                .parent()
-                .props()["aria-posinset"]
-        ).toEqual(1);
+        expect(triggerItem).toHaveLength(3);
         expect(linkItem).toHaveLength(3);
-        expect(linkItem.at(0).props()["aria-level"]).toEqual(5);
-        expect(linkItem.at(0).props()["aria-setsize"]).toEqual(2);
-        expect(linkItem.at(0).props()["aria-posinset"]).toEqual(1);
-        expect(linkItem.at(1).props()["aria-level"]).toEqual(5);
-        expect(linkItem.at(1).props()["aria-setsize"]).toEqual(2);
-        expect(linkItem.at(1).props()["aria-posinset"]).toEqual(2);
-        expect(linkItem.at(2).props()["aria-level"]).toEqual(5);
-        expect(linkItem.at(2).props()["aria-setsize"]).toEqual(1);
-        expect(linkItem.at(2).props()["aria-posinset"]).toEqual(1);
     });
     test("should fire a callback when a link has been clicked", () => {
         const onLocationUpdate: any = jest.fn();
@@ -457,7 +330,14 @@ describe("Navigation", () => {
         const onLocationUpdate: any = jest.fn();
         const props: any = {
             ...navigationProps,
-            data: standardData,
+            data: {
+                otherChildren: [
+                    {
+                        id: childOptions[0].schema.id,
+                        props: {},
+                    },
+                ],
+            },
             managedClasses,
             onLocationUpdate,
         };

@@ -167,9 +167,6 @@ const NavigationTreeItem: React.RefForwardingComponent<
                     className={props.className}
                     role={"treeitem"}
                     ref={elementRef}
-                    aria-level={props.level}
-                    aria-setsize={props.navigationLength}
-                    aria-posinset={props.positionInNavigation}
                     aria-expanded={props.expanded}
                     onClick={props.handleClick}
                     onKeyUp={props.handleKeyUp}
@@ -186,14 +183,11 @@ const NavigationTreeItem: React.RefForwardingComponent<
                     {props.children}
                 </div>
             ) : (
-                <div className={props.className} role={"none"} ref={elementRef}>
+                <div className={props.className} ref={elementRef}>
                     <a
                         className={`${props.contentClassName}${getDragHoverClassName()}`}
                         role={"treeitem"}
                         data-location={props.dataLocation}
-                        aria-level={props.level}
-                        aria-setsize={props.navigationLength}
-                        aria-posinset={props.positionInNavigation}
                         href={"#"}
                         onClick={props.handleClick}
                         onKeyUp={props.handleKeyUp}
