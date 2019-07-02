@@ -17,7 +17,7 @@ export type DensityOffset = -3 | -2 | -1 | 0 | 1 | 2 | 3;
 export interface DesignSystem {
     /**
      * The background color of the current context.
-     * May be used to draw an actual background or not. Either way, any color recipes evaluated within this context will use this as their basis.
+     * May be used to draw an actual background or not. Color recipes evaluated within this context will use this as their basis.
      */
     backgroundColor: string;
 
@@ -29,14 +29,14 @@ export interface DesignSystem {
 
     /**
      * An array of colors in a ramp from light to dark, used to look up values for neutral color recipes.
-     * Typically generated using ComponentStateColorPalette in @microsoft/fast-colors.
+     * Generate by calling createColorPalette.
      */
     neutralPalette: Palette;
 
     /**
      * An array of colors in a ramp from light to dark, used to lookup values for accent color recipes.
      * Keep this value in sync with accentBaseColor.
-     * Typically generated using ComponentStateColorPalette in @microsoft/fast-colors.
+     * Generate by calling createColorPalette.
      */
     accentPalette: Palette;
 
