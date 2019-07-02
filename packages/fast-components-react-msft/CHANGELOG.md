@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.12.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-msft@4.11.0...@microsoft/fast-components-react-msft@4.12.0) (2019-07-01)
+
+
+### Bug Fixes
+
+* export Text Action class name contract ([#1898](https://github.com/Microsoft/fast-dna/issues/1898)) ([098ddb1](https://github.com/Microsoft/fast-dna/commit/098ddb1))
+
+
+### Features
+
+* color algorithm and recipe updates ([#1899](https://github.com/Microsoft/fast-dna/issues/1899)) ([84d6b19](https://github.com/Microsoft/fast-dna/commit/84d6b19))
+
+
+
+
+
 # [4.11.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-msft@4.10.0...@microsoft/fast-components-react-msft@4.11.0) (2019-06-25)
 
 

@@ -105,6 +105,8 @@ class ViewportPositioner extends Foundation<
         defaultVerticalPosition: ViewportPositionerVerticalPosition.bottom,
         horizontalAlwaysInView: false,
         verticalAlwaysInView: false,
+        verticalLockToDefault: false,
+        horizontalLockToDefault: false,
         fixedAfterInitialPlacement: false,
     };
 
@@ -116,10 +118,12 @@ class ViewportPositioner extends Foundation<
         defaultHorizontalPosition: void 0,
         horizontalThreshold: void 0,
         horizontalAlwaysInView: void 0,
+        horizontalLockToDefault: void 0,
         verticalPositioningMode: void 0,
         defaultVerticalPosition: void 0,
         verticalThreshold: void 0,
         verticalAlwaysInView: void 0,
+        verticalLockToDefault: void 0,
         fixedAfterInitialPlacement: void 0,
         disabled: void 0,
     };
@@ -144,6 +148,12 @@ class ViewportPositioner extends Foundation<
 
     private scrollTop: number = 0;
     private scrollLeft: number = 0;
+
+    /**
+     * base offsets between the positioner's base position and the anchor's
+     */
+    private baseHorizontalOffset: number = 0;
+    private baseVerticalOffset: number = 0;
 
     /**
      * constructor
@@ -637,6 +647,7 @@ class ViewportPositioner extends Foundation<
         this.anchorTop = anchorEntry.boundingClientRect.top;
         this.anchorRight = anchorEntry.boundingClientRect.right;
         this.anchorBottom = anchorEntry.boundingClientRect.bottom;
+        this.anchorLeft = anchorEntry.boundingClientRect.left;
         this.anchorHeight = anchorEntry.boundingClientRect.height;
         this.anchorWidth = anchorEntry.boundingClientRect.width;
     };
@@ -737,6 +748,23 @@ class ViewportPositioner extends Foundation<
             return;
         }
 
+        // on the first layout pass we determine the base offset between the positioner and the anchor
+        if (
+            this.props.horizontalPositioningMode !== AxisPositioningMode.uncontrolled &&
+            this.state.currentHorizontalPosition ===
+                ViewportPositionerHorizontalPositionLabel.undefined
+        ) {
+            this.baseHorizontalOffset = this.anchorLeft - this.positionerRect.left;
+        }
+
+        if (
+            this.props.verticalPositioningMode !== AxisPositioningMode.uncontrolled &&
+            this.state.currentVerticalPosition ===
+                ViewportPositionerVerticalPositionLabel.undefined
+        ) {
+            this.baseVerticalOffset = this.anchorBottom - this.positionerRect.top;
+        }
+
         this.updateForScrolling();
 
         let desiredVerticalPosition: ViewportPositionerVerticalPositionLabel =
@@ -756,8 +784,9 @@ class ViewportPositioner extends Foundation<
             if (
                 desiredHorizontalPosition ===
                     ViewportPositionerHorizontalPositionLabel.undefined ||
-                this.getHorizontalPositionAvailableWidth(desiredHorizontalPosition) <
-                    horizontalThreshold
+                (!this.props.horizontalLockToDefault &&
+                    this.getHorizontalPositionAvailableWidth(desiredHorizontalPosition) <
+                        horizontalThreshold)
             ) {
                 desiredHorizontalPosition =
                     this.getHorizontalPositionAvailableWidth(horizontalOptions[0]) >
@@ -779,8 +808,9 @@ class ViewportPositioner extends Foundation<
             if (
                 desiredVerticalPosition ===
                     ViewportPositionerVerticalPositionLabel.undefined ||
-                this.getVerticalPositionAvailableHeight(desiredVerticalPosition) <
-                    verticalThreshold
+                (!this.props.verticalLockToDefault &&
+                    this.getVerticalPositionAvailableHeight(desiredVerticalPosition) <
+                        verticalThreshold)
             ) {
                 desiredVerticalPosition =
                     this.getVerticalPositionAvailableHeight(verticalOptions[0]) >
@@ -814,22 +844,25 @@ class ViewportPositioner extends Foundation<
         switch (desiredHorizontalPosition) {
             case ViewportPositionerHorizontalPositionLabel.left:
                 xTransformOrigin = Location.right;
-                right = this.positionerRect.width;
+                right = this.positionerRect.width - this.baseHorizontalOffset;
                 break;
 
             case ViewportPositionerHorizontalPositionLabel.insetLeft:
                 xTransformOrigin = Location.right;
-                right = 0;
+                right =
+                    this.positionerRect.width -
+                    this.anchorWidth -
+                    this.baseHorizontalOffset;
                 break;
 
             case ViewportPositionerHorizontalPositionLabel.insetRight:
                 xTransformOrigin = Location.left;
-                left = 0;
+                left = this.baseHorizontalOffset;
                 break;
 
             case ViewportPositionerHorizontalPositionLabel.right:
                 xTransformOrigin = Location.left;
-                left = this.anchorWidth;
+                left = this.anchorWidth + this.baseHorizontalOffset;
                 break;
         }
 
@@ -854,22 +887,25 @@ class ViewportPositioner extends Foundation<
         switch (desiredVerticalPosition) {
             case ViewportPositionerVerticalPositionLabel.top:
                 yTransformOrigin = Location.bottom;
-                bottom = this.positionerRect.height + this.anchorHeight;
+                bottom =
+                    this.positionerRect.height +
+                    this.anchorHeight -
+                    this.baseVerticalOffset;
                 break;
 
             case ViewportPositionerVerticalPositionLabel.insetTop:
                 yTransformOrigin = Location.bottom;
-                bottom = this.positionerRect.height;
+                bottom = this.positionerRect.height - this.baseVerticalOffset;
                 break;
 
             case ViewportPositionerVerticalPositionLabel.insetBottom:
                 yTransformOrigin = Location.top;
-                top = -this.anchorHeight;
+                top = this.baseVerticalOffset - this.anchorHeight;
                 break;
 
             case ViewportPositionerVerticalPositionLabel.bottom:
                 yTransformOrigin = Location.top;
-                top = 0;
+                top = this.baseVerticalOffset;
                 break;
         }
         return {
