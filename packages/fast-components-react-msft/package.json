@@ -80,6 +80,7 @@
     "@microsoft/fast-storybook-presets": "^1.0.0",
     "@microsoft/fast-tooling-react": "^1.10.1",
     "@microsoft/fast-tslint-rules": "^3.0.3",
+    "@storybook/addon-actions": "^5.1.9",
     "@storybook/preset-typescript": "^1.0.0",
     "@storybook/react": "^5.1.1",
     "@types/jest": "^24.0.11",
