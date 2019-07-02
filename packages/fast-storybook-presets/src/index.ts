@@ -34,10 +34,19 @@ export function addons(entry = [], options?: FASTDNAPresetOptions): string[] {
     return entry;
 }
 
-export function entries(entries: any): any {
-    return [
-        ...entries,
+export function entries(entry = [], options?: FASTDNAPresetOptions): any {
+    const withDefaults: FASTDNAPresetOptions = merge({}, optionDefaults, options);
+
+    if (withDefaults.designSystemAddon.enabled) {
+        entry = entry.concat([
+            path.resolve(__dirname, "./fast-design-system-addon-setup.js"),
+        ]);
+    }
+
+    entry = entry.concat([
         ...glob.sync("./src/**/*.stories.tsx"),
         path.resolve(__dirname, "./setup.js"),
-    ];
+    ]);
+
+    return entry;
 }
