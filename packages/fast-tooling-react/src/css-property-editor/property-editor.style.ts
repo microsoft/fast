@@ -1,5 +1,5 @@
 import { ComponentStyles } from "@microsoft/fast-jss-manager-react";
-import { background300, cssKey, cssValue, foreground300 } from "../style";
+import { cssKey, cssValue, foreground300, neutralLayerL4 } from "../style";
 
 export interface CSSPropertyEditorClassNameContract {
     cssPropertyEditor?: string;
@@ -11,7 +11,7 @@ export interface CSSPropertyEditorClassNameContract {
 
 const styles: ComponentStyles<CSSPropertyEditorClassNameContract, {}> = {
     cssPropertyEditor: {
-        background: background300,
+        background: neutralLayerL4,
         color: foreground300,
         height: "100%",
         padding: "0",
