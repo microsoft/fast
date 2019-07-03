@@ -58,19 +58,19 @@ class Carousel extends Foundation<
             updatedState.activeId = nextProps.activeId;
         }
 
-        if (
-            typeof nextProps.autoplay === "boolean" &&
-            nextProps.autoplay !== prevState.autoplay
-        ) {
-            updatedState.autoplay = nextProps.autoplay;
-        }
+        // if (
+        //     typeof nextProps.autoplay === "boolean" &&
+        //     nextProps.autoplay !== prevState.autoplay
+        // ) {
+        //     updatedState.autoplay = nextProps.autoplay;
+        // }
 
-        if (
-            nextProps.autoplayInterval &&
-            nextProps.autoplayInterval !== prevState.autoplayInterval
-        ) {
-            updatedState.autoplayInterval = nextProps.autoplayInterval;
-        }
+        // if (
+        //     nextProps.autoplayInterval &&
+        //     nextProps.autoplayInterval !== prevState.autoplayInterval
+        // ) {
+        //     updatedState.autoplayInterval = nextProps.autoplayInterval;
+        // }
         console.log(isEmpty(updatedState), "is updatedState nil");
         return !isEmpty(updatedState) ? updatedState : null;
     }
@@ -133,7 +133,7 @@ class Carousel extends Foundation<
                 {...this.unhandledProps()}
                 className={this.generateClassNames()}
                 ref={this.rootEl}
-                // onFocus={this.checkActiveElement}
+                onFocus={this.checkActiveElement}
             >
                 {this.generatePreviousFlipper()}
                 <Tabs
@@ -151,10 +151,6 @@ class Carousel extends Foundation<
 
     public componentDidMount(): void {
         if (canUseDOM() && this.props.autoplay) {
-            // Remove event listeners
-            window.addEventListener("keyup", this.checkActiveElement);
-            window.addEventListener("click", this.checkActiveElement);
-
             // Set initial interval for autoplay
             this.autoplayTimer = window.setInterval(
                 this.nextSlide,
@@ -174,12 +170,6 @@ class Carousel extends Foundation<
             // Clear the interval if we should not be autoplaying
             this.autoplayTimer = window.clearInterval(this.autoplayTimer as number);
         }
-    }
-
-    public componentWillUnmount(): void {
-        // Remove event listeners
-        window.removeEventListener("keyup", this.checkActiveElement);
-        window.removeEventListener("click", this.checkActiveElement);
     }
 
     /**
