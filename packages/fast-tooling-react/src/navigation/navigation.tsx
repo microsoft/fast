@@ -106,7 +106,7 @@ export default class Navigation extends Foundation<
                 role={"tree"}
                 className={this.props.managedClasses.navigation}
             >
-                {this.renderTreeItem(this.state.navigation, 1, 1, 1, 0)}
+                {this.renderTreeItem(this.state.navigation, 1, 1, 0)}
             </div>
         );
     }
@@ -132,7 +132,6 @@ export default class Navigation extends Foundation<
         navigation: TreeNavigation,
         level: number,
         navigationLength: number,
-        positionInNavigation: number,
         index: number
     ): React.ReactNode {
         const dataLocation: string = navigation.dataLocation;
@@ -253,15 +252,8 @@ export default class Navigation extends Foundation<
 
         return sortedNavigation.map((navigationItem: TreeNavigation, index: number) => {
             const navigationLength: number = navigation.length;
-            const positionInNavigation: number = index + 1;
 
-            return this.renderTreeItem(
-                navigationItem,
-                level,
-                navigationLength,
-                positionInNavigation,
-                index
-            );
+            return this.renderTreeItem(navigationItem, level, navigationLength, index);
         });
     }
 
