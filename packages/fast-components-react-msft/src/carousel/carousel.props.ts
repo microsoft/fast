@@ -20,6 +20,8 @@ export interface CarouselManagedClasses
 export interface CarouselHandledProps extends CarouselManagedClasses {
     label: string;
     activeId?: string;
+    autoplay?: boolean;
+    autoplayInterval?: number;
     items: CarouselSlide[];
 }
 

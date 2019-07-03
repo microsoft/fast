@@ -14,6 +14,10 @@ export default {
             title: "Set active slide by HTML id attribute",
             type: "string",
         },
+        autoplay: {
+            title: "Autoplay",
+            type: "boolean",
+        },
         items: {
             title: "Slides",
             type: "array",
