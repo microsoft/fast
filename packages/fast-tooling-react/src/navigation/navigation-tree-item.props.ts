@@ -16,7 +16,7 @@ export interface NavigationTreeItemProps
     /**
      * The class
      */
-    className: string;
+    className: (dragging: boolean) => string;
 
     /**
      * The class for the content

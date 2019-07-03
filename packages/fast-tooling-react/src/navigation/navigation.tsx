@@ -366,26 +366,38 @@ export default class Navigation extends Foundation<
         }
     }
 
-    private getItemClassName(dataType: NavigationDataType): string {
-        let classes: string = this.props.managedClasses.navigation_item;
+    private getItemClassName(
+        dataType: NavigationDataType
+    ): (dragging: boolean) => string {
+        return (dragging: boolean): string => {
+            let classes: string = this.props.managedClasses.navigation_item;
 
-        if (dataType === NavigationDataType.childrenItem) {
-            classes = `${classes} ${get(
-                this.props,
-                "managedClasses.navigation_item__childItem",
-                ""
-            )}`;
-
-            if (this.props.dragAndDropReordering) {
+            if (dataType === NavigationDataType.childrenItem) {
                 classes = `${classes} ${get(
                     this.props,
-                    "managedClasses.navigation_item__draggable",
+                    "managedClasses.navigation_item__childItem",
                     ""
                 )}`;
-            }
-        }
 
-        return classes;
+                if (this.props.dragAndDropReordering) {
+                    classes = `${classes} ${get(
+                        this.props,
+                        "managedClasses.navigation_item__draggable",
+                        ""
+                    )}`;
+
+                    if (dragging) {
+                        classes = `${classes} ${get(
+                            this.props,
+                            "managedClasses.navigation_item__dragging",
+                            ""
+                        )}`;
+                    }
+                }
+            }
+
+            return classes;
+        };
     }
 
     private getItemContentClassName(dataLocation: string): string {

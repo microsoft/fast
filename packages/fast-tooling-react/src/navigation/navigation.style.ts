@@ -13,6 +13,7 @@ export interface NavigationClassNameContract {
     navigation_item?: string;
     navigation_item__childItem?: string;
     navigation_item__draggable?: string;
+    navigation_item__dragging?: string;
     navigation_itemContent?: string;
     navigation_itemContent__active?: string;
     navigation_itemContent__dragHover?: string;
@@ -69,7 +70,12 @@ const styles: ComponentStyles<NavigationClassNameContract, {}> = {
         },
     },
     navigation_item__draggable: {
-        cursor: "grab"
+        cursor: "grab",
+    },
+    navigation_item__dragging: {
+        "&$navigation_item__draggable": {
+            cursor: "grabbing",
+        },
     },
     navigation_itemContent: {
         ...applyTriggerStyle(foreground300),
