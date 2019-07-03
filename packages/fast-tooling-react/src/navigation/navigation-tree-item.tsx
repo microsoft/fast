@@ -164,7 +164,7 @@ const NavigationTreeItem: React.RefForwardingComponent<
         const item: JSX.Element =
             props.children !== undefined ? (
                 <div
-                    className={props.className}
+                    className={props.className(props.isDragging)}
                     role={"treeitem"}
                     ref={elementRef}
                     aria-expanded={props.expanded}
@@ -183,7 +183,7 @@ const NavigationTreeItem: React.RefForwardingComponent<
                     {props.children}
                 </div>
             ) : (
-                <div className={props.className} ref={elementRef}>
+                <div className={props.className(props.isDragging)} ref={elementRef}>
                     <a
                         className={`${props.contentClassName}${getDragHoverClassName()}`}
                         role={"treeitem"}
