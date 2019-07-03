@@ -10,7 +10,7 @@ import {
 import { Flipper, FlipperDirection } from "../flipper";
 import { Tabs, TabsItem } from "@microsoft/fast-components-react-base";
 import { TabsClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
-import { get, isNil } from "lodash-es";
+import { get, isEmpty, isNil } from "lodash-es";
 import { DisplayNamePrefix } from "../utilities";
 import { canUseDOM } from "exenv-es6";
 
@@ -52,13 +52,27 @@ class Carousel extends Foundation<
         nextProps: CarouselProps,
         prevState: CarouselState
     ): null | Partial<CarouselState> {
+        const updatedState: Partial<CarouselState> = {};
+
         if (nextProps.activeId && nextProps.activeId !== prevState.activeId) {
-            return {
-                activeId: nextProps.activeId,
-            };
+            updatedState.activeId = nextProps.activeId;
         }
 
-        return null;
+        if (
+            typeof nextProps.autoplay === "boolean" &&
+            nextProps.autoplay !== prevState.autoplay
+        ) {
+            updatedState.autoplay = nextProps.autoplay;
+        }
+
+        if (
+            nextProps.autoplayInterval &&
+            nextProps.autoplayInterval !== prevState.autoplayInterval
+        ) {
+            updatedState.autoplayInterval = nextProps.autoplayInterval;
+        }
+        console.log(isEmpty(updatedState), "is updatedState nil");
+        return !isEmpty(updatedState) ? updatedState : null;
     }
 
     /**
@@ -119,6 +133,7 @@ class Carousel extends Foundation<
                 {...this.unhandledProps()}
                 className={this.generateClassNames()}
                 ref={this.rootEl}
+                // onFocus={this.checkActiveElement}
             >
                 {this.generatePreviousFlipper()}
                 <Tabs
@@ -136,7 +151,7 @@ class Carousel extends Foundation<
 
     public componentDidMount(): void {
         if (canUseDOM() && this.props.autoplay) {
-            // Add event listeners
+            // Remove event listeners
             window.addEventListener("keyup", this.checkActiveElement);
             window.addEventListener("click", this.checkActiveElement);
 
@@ -149,7 +164,6 @@ class Carousel extends Foundation<
     }
 
     public componentDidUpdate(prevProps: CarouselProps, prevState: CarouselState): void {
-        console.log(this.state.autoplay, "autoplay in did update");
         if (this.state.autoplay && isNil(this.autoplayTimer)) {
             // Set the window interval if we are in autplay and don't have a timer
             this.autoplayTimer = window.setInterval(
