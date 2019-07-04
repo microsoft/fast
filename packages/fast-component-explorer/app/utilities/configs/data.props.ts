@@ -17,6 +17,11 @@ export interface ComponentViewConfig<D> {
     schema: any;
 
     /**
+     * The guidance extrapolated from the components README file
+     */
+    guidance: React.ComponentClass;
+
+    /**
      * The React component class
      */
     component: React.ComponentClass;

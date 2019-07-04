@@ -36,7 +36,7 @@ export default {
         MozHyphens: "none",
         msHyphens: "none",
         hyphens: "none",
-        padding: "12px",
+        padding: "0",
         margin: "6px 0",
         overflow: "auto",
     },

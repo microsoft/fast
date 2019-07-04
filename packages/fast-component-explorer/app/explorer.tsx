@@ -157,6 +157,7 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
                                                 pivot_tabPanels: {
                                                     height: "100%",
                                                     overflow: "auto",
+                                                    padding: "0 12px",
                                                 },
                                             }}
                                         />
@@ -224,7 +225,23 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
             },
             {
                 tab: (className: string): React.ReactNode => "Guidance",
-                content: (className: string): React.ReactNode => "world 2",
+                content: (className: string): React.ReactNode => {
+                    const paths: string[] = get(this.props, "location.pathname").split(
+                        "/"
+                    );
+                    const currentComponentIndex: number = paths.length - 1;
+                    const Guidance: React.ComponentClass = get(
+                        componentViewConfigs,
+                        `${camelCase(paths[currentComponentIndex])}Config.guidance`,
+                        null
+                    );
+
+                    return (
+                        <div className={className}>
+                            <Guidance />
+                        </div>
+                    );
+                },
                 id: "guidance",
             },
             {

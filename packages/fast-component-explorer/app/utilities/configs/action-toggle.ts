@@ -7,10 +7,12 @@ import {
 } from "@microsoft/fast-components-react-msft";
 import glyphSchema from "../components/glyph.schema";
 import { Icon } from "../components/glyph";
+import Guidance from "../../.tmp/action-toggle/guidance";
 
 const actionToggleConfig: ComponentViewConfig<ActionToggleProps> = {
     schema: actionToggleSchema,
     component: ActionToggle,
+    guidance: Guidance,
     scenarios: [
         {
             displayName: "Default",
