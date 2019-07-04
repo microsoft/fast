@@ -3,7 +3,10 @@ import RenderPropPlugin from "./render-prop";
 
 const initializedPlugins: Array<Plugin<PluginProps>> = [
     new RenderPropPlugin({
-        id: [""],
+        id: [
+            "@microsoft/fast-components-react-msft/action-toggle/selectedGlyph",
+            "@microsoft/fast-components-react-msft/action-toggle/unselectedGlyph",
+        ],
     }),
 ];
 

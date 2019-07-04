@@ -1,6 +1,7 @@
 import { MenuItem } from "@microsoft/fast-tooling-react";
 import { FormChildOptionItem } from "@microsoft/fast-tooling-react/dist/form/form";
 import { pascalCase } from "@microsoft/fast-web-utilities";
+import * as testComponentViewConfigs from "./utilities/components";
 import * as componentViewConfigs from "./utilities/configs";
 import { createBrowserHistory } from "history";
 
@@ -25,13 +26,27 @@ function generateMenu(schemas: any[]): MenuItem[] {
     ];
 }
 
-function getChildrenOptions(): FormChildOptionItem[] {
+function getComponentChildrenOptions(): FormChildOptionItem[] {
     return Object.keys(componentViewConfigs).map(
         (componentViewKey: string): FormChildOptionItem => {
             return {
                 name: pascalCase(componentViewConfigs[componentViewKey].schema.title),
                 component: componentViewConfigs[componentViewKey].component,
                 schema: componentViewConfigs[componentViewKey].schema,
+            };
+        }
+    );
+}
+
+function getTestComponentChildrenOptions(): FormChildOptionItem[] {
+    return Object.keys(testComponentViewConfigs).map(
+        (testComponentViewKey: string): FormChildOptionItem => {
+            return {
+                name: pascalCase(
+                    testComponentViewConfigs[testComponentViewKey].schema.title
+                ),
+                component: testComponentViewConfigs[testComponentViewKey].component,
+                schema: testComponentViewConfigs[testComponentViewKey].schema,
             };
         }
     );
@@ -45,6 +60,8 @@ Object.keys(componentViewConfigs).forEach((componentViewConfigKey: string) => {
 
 const history = createBrowserHistory();
 const menu: MenuItem[] = generateMenu(schemas);
-const childOptions: FormChildOptionItem[] = getChildrenOptions();
+const childOptions: FormChildOptionItem[] = getComponentChildrenOptions().concat(
+    getTestComponentChildrenOptions()
+);
 
 export { childOptions, history, menu };

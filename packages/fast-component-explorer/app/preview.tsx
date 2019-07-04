@@ -28,7 +28,10 @@ class Preview extends Foundation<{}, {}, PreviewState> {
         return (
             <div style={this.getStyle()} dir={this.state.direction}>
                 <DesignSystemProvider designSystem={this.state}>
-                    <ViewerContent components={childOptions} />
+                    <ViewerContent
+                        components={childOptions}
+                        plugins={initializedPlugins}
+                    />
                 </DesignSystemProvider>
             </div>
         );
@@ -39,9 +42,11 @@ class Preview extends Foundation<{}, {}, PreviewState> {
     }
 
     private handleMessage = (message: MessageEvent): void => {
-        const state: PreviewState = JSON.parse(message.data);
+        try {
+            const state: PreviewState = JSON.parse(message.data);
 
-        this.setState(state);
+            this.setState(state);
+        } catch (e) {}
     };
 
     private getStyle(): React.CSSProperties {
