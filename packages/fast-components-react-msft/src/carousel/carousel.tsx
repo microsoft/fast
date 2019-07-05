@@ -11,7 +11,7 @@ import {
 import { Flipper, FlipperDirection } from "../flipper";
 import { Tabs, TabsItem } from "@microsoft/fast-components-react-base";
 import { TabsClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
-import { get, isEmpty, isNil } from "lodash-es";
+import { get, isNil } from "lodash-es";
 import { DisplayNamePrefix } from "../utilities";
 import { canUseDOM } from "exenv-es6";
 
@@ -24,6 +24,7 @@ class Carousel extends Foundation<
 
     public static defaultProps: Partial<CarouselProps> = {
         autoplay: false,
+        autoplayInterval: 6000,
     };
 
     /**
@@ -33,13 +34,13 @@ class Carousel extends Foundation<
         nextProps: CarouselProps,
         prevState: CarouselState
     ): null | Partial<CarouselState> {
-        const updatedState: Partial<CarouselState> = {};
-
         if (nextProps.activeId && nextProps.activeId !== prevState.activeId) {
-            updatedState.activeId = nextProps.activeId;
+            return {
+                activeId: nextProps.activeId,
+            };
         }
 
-        return !isEmpty(updatedState) ? updatedState : null;
+        return null;
     }
 
     /**
@@ -57,12 +58,7 @@ class Carousel extends Foundation<
     };
 
     /**
-     * Store a reference the autoplay interval
-     */
-    private autoplayInterval: number | null;
-
-    /**
-     * Store a reference the autoplay timer
+     * Store a reference to the autoplay timer
      */
     private autoplayTimer: number | void;
 
@@ -83,7 +79,6 @@ class Carousel extends Foundation<
         super(props);
 
         this.rootEl = React.createRef();
-        this.autoplayInterval = get(this.props, "autoplayInterval", 6000);
 
         if (Array.isArray(this.props.items)) {
             this.state = {
@@ -122,25 +117,40 @@ class Carousel extends Foundation<
         );
     }
 
+    /**
+     * React lifecycle hook
+     */
     public componentDidMount(): void {
         if (canUseDOM() && this.props.autoplay) {
             // Set initial interval for autoplay
             this.autoplayTimer = window.setInterval(
                 this.nextSlide,
-                this.autoplayInterval
+                this.props.autoplayInterval
             );
         }
     }
 
+    /**
+     * React lifecycle hook
+     */
     public componentDidUpdate(prevProps: CarouselProps, prevState: CarouselState): void {
         if (this.props.autoplay && isNil(this.autoplayTimer)) {
             // Set the window interval if we are in autplay and don't have a timer
             this.autoplayTimer = window.setInterval(
                 this.nextSlide,
-                this.autoplayInterval
+                this.props.autoplayInterval
             );
         } else if (!this.props.autoplay && !isNil(this.autoplayTimer)) {
             // Clear the interval if we should not be autoplaying
+            this.autoplayTimer = window.clearInterval(this.autoplayTimer as number);
+        }
+    }
+
+    /**
+     * React lifecycle hook
+     */
+    public componentWillUnmount(): void {
+        if (!isNil(this.autoplayTimer)) {
             this.autoplayTimer = window.clearInterval(this.autoplayTimer as number);
         }
     }

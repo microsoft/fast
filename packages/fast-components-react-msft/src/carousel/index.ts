@@ -3,9 +3,9 @@ import MSFTCarousel, {
     CarouselHandledProps as MSFTCarouselHandledProps,
     CarouselManagedClasses,
     CarouselProps as MSFTCarouselProps,
-    CarouselState,
     CarouselSlide,
     CarouselSlideTheme,
+    CarouselState,
     CarouselUnhandledProps,
 } from "./carousel";
 import carouselSchema from "./carousel.schema";

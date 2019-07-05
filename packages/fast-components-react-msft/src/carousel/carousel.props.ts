@@ -1,11 +1,11 @@
-import React, { ReactNodeArray } from "react";
+import React from "react";
 import {
     CarouselClassNameContract,
     ManagedClasses,
 } from "@microsoft/fast-components-class-name-contracts-msft";
 
 /**
- * The carousel themes
+ * The carousel slide theme
  */
 export enum CarouselSlideTheme {
     light = "light",
@@ -57,7 +57,7 @@ export interface CarouselHandledProps extends CarouselManagedClasses {
     autoplay?: boolean;
 
     /**
-     * The autoplay inteval in milliseconds
+     * The autoplay interval in milliseconds
      */
     autoplayInterval?: number;
 
@@ -76,6 +76,7 @@ export interface CarouselHandledProps extends CarouselManagedClasses {
         e: React.MouseEvent<HTMLDivElement>,
         props: CarouselProps
     ) => void;
+
     /**
      * The carousel items
      */

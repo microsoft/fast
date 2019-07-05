@@ -4,6 +4,7 @@ import { configure, mount, shallow } from "enzyme";
 import MSFTCarousel, {
     CarouselHandledProps,
     CarouselManagedClasses,
+    CarouselProps,
     CarouselSlide,
     CarouselSlideTheme,
     CarouselUnhandledProps,
@@ -43,7 +44,6 @@ function mockHero(): (className?: string) => React.ReactNode {
                     height: "100%",
                     alignItems: "flex-end",
                     display: "flex",
-                    JustifyContent: "center",
                     left: "0",
                     right: "0",
                 }}
@@ -236,32 +236,52 @@ describe("carousel", (): void => {
         expect(rendered.state("activeId")).toBe("id02");
     });
 
-    // describe("autoplay", (): void => {
-    //     test("should fire a callback when focus is brought to the carousel", () => {
-    //         const mockCallback: any = jest.fn();
-    //         const rendered: any = mount(<MSFTCarousel {...handledProps} onCarouselMouseEnterOrFocus={mockCallback} />);
+    describe("autoplay", (): void => {
+        const mockCallback: any = jest.fn();
+        const props: CarouselProps = {
+            ...handledProps,
+            managedClasses: {
+                carousel: "carousel",
+            },
+            onCarouselMouseEnterOrFocus: mockCallback,
+        };
 
-    //         rendered.focus();
+        test("should initialize with `autoplay` defaulted to false", () => {
+            const rendered: any = mount(<MSFTCarousel {...props} />);
 
-    //         expect(mockCallback.toHaveBeenCalledTimes(1));
-    //     });
+            expect(rendered.props().autoplay).toBe(false);
+        });
 
-    //     test("should fire a callback when mouse enters the carousel", () => {
-    //         const mockCallback: any = jest.fn();
-    //         const rendered: any = mount(<MSFTCarousel {...handledProps} onCarouselMouseEnterOrFocus={mockCallback} />);
+        test("should set `autoplay` to true when `autoplay` is passed as true", () => {
+            const rendered: any = mount(<MSFTCarousel {...props} autoplay={true} />);
 
-    //         rendered.simulate("onMouseEnter");
+            expect(rendered.props().autoplay).toBe(true);
+        });
 
-    //         expect(mockCallback.toHaveBeenCalledTimes(1));
-    //     });
+        test("should fire a callback when focus is brought to the carousel", () => {
+            const rendered: any = mount(<MSFTCarousel {...props} />);
 
-    //     test("should fire a callback when mouse leaves the carousel", () => {
-    //         const mockCallback: any = jest.fn();
-    //         const rendered: any = mount(<MSFTCarousel {...handledProps} onCarouselMouseLeave={mockCallback} />);
+            rendered.find(".carousel").simulate("focus");
 
-    //         rendered.simulate("onMouseLeave");
+            expect(mockCallback).toHaveBeenCalledTimes(1);
+        });
 
-    //         expect(mockCallback.toHaveBeenCalledTimes(1));
-    //     });
-    // })
+        test("should fire a callback when mouse enters the carousel", () => {
+            const rendered: any = mount(<MSFTCarousel {...props} />);
+
+            rendered.simulate("mouseEnter");
+
+            expect(mockCallback).toHaveBeenCalledTimes(2);
+        });
+
+        test("should fire a callback when mouse leaves the carousel", () => {
+            const rendered: any = mount(
+                <MSFTCarousel {...handledProps} onCarouselMouseLeave={mockCallback} />
+            );
+
+            rendered.simulate("mouseLeave");
+
+            expect(mockCallback).toHaveBeenCalledTimes(3);
+        });
+    });
 });
