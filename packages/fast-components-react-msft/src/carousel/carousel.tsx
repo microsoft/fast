@@ -5,6 +5,7 @@ import {
     CarouselProps,
     CarouselSlide,
     CarouselSlideTheme,
+    CarouselState,
     CarouselUnhandledProps,
 } from "./carousel.props";
 import { Flipper, FlipperDirection } from "../flipper";
@@ -13,26 +14,6 @@ import { TabsClassNameContract } from "@microsoft/fast-components-class-name-con
 import { get, isEmpty, isNil } from "lodash-es";
 import { DisplayNamePrefix } from "../utilities";
 import { canUseDOM } from "exenv-es6";
-
-/**
- * The carousel state interface
- */
-export interface CarouselState {
-    /**
-     * Holds the active tab id to share with other controls
-     */
-    activeId: string;
-
-    /**
-     * Whether the carousel is in autoplay mode
-     */
-    autoplay: boolean;
-
-    /**
-     * The autoplay interval
-     */
-    autoplayInterval: number | null;
-}
 
 class Carousel extends Foundation<
     CarouselHandledProps,
@@ -58,20 +39,6 @@ class Carousel extends Foundation<
             updatedState.activeId = nextProps.activeId;
         }
 
-        // if (
-        //     typeof nextProps.autoplay === "boolean" &&
-        //     nextProps.autoplay !== prevState.autoplay
-        // ) {
-        //     updatedState.autoplay = nextProps.autoplay;
-        // }
-
-        // if (
-        //     nextProps.autoplayInterval &&
-        //     nextProps.autoplayInterval !== prevState.autoplayInterval
-        // ) {
-        //     updatedState.autoplayInterval = nextProps.autoplayInterval;
-        // }
-        console.log(isEmpty(updatedState), "is updatedState nil");
         return !isEmpty(updatedState) ? updatedState : null;
     }
 
@@ -85,7 +52,14 @@ class Carousel extends Foundation<
         label: void 0,
         activeId: void 0,
         items: void 0,
+        onCarouselMouseEnterOrFocus: void 0,
+        onCarouselMouseLeave: void 0,
     };
+
+    /**
+     * Store a reference the autoplay interval
+     */
+    private autoplayInterval: number | null;
 
     /**
      * Store a reference the autoplay timer
@@ -109,6 +83,7 @@ class Carousel extends Foundation<
         super(props);
 
         this.rootEl = React.createRef();
+        this.autoplayInterval = get(this.props, "autoplayInterval", 6000);
 
         if (Array.isArray(this.props.items)) {
             this.state = {
@@ -116,10 +91,6 @@ class Carousel extends Foundation<
                     typeof this.props.activeId === "string"
                         ? this.props.activeId
                         : get(this.props.items[0], "id", ""),
-                autoplay: this.props.autoplay,
-                autoplayInterval: this.props.autoplay
-                    ? get(this.props, "autoplayInterval", 6000)
-                    : null,
             };
         }
     }
@@ -133,7 +104,9 @@ class Carousel extends Foundation<
                 {...this.unhandledProps()}
                 className={this.generateClassNames()}
                 ref={this.rootEl}
-                onFocus={this.checkActiveElement}
+                onFocus={this.handleCarouselHoverOrFocus}
+                onMouseEnter={this.handleCarouselHoverOrFocus}
+                onMouseLeave={this.handleCarouselMouseLeave}
             >
                 {this.generatePreviousFlipper()}
                 <Tabs
@@ -142,7 +115,7 @@ class Carousel extends Foundation<
                     onUpdate={this.handleUpdate}
                     items={this.slides as TabsItem[]}
                     managedClasses={this.generateTabsClassNames()}
-                    disableTabFocus={this.state.autoplay}
+                    disableTabFocus={this.props.autoplay}
                 />
                 {this.generateNextFlipper()}
             </div>
@@ -154,19 +127,19 @@ class Carousel extends Foundation<
             // Set initial interval for autoplay
             this.autoplayTimer = window.setInterval(
                 this.nextSlide,
-                this.state.autoplayInterval
+                this.autoplayInterval
             );
         }
     }
 
     public componentDidUpdate(prevProps: CarouselProps, prevState: CarouselState): void {
-        if (this.state.autoplay && isNil(this.autoplayTimer)) {
+        if (this.props.autoplay && isNil(this.autoplayTimer)) {
             // Set the window interval if we are in autplay and don't have a timer
             this.autoplayTimer = window.setInterval(
                 this.nextSlide,
-                this.state.autoplayInterval
+                this.autoplayInterval
             );
-        } else if (this.state.autoplay !== true && !isNil(this.autoplayTimer)) {
+        } else if (!this.props.autoplay && !isNil(this.autoplayTimer)) {
             // Clear the interval if we should not be autoplaying
             this.autoplayTimer = window.clearInterval(this.autoplayTimer as number);
         }
@@ -387,16 +360,25 @@ class Carousel extends Foundation<
         });
     }
 
-    private checkActiveElement = (): void => {
-        console.log(document.activeElement, "active element");
-        if (
-            this.rootEl &&
-            this.rootEl.current &&
-            this.rootEl.current.contains(document.activeElement)
-        ) {
-            this.setState({
-                autoplay: false,
-            });
+    /**
+     * Handles carousel hover and focus
+     * Fire a callback if the carousel is hovered or focused while autoplaying
+     */
+    private handleCarouselHoverOrFocus = (
+        e: React.FocusEvent<HTMLDivElement> | React.MouseEvent<HTMLDivElement>
+    ): void => {
+        if (typeof this.props.onCarouselMouseEnterOrFocus === "function") {
+            return this.props.onCarouselMouseEnterOrFocus(e, this.props);
+        }
+    };
+
+    /**
+     * Handles carousel mouse leave
+     * Fire a callback when carousel is no longer hovered
+     */
+    private handleCarouselMouseLeave = (e: React.MouseEvent<HTMLDivElement>): void => {
+        if (typeof this.props.onCarouselMouseLeave === "function") {
+            return this.props.onCarouselMouseLeave(e, this.props);
         }
     };
 }

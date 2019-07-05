@@ -235,4 +235,33 @@ describe("carousel", (): void => {
             .simulate("click");
         expect(rendered.state("activeId")).toBe("id02");
     });
+
+    // describe("autoplay", (): void => {
+    //     test("should fire a callback when focus is brought to the carousel", () => {
+    //         const mockCallback: any = jest.fn();
+    //         const rendered: any = mount(<MSFTCarousel {...handledProps} onCarouselMouseEnterOrFocus={mockCallback} />);
+
+    //         rendered.focus();
+
+    //         expect(mockCallback.toHaveBeenCalledTimes(1));
+    //     });
+
+    //     test("should fire a callback when mouse enters the carousel", () => {
+    //         const mockCallback: any = jest.fn();
+    //         const rendered: any = mount(<MSFTCarousel {...handledProps} onCarouselMouseEnterOrFocus={mockCallback} />);
+
+    //         rendered.simulate("onMouseEnter");
+
+    //         expect(mockCallback.toHaveBeenCalledTimes(1));
+    //     });
+
+    //     test("should fire a callback when mouse leaves the carousel", () => {
+    //         const mockCallback: any = jest.fn();
+    //         const rendered: any = mount(<MSFTCarousel {...handledProps} onCarouselMouseLeave={mockCallback} />);
+
+    //         rendered.simulate("onMouseLeave");
+
+    //         expect(mockCallback.toHaveBeenCalledTimes(1));
+    //     });
+    // })
 });

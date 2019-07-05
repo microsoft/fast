@@ -1,27 +1,84 @@
-import React from "react";
+import React, { ReactNodeArray } from "react";
 import {
     CarouselClassNameContract,
     ManagedClasses,
 } from "@microsoft/fast-components-class-name-contracts-msft";
 
+/**
+ * The carousel themes
+ */
 export enum CarouselSlideTheme {
     light = "light",
     dark = "dark",
 }
 
+/**
+ * The carousel slide interface
+ */
 export interface CarouselSlide {
     content: (className?: string) => React.ReactNode;
     id: string;
     theme?: CarouselSlideTheme;
 }
 
+/**
+ * The carousel state interface
+ */
+export interface CarouselState {
+    /**
+     * Holds the active tab id to share with other controls
+     */
+    activeId: string;
+}
+
+/**
+ * The carousel managed clsases interface
+ */
 export interface CarouselManagedClasses
     extends ManagedClasses<CarouselClassNameContract> {}
+
+/**
+ * The carousel prop interface
+ */
 export interface CarouselHandledProps extends CarouselManagedClasses {
+    /**
+     * An accessible label for the carousel
+     */
     label: string;
+
+    /**
+     * The carousel activeId
+     */
     activeId?: string;
+
+    /**
+     * Autoplay the carousel
+     */
     autoplay?: boolean;
+
+    /**
+     * The autoplay inteval in milliseconds
+     */
     autoplayInterval?: number;
+
+    /**
+     * Callback for when the carousel receives hover or focus
+     */
+    onCarouselMouseEnterOrFocus?: (
+        e: React.FocusEvent<HTMLDivElement> | React.MouseEvent<HTMLDivElement>,
+        props: CarouselProps
+    ) => void;
+
+    /**
+     * Callback for when the carousel hover terminates
+     */
+    onCarouselMouseLeave?: (
+        e: React.MouseEvent<HTMLDivElement>,
+        props: CarouselProps
+    ) => void;
+    /**
+     * The carousel items
+     */
     items: CarouselSlide[];
 }
 

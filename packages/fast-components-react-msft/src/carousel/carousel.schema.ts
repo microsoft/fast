@@ -18,6 +18,11 @@ export default {
             title: "Autoplay",
             type: "boolean",
         },
+        autoplayInterval: {
+            title: "Autoplay interval (in milliseconds)",
+            type: "number",
+            default: 6000,
+        },
         items: {
             title: "Slides",
             type: "array",
