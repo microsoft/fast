@@ -1,11 +1,9 @@
-import designSystemDefaults, {
-    DesignSystem,
-    withDesignSystemDefaults,
-} from "../design-system";
-import { ComponentStyles, ComponentStyleSheet } from "@microsoft/fast-jss-manager";
-import { neutralOutlineRest } from "../utilities/color";
+import { DesignSystem } from "../design-system";
+import { ComponentStyles } from "@microsoft/fast-jss-manager";
 import { DividerClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
-import { format } from "@microsoft/fast-jss-utilities";
+import { format, toPx } from "@microsoft/fast-jss-utilities";
+import { outlineWidth } from "../utilities/design-system";
+import { neutralDivider } from "../utilities/color/neutral-divider";
 
 const styles: ComponentStyles<DividerClassNameContract, DesignSystem> = {
     divider: {
@@ -13,7 +11,11 @@ const styles: ComponentStyles<DividerClassNameContract, DesignSystem> = {
         height: "0",
         margin: "0",
         border: "none",
-        borderTop: format<DesignSystem>("1px solid {0}", neutralOutlineRest),
+        borderTop: format<DesignSystem>(
+            "{0} solid {1}",
+            toPx(outlineWidth),
+            neutralDivider
+        ),
         transition: "all 0.2s ease-in-out",
     },
 };
