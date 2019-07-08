@@ -3,6 +3,4 @@ import React, { useState } from "react";
 import Badge from "./";
 import { uniqueId } from "lodash-es";
 
-storiesOf("Badge", module)
-    .add("Badge", () => <p>Badge</p>)
-    .add("Badge 2", () => <p>Badge</p>);
+storiesOf("Badge", module).add("Badge", () => <Badge>Badge</Badge>);
