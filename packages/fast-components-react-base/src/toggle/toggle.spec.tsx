@@ -2,7 +2,6 @@ import React from "react";
 import * as ShallowRenderer from "react-test-renderer/shallow";
 import Adapter from "enzyme-adapter-react-16";
 import { configure, shallow, ShallowWrapper } from "enzyme";
-import examples from "./examples.data";
 import Toggle, {
     ToggleClassNameContract,
     ToggleHandledProps,
