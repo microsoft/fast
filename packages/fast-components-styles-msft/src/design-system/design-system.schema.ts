@@ -211,8 +211,8 @@ export default {
             type: "number",
             default: 16,
         },
-        neutralDividerDelta: {
-            title: "Neutral divider delta",
+        neutralDividerRestDelta: {
+            title: "Neutral divider rest delta",
             type: "number",
             default: 6,
         },

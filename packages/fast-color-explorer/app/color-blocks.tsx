@@ -14,7 +14,7 @@ import {
     accentForegroundRest,
     backgroundColor,
     fontWeight,
-    neutralDivider,
+    neutralDividerRest,
     neutralFillActive,
     neutralFillHover,
     neutralFillInputRest,
@@ -573,8 +573,8 @@ class ColorBlocksBase extends React.Component<ColorBlocksProps, ColorBlocksState
                     type={SwatchTypes.outline}
                     fillRecipe={backgroundColor}
                     foregroundRecipe={neutralForegroundRest}
-                    outlineRecipe={neutralDivider}
-                    recipeName="neutralDivider"
+                    outlineRecipe={neutralDividerRest}
+                    recipeName="neutralDividerRest"
                 />
             </React.Fragment>
         );

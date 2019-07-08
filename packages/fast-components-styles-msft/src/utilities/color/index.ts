@@ -78,7 +78,7 @@ export {
     neutralOutlineActive,
 } from "./neutral-outline";
 
-export { neutralDivider } from "./neutral-divider";
+export { neutralDividerRest } from "./neutral-divider";
 
 /**
  * App layer exports

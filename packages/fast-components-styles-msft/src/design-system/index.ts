@@ -162,7 +162,7 @@ export interface DesignSystem {
     /**
      * Color swatch delta for the neutral-divider recipe.
      */
-    neutralDividerDelta: number;
+    neutralDividerRestDelta: number;
 
     /**
      * Color swatch deltas for the neutral-outline recipe.
@@ -231,7 +231,7 @@ const designSystemDefaults: DesignSystem = {
     neutralForegroundHoverDelta: 0,
     neutralForegroundActiveDelta: 0,
 
-    neutralDividerDelta: 6,
+    neutralDividerRestDelta: 6,
 
     neutralOutlineRestDelta: 25,
     neutralOutlineHoverDelta: 40,
