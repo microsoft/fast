@@ -6,7 +6,6 @@ import { TextFieldType } from "./text-field.props";
 
 storiesOf("Text Field", module)
     .add("Default", () => <TextField />)
-    .add("Text Field with step", () => <TextField step={0.1} />)
     .add("Text Field with type `email`", () => <TextField type={TextFieldType.email} />)
     .add("Text Field with type `number`", () => <TextField type={TextFieldType.number} />)
     .add("Text Field with type `password`", () => (
