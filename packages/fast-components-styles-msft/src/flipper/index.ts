@@ -1,5 +1,5 @@
-import { DesignSystem, withDesignSystemDefaults } from "../design-system";
-import { ComponentStyles, ComponentStyleSheet } from "@microsoft/fast-jss-manager";
+import { DesignSystem } from "../design-system";
+import { ComponentStyles } from "@microsoft/fast-jss-manager";
 import { FlipperClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import {
     applyFocusVisible,
@@ -19,9 +19,11 @@ import {
 } from "../utilities/color";
 import { glyphSize, height } from "../utilities/density";
 import { outlineWidth } from "../utilities/design-system";
+import { applyCursorPointer } from "../utilities/cursor";
 
 const styles: ComponentStyles<FlipperClassNameContract, DesignSystem> = {
     flipper: {
+        ...applyCursorPointer(),
         width: height(),
         height: height(),
         display: "inline-flex",

@@ -1,15 +1,9 @@
-import {
-    DesignSystem,
-    DesignSystemResolver,
-    withDesignSystemDefaults,
-} from "../design-system";
-import { ComponentStyles, ComponentStyleSheet } from "@microsoft/fast-jss-manager";
+import { DesignSystem, DesignSystemResolver } from "../design-system";
+import { ComponentStyles } from "@microsoft/fast-jss-manager";
 import { RadioClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import {
     add,
     applyFocusVisible,
-    applyLocalizedProperty,
-    Direction,
     directionSwitch,
     divide,
     format,
@@ -33,6 +27,7 @@ import {
 import { applyDisabledState } from "../utilities/disabled";
 import { applyScaledTypeRamp } from "../utilities/typography";
 import { designUnit, outlineWidth } from "../utilities/design-system";
+import { applyCursorDisabled, applyCursorPointer } from "../utilities/cursor";
 
 const inputSize: DesignSystemResolver<string> = toPx(
     add(divide(heightNumber(), 2), designUnit)
@@ -60,7 +55,14 @@ const styles: ComponentStyles<RadioClassNameContract, DesignSystem> = {
         zIndex: "1",
         background: neutralFillInputRest,
         transition: "all 0.2s ease-in-out",
-        border: format("{0} solid {1}", toPx(outlineWidth), neutralOutlineRest),
+        border: format(
+            "{0} solid {1}",
+            toPx<DesignSystem>(outlineWidth),
+            neutralOutlineRest
+        ),
+        "&:enabled": {
+            ...applyCursorPointer(),
+        },
         "&:hover:enabled": {
             background: neutralFillInputHover,
             borderColor: neutralOutlineHover,
@@ -95,6 +97,7 @@ const styles: ComponentStyles<RadioClassNameContract, DesignSystem> = {
         },
     },
     radio_label: {
+        ...applyCursorPointer(),
         color: neutralForegroundRest,
         ...applyScaledTypeRamp("t7"),
         marginLeft: directionSwitch(horizontalSpacing(2), ""),
@@ -112,6 +115,9 @@ const styles: ComponentStyles<RadioClassNameContract, DesignSystem> = {
     },
     radio__disabled: {
         ...applyDisabledState(),
+        "& $radio_input, & $radio_label": {
+            ...applyCursorDisabled(),
+        },
     },
 };
 

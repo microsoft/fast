@@ -1,52 +1,40 @@
-import { DesignSystem, withDesignSystemDefaults } from "../design-system";
-import { ComponentStyles, ComponentStyleSheet } from "@microsoft/fast-jss-manager";
-import { Direction, directionSwitch } from "@microsoft/fast-jss-utilities";
-import {
-    accentForegroundRest,
-    neutralForegroundHint,
-    neutralForegroundRest,
-} from "../utilities/color";
+import { DesignSystem } from "../design-system";
+import { ComponentStyles } from "@microsoft/fast-jss-manager";
+import { directionSwitch } from "@microsoft/fast-jss-utilities";
+import { neutralForegroundHint, neutralForegroundRest } from "../utilities/color";
 import { BreadcrumbClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import { applyCursorDefault } from "../utilities/cursor";
 import { applyScaledTypeRamp } from "../utilities/typography";
 
-const styles: ComponentStyles<BreadcrumbClassNameContract, DesignSystem> = (
-    config: DesignSystem
-): ComponentStyleSheet<BreadcrumbClassNameContract, DesignSystem> => {
-    const designSystem: DesignSystem = withDesignSystemDefaults(config);
-    const direction: Direction = designSystem.direction;
-
-    return {
-        breadcrumb: {
-            color: neutralForegroundRest,
-            ...applyScaledTypeRamp("t7"),
-            ...applyCursorDefault(),
+const styles: ComponentStyles<BreadcrumbClassNameContract, DesignSystem> = {
+    breadcrumb: {
+        color: neutralForegroundRest,
+        ...applyScaledTypeRamp("t7"),
+        ...applyCursorDefault(),
+    },
+    breadcrumb_item: {
+        display: "inline",
+        outline: "none",
+        textDecoration: "none",
+        transition: "all 0.2s ease-in-out, border none",
+        "&:link, &:visited": {
+            borderBottom: "0px",
         },
-        breadcrumb_item: {
-            display: "inline",
-            outline: "none",
-            textDecoration: "none",
-            transition: "all 0.2s ease-in-out",
-            "&:link, &:visited": {
-                color: accentForegroundRest,
-                borderBottom: "0px",
-            },
-        },
-        breadcrumb_itemsContainer: {
-            listStyle: "none",
-            paddingLeft: directionSwitch("0", ""),
-            paddingRight: directionSwitch("", "0"),
-            margin: "0",
-            display: "flex",
-            flexWrap: "wrap",
-        },
-        breadcrumb_separator: {
-            display: "inline-block",
-            ...applyCursorDefault(),
-            color: neutralForegroundHint,
-            margin: "0 6px",
-        },
-    };
+    },
+    breadcrumb_itemsContainer: {
+        listStyle: "none",
+        paddingLeft: directionSwitch("0", ""),
+        paddingRight: directionSwitch("", "0"),
+        margin: "0",
+        display: "flex",
+        flexWrap: "wrap",
+    },
+    breadcrumb_separator: {
+        display: "inline-block",
+        ...applyCursorDefault(),
+        color: neutralForegroundHint,
+        margin: "0 6px",
+    },
 };
 
 export default styles;
