@@ -589,6 +589,32 @@ describe("Slider", (): void => {
         });
     });
 
+    test("thumb gains focus on mouse down", (): void => {
+        const container: HTMLDivElement = document.createElement("div");
+        document.body.appendChild(container);
+        const preventDefaultFn: any = jest.fn();
+
+        const rendered: any = mount(
+            <Slider
+                range={{
+                    minValue: 0,
+                    maxValue: 100,
+                }}
+                mode={SliderMode.adustUpperValue}
+                managedClasses={managedClasses}
+            />,
+            {
+                attachTo: container,
+            }
+        );
+
+        const thumb: any = rendered.find(`.${managedClasses.slider_thumb__upperValue}`);
+        thumb.simulate("mouseDown");
+        expect(document.activeElement.className).toEqual(thumb.props().className);
+
+        document.body.removeChild(container);
+    });
+
     // tslint:disable-next-line:no-shadowed-variable
     window.removeEventListener = jest.fn((event: string, callback: any) => {
         map[event] = callback;
