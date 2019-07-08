@@ -1,5 +1,8 @@
 import React from "react";
-import { ButtonClassNameContract } from "@microsoft/fast-components-react-base";
+import {
+    ButtonClassNameContract,
+    DividerClassNameContract,
+} from "@microsoft/fast-components-react-base";
 import {
     accentFillActive,
     accentFillHover,
@@ -11,6 +14,7 @@ import {
     accentForegroundRest,
     backgroundColor,
     fontWeight,
+    neutralDividerRest,
     neutralFillActive,
     neutralFillHover,
     neutralFillInputRest,
@@ -23,7 +27,6 @@ import {
     neutralFocus,
     neutralForegroundActive,
     neutralForegroundHint,
-    neutralForegroundHintLarge,
     neutralForegroundHover,
     neutralForegroundRest,
     neutralOutlineActive,
@@ -40,6 +43,7 @@ import {
     Caption,
     CaptionClassNameContract,
     Checkbox,
+    Divider,
     Hypertext,
     Paragraph,
     ParagraphClassNameContract,
@@ -212,6 +216,16 @@ class ColorBlocksBase extends React.Component<ColorBlocksProps, ColorBlocksState
             color: neutralForegroundHint,
         },
     };
+
+    private dividerStyleOverrides: ComponentStyleSheet<
+        DividerClassNameContract,
+        ColorsDesignSystem
+    > = {
+        divider: {
+            width: "150px",
+        },
+    };
+
     constructor(props: ColorBlocksProps) {
         super(props);
 
@@ -552,6 +566,16 @@ class ColorBlocksBase extends React.Component<ColorBlocksProps, ColorBlocksState
                     recipeName="neutralOutlineHover"
                 />
                 <FocusSwatch fillRecipe={accentFillRest} />
+                {this.renderExample(
+                    <Divider jssStyleSheet={this.dividerStyleOverrides} />
+                )}
+                <Swatch
+                    type={SwatchTypes.outline}
+                    fillRecipe={backgroundColor}
+                    foregroundRecipe={neutralForegroundRest}
+                    outlineRecipe={neutralDividerRest}
+                    recipeName="neutralDividerRest"
+                />
             </React.Fragment>
         );
     }
