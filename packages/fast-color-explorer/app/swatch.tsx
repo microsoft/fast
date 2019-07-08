@@ -147,7 +147,7 @@ function iconStyleOverrides(
                           ? outlineRecipe(designSystem)
                           : fillRecipe(designSystem)
                   }`,
-                  backgroundColor: "transparent",
+                  backgroundColor: fillRecipe(designSystem),
               }
             : type === SwatchTypes.foreground
                 ? {
@@ -202,7 +202,11 @@ function iconFactoryByType(type: SwatchTypes): SwatchIconFactory {
                     : type === SwatchTypes.outline && typeof outlineRecipe === "function"
                         ? outlineRecipe
                         : fillRecipe,
-                type === SwatchTypes.foreground ? fillRecipe : backgroundColor
+                type === SwatchTypes.foreground
+                    ? fillRecipe
+                    : type === SwatchTypes.outline && typeof fillRecipe === "function"
+                        ? fillRecipe
+                        : backgroundColor
             )(designSystem);
             const tooltip: string =
                 type === SwatchTypes.fill && typeof foregroundRecipe === "function"

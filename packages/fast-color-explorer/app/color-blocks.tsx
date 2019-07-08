@@ -25,6 +25,7 @@ import {
     neutralFillStealthRest,
     neutralFillStealthSelected,
     neutralFocus,
+    neutralFocusInnerAccent,
     neutralForegroundActive,
     neutralForegroundHint,
     neutralForegroundHover,
@@ -144,12 +145,13 @@ function AccentFillSwatch(
 }
 
 function FocusSwatch(
-    props: Omit<SwatchProps, "type" | "foregroundRecipe" | "recipeName">
+    props: Omit<SwatchProps, "type" | "fillRecipe" | "foregroundRecipe" | "recipeName">
 ): JSX.Element {
     return (
         <Swatch
             {...props}
             type={SwatchTypes.outline}
+            fillRecipe={backgroundColor}
             foregroundRecipe={neutralFocus}
             outlineRecipe={neutralFocus}
             recipeName="neutralFocus"
@@ -320,7 +322,14 @@ class ColorBlocksBase extends React.Component<ColorBlocksProps, ColorBlocksState
                     foregroundRecipe={accentForegroundCut}
                     recipeName="accentForegroundCut"
                 />
-                <FocusSwatch fillRecipe={accentFillRest} />
+                <Swatch
+                    type={SwatchTypes.outline}
+                    fillRecipe={neutralFocus}
+                    foregroundRecipe={neutralFocusInnerAccent(accentFillRest)}
+                    outlineRecipe={neutralFocusInnerAccent(accentFillRest)}
+                    recipeName="neutralFocusInnerAccent"
+                />
+                <FocusSwatch />
 
                 {/* Neutral component */}
                 {this.renderExample(<Button>Neutral</Button>)}
@@ -346,7 +355,7 @@ class ColorBlocksBase extends React.Component<ColorBlocksProps, ColorBlocksState
                     foregroundRecipe={neutralForegroundRest}
                     recipeName="neutralForegroundRest"
                 />
-                <FocusSwatch fillRecipe={accentFillRest} />
+                <FocusSwatch />
 
                 {/* Outline component */}
                 {this.renderExample(
@@ -395,7 +404,7 @@ class ColorBlocksBase extends React.Component<ColorBlocksProps, ColorBlocksState
                     foregroundRecipe={neutralForegroundRest}
                     recipeName="neutralForegroundRest"
                 />
-                <FocusSwatch fillRecipe={accentFillRest} />
+                <FocusSwatch />
 
                 {/* Outline component */}
                 {this.renderExample(
@@ -430,7 +439,7 @@ class ColorBlocksBase extends React.Component<ColorBlocksProps, ColorBlocksState
                     foregroundRecipe={neutralForegroundRest}
                     recipeName="neutralForegroundRest"
                 />
-                <FocusSwatch fillRecipe={accentFillRest} />
+                <FocusSwatch />
             </React.Fragment>
         );
     }
@@ -492,7 +501,7 @@ class ColorBlocksBase extends React.Component<ColorBlocksProps, ColorBlocksState
                     foregroundRecipe={accentForegroundActive}
                     recipeName="accentForegroundActive"
                 />
-                <FocusSwatch fillRecipe={accentFillRest} />
+                <FocusSwatch />
             </React.Fragment>
         );
     }
@@ -533,7 +542,7 @@ class ColorBlocksBase extends React.Component<ColorBlocksProps, ColorBlocksState
                     outlineRecipe={neutralOutlineHover}
                     recipeName="neutralOutlineHover"
                 />
-                <FocusSwatch fillRecipe={accentFillRest} />
+                <FocusSwatch />
                 {this.renderExample(
                     <Checkbox inputId={uniqueId()}>
                         <label slot="label">Checkbox</label>
@@ -565,7 +574,7 @@ class ColorBlocksBase extends React.Component<ColorBlocksProps, ColorBlocksState
                     outlineRecipe={neutralOutlineHover}
                     recipeName="neutralOutlineHover"
                 />
-                <FocusSwatch fillRecipe={accentFillRest} />
+                <FocusSwatch />
                 {this.renderExample(
                     <Divider jssStyleSheet={this.dividerStyleOverrides} />
                 )}
