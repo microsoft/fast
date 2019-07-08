@@ -19,7 +19,6 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc -p ./tsconfig.build.json && npm run copy:all",
-    "build:app": "webpack --progress --mode=production",
     "clean:dist": "node ../../build/clean.js dist",
     "convert:readme": "node ../../build/convert-readme.js .tmp",
     "copy:all": "npm run convert:json-schema && npm run copy:readme",
@@ -87,7 +86,6 @@
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-16": "^1.1.1",
     "glob": "^7.1.2",
-    "html-webpack-plugin": "^3.0.4",
     "jest": "^24.5.0",
     "jsdom-global": "^3.0.2",
     "lodash-es": "^4.0.0",
@@ -106,11 +104,6 @@
     "tslint-loader": "^3.6.0",
     "typescript": "3.3.3",
     "utility-types": "^2.1.0",
-    "webpack": "^4.1.0",
-    "webpack-bundle-analyzer": "^2.13.1",
-    "webpack-cli": "^3.1.1",
-    "webpack-dev-server": "^3.1.0",
-    "webpack-shell-plugin": "^0.5.0",
     "yargs": "^11.0.0"
   },
   "peerDependencies": {
