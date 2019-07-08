@@ -202,11 +202,9 @@ function iconFactoryByType(type: SwatchTypes): SwatchIconFactory {
                     : type === SwatchTypes.outline && typeof outlineRecipe === "function"
                         ? outlineRecipe
                         : fillRecipe,
-                type === SwatchTypes.foreground
+                type === SwatchTypes.foreground || type === SwatchTypes.outline
                     ? fillRecipe
-                    : type === SwatchTypes.outline && typeof fillRecipe === "function"
-                        ? fillRecipe
-                        : backgroundColor
+                    : backgroundColor
             )(designSystem);
             const tooltip: string =
                 type === SwatchTypes.fill && typeof foregroundRecipe === "function"
