@@ -21,6 +21,7 @@ import {
 import { applyElevatedCornerRadius } from "../utilities/border";
 import { designUnit } from "../utilities/design-system";
 import { inputFieldStyles } from "../patterns/input-field";
+import { applyCursorPointer } from "../utilities/cursor";
 
 const styles: ComponentStyles<SelectClassNameContract, DesignSystem> = {
     select: {
@@ -28,6 +29,7 @@ const styles: ComponentStyles<SelectClassNameContract, DesignSystem> = {
         height: height(),
     },
     select_button: {
+        ...applyCursorPointer(),
         height: height(),
         width: "100%",
         ...inputFieldStyles(),

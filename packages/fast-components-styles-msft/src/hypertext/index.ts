@@ -25,11 +25,19 @@ const styles: ComponentStyles<HypertextClassNameContract, DesignSystem> = {
             ),
             color: accentForegroundRest,
             "&:hover": {
-                borderBottomColor: accentForegroundHover,
+                borderBottom: format<DesignSystem>(
+                    "{0} solid {1}",
+                    toPx(outlineWidth),
+                    accentForegroundHover
+                ),
                 color: accentForegroundHover,
             },
             "&:active": {
-                borderBottomColor: accentForegroundActive,
+                borderBottom: format<DesignSystem>(
+                    "{0} solid {1}",
+                    toPx(outlineWidth),
+                    accentForegroundActive
+                ),
                 color: accentForegroundActive,
             },
             ...applyFocusVisible({

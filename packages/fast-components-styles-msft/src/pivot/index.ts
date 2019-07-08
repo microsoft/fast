@@ -1,13 +1,7 @@
-import { DesignSystem, withDesignSystemDefaults } from "../design-system";
-import {
-    ComponentStyles,
-    ComponentStyleSheet,
-    CSSRules,
-} from "@microsoft/fast-jss-manager";
+import { DesignSystem } from "../design-system";
+import { ComponentStyles } from "@microsoft/fast-jss-manager";
 import {
     applyFocusVisible,
-    applyLocalizedProperty,
-    Direction,
     directionSwitch,
     format,
     subtract,
@@ -25,6 +19,7 @@ import { PivotClassNameContract } from "@microsoft/fast-components-class-name-co
 import { applyCornerRadius, applyFocusPlaceholderBorder } from "../utilities/border";
 import { applyScaledTypeRamp } from "../utilities/typography";
 import { focusOutlineWidth } from "../utilities/design-system";
+import { applyCursorPointer } from "../utilities/cursor";
 
 const activeIndicatorHeight: number = 3;
 const styles: ComponentStyles<PivotClassNameContract, DesignSystem> = {
@@ -39,8 +34,9 @@ const styles: ComponentStyles<PivotClassNameContract, DesignSystem> = {
         boxSizing: "border-box",
     },
     pivot_tab: {
+        ...applyCursorPointer(),
         height: height(),
-        padding: format("0 {0}", horizontalSpacing(2)),
+        padding: format("0 {0}", horizontalSpacing(focusOutlineWidth)),
         whiteSpace: "nowrap",
         display: "flex",
         ...applyFocusPlaceholderBorder(),

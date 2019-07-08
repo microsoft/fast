@@ -28,7 +28,7 @@ import {
 import { applyDisabledState } from "../utilities/disabled";
 import { applyScaledTypeRamp } from "../utilities/typography";
 import { designUnit, outlineWidth } from "../utilities/design-system";
-import { applyCursorDefault, applyCursorPointer } from "../utilities/cursor";
+import { applyCursorDisabled, applyCursorPointer } from "../utilities/cursor";
 
 const inputSize: DesignSystemResolver<string> = toPx(
     add(divide(heightNumber(), 2), designUnit)
@@ -141,8 +141,8 @@ const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = {
     },
     checkbox__disabled: {
         ...applyDisabledState(),
-        "& $checkbox_label": {
-            ...applyCursorDefault(),
+        "& $checkbox_input, & $checkbox_label": {
+            ...applyCursorDisabled(),
         },
     },
 };

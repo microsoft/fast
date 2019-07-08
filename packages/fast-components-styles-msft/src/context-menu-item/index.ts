@@ -1,7 +1,7 @@
 import { ContextMenuItemClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import { ComponentStyles } from "@microsoft/fast-jss-manager";
 import { add, applyFocusVisible, format, toPx } from "@microsoft/fast-jss-utilities";
-import { DesignSystem, DesignSystemResolver } from "../design-system";
+import { DesignSystem } from "../design-system";
 import { applyCornerRadius, applyFocusPlaceholderBorder } from "../utilities/border";
 import {
     neutralFillStealthActive,
@@ -9,7 +9,7 @@ import {
     neutralFocus,
     neutralForegroundRest,
 } from "../utilities/color";
-import { applyCursorDefault } from "../utilities/cursor";
+import { applyCursorPointer } from "../utilities/cursor";
 import { height, horizontalSpacingNumber } from "../utilities/density";
 import { designUnit } from "../utilities/design-system";
 import { applyDisabledState } from "../utilities/disabled";
@@ -35,7 +35,7 @@ const styles: ComponentStyles<ContextMenuItemClassNameContract, DesignSystem> = 
         fill: neutralForegroundRest,
         whiteSpace: "nowrap",
         overflow: "hidden",
-        ...applyCursorDefault(),
+        ...applyCursorPointer(),
         ...applyScaledTypeRamp("t7"),
         ...applyCornerRadius(),
         ...applyFocusPlaceholderBorder(),

@@ -1,7 +1,7 @@
-import { DesignSystem, withDesignSystemDefaults } from "../design-system";
-import { ComponentStyles, ComponentStyleSheet } from "@microsoft/fast-jss-manager";
+import { DesignSystem } from "../design-system";
+import { ComponentStyles } from "@microsoft/fast-jss-manager";
 import { CardClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
-import { applyCornerRadius } from "../utilities/border";
+import { applyElevatedCornerRadius } from "../utilities/border";
 import { applyElevation, ElevationMultiplier } from "../utilities/elevation";
 import { backgroundColor } from "../utilities/design-system";
 
@@ -10,7 +10,7 @@ const styles: ComponentStyles<CardClassNameContract, DesignSystem> = {
         width: "100%",
         height: "100%",
         background: backgroundColor,
-        ...applyCornerRadius(),
+        ...applyElevatedCornerRadius(),
         ...applyElevation(ElevationMultiplier.e4),
         transition: "all 0.2s ease-in-out",
     },
