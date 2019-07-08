@@ -5,11 +5,15 @@ import {
     accentFillHoverDelta,
     accentFillRestDelta,
     accentFillSelectedDelta,
+    neutralFillActiveDelta,
+    neutralFillHoverDelta,
+    neutralFillRestDelta,
 } from "../design-system";
-import { findAccessibleAccentSwatchIndexes } from "./accent";
 import { accentForegroundCut } from "./accent-foreground-cut";
 import {
     colorRecipeFactory,
+    contrast,
+    designSystemResolverMax,
     FillSwatchFamily,
     Swatch,
     SwatchFamilyResolver,
@@ -17,9 +21,26 @@ import {
     SwatchFamilyType,
     SwatchRecipe,
 } from "./common";
-import { getSwatch, isDarkMode, Palette, palette, PaletteType } from "./palette";
+import {
+    findClosestBackgroundIndex,
+    findClosestSwatchIndex,
+    getSwatch,
+    isDarkMode,
+    Palette,
+    palette,
+    PaletteType,
+} from "./palette";
+import { inRange } from "lodash-es";
 
-function accentFillAlgorithm(contrast: number): DesignSystemResolver<FillSwatchFamily> {
+const neutralFillThreshold: DesignSystemResolver<number> = designSystemResolverMax(
+    neutralFillRestDelta,
+    neutralFillHoverDelta,
+    neutralFillActiveDelta
+);
+
+function accentFillAlgorithm(
+    contrastTarget: number
+): DesignSystemResolver<FillSwatchFamily> {
     return (designSystem: DesignSystem): FillSwatchFamily => {
         const accentPalette: Palette = palette(PaletteType.accent)(designSystem);
         const accent: Swatch = accentBaseColor(designSystem);
@@ -28,22 +49,49 @@ function accentFillAlgorithm(contrast: number): DesignSystemResolver<FillSwatchF
                 backgroundColor: accent,
             })
         );
-        const indexes: {
-            rest: number;
-            hover: number;
-            active: number;
-        } = findAccessibleAccentSwatchIndexes(designSystem, contrast, textColor, {
+
+        const stateDeltas: any = {
             rest: accentFillRestDelta(designSystem),
             hover: accentFillHoverDelta(designSystem),
             active: accentFillActiveDelta(designSystem),
-        });
+        };
+
+        // Use the hover direction that matches the neutral fill recipe.
+        const backgroundIndex: number = findClosestBackgroundIndex(designSystem);
+        const swapThreshold: number = neutralFillThreshold(designSystem);
+        const direction: 1 | -1 = backgroundIndex >= swapThreshold ? -1 : 1;
+
+        const paletteLength: number = accentPalette.length;
+        const maxIndex: number = paletteLength - 1;
+        const accentIndex: number = findClosestSwatchIndex(PaletteType.accent, accent)(
+            designSystem
+        );
+
+        let accessibleOffset: number = 0;
+
+        // Move the accent color the direction of hover, while maintaining the foreground color.
+        while (
+            accessibleOffset < direction * stateDeltas.hover &&
+            inRange(accentIndex + accessibleOffset + direction, 0, paletteLength) &&
+            contrast(
+                accentPalette[accentIndex + accessibleOffset + direction],
+                textColor
+            ) >= contrastTarget &&
+            inRange(accentIndex + accessibleOffset + direction + direction, 0, maxIndex)
+        ) {
+            accessibleOffset += direction;
+        }
+
+        const hoverIndex: number = accentIndex + accessibleOffset;
+        const restIndex: number = hoverIndex + direction * -1 * stateDeltas.hover;
+        const activeIndex: number = restIndex + direction * stateDeltas.active;
 
         return {
-            rest: getSwatch(indexes.rest, accentPalette),
-            hover: getSwatch(indexes.hover, accentPalette),
-            active: getSwatch(indexes.active, accentPalette),
+            rest: getSwatch(restIndex, accentPalette),
+            hover: getSwatch(hoverIndex, accentPalette),
+            active: getSwatch(activeIndex, accentPalette),
             selected: getSwatch(
-                indexes.rest +
+                restIndex +
                     (isDarkMode(designSystem)
                         ? accentFillSelectedDelta(designSystem) * -1
                         : accentFillSelectedDelta(designSystem)),

@@ -106,7 +106,7 @@ export default class Navigation extends Foundation<
                 role={"tree"}
                 className={this.props.managedClasses.navigation}
             >
-                {this.renderTreeItem(this.state.navigation, 1, 1, 1, 0)}
+                {this.renderTreeItem(this.state.navigation, 1, 1, 0)}
             </div>
         );
     }
@@ -132,13 +132,12 @@ export default class Navigation extends Foundation<
         navigation: TreeNavigation,
         level: number,
         navigationLength: number,
-        positionInNavigation: number,
         index: number
     ): React.ReactNode {
         const dataLocation: string = navigation.dataLocation;
         const dataType: NavigationDataType = navigation.type;
         const props: NavigationTreeItemProps = {
-            className: this.props.managedClasses.navigation_item,
+            className: this.getItemClassName(dataType),
             contentClassName: this.getItemContentClassName(dataLocation),
             getContentDragHoverClassName: this.getItemContentDragHoverClassName,
             dataLocation,
@@ -148,9 +147,6 @@ export default class Navigation extends Foundation<
             expanded: this.isExpanded(dataLocation),
             handleClick: this.handleTreeItemClick(dataLocation, dataType),
             handleKeyUp: this.handleTreeItemKeyUp(dataLocation, dataType),
-            level,
-            navigationLength,
-            positionInNavigation,
             text: navigation.text,
             type: dataType,
             onChange: this.handleChange,
@@ -160,6 +156,13 @@ export default class Navigation extends Foundation<
             Array.isArray(navigation.items) && navigationLength > 0
                 ? this.renderTreeItemContainer(navigation.items, level)
                 : void 0;
+
+        // Directly nest React children which use the "children" property
+        if (dataLocation === "children" || dataLocation.endsWith("props.children")) {
+            if (Array.isArray(navigation.items) && navigationLength > 0) {
+                return this.renderTreeItems(navigation.items, level + 1);
+            }
+        }
 
         if (this.props.dragAndDropReordering) {
             return (
@@ -240,17 +243,24 @@ export default class Navigation extends Foundation<
         navigation: TreeNavigation[],
         level: number
     ): React.ReactNode {
-        return navigation.map((navigationItem: TreeNavigation, index: number) => {
-            const navigationLength: number = navigation.length;
-            const positionInNavigation: number = index + 1;
+        // Sort items so that childrenItems are weighted towards the top
+        const sortedNavigation: TreeNavigation[] = navigation.sort(
+            (a: TreeNavigation, b: TreeNavigation) => {
+                return a.type === NavigationDataType.children &&
+                    b.type === NavigationDataType.children
+                    ? 0
+                    : a.type === NavigationDataType.children
+                        ? 1
+                        : b.type !== NavigationDataType.children
+                            ? 0
+                            : -1;
+            }
+        );
 
-            return this.renderTreeItem(
-                navigationItem,
-                level,
-                navigationLength,
-                positionInNavigation,
-                index
-            );
+        return sortedNavigation.map((navigationItem: TreeNavigation, index: number) => {
+            const navigationLength: number = navigation.length;
+
+            return this.renderTreeItem(navigationItem, level, navigationLength, index);
         });
     }
 
@@ -353,6 +363,40 @@ export default class Navigation extends Foundation<
                 nodes[currentIndex - 1].focus();
             }
         }
+    }
+
+    private getItemClassName(
+        dataType: NavigationDataType
+    ): (dragging: boolean) => string {
+        return (dragging: boolean): string => {
+            let classes: string = this.props.managedClasses.navigation_item;
+
+            if (dataType === NavigationDataType.childrenItem) {
+                classes = `${classes} ${get(
+                    this.props,
+                    "managedClasses.navigation_item__childItem",
+                    ""
+                )}`;
+
+                if (this.props.dragAndDropReordering) {
+                    classes = `${classes} ${get(
+                        this.props,
+                        "managedClasses.navigation_item__draggable",
+                        ""
+                    )}`;
+
+                    if (dragging) {
+                        classes = `${classes} ${get(
+                            this.props,
+                            "managedClasses.navigation_item__dragging",
+                            ""
+                        )}`;
+                    }
+                }
+            }
+
+            return classes;
+        };
     }
 
     private getItemContentClassName(dataLocation: string): string {

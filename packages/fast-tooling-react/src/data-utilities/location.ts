@@ -5,6 +5,7 @@ import {
     DataResolverType,
     DataType,
     idKeyword,
+    itemsKeyword,
     pluginIdKeyword,
     PluginLocation,
     PropertyKeyword,
@@ -40,17 +41,13 @@ export function getDataLocationsOfChildren(
     data: any,
     childOptions: ChildOptionItem[]
 ): string[] {
-    // get all schema locations from the schema
-    const schemaLocations: string[] = getLocationsFromObject(schema);
+    const schemaLocationInstance: SchemaLocation = new SchemaLocation(schema);
 
     // get all data locations from the data
     const dataLocations: string[] = getLocationsFromObject(data);
 
     // get all react children locations from schema
-    const schemaReactChildrenLocations: string[] = getReactChildrenLocationsFromSchema(
-        schema,
-        schemaLocations
-    );
+    const schemaReactChildrenLocations: string[] = schemaLocationInstance.getChildrenLocations();
 
     // get all schema locations from data locations
     const schemaLocationsFromDataLocations: string[] = dataLocations.map(
@@ -341,21 +338,125 @@ function mapSchemaLocationSegmentFromDataLocationSegment(
     return `${schemaLocation}${modifier}${dataLocationSegment}`;
 }
 
-/**
- * Finds a subset of locations that are react children
- */
-function getReactChildrenLocationsFromSchema(
-    schema: any,
-    schemaLocations: any
-): string[] {
-    return schemaLocations.filter(
-        (schemaLocation: string): boolean => {
-            return (
-                !!schemaLocation.match(/reactProperties\..+?\b/) &&
-                get(schema, schemaLocation).type === DataType.children
+class SchemaLocation {
+    private childrenLocations: string[];
+    private schemaLocations: string[];
+
+    constructor(schema: any) {
+        this.childrenLocations = [];
+        this.schemaLocations = this.getSchemaLocationsFromSchema(schema);
+    }
+
+    public getChildrenLocations(): string[] {
+        return this.childrenLocations;
+    }
+
+    public getSchemaLocations(): string[] {
+        return this.schemaLocations;
+    }
+
+    /**
+     * Gets the schema locations from an object
+     */
+    private getObjectSchemaLocations(
+        schema: any,
+        locations: string[],
+        locationSegments: string[]
+    ): string[] {
+        let objectSchemaLocations: string[] = [];
+
+        Object.keys(schema).forEach((propertyKey: string) => {
+            objectSchemaLocations = objectSchemaLocations.concat(
+                this.getSchemaLocationsFromSchemaItem(
+                    get(schema, propertyKey),
+                    locations.concat(locationSegments.concat(propertyKey).join(".")),
+                    locationSegments.concat(propertyKey)
+                )
+            );
+        });
+
+        return objectSchemaLocations;
+    }
+
+    private getSchemaLocationsFromSchema(schema: any): string[] {
+        return [...new Set([""].concat(this.getSchemaLocationsFromSchemaItem(schema)))];
+    }
+
+    /**
+     * Finds the schema locations throughout a schema
+     */
+    private getSchemaLocationsFromSchemaItem(
+        schema: any,
+        locations: string[] = [],
+        locationSegments: string[] = []
+    ): string[] {
+        const type: DataType = get(schema, typeKeyword, DataType.object);
+        const combiningKeyword: CombiningKeyword | void = get(
+            schema,
+            CombiningKeyword.oneOf
+        )
+            ? CombiningKeyword.oneOf
+            : get(schema, CombiningKeyword.anyOf)
+                ? CombiningKeyword.anyOf
+                : void 0;
+
+        if (typeof combiningKeyword !== "undefined") {
+            return this.getSchemaLocationsFromSchemaItem(
+                get(schema, combiningKeyword),
+                locations.concat(locationSegments.concat(combiningKeyword).join(".")),
+                locationSegments.concat(combiningKeyword)
             );
         }
-    );
+
+        switch (type) {
+            case DataType.string:
+            case DataType.null:
+            case DataType.number:
+            case DataType.boolean:
+                return locations;
+            case DataType.children:
+                this.childrenLocations.push(locationSegments.join("."));
+                return locations;
+            case DataType.array:
+                return this.getSchemaLocationsFromSchemaItem(
+                    get(schema, itemsKeyword),
+                    locations.concat(locationSegments.concat(itemsKeyword).join(".")),
+                    locationSegments.concat(itemsKeyword)
+                );
+            default:
+                let objectSchemaLocations: string[] = [];
+
+                if (get(schema, PropertyKeyword.properties)) {
+                    objectSchemaLocations = objectSchemaLocations.concat(
+                        this.getObjectSchemaLocations(
+                            get(schema, PropertyKeyword.properties),
+                            locations.concat(
+                                locationSegments
+                                    .concat(PropertyKeyword.properties)
+                                    .join(".")
+                            ),
+                            locationSegments.concat(PropertyKeyword.properties)
+                        )
+                    );
+                }
+
+                if (get(schema, PropertyKeyword.reactProperties)) {
+                    objectSchemaLocations = objectSchemaLocations.concat(
+                        this.getObjectSchemaLocations(
+                            get(schema, PropertyKeyword.reactProperties),
+                            locations.concat(
+                                locationSegments
+                                    .concat(PropertyKeyword.reactProperties)
+                                    .join(".")
+                            ),
+                            locationSegments.concat(PropertyKeyword.reactProperties)
+                        )
+                    );
+                }
+
+                return objectSchemaLocations;
+        }
+    }
 }
 
 /**

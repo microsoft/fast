@@ -1,6 +1,6 @@
 import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager-react";
 import { applyTriggerStyle, insetStrongBoxShadow } from "../style";
-import { accent, background300, background800, foreground300 } from "../style/constants";
+import { accent, background800, foreground300, neutralLayerL4 } from "../style/constants";
 import { NavigationMenuItemClassNameContract } from "./navigation-menu-item.props";
 
 export interface NavigationMenuClassNameContract
@@ -11,7 +11,7 @@ export interface NavigationMenuClassNameContract
 const styles: ComponentStyles<NavigationMenuClassNameContract, {}> = {
     navigationMenu: {
         fontSize: "12px",
-        background: background300,
+        background: neutralLayerL4,
         color: foreground300,
         height: "100%",
     },

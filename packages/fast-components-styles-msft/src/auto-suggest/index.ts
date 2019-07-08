@@ -2,7 +2,7 @@ import { DesignSystem, withDesignSystemDefaults } from "../design-system";
 import { ComponentStyles, ComponentStyleSheet } from "@microsoft/fast-jss-manager";
 import { AutoSuggestClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import { add, format, multiply, toPx } from "@microsoft/fast-jss-utilities";
-import { applyFloatingCornerRadius } from "../utilities/border";
+import { applyElevatedCornerRadius } from "../utilities/border";
 import { neutralFillStealthRest } from "../utilities/color";
 import { heightNumber } from "../utilities/density";
 import { applyElevation, ElevationMultiplier } from "../utilities/elevation";
@@ -27,7 +27,7 @@ const styles: ComponentStyles<AutoSuggestClassNameContract, DesignSystem> = {
         minWidth: "276px",
         maxHeight: toPx(add(heightNumber(visibleChildCount), multiply(designUnit, 2))),
         overflow: "auto",
-        ...applyFloatingCornerRadius(),
+        ...applyElevatedCornerRadius(),
     },
     autoSuggest__menuOpen: {},
 };

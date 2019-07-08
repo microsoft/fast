@@ -29,7 +29,7 @@ export interface ColorPaletteConfig {
 
 export class ColorPalette {
     public static readonly defaultPaletteConfig: ColorPaletteConfig = {
-        baseColor: new ColorRGBA64(0.5, 0.5, 0.5, 1),
+        baseColor: parseColorHexRGB("#808080"),
         steps: 11,
         interpolationMode: ColorInterpolationSpace.RGB,
         scaleColorLight: new ColorRGBA64(1, 1, 1, 1),

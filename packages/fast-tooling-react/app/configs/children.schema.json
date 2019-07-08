@@ -11,6 +11,13 @@
             "defaults": [
                 "text"
             ]
+        },
+        "otherChildren": {
+            "title": "Children",
+            "type": "children",
+            "defaults": [
+                "text"
+            ]
         }
     },
     "properties": {

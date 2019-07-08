@@ -19,12 +19,12 @@ describe("palette", (): void => {
     });
 
     test("should return a function that returns a palette if the argument does not match a palette", (): void => {
-        expect((palette as any)()()).toHaveLength(63);
+        expect((palette as any)()()).toHaveLength(94);
     });
 
     test("should return a palette if no designSystem is provided", (): void => {
-        expect(palette(PaletteType.neutral)(undefined as any)).toHaveLength(63);
-        expect(palette(PaletteType.accent)(undefined as any)).toHaveLength(63);
+        expect(palette(PaletteType.neutral)(undefined as any)).toHaveLength(94);
+        expect(palette(PaletteType.accent)(undefined as any)).toHaveLength(94);
     });
 
     test("should return upper-case hex values", (): void => {
@@ -61,7 +61,11 @@ describe("findSwatchIndex", (): void => {
 
     test("should impelment design-system defaults", (): void => {
         expect(findSwatchIndex(PaletteType.neutral, "#FFF")({} as DesignSystem)).toBe(0);
-        expect(findSwatchIndex(PaletteType.accent, accent)({} as DesignSystem)).toBe(31);
+        expect(
+            findSwatchIndex(PaletteType.accent, accentBaseColor({} as DesignSystem))(
+                {} as DesignSystem
+            )
+        ).toBe(59);
     });
 
     test("should return -1 if the color is not found", (): void => {
@@ -90,22 +94,24 @@ describe("findSwatchIndex", (): void => {
     test("should find black", (): void => {
         expect(
             findSwatchIndex(PaletteType.neutral, "#000000")(designSystemDefaults)
-        ).toBe(62);
+        ).toBe(93);
         expect(findSwatchIndex(PaletteType.neutral, "#000")(designSystemDefaults)).toBe(
-            62
+            93
         );
         expect(
             findSwatchIndex(PaletteType.neutral, "rgb(0, 0, 0)")(designSystemDefaults)
-        ).toBe(62);
+        ).toBe(93);
     });
 
     test("should find accent", (): void => {
-        expect(findSwatchIndex(PaletteType.accent, accent)(designSystemDefaults)).toBe(
-            31
-        );
+        expect(
+            findSwatchIndex(PaletteType.accent, accentBaseColor(designSystemDefaults))(
+                designSystemDefaults
+            )
+        ).toBe(59);
         expect(
             findSwatchIndex(PaletteType.accent, "rgb(0, 120, 212)")(designSystemDefaults)
-        ).toBe(31);
+        ).toBe(59);
     });
 });
 
@@ -121,18 +127,18 @@ describe("findClosestSwatchIndex", (): void => {
         ).toBe(0);
         expect(
             findClosestSwatchIndex(PaletteType.neutral, "#808080")({} as DesignSystem)
-        ).toBe(31);
+        ).toBe(49);
         expect(
             findClosestSwatchIndex(PaletteType.neutral, "#000000")({} as DesignSystem)
-        ).toBe(62);
+        ).toBe(93);
     });
     test("should return the index with the closest luminance to the input swatch if the swatch is not in the palette", (): void => {
         expect(
             findClosestSwatchIndex(PaletteType.neutral, "#008000")({} as DesignSystem)
-        ).toBe(35);
+        ).toBe(56);
         expect(
             findClosestSwatchIndex(PaletteType.neutral, "#F589FF")({} as DesignSystem)
-        ).toBe(19);
+        ).toBe(30);
     });
 });
 
@@ -231,8 +237,8 @@ describe("swatchByContrast", (): void => {
             expect(directionResolver).toHaveBeenCalledTimes(1);
             expect(directionResolver.mock.calls[0][0]).toBe(index);
         });
-        test("should recieve recieve the palette length - 1 if the resolved index is greater than the palette length", (): void => {
-            const index: number = 77;
+        test("should recieve the palette length - 1 if the resolved index is greater than the palette length", (): void => {
+            const index: number = 105;
             const indexResolver: jest.SpyInstance = jest.fn(() => index);
             const directionResolver: jest.SpyInstance = jest.fn(() => 1);
             const contrastCondition: jest.SpyInstance = jest.fn(() => false);

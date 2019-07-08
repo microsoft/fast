@@ -32,6 +32,8 @@ Inset:
  
  If a default position is specified for a particular axis and there is enough space that position will be set.  Whether there is enough space is determined by comparing the threshold size for the axis (or the height/width of the positioner if no threshold specified) to the available space for that position. If there is not enough space, or if no default position is specified, the positioner chooses the position with the most available space.
 
+ The "verticalLockToDefault" and "horizontalLockToDefault" properties force placement to specified default positions regardless of available space.  Note that this has no effect when an axis is in "uncontrolled" mode.
+
 The chosen position determines which side of the positioner is fixed to the anchor.  For example if the chosen position for the horizontal axis is "left" the positioner will have its "right" property set to a value corresponding to the left edge of the anchor and the "left" propertly will be unset.
 
 The *viewport positioner* adds css classes to itself based on the chosen positions (i.e. "viewportPositioner__left", "viewportPositioner__right", etc.) to enable authors to style the positioner and its contents based on relative position.
@@ -40,11 +42,11 @@ The "AlwaysInView" props (i.e. "horizontalAlwaysInView" and "verticalAlwaysInVie
 
 The "fixedAfterInitialPlacement" prop is set the component will not adjust positioning after the initial render.
 
+Authors should be mindful that instanciating a flyout positioner can cause layout changes as it is actually inserted into the DOM and can cause parent containers to expand, move siblings down the page, etc.  It is up to authors to place the component such that it does not cause unwanted layout changes.  
+
+Authors should ensure that the positioner element has fixed dimensions. If these are dynamic this can cause incorrect positioning to be calculated.   
+
 The not fully supported [ResizeObserver](https://developers.google.com/web/updates/2016/10/resizeobserver) and [IntersectionObserver](https://developers.google.com/web/updates/2016/04/intersectionobserver) are used (supported in Chrome), so it is necessary to apply a polyfill if more thorough browser support is needed (Safari and Firefox). Full adaptation is expected soon.
-
-
-
-
 
 
 

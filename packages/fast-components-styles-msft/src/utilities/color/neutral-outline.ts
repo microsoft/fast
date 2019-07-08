@@ -1,6 +1,6 @@
 import { DesignSystem } from "../../design-system";
 import {
-    findClosestSwatchIndex,
+    findClosestBackgroundIndex,
     getSwatch,
     isDarkMode,
     palette,
@@ -10,7 +10,6 @@ import {
 import {
     ColorRecipe,
     colorRecipeFactory,
-    Swatch,
     SwatchFamily,
     SwatchFamilyResolver,
     swatchFamilyToSwatchRecipeFactory,
@@ -18,7 +17,6 @@ import {
     SwatchRecipe,
 } from "./common";
 import {
-    backgroundColor,
     neutralOutlineActiveDelta,
     neutralOutlineHoverDelta,
     neutralOutlineRestDelta,
@@ -28,25 +26,20 @@ const neutralOutlineAlgorithm: SwatchFamilyResolver = (
     designSystem: DesignSystem
 ): SwatchFamily => {
     const neutralPalette: Palette = palette(PaletteType.neutral)(designSystem);
-    const backgroundIndex: number = findClosestSwatchIndex(
-        PaletteType.neutral,
-        backgroundColor(designSystem)
-    )(designSystem);
+    const backgroundIndex: number = findClosestBackgroundIndex(designSystem);
     const direction: 1 | -1 = isDarkMode(designSystem) ? -1 : 1;
 
+    const restDelta: number = neutralOutlineRestDelta(designSystem);
+    const restIndex: number = backgroundIndex + direction * restDelta;
+    const hoverDelta: number = neutralOutlineHoverDelta(designSystem);
+    const hoverIndex: number = restIndex + direction * (hoverDelta - restDelta);
+    const activeDelta: number = neutralOutlineActiveDelta(designSystem);
+    const activeIndex: number = restIndex + direction * (activeDelta - restDelta);
+
     return {
-        rest: getSwatch(
-            backgroundIndex + direction * neutralOutlineRestDelta(designSystem),
-            neutralPalette
-        ),
-        hover: getSwatch(
-            backgroundIndex + direction * neutralOutlineHoverDelta(designSystem),
-            neutralPalette
-        ),
-        active: getSwatch(
-            backgroundIndex + direction * neutralOutlineActiveDelta(designSystem),
-            neutralPalette
-        ),
+        rest: getSwatch(restIndex, neutralPalette),
+        hover: getSwatch(hoverIndex, neutralPalette),
+        active: getSwatch(activeIndex, neutralPalette),
     };
 };
 

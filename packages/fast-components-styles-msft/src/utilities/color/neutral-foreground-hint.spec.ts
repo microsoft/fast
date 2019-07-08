@@ -12,7 +12,7 @@ describe("neutralForegroundHint", (): void => {
 
     // test("should return a swatch when argument is a ")
     test("should implement design system defaults", (): void => {
-        expect(neutralForegroundHint(undefined as any)).toBe("#737373");
+        expect(neutralForegroundHint(undefined as any)).toBe("#767676");
     });
 
     neutralPalette.concat(accentPalette).forEach(
@@ -61,7 +61,7 @@ describe("neutralForegroundHint", (): void => {
                     // Because neutralForegroundHint follows the direction patterns of neutralForeground,
                     // a backgroundColor #777777 is impossible to hit 4.5 against.
                 ).toBeGreaterThanOrEqual(swatch === "#777777" ? 4.48 : 4.5);
-                expect(retrieveContrast(swatch, neutralForegroundHint)).toBeLessThan(4.9);
+                expect(retrieveContrast(swatch, neutralForegroundHint)).toBeLessThan(5);
                 expect(
                     retrieveContrast(swatch, neutralForegroundHintLarge)
                 ).toBeGreaterThanOrEqual(3);

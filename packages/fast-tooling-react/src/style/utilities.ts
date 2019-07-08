@@ -7,13 +7,13 @@ import {
 } from "@microsoft/fast-jss-utilities";
 import {
     accent,
-    background300,
     background800,
     disabledOpacity,
     error,
     foreground200,
     foreground300,
     foreground800,
+    neutralLayerL4,
 } from "./constants";
 
 export interface BoxShadowConfig {
@@ -144,7 +144,7 @@ export function applySelectInputStyles(): CSSRules<{}> {
             display: "none",
         },
         "& option": {
-            background: background300,
+            background: neutralLayerL4,
         },
         "&:disabled": {
             cursor: "not-allowed",

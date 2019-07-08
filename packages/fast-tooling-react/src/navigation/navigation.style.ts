@@ -1,10 +1,19 @@
 import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager-react";
 import { applyTriggerStyle, insetStrongBoxShadow } from "../style";
-import { accent, background300, background800, foreground300 } from "../style/constants";
+import {
+    accent,
+    foreground300,
+    neutralLayerL3,
+    neutralLayerL4,
+    neutralOutlineActive,
+} from "../style/constants";
 
 export interface NavigationClassNameContract {
     navigation?: string;
     navigation_item?: string;
+    navigation_item__childItem?: string;
+    navigation_item__draggable?: string;
+    navigation_item__dragging?: string;
     navigation_itemContent?: string;
     navigation_itemContent__active?: string;
     navigation_itemContent__dragHover?: string;
@@ -16,7 +25,7 @@ export interface NavigationClassNameContract {
 const styles: ComponentStyles<NavigationClassNameContract, {}> = {
     navigation: {
         fontSize: "12px",
-        background: background300,
+        background: neutralLayerL4,
         color: foreground300,
         height: "100%",
     },
@@ -24,6 +33,15 @@ const styles: ComponentStyles<NavigationClassNameContract, {}> = {
         display: "flex",
         flexFlow: "column",
         textIndent: "1em",
+        position: "relative",
+        cursor: "pointer",
+        "& $navigation_item::after": {
+            content: "''",
+            height: "100%",
+            position: "absolute",
+            left: "calc(1em - 13px)",
+            borderRight: `1px solid ${neutralOutlineActive}`,
+        },
         '&[aria-expanded="true"] > $navigation_itemList': {
             display: "block",
         },
@@ -46,15 +64,30 @@ const styles: ComponentStyles<NavigationClassNameContract, {}> = {
             borderBottom: "3px solid transparent",
         },
     },
+    navigation_item__childItem: {
+        "& > $navigation_itemContent": {
+            fontStyle: "normal",
+        },
+    },
+    navigation_item__draggable: {
+        cursor: "grab",
+    },
+    navigation_item__dragging: {
+        "&$navigation_item__draggable": {
+            cursor: "grabbing",
+        },
+    },
     navigation_itemContent: {
         ...applyTriggerStyle(foreground300),
+        cursor: "inherit",
         textDecoration: "none",
+        fontStyle: "italic",
         "&:focus": {
             ...insetStrongBoxShadow(accent),
         },
     },
     navigation_itemContent__active: {
-        background: background800,
+        background: neutralLayerL3,
     },
     navigation_itemContent__dragHover: {
         background: accent,

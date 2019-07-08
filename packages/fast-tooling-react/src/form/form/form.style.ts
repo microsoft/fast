@@ -1,10 +1,10 @@
-import { accent, applyCleanListStyle, background300, foreground300 } from "../../style";
+import { accent, applyCleanListStyle, foreground300, neutralLayerL4 } from "../../style";
 import { ComponentStyles } from "@microsoft/fast-jss-manager-react";
 import { FormClassNameContract } from "./form.props";
 
 const styles: ComponentStyles<FormClassNameContract, {}> = {
     form: {
-        background: background300,
+        background: neutralLayerL4,
         color: foreground300,
         height: "100%",
         padding: "0 0 0 10px",

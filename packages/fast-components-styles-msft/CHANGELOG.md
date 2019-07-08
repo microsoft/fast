@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.14.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-styles-msft@4.13.0...@microsoft/fast-components-styles-msft@4.14.0) (2019-07-01)
+
+
+### Features
+
+* add unique design system value for elevated corner radius ([#1905](https://github.com/Microsoft/fast-dna/issues/1905)) ([3782381](https://github.com/Microsoft/fast-dna/commit/3782381))
+* added applyElevatedCornerRadius and deprecated the 'floating' version ([#1909](https://github.com/Microsoft/fast-dna/issues/1909)) ([f8fd79a](https://github.com/Microsoft/fast-dna/commit/f8fd79a))
+* color algorithm and recipe updates ([#1899](https://github.com/Microsoft/fast-dna/issues/1899)) ([84d6b19](https://github.com/Microsoft/fast-dna/commit/84d6b19))
+
+
+
+
+
 # [4.13.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-styles-msft@4.12.0...@microsoft/fast-components-styles-msft@4.13.0) (2019-06-25)
 
 
