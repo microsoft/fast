@@ -1,10 +1,15 @@
 import {
+    Background,
+    DarkModeBackgrounds,
+    LightModeBackgrounds,
+    Pivot,
+} from "@microsoft/fast-components-react-msft";
+import {
     ComponentProps,
     ExplorerHandledProps,
     ExplorerProps,
     ExplorerState,
 } from "./explorer.props";
-import style from "./explorer.style";
 import { camelCase, cloneDeep, get, memoize } from "lodash-es";
 import {
     Canvas,
@@ -19,8 +24,8 @@ import {
     defaultDevices,
     Form,
     mapDataToCodePreview,
-    Viewer,
     NavigationMenu,
+    Viewer,
 } from "@microsoft/fast-tooling-react";
 import manageJss, {
     ComponentStyleSheet,
@@ -33,12 +38,7 @@ import designSystemDefaults, {
     DesignSystem,
 } from "@microsoft/fast-components-styles-msft/dist/design-system";
 import { TabsItem } from "@microsoft/fast-components-react-base";
-import {
-    Background,
-    DarkModeBackgrounds,
-    LightModeBackgrounds,
-    Pivot,
-} from "@microsoft/fast-components-react-msft";
+import style from "./explorer.style";
 import { CodePreviewChildOption } from "@microsoft/fast-tooling-react/dist/data-utilities/mapping";
 import { ViewerManagedClasses } from "@microsoft/fast-tooling-react/dist/viewer/viewer/viewer.props";
 import { FormClassNameContract } from "@microsoft/fast-tooling-react/dist/form/form";
@@ -268,7 +268,7 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
 
     private renderScenarioSelect(): React.ReactNode {
         const paths: string[] = get(this.props, "location.pathname").split("/");
-        const scenarioOptions: Scenario<any>[] =
+        const scenarioOptions: Array<Scenario<any>> =
             componentViewConfigs[`${camelCase(paths[paths.length - 1])}Config`].scenarios;
 
         if (Array.isArray(scenarioOptions)) {
@@ -280,7 +280,9 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
         }
     }
 
-    private renderScenarioOptions(scenarioOptions: Scenario<any>[]): React.ReactNode {
+    private renderScenarioOptions(
+        scenarioOptions: Array<Scenario<any>>
+    ): React.ReactNode {
         return scenarioOptions.map((scenarioOption: Scenario<any>, index: number) => {
             return (
                 <option key={scenarioOption.displayName} value={index}>

@@ -29,5 +29,5 @@ export interface ComponentViewConfig<D> {
     /**
      * The scenarios associated with the component
      */
-    scenarios: Scenario<D>[];
+    scenarios: Array<Scenario<D>>;
 }

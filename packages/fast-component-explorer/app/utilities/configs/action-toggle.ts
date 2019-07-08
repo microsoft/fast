@@ -1,9 +1,9 @@
 import { ComponentViewConfig } from "./data.props";
 import {
+    ActionToggle,
+    ActionToggleAppearance,
     ActionToggleProps,
     actionToggleSchema,
-    ActionToggleAppearance,
-    ActionToggle,
 } from "@microsoft/fast-components-react-msft";
 import glyphSchema from "../components/glyph.schema";
 import { Icon } from "../components/glyph";

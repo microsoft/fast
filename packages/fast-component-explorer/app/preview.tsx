@@ -46,6 +46,7 @@ class Preview extends Foundation<{}, {}, PreviewState> {
             const state: PreviewState = JSON.parse(message.data);
 
             this.setState(state);
+            /* tslint:disable-next-line */
         } catch (e) {}
     };
 

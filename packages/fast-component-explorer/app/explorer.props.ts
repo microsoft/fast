@@ -57,11 +57,15 @@ export interface ProjectFile {
     viewConfig: ViewConfig;
 }
 
+/* tslint:disable-next-line */
 export interface ExplorerManagedClasses
     extends ManagedClasses<ExplorerClassNameContract> {}
 
+/* tslint:disable-next-line */
 export interface ExplorerHandledProps extends ExplorerManagedClasses {}
 
+/* tslint:disable-next-line */
 export interface ExplorerProps extends ExplorerHandledProps {}
 
+/* tslint:disable-next-line */
 export interface ExplorerState extends ProjectFile {}

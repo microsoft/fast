@@ -3,7 +3,7 @@ import Dictionary from "./dictionary";
 import Explorer from "./explorer";
 import Preview from "./preview";
 import { history } from "./config";
-import { Router, Route } from "react-router-dom";
+import { Route, Router } from "react-router-dom";
 
 /**
  * The root level app

@@ -5,16 +5,28 @@ import * as testComponentViewConfigs from "./utilities/components";
 import * as componentViewConfigs from "./utilities/configs";
 import { createBrowserHistory } from "history";
 
+const schemas: any[] = [];
+
+Object.keys(componentViewConfigs).forEach((componentViewConfigKey: string) => {
+    schemas.push(componentViewConfigs[componentViewConfigKey].schema);
+});
+
+const history: any = createBrowserHistory();
+const menu: MenuItem[] = generateMenu(schemas);
+const childOptions: FormChildOptionItem[] = getComponentChildrenOptions().concat(
+    getTestComponentChildrenOptions()
+);
+
 function getRouteFromSchemaId(schemaId: string): string {
     const matchedRegex: RegExpMatchArray | null = schemaId.match(/\/(?:.(?!\/))+$/);
     return Array.isArray(matchedRegex) ? `/components${matchedRegex[0]}` : "";
 }
 
-function generateMenu(schemas: any[]): MenuItem[] {
+function generateMenu(componentSchemas: any[]): MenuItem[] {
     return [
         {
             displayName: "Components",
-            items: schemas.map(
+            items: componentSchemas.map(
                 (schema: any): MenuItem => {
                     return {
                         displayName: schema.title,
@@ -51,17 +63,5 @@ function getTestComponentChildrenOptions(): FormChildOptionItem[] {
         }
     );
 }
-
-const schemas: any[] = [];
-
-Object.keys(componentViewConfigs).forEach((componentViewConfigKey: string) => {
-    schemas.push(componentViewConfigs[componentViewConfigKey].schema);
-});
-
-const history = createBrowserHistory();
-const menu: MenuItem[] = generateMenu(schemas);
-const childOptions: FormChildOptionItem[] = getComponentChildrenOptions().concat(
-    getTestComponentChildrenOptions()
-);
 
 export { childOptions, history, menu };
