@@ -11,7 +11,7 @@
     "prettier": "prettier --config ../../.prettierrc --write \"**/*.{ts,tsx}\"",
     "prettier:diff": "prettier --config ../../.prettierrc \"**/*.{ts,tsx}\" --list-different",
     "start": "npm run convert:readme && webpack-dev-server",
-    "test": "npm run build && npm run unit-tests && npm run tslint",
+    "test": "npm run convert:readme && npm run unit-tests && npm run tslint",
     "unit-tests": "jest --maxWorkers=2",
     "unit-tests:watch": "jest --watch",
     "tslint": "tslint -c ./tslint.json '**/*.ts{,x}'",
