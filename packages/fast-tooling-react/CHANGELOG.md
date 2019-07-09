@@ -3,6 +3,26 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.11.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-tooling-react@1.10.1...@microsoft/fast-tooling-react@1.11.0) (2019-07-09)
+
+
+### Bug Fixes
+
+* refine sorting behavior to be more precise when dealing with items that are not children items ([#1919](https://github.com/Microsoft/fast-dna/issues/1919)) ([d4f25ae](https://github.com/Microsoft/fast-dna/commit/d4f25ae))
+* slight performance improvement when getting the children locations within a schema ([#1897](https://github.com/Microsoft/fast-dna/issues/1897)) ([f6efd80](https://github.com/Microsoft/fast-dna/commit/f6efd80))
+
+
+### Features
+
+* add grab hand when hovering a draggable item ([#1917](https://github.com/Microsoft/fast-dna/issues/1917)) ([4c0683f](https://github.com/Microsoft/fast-dna/commit/4c0683f))
+* add hierarchical lines to the Navigation component UI ([#1911](https://github.com/Microsoft/fast-dna/issues/1911)) ([a3b9f10](https://github.com/Microsoft/fast-dna/commit/a3b9f10))
+* add plugins to the ViewerContent component ([#1907](https://github.com/Microsoft/fast-dna/issues/1907)) ([a88c29b](https://github.com/Microsoft/fast-dna/commit/a88c29b))
+* allow children in the React default children prop to be directly nested in the Navigation component ([#1910](https://github.com/Microsoft/fast-dna/issues/1910)) ([a810ea8](https://github.com/Microsoft/fast-dna/commit/a810ea8))
+
+
+
+
+
 ## [1.10.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-tooling-react@1.10.0...@microsoft/fast-tooling-react@1.10.1) (2019-07-01)
 
 **Note:** Version bump only for package @microsoft/fast-tooling-react

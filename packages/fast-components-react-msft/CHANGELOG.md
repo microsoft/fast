@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.13.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-msft@4.12.0...@microsoft/fast-components-react-msft@4.13.0) (2019-07-09)
+
+
+### Features
+
+* add autoplay support for carousel as a controlled behavior ([#1921](https://github.com/Microsoft/fast-dna/issues/1921)) ([eabbf7b](https://github.com/Microsoft/fast-dna/commit/eabbf7b))
+
+
+
+
+
 # [4.12.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-msft@4.11.0...@microsoft/fast-components-react-msft@4.12.0) (2019-07-01)
 
 

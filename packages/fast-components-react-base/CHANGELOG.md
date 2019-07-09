@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.9.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-base@4.8.1...@microsoft/fast-components-react-base@4.9.0) (2019-07-09)
+
+
+### Bug Fixes
+
+* slider thumb should be focused on click ([#1906](https://github.com/Microsoft/fast-dna/issues/1906)) ([22c2bb4](https://github.com/Microsoft/fast-dna/commit/22c2bb4))
+
+
+### Features
+
+* add autoplay support for carousel as a controlled behavior ([#1921](https://github.com/Microsoft/fast-dna/issues/1921)) ([eabbf7b](https://github.com/Microsoft/fast-dna/commit/eabbf7b))
+
+
+
+
+
 ## [4.8.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-base@4.8.0...@microsoft/fast-components-react-base@4.8.1) (2019-07-01)
 
 
