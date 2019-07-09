@@ -5,23 +5,15 @@ import {
     CarouselProps,
     CarouselSlide,
     CarouselSlideTheme,
+    CarouselState,
     CarouselUnhandledProps,
 } from "./carousel.props";
 import { Flipper, FlipperDirection } from "../flipper";
 import { Tabs, TabsItem } from "@microsoft/fast-components-react-base";
 import { TabsClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
-import { get } from "lodash-es";
+import { get, isNil } from "lodash-es";
 import { DisplayNamePrefix } from "../utilities";
-
-/**
- * The carousel state interface
- */
-export interface CarouselState {
-    /**
-     * Holds the active tab id to share with other controls
-     */
-    activeId: string;
-}
+import { canUseDOM } from "exenv-es6";
 
 class Carousel extends Foundation<
     CarouselHandledProps,
@@ -30,13 +22,18 @@ class Carousel extends Foundation<
 > {
     public static displayName: string = `${DisplayNamePrefix}Carousel`;
 
+    public static defaultProps: Partial<CarouselProps> = {
+        autoplay: false,
+        autoplayInterval: 6000,
+    };
+
     /**
      * React life-cycle method
      */
     public static getDerivedStateFromProps(
         nextProps: CarouselProps,
         prevState: CarouselState
-    ): null | CarouselState {
+    ): null | Partial<CarouselState> {
         if (nextProps.activeId && nextProps.activeId !== prevState.activeId) {
             return {
                 activeId: nextProps.activeId,
@@ -50,11 +47,23 @@ class Carousel extends Foundation<
      * Handled props
      */
     protected handledProps: HandledProps<CarouselHandledProps> = {
+        autoplay: void 0,
+        autoplayInterval: void 0,
         managedClasses: void 0,
         label: void 0,
         activeId: void 0,
         items: void 0,
     };
+
+    /**
+     * Store a reference to the autoplay timer
+     */
+    private autoplayTimer: number | void;
+
+    /**
+     * Store a reference to the root element
+     */
+    private rootEl: React.RefObject<HTMLDivElement>;
 
     /**
      * Initial slide transition direction is none (on carousel load)
@@ -66,6 +75,8 @@ class Carousel extends Foundation<
      */
     constructor(props: CarouselProps) {
         super(props);
+
+        this.rootEl = React.createRef();
 
         if (Array.isArray(this.props.items)) {
             this.state = {
@@ -82,7 +93,11 @@ class Carousel extends Foundation<
      */
     public render(): React.ReactElement<HTMLDivElement> {
         return (
-            <div {...this.unhandledProps()} className={this.generateClassNames()}>
+            <div
+                {...this.unhandledProps()}
+                className={this.generateClassNames()}
+                ref={this.rootEl}
+            >
                 {this.generatePreviousFlipper()}
                 <Tabs
                     label={this.props.label}
@@ -90,10 +105,49 @@ class Carousel extends Foundation<
                     onUpdate={this.handleUpdate}
                     items={this.slides as TabsItem[]}
                     managedClasses={this.generateTabsClassNames()}
+                    disableTabFocus={this.props.autoplay}
                 />
                 {this.generateNextFlipper()}
             </div>
         );
+    }
+
+    /**
+     * React lifecycle hook
+     */
+    public componentDidMount(): void {
+        if (canUseDOM() && this.props.autoplay) {
+            // Set initial interval for autoplay
+            this.autoplayTimer = window.setInterval(
+                this.nextSlide,
+                this.props.autoplayInterval
+            );
+        }
+    }
+
+    /**
+     * React lifecycle hook
+     */
+    public componentDidUpdate(prevProps: CarouselProps, prevState: CarouselState): void {
+        if (this.props.autoplay && isNil(this.autoplayTimer)) {
+            // Set the window interval if we are in autplay and don't have a timer
+            this.autoplayTimer = window.setInterval(
+                this.nextSlide,
+                this.props.autoplayInterval
+            );
+        } else if (!this.props.autoplay && !isNil(this.autoplayTimer)) {
+            // Clear the interval if we should not be autoplaying
+            this.autoplayTimer = window.clearInterval(this.autoplayTimer as number);
+        }
+    }
+
+    /**
+     * React lifecycle hook
+     */
+    public componentWillUnmount(): void {
+        if (!isNil(this.autoplayTimer)) {
+            this.autoplayTimer = window.clearInterval(this.autoplayTimer as number);
+        }
     }
 
     /**
@@ -233,7 +287,7 @@ class Carousel extends Foundation<
             return (
                 <Flipper
                     direction={FlipperDirection.previous}
-                    onClick={this.handlePreviousClick}
+                    onClick={this.previousSlide}
                     className={get(
                         this.props,
                         "managedClasses.carousel_flipperPrevious",
@@ -252,7 +306,7 @@ class Carousel extends Foundation<
             return (
                 <Flipper
                     direction={FlipperDirection.next}
-                    onClick={this.handleNextClick}
+                    onClick={this.nextSlide}
                     className={get(this.props, "managedClasses.carousel_flipperNext", "")}
                 />
             );
@@ -275,13 +329,13 @@ class Carousel extends Foundation<
     };
 
     /**
-     * Move to previous slide if applicable
+     * Move to next slide if applicable
      */
-    private handlePreviousClick = (): void => {
-        let newPosition: number = this.getActiveIndex() - 1;
+    private nextSlide = (): void => {
+        let newPosition: number = this.getActiveIndex() + 1;
 
-        if (newPosition < 0) {
-            newPosition = this.slides.length - 1;
+        if (newPosition > this.slides.length - 1) {
+            newPosition = 0;
         }
 
         this.setTransitionDirection(newPosition);
@@ -289,13 +343,13 @@ class Carousel extends Foundation<
     };
 
     /**
-     * Move to next slide if applicable
+     * Move to previous slide if applicable
      */
-    private handleNextClick = (): void => {
-        let newPosition: number = this.getActiveIndex() + 1;
+    private previousSlide = (): void => {
+        let newPosition: number = this.getActiveIndex() - 1;
 
-        if (newPosition > this.slides.length - 1) {
-            newPosition = 0;
+        if (newPosition < 0) {
+            newPosition = this.slides.length - 1;
         }
 
         this.setTransitionDirection(newPosition);

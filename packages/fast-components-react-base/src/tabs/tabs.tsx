@@ -36,6 +36,10 @@ export interface TabsState {
 }
 
 class Tabs extends Foundation<TabsHandledProps, TabsUnhandledProps, TabsState> {
+    public static defaultProps: Partial<TabsProps> = {
+        disableTabFocus: false,
+    };
+
     public static displayName: string = `${DisplayNamePrefix}Tabs`;
 
     /**
@@ -56,6 +60,7 @@ class Tabs extends Foundation<TabsHandledProps, TabsUnhandledProps, TabsState> {
 
     protected handledProps: HandledProps<TabsHandledProps> = {
         activeId: void 0,
+        disableTabFocus: void 0,
         label: void 0,
         managedClasses: void 0,
         onUpdate: void 0,
@@ -123,7 +128,8 @@ class Tabs extends Foundation<TabsHandledProps, TabsUnhandledProps, TabsState> {
     public componentDidUpdate(prevProps: TabsProps): void {
         if (
             typeof this.props.activeId === "string" &&
-            this.props.activeId !== prevProps.activeId
+            this.props.activeId !== prevProps.activeId &&
+            this.props.disableTabFocus !== true
         ) {
             const items: React.ReactNode[] = React.Children.toArray(this.tabItems());
             const currentItemIndex: number = items.findIndex(this.getCurrentIndexById);

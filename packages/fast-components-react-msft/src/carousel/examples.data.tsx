@@ -104,6 +104,7 @@ export default {
     detailData: {
         label: "A carousel of items",
         items: detailTabItem,
+        autoplay: true,
     },
     data: [
         {
@@ -114,6 +115,10 @@ export default {
         {
             label: "A single slide carousel",
             items: singleTabItem,
-        } as any,
+        },
+        {
+            label: "An autoplay carousel of items",
+            items: detailTabItem,
+        },
     ],
 } as ComponentFactoryExample<CarouselProps>;

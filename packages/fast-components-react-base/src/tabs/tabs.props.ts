@@ -56,6 +56,12 @@ export interface TabsHandledProps extends TabsManagedClasses {
     tabSlot?: string;
 
     /**
+     * Disable the automated focus management of tablist items
+     * Defaults to false
+     */
+    disableTabFocus?: boolean;
+
+    /**
      * The tabs' tab item
      */
     items?: TabsItem[];

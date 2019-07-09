@@ -14,6 +14,15 @@ export default {
             title: "Set active slide by HTML id attribute",
             type: "string",
         },
+        autoplay: {
+            title: "Autoplay",
+            type: "boolean",
+        },
+        autoplayInterval: {
+            title: "Autoplay interval (in milliseconds)",
+            type: "number",
+            default: 6000,
+        },
         items: {
             title: "Slides",
             type: "array",
