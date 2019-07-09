@@ -155,9 +155,9 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
                                                     height: "100%",
                                                 },
                                                 pivot_tabPanels: {
-                                                    height: "100%",
                                                     overflow: "auto",
                                                     padding: "0 12px",
+                                                    height: "calc(100% - 32px)",
                                                 },
                                             }}
                                         />

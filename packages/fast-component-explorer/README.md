@@ -2,7 +2,7 @@
 
 This is the documentation site for `@microsoft/fast-components-react-msft`.
 
-It is built using the `@microsoft/fast-tooling-react` and `@microsoft/fast-components-react-msft` packages and shows the components in a playground as well as the documentation for each component.
+It is built using the `@microsoft/fast-tooling-react` and `@microsoft/fast-components-react-msft` packages to view, configure and document each component.
 
 ## Getting Started
 Follow setup instructions in [contributing](https://github.com/Microsoft/fast-dna/blob/master/CONTRIBUTING.md).
