@@ -626,21 +626,6 @@ export type HandleBreadcrumbClick = (
 ) => BreadcrumbItemEventHandler;
 
 /**
- * Gets the data cache based on a new data object and
- * previous data object
- */
-export function getDataCache(dataCache: any, newData: any): any {
-    let newDataCache: any =
-        typeof dataCache !== "undefined" ? cloneDeep(dataCache) : newData;
-
-    if (newDataCache !== newData) {
-        newDataCache = mergeWith(dataCache, newData, cachedArrayResolver);
-    }
-
-    return newDataCache;
-}
-
-/**
  * Resolves arrays when the object is an array and the data passed is an array
  */
 function cachedArrayResolver(objValue: any, srcValue: any): any {

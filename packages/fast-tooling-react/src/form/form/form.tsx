@@ -16,7 +16,6 @@ import {
     BreadcrumbItem,
     getActiveComponentAndSection,
     getBreadcrumbs,
-    getDataCache,
     getNavigation,
     isDifferentSchema,
     isModifiedSchema,
@@ -87,7 +86,6 @@ class Form extends React.Component<
                 props.location && typeof props.location === "string"
                     ? props.location
                     : "",
-            dataCache: this.props.data,
             navigation:
                 typeof this.props.location !== "undefined" // Location has been passed
                     ? getNavigation(
@@ -188,7 +186,7 @@ class Form extends React.Component<
         }
 
         if (updateData) {
-            state = this.getStateWithUpdatedDataCache(props, state);
+            state = this.getStateForUpdatedData(props, state);
         }
 
         if (updateSchema) {
@@ -213,20 +211,13 @@ class Form extends React.Component<
     }
 
     /**
-     * Gets the state object with an updated data cache
+     * Gets the updated state object due to updated data
      */
-    private getStateWithUpdatedDataCache(
+    private getStateForUpdatedData(
         props: FormProps,
         state: Partial<FormState>
     ): Partial<FormState> {
-        const dataCache: any =
-            typeof this.state !== "undefined" &&
-            typeof this.state.dataCache !== "undefined"
-                ? this.state.dataCache
-                : void 0;
-
         const updatedState: Partial<FormState> = {
-            dataCache: getDataCache(dataCache, props.data),
             validationErrors: this.getValidationErrors(props),
             // schemas are stored in the navigation so this must be refreshed
             // in case a plugin has updated one of the internal schemas
@@ -247,7 +238,6 @@ class Form extends React.Component<
             titleProps:
                 this.schema && this.schema.title ? this.schema.title : this.untitled,
             activeDataLocation: "",
-            dataCache: cloneDeep(props.data),
             navigation: this.getUpdatedNavigation(props, state),
         };
 
@@ -347,7 +337,6 @@ class Form extends React.Component<
                 onChange={this.handleOnChange}
                 onUpdateActiveSection={this.handleUpdateActiveSection}
                 data={this.getData("data", "props")}
-                dataCache={this.getData("dataCache", "state")}
                 schemaLocation={mapSchemaLocationFromDataLocation(
                     this.state.activeDataLocation,
                     this.schema,
