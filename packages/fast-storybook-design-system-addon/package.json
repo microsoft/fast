@@ -3,6 +3,18 @@
   "version": "1.0.0",
   "description": "Storybook add-on for FAST MSFT DesignSystem",
   "main": "dist/index.js",
+  "author": {
+    "name": "Microsoft",
+    "url": "https://discord.gg/FcSNfg4"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Microsoft/fast-dna.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Microsoft/fast-dna/issues/new/choose"
+  },
   "scripts": {
     "build": "tsc -p ./tsconfig.json",
     "clean:dist": "node ../../build/clean.js dist",
@@ -46,8 +58,6 @@
       "src"
     ]
   },
-  "author": "",
-  "license": "ISC",
   "dependencies": {
     "@microsoft/fast-colors": "^4.1.2",
     "@microsoft/fast-components-styles-msft": "^4.11.3",

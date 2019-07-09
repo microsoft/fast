@@ -3,6 +3,18 @@
   "version": "1.0.0",
   "description": "Storybook presets for FAST integration",
   "main": "dist/index.js",
+  "author": {
+    "name": "Microsoft",
+    "url": "https://discord.gg/FcSNfg4"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Microsoft/fast-dna.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Microsoft/fast-dna/issues/new/choose"
+  },
   "scripts": {
     "prepare": "tsc -p ./tsconfig.json",
     "prettier": "prettier --config ../../.prettierrc --write \"**/*.{ts,tsx}\"",
@@ -12,8 +24,6 @@
     "tslint:fix": "tslint -c ./tslint.json --fix '**/*.ts{,x}'",
     "watch": "tsc -p ./tsconfig.json -w --preserveWatchOutput"
   },
-  "author": "",
-  "license": "ISC",
   "dependencies": {
     "@microsoft/fast-components-styles-msft": "^4.12.0",
     "@microsoft/fast-storybook-design-system-addon": "^1.0.0",
