@@ -3,7 +3,7 @@ import { addDecorator, addParameters } from "@storybook/react";
 import { create, Global } from "@storybook/theming";
 import React from "react";
 
-function GlobalStyles(fn) {
+function GlobalStyles(fn: () => JSX.Element): JSX.Element {
     return (
         <React.Fragment>
             <Global

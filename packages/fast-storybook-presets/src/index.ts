@@ -17,7 +17,7 @@ const optionDefaults: FASTDNAPresetOptions = {
     },
 };
 
-export function addons(entry = [], options?: FASTDNAPresetOptions): string[] {
+export function addons(entry: string[] = [], options?: FASTDNAPresetOptions): string[] {
     const withDefaults: FASTDNAPresetOptions = merge({}, optionDefaults, options);
 
     if (withDefaults.designSystemAddon.enabled) {
@@ -35,7 +35,7 @@ export function addons(entry = [], options?: FASTDNAPresetOptions): string[] {
     return entry;
 }
 
-export function entries(entry = [], options?: FASTDNAPresetOptions): any {
+export function entries(entry: string[] = [], options?: FASTDNAPresetOptions): any {
     const withDefaults: FASTDNAPresetOptions = merge({}, optionDefaults, options);
 
     if (withDefaults.designSystemAddon.enabled) {
