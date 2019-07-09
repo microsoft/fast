@@ -5,14 +5,14 @@
   "sideEffects": false,
   "private": true,
   "scripts": {
-    "build": "npm run convert:readme && webpack --progress --mode=production",
+    "build:app": "webpack --progress --mode=production",
     "convert:readme": "node ./build/convert-readme.js",
     "clean:tmp": "node ../../build/clean.js app/.tmp",
     "prettier": "prettier --config ../../.prettierrc --write \"**/*.{ts,tsx}\"",
     "prettier:diff": "prettier --config ../../.prettierrc \"**/*.{ts,tsx}\" --list-different",
-    "start": "npm run convert:readme && webpack-dev-server",
-    "test": "npm run build && npm run unit-tests && npm run tslint",
-    "unit-tests": "jest --runInBand",
+    "start": "webpack-dev-server",
+    "test": "npm run convert:readme && npm run tslint && npm run unit-tests && npm run build:app",
+    "unit-tests": "jest --maxWorkers=2",
     "unit-tests:watch": "jest --watch",
     "tslint": "tslint -c ./tslint.json '**/*.ts{,x}'",
     "tslint:fix": "tslint -c ./tslint.json --fix '**/*.ts{,x}'"
@@ -110,6 +110,7 @@
     "webpack-bundle-analyzer": "^3.0.3",
     "webpack-cli": "^3.1.2",
     "webpack-dev-server": "^3.1.10",
+    "webpack-shell-plugin": "^0.5.0",
     "workbox-webpack-plugin": "^3.6.3"
   },
   "dependencies": {

@@ -1,6 +1,7 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
+const WebpackShellPlugin = require("webpack-shell-plugin");
 const CleanWebpackPlugin = require("clean-webpack-plugin");
 const WorkboxPlugin = require("workbox-webpack-plugin");
 const FaviconsWebpackPlugin = require("favicons-webpack-plugin");
@@ -63,8 +64,11 @@ module.exports = (env, args) => {
         plugins: [
             new CleanWebpackPlugin([outDir]),
             new HtmlWebpackPlugin({
-                title: "FAST documentation",
+                title: "FAST Component explorer",
                 contentBase: outDir,
+            }),
+            new WebpackShellPlugin({
+                onBuildStart: [`npm run convert:readme`],
             }),
             new BundleAnalyzerPlugin({
                 // Remove this to inspect bundle sizes.
