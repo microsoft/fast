@@ -13,7 +13,7 @@ addons.register(
             type: types.PANEL,
             route: (options: RouteOptions): string => `info/${options.storyId}`,
             match: (options: MatchOptions): boolean => options.viewMode === "info",
-            render: (options: RenderOptions) => (
+            render: (options: RenderOptions): JSX.Element => (
                 <DesignSystemPanel key={options.key} api={api} active={options.active} />
             ),
         });

@@ -10,6 +10,9 @@
     "prettier": "prettier --config ../../.prettierrc --write \"**/*.{ts,tsx}\"",
     "prettier:diff": "prettier --config ../../.prettierrc \"**/*.{ts,tsx}\" --list-different",
     "test": "npm run unit-tests",
+    "test": "npm run convert:readme && npm run tslint && npm run unit-tests && npm run build:app",
+    "tslint": "tslint -c ./tslint.json '**/*.ts{,x}'",
+    "tslint:fix": "tslint -c ./tslint.json --fix '**/*.ts{,x}'",
     "unit-tests": "jest --maxWorkers=2",
     "unit-tests:watch": "jest --watch",
     "watch": "tsc -p ./tsconfig.json -w --preserveWatchOutput"
@@ -59,6 +62,7 @@
   },
   "devDependencies": {
     "@microsoft/fast-jss-manager-react": "^4.3.3",
+    "@microsoft/fast-tslint-rules": "^3.0.3",
     "@storybook/react": "^5.1.3",
     "@types/jest": "^24.0.13",
     "@types/react": "^16.8.19",
@@ -66,6 +70,7 @@
     "jest": "^24.8.0",
     "prettier": "^1.18.0",
     "ts-jest": "^24.0.2",
+    "tslint": "^5.9.1",
     "tslint-config-prettier": "^1.18.0",
     "typescript": "^3.5.1"
   },

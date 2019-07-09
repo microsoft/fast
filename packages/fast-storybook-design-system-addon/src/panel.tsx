@@ -44,35 +44,33 @@ interface SwatchProps {
     labelledby: string;
 }
 
-class Swatch extends React.Component<SwatchProps> {
-    render(): JSX.Element {
-        const shadow: string = `0 0 .8px 0px #000`;
-        const Inner: any = styled.div(({ theme }) => ({
-            width: 36,
-            height: 36,
-            backgroundColor: this.props.color,
-            display: "inline-block",
-            margin: "0 8px 8px 0",
-            outline: "none",
-            boxShadow: this.props.selected
-                ? `0 0 0 4px inset ${theme.barSelectedColor}, ${shadow}`
-                : shadow,
-        }));
+function Swatch(props: SwatchProps): JSX.Element {
+    const shadow: string = `0 0 .8px 0px #000`;
+    const Inner: any = styled.div(({ theme }: { theme: Theme }) => ({
+        width: 36,
+        height: 36,
+        backgroundColor: props.color,
+        display: "inline-block",
+        margin: "0 8px 8px 0",
+        outline: "none",
+        boxShadow: props.selected
+            ? `0 0 0 4px inset ${theme.barSelectedColor}, ${shadow}`
+            : shadow,
+    }));
 
-        return (
-            <Inner
-                tabIndex={0}
-                data-value={this.props.value}
-                onClick={this.props.onClick}
-                aria-checked={this.props.selected}
-                aria-labelledby={this.props.labelledby}
-            />
-        );
-    }
+    return (
+        <Inner
+            tabIndex={0}
+            data-value={props.value}
+            onClick={props.onClick}
+            aria-checked={props.selected}
+            aria-labelledby={props.labelledby}
+        />
+    );
 }
 
 function Radio(props: React.InputHTMLAttributes<HTMLInputElement>): React.ReactElement {
-    const inner: React.ReactNode = styled.input(({ theme }) => ({
+    const inner: React.ReactNode = styled.input(({ theme }: { theme: Theme }) => ({
         width: 16,
         height: 16,
         marginRight: 20,
@@ -97,11 +95,11 @@ export class DesignSystemPanel extends React.Component<
         };
     }
 
-    public render() {
+    public render(): JSX.Element {
         return (
             <React.Fragment>
                 <Global
-                    styles={(theme: Theme) => ({
+                    styles={(theme: Theme): any => ({
                         [`#storybook-preview-background`]: {
                             background: `${this.state.designSystem.backgroundColor}`,
                         },
@@ -110,6 +108,18 @@ export class DesignSystemPanel extends React.Component<
                 {this.props.active ? this.renderForm() : null}
             </React.Fragment>
         );
+    }
+
+    public componentDidMount(): void {
+        this.props.api
+            .getChannel()
+            .addListener(REQUEST_DESIGN_SYSTEM_EVENT, this.emitDesignSystemUpdate);
+    }
+
+    public componentWillUnmount(): void {
+        this.props.api
+            .getChannel()
+            .removeListener(REQUEST_DESIGN_SYSTEM_EVENT, this.emitDesignSystemUpdate);
     }
 
     private renderForm(): JSX.Element {
@@ -185,18 +195,6 @@ export class DesignSystemPanel extends React.Component<
                 </fieldset>
             </div>
         );
-    }
-
-    public componentDidMount(): void {
-        this.props.api
-            .getChannel()
-            .addListener(REQUEST_DESIGN_SYSTEM_EVENT, this.emitDesignSystemUpdate);
-    }
-
-    public componentWillUnmount(): void {
-        this.props.api
-            .getChannel()
-            .removeListener(REQUEST_DESIGN_SYSTEM_EVENT, this.emitDesignSystemUpdate);
     }
 
     private renderSwatch(background: Background): JSX.Element {

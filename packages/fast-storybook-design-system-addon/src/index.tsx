@@ -1,9 +1,10 @@
 import { DesignSystem } from "@microsoft/fast-components-styles-msft";
 import { DesignSystemProvider } from "@microsoft/fast-jss-manager-react";
 import addons, { makeDecorator, StoryContext, StoryGetter } from "@storybook/addons";
-import { addDecorator } from "@storybook/react";
+import { addDecorator, MakeDecoratorResult } from "@storybook/react";
 import React from "react";
 import { REQUEST_DESIGN_SYSTEM_EVENT, UPDATE_DESIGN_SYSTEM_EVENT } from "./constants";
+import Channel from "@storybook/channels";
 
 interface DesignSystemDecoratorProps {
     channel: ReturnType<typeof addons.getChannel>;
@@ -51,18 +52,18 @@ class DesignSystemDecorator<T> extends React.Component<
         );
     }
 
-    private updateDesignSystem = (designSystem: DesignSystem) => {
+    private updateDesignSystem = (designSystem: DesignSystem): void => {
         this.setState({
             designSystem: Object.assign({}, designSystem),
         });
     };
 }
 
-const decorator = makeDecorator({
+const decorator: MakeDecoratorResult = makeDecorator({
     name: "withDesignSystem",
     parameterName: "designSystem",
     wrapper: (getStory: StoryGetter, context: StoryContext): ReturnType<StoryGetter> => {
-        const channel = addons.getChannel();
+        const channel: Channel = addons.getChannel();
 
         return (
             <DesignSystemDecorator channel={channel}>
@@ -72,6 +73,6 @@ const decorator = makeDecorator({
     },
 });
 
-export function setup() {
+export function setup(): void {
     addDecorator(decorator);
 }
