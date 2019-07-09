@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.2.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-color-explorer@1.1.1...@microsoft/fast-color-explorer@1.2.0) (2019-07-09)
+
+
+### Features
+
+* add neutral divider color recipe. ([#1920](https://github.com/Microsoft/fast-dna/issues/1920)) ([d89a78d](https://github.com/Microsoft/fast-dna/commit/d89a78d))
+
+
+
+
+
 ## [1.1.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-color-explorer@1.1.0...@microsoft/fast-color-explorer@1.1.1) (2019-07-01)
 
 **Note:** Version bump only for package @microsoft/fast-color-explorer

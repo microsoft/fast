@@ -4,6 +4,7 @@ import { configure, mount, shallow } from "enzyme";
 import MSFTCarousel, {
     CarouselHandledProps,
     CarouselManagedClasses,
+    CarouselProps,
     CarouselSlide,
     CarouselSlideTheme,
     CarouselUnhandledProps,
@@ -43,7 +44,6 @@ function mockHero(): (className?: string) => React.ReactNode {
                     height: "100%",
                     alignItems: "flex-end",
                     display: "flex",
-                    JustifyContent: "center",
                     left: "0",
                     right: "0",
                 }}
@@ -234,5 +234,65 @@ describe("carousel", (): void => {
             .at(1)
             .simulate("click");
         expect(rendered.state("activeId")).toBe("id02");
+    });
+
+    describe("autoplay", (): void => {
+        const mockFocus: any = jest.fn();
+        const mockHover: any = jest.fn();
+        const mockLeave: any = jest.fn();
+        const props: CarouselProps = {
+            ...handledProps,
+            managedClasses: {
+                carousel: "carousel",
+            },
+        };
+
+        test("should initialize with `autoplay` defaulted to false", () => {
+            const rendered: any = mount(<MSFTCarousel {...props} />);
+
+            expect(rendered.props().autoplay).toBe(false);
+        });
+
+        test("should set `autoplay` to true when `autoplay` is passed as true", () => {
+            const rendered: any = mount(<MSFTCarousel {...props} autoplay={true} />);
+
+            expect(rendered.props().autoplay).toBe(true);
+        });
+
+        test("should fire a callback when focus is brought to the carousel", () => {
+            const rendered: any = mount(<MSFTCarousel {...props} onFocus={mockFocus} />);
+
+            rendered.find(".carousel").simulate("focus");
+
+            expect(mockFocus).toHaveBeenCalledTimes(1);
+        });
+
+        test("should fire a callback when mouse enters the carousel", () => {
+            const rendered: any = mount(
+                <MSFTCarousel {...props} onMouseEnter={mockHover} />
+            );
+
+            rendered.simulate("mouseEnter");
+
+            expect(mockHover).toHaveBeenCalledTimes(1);
+        });
+
+        test("should fire a callback when mouse leaves the carousel", () => {
+            const rendered: any = mount(
+                <MSFTCarousel
+                    {...handledProps}
+                    onMouseEnter={mockHover}
+                    onMouseLeave={mockLeave}
+                />
+            );
+
+            rendered.simulate("mouseEnter");
+
+            expect(mockHover).toHaveBeenCalledTimes(2);
+
+            rendered.simulate("mouseLeave");
+
+            expect(mockLeave).toHaveBeenCalledTimes(1);
+        });
     });
 });

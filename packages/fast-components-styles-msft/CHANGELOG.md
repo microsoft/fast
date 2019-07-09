@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.15.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-styles-msft@4.14.0...@microsoft/fast-components-styles-msft@4.15.0) (2019-07-09)
+
+
+### Features
+
+* add neutral divider color recipe. ([#1920](https://github.com/Microsoft/fast-dna/issues/1920)) ([d89a78d](https://github.com/Microsoft/fast-dna/commit/d89a78d))
+
+
+
+
+
 # [4.14.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-styles-msft@4.13.0...@microsoft/fast-components-styles-msft@4.14.0) (2019-07-01)
 
 

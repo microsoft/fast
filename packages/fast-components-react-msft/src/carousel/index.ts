@@ -5,6 +5,7 @@ import MSFTCarousel, {
     CarouselProps as MSFTCarouselProps,
     CarouselSlide,
     CarouselSlideTheme,
+    CarouselState,
     CarouselUnhandledProps,
 } from "./carousel";
 import carouselSchema from "./carousel.schema";
@@ -35,6 +36,7 @@ export {
     CarouselClassNameContract,
     CarouselHandledProps,
     carouselSchema,
+    CarouselState,
     CarouselSlide,
     CarouselSlideTheme,
     CarouselUnhandledProps,
