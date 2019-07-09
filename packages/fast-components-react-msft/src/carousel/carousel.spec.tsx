@@ -237,13 +237,14 @@ describe("carousel", (): void => {
     });
 
     describe("autoplay", (): void => {
-        const mockCallback: any = jest.fn();
+        const mockFocus: any = jest.fn();
+        const mockHover: any = jest.fn();
+        const mockLeave: any = jest.fn();
         const props: CarouselProps = {
             ...handledProps,
             managedClasses: {
                 carousel: "carousel",
             },
-            onCarouselMouseEnterOrFocus: mockCallback,
         };
 
         test("should initialize with `autoplay` defaulted to false", () => {
@@ -259,29 +260,39 @@ describe("carousel", (): void => {
         });
 
         test("should fire a callback when focus is brought to the carousel", () => {
-            const rendered: any = mount(<MSFTCarousel {...props} />);
+            const rendered: any = mount(<MSFTCarousel {...props} onFocus={mockFocus} />);
 
             rendered.find(".carousel").simulate("focus");
 
-            expect(mockCallback).toHaveBeenCalledTimes(1);
+            expect(mockFocus).toHaveBeenCalledTimes(1);
         });
 
         test("should fire a callback when mouse enters the carousel", () => {
-            const rendered: any = mount(<MSFTCarousel {...props} />);
+            const rendered: any = mount(
+                <MSFTCarousel {...props} onMouseEnter={mockHover} />
+            );
 
             rendered.simulate("mouseEnter");
 
-            expect(mockCallback).toHaveBeenCalledTimes(2);
+            expect(mockHover).toHaveBeenCalledTimes(1);
         });
 
         test("should fire a callback when mouse leaves the carousel", () => {
             const rendered: any = mount(
-                <MSFTCarousel {...handledProps} onCarouselMouseLeave={mockCallback} />
+                <MSFTCarousel
+                    {...handledProps}
+                    onMouseEnter={mockHover}
+                    onMouseLeave={mockLeave}
+                />
             );
+
+            rendered.simulate("mouseEnter");
+
+            expect(mockHover).toHaveBeenCalledTimes(2);
 
             rendered.simulate("mouseLeave");
 
-            expect(mockCallback).toHaveBeenCalledTimes(3);
+            expect(mockLeave).toHaveBeenCalledTimes(1);
         });
     });
 });

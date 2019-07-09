@@ -62,22 +62,6 @@ export interface CarouselHandledProps extends CarouselManagedClasses {
     autoplayInterval?: number;
 
     /**
-     * Callback for when the carousel receives hover or focus
-     */
-    onCarouselMouseEnterOrFocus?: (
-        e: React.FocusEvent<HTMLDivElement> | React.MouseEvent<HTMLDivElement>,
-        props: CarouselProps
-    ) => void;
-
-    /**
-     * Callback for when the carousel hover terminates
-     */
-    onCarouselMouseLeave?: (
-        e: React.MouseEvent<HTMLDivElement>,
-        props: CarouselProps
-    ) => void;
-
-    /**
      * The carousel items
      */
     items: CarouselSlide[];

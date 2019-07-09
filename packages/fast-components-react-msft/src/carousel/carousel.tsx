@@ -53,8 +53,6 @@ class Carousel extends Foundation<
         label: void 0,
         activeId: void 0,
         items: void 0,
-        onCarouselMouseEnterOrFocus: void 0,
-        onCarouselMouseLeave: void 0,
     };
 
     /**
@@ -99,9 +97,6 @@ class Carousel extends Foundation<
                 {...this.unhandledProps()}
                 className={this.generateClassNames()}
                 ref={this.rootEl}
-                onFocus={this.handleCarouselHoverOrFocus}
-                onMouseEnter={this.handleCarouselHoverOrFocus}
-                onMouseLeave={this.handleCarouselMouseLeave}
             >
                 {this.generatePreviousFlipper()}
                 <Tabs
@@ -369,28 +364,6 @@ class Carousel extends Foundation<
             activeId: this.slides[position].id,
         });
     }
-
-    /**
-     * Handles carousel hover and focus
-     * Fire a callback if the carousel is hovered or focused while autoplaying
-     */
-    private handleCarouselHoverOrFocus = (
-        e: React.FocusEvent<HTMLDivElement> | React.MouseEvent<HTMLDivElement>
-    ): void => {
-        if (typeof this.props.onCarouselMouseEnterOrFocus === "function") {
-            return this.props.onCarouselMouseEnterOrFocus(e, this.props);
-        }
-    };
-
-    /**
-     * Handles carousel mouse leave
-     * Fire a callback when carousel is no longer hovered
-     */
-    private handleCarouselMouseLeave = (e: React.MouseEvent<HTMLDivElement>): void => {
-        if (typeof this.props.onCarouselMouseLeave === "function") {
-            return this.props.onCarouselMouseLeave(e, this.props);
-        }
-    };
 }
 
 export default Carousel;
