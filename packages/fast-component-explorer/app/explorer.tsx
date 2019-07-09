@@ -10,7 +10,7 @@ import {
     ExplorerProps,
     ExplorerState,
 } from "./explorer.props";
-import { camelCase, cloneDeep, get, memoize } from "lodash-es";
+import { camelCase, get, memoize } from "lodash-es";
 import {
     Canvas,
     CanvasClassNamesContract,
@@ -313,23 +313,19 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
                     .schema.id,
             props:
                 typeof index === "number"
-                    ? cloneDeep(
-                          get(
-                              componentViewConfigs,
-                              `${camelCase(
-                                  paths[currentComponentIndex]
-                              )}Config.scenarios[${index}].data`,
-                              {}
-                          )
+                    ? get(
+                          componentViewConfigs,
+                          `${camelCase(
+                              paths[currentComponentIndex]
+                          )}Config.scenarios[${index}].data`,
+                          {}
                       )
-                    : cloneDeep(
-                          get(
-                              componentViewConfigs,
-                              `${camelCase(
-                                  paths[currentComponentIndex]
-                              )}Config.scenarios[0].data`,
-                              {}
-                          )
+                    : get(
+                          componentViewConfigs,
+                          `${camelCase(
+                              paths[currentComponentIndex]
+                          )}Config.scenarios[0].data`,
+                          {}
                       ),
         };
     }
