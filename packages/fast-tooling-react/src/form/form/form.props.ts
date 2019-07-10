@@ -121,11 +121,6 @@ export interface FormState {
     activeDataLocation: string;
 
     /**
-     * The cached data
-     */
-    dataCache: any;
-
-    /**
      * The navigation items used for the breadcrumb links
      */
     navigation?: NavigationItem[];

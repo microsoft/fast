@@ -77,11 +77,6 @@ export interface FormSectionProps {
     data: any;
 
     /**
-     * The cached data
-     */
-    dataCache: any;
-
-    /**
      * The optional components to be added as children
      */
     childOptions: any[];
