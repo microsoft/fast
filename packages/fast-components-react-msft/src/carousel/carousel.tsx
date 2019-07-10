@@ -52,6 +52,7 @@ class Carousel extends Foundation<
         managedClasses: void 0,
         label: void 0,
         activeId: void 0,
+        onActiveIdUpdate: void 0,
         items: void 0,
     };
 
@@ -317,6 +318,10 @@ class Carousel extends Foundation<
      * Change active tab
      */
     private handleUpdate = (activeTab: string): void => {
+        if (typeof this.props.onActiveIdUpdate === "function") {
+            this.props.onActiveIdUpdate(activeTab);
+        }
+
         this.setState({
             activeId: activeTab,
         });
@@ -360,8 +365,13 @@ class Carousel extends Foundation<
      * Sets new slide based on position
      */
     private setNewSlidePosition(position: number): void {
+        const newActiveId: string = this.slides[position].id;
+
+        if (typeof this.props.onActiveIdUpdate === "function") {
+            this.props.onActiveIdUpdate(newActiveId);
+        }
         this.setState({
-            activeId: this.slides[position].id,
+            activeId: newActiveId,
         });
     }
 }

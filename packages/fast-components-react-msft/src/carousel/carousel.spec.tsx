@@ -236,6 +236,62 @@ describe("carousel", (): void => {
         expect(rendered.state("activeId")).toBe("id02");
     });
 
+    test("should fire a callback when `onActiveIdUpdate` prop is passed", () => {
+        const onActiveIdUpdateMock: any = jest.fn();
+        const rendered: any = mount(
+            <MSFTCarousel {...handledProps} onActiveIdUpdate={onActiveIdUpdateMock} />
+        );
+
+        rendered
+            .find('[direction="next"]')
+            .first()
+            .simulate("click");
+
+        expect(onActiveIdUpdateMock).toHaveBeenCalledTimes(1);
+
+        rendered
+            .find('[direction="previous"]')
+            .first()
+            .simulate("click");
+
+        expect(onActiveIdUpdateMock).toHaveBeenCalledTimes(2);
+
+        rendered
+            .find('[role="tab"]')
+            .at(1)
+            .simulate("click");
+
+        expect(onActiveIdUpdateMock).toHaveBeenCalledTimes(3);
+    });
+
+    test("should provide the current active index when `onActiveIdUpdate` prop is passed", () => {
+        const onActiveIdUpdateFn: any = jest.fn((id: string) => id);
+        const rendered: any = mount(
+            <MSFTCarousel {...handledProps} onActiveIdUpdate={onActiveIdUpdateFn} />
+        );
+
+        rendered
+            .find('[direction="next"]')
+            .first()
+            .simulate("click");
+
+        expect(onActiveIdUpdateFn.mock.results[0].value).toBe("id02");
+
+        rendered
+            .find('[direction="previous"]')
+            .first()
+            .simulate("click");
+
+        expect(onActiveIdUpdateFn.mock.results[1].value).toBe("id01");
+
+        rendered
+            .find('[role="tab"]')
+            .at(1)
+            .simulate("click");
+
+        expect(onActiveIdUpdateFn.mock.results[2].value).toBe("id02");
+    });
+
     describe("autoplay", (): void => {
         const mockFocus: any = jest.fn();
         const mockHover: any = jest.fn();
