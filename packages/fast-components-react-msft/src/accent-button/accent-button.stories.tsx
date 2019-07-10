@@ -22,7 +22,7 @@ storiesOf("Accent button", module)
     .add("Only after content", () => (
         <AccentButton afterContent={glyphFactory(SVGGlyph.robot)} />
     ))
-    .add("Disabled", () => (
+    .add("Disabled button", () => (
         <AccentButton
             disabled={true}
             beforeContent={glyphFactory(SVGGlyph.download)}

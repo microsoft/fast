@@ -35,7 +35,7 @@ const sourceElements: JSX.Element[] = [
     />,
 ];
 
-storiesOf("Horizontal overflow", module)
+storiesOf("Image", module)
     .add("Default", () => (
         <Image
             src={"https://placehold.it/400x400"}
