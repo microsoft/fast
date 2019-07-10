@@ -3,7 +3,6 @@ import ReactDOM from "react-dom";
 import * as ShallowRenderer from "react-test-renderer/shallow";
 import Adapter from "enzyme-adapter-react-16";
 import { configure, mount, shallow } from "enzyme";
-import examples from "./examples.data";
 import Dialog, {
     DialogClassNameContract,
     DialogHandledProps,
