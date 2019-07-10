@@ -5,9 +5,9 @@ import { Direction } from "@microsoft/fast-web-utilities";
 /**
  * The properties of a component
  */
-export interface ComponentProps {
+export interface ComponentProps<T> {
     id: string;
-    props: any;
+    props: T;
 }
 
 /**
@@ -17,10 +17,18 @@ export interface ViewConfig {
     direction: Direction;
 }
 
-/**
- * A project file is a culmination of all views which should contain the data for that view
- */
-export interface ProjectFile {
+/* tslint:disable-next-line */
+export interface ExplorerManagedClasses
+    extends ManagedClasses<ExplorerClassNameContract> {}
+
+/* tslint:disable-next-line */
+export interface ExplorerHandledProps extends ExplorerManagedClasses {}
+
+/* tslint:disable-next-line */
+export interface ExplorerProps extends ExplorerHandledProps {}
+
+/* tslint:disable-next-line */
+export interface ExplorerState {
     /**
      * The current data location
      */
@@ -49,23 +57,10 @@ export interface ProjectFile {
     /**
      * The scenario
      */
-    scenario: ComponentProps;
+    scenario: ComponentProps<unknown> | void;
 
     /**
      * The configuration for the view
      */
     viewConfig: ViewConfig;
 }
-
-/* tslint:disable-next-line */
-export interface ExplorerManagedClasses
-    extends ManagedClasses<ExplorerClassNameContract> {}
-
-/* tslint:disable-next-line */
-export interface ExplorerHandledProps extends ExplorerManagedClasses {}
-
-/* tslint:disable-next-line */
-export interface ExplorerProps extends ExplorerHandledProps {}
-
-/* tslint:disable-next-line */
-export interface ExplorerState extends ProjectFile {}

@@ -1,15 +1,10 @@
 import {
-    Background,
-    DarkModeBackgrounds,
-    LightModeBackgrounds,
-    Pivot,
-} from "@microsoft/fast-components-react-msft";
-import {
     ComponentProps,
     ExplorerHandledProps,
     ExplorerProps,
     ExplorerState,
 } from "./explorer.props";
+import { CodePreviewChildOption } from "@microsoft/fast-tooling-react/dist/data-utilities/mapping";
 import { camelCase, get, memoize } from "lodash-es";
 import {
     Canvas,
@@ -34,14 +29,24 @@ import manageJss, {
 import ReactDOM from "react-dom";
 import React from "react";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
-import designSystemDefaults, {
+import {
     DesignSystem,
-} from "@microsoft/fast-components-styles-msft/dist/design-system";
+    DesignSystemDefaults,
+} from "@microsoft/fast-components-styles-msft";
 import { TabsItem } from "@microsoft/fast-components-react-base";
 import style from "./explorer.style";
-import { CodePreviewChildOption } from "@microsoft/fast-tooling-react/dist/data-utilities/mapping";
+import {
+    Background,
+    DarkModeBackgrounds,
+    LightModeBackgrounds,
+    Pivot,
+    PivotClassNameContract,
+} from "@microsoft/fast-components-react-msft";
 import { ViewerManagedClasses } from "@microsoft/fast-tooling-react/dist/viewer/viewer/viewer.props";
-import { FormClassNameContract } from "@microsoft/fast-tooling-react/dist/form/form";
+import {
+    FormChildOptionItem,
+    FormClassNameContract,
+} from "@microsoft/fast-tooling-react/dist/form/form";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import jsx from "react-syntax-highlighter/dist/esm/languages/prism/jsx";
 import syntaxHighlighterStyles from "./syntax-highlighting-style";
@@ -86,6 +91,20 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
         },
     };
 
+    private pivotStyleOverrides: ComponentStyleSheet<
+        Partial<PivotClassNameContract>,
+        DesignSystem
+    > = {
+        pivot: {
+            height: "100%",
+        },
+        pivot_tabPanels: {
+            overflow: "auto",
+            padding: "0 12px",
+            height: "calc(100% - 32px)",
+        },
+    };
+
     private resolveSchemaById: ((id: string) => any) & MemoizedFunction;
 
     constructor(props: ExplorerProps) {
@@ -107,7 +126,7 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
 
     public render(): React.ReactNode {
         return (
-            <DesignSystemProvider designSystem={designSystemDefaults}>
+            <DesignSystemProvider designSystem={DesignSystemDefaults}>
                 <Background value={this.backgrounds.L1}>
                     <Container className={get(this.props, "managedClasses.explorer")}>
                         <Row style={{ flex: "1" }}>
@@ -125,17 +144,7 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
                                             {this.renderScenarioSelect()}
                                             {this.renderDirectionToggle()}
                                         </div>
-                                        <Viewer
-                                            iframeSrc={"/preview"}
-                                            iframePostMessage={this.state.viewConfig}
-                                            width={this.state.width}
-                                            height={this.state.height}
-                                            onUpdateHeight={this.handleUpdateHeight}
-                                            onUpdateWidth={this.handleUpdateWidth}
-                                            viewerContentProps={this.state.scenario}
-                                            responsive={true}
-                                            jssStyleSheet={this.viewerStyleOverrides}
-                                        />
+                                        {this.renderViewer()}
                                     </div>
                                 </Row>
                                 <Row
@@ -150,16 +159,7 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
                                         <Pivot
                                             label={"documentation"}
                                             items={this.renderPivotItems()}
-                                            jssStyleSheet={{
-                                                pivot: {
-                                                    height: "100%",
-                                                },
-                                                pivot_tabPanels: {
-                                                    overflow: "auto",
-                                                    padding: "0 12px",
-                                                    height: "calc(100% - 32px)",
-                                                },
-                                            }}
+                                            jssStyleSheet={this.pivotStyleOverrides}
                                         />
                                     </Background>
                                 </Row>
@@ -172,19 +172,7 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
                                         background: "#212121",
                                     }}
                                 >
-                                    <Form
-                                        data={this.state.scenario.props}
-                                        onChange={this.handleUpdateData}
-                                        schema={this.resolveSchemaById(
-                                            get(this.state.scenario, "id")
-                                        )}
-                                        location={{
-                                            onChange: this.handleUpdateLocation,
-                                            dataLocation: this.state.dataLocation,
-                                        }}
-                                        childOptions={childOptions}
-                                        jssStyleSheet={this.formStyleOverrides}
-                                    />
+                                    {this.renderForm()}
                                 </div>
                             </Pane>
                         </Row>
@@ -192,6 +180,42 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
                 </Background>
             </DesignSystemProvider>
         );
+    }
+
+    private renderViewer(): React.ReactNode {
+        return (
+            <Viewer
+                iframeSrc={"/preview"}
+                iframePostMessage={this.state.viewConfig}
+                width={this.state.width}
+                height={this.state.height}
+                onUpdateHeight={this.handleUpdateHeight}
+                onUpdateWidth={this.handleUpdateWidth}
+                viewerContentProps={this.state.scenario}
+                responsive={true}
+                jssStyleSheet={this.viewerStyleOverrides}
+            />
+        );
+    }
+
+    private renderForm(): React.ReactNode {
+        const schema: any = this.resolveSchemaById(get(this.state.scenario, "id"));
+
+        if (typeof schema !== "undefined") {
+            return (
+                <Form
+                    data={get(this.state.scenario, "props")}
+                    onChange={this.handleUpdateData}
+                    schema={schema}
+                    location={{
+                        onChange: this.handleUpdateLocation,
+                        dataLocation: this.state.dataLocation,
+                    }}
+                    childOptions={childOptions}
+                    jssStyleSheet={this.formStyleOverrides}
+                />
+            );
+        }
     }
 
     private renderDirectionToggle(): React.ReactNode {
@@ -213,10 +237,7 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
                                 language="jsx"
                                 style={syntaxHighlighterStyles}
                             >
-                                {mapDataToCodePreview({
-                                    data: this.state.scenario,
-                                    childOptions: childOptions as CodePreviewChildOption[],
-                                })}
+                                {this.getCodePreview()}
                             </SyntaxHighlighter>
                         </div>
                     );
@@ -226,9 +247,7 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
             {
                 tab: (className: string): React.ReactNode => "Guidance",
                 content: (className: string): React.ReactNode => {
-                    const paths: string[] = get(this.props, "location.pathname").split(
-                        "/"
-                    );
+                    const paths: string[] = this.getPaths();
                     const currentComponentIndex: number = paths.length - 1;
                     const Guidance: React.ComponentClass = get(
                         componentViewConfigs,
@@ -247,19 +266,17 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
             {
                 tab: (className: string): React.ReactNode => "Schema",
                 content: (className: string): React.ReactNode => {
-                    return (
-                        <div className={className}>
-                            <pre>
-                                {JSON.stringify(
-                                    this.resolveSchemaById(
-                                        get(this.state.scenario, "id")
-                                    ),
-                                    null,
-                                    2
-                                )}
-                            </pre>
-                        </div>
+                    const schema: any = this.resolveSchemaById(
+                        get(this.state.scenario, "id")
                     );
+
+                    if (typeof schema !== "undefined") {
+                        return (
+                            <div className={className}>
+                                <pre>{JSON.stringify(schema, null, 2)}</pre>
+                            </div>
+                        );
+                    }
                 },
                 id: "schema",
             },
@@ -267,9 +284,11 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
     }
 
     private renderScenarioSelect(): React.ReactNode {
-        const paths: string[] = get(this.props, "location.pathname").split("/");
-        const scenarioOptions: Array<Scenario<any>> =
-            componentViewConfigs[`${camelCase(paths[paths.length - 1])}Config`].scenarios;
+        const paths: string[] = this.getPaths();
+        const scenarioOptions: Array<Scenario<any>> = get(
+            componentViewConfigs[`${camelCase(paths[paths.length - 1])}Config`],
+            "scenarios"
+        );
 
         if (Array.isArray(scenarioOptions)) {
             return (
@@ -292,25 +311,44 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
         });
     }
 
-    private getSchemaById(id: string): any {
-        return get(
-            childOptions.find((componentOption: any): any => {
-                return componentOption.schema.id === id;
-            }),
-            "schema"
-        );
+    private getPaths(): string[] {
+        return get(this.props, "location.pathname", "").split("/");
     }
 
-    private getScenarioData(index?: number): ComponentProps {
-        const paths: string[] = get(this.props, "location.pathname").split("/");
+    private getSchemaById(id: string): any | void {
+        const childOption: FormChildOptionItem | void = childOptions.find(
+            (componentOption: any): any => {
+                return get(componentOption, "schema.id") === id;
+            }
+        );
+
+        if (typeof childOption !== "undefined") {
+            return get(childOption, "schema");
+        }
+    }
+
+    private getCodePreview(): string | null {
+        return typeof this.state.scenario !== "undefined" &&
+            Array.isArray(childOptions) &&
+            childOptions.length > 0
+            ? mapDataToCodePreview({
+                  data: this.state.scenario,
+                  childOptions: childOptions as CodePreviewChildOption[],
+              })
+            : null;
+    }
+
+    private getScenarioData<T>(index?: number): ComponentProps<T> | void {
+        const paths: string[] = this.getPaths();
         const currentComponentIndex: number = paths.length - 1;
 
         // cloning when the scenario data is fetched as there appears to be
         // a mutation happening in one of the Form
         return {
-            id:
-                componentViewConfigs[`${camelCase(paths[currentComponentIndex])}Config`]
-                    .schema.id,
+            id: get(
+                componentViewConfigs[`${camelCase(paths[currentComponentIndex])}Config`],
+                "schema.id"
+            ),
             props:
                 typeof index === "number"
                     ? get(
@@ -332,6 +370,8 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
 
     private handleUpdateDirection = (): void => {
         this.setState({
+            // The viewConfig only contains the direction,
+            // if more items are added to the viewConfig use merge
             viewConfig: {
                 direction:
                     this.state.viewConfig.direction === Direction.ltr
@@ -350,7 +390,7 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
     private handleUpdateData = (data: any): void => {
         this.setState({
             scenario: {
-                id: this.state.scenario.id,
+                id: get(this.state.scenario, "id"),
                 props: data,
             },
         });

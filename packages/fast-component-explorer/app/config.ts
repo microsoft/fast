@@ -5,12 +5,10 @@ import * as testComponentViewConfigs from "./utilities/components";
 import * as componentViewConfigs from "./utilities/configs";
 import { createBrowserHistory } from "history";
 
-const schemas: any[] = [];
-
-Object.keys(componentViewConfigs).forEach((componentViewConfigKey: string) => {
-    schemas.push(componentViewConfigs[componentViewConfigKey].schema);
-});
-
+const schemas: any[] = Object.keys(componentViewConfigs).map(
+    (componentViewConfigKey: string) =>
+        componentViewConfigs[componentViewConfigKey].schema
+);
 const history: any = createBrowserHistory();
 const menu: MenuItem[] = generateMenu(schemas);
 const childOptions: FormChildOptionItem[] = getComponentChildrenOptions().concat(

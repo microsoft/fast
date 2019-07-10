@@ -1,11 +1,11 @@
 import { ComponentStyles, ManagedClasses } from "@microsoft/fast-jss-manager-react";
-import { ExplorerDesignSystem } from "./design-system";
+import { DesignSystem } from "@microsoft/fast-components-styles-msft";
 
 export interface ExplorerClassNameContract {
     explorer?: string;
 }
 
-const style: ComponentStyles<ExplorerClassNameContract, ExplorerDesignSystem> = {
+const style: ComponentStyles<ExplorerClassNameContract, DesignSystem> = {
     "@font-face": {
         fontFamily: "Segoe UI",
         src:

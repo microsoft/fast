@@ -11,7 +11,7 @@ configure({ adapter: new Adapter() });
 describe("App", (): void => {
     test("should not throw", () => {
         expect(() => {
-            shallow(<App />);
+            mount(<App />);
         }).not.toThrow();
     });
 });

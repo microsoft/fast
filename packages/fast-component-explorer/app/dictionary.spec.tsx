@@ -11,7 +11,7 @@ configure({ adapter: new Adapter() });
 describe("Dictionary", (): void => {
     test("should not throw", () => {
         expect(() => {
-            shallow(<Dictionary />);
+            mount(<Dictionary />);
         }).not.toThrow();
     });
 });
