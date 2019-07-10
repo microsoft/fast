@@ -35,16 +35,6 @@ export interface ExplorerState {
     dataLocation: string;
 
     /**
-     * The x position in the preview
-     */
-    xCoord: number;
-
-    /**
-     * The y position in the preview
-     */
-    yCoord: number;
-
-    /**
      * The width of the preview
      */
     width: number;

@@ -112,8 +112,6 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
 
         this.resolveSchemaById = memoize(this.getSchemaById);
         this.state = {
-            xCoord: 0,
-            yCoord: 0,
             dataLocation: "",
             width: defaultDevices[0].width ? defaultDevices[0].width : 500,
             height: defaultDevices[0].height ? defaultDevices[0].height : 500,
