@@ -110,12 +110,17 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
     constructor(props: ExplorerProps) {
         super(props);
 
+        const locationPathname: string = get(this.props, "location.pathname", "");
+
         this.resolveSchemaById = memoize(this.getSchemaById);
         this.state = {
             dataLocation: "",
             width: defaultDevices[0].width ? defaultDevices[0].width : 500,
             height: defaultDevices[0].height ? defaultDevices[0].height : 500,
-            scenario: this.getScenarioData(),
+            scenario: this.getScenarioData(
+                this.getComponentNameSpinalCaseByPath(locationPathname)
+            ),
+            locationPathname,
             viewConfig: {
                 direction: Direction.ltr,
             },
@@ -245,11 +250,12 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
             {
                 tab: (className: string): React.ReactNode => "Guidance",
                 content: (className: string): React.ReactNode => {
-                    const paths: string[] = this.getPaths();
-                    const currentComponentIndex: number = paths.length - 1;
+                    const componentName: string = this.getComponentNameSpinalCaseByPath(
+                        this.state.locationPathname
+                    );
                     const Guidance: React.ComponentClass = get(
                         componentViewConfigs,
-                        `${camelCase(paths[currentComponentIndex])}Config.guidance`,
+                        `${camelCase(componentName)}Config.guidance`,
                         null
                     );
 
@@ -282,9 +288,11 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
     }
 
     private renderScenarioSelect(): React.ReactNode {
-        const paths: string[] = this.getPaths();
+        const componentName: string = this.getComponentNameSpinalCaseByPath(
+            this.state.locationPathname
+        );
         const scenarioOptions: Array<Scenario<any>> = get(
-            componentViewConfigs[`${camelCase(paths[paths.length - 1])}Config`],
+            componentViewConfigs[`${camelCase(componentName)}Config`],
             "scenarios"
         );
 
@@ -309,8 +317,9 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
         });
     }
 
-    private getPaths(): string[] {
-        return get(this.props, "location.pathname", "").split("/");
+    private getComponentNameSpinalCaseByPath(path: string): string {
+        const paths: string[] = path.split("/");
+        return paths[paths.length - 1];
     }
 
     private getSchemaById(id: string): any | void {
@@ -336,31 +345,27 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
             : null;
     }
 
-    private getScenarioData<T>(index?: number): ComponentProps<T> | void {
-        const paths: string[] = this.getPaths();
-        const currentComponentIndex: number = paths.length - 1;
-
+    private getScenarioData<T>(
+        componentName: string,
+        index?: number
+    ): ComponentProps<T> | void {
         // cloning when the scenario data is fetched as there appears to be
         // a mutation happening in one of the Form
         return {
             id: get(
-                componentViewConfigs[`${camelCase(paths[currentComponentIndex])}Config`],
+                componentViewConfigs[`${camelCase(componentName)}Config`],
                 "schema.id"
             ),
             props:
                 typeof index === "number"
                     ? get(
                           componentViewConfigs,
-                          `${camelCase(
-                              paths[currentComponentIndex]
-                          )}Config.scenarios[${index}].data`,
+                          `${camelCase(componentName)}Config.scenarios[${index}].data`,
                           {}
                       )
                     : get(
                           componentViewConfigs,
-                          `${camelCase(
-                              paths[currentComponentIndex]
-                          )}Config.scenarios[0].data`,
+                          `${camelCase(componentName)}Config.scenarios[0].data`,
                           {}
                       ),
         };
@@ -381,7 +386,10 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
 
     private handleUpdateScenario = (e: React.ChangeEvent<HTMLSelectElement>): void => {
         this.setState({
-            scenario: this.getScenarioData(parseInt(e.target.value, 10)),
+            scenario: this.getScenarioData(
+                this.getComponentNameSpinalCaseByPath(this.state.locationPathname),
+                parseInt(e.target.value, 10)
+            ),
         });
     };
 
@@ -413,7 +421,17 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
     };
 
     private handleUpdateRoute = (route: string): void => {
-        history.push(route);
+        this.setState(
+            {
+                locationPathname: route,
+                scenario: this.getScenarioData(
+                    this.getComponentNameSpinalCaseByPath(route)
+                ),
+            },
+            () => {
+                history.push(route);
+            }
+        );
     };
 
     private get backgrounds(): typeof DarkModeBackgrounds | typeof LightModeBackgrounds {

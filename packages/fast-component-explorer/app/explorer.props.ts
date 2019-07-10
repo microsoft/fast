@@ -35,6 +35,11 @@ export interface ExplorerState {
     dataLocation: string;
 
     /**
+     * The current location path based on route
+     */
+    locationPathname: string;
+
+    /**
      * The width of the preview
      */
     width: number;
