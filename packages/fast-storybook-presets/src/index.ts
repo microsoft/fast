@@ -51,3 +51,6 @@ export function entries(entry: string[] = [], options?: FASTDNAPresetOptions): a
 
     return entry;
 }
+
+import theme from "./theme";
+export { theme };
