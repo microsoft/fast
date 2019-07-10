@@ -12,7 +12,6 @@ configure({ adapter: new Adapter() });
 const formSectionProps: FormSectionProps = {
     dataLocation: "",
     schemaLocation: "",
-    dataCache: {},
     childOptions: [],
     schema: {},
     data: "",
