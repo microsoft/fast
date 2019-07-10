@@ -62,12 +62,7 @@ function neutralFocusInnerAccentDirectionResolver(
     palette: string[],
     designSystem: DesignSystem
 ): 1 | -1 {
-    return isDarkMode({
-        ...designSystem,
-        backgroundColor: palette[referenceIndex],
-    })
-        ? -1
-        : 1;
+    return isDarkMode(designSystem) ? 1 : -1;
 }
 
 export function neutralFocusInnerAccent(
