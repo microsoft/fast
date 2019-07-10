@@ -183,6 +183,10 @@ export const neutralForegroundActiveDelta: DesignSystemResolver<
     number
 > = getDesignSystemValue("neutralForegroundActiveDelta");
 
+export const neutralDividerRestDelta: DesignSystemResolver<number> = getDesignSystemValue(
+    "neutralDividerRestDelta"
+);
+
 export const neutralOutlineRestDelta: DesignSystemResolver<number> = getDesignSystemValue(
     "neutralOutlineRestDelta"
 );
