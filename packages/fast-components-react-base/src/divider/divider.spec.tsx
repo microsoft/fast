@@ -1,7 +1,6 @@
 import React from "react";
 import Adapter from "enzyme-adapter-react-16";
 import { configure, shallow, ShallowWrapper } from "enzyme";
-import examples from "./examples.data";
 import Divider, {
     DividerClassNameContract,
     DividerHandledProps,
