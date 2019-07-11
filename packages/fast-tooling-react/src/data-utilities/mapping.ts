@@ -30,45 +30,27 @@ export function mapDataToComponent(
     data: any,
     childOptions: ChildOptionItem[] = [],
     plugins: Array<Plugin<PluginProps>> = []
-): MappedDataLocation[] {
+): any {
     const mappedData: any = cloneDeep(data);
-    let reactChildrenDataLocations: string[] = [];
-    let pluginModifiedDataLocations: PluginLocation[] = [];
-
-    if (childOptions.length > 0) {
-        // find locations of all items of data that are react children
-        reactChildrenDataLocations = getDataLocationsOfChildren(
-            schema,
-            mappedData,
-            childOptions
-        );
-    }
-
-    if (plugins.length > 0) {
-        // find locations of all items of data that are overridden by mappings
-        pluginModifiedDataLocations = getDataLocationsOfPlugins(
-            schema,
-            mappedData,
-            childOptions
-        );
-    }
+    const reactChildrenDataLocations: string[] =
+        childOptions.length > 0
+            ? getDataLocationsOfChildren(schema, mappedData, childOptions)
+            : [];
+    const pluginModifiedDataLocations: PluginLocation[] =
+        plugins.length > 0
+            ? getDataLocationsOfPlugins(schema, mappedData, childOptions)
+            : [];
 
     // remove any children data locations from plugin modified locations
-    reactChildrenDataLocations = reactChildrenDataLocations.filter(
-        (reactChildrenDataLocation: string): string | undefined => {
-            if (
+    return reactChildrenDataLocations
+        .filter(
+            (reactChildrenDataLocation: string): boolean =>
                 pluginModifiedDataLocations.findIndex(
                     pluginFindIndexCallback(reactChildrenDataLocation)
                 ) === -1
-            ) {
-                return reactChildrenDataLocation;
-            }
-        }
-    );
-
-    // merge the plugin modified data locations with the children option data locations and categorize them
-    return reactChildrenDataLocations
+        )
         .map(
+            // merge the plugin modified data locations with the children option data locations and categorize them
             (childDataLocation: string): MappedDataLocation => {
                 return {
                     mappingType: DataResolverType.component,
@@ -78,14 +60,11 @@ export function mapDataToComponent(
         )
         .concat(pluginModifiedDataLocations)
         .sort(orderMappedDataByDataLocation)
-        .reduce((mappedDataReduced: any, mappedDataLocation: MappedDataLocation): any => {
-            return resolveData(
-                mappedDataLocation,
-                mappedDataReduced,
-                plugins,
-                childOptions
-            );
-        }, mappedData);
+        .reduce(
+            (mappedDataReduced: any, mappedDataLocation: MappedDataLocation): any =>
+                resolveData(mappedDataLocation, mappedDataReduced, plugins, childOptions),
+            mappedData
+        );
 }
 
 /**
