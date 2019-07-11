@@ -3,5 +3,9 @@
     "compilerOptions": {
         "baseUrl": ".",
         "outDir": "./dist"
-    }
+    },
+    "include": [
+        "./**/*.ts",
+        "./**/*.tsx"
+    ]
 }

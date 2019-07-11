@@ -1,0 +1,17 @@
+{
+    "$schema": "http://json-schema.org/schema#",
+    "title": "Group",
+    "description": "A group's schema definition.",
+    "id": "group",
+    "type": "object",
+    "properties": {},
+    "reactProperties": {
+        "children": {
+            "title": "Children",
+            "type": "children",
+            "defaults": [
+                "text"
+            ]
+        }
+    }
+}
