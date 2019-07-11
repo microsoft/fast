@@ -9,6 +9,8 @@ const initializedPlugins: Array<Plugin<PluginProps>> = [
             "@microsoft/fast-components-react-msft/action-trigger/glyph",
             "@microsoft/fast-components-react-msft/breadcrumb/separator",
             "@microsoft/fast-components-react-msft/select-option/glyph",
+            "@microsoft/fast-components-react-msft/text-action/button",
+            "@microsoft/fast-components-react-msft/text-action/beforeGlyph",
         ],
     }),
 ];

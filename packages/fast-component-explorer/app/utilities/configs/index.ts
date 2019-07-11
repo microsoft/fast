@@ -88,5 +88,17 @@ export { sliderConfig };
 import subheadingConfig from "./subheading";
 export { subheadingConfig };
 
+import textActionConfig from "./text-action";
+export { textActionConfig };
+
+import textAreaConfig from "./text-area";
+export { textAreaConfig };
+
+import textFieldConfig from "./text-field";
+export { textFieldConfig };
+
+import toggleConfig from "./toggle";
+export { toggleConfig };
+
 import typographyConfig from "./typography";
 export { typographyConfig };
