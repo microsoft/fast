@@ -149,6 +149,9 @@ const styles: ComponentStyles<CarouselClassNameContract, DesignSystem> = {
                     borderColor: darkModeNeutralForegroundRest,
                 },
             },
+            "& > svg": {
+                fill: darkModeNeutralForegroundRest,
+            },
         },
         "& $carousel_sequenceIndicator": {
             "&::before": {
@@ -184,6 +187,9 @@ const styles: ComponentStyles<CarouselClassNameContract, DesignSystem> = {
                 "& span::before": {
                     borderColor: lightModeNeutralForegroundRest,
                 },
+            },
+            "& > svg": {
+                fill: lightModeNeutralForegroundRest,
             },
         },
         "& $carousel_sequenceIndicator": {
