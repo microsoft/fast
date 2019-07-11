@@ -239,17 +239,13 @@ function mapDataToChildren(
  * see: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort
  */
 function orderMappedDataByDataLocation(
-    firstMapping: MappedDataLocation,
-    secondMapping: MappedDataLocation
+    a: MappedDataLocation,
+    b: MappedDataLocation
 ): number {
-    const firstLocationLength: number = firstMapping.dataLocation.split(".").length;
-    const secondLocationLength: number = secondMapping.dataLocation.split(".").length;
+    const A: number = a.dataLocation.split(".").length;
+    const B: number = b.dataLocation.split(".").length;
 
-    return firstLocationLength > secondLocationLength
-        ? -1
-        : firstLocationLength < secondLocationLength
-            ? 1
-            : 0;
+    return A > B ? -1 : A < B ? 1 : 0;
 }
 
 export interface CodePreviewChildOption {
