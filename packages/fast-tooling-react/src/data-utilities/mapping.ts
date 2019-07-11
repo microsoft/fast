@@ -21,6 +21,7 @@ import {
     pluginFindIndexCallback,
     squareBracketsRegex,
 } from "./location";
+import { ArgumentTypes } from "../typings";
 
 /**
  * Maps data returned from the form generator to the React components
@@ -202,45 +203,37 @@ function mapDataToChildren(
     reactChildrenDataLocation: string,
     childOptions: ChildOptionItem[]
 ): any {
-    const mappedData: any = data;
+    if (typeof get(data, reactChildrenDataLocation) === "string") {
+        return data;
+    }
+
     const subSchemaId: string = get(
-        mappedData,
+        data,
         `${reactChildrenDataLocation}.${idKeyword}`
     );
-    const subData: any = get(mappedData, reactChildrenDataLocation);
-    const isChildString: boolean = typeof subData === "string";
-    const subDataNormalized: any = isChildString ? subData : get(subData, propsKeyword);
+    const subData: any = get(data, reactChildrenDataLocation);
+    const subDataNormalized: any = get(subData, propsKeyword);
     const childOption: ChildOptionItem = getChildOptionBySchemaId(
         subSchemaId,
         childOptions
     );
 
-    if (!isChildString) {
-        let value: any;
+    const key: { key: string } = { key: uniqueId(subSchemaId) };
+    const createElementArguments: ArgumentTypes<typeof React.createElement> =
+        childOption === undefined
+        ? [React.Fragment, key, subDataNormalized]
+        : [childOption.component, { ...key, ...subDataNormalized }];
 
-        if (typeof childOption === "undefined") {
-            value = Object.assign(
-                { id: subSchemaId },
-                React.createElement(
-                    React.Fragment,
-                    { key: uniqueId(subSchemaId) },
-                    subDataNormalized
-                )
-            );
-        } else {
-            value = Object.assign(
-                { id: subSchemaId },
-                React.createElement(childOption.component, {
-                    key: uniqueId(subSchemaId),
-                    ...subDataNormalized,
-                })
-            );
-        }
+    // This data mutation is intentional.
+    // We don't clone data here because this function is always called on data that has previously been cloned. It also
+    // may contain react nodes - and cloning react nodes has massive negative performance impacts.
+    set(
+        data,
+        reactChildrenDataLocation,
+        Object.assign({ id: subSchemaId }, React.createElement.apply(this, createElementArguments))
+    );
 
-        set(mappedData, reactChildrenDataLocation, value);
-    }
-
-    return mappedData;
+    return data;
 }
 
 /**
@@ -389,8 +382,8 @@ class ComponentCodePreview {
                     if (
                         childrenLocations.find(
                             (childrenLocation: string) =>
-                                childrenLocation.replace(/\[\d*\]/, "") ===
-                                componentPropKey
+                            childrenLocation.replace(/\[\d*\]/, "") ===
+                            componentPropKey
                         )
                     ) {
                         // The property key contains the word "children", use a nesting pattern
@@ -424,17 +417,17 @@ class ComponentCodePreview {
             // Add attributes to the component
             componentJSX +=
                 componentAttributes !== ""
-                    ? `\n${componentAttributes}`
-                    : hasNestedChildren
-                        ? ""
-                        : " ";
+                ? `\n${componentAttributes}`
+                : hasNestedChildren
+                ? ""
+                : " ";
             // Add nested children and the end tag (or self closing) to the component
             componentJSX += hasNestedChildren
                 ? `${componentAttributes !== "" ? codePreviewConfig.tabIndent : ""}>\n${
-                      this.tabIndent
-                  }${codePreviewConfig.tabIndent}${nestedChildren}\n${
-                      codePreviewConfig.tabIndent
-                  }</${component.name}>`
+                    this.tabIndent
+                }${codePreviewConfig.tabIndent}${nestedChildren}\n${
+                    codePreviewConfig.tabIndent
+                }</${component.name}>`
                 : `${componentAttributes !== "" ? codePreviewConfig.tabIndent : ""}/>`;
         }
 
