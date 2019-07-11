@@ -160,22 +160,21 @@ function mapPluginToData(
     plugins: Array<Plugin<PluginProps>>,
     childOptions: ChildOptionItem[]
 ): any {
-    const mappedData: any = data;
-    const pluginModifiedSchemaLocation: string = mapSchemaLocationFromDataLocation(
-        pluginModifiedDataLocation.relativeDataLocation,
-        pluginModifiedDataLocation.schema,
-        mappedData
+    const {
+        dataLocation,
+        schema,
+        relativeDataLocation,
+    }: PluginLocation = pluginModifiedDataLocation;
+    const schemaLocation: string = mapSchemaLocationFromDataLocation(
+        relativeDataLocation,
+        schema,
+        data
     );
-    const pluginId: string = get(
-        pluginModifiedDataLocation.schema,
-        `${pluginModifiedSchemaLocation}.${pluginIdKeyword}`
-    );
+    const pluginId: string = get(schema, `${schemaLocation}.${pluginIdKeyword}`);
     const pluginResolver: Plugin<PluginProps> = plugins.find(
-        (plugin: Plugin<PluginProps>): boolean => {
-            return plugin.matches(pluginId);
-        }
+        (plugin: Plugin<PluginProps>): boolean => plugin.matches(pluginId)
     );
-    const pluginData: any = get(mappedData, pluginModifiedDataLocation.dataLocation);
+    const pluginData: any = get(data, dataLocation);
 
     if (pluginResolver !== undefined) {
         getPluginResolverDataMap({
@@ -183,19 +182,18 @@ function mapPluginToData(
             pluginData,
             pluginResolver,
             childOptions,
-            dataLocation: pluginModifiedDataLocation.dataLocation,
+            dataLocation,
         }).forEach(
             (pluginResolverMappingItem: PluginResolverDataMap): void => {
-                set(
-                    mappedData,
-                    pluginResolverMappingItem.dataLocation,
-                    pluginResolverMappingItem.data
-                );
+                // This data mutation is intentional.
+                // We don't clone data here because this function is always called on data that has previously been cloned. It also
+                // may contain react nodes - and cloning react nodes has massive negative performance impacts.
+                set(data, dataLocation, pluginResolverMappingItem.data);
             }
         );
     }
 
-    return mappedData;
+    return data;
 }
 
 function mapDataToChildren(
@@ -207,10 +205,7 @@ function mapDataToChildren(
         return data;
     }
 
-    const subSchemaId: string = get(
-        data,
-        `${reactChildrenDataLocation}.${idKeyword}`
-    );
+    const subSchemaId: string = get(data, `${reactChildrenDataLocation}.${idKeyword}`);
     const subData: any = get(data, reactChildrenDataLocation);
     const subDataNormalized: any = get(subData, propsKeyword);
     const childOption: ChildOptionItem = getChildOptionBySchemaId(
@@ -221,8 +216,8 @@ function mapDataToChildren(
     const key: { key: string } = { key: uniqueId(subSchemaId) };
     const createElementArguments: ArgumentTypes<typeof React.createElement> =
         childOption === undefined
-        ? [React.Fragment, key, subDataNormalized]
-        : [childOption.component, { ...key, ...subDataNormalized }];
+            ? [React.Fragment, key, subDataNormalized]
+            : [childOption.component, { ...key, ...subDataNormalized }];
 
     // This data mutation is intentional.
     // We don't clone data here because this function is always called on data that has previously been cloned. It also
@@ -230,7 +225,10 @@ function mapDataToChildren(
     set(
         data,
         reactChildrenDataLocation,
-        Object.assign({ id: subSchemaId }, React.createElement.apply(this, createElementArguments))
+        Object.assign(
+            { id: subSchemaId },
+            React.createElement.apply(this, createElementArguments)
+        )
     );
 
     return data;
@@ -382,8 +380,8 @@ class ComponentCodePreview {
                     if (
                         childrenLocations.find(
                             (childrenLocation: string) =>
-                            childrenLocation.replace(/\[\d*\]/, "") ===
-                            componentPropKey
+                                childrenLocation.replace(/\[\d*\]/, "") ===
+                                componentPropKey
                         )
                     ) {
                         // The property key contains the word "children", use a nesting pattern
@@ -417,17 +415,17 @@ class ComponentCodePreview {
             // Add attributes to the component
             componentJSX +=
                 componentAttributes !== ""
-                ? `\n${componentAttributes}`
-                : hasNestedChildren
-                ? ""
-                : " ";
+                    ? `\n${componentAttributes}`
+                    : hasNestedChildren
+                        ? ""
+                        : " ";
             // Add nested children and the end tag (or self closing) to the component
             componentJSX += hasNestedChildren
                 ? `${componentAttributes !== "" ? codePreviewConfig.tabIndent : ""}>\n${
-                    this.tabIndent
-                }${codePreviewConfig.tabIndent}${nestedChildren}\n${
-                    codePreviewConfig.tabIndent
-                }</${component.name}>`
+                      this.tabIndent
+                  }${codePreviewConfig.tabIndent}${nestedChildren}\n${
+                      codePreviewConfig.tabIndent
+                  }</${component.name}>`
                 : `${componentAttributes !== "" ? codePreviewConfig.tabIndent : ""}/>`;
         }
 
