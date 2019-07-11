@@ -89,46 +89,38 @@ function getPluginResolverDataMap(
     pluginResolverDataMapConfig: PluginResolverDataMapConfig
 ): PluginResolverDataMap[] {
     const pluginResolverMapping: PluginResolverDataMap[] = [];
+    const {
+        pluginResolver,
+        childOptions,
+        dataLocation,
+        pluginData,
+    }: PluginResolverDataMapConfig = pluginResolverDataMapConfig;
 
     if (pluginResolverDataMapConfig.isReactChildren) {
         if (Array.isArray(pluginResolverDataMapConfig.pluginData)) {
             pluginResolverDataMapConfig.pluginData.forEach(
                 (pluginDataItem: any, index: number): void => {
-                    const pluginResolverMappingItem: PluginResolverDataMap = {
+                    pluginResolverMapping.push({
                         data: getPluginResolvedChildren(
                             pluginDataItem,
-                            pluginResolverDataMapConfig.pluginResolver,
-                            pluginResolverDataMapConfig.childOptions
+                            pluginResolver,
+                            childOptions
                         ),
-                        dataLocation: `${
-                            pluginResolverDataMapConfig.dataLocation
-                        }.${index}`,
-                    };
-
-                    pluginResolverMapping.push(pluginResolverMappingItem);
+                        dataLocation: `${dataLocation}.${index}`,
+                    });
                 }
             );
         } else {
-            const pluginResolverMappingItem: PluginResolverDataMap = {
-                data: getPluginResolvedChildren(
-                    pluginResolverDataMapConfig.pluginData,
-                    pluginResolverDataMapConfig.pluginResolver,
-                    pluginResolverDataMapConfig.childOptions
-                ),
-                dataLocation: pluginResolverDataMapConfig.dataLocation,
-            };
-
-            pluginResolverMapping.push(pluginResolverMappingItem);
+            pluginResolverMapping.push({
+                data: getPluginResolvedChildren(pluginData, pluginResolver, childOptions),
+                dataLocation,
+            });
         }
     } else {
-        const pluginResolverMappingItem: PluginResolverDataMap = {
-            dataLocation: pluginResolverDataMapConfig.dataLocation,
-            data: pluginResolverDataMapConfig.pluginResolver.resolver(
-                pluginResolverDataMapConfig.pluginData
-            ),
-        };
-
-        pluginResolverMapping.push(pluginResolverMappingItem);
+        pluginResolverMapping.push({
+            dataLocation,
+            data: pluginResolver.resolver(pluginData),
+        });
     }
 
     return pluginResolverMapping;
