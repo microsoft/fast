@@ -1,0 +1,39 @@
+import { ComponentViewConfig } from "./data.props";
+import {
+    NumberField,
+    NumberFieldProps,
+    numberFieldSchema,
+} from "@microsoft/fast-components-react-msft";
+import Guidance from "../../.tmp/number-field/guidance";
+
+const numberFieldConfig: ComponentViewConfig<NumberFieldProps> = {
+    schema: numberFieldSchema,
+    component: NumberField,
+    guidance: Guidance,
+    scenarios: [
+        {
+            displayName: "Default",
+            data: {
+                name: "numberField",
+            },
+        },
+        {
+            displayName: "Min, max and step",
+            data: {
+                min: 0,
+                max: 100,
+                step: 10,
+                name: "numberField",
+            },
+        },
+        {
+            displayName: "Disabled",
+            data: {
+                disabled: true,
+                name: "numberField",
+            },
+        },
+    ],
+};
+
+export default numberFieldConfig;

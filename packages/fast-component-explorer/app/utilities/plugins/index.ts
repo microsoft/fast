@@ -6,6 +6,9 @@ const initializedPlugins: Array<Plugin<PluginProps>> = [
         id: [
             "@microsoft/fast-components-react-msft/action-toggle/selectedGlyph",
             "@microsoft/fast-components-react-msft/action-toggle/unselectedGlyph",
+            "@microsoft/fast-components-react-msft/action-trigger/glyph",
+            "@microsoft/fast-components-react-msft/breadcrumb/separator",
+            "@microsoft/fast-components-react-msft/select-option/glyph",
         ],
     }),
 ];
