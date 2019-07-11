@@ -245,13 +245,11 @@ function orderMappedDataByDataLocation(
     const firstLocationLength: number = firstMapping.dataLocation.split(".").length;
     const secondLocationLength: number = secondMapping.dataLocation.split(".").length;
 
-    if (firstLocationLength > secondLocationLength) {
-        return -1;
-    } else if (firstLocationLength < secondLocationLength) {
-        return 1;
-    }
-
-    return 0;
+    return firstLocationLength > secondLocationLength
+        ? -1
+        : firstLocationLength < secondLocationLength
+            ? 1
+            : 0;
 }
 
 export interface CodePreviewChildOption {
