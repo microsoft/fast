@@ -17,6 +17,7 @@ export enum ComponentTypes {
 const SET_COMPONENT_TYPE: symbol = Symbol();
 const SET_NEUTRAL_BASE_COLOR: symbol = Symbol();
 const SET_ACCENT_BASE_COLOR: symbol = Symbol();
+const SET_SHOW_ONLY_APPROVED_BACKGROUNDS: symbol = Symbol();
 
 export interface AppState {
     /**
@@ -29,9 +30,20 @@ export interface AppState {
      */
     componentType: ComponentTypes;
 
+    /**
+     * The source color that the neutral palette is derived from
+     */
     neutralBaseColor: Swatch;
 
+    /**
+     * The source color that the accent palette is derived from
+     */
     accentBaseColor: Swatch;
+
+    /**
+     * If the app should only display the approved background colors
+     */
+    showOnlyApprovedBackgrounds: boolean;
 }
 
 export interface Action {
@@ -74,6 +86,8 @@ function rootReducer(state: AppState, action: any): AppState {
             return setNeutralPalette(state, action.value);
         case SET_ACCENT_BASE_COLOR:
             return setAccentPalette(state, action.value);
+        case SET_SHOW_ONLY_APPROVED_BACKGROUNDS:
+            return { ...state, ...{ showOnlyApprovedBackgrounds: action.value } };
     }
 
     return state;
@@ -84,6 +98,7 @@ export const store: any = createStore(rootReducer, {
     componentType: ComponentTypes.backplate,
     neutralBaseColor: defaultNeutralColor,
     accentBaseColor: colorsDesignSystem.accentBaseColor,
+    showOnlyApprovedBackgrounds: true,
 });
 
 interface ColorExplorerAction<S, T = any> extends Action<T> {
@@ -105,6 +120,10 @@ function setColorActionCreator<T>(
     return (value: ColorRGBA64): ColorExplorerAction<ColorRGBA64, T> => {
         return { type, value };
     };
+}
+
+export function setShowOnlyApprovedBackgrounds(value: boolean): ColorExplorerAction<boolean> {
+    return { type: SET_SHOW_ONLY_APPROVED_BACKGROUNDS, value };
 }
 
 export const setNeutralBaseColor: ReturnType<

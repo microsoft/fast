@@ -17,6 +17,7 @@ interface AppProps {
     designSystem: ColorsDesignSystem;
     neutralBaseColor: Swatch;
     accentBaseColor: Swatch;
+    showOnlyApprovedBackgrounds: boolean;
 }
 /* tslint:disable:jsx-no-lambda */
 /* tslint:disable:no-empty */
@@ -124,6 +125,7 @@ function mapStateToProps(state: AppState): Partial<AppProps> {
         designSystem: state.designSystem,
         neutralBaseColor: state.neutralBaseColor,
         accentBaseColor: state.accentBaseColor,
+        showOnlyApprovedBackgrounds: state.showOnlyApprovedBackgrounds
     };
 }
 
