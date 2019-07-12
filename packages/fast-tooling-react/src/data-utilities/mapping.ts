@@ -23,6 +23,28 @@ import {
 } from "./location";
 import { ArgumentTypes } from "../typings";
 
+interface WrappingComponentProps<T = any> {
+    /**
+     * The props of the component from data
+     */
+    componentProps: T;
+
+    /**
+     * The component to be rendered as a child of the wrapping component
+     */
+    component: React.ComponentType<T>;
+
+    /**
+     * The id of the wrapped component schema
+     */
+    schemaId: string;
+
+    /**
+     * The absolute data location of the component instance
+     */
+    absoluteDataLocation: string;
+}
+
 /**
  * Maps data returned from the form generator to the React components
  */
@@ -30,7 +52,8 @@ export function mapDataToComponent(
     schema: any,
     data: any,
     childOptions: ChildOptionItem[] = [],
-    plugins: Array<Plugin<PluginProps>> = []
+    plugins: Array<Plugin<PluginProps>> = [],
+    wrappingComponent?: React.ComponentType<WrappingComponentProps>
 ): any {
     const mappedData: any = cloneDeep(data);
     const reactChildrenDataLocations: string[] =
