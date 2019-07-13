@@ -44,7 +44,7 @@ import {
     setAccentBaseColor,
     setComponentType,
     setNeutralBaseColor,
-    setShowOnlyRecommendedBackgrounds
+    setShowOnlyRecommendedBackgrounds,
 } from "./state";
 
 export interface ControlPaneClassNameContract {
@@ -185,8 +185,8 @@ class ControlPaneBase extends React.Component<ControlPaneProps, ControlPaneState
                         Settings
                     </Heading>
                     {this.renderComponentSelector()}
-                    {this.renderShowOnlyReccomendedBackgroundsInput()}
                     {this.renderNeutralBaseColorInput()}
+                    {this.renderShowOnlyReccomendedBackgroundsInput()}
                     {this.renderAccentBaseColorInput()}
                     <div
                         className={get(
@@ -343,21 +343,28 @@ class ControlPaneBase extends React.Component<ControlPaneProps, ControlPaneState
     private renderShowOnlyReccomendedBackgroundsInput(): JSX.Element {
         return (
             <React.Fragment>
-                <Label style={this.labelStyles}>Show recommended backgrounds only</Label>
                 <div style={{ marginBottom: "12px" }}>
                     <Checkbox
                         checked={this.props.showOnlyRecommendedBackgrounds}
                         inputId="showOnlyReccomendedBackgrounds"
                         onChange={this.handleReccomendedBackgroundsChange}
-                    />
+                    >
+                        <Label slot="label">
+                            Show recommended backgrounds only
+                        </Label>
+                    </Checkbox>
                 </div>
             </React.Fragment>
         );
     }
 
-    private handleReccomendedBackgroundsChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
-        this.props.setShowOnlyRecommendedBackgrounds(!this.props.showOnlyRecommendedBackgrounds)
-    }
+    private handleReccomendedBackgroundsChange = (
+        e: React.ChangeEvent<HTMLInputElement>
+    ): void => {
+        this.props.setShowOnlyRecommendedBackgrounds(
+            !this.props.showOnlyRecommendedBackgrounds
+        );
+    };
 
     private handleColorChange(
         palette: "neutralColorBase" | "accentColorBase",
@@ -384,7 +391,12 @@ function mapStateToProps(state: AppState): AppState {
 /* tslint:disable-next-line */
 const ControlPane = connect(
     mapStateToProps,
-    { setComponentType, setNeutralBaseColor, setAccentBaseColor, setShowOnlyRecommendedBackgrounds }
+    {
+        setComponentType,
+        setNeutralBaseColor,
+        setAccentBaseColor,
+        setShowOnlyRecommendedBackgrounds,
+    }
 )(manageJss(styles)(ControlPaneBase));
 type ControlPane = InstanceType<typeof ControlPane>;
 export { ControlPane };
