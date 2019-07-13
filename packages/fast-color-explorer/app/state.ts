@@ -43,7 +43,7 @@ export interface AppState {
     /**
      * If the app should only display the approved background colors
      */
-    showOnlyApprovedBackgrounds: boolean;
+    showOnlyRecommendedBackgrounds: boolean;
 }
 
 export interface Action {
@@ -87,7 +87,7 @@ function rootReducer(state: AppState, action: any): AppState {
         case SET_ACCENT_BASE_COLOR:
             return setAccentPalette(state, action.value);
         case SET_SHOW_ONLY_APPROVED_BACKGROUNDS:
-            return { ...state, ...{ showOnlyApprovedBackgrounds: action.value } };
+            return { ...state, ...{ showOnlyRecommendedBackgrounds: action.value } };
     }
 
     return state;
@@ -98,7 +98,7 @@ export const store: any = createStore(rootReducer, {
     componentType: ComponentTypes.backplate,
     neutralBaseColor: defaultNeutralColor,
     accentBaseColor: colorsDesignSystem.accentBaseColor,
-    showOnlyApprovedBackgrounds: true,
+    showOnlyRecommendedBackgrounds: true,
 });
 
 interface ColorExplorerAction<S, T = any> extends Action<T> {
@@ -122,7 +122,7 @@ function setColorActionCreator<T>(
     };
 }
 
-export function setShowOnlyApprovedBackgrounds(value: boolean): ColorExplorerAction<boolean> {
+export function setShowOnlyRecommendedBackgrounds(value: boolean): ColorExplorerAction<boolean> {
     return { type: SET_SHOW_ONLY_APPROVED_BACKGROUNDS, value };
 }
 

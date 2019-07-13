@@ -44,7 +44,7 @@ import {
     setAccentBaseColor,
     setComponentType,
     setNeutralBaseColor,
-    setShowOnlyApprovedBackgrounds
+    setShowOnlyRecommendedBackgrounds
 } from "./state";
 
 export interface ControlPaneClassNameContract {
@@ -60,8 +60,8 @@ export interface ControlPaneProps extends ManagedClasses<ControlPaneClassNameCon
     setComponentType: (value: string) => any;
     setNeutralBaseColor: (value: ColorRGBA64) => any;
     setAccentBaseColor: (value: ColorRGBA64) => any;
-    setShowOnlyApprovedBackgrounds: (value: boolean) => any;
-    showOnlyApprovedBackgrounds: boolean;
+    setShowOnlyRecommendedBackgrounds: (value: boolean) => any;
+    showOnlyRecommendedBackgrounds: boolean;
 }
 
 export interface ControlPaneState {
@@ -346,7 +346,7 @@ class ControlPaneBase extends React.Component<ControlPaneProps, ControlPaneState
                 <Label style={this.labelStyles}>Show recommended backgrounds only</Label>
                 <div style={{ marginBottom: "12px" }}>
                     <Checkbox
-                        checked={this.props.showOnlyApprovedBackgrounds}
+                        checked={this.props.showOnlyRecommendedBackgrounds}
                         inputId="showOnlyReccomendedBackgrounds"
                         onChange={this.handleReccomendedBackgroundsChange}
                     />
@@ -356,7 +356,7 @@ class ControlPaneBase extends React.Component<ControlPaneProps, ControlPaneState
     }
 
     private handleReccomendedBackgroundsChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
-        this.props.setShowOnlyApprovedBackgrounds(!this.props.showOnlyApprovedBackgrounds)
+        this.props.setShowOnlyRecommendedBackgrounds(!this.props.showOnlyRecommendedBackgrounds)
     }
 
     private handleColorChange(
@@ -384,7 +384,7 @@ function mapStateToProps(state: AppState): AppState {
 /* tslint:disable-next-line */
 const ControlPane = connect(
     mapStateToProps,
-    { setComponentType, setNeutralBaseColor, setAccentBaseColor, setShowOnlyApprovedBackgrounds }
+    { setComponentType, setNeutralBaseColor, setAccentBaseColor, setShowOnlyRecommendedBackgrounds }
 )(manageJss(styles)(ControlPaneBase));
 type ControlPane = InstanceType<typeof ControlPane>;
 export { ControlPane };
