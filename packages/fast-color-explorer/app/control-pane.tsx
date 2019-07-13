@@ -341,15 +341,16 @@ class ControlPaneBase extends React.Component<ControlPaneProps, ControlPaneState
     }
 
     private renderShowOnlyReccomendedBackgroundsInput(): JSX.Element {
+        const id: string = "showOnlyReccomendedBackgrounds";
         return (
             <React.Fragment>
                 <div style={{ marginBottom: "12px" }}>
                     <Checkbox
                         checked={this.props.showOnlyRecommendedBackgrounds}
-                        inputId="showOnlyReccomendedBackgrounds"
+                        inputId={id}
                         onChange={this.handleReccomendedBackgroundsChange}
                     >
-                        <Label slot="label">
+                        <Label slot="label" htmlFor={id}>
                             Show recommended backgrounds only
                         </Label>
                     </Checkbox>
