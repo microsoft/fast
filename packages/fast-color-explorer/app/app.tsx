@@ -8,7 +8,11 @@ import { ControlPane } from "./control-pane";
 import { palette, PaletteType } from "@microsoft/fast-components-styles-msft";
 import { AppState } from "./state";
 import { connect } from "react-redux";
-import { Background, DarkModeBackgrounds } from "@microsoft/fast-components-react-msft";
+import {
+    Background,
+    DarkModeBackgrounds,
+    LightModeBackgrounds,
+} from "@microsoft/fast-components-react-msft";
 import { FixedSizeList } from "react-window";
 import AutoSizer from "react-virtualized-auto-sizer";
 import { Swatch } from "@microsoft/fast-components-styles-msft/dist/utilities/color/common";
@@ -17,8 +21,20 @@ interface AppProps {
     designSystem: ColorsDesignSystem;
     neutralBaseColor: Swatch;
     accentBaseColor: Swatch;
-    showOnlyApprovedBackgrounds: boolean;
+    showOnlyRecommendedBackgrounds: boolean;
 }
+
+/**
+ * Array of indexes corresponding to the recommended background colors
+ */
+const reccomendedBackgrounds: any[] = Object.keys(DarkModeBackgrounds)
+    .concat(Object.keys(LightModeBackgrounds))
+    .map((key: string) => parseInt(key, 10))
+    .filter((index: number) => !isNaN(index))
+    .sort((a: number, b: number): number => {
+        return a > b ? 1 : a < b ? -1 : 1
+    });
+
 /* tslint:disable:jsx-no-lambda */
 /* tslint:disable:no-empty */
 class App extends React.Component<AppProps, {}> {
@@ -92,9 +108,17 @@ class App extends React.Component<AppProps, {}> {
                 height={props.height}
                 itemSize={400}
                 layout={"horizontal"}
-                itemCount={this.props.designSystem.neutralPalette.length}
+                itemCount={
+                    this.props.showOnlyRecommendedBackgrounds
+                        ? reccomendedBackgrounds.length
+                        : this.props.designSystem.neutralPalette.length
+                }
                 itemKey={(index: number): string =>
-                    palette(PaletteType.neutral)(this.props.designSystem)[index]
+                    palette(PaletteType.neutral)(this.props.designSystem)[
+                        this.props.showOnlyRecommendedBackgrounds
+                            ? reccomendedBackgrounds[index]
+                            : index
+                    ]
                 }
                 ref={this.colorBlockScrollerRef}
             >
@@ -104,15 +128,18 @@ class App extends React.Component<AppProps, {}> {
     };
 
     private renderColorBlock = (props: any): JSX.Element => {
+        const index: number = this.props.showOnlyRecommendedBackgrounds
+            ? reccomendedBackgrounds[props.index]
+            : props.index
         const color: string = palette(PaletteType.neutral)(this.props.designSystem)[
-            props.index
+            index
         ];
 
         return (
             <div style={props.style} key={color}>
                 <Background value={color} style={{ minHeight: "100%" }}>
                     <ColorBlocks
-                        {...{ backgroundColor: color, index: props.index } as any}
+                        {...({ backgroundColor: color, index } as any)}
                     />
                 </Background>
             </div>
@@ -125,7 +152,7 @@ function mapStateToProps(state: AppState): Partial<AppProps> {
         designSystem: state.designSystem,
         neutralBaseColor: state.neutralBaseColor,
         accentBaseColor: state.accentBaseColor,
-        showOnlyApprovedBackgrounds: state.showOnlyApprovedBackgrounds
+        showOnlyRecommendedBackgrounds: state.showOnlyRecommendedBackgrounds,
     };
 }
 
