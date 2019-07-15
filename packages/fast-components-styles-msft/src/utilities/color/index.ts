@@ -84,6 +84,9 @@ export { neutralDividerRest } from "./neutral-divider";
  * App layer exports
  */
 export {
+    neutralLayerFloating,
+    neutralLayerCard,
+    neutralLayerCardContainer,
     neutralLayerL1,
     neutralLayerL1Alt,
     neutralLayerL2,
