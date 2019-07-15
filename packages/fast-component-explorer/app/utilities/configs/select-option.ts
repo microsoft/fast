@@ -5,7 +5,7 @@ import {
     selectOptionSchema,
 } from "@microsoft/fast-components-react-msft";
 import { uniqueId } from "lodash-es";
-import { glyphSchema, Icon } from "../../../app/components/";
+import { glyphSchema, Icon } from "../../../app/components/glyph";
 import Guidance from "../../.tmp/select-option/guidance";
 
 const selectOptionConfig: ComponentViewConfig<SelectOptionProps> = {

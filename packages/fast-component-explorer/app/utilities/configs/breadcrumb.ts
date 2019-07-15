@@ -5,7 +5,7 @@ import {
     breadcrumbSchema,
     hypertextSchema,
 } from "@microsoft/fast-components-react-msft";
-import { groupSchema } from "../../../app/components/";
+import { groupSchema } from "../../../app/components/group";
 import Guidance from "../../.tmp/breadcrumb/guidance";
 
 const breadcrumbConfig: ComponentViewConfig<BreadcrumbProps> = {
