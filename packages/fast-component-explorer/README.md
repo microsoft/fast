@@ -23,4 +23,4 @@ If you are adding a component to the documentation site, you will need to:
 
 - Add curated component configs to the `./app/utilities/configs/` folder. See the `./app/utilities/configs/README.md` for details.
 - If your component includes a plugin, add any plugin ids and custom plugins to the `./app/utilities/plugins/` folder. For more information on how plugins work, read the [documentation](https://github.com/microsoft/fast-dna/blob/master/packages/fast-tooling-react/README.md) for the `@microsoft/fast-tooling-react` package.
-- If a scenario is added to a components config that uses other components as children, those children components must first be added to the `.app/utilities/configs` (published components) or `.app/utilities/components` (test components for demonstration purposes)
+- If a scenario is added to a components config that uses other components as children, those children components must first be added to the `./app/utilities/configs` (published components) or `./app/utilities/components` (test components for demonstration purposes)

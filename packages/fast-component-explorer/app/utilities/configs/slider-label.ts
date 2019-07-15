@@ -1,9 +1,9 @@
 import { ComponentViewConfig } from "./data.props";
 import {
     SliderLabel,
+    SliderLabelClassNameContract,
     SliderLabelProps,
     sliderLabelSchema,
-    SliderLabelClassNameContract,
 } from "@microsoft/fast-components-react-msft";
 import Guidance from "../../.tmp/slider-label/guidance";
 import { DesignSystem } from "@microsoft/fast-components-styles-msft";

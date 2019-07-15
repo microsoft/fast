@@ -6,8 +6,7 @@ import {
     TextActionProps,
     textActionSchema,
 } from "@microsoft/fast-components-react-msft";
-import glyphSchema from "../components/glyph.schema";
-import { Icon } from "../components/glyph";
+import { glyphSchema, Icon } from "../../../app/components/";
 import Guidance from "../../.tmp/text-action/guidance";
 
 const textActionConfig: ComponentViewConfig<TextActionProps> = {

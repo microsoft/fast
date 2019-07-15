@@ -5,7 +5,7 @@ import {
     breadcrumbSchema,
     hypertextSchema,
 } from "@microsoft/fast-components-react-msft";
-import reactHtmlElementSchema from "../components/react-html-element.schema";
+import { groupSchema } from "../../../app/components/";
 import Guidance from "../../.tmp/breadcrumb/guidance";
 
 const breadcrumbConfig: ComponentViewConfig<BreadcrumbProps> = {
@@ -18,7 +18,7 @@ const breadcrumbConfig: ComponentViewConfig<BreadcrumbProps> = {
             data: {
                 label: "",
                 separator: {
-                    id: reactHtmlElementSchema.id,
+                    id: groupSchema.id,
                     props: {
                         children: "/",
                     },

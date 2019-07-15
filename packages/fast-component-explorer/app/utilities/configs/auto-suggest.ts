@@ -12,7 +12,7 @@ import Guidance from "../../.tmp/auto-suggest/guidance";
 function autoSuggestOptionPropFactory(value: string): AutoSuggestOptionProps {
     return {
         id: uniqueId(),
-        value: value,
+        value,
         role: "option",
     };
 }

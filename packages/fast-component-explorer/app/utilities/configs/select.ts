@@ -7,14 +7,12 @@ import {
     selectSchema,
 } from "@microsoft/fast-components-react-msft";
 import { uniqueId } from "lodash-es";
-import glyphSchema from "../components/glyph.schema";
-import { Icon } from "../components/glyph";
 import Guidance from "../../.tmp/select/guidance";
 
 function selectOptionPropFactory(value: string): SelectOptionProps {
     return {
         id: uniqueId(),
-        value: value,
+        value,
         displayString: value,
     };
 }

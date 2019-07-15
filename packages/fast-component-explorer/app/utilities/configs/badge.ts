@@ -1,9 +1,9 @@
 import { ComponentViewConfig } from "./data.props";
 import {
     Badge,
-    BadgeSize,
     BadgeProps,
     badgeSchema,
+    BadgeSize,
 } from "@microsoft/fast-components-react-msft";
 import Guidance from "../../.tmp/badge/guidance";
 

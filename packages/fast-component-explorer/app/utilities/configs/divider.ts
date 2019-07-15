@@ -1,9 +1,9 @@
 import { ComponentViewConfig } from "./data.props";
 import {
     Divider,
+    DividerClassNameContract,
     DividerProps,
     dividerSchema,
-    DividerClassNameContract,
 } from "@microsoft/fast-components-react-msft";
 import Guidance from "../../.tmp/divider/guidance";
 import { DesignSystem } from "@microsoft/fast-components-styles-msft";
