@@ -36,17 +36,6 @@ interface AppProps {
     showOnlyRecommendedBackgrounds: boolean;
 }
 
-/**
- * Array of indexes corresponding to the recommended background colors
- */
-const reccomendedBackgrounds: any[] = Object.keys(DarkModeBackgrounds)
-    .concat(Object.keys(LightModeBackgrounds))
-    .map((key: string) => parseInt(key, 10))
-    .filter((index: number) => !isNaN(index))
-    .sort((a: number, b: number): number => {
-        return a > b ? 1 : a < b ? -1 : 1;
-    });
-
 /* tslint:disable:jsx-no-lambda */
 /* tslint:disable:no-empty */
 class App extends React.Component<AppProps, {}> {
