@@ -58,10 +58,11 @@ const styles: ComponentStyles<NavigationClassNameContract, {}> = {
             borderBottom: "3px solid transparent",
         },
         '&[aria-expanded="true"] > $navigation_itemContent::before': {
-            borderTop: `3px solid ${foreground300}`,
-            borderLeft: "3px solid transparent",
+            borderTop: "3px solid transparent",
+            borderLeft: `3px solid ${foreground300}`,
             borderRight: "3px solid transparent",
             borderBottom: "3px solid transparent",
+            transform: "rotate(45deg)",
         },
     },
     navigation_item__childItem: {
