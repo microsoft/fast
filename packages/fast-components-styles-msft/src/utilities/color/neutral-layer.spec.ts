@@ -25,6 +25,14 @@ describe("neutralLayer", (): void => {
                 designSystemDefaults.neutralPalette[NeutralPaletteDarkModeLayers.L1]
             );
         });
+        test("should opperate on a provided background color", (): void => {
+            expect(neutralLayerL1((): string => "#000000")(designSystemDefaults)).toBe(
+                designSystemDefaults.neutralPalette[NeutralPaletteDarkModeLayers.L1]
+            );
+            expect(neutralLayerL1((): string => "#FFFFFF")(darkThemeDesignSystem)).toBe(
+                designSystemDefaults.neutralPalette[NeutralPaletteLightModeLayers.L1]
+            );
+        });
     });
 
     describe("L1Alt", (): void => {
@@ -36,6 +44,14 @@ describe("neutralLayer", (): void => {
         test("should return values from L1Alt when in dark mode", (): void => {
             expect(neutralLayerL1Alt(darkThemeDesignSystem)).toBe(
                 designSystemDefaults.neutralPalette[NeutralPaletteDarkModeLayers.L1Alt]
+            );
+        });
+        test("should opperate on a provided background color", (): void => {
+            expect(neutralLayerL1Alt((): string => "#000000")(designSystemDefaults)).toBe(
+                designSystemDefaults.neutralPalette[NeutralPaletteDarkModeLayers.L1Alt]
+            );
+            expect(neutralLayerL1Alt((): string => "#FFFFFF")(darkThemeDesignSystem)).toBe(
+                designSystemDefaults.neutralPalette[NeutralPaletteLightModeLayers.L1Alt]
             );
         });
     });
@@ -51,6 +67,14 @@ describe("neutralLayer", (): void => {
                 designSystemDefaults.neutralPalette[NeutralPaletteDarkModeLayers.L2]
             );
         });
+        test("should opperate on a provided background color", (): void => {
+            expect(neutralLayerL2((): string => "#000000")(designSystemDefaults)).toBe(
+                designSystemDefaults.neutralPalette[NeutralPaletteDarkModeLayers.L2]
+            );
+            expect(neutralLayerL2((): string => "#FFFFFF")(darkThemeDesignSystem)).toBe(
+                designSystemDefaults.neutralPalette[NeutralPaletteLightModeLayers.L2]
+            );
+        });
     });
 
     describe("L3", (): void => {
@@ -64,6 +88,14 @@ describe("neutralLayer", (): void => {
                 designSystemDefaults.neutralPalette[NeutralPaletteDarkModeLayers.L3]
             );
         });
+        test("should opperate on a provided background color", (): void => {
+            expect(neutralLayerL3((): string => "#000000")(designSystemDefaults)).toBe(
+                designSystemDefaults.neutralPalette[NeutralPaletteDarkModeLayers.L3]
+            );
+            expect(neutralLayerL3((): string => "#FFFFFF")(darkThemeDesignSystem)).toBe(
+                designSystemDefaults.neutralPalette[NeutralPaletteLightModeLayers.L3]
+            );
+        });
     });
 
     describe("L4", (): void => {
@@ -75,6 +107,14 @@ describe("neutralLayer", (): void => {
         test("should return values from L4 when in dark mode", (): void => {
             expect(neutralLayerL4(darkThemeDesignSystem)).toBe(
                 designSystemDefaults.neutralPalette[NeutralPaletteDarkModeLayers.L4]
+            );
+        });
+        test("should opperate on a provided background color", (): void => {
+            expect(neutralLayerL4((): string => "#000000")(designSystemDefaults)).toBe(
+                designSystemDefaults.neutralPalette[NeutralPaletteDarkModeLayers.L4]
+            );
+            expect(neutralLayerL4((): string => "#FFFFFF")(darkThemeDesignSystem)).toBe(
+                designSystemDefaults.neutralPalette[NeutralPaletteLightModeLayers.L4]
             );
         });
     });
