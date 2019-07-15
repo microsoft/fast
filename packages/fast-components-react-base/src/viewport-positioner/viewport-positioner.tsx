@@ -25,7 +25,7 @@ export interface ViewportPositionerState {
      * Indicates that the component is unable to react to viewport changes and only places the
      * positioner in the default position on mount.
      */
-    noOberverMode: boolean;
+    noObserverMode: boolean;
 
     /**
      * values to be applied to the component's transform origin attribute on render
@@ -163,7 +163,7 @@ class ViewportPositioner extends Foundation<
 
         this.state = {
             disabled: true,
-            noOberverMode: false,
+            noObserverMode: false,
             xTransformOrigin: Location.left,
             yTransformOrigin: Location.top,
             xTranslate: 0,
@@ -337,7 +337,7 @@ class ViewportPositioner extends Foundation<
                 ((this.props.disabled === undefined || this.props.disabled === false) &&
                     isNil(this.positionerRect) &&
                     this.getAnchorElement() !== null)) ||
-            (isNil(this.positionerRect) && !this.state.noOberverMode);
+            (isNil(this.positionerRect) && !this.state.noObserverMode);
 
         return {
             opacity: shouldHide ? 0 : undefined,
@@ -395,7 +395,7 @@ class ViewportPositioner extends Foundation<
 
         this.setState({
             disabled: false,
-            noOberverMode: false,
+            noObserverMode: false,
         });
 
         this.collisionDetector = new (window as WindowWithIntersectionObserver).IntersectionObserver(
@@ -418,49 +418,38 @@ class ViewportPositioner extends Foundation<
     };
 
     /**
-     *  Disable the component
+     *  If observers are not supported we do expensive getBoundingClientRect calls
+     *  once to get correct initial placement
      */
     private setNoObserverMode = (): void => {
-        // observers not supported so the best we do is try to set the default position if there is one
-        this.positionerRect = {
-            top: 0,
-            right: this.rootElement.current.clientHeight,
-            bottom: this.rootElement.current.clientHeight,
-            left: 0,
-            height: this.rootElement.current.clientHeight,
-            width: this.rootElement.current.clientHeight,
-        };
-
-        let desiredHorizontalPosition: ViewportPositionerHorizontalPositionLabel = this
-            .state.defaultHorizontalPosition;
+        const viewPortElement: HTMLElement = this.getViewportElement();
+        const anchorElement: HTMLElement = this.getAnchorElement();
 
         if (
-            this.props.horizontalPositioningMode !== AxisPositioningMode.uncontrolled &&
-            this.state.defaultHorizontalPosition ===
-                ViewportPositionerHorizontalPositionLabel.undefined
+            isNil(viewPortElement) ||
+            isNil(anchorElement) ||
+            isNil(this.rootElement.current)
         ) {
-            desiredHorizontalPosition = this.getHorizontalPositioningOptions()[0];
+            return;
         }
 
-        let desiredVerticalPosition: ViewportPositionerVerticalPositionLabel = this.state
-            .defaultVerticalPosition;
+        this.positionerRect = this.rootElement.current.getBoundingClientRect();
+        this.viewportRect = viewPortElement.getBoundingClientRect();
+        const anchorRect: ClientRect | DOMRect = anchorElement.getBoundingClientRect();
 
-        if (
-            this.props.verticalPositioningMode !== AxisPositioningMode.uncontrolled &&
-            this.state.defaultVerticalPosition ===
-                ViewportPositionerVerticalPositionLabel.undefined
-        ) {
-            desiredVerticalPosition = this.getVerticalPositioningOptions()[0];
-        }
+        this.anchorTop = anchorRect.top;
+        this.anchorRight = anchorRect.right;
+        this.anchorBottom = anchorRect.bottom;
+        this.anchorLeft = anchorRect.left;
+        this.anchorWidth = anchorRect.width;
+        this.anchorHeight = anchorRect.height;
 
-        this.setState(Object.assign(
-            {
-                disabled: false,
-                noOberverMode: true,
-            },
-            this.getHorizontalPositioningState(desiredHorizontalPosition),
-            this.getVerticalPositioningState(desiredVerticalPosition)
-        ) as ViewportPositionerState);
+        this.updatePositionerOffset();
+
+        this.setState({
+            disabled: false,
+            noObserverMode: true,
+        });
     };
 
     /**
@@ -474,7 +463,7 @@ class ViewportPositioner extends Foundation<
             disabled: true,
         });
 
-        if (!this.state.noOberverMode) {
+        if (!this.state.noObserverMode) {
             if (
                 this.collisionDetector &&
                 typeof this.collisionDetector.disconnect === "function"
@@ -499,7 +488,7 @@ class ViewportPositioner extends Foundation<
                 this.resizeDetector = null;
             }
 
-            this.getViewportElement().addEventListener("scroll", this.handleScroll);
+            this.getViewportElement().removeEventListener("scroll", this.handleScroll);
         }
     };
 
@@ -602,7 +591,9 @@ class ViewportPositioner extends Foundation<
 
         if (
             this.state.currentVerticalPosition ===
-            ViewportPositionerVerticalPositionLabel.top
+                ViewportPositionerVerticalPositionLabel.top ||
+            this.state.currentVerticalPosition ===
+                ViewportPositionerVerticalPositionLabel.insetTop
         ) {
             this.anchorBottom = this.anchorTop + this.anchorHeight;
         } else {
@@ -611,7 +602,9 @@ class ViewportPositioner extends Foundation<
 
         if (
             this.state.currentHorizontalPosition ===
-            ViewportPositionerHorizontalPositionLabel.left
+                ViewportPositionerHorizontalPositionLabel.left ||
+            this.state.currentHorizontalPosition ===
+                ViewportPositionerHorizontalPositionLabel.insetLeft
         ) {
             this.anchorRight = this.anchorLeft + this.anchorWidth;
         } else {
@@ -727,7 +720,9 @@ class ViewportPositioner extends Foundation<
             switch (this.state.currentHorizontalPosition) {
                 case ViewportPositionerHorizontalPositionLabel.undefined:
                     this.baseHorizontalOffset =
-                        this.anchorLeft - this.positionerRect.left;
+                        this.anchorLeft +
+                        this.state.xTranslate -
+                        this.positionerRect.left;
                     break;
 
                 case ViewportPositionerHorizontalPositionLabel.left:
@@ -847,7 +842,8 @@ class ViewportPositioner extends Foundation<
             this.state.disabled ||
             isNil(this.viewportRect) ||
             isNil(this.positionerRect) ||
-            (this.props.fixedAfterInitialPlacement && this.state.initialLayoutComplete)
+            (this.props.fixedAfterInitialPlacement && this.state.initialLayoutComplete) ||
+            (this.state.noObserverMode && this.state.initialLayoutComplete)
         ) {
             return;
         }
@@ -1009,7 +1005,8 @@ class ViewportPositioner extends Foundation<
     private getHorizontalTranslate = (
         horizontalPosition: ViewportPositionerHorizontalPositionLabel
     ): number => {
-        if (!this.props.horizontalAlwaysInView) {
+        /* tslint:disable-next-line */
+        if (!this.props.horizontalAlwaysInView || this.state.disabled) {
             return 0;
         }
 
@@ -1045,7 +1042,7 @@ class ViewportPositioner extends Foundation<
     private getVerticalTranslate = (
         verticalPosition: ViewportPositionerVerticalPositionLabel
     ): number => {
-        if (!this.props.verticalAlwaysInView) {
+        if (!this.props.verticalAlwaysInView || this.state.disabled) {
             return 0;
         }
 
