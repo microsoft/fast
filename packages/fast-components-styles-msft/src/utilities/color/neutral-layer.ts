@@ -1,5 +1,11 @@
 import { findClosestSwatchIndex, PaletteType, swatchByMode } from "./palette";
-import { designSystemResolverMax, SwatchResolver } from "./common";
+import {
+    ColorRecipe,
+    colorRecipeFactory,
+    designSystemResolverMax,
+    Swatch,
+    SwatchResolver,
+} from "./common";
 import {
     neutralFillActiveDelta,
     neutralFillCardDelta,
@@ -60,32 +66,41 @@ const darkNeutralLayerL4: DesignSystemResolver<number> = (
 /**
  * Used as the background color for floating layers like context menus and flyouts.
  */
-export const neutralLayerFloating: SwatchResolver = swatchByMode(PaletteType.neutral)(
-    0,
-    subtract(darkNeutralLayerL4, multiply(neutralFillCardDelta, 5))
+export const neutralLayerFloating: ColorRecipe<Swatch> = colorRecipeFactory(
+    swatchByMode(PaletteType.neutral)(
+        0,
+        subtract(darkNeutralLayerL4, multiply(neutralFillCardDelta, 5))
+    )
 );
 
 /**
  * Used as the background color for cards. Pair with neutralLayerCardContainer for the container background.
  */
-export const neutralLayerCard: SwatchResolver = swatchByMode(PaletteType.neutral)(
-    0,
-    subtract(darkNeutralLayerL4, multiply(neutralFillCardDelta, 4))
+export const neutralLayerCard: ColorRecipe<Swatch> = colorRecipeFactory(
+    swatchByMode(PaletteType.neutral)(
+        0,
+        subtract(darkNeutralLayerL4, multiply(neutralFillCardDelta, 4))
+    )
 );
 
 /**
  * Used as the background color for card containers. Pair with neutralLayerCard for the card backgrounds.
  */
-export const neutralLayerCardContainer: SwatchResolver = swatchByMode(
-    PaletteType.neutral
-)(neutralFillCardDelta, subtract(darkNeutralLayerL4, multiply(neutralFillCardDelta, 3)));
+export const neutralLayerCardContainer: ColorRecipe<Swatch> = colorRecipeFactory(
+    swatchByMode(PaletteType.neutral)(
+        neutralFillCardDelta,
+        subtract(darkNeutralLayerL4, multiply(neutralFillCardDelta, 3))
+    )
+);
 
 /**
  * Used as the background color for the primary content layer (L1).
  */
-export const neutralLayerL1: SwatchResolver = swatchByMode(PaletteType.neutral)(
-    0,
-    subtract(darkNeutralLayerL4, multiply(neutralFillCardDelta, 3))
+export const neutralLayerL1: ColorRecipe<Swatch> = colorRecipeFactory(
+    swatchByMode(PaletteType.neutral)(
+        0,
+        subtract(darkNeutralLayerL4, multiply(neutralFillCardDelta, 3))
+    )
 );
 
 /**
@@ -93,28 +108,34 @@ export const neutralLayerL1: SwatchResolver = swatchByMode(PaletteType.neutral)(
  *
  * @deprecated Use neutralLayerCardContainer instead.
  */
-export const neutralLayerL1Alt: SwatchResolver = neutralLayerCardContainer;
+export const neutralLayerL1Alt: ColorRecipe<Swatch> = neutralLayerCardContainer;
 
 /**
  * Used as the background for the top command surface, logically below L1.
  */
-export const neutralLayerL2: SwatchResolver = swatchByMode(PaletteType.neutral)(
-    lightNeutralLayerL2,
-    subtract(darkNeutralLayerL4, multiply(neutralFillCardDelta, 2))
+export const neutralLayerL2: ColorRecipe<Swatch> = colorRecipeFactory(
+    swatchByMode(PaletteType.neutral)(
+        lightNeutralLayerL2,
+        subtract(darkNeutralLayerL4, multiply(neutralFillCardDelta, 2))
+    )
 );
 
 /**
  * Used as the background for secondary command surfaces, logically below L2.
  */
-export const neutralLayerL3: SwatchResolver = swatchByMode(PaletteType.neutral)(
-    add(lightNeutralLayerL2, neutralFillCardDelta),
-    subtract(darkNeutralLayerL4, neutralFillCardDelta)
+export const neutralLayerL3: ColorRecipe<Swatch> = colorRecipeFactory(
+    swatchByMode(PaletteType.neutral)(
+        add(lightNeutralLayerL2, neutralFillCardDelta),
+        subtract(darkNeutralLayerL4, neutralFillCardDelta)
+    )
 );
 
 /**
  * Used as the background for the lowest command surface or title bar, logically below L3.
  */
-export const neutralLayerL4: SwatchResolver = swatchByMode(PaletteType.neutral)(
-    add(lightNeutralLayerL2, multiply(neutralFillCardDelta, 2)),
-    darkNeutralLayerL4
+export const neutralLayerL4: ColorRecipe<Swatch> = colorRecipeFactory(
+    swatchByMode(PaletteType.neutral)(
+        add(lightNeutralLayerL2, multiply(neutralFillCardDelta, 2)),
+        darkNeutralLayerL4
+    )
 );

@@ -1,4 +1,5 @@
 import {
+    neutralLayerFloating,
     neutralLayerL1,
     neutralLayerL1Alt,
     neutralLayerL2,
@@ -6,6 +7,8 @@ import {
     neutralLayerL4,
     NeutralPaletteDarkModeLayers,
     NeutralPaletteLightModeLayers,
+    neutralLayerCardContainer,
+    neutralLayerCard,
 } from "./neutral-layer";
 import designSystemDefaults, { DesignSystem } from "../../design-system";
 
@@ -50,7 +53,9 @@ describe("neutralLayer", (): void => {
             expect(neutralLayerL1Alt((): string => "#000000")(designSystemDefaults)).toBe(
                 designSystemDefaults.neutralPalette[NeutralPaletteDarkModeLayers.L1Alt]
             );
-            expect(neutralLayerL1Alt((): string => "#FFFFFF")(darkThemeDesignSystem)).toBe(
+            expect(
+                neutralLayerL1Alt((): string => "#FFFFFF")(darkThemeDesignSystem)
+            ).toBe(
                 designSystemDefaults.neutralPalette[NeutralPaletteLightModeLayers.L1Alt]
             );
         });
@@ -116,6 +121,53 @@ describe("neutralLayer", (): void => {
             expect(neutralLayerL4((): string => "#FFFFFF")(darkThemeDesignSystem)).toBe(
                 designSystemDefaults.neutralPalette[NeutralPaletteLightModeLayers.L4]
             );
+        });
+    });
+
+    describe("neutralLayerFloating", (): void => {
+        test("should return a color from the neutral palette", (): void => {
+            expect(
+                designSystemDefaults.neutralPalette.includes(
+                    neutralLayerFloating(designSystemDefaults)
+                )
+            ).toBeTruthy();
+        });
+
+        test("should opperate on a provided background color", (): void => {
+            const color: string = neutralLayerFloating((): string => "#000000")(designSystemDefaults);
+
+            expect(color).not.toBe(neutralLayerFloating(designSystemDefaults));
+            expect(designSystemDefaults.neutralPalette.includes(color)).toBeTruthy();
+        });
+    });
+    describe("neutralLayerCardContainer", (): void => {
+        test("should return a color from the neutral palette", (): void => {
+            expect(
+                designSystemDefaults.neutralPalette.includes(
+                    neutralLayerCardContainer(designSystemDefaults)
+                )
+            ).toBeTruthy();
+        });
+        test("should opperate on a provided background color", (): void => {
+            const color: string = neutralLayerCardContainer((): string => "#000000")(designSystemDefaults);
+
+            expect(color).not.toBe(neutralLayerCardContainer(designSystemDefaults));
+            expect(designSystemDefaults.neutralPalette.includes(color)).toBeTruthy();
+        });
+    });
+    describe("neutralLayerCard", (): void => {
+        test("should return a color from the neutral palette", (): void => {
+            expect(
+                designSystemDefaults.neutralPalette.includes(
+                    neutralLayerCard(designSystemDefaults)
+                )
+            ).toBeTruthy();
+        });
+        test("should opperate on a provided background color", (): void => {
+            const color: string = neutralLayerCard((): string => "#000000")(designSystemDefaults);
+
+            expect(color).not.toBe(neutralLayerCard(designSystemDefaults));
+            expect(designSystemDefaults.neutralPalette.includes(color)).toBeTruthy();
         });
     });
 });
