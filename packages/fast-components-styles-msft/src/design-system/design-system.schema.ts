@@ -232,18 +232,6 @@ export default {
             type: "number",
             default: 18,
         },
-        neutralPalette: {
-            title: "Neutral palette",
-            type: "string",
-            pattern: "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$",
-            default: "#808080"
-        },
-        accentPalette: {
-            title: "Accent palette",
-            type: "string",
-            pattern: "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$",
-            default: "#0078D4"
-        },
         accentBaseColor: {
             title: "Accent base color",
             type: "string",
