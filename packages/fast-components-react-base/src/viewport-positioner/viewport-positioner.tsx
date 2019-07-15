@@ -212,10 +212,10 @@ class ViewportPositioner extends Foundation<
     public render(): React.ReactElement<HTMLDivElement> {
         return (
             <div
+                {...this.unhandledProps()}
                 ref={this.rootElement}
                 className={this.generateClassNames()}
                 style={this.getPositioningStyles()}
-                {...this.unhandledProps()}
             >
                 {this.props.children}
             </div>
@@ -226,7 +226,7 @@ class ViewportPositioner extends Foundation<
      * Create class-names
      */
     protected generateClassNames(): string {
-        let classNames: string = get(this.props, "managedClasses.viewportPositioner", "");
+        let classNames: string = get(this.props.managedClasses, "viewportPositioner", "");
 
         switch (this.state.currentHorizontalPosition) {
             case ViewportPositionerHorizontalPositionLabel.left:
@@ -327,6 +327,9 @@ class ViewportPositioner extends Foundation<
      *  gets the CSS classes to be programmatically applied to the component
      */
     private getPositioningStyles = (): React.CSSProperties => {
+        // Check if there is already a style object being passed as props
+        const styleProps: React.CSSProperties = get(this.props, "style");
+
         // determine if we should hide the positioner because we don't have data to position it yet
         // (avoiding flicker)
         const shouldHide: boolean =
@@ -350,6 +353,7 @@ class ViewportPositioner extends Foundation<
             right: this.state.right === null ? null : `${this.state.right}px`,
             bottom: this.state.bottom === null ? null : `${this.state.bottom}px`,
             left: this.state.left === null ? null : `${this.state.left}px`,
+            ...styleProps,
         };
     };
 
