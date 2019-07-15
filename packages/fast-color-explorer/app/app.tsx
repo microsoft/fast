@@ -1,11 +1,20 @@
+import {
+    DesignSystem,
+    neutralLayerL1,
+    neutralLayerL1Alt,
+    neutralLayerL2,
+    neutralLayerL3,
+    neutralLayerL4,
+    palette,
+    PaletteType,
+} from "@microsoft/fast-components-styles-msft";
 import React from "react";
-import { Canvas, Container, Row } from "@microsoft/fast-layouts-react";
 import { DesignSystemProvider } from "@microsoft/fast-jss-manager-react";
 import { ColorsDesignSystem } from "./design-system";
 import { Gradient } from "./gradient";
 import ColorBlocks from "./color-blocks";
 import { ControlPane } from "./control-pane";
-import { palette, PaletteType } from "@microsoft/fast-components-styles-msft";
+import { Canvas, Container, Row } from "@microsoft/fast-layouts-react";
 import { AppState } from "./state";
 import { connect } from "react-redux";
 import {
@@ -15,7 +24,10 @@ import {
 } from "@microsoft/fast-components-react-msft";
 import { FixedSizeList } from "react-window";
 import AutoSizer from "react-virtualized-auto-sizer";
-import { Swatch } from "@microsoft/fast-components-styles-msft/dist/utilities/color/common";
+import {
+    ColorRecipe,
+    Swatch,
+} from "@microsoft/fast-components-styles-msft/dist/utilities/color/common";
 
 interface AppProps {
     designSystem: ColorsDesignSystem;
@@ -32,7 +44,7 @@ const reccomendedBackgrounds: any[] = Object.keys(DarkModeBackgrounds)
     .map((key: string) => parseInt(key, 10))
     .filter((index: number) => !isNaN(index))
     .sort((a: number, b: number): number => {
-        return a > b ? 1 : a < b ? -1 : 1
+        return a > b ? 1 : a < b ? -1 : 1;
     });
 
 /* tslint:disable:jsx-no-lambda */
@@ -48,6 +60,14 @@ class App extends React.Component<AppProps, {}> {
             height: "100%",
         },
     };
+
+    private backgroundRecipes: Array<ColorRecipe<string>> = [
+        neutralLayerL1,
+        neutralLayerL1Alt,
+        neutralLayerL2,
+        neutralLayerL3,
+        neutralLayerL4,
+    ];
 
     public render(): React.ReactNode {
         return (
@@ -102,6 +122,8 @@ class App extends React.Component<AppProps, {}> {
     };
 
     private renderColorBlockList = (props: any): JSX.Element => {
+        const backgrounds: string[] = this.backgrounds();
+
         return (
             <FixedSizeList
                 width={props.width}
@@ -109,18 +131,11 @@ class App extends React.Component<AppProps, {}> {
                 itemSize={400}
                 layout={"horizontal"}
                 itemCount={
-                    this.props.showOnlyRecommendedBackgrounds
-                        ? reccomendedBackgrounds.length
-                        : this.props.designSystem.neutralPalette.length
+                    backgrounds.length
                 }
-                itemKey={(index: number): string =>
-                    palette(PaletteType.neutral)(this.props.designSystem)[
-                        this.props.showOnlyRecommendedBackgrounds
-                            ? reccomendedBackgrounds[index]
-                            : index
-                    ]
-                }
+                itemKey={(index: number): string => backgrounds[index]}
                 ref={this.colorBlockScrollerRef}
+                itemData={backgrounds}
             >
                 {this.renderColorBlock}
             </FixedSizeList>
@@ -128,22 +143,44 @@ class App extends React.Component<AppProps, {}> {
     };
 
     private renderColorBlock = (props: any): JSX.Element => {
-        const index: number = this.props.showOnlyRecommendedBackgrounds
-            ? reccomendedBackgrounds[props.index]
-            : props.index
-        const color: string = palette(PaletteType.neutral)(this.props.designSystem)[
-            index
-        ];
+        const color: string = props.data[props.index];
+        const index: number = this.props.designSystem.neutralPalette.indexOf(color);
 
         return (
             <div style={props.style} key={color}>
                 <Background value={color} style={{ minHeight: "100%" }}>
-                    <ColorBlocks
-                        {...({ backgroundColor: color, index } as any)}
-                    />
+                    <ColorBlocks {...({ backgroundColor: color, index } as any)} />
                 </Background>
             </div>
         );
+    };
+
+    private backgrounds(): string[] {
+        return this.props.showOnlyRecommendedBackgrounds
+            ? this.backgroundRecipes
+                  .map(this.applyLightMode)
+                  .concat(this.backgroundRecipes.map(this.applyDarkMode))
+                  .reduce(
+                      (accum: string[], value: string): string[] =>
+                          accum.includes(value) ? accum : accum.concat(value),
+                      []
+                  )
+            : this.props.designSystem.neutralPalette;
+    }
+
+    private applyLightMode = (recipe: ColorRecipe<string>): string => {
+        return recipe((): string => this.props.designSystem.neutralPalette[0])(
+            this.props.designSystem
+        );
+    };
+
+    private applyDarkMode = (recipe: ColorRecipe<string>): string => {
+        return recipe(
+            (): string =>
+                this.props.designSystem.neutralPalette[
+                    this.props.designSystem.neutralPalette.length - 1
+                ]
+        )(this.props.designSystem);
     };
 }
 
