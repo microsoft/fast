@@ -23,7 +23,7 @@ import {
 } from "./location";
 import { ArgumentTypes } from "../typings";
 
-interface WrappingComponentProps<T = any> {
+export interface WrappingComponentProps<T = any> {
     /**
      * The props of the component from data
      */
@@ -86,7 +86,13 @@ export function mapDataToComponent(
         .sort(orderMappedDataByDataLocation)
         .reduce(
             (mappedDataReduced: any, mappedDataLocation: MappedDataLocation): any =>
-                resolveData(mappedDataLocation, mappedDataReduced, plugins, childOptions),
+                resolveData(
+                    mappedDataLocation,
+                    mappedDataReduced,
+                    plugins,
+                    childOptions,
+                    wrappingComponent
+                ),
             mappedData
         );
 }
@@ -153,7 +159,8 @@ function resolveData(
     mappedDataLocation: MappedDataLocation,
     data: any,
     plugins: Array<Plugin<PluginProps>>,
-    childOptions: ChildOptionItem[]
+    childOptions: ChildOptionItem[],
+    wrappingComponent?: React.ComponentType<WrappingComponentProps>
 ): any {
     switch (mappedDataLocation.mappingType) {
         case DataResolverType.plugin:
@@ -161,11 +168,17 @@ function resolveData(
                 mappedDataLocation as PluginLocation,
                 data,
                 plugins,
-                childOptions
+                childOptions,
+                wrappingComponent
             );
         case DataResolverType.component:
         default:
-            return mapDataToChildren(data, mappedDataLocation.dataLocation, childOptions);
+            return mapDataToChildren(
+                data,
+                mappedDataLocation.dataLocation,
+                childOptions,
+                wrappingComponent
+            );
     }
 }
 
@@ -173,7 +186,8 @@ function mapPluginToData(
     pluginModifiedDataLocation: PluginLocation,
     data: any,
     plugins: Array<Plugin<PluginProps>>,
-    childOptions: ChildOptionItem[]
+    childOptions: ChildOptionItem[],
+    wrappingComponent?: React.ComponentType<WrappingComponentProps>
 ): any {
     const {
         dataLocation,
@@ -214,7 +228,8 @@ function mapPluginToData(
 function mapDataToChildren(
     data: any,
     reactChildrenDataLocation: string,
-    childOptions: ChildOptionItem[]
+    childOptions: ChildOptionItem[],
+    wrappingComponent?: React.ComponentType<WrappingComponentProps>
 ): any {
     if (typeof get(data, reactChildrenDataLocation) === "string") {
         return data;
@@ -232,7 +247,17 @@ function mapDataToChildren(
     const createElementArguments: ArgumentTypes<typeof React.createElement> =
         childOption === undefined
             ? [React.Fragment, key, subDataNormalized]
-            : [childOption.component, { ...key, ...subDataNormalized }];
+            : wrappingComponent !== undefined
+                ? [
+                      wrappingComponent,
+                      {
+                          schemaId: subSchemaId,
+                          absoluteDataLocation: reactChildrenDataLocation,
+                          ...key,
+                          ...subDataNormalized
+                      },
+                  ]
+                : [childOption.component, { ...key, ...subDataNormalized }];
 
     // This data mutation is intentional.
     // We don't clone data here because this function is always called on data that has previously been cloned. It also

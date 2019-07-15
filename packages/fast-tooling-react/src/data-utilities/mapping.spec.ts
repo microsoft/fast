@@ -1,6 +1,7 @@
 import "jest";
 import { get } from "lodash-es";
 import { ChildOptionItem, mapDataToComponent } from "./";
+import { WrappingComponentProps } from "./mapping";
 import {
     CodePreviewChildOption,
     CodePreviewConfig,
@@ -30,6 +31,11 @@ describe("mapDataToComponent", () => {
         { component: TextField, schema: textFieldSchema },
         { component: ChildrenWithRenderProp, schema: childrenWithPluginPropsSchema },
     ];
+    const WrappingComponent: React.FunctionComponent<WrappingComponentProps> = (
+        props: WrappingComponentProps
+    ): JSX.Element => {
+        return this.props.children;
+    };
 
     test("should map data to a child", () => {
         const textString: string = "Hello world";
@@ -105,6 +111,78 @@ describe("mapDataToComponent", () => {
         expect(typeof get(mappedData, "children[1].type")).toBe("function");
         expect(get(mappedData, "children[1].type.displayName")).toBe("Text field");
     });
+    test("should map data to wrapping component if provided", () => {
+        const data: any = {
+            children: {
+                id: childrenSchema.id,
+                props: {},
+            },
+        };
+        const mappedData: any = mapDataToComponent(
+            childrenSchema,
+            data,
+            childOptions,
+            [],
+            WrappingComponent
+        );
+
+        expect(mappedData.children.type).toBe(WrappingComponent);
+    });
+    test("should map data to nested wrapping component", () => {
+        const data: any = {
+            children: [
+                {
+                    id: childrenSchema.id,
+                    props: {
+                        children: {
+                            id: textFieldSchema.id,
+                            props: {},
+                        },
+                    },
+                },
+                {
+                    id: textFieldSchema.id,
+                    props: {},
+                },
+            ],
+        };
+
+        const mappedData: any = mapDataToComponent(
+            childrenSchema,
+            data,
+            childOptions,
+            [],
+            WrappingComponent
+        );
+
+        expect(get(mappedData, "children[0].type")).toBe(WrappingComponent);
+        expect(get(mappedData, "children[0].props.children.type")).toBe(
+            WrappingComponent
+        );
+        expect(get(mappedData, "children[0].props.children.props.children.displayName")).toBe(
+            "Text field"
+        );
+        // expect(typeof get(mappedData, "children[1].type")).toBe("function");
+        // expect(get(mappedData, "children[1].type.displayName")).toBe("Text field");
+    });
+    test("should map schemaId to props to wrapping component", () => {
+        const data: any = {
+            children: {
+                id: childrenSchema.id,
+                props: {},
+            },
+        };
+        const mappedData: any = mapDataToComponent(
+            childrenSchema,
+            data,
+            childOptions,
+            [],
+            WrappingComponent
+        );
+
+        expect(mappedData.children.props.schemaId).toBe(childrenSchema.id);
+    });
+
     test("should map simple data to a plugin", () => {
         const data: any = {
             boolean: true,
