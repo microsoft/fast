@@ -1,5 +1,11 @@
 import { findClosestSwatchIndex, PaletteType, swatchByMode } from "./palette";
-import { designSystemResolverMax, SwatchResolver } from "./common";
+import {
+    ColorRecipe,
+    colorRecipeFactory,
+    designSystemResolverMax,
+    Swatch,
+    SwatchResolver,
+} from "./common";
 import {
     neutralFillActiveDelta,
     neutralFillCardDelta,
@@ -9,7 +15,6 @@ import {
 import { add, multiply, subtract } from "@microsoft/fast-jss-utilities";
 import { DesignSystem, DesignSystemResolver } from "src/design-system";
 import { ColorRGBA64 } from "@microsoft/fast-colors";
-
 /**
  * @deprecated Use the recipes because they can be more dynamic for different ramps
  */
@@ -44,45 +49,55 @@ const darkNeutralLayerL4: DesignSystemResolver<number> = (
     return darkRefIndex;
 };
 
-export const neutralLayerL1: SwatchResolver = swatchByMode(PaletteType.neutral)(
-    0,
-    subtract(darkNeutralLayerL4, multiply(neutralFillCardDelta, 3))
+export const neutralLayerL1: ColorRecipe<Swatch> = colorRecipeFactory(
+    swatchByMode(PaletteType.neutral)(
+        0,
+        subtract(darkNeutralLayerL4, multiply(neutralFillCardDelta, 3))
+    )
 );
 
-export const neutralLayerL1Alt: SwatchResolver = swatchByMode(PaletteType.neutral)(
-    neutralFillCardDelta,
-    subtract(darkNeutralLayerL4, multiply(neutralFillCardDelta, 3))
+export const neutralLayerL1Alt: ColorRecipe<Swatch> = colorRecipeFactory(
+    swatchByMode(PaletteType.neutral)(
+        neutralFillCardDelta,
+        subtract(darkNeutralLayerL4, multiply(neutralFillCardDelta, 3))
+    )
 );
 
-export const neutralLayerL2: SwatchResolver = swatchByMode(PaletteType.neutral)(
-    designSystemResolverMax(
-        neutralFillRestDelta,
-        neutralFillHoverDelta,
-        neutralFillActiveDelta
-    ),
-    subtract(darkNeutralLayerL4, multiply(neutralFillCardDelta, 2))
-);
-
-export const neutralLayerL3: SwatchResolver = swatchByMode(PaletteType.neutral)(
-    add(
+export const neutralLayerL2: ColorRecipe<Swatch> = colorRecipeFactory(
+    swatchByMode(PaletteType.neutral)(
         designSystemResolverMax(
             neutralFillRestDelta,
             neutralFillHoverDelta,
             neutralFillActiveDelta
         ),
-        neutralFillCardDelta
-    ),
-    subtract(darkNeutralLayerL4, neutralFillCardDelta)
+        subtract(darkNeutralLayerL4, multiply(neutralFillCardDelta, 2))
+    )
 );
 
-export const neutralLayerL4: SwatchResolver = swatchByMode(PaletteType.neutral)(
-    add(
-        designSystemResolverMax(
-            neutralFillRestDelta,
-            neutralFillHoverDelta,
-            neutralFillActiveDelta
+export const neutralLayerL3: ColorRecipe<Swatch> = colorRecipeFactory(
+    swatchByMode(PaletteType.neutral)(
+        add(
+            designSystemResolverMax(
+                neutralFillRestDelta,
+                neutralFillHoverDelta,
+                neutralFillActiveDelta
+            ),
+            neutralFillCardDelta
         ),
-        multiply(neutralFillCardDelta, 2)
-    ),
-    darkNeutralLayerL4
+        subtract(darkNeutralLayerL4, neutralFillCardDelta)
+    )
+);
+
+export const neutralLayerL4: ColorRecipe<Swatch> = colorRecipeFactory(
+    swatchByMode(PaletteType.neutral)(
+        add(
+            designSystemResolverMax(
+                neutralFillRestDelta,
+                neutralFillHoverDelta,
+                neutralFillActiveDelta
+            ),
+            multiply(neutralFillCardDelta, 2)
+        ),
+        darkNeutralLayerL4
+    )
 );
