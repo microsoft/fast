@@ -1,4 +1,5 @@
 import React from "react";
+import ReactDOM from "react-dom";
 import Adapter from "enzyme-adapter-react-16";
 import { configure, mount, shallow } from "enzyme";
 import MSFTFlyout from "./flyout";
@@ -9,6 +10,7 @@ import {
     FlyoutUnhandledProps,
 } from "./index";
 import { DisplayNamePrefix } from "../utilities";
+import { Omit } from "utility-types";
 import { KeyCodes } from "@microsoft/fast-web-utilities";
 
 /*
@@ -26,6 +28,17 @@ describe("flyout", (): void => {
         flyout__horizontalInset: "flyout__horizontalInset",
         flyout__verticalInset: "flyout__verticalInset",
     };
+    const anchorElement: React.RefObject<HTMLDivElement> = React.createRef<
+        HTMLDivElement
+    >();
+    const FlyoutUpdateWrapper: (props: Omit<FlyoutProps, "anchor">) => JSX.Element = (props: Omit<FlyoutProps, "anchor">): JSX.Element => {
+        return (
+            <div>
+                <div ref={anchorElement} />
+                <MSFTFlyout anchor={anchorElement} {...props} />
+            </div>
+        );
+    };
 
     test("should have a displayName that matches the component name", () => {
         expect(`${DisplayNamePrefix}${(MSFTFlyout as any).name}`).toBe(
@@ -39,7 +52,7 @@ describe("flyout", (): void => {
         }).not.toThrow();
     });
 
-    test("should accent unhandledProps", (): void => {
+    test("should accept unhandledProps", (): void => {
         const unhandledProps: FlyoutUnhandledProps = {
             "aria-disabled": false,
         };
@@ -98,172 +111,181 @@ describe("flyout", (): void => {
         ).toEqual(describedby);
     });
 
-    // test("should call the `onDismiss` callback after a click event on the window when `visible` prop is true", () => {
-    //     const onDismiss: any = jest.fn();
-    //     const map: any = {};
+    test("should call the `onDismiss` callback after a click event on the window when `visible` prop is true", () => {
+        const onDismiss: any = jest.fn();
+        const map: any = {};
 
-    //     // Mock window.addEventListener
-    //     window.addEventListener = jest.fn((event: string, callback: any) => {
-    //         map[event] = callback;
-    //     });
+        // Mock window.addEventListener
+        window.addEventListener = jest.fn((event: string, callback: any) => {
+            map[event] = callback;
+        });
 
-    //     const rendered: any = mount(
-    //         <MSFTFlyout onDismiss={onDismiss} visible={true} />
-    //     );
+        const rendered: any = mount(
+            <div>
+                <div ref={anchorElement} />
+                <MSFTFlyout anchor={anchorElement} onDismiss={onDismiss} visible={true} />
+            </div>
+        );
 
-    //     map.click({});
+        map.click({});
 
-    //     expect(onDismiss).toHaveBeenCalledTimes(1);
-    // });
+        expect(onDismiss).toHaveBeenCalledTimes(1);
+    });
 
-    // test("should call the `onDismiss` callback when escape key is pressed and `visible` prop is true", () => {
-    //     const onDismiss: any = jest.fn();
-    //     const map: any = {};
+    test("should call the `onDismiss` callback when escape key is pressed and `visible` prop is true", () => {
+        const onDismiss: any = jest.fn();
+        const map: any = {};
 
-    //     // Mock window.addEventListener
-    //     window.addEventListener = jest.fn((event: string, callback: any) => {
-    //         map[event] = callback;
-    //     });
+        // Mock window.addEventListener
+        window.addEventListener = jest.fn((event: string, callback: any) => {
+            map[event] = callback;
+        });
 
-    //     const rendered: any = mount(
-    //         <MSFTFlyout onDismiss={onDismiss} visible={true} />
-    //     );
+        const rendered: any = mount(
+            <div>
+                <div ref={anchorElement} />
+                <MSFTFlyout anchor={anchorElement} onDismiss={onDismiss} visible={true} />
+            </div>
+        );
 
-    //     map.keydown({ keyCode: KeyCodes.escape });
+        map.keydown({ keyCode: KeyCodes.escape });
 
-    //     expect(onDismiss).toHaveBeenCalledTimes(1);
-    // });
+        expect(onDismiss).toHaveBeenCalledTimes(1);
+    });
 
-    // test("should remove keydown event listener for the `onDismiss` callback when component unmounts", () => {
-    //     const onDismiss: any = jest.fn();
-    //     const map: any = {};
+    test("should remove keydown event listener for the `onDismiss` callback when component unmounts", () => {
+        const onDismiss: any = jest.fn();
+        const map: any = {};
 
-    //     // Mock window.removeEventListener
-    //     window.removeEventListener = jest.fn((event: string, callback: any) => {
-    //         map[event] = callback;
-    //     });
+        // Mock window.removeEventListener
+        window.removeEventListener = jest.fn((event: string, callback: any) => {
+            map[event] = callback;
+        });
 
-    //     const rendered: any = mount(
-    //         <MSFTFlyout onDismiss={onDismiss} visible={true} />
-    //     );
+        const rendered: any = mount(
+            <div>
+                <div ref={anchorElement} />
+                <MSFTFlyout anchor={anchorElement} onDismiss={onDismiss} visible={true} />
+            </div>
+        );
 
-    //     rendered.unmount();
+        rendered.unmount();
 
-    //     map.keydown({ keyCode: KeyCodes.escape });
+        map.keydown({ keyCode: KeyCodes.escape });
 
-    //     expect(onDismiss).toHaveBeenCalledTimes(1);
-    // });
+        expect(onDismiss).toHaveBeenCalledTimes(1);
+    });
 
-    // test("should add keydown event listener for the `onDismiss` callback if `onDismiss` prop is added to the component", () => {
-    //     const onDismiss: any = jest.fn();
-    //     const map: any = {};
+    test("should add keydown event listener for the `onDismiss` callback if `onDismiss` prop is added to the component", () => {
+        const onDismiss: any = jest.fn();
+        const map: any = {};
 
-    //     // Mock window.addEventListener
-    //     window.addEventListener = jest.fn((event: string, callback: any) => {
-    //         map[event] = callback;
-    //     });
+        // Mock window.addEventListener
+        window.addEventListener = jest.fn((event: string, callback: any) => {
+            map[event] = callback;
+        });
 
-    //     const rendered: any = mount(
-    //         <MSFTFlyout visible={true} />
-    //     );
+        const rendered: any = mount(
+            <FlyoutUpdateWrapper visible={true} />
+        );
 
-    //     // map does not exist
-    //     /* tslint:disable-next-line:no-string-literal */
-    //     expect(map["keydown"]).toBe(undefined);
+        // map does not exist
+        /* tslint:disable-next-line:no-string-literal */
+        expect(map["keydown"]).toBe(undefined);
 
-    //     rendered.setProps({ onDismiss });
+        rendered.setProps({ onDismiss });
 
-    //     // map exists
-    //     map.keydown({ keyCode: KeyCodes.escape });
+        // map exists
+        map.keydown({ keyCode: KeyCodes.escape });
 
-    //     expect(onDismiss).toHaveBeenCalledTimes(1);
-    // });
+        expect(onDismiss).toHaveBeenCalledTimes(1);
+    });
 
-    // test("should add click event listener for the `onDismiss` callback if `onDismiss` prop is added to the component", () => {
-    //     const onDismiss: any = jest.fn();
-    //     const map: any = {};
+    test("should add click event listener for the `onDismiss` callback if `onDismiss` prop is added to the component", () => {
+        const onDismiss: any = jest.fn();
+        const map: any = {};
 
-    //     // Mock window.addEventListener
-    //     window.addEventListener = jest.fn((event: string, callback: any) => {
-    //         map[event] = callback;
-    //     });
+        // Mock window.addEventListener
+        window.addEventListener = jest.fn((event: string, callback: any) => {
+            map[event] = callback;
+        });
 
-    //     const rendered: any = mount(
-    //         <MSFTFlyout visible={true} />
-    //     );
+        const rendered: any = mount(
+            <FlyoutUpdateWrapper visible={true} />
+        );
 
-    //     // map does not exist
-    //     /* tslint:disable-next-line:no-string-literal */
-    //     expect(map["click"]).toBe(undefined);
+        // map does not exist
+        /* tslint:disable-next-line:no-string-literal */
+        expect(map["click"]).toBe(undefined);
 
-    //     rendered.setProps({ onDismiss });
+        rendered.setProps({ onDismiss });
 
-    //     // map exists
-    //     map.click({});
+        // map exists
+        map.click({});
 
-    //     expect(onDismiss).toHaveBeenCalledTimes(1);
-    // });
+        expect(onDismiss).toHaveBeenCalledTimes(1);
+    });
 
-    // test("should remove keydown event listener for the `onDismiss` callback if `onDismiss` prop is removed from the component", () => {
-    //     const onDismiss: any = jest.fn();
-    //     const map: any = {};
+    test("should remove keydown event listener for the `onDismiss` callback if `onDismiss` prop is removed from the component", () => {
+        const onDismiss: any = jest.fn();
+        const map: any = {};
 
-    //     // Mock window.addEventListener
-    //     window.addEventListener = jest.fn((event: string, callback: any) => {
-    //         map[event] = callback;
-    //     });
+        // Mock window.addEventListener
+        window.addEventListener = jest.fn((event: string, callback: any) => {
+            map[event] = callback;
+        });
 
-    //     // Mock window.removeEventListener
-    //     window.removeEventListener = jest.fn((event: string, callback: any) => {
-    //         map[event] = callback;
-    //     });
+        // Mock window.removeEventListener
+        window.removeEventListener = jest.fn((event: string, callback: any) => {
+            map[event] = callback;
+        });
 
-    //     const rendered: any = mount(
-    //         <MSFTFlyout onDismiss={onDismiss} visible={true} />
-    //     );
+        const rendered: any = mount(
+            <FlyoutUpdateWrapper onDismiss={onDismiss} visible={true} />
+        );
 
-    //     // map exists
-    //     map.keydown({ keyCode: KeyCodes.escape });
+        // map exists
+        map.keydown({ keyCode: KeyCodes.escape });
 
-    //     expect(onDismiss).toHaveBeenCalledTimes(1);
+        expect(onDismiss).toHaveBeenCalledTimes(1);
 
-    //     rendered.setProps({ onDismiss: void 0 });
+        rendered.setProps({ onDismiss: void 0 });
 
-    //     map.keydown({ keyCode: KeyCodes.escape });
+        map.keydown({ keyCode: KeyCodes.escape });
 
-    //     expect(onDismiss).toHaveBeenCalledTimes(1);
-    // });
+        expect(onDismiss).toHaveBeenCalledTimes(1);
+    });
 
-    // test("should remove click event listener for the `onDismiss` callback if `onDismiss` prop is removed from the component", () => {
-    //     const onDismiss: any = jest.fn();
-    //     const map: any = {};
+    test("should remove click event listener for the `onDismiss` callback if `onDismiss` prop is removed from the component", () => {
+        const onDismiss: any = jest.fn();
+        const map: any = {};
 
-    //     // Mock window.addEventListener
-    //     window.addEventListener = jest.fn((event: string, callback: any) => {
-    //         map[event] = callback;
-    //     });
+        // Mock window.addEventListener
+        window.addEventListener = jest.fn((event: string, callback: any) => {
+            map[event] = callback;
+        });
 
-    //     // Mock window.removeEventListener
-    //     window.removeEventListener = jest.fn((event: string, callback: any) => {
-    //         map[event] = callback;
-    //     });
+        // Mock window.removeEventListener
+        window.removeEventListener = jest.fn((event: string, callback: any) => {
+            map[event] = callback;
+        });
 
-    //     const rendered: any = mount(
-    //         <MSFTFlyout onDismiss={onDismiss} visible={true} />
-    //     );
+        const rendered: any = mount(
+            <FlyoutUpdateWrapper onDismiss={onDismiss} visible={true} />
+        );
 
-    //     // map exists
-    //     map.click({});
+        // map exists
+        map.click({});
 
-    //     expect(onDismiss).toHaveBeenCalledTimes(1);
+        expect(onDismiss).toHaveBeenCalledTimes(1);
 
-    //     rendered.setProps({ onDismiss: void 0 });
+        rendered.setProps({ onDismiss: void 0 });
 
-    //     /* tslint:disable-next-line:no-string-literal */
-    //     map.click({});
+        /* tslint:disable-next-line:no-string-literal */
+        map.click({});
 
-    //     expect(onDismiss).toHaveBeenCalledTimes(1);
-    // });
+        expect(onDismiss).toHaveBeenCalledTimes(1);
+    });
 
     test("should accept and render children", () => {
         const rendered: any = shallow(<MSFTFlyout>Children</MSFTFlyout>);

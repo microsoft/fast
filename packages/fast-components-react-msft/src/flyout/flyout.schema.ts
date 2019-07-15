@@ -4,6 +4,7 @@ export default {
     description: "A flyout component's schema definition.",
     type: "object",
     id: "@microsoft/fast-components-react-msft/flyout",
+    formPluginId: "@microsoft/fast-components-react-msft/flyout",
     properties: {
         visible: {
             title: "Visible",

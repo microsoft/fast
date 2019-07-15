@@ -1,5 +1,6 @@
 import { storiesOf } from "@storybook/react";
 import React, { useState } from "react";
+import ReactDOM from "react-dom";
 import { action } from "@storybook/addon-actions";
 import {
     Flyout,
@@ -35,13 +36,13 @@ class FlyoutTest extends React.Component<Omit<FlyoutProps, "anchor">, FlyoutTest
     public render(): JSX.Element {
         return (
             <React.Fragment>
-                <button
+                <AccentButton
                     ref={this.anchor}
                     onClick={this.updateFlyoutState}
                     style={{ margin: "0 auto" }}
                 >
                     Flyout anchor
-                </button>
+                </AccentButton>
                 {this.renderFlyout()}
             </React.Fragment>
         );
@@ -53,15 +54,16 @@ class FlyoutTest extends React.Component<Omit<FlyoutProps, "anchor">, FlyoutTest
         }
 
         const { children, visible, ...props }: Partial<FlyoutProps> = this.props;
+        const anchor: HTMLElement = ReactDOM.findDOMNode(this.anchor.current);
 
         return (
-            <Flyout anchor={this.anchor.current} visible={this.state.visible} {...props}>
+            <Flyout anchor={anchor} visible={this.state.visible} {...props}>
                 {children}
             </Flyout>
         );
     }
 
-    private updateFlyoutState = (e: React.MouseEvent<HTMLButtonElement>): void => {
+    private updateFlyoutState = (e: React.MouseEvent<any>): void => {
         this.setState({
             visible: !this.state.visible,
         });
@@ -71,11 +73,15 @@ class FlyoutTest extends React.Component<Omit<FlyoutProps, "anchor">, FlyoutTest
 storiesOf("Flyout", module)
     .add("Default", () => <FlyoutTest />)
     .add("with Children", () => (
-        <FlyoutTest onDismiss={e => console.log("soft dismiss")}>
+        <FlyoutTest>
             <Heading size={HeadingSize._5}>Flyout</Heading>
             <Paragraph size={ParagraphSize._3}>This is a flyout component.</Paragraph>
             <AccentButton>Accept</AccentButton>
         </FlyoutTest>
+    ))
+    .add("with soft dismiss", () => (
+        /* tslint:disable-next-line:jsx-no-lambda */
+        <FlyoutTest onDismiss={(): void => alert("soft dismiss")} />
     ))
     .add("with Height", () => <FlyoutTest height={"100px"} />)
     .add("with Width", () => <FlyoutTest width={"200px"} />)

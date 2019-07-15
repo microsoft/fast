@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { get } from "lodash-es";
+import { get, isNil } from "lodash-es";
 import { canUseDOM } from "exenv-es6";
 import { KeyCodes } from "@microsoft/fast-web-utilities";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
@@ -130,7 +130,7 @@ class Flyout extends Foundation<FlyoutHandledProps, FlyoutUnhandledProps, {}> {
      * React life-cycle method
      */
     public componentDidMount(): void {
-        if (canUseDOM() && this.props.onDismiss && this.props.visible) {
+        if (canUseDOM() && this.props.onDismiss) {
             window.addEventListener("keydown", this.handleWindowKeyDown);
             window.addEventListener("click", this.handleWindowClick);
         }
@@ -190,7 +190,8 @@ class Flyout extends Foundation<FlyoutHandledProps, FlyoutUnhandledProps, {}> {
     }
 
     private handleWindowClick = (event: MouseEvent): void => {
-        const anchor: HTMLElement = get(this.props.anchor, "current", this.props.anchor);
+        const anchor: React.RefObject<any> | HTMLElement = 
+            this.props.anchor instanceof HTMLElement ? this.props.anchor : this.props.anchor.current;
 
         if (
             typeof this.props.onDismiss === "function" &&
@@ -199,7 +200,7 @@ class Flyout extends Foundation<FlyoutHandledProps, FlyoutUnhandledProps, {}> {
             !ReactDOM.findDOMNode(anchor).contains(event.target)
         ) {
             this.props.onDismiss(event);
-        }
+        }        
     };
 
     private handleWindowKeyDown = (event: KeyboardEvent): void => {
