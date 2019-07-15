@@ -3,7 +3,8 @@ export default {
     title: "Slider",
     description: "A slider component's schema definition.",
     type: "object",
-    id: "slider",
+    id: "@microsoft/fast-components-react-msft/slider",
+    formPluginId: "@microsoft/fast-components-react-msft/slider",
     properties: {
         disabled: {
             title: "Disabled",
