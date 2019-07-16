@@ -1,9 +1,5 @@
 import "jest";
-import {
-    getNavigationFromData,
-    getUpdatedDataWithoutSourceData,
-    getUpdatedDataWithTargetData,
-} from "./navigation.utilities";
+import { getNavigationFromData, getUpdatedData } from "./navigation.utilities";
 import { NavigationDataType, TreeNavigation } from "./navigation.props";
 import { ChildOptionItem } from "../data-utilities";
 
@@ -54,9 +50,7 @@ describe("getNavigationFromData", () => {
         expect(navigationFromData[0].items[0].items).toEqual(void 0);
         expect(navigationFromData[0].items[0].dataLocation).toEqual("children");
         expect(navigationFromData[0].items[0].text).toEqual(childrenText);
-        expect(navigationFromData[0].items[0].type).toEqual(
-            NavigationDataType.childrenItem
-        );
+        expect(navigationFromData[0].items[0].type).toEqual(NavigationDataType.component);
     });
     test("should return a single item if a single child has been passed", () => {
         const data: any = {
@@ -81,9 +75,7 @@ describe("getNavigationFromData", () => {
         expect(navigationFromData[0].items[0].items).toEqual(void 0);
         expect(navigationFromData[0].items[0].dataLocation).toEqual("children.props");
         expect(navigationFromData[0].items[0].text).toEqual(childOptions[0].schema.title);
-        expect(navigationFromData[0].items[0].type).toEqual(
-            NavigationDataType.childrenItem
-        );
+        expect(navigationFromData[0].items[0].type).toEqual(NavigationDataType.component);
     });
     test("should return multiple items if multiple children have been passed", () => {
         const childrenText: string = "Bar";
@@ -115,21 +107,15 @@ describe("getNavigationFromData", () => {
         expect(navigationFromData[0].dataLocation).toEqual("children");
         expect(navigationFromData[0].items).toHaveLength(3);
         expect(navigationFromData[0].items[0].text).toEqual(childOptions[0].schema.title);
-        expect(navigationFromData[0].items[0].type).toEqual(
-            NavigationDataType.childrenItem
-        );
+        expect(navigationFromData[0].items[0].type).toEqual(NavigationDataType.component);
         expect(navigationFromData[0].items[0].dataLocation).toEqual("children.0.props");
         expect(navigationFromData[0].items[0].items).toEqual(void 0);
         expect(navigationFromData[0].items[1].text).toEqual(childOptions[0].schema.title);
-        expect(navigationFromData[0].items[1].type).toEqual(
-            NavigationDataType.childrenItem
-        );
+        expect(navigationFromData[0].items[1].type).toEqual(NavigationDataType.component);
         expect(navigationFromData[0].items[1].dataLocation).toEqual("children.1.props");
         expect(navigationFromData[0].items[1].items).toEqual(void 0);
         expect(navigationFromData[0].items[2].text).toEqual(childrenText);
-        expect(navigationFromData[0].items[2].type).toEqual(
-            NavigationDataType.childrenItem
-        );
+        expect(navigationFromData[0].items[2].type).toEqual(NavigationDataType.component);
         expect(navigationFromData[0].items[2].dataLocation).toEqual("children.2");
         expect(navigationFromData[0].items[2].items).toEqual(undefined);
     });
@@ -160,9 +146,7 @@ describe("getNavigationFromData", () => {
         expect(navigationFromData[0].items).toHaveLength(1);
         expect(navigationFromData[0].items[0].dataLocation).toEqual("children.props");
         expect(navigationFromData[0].items[0].text).toEqual(childOptions[1].schema.title);
-        expect(navigationFromData[0].items[0].type).toEqual(
-            NavigationDataType.childrenItem
-        );
+        expect(navigationFromData[0].items[0].type).toEqual(NavigationDataType.component);
         expect(navigationFromData[0].items[0].items).toHaveLength(1);
         expect(navigationFromData[0].items[0].items[0].dataLocation).toEqual(
             "children.props.children"
@@ -181,7 +165,7 @@ describe("getNavigationFromData", () => {
             childOptions[0].schema.title
         );
         expect(navigationFromData[0].items[0].items[0].items[0].type).toEqual(
-            NavigationDataType.childrenItem
+            NavigationDataType.component
         );
         expect(navigationFromData[0].items[0].items[0].items[0].items).toEqual(void 0);
     });
@@ -218,9 +202,7 @@ describe("getNavigationFromData", () => {
         expect(navigationFromData[0].items).toHaveLength(1);
         expect(navigationFromData[0].items[0].dataLocation).toEqual("children.props");
         expect(navigationFromData[0].items[0].text).toEqual(childOptions[1].schema.title);
-        expect(navigationFromData[0].items[0].type).toEqual(
-            NavigationDataType.childrenItem
-        );
+        expect(navigationFromData[0].items[0].type).toEqual(NavigationDataType.component);
         expect(navigationFromData[0].items[0].items).toHaveLength(1);
         expect(navigationFromData[0].items[0].items[0].dataLocation).toEqual(
             "children.props.children"
@@ -239,7 +221,7 @@ describe("getNavigationFromData", () => {
             childOptions[0].schema.title
         );
         expect(navigationFromData[0].items[0].items[0].items[0].type).toEqual(
-            NavigationDataType.childrenItem
+            NavigationDataType.component
         );
         expect(navigationFromData[0].items[0].items[0].items[0].items).toEqual(void 0);
         expect(navigationFromData[0].items[0].items[0].items[1].dataLocation).toEqual(
@@ -249,7 +231,7 @@ describe("getNavigationFromData", () => {
             childOptions[0].schema.title
         );
         expect(navigationFromData[0].items[0].items[0].items[1].type).toEqual(
-            NavigationDataType.childrenItem
+            NavigationDataType.component
         );
         expect(navigationFromData[0].items[0].items[0].items[1].items).toEqual(void 0);
     });
@@ -311,340 +293,482 @@ describe("getNavigationFromData", () => {
 });
 
 /**
- * Gets updated data by removing data from a path
- */
-describe("getUpdatedDataWithoutSourceData", () => {
-    test("should remove a string", () => {
-        const updatedData: any = getUpdatedDataWithoutSourceData(
-            {
-                foo: "a",
-            },
-            "foo"
-        );
-
-        expect(updatedData).toEqual({});
-    });
-    test("should remove a children item", () => {
-        const updatedData: any = getUpdatedDataWithoutSourceData(
-            {
-                foo: {
-                    id: "a",
-                    props: {},
-                },
-            },
-            "foo"
-        );
-
-        expect(updatedData).toEqual({});
-    });
-    test("should remove a react children item from an array", () => {
-        const updatedData: any = getUpdatedDataWithoutSourceData(
-            {
-                foo: [
-                    {
-                        id: "a",
-                        props: {},
-                    },
-                    "b",
-                ],
-            },
-            "foo.0.props"
-        );
-
-        expect(updatedData).toEqual({ foo: "b" });
-    });
-    test("should remove a string children item from an array", () => {
-        const updatedData: any = getUpdatedDataWithoutSourceData(
-            {
-                foo: [
-                    {
-                        id: "a",
-                        props: {},
-                    },
-                    "b",
-                ],
-            },
-            "foo.1"
-        );
-
-        expect(updatedData).toEqual({
-            foo: {
-                id: "a",
-                props: {},
-            },
-        });
-    });
-});
-
-/**
  * Gets updated data by adding data
  */
-describe("getUpdatedDataWithTargetData", () => {
-    describe("should return updated data when moving a children item to a children property", () => {
+describe("getUpdatedData", () => {
+    describe("should return updated data when moving a children item to a component", () => {
         test("when the children property contains a string and targets a string", () => {
-            const updatedData: any = getUpdatedDataWithTargetData({
+            const updatedData: any = getUpdatedData({
                 data: {
                     foo: "b",
+                    bar: "a",
                 },
-                updatedSourceData: "a",
                 targetDataLocation: "foo",
                 sourceDataLocation: "bar",
-                type: NavigationDataType.childrenItem,
-                direction: null,
+                type: NavigationDataType.component,
+                direction: VerticalDragDirection.center,
             });
 
-            expect(updatedData.foo).toEqual(["b", "a"]);
+            expect(updatedData).toEqual({ foo: ["a", "b"] });
         });
         test("when the children property contains a string and targets a react child", () => {
-            const updatedData: any = getUpdatedDataWithTargetData({
+            const updatedData: any = getUpdatedData({
                 data: {
                     foo: {
                         id: "b",
                         props: {},
                     },
+                    bar: "a",
                 },
-                updatedSourceData: "a",
-                targetDataLocation: "foo.props",
+                targetDataLocation: "foo",
                 sourceDataLocation: "bar",
-                type: NavigationDataType.childrenItem,
-                direction: null,
+                type: NavigationDataType.component,
+                direction: VerticalDragDirection.center,
             });
 
-            expect(updatedData.foo).toEqual([
-                {
-                    id: "b",
-                    props: {},
-                },
-                "a",
-            ]);
+            expect(updatedData).toEqual({
+                foo: [
+                    "a",
+                    {
+                        id: "b",
+                        props: {},
+                    },
+                ],
+            });
         });
         test("when the children property contains a react child and targets a react child", () => {
-            const updatedData: any = getUpdatedDataWithTargetData({
+            const updatedData: any = getUpdatedData({
                 data: {
                     foo: {
                         id: "bar",
                         props: {},
                     },
-                },
-                updatedSourceData: {
-                    id: "a",
-                },
-                targetDataLocation: "foo.props",
-                sourceDataLocation: "bar",
-                type: NavigationDataType.childrenItem,
-                direction: null,
-            });
-
-            expect(updatedData.foo).toEqual([
-                {
-                    id: "bar",
-                    props: {},
-                },
-                {
-                    id: "a",
-                },
-            ]);
-        });
-        test("when the children property contains a react child and targets a string", () => {
-            const updatedData: any = getUpdatedDataWithTargetData({
-                data: {
-                    foo: "a",
-                },
-                updatedSourceData: {
-                    id: "b",
-                    props: {},
+                    bar: {
+                        id: "a",
+                    },
                 },
                 targetDataLocation: "foo",
                 sourceDataLocation: "bar",
-                type: NavigationDataType.childrenItem,
-                direction: null,
+                type: NavigationDataType.component,
+                direction: VerticalDragDirection.center,
             });
 
-            expect(updatedData.foo).toEqual([
-                "a",
-                {
+            expect(updatedData).toEqual({
+                foo: [
+                    {
+                        id: "a",
+                    },
+                    {
+                        id: "bar",
+                        props: {},
+                    },
+                ],
+            });
+        });
+        test("when the children property contains a react child and targets a string", () => {
+            const updatedData: any = getUpdatedData({
+                data: {
+                    foo: "a",
+                    bar: {
+                        id: "b",
+                        props: {},
+                    },
+                },
+                targetDataLocation: "foo",
+                sourceDataLocation: "bar",
+                type: NavigationDataType.component,
+                direction: VerticalDragDirection.center,
+            });
+
+            expect(updatedData).toEqual({
+                foo: [
+                    {
+                        id: "b",
+                        props: {},
+                    },
+                    "a",
+                ],
+            });
+        });
+        test("when the children property is undefined", () => {
+            const updatedData: any = getUpdatedData({
+                data: {
+                    bar: {
+                        id: "b",
+                        props: {},
+                    },
+                },
+                targetDataLocation: "foo",
+                sourceDataLocation: "bar",
+                type: NavigationDataType.component,
+                direction: VerticalDragDirection.center,
+            });
+
+            expect(updatedData).toEqual({
+                foo: {
                     id: "b",
                     props: {},
                 },
-            ]);
+            });
+        });
+        test("when the children property is in an array and targets on a single child", () => {
+            const updatedData: any = getUpdatedData({
+                data: {
+                    foo: ["a", "b"],
+                    bar: {
+                        id: "b",
+                        props: {},
+                    },
+                },
+                targetDataLocation: "bar",
+                sourceDataLocation: "foo.1",
+                type: NavigationDataType.component,
+                direction: VerticalDragDirection.center,
+            });
+
+            expect(updatedData).toEqual({
+                foo: "a",
+                bar: [
+                    "b",
+                    {
+                        id: "b",
+                        props: {},
+                    },
+                ],
+            });
+        });
+        test("when the children property is in an array and targets above a single child", () => {
+            const updatedData: any = getUpdatedData({
+                data: {
+                    foo: ["a", "b"],
+                    bar: {
+                        id: "b",
+                        props: {},
+                    },
+                },
+                targetDataLocation: "bar",
+                sourceDataLocation: "foo.1",
+                type: NavigationDataType.component,
+                direction: VerticalDragDirection.up,
+            });
+
+            expect(updatedData).toEqual({
+                foo: "a",
+                bar: [
+                    "b",
+                    {
+                        id: "b",
+                        props: {},
+                    },
+                ],
+            });
+        });
+        test("when the children property is in an array and targets below a single child", () => {
+            const updatedData: any = getUpdatedData({
+                data: {
+                    foo: ["a", "b"],
+                    bar: {
+                        id: "b",
+                        props: {},
+                    },
+                },
+                targetDataLocation: "bar",
+                sourceDataLocation: "foo.1",
+                type: NavigationDataType.component,
+                direction: VerticalDragDirection.down,
+            });
+
+            expect(updatedData).toEqual({
+                foo: "a",
+                bar: [
+                    {
+                        id: "b",
+                        props: {},
+                    },
+                    "b",
+                ],
+            });
+        });
+        test("when the children property is in an array and the target is in a different array", () => {
+            const updatedData: any = getUpdatedData({
+                data: {
+                    foo: ["a", "b"],
+                    bar: [
+                        {
+                            id: "b",
+                            props: {},
+                        },
+                        "c",
+                    ],
+                },
+                targetDataLocation: "bar",
+                sourceDataLocation: "foo.1",
+                type: NavigationDataType.component,
+                direction: VerticalDragDirection.center,
+            });
+
+            expect(updatedData).toEqual({
+                foo: "a",
+                bar: [
+                    "b",
+                    {
+                        id: "b",
+                        props: {},
+                    },
+                    "c",
+                ],
+            });
+        });
+        test("when the children property is in an array and the target is above an item in a different array", () => {
+            const updatedData: any = getUpdatedData({
+                data: {
+                    foo: ["a", "b"],
+                    bar: [
+                        {
+                            id: "b",
+                            props: {},
+                        },
+                        "c",
+                    ],
+                },
+                targetDataLocation: "bar.1",
+                sourceDataLocation: "foo.1",
+                type: NavigationDataType.component,
+                direction: VerticalDragDirection.up,
+            });
+
+            expect(updatedData).toEqual({
+                foo: "a",
+                bar: [
+                    {
+                        id: "b",
+                        props: {},
+                    },
+                    "b",
+                    "c",
+                ],
+            });
+        });
+        test("when the children property is in an array and the target is below an item in a different array", () => {
+            const updatedData: any = getUpdatedData({
+                data: {
+                    foo: ["a", "b"],
+                    bar: [
+                        {
+                            id: "b",
+                            props: {},
+                        },
+                        "c",
+                    ],
+                },
+                targetDataLocation: "bar.1",
+                sourceDataLocation: "foo.1",
+                type: NavigationDataType.component,
+                direction: VerticalDragDirection.down,
+            });
+
+            expect(updatedData).toEqual({
+                foo: "a",
+                bar: [
+                    {
+                        id: "b",
+                        props: {},
+                    },
+                    "c",
+                    "b",
+                ],
+            });
         });
     });
     describe("should return updated data when moving a children item adjacent to a children item", () => {
         describe("containing string(s)", () => {
             test("when the children item targets a different children property above the existing item", () => {
-                const updatedData: any = getUpdatedDataWithTargetData({
+                const updatedData: any = getUpdatedData({
                     data: {
                         foo: "b",
+                        bar: "a",
                     },
-                    updatedSourceData: "a",
                     targetDataLocation: "foo",
                     sourceDataLocation: "bar",
-                    type: NavigationDataType.childrenItem,
+                    type: NavigationDataType.component,
                     direction: VerticalDragDirection.up,
                 });
 
                 expect(updatedData.foo).toEqual(["a", "b"]);
             });
             test("when the children item targets a different children property above the existing item", () => {
-                const updatedData: any = getUpdatedDataWithTargetData({
+                const updatedData: any = getUpdatedData({
                     data: {
                         foo: "b",
+                        bar: "a",
                     },
-                    updatedSourceData: "a",
                     targetDataLocation: "foo",
                     sourceDataLocation: "bar",
-                    type: NavigationDataType.childrenItem,
+                    type: NavigationDataType.component,
                     direction: VerticalDragDirection.down,
                 });
 
                 expect(updatedData.foo).toEqual(["b", "a"]);
             });
-            test("when the children item targets a different children property array", () => {
-                const updatedData: any = getUpdatedDataWithTargetData({
+            test("when the children item targets a different children property array above an item", () => {
+                const updatedData: any = getUpdatedData({
                     data: {
-                        foo: ["b", "c"],
+                        foo: ["a", "b", "c"],
+                        bar: "d",
                     },
-                    updatedSourceData: "a",
-                    targetDataLocation: "foo",
+                    targetDataLocation: "foo.1",
                     sourceDataLocation: "bar",
-                    type: NavigationDataType.children,
-                    direction: null,
+                    type: NavigationDataType.component,
+                    direction: VerticalDragDirection.up,
+                });
+
+                expect(updatedData).toEqual({ foo: ["a", "d", "b", "c"] });
+            });
+            test("when the children item targets a different children property array below an item", () => {
+                const updatedData: any = getUpdatedData({
+                    data: {
+                        foo: ["a", "b", "c"],
+                        bar: "d",
+                    },
+                    targetDataLocation: "foo.1",
+                    sourceDataLocation: "bar",
+                    type: NavigationDataType.component,
+                    direction: VerticalDragDirection.down,
+                });
+
+                expect(updatedData).toEqual({ foo: ["a", "b", "d", "c"] });
+            });
+            test("when the children item targets the same children property array", () => {
+                const updatedData: any = getUpdatedData({
+                    data: {
+                        foo: ["a", "b", "c"],
+                    },
+                    targetDataLocation: "foo.0",
+                    sourceDataLocation: "foo.2",
+                    type: NavigationDataType.component,
+                    direction: VerticalDragDirection.down,
+                });
+
+                expect(updatedData).toEqual({ foo: ["a", "c", "b"] });
+            });
+            test("when the children item targets the same children property array above an item", () => {
+                const updatedData: any = getUpdatedData({
+                    data: {
+                        foo: ["a", "b", "c"],
+                    },
+                    targetDataLocation: "foo.0",
+                    sourceDataLocation: "foo.2",
+                    type: NavigationDataType.component,
+                    direction: VerticalDragDirection.up,
+                });
+
+                expect(updatedData).toEqual({ foo: ["c", "a", "b"] });
+            });
+            test("when the children item targets the same children property array below an item", () => {
+                const updatedData: any = getUpdatedData({
+                    data: {
+                        foo: ["a", "b", "c"],
+                    },
+                    targetDataLocation: "foo.0",
+                    sourceDataLocation: "foo.2",
+                    type: NavigationDataType.component,
+                    direction: VerticalDragDirection.down,
+                });
+
+                expect(updatedData.foo).toEqual(["a", "c", "b"]);
+            });
+            test("when the children items target the same children property array below the source item", () => {
+                const updatedData: any = getUpdatedData({
+                    data: {
+                        foo: ["a", "b", "c"],
+                    },
+                    targetDataLocation: "foo.1",
+                    sourceDataLocation: "foo.0",
+                    type: NavigationDataType.component,
+                    direction: VerticalDragDirection.down,
+                });
+
+                expect(updatedData.foo).toEqual(["b", "a", "c"]);
+            });
+            test("when the children items target the same children property array at the end of the source item", () => {
+                const updatedData: any = getUpdatedData({
+                    data: {
+                        foo: ["a", "b", "c"],
+                    },
+                    targetDataLocation: "foo.2",
+                    sourceDataLocation: "foo.0",
+                    type: NavigationDataType.component,
+                    direction: VerticalDragDirection.down,
                 });
 
                 expect(updatedData.foo).toEqual(["b", "c", "a"]);
             });
-            test("when the children item targets a different children property array above an item", () => {
-                const updatedData: any = getUpdatedDataWithTargetData({
-                    data: {
-                        foo: ["a", "b", "c"],
-                    },
-                    updatedSourceData: "d",
-                    targetDataLocation: "foo.1",
-                    sourceDataLocation: "bar",
-                    type: NavigationDataType.childrenItem,
-                    direction: VerticalDragDirection.up,
-                });
-
-                expect(updatedData.foo).toEqual(["a", "d", "b", "c"]);
-            });
-            test("when the children item targets a different children property array below an item", () => {
-                const updatedData: any = getUpdatedDataWithTargetData({
-                    data: {
-                        foo: ["a", "b", "c"],
-                    },
-                    updatedSourceData: "d",
-                    targetDataLocation: "foo.1",
-                    sourceDataLocation: "bar",
-                    type: NavigationDataType.childrenItem,
-                    direction: VerticalDragDirection.down,
-                });
-
-                expect(updatedData.foo).toEqual(["a", "b", "d", "c"]);
-            });
-            test("when the children item targets the same children property array", () => {
-                const updatedData: any = getUpdatedDataWithTargetData({
-                    data: {
-                        foo: ["a", "b"],
-                    },
-                    updatedSourceData: "c",
-                    targetDataLocation: "foo.0",
-                    sourceDataLocation: "foo.2",
-                    type: NavigationDataType.childrenItem,
-                    direction: null,
-                });
-
-                expect(updatedData.foo).toEqual(["a", "c", "b"]);
-            });
-            test("when the children item targets the same children property array above an item", () => {
-                const updatedData: any = getUpdatedDataWithTargetData({
-                    data: {
-                        foo: ["a", "b"],
-                    },
-                    updatedSourceData: "c",
-                    targetDataLocation: "foo.0",
-                    sourceDataLocation: "foo.2",
-                    type: NavigationDataType.childrenItem,
-                    direction: VerticalDragDirection.up,
-                });
-
-                expect(updatedData.foo).toEqual(["c", "a", "b"]);
-            });
-            test("when the children item targets the same children property array below an item", () => {
-                const updatedData: any = getUpdatedDataWithTargetData({
-                    data: {
-                        foo: ["a", "b"],
-                    },
-                    updatedSourceData: "c",
-                    targetDataLocation: "foo.0",
-                    sourceDataLocation: "foo.2",
-                    type: NavigationDataType.childrenItem,
-                    direction: VerticalDragDirection.down,
-                });
-
-                expect(updatedData.foo).toEqual(["a", "c", "b"]);
-            });
         });
         describe("containing children item(s)", () => {
             test("when the children item targets a different children property above the existing item", () => {
-                const updatedData: any = getUpdatedDataWithTargetData({
+                const updatedData: any = getUpdatedData({
                     data: {
                         foo: {
                             id: "b",
                             props: {},
                         },
+                        bar: {
+                            id: "a",
+                            props: {},
+                        },
                     },
-                    updatedSourceData: {
-                        id: "a",
-                        props: {},
-                    },
-                    targetDataLocation: "foo.props",
+                    targetDataLocation: "foo",
                     sourceDataLocation: "bar",
-                    type: NavigationDataType.childrenItem,
+                    type: NavigationDataType.component,
                     direction: VerticalDragDirection.up,
                 });
 
-                expect(updatedData.foo).toEqual([
-                    {
-                        id: "a",
-                        props: {},
-                    },
-                    {
-                        id: "b",
-                        props: {},
-                    },
-                ]);
+                expect(updatedData).toEqual({
+                    foo: [
+                        {
+                            id: "a",
+                            props: {},
+                        },
+                        {
+                            id: "b",
+                            props: {},
+                        },
+                    ],
+                });
             });
             test("when the children item targets a different children property above the existing item", () => {
-                const updatedData: any = getUpdatedDataWithTargetData({
+                const updatedData: any = getUpdatedData({
                     data: {
                         foo: {
                             id: "b",
                             props: {},
                         },
+                        bar: {
+                            id: "a",
+                            props: {},
+                        },
                     },
-                    updatedSourceData: {
-                        id: "a",
-                        props: {},
-                    },
-                    targetDataLocation: "foo.props",
+                    targetDataLocation: "foo",
                     sourceDataLocation: "bar",
-                    type: NavigationDataType.childrenItem,
+                    type: NavigationDataType.component,
                     direction: VerticalDragDirection.down,
                 });
 
-                expect(updatedData.foo).toEqual([
-                    {
-                        id: "b",
-                        props: {},
-                    },
-                    {
-                        id: "a",
-                        props: {},
-                    },
-                ]);
+                expect(updatedData).toEqual({
+                    foo: [
+                        {
+                            id: "b",
+                            props: {},
+                        },
+                        {
+                            id: "a",
+                            props: {},
+                        },
+                    ],
+                });
             });
             test("when the children item targets a different children property array", () => {
-                const updatedData: any = getUpdatedDataWithTargetData({
+                const updatedData: any = getUpdatedData({
                     data: {
                         foo: [
                             {
@@ -656,34 +780,36 @@ describe("getUpdatedDataWithTargetData", () => {
                                 props: {},
                             },
                         ],
+                        bar: {
+                            id: "a",
+                            props: {},
+                        },
                     },
-                    updatedSourceData: {
-                        id: "a",
-                        props: {},
-                    },
-                    targetDataLocation: "foo.1.props",
+                    targetDataLocation: "foo.1",
                     sourceDataLocation: "bar",
-                    type: NavigationDataType.childrenItem,
+                    type: NavigationDataType.component,
                     direction: VerticalDragDirection.down,
                 });
 
-                expect(updatedData.foo).toEqual([
-                    {
-                        id: "b",
-                        props: {},
-                    },
-                    {
-                        id: "c",
-                        props: {},
-                    },
-                    {
-                        id: "a",
-                        props: {},
-                    },
-                ]);
+                expect(updatedData).toEqual({
+                    foo: [
+                        {
+                            id: "b",
+                            props: {},
+                        },
+                        {
+                            id: "c",
+                            props: {},
+                        },
+                        {
+                            id: "a",
+                            props: {},
+                        },
+                    ],
+                });
             });
             test("when the children item targets a different children property array above an item", () => {
-                const updatedData: any = getUpdatedDataWithTargetData({
+                const updatedData: any = getUpdatedData({
                     data: {
                         foo: [
                             {
@@ -699,38 +825,40 @@ describe("getUpdatedDataWithTargetData", () => {
                                 props: {},
                             },
                         ],
+                        bar: {
+                            id: "d",
+                            props: {},
+                        },
                     },
-                    updatedSourceData: {
-                        id: "d",
-                        props: {},
-                    },
-                    targetDataLocation: "foo.1.props",
+                    targetDataLocation: "foo.1",
                     sourceDataLocation: "bar",
-                    type: NavigationDataType.childrenItem,
+                    type: NavigationDataType.component,
                     direction: VerticalDragDirection.up,
                 });
 
-                expect(updatedData.foo).toEqual([
-                    {
-                        id: "a",
-                        props: {},
-                    },
-                    {
-                        id: "d",
-                        props: {},
-                    },
-                    {
-                        id: "b",
-                        props: {},
-                    },
-                    {
-                        id: "c",
-                        props: {},
-                    },
-                ]);
+                expect(updatedData).toEqual({
+                    foo: [
+                        {
+                            id: "a",
+                            props: {},
+                        },
+                        {
+                            id: "d",
+                            props: {},
+                        },
+                        {
+                            id: "b",
+                            props: {},
+                        },
+                        {
+                            id: "c",
+                            props: {},
+                        },
+                    ],
+                });
             });
             test("when the children item targets a different children property array below an item", () => {
-                const updatedData: any = getUpdatedDataWithTargetData({
+                const updatedData: any = getUpdatedData({
                     data: {
                         foo: [
                             {
@@ -746,14 +874,14 @@ describe("getUpdatedDataWithTargetData", () => {
                                 props: {},
                             },
                         ],
+                        bar: {
+                            id: "d",
+                            props: {},
+                        },
                     },
-                    updatedSourceData: {
-                        id: "d",
-                        props: {},
-                    },
-                    targetDataLocation: "foo.1.props",
+                    targetDataLocation: "foo.1",
                     sourceDataLocation: "bar",
-                    type: NavigationDataType.childrenItem,
+                    type: NavigationDataType.component,
                     direction: VerticalDragDirection.down,
                 });
 
@@ -777,9 +905,13 @@ describe("getUpdatedDataWithTargetData", () => {
                 ]);
             });
             test("when the children item targets the same children property array", () => {
-                const updatedData: any = getUpdatedDataWithTargetData({
+                const updatedData: any = getUpdatedData({
                     data: {
                         foo: [
+                            {
+                                id: "c",
+                                props: {},
+                            },
                             {
                                 id: "a",
                                 props: {},
@@ -790,19 +922,15 @@ describe("getUpdatedDataWithTargetData", () => {
                             },
                         ],
                     },
-                    updatedSourceData: {
-                        id: "c",
-                        props: {},
-                    },
-                    targetDataLocation: "foo.0.props",
-                    sourceDataLocation: "foo.2.props",
-                    type: NavigationDataType.childrenItem,
-                    direction: null,
+                    targetDataLocation: "foo.0",
+                    sourceDataLocation: "foo.2",
+                    type: NavigationDataType.component,
+                    direction: VerticalDragDirection.up,
                 });
 
                 expect(updatedData.foo).toEqual([
                     {
-                        id: "a",
+                        id: "b",
                         props: {},
                     },
                     {
@@ -810,13 +938,13 @@ describe("getUpdatedDataWithTargetData", () => {
                         props: {},
                     },
                     {
-                        id: "b",
+                        id: "a",
                         props: {},
                     },
                 ]);
             });
             test("when the children item targets the same children property array above an item", () => {
-                const updatedData: any = getUpdatedDataWithTargetData({
+                const updatedData: any = getUpdatedData({
                     data: {
                         foo: [
                             {
@@ -827,15 +955,15 @@ describe("getUpdatedDataWithTargetData", () => {
                                 id: "b",
                                 props: {},
                             },
+                            {
+                                id: "c",
+                                props: {},
+                            },
                         ],
                     },
-                    updatedSourceData: {
-                        id: "c",
-                        props: {},
-                    },
-                    targetDataLocation: "foo.0.props",
-                    sourceDataLocation: "foo.2.props",
-                    type: NavigationDataType.childrenItem,
+                    targetDataLocation: "foo.0",
+                    sourceDataLocation: "foo.2",
+                    type: NavigationDataType.component,
                     direction: VerticalDragDirection.up,
                 });
 
@@ -855,7 +983,7 @@ describe("getUpdatedDataWithTargetData", () => {
                 ]);
             });
             test("when the children item targets the same children property array below an item", () => {
-                const updatedData: any = getUpdatedDataWithTargetData({
+                const updatedData: any = getUpdatedData({
                     data: {
                         foo: [
                             {
@@ -866,15 +994,15 @@ describe("getUpdatedDataWithTargetData", () => {
                                 id: "b",
                                 props: {},
                             },
+                            {
+                                id: "c",
+                                props: {},
+                            },
                         ],
                     },
-                    updatedSourceData: {
-                        id: "c",
-                        props: {},
-                    },
-                    targetDataLocation: "foo.0.props",
-                    sourceDataLocation: "foo.2.props",
-                    type: NavigationDataType.childrenItem,
+                    targetDataLocation: "foo.0",
+                    sourceDataLocation: "foo.2",
+                    type: NavigationDataType.component,
                     direction: VerticalDragDirection.down,
                 });
 

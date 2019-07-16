@@ -3,6 +3,7 @@ import { NavigationDataType } from "./navigation.props";
 export enum VerticalDragDirection {
     up,
     down,
+    center,
 }
 
 export interface NavigationTreeItemProps

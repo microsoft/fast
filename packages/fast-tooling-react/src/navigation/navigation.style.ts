@@ -11,7 +11,11 @@ import {
 export interface NavigationClassNameContract {
     navigation?: string;
     navigation_item?: string;
+    /**
+     * @deprecated
+     */
     navigation_item__childItem?: string;
+    navigation_item__component?: string;
     navigation_item__draggable?: string;
     navigation_item__dragging?: string;
     navigation_itemContent?: string;
@@ -66,6 +70,11 @@ const styles: ComponentStyles<NavigationClassNameContract, {}> = {
         },
     },
     navigation_item__childItem: {
+        "& > $navigation_itemContent": {
+            fontStyle: "normal",
+        },
+    },
+    navigation_item__component: {
         "& > $navigation_itemContent": {
             fontStyle: "normal",
         },

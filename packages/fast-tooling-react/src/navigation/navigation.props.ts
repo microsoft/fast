@@ -6,7 +6,7 @@ export enum NavigationDataType {
     object = "object",
     array = "array",
     children = "children",
-    childrenItem = "childrenItem",
+    component = "component",
 }
 
 export interface NavigationState {
@@ -39,6 +39,11 @@ export interface NavigationState {
      * The hovered location after
      */
     dragHoverAfterDataLocation: null | string;
+
+    /**
+     * The hovered location center
+     */
+    dragHoverCenterDataLocation: null | string;
 }
 
 export interface TreeNavigation {
