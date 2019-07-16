@@ -1,17 +1,5 @@
 import React from "react";
-
-export enum Icon {
-    play = "play",
-    pause = "pause",
-    robot = "robot",
-    user = "user",
-    arrow = "arrow",
-    download = "download",
-}
-
-export interface GlyphProps {
-    path: Icon;
-}
+import { GlyphProps, Icon } from "./glyph.props";
 
 /**
  * A stand-in for any SVG svg element
