@@ -52,8 +52,7 @@ export function mapDataToComponent(
     schema: any,
     data: any,
     childOptions: ChildOptionItem[] = [],
-    plugins: Array<Plugin<PluginProps>> = [],
-    wrappingComponent?: React.ComponentType<WrappingComponentProps>
+    plugins: Array<Plugin<PluginProps>> = []
 ): any {
     const mappedData: any = cloneDeep(data);
     const reactChildrenDataLocations: string[] =
@@ -90,8 +89,7 @@ export function mapDataToComponent(
                     mappedDataLocation,
                     mappedDataReduced,
                     plugins,
-                    childOptions,
-                    wrappingComponent
+                    childOptions
                 ),
             mappedData
         );
@@ -160,7 +158,6 @@ function resolveData(
     data: any,
     plugins: Array<Plugin<PluginProps>>,
     childOptions: ChildOptionItem[],
-    wrappingComponent?: React.ComponentType<WrappingComponentProps>
 ): any {
     switch (mappedDataLocation.mappingType) {
         case DataResolverType.plugin:
@@ -168,16 +165,14 @@ function resolveData(
                 mappedDataLocation as PluginLocation,
                 data,
                 plugins,
-                childOptions,
-                wrappingComponent
+                childOptions
             );
         case DataResolverType.component:
         default:
             return mapDataToChildren(
                 data,
                 mappedDataLocation.dataLocation,
-                childOptions,
-                wrappingComponent
+                childOptions
             );
     }
 }
@@ -247,17 +242,7 @@ function mapDataToChildren(
     const createElementArguments: ArgumentTypes<typeof React.createElement> =
         childOption === undefined
             ? [React.Fragment, key, subDataNormalized]
-            : wrappingComponent !== undefined
-                ? [
-                      wrappingComponent,
-                      {
-                          schemaId: subSchemaId,
-                          absoluteDataLocation: reactChildrenDataLocation,
-                          ...key,
-                          ...subDataNormalized
-                      },
-                  ]
-                : [childOption.component, { ...key, ...subDataNormalized }];
+            : [childOption.component, { ...key, ...subDataNormalized }];
 
     // This data mutation is intentional.
     // We don't clone data here because this function is always called on data that has previously been cloned. It also
