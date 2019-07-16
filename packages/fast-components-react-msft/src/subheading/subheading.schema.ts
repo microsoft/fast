@@ -1,5 +1,5 @@
 export default {
-    $schema: "http://json.schema.org/schema#",
+    $schema: "http://json-schema.org/schema#",
     title: "Subheading",
     description: "A Subheading component's schema definition",
     type: "object",
