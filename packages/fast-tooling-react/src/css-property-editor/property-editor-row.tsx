@@ -139,10 +139,7 @@ export default class CSSPropertyEditorRow extends Foundation<
      */
     private handleNameInputChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
         const newName: string = e.target.value;
-        if (
-            typeof this.props.onPropertyNameChange === "function" &&
-            this.props.cssPropertyName !== newName
-        ) {
+        if (this.props.cssPropertyName !== newName) {
             this.props.onPropertyNameChange(
                 camelCase(newName),
                 this.props.cssPropertyName,
@@ -156,10 +153,7 @@ export default class CSSPropertyEditorRow extends Foundation<
      */
     private handleValueInputChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
         const newValue: string = e.target.value;
-        if (
-            typeof this.props.onValueChange === "function" &&
-            this.props.value !== newValue
-        ) {
+        if (this.props.value !== newValue) {
             this.props.onValueChange(
                 newValue,
                 this.props.cssPropertyName,
@@ -172,21 +166,17 @@ export default class CSSPropertyEditorRow extends Foundation<
      *  Handle focus events
      */
     private handleFocus = (): void => {
-        if (typeof this.props.onRowFocus === "function") {
-            this.props.onRowFocus(this.props.cssPropertyName, this.props.rowIndex);
-        }
+        this.props.onRowFocus(this.props.cssPropertyName, this.props.rowIndex);
     };
 
     /**
      *  key input has lost focus
      */
     private handleNameInputBlur = (e: React.FocusEvent<HTMLInputElement>): void => {
-        if (typeof this.props.onCommitPropertyNameEdit === "function") {
-            this.props.onCommitPropertyNameEdit(
-                this.props.cssPropertyName,
-                this.props.rowIndex
-            );
-        }
+        this.props.onCommitPropertyNameEdit(
+            this.props.cssPropertyName,
+            this.props.rowIndex
+        );
 
         this.checkForRowBlur(e);
     };
@@ -203,7 +193,6 @@ export default class CSSPropertyEditorRow extends Foundation<
      */
     private checkForRowBlur = (e: React.FocusEvent<HTMLInputElement>): void => {
         if (
-            typeof this.props.onRowBlur === "function" &&
             !isNil(this.rowRef.current) &&
             !this.rowRef.current.contains(e.relatedTarget as Element)
         ) {
@@ -215,10 +204,7 @@ export default class CSSPropertyEditorRow extends Foundation<
      * Handle click
      */
     private handleClick = (e: React.MouseEvent<HTMLDivElement>): void => {
-        if (
-            typeof this.props.onClickOutside === "function" &&
-            (e.target as HTMLElement).nodeName !== "INPUT"
-        ) {
+        if ((e.target as HTMLElement).nodeName !== "INPUT") {
             this.props.onClickOutside(this.props.cssPropertyName, this.props.rowIndex);
         }
         e.preventDefault();
@@ -232,11 +218,9 @@ export default class CSSPropertyEditorRow extends Foundation<
             return;
         }
         e.preventDefault();
-        if (typeof this.props.onCommitPropertyNameEdit === "function") {
-            this.props.onCommitPropertyNameEdit(
-                this.props.cssPropertyName,
-                this.props.rowIndex
-            );
-        }
+        this.props.onCommitPropertyNameEdit(
+            this.props.cssPropertyName,
+            this.props.rowIndex
+        );
     };
 }
