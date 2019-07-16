@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.2.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-color-explorer@1.2.0...@microsoft/fast-color-explorer@1.2.1) (2019-07-16)
+
+
+### Bug Fixes
+
+* accent color inner focus ([#1923](https://github.com/Microsoft/fast-dna/issues/1923)) ([5aa02a9](https://github.com/Microsoft/fast-dna/commit/5aa02a9))
+
+
+
+
+
 # [1.2.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-color-explorer@1.1.1...@microsoft/fast-color-explorer@1.2.0) (2019-07-09)
 
 

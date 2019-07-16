@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.16.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-styles-msft@4.15.0...@microsoft/fast-components-styles-msft@4.16.0) (2019-07-16)
+
+
+### Bug Fixes
+
+* accent color inner focus ([#1923](https://github.com/Microsoft/fast-dna/issues/1923)) ([5aa02a9](https://github.com/Microsoft/fast-dna/commit/5aa02a9))
+
+
+### Features
+
+* add regex pattern for HEX value in design system schema ([#1960](https://github.com/Microsoft/fast-dna/issues/1960)) ([3f69726](https://github.com/Microsoft/fast-dna/commit/3f69726))
+
+
+
+
+
 # [4.15.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-styles-msft@4.14.0...@microsoft/fast-components-styles-msft@4.15.0) (2019-07-09)
 
 
