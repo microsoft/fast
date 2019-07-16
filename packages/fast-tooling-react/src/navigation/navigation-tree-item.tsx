@@ -22,7 +22,7 @@ import {
     DropTargetSpec,
 } from "react-dnd";
 
-export const NavigationTreeItemDragID: symbol = Symbol();
+export const NavigationTreeItemDragId: symbol = Symbol();
 
 export const navigationTreeItemDragSource: DragSourceSpec<
     NavigationTreeItemProps,
@@ -50,16 +50,19 @@ export const navigationTreeItemDropSource: DropTargetSpec<NavigationTreeItemProp
 
         const item: any = monitor.getItem();
 
-        if (props.type === NavigationDataType.children) {
-            component.props.onChange(item.dataLocation, props.dataLocation, props.type);
-        } else if (props.type === NavigationDataType.childrenItem) {
+        if (
+            props.type === NavigationDataType.children ||
+            props.type === NavigationDataType.component
+        ) {
             component.props.onChange(
                 item.dataLocation,
                 props.dataLocation,
                 props.type,
                 props.dragHoverAfter
                     ? VerticalDragDirection.down
-                    : VerticalDragDirection.up
+                    : props.dragHoverBefore
+                        ? VerticalDragDirection.up
+                        : VerticalDragDirection.center
             );
         }
     },
@@ -75,7 +78,7 @@ export const navigationTreeItemDropSource: DropTargetSpec<NavigationTreeItemProp
             props.onDragHover(props.dataLocation);
         } else if (
             monitor.isOver({ shallow: true }) &&
-            props.type === NavigationDataType.childrenItem
+            props.type === NavigationDataType.component
         ) {
             if (!component) {
                 return null;
@@ -92,10 +95,13 @@ export const navigationTreeItemDropSource: DropTargetSpec<NavigationTreeItemProp
                 (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2; // vertical centerline
             const clientOffset: XYCoord | null = monitor.getClientOffset(); // mouse position
             const hoverClientY: number = clientOffset.y - hoverBoundingRect.top; // pixels from the top
+            const verticalOffset: number = hoverBoundingRect.height / 4;
             const direction: VerticalDragDirection =
-                hoverClientY < hoverMiddleY
+                hoverClientY < hoverMiddleY - verticalOffset
                     ? VerticalDragDirection.up
-                    : VerticalDragDirection.down;
+                    : hoverClientY > hoverMiddleY + verticalOffset
+                        ? VerticalDragDirection.down
+                        : VerticalDragDirection.center;
 
             props.onDragHover(props.dataLocation, direction);
         }
@@ -143,7 +149,7 @@ const NavigationTreeItem: React.RefForwardingComponent<
             ? VerticalDragDirection.up
             : props.dragHoverAfter
                 ? VerticalDragDirection.down
-                : void 0;
+                : VerticalDragDirection.center;
 
         function getDragHoverClassName(): string {
             return props.dragHover && props.canDrop && props.isOver
@@ -202,9 +208,11 @@ const NavigationTreeItem: React.RefForwardingComponent<
             typeof props.connectDropTarget === "function" &&
             typeof props.connectDragSource === "function";
 
-        return canDragAndDrop && props.type === NavigationDataType.childrenItem
+        return canDragAndDrop && props.type === NavigationDataType.component
             ? props.connectDragSource(props.connectDropTarget(item))
-            : canDragAndDrop && props.type === NavigationDataType.children
+            : canDragAndDrop &&
+              (props.type === NavigationDataType.children ||
+                  props.type === NavigationDataType.component)
                 ? props.connectDropTarget(item)
                 : item;
     }
@@ -218,12 +226,12 @@ export { NavigationTreeItem };
  */
 /* tslint:disable-next-line:typedef */
 export const DraggableNavigationTreeItem = DropTarget(
-    NavigationTreeItemDragID,
+    NavigationTreeItemDragId,
     navigationTreeItemDropSource,
     navigationTreeItemDropTargetCollect
 )(
     DragSource(
-        NavigationTreeItemDragID,
+        NavigationTreeItemDragId,
         navigationTreeItemDragSource,
         navigationTreeItemDragSourceCollect
     )(NavigationTreeItem)

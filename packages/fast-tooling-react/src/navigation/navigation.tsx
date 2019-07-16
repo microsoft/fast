@@ -14,12 +14,7 @@ import {
     NavigationUnhandledProps,
     TreeNavigation,
 } from "./navigation.props";
-import {
-    getDataLocationNormalized,
-    getNavigationFromData,
-    getUpdatedDataWithoutSourceData,
-    getUpdatedDataWithTargetData,
-} from "./navigation.utilities";
+import { getNavigationFromData, getUpdatedData } from "./navigation.utilities";
 import { DraggableNavigationTreeItem, NavigationTreeItem } from "./navigation-tree-item";
 import {
     NavigationTreeItemProps,
@@ -93,6 +88,7 @@ export default class Navigation extends Foundation<
             dragHoverDataLocation: null,
             dragHoverAfterDataLocation: null,
             dragHoverBeforeDataLocation: null,
+            dragHoverCenterDataLocation: null,
         };
 
         this.rootElement = React.createRef();
@@ -189,26 +185,15 @@ export default class Navigation extends Foundation<
         direction?: VerticalDragDirection
     ): void => {
         if (typeof this.props.onChange === "function") {
-            let updatedData: any = cloneDeep(this.props.data);
-            const sourceDataLocationNormalized: string = getDataLocationNormalized(
-                sourceDataLocation
+            this.props.onChange(
+                getUpdatedData({
+                    targetDataLocation,
+                    sourceDataLocation,
+                    direction,
+                    type,
+                    data: this.props.data,
+                })
             );
-            const updatedSourceData: any = get(updatedData, sourceDataLocationNormalized);
-
-            updatedData = getUpdatedDataWithoutSourceData(
-                updatedData,
-                sourceDataLocation
-            );
-            updatedData = getUpdatedDataWithTargetData({
-                data: updatedData,
-                updatedSourceData,
-                targetDataLocation,
-                sourceDataLocation,
-                type,
-                direction,
-            });
-
-            this.props.onChange(updatedData);
         }
     };
 
@@ -225,12 +210,16 @@ export default class Navigation extends Foundation<
                 direction === VerticalDragDirection.up ? dragHoverDataLocation : null,
             dragHoverAfterDataLocation:
                 direction === VerticalDragDirection.down ? dragHoverDataLocation : null,
+            dragHoverCenterDataLocation:
+                direction === VerticalDragDirection.center ? dragHoverDataLocation : null,
         };
 
         if (
             this.state.dragHoverDataLocation !== state.dragHoverDataLocation ||
             this.state.dragHoverAfterDataLocation !== state.dragHoverAfterDataLocation ||
-            this.state.dragHoverBeforeDataLocation !== state.dragHoverBeforeDataLocation
+            this.state.dragHoverBeforeDataLocation !==
+                state.dragHoverBeforeDataLocation ||
+            this.state.dragHoverCenterDataLocation !== state.dragHoverCenterDataLocation
         ) {
             this.setState(state as NavigationState);
         }
@@ -371,10 +360,10 @@ export default class Navigation extends Foundation<
         return (dragging: boolean): string => {
             let classes: string = this.props.managedClasses.navigation_item;
 
-            if (dataType === NavigationDataType.childrenItem) {
+            if (dataType === NavigationDataType.component) {
                 classes = `${classes} ${get(
                     this.props,
-                    "managedClasses.navigation_item__childItem",
+                    "managedClasses.navigation_item__component",
                     ""
                 )}`;
 
@@ -420,19 +409,18 @@ export default class Navigation extends Foundation<
         let classNames: string = "";
 
         if (
-            type === NavigationDataType.children &&
-            typeof verticalDragDirection === "undefined"
+            verticalDragDirection === VerticalDragDirection.center &&
+            (type === NavigationDataType.children ||
+                type === NavigationDataType.component)
         ) {
             classNames += `${get(
                 this.props,
                 "managedClasses.navigation_itemContent__dragHover",
                 ""
             )}`;
-        }
-
-        if (
+        } else if (
             typeof verticalDragDirection !== "undefined" &&
-            type !== NavigationDataType.children
+            verticalDragDirection !== VerticalDragDirection.center
         ) {
             classNames += ` ${
                 verticalDragDirection === VerticalDragDirection.up
