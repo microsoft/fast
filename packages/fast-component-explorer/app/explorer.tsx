@@ -315,7 +315,7 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
                     onClick={this.handleUpdateDirection}
                     selectedMessage={""}
                     unselectedMessage={""}
-                    statusMessageId={"difrection"}
+                    statusMessageId={"direction"}
                 />
             </div>
         );
@@ -336,7 +336,7 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
                     onClick={this.handleUpdateTheme}
                     selectedMessage={""}
                     unselectedMessage={""}
-                    statusMessageId={"Theme"}
+                    statusMessageId={"theme"}
                 />
             </div>
         );
