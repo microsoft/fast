@@ -7,6 +7,7 @@ import CarouselHero from "../../assets/carousel-hero-content";
 storiesOf("Carousel", module).add("Default", () => (
     <Carousel
         label="A carousel of items"
+        autoplay={true}
         items={[
             {
                 id: uniqueId(),

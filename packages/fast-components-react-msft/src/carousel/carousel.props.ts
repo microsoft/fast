@@ -64,7 +64,7 @@ export interface CarouselHandledProps extends CarouselManagedClasses {
     /**
      * The callback which is fired when the active id is changed
      */
-    onActiveIdUpdate?: (activeId: string) => void;
+    onActiveIdUpdate?: (activeId: string, isAutoplay?: boolean) => void;
 
     /**
      * The carousel items
