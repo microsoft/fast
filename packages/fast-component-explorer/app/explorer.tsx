@@ -160,19 +160,6 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
 
     private resolveSchemaById: ((id: string) => any) & MemoizedFunction;
 
-    private themes: Theme[] = [
-        {
-            id: ThemeName.light,
-            displayName: ThemeName.light,
-            background: light,
-        },
-        {
-            id: ThemeName.dark,
-            displayName: ThemeName.dark,
-            background: dark,
-        },
-    ];
-
     constructor(props: ExplorerProps) {
         super(props);
 
@@ -180,7 +167,7 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
 
         this.resolveSchemaById = memoize(this.getSchemaById);
 
-        const neutralColorPalette: ColorRGBA64 | null = parseColor("#808080");
+        const paletteSource: ColorRGBA64 | null = parseColor("#808080");
 
         this.state = {
             dataLocation: "",
@@ -196,9 +183,7 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
                 backgroundColor: DesignSystemDefaults.backgroundColor,
                 designSystem: Object.assign({}, DesignSystemDefaults, {
                     neutralPalette:
-                        neutralColorPalette !== null
-                            ? createColorPalette(neutralColorPalette)
-                            : [],
+                        paletteSource !== null ? createColorPalette(paletteSource) : [],
                     direction: Direction.ltr,
                 }),
             },
@@ -206,10 +191,13 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
     }
 
     public render(): React.ReactNode {
+        const explorerDesignSystem: DesignSystem = Object.assign(
+            {},
+            DesignSystemDefaults,
+            { density: -2 }
+        );
         return (
-            <DesignSystemProvider
-                designSystem={Object.assign({}, DesignSystemDefaults, { density: -2 })}
-            >
+            <DesignSystemProvider designSystem={explorerDesignSystem}>
                 <Background value={this.backgrounds.L1}>
                     <Container className={get(this.props, "managedClasses.explorer")}>
                         <Row style={{ flex: "1" }}>
@@ -590,7 +578,7 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
                 return createColorPalette(hslToRGB(augmentedHSLColor));
             }
         }
-        return [];
+        return DesignSystemDefaults.neutralPalette;
     }
 
     private handleUpdateTheme = (): void => {

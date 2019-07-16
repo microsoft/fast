@@ -36,7 +36,6 @@ class Preview extends Foundation<{}, {}, PreviewState> {
             <Background
                 className={get(this.props, "managedClasses.preview")}
                 value={this.state.backgroundColor}
-                drawBackground={true}
                 dir={this.state.direction}
             >
                 <DesignSystemProvider designSystem={this.state}>
