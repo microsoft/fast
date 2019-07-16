@@ -31,7 +31,9 @@ describe("flyout", (): void => {
     const anchorElement: React.RefObject<HTMLDivElement> = React.createRef<
         HTMLDivElement
     >();
-    const FlyoutUpdateWrapper: (props: Omit<FlyoutProps, "anchor">) => JSX.Element = (props: Omit<FlyoutProps, "anchor">): JSX.Element => {
+    const FlyoutUpdateWrapper: (props: Omit<FlyoutProps, "anchor">) => JSX.Element = (
+        props: Omit<FlyoutProps, "anchor">
+    ): JSX.Element => {
         return (
             <div>
                 <div ref={anchorElement} />
@@ -185,9 +187,7 @@ describe("flyout", (): void => {
             map[event] = callback;
         });
 
-        const rendered: any = mount(
-            <FlyoutUpdateWrapper visible={true} />
-        );
+        const rendered: any = mount(<FlyoutUpdateWrapper visible={true} />);
 
         // map does not exist
         /* tslint:disable-next-line:no-string-literal */
@@ -210,9 +210,7 @@ describe("flyout", (): void => {
             map[event] = callback;
         });
 
-        const rendered: any = mount(
-            <FlyoutUpdateWrapper visible={true} />
-        );
+        const rendered: any = mount(<FlyoutUpdateWrapper visible={true} />);
 
         // map does not exist
         /* tslint:disable-next-line:no-string-literal */

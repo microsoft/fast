@@ -87,6 +87,7 @@ class Flyout extends Foundation<FlyoutHandledProps, FlyoutUnhandledProps, {}> {
                 aria-label={this.props.label}
                 aria-labelledby={this.props.labelledBy}
                 aria-describedby={this.props.describedBy}
+                aria-hidden={!this.props.visible}
                 anchor={this.props.anchor}
                 defaultHorizontalPosition={
                     ViewportPositionerHorizontalPosition[
@@ -98,7 +99,7 @@ class Flyout extends Foundation<FlyoutHandledProps, FlyoutUnhandledProps, {}> {
                         FlyoutVerticalPosition[this.props.defaultVerticalPosition]
                     ]
                 }
-                disabled={!this.props.visible}
+                disabled={false}
                 fixedAfterInitialPlacement={this.props.fixedAfterInitialPlacement}
                 horizontalAlwaysInView={this.props.horizontalAlwaysInView}
                 horizontalPositioningMode={
@@ -190,8 +191,10 @@ class Flyout extends Foundation<FlyoutHandledProps, FlyoutUnhandledProps, {}> {
     }
 
     private handleWindowClick = (event: MouseEvent): void => {
-        const anchor: React.RefObject<any> | HTMLElement = 
-            this.props.anchor instanceof HTMLElement ? this.props.anchor : this.props.anchor.current;
+        const anchor: React.RefObject<any> | HTMLElement =
+            this.props.anchor instanceof HTMLElement
+                ? this.props.anchor
+                : this.props.anchor.current;
 
         if (
             typeof this.props.onDismiss === "function" &&
@@ -200,7 +203,7 @@ class Flyout extends Foundation<FlyoutHandledProps, FlyoutUnhandledProps, {}> {
             !ReactDOM.findDOMNode(anchor).contains(event.target)
         ) {
             this.props.onDismiss(event);
-        }        
+        }
     };
 
     private handleWindowKeyDown = (event: KeyboardEvent): void => {

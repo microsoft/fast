@@ -6,12 +6,16 @@ import { applyElevation, ElevationMultiplier } from "../utilities/elevation";
 
 const styles: ComponentStyles<FlyoutClassNameContract, DesignSystem> = {
     flyout: {
+        display: "none",
         background: ensureDesignSystemDefaults(
             (designSystem: DesignSystem): string => designSystem.backgroundColor
         ),
         ...applyFloatingCornerRadius(),
         ...applyElevation(ElevationMultiplier.e14),
         zIndex: "1",
+        '&[aria-hidden="false"]': {
+            display: "block",
+        },
     },
     flyout__top: {},
     flyout__bottom: {},
