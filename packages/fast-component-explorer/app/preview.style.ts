@@ -4,9 +4,6 @@ import { reduce } from "lodash-es";
 
 export interface ExplorerClassNameContract {
     explorer?: string;
-    explorer_controls?: string;
-    explorer_viewerContrainer?: string;
-    explorer_viewerControlContrainer?: string;
 }
 
 const style: ComponentStyles<ExplorerClassNameContract, DesignSystem> = {
@@ -21,22 +18,14 @@ const style: ComponentStyles<ExplorerClassNameContract, DesignSystem> = {
             fontSize: "12px",
             padding: "0",
             margin: "0",
+            height: "100vh",
+            "& div": {
+                height: "100%",
+            },
         },
     },
-    explorer: {},
-    explorer_controls: {
-        display: "flex",
-        padding: "7px 10px",
-        marginLeft: "auto",
-        alignItems: "center",
-    },
-    explorer_viewerContrainer: {
-        display: "flex",
-        flexDirection: "column",
-        width: "100%",
-    },
-    explorer_viewerControlContrainer: {
-        display: "flex",
+    preview: {
+        padding: "12px",
     },
 };
 
