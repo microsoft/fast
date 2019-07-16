@@ -3,6 +3,7 @@ import {
     CallToAction,
     CallToActionAppearance,
     CallToActionProps,
+    CarouselSlideTheme,
     Heading,
     HeadingProps,
     HeadingSize,
@@ -20,6 +21,7 @@ export interface CarouselHeroContentProps {
     callToAction?: CallToActionProps;
     image?: ImageProps;
     className?: string;
+    theme?: CarouselSlideTheme;
 }
 
 /**
@@ -37,7 +39,6 @@ export default class CarouselHeroContent extends React.Component<
             children: "Hero paragraph test text",
         },
         image: {
-            src: "http://placehold.it/1399x600/2F2F2F/171717",
             alt: "Placeholder image",
         },
         callToAction: {
@@ -46,6 +47,11 @@ export default class CarouselHeroContent extends React.Component<
             appearance: CallToActionAppearance.primary,
         },
     };
+
+    private imageSrc: string =
+        this.props.theme === CarouselSlideTheme.light
+            ? "http://placehold.it/1399x600/2F2F2F/171717"
+            : "http://placehold.it/1399x600/";
 
     public render(): React.ReactNode {
         return (
@@ -91,7 +97,7 @@ export default class CarouselHeroContent extends React.Component<
                         />
                     </div>
                 </div>
-                <Image src={this.props.image.src} alt={this.props.image.alt} />
+                <Image src={this.imageSrc} alt={this.props.image.alt} />
             </div>
         );
     }
