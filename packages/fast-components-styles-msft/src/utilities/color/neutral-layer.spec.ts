@@ -134,7 +134,9 @@ describe("neutralLayer", (): void => {
         });
 
         test("should opperate on a provided background color", (): void => {
-            const color: string = neutralLayerFloating((): string => "#000000")(designSystemDefaults);
+            const color: string = neutralLayerFloating((): string => "#000000")(
+                designSystemDefaults
+            );
 
             expect(color).not.toBe(neutralLayerFloating(designSystemDefaults));
             expect(designSystemDefaults.neutralPalette.includes(color)).toBeTruthy();
@@ -149,7 +151,9 @@ describe("neutralLayer", (): void => {
             ).toBeTruthy();
         });
         test("should opperate on a provided background color", (): void => {
-            const color: string = neutralLayerCardContainer((): string => "#000000")(designSystemDefaults);
+            const color: string = neutralLayerCardContainer((): string => "#000000")(
+                designSystemDefaults
+            );
 
             expect(color).not.toBe(neutralLayerCardContainer(designSystemDefaults));
             expect(designSystemDefaults.neutralPalette.includes(color)).toBeTruthy();
@@ -164,7 +168,9 @@ describe("neutralLayer", (): void => {
             ).toBeTruthy();
         });
         test("should opperate on a provided background color", (): void => {
-            const color: string = neutralLayerCard((): string => "#000000")(designSystemDefaults);
+            const color: string = neutralLayerCard((): string => "#000000")(
+                designSystemDefaults
+            );
 
             expect(color).not.toBe(neutralLayerCard(designSystemDefaults));
             expect(designSystemDefaults.neutralPalette.includes(color)).toBeTruthy();
