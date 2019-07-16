@@ -1,6 +1,5 @@
-import { ComponentStyles, ManagedClasses } from "@microsoft/fast-jss-manager-react";
-import { DesignSystem, neutralLayerL1 } from "@microsoft/fast-components-styles-msft";
-import { reduce } from "lodash-es";
+import { ComponentStyles } from "@microsoft/fast-jss-manager-react";
+import { DesignSystem } from "@microsoft/fast-components-styles-msft";
 
 export interface ExplorerClassNameContract {
     explorer?: string;

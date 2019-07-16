@@ -41,7 +41,6 @@ import {
 } from "@microsoft/fast-components-styles-msft";
 import {
     LabelClassNameContract,
-    ListboxItem,
     ListboxItemProps,
     TabsItem,
 } from "@microsoft/fast-components-react-base";
@@ -64,7 +63,6 @@ import {
     FormClassNameContract,
 } from "@microsoft/fast-tooling-react/dist/form/form";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import jsx from "react-syntax-highlighter/dist/esm/languages/prism/jsx";
 import syntaxHighlighterStyles from "./syntax-highlighting-style";
 import { childOptions, history, menu } from "./config";
 import * as componentViewConfigs from "./utilities/configs";
@@ -73,7 +71,6 @@ import { MemoizedFunction } from "lodash";
 import { Direction, format } from "@microsoft/fast-web-utilities";
 import {
     ColorHSL,
-    ColorPalette,
     ColorRGBA64,
     hslToRGB,
     parseColor,
