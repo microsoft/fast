@@ -19,12 +19,16 @@ const style: ComponentStyles<ExplorerClassNameContract, DesignSystem> = {
             padding: "0",
             margin: "0",
             height: "100vh",
-            "& div": {
+            "& #root": {
+                height: "100%",
+            },
+            "& #root > div": {
                 height: "100%",
             },
         },
     },
     preview: {
+        height: "100%",
         padding: "12px",
     },
 };
