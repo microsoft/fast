@@ -5,8 +5,7 @@ import {
     ActionToggleProps,
     actionToggleSchema,
 } from "@microsoft/fast-components-react-msft";
-import glyphSchema from "../components/glyph.schema";
-import { Icon } from "../components/glyph";
+import { glyphSchema, Icon } from "../../../app/components/glyph";
 import Guidance from "../../.tmp/action-toggle/guidance";
 
 const actionToggleConfig: ComponentViewConfig<ActionToggleProps> = {
