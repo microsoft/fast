@@ -98,12 +98,7 @@ class Toggle extends Foundation<ToggleHandledProps, ToggleUnhandledProps, Toggle
                         )}
                     />
                 </div>
-                <span
-                    id={this.props.statusMessageId}
-                    className={get(this.props, "managedClasses.toggle_statusMessage")}
-                >
-                    {this.generateToggleStateLabel()}
-                </span>
+                {this.renderStatusMessage()}
             </div>
         );
     }
@@ -169,6 +164,19 @@ class Toggle extends Foundation<ToggleHandledProps, ToggleUnhandledProps, Toggle
                     {this.props.children}
                 </label>
             );
+        }
+    }
+
+    private renderStatusMessage(): React.ReactNode {
+        if (this.props.selectedMessage || this.props.unselectedMessage) {
+            return (
+                <span
+                    id={this.props.statusMessageId}
+                    className={get(this.props, "managedClasses.toggle_statusMessage")}
+                >
+                    {this.generateToggleStateLabel()}
+                </span>
+            )
         }
     }
 }
