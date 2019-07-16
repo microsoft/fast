@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.10.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-base@4.9.0...@microsoft/fast-components-react-base@4.10.0) (2019-07-16)
+
+
+### Bug Fixes
+
+* ensure unhandled props are passed first and merge with existing style properties ([#1962](https://github.com/Microsoft/fast-dna/issues/1962)) ([6e1170a](https://github.com/Microsoft/fast-dna/commit/6e1170a))
+* slider & subheading schemas are incorrect ([#1961](https://github.com/Microsoft/fast-dna/issues/1961)) ([b440051](https://github.com/Microsoft/fast-dna/commit/b440051))
+
+
+### Features
+
+* add storybook to component libraries and a private package for component documentation ([#1928](https://github.com/Microsoft/fast-dna/issues/1928)) ([179fa9d](https://github.com/Microsoft/fast-dna/commit/179fa9d))
+
+
+
+
+
 # [4.9.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-base@4.8.1...@microsoft/fast-components-react-base@4.9.0) (2019-07-09)
 
 
