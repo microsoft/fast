@@ -236,6 +236,78 @@ describe("carousel", (): void => {
         expect(rendered.state("activeId")).toBe("id02");
     });
 
+    test("should fire a callback when `onActiveIdUpdate` prop is passed", () => {
+        const onActiveIdUpdateMock: any = jest.fn();
+        const rendered: any = mount(
+            <MSFTCarousel {...handledProps} onActiveIdUpdate={onActiveIdUpdateMock} />
+        );
+
+        rendered
+            .find('[direction="next"]')
+            .first()
+            .simulate("click");
+
+        expect(onActiveIdUpdateMock).toHaveBeenCalledTimes(1);
+
+        rendered
+            .find('[direction="previous"]')
+            .first()
+            .simulate("click");
+
+        expect(onActiveIdUpdateMock).toHaveBeenCalledTimes(2);
+
+        rendered
+            .find('[role="tab"]')
+            .at(1)
+            .simulate("click");
+
+        expect(onActiveIdUpdateMock).toHaveBeenCalledTimes(3);
+    });
+
+    test("should provide the current active index when `onActiveIdUpdate` prop is passed", () => {
+        const onActiveIdUpdateFn: any = jest.fn((id: string) => id);
+        const rendered: any = mount(
+            <MSFTCarousel {...handledProps} onActiveIdUpdate={onActiveIdUpdateFn} />
+        );
+
+        rendered
+            .find('[direction="next"]')
+            .first()
+            .simulate("click");
+
+        expect(onActiveIdUpdateFn.mock.results[0].value).toBe("id02");
+
+        rendered
+            .find('[direction="previous"]')
+            .first()
+            .simulate("click");
+
+        expect(onActiveIdUpdateFn.mock.results[1].value).toBe("id01");
+
+        rendered
+            .find('[role="tab"]')
+            .at(1)
+            .simulate("click");
+
+        expect(onActiveIdUpdateFn.mock.results[2].value).toBe("id02");
+    });
+
+    test("should provide the `isAutoplayInitiated` value to `onActiveIdUpdate` when prop is passed", () => {
+        const onActiveIdUpdateFn: any = jest.fn(
+            (id: string, autoplayInitiated: boolean) => autoplayInitiated
+        );
+        const rendered: any = mount(
+            <MSFTCarousel {...handledProps} onActiveIdUpdate={onActiveIdUpdateFn} />
+        );
+
+        rendered
+            .find('[role="tab"]')
+            .at(1)
+            .simulate("click");
+
+        expect(onActiveIdUpdateFn.mock.results[0].value).toBe(false);
+    });
+
     describe("autoplay", (): void => {
         const mockFocus: any = jest.fn();
         const mockHover: any = jest.fn();
@@ -251,6 +323,18 @@ describe("carousel", (): void => {
             const rendered: any = mount(<MSFTCarousel {...props} />);
 
             expect(rendered.props().autoplay).toBe(false);
+        });
+
+        test("should automatically advance the slide when `autoplay` prop is passed to the component", () => {
+            jest.useFakeTimers();
+
+            const rendered: any = mount(<MSFTCarousel {...props} autoplay={true} />);
+
+            expect(rendered.state().activeId).toBe("id01");
+
+            jest.advanceTimersByTime(6001);
+
+            expect(rendered.state().activeId).toBe("id02");
         });
 
         test("should set `autoplay` to true when `autoplay` is passed as true", () => {

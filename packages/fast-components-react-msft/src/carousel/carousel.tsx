@@ -52,6 +52,7 @@ class Carousel extends Foundation<
         managedClasses: void 0,
         label: void 0,
         activeId: void 0,
+        onActiveIdUpdate: void 0,
         items: void 0,
     };
 
@@ -83,7 +84,7 @@ class Carousel extends Foundation<
                 activeId:
                     typeof this.props.activeId === "string"
                         ? this.props.activeId
-                        : get(this.props.items[0], "id", ""),
+                        : get(this.props.items[0], "id", " "),
             };
         }
     }
@@ -119,7 +120,7 @@ class Carousel extends Foundation<
         if (canUseDOM() && this.props.autoplay) {
             // Set initial interval for autoplay
             this.autoplayTimer = window.setInterval(
-                this.nextSlide,
+                this.autoplayNextSlide,
                 this.props.autoplayInterval
             );
         }
@@ -132,7 +133,7 @@ class Carousel extends Foundation<
         if (this.props.autoplay && isNil(this.autoplayTimer)) {
             // Set the window interval if we are in autplay and don't have a timer
             this.autoplayTimer = window.setInterval(
-                this.nextSlide,
+                this.autoplayNextSlide,
                 this.props.autoplayInterval
             );
         } else if (!this.props.autoplay && !isNil(this.autoplayTimer)) {
@@ -317,6 +318,10 @@ class Carousel extends Foundation<
      * Change active tab
      */
     private handleUpdate = (activeTab: string): void => {
+        if (typeof this.props.onActiveIdUpdate === "function") {
+            this.props.onActiveIdUpdate(activeTab, false);
+        }
+
         this.setState({
             activeId: activeTab,
         });
@@ -326,6 +331,29 @@ class Carousel extends Foundation<
             .indexOf(activeTab);
 
         this.setTransitionDirection(activeTabIndex);
+    };
+
+    /**
+     * Handles automation of slide movement
+     */
+    private autoplayNextSlide = (): void => {
+        let nextPosition: number = this.getActiveIndex() + 1;
+
+        if (nextPosition > this.slides.length - 1) {
+            nextPosition = 0;
+        }
+
+        const activeId: string = this.slides[nextPosition].id;
+
+        this.setTransitionDirection(nextPosition);
+
+        if (typeof this.props.onActiveIdUpdate === "function") {
+            this.props.onActiveIdUpdate(activeId, true);
+        }
+
+        this.setState({
+            activeId,
+        });
     };
 
     /**
@@ -360,8 +388,14 @@ class Carousel extends Foundation<
      * Sets new slide based on position
      */
     private setNewSlidePosition(position: number): void {
+        const newActiveId: string = this.slides[position].id;
+
+        if (typeof this.props.onActiveIdUpdate === "function") {
+            this.props.onActiveIdUpdate(newActiveId, false);
+        }
+
         this.setState({
-            activeId: this.slides[position].id,
+            activeId: newActiveId,
         });
     }
 }

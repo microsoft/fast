@@ -83,6 +83,33 @@ describe("viewport positioner", (): void => {
         expect(rendered.first().prop("aria-label")).toEqual("label");
     });
 
+    test("should merge unhandledProps style properties with existing styles from the component", (): void => {
+        const unhandledProps: ViewportPositionerUnhandledProps = {
+            style: {
+                width: "100px",
+                height: "200px",
+            },
+        };
+        const expectedStyles: Partial<React.CSSProperties> = {
+            opacity: 0,
+            position: "relative",
+            transformOrigin: "left top",
+            transform: `translate(
+                0px, 
+                0px
+            )`,
+            top: null,
+            right: null,
+            bottom: null,
+            left: null,
+            width: "100px",
+            height: "200px",
+        };
+        const rendered: any = shallow(<ViewportPositioner {...unhandledProps} />);
+
+        expect(rendered.first().prop("style")).toEqual(expectedStyles);
+    });
+
     test("should be disabled without an anchor", (): void => {
         const rendered: any = mount(
             <div>

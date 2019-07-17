@@ -90,6 +90,7 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, {}> {
                 height="16"
                 viewBox="0 0 16 12"
                 className={get(this.props, "managedClasses.select_toggleGlyph", "")}
+                aria-hidden={true}
                 xmlns="http://www.w3.org/2000/svg"
             >
                 <path d="M11.3613 2.73633L11.8887 3.26367L6 9.15234L0.111328 3.26367L0.638672 2.73633L6 8.09766L11.3613 2.73633Z" />
