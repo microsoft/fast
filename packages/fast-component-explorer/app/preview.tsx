@@ -4,7 +4,6 @@ import style from "./preview.style";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import { ViewerContent } from "@microsoft/fast-tooling-react";
 import { childOptions } from "./config";
-import { Direction } from "@microsoft/fast-web-utilities";
 import initializedPlugins from "./utilities/plugins"; // TODO: add this to Viewer Content
 import { Background } from "@microsoft/fast-components-react-msft";
 import {
@@ -13,9 +12,7 @@ import {
 } from "@microsoft/fast-components-styles-msft";
 import { get } from "lodash-es";
 
-export interface PreviewState extends DesignSystem {
-    direction: Direction;
-}
+export interface PreviewState extends DesignSystem {}
 
 /**
  * The preview component exists on a route inside an iframe
@@ -26,7 +23,6 @@ class Preview extends Foundation<{}, {}, PreviewState> {
         super(props);
 
         this.state = {
-            direction: Direction.ltr,
             ...DesignSystemDefaults,
         };
     }
