@@ -70,14 +70,9 @@ const styles: ComponentStyleSheet<ColorBlocksClassNameContract, ColorsDesignSyst
         height: "100%",
     },
     colorBlocks_title: {
-        lineHeight: "36px",
-        textAlign: "center",
-        color: accentForegroundCut,
-        background: accentFillRest,
-    },
-    colorBlocks_backgroundColor: {
         margin: "16px auto 4px",
         fontWeight: fontWeight.semibold.toString(),
+        height: "34px"
     },
     colorBlocks_content: {
         flexGrow: "1",
@@ -97,7 +92,6 @@ const styles: ComponentStyleSheet<ColorBlocksClassNameContract, ColorsDesignSyst
 interface ColorBlocksClassNameContract {
     colorBlocks: string;
     colorBlocks_title: string;
-    colorBlocks_backgroundColor: string;
     colorBlocks_content: string;
     colorBlocks_example: string;
 }
@@ -242,7 +236,7 @@ class ColorBlocksBase extends React.Component<ColorBlocksProps, ColorBlocksState
                     .replace("#", "")}`}
             >
                 <Caption
-                    className={this.props.managedClasses.colorBlocks_backgroundColor}
+                    className={this.props.managedClasses.colorBlocks_title}
                     jssStyleSheet={{ caption: { color: neutralForegroundHint } }}
                 >
                     BACKGROUND {this.props.index} -{" "}
