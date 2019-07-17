@@ -1,5 +1,9 @@
+import { Canvas, Container, Row } from "@microsoft/fast-layouts-react";
 import {
     DesignSystem,
+    neutralLayerCard,
+    neutralLayerCardContainer,
+    neutralLayerFloating,
     neutralLayerL1,
     neutralLayerL1Alt,
     neutralLayerL2,
@@ -8,13 +12,12 @@ import {
     palette,
     PaletteType,
 } from "@microsoft/fast-components-styles-msft";
-import React from "react";
 import { DesignSystemProvider } from "@microsoft/fast-jss-manager-react";
 import { ColorsDesignSystem } from "./design-system";
 import { Gradient } from "./gradient";
 import ColorBlocks from "./color-blocks";
 import { ControlPane } from "./control-pane";
-import { Canvas, Container, Row } from "@microsoft/fast-layouts-react";
+import React from "react";
 import { AppState } from "./state";
 import { connect } from "react-redux";
 import {
@@ -51,8 +54,10 @@ class App extends React.Component<AppProps, {}> {
     };
 
     private backgroundRecipes: Array<ColorRecipe<string>> = [
+        neutralLayerFloating,
+        neutralLayerCard,
+        neutralLayerCardContainer,
         neutralLayerL1,
-        neutralLayerL1Alt,
         neutralLayerL2,
         neutralLayerL3,
         neutralLayerL4,
@@ -119,9 +124,7 @@ class App extends React.Component<AppProps, {}> {
                 height={props.height}
                 itemSize={400}
                 layout={"horizontal"}
-                itemCount={
-                    backgrounds.length
-                }
+                itemCount={backgrounds.length}
                 itemKey={(index: number): string => backgrounds[index]}
                 ref={this.colorBlockScrollerRef}
                 itemData={backgrounds}
