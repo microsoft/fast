@@ -21,6 +21,7 @@ import {
     pluginFindIndexCallback,
     squareBracketsRegex,
 } from "./location";
+import { Arguments } from "../typings"
 
 /**
  * Maps data returned from the form generator to the React components
@@ -158,7 +159,6 @@ function mapPluginToData(
     data: any,
     plugins: Array<Plugin<PluginProps>>,
     childOptions: ChildOptionItem[],
-    wrappingComponent?: React.ComponentType<WrappingComponentProps>
 ): any {
     const {
         dataLocation,
@@ -199,8 +199,7 @@ function mapPluginToData(
 function mapDataToChildren(
     data: any,
     reactChildrenDataLocation: string,
-    childOptions: ChildOptionItem[],
-    wrappingComponent?: React.ComponentType<WrappingComponentProps>
+    childOptions: ChildOptionItem[]
 ): any {
     if (typeof get(data, reactChildrenDataLocation) === "string") {
         return data;
@@ -215,7 +214,7 @@ function mapDataToChildren(
     );
 
     const key: { key: string } = { key: uniqueId(subSchemaId) };
-    const createElementArguments: ArgumentTypes<typeof React.createElement> =
+    const createElementArguments: Arguments<typeof React.createElement> =
         childOption === undefined
             ? [React.Fragment, key, subDataNormalized]
             : [childOption.component, { ...key, ...subDataNormalized }];
