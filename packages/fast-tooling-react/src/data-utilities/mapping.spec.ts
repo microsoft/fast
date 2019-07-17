@@ -1,5 +1,6 @@
 import "jest";
 import { get } from "lodash-es";
+import React from "react";
 import { ChildOptionItem, mapDataToComponent } from "./";
 import { WrappingComponentProps } from "./mapping";
 import {
@@ -18,7 +19,9 @@ import textFieldSchema from "../__tests__/schemas/text-field.schema.json";
 import MapChildrenPropToCallbackPassingClassName from "./__tests__/plugins/map-children-prop-to-callback-passing-class-name";
 import MapBooleanPropToString from "./__tests__/plugins/map-boolean-prop-to-string";
 import MapArrayPropToObject from "./__tests__/plugins/map-array-prop-to-object";
+import { Plugin, PluginProps } from "./plugin";
 
+/* tslint:disable:max-classes-per-file */
 describe("mapDataToComponent", () => {
     const childrenPluginResolverId: string =
         childrenWithPluginPropsSchema.reactProperties.render.pluginId;
@@ -317,6 +320,117 @@ describe("mapDataToComponent", () => {
             "Text field"
         );
     });
+    test("should resolve plugins with the data location of the item", () => {
+        const resolver: jest.Mock = jest.fn();
+        class MyPlugin extends Plugin<PluginProps> {
+            public resolver(d: any, childItem?: ChildOptionItem, dataLocation?: string): any {
+                resolver(data, childItem, dataLocation)
+            }
+        }
+        const data: any = {
+            render: {
+                id: textFieldSchema.id,
+                props: {},
+            },
+        };
+        const mappedData: any = mapDataToComponent(
+            childrenWithPluginPropsSchema,
+            data,
+            childOptions,
+            [new MyPlugin({id: childrenPluginResolverId})]
+        );
+
+        expect(resolver).toHaveBeenCalled();
+        expect(resolver.mock.calls[0][2]).toBe("render");
+    });
+    test("should resolve plugins with the data location of the item within arrays", () => {
+        const resolver: jest.Mock = jest.fn();
+        class MyPlugin extends Plugin<PluginProps> {
+            public resolver(d: any, childItem?: ChildOptionItem, dataLocation?: string): any {
+                resolver(data, childItem, dataLocation)
+                return React.createElement(childItem.component, data);
+            }
+        }
+
+        const data: any = {
+            render: {
+                id: childrenWithPluginPropsSchema.id,
+                props: {
+                    render: {
+                        id: textFieldSchema.id,
+                        props: {},
+                    },
+                },
+            },
+        };
+
+        const mappedData: any = mapDataToComponent(
+            childrenWithPluginPropsSchema,
+            data,
+            childOptions,
+            [new MyPlugin({id: childrenPluginResolverId})]
+        );
+
+        expect(resolver).toHaveBeenCalledTimes(2);
+        expect(resolver.mock.calls[0][2]).toBe("render.props.render");
+        expect(resolver.mock.calls[1][2]).toBe("render");
+    });
+    test("should resolve plugins in an array with the data location", () => {
+        const resolver: jest.Mock = jest.fn();
+        class MyPlugin extends Plugin<PluginProps> {
+            public resolver(d: any, childItem?: ChildOptionItem, dataLocation?: string): any {
+                resolver(data, childItem, dataLocation)
+                return React.createElement(childItem.component, data);
+            }
+        }
+
+        const data: any = {
+            render: [
+                {
+                    children: [
+                        {
+                            id: textFieldSchema.id,
+                            props: {},
+                        },
+                        {
+                            id: childrenSchema.id,
+                            props: {},
+                        },
+                    ],
+                },
+            ],
+        };
+        const arrayPropertyPluginId: string = "myPluginId";
+        const schema: any = {
+            type: "object",
+            properties: {
+                render: {
+                    type: "array",
+                    items: {
+                        type: "object",
+                        reactProperties: {
+                            children: {
+                                type: "children",
+                                pluginId: arrayPropertyPluginId,
+                            },
+                        },
+                    },
+                },
+            },
+        };
+
+        const testClass1: string = "Foo";
+        const testClass2: string = "Bar";
+
+        const mappedData: any = mapDataToComponent(schema, data, childOptions, [
+            new MyPlugin({
+                id: arrayPropertyPluginId,
+            }),
+        ]);
+        expect(resolver).toHaveBeenCalledTimes(2)
+        expect(resolver.mock.calls[0][2]).toBe("render[0].children[0]")
+        expect(resolver.mock.calls[1][2]).toBe("render[0].children[1]")
+    });
     test("should not map data to a plugin if a plugin is not available but a pluginId has been specified", () => {
         const data: any = {
             render: [
@@ -614,3 +728,4 @@ describe("mapDataToCodePreview", () => {
         expect(id2).toEqual(id4);
     });
 });
+/* tslint:disable:max-classes-per-file */

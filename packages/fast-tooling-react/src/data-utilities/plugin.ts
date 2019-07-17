@@ -34,5 +34,5 @@ export abstract class Plugin<C extends PluginProps> {
      * Resolves the data given
      */
     /* tslint:disable-next-line */
-    public resolver(data: any, childOption?: ChildOptionItem): any {}
+    public resolver(data: any, childOption?: ChildOptionItem, dataLocation?: string): any {}
 }

@@ -85,12 +85,7 @@ export function mapDataToComponent(
         .sort(orderMappedDataByDataLocation)
         .reduce(
             (mappedDataReduced: any, mappedDataLocation: MappedDataLocation): any =>
-                resolveData(
-                    mappedDataLocation,
-                    mappedDataReduced,
-                    plugins,
-                    childOptions
-                ),
+                resolveData(mappedDataLocation, mappedDataReduced, plugins, childOptions),
             mappedData
         );
 }
@@ -101,11 +96,13 @@ export function mapDataToComponent(
 function getPluginResolvedChildren(
     pluginData: any,
     pluginResolver: Plugin<PluginProps>,
-    childOptions: ChildOptionItem[]
+    childOptions: ChildOptionItem[],
+    dataLocation: string
 ): any {
     return pluginResolver.resolver(
         get(pluginData, propsKeyword),
-        getChildOptionBySchemaId(pluginData.id, childOptions)
+        getChildOptionBySchemaId(pluginData.id, childOptions),
+        dataLocation
     );
 }
 
@@ -131,7 +128,8 @@ function getPluginResolverDataMap(
                         data: getPluginResolvedChildren(
                             pluginDataItem,
                             pluginResolver,
-                            childOptions
+                            childOptions,
+                            dataLocation
                         ),
                         dataLocation: `${dataLocation}.${index}`,
                     });
@@ -139,14 +137,19 @@ function getPluginResolverDataMap(
             );
         } else {
             pluginResolverMapping.push({
-                data: getPluginResolvedChildren(pluginData, pluginResolver, childOptions),
+                data: getPluginResolvedChildren(
+                    pluginData,
+                    pluginResolver,
+                    childOptions,
+                    dataLocation
+                ),
                 dataLocation,
             });
         }
     } else {
         pluginResolverMapping.push({
             dataLocation,
-            data: pluginResolver.resolver(pluginData),
+            data: pluginResolver.resolver(pluginData, void 0, dataLocation),
         });
     }
 
@@ -157,7 +160,7 @@ function resolveData(
     mappedDataLocation: MappedDataLocation,
     data: any,
     plugins: Array<Plugin<PluginProps>>,
-    childOptions: ChildOptionItem[],
+    childOptions: ChildOptionItem[]
 ): any {
     switch (mappedDataLocation.mappingType) {
         case DataResolverType.plugin:
@@ -169,11 +172,7 @@ function resolveData(
             );
         case DataResolverType.component:
         default:
-            return mapDataToChildren(
-                data,
-                mappedDataLocation.dataLocation,
-                childOptions
-            );
+            return mapDataToChildren(data, mappedDataLocation.dataLocation, childOptions);
     }
 }
 

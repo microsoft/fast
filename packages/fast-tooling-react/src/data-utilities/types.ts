@@ -89,6 +89,11 @@ export interface ChildOptionItem {
      * The JSON schema for the component
      */
     schema: any;
+
+    /**
+     * The data location of the item
+     */
+    dataLocation?: string
 }
 
 export interface PluginResolverDataMap {
