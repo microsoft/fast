@@ -21,7 +21,7 @@ import {
     pluginFindIndexCallback,
     squareBracketsRegex,
 } from "./location";
-import { Arguments } from "../typings"
+import { Arguments } from "../typings";
 
 /**
  * Maps data returned from the form generator to the React components
@@ -158,7 +158,7 @@ function mapPluginToData(
     pluginModifiedDataLocation: PluginLocation,
     data: any,
     plugins: Array<Plugin<PluginProps>>,
-    childOptions: ChildOptionItem[],
+    childOptions: ChildOptionItem[]
 ): any {
     const {
         dataLocation,

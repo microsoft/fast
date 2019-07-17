@@ -323,8 +323,12 @@ describe("mapDataToComponent", () => {
     test("should resolve plugins with the data location of the item", () => {
         const resolver: jest.Mock = jest.fn();
         class MyPlugin extends Plugin<PluginProps> {
-            public resolver(d: any, childItem?: ChildOptionItem, dataLocation?: string): any {
-                resolver(data, childItem, dataLocation)
+            public resolver(
+                d: any,
+                childItem?: ChildOptionItem,
+                dataLocation?: string
+            ): any {
+                resolver(data, childItem, dataLocation);
             }
         }
         const data: any = {
@@ -337,7 +341,7 @@ describe("mapDataToComponent", () => {
             childrenWithPluginPropsSchema,
             data,
             childOptions,
-            [new MyPlugin({id: childrenPluginResolverId})]
+            [new MyPlugin({ id: childrenPluginResolverId })]
         );
 
         expect(resolver).toHaveBeenCalled();
@@ -346,8 +350,12 @@ describe("mapDataToComponent", () => {
     test("should resolve plugins with the data location of the item within arrays", () => {
         const resolver: jest.Mock = jest.fn();
         class MyPlugin extends Plugin<PluginProps> {
-            public resolver(d: any, childItem?: ChildOptionItem, dataLocation?: string): any {
-                resolver(data, childItem, dataLocation)
+            public resolver(
+                d: any,
+                childItem?: ChildOptionItem,
+                dataLocation?: string
+            ): any {
+                resolver(data, childItem, dataLocation);
                 return React.createElement(childItem.component, data);
             }
         }
@@ -368,7 +376,7 @@ describe("mapDataToComponent", () => {
             childrenWithPluginPropsSchema,
             data,
             childOptions,
-            [new MyPlugin({id: childrenPluginResolverId})]
+            [new MyPlugin({ id: childrenPluginResolverId })]
         );
 
         expect(resolver).toHaveBeenCalledTimes(2);
@@ -378,8 +386,12 @@ describe("mapDataToComponent", () => {
     test("should resolve plugins in an array with the data location", () => {
         const resolver: jest.Mock = jest.fn();
         class MyPlugin extends Plugin<PluginProps> {
-            public resolver(d: any, childItem?: ChildOptionItem, dataLocation?: string): any {
-                resolver(data, childItem, dataLocation)
+            public resolver(
+                d: any,
+                childItem?: ChildOptionItem,
+                dataLocation?: string
+            ): any {
+                resolver(data, childItem, dataLocation);
                 return React.createElement(childItem.component, data);
             }
         }
@@ -427,9 +439,9 @@ describe("mapDataToComponent", () => {
                 id: arrayPropertyPluginId,
             }),
         ]);
-        expect(resolver).toHaveBeenCalledTimes(2)
-        expect(resolver.mock.calls[0][2]).toBe("render[0].children[0]")
-        expect(resolver.mock.calls[1][2]).toBe("render[0].children[1]")
+        expect(resolver).toHaveBeenCalledTimes(2);
+        expect(resolver.mock.calls[0][2]).toBe("render[0].children[0]");
+        expect(resolver.mock.calls[1][2]).toBe("render[0].children[1]");
     });
     test("should not map data to a plugin if a plugin is not available but a pluginId has been specified", () => {
         const data: any = {

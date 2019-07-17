@@ -93,7 +93,7 @@ export interface ChildOptionItem {
     /**
      * The data location of the item
      */
-    dataLocation?: string
+    dataLocation?: string;
 }
 
 export interface PluginResolverDataMap {
