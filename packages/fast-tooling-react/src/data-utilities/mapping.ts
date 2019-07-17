@@ -21,7 +21,6 @@ import {
     pluginFindIndexCallback,
     squareBracketsRegex,
 } from "./location";
-import { ArgumentTypes } from "../typings";
 
 /**
  * Maps data returned from the form generator to the React components
