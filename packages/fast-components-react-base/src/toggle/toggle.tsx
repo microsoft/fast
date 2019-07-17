@@ -176,7 +176,7 @@ class Toggle extends Foundation<ToggleHandledProps, ToggleUnhandledProps, Toggle
                 >
                     {this.generateToggleStateLabel()}
                 </span>
-            )
+            );
         }
     }
 }

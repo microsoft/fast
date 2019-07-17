@@ -126,15 +126,19 @@ describe("toggle", (): void => {
     });
 
     test("should render status message when unselected or selected message prop is passed", () => {
-        const rendered: any = shallow(<Toggle inputId="id" {...handledProps} selected={false} />);
+        const rendered: any = shallow(
+            <Toggle inputId="id" {...handledProps} selected={false} />
+        );
 
         expect(rendered.exists("span.toggle_statusMessage-class")).toBe(true);
         // expect(rendered.exists("div.breadcrumb-separator-class")).toBe(true);
-    })
+    });
 
     test("should not render status message when unselected and selected message prop is not passed", () => {
-        const rendered: any = shallow(<Toggle inputId="id" managedClasses={managedClasses} selected={false} />);
+        const rendered: any = shallow(
+            <Toggle inputId="id" managedClasses={managedClasses} selected={false} />
+        );
 
         expect(rendered.exists("span.toggle_statusMessage-class")).toBe(false);
-    })
+    });
 });
