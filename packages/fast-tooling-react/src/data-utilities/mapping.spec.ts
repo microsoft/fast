@@ -2,7 +2,6 @@ import "jest";
 import { get } from "lodash-es";
 import React from "react";
 import { ChildOptionItem, mapDataToComponent } from "./";
-import { WrappingComponentProps } from "./mapping";
 import {
     CodePreviewChildOption,
     CodePreviewConfig,
@@ -34,11 +33,6 @@ describe("mapDataToComponent", () => {
         { component: TextField, schema: textFieldSchema },
         { component: ChildrenWithRenderProp, schema: childrenWithPluginPropsSchema },
     ];
-    const WrappingComponent: React.FunctionComponent<WrappingComponentProps> = (
-        props: WrappingComponentProps
-    ): JSX.Element => {
-        return this.props.children;
-    };
 
     test("should map data to a child", () => {
         const textString: string = "Hello world";

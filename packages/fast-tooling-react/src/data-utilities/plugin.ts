@@ -33,10 +33,9 @@ export abstract class Plugin<C extends PluginProps> {
     /**
      * Resolves the data given
      */
-    /* tslint:disable-next-line */
-    public resolver(
+    public abstract resolver(
         data: any,
         childOption?: ChildOptionItem,
         dataLocation?: string
-    ): any {}
+    ): any
 }
