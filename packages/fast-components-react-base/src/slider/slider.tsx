@@ -72,6 +72,7 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
         minThumbLabel: void 0,
         maxThumbLabel: void 0,
         valuetextStringFormatter: void 0,
+        displayValueConverter: void 0,
     };
 
     private rootElement: React.RefObject<HTMLDivElement> = React.createRef<
@@ -490,10 +491,20 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
                 tabIndex={props.disabled === true ? null : 0}
                 onKeyDown={keyDownCallback}
                 onMouseDown={mouseDownCallback}
-                aria-valuemin={props.range.minValue}
-                aria-valuemax={props.range.maxValue}
+                aria-valuemin={ 
+                    typeof props.displayValueConverter === "function"
+                        ? props.displayValueConverter(props.range.minValue)
+                        : props.range.minValue
+                }
+                aria-valuemax={
+                    typeof props.displayValueConverter === "function"
+                        ? props.displayValueConverter(props.range.maxValue)
+                        : props.range.maxValue
+                }
                 aria-valuenow={
-                    thumb === SliderThumb.lowerThumb ? state.lowerValue : state.upperValue
+                    typeof props.displayValueConverter === "function"
+                        ? props.displayValueConverter(thumb === SliderThumb.lowerThumb ? state.lowerValue : state.upperValue)
+                        : thumb === SliderThumb.lowerThumb ? state.lowerValue : state.upperValue
                 }
                 aria-valuetext={
                     typeof props.valuetextStringFormatter === "function"

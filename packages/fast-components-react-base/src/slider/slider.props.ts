@@ -120,6 +120,15 @@ export interface SliderHandledProps extends SliderManagedClasses {
         sliderState: SliderState,
         thumb: SliderThumb
     ) => string;
+
+    /**
+     * Function which converts the underlying slider value to another value to be displayed to the user.
+     * This may be useful in scenarios such as the case where a slider is selecting indexes in an array and 
+     * the author wants aria to report the value at that index, not the index.
+     */
+    displayValueConverter?: (
+        value: number
+    ) => number;
 }
 
 export type SliderProps = SliderUnhandledProps & SliderHandledProps;
