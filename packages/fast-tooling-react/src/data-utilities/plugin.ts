@@ -37,5 +37,5 @@ export abstract class Plugin<C extends PluginProps> {
         data: any,
         childOption?: ChildOptionItem,
         dataLocation?: string
-    ): any
+    ): any;
 }
