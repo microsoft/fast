@@ -114,6 +114,8 @@ interface ColorBlocksProps extends ColorBlocksManagedClasses {
     designSystem: ColorsDesignSystem;
 
     backgroundColor: string;
+
+    title?: string;
 }
 
 interface ColorBlocksState {
@@ -188,19 +190,11 @@ class ColorBlocksBase extends React.Component<ColorBlocksProps, ColorBlocksState
         },
     };
 
-    private stealthButtonOverrides: ComponentStyleSheet<
-        ButtonClassNameContract,
-        ColorsDesignSystem
-    > = {
-        button: {},
-    };
-
     private neutralTextStyleOverrides: ComponentStyleSheet<
         ParagraphClassNameContract,
         ColorsDesignSystem
     > = {
         paragraph: {
-            cursor: "pointer !important",
             "&:hover": {
                 color: neutralForegroundHover,
             },
@@ -253,6 +247,12 @@ class ColorBlocksBase extends React.Component<ColorBlocksProps, ColorBlocksState
                 >
                     BACKGROUND {this.props.index} -{" "}
                     {this.state.designSystem.backgroundColor.toUpperCase()}
+                    {this.props.title ? <br /> : null}
+                    {this.props.title ? (
+                        <code style={{ fontWeight: "normal" }}>
+                            {this.props.title}
+                        </code>
+                    ) : null}
                 </Caption>
 
                 <div className={this.props.managedClasses.colorBlocks_content}>
@@ -410,7 +410,6 @@ class ColorBlocksBase extends React.Component<ColorBlocksProps, ColorBlocksState
                 {this.renderExample(
                     <Button
                         appearance={ButtonAppearance.stealth}
-                        jssStyleSheet={this.stealthButtonOverrides}
                         beforeContent={StealthIcon}
                     >
                         Stealth
@@ -590,11 +589,13 @@ class ColorBlocksBase extends React.Component<ColorBlocksProps, ColorBlocksState
     }
 }
 
-function mapStateToProps(state: AppState): Pick<ColorBlocksProps, "component" | "designSystem"> {
+function mapStateToProps(
+    state: AppState
+): Pick<ColorBlocksProps, "component" | "designSystem"> {
     return {
         component: state.componentType,
         designSystem: state.designSystem,
     };
 }
 
-export default manageJss(styles)(connect(mapStateToProps)(ColorBlocksBase))
+export default manageJss(styles)(connect(mapStateToProps)(ColorBlocksBase));
