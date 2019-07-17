@@ -590,15 +590,11 @@ class ColorBlocksBase extends React.Component<ColorBlocksProps, ColorBlocksState
     }
 }
 
-/* tslint:disable-next-line */
-const ColorBlocks = manageJss(styles)(ColorBlocksBase);
-type ColorBlocks = InstanceType<typeof ColorBlocks>;
-
-function mapStateToProps(state: AppState): Partial<ColorBlocksProps> {
+function mapStateToProps(state: AppState): Pick<ColorBlocksProps, "component" | "designSystem"> {
     return {
         component: state.componentType,
         designSystem: state.designSystem,
     };
 }
 
-export default connect(mapStateToProps)(ColorBlocks);
+export default manageJss(styles)(connect(mapStateToProps)(ColorBlocksBase))
