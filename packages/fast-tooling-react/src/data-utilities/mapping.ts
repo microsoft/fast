@@ -23,28 +23,6 @@ import {
 } from "./location";
 import { ArgumentTypes } from "../typings";
 
-export interface WrappingComponentProps<T = any> {
-    /**
-     * The props of the component from data
-     */
-    componentProps: T;
-
-    /**
-     * The component to be rendered as a child of the wrapping component
-     */
-    component: React.ComponentType<T>;
-
-    /**
-     * The id of the wrapped component schema
-     */
-    schemaId: string;
-
-    /**
-     * The absolute data location of the component instance
-     */
-    absoluteDataLocation: string;
-}
-
 /**
  * Maps data returned from the form generator to the React components
  */
