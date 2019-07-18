@@ -14,11 +14,8 @@ export interface ComponentProps<T> {
 /**
  * The view config
  */
-export interface ViewConfig {
-    direction: Direction;
+export interface ViewConfig extends DesignSystem {
     theme: ThemeName;
-    backgroundColor: string;
-    designSystem: DesignSystem;
 }
 
 /* tslint:disable-next-line */

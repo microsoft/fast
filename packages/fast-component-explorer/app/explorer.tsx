@@ -167,7 +167,7 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
 
         this.resolveSchemaById = memoize(this.getSchemaById);
 
-        const paletteSource: ColorRGBA64 | null = parseColor("#808080");
+        const paletteSource: ColorRGBA64 | null = parseColor(light);
 
         this.state = {
             dataLocation: "",
@@ -177,16 +177,10 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
                 this.getComponentNameSpinalCaseByPath(locationPathname)
             ),
             locationPathname,
-            viewConfig: {
-                direction: Direction.ltr,
+            viewConfig: Object.assign({}, DesignSystemDefaults, {
                 theme: ThemeName.light,
-                backgroundColor: DesignSystemDefaults.backgroundColor,
-                designSystem: Object.assign({}, DesignSystemDefaults, {
-                    neutralPalette:
-                        paletteSource !== null ? createColorPalette(paletteSource) : [],
-                    direction: Direction.ltr,
-                }),
-            },
+                direction: Direction.ltr,
+            }),
         };
     }
 
@@ -213,13 +207,13 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
                                     <div
                                         className={get(
                                             this.props,
-                                            "managedClasses.explorer_viewerContrainer"
+                                            "managedClasses.explorer_viewerRegion"
                                         )}
                                     >
                                         <div
                                             className={get(
                                                 this.props,
-                                                "managedClasses.explorer_controls"
+                                                "managedClasses.explorer_viewerControls"
                                             )}
                                         >
                                             {this.renderScenarioSelect()}
@@ -303,10 +297,7 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
     private renderDirectionToggle(): React.ReactNode {
         return (
             <div
-                className={get(
-                    this.props,
-                    "managedClasses.explorer_viewerControlContrainer"
-                )}
+                className={get(this.props, "managedClasses.explorer_viewerControlRegion")}
             >
                 <Label jssStyleSheet={this.labelStyleOverrides}>RTL</Label>
                 <Toggle
@@ -324,10 +315,7 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
     private renderThemeToggle(): React.ReactNode {
         return (
             <div
-                className={get(
-                    this.props,
-                    "managedClasses.explorer_viewerControlContrainer"
-                )}
+                className={get(this.props, "managedClasses.explorer_viewerControlRegion")}
             >
                 <Label jssStyleSheet={this.labelStyleOverrides}>Dark mode</Label>
                 <Toggle
@@ -491,17 +479,11 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
 
     private handleUpdateDirection = (): void => {
         this.setState({
-            viewConfig: merge({}, this.state.viewConfig, {
+            viewConfig: Object.assign({}, this.state.viewConfig, {
                 direction:
                     this.state.viewConfig.direction === Direction.ltr
                         ? Direction.rtl
                         : Direction.ltr,
-                designSystem: Object.assign({}, this.state.viewConfig.designSystem, {
-                    direction:
-                        this.state.viewConfig.direction === Direction.ltr
-                            ? Direction.rtl
-                            : Direction.ltr,
-                }),
             }),
         });
     };
@@ -564,7 +546,7 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
         return DarkModeBackgrounds;
     }
 
-    private getNeutralPallete(colorSource: string): string[] {
+    private getNeutralPalette(colorSource: string): string[] {
         const color: ColorRGBA64 | null = parseColor(colorSource);
         if (color !== null) {
             const hslColor: ColorHSL = rgbToHSL(color);
@@ -590,11 +572,9 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
                         : ThemeName.light,
                 backgroundColor:
                     this.state.viewConfig.theme === ThemeName.light ? dark : light,
-                designSystem: Object.assign({}, this.state.viewConfig.designSystem, {
-                    neutralPalette: this.getNeutralPallete(
-                        this.state.viewConfig.theme === ThemeName.light ? dark : light
-                    ),
-                }),
+                neutralPalette: this.getNeutralPalette(
+                    this.state.viewConfig.theme === ThemeName.light ? dark : light
+                ),
             }),
         });
     };

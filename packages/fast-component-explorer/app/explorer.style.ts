@@ -3,9 +3,9 @@ import { DesignSystem } from "@microsoft/fast-components-styles-msft";
 
 export interface ExplorerClassNameContract {
     explorer?: string;
-    explorer_controls?: string;
-    explorer_viewerContrainer?: string;
-    explorer_viewerControlContrainer?: string;
+    explorer_viewerRegion?: string;
+    explorer_viewerControlRegion?: string;
+    explorer_viewerControls?: string;
 }
 
 const style: ComponentStyles<ExplorerClassNameContract, DesignSystem> = {
@@ -23,19 +23,19 @@ const style: ComponentStyles<ExplorerClassNameContract, DesignSystem> = {
         },
     },
     explorer: {},
-    explorer_controls: {
-        display: "flex",
-        padding: "7px 10px",
-        marginLeft: "auto",
-        alignItems: "center",
-    },
-    explorer_viewerContrainer: {
+    explorer_viewerRegion: {
         display: "flex",
         flexDirection: "column",
         width: "100%",
     },
-    explorer_viewerControlContrainer: {
+    explorer_viewerControlRegion: {
         display: "flex",
+    },
+    explorer_viewerControls: {
+        display: "flex",
+        padding: "7px 10px",
+        marginLeft: "auto",
+        alignItems: "center",
     },
 };
 
