@@ -40,17 +40,17 @@ export interface ToggleHandledProps extends ToggleManagedClasses {
     /**
      * The text to display when selected
      */
-    selectedMessage: string;
+    selectedMessage?: string;
 
     /**
      * The status label HTML id attribute
      */
-    statusMessageId: string;
+    statusMessageId?: string;
 
     /**
      * The text to display when unselected
      */
-    unselectedMessage: string;
+    unselectedMessage?: string;
 }
 
 export type ToggleProps = ToggleHandledProps & ToggleUnhandledProps;
