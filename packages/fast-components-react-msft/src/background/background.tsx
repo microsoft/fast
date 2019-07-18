@@ -76,9 +76,12 @@ export default class Background extends Foundation<
                 designSystem={this.getDesignSystemOverrides(color)}
                 designSystemMergingFunction={this.props.designSystemMergingFunction}
             >
-                <this.tag {...this.unhandledProps()} style={style}>
-                    {this.props.children}
-                </this.tag>
+                {(this.tag && (
+                    <this.tag {...this.unhandledProps()} style={style}>
+                        {this.props.children}
+                    </this.tag>
+                )) ||
+                    this.props.children}
             </DesignSystemProvider>
         );
     };

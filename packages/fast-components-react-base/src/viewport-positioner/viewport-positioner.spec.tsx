@@ -1181,4 +1181,66 @@ describe("viewport positioner", (): void => {
                 )["top"]
         ).toBe(0);
     });
+
+    test("Positioner base position offset correctly recalculated", (): void => {
+        const anchorElement: React.RefObject<HTMLDivElement> = React.createRef<
+            HTMLDivElement
+        >();
+        const viewportElement: React.RefObject<HTMLDivElement> = React.createRef<
+            HTMLDivElement
+        >();
+
+        const rendered: any = mount(
+            <div
+                style={{
+                    height: "100px",
+                    width: "100px",
+                }}
+                ref={viewportElement}
+            >
+                <div
+                    style={{
+                        height: "10px",
+                        width: "10px",
+                    }}
+                    ref={anchorElement}
+                />
+                <ViewportPositioner
+                    horizontalPositioningMode={AxisPositioningMode.adjacent}
+                    verticalPositioningMode={AxisPositioningMode.adjacent}
+                    anchor={anchorElement}
+                    viewport={viewportElement}
+                    managedClasses={managedClasses}
+                />
+            </div>
+        );
+
+        const positioner: any = rendered.find("BaseViewportPositioner");
+
+        positioner.instance().viewportRect = viewportRect;
+        positioner.instance().positionerRect = positionerRectX70Y70;
+        positioner.instance().anchorTop = 60;
+        positioner.instance().anchorRight = 90;
+        positioner.instance().anchorBottom = 70;
+        positioner.instance().anchorLeft = 80;
+        positioner.instance().anchorWidth = 10;
+        positioner.instance().anchorHeight = 10;
+        positioner.instance().scrollTop = 0;
+        positioner.instance().scrollLeft = 0;
+
+        positioner.instance()["updatePositionerOffset"]();
+
+        expect(positioner.instance().baseHorizontalOffset).toBe(0);
+        expect(positioner.instance().baseVerticalOffset).toBe(0);
+
+        positioner.instance().anchorTop = 50;
+        positioner.instance().anchorRight = 80;
+        positioner.instance().anchorBottom = 60;
+        positioner.instance().anchorLeft = 70;
+
+        positioner.instance()["updatePositionerOffset"]();
+
+        expect(positioner.instance().baseHorizontalOffset).toBe(-10);
+        expect(positioner.instance().baseVerticalOffset).toBe(-10);
+    });
 });
