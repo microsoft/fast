@@ -36,8 +36,9 @@ export enum DarkModeBackgrounds {
 export interface BackgroundHandledProps {
     /**
      * The HTML element to create
+     * If tag is set to null, no HTML element will be created.
      */
-    tag?: keyof React.ReactHTML;
+    tag?: keyof React.ReactHTML | null;
 
     /**
      * The value of the background to set. When set to a number, the value will be

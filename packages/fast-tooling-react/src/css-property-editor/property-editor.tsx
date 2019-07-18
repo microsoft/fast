@@ -1,21 +1,17 @@
 import React from "react";
-import { camelCase } from "lodash-es";
+import { get, isEqual, isNil } from "lodash-es";
 import Foundation, {
     FoundationProps,
     HandledProps,
 } from "@microsoft/fast-components-foundation-react";
 import {
     CSSProperties,
-    CSSPropertiesConfig,
-    CSSPropertyConfig,
     CSSPropertyEditorHandledProps,
     CSSPropertyEditorProps,
     CSSPropertyEditorState,
     CSSPropertyEditorUnhandledProps,
-    InputConfig,
 } from "./property-editor.props";
-import { KeyCodes, spinalCase } from "@microsoft/fast-web-utilities";
-import { getCSSPropertyConfig } from "./property-editor.utilities";
+import PropertyEditorRow from "./property-editor-row";
 
 export default class CSSPropertyEditor extends Foundation<
     CSSPropertyEditorHandledProps,
@@ -23,12 +19,7 @@ export default class CSSPropertyEditor extends Foundation<
     CSSPropertyEditorState
 > {
     public static displayName: string = "CSSPropertyEditor";
-
-    public static getDerivedStateFromProps(
-        props: CSSPropertyEditorProps
-    ): Partial<CSSPropertyEditorState> | null {
-        return { data: getCSSPropertyConfig(props.data) };
-    }
+    public static newRowKey: string = "newCSSEditorRow";
 
     protected handledProps: HandledProps<CSSPropertyEditorHandledProps> = {
         data: void 0,
@@ -36,202 +27,341 @@ export default class CSSPropertyEditor extends Foundation<
         managedClasses: void 0,
     };
 
-    private propertyEditorRef: React.RefObject<HTMLPreElement>;
-
-    private keyInputRef: React.RefObject<HTMLInputElement>;
+    // private newEditRowKeyName: string = "newCssPropertyEditorEditRow";
+    private propertyEditorRef: React.RefObject<HTMLDivElement>;
+    private editData: CSSProperties;
+    private activeEditRowReactKey: string;
+    private activeEditRowIndex: number;
+    private newRowKeyCounter: number;
 
     constructor(props: CSSPropertyEditorProps) {
         super(props);
 
-        this.keyInputRef = React.createRef();
         this.propertyEditorRef = React.createRef();
-
+        this.activeEditRowIndex = -1;
+        this.newRowKeyCounter = 0;
+        this.activeEditRowReactKey = null;
+        this.editData = isNil(this.props.data) ? {} : Object.assign({}, this.props.data);
         this.state = {
-            key: "",
-            value: "",
-            data: getCSSPropertyConfig(this.props.data),
+            activeRowUncommittedCSSName: null,
         };
     }
 
+    public componentDidUpdate(prevProps: CSSPropertyEditorProps): void {
+        if (
+            !isEqual(this.props.data, prevProps.data) &&
+            !isEqual(this.props.data, this.editData)
+        ) {
+            // if we don't recognize data props treat as a reset
+            this.editData = isNil(this.props.data)
+                ? {}
+                : Object.assign({}, this.props.data);
+            this.setState({
+                activeRowUncommittedCSSName: null,
+            });
+        }
+    }
+
+    /**
+     * Render the component
+     */
     public render(): React.ReactNode {
         return (
-            <pre
-                className={this.props.managedClasses.cssPropertyEditor}
+            <div
                 onClick={this.handleClick}
+                tabIndex={Object.keys(this.editData).length === 0 ? 0 : -1}
+                onFocus={
+                    Object.keys(this.editData).length === 0 ? this.handleEmptyFocus : null
+                }
+                className={this.props.managedClasses.cssPropertyEditor}
                 ref={this.propertyEditorRef}
             >
-                <div
+                <pre
                     className={this.props.managedClasses.cssPropertyEditor_propertyRegion}
                 >
-                    {this.renderCurrentProperties()}
-                    {this.renderNewProperty()}
-                </div>
-            </pre>
+                    {this.renderRows()}
+                </pre>
+            </div>
         );
     }
 
-    private renderCurrentProperties(): React.ReactNode {
-        if (!this.state.data) {
+    /**
+     * Render all rows
+     */
+    private renderRows(): React.ReactNode {
+        if (isNil(this.editData)) {
             return;
         }
 
-        return Object.keys(this.state.data).map(
+        return Object.keys(this.editData).map(
             (cssKey: string, index: number): React.ReactNode => {
-                return this.renderPropertyInput(cssKey, this.state.data[cssKey], index);
+                return this.renderRow(cssKey, index);
             }
         );
     }
 
-    private renderNewProperty(): React.ReactNode {
-        const newPropertyConfig: CSSPropertiesConfig = getCSSPropertyConfig({
-            [this.state.key]: this.state.value,
+    /**
+     * Render a single row
+     */
+    private renderRow = (cssKey: string, index: number): React.ReactNode => {
+        const itemKey: string = this.getItemKey(cssKey, index);
+
+        const editKey: string =
+            this.activeEditRowIndex === index &&
+            this.state.activeRowUncommittedCSSName !== null
+                ? this.state.activeRowUncommittedCSSName
+                : cssKey;
+
+        return (
+            <PropertyEditorRow
+                key={itemKey}
+                cssPropertyName={editKey}
+                value={this.editData[cssKey]}
+                rowIndex={index}
+                onValueChange={this.handleValueChange}
+                onPropertyNameChange={this.handleKeyChange}
+                onClickOutside={this.handleClickToInsert}
+                onCommitPropertyNameEdit={this.handleCommitKeyEdit}
+                onRowBlur={this.handleRowBlur}
+                onRowFocus={this.handleRowFocus}
+                managedClasses={{
+                    cssPropertyEditorRow: get(
+                        this.props.managedClasses,
+                        "cssPropertyEditor_row",
+                        ""
+                    ),
+                    cssPropertyEditorRow_input: get(
+                        this.props.managedClasses,
+                        "cssPropertyEditor_input",
+                        ""
+                    ),
+                    cssPropertyEditorRow_inputKey: get(
+                        this.props.managedClasses,
+                        "cssPropertyEditor_inputKey",
+                        ""
+                    ),
+                    cssPropertyEditorRow_inputValue: get(
+                        this.props.managedClasses,
+                        "cssPropertyEditor_inputValue",
+                        ""
+                    ),
+                }}
+            />
+        );
+    };
+
+    /**
+     * get an item key
+     */
+    private getItemKey = (cssKey: string, index: number): string => {
+        let editKey: string = cssKey;
+        if (this.activeEditRowIndex === index) {
+            if (this.activeEditRowReactKey !== null) {
+                editKey = this.activeEditRowReactKey;
+            } else if (cssKey === "") {
+                editKey = this.generateItemKey();
+            } else {
+                this.activeEditRowReactKey = cssKey;
+            }
+        }
+        return editKey;
+    };
+
+    /**
+     * generate a new item key
+     */
+    private generateItemKey = (): string => {
+        this.newRowKeyCounter = this.newRowKeyCounter + 1;
+        if (this.newRowKeyCounter > 100) {
+            this.newRowKeyCounter = 1;
+        }
+        this.activeEditRowReactKey = `${CSSPropertyEditor.newRowKey}${
+            this.newRowKeyCounter
+        }`;
+        return this.activeEditRowReactKey;
+    };
+
+    /**
+     * CSS key has changed in a row input
+     */
+    private handleKeyChange = (
+        newkey: string,
+        oldKey: string,
+        rowIndex: number
+    ): void => {
+        this.setState({
+            activeRowUncommittedCSSName: newkey,
+        });
+    };
+
+    /**
+     * A value has changed in a row input
+     */
+    private handleValueChange = (
+        newValue: string,
+        rowKey: string,
+        rowIndex: number
+    ): void => {
+        const newData: CSSProperties = {};
+
+        // The reason this is iterated over in this manner is to preserve
+        // the order of keys in the CSS object
+        Object.keys(this.editData).forEach((key: string, index: number) => {
+            newData[key] = index === rowIndex ? newValue : this.editData[key];
         });
 
-        return this.renderNewPropertyInput(newPropertyConfig[this.state.key]);
-    }
+        this.editData = newData;
+        this.activeEditRowIndex = rowIndex;
+        this.handleCSSUpdate(newData);
+    };
 
-    private renderPropertyInput(
-        key: string,
-        config: CSSPropertyConfig,
-        index: number
-    ): React.ReactNode {
-        return (
-            <div key={index}>
-                {this.renderInput({
-                    className: this.generateKeyClassNames(),
-                    onChange: this.handlePropertyKeyChange(key),
-                    value: spinalCase(key),
-                    style: { width: `${config.keyWidth}px` },
-                })}
-                :
-                {this.renderInput({
-                    className: this.generateValueClassNames(),
-                    onChange: this.handlePropertyValueChange(key),
-                    value: config.value,
-                    style: { width: `${config.valueWidth}px` },
-                })}
-                ;
-            </div>
-        );
-    }
+    /**
+     * Commits a key change to data
+     */
+    private commitCSSKeyEdit = (): void => {
+        if (this.state.activeRowUncommittedCSSName === null) {
+            return;
+        }
+        const newData: CSSProperties = {};
 
-    private renderNewPropertyInput(config: CSSPropertyConfig): React.ReactNode {
-        return (
-            <div>
-                {this.renderInput({
-                    className: this.generateKeyClassNames(),
-                    onChange: this.handleNewPropertyKeyChange,
-                    value: spinalCase(this.state.key),
-                    style: { width: `${config.keyWidth}px` },
-                    ref: this.keyInputRef,
-                })}
-                :
-                {this.renderInput({
-                    className: this.generateValueClassNames(),
-                    onChange: this.handleNewPropertyValueChange,
-                    onKeyDown: this.handleNewPropertyValueKeyDown,
-                    value: this.state.value,
-                    style: { width: `${config.valueWidth}px` },
-                })}
-                ;
-            </div>
-        );
-    }
+        // The reason this is iterated over in this manner is to preserve
+        // the order of keys in the CSS object
+        Object.keys(this.editData).forEach((key: string, index: number) => {
+            if (index === this.activeEditRowIndex) {
+                newData[this.state.activeRowUncommittedCSSName] = this.editData[key];
+            } else {
+                newData[key] = this.editData[key];
+            }
+        });
 
-    private renderInput(config: InputConfig): React.ReactNode {
-        return <input type={"text"} {...config} />;
-    }
+        this.editData = newData;
+        this.setState({
+            activeRowUncommittedCSSName: null,
+        });
 
-    private generateKeyClassNames(): string {
-        return `${this.props.managedClasses.cssPropertyEditor_input} ${
-            this.props.managedClasses.cssPropertyEditor_inputKey
-        }`;
-    }
+        this.handleCSSUpdate(newData);
+    };
 
-    private generateValueClassNames(): string {
-        return `${this.props.managedClasses.cssPropertyEditor_input} ${
-            this.props.managedClasses.cssPropertyEditor_inputValue
-        }`;
-    }
-
-    private handleClick = (e: React.MouseEvent<HTMLPreElement>): void => {
-        if ((e.target as HTMLElement).nodeName !== "INPUT") {
-            this.keyInputRef.current.focus();
+    /**
+     * Row gained focus
+     */
+    private handleRowFocus = (rowKey: string, rowIndex: number): void => {
+        if (this.activeEditRowIndex !== rowIndex) {
+            this.activeEditRowReactKey = null;
+            this.activeEditRowIndex = rowIndex;
         }
     };
 
-    private handlePropertyKeyChange(
-        oldKey: string
-    ): (e: React.ChangeEvent<HTMLInputElement>) => void {
-        return (e: React.ChangeEvent<HTMLInputElement>): void => {
-            const newData: CSSProperties = {};
-
-            // The reason this is iterated over in this manner is to preserve
-            // the order of keys in the CSS object
-            Object.keys(this.props.data).forEach((key: string) => {
-                if (key === oldKey) {
-                    newData[camelCase(e.target.value)] = this.props.data[key];
-                } else {
-                    newData[key] = this.props.data[key];
-                }
-            });
-
-            this.handleCSSUpdate(newData);
-        };
-    }
-
-    private handlePropertyValueChange(
-        key: string
-    ): (e: React.ChangeEvent<HTMLInputElement>) => void {
-        return (e: React.ChangeEvent<HTMLInputElement>): void => {
-            this.handleCSSUpdate({
-                ...this.props.data,
-                ...{ [camelCase(key)]: e.target.value },
-            });
-        };
-    }
-
-    private handleNewPropertyKeyChange = (
-        e: React.ChangeEvent<HTMLInputElement>
-    ): void => {
-        this.setState({
-            key: e.target.value,
-        });
-    };
-
-    private handleNewPropertyValueChange = (
-        e: React.ChangeEvent<HTMLInputElement>
-    ): void => {
-        this.setState({
-            value: e.target.value,
-        });
-    };
-
-    private handleNewPropertyValueKeyDown = (
-        e: React.KeyboardEvent<HTMLInputElement>
-    ): void => {
-        if (e.keyCode === KeyCodes.tab) {
-            if (this.state.key !== "" && this.state.value !== "") {
-                e.preventDefault();
-
-                this.handleCSSUpdate(
-                    Object.assign({}, this.props.data, {
-                        [camelCase(this.state.key)]: this.state.value,
-                    })
-                );
-
-                this.keyInputRef.current.focus();
+    /**
+     * Key input has lost focus
+     */
+    private handleCommitKeyEdit = (rowKey: string, rowIndex: number): void => {
+        if (this.state.activeRowUncommittedCSSName !== null) {
+            if (this.state.activeRowUncommittedCSSName === "") {
+                this.deleteRow(rowIndex);
+            } else {
+                this.commitCSSKeyEdit();
             }
+        } else if (rowKey === "") {
+            this.deleteRow(rowIndex);
+        }
+    };
 
+    /**
+     * Row has lost focus
+     */
+    private handleRowBlur = (rowKey: string, rowIndex: number): void => {
+        if (this.activeEditRowIndex !== -1 && this.editData[rowKey] === "") {
+            this.deleteRow(rowIndex);
+        }
+        this.activeEditRowReactKey = null;
+        this.setState({
+            activeRowUncommittedCSSName: null,
+        });
+    };
+
+    /**
+     * Clicks on a row outside the inputs add a row following that row
+     */
+    private handleClickToInsert = (rowKey: string, rowIndex: number): void => {
+        this.createRow(rowIndex + 1);
+    };
+
+    /**
+     * Add a row at the end of the list when there are clicks outside of an existing row
+     */
+    private handleClick = (e: React.MouseEvent<HTMLDivElement>): void => {
+        if (e.defaultPrevented) {
+            return;
+        }
+        this.createRow(Object.keys(this.editData).length);
+    };
+
+    /**
+     * Component got focus without any data rows, so add an empty one
+     */
+    private handleEmptyFocus = (): void => {
+        this.createRow(0);
+    };
+
+    /**
+     * Create a new row at the insertion index
+     * Retains keys for existing elements
+     */
+    private createRow = (insertionIndex: number): void => {
+        const newData: CSSProperties = {};
+        const keys: string[] = Object.keys(this.editData);
+
+        for (let i: number = 0, keysLength: number = keys.length; i <= keysLength; i++) {
+            if (i === insertionIndex) {
+                newData[""] = "";
+            } else if (i < insertionIndex) {
+                const key: string = keys[i];
+                newData[key] = this.editData[key];
+            } else {
+                const key: string = keys[i - 1];
+                newData[key] = this.editData[key];
+            }
+        }
+
+        this.activeEditRowIndex = insertionIndex;
+        this.activeEditRowReactKey = null;
+        this.editData = newData;
+        this.forceUpdate();
+    };
+
+    /**
+     * Delete the new row at the deletion index
+     */
+    private deleteRow = (deletionIndex: number): void => {
+        const newData: CSSProperties = {};
+
+        Object.keys(this.editData).forEach((key: string, index: number) => {
+            if (index !== deletionIndex) {
+                newData[key] = this.editData[key];
+            }
+        });
+
+        this.editData = newData;
+
+        if (deletionIndex === this.activeEditRowIndex) {
             this.setState({
-                key: "",
-                value: "",
+                activeRowUncommittedCSSName: null,
             });
+            this.activeEditRowIndex = -1;
         }
+
+        this.handleCSSUpdate(newData);
     };
 
+    /**
+     * data has changed, invoke onChange to update the parent
+     */
     private handleCSSUpdate = <D extends {}>(updatedCSS: D): void => {
-        if (typeof this.props.onChange === "function") {
+        if (
+            typeof this.props.onChange === "function" &&
+            !isEqual(updatedCSS, this.props.data)
+        ) {
             this.props.onChange(updatedCSS);
         }
     };
