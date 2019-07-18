@@ -31,7 +31,7 @@ const styles: ComponentStyles<SliderLabelClassNameContract, DesignSystem> = {
     sliderLabel_tickMark: {
         background: neutralOutlineRest,
         "@media (-ms-high-contrast:active)": {
-            background: "ButtonHighlight",
+            background: "ButtonText",
         },
     },
 
