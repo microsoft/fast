@@ -1,25 +1,46 @@
-import React from "react";
+/* tslint:disable:jsx-no-lambda */
+/* tslint:disable:no-empty */
 import { Canvas, Container, Row } from "@microsoft/fast-layouts-react";
+import {
+    DesignSystem,
+    neutralLayerCard,
+    neutralLayerCardContainer,
+    neutralLayerFloating,
+    neutralLayerL1,
+    neutralLayerL1Alt,
+    neutralLayerL2,
+    neutralLayerL3,
+    neutralLayerL4,
+    palette,
+    PaletteType,
+} from "@microsoft/fast-components-styles-msft";
 import { DesignSystemProvider } from "@microsoft/fast-jss-manager-react";
 import { ColorsDesignSystem } from "./design-system";
 import { Gradient } from "./gradient";
 import ColorBlocks from "./color-blocks";
 import { ControlPane } from "./control-pane";
-import { palette, PaletteType } from "@microsoft/fast-components-styles-msft";
+import React from "react";
 import { AppState } from "./state";
 import { connect } from "react-redux";
-import { Background, DarkModeBackgrounds } from "@microsoft/fast-components-react-msft";
+import {
+    Background,
+    DarkModeBackgrounds,
+    LightModeBackgrounds,
+} from "@microsoft/fast-components-react-msft";
 import { FixedSizeList } from "react-window";
 import AutoSizer from "react-virtualized-auto-sizer";
-import { Swatch } from "@microsoft/fast-components-styles-msft/dist/utilities/color/common";
+import {
+    ColorRecipe,
+    Swatch,
+} from "@microsoft/fast-components-styles-msft/dist/utilities/color/common";
 
 interface AppProps {
     designSystem: ColorsDesignSystem;
     neutralBaseColor: Swatch;
     accentBaseColor: Swatch;
+    showOnlyRecommendedBackgrounds: boolean;
 }
-/* tslint:disable:jsx-no-lambda */
-/* tslint:disable:no-empty */
+
 class App extends React.Component<AppProps, {}> {
     private colorBlockScrollerRef: React.RefObject<FixedSizeList> = React.createRef<
         FixedSizeList
@@ -31,6 +52,16 @@ class App extends React.Component<AppProps, {}> {
             height: "100%",
         },
     };
+
+    private backgroundRecipes: Array<[ColorRecipe<string>, string]> = [
+        [neutralLayerFloating, "neutralLayerFloating"],
+        [neutralLayerCard, "neutralLayerCard"],
+        [neutralLayerCardContainer, "neutralLayerCardContainer"],
+        [neutralLayerL1, "neutralLayerL1"],
+        [neutralLayerL2, "neutralLayerL2"],
+        [neutralLayerL3, "neutralLlayerL3"],
+        [neutralLayerL4, "neutralLayerL4"],
+    ];
 
     public render(): React.ReactNode {
         return (
@@ -85,17 +116,18 @@ class App extends React.Component<AppProps, {}> {
     };
 
     private renderColorBlockList = (props: any): JSX.Element => {
+        const backgrounds: Array<{ color: string; title?: string }> = this.backgrounds();
+
         return (
             <FixedSizeList
                 width={props.width}
                 height={props.height}
                 itemSize={400}
                 layout={"horizontal"}
-                itemCount={this.props.designSystem.neutralPalette.length}
-                itemKey={(index: number): string =>
-                    palette(PaletteType.neutral)(this.props.designSystem)[index]
-                }
+                itemCount={backgrounds.length}
+                itemKey={(index: number): string => backgrounds[index].color}
                 ref={this.colorBlockScrollerRef}
+                itemData={backgrounds}
             >
                 {this.renderColorBlock}
             </FixedSizeList>
@@ -103,20 +135,93 @@ class App extends React.Component<AppProps, {}> {
     };
 
     private renderColorBlock = (props: any): JSX.Element => {
-        const color: string = palette(PaletteType.neutral)(this.props.designSystem)[
-            props.index
-        ];
+        const color: string = props.data[props.index].color;
+        const index: number = this.props.designSystem.neutralPalette.indexOf(color);
 
         return (
             <div style={props.style} key={color}>
                 <Background value={color} style={{ minHeight: "100%" }}>
                     <ColorBlocks
-                        {...{ backgroundColor: color, index: props.index } as any}
+                        index={index}
+                        backgroundColor={color}
+                        title={props.data[props.index].title}
                     />
                 </Background>
             </div>
         );
     };
+
+    private backgrounds(): Array<{ color: string; title?: string }> {
+        const neutralPalette: string[] = this.props.designSystem.neutralPalette;
+        const neutralLayers: Array<{
+            color: string;
+            title: string;
+        }> = this.lightModeLayers.concat(this.darkModeLayers);
+
+        return this.props.showOnlyRecommendedBackgrounds
+            ? neutralLayers
+            : neutralPalette.map((color: string): { color: string; title?: string } => {
+                  const neutralLayerIndex: number = neutralLayers.findIndex(
+                      (config: { color: string; title: string }): boolean =>
+                          config.color === color
+                  );
+
+                  return {
+                      color,
+                      title:
+                          neutralLayerIndex !== -1
+                              ? neutralLayers[neutralLayerIndex].title
+                              : undefined,
+                  };
+              });
+    }
+
+    private resolveRecipes = (color: string): Array<{ color: string; title: string }> => {
+        return this.backgroundRecipes
+            .map((conf: [ColorRecipe<string>, string]): {
+                color: string;
+                title: string;
+            } => ({
+                color: conf[0]((): string => color)(this.props.designSystem),
+                title: conf[1],
+            }))
+            .reduce(
+                (
+                    accum: Array<{ color: string; title: string }>,
+                    value: { color: string; title: string }
+                ): Array<{ color: string; title: string }> => {
+                    const colorIndex: number = accum.findIndex(
+                        (config: { color: string; title: string }): boolean =>
+                            config.color === value.color
+                    );
+
+                    return colorIndex === -1
+                        ? accum.concat(value)
+                        : accum.map(
+                              (
+                                  config: { color: string; title: string },
+                                  index: number
+                              ): { color: string; title: string } =>
+                                  index === colorIndex
+                                      ? {
+                                            color: value.color,
+                                            title: value.title.concat(", ", config.title),
+                                        }
+                                      : config
+                          );
+                },
+                []
+            );
+    };
+
+    private get lightModeLayers(): Array<{ color: string; title: string }> {
+        return this.resolveRecipes(this.props.designSystem.neutralPalette[0]);
+    }
+
+    private get darkModeLayers(): Array<{ color: string; title: string }> {
+        const neutralPalette: string[] = this.props.designSystem.neutralPalette;
+        return this.resolveRecipes(neutralPalette[neutralPalette.length - 1]);
+    }
 }
 
 function mapStateToProps(state: AppState): Partial<AppProps> {
@@ -124,6 +229,7 @@ function mapStateToProps(state: AppState): Partial<AppProps> {
         designSystem: state.designSystem,
         neutralBaseColor: state.neutralBaseColor,
         accentBaseColor: state.accentBaseColor,
+        showOnlyRecommendedBackgrounds: state.showOnlyRecommendedBackgrounds,
     };
 }
 
