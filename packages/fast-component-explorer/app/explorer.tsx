@@ -564,14 +564,13 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
     }
 
     private handleUpdateTheme = (): void => {
+        const isLightTheme: boolean = this.state.theme === ThemeName.light;
+        const updatedThemeColor: string = isLightTheme ? dark : light;
         this.setState({
-            theme:
-                this.state.theme === ThemeName.light ? ThemeName.dark : ThemeName.light,
+            theme: isLightTheme ? ThemeName.dark : ThemeName.light,
             viewConfig: merge({}, this.state.viewConfig, {
-                backgroundColor: this.state.theme === ThemeName.light ? dark : light,
-                neutralPalette: this.getNeutralPalette(
-                    this.state.theme === ThemeName.light ? dark : light
-                ),
+                backgroundColor: updatedThemeColor,
+                neutralPalette: this.getNeutralPalette(updatedThemeColor),
             }),
         });
     };

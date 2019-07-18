@@ -14,6 +14,7 @@ export interface ComponentProps<T> {
 /**
  * The view config
  */
+/* tslint:disable-next-line */
 export interface ViewConfig extends DesignSystem {}
 
 /* tslint:disable-next-line */
