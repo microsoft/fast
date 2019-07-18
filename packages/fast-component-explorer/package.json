@@ -35,7 +35,7 @@
       "global": {
         "statements": 50,
         "branches": 5,
-        "functions": 20,
+        "functions": 19,
         "lines": 20
       }
     },
@@ -114,6 +114,7 @@
     "workbox-webpack-plugin": "^3.6.3"
   },
   "dependencies": {
+    "@microsoft/fast-colors": "^4.2.0",
     "@microsoft/fast-components-react-base": "^4.10.0",
     "@microsoft/fast-components-react-msft": "^4.14.0",
     "@microsoft/fast-components-styles-msft": "^4.16.0",
