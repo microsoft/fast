@@ -8,10 +8,11 @@ import {
 } from "./pane.props";
 import { west } from "../row";
 import rafThrottle from "raf-throttle";
-import { toPx } from "@microsoft/fast-jss-utilities";
+import { applyFocusVisible, toPx } from "@microsoft/fast-jss-utilities";
 import { ComponentStyles } from "@microsoft/fast-jss-manager-react";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import { canUseDOM } from "exenv-es6";
+import { Direction, KeyCodes } from "@microsoft/fast-web-utilities";
 import { joinClasses } from "../utilities";
 
 /**
@@ -64,6 +65,10 @@ export const paneStyleSheet: ComponentStyles<PaneClassNamesContract, undefined> 
         "&:hover": {
             cursor: "ew-resize",
         },
+        ...applyFocusVisible({
+            opacity: "1",
+            transform: "scale(1)",
+        }),
         "&:active": {
             opacity: "1",
             transform: "scale(1)",
@@ -233,11 +238,31 @@ export class Pane extends Foundation<PaneHandledProps, PaneUnhandledProps, PaneS
         return (
             <button
                 className={this.props.managedClasses.pane_resizeHandle}
-                aria-hidden={true}
                 onMouseDown={this.onMouseDown}
+                onKeyDown={this.onKeyDown}
+                aria-hidden={true}
             />
         );
     }
+
+    /**
+     * Handle keyPress
+     */
+    public onKeyDown = (e: React.KeyboardEvent<HTMLButtonElement>): void => {
+        const isShift: boolean = e.shiftKey;
+        const offset: number = isShift ? 10 : 1;
+
+        switch (e.keyCode) {
+            case KeyCodes.arrowLeft:
+                this.setWidth(this.rootElement.current.clientWidth - offset);
+                break;
+            case KeyCodes.arrowRight:
+                this.setWidth(this.rootElement.current.clientWidth + offset);
+                break;
+            default:
+                break;
+        }
+    };
 
     /**
      * Handle mouseDown
