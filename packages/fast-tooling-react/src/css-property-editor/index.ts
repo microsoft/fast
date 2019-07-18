@@ -2,9 +2,7 @@ import React from "react";
 import { FoundationProps } from "@microsoft/fast-components-foundation-react";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import PropertyEditor from "./property-editor";
-import CSSPropertyEditorStyles, {
-    CSSPropertyEditorClassNameContract,
-} from "./property-editor.style";
+import CSSPropertyEditorStyles from "./property-editor.style";
 
 /*
  * The type returned by manageJss type is very complicated so we'll let the
