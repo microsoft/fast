@@ -3,9 +3,11 @@ import {
     ExplorerHandledProps,
     ExplorerProps,
     ExplorerState,
+    Theme,
+    ThemeName,
 } from "./explorer.props";
 import { CodePreviewChildOption } from "@microsoft/fast-tooling-react/dist/data-utilities/mapping";
-import { camelCase, get, memoize } from "lodash-es";
+import { camelCase, get, memoize, merge } from "lodash-es";
 import {
     Canvas,
     CanvasClassNamesContract,
@@ -30,17 +32,30 @@ import ReactDOM from "react-dom";
 import React from "react";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import {
+    createColorPalette,
     DesignSystem,
     DesignSystemDefaults,
+    designUnit,
+    height,
+    horizontalSpacing,
 } from "@microsoft/fast-components-styles-msft";
-import { TabsItem } from "@microsoft/fast-components-react-base";
+import {
+    LabelClassNameContract,
+    ListboxItemProps,
+    TabsItem,
+} from "@microsoft/fast-components-react-base";
 import style from "./explorer.style";
 import {
     Background,
     DarkModeBackgrounds,
+    Label,
     LightModeBackgrounds,
     Pivot,
     PivotClassNameContract,
+    Select,
+    SelectOption,
+    Toggle,
+    ToggleClassNameContract,
 } from "@microsoft/fast-components-react-msft";
 import { ViewerManagedClasses } from "@microsoft/fast-tooling-react/dist/viewer/viewer/viewer.props";
 import {
@@ -48,13 +63,23 @@ import {
     FormClassNameContract,
 } from "@microsoft/fast-tooling-react/dist/form/form";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import jsx from "react-syntax-highlighter/dist/esm/languages/prism/jsx";
 import syntaxHighlighterStyles from "./syntax-highlighting-style";
 import { childOptions, history, menu } from "./config";
 import * as componentViewConfigs from "./utilities/configs";
 import { Scenario } from "./utilities/configs/data.props";
 import { MemoizedFunction } from "lodash";
-import { Direction } from "@microsoft/fast-web-utilities";
+import { Direction, format } from "@microsoft/fast-web-utilities";
+import {
+    ColorHSL,
+    ColorRGBA64,
+    hslToRGB,
+    parseColor,
+    rgbToHSL,
+} from "@microsoft/fast-colors";
+import { toPx } from "@microsoft/fast-jss-utilities";
+
+const dark: string = "#111111";
+const light: string = "#FFFFFF";
 
 class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
     public static displayName: string = "Explorer";
@@ -100,8 +125,36 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
         },
         pivot_tabPanels: {
             overflow: "auto",
-            padding: "0 12px",
-            height: "calc(100% - 32px)",
+            padding: (designSystem: DesignSystem): string => {
+                return format("0 {0}", horizontalSpacing()(designSystem));
+            },
+            height: (designSystem: DesignSystem): string => {
+                return format("calc(100% - {0})", height()(designSystem));
+            },
+        },
+    };
+
+    private toggleStyleOverrides: ComponentStyleSheet<
+        Partial<ToggleClassNameContract>,
+        DesignSystem
+    > = {
+        toggle_toggleButton: {
+            display: "flex",
+        },
+    };
+
+    private labelStyleOverrides: ComponentStyleSheet<
+        Partial<LabelClassNameContract>,
+        DesignSystem
+    > = {
+        label: {
+            margin: (designSystem: DesignSystem): string => {
+                return format(
+                    "0 {0} 0 {1}",
+                    toPx(designUnit)(designSystem),
+                    horizontalSpacing()(designSystem)
+                );
+            },
         },
     };
 
@@ -113,6 +166,9 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
         const locationPathname: string = get(this.props, "location.pathname", "");
 
         this.resolveSchemaById = memoize(this.getSchemaById);
+
+        const paletteSource: ColorRGBA64 | null = parseColor(light);
+
         this.state = {
             dataLocation: "",
             width: defaultDevices[0].width ? defaultDevices[0].width : 500,
@@ -121,15 +177,21 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
                 this.getComponentNameSpinalCaseByPath(locationPathname)
             ),
             locationPathname,
-            viewConfig: {
+            theme: ThemeName.light,
+            viewConfig: Object.assign({}, DesignSystemDefaults, {
                 direction: Direction.ltr,
-            },
+            }),
         };
     }
 
     public render(): React.ReactNode {
+        const explorerDesignSystem: DesignSystem = Object.assign(
+            {},
+            DesignSystemDefaults,
+            { density: -2 }
+        );
         return (
-            <DesignSystemProvider designSystem={DesignSystemDefaults}>
+            <DesignSystemProvider designSystem={explorerDesignSystem}>
                 <Background value={this.backgrounds.L1}>
                     <Container className={get(this.props, "managedClasses.explorer")}>
                         <Row style={{ flex: "1" }}>
@@ -142,10 +204,21 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
                             </Pane>
                             <Canvas jssStyleSheet={this.canvasStyleOverrides}>
                                 <Row fill={true}>
-                                    <div style={{ width: "100%" }}>
-                                        <div style={{ padding: "7px 10px" }}>
+                                    <div
+                                        className={get(
+                                            this.props,
+                                            "managedClasses.explorer_viewerRegion"
+                                        )}
+                                    >
+                                        <div
+                                            className={get(
+                                                this.props,
+                                                "managedClasses.explorer_viewerControls"
+                                            )}
+                                        >
                                             {this.renderScenarioSelect()}
                                             {this.renderDirectionToggle()}
+                                            {this.renderThemeToggle()}
                                         </div>
                                         {this.renderViewer()}
                                     </div>
@@ -223,9 +296,37 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
 
     private renderDirectionToggle(): React.ReactNode {
         return (
-            <button onClick={this.handleUpdateDirection}>
-                {this.state.viewConfig.direction}
-            </button>
+            <div
+                className={get(this.props, "managedClasses.explorer_viewerControlRegion")}
+            >
+                <Label jssStyleSheet={this.labelStyleOverrides}>RTL</Label>
+                <Toggle
+                    jssStyleSheet={this.toggleStyleOverrides}
+                    inputId={"direction"}
+                    onClick={this.handleUpdateDirection}
+                    selectedMessage={""}
+                    unselectedMessage={""}
+                    statusMessageId={"direction"}
+                />
+            </div>
+        );
+    }
+
+    private renderThemeToggle(): React.ReactNode {
+        return (
+            <div
+                className={get(this.props, "managedClasses.explorer_viewerControlRegion")}
+            >
+                <Label jssStyleSheet={this.labelStyleOverrides}>Dark mode</Label>
+                <Toggle
+                    jssStyleSheet={this.toggleStyleOverrides}
+                    inputId={"theme"}
+                    onClick={this.handleUpdateTheme}
+                    selectedMessage={""}
+                    unselectedMessage={""}
+                    statusMessageId={"theme"}
+                />
+            </div>
         );
     }
 
@@ -298,9 +399,12 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
 
         if (Array.isArray(scenarioOptions)) {
             return (
-                <select onChange={this.handleUpdateScenario}>
+                <Select
+                    onValueChange={this.handleUpdateScenario}
+                    defaultSelection={[scenarioOptions[0].displayName]}
+                >
                     {this.renderScenarioOptions(scenarioOptions)}
-                </select>
+                </Select>
             );
         }
     }
@@ -310,9 +414,11 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
     ): React.ReactNode {
         return scenarioOptions.map((scenarioOption: Scenario<any>, index: number) => {
             return (
-                <option key={scenarioOption.displayName} value={index}>
-                    {scenarioOption.displayName}
-                </option>
+                <SelectOption
+                    id={scenarioOption.displayName}
+                    displayString={scenarioOption.displayName}
+                    value={`${index}`}
+                />
             );
         });
     }
@@ -373,22 +479,24 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
 
     private handleUpdateDirection = (): void => {
         this.setState({
-            // The viewConfig only contains the direction,
-            // if more items are added to the viewConfig use merge
-            viewConfig: {
+            viewConfig: Object.assign({}, this.state.viewConfig, {
                 direction:
                     this.state.viewConfig.direction === Direction.ltr
                         ? Direction.rtl
                         : Direction.ltr,
-            },
+            }),
         });
     };
 
-    private handleUpdateScenario = (e: React.ChangeEvent<HTMLSelectElement>): void => {
+    private handleUpdateScenario = (
+        newValue: string | string[],
+        selectedItems: ListboxItemProps[],
+        displayString: string
+    ): void => {
         this.setState({
             scenario: this.getScenarioData(
                 this.getComponentNameSpinalCaseByPath(this.state.locationPathname),
-                parseInt(e.target.value, 10)
+                parseInt(selectedItems[0].value, 10)
             ),
         });
     };
@@ -402,15 +510,15 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
         });
     };
 
-    private handleUpdateHeight = (height: number): void => {
+    private handleUpdateHeight = (updatedHeight: number): void => {
         this.setState({
-            height,
+            height: updatedHeight,
         });
     };
 
-    private handleUpdateWidth = (width: number): void => {
+    private handleUpdateWidth = (updatedWidth: number): void => {
         this.setState({
-            width,
+            width: updatedWidth,
         });
     };
 
@@ -437,6 +545,35 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
     private get backgrounds(): typeof DarkModeBackgrounds | typeof LightModeBackgrounds {
         return DarkModeBackgrounds;
     }
+
+    private getNeutralPalette(colorSource: string): string[] {
+        const color: ColorRGBA64 | null = parseColor(colorSource);
+        if (color !== null) {
+            const hslColor: ColorHSL = rgbToHSL(color);
+            const augmentedHSLColor: ColorHSL | null = ColorHSL.fromObject({
+                h: hslColor.h,
+                s: hslColor.s,
+                l: 0.5,
+            });
+
+            if (augmentedHSLColor !== null) {
+                return createColorPalette(hslToRGB(augmentedHSLColor));
+            }
+        }
+        return DesignSystemDefaults.neutralPalette;
+    }
+
+    private handleUpdateTheme = (): void => {
+        const isLightTheme: boolean = this.state.theme === ThemeName.light;
+        const updatedThemeColor: string = isLightTheme ? dark : light;
+        this.setState({
+            theme: isLightTheme ? ThemeName.dark : ThemeName.light,
+            viewConfig: merge({}, this.state.viewConfig, {
+                backgroundColor: updatedThemeColor,
+                neutralPalette: this.getNeutralPalette(updatedThemeColor),
+            }),
+        });
+    };
 }
 
 export default manageJss(style)(Explorer);

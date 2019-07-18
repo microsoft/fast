@@ -1,15 +1,19 @@
 import React from "react";
 import manageJss, { DesignSystemProvider } from "@microsoft/fast-jss-manager-react";
-import style from "./explorer.style";
+import style from "./preview.style";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import { ViewerContent } from "@microsoft/fast-tooling-react";
 import { childOptions } from "./config";
-import { Direction } from "@microsoft/fast-web-utilities";
 import initializedPlugins from "./utilities/plugins"; // TODO: add this to Viewer Content
+import { Background } from "@microsoft/fast-components-react-msft";
+import {
+    DesignSystem,
+    DesignSystemDefaults,
+} from "@microsoft/fast-components-styles-msft";
+import { get } from "lodash-es";
 
-export interface PreviewState {
-    direction: Direction;
-}
+/* tslint:disable-next-line */
+export interface PreviewState extends DesignSystem {}
 
 /**
  * The preview component exists on a route inside an iframe
@@ -20,20 +24,24 @@ class Preview extends Foundation<{}, {}, PreviewState> {
         super(props);
 
         this.state = {
-            direction: Direction.ltr,
+            ...DesignSystemDefaults,
         };
     }
 
     public render(): React.ReactNode {
         return (
-            <div style={this.getStyle()} dir={this.state.direction}>
+            <Background
+                className={get(this.props, "managedClasses.preview")}
+                value={this.state.backgroundColor}
+                dir={this.state.direction}
+            >
                 <DesignSystemProvider designSystem={this.state}>
                     <ViewerContent
                         components={childOptions}
                         plugins={initializedPlugins}
                     />
                 </DesignSystemProvider>
-            </div>
+            </Background>
         );
     }
 
@@ -49,10 +57,6 @@ class Preview extends Foundation<{}, {}, PreviewState> {
             /* tslint:disable-next-line */
         } catch (e) {}
     };
-
-    private getStyle(): React.CSSProperties {
-        return {};
-    }
 }
 
 export default manageJss(style)(Preview as React.ComponentType);
