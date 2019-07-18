@@ -43,5 +43,5 @@ export default {
             defaults: ["text"],
         },
     },
-    required: ["id", "selectedMessage", "statusMessageId", "unselectedMessage"],
+    required: ["id"],
 };
