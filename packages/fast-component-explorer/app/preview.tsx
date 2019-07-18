@@ -12,6 +12,7 @@ import {
 } from "@microsoft/fast-components-styles-msft";
 import { get } from "lodash-es";
 
+/* tslint:disable-next-line */
 export interface PreviewState extends DesignSystem {}
 
 /**
