@@ -25,6 +25,9 @@ describe("Background", (): void => {
     test("should create a div by default", (): void => {
         expect(mount(<Background />).find("div")).toHaveLength(1);
     });
+    test("should not create a div with tag = null", (): void => {
+        expect(mount(<Background tag={null} />).find("div")).toHaveLength(0);
+    });
     test("should accept unhandled props", (): void => {
         expect(
             mount(<Background aria-label="wee" />)
