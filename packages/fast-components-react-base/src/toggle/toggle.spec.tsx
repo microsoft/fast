@@ -147,7 +147,7 @@ describe("toggle", (): void => {
         );
 
         const span: any = rendered.find("span.toggle_statusMessage-class");
-        const input: any = rendered.find("input.toggle-input-class")
+        const input: any = rendered.find("input.toggle-input-class");
 
         expect(span.prop("id")).toEqual("status-message-id");
         expect(input.prop("aria-describedby")).toEqual("status-message-id");
