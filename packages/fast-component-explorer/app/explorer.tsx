@@ -177,8 +177,8 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
                 this.getComponentNameSpinalCaseByPath(locationPathname)
             ),
             locationPathname,
+            theme: ThemeName.light,
             viewConfig: Object.assign({}, DesignSystemDefaults, {
-                theme: ThemeName.light,
                 direction: Direction.ltr,
             }),
         };
@@ -565,15 +565,12 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
 
     private handleUpdateTheme = (): void => {
         this.setState({
+            theme:
+                this.state.theme === ThemeName.light ? ThemeName.dark : ThemeName.light,
             viewConfig: merge({}, this.state.viewConfig, {
-                theme:
-                    this.state.viewConfig.theme === ThemeName.light
-                        ? ThemeName.dark
-                        : ThemeName.light,
-                backgroundColor:
-                    this.state.viewConfig.theme === ThemeName.light ? dark : light,
+                backgroundColor: this.state.theme === ThemeName.light ? dark : light,
                 neutralPalette: this.getNeutralPalette(
-                    this.state.viewConfig.theme === ThemeName.light ? dark : light
+                    this.state.theme === ThemeName.light ? dark : light
                 ),
             }),
         });

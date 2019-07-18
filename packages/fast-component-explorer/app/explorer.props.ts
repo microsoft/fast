@@ -14,9 +14,7 @@ export interface ComponentProps<T> {
 /**
  * The view config
  */
-export interface ViewConfig extends DesignSystem {
-    theme: ThemeName;
-}
+export interface ViewConfig extends DesignSystem {}
 
 /* tslint:disable-next-line */
 export interface ExplorerManagedClasses
@@ -70,4 +68,9 @@ export interface ExplorerState {
      * The configuration for the view
      */
     viewConfig: ViewConfig;
+
+    /**
+     * The explorer theme
+     */
+    theme: ThemeName;
 }
