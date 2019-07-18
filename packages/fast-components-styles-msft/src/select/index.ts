@@ -63,7 +63,6 @@ const styles: ComponentStyles<SelectClassNameContract, DesignSystem> = {
         background: neutralFillStealthRest,
         ...applyElevatedCornerRadius(),
         ...applyElevation(ElevationMultiplier.e11),
-        zIndex: "1",
         position: "relative",
         width: "100%",
         margin: "0",
