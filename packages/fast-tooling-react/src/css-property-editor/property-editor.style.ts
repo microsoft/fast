@@ -16,12 +16,15 @@ const styles: ComponentStyles<CSSPropertyEditorClassNameContract, {}> = {
         height: "100%",
         padding: "0",
         margin: "0",
+        outlineWidth: "0",
         fontFamily: "Consolas, monaco, monospace, monospace",
         fontSize: "12px",
     },
     cssPropertyEditor_propertyRegion: {
         display: "inline-block",
         paddingLeft: "20px",
+        width:"100%",
+        outlineWidth: "0",
         "&::before, &::after": {
             marginLeft: "-20px",
         },
@@ -31,6 +34,9 @@ const styles: ComponentStyles<CSSPropertyEditorClassNameContract, {}> = {
         "&::after": {
             content: "'}'",
         },
+    },
+    cssPropertyEditor_row: {
+        outlineWidth: "0"
     },
     cssPropertyEditor_input: {
         background: "transparent",
