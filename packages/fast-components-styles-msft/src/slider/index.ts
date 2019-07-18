@@ -72,6 +72,12 @@ const styles: ComponentStyles<SliderClassNameContract, DesignSystem> = {
         },
         "@media (-ms-high-contrast:active)": {
             background: "ButtonText",
+            "&:hover": {
+                background: "Highlight",
+            },
+            "&:active": {
+                background: "Highlight",
+            },
         },
     },
     slider_thumb__lowerValue: {},
@@ -81,7 +87,7 @@ const styles: ComponentStyles<SliderClassNameContract, DesignSystem> = {
         ...applyCornerRadius(),
         background: neutralOutlineRest,
         "@media (-ms-high-contrast:active)": {
-            background: "ButtonShadow",
+            background: "ButtonText",
         },
     },
     slider_foregroundTrack: {
@@ -89,7 +95,7 @@ const styles: ComponentStyles<SliderClassNameContract, DesignSystem> = {
         background: neutralForegroundHint,
         transition: "all 0.1s ease",
         "@media (-ms-high-contrast:active)": {
-            background: "ButtonHighlight",
+            background: "Highlight",
         },
     },
     slider__disabled: {
