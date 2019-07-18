@@ -140,4 +140,16 @@ describe("toggle", (): void => {
 
         expect(rendered.exists("span.toggle_statusMessage-class")).toBe(false);
     });
+
+    test("should set id on span and aria-describedby on input when statusMessageId is passed", () => {
+        const rendered: any = shallow(
+            <Toggle inputId="id" {...handledProps} selected={false} />
+        );
+
+        const span: any = rendered.find("span.toggle_statusMessage-class");
+        const input: any = rendered.find("input.toggle-input-class")
+
+        expect(span.prop("id")).toEqual("status-message-id");
+        expect(input.prop("aria-describedby")).toEqual("status-message-id");
+    });
 });
