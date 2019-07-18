@@ -70,6 +70,9 @@ const styles: ComponentStyles<SliderClassNameContract, DesignSystem> = {
         "&:active": {
             background: neutralForegroundActive,
         },
+        "@media (-ms-high-contrast:active)": {
+            background: "ButtonText",
+        },
     },
     slider_thumb__lowerValue: {},
     slider_thumb__upperValue: {},
@@ -77,11 +80,17 @@ const styles: ComponentStyles<SliderClassNameContract, DesignSystem> = {
     slider_backgroundTrack: {
         ...applyCornerRadius(),
         background: neutralOutlineRest,
+        "@media (-ms-high-contrast:active)": {
+            background: "ButtonShadow",
+        },
     },
     slider_foregroundTrack: {
         ...applyCornerRadius(),
         background: neutralForegroundHint,
         transition: "all 0.1s ease",
+        "@media (-ms-high-contrast:active)": {
+            background: "ButtonHighlight",
+        },
     },
     slider__disabled: {
         ...applyDisabledState(),
