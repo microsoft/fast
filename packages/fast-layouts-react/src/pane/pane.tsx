@@ -12,7 +12,7 @@ import { applyFocusVisible, toPx } from "@microsoft/fast-jss-utilities";
 import { ComponentStyles } from "@microsoft/fast-jss-manager-react";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import { canUseDOM } from "exenv-es6";
-import { Direction, KeyCodes } from "@microsoft/fast-web-utilities";
+import { KeyCodes } from "@microsoft/fast-web-utilities";
 import { joinClasses } from "../utilities";
 
 /**
@@ -130,6 +130,7 @@ export class Pane extends Foundation<PaneHandledProps, PaneUnhandledProps, PaneS
         hidden: void 0,
         resizeFrom: void 0,
         managedClasses: void 0,
+        onResize: void 0,
     };
     /**
      * Stores a reference to the pane HTML element
@@ -145,6 +146,7 @@ export class Pane extends Foundation<PaneHandledProps, PaneUnhandledProps, PaneS
             width: this.props.initialWidth,
         };
 
+        this.onResize = throttle(this.onResize, 16);
         this.onMouseMove = throttle(this.onMouseMove, 16);
         this.onWindowResize = rafThrottle(this.onWindowResize);
         this.rootElement = React.createRef();
@@ -262,6 +264,9 @@ export class Pane extends Foundation<PaneHandledProps, PaneUnhandledProps, PaneS
             default:
                 break;
         }
+
+        // Fire the resize callback
+        this.onResize(e);
     };
 
     /**
@@ -308,6 +313,9 @@ export class Pane extends Foundation<PaneHandledProps, PaneUnhandledProps, PaneS
         if (updatedWidth <= this.props.minWidth || updatedWidth >= this.props.maxWidth) {
             return;
         }
+
+        // Fire the resize callback
+        this.onResize(e);
 
         this.setState({
             dragReference: e.pageX,
@@ -367,6 +375,12 @@ export class Pane extends Foundation<PaneHandledProps, PaneUnhandledProps, PaneS
 
         return super.generateClassNames(classes);
     }
+
+    private onResize = (e: MouseEvent | React.KeyboardEvent<HTMLButtonElement>): void => {
+        if (typeof this.props.onResize === "function") {
+            this.props.onResize(e);
+        }
+    };
 }
 
 export * from "./pane.props";
