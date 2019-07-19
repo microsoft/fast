@@ -253,20 +253,23 @@ export class Pane extends Foundation<PaneHandledProps, PaneUnhandledProps, PaneS
     public onKeyDown = (e: React.KeyboardEvent<HTMLButtonElement>): void => {
         const isShift: boolean = e.shiftKey;
         const offset: number = isShift ? 10 : 1;
+        let width: number;
 
         switch (e.keyCode) {
             case KeyCodes.arrowLeft:
-                this.setWidth(this.rootElement.current.clientWidth - offset);
+                width = this.rootElement.current.clientWidth - offset;
                 break;
             case KeyCodes.arrowRight:
-                this.setWidth(this.rootElement.current.clientWidth + offset);
+                width = this.rootElement.current.clientWidth + offset;
                 break;
             default:
                 break;
         }
 
+        this.setWidth(width);
+
         // Fire the resize callback
-        this.onResize(e);
+        this.onResize(e, width);
     };
 
     /**
@@ -315,7 +318,7 @@ export class Pane extends Foundation<PaneHandledProps, PaneUnhandledProps, PaneS
         }
 
         // Fire the resize callback
-        this.onResize(e);
+        this.onResize(e, updatedWidth);
 
         this.setState({
             dragReference: e.pageX,
@@ -376,9 +379,12 @@ export class Pane extends Foundation<PaneHandledProps, PaneUnhandledProps, PaneS
         return super.generateClassNames(classes);
     }
 
-    private onResize = (e: MouseEvent | React.KeyboardEvent<HTMLButtonElement>): void => {
+    private onResize = (
+        e: MouseEvent | React.KeyboardEvent<HTMLButtonElement>,
+        width: number
+    ): void => {
         if (typeof this.props.onResize === "function") {
-            this.props.onResize(e);
+            this.props.onResize(e, width);
         }
     };
 }
