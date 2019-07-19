@@ -77,7 +77,7 @@ const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = {
         height: toPx(indicatorSize),
         background: neutralForegroundRest,
         "@media (-ms-high-contrast:active)": {
-            backgroundColor: "ButtonHighlight",
+            background: "ButtonText",
         },
     },
     toggle_input: {
@@ -98,6 +98,12 @@ const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = {
         "&:hover": {
             background: neutralFillInputHover,
             borderColor: neutralOutlineHover,
+            "@media (-ms-high-contrast:active)": {
+                borderColor: "Highlight",
+                "& + span": {
+                    background: "Highlight",
+                },
+            },
         },
         "&:active": {
             background: neutralFillInputActive,
@@ -107,6 +113,9 @@ const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = {
             boxShadow: format<DesignSystem>("0 0 0 1px {0} inset", neutralFocus),
             borderColor: neutralFocus,
         }),
+        "@media (-ms-high-contrast:active)": {
+            borderColor: "ButtonText",
+        },
     },
     toggle__checked: {
         "& $toggle_input": {
@@ -116,10 +125,23 @@ const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = {
                 boxShadow: format<DesignSystem>("0 0 0 1px {0} inset", neutralFocus),
                 borderColor: neutralFocus,
             }),
+            "@media (-ms-high-contrast:active)": {
+                background: "Highlight",
+                borderColor: "Highlight",
+                "&:hover": {
+                    "@media (-ms-high-contrast:active)": {
+                        background: "Background",
+                        borderColor: "Highlight",
+                    },
+                },
+            }
         },
         "& $toggle_stateIndicator": {
             left: toPx(indicatorCheckedLeft),
             background: accentForegroundCut,
+            "@media (-ms-high-contrast:active)": {
+                background: "Background",
+            }
         },
     },
     toggle__disabled: {
