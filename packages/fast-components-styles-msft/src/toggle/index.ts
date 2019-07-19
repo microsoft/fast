@@ -95,6 +95,16 @@ const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = {
         borderRadius: toPx(height),
         appearance: "none",
         outline: "none",
+        "&:active": {
+            background: neutralFillInputActive,
+            borderColor: neutralOutlineActive,
+            "@media (-ms-high-contrast:active)": {
+                background: "Highlight",
+                "& + span": {
+                    background: "Background",
+                },
+            },
+        },
         "&:hover": {
             background: neutralFillInputHover,
             borderColor: neutralOutlineHover,
@@ -104,10 +114,6 @@ const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = {
                     background: "Highlight",
                 },
             },
-        },
-        "&:active": {
-            background: neutralFillInputActive,
-            borderColor: neutralOutlineActive,
         },
         ...applyFocusVisible({
             boxShadow: format<DesignSystem>("0 0 0 1px {0} inset", neutralFocus),
@@ -128,6 +134,14 @@ const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = {
             "@media (-ms-high-contrast:active)": {
                 background: "Highlight",
                 borderColor: "Highlight",
+                "&:active": {
+                    "@media (-ms-high-contrast:active)": {
+                        background: "Highlight",
+                        "& + span": {
+                            background: "Background",
+                        },
+                    },
+                },
                 "&:hover": {
                     "@media (-ms-high-contrast:active)": {
                         background: "Background",
