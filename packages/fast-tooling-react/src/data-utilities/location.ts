@@ -165,6 +165,8 @@ export function getDataLocationsOfPlugins(
                             : `${schemaLocation}.${typeKeyword}`
                     }`
                 ) === DataType.children;
+            // BUG: this evaluates to `undefined` when data is { children: "foobar" }. This will also fail
+            // when data is { children: [ /* any react node goes here */ ] }
             const childrenProps: any = get(data, `${dataLocation}.${propsKeyword}`);
             const isNotAnArrayOfChildren: boolean =
                 (isChildComponent && typeof childrenProps !== "undefined") ||
