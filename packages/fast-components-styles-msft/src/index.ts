@@ -80,6 +80,12 @@ import FlipperStyles from "./flipper";
 export { FlipperStyles };
 
 /**
+ * Export flyout styles
+ */
+import FlyoutStyles from "./flyout";
+export { FlyoutStyles };
+
+/**
  * Export image styles
  */
 import ImageStyles from "./image";
