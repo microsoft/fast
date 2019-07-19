@@ -148,14 +148,14 @@ const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = {
                         borderColor: "Highlight",
                     },
                 },
-            }
+            },
         },
         "& $toggle_stateIndicator": {
             left: toPx(indicatorCheckedLeft),
             background: accentForegroundCut,
             "@media (-ms-high-contrast:active)": {
                 background: "Background",
-            }
+            },
         },
     },
     toggle__disabled: {
