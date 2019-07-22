@@ -18,7 +18,7 @@ class Progress extends Foundation<ProgressHandledProps, ProgressUnhandledProps, 
         minValue: 0,
         maxValue: 100,
         circular: false,
-        size: ProgressSize._32,
+        size: ProgressSize.medium,
     };
 
     public static displayName: string = `${DisplayNamePrefix}Progress`;
@@ -84,6 +84,14 @@ class Progress extends Foundation<ProgressHandledProps, ProgressUnhandledProps, 
         return className;
     }
 
+    private generateSVGClassNames(): string {
+        const className: string = this.props.size
+            ? get(this.props, `managedClasses.progressCircular__${this.props.size}`, "")
+            : get(this.props, "managedClasses.progressCircular__medium", "");
+
+        return className;
+    }
+
     private progressIndicatorClasses(): string {
         return [
             get(this.props.managedClasses, "progress_indicator"),
@@ -122,8 +130,7 @@ class Progress extends Foundation<ProgressHandledProps, ProgressUnhandledProps, 
             return [
                 <div slot={ProgressType.determinate} key="0">
                     <svg
-                        width={toPx(this.props.size)}
-                        height={toPx(this.props.size)}
+                        className={this.generateSVGClassNames()}
                         viewBox="0 0 16 16"
                     >
                         {this.renderCircularBackground()}
@@ -140,8 +147,7 @@ class Progress extends Foundation<ProgressHandledProps, ProgressUnhandledProps, 
                 </div>,
                 <div slot={ProgressType.indeterminate} key="1">
                     <svg
-                        width={toPx(this.props.size)}
-                        height={toPx(this.props.size)}
+                        className={this.generateSVGClassNames()}
                         viewBox="0 0 16 16"
                     >
                         {this.renderCircularBackground()}

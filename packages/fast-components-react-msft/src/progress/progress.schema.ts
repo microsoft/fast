@@ -26,8 +26,8 @@ export default {
         size: {
             title: "Circular progress size",
             type: "string",
-            enum: ["16", "32", "64"],
-            default: "32",
+            enum: ["small", "medium", "large"],
+            default: "medium",
         },
     },
     reactProperties: {

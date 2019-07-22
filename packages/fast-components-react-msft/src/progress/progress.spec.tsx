@@ -14,6 +14,9 @@ configure({ adapter: new Adapter() });
 const managedClasses: ProgressClassNameContract = {
     progress: "progress-class",
     progressCircular: "progressCircular-class",
+    progressCircular__small: "progressCircular__small-class",
+    progressCircular__medium: "progressCircular__medium-class",
+    progressCircular__large: "progressCircular__large-class",
     progress_valueIndicator: "progress_valueIndicator-class",
     progressCircular_valueIndicator: "progressCircular_valueIndicator-class",
     progressCircular_valueIndicator__indeterminate: "progressCircular_valueIndicator__indeterminate-class",
@@ -52,13 +55,20 @@ describe("progress", (): void => {
         expect(rendered.exists("circle.progressCircular_valueIndicator__indeterminate-class")).toBe(false);
     });
 
-    test("should render the correct `size` when `size` prop is passed", () => {
+    test("should render the correct `size` when `size` prop is small", () => {
         const rendered: any = mount(
-            <MSFTProgress managedClasses={managedClasses} circular={true} size={ProgressSize._16} />
+            <MSFTProgress managedClasses={managedClasses} circular={true} size={ProgressSize.small} />
         );
 
-        expect(rendered.find("svg").prop("height")).toContain(ProgressSize._16);
-        expect(rendered.find("svg").prop("width")).toContain(ProgressSize._16);
+        expect(rendered.find("svg").prop("className")).toContain("small");
+    });
+
+    test("should render the correct `size` when `size` prop is large", () => {
+        const rendered: any = mount(
+            <MSFTProgress managedClasses={managedClasses} circular={true} size={ProgressSize.large} />
+        );
+
+        expect(rendered.find("svg").prop("className")).toContain("large");
     });
 
     test("should render default size if none is specified", () => {
@@ -66,7 +76,6 @@ describe("progress", (): void => {
             <MSFTProgress managedClasses={managedClasses} circular={true}/>
         );
 
-        expect(rendered.find("svg").prop("height")).toContain(ProgressSize._32);
-        expect(rendered.find("svg").prop("width")).toContain(ProgressSize._32);
+        expect(rendered.find("svg").prop("className")).toContain("medium");
     });
 });

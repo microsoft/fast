@@ -10,6 +10,21 @@ export interface ProgressClassNameContract extends BaseProgressClassNameContract
     progressCircular?: string;
 
     /**
+     * The progress size small modifier
+     */
+    progressCircular__small: string;
+
+    /**
+     * The progress size medium modifier
+     */
+    progressCircular__medium: string;
+
+    /**
+     * The progress size large modifier
+     */
+    progressCircular__large: string;
+
+    /**
      * The progress value indicator
      */
     progress_valueIndicator?: string;
