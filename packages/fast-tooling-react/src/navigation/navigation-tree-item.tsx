@@ -50,6 +50,10 @@ export const navigationTreeItemDropSource: DropTargetSpec<NavigationTreeItemProp
 
         const item: any = monitor.getItem();
 
+        if (props.dataLocation === item.dataLocation) {
+            return;
+        }
+
         if (
             props.type === NavigationDataType.children ||
             props.type === NavigationDataType.component
