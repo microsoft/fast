@@ -166,10 +166,20 @@ export function getDataLocationsOfPlugins(
                     }`
                 ) === DataType.children;
             // BUG: this evaluates to `undefined` when data is { children: "foobar" }. This will also fail
-            // when data is { children: [ /* any react node goes here */ ] }
+            // when data is { children: [ /* any primitive react node goes here */ ] }
+            const renderableReactPrimitives: string[] = [
+                true,
+                "",
+                1,
+            ].map((val: unknown) => typeof val);
+
             const childrenProps: any = get(data, `${dataLocation}.${propsKeyword}`);
             const isNotAnArrayOfChildren: boolean =
-                (isChildComponent && typeof childrenProps !== "undefined") ||
+                (isChildComponent &&
+                    (typeof childrenProps !== "undefined" ||
+                        renderableReactPrimitives.includes(
+                            typeof get(data, dataLocation)
+                        ))) ||
                 !isChildComponent;
 
             // check to see if the data location matches with the current schema and includes a plugin identifier
