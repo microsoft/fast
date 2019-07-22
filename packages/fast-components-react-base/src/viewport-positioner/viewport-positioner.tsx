@@ -1005,7 +1005,6 @@ class ViewportPositioner extends Foundation<
     private getHorizontalTranslate = (
         horizontalPosition: ViewportPositionerHorizontalPositionLabel
     ): number => {
-        /* tslint:disable-next-line */
         if (!this.props.horizontalAlwaysInView || this.state.disabled) {
             return 0;
         }
