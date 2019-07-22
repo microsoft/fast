@@ -165,8 +165,6 @@ export function getDataLocationsOfPlugins(
                             : `${schemaLocation}.${typeKeyword}`
                     }`
                 ) === DataType.children;
-            // BUG: this evaluates to `undefined` when data is { children: "foobar" }. This will also fail
-            // when data is { children: [ /* any primitive react node goes here */ ] }
             const renderableReactPrimitives: string[] = [
                 true,
                 "",

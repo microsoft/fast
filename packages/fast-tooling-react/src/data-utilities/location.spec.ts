@@ -388,15 +388,6 @@ describe("getDataLocationsOfPlugins", () => {
             expect(pluginLocation.length).toBe(1);
             expect(pluginLocation[0].dataLocation).toBe("children.props.children.props.children.props.render");
         });
-
-        //        const dataLocationsOfPluginsWithStringChild: PluginLocation[] = getDataLocationsOfPlugins(
-        //            childrenSchema,
-        //            factory("string"),
-        //            childOptions
-        //        );
-        //
-        //        expect(dataLocationsOfPluginsWithStringChild.length).toBe(1);
-        //        expect(dataLocationsOfPluginsWithStringChild[0].dataLocation).toBe("children.props.children.props.children.props.render");
     });
     test("should return the data location of a nested react child", () => {
         const data: any = {
