@@ -16,6 +16,9 @@ const styles: ComponentStyles<ProgressClassNameContract, DesignSystem> = {
         height: toPx<DesignSystem>(designUnit),
         textAlign: "left",
     },
+    progressCircular: {
+        height: "unset",
+    },
     progress_valueIndicator: {
         background: accentFillRest,
         borderRadius: "100px",
@@ -24,6 +27,21 @@ const styles: ComponentStyles<ProgressClassNameContract, DesignSystem> = {
         "@media (-ms-high-contrast:active)": {
             background: "ButtonText",
         },
+    },
+    progressCircular_valueIndicator: {
+        fill: "none",
+        stroke: accentFillRest,
+        strokeWidth: "2px",
+        strokeLinecap: "round",
+        transformOrigin: "50% 50%",
+        transform: "rotate(-90deg)",
+        transition: "all 0.2s ease-in-out",
+        "@media (-ms-high-contrast:active)": {
+            stroke: "ButtonText",
+        },
+    },
+    progressCircular_valueIndicator__indeterminate: {
+        animation: "spin-infinite 2s linear infinite",
     },
     progress_indicator: {
         position: "relative",
@@ -36,6 +54,15 @@ const styles: ComponentStyles<ProgressClassNameContract, DesignSystem> = {
         background: neutralFillRest,
         transition: "all 0.2s ease-in-out",
         maskImage: "-webkit-radial-gradient(white, black)",
+    },
+    progressCircular_indicator: {
+        fill: "none",
+        stroke: neutralFillRest,
+        strokeWidth: "2px",
+        strokeLinecap: "round",
+        transformOrigin: "50% 50%",
+        transform: "rotate(-90deg)",
+        transition: "all 0.2s ease-in-out",
     },
     progress_indicator__determinate: {
         height: toPx<DesignSystem>(designUnit),
@@ -65,6 +92,20 @@ const styles: ComponentStyles<ProgressClassNameContract, DesignSystem> = {
         width: "60%",
         transform: "translateX(-150%)",
         animation: "indeterminate-2 2s infinite",
+    },
+    "@keyframes spin-infinite": {
+        "0%": {
+            strokeDasharray: "0.01px 43.97px",
+            transform: "rotate(0deg)",
+        },
+        "50%": {
+            strokeDasharray: "21.99px 21.99px",
+            transform: "rotate(450deg)",
+        },
+        "100%": {
+            strokeDasharray: ".01px 43.97px",
+            transform: "rotate(1080deg)",
+        }
     },
     "@keyframes indeterminate-1": {
         "0%": {

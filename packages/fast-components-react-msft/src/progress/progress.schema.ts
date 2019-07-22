@@ -18,6 +18,17 @@ export default {
             title: "HTML maxValue attribute",
             type: "number",
         },
+        circular: {
+            title: "Is circular",
+            type: "boolean",
+            default: "false",
+        },
+        size: {
+            title: "Circular progress size",
+            type: "string",
+            enum: ["16", "32", "64"],
+            default: "32",
+        },
     },
     reactProperties: {
         children: {
