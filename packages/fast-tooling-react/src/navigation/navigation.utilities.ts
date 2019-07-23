@@ -141,7 +141,6 @@ function getNavigationFromChildren(config: NavigationFromChildrenConfig): TreeNa
 
     if (Array.isArray(config.data) && config.data.length !== 0) {
         const dataLength: number = config.data.length;
-        const isSingleItem: boolean = dataLength === 1;
         childrenTreeNavigation.items = [];
 
         for (let i: number = 0; i < dataLength; i++) {
@@ -150,8 +149,8 @@ function getNavigationFromChildren(config: NavigationFromChildrenConfig): TreeNa
                     data: config.data[i],
                     schema: config.schema,
                     dataLocation: `${config.dataLocation}${
-                        config.dataLocation !== "" && !isSingleItem ? "." : ""
-                    }${isSingleItem ? "" : i}`,
+                        config.dataLocation !== "" ? "." : ""
+                    }${i}`,
                     childOptions: config.childOptions,
                 })
             );

@@ -294,6 +294,63 @@ describe("getNavigationFromData", () => {
         expect(navigationFromData.type).toEqual(NavigationDataType.array);
         expect(navigationFromData.items).toEqual(void 0);
     });
+    test("should return deeply nested array items that terminate in a single children item", () => {
+        const data: any = {
+            children: {
+                id: childOptions[1].schema.id,
+                props: {
+                    children: [
+                        {
+                            id: childOptions[1].schema.id,
+                            props: {
+                                children: {
+                                    id: childOptions[1].schema.id,
+                                    props: {
+                                        children: [
+                                            {
+                                                id: childOptions[0].schema.id,
+                                                props: {},
+                                            }
+                                        ],
+                                    },
+                                },
+                            },
+                        },
+                        "Foo"
+                    ],
+                },
+            },
+        };
+
+        const navigationFromData: TreeNavigation[] | void = getNavigationFromData(
+            data,
+            childrenSchema,
+            childOptions
+        ).items;
+
+        expect(navigationFromData[0].dataLocation).toEqual("children");
+        expect(navigationFromData[0].items[0].dataLocation).toEqual(
+            "children.props"
+        );
+        expect(navigationFromData[0].items[0].items[0].dataLocation).toEqual(
+            "children.props.children"
+        );
+        expect(navigationFromData[0].items[0].items[0].items[0].dataLocation).toEqual(
+            "children.props.children.0.props"
+        );
+        expect(navigationFromData[0].items[0].items[0].items[1].dataLocation).toEqual(
+            "children.props.children.1"
+        );
+        expect(navigationFromData[0].items[0].items[0].items[0].items[0].dataLocation).toEqual(
+            "children.props.children.0.props.children"
+        );
+        expect(navigationFromData[0].items[0].items[0].items[0].items[0].items[0].dataLocation).toEqual(
+            "children.props.children.0.props.children.props"
+        );
+        expect(navigationFromData[0].items[0].items[0].items[0].items[0].items[0].items[0].dataLocation).toEqual(
+            "children.props.children.0.props.children.props.children"
+        );
+    });
 });
 
 /**
