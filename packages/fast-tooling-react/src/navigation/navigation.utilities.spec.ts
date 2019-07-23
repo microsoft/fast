@@ -50,7 +50,9 @@ describe("getNavigationFromData", () => {
         expect(navigationFromData[0].items[0].items).toEqual(void 0);
         expect(navigationFromData[0].items[0].dataLocation).toEqual("children");
         expect(navigationFromData[0].items[0].text).toEqual(childrenText);
-        expect(navigationFromData[0].items[0].type).toEqual(NavigationDataType.primitiveChild);
+        expect(navigationFromData[0].items[0].type).toEqual(
+            NavigationDataType.primitiveChild
+        );
     });
     test("should return a single item if a single child has been passed", () => {
         const data: any = {
@@ -115,7 +117,9 @@ describe("getNavigationFromData", () => {
         expect(navigationFromData[0].items[1].dataLocation).toEqual("children.1.props");
         expect(navigationFromData[0].items[1].items).toEqual(void 0);
         expect(navigationFromData[0].items[2].text).toEqual(childrenText);
-        expect(navigationFromData[0].items[2].type).toEqual(NavigationDataType.primitiveChild);
+        expect(navigationFromData[0].items[2].type).toEqual(
+            NavigationDataType.primitiveChild
+        );
         expect(navigationFromData[0].items[2].dataLocation).toEqual("children.2");
         expect(navigationFromData[0].items[2].items).toEqual(undefined);
     });
@@ -605,10 +609,10 @@ describe("getUpdatedData", () => {
                         props: {},
                     },
                     {
-                    id: childOptions[1].schema.id,
-                    props: {},
-                    }
-                ]
+                        id: childOptions[1].schema.id,
+                        props: {},
+                    },
+                ],
             });
         });
     });

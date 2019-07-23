@@ -7,7 +7,7 @@ export enum NavigationDataType {
     array = "array",
     children = "children",
     component = "component",
-    primitiveChild = "primitiveChild"
+    primitiveChild = "primitiveChild",
 }
 
 export interface NavigationState {

@@ -28,9 +28,7 @@ export const navigationTreeItemDragSource: DragSourceSpec<
     NavigationTreeItemProps,
     NavigationTreeItemDragObject
 > = {
-    beginDrag: (
-        props: NavigationTreeItemProps
-    ): NavigationTreeItemDragObject => {
+    beginDrag: (props: NavigationTreeItemProps): NavigationTreeItemDragObject => {
         props.handleCloseDraggingItem(props.dataLocation, props.type);
 
         return {
@@ -61,18 +59,14 @@ export const navigationTreeItemDropSource: DropTargetSpec<NavigationTreeItemProp
         if (
             props.type === NavigationDataType.children ||
             props.type === NavigationDataType.component ||
-            (
-                props.type === NavigationDataType.primitiveChild &&
-                (
-                    props.dragHoverAfter || props.dragHoverBefore
-                )
-            )
+            (props.type === NavigationDataType.primitiveChild &&
+                (props.dragHoverAfter || props.dragHoverBefore))
         ) {
             const verticalDirection: VerticalDragDirection = props.dragHoverAfter
                 ? VerticalDragDirection.down
                 : props.dragHoverBefore
                     ? VerticalDragDirection.up
-                    : VerticalDragDirection.center
+                    : VerticalDragDirection.center;
 
             component.props.onChange(
                 item.dataLocation,
@@ -94,10 +88,8 @@ export const navigationTreeItemDropSource: DropTargetSpec<NavigationTreeItemProp
             props.onDragHover(props.dataLocation);
         } else if (
             monitor.isOver({ shallow: true }) &&
-            (
-                props.type === NavigationDataType.component
-                || props.type === NavigationDataType.primitiveChild
-            )
+            (props.type === NavigationDataType.component ||
+                props.type === NavigationDataType.primitiveChild)
         ) {
             if (!component) {
                 return null;
@@ -227,7 +219,9 @@ const NavigationTreeItem: React.RefForwardingComponent<
             typeof props.connectDropTarget === "function" &&
             typeof props.connectDragSource === "function";
 
-        return canDragAndDrop && (props.type === NavigationDataType.component || props.type === NavigationDataType.primitiveChild)
+        return canDragAndDrop &&
+            (props.type === NavigationDataType.component ||
+                props.type === NavigationDataType.primitiveChild)
             ? props.connectDragSource(props.connectDropTarget(item))
             : canDragAndDrop && props.type === NavigationDataType.children
                 ? props.connectDropTarget(item)

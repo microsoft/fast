@@ -138,9 +138,14 @@ export default class Navigation extends Foundation<
             contentClassName: this.getItemContentClassName(dataLocation),
             getContentDragHoverClassName: this.getItemContentDragHoverClassName,
             dataLocation,
-            dragHover: !isRootDataLocation && dataLocation === this.state.dragHoverDataLocation,
-            dragHoverBefore: !isRootDataLocation && dataLocation === this.state.dragHoverBeforeDataLocation,
-            dragHoverAfter: !isRootDataLocation && dataLocation === this.state.dragHoverAfterDataLocation,
+            dragHover:
+                !isRootDataLocation && dataLocation === this.state.dragHoverDataLocation,
+            dragHoverBefore:
+                !isRootDataLocation &&
+                dataLocation === this.state.dragHoverBeforeDataLocation,
+            dragHoverAfter:
+                !isRootDataLocation &&
+                dataLocation === this.state.dragHoverAfterDataLocation,
             expanded: this.isExpanded(dataLocation),
             handleClick: this.handleTreeItemClick(dataLocation, dataType),
             handleKeyUp: this.handleTreeItemKeyUp(dataLocation, dataType),
@@ -362,7 +367,10 @@ export default class Navigation extends Foundation<
         return (dragging: boolean): string => {
             let classes: string = this.props.managedClasses.navigation_item;
 
-            if (dataType === NavigationDataType.component || dataType === NavigationDataType.primitiveChild) {
+            if (
+                dataType === NavigationDataType.component ||
+                dataType === NavigationDataType.primitiveChild
+            ) {
                 classes = `${classes} ${get(
                     this.props,
                     `managedClasses.navigation_item__${dataType}`,
@@ -414,7 +422,7 @@ export default class Navigation extends Foundation<
             verticalDragDirection === VerticalDragDirection.center &&
             (type === NavigationDataType.children ||
                 type === NavigationDataType.component ||
-                    type === NavigationDataType.primitiveChild)
+                type === NavigationDataType.primitiveChild)
         ) {
             classNames += `${get(
                 this.props,
@@ -519,7 +527,10 @@ export default class Navigation extends Foundation<
         };
     };
 
-    private handleCloseDraggingTreeItem = (dataLocation: string, type: NavigationDataType): void => {
+    private handleCloseDraggingTreeItem = (
+        dataLocation: string,
+        type: NavigationDataType
+    ): void => {
         const updatedState: Partial<NavigationState> = {};
 
         updatedState.openItems = this.state.openItems.filter((openItem: string) => {
@@ -534,7 +545,7 @@ export default class Navigation extends Foundation<
         ) {
             this.props.onLocationUpdate(dataLocation);
         }
-    }
+    };
 
     /**
      * Toggles the items by adding/removing them from the openItems array

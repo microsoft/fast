@@ -1,4 +1,4 @@
-    import { cloneDeep, get, set, unset } from "lodash-es";
+import { cloneDeep, get, set, unset } from "lodash-es";
 import { ChildOptionItem } from "../data-utilities";
 import { mapSchemaLocationFromDataLocation } from "../data-utilities/location";
 import { NavigationDataType, TreeNavigation } from "./navigation.props";
@@ -188,9 +188,12 @@ function getNavigationFromChildrenItem(
     const childTreeNavigation: TreeNavigation = {
         text,
         dataLocation: updatedDataLocation,
-        type: typeof config.data === "string" || typeof config.data === "number" || typeof config.data === "boolean"
-            ? NavigationDataType.primitiveChild
-            : NavigationDataType.component,
+        type:
+            typeof config.data === "string" ||
+            typeof config.data === "number" ||
+            typeof config.data === "boolean"
+                ? NavigationDataType.primitiveChild
+                : NavigationDataType.component,
     };
 
     if (!!childSchema && !isString) {
@@ -230,9 +233,7 @@ export function getNavigationFromData(
 /**
  * Gets a normalized source data location that can be used for setting/getting data
  */
-export function getDataLocationNormalized(
-    dataLocation: string
-): string {
+export function getDataLocationNormalized(dataLocation: string): string {
     return dataLocation.endsWith(`.${propsKeyword}`)
         ? dataLocation.slice(0, -6)
         : dataLocation;
@@ -414,17 +415,16 @@ function setDataOnDropVerticalCenter(
     type: NavigationDataType
 ): void {
     const isComponent: boolean = type === NavigationDataType.component;
-            
+
     if (isComponent) {
-        const componentChildren: unknown = get(targetData, `${propsKeyword}.${childrenKeyword}`);
+        const componentChildren: unknown = get(
+            targetData,
+            `${propsKeyword}.${childrenKeyword}`
+        );
         targetDataLocation = `${targetDataLocation}.${propsKeyword}.${childrenKeyword}`;
 
         if (typeof componentChildren === "undefined") {
-            set(
-                data as object,
-                targetDataLocation,
-                sourceData
-            );
+            set(data as object, targetDataLocation, sourceData);
         } else if (Array.isArray(componentChildren)) {
             componentChildren.push(sourceData);
         } else {
@@ -435,11 +435,7 @@ function setDataOnDropVerticalCenter(
             );
         }
     } else {
-        set(
-            data as object,
-            targetDataLocation,
-            [sourceData].concat(targetData)
-        );
+        set(data as object, targetDataLocation, [sourceData].concat(targetData));
     }
 }
 

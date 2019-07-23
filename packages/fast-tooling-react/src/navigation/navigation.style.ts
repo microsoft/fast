@@ -80,13 +80,13 @@ const styles: ComponentStyles<NavigationClassNameContract, {}> = {
             fontStyle: "normal",
         },
         "& > $navigation_itemContent$navigation_itemContent__dragHover": {
-            background: "none"
-        }
+            background: "none",
+        },
     },
     navigation_item__component: {
         "& > $navigation_itemContent": {
             fontStyle: "normal",
-        }
+        },
     },
     navigation_item__draggable: {
         cursor: "grab",
