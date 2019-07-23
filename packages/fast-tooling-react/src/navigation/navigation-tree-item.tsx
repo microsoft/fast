@@ -29,7 +29,9 @@ export const navigationTreeItemDragSource: DragSourceSpec<
     NavigationTreeItemDragObject
 > = {
     beginDrag: (props: NavigationTreeItemProps): NavigationTreeItemDragObject => {
-        props.handleCloseDraggingItem(props.dataLocation, props.type);
+        if (props.type === NavigationDataType.component) {
+            props.handleCloseDraggingItem(props.dataLocation, props.type);
+        }
 
         return {
             dataLocation: props.dataLocation,
