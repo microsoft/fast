@@ -165,9 +165,17 @@ export function getDataLocationsOfPlugins(
                             : `${schemaLocation}.${typeKeyword}`
                     }`
                 ) === DataType.children;
+            const renderableReactPrimitives: string[] = [true, "", 1].map(
+                (val: unknown) => typeof val
+            );
+
             const childrenProps: any = get(data, `${dataLocation}.${propsKeyword}`);
             const isNotAnArrayOfChildren: boolean =
-                (isChildComponent && typeof childrenProps !== "undefined") ||
+                (isChildComponent &&
+                    (typeof childrenProps !== "undefined" ||
+                        renderableReactPrimitives.includes(
+                            typeof get(data, dataLocation)
+                        ))) ||
                 !isChildComponent;
 
             // check to see if the data location matches with the current schema and includes a plugin identifier
