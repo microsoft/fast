@@ -45,6 +45,11 @@ export interface NavigationTreeItemProps
     handleKeyUp: React.KeyboardEventHandler<HTMLElement>;
 
     /**
+     * The handler for closing dragging items
+     */
+    handleCloseDraggingItem: (dataLocation: string, type: NavigationDataType) => void;
+
+    /**
      * The text used for the tree item
      */
     text: string;

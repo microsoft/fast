@@ -144,6 +144,7 @@ export default class Navigation extends Foundation<
             expanded: this.isExpanded(dataLocation),
             handleClick: this.handleTreeItemClick(dataLocation, dataType),
             handleKeyUp: this.handleTreeItemKeyUp(dataLocation, dataType),
+            handleCloseDraggingItem: this.handleCloseDraggingTreeItem,
             text: navigation.text,
             type: dataType,
             onChange: this.handleChange,
@@ -516,6 +517,23 @@ export default class Navigation extends Foundation<
             }
         };
     };
+
+    private handleCloseDraggingTreeItem = (dataLocation: string, type: NavigationDataType): void => {
+        const updatedState: Partial<NavigationState> = {};
+
+        updatedState.openItems = this.state.openItems.filter((openItem: string) => {
+            return openItem.slice(0, dataLocation.length) !== dataLocation;
+        });
+
+        this.setState(updatedState as NavigationState);
+
+        if (
+            typeof this.props.onLocationUpdate === "function" &&
+            type !== NavigationDataType.children
+        ) {
+            this.props.onLocationUpdate(dataLocation);
+        }
+    }
 
     /**
      * Toggles the items by adding/removing them from the openItems array
