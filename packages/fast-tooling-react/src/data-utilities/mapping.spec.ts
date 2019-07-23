@@ -158,46 +158,35 @@ describe("mapDataToComponent", () => {
         expect(mappedData.render(testClass).type.displayName).toEqual("Text field");
         expect(mappedData.render(testClass).props.className).toBe(testClass);
     });
-    test("should invoke plugin resolver with string data", () => {
-        const childText: string = "child text";
-        const data: any = {
-            children: childText,
-        };
-        // const data: any = {
-        //     children: {
-        //         id: childrenWithPluginPropsSchema.id,
-        //         props: {
-        //             render: childText,
-        //         },
-        //     },
-        // };
-        const resolver: jest.Mock = jest.fn();
-        class MyPlugin extends Plugin<PluginProps> {
-            public resolver(
-                d: any,
-                childItem?: ChildOptionItem,
-                dataLocation?: string
-            ): any {
-                resolver(data, childItem, dataLocation);
+    test("should invoke plugin resolver with string and number data", () => {
+        ["child text", 10].forEach((childData: unknown): void => {
+            const data: any = {
+                render: childData,
+            };
+            const resolver: jest.Mock = jest.fn();
+            class MyPlugin extends Plugin<PluginProps> {
+                public resolver(
+                    d: any,
+                    childItem?: ChildOptionItem,
+                    dataLocation?: string
+                ): any {
+                    resolver(d, childItem, dataLocation);
+                }
             }
-        }
-        const mappedData: any = mapDataToComponent(
-            childrenWithPluginPropsSchema,
-            data,
-            childOptions,
-            [
-                new MyPlugin({
-                    id: childrenPluginResolverId,
-                }),
-            ]
-        );
+            const mappedData: any = mapDataToComponent(
+                childrenWithPluginPropsSchema,
+                data,
+                childOptions,
+                [
+                    new MyPlugin({
+                        id: childrenPluginResolverId,
+                    }),
+                ]
+            );
 
-        expect(resolver).toHaveBeenCalledTimes(1)
-        expect(resolver.mock.calls[0][0]).toBe(childText)
-        // expect(mappedData.render).toHaveLength(1);
-        // expect(typeof mappedData.render).toBe("function");
-        // expect(mappedData.render(testClass).type.displayName).toEqual("Text field");
-        // expect(mappedData.render(testClass).props.className).toBe(testClass);
+            expect(resolver).toHaveBeenCalledTimes(1)
+            expect(resolver.mock.calls[0][0]).toBe(childData)
+        })
     });
     test("should map arrays of children to plugins", () => {
         const data: any = {
@@ -363,7 +352,7 @@ describe("mapDataToComponent", () => {
                 childItem?: ChildOptionItem,
                 dataLocation?: string
             ): any {
-                resolver(data, childItem, dataLocation);
+                resolver(d, childItem, dataLocation);
             }
         }
         const data: any = {
@@ -619,8 +608,8 @@ describe("mapDataToCodePreview", () => {
 
         expect(mappedData).toEqual(
             `<${badgeJSXName}>\n${tabIndent}<${badgeJSXName}>\n${tabIndent +
-                tabIndent}foo\n${tabIndent}</${badgeJSXName}>\n${tabIndent}<${badgeJSXName}>\n${tabIndent +
-                tabIndent}bar\n${tabIndent}</${badgeJSXName}>\n</${badgeJSXName}>`
+                    tabIndent}foo\n${tabIndent}</${badgeJSXName}>\n${tabIndent}<${badgeJSXName}>\n${tabIndent +
+                            tabIndent}bar\n${tabIndent}</${badgeJSXName}>\n</${badgeJSXName}>`
         );
     });
     test("should return a string containing a JSX element with a self closing component child", () => {
@@ -659,7 +648,7 @@ describe("mapDataToCodePreview", () => {
 
         expect(mappedData).toEqual(
             `<${childrenJSXName}>\n${tabIndent}<${badgeJSXName}>\n${tabIndent +
-                tabIndent}foo\n${tabIndent}</${badgeJSXName}>\n</${childrenJSXName}>`
+                    tabIndent}foo\n${tabIndent}</${badgeJSXName}>\n</${childrenJSXName}>`
         );
     });
     test("should return a string containing a JSX element with component children containing attributes", () => {
@@ -682,8 +671,8 @@ describe("mapDataToCodePreview", () => {
 
         expect(mappedData).toEqual(
             `<${badgeJSXName}\n${tabIndent}string={"foo"}\n>\n${tabIndent}<${badgeJSXName}\n${tabIndent +
-                tabIndent}string={"bar"}\n${tabIndent}>\n${tabIndent +
-                tabIndent}bat\n${tabIndent}</${badgeJSXName}>\n</${badgeJSXName}>`
+                    tabIndent}string={"bar"}\n${tabIndent}>\n${tabIndent +
+                            tabIndent}bat\n${tabIndent}</${badgeJSXName}>\n</${badgeJSXName}>`
         );
     });
     test("should return a string containing a JSX element with variables assigned to attributes", () => {
@@ -731,7 +720,7 @@ describe("mapDataToCodePreview", () => {
 
         const regex: RegExp = new RegExp(
             `const\\s(\\w+)\\s\\=\\s{\\n\\s\\s"number":\\s42\\n};\\n\\nconst\\s(\\w+)\\s\\=\\s{\\n\\s\\s"number":\\s24\\n};\\n\\n<${badgeJSXName}\\n${tabIndent}object={(\\w+)}\\n>\\n${tabIndent}<${badgeJSXName}\\n${tabIndent +
-                tabIndent}object\\={(\\w+)}\\n${tabIndent}\\/>\\n<\\/${badgeJSXName}>`
+                    tabIndent}object\\={(\\w+)}\\n${tabIndent}\\/>\\n<\\/${badgeJSXName}>`
         );
         expect(mappedData.match(regex)).not.toBe(null);
 
@@ -761,7 +750,7 @@ describe("mapDataToCodePreview", () => {
 
         const regex: RegExp = new RegExp(
             `const\\s(\\w+)\\s\\=\\s\\(\\n${tabIndent}foo\\n\\);\\n\\nconst\\s(\\w+)\\s\\=\\s\\(\\n${tabIndent}<${childrenJSXName}\\n${tabIndent +
-                tabIndent}restrictedWithChildren\\={(\\w+)}\\n${tabIndent}\\/>\\n\\);\\n\\n<${childrenJSXName}\\n${tabIndent}restrictedWithChildren={(\\w+)}\\n\\/>`
+                    tabIndent}restrictedWithChildren\\={(\\w+)}\\n${tabIndent}\\/>\\n\\);\\n\\n<${childrenJSXName}\\n${tabIndent}restrictedWithChildren={(\\w+)}\\n\\/>`
         );
 
         expect(mappedData.match(regex)).not.toBe(null);
