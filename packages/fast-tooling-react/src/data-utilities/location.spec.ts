@@ -380,7 +380,7 @@ describe("getDataLocationsOfPlugins", () => {
             };
         }
 
-        ["", 1, true]
+        ["", 1]
             .map((value: unknown) =>
                 getDataLocationsOfPlugins(childrenSchema, factory(value), childOptions)
             )

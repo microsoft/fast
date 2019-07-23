@@ -158,6 +158,38 @@ describe("mapDataToComponent", () => {
         expect(mappedData.render(testClass).type.displayName).toEqual("Text field");
         expect(mappedData.render(testClass).props.className).toBe(testClass);
     });
+    test("should invoke plugin resolver with string and number data", () => {
+        ["child text", 10].forEach(
+            (childData: unknown): void => {
+                const data: any = {
+                    render: childData,
+                };
+                const resolver: jest.Mock = jest.fn();
+                class MyPlugin extends Plugin<PluginProps> {
+                    public resolver(
+                        d: any,
+                        childItem?: ChildOptionItem,
+                        dataLocation?: string
+                    ): any {
+                        resolver(d, childItem, dataLocation);
+                    }
+                }
+                const mappedData: any = mapDataToComponent(
+                    childrenWithPluginPropsSchema,
+                    data,
+                    childOptions,
+                    [
+                        new MyPlugin({
+                            id: childrenPluginResolverId,
+                        }),
+                    ]
+                );
+
+                expect(resolver).toHaveBeenCalledTimes(1);
+                expect(resolver.mock.calls[0][0]).toBe(childData);
+            }
+        );
+    });
     test("should map arrays of children to plugins", () => {
         const data: any = {
             render: [
@@ -322,7 +354,7 @@ describe("mapDataToComponent", () => {
                 childItem?: ChildOptionItem,
                 dataLocation?: string
             ): any {
-                resolver(data, childItem, dataLocation);
+                resolver(d, childItem, dataLocation);
             }
         }
         const data: any = {
