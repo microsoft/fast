@@ -60,7 +60,13 @@ export const navigationTreeItemDropSource: DropTargetSpec<NavigationTreeItemProp
 
         if (
             props.type === NavigationDataType.children ||
-            props.type === NavigationDataType.component
+            props.type === NavigationDataType.component ||
+            (
+                props.type === NavigationDataType.primitiveChild &&
+                (
+                    props.dragHoverAfter || props.dragHoverBefore
+                )
+            )
         ) {
             component.props.onChange(
                 item.dataLocation,
@@ -86,7 +92,10 @@ export const navigationTreeItemDropSource: DropTargetSpec<NavigationTreeItemProp
             props.onDragHover(props.dataLocation);
         } else if (
             monitor.isOver({ shallow: true }) &&
-            props.type === NavigationDataType.component
+            (
+                props.type === NavigationDataType.component
+                || props.type === NavigationDataType.primitiveChild
+            )
         ) {
             if (!component) {
                 return null;
@@ -216,11 +225,9 @@ const NavigationTreeItem: React.RefForwardingComponent<
             typeof props.connectDropTarget === "function" &&
             typeof props.connectDragSource === "function";
 
-        return canDragAndDrop && props.type === NavigationDataType.component
+        return canDragAndDrop && (props.type === NavigationDataType.component || props.type === NavigationDataType.primitiveChild)
             ? props.connectDragSource(props.connectDropTarget(item))
-            : canDragAndDrop &&
-              (props.type === NavigationDataType.children ||
-                  props.type === NavigationDataType.component)
+            : canDragAndDrop && props.type === NavigationDataType.children
                 ? props.connectDropTarget(item)
                 : item;
     }

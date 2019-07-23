@@ -187,7 +187,9 @@ function getNavigationFromChildrenItem(
     const childTreeNavigation: TreeNavigation = {
         text,
         dataLocation: updatedDataLocation,
-        type: NavigationDataType.component,
+        type: typeof config.data === "string" || typeof config.data === "number" || typeof config.data === "boolean"
+            ? NavigationDataType.primitiveChild
+            : NavigationDataType.component,
     };
 
     if (!!childSchema && !isString) {

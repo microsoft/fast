@@ -362,10 +362,10 @@ export default class Navigation extends Foundation<
         return (dragging: boolean): string => {
             let classes: string = this.props.managedClasses.navigation_item;
 
-            if (dataType === NavigationDataType.component) {
+            if (dataType === NavigationDataType.component || dataType === NavigationDataType.primitiveChild) {
                 classes = `${classes} ${get(
                     this.props,
-                    "managedClasses.navigation_item__component",
+                    `managedClasses.navigation_item__${dataType}`,
                     ""
                 )}`;
 
@@ -413,7 +413,8 @@ export default class Navigation extends Foundation<
         if (
             verticalDragDirection === VerticalDragDirection.center &&
             (type === NavigationDataType.children ||
-                type === NavigationDataType.component)
+                type === NavigationDataType.component ||
+                    type === NavigationDataType.primitiveChild)
         ) {
             classNames += `${get(
                 this.props,

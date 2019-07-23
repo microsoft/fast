@@ -15,6 +15,7 @@ export interface NavigationClassNameContract {
      * @deprecated
      */
     navigation_item__childItem?: string;
+    navigation_item__primitiveChild?: string;
     navigation_item__component?: string;
     navigation_item__draggable?: string;
     navigation_item__dragging?: string;
@@ -74,10 +75,18 @@ const styles: ComponentStyles<NavigationClassNameContract, {}> = {
             fontStyle: "normal",
         },
     },
-    navigation_item__component: {
+    navigation_item__primitiveChild: {
         "& > $navigation_itemContent": {
             fontStyle: "normal",
         },
+        "& > $navigation_itemContent$navigation_itemContent__dragHover": {
+            background: "none"
+        }
+    },
+    navigation_item__component: {
+        "& > $navigation_itemContent": {
+            fontStyle: "normal",
+        }
     },
     navigation_item__draggable: {
         cursor: "grab",
