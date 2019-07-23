@@ -7,7 +7,7 @@ import { ProgressClassNameContract } from "@microsoft/fast-components-class-name
 import { accentFillRest, neutralFillRest } from "../utilities/color";
 import { multiply, toPx } from "@microsoft/fast-jss-utilities";
 import { designUnit } from "../utilities/design-system";
-import { height, heightNumber, glyphSize } from "../utilities/density";
+import { glyphSize, height, heightNumber } from "../utilities/density";
 
 const styles: ComponentStyles<ProgressClassNameContract, DesignSystem> = {
     progress: {
