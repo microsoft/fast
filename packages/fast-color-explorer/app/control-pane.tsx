@@ -1,13 +1,5 @@
+import { get, values } from "lodash-es";
 import { ColorRGBA64, parseColorHexRGB } from "@microsoft/fast-colors";
-import {
-    Heading,
-    HeadingSize,
-    HeadingTag,
-    Label,
-    Radio,
-    RadioSlot,
-    SelectOption,
-} from "@microsoft/fast-components-react-msft";
 import {
     backgroundColor,
     cornerRadius,
@@ -26,7 +18,16 @@ import manageJss, {
 import { format, toPx } from "@microsoft/fast-jss-utilities";
 import { Pane } from "@microsoft/fast-layouts-react";
 import classnames from "classnames";
-import { get, values } from "lodash-es";
+import {
+    Checkbox,
+    Heading,
+    HeadingSize,
+    HeadingTag,
+    Label,
+    Radio,
+    RadioSlot,
+    SelectOption,
+} from "@microsoft/fast-components-react-msft";
 import React from "react";
 import { SketchPicker } from "react-color";
 import { connect } from "react-redux";
@@ -43,6 +44,7 @@ import {
     setAccentBaseColor,
     setComponentType,
     setNeutralBaseColor,
+    setShowOnlyRecommendedBackgrounds,
 } from "./state";
 
 export interface ControlPaneClassNameContract {
@@ -58,6 +60,8 @@ export interface ControlPaneProps extends ManagedClasses<ControlPaneClassNameCon
     setComponentType: (value: string) => any;
     setNeutralBaseColor: (value: ColorRGBA64) => any;
     setAccentBaseColor: (value: ColorRGBA64) => any;
+    setShowOnlyRecommendedBackgrounds: (value: boolean) => any;
+    showOnlyRecommendedBackgrounds: boolean;
 }
 
 export interface ControlPaneState {
@@ -182,6 +186,7 @@ class ControlPaneBase extends React.Component<ControlPaneProps, ControlPaneState
                     </Heading>
                     {this.renderComponentSelector()}
                     {this.renderNeutralBaseColorInput()}
+                    {this.renderShowOnlyReccomendedBackgroundsInput()}
                     {this.renderAccentBaseColorInput()}
                     <div
                         className={get(
@@ -335,6 +340,33 @@ class ControlPaneBase extends React.Component<ControlPaneProps, ControlPaneState
         );
     }
 
+    private renderShowOnlyReccomendedBackgroundsInput(): JSX.Element {
+        const id: string = "showOnlyReccomendedBackgrounds";
+        return (
+            <React.Fragment>
+                <div style={{ marginBottom: "12px" }}>
+                    <Checkbox
+                        checked={this.props.showOnlyRecommendedBackgrounds}
+                        inputId={id}
+                        onChange={this.handleReccomendedBackgroundsChange}
+                    >
+                        <Label slot="label" htmlFor={id}>
+                            Show recommended backgrounds only
+                        </Label>
+                    </Checkbox>
+                </div>
+            </React.Fragment>
+        );
+    }
+
+    private handleReccomendedBackgroundsChange = (
+        e: React.ChangeEvent<HTMLInputElement>
+    ): void => {
+        this.props.setShowOnlyRecommendedBackgrounds(
+            !this.props.showOnlyRecommendedBackgrounds
+        );
+    };
+
     private handleColorChange(
         palette: "neutralColorBase" | "accentColorBase",
         callback: (color: ColorRGBA64) => void
@@ -353,14 +385,19 @@ class ControlPaneBase extends React.Component<ControlPaneProps, ControlPaneState
     }
 }
 
-function mapStateToProps(state: AppState): Partial<ControlPaneProps> {
+function mapStateToProps(state: AppState): AppState {
     return state;
 }
 
 /* tslint:disable-next-line */
 const ControlPane = connect(
     mapStateToProps,
-    { setComponentType, setNeutralBaseColor, setAccentBaseColor }
+    {
+        setComponentType,
+        setNeutralBaseColor,
+        setAccentBaseColor,
+        setShowOnlyRecommendedBackgrounds,
+    }
 )(manageJss(styles)(ControlPaneBase));
 type ControlPane = InstanceType<typeof ControlPane>;
 export { ControlPane };

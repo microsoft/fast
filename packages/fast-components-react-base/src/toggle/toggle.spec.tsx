@@ -24,6 +24,7 @@ describe("toggle", (): void => {
         toggle_toggleButton: "toggle-wrapper-class",
         toggle_input: "toggle-input-class",
         toggle_stateIndicator: "toggle-button-class",
+        toggle_statusMessage: "toggle_statusMessage-class",
     };
     const handledProps: ToggleHandledProps = {
         managedClasses,
@@ -122,5 +123,33 @@ describe("toggle", (): void => {
         expect(rendered.state("selected")).toEqual(true);
         rendered.find(inputSelector).simulate("change");
         expect(rendered.state("selected")).toEqual(true);
+    });
+
+    test("should render status message when unselected or selected message prop is passed", () => {
+        const rendered: any = shallow(
+            <Toggle inputId="id" {...handledProps} selected={false} />
+        );
+
+        expect(rendered.exists("span.toggle_statusMessage-class")).toBe(true);
+    });
+
+    test("should not render status message when unselected and selected message prop is not passed", () => {
+        const rendered: any = shallow(
+            <Toggle inputId="id" managedClasses={managedClasses} selected={false} />
+        );
+
+        expect(rendered.exists("span.toggle_statusMessage-class")).toBe(false);
+    });
+
+    test("should set id on span and aria-describedby on input when statusMessageId is passed", () => {
+        const rendered: any = shallow(
+            <Toggle inputId="id" {...handledProps} selected={false} />
+        );
+
+        const span: any = rendered.find("span.toggle_statusMessage-class");
+        const input: any = rendered.find("input.toggle-input-class");
+
+        expect(span.prop("id")).toEqual("status-message-id");
+        expect(input.prop("aria-describedby")).toEqual("status-message-id");
     });
 });

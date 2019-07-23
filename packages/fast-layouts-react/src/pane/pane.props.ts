@@ -66,6 +66,14 @@ export interface PaneHandledProps extends PaneManagedClasses {
      * Direction that the pane should be resized from
      */
     resizeFrom?: PaneResizeDirection;
+
+    /**
+     * The callback which is fired during resize
+     */
+    onResize?: (
+        e: MouseEvent | React.KeyboardEvent<HTMLButtonElement>,
+        width?: number
+    ) => void;
 }
 
 export type PaneProps = PaneHandledProps & PaneUnhandledProps;

@@ -1,8 +1,11 @@
-import { ComponentStyles, ManagedClasses } from "@microsoft/fast-jss-manager-react";
+import { ComponentStyles } from "@microsoft/fast-jss-manager-react";
 import { DesignSystem } from "@microsoft/fast-components-styles-msft";
 
 export interface ExplorerClassNameContract {
     explorer?: string;
+    explorer_viewerRegion?: string;
+    explorer_viewerControlRegion?: string;
+    explorer_viewerControls?: string;
 }
 
 const style: ComponentStyles<ExplorerClassNameContract, DesignSystem> = {
@@ -20,6 +23,20 @@ const style: ComponentStyles<ExplorerClassNameContract, DesignSystem> = {
         },
     },
     explorer: {},
+    explorer_viewerRegion: {
+        display: "flex",
+        flexDirection: "column",
+        width: "100%",
+    },
+    explorer_viewerControlRegion: {
+        display: "flex",
+    },
+    explorer_viewerControls: {
+        display: "flex",
+        padding: "7px 10px",
+        marginLeft: "auto",
+        alignItems: "center",
+    },
 };
 
 export default style;

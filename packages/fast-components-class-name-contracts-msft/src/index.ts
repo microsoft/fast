@@ -10,6 +10,7 @@ export * from "./caption";
 export * from "./carousel";
 export * from "./context-menu-item";
 export * from "./flipper";
+export * from "./flyout";
 export * from "./heading";
 export * from "./managed-classes";
 export * from "./metatext";

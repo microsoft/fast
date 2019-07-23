@@ -8,10 +8,11 @@ import {
 } from "./pane.props";
 import { west } from "../row";
 import rafThrottle from "raf-throttle";
-import { toPx } from "@microsoft/fast-jss-utilities";
+import { applyFocusVisible, toPx } from "@microsoft/fast-jss-utilities";
 import { ComponentStyles } from "@microsoft/fast-jss-manager-react";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import { canUseDOM } from "exenv-es6";
+import { KeyCodes } from "@microsoft/fast-web-utilities";
 import { joinClasses } from "../utilities";
 
 /**
@@ -64,6 +65,10 @@ export const paneStyleSheet: ComponentStyles<PaneClassNamesContract, undefined> 
         "&:hover": {
             cursor: "ew-resize",
         },
+        ...applyFocusVisible({
+            opacity: "1",
+            transform: "scale(1)",
+        }),
         "&:active": {
             opacity: "1",
             transform: "scale(1)",
@@ -125,6 +130,7 @@ export class Pane extends Foundation<PaneHandledProps, PaneUnhandledProps, PaneS
         hidden: void 0,
         resizeFrom: void 0,
         managedClasses: void 0,
+        onResize: void 0,
     };
     /**
      * Stores a reference to the pane HTML element
@@ -140,6 +146,7 @@ export class Pane extends Foundation<PaneHandledProps, PaneUnhandledProps, PaneS
             width: this.props.initialWidth,
         };
 
+        this.onResize = throttle(this.onResize, 16);
         this.onMouseMove = throttle(this.onMouseMove, 16);
         this.onWindowResize = rafThrottle(this.onWindowResize);
         this.rootElement = React.createRef();
@@ -233,11 +240,37 @@ export class Pane extends Foundation<PaneHandledProps, PaneUnhandledProps, PaneS
         return (
             <button
                 className={this.props.managedClasses.pane_resizeHandle}
-                aria-hidden={true}
                 onMouseDown={this.onMouseDown}
+                onKeyDown={this.onKeyDown}
+                aria-hidden={true}
             />
         );
     }
+
+    /**
+     * Handle keyPress
+     */
+    public onKeyDown = (e: React.KeyboardEvent<HTMLButtonElement>): void => {
+        const isShift: boolean = e.shiftKey;
+        const offset: number = isShift ? 10 : 1;
+        let width: number;
+
+        switch (e.keyCode) {
+            case KeyCodes.arrowLeft:
+                width = this.rootElement.current.clientWidth - offset;
+                break;
+            case KeyCodes.arrowRight:
+                width = this.rootElement.current.clientWidth + offset;
+                break;
+            default:
+                break;
+        }
+
+        this.setWidth(width);
+
+        // Fire the resize callback
+        this.onResize(e, width);
+    };
 
     /**
      * Handle mouseDown
@@ -283,6 +316,9 @@ export class Pane extends Foundation<PaneHandledProps, PaneUnhandledProps, PaneS
         if (updatedWidth <= this.props.minWidth || updatedWidth >= this.props.maxWidth) {
             return;
         }
+
+        // Fire the resize callback
+        this.onResize(e, updatedWidth);
 
         this.setState({
             dragReference: e.pageX,
@@ -342,6 +378,15 @@ export class Pane extends Foundation<PaneHandledProps, PaneUnhandledProps, PaneS
 
         return super.generateClassNames(classes);
     }
+
+    private onResize = (
+        e: MouseEvent | React.KeyboardEvent<HTMLButtonElement>,
+        width: number
+    ): void => {
+        if (typeof this.props.onResize === "function") {
+            this.props.onResize(e, width);
+        }
+    };
 }
 
 export * from "./pane.props";

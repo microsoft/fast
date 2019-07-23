@@ -70,14 +70,9 @@ const styles: ComponentStyleSheet<ColorBlocksClassNameContract, ColorsDesignSyst
         height: "100%",
     },
     colorBlocks_title: {
-        lineHeight: "36px",
-        textAlign: "center",
-        color: accentForegroundCut,
-        background: accentFillRest,
-    },
-    colorBlocks_backgroundColor: {
         margin: "16px auto 4px",
         fontWeight: fontWeight.semibold.toString(),
+        height: "34px"
     },
     colorBlocks_content: {
         flexGrow: "1",
@@ -97,7 +92,6 @@ const styles: ComponentStyleSheet<ColorBlocksClassNameContract, ColorsDesignSyst
 interface ColorBlocksClassNameContract {
     colorBlocks: string;
     colorBlocks_title: string;
-    colorBlocks_backgroundColor: string;
     colorBlocks_content: string;
     colorBlocks_example: string;
 }
@@ -114,6 +108,8 @@ interface ColorBlocksProps extends ColorBlocksManagedClasses {
     designSystem: ColorsDesignSystem;
 
     backgroundColor: string;
+
+    title?: string;
 }
 
 interface ColorBlocksState {
@@ -188,19 +184,11 @@ class ColorBlocksBase extends React.Component<ColorBlocksProps, ColorBlocksState
         },
     };
 
-    private stealthButtonOverrides: ComponentStyleSheet<
-        ButtonClassNameContract,
-        ColorsDesignSystem
-    > = {
-        button: {},
-    };
-
     private neutralTextStyleOverrides: ComponentStyleSheet<
         ParagraphClassNameContract,
         ColorsDesignSystem
     > = {
         paragraph: {
-            cursor: "pointer !important",
             "&:hover": {
                 color: neutralForegroundHover,
             },
@@ -248,11 +236,17 @@ class ColorBlocksBase extends React.Component<ColorBlocksProps, ColorBlocksState
                     .replace("#", "")}`}
             >
                 <Caption
-                    className={this.props.managedClasses.colorBlocks_backgroundColor}
+                    className={this.props.managedClasses.colorBlocks_title}
                     jssStyleSheet={{ caption: { color: neutralForegroundHint } }}
                 >
                     BACKGROUND {this.props.index} -{" "}
                     {this.state.designSystem.backgroundColor.toUpperCase()}
+                    {this.props.title ? <br /> : null}
+                    {this.props.title ? (
+                        <code style={{ fontWeight: "normal" }}>
+                            {this.props.title}
+                        </code>
+                    ) : null}
                 </Caption>
 
                 <div className={this.props.managedClasses.colorBlocks_content}>
@@ -410,7 +404,6 @@ class ColorBlocksBase extends React.Component<ColorBlocksProps, ColorBlocksState
                 {this.renderExample(
                     <Button
                         appearance={ButtonAppearance.stealth}
-                        jssStyleSheet={this.stealthButtonOverrides}
                         beforeContent={StealthIcon}
                     >
                         Stealth
@@ -590,15 +583,13 @@ class ColorBlocksBase extends React.Component<ColorBlocksProps, ColorBlocksState
     }
 }
 
-/* tslint:disable-next-line */
-const ColorBlocks = manageJss(styles)(ColorBlocksBase);
-type ColorBlocks = InstanceType<typeof ColorBlocks>;
-
-function mapStateToProps(state: AppState): Partial<ColorBlocksProps> {
+function mapStateToProps(
+    state: AppState
+): Pick<ColorBlocksProps, "component" | "designSystem"> {
     return {
         component: state.componentType,
         designSystem: state.designSystem,
     };
 }
 
-export default connect(mapStateToProps)(ColorBlocks);
+export default manageJss(styles)(connect(mapStateToProps)(ColorBlocksBase));
