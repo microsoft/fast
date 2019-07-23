@@ -358,6 +358,41 @@ describe("getDataLocationsOfPlugins", () => {
         expect(dataLocationsOfPlugins.length).toBe(1);
         expect(dataLocationsOfPlugins[0].dataLocation).toBe("render");
     });
+    test("should return the data location when children is a primitive type", () => {
+        function factory(type: unknown): any {
+            return {
+                children: {
+                    id: childrenSchema.id,
+                    props: {
+                        children: {
+                            id: childrenSchema.id,
+                            props: {
+                                children: {
+                                    id: childrenWithPluginPropsSchema.id,
+                                    props: {
+                                        render: type,
+                                    },
+                                },
+                            },
+                        },
+                    },
+                },
+            };
+        }
+
+        ["", 1, true]
+            .map((value: unknown) =>
+                getDataLocationsOfPlugins(childrenSchema, factory(value), childOptions)
+            )
+            .forEach(
+                (pluginLocation: PluginLocation[]): void => {
+                    expect(pluginLocation.length).toBe(1);
+                    expect(pluginLocation[0].dataLocation).toBe(
+                        "children.props.children.props.children.props.render"
+                    );
+                }
+            );
+    });
     test("should return the data location of a nested react child", () => {
         const data: any = {
             children: {
