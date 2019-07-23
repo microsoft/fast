@@ -1202,7 +1202,7 @@ describe("viewport positioner", (): void => {
         positioner.instance().scrollTop = 0;
         positioner.instance().scrollLeft = 0;
 
-        //test bottom right
+        // test bottom right
         positioner.instance().baseHorizontalOffset = 0;
         positioner.instance().baseVerticalOffset = 0;
         positioner.instance().setState({ 
@@ -1219,7 +1219,7 @@ describe("viewport positioner", (): void => {
         expect(positioner.instance().baseHorizontalOffset).toBe(0);
         expect(positioner.instance().baseVerticalOffset).toBe(0);
 
-        //test inset bottom right
+        // test inset bottom right
         positioner.instance().baseHorizontalOffset = 0;
         positioner.instance().baseVerticalOffset = 0;
         positioner.instance().setState({ 
@@ -1236,7 +1236,7 @@ describe("viewport positioner", (): void => {
         expect(positioner.instance().baseHorizontalOffset).toBe(-10);
         expect(positioner.instance().baseVerticalOffset).toBe(-10);
 
-        //test top left
+        // test top left
         positioner.instance().baseHorizontalOffset = 0;
         positioner.instance().baseVerticalOffset = 0;
         positioner.instance().setState({ 
@@ -1253,7 +1253,7 @@ describe("viewport positioner", (): void => {
         expect(positioner.instance().baseHorizontalOffset).toBe(-20);
         expect(positioner.instance().baseVerticalOffset).toBe(-20);
 
-        //test inset top left
+        // test inset top left
         positioner.instance().baseHorizontalOffset = 0;
         positioner.instance().baseVerticalOffset = 0;
         positioner.instance().setState({ 

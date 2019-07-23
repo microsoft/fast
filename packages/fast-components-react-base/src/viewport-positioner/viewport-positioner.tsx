@@ -380,6 +380,7 @@ class ViewportPositioner extends Foundation<
             !this.state.disabled ||
             this.props.disabled ||
             this.getAnchorElement() === null ||
+            this.getViewportElement() === null ||
             isNil(this.rootElement.current)
         ) {
             return;
