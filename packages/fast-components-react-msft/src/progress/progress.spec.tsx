@@ -14,9 +14,9 @@ configure({ adapter: new Adapter() });
 const managedClasses: ProgressClassNameContract = {
     progress: "progress-class",
     progressCircular: "progressCircular-class",
-    progressCircular__small: "progressCircular__small-class",
-    progressCircular__medium: "progressCircular__medium-class",
-    progressCircular__large: "progressCircular__large-class",
+    progressCircular__control: "progressCircular__control-class",
+    progressCircular__container: "progressCircular__container-class",
+    progressCircular__page: "progressCircular__page-class",
     progress_valueIndicator: "progress_valueIndicator-class",
     progressCircular_valueIndicator: "progressCircular_valueIndicator-class",
     progressCircular_valueIndicator__indeterminate:
@@ -66,28 +66,28 @@ describe("progress", (): void => {
         ).toBe(false);
     });
 
-    test("should render the correct `size` when `size` prop is small", () => {
+    test("should render the correct size when `size` prop is control", () => {
         const rendered: any = mount(
             <MSFTProgress
                 managedClasses={managedClasses}
                 circular={true}
-                size={ProgressSize.small}
+                size={ProgressSize.control}
             />
         );
 
-        expect(rendered.find("svg").prop("className")).toContain("small");
+        expect(rendered.find("svg").prop("className")).toContain("control");
     });
 
-    test("should render the correct `size` when `size` prop is large", () => {
+    test("should render the correct size when `size` prop is page", () => {
         const rendered: any = mount(
             <MSFTProgress
                 managedClasses={managedClasses}
                 circular={true}
-                size={ProgressSize.large}
+                size={ProgressSize.page}
             />
         );
 
-        expect(rendered.find("svg").prop("className")).toContain("large");
+        expect(rendered.find("svg").prop("className")).toContain("page");
     });
 
     test("should render default size if none is specified", () => {
@@ -95,6 +95,6 @@ describe("progress", (): void => {
             <MSFTProgress managedClasses={managedClasses} circular={true} />
         );
 
-        expect(rendered.find("svg").prop("className")).toContain("medium");
+        expect(rendered.find("svg").prop("className")).toContain("container");
     });
 });

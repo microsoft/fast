@@ -5,9 +5,9 @@ import designSystemDefaults, {
 import { ComponentStyles, ComponentStyleSheet } from "@microsoft/fast-jss-manager";
 import { ProgressClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import { accentFillRest, neutralFillRest } from "../utilities/color";
-import { divide, multiply, toPx } from "@microsoft/fast-jss-utilities";
+import { multiply, toPx } from "@microsoft/fast-jss-utilities";
 import { designUnit } from "../utilities/design-system";
-import { height, heightNumber } from "../utilities/density";
+import { height, heightNumber, glyphSize } from "../utilities/density";
 
 const styles: ComponentStyles<ProgressClassNameContract, DesignSystem> = {
     progress: {
@@ -20,15 +20,15 @@ const styles: ComponentStyles<ProgressClassNameContract, DesignSystem> = {
     progressCircular: {
         height: "unset",
     },
-    progressCircular__small: {
-        height: toPx(divide(heightNumber(), 2)),
-        width: toPx(divide(heightNumber(), 2)),
+    progressCircular__control: {
+        height: glyphSize,
+        width: glyphSize,
     },
-    progressCircular__medium: {
+    progressCircular__container: {
         height: height(),
         width: height(),
     },
-    progressCircular__large: {
+    progressCircular__page: {
         height: toPx(multiply(heightNumber(), 2)),
         width: toPx(multiply(heightNumber(), 2)),
     },

@@ -11,9 +11,9 @@ import {
 import { Subtract } from "utility-types";
 
 export enum ProgressSize {
-    small = "small",
-    medium = "medium",
-    large = "large",
+    control = "control",
+    container = "container",
+    page = "page",
 }
 
 /* tslint:disable:no-empty-interface */
