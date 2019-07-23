@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.11.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-base@4.10.0...@microsoft/fast-components-react-base@4.11.0) (2019-07-23)
+
+
+### Bug Fixes
+
+* [toggle] make selected & unselected messages optional  ([#1973](https://github.com/Microsoft/fast-dna/issues/1973)) ([5b79a4c](https://github.com/Microsoft/fast-dna/commit/5b79a4c))
+
+
+### Features
+
+* improve viewport positioner offset correction ([#1978](https://github.com/Microsoft/fast-dna/issues/1978)) ([b9d34ef](https://github.com/Microsoft/fast-dna/commit/b9d34ef))
+
+
+
+
+
 # [4.10.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-base@4.9.0...@microsoft/fast-components-react-base@4.10.0) (2019-07-16)
 
 

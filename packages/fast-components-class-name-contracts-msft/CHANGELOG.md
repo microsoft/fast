@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.5.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-class-name-contracts-msft@4.4.0...@microsoft/fast-components-class-name-contracts-msft@4.5.0) (2019-07-23)
+
+
+### Features
+
+* add flyout as a new component ([#1940](https://github.com/Microsoft/fast-dna/issues/1940)) ([b9ad765](https://github.com/Microsoft/fast-dna/commit/b9ad765))
+
+
+
+
+
 # [4.4.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-class-name-contracts-msft@4.3.2...@microsoft/fast-components-class-name-contracts-msft@4.4.0) (2019-06-25)
 
 
