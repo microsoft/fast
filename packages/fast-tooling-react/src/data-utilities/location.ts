@@ -165,11 +165,9 @@ export function getDataLocationsOfPlugins(
                             : `${schemaLocation}.${typeKeyword}`
                     }`
                 ) === DataType.children;
-            const renderableReactPrimitives: string[] = [
-                true,
-                "",
-                1,
-            ].map((val: unknown) => typeof val);
+            const renderableReactPrimitives: string[] = [true, "", 1].map(
+                (val: unknown) => typeof val
+            );
 
             const childrenProps: any = get(data, `${dataLocation}.${propsKeyword}`);
             const isNotAnArrayOfChildren: boolean =

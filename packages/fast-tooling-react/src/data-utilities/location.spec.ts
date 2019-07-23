@@ -380,14 +380,18 @@ describe("getDataLocationsOfPlugins", () => {
             };
         }
 
-        ["", 1, true].map((value: unknown) => getDataLocationsOfPlugins(
-            childrenSchema,
-            factory(value),
-            childOptions
-        )).forEach((pluginLocation: PluginLocation[]): void => {
-            expect(pluginLocation.length).toBe(1);
-            expect(pluginLocation[0].dataLocation).toBe("children.props.children.props.children.props.render");
-        });
+        ["", 1, true]
+            .map((value: unknown) =>
+                getDataLocationsOfPlugins(childrenSchema, factory(value), childOptions)
+            )
+            .forEach(
+                (pluginLocation: PluginLocation[]): void => {
+                    expect(pluginLocation.length).toBe(1);
+                    expect(pluginLocation[0].dataLocation).toBe(
+                        "children.props.children.props.children.props.render"
+                    );
+                }
+            );
     });
     test("should return the data location of a nested react child", () => {
         const data: any = {
