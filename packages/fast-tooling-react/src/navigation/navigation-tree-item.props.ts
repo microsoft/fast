@@ -50,6 +50,11 @@ export interface NavigationTreeItemProps
     handleCloseDraggingItem: (dataLocation: string, type: NavigationDataType) => void;
 
     /**
+     * The handler for opening a dropped item
+     */
+    handleOpenDroppedItem: (dataLocation: string) => void;
+
+    /**
      * The text used for the tree item
      */
     text: string;

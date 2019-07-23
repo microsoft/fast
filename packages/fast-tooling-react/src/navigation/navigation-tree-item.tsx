@@ -70,6 +70,10 @@ export const navigationTreeItemDropSource: DropTargetSpec<NavigationTreeItemProp
                     ? VerticalDragDirection.up
                     : VerticalDragDirection.center;
 
+            if (props.type === NavigationDataType.component) {
+                props.handleOpenDroppedItem(props.dataLocation);
+            }
+
             component.props.onChange(
                 item.dataLocation,
                 props.dataLocation,
