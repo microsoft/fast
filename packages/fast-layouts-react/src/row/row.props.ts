@@ -72,6 +72,14 @@ export interface RowHandledProps extends RowManagedClasses {
      * Direction that the row should be resized from
      */
     resizeFrom?: RowResizeDirection;
+
+    /**
+     * The callback which is fired during resize
+     */
+    onResize?: (
+        e: MouseEvent | React.KeyboardEvent<HTMLButtonElement>,
+        height?: number
+    ) => void;
 }
 
 export type RowProps = RowHandledProps & RowUnhandledProps;

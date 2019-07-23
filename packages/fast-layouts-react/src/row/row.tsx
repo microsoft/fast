@@ -1,7 +1,7 @@
 import React from "react";
 import { throttle } from "lodash-es";
 import { Canvas } from "../canvas";
-import rafThrottle from "raf-throttle";
+import { KeyCodes } from "@microsoft/fast-web-utilities";
 import {
     RowHandledProps,
     RowProps,
@@ -81,6 +81,10 @@ export const rowStyleSheet: ComponentStyles<RowClassNamesContract, undefined> = 
         "&:hover": {
             cursor: "ns-resize",
         },
+        "&:focus": {
+            opacity: "1",
+            transform: "scale(1)",
+        },
         "&:active": {
             opacity: "1",
             transform: "scale(1)",
@@ -145,6 +149,7 @@ export class Row extends Foundation<
         resizeFrom: void 0,
         managedClasses: void 0,
         initialHeight: void 0,
+        onResize: void 0,
     };
 
     /**
@@ -161,6 +166,7 @@ export class Row extends Foundation<
             height: this.props.initialHeight,
         };
 
+        this.onResize = throttle(this.onResize, 16);
         this.onMouseMove = throttle(this.onMouseMove, 16);
         this.rootElement = React.createRef();
     }
@@ -235,11 +241,39 @@ export class Row extends Foundation<
         return (
             <button
                 className={this.props.managedClasses.row_resizeHandle}
-                aria-hidden={true}
                 onMouseDown={this.onMouseDown}
+                onKeyDown={this.onKeyDown}
+                aria-hidden={true}
             />
         );
     }
+
+    /**
+     * Handle keyPress
+     */
+    public onKeyDown = (e: React.KeyboardEvent<HTMLButtonElement>): void => {
+        const isShift: boolean = e.shiftKey;
+        const resizeFromNorth: boolean =
+            this.props.resizeFrom === RowResizeDirection.north;
+        const offset: number = isShift ? 10 : 1;
+        let height: number = this.getHeight();
+
+        switch (e.keyCode) {
+            case KeyCodes.arrowDown:
+                height = resizeFromNorth ? height - offset : height + offset;
+                break;
+            case KeyCodes.arrowUp:
+                height = resizeFromNorth ? height + offset : height - offset;
+                break;
+            default:
+                break;
+        }
+
+        this.setHeight(height);
+
+        // Fire the resize callback
+        this.onResize(e, height);
+    };
 
     /**
      * Handle mouseDown
@@ -288,6 +322,9 @@ export class Row extends Foundation<
         ) {
             return;
         }
+
+        // Fire the resize callback
+        this.onResize(e, updatedHeight);
 
         this.setState({
             dragReference: e.pageY,
@@ -345,6 +382,15 @@ export class Row extends Foundation<
 
         return super.generateClassNames(classes);
     }
+
+    private onResize = (
+        e: MouseEvent | React.KeyboardEvent<HTMLButtonElement>,
+        height: number
+    ): void => {
+        if (typeof this.props.onResize === "function") {
+            this.props.onResize(e, height);
+        }
+    };
 }
 
 export * from "./row.props";
