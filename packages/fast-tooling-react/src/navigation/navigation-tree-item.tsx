@@ -68,15 +68,17 @@ export const navigationTreeItemDropSource: DropTargetSpec<NavigationTreeItemProp
                 )
             )
         ) {
+            const verticalDirection: VerticalDragDirection = props.dragHoverAfter
+                ? VerticalDragDirection.down
+                : props.dragHoverBefore
+                    ? VerticalDragDirection.up
+                    : VerticalDragDirection.center
+
             component.props.onChange(
                 item.dataLocation,
                 props.dataLocation,
                 props.type,
-                props.dragHoverAfter
-                    ? VerticalDragDirection.down
-                    : props.dragHoverBefore
-                        ? VerticalDragDirection.up
-                        : VerticalDragDirection.center
+                verticalDirection
             );
         }
     },

@@ -1,4 +1,4 @@
-import { cloneDeep, get, set, unset } from "lodash-es";
+    import { cloneDeep, get, set, unset } from "lodash-es";
 import { ChildOptionItem } from "../data-utilities";
 import { mapSchemaLocationFromDataLocation } from "../data-utilities/location";
 import { NavigationDataType, TreeNavigation } from "./navigation.props";
@@ -11,6 +11,7 @@ import {
 import { VerticalDragDirection } from "./navigation-tree-item.props";
 
 const propsKeyword: string = "props";
+const childrenKeyword: string = "children";
 
 export interface NavigationFromChildrenConfig {
     data: any;
@@ -276,7 +277,8 @@ export function getUpdatedData<T>(config: UpdateDataConfig): T {
             normalizedSourceDataLocation,
             normalizedTargetDataLocation,
             config.direction,
-            targetNestedBelowSource
+            targetNestedBelowSource,
+            config.type
         );
     } else if (targetInArray && sourceInArray) {
         setDataWhenTargetInArrayAndSourceInArray(
@@ -284,7 +286,8 @@ export function getUpdatedData<T>(config: UpdateDataConfig): T {
             normalizedSourceDataLocation,
             normalizedTargetDataLocation,
             config.direction,
-            targetNestedBelowSource
+            targetNestedBelowSource,
+            config.type
         );
     } else if (targetInArray) {
         setDataWhenTargetInArray(
@@ -292,7 +295,8 @@ export function getUpdatedData<T>(config: UpdateDataConfig): T {
             normalizedSourceDataLocation,
             normalizedTargetDataLocation,
             config.direction,
-            targetNestedBelowSource
+            targetNestedBelowSource,
+            config.type
         );
     } else if (sourceInArray) {
         setDataWhenSourceInArray(
@@ -300,7 +304,8 @@ export function getUpdatedData<T>(config: UpdateDataConfig): T {
             normalizedSourceDataLocation,
             normalizedTargetDataLocation,
             config.direction,
-            targetNestedBelowSource
+            targetNestedBelowSource,
+            config.type
         );
     } else if (targetIsNotUndefined) {
         setDataWhenTargetInObjectAndSourceInObject(
@@ -308,7 +313,8 @@ export function getUpdatedData<T>(config: UpdateDataConfig): T {
             normalizedSourceDataLocation,
             normalizedTargetDataLocation,
             config.direction,
-            targetNestedBelowSource
+            targetNestedBelowSource,
+            config.type
         );
     } else {
         setDataWhenTargetIsUndefined(
@@ -400,14 +406,50 @@ function isInArray(data: unknown, dataLocation: string): boolean {
     );
 }
 
-/* tslint:disable */
+function setDataOnDropVerticalCenter(
+    data: any,
+    targetData: any,
+    sourceData: any,
+    targetDataLocation: string,
+    type: NavigationDataType
+): void {
+    const isComponent: boolean = type === NavigationDataType.component;
+            
+    if (isComponent) {
+        const componentChildren: unknown = get(targetData, `${propsKeyword}.${childrenKeyword}`);
+        targetDataLocation = `${targetDataLocation}.${propsKeyword}.${childrenKeyword}`;
+
+        if (typeof componentChildren === "undefined") {
+            set(
+                data as object,
+                targetDataLocation,
+                sourceData
+            );
+        } else if (Array.isArray(componentChildren)) {
+            componentChildren.push(sourceData);
+        } else {
+            set(
+                data as object,
+                targetDataLocation,
+                [componentChildren].concat(sourceData)
+            );
+        }
+    } else {
+        set(
+            data as object,
+            targetDataLocation,
+            [sourceData].concat(targetData)
+        );
+    }
+}
 
 function setDataWhenTargetInSourceArray(
     data: unknown,
     sourceDataLocation: string,
     targetDataLocation: string,
     direction: VerticalDragDirection,
-    targetNestedBelowSource: boolean
+    targetNestedBelowSource: boolean,
+    type: NavigationDataType
 ): void {
     const sourceData: unknown = get(data, sourceDataLocation);
     const targetData: unknown = get(data, targetDataLocation);
@@ -428,10 +470,12 @@ function setDataWhenTargetInSourceArray(
 
     switch (direction) {
         case VerticalDragDirection.center:
-            set(
-                data as object,
+            setDataOnDropVerticalCenter(
+                data,
+                targetData,
+                sourceData,
                 targetDataLocation,
-                [sourceData].concat(targetData)
+                type
             );
 
             (targetParentData as any[]).splice(sourceDataLocationIndex, 1);
@@ -478,7 +522,8 @@ function setDataWhenTargetInArrayAndSourceInArray(
     sourceDataLocation: string,
     targetDataLocation: string,
     direction: VerticalDragDirection,
-    targetNestedBelowSource: boolean
+    targetNestedBelowSource: boolean,
+    type: NavigationDataType
 ): void {
     const sourceData: unknown = get(data as object, sourceDataLocation);
     const targetData: unknown = get(data as object, targetDataLocation);
@@ -515,7 +560,13 @@ function setDataWhenTargetInArrayAndSourceInArray(
 
     switch (direction) {
         case VerticalDragDirection.center:
-            set(data as object, targetDataLocation, [sourceData].concat(targetData));
+            setDataOnDropVerticalCenter(
+                data,
+                targetData,
+                sourceData,
+                targetDataLocation,
+                type
+            );
             break;
         case VerticalDragDirection.up:
             parentTargetData.splice(targetDataLocationIndex, 0, sourceData);
@@ -542,7 +593,8 @@ function setDataWhenTargetInObjectAndSourceInObject(
     sourceDataLocation: string,
     targetDataLocation: string,
     direction: VerticalDragDirection,
-    targetNestedBelowSource: boolean
+    targetNestedBelowSource: boolean,
+    type: NavigationDataType
 ): void {
     const sourceData: unknown = get(data, sourceDataLocation);
     const targetData: unknown[] = get(data, targetDataLocation);
@@ -553,6 +605,14 @@ function setDataWhenTargetInObjectAndSourceInObject(
 
     switch (direction) {
         case VerticalDragDirection.center:
+            setDataOnDropVerticalCenter(
+                data,
+                targetData,
+                sourceData,
+                targetDataLocation,
+                type
+            );
+            break;
         case VerticalDragDirection.up:
             set(data as object, targetDataLocation, [sourceData, targetData]);
             break;
@@ -570,7 +630,8 @@ function setDataWhenTargetInArray(
     sourceDataLocation: string,
     targetDataLocation: string,
     direction: VerticalDragDirection,
-    targetNestedBelowSource: boolean
+    targetNestedBelowSource: boolean,
+    type: NavigationDataType
 ): void {
     const sourceData: unknown = get(data, sourceDataLocation);
     const targetData: unknown = get(data, targetDataLocation);
@@ -586,7 +647,13 @@ function setDataWhenTargetInArray(
 
     switch (direction) {
         case VerticalDragDirection.center:
-            set(data as object, targetDataLocation, [sourceData].concat(targetData));
+            setDataOnDropVerticalCenter(
+                data,
+                targetData,
+                sourceData,
+                targetDataLocation,
+                type
+            );
             break;
         case VerticalDragDirection.up:
             targetParentData.splice(
@@ -619,7 +686,8 @@ function setDataWhenSourceInArray(
     sourceDataLocation: string,
     targetDataLocation: string,
     direction: VerticalDragDirection,
-    targetNestedBelowSource: boolean
+    targetNestedBelowSource: boolean,
+    type: NavigationDataType
 ): void {
     const sourceData: unknown = get(data, sourceDataLocation);
     const targetData: unknown = get(data, targetDataLocation);
@@ -631,7 +699,7 @@ function setDataWhenSourceInArray(
     const parentSourceDataLocation: string = sourceDataLocationSegments
         .slice(0, -1)
         .join(".");
-    let parentSourceData: unknown | unknown[] = get(data, parentSourceDataLocation);
+    const parentSourceData: unknown | unknown[] = get(data, parentSourceDataLocation);
 
     if (!targetNestedBelowSource) {
         (parentSourceData as unknown[]).splice(lastSourceDataLocationIndex, 1);
@@ -647,6 +715,14 @@ function setDataWhenSourceInArray(
 
     switch (direction) {
         case VerticalDragDirection.center:
+            setDataOnDropVerticalCenter(
+                data,
+                targetData,
+                sourceData,
+                targetDataLocation,
+                type
+            );
+            break;
         case VerticalDragDirection.up:
             set(data as object, targetDataLocation, [sourceData].concat(targetData));
             break;

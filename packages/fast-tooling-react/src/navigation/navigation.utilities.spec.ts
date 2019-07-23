@@ -50,7 +50,7 @@ describe("getNavigationFromData", () => {
         expect(navigationFromData[0].items[0].items).toEqual(void 0);
         expect(navigationFromData[0].items[0].dataLocation).toEqual("children");
         expect(navigationFromData[0].items[0].text).toEqual(childrenText);
-        expect(navigationFromData[0].items[0].type).toEqual(NavigationDataType.component);
+        expect(navigationFromData[0].items[0].type).toEqual(NavigationDataType.primitiveChild);
     });
     test("should return a single item if a single child has been passed", () => {
         const data: any = {
@@ -115,7 +115,7 @@ describe("getNavigationFromData", () => {
         expect(navigationFromData[0].items[1].dataLocation).toEqual("children.1.props");
         expect(navigationFromData[0].items[1].items).toEqual(void 0);
         expect(navigationFromData[0].items[2].text).toEqual(childrenText);
-        expect(navigationFromData[0].items[2].type).toEqual(NavigationDataType.component);
+        expect(navigationFromData[0].items[2].type).toEqual(NavigationDataType.primitiveChild);
         expect(navigationFromData[0].items[2].dataLocation).toEqual("children.2");
         expect(navigationFromData[0].items[2].items).toEqual(undefined);
     });
@@ -305,7 +305,7 @@ describe("getUpdatedData", () => {
                 },
                 targetDataLocation: "foo",
                 sourceDataLocation: "bar",
-                type: NavigationDataType.component,
+                type: NavigationDataType.primitiveChild,
                 direction: VerticalDragDirection.center,
             });
 
@@ -322,7 +322,7 @@ describe("getUpdatedData", () => {
                 },
                 targetDataLocation: "foo",
                 sourceDataLocation: "bar",
-                type: NavigationDataType.component,
+                type: NavigationDataType.primitiveChild,
                 direction: VerticalDragDirection.center,
             });
 
@@ -349,7 +349,7 @@ describe("getUpdatedData", () => {
                 },
                 targetDataLocation: "foo",
                 sourceDataLocation: "bar",
-                type: NavigationDataType.component,
+                type: NavigationDataType.primitiveChild,
                 direction: VerticalDragDirection.center,
             });
 
@@ -376,7 +376,7 @@ describe("getUpdatedData", () => {
                 },
                 targetDataLocation: "foo",
                 sourceDataLocation: "bar",
-                type: NavigationDataType.component,
+                type: NavigationDataType.primitiveChild,
                 direction: VerticalDragDirection.center,
             });
 
@@ -400,7 +400,7 @@ describe("getUpdatedData", () => {
                 },
                 targetDataLocation: "foo",
                 sourceDataLocation: "bar",
-                type: NavigationDataType.component,
+                type: NavigationDataType.children,
                 direction: VerticalDragDirection.center,
             });
 
@@ -422,7 +422,7 @@ describe("getUpdatedData", () => {
                 },
                 targetDataLocation: "bar",
                 sourceDataLocation: "foo.1",
-                type: NavigationDataType.component,
+                type: NavigationDataType.primitiveChild,
                 direction: VerticalDragDirection.center,
             });
 
@@ -503,7 +503,7 @@ describe("getUpdatedData", () => {
                 },
                 targetDataLocation: "bar",
                 sourceDataLocation: "foo.1",
-                type: NavigationDataType.component,
+                type: NavigationDataType.children,
                 direction: VerticalDragDirection.center,
             });
 
@@ -594,7 +594,7 @@ describe("getUpdatedData", () => {
                 },
                 targetDataLocation: "children",
                 sourceDataLocation: "children.props.children",
-                type: NavigationDataType.component,
+                type: NavigationDataType.children,
                 direction: VerticalDragDirection.center,
             });
 
