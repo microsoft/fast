@@ -13,5 +13,5 @@ describe("node types", () => {
         expect(isPrimitiveReactNode(new Date())).toBe(false);
         expect(isPrimitiveReactNode(null)).toBe(false);
         expect(isPrimitiveReactNode(undefined)).toBe(false);
-    })
-})
+    });
+});

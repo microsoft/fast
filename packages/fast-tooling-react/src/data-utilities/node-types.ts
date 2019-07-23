@@ -3,5 +3,5 @@
  */
 export function isPrimitiveReactNode(node: unknown): node is string | number {
     const nodeType: string = typeof node;
-    return nodeType === "string" || nodeType === "number"
+    return nodeType === "string" || nodeType === "number";
 }
