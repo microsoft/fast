@@ -14,6 +14,7 @@ import {
 } from "./types";
 import { ChildOptionItem } from "./";
 import { oneOfAnyOfType } from "../form/form/form-section.props";
+import { isPrimitiveReactNode } from "./node-types";
 
 /**
  * This file contains all functionality for the manipulation of lodash paths
@@ -165,17 +166,11 @@ export function getDataLocationsOfPlugins(
                             : `${schemaLocation}.${typeKeyword}`
                     }`
                 ) === DataType.children;
-            const renderableReactPrimitives: string[] = [true, "", 1].map(
-                (val: unknown) => typeof val
-            );
-
             const childrenProps: any = get(data, `${dataLocation}.${propsKeyword}`);
             const isNotAnArrayOfChildren: boolean =
                 (isChildComponent &&
                     (typeof childrenProps !== "undefined" ||
-                        renderableReactPrimitives.includes(
-                            typeof get(data, dataLocation)
-                        ))) ||
+                        isPrimitiveReactNode(get(data, dataLocation)))) ||
                 !isChildComponent;
 
             // check to see if the data location matches with the current schema and includes a plugin identifier

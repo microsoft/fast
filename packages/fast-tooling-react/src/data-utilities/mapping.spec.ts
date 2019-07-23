@@ -158,6 +158,47 @@ describe("mapDataToComponent", () => {
         expect(mappedData.render(testClass).type.displayName).toEqual("Text field");
         expect(mappedData.render(testClass).props.className).toBe(testClass);
     });
+    test("should invoke plugin resolver with string data", () => {
+        const childText: string = "child text";
+        const data: any = {
+            children: childText,
+        };
+        // const data: any = {
+        //     children: {
+        //         id: childrenWithPluginPropsSchema.id,
+        //         props: {
+        //             render: childText,
+        //         },
+        //     },
+        // };
+        const resolver: jest.Mock = jest.fn();
+        class MyPlugin extends Plugin<PluginProps> {
+            public resolver(
+                d: any,
+                childItem?: ChildOptionItem,
+                dataLocation?: string
+            ): any {
+                resolver(data, childItem, dataLocation);
+            }
+        }
+        const mappedData: any = mapDataToComponent(
+            childrenWithPluginPropsSchema,
+            data,
+            childOptions,
+            [
+                new MyPlugin({
+                    id: childrenPluginResolverId,
+                }),
+            ]
+        );
+
+        expect(resolver).toHaveBeenCalledTimes(1)
+        expect(resolver.mock.calls[0][0]).toBe(childText)
+        // expect(mappedData.render).toHaveLength(1);
+        // expect(typeof mappedData.render).toBe("function");
+        // expect(mappedData.render(testClass).type.displayName).toEqual("Text field");
+        // expect(mappedData.render(testClass).props.className).toBe(testClass);
+    });
     test("should map arrays of children to plugins", () => {
         const data: any = {
             render: [
