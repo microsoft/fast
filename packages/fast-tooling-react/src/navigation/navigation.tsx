@@ -132,14 +132,15 @@ export default class Navigation extends Foundation<
     ): React.ReactNode {
         const dataLocation: string = navigation.dataLocation;
         const dataType: NavigationDataType = navigation.type;
+        const isRootDataLocation: boolean = dataLocation === "";
         const props: NavigationTreeItemProps = {
             className: this.getItemClassName(dataType),
             contentClassName: this.getItemContentClassName(dataLocation),
             getContentDragHoverClassName: this.getItemContentDragHoverClassName,
             dataLocation,
-            dragHover: dataLocation === this.state.dragHoverDataLocation,
-            dragHoverBefore: dataLocation === this.state.dragHoverBeforeDataLocation,
-            dragHoverAfter: dataLocation === this.state.dragHoverAfterDataLocation,
+            dragHover: !isRootDataLocation && dataLocation === this.state.dragHoverDataLocation,
+            dragHoverBefore: !isRootDataLocation && dataLocation === this.state.dragHoverBeforeDataLocation,
+            dragHoverAfter: !isRootDataLocation && dataLocation === this.state.dragHoverAfterDataLocation,
             expanded: this.isExpanded(dataLocation),
             handleClick: this.handleTreeItemClick(dataLocation, dataType),
             handleKeyUp: this.handleTreeItemKeyUp(dataLocation, dataType),

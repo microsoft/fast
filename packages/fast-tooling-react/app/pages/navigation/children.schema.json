@@ -6,7 +6,7 @@
     "id": "children",
     "reactProperties": {
         "foo": {
-            "title": "Foo",
+            "title": "Foo children",
             "type": "children",
             "defaults": [
                 "text"

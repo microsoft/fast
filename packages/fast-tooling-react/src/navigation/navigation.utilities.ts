@@ -227,7 +227,9 @@ export function getNavigationFromData(
 /**
  * Gets a normalized source data location that can be used for setting/getting data
  */
-export function getDataLocationNormalized(dataLocation: string): string {
+export function getDataLocationNormalized(
+    dataLocation: string
+): string {
     return dataLocation.endsWith(`.${propsKeyword}`)
         ? dataLocation.slice(0, -6)
         : dataLocation;
@@ -238,6 +240,12 @@ export function getUpdatedData<T>(config: UpdateDataConfig): T {
     const normalizedTargetDataLocation: string = getDataLocationNormalized(
         config.targetDataLocation
     );
+
+    // do not allow dropping onto the root item
+    if (normalizedTargetDataLocation === "") {
+        return clonedData;
+    }
+
     const normalizedSourceDataLocation: string = getDataLocationNormalized(
         config.sourceDataLocation
     );
@@ -249,7 +257,9 @@ export function getUpdatedData<T>(config: UpdateDataConfig): T {
         normalizedSourceDataLocation
     );
     const targetIsNotUndefined: boolean =
-        typeof get(clonedData, normalizedTargetDataLocation) !== "undefined";
+        normalizedTargetDataLocation !== ""
+            ? typeof get(clonedData, normalizedTargetDataLocation) !== "undefined"
+            : typeof clonedData !== "undefined";
     // this determines the sequence of setting data
     // if the source is below the target, then unset the source data first
     // if the source is above the target, then set the target data first
@@ -416,15 +426,10 @@ function setDataWhenTargetInSourceArray(
 
     switch (direction) {
         case VerticalDragDirection.center:
-            const targetChildrenData: unknown = get(targetData, "props.children");
-            const targetChildrenDataLocation: string = `${targetDataLocation}${
-                targetDataLocation === "" ? "" : "."
-            }props.children`;
-
             set(
                 data as object,
-                targetChildrenDataLocation,
-                [sourceData].concat(targetChildrenData)
+                targetDataLocation,
+                [sourceData].concat(targetData)
             );
 
             (targetParentData as any[]).splice(sourceDataLocationIndex, 1);

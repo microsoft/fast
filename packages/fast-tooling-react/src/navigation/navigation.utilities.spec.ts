@@ -579,6 +579,38 @@ describe("getUpdatedData", () => {
                 ],
             });
         });
+        test("when the children property is not in an array and targets a single child", () => {
+            const updatedData: any = getUpdatedData({
+                data: {
+                    children: {
+                        id: childOptions[1].schema.id,
+                        props: {
+                            children: {
+                                id: childOptions[0].schema.id,
+                                props: {},
+                            },
+                        },
+                    },
+                },
+                targetDataLocation: "children",
+                sourceDataLocation: "children.props.children",
+                type: NavigationDataType.component,
+                direction: VerticalDragDirection.center,
+            });
+
+            expect(updatedData).toEqual({
+                children: [
+                    {
+                        id: childOptions[0].schema.id,
+                        props: {},
+                    },
+                    {
+                    id: childOptions[1].schema.id,
+                    props: {},
+                    }
+                ]
+            });
+        });
     });
     describe("should return updated data when moving a children item adjacent to a children item", () => {
         describe("containing string(s)", () => {
