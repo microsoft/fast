@@ -60,7 +60,7 @@ class Progress extends Foundation<ProgressHandledProps, ProgressUnhandledProps, 
         let className: string = get(this.props.managedClasses, "progress", "");
 
         if (this.props.circular) {
-            className = get(this.props.managedClasses, "progressCircular", "");
+            className = get(this.props.managedClasses, "progress_circular", "");
         }
 
         return super.generateClassNames(className);
@@ -69,14 +69,14 @@ class Progress extends Foundation<ProgressHandledProps, ProgressUnhandledProps, 
     private generateCircularValueIndicatorClassNames(): string {
         let className: string = get(
             this.props.managedClasses,
-            "progressCircular_valueIndicator",
+            "progress_valueIndicator",
             ""
         );
 
         if (!this.props.value) {
             className = `${className} ${get(
                 this.props.managedClasses,
-                "progressCircular_valueIndicator__indeterminate",
+                "progress_valueIndicator__indeterminate",
                 ""
             )}`;
         }
@@ -86,8 +86,8 @@ class Progress extends Foundation<ProgressHandledProps, ProgressUnhandledProps, 
 
     private generateSVGClassNames(): string {
         const className: string = this.props.size
-            ? get(this.props, `managedClasses.progressCircular__${this.props.size}`, "")
-            : get(this.props, "managedClasses.progressCircular__container", "");
+            ? get(this.props.managedClasses, `progress_circular__${this.props.size}`, "")
+            : get(this.props.managedClasses, "progress_circular__container", "");
 
         return className;
     }
@@ -116,7 +116,7 @@ class Progress extends Foundation<ProgressHandledProps, ProgressUnhandledProps, 
     private renderCircularBackground(): JSX.Element {
         return (
             <circle
-                className={get(this.props.managedClasses, "progressCircular_indicator")}
+                className={get(this.props.managedClasses, "progress_indicator")}
                 cx="8px"
                 cy="8px"
                 r="7px"

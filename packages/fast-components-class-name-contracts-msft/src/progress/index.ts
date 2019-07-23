@@ -7,22 +7,22 @@ export interface ProgressClassNameContract extends BaseProgressClassNameContract
     /**
      * The root of the circular progress component
      */
-    progressCircular?: string;
+    progress_circular?: string;
 
     /**
      * The progress size control modifier
      */
-    progressCircular__control: string;
+    progress_circular__control: string;
 
     /**
      * The progress size container modifier
      */
-    progressCircular__container: string;
+    progress_circular__container: string;
 
     /**
      * The progress size page modifier
      */
-    progressCircular__page: string;
+    progress_circular__page: string;
 
     /**
      * The progress value indicator
@@ -30,24 +30,14 @@ export interface ProgressClassNameContract extends BaseProgressClassNameContract
     progress_valueIndicator?: string;
 
     /**
-     * The circular progress value indicator
+     * The indeterminate progress value indicator
      */
-    progressCircular_valueIndicator?: string;
-
-    /**
-     * The indeterminate circular progress value indicator
-     */
-    progressCircular_valueIndicator__indeterminate?: string;
+    progress_valueIndicator__indeterminate?: string;
 
     /**
      * The indeterminate progress indicator
      */
     progress_indicator?: string;
-
-    /**
-     * The indeterminate circular progress indicator
-     */
-    progressCircular_indicator?: string;
 
     /**
      * The determinate progress value indicator

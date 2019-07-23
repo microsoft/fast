@@ -13,16 +13,13 @@ configure({ adapter: new Adapter() });
 
 const managedClasses: ProgressClassNameContract = {
     progress: "progress-class",
-    progressCircular: "progressCircular-class",
-    progressCircular__control: "progressCircular__control-class",
-    progressCircular__container: "progressCircular__container-class",
-    progressCircular__page: "progressCircular__page-class",
+    progress_circular: "progress_circular-class",
+    progress_circular__control: "progressCircular__control-class",
+    progress_circular__container: "progressCircular__container-class",
+    progress_circular__page: "progressCircular__page-class",
     progress_valueIndicator: "progress_valueIndicator-class",
-    progressCircular_valueIndicator: "progressCircular_valueIndicator-class",
-    progressCircular_valueIndicator__indeterminate:
-        "progressCircular_valueIndicator__indeterminate-class",
+    progress_valueIndicator__indeterminate: "progress_valueIndicator__indeterminate-class",
     progress_indicator: "progress_indicator-class",
-    progressCircular_indicator: "progressCircular_indicator-class",
     progress_indicator__determinate: "progress_indicator__determinate-class",
     progress_dot: "progress_dot-class",
     progress_dot__1: "progress_dot__1-class",
@@ -47,13 +44,7 @@ describe("progress", (): void => {
             <MSFTProgress managedClasses={managedClasses} circular={true} />
         );
 
-        expect(rendered.exists("div.progressCircular-class")).toBe(true);
-        expect(rendered.exists("circle.progressCircular_valueIndicator-class")).toBe(
-            true
-        );
-        expect(
-            rendered.exists("circle.progressCircular_valueIndicator__indeterminate-class")
-        ).toBe(true);
+        expect(rendered.exists("div.progress_circular-class")).toBe(true);
     });
 
     test("should use not use interdeterminate class names when value prop is set", () => {
@@ -62,7 +53,7 @@ describe("progress", (): void => {
         );
 
         expect(
-            rendered.exists("circle.progressCircular_valueIndicator__indeterminate-class")
+            rendered.exists("circle.progress_valueIndicator__indeterminate-class")
         ).toBe(false);
     });
 

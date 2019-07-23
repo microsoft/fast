@@ -17,18 +17,42 @@ const styles: ComponentStyles<ProgressClassNameContract, DesignSystem> = {
         height: toPx<DesignSystem>(designUnit),
         textAlign: "left",
     },
-    progressCircular: {
+    progress_circular: {
         height: "unset",
+        "& $progress_valueIndicator": {
+            fill: "none",
+            stroke: accentFillRest,
+            strokeWidth: "2px",
+            strokeLinecap: "round",
+            transformOrigin: "50% 50%",
+            transform: "rotate(-90deg)",
+            transition: "all 0.2s ease-in-out",
+            "@media (-ms-high-contrast:active)": {
+                stroke: "ButtonText",
+            },
+        },
+        "& $progress_valueIndicator__indeterminate": {
+            animation: "spin-infinite 2s linear infinite",
+        },
+        "& $progress_indicator": {
+            fill: "none",
+            stroke: neutralFillRest,
+            strokeWidth: "2px",
+            strokeLinecap: "round",
+            transformOrigin: "50% 50%",
+            transform: "rotate(-90deg)",
+            transition: "all 0.2s ease-in-out",
+        }
     },
-    progressCircular__control: {
+    progress_circular__control: {
         height: glyphSize,
         width: glyphSize,
     },
-    progressCircular__container: {
+    progress_circular__container: {
         height: height(),
         width: height(),
     },
-    progressCircular__page: {
+    progress_circular__page: {
         height: toPx(multiply(heightNumber(), 2)),
         width: toPx(multiply(heightNumber(), 2)),
     },
@@ -41,21 +65,7 @@ const styles: ComponentStyles<ProgressClassNameContract, DesignSystem> = {
             background: "ButtonText",
         },
     },
-    progressCircular_valueIndicator: {
-        fill: "none",
-        stroke: accentFillRest,
-        strokeWidth: "2px",
-        strokeLinecap: "round",
-        transformOrigin: "50% 50%",
-        transform: "rotate(-90deg)",
-        transition: "all 0.2s ease-in-out",
-        "@media (-ms-high-contrast:active)": {
-            stroke: "ButtonText",
-        },
-    },
-    progressCircular_valueIndicator__indeterminate: {
-        animation: "spin-infinite 2s linear infinite",
-    },
+    progress_valueIndicator__indeterminate: {},
     progress_indicator: {
         position: "relative",
         display: "flex",
@@ -67,15 +77,6 @@ const styles: ComponentStyles<ProgressClassNameContract, DesignSystem> = {
         background: neutralFillRest,
         transition: "all 0.2s ease-in-out",
         maskImage: "-webkit-radial-gradient(white, black)",
-    },
-    progressCircular_indicator: {
-        fill: "none",
-        stroke: neutralFillRest,
-        strokeWidth: "2px",
-        strokeLinecap: "round",
-        transformOrigin: "50% 50%",
-        transform: "rotate(-90deg)",
-        transition: "all 0.2s ease-in-out",
     },
     progress_indicator__determinate: {
         height: toPx<DesignSystem>(designUnit),
