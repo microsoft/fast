@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.12.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-tooling-react@1.12.0...@microsoft/fast-tooling-react@1.12.1) (2019-07-23)
+
+
+### Bug Fixes
+
+* enable plugin resolvers to be invoked with string or number data ([#2004](https://github.com/Microsoft/fast-dna/issues/2004)) ([5dfe57b](https://github.com/Microsoft/fast-dna/commit/5dfe57b))
+
+
+
+
+
 # [1.12.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-tooling-react@1.11.1...@microsoft/fast-tooling-react@1.12.0) (2019-07-23)
 
 
