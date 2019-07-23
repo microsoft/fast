@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.15.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-msft@4.14.0...@microsoft/fast-components-react-msft@4.15.0) (2019-07-23)
+
+
+### Bug Fixes
+
+* [toggle] make selected & unselected messages optional  ([#1973](https://github.com/Microsoft/fast-dna/issues/1973)) ([5b79a4c](https://github.com/Microsoft/fast-dna/commit/5b79a4c))
+
+
+### Features
+
+* add ability to avoid tag rendering for background component ([#1983](https://github.com/Microsoft/fast-dna/issues/1983)) ([ca666cb](https://github.com/Microsoft/fast-dna/commit/ca666cb))
+* add flyout as a new component ([#1940](https://github.com/Microsoft/fast-dna/issues/1940)) ([b9ad765](https://github.com/Microsoft/fast-dna/commit/b9ad765))
+
+
+
+
+
 # [4.14.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-msft@4.13.0...@microsoft/fast-components-react-msft@4.14.0) (2019-07-16)
 
 

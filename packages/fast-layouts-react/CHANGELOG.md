@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.3.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-layouts-react@4.2.10...@microsoft/fast-layouts-react@4.3.0) (2019-07-23)
+
+
+### Features
+
+* add onResize callback to Pane ([#1990](https://github.com/Microsoft/fast-dna/issues/1990)) ([a097017](https://github.com/Microsoft/fast-dna/commit/a097017))
+* add support to resize pane using left/right arrow keys ([#1977](https://github.com/Microsoft/fast-dna/issues/1977)) ([fc03da8](https://github.com/Microsoft/fast-dna/commit/fc03da8))
+* add support to resize via keyboard and provide an onResize callback ([#1995](https://github.com/Microsoft/fast-dna/issues/1995)) ([a68991c](https://github.com/Microsoft/fast-dna/commit/a68991c))
+
+
+
+
+
 ## [4.2.10](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-layouts-react@4.2.9...@microsoft/fast-layouts-react@4.2.10) (2019-07-01)
 
 **Note:** Version bump only for package @microsoft/fast-layouts-react
