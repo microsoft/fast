@@ -19,14 +19,15 @@ const managedClasses: ProgressClassNameContract = {
     progressCircular__large: "progressCircular__large-class",
     progress_valueIndicator: "progress_valueIndicator-class",
     progressCircular_valueIndicator: "progressCircular_valueIndicator-class",
-    progressCircular_valueIndicator__indeterminate: "progressCircular_valueIndicator__indeterminate-class",
+    progressCircular_valueIndicator__indeterminate:
+        "progressCircular_valueIndicator__indeterminate-class",
     progress_indicator: "progress_indicator-class",
     progressCircular_indicator: "progressCircular_indicator-class",
     progress_indicator__determinate: "progress_indicator__determinate-class",
     progress_dot: "progress_dot-class",
     progress_dot__1: "progress_dot__1-class",
     progress_dot__2: "progress_dot__2-class",
-}
+};
 
 describe("progress", (): void => {
     test("should have a displayName that matches the component name", () => {
@@ -40,24 +41,38 @@ describe("progress", (): void => {
             shallow(<MSFTProgress />);
         }).not.toThrow();
     });
-    
+
     test("should use circular class names when circular prop is set to true", () => {
-        const rendered: any = mount(<MSFTProgress managedClasses={managedClasses} circular={true} />);
+        const rendered: any = mount(
+            <MSFTProgress managedClasses={managedClasses} circular={true} />
+        );
 
         expect(rendered.exists("div.progressCircular-class")).toBe(true);
-        expect(rendered.exists("circle.progressCircular_valueIndicator-class")).toBe(true);
-        expect(rendered.exists("circle.progressCircular_valueIndicator__indeterminate-class")).toBe(true);
+        expect(rendered.exists("circle.progressCircular_valueIndicator-class")).toBe(
+            true
+        );
+        expect(
+            rendered.exists("circle.progressCircular_valueIndicator__indeterminate-class")
+        ).toBe(true);
     });
 
     test("should use not use interdeterminate class names when value prop is set", () => {
-        const rendered: any = shallow(<MSFTProgress managedClasses={managedClasses} circular={true} value={75}/>);
+        const rendered: any = shallow(
+            <MSFTProgress managedClasses={managedClasses} circular={true} value={75} />
+        );
 
-        expect(rendered.exists("circle.progressCircular_valueIndicator__indeterminate-class")).toBe(false);
+        expect(
+            rendered.exists("circle.progressCircular_valueIndicator__indeterminate-class")
+        ).toBe(false);
     });
 
     test("should render the correct `size` when `size` prop is small", () => {
         const rendered: any = mount(
-            <MSFTProgress managedClasses={managedClasses} circular={true} size={ProgressSize.small} />
+            <MSFTProgress
+                managedClasses={managedClasses}
+                circular={true}
+                size={ProgressSize.small}
+            />
         );
 
         expect(rendered.find("svg").prop("className")).toContain("small");
@@ -65,7 +80,11 @@ describe("progress", (): void => {
 
     test("should render the correct `size` when `size` prop is large", () => {
         const rendered: any = mount(
-            <MSFTProgress managedClasses={managedClasses} circular={true} size={ProgressSize.large} />
+            <MSFTProgress
+                managedClasses={managedClasses}
+                circular={true}
+                size={ProgressSize.large}
+            />
         );
 
         expect(rendered.find("svg").prop("className")).toContain("large");
@@ -73,7 +92,7 @@ describe("progress", (): void => {
 
     test("should render default size if none is specified", () => {
         const rendered: any = mount(
-            <MSFTProgress managedClasses={managedClasses} circular={true}/>
+            <MSFTProgress managedClasses={managedClasses} circular={true} />
         );
 
         expect(rendered.find("svg").prop("className")).toContain("medium");

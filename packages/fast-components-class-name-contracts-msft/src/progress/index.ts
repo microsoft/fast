@@ -43,7 +43,7 @@ export interface ProgressClassNameContract extends BaseProgressClassNameContract
      * The indeterminate progress indicator
      */
     progress_indicator?: string;
-    
+
     /**
      * The indeterminate circular progress indicator
      */

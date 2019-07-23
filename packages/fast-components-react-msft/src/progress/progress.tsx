@@ -129,10 +129,7 @@ class Progress extends Foundation<ProgressHandledProps, ProgressUnhandledProps, 
             const strokeValue: number = (44 * this.props.value) / 100;
             return [
                 <div slot={ProgressType.determinate} key="0">
-                    <svg
-                        className={this.generateSVGClassNames()}
-                        viewBox="0 0 16 16"
-                    >
+                    <svg className={this.generateSVGClassNames()} viewBox="0 0 16 16">
                         {this.renderCircularBackground()}
                         <circle
                             className={this.generateCircularValueIndicatorClassNames()}
@@ -146,10 +143,7 @@ class Progress extends Foundation<ProgressHandledProps, ProgressUnhandledProps, 
                     </svg>
                 </div>,
                 <div slot={ProgressType.indeterminate} key="1">
-                    <svg
-                        className={this.generateSVGClassNames()}
-                        viewBox="0 0 16 16"
-                    >
+                    <svg className={this.generateSVGClassNames()} viewBox="0 0 16 16">
                         {this.renderCircularBackground()}
                         <circle
                             className={this.generateCircularValueIndicatorClassNames()}

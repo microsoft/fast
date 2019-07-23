@@ -118,7 +118,7 @@ const styles: ComponentStyles<ProgressClassNameContract, DesignSystem> = {
         "100%": {
             strokeDasharray: ".01px 43.97px",
             transform: "rotate(1080deg)",
-        }
+        },
     },
     "@keyframes indeterminate-1": {
         "0%": {
