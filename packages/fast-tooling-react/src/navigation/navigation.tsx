@@ -150,7 +150,6 @@ export default class Navigation extends Foundation<
             handleClick: this.handleTreeItemClick(dataLocation, dataType),
             handleKeyUp: this.handleTreeItemKeyUp(dataLocation, dataType),
             handleCloseDraggingItem: this.handleCloseDraggingTreeItem,
-            handleOpenDroppedItem: this.handleOpenDroppedItem,
             text: navigation.text,
             type: dataType,
             onChange: this.handleChange,
@@ -527,24 +526,6 @@ export default class Navigation extends Foundation<
             }
         };
     };
-
-    private handleOpenDroppedItem = (dataLocation: string): void => {
-        const updatedState: Partial<NavigationState> = {};
-
-        updatedState.openItems = this.state.openItems.concat(dataLocation);
-
-        if (this.props.dataLocation === undefined) {
-            updatedState.activeItem = dataLocation;
-        }
-
-        this.setState(updatedState as NavigationState);
-
-        if (
-            typeof this.props.onLocationUpdate === "function"
-        ) {
-            this.props.onLocationUpdate(dataLocation);
-        }
-    }
 
     private handleCloseDraggingTreeItem = (
         dataLocation: string,
