@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.3.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-component-explorer@0.2.2...@microsoft/fast-component-explorer@0.3.0) (2019-07-24)
+
+
+### Features
+
+* add accent color picker to explorer site ([#2005](https://github.com/Microsoft/fast-dna/issues/2005)) ([3fac4f6](https://github.com/Microsoft/fast-dna/commit/3fac4f6))
+* add circular progress component ([#1998](https://github.com/Microsoft/fast-dna/issues/1998)) ([fda7061](https://github.com/Microsoft/fast-dna/commit/fda7061))
+
+
+
+
+
 ## [0.2.2](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-component-explorer@0.2.1...@microsoft/fast-component-explorer@0.2.2) (2019-07-24)
 
 **Note:** Version bump only for package @microsoft/fast-component-explorer

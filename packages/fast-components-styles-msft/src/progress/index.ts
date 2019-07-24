@@ -5,8 +5,9 @@ import designSystemDefaults, {
 import { ComponentStyles, ComponentStyleSheet } from "@microsoft/fast-jss-manager";
 import { ProgressClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import { accentFillRest, neutralFillRest } from "../utilities/color";
-import { toPx } from "@microsoft/fast-jss-utilities";
+import { multiply, toPx } from "@microsoft/fast-jss-utilities";
 import { designUnit } from "../utilities/design-system";
+import { glyphSize, height, heightNumber } from "../utilities/density";
 
 const styles: ComponentStyles<ProgressClassNameContract, DesignSystem> = {
     progress: {
@@ -15,6 +16,45 @@ const styles: ComponentStyles<ProgressClassNameContract, DesignSystem> = {
         alignItems: "center",
         height: toPx<DesignSystem>(designUnit),
         textAlign: "left",
+    },
+    progress__circular: {
+        height: "unset",
+        "& $progress_valueIndicator": {
+            fill: "none",
+            stroke: accentFillRest,
+            strokeWidth: "2px",
+            strokeLinecap: "round",
+            transformOrigin: "50% 50%",
+            transform: "rotate(-90deg)",
+            transition: "all 0.2s ease-in-out",
+            "@media (-ms-high-contrast:active)": {
+                stroke: "ButtonText",
+            },
+        },
+        "& $progress_valueIndicator__indeterminate": {
+            animation: "spin-infinite 2s linear infinite",
+        },
+        "& $progress_indicator": {
+            fill: "none",
+            stroke: neutralFillRest,
+            strokeWidth: "2px",
+            strokeLinecap: "round",
+            transformOrigin: "50% 50%",
+            transform: "rotate(-90deg)",
+            transition: "all 0.2s ease-in-out",
+        },
+    },
+    progress_circularSVG__control: {
+        height: glyphSize,
+        width: glyphSize,
+    },
+    progress_circularSVG__container: {
+        height: height(),
+        width: height(),
+    },
+    progress_circularSVG__page: {
+        height: toPx(multiply(heightNumber(), 2)),
+        width: toPx(multiply(heightNumber(), 2)),
     },
     progress_valueIndicator: {
         background: accentFillRest,
@@ -25,6 +65,7 @@ const styles: ComponentStyles<ProgressClassNameContract, DesignSystem> = {
             background: "ButtonText",
         },
     },
+    progress_valueIndicator__indeterminate: {},
     progress_indicator: {
         position: "relative",
         display: "flex",
@@ -65,6 +106,20 @@ const styles: ComponentStyles<ProgressClassNameContract, DesignSystem> = {
         width: "60%",
         transform: "translateX(-150%)",
         animation: "indeterminate-2 2s infinite",
+    },
+    "@keyframes spin-infinite": {
+        "0%": {
+            strokeDasharray: "0.01px 43.97px",
+            transform: "rotate(0deg)",
+        },
+        "50%": {
+            strokeDasharray: "21.99px 21.99px",
+            transform: "rotate(450deg)",
+        },
+        "100%": {
+            strokeDasharray: ".01px 43.97px",
+            transform: "rotate(1080deg)",
+        },
     },
     "@keyframes indeterminate-1": {
         "0%": {

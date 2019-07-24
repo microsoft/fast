@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.12.3](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-tooling-react@1.12.2...@microsoft/fast-tooling-react@1.12.3) (2019-07-24)
+
+
+### Bug Fixes
+
+* correcting missing data-location reference ([#2009](https://github.com/Microsoft/fast-dna/issues/2009)) ([3d6c14c](https://github.com/Microsoft/fast-dna/commit/3d6c14c))
+
+
+
+
+
 ## [1.12.2](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-tooling-react@1.12.1...@microsoft/fast-tooling-react@1.12.2) (2019-07-24)
 
 
