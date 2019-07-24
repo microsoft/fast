@@ -42,7 +42,7 @@ const styles: ComponentStyles<ProgressClassNameContract, DesignSystem> = {
             transformOrigin: "50% 50%",
             transform: "rotate(-90deg)",
             transition: "all 0.2s ease-in-out",
-        }
+        },
     },
     progress_circular__control: {
         height: glyphSize,
