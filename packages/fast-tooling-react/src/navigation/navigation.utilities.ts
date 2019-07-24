@@ -11,6 +11,7 @@ import {
 import { VerticalDragDirection } from "./navigation-tree-item.props";
 
 const propsKeyword: string = "props";
+const childrenKeyword: string = "children";
 
 export interface NavigationFromChildrenConfig {
     data: any;
@@ -19,56 +20,39 @@ export interface NavigationFromChildrenConfig {
     childOptions: ChildOptionItem[];
 }
 
-export interface TargetDataConfig {
+export interface UpdateDataConfig {
     targetDataLocation: string;
-    updatedTargetData: any;
-}
-
-export interface UpdatedDataCommonConfig {
-    data: any;
-    updatedSourceData: any;
+    sourceDataLocation: string;
+    data: unknown;
+    type: NavigationDataType;
     direction: VerticalDragDirection;
 }
 
-export interface UpdatedDataConfig extends UpdatedDataCommonConfig {
-    targetDataLocation: string;
-    sourceDataLocation: string;
+export interface ResolveDataConfig {
+    data: unknown;
+    dataLocation: string;
+}
+
+export interface ResolveTargetDataConfig extends ResolveDataConfig {
+    direction: VerticalDragDirection;
     type: NavigationDataType;
-}
-
-export interface ArrayTargetConfig extends UpdatedDataCommonConfig {
-    targetDataLocationNormalizedLastSegmentAsNumber: number;
-    targetDataLocationNormalizedSegments: string[];
-    sourceDataLocation: string;
-}
-
-export interface ObjectTargetConfig extends UpdatedDataCommonConfig {
-    targetDataLocation: string;
-    targetDataLocationNormalizedSegments: string[];
-}
-
-export interface UpdatedDataListConfig extends UpdatedDataCommonConfig {
-    targetDataLocation: string;
-    sourceDataLocation: string;
-}
-
-export interface SourceArrayMatchesTargetArrayConfig extends UpdatedDataCommonConfig {
-    sourceDataLocation: string;
-    targetDataLocationNormalizedLastSegmentAsNumber: number;
-    targetArrayDataLocation: string;
+    sourceData: unknown;
 }
 
 /**
  * Gets the data type from a navigation item
  */
 function getNavigationDataType(schema: any): NavigationDataType {
-    return schema[typeKeyword]
-        ? schema[typeKeyword]
-        : schema[PropertyKeyword.properties] || schema[PropertyKeyword.reactProperties]
-            ? NavigationDataType.object
-            : schema[itemsKeyword]
-                ? NavigationDataType.array
-                : NavigationDataType.object;
+    return schema.$schema // The $schema keyword is required to be present on the root of a JSON schema
+        ? NavigationDataType.component
+        : schema[typeKeyword]
+            ? schema[typeKeyword]
+            : schema[PropertyKeyword.properties] ||
+              schema[PropertyKeyword.reactProperties]
+                ? NavigationDataType.object
+                : schema[itemsKeyword]
+                    ? NavigationDataType.array
+                    : NavigationDataType.object;
 }
 
 /**
@@ -203,7 +187,12 @@ function getNavigationFromChildrenItem(
     const childTreeNavigation: TreeNavigation = {
         text,
         dataLocation: updatedDataLocation,
-        type: NavigationDataType.childrenItem,
+        type:
+            typeof config.data === "string" ||
+            typeof config.data === "number" ||
+            typeof config.data === "boolean"
+                ? NavigationDataType.primitiveChild
+                : NavigationDataType.component,
     };
 
     if (!!childSchema && !isString) {
@@ -244,289 +233,518 @@ export function getNavigationFromData(
  * Gets a normalized source data location that can be used for setting/getting data
  */
 export function getDataLocationNormalized(dataLocation: string): string {
-    const dataLocationNormalized: string = dataLocation.endsWith(`.${propsKeyword}`)
+    return dataLocation.endsWith(`.${propsKeyword}`)
         ? dataLocation.slice(0, -6)
         : dataLocation;
-
-    return dataLocationNormalized;
 }
 
-/**
- * Removes the source data
- */
-export function getUpdatedDataWithoutSourceData(
-    data: any,
-    sourceDataLocation: string
-): any {
-    const updatedData: any = cloneDeep(data);
-
-    // determine if the source is an array
-    const sourceDataLocationNormalized: string = getDataLocationNormalized(
-        sourceDataLocation
-    );
-    const sourceDataLocationSegments: string[] = sourceDataLocationNormalized.split(".");
-    const lastSourceDataLocationSegmentAsNumber: number = Number(
-        sourceDataLocationSegments[sourceDataLocationSegments.length - 1]
-    );
-
-    // Remove the item from the data
-    if (!isNaN(lastSourceDataLocationSegmentAsNumber)) {
-        sourceDataLocationSegments.pop();
-        const arrayDataLocation: string = sourceDataLocationSegments.join(".");
-        const array: any[] = get(updatedData, arrayDataLocation);
-        array.splice(lastSourceDataLocationSegmentAsNumber, 1);
-
-        // if there is only one item left in the children array, make it an object
-        set(updatedData, arrayDataLocation, array.length === 1 ? array[0] : array);
-    } else {
-        unset(updatedData, sourceDataLocationNormalized);
-    }
-
-    return updatedData;
-}
-
-/**
- * Returns updated data when the target is children list parent
- */
-function getUpdatedDataWithTargetDataAddedToChildren(
-    data: any,
-    updatedTargetData: any,
-    updatedSourceData: any,
-    targetDataLocation: string
-): any {
-    const updatedData: any = cloneDeep(data);
-
-    if (Array.isArray(updatedTargetData)) {
-        set(
-            updatedData,
-            targetDataLocation,
-            updatedTargetData.concat([updatedSourceData])
-        );
-    } else if (typeof updatedTargetData !== "undefined") {
-        set(updatedData, targetDataLocation, [updatedTargetData, updatedSourceData]);
-    } else {
-        set(updatedData, targetDataLocation, updatedSourceData);
-    }
-
-    return updatedData;
-}
-
-/**
- * Returns target data when the source and target location are the same
- */
-function getTargetDataWhenSourceArrayIsTargetArray(
-    config: SourceArrayMatchesTargetArrayConfig
-): any {
-    const targetArrayIndex: number =
-        getLastDataLocationSegmentAsNumber(config.sourceDataLocation) <
-        config.targetDataLocationNormalizedLastSegmentAsNumber
-            ? config.targetDataLocationNormalizedLastSegmentAsNumber - 1
-            : config.targetDataLocationNormalizedLastSegmentAsNumber;
-    let updatedTargetData: any = get(config.data, config.targetArrayDataLocation);
-
-    if (!Array.isArray(updatedTargetData)) {
-        updatedTargetData = [updatedTargetData];
-        updatedTargetData.splice(
-            config.direction === VerticalDragDirection.up ? 0 : 1,
-            0,
-            config.updatedSourceData
-        );
-    } else {
-        updatedTargetData.splice(
-            config.direction === VerticalDragDirection.up
-                ? targetArrayIndex
-                : targetArrayIndex + 1,
-            0,
-            config.updatedSourceData
-        );
-    }
-
-    return updatedTargetData;
-}
-
-/**
- * Returns updated data with the targets data added the children items
- */
-function getUpdatedDataWithTargetDataAddedToChildrenList(
-    config: UpdatedDataListConfig
-): any {
-    const updatedData: any = cloneDeep(config.data);
-
-    // determine if this is an array
-    const targetDataLocationNormalizedSegments: string[] = getDataLocationNormalized(
+export function getUpdatedData<T>(config: UpdateDataConfig): T {
+    const clonedData: T = cloneDeep(config.data) as T;
+    const normalizedTargetDataLocation: string = getDataLocationNormalized(
         config.targetDataLocation
-    ).split(".");
-    const targetDataLocationNormalizedLastSegment: string =
-        targetDataLocationNormalizedSegments[
-            targetDataLocationNormalizedSegments.length - 1
-        ];
-    const targetDataLocationNormalizedLastSegmentAsNumber: number = parseInt(
-        targetDataLocationNormalizedLastSegment,
-        10
     );
 
-    // The target is an array
-    if (!isNaN(targetDataLocationNormalizedLastSegmentAsNumber)) {
-        const target: TargetDataConfig = getTargetDataAndTargetDataLocationWhenTargetIsInAnArray(
-            {
-                data: updatedData,
-                updatedSourceData: config.updatedSourceData,
-                targetDataLocationNormalizedLastSegmentAsNumber,
-                targetDataLocationNormalizedSegments,
-                sourceDataLocation: config.sourceDataLocation,
-                direction: config.direction,
-            }
+    // do not allow dropping onto the root item
+    if (normalizedTargetDataLocation === "") {
+        return clonedData;
+    }
+
+    const normalizedSourceDataLocation: string = getDataLocationNormalized(
+        config.sourceDataLocation
+    );
+    const targetInArray: boolean = isInArray(clonedData, normalizedTargetDataLocation);
+    const sourceInArray: boolean = isInArray(clonedData, normalizedSourceDataLocation);
+    const targetInSourceArray: boolean = isTargetInSourceArray(
+        targetInArray && sourceInArray,
+        normalizedTargetDataLocation,
+        normalizedSourceDataLocation
+    );
+    const targetIsNotUndefined: boolean =
+        normalizedTargetDataLocation !== ""
+            ? typeof get(clonedData, normalizedTargetDataLocation) !== "undefined"
+            : typeof clonedData !== "undefined";
+    // this determines the sequence of setting data
+    // if the source is below the target, then unset the source data first
+    // if the source is above the target, then set the target data first
+    const targetNestedBelowSource: boolean = isTargetNestedBelowSource(
+        normalizedSourceDataLocation,
+        normalizedTargetDataLocation
+    );
+
+    if (targetInSourceArray) {
+        setDataWhenTargetInSourceArray(
+            clonedData,
+            normalizedSourceDataLocation,
+            normalizedTargetDataLocation,
+            config.direction,
+            targetNestedBelowSource,
+            config.type
         );
-        set(updatedData, target.targetDataLocation, target.updatedTargetData);
+    } else if (targetInArray && sourceInArray) {
+        setDataWhenTargetInArrayAndSourceInArray(
+            clonedData,
+            normalizedSourceDataLocation,
+            normalizedTargetDataLocation,
+            config.direction,
+            targetNestedBelowSource,
+            config.type
+        );
+    } else if (targetInArray) {
+        setDataWhenTargetInArray(
+            clonedData,
+            normalizedSourceDataLocation,
+            normalizedTargetDataLocation,
+            config.direction,
+            targetNestedBelowSource,
+            config.type
+        );
+    } else if (sourceInArray) {
+        setDataWhenSourceInArray(
+            clonedData,
+            normalizedSourceDataLocation,
+            normalizedTargetDataLocation,
+            config.direction,
+            targetNestedBelowSource,
+            config.type
+        );
+    } else if (targetIsNotUndefined) {
+        setDataWhenTargetInObjectAndSourceInObject(
+            clonedData,
+            normalizedSourceDataLocation,
+            normalizedTargetDataLocation,
+            config.direction,
+            targetNestedBelowSource,
+            config.type
+        );
     } else {
-        const target: TargetDataConfig = getTargetDataAndTargetDataLocation({
-            data: updatedData,
-            updatedSourceData: config.updatedSourceData,
-            targetDataLocation: config.targetDataLocation,
-            targetDataLocationNormalizedSegments,
-            direction: config.direction,
-        });
-        set(updatedData, target.targetDataLocation, target.updatedTargetData);
-    }
-
-    return updatedData;
-}
-
-/**
- * Gets the targets data and data location when the target is an object
- */
-function getTargetDataAndTargetDataLocation(
-    config: ObjectTargetConfig
-): TargetDataConfig {
-    const targetDataLocationObject: string = config.targetDataLocationNormalizedSegments.join(
-        "."
-    );
-    let updatedTargetData: any = get(config.data, targetDataLocationObject);
-
-    if (typeof updatedTargetData !== "undefined") {
-        updatedTargetData = [updatedTargetData];
-        updatedTargetData.splice(
-            config.direction === VerticalDragDirection.up ? 0 : 1,
-            0,
-            config.updatedSourceData
+        setDataWhenTargetIsUndefined(
+            clonedData,
+            normalizedSourceDataLocation,
+            normalizedTargetDataLocation
         );
-
-        return {
-            targetDataLocation: targetDataLocationObject,
-            updatedTargetData,
-        };
     }
 
-    return {
-        targetDataLocation: config.targetDataLocation,
-        updatedTargetData: config.updatedSourceData,
-    };
+    return clonedData;
 }
 
-/**
- * Gets the targets data and data location when the target is an array
- */
-function getTargetDataAndTargetDataLocationWhenTargetIsInAnArray(
-    config: ArrayTargetConfig
-): TargetDataConfig {
-    config.targetDataLocationNormalizedSegments.pop();
-    const targetDataLocation: string = config.targetDataLocationNormalizedSegments.join(
-        "."
-    );
-    // determine if the source array is the same as the target array
-    const sourceArrayIsTargetArray: boolean = isSourceArrayTargetArray(
-        config.sourceDataLocation,
-        targetDataLocation
-    );
-
-    // if the source location is the same as the target location
-    // we must account for the new index being used
-    if (sourceArrayIsTargetArray) {
-        return {
-            targetDataLocation,
-            updatedTargetData: getTargetDataWhenSourceArrayIsTargetArray({
-                data: config.data,
-                updatedSourceData: config.updatedSourceData,
-                sourceDataLocation: config.sourceDataLocation,
-                targetDataLocationNormalizedLastSegmentAsNumber:
-                    config.targetDataLocationNormalizedLastSegmentAsNumber,
-                targetArrayDataLocation: targetDataLocation,
-                direction: config.direction,
-            }),
-        };
-    }
-    const updatedTargetData: any = get(config.data, targetDataLocation);
-
-    updatedTargetData.splice(
-        config.direction === VerticalDragDirection.up
-            ? config.targetDataLocationNormalizedLastSegmentAsNumber
-            : config.targetDataLocationNormalizedLastSegmentAsNumber + 1,
-        0,
-        config.updatedSourceData
-    );
-    return {
-        targetDataLocation,
-        updatedTargetData,
-    };
-}
-
-/**
- * Returns the last segment as a number
- */
-function getLastDataLocationSegmentAsNumber(dataLocation: string): number {
-    const dataLocationNormalized: string = getDataLocationNormalized(dataLocation);
-    const dataLocationSegments: string[] = dataLocationNormalized.split(".");
-    return Number(dataLocationSegments.pop());
-}
-
-/**
- * Check to see if the source location of an array is the same as the target location
- */
-function isSourceArrayTargetArray(
+function isTargetNestedBelowSource(
     sourceDataLocation: string,
     targetDataLocation: string
 ): boolean {
-    const sourceDataLocationNormalized: string = getDataLocationNormalized(
-        sourceDataLocation
-    );
-    const sourceDataLocationSegments: string[] = sourceDataLocationNormalized.split(".");
-    const lastSourceDataLocationSegmentAsNumber: number = Number(
-        sourceDataLocationSegments.pop()
-    );
+    const sourceDataLocationSegments: string[] = sourceDataLocation.split(".");
+    const targetDataLocationSegments: string[] = targetDataLocation.split(".");
 
-    if (!isNaN(lastSourceDataLocationSegmentAsNumber)) {
-        return targetDataLocation === sourceDataLocationSegments.join(".");
+    for (
+        let i: number = 0,
+            sourceDataLocationSegmentsLength: number = sourceDataLocationSegments.length;
+        i < sourceDataLocationSegmentsLength;
+        i++
+    ) {
+        const sourceDataLocationSegmentIndex: number = parseInt(
+            sourceDataLocationSegments[i],
+            10
+        );
+        const targetDataLocationSegmentIndex: number = parseInt(
+            targetDataLocationSegments[i],
+            10
+        );
+
+        if (
+            typeof targetDataLocationSegments[i] === "undefined" ||
+            (isNaN(sourceDataLocationSegmentIndex) &&
+                isNaN(targetDataLocationSegmentIndex) &&
+                sourceDataLocationSegments[i] !== targetDataLocationSegments[i])
+        ) {
+            break;
+        }
+
+        if (
+            !isNaN(sourceDataLocationSegmentIndex) &&
+            !isNaN(targetDataLocationSegmentIndex)
+        ) {
+            return sourceDataLocationSegmentIndex < targetDataLocationSegmentIndex;
+        }
     }
 
-    return targetDataLocation === sourceDataLocationNormalized;
+    return false;
 }
 
 /**
- * Updates the target data with the source data
+ * The target array is the same as the source array
  */
-export function getUpdatedDataWithTargetData(config: UpdatedDataConfig): any {
-    let updatedData: any;
-    const updatedTargetData: any = get(config.data, config.targetDataLocation);
-
-    switch (config.type) {
-        case NavigationDataType.children:
-            updatedData = getUpdatedDataWithTargetDataAddedToChildren(
-                config.data,
-                updatedTargetData,
-                config.updatedSourceData,
-                config.targetDataLocation
-            );
-            break;
-        case NavigationDataType.childrenItem:
-            updatedData = getUpdatedDataWithTargetDataAddedToChildrenList({
-                data: config.data,
-                updatedSourceData: config.updatedSourceData,
-                targetDataLocation: config.targetDataLocation,
-                sourceDataLocation: config.sourceDataLocation,
-                direction: config.direction,
-            });
-            break;
+function isTargetInSourceArray(
+    targetAndSourceAreInArray: boolean,
+    targetDataLocation: string,
+    sourceDataLocation: string
+): boolean {
+    if (!targetAndSourceAreInArray) {
+        return false;
     }
 
-    return updatedData;
+    const targetDataLocationSegments: string[] = targetDataLocation.split(".");
+    const sourceDataLocationSegments: string[] = sourceDataLocation.split(".");
+    const targetParentDataLocation: string = targetDataLocationSegments
+        .slice(0, -1)
+        .join(".");
+    const sourceParentDataLocation: string = sourceDataLocationSegments
+        .slice(0, -1)
+        .join(".");
+
+    return targetParentDataLocation === sourceParentDataLocation;
+}
+
+/**
+ * The target is in an array
+ */
+function isInArray(data: unknown, dataLocation: string): boolean {
+    const dataLocationSegments: string[] = dataLocation.split(".");
+    const parentDataLocation: string = dataLocationSegments.slice(0, -1).join(".");
+
+    return (
+        !isNaN(parseInt(dataLocationSegments[dataLocationSegments.length - 1], 10)) &&
+        Array.isArray(get(data, parentDataLocation))
+    );
+}
+
+function setDataOnDropVerticalCenter(
+    data: any,
+    targetData: any,
+    sourceData: any,
+    targetDataLocation: string,
+    type: NavigationDataType
+): void {
+    const isComponent: boolean = type === NavigationDataType.component;
+
+    if (isComponent) {
+        const componentChildren: unknown = get(
+            targetData,
+            `${propsKeyword}.${childrenKeyword}`
+        );
+        targetDataLocation = `${targetDataLocation}.${propsKeyword}.${childrenKeyword}`;
+
+        if (typeof componentChildren === "undefined") {
+            set(data as object, targetDataLocation, sourceData);
+        } else if (Array.isArray(componentChildren)) {
+            componentChildren.push(sourceData);
+        } else {
+            set(
+                data as object,
+                targetDataLocation,
+                [componentChildren].concat(sourceData)
+            );
+        }
+    } else {
+        set(data as object, targetDataLocation, [sourceData].concat(targetData));
+    }
+}
+
+function setDataWhenTargetInSourceArray(
+    data: unknown,
+    sourceDataLocation: string,
+    targetDataLocation: string,
+    direction: VerticalDragDirection,
+    targetNestedBelowSource: boolean,
+    type: NavigationDataType
+): void {
+    const sourceData: unknown = get(data, sourceDataLocation);
+    const targetData: unknown = get(data, targetDataLocation);
+    const sourceDataLocationSegments: string[] = sourceDataLocation.split(".");
+    const targetDataLocationSegments: string[] = targetDataLocation.split(".");
+    const sourceDataLocationIndex: number = parseInt(
+        sourceDataLocationSegments[sourceDataLocationSegments.length - 1],
+        10
+    );
+    const targetDataLocationIndex: number = parseInt(
+        targetDataLocationSegments[targetDataLocationSegments.length - 1],
+        10
+    );
+    const parentTargetDataLocation: string = targetDataLocationSegments
+        .slice(0, -1)
+        .join(".");
+    const targetParentData: unknown[] = get(data, parentTargetDataLocation);
+
+    switch (direction) {
+        case VerticalDragDirection.center:
+            setDataOnDropVerticalCenter(
+                data,
+                targetData,
+                sourceData,
+                targetDataLocation,
+                type
+            );
+
+            (targetParentData as any[]).splice(sourceDataLocationIndex, 1);
+
+            break;
+        case VerticalDragDirection.up:
+            if (targetNestedBelowSource) {
+                (targetParentData as any[]).splice(
+                    targetDataLocationIndex,
+                    0,
+                    sourceData
+                );
+                (targetParentData as any[]).splice(sourceDataLocationIndex, 1);
+            } else {
+                (targetParentData as any[]).splice(sourceDataLocationIndex, 1);
+                (targetParentData as any[]).splice(
+                    targetDataLocationIndex,
+                    0,
+                    sourceData
+                );
+            }
+            break;
+        default:
+            if (targetNestedBelowSource) {
+                (targetParentData as any[]).splice(
+                    targetDataLocationIndex + 1,
+                    0,
+                    sourceData
+                );
+                (targetParentData as any[]).splice(sourceDataLocationIndex, 1);
+            } else {
+                (targetParentData as any[]).splice(sourceDataLocationIndex, 1);
+                (targetParentData as any[]).splice(
+                    targetDataLocationIndex + 1,
+                    0,
+                    sourceData
+                );
+            }
+    }
+}
+
+function setDataWhenTargetInArrayAndSourceInArray(
+    data: unknown,
+    sourceDataLocation: string,
+    targetDataLocation: string,
+    direction: VerticalDragDirection,
+    targetNestedBelowSource: boolean,
+    type: NavigationDataType
+): void {
+    const sourceData: unknown = get(data as object, sourceDataLocation);
+    const targetData: unknown = get(data as object, targetDataLocation);
+    const sourceDataLocationSegments: string[] = sourceDataLocation.split(".");
+    const targetDataLocationSegments: string[] = targetDataLocation.split(".");
+    const sourceDataLocationIndex: number = parseInt(
+        sourceDataLocationSegments[sourceDataLocationSegments.length - 1],
+        10
+    );
+    const targetDataLocationIndex: number = parseInt(
+        targetDataLocationSegments[targetDataLocationSegments.length - 1],
+        10
+    );
+    const parentTargetDataLocation: string = targetDataLocationSegments
+        .slice(0, -1)
+        .join(".");
+    const parentSourceDataLocation: string = sourceDataLocationSegments
+        .slice(0, -1)
+        .join(".");
+    const parentSourceData: unknown | unknown[] = get(data, parentSourceDataLocation);
+    const parentTargetData: unknown[] = get(data, parentTargetDataLocation);
+
+    if (!targetNestedBelowSource) {
+        (parentSourceData as unknown[]).splice(sourceDataLocationIndex, 1);
+
+        if ((parentSourceData as unknown[]).length === 1) {
+            set(
+                data as object,
+                parentSourceDataLocation,
+                (parentSourceData as object[])[0]
+            );
+        }
+    }
+
+    switch (direction) {
+        case VerticalDragDirection.center:
+            setDataOnDropVerticalCenter(
+                data,
+                targetData,
+                sourceData,
+                targetDataLocation,
+                type
+            );
+            break;
+        case VerticalDragDirection.up:
+            parentTargetData.splice(targetDataLocationIndex, 0, sourceData);
+            break;
+        default:
+            parentTargetData.splice(targetDataLocationIndex + 1, 0, sourceData);
+    }
+
+    if (targetNestedBelowSource) {
+        (parentSourceData as unknown[]).splice(sourceDataLocationIndex, 1);
+
+        if ((parentSourceData as unknown[]).length === 1) {
+            set(
+                data as object,
+                parentSourceDataLocation,
+                (parentSourceData as object[])[0]
+            );
+        }
+    }
+}
+
+function setDataWhenTargetInObjectAndSourceInObject(
+    data: unknown,
+    sourceDataLocation: string,
+    targetDataLocation: string,
+    direction: VerticalDragDirection,
+    targetNestedBelowSource: boolean,
+    type: NavigationDataType
+): void {
+    const sourceData: unknown = get(data, sourceDataLocation);
+    const targetData: unknown[] = get(data, targetDataLocation);
+
+    if (!targetNestedBelowSource) {
+        unset(data, sourceDataLocation);
+    }
+
+    switch (direction) {
+        case VerticalDragDirection.center:
+            setDataOnDropVerticalCenter(
+                data,
+                targetData,
+                sourceData,
+                targetDataLocation,
+                type
+            );
+            break;
+        case VerticalDragDirection.up:
+            set(data as object, targetDataLocation, [sourceData, targetData]);
+            break;
+        default:
+            set(data as object, targetDataLocation, [targetData, sourceData]);
+    }
+
+    if (targetNestedBelowSource) {
+        unset(data, sourceDataLocation);
+    }
+}
+
+function setDataWhenTargetInArray(
+    data: unknown,
+    sourceDataLocation: string,
+    targetDataLocation: string,
+    direction: VerticalDragDirection,
+    targetNestedBelowSource: boolean,
+    type: NavigationDataType
+): void {
+    const sourceData: unknown = get(data, sourceDataLocation);
+    const targetData: unknown = get(data, targetDataLocation);
+    const targetDataLocationSegments: string[] = targetDataLocation.split(".");
+    const parentTargetDataLocation: string = targetDataLocationSegments
+        .slice(0, -1)
+        .join(".");
+    const targetParentData: unknown[] = get(data, parentTargetDataLocation);
+
+    if (!targetNestedBelowSource) {
+        unset(data as object, sourceDataLocation);
+    }
+
+    switch (direction) {
+        case VerticalDragDirection.center:
+            setDataOnDropVerticalCenter(
+                data,
+                targetData,
+                sourceData,
+                targetDataLocation,
+                type
+            );
+            break;
+        case VerticalDragDirection.up:
+            targetParentData.splice(
+                parseInt(
+                    targetDataLocationSegments[targetDataLocationSegments.length - 1],
+                    10
+                ),
+                0,
+                sourceData
+            );
+            break;
+        default:
+            targetParentData.splice(
+                parseInt(
+                    targetDataLocationSegments[targetDataLocationSegments.length - 1],
+                    10
+                ) + 1,
+                0,
+                sourceData
+            );
+    }
+
+    if (targetNestedBelowSource) {
+        unset(data as object, sourceDataLocation);
+    }
+}
+
+function setDataWhenSourceInArray(
+    data: unknown,
+    sourceDataLocation: string,
+    targetDataLocation: string,
+    direction: VerticalDragDirection,
+    targetNestedBelowSource: boolean,
+    type: NavigationDataType
+): void {
+    const sourceData: unknown = get(data, sourceDataLocation);
+    const targetData: unknown = get(data, targetDataLocation);
+    const sourceDataLocationSegments: string[] = sourceDataLocation.split(".");
+    const lastSourceDataLocationIndex: number = parseInt(
+        sourceDataLocationSegments[sourceDataLocationSegments.length - 1],
+        10
+    );
+    const parentSourceDataLocation: string = sourceDataLocationSegments
+        .slice(0, -1)
+        .join(".");
+    const parentSourceData: unknown | unknown[] = get(data, parentSourceDataLocation);
+
+    if (!targetNestedBelowSource) {
+        (parentSourceData as unknown[]).splice(lastSourceDataLocationIndex, 1);
+
+        if ((parentSourceData as unknown[]).length === 1) {
+            set(
+                data as object,
+                parentSourceDataLocation,
+                (parentSourceData as object[])[0]
+            );
+        }
+    }
+
+    switch (direction) {
+        case VerticalDragDirection.center:
+            setDataOnDropVerticalCenter(
+                data,
+                targetData,
+                sourceData,
+                targetDataLocation,
+                type
+            );
+            break;
+        case VerticalDragDirection.up:
+            set(data as object, targetDataLocation, [sourceData].concat(targetData));
+            break;
+        default:
+            set(data as object, targetDataLocation, [targetData].concat(sourceData));
+    }
+
+    if (targetNestedBelowSource) {
+        (parentSourceData as unknown[]).splice(lastSourceDataLocationIndex, 1);
+
+        if ((parentSourceData as unknown[]).length === 1) {
+            set(
+                data as object,
+                parentSourceDataLocation,
+                (parentSourceData as object[])[0]
+            );
+        }
+    }
+}
+
+function setDataWhenTargetIsUndefined(
+    data: unknown,
+    sourceDataLocation: string,
+    targetDataLocation: string
+): void {
+    const sourceData: unknown = get(data, sourceDataLocation);
+
+    unset(data, sourceDataLocation);
+    set(data as object, targetDataLocation, sourceData);
 }
