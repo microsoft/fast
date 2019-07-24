@@ -219,7 +219,7 @@ export function getDataLocationsOfPlugins(
                 );
                 const updatedDataLocationPrefix: string =
                     dataLocationPrefix === ""
-                        ? dataLocation
+                        ? normalizedDataLocation
                         : `${dataLocationPrefix}.${propsKeyword}.${normalizedDataLocation}`;
 
                 if (childOption !== undefined) {
