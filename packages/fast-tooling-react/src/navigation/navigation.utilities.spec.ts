@@ -310,13 +310,13 @@ describe("getNavigationFromData", () => {
                                             {
                                                 id: childOptions[0].schema.id,
                                                 props: {},
-                                            }
+                                            },
                                         ],
                                     },
                                 },
                             },
                         },
-                        "Foo"
+                        "Foo",
                     ],
                 },
             },
@@ -329,9 +329,7 @@ describe("getNavigationFromData", () => {
         ).items;
 
         expect(navigationFromData[0].dataLocation).toEqual("children");
-        expect(navigationFromData[0].items[0].dataLocation).toEqual(
-            "children.props"
-        );
+        expect(navigationFromData[0].items[0].dataLocation).toEqual("children.props");
         expect(navigationFromData[0].items[0].items[0].dataLocation).toEqual(
             "children.props.children"
         );
@@ -341,15 +339,17 @@ describe("getNavigationFromData", () => {
         expect(navigationFromData[0].items[0].items[0].items[1].dataLocation).toEqual(
             "children.props.children.1"
         );
-        expect(navigationFromData[0].items[0].items[0].items[0].items[0].dataLocation).toEqual(
-            "children.props.children.0.props.children"
-        );
-        expect(navigationFromData[0].items[0].items[0].items[0].items[0].items[0].dataLocation).toEqual(
-            "children.props.children.0.props.children.props"
-        );
-        expect(navigationFromData[0].items[0].items[0].items[0].items[0].items[0].items[0].dataLocation).toEqual(
-            "children.props.children.0.props.children.props.children"
-        );
+        expect(
+            navigationFromData[0].items[0].items[0].items[0].items[0].dataLocation
+        ).toEqual("children.props.children.0.props.children");
+        expect(
+            navigationFromData[0].items[0].items[0].items[0].items[0].items[0]
+                .dataLocation
+        ).toEqual("children.props.children.0.props.children.props");
+        expect(
+            navigationFromData[0].items[0].items[0].items[0].items[0].items[0].items[0]
+                .dataLocation
+        ).toEqual("children.props.children.0.props.children.props.children");
     });
 });
 
