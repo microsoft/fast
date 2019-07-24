@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.18.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-styles-msft@4.17.0...@microsoft/fast-components-styles-msft@4.18.0) (2019-07-24)
+
+
+### Features
+
+* add circular progress component ([#1998](https://github.com/Microsoft/fast-dna/issues/1998)) ([fda7061](https://github.com/Microsoft/fast-dna/commit/fda7061))
+
+
+
+
+
 # [4.17.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-styles-msft@4.16.0...@microsoft/fast-components-styles-msft@4.17.0) (2019-07-23)
 
 

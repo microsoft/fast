@@ -287,11 +287,34 @@ describe("auto suggest", (): void => {
         );
 
         expect(onValueChange).toHaveBeenCalledTimes(0);
+        const input: any = rendered.find("input");
+        input.simulate("keydown", { keyCode: KeyCodes.colon });
+        expect(onValueChange).toHaveBeenCalledTimes(1);
+        expect(onValueChange.mock.calls[0][1]).toEqual(false);
+        document.body.removeChild(container);
+    });
+
+    test("onValueChanged event handler called with 'isFromSuggestedOption' flag when focus changes in menu", (): void => {
+        const container: HTMLDivElement = document.createElement("div");
+        document.body.appendChild(container);
+
+        const onValueChange: any = jest.fn();
+        const rendered: any = mount(
+            <AutoSuggest listboxId="listboxId" onValueChange={onValueChange}>
+                {itemA}
+                {itemB}
+                {itemC}
+            </AutoSuggest>,
+            { attachTo: container }
+        );
+
+        expect(onValueChange).toHaveBeenCalledTimes(0);
         expect(rendered.state("value")).toBe("");
         const input: any = rendered.find("input");
         input.simulate("keydown", { keyCode: KeyCodes.arrowDown });
         expect(rendered.state("value")).toBe("a");
         expect(onValueChange).toHaveBeenCalledTimes(1);
+        expect(onValueChange.mock.calls[0][1]).toEqual(true);
 
         document.body.removeChild(container);
     });

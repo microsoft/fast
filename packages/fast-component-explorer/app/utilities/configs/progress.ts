@@ -23,6 +23,21 @@ const progressConfig: ComponentViewConfig<ProgressProps> = {
                 value: 72,
             },
         },
+        {
+            displayName: "Indeterminate circular",
+            data: {
+                circular: true,
+            },
+        },
+        {
+            displayName: "Min, max and value circular",
+            data: {
+                circular: true,
+                minValue: 0,
+                maxValue: 100,
+                value: 72,
+            },
+        },
     ],
 };
 

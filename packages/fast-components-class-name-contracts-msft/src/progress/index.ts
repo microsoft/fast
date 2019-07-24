@@ -5,9 +5,34 @@ import { ProgressClassNameContract as BaseProgressClassNameContract } from "@mic
  */
 export interface ProgressClassNameContract extends BaseProgressClassNameContract {
     /**
+     * The root progress circular modifier
+     */
+    progress__circular?: string;
+
+    /**
+     * The progress size control modifier
+     */
+    progress_circularSVG__control: string;
+
+    /**
+     * The progress size container modifier
+     */
+    progress_circularSVG__container: string;
+
+    /**
+     * The progress size page modifier
+     */
+    progress_circularSVG__page: string;
+
+    /**
      * The progress value indicator
      */
     progress_valueIndicator?: string;
+
+    /**
+     * The indeterminate progress value indicator
+     */
+    progress_valueIndicator__indeterminate?: string;
 
     /**
      * The indeterminate progress indicator

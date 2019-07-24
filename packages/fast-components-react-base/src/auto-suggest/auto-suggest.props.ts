@@ -51,7 +51,7 @@ export interface AutoSuggestHandledProps extends AutoSuggestManagedClasses {
      * The onValueChanged event handler
      * called when text changes in the input region
      */
-    onValueChange?: (value: string) => void;
+    onValueChange?: (value: string, isFromSuggestedOption?: boolean) => void;
 
     /**
      * The onInvoked event handler
