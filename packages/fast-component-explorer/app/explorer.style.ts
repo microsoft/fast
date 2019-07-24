@@ -1,8 +1,15 @@
 import { ComponentStyles } from "@microsoft/fast-jss-manager-react";
-import { DesignSystem } from "@microsoft/fast-components-styles-msft";
+import {
+    applyCornerRadius,
+    DesignSystem,
+    neutralFillActive,
+    neutralFillHover,
+    neutralFillRest,
+} from "@microsoft/fast-components-styles-msft";
 
 export interface ExplorerClassNameContract {
     explorer?: string;
+    explorer_colorPicker?: string;
     explorer_viewerRegion?: string;
     explorer_viewerControlRegion?: string;
     explorer_viewerControls?: string;
@@ -23,6 +30,21 @@ const style: ComponentStyles<ExplorerClassNameContract, DesignSystem> = {
         },
     },
     explorer: {},
+    explorer_colorPicker: {
+        background: neutralFillRest(() => "#3B3B3B"),
+        border: "none",
+        width: "23px",
+        ...applyCornerRadius(),
+        "&:hover": {
+            background: neutralFillHover(() => "#3B3B3B"),
+        },
+        "&:active": {
+            background: neutralFillActive(() => "#3B3B3B"),
+        },
+        "&:focus": {
+            outline: "none",
+        },
+    },
     explorer_viewerRegion: {
         display: "flex",
         flexDirection: "column",
@@ -30,6 +52,7 @@ const style: ComponentStyles<ExplorerClassNameContract, DesignSystem> = {
     },
     explorer_viewerControlRegion: {
         display: "flex",
+        alignItems: "center",
     },
     explorer_viewerControls: {
         display: "flex",
