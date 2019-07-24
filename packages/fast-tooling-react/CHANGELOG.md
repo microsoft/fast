@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.12.2](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-tooling-react@1.12.1...@microsoft/fast-tooling-react@1.12.2) (2019-07-24)
+
+
+### Bug Fixes
+
+* add drag and drop of components to their direct children ([#2006](https://github.com/Microsoft/fast-dna/issues/2006)) ([1bd2196](https://github.com/Microsoft/fast-dna/commit/1bd2196))
+* normalize data locations of plugins ([#2007](https://github.com/Microsoft/fast-dna/issues/2007)) ([b8bb2c3](https://github.com/Microsoft/fast-dna/commit/b8bb2c3))
+
+
+
+
+
 ## [1.12.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-tooling-react@1.12.0...@microsoft/fast-tooling-react@1.12.1) (2019-07-23)
 
 
