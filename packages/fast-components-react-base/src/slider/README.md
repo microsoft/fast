@@ -33,5 +33,9 @@ The "value" prop is used for controlled mode.
 
 The "thumb" prop allows authors to provide custom render functions for the thumb element(s).
 
+The "valuetextStringFormatter" prop enables authors to provide a function to format the "aria-valuetext" attribute of the thumbs.
+
+The "displayValueConverter" prop enables authors to provide a function that converts the underlying slider value to one that is appropriate to display to the user if those differ.  A likely scenario for this is when the slider is actually selection an array index and the correct thing to report to the user is the value for that index and not the index itself.  This is currently applied to the "aria-valuemin", "aria-valuemax" and "aria-valuenow" attributes of the slider thumbs.
+
 ### Accessibility
 *Slider* implements the recommended keyboard navigation scheme described [here](http://w3c.github.io/aria-practices/examples/slider/multithumb-slider.html).
