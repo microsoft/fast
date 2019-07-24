@@ -4,7 +4,7 @@ The *progress* component is an [`<div>`](https://developer.mozilla.org/en-US/doc
 
 ## Usage
 
-The *progress* component should be used for an element that displays the progress status for a task that takes a long time or consists of several steps. The *progress* component indicates that the user's request has been received and the application is making progress toward completing the requested action. If the `value` of the *progress* component can't be determined then the indeterminate visuals will be shown until the `value` is determined.
+The *progress* component should be used for an element that displays the progress status for a task that takes a long time or consists of several steps. The *progress* component indicates that the user's request has been received and the application is making progress toward completing the requested action. If the `value` of the *progress* component can't be determined then the indeterminate visuals will be shown until the `value` is determined. For a circular style *progress* component pass `true` to the `circular` prop.
 
 ## Style guidance
 

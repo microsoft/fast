@@ -33,7 +33,7 @@
     "tslint:fix": "tslint -c ./tslint.json --fix '**/*.ts{,x}'",
     "unit-tests": "jest --maxWorkers=2",
     "unit-tests:watch": "jest --watch",
-    "watch": "tsc -p ./tsconfig.json -w --preserveWatchOutput"
+    "watch": "tsc -p ./tsconfig.build.json -w --preserveWatchOutput"
   },
   "jest": {
     "collectCoverage": true,
