@@ -491,7 +491,7 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
                 tabIndex={props.disabled === true ? null : 0}
                 onKeyDown={keyDownCallback}
                 onMouseDown={mouseDownCallback}
-                aria-valuemin={ 
+                aria-valuemin={
                     typeof props.displayValueConverter === "function"
                         ? props.displayValueConverter(props.range.minValue)
                         : props.range.minValue
@@ -503,8 +503,14 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
                 }
                 aria-valuenow={
                     typeof props.displayValueConverter === "function"
-                        ? props.displayValueConverter(thumb === SliderThumb.lowerThumb ? state.lowerValue : state.upperValue)
-                        : thumb === SliderThumb.lowerThumb ? state.lowerValue : state.upperValue
+                        ? props.displayValueConverter(
+                              thumb === SliderThumb.lowerThumb
+                                  ? state.lowerValue
+                                  : state.upperValue
+                          )
+                        : thumb === SliderThumb.lowerThumb
+                            ? state.lowerValue
+                            : state.upperValue
                 }
                 aria-valuetext={
                     typeof props.valuetextStringFormatter === "function"
