@@ -23,7 +23,7 @@ export interface ProgressHandledProps
     extends Subtract<BaseProgressHandledProps, BaseProgressManagedClasses>,
         ProgressManagedClasses {
     /**
-     * The progess is circular prop
+     * The progess circular prop
      */
     circular?: boolean;
 

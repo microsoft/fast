@@ -113,15 +113,12 @@ class Progress extends Foundation<ProgressHandledProps, ProgressUnhandledProps, 
             });
     }
 
+    private renderCircle(className: string, style?: React.CSSProperties): JSX.Element {
+        return <circle className={className} style={style} cx="8px" cy="8px" r="7px" />;
+    }
+
     private renderCircularBackground(): JSX.Element {
-        return (
-            <circle
-                className={get(this.props.managedClasses, "progress_indicator")}
-                cx="8px"
-                cy="8px"
-                r="7px"
-            />
-        );
+        return this.renderCircle(get(this.props.managedClasses, "progress_indicator"));
     }
 
     private renderProgress(): React.ReactFragment {
@@ -131,26 +128,18 @@ class Progress extends Foundation<ProgressHandledProps, ProgressUnhandledProps, 
                 <div slot={ProgressType.determinate} key="0">
                     <svg className={this.generateSVGClassNames()} viewBox="0 0 16 16">
                         {this.renderCircularBackground()}
-                        <circle
-                            className={this.generateCircularValueIndicatorClassNames()}
-                            style={{
-                                strokeDasharray: `${strokeValue}px 44px`,
-                            }}
-                            cx="8px"
-                            cy="8px"
-                            r="7px"
-                        />
+                        {this.renderCircle(
+                            this.generateCircularValueIndicatorClassNames(),
+                            { strokeDasharray: `${strokeValue}px 44px` }
+                        )}
                     </svg>
                 </div>,
                 <div slot={ProgressType.indeterminate} key="1">
                     <svg className={this.generateSVGClassNames()} viewBox="0 0 16 16">
                         {this.renderCircularBackground()}
-                        <circle
-                            className={this.generateCircularValueIndicatorClassNames()}
-                            cx="8px"
-                            cy="8px"
-                            r="7px"
-                        />
+                        {this.renderCircle(
+                            this.generateCircularValueIndicatorClassNames()
+                        )}
                     </svg>
                 </div>,
             ];

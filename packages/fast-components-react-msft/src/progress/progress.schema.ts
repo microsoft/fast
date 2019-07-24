@@ -19,7 +19,7 @@ export default {
             type: "number",
         },
         circular: {
-            title: "Is circular",
+            title: "Circular",
             type: "boolean",
             default: "false",
         },

@@ -18,7 +18,8 @@ const managedClasses: ProgressClassNameContract = {
     progress_circular__container: "progressCircular__container-class",
     progress_circular__page: "progressCircular__page-class",
     progress_valueIndicator: "progress_valueIndicator-class",
-    progress_valueIndicator__indeterminate: "progress_valueIndicator__indeterminate-class",
+    progress_valueIndicator__indeterminate:
+        "progress_valueIndicator__indeterminate-class",
     progress_indicator: "progress_indicator-class",
     progress_indicator__determinate: "progress_indicator__determinate-class",
     progress_dot: "progress_dot-class",
