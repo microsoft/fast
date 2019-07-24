@@ -3,6 +3,58 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.12.2](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-tooling-react@1.12.1...@microsoft/fast-tooling-react@1.12.2) (2019-07-24)
+
+
+### Bug Fixes
+
+* add drag and drop of components to their direct children ([#2006](https://github.com/Microsoft/fast-dna/issues/2006)) ([1bd2196](https://github.com/Microsoft/fast-dna/commit/1bd2196))
+* normalize data locations of plugins ([#2007](https://github.com/Microsoft/fast-dna/issues/2007)) ([b8bb2c3](https://github.com/Microsoft/fast-dna/commit/b8bb2c3))
+
+
+
+
+
+## [1.12.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-tooling-react@1.12.0...@microsoft/fast-tooling-react@1.12.1) (2019-07-23)
+
+
+### Bug Fixes
+
+* enable plugin resolvers to be invoked with string or number data ([#2004](https://github.com/Microsoft/fast-dna/issues/2004)) ([5dfe57b](https://github.com/Microsoft/fast-dna/commit/5dfe57b))
+
+
+
+
+
+# [1.12.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-tooling-react@1.11.1...@microsoft/fast-tooling-react@1.12.0) (2019-07-23)
+
+
+### Bug Fixes
+
+* resolve plugins against objects without props ([#2000](https://github.com/Microsoft/fast-dna/issues/2000)) ([37b4fe3](https://github.com/Microsoft/fast-dna/commit/37b4fe3))
+
+
+### Features
+
+*  delete rows with empty data on blur ([#1893](https://github.com/Microsoft/fast-dna/issues/1893)) ([706b47c](https://github.com/Microsoft/fast-dna/commit/706b47c))
+* adds data location to plugin resolver ([#1976](https://github.com/Microsoft/fast-dna/issues/1976)) ([d3016a8](https://github.com/Microsoft/fast-dna/commit/d3016a8))
+
+
+
+
+
+## [1.11.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-tooling-react@1.11.0...@microsoft/fast-tooling-react@1.11.1) (2019-07-16)
+
+
+### Bug Fixes
+
+* mutability fix for the initial data being passed to the Form ([#1926](https://github.com/Microsoft/fast-dna/issues/1926)) ([b4aa7be](https://github.com/Microsoft/fast-dna/commit/b4aa7be))
+* Navigation arrows should only tip 45 degrees ([#1956](https://github.com/Microsoft/fast-dna/issues/1956)) ([fcabdb8](https://github.com/Microsoft/fast-dna/commit/fcabdb8))
+
+
+
+
+
 # [1.11.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-tooling-react@1.10.1...@microsoft/fast-tooling-react@1.11.0) (2019-07-09)
 
 

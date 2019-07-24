@@ -3,6 +3,40 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.17.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-styles-msft@4.16.0...@microsoft/fast-components-styles-msft@4.17.0) (2019-07-23)
+
+
+### Bug Fixes
+
+* high contrast for slider component ([#1987](https://github.com/Microsoft/fast-dna/issues/1987)) ([68c2ecd](https://github.com/Microsoft/fast-dna/commit/68c2ecd))
+* high contrast on toggle component ([#1991](https://github.com/Microsoft/fast-dna/issues/1991)) ([e9634a8](https://github.com/Microsoft/fast-dna/commit/e9634a8))
+
+
+### Features
+
+* add flyout as a new component ([#1940](https://github.com/Microsoft/fast-dna/issues/1940)) ([b9ad765](https://github.com/Microsoft/fast-dna/commit/b9ad765))
+* converts layer recipes to ColorRecipes ([#1967](https://github.com/Microsoft/fast-dna/issues/1967)) ([63ad20c](https://github.com/Microsoft/fast-dna/commit/63ad20c))
+
+
+
+
+
+# [4.16.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-styles-msft@4.15.0...@microsoft/fast-components-styles-msft@4.16.0) (2019-07-16)
+
+
+### Bug Fixes
+
+* accent color inner focus ([#1923](https://github.com/Microsoft/fast-dna/issues/1923)) ([5aa02a9](https://github.com/Microsoft/fast-dna/commit/5aa02a9))
+
+
+### Features
+
+* add regex pattern for HEX value in design system schema ([#1960](https://github.com/Microsoft/fast-dna/issues/1960)) ([3f69726](https://github.com/Microsoft/fast-dna/commit/3f69726))
+
+
+
+
+
 # [4.15.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-styles-msft@4.14.0...@microsoft/fast-components-styles-msft@4.15.0) (2019-07-09)
 
 

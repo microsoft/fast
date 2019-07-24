@@ -21,6 +21,8 @@ import {
     pluginFindIndexCallback,
     squareBracketsRegex,
 } from "./location";
+import { Arguments } from "../typings";
+import { isPrimitiveReactNode } from "./node-types";
 
 /**
  * Maps data returned from the form generator to the React components
@@ -30,45 +32,27 @@ export function mapDataToComponent(
     data: any,
     childOptions: ChildOptionItem[] = [],
     plugins: Array<Plugin<PluginProps>> = []
-): MappedDataLocation[] {
+): any {
     const mappedData: any = cloneDeep(data);
-    let reactChildrenDataLocations: string[] = [];
-    let pluginModifiedDataLocations: PluginLocation[] = [];
-
-    if (childOptions.length > 0) {
-        // find locations of all items of data that are react children
-        reactChildrenDataLocations = getDataLocationsOfChildren(
-            schema,
-            mappedData,
-            childOptions
-        );
-    }
-
-    if (plugins.length > 0) {
-        // find locations of all items of data that are overridden by mappings
-        pluginModifiedDataLocations = getDataLocationsOfPlugins(
-            schema,
-            mappedData,
-            childOptions
-        );
-    }
+    const reactChildrenDataLocations: string[] =
+        childOptions.length > 0
+            ? getDataLocationsOfChildren(schema, mappedData, childOptions)
+            : [];
+    const pluginModifiedDataLocations: PluginLocation[] =
+        plugins.length > 0
+            ? getDataLocationsOfPlugins(schema, mappedData, childOptions)
+            : [];
 
     // remove any children data locations from plugin modified locations
-    reactChildrenDataLocations = reactChildrenDataLocations.filter(
-        (reactChildrenDataLocation: string): string | undefined => {
-            if (
+    return reactChildrenDataLocations
+        .filter(
+            (reactChildrenDataLocation: string): boolean =>
                 pluginModifiedDataLocations.findIndex(
                     pluginFindIndexCallback(reactChildrenDataLocation)
                 ) === -1
-            ) {
-                return reactChildrenDataLocation;
-            }
-        }
-    );
-
-    // merge the plugin modified data locations with the children option data locations and categorize them
-    return reactChildrenDataLocations
+        )
         .map(
+            // merge the plugin modified data locations with the children option data locations and categorize them
             (childDataLocation: string): MappedDataLocation => {
                 return {
                     mappingType: DataResolverType.component,
@@ -78,14 +62,11 @@ export function mapDataToComponent(
         )
         .concat(pluginModifiedDataLocations)
         .sort(orderMappedDataByDataLocation)
-        .reduce((mappedDataReduced: any, mappedDataLocation: MappedDataLocation): any => {
-            return resolveData(
-                mappedDataLocation,
-                mappedDataReduced,
-                plugins,
-                childOptions
-            );
-        }, mappedData);
+        .reduce(
+            (mappedDataReduced: any, mappedDataLocation: MappedDataLocation): any =>
+                resolveData(mappedDataLocation, mappedDataReduced, plugins, childOptions),
+            mappedData
+        );
 }
 
 /**
@@ -94,11 +75,13 @@ export function mapDataToComponent(
 function getPluginResolvedChildren(
     pluginData: any,
     pluginResolver: Plugin<PluginProps>,
-    childOptions: ChildOptionItem[]
+    childOptions: ChildOptionItem[],
+    dataLocation: string
 ): any {
     return pluginResolver.resolver(
-        get(pluginData, propsKeyword),
-        getChildOptionBySchemaId(pluginData.id, childOptions)
+        isPrimitiveReactNode(pluginData) ? pluginData : get(pluginData, propsKeyword),
+        getChildOptionBySchemaId(pluginData.id, childOptions),
+        dataLocation
     );
 }
 
@@ -109,46 +92,44 @@ function getPluginResolverDataMap(
     pluginResolverDataMapConfig: PluginResolverDataMapConfig
 ): PluginResolverDataMap[] {
     const pluginResolverMapping: PluginResolverDataMap[] = [];
+    const {
+        pluginResolver,
+        childOptions,
+        dataLocation,
+        pluginData,
+    }: PluginResolverDataMapConfig = pluginResolverDataMapConfig;
 
     if (pluginResolverDataMapConfig.isReactChildren) {
         if (Array.isArray(pluginResolverDataMapConfig.pluginData)) {
             pluginResolverDataMapConfig.pluginData.forEach(
                 (pluginDataItem: any, index: number): void => {
-                    const pluginResolverMappingItem: PluginResolverDataMap = {
+                    pluginResolverMapping.push({
                         data: getPluginResolvedChildren(
                             pluginDataItem,
-                            pluginResolverDataMapConfig.pluginResolver,
-                            pluginResolverDataMapConfig.childOptions
+                            pluginResolver,
+                            childOptions,
+                            dataLocation
                         ),
-                        dataLocation: `${
-                            pluginResolverDataMapConfig.dataLocation
-                        }.${index}`,
-                    };
-
-                    pluginResolverMapping.push(pluginResolverMappingItem);
+                        dataLocation: `${dataLocation}.${index}`,
+                    });
                 }
             );
         } else {
-            const pluginResolverMappingItem: PluginResolverDataMap = {
+            pluginResolverMapping.push({
                 data: getPluginResolvedChildren(
-                    pluginResolverDataMapConfig.pluginData,
-                    pluginResolverDataMapConfig.pluginResolver,
-                    pluginResolverDataMapConfig.childOptions
+                    pluginData,
+                    pluginResolver,
+                    childOptions,
+                    dataLocation
                 ),
-                dataLocation: pluginResolverDataMapConfig.dataLocation,
-            };
-
-            pluginResolverMapping.push(pluginResolverMappingItem);
+                dataLocation,
+            });
         }
     } else {
-        const pluginResolverMappingItem: PluginResolverDataMap = {
-            dataLocation: pluginResolverDataMapConfig.dataLocation,
-            data: pluginResolverDataMapConfig.pluginResolver.resolver(
-                pluginResolverDataMapConfig.pluginData
-            ),
-        };
-
-        pluginResolverMapping.push(pluginResolverMappingItem);
+        pluginResolverMapping.push({
+            dataLocation,
+            data: pluginResolver.resolver(pluginData, void 0, dataLocation),
+        });
     }
 
     return pluginResolverMapping;
@@ -180,22 +161,21 @@ function mapPluginToData(
     plugins: Array<Plugin<PluginProps>>,
     childOptions: ChildOptionItem[]
 ): any {
-    const mappedData: any = data;
-    const pluginModifiedSchemaLocation: string = mapSchemaLocationFromDataLocation(
-        pluginModifiedDataLocation.relativeDataLocation,
-        pluginModifiedDataLocation.schema,
-        mappedData
+    const {
+        dataLocation,
+        schema,
+        relativeDataLocation,
+    }: PluginLocation = pluginModifiedDataLocation;
+    const schemaLocation: string = mapSchemaLocationFromDataLocation(
+        relativeDataLocation,
+        schema,
+        data
     );
-    const pluginId: string = get(
-        pluginModifiedDataLocation.schema,
-        `${pluginModifiedSchemaLocation}.${pluginIdKeyword}`
-    );
+    const pluginId: string = get(schema, `${schemaLocation}.${pluginIdKeyword}`);
     const pluginResolver: Plugin<PluginProps> = plugins.find(
-        (plugin: Plugin<PluginProps>): boolean => {
-            return plugin.matches(pluginId);
-        }
+        (plugin: Plugin<PluginProps>): boolean => plugin.matches(pluginId)
     );
-    const pluginData: any = get(mappedData, pluginModifiedDataLocation.dataLocation);
+    const pluginData: any = get(data, dataLocation);
 
     if (pluginResolver !== undefined) {
         getPluginResolverDataMap({
@@ -203,19 +183,18 @@ function mapPluginToData(
             pluginData,
             pluginResolver,
             childOptions,
-            dataLocation: pluginModifiedDataLocation.dataLocation,
+            dataLocation,
         }).forEach(
             (pluginResolverMappingItem: PluginResolverDataMap): void => {
-                set(
-                    mappedData,
-                    pluginResolverMappingItem.dataLocation,
-                    pluginResolverMappingItem.data
-                );
+                // This data mutation is intentional.
+                // We don't clone data here because this function is always called on data that has previously been cloned. It also
+                // may contain react nodes - and cloning react nodes has massive negative performance impacts.
+                set(data, dataLocation, pluginResolverMappingItem.data);
             }
         );
     }
 
-    return mappedData;
+    return data;
 }
 
 function mapDataToChildren(
@@ -223,45 +202,37 @@ function mapDataToChildren(
     reactChildrenDataLocation: string,
     childOptions: ChildOptionItem[]
 ): any {
-    const mappedData: any = data;
-    const subSchemaId: string = get(
-        mappedData,
-        `${reactChildrenDataLocation}.${idKeyword}`
-    );
-    const subData: any = get(mappedData, reactChildrenDataLocation);
-    const isChildString: boolean = typeof subData === "string";
-    const subDataNormalized: any = isChildString ? subData : get(subData, propsKeyword);
+    if (typeof get(data, reactChildrenDataLocation) === "string") {
+        return data;
+    }
+
+    const subSchemaId: string = get(data, `${reactChildrenDataLocation}.${idKeyword}`);
+    const subData: any = get(data, reactChildrenDataLocation);
+    const subDataNormalized: any = get(subData, propsKeyword);
     const childOption: ChildOptionItem = getChildOptionBySchemaId(
         subSchemaId,
         childOptions
     );
 
-    if (!isChildString) {
-        let value: any;
+    const key: { key: string } = { key: uniqueId(subSchemaId) };
+    const createElementArguments: Arguments<typeof React.createElement> =
+        childOption === undefined
+            ? [React.Fragment, key, subDataNormalized]
+            : [childOption.component, { ...key, ...subDataNormalized }];
 
-        if (typeof childOption === "undefined") {
-            value = Object.assign(
-                { id: subSchemaId },
-                React.createElement(
-                    React.Fragment,
-                    { key: uniqueId(subSchemaId) },
-                    subDataNormalized
-                )
-            );
-        } else {
-            value = Object.assign(
-                { id: subSchemaId },
-                React.createElement(childOption.component, {
-                    key: uniqueId(subSchemaId),
-                    ...subDataNormalized,
-                })
-            );
-        }
+    // This data mutation is intentional.
+    // We don't clone data here because this function is always called on data that has previously been cloned. It also
+    // may contain react nodes - and cloning react nodes has massive negative performance impacts.
+    set(
+        data,
+        reactChildrenDataLocation,
+        Object.assign(
+            { id: subSchemaId },
+            React.createElement.apply(this, createElementArguments)
+        )
+    );
 
-        set(mappedData, reactChildrenDataLocation, value);
-    }
-
-    return mappedData;
+    return data;
 }
 
 /**
@@ -269,19 +240,13 @@ function mapDataToChildren(
  * see: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort
  */
 function orderMappedDataByDataLocation(
-    firstMapping: MappedDataLocation,
-    secondMapping: MappedDataLocation
+    a: MappedDataLocation,
+    b: MappedDataLocation
 ): number {
-    const firstLocationLength: number = firstMapping.dataLocation.split(".").length;
-    const secondLocationLength: number = secondMapping.dataLocation.split(".").length;
+    const A: number = a.dataLocation.split(".").length;
+    const B: number = b.dataLocation.split(".").length;
 
-    if (firstLocationLength > secondLocationLength) {
-        return -1;
-    } else if (firstLocationLength < secondLocationLength) {
-        return 1;
-    }
-
-    return 0;
+    return A > B ? -1 : A < B ? 1 : 0;
 }
 
 export interface CodePreviewChildOption {

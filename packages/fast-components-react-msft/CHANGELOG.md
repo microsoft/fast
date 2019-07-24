@@ -3,6 +3,58 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.15.2](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-msft@4.15.1...@microsoft/fast-components-react-msft@4.15.2) (2019-07-24)
+
+**Note:** Version bump only for package @microsoft/fast-components-react-msft
+
+
+
+
+
+## [4.15.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-msft@4.15.0...@microsoft/fast-components-react-msft@4.15.1) (2019-07-23)
+
+**Note:** Version bump only for package @microsoft/fast-components-react-msft
+
+
+
+
+
+# [4.15.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-msft@4.14.0...@microsoft/fast-components-react-msft@4.15.0) (2019-07-23)
+
+
+### Bug Fixes
+
+* [toggle] make selected & unselected messages optional  ([#1973](https://github.com/Microsoft/fast-dna/issues/1973)) ([5b79a4c](https://github.com/Microsoft/fast-dna/commit/5b79a4c))
+
+
+### Features
+
+* add ability to avoid tag rendering for background component ([#1983](https://github.com/Microsoft/fast-dna/issues/1983)) ([ca666cb](https://github.com/Microsoft/fast-dna/commit/ca666cb))
+* add flyout as a new component ([#1940](https://github.com/Microsoft/fast-dna/issues/1940)) ([b9ad765](https://github.com/Microsoft/fast-dna/commit/b9ad765))
+
+
+
+
+
+# [4.14.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-msft@4.13.0...@microsoft/fast-components-react-msft@4.14.0) (2019-07-16)
+
+
+### Bug Fixes
+
+* hide select dropdown carat from screen readers ([#1930](https://github.com/Microsoft/fast-dna/issues/1930)) ([abd1c16](https://github.com/Microsoft/fast-dna/commit/abd1c16))
+* slider & subheading schemas are incorrect ([#1961](https://github.com/Microsoft/fast-dna/issues/1961)) ([b440051](https://github.com/Microsoft/fast-dna/commit/b440051))
+
+
+### Features
+
+* add callback for when carousel active id changes ([#1929](https://github.com/Microsoft/fast-dna/issues/1929)) ([aa4e887](https://github.com/Microsoft/fast-dna/commit/aa4e887))
+* add flag to carousel onActiveIdUpdate to denote if the update was initiated by autoplay ([#1970](https://github.com/Microsoft/fast-dna/issues/1970)) ([d9774df](https://github.com/Microsoft/fast-dna/commit/d9774df))
+* add storybook to component libraries and a private package for component documentation ([#1928](https://github.com/Microsoft/fast-dna/issues/1928)) ([179fa9d](https://github.com/Microsoft/fast-dna/commit/179fa9d))
+
+
+
+
+
 # [4.13.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-msft@4.12.0...@microsoft/fast-components-react-msft@4.13.0) (2019-07-09)
 
 

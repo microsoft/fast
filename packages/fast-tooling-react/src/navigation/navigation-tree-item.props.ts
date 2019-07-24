@@ -3,6 +3,7 @@ import { NavigationDataType } from "./navigation.props";
 export enum VerticalDragDirection {
     up,
     down,
+    center,
 }
 
 export interface NavigationTreeItemProps
@@ -42,6 +43,11 @@ export interface NavigationTreeItemProps
      * The keyUp handler
      */
     handleKeyUp: React.KeyboardEventHandler<HTMLElement>;
+
+    /**
+     * The handler for closing dragging items
+     */
+    handleCloseDraggingItem: (dataLocation: string, type: NavigationDataType) => void;
 
     /**
      * The text used for the tree item

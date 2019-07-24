@@ -3,6 +3,42 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.4.3](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-development-site-react@4.4.2...@microsoft/fast-development-site-react@4.4.3) (2019-07-24)
+
+**Note:** Version bump only for package @microsoft/fast-development-site-react
+
+
+
+
+
+## [4.4.2](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-development-site-react@4.4.1...@microsoft/fast-development-site-react@4.4.2) (2019-07-23)
+
+**Note:** Version bump only for package @microsoft/fast-development-site-react
+
+
+
+
+
+## [4.4.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-development-site-react@4.4.0...@microsoft/fast-development-site-react@4.4.1) (2019-07-23)
+
+**Note:** Version bump only for package @microsoft/fast-development-site-react
+
+
+
+
+
+# [4.4.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-development-site-react@4.3.12...@microsoft/fast-development-site-react@4.4.0) (2019-07-16)
+
+
+### Features
+
+* add storybook to component libraries and a private package for component documentation ([#1928](https://github.com/Microsoft/fast-dna/issues/1928)) ([179fa9d](https://github.com/Microsoft/fast-dna/commit/179fa9d))
+* deprecate the development site ([#1931](https://github.com/Microsoft/fast-dna/issues/1931)) ([7d4b97d](https://github.com/Microsoft/fast-dna/commit/7d4b97d))
+
+
+
+
+
 ## [4.3.12](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-development-site-react@4.3.11...@microsoft/fast-development-site-react@4.3.12) (2019-07-09)
 
 **Note:** Version bump only for package @microsoft/fast-development-site-react

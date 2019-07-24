@@ -14,6 +14,7 @@ import {
 } from "./types";
 import { ChildOptionItem } from "./";
 import { oneOfAnyOfType } from "../form/form/form-section.props";
+import { isPrimitiveReactNode } from "./node-types";
 
 /**
  * This file contains all functionality for the manipulation of lodash paths
@@ -120,7 +121,7 @@ export function getDataLocationsOfChildren(
     });
 
     return dataLocationsOfChildren.map((dataLocationOfChildren: string) => {
-        return arrayItemsToBracketNotation(dataLocationOfChildren, data);
+        return normalizeDataLocation(dataLocationOfChildren, data);
     });
 }
 
@@ -165,9 +166,14 @@ export function getDataLocationsOfPlugins(
                             : `${schemaLocation}.${typeKeyword}`
                     }`
                 ) === DataType.children;
-            const childrenProps: any = get(data, `${dataLocation}.${propsKeyword}`);
+            const childrenProps: any = get(
+                data,
+                `${normalizedDataLocation}.${propsKeyword}`
+            );
             const isNotAnArrayOfChildren: boolean =
-                (isChildComponent && typeof childrenProps !== "undefined") ||
+                (isChildComponent &&
+                    (typeof childrenProps !== "undefined" ||
+                        isPrimitiveReactNode(get(data, normalizedDataLocation)))) ||
                 !isChildComponent;
 
             // check to see if the data location matches with the current schema and includes a plugin identifier
@@ -186,7 +192,7 @@ export function getDataLocationsOfPlugins(
                         relativeDataLocation: normalizedDataLocation,
                     });
                 } else {
-                    const subData: any = get(data, dataLocation);
+                    const subData: any = get(data, normalizedDataLocation);
 
                     if (Array.isArray(subData)) {
                         const childrenLength: number = subData.length;
@@ -208,13 +214,13 @@ export function getDataLocationsOfPlugins(
             if (isChildComponent) {
                 // resolve the child id with a child option
                 const childOption: ChildOptionItem = getChildOptionBySchemaId(
-                    get(data, dataLocation).id,
+                    get(data, normalizedDataLocation).id,
                     childOptions
                 );
                 const updatedDataLocationPrefix: string =
                     dataLocationPrefix === ""
-                        ? dataLocation
-                        : `${dataLocationPrefix}.${propsKeyword}.${dataLocation}`;
+                        ? normalizedDataLocation
+                        : `${dataLocationPrefix}.${propsKeyword}.${normalizedDataLocation}`;
 
                 if (childOption !== undefined) {
                     dataLocationsOfPlugins = dataLocationsOfPlugins.concat(

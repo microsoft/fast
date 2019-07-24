@@ -3,6 +3,55 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.11.2](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-base@4.11.1...@microsoft/fast-components-react-base@4.11.2) (2019-07-24)
+
+**Note:** Version bump only for package @microsoft/fast-components-react-base
+
+
+
+
+
+## [4.11.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-base@4.11.0...@microsoft/fast-components-react-base@4.11.1) (2019-07-23)
+
+**Note:** Version bump only for package @microsoft/fast-components-react-base
+
+
+
+
+
+# [4.11.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-base@4.10.0...@microsoft/fast-components-react-base@4.11.0) (2019-07-23)
+
+
+### Bug Fixes
+
+* [toggle] make selected & unselected messages optional  ([#1973](https://github.com/Microsoft/fast-dna/issues/1973)) ([5b79a4c](https://github.com/Microsoft/fast-dna/commit/5b79a4c))
+
+
+### Features
+
+* improve viewport positioner offset correction ([#1978](https://github.com/Microsoft/fast-dna/issues/1978)) ([b9d34ef](https://github.com/Microsoft/fast-dna/commit/b9d34ef))
+
+
+
+
+
+# [4.10.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-base@4.9.0...@microsoft/fast-components-react-base@4.10.0) (2019-07-16)
+
+
+### Bug Fixes
+
+* ensure unhandled props are passed first and merge with existing style properties ([#1962](https://github.com/Microsoft/fast-dna/issues/1962)) ([6e1170a](https://github.com/Microsoft/fast-dna/commit/6e1170a))
+* slider & subheading schemas are incorrect ([#1961](https://github.com/Microsoft/fast-dna/issues/1961)) ([b440051](https://github.com/Microsoft/fast-dna/commit/b440051))
+
+
+### Features
+
+* add storybook to component libraries and a private package for component documentation ([#1928](https://github.com/Microsoft/fast-dna/issues/1928)) ([179fa9d](https://github.com/Microsoft/fast-dna/commit/179fa9d))
+
+
+
+
+
 # [4.9.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-base@4.8.1...@microsoft/fast-components-react-base@4.9.0) (2019-07-09)
 
 

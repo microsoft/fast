@@ -1,6 +1,7 @@
 import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 import { ExplorerClassNameContract } from "./explorer.style";
 import { Direction } from "@microsoft/fast-web-utilities";
+import { DesignSystem } from "@microsoft/fast-components-styles-msft";
 
 /**
  * The properties of a component
@@ -13,9 +14,8 @@ export interface ComponentProps<T> {
 /**
  * The view config
  */
-export interface ViewConfig {
-    direction: Direction;
-}
+/* tslint:disable-next-line */
+export interface ViewConfig extends DesignSystem {}
 
 /* tslint:disable-next-line */
 export interface ExplorerManagedClasses
@@ -26,6 +26,17 @@ export interface ExplorerHandledProps extends ExplorerManagedClasses {}
 
 /* tslint:disable-next-line */
 export interface ExplorerProps extends ExplorerHandledProps {}
+
+export interface Theme {
+    id: string;
+    displayName: string;
+    background?: string;
+}
+
+export enum ThemeName {
+    dark = "dark",
+    light = "light",
+}
 
 /* tslint:disable-next-line */
 export interface ExplorerState {
@@ -58,4 +69,9 @@ export interface ExplorerState {
      * The configuration for the view
      */
     viewConfig: ViewConfig;
+
+    /**
+     * The explorer theme
+     */
+    theme: ThemeName;
 }

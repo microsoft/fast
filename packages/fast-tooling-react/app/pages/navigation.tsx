@@ -35,6 +35,7 @@ class NavigationTestPage extends React.Component<{}, NavigationTestPageState> {
                     onChange={this.handleChange}
                     dragAndDropReordering={this.state.dragAndDropReordering}
                 />
+                <pre>{JSON.stringify(this.state.data, null, 2)}</pre>
             </div>
         );
     }

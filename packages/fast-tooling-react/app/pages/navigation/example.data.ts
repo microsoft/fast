@@ -119,22 +119,22 @@ const children: any = {
 const navigationData: TreeNavigation[] = [
     {
         text: "Child A",
-        type: NavigationDataType.children,
+        type: NavigationDataType.component,
         dataLocation: "children[0]",
         items: [
             {
                 text: "Child B",
-                type: NavigationDataType.children,
+                type: NavigationDataType.component,
                 dataLocation: "children[0].props.children[0]",
             },
             {
                 text: "Child C",
-                type: NavigationDataType.children,
+                type: NavigationDataType.component,
                 dataLocation: "children[0].props.children[1]",
                 items: [
                     {
                         text: "Child D",
-                        type: NavigationDataType.children,
+                        type: NavigationDataType.component,
                         dataLocation: "children[0].props.children[1].props.children",
                     },
                 ],
@@ -143,7 +143,7 @@ const navigationData: TreeNavigation[] = [
     },
     {
         text: "Child E",
-        type: NavigationDataType.children,
+        type: NavigationDataType.component,
         dataLocation: "children[1]",
     },
 ];

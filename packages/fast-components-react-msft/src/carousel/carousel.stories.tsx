@@ -7,6 +7,7 @@ import CarouselHero from "../../assets/carousel-hero-content";
 storiesOf("Carousel", module).add("Default", () => (
     <Carousel
         label="A carousel of items"
+        autoplay={true}
         items={[
             {
                 id: uniqueId(),
@@ -15,6 +16,7 @@ storiesOf("Carousel", module).add("Default", () => (
                     <CarouselHero
                         className={className}
                         heading={{ children: "slide one" }}
+                        theme={CarouselSlideTheme.light}
                     />
                 ),
             },
@@ -25,6 +27,7 @@ storiesOf("Carousel", module).add("Default", () => (
                     <CarouselHero
                         className={className}
                         heading={{ children: "slide two" }}
+                        theme={CarouselSlideTheme.dark}
                     />
                 ),
             },
@@ -35,6 +38,7 @@ storiesOf("Carousel", module).add("Default", () => (
                     <CarouselHero
                         className={className}
                         heading={{ children: "slide three" }}
+                        theme={CarouselSlideTheme.light}
                     />
                 ),
             },
@@ -45,6 +49,7 @@ storiesOf("Carousel", module).add("Default", () => (
                     <CarouselHero
                         className={className}
                         heading={{ children: "slide four" }}
+                        theme={CarouselSlideTheme.dark}
                     />
                 ),
             },
