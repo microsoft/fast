@@ -287,13 +287,8 @@ class AutoSuggest extends Foundation<
     /**
      * Update the currentValue of the component
      */
-    private updateValue = (
-            newValue: string,
-            isFromSuggestedOption: boolean
-        ): void => {
-        if (
-            typeof this.props.onValueChange === "function"
-        ) {
+    private updateValue = (newValue: string, isFromSuggestedOption: boolean): void => {
+        if (typeof this.props.onValueChange === "function") {
             this.props.onValueChange(newValue, isFromSuggestedOption);
         }
 

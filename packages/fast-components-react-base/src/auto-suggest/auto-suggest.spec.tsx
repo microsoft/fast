@@ -288,7 +288,7 @@ describe("auto suggest", (): void => {
 
         expect(onValueChange).toHaveBeenCalledTimes(0);
         const input: any = rendered.find("input");
-        input.simulate("keydown", { keyCode: KeyCodes.colon});
+        input.simulate("keydown", { keyCode: KeyCodes.colon });
         expect(onValueChange).toHaveBeenCalledTimes(1);
         expect(onValueChange.mock.calls[0][1]).toEqual(false);
         document.body.removeChild(container);
