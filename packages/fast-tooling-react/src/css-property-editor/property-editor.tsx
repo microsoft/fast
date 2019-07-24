@@ -294,14 +294,13 @@ export default class CSSPropertyEditor extends Foundation<
         if (e.defaultPrevented) {
             return;
         }
-        if (
+
+        this.createRow(
             !isNil(this.propertyEditorRef.current) &&
             e.nativeEvent.offsetY < this.propertyEditorRef.current.clientHeight / 2
-        ) {
-            this.createRow(0);
-        } else {
-            this.createRow(Object.keys(this.editData).length);
-        }
+                ? 0
+                : Object.keys(this.editData).length
+        );
     };
 
     /**

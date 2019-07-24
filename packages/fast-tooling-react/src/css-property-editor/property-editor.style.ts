@@ -23,7 +23,7 @@ const styles: ComponentStyles<CSSPropertyEditorClassNameContract, {}> = {
     cssPropertyEditor_propertyRegion: {
         display: "inline-block",
         paddingLeft: "20px",
-        width:"100%",
+        width: "100%",
         outlineWidth: "0",
         "&::before, &::after": {
             marginLeft: "-20px",
@@ -36,7 +36,7 @@ const styles: ComponentStyles<CSSPropertyEditorClassNameContract, {}> = {
         },
     },
     cssPropertyEditor_row: {
-        outlineWidth: "0"
+        outlineWidth: "0",
     },
     cssPropertyEditor_input: {
         background: "transparent",
