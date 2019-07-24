@@ -63,6 +63,14 @@ export interface ViewportPositionerState {
      * indicates that an initial positioning pass on layout has completed
      */
     initialLayoutComplete: boolean;
+
+    
+    /**
+     * how many checks for a valid viewport before we give up
+     * this is primarily because during the initial layout pass
+     * we may not have a valid viewport dom instance available yet
+     */
+    validRefChecksRemaining: number;
 }
 
 export enum ViewportPositionerHorizontalPositionLabel {
@@ -184,6 +192,7 @@ class ViewportPositioner extends Foundation<
                 this.props.defaultVerticalPosition
             ),
             initialLayoutComplete: false,
+            validRefChecksRemaining: 2,
         };
     }
 
@@ -197,11 +206,10 @@ class ViewportPositioner extends Foundation<
     }
 
     public componentDidUpdate(prevProps: ViewportPositionerProps): void {
-        if (
-            prevProps.viewport !== this.props.viewport ||
-            prevProps.anchor !== this.props.anchor ||
-            prevProps.disabled !== this.props.disabled
-        ) {
+        if(
+            prevProps.disabled !== this.props.disabled ||
+            this.state.validRefChecksRemaining > 0
+        ){
             this.updateDisabledState();
         }
     }
@@ -363,12 +371,24 @@ class ViewportPositioner extends Foundation<
     private updateDisabledState = (): void => {
         if (
             !canUseDOM() ||
-            this.props.disabled === true ||
-            this.getAnchorElement() === null
+            this.props.disabled === true
         ) {
             this.disable();
             return;
         }
+
+        if (
+            this.getAnchorElement() === null ||
+            this.getViewportElement() === null
+        ){
+            if(this.state.validRefChecksRemaining > 0){
+                this.setState({
+                    validRefChecksRemaining: this.state.validRefChecksRemaining - 1,
+                });
+                return;
+            }
+        }
+
         this.enableComponent();
     };
 
@@ -397,6 +417,7 @@ class ViewportPositioner extends Foundation<
         this.setState({
             disabled: false,
             noObserverMode: false,
+            validRefChecksRemaining: 0,
         });
 
         this.collisionDetector = new (window as WindowWithIntersectionObserver).IntersectionObserver(
@@ -426,14 +447,6 @@ class ViewportPositioner extends Foundation<
         const viewPortElement: HTMLElement = this.getViewportElement();
         const anchorElement: HTMLElement = this.getAnchorElement();
 
-        if (
-            isNil(viewPortElement) ||
-            isNil(anchorElement) ||
-            isNil(this.rootElement.current)
-        ) {
-            return;
-        }
-
         this.positionerRect = this.rootElement.current.getBoundingClientRect();
         this.viewportRect = viewPortElement.getBoundingClientRect();
         const anchorRect: ClientRect | DOMRect = anchorElement.getBoundingClientRect();
@@ -448,9 +461,12 @@ class ViewportPositioner extends Foundation<
         this.updatePositionerOffset();
 
         this.setState({
+            validRefChecksRemaining: 0,
             disabled: false,
             noObserverMode: true,
         });
+
+        this.requestFrame();
     };
 
     /**
@@ -462,34 +478,36 @@ class ViewportPositioner extends Foundation<
         }
         this.setState({
             disabled: true,
+            validRefChecksRemaining: 0,
         });
+       
+        if (
+            this.collisionDetector &&
+            typeof this.collisionDetector.disconnect === "function"
+        ) {
+            this.collisionDetector.unobserve(this.rootElement.current);
+            this.collisionDetector.unobserve(this.getAnchorElement());
+            this.collisionDetector.disconnect();
+            this.collisionDetector = null;
+        }
 
-        if (!this.state.noObserverMode) {
-            if (
-                this.collisionDetector &&
-                typeof this.collisionDetector.disconnect === "function"
-            ) {
-                this.collisionDetector.unobserve(this.rootElement.current);
-                this.collisionDetector.unobserve(this.getAnchorElement());
-                this.collisionDetector.disconnect();
-                this.collisionDetector = null;
-            }
-
-            // TODO #1142 https://github.com/Microsoft/fast-dna/issues/1142
-            // Full browser support imminent
-            // Revisit usage once Safari and Firefox adapt
-            // https://bugzilla.mozilla.org/show_bug.cgi?id=1272409
-            // https://bugs.webkit.org/show_bug.cgi?id=157743
-            if (
-                this.resizeDetector &&
-                typeof this.resizeDetector.disconnect === "function"
-            ) {
-                this.resizeDetector.unobserve(this.getAnchorElement());
-                this.resizeDetector.disconnect();
-                this.resizeDetector = null;
-            }
-
-            this.getViewportElement().removeEventListener("scroll", this.handleScroll);
+        // TODO #1142 https://github.com/Microsoft/fast-dna/issues/1142
+        // Full browser support imminent
+        // Revisit usage once Safari and Firefox adapt
+        // https://bugzilla.mozilla.org/show_bug.cgi?id=1272409
+        // https://bugs.webkit.org/show_bug.cgi?id=157743
+        if (
+            this.resizeDetector &&
+            typeof this.resizeDetector.disconnect === "function"
+        ) {
+            this.resizeDetector.unobserve(this.getAnchorElement());
+            this.resizeDetector.disconnect();
+            this.resizeDetector = null;
+        }
+        
+        const viewPortElement: HTMLElement = this.getViewportElement();
+        if (!isNil(viewPortElement)){
+            viewPortElement.removeEventListener("scroll", this.handleScroll);
         }
     };
 
@@ -1077,7 +1095,7 @@ class ViewportPositioner extends Foundation<
      * Request's an animation frame if there are currently no open animation frame requests
      */
     private requestFrame = (): void => {
-        if (this.openRequestAnimationFrame === null && !this.state.disabled) {
+        if (this.openRequestAnimationFrame === null) {
             this.openRequestAnimationFrame = window.requestAnimationFrame(
                 this.updateLayout
             );

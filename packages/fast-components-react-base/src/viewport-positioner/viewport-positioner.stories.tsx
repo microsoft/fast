@@ -1,46 +1,58 @@
 import { storiesOf } from "@storybook/react";
 import React from "react";
 import ViewportPositioner from "./";
+import { AxisPositioningMode } from "./viewport-positioner.props";
+import Foundation from "@microsoft/fast-components-foundation-react";
 
-const viewportElement: React.RefObject<HTMLDivElement> = React.createRef<
-    HTMLDivElement
->();
 const anchorElement: React.RefObject<HTMLDivElement> = React.createRef<
-    HTMLDivElement
+HTMLDivElement
+>();
+
+const rootElement: React.RefObject<HTMLDivElement> = React.createRef<
+HTMLDivElement
 >();
 
 storiesOf("Viewport Positioner", module)
     .add("Default", () => (
         <div
-            id="view"
+            ref={rootElement}
             style={{
-                position: "relative",
-                height: "1000px",
-                width: "1000px",
-                padding: "100px",
-                background: "blue"
+                height: "400px",
+                width: "400px",
+                overflow: "scroll"
             }}
         >
             <div
-                ref={anchorElement}
                 style={{
-                    height: "100px",
-                    width: "100px",
-                    background: "green"
+                    height: "600px",
+                    width: "600px",
+                    padding: "250px",
+                    background: "blue",
                 }}
             >
-                Anchor
+                <div
+                    ref={anchorElement}
+                    style={{
+                        height: "100px",
+                        width: "100px",
+                        background: "green",
+                    }}
+                >
+                    Anchor
+            </div>
             </div>
             <ViewportPositioner
-                viewport={viewportElement}
-                anchor={anchorElement}
-                style={{
-                    height: "100px",
-                    width: "100px",
-                    background: "yellow"
-                }}
-            >
-                Positioner
+                    verticalPositioningMode={AxisPositioningMode.adjacent}
+                    horizontalPositioningMode={AxisPositioningMode.adjacent}
+                    anchor={anchorElement}
+                    viewport={rootElement}
+                    style={{
+                        height: "100px",
+                        width: "100px",
+                        background: "yellow"
+                    }}
+                >
+                    Positioner
             </ViewportPositioner>
         </div>
-));
+    ));
