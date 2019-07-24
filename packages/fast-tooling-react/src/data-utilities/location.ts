@@ -166,7 +166,10 @@ export function getDataLocationsOfPlugins(
                             : `${schemaLocation}.${typeKeyword}`
                     }`
                 ) === DataType.children;
-            const childrenProps: any = get(data, `${normalizedDataLocation}.${propsKeyword}`);
+            const childrenProps: any = get(
+                data,
+                `${normalizedDataLocation}.${propsKeyword}`
+            );
             const isNotAnArrayOfChildren: boolean =
                 (isChildComponent &&
                     (typeof childrenProps !== "undefined" ||
