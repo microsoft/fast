@@ -67,7 +67,7 @@ import syntaxHighlighterStyles from "./syntax-highlighting-style";
 import { childOptions, history, menu } from "./config";
 import * as componentViewConfigs from "./utilities/configs";
 import { Scenario } from "./utilities/configs/data.props";
-import { MemoizedFunction } from "lodash";
+import { MemoizedFunction, uniqueId } from "lodash";
 import { Direction, format } from "@microsoft/fast-web-utilities";
 import {
     ColorHSL,
@@ -167,8 +167,6 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
 
         this.resolveSchemaById = memoize(this.getSchemaById);
 
-        const paletteSource: ColorRGBA64 | null = parseColor(light);
-
         this.state = {
             dataLocation: "",
             width: defaultDevices[0].width ? defaultDevices[0].width : 500,
@@ -217,6 +215,7 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
                                             )}
                                         >
                                             {this.renderScenarioSelect()}
+                                            {this.renderAccentColorPicker()}
                                             {this.renderDirectionToggle()}
                                             {this.renderThemeToggle()}
                                         </div>
@@ -294,15 +293,38 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
         }
     }
 
-    private renderDirectionToggle(): React.ReactNode {
+    private renderAccentColorPicker(): React.ReactNode {
+        const id: string = uniqueId("accent-color-picker");
         return (
             <div
                 className={get(this.props, "managedClasses.explorer_viewerControlRegion")}
             >
-                <Label jssStyleSheet={this.labelStyleOverrides}>RTL</Label>
+                <Label jssStyleSheet={this.labelStyleOverrides} htmlFor={id}>
+                    Accent color
+                </Label>
+                <input
+                    type={"color"}
+                    id={id}
+                    className={get(this.props, "managedClasses.explorer_colorPicker")}
+                    value={this.state.viewConfig.accentBaseColor}
+                    onChange={this.handleAccentColorPickerChange}
+                />
+            </div>
+        );
+    }
+
+    private renderDirectionToggle(): React.ReactNode {
+        const id: string = uniqueId("direction");
+        return (
+            <div
+                className={get(this.props, "managedClasses.explorer_viewerControlRegion")}
+            >
+                <Label jssStyleSheet={this.labelStyleOverrides} htmlFor={id}>
+                    RTL
+                </Label>
                 <Toggle
                     jssStyleSheet={this.toggleStyleOverrides}
-                    inputId={"direction"}
+                    inputId={id}
                     onClick={this.handleUpdateDirection}
                     selectedMessage={""}
                     unselectedMessage={""}
@@ -313,14 +335,17 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
     }
 
     private renderThemeToggle(): React.ReactNode {
+        const id: string = uniqueId("theme");
         return (
             <div
                 className={get(this.props, "managedClasses.explorer_viewerControlRegion")}
             >
-                <Label jssStyleSheet={this.labelStyleOverrides}>Dark mode</Label>
+                <Label jssStyleSheet={this.labelStyleOverrides} htmlFor={id}>
+                    Dark mode
+                </Label>
                 <Toggle
                     jssStyleSheet={this.toggleStyleOverrides}
-                    inputId={"theme"}
+                    inputId={id}
                     onClick={this.handleUpdateTheme}
                     selectedMessage={""}
                     unselectedMessage={""}
@@ -573,6 +598,25 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
                 neutralPalette: this.getNeutralPalette(updatedThemeColor),
             }),
         });
+    };
+
+    /**
+     * Event handler for all color input changes
+     */
+    private handleAccentColorPickerChange = (
+        e: React.FormEvent<HTMLInputElement>
+    ): void => {
+        const value: string = e.currentTarget.value;
+        const accentPaletteSource: ColorRGBA64 | null = parseColor(value);
+        if (accentPaletteSource !== null) {
+            const palette: any = createColorPalette(accentPaletteSource);
+            this.setState({
+                viewConfig: merge({}, this.state.viewConfig, {
+                    accentBaseColor: value.toUpperCase(),
+                    accentPalette: palette,
+                }),
+            });
+        }
     };
 }
 
