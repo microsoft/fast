@@ -21,7 +21,7 @@ export default {
         circular: {
             title: "Circular",
             type: "boolean",
-            default: "false",
+            default: false,
         },
         size: {
             title: "Circular progress size",
