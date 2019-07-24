@@ -28,6 +28,7 @@ const styles: ComponentStyles<DialogClassNameContract, DesignSystem> = (
             bottom: "0",
             left: "0",
             right: "0",
+            overflow: "auto",
         },
         dialog_modalOverlay: {
             position: "fixed",
