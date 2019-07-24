@@ -245,7 +245,7 @@ class AutoSuggest extends Foundation<
             this.setState({
                 focusedItem: newSelection[0],
             });
-            this.updateValue(newSelection[0].value);
+            this.updateValue(newSelection[0].value, true);
         }
     };
 
@@ -281,15 +281,15 @@ class AutoSuggest extends Foundation<
      */
     private handleChange = (e: React.ChangeEvent): void => {
         const newValue: string = (e.target as HTMLInputElement).value;
-        this.updateValue(newValue);
+        this.updateValue(newValue, false);
     };
 
     /**
      * Update the currentValue of the component
      */
-    private updateValue = (newValue: string): void => {
+    private updateValue = (newValue: string, isFromSuggestedOption: boolean): void => {
         if (typeof this.props.onValueChange === "function") {
-            this.props.onValueChange(newValue);
+            this.props.onValueChange(newValue, isFromSuggestedOption);
         }
 
         if (this.props.value !== undefined || newValue !== this.state.value) {
@@ -330,7 +330,7 @@ class AutoSuggest extends Foundation<
             default:
                 if (e.target instanceof HTMLInputElement) {
                     const newValue: string = (e.target as HTMLInputElement).value;
-                    this.updateValue(newValue);
+                    this.updateValue(newValue, false);
                     this.focusOnInput();
                     break;
                 }
