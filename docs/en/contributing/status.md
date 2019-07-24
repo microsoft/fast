@@ -24,6 +24,6 @@ This page can be used to display the health of FAST-DNA systems.
 
 | Staging | Production |
 |--|--|
-|[![Build status](https://vsrm.dev.azure.com/edgewebui/_apis/public/Release/badge/db5c5831-7b32-4ef1-9e7d-205361d49e08/2/2)](https://explore-stage.fastdna.net) |[![Build Status](https://vsrm.dev.azure.com/edgewebui/_apis/public/Release/badge/db5c5831-7b32-4ef1-9e7d-205361d49e08/2/3)](https://explore.fastdna.net) |
-| https://explore-stage.fastdna.net | https://explore.fastdna.net | 
+|[![Build status](https://vsrm.dev.azure.com/edgewebui/_apis/public/Release/badge/db5c5831-7b32-4ef1-9e7d-205361d49e08/2/2)](https://explore-stage.azurewebsites.net) |[![Build Status](https://vsrm.dev.azure.com/edgewebui/_apis/public/Release/badge/db5c5831-7b32-4ef1-9e7d-205361d49e08/2/3)](https://explore.fast.design) |
+| https://explore-stage.azurewebsites.net | https://explore.fast.design | 
 * Automatically released after commit to master | * Manually released after design approval
