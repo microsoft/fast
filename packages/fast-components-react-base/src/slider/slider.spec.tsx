@@ -615,6 +615,64 @@ describe("Slider", (): void => {
         document.body.removeChild(container);
     });
 
+    test("valuetextStringFormatter gets called and applied", (): void => {
+        const container: HTMLDivElement = document.createElement("div");
+        document.body.appendChild(container);
+        const valueFormatterFn: any = jest.fn();
+        valueFormatterFn.mockReturnValue("test Value");
+
+        const rendered: any = mount(
+            <Slider
+                range={{
+                    minValue: 0,
+                    maxValue: 100,
+                }}
+                mode={SliderMode.adustUpperValue}
+                managedClasses={managedClasses}
+                valuetextStringFormatter={valueFormatterFn}
+            />,
+            {
+                attachTo: container,
+            }
+        );
+
+        expect(valueFormatterFn).toHaveBeenCalledTimes(1);
+        const thumb: any = rendered.find(`.${managedClasses.slider_thumb__upperValue}`);
+        expect(thumb.prop("aria-valuetext")).toBe("test Value");
+
+        document.body.removeChild(container);
+    });
+
+    test("displayValueConverter gets called", (): void => {
+        const container: HTMLDivElement = document.createElement("div");
+        document.body.appendChild(container);
+        const displayValueConverterFn: any = jest.fn();
+        displayValueConverterFn.mockReturnValue(1000);
+
+        const rendered: any = mount(
+            <Slider
+                range={{
+                    minValue: 0,
+                    maxValue: 100,
+                }}
+                mode={SliderMode.adustUpperValue}
+                managedClasses={managedClasses}
+                displayValueConverter={displayValueConverterFn}
+            />,
+            {
+                attachTo: container,
+            }
+        );
+
+        expect(displayValueConverterFn).toHaveBeenCalledTimes(3);
+        const thumb: any = rendered.find(`.${managedClasses.slider_thumb__upperValue}`);
+        expect(thumb.prop("aria-valuenow")).toBe(1000);
+        expect(thumb.prop("aria-valuemin")).toBe(1000);
+        expect(thumb.prop("aria-valuemax")).toBe(1000);
+
+        document.body.removeChild(container);
+    });
+
     // tslint:disable-next-line:no-shadowed-variable
     window.removeEventListener = jest.fn((event: string, callback: any) => {
         map[event] = callback;
