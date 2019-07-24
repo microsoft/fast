@@ -13,10 +13,10 @@ configure({ adapter: new Adapter() });
 
 const managedClasses: ProgressClassNameContract = {
     progress: "progress-class",
-    progress_circular: "progress_circular-class",
-    progress_circular__control: "progressCircular__control-class",
-    progress_circular__container: "progressCircular__container-class",
-    progress_circular__page: "progressCircular__page-class",
+    progress__circular: "progress__circular-class",
+    progress_circularSVG__control: "progress_circularSVG__control-class",
+    progress_circularSVG__container: "progress_circularSVG__container-class",
+    progress_circularSVG__page: "progress_circularSVG__page-class",
     progress_valueIndicator: "progress_valueIndicator-class",
     progress_valueIndicator__indeterminate:
         "progress_valueIndicator__indeterminate-class",
@@ -45,7 +45,7 @@ describe("progress", (): void => {
             <MSFTProgress managedClasses={managedClasses} circular={true} />
         );
 
-        expect(rendered.exists("div.progress_circular-class")).toBe(true);
+        expect(rendered.exists("div.progress__circular-class")).toBe(true);
     });
 
     test("should use not use interdeterminate class names when value prop is set", () => {

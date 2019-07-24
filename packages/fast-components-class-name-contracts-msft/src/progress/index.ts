@@ -5,24 +5,24 @@ import { ProgressClassNameContract as BaseProgressClassNameContract } from "@mic
  */
 export interface ProgressClassNameContract extends BaseProgressClassNameContract {
     /**
-     * The root of the circular progress component
+     * The root progress circular modifier
      */
-    progress_circular?: string;
+    progress__circular?: string;
 
     /**
      * The progress size control modifier
      */
-    progress_circular__control: string;
+    progress_circularSVG__control: string;
 
     /**
      * The progress size container modifier
      */
-    progress_circular__container: string;
+    progress_circularSVG__container: string;
 
     /**
      * The progress size page modifier
      */
-    progress_circular__page: string;
+    progress_circularSVG__page: string;
 
     /**
      * The progress value indicator

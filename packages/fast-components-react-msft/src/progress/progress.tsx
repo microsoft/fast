@@ -60,7 +60,7 @@ class Progress extends Foundation<ProgressHandledProps, ProgressUnhandledProps, 
         let className: string = get(this.props.managedClasses, "progress", "");
 
         if (this.props.circular) {
-            className = get(this.props.managedClasses, "progress_circular", "");
+            className = get(this.props.managedClasses, "progress__circular", "");
         }
 
         return super.generateClassNames(className);
@@ -86,8 +86,8 @@ class Progress extends Foundation<ProgressHandledProps, ProgressUnhandledProps, 
 
     private generateSVGClassNames(): string {
         const className: string = this.props.size
-            ? get(this.props.managedClasses, `progress_circular__${this.props.size}`, "")
-            : get(this.props.managedClasses, "progress_circular__container", "");
+            ? get(this.props.managedClasses, `progress_circularSVG__${this.props.size}`, "")
+            : get(this.props.managedClasses, "progress_circularSVG__container", "");
 
         return className;
     }

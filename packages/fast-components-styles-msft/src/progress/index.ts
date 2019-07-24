@@ -17,7 +17,7 @@ const styles: ComponentStyles<ProgressClassNameContract, DesignSystem> = {
         height: toPx<DesignSystem>(designUnit),
         textAlign: "left",
     },
-    progress_circular: {
+    progress__circular: {
         height: "unset",
         "& $progress_valueIndicator": {
             fill: "none",
@@ -44,15 +44,15 @@ const styles: ComponentStyles<ProgressClassNameContract, DesignSystem> = {
             transition: "all 0.2s ease-in-out",
         },
     },
-    progress_circular__control: {
+    progress_circularSVG__control: {
         height: glyphSize,
         width: glyphSize,
     },
-    progress_circular__container: {
+    progress_circularSVG__container: {
         height: height(),
         width: height(),
     },
-    progress_circular__page: {
+    progress_circularSVG__page: {
         height: toPx(multiply(heightNumber(), 2)),
         width: toPx(multiply(heightNumber(), 2)),
     },
