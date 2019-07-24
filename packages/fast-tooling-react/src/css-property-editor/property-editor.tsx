@@ -120,7 +120,7 @@ export default class CSSPropertyEditor extends Foundation<
                 rowIndex={index}
                 onValueChange={this.handleValueChange}
                 onPropertyNameChange={this.handleKeyChange}
-                onClickOutside={this.handleClickToInsert}
+                onClickOutside={this.handleClickOutside}
                 onCommitPropertyNameEdit={this.handleCommitKeyEdit}
                 onRowBlur={this.handleRowBlur}
                 onRowFocus={this.handleRowFocus}
@@ -283,7 +283,7 @@ export default class CSSPropertyEditor extends Foundation<
     /**
      * Clicks on a row outside the inputs add a row following that row
      */
-    private handleClickToInsert = (rowKey: string, rowIndex: number): void => {
+    private handleClickOutside = (rowKey: string, rowIndex: number): void => {
         this.createRow(rowIndex + 1);
     };
 
@@ -294,7 +294,13 @@ export default class CSSPropertyEditor extends Foundation<
         if (e.defaultPrevented) {
             return;
         }
-        this.createRow(Object.keys(this.editData).length);
+
+        this.createRow(
+            !isNil(this.propertyEditorRef.current) &&
+            e.nativeEvent.offsetY < this.propertyEditorRef.current.clientHeight / 2
+                ? 0
+                : Object.keys(this.editData).length
+        );
     };
 
     /**
