@@ -39,6 +39,7 @@ const styles: ComponentStyles<
         },
         selectDevice_select: {
             ...applySelectInputStyles(),
+            paddingRight: "15px",
         },
     };
 };
