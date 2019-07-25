@@ -24,6 +24,7 @@ export default class CSSPropertyEditorRow extends Foundation<
         onPropertyNameChange: void 0,
         onValueChange: void 0,
         onClickOutside: void 0,
+        onValueInputEnter: void 0,
         onCommitPropertyNameEdit: void 0,
         onRowFocus: void 0,
         onRowBlur: void 0,
@@ -76,7 +77,7 @@ export default class CSSPropertyEditorRow extends Foundation<
                     onChange={this.handleNameInputChange}
                     onBlur={this.handleNameInputBlur}
                     onFocus={this.handleFocus}
-                    onKeyDown={this.handleNameInputKeyDown}
+                    onKeyDown={this.handleKeyInputKeyDown}
                     value={spinalCase(this.props.cssPropertyName)}
                     style={{
                         width: `${this.getMonospaceInputWidth(
@@ -92,6 +93,7 @@ export default class CSSPropertyEditorRow extends Foundation<
                     onChange={this.handleValueInputChange}
                     onBlur={this.handleValueInputBlur}
                     onFocus={this.handleFocus}
+                    onKeyDown={this.handleValueInputKeyDown}
                     value={this.props.value}
                     style={{
                         width: `${this.getMonospaceInputWidth(this.props.value)}px`,
@@ -213,12 +215,29 @@ export default class CSSPropertyEditorRow extends Foundation<
     /**
      * Handle key presses on key input
      */
-    private handleNameInputKeyDown = (e: React.KeyboardEvent): void => {
+    private handleKeyInputKeyDown = (e: React.KeyboardEvent): void => {
         if (e.keyCode !== KeyCodes.enter) {
             return;
         }
         e.preventDefault();
         this.props.onCommitPropertyNameEdit(
+            this.props.cssPropertyName,
+            this.props.rowIndex
+        );
+        if (!isNil(this.valueInputRef.current)){
+            this.valueInputRef.current.focus();
+        }
+    };
+
+    /**
+     * Handle key presses on key input
+     */
+    private handleValueInputKeyDown = (e: React.KeyboardEvent): void => {
+        if (e.keyCode !== KeyCodes.enter) {
+            return;
+        }
+        e.preventDefault();
+        this.props.onValueInputEnter(
             this.props.cssPropertyName,
             this.props.rowIndex
         );
