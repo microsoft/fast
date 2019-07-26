@@ -85,7 +85,6 @@ const style: ComponentStyles<ExplorerClassNameContract, DesignSystem> = {
         padding: "0 10px",
         height: "32px",
         display: "flex",
-        verticalAlign: "middle",
         alignItems: "center",
         background: neutralLayerL2,
         justifyContent: "flex-end",
