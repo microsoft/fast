@@ -28,6 +28,9 @@ export { captionConfig };
 import cardConfig from "./card";
 export { cardConfig };
 
+import carouselConfig from "./carousel";
+export { carouselConfig };
+
 import checkboxConfig from "./checkbox";
 export { checkboxConfig };
 
@@ -66,6 +69,9 @@ export { numberFieldConfig };
 
 import paragraphConfig from "./paragraph";
 export { paragraphConfig };
+
+import pivotConfig from "./pivot";
+export { pivotConfig };
 
 import progressConfig from "./progress";
 export { progressConfig };
