@@ -28,6 +28,9 @@ export { captionConfig };
 import cardConfig from "./card";
 export { cardConfig };
 
+import carouselConfig from "./carousel";
+export { carouselConfig };
+
 import checkboxConfig from "./checkbox";
 export { checkboxConfig };
 
