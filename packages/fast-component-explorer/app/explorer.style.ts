@@ -8,6 +8,7 @@ import {
     neutralFillRest,
     neutralLayerL2,
     neutralLayerL3,
+    accentForegroundRest,
 } from "@microsoft/fast-components-styles-msft";
 import { format } from "@microsoft/fast-jss-utilities";
 
@@ -60,6 +61,9 @@ const style: ComponentStyles<ExplorerClassNameContract, DesignSystem> = {
             "0px 0.6px 1.8px rgba(0, 0, 0, 0.11) inset, 0px 3.2px 7.2px rgba(0, 0, 0, 0.13) inset",
         width: "100%",
         overflow: "auto",
+        "& a": {
+            color: accentForegroundRest(neutralLayerL2),
+        },
     },
     explorer_navigationPanel: {
         overflowY: "auto",
