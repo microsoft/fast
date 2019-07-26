@@ -6,13 +6,11 @@ import {
     carouselSchema,
     CarouselSlide,
     CarouselSlideTheme,
+    imageSchema,
 } from "@microsoft/fast-components-react-msft";
 import { uniqueId } from "lodash-es";
-import {
-    carouselDarkImageContentSchema,
-    carouselHeroContentSchema,
-    carouselLightImageContentSchema,
-} from "../../components/carousel";
+import { carouselHeroContentSchema } from "../../components/carousel";
+import { groupSchema } from "../../../app/components/group";
 import Guidance from "../../.tmp/carousel/guidance";
 
 const heroContentProps: object = {
@@ -37,10 +35,15 @@ const heroContentProps: object = {
 
 const darkImageProps: object = {
     props: {
-        image: {
-            src: "http://placehold.it/1399x600/2F2F2F/171717",
-            alt: "Placeholder image",
-        },
+        src: "http://placehold.it/1399x600/2F2F2F/171717",
+        alt: "Placeholder image",
+    },
+};
+
+const lightImageProps: object = {
+    props: {
+        src: "http://placehold.it/1399x600/DDD/222",
+        alt: "Placeholder image",
     },
 };
 
@@ -55,19 +58,24 @@ const defaultTabItems: CarouselSlide[] = [
     },
     {
         content: {
-            id: carouselDarkImageContentSchema.id,
-            ...darkImageProps,
+            id: groupSchema.id,
+            props: {
+                children: {
+                    id: imageSchema.id,
+                    ...darkImageProps,
+                },
+            },
         } as any,
         id: uniqueId(),
         theme: CarouselSlideTheme.dark,
     },
     {
         content: {
-            id: carouselLightImageContentSchema.id,
+            id: groupSchema.id,
             props: {
-                image: {
-                    src: "http://placehold.it/1399x600/DDD/222",
-                    alt: "Placeholder image",
+                children: {
+                    id: imageSchema.id,
+                    ...lightImageProps,
                 },
             },
         } as any,
@@ -76,8 +84,13 @@ const defaultTabItems: CarouselSlide[] = [
     },
     {
         content: {
-            id: carouselDarkImageContentSchema.id,
-            ...darkImageProps,
+            id: groupSchema.id,
+            props: {
+                children: {
+                    id: imageSchema.id,
+                    ...darkImageProps,
+                },
+            },
         } as any,
         id: uniqueId(),
         theme: CarouselSlideTheme.dark,
