@@ -481,6 +481,7 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
         return scenarioOptions.map((scenarioOption: Scenario<any>, index: number) => {
             return (
                 <SelectOption
+                    key={index}
                     id={scenarioOption.displayName}
                     displayString={scenarioOption.displayName}
                     value={`${index}`}
