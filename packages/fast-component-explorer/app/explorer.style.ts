@@ -1,5 +1,6 @@
 import { ComponentStyles } from "@microsoft/fast-jss-manager-react";
 import {
+    accentForegroundRest,
     applyCornerRadius,
     DesignSystem,
     neutralDividerRest,
@@ -8,7 +9,6 @@ import {
     neutralFillRest,
     neutralLayerL2,
     neutralLayerL3,
-    accentForegroundRest,
 } from "@microsoft/fast-components-styles-msft";
 import { format } from "@microsoft/fast-jss-utilities";
 
