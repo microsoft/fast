@@ -32,6 +32,7 @@ const styles: ComponentStyles<CSSPropertyEditorClassNameContract, {}> = {
             content: "'{'",
         },
         "&::after": {
+            display: "block",
             content: "'}'",
         },
     },
