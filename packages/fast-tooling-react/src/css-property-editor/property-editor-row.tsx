@@ -224,7 +224,7 @@ export default class CSSPropertyEditorRow extends Foundation<
             this.props.cssPropertyName,
             this.props.rowIndex
         );
-        if (!isNil(this.valueInputRef.current)){
+        if (!isNil(this.valueInputRef.current)) {
             this.valueInputRef.current.focus();
         }
     };

@@ -60,7 +60,11 @@ export interface CSSPropertyEditorRowHandledProps
     /**
      *  Enter key press on value edit input
      */
-    onValueInputKeyDown: (rowKey: string, rowIndex: number, event: React.KeyboardEvent) => void;
+    onValueInputKeyDown: (
+        rowKey: string,
+        rowIndex: number,
+        event: React.KeyboardEvent
+    ) => void;
 }
 
 export type CSSPropertyEditorRowProps = CSSPropertyEditorRowHandledProps &

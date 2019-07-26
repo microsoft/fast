@@ -19,7 +19,7 @@ export default class CSSPropertyEditor extends Foundation<
     CSSPropertyEditorHandledProps,
     CSSPropertyEditorUnhandledProps,
     CSSPropertyEditorState
-    > {
+> {
     public static displayName: string = "CSSPropertyEditor";
     public static newRowKey: string = "newCSSEditorRow";
 
@@ -45,7 +45,9 @@ export default class CSSPropertyEditor extends Foundation<
         this.newRowKeyCounter = 0;
         this.activeEditRowReactKey = null;
         this.editData = isNil(this.props.data) ? {} : Object.assign({}, this.props.data);
-        this.submittedEditData = isNil(this.props.data) ? {} : Object.assign({}, this.props.data);
+        this.submittedEditData = isNil(this.props.data)
+            ? {}
+            : Object.assign({}, this.props.data);
         this.state = {
             activeRowUncommittedCSSName: null,
         };
@@ -112,7 +114,7 @@ export default class CSSPropertyEditor extends Foundation<
 
         const editKey: string =
             this.activeEditRowIndex === index &&
-                this.state.activeRowUncommittedCSSName !== null
+            this.state.activeRowUncommittedCSSName !== null
                 ? this.state.activeRowUncommittedCSSName
                 : cssKey;
 
@@ -182,7 +184,7 @@ export default class CSSPropertyEditor extends Foundation<
         }
         this.activeEditRowReactKey = `${CSSPropertyEditor.newRowKey}${
             this.newRowKeyCounter
-            }`;
+        }`;
         return this.activeEditRowReactKey;
     };
 
@@ -306,7 +308,7 @@ export default class CSSPropertyEditor extends Foundation<
 
         this.createRow(
             !isNil(this.propertyEditorRef.current) &&
-                e.nativeEvent.offsetY < this.propertyEditorRef.current.clientHeight / 2
+            e.nativeEvent.offsetY < this.propertyEditorRef.current.clientHeight / 2
                 ? 0
                 : Object.keys(this.editData).length
         );
@@ -315,7 +317,11 @@ export default class CSSPropertyEditor extends Foundation<
     /**
      * key was pressed on value editor input
      */
-    private handleValueInputKeyDown = (rowKey: string, rowIndex: number, event: React.KeyboardEvent): void => {
+    private handleValueInputKeyDown = (
+        rowKey: string,
+        rowIndex: number,
+        event: React.KeyboardEvent
+    ): void => {
         const rowCount: number = Object.keys(this.editData).length;
         switch (event.keyCode) {
             case KeyCodes.enter:
@@ -341,7 +347,6 @@ export default class CSSPropertyEditor extends Foundation<
                     event.preventDefault();
                 }
                 return;
-
         }
     };
 
@@ -349,14 +354,15 @@ export default class CSSPropertyEditor extends Foundation<
      * Focus on the key input of the next row
      */
     private focusOnRow = (index: number): void => {
-        const rows: Element[] = this.domChildren((this.propertyEditorRef.current as HTMLElement).firstElementChild as HTMLElement);
+        const rows: Element[] = this.domChildren((this.propertyEditorRef
+            .current as HTMLElement).firstElementChild as HTMLElement);
         if (rows.length < index + 1) {
             return;
         }
         const focusRow: HTMLElement = rows[index] as HTMLElement;
         const focusInput: HTMLElement = this.domChildren(focusRow)[0] as HTMLElement;
         focusInput.focus();
-    }
+    };
 
     /**
      * Return an array of all elements that are children
@@ -381,9 +387,11 @@ export default class CSSPropertyEditor extends Foundation<
      */
     private createRow = (insertionIndex: number): void => {
         if (this.activeEditRowIndex !== -1) {
-            const activeRowKey: string = Object.keys(this.editData)[this.activeEditRowIndex];
+            const activeRowKey: string = Object.keys(this.editData)[
+                this.activeEditRowIndex
+            ];
             const activeRowIndex: number = this.activeEditRowIndex;
-            this.handleRowBlur(activeRowKey, this.activeEditRowIndex)
+            this.handleRowBlur(activeRowKey, this.activeEditRowIndex);
             // if the active row was delected we may need to adjust the insertion index
             if (
                 Object.keys(this.editData).indexOf(activeRowKey) === -1 &&
