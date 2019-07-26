@@ -70,6 +70,9 @@ export { numberFieldConfig };
 import paragraphConfig from "./paragraph";
 export { paragraphConfig };
 
+import pivotConfig from "./pivot";
+export { pivotConfig };
+
 import progressConfig from "./progress";
 export { progressConfig };
 

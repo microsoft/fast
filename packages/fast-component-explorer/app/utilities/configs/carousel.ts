@@ -10,10 +10,10 @@ import {
 import { uniqueId } from "lodash-es";
 import {
     carouselDarkImageContentSchema,
-    carouselLightImageContentSchema,
     carouselHeroContentSchema,
+    carouselLightImageContentSchema,
 } from "../../components/carousel";
-import Guidance from "../../.tmp/checkbox/guidance";
+import Guidance from "../../.tmp/carousel/guidance";
 
 const heroContentProps: object = {
     props: {
@@ -44,7 +44,7 @@ const darkImageProps: object = {
     },
 };
 
-const defaultTabItem: CarouselSlide[] = [
+const defaultTabItems: CarouselSlide[] = [
     {
         content: {
             id: carouselHeroContentSchema.id,
@@ -101,7 +101,7 @@ const carouselConfig: ComponentViewConfig<CarouselProps> = {
             displayName: "Default",
             data: {
                 label: "A carousel of items",
-                items: defaultTabItem,
+                items: defaultTabItems,
                 autoplay: true,
             },
         },
