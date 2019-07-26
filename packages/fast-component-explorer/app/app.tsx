@@ -1,14 +1,13 @@
 import React from "react";
-import Dictionary from "./dictionary";
 import Explorer from "./explorer";
 import Preview from "./preview";
-import { history } from "./config";
-import { Route, Router } from "react-router-dom";
 import { DesignSystemProvider } from "@microsoft/fast-jss-manager-react";
 import {
     DesignSystem,
     DesignSystemDefaults,
 } from "@microsoft/fast-components-styles-msft";
+import { history, initialComponentRoute } from "./config";
+import { Redirect, Route, Router, Switch } from "react-router-dom";
 
 const creatorDesignSystem: DesignSystem = Object.assign({}, DesignSystemDefaults, {
     density: -2,
@@ -26,8 +25,7 @@ export default class App extends React.Component<{}, {}> {
     public render(): React.ReactNode {
         return (
             <Router history={history}>
-                <div>
-                    <Route component={Dictionary} exact={true} path="/" />
+                <Switch>
                     <DesignSystemProvider designSystem={creatorDesignSystem}>
                         <Route
                             component={Explorer}
@@ -36,7 +34,10 @@ export default class App extends React.Component<{}, {}> {
                         />
                     </DesignSystemProvider>
                     <Route component={Preview} exact={true} path="/preview" />
-                </div>
+                    <Route>
+                        <Redirect to={initialComponentRoute} />
+                    </Route>
+                </Switch>
             </Router>
         );
     }
