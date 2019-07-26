@@ -13,12 +13,13 @@ import {
 } from "./property-editor.props";
 import PropertyEditorRow from "./property-editor-row";
 import { canUseDOM } from "exenv-es6";
+import { KeyCodes } from "@microsoft/fast-web-utilities";
 
 export default class CSSPropertyEditor extends Foundation<
     CSSPropertyEditorHandledProps,
     CSSPropertyEditorUnhandledProps,
     CSSPropertyEditorState
-> {
+    > {
     public static displayName: string = "CSSPropertyEditor";
     public static newRowKey: string = "newCSSEditorRow";
 
@@ -111,7 +112,7 @@ export default class CSSPropertyEditor extends Foundation<
 
         const editKey: string =
             this.activeEditRowIndex === index &&
-            this.state.activeRowUncommittedCSSName !== null
+                this.state.activeRowUncommittedCSSName !== null
                 ? this.state.activeRowUncommittedCSSName
                 : cssKey;
 
@@ -125,7 +126,7 @@ export default class CSSPropertyEditor extends Foundation<
                 onPropertyNameChange={this.handleKeyChange}
                 onClickOutside={this.handleClickOutside}
                 onCommitPropertyNameEdit={this.handleCommitKeyEdit}
-                onValueInputEnter={this.handleValueInputEnter}
+                onValueInputKeyDown={this.handleValueInputKeyDown}
                 onRowBlur={this.handleRowBlur}
                 onRowFocus={this.handleRowFocus}
                 managedClasses={{
@@ -181,7 +182,7 @@ export default class CSSPropertyEditor extends Foundation<
         }
         this.activeEditRowReactKey = `${CSSPropertyEditor.newRowKey}${
             this.newRowKeyCounter
-        }`;
+            }`;
         return this.activeEditRowReactKey;
     };
 
@@ -305,26 +306,57 @@ export default class CSSPropertyEditor extends Foundation<
 
         this.createRow(
             !isNil(this.propertyEditorRef.current) &&
-            e.nativeEvent.offsetY < this.propertyEditorRef.current.clientHeight / 2
+                e.nativeEvent.offsetY < this.propertyEditorRef.current.clientHeight / 2
                 ? 0
                 : Object.keys(this.editData).length
         );
     };
 
     /**
-     * Enter key was pressed on value editor input
+     * key was pressed on value editor input
      */
-    private handleValueInputEnter = (rowKey: string, rowIndex: number): void => {
-        const rowCount: number = Object.keys(this.editData).length
-        if (rowIndex === rowCount- 1) {
-            this.createRow(rowCount);
-        } else {
-            const rows: Element[] = this.domChildren((this.propertyEditorRef.current as HTMLElement).firstElementChild as HTMLElement);
-            const focusRow: HTMLElement =  rows[rowIndex + 1] as HTMLElement;
-            const focusInput: HTMLElement = this.domChildren(focusRow)[0] as HTMLElement;
-            focusInput.focus();
+    private handleValueInputKeyDown = (rowKey: string, rowIndex: number, event: React.KeyboardEvent): void => {
+        const rowCount: number = Object.keys(this.editData).length;
+        switch (event.keyCode) {
+            case KeyCodes.enter:
+                if (rowIndex < rowCount - 1) {
+                    // focus on the next row
+                    this.focusOnRow(rowIndex + 1);
+                    event.preventDefault();
+                } else if (this.editData[rowKey] !== "") {
+                    // create a new row if the current one is valid
+                    this.createRow(rowCount);
+                    event.preventDefault();
+                }
+                return;
+
+            case KeyCodes.tab:
+                if (
+                    !event.shiftKey &&
+                    rowIndex === rowCount - 1 &&
+                    this.editData[rowKey] !== ""
+                ) {
+                    // create a new row if the current one is valid
+                    this.createRow(rowCount);
+                    event.preventDefault();
+                }
+                return;
+
         }
     };
+
+    /**
+     * Focus on the key input of the next row
+     */
+    private focusOnRow = (index: number): void => {
+        const rows: Element[] = this.domChildren((this.propertyEditorRef.current as HTMLElement).firstElementChild as HTMLElement);
+        if (rows.length < index + 1) {
+            return;
+        }
+        const focusRow: HTMLElement = rows[index] as HTMLElement;
+        const focusInput: HTMLElement = this.domChildren(focusRow)[0] as HTMLElement;
+        focusInput.focus();
+    }
 
     /**
      * Return an array of all elements that are children

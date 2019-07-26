@@ -24,7 +24,7 @@ export default class CSSPropertyEditorRow extends Foundation<
         onPropertyNameChange: void 0,
         onValueChange: void 0,
         onClickOutside: void 0,
-        onValueInputEnter: void 0,
+        onValueInputKeyDown: void 0,
         onCommitPropertyNameEdit: void 0,
         onRowFocus: void 0,
         onRowBlur: void 0,
@@ -233,13 +233,10 @@ export default class CSSPropertyEditorRow extends Foundation<
      * Handle key presses on key input
      */
     private handleValueInputKeyDown = (e: React.KeyboardEvent): void => {
-        if (e.keyCode !== KeyCodes.enter) {
-            return;
-        }
-        e.preventDefault();
-        this.props.onValueInputEnter(
+        this.props.onValueInputKeyDown(
             this.props.cssPropertyName,
-            this.props.rowIndex
+            this.props.rowIndex,
+            e
         );
     };
 }
