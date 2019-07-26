@@ -219,7 +219,7 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
                                         "managedClasses.explorer_paneTitleContainer"
                                     )}
                                 >
-                                    <Label>Creator</Label>
+                                    <Label>Component Explorer</Label>
                                 </div>
                                 <NavigationMenu
                                     menu={menu}
