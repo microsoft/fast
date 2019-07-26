@@ -1,5 +1,6 @@
 import { CSSRules } from "@microsoft/fast-jss-manager-react";
 import {
+    applyFocusVisible,
     Direction,
     ellipsis,
     localizeSpacing,
@@ -69,10 +70,10 @@ export function applyInteractiveFormItemIndicator(): CSSRules<{}> {
                 fill: accent,
             },
         },
-        "&:focus": {
+        ...applyFocusVisible({
             borderColor: accent,
             outline: "none",
-        },
+        }),
     };
 }
 
@@ -274,10 +275,10 @@ export function applyRemoveItemStyle(): CSSRules<{}> {
         height: "20px",
         zIndex: "1",
         borderRadius: "2px",
-        "&:focus": {
+        ...applyFocusVisible({
             ...insetStrongBoxShadow(accent),
             outline: "none",
-        },
+        }),
         "&::before": {
             position: "absolute",
             content: "''",
@@ -341,10 +342,10 @@ export function applySoftRemoveInput(): CSSRules<{}> {
         height: "20px",
         zIndex: "1",
         borderRadius: "2px",
-        "&:focus": {
+        ...applyFocusVisible({
             ...insetStrongBoxShadow(accent),
             outline: "none",
-        },
+        }),
         "& + svg": {
             fill: foreground800,
         },
