@@ -38,6 +38,9 @@ import {
     designUnit,
     height,
     horizontalSpacing,
+    neutralLayerL1,
+    neutralLayerL2,
+    neutralLayerL3,
 } from "@microsoft/fast-components-styles-msft";
 import {
     LabelClassNameContract,
@@ -113,6 +116,13 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
     > = {
         form: {
             height: "unset",
+            background: "unset",
+        },
+    };
+
+    private navigationMenuStyleOverrides: any = {
+        navigationMenu: {
+            background: "unset",
         },
     };
 
@@ -176,84 +186,106 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
             ),
             locationPathname,
             theme: ThemeName.light,
-            viewConfig: Object.assign({}, DesignSystemDefaults, {
-                direction: Direction.ltr,
-            }),
+            viewConfig: DesignSystemDefaults,
         };
     }
 
     public render(): React.ReactNode {
-        const explorerDesignSystem: DesignSystem = Object.assign(
-            {},
-            DesignSystemDefaults,
-            { density: -2 }
-        );
         return (
-            <DesignSystemProvider designSystem={explorerDesignSystem}>
-                <Background value={this.backgrounds.L1}>
-                    <Container className={get(this.props, "managedClasses.explorer")}>
-                        <Row style={{ flex: "1" }}>
-                            <Pane>
+            <Background value={neutralLayerL1}>
+                <Container className={get(this.props, "managedClasses.explorer")}>
+                    <Row style={{ flex: "1" }}>
+                        <Pane
+                            className={get(
+                                this.props,
+                                "managedClasses.explorer_navigationPanel"
+                            )}
+                            resizable={true}
+                            resizeFrom={PaneResizeDirection.east}
+                        >
+                            <Background value={neutralLayerL3} drawBackground={false}>
+                                <div
+                                    className={get(
+                                        this.props,
+                                        "managedClasses.explorer_paneTitleContainer"
+                                    )}
+                                >
+                                    <Label>Creator</Label>
+                                </div>
                                 <NavigationMenu
                                     menu={menu}
                                     expanded={true}
                                     onLocationUpdate={this.handleUpdateRoute}
+                                    jssStyleSheet={this.navigationMenuStyleOverrides}
                                 />
-                            </Pane>
-                            <Canvas jssStyleSheet={this.canvasStyleOverrides}>
-                                <Row fill={true}>
-                                    <div
-                                        className={get(
-                                            this.props,
-                                            "managedClasses.explorer_viewerRegion"
-                                        )}
-                                    >
-                                        <div
-                                            className={get(
-                                                this.props,
-                                                "managedClasses.explorer_viewerControls"
-                                            )}
-                                        >
-                                            {this.renderScenarioSelect()}
-                                            {this.renderAccentColorPicker()}
-                                            {this.renderDirectionToggle()}
-                                            {this.renderThemeToggle()}
-                                        </div>
-                                        {this.renderViewer()}
-                                    </div>
-                                </Row>
-                                <Row
-                                    resizable={true}
-                                    resizeFrom={RowResizeDirection.north}
-                                    initialHeight={400}
+                            </Background>
+                        </Pane>
+                        <Canvas jssStyleSheet={this.canvasStyleOverrides}>
+                            <Row fill={true}>
+                                <div
+                                    className={get(
+                                        this.props,
+                                        "managedClasses.explorer_viewerRegion"
+                                    )}
                                 >
                                     <Background
-                                        value={this.backgrounds.L4}
-                                        style={{ width: "100%" }}
+                                        value={neutralLayerL2}
+                                        className={get(
+                                            this.props,
+                                            "managedClasses.explorer_toolbar"
+                                        )}
                                     >
-                                        <Pivot
-                                            label={"documentation"}
-                                            items={this.renderPivotItems()}
-                                            jssStyleSheet={this.pivotStyleOverrides}
-                                        />
+                                        {this.renderScenarioSelect()}
+                                        {this.renderThemeToggle()}
+                                        {this.renderDirectionToggle()}
+                                        {this.renderAccentColorPicker()}
                                     </Background>
-                                </Row>
-                            </Canvas>
-                            <Pane resizable={true} resizeFrom={PaneResizeDirection.west}>
-                                <div
-                                    style={{
-                                        overflow: "auto",
-                                        minHeight: "100%",
-                                        background: "#212121",
-                                    }}
-                                >
-                                    {this.renderForm()}
+                                    {this.renderViewer()}
                                 </div>
-                            </Pane>
-                        </Row>
-                    </Container>
-                </Background>
-            </DesignSystemProvider>
+                            </Row>
+                            <Row
+                                resizable={true}
+                                resizeFrom={RowResizeDirection.north}
+                                initialHeight={400}
+                            >
+                                <Background
+                                    value={neutralLayerL2}
+                                    className={get(
+                                        this.props,
+                                        "managedClasses.explorer_devToolsPanel"
+                                    )}
+                                >
+                                    <Pivot
+                                        label={"documentation"}
+                                        items={this.renderPivotItems()}
+                                        jssStyleSheet={this.pivotStyleOverrides}
+                                    />
+                                </Background>
+                            </Row>
+                        </Canvas>
+                        <Pane
+                            className={get(
+                                this.props,
+                                "managedClasses.explorer_propertiesPanel"
+                            )}
+                            resizable={true}
+                            resizeFrom={PaneResizeDirection.west}
+                        >
+                            <Background value={neutralLayerL3}>
+                                <div
+                                    className={get(
+                                        this.props,
+                                        "managedClasses.explorer_paneTitleContainer"
+                                    )}
+                                >
+                                    <Label>Properties</Label>
+                                </div>
+                                {this.renderForm()}
+                            </Background>
+                        </Pane>
+                    </Row>
+                </Container>
+            </Background>
         );
     }
 
@@ -567,27 +599,6 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
         );
     };
 
-    private get backgrounds(): typeof DarkModeBackgrounds | typeof LightModeBackgrounds {
-        return DarkModeBackgrounds;
-    }
-
-    private getNeutralPalette(colorSource: string): string[] {
-        const color: ColorRGBA64 | null = parseColor(colorSource);
-        if (color !== null) {
-            const hslColor: ColorHSL = rgbToHSL(color);
-            const augmentedHSLColor: ColorHSL | null = ColorHSL.fromObject({
-                h: hslColor.h,
-                s: hslColor.s,
-                l: 0.5,
-            });
-
-            if (augmentedHSLColor !== null) {
-                return createColorPalette(hslToRGB(augmentedHSLColor));
-            }
-        }
-        return DesignSystemDefaults.neutralPalette;
-    }
-
     private handleUpdateTheme = (): void => {
         const isLightTheme: boolean = this.state.theme === ThemeName.light;
         const updatedThemeColor: string = isLightTheme ? dark : light;
@@ -595,7 +606,6 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
             theme: isLightTheme ? ThemeName.dark : ThemeName.light,
             viewConfig: merge({}, this.state.viewConfig, {
                 backgroundColor: updatedThemeColor,
-                neutralPalette: this.getNeutralPalette(updatedThemeColor),
             }),
         });
     };

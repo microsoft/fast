@@ -2,14 +2,23 @@ import { ComponentStyles } from "@microsoft/fast-jss-manager-react";
 import {
     applyCornerRadius,
     DesignSystem,
+    neutralDividerRest,
     neutralFillActive,
     neutralFillHover,
     neutralFillRest,
+    neutralLayerL2,
+    neutralLayerL3,
 } from "@microsoft/fast-components-styles-msft";
+import { format } from "@microsoft/fast-jss-utilities";
 
 export interface ExplorerClassNameContract {
     explorer?: string;
     explorer_colorPicker?: string;
+    explorer_devToolsPanel?: string;
+    explorer_navigationPanel?: string;
+    explorer_paneTitleContainer?: string;
+    explorer_propertiesPanel?: string;
+    explorer_toolbar?: string;
     explorer_viewerRegion?: string;
     explorer_viewerControlRegion?: string;
     explorer_viewerControls?: string;
@@ -31,22 +40,58 @@ const style: ComponentStyles<ExplorerClassNameContract, DesignSystem> = {
     },
     explorer: {},
     explorer_colorPicker: {
-        background: neutralFillRest(() => "#3B3B3B"),
+        background: neutralFillRest(neutralLayerL2),
         border: "none",
         width: "23px",
+        height: "22px",
         ...applyCornerRadius(),
         "&:hover": {
-            background: neutralFillHover(() => "#3B3B3B"),
+            background: neutralFillHover(neutralLayerL2),
         },
         "&:active": {
-            background: neutralFillActive(() => "#3B3B3B"),
+            background: neutralFillActive(neutralLayerL2),
         },
         "&:focus": {
             outline: "none",
         },
     },
-    explorer_viewerRegion: {
+    explorer_devToolsPanel: {
+        boxShadow:
+            "0px 0.6px 1.8px rgba(0, 0, 0, 0.11) inset, 0px 3.2px 7.2px rgba(0, 0, 0, 0.13) inset",
+        width: "100%",
+        overflow: "auto",
+    },
+    explorer_navigationPanel: {
+        overflowY: "auto",
+        overflowX: "hidden",
+        background: neutralLayerL3,
+        boxShadow:
+            "-0.6px 0px 1.8px rgba(0, 0, 0, 0.11) inset, -3.2px 0px 7.2px rgba(0, 0, 0, 0.13) inset",
+    },
+    explorer_paneTitleContainer: {
+        height: "32px",
         display: "flex",
+        boxSizing: "border-box",
+        alignItems: "center",
+        paddingLeft: "10px",
+        borderBottom: format<DesignSystem>("1px solid {0}", neutralDividerRest),
+    },
+    explorer_propertiesPanel: {
+        background: neutralLayerL3,
+        boxShadow:
+            "0.6px 0px 1.8px rgba(0, 0, 0, 0.11) inset, 3.2px 0px 7.2px rgba(0, 0, 0, 0.13) inset",
+    },
+    explorer_toolbar: {
+        padding: "0 10px",
+        height: "32px",
+        display: "flex",
+        alignItems: "center",
+        background: neutralLayerL2,
+        justifyContent: "flex-end",
+        boxShadow:
+            "0px -0.6px 1.8px rgba(0, 0, 0, 0.11) inset, 0px -3.2px 7.2px rgba(0, 0, 0, 0.13) inset",
+    },
+    explorer_viewerRegion: {
         flexDirection: "column",
         width: "100%",
     },
