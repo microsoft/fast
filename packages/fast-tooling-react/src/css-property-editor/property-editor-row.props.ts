@@ -56,6 +56,15 @@ export interface CSSPropertyEditorRowHandledProps
      *  Called when row loses focus
      */
     onRowBlur: (rowKey: string, rowIndex: number) => void;
+
+    /**
+     *  Enter key press on value edit input
+     */
+    onValueInputKeyDown: (
+        rowKey: string,
+        rowIndex: number,
+        event: React.KeyboardEvent
+    ) => void;
 }
 
 export type CSSPropertyEditorRowProps = CSSPropertyEditorRowHandledProps &
