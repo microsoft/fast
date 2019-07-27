@@ -12,6 +12,8 @@ import {
     CSSPropertyEditorUnhandledProps,
 } from "./property-editor.props";
 import PropertyEditorRow from "./property-editor-row";
+import { canUseDOM } from "exenv-es6";
+import { KeyCodes } from "@microsoft/fast-web-utilities";
 
 export default class CSSPropertyEditor extends Foundation<
     CSSPropertyEditorHandledProps,
@@ -30,6 +32,7 @@ export default class CSSPropertyEditor extends Foundation<
     // private newEditRowKeyName: string = "newCssPropertyEditorEditRow";
     private propertyEditorRef: React.RefObject<HTMLDivElement>;
     private editData: CSSProperties;
+    private submittedEditData: CSSProperties;
     private activeEditRowReactKey: string;
     private activeEditRowIndex: number;
     private newRowKeyCounter: number;
@@ -42,6 +45,9 @@ export default class CSSPropertyEditor extends Foundation<
         this.newRowKeyCounter = 0;
         this.activeEditRowReactKey = null;
         this.editData = isNil(this.props.data) ? {} : Object.assign({}, this.props.data);
+        this.submittedEditData = isNil(this.props.data)
+            ? {}
+            : Object.assign({}, this.props.data);
         this.state = {
             activeRowUncommittedCSSName: null,
         };
@@ -50,7 +56,7 @@ export default class CSSPropertyEditor extends Foundation<
     public componentDidUpdate(prevProps: CSSPropertyEditorProps): void {
         if (
             !isEqual(this.props.data, prevProps.data) &&
-            !isEqual(this.props.data, this.editData)
+            !isEqual(this.props.data, this.submittedEditData)
         ) {
             // if we don't recognize data props treat as a reset
             this.editData = isNil(this.props.data)
@@ -122,6 +128,7 @@ export default class CSSPropertyEditor extends Foundation<
                 onPropertyNameChange={this.handleKeyChange}
                 onClickOutside={this.handleClickOutside}
                 onCommitPropertyNameEdit={this.handleCommitKeyEdit}
+                onValueInputKeyDown={this.handleValueInputKeyDown}
                 onRowBlur={this.handleRowBlur}
                 onRowFocus={this.handleRowFocus}
                 managedClasses={{
@@ -271,10 +278,14 @@ export default class CSSPropertyEditor extends Foundation<
      * Row has lost focus
      */
     private handleRowBlur = (rowKey: string, rowIndex: number): void => {
-        if (this.activeEditRowIndex !== -1 && this.editData[rowKey] === "") {
+        if (this.activeEditRowIndex !== rowIndex) {
+            return;
+        }
+        if (this.editData[rowKey] === "") {
             this.deleteRow(rowIndex);
         }
         this.activeEditRowReactKey = null;
+        this.activeEditRowIndex = -1;
         this.setState({
             activeRowUncommittedCSSName: null,
         });
@@ -304,6 +315,66 @@ export default class CSSPropertyEditor extends Foundation<
     };
 
     /**
+     * key was pressed on value editor input
+     */
+    private handleValueInputKeyDown = (
+        rowKey: string,
+        rowIndex: number,
+        event: React.KeyboardEvent
+    ): void => {
+        const rowCount: number = Object.keys(this.editData).length;
+        switch (event.keyCode) {
+            case KeyCodes.enter:
+                if (rowIndex < rowCount - 1) {
+                    // focus on the next row
+                    this.focusOnRow(rowIndex + 1);
+                    event.preventDefault();
+                } else if (this.editData[rowKey] !== "") {
+                    // create a new row if the current one is valid
+                    this.createRow(rowCount);
+                    event.preventDefault();
+                }
+                return;
+
+            case KeyCodes.tab:
+                if (
+                    !event.shiftKey &&
+                    rowIndex === rowCount - 1 &&
+                    this.editData[rowKey] !== ""
+                ) {
+                    // create a new row if the current one is valid
+                    this.createRow(rowCount);
+                    event.preventDefault();
+                }
+                return;
+        }
+    };
+
+    /**
+     * Focus on the key input of the next row
+     */
+    private focusOnRow = (index: number): void => {
+        const rows: Element[] = this.domChildren((this.propertyEditorRef
+            .current as HTMLElement).firstElementChild as HTMLElement);
+        if (rows.length < index + 1) {
+            return;
+        }
+        const focusRow: HTMLElement = rows[index] as HTMLElement;
+        const focusInput: HTMLElement = this.domChildren(focusRow)[0] as HTMLElement;
+        focusInput.focus();
+    };
+
+    /**
+     * Return an array of all elements that are children
+     * of the root element
+     */
+    private domChildren(element: HTMLElement): Element[] {
+        return canUseDOM() && element instanceof HTMLElement
+            ? Array.from(element.children)
+            : [];
+    }
+
+    /**
      * Component got focus without any data rows, so add an empty one
      */
     private handleEmptyFocus = (): void => {
@@ -315,6 +386,21 @@ export default class CSSPropertyEditor extends Foundation<
      * Retains keys for existing elements
      */
     private createRow = (insertionIndex: number): void => {
+        if (this.activeEditRowIndex !== -1) {
+            const activeRowKey: string = Object.keys(this.editData)[
+                this.activeEditRowIndex
+            ];
+            const activeRowIndex: number = this.activeEditRowIndex;
+            this.handleRowBlur(activeRowKey, this.activeEditRowIndex);
+            // if the active row was delected we may need to adjust the insertion index
+            if (
+                Object.keys(this.editData).indexOf(activeRowKey) === -1 &&
+                insertionIndex > activeRowIndex
+            ) {
+                insertionIndex = insertionIndex - 1;
+            }
+        }
+
         const newData: CSSProperties = {};
         const keys: string[] = Object.keys(this.editData);
 
@@ -368,7 +454,8 @@ export default class CSSPropertyEditor extends Foundation<
             typeof this.props.onChange === "function" &&
             !isEqual(updatedCSS, this.props.data)
         ) {
-            this.props.onChange(updatedCSS);
+            this.submittedEditData = Object.assign({}, updatedCSS);
+            this.props.onChange(Object.assign({}, updatedCSS));
         }
     };
 }
