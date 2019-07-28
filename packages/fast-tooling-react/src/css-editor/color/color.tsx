@@ -32,6 +32,7 @@ export default class CSSColor extends Foundation<
                             type={"color"}
                             style={{opacity: 0}}
                             onChange={this.handleColorOnChange}
+                            value={get(this.props.data, "color", "")}
                         />
                     </div>
                     <input
