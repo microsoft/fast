@@ -1,0 +1,19 @@
+{
+    "$schema": "http://json-schema.org/schema#",
+    "title": "CSS Border",
+    "description": "A CSS border component's schema definition.",
+    "id": "@microsoft/fast-tooling-react/css-border",
+    "type": "object",
+    "properties": {
+        "data": {
+            "title": "CSS Values",
+            "type": "object",
+            "properties": {
+                "color": {
+                    "title": "Border",
+                    "type": "string"
+                }
+            }
+        }
+    }
+}
