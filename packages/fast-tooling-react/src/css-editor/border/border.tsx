@@ -38,11 +38,9 @@ export default class CSSBorder extends Foundation<
     ): void {
         if (this.state !== prevState) {
             this.props.onChange({
-                border: this.trimSpaces(
-                    `${this.state.borderColor} ${this.state.borderStyle} ${
+                border: `${this.state.borderColor} ${this.state.borderStyle} ${
                         this.state.borderWidth
-                    }`
-                ),
+                    }`.trim()
             });
         }
     }
@@ -92,10 +90,6 @@ export default class CSSBorder extends Foundation<
                 </div>
             </div>
         );
-    }
-
-    private trimSpaces(string: string): string {
-        return string.replace(/^\s\s*/, "").replace(/\s\s*$/, "");
     }
 
     private renderBorderOption(style: string): JSX.Element {
