@@ -1,4 +1,4 @@
-import { ComponentStyles } from "@microsoft/fast-jss-manager-react";
+import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager-react";
 import {
     accentForegroundRest,
     applyCornerRadius,
@@ -7,6 +7,7 @@ import {
     neutralFillActive,
     neutralFillHover,
     neutralFillRest,
+    neutralLayerFloating,
     neutralLayerL2,
     neutralLayerL3,
 } from "@microsoft/fast-components-styles-msft";
@@ -25,6 +26,24 @@ export interface ExplorerClassNameContract {
     explorer_viewerControls?: string;
 }
 
+export function applyScrollbarStyle(): CSSRules<{}> {
+    return {
+        "&::-webkit-scrollbar": {
+            background: (config: DesignSystem): string => {
+                return neutralLayerL2(config);
+            },
+            width: "11px",
+            height: "11px",
+        },
+        "&::-webkit-scrollbar-thumb": {
+            background: (config: DesignSystem): string => {
+                return neutralLayerFloating(config);
+            },
+            borderRadius: "8px",
+        },
+    };
+}
+
 const style: ComponentStyles<ExplorerClassNameContract, DesignSystem> = {
     "@font-face": {
         fontFamily: "Segoe UI",
@@ -37,6 +56,7 @@ const style: ComponentStyles<ExplorerClassNameContract, DesignSystem> = {
             fontSize: "12px",
             padding: "0",
             margin: "0",
+            ...applyScrollbarStyle(),
         },
     },
     explorer: {},
@@ -71,6 +91,7 @@ const style: ComponentStyles<ExplorerClassNameContract, DesignSystem> = {
         background: neutralLayerL3,
         boxShadow:
             "-0.6px 0px 1.8px rgba(0, 0, 0, 0.11) inset, -3.2px 0px 7.2px rgba(0, 0, 0, 0.13) inset",
+        ...applyScrollbarStyle(),
     },
     explorer_paneTitleContainer: {
         height: "32px",
