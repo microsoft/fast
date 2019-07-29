@@ -1,5 +1,5 @@
-import manageJss from "@microsoft/fast-jss-manager-react";
 import Border from "./border";
+import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import CSSBorderStyles, { CSSBorderClassNameContract } from "./border.style";
 
 /*

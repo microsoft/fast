@@ -10,7 +10,7 @@ import {
 
 export interface CSSBorderClassNameContract {
     cssBorder?: string;
-    cssBorder_borderInputContainer?: string;
+    cssBorder_colorInputRegion?: string;
     cssBorder_control?: string;
     cssBorder_input?: string;
     cssBorder_label?: string;
@@ -23,14 +23,14 @@ const styles: ComponentStyles<CSSBorderClassNameContract, {}> = {
     cssBorder: {
         ...applyControlWrapper(),
     },
-    cssBorder_control: {
-        ...applyControlRegion(),
-    },
-    cssBorder_borderInputContainer: {
+    cssBorder_colorInputRegion: {
         borderRadius: "2px",
         boxShadow: "0 0 0 1px inset rgba(255, 255, 255, 0.19)",
         width: "45px",
         marginRight: "8px",
+    },
+    cssBorder_control: {
+        ...applyControlRegion(),
     },
     cssBorder_input: {
         ...applyInputStyle(),

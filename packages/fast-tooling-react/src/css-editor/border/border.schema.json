@@ -9,8 +9,35 @@
             "title": "CSS Values",
             "type": "object",
             "properties": {
-                "color": {
+                "border": {
                     "title": "Border",
+                    "type": "string"
+                },
+                "borderColor": {
+                    "title": "Color",
+                    "type": "string"
+                },
+                "borderStyle": {
+                    "title": "Style",
+                    "type": "string",
+                    "enum": [
+                        "dashed",
+                        "dotted",
+                        "double",
+                        "groove",
+                        "hidden",
+                        "inherit",
+                        "initial",
+                        "inset",
+                        "none",
+                        "outset",
+                        "ridge",
+                        "solid",
+                        "unset"
+                    ]
+                },
+                "borderSize": {
+                    "title": "Size",
                     "type": "string"
                 }
             }

@@ -44,7 +44,7 @@ export default class CSSBorder extends Foundation<
                     Border
                 </label>
                 <div className={get(this.props, "managedClasses.cssBorder_control")}>
-                    <div className={get(this.props, "managedClasses.cssBorder_borderInputContainer")} style={{background: this.state.borderColor}}>
+                    <div className={get(this.props, "managedClasses.cssBorder_colorInputRegion")} style={{background: this.state.borderColor}}>
                         <input
                             type={"color"}
                             style={{opacity: 0}}

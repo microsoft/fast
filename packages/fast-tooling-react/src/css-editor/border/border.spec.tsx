@@ -12,7 +12,7 @@ configure({ adapter: new Adapter() });
 describe("CSSBorder", () => {
     const managedClasses: CSSBorderClassNameContract = {
         cssBorder: "cssBorder",
-        cssBorder_borderInputContainer: "cssBorder_borderInputContainer",
+        cssBorder_colorInputRegion: "cssBorder_colorInputRegion",
         cssBorder_control: "cssBorder_control",
         cssBorder_input: "cssBorder_input",
         cssBorder_label: "cssBorder_label",
