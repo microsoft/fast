@@ -9,6 +9,7 @@ import { CSSPosition, CSSPositionValues, Location, PositionValue } from "./posit
 import { CSSSpacing, CSSSpacingValues, SpacingProperty } from "./spacing";
 import { CSSWidth, CSSWidthValues } from "./width";
 import { CSSHeight, CSSHeightValues } from "./height";
+import { CSSColor, CSSColorValues } from "./color";
 
 export default class CSSEditor extends Foundation<
     CSSEditorHandledProps,
@@ -45,6 +46,7 @@ export default class CSSEditor extends Foundation<
                 />
                 <CSSWidth data={this.getWidthData()} onChange={this.handleCSSUpdate} />
                 <CSSHeight data={this.getHeightData()} onChange={this.handleCSSUpdate} />
+                <CSSColor data={this.getColorData()} onChange={this.handleCSSUpdate} />
             </React.Fragment>
         );
     }
@@ -88,6 +90,13 @@ export default class CSSEditor extends Foundation<
      */
     private getWidthData(): CSSWidthValues {
         return pick(this.props.data, ["width"]);
+    }
+
+    /**
+     * Gets the color value
+     */
+    private getColorData(): CSSColorValues {
+        return pick(this.props.data, ["color"]);
     }
 
     private handleCSSUpdate = <D extends {}>(updatedCSS: D): void => {
