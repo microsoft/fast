@@ -39,8 +39,8 @@ export default class CSSBorder extends Foundation<
         if (this.state !== prevState) {
             this.props.onChange({
                 border: `${this.state.borderColor} ${this.state.borderStyle} ${
-                        this.state.borderWidth
-                    }`.trim()
+                    this.state.borderWidth
+                }`.trim(),
             });
         }
     }
