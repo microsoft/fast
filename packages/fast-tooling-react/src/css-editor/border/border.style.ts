@@ -43,6 +43,7 @@ const styles: ComponentStyles<CSSBorderClassNameContract, {}> = {
     },
     cssBorder_select: {
         ...applySelectInputStyles(),
+        padding: "3px 15px 2px 5px",
     },
 };
 

@@ -38,9 +38,11 @@ export default class CSSBorder extends Foundation<
     ): void {
         if (this.state !== prevState) {
             this.props.onChange({
-                border: `${this.state.borderColor} ${this.state.borderStyle} ${
-                    this.state.borderWidth
-                }`,
+                border: this.trimSpaces(
+                    `${this.state.borderColor} ${this.state.borderStyle} ${
+                        this.state.borderWidth
+                    }`
+                ),
             });
         }
     }
@@ -77,29 +79,33 @@ export default class CSSBorder extends Foundation<
                             onChange={this.handleBorderStyleOnChange}
                             value={this.state.borderStyle}
                         >
-                            <option value={BorderStyleValue.dashed}>Dashed</option>
-                            <option value={BorderStyleValue.dotted}>Dotted</option>
-                            <option value={BorderStyleValue.double}>Double</option>
-                            <option value={BorderStyleValue.groove}>Groove</option>
-                            <option value={BorderStyleValue.hidden}>Hidden</option>
-                            <option value={BorderStyleValue.inherit}>Inherit</option>
-                            <option value={BorderStyleValue.initial}>Initial</option>
-                            <option value={BorderStyleValue.inset}>Inset</option>
-                            <option value={BorderStyleValue.none}>None</option>
-                            <option value={BorderStyleValue.outset}>Outset</option>
-                            <option value={BorderStyleValue.ridge}>Ridge</option>
-                            <option value={BorderStyleValue.solid}>Solid</option>
-                            <option value={BorderStyleValue.unset}>Unset</option>
+                            {Object.keys(BorderStyleValue).map(this.renderBorderOption)}
                         </select>
                     </span>
                     <input
                         className={get(this.props, "managedClasses.cssBorder_input")}
                         type={"text"}
+                        placeholder={"medium"}
                         value={this.state.borderWidth}
                         onChange={this.handleBorderWidthOnChange}
                     />
                 </div>
             </div>
+        );
+    }
+
+    private trimSpaces(string: string): string {
+        return string.replace(/^\s\s*/, "").replace(/\s\s*$/, "");
+    }
+
+    private renderBorderOption(style: string): JSX.Element {
+        return (
+            <option key={style} value={style}>
+                {style
+                    .charAt(0)
+                    .toUpperCase()
+                    .concat(style.slice(1))}
+            </option>
         );
     }
 
