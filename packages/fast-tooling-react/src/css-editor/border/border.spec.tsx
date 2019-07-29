@@ -1,7 +1,7 @@
 import React from "react";
 import Adapter from "enzyme-adapter-react-16";
 import { configure, mount, shallow } from "enzyme";
-import { BorderStyleValue } from "./border.props"
+import { BorderStyleValue } from "./border.props";
 import CSSBorder from "./border";
 import { CSSBorderClassNameContract } from "./border.style";
 
@@ -76,7 +76,8 @@ describe("CSSBorder", () => {
         expect(rendered.state("borderColor")).toBe(borderColor);
 
         rendered
-            .find("input").at(0)
+            .find("input")
+            .at(0)
             .simulate("change", { target: { value: newBorderColor } });
 
         expect(rendered.state("borderColor")).toBe(newBorderColor);
