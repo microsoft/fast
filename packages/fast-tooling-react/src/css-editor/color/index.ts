@@ -1,4 +1,6 @@
-import manageJss from "@microsoft/fast-jss-manager-react";
+import React from "react";
+import { FoundationProps } from "@microsoft/fast-components-foundation-react";
+import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import Color from "./color";
 import CSSColorStyles, { CSSColorClassNameContract } from "./color.style";
 
