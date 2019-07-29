@@ -1,3 +1,4 @@
+import { get } from "lodash-es";
 import { MenuItem } from "@microsoft/fast-tooling-react";
 import { FormChildOptionItem } from "@microsoft/fast-tooling-react/dist/form/form";
 import { pascalCase } from "@microsoft/fast-web-utilities";
@@ -14,6 +15,7 @@ const menu: MenuItem[] = generateMenu(schemas);
 const childOptions: FormChildOptionItem[] = getComponentChildrenOptions().concat(
     getTestComponentChildrenOptions()
 );
+const initialComponentRoute: string = get(menu, "[0].items[0].location", "");
 
 function getRouteFromSchemaId(schemaId: string): string {
     const matchedRegex: RegExpMatchArray | null = schemaId.match(/\/(?:.(?!\/))+$/);
@@ -62,4 +64,4 @@ function getTestComponentChildrenOptions(): FormChildOptionItem[] {
     );
 }
 
-export { childOptions, history, menu };
+export { childOptions, history, initialComponentRoute, menu };

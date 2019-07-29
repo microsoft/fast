@@ -191,6 +191,15 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
     }
 
     public render(): React.ReactNode {
+        if (typeof get(this.state, "scenario.id") === "undefined") {
+            return (
+                <div>
+                    <h1>404 - This page does not exist</h1>
+                    <a href={"/"}>Go to a valid page</a>
+                </div>
+            );
+        }
+
         return (
             <Background value={neutralLayerL1}>
                 <Container className={get(this.props, "managedClasses.explorer")}>
@@ -472,6 +481,7 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
         return scenarioOptions.map((scenarioOption: Scenario<any>, index: number) => {
             return (
                 <SelectOption
+                    key={index}
                     id={scenarioOption.displayName}
                     displayString={scenarioOption.displayName}
                     value={`${index}`}

@@ -1,22 +1,9 @@
 import React from "react";
-import Dictionary from "./dictionary";
-import Explorer from "./explorer";
+import ExplorerRegion from "./explorer-region";
 import Preview from "./preview";
-import { history } from "./config";
-import { Route, Router } from "react-router-dom";
-import { DesignSystemProvider } from "@microsoft/fast-jss-manager-react";
-import {
-    DesignSystem,
-    DesignSystemDefaults,
-} from "@microsoft/fast-components-styles-msft";
+import { history, initialComponentRoute } from "./config";
+import { Redirect, Route, Router, Switch } from "react-router-dom";
 
-const creatorDesignSystem: DesignSystem = Object.assign({}, DesignSystemDefaults, {
-    density: -2,
-    backgroundColor:
-        DesignSystemDefaults.neutralPalette[
-            DesignSystemDefaults.neutralPalette.length - 1
-        ],
-});
 /**
  * The root level app
  *
@@ -26,17 +13,17 @@ export default class App extends React.Component<{}, {}> {
     public render(): React.ReactNode {
         return (
             <Router history={history}>
-                <div>
-                    <Route component={Dictionary} exact={true} path="/" />
-                    <DesignSystemProvider designSystem={creatorDesignSystem}>
-                        <Route
-                            component={Explorer}
-                            exact={true}
-                            path="/components/:component"
-                        />
-                    </DesignSystemProvider>
+                <Switch>
+                    <Route
+                        component={ExplorerRegion}
+                        exact={true}
+                        path="/components/:component"
+                    />
                     <Route component={Preview} exact={true} path="/preview" />
-                </div>
+                    <Route>
+                        <Redirect to={initialComponentRoute} />
+                    </Route>
+                </Switch>
             </Router>
         );
     }
