@@ -16,7 +16,6 @@ export interface CSSBorderClassNameContract {
     cssBorder_label?: string;
     cssBorder_selectControl?: string;
     cssBorder_select?: string;
-
 }
 
 const styles: ComponentStyles<CSSBorderClassNameContract, {}> = {

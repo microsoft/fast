@@ -1,5 +1,7 @@
-import Border from "./border";
+import React from "react";
+import { FoundationProps } from "@microsoft/fast-components-foundation-react";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
+import Border from "./border";
 import CSSBorderStyles, { CSSBorderClassNameContract } from "./border.style";
 
 /*

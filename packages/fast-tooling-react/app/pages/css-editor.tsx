@@ -14,7 +14,7 @@ class CSSEditorTestPage extends React.Component<{}, CSSEditorTestPageState> {
                 margin: "10px",
                 padding: "20px",
                 background: "#FFF",
-                border: "1px solid #000"
+                border: "1px solid #000",
             },
         };
     }

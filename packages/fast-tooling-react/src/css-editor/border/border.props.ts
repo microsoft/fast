@@ -20,7 +20,7 @@ export enum BorderStyleValue {
 export interface CSSBorderState {
     borderColor?: string;
     borderStyle?: BorderStyleValue;
-    borderWidth?: string
+    borderWidth?: string;
 }
 
 export interface CSSBorderValues {
