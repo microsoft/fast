@@ -38,7 +38,7 @@ export default class CSSColor extends Foundation<
                     <input
                         className={get(this.props, "managedClasses.cssColor_input")}
                         type={"text"}
-                        value={get(this.props.data, "color", "").toUpperCase()}
+                        value={get(this.props.data, "color", "")}
                         onChange={this.handleColorOnChange}
                     />
                 </div>
