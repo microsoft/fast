@@ -7,8 +7,7 @@ export interface CSSColorValues {
 
 export interface CSSColorUnhandledProps extends React.HTMLAttributes<HTMLDivElement> {}
 
-export interface CSSColorHandledProps
-    extends ManagedClasses<CSSColorClassNameContract> {
+export interface CSSColorHandledProps extends ManagedClasses<CSSColorClassNameContract> {
     /**
      * The data
      */
