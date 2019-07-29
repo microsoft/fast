@@ -9,7 +9,6 @@ import {
     imageSchema,
 } from "@microsoft/fast-components-react-msft";
 import { uniqueId } from "lodash-es";
-import { groupSchema } from "../../../app/components/group";
 import Guidance from "../../.tmp/carousel/guidance";
 
 const darkImageProps: object = {
@@ -29,65 +28,40 @@ const lightImageProps: object = {
 const defaultTabItems: CarouselSlide[] = [
     {
         content: {
-            id: groupSchema.id,
-            props: {
-                children: {
-                    id: imageSchema.id,
-                    ...lightImageProps,
-                },
-            },
+            id: imageSchema.id,
+            ...lightImageProps,
         } as any,
         id: uniqueId(),
         theme: CarouselSlideTheme.dark,
     },
     {
         content: {
-            id: groupSchema.id,
-            props: {
-                children: {
-                    id: imageSchema.id,
-                    ...darkImageProps,
-                },
-            },
+            id: imageSchema.id,
+            ...darkImageProps,
         } as any,
         id: uniqueId(),
         theme: CarouselSlideTheme.dark,
     },
     {
         content: {
-            id: groupSchema.id,
-            props: {
-                children: {
-                    id: imageSchema.id,
-                    ...lightImageProps,
-                },
-            },
+            id: imageSchema.id,
+            ...lightImageProps,
         } as any,
         id: uniqueId(),
         theme: CarouselSlideTheme.light,
     },
     {
         content: {
-            id: groupSchema.id,
-            props: {
-                children: {
-                    id: imageSchema.id,
-                    ...darkImageProps,
-                },
-            },
+            id: imageSchema.id,
+            ...darkImageProps,
         } as any,
         id: uniqueId(),
         theme: CarouselSlideTheme.dark,
     },
     {
         content: {
-            id: groupSchema.id,
-            props: {
-                children: {
-                    id: imageSchema.id,
-                    ...lightImageProps,
-                },
-            },
+            id: imageSchema.id,
+            ...lightImageProps,
         } as any,
         id: uniqueId(),
         theme: CarouselSlideTheme.dark,
