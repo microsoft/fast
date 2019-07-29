@@ -39,7 +39,7 @@ function applyGlyphTransform(): CSSRules<DesignSystem> {
     return {
         transform: directionSwitch(
             format("translateX({0})", toPx(designUnit)),
-            format("rotate(180deg) translateX({})", toPx(designUnit))
+            format("rotate(180deg) translateX({0})", toPx(designUnit))
         ),
         position: "relative",
     };
