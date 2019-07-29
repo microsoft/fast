@@ -27,7 +27,7 @@ export default class CSSColor extends Foundation<
                     Color
                 </label>
                 <div className={get(this.props, "managedClasses.cssColor_control")}>
-                    <div className={get(this.props, "managedClasses.cssColor_colorInputContainer")} style={{background: get(this.props.data, "color", "")}}>
+                    <div className={get(this.props, "managedClasses.cssColor_colorInputRegion")} style={{background: get(this.props.data, "color", "")}}>
                         <input
                             type={"color"}
                             style={{opacity: 0}}

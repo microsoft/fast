@@ -8,7 +8,7 @@ import {
 
 export interface CSSColorClassNameContract {
     cssColor?: string;
-    cssColor_colorInputContainer?: string;
+    cssColor_colorInputRegion?: string;
     cssColor_control?: string;
     cssColor_input?: string;
     cssColor_label?: string;
@@ -18,14 +18,14 @@ const styles: ComponentStyles<CSSColorClassNameContract, {}> = {
     cssColor: {
         ...applyControlWrapper(),
     },
-    cssColor_control: {
-        ...applyControlRegion(),
-    },
-    cssColor_colorInputContainer: {
+    cssColor_colorInputRegion: {
         borderRadius: "2px",
         boxShadow: "0 0 0 1px inset rgba(255, 255, 255, 0.19)",
         width: "45px",
         marginRight: "8px",
+    },
+    cssColor_control: {
+        ...applyControlRegion(),
     },
     cssColor_input: {
         ...applyInputStyle(),
