@@ -27,7 +27,7 @@ class FormItemSelect extends FormItemBase<
         const value: any =
             typeof this.props.data !== "undefined"
                 ? this.props.data
-                : this.props.default || this.props.options[0];
+                : this.props.default || "";
 
         return (
             <div className={this.generateClassNames()}>
