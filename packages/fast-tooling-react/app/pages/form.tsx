@@ -27,11 +27,17 @@ export interface FormTestPageState {
     controlled: ControlledState;
     defaultBrowserErrors?: boolean;
     inlineErrors?: boolean;
+    dataSet?: any;
 }
 
 export interface GroupItem {
     items: any;
     type: string;
+}
+
+export interface DataSet {
+    displayName: string;
+    data: any;
 }
 
 enum ControlledState {
@@ -44,6 +50,36 @@ const designSystemDefaults: any = {
     backgroundColor: "#FFF",
     brandColor: "#0078D4",
 };
+
+const dataSets: DataSet[] = [
+    {
+        displayName: "Data set 1 (all defined)",
+        data: {
+            textarea: "alpha",
+            "section-link": {},
+            checkbox: true,
+            button: null,
+            array: ["foo", "bar"],
+            "number-field": 42,
+            select: "foo"
+        }
+    },
+    {
+        displayName: "Data set 2 (select defined)",
+        data: {
+            textarea: "beta",
+            "section-link": {},
+            display: "foobar",
+            checkbox: false,
+            "number-field": 24,
+            select: "bar"
+        }
+    },
+    {
+        displayName: "Data set 3 (none defined)",
+        data: {}
+    }
+];
 
 class FormTestPage extends React.Component<{}, FormTestPageState> {
     /**
@@ -81,6 +117,7 @@ class FormTestPage extends React.Component<{}, FormTestPageState> {
             controlled: ControlledState.uncontrolled,
             inlineErrors: void 0,
             defaultBrowserErrors: void 0,
+            dataSet: dataSets[0].data
         };
     }
 
@@ -125,6 +162,7 @@ class FormTestPage extends React.Component<{}, FormTestPageState> {
                             <select onChange={this.handleComponentUpdate}>
                                 {this.getComponentOptions()}
                             </select>
+                            {this.renderDataSetComponentOptions()}
                             <br />
                             <br />
                             <input
@@ -161,6 +199,16 @@ class FormTestPage extends React.Component<{}, FormTestPageState> {
         );
     }
 
+    private renderDataSetComponentOptions(): React.ReactNode {
+        if (this.state.schema.id === testConfigs.allControlTypes.schema.id) {
+            return (
+                <select onChange={this.handleDataSetUpdate}>
+                    {this.getComponentDataSets()}
+                </select>
+            );
+        }
+    }
+
     /**
      * Gets the child options for the schema form
      */
@@ -190,6 +238,12 @@ class FormTestPage extends React.Component<{}, FormTestPageState> {
         }
 
         return childOptions;
+    }
+
+    private getComponentDataSets(): React.ReactNode {
+        return dataSets.map((dataSet: DataSet, index: number) => {
+            return <option key={index} value={index}>{dataSet.displayName}</option>;
+        });
     }
 
     private coerceFormProps(): FormProps {
@@ -223,6 +277,12 @@ class FormTestPage extends React.Component<{}, FormTestPageState> {
                 location,
             };
         }
+    }
+
+    private handleDataSetUpdate = (e: React.ChangeEvent<HTMLSelectElement>): void => {
+        this.setState({
+            data: dataSets[parseInt(e.target.value, 10)].data
+        });
     }
 
     private handleShowInlineErrors = (e: React.ChangeEvent<HTMLInputElement>): void => {
@@ -301,7 +361,9 @@ class FormTestPage extends React.Component<{}, FormTestPageState> {
             config: testConfigs[e.target.value].config,
             data:
                 testConfigs[e.target.value].data ||
-                getDataFromSchema(testConfigs[e.target.value].schema),
+                testConfigs[e.target.value].schema.id === testConfigs.allControlTypes.schema.id
+                    ? this.state.dataSet
+                    : getDataFromSchema(testConfigs[e.target.value].schema),
         });
     };
 

@@ -112,3 +112,9 @@ import NullKeywordSchema from "../../../src/__tests__/schemas/null.schema.json";
 export const nullKeyword: ExampleComponent = {
     schema: NullKeywordSchema,
 };
+
+import AllControlTypesSchema from "../../../src/__tests__/schemas/all-control-types.schema.json";
+
+export const allControlTypes: ExampleComponent = {
+    schema: AllControlTypesSchema
+}
