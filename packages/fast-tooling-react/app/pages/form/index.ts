@@ -116,5 +116,5 @@ export const nullKeyword: ExampleComponent = {
 import AllControlTypesSchema from "../../../src/__tests__/schemas/all-control-types.schema.json";
 
 export const allControlTypes: ExampleComponent = {
-    schema: AllControlTypesSchema
-}
+    schema: AllControlTypesSchema,
+};

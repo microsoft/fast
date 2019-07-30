@@ -61,8 +61,8 @@ const dataSets: DataSet[] = [
             button: null,
             array: ["foo", "bar"],
             "number-field": 42,
-            select: "foo"
-        }
+            select: "foo",
+        },
     },
     {
         displayName: "Data set 2 (select defined)",
@@ -72,13 +72,13 @@ const dataSets: DataSet[] = [
             display: "foobar",
             checkbox: false,
             "number-field": 24,
-            select: "bar"
-        }
+            select: "bar",
+        },
     },
     {
         displayName: "Data set 3 (none defined)",
-        data: {}
-    }
+        data: {},
+    },
 ];
 
 class FormTestPage extends React.Component<{}, FormTestPageState> {
@@ -117,7 +117,7 @@ class FormTestPage extends React.Component<{}, FormTestPageState> {
             controlled: ControlledState.uncontrolled,
             inlineErrors: void 0,
             defaultBrowserErrors: void 0,
-            dataSet: dataSets[0].data
+            dataSet: dataSets[0].data,
         };
     }
 
@@ -242,7 +242,11 @@ class FormTestPage extends React.Component<{}, FormTestPageState> {
 
     private getComponentDataSets(): React.ReactNode {
         return dataSets.map((dataSet: DataSet, index: number) => {
-            return <option key={index} value={index}>{dataSet.displayName}</option>;
+            return (
+                <option key={index} value={index}>
+                    {dataSet.displayName}
+                </option>
+            );
         });
     }
 
@@ -281,9 +285,9 @@ class FormTestPage extends React.Component<{}, FormTestPageState> {
 
     private handleDataSetUpdate = (e: React.ChangeEvent<HTMLSelectElement>): void => {
         this.setState({
-            data: dataSets[parseInt(e.target.value, 10)].data
+            data: dataSets[parseInt(e.target.value, 10)].data,
         });
-    }
+    };
 
     private handleShowInlineErrors = (e: React.ChangeEvent<HTMLInputElement>): void => {
         if (e.target.value === "true") {
@@ -361,7 +365,8 @@ class FormTestPage extends React.Component<{}, FormTestPageState> {
             config: testConfigs[e.target.value].config,
             data:
                 testConfigs[e.target.value].data ||
-                testConfigs[e.target.value].schema.id === testConfigs.allControlTypes.schema.id
+                testConfigs[e.target.value].schema.id ===
+                    testConfigs.allControlTypes.schema.id
                     ? this.state.dataSet
                     : getDataFromSchema(testConfigs[e.target.value].schema),
         });
