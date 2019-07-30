@@ -36,4 +36,9 @@ export interface SubheadingClassNameContract {
      * The size 6 modifier
      */
     subheading__6?: string;
+
+    /**
+     * The size 7 modifier
+     */
+    subheading__7?: string;
 }

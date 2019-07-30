@@ -23,6 +23,9 @@ const styles: ComponentStyles<SubheadingClassNameContract, DesignSystem> = {
         "&$subheading__6": {
             ...applyFontWeightNormal(),
         },
+        "&$subheading__7": {
+            ...applyFontWeightNormal(),
+        },
     },
     subheading__1: {},
     subheading__2: {},
@@ -30,6 +33,7 @@ const styles: ComponentStyles<SubheadingClassNameContract, DesignSystem> = {
     subheading__4: {},
     subheading__5: {},
     subheading__6: {},
+    subheading__7: {},
 };
 
 export default styles;

@@ -49,7 +49,9 @@ class Subheading extends Foundation<
                 return TypographySize._7;
             case SubheadingSize._6:
                 return TypographySize._8;
-        }
+            case SubheadingSize._7:
+                return TypographySize._9;
+            }
     }
 
     public render(): React.ReactElement<HTMLHeadingElement | HTMLParagraphElement> {
