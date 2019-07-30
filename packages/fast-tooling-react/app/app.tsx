@@ -10,6 +10,7 @@ import DevicePageViewerContent from "./pages/viewer/device-page.viewer-content";
 import UpdatePropsPage from "./pages/viewer/update-props-page";
 import UpdatePropsViewerContent from "./pages/viewer/update-props-page.viewer-content";
 import { CSSEditorTestPage } from "./pages/css-editor";
+import { StyleEditorsTestPage } from "./pages/style-editors";
 import { FormTestPage } from "./pages/form";
 import { CodePreviewTestPage } from "./pages/code-preview/";
 import { FormAndNavigationTestPage } from "./pages/form-and-navigation";
@@ -37,6 +38,11 @@ class App extends React.Component<{}, {}> {
                             exact={true}
                             path={"/css-property-editor"}
                             component={CSSPropertyEditorTestPage}
+                        />
+                        <Route
+                            exact={true}
+                            path={"/style-editors"}
+                            component={StyleEditorsTestPage}
                         />
                         <Route
                             exact={true}
@@ -119,6 +125,9 @@ class App extends React.Component<{}, {}> {
                         </li>
                         <li>
                             <Link to="/css-property-editor">CSS Property Editor</Link>
+                        </li>
+                        <li>
+                            <Link to="/style-editors">Style Editors</Link>
                         </li>
                         <li>
                             <Link to="/form">Form</Link>
