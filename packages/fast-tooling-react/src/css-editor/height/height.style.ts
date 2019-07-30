@@ -22,9 +22,12 @@ const styles: ComponentStyles<CSSHeightClassNameContract, {}> = {
     },
     cssHeight_input: {
         ...applyInputStyle(),
+        width: "50%",
+        marginLeft: "4px",
     },
     cssHeight_label: {
         ...applyLabelStyle(),
+        width: "50%",
     },
 };
 
