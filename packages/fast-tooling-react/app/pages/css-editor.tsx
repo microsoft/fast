@@ -10,7 +10,11 @@ class CSSEditorTestPage extends React.Component<{}, CSSEditorTestPageState> {
         super(props);
 
         this.state = {
-            css: {},
+            css: {
+                margin: "10px",
+                padding: "20px",
+                background: "#FFF",
+            },
         };
     }
 
