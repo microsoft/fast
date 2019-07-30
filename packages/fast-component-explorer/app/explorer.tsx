@@ -108,6 +108,8 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
     > = {
         viewer: {
             height: "calc(100% - 80px)",
+            overflow: "auto",
+            ...applyScrollbarStyle(),
         },
     };
 
@@ -118,6 +120,7 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
         form: {
             height: "unset",
             background: "unset",
+            paddingRight: "12px",
         },
     };
 

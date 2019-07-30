@@ -32,8 +32,8 @@ export function applyScrollbarStyle(): CSSRules<{}> {
             background: (config: DesignSystem): string => {
                 return neutralLayerL2(config);
             },
-            width: "11px",
-            height: "11px",
+            width: "8px",
+            height: "8px",
         },
         "&::-webkit-scrollbar-thumb": {
             background: (config: DesignSystem): string => {
