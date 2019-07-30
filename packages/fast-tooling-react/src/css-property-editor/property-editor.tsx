@@ -235,7 +235,9 @@ export default class CSSPropertyEditor extends Foundation<
         // the order of keys in the CSS object
         Object.keys(this.editData).forEach((key: string, index: number) => {
             if (index === this.activeEditRowIndex) {
-                newData[camelCase(this.state.activeRowUncommittedCSSName)] = this.editData[key];
+                newData[
+                    camelCase(this.state.activeRowUncommittedCSSName)
+                ] = this.editData[key];
             } else {
                 newData[key] = this.editData[key];
             }
