@@ -165,6 +165,7 @@ class FormItemChildren extends FormItemBase<
                         ref={this.filteredChildrenInput}
                     />
                     <button
+                        type="button" // Ensure the form doesn't see this as a submit button
                         className={
                             this.props.managedClasses.formItemChildren_childrenListTrigger
                         }
@@ -286,6 +287,7 @@ class FormItemChildren extends FormItemBase<
     private renderExistingChildDelete(index: number): JSX.Element {
         return (
             <button
+                type="button" // Ensure the form doesn't see this as a submit button
                 aria-label={"Select to remove"}
                 className={this.props.managedClasses.formItemChildren_deleteButton}
                 onClick={this.clickDeleteComponentFactory(index)}
