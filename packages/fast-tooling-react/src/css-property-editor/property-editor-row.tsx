@@ -1,12 +1,11 @@
 import React from "react";
-import { camelCase, get, isNil } from "lodash-es";
+import { get, isNil } from "lodash-es";
 import Foundation, {
     FoundationProps,
     HandledProps,
 } from "@microsoft/fast-components-foundation-react";
 import {
     CSSPropertyEditorRowHandledProps,
-    CSSPropertyEditorRowState,
     CSSPropertyEditorRowUnhandledProps,
 } from "./property-editor-row.props";
 import { KeyCodes, spinalCase } from "@microsoft/fast-web-utilities";
@@ -14,7 +13,7 @@ import { KeyCodes, spinalCase } from "@microsoft/fast-web-utilities";
 export default class CSSPropertyEditorRow extends Foundation<
     CSSPropertyEditorRowHandledProps,
     CSSPropertyEditorRowUnhandledProps,
-    CSSPropertyEditorRowState
+    {}
 > {
     public static displayName: string = "CSSPropertyEditorRow";
 
@@ -129,9 +128,7 @@ export default class CSSPropertyEditorRow extends Foundation<
      * a user to continue typing using spinal case
      */
     private getSpinalCase(propertyName: string): string {
-        return `${spinalCase(propertyName)}${
-            this.state.propertyKeyLastCharacterIsDash ? "-" : ""
-        }`;
+        return spinalCase(propertyName);
     }
 
     /**
@@ -168,7 +165,7 @@ export default class CSSPropertyEditorRow extends Foundation<
             });
 
             this.props.onPropertyNameChange(
-                camelCase(newName),
+                newName,
                 this.props.cssPropertyName,
                 this.props.rowIndex
             );
