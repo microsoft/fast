@@ -86,7 +86,7 @@ export default class CSSPropertyEditorRow extends Foundation<
                     onBlur={this.handleNameInputBlur}
                     onFocus={this.handleFocus}
                     onKeyDown={this.handleKeyInputKeyDown}
-                    value={this.getSpinalCase(this.props.cssPropertyName)}
+                    value={spinalCase(this.props.cssPropertyName)}
                     style={{
                         width: `${this.getMonospaceInputWidth(
                             this.props.cssPropertyName
@@ -121,15 +121,6 @@ export default class CSSPropertyEditorRow extends Foundation<
         }
         return inputValue.length * this.monospaceFontWidthMultiplier;
     };
-
-    /**
-     * get the spinal case for the typed in property
-     * include a dash if that was the last character typed to allow
-     * a user to continue typing using spinal case
-     */
-    private getSpinalCase(propertyName: string): string {
-        return spinalCase(propertyName);
-    }
 
     /**
      * get classes for name input
