@@ -1,9 +1,5 @@
 import { ComponentStyles } from "@microsoft/fast-jss-manager-react";
-import {
-    applyControlRegion,
-    applyControlWrapper,
-    applyInputStyle,
-} from "../../style";
+import { applyControlRegion, applyControlWrapper, applyInputStyle } from "../../style";
 
 export interface CSSBoxShadowClassNameContract {
     cssBoxShadow?: string;
@@ -19,7 +15,7 @@ export interface CSSBoxShadowClassNameContract {
 
 const styles: ComponentStyles<CSSBoxShadowClassNameContract, {}> = {
     cssBoxShadow: {
-        display: "flex"
+        display: "flex",
     },
     cssBoxShadow_colorInputRegion: {
         borderRadius: "2px",
@@ -37,19 +33,19 @@ const styles: ComponentStyles<CSSBoxShadowClassNameContract, {}> = {
     },
     cssBoxShadow_opacityInput: {
         ...applyInputStyle(),
-        height: "25px"
+        height: "25px",
     },
     cssBoxShadow_xInput: {
         ...applyInputStyle(),
-        height: "25px"
+        height: "25px",
     },
     cssBoxShadow_yInput: {
         ...applyInputStyle(),
-        height: "25px"
+        height: "25px",
     },
     cssBoxShadow_blurInput: {
         ...applyInputStyle(),
-        height: "25px"
+        height: "25px",
     },
 };
 

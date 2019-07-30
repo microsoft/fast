@@ -30,7 +30,7 @@ export default class CSSBoxShadow extends Foundation<
             boxShadowBlurRadius: get(this.props.data, "boxShadowBlurRadius", ""),
             boxShadowOffsetX: get(this.props.data, "boxShadowOffsetX", "5px"),
             boxShadowOffsetY: get(this.props.data, "boxShadowOffsetY", "5px"),
-            boxShadowOpacity: 0.5
+            boxShadowOpacity: 0.5,
         };
     }
 
@@ -44,10 +44,10 @@ export default class CSSBoxShadow extends Foundation<
                 r: rgb.r,
                 g: rgb.g,
                 b: rgb.b,
-                a: this.state.boxShadowOpacity
-            })
-            
-            const rgbaValue: string = `rgba(${rgba})`
+                a: this.state.boxShadowOpacity,
+            });
+
+            const rgbaValue: string = `rgba(${rgba})`;
             let boxShadowArray: string[] = [
                 this.state.boxShadowOffsetX,
                 this.state.boxShadowOffsetY,
@@ -56,12 +56,12 @@ export default class CSSBoxShadow extends Foundation<
             ];
 
             this.props.onChange({
-                boxShadow: boxShadowArray.reduce((accum: string, current: string): string => {
-                    return current.length
-                        ? accum.concat(" ", current.trim())
-                        : accum;
-                })
-            })
+                boxShadow: boxShadowArray.reduce(
+                    (accum: string, current: string): string => {
+                        return current.length ? accum.concat(" ", current.trim()) : accum;
+                    }
+                ),
+            });
         }
     }
 
@@ -179,7 +179,7 @@ export default class CSSBoxShadow extends Foundation<
         e: React.ChangeEvent<HTMLInputElement>
     ): void => {
         this.setState({
-            boxShadowColor: e.target.value
+            boxShadowColor: e.target.value,
         });
     };
 
