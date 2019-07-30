@@ -16,6 +16,10 @@ module.exports = (env, args) => {
         entry: {
             main: path.resolve(appDir, "index.tsx"),
             serviceWorker: path.resolve(appDir, "service-worker-registration.ts"),
+            focusVisible: path.resolve(
+                __dirname,
+                "node_modules/focus-visible/dist/focus-visible.min.js"
+            ),
         },
         output: {
             path: outDir,
