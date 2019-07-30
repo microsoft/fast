@@ -21,7 +21,6 @@ const styles: ComponentStyles<CSSBoxShadowClassNameContract, {}> = {
         borderRadius: "2px",
         boxShadow: "0 0 0 1px inset rgba(255, 255, 255, 0.19)",
         width: "45px",
-        marginRight: "8px",
     },
     cssBoxShadow_control: {
         ...applyControlRegion(),

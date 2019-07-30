@@ -27,10 +27,10 @@ export default class CSSBoxShadow extends Foundation<
 
         this.state = {
             boxShadowColor: get(this.props.data, "boxShadowColor", ""),
-            boxShadowBlurRadius: get(this.props.data, "boxShadowBlurRadius", ""),
-            boxShadowOffsetX: get(this.props.data, "boxShadowOffsetX", "5px"),
-            boxShadowOffsetY: get(this.props.data, "boxShadowOffsetY", "5px"),
-            boxShadowOpacity: 0.5,
+            boxShadowBlurRadius: get(this.props.data, "boxShadowBlurRadius", "4px"),
+            boxShadowOffsetX: get(this.props.data, "boxShadowOffsetX", "0"),
+            boxShadowOffsetY: get(this.props.data, "boxShadowOffsetY", "4px"),
+            boxShadowOpacity: 0.25,
         };
     }
 
