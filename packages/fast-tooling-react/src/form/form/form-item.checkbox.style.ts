@@ -1,5 +1,6 @@
 import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager-react";
 import { FormItemCheckboxClassNameContract } from "./form-item.checkbox.props";
+import { applyFocusVisible } from "@microsoft/fast-jss-utilities";
 import {
     applyControlSingleLineWrapper,
     applyFormItemDisabled,
@@ -49,10 +50,10 @@ const styles: ComponentStyles<FormItemCheckboxClassNameContract, {}> = {
         "&:hover": {
             border: `1px solid ${foreground300}`,
         },
-        "&:focus": {
+        ...applyFocusVisible({
             outline: "none",
             ...insetStrongBoxShadow(foreground300),
-        },
+        }),
         "& + span": {
             position: "absolute",
             left: "0",
