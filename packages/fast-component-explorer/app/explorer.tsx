@@ -56,6 +56,7 @@ import {
     Pivot,
     PivotClassNameContract,
     Select,
+    SelectClassNameContract,
     SelectOption,
     Toggle,
     ToggleClassNameContract,
@@ -165,6 +166,15 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
                     horizontalSpacing()(designSystem)
                 );
             },
+        },
+    };
+
+    private selectStyleOverrides: ComponentStyleSheet<
+        Partial<SelectClassNameContract>,
+        DesignSystem
+    > = {
+        select: {
+            zIndex: "1",
         },
     };
 
@@ -466,6 +476,7 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
         if (Array.isArray(scenarioOptions)) {
             return (
                 <Select
+                    jssStyleSheet={this.selectStyleOverrides}
                     onValueChange={this.handleUpdateScenario}
                     defaultSelection={[scenarioOptions[0].displayName]}
                 >
