@@ -16,6 +16,9 @@ export default class CSSBorder extends Foundation<
 > {
     public static displayName: string = "CSSBorder";
 
+    private defaultBorderColor: string = "#000";
+    private defaultBorderWidth: string = "1px";
+
     protected handledProps: HandledProps<CSSBorderHandledProps> = {
         data: void 0,
         onChange: void 0,
@@ -26,9 +29,9 @@ export default class CSSBorder extends Foundation<
         super(props);
 
         this.state = {
-            borderColor: get(this.props.data, "borderColor", "#000"),
+            borderColor: get(this.props.data, "borderColor", this.defaultBorderColor),
             borderStyle: get(this.props.data, "borderStyle", BorderStyleValue.solid),
-            borderWidth: get(this.props.data, "borderWidth", "1px"),
+            borderWidth: get(this.props.data, "borderWidth", this.defaultBorderWidth),
         };
     }
 
@@ -105,7 +108,7 @@ export default class CSSBorder extends Foundation<
         e: React.ChangeEvent<HTMLSelectElement>
     ): void => {
         this.setState({
-            borderStyle: e.target.value as BorderStyleValue,
+            borderStyle: e.target.value as BorderStyleValue || BorderStyleValue.solid,
         });
     };
 
@@ -113,7 +116,7 @@ export default class CSSBorder extends Foundation<
         e: React.ChangeEvent<HTMLInputElement>
     ): void => {
         this.setState({
-            borderColor: e.target.value,
+            borderColor: e.target.value || this.defaultBorderColor,
         });
     };
 
@@ -121,7 +124,7 @@ export default class CSSBorder extends Foundation<
         e: React.ChangeEvent<HTMLInputElement>
     ): void => {
         this.setState({
-            borderWidth: e.target.value,
+            borderWidth: e.target.value || this.defaultBorderWidth,
         });
     };
 }

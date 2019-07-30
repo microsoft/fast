@@ -27,7 +27,6 @@ const styles: ComponentStyles<CSSBorderClassNameContract, {}> = {
         position: "relative",
         boxShadow: "0 0 0 1px inset rgba(255, 255, 255, 0.19)",
         width: "18%",
-        marginRight: "4px",
     },
     cssBorder_control: {
         ...applyControlRegion(),
@@ -35,13 +34,14 @@ const styles: ComponentStyles<CSSBorderClassNameContract, {}> = {
     cssBorder_input: {
         ...applyInputStyle(),
         width: "22%",
+        marginLeft: "4px"
     },
     cssBorder_label: {
         ...applyLabelStyle(),
     },
     cssBorder_selectControl: {
         ...applySelectSpanStyles(),
-        marginRight: "4px",
+        marginLeft: "4px",
         width: "60%",
     },
     cssBorder_select: {
