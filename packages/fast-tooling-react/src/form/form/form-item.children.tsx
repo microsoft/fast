@@ -655,10 +655,8 @@ class FormItemChildren extends FormItemBase<
             );
 
             if (navigateToItem) {
-                const chil: any = this.currentChildrenArray().filter((i: any) => !!i);
-                const len: number = chil.length;
                 this.setState({
-                    editChildIndex: len,
+                    editChildIndex: this.currentChildrenArray().filter((childItem: ChildComponent) => !!childItem).length,
                 });
             }
         }
