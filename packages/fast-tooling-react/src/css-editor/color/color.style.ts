@@ -29,7 +29,7 @@ const styles: ComponentStyles<CSSColorClassNameContract, {}> = {
     cssColor_input: {
         ...applyInputStyle(),
         marginLeft: "4px",
-        width: "82%",
+        width: "83%",
     },
     cssColor_label: {
         ...applyLabelStyle(),
