@@ -149,7 +149,7 @@ class FormItemChildren extends FormItemBase<
                 );
 
                 this.setState({
-                    editChildIndex: -1
+                    editChildIndex: -1,
                 });
             }
         }
@@ -656,7 +656,9 @@ class FormItemChildren extends FormItemBase<
 
             if (navigateToItem) {
                 this.setState({
-                    editChildIndex: this.currentChildrenArray().filter((childItem: ChildComponent) => !!childItem).length,
+                    editChildIndex: this.currentChildrenArray().filter(
+                        (childItem: ChildComponent) => !!childItem
+                    ).length,
                 });
             }
         }

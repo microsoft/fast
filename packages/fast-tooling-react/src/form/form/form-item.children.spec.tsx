@@ -430,7 +430,12 @@ describe("Children", () => {
             .at(1)
             .simulate("click", { ctrlKey: true });
 
-        rendered.setProps(Object.assign({}, childrenProps, { data: childItem, onUpdateActiveSection: callback }))
+        rendered.setProps(
+            Object.assign({}, childrenProps, {
+                data: childItem,
+                onUpdateActiveSection: callback,
+            })
+        );
 
         expect(callback).toHaveBeenCalled();
         expect(callback.mock.calls[0][1]).toEqual("locationOfChildren.props");
@@ -439,7 +444,7 @@ describe("Children", () => {
         const callback: any = jest.fn();
         const rendered: ReactWrapper = mount(
             <FormItemChildren
-                {...childrenProps }
+                {...childrenProps}
                 data={[Symbol(), Symbol()]}
                 onUpdateActiveSection={callback}
                 managedClasses={managedClasses}
@@ -453,7 +458,12 @@ describe("Children", () => {
             .at(1)
             .simulate("click", { ctrlKey: true });
 
-        rendered.setProps(Object.assign({}, childrenProps, { data: [Symbol(), Symbol(), Symbol()], onUpdateActiveSection: callback }))
+        rendered.setProps(
+            Object.assign({}, childrenProps, {
+                data: [Symbol(), Symbol(), Symbol()],
+                onUpdateActiveSection: callback,
+            })
+        );
 
         expect(callback).toHaveBeenCalled();
         expect(callback.mock.calls[0][1]).toEqual("locationOfChildren[2].props");
