@@ -6,6 +6,7 @@ import Foundation, {
 } from "@microsoft/fast-components-foundation-react";
 import {
     CSSPropertyEditorRowHandledProps,
+    CSSPropertyEditorRowState,
     CSSPropertyEditorRowUnhandledProps,
 } from "./property-editor-row.props";
 import { KeyCodes, spinalCase } from "@microsoft/fast-web-utilities";
@@ -13,7 +14,7 @@ import { KeyCodes, spinalCase } from "@microsoft/fast-web-utilities";
 export default class CSSPropertyEditorRow extends Foundation<
     CSSPropertyEditorRowHandledProps,
     CSSPropertyEditorRowUnhandledProps,
-    {}
+    CSSPropertyEditorRowState
 > {
     public static displayName: string = "CSSPropertyEditorRow";
 
@@ -39,6 +40,14 @@ export default class CSSPropertyEditorRow extends Foundation<
     private valueInputRef: React.RefObject<HTMLInputElement> = React.createRef<
         HTMLInputElement
     >();
+
+    constructor(props: CSSPropertyEditorRowHandledProps) {
+        super(props);
+
+        this.state = {
+            propertyKeyLastCharacterIsDash: false,
+        };
+    }
 
     public componentDidMount(): void {
         if (
@@ -78,7 +87,7 @@ export default class CSSPropertyEditorRow extends Foundation<
                     onBlur={this.handleNameInputBlur}
                     onFocus={this.handleFocus}
                     onKeyDown={this.handleKeyInputKeyDown}
-                    value={spinalCase(this.props.cssPropertyName)}
+                    value={this.getSpinalCase(this.props.cssPropertyName)}
                     style={{
                         width: `${this.getMonospaceInputWidth(
                             this.props.cssPropertyName
@@ -115,6 +124,17 @@ export default class CSSPropertyEditorRow extends Foundation<
     };
 
     /**
+     * get the spinal case for the typed in property
+     * include a dash if that was the last character typed to allow
+     * a user to continue typing using spinal case
+     */
+    private getSpinalCase(propertyName: string): string {
+        return `${spinalCase(propertyName)}${
+            this.state.propertyKeyLastCharacterIsDash ? "-" : ""
+        }`;
+    }
+
+    /**
      * get classes for name input
      */
     private generateNameInputClassNames(): string {
@@ -141,7 +161,12 @@ export default class CSSPropertyEditorRow extends Foundation<
      */
     private handleNameInputChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
         const newName: string = e.target.value;
+
         if (this.props.cssPropertyName !== newName) {
+            this.setState({
+                propertyKeyLastCharacterIsDash: newName.endsWith("-"),
+            });
+
             this.props.onPropertyNameChange(
                 camelCase(newName),
                 this.props.cssPropertyName,
@@ -155,6 +180,7 @@ export default class CSSPropertyEditorRow extends Foundation<
      */
     private handleValueInputChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
         const newValue: string = e.target.value;
+
         if (this.props.value !== newValue) {
             this.props.onValueChange(
                 newValue,
@@ -175,6 +201,10 @@ export default class CSSPropertyEditorRow extends Foundation<
      *  key input has lost focus
      */
     private handleNameInputBlur = (e: React.FocusEvent<HTMLInputElement>): void => {
+        this.setState({
+            propertyKeyLastCharacterIsDash: false, // this must be removed prior to submitting the property name
+        });
+
         this.props.onCommitPropertyNameEdit(
             this.props.cssPropertyName,
             this.props.rowIndex
@@ -216,16 +246,17 @@ export default class CSSPropertyEditorRow extends Foundation<
      * Handle key presses on key input
      */
     private handleKeyInputKeyDown = (e: React.KeyboardEvent): void => {
-        if (e.keyCode !== KeyCodes.enter) {
-            return;
-        }
-        e.preventDefault();
-        this.props.onCommitPropertyNameEdit(
-            this.props.cssPropertyName,
-            this.props.rowIndex
-        );
-        if (!isNil(this.valueInputRef.current)) {
-            this.valueInputRef.current.focus();
+        if (e.keyCode === KeyCodes.enter) {
+            e.preventDefault();
+
+            this.props.onCommitPropertyNameEdit(
+                this.props.cssPropertyName,
+                this.props.rowIndex
+            );
+
+            if (!isNil(this.valueInputRef.current)) {
+                this.valueInputRef.current.focus();
+            }
         }
     };
 

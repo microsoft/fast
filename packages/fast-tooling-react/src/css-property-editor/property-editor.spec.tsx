@@ -109,6 +109,25 @@ describe("CSSPropertyEditor", () => {
         expect(inputs.at(0).prop("value")).toEqual("padding-top");
     });
 
+    test("should convert a dash separated key that ends in a dash into a camelCased key when the onChange callback is fired", () => {
+        const callback: any = jest.fn();
+        const data: { [key: string]: string } = {
+            margin: "10px",
+        };
+        const rendered: any = mount(
+            <CSSPropertyEditor data={data} onChange={callback} />
+        );
+        const inputs: any = rendered.find("input");
+
+        inputs.at(0).simulate("focus");
+        inputs.at(0).simulate("change", { target: { value: "padding-" } });
+        inputs.at(0).simulate("blur");
+
+        const updatedDataKeys: string[] = Object.keys(callback.mock.calls[0][0]);
+
+        expect(updatedDataKeys[0]).toEqual("padding");
+    });
+
     test("should convert a dash separated key into a camelCased key when the onChange callback is fired", () => {
         const callback: any = jest.fn();
         const data: { [key: string]: string } = {

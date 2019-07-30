@@ -7,6 +7,14 @@ export interface CSSPropertyEditorRowClassNameContract {
     cssPropertyEditorRow_inputValue?: string;
 }
 
+export interface CSSPropertyEditorRowState {
+    /**
+     * Retain a check on whether the last key in the property
+     * key is a dash
+     */
+    propertyKeyLastCharacterIsDash: boolean;
+}
+
 export interface CSSPropertyEditorRowUnhandledProps
     extends React.HTMLAttributes<HTMLDivElement> {}
 
