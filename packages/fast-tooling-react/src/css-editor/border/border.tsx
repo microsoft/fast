@@ -16,14 +16,14 @@ export default class CSSBorder extends Foundation<
 > {
     public static displayName: string = "CSSBorder";
 
-    private defaultBorderColor: string = "#000";
-    private defaultBorderWidth: string = "1px";
-
     protected handledProps: HandledProps<CSSBorderHandledProps> = {
         data: void 0,
         onChange: void 0,
         managedClasses: void 0,
     };
+
+    private defaultBorderColor: string = "#000";
+    private defaultBorderWidth: string = "1px";
 
     constructor(props: CSSBorderProps) {
         super(props);
