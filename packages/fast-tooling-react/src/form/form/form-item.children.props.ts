@@ -82,4 +82,9 @@ export interface FormItemChildrenState {
     indexOfSelectedFilteredChildOption: number;
     filteredChildOptions: FormChildOptionItem[];
     hideChildrenList: boolean;
+    /**
+     * The child item to move the editor too on
+     * the next render
+     */
+    editChildIndex: number;
 }
