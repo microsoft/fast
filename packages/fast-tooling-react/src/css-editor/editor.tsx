@@ -11,6 +11,7 @@ import { CSSWidth, CSSWidthValues } from "./width";
 import { CSSHeight, CSSHeightValues } from "./height";
 import { CSSColor, CSSColorValues } from "./color";
 import { CSSBorder, CSSBorderValues } from "./border";
+import { CSSBoxShadow, CSSBoxShadowValues } from "./box-shadow";
 
 export default class CSSEditor extends Foundation<
     CSSEditorHandledProps,
@@ -49,6 +50,10 @@ export default class CSSEditor extends Foundation<
                 <CSSHeight data={this.getHeightData()} onChange={this.handleCSSUpdate} />
                 <CSSColor data={this.getColorData()} onChange={this.handleCSSUpdate} />
                 <CSSBorder data={this.getBorderData()} onChange={this.handleCSSUpdate} />
+                <CSSBoxShadow
+                    data={this.getBoxShadowData()}
+                    onChange={this.handleCSSUpdate}
+                />
             </React.Fragment>
         );
     }
@@ -111,6 +116,13 @@ export default class CSSEditor extends Foundation<
             "borderWidth",
         ]);
         return borderData;
+    }
+
+    /**
+     * Gets the box shadow value
+     */
+    private getBoxShadowData(): CSSBoxShadowValues {
+        return pick(this.props.data, ["boxShadow"]);
     }
 
     private handleCSSUpdate = <D extends {}>(updatedCSS: D): void => {
