@@ -105,7 +105,12 @@ export default class CSSEditor extends Foundation<
      * Gets the border value
      */
     private getBorderData(): CSSBorderValues {
-        return pick(this.props.data, ["border"]);
+        const borderData: CSSBorderValues = pick(this.props.data, [
+            "borderColor",
+            "borderStyle",
+            "borderWidth",
+        ]);
+        return borderData;
     }
 
     private handleCSSUpdate = <D extends {}>(updatedCSS: D): void => {

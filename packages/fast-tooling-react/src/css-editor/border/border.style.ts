@@ -34,7 +34,7 @@ const styles: ComponentStyles<CSSBorderClassNameContract, {}> = {
     cssBorder_input: {
         ...applyInputStyle(),
         width: "22%",
-        marginLeft: "4px"
+        marginLeft: "4px",
     },
     cssBorder_label: {
         ...applyLabelStyle(),

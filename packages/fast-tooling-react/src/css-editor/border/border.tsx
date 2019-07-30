@@ -41,7 +41,7 @@ export default class CSSBorder extends Foundation<
     ): void {
         if (this.state !== prevState) {
             this.props.onChange({
-                ...this.state
+                ...this.state,
             });
         }
     }
@@ -108,7 +108,7 @@ export default class CSSBorder extends Foundation<
         e: React.ChangeEvent<HTMLSelectElement>
     ): void => {
         this.setState({
-            borderStyle: e.target.value as BorderStyleValue || BorderStyleValue.solid,
+            borderStyle: (e.target.value as BorderStyleValue) || BorderStyleValue.solid,
         });
     };
 
