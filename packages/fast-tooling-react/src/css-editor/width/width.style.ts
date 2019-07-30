@@ -22,9 +22,12 @@ const styles: ComponentStyles<CSSWidthClassNameContract, {}> = {
     },
     cssWidth_input: {
         ...applyInputStyle(),
+        width: "50%",
+        marginLeft: "4px",
     },
     cssWidth_label: {
         ...applyLabelStyle(),
+        width: "50%",
     },
 };
 
