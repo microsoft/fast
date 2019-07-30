@@ -1,8 +1,6 @@
 import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager-react";
 import { FormItemCheckboxClassNameContract } from "./form-item.checkbox.props";
-import {
-    applyFocusVisible,
-} from "@microsoft/fast-jss-utilities";
+import { applyFocusVisible } from "@microsoft/fast-jss-utilities";
 import {
     applyControlSingleLineWrapper,
     applyFormItemDisabled,
