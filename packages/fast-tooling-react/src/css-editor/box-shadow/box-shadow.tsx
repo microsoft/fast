@@ -7,7 +7,7 @@ import {
     CSSBoxShadowState,
     CSSBoxShadowUnhandledProps,
 } from "./box-shadow.props";
-import { parseColorHexRGB, ColorRGBA64 } from "@microsoft/fast-colors";
+import { ColorRGBA64, parseColorHexRGB } from "@microsoft/fast-colors";
 
 export default class CSSBoxShadow extends Foundation<
     CSSBoxShadowHandledProps,
@@ -16,17 +16,17 @@ export default class CSSBoxShadow extends Foundation<
 > {
     public static displayName: string = "CSSBoxShadow";
 
-    private defaultBoxShadowColor: string = "#000";
-    private defaultBoxShadowBlurRadius: string = "4px";
-    private defaultBoxShadowOffsetX: string = "0";
-    private defaultBoxShadowOffsetY: string = "4px";
-    private defaultBoxShadowOpacity: number = 0.25;
-
     protected handledProps: HandledProps<CSSBoxShadowHandledProps> = {
         data: void 0,
         onChange: void 0,
         managedClasses: void 0,
     };
+
+    private defaultBoxShadowColor: string = "#000";
+    private defaultBoxShadowBlurRadius: string = "4px";
+    private defaultBoxShadowOffsetX: string = "0";
+    private defaultBoxShadowOffsetY: string = "4px";
+    private defaultBoxShadowOpacity: number = 0.25;
 
     constructor(props: CSSBoxShadowProps) {
         super(props);
@@ -53,7 +53,7 @@ export default class CSSBoxShadow extends Foundation<
                 a: this.state.boxShadowOpacity,
             });
 
-            let boxShadowArray: string[] = [
+            const boxShadowArray: string[] = [
                 this.state.boxShadowOffsetX,
                 this.state.boxShadowOffsetY,
                 this.state.boxShadowBlurRadius,
