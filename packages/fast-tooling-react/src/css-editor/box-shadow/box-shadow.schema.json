@@ -2,7 +2,7 @@
     "$schema": "http://json-schema.org/schema#",
     "title": "CSS box shadow",
     "description": "A CSS box shadow component's schema definition.",
-    "id": "@microsoft/fast-tooling-react/css-color",
+    "id": "@microsoft/fast-tooling-react/css-box-shadow",
     "type": "object",
     "properties": {
         "data": {

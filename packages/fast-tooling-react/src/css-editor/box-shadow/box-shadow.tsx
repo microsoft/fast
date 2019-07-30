@@ -16,6 +16,12 @@ export default class CSSBoxShadow extends Foundation<
 > {
     public static displayName: string = "CSSBoxShadow";
 
+    private defaultBoxShadowColor: string = "#000";
+    private defaultBoxShadowBlurRadius: string = "4px";
+    private defaultBoxShadowOffsetX: string = "0";
+    private defaultBoxShadowOffsetY: string = "4px";
+    private defaultBoxShadowOpacity: number = 0.25;
+
     protected handledProps: HandledProps<CSSBoxShadowHandledProps> = {
         data: void 0,
         onChange: void 0,
@@ -26,11 +32,11 @@ export default class CSSBoxShadow extends Foundation<
         super(props);
 
         this.state = {
-            boxShadowColor: "",
-            boxShadowBlurRadius: "4px",
-            boxShadowOffsetX: "0",
-            boxShadowOffsetY: "4px",
-            boxShadowOpacity: 0.25,
+            boxShadowColor: this.defaultBoxShadowColor,
+            boxShadowBlurRadius: this.defaultBoxShadowBlurRadius,
+            boxShadowOffsetX: this.defaultBoxShadowOffsetX,
+            boxShadowOffsetY: this.defaultBoxShadowOffsetY,
+            boxShadowOpacity: this.defaultBoxShadowOpacity,
         };
     }
 
@@ -175,7 +181,7 @@ export default class CSSBoxShadow extends Foundation<
         e: React.ChangeEvent<HTMLInputElement>
     ): void => {
         this.setState({
-            boxShadowColor: e.target.value,
+            boxShadowColor: e.target.value || this.defaultBoxShadowColor,
         });
     };
 
@@ -183,19 +189,19 @@ export default class CSSBoxShadow extends Foundation<
         e: React.ChangeEvent<HTMLInputElement>
     ): void => {
         this.setState({
-            boxShadowOpacity: e.target.valueAsNumber,
+            boxShadowOpacity: e.target.valueAsNumber || this.defaultBoxShadowOpacity,
         });
     };
 
     private handleBoxShadowXOnChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
         this.setState({
-            boxShadowOffsetX: e.target.value,
+            boxShadowOffsetX: e.target.value || this.defaultBoxShadowOffsetX,
         });
     };
 
     private handleBoxShadowYOnChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
         this.setState({
-            boxShadowOffsetY: e.target.value,
+            boxShadowOffsetY: e.target.value || this.defaultBoxShadowOffsetY,
         });
     };
 
@@ -203,7 +209,7 @@ export default class CSSBoxShadow extends Foundation<
         e: React.ChangeEvent<HTMLInputElement>
     ): void => {
         this.setState({
-            boxShadowBlurRadius: e.target.value,
+            boxShadowBlurRadius: e.target.value || this.defaultBoxShadowBlurRadius,
         });
     };
 }
