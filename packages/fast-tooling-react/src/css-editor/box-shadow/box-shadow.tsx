@@ -26,10 +26,10 @@ export default class CSSBoxShadow extends Foundation<
         super(props);
 
         this.state = {
-            boxShadowColor: get(this.props.data, "boxShadowColor", ""),
-            boxShadowBlurRadius: get(this.props.data, "boxShadowBlurRadius", "4px"),
-            boxShadowOffsetX: get(this.props.data, "boxShadowOffsetX", "0"),
-            boxShadowOffsetY: get(this.props.data, "boxShadowOffsetY", "4px"),
+            boxShadowColor: "",
+            boxShadowBlurRadius: "4px",
+            boxShadowOffsetX: "0",
+            boxShadowOffsetY: "4px",
             boxShadowOpacity: 0.25,
         };
     }
@@ -47,7 +47,6 @@ export default class CSSBoxShadow extends Foundation<
                 a: this.state.boxShadowOpacity,
             });
 
-            const rgbaValue: string = `rgba(${rgba})`;
             let boxShadowArray: string[] = [
                 this.state.boxShadowOffsetX,
                 this.state.boxShadowOffsetY,
@@ -69,10 +68,7 @@ export default class CSSBoxShadow extends Foundation<
         return (
             <div className={get(this.props, "managedClasses.cssBoxShadow")}>
                 <div
-                    className={get(
-                        this.props,
-                        "managedClasses.cssBoxShadow_controlRegion"
-                    )}
+                    className={get(this.props, "managedClasses.cssBoxShadow_colorRegion")}
                 >
                     <label
                         className={get(this.props, "managedClasses.cssBoxShadow_label")}
@@ -91,7 +87,7 @@ export default class CSSBoxShadow extends Foundation<
                         >
                             <input
                                 type={"color"}
-                                style={{ opacity: 0 }}
+                                style={{ opacity: 0, width: "100%" }}
                                 value={this.state.boxShadowColor}
                                 onChange={this.handleBoxShadowColorOnChange}
                             />

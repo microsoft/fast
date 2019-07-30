@@ -11,11 +11,6 @@ export interface CSSBoxShadowState {
 
 export interface CSSBoxShadowValues {
     boxShadow?: string;
-    boxShadowColor?: string;
-    boxShadowOpacity?: number;
-    boxShadowOffsetX?: string;
-    boxShadowOffsetY?: string;
-    boxShadowBlurRadius?: string;
 }
 
 export interface CSSBoxShadowUnhandledProps

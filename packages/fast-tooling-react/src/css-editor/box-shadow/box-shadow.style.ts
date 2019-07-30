@@ -6,6 +6,7 @@ export interface CSSBoxShadowClassNameContract {
     cssBoxShadow_colorInputRegion?: string;
     cssBoxShadow_control?: string;
     cssBoxShadow_controlRegion?: string;
+    cssBoxShadow_colorRegion?: string;
     cssBoxShadow_opacityInput?: string;
     cssBoxShadow_xInput?: string;
     cssBoxShadow_yInput?: string;
@@ -20,7 +21,10 @@ const styles: ComponentStyles<CSSBoxShadowClassNameContract, {}> = {
     cssBoxShadow_colorInputRegion: {
         borderRadius: "2px",
         boxShadow: "0 0 0 1px inset rgba(255, 255, 255, 0.19)",
-        width: "45px",
+        width: "49%",
+    },
+    cssBoxShadow_colorRegion: {
+        width: "37%",
     },
     cssBoxShadow_control: {
         ...applyControlRegion(),
@@ -28,10 +32,12 @@ const styles: ComponentStyles<CSSBoxShadowClassNameContract, {}> = {
     cssBoxShadow_controlRegion: {
         display: "flex",
         flexDirection: "column",
-        marginRight: "8px",
+        width: "21%",
+        marginLeft: "4px",
     },
     cssBoxShadow_opacityInput: {
         ...applyInputStyle(),
+        width: "51%",
         height: "25px",
     },
     cssBoxShadow_xInput: {
