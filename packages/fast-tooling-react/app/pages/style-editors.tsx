@@ -1,20 +1,17 @@
 import React from "react";
 import { CSSEditor } from "../../src";
+import { CSSPropertyEditor } from "../../src/css-property-editor";
 
 interface CSSEditorTestPageState {
     css: any;
 }
 
-class CSSEditorTestPage extends React.Component<{}, CSSEditorTestPageState> {
+class StyleEditorsTestPage extends React.Component<{}, CSSEditorTestPageState> {
     constructor(props: {}) {
         super(props);
 
         this.state = {
-            css: {
-                margin: "10px",
-                padding: "20px",
-                background: "#FFF",
-            },
+            css: {},
         };
     }
 
@@ -22,6 +19,7 @@ class CSSEditorTestPage extends React.Component<{}, CSSEditorTestPageState> {
         return (
             <React.Fragment>
                 <CSSEditor data={this.state.css} onChange={this.handleOnChange} />
+                <CSSPropertyEditor data={this.state.css} onChange={this.handleOnChange} />
                 <pre>{JSON.stringify(this.state.css, null, 2)}</pre>
                 <div style={this.state.css}>Hello world</div>
             </React.Fragment>
@@ -35,4 +33,4 @@ class CSSEditorTestPage extends React.Component<{}, CSSEditorTestPageState> {
     };
 }
 
-export { CSSEditorTestPage };
+export { StyleEditorsTestPage };

@@ -21,14 +21,15 @@ const styles: ComponentStyles<CSSColorClassNameContract, {}> = {
     cssColor_colorInputRegion: {
         borderRadius: "2px",
         boxShadow: "0 0 0 1px inset rgba(255, 255, 255, 0.19)",
-        width: "45px",
-        marginRight: "8px",
+        width: "18%",
     },
     cssColor_control: {
         ...applyControlRegion(),
     },
     cssColor_input: {
         ...applyInputStyle(),
+        marginLeft: "4px",
+        width: "83%",
     },
     cssColor_label: {
         ...applyLabelStyle(),

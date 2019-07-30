@@ -5,13 +5,17 @@ import { CSSPositionValues } from "./position";
 import { CSSWidthValues } from "./width";
 import { CSSHeightValues } from "./height";
 import { CSSColorValues } from "./color";
+import { CSSBorderValues } from "./border";
+import { CSSBoxShadowValues } from "./box-shadow";
 
 export interface CSSEditorValues
     extends CSSSpacingValues,
         CSSPositionValues,
         CSSWidthValues,
         CSSHeightValues,
-        CSSColorValues {}
+        CSSColorValues,
+        CSSBorderValues,
+        CSSBoxShadowValues {}
 
 export type CSSOnChange = (CSS: CSSEditorValues) => void;
 
