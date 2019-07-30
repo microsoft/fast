@@ -24,22 +24,25 @@ const styles: ComponentStyles<CSSBorderClassNameContract, {}> = {
     },
     cssBorder_colorInputRegion: {
         borderRadius: "2px",
+        position: "relative",
         boxShadow: "0 0 0 1px inset rgba(255, 255, 255, 0.19)",
-        width: "45px",
-        marginRight: "8px",
+        width: "18%",
+        marginRight: "4px",
     },
     cssBorder_control: {
         ...applyControlRegion(),
     },
     cssBorder_input: {
         ...applyInputStyle(),
+        width: "22%",
     },
     cssBorder_label: {
         ...applyLabelStyle(),
     },
     cssBorder_selectControl: {
         ...applySelectSpanStyles(),
-        marginRight: "8px",
+        marginRight: "4px",
+        width: "60%",
     },
     cssBorder_select: {
         ...applySelectInputStyles(),

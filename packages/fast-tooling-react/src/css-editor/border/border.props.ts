@@ -24,7 +24,6 @@ export interface CSSBorderState {
 }
 
 export interface CSSBorderValues {
-    border?: string;
     borderColor?: string;
     borderStyle?: BorderStyleValue;
     borderWidth?: string;

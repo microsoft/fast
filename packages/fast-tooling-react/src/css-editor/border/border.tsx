@@ -26,9 +26,9 @@ export default class CSSBorder extends Foundation<
         super(props);
 
         this.state = {
-            borderColor: get(this.props.data, "borderColor", ""),
+            borderColor: get(this.props.data, "borderColor", "#000"),
             borderStyle: get(this.props.data, "borderStyle", BorderStyleValue.solid),
-            borderWidth: get(this.props.data, "borderWidth", ""),
+            borderWidth: get(this.props.data, "borderWidth", "1px"),
         };
     }
 
@@ -38,9 +38,7 @@ export default class CSSBorder extends Foundation<
     ): void {
         if (this.state !== prevState) {
             this.props.onChange({
-                border: `${this.state.borderColor} ${this.state.borderStyle} ${
-                    this.state.borderWidth
-                }`.trim(),
+                ...this.state
             });
         }
     }
@@ -61,7 +59,7 @@ export default class CSSBorder extends Foundation<
                     >
                         <input
                             type={"color"}
-                            style={{ opacity: 0 }}
+                            style={{ opacity: 0, width: "100%" }}
                             value={this.state.borderColor}
                             onChange={this.handleBorderColorOnChange}
                         />
@@ -83,7 +81,7 @@ export default class CSSBorder extends Foundation<
                     <input
                         className={get(this.props, "managedClasses.cssBorder_input")}
                         type={"text"}
-                        placeholder={"medium"}
+                        placeholder={"1px"}
                         value={this.state.borderWidth}
                         onChange={this.handleBorderWidthOnChange}
                     />
@@ -115,7 +113,7 @@ export default class CSSBorder extends Foundation<
         e: React.ChangeEvent<HTMLInputElement>
     ): void => {
         this.setState({
-            borderColor: e.target.value.toUpperCase(),
+            borderColor: e.target.value,
         });
     };
 
