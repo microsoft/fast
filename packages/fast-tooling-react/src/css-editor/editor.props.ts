@@ -4,12 +4,14 @@ import { CSSSpacingValues } from "./spacing";
 import { CSSPositionValues } from "./position";
 import { CSSWidthValues } from "./width";
 import { CSSHeightValues } from "./height";
+import { CSSColorValues } from "./color";
 
 export interface CSSEditorValues
     extends CSSSpacingValues,
         CSSPositionValues,
         CSSWidthValues,
-        CSSHeightValues {}
+        CSSHeightValues,
+        CSSColorValues {}
 
 export type CSSOnChange = (CSS: CSSEditorValues) => void;
 
