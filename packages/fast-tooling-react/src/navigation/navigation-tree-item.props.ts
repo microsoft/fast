@@ -25,6 +25,11 @@ export interface NavigationTreeItemProps
     contentClassName: string;
 
     /**
+     * The class for the expand trigger
+     */
+    expandTriggerClassName: string;
+
+    /**
      * A string representing the data location in lodash notation
      */
     dataLocation: string;
@@ -35,9 +40,14 @@ export interface NavigationTreeItemProps
     expanded: boolean;
 
     /**
-     * The click handler
+     * The click handler for expanding an item
      */
     handleClick: React.MouseEventHandler<HTMLElement>;
+
+    /**
+     * The click handler for selecting an item
+     */
+    handleSelectionClick: React.MouseEventHandler<HTMLElement>;
 
     /**
      * The keyDown handler

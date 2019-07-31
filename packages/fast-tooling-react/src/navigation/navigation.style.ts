@@ -3,14 +3,15 @@ import { applyTriggerStyle, insetStrongBoxShadow } from "../style";
 import {
     accent,
     foreground300,
-    neutralLayerL3,
     neutralLayerL4,
     neutralOutlineActive,
+    neutralFillStealthSelected,
 } from "../style/constants";
 
 export interface NavigationClassNameContract {
     navigation?: string;
     navigation_item?: string;
+    navigation_itemExpandTrigger?: string;
     /**
      * @deprecated
      */
@@ -50,24 +51,41 @@ const styles: ComponentStyles<NavigationClassNameContract, {}> = {
         '&[aria-expanded="true"] > $navigation_itemList': {
             display: "block",
         },
-        '&[aria-expanded="false"] > $navigation_itemContent::before, &[aria-expanded="true"] > $navigation_itemContent::before': {
+        '&[aria-expanded="false"] > $navigation_itemContent > $navigation_itemExpandTrigger::before, &[aria-expanded="true"] > $navigation_itemContent > $navigation_itemExpandTrigger::before': {
             content: "''",
             display: "inline-block",
-            marginLeft: "-11px",
-            marginRight: "5px",
+            marginLeft: "6px",
         },
-        '&[aria-expanded="false"] > $navigation_itemContent::before': {
-            borderTop: "3px solid transparent",
-            borderLeft: `3px solid ${foreground300}`,
-            borderRight: "3px solid transparent",
-            borderBottom: "3px solid transparent",
+        '&[aria-expanded="false"] > $navigation_itemContent > $navigation_itemExpandTrigger::before': {
+            borderTop: "4px solid transparent",
+            borderLeft: `4px solid ${foreground300}`,
+            borderRight: "4px solid transparent",
+            borderBottom: "4px solid transparent",
         },
-        '&[aria-expanded="true"] > $navigation_itemContent::before': {
-            borderTop: "3px solid transparent",
-            borderLeft: `3px solid ${foreground300}`,
-            borderRight: "3px solid transparent",
-            borderBottom: "3px solid transparent",
+        '&[aria-expanded="true"] > $navigation_itemContent > $navigation_itemExpandTrigger::before': {
+            borderTop: "4px solid transparent",
+            borderLeft: `4px solid ${foreground300}`,
+            borderRight: "4px solid transparent",
+            borderBottom: "4px solid transparent",
             transform: "rotate(45deg)",
+        },
+    },
+    navigation_itemExpandTrigger: {
+        display: "inline-flex",
+        cursor: "pointer",
+        background: "transparent",
+        width: "12px",
+        height: "12px",
+        border: "none",
+        padding: "0",
+        verticalAlign: "middle",
+        marginLeft: "-17px",
+        marginRight: "5px",
+        "&:focus": {
+            outline: "none",
+        },
+        "&::before": {
+            alignItems: "center",
         },
     },
     navigation_item__childItem: {
@@ -101,12 +119,21 @@ const styles: ComponentStyles<NavigationClassNameContract, {}> = {
         cursor: "inherit",
         textDecoration: "none",
         fontStyle: "italic",
-        "&:focus": {
-            ...insetStrongBoxShadow(accent),
-        },
     },
     navigation_itemContent__active: {
-        background: neutralLayerL3,
+        background: neutralFillStealthSelected,
+        position: "relative",
+        borderRadius: "2px",
+        "&::before": {
+            content: "''",
+            position: "absolute",
+            background: accent,
+            borderRadius: "2px",
+            width: "2px",
+            height: "calc(100% - 4px)",
+            top: "2px",
+            left: "2px",
+        },
     },
     navigation_itemContent__dragHover: {
         background: accent,

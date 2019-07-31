@@ -187,16 +187,19 @@ const NavigationTreeItem: React.RefForwardingComponent<
                     role={"treeitem"}
                     ref={elementRef}
                     aria-expanded={props.expanded}
-                    onClick={props.handleClick}
-                    onKeyDown={props.handleKeyDown}
+                        onKeyDown={props.handleKeyDown}
                 >
                     <span
                         className={`${props.contentClassName}${getDragHoverClassName()}`}
-                        onClick={props.handleClick}
+                        onClick={props.handleSelectionClick}
                         onKeyDown={props.handleKeyDown}
                         tabIndex={0}
                         data-location={props.dataLocation}
                     >
+                        <button
+                            className={props.expandTriggerClassName}
+                            onClick={props.handleClick}
+                        />
                         {props.text}
                     </span>
                     {props.children}
