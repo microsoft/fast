@@ -14,7 +14,11 @@ import {
     NavigationUnhandledProps,
     TreeNavigation,
 } from "./navigation.props";
-import { getNavigationFromData, getUpdatedData } from "./navigation.utilities";
+import {
+    getDataWithDuplicate,
+    getNavigationFromData,
+    getUpdatedData,
+} from "./navigation.utilities";
 import { DraggableNavigationTreeItem, NavigationTreeItem } from "./navigation-tree-item";
 import {
     NavigationTreeItemProps,
@@ -504,7 +508,12 @@ export default class Navigation extends Foundation<
                     case KeyCodes.end:
                         this.focusLastTreeItem();
                         break;
+
                     default:
+                        if (e.key.toLowerCase() === "d" && e.shiftKey) {
+                            this.duplicateCurrentItem(dataLocation, type);
+                            e.preventDefault();
+                        }
                         break;
                 }
             }
@@ -591,4 +600,23 @@ export default class Navigation extends Foundation<
 
         return false;
     }
+
+    /**
+     * Duplicates the item
+     */
+    private duplicateCurrentItem = (
+        dataLocation: string,
+        type: NavigationDataType
+    ): void => {
+        if (
+            type !== NavigationDataType.component &&
+            type !== NavigationDataType.primitiveChild
+        ) {
+            return;
+        }
+
+        if (typeof this.props.onChange === "function") {
+            this.props.onChange(getDataWithDuplicate(dataLocation, this.props.data));
+        }
+    };
 }
