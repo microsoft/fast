@@ -2,6 +2,7 @@ import { ManagedClasses } from "@microsoft/fast-jss-manager-react";
 import { CSSBorderClassNameContract } from "./border.style";
 
 export enum BorderStyleValue {
+    "" = "",
     dashed = "dashed",
     dotted = "dotted",
     double = "double",

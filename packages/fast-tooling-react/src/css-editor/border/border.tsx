@@ -70,11 +70,7 @@ export default class CSSBorder extends Foundation<
                             onChange={this.handleInputOnChange(
                                 BorderProperty.borderStyle
                             )}
-                            value={get(
-                                this.props.data,
-                                "borderStyle",
-                                BorderStyleValue.solid
-                            )}
+                            value={get(this.props.data, "borderStyle", "")}
                         >
                             {Object.keys(BorderStyleValue).map(this.renderBorderOption)}
                         </select>

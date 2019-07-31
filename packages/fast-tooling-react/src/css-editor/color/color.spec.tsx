@@ -86,8 +86,6 @@ describe("CSSColor", () => {
             data: {},
         });
 
-        expect(rendered.find(`.${managedClasses.cssColor_input}`).prop("value")).toBe(
-            "#000000"
-        );
+        expect(rendered.find(`.${managedClasses.cssColor_input}`).prop("value")).toBe("");
     });
 });
