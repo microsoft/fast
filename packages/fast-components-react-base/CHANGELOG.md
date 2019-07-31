@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.12.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-base@4.11.3...@microsoft/fast-components-react-base@4.12.0) (2019-07-31)
+
+
+### Bug Fixes
+
+* add flag to autosuggest onValueChange event to label when change is from a suggested option ([#2002](https://github.com/Microsoft/fast-dna/issues/2002)) ([f468c33](https://github.com/Microsoft/fast-dna/commit/f468c33))
+
+
+### Features
+
+* add slider display value converter ([#1986](https://github.com/Microsoft/fast-dna/issues/1986)) ([c08fb97](https://github.com/Microsoft/fast-dna/commit/c08fb97))
+
+
+
+
+
 ## [4.11.3](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-base@4.11.2...@microsoft/fast-components-react-base@4.11.3) (2019-07-24)
 
 **Note:** Version bump only for package @microsoft/fast-components-react-base

@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.19.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-styles-msft@4.18.0...@microsoft/fast-components-styles-msft@4.19.0) (2019-07-31)
+
+
+### Bug Fixes
+
+* missing format index prevented rtl support for call to action transform ([#2019](https://github.com/Microsoft/fast-dna/issues/2019)) ([ad6816f](https://github.com/Microsoft/fast-dna/commit/ad6816f))
+
+
+### Features
+
+* add support for size 7 heading and subheading ([#2061](https://github.com/Microsoft/fast-dna/issues/2061)) ([ed950fb](https://github.com/Microsoft/fast-dna/commit/ed950fb))
+
+
+
+
+
 # [4.18.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-styles-msft@4.17.0...@microsoft/fast-components-styles-msft@4.18.0) (2019-07-24)
 
 

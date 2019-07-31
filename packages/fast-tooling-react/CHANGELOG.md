@@ -3,6 +3,34 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.13.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-tooling-react@1.12.3...@microsoft/fast-tooling-react@1.13.0) (2019-07-31)
+
+
+### Bug Fixes
+
+* address an issue where undefined was used in select and would show the previous value ([#2063](https://github.com/Microsoft/fast-dna/issues/2063)) ([5ab6d59](https://github.com/Microsoft/fast-dna/commit/5ab6d59))
+* adjust spacing on SelectDevice dropdown for the dropdown arrow ([#2008](https://github.com/Microsoft/fast-dna/issues/2008)) ([d3b22d0](https://github.com/Microsoft/fast-dna/commit/d3b22d0))
+* allow the deletion via keyboard of dashes in property names ([#2064](https://github.com/Microsoft/fast-dna/issues/2064)) ([3da0d2b](https://github.com/Microsoft/fast-dna/commit/3da0d2b))
+* allow typing in spinal case for the CSS property name ([#2049](https://github.com/Microsoft/fast-dna/issues/2049)) ([d6a3799](https://github.com/Microsoft/fast-dna/commit/d6a3799))
+* ensure enter does not 'click' buttons in the Form ([#2044](https://github.com/Microsoft/fast-dna/issues/2044)) ([64380dc](https://github.com/Microsoft/fast-dna/commit/64380dc))
+* integration fixes between css editor and css property editor ([#2067](https://github.com/Microsoft/fast-dna/issues/2067)) ([342ec5b](https://github.com/Microsoft/fast-dna/commit/342ec5b))
+* use focus visible in form items that support it ([#2023](https://github.com/Microsoft/fast-dna/issues/2023)) ([7c68aaa](https://github.com/Microsoft/fast-dna/commit/7c68aaa))
+* width and height styles ([#2056](https://github.com/Microsoft/fast-dna/issues/2056)) ([453ce25](https://github.com/Microsoft/fast-dna/commit/453ce25))
+
+
+### Features
+
+* add css border component ([#2026](https://github.com/Microsoft/fast-dna/issues/2026)) ([7976560](https://github.com/Microsoft/fast-dna/commit/7976560))
+* add css boxShadow ([#2047](https://github.com/Microsoft/fast-dna/issues/2047)) ([79a455c](https://github.com/Microsoft/fast-dna/commit/79a455c))
+* add css color picker ([#2025](https://github.com/Microsoft/fast-dna/issues/2025)) ([a4d9201](https://github.com/Microsoft/fast-dna/commit/a4d9201))
+* add enter key behavior to CSS prop editor ([#2012](https://github.com/Microsoft/fast-dna/issues/2012)) ([f75fb5d](https://github.com/Microsoft/fast-dna/commit/f75fb5d))
+* implement ctrl click to edit child item after adding it ([#2060](https://github.com/Microsoft/fast-dna/issues/2060)) ([59ade70](https://github.com/Microsoft/fast-dna/commit/59ade70))
+* refine css prop editor create row behavior ([#1988](https://github.com/Microsoft/fast-dna/issues/1988)) ([5a641b6](https://github.com/Microsoft/fast-dna/commit/5a641b6))
+
+
+
+
+
 ## [1.12.3](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-tooling-react@1.12.2...@microsoft/fast-tooling-react@1.12.3) (2019-07-24)
 
 

@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.17.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-msft@4.16.0...@microsoft/fast-components-react-msft@4.17.0) (2019-07-31)
+
+
+### Features
+
+* add slider display value converter ([#1986](https://github.com/Microsoft/fast-dna/issues/1986)) ([c08fb97](https://github.com/Microsoft/fast-dna/commit/c08fb97))
+* add support for size 7 heading and subheading ([#2061](https://github.com/Microsoft/fast-dna/issues/2061)) ([ed950fb](https://github.com/Microsoft/fast-dna/commit/ed950fb))
+
+
+
+
+
 # [4.16.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-msft@4.15.2...@microsoft/fast-components-react-msft@4.16.0) (2019-07-24)
 
 
