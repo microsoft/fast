@@ -102,6 +102,7 @@ export class Pane extends Foundation<PaneHandledProps, PaneUnhandledProps, PaneS
      */
     public static defaultProps: Partial<PaneProps> = {
         initialWidth: 300,
+        collapsedWidth: 40,
         minWidth: 100,
         maxWidth: 800,
         resizable: false,
@@ -109,11 +110,6 @@ export class Pane extends Foundation<PaneHandledProps, PaneUnhandledProps, PaneS
         overlay: false,
         hidden: false,
     };
-
-    /**
-     * The width of a pane when it is collapsed
-     */
-    private static collapsedWidth: number = 40;
 
     /**
      * All handled props
@@ -197,7 +193,7 @@ export class Pane extends Foundation<PaneHandledProps, PaneUnhandledProps, PaneS
      */
     public getWidth(): number {
         if (this.props.collapsed) {
-            return Pane.collapsedWidth;
+            return this.props.collapsedWidth;
         } else if (this.width() < this.props.minWidth) {
             return this.props.minWidth;
         } else if (this.width() > this.props.maxWidth) {
@@ -215,7 +211,7 @@ export class Pane extends Foundation<PaneHandledProps, PaneUnhandledProps, PaneS
         const styles: React.CSSProperties = {};
 
         styles.minWidth = this.props.collapsed
-            ? Pane.collapsedWidth
+            ? this.props.collapsedWidth
             : this.props.resizable
                 ? toPx(this.props.minWidth)
                 : width;
