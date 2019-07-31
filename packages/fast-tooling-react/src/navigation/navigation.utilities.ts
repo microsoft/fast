@@ -760,7 +760,10 @@ export function getDataWithDuplicate<T>(sourceDataLocation: string, data: T): T 
     } else {
         // check for case of single child as object
         const sourceDataLocationSegments: string[] = sourceDataLocation.split(".");
-        if (sourceDataLocationSegments[sourceDataLocationSegments.length - 2] === childrenKeyword) {
+        if (
+            sourceDataLocationSegments[sourceDataLocationSegments.length - 2] ===
+            childrenKeyword
+        ) {
             duplicateDataInArray(clonedData, normalizedSourceDataLocation);
         }
     }
