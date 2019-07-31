@@ -13,7 +13,7 @@ const contextMenuConfig: ComponentViewConfig<ContextMenuProps> = {
     guidance: Guidance,
     scenarios: [
         {
-            displayName: "Default",
+            displayName: "Basic",
             data: {
                 children: [
                     {

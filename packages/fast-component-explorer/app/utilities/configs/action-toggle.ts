@@ -14,7 +14,7 @@ const actionToggleConfig: ComponentViewConfig<ActionToggleProps> = {
     guidance: Guidance,
     scenarios: [
         {
-            displayName: "Default",
+            displayName: "Neutral",
             data: {
                 unselectedLabel: "Pause",
                 selectedLabel: "Play",
@@ -35,7 +35,7 @@ const actionToggleConfig: ComponentViewConfig<ActionToggleProps> = {
             },
         },
         {
-            displayName: "Primary",
+            displayName: "Accent", // using updated "Accent" terminology until "Primary" appearance is deprecated
             data: {
                 appearance: ActionToggleAppearance.primary,
                 selectedContent: "Pause",

@@ -14,12 +14,6 @@ const subheadingConfig: ComponentViewConfig<SubheadingProps> = {
     guidance: Guidance,
     scenarios: [
         {
-            displayName: "Default",
-            data: {
-                children: "Default heading",
-            },
-        },
-        {
             displayName: "Subheading 1",
             data: {
                 tag: SubheadingTag.h1,

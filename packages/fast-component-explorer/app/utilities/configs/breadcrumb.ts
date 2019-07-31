@@ -14,7 +14,7 @@ const breadcrumbConfig: ComponentViewConfig<BreadcrumbProps> = {
     guidance: Guidance,
     scenarios: [
         {
-            displayName: "Default",
+            displayName: "Basic",
             data: {
                 label: "",
                 separator: {

@@ -14,7 +14,7 @@ const actionTriggerConfig: ComponentViewConfig<ActionTriggerProps> = {
     guidance: Guidance,
     scenarios: [
         {
-            displayName: "Default",
+            displayName: "Neutral",
             data: {
                 glyph: {
                     id: glyphSchema.id,

@@ -13,12 +13,6 @@ const paragraphConfig: ComponentViewConfig<ParagraphProps> = {
     guidance: Guidance,
     scenarios: [
         {
-            displayName: "Default",
-            data: {
-                children: "Default paragraph",
-            },
-        },
-        {
             displayName: "Paragraph 1",
             data: {
                 children: "Paragraph 1",

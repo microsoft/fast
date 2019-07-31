@@ -14,12 +14,6 @@ const headingConfig: ComponentViewConfig<HeadingProps> = {
     guidance: Guidance,
     scenarios: [
         {
-            displayName: "Default",
-            data: {
-                children: "Default heading",
-            },
-        },
-        {
             displayName: "Heading 1",
             data: {
                 tag: HeadingTag.h1,

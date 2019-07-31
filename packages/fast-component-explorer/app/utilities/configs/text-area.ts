@@ -12,7 +12,7 @@ const textAreaConfig: ComponentViewConfig<TextAreaProps> = {
     guidance: Guidance,
     scenarios: [
         {
-            displayName: "Default",
+            displayName: "Basic",
             data: {},
         },
         {

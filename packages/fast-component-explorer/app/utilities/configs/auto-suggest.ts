@@ -23,7 +23,7 @@ const autoSuggestConfig: ComponentViewConfig<AutoSuggestProps> = {
     guidance: Guidance,
     scenarios: [
         {
-            displayName: "Default",
+            displayName: "Basic",
             data: {
                 placeholder: "Favorite animal",
                 listboxId: uniqueId(),

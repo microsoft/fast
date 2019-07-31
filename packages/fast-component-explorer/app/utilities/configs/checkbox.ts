@@ -16,7 +16,7 @@ const checkboxConfig: ComponentViewConfig<CheckboxProps> = {
     guidance: Guidance,
     scenarios: [
         {
-            displayName: "Default",
+            displayName: "Basic",
             data: {
                 inputId: id,
                 children: [

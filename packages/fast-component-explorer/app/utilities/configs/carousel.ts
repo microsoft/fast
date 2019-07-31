@@ -74,7 +74,7 @@ const carouselConfig: ComponentViewConfig<CarouselProps> = {
     guidance: Guidance,
     scenarios: [
         {
-            displayName: "Default",
+            displayName: "Basic",
             data: {
                 label: "A carousel of items",
                 items: defaultTabItems,
