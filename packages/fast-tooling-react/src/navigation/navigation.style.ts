@@ -1,4 +1,5 @@
 import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager-react";
+import { applyFocusVisible } from "@microsoft/fast-jss-utilities";
 import { applyTriggerStyle, insetStrongBoxShadow } from "../style";
 import {
     accent,
@@ -119,6 +120,9 @@ const styles: ComponentStyles<NavigationClassNameContract, {}> = {
         cursor: "inherit",
         textDecoration: "none",
         fontStyle: "italic",
+        ...applyFocusVisible({
+            ...insetStrongBoxShadow(accent),
+        }),
     },
     navigation_itemContent__active: {
         background: neutralFillStealthSelected,
