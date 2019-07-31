@@ -62,6 +62,9 @@ export default class CSSPropertyEditor extends Foundation<
             this.editData = isNil(this.props.data)
                 ? {}
                 : Object.assign({}, this.props.data);
+            this.submittedEditData = isNil(this.props.data)
+                ? {}
+                : Object.assign({}, this.props.data);
             this.setState({
                 activeRowUncommittedCSSName: null,
             });
