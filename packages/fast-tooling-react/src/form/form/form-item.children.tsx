@@ -1,11 +1,11 @@
+import { canUseDOM } from "exenv-es6";
 import { generateExampleData } from "../utilities";
-import React from "react";
 import { arrayMove, SortableContainer, SortableElement } from "react-sortable-hoc";
-import { cloneDeep, get, uniqueId } from "lodash-es";
+import { cloneDeep, get, inRange, uniqueId } from "lodash-es";
 import { KeyCodes } from "@microsoft/fast-web-utilities";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
-import { canUseDOM } from "exenv-es6";
+import React from "react";
 import { getChildOptionBySchemaId } from "../../data-utilities/location";
 import { SortableListItem, sortingProps } from "./sorting";
 import { FormChildOptionItem } from "./form.props";
@@ -86,6 +86,7 @@ class FormItemChildren extends FormItemBase<
             indexOfSelectedFilteredChildOption: 0,
             filteredChildOptions: this.childOptions,
             hideChildrenList: true,
+            editChildIndex: -1,
         };
     }
 
@@ -129,6 +130,28 @@ class FormItemChildren extends FormItemBase<
     public componentDidMount(): void {
         if (canUseDOM()) {
             document.addEventListener("click", this.handleWindowClick);
+        }
+    }
+
+    public componentDidUpdate(): void {
+        const editIndex: number = this.state.editChildIndex;
+
+        if (editIndex > -1) {
+            const children: ChildComponent[] = this.currentChildrenArray();
+            const childToEdit: ChildComponent | undefined = children[editIndex];
+
+            if (childToEdit !== undefined) {
+                this.onEditComponent(
+                    childToEdit,
+                    editIndex === 0 && !Array.isArray(this.props.data)
+                        ? undefined
+                        : editIndex
+                );
+
+                this.setState({
+                    editChildIndex: -1,
+                });
+            }
         }
     }
 
@@ -311,14 +334,16 @@ class FormItemChildren extends FormItemBase<
         }
     }
 
+    private currentChildrenArray(): ChildComponent[] {
+        return Array.isArray(this.props.data) ? this.props.data : [this.props.data];
+    }
+
     /**
      * Generate all items for the list of existing children
      */
     private renderExistingChildItems(): JSX.Element | JSX.Element[] {
         const currentChildren: ChildComponent = this.props.data;
-        const currentChildrenArray: ChildComponent[] = Array.isArray(currentChildren)
-            ? currentChildren
-            : [currentChildren];
+        const currentChildrenArray: ChildComponent[] = this.currentChildrenArray();
 
         if (currentChildren) {
             return currentChildrenArray.map(
@@ -480,7 +505,8 @@ class FormItemChildren extends FormItemBase<
                     this.onAddComponent(
                         this.state.filteredChildOptions[
                             this.state.indexOfSelectedFilteredChildOption
-                        ]
+                        ],
+                        e.ctrlKey
                     );
                 }
 
@@ -608,27 +634,33 @@ class FormItemChildren extends FormItemBase<
     /**
      * Click event for adding a component
      */
-    private onAddComponent(item: FormChildOptionItem): void {
+    private onAddComponent(item: FormChildOptionItem, navigateToItem: boolean): void {
         const currentChildren: ChildComponent[] = this.getCurrentChildren(
             this.props.data
         );
+        const items: null | string | ChildComponent[] | ChildComponentConfig =
+            typeof item === "object" && item !== null
+                ? this.getChildComponents(currentChildren, item)
+                : typeof item === "string"
+                    ? this.getChildStrings(currentChildren, item)
+                    : null;
 
-        if (typeof item === "object" && item !== null) {
+        if (items !== null) {
             this.props.onChange(
                 this.props.dataLocation,
-                this.getChildComponents(currentChildren, item),
+                items,
                 undefined,
                 undefined,
                 true
             );
-        } else if (typeof item === "string") {
-            this.props.onChange(
-                this.props.dataLocation,
-                this.getChildStrings(currentChildren, item),
-                undefined,
-                undefined,
-                true
-            );
+
+            if (navigateToItem) {
+                this.setState({
+                    editChildIndex: this.currentChildrenArray().filter(
+                        (childItem: ChildComponent) => !!childItem
+                    ).length,
+                });
+            }
         }
 
         this.setState({
@@ -644,7 +676,7 @@ class FormItemChildren extends FormItemBase<
         component: FormChildOptionItem
     ): ((e: React.MouseEvent<HTMLLIElement>) => void) => {
         return (e: React.MouseEvent<HTMLLIElement>): void => {
-            this.onAddComponent(component);
+            this.onAddComponent(component, e.ctrlKey);
         };
     };
 
