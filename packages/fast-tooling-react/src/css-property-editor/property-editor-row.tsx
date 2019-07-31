@@ -1,12 +1,11 @@
 import React from "react";
-import { camelCase, get, isNil } from "lodash-es";
+import { get, isNil } from "lodash-es";
 import Foundation, {
     FoundationProps,
     HandledProps,
 } from "@microsoft/fast-components-foundation-react";
 import {
     CSSPropertyEditorRowHandledProps,
-    CSSPropertyEditorRowState,
     CSSPropertyEditorRowUnhandledProps,
 } from "./property-editor-row.props";
 import { KeyCodes, spinalCase } from "@microsoft/fast-web-utilities";
@@ -14,7 +13,7 @@ import { KeyCodes, spinalCase } from "@microsoft/fast-web-utilities";
 export default class CSSPropertyEditorRow extends Foundation<
     CSSPropertyEditorRowHandledProps,
     CSSPropertyEditorRowUnhandledProps,
-    CSSPropertyEditorRowState
+    {}
 > {
     public static displayName: string = "CSSPropertyEditorRow";
 
@@ -87,7 +86,7 @@ export default class CSSPropertyEditorRow extends Foundation<
                     onBlur={this.handleNameInputBlur}
                     onFocus={this.handleFocus}
                     onKeyDown={this.handleKeyInputKeyDown}
-                    value={this.getSpinalCase(this.props.cssPropertyName)}
+                    value={spinalCase(this.props.cssPropertyName)}
                     style={{
                         width: `${this.getMonospaceInputWidth(
                             this.props.cssPropertyName
@@ -124,17 +123,6 @@ export default class CSSPropertyEditorRow extends Foundation<
     };
 
     /**
-     * get the spinal case for the typed in property
-     * include a dash if that was the last character typed to allow
-     * a user to continue typing using spinal case
-     */
-    private getSpinalCase(propertyName: string): string {
-        return `${spinalCase(propertyName)}${
-            this.state.propertyKeyLastCharacterIsDash ? "-" : ""
-        }`;
-    }
-
-    /**
      * get classes for name input
      */
     private generateNameInputClassNames(): string {
@@ -168,7 +156,7 @@ export default class CSSPropertyEditorRow extends Foundation<
             });
 
             this.props.onPropertyNameChange(
-                camelCase(newName),
+                newName,
                 this.props.cssPropertyName,
                 this.props.rowIndex
             );
