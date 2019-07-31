@@ -21,6 +21,11 @@ export interface PaneHandledProps extends PaneManagedClasses {
     initialWidth?: number;
 
     /**
+     * The width of a pane when it is collapsed
+     */
+    collapsedWidth?: number;
+
+    /**
      * The minimum width of the pane
      */
     minWidth?: number;
