@@ -24,6 +24,11 @@ export interface RowHandledProps extends RowManagedClasses {
     initialHeight?: number;
 
     /**
+     * The height of a row when it is collapsed
+     */
+    collapsedHeight?: number;
+
+    /**
      * Causes the row to fill all available vertical space
      */
     fill?: boolean;

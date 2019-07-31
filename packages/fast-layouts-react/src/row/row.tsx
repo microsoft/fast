@@ -123,6 +123,7 @@ export class Row extends Foundation<
     public static defaultProps: Partial<RowProps> = {
         fill: false,
         initialHeight: 40,
+        collapsedHeight: 40,
         minHeight: 40,
         maxHeight: 800,
         resizable: false,
@@ -130,11 +131,6 @@ export class Row extends Foundation<
         overlay: false,
         hidden: false,
     };
-
-    /**
-     * The height of a row when it is collapsed
-     */
-    private static collapsedHeight: number = 40;
 
     protected handledProps: HandledProps<RowHandledProps> = {
         fill: void 0,
@@ -198,7 +194,7 @@ export class Row extends Foundation<
      */
     public getHeight(): number {
         if (this.props.collapsed) {
-            return Row.collapsedHeight;
+            return this.props.collapsedHeight;
         } else if (this.height() <= this.props.minHeight) {
             return this.props.minHeight;
         } else if (this.height() >= this.props.maxHeight) {
@@ -216,7 +212,7 @@ export class Row extends Foundation<
         const styles: React.CSSProperties = {};
 
         styles.minHeight = this.props.collapsed
-            ? Row.collapsedHeight
+            ? this.props.collapsedHeight
             : this.props.resizable
                 ? toPx(this.props.minHeight)
                 : height;
