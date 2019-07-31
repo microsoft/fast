@@ -187,7 +187,7 @@ const NavigationTreeItem: React.RefForwardingComponent<
                     role={"treeitem"}
                     ref={elementRef}
                     aria-expanded={props.expanded}
-                        onKeyDown={props.handleKeyDown}
+                    onKeyDown={props.handleKeyDown}
                 >
                     <span
                         className={`${props.contentClassName}${getDragHoverClassName()}`}
