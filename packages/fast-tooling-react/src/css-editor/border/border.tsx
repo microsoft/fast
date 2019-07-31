@@ -72,7 +72,9 @@ export default class CSSBorder extends Foundation<
                             )}
                             value={get(this.props.data, "borderStyle", "")}
                         >
-                            {Object.keys(BorderStyleValue).map(this.renderBorderOption)}
+                            {[""]
+                                .concat(Object.keys(BorderStyleValue))
+                                .map(this.renderBorderOption)}
                         </select>
                     </span>
                     <input
