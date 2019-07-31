@@ -29,16 +29,12 @@ export interface ExplorerClassNameContract {
 export function applyScrollbarStyle(): CSSRules<{}> {
     return {
         "&::-webkit-scrollbar": {
-            background: (config: DesignSystem): string => {
-                return neutralLayerL2(config);
-            },
+            background: neutralLayerL2,
             width: "8px",
             height: "8px",
         },
         "&::-webkit-scrollbar-thumb": {
-            background: (config: DesignSystem): string => {
-                return neutralLayerFloating(config);
-            },
+            background: neutralLayerFloating,
             borderRadius: "8px",
         },
     };
