@@ -77,7 +77,8 @@ const managedClasses: NavigationClassNameContract = {
 };
 const treeItemSelector: string = "[role='treeitem']";
 const treeItemEndPointSelector: string = `a${treeItemSelector}`;
-const treeItemExpandListTriggerSelector: string = `div${treeItemSelector} > span`;
+const treeItemListItemSelector: string = `div${treeItemSelector} > span`;
+const treeItemExpandListTriggerSelector: string = `div${treeItemSelector} > span > button`;
 
 // context singleton
 let context: any;
@@ -116,7 +117,7 @@ describe("Navigation", () => {
         const rendered: any = mount(<DragDropNavigation {...props} />);
         const item: any = rendered.find(treeItemEndPointSelector);
         expect(item).toHaveLength(1);
-        const triggerItem: any = rendered.find(treeItemExpandListTriggerSelector);
+        const triggerItem: any = rendered.find(treeItemListItemSelector);
         expect(triggerItem).toHaveLength(1);
         expect(item.props().className).toEqual(managedClasses.navigation_itemContent);
     });
@@ -140,7 +141,7 @@ describe("Navigation", () => {
 
         const rendered: any = mount(<DragDropNavigation {...props} />);
         const item: any = rendered.find(treeItemEndPointSelector);
-        const itemTriggers: any = rendered.find(treeItemExpandListTriggerSelector);
+        const itemTriggers: any = rendered.find(treeItemListItemSelector);
         expect(item).toHaveLength(2);
         expect(itemTriggers).toHaveLength(1);
         expect(item.at(0).props().className).toEqual(
@@ -163,7 +164,7 @@ describe("Navigation", () => {
         };
 
         const rendered: any = mount(<DragDropNavigation {...props} />);
-        const triggerItem: any = rendered.find(treeItemExpandListTriggerSelector);
+        const triggerItem: any = rendered.find(treeItemListItemSelector);
         expect(triggerItem).toHaveLength(1);
     });
     test("should render a children data type for props not using the React default children prop", () => {
@@ -179,7 +180,7 @@ describe("Navigation", () => {
         };
 
         const rendered: any = mount(<DragDropNavigation {...props} />);
-        const triggerItem: any = rendered.find(treeItemExpandListTriggerSelector);
+        const triggerItem: any = rendered.find(treeItemListItemSelector);
         expect(triggerItem).toHaveLength(2);
     });
     test("should render a nested item if nested children have been passed", () => {
@@ -201,7 +202,7 @@ describe("Navigation", () => {
 
         const rendered: any = mount(<DragDropNavigation {...props} />);
         const linkItem: any = rendered.find(treeItemEndPointSelector);
-        const triggerItem: any = rendered.find(treeItemExpandListTriggerSelector).at(1);
+        const triggerItem: any = rendered.find(treeItemListItemSelector).at(1);
 
         expect(triggerItem).toHaveLength(1);
         expect(triggerItem.props().className).toEqual(
@@ -235,7 +236,7 @@ describe("Navigation", () => {
 
         const rendered: any = mount(<DragDropNavigation {...props} />);
         const linkItem: any = rendered.find(treeItemEndPointSelector);
-        const triggerItem: any = rendered.find(treeItemExpandListTriggerSelector).at(1);
+        const triggerItem: any = rendered.find(treeItemListItemSelector).at(1);
 
         expect(triggerItem).toHaveLength(1);
         expect(triggerItem.props().className).toEqual(
@@ -285,7 +286,7 @@ describe("Navigation", () => {
 
         const rendered: any = mount(<DragDropNavigation {...props} />);
         const linkItem: any = rendered.find(treeItemEndPointSelector);
-        const triggerItem: any = rendered.find(treeItemExpandListTriggerSelector);
+        const triggerItem: any = rendered.find(treeItemListItemSelector);
 
         expect(triggerItem).toHaveLength(3);
         expect(linkItem).toHaveLength(3);
@@ -317,7 +318,7 @@ describe("Navigation", () => {
             onLocationUpdate,
         };
         const rendered: any = mount(<DragDropNavigation {...props} />);
-        const triggerItem: any = rendered.find(treeItemExpandListTriggerSelector);
+        const triggerItem: any = rendered.find(treeItemListItemSelector);
 
         triggerItem.at(0).simulate("click");
 
@@ -325,28 +326,6 @@ describe("Navigation", () => {
         expect(onLocationUpdate.mock.calls[0][0]).toEqual(
             triggerItem.at(0).props()["data-location"]
         );
-    });
-    test("should not fire a callback when a children data type is clicked", () => {
-        const onLocationUpdate: any = jest.fn();
-        const props: any = {
-            ...navigationProps,
-            data: {
-                otherChildren: [
-                    {
-                        id: childOptions[0].schema.id,
-                        props: {},
-                    },
-                ],
-            },
-            managedClasses,
-            onLocationUpdate,
-        };
-        const rendered: any = mount(<DragDropNavigation {...props} />);
-        const triggerItem: any = rendered.find(treeItemExpandListTriggerSelector);
-
-        triggerItem.at(1).simulate("click");
-
-        expect(onLocationUpdate).not.toHaveBeenCalled();
     });
     test("should add an active class on a link when it has been clicked", () => {
         const props: any = {
@@ -381,7 +360,7 @@ describe("Navigation", () => {
             managedClasses,
         };
         const rendered: any = mount(<DragDropNavigation {...props} />);
-        const triggerItem: any = rendered.find(treeItemExpandListTriggerSelector);
+        const triggerItem: any = rendered.find(treeItemListItemSelector);
 
         expect(triggerItem.at(0).props().className).toEqual(
             managedClasses.navigation_itemContent
@@ -391,7 +370,7 @@ describe("Navigation", () => {
 
         expect(
             rendered
-                .find(treeItemExpandListTriggerSelector)
+                .find(treeItemListItemSelector)
                 .at(0)
                 .props().className
         ).toEqual(
@@ -410,7 +389,8 @@ describe("Navigation", () => {
         const triggerItem: any = rendered.find(treeItemExpandListTriggerSelector);
 
         expect(
-            triggerItem
+            rendered
+                .find(treeItemListItemSelector)
                 .at(0)
                 .parent()
                 .props()["aria-expanded"]
@@ -420,7 +400,7 @@ describe("Navigation", () => {
 
         expect(
             rendered
-                .find(treeItemExpandListTriggerSelector)
+                .find(treeItemListItemSelector)
                 .at(0)
                 .parent()
                 .props()["aria-expanded"]
@@ -439,7 +419,7 @@ describe("Navigation", () => {
 
         expect(
             rendered
-                .find(treeItemExpandListTriggerSelector)
+                .find(treeItemListItemSelector)
                 .at(0)
                 .parent()
                 .props()["aria-expanded"]
@@ -449,7 +429,7 @@ describe("Navigation", () => {
 
         expect(
             rendered
-                .find(treeItemExpandListTriggerSelector)
+                .find(treeItemListItemSelector)
                 .at(0)
                 .parent()
                 .props()["aria-expanded"]
@@ -462,7 +442,7 @@ describe("Navigation", () => {
             managedClasses,
         };
         const rendered: any = mount(<DragDropNavigation {...props} />);
-        const triggerItem: any = rendered.find(treeItemExpandListTriggerSelector);
+        const triggerItem: any = rendered.find(treeItemListItemSelector);
 
         expect(
             triggerItem
@@ -475,7 +455,7 @@ describe("Navigation", () => {
 
         expect(
             rendered
-                .find(treeItemExpandListTriggerSelector)
+                .find(treeItemListItemSelector)
                 .at(0)
                 .parent()
                 .props()["aria-expanded"]
@@ -488,13 +468,13 @@ describe("Navigation", () => {
             managedClasses,
         };
         const rendered: any = mount(<DragDropNavigation {...props} />);
-        const triggerItem: any = rendered.find(treeItemExpandListTriggerSelector);
+        const triggerItem: any = rendered.find(treeItemListItemSelector);
 
         triggerItem.at(0).simulate("keydown", { keyCode: KeyCodes.enter });
 
         expect(
             rendered
-                .find(treeItemExpandListTriggerSelector)
+                .find(treeItemListItemSelector)
                 .at(0)
                 .parent()
                 .props()["aria-expanded"]
@@ -504,7 +484,7 @@ describe("Navigation", () => {
 
         expect(
             rendered
-                .find(treeItemExpandListTriggerSelector)
+                .find(treeItemListItemSelector)
                 .at(0)
                 .parent()
                 .props()["aria-expanded"]
@@ -517,7 +497,7 @@ describe("Navigation", () => {
             managedClasses,
         };
         const rendered: any = mount(<DragDropNavigation {...props} />);
-        const triggerItem: any = rendered.find(treeItemExpandListTriggerSelector);
+        const triggerItem: any = rendered.find(treeItemListItemSelector);
 
         expect(
             triggerItem
@@ -530,7 +510,7 @@ describe("Navigation", () => {
 
         expect(
             rendered
-                .find(treeItemExpandListTriggerSelector)
+                .find(treeItemListItemSelector)
                 .at(0)
                 .parent()
                 .props()["aria-expanded"]
@@ -543,13 +523,13 @@ describe("Navigation", () => {
             managedClasses,
         };
         const rendered: any = mount(<DragDropNavigation {...props} />);
-        const triggerItem: any = rendered.find(treeItemExpandListTriggerSelector);
+        const triggerItem: any = rendered.find(treeItemListItemSelector);
 
         triggerItem.at(0).simulate("keydown", { keyCode: KeyCodes.space });
 
         expect(
             rendered
-                .find(treeItemExpandListTriggerSelector)
+                .find(treeItemListItemSelector)
                 .at(0)
                 .parent()
                 .props()["aria-expanded"]
@@ -559,7 +539,7 @@ describe("Navigation", () => {
 
         expect(
             rendered
-                .find(treeItemExpandListTriggerSelector)
+                .find(treeItemListItemSelector)
                 .at(0)
                 .parent()
                 .props()["aria-expanded"]
