@@ -11,6 +11,7 @@ export enum SubheadingSize {
     _4 = 4,
     _5 = 5,
     _6 = 6,
+    _7 = 7,
 }
 
 export enum SubheadingTag {

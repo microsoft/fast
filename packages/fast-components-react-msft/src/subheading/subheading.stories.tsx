@@ -22,6 +22,9 @@ storiesOf("Subheading", module)
     .add("Subheading 6", () => (
         <Subheading size={SubheadingSize._6}>Subheading 6</Subheading>
     ))
+    .add("Subheading 7", () => (
+        <Subheading size={SubheadingSize._7}>Subheading 7</Subheading>
+    ))
     .add("Subheading h1", () => (
         <Subheading tag={SubheadingTag.h1}>Subheading h1</Subheading>
     ))

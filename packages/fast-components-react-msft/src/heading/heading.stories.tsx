@@ -33,4 +33,9 @@ storiesOf("Heading", module)
         <Heading tag={HeadingTag.h6} size={HeadingSize._6}>
             Heading 6
         </Heading>
+    ))
+    .add("Heading 7", () => (
+        <Heading tag={HeadingTag.p} size={HeadingSize._7}>
+            Heading 7
+        </Heading>
     ));
