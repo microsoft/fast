@@ -75,6 +75,7 @@ export default class Navigation extends Foundation<
     };
 
     private rootElement: React.RefObject<HTMLDivElement>;
+    private delayedFocusDataLocation: string = null;
 
     constructor(props: NavigationProps) {
         super(props);
@@ -109,6 +110,13 @@ export default class Navigation extends Foundation<
                 {this.renderTreeItem(this.state.navigation, 1, 1, 0)}
             </div>
         );
+    }
+
+    public componentDidUpdate(prevProps: NavigationProps): void {
+        if (this.delayedFocusDataLocation !== null) {
+            this.focusNextTreeItem(this.delayedFocusDataLocation);
+            this.delayedFocusDataLocation = null;
+        }
     }
 
     /**
@@ -613,6 +621,12 @@ export default class Navigation extends Foundation<
             type !== NavigationDataType.primitiveChild
         ) {
             return;
+        }
+
+        this.delayedFocusDataLocation = dataLocation;
+
+        if (this.isExpanded(dataLocation)) {
+            this.toggleItems(dataLocation, type);
         }
 
         if (typeof this.props.onChange === "function") {
