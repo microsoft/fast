@@ -17,10 +17,13 @@ export enum BorderStyleValue {
     unset = "unset",
 }
 
-export interface CSSBorderState {
-    borderColor?: string;
-    borderStyle?: BorderStyleValue;
-    borderWidth?: string;
+/**
+ * The CSS border keys
+ */
+export enum BorderProperty {
+    borderColor = "borderColor",
+    borderStyle = "borderStyle",
+    borderWidth = "borderWidth",
 }
 
 export interface CSSBorderValues {

@@ -196,8 +196,8 @@ export default class CSSPosition extends Foundation<
 
         props.forEach(
             (prop: string): void => {
-                if (this.props[prop] && prop !== excludedProp) {
-                    updatedProps[prop] = this.props[prop];
+                if (get(this.props, `data.${prop}`) && prop !== excludedProp) {
+                    updatedProps[prop] = this.props.data[prop];
                 }
             }
         );

@@ -1,5 +1,5 @@
 import { ComponentStyles } from "@microsoft/fast-jss-manager-react";
-import { applyControlRegion, applyControlWrapper, applyInputStyle } from "../../style";
+import { applyControlRegion, applyInputStyle, applyLabelStyle } from "../../style";
 
 export interface CSSBoxShadowClassNameContract {
     cssBoxShadow?: string;
@@ -51,6 +51,9 @@ const styles: ComponentStyles<CSSBoxShadowClassNameContract, {}> = {
     cssBoxShadow_blurInput: {
         ...applyInputStyle(),
         height: "25px",
+    },
+    cssBoxShadow_label: {
+        ...applyLabelStyle(),
     },
 };
 
