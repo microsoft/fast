@@ -14,7 +14,11 @@ import {
     NavigationUnhandledProps,
     TreeNavigation,
 } from "./navigation.props";
-import { getNavigationFromData, getUpdatedData } from "./navigation.utilities";
+import {
+    getDataWithDuplicate,
+    getNavigationFromData,
+    getUpdatedData,
+} from "./navigation.utilities";
 import { DraggableNavigationTreeItem, NavigationTreeItem } from "./navigation-tree-item";
 import {
     NavigationTreeItemProps,
@@ -148,7 +152,7 @@ export default class Navigation extends Foundation<
                 dataLocation === this.state.dragHoverAfterDataLocation,
             expanded: this.isExpanded(dataLocation),
             handleClick: this.handleTreeItemClick(dataLocation, dataType),
-            handleKeyUp: this.handleTreeItemKeyUp(dataLocation, dataType),
+            handleKeyDown: this.handleTreeItemKeyDown(dataLocation, dataType),
             handleCloseDraggingItem: this.handleCloseDraggingTreeItem,
             text: navigation.text,
             type: dataType,
@@ -471,7 +475,7 @@ export default class Navigation extends Foundation<
     /**
      * Handles key up on a tree item
      */
-    private handleTreeItemKeyUp = (
+    private handleTreeItemKeyDown = (
         dataLocation: string,
         type: NavigationDataType
     ): ((e: React.KeyboardEvent<HTMLDivElement | HTMLAnchorElement>) => void) => {
@@ -504,7 +508,12 @@ export default class Navigation extends Foundation<
                     case KeyCodes.end:
                         this.focusLastTreeItem();
                         break;
+
                     default:
+                        if (e.key.toLowerCase() === "d" && e.ctrlKey) {
+                            e.preventDefault();
+                            this.duplicateCurrentItem(dataLocation, type);
+                        }
                         break;
                 }
             }
@@ -591,4 +600,23 @@ export default class Navigation extends Foundation<
 
         return false;
     }
+
+    /**
+     * Duplicates the item
+     */
+    private duplicateCurrentItem = (
+        dataLocation: string,
+        type: NavigationDataType
+    ): void => {
+        if (
+            type !== NavigationDataType.component &&
+            type !== NavigationDataType.primitiveChild
+        ) {
+            return;
+        }
+
+        if (typeof this.props.onChange === "function") {
+            this.props.onChange(getDataWithDuplicate(dataLocation, this.props.data));
+        }
+    };
 }

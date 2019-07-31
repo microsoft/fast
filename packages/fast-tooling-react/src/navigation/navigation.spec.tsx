@@ -471,7 +471,7 @@ describe("Navigation", () => {
                 .props()["aria-expanded"]
         ).toEqual(false);
 
-        triggerItem.at(0).simulate("keyup", { keyCode: KeyCodes.enter });
+        triggerItem.at(0).simulate("keydown", { keyCode: KeyCodes.enter });
 
         expect(
             rendered
@@ -490,7 +490,7 @@ describe("Navigation", () => {
         const rendered: any = mount(<DragDropNavigation {...props} />);
         const triggerItem: any = rendered.find(treeItemExpandListTriggerSelector);
 
-        triggerItem.at(0).simulate("keyup", { keyCode: KeyCodes.enter });
+        triggerItem.at(0).simulate("keydown", { keyCode: KeyCodes.enter });
 
         expect(
             rendered
@@ -500,7 +500,7 @@ describe("Navigation", () => {
                 .props()["aria-expanded"]
         ).toEqual(true);
 
-        triggerItem.at(0).simulate("keyup", { keyCode: KeyCodes.enter });
+        triggerItem.at(0).simulate("keydown", { keyCode: KeyCodes.enter });
 
         expect(
             rendered
@@ -526,7 +526,7 @@ describe("Navigation", () => {
                 .props()["aria-expanded"]
         ).toEqual(false);
 
-        triggerItem.at(0).simulate("keyup", { keyCode: KeyCodes.space });
+        triggerItem.at(0).simulate("keydown", { keyCode: KeyCodes.space });
 
         expect(
             rendered
@@ -545,7 +545,7 @@ describe("Navigation", () => {
         const rendered: any = mount(<DragDropNavigation {...props} />);
         const triggerItem: any = rendered.find(treeItemExpandListTriggerSelector);
 
-        triggerItem.at(0).simulate("keyup", { keyCode: KeyCodes.space });
+        triggerItem.at(0).simulate("keydown", { keyCode: KeyCodes.space });
 
         expect(
             rendered
@@ -555,7 +555,7 @@ describe("Navigation", () => {
                 .props()["aria-expanded"]
         ).toEqual(true);
 
-        triggerItem.at(0).simulate("keyup", { keyCode: KeyCodes.space });
+        triggerItem.at(0).simulate("keydown", { keyCode: KeyCodes.space });
 
         expect(
             rendered
