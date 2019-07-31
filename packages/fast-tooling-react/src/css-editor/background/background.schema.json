@@ -1,0 +1,19 @@
+{
+    "$schema": "http://json-schema.org/schema#",
+    "title": "CSS Background",
+    "description": "A CSS background component's schema definition.",
+    "id": "@microsoft/fast-tooling-react/css-background",
+    "type": "object",
+    "properties": {
+        "data": {
+            "title": "CSS Values",
+            "type": "object",
+            "properties": {
+                "background": {
+                    "title": "Background",
+                    "type": "string"
+                }
+            }
+        }
+    }
+}

@@ -17,6 +17,7 @@ import { CSSHeight, CSSHeightValues } from "./height";
 import { CSSColor, CSSColorValues } from "./color";
 import { CSSBorder, CSSBorderValues } from "./border";
 import { CSSBoxShadow, CSSBoxShadowValues } from "./box-shadow";
+import { CSSBackground, CSSBackgroundValues } from "./background";
 
 export default class CSSEditor extends Foundation<
     CSSEditorHandledProps,
@@ -54,6 +55,8 @@ export default class CSSEditor extends Foundation<
 
     private widthPropertyNames: string[] = ["width"];
 
+    private backgroundPropertyNames: string[] = ["background"];
+
     private colorPropertyNames: string[] = ["color"];
 
     private borderPropertyNames: string[] = ["borderColor", "borderStyle", "borderWidth"];
@@ -87,6 +90,10 @@ export default class CSSEditor extends Foundation<
                 <CSSHeight
                     data={this.getHeightData()}
                     onChange={this.handleCSSUpdate(CSSComponent.height)}
+                />
+                <CSSBackground
+                    data={this.getBackgroundData()}
+                    onChange={this.handleCSSUpdate(CSSComponent.background)}
                 />
                 <CSSColor
                     data={this.getColorData()}
@@ -144,6 +151,13 @@ export default class CSSEditor extends Foundation<
     }
 
     /**
+     * Gets the bac kground value
+     */
+    private getBackgroundData(): CSSBackgroundValues {
+        return pick(this.props.data, this.backgroundPropertyNames);
+    }
+
+    /**
      * Gets the border value
      */
     private getBorderData(): CSSBorderValues {
@@ -180,6 +194,9 @@ export default class CSSEditor extends Foundation<
                         break;
                     case CSSComponent.color:
                         updatedCSS = omit(this.props.data, this.colorPropertyNames);
+                        break;
+                    case CSSComponent.background:
+                        updatedCSS = omit(this.props.data, this.backgroundPropertyNames);
                         break;
                     case CSSComponent.height:
                         updatedCSS = omit(this.props.data, this.heightPropertyNames);

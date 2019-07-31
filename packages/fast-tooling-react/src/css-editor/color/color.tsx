@@ -23,8 +23,6 @@ export default class CSSColor extends Foundation<
         managedClasses: void 0,
     };
 
-    private defaultColor: string = "#000000";
-
     public render(): React.ReactNode {
         return (
             <div className={get(this.props, "managedClasses.cssColor")}>
@@ -38,20 +36,20 @@ export default class CSSColor extends Foundation<
                             "managedClasses.cssColor_colorInputRegion"
                         )}
                         style={{
-                            background: get(this.props.data, "color", this.defaultColor),
+                            background: get(this.props.data, "color", ""),
                         }}
                     >
                         <input
                             type={"color"}
                             style={{ opacity: 0, width: "100%" }}
                             onChange={this.handleColorOnChange}
-                            value={get(this.props.data, "color", this.defaultColor)}
+                            value={get(this.props.data, "color", "")}
                         />
                     </div>
                     <input
                         className={get(this.props, "managedClasses.cssColor_input")}
                         type={"text"}
-                        value={get(this.props.data, "color", this.defaultColor)}
+                        value={get(this.props.data, "color", "")}
                         onChange={this.handleColorOnChange}
                     />
                 </div>
