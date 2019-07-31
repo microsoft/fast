@@ -14,7 +14,7 @@ export default {
         size: {
             title: "Size",
             type: "number",
-            enum: [1, 2, 3, 4, 5, 6],
+            enum: [1, 2, 3, 4, 5, 6, 7],
         },
     },
     reactProperties: {

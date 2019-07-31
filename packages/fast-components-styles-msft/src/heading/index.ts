@@ -23,6 +23,9 @@ const styles: ComponentStyles<HeadingClassNameContract, DesignSystem> = {
         "&$heading__6": {
             ...applyFontWeightSemiBold(),
         },
+        "&$heading__7": {
+            ...applyFontWeightSemiBold(),
+        },
     },
     heading__1: {},
     heading__2: {},
@@ -30,6 +33,7 @@ const styles: ComponentStyles<HeadingClassNameContract, DesignSystem> = {
     heading__4: {},
     heading__5: {},
     heading__6: {},
+    heading__7: {},
 };
 
 export default styles;
