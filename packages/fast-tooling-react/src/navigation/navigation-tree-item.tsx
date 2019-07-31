@@ -188,12 +188,12 @@ const NavigationTreeItem: React.RefForwardingComponent<
                     ref={elementRef}
                     aria-expanded={props.expanded}
                     onClick={props.handleClick}
-                    onKeyUp={props.handleKeyUp}
+                    onKeyDown={props.handleKeyDown}
                 >
                     <span
                         className={`${props.contentClassName}${getDragHoverClassName()}`}
                         onClick={props.handleClick}
-                        onKeyUp={props.handleKeyUp}
+                        onKeyDown={props.handleKeyDown}
                         tabIndex={0}
                         data-location={props.dataLocation}
                     >
@@ -209,7 +209,7 @@ const NavigationTreeItem: React.RefForwardingComponent<
                         data-location={props.dataLocation}
                         href={"#"}
                         onClick={props.handleClick}
-                        onKeyUp={props.handleKeyUp}
+                        onKeyDown={props.handleKeyDown}
                         tabIndex={0}
                     >
                         {props.text}

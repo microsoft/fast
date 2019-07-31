@@ -75,7 +75,6 @@ export default class Navigation extends Foundation<
     };
 
     private rootElement: React.RefObject<HTMLDivElement>;
-    private delayedFocusDataLocation: string = null;
 
     constructor(props: NavigationProps) {
         super(props);
@@ -110,13 +109,6 @@ export default class Navigation extends Foundation<
                 {this.renderTreeItem(this.state.navigation, 1, 1, 0)}
             </div>
         );
-    }
-
-    public componentDidUpdate(prevProps: NavigationProps): void {
-        if (this.delayedFocusDataLocation !== null) {
-            this.focusNextTreeItem(this.delayedFocusDataLocation);
-            this.delayedFocusDataLocation = null;
-        }
     }
 
     /**
@@ -160,7 +152,7 @@ export default class Navigation extends Foundation<
                 dataLocation === this.state.dragHoverAfterDataLocation,
             expanded: this.isExpanded(dataLocation),
             handleClick: this.handleTreeItemClick(dataLocation, dataType),
-            handleKeyUp: this.handleTreeItemKeyUp(dataLocation, dataType),
+            handleKeyDown: this.handleTreeItemKeyDown(dataLocation, dataType),
             handleCloseDraggingItem: this.handleCloseDraggingTreeItem,
             text: navigation.text,
             type: dataType,
@@ -483,7 +475,7 @@ export default class Navigation extends Foundation<
     /**
      * Handles key up on a tree item
      */
-    private handleTreeItemKeyUp = (
+    private handleTreeItemKeyDown = (
         dataLocation: string,
         type: NavigationDataType
     ): ((e: React.KeyboardEvent<HTMLDivElement | HTMLAnchorElement>) => void) => {
@@ -518,9 +510,9 @@ export default class Navigation extends Foundation<
                         break;
 
                     default:
-                        if (e.key.toLowerCase() === "d" && e.shiftKey) {
-                            this.duplicateCurrentItem(dataLocation, type);
+                        if (e.key.toLowerCase() === "d" && e.ctrlKey) {
                             e.preventDefault();
+                            this.duplicateCurrentItem(dataLocation, type);
                         }
                         break;
                 }
@@ -621,12 +613,6 @@ export default class Navigation extends Foundation<
             type !== NavigationDataType.primitiveChild
         ) {
             return;
-        }
-
-        this.delayedFocusDataLocation = dataLocation;
-
-        if (this.isExpanded(dataLocation)) {
-            this.toggleItems(dataLocation, type);
         }
 
         if (typeof this.props.onChange === "function") {
