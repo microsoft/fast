@@ -140,6 +140,7 @@ export default class Navigation extends Foundation<
         const props: NavigationTreeItemProps = {
             className: this.getItemClassName(dataType),
             contentClassName: this.getItemContentClassName(dataLocation),
+            expandTriggerClassName: this.getItemExpandTriggerClassName(),
             getContentDragHoverClassName: this.getItemContentDragHoverClassName,
             dataLocation,
             dragHover:
@@ -153,6 +154,7 @@ export default class Navigation extends Foundation<
             expanded: this.isExpanded(dataLocation),
             handleClick: this.handleTreeItemClick(dataLocation, dataType),
             handleKeyDown: this.handleTreeItemKeyDown(dataLocation, dataType),
+            handleSelectionClick: this.handleTreeItemSelectionClick(dataLocation),
             handleCloseDraggingItem: this.handleCloseDraggingTreeItem,
             text: navigation.text,
             type: dataType,
@@ -402,6 +404,10 @@ export default class Navigation extends Foundation<
         };
     }
 
+    private getItemExpandTriggerClassName(): string {
+        return get(this.props, "managedClasses.navigation_itemExpandTrigger", "");
+    }
+
     private getItemContentClassName(dataLocation: string): string {
         let classes: string = this.props.managedClasses.navigation_itemContent;
 
@@ -536,6 +542,18 @@ export default class Navigation extends Foundation<
         };
     };
 
+    private handleTreeItemSelectionClick = (
+        dataLocation: string
+    ): ((e: React.MouseEvent<HTMLAnchorElement | HTMLDivElement>) => void) => {
+        return (e: React.MouseEvent<HTMLAnchorElement>): void => {
+            e.preventDefault();
+
+            if (e.target === e.currentTarget) {
+                this.selectItem(dataLocation);
+            }
+        };
+    };
+
     private handleCloseDraggingTreeItem = (
         dataLocation: string,
         type: NavigationDataType
@@ -581,6 +599,16 @@ export default class Navigation extends Foundation<
             typeof this.props.onLocationUpdate === "function" &&
             type !== NavigationDataType.children
         ) {
+            this.props.onLocationUpdate(dataLocation);
+        }
+    }
+
+    private selectItem(dataLocation: string): void {
+        this.setState({
+            activeItem: dataLocation,
+        });
+
+        if (typeof this.props.onLocationUpdate === "function") {
             this.props.onLocationUpdate(dataLocation);
         }
     }
