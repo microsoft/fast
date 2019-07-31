@@ -1,18 +1,19 @@
 import React from "react";
-import { get } from "lodash-es";
+import { get, pick } from "lodash-es";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import {
+    BorderProperty,
     BorderStyleValue,
     CSSBorderHandledProps,
     CSSBorderProps,
-    CSSBorderState,
     CSSBorderUnhandledProps,
+    CSSBorderValues,
 } from "./border.props";
 
 export default class CSSBorder extends Foundation<
     CSSBorderHandledProps,
     CSSBorderUnhandledProps,
-    CSSBorderState
+    {}
 > {
     public static displayName: string = "CSSBorder";
 
@@ -22,29 +23,8 @@ export default class CSSBorder extends Foundation<
         managedClasses: void 0,
     };
 
-    private defaultBorderColor: string = "#000";
-    private defaultBorderWidth: string = "1px";
-
-    constructor(props: CSSBorderProps) {
-        super(props);
-
-        this.state = {
-            borderColor: get(this.props.data, "borderColor", this.defaultBorderColor),
-            borderStyle: get(this.props.data, "borderStyle", BorderStyleValue.solid),
-            borderWidth: get(this.props.data, "borderWidth", this.defaultBorderWidth),
-        };
-    }
-
-    public componentDidUpdate(
-        prevProps: CSSBorderProps,
-        prevState: CSSBorderState
-    ): void {
-        if (this.state !== prevState) {
-            this.props.onChange({
-                ...this.state,
-            });
-        }
-    }
+    private defaultBorderColor: string = "#000000";
+    private defaultBorderWidth: string = "initial";
 
     public render(): React.ReactNode {
         return (
@@ -58,13 +38,25 @@ export default class CSSBorder extends Foundation<
                             this.props,
                             "managedClasses.cssBorder_colorInputRegion"
                         )}
-                        style={{ background: this.state.borderColor }}
+                        style={{
+                            background: get(
+                                this.props.data,
+                                "borderColor",
+                                this.defaultBorderColor
+                            ),
+                        }}
                     >
                         <input
                             type={"color"}
                             style={{ opacity: 0, width: "100%" }}
-                            value={this.state.borderColor}
-                            onChange={this.handleBorderColorOnChange}
+                            value={get(
+                                this.props.data,
+                                "borderColor",
+                                this.defaultBorderColor
+                            )}
+                            onChange={this.handleInputOnChange(
+                                BorderProperty.borderColor
+                            )}
                         />
                     </div>
                     <span
@@ -75,8 +67,14 @@ export default class CSSBorder extends Foundation<
                     >
                         <select
                             className={get(this.props, "managedClasses.cssBorder_select")}
-                            onChange={this.handleBorderStyleOnChange}
-                            value={this.state.borderStyle}
+                            onChange={this.handleInputOnChange(
+                                BorderProperty.borderStyle
+                            )}
+                            value={get(
+                                this.props.data,
+                                "borderStyle",
+                                BorderStyleValue.solid
+                            )}
                         >
                             {Object.keys(BorderStyleValue).map(this.renderBorderOption)}
                         </select>
@@ -85,8 +83,12 @@ export default class CSSBorder extends Foundation<
                         className={get(this.props, "managedClasses.cssBorder_input")}
                         type={"text"}
                         placeholder={"1px"}
-                        value={this.state.borderWidth}
-                        onChange={this.handleBorderWidthOnChange}
+                        value={get(
+                            this.props.data,
+                            "borderWidth",
+                            this.defaultBorderWidth
+                        )}
+                        onChange={this.handleInputOnChange(BorderProperty.borderWidth)}
                     />
                 </div>
             </div>
@@ -104,27 +106,26 @@ export default class CSSBorder extends Foundation<
         );
     }
 
-    private handleBorderStyleOnChange = (
-        e: React.ChangeEvent<HTMLSelectElement>
-    ): void => {
-        this.setState({
-            borderStyle: (e.target.value as BorderStyleValue) || BorderStyleValue.solid,
-        });
-    };
+    private handleInputOnChange(
+        cssKey: BorderProperty
+    ): (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void {
+        return (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>): void => {
+            const border: CSSBorderValues = pick(this.props.data, [
+                BorderProperty.borderColor,
+                BorderProperty.borderStyle,
+                BorderProperty.borderWidth,
+            ]);
 
-    private handleBorderColorOnChange = (
-        e: React.ChangeEvent<HTMLInputElement>
-    ): void => {
-        this.setState({
-            borderColor: e.target.value || this.defaultBorderColor,
-        });
-    };
+            switch (cssKey) {
+                case BorderProperty.borderStyle:
+                    border[cssKey] = e.target.value as BorderStyleValue;
+                    break;
+                default:
+                    border[cssKey] = e.target.value;
+                    break;
+            }
 
-    private handleBorderWidthOnChange = (
-        e: React.ChangeEvent<HTMLInputElement>
-    ): void => {
-        this.setState({
-            borderWidth: e.target.value || this.defaultBorderWidth,
-        });
-    };
+            this.props.onChange(border);
+        };
+    }
 }

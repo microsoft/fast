@@ -1,10 +1,15 @@
 import React from "react";
-import { get, pick } from "lodash-es";
+import { get, omit, pick } from "lodash-es";
 import Foundation, {
     FoundationProps,
     HandledProps,
 } from "@microsoft/fast-components-foundation-react";
-import { CSSEditorHandledProps, CSSEditorUnhandledProps } from "./editor.props";
+import {
+    CSSComponent,
+    CSSEditorHandledProps,
+    CSSEditorUnhandledProps,
+    CSSEditorValues,
+} from "./editor.props";
 import { CSSPosition, CSSPositionValues, Location, PositionValue } from "./position";
 import { CSSSpacing, CSSSpacingValues, SpacingProperty } from "./spacing";
 import { CSSWidth, CSSWidthValues } from "./width";
@@ -26,6 +31,35 @@ export default class CSSEditor extends Foundation<
         managedClasses: void 0,
     };
 
+    private spacingPropertyNames: string[] = [
+        SpacingProperty.marginBottom,
+        SpacingProperty.marginLeft,
+        SpacingProperty.marginRight,
+        SpacingProperty.marginTop,
+        SpacingProperty.paddingBottom,
+        SpacingProperty.paddingLeft,
+        SpacingProperty.paddingRight,
+        SpacingProperty.paddingTop,
+    ];
+
+    private postionPropertyNames: string[] = [
+        "position",
+        Location.left,
+        Location.right,
+        Location.top,
+        Location.bottom,
+    ];
+
+    private heightPropertyNames: string[] = ["height"];
+
+    private widthPropertyNames: string[] = ["width"];
+
+    private colorPropertyNames: string[] = ["color"];
+
+    private borderPropertyNames: string[] = ["borderColor", "borderStyle", "borderWidth"];
+
+    private boxShadowPropertyNames: string[] = ["boxShadow"];
+
     public render(): React.ReactNode {
         return (
             <div className={this.props.managedClasses.cssEditor}>
@@ -40,47 +74,50 @@ export default class CSSEditor extends Foundation<
                 <CSSSpacing
                     jssStyleSheet={{ cssSpacing: { marginBottom: "10px" } }}
                     data={this.getSpacingData()}
-                    onChange={this.handleCSSUpdate}
+                    onChange={this.handleCSSUpdate(CSSComponent.spacing)}
                 />
                 <CSSPosition
                     data={this.getPositionData()}
-                    onChange={this.handleCSSUpdate}
+                    onChange={this.handleCSSUpdate(CSSComponent.position)}
                 />
-                <CSSWidth data={this.getWidthData()} onChange={this.handleCSSUpdate} />
-                <CSSHeight data={this.getHeightData()} onChange={this.handleCSSUpdate} />
-                <CSSColor data={this.getColorData()} onChange={this.handleCSSUpdate} />
-                <CSSBorder data={this.getBorderData()} onChange={this.handleCSSUpdate} />
+                <CSSWidth
+                    data={this.getWidthData()}
+                    onChange={this.handleCSSUpdate(CSSComponent.width)}
+                />
+                <CSSHeight
+                    data={this.getHeightData()}
+                    onChange={this.handleCSSUpdate(CSSComponent.height)}
+                />
+                <CSSColor
+                    data={this.getColorData()}
+                    onChange={this.handleCSSUpdate(CSSComponent.color)}
+                />
+                <CSSBorder
+                    data={this.getBorderData()}
+                    onChange={this.handleCSSUpdate(CSSComponent.border)}
+                />
                 <CSSBoxShadow
                     data={this.getBoxShadowData()}
-                    onChange={this.handleCSSUpdate}
+                    onChange={this.handleCSSUpdate(CSSComponent.boxShadow)}
                 />
             </React.Fragment>
         );
     }
 
     private getSpacingData(): CSSSpacingValues {
-        const spacingData: CSSSpacingValues = pick(this.props.data, [
-            SpacingProperty.marginBottom,
-            SpacingProperty.marginLeft,
-            SpacingProperty.marginRight,
-            SpacingProperty.marginTop,
-            SpacingProperty.paddingBottom,
-            SpacingProperty.paddingLeft,
-            SpacingProperty.paddingRight,
-            SpacingProperty.paddingTop,
-        ]);
+        const spacingData: CSSSpacingValues = pick(
+            this.props.data,
+            this.spacingPropertyNames
+        );
 
         return spacingData;
     }
 
     private getPositionData(): CSSPositionValues {
-        const positionData: CSSPositionValues = pick(this.props.data, [
-            "position",
-            Location.left,
-            Location.right,
-            Location.top,
-            Location.bottom,
-        ]);
+        const positionData: CSSPositionValues = pick(
+            this.props.data,
+            this.postionPropertyNames
+        );
 
         return positionData;
     }
@@ -89,32 +126,31 @@ export default class CSSEditor extends Foundation<
      * Gets the height value
      */
     private getHeightData(): CSSHeightValues {
-        return pick(this.props.data, ["height"]);
+        return pick(this.props.data, this.heightPropertyNames);
     }
 
     /**
      * Gets the width value
      */
     private getWidthData(): CSSWidthValues {
-        return pick(this.props.data, ["width"]);
+        return pick(this.props.data, this.widthPropertyNames);
     }
 
     /**
      * Gets the color value
      */
     private getColorData(): CSSColorValues {
-        return pick(this.props.data, ["color"]);
+        return pick(this.props.data, this.colorPropertyNames);
     }
 
     /**
      * Gets the border value
      */
     private getBorderData(): CSSBorderValues {
-        const borderData: CSSBorderValues = pick(this.props.data, [
-            "borderColor",
-            "borderStyle",
-            "borderWidth",
-        ]);
+        const borderData: CSSBorderValues = pick(
+            this.props.data,
+            this.borderPropertyNames
+        );
         return borderData;
     }
 
@@ -122,12 +158,57 @@ export default class CSSEditor extends Foundation<
      * Gets the box shadow value
      */
     private getBoxShadowData(): CSSBoxShadowValues {
-        return pick(this.props.data, ["boxShadow"]);
+        return pick(this.props.data, this.boxShadowPropertyNames);
     }
 
-    private handleCSSUpdate = <D extends {}>(updatedCSS: D): void => {
-        if (typeof this.props.onChange === "function") {
-            this.props.onChange(Object.assign({}, this.props.data, updatedCSS));
-        }
+    private handleCSSUpdate = (
+        component: CSSComponent
+    ): (<D extends {}>(updatedComponentCSS: D) => void) => {
+        return <D extends {}>(updatedComponentCSS: D): void => {
+            if (typeof this.props.onChange === "function") {
+                let updatedCSS: Partial<CSSEditorValues>;
+
+                switch (component) {
+                    case CSSComponent.spacing:
+                        updatedCSS = omit(this.props.data, this.spacingPropertyNames);
+                        break;
+                    case CSSComponent.border:
+                        updatedCSS = omit(this.props.data, this.borderPropertyNames);
+                        break;
+                    case CSSComponent.boxShadow:
+                        updatedCSS = omit(this.props.data, this.boxShadowPropertyNames);
+                        break;
+                    case CSSComponent.color:
+                        updatedCSS = omit(this.props.data, this.colorPropertyNames);
+                        break;
+                    case CSSComponent.height:
+                        updatedCSS = omit(this.props.data, this.heightPropertyNames);
+                        break;
+                    case CSSComponent.width:
+                        updatedCSS = omit(this.props.data, this.widthPropertyNames);
+                        break;
+                    case CSSComponent.position:
+                        updatedCSS = omit(this.props.data, this.postionPropertyNames);
+                        break;
+                }
+
+                const reducedData: Partial<CSSEditorValues> = Object.keys(
+                    updatedComponentCSS
+                ).reduce(
+                    (
+                        filteredProperties: Partial<CSSEditorValues>,
+                        key: string
+                    ): Partial<CSSEditorValues> => {
+                        const value: unknown = updatedComponentCSS[key];
+                        return typeof value === "string" && value.trim().length
+                            ? { ...filteredProperties, [key]: value }
+                            : filteredProperties;
+                    },
+                    {}
+                );
+
+                this.props.onChange(Object.assign({}, updatedCSS, reducedData));
+            }
+        };
     };
 }

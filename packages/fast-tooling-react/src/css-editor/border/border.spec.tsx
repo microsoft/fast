@@ -43,25 +43,8 @@ describe("CSSBorder", () => {
             borderWidth
         );
     });
-    test("should call onChange when state updates", () => {
-        const borderWidth: string = "3px";
-        const callback: any = jest.fn();
-        const rendered: any = mount(
-            <CSSBorder
-                data={{ borderWidth }}
-                managedClasses={managedClasses}
-                onChange={callback}
-            />
-        );
 
-        expect(callback).toHaveBeenCalledTimes(0);
-
-        rendered.setState({ borderWidth: "10px" });
-
-        expect(callback).toHaveBeenCalledTimes(1);
-    });
-
-    test("should set borderColor state in onChange event", () => {
+    test("should set borderColor value in onChange event", () => {
         const borderColor: string = "#000";
         const newBorderColor: string = "#FFF";
         const callback: any = jest.fn();
@@ -73,17 +56,14 @@ describe("CSSBorder", () => {
             />
         );
 
-        expect(rendered.state("borderColor")).toBe(borderColor);
+        const input: any = rendered.find("input").at(0);
 
-        rendered
-            .find("input")
-            .at(0)
-            .simulate("change", { target: { value: newBorderColor } });
+        input.simulate("change", { target: { value: newBorderColor } });
 
-        expect(rendered.state("borderColor")).toBe(newBorderColor);
+        expect(callback.mock.calls[0][0]).toStrictEqual({ borderColor: newBorderColor });
     });
 
-    test("should set borderStyle state in onChange event", () => {
+    test("should set borderStyle value in onChange event", () => {
         const borderStyle: BorderStyleValue = BorderStyleValue.solid;
         const newBorderStyle: BorderStyleValue = BorderStyleValue.dotted;
         const callback: any = jest.fn();
@@ -95,16 +75,14 @@ describe("CSSBorder", () => {
             />
         );
 
-        expect(rendered.state("borderStyle")).toBe(borderStyle);
+        const input: any = rendered.find(`.${managedClasses.cssBorder_select}`);
 
-        rendered
-            .find(`.${managedClasses.cssBorder_select}`)
-            .simulate("change", { target: { value: newBorderStyle } });
+        input.simulate("change", { target: { value: newBorderStyle } });
 
-        expect(rendered.state("borderStyle")).toBe(newBorderStyle);
+        expect(callback.mock.calls[0][0]).toStrictEqual({ borderStyle: newBorderStyle });
     });
 
-    test("should set borderWidth state in onChange event", () => {
+    test("should set borderWidth value in onChange event", () => {
         const borderWidth: string = "1px";
         const newBorderWidth: string = "10px";
         const callback: any = jest.fn();
@@ -116,12 +94,10 @@ describe("CSSBorder", () => {
             />
         );
 
-        expect(rendered.state("borderWidth")).toBe(borderWidth);
+        const input: any = rendered.find(`.${managedClasses.cssBorder_input}`);
 
-        rendered
-            .find(`.${managedClasses.cssBorder_input}`)
-            .simulate("change", { target: { value: newBorderWidth } });
+        input.simulate("change", { target: { value: newBorderWidth } });
 
-        expect(rendered.state("borderWidth")).toBe(newBorderWidth);
+        expect(callback.mock.calls[0][0]).toStrictEqual({ borderWidth: newBorderWidth });
     });
 });
