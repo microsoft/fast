@@ -3,9 +3,9 @@ import { applyTriggerStyle, insetStrongBoxShadow } from "../style";
 import {
     accent,
     foreground300,
+    neutralFillStealthSelected,
     neutralLayerL4,
     neutralOutlineActive,
-    neutralFillStealthSelected,
 } from "../style/constants";
 
 export interface NavigationClassNameContract {
