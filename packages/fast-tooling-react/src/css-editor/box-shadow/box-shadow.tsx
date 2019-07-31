@@ -105,10 +105,10 @@ export default class CSSBoxShadow extends Foundation<
                             )}
                             type={"number"}
                             min={0}
-                            max={1}
-                            step={0.01}
-                            placeholder={"0.5"}
-                            value={this.state.boxShadowOpacity}
+                            max={100}
+                            step={1}
+                            placeholder={"50"}
+                            value={Math.round(this.state.boxShadowOpacity * 100)}
                             onChange={this.handleBoxShadowOpacityOnChange}
                         />
                     </div>
@@ -189,7 +189,8 @@ export default class CSSBoxShadow extends Foundation<
         e: React.ChangeEvent<HTMLInputElement>
     ): void => {
         this.setState({
-            boxShadowOpacity: e.target.valueAsNumber || this.defaultBoxShadowOpacity,
+            boxShadowOpacity:
+                e.target.valueAsNumber / 100 || this.defaultBoxShadowOpacity,
         });
     };
 

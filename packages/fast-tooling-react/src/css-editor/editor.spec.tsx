@@ -48,7 +48,7 @@ describe("CSSEditor", () => {
         expect(cssPosition.prop("data").left).toBe(leftValue);
         expect(cssPosition.prop("data").bottom).toBe(bottomValue);
         expect(cssPosition.prop("data").right).toBe(rightValue);
-        expect(typeof cssPosition.prop("onChange")).toEqual(typeof Function);
+        expect(typeof cssPosition.prop("onChange")).toEqual("function");
     });
     test("should execute the `onChange` callback to recieve the correct CSSPosition props", () => {
         const updatedPositionValue: string = "5";

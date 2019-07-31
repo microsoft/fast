@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.7.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-class-name-contracts-msft@4.6.0...@microsoft/fast-components-class-name-contracts-msft@4.7.0) (2019-07-31)
+
+
+### Features
+
+* add support for size 7 heading and subheading ([#2061](https://github.com/Microsoft/fast-dna/issues/2061)) ([ed950fb](https://github.com/Microsoft/fast-dna/commit/ed950fb))
+
+
+
+
+
 # [4.6.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-class-name-contracts-msft@4.5.0...@microsoft/fast-components-class-name-contracts-msft@4.6.0) (2019-07-24)
 
 

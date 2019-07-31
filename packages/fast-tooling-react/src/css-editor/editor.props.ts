@@ -8,6 +8,16 @@ import { CSSColorValues } from "./color";
 import { CSSBorderValues } from "./border";
 import { CSSBoxShadowValues } from "./box-shadow";
 
+export enum CSSComponent {
+    spacing,
+    position,
+    width,
+    height,
+    color,
+    border,
+    boxShadow,
+}
+
 export interface CSSEditorValues
     extends CSSSpacingValues,
         CSSPositionValues,

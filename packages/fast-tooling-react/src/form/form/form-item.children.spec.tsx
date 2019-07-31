@@ -1,6 +1,6 @@
 import React from "react";
 import Adapter from "enzyme-adapter-react-16";
-import { configure, mount } from "enzyme";
+import { configure, mount, ReactWrapper } from "enzyme";
 import { KeyCodes } from "@microsoft/fast-web-utilities";
 import { FormItemChildren } from "./form-item.children";
 import {
@@ -411,6 +411,62 @@ describe("Children", () => {
         expect(callback.mock.calls[0][0]).toEqual("locationOfChildren");
         expect(Array.isArray(callback.mock.calls[0][1])).toBe(true);
         expect(typeof callback.mock.calls[0][1][0]).toEqual("string");
+    });
+    test("should update active section to item clicked when ctrl key is pressed and a new item is provided", () => {
+        const childItem: any = Symbol();
+        const callback: any = jest.fn();
+        const rendered: ReactWrapper = mount(
+            <FormItemChildren
+                {...childrenProps}
+                onUpdateActiveSection={callback}
+                managedClasses={managedClasses}
+            />
+        );
+
+        rendered
+            .find("ul")
+            .at(0)
+            .find("li")
+            .at(1)
+            .simulate("click", { ctrlKey: true });
+
+        rendered.setProps(
+            Object.assign({}, childrenProps, {
+                data: childItem,
+                onUpdateActiveSection: callback,
+            })
+        );
+
+        expect(callback).toHaveBeenCalled();
+        expect(callback.mock.calls[0][1]).toEqual("locationOfChildren.props");
+    });
+    test("should update active section to item clicked when ctrl key is pressed and a new item is provided to an existing set of items", () => {
+        const callback: any = jest.fn();
+        const rendered: ReactWrapper = mount(
+            <FormItemChildren
+                {...childrenProps}
+                data={[Symbol(), Symbol()]}
+                onUpdateActiveSection={callback}
+                managedClasses={managedClasses}
+            />
+        );
+
+        rendered
+            .find("ul")
+            .at(1)
+            .find("li")
+            .at(1)
+            .simulate("click", { ctrlKey: true });
+
+        rendered.setProps(
+            Object.assign({}, childrenProps, {
+                data: [Symbol(), Symbol(), Symbol()],
+                onUpdateActiveSection: callback,
+            })
+        );
+
+        expect(callback).toHaveBeenCalled();
+        expect(callback.mock.calls[0][1]).toEqual("locationOfChildren[2].props");
     });
     test("should not add a child option to the data when a value has been added to the `input` that is an empty string", () => {
         const callback: any = jest.fn();
