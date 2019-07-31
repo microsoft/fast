@@ -30,7 +30,7 @@ const styles: ComponentStyles<CSSBoxShadowClassNameContract, {}> = {
             position: "absolute",
             right: "-38px",
             top: "4px",
-            pointerEvents: "none"
+            pointerEvents: "none",
         },
     },
     cssBoxShadow_colorRegion: {
