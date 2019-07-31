@@ -29,7 +29,8 @@ const styles: ComponentStyles<CSSBoxShadowClassNameContract, {}> = {
             fontSize: "12px",
             position: "absolute",
             right: "-38px",
-            top: "7px",
+            top: "4px",
+            pointerEvents: "none"
         },
     },
     cssBoxShadow_colorRegion: {
