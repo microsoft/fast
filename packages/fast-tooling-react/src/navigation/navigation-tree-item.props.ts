@@ -40,9 +40,9 @@ export interface NavigationTreeItemProps
     handleClick: React.MouseEventHandler<HTMLElement>;
 
     /**
-     * The keyUp handler
+     * The keyDown handler
      */
-    handleKeyUp: React.KeyboardEventHandler<HTMLElement>;
+    handleKeyDown: React.KeyboardEventHandler<HTMLElement>;
 
     /**
      * The handler for closing dragging items

@@ -748,3 +748,54 @@ function setDataWhenTargetIsUndefined(
     unset(data, sourceDataLocation);
     set(data as object, targetDataLocation, sourceData);
 }
+
+export function getDataWithDuplicate<T>(sourceDataLocation: string, data: T): T {
+    const clonedData: T = cloneDeep(data) as T;
+    const normalizedSourceDataLocation: string = getDataLocationNormalized(
+        sourceDataLocation
+    );
+
+    if (isInArray(clonedData, normalizedSourceDataLocation)) {
+        duplicateDataInArray(clonedData, normalizedSourceDataLocation);
+    } else {
+        // check for case of single child as object
+        const sourceDataLocationSegments: string[] = sourceDataLocation.split(".");
+        if (
+            sourceDataLocationSegments[sourceDataLocationSegments.length - 2] ===
+            childrenKeyword
+        ) {
+            duplicateDataInArray(clonedData, normalizedSourceDataLocation);
+        }
+    }
+
+    return clonedData;
+}
+
+function duplicateDataInArray(data: unknown, sourceDataLocation: string): void {
+    const sourceData: unknown = get(data as object, sourceDataLocation);
+    const sourceDataLocationSegments: string[] = sourceDataLocation.split(".");
+
+    let parentSourceDataLocation: string = sourceDataLocationSegments
+        .slice(0, -1)
+        .join(".");
+    let parentSourceData: unknown | unknown[] = get(data, parentSourceDataLocation);
+
+    let sourceDataLocationIndex: number = 0;
+    if (!Array.isArray(parentSourceData)) {
+        parentSourceData = [(parentSourceData as object)[childrenKeyword]];
+        parentSourceDataLocation = `${parentSourceDataLocation}.${childrenKeyword}`;
+    } else {
+        sourceDataLocationIndex = parseInt(
+            sourceDataLocationSegments[sourceDataLocationSegments.length - 1],
+            10
+        );
+    }
+
+    (parentSourceData as unknown[]).splice(
+        sourceDataLocationIndex + 1,
+        0,
+        cloneDeep(sourceData)
+    );
+
+    set(data as object, parentSourceDataLocation, parentSourceData as object[]);
+}
