@@ -32,7 +32,7 @@ const { spawn } = require("child_process");
 // Retrive user/key from environment variables
 const username = process.env.SAUCE_LABS_USER;
 const accessKey = process.env.SAUCE_LABS_KEY;
-const domain = "https://explore.fastdna.net";
+const domain = "https://explore.fast.design";
 
 // Configure to connect to remote hub
 const remoteHub = `http://${username}:${accessKey}@ondemand.saucelabs.com:80/wd/hub`;
