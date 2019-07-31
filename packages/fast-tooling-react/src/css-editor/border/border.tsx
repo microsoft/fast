@@ -24,7 +24,6 @@ export default class CSSBorder extends Foundation<
     };
 
     private defaultBorderColor: string = "#000000";
-    private defaultBorderWidth: string = "initial";
 
     public render(): React.ReactNode {
         return (
@@ -80,12 +79,8 @@ export default class CSSBorder extends Foundation<
                     <input
                         className={get(this.props, "managedClasses.cssBorder_input")}
                         type={"text"}
-                        placeholder={"1px"}
-                        value={get(
-                            this.props.data,
-                            "borderWidth",
-                            this.defaultBorderWidth
-                        )}
+                        placeholder={"initial"}
+                        value={get(this.props.data, "borderWidth", "")}
                         onChange={this.handleInputOnChange(BorderProperty.borderWidth)}
                     />
                 </div>
