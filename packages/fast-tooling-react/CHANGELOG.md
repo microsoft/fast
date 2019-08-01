@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.15.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-tooling-react@1.14.0...@microsoft/fast-tooling-react@1.15.0) (2019-08-01)
+
+
+### Features
+
+* addresses an issue where duplication of children would not work when there was only a single child, also allows the duplication of string children ([#2085](https://github.com/Microsoft/fast-dna/issues/2085)) ([2dbc722](https://github.com/Microsoft/fast-dna/commit/2dbc722))
+
+
+
+
+
 # [1.14.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-tooling-react@1.13.0...@microsoft/fast-tooling-react@1.14.0) (2019-08-01)
 
 
