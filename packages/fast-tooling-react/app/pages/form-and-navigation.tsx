@@ -152,6 +152,9 @@ class FormAndNavigationTestPage extends React.Component<{}, FormTestPageState> {
                         >
                             {JSON.stringify(this.state.data, null, 2)}
                         </pre>
+                        <pre>
+                            {this.state.dataLocation}
+                        </pre>
                     </div>
                     <div
                         style={{
@@ -176,6 +179,7 @@ class FormAndNavigationTestPage extends React.Component<{}, FormTestPageState> {
                 schema={this.state.schema}
                 childOptions={this.getChildOptions()}
                 onLocationUpdate={this.handleLocationOnChange}
+                dataLocation={this.state.dataLocation}
                 onChange={this.handleDataOnChange}
             />
         );

@@ -646,11 +646,16 @@ export default class Navigation extends Foundation<
         if (typeof this.props.onChange === "function") {
             const dataLocationSegments: string[] = dataLocation.split(".");
             dataLocationSegments.pop();
-            const updatedDataLocation: string = !isInArray(this.props.data, dataLocation)
-                ?  void 0
+            const updatedDataLocation: string = isInArray(
+                this.props.data,
+                dataLocation.endsWith("props")
+                    ? dataLocationSegments.join(".")
+                    : dataLocation
+            )
+                ?  dataLocation
                 : type === NavigationDataType.primitiveChild
-                ? `${dataLocation}[0]`
-                : `${dataLocationSegments.join(".")}[0].props`
+                ? `${dataLocation}.0`
+                : `${dataLocationSegments.join(".")}.0.props`
 
             this.props.onChange(
                 getDataWithDuplicate(dataLocation, this.props.data),
