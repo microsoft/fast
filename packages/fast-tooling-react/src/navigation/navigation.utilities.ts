@@ -396,7 +396,7 @@ function isTargetInSourceArray(
 /**
  * The target is in an array
  */
-function isInArray(data: unknown, dataLocation: string): boolean {
+export function isInArray(data: unknown, dataLocation: string): boolean {
     const dataLocationSegments: string[] = dataLocation.split(".");
     const parentDataLocation: string = dataLocationSegments.slice(0, -1).join(".");
 

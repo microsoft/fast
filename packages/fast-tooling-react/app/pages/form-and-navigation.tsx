@@ -176,6 +176,7 @@ class FormAndNavigationTestPage extends React.Component<{}, FormTestPageState> {
                 schema={this.state.schema}
                 childOptions={this.getChildOptions()}
                 onLocationUpdate={this.handleLocationOnChange}
+                onChange={this.handleDataOnChange}
             />
         );
     }
@@ -285,6 +286,13 @@ class FormAndNavigationTestPage extends React.Component<{}, FormTestPageState> {
             dataLocation,
         });
     };
+
+    private handleDataOnChange = (data: any, dataLocation: string): void => {
+        this.setState({
+            data,
+            dataLocation
+        });
+    }
 
     /**
      * The app on change event

@@ -11,13 +11,13 @@ import {
     NavigationHandledProps,
     NavigationProps,
     NavigationState,
-    NavigationUnhandledProps,
     TreeNavigation,
 } from "./navigation.props";
 import {
     getDataWithDuplicate,
     getNavigationFromData,
     getUpdatedData,
+    isInArray
 } from "./navigation.utilities";
 import { DraggableNavigationTreeItem, NavigationTreeItem } from "./navigation-tree-item";
 import {
@@ -27,7 +27,7 @@ import {
 
 export default class Navigation extends Foundation<
     NavigationHandledProps,
-    NavigationUnhandledProps,
+    {},
     NavigationState
 > {
     public static displayName: string = "Navigation";
@@ -644,7 +644,18 @@ export default class Navigation extends Foundation<
         }
 
         if (typeof this.props.onChange === "function") {
-            this.props.onChange(getDataWithDuplicate(dataLocation, this.props.data));
+            const dataLocationSegments: string[] = dataLocation.split(".");
+            dataLocationSegments.pop();
+            const updatedDataLocation: string = !isInArray(this.props.data, dataLocation)
+                ?  void 0
+                : type === NavigationDataType.primitiveChild
+                ? `${dataLocation}[0]`
+                : `${dataLocationSegments.join(".")}[0].props`
+
+            this.props.onChange(
+                getDataWithDuplicate(dataLocation, this.props.data),
+                updatedDataLocation
+            );
         }
     };
 }
