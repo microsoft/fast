@@ -14,7 +14,7 @@ const selectOptionConfig: ComponentViewConfig<SelectOptionProps> = {
     guidance: Guidance,
     scenarios: [
         {
-            displayName: "Default",
+            displayName: "Basic",
             data: {
                 value: "Default",
                 displayString: "Default",

@@ -13,7 +13,7 @@ const autoSuggestOptionConfig: ComponentViewConfig<AutoSuggestOptionProps> = {
     guidance: Guidance,
     scenarios: [
         {
-            displayName: "Default",
+            displayName: "Basic",
             data: {
                 value: "Value",
                 id: uniqueId(),

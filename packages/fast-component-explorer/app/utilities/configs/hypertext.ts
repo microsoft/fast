@@ -12,7 +12,7 @@ const hypertextConfig: ComponentViewConfig<HypertextProps> = {
     guidance: Guidance,
     scenarios: [
         {
-            displayName: "Default",
+            displayName: "Basic",
             data: {
                 href: "#",
                 children: "Hypertext",
