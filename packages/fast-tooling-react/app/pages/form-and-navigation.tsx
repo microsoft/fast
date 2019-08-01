@@ -152,9 +152,7 @@ class FormAndNavigationTestPage extends React.Component<{}, FormTestPageState> {
                         >
                             {JSON.stringify(this.state.data, null, 2)}
                         </pre>
-                        <pre>
-                            {this.state.dataLocation}
-                        </pre>
+                        <pre>{this.state.dataLocation}</pre>
                     </div>
                     <div
                         style={{
@@ -294,9 +292,9 @@ class FormAndNavigationTestPage extends React.Component<{}, FormTestPageState> {
     private handleDataOnChange = (data: any, dataLocation: string): void => {
         this.setState({
             data,
-            dataLocation
+            dataLocation,
         });
-    }
+    };
 
     /**
      * The app on change event

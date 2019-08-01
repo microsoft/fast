@@ -17,7 +17,7 @@ import {
     getDataWithDuplicate,
     getNavigationFromData,
     getUpdatedData,
-    isInArray
+    isInArray,
 } from "./navigation.utilities";
 import { DraggableNavigationTreeItem, NavigationTreeItem } from "./navigation-tree-item";
 import {
@@ -652,10 +652,10 @@ export default class Navigation extends Foundation<
                     ? dataLocationSegments.join(".")
                     : dataLocation
             )
-                ?  dataLocation
+                ? dataLocation
                 : type === NavigationDataType.primitiveChild
-                ? `${dataLocation}.0`
-                : `${dataLocationSegments.join(".")}.0.props`
+                    ? `${dataLocation}.0`
+                    : `${dataLocationSegments.join(".")}.0.props`;
 
             this.props.onChange(
                 getDataWithDuplicate(dataLocation, this.props.data),
