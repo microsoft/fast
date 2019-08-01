@@ -82,7 +82,7 @@ import {
 } from "@microsoft/fast-colors";
 import { toPx } from "@microsoft/fast-jss-utilities";
 
-const dark: string = "#111111";
+const dark: string = `#333333`;
 const light: string = "#FFFFFF";
 
 class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
