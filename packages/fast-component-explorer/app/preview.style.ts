@@ -15,9 +15,8 @@ const style: ComponentStyles<PreviewClassNameContract, DesignSystem> = {
         "body, html": {
             fontFamily: "Segoe UI, SegoeUI, Helvetica Neue, Helvetica, Arial, sans-serif",
             fontSize: "12px",
-            padding: "0",
+            padding: "12px",
             margin: "0",
-            height: "100vh",
             "& #root": {
                 height: "100%",
             },
@@ -28,7 +27,6 @@ const style: ComponentStyles<PreviewClassNameContract, DesignSystem> = {
     },
     preview: {
         height: "100%",
-        padding: "12px",
     },
 };
 
