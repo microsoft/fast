@@ -23,7 +23,7 @@
     "tslint": "tslint -c ./tslint.json '**/*.ts'",
     "tslint:fix": "tslint -c ./tslint.json --fix '**/*.ts'",
     "test": "npm run tslint && npm run unit-tests",
-    "build": "tsc -p ./tsconfig.build.json",
+    "build": "npm run generate-palettes && tsc -p ./tsconfig.build.json",
     "build:watch": "npm run build -- -w",
     "prepare": "npm run clean:dist && npm run build",
     "prettier": "prettier --config ../../.prettierrc --write \"**/*.ts\"",
