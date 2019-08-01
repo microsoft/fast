@@ -19,6 +19,7 @@
   "types": "./dist/index.d.ts",
   "scripts": {
     "clean:dist": "node ../../build/clean.js dist",
+    "clean:tmp": "node ../../build/clean.js .tmp",
     "tslint": "tslint -c ./tslint.json '**/*.ts'",
     "tslint:fix": "tslint -c ./tslint.json --fix '**/*.ts'",
     "test": "npm run tslint && npm run unit-tests",
@@ -29,7 +30,8 @@
     "prettier:diff": "prettier --config ../../.prettierrc \"**/*.ts\" --list-different",
     "unit-tests": "jest --maxWorkers=2",
     "unit-tests:watch": "jest --watch",
-    "watch": "npm run build -- -w --preserveWatchOutput"
+    "watch": "npm run build -- -w --preserveWatchOutput",
+    "generate-palettes": "rollup --config && node .tmp/generate-palettes.js && npm run clean:tmp"
   },
   "jest": {
     "collectCoverage": true,
@@ -69,6 +71,8 @@
     "jest": "^24.1.0",
     "lodash-es": "^4.0.0",
     "prettier": "1.14.3",
+    "rollup": "^1.18.0",
+    "rollup-plugin-node-resolve": "^5.2.0",
     "ts-jest": "^23.10.5",
     "tslint": "^5.9.1",
     "tslint-config-prettier": "^1.15.0",
