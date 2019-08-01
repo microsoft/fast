@@ -1,4 +1,5 @@
 const resolve = require("rollup-plugin-node-resolve");
+const typescript = require("rollup-plugin-typescript");
 const path = require("path");
 
 module.exports = {
@@ -8,7 +9,8 @@ module.exports = {
         format: "cjs",
     },
     plugins: [
-        resolve()
+        resolve(),
+        typescript()
     ],
     external: [
         "fs",

@@ -1,12 +1,7 @@
 import fs from "fs";
 import path from "path";
-import { ComponentStateColorPalette, parseColorHexRGB } from "@microsoft/fast-colors";
-
-function createColorPalette(baseColor) {
-    return new ComponentStateColorPalette({
-        baseColor,
-    }).palette.map((color) => color.toStringHexRGB().toUpperCase());
-}
+import { parseColorHexRGB } from "@microsoft/fast-colors";
+import { createColorPalette } from "./src/utilities/color/create-color-palette";
 
 const outpath = path.resolve(__dirname, "../src/default-palette.ts");
 const packageName = process.cwd().slice(process.cwd().lastIndexOf("/") + 1)
