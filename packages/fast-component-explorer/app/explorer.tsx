@@ -47,7 +47,7 @@ import {
     ListboxItemProps,
     TabsItem,
 } from "@microsoft/fast-components-react-base";
-import style from "./explorer.style";
+import style, { applyScrollbarStyle } from "./explorer.style";
 import {
     Background,
     DarkModeBackgrounds,
@@ -56,6 +56,7 @@ import {
     Pivot,
     PivotClassNameContract,
     Select,
+    SelectClassNameContract,
     SelectOption,
     Toggle,
     ToggleClassNameContract,
@@ -71,7 +72,7 @@ import { childOptions, history, menu } from "./config";
 import * as componentViewConfigs from "./utilities/configs";
 import { Scenario } from "./utilities/configs/data.props";
 import { MemoizedFunction, uniqueId } from "lodash";
-import { Direction, format } from "@microsoft/fast-web-utilities";
+import { Direction } from "@microsoft/fast-web-utilities";
 import {
     ColorHSL,
     ColorRGBA64,
@@ -79,9 +80,9 @@ import {
     parseColor,
     rgbToHSL,
 } from "@microsoft/fast-colors";
-import { toPx } from "@microsoft/fast-jss-utilities";
+import { format, toPx } from "@microsoft/fast-jss-utilities";
 
-const dark: string = "#111111";
+const dark: string = `#333333`;
 const light: string = "#FFFFFF";
 
 class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
@@ -107,6 +108,8 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
     > = {
         viewer: {
             height: "calc(100% - 80px)",
+            overflow: "auto",
+            ...applyScrollbarStyle(),
         },
     };
 
@@ -117,6 +120,7 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
         form: {
             height: "unset",
             background: "unset",
+            paddingRight: "12px",
         },
     };
 
@@ -135,12 +139,9 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
         },
         pivot_tabPanels: {
             overflow: "auto",
-            padding: (designSystem: DesignSystem): string => {
-                return format("0 {0}", horizontalSpacing()(designSystem));
-            },
-            height: (designSystem: DesignSystem): string => {
-                return format("calc(100% - {0})", height()(designSystem));
-            },
+            padding: format("0 {0}", horizontalSpacing()),
+            height: format("calc(100% - {0})", height()),
+            ...applyScrollbarStyle(),
         },
     };
 
@@ -158,13 +159,16 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
         DesignSystem
     > = {
         label: {
-            margin: (designSystem: DesignSystem): string => {
-                return format(
-                    "0 {0} 0 {1}",
-                    toPx(designUnit)(designSystem),
-                    horizontalSpacing()(designSystem)
-                );
-            },
+            margin: format("0 {0} 0 {1}", toPx(designUnit), horizontalSpacing()),
+        },
+    };
+
+    private selectStyleOverrides: ComponentStyleSheet<
+        Partial<SelectClassNameContract>,
+        DesignSystem
+    > = {
+        select: {
+            zIndex: "1",
         },
     };
 
@@ -466,6 +470,7 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
         if (Array.isArray(scenarioOptions)) {
             return (
                 <Select
+                    jssStyleSheet={this.selectStyleOverrides}
                     onValueChange={this.handleUpdateScenario}
                     defaultSelection={[scenarioOptions[0].displayName]}
                 >

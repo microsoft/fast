@@ -13,7 +13,10 @@ module.exports = {
         port: 7002
     },
     devtool: process.env.NODE_ENV === "production" ? "none" : "inline-source-map",
-    entry: path.resolve(appDir, "index.tsx"),
+    entry: {
+        app: path.resolve(appDir, "index.tsx"),
+        focusVisible: path.resolve(__dirname, "node_modules/focus-visible/dist/focus-visible.min.js")
+    },
     output: {
         path: outDir,
         publicPath: "/",
