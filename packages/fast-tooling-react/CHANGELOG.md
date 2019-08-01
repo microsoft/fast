@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.14.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-tooling-react@1.13.0...@microsoft/fast-tooling-react@1.14.0) (2019-08-01)
+
+
+### Bug Fixes
+
+* css data gets out of sync ([#2081](https://github.com/Microsoft/fast-dna/issues/2081)) ([11d6d7f](https://github.com/Microsoft/fast-dna/commit/11d6d7f))
+
+
+### Features
+
+* add ability to duplicate component children in react "children" property using Ctrl + D in the navigation component ([#2069](https://github.com/Microsoft/fast-dna/issues/2069)) ([5b0a524](https://github.com/Microsoft/fast-dna/commit/5b0a524))
+* add css Background, fix default border style ([#2074](https://github.com/Microsoft/fast-dna/issues/2074)) ([5882061](https://github.com/Microsoft/fast-dna/commit/5882061))
+* change Navigation selection UX and update UI to new design guidance ([#2076](https://github.com/Microsoft/fast-dna/issues/2076)) ([b3b4349](https://github.com/Microsoft/fast-dna/commit/b3b4349))
+
+
+
+
+
 # [1.13.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-tooling-react@1.12.3...@microsoft/fast-tooling-react@1.13.0) (2019-07-31)
 
 
