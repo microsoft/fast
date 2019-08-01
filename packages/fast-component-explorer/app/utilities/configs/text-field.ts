@@ -13,7 +13,7 @@ const textFieldConfig: ComponentViewConfig<TextFieldProps> = {
     guidance: Guidance,
     scenarios: [
         {
-            displayName: "Default",
+            displayName: "Basic",
             data: {},
         },
         {

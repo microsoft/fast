@@ -8,7 +8,7 @@ const imageConfig: ComponentViewConfig<ImageProps> = {
     guidance: Guidance,
     scenarios: [
         {
-            displayName: "Default",
+            displayName: "Basic",
             data: {
                 src: "https://placehold.it/300x300/3E3E3E/171717",
                 alt: "Placeholder image",

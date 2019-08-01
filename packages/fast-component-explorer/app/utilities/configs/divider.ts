@@ -21,7 +21,7 @@ const dividerConfig: ComponentViewConfig<DividerProps> = {
     guidance: Guidance,
     scenarios: [
         {
-            displayName: "Default",
+            displayName: "Basic",
             data: {
                 jssStyleSheet: styles,
             },

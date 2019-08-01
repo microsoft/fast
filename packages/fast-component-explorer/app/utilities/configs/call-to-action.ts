@@ -13,7 +13,7 @@ const callToActionConfig: ComponentViewConfig<CallToActionProps> = {
     guidance: Guidance,
     scenarios: [
         {
-            displayName: "Default",
+            displayName: "Neutral",
             data: {
                 children: "Buy Now",
             },

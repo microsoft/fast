@@ -13,7 +13,7 @@ const sliderConfig: ComponentViewConfig<SliderProps> = {
     guidance: Guidance,
     scenarios: [
         {
-            displayName: "Default",
+            displayName: "Basic",
             data: {},
         },
         {

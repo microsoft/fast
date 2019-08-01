@@ -22,7 +22,7 @@ const sliderLabelConfig: ComponentViewConfig<SliderLabelProps> = {
     guidance: Guidance,
     scenarios: [
         {
-            displayName: "Default",
+            displayName: "Basic",
             data: {
                 label: "Label",
                 jssStyleSheet: styles,

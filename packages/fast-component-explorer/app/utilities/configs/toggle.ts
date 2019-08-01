@@ -24,8 +24,9 @@ const toggleConfig: ComponentViewConfig<ToggleProps> = {
     guidance: Guidance,
     scenarios: [
         {
-            displayName: "Default",
+            displayName: "Unselected",
             data: {
+                selected: false,
                 ...toggleProps,
             },
         },

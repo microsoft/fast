@@ -77,7 +77,7 @@ const pivotConfig: ComponentViewConfig<PivotProps> = {
     guidance: Guidance,
     scenarios: [
         {
-            displayName: "Default",
+            displayName: "Basic",
             data: {
                 label: "A set of example text content",
                 items: defaultPivotItems,
