@@ -766,7 +766,7 @@ export function getDataWithDuplicate<T>(sourceDataLocation: string, data: T): T 
 
 function duplicateData(data: unknown, sourceDataLocation: string): void {
     const sourceData: unknown = get(data as object, sourceDataLocation);
-    const targetData: unknown = [sourceData, sourceData];
+    const targetData: unknown[] = [sourceData, sourceData];
 
     set(data as object, sourceDataLocation, targetData);
 }
