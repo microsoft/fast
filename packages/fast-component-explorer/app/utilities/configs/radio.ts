@@ -16,7 +16,7 @@ const radioConfig: ComponentViewConfig<RadioProps> = {
     guidance: Guidance,
     scenarios: [
         {
-            displayName: "Default",
+            displayName: "Basic",
             data: {
                 inputId: id,
                 children: [

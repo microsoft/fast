@@ -12,7 +12,7 @@ const metatextConfig: ComponentViewConfig<MetatextProps> = {
     guidance: Guidance,
     scenarios: [
         {
-            displayName: "Default",
+            displayName: "Basic",
             data: {
                 children: "Default metatext",
             },

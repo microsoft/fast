@@ -70,8 +70,6 @@ export interface TreeNavigation {
     items?: TreeNavigation[] | void;
 }
 
-export interface NavigationUnhandledProps extends React.HTMLAttributes<HTMLDivElement> {}
-
 export interface NavigationHandledProps
     extends ManagedClasses<NavigationClassNameContract> {
     /**
@@ -110,7 +108,7 @@ export interface NavigationHandledProps
     /**
      * The onChange callback for updating the data
      */
-    onChange?: (data: any) => void;
+    onChange?: (data: any, dataLocation?: string) => void;
 }
 
-export type NavigationProps = NavigationHandledProps & NavigationUnhandledProps;
+export type NavigationProps = NavigationHandledProps;

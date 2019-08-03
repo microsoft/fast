@@ -12,7 +12,7 @@ const typographyConfig: ComponentViewConfig<TypographyProps> = {
     guidance: Guidance,
     scenarios: [
         {
-            displayName: "Default",
+            displayName: "Basic",
             data: {
                 children: "Typography",
             },

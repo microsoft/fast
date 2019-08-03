@@ -396,7 +396,7 @@ function isTargetInSourceArray(
 /**
  * The target is in an array
  */
-function isInArray(data: unknown, dataLocation: string): boolean {
+export function isInArray(data: unknown, dataLocation: string): boolean {
     const dataLocationSegments: string[] = dataLocation.split(".");
     const parentDataLocation: string = dataLocationSegments.slice(0, -1).join(".");
 
@@ -758,38 +758,32 @@ export function getDataWithDuplicate<T>(sourceDataLocation: string, data: T): T 
     if (isInArray(clonedData, normalizedSourceDataLocation)) {
         duplicateDataInArray(clonedData, normalizedSourceDataLocation);
     } else {
-        // check for case of single child as object
-        const sourceDataLocationSegments: string[] = sourceDataLocation.split(".");
-        if (
-            sourceDataLocationSegments[sourceDataLocationSegments.length - 2] ===
-            childrenKeyword
-        ) {
-            duplicateDataInArray(clonedData, normalizedSourceDataLocation);
-        }
+        duplicateData(clonedData, normalizedSourceDataLocation);
     }
 
     return clonedData;
 }
 
+function duplicateData(data: unknown, sourceDataLocation: string): void {
+    const sourceData: unknown = get(data as object, sourceDataLocation);
+    const targetData: unknown[] = [sourceData, sourceData];
+
+    set(data as object, sourceDataLocation, targetData);
+}
+
 function duplicateDataInArray(data: unknown, sourceDataLocation: string): void {
     const sourceData: unknown = get(data as object, sourceDataLocation);
     const sourceDataLocationSegments: string[] = sourceDataLocation.split(".");
-
-    let parentSourceDataLocation: string = sourceDataLocationSegments
+    const parentSourceDataLocation: string = sourceDataLocationSegments
         .slice(0, -1)
         .join(".");
-    let parentSourceData: unknown | unknown[] = get(data, parentSourceDataLocation);
-
+    const parentSourceData: unknown | unknown[] = get(data, parentSourceDataLocation);
     let sourceDataLocationIndex: number = 0;
-    if (!Array.isArray(parentSourceData)) {
-        parentSourceData = [(parentSourceData as object)[childrenKeyword]];
-        parentSourceDataLocation = `${parentSourceDataLocation}.${childrenKeyword}`;
-    } else {
-        sourceDataLocationIndex = parseInt(
-            sourceDataLocationSegments[sourceDataLocationSegments.length - 1],
-            10
-        );
-    }
+
+    sourceDataLocationIndex = parseInt(
+        sourceDataLocationSegments[sourceDataLocationSegments.length - 1],
+        10
+    );
 
     (parentSourceData as unknown[]).splice(
         sourceDataLocationIndex + 1,

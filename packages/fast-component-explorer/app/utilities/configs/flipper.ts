@@ -13,7 +13,7 @@ const flipperConfig: ComponentViewConfig<FlipperProps> = {
     guidance: Guidance,
     scenarios: [
         {
-            displayName: "Default",
+            displayName: "Next",
             data: {},
         },
         {

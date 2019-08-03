@@ -8,7 +8,7 @@ const dialogConfig: ComponentViewConfig<DialogProps> = {
     guidance: Guidance,
     scenarios: [
         {
-            displayName: "Default",
+            displayName: "Basic",
             data: {
                 visible: true,
             },

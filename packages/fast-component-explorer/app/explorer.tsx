@@ -81,6 +81,7 @@ import {
     rgbToHSL,
 } from "@microsoft/fast-colors";
 import { format, toPx } from "@microsoft/fast-jss-utilities";
+import { NavigationMenuClassNameContract } from "@microsoft/fast-tooling-react/dist/navigation-menu/navigation-menu.style";
 
 const dark: string = `#333333`;
 const light: string = "#FFFFFF";
@@ -124,9 +125,18 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
         },
     };
 
-    private navigationMenuStyleOverrides: any = {
+    private navigationMenuStyleOverrides: ComponentStyleSheet<
+        Partial<NavigationMenuClassNameContract>,
+        DesignSystem
+    > = {
         navigationMenu: {
             background: "unset",
+        },
+        navigationMenuItem: {
+            textIndent: "0",
+        },
+        navigationMenuItem_listItem: {
+            paddingLeft: "10px",
         },
     };
 

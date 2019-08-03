@@ -13,9 +13,10 @@ const badgeConfig: ComponentViewConfig<BadgeProps> = {
     guidance: Guidance,
     scenarios: [
         {
-            displayName: "Default",
+            displayName: "Small",
             data: {
-                children: "Badge",
+                children: "Small badge",
+                size: BadgeSize.small,
             },
         },
         {
@@ -23,13 +24,6 @@ const badgeConfig: ComponentViewConfig<BadgeProps> = {
             data: {
                 children: "Large badge",
                 size: BadgeSize.large,
-            },
-        },
-        {
-            displayName: "Small",
-            data: {
-                children: "Small badge",
-                size: BadgeSize.small,
             },
         },
         {

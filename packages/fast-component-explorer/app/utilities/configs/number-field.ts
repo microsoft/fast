@@ -12,7 +12,7 @@ const numberFieldConfig: ComponentViewConfig<NumberFieldProps> = {
     guidance: Guidance,
     scenarios: [
         {
-            displayName: "Default",
+            displayName: "Basic",
             data: {
                 name: "numberField",
             },

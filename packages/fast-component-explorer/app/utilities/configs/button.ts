@@ -13,7 +13,7 @@ const buttonConfig: ComponentViewConfig<ButtonProps> = {
     guidance: Guidance,
     scenarios: [
         {
-            displayName: "Default",
+            displayName: "Neutral",
             data: {
                 children: "Button",
             },

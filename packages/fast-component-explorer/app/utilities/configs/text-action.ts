@@ -15,9 +15,32 @@ const textActionConfig: ComponentViewConfig<TextActionProps> = {
     guidance: Guidance,
     scenarios: [
         {
-            displayName: "Default",
+            displayName: "Filled",
             data: {
                 appearance: TextActionAppearance.filled,
+                button: {
+                    id: buttonSchema.id,
+                    props: {
+                        children: {
+                            id: glyphSchema.id,
+                            props: {
+                                path: Icon.arrow,
+                            },
+                        },
+                    },
+                } as any,
+                beforeGlyph: {
+                    id: glyphSchema.id,
+                    props: {
+                        path: Icon.user,
+                    },
+                } as any,
+            },
+        },
+        {
+            displayName: "Outline",
+            data: {
+                appearance: TextActionAppearance.outline,
                 button: {
                     id: buttonSchema.id,
                     props: {

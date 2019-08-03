@@ -8,7 +8,7 @@ const checkboxConfig: ComponentViewConfig<LabelProps> = {
     guidance: Guidance,
     scenarios: [
         {
-            displayName: "Default",
+            displayName: "Basic",
             data: {
                 children: "Default label",
             },
