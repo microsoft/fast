@@ -24,17 +24,14 @@ function getRouteFromSchemaId(schemaId: string): string {
 
 function generateMenu(componentSchemas: any[]): MenuItem[] {
     return [
-        {
-            displayName: "Components",
-            items: componentSchemas.map(
-                (schema: any): MenuItem => {
-                    return {
-                        displayName: schema.title,
-                        location: getRouteFromSchemaId(schema.id),
-                    };
-                }
-            ),
-        },
+        ...componentSchemas.map(
+            (schema: any): MenuItem => {
+                return {
+                    displayName: schema.title,
+                    location: getRouteFromSchemaId(schema.id),
+                };
+            }
+        ),
     ];
 }
 
