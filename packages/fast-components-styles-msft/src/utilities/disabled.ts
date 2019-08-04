@@ -10,5 +10,8 @@ export function applyDisabledState(
     return {
         opacity: toString(disabledOpacity),
         ...applyCursorDisabled(),
+        "@media (-ms-high-contrast:active)": {
+            opacity: "1",
+        },
     };
 }
