@@ -52,6 +52,9 @@ const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = {
         display: "inline-block",
         color: neutralForegroundRest,
         transition: "all 0.2s ease-in-out",
+        "@media (-ms-high-contrast:active)": {
+            color: "ButtonText",
+        },
     },
     toggle_label: {
         ...applyCursorPointer(),
@@ -101,7 +104,7 @@ const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = {
             "@media (-ms-high-contrast:active)": {
                 background: "Highlight",
                 "& + span": {
-                    background: "Background",
+                    background: "HighlightText",
                 },
             },
         },
@@ -131,6 +134,24 @@ const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = {
                 boxShadow: format<DesignSystem>("0 0 0 1px {0} inset", neutralFocus),
                 borderColor: neutralFocus,
             }),
+            "&:disabled": {
+                "@media (-ms-high-contrast:active)": {
+                    background: "graytext",
+                    borderColor: "graytext",
+                    "& + span": {
+                        background: "Background",
+                    },
+                },
+                "&:hover": {
+                    "@media (-ms-high-contrast:active)": {
+                        background: "graytext",
+                        borderColor: "graytext",
+                        "& + span": {
+                            background: "Background",
+                        },
+                    },
+                },
+            },
             "@media (-ms-high-contrast:active)": {
                 background: "Highlight",
                 borderColor: "Highlight",
@@ -138,13 +159,13 @@ const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = {
                     "@media (-ms-high-contrast:active)": {
                         background: "Highlight",
                         "& + span": {
-                            background: "Background",
+                            background: "HighlightText",
                         },
                     },
                 },
                 "&:hover": {
                     "@media (-ms-high-contrast:active)": {
-                        background: "Background",
+                        background: "HighlightText",
                         borderColor: "Highlight",
                     },
                 },
@@ -154,7 +175,12 @@ const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = {
             left: toPx(indicatorCheckedLeft),
             background: accentForegroundCut,
             "@media (-ms-high-contrast:active)": {
-                background: "Background",
+                background: "HighlightText",
+                "&:hover": {
+                    "@media (-ms-high-contrast:active)": {
+                        background: "Highlight",
+                    },
+                },
             },
         },
     },
@@ -163,12 +189,40 @@ const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = {
         "& $toggle_input": {
             background: neutralFillSelected,
             borderColor: neutralFillSelected,
+            "@media (-ms-high-contrast:active)": {
+                background: "Background",
+                borderColor: "graytext",
+                "&:active": {
+                    "@media (-ms-high-contrast:active)": {
+                        background: "Background",
+                        "& + span": {
+                            background: "graytext",
+                        },
+                    },
+                },
+                "&:hover": {
+                    "@media (-ms-high-contrast:active)": {
+                        background: "Background",
+                        borderColor: "graytext",
+                        "& + span": {
+                            background: "graytext",
+                        },
+                    },
+                },
+            },
         },
         "& $toggle_stateIndicator": {
             background: neutralForegroundRest,
+            "@media (-ms-high-contrast:active)": {
+                background: "graytext",
+            },
         },
         "& $toggle_input, & $toggle_label, & $toggle_statusMessage": {
             ...applyCursorDisabled(),
+        },
+        "@media (-ms-high-contrast:active)": {
+            opacity: "1",
+            color: "graytext",
         },
     },
     toggle_statusMessage: {
