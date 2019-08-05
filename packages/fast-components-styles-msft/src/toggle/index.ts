@@ -136,16 +136,16 @@ const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = {
             }),
             "&:disabled": {
                 "@media (-ms-high-contrast:active)": {
-                    background: "graytext",
-                    borderColor: "graytext",
+                    background: "GrayText",
+                    borderColor: "GrayText",
                     "& + span": {
                         background: "Background",
                     },
                 },
                 "&:hover": {
                     "@media (-ms-high-contrast:active)": {
-                        background: "graytext",
-                        borderColor: "graytext",
+                        background: "GrayText",
+                        borderColor: "GrayText",
                         "& + span": {
                             background: "Background",
                         },
@@ -191,21 +191,21 @@ const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = {
             borderColor: neutralFillSelected,
             "@media (-ms-high-contrast:active)": {
                 background: "Background",
-                borderColor: "graytext",
+                borderColor: "GrayText",
                 "&:active": {
                     "@media (-ms-high-contrast:active)": {
                         background: "Background",
                         "& + span": {
-                            background: "graytext",
+                            background: "GrayText",
                         },
                     },
                 },
                 "&:hover": {
                     "@media (-ms-high-contrast:active)": {
                         background: "Background",
-                        borderColor: "graytext",
+                        borderColor: "GrayText",
                         "& + span": {
-                            background: "graytext",
+                            background: "GrayText",
                         },
                     },
                 },
@@ -214,15 +214,17 @@ const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = {
         "& $toggle_stateIndicator": {
             background: neutralForegroundRest,
             "@media (-ms-high-contrast:active)": {
-                background: "graytext",
+                background: "GrayText",
             },
         },
         "& $toggle_input, & $toggle_label, & $toggle_statusMessage": {
             ...applyCursorDisabled(),
+            "@media (-ms-high-contrast:active)": {
+                color: "GrayText",
+            },
         },
         "@media (-ms-high-contrast:active)": {
             opacity: "1",
-            color: "graytext",
         },
     },
     toggle_statusMessage: {
