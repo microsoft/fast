@@ -3,12 +3,12 @@ import { ProgressClassNameContract } from "@microsoft/fast-components-class-name
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { DesignSystem, ProgressStyles } from "@microsoft/fast-components-styles-msft";
 import MSFTProgress, {
+    ProgressSize,
     ProgressHandledProps as MSFTProgressHandledProps,
     ProgressManagedClasses,
     ProgressProps as MSFTProgressProps,
     ProgressUnhandledProps,
 } from "./progress";
-import { ProgressSize } from "./progress.props";
 import progressSchema from "./progress.schema";
 import { Subtract } from "utility-types";
 /*
