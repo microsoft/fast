@@ -114,19 +114,20 @@ export class Pane extends Foundation<PaneHandledProps, PaneUnhandledProps, PaneS
     /**
      * All handled props
      */
-    protected handledProps: HandledProps<PaneHandledProps> = {
-        initialWidth: void 0,
-        minWidth: void 0,
-        maxWidth: void 0,
-        width: void 0,
-        resizable: void 0,
-        id: void 0,
+    protected handledProps: HandledProps<Required<PaneHandledProps>> = {
         collapsed: void 0,
-        overlay: void 0,
+        collapsedWidth: void 0,
         hidden: void 0,
-        resizeFrom: void 0,
+        id: void 0,
+        initialWidth: void 0,
         managedClasses: void 0,
+        maxWidth: void 0,
+        minWidth: void 0,
         onResize: void 0,
+        overlay: void 0,
+        resizable: void 0,
+        resizeFrom: void 0,
+        width: void 0,
     };
     /**
      * Stores a reference to the pane HTML element
