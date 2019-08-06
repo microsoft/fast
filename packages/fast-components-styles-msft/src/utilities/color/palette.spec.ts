@@ -162,21 +162,21 @@ describe("getSwatch", (): void => {
 
 describe("swatchByMode", (): void => {
     test("should operate on designSystemDefaults", (): void => {
-        expect(swatchByMode(PaletteType.neutral)(0, 0)({} as DesignSystem)).toBe(
+        expect(swatchByMode(neutralPalette)(0, 0)({} as DesignSystem)).toBe(
             designSystemDefaults.neutralPalette[0]
         );
-        expect(swatchByMode(PaletteType.accent)(0, 0)({} as DesignSystem)).toBe(
+        expect(swatchByMode(accentPalette)(0, 0)({} as DesignSystem)).toBe(
             designSystemDefaults.accentPalette[0]
         );
     });
     test("should return the dark index color when the background color is dark", (): void => {
         expect(
-            swatchByMode(PaletteType.neutral)(0, 7)({
+            swatchByMode(neutralPalette)(0, 7)({
                 backgroundColor: "#000",
             } as DesignSystem)
         ).toBe(designSystemDefaults.neutralPalette[7]);
         expect(
-            swatchByMode(PaletteType.accent)(0, 7)({
+            swatchByMode(accentPalette)(0, 7)({
                 backgroundColor: "#000",
             } as DesignSystem)
         ).toBe(designSystemDefaults.accentPalette[7]);
