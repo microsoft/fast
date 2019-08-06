@@ -21,6 +21,15 @@ const styles: ComponentStyles<AccentButtonClassNameContract, DesignSystem> = {
         background: accentFillRest,
         "&:hover:enabled": {
             background: accentFillHover,
+            "@media (-ms-high-contrast:active)": {
+                background: "Highlight",
+                color: "HighlightText",
+            },
+            "& $button_beforeContent, & $button_afterContent": {
+                "@media (-ms-high-contrast:active)": {
+                    fill: "HighlightText",
+                },
+            },
         },
         "&:active:enabled": {
             background: accentFillActive,
@@ -32,8 +41,48 @@ const styles: ComponentStyles<AccentButtonClassNameContract, DesignSystem> = {
                 neutralFocusInnerAccent(accentFillRest)
             ),
         }),
+        "&:disabled": {
+            "@media (-ms-high-contrast:active)": {
+                background: "Background",
+                borderColor: "GrayText",
+                color: "GrayText",
+            },
+            "& $button_beforeContent, & $button_afterContent": {
+                "@media (-ms-high-contrast:active)": {
+                    fill: "GrayText",
+                },
+            },
+        },
         "& $button_beforeContent, & $button_afterContent": {
             fill: accentForegroundCut,
+            "@media (-ms-high-contrast:active)": {
+                fill: "ButtonText",
+            }
+        },
+        "@media (-ms-high-contrast:active)": {
+            background: "ButtonFace",
+            color: "ButtonText",
+            "-ms-high-contrast-adjust": "none"
+        },
+        "a&": {
+            "@media (-ms-high-contrast:active)": {
+                color: "LinkText",
+                "&:hover": {
+                    background: "Highlight",
+                    color: "HighlightText",
+                }
+            },
+            "&$button__disabled": {
+                "@media (-ms-high-contrast:active)": {
+                    background: "transparent",
+                    color: "GrayText",
+                },
+                "& $button_beforeContent, & $button_afterContent": {
+                    "@media (-ms-high-contrast:active)": {
+                        fill: "GrayText",
+                    },
+                }
+            },
         },
     },
 };

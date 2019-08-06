@@ -20,6 +20,15 @@ const styles: ComponentStyles<AccentButtonClassNameContract, DesignSystem> = {
         background: neutralFillStealthRest,
         "&:hover:enabled": {
             backgroundColor: neutralFillStealthHover,
+            "@media (-ms-high-contrast:active)": {
+                background: "Highlight",
+                color: "HighlightText",
+            },
+            "& $button_beforeContent, & $button_afterContent": {
+                "@media (-ms-high-contrast:active)": {
+                    fill: "HighlightText",
+                },
+            }
         },
         "&:active:enabled": {
             backgroundColor: neutralFillStealthActive,
@@ -27,6 +36,36 @@ const styles: ComponentStyles<AccentButtonClassNameContract, DesignSystem> = {
         ...applyFocusVisible<DesignSystem>({
             borderColor: neutralFocus,
         }),
+        "&:disabled": {
+            "@media (-ms-high-contrast:active)": {
+                background: "Background",
+                borderColor: "GrayText",
+                color: "GrayText",
+            },
+            "& $button_beforeContent, & $button_afterContent": {
+                "@media (-ms-high-contrast:active)": {
+                    fill: "GrayText",
+                },
+            },
+        },
+        "@media (-ms-high-contrast:active)": {
+            border: "none",
+            "-ms-high-contrast-adjust": "none"
+        },
+        "a&": {
+            "@media (-ms-high-contrast:active)": {
+                color: "LinkText",
+                "&:hover": {
+                    background: "Highlight",
+                    color: "HighlightText",
+                }
+            },
+            "&$button__disabled": {
+                "@media (-ms-high-contrast:active)": {
+                    color: "GrayText",
+                },
+            }
+        },
     },
 };
 

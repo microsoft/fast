@@ -34,7 +34,7 @@ const styles: ComponentStyles<LightweightButtonClassNameContract, DesignSystem> 
         "&:hover $button_contentRegion::before": {
             background: accentForegroundHover,
             "@media (-ms-high-contrast:active)": {
-                background: "ButtonHighlight",
+                background: "ButtonText",
             },
         },
         "&:hover$button__disabled $button_contentRegion::before": {
@@ -48,12 +48,15 @@ const styles: ComponentStyles<LightweightButtonClassNameContract, DesignSystem> 
         },
         "@media (-ms-high-contrast:active)": {
             border: "none",
-            fill: "ButtonHighlight",
+            fill: "ButtonText",
         },
         "&:hover:enabled": {
             color: accentForegroundHover,
             fill: accentForegroundHover,
             backgroundColor: "transparent",
+            "@media (-ms-high-contrast:active)": {
+                fill: "ButtonText",
+            },
         },
         "&:active:enabled": {
             color: accentForegroundActive,

@@ -20,6 +20,15 @@ const styles: ComponentStyles<NeutralButtonClassNameContract, DesignSystem> = {
         background: neutralFillRest,
         "&:hover:enabled": {
             background: neutralFillHover,
+            "@media (-ms-high-contrast:active)": {
+                background: "Highlight",
+                color: "HighlightText",
+            },
+            "& $button_beforeContent, & $button_afterContent": {
+                "@media (-ms-high-contrast:active)": {
+                    fill: "HighlightText",
+                },
+            }
         },
         "&:active:enabled": {
             background: neutralFillActive,
@@ -27,11 +36,41 @@ const styles: ComponentStyles<NeutralButtonClassNameContract, DesignSystem> = {
         ...applyFocusVisible<DesignSystem>({
             borderColor: neutralFocus,
         }),
+        "&:disabled": {
+            "@media (-ms-high-contrast:active)": {
+                background: "Background",
+                borderColor: "GrayText",
+                color: "GrayText",
+            },
+            "a&": {
+                "@media (-ms-high-contrast:active)": {
+                    color: "GrayText"
+                }
+            }
+        },
         "&::-moz-focus-inner": {
             border: "0",
         },
         "@media (-ms-high-contrast:active)": {
-            fill: "ButtonHighlight",
+            background: "Background",
+            borderColor: "ButtonText",
+            fill: "ButtonText",
+            "-ms-high-contrast-adjust": "none"
+        },
+        "a&": {
+            "@media (-ms-high-contrast:active)": {
+                color: "LinkText",
+                "&:hover": {
+                    background: "Highlight",
+                    color: "HighlightText",
+                }
+            },
+            "&$button__disabled": {
+                "@media (-ms-high-contrast:active)": {
+                    borderColor: "GrayText",
+                    color: "GrayText",
+                },
+            }
         },
     },
 };
