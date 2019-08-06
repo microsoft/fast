@@ -2,8 +2,7 @@
 
 import { ColorRGBA64 } from "./color-rgba-64";
 import { normalize } from "./math-utilities";
-import { namedColorsConfigs } from "./named-colors";
-
+import { NamedColors, namedColorsConfigs } from "./named-colors";
 
 // Matches rgb(R, G, B) where R, G, and B are integers [0 - 255]
 const webRGBRegex: RegExp = /^rgb\(\s*((?:(?:25[0-5]|2[0-4]\d|1\d\d|\d{1,2})\s*,\s*){2}(?:25[0-5]|2[0-4]\d|1\d\d|\d{1,2})\s*)\)$/i;
@@ -47,6 +46,10 @@ export function isColorStringWebRGB(raw: string): boolean {
  */
 export function isColorStringWebRGBA(raw: string): boolean {
     return webRGBARegex.test(raw);
+}
+
+export function isColorNamed(raw: string | NamedColors): raw is NamedColors {
+    return namedColorsConfigs.hasOwnProperty(raw);
 }
 
 // Expects format #RRGGBB or #RGB
@@ -190,12 +193,24 @@ export function parseColorWebRGBA(raw: string): ColorRGBA64 | null {
 }
 
 // Expects any of the CSS color names https://www.w3schools.com/colors/colors_names.asp
-export function parseColorNamed(raw: string): ColorRGBA64 | null {
-    const rawLower: string = raw.toLowerCase();
-    const config: typeof namedColorsConfigs[string] | void = namedColorsConfigs[rawLower];
+export function parseColorNamed(
+    raw: keyof typeof namedColorsConfigs
+): ColorRGBA64 | null {
+    // const rawLower: typeof raw =  raw.toLowerCase() : raw.toString();
+    const config: typeof namedColorsConfigs[keyof typeof namedColorsConfigs] | void =
+        namedColorsConfigs[raw.toLowerCase()];
 
-    return !!config ? new ColorRGBA64(config.r, config.g, config.b, config.a) : null
+    return !!config
+        ? new ColorRGBA64(
+              config.r,
+              config.g,
+              config.b,
+              config.hasOwnProperty("a") ? config.a : void 0
+          )
+        : null;
 }
+
+// parseColorNamed("yellowgreen")
 
 // Expects any of the following and attempts to determine which is being used
 // #RRGGBB
@@ -214,7 +229,7 @@ export function parseColor(raw: string): ColorRGBA64 | null {
                 ? parseColorWebRGB(rawLower)
                 : isColorStringWebRGBA(rawLower)
                     ? parseColorWebRGBA(rawLower)
-                    : !!namedColorsConfigs[rawLower]
+                    : isColorNamed(rawLower)
                         ? parseColorNamed(rawLower)
                         : null;
 }

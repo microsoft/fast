@@ -6,13 +6,15 @@ import {
     roundToPrecisionSmall,
 } from "./math-utilities";
 
+export interface ColorRGBA64Config {
+    r: number;
+    g: number;
+    b: number;
+    a?: number;
+}
+
 export class ColorRGBA64 {
-    public static fromObject(data: {
-        r: number;
-        g: number;
-        b: number;
-        a?: number;
-    }): ColorRGBA64 | null {
+    public static fromObject(data: ColorRGBA64Config): ColorRGBA64 | null {
         return data && !isNaN(data.r) && !isNaN(data.g) && !isNaN(data.b)
             ? new ColorRGBA64(data.r, data.g, data.b, data.a)
             : null;
@@ -91,7 +93,7 @@ export class ColorRGBA64 {
         );
     }
 
-    public toObject(): { r: number; g: number; b: number; a: number } {
+    public toObject(): Required<ColorRGBA64Config> {
         return { r: this.r, g: this.g, b: this.b, a: this.a };
     }
 
