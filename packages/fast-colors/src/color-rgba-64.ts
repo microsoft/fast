@@ -41,23 +41,17 @@ export class ColorRGBA64 {
 
     // #RRGGBB
     public toStringHexRGB(): string {
-        return (
-            "#" + [this.r, this.g, this.b].map(this.formatHexValue).join("")
-        );
+        return "#" + [this.r, this.g, this.b].map(this.formatHexValue).join("");
     }
 
     // #RRGGBBAA
     public toStringHexRGBA(): string {
-        return (
-            this.toStringHexRGB() + this.formatHexValue(this.a)
-        );
+        return this.toStringHexRGB() + this.formatHexValue(this.a);
     }
 
     // #AARRGGBB
     public toStringHexARGB(): string {
-        return (
-            "#" + [this.a, this.r, this.g, this.b].map(this.formatHexValue).join("")
-        );
+        return "#" + [this.a, this.r, this.g, this.b].map(this.formatHexValue).join("");
     }
 
     // rgb(0xRR, 0xGG, 0xBB)

@@ -1,4 +1,4 @@
-import { ColorRGBA64Config } from "./color-rgba-64"
+import { ColorRGBA64Config } from "./color-rgba-64";
 export type NamedColors =
     | "aliceblue"
     | "antiquewhite"
