@@ -30,29 +30,37 @@ import manageJss, {
 } from "@microsoft/fast-jss-manager-react";
 import ReactDOM from "react-dom";
 import React from "react";
+import { downChevron, upChevron } from "./icons/chevrons";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import {
     createColorPalette,
     DesignSystem,
     DesignSystemDefaults,
     designUnit,
-    height,
     horizontalSpacing,
+    neutralDividerRest,
     neutralLayerL1,
     neutralLayerL2,
     neutralLayerL3,
+    outlineWidth,
 } from "@microsoft/fast-components-styles-msft";
 import {
     LabelClassNameContract,
     ListboxItemProps,
     TabsItem,
+    TypographyClassNameContract,
+    TypographySize,
 } from "@microsoft/fast-components-react-base";
 import style, { applyScrollbarStyle } from "./explorer.style";
 import {
+    ActionToggle,
+    ActionToggleAppearance,
+    ActionToggleClassNameContract,
+    ActionToggleProps,
     Background,
-    DarkModeBackgrounds,
+    Heading,
+    HeadingSize,
     Label,
-    LightModeBackgrounds,
     Pivot,
     PivotClassNameContract,
     Select,
@@ -60,6 +68,7 @@ import {
     SelectOption,
     Toggle,
     ToggleClassNameContract,
+    Typography,
 } from "@microsoft/fast-components-react-msft";
 import { ViewerManagedClasses } from "@microsoft/fast-tooling-react/dist/viewer/viewer/viewer.props";
 import {
@@ -73,14 +82,8 @@ import * as componentViewConfigs from "./utilities/configs";
 import { Scenario } from "./utilities/configs/data.props";
 import { MemoizedFunction, uniqueId } from "lodash";
 import { Direction } from "@microsoft/fast-web-utilities";
-import {
-    ColorHSL,
-    ColorRGBA64,
-    hslToRGB,
-    parseColor,
-    rgbToHSL,
-} from "@microsoft/fast-colors";
-import { format, toPx } from "@microsoft/fast-jss-utilities";
+import { ColorRGBA64, parseColor } from "@microsoft/fast-colors";
+import { format, multiply, toPx } from "@microsoft/fast-jss-utilities";
 import { NavigationMenuClassNameContract } from "@microsoft/fast-tooling-react/dist/navigation-menu/navigation-menu.style";
 
 const dark: string = `#333333`;
@@ -146,12 +149,37 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
     > = {
         pivot: {
             height: "100%",
+            boxSizing: "border-box",
+        },
+        pivot_tabList: {
+            padding: format("{0} {1}", toPx(designUnit), toPx(multiply(designUnit, 2))),
+        },
+        pivot_activeIndicator: {
+            top: "23px",
+        },
+        pivot_tabPanelContent: {
+            padding: format("{0} {1}", toPx(designUnit), toPx(multiply(designUnit, 2))),
         },
         pivot_tabPanels: {
             overflow: "auto",
-            padding: format("0 {0}", horizontalSpacing()),
-            height: format("calc(100% - {0})", height()),
+            height: "calc(100% - 32px)",
+            borderTop: format<DesignSystem>(
+                "{0} solid {1}",
+                neutralDividerRest,
+                toPx(outlineWidth)
+            ),
             ...applyScrollbarStyle(),
+        },
+    };
+
+    private devToolsToggleStyles: ComponentStyleSheet<
+        ActionToggleClassNameContract,
+        DesignSystem
+    > = {
+        actionToggle: {
+            position: "absolute",
+            top: toPx(designUnit),
+            right: toPx(multiply(designUnit, 2)),
         },
     };
 
@@ -201,6 +229,7 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
             locationPathname,
             theme: ThemeName.light,
             viewConfig: DesignSystemDefaults,
+            devToolsVisible: true,
         };
     }
 
@@ -233,7 +262,7 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
                                         "managedClasses.explorer_paneTitleContainer"
                                     )}
                                 >
-                                    <Label>Component Explorer</Label>
+                                    <Heading size={HeadingSize._6}>Explore</Heading>
                                 </div>
                                 <NavigationMenu
                                     menu={menu}
@@ -270,6 +299,8 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
                                 resizable={true}
                                 resizeFrom={RowResizeDirection.north}
                                 initialHeight={400}
+                                collapsedHeight={32}
+                                collapsed={!this.state.devToolsVisible}
                             >
                                 <Background
                                     value={neutralLayerL2}
@@ -282,6 +313,16 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
                                         label={"documentation"}
                                         items={this.renderPivotItems()}
                                         jssStyleSheet={this.pivotStyleOverrides}
+                                    />
+                                    <ActionToggle
+                                        appearance={ActionToggleAppearance.stealth}
+                                        selectedLabel={"Development tools expanded"}
+                                        selectedGlyph={downChevron}
+                                        unselectedLabel={"Development tools collapsed"}
+                                        unselectedGlyph={upChevron}
+                                        selected={this.state.devToolsVisible}
+                                        jssStyleSheet={this.devToolsToggleStyles}
+                                        onToggle={this.handleDevToolsToggle}
                                     />
                                 </Background>
                             </Row>
@@ -301,7 +342,7 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
                                         "managedClasses.explorer_paneTitleContainer"
                                     )}
                                 >
-                                    <Label>Properties</Label>
+                                    <Heading size={HeadingSize._6}>Properties</Heading>
                                 </div>
                                 {this.renderForm()}
                             </Background>
@@ -413,7 +454,17 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
     private renderPivotItems(): TabsItem[] {
         return [
             {
-                tab: (className: string): React.ReactNode => "Code Preview",
+                tab: (className: string): React.ReactNode => {
+                    return (
+                        <Typography
+                            className={className}
+                            size={TypographySize._8}
+                            onClick={this.handleDevToolsItemClick}
+                        >
+                            Code Preview
+                        </Typography>
+                    );
+                },
                 content: (className: string): React.ReactNode => {
                     return (
                         <div className={className}>
@@ -429,7 +480,17 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
                 id: "codePreview",
             },
             {
-                tab: (className: string): React.ReactNode => "Guidance",
+                tab: (className: string): React.ReactNode => {
+                    return (
+                        <Typography
+                            className={className}
+                            size={TypographySize._8}
+                            onClick={this.handleDevToolsItemClick}
+                        >
+                            Guidance
+                        </Typography>
+                    );
+                },
                 content: (className: string): React.ReactNode => {
                     const componentName: string = this.getComponentNameSpinalCaseByPath(
                         this.state.locationPathname
@@ -449,7 +510,17 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
                 id: "guidance",
             },
             {
-                tab: (className: string): React.ReactNode => "Schema",
+                tab: (className: string): React.ReactNode => {
+                    return (
+                        <Typography
+                            className={className}
+                            size={TypographySize._8}
+                            onClick={this.handleDevToolsItemClick}
+                        >
+                            Schema
+                        </Typography>
+                    );
+                },
                 content: (className: string): React.ReactNode => {
                     const schema: any = this.resolveSchemaById(
                         get(this.state.scenario, "id")
@@ -644,12 +715,29 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
         const value: string = e.currentTarget.value;
         const accentPaletteSource: ColorRGBA64 | null = parseColor(value);
         if (accentPaletteSource !== null) {
-            const palette: any = createColorPalette(accentPaletteSource);
+            const palette: string[] = createColorPalette(accentPaletteSource);
             this.setState({
                 viewConfig: merge({}, this.state.viewConfig, {
                     accentBaseColor: value.toUpperCase(),
                     accentPalette: palette,
                 }),
+            });
+        }
+    };
+
+    private handleDevToolsToggle = (
+        e: React.MouseEvent<HTMLButtonElement>,
+        props: ActionToggleProps
+    ): void => {
+        this.setState({
+            devToolsVisible: !props.selected,
+        });
+    };
+
+    private handleDevToolsItemClick = (e: React.MouseEvent<unknown>): void => {
+        if (!this.state.devToolsVisible) {
+            this.setState({
+                devToolsVisible: true,
             });
         }
     };

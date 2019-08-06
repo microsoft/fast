@@ -104,7 +104,6 @@ const style: ComponentStyles<ExplorerClassNameContract, DesignSystem> = {
         boxSizing: "border-box",
         alignItems: "center",
         paddingLeft: "10px",
-        borderBottom: format<DesignSystem>("1px solid {0}", neutralDividerRest),
     },
     explorer_propertiesPanel: {
         background: neutralLayerL3,
@@ -112,7 +111,7 @@ const style: ComponentStyles<ExplorerClassNameContract, DesignSystem> = {
             "0.6px 0px 1.8px rgba(0, 0, 0, 0.11) inset, 3.2px 0px 7.2px rgba(0, 0, 0, 0.13) inset",
     },
     explorer_toolbar: {
-        padding: "0 10px",
+        padding: "0 8px",
         height: "32px",
         display: "flex",
         alignItems: "center",

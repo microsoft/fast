@@ -74,4 +74,9 @@ export interface ExplorerState {
      * The explorer theme
      */
     theme: ThemeName;
+
+    /**
+     * Dev tools visible
+     */
+    devToolsVisible: boolean;
 }
