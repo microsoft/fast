@@ -11,23 +11,18 @@ export class ColorRGBA64 {
         r: number;
         g: number;
         b: number;
-        a: number;
+        a?: number;
     }): ColorRGBA64 | null {
-        if (data && !isNaN(data.r) && !isNaN(data.g) && !isNaN(data.b)) {
-            if (!isNaN(data.a)) {
-                return new ColorRGBA64(data.r, data.g, data.b, data.a);
-            } else {
-                return new ColorRGBA64(data.r, data.g, data.b, 1);
-            }
-        }
-        return null;
+        return data && !isNaN(data.r) && !isNaN(data.g) && !isNaN(data.b)
+            ? new ColorRGBA64(data.r, data.g, data.b, data.a)
+            : null;
     }
 
-    constructor(red: number, green: number, blue: number, alpha: number) {
+    constructor(red: number, green: number, blue: number, alpha?: number) {
         this.r = red;
         this.g = green;
         this.b = blue;
-        this.a = alpha;
+        this.a = typeof alpha === "number" && !isNaN(alpha) ? alpha : 1;
     }
 
     // Scaled to the range [0.0 , 1.0]. Values outside this range are allowed but any methods that convert or tostring the values will also be clamped
@@ -45,28 +40,21 @@ export class ColorRGBA64 {
     // #RRGGBB
     public toStringHexRGB(): string {
         return (
-            "#" +
-            getHexStringForByte(denormalize(this.r, 0.0, 255.0)) +
-            getHexStringForByte(denormalize(this.g, 0.0, 255.0)) +
-            getHexStringForByte(denormalize(this.b, 0.0, 255.0))
+            "#" + [this.r, this.g, this.b].map(this.formatHexValue).join("")
         );
     }
 
     // #RRGGBBAA
     public toStringHexRGBA(): string {
         return (
-            this.toStringHexRGB() + getHexStringForByte(denormalize(this.a, 0.0, 255.0))
+            this.toStringHexRGB() + this.formatHexValue(this.a)
         );
     }
 
     // #AARRGGBB
     public toStringHexARGB(): string {
         return (
-            "#" +
-            getHexStringForByte(denormalize(this.a, 0.0, 255.0)) +
-            getHexStringForByte(denormalize(this.r, 0.0, 255.0)) +
-            getHexStringForByte(denormalize(this.g, 0.0, 255.0)) +
-            getHexStringForByte(denormalize(this.b, 0.0, 255.0))
+            "#" + [this.a, this.r, this.g, this.b].map(this.formatHexValue).join("")
         );
     }
 
@@ -105,5 +93,9 @@ export class ColorRGBA64 {
 
     public toObject(): { r: number; g: number; b: number; a: number } {
         return { r: this.r, g: this.g, b: this.b, a: this.a };
+    }
+
+    private formatHexValue(value: number): string {
+        return getHexStringForByte(denormalize(value, 0.0, 255.0));
     }
 }

@@ -21,18 +21,6 @@ import { degreesToRadians, radiansToDegrees } from "./math-utilities";
  * Adjusts the color to sRGB space, which is necessary for the WCAG contrast spec.
  * The alpha channel of the input is ignored.
  * @param rgb The input color
- *
- * @deprecated Use rgbToRelativeLuminance instead.
- */
-export function rgbToLuminance(rgb: ColorRGBA64): number {
-    return rgbToRelativeLuminance(rgb);
-}
-
-/**
- * Get the relative luminance of a color.
- * Adjusts the color to sRGB space, which is necessary for the WCAG contrast spec.
- * The alpha channel of the input is ignored.
- * @param rgb The input color
  */
 export function rgbToRelativeLuminance(rgb: ColorRGBA64): number {
     function luminanceHelper(i: number): number {
@@ -42,21 +30,28 @@ export function rgbToRelativeLuminance(rgb: ColorRGBA64): number {
         return Math.pow((i + 0.055) / 1.055, 2.4);
     }
 
-    const r: number = luminanceHelper(rgb.r);
-    const g: number = luminanceHelper(rgb.g);
-    const b: number = luminanceHelper(rgb.b);
-
-    return r * 0.2126 + g * 0.7152 + b * 0.0722;
+    return rgbToLinearLuminance(
+        new ColorRGBA64(
+            luminanceHelper(rgb.r),
+            luminanceHelper(rgb.g),
+            luminanceHelper(rgb.b),
+            1
+        )
+    );
 }
+
+const calculateContrastRatio: (a: number, b: number) => number = (
+    a: number,
+    b: number
+): number => (a + 0.05) / (b + 0.05);
 
 // The alpha channel of the input is ignored
 export function contrastRatio(a: ColorRGBA64, b: ColorRGBA64): number {
     const luminanceA: number = rgbToRelativeLuminance(a);
     const luminanceB: number = rgbToRelativeLuminance(b);
-    if (luminanceA > luminanceB) {
-        return (luminanceA + 0.05) / (luminanceB + 0.05);
-    }
-    return (luminanceB + 0.05) / (luminanceA + 0.05);
+    return luminanceA > luminanceB
+        ? calculateContrastRatio(luminanceA, luminanceB)
+        : calculateContrastRatio(luminanceB, luminanceA);
 }
 
 /**
