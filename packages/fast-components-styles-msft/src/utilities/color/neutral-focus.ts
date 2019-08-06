@@ -2,7 +2,6 @@ import {
     findClosestSwatchIndex,
     isDarkMode,
     Palette,
-    PaletteType,
     swatchByContrast,
 } from "./palette";
 import { ColorRecipe, colorRecipeFactory, Swatch, SwatchResolver } from "./common";
@@ -16,7 +15,7 @@ function neutralFocusIndexResolver(
     palette: Palette,
     designSystem: DesignSystem
 ): number {
-    return findClosestSwatchIndex(PaletteType.neutral, referenceColor)(designSystem);
+    return findClosestSwatchIndex(neutralPalette, referenceColor)(designSystem);
 }
 
 function neutralFocusDirectionResolver(

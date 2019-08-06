@@ -4,13 +4,13 @@ import {
     colorRecipeFactory,
     designSystemResolverMax,
     Swatch,
-    SwatchResolver,
-} from "./common";
+h} from "./common";
 import {
     neutralFillActiveDelta,
     neutralFillCardDelta,
     neutralFillHoverDelta,
     neutralFillRestDelta,
+    neutralPalette,
 } from "../design-system";
 import { add, multiply, subtract } from "@microsoft/fast-jss-utilities";
 import { DesignSystem, DesignSystemResolver } from "src/design-system";
@@ -57,7 +57,7 @@ const darkNeutralLayerL4: DesignSystemResolver<number> = (
     const darkLum: number = 0.14;
     const darkColor: ColorRGBA64 = new ColorRGBA64(darkLum, darkLum, darkLum, 1);
     const darkRefIndex: number = findClosestSwatchIndex(
-        PaletteType.neutral,
+        neutralPalette,
         darkColor.toStringHexRGB()
     )(designSystem);
     return darkRefIndex;

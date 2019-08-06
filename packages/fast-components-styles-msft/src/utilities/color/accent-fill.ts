@@ -28,7 +28,6 @@ import {
     getSwatch,
     isDarkMode,
     Palette,
-    PaletteType
 } from "./palette";
 import { inRange } from "lodash-es";
 
@@ -63,7 +62,7 @@ function accentFillAlgorithm(
 
         const paletteLength: number = palette.length;
         const maxIndex: number = paletteLength - 1;
-        const accentIndex: number = findClosestSwatchIndex(PaletteType.accent, accent)(
+        const accentIndex: number = findClosestSwatchIndex(accentPalette, accent)(
             designSystem
         );
 

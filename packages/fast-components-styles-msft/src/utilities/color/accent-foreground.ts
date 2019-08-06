@@ -5,7 +5,6 @@ import {
     getSwatch,
     isDarkMode,
     Palette,
-    PaletteType,
     swatchByContrast,
 } from "./palette";
 import {
@@ -32,7 +31,7 @@ function accentForegroundAlgorithm(
     return (designSystem: DesignSystem): SwatchFamily => {
         const palette: Palette = accentPalette(designSystem);
         const accent: Swatch = accentBaseColor(designSystem);
-        const accentIndex: number = findClosestSwatchIndex(PaletteType.accent, accent)(
+        const accentIndex: number = findClosestSwatchIndex(accentPalette, accent)(
             designSystem
         );
 
@@ -66,7 +65,7 @@ function accentForegroundAlgorithm(
 
         // One of these will be rest, the other will be hover. Depends on the offsets and the direction.
         const accessibleIndex1: number = findSwatchIndex(
-            PaletteType.accent,
+            accentPalette,
             accessibleSwatch
         )(designSystem);
         const accessibleIndex2: number =

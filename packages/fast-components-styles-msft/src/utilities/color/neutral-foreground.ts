@@ -20,7 +20,6 @@ import {
     getSwatch,
     isDarkMode,
     Palette,
-    PaletteType,
     swatchByContrast,
 } from "./palette";
 
@@ -32,7 +31,7 @@ function neutralForegroundInitialIndexResolver(
     sourcePalette: Palette,
     designSystem: DesignSystem
 ): number {
-    return findClosestSwatchIndex(PaletteType.neutral, referenceColor)(designSystem);
+    return findClosestSwatchIndex(neutralPalette, referenceColor)(designSystem);
 }
 
 function contrastTargetFactory(
@@ -75,7 +74,7 @@ function neutralForegroundAlgorithm(): DesignSystemResolver<SwatchFamily> {
 
         // One of these will be rest, the other will be hover. Depends on the offsets and the direction.
         const accessibleIndex1: number = findSwatchIndex(
-            PaletteType.neutral,
+            neutralPalette,
             accessibleSwatch
         )(designSystem);
         const accessibleIndex2: number =
