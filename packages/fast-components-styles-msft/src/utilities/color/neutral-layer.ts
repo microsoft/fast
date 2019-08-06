@@ -1,4 +1,4 @@
-import { findClosestSwatchIndex, PaletteType, swatchByMode } from "./palette";
+import { findClosestSwatchIndex, swatchByMode } from "./palette";
 import {
     ColorRecipe,
     colorRecipeFactory,

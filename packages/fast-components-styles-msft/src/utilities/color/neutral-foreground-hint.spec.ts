@@ -3,7 +3,7 @@ import {
     neutralForegroundHintLarge,
 } from "./neutral-foreground-hint";
 import designSystemDefaults from "../../design-system";
-import { Palette, palette, PaletteType } from "./palette";
+import { Palette } from "./palette";
 import { contrast, Swatch, SwatchRecipe } from "./common";
 import {
     accentPalette as getAccentPalette,

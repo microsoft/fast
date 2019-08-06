@@ -42,25 +42,19 @@ function accentFillAlgorithm(
 ): DesignSystemResolver<FillSwatchFamily> {
     return (designSystem: DesignSystem): FillSwatchFamily => {
         const palette: Palette = accentPalette(designSystem);
+        const paletteLength: number = palette.length;
         const accent: Swatch = accentBaseColor(designSystem);
         const textColor: Swatch = accentForegroundCut(
             Object.assign({}, designSystem, {
                 backgroundColor: accent,
             })
         );
-
-        const stateDeltas: any = {
-            rest: accentFillRestDelta(designSystem),
-            hover: accentFillHoverDelta(designSystem),
-            active: accentFillActiveDelta(designSystem),
-        };
+        const hoverDelta: number = accentFillHoverDelta(designSystem);
 
         // Use the hover direction that matches the neutral fill recipe.
         const backgroundIndex: number = findClosestBackgroundIndex(designSystem);
         const swapThreshold: number = neutralFillThreshold(designSystem);
         const direction: 1 | -1 = backgroundIndex >= swapThreshold ? -1 : 1;
-
-        const paletteLength: number = palette.length;
         const maxIndex: number = paletteLength - 1;
         const accentIndex: number = findClosestSwatchIndex(accentPalette, accent)(
             designSystem
@@ -70,7 +64,7 @@ function accentFillAlgorithm(
 
         // Move the accent color the direction of hover, while maintaining the foreground color.
         while (
-            accessibleOffset < direction * stateDeltas.hover &&
+            accessibleOffset < direction * hoverDelta &&
             inRange(accentIndex + accessibleOffset + direction, 0, paletteLength) &&
             contrast(
                 palette[accentIndex + accessibleOffset + direction],
@@ -82,8 +76,8 @@ function accentFillAlgorithm(
         }
 
         const hoverIndex: number = accentIndex + accessibleOffset;
-        const restIndex: number = hoverIndex + direction * -1 * stateDeltas.hover;
-        const activeIndex: number = restIndex + direction * stateDeltas.active;
+        const restIndex: number = hoverIndex + direction * -1 * hoverDelta;
+        const activeIndex: number = restIndex + direction * accentFillActiveDelta(designSystem);
 
         return {
             rest: getSwatch(restIndex, palette),
