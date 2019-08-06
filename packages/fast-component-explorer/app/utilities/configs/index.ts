@@ -1,3 +1,6 @@
+import accentButtonConfig from "./accent-button";
+export { accentButtonConfig };
+
 import actionToggleConfig from "./action-toggle";
 export { actionToggleConfig };
 
@@ -61,11 +64,20 @@ export { imageConfig };
 import labelConfig from "./label";
 export { labelConfig };
 
+import lightweightButtonConfig from "./lightweight-button";
+export { lightweightButtonConfig };
+
 import metatextConfig from "./metatext";
 export { metatextConfig };
 
+import neutralButtonConfig from "./neutral-button";
+export { neutralButtonConfig };
+
 import numberFieldConfig from "./number-field";
 export { numberFieldConfig };
+
+import outlineButtonConfig from "./outline-button";
+export { outlineButtonConfig };
 
 import paragraphConfig from "./paragraph";
 export { paragraphConfig };
@@ -90,6 +102,9 @@ export { sliderLabelConfig };
 
 import sliderConfig from "./slider";
 export { sliderConfig };
+
+import stealthButtonConfig from "./stealth-button";
+export { stealthButtonConfig };
 
 import subheadingConfig from "./subheading";
 export { subheadingConfig };
