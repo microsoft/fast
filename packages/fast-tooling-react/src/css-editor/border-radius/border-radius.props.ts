@@ -21,10 +21,6 @@ export enum BorderRadiusValue {
 
 export interface CSSBorderRadiusValues {
     borderRadius?: string;
-    borderTopLeftRadius?: string;
-    borderTopRightRadius?: string;
-    borderBottomRightRadius?: string;
-    borderBottomLeftRadius?: string;
 }
 
 export interface CSSBorderRadiusUnhandledProps
