@@ -1170,7 +1170,6 @@ describe("viewport positioner", (): void => {
                     height: "100px",
                     width: "100px",
                 }}
-                ref={viewportElement}
             >
                 <div
                     style={{
@@ -1183,7 +1182,7 @@ describe("viewport positioner", (): void => {
                     horizontalPositioningMode={AxisPositioningMode.adjacent}
                     verticalPositioningMode={AxisPositioningMode.adjacent}
                     anchor={anchorElement}
-                    viewport={viewportElement}
+                    viewport={document.firstElementChild as HTMLElement}
                     managedClasses={managedClasses}
                 />
             </div>
