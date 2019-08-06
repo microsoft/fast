@@ -19,7 +19,7 @@ import {
     neutralOutlineRest,
 } from "../utilities/color";
 import { applyElevatedCornerRadius } from "../utilities/border";
-import { designUnit } from "../utilities/design-system";
+import { designUnit, outlineWidth } from "../utilities/design-system";
 import { inputFieldStyles } from "../patterns/input-field";
 import { applyCursorPointer } from "../utilities/cursor";
 
@@ -69,6 +69,13 @@ const styles: ComponentStyles<SelectClassNameContract, DesignSystem> = {
         padding: format("{0} 0", toPx<DesignSystem>(designUnit)),
         maxHeight: "328px",
         overflow: "auto",
+        "@media (-ms-high-contrast:active)": {
+            background: "ButtonFace",
+            border: format<DesignSystem>(
+                "{0} solid ButtonText",
+                toPx(outlineWidth)
+            ),
+        },
     },
     select__multiSelectable: {
         "& $select_menu": {

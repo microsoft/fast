@@ -52,7 +52,17 @@ const styles: ComponentStyles<AutoSuggestOptionClassNameContract, DesignSystem> 
         }),
         "&:hover": {
             background: neutralFillStealthHover,
+            "@media (-ms-high-contrast:active)": {
+                background: "Highlight",
+                color: "HighlightText",
+            }
         },
+        "@media (-ms-high-contrast:active)": {
+            border: "none",
+            background: "ButtonFace",
+            color: "ButtonText",
+            "-ms-high-contrast-adjust": "none",
+        }
     },
     autoSuggestOption_contentRegion: {
         gridColumnStart: "3",
@@ -78,6 +88,10 @@ const styles: ComponentStyles<AutoSuggestOptionClassNameContract, DesignSystem> 
         background: neutralFillStealthSelected,
         "&:hover": {
             background: neutralFillStealthSelected,
+            "@media (-ms-high-contrast:active)": {
+                background: "Highlight",
+                color: "HighlightText",
+            }
         },
     },
 };

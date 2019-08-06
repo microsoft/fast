@@ -73,6 +73,12 @@ const styles: ComponentStyles<TextActionClassNameContract, DesignSystem> = {
             background: neutralFillInputActive,
             borderColor: neutralOutlineActive,
         },
+        "@media (-ms-high-contrast:active)": {
+            border: format(
+                "{0} solid ButtonText",
+                toPx<DesignSystem>(outlineWidth)
+            ),
+        }
     },
     textAction__filled: {
         background: neutralFillRest,
@@ -113,6 +119,11 @@ const styles: ComponentStyles<TextActionClassNameContract, DesignSystem> = {
         },
         "& $textAction_beforeGlyph, & $textAction_afterGlyph": {
             fill: "GrayText"
+        },
+        "@media (-ms-high-contrast:active)": {
+            opacity: "1",
+            background: "Background",
+            borderColor: "GrayText",
         }
     },
     textAction_button: {
@@ -129,6 +140,27 @@ const styles: ComponentStyles<TextActionClassNameContract, DesignSystem> = {
         transition: "color .1s, background-color .1s, border-color 0.2s ease-in-out",
         flex: "0 0 auto",
         cursor: "pointer",
+        "@media (-ms-high-contrast:active)": {
+            background: "ButtonFace",
+        },
+        "&:hover": {
+            "@media (-ms-high-contrast:active)": {
+                background: "Highlight",
+                fill: "HighlightText",
+            },
+        },
+        "&:disabled": {
+            "@media (-ms-high-contrast:active)": {
+                opacity: "1",
+                background: "Background",
+                fill: "GrayText",
+                "&:hover": {
+                    "@media (-ms-high-contrast:active)": {
+                        background: "Background",
+                    },
+                },
+            },
+        },
     },
     textAction_beforeGlyph: {
         ...glyphStyles,

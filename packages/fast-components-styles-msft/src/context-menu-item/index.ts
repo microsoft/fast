@@ -44,10 +44,21 @@ const styles: ComponentStyles<ContextMenuItemClassNameContract, DesignSystem> = 
         }),
         "&:hover": {
             background: neutralFillStealthHover,
+            "@media (-ms-high-contrast:active)": {
+                background: "Highlight",
+                color: "HighlightText",
+                fill: "HighlightText"
+            }
         },
         "&:active": {
             background: neutralFillStealthActive,
         },
+        "@media (-ms-high-contrast:active)": {
+            border: "none",
+            background: "ButtonFace",
+            color: "ButtonText",
+            "-ms-high-contrast-adjust": "none",
+        }
     },
     contextMenuItem_contentRegion: {
         gridColumnStart: "2",
@@ -59,9 +70,14 @@ const styles: ComponentStyles<ContextMenuItemClassNameContract, DesignSystem> = 
         ...applyDisabledState(),
         "@media (-ms-high-contrast:active)": {
             opacity: "1",
-            borderColor: "GrayText",
+            background: "Background",
             color: "GrayText",
-            fill: "GrayText"
+            fill: "GrayText",
+            "&:hover": {
+                background: "Background",
+                color: "GrayText",
+                fill: "GrayText",
+            },
         }
     },
 };

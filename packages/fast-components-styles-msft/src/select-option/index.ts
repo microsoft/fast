@@ -46,7 +46,18 @@ const styles: ComponentStyles<SelectOptionClassNameContract, DesignSystem> = {
         }),
         "&:hover": {
             background: neutralFillStealthHover,
+            "@media (-ms-high-contrast:active)": {
+                background: "Highlight",
+                color: "HighlightText",
+                fill: "HighlightText"
+            }
         },
+        "@media (-ms-high-contrast:active)": {
+            border: "none",
+            background: "ButtonFace",
+            color: "ButtonText",
+            "-ms-high-contrast-adjust": "none",
+        }
     },
     selectOption_contentRegion: {
         overflow: "hidden",
@@ -78,7 +89,17 @@ const styles: ComponentStyles<SelectOptionClassNameContract, DesignSystem> = {
         background: neutralFillStealthSelected,
         "&:hover": {
             background: neutralFillStealthSelected,
+            "@media (-ms-high-contrast:active)": {
+                background: "Highlight",
+                color: "HighlightText",
+                fill: "HighlightText"
+            }
         },
+        "@media (-ms-high-contrast:active)": {
+            background: "Highlight",
+            color: "HighlightText",
+            fill: "HighlightText"
+        }
     },
 };
 

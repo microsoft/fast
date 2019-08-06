@@ -8,6 +8,9 @@ const styles: ComponentStyles<TextFieldClassNameContract, DesignSystem> = {
     textField: {
         ...inputFieldStyles(),
         height: height(),
+        "@media (-ms-high-contrast:active)": {
+            color: "ButtonText"
+        }
     },
     textField__filled: {
         ...filledInputFieldStyles(),

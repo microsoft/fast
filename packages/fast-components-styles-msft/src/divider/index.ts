@@ -17,6 +17,12 @@ const styles: ComponentStyles<DividerClassNameContract, DesignSystem> = {
             neutralDividerRest
         ),
         transition: "all 0.2s ease-in-out",
+        "@media (-ms-high-contrast:active)": {
+            borderTop: format<DesignSystem>(
+                "{0} solid ButtonText",
+                toPx(outlineWidth)
+            ),
+        }
     },
 };
 

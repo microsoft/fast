@@ -3,8 +3,8 @@ import { TextAreaClassNameContract } from "@microsoft/fast-components-class-name
 import { ComponentStyles, ComponentStyleSheet } from "@microsoft/fast-jss-manager";
 import { height } from "../utilities/density";
 import { inputFieldStyles } from "../patterns/input-field";
-import { multiply, toPx } from "@microsoft/fast-jss-utilities";
-import { designUnit } from "../utilities/design-system";
+import { format, multiply, toPx } from "@microsoft/fast-jss-utilities";
+import { designUnit, outlineWidth } from "../utilities/design-system";
 
 const styles: ComponentStyles<TextAreaClassNameContract, DesignSystem> = {
     textArea: {
@@ -13,6 +13,12 @@ const styles: ComponentStyles<TextAreaClassNameContract, DesignSystem> = {
         paddingTop: toPx(multiply(designUnit, 1.5)),
         paddingBottom: toPx(multiply(designUnit, 1.5)),
         maxWidth: "100%",
+        "@media (-ms-high-contrast:active)": {
+            border: format(
+                "{0} solid ButtonText",
+                toPx<DesignSystem>(outlineWidth)
+            ),
+        },
         "&:disabled": {
             "@media (-ms-high-contrast:active)": {
                 background: "Background",
