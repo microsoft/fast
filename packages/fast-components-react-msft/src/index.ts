@@ -17,6 +17,7 @@ export * from "./context-menu-item";
 export * from "./dialog";
 export * from "./divider";
 export * from "./flipper";
+export * from "./flyout";
 export * from "./heading";
 export * from "./hypertext";
 export * from "./image";
