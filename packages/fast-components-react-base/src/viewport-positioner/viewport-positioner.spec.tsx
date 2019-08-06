@@ -1204,9 +1204,9 @@ describe("viewport positioner", (): void => {
         // test bottom right
         positioner.instance().baseHorizontalOffset = 0;
         positioner.instance().baseVerticalOffset = 0;
-        positioner.instance().setState({ 
+        positioner.instance().setState({
             currentHorizontalPosition: ViewportPositionerHorizontalPositionLabel.right,
-            currentVerticalPosition: ViewportPositionerVerticalPositionLabel.bottom
+            currentVerticalPosition: ViewportPositionerVerticalPositionLabel.bottom,
         });
         expect(positioner.instance().state.currentHorizontalPosition).toBe(
             ViewportPositionerHorizontalPositionLabel.right
@@ -1221,9 +1221,10 @@ describe("viewport positioner", (): void => {
         // test inset bottom right
         positioner.instance().baseHorizontalOffset = 0;
         positioner.instance().baseVerticalOffset = 0;
-        positioner.instance().setState({ 
-            currentHorizontalPosition: ViewportPositionerHorizontalPositionLabel.insetRight,
-            currentVerticalPosition: ViewportPositionerVerticalPositionLabel.insetBottom
+        positioner.instance().setState({
+            currentHorizontalPosition:
+                ViewportPositionerHorizontalPositionLabel.insetRight,
+            currentVerticalPosition: ViewportPositionerVerticalPositionLabel.insetBottom,
         });
         expect(positioner.instance().state.currentHorizontalPosition).toBe(
             ViewportPositionerHorizontalPositionLabel.insetRight
@@ -1238,9 +1239,9 @@ describe("viewport positioner", (): void => {
         // test top left
         positioner.instance().baseHorizontalOffset = 0;
         positioner.instance().baseVerticalOffset = 0;
-        positioner.instance().setState({ 
+        positioner.instance().setState({
             currentHorizontalPosition: ViewportPositionerHorizontalPositionLabel.left,
-            currentVerticalPosition: ViewportPositionerVerticalPositionLabel.top
+            currentVerticalPosition: ViewportPositionerVerticalPositionLabel.top,
         });
         expect(positioner.instance().state.currentHorizontalPosition).toBe(
             ViewportPositionerHorizontalPositionLabel.left
@@ -1255,9 +1256,10 @@ describe("viewport positioner", (): void => {
         // test inset top left
         positioner.instance().baseHorizontalOffset = 0;
         positioner.instance().baseVerticalOffset = 0;
-        positioner.instance().setState({ 
-            currentHorizontalPosition: ViewportPositionerHorizontalPositionLabel.insetLeft,
-            currentVerticalPosition: ViewportPositionerVerticalPositionLabel.insetTop
+        positioner.instance().setState({
+            currentHorizontalPosition:
+                ViewportPositionerHorizontalPositionLabel.insetLeft,
+            currentVerticalPosition: ViewportPositionerVerticalPositionLabel.insetTop,
         });
         expect(positioner.instance().state.currentHorizontalPosition).toBe(
             ViewportPositionerHorizontalPositionLabel.insetLeft

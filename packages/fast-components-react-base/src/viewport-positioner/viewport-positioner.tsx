@@ -64,7 +64,6 @@ export interface ViewportPositionerState {
      */
     initialLayoutComplete: boolean;
 
-    
     /**
      * how many checks for a valid viewport before we give up
      * this is primarily because during the initial layout pass
@@ -206,10 +205,10 @@ class ViewportPositioner extends Foundation<
     }
 
     public componentDidUpdate(prevProps: ViewportPositionerProps): void {
-        if(
+        if (
             prevProps.disabled !== this.props.disabled ||
             this.state.validRefChecksRemaining > 0
-        ){
+        ) {
             this.updateDisabledState();
         }
     }
@@ -369,19 +368,13 @@ class ViewportPositioner extends Foundation<
      *  Checks whether component should be disabled or not
      */
     private updateDisabledState = (): void => {
-        if (
-            !canUseDOM() ||
-            this.props.disabled === true
-        ) {
+        if (!canUseDOM() || this.props.disabled === true) {
             this.disable();
             return;
         }
 
-        if (
-            this.getAnchorElement() === null ||
-            this.getViewportElement() === null
-        ){
-            if(this.state.validRefChecksRemaining > 0){
+        if (this.getAnchorElement() === null || this.getViewportElement() === null) {
+            if (this.state.validRefChecksRemaining > 0) {
                 this.setState({
                     validRefChecksRemaining: this.state.validRefChecksRemaining - 1,
                 });
@@ -480,7 +473,7 @@ class ViewportPositioner extends Foundation<
             disabled: true,
             validRefChecksRemaining: 0,
         });
-       
+
         if (
             this.collisionDetector &&
             typeof this.collisionDetector.disconnect === "function"
@@ -496,17 +489,14 @@ class ViewportPositioner extends Foundation<
         // Revisit usage once Safari and Firefox adapt
         // https://bugzilla.mozilla.org/show_bug.cgi?id=1272409
         // https://bugs.webkit.org/show_bug.cgi?id=157743
-        if (
-            this.resizeDetector &&
-            typeof this.resizeDetector.disconnect === "function"
-        ) {
+        if (this.resizeDetector && typeof this.resizeDetector.disconnect === "function") {
             this.resizeDetector.unobserve(this.getAnchorElement());
             this.resizeDetector.disconnect();
             this.resizeDetector = null;
         }
-        
+
         const viewPortElement: HTMLElement = this.getViewportElement();
-        if (!isNil(viewPortElement)){
+        if (!isNil(viewPortElement)) {
             viewPortElement.removeEventListener("scroll", this.handleScroll);
         }
     };
