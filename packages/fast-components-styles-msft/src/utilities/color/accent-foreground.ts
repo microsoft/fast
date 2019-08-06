@@ -4,7 +4,6 @@ import {
     findSwatchIndex,
     getSwatch,
     isDarkMode,
-    palette,
     Palette,
     PaletteType,
     swatchByContrast,
@@ -23,6 +22,7 @@ import {
     accentForegroundActiveDelta,
     accentForegroundHoverDelta,
     accentForegroundRestDelta,
+    accentPalette,
     backgroundColor,
 } from "../design-system";
 
@@ -30,10 +30,7 @@ function accentForegroundAlgorithm(
     contrastTarget: number
 ): DesignSystemResolver<SwatchFamily> {
     return (designSystem: DesignSystem): SwatchFamily => {
-        const accentPalette: Palette = palette(PaletteType.accent)(designSystem);
-        const paletteLength: number = accentPalette.length;
-        const maxIndex: number = paletteLength - 1;
-
+        const palette: Palette = accentPalette(designSystem);
         const accent: Swatch = accentBaseColor(designSystem);
         const accentIndex: number = findClosestSwatchIndex(PaletteType.accent, accent)(
             designSystem
@@ -56,7 +53,7 @@ function accentForegroundAlgorithm(
         const accessibleSwatch: Swatch = swatchByContrast(
             backgroundColor // Compare swatches against the background
         )(
-            palette(PaletteType.accent) // Use the accent palette
+            accentPalette // Use the accent palette
         )(
             () => startIndex // Begin searching based on accent index, direction, and deltas
         )(
@@ -90,9 +87,9 @@ function accentForegroundAlgorithm(
         const activeIndex: number = restIndex + direction * stateDeltas.active;
 
         return {
-            rest: getSwatch(restIndex, accentPalette),
-            hover: getSwatch(hoverIndex, accentPalette),
-            active: getSwatch(activeIndex, accentPalette),
+            rest: getSwatch(restIndex, palette),
+            hover: getSwatch(hoverIndex, palette),
+            active: getSwatch(activeIndex, palette),
         };
     };
 }

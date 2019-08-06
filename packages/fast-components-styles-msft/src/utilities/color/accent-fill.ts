@@ -5,6 +5,7 @@ import {
     accentFillHoverDelta,
     accentFillRestDelta,
     accentFillSelectedDelta,
+    accentPalette,
     neutralFillActiveDelta,
     neutralFillHoverDelta,
     neutralFillRestDelta,
@@ -27,8 +28,7 @@ import {
     getSwatch,
     isDarkMode,
     Palette,
-    palette,
-    PaletteType,
+    PaletteType
 } from "./palette";
 import { inRange } from "lodash-es";
 
@@ -42,7 +42,7 @@ function accentFillAlgorithm(
     contrastTarget: number
 ): DesignSystemResolver<FillSwatchFamily> {
     return (designSystem: DesignSystem): FillSwatchFamily => {
-        const accentPalette: Palette = palette(PaletteType.accent)(designSystem);
+        const palette: Palette = accentPalette(designSystem);
         const accent: Swatch = accentBaseColor(designSystem);
         const textColor: Swatch = accentForegroundCut(
             Object.assign({}, designSystem, {
@@ -61,7 +61,7 @@ function accentFillAlgorithm(
         const swapThreshold: number = neutralFillThreshold(designSystem);
         const direction: 1 | -1 = backgroundIndex >= swapThreshold ? -1 : 1;
 
-        const paletteLength: number = accentPalette.length;
+        const paletteLength: number = palette.length;
         const maxIndex: number = paletteLength - 1;
         const accentIndex: number = findClosestSwatchIndex(PaletteType.accent, accent)(
             designSystem
@@ -74,7 +74,7 @@ function accentFillAlgorithm(
             accessibleOffset < direction * stateDeltas.hover &&
             inRange(accentIndex + accessibleOffset + direction, 0, paletteLength) &&
             contrast(
-                accentPalette[accentIndex + accessibleOffset + direction],
+                palette[accentIndex + accessibleOffset + direction],
                 textColor
             ) >= contrastTarget &&
             inRange(accentIndex + accessibleOffset + direction + direction, 0, maxIndex)
@@ -87,15 +87,15 @@ function accentFillAlgorithm(
         const activeIndex: number = restIndex + direction * stateDeltas.active;
 
         return {
-            rest: getSwatch(restIndex, accentPalette),
-            hover: getSwatch(hoverIndex, accentPalette),
-            active: getSwatch(activeIndex, accentPalette),
+            rest: getSwatch(restIndex, palette),
+            hover: getSwatch(hoverIndex, palette),
+            active: getSwatch(activeIndex, palette),
             selected: getSwatch(
                 restIndex +
                     (isDarkMode(designSystem)
                         ? accentFillSelectedDelta(designSystem) * -1
                         : accentFillSelectedDelta(designSystem)),
-                accentPalette
+                palette
             ),
         };
     };

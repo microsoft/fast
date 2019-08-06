@@ -3,9 +3,6 @@ import {
     findClosestBackgroundIndex,
     getSwatch,
     isDarkMode,
-    palette,
-    Palette,
-    PaletteType,
 } from "./palette";
 import {
     ColorRecipe,
@@ -20,12 +17,13 @@ import {
     neutralOutlineActiveDelta,
     neutralOutlineHoverDelta,
     neutralOutlineRestDelta,
+    neutralPalette
 } from "../design-system";
 
 const neutralOutlineAlgorithm: SwatchFamilyResolver = (
     designSystem: DesignSystem
 ): SwatchFamily => {
-    const neutralPalette: Palette = palette(PaletteType.neutral)(designSystem);
+    const palette: string[] = neutralPalette(designSystem);
     const backgroundIndex: number = findClosestBackgroundIndex(designSystem);
     const direction: 1 | -1 = isDarkMode(designSystem) ? -1 : 1;
 
@@ -37,9 +35,9 @@ const neutralOutlineAlgorithm: SwatchFamilyResolver = (
     const activeIndex: number = restIndex + direction * (activeDelta - restDelta);
 
     return {
-        rest: getSwatch(restIndex, neutralPalette),
-        hover: getSwatch(hoverIndex, neutralPalette),
-        active: getSwatch(activeIndex, neutralPalette),
+        rest: getSwatch(restIndex, palette),
+        hover: getSwatch(hoverIndex, palette),
+        active: getSwatch(activeIndex, palette),
     };
 };
 

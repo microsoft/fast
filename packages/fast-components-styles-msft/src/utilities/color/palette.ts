@@ -104,7 +104,7 @@ export function findClosestSwatchIndex(
             luminance: number;
             index: number;
         }
-
+        
         return palette(paletteType)(designSystem)
             .map(
                 (mappedSwatch: Swatch, mappedIndex: number): LuminanceMap => {
