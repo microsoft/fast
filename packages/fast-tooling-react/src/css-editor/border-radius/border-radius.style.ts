@@ -2,9 +2,9 @@ import { ComponentStyles } from "@microsoft/fast-jss-manager-react";
 import {
     applyControlRegion,
     applyControlWrapper,
+    applyInputBackplateStyle,
     applyInputStyle,
     applyLabelStyle,
-    applyInputBackplateStyle,
 } from "../../style";
 
 export interface CSSBorderRadiusClassNameContract {
