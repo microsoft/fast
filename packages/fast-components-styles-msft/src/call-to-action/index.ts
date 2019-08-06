@@ -151,6 +151,11 @@ const styles: ComponentStyles<CallToActionClassNameContract, DesignSystem> = {
                 transform: "none",
             },
         },
+        "& $callToAction_glyph": {
+            "@media (-ms-high-contrast:active)": {
+                fill: "GrayText",
+            },
+        },
     },
 };
 

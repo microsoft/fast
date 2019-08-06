@@ -57,6 +57,12 @@ const styles: ComponentStyles<ContextMenuItemClassNameContract, DesignSystem> = 
     },
     contextMenuItem__disabled: {
         ...applyDisabledState(),
+        "@media (-ms-high-contrast:active)": {
+            opacity: "1",
+            borderColor: "GrayText",
+            color: "GrayText",
+            fill: "GrayText"
+        }
     },
 };
 

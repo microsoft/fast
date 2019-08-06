@@ -55,6 +55,9 @@ const styles: ComponentStyles<ActionToggleClassNameContract, DesignSystem> = {
         },
         "&$actionToggle__disabled $actionToggle_selectedGlyph, &$actionToggle__disabled $actionToggle_unselectedGlyph": {
             fill: accentForegroundCut,
+            "@media (-ms-high-contrast:active)": {
+                fill: "GrayText",
+            }
         },
     },
     actionToggle__lightweight: {
@@ -73,6 +76,9 @@ const styles: ComponentStyles<ActionToggleClassNameContract, DesignSystem> = {
         },
         "&$actionToggle__disabled $actionToggle_selectedGlyph, &$actionToggle__disabled $actionToggle_unselectedGlyph": {
             fill: accentForegroundRest,
+            "@media (-ms-high-contrast:active)": {
+                fill: "GrayText",
+            }
         },
     },
     actionToggle__justified: {
@@ -90,6 +96,9 @@ const styles: ComponentStyles<ActionToggleClassNameContract, DesignSystem> = {
             },
             "&$actionToggle__disabled $actionToggle_selectedGlyph, &$actionToggle__disabled $actionToggle_unselectedGlyph": {
                 fill: neutralForegroundRest,
+                "@media (-ms-high-contrast:active)": {
+                    fill: "GrayText",
+                }
             },
         },
         actionToggle__disabled: {},
@@ -100,6 +109,9 @@ const styles: ComponentStyles<ActionToggleClassNameContract, DesignSystem> = {
         },
         "&$actionToggle__disabled $actionToggle_selectedGlyph, &$actionToggle__disabled $actionToggle_unselectedGlyph": {
             fill: accentForegroundRest,
+            "@media (-ms-high-contrast:active)": {
+                fill: "GrayText",
+            }
         },
     },
     actionToggle__outline: {
@@ -108,6 +120,9 @@ const styles: ComponentStyles<ActionToggleClassNameContract, DesignSystem> = {
         },
         "&$actionToggle__disabled $actionToggle_selectedGlyph, &$actionToggle__disabled $actionToggle_unselectedGlyph": {
             fill: neutralForegroundRest,
+            "@media (-ms-high-contrast:active)": {
+                fill: "GrayText",
+            }
         },
     },
     actionToggle__disabled: {},

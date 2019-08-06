@@ -117,6 +117,10 @@ const styles: ComponentStyles<RadioClassNameContract, DesignSystem> = {
         ...applyDisabledState(),
         "& $radio_input, & $radio_label": {
             ...applyCursorDisabled(),
+            "@media (-ms-high-contrast:active)": {
+                borderColor: "GrayText",
+                color: "GrayText"
+            },
         },
     },
 };

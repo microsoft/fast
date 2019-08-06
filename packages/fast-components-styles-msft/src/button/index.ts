@@ -226,6 +226,9 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = {
         ...applyDisabledState(),
         "& $button_beforeContent, & $button_afterContent": {
             fill: "ButtonHighlight",
+            "@media (-ms-high-contrast:active)": {
+                fill: "GrayText",
+            }
         },
     },
     button_beforeContent: {

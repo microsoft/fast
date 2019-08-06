@@ -63,7 +63,16 @@ const styles: ComponentStyles<AutoSuggestOptionClassNameContract, DesignSystem> 
         ...applyDisabledState(),
         "&:hover": {
             background: neutralFillStealthRest,
+            "@media (-ms-high-contrast:active)": {
+                background: "transparent",
+                color: "GrayText",
+            }
         },
+        "@media (-ms-high-contrast:active)": {
+            opacity: "1",
+            background: "transparent",
+            color: "GrayText",
+        }
     },
     autoSuggestOption__selected: {
         background: neutralFillStealthSelected,

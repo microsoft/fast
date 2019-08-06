@@ -60,6 +60,11 @@ export const baseButton: ComponentStyles<ButtonBaseClassNameContract, DesignSyst
     },
     button__disabled: {
         ...applyDisabledState(),
+        "& $button_beforeContent, & $button_afterContent": {
+            "@media (-ms-high-contrast:active)": {
+                fill: "GrayText"
+            },
+        }
     },
     button_beforeContent: {
         width: glyphSize,

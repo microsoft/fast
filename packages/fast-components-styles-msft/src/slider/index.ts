@@ -107,7 +107,15 @@ const styles: ComponentStyles<SliderClassNameContract, DesignSystem> = {
             "&:active": {
                 background: neutralForegroundRest,
             },
+            "@media (-ms-high-contrast:active)": {
+                background: "GrayText",
+            },
         },
+        "& $slider_backgroundTrack": {
+            "@media (-ms-high-contrast:active)": {
+                background: "GrayText",
+            },
+        }
     },
     slider__horizontal: {
         "&$slider": {

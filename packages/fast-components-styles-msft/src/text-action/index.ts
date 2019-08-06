@@ -111,6 +111,9 @@ const styles: ComponentStyles<TextActionClassNameContract, DesignSystem> = {
             background: neutralFillInputRest,
             borderColor: neutralOutlineRest,
         },
+        "& $textAction_beforeGlyph, & $textAction_afterGlyph": {
+            fill: "GrayText"
+        }
     },
     textAction_button: {
         borderColor: "transparent",

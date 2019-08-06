@@ -13,6 +13,12 @@ const styles: ComponentStyles<TextAreaClassNameContract, DesignSystem> = {
         paddingTop: toPx(multiply(designUnit, 1.5)),
         paddingBottom: toPx(multiply(designUnit, 1.5)),
         maxWidth: "100%",
+        "&:disabled": {
+            "@media (-ms-high-contrast:active)": {
+                background: "Background",
+                borderColor: "GrayText"
+            }
+        }
     },
 };
 

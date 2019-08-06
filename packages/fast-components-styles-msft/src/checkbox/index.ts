@@ -143,6 +143,10 @@ const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = {
         ...applyDisabledState(),
         "& $checkbox_input, & $checkbox_label": {
             ...applyCursorDisabled(),
+            "@media (-ms-high-contrast:active)": {
+                borderColor: "GrayText",
+                color: "GrayText",
+            },
         },
     },
 };

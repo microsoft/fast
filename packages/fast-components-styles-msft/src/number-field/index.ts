@@ -18,6 +18,12 @@ const styles: ComponentStyles<NumberFieldClassNameContract, DesignSystem> = {
             format("0 6px 0 {0}", horizontalSpacing()),
             format("0 {0} 0 6px", horizontalSpacing())
         ),
+        "&:disabled": {
+            "@media (-ms-high-contrast:active)": {
+                background: "Background",
+                borderColor: "GrayText"
+            }
+        }
     },
 };
 

@@ -67,6 +67,11 @@ const styles: ComponentStyles<SelectOptionClassNameContract, DesignSystem> = {
         ...applyDisabledState(),
         "&, &:hover": {
             background: neutralFillStealthRest,
+            "@media (-ms-high-contrast:active)": {
+                borderColor: "GrayText",
+                color: "GrayText",
+                fill: "GrayText"
+            }
         },
     },
     selectOption__selected: {

@@ -45,6 +45,9 @@ const styles: ComponentStyles<ActionTriggerClassNameContract, DesignSystem> = {
         },
         "&$actionTrigger__disabled $actionTrigger_glyph": {
             fill: accentForegroundCut,
+            "@media (-ms-high-contrast:active)": {
+                fill: "GrayText",
+            }
         },
     },
     actionTrigger__lightweight: {
@@ -63,6 +66,9 @@ const styles: ComponentStyles<ActionTriggerClassNameContract, DesignSystem> = {
         },
         "&$actionTrigger__disabled $actionTrigger_glyph": {
             fill: accentForegroundRest,
+            "@media (-ms-high-contrast:active)": {
+                fill: "GrayText",
+            }
         },
     },
     actionTrigger__justified: {
@@ -81,6 +87,9 @@ const styles: ComponentStyles<ActionTriggerClassNameContract, DesignSystem> = {
         },
         "&$actionTrigger__disabled $actionTrigger_glyph": {
             fill: accentForegroundRest,
+            "@media (-ms-high-contrast:active)": {
+                fill: "GrayText",
+            }
         },
     },
     actionTrigger__outline: {
@@ -89,6 +98,9 @@ const styles: ComponentStyles<ActionTriggerClassNameContract, DesignSystem> = {
         },
         "&$actionTrigger__disabled $actionTrigger_glyph": {
             fill: neutralForegroundRest,
+            "@media (-ms-high-contrast:active)": {
+                fill: "GrayText",
+            }
         },
     },
     actionTrigger__stealth: {
@@ -97,9 +109,18 @@ const styles: ComponentStyles<ActionTriggerClassNameContract, DesignSystem> = {
         },
         "&$actionTrigger__disabled $actionTrigger_glyph": {
             fill: neutralForegroundRest,
+            "@media (-ms-high-contrast:active)": {
+                fill: "GrayText",
+            }
         },
     },
-    actionTrigger__disabled: {},
+    actionTrigger__disabled: {
+        "& $actionTrigger_glyph": {
+            "@media (-ms-high-contrast:active)": {
+                fill: "GrayText",
+            }
+        }
+    },
     actionTrigger__hasGlyphAndContent: {
         "& $actionTrigger_glyph": {
             marginRight: directionSwitch(horizontalSpacing(), ""),
