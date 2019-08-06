@@ -52,6 +52,16 @@ const styles: ComponentStyles<ActionToggleClassNameContract, DesignSystem> = {
     actionToggle__primary: {
         "& $actionToggle_selectedGlyph, & $actionToggle_unselectedGlyph": {
             fill: accentForegroundCut,
+            "@media (-ms-high-contrast:active)": {
+                fill: "ButtonText"
+            }
+        },
+        "&:hover": {
+            "& $actionToggle_selectedGlyph, & $actionToggle_unselectedGlyph": {
+                "@media (-ms-high-contrast:active)": {
+                    fill: "HighlightText"
+                }
+            },
         },
         "&$actionToggle__disabled $actionToggle_selectedGlyph, &$actionToggle__disabled $actionToggle_unselectedGlyph": {
             fill: accentForegroundCut,
@@ -63,6 +73,9 @@ const styles: ComponentStyles<ActionToggleClassNameContract, DesignSystem> = {
     actionToggle__lightweight: {
         "& $actionToggle_selectedGlyph, & $actionToggle_unselectedGlyph": {
             fill: accentForegroundRest,
+            "@media (-ms-high-contrast:active)": {
+                fill: "ButtonText"
+            }
         },
         "&:hover": {
             "& $actionToggle_selectedGlyph, & $actionToggle_unselectedGlyph": {
@@ -117,6 +130,13 @@ const styles: ComponentStyles<ActionToggleClassNameContract, DesignSystem> = {
     actionToggle__outline: {
         "& $actionToggle_selectedGlyph, & $actionToggle_unselectedGlyph": {
             fill: neutralForegroundRest,
+        },
+        "&:hover": {
+            "& $actionToggle_selectedGlyph, & $actionToggle_unselectedGlyph": {
+                "@media (-ms-high-contrast:active)": {
+                    fill: "HighlightText"
+                }
+            },
         },
         "&$actionToggle__disabled $actionToggle_selectedGlyph, &$actionToggle__disabled $actionToggle_unselectedGlyph": {
             fill: neutralForegroundRest,
