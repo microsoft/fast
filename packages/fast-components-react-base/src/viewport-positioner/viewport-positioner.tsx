@@ -392,8 +392,8 @@ class ViewportPositioner extends Foundation<
         if (
             !this.state.disabled ||
             this.props.disabled ||
-            this.getAnchorElement() === null ||
-            this.getViewportElement() === null ||
+            isNil(this.getAnchorElement()) ||
+            isNil(this.getViewportElement()) ||
             isNil(this.rootElement.current)
         ) {
             return;
@@ -1112,7 +1112,10 @@ class ViewportPositioner extends Foundation<
      */
     private getViewportElement = (): HTMLElement => {
         if (isNil(this.props.viewport)) {
-            return document.scrollingElement as HTMLElement;
+            if (document.scrollingElement instanceof HTMLElement) {
+                return document.scrollingElement as HTMLElement;
+            } 
+            return null;
         }
 
         if (this.props.viewport instanceof HTMLElement) {
