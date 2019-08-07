@@ -3,7 +3,7 @@ import {
     backgroundColor,
     neutralForegroundActiveDelta,
     neutralForegroundHoverDelta,
-    neutralPalette
+    neutralPalette,
 } from "../design-system";
 import {
     colorRecipeFactory,

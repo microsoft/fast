@@ -1,9 +1,5 @@
 import { DesignSystem, DesignSystemResolver } from "../../design-system";
-import {
-    findClosestBackgroundIndex,
-    getSwatch,
-    isDarkMode,
-} from "./palette";
+import { findClosestBackgroundIndex, getSwatch, isDarkMode } from "./palette";
 import {
     ColorRecipe,
     colorRecipeFactory,
@@ -16,7 +12,7 @@ import {
     neutralFillInputHoverDelta,
     neutralFillInputRestDelta,
     neutralFillInputSelectedDelta,
-    neutralPalette
+    neutralPalette,
 } from "../design-system";
 
 /**
@@ -30,7 +26,7 @@ function neutralFillInputAlgorithm(
         return getSwatch(
             findClosestBackgroundIndex(designSystem) -
                 indexResolver(designSystem) * direction,
-                neutralPalette(designSystem)
+            neutralPalette(designSystem)
         );
     };
 }

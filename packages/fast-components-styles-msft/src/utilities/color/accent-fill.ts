@@ -66,10 +66,8 @@ function accentFillAlgorithm(
         while (
             accessibleOffset < direction * hoverDelta &&
             inRange(accentIndex + accessibleOffset + direction, 0, paletteLength) &&
-            contrast(
-                palette[accentIndex + accessibleOffset + direction],
-                textColor
-            ) >= contrastTarget &&
+            contrast(palette[accentIndex + accessibleOffset + direction], textColor) >=
+                contrastTarget &&
             inRange(accentIndex + accessibleOffset + direction + direction, 0, maxIndex)
         ) {
             accessibleOffset += direction;
@@ -77,7 +75,8 @@ function accentFillAlgorithm(
 
         const hoverIndex: number = accentIndex + accessibleOffset;
         const restIndex: number = hoverIndex + direction * -1 * hoverDelta;
-        const activeIndex: number = restIndex + direction * accentFillActiveDelta(designSystem);
+        const activeIndex: number =
+            restIndex + direction * accentFillActiveDelta(designSystem);
 
         return {
             rest: getSwatch(restIndex, palette),

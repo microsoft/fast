@@ -10,7 +10,7 @@ import {
 } from "./palette";
 import designSystemDefaults, { DesignSystem } from "../../design-system";
 import { Swatch } from "./common";
-import { accentBaseColor, accentPalette, neutralPalette, } from "../design-system";
+import { accentBaseColor, accentPalette, neutralPalette } from "../design-system";
 
 describe("palette", (): void => {
     test("should return a function", (): void => {
@@ -69,35 +69,21 @@ describe("findSwatchIndex", (): void => {
     });
 
     test("should return -1 if the color is not found", (): void => {
-        expect(
-            findSwatchIndex(neutralPalette, "#FF0000")(designSystemDefaults)
-        ).toBe(-1);
-        expect(findSwatchIndex(accentPalette, "#FF0000")(designSystemDefaults)).toBe(
-            -1
-        );
+        expect(findSwatchIndex(neutralPalette, "#FF0000")(designSystemDefaults)).toBe(-1);
+        expect(findSwatchIndex(accentPalette, "#FF0000")(designSystemDefaults)).toBe(-1);
     });
 
     test("should find white", (): void => {
+        expect(findSwatchIndex(neutralPalette, "#FFFFFF")(designSystemDefaults)).toBe(0);
+        expect(findSwatchIndex(neutralPalette, "#FFF")(designSystemDefaults)).toBe(0);
         expect(
-            findSwatchIndex(neutralPalette, "#FFFFFF")(designSystemDefaults)
-        ).toBe(0);
-        expect(findSwatchIndex(neutralPalette, "#FFF")(designSystemDefaults)).toBe(
-            0
-        );
-        expect(
-            findSwatchIndex(neutralPalette, "rgb(255, 255, 255)")(
-                designSystemDefaults
-            )
+            findSwatchIndex(neutralPalette, "rgb(255, 255, 255)")(designSystemDefaults)
         ).toBe(0);
     });
 
     test("should find black", (): void => {
-        expect(
-            findSwatchIndex(neutralPalette, "#000000")(designSystemDefaults)
-        ).toBe(93);
-        expect(findSwatchIndex(neutralPalette, "#000")(designSystemDefaults)).toBe(
-            93
-        );
+        expect(findSwatchIndex(neutralPalette, "#000000")(designSystemDefaults)).toBe(93);
+        expect(findSwatchIndex(neutralPalette, "#000")(designSystemDefaults)).toBe(93);
         expect(
             findSwatchIndex(neutralPalette, "rgb(0, 0, 0)")(designSystemDefaults)
         ).toBe(93);

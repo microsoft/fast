@@ -64,10 +64,9 @@ function accentForegroundAlgorithm(
         );
 
         // One of these will be rest, the other will be hover. Depends on the offsets and the direction.
-        const accessibleIndex1: number = findSwatchIndex(
-            accentPalette,
-            accessibleSwatch
-        )(designSystem);
+        const accessibleIndex1: number = findSwatchIndex(accentPalette, accessibleSwatch)(
+            designSystem
+        );
         const accessibleIndex2: number =
             accessibleIndex1 + direction * Math.abs(stateDeltas.rest - stateDeltas.hover);
 

@@ -1,9 +1,5 @@
 import { DesignSystem } from "../../design-system";
-import {
-    findClosestBackgroundIndex,
-    getSwatch,
-    isDarkMode,
-} from "./palette";
+import { findClosestBackgroundIndex, getSwatch, isDarkMode } from "./palette";
 import {
     ColorRecipe,
     colorRecipeFactory,
@@ -17,7 +13,7 @@ import {
     neutralOutlineActiveDelta,
     neutralOutlineHoverDelta,
     neutralOutlineRestDelta,
-    neutralPalette
+    neutralPalette,
 } from "../design-system";
 
 const neutralOutlineAlgorithm: SwatchFamilyResolver = (

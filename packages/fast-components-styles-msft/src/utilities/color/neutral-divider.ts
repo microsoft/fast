@@ -1,10 +1,6 @@
 import { DesignSystem } from "../../design-system";
 import { neutralDividerRestDelta, neutralPalette } from "../design-system";
-import {
-    findClosestBackgroundIndex,
-    getSwatch,
-    Palette,
-} from "./palette";
+import { findClosestBackgroundIndex, getSwatch, Palette } from "./palette";
 import { colorRecipeFactory, Swatch, SwatchRecipe, SwatchResolver } from "./common";
 
 const neutralDividerAlgorithm: SwatchResolver = (designSystem: DesignSystem): Swatch => {

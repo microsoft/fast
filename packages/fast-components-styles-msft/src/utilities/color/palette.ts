@@ -106,7 +106,7 @@ export function findClosestSwatchIndex(
             luminance: number;
             index: number;
         }
-        
+
         return paletteResolver(designSystem)
             .map(
                 (mappedSwatch: Swatch, mappedIndex: number): LuminanceMap => {
@@ -171,10 +171,7 @@ export function swatchByMode(
             const aEval: number =
                 typeof valueA === "function" ? valueA(designSystem) : valueA;
 
-            return getSwatch(
-                isDarkMode(designSystem) ? bEval: aEval,
-                currentPalette
-            )
+            return getSwatch(isDarkMode(designSystem) ? bEval : aEval, currentPalette);
         };
     };
 }

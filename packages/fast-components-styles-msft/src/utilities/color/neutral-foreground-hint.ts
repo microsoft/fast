@@ -1,10 +1,5 @@
 import { DesignSystem } from "../../design-system";
-import {
-    findClosestSwatchIndex,
-    isDarkMode,
-    Palette,
-    swatchByContrast,
-} from "./palette";
+import { findClosestSwatchIndex, isDarkMode, Palette, swatchByContrast } from "./palette";
 import { colorRecipeFactory, SwatchRecipe } from "./common";
 import { backgroundColor, neutralPalette } from "../design-system";
 
