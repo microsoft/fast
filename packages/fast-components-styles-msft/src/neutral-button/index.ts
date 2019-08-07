@@ -52,7 +52,7 @@ const styles: ComponentStyles<NeutralButtonClassNameContract, DesignSystem> = {
             border: "0",
         },
         "@media (-ms-high-contrast:active)": {
-            background: "Background",
+            background: "ButtonFace",
             borderColor: "ButtonText",
             fill: "ButtonText",
             "-ms-high-contrast-adjust": "none"
@@ -67,9 +67,20 @@ const styles: ComponentStyles<NeutralButtonClassNameContract, DesignSystem> = {
             },
             "&$button__disabled": {
                 "@media (-ms-high-contrast:active)": {
+                    background: "transparent",
                     borderColor: "GrayText",
                     color: "GrayText",
                 },
+                "&:hover": {
+                    background: "transparent",
+                    borderColor: "GrayText",
+                    color: "GrayText",
+                    "& $button_beforeContent, & $button_afterContent": {
+                        "@media (-ms-high-contrast:active)": {
+                            fill: "GrayText",
+                        },
+                    }
+                }
             }
         },
     },

@@ -172,8 +172,9 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = {
         "&:hover:enabled": {
             background: accentFillHover,
             "@media (-ms-high-contrast:active)": {
-                background: "Highlight",
-                color: "HighlightText",
+                background: "HighlightText",
+                borderColor: "Highlight",
+                color: "Highlight",
             }
         },
         "&:active:enabled": {
@@ -186,6 +187,13 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = {
                 toPx(focusOutlineWidth),
                 neutralFocusInnerAccent(accentFillRest)
             ),
+            "@media (-ms-high-contrast:active)": {
+                borderColor: "ButtonText",
+                boxShadow: format(
+                    "0 0 0 {0} inset ButtonFace",
+                    toPx(focusOutlineWidth)
+                ),
+            }
         }),
         "&:disabled": {
             "@media (-ms-high-contrast:active)": {
@@ -199,8 +207,9 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = {
             }
         },
         "@media (-ms-high-contrast:active)": {
-            background: "ButtonFace",
-            color: "ButtonText",
+            background: "Highlight",
+            borderColor: "Highlight",
+            color: "HighlightText",
             "-ms-high-contrast-adjust": "none"
         }
     },
@@ -241,6 +250,9 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = {
                 }
             ),
             borderColor: neutralFocus,
+            "@media (-ms-high-contrast:active)": {
+                borderColor: "2px solid ButtonText"
+            }
         }),
         "&:disabled": {
             "@media (-ms-high-contrast:active)": {
@@ -281,6 +293,9 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = {
         },
         ...applyFocusVisible<DesignSystem>({
             borderColor: neutralFocus,
+            "@media (-ms-high-contrast:active)": {
+                borderColor: "2px solid ButtonText"
+            }
         }),
         "@media (-ms-high-contrast:active)": {
             background: "Background",

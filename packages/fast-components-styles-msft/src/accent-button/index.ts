@@ -1,6 +1,6 @@
 import { ButtonBaseClassNameContract as AccentButtonClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import { ComponentStyles } from "@microsoft/fast-jss-manager";
-import { applyFocusVisible, format } from "@microsoft/fast-jss-utilities";
+import { applyFocusVisible, format, toPx } from "@microsoft/fast-jss-utilities";
 import { DesignSystem } from "../design-system";
 import { baseButton, buttonStyles } from "../patterns/button";
 import {
@@ -11,6 +11,7 @@ import {
     neutralFocus,
     neutralFocusInnerAccent,
 } from "../utilities/color";
+import { focusOutlineWidth } from "../utilities/design-system";
 
 const styles: ComponentStyles<AccentButtonClassNameContract, DesignSystem> = {
     ...baseButton,
@@ -22,12 +23,13 @@ const styles: ComponentStyles<AccentButtonClassNameContract, DesignSystem> = {
         "&:hover:enabled": {
             background: accentFillHover,
             "@media (-ms-high-contrast:active)": {
-                background: "Highlight",
-                color: "HighlightText",
+                background: "HighlightText",
+                borderColor: "Highlight",
+                color: "Highlight",
             },
             "& $button_beforeContent, & $button_afterContent": {
                 "@media (-ms-high-contrast:active)": {
-                    fill: "HighlightText",
+                    fill: "Highlight",
                 },
             },
         },
@@ -40,6 +42,13 @@ const styles: ComponentStyles<AccentButtonClassNameContract, DesignSystem> = {
                 "0 0 0 2px inset {0}",
                 neutralFocusInnerAccent(accentFillRest)
             ),
+            "@media (-ms-high-contrast:active)": {
+                borderColor: "ButtonText",
+                boxShadow: format(
+                    "0 0 0 {0} inset ButtonFace",
+                    toPx(focusOutlineWidth)
+                ),
+            }
         }),
         "&:disabled": {
             "@media (-ms-high-contrast:active)": {
@@ -56,13 +65,13 @@ const styles: ComponentStyles<AccentButtonClassNameContract, DesignSystem> = {
         "& $button_beforeContent, & $button_afterContent": {
             fill: accentForegroundCut,
             "@media (-ms-high-contrast:active)": {
-                fill: "ButtonText",
+                fill: "HighlightText",
             }
         },
         "@media (-ms-high-contrast:active)": {
-            background: "ButtonFace",
-            borderColor: "ButtonText",
-            color: "ButtonText",
+            background: "Highlight",
+            borderColor: "Highlight",
+            color: "HighlightText",
             "-ms-high-contrast-adjust": "none"
         },
         "a&": {
@@ -76,13 +85,26 @@ const styles: ComponentStyles<AccentButtonClassNameContract, DesignSystem> = {
             "&$button__disabled": {
                 "@media (-ms-high-contrast:active)": {
                     background: "transparent",
+                    borderColor: "GrayText",
                     color: "GrayText",
                 },
                 "& $button_beforeContent, & $button_afterContent": {
                     "@media (-ms-high-contrast:active)": {
                         fill: "GrayText",
                     },
-                }
+                },
+                "&:hover:enabled": {
+                    "@media (-ms-high-contrast:active)": {
+                        background: "transparent",
+                        borderColor: "GrayText",
+                        color: "GrayText",
+                    },
+                    "& $button_beforeContent, & $button_afterContent": {
+                        "@media (-ms-high-contrast:active)": {
+                            fill: "GrayText",
+                        },
+                    },
+                },
             },
         },
     },
