@@ -75,6 +75,12 @@ const styles: ComponentStyles<RadioClassNameContract, DesignSystem> = {
             boxShadow: format<DesignSystem>("0 0 0 1px {0} inset", neutralFocus),
             borderColor: neutralFocus,
         }),
+        "@media (-ms-high-contrast:active)": {
+            border: format(
+                "{0} solid ButtonText",
+                toPx<DesignSystem>(outlineWidth)
+            ),
+        },
     },
     radio_stateIndicator: {
         position: "relative",
@@ -102,6 +108,9 @@ const styles: ComponentStyles<RadioClassNameContract, DesignSystem> = {
         ...applyScaledTypeRamp("t7"),
         marginLeft: directionSwitch(horizontalSpacing(2), ""),
         marginRight: directionSwitch("", horizontalSpacing(2)),
+        "@media (-ms-high-contrast:active)": {
+            color: "ButtonText"
+        },
     },
     radio__checked: {
         "& $radio_stateIndicator": {

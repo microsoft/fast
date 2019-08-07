@@ -87,6 +87,12 @@ const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = {
             boxShadow: format<DesignSystem>("0 0 0 1px {0} inset", neutralFocus),
             borderColor: neutralFocus,
         }),
+        "@media (-ms-high-contrast:active)": {
+            border: format(
+                "{0} solid ButtonText",
+                toPx<DesignSystem>(outlineWidth)
+            ),
+        },
     },
     checkbox_stateIndicator: {
         position: "relative",
@@ -110,6 +116,9 @@ const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = {
         ...applyCursorPointer(),
         color: neutralForegroundRest,
         ...applyScaledTypeRamp("t7"),
+        "@media (-ms-high-contrast:active)": {
+            color: "ButtonText"
+        },
     },
     checkbox__checked: {
         "& $checkbox_stateIndicator": {
