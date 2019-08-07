@@ -1114,7 +1114,7 @@ class ViewportPositioner extends Foundation<
         if (isNil(this.props.viewport)) {
             if (document.scrollingElement instanceof HTMLElement) {
                 return document.scrollingElement as HTMLElement;
-            } 
+            }
             return null;
         }
 
