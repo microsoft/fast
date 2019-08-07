@@ -272,6 +272,10 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = {
         background: neutralFillStealthRest,
         "&:hover:enabled": {
             backgroundColor: neutralFillStealthHover,
+            "@media (-ms-high-contrast:active)": {
+                background: "Highlight",
+                color: "HighlightText",
+            }
         },
         "&:active:enabled": {
             backgroundColor: neutralFillStealthActive,
@@ -279,6 +283,12 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = {
         ...applyFocusVisible<DesignSystem>({
             borderColor: neutralFocus,
         }),
+        "@media (-ms-high-contrast:active)": {
+            background: "Background",
+            border: "none",
+            color: "ButtonText",
+            "-ms-high-contrast-adjust": "none"
+        }
     },
     button_contentRegion: {
         position: "relative",

@@ -89,6 +89,9 @@ const styles: ComponentStyles<CallToActionClassNameContract, DesignSystem> = {
         "&:hover": {
             "& $callToAction_glyph": {
                 ...applyGlyphTransform(),
+                "@media (-ms-high-contrast:active)": {
+                    fill: "HighlightText"
+                }
             },
         },
         ...applyFocusVisible("& $callToAction_glyph", {
@@ -109,11 +112,17 @@ const styles: ComponentStyles<CallToActionClassNameContract, DesignSystem> = {
     callToAction__primary: {
         "& $callToAction_glyph": {
             fill: accentForegroundCut,
+            "@media (-ms-high-contrast:active)": {
+                fill: "ButtonText"
+            }
         },
     },
     callToAction__lightweight: {
         "& $callToAction_glyph": {
             fill: accentForegroundRest,
+            "@media (-ms-high-contrast:active)": {
+                fill: "ButtonText"
+            }
         },
         "&:hover": {
             "& $callToAction_glyph": {
@@ -131,6 +140,9 @@ const styles: ComponentStyles<CallToActionClassNameContract, DesignSystem> = {
         paddingLeft: directionSwitch("", translateXValue),
         "& $callToAction_glyph": {
             fill: accentForegroundRest,
+            "@media (-ms-high-contrast:active)": {
+                fill: "ButtonText"
+            }
         },
         "&:hover": {
             "& $callToAction_glyph": {
