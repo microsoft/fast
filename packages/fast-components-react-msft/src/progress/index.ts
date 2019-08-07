@@ -9,7 +9,6 @@ import MSFTProgress, {
     ProgressSize,
     ProgressUnhandledProps,
 } from "./progress";
-import { ProgressSize } from "./progress.props";
 import progressSchema from "./progress.schema";
 import { Subtract } from "utility-types";
 /*
@@ -34,6 +33,5 @@ export {
     ProgressUnhandledProps,
     ProgressHandledProps,
     progressSchema,
-    ProgressSize,
     ProgressClassNameContract,
 };
