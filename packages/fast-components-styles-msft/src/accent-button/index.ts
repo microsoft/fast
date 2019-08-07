@@ -61,6 +61,7 @@ const styles: ComponentStyles<AccentButtonClassNameContract, DesignSystem> = {
         },
         "@media (-ms-high-contrast:active)": {
             background: "ButtonFace",
+            borderColor: "ButtonText",
             color: "ButtonText",
             "-ms-high-contrast-adjust": "none"
         },

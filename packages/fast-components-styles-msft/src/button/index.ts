@@ -200,7 +200,6 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = {
         },
         "@media (-ms-high-contrast:active)": {
             background: "ButtonFace",
-            border: "none",
             color: "ButtonText",
             "-ms-high-contrast-adjust": "none"
         }

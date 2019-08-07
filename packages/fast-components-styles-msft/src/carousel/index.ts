@@ -94,6 +94,10 @@ const styles: ComponentStyles<CarouselClassNameContract, DesignSystem> = {
             height: toPx<DesignSystem>(designUnit),
             width: "32px",
             transition: "all 0.05s ease-in-out",
+            "@media (-ms-high-contrast:active)": {
+                background: "HighlightText",
+                borderColor: "ButtonText"
+            },
         },
         "&:not($carousel_sequenceIndicator__active)": {
             "&:hover": {
@@ -151,6 +155,9 @@ const styles: ComponentStyles<CarouselClassNameContract, DesignSystem> = {
             },
             "& > svg": {
                 fill: darkModeNeutralForegroundRest,
+                "@media (-ms-high-contrast:active)": {
+                    fill: "ButtonText"
+                }
             },
         },
         "& $carousel_sequenceIndicator": {

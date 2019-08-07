@@ -145,7 +145,13 @@ const styles: ComponentStyles<ActionToggleClassNameContract, DesignSystem> = {
             }
         },
     },
-    actionToggle__disabled: {},
+    actionToggle__disabled: {
+        "& $actionToggle_selectedGlyph, & $actionToggle_unselectedGlyph": {
+            "@media (-ms-high-contrast:active)": {
+                fill: "GrayText",
+            },
+        }
+    },
     actionToggle__hasGlyphAndContent: {
         "& $actionToggle_selectedGlyph, & $actionToggle_unselectedGlyph": {
             marginRight: directionSwitch(horizontalSpacing(), ""),
