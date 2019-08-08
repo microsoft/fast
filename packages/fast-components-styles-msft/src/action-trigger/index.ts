@@ -43,12 +43,12 @@ const styles: ComponentStyles<ActionTriggerClassNameContract, DesignSystem> = {
         "& $actionTrigger_glyph": {
             fill: accentForegroundCut,
             "@media (-ms-high-contrast:active)": {
-                fill: "ButtonText"
+                fill: "HighlightText"
             }
         },
         "&:hover": {
             "& $actionTrigger_glyph": {
-                fill: "HighlightText",
+                fill: "Highlight",
             },
         },
         "&$actionTrigger__disabled $actionTrigger_glyph": {

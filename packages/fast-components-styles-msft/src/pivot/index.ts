@@ -57,6 +57,12 @@ const styles: ComponentStyles<PivotClassNameContract, DesignSystem> = {
         },
         ...applyFocusVisible<DesignSystem>({
             borderColor: neutralFocus,
+            "@media (-ms-high-contrast:active)": {
+                boxShadow: format(
+                    `0 0 0 {0} inset ButtonText`,
+                    toPx(focusOutlineWidth)
+                ),
+            },
         }),
         "@media (-ms-high-contrast:active)": {
             border: "none",

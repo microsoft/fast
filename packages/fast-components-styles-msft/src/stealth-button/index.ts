@@ -1,6 +1,6 @@
 import { ButtonBaseClassNameContract as AccentButtonClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import { ComponentStyles } from "@microsoft/fast-jss-manager";
-import { applyFocusVisible } from "@microsoft/fast-jss-utilities";
+import { applyFocusVisible, format, toPx } from "@microsoft/fast-jss-utilities";
 import { DesignSystem } from "../design-system";
 import {
     neutralFillStealthActive,
@@ -10,6 +10,7 @@ import {
     neutralForegroundRest,
 } from "../utilities/color";
 import { baseButton, buttonStyles } from "../patterns/button";
+import { focusOutlineWidth } from "../utilities/design-system";
 
 const styles: ComponentStyles<AccentButtonClassNameContract, DesignSystem> = {
     ...baseButton,
@@ -35,6 +36,12 @@ const styles: ComponentStyles<AccentButtonClassNameContract, DesignSystem> = {
         },
         ...applyFocusVisible<DesignSystem>({
             borderColor: neutralFocus,
+            "@media (-ms-high-contrast:active)": {
+                boxShadow: format(
+                    `0 0 0 {0} inset ButtonText`,
+                    toPx(focusOutlineWidth)
+                ),
+            },
         }),
         "&:disabled": {
             "@media (-ms-high-contrast:active)": {
@@ -63,6 +70,7 @@ const styles: ComponentStyles<AccentButtonClassNameContract, DesignSystem> = {
             "&$button__disabled": {
                 "@media (-ms-high-contrast:active)": {
                     color: "GrayText",
+                    boxShadow: "none"
                 },
                 "&:hover": {
                     background: "transparent",

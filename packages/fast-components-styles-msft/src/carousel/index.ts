@@ -117,7 +117,6 @@ const styles: ComponentStyles<CarouselClassNameContract, DesignSystem> = {
         "&::before": {
             opacity: "1",
             "@media (-ms-high-contrast:active)": {
-                background: "Highlight",
                 borderColor: "HighlightText"
             },
         },
@@ -158,6 +157,9 @@ const styles: ComponentStyles<CarouselClassNameContract, DesignSystem> = {
             "&:hover": {
                 "&::before": {
                     background: neutralFillStealthHover((): string => black),
+                    "@media (-ms-high-contrast:active)": {
+                        background: "Highlight",
+                    },
                 },
                 "& span::before": {
                     borderColor: darkModeNeutralForegroundRest,
@@ -178,6 +180,9 @@ const styles: ComponentStyles<CarouselClassNameContract, DesignSystem> = {
             "&$carousel_sequenceIndicator__active": {
                 "&::before": {
                     background: darkModeNeutralFillStealthRest,
+                    "@media (-ms-high-contrast:active)": {
+                        background: "Highlight",
+                    },
                 },
             },
         },
@@ -200,6 +205,9 @@ const styles: ComponentStyles<CarouselClassNameContract, DesignSystem> = {
             "&:hover": {
                 "&::before": {
                     background: neutralFillStealthHover((): string => white),
+                    "@media (-ms-high-contrast:active)": {
+                        background: "Highlight",
+                    },
                 },
                 "& span::before": {
                     borderColor: lightModeNeutralForegroundRest,
@@ -217,6 +225,9 @@ const styles: ComponentStyles<CarouselClassNameContract, DesignSystem> = {
             "&$carousel_sequenceIndicator__active": {
                 "&::before": {
                     background: lightModeNeutralFillStealthRest,
+                    "@media (-ms-high-contrast:active)": {
+                        background: "Highlight",
+                    },
                 },
             },
         },

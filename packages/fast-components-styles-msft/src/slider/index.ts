@@ -63,6 +63,12 @@ const styles: ComponentStyles<SliderClassNameContract, DesignSystem> = {
                 neutralFocus,
                 toPx(add(focusOutlineWidth, 2))
             ),
+            "@media (-ms-high-contrast:active)": {
+                boxShadow: format(
+                    `0 0 0 2px Background, 0 0 0 {0} ButtonText`,
+                    toPx(focusOutlineWidth)
+                ),
+            },
         }),
         "&:hover": {
             background: neutralForegroundHover,

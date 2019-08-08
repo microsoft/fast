@@ -53,13 +53,13 @@ const styles: ComponentStyles<ActionToggleClassNameContract, DesignSystem> = {
         "& $actionToggle_selectedGlyph, & $actionToggle_unselectedGlyph": {
             fill: accentForegroundCut,
             "@media (-ms-high-contrast:active)": {
-                fill: "ButtonText"
+                fill: "HighlightText"
             }
         },
         "&:hover": {
             "& $actionToggle_selectedGlyph, & $actionToggle_unselectedGlyph": {
                 "@media (-ms-high-contrast:active)": {
-                    fill: "HighlightText"
+                    fill: "Highlight"
                 }
             },
         },

@@ -116,6 +116,13 @@ const styles: ComponentStyles<CallToActionClassNameContract, DesignSystem> = {
                 fill: "HighlightText"
             },
         },
+        "&:hover": {
+            "& $callToAction_glyph": {
+                "@media (-ms-high-contrast:active)": {
+                    fill: "Highlight"
+                },
+            },
+        },
     },
     callToAction__lightweight: {
         "& $callToAction_glyph": {

@@ -74,6 +74,9 @@ const styles: ComponentStyles<RadioClassNameContract, DesignSystem> = {
         ...applyFocusVisible({
             boxShadow: format<DesignSystem>("0 0 0 1px {0} inset", neutralFocus),
             borderColor: neutralFocus,
+            "@media (-ms-high-contrast:active)": {
+                boxShadow: format<DesignSystem>("0 0 0 2px ButtonText"),
+            },
         }),
         "@media (-ms-high-contrast:active)": {
             border: format(

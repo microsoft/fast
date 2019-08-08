@@ -27,6 +27,10 @@ const styles: ComponentStyles<LightweightButtonClassNameContract, DesignSystem> 
             "& $button_contentRegion::before": {
                 background: neutralForegroundRest,
                 height: toPx<DesignSystem>(focusOutlineWidth),
+                "@media (-ms-high-contrast:active)": {
+                    background: "ButtonText",
+                    height: toPx<DesignSystem>(focusOutlineWidth),
+                },
             },
         }),
         "a&, button&": {},

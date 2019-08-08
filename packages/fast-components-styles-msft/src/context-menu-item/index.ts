@@ -11,7 +11,7 @@ import {
 } from "../utilities/color";
 import { applyCursorPointer } from "../utilities/cursor";
 import { height, horizontalSpacingNumber } from "../utilities/density";
-import { designUnit } from "../utilities/design-system";
+import { designUnit, focusOutlineWidth } from "../utilities/design-system";
 import { applyDisabledState } from "../utilities/disabled";
 import { applyScaledTypeRamp } from "../utilities/typography";
 
@@ -41,6 +41,12 @@ const styles: ComponentStyles<ContextMenuItemClassNameContract, DesignSystem> = 
         ...applyFocusPlaceholderBorder(),
         ...applyFocusVisible<DesignSystem>({
             borderColor: neutralFocus,
+            "@media (-ms-high-contrast:active)": {
+                boxShadow: format(
+                    `0 0 0 {0} inset ButtonText`,
+                    toPx(focusOutlineWidth)
+                ),
+            },
         }),
         "&:hover": {
             background: neutralFillStealthHover,
