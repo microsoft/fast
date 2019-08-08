@@ -7,8 +7,10 @@ import {
     ButtonManagedClasses,
     ButtonUnhandledProps,
 } from "./button.props";
-import { Button as BaseButton } from "@microsoft/fast-components-react-base";
+import { Button as BaseButton, ButtonProps } from "@microsoft/fast-components-react-base";
 import { DisplayNamePrefix } from "../utilities";
+import { classNames } from "@microsoft/fast-web-utilities";
+import { ButtonClassNameContract } from ".";
 
 /**
  * Button slot options
@@ -20,6 +22,10 @@ export enum ButtonSlot {
 
 class Button extends Foundation<ButtonHandledProps, ButtonUnhandledProps, {}> {
     public static displayName: string = `${DisplayNamePrefix}Button`;
+
+    public static defaultProps: ButtonProps = {
+        managedClasses: {}
+    }
 
     protected handledProps: HandledProps<ButtonHandledProps> = {
         appearance: void 0,
@@ -34,17 +40,19 @@ class Button extends Foundation<ButtonHandledProps, ButtonUnhandledProps, {}> {
      * Renders the component
      */
     public render(): React.ReactElement<HTMLButtonElement | HTMLAnchorElement> {
+        const managedClasses: ButtonClassNameContract = this.props.managedClasses;
+
         return (
             <BaseButton
                 {...this.unhandledProps()}
                 className={this.generateClassNames()}
-                managedClasses={this.props.managedClasses}
+                managedClasses={managedClasses}
                 href={this.props.href}
                 disabled={this.props.disabled}
             >
                 {this.withSlot(ButtonSlot.before)}
                 {this.generateBeforeContent()}
-                <span className={get(this.props, "managedClasses.button_contentRegion")}>
+                <span className={classNames(managedClasses.button_contentRegion)}>
                     {this.withoutSlot([ButtonSlot.before, ButtonSlot.after])}
                 </span>
                 {this.withSlot(ButtonSlot.after)}
@@ -64,13 +72,15 @@ class Button extends Foundation<ButtonHandledProps, ButtonUnhandledProps, {}> {
               )
             : "";
 
-        return super.generateClassNames(className);
+        return super.generateClassNames(classNames(
+            [this.props.managedClasses[`button__${ButtonAppearance[this.props.appearance]}`], typeof this.props.appearance === "string"]
+        ));
     }
 
     private generateBeforeContent(): React.ReactNode {
         if (typeof this.props.beforeContent === "function") {
             return this.props.beforeContent(
-                get(this.props, "managedClasses.button_beforeContent", "")
+                classNames(this.props.managedClasses.button_beforeContent)
             );
         }
     }
@@ -78,7 +88,7 @@ class Button extends Foundation<ButtonHandledProps, ButtonUnhandledProps, {}> {
     private generateAfterContent(): React.ReactNode {
         if (typeof this.props.afterContent === "function") {
             return this.props.afterContent(
-                get(this.props, "managedClasses.button_afterContent", "")
+                classNames(this.props.managedClasses.button_afterContent)
             );
         }
     }

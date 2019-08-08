@@ -15,12 +15,14 @@ import {
     ManagedClasses,
 } from "@microsoft/fast-components-class-name-contracts-msft";
 import { DisplayNamePrefix } from "../utilities";
+import { classNames } from "@microsoft/fast-web-utilities";
 
 class Flipper extends Foundation<FlipperHandledProps, FlipperUnhandledProps, {}> {
     public static displayName: string = `${DisplayNamePrefix}Flipper`;
 
     public static defaultProps: Partial<FlipperProps> = {
         direction: FlipperDirection.next,
+        managedClasses: {},
     };
 
     protected handledProps: HandledProps<FlipperHandledProps> = {
@@ -49,15 +51,14 @@ class Flipper extends Foundation<FlipperHandledProps, FlipperUnhandledProps, {}>
      * Generates class names based on props
      */
     protected generateClassNames(): string {
-        const classes: string = get(
-            this.props,
-            `managedClasses.flipper__${this.props.direction || FlipperDirection.next}`,
-            ""
-        );
+        const {
+            flipper,
+            flipper__next,
+            flipper__previous,
+        }: FlipperClassNameContract = this.props.managedClasses;
+        const isNext: boolean = this.props.direction !== FlipperDirection.previous;
 
-        return super.generateClassNames(
-            `${get(this.props, "managedClasses.flipper", "")} ${classes}`
-        );
+        return classNames(flipper, [flipper__previous, !isNext], [flipper__next, isNext]);
     }
 
     /**
@@ -96,7 +97,7 @@ class Flipper extends Foundation<FlipperHandledProps, FlipperUnhandledProps, {}>
                 <svg
                     viewBox="0 0 16 16"
                     xmlns="http://www.w3.org/2000/svg"
-                    className={get(this.props, "managedClasses.flipper_glyph")}
+                    className={classNames(this.props.managedClasses.flipper_glyph)}
                 >
                     {path}
                 </svg>

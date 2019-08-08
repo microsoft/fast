@@ -9,6 +9,8 @@ import {
 import { ContextMenuItem as BaseContextMenuItem } from "@microsoft/fast-components-react-base";
 import { get } from "lodash-es";
 import { DisplayNamePrefix } from "../utilities";
+import { classNames } from "@microsoft/fast-web-utilities";
+import { includesAllSubdirectoriesAsNamedExports } from "../../../../build/helpers/file-includes-all-subdirectories-as-named-exports";
 
 class ContextMenuItem extends Foundation<
     ContextMenuItemHandledProps,
@@ -16,6 +18,9 @@ class ContextMenuItem extends Foundation<
     {}
 > {
     public static displayName: string = `${DisplayNamePrefix}ContextMenuItem`;
+    public static defaultProps: Partial<ContextMenuItemProps> = {
+        managedClasses: {}
+    }
 
     protected handledProps: HandledProps<ContextMenuItemHandledProps> = {
         before: void 0,
@@ -26,9 +31,8 @@ class ContextMenuItem extends Foundation<
             <BaseContextMenuItem {...this.unhandledProps()}>
                 {this.props.before !== undefined ? this.props.before : undefined}
                 <span
-                    className={get(
-                        this.props.managedClasses,
-                        "contextMenuItem_contentRegion"
+                    className={classNames(
+                        this.props.managedClasses.contextMenuItem_contentRegion
                     )}
                 >
                     {this.props.children}

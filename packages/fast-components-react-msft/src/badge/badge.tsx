@@ -9,6 +9,8 @@ import {
 import { Badge as BaseBadge } from "@microsoft/fast-components-react-base";
 import { get } from "lodash-es";
 import { DisplayNamePrefix } from "../utilities";
+import { BadgeClassNameContract } from "./index";
+import { classNames } from "@microsoft/fast-web-utilities";
 
 class Badge extends Foundation<BadgeHandledProps, BadgeUnhandledProps, {}> {
     public static displayName: string = `${DisplayNamePrefix}Badge`;
@@ -16,6 +18,7 @@ class Badge extends Foundation<BadgeHandledProps, BadgeUnhandledProps, {}> {
     public static defaultProps: Partial<BadgeProps> = {
         size: BadgeSize.small,
         filled: true,
+        managedClasses: {}
     };
 
     protected handledProps: HandledProps<BadgeHandledProps> = {
@@ -43,34 +46,17 @@ class Badge extends Foundation<BadgeHandledProps, BadgeUnhandledProps, {}> {
      * Generates class names
      */
     protected generateClassNames(): string {
-        let classNames: string = "";
+        const {
+            badge__filled,
+            badge__small,
+            badge__large
+        }: Partial<BadgeClassNameContract> = this.props.managedClasses;
 
-        if (this.props.filled) {
-            classNames = `${classNames} ${get(
-                this.props,
-                "managedClasses.badge__filled",
-                ""
-            )}`;
-        }
-
-        switch (this.props.size) {
-            case BadgeSize.small:
-                classNames = `${classNames} ${get(
-                    this.props,
-                    "managedClasses.badge__small",
-                    ""
-                )}`;
-                break;
-            case BadgeSize.large:
-                classNames = `${classNames} ${get(
-                    this.props,
-                    "managedClasses.badge__large",
-                    ""
-                )}`;
-                break;
-        }
-
-        return super.generateClassNames(classNames);
+        return super.generateClassNames(classNames(
+            [badge__filled, this.props.filled],
+            [badge__large, this.props.size === BadgeSize.large],
+            [badge__small, this.props.size === BadgeSize.small]
+        ));
     }
 }
 

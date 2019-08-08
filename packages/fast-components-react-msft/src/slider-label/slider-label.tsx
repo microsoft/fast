@@ -11,9 +11,11 @@ import {
     SliderTrackItem as BaseSliderTrackItem,
     SliderTrackItemAnchor,
 } from "@microsoft/fast-components-react-base";
-import { Direction } from "@microsoft/fast-web-utilities";
+import { Direction, classNames } from "@microsoft/fast-web-utilities";
 import { get } from "lodash-es";
 import { DisplayNamePrefix } from "../utilities";
+import { SliderClassNameContract } from "src/slider";
+import { SliderLabelClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 
 class SliderLabel extends Foundation<
     SliderLabelHandledProps,
@@ -25,6 +27,7 @@ class SliderLabel extends Foundation<
 
     public static defaultProps: Partial<SliderLabelProps> = {
         showTickmark: true,
+        managedClasses: {}
     };
 
     protected handledProps: HandledProps<SliderLabelHandledProps> = {
@@ -35,23 +38,20 @@ class SliderLabel extends Foundation<
     };
 
     public render(): React.ReactNode {
+        const {
+            sliderLabel,
+            sliderLabel__horizontal,
+            sliderLabel__vertical
+        }: Partial<SliderLabelClassNameContract> = this.props.managedClasses
         return (
             <BaseSliderTrackItem
                 {...this.unhandledProps()}
                 minValuePositionBinding={this.props.valuePositionBinding}
                 maxValuePositionBinding={this.props.valuePositionBinding}
                 managedClasses={{
-                    sliderTrackItem: get(this.props.managedClasses, "sliderLabel", ""),
-                    sliderTrackItem_horizontal: get(
-                        this.props.managedClasses,
-                        "sliderLabel__horizontal",
-                        ""
-                    ),
-                    sliderTrackItem_vertical: get(
-                        this.props.managedClasses,
-                        "sliderLabel__vertical",
-                        ""
-                    ),
+                    sliderTrackItem: sliderLabel,
+                    sliderTrackItem_horizontal: sliderLabel__horizontal,
+                    sliderTrackItem_vertical: sliderLabel__vertical,
                 }}
             >
                 <div className={this.generatePositioningPanelClassNames()}>
@@ -67,37 +67,20 @@ class SliderLabel extends Foundation<
      * Create class-names
      */
     private generatePositioningPanelClassNames(): string {
-        let classNames: string = get(
-            this.props,
-            "managedClasses.sliderLabel_positioningRegion",
-            ""
-        );
+        const {
+            sliderLabel_positioningRegion,
+            sliderLabel__positionMax,
+            sliderLabel__positionMin,
+            sliderLabel__rtl
+        }: Partial<SliderLabelClassNameContract> = this.props.managedClasses
+        const binding: SliderLabelProps["valuePositionBinding"] = this.props.valuePositionBinding;
 
-        if (this.props.valuePositionBinding === SliderTrackItemAnchor.totalRangeMax) {
-            classNames = `${classNames} ${get(
-                this.props,
-                "managedClasses.sliderLabel__positionMax",
-                ""
-            )}`;
-        } else if (
-            this.props.valuePositionBinding === SliderTrackItemAnchor.totalRangeMin
-        ) {
-            classNames = `${classNames} ${get(
-                this.props,
-                "managedClasses.sliderLabel__positionMin",
-                ""
-            )}`;
-        }
-
-        if (this.context.sliderDirection === Direction.rtl) {
-            classNames = `${classNames} ${get(
-                this.props,
-                "managedClasses.sliderLabel__rtl",
-                ""
-            )}`;
-        }
-
-        return classNames;
+        return classNames(
+            sliderLabel_positioningRegion,
+            [sliderLabel__positionMax, binding === SliderTrackItemAnchor.totalRangeMax],
+            [sliderLabel__positionMin, binding === SliderTrackItemAnchor.totalRangeMin],
+            [sliderLabel__rtl, this.context.sliderDirection === Direction.rtl]
+        )
     }
 
     private renderLabel = (): React.ReactNode => {
@@ -105,7 +88,7 @@ class SliderLabel extends Foundation<
             return null;
         }
         return (
-            <span className={get(this.props.managedClasses, "sliderLabel_label", "")}>
+            <span className={classNames(this.props.managedClasses.sliderLabel_label)}>
                 {this.props.label}
             </span>
         );
@@ -115,8 +98,9 @@ class SliderLabel extends Foundation<
         if (!this.props.showTickmark) {
             return;
         }
+
         return (
-            <div className={get(this.props.managedClasses, "sliderLabel_tickMark", "")} />
+            <div className={classNames(this.props.managedClasses.sliderLabel_tickMark)} />
         );
     };
 }

@@ -20,6 +20,10 @@ class AutoSuggest extends Foundation<
 > {
     public static displayName: string = `${DisplayNamePrefix}AutoSuggest`;
 
+    public static defaultProps: Partial<AutoSuggestProps> = {
+        managedClasses: {}
+    }
+
     protected handledProps: HandledProps<AutoSuggestHandledProps> = {
         listboxId: void 0,
         disabled: void 0,

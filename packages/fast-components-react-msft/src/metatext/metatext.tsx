@@ -16,10 +16,12 @@ import {
     MetatextClassNameContract,
 } from "@microsoft/fast-components-class-name-contracts-msft";
 import { DisplayNamePrefix } from "../utilities";
+import { classNames } from "@microsoft/fast-web-utilities";
 
 class Metatext extends Foundation<MetatextHandledProps, MetatextUnhandledProps, {}> {
     public static defaultProps: Partial<MetatextProps> = {
         tag: MetatextTag.span,
+        managedClasses: {}
     };
 
     public static displayName: string = `${DisplayNamePrefix}Metatext`;
@@ -49,7 +51,7 @@ class Metatext extends Foundation<MetatextHandledProps, MetatextUnhandledProps, 
      * Generates class names based on props
      */
     protected generateClassNames(): string {
-        return super.generateClassNames(get(this.props, "managedClasses.metatext"));
+        return super.generateClassNames(classNames(this.props.managedClasses.metatext));
     }
 }
 

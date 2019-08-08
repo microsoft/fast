@@ -16,6 +16,7 @@ import {
     SubheadingClassNameContract,
 } from "@microsoft/fast-components-class-name-contracts-msft";
 import { DisplayNamePrefix } from "../utilities";
+import { classNames } from "@microsoft/fast-web-utilities";
 
 class Subheading extends Foundation<
     SubheadingHandledProps,
@@ -25,6 +26,7 @@ class Subheading extends Foundation<
     public static defaultProps: Partial<SubheadingProps> = {
         size: SubheadingSize._1,
         tag: SubheadingTag.h3,
+        managedClasses: {},
     };
 
     public static displayName: string = `${DisplayNamePrefix}Subheading`;
@@ -68,12 +70,13 @@ class Subheading extends Foundation<
     }
 
     protected generateClassNames(): string {
+        const managedClasses: SubheadingClassNameContract = this.props.managedClasses;
+
         return super.generateClassNames(
-            `${get(this.props, "managedClasses.subheading", "")} ${get(
-                this.props,
-                `managedClasses.subheading__${this.props.size}`,
-                ""
-            )}`
+            classNames(
+                managedClasses.subheading,
+                managedClasses[`subheading__${this.props.size}`]
+            )
         );
     }
 }

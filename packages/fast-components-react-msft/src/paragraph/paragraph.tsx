@@ -16,10 +16,12 @@ import {
     ParagraphClassNameContract,
 } from "@microsoft/fast-components-class-name-contracts-msft";
 import { DisplayNamePrefix } from "../utilities";
+import { classNames } from "@microsoft/fast-web-utilities";
 
 class Paragraph extends Foundation<ParagraphHandledProps, ParagraphUnhandledProps, {}> {
     public static defaultProps: Partial<ParagraphProps> = {
         size: ParagraphSize._3,
+        managedClasses: {},
     };
 
     public static displayName: string = `${DisplayNamePrefix}Paragraph`;
@@ -49,14 +51,12 @@ class Paragraph extends Foundation<ParagraphHandledProps, ParagraphUnhandledProp
      * Generates class names based on props
      */
     protected generateClassNames(): string {
-        const classes: string = `${get(this.props, `managedClasses.paragraph`, "")} ${get(
-            this.props,
-            `managedClasses.paragraph__${this.props.size}`,
-            ""
-        )}`;
-
+        const managedClasses: ParagraphClassNameContract = this.props.managedClasses;
         return super.generateClassNames(
-            `${get(this.props, "managedClasses.paragraph")} ${classes}`
+            classNames(
+                managedClasses.paragraph,
+                managedClasses[`paragraph__${this.props.size}`]
+            )
         );
     }
 

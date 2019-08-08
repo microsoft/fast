@@ -14,6 +14,8 @@ import { TabsClassNameContract } from "@microsoft/fast-components-class-name-con
 import { get, isNil } from "lodash-es";
 import { DisplayNamePrefix } from "../utilities";
 import { canUseDOM } from "exenv-es6";
+import { classNames } from "@microsoft/fast-web-utilities";
+import { CarouselClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 
 class Carousel extends Foundation<
     CarouselHandledProps,
@@ -25,6 +27,7 @@ class Carousel extends Foundation<
     public static defaultProps: Partial<CarouselProps> = {
         autoplay: false,
         autoplayInterval: 6000,
+        managedClasses: {},
     };
 
     /**
@@ -155,48 +158,43 @@ class Carousel extends Foundation<
      * Generate class names
      */
     protected generateClassNames(): string {
-        let className: string = get(this.props, "managedClasses.carousel", "");
-
-        if (this.getSlideTheme()) {
-            className += this.assignSlideThemeClassName();
-        }
-
-        if (this.slideTransitionDirection) {
-            className += this.assignTransitionDirectionClassName();
-        }
-
-        return super.generateClassNames(className);
+        return super.generateClassNames(
+            classNames(
+                this.props.managedClasses.carousel,
+                [this.assignSlideThemeClassName, !!this.getSlideTheme()],
+                [
+                    this.assignTransitionDirectionClassName(),
+                    !!this.slideTransitionDirection,
+                ]
+            )
+        );
     }
 
     /**
      * Returns tabs managedclasses with new carousel-specific JSS
      */
     protected generateTabsClassNames(): TabsClassNameContract {
+        const {
+            carousel_slides,
+            carousel_tabPanels,
+            carousel_sequenceIndicators,
+            carousel_tabPanelContent,
+            carousel_sequenceIndicator,
+            carousel_sequenceIndicator__active,
+            carousel_tabPanel,
+            carousel_tabPanel__hidden,
+        }: CarouselClassNameContract = this.props.managedClasses;
+
         return {
-            tabs: get(this.props, "managedClasses.carousel_slides", ""),
-            tabs_tabPanels: get(this.props, "managedClasses.carousel_tabPanels", ""),
-            tabs_tabList: get(
-                this.props,
-                "managedClasses.carousel_sequenceIndicators",
-                ""
-            ),
-            tabs_tabPanelContent: get(
-                this.props,
-                "managedClasses.carousel_tabPanelContent",
-                ""
-            ),
-            tab: get(this.props, "managedClasses.carousel_sequenceIndicator", ""),
-            tab__active: get(
-                this.props,
-                "managedClasses.carousel_sequenceIndicator__active",
-                ""
-            ),
-            tabPanel: get(this.props, "managedClasses.carousel_tabPanel", ""),
-            tabPanel__hidden: get(
-                this.props,
-                "managedClasses.carousel_tabPanel__hidden",
-                ""
-            ),
+            tabs: carousel_slides,
+            tabs_tabPanels: carousel_tabPanels,
+            tabs_tabList: carousel_sequenceIndicators,
+            tabs_tabPanelContent: carousel_tabPanelContent,
+
+            tab: carousel_sequenceIndicator,
+            tab__active: carousel_sequenceIndicator__active,
+            tabPanel: carousel_tabPanel,
+            tabPanel__hidden: carousel_tabPanel__hidden,
         };
     }
 
@@ -259,11 +257,15 @@ class Carousel extends Foundation<
     /**
      * Return transition direction class name
      */
-    private assignTransitionDirectionClassName(): string {
+    private assignTransitionDirectionClassName = (): string => {
+        const {
+            carousel__slideAnimateNext,
+            carousel__slideAnimatePrevious
+        }: CarouselClassNameContract = this.props.managedClasses;
         const transitionDirection: string =
             this.slideTransitionDirection === FlipperDirection.next
-                ? get(this.props, "managedClasses.carousel__slideAnimateNext", "")
-                : get(this.props, "managedClasses.carousel__slideAnimatePrevious", "");
+                ? carousel__slideAnimateNext
+                : carousel__slideAnimatePrevious
 
         return ` ${transitionDirection}`;
     }
@@ -271,11 +273,15 @@ class Carousel extends Foundation<
     /**
      * Return slide theme class name
      */
-    private assignSlideThemeClassName(): string {
+    private assignSlideThemeClassName = (): string => {
+        const {
+            carousel__themeLight,
+            carousel__themeDark
+        }: CarouselClassNameContract = this.props.managedClasses;
         const theme: string =
             this.getSlideTheme() === CarouselSlideTheme.light
-                ? get(this.props, "managedClasses.carousel__themeLight", "")
-                : get(this.props, "managedClasses.carousel__themeDark", "");
+                ? carousel__themeLight
+                : carousel__themeDark
 
         return ` ${theme}`;
     }
@@ -289,10 +295,8 @@ class Carousel extends Foundation<
                 <Flipper
                     direction={FlipperDirection.previous}
                     onClick={this.previousSlide}
-                    className={get(
-                        this.props,
-                        "managedClasses.carousel_flipperPrevious",
-                        ""
+                    className={classNames(
+                        this.props.managedClasses.carousel_flipperPrevious
                     )}
                 />
             );
@@ -308,7 +312,7 @@ class Carousel extends Foundation<
                 <Flipper
                     direction={FlipperDirection.next}
                     onClick={this.nextSlide}
-                    className={get(this.props, "managedClasses.carousel_flipperNext", "")}
+                    className={classNames(this.props.managedClasses.carousel_flipperNext)}
                 />
             );
         }

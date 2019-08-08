@@ -12,11 +12,14 @@ import {
 } from "./caption.props";
 import { Typography } from "../typography";
 import { DisplayNamePrefix } from "../utilities";
+import { classNames } from "@microsoft/fast-web-utilities";
+import { includesAllSubdirectoriesAsNamedExports } from "../../../../build/helpers/file-includes-all-subdirectories-as-named-exports";
 
 class Caption extends Foundation<CaptionHandledProps, CaptionUnhandledProps, {}> {
     public static defaultProps: Partial<CaptionProps> = {
         tag: CaptionTag.p,
         size: CaptionSize._1,
+        managedClasses: {}
     };
 
     public static displayName: string = `${DisplayNamePrefix}Caption`;
@@ -46,13 +49,10 @@ class Caption extends Foundation<CaptionHandledProps, CaptionUnhandledProps, {}>
     }
 
     protected generateClassNames(): string {
-        const classes: string = `${get(this.props, `managedClasses.caption`, "")} ${get(
-            this.props,
-            `managedClasses.caption__${this.props.size}`,
-            ""
-        )}`;
-
-        return super.generateClassNames(classes);
+        return super.generateClassNames(classNames(
+            this.props.managedClasses.caption,
+            [this.props.managedClasses[`caption__${this.props.size}`], true]
+        ));
     }
 
     private size(): TypographySize {

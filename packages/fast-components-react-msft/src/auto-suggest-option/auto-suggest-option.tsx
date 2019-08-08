@@ -11,8 +11,9 @@ import {
     ListboxItem as BaseListboxItem,
 } from "@microsoft/fast-components-react-base";
 import { get, isNil, slice } from "lodash-es";
-import { startsWith } from "@microsoft/fast-web-utilities";
+import { classNames, startsWith } from "@microsoft/fast-web-utilities";
 import { DisplayNamePrefix } from "../utilities";
+import { AutoSuggestOptionClassNameContract } from ".";
 
 class AutoSuggestOption extends Foundation<
     AutoSuggestOptionHandledProps,
@@ -25,6 +26,7 @@ class AutoSuggestOption extends Foundation<
 
     public static defaultProps: Partial<AutoSuggestOptionProps> = {
         formatDisplayString: true,
+        managedClasses: {},
     };
 
     protected handledProps: HandledProps<AutoSuggestOptionHandledProps> = {
@@ -36,32 +38,25 @@ class AutoSuggestOption extends Foundation<
     };
 
     public render(): React.ReactNode {
+        const {
+            autoSuggestOption,
+            autoSuggestOption__selected,
+            autoSuggestOption__disabled,
+            autoSuggestOption_contentRegion,
+        }: AutoSuggestOptionClassNameContract = this.props.managedClasses;
+
         return (
             <BaseListboxItem
                 {...this.unhandledProps()}
                 id={this.props.id}
                 value={this.props.value}
                 managedClasses={{
-                    listboxItem: get(this.props.managedClasses, "autoSuggestOption", ""),
-                    listboxItem__disabled: get(
-                        this.props.managedClasses,
-                        "autoSuggestOption__disabled",
-                        ""
-                    ),
-                    listboxItem__selected: get(
-                        this.props.managedClasses,
-                        "autoSuggestOption__selected",
-                        ""
-                    ),
+                    listboxItem: classNames(autoSuggestOption),
+                    listboxItem__disabled: classNames(autoSuggestOption__disabled),
+                    listboxItem__selected: classNames(autoSuggestOption__selected),
                 }}
             >
-                <span
-                    className={get(
-                        this.props.managedClasses,
-                        "autoSuggestOption_contentRegion",
-                        ""
-                    )}
-                >
+                <span className={classNames(autoSuggestOption_contentRegion)}>
                     {this.formatDisplayString()}
                     {this.props.children}
                 </span>
