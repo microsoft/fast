@@ -106,6 +106,8 @@ import Typography from "./typography";
 export { Typography };
 export * from "./typography";
 
+export * from "./utilities";
+
 import ViewportPositioner from "./viewport-positioner";
 export { ViewportPositioner };
 export * from "./viewport-positioner";

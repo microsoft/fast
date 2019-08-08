@@ -13,7 +13,8 @@ declare global {
     }
 }
 
-export { DisplayNamePrefix };
+export { DisplayNamePrefix, WindowWithIntersectionObserver, WindowWithResizeObserver };
+
 export * from "./resize-observer";
 export * from "./resize-observer-entry";
 export * from "./intersection-observer";
