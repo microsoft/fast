@@ -106,7 +106,11 @@ import Typography from "./typography";
 export { Typography };
 export * from "./typography";
 
-export * from "./utilities";
+export { WindowWithIntersectionObserver, WindowWithResizeObserver } from "./utilities";
+export * from "./utilities/resize-observer";
+export * from "./utilities/resize-observer-entry";
+export * from "./utilities/intersection-observer";
+export * from "./utilities/intersection-observer-entry";
 
 import ViewportPositioner from "./viewport-positioner";
 export { ViewportPositioner };
