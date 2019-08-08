@@ -10,6 +10,7 @@ import {
 import { ListboxContext, ListboxContextType } from "../listbox/listbox-context";
 import { keyCodeEnter, keyCodeSpace } from "@microsoft/fast-web-utilities";
 import { DisplayNamePrefix } from "../utilities";
+import { classNames } from "@microsoft/fast-web-utilities";
 
 class ListboxItem extends Foundation<
     ListboxItemHandledProps,
@@ -22,6 +23,7 @@ class ListboxItem extends Foundation<
 
     public static defaultProps: Partial<ListboxItemProps> = {
         disabled: false,
+        managedClasses: {},
     };
 
     protected handledProps: HandledProps<ListboxItemHandledProps> = {
@@ -58,25 +60,19 @@ class ListboxItem extends Foundation<
      * Create class-names
      */
     protected generateClassNames(): string {
-        let classNames: string = get(this.props, "managedClasses.listboxItem", "");
+        const {
+            listboxItem,
+            listboxItem__disabled,
+            listboxItem__selected,
+        }: ListboxItemClassNameContract = this.props.managedClasses;
 
-        if (this.props.disabled) {
-            classNames = `${classNames} ${get(
-                this.props,
-                "managedClasses.listboxItem__disabled",
-                ""
-            )}`;
-        }
-
-        if (this.isItemSelected()) {
-            classNames = `${classNames} ${get(
-                this.props,
-                "managedClasses.listboxItem__selected",
-                ""
-            )}`;
-        }
-
-        return super.generateClassNames(classNames);
+        return super.generateClassNames(
+            classNames(
+                listboxItem,
+                [listboxItem__disabled, this.props.disabled],
+                [listboxItem__selected, this.isItemSelected()]
+            )
+        );
     }
 
     /**

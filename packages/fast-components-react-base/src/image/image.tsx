@@ -5,6 +5,7 @@ import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-
 import {
     ImageHandledProps,
     ImageManagedClasses,
+    ImageProps,
     ImageUnhandledProps,
 } from "./image.props";
 import {
@@ -12,6 +13,7 @@ import {
     ManagedClasses,
 } from "@microsoft/fast-components-class-name-contracts-base";
 import { DisplayNamePrefix } from "../utilities";
+import { classNames } from "@microsoft/fast-web-utilities";
 
 export enum ImageSlot {
     source = "source",
@@ -19,6 +21,10 @@ export enum ImageSlot {
 
 class Image extends Foundation<ImageHandledProps, ImageUnhandledProps, {}> {
     public static displayName: string = `${DisplayNamePrefix}Image`;
+
+    public static defaultProps: Partial<ImageProps> = {
+        managedClasses: {},
+    };
 
     protected handledProps: HandledProps<ImageHandledProps> = {
         managedClasses: void 0,
@@ -32,7 +38,7 @@ class Image extends Foundation<ImageHandledProps, ImageUnhandledProps, {}> {
      * Renders the component
      */
     public render(): React.ReactElement<HTMLImageElement | HTMLPictureElement> {
-        let className: string = get(this.props, "managedClasses.image", "");
+        let className: string = classNames(this.props.managedClasses.image);
 
         if (!this.props.children) {
             return (

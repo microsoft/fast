@@ -4,6 +4,7 @@ import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-
 import {
     HypertextHandledProps,
     HypertextManagedClasses,
+    HypertextProps,
     HypertextUnhandledProps,
 } from "./hypertext.props";
 import {
@@ -15,6 +16,10 @@ import { DisplayNamePrefix } from "../utilities";
 
 class Hypertext extends Foundation<HypertextHandledProps, HypertextUnhandledProps, {}> {
     public static displayName: string = `${DisplayNamePrefix}Hypertext`;
+
+    public static defaultProps: Partial<HypertextProps> = {
+        managedClasses: {},
+    };
 
     protected handledProps: HandledProps<HypertextHandledProps> = {
         managedClasses: void 0,
@@ -39,7 +44,7 @@ class Hypertext extends Foundation<HypertextHandledProps, HypertextUnhandledProp
      * Generates class names
      */
     protected generateClassNames(): string {
-        return super.generateClassNames(get(this.props, "managedClasses.hypertext", ""));
+        return super.generateClassNames(this.props.managedClasses.hypertext);
     }
 }
 

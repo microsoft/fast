@@ -5,6 +5,7 @@ import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-
 import {
     DividerHandledProps,
     DividerManagedClasses,
+    DividerProps,
     DividerRoles,
     DividerUnhandledProps,
 } from "./divider.props";
@@ -13,10 +14,15 @@ import {
     ManagedClasses,
 } from "@microsoft/fast-components-class-name-contracts-base";
 import { DisplayNamePrefix } from "../utilities";
+import { classNames } from "@microsoft/fast-web-utilities";
 
 /* tslint:disable-next-line */
 class Divider extends Foundation<DividerHandledProps, DividerUnhandledProps, {}> {
     public static displayName: string = `${DisplayNamePrefix}Divider`;
+
+    public static defaultProps: Partial<DividerProps> = {
+        managedClasses: {},
+    };
 
     protected handledProps: HandledProps<DividerHandledProps> = {
         managedClasses: void 0,
@@ -50,7 +56,7 @@ class Divider extends Foundation<DividerHandledProps, DividerUnhandledProps, {}>
      * Generates class names
      */
     protected generateClassNames(): string {
-        return super.generateClassNames(get(this.props, "managedClasses.divider"));
+        return super.generateClassNames(classNames(this.props.managedClasses.divider));
     }
 }
 

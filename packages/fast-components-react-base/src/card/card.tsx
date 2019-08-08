@@ -5,6 +5,7 @@ import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-
 import {
     CardHandledProps,
     CardManagedClasses,
+    CardProps,
     CardTag,
     CardUnhandledProps,
 } from "./card.props";
@@ -13,8 +14,13 @@ import {
     ManagedClasses,
 } from "@microsoft/fast-components-class-name-contracts-base";
 import { DisplayNamePrefix } from "../utilities";
+import { classNames } from "@microsoft/fast-web-utilities";
+
 class Card extends Foundation<CardHandledProps, CardUnhandledProps, {}> {
     public static displayName: string = `${DisplayNamePrefix}Card`;
+    public static defaultProps: Partial<CardProps> = {
+        managedClasses: {},
+    };
 
     protected handledProps: HandledProps<CardHandledProps> = {
         children: void 0,
@@ -37,7 +43,7 @@ class Card extends Foundation<CardHandledProps, CardUnhandledProps, {}> {
      * Generates class names
      */
     protected generateClassNames(): string {
-        return super.generateClassNames(get(this.props, "managedClasses.card"));
+        return super.generateClassNames(classNames(this.props.managedClasses.card));
     }
 
     /**

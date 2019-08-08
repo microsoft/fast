@@ -1,6 +1,7 @@
-import React from "react";
-import { get } from "lodash-es";
+import { TabsClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
+import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import {
+    classNames,
     keyCodeArrowDown,
     keyCodeArrowLeft,
     keyCodeArrowRight,
@@ -8,22 +9,13 @@ import {
     keyCodeEnd,
     keyCodeHome,
 } from "@microsoft/fast-web-utilities";
-import {
-    ManagedClasses,
-    TabsClassNameContract,
-} from "@microsoft/fast-components-class-name-contracts-base";
-import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
-import {
-    TabsHandledProps,
-    TabsItem,
-    TabsManagedClasses,
-    TabsProps,
-    TabsUnhandledProps,
-} from "./tabs.props";
+import { get } from "lodash-es";
+import React from "react";
+import { DisplayNamePrefix } from "../utilities";
 import Tab, { TabManagedClasses } from "./tab";
 import TabItem from "./tab-item";
 import TabPanel, { TabPanelManagedClasses } from "./tab-panel";
-import { DisplayNamePrefix } from "../utilities";
+import { TabsHandledProps, TabsItem, TabsProps, TabsUnhandledProps } from "./tabs.props";
 
 export enum TabLocation {
     first,
@@ -45,6 +37,7 @@ export interface TabsState {
 class Tabs extends Foundation<TabsHandledProps, TabsUnhandledProps, TabsState> {
     public static defaultProps: Partial<TabsProps> = {
         disableTabFocus: false,
+        managedClasses: {},
     };
 
     public static displayName: string = `${DisplayNamePrefix}Tabs`;
@@ -109,21 +102,23 @@ class Tabs extends Foundation<TabsHandledProps, TabsUnhandledProps, TabsState> {
      */
     public render(): JSX.Element {
         const tabElements: JSX.Element[] = this.renderTabElements();
+        const {
+            tabs_tabList,
+            tabs_tabPanels,
+        }: TabsClassNameContract = this.props.managedClasses;
 
         return (
             <div {...this.unhandledProps()} className={this.generateClassNames()}>
                 <div
                     role="tablist"
                     ref={this.tabListRef}
-                    className={get(this.props, "managedClasses.tabs_tabList")}
+                    className={classNames(tabs_tabList)}
                     aria-label={this.props.label}
                     aria-orientation={this.props.orientation}
                 >
                     {tabElements}
                 </div>
-                <div className={get(this.props, "managedClasses.tabs_tabPanels")}>
-                    {this.renderTabPanels()}
-                </div>
+                <div className={classNames(tabs_tabPanels)}>{this.renderTabPanels()}</div>
                 {this.withoutSlot(TabsSlot.tabItem, this.props.children)}
             </div>
         );
@@ -154,31 +149,33 @@ class Tabs extends Foundation<TabsHandledProps, TabsUnhandledProps, TabsState> {
      * Generates class names based on props
      */
     protected generateClassNames(): string {
-        return super.generateClassNames(get(this.props, "managedClasses.tabs"));
+        return super.generateClassNames(classNames(this.props.managedClasses.tabs));
     }
 
     /**
      * Create tab content class names
      */
     protected generateTabContentClassNames(): string {
-        return get(this.props, "managedClasses.tabs_tabContent") || "";
+        return classNames(this.props.managedClasses.tabs_tabContent);
     }
 
     /**
      * Create tab panel content class names
      */
     protected generateTabPanelContentClassNames(): string {
-        return get(this.props, "managedClasses.tabs_tabPanelContent") || "";
+        return classNames(this.props.managedClasses.tabs_tabPanelContent);
     }
 
     /**
      * Create tab class names
      */
     protected generateTabClassNames(): TabManagedClasses {
+        const { tab, tab__active }: TabsClassNameContract = this.props.managedClasses;
+
         return {
             managedClasses: {
-                tab: get(this.props, "managedClasses.tab"),
-                tab__active: get(this.props, "managedClasses.tab__active"),
+                tab: classNames(tab),
+                tab__active: classNames(tab__active),
             },
         };
     }
@@ -187,10 +184,15 @@ class Tabs extends Foundation<TabsHandledProps, TabsUnhandledProps, TabsState> {
      * Create tab panel class names
      */
     protected generateTabPanelClassNames(): TabPanelManagedClasses {
+        const {
+            tabPanel,
+            tabPanel__hidden,
+        }: TabsClassNameContract = this.props.managedClasses;
+
         return {
             managedClasses: {
-                tabPanel: get(this.props, "managedClasses.tabPanel"),
-                tabPanel__hidden: get(this.props, "managedClasses.tabPanel__hidden"),
+                tabPanel: classNames(tabPanel),
+                tabPanel__hidden: classNames(tabPanel__hidden),
             },
         };
     }

@@ -17,6 +17,7 @@ import {
 } from "../utilities";
 import { DisplayNamePrefix } from "../utilities";
 import { canUseDOM } from "exenv-es6";
+import { classNames } from "@microsoft/fast-web-utilities";
 
 export interface ViewportPositionerState {
     disabled: boolean;
@@ -108,6 +109,7 @@ class ViewportPositioner extends Foundation<
         verticalLockToDefault: false,
         horizontalLockToDefault: false,
         fixedAfterInitialPlacement: false,
+        managedClasses: {},
     };
 
     protected handledProps: HandledProps<ViewportPositionerHandledProps> = {
@@ -226,101 +228,59 @@ class ViewportPositioner extends Foundation<
      * Create class-names
      */
     protected generateClassNames(): string {
-        let classNames: string = get(this.props.managedClasses, "viewportPositioner", "");
+        const {
+            viewportPositioner,
+            viewportPositioner__left,
+            viewportPositioner__right,
+            viewportPositioner__top,
+            viewportPositioner__bottom,
+            viewportPositioner__horizontalInset,
+            viewportPositioner__verticalInset,
+        }: ViewportPositionerClassNameContract = this.props.managedClasses;
+        const horizontalPosition: ViewportPositionerHorizontalPositionLabel = this.state
+            .currentHorizontalPosition;
+        const verticalPosition: ViewportPositionerVerticalPositionLabel = this.state
+            .currentVerticalPosition;
+        const isVerticalInset: boolean =
+            verticalPosition === ViewportPositionerVerticalPositionLabel.insetTop ||
+            verticalPosition === ViewportPositionerVerticalPositionLabel.insetBottom;
+        const isHorizontalInset: boolean =
+            horizontalPosition === ViewportPositionerHorizontalPositionLabel.insetLeft ||
+            horizontalPosition === ViewportPositionerHorizontalPositionLabel.insetRight;
 
-        switch (this.state.currentHorizontalPosition) {
-            case ViewportPositionerHorizontalPositionLabel.left:
-                classNames = classNames.concat(
-                    " ",
-                    get(this.props.managedClasses, "viewportPositioner__left", "")
-                );
-                break;
-
-            case ViewportPositionerHorizontalPositionLabel.insetLeft:
-                classNames = classNames.concat(
-                    " ",
-                    get(this.props.managedClasses, "viewportPositioner__left", "")
-                );
-                classNames = classNames.concat(
-                    " ",
-                    get(
-                        this.props.managedClasses,
-                        "viewportPositioner__horizontalInset",
-                        ""
-                    )
-                );
-                break;
-
-            case ViewportPositionerHorizontalPositionLabel.insetRight:
-                classNames = classNames.concat(
-                    " ",
-                    get(this.props.managedClasses, "viewportPositioner__right", "")
-                );
-                classNames = classNames.concat(
-                    " ",
-                    get(
-                        this.props.managedClasses,
-                        "viewportPositioner__horizontalInset",
-                        ""
-                    )
-                );
-                break;
-
-            case ViewportPositionerHorizontalPositionLabel.right:
-                classNames = classNames.concat(
-                    " ",
-                    get(this.props.managedClasses, "viewportPositioner__right", "")
-                );
-                break;
-        }
-
-        switch (this.state.currentVerticalPosition) {
-            case ViewportPositionerVerticalPositionLabel.top:
-                classNames = classNames.concat(
-                    " ",
-                    get(this.props.managedClasses, "viewportPositioner__top", "")
-                );
-                break;
-
-            case ViewportPositionerVerticalPositionLabel.insetTop:
-                classNames = classNames.concat(
-                    " ",
-                    get(this.props.managedClasses, "viewportPositioner__top", "")
-                );
-                classNames = classNames.concat(
-                    " ",
-                    get(
-                        this.props.managedClasses,
-                        "viewportPositioner__verticalInset",
-                        ""
-                    )
-                );
-                break;
-
-            case ViewportPositionerVerticalPositionLabel.insetBottom:
-                classNames = classNames.concat(
-                    " ",
-                    get(this.props.managedClasses, "viewportPositioner__bottom", "")
-                );
-                classNames = classNames.concat(
-                    " ",
-                    get(
-                        this.props.managedClasses,
-                        "viewportPositioner__verticalInset",
-                        ""
-                    )
-                );
-                break;
-
-            case ViewportPositionerVerticalPositionLabel.bottom:
-                classNames = classNames.concat(
-                    " ",
-                    get(this.props.managedClasses, "viewportPositioner__bottom", "")
-                );
-                break;
-        }
-
-        return super.generateClassNames(classNames);
+        return super.generateClassNames(
+            classNames(
+                viewportPositioner,
+                [
+                    viewportPositioner__left,
+                    horizontalPosition === ViewportPositionerHorizontalPositionLabel.left ||
+                    isHorizontalInset
+                ],
+                [
+                    viewportPositioner__right,
+                    horizontalPosition === ViewportPositionerHorizontalPositionLabel.right ||
+                    isHorizontalInset
+                ],
+                [
+                    viewportPositioner__horizontalInset,
+                    isHorizontalInset
+                ],
+                [
+                    viewportPositioner__top,
+                    verticalPosition === ViewportPositionerVerticalPositionLabel.top ||
+                    isVerticalInset
+                ],
+                [
+                    viewportPositioner__bottom,
+                    verticalPosition === ViewportPositionerVerticalPositionLabel.bottom ||
+                    isVerticalInset
+                ],
+                [
+                    viewportPositioner__verticalInset,
+                    isVerticalInset
+                ]
+            )
+        );
     }
 
     /**

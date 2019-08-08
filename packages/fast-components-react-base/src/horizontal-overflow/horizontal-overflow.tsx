@@ -5,7 +5,7 @@ import {
     HorizontalOverflowClassNameContract,
     ManagedClasses,
 } from "@microsoft/fast-components-class-name-contracts-base";
-import { getClientRectWithMargin } from "@microsoft/fast-web-utilities";
+import { getClientRectWithMargin, classNames } from "@microsoft/fast-web-utilities";
 import { Direction } from "@microsoft/fast-web-utilities";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import {
@@ -33,6 +33,10 @@ class HorizontalOverflow extends Foundation<
     HorizontalOverflowState
 > {
     public static displayName: string = `${DisplayNamePrefix}HorizontalOverflow`;
+
+    public static defaultProps: Partial<HorizontalOverflowProps> = {
+        managedClasses: {}
+    }
 
     protected handledProps: HandledProps<HorizontalOverflowHandledProps> = {
         scrollDuration: void 0,
@@ -93,6 +97,12 @@ class HorizontalOverflow extends Foundation<
      * Renders the Horizontal Overflow markup
      */
     public render(): React.ReactElement<HTMLDivElement> {
+        const {
+            horizontalOverflow_contentRegion,
+            horizontalOverflow_previous,
+            horizontalOverflow_next
+        }: HorizontalOverflowClassNameContract = this.props.managedClasses;
+
         return (
             <div
                 {...this.unhandledProps()}
@@ -107,10 +117,7 @@ class HorizontalOverflow extends Foundation<
                     }}
                 >
                     <ul
-                        className={get(
-                            this.props,
-                            "managedClasses.horizontalOverflow_contentRegion"
-                        )}
+                        className={classNames(horizontalOverflow_contentRegion)}
                         style={this.getListStyle()}
                         ref={this.horizontalOverflowItemsRef}
                     >
@@ -118,16 +125,13 @@ class HorizontalOverflow extends Foundation<
                     </ul>
                 </div>
                 <div
-                    className={get(
-                        this.props,
-                        "managedClasses.horizontalOverflow_previous"
-                    )}
+                    className={classNames(horizontalOverflow_previous)}
                     onClick={this.handlePreviousClick}
                 >
                     {this.withSlot(ButtonDirection.previous)}
                 </div>
                 <div
-                    className={get(this.props, "managedClasses.horizontalOverflow_next")}
+                    className={classNames(horizontalOverflow_next)}
                     onClick={this.handleNextClick}
                 >
                     {this.withSlot(ButtonDirection.next)}
@@ -233,7 +237,7 @@ class HorizontalOverflow extends Foundation<
      */
     protected generateClassNames(): string {
         return super.generateClassNames(
-            get(this.props, "managedClasses.horizontalOverflow")
+            classNames(this.props.managedClasses.horizontalOverflow)
         );
     }
 
@@ -388,11 +392,10 @@ class HorizontalOverflow extends Foundation<
             (child: React.ReactNode): React.ReactElement<HTMLLIElement> => {
                 return (
                     <li
-                        className={get(
-                            this.props.managedClasses,
-                            "horizontalOverflow_item",
-                            ""
-                        )}
+                        className={
+                            classNames(this.props.managedClasses.horizontalOverflow_item)
+                        }
+
                         style={{ display: "inline-block" }}
                     >
                         {child}

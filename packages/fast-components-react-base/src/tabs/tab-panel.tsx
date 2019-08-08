@@ -12,10 +12,12 @@ import {
     TabPanelUnhandledProps,
 } from "./tab-panel.props";
 import { DisplayNamePrefix } from "../utilities";
+import { classNames } from "@microsoft/fast-web-utilities";
 
 class TabPanel extends Foundation<TabPanelHandledProps, TabPanelUnhandledProps, {}> {
     public static defaultProps: Partial<TabPanelProps> = {
         active: false,
+        managedClasses: {}
     };
 
     public static displayName: string = `${DisplayNamePrefix}TabPanel`;
@@ -46,15 +48,11 @@ class TabPanel extends Foundation<TabPanelHandledProps, TabPanelUnhandledProps, 
      * Generates class names based on props
      */
     protected generateClassNames(): string {
-        return this.props.active
-            ? super.generateClassNames(get(this.props, "managedClasses.tabPanel"))
-            : super.generateClassNames(
-                  `${get(this.props, "managedClasses.tabPanel", "")} ${get(
-                      this.props,
-                      "managedClasses.tabPanel__hidden",
-                      ""
-                  )}`
-              );
+        const {
+            tabPanel,
+            tabPanel__hidden
+        }: TabPanelClassNameContract = this.props.managedClasses;
+        return super.generateClassNames(classNames(tabPanel, [tabPanel__hidden, !this.props.active]))
     }
 }
 

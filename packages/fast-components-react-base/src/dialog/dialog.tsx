@@ -15,12 +15,14 @@ import {
 import { canUseDOM } from "exenv-es6";
 import { keyCodeEscape } from "@microsoft/fast-web-utilities";
 import { DisplayNamePrefix } from "../utilities";
+import { classNames } from "@microsoft/fast-web-utilities";
 
 class Dialog extends Foundation<DialogHandledProps, DialogUnhandledProps, {}> {
     public static defaultProps: Partial<DialogProps> = {
         contentHeight: "480px",
         contentWidth: "640px",
         visible: false,
+        managedClasses: {},
     };
 
     public static displayName: string = `${DisplayNamePrefix}Dialog`;
@@ -41,24 +43,23 @@ class Dialog extends Foundation<DialogHandledProps, DialogUnhandledProps, {}> {
      * Renders the component
      */
     public render(): React.ReactElement<HTMLDivElement> {
+        const {
+            dialog_positioningRegion,
+            dialog_contentRegion,
+        }: DialogClassNameContract = this.props.managedClasses;
+
         return (
             <div
                 {...this.unhandledProps()}
                 className={this.generateClassNames()}
                 aria-hidden={!this.props.visible}
             >
-                <div
-                    className={get(
-                        this.props.managedClasses,
-                        "dialog_positioningRegion",
-                        ""
-                    )}
-                >
+                <div className={classNames(dialog_positioningRegion)}>
                     {this.renderModalOverlay()}
                     <div
                         role="dialog"
                         tabIndex={-1}
-                        className={get(this.props, "managedClasses.dialog_contentRegion")}
+                        className={classNames(dialog_contentRegion)}
                         style={{
                             height: this.props.contentHeight,
                             width: this.props.contentWidth,
@@ -109,7 +110,7 @@ class Dialog extends Foundation<DialogHandledProps, DialogUnhandledProps, {}> {
      * Generates class names
      */
     protected generateClassNames(): string {
-        return super.generateClassNames(get(this.props, "managedClasses.dialog"));
+        return super.generateClassNames(classNames(this.props.managedClasses.dialog));
     }
 
     /**
@@ -122,7 +123,7 @@ class Dialog extends Foundation<DialogHandledProps, DialogUnhandledProps, {}> {
 
         return (
             <div
-                className={get(this.props, "managedClasses.dialog_modalOverlay")}
+                className={classNames(this.props.managedClasses.dialog_modalOverlay)}
                 onClick={this.handleOverlayClick}
                 role={"presentation"}
                 tabIndex={-1}
