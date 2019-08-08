@@ -46,6 +46,9 @@ const glyphStyles: CSSRules<{}> = {
     height: glyphSize,
     margin: "auto",
     fill: neutralForegroundRest,
+    "@media (-ms-high-contrast:active)": {
+        fill: "ButtonText"
+    }
 };
 
 const styles: ComponentStyles<TextActionClassNameContract, DesignSystem> = {

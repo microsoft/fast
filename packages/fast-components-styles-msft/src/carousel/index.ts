@@ -215,6 +215,9 @@ const styles: ComponentStyles<CarouselClassNameContract, DesignSystem> = {
             },
             "& > svg": {
                 fill: lightModeNeutralForegroundRest,
+                "@media (-ms-high-contrast:active)": {
+                    fill: "ButtonText"
+                }
             },
         },
         "& $carousel_sequenceIndicator": {

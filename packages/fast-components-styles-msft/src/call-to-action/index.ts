@@ -108,6 +108,9 @@ const styles: ComponentStyles<CallToActionClassNameContract, DesignSystem> = {
         marginRight: directionSwitch("", "6px"),
         transform: directionSwitch("none", "rotate(180deg)"),
         transition: "all 600ms cubic-bezier(0.19, 1, 0.22, 1)",
+        "@media (-ms-high-contrast:active)": {
+            fill: "ButtonText"
+        },
     },
     callToAction__primary: {
         "& $callToAction_glyph": {
@@ -134,6 +137,9 @@ const styles: ComponentStyles<CallToActionClassNameContract, DesignSystem> = {
         "&:hover": {
             "& $callToAction_glyph": {
                 fill: accentForegroundHover,
+                "@media (-ms-high-contrast:active)": {
+                    fill: "ButtonText"
+                },
             },
         },
         "&:active": {
@@ -154,6 +160,9 @@ const styles: ComponentStyles<CallToActionClassNameContract, DesignSystem> = {
         "&:hover": {
             "& $callToAction_glyph": {
                 fill: accentForegroundHover,
+                "@media (-ms-high-contrast:active)": {
+                    fill: "ButtonText"
+                },
             },
         },
         "&:active": {

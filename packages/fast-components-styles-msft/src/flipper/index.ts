@@ -85,6 +85,9 @@ const styles: ComponentStyles<FlipperClassNameContract, DesignSystem> = {
         "&::-moz-focus-inner": {
             border: "0",
         },
+        "@media (-ms-high-contrast:active)": {
+            fill: "ButtonText"
+        }
     },
     flipper_glyph: {
         position: "relative",

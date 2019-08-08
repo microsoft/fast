@@ -74,6 +74,8 @@ const styles: ComponentStyles<LightweightButtonClassNameContract, DesignSystem> 
             }
         },
         "@media (-ms-high-contrast:active)": {
+            color: "ButtonText",
+            fill: "ButtonText",
             border: format(
                 "{0} solid ButtonText",
                 toPx<DesignSystem>(outlineWidth)
