@@ -142,6 +142,7 @@ const styles: ComponentStyles<TextActionClassNameContract, DesignSystem> = {
         cursor: "pointer",
         "@media (-ms-high-contrast:active)": {
             background: "ButtonFace",
+            fill: "ButtonText"
         },
         "&:hover": {
             "@media (-ms-high-contrast:active)": {

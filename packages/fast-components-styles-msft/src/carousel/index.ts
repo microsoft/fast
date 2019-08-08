@@ -95,7 +95,8 @@ const styles: ComponentStyles<CarouselClassNameContract, DesignSystem> = {
             width: "32px",
             transition: "all 0.05s ease-in-out",
             "@media (-ms-high-contrast:active)": {
-                background: "HighlightText",
+                opacity: "1",
+                background: "ButtonFace",
                 borderColor: "ButtonText"
             },
         },
@@ -103,6 +104,11 @@ const styles: ComponentStyles<CarouselClassNameContract, DesignSystem> = {
             "&:hover": {
                 "&::before": {
                     opacity: "0.9",
+                    "@media (-ms-high-contrast:active)": {
+                        opacity: "1",
+                        background: "Highlight",
+                        borderColor: "HighlightText"
+                    },
                 },
             },
         },
@@ -110,6 +116,10 @@ const styles: ComponentStyles<CarouselClassNameContract, DesignSystem> = {
     carousel_sequenceIndicator__active: {
         "&::before": {
             opacity: "1",
+            "@media (-ms-high-contrast:active)": {
+                background: "Highlight",
+                borderColor: "HighlightText"
+            },
         },
     },
     carousel_tabPanel: {

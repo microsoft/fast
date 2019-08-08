@@ -33,6 +33,12 @@ const styles: ComponentStyles<SelectClassNameContract, DesignSystem> = {
         height: height(),
         width: "100%",
         ...inputFieldStyles(),
+        "@media (-ms-high-contrast:active)": {
+            background: "ButtonFace",
+            borderColor: "ButtonText",
+            color: "ButtonText",
+            "-ms-high-contrast-adjust": "none"
+        }
     },
     select_buttonContentRegion: {
         display: "grid",
@@ -58,6 +64,9 @@ const styles: ComponentStyles<SelectClassNameContract, DesignSystem> = {
         width: glyphSize,
         height: glyphSize,
         gridColumnStart: "2",
+        "@media (-ms-high-contrast:active)": {
+            fill: "ButtonText"
+        },
     },
     select_menu: {
         background: neutralFillStealthRest,

@@ -117,10 +117,29 @@ const styles: ComponentStyles<RadioClassNameContract, DesignSystem> = {
             "&::before": {
                 background: neutralForegroundRest,
                 "@media (-ms-high-contrast:active)": {
-                    backgroundColor: "ButtonHighlight",
+                    background: "Highlight",
                 },
             },
         },
+        "&:hover": {
+            "& $radio_stateIndicator": {
+                "&::before": {
+                    "@media (-ms-high-contrast:active)": {
+                        background: "HighlightText",
+                    },
+                },
+            },
+        },
+        "& $radio_input": {
+            "@media (-ms-high-contrast:active)": {
+                background: "HighlightText",
+            },
+            "&:hover": {
+                "@media (-ms-high-contrast:active)": {
+                    background: "Highlight",
+                },
+            },
+        }
     },
     radio__disabled: {
         ...applyDisabledState(),

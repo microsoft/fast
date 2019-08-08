@@ -64,6 +64,15 @@ const styles: ComponentStyles<AccentButtonClassNameContract, DesignSystem> = {
                 "@media (-ms-high-contrast:active)": {
                     color: "GrayText",
                 },
+                "&:hover": {
+                    background: "transparent",
+                    color: "GrayText",
+                    "& $button_beforeContent, & $button_afterContent": {
+                        "@media (-ms-high-contrast:active)": {
+                            fill: "GrayText",
+                        },
+                    }
+                }
             }
         },
     },

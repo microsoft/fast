@@ -74,6 +74,10 @@ const styles: ComponentStyles<LightweightButtonClassNameContract, DesignSystem> 
             }
         },
         "@media (-ms-high-contrast:active)": {
+            border: format(
+                "{0} solid ButtonText",
+                toPx<DesignSystem>(outlineWidth)
+            ),
             "-ms-high-contrast-adjust": "none"
         },
         "a&": {

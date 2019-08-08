@@ -6,6 +6,7 @@ import {
     directionSwitch,
     format,
     localizeSpacing,
+    toPx,
 } from "@microsoft/fast-jss-utilities";
 import { height, horizontalSpacing } from "../utilities/density";
 import { inputFieldStyles } from "../patterns/input-field";
@@ -18,12 +19,9 @@ const styles: ComponentStyles<NumberFieldClassNameContract, DesignSystem> = {
             format("0 6px 0 {0}", horizontalSpacing()),
             format("0 {0} 0 6px", horizontalSpacing())
         ),
-        "&:disabled": {
-            "@media (-ms-high-contrast:active)": {
-                background: "Background",
-                borderColor: "GrayText"
-            }
-        }
+        "@media (-ms-high-contrast:active)": {
+            borderColor: "ButtonText",
+        },
     },
 };
 

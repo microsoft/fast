@@ -113,8 +113,8 @@ const styles: ComponentStyles<CallToActionClassNameContract, DesignSystem> = {
         "& $callToAction_glyph": {
             fill: accentForegroundCut,
             "@media (-ms-high-contrast:active)": {
-                fill: "ButtonText"
-            }
+                fill: "HighlightText"
+            },
         },
     },
     callToAction__lightweight: {

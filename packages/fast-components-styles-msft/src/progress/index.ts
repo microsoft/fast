@@ -28,7 +28,7 @@ const styles: ComponentStyles<ProgressClassNameContract, DesignSystem> = {
             transform: "rotate(-90deg)",
             transition: "all 0.2s ease-in-out",
             "@media (-ms-high-contrast:active)": {
-                stroke: "ButtonText",
+                stroke: "ButtonFace",
             },
         },
         "& $progress_valueIndicator__indeterminate": {
@@ -42,6 +42,9 @@ const styles: ComponentStyles<ProgressClassNameContract, DesignSystem> = {
             transformOrigin: "50% 50%",
             transform: "rotate(-90deg)",
             transition: "all 0.2s ease-in-out",
+            "@media (-ms-high-contrast:active)": {
+                stroke: "ButtonText",
+            },
         },
     },
     progress_circularSVG__control: {
@@ -62,7 +65,7 @@ const styles: ComponentStyles<ProgressClassNameContract, DesignSystem> = {
         height: "100%",
         transition: "all 0.2s ease-in-out",
         "@media (-ms-high-contrast:active)": {
-            background: "ButtonText",
+            background: "ButtonFace",
         },
     },
     progress_valueIndicator__indeterminate: {},
@@ -77,12 +80,17 @@ const styles: ComponentStyles<ProgressClassNameContract, DesignSystem> = {
         background: neutralFillRest,
         transition: "all 0.2s ease-in-out",
         maskImage: "-webkit-radial-gradient(white, black)",
+        "@media (-ms-high-contrast:active)": {
+            background: "ButtonText",
+            border: "1px solid ButtonText"
+        },
     },
     progress_indicator__determinate: {
         height: toPx<DesignSystem>(designUnit),
         borderRadius: "2px",
         "@media (-ms-high-contrast:active)": {
-            background: "ButtonShadow",
+            background: "ButtonText",
+            border: "1px solid ButtonText"
         },
     },
     progress_dot: {
@@ -93,7 +101,7 @@ const styles: ComponentStyles<ProgressClassNameContract, DesignSystem> = {
         borderRadius: "100px",
         animationTimingFunction: "cubic-bezier(0.4, 0.0, 0.6, 1.0)",
         "@media (-ms-high-contrast:active)": {
-            background: "ButtonShadow",
+            background: "ButtonFace",
             opacity: "1 !important",
         },
     },

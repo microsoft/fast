@@ -43,7 +43,8 @@ const indicatorSvg: DesignSystemResolver<string> = (
         neutralForegroundRest(designSystem)
     )}" fill-rule="evenodd" clip-rule="evenodd" d="M8.143 12.6697L15.235 4.5L16.8 5.90363L8.23812 15.7667L3.80005 11.2556L5.27591 9.7555L8.143 12.6697Z"/></svg>`;
 };
-const indicatorSvgHc: string = `<svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill="ButtonHighlight" fill-rule="evenodd" clip-rule="evenodd" d="M8.143 12.6697L15.235 4.5L16.8 5.90363L8.23812 15.7667L3.80005 11.2556L5.27591 9.7555L8.143 12.6697Z"/></svg>`;
+const indicatorSvgHc: string = `<svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill="HighlightText" fill-rule="evenodd" clip-rule="evenodd" d="M8.143 12.6697L15.235 4.5L16.8 5.90363L8.23812 15.7667L3.80005 11.2556L5.27591 9.7555L8.143 12.6697Z"/></svg>`;
+const indicatorSvgHcHover: string = `<svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill="Highlight" fill-rule="evenodd" clip-rule="evenodd" d="M8.143 12.6697L15.235 4.5L16.8 5.90363L8.23812 15.7667L3.80005 11.2556L5.27591 9.7555L8.143 12.6697Z"/></svg>`;
 const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = {
     checkbox: {
         position: "relative",
@@ -129,6 +130,25 @@ const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = {
                 },
             },
         },
+        "&:hover": {
+            "& $checkbox_stateIndicator": {
+                "&::before": {
+                    "@media (-ms-high-contrast:active)": {
+                        background: `url('data:image/svg+xml;utf8,${indicatorSvgHcHover}')`,
+                    },
+                },
+            },
+        },
+        "& $checkbox_input": {
+            "@media (-ms-high-contrast:active)": {
+                background: "Highlight",
+            },
+            "&:hover": {
+                "@media (-ms-high-contrast:active)": {
+                    background: "HighlightText",
+                },
+            },
+        }
     },
     checkbox__indeterminate: {
         "& $checkbox_stateIndicator": {
