@@ -1,17 +1,16 @@
-import React from "react";
-import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
-import { get } from "lodash-es";
 import { SliderTrackItemClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
+import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
+import { classNames } from "@microsoft/fast-web-utilities";
+import React from "react";
+import { SliderContext, SliderContextType } from "../slider/slider-context";
+import { SliderOrientation } from "../slider/slider.props";
+import { DisplayNamePrefix } from "../utilities";
 import {
     SliderTrackItemAnchor,
     SliderTrackItemHandledProps,
     SliderTrackItemProps,
     SliderTrackItemUnhandledProps,
 } from "./slider-track-item.props";
-import { SliderOrientation } from "../slider/slider.props";
-import { SliderContext, SliderContextType } from "../slider/slider-context";
-import { DisplayNamePrefix } from "../utilities";
-import { classNames } from "@microsoft/fast-web-utilities";
 
 class SliderTrackItem extends Foundation<
     SliderTrackItemHandledProps,

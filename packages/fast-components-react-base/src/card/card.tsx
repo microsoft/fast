@@ -1,20 +1,9 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import { get } from "lodash-es";
+import { CardClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
-import {
-    CardHandledProps,
-    CardManagedClasses,
-    CardProps,
-    CardTag,
-    CardUnhandledProps,
-} from "./card.props";
-import {
-    CardClassNameContract,
-    ManagedClasses,
-} from "@microsoft/fast-components-class-name-contracts-base";
-import { DisplayNamePrefix } from "../utilities";
 import { classNames } from "@microsoft/fast-web-utilities";
+import React from "react";
+import { DisplayNamePrefix } from "../utilities";
+import { CardHandledProps, CardProps, CardTag, CardUnhandledProps } from "./card.props";
 
 class Card extends Foundation<CardHandledProps, CardUnhandledProps, {}> {
     public static displayName: string = `${DisplayNamePrefix}Card`;

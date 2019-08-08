@@ -1,16 +1,14 @@
-import React from "react";
-import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
-import { get } from "lodash-es";
 import { ListboxItemClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
+import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
+import { classNames, keyCodeEnter, keyCodeSpace } from "@microsoft/fast-web-utilities";
+import React from "react";
+import { ListboxContext, ListboxContextType } from "../listbox/listbox-context";
+import { DisplayNamePrefix } from "../utilities";
 import {
     ListboxItemHandledProps,
     ListboxItemProps,
     ListboxItemUnhandledProps,
 } from "./listbox-item.props";
-import { ListboxContext, ListboxContextType } from "../listbox/listbox-context";
-import { keyCodeEnter, keyCodeSpace } from "@microsoft/fast-web-utilities";
-import { DisplayNamePrefix } from "../utilities";
-import { classNames } from "@microsoft/fast-web-utilities";
 
 class ListboxItem extends Foundation<
     ListboxItemHandledProps,

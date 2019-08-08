@@ -1,7 +1,15 @@
-import React from "react";
-import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
-import { get, isNil } from "lodash-es";
 import { ViewportPositionerClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
+import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
+import { classNames } from "@microsoft/fast-web-utilities";
+import { canUseDOM } from "exenv-es6";
+import { get, isNil } from "lodash-es";
+import React from "react";
+import {
+    DisplayNamePrefix,
+    IntersectionObserverEntry,
+    ResizeObserverClassDefinition,
+    ResizeObserverEntry,
+} from "../utilities";
 import {
     AxisPositioningMode,
     ViewportPositionerHandledProps,
@@ -10,14 +18,6 @@ import {
     ViewportPositionerUnhandledProps,
     ViewportPositionerVerticalPosition,
 } from "./viewport-positioner.props";
-import {
-    IntersectionObserverEntry,
-    ResizeObserverClassDefinition,
-    ResizeObserverEntry,
-} from "../utilities";
-import { DisplayNamePrefix } from "../utilities";
-import { canUseDOM } from "exenv-es6";
-import { classNames } from "@microsoft/fast-web-utilities";
 
 export interface ViewportPositionerState {
     disabled: boolean;
@@ -253,32 +253,28 @@ class ViewportPositioner extends Foundation<
                 viewportPositioner,
                 [
                     viewportPositioner__left,
-                    horizontalPosition === ViewportPositionerHorizontalPositionLabel.left ||
-                    isHorizontalInset
+                    horizontalPosition ===
+                        ViewportPositionerHorizontalPositionLabel.left ||
+                        isHorizontalInset,
                 ],
                 [
                     viewportPositioner__right,
-                    horizontalPosition === ViewportPositionerHorizontalPositionLabel.right ||
-                    isHorizontalInset
+                    horizontalPosition ===
+                        ViewportPositionerHorizontalPositionLabel.right ||
+                        isHorizontalInset,
                 ],
-                [
-                    viewportPositioner__horizontalInset,
-                    isHorizontalInset
-                ],
+                [viewportPositioner__horizontalInset, isHorizontalInset],
                 [
                     viewportPositioner__top,
                     verticalPosition === ViewportPositionerVerticalPositionLabel.top ||
-                    isVerticalInset
+                        isVerticalInset,
                 ],
                 [
                     viewportPositioner__bottom,
                     verticalPosition === ViewportPositionerVerticalPositionLabel.bottom ||
-                    isVerticalInset
+                        isVerticalInset,
                 ],
-                [
-                    viewportPositioner__verticalInset,
-                    isVerticalInset
-                ]
+                [viewportPositioner__verticalInset, isVerticalInset]
             )
         );
     }

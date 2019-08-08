@@ -1,21 +1,10 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import { get } from "lodash-es";
+import { DialogClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
-import {
-    DialogHandledProps,
-    DialogManagedClasses,
-    DialogProps,
-    DialogUnhandledProps,
-} from "./dialog.props";
-import {
-    DialogClassNameContract,
-    ManagedClasses,
-} from "@microsoft/fast-components-class-name-contracts-base";
+import { classNames, keyCodeEscape } from "@microsoft/fast-web-utilities";
 import { canUseDOM } from "exenv-es6";
-import { keyCodeEscape } from "@microsoft/fast-web-utilities";
+import React from "react";
 import { DisplayNamePrefix } from "../utilities";
-import { classNames } from "@microsoft/fast-web-utilities";
+import { DialogHandledProps, DialogProps, DialogUnhandledProps } from "./dialog.props";
 
 class Dialog extends Foundation<DialogHandledProps, DialogUnhandledProps, {}> {
     public static defaultProps: Partial<DialogProps> = {

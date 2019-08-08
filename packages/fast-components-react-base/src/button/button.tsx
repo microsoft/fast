@@ -1,14 +1,9 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import { get } from "lodash-es";
+import { ButtonClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
-import { ButtonHandledProps, ButtonProps, ButtonUnhandledProps } from "./button.props";
-import {
-    ButtonClassNameContract,
-    ManagedClasses,
-} from "@microsoft/fast-components-class-name-contracts-base";
-import { DisplayNamePrefix } from "../utilities";
 import { classNames } from "@microsoft/fast-web-utilities";
+import React from "react";
+import { DisplayNamePrefix } from "../utilities";
+import { ButtonHandledProps, ButtonProps, ButtonUnhandledProps } from "./button.props";
 
 /**
  * Button HTML tags

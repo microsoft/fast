@@ -1,15 +1,13 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import { BreadcrumbClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
+import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
+import { classNames } from "@microsoft/fast-web-utilities";
+import React from "react";
+import { DisplayNamePrefix } from "../utilities";
 import {
     BreadcrumbHandledProps,
     BreadcrumbProps,
     BreadcrumbUnhandledProps,
 } from "./breadcrumb.props";
-import { get } from "lodash-es";
-import { DisplayNamePrefix } from "../utilities";
-import { classNames } from "@microsoft/fast-web-utilities";
 
 class Breadcrumb extends Foundation<
     BreadcrumbHandledProps,

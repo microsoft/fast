@@ -1,18 +1,13 @@
-import React from "react";
-import ReactDOM from "react-dom";
+import { HypertextClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
+import { get } from "lodash-es";
+import React from "react";
+import { DisplayNamePrefix } from "../utilities";
 import {
     HypertextHandledProps,
-    HypertextManagedClasses,
     HypertextProps,
     HypertextUnhandledProps,
 } from "./hypertext.props";
-import {
-    HypertextClassNameContract,
-    ManagedClasses,
-} from "@microsoft/fast-components-class-name-contracts-base";
-import { get } from "lodash-es";
-import { DisplayNamePrefix } from "../utilities";
 
 class Hypertext extends Foundation<HypertextHandledProps, HypertextUnhandledProps, {}> {
     public static displayName: string = `${DisplayNamePrefix}Hypertext`;

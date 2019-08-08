@@ -1,3 +1,23 @@
+import { SliderClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
+import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
+import {
+    classNames,
+    Direction,
+    keyCodeArrowDown,
+    keyCodeArrowLeft,
+    keyCodeArrowRight,
+    keyCodeArrowUp,
+    keyCodePageDown,
+    keyCodePageUp,
+} from "@microsoft/fast-web-utilities";
+import { get } from "lodash-es";
+import React from "react";
+import SliderTrackItem, {
+    SliderTrackItemAnchor,
+    SliderTrackItemManagedClasses,
+} from "../slider-track-item";
+import { DisplayNamePrefix } from "../utilities";
+import { SliderContext, SliderContextType } from "./slider-context";
 import {
     SliderHandledProps,
     SliderMode,
@@ -6,27 +26,6 @@ import {
     SliderRange,
     SliderUnhandledProps,
 } from "./slider.props";
-import React from "react";
-import { get } from "lodash-es";
-import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
-import {
-    keyCodeArrowDown,
-    keyCodeArrowLeft,
-    keyCodeArrowRight,
-    keyCodeArrowUp,
-    keyCodePageDown,
-    keyCodePageUp,
-} from "@microsoft/fast-web-utilities";
-import { classNames, KeyCodes } from "@microsoft/fast-web-utilities";
-import ReactDOM from "react-dom";
-import { SliderClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
-import { Direction } from "@microsoft/fast-web-utilities";
-import { DisplayNamePrefix } from "../utilities";
-import { SliderContext, SliderContextType } from "./slider-context";
-import SliderTrackItem, {
-    SliderTrackItemAnchor,
-    SliderTrackItemManagedClasses,
-} from "../slider-track-item";
 
 export enum SliderThumb {
     upperThumb = "upperThumb",
@@ -235,25 +234,19 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
                     }}
                 >
                     <div
-                        className={classNames(
-                            slider_layoutRegion
-                        )}
+                        className={classNames(slider_layoutRegion)}
                         style={{
                             position: "relative",
                         }}
                     >
                         <div
-                            className={classNames(
-                                slider_backgroundTrack
-                            )}
+                            className={classNames(slider_backgroundTrack)}
                             style={{
                                 position: "absolute",
                             }}
                         />
                         <SliderTrackItem
-                            className={classNames(
-                                slider_foregroundTrack
-                            )}
+                            className={classNames(slider_foregroundTrack)}
                             maxValuePositionBinding={
                                 SliderTrackItemAnchor.selectedRangeMax
                             }
@@ -383,7 +376,7 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
                     [slider_thumb__lowerValue, thumb !== SliderThumb.upperThumb]
                 ),
                 sliderTrackItem_horizontal: classNames(sliderTrackItem_vertical),
-                sliderTrackItem_vertical: classNames(slider_thumb__orientationVertical)
+                sliderTrackItem_vertical: classNames(slider_thumb__orientationVertical),
             },
         };
     };

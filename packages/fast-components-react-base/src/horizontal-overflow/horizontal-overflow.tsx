@@ -1,22 +1,25 @@
-import React from "react";
-import { get } from "lodash-es";
-import { canUseDOM } from "exenv-es6";
-import {
-    HorizontalOverflowClassNameContract,
-    ManagedClasses,
-} from "@microsoft/fast-components-class-name-contracts-base";
-import { getClientRectWithMargin, classNames } from "@microsoft/fast-web-utilities";
-import { Direction } from "@microsoft/fast-web-utilities";
+import { HorizontalOverflowClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
+import {
+    classNames,
+    Direction,
+    getClientRectWithMargin,
+} from "@microsoft/fast-web-utilities";
+import { canUseDOM } from "exenv-es6";
+import { get } from "lodash-es";
+import throttle from "raf-throttle";
+import React from "react";
+import {
+    DisplayNamePrefix,
+    ResizeObserverClassDefinition,
+    ResizeObserverEntry,
+} from "../utilities";
 import {
     HorizontalOverflowHandledProps,
     HorizontalOverflowProps,
     HorizontalOverflowUnhandledProps,
     PositionChange,
 } from "./horizontal-overflow.props";
-import throttle from "raf-throttle";
-import { ResizeObserverClassDefinition, ResizeObserverEntry } from "../utilities";
-import { DisplayNamePrefix } from "../utilities";
 
 export enum ButtonDirection {
     previous = "previous",
@@ -35,8 +38,8 @@ class HorizontalOverflow extends Foundation<
     public static displayName: string = `${DisplayNamePrefix}HorizontalOverflow`;
 
     public static defaultProps: Partial<HorizontalOverflowProps> = {
-        managedClasses: {}
-    }
+        managedClasses: {},
+    };
 
     protected handledProps: HandledProps<HorizontalOverflowHandledProps> = {
         scrollDuration: void 0,
@@ -100,7 +103,7 @@ class HorizontalOverflow extends Foundation<
         const {
             horizontalOverflow_contentRegion,
             horizontalOverflow_previous,
-            horizontalOverflow_next
+            horizontalOverflow_next,
         }: HorizontalOverflowClassNameContract = this.props.managedClasses;
 
         return (
@@ -392,10 +395,9 @@ class HorizontalOverflow extends Foundation<
             (child: React.ReactNode): React.ReactElement<HTMLLIElement> => {
                 return (
                     <li
-                        className={
-                            classNames(this.props.managedClasses.horizontalOverflow_item)
-                        }
-
+                        className={classNames(
+                            this.props.managedClasses.horizontalOverflow_item
+                        )}
                         style={{ display: "inline-block" }}
                     >
                         {child}

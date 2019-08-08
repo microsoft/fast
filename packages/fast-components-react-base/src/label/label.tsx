@@ -1,20 +1,18 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import { get, isUndefined } from "lodash-es";
-import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
-import {
-    LabelHandledProps,
-    LabelManagedClasses,
-    LabelProps,
-    LabelTag,
-    LabelUnhandledProps,
-} from "./label.props";
 import {
     LabelClassNameContract,
     ManagedClasses,
 } from "@microsoft/fast-components-class-name-contracts-base";
-import { DisplayNamePrefix } from "../utilities";
+import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import { classNames } from "@microsoft/fast-web-utilities";
+import { isUndefined } from "lodash-es";
+import React from "react";
+import { DisplayNamePrefix } from "../utilities";
+import {
+    LabelHandledProps,
+    LabelProps,
+    LabelTag,
+    LabelUnhandledProps,
+} from "./label.props";
 class Label extends Foundation<LabelHandledProps, LabelUnhandledProps, {}> {
     public static displayName: string = `${DisplayNamePrefix}Label`;
 

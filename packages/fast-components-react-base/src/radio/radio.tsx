@@ -1,19 +1,9 @@
-import React from "react";
-import ReactDOM from "react-dom";
+import { RadioClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
-import {
-    RadioHandledProps,
-    RadioManagedClasses,
-    RadioProps,
-    RadioUnhandledProps,
-} from "./radio.props";
-import {
-    ManagedClasses,
-    RadioClassNameContract,
-} from "@microsoft/fast-components-class-name-contracts-base";
-import { get } from "lodash-es";
-import { DisplayNamePrefix } from "../utilities";
 import { classNames } from "@microsoft/fast-web-utilities";
+import React from "react";
+import { DisplayNamePrefix } from "../utilities";
+import { RadioHandledProps, RadioProps, RadioUnhandledProps } from "./radio.props";
 
 /**
  * Radio slot options

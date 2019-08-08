@@ -1,21 +1,14 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import { get } from "lodash-es";
+import { NumberFieldClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
+import { classNames } from "@microsoft/fast-web-utilities";
+import React from "react";
+import { TextFieldType } from "../text-field/index";
+import { DisplayNamePrefix } from "../utilities";
 import {
     NumberFieldHandledProps,
-    NumberFieldManagedClasses,
     NumberFieldProps,
     NumberFieldUnhandledProps,
 } from "./number-field.props";
-import {
-    ManagedClasses,
-    NumberFieldClassNameContract,
-} from "@microsoft/fast-components-class-name-contracts-base";
-import { TextFieldType } from "../text-field/index";
-import { DisplayNamePrefix } from "../utilities";
-import { classNames } from "@microsoft/fast-web-utilities";
-import { includesAllSubdirectoriesAsNamedExports } from "../../../../build/helpers/file-includes-all-subdirectories-as-named-exports";
 
 class NumberField extends Foundation<
     NumberFieldHandledProps,

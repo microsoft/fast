@@ -1,23 +1,14 @@
-import React from "react";
-import { get } from "lodash-es";
-import {
-    ManagedClasses,
-    TabClassNameContract,
-} from "@microsoft/fast-components-class-name-contracts-base";
+import { TabClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
-import {
-    TabHandledProps,
-    TabManagedClasses,
-    TabProps,
-    TabUnhandledProps,
-} from "./tab.props";
-import { DisplayNamePrefix } from "../utilities";
 import { classNames } from "@microsoft/fast-web-utilities";
+import React from "react";
+import { DisplayNamePrefix } from "../utilities";
+import { TabHandledProps, TabProps, TabUnhandledProps } from "./tab.props";
 
 class Tab extends Foundation<TabHandledProps, TabUnhandledProps, {}> {
     public static defaultProps: Partial<TabProps> = {
         active: false,
-        managedClasses: {}
+        managedClasses: {},
     };
 
     public static displayName: string = `${DisplayNamePrefix}Tab`;
@@ -48,12 +39,11 @@ class Tab extends Foundation<TabHandledProps, TabUnhandledProps, {}> {
      * Generates class names based on props
      */
     protected generateClassNames(): string {
-        const {
-            tab,
-            tab__active
-        }: TabClassNameContract = this.props.managedClasses;
+        const { tab, tab__active }: TabClassNameContract = this.props.managedClasses;
 
-        return super.generateClassNames(classNames(tab, [tab__active, this.props.active]))
+        return super.generateClassNames(
+            classNames(tab, [tab__active, this.props.active])
+        );
     }
 }
 

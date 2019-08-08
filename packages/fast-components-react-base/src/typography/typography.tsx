@@ -1,21 +1,15 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import { get } from "lodash-es";
+import { TypographyClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
+import { classNames } from "@microsoft/fast-web-utilities";
+import React from "react";
+import { DisplayNamePrefix } from "../utilities";
 import {
     TypographyHandledProps,
-    TypographyManagedClasses,
     TypographyProps,
     TypographySize,
     TypographyTag,
     TypographyUnhandledProps,
 } from "./typography.props";
-import {
-    ManagedClasses,
-    TypographyClassNameContract,
-} from "@microsoft/fast-components-class-name-contracts-base";
-import { DisplayNamePrefix } from "../utilities";
-import { classNames } from "@microsoft/fast-web-utilities";
 
 class Typography extends Foundation<
     TypographyHandledProps,

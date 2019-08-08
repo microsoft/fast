@@ -1,15 +1,13 @@
-import React from "react";
-import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
-import { get } from "lodash-es";
 import { ContextMenuItemClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
-import { keyCodeEnter, keyCodeSpace } from "@microsoft/fast-web-utilities";
+import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
+import { classNames, keyCodeEnter, keyCodeSpace } from "@microsoft/fast-web-utilities";
+import React from "react";
+import { DisplayNamePrefix } from "../utilities";
 import {
     ContextMenuItemHandledProps,
     ContextMenuItemProps,
     ContextMenuItemUnhandledProps,
 } from "./context-menu-item.props";
-import { DisplayNamePrefix } from "../utilities";
-import { classNames } from "@microsoft/fast-web-utilities";
 
 export enum ContextMenuItemRole {
     menuItem = "menuitem",

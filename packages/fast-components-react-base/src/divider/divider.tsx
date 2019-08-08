@@ -1,20 +1,14 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import { get } from "lodash-es";
+import { DividerClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
+import { classNames } from "@microsoft/fast-web-utilities";
+import React from "react";
+import { DisplayNamePrefix } from "../utilities";
 import {
     DividerHandledProps,
-    DividerManagedClasses,
     DividerProps,
     DividerRoles,
     DividerUnhandledProps,
 } from "./divider.props";
-import {
-    DividerClassNameContract,
-    ManagedClasses,
-} from "@microsoft/fast-components-class-name-contracts-base";
-import { DisplayNamePrefix } from "../utilities";
-import { classNames } from "@microsoft/fast-web-utilities";
 
 /* tslint:disable-next-line */
 class Divider extends Foundation<DividerHandledProps, DividerUnhandledProps, {}> {

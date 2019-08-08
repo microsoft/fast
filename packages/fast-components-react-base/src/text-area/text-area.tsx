@@ -1,19 +1,13 @@
-import React from "react";
-import ReactDOM from "react-dom";
+import { TextAreaClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
+import { classNames } from "@microsoft/fast-web-utilities";
+import React from "react";
+import { DisplayNamePrefix } from "../utilities";
 import {
     TextAreaHandledProps,
-    TextAreaManagedClasses,
     TextAreaProps,
     TextAreaUnhandledProps,
 } from "./text-area.props";
-import {
-    ManagedClasses,
-    TextAreaClassNameContract,
-} from "@microsoft/fast-components-class-name-contracts-base";
-import { get } from "lodash-es";
-import { DisplayNamePrefix } from "../utilities";
-import { classNames } from "@microsoft/fast-web-utilities";
 
 class TextArea extends Foundation<TextAreaHandledProps, TextAreaUnhandledProps, {}> {
     public static displayName: string = `${DisplayNamePrefix}TextArea`;

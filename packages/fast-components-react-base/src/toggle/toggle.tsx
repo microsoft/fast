@@ -1,19 +1,9 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import { get } from "lodash-es";
+import { ToggleClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
-import {
-    ToggleHandledProps,
-    ToggleManagedClasses,
-    ToggleProps,
-    ToggleUnhandledProps,
-} from "./toggle.props";
-import {
-    ManagedClasses,
-    ToggleClassNameContract,
-} from "@microsoft/fast-components-class-name-contracts-base";
-import { DisplayNamePrefix } from "../utilities";
 import { classNames } from "@microsoft/fast-web-utilities";
+import React from "react";
+import { DisplayNamePrefix } from "../utilities";
+import { ToggleHandledProps, ToggleProps, ToggleUnhandledProps } from "./toggle.props";
 
 /**
  * Toggle state interface
