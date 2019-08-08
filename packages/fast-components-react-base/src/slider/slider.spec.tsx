@@ -673,6 +673,22 @@ describe("Slider", (): void => {
         document.body.removeChild(container);
     });
 
+    test("constrainToStep rounds fractions of a step properly", (): void => {
+        const rendered: any = mount(
+            <Slider
+                range={{
+                    minValue: 0,
+                    maxValue: 100,
+                }}
+                managedClasses={managedClasses}
+            />
+        );
+
+        expect(rendered.instance()["constrainToStep"](14, 10)).toBe(10);
+        expect(rendered.instance()["constrainToStep"](16, 10)).toBe(20);
+
+    });
+
     // tslint:disable-next-line:no-shadowed-variable
     window.removeEventListener = jest.fn((event: string, callback: any) => {
         map[event] = callback;
