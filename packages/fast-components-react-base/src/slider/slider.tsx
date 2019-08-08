@@ -1135,15 +1135,14 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
             return value;
         }
 
-        let constrainedValue: number = Math.floor((value - this.props.range.minValue) / step) * step;
-        constrainedValue = (((value - constrainedValue) / step) > 0.5)
-            ? constrainedValue + step
-            : constrainedValue;
+        let constrainedValue: number =
+            Math.floor((value - this.props.range.minValue) / step) * step;
+        constrainedValue =
+            (value - constrainedValue) / step > 0.5
+                ? constrainedValue + step
+                : constrainedValue;
 
-        return (
-            constrainedValue +
-            this.props.range.minValue
-        );
+        return constrainedValue + this.props.range.minValue;
     };
 
     /**

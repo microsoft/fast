@@ -686,7 +686,6 @@ describe("Slider", (): void => {
 
         expect(rendered.instance()["constrainToStep"](14, 10)).toBe(10);
         expect(rendered.instance()["constrainToStep"](16, 10)).toBe(20);
-
     });
 
     // tslint:disable-next-line:no-shadowed-variable
