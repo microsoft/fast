@@ -231,6 +231,7 @@ describe("Form", () => {
         rendered
             .find("Form")
             .find("a")
+            .at(0)
             .simulate("click");
 
         expect(form.state("navigation")).toHaveLength(2);
