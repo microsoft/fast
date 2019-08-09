@@ -239,8 +239,8 @@ describe("Slider", (): void => {
     test("initial value respects step", (): void => {
         const rendered: any = mount(<Slider mode={SliderMode.singleValue} step={20} />);
 
-        expect(rendered.state("upperValue")).toBe(40);
-        expect(rendered.state("lowerValue")).toBe(40);
+        expect(rendered.state("upperValue")).toBe(60);
+        expect(rendered.state("lowerValue")).toBe(60);
     });
 
     test("one thumb is rendered in singleValue mode", (): void => {
