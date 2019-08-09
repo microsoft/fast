@@ -1,4 +1,8 @@
-type ClassNamesArg = string | [string | (() => string), boolean];
+import { isFunction, isString } from "lodash-es";
+
+type ClassNamesArg = string | (() => string) | [string | (() => string), boolean];
+
+// const isString: (val: unknown) => val is string = (val: unknown): val is string => typeof val === "string"
 
 export function classNames(...args: ClassNamesArg[]): string {
     let classes: string = "";
@@ -10,14 +14,16 @@ export function classNames(...args: ClassNamesArg[]): string {
         const arg: ClassNamesArg = args[i];
         leadingChar = classes.length === 0 ? "" : " ";
 
-        if (typeof arg === "string") {
+        if (isString(arg)) {
             classes += addLeadingChar(arg);
+        } else if (isFunction(arg)) {
+            classes += addLeadingChar(arg());
         } else if (Array.isArray(arg) && arg[1]) {
             const value: string | (() => string) = arg[0];
 
-            if (typeof value === "string") {
+            if (isString(value)) {
                 classes += addLeadingChar(value);
-            } else if (typeof value === "function") {
+            } else if (isFunction(value)) {
                 classes += addLeadingChar(value());
             }
         }
