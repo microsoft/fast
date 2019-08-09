@@ -1,4 +1,6 @@
 import { ColorRGBA64Config } from "./color-rgba-64";
+
+// https://www.w3schools.com/colors/colors_names.asp
 export type NamedColors =
     | "aliceblue"
     | "antiquewhite"

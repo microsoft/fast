@@ -210,8 +210,6 @@ export function parseColorNamed(
         : null;
 }
 
-// parseColorNamed("yellowgreen")
-
 // Expects any of the following and attempts to determine which is being used
 // #RRGGBB
 // #AARRGGBB
