@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.12.4](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-base@4.12.3...@microsoft/fast-components-react-base@4.12.4) (2019-08-09)
+
+
+### Bug Fixes
+
+* export observer support code from base package ([#2117](https://github.com/Microsoft/fast-dna/issues/2117)) ([e10ec21](https://github.com/Microsoft/fast-dna/commit/e10ec21))
+* resolve issues with viewport positioner no-observer mode ([#2111](https://github.com/Microsoft/fast-dna/issues/2111)) ([a338449](https://github.com/Microsoft/fast-dna/commit/a338449))
+* slider moves to nearest increment on click ([#2119](https://github.com/Microsoft/fast-dna/issues/2119)) ([139a649](https://github.com/Microsoft/fast-dna/commit/139a649))
+
+
+
+
+
 ## [4.12.3](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-base@4.12.2...@microsoft/fast-components-react-base@4.12.3) (2019-08-01)
 
 **Note:** Version bump only for package @microsoft/fast-components-react-base

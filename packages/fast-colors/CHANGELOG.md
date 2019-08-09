@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.2.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-colors@4.2.0...@microsoft/fast-colors@4.2.1) (2019-08-09)
+
+
+### Bug Fixes
+
+* add deprecation notice to namedColors export [#2114](https://github.com/Microsoft/fast-dna/issues/2114) ([38dcb1f](https://github.com/Microsoft/fast-dna/commit/38dcb1f))
+
+
+
+
+
 # [4.2.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-colors@4.1.2...@microsoft/fast-colors@4.2.0) (2019-07-01)
 
 

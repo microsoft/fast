@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.2.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-web-utilities@4.2.0...@microsoft/fast-web-utilities@4.2.1) (2019-08-09)
+
+
+### Bug Fixes
+
+* establish no side effects in fast-web-utilities ([a97741a](https://github.com/Microsoft/fast-dna/commit/a97741a))
+
+
+
+
+
 # [4.2.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-web-utilities@4.1.0...@microsoft/fast-web-utilities@4.2.0) (2019-05-31)
 
 

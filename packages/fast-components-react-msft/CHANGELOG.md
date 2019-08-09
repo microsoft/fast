@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.17.4](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-msft@4.17.3...@microsoft/fast-components-react-msft@4.17.4) (2019-08-09)
+
+
+### Bug Fixes
+
+* export flyout from package root ([#2103](https://github.com/Microsoft/fast-dna/issues/2103)) ([06b965e](https://github.com/Microsoft/fast-dna/commit/06b965e))
+
+
+
+
+
 ## [4.17.3](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-msft@4.17.2...@microsoft/fast-components-react-msft@4.17.3) (2019-08-01)
 
 **Note:** Version bump only for package @microsoft/fast-components-react-msft

@@ -1,6 +1,6 @@
 {
   "name": "@microsoft/fast-component-explorer",
-  "version": "0.4.3",
+  "version": "0.4.4",
   "description": "Component exploration",
   "sideEffects": false,
   "private": true,
@@ -70,8 +70,8 @@
     "@microsoft/fast-components-class-name-contracts-msft": "^4.7.0",
     "@microsoft/fast-components-foundation-react": "^3.1.1",
     "@microsoft/fast-jss-manager-react": "^4.3.2",
-    "@microsoft/fast-jss-utilities": "^4.5.1",
-    "@microsoft/fast-layouts-react": "^4.4.0",
+    "@microsoft/fast-jss-utilities": "^4.5.5",
+    "@microsoft/fast-layouts-react": "^4.4.1",
     "@microsoft/fast-tslint-rules": "^3.0.3",
     "@types/jest": "^23.3.10",
     "@types/lodash-es": "^4.17.0",
@@ -115,12 +115,12 @@
     "workbox-webpack-plugin": "^3.6.3"
   },
   "dependencies": {
-    "@microsoft/fast-colors": "^4.2.0",
-    "@microsoft/fast-components-react-base": "^4.12.3",
-    "@microsoft/fast-components-react-msft": "^4.17.3",
-    "@microsoft/fast-components-styles-msft": "^4.19.0",
-    "@microsoft/fast-tooling-react": "^1.15.1",
-    "@microsoft/fast-web-utilities": "^4.2.0",
+    "@microsoft/fast-colors": "^4.2.1",
+    "@microsoft/fast-components-react-base": "^4.12.4",
+    "@microsoft/fast-components-react-msft": "^4.17.4",
+    "@microsoft/fast-components-styles-msft": "^4.19.1",
+    "@microsoft/fast-tooling-react": "^1.15.2",
+    "@microsoft/fast-web-utilities": "^4.2.1",
     "react-dnd-html5-backend": "^7.4.4",
     "react-sortable-hoc": "^1.9.1"
   }
