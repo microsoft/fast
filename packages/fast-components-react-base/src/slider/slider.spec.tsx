@@ -684,7 +684,7 @@ describe("Slider", (): void => {
             />
         );
 
-        // constrainToStep = (value: number, step: number): number 
+        // constrainToStep = (value: number, step: number): number
         // where value is the number to be constrained and step the step increment
         expect(rendered.instance()["constrainToStep"](14, 10)).toBe(10);
         expect(rendered.instance()["constrainToStep"](16, 10)).toBe(20);
