@@ -48,7 +48,9 @@ const styles: ComponentStyles<ActionTriggerClassNameContract, DesignSystem> = {
         },
         "&:hover": {
             "& $actionTrigger_glyph": {
-                fill: "Highlight",
+                "@media (-ms-high-contrast:active)": {
+                    fill: "Highlight",
+                }
             },
         },
         "&$actionTrigger__disabled $actionTrigger_glyph": {
@@ -112,7 +114,9 @@ const styles: ComponentStyles<ActionTriggerClassNameContract, DesignSystem> = {
         },
         "&:hover": {
             "& $actionTrigger_glyph": {
-                fill: "HighlightText",
+                "@media (-ms-high-contrast:active)": {
+                    fill: "HighlightText",
+                }
             },
         },
         "&$actionTrigger__disabled $actionTrigger_glyph": {
@@ -128,7 +132,9 @@ const styles: ComponentStyles<ActionTriggerClassNameContract, DesignSystem> = {
         },
         "&:hover": {
             "& $actionTrigger_glyph": {
-                fill: "HighlightText",
+                "@media (-ms-high-contrast:active)": {
+                    fill: "HighlightText",
+                }
             },
         },
         "&$actionTrigger__disabled $actionTrigger_glyph": {
