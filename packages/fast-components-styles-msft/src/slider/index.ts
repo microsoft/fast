@@ -66,7 +66,7 @@ const styles: ComponentStyles<SliderClassNameContract, DesignSystem> = {
             "@media (-ms-high-contrast:active)": {
                 boxShadow: format(
                     `0 0 0 2px Background, 0 0 0 {0} ButtonText`,
-                    toPx(focusOutlineWidth)
+                    toPx(add(focusOutlineWidth, 2))
                 ),
             },
         }),

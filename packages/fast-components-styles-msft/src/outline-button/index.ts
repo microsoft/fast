@@ -10,8 +10,8 @@ import {
     neutralOutlineRest,
 } from "../utilities/color";
 import { horizontalSpacing } from "../utilities/density";
-import { outlineWidth } from "../utilities/design-system";
-import { applyFocusVisible, format, toPx } from "@microsoft/fast-jss-utilities";
+import { focusOutlineWidth, outlineWidth } from "../utilities/design-system";
+import { applyFocusVisible, format, subtract, toPx } from "@microsoft/fast-jss-utilities";
 
 const styles: ComponentStyles<LightweightButtonClassNameContract, DesignSystem> = {
     ...baseButton,
@@ -60,6 +60,13 @@ const styles: ComponentStyles<LightweightButtonClassNameContract, DesignSystem> 
                 }
             ),
             borderColor: neutralFocus,
+            "@media (-ms-high-contrast:active)": {
+                boxShadow: format(
+                    "0 0 0 {0} ButtonText inset",
+                    toPx<DesignSystem>(subtract(focusOutlineWidth, outlineWidth))
+                ),
+                borderColor: "ButtonText",
+            }
         }),
         "&:disabled": {
             "@media (-ms-high-contrast:active)": {

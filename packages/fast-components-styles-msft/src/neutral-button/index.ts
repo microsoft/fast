@@ -2,7 +2,7 @@ import { ButtonBaseClassNameContract as NeutralButtonClassNameContract } from "@
 import { ComponentStyles } from "@microsoft/fast-jss-manager";
 import { DesignSystem } from "../design-system";
 import { baseButton, buttonStyles } from "../patterns/button";
-import { applyFocusVisible } from "@microsoft/fast-jss-utilities";
+import { applyFocusVisible, format, toPx } from "@microsoft/fast-jss-utilities";
 import {
     neutralFillActive,
     neutralFillHover,
@@ -10,6 +10,7 @@ import {
     neutralFocus,
     neutralForegroundRest,
 } from "../utilities/color";
+import { outlineWidth } from "../utilities/design-system";
 
 const styles: ComponentStyles<NeutralButtonClassNameContract, DesignSystem> = {
     ...baseButton,
@@ -35,6 +36,13 @@ const styles: ComponentStyles<NeutralButtonClassNameContract, DesignSystem> = {
         },
         ...applyFocusVisible<DesignSystem>({
             borderColor: neutralFocus,
+            "@media (-ms-high-contrast:active)": {
+                borderColor: "ButtonText",
+                boxShadow: format(
+                    "0 0 0 {0} inset ButtonText",
+                    toPx(outlineWidth)
+                ),
+            }
         }),
         "&:disabled": {
             "@media (-ms-high-contrast:active)": {

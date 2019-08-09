@@ -28,7 +28,7 @@ const styles: ComponentStyles<ProgressClassNameContract, DesignSystem> = {
             transform: "rotate(-90deg)",
             transition: "all 0.2s ease-in-out",
             "@media (-ms-high-contrast:active)": {
-                stroke: "ButtonFace",
+                stroke: "ButtonText",
             },
         },
         "& $progress_valueIndicator__indeterminate": {
@@ -43,7 +43,7 @@ const styles: ComponentStyles<ProgressClassNameContract, DesignSystem> = {
             transform: "rotate(-90deg)",
             transition: "all 0.2s ease-in-out",
             "@media (-ms-high-contrast:active)": {
-                stroke: "ButtonText",
+                stroke: "ButtonFace",
             },
         },
     },
@@ -65,7 +65,7 @@ const styles: ComponentStyles<ProgressClassNameContract, DesignSystem> = {
         height: "100%",
         transition: "all 0.2s ease-in-out",
         "@media (-ms-high-contrast:active)": {
-            background: "ButtonFace",
+            background: "ButtonText",
         },
     },
     progress_valueIndicator__indeterminate: {},
@@ -81,7 +81,7 @@ const styles: ComponentStyles<ProgressClassNameContract, DesignSystem> = {
         transition: "all 0.2s ease-in-out",
         maskImage: "-webkit-radial-gradient(white, black)",
         "@media (-ms-high-contrast:active)": {
-            background: "ButtonText",
+            background: "ButtonFace",
             border: "1px solid ButtonText"
         },
     },
@@ -89,7 +89,7 @@ const styles: ComponentStyles<ProgressClassNameContract, DesignSystem> = {
         height: toPx<DesignSystem>(designUnit),
         borderRadius: "2px",
         "@media (-ms-high-contrast:active)": {
-            background: "ButtonText",
+            background: "ButtonFace",
             border: "1px solid ButtonText"
         },
     },
@@ -101,7 +101,7 @@ const styles: ComponentStyles<ProgressClassNameContract, DesignSystem> = {
         borderRadius: "100px",
         animationTimingFunction: "cubic-bezier(0.4, 0.0, 0.6, 1.0)",
         "@media (-ms-high-contrast:active)": {
-            background: "ButtonFace",
+            background: "ButtonText",
             opacity: "1 !important",
         },
     },

@@ -1,7 +1,7 @@
 import { TextFieldClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import { TextActionClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager";
-import { directionSwitch, format, subtract, toPx } from "@microsoft/fast-jss-utilities";
+import { applyFocusVisible, directionSwitch, format, subtract, toPx } from "@microsoft/fast-jss-utilities";
 import { DesignSystem } from "../design-system";
 import { applyCornerRadius } from "../utilities/border";
 import {
@@ -37,6 +37,11 @@ export const textFieldOverrides: ComponentStyles<
             background: "none",
             border: "none",
             boxShadow: "none",
+            "@media (-ms-high-contrast:active)": {
+                background: "none",
+                border: "none",
+                boxShadow: "none",
+            }
         },
     },
 };
@@ -109,6 +114,18 @@ const styles: ComponentStyles<TextActionClassNameContract, DesignSystem> = {
                 neutralFocus
             ),
         },
+        "@media (-ms-high-contrast:active)": {
+            "&, &:hover": {
+                boxShadow: format(
+                    "0 0 0 {0} ButtonText inset",
+                    toPx<DesignSystem>(subtract(focusOutlineWidth, outlineWidth))
+                ),
+                border: format(
+                    "{0} solid ButtonText",
+                    toPx<DesignSystem>(outlineWidth)
+                ),
+            },  
+        }
     },
     textAction__disabled: {
         ...applyDisabledState(),
@@ -153,6 +170,11 @@ const styles: ComponentStyles<TextActionClassNameContract, DesignSystem> = {
                 fill: "HighlightText",
             },
         },
+        ...applyFocusVisible<DesignSystem>({
+            "@media (-ms-high-contrast:active)": {
+                borderColor: "ButtonText",
+            },
+        }),
         "&:disabled": {
             "@media (-ms-high-contrast:active)": {
                 opacity: "1",

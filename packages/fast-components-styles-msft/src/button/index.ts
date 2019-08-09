@@ -4,6 +4,7 @@ import {
     applyFocusVisible,
     directionSwitch,
     format,
+    subtract,
     toPx,
 } from "@microsoft/fast-jss-utilities";
 import { DesignSystem, ensureDesignSystemDefaults } from "../design-system";
@@ -127,6 +128,13 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = {
         },
         ...applyFocusVisible<DesignSystem>({
             borderColor: neutralFocus,
+            "@media (-ms-high-contrast:active)": {
+                borderColor: "ButtonText",
+                boxShadow: format(
+                    "0 0 0 {0} inset ButtonText",
+                    toPx(outlineWidth)
+                ),
+            }
         }),
         "&:disabled": {
             "@media (-ms-high-contrast:active)": {
@@ -251,7 +259,11 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = {
             ),
             borderColor: neutralFocus,
             "@media (-ms-high-contrast:active)": {
-                borderColor: "2px solid ButtonText"
+                boxShadow: format(
+                    "0 0 0 {0} ButtonText inset",
+                    toPx<DesignSystem>(subtract(focusOutlineWidth, outlineWidth))
+                ),
+                borderColor: "ButtonText",
             }
         }),
         "&:disabled": {
@@ -294,7 +306,10 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = {
         ...applyFocusVisible<DesignSystem>({
             borderColor: neutralFocus,
             "@media (-ms-high-contrast:active)": {
-                borderColor: "2px solid ButtonText"
+                boxShadow: format(
+                    `0 0 0 {0} inset ButtonText`,
+                    toPx(focusOutlineWidth)
+                ),
             }
         }),
         "@media (-ms-high-contrast:active)": {

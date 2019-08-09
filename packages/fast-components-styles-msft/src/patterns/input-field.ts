@@ -63,6 +63,9 @@ export function inputFieldStyles(
             boxShadow: format<DesignSystem>("0 0 0 1px {0} inset", neutralFocus),
             borderColor: neutralFocus,
             outline: "none",
+            "@media (-ms-high-contrast:active)": {
+                boxShadow: format<DesignSystem>("0 0 0 1px ButtonText inset"),
+            }
         },
         "&:disabled": {
             ...applyDisabledState(),
