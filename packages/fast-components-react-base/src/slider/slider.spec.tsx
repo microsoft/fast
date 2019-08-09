@@ -239,8 +239,8 @@ describe("Slider", (): void => {
     test("initial value respects step", (): void => {
         const rendered: any = mount(<Slider mode={SliderMode.singleValue} step={20} />);
 
-        expect(rendered.state("upperValue")).toBe(40);
-        expect(rendered.state("lowerValue")).toBe(40);
+        expect(rendered.state("upperValue")).toBe(60);
+        expect(rendered.state("lowerValue")).toBe(60);
     });
 
     test("one thumb is rendered in singleValue mode", (): void => {
@@ -671,6 +671,23 @@ describe("Slider", (): void => {
         expect(thumb.prop("aria-valuemax")).toBe(1000);
 
         document.body.removeChild(container);
+    });
+
+    test("constrainToStep rounds fractions of a step properly", (): void => {
+        const rendered: any = mount(
+            <Slider
+                range={{
+                    minValue: 0,
+                    maxValue: 100,
+                }}
+                managedClasses={managedClasses}
+            />
+        );
+
+        // constrainToStep = (value: number, step: number): number
+        // where value is the number to be constrained and step the step increment
+        expect(rendered.instance()["constrainToStep"](14, 10)).toBe(10);
+        expect(rendered.instance()["constrainToStep"](16, 10)).toBe(20);
     });
 
     // tslint:disable-next-line:no-shadowed-variable
