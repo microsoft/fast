@@ -3,6 +3,11 @@
 import { ColorRGBA64 } from "./color-rgba-64";
 import { normalize } from "./math-utilities";
 
+/**
+ * @deprecated
+ * This export will be deprecated in favor of a method
+ * in favor of the parseColorNamed function
+ */
 export const namedColors: object = {
     aliceblue: new ColorRGBA64(0.941176, 0.972549, 1, 1),
     antiquewhite: new ColorRGBA64(0.980392, 0.921569, 0.843137, 1),
