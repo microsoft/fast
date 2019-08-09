@@ -114,6 +114,7 @@ describe("viewport positioner", (): void => {
         const rendered: any = mount(
             <div>
                 <ViewportPositioner
+                    viewport={document.firstElementChild as HTMLElement}
                     defaultHorizontalPosition={ViewportPositionerHorizontalPosition.left}
                     managedClasses={managedClasses}
                 />
@@ -133,6 +134,7 @@ describe("viewport positioner", (): void => {
             <div>
                 <div ref={anchorElement} />
                 <ViewportPositioner
+                    viewport={document.firstElementChild as HTMLElement}
                     anchor={anchorElement}
                     managedClasses={managedClasses}
                 />
@@ -152,6 +154,7 @@ describe("viewport positioner", (): void => {
             <div>
                 <div ref={anchorElement} />
                 <ViewportPositioner
+                    viewport={document.firstElementChild as HTMLElement}
                     disabled={true}
                     anchor={anchorElement}
                     managedClasses={managedClasses}
@@ -172,6 +175,7 @@ describe("viewport positioner", (): void => {
             <div>
                 <div ref={anchorElement} />
                 <ViewportPositioner
+                    viewport={document.firstElementChild as HTMLElement}
                     horizontalPositioningMode={AxisPositioningMode.adjacent}
                     defaultHorizontalPosition={ViewportPositionerHorizontalPosition.left}
                     verticalPositioningMode={AxisPositioningMode.adjacent}
@@ -183,6 +187,7 @@ describe("viewport positioner", (): void => {
         );
 
         const positioner: any = rendered.find("BaseViewportPositioner");
+        positioner.instance().updateLayout();
         expect(positioner.instance().state.currentHorizontalPosition).toBe(
             ViewportPositionerHorizontalPosition.left
         );
@@ -213,6 +218,7 @@ describe("viewport positioner", (): void => {
             <div>
                 <div ref={anchorElement} />
                 <ViewportPositioner
+                    viewport={document.firstElementChild as HTMLElement}
                     horizontalPositioningMode={AxisPositioningMode.adjacent}
                     defaultHorizontalPosition={ViewportPositionerHorizontalPosition.right}
                     verticalPositioningMode={AxisPositioningMode.adjacent}
@@ -224,6 +230,7 @@ describe("viewport positioner", (): void => {
         );
 
         const positioner: any = rendered.find("BaseViewportPositioner");
+        positioner.instance().updateLayout();
         expect(positioner.instance().state.currentHorizontalPosition).toBe(
             ViewportPositionerHorizontalPosition.right
         );
@@ -254,6 +261,7 @@ describe("viewport positioner", (): void => {
             <div>
                 <div ref={anchorElement} />
                 <ViewportPositioner
+                    viewport={document.firstElementChild as HTMLElement}
                     horizontalPositioningMode={AxisPositioningMode.inset}
                     defaultHorizontalPosition={ViewportPositionerHorizontalPosition.left}
                     verticalPositioningMode={AxisPositioningMode.inset}
@@ -265,6 +273,7 @@ describe("viewport positioner", (): void => {
         );
 
         const positioner: any = rendered.find("BaseViewportPositioner");
+        positioner.instance().updateLayout();
         expect(positioner.instance().state.currentHorizontalPosition).toBe(
             ViewportPositionerHorizontalPositionLabel.insetLeft
         );
@@ -301,6 +310,7 @@ describe("viewport positioner", (): void => {
             <div>
                 <div ref={anchorElement} />
                 <ViewportPositioner
+                    viewport={document.firstElementChild as HTMLElement}
                     horizontalPositioningMode={AxisPositioningMode.inset}
                     defaultHorizontalPosition={ViewportPositionerHorizontalPosition.right}
                     verticalPositioningMode={AxisPositioningMode.inset}
@@ -312,6 +322,7 @@ describe("viewport positioner", (): void => {
         );
 
         const positioner: any = rendered.find("BaseViewportPositioner");
+        positioner.instance().updateLayout();
         expect(positioner.instance().state.currentHorizontalPosition).toBe(
             ViewportPositionerHorizontalPositionLabel.insetRight
         );
@@ -343,9 +354,6 @@ describe("viewport positioner", (): void => {
         const anchorElement: React.RefObject<HTMLDivElement> = React.createRef<
             HTMLDivElement
         >();
-        const viewportElement: React.RefObject<HTMLDivElement> = React.createRef<
-            HTMLDivElement
-        >();
 
         const rendered: any = mount(
             <div
@@ -353,7 +361,6 @@ describe("viewport positioner", (): void => {
                     height: "100px",
                     width: "100px",
                 }}
-                ref={viewportElement}
             >
                 <div
                     style={{
@@ -366,7 +373,7 @@ describe("viewport positioner", (): void => {
                     horizontalPositioningMode={AxisPositioningMode.adjacent}
                     verticalPositioningMode={AxisPositioningMode.adjacent}
                     anchor={anchorElement}
-                    viewport={viewportElement}
+                    viewport={document.firstElementChild as HTMLElement}
                     managedClasses={managedClasses}
                 />
             </div>
@@ -419,9 +426,6 @@ describe("viewport positioner", (): void => {
         const anchorElement: React.RefObject<HTMLDivElement> = React.createRef<
             HTMLDivElement
         >();
-        const viewportElement: React.RefObject<HTMLDivElement> = React.createRef<
-            HTMLDivElement
-        >();
 
         const rendered: any = mount(
             <div
@@ -429,7 +433,6 @@ describe("viewport positioner", (): void => {
                     height: "100px",
                     width: "100px",
                 }}
-                ref={viewportElement}
             >
                 <div
                     style={{
@@ -442,7 +445,7 @@ describe("viewport positioner", (): void => {
                     horizontalPositioningMode={AxisPositioningMode.inset}
                     verticalPositioningMode={AxisPositioningMode.inset}
                     anchor={anchorElement}
-                    viewport={viewportElement}
+                    viewport={document.firstElementChild as HTMLElement}
                     managedClasses={managedClasses}
                 />
             </div>
@@ -565,9 +568,6 @@ describe("viewport positioner", (): void => {
         const anchorElement: React.RefObject<HTMLDivElement> = React.createRef<
             HTMLDivElement
         >();
-        const viewportElement: React.RefObject<HTMLDivElement> = React.createRef<
-            HTMLDivElement
-        >();
 
         const rendered: any = mount(
             <div
@@ -575,7 +575,6 @@ describe("viewport positioner", (): void => {
                     height: "100px",
                     width: "100px",
                 }}
-                ref={viewportElement}
             >
                 <div
                     style={{
@@ -594,7 +593,7 @@ describe("viewport positioner", (): void => {
                         ViewportPositionerVerticalPosition.uncontrolled
                     }
                     anchor={anchorElement}
-                    viewport={viewportElement}
+                    viewport={document.firstElementChild as HTMLElement}
                     managedClasses={managedClasses}
                 />
             </div>
@@ -627,9 +626,6 @@ describe("viewport positioner", (): void => {
         const anchorElement: React.RefObject<HTMLDivElement> = React.createRef<
             HTMLDivElement
         >();
-        const viewportElement: React.RefObject<HTMLDivElement> = React.createRef<
-            HTMLDivElement
-        >();
 
         const rendered: any = mount(
             <div
@@ -637,7 +633,6 @@ describe("viewport positioner", (): void => {
                     height: "100px",
                     width: "100px",
                 }}
-                ref={viewportElement}
             >
                 <div
                     style={{
@@ -650,7 +645,7 @@ describe("viewport positioner", (): void => {
                     horizontalPositioningMode={AxisPositioningMode.adjacent}
                     verticalPositioningMode={AxisPositioningMode.adjacent}
                     anchor={anchorElement}
-                    viewport={viewportElement}
+                    viewport={document.firstElementChild as HTMLElement}
                     managedClasses={managedClasses}
                 />
             </div>
@@ -683,9 +678,6 @@ describe("viewport positioner", (): void => {
         const anchorElement: React.RefObject<HTMLDivElement> = React.createRef<
             HTMLDivElement
         >();
-        const viewportElement: React.RefObject<HTMLDivElement> = React.createRef<
-            HTMLDivElement
-        >();
 
         const rendered: any = mount(
             <div
@@ -693,7 +685,6 @@ describe("viewport positioner", (): void => {
                     height: "100px",
                     width: "100px",
                 }}
-                ref={viewportElement}
             >
                 <div
                     style={{
@@ -706,7 +697,7 @@ describe("viewport positioner", (): void => {
                     horizontalPositioningMode={AxisPositioningMode.inset}
                     verticalPositioningMode={AxisPositioningMode.inset}
                     anchor={anchorElement}
-                    viewport={viewportElement}
+                    viewport={document.firstElementChild as HTMLElement}
                     managedClasses={managedClasses}
                     horizontalAlwaysInView={true}
                     verticalAlwaysInView={true}
@@ -721,6 +712,8 @@ describe("viewport positioner", (): void => {
         positioner.instance().anchorRight = 210;
         positioner.instance().anchorBottom = 210;
         positioner.instance().anchorLeft = 200;
+        positioner.instance().setState({ noObserverMode: false });
+        expect(positioner.instance().state.noObserverMode).toBe(false);
 
         expect(
             positioner
@@ -750,9 +743,6 @@ describe("viewport positioner", (): void => {
         const anchorElement: React.RefObject<HTMLDivElement> = React.createRef<
             HTMLDivElement
         >();
-        const viewportElement: React.RefObject<HTMLDivElement> = React.createRef<
-            HTMLDivElement
-        >();
 
         const rendered: any = mount(
             <div
@@ -760,7 +750,6 @@ describe("viewport positioner", (): void => {
                     height: "100px",
                     width: "100px",
                 }}
-                ref={viewportElement}
             >
                 <div
                     style={{
@@ -773,7 +762,7 @@ describe("viewport positioner", (): void => {
                     horizontalPositioningMode={AxisPositioningMode.inset}
                     verticalPositioningMode={AxisPositioningMode.inset}
                     anchor={anchorElement}
-                    viewport={viewportElement}
+                    viewport={document.firstElementChild as HTMLElement}
                     managedClasses={managedClasses}
                     horizontalAlwaysInView={true}
                     verticalAlwaysInView={true}
@@ -819,9 +808,6 @@ describe("viewport positioner", (): void => {
         const anchorElement: React.RefObject<HTMLDivElement> = React.createRef<
             HTMLDivElement
         >();
-        const viewportElement: React.RefObject<HTMLDivElement> = React.createRef<
-            HTMLDivElement
-        >();
 
         const rendered: any = mount(
             <div
@@ -829,7 +815,6 @@ describe("viewport positioner", (): void => {
                     height: "100px",
                     width: "100px",
                 }}
-                ref={viewportElement}
             >
                 <div
                     style={{
@@ -848,7 +833,7 @@ describe("viewport positioner", (): void => {
                         ViewportPositionerVerticalPosition.uncontrolled
                     }
                     anchor={anchorElement}
-                    viewport={viewportElement}
+                    viewport={document.firstElementChild as HTMLElement}
                     managedClasses={managedClasses}
                 />
             </div>
@@ -866,6 +851,7 @@ describe("viewport positioner", (): void => {
         positioner.instance().anchorHeight = 10;
         positioner.instance().scrollTop = 0;
         positioner.instance().scrollLeft = 0;
+        positioner.instance().setState({ noObserverMode: false });
 
         positioner.instance()["updateLayout"]();
 
@@ -895,17 +881,12 @@ describe("viewport positioner", (): void => {
         const anchorElement: React.RefObject<HTMLDivElement> = React.createRef<
             HTMLDivElement
         >();
-        const viewportElement: React.RefObject<HTMLDivElement> = React.createRef<
-            HTMLDivElement
-        >();
-
         const rendered: any = mount(
             <div
                 style={{
                     height: "100px",
                     width: "100px",
                 }}
-                ref={viewportElement}
             >
                 <div
                     style={{
@@ -922,7 +903,7 @@ describe("viewport positioner", (): void => {
                     defaultVerticalPosition={ViewportPositionerVerticalPosition.top}
                     verticalThreshold={20}
                     anchor={anchorElement}
-                    viewport={viewportElement}
+                    viewport={document.firstElementChild as HTMLElement}
                     managedClasses={managedClasses}
                 />
             </div>
@@ -940,6 +921,7 @@ describe("viewport positioner", (): void => {
         positioner.instance().anchorHeight = 10;
         positioner.instance().scrollTop = 0;
         positioner.instance().scrollLeft = 0;
+        positioner.instance().setState({ noObserverMode: false });
 
         positioner.instance()["updateLayout"]();
 
@@ -983,9 +965,6 @@ describe("viewport positioner", (): void => {
         const anchorElement: React.RefObject<HTMLDivElement> = React.createRef<
             HTMLDivElement
         >();
-        const viewportElement: React.RefObject<HTMLDivElement> = React.createRef<
-            HTMLDivElement
-        >();
 
         const rendered: any = mount(
             <div
@@ -993,7 +972,6 @@ describe("viewport positioner", (): void => {
                     height: "100px",
                     width: "100px",
                 }}
-                ref={viewportElement}
             >
                 <div
                     style={{
@@ -1012,7 +990,7 @@ describe("viewport positioner", (): void => {
                     verticalLockToDefault={true}
                     verticalThreshold={20}
                     anchor={anchorElement}
-                    viewport={viewportElement}
+                    viewport={document.firstElementChild as HTMLElement}
                     managedClasses={managedClasses}
                 />
             </div>
@@ -1073,9 +1051,6 @@ describe("viewport positioner", (): void => {
         const anchorElement: React.RefObject<HTMLDivElement> = React.createRef<
             HTMLDivElement
         >();
-        const viewportElement: React.RefObject<HTMLDivElement> = React.createRef<
-            HTMLDivElement
-        >();
 
         const rendered: any = mount(
             <div
@@ -1083,7 +1058,6 @@ describe("viewport positioner", (): void => {
                     height: "100px",
                     width: "100px",
                 }}
-                ref={viewportElement}
             >
                 <div
                     style={{
@@ -1096,7 +1070,7 @@ describe("viewport positioner", (): void => {
                     horizontalPositioningMode={AxisPositioningMode.adjacent}
                     verticalPositioningMode={AxisPositioningMode.adjacent}
                     anchor={anchorElement}
-                    viewport={viewportElement}
+                    viewport={document.firstElementChild as HTMLElement}
                     managedClasses={managedClasses}
                 />
             </div>
@@ -1182,7 +1156,7 @@ describe("viewport positioner", (): void => {
         ).toBe(0);
     });
 
-    test("Positioner base position offset correctly recalculated", (): void => {
+    test("Positioner base position offset correctly calculated", (): void => {
         const anchorElement: React.RefObject<HTMLDivElement> = React.createRef<
             HTMLDivElement
         >();
@@ -1196,7 +1170,6 @@ describe("viewport positioner", (): void => {
                     height: "100px",
                     width: "100px",
                 }}
-                ref={viewportElement}
             >
                 <div
                     style={{
@@ -1209,7 +1182,7 @@ describe("viewport positioner", (): void => {
                     horizontalPositioningMode={AxisPositioningMode.adjacent}
                     verticalPositioningMode={AxisPositioningMode.adjacent}
                     anchor={anchorElement}
-                    viewport={viewportElement}
+                    viewport={document.firstElementChild as HTMLElement}
                     managedClasses={managedClasses}
                 />
             </div>
@@ -1220,26 +1193,81 @@ describe("viewport positioner", (): void => {
         positioner.instance().viewportRect = viewportRect;
         positioner.instance().positionerRect = positionerRectX70Y70;
         positioner.instance().anchorTop = 60;
-        positioner.instance().anchorRight = 90;
+        positioner.instance().anchorRight = 70;
         positioner.instance().anchorBottom = 70;
-        positioner.instance().anchorLeft = 80;
+        positioner.instance().anchorLeft = 60;
         positioner.instance().anchorWidth = 10;
         positioner.instance().anchorHeight = 10;
         positioner.instance().scrollTop = 0;
         positioner.instance().scrollLeft = 0;
 
+        // test bottom right
+        positioner.instance().baseHorizontalOffset = 0;
+        positioner.instance().baseVerticalOffset = 0;
+        positioner.instance().setState({
+            currentHorizontalPosition: ViewportPositionerHorizontalPositionLabel.right,
+            currentVerticalPosition: ViewportPositionerVerticalPositionLabel.bottom,
+        });
+        expect(positioner.instance().state.currentHorizontalPosition).toBe(
+            ViewportPositionerHorizontalPositionLabel.right
+        );
+        expect(positioner.instance().state.currentVerticalPosition).toBe(
+            ViewportPositionerVerticalPositionLabel.bottom
+        );
         positioner.instance()["updatePositionerOffset"]();
-
         expect(positioner.instance().baseHorizontalOffset).toBe(0);
         expect(positioner.instance().baseVerticalOffset).toBe(0);
 
-        positioner.instance().anchorTop = 50;
-        positioner.instance().anchorRight = 80;
-        positioner.instance().anchorBottom = 60;
-        positioner.instance().anchorLeft = 70;
-
+        // test inset bottom right
+        positioner.instance().baseHorizontalOffset = 0;
+        positioner.instance().baseVerticalOffset = 0;
+        positioner.instance().setState({
+            currentHorizontalPosition:
+                ViewportPositionerHorizontalPositionLabel.insetRight,
+            currentVerticalPosition: ViewportPositionerVerticalPositionLabel.insetBottom,
+        });
+        expect(positioner.instance().state.currentHorizontalPosition).toBe(
+            ViewportPositionerHorizontalPositionLabel.insetRight
+        );
+        expect(positioner.instance().state.currentVerticalPosition).toBe(
+            ViewportPositionerVerticalPositionLabel.insetBottom
+        );
         positioner.instance()["updatePositionerOffset"]();
+        expect(positioner.instance().baseHorizontalOffset).toBe(-10);
+        expect(positioner.instance().baseVerticalOffset).toBe(-10);
 
+        // test top left
+        positioner.instance().baseHorizontalOffset = 0;
+        positioner.instance().baseVerticalOffset = 0;
+        positioner.instance().setState({
+            currentHorizontalPosition: ViewportPositionerHorizontalPositionLabel.left,
+            currentVerticalPosition: ViewportPositionerVerticalPositionLabel.top,
+        });
+        expect(positioner.instance().state.currentHorizontalPosition).toBe(
+            ViewportPositionerHorizontalPositionLabel.left
+        );
+        expect(positioner.instance().state.currentVerticalPosition).toBe(
+            ViewportPositionerVerticalPositionLabel.top
+        );
+        positioner.instance()["updatePositionerOffset"]();
+        expect(positioner.instance().baseHorizontalOffset).toBe(-20);
+        expect(positioner.instance().baseVerticalOffset).toBe(-20);
+
+        // test inset top left
+        positioner.instance().baseHorizontalOffset = 0;
+        positioner.instance().baseVerticalOffset = 0;
+        positioner.instance().setState({
+            currentHorizontalPosition:
+                ViewportPositionerHorizontalPositionLabel.insetLeft,
+            currentVerticalPosition: ViewportPositionerVerticalPositionLabel.insetTop,
+        });
+        expect(positioner.instance().state.currentHorizontalPosition).toBe(
+            ViewportPositionerHorizontalPositionLabel.insetLeft
+        );
+        expect(positioner.instance().state.currentVerticalPosition).toBe(
+            ViewportPositionerVerticalPositionLabel.insetTop
+        );
+        positioner.instance()["updatePositionerOffset"]();
         expect(positioner.instance().baseHorizontalOffset).toBe(-10);
         expect(positioner.instance().baseVerticalOffset).toBe(-10);
     });
