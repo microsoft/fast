@@ -1131,16 +1131,10 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
      * Ensures a value is an even multiple of the slider step increment
      */
     private constrainToStep = (value: number, step: number): number => {
-        if (step === 0) {
-            return value;
-        }
-
-        let constrainedValue: number =
-            Math.floor((value - this.props.range.minValue) / step) * step;
-        constrainedValue =
-            (value - constrainedValue) / step >= 0.5
-                ? constrainedValue + step
-                : constrainedValue;
+        const remainder: number = value % step;
+        const constrainedValue: number = remainder >= (step / 2) // check to see if this is over half a single step
+            ? value - remainder + step // if so add a step
+            : value - remainder;
 
         return constrainedValue + this.props.range.minValue;
     };
