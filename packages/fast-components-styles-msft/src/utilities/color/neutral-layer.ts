@@ -1,16 +1,16 @@
-import { findClosestSwatchIndex, PaletteType, swatchByMode } from "./palette";
+import { findClosestSwatchIndex, swatchByMode } from "./palette";
 import {
     ColorRecipe,
     colorRecipeFactory,
     designSystemResolverMax,
     Swatch,
-    SwatchResolver,
 } from "./common";
 import {
     neutralFillActiveDelta,
     neutralFillCardDelta,
     neutralFillHoverDelta,
     neutralFillRestDelta,
+    neutralPalette,
 } from "../design-system";
 import { add, multiply, subtract } from "@microsoft/fast-jss-utilities";
 import { DesignSystem, DesignSystemResolver } from "src/design-system";
@@ -57,7 +57,7 @@ const darkNeutralLayerL4: DesignSystemResolver<number> = (
     const darkLum: number = 0.14;
     const darkColor: ColorRGBA64 = new ColorRGBA64(darkLum, darkLum, darkLum, 1);
     const darkRefIndex: number = findClosestSwatchIndex(
-        PaletteType.neutral,
+        neutralPalette,
         darkColor.toStringHexRGB()
     )(designSystem);
     return darkRefIndex;
@@ -67,7 +67,7 @@ const darkNeutralLayerL4: DesignSystemResolver<number> = (
  * Used as the background color for floating layers like context menus and flyouts.
  */
 export const neutralLayerFloating: ColorRecipe<Swatch> = colorRecipeFactory(
-    swatchByMode(PaletteType.neutral)(
+    swatchByMode(neutralPalette)(
         0,
         subtract(darkNeutralLayerL4, multiply(neutralFillCardDelta, 5))
     )
@@ -77,7 +77,7 @@ export const neutralLayerFloating: ColorRecipe<Swatch> = colorRecipeFactory(
  * Used as the background color for cards. Pair with neutralLayerCardContainer for the container background.
  */
 export const neutralLayerCard: ColorRecipe<Swatch> = colorRecipeFactory(
-    swatchByMode(PaletteType.neutral)(
+    swatchByMode(neutralPalette)(
         0,
         subtract(darkNeutralLayerL4, multiply(neutralFillCardDelta, 4))
     )
@@ -87,7 +87,7 @@ export const neutralLayerCard: ColorRecipe<Swatch> = colorRecipeFactory(
  * Used as the background color for card containers. Pair with neutralLayerCard for the card backgrounds.
  */
 export const neutralLayerCardContainer: ColorRecipe<Swatch> = colorRecipeFactory(
-    swatchByMode(PaletteType.neutral)(
+    swatchByMode(neutralPalette)(
         neutralFillCardDelta,
         subtract(darkNeutralLayerL4, multiply(neutralFillCardDelta, 3))
     )
@@ -97,7 +97,7 @@ export const neutralLayerCardContainer: ColorRecipe<Swatch> = colorRecipeFactory
  * Used as the background color for the primary content layer (L1).
  */
 export const neutralLayerL1: ColorRecipe<Swatch> = colorRecipeFactory(
-    swatchByMode(PaletteType.neutral)(
+    swatchByMode(neutralPalette)(
         0,
         subtract(darkNeutralLayerL4, multiply(neutralFillCardDelta, 3))
     )
@@ -114,7 +114,7 @@ export const neutralLayerL1Alt: ColorRecipe<Swatch> = neutralLayerCardContainer;
  * Used as the background for the top command surface, logically below L1.
  */
 export const neutralLayerL2: ColorRecipe<Swatch> = colorRecipeFactory(
-    swatchByMode(PaletteType.neutral)(
+    swatchByMode(neutralPalette)(
         lightNeutralLayerL2,
         subtract(darkNeutralLayerL4, multiply(neutralFillCardDelta, 2))
     )
@@ -124,7 +124,7 @@ export const neutralLayerL2: ColorRecipe<Swatch> = colorRecipeFactory(
  * Used as the background for secondary command surfaces, logically below L2.
  */
 export const neutralLayerL3: ColorRecipe<Swatch> = colorRecipeFactory(
-    swatchByMode(PaletteType.neutral)(
+    swatchByMode(neutralPalette)(
         add(lightNeutralLayerL2, neutralFillCardDelta),
         subtract(darkNeutralLayerL4, neutralFillCardDelta)
     )
@@ -134,7 +134,7 @@ export const neutralLayerL3: ColorRecipe<Swatch> = colorRecipeFactory(
  * Used as the background for the lowest command surface or title bar, logically below L3.
  */
 export const neutralLayerL4: ColorRecipe<Swatch> = colorRecipeFactory(
-    swatchByMode(PaletteType.neutral)(
+    swatchByMode(neutralPalette)(
         add(lightNeutralLayerL2, multiply(neutralFillCardDelta, 2)),
         darkNeutralLayerL4
     )

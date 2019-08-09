@@ -3,6 +3,9 @@ import { ColorPaletteConfig, parseColorHexRGB } from "@microsoft/fast-colors";
 export const white: string = "#FFFFFF";
 export const black: string = "#000000";
 
+/**
+ * @deprecated
+ */
 const paletteConstants: Partial<ColorPaletteConfig> = {
     steps: 94,
     clipLight: 0,
