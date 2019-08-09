@@ -55,14 +55,14 @@ const styles: ComponentStyles<AutoSuggestOptionClassNameContract, DesignSystem> 
             "@media (-ms-high-contrast:active)": {
                 background: "Highlight",
                 color: "HighlightText",
-            }
+            },
         },
         "@media (-ms-high-contrast:active)": {
             border: "none",
             background: "ButtonFace",
             color: "ButtonText",
             "-ms-high-contrast-adjust": "none",
-        }
+        },
     },
     autoSuggestOption_contentRegion: {
         gridColumnStart: "3",
@@ -76,13 +76,13 @@ const styles: ComponentStyles<AutoSuggestOptionClassNameContract, DesignSystem> 
             "@media (-ms-high-contrast:active)": {
                 background: "transparent",
                 color: "GrayText",
-            }
+            },
         },
         "@media (-ms-high-contrast:active)": {
             opacity: "1",
             background: "transparent",
             color: "GrayText",
-        }
+        },
     },
     autoSuggestOption__selected: {
         background: neutralFillStealthSelected,
@@ -91,7 +91,7 @@ const styles: ComponentStyles<AutoSuggestOptionClassNameContract, DesignSystem> 
             "@media (-ms-high-contrast:active)": {
                 background: "Highlight",
                 color: "HighlightText",
-            }
+            },
         },
     },
 };

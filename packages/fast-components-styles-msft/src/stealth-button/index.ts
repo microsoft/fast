@@ -29,7 +29,7 @@ const styles: ComponentStyles<AccentButtonClassNameContract, DesignSystem> = {
                 "@media (-ms-high-contrast:active)": {
                     fill: "HighlightText",
                 },
-            }
+            },
         },
         "&:active:enabled": {
             backgroundColor: neutralFillStealthActive,
@@ -37,10 +37,7 @@ const styles: ComponentStyles<AccentButtonClassNameContract, DesignSystem> = {
         ...applyFocusVisible<DesignSystem>({
             borderColor: neutralFocus,
             "@media (-ms-high-contrast:active)": {
-                boxShadow: format(
-                    `0 0 0 {0} inset ButtonText`,
-                    toPx(focusOutlineWidth)
-                ),
+                boxShadow: format(`0 0 0 {0} inset ButtonText`, toPx(focusOutlineWidth)),
             },
         }),
         "&:disabled": {
@@ -60,7 +57,7 @@ const styles: ComponentStyles<AccentButtonClassNameContract, DesignSystem> = {
             border: "none",
             color: "ButtonText",
             fill: "ButtonText",
-            "-ms-high-contrast-adjust": "none"
+            "-ms-high-contrast-adjust": "none",
         },
         "a&": {
             "@media (-ms-high-contrast:active)": {
@@ -68,12 +65,12 @@ const styles: ComponentStyles<AccentButtonClassNameContract, DesignSystem> = {
                 "&:hover": {
                     background: "Highlight",
                     color: "HighlightText",
-                }
+                },
             },
             "&$button__disabled": {
                 "@media (-ms-high-contrast:active)": {
                     color: "GrayText",
-                    boxShadow: "none"
+                    boxShadow: "none",
                 },
                 "&:hover": {
                     background: "transparent",
@@ -82,9 +79,9 @@ const styles: ComponentStyles<AccentButtonClassNameContract, DesignSystem> = {
                         "@media (-ms-high-contrast:active)": {
                             fill: "GrayText",
                         },
-                    }
-                }
-            }
+                    },
+                },
+            },
         },
     },
 };

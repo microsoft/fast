@@ -30,10 +30,7 @@ const styles: ComponentStyles<AutoSuggestClassNameContract, DesignSystem> = {
         ...applyElevatedCornerRadius(),
         "@media (-ms-high-contrast:active)": {
             background: "ButtonFace",
-            border: format<DesignSystem>(
-                "{0} solid ButtonText",
-                toPx(outlineWidth)
-            ),
+            border: format<DesignSystem>("{0} solid ButtonText", toPx(outlineWidth)),
         },
     },
     autoSuggest__menuOpen: {},

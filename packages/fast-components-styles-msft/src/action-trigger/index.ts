@@ -43,29 +43,29 @@ const styles: ComponentStyles<ActionTriggerClassNameContract, DesignSystem> = {
         "& $actionTrigger_glyph": {
             fill: accentForegroundCut,
             "@media (-ms-high-contrast:active)": {
-                fill: "HighlightText"
-            }
+                fill: "HighlightText",
+            },
         },
         "&:hover": {
             "& $actionTrigger_glyph": {
                 "@media (-ms-high-contrast:active)": {
                     fill: "Highlight",
-                }
+                },
             },
         },
         "&$actionTrigger__disabled $actionTrigger_glyph": {
             fill: accentForegroundCut,
             "@media (-ms-high-contrast:active)": {
                 fill: "GrayText",
-            }
+            },
         },
     },
     actionTrigger__lightweight: {
         "& $actionTrigger_glyph": {
             fill: accentForegroundRest,
             "@media (-ms-high-contrast:active)": {
-                fill: "ButtonText"
-            }
+                fill: "ButtonText",
+            },
         },
         "&:hover": {
             "& $actionTrigger_glyph": {
@@ -81,15 +81,15 @@ const styles: ComponentStyles<ActionTriggerClassNameContract, DesignSystem> = {
             fill: accentForegroundRest,
             "@media (-ms-high-contrast:active)": {
                 fill: "GrayText",
-            }
+            },
         },
     },
     actionTrigger__justified: {
         "& $actionTrigger_glyph": {
             fill: accentForegroundRest,
             "@media (-ms-high-contrast:active)": {
-                fill: "ButtonText"
-            }
+                fill: "ButtonText",
+            },
         },
         "&:hover": {
             "& $actionTrigger_glyph": {
@@ -105,7 +105,7 @@ const styles: ComponentStyles<ActionTriggerClassNameContract, DesignSystem> = {
             fill: accentForegroundRest,
             "@media (-ms-high-contrast:active)": {
                 fill: "GrayText",
-            }
+            },
         },
     },
     actionTrigger__outline: {
@@ -116,14 +116,14 @@ const styles: ComponentStyles<ActionTriggerClassNameContract, DesignSystem> = {
             "& $actionTrigger_glyph": {
                 "@media (-ms-high-contrast:active)": {
                     fill: "HighlightText",
-                }
+                },
             },
         },
         "&$actionTrigger__disabled $actionTrigger_glyph": {
             fill: neutralForegroundRest,
             "@media (-ms-high-contrast:active)": {
                 fill: "GrayText",
-            }
+            },
         },
     },
     actionTrigger__stealth: {
@@ -134,22 +134,22 @@ const styles: ComponentStyles<ActionTriggerClassNameContract, DesignSystem> = {
             "& $actionTrigger_glyph": {
                 "@media (-ms-high-contrast:active)": {
                     fill: "HighlightText",
-                }
+                },
             },
         },
         "&$actionTrigger__disabled $actionTrigger_glyph": {
             fill: neutralForegroundRest,
             "@media (-ms-high-contrast:active)": {
                 fill: "GrayText",
-            }
+            },
         },
     },
     actionTrigger__disabled: {
         "& $actionTrigger_glyph": {
             "@media (-ms-high-contrast:active)": {
                 fill: "GrayText",
-            }
-        }
+            },
+        },
     },
     actionTrigger__hasGlyphAndContent: {
         "& $actionTrigger_glyph": {

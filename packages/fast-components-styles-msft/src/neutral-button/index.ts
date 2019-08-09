@@ -29,7 +29,7 @@ const styles: ComponentStyles<NeutralButtonClassNameContract, DesignSystem> = {
                 "@media (-ms-high-contrast:active)": {
                     fill: "HighlightText",
                 },
-            }
+            },
         },
         "&:active:enabled": {
             background: neutralFillActive,
@@ -38,11 +38,8 @@ const styles: ComponentStyles<NeutralButtonClassNameContract, DesignSystem> = {
             borderColor: neutralFocus,
             "@media (-ms-high-contrast:active)": {
                 borderColor: "ButtonText",
-                boxShadow: format(
-                    "0 0 0 {0} inset ButtonText",
-                    toPx(outlineWidth)
-                ),
-            }
+                boxShadow: format("0 0 0 {0} inset ButtonText", toPx(outlineWidth)),
+            },
         }),
         "&:disabled": {
             "@media (-ms-high-contrast:active)": {
@@ -52,9 +49,9 @@ const styles: ComponentStyles<NeutralButtonClassNameContract, DesignSystem> = {
             },
             "a&": {
                 "@media (-ms-high-contrast:active)": {
-                    color: "GrayText"
-                }
-            }
+                    color: "GrayText",
+                },
+            },
         },
         "&::-moz-focus-inner": {
             border: "0",
@@ -64,7 +61,7 @@ const styles: ComponentStyles<NeutralButtonClassNameContract, DesignSystem> = {
             borderColor: "ButtonText",
             color: "ButtonText",
             fill: "ButtonText",
-            "-ms-high-contrast-adjust": "none"
+            "-ms-high-contrast-adjust": "none",
         },
         "a&": {
             "@media (-ms-high-contrast:active)": {
@@ -72,7 +69,7 @@ const styles: ComponentStyles<NeutralButtonClassNameContract, DesignSystem> = {
                 "&:hover": {
                     background: "Highlight",
                     color: "HighlightText",
-                }
+                },
             },
             "&$button__disabled": {
                 "@media (-ms-high-contrast:active)": {
@@ -88,9 +85,9 @@ const styles: ComponentStyles<NeutralButtonClassNameContract, DesignSystem> = {
                         "@media (-ms-high-contrast:active)": {
                             fill: "GrayText",
                         },
-                    }
-                }
-            }
+                    },
+                },
+            },
         },
     },
 };

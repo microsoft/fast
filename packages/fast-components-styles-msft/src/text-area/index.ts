@@ -15,10 +15,7 @@ const styles: ComponentStyles<TextAreaClassNameContract, DesignSystem> = {
         maxWidth: "100%",
         "@media (-ms-high-contrast:active)": {
             background: "ButtonFace",
-            border: format(
-                "{0} solid ButtonText",
-                toPx<DesignSystem>(outlineWidth)
-            ),
+            border: format("{0} solid ButtonText", toPx<DesignSystem>(outlineWidth)),
         },
     },
 };

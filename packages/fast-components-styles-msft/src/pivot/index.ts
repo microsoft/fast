@@ -50,7 +50,7 @@ const styles: ComponentStyles<PivotClassNameContract, DesignSystem> = {
             "@media (-ms-high-contrast:active)": {
                 background: "Highlight",
                 color: "HighlightText",
-            }
+            },
         },
         "&:active": {
             color: neutralForegroundActive,
@@ -59,17 +59,14 @@ const styles: ComponentStyles<PivotClassNameContract, DesignSystem> = {
             borderColor: neutralFocus,
             "@media (-ms-high-contrast:active)": {
                 borderColor: "ButtonText",
-                boxShadow: format(
-                    `0 0 0 {0} inset ButtonFace`,
-                    toPx(focusOutlineWidth)
-                ),
+                boxShadow: format(`0 0 0 {0} inset ButtonFace`, toPx(focusOutlineWidth)),
             },
         }),
         "@media (-ms-high-contrast:active)": {
             background: "ButtonFace",
             color: "ButtonText",
-            "-ms-high-contrast-adjust": "none"
-        }
+            "-ms-high-contrast-adjust": "none",
+        },
     },
     pivot_tab__active: {
         "@media (-ms-high-contrast:active)": {
@@ -78,9 +75,9 @@ const styles: ComponentStyles<PivotClassNameContract, DesignSystem> = {
             "&:hover": {
                 "@media (-ms-high-contrast:active)": {
                     color: "HighlightText",
-                }
-            }
-        }
+                },
+            },
+        },
     },
     pivot_tabContent: {
         ...applyScaledTypeRamp("t7"),
@@ -99,7 +96,7 @@ const styles: ComponentStyles<PivotClassNameContract, DesignSystem> = {
         background: accentFillRest,
         "@media (-ms-high-contrast:active)": {
             background: "HighlightText",
-        }
+        },
     },
     pivot_tabPanel: {
         display: "block",

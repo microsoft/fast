@@ -49,11 +49,8 @@ export function inputFieldStyles(
             borderColor: neutralOutlineHover,
             "@media (-ms-high-contrast:active)": {
                 background: "Background",
-                border: format(
-                    "{0} solid ButtonText",
-                    toPx<DesignSystem>(outlineWidth)
-                ),
-            }
+                border: format("{0} solid ButtonText", toPx<DesignSystem>(outlineWidth)),
+            },
         },
         "&:active:enabled": {
             background: neutralFillInputActive,
@@ -65,18 +62,15 @@ export function inputFieldStyles(
             outline: "none",
             "@media (-ms-high-contrast:active)": {
                 boxShadow: format<DesignSystem>("0 0 0 1px ButtonText inset"),
-            }
+            },
         },
         "&:disabled": {
             ...applyDisabledState(),
             "@media (-ms-high-contrast:active)": {
                 opacity: "1",
                 background: "Background",
-                border: format(
-                    "{0} solid GrayText",
-                    toPx<DesignSystem>(outlineWidth)
-                ),
-            }
+                border: format("{0} solid GrayText", toPx<DesignSystem>(outlineWidth)),
+            },
         },
         "&::placeholder": {
             color: neutralForegroundHint(neutralFillInputRest),

@@ -18,10 +18,7 @@ const styles: ComponentStyles<ContextMenuClassNameContract, DesignSystem> = {
         transition: "all 0.2s ease-in-out",
         "@media (-ms-high-contrast:active)": {
             background: "ButtonFace",
-            border: format<DesignSystem>(
-                "{0} solid ButtonText",
-                toPx(outlineWidth)
-            ),
+            border: format<DesignSystem>("{0} solid ButtonText", toPx(outlineWidth)),
         },
     },
 };

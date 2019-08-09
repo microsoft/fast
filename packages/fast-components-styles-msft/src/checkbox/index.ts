@@ -92,10 +92,7 @@ const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = {
             },
         }),
         "@media (-ms-high-contrast:active)": {
-            border: format(
-                "{0} solid ButtonText",
-                toPx<DesignSystem>(outlineWidth)
-            ),
+            border: format("{0} solid ButtonText", toPx<DesignSystem>(outlineWidth)),
         },
     },
     checkbox_stateIndicator: {
@@ -121,7 +118,7 @@ const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = {
         color: neutralForegroundRest,
         ...applyScaledTypeRamp("t7"),
         "@media (-ms-high-contrast:active)": {
-            color: "ButtonText"
+            color: "ButtonText",
         },
     },
     checkbox__checked: {
@@ -151,7 +148,7 @@ const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = {
                     background: "HighlightText",
                 },
             },
-        }
+        },
     },
     checkbox__indeterminate: {
         "& $checkbox_stateIndicator": {

@@ -53,8 +53,8 @@ const styles: ComponentStyles<FlipperClassNameContract, DesignSystem> = {
             bottom: "0",
             left: "0",
             "@media (-ms-high-contrast:active)": {
-                background: "ButtonFace"
-            }
+                background: "ButtonFace",
+            },
         },
         "&:active": {
             "&::before": {
@@ -67,14 +67,14 @@ const styles: ComponentStyles<FlipperClassNameContract, DesignSystem> = {
                 background: neutralFillStealthHover,
                 borderColor: neutralOutlineHover,
                 "@media (-ms-high-contrast:active)": {
-                    background: "Highlight"
+                    background: "Highlight",
                 },
             },
             "& $flipper_glyph": {
                 "@media (-ms-high-contrast:active)": {
-                    fill: "HighlightText"
-                }
-            }
+                    fill: "HighlightText",
+                },
+            },
         },
         ...applyFocusVisible({
             "&::before": {
@@ -86,8 +86,8 @@ const styles: ComponentStyles<FlipperClassNameContract, DesignSystem> = {
             border: "0",
         },
         "@media (-ms-high-contrast:active)": {
-            fill: "ButtonText"
-        }
+            fill: "ButtonText",
+        },
     },
     flipper_glyph: {
         position: "relative",

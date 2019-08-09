@@ -41,7 +41,7 @@ const styles: ComponentStyles<LightweightButtonClassNameContract, DesignSystem> 
                 "@media (-ms-high-contrast:active)": {
                     fill: "HighlightText",
                 },
-            }
+            },
         },
         "&:active:enabled": {
             background: "transparent",
@@ -66,7 +66,7 @@ const styles: ComponentStyles<LightweightButtonClassNameContract, DesignSystem> 
                     toPx<DesignSystem>(subtract(focusOutlineWidth, outlineWidth))
                 ),
                 borderColor: "ButtonText",
-            }
+            },
         }),
         "&:disabled": {
             "@media (-ms-high-contrast:active)": {
@@ -78,16 +78,13 @@ const styles: ComponentStyles<LightweightButtonClassNameContract, DesignSystem> 
                 "@media (-ms-high-contrast:active)": {
                     fill: "GrayText",
                 },
-            }
+            },
         },
         "@media (-ms-high-contrast:active)": {
             color: "ButtonText",
             fill: "ButtonText",
-            border: format(
-                "{0} solid ButtonText",
-                toPx<DesignSystem>(outlineWidth)
-            ),
-            "-ms-high-contrast-adjust": "none"
+            border: format("{0} solid ButtonText", toPx<DesignSystem>(outlineWidth)),
+            "-ms-high-contrast-adjust": "none",
         },
         "a&": {
             "@media (-ms-high-contrast:active)": {
@@ -95,14 +92,14 @@ const styles: ComponentStyles<LightweightButtonClassNameContract, DesignSystem> 
                 "&:hover": {
                     background: "Highlight",
                     color: "HighlightText",
-                }
+                },
             },
             "&$button__disabled": {
                 "@media (-ms-high-contrast:active)": {
                     borderColor: "GrayText",
                     color: "GrayText",
                 },
-            }
+            },
         },
     },
 };

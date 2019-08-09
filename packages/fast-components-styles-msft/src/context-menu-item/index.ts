@@ -42,10 +42,7 @@ const styles: ComponentStyles<ContextMenuItemClassNameContract, DesignSystem> = 
         ...applyFocusVisible<DesignSystem>({
             borderColor: neutralFocus,
             "@media (-ms-high-contrast:active)": {
-                boxShadow: format(
-                    `0 0 0 {0} inset ButtonText`,
-                    toPx(focusOutlineWidth)
-                ),
+                boxShadow: format(`0 0 0 {0} inset ButtonText`, toPx(focusOutlineWidth)),
             },
         }),
         "&:hover": {
@@ -53,8 +50,8 @@ const styles: ComponentStyles<ContextMenuItemClassNameContract, DesignSystem> = 
             "@media (-ms-high-contrast:active)": {
                 background: "Highlight",
                 color: "HighlightText",
-                fill: "HighlightText"
-            }
+                fill: "HighlightText",
+            },
         },
         "&:active": {
             background: neutralFillStealthActive,
@@ -64,7 +61,7 @@ const styles: ComponentStyles<ContextMenuItemClassNameContract, DesignSystem> = 
             background: "ButtonFace",
             color: "ButtonText",
             "-ms-high-contrast-adjust": "none",
-        }
+        },
     },
     contextMenuItem_contentRegion: {
         gridColumnStart: "2",
@@ -84,7 +81,7 @@ const styles: ComponentStyles<ContextMenuItemClassNameContract, DesignSystem> = 
                 color: "GrayText",
                 fill: "GrayText",
             },
-        }
+        },
     },
 };
 

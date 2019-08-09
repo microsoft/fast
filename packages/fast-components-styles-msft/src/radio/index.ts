@@ -79,10 +79,7 @@ const styles: ComponentStyles<RadioClassNameContract, DesignSystem> = {
             },
         }),
         "@media (-ms-high-contrast:active)": {
-            border: format(
-                "{0} solid ButtonText",
-                toPx<DesignSystem>(outlineWidth)
-            ),
+            border: format("{0} solid ButtonText", toPx<DesignSystem>(outlineWidth)),
         },
     },
     radio_stateIndicator: {
@@ -112,7 +109,7 @@ const styles: ComponentStyles<RadioClassNameContract, DesignSystem> = {
         marginLeft: directionSwitch(horizontalSpacing(2), ""),
         marginRight: directionSwitch("", horizontalSpacing(2)),
         "@media (-ms-high-contrast:active)": {
-            color: "ButtonText"
+            color: "ButtonText",
         },
     },
     radio__checked: {
@@ -142,7 +139,7 @@ const styles: ComponentStyles<RadioClassNameContract, DesignSystem> = {
                     background: "Highlight",
                 },
             },
-        }
+        },
     },
     radio__disabled: {
         ...applyDisabledState(),
@@ -150,7 +147,7 @@ const styles: ComponentStyles<RadioClassNameContract, DesignSystem> = {
             ...applyCursorDisabled(),
             "@media (-ms-high-contrast:active)": {
                 borderColor: "GrayText",
-                color: "GrayText"
+                color: "GrayText",
             },
         },
     },

@@ -97,7 +97,7 @@ const styles: ComponentStyles<CarouselClassNameContract, DesignSystem> = {
             "@media (-ms-high-contrast:active)": {
                 opacity: "1",
                 background: "ButtonFace",
-                borderColor: "ButtonText"
+                borderColor: "ButtonText",
             },
         },
         "&:not($carousel_sequenceIndicator__active)": {
@@ -107,7 +107,7 @@ const styles: ComponentStyles<CarouselClassNameContract, DesignSystem> = {
                     "@media (-ms-high-contrast:active)": {
                         opacity: "1",
                         background: "Highlight",
-                        borderColor: "HighlightText"
+                        borderColor: "HighlightText",
                     },
                 },
             },
@@ -117,7 +117,7 @@ const styles: ComponentStyles<CarouselClassNameContract, DesignSystem> = {
         "&::before": {
             opacity: "1",
             "@media (-ms-high-contrast:active)": {
-                borderColor: "HighlightText"
+                borderColor: "HighlightText",
             },
         },
     },
@@ -168,8 +168,8 @@ const styles: ComponentStyles<CarouselClassNameContract, DesignSystem> = {
             "& > svg": {
                 fill: darkModeNeutralForegroundRest,
                 "@media (-ms-high-contrast:active)": {
-                    fill: "ButtonText"
-                }
+                    fill: "ButtonText",
+                },
             },
         },
         "& $carousel_sequenceIndicator": {
@@ -216,8 +216,8 @@ const styles: ComponentStyles<CarouselClassNameContract, DesignSystem> = {
             "& > svg": {
                 fill: lightModeNeutralForegroundRest,
                 "@media (-ms-high-contrast:active)": {
-                    fill: "ButtonText"
-                }
+                    fill: "ButtonText",
+                },
             },
         },
         "& $carousel_sequenceIndicator": {

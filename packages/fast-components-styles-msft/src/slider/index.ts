@@ -121,7 +121,7 @@ const styles: ComponentStyles<SliderClassNameContract, DesignSystem> = {
             "@media (-ms-high-contrast:active)": {
                 background: "GrayText",
             },
-        }
+        },
     },
     slider__horizontal: {
         "&$slider": {

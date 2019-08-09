@@ -49,15 +49,15 @@ const styles: ComponentStyles<SelectOptionClassNameContract, DesignSystem> = {
             "@media (-ms-high-contrast:active)": {
                 background: "Highlight",
                 color: "HighlightText",
-                fill: "HighlightText"
-            }
+                fill: "HighlightText",
+            },
         },
         "@media (-ms-high-contrast:active)": {
             border: "none",
             background: "ButtonFace",
             color: "ButtonText",
             "-ms-high-contrast-adjust": "none",
-        }
+        },
     },
     selectOption_contentRegion: {
         overflow: "hidden",
@@ -81,8 +81,8 @@ const styles: ComponentStyles<SelectOptionClassNameContract, DesignSystem> = {
             "@media (-ms-high-contrast:active)": {
                 borderColor: "GrayText",
                 color: "GrayText",
-                fill: "GrayText"
-            }
+                fill: "GrayText",
+            },
         },
     },
     selectOption__selected: {
@@ -92,14 +92,14 @@ const styles: ComponentStyles<SelectOptionClassNameContract, DesignSystem> = {
             "@media (-ms-high-contrast:active)": {
                 background: "Highlight",
                 color: "HighlightText",
-                fill: "HighlightText"
-            }
+                fill: "HighlightText",
+            },
         },
         "@media (-ms-high-contrast:active)": {
             background: "Highlight",
             color: "HighlightText",
-            fill: "HighlightText"
-        }
+            fill: "HighlightText",
+        },
     },
 };
 

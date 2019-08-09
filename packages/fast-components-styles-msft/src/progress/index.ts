@@ -82,7 +82,7 @@ const styles: ComponentStyles<ProgressClassNameContract, DesignSystem> = {
         maskImage: "-webkit-radial-gradient(white, black)",
         "@media (-ms-high-contrast:active)": {
             background: "ButtonFace",
-            border: "1px solid ButtonText"
+            border: "1px solid ButtonText",
         },
     },
     progress_indicator__determinate: {
@@ -90,7 +90,7 @@ const styles: ComponentStyles<ProgressClassNameContract, DesignSystem> = {
         borderRadius: "2px",
         "@media (-ms-high-contrast:active)": {
             background: "ButtonFace",
-            border: "1px solid ButtonText"
+            border: "1px solid ButtonText",
         },
     },
     progress_dot: {

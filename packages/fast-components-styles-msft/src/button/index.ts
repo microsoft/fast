@@ -120,8 +120,8 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = {
             "@media (-ms-high-contrast:active)": {
                 background: "Highlight",
                 color: "HighlightText",
-                fill: "HighlightText"
-            }
+                fill: "HighlightText",
+            },
         },
         "&:active:enabled": {
             background: neutralFillActive,
@@ -130,16 +130,13 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = {
             borderColor: neutralFocus,
             "@media (-ms-high-contrast:active)": {
                 borderColor: "ButtonText",
-                boxShadow: format(
-                    "0 0 0 {0} inset ButtonText",
-                    toPx(outlineWidth)
-                ),
-            }
+                boxShadow: format("0 0 0 {0} inset ButtonText", toPx(outlineWidth)),
+            },
         }),
         "&:disabled": {
             "@media (-ms-high-contrast:active)": {
                 borderColor: "GrayText",
-            }
+            },
         },
         "&::-moz-focus-inner": {
             border: "0",
@@ -149,7 +146,7 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = {
             borderColor: "ButtonText",
             color: "ButtonText",
             fill: "ButtonText",
-            "-ms-high-contrast-adjust": "none"
+            "-ms-high-contrast-adjust": "none",
         },
         "a&": {
             "@media (-ms-high-contrast:active)": {
@@ -157,7 +154,7 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = {
                 "&:hover": {
                     background: "Highlight",
                     color: "HighlightText",
-                }
+                },
             },
             "&$button__disabled": {
                 "@media (-ms-high-contrast:active)": {
@@ -169,7 +166,7 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = {
                     "@media (-ms-high-contrast:active)": {
                         fill: "GrayText",
                     },
-                }
+                },
             },
         },
     },
@@ -183,7 +180,7 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = {
                 background: "HighlightText",
                 borderColor: "Highlight",
                 color: "Highlight",
-            }
+            },
         },
         "&:active:enabled": {
             background: accentFillActive,
@@ -197,29 +194,26 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = {
             ),
             "@media (-ms-high-contrast:active)": {
                 borderColor: "ButtonText",
-                boxShadow: format(
-                    "0 0 0 {0} inset ButtonFace",
-                    toPx(focusOutlineWidth)
-                ),
-            }
+                boxShadow: format("0 0 0 {0} inset ButtonFace", toPx(focusOutlineWidth)),
+            },
         }),
         "&:disabled": {
             "@media (-ms-high-contrast:active)": {
                 background: "Background",
-            }
+            },
         },
         "& $button_beforeContent, & $button_afterContent": {
             fill: accentForegroundCut,
             "@media (-ms-high-contrast:active)": {
                 fill: "ButtonText",
-            }
+            },
         },
         "@media (-ms-high-contrast:active)": {
             background: "Highlight",
             borderColor: "Highlight",
             color: "HighlightText",
-            "-ms-high-contrast-adjust": "none"
-        }
+            "-ms-high-contrast-adjust": "none",
+        },
     },
     button__outline: {
         background: "transparent",
@@ -239,7 +233,7 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = {
             "@media (-ms-high-contrast:active)": {
                 background: "Highlight",
                 color: "HighlightText",
-            }
+            },
         },
         "&:active:enabled": {
             background: "transparent",
@@ -264,21 +258,18 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = {
                     toPx<DesignSystem>(subtract(focusOutlineWidth, outlineWidth))
                 ),
                 borderColor: "ButtonText",
-            }
+            },
         }),
         "&:disabled": {
             "@media (-ms-high-contrast:active)": {
                 borderColor: "GrayText",
-            }
+            },
         },
         "@media (-ms-high-contrast:active)": {
-            border: format(
-                "{0} solid ButtonText",
-                toPx<DesignSystem>(outlineWidth)
-            ),
+            border: format("{0} solid ButtonText", toPx<DesignSystem>(outlineWidth)),
             color: "ButtonText",
-            "-ms-high-contrast-adjust": "none"
-        }
+            "-ms-high-contrast-adjust": "none",
+        },
     },
     button__lightweight: {
         ...applyTransparentBackplateStyles,
@@ -298,7 +289,7 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = {
             "@media (-ms-high-contrast:active)": {
                 background: "Highlight",
                 color: "HighlightText",
-            }
+            },
         },
         "&:active:enabled": {
             backgroundColor: neutralFillStealthActive,
@@ -306,18 +297,15 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = {
         ...applyFocusVisible<DesignSystem>({
             borderColor: neutralFocus,
             "@media (-ms-high-contrast:active)": {
-                boxShadow: format(
-                    `0 0 0 {0} inset ButtonText`,
-                    toPx(focusOutlineWidth)
-                ),
-            }
+                boxShadow: format(`0 0 0 {0} inset ButtonText`, toPx(focusOutlineWidth)),
+            },
         }),
         "@media (-ms-high-contrast:active)": {
             background: "Background",
             border: "none",
             color: "ButtonText",
-            "-ms-high-contrast-adjust": "none"
-        }
+            "-ms-high-contrast-adjust": "none",
+        },
     },
     button_contentRegion: {
         position: "relative",
@@ -342,7 +330,7 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = {
             fill: "ButtonHighlight",
             "@media (-ms-high-contrast:active)": {
                 fill: "GrayText",
-            }
+            },
         },
     },
     button_beforeContent: {

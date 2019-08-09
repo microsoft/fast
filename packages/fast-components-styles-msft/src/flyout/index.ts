@@ -17,8 +17,8 @@ const styles: ComponentStyles<FlyoutClassNameContract, DesignSystem> = {
             display: "block",
         },
         "@media (-ms-high-contrast:active)": {
-            border: "1px solid WindowText"
-        }
+            border: "1px solid WindowText",
+        },
     },
     flyout__top: {},
     flyout__bottom: {},

@@ -44,11 +44,8 @@ const styles: ComponentStyles<AccentButtonClassNameContract, DesignSystem> = {
             ),
             "@media (-ms-high-contrast:active)": {
                 borderColor: "ButtonText",
-                boxShadow: format(
-                    "0 0 0 {0} inset ButtonFace",
-                    toPx(focusOutlineWidth)
-                ),
-            }
+                boxShadow: format("0 0 0 {0} inset ButtonFace", toPx(focusOutlineWidth)),
+            },
         }),
         "&:disabled": {
             "@media (-ms-high-contrast:active)": {
@@ -66,13 +63,13 @@ const styles: ComponentStyles<AccentButtonClassNameContract, DesignSystem> = {
             fill: accentForegroundCut,
             "@media (-ms-high-contrast:active)": {
                 fill: "HighlightText",
-            }
+            },
         },
         "@media (-ms-high-contrast:active)": {
             background: "Highlight",
             borderColor: "Highlight",
             color: "HighlightText",
-            "-ms-high-contrast-adjust": "none"
+            "-ms-high-contrast-adjust": "none",
         },
         "a&": {
             "@media (-ms-high-contrast:active)": {
@@ -80,7 +77,7 @@ const styles: ComponentStyles<AccentButtonClassNameContract, DesignSystem> = {
                 "&:hover": {
                     background: "Highlight",
                     color: "HighlightText",
-                }
+                },
             },
             "&$button__disabled": {
                 "@media (-ms-high-contrast:active)": {

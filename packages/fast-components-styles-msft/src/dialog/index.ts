@@ -19,8 +19,8 @@ const styles: ComponentStyles<DialogClassNameContract, DesignSystem> = (
                 display: "block",
             },
             "@media (-ms-high-contrast:active)": {
-                border: "1px solid WindowText"
-            }
+                border: "1px solid WindowText",
+            },
         },
         dialog_positioningRegion: {
             display: "flex",

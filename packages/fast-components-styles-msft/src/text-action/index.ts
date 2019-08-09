@@ -1,7 +1,13 @@
 import { TextFieldClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import { TextActionClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager";
-import { applyFocusVisible, directionSwitch, format, subtract, toPx } from "@microsoft/fast-jss-utilities";
+import {
+    applyFocusVisible,
+    directionSwitch,
+    format,
+    subtract,
+    toPx,
+} from "@microsoft/fast-jss-utilities";
 import { DesignSystem } from "../design-system";
 import { applyCornerRadius } from "../utilities/border";
 import {
@@ -41,7 +47,7 @@ export const textFieldOverrides: ComponentStyles<
                 background: "none",
                 border: "none",
                 boxShadow: "none",
-            }
+            },
         },
     },
 };
@@ -52,8 +58,8 @@ const glyphStyles: CSSRules<{}> = {
     margin: "auto",
     fill: neutralForegroundRest,
     "@media (-ms-high-contrast:active)": {
-        fill: "ButtonText"
-    }
+        fill: "ButtonText",
+    },
 };
 
 const styles: ComponentStyles<TextActionClassNameContract, DesignSystem> = {
@@ -82,11 +88,8 @@ const styles: ComponentStyles<TextActionClassNameContract, DesignSystem> = {
             borderColor: neutralOutlineActive,
         },
         "@media (-ms-high-contrast:active)": {
-            border: format(
-                "{0} solid ButtonText",
-                toPx<DesignSystem>(outlineWidth)
-            ),
-        }
+            border: format("{0} solid ButtonText", toPx<DesignSystem>(outlineWidth)),
+        },
     },
     textAction__filled: {
         background: neutralFillRest,
@@ -120,12 +123,9 @@ const styles: ComponentStyles<TextActionClassNameContract, DesignSystem> = {
                     "0 0 0 {0} ButtonText inset",
                     toPx<DesignSystem>(subtract(focusOutlineWidth, outlineWidth))
                 ),
-                border: format(
-                    "{0} solid ButtonText",
-                    toPx<DesignSystem>(outlineWidth)
-                ),
-            },  
-        }
+                border: format("{0} solid ButtonText", toPx<DesignSystem>(outlineWidth)),
+            },
+        },
     },
     textAction__disabled: {
         ...applyDisabledState(),
@@ -138,13 +138,13 @@ const styles: ComponentStyles<TextActionClassNameContract, DesignSystem> = {
             borderColor: neutralOutlineRest,
         },
         "& $textAction_beforeGlyph, & $textAction_afterGlyph": {
-            fill: "GrayText"
+            fill: "GrayText",
         },
         "@media (-ms-high-contrast:active)": {
             opacity: "1",
             background: "Background",
             borderColor: "GrayText",
-        }
+        },
     },
     textAction_button: {
         borderColor: "transparent",
@@ -162,7 +162,7 @@ const styles: ComponentStyles<TextActionClassNameContract, DesignSystem> = {
         cursor: "pointer",
         "@media (-ms-high-contrast:active)": {
             background: "ButtonFace",
-            fill: "ButtonText"
+            fill: "ButtonText",
         },
         "&:hover": {
             "@media (-ms-high-contrast:active)": {
