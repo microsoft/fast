@@ -2,8 +2,6 @@ import { isFunction, isString } from "lodash-es";
 
 type ClassNamesArg = string | (() => string) | [string | (() => string), boolean];
 
-// const isString: (val: unknown) => val is string = (val: unknown): val is string => typeof val === "string"
-
 export function classNames(...args: ClassNamesArg[]): string {
     let classes: string = "";
     let leadingChar: string = "";
