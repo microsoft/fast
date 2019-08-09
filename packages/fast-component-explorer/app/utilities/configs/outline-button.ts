@@ -15,7 +15,7 @@ const outlineButtonConfig: ComponentViewConfig<OutlineButtonProps> = {
         {
             displayName: "Default",
             data: {
-                children: "Outline button",
+                children: "Default outline button",
             },
         },
         {
@@ -33,9 +33,9 @@ const outlineButtonConfig: ComponentViewConfig<OutlineButtonProps> = {
             },
         },
         {
-            displayName: "Before content outline button",
+            displayName: "Glyph before text",
             data: {
-                children: "Disabled outline button",
+                children: "Glyph before text outline button",
                 beforeContent: {
                     id: glyphSchema.id,
                     props: {
@@ -45,9 +45,9 @@ const outlineButtonConfig: ComponentViewConfig<OutlineButtonProps> = {
             },
         },
         {
-            displayName: "After content outline button",
+            displayName: "Glyph after text",
             data: {
-                children: "Disabled outline button",
+                children: "Glyph after text outline button",
                 afterContent: {
                     id: glyphSchema.id,
                     props: {

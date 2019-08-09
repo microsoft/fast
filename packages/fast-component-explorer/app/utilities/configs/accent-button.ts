@@ -15,7 +15,7 @@ const accentButtonConfig: ComponentViewConfig<AccentButtonProps> = {
         {
             displayName: "Default",
             data: {
-                children: "Accent button",
+                children: "Default accent button",
             },
         },
         {
@@ -33,9 +33,9 @@ const accentButtonConfig: ComponentViewConfig<AccentButtonProps> = {
             },
         },
         {
-            displayName: "Before content accent button",
+            displayName: "Glyph before text",
             data: {
-                children: "Disabled accent button",
+                children: "Glyph before text accent button",
                 beforeContent: {
                     id: glyphSchema.id,
                     props: {
@@ -45,9 +45,9 @@ const accentButtonConfig: ComponentViewConfig<AccentButtonProps> = {
             },
         },
         {
-            displayName: "After content accent button",
+            displayName: "Glyph after text",
             data: {
-                children: "Disabled accent button",
+                children: "Glyph after text accent button",
                 afterContent: {
                     id: glyphSchema.id,
                     props: {

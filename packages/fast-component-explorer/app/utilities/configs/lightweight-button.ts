@@ -15,7 +15,7 @@ const lightweightButtonConfig: ComponentViewConfig<LightweightButtonProps> = {
         {
             displayName: "Default",
             data: {
-                children: "Lightweight button",
+                children: "Default lightweight button",
             },
         },
         {
@@ -33,9 +33,9 @@ const lightweightButtonConfig: ComponentViewConfig<LightweightButtonProps> = {
             },
         },
         {
-            displayName: "Before content lightweight button",
+            displayName: "Glyph before text",
             data: {
-                children: "Disabled lightweight button",
+                children: "Glyph before text lightweight button",
                 beforeContent: {
                     id: glyphSchema.id,
                     props: {
@@ -45,9 +45,9 @@ const lightweightButtonConfig: ComponentViewConfig<LightweightButtonProps> = {
             },
         },
         {
-            displayName: "After content lightweight button",
+            displayName: "Glyph after text",
             data: {
-                children: "Disabled lightweight button",
+                children: "Glyph after text lightweight button",
                 afterContent: {
                     id: glyphSchema.id,
                     props: {

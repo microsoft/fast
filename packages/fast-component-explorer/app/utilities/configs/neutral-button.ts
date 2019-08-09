@@ -15,7 +15,7 @@ const neutralButtonConfig: ComponentViewConfig<NeutralButtonProps> = {
         {
             displayName: "Default",
             data: {
-                children: "Neutral button",
+                children: "Default neutral button",
             },
         },
         {
@@ -33,9 +33,9 @@ const neutralButtonConfig: ComponentViewConfig<NeutralButtonProps> = {
             },
         },
         {
-            displayName: "Before content neutral button",
+            displayName: "Glyph before text",
             data: {
-                children: "Disabled neutral button",
+                children: "Glyph before text neutral button",
                 beforeContent: {
                     id: glyphSchema.id,
                     props: {
@@ -45,9 +45,9 @@ const neutralButtonConfig: ComponentViewConfig<NeutralButtonProps> = {
             },
         },
         {
-            displayName: "After content neutral button",
+            displayName: "Glyph after text",
             data: {
-                children: "Disabled neutral button",
+                children: "Glyph after text neutral button",
                 afterContent: {
                     id: glyphSchema.id,
                     props: {
