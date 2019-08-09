@@ -41,23 +41,14 @@ export function applyScrollbarStyle(): CSSRules<{}> {
 }
 
 const style: ComponentStyles<ExplorerClassNameContract, DesignSystem> = {
-    "@font-face": [
-        {
-            fontFamily: "SegoeUIVF",
-            src:
-                "url(https://res.cloudinary.com/fast-dna/raw/upload/v1558051831/SegoeUI-Roman-VF_web.ttf) format('truetype')",
-            fontWeight: "1 1000",
-        },
-        {
-            fontFamily: "Segoe UI",
-            src:
-                "url('//c.s-microsoft.com/static/fonts/segoe-ui/west-european/Normal/latest.woff2') format('woff2')",
-        },
-    ] as any,
+    "@font-face": {
+        fontFamily: "Segoe UI",
+        src:
+            "url('//c.s-microsoft.com/static/fonts/segoe-ui/west-european/Normal/latest.woff2') format('woff2')",
+    },
     "@global": {
         "body, html": {
-            fontFamily:
-                "SegoeUIVF, Segoe UI, SegoeUI, Helvetica Neue, Helvetica, Arial, sans-serif",
+            fontFamily: "Segoe UI, SegoeUI, Helvetica Neue, Helvetica, Arial, sans-serif",
             fontSize: "12px",
             padding: "0",
             margin: "0",
