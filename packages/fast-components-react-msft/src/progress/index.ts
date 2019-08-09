@@ -6,6 +6,7 @@ import MSFTProgress, {
     ProgressHandledProps as MSFTProgressHandledProps,
     ProgressManagedClasses,
     ProgressProps as MSFTProgressProps,
+    ProgressSize,
     ProgressUnhandledProps,
 } from "./progress";
 import progressSchema from "./progress.schema";
@@ -32,5 +33,6 @@ export {
     ProgressUnhandledProps,
     ProgressHandledProps,
     progressSchema,
+    ProgressSize,
     ProgressClassNameContract,
 };
