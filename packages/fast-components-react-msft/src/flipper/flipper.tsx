@@ -1,21 +1,15 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import { get } from "lodash-es";
+import { FlipperClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import { Button, ButtonProps } from "@microsoft/fast-components-react-base";
+import { classNames } from "@microsoft/fast-web-utilities";
+import React from "react";
+import { DisplayNamePrefix } from "../utilities";
 import {
     FlipperDirection,
     FlipperHandledProps,
-    FlipperManagedClasses,
     FlipperProps,
     FlipperUnhandledProps,
 } from "./flipper.props";
-import {
-    FlipperClassNameContract,
-    ManagedClasses,
-} from "@microsoft/fast-components-class-name-contracts-msft";
-import { DisplayNamePrefix } from "../utilities";
-import { classNames } from "@microsoft/fast-web-utilities";
 
 class Flipper extends Foundation<FlipperHandledProps, FlipperUnhandledProps, {}> {
     public static displayName: string = `${DisplayNamePrefix}Flipper`;

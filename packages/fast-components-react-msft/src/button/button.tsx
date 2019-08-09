@@ -1,16 +1,15 @@
-import React from "react";
-import { get } from "lodash-es";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
+import { Button as BaseButton, ButtonProps } from "@microsoft/fast-components-react-base";
+import { classNames } from "@microsoft/fast-web-utilities";
+import { get } from "lodash-es";
+import React from "react";
+import { ButtonClassNameContract } from ".";
+import { DisplayNamePrefix } from "../utilities";
 import {
     ButtonAppearance,
     ButtonHandledProps,
-    ButtonManagedClasses,
     ButtonUnhandledProps,
 } from "./button.props";
-import { Button as BaseButton, ButtonProps } from "@microsoft/fast-components-react-base";
-import { DisplayNamePrefix } from "../utilities";
-import { classNames } from "@microsoft/fast-web-utilities";
-import { ButtonClassNameContract } from ".";
 
 /**
  * Button slot options
@@ -24,8 +23,8 @@ class Button extends Foundation<ButtonHandledProps, ButtonUnhandledProps, {}> {
     public static displayName: string = `${DisplayNamePrefix}Button`;
 
     public static defaultProps: ButtonProps = {
-        managedClasses: {}
-    }
+        managedClasses: {},
+    };
 
     protected handledProps: HandledProps<ButtonHandledProps> = {
         appearance: void 0,
@@ -72,9 +71,14 @@ class Button extends Foundation<ButtonHandledProps, ButtonUnhandledProps, {}> {
               )
             : "";
 
-        return super.generateClassNames(classNames(
-            [this.props.managedClasses[`button__${ButtonAppearance[this.props.appearance]}`], typeof this.props.appearance === "string"]
-        ));
+        return super.generateClassNames(
+            classNames([
+                this.props.managedClasses[
+                    `button__${ButtonAppearance[this.props.appearance]}`
+                ],
+                typeof this.props.appearance === "string",
+            ])
+        );
     }
 
     private generateBeforeContent(): React.ReactNode {

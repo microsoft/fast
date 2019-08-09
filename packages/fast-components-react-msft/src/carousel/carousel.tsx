@@ -1,5 +1,13 @@
-import React from "react";
+import { TabsClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
+import { CarouselClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
+import { Tabs, TabsItem } from "@microsoft/fast-components-react-base";
+import { classNames } from "@microsoft/fast-web-utilities";
+import { canUseDOM } from "exenv-es6";
+import { get, isNil } from "lodash-es";
+import React from "react";
+import { Flipper, FlipperDirection } from "../flipper";
+import { DisplayNamePrefix } from "../utilities";
 import {
     CarouselHandledProps,
     CarouselProps,
@@ -8,14 +16,6 @@ import {
     CarouselState,
     CarouselUnhandledProps,
 } from "./carousel.props";
-import { Flipper, FlipperDirection } from "../flipper";
-import { Tabs, TabsItem } from "@microsoft/fast-components-react-base";
-import { TabsClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
-import { get, isNil } from "lodash-es";
-import { DisplayNamePrefix } from "../utilities";
-import { canUseDOM } from "exenv-es6";
-import { classNames } from "@microsoft/fast-web-utilities";
-import { CarouselClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 
 class Carousel extends Foundation<
     CarouselHandledProps,
@@ -260,15 +260,15 @@ class Carousel extends Foundation<
     private assignTransitionDirectionClassName = (): string => {
         const {
             carousel__slideAnimateNext,
-            carousel__slideAnimatePrevious
+            carousel__slideAnimatePrevious,
         }: CarouselClassNameContract = this.props.managedClasses;
         const transitionDirection: string =
             this.slideTransitionDirection === FlipperDirection.next
                 ? carousel__slideAnimateNext
-                : carousel__slideAnimatePrevious
+                : carousel__slideAnimatePrevious;
 
         return ` ${transitionDirection}`;
-    }
+    };
 
     /**
      * Return slide theme class name
@@ -276,15 +276,15 @@ class Carousel extends Foundation<
     private assignSlideThemeClassName = (): string => {
         const {
             carousel__themeLight,
-            carousel__themeDark
+            carousel__themeDark,
         }: CarouselClassNameContract = this.props.managedClasses;
         const theme: string =
             this.getSlideTheme() === CarouselSlideTheme.light
                 ? carousel__themeLight
-                : carousel__themeDark
+                : carousel__themeDark;
 
         return ` ${theme}`;
-    }
+    };
 
     /**
      * Generates previous flipper if more than one slide

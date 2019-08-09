@@ -1,23 +1,16 @@
-import React from "react";
-import { get } from "lodash-es";
-import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
-import {
-    SelectHandledProps,
-    SelectManagedClasses,
-    SelectProps,
-    SelectUnhandledProps,
-} from "./select.props";
-import { Select as BaseSelect, SelectState } from "@microsoft/fast-components-react-base";
-import { Button, ButtonAppearance } from "../button";
-import { DisplayNamePrefix } from "../utilities";
 import { SelectClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
+import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
+import { Select as BaseSelect, SelectState } from "@microsoft/fast-components-react-base";
 import { classNames } from "@microsoft/fast-web-utilities";
+import React from "react";
+import { DisplayNamePrefix } from "../utilities";
+import { SelectHandledProps, SelectProps, SelectUnhandledProps } from "./select.props";
 
 class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, {}> {
     public static displayName: string = `${DisplayNamePrefix}Select`;
     public static defaultProps: SelectProps = {
-        managedClasses: {}
-    }
+        managedClasses: {},
+    };
 
     protected handledProps: HandledProps<SelectHandledProps> = {
         disabled: void 0,
@@ -58,8 +51,8 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, {}> {
         const {
             select_button,
             select_buttonContentRegion,
-            select_buttonDisplayText
-        }: SelectClassNameContract = this.props.managedClasses
+            select_buttonDisplayText,
+        }: SelectClassNameContract = this.props.managedClasses;
         return (
             <button
                 disabled={props.disabled}
@@ -68,12 +61,8 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, {}> {
                 aria-haspopup={true}
                 aria-expanded={state.isMenuOpen}
             >
-                <span
-                    className={classNames(select_buttonContentRegion)}
-                >
-                    <div
-                        className={classNames(select_buttonDisplayText)}
-                    >
+                <span className={classNames(select_buttonContentRegion)}>
+                    <div className={classNames(select_buttonDisplayText)}>
                         {state.displayString}
                     </div>
                     {this.generateGlyph()}

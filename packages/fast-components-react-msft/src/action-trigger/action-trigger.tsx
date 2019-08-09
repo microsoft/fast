@@ -1,17 +1,17 @@
-import React from "react";
-import { get, isNil } from "lodash-es";
+import { ActionTriggerClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
+import { actionTriggerButtonOverrides } from "@microsoft/fast-components-styles-msft";
+import { classNames } from "@microsoft/fast-web-utilities";
+import { isNil } from "lodash-es";
+import React from "react";
 import { Button, ButtonAppearance } from "../button";
+import { DisplayNamePrefix } from "../utilities";
 import {
     ActionTriggerAppearance,
     ActionTriggerHandledProps,
     ActionTriggerProps,
     ActionTriggerUnhandledProps,
 } from "./action-trigger.props";
-import { actionTriggerButtonOverrides } from "@microsoft/fast-components-styles-msft";
-import { ActionTriggerClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
-import { DisplayNamePrefix } from "../utilities";
-import { classNames } from "@microsoft/fast-web-utilities";
 
 class ActionTrigger extends Foundation<
     ActionTriggerHandledProps,
@@ -77,7 +77,9 @@ class ActionTrigger extends Foundation<
     }
 
     private generateGlyph = (): React.ReactNode => {
-        return this.props.glyph(classNames(this.props.managedClasses.actionTrigger_glyph));
+        return this.props.glyph(
+            classNames(this.props.managedClasses.actionTrigger_glyph)
+        );
     };
 
     /**

@@ -1,16 +1,14 @@
-import React from "react";
-import { get } from "lodash-es";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
+import { TextField as BaseTextField } from "@microsoft/fast-components-react-base";
+import { classNames } from "@microsoft/fast-web-utilities";
+import React from "react";
+import { DisplayNamePrefix } from "../utilities";
 import {
     TextFieldAppearance,
     TextFieldHandledProps,
-    TextFieldManagedClasses,
     TextFieldProps,
     TextFieldUnhandledProps,
 } from "./text-field.props";
-import { TextField as BaseTextField } from "@microsoft/fast-components-react-base";
-import { DisplayNamePrefix } from "../utilities";
-import { classNames } from "@microsoft/fast-web-utilities";
 
 class TextField extends Foundation<TextFieldHandledProps, TextFieldUnhandledProps, {}> {
     public static displayName: string = `${DisplayNamePrefix}TextField`;

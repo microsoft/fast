@@ -1,22 +1,17 @@
-import React from "react";
-import { get } from "lodash-es";
+import { SubheadingClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import { TypographySize, TypographyTag } from "@microsoft/fast-components-react-base";
+import { classNames } from "@microsoft/fast-web-utilities";
+import React from "react";
+import { Typography } from "../typography";
+import { DisplayNamePrefix } from "../utilities";
 import {
     SubheadingHandledProps,
-    SubheadingManagedClasses,
     SubheadingProps,
     SubheadingSize,
     SubheadingTag,
     SubheadingUnhandledProps,
 } from "./subheading.props";
-import { Typography } from "../typography";
-import {
-    ManagedClasses,
-    SubheadingClassNameContract,
-} from "@microsoft/fast-components-class-name-contracts-msft";
-import { DisplayNamePrefix } from "../utilities";
-import { classNames } from "@microsoft/fast-web-utilities";
 
 class Subheading extends Foundation<
     SubheadingHandledProps,

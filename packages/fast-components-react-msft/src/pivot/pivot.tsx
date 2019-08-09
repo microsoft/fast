@@ -1,23 +1,15 @@
-import {
-    ManagedClasses,
-    PivotClassNameContract,
-} from "@microsoft/fast-components-class-name-contracts-msft";
+import { TabsClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
+import { PivotClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
+import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
+import { Tabs as BaseTabs } from "@microsoft/fast-components-react-base";
+import { toPx } from "@microsoft/fast-jss-utilities";
+import { classNames, Direction } from "@microsoft/fast-web-utilities";
+import { canUseDOM } from "exenv-es6";
+import { get } from "lodash-es";
 import React from "react";
 import ReactDOM from "react-dom";
-import { canUseDOM } from "exenv-es6";
-import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
-import {
-    PivotHandledProps,
-    PivotManagedClasses,
-    PivotUnhandledProps,
-} from "./pivot.props";
-import { get } from "lodash-es";
-import { TabsClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
-import { classNames, Direction } from "@microsoft/fast-web-utilities";
-import { toPx } from "@microsoft/fast-jss-utilities";
-import { Tabs as BaseTabs } from "@microsoft/fast-components-react-base";
-import { PivotProps } from "./pivot.props";
 import { DisplayNamePrefix } from "../utilities";
+import { PivotHandledProps, PivotProps, PivotUnhandledProps } from "./pivot.props";
 
 export interface PivotState {
     offsetX: number;

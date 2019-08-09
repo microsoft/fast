@@ -1,17 +1,17 @@
-import React from "react";
-import { get, isNil } from "lodash-es";
+import { ActionToggleClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
+import { actionToggleButtonOverrides } from "@microsoft/fast-components-styles-msft";
+import { classNames } from "@microsoft/fast-web-utilities";
+import { isNil } from "lodash-es";
+import React from "react";
 import { Button, ButtonAppearance } from "../button";
+import { DisplayNamePrefix } from "../utilities";
 import {
     ActionToggleAppearance,
     ActionToggleHandledProps,
     ActionToggleProps,
     ActionToggleUnhandledProps,
 } from "./action-toggle.props";
-import { actionToggleButtonOverrides } from "@microsoft/fast-components-styles-msft";
-import { DisplayNamePrefix } from "../utilities";
-import { ActionToggleClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
-import { classNames } from "@microsoft/fast-web-utilities";
 
 export interface ActionToggleState {
     selected: boolean;
@@ -25,8 +25,8 @@ class ActionToggle extends Foundation<
     public static displayName: string = `${DisplayNamePrefix}ActionToggle`;
 
     public static defaultProps: Partial<ActionToggleProps> = {
-        managedClasses: {}
-    }
+        managedClasses: {},
+    };
 
     /**
      * React life-cycle method
@@ -101,15 +101,21 @@ class ActionToggle extends Foundation<
             actionToggle,
             actionToggle__disabled,
             actionToggle__selected,
-            actionToggle__hasGlyphAndContent
+            actionToggle__hasGlyphAndContent,
         }: ActionToggleClassNameContract = this.props.managedClasses;
 
-         return super.generateClassNames(classNames(actionToggle,
-             [actionToggle__disabled, this.props.disabled],
-             [actionToggle__selected, this.state.selected],
-             [this.props.managedClasses[`actionToggle__${this.props.appearance}`], typeof this.props.appearance === "string"],
-             [actionToggle__hasGlyphAndContent, this.hasGlyphAndContent()]
-         ));
+        return super.generateClassNames(
+            classNames(
+                actionToggle,
+                [actionToggle__disabled, this.props.disabled],
+                [actionToggle__selected, this.state.selected],
+                [
+                    this.props.managedClasses[`actionToggle__${this.props.appearance}`],
+                    typeof this.props.appearance === "string",
+                ],
+                [actionToggle__hasGlyphAndContent, this.hasGlyphAndContent()]
+            )
+        );
     }
 
     /**

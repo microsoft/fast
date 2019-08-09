@@ -1,21 +1,19 @@
-import React from "react";
+import { SliderLabelClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
-import {
-    SliderLabelHandledProps,
-    SliderLabelProps,
-    SliderLabelUnhandledProps,
-} from "./slider-label.props";
 import {
     SliderContext,
     SliderContextType,
     SliderTrackItem as BaseSliderTrackItem,
     SliderTrackItemAnchor,
 } from "@microsoft/fast-components-react-base";
-import { Direction, classNames } from "@microsoft/fast-web-utilities";
-import { get } from "lodash-es";
+import { classNames, Direction } from "@microsoft/fast-web-utilities";
+import React from "react";
 import { DisplayNamePrefix } from "../utilities";
-import { SliderClassNameContract } from "src/slider";
-import { SliderLabelClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
+import {
+    SliderLabelHandledProps,
+    SliderLabelProps,
+    SliderLabelUnhandledProps,
+} from "./slider-label.props";
 
 class SliderLabel extends Foundation<
     SliderLabelHandledProps,
@@ -27,7 +25,7 @@ class SliderLabel extends Foundation<
 
     public static defaultProps: Partial<SliderLabelProps> = {
         showTickmark: true,
-        managedClasses: {}
+        managedClasses: {},
     };
 
     protected handledProps: HandledProps<SliderLabelHandledProps> = {
@@ -41,8 +39,8 @@ class SliderLabel extends Foundation<
         const {
             sliderLabel,
             sliderLabel__horizontal,
-            sliderLabel__vertical
-        }: Partial<SliderLabelClassNameContract> = this.props.managedClasses
+            sliderLabel__vertical,
+        }: Partial<SliderLabelClassNameContract> = this.props.managedClasses;
         return (
             <BaseSliderTrackItem
                 {...this.unhandledProps()}
@@ -71,16 +69,17 @@ class SliderLabel extends Foundation<
             sliderLabel_positioningRegion,
             sliderLabel__positionMax,
             sliderLabel__positionMin,
-            sliderLabel__rtl
-        }: Partial<SliderLabelClassNameContract> = this.props.managedClasses
-        const binding: SliderLabelProps["valuePositionBinding"] = this.props.valuePositionBinding;
+            sliderLabel__rtl,
+        }: Partial<SliderLabelClassNameContract> = this.props.managedClasses;
+        const binding: SliderLabelProps["valuePositionBinding"] = this.props
+            .valuePositionBinding;
 
         return classNames(
             sliderLabel_positioningRegion,
             [sliderLabel__positionMax, binding === SliderTrackItemAnchor.totalRangeMax],
             [sliderLabel__positionMin, binding === SliderTrackItemAnchor.totalRangeMin],
             [sliderLabel__rtl, this.context.sliderDirection === Direction.rtl]
-        )
+        );
     }
 
     private renderLabel = (): React.ReactNode => {

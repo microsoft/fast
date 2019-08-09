@@ -1,17 +1,17 @@
-import React from "react";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
+import { callToActionButtonOverrides } from "@microsoft/fast-components-styles-msft";
+import { classNames } from "@microsoft/fast-web-utilities";
+import { get } from "lodash-es";
+import React from "react";
+import { CallToActionClassNameContract } from ".";
 import { Button, ButtonAppearance } from "../button";
+import { DisplayNamePrefix } from "../utilities";
 import {
     CallToActionAppearance,
     CallToActionHandledProps,
+    CallToActionProps,
     CallToActionUnhandledProps,
 } from "./call-to-action.props";
-import { get } from "lodash-es";
-import { callToActionButtonOverrides } from "@microsoft/fast-components-styles-msft";
-import { DisplayNamePrefix } from "../utilities";
-import { CallToActionProps } from "./call-to-action.props";
-import { classNames } from "@microsoft/fast-web-utilities";
-import { CallToActionClassNameContract } from ".";
 
 class CallToAction extends Foundation<
     CallToActionHandledProps,
@@ -21,8 +21,8 @@ class CallToAction extends Foundation<
     public static displayName: string = `${DisplayNamePrefix}CallToAction`;
 
     public static defaultProps: Partial<CallToActionProps> = {
-        managedClasses: {}
-    }
+        managedClasses: {},
+    };
 
     protected handledProps: HandledProps<CallToActionHandledProps> = {
         appearance: void 0,
@@ -61,11 +61,16 @@ class CallToAction extends Foundation<
             callToAction__disabled,
         }: CallToActionClassNameContract = this.props.managedClasses;
 
-        return super.generateClassNames(classNames(
-            callToAction,
-            [callToAction__disabled, this.props.disabled],
-            [this.props.managedClasses[`callToAction__${this.props.appearance}`], !!this.props.appearance]
-        ));
+        return super.generateClassNames(
+            classNames(
+                callToAction,
+                [callToAction__disabled, this.props.disabled],
+                [
+                    this.props.managedClasses[`callToAction__${this.props.appearance}`],
+                    !!this.props.appearance,
+                ]
+            )
+        );
     }
 
     private renderAfterContent(): (classname?: string) => React.ReactNode {

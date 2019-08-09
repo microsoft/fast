@@ -1,22 +1,16 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import { get } from "lodash-es";
+import { ParagraphClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import { TypographySize, TypographyTag } from "@microsoft/fast-components-react-base";
+import { classNames } from "@microsoft/fast-web-utilities";
+import React from "react";
+import { Typography } from "../typography";
+import { DisplayNamePrefix } from "../utilities";
 import {
     ParagraphHandledProps,
-    ParagraphManagedClasses,
     ParagraphProps,
     ParagraphSize,
     ParagraphUnhandledProps,
 } from "./paragraph.props";
-import { Typography } from "../typography";
-import {
-    ManagedClasses,
-    ParagraphClassNameContract,
-} from "@microsoft/fast-components-class-name-contracts-msft";
-import { DisplayNamePrefix } from "../utilities";
-import { classNames } from "@microsoft/fast-web-utilities";
 
 class Paragraph extends Foundation<ParagraphHandledProps, ParagraphUnhandledProps, {}> {
     public static defaultProps: Partial<ParagraphProps> = {

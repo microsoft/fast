@@ -1,16 +1,15 @@
-import React from "react";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
+import { Badge as BaseBadge } from "@microsoft/fast-components-react-base";
+import { classNames } from "@microsoft/fast-web-utilities";
+import React from "react";
+import { DisplayNamePrefix } from "../utilities";
 import {
     BadgeHandledProps,
     BadgeProps,
     BadgeSize,
     BadgeUnhandledProps,
 } from "./badge.props";
-import { Badge as BaseBadge } from "@microsoft/fast-components-react-base";
-import { get } from "lodash-es";
-import { DisplayNamePrefix } from "../utilities";
 import { BadgeClassNameContract } from "./index";
-import { classNames } from "@microsoft/fast-web-utilities";
 
 class Badge extends Foundation<BadgeHandledProps, BadgeUnhandledProps, {}> {
     public static displayName: string = `${DisplayNamePrefix}Badge`;
@@ -18,7 +17,7 @@ class Badge extends Foundation<BadgeHandledProps, BadgeUnhandledProps, {}> {
     public static defaultProps: Partial<BadgeProps> = {
         size: BadgeSize.small,
         filled: true,
-        managedClasses: {}
+        managedClasses: {},
     };
 
     protected handledProps: HandledProps<BadgeHandledProps> = {
@@ -49,14 +48,16 @@ class Badge extends Foundation<BadgeHandledProps, BadgeUnhandledProps, {}> {
         const {
             badge__filled,
             badge__small,
-            badge__large
+            badge__large,
         }: Partial<BadgeClassNameContract> = this.props.managedClasses;
 
-        return super.generateClassNames(classNames(
-            [badge__filled, this.props.filled],
-            [badge__large, this.props.size === BadgeSize.large],
-            [badge__small, this.props.size === BadgeSize.small]
-        ));
+        return super.generateClassNames(
+            classNames(
+                [badge__filled, this.props.filled],
+                [badge__large, this.props.size === BadgeSize.large],
+                [badge__small, this.props.size === BadgeSize.small]
+            )
+        );
     }
 }
 

@@ -1,23 +1,16 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import { get } from "lodash-es";
+import { HeadingClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import { TypographySize, TypographyTag } from "@microsoft/fast-components-react-base";
-import {
-    HeadingAlignBaseline,
-    HeadingHandledProps,
-    HeadingManagedClasses,
-    HeadingProps,
-    HeadingUnhandledProps,
-    HeadingSize,
-} from "./heading.props";
-import { Typography } from "../typography";
-import {
-    HeadingClassNameContract,
-    ManagedClasses,
-} from "@microsoft/fast-components-class-name-contracts-msft";
-import { DisplayNamePrefix } from "../utilities";
 import { classNames } from "@microsoft/fast-web-utilities";
+import React from "react";
+import { Typography } from "../typography";
+import { DisplayNamePrefix } from "../utilities";
+import {
+    HeadingHandledProps,
+    HeadingProps,
+    HeadingSize,
+    HeadingUnhandledProps,
+} from "./heading.props";
 
 class Heading extends Foundation<HeadingHandledProps, HeadingUnhandledProps, {}> {
     public static displayName: string = `${DisplayNamePrefix}Heading`;
@@ -67,10 +60,12 @@ class Heading extends Foundation<HeadingHandledProps, HeadingUnhandledProps, {}>
      */
     protected generateClassNames(): string {
         const managedClasses: HeadingClassNameContract = this.props.managedClasses;
-        return super.generateClassNames(classNames(
-            managedClasses.heading,
-            managedClasses[`heading__${this.props.size}`]
-        ))
+        return super.generateClassNames(
+            classNames(
+                managedClasses.heading,
+                managedClasses[`heading__${this.props.size}`]
+            )
+        );
     }
 }
 

@@ -1,8 +1,9 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import { get } from "lodash-es";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import { TypographySize, TypographyTag } from "@microsoft/fast-components-react-base";
+import { classNames } from "@microsoft/fast-web-utilities";
+import React from "react";
+import { Typography } from "../typography";
+import { DisplayNamePrefix } from "../utilities";
 import {
     CaptionHandledProps,
     CaptionProps,
@@ -10,16 +11,12 @@ import {
     CaptionTag,
     CaptionUnhandledProps,
 } from "./caption.props";
-import { Typography } from "../typography";
-import { DisplayNamePrefix } from "../utilities";
-import { classNames } from "@microsoft/fast-web-utilities";
-import { includesAllSubdirectoriesAsNamedExports } from "../../../../build/helpers/file-includes-all-subdirectories-as-named-exports";
 
 class Caption extends Foundation<CaptionHandledProps, CaptionUnhandledProps, {}> {
     public static defaultProps: Partial<CaptionProps> = {
         tag: CaptionTag.p,
         size: CaptionSize._1,
-        managedClasses: {}
+        managedClasses: {},
     };
 
     public static displayName: string = `${DisplayNamePrefix}Caption`;
@@ -49,10 +46,12 @@ class Caption extends Foundation<CaptionHandledProps, CaptionUnhandledProps, {}>
     }
 
     protected generateClassNames(): string {
-        return super.generateClassNames(classNames(
-            this.props.managedClasses.caption,
-            [this.props.managedClasses[`caption__${this.props.size}`], true]
-        ));
+        return super.generateClassNames(
+            classNames(this.props.managedClasses.caption, [
+                this.props.managedClasses[`caption__${this.props.size}`],
+                true,
+            ])
+        );
     }
 
     private size(): TypographySize {

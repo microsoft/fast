@@ -1,15 +1,14 @@
-import React from "react";
+import { SelectOptionClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
+import { ListboxItem as BaseListboxItem } from "@microsoft/fast-components-react-base";
+import { classNames } from "@microsoft/fast-web-utilities";
+import React from "react";
+import { DisplayNamePrefix } from "../utilities";
 import {
     SelectOptionHandledProps,
+    SelectOptionProps,
     SelectOptionUnhandledProps,
 } from "./select-option.props";
-import { ListboxItem as BaseListboxItem } from "@microsoft/fast-components-react-base";
-import { get } from "lodash-es";
-import { DisplayNamePrefix } from "../utilities";
-import { SelectOptionProps } from "./select-option.props";
-import { SelectOptionClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
-import { classNames } from "@microsoft/fast-web-utilities";
 
 class SelectOption extends Foundation<
     SelectOptionHandledProps,
@@ -18,8 +17,8 @@ class SelectOption extends Foundation<
 > {
     public static displayName: string = `${DisplayNamePrefix}SelectOption`;
     public static defaultProps: Partial<SelectOptionProps> = {
-        managedClasses: {}
-    }
+        managedClasses: {},
+    };
 
     protected handledProps: HandledProps<SelectOptionHandledProps> = {
         glyph: void 0,
@@ -33,7 +32,7 @@ class SelectOption extends Foundation<
             selectOption,
             selectOption__disabled,
             selectOption__selected,
-            selectOption_contentRegion
+            selectOption_contentRegion,
         }: SelectOptionClassNameContract = this.props.managedClasses;
 
         return (
@@ -49,11 +48,7 @@ class SelectOption extends Foundation<
                 }}
             >
                 {this.renderGlyph()}
-                <span
-                    className={classNames(
-                        selectOption_contentRegion
-                    )}
-                >
+                <span className={classNames(selectOption_contentRegion)}>
                     {this.props.displayString}
                     {this.props.children}
                 </span>

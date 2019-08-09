@@ -1,16 +1,13 @@
-import React from "react";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
+import { ContextMenuItem as BaseContextMenuItem } from "@microsoft/fast-components-react-base";
+import { classNames } from "@microsoft/fast-web-utilities";
+import React from "react";
+import { DisplayNamePrefix } from "../utilities";
 import {
     ContextMenuItemHandledProps,
-    ContextMenuItemManagedClasses,
     ContextMenuItemProps,
     ContextMenuItemUnhandledProps,
 } from "./context-menu-item.props";
-import { ContextMenuItem as BaseContextMenuItem } from "@microsoft/fast-components-react-base";
-import { get } from "lodash-es";
-import { DisplayNamePrefix } from "../utilities";
-import { classNames } from "@microsoft/fast-web-utilities";
-import { includesAllSubdirectoriesAsNamedExports } from "../../../../build/helpers/file-includes-all-subdirectories-as-named-exports";
 
 class ContextMenuItem extends Foundation<
     ContextMenuItemHandledProps,
@@ -19,8 +16,8 @@ class ContextMenuItem extends Foundation<
 > {
     public static displayName: string = `${DisplayNamePrefix}ContextMenuItem`;
     public static defaultProps: Partial<ContextMenuItemProps> = {
-        managedClasses: {}
-    }
+        managedClasses: {},
+    };
 
     protected handledProps: HandledProps<ContextMenuItemHandledProps> = {
         before: void 0,

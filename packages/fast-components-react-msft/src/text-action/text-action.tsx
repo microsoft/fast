@@ -1,5 +1,11 @@
-import React from "react";
+import { TextActionClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
+import { textFieldOverrides } from "@microsoft/fast-components-styles-msft";
+import { classNames } from "@microsoft/fast-web-utilities";
+import { get } from "lodash-es";
+import React from "react";
+import { TextField } from "../text-field";
+import { DisplayNamePrefix } from "../utilities";
 import {
     TextActionAppearance,
     TextActionButtonPosition,
@@ -7,17 +13,6 @@ import {
     TextActionProps,
     TextActionUnhandledProps,
 } from "./text-action.props";
-import {
-    DesignSystemResolver,
-    neutralFillInputRest,
-    neutralFillRest,
-    textFieldOverrides,
-} from "@microsoft/fast-components-styles-msft";
-import { TextField } from "../text-field";
-import { get } from "lodash-es";
-import { DisplayNamePrefix } from "../utilities";
-import { TextActionClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
-import { classNames } from "@microsoft/fast-web-utilities";
 
 /**
  * Text action state interface
@@ -34,7 +29,7 @@ class TextAction extends Foundation<
 
     public static defaultProps: Partial<TextActionProps> = {
         buttonPosition: TextActionButtonPosition.after,
-        managedClasses: {}
+        managedClasses: {},
     };
 
     protected handledProps: HandledProps<TextActionHandledProps> = {
@@ -89,16 +84,22 @@ class TextAction extends Foundation<
         const {
             textAction,
             textAction__disabled,
-            textAction__focus
+            textAction__focus,
         }: Partial<TextActionClassNameContract> = this.props.managedClasses;
 
-
-        return super.generateClassNames(classNames(
-            textAction,
-            [this.props.managedClasses[`textAction__${TextActionAppearance[this.props.appearance]}`], !!this.props.appearance],
-            [textAction__disabled, this.props.disabled],
-            [textAction__focus, this.state.focused]
-        ));
+        return super.generateClassNames(
+            classNames(
+                textAction,
+                [
+                    this.props.managedClasses[
+                        `textAction__${TextActionAppearance[this.props.appearance]}`
+                    ],
+                    !!this.props.appearance,
+                ],
+                [textAction__disabled, this.props.disabled],
+                [textAction__focus, this.state.focused]
+            )
+        );
     }
 
     /**

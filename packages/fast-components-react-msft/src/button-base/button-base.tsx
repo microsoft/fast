@@ -1,16 +1,15 @@
-import React from "react";
-import { get, isNil } from "lodash-es";
+import { ButtonBaseClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
+import { Button as BaseButton } from "@microsoft/fast-components-react-base";
+import { classNames } from "@microsoft/fast-web-utilities";
+import { isNil } from "lodash-es";
+import React from "react";
+import { DisplayNamePrefix } from "../utilities";
 import {
     ButtonBaseHandledProps,
-    ButtonBaseManagedClasses,
     ButtonBaseProps,
     ButtonBaseUnhandledProps,
 } from "./button-base.props";
-import { Button as BaseButton } from "@microsoft/fast-components-react-base";
-import { DisplayNamePrefix } from "../utilities";
-import { ButtonBaseClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
-import { classNames } from "@microsoft/fast-web-utilities";
 
 class ButtonBase extends Foundation<
     ButtonBaseHandledProps,

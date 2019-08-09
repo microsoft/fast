@@ -1,19 +1,19 @@
-import React from "react";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
-import {
-    AutoSuggestOptionHandledProps,
-    AutoSuggestOptionProps,
-    AutoSuggestOptionUnhandledProps,
-} from "./auto-suggest-option.props";
 import {
     AutoSuggestContext,
     AutoSuggestContextType,
     ListboxItem as BaseListboxItem,
 } from "@microsoft/fast-components-react-base";
-import { get, isNil, slice } from "lodash-es";
 import { classNames, startsWith } from "@microsoft/fast-web-utilities";
-import { DisplayNamePrefix } from "../utilities";
+import { isNil } from "lodash-es";
+import React from "react";
 import { AutoSuggestOptionClassNameContract } from ".";
+import { DisplayNamePrefix } from "../utilities";
+import {
+    AutoSuggestOptionHandledProps,
+    AutoSuggestOptionProps,
+    AutoSuggestOptionUnhandledProps,
+} from "./auto-suggest-option.props";
 
 class AutoSuggestOption extends Foundation<
     AutoSuggestOptionHandledProps,

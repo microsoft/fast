@@ -1,18 +1,18 @@
-import React from "react";
-import { get } from "lodash-es";
+import { ProgressClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
-import { ProgressType } from "@microsoft/fast-components-react-base";
+import {
+    Progress as BaseProgress,
+    ProgressType,
+} from "@microsoft/fast-components-react-base";
+import { classNames } from "@microsoft/fast-web-utilities";
+import React from "react";
+import { DisplayNamePrefix } from "../utilities";
 import {
     ProgressHandledProps,
     ProgressProps,
     ProgressSize,
     ProgressUnhandledProps,
 } from "./progress.props";
-import { ProgressClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
-import { Progress as BaseProgress } from "@microsoft/fast-components-react-base";
-import { DisplayNamePrefix } from "../utilities";
-import { toPx } from "@microsoft/fast-jss-utilities";
-import { classNames } from "@microsoft/fast-web-utilities";
 
 class Progress extends Foundation<ProgressHandledProps, ProgressUnhandledProps, {}> {
     public static defaultProps: Partial<ProgressProps> = {
@@ -124,13 +124,15 @@ class Progress extends Foundation<ProgressHandledProps, ProgressUnhandledProps, 
     }
 
     private renderCircularBackground(): JSX.Element {
-        return this.renderCircle(classNames(this.props.managedClasses.progress_indicator));
+        return this.renderCircle(
+            classNames(this.props.managedClasses.progress_indicator)
+        );
     }
 
     private renderProgress(): React.ReactFragment {
         const {
             progress_valueIndicator,
-            progress_indicator
+            progress_indicator,
         }: Partial<ProgressClassNameContract> = this.props.managedClasses;
 
         if (this.props.circular) {
