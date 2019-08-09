@@ -22,8 +22,17 @@ class AnimateGroup {
      */
     public set onFinish(callback: () => void) {
         this._onFinish = callback;
+        const longestRunning: AnimateTo | AnimateFrom = this.getLongestAnimation();
 
-        this.getLongestAnimation().onFinish = callback;
+        if (typeof longestRunning.onFinish === "function") {
+            const fn: () => void = longestRunning.onFinish;
+            longestRunning.onFinish = (): void => {
+                fn();
+                this._onFinish();
+            };
+        } else {
+            longestRunning.onFinish = this._onFinish;
+        }
     }
 
     /**
@@ -78,7 +87,10 @@ class AnimateGroup {
                     currentValue.effectTiming
                 );
 
-                return currentDuration > previousDuration ? currentValue : previousValue;
+                // If two durations in the group are equal, consider the higher index the
+                // longest animation - this helps ensure the group onFinish callback
+                // is fired after all individual animation onFinish callbacks have fired.
+                return currentDuration >= previousDuration ? currentValue : previousValue;
             }
         );
     }
