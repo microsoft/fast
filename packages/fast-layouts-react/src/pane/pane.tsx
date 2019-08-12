@@ -12,7 +12,7 @@ import { applyFocusVisible, toPx } from "@microsoft/fast-jss-utilities";
 import { ComponentStyles } from "@microsoft/fast-jss-manager-react";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import { canUseDOM } from "exenv-es6";
-import { KeyCodes } from "@microsoft/fast-web-utilities";
+import { keyCodeArrowLeft, keyCodeArrowRight } from "@microsoft/fast-web-utilities";
 import { joinClasses } from "../utilities";
 
 /**
@@ -253,10 +253,10 @@ export class Pane extends Foundation<PaneHandledProps, PaneUnhandledProps, PaneS
         let width: number;
 
         switch (e.keyCode) {
-            case KeyCodes.arrowLeft:
+            case keyCodeArrowLeft:
                 width = this.rootElement.current.clientWidth - offset;
                 break;
-            case KeyCodes.arrowRight:
+            case keyCodeArrowRight:
                 width = this.rootElement.current.clientWidth + offset;
                 break;
             default:
