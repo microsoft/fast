@@ -175,6 +175,7 @@ class AutoSuggest extends Foundation<
         const shouldFocusOnMenu: boolean = this.shouldFocusMenuOnNextRender;
         const {
             autoSuggest_menu,
+            autoSuggest__disabled,
         }: AutoSuggestClassNameContract = this.props.managedClasses;
 
         this.shouldFocusMenuOnNextRender = false;
@@ -197,12 +198,7 @@ class AutoSuggest extends Foundation<
                 onKeyDown={this.handleMenuKeydown}
                 managedClasses={{
                     listbox: autoSuggest_menu,
-                    listbox__disabled: get(
-                        /* TODO: what should this be? This class is not in the contract */
-                        this.props.managedClasses,
-                        "autoSuggest_menuDisabled",
-                        ""
-                    ),
+                    listbox__disabled: autoSuggest__disabled,
                 }}
             >
                 {this.props.children}
