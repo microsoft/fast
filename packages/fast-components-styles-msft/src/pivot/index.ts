@@ -47,10 +47,6 @@ const styles: ComponentStyles<PivotClassNameContract, DesignSystem> = {
         ...applyCornerRadius(),
         "&:hover": {
             color: neutralForegroundHover,
-            "@media (-ms-high-contrast:active)": {
-                background: "Highlight",
-                color: "HighlightText",
-            },
         },
         "&:active": {
             color: neutralForegroundActive,
@@ -59,24 +55,16 @@ const styles: ComponentStyles<PivotClassNameContract, DesignSystem> = {
             borderColor: neutralFocus,
             "@media (-ms-high-contrast:active)": {
                 borderColor: "ButtonText",
-                boxShadow: format(`0 0 0 {0} inset ButtonFace`, toPx(focusOutlineWidth)),
             },
         }),
         "@media (-ms-high-contrast:active)": {
-            background: "ButtonFace",
             color: "ButtonText",
             "-ms-high-contrast-adjust": "none",
         },
     },
     pivot_tab__active: {
         "@media (-ms-high-contrast:active)": {
-            background: "Highlight",
-            color: "HighlightText",
-            "&:hover": {
-                "@media (-ms-high-contrast:active)": {
-                    color: "HighlightText",
-                },
-            },
+            color: "ButtonText",
         },
     },
     pivot_tabContent: {
@@ -95,7 +83,7 @@ const styles: ComponentStyles<PivotClassNameContract, DesignSystem> = {
         display: "block",
         background: accentFillRest,
         "@media (-ms-high-contrast:active)": {
-            background: "HighlightText",
+            background: "Highlight",
         },
     },
     pivot_tabPanel: {

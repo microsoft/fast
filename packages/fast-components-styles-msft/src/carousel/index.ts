@@ -159,6 +159,10 @@ const styles: ComponentStyles<CarouselClassNameContract, DesignSystem> = {
                     background: neutralFillStealthHover((): string => black),
                     "@media (-ms-high-contrast:active)": {
                         background: "Highlight",
+                        border: format(
+                            "{0} solid HighlightText",
+                            toPx<DesignSystem>(outlineWidth)
+                        ),
                     },
                 },
                 "& span::before": {
@@ -207,6 +211,10 @@ const styles: ComponentStyles<CarouselClassNameContract, DesignSystem> = {
                     background: neutralFillStealthHover((): string => white),
                     "@media (-ms-high-contrast:active)": {
                         background: "Highlight",
+                        border: format(
+                            "{0} solid HighlightText",
+                            toPx<DesignSystem>(outlineWidth)
+                        ),
                     },
                 },
                 "& span::before": {
