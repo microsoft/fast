@@ -10,7 +10,7 @@ import Dialog, {
     DialogProps,
     DialogUnhandledProps,
 } from "./dialog";
-import { KeyCodes } from "@microsoft/fast-web-utilities";
+import { keyCodeEscape } from "@microsoft/fast-web-utilities";
 import { DisplayNamePrefix } from "../utilities";
 
 /*
@@ -148,14 +148,14 @@ describe("dialog", (): void => {
             <Dialog managedClasses={managedClasses} modal={true} onDismiss={onDismiss} />
         );
 
-        map.keydown({ keyCode: KeyCodes.escape });
+        map.keydown({ keyCode: keyCodeEscape });
 
         expect(onDismiss).toHaveBeenCalledTimes(0);
 
         // set visible prop
         rendered.setProps({ visible: true });
 
-        map.keydown({ keyCode: KeyCodes.escape });
+        map.keydown({ keyCode: keyCodeEscape });
 
         expect(onDismiss).toHaveBeenCalledTimes(1);
     });
@@ -180,7 +180,7 @@ describe("dialog", (): void => {
 
         rendered.unmount();
 
-        map.keydown({ keyCode: KeyCodes.escape });
+        map.keydown({ keyCode: keyCodeEscape });
 
         expect(onDismiss).toHaveBeenCalledTimes(1);
     });

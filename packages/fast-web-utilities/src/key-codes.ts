@@ -1,5 +1,6 @@
 /*
  * Key Code values
+ * @deprecated - use individual keycode exports
  */
 export enum KeyCodes {
     alt = 18,
@@ -72,3 +73,73 @@ export enum KeyCodes {
     windowsOpera = 219, // Opera
     windowsRight = 92,
 }
+
+export const keyCodeAlt: number = 18;
+export const keyCodeArrowDown: number = 40;
+export const keyCodeArrowLeft: number = 37;
+export const keyCodeArrowRight: number = 39;
+export const keyCodeArrowUp: number = 38;
+export const keyCodeBack: number = 8;
+export const keyCodeBackSlash: number = 220;
+export const keyCodeBreak: number = 19;
+export const keyCodeCapsLock: number = 20;
+export const keyCodeCloseBracket: number = 221;
+export const keyCodeColon: number = 186;
+export const keyCodeColon2: number = 59; // Opera and Firefox
+export const keyCodeComma: number = 188;
+export const keyCodeCtrl: number = 17;
+export const keyCodeDelete: number = 46;
+export const keyCodeEnd: number = 35;
+export const keyCodeEnter: number = 13;
+export const keyCodeEquals: number = 187;
+export const keyCodeEquals2: number = 61; // Opera
+export const keyCodeEquals3: number = 107; // Firefox
+export const keyCodeEscape: number = 27;
+export const keyCodeForwardSlash: number = 191;
+export const keyCodeFunction1: number = 112;
+export const keyCodeFunction10: number = 121;
+export const keyCodeFunction11: number = 122;
+export const keyCodeFunction12: number = 123;
+export const keyCodeFunction2: number = 113;
+export const keyCodeFunction3: number = 114;
+export const keyCodeFunction4: number = 115;
+export const keyCodeFunction5: number = 116;
+export const keyCodeFunction6: number = 117;
+export const keyCodeFunction7: number = 118;
+export const keyCodeFunction8: number = 119;
+export const keyCodeFunction9: number = 120;
+export const keyCodeHome: number = 36;
+export const keyCodeInsert: number = 45;
+export const keyCodeMenu: number = 93;
+export const keyCodeMinus: number = 189;
+export const keyCodeMinus2: number = 109; // Opera and Firefox
+export const keyCodeNumLock: number = 144;
+export const keyCodeNumPad0: number = 96;
+export const keyCodeNumPad1: number = 97;
+export const keyCodeNumPad2: number = 98;
+export const keyCodeNumPad3: number = 99;
+export const keyCodeNumPad4: number = 100;
+export const keyCodeNumPad5: number = 101;
+export const keyCodeNumPad6: number = 102;
+export const keyCodeNumPad7: number = 103;
+export const keyCodeNumPad8: number = 104;
+export const keyCodeNumPad9: number = 105;
+export const keyCodeNumPadDivide: number = 111;
+export const keyCodeNumPadDot: number = 110;
+export const keyCodeNumPadMinus: number = 109;
+export const keyCodeNumPadMultiply: number = 106;
+export const keyCodeNumPadPlus: number = 107;
+export const keyCodeOpenBracket: number = 219;
+export const keyCodePageDown: number = 34;
+export const keyCodePageUp: number = 33;
+export const keyCodePeriod: number = 190;
+export const keyCodePrint: number = 44;
+export const keyCodeQuote: number = 222;
+export const keyCodeScrollLock: number = 145;
+export const keyCodeShift: number = 16;
+export const keyCodeSpace: number = 32;
+export const keyCodeTab: number = 9;
+export const keyCodeTilde: number = 192;
+export const keyCodeWindowsLeft: number = 91;
+export const keyCodeWindowsOpera: number = 219; // Opera
+export const keyCodeWindowsRight: number = 92;

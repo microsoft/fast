@@ -1,13 +1,21 @@
-import React from "react";
-import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
-import { get, isEqual } from "lodash-es";
-import { KeyCodes } from "@microsoft/fast-web-utilities";
-import { AutoSuggestClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import {
     AutoSuggestHandledProps,
     AutoSuggestProps,
     AutoSuggestUnhandledProps,
 } from "./auto-suggest.props";
+import React from "react";
+import { get, isEqual } from "lodash-es";
+import {
+    keyCodeArrowDown,
+    keyCodeArrowLeft,
+    keyCodeArrowRight,
+    keyCodeArrowUp,
+    keyCodeColon,
+    keyCodeEnter,
+    keyCodeEscape,
+} from "@microsoft/fast-web-utilities";
+import { AutoSuggestClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
+import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import { ListboxItemProps } from "../listbox-item";
 import Listbox from "../listbox";
 import TextField, { TextFieldType } from "../text-field";
@@ -309,20 +317,20 @@ class AutoSuggest extends Foundation<
         }
 
         switch (e.keyCode) {
-            case KeyCodes.enter:
+            case keyCodeEnter:
                 this.invoke(this.state.value, null);
                 break;
 
-            case KeyCodes.escape:
+            case keyCodeEscape:
                 this.toggleMenu(false);
                 break;
 
-            case KeyCodes.arrowDown:
+            case keyCodeArrowDown:
                 this.focusOnMenu(1);
                 e.preventDefault();
                 break;
 
-            case KeyCodes.arrowUp:
+            case keyCodeArrowUp:
                 this.focusOnMenu(-1);
                 e.preventDefault();
                 break;
@@ -345,17 +353,17 @@ class AutoSuggest extends Foundation<
             return;
         }
         switch (e.keyCode) {
-            case KeyCodes.escape:
+            case keyCodeEscape:
                 this.toggleMenu(false);
                 break;
 
-            case KeyCodes.arrowDown:
+            case keyCodeArrowDown:
                 if (this.checkForMenuEnd(1) === true) {
                     e.preventDefault();
                 }
                 break;
 
-            case KeyCodes.arrowUp:
+            case keyCodeArrowUp:
                 if (this.checkForMenuEnd(-1) === true) {
                     e.preventDefault();
                 }
