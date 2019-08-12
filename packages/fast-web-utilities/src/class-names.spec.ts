@@ -18,7 +18,7 @@ describe("classNames", (): void => {
     });
 
     test("should return a single string argument unmodified", (): void => {
-        expect(classNames("hello")).toBe("hello")
+        expect(classNames("hello")).toBe("hello");
     });
 
     test("should join multiple string arguments together", (): void => {
@@ -50,6 +50,15 @@ describe("classNames", (): void => {
     });
 
     test("should join string, function, and object arguments", (): void => {
-        expect(classNames("hello", ["foo", true], ["bar", false], [(): string => "bat", true], "world", () => "earth")).toBe("hello foo bat world earth");
+        expect(
+            classNames(
+                "hello",
+                ["foo", true],
+                ["bar", false],
+                [(): string => "bat", true],
+                "world",
+                () => "earth"
+            )
+        ).toBe("hello foo bat world earth");
     });
 });

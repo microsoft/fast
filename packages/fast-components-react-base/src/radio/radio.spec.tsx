@@ -94,7 +94,7 @@ describe("radio", (): void => {
         const expected: string =
             '<div><input type="radio" id="radio03"/><span></span></div>';
 
-        expect(rendered.exists(".child")).toBe(false)
+        expect(rendered.exists(".child")).toBe(false);
     });
 
     test("should add a `radio_label` className to a child with the `label` slot prop", () => {
