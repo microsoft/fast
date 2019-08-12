@@ -459,7 +459,7 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
                         <Typography
                             className={className}
                             size={TypographySize._8}
-                            onClick={this.handleDevToolsItemClick}
+                            onClick={this.handleDevToolsTabTriggerClick}
                         >
                             Code Preview
                         </Typography>
@@ -485,7 +485,7 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
                         <Typography
                             className={className}
                             size={TypographySize._8}
-                            onClick={this.handleDevToolsItemClick}
+                            onClick={this.handleDevToolsTabTriggerClick}
                         >
                             Guidance
                         </Typography>
@@ -515,7 +515,7 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
                         <Typography
                             className={className}
                             size={TypographySize._8}
-                            onClick={this.handleDevToolsItemClick}
+                            onClick={this.handleDevToolsTabTriggerClick}
                         >
                             Schema
                         </Typography>
@@ -734,7 +734,7 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
         });
     };
 
-    private handleDevToolsItemClick = (e: React.MouseEvent<unknown>): void => {
+    private handleDevToolsTabTriggerClick = (e: React.MouseEvent<unknown>): void => {
         if (!this.state.devToolsVisible) {
             this.setState({
                 devToolsVisible: true,
