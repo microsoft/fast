@@ -27,6 +27,7 @@ const style: ComponentStyles<PreviewClassNameContract, DesignSystem> = {
     },
     preview: {
         height: "100%",
+        boxSizing: "border-box",
     },
 };
 
