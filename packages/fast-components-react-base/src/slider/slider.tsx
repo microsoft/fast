@@ -359,13 +359,15 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
     private getThumbManagedClasses = (
         thumb: SliderThumb
     ): SliderTrackItemManagedClasses => {
+        // TODO: https://github.com/microsoft/fast-dna/issues/2124
+        // This object should not be typed as any and should only access properties defined in the class name contract
         const {
             slider_thumb,
             slider_thumb__upperValue,
             slider_thumb__lowerValue,
             slider_thumb__orientationVertical,
             sliderTrackItem_vertical,
-        }: SliderClassNameContract | any = this.props.managedClasses; // TODO: Why is sliderTrackItem_vertical here?
+        }: SliderClassNameContract | any = this.props.managedClasses;
 
         const thumbBaseClass: string = get(this.props, "managedClasses.slider_thumb", "");
         return {
