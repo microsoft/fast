@@ -262,7 +262,7 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
                                         "managedClasses.explorer_paneTitleContainer"
                                     )}
                                 >
-                                    <Heading size={HeadingSize._6}>Explore</Heading>
+                                    <Heading size={HeadingSize._6}>FAST Explorer</Heading>
                                 </div>
                                 <NavigationMenu
                                     menu={menu}
