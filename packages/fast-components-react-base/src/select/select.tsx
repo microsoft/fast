@@ -1,9 +1,17 @@
-import React from "react";
-import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
-import { get, isEqual } from "lodash-es";
-import { KeyCodes } from "@microsoft/fast-web-utilities";
-import { SelectClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import { SelectHandledProps, SelectProps, SelectUnhandledProps } from "./select.props";
+import React from "react";
+import { get, isEqual } from "lodash-es";
+import {
+    keyCodeArrowDown,
+    keyCodeArrowLeft,
+    keyCodeArrowRight,
+    keyCodeArrowUp,
+    keyCodeEnter,
+    keyCodeEscape,
+    keyCodeSpace,
+} from "@microsoft/fast-web-utilities";
+import { SelectClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
+import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import { ListboxItemProps } from "../listbox-item";
 import Listbox from "../listbox";
 import Button from "../button";
@@ -389,8 +397,8 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
         }
 
         switch (e.keyCode) {
-            case KeyCodes.enter:
-            case KeyCodes.space:
+            case keyCodeEnter:
+            case keyCodeSpace:
                 // preventing default here because when we change focus to the trigger the keydown event gets
                 // emitted from the button again which otherwise toggles the menu a second time on a single key press
                 e.preventDefault();
@@ -399,18 +407,18 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
                     this.focusTriggerElement();
                 }
                 break;
-            case KeyCodes.escape:
+            case keyCodeEscape:
                 this.toggleMenu(false);
                 this.focusTriggerElement();
                 break;
-            case KeyCodes.arrowDown:
-            case KeyCodes.arrowRight:
+            case keyCodeArrowDown:
+            case keyCodeArrowRight:
                 if (!this.props.multiselectable && !this.state.isMenuOpen) {
                     this.incrementSelectedOption(+1);
                 }
                 break;
-            case KeyCodes.arrowUp:
-            case KeyCodes.arrowLeft:
+            case keyCodeArrowUp:
+            case keyCodeArrowLeft:
                 if (!this.props.multiselectable && !this.state.isMenuOpen) {
                     this.incrementSelectedOption(-1);
                 }

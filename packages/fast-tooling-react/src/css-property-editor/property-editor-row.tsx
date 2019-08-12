@@ -8,7 +8,7 @@ import {
     CSSPropertyEditorRowHandledProps,
     CSSPropertyEditorRowUnhandledProps,
 } from "./property-editor-row.props";
-import { KeyCodes, spinalCase } from "@microsoft/fast-web-utilities";
+import { keyCodeEnter, spinalCase } from "@microsoft/fast-web-utilities";
 
 export default class CSSPropertyEditorRow extends Foundation<
     CSSPropertyEditorRowHandledProps,
@@ -234,7 +234,7 @@ export default class CSSPropertyEditorRow extends Foundation<
      * Handle key presses on key input
      */
     private handleKeyInputKeyDown = (e: React.KeyboardEvent): void => {
-        if (e.keyCode === KeyCodes.enter) {
+        if (e.keyCode === keyCodeEnter) {
             e.preventDefault();
 
             this.props.onCommitPropertyNameEdit(

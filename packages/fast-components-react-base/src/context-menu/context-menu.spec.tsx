@@ -2,7 +2,14 @@ import React from "react";
 import Adapter from "enzyme-adapter-react-16";
 import { configure, mount, shallow, ShallowWrapper } from "enzyme";
 import ContextMenu, { ContextMenuUnhandledProps } from "./context-menu";
-import { KeyCodes } from "@microsoft/fast-web-utilities";
+import {
+    keyCodeArrowDown,
+    keyCodeArrowLeft,
+    keyCodeArrowRight,
+    keyCodeArrowUp,
+    keyCodeEnd,
+    keyCodeHome,
+} from "@microsoft/fast-web-utilities";
 import { ContextMenuItemRole } from "../context-menu-item";
 import { DisplayNamePrefix } from "../utilities";
 
@@ -68,7 +75,7 @@ describe("context menu", (): void => {
             </ContextMenu>
         );
 
-        rendered.childAt(0).simulate("keydown", { keyCode: KeyCodes.arrowDown });
+        rendered.childAt(0).simulate("keydown", { keyCode: keyCodeArrowDown });
 
         expect(rendered.state("focusIndex")).toBe(1);
     });
@@ -81,7 +88,7 @@ describe("context menu", (): void => {
             </ContextMenu>
         );
 
-        rendered.childAt(0).simulate("keydown", { keyCode: KeyCodes.arrowRight });
+        rendered.childAt(0).simulate("keydown", { keyCode: keyCodeArrowRight });
 
         expect(rendered.state("focusIndex")).toBe(1);
     });
@@ -96,7 +103,7 @@ describe("context menu", (): void => {
 
         rendered.setState({ focusIndex: 1 });
 
-        rendered.childAt(0).simulate("keydown", { keyCode: KeyCodes.arrowUp });
+        rendered.childAt(0).simulate("keydown", { keyCode: keyCodeArrowUp });
 
         expect(rendered.state("focusIndex")).toBe(0);
     });
@@ -111,7 +118,7 @@ describe("context menu", (): void => {
 
         rendered.setState({ focusIndex: 1 });
 
-        rendered.childAt(0).simulate("keydown", { keyCode: KeyCodes.arrowUp });
+        rendered.childAt(0).simulate("keydown", { keyCode: keyCodeArrowUp });
 
         expect(rendered.state("focusIndex")).toBe(0);
     });
@@ -126,7 +133,7 @@ describe("context menu", (): void => {
             </ContextMenu>
         );
 
-        rendered.childAt(0).simulate("keydown", { keyCode: KeyCodes.end });
+        rendered.childAt(0).simulate("keydown", { keyCode: keyCodeEnd });
 
         expect(rendered.state("focusIndex")).toBe(2);
     });
@@ -143,7 +150,7 @@ describe("context menu", (): void => {
 
         rendered.setState({ focusIndex: 3 });
 
-        rendered.childAt(0).simulate("keydown", { keyCode: KeyCodes.home });
+        rendered.childAt(0).simulate("keydown", { keyCode: keyCodeHome });
 
         expect(rendered.state("focusIndex")).toBe(1);
     });
@@ -163,10 +170,10 @@ describe("context menu", (): void => {
 
         expect(rendered.state("focusIndex")).toBe(0);
 
-        rendered.childAt(0).simulate("keydown", { keyCode: KeyCodes.arrowDown });
+        rendered.childAt(0).simulate("keydown", { keyCode: keyCodeArrowDown });
         expect(rendered.state("focusIndex")).toBe(1);
 
-        rendered.childAt(0).simulate("keydown", { keyCode: KeyCodes.arrowDown });
+        rendered.childAt(0).simulate("keydown", { keyCode: keyCodeArrowDown });
         expect(rendered.state("focusIndex")).toBe(2);
     });
 
@@ -185,10 +192,10 @@ describe("context menu", (): void => {
 
         expect(rendered.state("focusIndex")).toBe(1);
 
-        rendered.childAt(0).simulate("keydown", { keyCode: KeyCodes.arrowDown });
+        rendered.childAt(0).simulate("keydown", { keyCode: keyCodeArrowDown });
         expect(rendered.state("focusIndex")).toBe(3);
 
-        rendered.childAt(0).simulate("keydown", { keyCode: KeyCodes.arrowDown });
+        rendered.childAt(0).simulate("keydown", { keyCode: keyCodeArrowDown });
         expect(rendered.state("focusIndex")).toBe(5);
     });
 

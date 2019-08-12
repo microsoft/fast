@@ -11,7 +11,7 @@ import {
 } from "./index";
 import { DisplayNamePrefix } from "../utilities";
 import { Omit } from "utility-types";
-import { KeyCodes } from "@microsoft/fast-web-utilities";
+import { keyCodeEscape } from "@microsoft/fast-web-utilities";
 
 /*
  * Configure Enzyme
@@ -150,7 +150,7 @@ describe("flyout", (): void => {
             </div>
         );
 
-        map.keydown({ keyCode: KeyCodes.escape });
+        map.keydown({ keyCode: keyCodeEscape });
 
         expect(onDismiss).toHaveBeenCalledTimes(1);
     });
@@ -173,7 +173,7 @@ describe("flyout", (): void => {
 
         rendered.unmount();
 
-        map.keydown({ keyCode: KeyCodes.escape });
+        map.keydown({ keyCode: keyCodeEscape });
 
         expect(onDismiss).toHaveBeenCalledTimes(1);
     });
@@ -196,7 +196,7 @@ describe("flyout", (): void => {
         rendered.setProps({ onDismiss });
 
         // map exists
-        map.keydown({ keyCode: KeyCodes.escape });
+        map.keydown({ keyCode: keyCodeEscape });
 
         expect(onDismiss).toHaveBeenCalledTimes(1);
     });
@@ -243,13 +243,13 @@ describe("flyout", (): void => {
         );
 
         // map exists
-        map.keydown({ keyCode: KeyCodes.escape });
+        map.keydown({ keyCode: keyCodeEscape });
 
         expect(onDismiss).toHaveBeenCalledTimes(1);
 
         rendered.setProps({ onDismiss: void 0 });
 
-        map.keydown({ keyCode: KeyCodes.escape });
+        map.keydown({ keyCode: keyCodeEscape });
 
         expect(onDismiss).toHaveBeenCalledTimes(1);
     });

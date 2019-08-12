@@ -9,7 +9,7 @@ import {
     AutoSuggestProps,
     AutoSuggestUnhandledProps,
 } from "./index";
-import { KeyCodes } from "@microsoft/fast-web-utilities";
+import { keyCodeEnter } from "@microsoft/fast-web-utilities";
 import { DisplayNamePrefix } from "../utilities";
 
 /*
@@ -96,7 +96,7 @@ describe("auto suggest", (): void => {
 
         expect(onInvoked).toHaveBeenCalledTimes(0);
         const input: any = rendered.find("input");
-        input.simulate("keydown", { keyCode: KeyCodes.enter });
+        input.simulate("keydown", { keyCode: keyCodeEnter });
         expect(onInvoked).toHaveBeenCalledTimes(1);
 
         document.body.removeChild(container);
