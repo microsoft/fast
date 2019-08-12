@@ -2,8 +2,8 @@ import { ManagedClasses } from "@microsoft/fast-jss-manager-react";
 import { CSSBorderRadiusClassNameContract } from "./border-radius.style";
 
 export interface CSSBorderRadiusState {
-    indvidualValues?: boolean;
-    hasFocus?: BorderRadiusValue;
+    individualValues?: boolean;
+    hasFocus?: BorderRadiusValue | void;
     topLeftValue?: string;
     topRightValue?: string;
     bottomRightValue?: string;

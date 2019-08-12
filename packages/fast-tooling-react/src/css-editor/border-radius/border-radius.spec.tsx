@@ -105,14 +105,13 @@ describe("CSSBorderRadius", () => {
                 borderRadius: borderRadiusValue
             },
         });
-        rendered.setState({ indvidualValues: true });
+        rendered.setState({ individualValues: true });
 
         const inputTopLeft: any = rendered.find("input").at(0);
         const inputTopRight: any = rendered.find("input").at(1);
         const inputBottomRight: any = rendered.find("input").at(2);
         const inputBottomLeft: any = rendered.find("input").at(3);
         
-
         expect(
             inputTopLeft.prop("value")
         ).toBe("12px");
@@ -141,14 +140,13 @@ describe("CSSBorderRadius", () => {
                 borderRadius: borderRadiusValue
             },
         });
-        rendered.setState({ indvidualValues: true });
+        rendered.setState({ individualValues: true });
 
         const inputTopLeft: any = rendered.find("input").at(0);
         const inputTopRight: any = rendered.find("input").at(1);
         const inputBottomRight: any = rendered.find("input").at(2);
         const inputBottomLeft: any = rendered.find("input").at(3);
         
-
         expect(
             inputTopLeft.prop("value")
         ).toBe("12px");
@@ -177,13 +175,12 @@ describe("CSSBorderRadius", () => {
                 borderRadius: borderRadiusValue
             },
         });
-        rendered.setState({ indvidualValues: true });
+        rendered.setState({ individualValues: true });
 
         const inputTopLeft: any = rendered.find("input").at(0);
         const inputTopRight: any = rendered.find("input").at(1);
         const inputBottomRight: any = rendered.find("input").at(2);
-        const inputBottomLeft: any = rendered.find("input").at(3);
-        
+        const inputBottomLeft: any = rendered.find("input").at(3);      
 
         expect(
             inputTopLeft.prop("value")
@@ -213,14 +210,13 @@ describe("CSSBorderRadius", () => {
                 borderRadius: borderRadiusValue
             },
         });
-        rendered.setState({ indvidualValues: true });
+        rendered.setState({ individualValues: true });
 
         const inputTopLeft: any = rendered.find("input").at(0);
         const inputTopRight: any = rendered.find("input").at(1);
         const inputBottomRight: any = rendered.find("input").at(2);
         const inputBottomLeft: any = rendered.find("input").at(3);
         
-
         expect(
             inputTopLeft.prop("value")
         ).toBe("12px");
@@ -243,14 +239,13 @@ describe("CSSBorderRadius", () => {
             />
         );
 
-        rendered.setState({ indvidualValues: true });
+        rendered.setState({ individualValues: true });
 
         const inputTopLeft: any = rendered.find("input").at(0);
         
         inputTopLeft.simulate("focus");
 
         expect(rendered.state("hasFocus")).toBe(BorderRadiusValue.borderTopLeftRadius);
-
     });
 
     test("should set the `hasFocus` state when top right input is focused", () => {
@@ -261,14 +256,13 @@ describe("CSSBorderRadius", () => {
             />
         );
 
-        rendered.setState({ indvidualValues: true });
+        rendered.setState({ individualValues: true });
 
         const inputTopRight: any = rendered.find("input").at(1);
         
         inputTopRight.simulate("focus");
 
         expect(rendered.state("hasFocus")).toBe(BorderRadiusValue.borderTopRightRadius);
-
     });
 
     test("should set the `hasFocus` state when bottom right input is focused", () => {
@@ -279,14 +273,13 @@ describe("CSSBorderRadius", () => {
             />
         );
 
-        rendered.setState({ indvidualValues: true });
+        rendered.setState({ individualValues: true });
 
         const inputBottomRight: any = rendered.find("input").at(2);
         
         inputBottomRight.simulate("focus");
 
         expect(rendered.state("hasFocus")).toBe(BorderRadiusValue.borderBottomRightRadius);
-
     });
 
     test("should set the `hasFocus` state when bottom left input is focused", () => {
@@ -297,17 +290,16 @@ describe("CSSBorderRadius", () => {
             />
         );
 
-        rendered.setState({ indvidualValues: true });
+        rendered.setState({ individualValues: true });
 
         const inputBottomLeft: any = rendered.find("input").at(3);
         
         inputBottomLeft.simulate("focus");
 
         expect(rendered.state("hasFocus")).toBe(BorderRadiusValue.borderBottomLeftRadius);
-
     });
 
-    test("should set the `indvidualValues` state when input toggle is clicked", () => {
+    test("should set the `individualValues` state when input toggle is clicked", () => {
         const rendered: any = mount(
             <CSSBorderRadius
                 managedClasses={managedClasses}
@@ -319,8 +311,7 @@ describe("CSSBorderRadius", () => {
         
         toggleInputButton.simulate("click");
 
-        expect(rendered.state("indvidualValues")).toBe(true);
-
+        expect(rendered.state("individualValues")).toBe(true);
     });
 
     xtest("should set the `hasFocus` state when top left input is focused", () => {
@@ -335,7 +326,7 @@ describe("CSSBorderRadius", () => {
             />
         );
 
-        rendered.setState({ indvidualValues: true });
+        rendered.setState({ individualValues: true });
 
         const input: any = rendered.find("input").at(0);
         

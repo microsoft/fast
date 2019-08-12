@@ -12,6 +12,7 @@ import {
     CSSBorderRadiusUnhandledProps,
     CSSBorderRadiusValues,
 } from "./border-radius.props";
+import { parseCSSString } from "../../utilities/parse-css-string"
 
 export default class CSSBorderRadius extends Foundation<
     CSSBorderRadiusHandledProps,
@@ -26,25 +27,31 @@ export default class CSSBorderRadius extends Foundation<
         managedClasses: void 0,
     };
 
-    private parsedString: string[];
-
     constructor(props: CSSBorderRadiusProps) {
         super(props);
 
         this.state = {
-            indvidualValues: false,
+            individualValues: false,
             hasFocus: void 0,
             topLeftValue: "0",
             topRightValue: "0",
             bottomRightValue: "0",
             bottomLeftValue: "0",
-            data: this.props.data || void 0,
+            data: this.props.data,
         };
     }
 
     public componentDidUpdate(prevProps: CSSBorderRadiusProps): void {
         if (prevProps.data !== this.props.data) {
-            this.assignBorderRadiusValues();
+            const parsedString: string[] = parseCSSString(get(this.props.data, "borderRadius", ""));
+            if(parsedString !== undefined) {
+                this.setState({
+                    topLeftValue: parsedString[0],
+                    topRightValue: parsedString[1],
+                    bottomRightValue: parsedString[2],
+                    bottomLeftValue: parsedString[3],
+                });
+            }
         }
     }
 
@@ -116,7 +123,7 @@ export default class CSSBorderRadius extends Foundation<
     }
 
     private renderInputs(): React.ReactFragment {
-        if (this.state.indvidualValues === true) {
+        if (this.state.individualValues === true) {
             return (
                 <React.Fragment>
                     {this.renderIndividualInputs(
@@ -221,14 +228,13 @@ export default class CSSBorderRadius extends Foundation<
                     }`;
                     break;
             }
-
                 this.props.onChange(borderRadius);
         };
     }
 
     private toggleInputs = (): void => {
         this.setState({
-            indvidualValues: !this.state.indvidualValues,
+            individualValues: !this.state.individualValues,
         });
 
     };
@@ -239,7 +245,7 @@ export default class CSSBorderRadius extends Foundation<
             "managedClasses.cssBorderRadius_toggleButton"
         );
 
-        if (this.state.indvidualValues) {
+        if (this.state.individualValues) {
             className = `${className} ${get(
                 this.props,
                 "managedClasses.cssBorderRadius_toggleButton__selected"
@@ -262,56 +268,10 @@ export default class CSSBorderRadius extends Foundation<
         cssKey: BorderRadiusValue
     ): (e: React.ChangeEvent<HTMLInputElement>) => void {
         return (e: React.ChangeEvent<HTMLInputElement>): void => {
-            switch (cssKey) {
-                case BorderRadiusValue.borderBottomLeftRadius:
-                    break;
-                case BorderRadiusValue.borderBottomRightRadius:
-                    break;
-                case BorderRadiusValue.borderTopLeftRadius:
-                    break;
-                case BorderRadiusValue.borderTopRightRadius:
-                    break;
-            }
-
             this.setState({
                 hasFocus: cssKey,
             });
         };
-    }
-
-    private assignBorderRadiusValues(): void {
-
-        this.parsedString = get(this.props.data, "borderRadius", "").split(/[\s ]+/);
-
-        if (this.parsedString.length === 1) {
-            this.setState({
-                topLeftValue: this.parsedString[0],
-                topRightValue: this.parsedString[0],
-                bottomRightValue: this.parsedString[0],
-                bottomLeftValue: this.parsedString[0],
-            });
-        } else if (this.parsedString.length === 2) {
-            this.setState({
-                topLeftValue: this.parsedString[0],
-                topRightValue: this.parsedString[1],
-                bottomRightValue: this.parsedString[0],
-                bottomLeftValue: this.parsedString[1],
-            });
-        } else if (this.parsedString.length === 3) {
-            this.setState({
-                topLeftValue: this.parsedString[0],
-                topRightValue: this.parsedString[1],
-                bottomRightValue: this.parsedString[2],
-                bottomLeftValue: this.parsedString[1],
-            });
-        } else if (this.parsedString.length === 4) {
-            this.setState({
-                topLeftValue: this.parsedString[0],
-                topRightValue: this.parsedString[1],
-                bottomRightValue: this.parsedString[2],
-                bottomLeftValue: this.parsedString[3],
-            });
-        }
     }
 
     private handleInputBlur(
