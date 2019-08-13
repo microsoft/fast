@@ -4,10 +4,6 @@ import { CSSBorderRadiusClassNameContract } from "./border-radius.style";
 export interface CSSBorderRadiusState {
     individualValues?: boolean;
     hasFocus?: BorderRadiusValue | void;
-    topLeftValue?: string;
-    topRightValue?: string;
-    bottomRightValue?: string;
-    bottomLeftValue?: string;
     data?: CSSBorderRadiusValues;
 }
 

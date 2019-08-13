@@ -12,7 +12,7 @@ import {
     CSSBorderRadiusUnhandledProps,
     CSSBorderRadiusValues,
 } from "./border-radius.props";
-import { parseCSSString } from "../../utilities/parse-css-string"
+import { parseCSSString } from "../../utilities/parse-css-string";
 
 export default class CSSBorderRadius extends Foundation<
     CSSBorderRadiusHandledProps,
@@ -33,26 +33,8 @@ export default class CSSBorderRadius extends Foundation<
         this.state = {
             individualValues: false,
             hasFocus: void 0,
-            topLeftValue: "0",
-            topRightValue: "0",
-            bottomRightValue: "0",
-            bottomLeftValue: "0",
             data: this.props.data,
         };
-    }
-
-    public componentDidUpdate(prevProps: CSSBorderRadiusProps): void {
-        if (prevProps.data !== this.props.data) {
-            const parsedString: string[] = parseCSSString(get(this.props.data, "borderRadius", ""));
-            if(parsedString !== undefined) {
-                this.setState({
-                    topLeftValue: parsedString[0],
-                    topRightValue: parsedString[1],
-                    bottomRightValue: parsedString[2],
-                    bottomLeftValue: parsedString[3],
-                });
-            }
-        }
     }
 
     public render(): React.ReactNode {
@@ -124,23 +106,26 @@ export default class CSSBorderRadius extends Foundation<
 
     private renderInputs(): React.ReactFragment {
         if (this.state.individualValues === true) {
+            const parsedString: string[] = parseCSSString(
+                get(this.props.data, "borderRadius", "")
+            );
             return (
                 <React.Fragment>
                     {this.renderIndividualInputs(
                         BorderRadiusValue.borderTopLeftRadius,
-                        this.state.topLeftValue
+                        parsedString[0]
                     )}
                     {this.renderIndividualInputs(
                         BorderRadiusValue.borderTopRightRadius,
-                        this.state.topRightValue
+                        parsedString[1]
                     )}
                     {this.renderIndividualInputs(
                         BorderRadiusValue.borderBottomRightRadius,
-                        this.state.bottomRightValue
+                        parsedString[2]
                     )}
                     {this.renderIndividualInputs(
                         BorderRadiusValue.borderBottomLeftRadius,
-                        this.state.bottomLeftValue
+                        parsedString[3]
                     )}
                 </React.Fragment>
             );
@@ -158,9 +143,9 @@ export default class CSSBorderRadius extends Foundation<
 
     private renderIndividualInputs(
         position: BorderRadiusValue,
-        state: string
+        value: string
     ): React.ReactNode {
-        const value: string = state === "0" ? "" : state
+        const normalizedValue: string = value === "0" ? "" : value;
         return (
             <input
                 className={get(
@@ -168,10 +153,10 @@ export default class CSSBorderRadius extends Foundation<
                     "managedClasses.cssBorderRadius_individualInput"
                 )}
                 onFocus={this.handleInputOnFocus(position)}
-                onBlur={this.handleInputBlur(position)}
+                onBlur={this.handleInputBlur}
                 placeholder={"0"}
                 type={"text"}
-                value={value}
+                value={normalizedValue}
                 onChange={this.handleBorderRadiusOnChange(position)}
             />
         );
@@ -188,47 +173,38 @@ export default class CSSBorderRadius extends Foundation<
                 BorderRadiusValue.borderTopLeftRadius,
                 BorderRadiusValue.borderTopRightRadius,
             ]);
-            
-            const validatedValue: string = e.target.value === "" ? "0" : e.target.value
 
+            const validatedValue: string = e.target.value === "" ? "0" : e.target.value;
+
+            const parsedString: string[] = parseCSSString(
+                get(this.props.data, "borderRadius", "")
+            );
             switch (cssKey) {
                 case BorderRadiusValue.borderRadius:
                     borderRadius[cssKey] = e.target.value;
                     break;
                 case BorderRadiusValue.borderBottomLeftRadius:
-                    this.setState({
-                        bottomLeftValue: e.target.value,
-                    });
-                    borderRadius.borderRadius = `${this.state.topLeftValue} ${
-                        this.state.topRightValue
-                    } ${this.state.bottomRightValue} ${validatedValue}`;
+                    borderRadius.borderRadius = `${parsedString[0]} ${parsedString[1]} ${
+                        parsedString[2]
+                    } ${validatedValue}`;
                     break;
                 case BorderRadiusValue.borderBottomRightRadius:
-                    this.setState({
-                        bottomRightValue: e.target.value
-                    });
-                    borderRadius.borderRadius = `${this.state.topLeftValue} ${
-                        this.state.topRightValue
-                    } ${validatedValue} ${this.state.bottomLeftValue}`;
+                    borderRadius.borderRadius = `${parsedString[0]} ${
+                        parsedString[1]
+                    } ${validatedValue} ${parsedString[3]}`;
                     break;
                 case BorderRadiusValue.borderTopLeftRadius:
-                    this.setState({
-                        topLeftValue: e.target.value,
-                    });
-                    borderRadius.borderRadius = `${validatedValue} ${
-                        this.state.topRightValue
-                    } ${this.state.bottomRightValue} ${this.state.bottomLeftValue}`;
+                    borderRadius.borderRadius = `${validatedValue} ${parsedString[1]} ${
+                        parsedString[2]
+                    } ${parsedString[3]}`;
                     break;
                 case BorderRadiusValue.borderTopRightRadius:
-                    this.setState({
-                        topRightValue: e.target.value,
-                    });
-                    borderRadius.borderRadius = `${this.state.topLeftValue} ${validatedValue} ${this.state.bottomRightValue} ${
-                        this.state.bottomLeftValue
-                    }`;
+                    borderRadius.borderRadius = `${parsedString[0]} ${validatedValue} ${
+                        parsedString[2]
+                    } ${parsedString[3]}`;
                     break;
             }
-                this.props.onChange(borderRadius);
+            this.props.onChange(borderRadius);
         };
     }
 
@@ -236,7 +212,6 @@ export default class CSSBorderRadius extends Foundation<
         this.setState({
             individualValues: !this.state.individualValues,
         });
-
     };
 
     private generateToggleClassNames(): string {
@@ -274,30 +249,9 @@ export default class CSSBorderRadius extends Foundation<
         };
     }
 
-    private handleInputBlur(
-        cssKey: BorderRadiusValue
-    ): (e: React.ChangeEvent<HTMLInputElement>) => void {
-        return (e: React.ChangeEvent<HTMLInputElement>): void => {
-            let partialState: Partial<CSSBorderRadiusState>;
-            switch (cssKey) {
-                case BorderRadiusValue.borderBottomLeftRadius:
-                    partialState = {bottomLeftValue: e.target.value === "" ? "0" : this.state.bottomLeftValue}
-                    break;
-                case BorderRadiusValue.borderBottomRightRadius:
-                    partialState = {bottomRightValue: e.target.value === "" ? "0" : this.state.bottomRightValue}
-                    break;
-                case BorderRadiusValue.borderTopLeftRadius:
-                    partialState = {topLeftValue: e.target.value === "" ? "0" : this.state.topLeftValue}
-                    break;
-                case BorderRadiusValue.borderTopRightRadius:
-                    partialState = {topRightValue: e.target.value === "" ? "0" : this.state.topRightValue}
-                    break;
-            }
-
-            this.setState({
-                hasFocus: void 0,
-                ...partialState
-            });
-        };
-    }
+    private handleInputBlur = (): void => {
+        this.setState({
+            hasFocus: void 0,
+        });
+    };
 }
