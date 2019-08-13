@@ -29,12 +29,12 @@ const styles: ComponentStyles<CSSBorderRadiusClassNameContract, {}> = {
     cssBorderRadius_input: {
         ...applyInputStyle(),
         marginRight: "4px",
-        width: "inherit"
+        width: "inherit",
     },
     cssBorderRadius_individualInput: {
         ...applyInputStyle(),
         marginRight: "4px",
-        width: "inherit"
+        width: "inherit",
     },
     cssBorderRadius_label: {
         ...applyLabelStyle(),
