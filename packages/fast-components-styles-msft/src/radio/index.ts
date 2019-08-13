@@ -75,7 +75,7 @@ const styles: ComponentStyles<RadioClassNameContract, DesignSystem> = {
             boxShadow: format<DesignSystem>("0 0 0 1px {0} inset", neutralFocus),
             borderColor: neutralFocus,
             "@media (-ms-high-contrast:active)": {
-                boxShadow: "0 0 0 1px ButtonText inset"
+                boxShadow: "0 0 0 1px ButtonText inset",
             },
         }),
         "@media (-ms-high-contrast:active)": {

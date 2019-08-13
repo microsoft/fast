@@ -37,10 +37,16 @@ const inputSize: DesignSystemResolver<string> = toPx(
 const indeterminateIndicatorMargin: DesignSystemResolver<string> = toPx(
     add(designUnit, densityCategorySwitch(0, 1, 2))
 );
-const indicatorSvg: (color: ColorRecipe<string> | string) => DesignSystemResolver<string> = (color: ColorRecipe<string> | string): DesignSystemResolver<string> => {
+const indicatorSvg: (
+    color: ColorRecipe<string> | string
+) => DesignSystemResolver<string> = (
+    color: ColorRecipe<string> | string
+): DesignSystemResolver<string> => {
     return (designSystem: DesignSystem): string => {
-        const colorEval: string = (typeof color === "string" ? color : color(designSystem));
-        return `<svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill="${encodeURIComponent(colorEval)}" fill-rule="evenodd" clip-rule="evenodd" d="M8.143 12.6697L15.235 4.5L16.8 5.90363L8.23812 15.7667L3.80005 11.2556L5.27591 9.7555L8.143 12.6697Z"/></svg>`;
+        const colorEval: string = typeof color === "string" ? color : color(designSystem);
+        return `<svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill="${encodeURIComponent(
+            colorEval
+        )}" fill-rule="evenodd" clip-rule="evenodd" d="M8.143 12.6697L15.235 4.5L16.8 5.90363L8.23812 15.7667L3.80005 11.2556L5.27591 9.7555L8.143 12.6697Z"/></svg>`;
     };
 };
 const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = {
@@ -123,9 +129,15 @@ const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = {
         "& $checkbox_stateIndicator": {
             "&::before": {
                 color: "green",
-                background: format("url('data:image/svg+xml;utf8,{0}')", indicatorSvg(neutralForegroundRest)),
+                background: format(
+                    "url('data:image/svg+xml;utf8,{0}')",
+                    indicatorSvg(neutralForegroundRest)
+                ),
                 "@media (-ms-high-contrast:active)": {
-                    background: format("url('data:image/svg+xml;utf8,{0}')", indicatorSvg("HighlightText")),
+                    background: format(
+                        "url('data:image/svg+xml;utf8,{0}')",
+                        indicatorSvg("HighlightText")
+                    ),
                 },
             },
         },
@@ -133,7 +145,10 @@ const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = {
             "& $checkbox_stateIndicator": {
                 "&::before": {
                     "@media (-ms-high-contrast:active)": {
-                        background: format("url('data:image/svg+xml;utf8,{0}')", indicatorSvg("Highlight")),
+                        background: format(
+                            "url('data:image/svg+xml;utf8,{0}')",
+                            indicatorSvg("Highlight")
+                        ),
                     },
                 },
             },

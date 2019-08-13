@@ -19,10 +19,7 @@ const styles: ComponentStyles<FlyoutClassNameContract, DesignSystem> = {
             display: "block",
         },
         "@media (-ms-high-contrast:active)": {
-            border: format(
-                "{0} solid WindowText",
-                toPx<DesignSystem>(outlineWidth),
-            ),
+            border: format("{0} solid WindowText", toPx<DesignSystem>(outlineWidth)),
         },
     },
     flyout__top: {},
