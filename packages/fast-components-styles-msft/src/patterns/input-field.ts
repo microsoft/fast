@@ -1,9 +1,8 @@
 import { horizontalSpacing } from "../utilities/density";
 import { CSSRules } from "@microsoft/fast-jss-manager";
 import { DesignSystem } from "../design-system";
-import { format, toPx } from "@microsoft/fast-jss-utilities";
+import { format, subtract, toPx } from "@microsoft/fast-jss-utilities";
 import {
-    neutralFillActive,
     neutralFillHover,
     neutralFillInputActive,
     neutralFillInputHover,
@@ -20,7 +19,7 @@ import { applyCornerRadius } from "../utilities/border";
 import { applyDisabledState } from "../utilities/disabled";
 import { applyScaledTypeRamp } from "../utilities/typography";
 import { applyFontWeightNormal } from "../utilities/fonts";
-import { outlineWidth } from "../utilities/design-system";
+import { focusOutlineWidth, outlineWidth } from "../utilities/design-system";
 
 /**
  * Shared input field styles
@@ -61,7 +60,10 @@ export function inputFieldStyles(
             borderColor: neutralFocus,
             outline: "none",
             "@media (-ms-high-contrast:active)": {
-                boxShadow: format<DesignSystem>("0 0 0 1px ButtonText inset"),
+                boxShadow: format(
+                    "0 0 0 {0} ButtonText inset",
+                    toPx<DesignSystem>(subtract(focusOutlineWidth, outlineWidth))
+                ),
             },
         },
         "&:disabled": {

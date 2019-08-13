@@ -3,6 +3,8 @@ import { FlyoutClassNameContract } from "@microsoft/fast-components-class-name-c
 import { DesignSystem, ensureDesignSystemDefaults } from "../design-system";
 import { applyFloatingCornerRadius } from "../utilities/border";
 import { applyElevation, ElevationMultiplier } from "../utilities/elevation";
+import { format, toPx } from "@microsoft/fast-jss-utilities";
+import { outlineWidth } from "../utilities/design-system";
 
 const styles: ComponentStyles<FlyoutClassNameContract, DesignSystem> = {
     flyout: {
@@ -17,7 +19,10 @@ const styles: ComponentStyles<FlyoutClassNameContract, DesignSystem> = {
             display: "block",
         },
         "@media (-ms-high-contrast:active)": {
-            border: "1px solid WindowText",
+            border: format(
+                "{0} solid WindowText",
+                toPx<DesignSystem>(outlineWidth),
+            ),
         },
     },
     flyout__top: {},

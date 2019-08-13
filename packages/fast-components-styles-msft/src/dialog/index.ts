@@ -4,6 +4,8 @@ import { DialogClassNameContract } from "@microsoft/fast-components-class-name-c
 import { applyAcrylicMaterial } from "../utilities/acrylic";
 import { applyElevatedCornerRadius } from "../utilities/border";
 import { applyElevation, ElevationMultiplier } from "../utilities/elevation";
+import { format, toPx } from "@microsoft/fast-jss-utilities";
+import { outlineWidth } from "../utilities/design-system";
 
 /* tslint:disable-next-line */
 const styles: ComponentStyles<DialogClassNameContract, DesignSystem> = (
@@ -19,7 +21,10 @@ const styles: ComponentStyles<DialogClassNameContract, DesignSystem> = (
                 display: "block",
             },
             "@media (-ms-high-contrast:active)": {
-                border: "1px solid WindowText",
+                border: format(
+                    "{0} solid WindowText",
+                    toPx<DesignSystem>(outlineWidth),
+                ),
             },
         },
         dialog_positioningRegion: {
