@@ -70,6 +70,9 @@ const styles: ComponentStyles<ActionTriggerClassNameContract, DesignSystem> = {
         "&:hover": {
             "& $actionTrigger_glyph": {
                 fill: accentForegroundHover,
+                "@media (-ms-high-contrast:active)": {
+                    fill: "ButtonText",
+                },
             },
         },
         "&:active": {
@@ -94,6 +97,9 @@ const styles: ComponentStyles<ActionTriggerClassNameContract, DesignSystem> = {
         "&:hover": {
             "& $actionTrigger_glyph": {
                 fill: accentForegroundHover,
+                "@media (-ms-high-contrast:active)": {
+                    fill: "ButtonText",
+                },
             },
         },
         "&:active": {
@@ -111,6 +117,9 @@ const styles: ComponentStyles<ActionTriggerClassNameContract, DesignSystem> = {
     actionTrigger__outline: {
         "& $actionTrigger_glyph": {
             fill: neutralForegroundRest,
+            "@media (-ms-high-contrast:active)": {
+                fill: "ButtonText",
+            },
         },
         "&:hover": {
             "& $actionTrigger_glyph": {
@@ -129,6 +138,9 @@ const styles: ComponentStyles<ActionTriggerClassNameContract, DesignSystem> = {
     actionTrigger__stealth: {
         "& $actionTrigger_glyph": {
             fill: neutralForegroundRest,
+            "@media (-ms-high-contrast:active)": {
+                fill: "ButtonText",
+            },
         },
         "&:hover": {
             "& $actionTrigger_glyph": {

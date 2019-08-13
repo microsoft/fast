@@ -80,6 +80,9 @@ const styles: ComponentStyles<ActionToggleClassNameContract, DesignSystem> = {
         "&:hover": {
             "& $actionToggle_selectedGlyph, & $actionToggle_unselectedGlyph": {
                 fill: accentForegroundHover,
+                "@media (-ms-high-contrast:active)": {
+                    fill: "ButtonText",
+                },
             },
         },
         "&:active": {
@@ -97,15 +100,24 @@ const styles: ComponentStyles<ActionToggleClassNameContract, DesignSystem> = {
     actionToggle__justified: {
         "& $actionToggle_selectedGlyph, & $actionToggle_unselectedGlyph": {
             fill: accentForegroundRest,
+            "@media (-ms-high-contrast:active)": {
+                fill: "ButtonText",
+            },
         },
         "&:hover": {
             "& $actionToggle_selectedGlyph, & $actionToggle_unselectedGlyph": {
                 fill: accentForegroundHover,
+                "@media (-ms-high-contrast:active)": {
+                    fill: "ButtonText",
+                },
             },
         },
         actionToggle__stealth: {
             "& $actionToggle_selectedGlyph, & $actionToggle_unselectedGlyph": {
                 fill: neutralForegroundRest,
+                "@media (-ms-high-contrast:active)": {
+                    fill: "ButtonText",
+                },
             },
             "&$actionToggle__disabled $actionToggle_selectedGlyph, &$actionToggle__disabled $actionToggle_unselectedGlyph": {
                 fill: neutralForegroundRest,
@@ -130,6 +142,9 @@ const styles: ComponentStyles<ActionToggleClassNameContract, DesignSystem> = {
     actionToggle__outline: {
         "& $actionToggle_selectedGlyph, & $actionToggle_unselectedGlyph": {
             fill: neutralForegroundRest,
+            "@media (-ms-high-contrast:active)": {
+                fill: "ButtonText",
+            },
         },
         "&:hover": {
             "& $actionToggle_selectedGlyph, & $actionToggle_unselectedGlyph": {

@@ -109,9 +109,15 @@ const styles: ComponentStyles<SliderClassNameContract, DesignSystem> = {
         "& $slider_thumb": {
             "&:hover": {
                 background: neutralForegroundRest,
+                "@media (-ms-high-contrast:active)": {
+                    background: "GrayText",
+                },
             },
             "&:active": {
                 background: neutralForegroundRest,
+                "@media (-ms-high-contrast:active)": {
+                    background: "GrayText",
+                },
             },
             "@media (-ms-high-contrast:active)": {
                 background: "GrayText",

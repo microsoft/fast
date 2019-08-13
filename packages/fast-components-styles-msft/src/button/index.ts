@@ -232,6 +232,7 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = {
             ),
             "@media (-ms-high-contrast:active)": {
                 background: "Highlight",
+                borderColor: "ButtonText",
                 color: "HighlightText",
             },
         },

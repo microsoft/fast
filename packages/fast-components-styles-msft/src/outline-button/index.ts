@@ -35,6 +35,7 @@ const styles: ComponentStyles<LightweightButtonClassNameContract, DesignSystem> 
             ),
             "@media (-ms-high-contrast:active)": {
                 background: "Highlight",
+                borderColor: "ButtonText",
                 color: "HighlightText",
             },
             "& $button_beforeContent, & $button_afterContent": {

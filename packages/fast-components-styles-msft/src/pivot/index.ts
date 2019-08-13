@@ -47,6 +47,9 @@ const styles: ComponentStyles<PivotClassNameContract, DesignSystem> = {
         ...applyCornerRadius(),
         "&:hover": {
             color: neutralForegroundHover,
+            "@media (-ms-high-contrast:active)": {
+                color: "ButtonText",
+            },
         },
         "&:active": {
             color: neutralForegroundActive,

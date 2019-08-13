@@ -56,6 +56,7 @@ const styles: ComponentStyles<SelectOptionClassNameContract, DesignSystem> = {
             border: "none",
             background: "ButtonFace",
             color: "ButtonText",
+            fill: "ButtonText",
             "-ms-high-contrast-adjust": "none",
         },
     },
@@ -79,6 +80,7 @@ const styles: ComponentStyles<SelectOptionClassNameContract, DesignSystem> = {
         "&, &:hover": {
             background: neutralFillStealthRest,
             "@media (-ms-high-contrast:active)": {
+                background: "Background",
                 borderColor: "GrayText",
                 color: "GrayText",
                 fill: "GrayText",
