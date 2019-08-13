@@ -249,7 +249,7 @@ export default class CSSBorderRadius extends Foundation<
         };
     }
 
-    private handleInputBlur = (event: React.FocusEvent<HTMLInputElement>): void => {
+    private handleInputBlur = (e: React.FocusEvent<HTMLInputElement>): void => {
         this.setState({
             hasFocus: void 0,
         });
