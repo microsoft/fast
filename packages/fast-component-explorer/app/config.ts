@@ -15,7 +15,8 @@ const menu: MenuItem[] = generateMenu(schemas);
 const childOptions: FormChildOptionItem[] = getComponentChildrenOptions().concat(
     getTestComponentChildrenOptions()
 );
-const initialComponentRoute: string = get(menu, "[0].items[0].location", "");
+
+const initialComponentRoute: string = get(menu, "[0].location", "");
 
 function getRouteFromSchemaId(schemaId: string): string {
     const matchedRegex: RegExpMatchArray | null = schemaId.match(/\/(?:.(?!\/))+$/);
