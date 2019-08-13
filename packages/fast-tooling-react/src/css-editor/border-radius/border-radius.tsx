@@ -241,15 +241,15 @@ export default class CSSBorderRadius extends Foundation<
 
     private handleInputOnFocus(
         cssKey: BorderRadiusValue
-    ): (e: React.ChangeEvent<HTMLInputElement>) => void {
-        return (e: React.ChangeEvent<HTMLInputElement>): void => {
+    ): (e: React.FocusEvent<HTMLInputElement>) => void {
+        return (e: React.FocusEvent<HTMLInputElement>): void => {
             this.setState({
                 hasFocus: cssKey,
             });
         };
     }
 
-    private handleInputBlur = (): void => {
+    private handleInputBlur = (event: React.FocusEvent<HTMLInputElement>): void => {
         this.setState({
             hasFocus: void 0,
         });

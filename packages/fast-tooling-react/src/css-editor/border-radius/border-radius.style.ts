@@ -28,13 +28,13 @@ const styles: ComponentStyles<CSSBorderRadiusClassNameContract, {}> = {
     },
     cssBorderRadius_input: {
         ...applyInputStyle(),
-        marginLeft: "4px",
-        width: "inherit",
+        marginRight: "4px",
+        width: "inherit"
     },
     cssBorderRadius_individualInput: {
         ...applyInputStyle(),
-        width: "22%",
         marginRight: "4px",
+        width: "inherit"
     },
     cssBorderRadius_label: {
         ...applyLabelStyle(),
@@ -42,12 +42,11 @@ const styles: ComponentStyles<CSSBorderRadiusClassNameContract, {}> = {
     cssBorderRadius_toggleButton: {
         ...applyInputStyle(),
         backgroundColor: "transparent",
-        marginRight: "4px",
         display: "flex",
         alignContent: "center",
         justifyContent: "center",
         padding: "0 5px",
-        width: "12%",
+        minWidth: "12%",
     },
     cssBorderRadius_toggleButton__selected: {
         ...applyInputStyle(),
