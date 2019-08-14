@@ -1,23 +1,23 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import { get } from "lodash-es";
+import { HeadingClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import { TypographySize, TypographyTag } from "@microsoft/fast-components-react-base";
+import { classNames } from "@microsoft/fast-web-utilities";
+import React from "react";
+import { Typography } from "../typography";
+import { DisplayNamePrefix } from "../utilities";
 import {
-    HeadingAlignBaseline,
     HeadingHandledProps,
-    HeadingManagedClasses,
+    HeadingProps,
+    HeadingSize,
     HeadingUnhandledProps,
 } from "./heading.props";
-import { Typography } from "../typography";
-import {
-    HeadingClassNameContract,
-    ManagedClasses,
-} from "@microsoft/fast-components-class-name-contracts-msft";
-import { DisplayNamePrefix } from "../utilities";
 
 class Heading extends Foundation<HeadingHandledProps, HeadingUnhandledProps, {}> {
     public static displayName: string = `${DisplayNamePrefix}Heading`;
+    public static defaultProps: Partial<HeadingProps> = {
+        size: HeadingSize._1,
+        managedClasses: {},
+    };
 
     protected handledProps: HandledProps<HeadingHandledProps> = {
         size: void 0,
@@ -59,12 +59,12 @@ class Heading extends Foundation<HeadingHandledProps, HeadingUnhandledProps, {}>
      * Generates class names based on props
      */
     protected generateClassNames(): string {
-        const classes: string = this.props.size
-            ? get(this.props, `managedClasses.heading__${this.props.size}`, "")
-            : get(this.props, "managedClasses.heading__1", "");
-
+        const managedClasses: HeadingClassNameContract = this.props.managedClasses;
         return super.generateClassNames(
-            `${get(this.props, "managedClasses.heading", "")} ${classes}`
+            classNames(
+                managedClasses.heading,
+                managedClasses[`heading__${this.props.size}`]
+            )
         );
     }
 }

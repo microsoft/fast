@@ -87,14 +87,14 @@ describe("radio", (): void => {
     test("should NOT render a child if one is passed as a child without the `label` slot prop", () => {
         const rendered: any = shallow(
             <Radio inputId="radio03">
-                <div>Label</div>
+                <div className="child">Label</div>
             </Radio>
         );
 
         const expected: string =
             '<div><input type="radio" id="radio03"/><span></span></div>';
 
-        expect(rendered.html()).toBe(expected);
+        expect(rendered.exists(".child")).toBe(false);
     });
 
     test("should add a `radio_label` className to a child with the `label` slot prop", () => {

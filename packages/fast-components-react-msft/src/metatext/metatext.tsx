@@ -1,25 +1,21 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import { get } from "lodash-es";
+import { MetatextClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import { TypographySize, TypographyTag } from "@microsoft/fast-components-react-base";
+import { classNames } from "@microsoft/fast-web-utilities";
+import React from "react";
+import { Typography } from "../typography";
+import { DisplayNamePrefix } from "../utilities";
 import {
     MetatextHandledProps,
-    MetatextManagedClasses,
     MetatextProps,
     MetatextTag,
     MetatextUnhandledProps,
 } from "./metatext.props";
-import { Typography } from "../typography";
-import {
-    ManagedClasses,
-    MetatextClassNameContract,
-} from "@microsoft/fast-components-class-name-contracts-msft";
-import { DisplayNamePrefix } from "../utilities";
 
 class Metatext extends Foundation<MetatextHandledProps, MetatextUnhandledProps, {}> {
     public static defaultProps: Partial<MetatextProps> = {
         tag: MetatextTag.span,
+        managedClasses: {},
     };
 
     public static displayName: string = `${DisplayNamePrefix}Metatext`;
@@ -49,7 +45,7 @@ class Metatext extends Foundation<MetatextHandledProps, MetatextUnhandledProps, 
      * Generates class names based on props
      */
     protected generateClassNames(): string {
-        return super.generateClassNames(get(this.props, "managedClasses.metatext"));
+        return super.generateClassNames(classNames(this.props.managedClasses.metatext));
     }
 }
 

@@ -1,18 +1,9 @@
-import React from "react";
-import ReactDOM from "react-dom";
+import { RadioClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
-import {
-    RadioHandledProps,
-    RadioManagedClasses,
-    RadioProps,
-    RadioUnhandledProps,
-} from "./radio.props";
-import {
-    ManagedClasses,
-    RadioClassNameContract,
-} from "@microsoft/fast-components-class-name-contracts-base";
-import { get } from "lodash-es";
+import { classNames } from "@microsoft/fast-web-utilities";
+import React from "react";
 import { DisplayNamePrefix } from "../utilities";
+import { RadioHandledProps, RadioProps, RadioUnhandledProps } from "./radio.props";
 
 /**
  * Radio slot options
@@ -27,6 +18,9 @@ interface RadioState {
 
 class Radio extends Foundation<RadioHandledProps, RadioUnhandledProps, RadioState> {
     public static displayName: string = `${DisplayNamePrefix}Radio`;
+    public static defaultProps: Partial<RadioHandledProps> = {
+        managedClasses: {},
+    };
 
     public static getDerivedStateFromProps(
         nextProps: RadioProps,
@@ -67,10 +61,15 @@ class Radio extends Foundation<RadioHandledProps, RadioUnhandledProps, RadioStat
     }
 
     public render(): React.ReactElement<HTMLElement> {
+        const {
+            radio_input,
+            radio_stateIndicator,
+        }: RadioClassNameContract = this.props.managedClasses;
+
         return (
             <div {...this.unhandledProps()} className={this.generateClassNames()}>
                 <input
-                    className={get(this.props, "managedClasses.radio_input")}
+                    className={classNames(radio_input)}
                     type="radio"
                     id={this.props.inputId}
                     name={this.props.name}
@@ -79,9 +78,7 @@ class Radio extends Foundation<RadioHandledProps, RadioUnhandledProps, RadioStat
                     checked={this.state.checked}
                     value={this.props.value}
                 />
-                <span
-                    className={get(this.props, "managedClasses.radio_stateIndicator")}
-                />
+                <span className={classNames(radio_stateIndicator)} />
                 {this.renderChildrenWithSlot(RadioSlot.label)}
             </div>
         );
@@ -91,42 +88,31 @@ class Radio extends Foundation<RadioHandledProps, RadioUnhandledProps, RadioStat
      * Generates class names
      */
     protected generateClassNames(): string {
-        let classes: string = get(this.props, "managedClasses.radio", "");
+        const {
+            radio,
+            radio__disabled,
+            radio__checked,
+        }: RadioClassNameContract = this.props.managedClasses;
 
-        if (this.props.disabled) {
-            classes = `${classes} ${get(
-                this.props,
-                "managedClasses.radio__disabled",
-                ""
-            )}`;
-        }
-
-        if (this.state.checked) {
-            classes = `${classes} ${get(
-                this.props,
-                "managedClasses.radio__checked",
-                ""
-            )}`;
-        }
-
-        return super.generateClassNames(classes);
+        return super.generateClassNames(
+            classNames(
+                radio,
+                [radio__disabled, this.props.disabled],
+                [radio__checked, this.state.checked]
+            )
+        );
     }
 
     private renderChildrenWithSlot(slot: RadioSlot): React.ReactChild[] {
         const node: React.ReactNode = this.withSlot(RadioSlot.label);
 
         return React.Children.map(node, (child: JSX.Element, index: number) => {
-            let labelSlotClassName: string = get(
-                this.props,
-                "managedClasses.radio_label"
-            );
-            const classNameKey: string = "className";
-
-            if (child.props[classNameKey] !== undefined) {
-                labelSlotClassName = `${child.props[classNameKey]} ${labelSlotClassName}`;
-            }
-
-            return React.cloneElement(child, { className: labelSlotClassName });
+            return React.cloneElement(child, {
+                className: classNames(
+                    child.props.className,
+                    this.props.managedClasses.radio_label
+                ),
+            });
         });
     }
 

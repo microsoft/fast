@@ -1,13 +1,9 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import { get } from "lodash-es";
+import { ButtonClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
-import { ButtonHandledProps, ButtonUnhandledProps } from "./button.props";
-import {
-    ButtonClassNameContract,
-    ManagedClasses,
-} from "@microsoft/fast-components-class-name-contracts-base";
+import { classNames } from "@microsoft/fast-web-utilities";
+import React from "react";
 import { DisplayNamePrefix } from "../utilities";
+import { ButtonHandledProps, ButtonProps, ButtonUnhandledProps } from "./button.props";
 
 /**
  * Button HTML tags
@@ -19,6 +15,9 @@ export enum ButtonHTMLTags {
 
 class Button extends Foundation<ButtonHandledProps, ButtonUnhandledProps, {}> {
     public static displayName: string = `${DisplayNamePrefix}Button`;
+    public static defaultProps: Partial<ButtonProps> = {
+        managedClasses: {},
+    };
 
     protected handledProps: HandledProps<ButtonHandledProps> = {
         disabled: void 0,
@@ -46,17 +45,14 @@ class Button extends Foundation<ButtonHandledProps, ButtonUnhandledProps, {}> {
      * Generates class names
      */
     protected generateClassNames(): string {
-        let classNames: string = get(this.props, "managedClasses.button", "");
+        const {
+            button,
+            button__disabled,
+        }: ButtonClassNameContract = this.props.managedClasses;
 
-        if (this.props.disabled) {
-            classNames = `${classNames} ${get(
-                this.props,
-                "managedClasses.button__disabled",
-                ""
-            )}`;
-        }
-
-        return super.generateClassNames(classNames);
+        return super.generateClassNames(
+            classNames(button, [button__disabled, this.props.disabled])
+        );
     }
 
     /**

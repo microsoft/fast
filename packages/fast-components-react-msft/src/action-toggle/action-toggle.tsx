@@ -1,15 +1,17 @@
-import React from "react";
-import { get, isNil } from "lodash-es";
+import { ActionToggleClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
+import { actionToggleButtonOverrides } from "@microsoft/fast-components-styles-msft";
+import { classNames } from "@microsoft/fast-web-utilities";
+import { isNil } from "lodash-es";
+import React from "react";
 import { Button, ButtonAppearance } from "../button";
+import { DisplayNamePrefix } from "../utilities";
 import {
     ActionToggleAppearance,
     ActionToggleHandledProps,
     ActionToggleProps,
     ActionToggleUnhandledProps,
 } from "./action-toggle.props";
-import { actionToggleButtonOverrides } from "@microsoft/fast-components-styles-msft";
-import { DisplayNamePrefix } from "../utilities";
 
 export interface ActionToggleState {
     selected: boolean;
@@ -21,6 +23,10 @@ class ActionToggle extends Foundation<
     ActionToggleState
 > {
     public static displayName: string = `${DisplayNamePrefix}ActionToggle`;
+
+    public static defaultProps: Partial<ActionToggleProps> = {
+        managedClasses: {},
+    };
 
     /**
      * React life-cycle method
@@ -91,41 +97,25 @@ class ActionToggle extends Foundation<
      * Generates class names
      */
     protected generateClassNames(): string {
-        let classNames: string = get(this.props, "managedClasses.actionToggle", "");
+        const {
+            actionToggle,
+            actionToggle__disabled,
+            actionToggle__selected,
+            actionToggle__hasGlyphAndContent,
+        }: ActionToggleClassNameContract = this.props.managedClasses;
 
-        if (this.props.disabled) {
-            classNames = `${classNames} ${get(
-                this.props,
-                "managedClasses.actionToggle__disabled",
-                ""
-            )}`;
-        }
-
-        if (this.state.selected) {
-            classNames = `${classNames} ${get(
-                this.props,
-                "managedClasses.actionToggle__selected",
-                ""
-            )}`;
-        }
-
-        if (this.props.appearance) {
-            classNames = `${classNames} ${get(
-                this.props,
-                `managedClasses.actionToggle__${this.props.appearance}`,
-                ""
-            )}`;
-        }
-
-        if (this.hasGlyphAndContent()) {
-            classNames = `${classNames} ${get(
-                this.props,
-                "managedClasses.actionToggle__hasGlyphAndContent",
-                ""
-            )}`;
-        }
-
-        return super.generateClassNames(classNames);
+        return super.generateClassNames(
+            classNames(
+                actionToggle,
+                [actionToggle__disabled, this.props.disabled],
+                [actionToggle__selected, this.state.selected],
+                [
+                    this.props.managedClasses[`actionToggle__${this.props.appearance}`],
+                    typeof this.props.appearance === "string",
+                ],
+                [actionToggle__hasGlyphAndContent, this.hasGlyphAndContent()]
+            )
+        );
     }
 
     /**
@@ -164,18 +154,20 @@ class ActionToggle extends Foundation<
     private renderSelectedGlyph(): React.ReactNode {
         if (typeof this.props.selectedGlyph === "function") {
             return this.props.selectedGlyph(
-                get(this.props, "managedClasses.actionToggle_selectedGlyph", "")
+                classNames(this.props.managedClasses.actionToggle_selectedGlyph)
             );
         }
+
         return null;
     }
 
     private renderUnselectedGlyph(): React.ReactNode {
         if (typeof this.props.unselectedGlyph === "function") {
             return this.props.unselectedGlyph(
-                get(this.props, "managedClasses.actionToggle_unselectedGlyph", "")
+                classNames(this.props.managedClasses.actionToggle_unselectedGlyph)
             );
         }
+
         return null;
     }
 

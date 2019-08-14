@@ -26,6 +26,8 @@ import SliderTrackItem, {
     SliderTrackItemAnchor,
     SliderTrackItemManagedClasses,
 } from "../slider-track-item";
+import { classNames } from "@microsoft/fast-web-utilities";
+import { SliderManagedClasses } from "www/dist/src";
 
 export enum SliderThumb {
     upperThumb = "upperThumb",
@@ -227,31 +229,23 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
                     }}
                 >
                     <div
-                        className={get(
-                            this.props.managedClasses,
-                            "slider_layoutRegion",
-                            ""
+                        className={classNames(
+                            this.props.managedClasses.slider_layoutRegion
                         )}
                         style={{
                             position: "relative",
                         }}
                     >
                         <div
-                            className={get(
-                                this.props.managedClasses,
-                                "slider_backgroundTrack",
-                                ""
+                            className={classNames(
+                                this.props.managedClasses.slider_backgroundTrack
                             )}
                             style={{
                                 position: "absolute",
                             }}
                         />
                         <SliderTrackItem
-                            className={get(
-                                this.props.managedClasses,
-                                "slider_foregroundTrack",
-                                ""
-                            )}
+                            className={this.props.managedClasses.slider_foregroundTrack}
                             maxValuePositionBinding={
                                 SliderTrackItemAnchor.selectedRangeMax
                             }
@@ -262,7 +256,7 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
                         <div
                             ref={this.sliderTrackElement}
                             onMouseDown={this.handleTrackMouseDown}
-                            className={get(this.props.managedClasses, "slider_track", "")}
+                            className={classNames(this.props.managedClasses.slider_track)}
                             style={{
                                 position: "absolute",
                             }}
@@ -281,73 +275,32 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
      * Generates class names
      */
     protected generateClassNames(): string {
-        let classNames: string = get(this.props, "managedClasses.slider", "");
+        const {
+            slider,
+            slider__disabled,
+            slider__vertical,
+            slider__horizontal,
+            slider__rtl,
+            slider__modeSingle,
+            slider__modeAdjustUpper,
+            slider__modeAdjustLower,
+            slider__modeAdjustBoth,
+        }: SliderClassNameContract = this.props.managedClasses;
+        const isVertical: boolean = this.props.orientation === SliderOrientation.vertical;
 
-        if (this.props.disabled) {
-            classNames = `${classNames} ${get(
-                this.props,
-                "managedClasses.slider__disabled",
-                ""
-            )}`;
-        }
-
-        if (this.props.orientation === SliderOrientation.vertical) {
-            classNames = `${classNames} ${get(
-                this.props,
-                "managedClasses.slider__vertical",
-                ""
-            )}`;
-        } else {
-            classNames = `${classNames} ${get(
-                this.props,
-                "managedClasses.slider__horizontal",
-                ""
-            )}`;
-        }
-
-        if (this.direction === "rtl") {
-            classNames = `${classNames} ${get(
-                this.props,
-                "managedClasses.slider__rtl",
-                ""
-            )}`;
-        }
-
-        switch (this.props.mode) {
-            case SliderMode.singleValue:
-                classNames = `${classNames} ${get(
-                    this.props,
-                    "managedClasses.slider__modeSingle",
-                    ""
-                )}`;
-                break;
-
-            case SliderMode.adustUpperValue:
-                classNames = `${classNames} ${get(
-                    this.props,
-                    "managedClasses.slider__modeAdjustUpper",
-                    ""
-                )}`;
-                break;
-
-            case SliderMode.adustLowerValue:
-                classNames = `${classNames} ${get(
-                    this.props,
-                    "managedClasses.slider__modeAdjustLower",
-                    ""
-                )}`;
-                break;
-
-            case SliderMode.adjustBoth:
-                classNames = `${classNames} ${get(
-                    this.props,
-                    "managedClasses.slider__modeAdjustBoth",
-                    ""
-                )}`;
-                break;
-        }
-
-        return super.generateClassNames(classNames);
+        return super.generateClassNames(
+            classNames(
+                slider,
+                [slider__disabled, this.props.disabled],
+                [slider__vertical, isVertical],
+                [slider__horizontal, !isVertical],
+                [slider__rtl, this.direction === "rtl"],
+                [slider__modeSingle, this.props.mode === SliderMode.singleValue],
+                [slider__modeAdjustUpper, this.props.mode === SliderMode.adustUpperValue],
+                [slider__modeAdjustLower, this.props.mode === SliderMode.adustLowerValue],
+                [slider__modeAdjustBoth, this.props.mode === SliderMode.adjustBoth]
+            )
+        );
     }
 
     /**

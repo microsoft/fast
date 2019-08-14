@@ -1,18 +1,16 @@
-import React from "react";
-import { get } from "lodash-es";
+import { SelectClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
-import {
-    SelectHandledProps,
-    SelectManagedClasses,
-    SelectProps,
-    SelectUnhandledProps,
-} from "./select.props";
 import { Select as BaseSelect, SelectState } from "@microsoft/fast-components-react-base";
-import { Button, ButtonAppearance } from "../button";
+import { classNames } from "@microsoft/fast-web-utilities";
+import React from "react";
 import { DisplayNamePrefix } from "../utilities";
+import { SelectHandledProps, SelectProps, SelectUnhandledProps } from "./select.props";
 
 class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, {}> {
     public static displayName: string = `${DisplayNamePrefix}Select`;
+    public static defaultProps: SelectProps = {
+        managedClasses: {},
+    };
 
     protected handledProps: HandledProps<SelectHandledProps> = {
         disabled: void 0,
@@ -49,28 +47,22 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, {}> {
         if (props.multiselectable) {
             return null;
         }
+
+        const {
+            select_button,
+            select_buttonContentRegion,
+            select_buttonDisplayText,
+        }: SelectClassNameContract = this.props.managedClasses;
         return (
             <button
                 disabled={props.disabled}
-                className={get(this.props, "managedClasses.select_button", "")}
+                className={classNames(select_button)}
                 aria-labelledby={props.labelledBy || null}
                 aria-haspopup={true}
                 aria-expanded={state.isMenuOpen}
             >
-                <span
-                    className={get(
-                        this.props,
-                        "managedClasses.select_buttonContentRegion",
-                        ""
-                    )}
-                >
-                    <div
-                        className={get(
-                            this.props,
-                            "managedClasses.select_buttonDisplayText",
-                            ""
-                        )}
-                    >
+                <span className={classNames(select_buttonContentRegion)}>
+                    <div className={classNames(select_buttonDisplayText)}>
                         {state.displayString}
                     </div>
                     {this.generateGlyph()}
@@ -89,7 +81,7 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, {}> {
                 width="16"
                 height="16"
                 viewBox="0 0 16 12"
-                className={get(this.props, "managedClasses.select_toggleGlyph", "")}
+                className={classNames(this.props.managedClasses.select_toggleGlyph)}
                 aria-hidden={true}
                 xmlns="http://www.w3.org/2000/svg"
             >
