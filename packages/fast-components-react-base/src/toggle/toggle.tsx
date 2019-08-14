@@ -1,18 +1,9 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import { get } from "lodash-es";
+import { ToggleClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
-import {
-    ToggleHandledProps,
-    ToggleManagedClasses,
-    ToggleProps,
-    ToggleUnhandledProps,
-} from "./toggle.props";
-import {
-    ManagedClasses,
-    ToggleClassNameContract,
-} from "@microsoft/fast-components-class-name-contracts-base";
+import { classNames } from "@microsoft/fast-web-utilities";
+import React from "react";
 import { DisplayNamePrefix } from "../utilities";
+import { ToggleHandledProps, ToggleProps, ToggleUnhandledProps } from "./toggle.props";
 
 /**
  * Toggle state interface
@@ -26,6 +17,10 @@ export interface ToggleState {
  */
 class Toggle extends Foundation<ToggleHandledProps, ToggleUnhandledProps, ToggleState> {
     public static displayName: string = `${DisplayNamePrefix}Toggle`;
+
+    public static defaultProps: Partial<ToggleProps> = {
+        managedClasses: {},
+    };
 
     /**
      * React life-cycle method
@@ -73,6 +68,12 @@ class Toggle extends Foundation<ToggleHandledProps, ToggleUnhandledProps, Toggle
      * Renders the component
      */
     public render(): React.ReactElement<HTMLDivElement> {
+        const {
+            toggle_toggleButton,
+            toggle_input,
+            toggle_stateIndicator,
+        }: ToggleClassNameContract = this.props.managedClasses;
+
         return (
             <div
                 {...this.unhandledProps()}
@@ -80,9 +81,9 @@ class Toggle extends Foundation<ToggleHandledProps, ToggleUnhandledProps, Toggle
                 aria-disabled={this.props.disabled || null}
             >
                 {this.generateLabel()}
-                <div className={get(this.props, "managedClasses.toggle_toggleButton")}>
+                <div className={classNames(toggle_toggleButton)}>
                     <input
-                        className={get(this.props, "managedClasses.toggle_input")}
+                        className={classNames(toggle_input)}
                         type="checkbox"
                         id={this.props.inputId}
                         aria-describedby={this.props.statusMessageId}
@@ -91,12 +92,7 @@ class Toggle extends Foundation<ToggleHandledProps, ToggleUnhandledProps, Toggle
                         onChange={this.handleToggleChange}
                         checked={this.state.selected}
                     />
-                    <span
-                        className={get(
-                            this.props,
-                            "managedClasses.toggle_stateIndicator"
-                        )}
-                    />
+                    <span className={classNames(toggle_stateIndicator)} />
                 </div>
                 {this.renderStatusMessage()}
             </div>
@@ -107,25 +103,19 @@ class Toggle extends Foundation<ToggleHandledProps, ToggleUnhandledProps, Toggle
      * Generates class names
      */
     protected generateClassNames(): string {
-        let className: string = get(this.props, "managedClasses.toggle", "");
+        const {
+            toggle,
+            toggle__disabled,
+            toggle__checked,
+        }: ToggleClassNameContract = this.props.managedClasses;
 
-        if (this.props.disabled) {
-            className = `${className} ${get(
-                this.props,
-                "managedClasses.toggle__disabled",
-                ""
-            )}`;
-        }
-
-        if (this.state.selected) {
-            className = `${className} ${get(
-                this.props,
-                "managedClasses.toggle__checked",
-                ""
-            )}`;
-        }
-
-        return super.generateClassNames(className);
+        return super.generateClassNames(
+            classNames(
+                toggle,
+                [toggle__disabled, this.props.disabled],
+                [toggle__checked, this.state.selected]
+            )
+        );
     }
 
     /**
@@ -157,7 +147,7 @@ class Toggle extends Foundation<ToggleHandledProps, ToggleUnhandledProps, Toggle
         if (this.props.labelId || this.props.children) {
             return (
                 <label
-                    className={get(this.props, "managedClasses.toggle_label")}
+                    className={classNames(this.props.managedClasses.toggle_label)}
                     id={this.props.labelId}
                     htmlFor={this.props.inputId}
                 >
@@ -172,7 +162,7 @@ class Toggle extends Foundation<ToggleHandledProps, ToggleUnhandledProps, Toggle
             return (
                 <span
                     id={this.props.statusMessageId}
-                    className={get(this.props, "managedClasses.toggle_statusMessage")}
+                    className={classNames(this.props.managedClasses.toggle_statusMessage)}
                 >
                     {this.generateToggleStateLabel()}
                 </span>

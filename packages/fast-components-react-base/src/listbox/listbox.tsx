@@ -1,4 +1,7 @@
+import { ListboxClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
+import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import {
+    classNames,
     keyCodeArrowDown,
     keyCodeArrowLeft,
     keyCodeArrowRight,
@@ -11,20 +14,17 @@ import {
     keyCodeTab,
     startsWith,
 } from "@microsoft/fast-web-utilities";
-import ReactDOM from "react-dom";
-import { ListboxClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
+import { canUseDOM } from "exenv-es6";
+import { inRange, isEqual } from "lodash-es";
+import React from "react";
+import { ListboxItemProps } from "../listbox-item";
+import { DisplayNamePrefix } from "../utilities";
+import { ListboxContext, ListboxContextType } from "./listbox-context";
 import {
     ListboxHandledProps,
     ListboxProps,
     ListboxUnhandledProps,
 } from "./listbox.props";
-import React from "react";
-import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
-import { get, inRange, isEqual } from "lodash-es";
-import { canUseDOM } from "exenv-es6";
-import { ListboxContext, ListboxContextType } from "./listbox-context";
-import { ListboxItemProps } from "../listbox-item";
-import { DisplayNamePrefix } from "../utilities";
 export interface ListboxState {
     /**
      * The index of the focusable child
@@ -47,6 +47,7 @@ class Listbox extends Foundation<
         typeAheadPropertyKey: "displayString",
         typeAheadEnabled: true,
         focusItemOnMount: false,
+        managedClasses: {},
     };
 
     /**
@@ -287,17 +288,14 @@ class Listbox extends Foundation<
      * Create class names
      */
     protected generateClassNames(): string {
-        let className: string = get(this.props.managedClasses, "listbox", "");
+        const {
+            listbox,
+            listbox__disabled,
+        }: ListboxClassNameContract = this.props.managedClasses;
 
-        if (this.props.disabled) {
-            className = `${className} ${get(
-                this.props,
-                "managedClasses.listbox__disabled",
-                ""
-            )}`;
-        }
-
-        return super.generateClassNames(className);
+        return super.generateClassNames(
+            classNames(listbox, [listbox__disabled, this.props.disabled])
+        );
     }
 
     /**

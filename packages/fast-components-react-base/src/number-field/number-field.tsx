@@ -1,19 +1,14 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import { get } from "lodash-es";
+import { NumberFieldClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
+import { classNames } from "@microsoft/fast-web-utilities";
+import React from "react";
+import { TextFieldType } from "../text-field/index";
+import { DisplayNamePrefix } from "../utilities";
 import {
     NumberFieldHandledProps,
-    NumberFieldManagedClasses,
     NumberFieldProps,
     NumberFieldUnhandledProps,
 } from "./number-field.props";
-import {
-    ManagedClasses,
-    NumberFieldClassNameContract,
-} from "@microsoft/fast-components-class-name-contracts-base";
-import { TextFieldType } from "../text-field/index";
-import { DisplayNamePrefix } from "../utilities";
 
 class NumberField extends Foundation<
     NumberFieldHandledProps,
@@ -21,6 +16,10 @@ class NumberField extends Foundation<
     {}
 > {
     public static displayName: string = `${DisplayNamePrefix}NumberField`;
+
+    public static defaultProps: Partial<NumberFieldProps> = {
+        managedClasses: {},
+    };
 
     protected handledProps: HandledProps<NumberFieldHandledProps> = {
         managedClasses: void 0,
@@ -43,7 +42,9 @@ class NumberField extends Foundation<
      * Generates class names
      */
     protected generateClassNames(): string {
-        return super.generateClassNames(get(this.props, "managedClasses.numberField"));
+        return super.generateClassNames(
+            classNames(this.props.managedClasses.numberField)
+        );
     }
 }
 
