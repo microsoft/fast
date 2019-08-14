@@ -1,7 +1,7 @@
-## Auto suggest
+# Auto suggest
 The *auto suggest* component presents suggestions in a list as the user types in a search box.
 
-### Usage
+## Usage
 The *auto suggest* component can be thought of as having two parts:
 - the "input region" portion of the component, basically a text input box.
 - the "menu" portion which consists of a *listbox* which displays the list of suggested options.
@@ -10,5 +10,5 @@ The expected usage pattern of the component is for authors to watch the "onValue
 
 The input region of the component can be customized using the component's "inputRegion" render prop.
 
-### Accessibility
+## Accessibility
 *Auto suggest* implements the recommended keyboard navigation scheme described [here](https://www.w3.org/TR/wai-aria-practices-1.1/#Listbox) for interacting with the listbox.
