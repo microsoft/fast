@@ -1,7 +1,7 @@
-## Slider label
+# Slider label
 A component designed to position a label and/or tickmark at a position that correspond to a specific value on a *slider*'s track. By default a *slider label* renders above the *slider*'s front and back bars and below the thumbs.
 
-### Usage
+## Usage
 *Slider label* exposes a "position binding" prop which can either be a numerical value that falls within the parent *slider*'s range or a SliderTrackItemAnchor enum value.  
 
 When a *slider label* renders as the child of a *slider* it uses absolute positioning to place itself at a position that corresponds to the value specified by the valuePositionBinding prop on the slider's track.
