@@ -1,15 +1,14 @@
 import { ComponentStyles } from "@microsoft/fast-jss-manager";
 import { FlyoutClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
-import { DesignSystem, ensureDesignSystemDefaults } from "../design-system";
+import { DesignSystem } from "../design-system";
 import { applyFloatingCornerRadius } from "../utilities/border";
 import { applyElevation, ElevationMultiplier } from "../utilities/elevation";
+import { backgroundColor } from "../utilities/design-system"
 
 const styles: ComponentStyles<FlyoutClassNameContract, DesignSystem> = {
     flyout: {
         display: "none",
-        background: ensureDesignSystemDefaults(
-            (designSystem: DesignSystem): string => designSystem.backgroundColor
-        ),
+        background: backgroundColor,
         ...applyFloatingCornerRadius(),
         ...applyElevation(ElevationMultiplier.e14),
         zIndex: "1",

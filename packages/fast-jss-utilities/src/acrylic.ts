@@ -19,9 +19,16 @@ export interface AcrylicConfig {
 /*
  * Check for backdrop-filter support within the current browser
  */
-export const backdropFilterSupport: boolean =
-    "backdrop-filter" in document.documentElement.style ||
-    "-webkit-backdrop-filter" in document.documentElement.style;
+let backdropFilterSupport: boolean;
+try {
+    backdropFilterSupport =
+        "backdrop-filter" in document.documentElement.style ||
+        "-webkit-backdrop-filter" in document.documentElement.style;
+} catch (e) {
+    backdropFilterSupport = false;
+}
+
+export { backdropFilterSupport }
 
 /*
  * Applies a partially transparent "acrylic" background to an element

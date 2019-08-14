@@ -285,6 +285,7 @@ export function checkDesignSystemResolver<T>(
 
 /**
  * Returns a function that calls the callback with designSystemDefaults ensured.
+ * @deprecated - use design system property accesseor functions instead
  */
 export function ensureDesignSystemDefaults<T>(
     callback: (designSystem: DesignSystem) => T

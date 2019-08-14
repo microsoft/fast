@@ -1,34 +1,9 @@
 import { ButtonClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager";
-import {
-    applyFocusVisible,
-    directionSwitch,
-    format,
-    toPx,
-} from "@microsoft/fast-jss-utilities";
-import { DesignSystem, ensureDesignSystemDefaults } from "../design-system";
+import { applyFocusVisible, directionSwitch, format, toPx } from "@microsoft/fast-jss-utilities";
+import { DesignSystem, DesignSystemResolver, getDesignSystemValue } from "../design-system";
 import { applyCornerRadius, applyFocusPlaceholderBorder } from "../utilities/border";
-import {
-    accentFillActive,
-    accentFillHover,
-    accentFillRest,
-    accentForegroundActive,
-    accentForegroundCut,
-    accentForegroundHover,
-    accentForegroundRest,
-    neutralFillActive,
-    neutralFillHover,
-    neutralFillRest,
-    neutralFillStealthActive,
-    neutralFillStealthHover,
-    neutralFillStealthRest,
-    neutralFocus,
-    neutralFocusInnerAccent,
-    neutralForegroundRest,
-    neutralOutlineActive,
-    neutralOutlineHover,
-    neutralOutlineRest,
-} from "../utilities/color";
+import { accentFillActive, accentFillHover, accentFillRest, accentForegroundActive, accentForegroundCut, accentForegroundHover, accentForegroundRest, neutralFillActive, neutralFillHover, neutralFillRest, neutralFillStealthActive, neutralFillStealthHover, neutralFillStealthRest, neutralFocus, neutralFocusInnerAccent, neutralForegroundRest, neutralOutlineActive, neutralOutlineHover, neutralOutlineRest } from "../utilities/color";
 import { applyCursorPointer } from "../utilities/cursor";
 import { glyphSize, height, horizontalSpacing } from "../utilities/density";
 import { focusOutlineWidth, outlineWidth } from "../utilities/design-system";
@@ -38,6 +13,12 @@ import { applyScaledTypeRamp } from "../utilities/typography";
 const transparentBackground: CSSRules<DesignSystem> = {
     backgroundColor: "transparent",
 };
+
+
+const density: DesignSystemResolver<number> = getDesignSystemValue(
+    "density"
+);
+
 
 const applyTransparentBackplateStyles: CSSRules<DesignSystem> = {
     color: accentForegroundRest,
@@ -90,10 +71,10 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = {
         ...applyCursorPointer(),
         boxSizing: "border-box",
         maxWidth: "374px",
-        minWidth: ensureDesignSystemDefaults(
+        minWidth:
             (designSystem: DesignSystem): string =>
-                designSystem.density <= -2 ? "28px" : "32px"
-        ),
+                density(designSystem) <= -2 ? "28px" : "32px"
+        ,
         padding: format("0 {0}", horizontalSpacing(focusOutlineWidth)),
         display: "inline-flex",
         justifyContent: "center",
@@ -172,13 +153,13 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = {
             ),
         },
         ...applyFocusVisible<DesignSystem>({
-            boxShadow: ensureDesignSystemDefaults(
+            boxShadow: 
                 (designSystem: DesignSystem): string => {
                     return `0 0 0 ${toPx(
-                        designSystem.focusOutlineWidth - designSystem.outlineWidth
+                        focusOutlineWidth(designSystem) - outlineWidth(designSystem)
                     )} ${neutralFocus(designSystem)} inset`;
                 }
-            ),
+            ,
             borderColor: neutralFocus,
         }),
     },

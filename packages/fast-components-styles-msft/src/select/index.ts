@@ -1,10 +1,9 @@
 import DesignSystemDefaults, {
     DesignSystem,
-    ensureDesignSystemDefaults,
 } from "../design-system";
 import { ComponentStyles } from "@microsoft/fast-jss-manager";
 import {
-    applyLocalizedProperty,
+    directionSwitch,
     ellipsis,
     format,
     localizeSpacing,
@@ -42,10 +41,7 @@ const styles: ComponentStyles<SelectClassNameContract, DesignSystem> = {
     },
     select_buttonDisplayText: {
         ...ellipsis(),
-        textAlign: ensureDesignSystemDefaults(
-            (designSystem: DesignSystem): string =>
-                applyLocalizedProperty("left", "right", designSystem.direction)
-        ),
+        textAlign: directionSwitch("left", "right"),
         width: "100%",
     },
     select_toggleGlyph: {
