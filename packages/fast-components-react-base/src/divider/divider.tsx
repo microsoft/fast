@@ -1,22 +1,22 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import { get } from "lodash-es";
+import { DividerClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
+import { classNames } from "@microsoft/fast-web-utilities";
+import React from "react";
+import { DisplayNamePrefix } from "../utilities";
 import {
     DividerHandledProps,
-    DividerManagedClasses,
+    DividerProps,
     DividerRoles,
     DividerUnhandledProps,
 } from "./divider.props";
-import {
-    DividerClassNameContract,
-    ManagedClasses,
-} from "@microsoft/fast-components-class-name-contracts-base";
-import { DisplayNamePrefix } from "../utilities";
 
 /* tslint:disable-next-line */
 class Divider extends Foundation<DividerHandledProps, DividerUnhandledProps, {}> {
     public static displayName: string = `${DisplayNamePrefix}Divider`;
+
+    public static defaultProps: Partial<DividerProps> = {
+        managedClasses: {},
+    };
 
     protected handledProps: HandledProps<DividerHandledProps> = {
         managedClasses: void 0,
@@ -50,7 +50,7 @@ class Divider extends Foundation<DividerHandledProps, DividerUnhandledProps, {}>
      * Generates class names
      */
     protected generateClassNames(): string {
-        return super.generateClassNames(get(this.props, "managedClasses.divider"));
+        return super.generateClassNames(classNames(this.props.managedClasses.divider));
     }
 }
 

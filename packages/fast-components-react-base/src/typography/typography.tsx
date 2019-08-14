@@ -1,20 +1,15 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import { get } from "lodash-es";
+import { TypographyClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
+import { classNames } from "@microsoft/fast-web-utilities";
+import React from "react";
+import { DisplayNamePrefix } from "../utilities";
 import {
     TypographyHandledProps,
-    TypographyManagedClasses,
     TypographyProps,
     TypographySize,
     TypographyTag,
     TypographyUnhandledProps,
 } from "./typography.props";
-import {
-    ManagedClasses,
-    TypographyClassNameContract,
-} from "@microsoft/fast-components-class-name-contracts-base";
-import { DisplayNamePrefix } from "../utilities";
 
 class Typography extends Foundation<
     TypographyHandledProps,
@@ -23,6 +18,8 @@ class Typography extends Foundation<
 > {
     public static defaultProps: Partial<TypographyProps> = {
         tag: TypographyTag.p,
+        size: TypographySize._1,
+        managedClasses: {},
     };
 
     public static displayName: string = `${DisplayNamePrefix}Typography`;
@@ -60,12 +57,13 @@ class Typography extends Foundation<
      * Generates class names based on props
      */
     protected generateClassNames(): string {
-        const classes: string = this.props.size
-            ? get(this.props, `managedClasses.typography__${this.props.size}`, "")
-            : get(this.props, "managedClasses.typography__1", "");
+        const managedClasses: TypographyClassNameContract = this.props.managedClasses;
 
         return super.generateClassNames(
-            `${get(this.props, "managedClasses.typography", "")} ${classes}`
+            classNames(
+                managedClasses.typography,
+                managedClasses[`typography__${this.props.size}`]
+            )
         );
     }
 
