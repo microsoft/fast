@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { get, isNil } from "lodash-es";
 import { canUseDOM } from "exenv-es6";
-import { KeyCodes } from "@microsoft/fast-web-utilities";
+import { keyCodeEscape } from "@microsoft/fast-web-utilities";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import {
     AxisPositioningMode,
@@ -210,7 +210,7 @@ class Flyout extends Foundation<FlyoutHandledProps, FlyoutUnhandledProps, {}> {
         if (
             typeof this.props.onDismiss === "function" &&
             this.props.visible &&
-            event.keyCode === KeyCodes.escape
+            event.keyCode === keyCodeEscape
         ) {
             this.props.onDismiss(event);
         }

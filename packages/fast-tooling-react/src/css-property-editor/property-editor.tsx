@@ -13,7 +13,7 @@ import {
 } from "./property-editor.props";
 import PropertyEditorRow from "./property-editor-row";
 import { canUseDOM } from "exenv-es6";
-import { KeyCodes } from "@microsoft/fast-web-utilities";
+import { keyCodeEnter, keyCodeTab } from "@microsoft/fast-web-utilities";
 
 export default class CSSPropertyEditor extends Foundation<
     CSSPropertyEditorHandledProps,
@@ -329,7 +329,7 @@ export default class CSSPropertyEditor extends Foundation<
     ): void => {
         const rowCount: number = Object.keys(this.editData).length;
         switch (event.keyCode) {
-            case KeyCodes.enter:
+            case keyCodeEnter:
                 if (rowIndex < rowCount - 1) {
                     // focus on the next row
                     this.focusOnRow(rowIndex + 1);
@@ -341,7 +341,7 @@ export default class CSSPropertyEditor extends Foundation<
                 }
                 return;
 
-            case KeyCodes.tab:
+            case keyCodeTab:
                 if (
                     !event.shiftKey &&
                     rowIndex === rowCount - 1 &&

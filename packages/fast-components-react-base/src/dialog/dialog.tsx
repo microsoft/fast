@@ -13,7 +13,7 @@ import {
     ManagedClasses,
 } from "@microsoft/fast-components-class-name-contracts-base";
 import { canUseDOM } from "exenv-es6";
-import { KeyCodes } from "@microsoft/fast-web-utilities";
+import { keyCodeEscape } from "@microsoft/fast-web-utilities";
 import { DisplayNamePrefix } from "../utilities";
 
 class Dialog extends Foundation<DialogHandledProps, DialogUnhandledProps, {}> {
@@ -145,7 +145,7 @@ class Dialog extends Foundation<DialogHandledProps, DialogUnhandledProps, {}> {
             this.props.onDismiss &&
             typeof this.props.onDismiss === "function" &&
             this.props.visible &&
-            event.keyCode === KeyCodes.escape
+            event.keyCode === keyCodeEscape
         ) {
             this.props.onDismiss(event);
         }
