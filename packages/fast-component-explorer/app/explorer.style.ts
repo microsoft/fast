@@ -121,8 +121,10 @@ const style: ComponentStyles<ExplorerClassNameContract, DesignSystem> = {
             "0px -0.6px 1.8px rgba(0, 0, 0, 0.11) inset, 0px -3.2px 7.2px rgba(0, 0, 0, 0.13) inset",
     },
     explorer_viewerRegion: {
-        flexDirection: "column",
         width: "100%",
+        height: "calc(100% - 32px)",
+        overflow: "auto",
+        ...applyScrollbarStyle(),
     },
     explorer_viewerControlRegion: {
         display: "flex",

@@ -96,6 +96,9 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
         managedClasses: void 0,
     };
 
+    private viewerContainerRef: React.RefObject<HTMLDivElement> = React.createRef();
+    private viewerContentAreaPadding: number = 20;
+
     private canvasStyleOverrides: ComponentStyleSheet<
         CanvasClassNamesContract,
         DesignSystem
@@ -111,9 +114,8 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
         DesignSystem
     > = {
         viewer: {
-            height: "calc(100% - 80px)",
-            overflow: "auto",
-            ...applyScrollbarStyle(),
+            minHeight: "unset",
+            width: "fit-content",
         },
     };
 
@@ -206,6 +208,7 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
         DesignSystem
     > = {
         select: {
+            marginRight: "auto",
             zIndex: "1",
         },
     };
@@ -221,8 +224,8 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
 
         this.state = {
             dataLocation: "",
-            width: defaultDevices[0].width ? defaultDevices[0].width : 500,
-            height: defaultDevices[0].height ? defaultDevices[0].height : 500,
+            width: 0,
+            height: 0,
             scenario: this.getScenarioData(
                 this.getComponentNameSpinalCaseByPath(locationPathname)
             ),
@@ -274,12 +277,7 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
                         </Pane>
                         <Canvas jssStyleSheet={this.canvasStyleOverrides}>
                             <Row fill={true}>
-                                <div
-                                    className={get(
-                                        this.props,
-                                        "managedClasses.explorer_viewerRegion"
-                                    )}
-                                >
+                                <div style={{ overflow: "auto", width: "100%" }}>
                                     <Background
                                         value={neutralLayerL2}
                                         className={get(
@@ -292,7 +290,24 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
                                         {this.renderDirectionToggle()}
                                         {this.renderAccentColorPicker()}
                                     </Background>
-                                    {this.renderViewer()}
+                                    <div
+                                        ref={this.viewerContainerRef}
+                                        className={get(
+                                            this.props,
+                                            "managedClasses.explorer_viewerRegion"
+                                        )}
+                                    >
+                                        <div
+                                            style={{
+                                                padding: toPx(
+                                                    this.viewerContentAreaPadding
+                                                ),
+                                                minWidth: "fit-content",
+                                            }}
+                                        >
+                                            {this.renderViewer()}
+                                        </div>
+                                    </div>
                                 </div>
                             </Row>
                             <Row
@@ -351,6 +366,31 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
                 </Container>
             </Background>
         );
+    }
+
+    public componentDidMount(): void {
+        this.setViewerToFullSize();
+    }
+
+    private setViewerToFullSize(): void {
+        const viewerContainer: HTMLDivElement | null = this.viewerContainerRef.current;
+
+        if (viewerContainer) {
+            const viewerNode: Element | Text | null = ReactDOM.findDOMNode(
+                viewerContainer
+            );
+
+            if (viewerNode instanceof Element) {
+                const height: number =
+                    viewerNode.clientHeight - this.viewerContentAreaPadding * 2;
+                const width: number =
+                    viewerNode.clientWidth - this.viewerContentAreaPadding * 2;
+                this.setState({
+                    width,
+                    height,
+                });
+            }
+        }
     }
 
     private renderViewer(): React.ReactNode {

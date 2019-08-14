@@ -1,6 +1,13 @@
 import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager-react";
 import { applyTriggerStyle, insetStrongBoxShadow } from "../style";
-import { accent, background800, foreground300, neutralLayerL4 } from "../style/constants";
+import { applyFocusVisible } from "@microsoft/fast-jss-utilities";
+import {
+    accent,
+    background800,
+    foreground300,
+    neutralFillStealthSelected,
+    neutralLayerL4,
+} from "../style/constants";
 import { NavigationMenuItemClassNameContract } from "./navigation-menu-item.props";
 
 export interface NavigationMenuClassNameContract
@@ -37,6 +44,7 @@ const styles: ComponentStyles<NavigationMenuClassNameContract, {}> = {
         fontFamily: "inherit",
         textIndent: "inherit",
         cursor: "pointer",
+        position: "relative",
         '&[aria-expanded="false"]::before, &[aria-expanded="true"]::before': {
             content: "''",
             display: "inline-block",
@@ -55,12 +63,22 @@ const styles: ComponentStyles<NavigationMenuClassNameContract, {}> = {
             borderRight: "3px solid transparent",
             borderBottom: "3px solid transparent",
         },
-        "&:focus": {
+        ...applyFocusVisible({
             ...insetStrongBoxShadow(accent),
-        },
+        }),
     },
     navigationMenuItem_listItem__active: {
-        background: background800,
+        background: neutralFillStealthSelected,
+        "&::after": {
+            content: "''",
+            position: "absolute",
+            background: accent,
+            borderRadius: "2px",
+            width: "2px",
+            height: "calc(100% - 4px)",
+            top: "2px",
+            left: "2px",
+        },
     },
 };
 
