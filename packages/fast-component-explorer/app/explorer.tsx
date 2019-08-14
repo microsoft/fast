@@ -270,6 +270,7 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
                                 <NavigationMenu
                                     menu={menu}
                                     expanded={true}
+                                    activeLocation={this.state.locationPathname}
                                     onLocationUpdate={this.handleUpdateRoute}
                                     jssStyleSheet={this.navigationMenuStyleOverrides}
                                 />
