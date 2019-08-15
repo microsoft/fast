@@ -33,6 +33,6 @@ export interface ProgressHandledProps
     size?: ProgressSize;
 }
 
-export interface ProgressUnhandledProps extends BaseProgressHandledProps {}
+export interface ProgressUnhandledProps extends BaseProgressUnhandledProps {}
 /* tslint:enable:no-empty-interface */
 export type ProgressProps = ProgressHandledProps & ProgressUnhandledProps;

@@ -2,7 +2,7 @@ import React from "react";
 import Adapter from "enzyme-adapter-react-16";
 import { configure, mount, shallow } from "enzyme";
 import MSFTProgress, { ProgressClassNameContract } from "./progress";
-import { ProgressProps } from "./index";
+import { ProgressHandledProps, ProgressProps, ProgressUnhandledProps } from "./index";
 import { DisplayNamePrefix } from "../utilities";
 import { ProgressSize } from "./progress.props";
 
@@ -32,6 +32,25 @@ describe("progress", (): void => {
         expect(`${DisplayNamePrefix}${(MSFTProgress as any).name}`).toBe(
             MSFTProgress.displayName
         );
+    });
+
+    test("should accept unhandledProps", (): void => {
+        const handledProps: ProgressHandledProps = {
+            circular: true,
+        };
+
+        const unhandledProps: ProgressUnhandledProps = {
+            "aria-hidden": true,
+        };
+
+        const props: ProgressProps = {
+            ...handledProps,
+            ...unhandledProps,
+        };
+
+        const rendered: any = mount(<MSFTProgress {...props} />);
+
+        expect(rendered.prop("aria-hidden")).toEqual(true);
     });
 
     test("should not throw if managedClasses are not provided", () => {
