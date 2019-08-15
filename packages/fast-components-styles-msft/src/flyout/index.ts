@@ -3,7 +3,7 @@ import { FlyoutClassNameContract } from "@microsoft/fast-components-class-name-c
 import { DesignSystem } from "../design-system";
 import { applyFloatingCornerRadius } from "../utilities/border";
 import { applyElevation, ElevationMultiplier } from "../utilities/elevation";
-import { backgroundColor } from "../utilities/design-system"
+import { backgroundColor } from "../utilities/design-system";
 
 const styles: ComponentStyles<FlyoutClassNameContract, DesignSystem> = {
     flyout: {

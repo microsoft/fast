@@ -2,7 +2,7 @@ import { CSSRules } from "@microsoft/fast-jss-manager";
 import {
     DesignSystem,
     DesignSystemResolver,
-    getDesignSystemValue
+    getDesignSystemValue,
 } from "../design-system";
 
 export interface FontWeight {
@@ -35,8 +35,8 @@ const getDesignSystemFontWeight: DesignSystemResolver<FontWeight> = getDesignSys
 
 function weight(index: keyof FontWeight): DesignSystemResolver<string> {
     return (designSystem: DesignSystem): string => {
-            return `${getDesignSystemFontWeight(designSystem)[index]}`;
-        };
+        return `${getDesignSystemFontWeight(designSystem)[index]}`;
+    };
 }
 
 export function applyFontWeightLight(): CSSRules<DesignSystem> {

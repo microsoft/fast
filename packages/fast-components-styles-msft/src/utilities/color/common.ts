@@ -81,7 +81,7 @@ export type ColorRecipe<T> = DesignSystemResolver<T> &
 
 export function colorRecipeFactory<T>(recipe: DesignSystemResolver<T>): ColorRecipe<T> {
     const memoizedRecipe: typeof recipe = memoize(recipe);
-    
+
     function curryRecipe(designSystem: DesignSystem): T;
     function curryRecipe(
         backgroundResolver: SwatchResolver

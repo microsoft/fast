@@ -1,9 +1,6 @@
 import { toPx } from "@microsoft/fast-jss-utilities";
 import { CSSRules } from "@microsoft/fast-jss-manager";
-import {
-    DesignSystem,
-    DesignSystemResolver,
-} from "../design-system";
+import { DesignSystem, DesignSystemResolver } from "../design-system";
 import { densityCategorySwitch } from "./density";
 import { clamp } from "lodash-es";
 
@@ -83,11 +80,11 @@ export const typeRamp: TypeRamp = {
  */
 function scaleTypeRampId(key: keyof TypeRamp): DesignSystemResolver<keyof TypeRamp> {
     return (designSystem: DesignSystem): keyof TypeRamp => {
-            const typeConfigNumber: number = parseInt(key.replace("t", ""), 10);
-            const densityOffset: number = densityCategorySwitch(-1, 0, 1)(designSystem);
-            const size: number = clamp(typeConfigNumber - densityOffset, 1, 9);
-            return sanitizeTypeRampId("t".concat(size.toString()) as keyof TypeRamp);
-        }
+        const typeConfigNumber: number = parseInt(key.replace("t", ""), 10);
+        const densityOffset: number = densityCategorySwitch(-1, 0, 1)(designSystem);
+        const size: number = clamp(typeConfigNumber - densityOffset, 1, 9);
+        return sanitizeTypeRampId("t".concat(size.toString()) as keyof TypeRamp);
+    };
 }
 
 /*

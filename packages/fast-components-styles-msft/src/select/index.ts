@@ -1,6 +1,4 @@
-import DesignSystemDefaults, {
-    DesignSystem,
-} from "../design-system";
+import DesignSystemDefaults, { DesignSystem } from "../design-system";
 import { ComponentStyles } from "@microsoft/fast-jss-manager";
 import {
     directionSwitch,

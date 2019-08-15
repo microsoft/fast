@@ -43,13 +43,11 @@ const styles: ComponentStyles<LightweightButtonClassNameContract, DesignSystem> 
             ),
         },
         ...applyFocusVisible<DesignSystem>({
-            boxShadow: 
-                (designSystem: DesignSystem): string => {
-                    return `0 0 0 ${toPx(
-                        focusOutlineWidth(designSystem) - outlineWidth(designSystem)
-                    )} ${neutralFocus(designSystem)} inset`;
-                }
-            ,
+            boxShadow: (designSystem: DesignSystem): string => {
+                return `0 0 0 ${toPx(
+                    focusOutlineWidth(designSystem) - outlineWidth(designSystem)
+                )} ${neutralFocus(designSystem)} inset`;
+            },
             borderColor: neutralFocus,
         }),
     },

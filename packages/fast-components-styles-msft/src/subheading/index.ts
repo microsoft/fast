@@ -7,7 +7,7 @@ const styles: ComponentStyles<SubheadingClassNameContract, DesignSystem> = {
     subheading: {
         "&$subheading__1, &$subheading__2, &$subheading__3, &$subheading__4, &$subheading__5, &$subheading__6, &$subheading__7": {
             ...applyFontWeightNormal(),
-        }
+        },
     },
     subheading__1: {},
     subheading__2: {},
