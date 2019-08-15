@@ -1,6 +1,7 @@
 import "jest";
 import Navigation, { NavigationItem } from "./navigation";
 import { FormChildOptionItem } from "../form/form.props";
+import { reactChildrenStringSchema } from "../form/form-item.children.text";
 import oneOfSchema from "../../__tests__/schemas/one-of.schema.json";
 import childrenSchema from "../../__tests__/schemas/children.schema.json";
 import textFieldSchema from "../../__tests__/schemas/textarea.schema.json";
@@ -344,11 +345,11 @@ describe("Navigation", () => {
         });
         expect(navItems[1]).toEqual({
             dataLocation: "children",
-            schemaLocation: "reactProperties.children",
+            schemaLocation: "",
             data: data.children,
-            schema,
+            schema: reactChildrenStringSchema,
             default: void 0,
-            title: "Untitled",
+            title: reactChildrenStringSchema.title,
         });
     });
     test("should return navigation items for nested children", () => {
@@ -516,10 +517,10 @@ describe("Navigation", () => {
         });
         expect(navItems[1]).toEqual({
             dataLocation: "children",
-            schemaLocation: "reactProperties.children",
-            schema: childrenSchema,
+            schemaLocation: "",
+            schema: reactChildrenStringSchema,
             data: data.children,
-            title: childrenSchema.reactProperties.children.title,
+            title: reactChildrenStringSchema.title,
             default: void 0,
         });
     });

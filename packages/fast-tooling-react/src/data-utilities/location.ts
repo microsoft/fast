@@ -51,11 +51,13 @@ export function getDataLocationsOfChildren(
     const schemaReactChildrenLocations: string[] = schemaLocationInstance.getChildrenLocations();
 
     // get all schema locations from data locations
-    const schemaLocationsFromDataLocations: string[] = dataLocations.map(
-        (dataLocation: string): string => {
+    let schemaLocationsFromDataLocations: string[] = [];
+
+    if (schemaReactChildrenLocations.length > 0) {
+        schemaLocationsFromDataLocations = dataLocations.map((dataLocation: string) => {
             return mapSchemaLocationFromDataLocation(dataLocation, schema, data);
-        }
-    );
+        });
+    }
 
     // get all child locations as schema locations
     const reactChildrenLocationsAsSchemaLocations: string[] = schemaReactChildrenLocations.filter(
@@ -75,17 +77,15 @@ export function getDataLocationsOfChildren(
 
     // get all child locations as data locations
     dataLocations.forEach((dataLocation: string) => {
-        const schemaLocation: string = mapSchemaLocationFromDataLocation(
-            dataLocation,
-            schema,
-            data
-        );
         const dataFromDataLocation: string = get(data, dataLocation);
 
         if (
             !!reactChildrenLocationsAsSchemaLocations.find(
-                (reactChildrenLocationsAsSchemaLocation: string) => {
-                    return schemaLocation === reactChildrenLocationsAsSchemaLocation;
+                (reactChildrenLocationsAsSchemaLocation: string): boolean => {
+                    return (
+                        mapSchemaLocationFromDataLocation(dataLocation, schema, data) ===
+                        reactChildrenLocationsAsSchemaLocation
+                    );
                 }
             ) &&
             typeof addedDataLocations.find((addedDataLocation: string) => {

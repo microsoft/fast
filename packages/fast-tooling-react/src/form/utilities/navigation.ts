@@ -8,6 +8,7 @@ import {
 } from "../../data-utilities/location";
 import { FormChildOptionItem } from "../form";
 import { getReactDefaultChildren, propsKeyword } from "./form";
+import { reactChildrenStringSchema } from "../form/form-item.children.text";
 
 export interface NavigationItemConfig {
     dataLocation: string;
@@ -72,7 +73,7 @@ class Navigation {
 
     private dataLocation: string;
 
-    private componentChildrenDataLocations: string[];
+    private reactChildrenDataLocations: string[];
 
     private resolveNormalizeDataLocation: ((dataLocation: string) => string) &
         MemoizedFunction;
@@ -82,9 +83,12 @@ class Navigation {
     constructor(config: NavigationConfig) {
         this.navigationMap = {};
         this.config = cloneDeep(config);
+        this.config.childOptions = getReactDefaultChildren().concat(
+            this.config.childOptions
+        );
         this.resolveNormalizeDataLocation = memoize(this.normalizeDataLocation);
         this.resolveDataLocations = memoize(this.getDataLocationArray);
-        this.updateComponentChildrenLocations();
+        this.updateChildrenLocations();
         this.dataLocation = this.resolveNormalizeDataLocation(config.dataLocation);
 
         this.setItemToNavigationMap(this.dataLocation);
@@ -116,7 +120,7 @@ class Navigation {
         callback: (updatedNav: NavigationItem[]) => void
     ): void {
         this.config.data = cloneDeep(data);
-        this.updateComponentChildrenLocations(); // children may have been added/removed
+        this.updateChildrenLocations(); // children may have been added/removed
 
         Object.keys(this.navigationMap).forEach((navigationMapKey: string) => {
             if (typeof this.navigationMap[navigationMapKey].data !== "undefined") {
@@ -154,15 +158,11 @@ class Navigation {
         return navigationItems.map(this.updateDefaultValues);
     }
 
-    private updateComponentChildrenLocations(): void {
-        this.componentChildrenDataLocations = getDataLocationsOfChildren(
+    private updateChildrenLocations(): void {
+        this.reactChildrenDataLocations = getDataLocationsOfChildren(
             this.config.schema,
             this.config.data,
-            getReactDefaultChildren().concat(this.config.childOptions)
-        ).filter(
-            (childrenDataLocation: string): boolean => {
-                return typeof get(this.config.data, childrenDataLocation) !== "string";
-            }
+            this.config.childOptions
         );
     }
 
@@ -178,7 +178,10 @@ class Navigation {
 
         return dataLocationsArray.filter(
             (dataLocationInArray: string): boolean => {
-                return !this.componentChildrenDataLocations.includes(dataLocationInArray);
+                return (
+                    typeof get(this.config.data, dataLocationInArray) === "string" ||
+                    !this.reactChildrenDataLocations.includes(dataLocationInArray)
+                );
             }
         );
     }
@@ -189,7 +192,7 @@ class Navigation {
             this.config.data
         );
 
-        return !this.componentChildrenDataLocations.includes(dataLocation) ||
+        return !this.reactChildrenDataLocations.includes(dataLocation) ||
             typeof get(this.config.data, dataLocation) === "string"
             ? normalizedDataLocation
             : `${normalizedDataLocation}.${propsKeyword}`;
@@ -284,21 +287,26 @@ class Navigation {
             return { schema: currentSchema, dataLocation: "" };
         }
 
-        const componentDataLocation: string = this.componentChildrenDataLocations
+        const childrenDataLocation: string = this.reactChildrenDataLocations
             .reverse()
             .find(
-                (componentChildrenDataLocation: string): boolean => {
+                (reactChildrenDataLocation: string): boolean => {
                     // must be the longest item in the array that is still shorter than the given data location
                     return (
-                        componentChildrenDataLocation.length <= dataLocation.length &&
-                        dataLocation.slice(0, componentChildrenDataLocation.length) ===
-                            componentChildrenDataLocation
+                        reactChildrenDataLocation.length <= dataLocation.length &&
+                        dataLocation.slice(0, reactChildrenDataLocation.length) ===
+                            reactChildrenDataLocation
                     );
                 }
             );
 
-        const subData: any = get(data, componentDataLocation);
-        const id: string | undefined = subData ? subData.id : void 0;
+        const subData: any = get(data, childrenDataLocation);
+        const id: string | undefined =
+            typeof subData === "string"
+                ? reactChildrenStringSchema.id
+                : get(subData, "id")
+                    ? subData.id
+                    : void 0;
         const childOptionWithMatchingSchemaId: FormChildOptionItem = childOptions.find(
             (childOption: FormChildOptionItem) => {
                 return childOption.schema.id === id;
@@ -308,9 +316,14 @@ class Navigation {
         return childOptionWithMatchingSchemaId
             ? {
                   schema: childOptionWithMatchingSchemaId.schema,
-                  dataLocation: `${componentDataLocation}.${propsKeyword}`,
+                  dataLocation: `${childrenDataLocation}${
+                      id === reactChildrenStringSchema.id ? "" : `.${propsKeyword}`
+                  }`,
               }
-            : { schema: currentSchema, dataLocation: "" };
+            : {
+                  schema: currentSchema,
+                  dataLocation: "",
+              };
     }
 
     private updateDefaultValues = (

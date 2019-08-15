@@ -329,7 +329,6 @@ describe("Form", () => {
         );
 
         expect(callback.mock.calls[0][0].properties.pluginModifiedString.enum).toEqual([
-            undefined,
             "red",
             "green",
             "blue",

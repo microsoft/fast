@@ -56,14 +56,13 @@ class Form extends React.Component<
     /**
      * The schema
      */
-    private _schema: any;
-    get schema(): any {
-        return this._schema;
+    private _rootSchema: any;
+    get rootSchema(): any {
+        return this._rootSchema;
     }
-    set schema(updatedSchema: any) {
-        this._schema = updatedSchema;
+    set rootSchema(updatedSchema: any) {
+        this._rootSchema = updatedSchema;
     }
-
     constructor(props: FormProps & ManagedClasses<FormClassNameContract>) {
         super(props);
 
@@ -71,7 +70,7 @@ class Form extends React.Component<
 
         this.untitled = "Untitled";
         this.validator = new ajv({ schemaId: "auto", allErrors: true });
-        this.schema = mapPluginsToSchema(
+        this.rootSchema = mapPluginsToSchema(
             this.props.schema,
             this.props.data,
             this.props.plugins
@@ -85,14 +84,16 @@ class Form extends React.Component<
 
         if (
             typeof this.props.onSchemaChange === "function" &&
-            isModifiedSchema(this.schema, this.props.schema)
+            isModifiedSchema(this.rootSchema, this.props.schema)
         ) {
-            this.props.onSchemaChange(this.schema);
+            this.props.onSchemaChange(this.rootSchema);
         }
 
         this.state = {
             titleProps:
-                this.schema && this.schema.title ? this.schema.title : this.untitled,
+                this.rootSchema && this.rootSchema.title
+                    ? this.rootSchema.title
+                    : this.untitled,
             activeDataLocation:
                 props.location && typeof props.location === "string"
                     ? props.location
@@ -143,8 +144,8 @@ class Form extends React.Component<
      * Gets the validation errors
      */
     private getValidationErrors(props: FormProps): ErrorObject[] | void {
-        this.validator.removeSchema(this.schema.id);
-        const validate: ValidateFunction = this.validator.compile(this.schema);
+        this.validator.removeSchema(this.rootSchema.id);
+        const validate: ValidateFunction = this.validator.compile(this.rootSchema);
         const isValid: boolean | PromiseLike<any> = validate(props.data);
 
         if (!!!isValid) {
@@ -173,13 +174,13 @@ class Form extends React.Component<
             props.plugins
         );
 
-        if (isModifiedSchema(this.schema, updatedSchema)) {
+        if (isModifiedSchema(this.rootSchema, updatedSchema)) {
             // The schema must be set before any other state updates occur so that
             // the correct schema is used for state navigation
-            this.schema = updatedSchema;
+            this.rootSchema = updatedSchema;
 
             if (typeof props.onSchemaChange === "function") {
-                props.onSchemaChange(this.schema);
+                props.onSchemaChange(this.rootSchema);
             }
         }
 
@@ -242,7 +243,9 @@ class Form extends React.Component<
     ): Partial<FormState> {
         const updatedState: Partial<FormState> = {
             titleProps:
-                this.schema && this.schema.title ? this.schema.title : this.untitled,
+                this.rootSchema && this.rootSchema.title
+                    ? this.rootSchema.title
+                    : this.untitled,
             activeDataLocation: "",
             navigation: this.navigation.get(),
         };
@@ -337,18 +340,24 @@ class Form extends React.Component<
         const lastNavigationItem: NavigationItem = this.state.navigation[
             this.state.navigation.length - 1
         ];
+        const currentSchema: any = mapPluginsToSchema(
+            lastNavigationItem.schema,
+            this.props.data,
+            this.props.plugins
+        );
+
         return (
             <FormSection
-                schema={get(this.schema, lastNavigationItem.schemaLocation, this.schema)}
+                schema={get(
+                    currentSchema,
+                    lastNavigationItem.schemaLocation,
+                    currentSchema
+                )}
                 onChange={this.handleOnChange}
                 onUpdateActiveSection={this.handleUpdateActiveSection}
                 data={this.getData("data", "props")}
-                schemaLocation={mapSchemaLocationFromDataLocation(
-                    this.state.activeDataLocation,
-                    this.schema,
-                    this.props.data
-                )}
-                default={this.state.navigation[this.state.navigation.length - 1].default}
+                schemaLocation={lastNavigationItem.schemaLocation}
+                default={lastNavigationItem.default}
                 dataLocation={this.state.activeDataLocation}
                 untitled={this.untitled}
                 childOptions={this.props.childOptions}
