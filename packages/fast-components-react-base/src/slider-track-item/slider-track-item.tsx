@@ -1,16 +1,16 @@
-import React from "react";
-import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
-import { get } from "lodash-es";
 import { SliderTrackItemClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
+import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
+import { classNames } from "@microsoft/fast-web-utilities";
+import React from "react";
+import { SliderContext, SliderContextType } from "../slider/slider-context";
+import { SliderOrientation } from "../slider/slider.props";
+import { DisplayNamePrefix } from "../utilities";
 import {
     SliderTrackItemAnchor,
     SliderTrackItemHandledProps,
     SliderTrackItemProps,
     SliderTrackItemUnhandledProps,
 } from "./slider-track-item.props";
-import { SliderOrientation } from "../slider/slider.props";
-import { SliderContext, SliderContextType } from "../slider/slider-context";
-import { DisplayNamePrefix } from "../utilities";
 
 class SliderTrackItem extends Foundation<
     SliderTrackItemHandledProps,
@@ -18,6 +18,10 @@ class SliderTrackItem extends Foundation<
     {}
 > {
     public static displayName: string = `${DisplayNamePrefix}SliderTrackItem`;
+
+    public static defaultProps: Partial<SliderTrackItemProps> = {
+        managedClasses: {},
+    };
 
     public static contextType: React.Context<SliderContextType> = SliderContext;
 
@@ -49,23 +53,20 @@ class SliderTrackItem extends Foundation<
      * Create class-names
      */
     protected generateClassNames(): string {
-        let classNames: string = get(this.props, "managedClasses.sliderTrackItem", "");
+        const {
+            sliderTrackItem,
+            sliderTrackItem_vertical,
+            sliderTrackItem_horizontal,
+        }: SliderTrackItemClassNameContract = this.props.managedClasses;
+        const orientation: SliderOrientation = this.context.sliderOrientation;
 
-        if (this.context.sliderOrientation === SliderOrientation.vertical) {
-            classNames = `${classNames} ${get(
-                this.props,
-                "managedClasses.sliderTrackItem_vertical",
-                ""
-            )}`;
-        } else {
-            classNames = `${classNames} ${get(
-                this.props,
-                "managedClasses.sliderTrackItem_horizontal",
-                ""
-            )}`;
-        }
-
-        return super.generateClassNames(classNames);
+        return super.generateClassNames(
+            classNames(
+                sliderTrackItem,
+                [sliderTrackItem_vertical, orientation === SliderOrientation.vertical],
+                [sliderTrackItem_horizontal, orientation === SliderOrientation.horizontal]
+            )
+        );
     }
 
     /**

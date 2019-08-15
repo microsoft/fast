@@ -1,21 +1,20 @@
-import React from "react";
-import ReactDOM from "react-dom";
+import { TextFieldClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
+import { classNames } from "@microsoft/fast-web-utilities";
+import React from "react";
+import { DisplayNamePrefix } from "../utilities";
 import {
     TextFieldHandledProps,
-    TextFieldManagedClasses,
+    TextFieldProps,
     TextFieldType,
     TextFieldUnhandledProps,
 } from "./text-field.props";
-import {
-    ManagedClasses,
-    TextFieldClassNameContract,
-} from "@microsoft/fast-components-class-name-contracts-base";
-import { get } from "lodash-es";
-import { DisplayNamePrefix } from "../utilities";
 
 class TextField extends Foundation<TextFieldHandledProps, TextFieldUnhandledProps, {}> {
     public static displayName: string = `${DisplayNamePrefix}TextField`;
+    public static defaultProps: Partial<TextFieldProps> = {
+        managedClasses: {},
+    };
 
     protected handledProps: HandledProps<TextFieldHandledProps> = {
         managedClasses: void 0,
@@ -30,8 +29,6 @@ class TextField extends Foundation<TextFieldHandledProps, TextFieldUnhandledProp
             <input
                 {...this.unhandledProps()}
                 className={this.generateClassNames()}
-                disabled={get(this.props, "disabled", null)}
-                placeholder={get(this.props, "placeholder", null)}
                 type={this.props.type || TextFieldType.text}
             />
         );
@@ -41,7 +38,7 @@ class TextField extends Foundation<TextFieldHandledProps, TextFieldUnhandledProp
      * Generates class names
      */
     protected generateClassNames(): string {
-        return super.generateClassNames(get(this.props, "managedClasses.textField"));
+        return super.generateClassNames(classNames(this.props.managedClasses.textField));
     }
 }
 

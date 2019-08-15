@@ -132,20 +132,21 @@ export class Row extends Foundation<
         hidden: false,
     };
 
-    protected handledProps: HandledProps<RowHandledProps> = {
-        fill: void 0,
-        minHeight: void 0,
-        maxHeight: void 0,
-        height: void 0,
-        resizable: void 0,
-        id: void 0,
+    protected handledProps: HandledProps<Required<RowHandledProps>> = {
         collapsed: void 0,
-        overlay: void 0,
+        collapsedHeight: void 0,
+        fill: void 0,
+        height: void 0,
         hidden: void 0,
-        resizeFrom: void 0,
-        managedClasses: void 0,
+        id: void 0,
         initialHeight: void 0,
+        managedClasses: void 0,
+        maxHeight: void 0,
+        minHeight: void 0,
         onResize: void 0,
+        overlay: void 0,
+        resizable: void 0,
+        resizeFrom: void 0,
     };
 
     /**

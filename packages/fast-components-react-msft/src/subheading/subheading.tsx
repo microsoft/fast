@@ -1,21 +1,17 @@
-import React from "react";
-import { get } from "lodash-es";
+import { SubheadingClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import { TypographySize, TypographyTag } from "@microsoft/fast-components-react-base";
+import { classNames } from "@microsoft/fast-web-utilities";
+import React from "react";
+import { Typography } from "../typography";
+import { DisplayNamePrefix } from "../utilities";
 import {
     SubheadingHandledProps,
-    SubheadingManagedClasses,
     SubheadingProps,
     SubheadingSize,
     SubheadingTag,
     SubheadingUnhandledProps,
 } from "./subheading.props";
-import { Typography } from "../typography";
-import {
-    ManagedClasses,
-    SubheadingClassNameContract,
-} from "@microsoft/fast-components-class-name-contracts-msft";
-import { DisplayNamePrefix } from "../utilities";
 
 class Subheading extends Foundation<
     SubheadingHandledProps,
@@ -25,6 +21,7 @@ class Subheading extends Foundation<
     public static defaultProps: Partial<SubheadingProps> = {
         size: SubheadingSize._1,
         tag: SubheadingTag.h3,
+        managedClasses: {},
     };
 
     public static displayName: string = `${DisplayNamePrefix}Subheading`;
@@ -68,12 +65,13 @@ class Subheading extends Foundation<
     }
 
     protected generateClassNames(): string {
+        const managedClasses: SubheadingClassNameContract = this.props.managedClasses;
+
         return super.generateClassNames(
-            `${get(this.props, "managedClasses.subheading", "")} ${get(
-                this.props,
-                `managedClasses.subheading__${this.props.size}`,
-                ""
-            )}`
+            classNames(
+                managedClasses.subheading,
+                managedClasses[`subheading__${this.props.size}`]
+            )
         );
     }
 }

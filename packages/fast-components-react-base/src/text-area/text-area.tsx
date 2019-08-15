@@ -1,20 +1,20 @@
-import React from "react";
-import ReactDOM from "react-dom";
+import { TextAreaClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
+import { classNames } from "@microsoft/fast-web-utilities";
+import React from "react";
+import { DisplayNamePrefix } from "../utilities";
 import {
     TextAreaHandledProps,
-    TextAreaManagedClasses,
+    TextAreaProps,
     TextAreaUnhandledProps,
 } from "./text-area.props";
-import {
-    ManagedClasses,
-    TextAreaClassNameContract,
-} from "@microsoft/fast-components-class-name-contracts-base";
-import { get } from "lodash-es";
-import { DisplayNamePrefix } from "../utilities";
 
 class TextArea extends Foundation<TextAreaHandledProps, TextAreaUnhandledProps, {}> {
     public static displayName: string = `${DisplayNamePrefix}TextArea`;
+
+    public static defaultProps: Partial<TextAreaProps> = {
+        managedClasses: {},
+    };
 
     protected handledProps: HandledProps<TextAreaHandledProps> = {
         managedClasses: void 0,
@@ -25,12 +25,7 @@ class TextArea extends Foundation<TextAreaHandledProps, TextAreaUnhandledProps, 
      */
     public render(): React.ReactElement<HTMLTextAreaElement> {
         return (
-            <textarea
-                {...this.unhandledProps()}
-                className={this.generateClassNames()}
-                disabled={get(this.props, "disabled", null)}
-                placeholder={get(this.props, "placeholder", null)}
-            />
+            <textarea {...this.unhandledProps()} className={this.generateClassNames()} />
         );
     }
 
@@ -38,7 +33,7 @@ class TextArea extends Foundation<TextAreaHandledProps, TextAreaUnhandledProps, 
      * Generates class names
      */
     protected generateClassNames(): string {
-        return super.generateClassNames(get(this.props, "managedClasses.textArea", ""));
+        return super.generateClassNames(classNames(this.props.managedClasses.textArea));
     }
 }
 
