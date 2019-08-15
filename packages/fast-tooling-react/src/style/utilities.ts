@@ -292,6 +292,45 @@ export function applyRemoveItemStyle(): CSSRules<{}> {
     };
 }
 
+export function applyAddItemStyle(): CSSRules<{}> {
+    return {
+        position: "absolute",
+        right: "5px",
+        top: "1px",
+        appearance: "none",
+        background: "none",
+        border: "none",
+        width: "20px",
+        height: "20px",
+        zIndex: "1",
+        borderRadius: "2px",
+        ...applyFocusVisible({
+            ...insetStrongBoxShadow(accent),
+            outline: "none",
+        }),
+        "&::before": {
+            position: "absolute",
+            content: "''",
+            pointerEvents: "none",
+            width: "9px",
+            height: "1px",
+            left: "5.5px",
+            top: "9.5px",
+            background: foreground300,
+        },
+        "&::after": {
+            position: "absolute",
+            content: "''",
+            pointerEvents: "none",
+            width: "1px",
+            height: "9px",
+            left: "9.5px",
+            top: "5.5px",
+            background: foreground300,
+        },
+    };
+}
+
 export function applyControlWrapper(): CSSRules<{}> {
     return {
         paddingTop: "7px",

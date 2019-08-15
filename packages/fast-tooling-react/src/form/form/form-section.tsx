@@ -30,6 +30,7 @@ import {
 } from "./form-section.props";
 import FormControl from "./form-control";
 import FormOneOfAnyOf from "./form-one-of-any-of";
+import FormItemDictionary from "./form-item.dictionary";
 
 /**
  * Schema form component definition
@@ -341,6 +342,46 @@ class FormSection extends React.Component<
         return null;
     }
 
+    /**
+     * Renders additional properties if they have been declared
+     */
+    private renderAdditionalProperties(): React.ReactNode {
+        const schema: any = get(
+            this.props.schema,
+            this.getSchemaLocation(),
+            this.props.schema
+        );
+
+        if (typeof schema.additionalProperties === "object") {
+            return (
+                <FormItemDictionary
+                    index={0}
+                    untitled={this.props.untitled}
+                    dataLocation={this.props.dataLocation}
+                    schemaLocation={this.getSchemaLocation()}
+                    schema={schema.additionalProperties}
+                    enumeratedProperties={this.getEnumeratedProperties(schema)}
+                    data={this.props.data}
+                    required={schema.required}
+                    label={schema.title || this.props.untitled}
+                    childOptions={this.props.childOptions}
+                    onChange={this.props.onChange}
+                    onUpdateActiveSection={this.props.onUpdateActiveSection}
+                    invalidMessage={getErrorFromDataLocation(
+                        this.props.dataLocation,
+                        this.props.validationErrors
+                    )}
+                    displayValidationBrowserDefault={
+                        this.props.displayValidationBrowserDefault
+                    }
+                    displayValidationInline={this.props.displayValidationInline}
+                />
+            );
+        }
+
+        return null;
+    }
+
     private renderFormSection(): React.ReactNode {
         return (
             <div>
@@ -359,9 +400,21 @@ class FormSection extends React.Component<
                             this.props.validationErrors
                         )
                     )}
+                    {this.renderAdditionalProperties()}
                 </div>
             </div>
         );
+    }
+
+    /**
+     * Get all enumerated properties for the object
+     */
+    private getEnumeratedProperties(schema: any): string[] {
+        if (typeof schema.properties === "undefined") {
+            return [];
+        }
+
+        return Object.keys(schema.properties);
     }
 
     private getSchemaLocation(): string {

@@ -360,15 +360,17 @@ class FormTestPage extends React.Component<{}, FormTestPageState> {
     };
 
     private handleComponentUpdate = (e: React.ChangeEvent<HTMLSelectElement>): void => {
+        const data: any = !!testConfigs[e.target.value].data
+            ? testConfigs[e.target.value].data
+            : testConfigs[e.target.value].schema.id ===
+              testConfigs.allControlTypes.schema.id
+                ? this.state.dataSet
+                : getDataFromSchema(testConfigs[e.target.value].schema);
+
         this.setState({
             schema: testConfigs[e.target.value].schema,
             config: testConfigs[e.target.value].config,
-            data:
-                testConfigs[e.target.value].data ||
-                testConfigs[e.target.value].schema.id ===
-                    testConfigs.allControlTypes.schema.id
-                    ? this.state.dataSet
-                    : getDataFromSchema(testConfigs[e.target.value].schema),
+            data,
         });
     };
 
