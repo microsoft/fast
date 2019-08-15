@@ -31,7 +31,7 @@ import {
     applyHighContrastDisabled,
     applyHighContrastDisabledBorder,
     applyHighContrastDisabledFill,
-    highContrastSelector
+    highContrastSelector,
 } from "../utilities/high-contrast";
 
 // Since MSFT text field is already styled, we need to override in this way to alter text field classes
@@ -142,7 +142,7 @@ const styles: ComponentStyles<TextActionClassNameContract, DesignSystem> = {
         "& $textAction_beforeGlyph, & $textAction_afterGlyph": {
             ...applyHighContrastDisabledFill(),
         },
-        ...applyHighContrastDisabledBorder()
+        ...applyHighContrastDisabledBorder(),
     },
     textAction_button: {
         borderColor: "transparent",
@@ -169,7 +169,7 @@ const styles: ComponentStyles<TextActionClassNameContract, DesignSystem> = {
             },
         },
         "&:disabled": {
-            ...applyHighContrastDisabled()
+            ...applyHighContrastDisabled(),
         },
     },
     textAction_beforeGlyph: {

@@ -25,7 +25,7 @@ import { applyCursorPointer } from "../utilities/cursor";
 import {
     applyHighContrastAdjustOutline,
     applyHighContrastBorder,
-    applyHighContrastColorFill
+    applyHighContrastColorFill,
 } from "../utilities/high-contrast";
 
 const styles: ComponentStyles<SelectClassNameContract, DesignSystem> = {
@@ -38,7 +38,7 @@ const styles: ComponentStyles<SelectClassNameContract, DesignSystem> = {
         height: height(),
         width: "100%",
         ...inputFieldStyles(),
-        ...applyHighContrastAdjustOutline()
+        ...applyHighContrastAdjustOutline(),
     },
     select_buttonContentRegion: {
         display: "grid",

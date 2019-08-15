@@ -28,7 +28,10 @@ import { applyDisabledState } from "../utilities/disabled";
 import { applyScaledTypeRamp } from "../utilities/typography";
 import { designUnit, outlineWidth } from "../utilities/design-system";
 import { applyCursorDisabled, applyCursorPointer } from "../utilities/cursor";
-import { applyHighContrastDisabledBorder, highContrastSelector } from "../utilities/high-contrast";
+import {
+    applyHighContrastDisabledBorder,
+    highContrastSelector,
+} from "../utilities/high-contrast";
 
 const inputSize: DesignSystemResolver<string> = toPx(
     add(divide(heightNumber(), 2), designUnit)

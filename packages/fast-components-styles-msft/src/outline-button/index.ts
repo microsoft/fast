@@ -20,7 +20,7 @@ import {
     applyHighContrastInsetFocus,
     applyHighContrastSelectedFillHover,
     applyHighContrastSelectedHover,
-    highContrastSelector
+    highContrastSelector,
 } from "../utilities/high-contrast";
 
 const styles: ComponentStyles<LightweightButtonClassNameContract, DesignSystem> = {
@@ -70,7 +70,7 @@ const styles: ComponentStyles<LightweightButtonClassNameContract, DesignSystem> 
         "&:disabled": {
             ...applyHighContrastDisabledBorder(),
             "& $button_beforeContent, & $button_afterContent": {
-                ...applyHighContrastDisabledFill()
+                ...applyHighContrastDisabledFill(),
             },
         },
         ...applyHighContrastAdjustOutline(),
@@ -82,7 +82,7 @@ const styles: ComponentStyles<LightweightButtonClassNameContract, DesignSystem> 
                     "&:hover": {
                         ...applyHighContrastDisabledBorder(),
                         "& $button_beforeContent, & $button_afterContent": {
-                            ...applyHighContrastDisabledFill()
+                            ...applyHighContrastDisabledFill(),
                         },
                     },
                 },

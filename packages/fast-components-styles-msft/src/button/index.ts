@@ -49,7 +49,7 @@ import {
     applyHighContrastInsetFocus,
     applyHighContrastSelectedColorFill,
     applyHighContrastSelectedHover,
-    highContrastSelector
+    highContrastSelector,
 } from "../utilities/high-contrast";
 
 const transparentBackground: CSSRules<DesignSystem> = {
@@ -140,7 +140,7 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = {
             ...applyHighContrastInsetFocus(),
         }),
         "&:disabled": {
-            ...applyHighContrastDisabledBorder()
+            ...applyHighContrastDisabledBorder(),
         },
         "&::-moz-focus-inner": {
             border: "0",
@@ -153,7 +153,7 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = {
                 "&:hover": {
                     ...applyHighContrastDisabledBorder(),
                     "& $button_beforeContent, & $button_afterContent": {
-                        ...applyHighContrastDisabledFill()
+                        ...applyHighContrastDisabledFill(),
                     },
                 },
             },
@@ -225,9 +225,9 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = {
             ...applyHighContrastInsetFocus(),
         }),
         "&:disabled": {
-            ...applyHighContrastDisabledBorder()
+            ...applyHighContrastDisabledBorder(),
         },
-        ...applyHighContrastAdjustOutline()
+        ...applyHighContrastAdjustOutline(),
     },
     button__lightweight: {
         ...applyTransparentBackplateStyles,
@@ -251,7 +251,7 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = {
         },
         ...applyFocusVisible<DesignSystem>({
             borderColor: neutralFocus,
-            ...applyHighContrastInsetFocus()
+            ...applyHighContrastInsetFocus(),
         }),
         ...applyHighContrastAdjustStealth(),
     },
@@ -276,7 +276,7 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = {
         ...applyDisabledState(),
         "& $button_beforeContent, & $button_afterContent": {
             fill: "ButtonHighlight",
-            ...applyHighContrastDisabledFill()
+            ...applyHighContrastDisabledFill(),
         },
     },
     button_beforeContent: {

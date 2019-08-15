@@ -21,7 +21,7 @@ import {
     applyHighContrastColorFill,
     applyHighContrastDisabledFill,
     applyHighContrastSelectedColorFill,
-    highContrastSelector
+    highContrastSelector,
 } from "../utilities/high-contrast";
 
 // Since MSFT button is already styled, we need to override in this way to alter button classes

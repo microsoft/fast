@@ -29,7 +29,7 @@ import {
     applyHighContrastColorFill,
     applyHighContrastDisabledFill,
     applyHighContrastSelectedColorFill,
-    highContrastSelector
+    highContrastSelector,
 } from "../utilities/high-contrast";
 
 function applyContentRegionTransform(): CSSRules<DesignSystem> {
@@ -169,11 +169,11 @@ const styles: ComponentStyles<CallToActionClassNameContract, DesignSystem> = {
         "&:hover": {
             "& $callToAction_glyph": {
                 transform: "none",
-                ...applyHighContrastDisabledFill()
+                ...applyHighContrastDisabledFill(),
             },
         },
         "& $callToAction_glyph": {
-            ...applyHighContrastDisabledFill()
+            ...applyHighContrastDisabledFill(),
         },
     },
 };

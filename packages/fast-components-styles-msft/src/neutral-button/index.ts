@@ -18,7 +18,7 @@ import {
     applyHighContrastHyperLink,
     applyHighContrastInsetFocus,
     applyHighContrastSelectedFillHover,
-    applyHighContrastSelectedHover
+    applyHighContrastSelectedHover,
 } from "../utilities/high-contrast";
 
 const styles: ComponentStyles<NeutralButtonClassNameContract, DesignSystem> = {
@@ -59,7 +59,7 @@ const styles: ComponentStyles<NeutralButtonClassNameContract, DesignSystem> = {
                 "&:hover": {
                     ...applyHighContrastDisabledBorder(),
                     "& $button_beforeContent, & $button_afterContent": {
-                        ...applyHighContrastDisabledFill()
+                        ...applyHighContrastDisabledFill(),
                     },
                 },
             },

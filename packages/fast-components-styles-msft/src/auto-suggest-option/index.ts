@@ -15,11 +15,7 @@ import {
 } from "../utilities/color";
 import { ComponentStyles, ComponentStyleSheet } from "@microsoft/fast-jss-manager";
 import { applyScaledTypeRamp } from "../utilities/typography";
-import {
-    Direction,
-    ellipsis,
-    toPx,
-} from "@microsoft/fast-jss-utilities";
+import { Direction, ellipsis, toPx } from "@microsoft/fast-jss-utilities";
 import { applyCornerRadius, applyFocusPlaceholderBorder } from "../utilities/border";
 import { applyCursorDefault } from "../utilities/cursor";
 import { applyDisabledState } from "../utilities/disabled";
@@ -29,7 +25,7 @@ import {
     applyHighContrastDisabled,
     applyHighContrastDisabledColor,
     applyHighContrastSelectedHover,
-    applyHighContrastSelectFocus
+    applyHighContrastSelectFocus,
 } from "../utilities/high-contrast";
 
 const styles: ComponentStyles<AutoSuggestOptionClassNameContract, DesignSystem> = {

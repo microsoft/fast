@@ -21,7 +21,7 @@ import {
     applyHighContrastDoubleFocus,
     applyHighContrastHyperLink,
     applyHighContrastSelectedHover,
-    applyHighContrastSelectedColorFill
+    applyHighContrastSelectedColorFill,
 } from "../utilities/high-contrast";
 
 const styles: ComponentStyles<AccentButtonClassNameContract, DesignSystem> = {
@@ -47,12 +47,12 @@ const styles: ComponentStyles<AccentButtonClassNameContract, DesignSystem> = {
                 "0 0 0 2px inset {0}",
                 neutralFocusInnerAccent(accentFillRest)
             ),
-            ...applyHighContrastDoubleFocus()
+            ...applyHighContrastDoubleFocus(),
         }),
         "&:disabled": {
             ...applyHighContrastDisabledBorder(),
             "& $button_beforeContent, & $button_afterContent": {
-                ...applyHighContrastDisabledFill()
+                ...applyHighContrastDisabledFill(),
             },
         },
         "& $button_beforeContent, & $button_afterContent": {
@@ -65,12 +65,12 @@ const styles: ComponentStyles<AccentButtonClassNameContract, DesignSystem> = {
             "&$button__disabled": {
                 ...applyHighContrastDisabledBorder(),
                 "& $button_beforeContent, & $button_afterContent": {
-                    ...applyHighContrastDisabledFill()
+                    ...applyHighContrastDisabledFill(),
                 },
                 "&:hover:enabled": {
                     ...applyHighContrastDisabledBorder(),
                     "& $button_beforeContent, & $button_afterContent": {
-                        ...applyHighContrastDisabledFill()
+                        ...applyHighContrastDisabledFill(),
                     },
                 },
             },

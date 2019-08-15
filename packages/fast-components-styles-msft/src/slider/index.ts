@@ -27,7 +27,10 @@ import {
 } from "../utilities/design-system";
 import { applyDisabledState } from "../utilities/disabled";
 import { applyElevation, ElevationMultiplier } from "../utilities/elevation";
-import { applyHighContrastDisabledBackground, highContrastSelector } from "../utilities/high-contrast";
+import {
+    applyHighContrastDisabledBackground,
+    highContrastSelector,
+} from "../utilities/high-contrast";
 
 const thumbSizeValue: DesignSystemResolver<number> = add(
     divide(heightNumber(), 2),

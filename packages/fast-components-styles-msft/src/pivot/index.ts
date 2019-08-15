@@ -23,7 +23,7 @@ import { applyCursorPointer } from "../utilities/cursor";
 import {
     applyHighContrastBorderOnlyFocus,
     applyHighContrastColorFill,
-    highContrastSelector
+    highContrastSelector,
 } from "../utilities/high-contrast";
 
 const activeIndicatorHeight: number = 3;

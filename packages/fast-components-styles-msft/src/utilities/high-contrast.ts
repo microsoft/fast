@@ -11,8 +11,8 @@ enum HighContrastColor {
     selectedBackground = "Highlight",
     buttonText = "ButtonText",
     buttonBackground = "ButtonFace",
-    background = "Background"
-};
+    background = "Background",
+}
 
 export const highContrastSelector: string = "@media (-ms-high-contrast:active)";
 
@@ -117,7 +117,7 @@ export function applyHighContrastHyperLink(): CSSRules<DesignSystem> {
                 color: HighContrastColor.selectedText,
             },
         },
-    }
+    };
 }
 
 export function applyHighContrastBorderOnlyFocus(): CSSRules<DesignSystem> {
@@ -125,7 +125,7 @@ export function applyHighContrastBorderOnlyFocus(): CSSRules<DesignSystem> {
         [highContrastSelector]: {
             borderColor: HighContrastColor.buttonText,
         },
-    }
+    };
 }
 
 export function applyHighContrastInsetFocus(): CSSRules<DesignSystem> {
@@ -134,7 +134,7 @@ export function applyHighContrastInsetFocus(): CSSRules<DesignSystem> {
             borderColor: HighContrastColor.buttonText,
             boxShadow: format("0 0 0 {0} inset ButtonText", toPx(outlineWidth)),
         },
-    }
+    };
 }
 
 export function applyHighContrastDoubleFocus(): CSSRules<DesignSystem> {
@@ -143,7 +143,7 @@ export function applyHighContrastDoubleFocus(): CSSRules<DesignSystem> {
             borderColor: HighContrastColor.buttonText,
             boxShadow: format("0 0 0 {0} inset ButtonFace", toPx(focusOutlineWidth)),
         },
-    }
+    };
 }
 
 export function applyHighContrastSelectFocus(): CSSRules<DesignSystem> {
@@ -152,7 +152,7 @@ export function applyHighContrastSelectFocus(): CSSRules<DesignSystem> {
             background: HighContrastColor.selectedBackground,
             color: HighContrastColor.selectedText,
         },
-    }
+    };
 }
 
 export function applyHighContrastAccentSelectedHover(): CSSRules<DesignSystem> {
@@ -162,7 +162,7 @@ export function applyHighContrastAccentSelectedHover(): CSSRules<DesignSystem> {
             borderColor: HighContrastColor.selectedBackground,
             color: HighContrastColor.selectedBackground,
         },
-    }
+    };
 }
 
 export function applyHighContrastAccentSelectedFillHover(): CSSRules<DesignSystem> {
@@ -170,7 +170,7 @@ export function applyHighContrastAccentSelectedFillHover(): CSSRules<DesignSyste
         [highContrastSelector]: {
             fill: HighContrastColor.selectedBackground,
         },
-    }
+    };
 }
 
 export function applyHighContrastSelectedHover(): CSSRules<DesignSystem> {
@@ -181,7 +181,7 @@ export function applyHighContrastSelectedHover(): CSSRules<DesignSystem> {
             color: HighContrastColor.selectedText,
             fill: HighContrastColor.selectedText,
         },
-    }
+    };
 }
 
 export function applyHighContrastSelectedFillHover(): CSSRules<DesignSystem> {
@@ -189,7 +189,7 @@ export function applyHighContrastSelectedFillHover(): CSSRules<DesignSystem> {
         [highContrastSelector]: {
             fill: HighContrastColor.selectedText,
         },
-    }
+    };
 }
 
 export function applyHighContrastColorFill(): CSSRules<DesignSystem> {
@@ -198,7 +198,7 @@ export function applyHighContrastColorFill(): CSSRules<DesignSystem> {
             color: HighContrastColor.buttonText,
             fill: HighContrastColor.buttonText,
         },
-    }
+    };
 }
 
 export function applyHighContrastSelectedColorFill(): CSSRules<DesignSystem> {
@@ -207,16 +207,13 @@ export function applyHighContrastSelectedColorFill(): CSSRules<DesignSystem> {
             color: HighContrastColor.selectedText,
             fill: HighContrastColor.selectedText,
         },
-    }
+    };
 }
 
 export function applyHighContrastTextBorder(): CSSRules<DesignSystem> {
     return {
         [highContrastSelector]: {
-            border: format(
-                "{0} solid WindowText",
-                toPx<DesignSystem>(outlineWidth),
-            ),
+            border: format("{0} solid WindowText", toPx<DesignSystem>(outlineWidth)),
         },
-    }
+    };
 }

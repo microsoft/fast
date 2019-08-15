@@ -30,7 +30,10 @@ import { applyScaledTypeRamp } from "../utilities/typography";
 import { densityCategorySwitch, heightNumber } from "../utilities/density";
 import { designUnit, focusOutlineWidth, outlineWidth } from "../utilities/design-system";
 import { applyCursorDisabled, applyCursorPointer } from "../utilities/cursor";
-import { applyHighContrastColorFill, highContrastSelector } from "../utilities/high-contrast";
+import {
+    applyHighContrastColorFill,
+    highContrastSelector,
+} from "../utilities/high-contrast";
 
 const height: DesignSystemResolver<number> = add(divide(heightNumber(), 2), designUnit);
 const width: DesignSystemResolver<number> = multiply(height, 2);

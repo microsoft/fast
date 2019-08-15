@@ -24,7 +24,7 @@ import { applyScaledTypeRamp } from "../utilities/typography";
 import {
     applyHighContrastAdjustStealth,
     applyHighContrastDisabledBorder,
-    applyHighContrastSelectedHover
+    applyHighContrastSelectedHover,
 } from "../utilities/high-contrast";
 
 const styles: ComponentStyles<SelectOptionClassNameContract, DesignSystem> = {

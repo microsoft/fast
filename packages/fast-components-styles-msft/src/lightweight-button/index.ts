@@ -14,7 +14,7 @@ import {
     applyHighContrastColorFill,
     applyHighContrastDisabledColor,
     applyHighContrastHyperLink,
-    highContrastSelector
+    highContrastSelector,
 } from "../utilities/high-contrast";
 
 const styles: ComponentStyles<LightweightButtonClassNameContract, DesignSystem> = {
@@ -76,7 +76,7 @@ const styles: ComponentStyles<LightweightButtonClassNameContract, DesignSystem> 
             "&$button__disabled": {
                 "&:hover": {
                     "& $button_contentRegion": {
-                        ...applyHighContrastDisabledColor()
+                        ...applyHighContrastDisabledColor(),
                     },
                 },
             },

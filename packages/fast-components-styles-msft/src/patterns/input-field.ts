@@ -23,7 +23,7 @@ import { outlineWidth } from "../utilities/design-system";
 import {
     applyHighContrastDisabledBorder,
     applyHighContrastInsetFocus,
-    highContrastSelector
+    highContrastSelector,
 } from "../utilities/high-contrast";
 
 /**
