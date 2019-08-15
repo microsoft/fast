@@ -1,6 +1,6 @@
 import { ButtonBaseClassNameContract as AccentButtonClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import { ComponentStyles } from "@microsoft/fast-jss-manager";
-import { applyFocusVisible, format, toPx } from "@microsoft/fast-jss-utilities";
+import { applyFocusVisible, format } from "@microsoft/fast-jss-utilities";
 import { DesignSystem } from "../design-system";
 import { baseButton, buttonStyles } from "../patterns/button";
 import {
@@ -11,7 +11,6 @@ import {
     neutralFocus,
     neutralFocusInnerAccent,
 } from "../utilities/color";
-import { focusOutlineWidth } from "../utilities/design-system";
 import {
     applyHighContrastAccentSelectedFillHover,
     applyHighContrastAccentSelectedHover,
@@ -20,7 +19,6 @@ import {
     applyHighContrastDisabledFill,
     applyHighContrastDoubleFocus,
     applyHighContrastHyperLink,
-    applyHighContrastSelectedHover,
     applyHighContrastSelectedColorFill,
 } from "../utilities/high-contrast";
 
