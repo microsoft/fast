@@ -19,7 +19,6 @@ import {
     isRootLocation,
 } from "../utilities";
 import styles from "./form.style";
-import { mapSchemaLocationFromDataLocation } from "../../data-utilities/location";
 import { mapPluginsToSchema } from "../utilities";
 import Navigation, { NavigationItem } from "../utilities/navigation";
 import { BreadcrumbItem, getBreadcrumbs } from "../utilities/breadcrumb";
@@ -76,7 +75,7 @@ class Form extends React.Component<
             this.props.plugins
         );
         this.navigation = new Navigation({
-            dataLocation: typeof dataLocation !== "undefined" ? dataLocation : "",
+            dataLocation: typeof dataLocation === "string" ? dataLocation : "",
             data: this.props.data,
             schema: this.props.schema,
             childOptions: this.props.childOptions ? this.props.childOptions : [],

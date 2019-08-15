@@ -1,5 +1,4 @@
 import { cloneDeep, get, memoize } from "lodash-es";
-import { MemoizedFunction } from "lodash";
 import {
     getDataLocationsOfChildren,
     getPartialData,
@@ -75,10 +74,9 @@ class Navigation {
 
     private reactChildrenDataLocations: string[];
 
-    private resolveNormalizeDataLocation: ((dataLocation: string) => string) &
-        MemoizedFunction;
+    private resolveNormalizeDataLocation: ((dataLocation: string) => string);
 
-    private resolveDataLocations: ((dataLocation: string) => string[]) & MemoizedFunction;
+    private resolveDataLocations: ((dataLocation: string) => string[]);
 
     constructor(config: NavigationConfig) {
         this.navigationMap = {};
@@ -142,20 +140,18 @@ class Navigation {
      * Gets an array of navigation items
      */
     public get(): NavigationItem[] {
-        const navigationItems: NavigationItem[] = this.resolveDataLocations(
-            this.dataLocation
-        ).map(
-            (dataLocation: string): NavigationItem => {
-                // return a previously resolved navigation item
-                if (typeof this.navigationMap[dataLocation] === "undefined") {
-                    this.setItemToNavigationMap(dataLocation);
+        return this.resolveDataLocations(this.dataLocation)
+            .map(
+                (dataLocation: string): NavigationItem => {
+                    // return a previously resolved navigation item
+                    if (typeof this.navigationMap[dataLocation] === "undefined") {
+                        this.setItemToNavigationMap(dataLocation);
+                    }
+
+                    return this.navigationMap[dataLocation];
                 }
-
-                return this.navigationMap[dataLocation];
-            }
-        );
-
-        return navigationItems.map(this.updateDefaultValues);
+            )
+            .map(this.updateDefaultValues);
     }
 
     private updateChildrenLocations(): void {
@@ -326,9 +322,13 @@ class Navigation {
               };
     }
 
+    /**
+     * A function to be run on navigation items to determine inherited
+     * default values
+     */
     private updateDefaultValues = (
         navigationItem: NavigationItem,
-        index: number,
+        index: number, // needed as part of map
         navigationItems: NavigationItem[]
     ): NavigationItem => {
         const navigationItemWithDefaultValue: NavigationItem = navigationItem;
