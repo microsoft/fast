@@ -13,10 +13,6 @@ const styles: ComponentStyles<TextAreaClassNameContract, DesignSystem> = {
         paddingTop: toPx(multiply(designUnit, 1.5)),
         paddingBottom: toPx(multiply(designUnit, 1.5)),
         maxWidth: "100%",
-        "@media (-ms-high-contrast:active)": {
-            background: "ButtonFace",
-            border: format("{0} solid ButtonText", toPx<DesignSystem>(outlineWidth)),
-        },
     },
 };
 

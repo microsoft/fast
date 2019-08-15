@@ -1,5 +1,5 @@
+import { applyCornerRadius } from "../utilities/border";
 import { TextFieldClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
-import { TextActionClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager";
 import {
     applyFocusVisible,
@@ -9,7 +9,7 @@ import {
     toPx,
 } from "@microsoft/fast-jss-utilities";
 import { DesignSystem } from "../design-system";
-import { applyCornerRadius } from "../utilities/border";
+import { TextActionClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import {
     neutralFillActive,
     neutralFillHover,
@@ -26,6 +26,13 @@ import {
 import { glyphSize, height, horizontalSpacing } from "../utilities/density";
 import { focusOutlineWidth, outlineWidth } from "../utilities/design-system";
 import { applyDisabledState } from "../utilities/disabled";
+import {
+    applyHighContrastColorFill,
+    applyHighContrastDisabled,
+    applyHighContrastDisabledBorder,
+    applyHighContrastDisabledFill,
+    highContrastSelector
+} from "../utilities/high-contrast";
 
 // Since MSFT text field is already styled, we need to override in this way to alter text field classes
 export const textFieldOverrides: ComponentStyles<
@@ -43,7 +50,7 @@ export const textFieldOverrides: ComponentStyles<
             background: "none",
             border: "none",
             boxShadow: "none",
-            "@media (-ms-high-contrast:active)": {
+            [highContrastSelector]: {
                 background: "none",
                 border: "none",
                 boxShadow: "none",
@@ -57,9 +64,7 @@ const glyphStyles: CSSRules<{}> = {
     height: glyphSize,
     margin: "auto",
     fill: neutralForegroundRest,
-    "@media (-ms-high-contrast:active)": {
-        fill: "ButtonText",
-    },
+    ...applyHighContrastColorFill(),
 };
 
 const styles: ComponentStyles<TextActionClassNameContract, DesignSystem> = {
@@ -86,9 +91,6 @@ const styles: ComponentStyles<TextActionClassNameContract, DesignSystem> = {
         "&:active": {
             background: neutralFillInputActive,
             borderColor: neutralOutlineActive,
-        },
-        "@media (-ms-high-contrast:active)": {
-            border: format("{0} solid ButtonText", toPx<DesignSystem>(outlineWidth)),
         },
     },
     textAction__filled: {
@@ -117,7 +119,7 @@ const styles: ComponentStyles<TextActionClassNameContract, DesignSystem> = {
                 neutralFocus
             ),
         },
-        "@media (-ms-high-contrast:active)": {
+        [highContrastSelector]: {
             "&, &:hover": {
                 boxShadow: format(
                     "0 0 0 {0} ButtonText inset",
@@ -138,13 +140,9 @@ const styles: ComponentStyles<TextActionClassNameContract, DesignSystem> = {
             borderColor: neutralOutlineRest,
         },
         "& $textAction_beforeGlyph, & $textAction_afterGlyph": {
-            fill: "GrayText",
+            ...applyHighContrastDisabledFill(),
         },
-        "@media (-ms-high-contrast:active)": {
-            opacity: "1",
-            background: "Background",
-            borderColor: "GrayText",
-        },
+        ...applyHighContrastDisabledBorder()
     },
     textAction_button: {
         borderColor: "transparent",
@@ -160,32 +158,18 @@ const styles: ComponentStyles<TextActionClassNameContract, DesignSystem> = {
         transition: "color .1s, background-color .1s, border-color 0.2s ease-in-out",
         flex: "0 0 auto",
         cursor: "pointer",
-        "@media (-ms-high-contrast:active)": {
+        [highContrastSelector]: {
             background: "ButtonFace",
             fill: "ButtonText",
         },
         "&:hover": {
-            "@media (-ms-high-contrast:active)": {
+            [highContrastSelector]: {
                 background: "Highlight",
                 fill: "HighlightText",
             },
         },
-        ...applyFocusVisible<DesignSystem>({
-            "@media (-ms-high-contrast:active)": {
-                borderColor: "ButtonText",
-            },
-        }),
         "&:disabled": {
-            "@media (-ms-high-contrast:active)": {
-                opacity: "1",
-                background: "Background",
-                fill: "GrayText",
-                "&:hover": {
-                    "@media (-ms-high-contrast:active)": {
-                        background: "Background",
-                    },
-                },
-            },
+            ...applyHighContrastDisabled()
         },
     },
     textAction_beforeGlyph: {

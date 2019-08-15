@@ -23,6 +23,7 @@ import {
 } from "../utilities/color";
 import { CarouselClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import { designUnit, outlineWidth } from "../utilities/design-system";
+import { highContrastSelector } from "../utilities/high-contrast";
 
 const white: string = "#FFF";
 const black: string = "#101010";
@@ -94,7 +95,7 @@ const styles: ComponentStyles<CarouselClassNameContract, DesignSystem> = {
             height: toPx<DesignSystem>(designUnit),
             width: "32px",
             transition: "all 0.05s ease-in-out",
-            "@media (-ms-high-contrast:active)": {
+            [highContrastSelector]: {
                 opacity: "1",
                 background: "ButtonFace",
                 borderColor: "ButtonText",
@@ -104,7 +105,7 @@ const styles: ComponentStyles<CarouselClassNameContract, DesignSystem> = {
             "&:hover": {
                 "&::before": {
                     opacity: "0.9",
-                    "@media (-ms-high-contrast:active)": {
+                    [highContrastSelector]: {
                         opacity: "1",
                         background: "Highlight",
                         borderColor: "HighlightText",
@@ -116,7 +117,7 @@ const styles: ComponentStyles<CarouselClassNameContract, DesignSystem> = {
     carousel_sequenceIndicator__active: {
         "&::before": {
             opacity: "1",
-            "@media (-ms-high-contrast:active)": {
+            [highContrastSelector]: {
                 borderColor: "HighlightText",
             },
         },
@@ -157,7 +158,7 @@ const styles: ComponentStyles<CarouselClassNameContract, DesignSystem> = {
             "&:hover": {
                 "&::before": {
                     background: neutralFillStealthHover((): string => black),
-                    "@media (-ms-high-contrast:active)": {
+                    [highContrastSelector]: {
                         background: "Highlight",
                         border: format(
                             "{0} solid HighlightText",
@@ -171,7 +172,7 @@ const styles: ComponentStyles<CarouselClassNameContract, DesignSystem> = {
             },
             "& > svg": {
                 fill: darkModeNeutralForegroundRest,
-                "@media (-ms-high-contrast:active)": {
+                [highContrastSelector]: {
                     fill: "ButtonText",
                 },
             },
@@ -184,7 +185,7 @@ const styles: ComponentStyles<CarouselClassNameContract, DesignSystem> = {
             "&$carousel_sequenceIndicator__active": {
                 "&::before": {
                     background: darkModeNeutralFillStealthRest,
-                    "@media (-ms-high-contrast:active)": {
+                    [highContrastSelector]: {
                         background: "Highlight",
                     },
                 },
@@ -209,7 +210,7 @@ const styles: ComponentStyles<CarouselClassNameContract, DesignSystem> = {
             "&:hover": {
                 "&::before": {
                     background: neutralFillStealthHover((): string => white),
-                    "@media (-ms-high-contrast:active)": {
+                    [highContrastSelector]: {
                         background: "Highlight",
                         border: format(
                             "{0} solid HighlightText",
@@ -223,7 +224,7 @@ const styles: ComponentStyles<CarouselClassNameContract, DesignSystem> = {
             },
             "& > svg": {
                 fill: lightModeNeutralForegroundRest,
-                "@media (-ms-high-contrast:active)": {
+                [highContrastSelector]: {
                     fill: "ButtonText",
                 },
             },
@@ -236,7 +237,7 @@ const styles: ComponentStyles<CarouselClassNameContract, DesignSystem> = {
             "&$carousel_sequenceIndicator__active": {
                 "&::before": {
                     background: lightModeNeutralFillStealthRest,
-                    "@media (-ms-high-contrast:active)": {
+                    [highContrastSelector]: {
                         background: "Highlight",
                     },
                 },

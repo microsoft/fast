@@ -16,7 +16,6 @@ import {
 import { ComponentStyles, ComponentStyleSheet } from "@microsoft/fast-jss-manager";
 import { applyScaledTypeRamp } from "../utilities/typography";
 import {
-    applyLocalizedProperty,
     Direction,
     ellipsis,
     toPx,
@@ -25,6 +24,13 @@ import { applyCornerRadius, applyFocusPlaceholderBorder } from "../utilities/bor
 import { applyCursorDefault } from "../utilities/cursor";
 import { applyDisabledState } from "../utilities/disabled";
 import { designUnit } from "../utilities/design-system";
+import {
+    applyHighContrastAdjustStealth,
+    applyHighContrastDisabled,
+    applyHighContrastDisabledColor,
+    applyHighContrastSelectedHover,
+    applyHighContrastSelectFocus
+} from "../utilities/high-contrast";
 
 const styles: ComponentStyles<AutoSuggestOptionClassNameContract, DesignSystem> = {
     autoSuggestOption: {
@@ -49,20 +55,13 @@ const styles: ComponentStyles<AutoSuggestOptionClassNameContract, DesignSystem> 
         ...applyFocusPlaceholderBorder(),
         ...applyFocusVisible<DesignSystem>({
             borderColor: neutralFocus,
+            ...applyHighContrastSelectFocus(),
         }),
         "&:hover": {
             background: neutralFillStealthHover,
-            "@media (-ms-high-contrast:active)": {
-                background: "Highlight",
-                color: "HighlightText",
-            },
+            ...applyHighContrastSelectedHover(),
         },
-        "@media (-ms-high-contrast:active)": {
-            border: "none",
-            background: "ButtonFace",
-            color: "ButtonText",
-            "-ms-high-contrast-adjust": "none",
-        },
+        ...applyHighContrastAdjustStealth(),
     },
     autoSuggestOption_contentRegion: {
         gridColumnStart: "3",
@@ -71,27 +70,17 @@ const styles: ComponentStyles<AutoSuggestOptionClassNameContract, DesignSystem> 
     },
     autoSuggestOption__disabled: {
         ...applyDisabledState(),
+        ...applyHighContrastDisabledColor(),
         "&:hover": {
             background: neutralFillStealthRest,
-            "@media (-ms-high-contrast:active)": {
-                background: "transparent",
-                color: "GrayText",
-            },
-        },
-        "@media (-ms-high-contrast:active)": {
-            opacity: "1",
-            background: "transparent",
-            color: "GrayText",
+            ...applyHighContrastDisabled(),
         },
     },
     autoSuggestOption__selected: {
         background: neutralFillStealthSelected,
         "&:hover": {
             background: neutralFillStealthSelected,
-            "@media (-ms-high-contrast:active)": {
-                background: "Highlight",
-                color: "HighlightText",
-            },
+            ...applyHighContrastSelectedHover(),
         },
     },
 };

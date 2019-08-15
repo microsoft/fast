@@ -8,6 +8,7 @@ import { accentFillRest, neutralFillRest } from "../utilities/color";
 import { multiply, toPx } from "@microsoft/fast-jss-utilities";
 import { designUnit } from "../utilities/design-system";
 import { glyphSize, height, heightNumber } from "../utilities/density";
+import { highContrastSelector } from "../utilities/high-contrast";
 
 const styles: ComponentStyles<ProgressClassNameContract, DesignSystem> = {
     progress: {
@@ -27,7 +28,7 @@ const styles: ComponentStyles<ProgressClassNameContract, DesignSystem> = {
             transformOrigin: "50% 50%",
             transform: "rotate(-90deg)",
             transition: "all 0.2s ease-in-out",
-            "@media (-ms-high-contrast:active)": {
+            [highContrastSelector]: {
                 stroke: "ButtonText",
             },
         },
@@ -42,7 +43,7 @@ const styles: ComponentStyles<ProgressClassNameContract, DesignSystem> = {
             transformOrigin: "50% 50%",
             transform: "rotate(-90deg)",
             transition: "all 0.2s ease-in-out",
-            "@media (-ms-high-contrast:active)": {
+            [highContrastSelector]: {
                 stroke: "ButtonFace",
             },
         },
@@ -64,7 +65,7 @@ const styles: ComponentStyles<ProgressClassNameContract, DesignSystem> = {
         borderRadius: "100px",
         height: "100%",
         transition: "all 0.2s ease-in-out",
-        "@media (-ms-high-contrast:active)": {
+        [highContrastSelector]: {
             background: "ButtonText",
         },
     },
@@ -80,7 +81,7 @@ const styles: ComponentStyles<ProgressClassNameContract, DesignSystem> = {
         background: neutralFillRest,
         transition: "all 0.2s ease-in-out",
         maskImage: "-webkit-radial-gradient(white, black)",
-        "@media (-ms-high-contrast:active)": {
+        [highContrastSelector]: {
             background: "ButtonFace",
             border: "1px solid ButtonText",
         },
@@ -88,7 +89,7 @@ const styles: ComponentStyles<ProgressClassNameContract, DesignSystem> = {
     progress_indicator__determinate: {
         height: toPx<DesignSystem>(designUnit),
         borderRadius: "2px",
-        "@media (-ms-high-contrast:active)": {
+        [highContrastSelector]: {
             background: "ButtonFace",
             border: "1px solid ButtonText",
         },
@@ -100,7 +101,7 @@ const styles: ComponentStyles<ProgressClassNameContract, DesignSystem> = {
         backgroundColor: accentFillRest,
         borderRadius: "100px",
         animationTimingFunction: "cubic-bezier(0.4, 0.0, 0.6, 1.0)",
-        "@media (-ms-high-contrast:active)": {
+        [highContrastSelector]: {
             background: "ButtonText",
             opacity: "1 !important",
         },

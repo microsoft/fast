@@ -27,6 +27,7 @@ import {
 } from "../utilities/design-system";
 import { applyDisabledState } from "../utilities/disabled";
 import { applyElevation, ElevationMultiplier } from "../utilities/elevation";
+import { applyHighContrastDisabledBackground, highContrastSelector } from "../utilities/high-contrast";
 
 const thumbSizeValue: DesignSystemResolver<number> = add(
     divide(heightNumber(), 2),
@@ -63,7 +64,7 @@ const styles: ComponentStyles<SliderClassNameContract, DesignSystem> = {
                 neutralFocus,
                 toPx(add(focusOutlineWidth, 2))
             ),
-            "@media (-ms-high-contrast:active)": {
+            [highContrastSelector]: {
                 boxShadow: format(
                     `0 0 0 2px Background, 0 0 0 {0} ButtonText`,
                     toPx(add(focusOutlineWidth, 2))
@@ -76,7 +77,7 @@ const styles: ComponentStyles<SliderClassNameContract, DesignSystem> = {
         "&:active": {
             background: neutralForegroundActive,
         },
-        "@media (-ms-high-contrast:active)": {
+        [highContrastSelector]: {
             background: "ButtonText",
             "&:hover": {
                 background: "Highlight",
@@ -92,7 +93,7 @@ const styles: ComponentStyles<SliderClassNameContract, DesignSystem> = {
     slider_backgroundTrack: {
         ...applyCornerRadius(),
         background: neutralOutlineRest,
-        "@media (-ms-high-contrast:active)": {
+        [highContrastSelector]: {
             background: "ButtonText",
         },
     },
@@ -100,7 +101,7 @@ const styles: ComponentStyles<SliderClassNameContract, DesignSystem> = {
         ...applyCornerRadius(),
         background: neutralForegroundHint,
         transition: "all 0.1s ease",
-        "@media (-ms-high-contrast:active)": {
+        [highContrastSelector]: {
             background: "Highlight",
         },
     },
@@ -109,24 +110,16 @@ const styles: ComponentStyles<SliderClassNameContract, DesignSystem> = {
         "& $slider_thumb": {
             "&:hover": {
                 background: neutralForegroundRest,
-                "@media (-ms-high-contrast:active)": {
-                    background: "GrayText",
-                },
+                ...applyHighContrastDisabledBackground(),
             },
             "&:active": {
                 background: neutralForegroundRest,
-                "@media (-ms-high-contrast:active)": {
-                    background: "GrayText",
-                },
+                ...applyHighContrastDisabledBackground(),
             },
-            "@media (-ms-high-contrast:active)": {
-                background: "GrayText",
-            },
+            ...applyHighContrastDisabledBackground(),
         },
         "& $slider_backgroundTrack": {
-            "@media (-ms-high-contrast:active)": {
-                background: "GrayText",
-            },
+            ...applyHighContrastDisabledBackground(),
         },
     },
     slider__horizontal: {

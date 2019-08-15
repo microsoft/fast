@@ -30,6 +30,7 @@ import { applyScaledTypeRamp } from "../utilities/typography";
 import { designUnit, outlineWidth } from "../utilities/design-system";
 import { applyCursorDisabled, applyCursorPointer } from "../utilities/cursor";
 import { ColorRecipe } from "src/utilities/color/common";
+import { applyHighContrastDisabledBorder, highContrastSelector } from "../utilities/high-contrast";
 
 const inputSize: DesignSystemResolver<string> = toPx(
     add(divide(heightNumber(), 2), designUnit)
@@ -91,11 +92,11 @@ const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = {
         ...applyFocusVisible({
             boxShadow: format<DesignSystem>("0 0 0 1px {0} inset", neutralFocus),
             borderColor: neutralFocus,
-            "@media (-ms-high-contrast:active)": {
+            [highContrastSelector]: {
                 boxShadow: format<DesignSystem>("0 0 0 1px ButtonText"),
             },
         }),
-        "@media (-ms-high-contrast:active)": {
+        [highContrastSelector]: {
             border: format("{0} solid ButtonText", toPx<DesignSystem>(outlineWidth)),
         },
     },
@@ -121,7 +122,7 @@ const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = {
         ...applyCursorPointer(),
         color: neutralForegroundRest,
         ...applyScaledTypeRamp("t7"),
-        "@media (-ms-high-contrast:active)": {
+        [highContrastSelector]: {
             color: "ButtonText",
         },
     },
@@ -133,7 +134,7 @@ const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = {
                     "url('data:image/svg+xml;utf8,{0}')",
                     indicatorSvg(neutralForegroundRest)
                 ),
-                "@media (-ms-high-contrast:active)": {
+                [highContrastSelector]: {
                     background: format(
                         "url('data:image/svg+xml;utf8,{0}')",
                         indicatorSvg("HighlightText")
@@ -144,7 +145,7 @@ const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = {
         "&:hover": {
             "& $checkbox_stateIndicator": {
                 "&::before": {
-                    "@media (-ms-high-contrast:active)": {
+                    [highContrastSelector]: {
                         background: format(
                             "url('data:image/svg+xml;utf8,{0}')",
                             indicatorSvg("Highlight")
@@ -154,11 +155,11 @@ const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = {
             },
         },
         "& $checkbox_input": {
-            "@media (-ms-high-contrast:active)": {
+            [highContrastSelector]: {
                 background: "Highlight",
             },
             "&:hover": {
-                "@media (-ms-high-contrast:active)": {
+                [highContrastSelector]: {
                     background: "HighlightText",
                 },
             },
@@ -176,7 +177,7 @@ const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = {
                 width: "auto",
                 height: "auto",
                 background: neutralForegroundRest,
-                "@media (-ms-high-contrast:active)": {
+                [highContrastSelector]: {
                     backgroundColor: "ButtonHighlight",
                 },
             },
@@ -186,9 +187,18 @@ const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = {
         ...applyDisabledState(),
         "& $checkbox_input, & $checkbox_label": {
             ...applyCursorDisabled(),
-            "@media (-ms-high-contrast:active)": {
-                borderColor: "GrayText",
-                color: "GrayText",
+            ...applyHighContrastDisabledBorder(),
+        },
+        "&:hover": {
+            "& $checkbox_stateIndicator": {
+                "&::before": {
+                    [highContrastSelector]: {
+                        background: format(
+                            "url('data:image/svg+xml;utf8,{0}')",
+                            indicatorSvg("transparent")
+                        ),
+                    },
+                },
             },
         },
     },

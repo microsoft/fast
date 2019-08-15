@@ -8,6 +8,7 @@ import { applyScaledTypeRamp } from "../utilities/typography";
 import { glyphSize, height, horizontalSpacing } from "../utilities/density";
 import { applyDisabledState } from "../utilities/disabled";
 import { ButtonBaseClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
+import { applyHighContrastDisabledFill } from "../utilities/high-contrast";
 
 export function buttonStyles(): CSSRules<{}> {
     return {
@@ -61,9 +62,7 @@ export const baseButton: ComponentStyles<ButtonBaseClassNameContract, DesignSyst
     button__disabled: {
         ...applyDisabledState(),
         "& $button_beforeContent, & $button_afterContent": {
-            "@media (-ms-high-contrast:active)": {
-                fill: "GrayText",
-            },
+            ...applyHighContrastDisabledFill(),
         },
     },
     button_beforeContent: {

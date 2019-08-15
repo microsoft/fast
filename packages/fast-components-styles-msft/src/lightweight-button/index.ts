@@ -10,6 +10,12 @@ import {
 } from "../utilities/color";
 import { applyFocusVisible, toPx } from "@microsoft/fast-jss-utilities";
 import { focusOutlineWidth } from "../utilities/design-system";
+import {
+    applyHighContrastColorFill,
+    applyHighContrastDisabledColor,
+    applyHighContrastHyperLink,
+    highContrastSelector
+} from "../utilities/high-contrast";
 
 const styles: ComponentStyles<LightweightButtonClassNameContract, DesignSystem> = {
     ...baseButton,
@@ -27,7 +33,7 @@ const styles: ComponentStyles<LightweightButtonClassNameContract, DesignSystem> 
             "& $button_contentRegion::before": {
                 background: neutralForegroundRest,
                 height: toPx<DesignSystem>(focusOutlineWidth),
-                "@media (-ms-high-contrast:active)": {
+                [highContrastSelector]: {
                     background: "ButtonText",
                     height: toPx<DesignSystem>(focusOutlineWidth),
                 },
@@ -37,7 +43,7 @@ const styles: ComponentStyles<LightweightButtonClassNameContract, DesignSystem> 
         // Underline
         "&:hover $button_contentRegion::before": {
             background: accentForegroundHover,
-            "@media (-ms-high-contrast:active)": {
+            [highContrastSelector]: {
                 background: "ButtonText",
             },
         },
@@ -50,7 +56,7 @@ const styles: ComponentStyles<LightweightButtonClassNameContract, DesignSystem> 
         "&$button__disabled, &$button__disabled $button_contentRegion::before": {
             backgroundColor: "transparent",
         },
-        "@media (-ms-high-contrast:active)": {
+        [highContrastSelector]: {
             border: "none",
             fill: "ButtonText",
         },
@@ -58,14 +64,22 @@ const styles: ComponentStyles<LightweightButtonClassNameContract, DesignSystem> 
             color: accentForegroundHover,
             fill: accentForegroundHover,
             backgroundColor: "transparent",
-            "@media (-ms-high-contrast:active)": {
-                fill: "ButtonText",
-            },
+            ...applyHighContrastColorFill(),
         },
         "&:active:enabled": {
             color: accentForegroundActive,
             fill: accentForegroundActive,
             backgroundColor: "transparent",
+        },
+        "a&": {
+            ...applyHighContrastHyperLink(),
+            "&$button__disabled": {
+                "&:hover": {
+                    "& $button_contentRegion": {
+                        ...applyHighContrastDisabledColor()
+                    },
+                },
+            },
         },
     },
 };

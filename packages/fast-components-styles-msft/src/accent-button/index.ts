@@ -12,6 +12,17 @@ import {
     neutralFocusInnerAccent,
 } from "../utilities/color";
 import { focusOutlineWidth } from "../utilities/design-system";
+import {
+    applyHighContrastAccentSelectedFillHover,
+    applyHighContrastAccentSelectedHover,
+    applyHighContrastAdjustSelectOutline,
+    applyHighContrastDisabledBorder,
+    applyHighContrastDisabledFill,
+    applyHighContrastDoubleFocus,
+    applyHighContrastHyperLink,
+    applyHighContrastSelectedHover,
+    applyHighContrastSelectedColorFill
+} from "../utilities/high-contrast";
 
 const styles: ComponentStyles<AccentButtonClassNameContract, DesignSystem> = {
     ...baseButton,
@@ -22,15 +33,9 @@ const styles: ComponentStyles<AccentButtonClassNameContract, DesignSystem> = {
         background: accentFillRest,
         "&:hover:enabled": {
             background: accentFillHover,
-            "@media (-ms-high-contrast:active)": {
-                background: "HighlightText",
-                borderColor: "Highlight",
-                color: "Highlight",
-            },
+            ...applyHighContrastAccentSelectedHover(),
             "& $button_beforeContent, & $button_afterContent": {
-                "@media (-ms-high-contrast:active)": {
-                    fill: "Highlight",
-                },
+                ...applyHighContrastAccentSelectedFillHover(),
             },
         },
         "&:active:enabled": {
@@ -42,64 +47,30 @@ const styles: ComponentStyles<AccentButtonClassNameContract, DesignSystem> = {
                 "0 0 0 2px inset {0}",
                 neutralFocusInnerAccent(accentFillRest)
             ),
-            "@media (-ms-high-contrast:active)": {
-                borderColor: "ButtonText",
-                boxShadow: format("0 0 0 {0} inset ButtonFace", toPx(focusOutlineWidth)),
-            },
+            ...applyHighContrastDoubleFocus()
         }),
         "&:disabled": {
-            "@media (-ms-high-contrast:active)": {
-                background: "Background",
-                borderColor: "GrayText",
-                color: "GrayText",
-            },
+            ...applyHighContrastDisabledBorder(),
             "& $button_beforeContent, & $button_afterContent": {
-                "@media (-ms-high-contrast:active)": {
-                    fill: "GrayText",
-                },
+                ...applyHighContrastDisabledFill()
             },
         },
         "& $button_beforeContent, & $button_afterContent": {
             fill: accentForegroundCut,
-            "@media (-ms-high-contrast:active)": {
-                fill: "HighlightText",
-            },
+            ...applyHighContrastSelectedColorFill(),
         },
-        "@media (-ms-high-contrast:active)": {
-            background: "Highlight",
-            borderColor: "Highlight",
-            color: "HighlightText",
-            "-ms-high-contrast-adjust": "none",
-        },
+        ...applyHighContrastAdjustSelectOutline(),
         "a&": {
-            "@media (-ms-high-contrast:active)": {
-                color: "LinkText",
-                "&:hover": {
-                    background: "Highlight",
-                    color: "HighlightText",
-                },
-            },
+            ...applyHighContrastHyperLink(),
             "&$button__disabled": {
-                "@media (-ms-high-contrast:active)": {
-                    background: "transparent",
-                    borderColor: "GrayText",
-                    color: "GrayText",
-                },
+                ...applyHighContrastDisabledBorder(),
                 "& $button_beforeContent, & $button_afterContent": {
-                    "@media (-ms-high-contrast:active)": {
-                        fill: "GrayText",
-                    },
+                    ...applyHighContrastDisabledFill()
                 },
                 "&:hover:enabled": {
-                    "@media (-ms-high-contrast:active)": {
-                        background: "transparent",
-                        borderColor: "GrayText",
-                        color: "GrayText",
-                    },
+                    ...applyHighContrastDisabledBorder(),
                     "& $button_beforeContent, & $button_afterContent": {
-                        "@media (-ms-high-contrast:active)": {
-                            fill: "GrayText",
-                        },
+                        ...applyHighContrastDisabledFill()
                     },
                 },
             },

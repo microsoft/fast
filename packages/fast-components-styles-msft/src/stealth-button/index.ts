@@ -10,7 +10,15 @@ import {
     neutralForegroundRest,
 } from "../utilities/color";
 import { baseButton, buttonStyles } from "../patterns/button";
-import { focusOutlineWidth } from "../utilities/design-system";
+import {
+    applyHighContrastAdjustStealth,
+    applyHighContrastDisabledBorder,
+    applyHighContrastDisabledFill,
+    applyHighContrastHyperLink,
+    applyHighContrastInsetFocus,
+    applyHighContrastSelectedFillHover,
+    applyHighContrastSelectedHover
+} from "../utilities/high-contrast";
 
 const styles: ComponentStyles<AccentButtonClassNameContract, DesignSystem> = {
     ...baseButton,
@@ -21,14 +29,9 @@ const styles: ComponentStyles<AccentButtonClassNameContract, DesignSystem> = {
         background: neutralFillStealthRest,
         "&:hover:enabled": {
             backgroundColor: neutralFillStealthHover,
-            "@media (-ms-high-contrast:active)": {
-                background: "Highlight",
-                color: "HighlightText",
-            },
+            ...applyHighContrastSelectedHover(),
             "& $button_beforeContent, & $button_afterContent": {
-                "@media (-ms-high-contrast:active)": {
-                    fill: "HighlightText",
-                },
+                ...applyHighContrastSelectedFillHover(),
             },
         },
         "&:active:enabled": {
@@ -36,49 +39,23 @@ const styles: ComponentStyles<AccentButtonClassNameContract, DesignSystem> = {
         },
         ...applyFocusVisible<DesignSystem>({
             borderColor: neutralFocus,
-            "@media (-ms-high-contrast:active)": {
-                boxShadow: format(`0 0 0 {0} inset ButtonText`, toPx(focusOutlineWidth)),
-            },
+            ...applyHighContrastInsetFocus(),
         }),
         "&:disabled": {
-            "@media (-ms-high-contrast:active)": {
-                background: "Background",
-                borderColor: "GrayText",
-                color: "GrayText",
-            },
+            ...applyHighContrastDisabledBorder(),
             "& $button_beforeContent, & $button_afterContent": {
-                "@media (-ms-high-contrast:active)": {
-                    fill: "GrayText",
-                },
+                ...applyHighContrastDisabledFill()
             },
         },
-        "@media (-ms-high-contrast:active)": {
-            background: "ButtonFace",
-            border: "none",
-            color: "ButtonText",
-            fill: "ButtonText",
-            "-ms-high-contrast-adjust": "none",
-        },
+        ...applyHighContrastAdjustStealth(),
         "a&": {
-            "@media (-ms-high-contrast:active)": {
-                color: "LinkText",
-                "&:hover": {
-                    background: "Highlight",
-                    color: "HighlightText",
-                },
-            },
+            ...applyHighContrastHyperLink(),
             "&$button__disabled": {
-                "@media (-ms-high-contrast:active)": {
-                    color: "GrayText",
-                    boxShadow: "none",
-                },
+                ...applyHighContrastDisabledBorder(),
                 "&:hover": {
-                    background: "transparent",
-                    color: "GrayText",
+                    ...applyHighContrastDisabledBorder(),
                     "& $button_beforeContent, & $button_afterContent": {
-                        "@media (-ms-high-contrast:active)": {
-                            fill: "GrayText",
-                        },
+                        ...applyHighContrastDisabledFill()
                     },
                 },
             },

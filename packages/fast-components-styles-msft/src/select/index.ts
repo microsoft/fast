@@ -1,8 +1,12 @@
+import {
+    neutralFillStealthRest,
+    neutralForegroundRest,
+    neutralOutlineRest,
+} from "../utilities/color";
 import DesignSystemDefaults, {
     DesignSystem,
     ensureDesignSystemDefaults,
 } from "../design-system";
-import { ComponentStyles } from "@microsoft/fast-jss-manager";
 import {
     applyLocalizedProperty,
     ellipsis,
@@ -13,15 +17,16 @@ import {
 import { SelectClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import { glyphSize, height, horizontalSpacing } from "../utilities/density";
 import { applyElevation, ElevationMultiplier } from "../utilities/elevation";
-import {
-    neutralFillStealthRest,
-    neutralForegroundRest,
-    neutralOutlineRest,
-} from "../utilities/color";
+import { ComponentStyles } from "@microsoft/fast-jss-manager";
 import { applyElevatedCornerRadius } from "../utilities/border";
-import { designUnit, outlineWidth } from "../utilities/design-system";
+import { designUnit } from "../utilities/design-system";
 import { inputFieldStyles } from "../patterns/input-field";
 import { applyCursorPointer } from "../utilities/cursor";
+import {
+    applyHighContrastAdjustOutline,
+    applyHighContrastBorder,
+    applyHighContrastColorFill
+} from "../utilities/high-contrast";
 
 const styles: ComponentStyles<SelectClassNameContract, DesignSystem> = {
     select: {
@@ -33,12 +38,7 @@ const styles: ComponentStyles<SelectClassNameContract, DesignSystem> = {
         height: height(),
         width: "100%",
         ...inputFieldStyles(),
-        "@media (-ms-high-contrast:active)": {
-            background: "ButtonFace",
-            borderColor: "ButtonText",
-            color: "ButtonText",
-            "-ms-high-contrast-adjust": "none",
-        },
+        ...applyHighContrastAdjustOutline()
     },
     select_buttonContentRegion: {
         display: "grid",
@@ -64,9 +64,7 @@ const styles: ComponentStyles<SelectClassNameContract, DesignSystem> = {
         width: glyphSize,
         height: glyphSize,
         gridColumnStart: "2",
-        "@media (-ms-high-contrast:active)": {
-            fill: "ButtonText",
-        },
+        ...applyHighContrastColorFill(),
     },
     select_menu: {
         background: neutralFillStealthRest,
@@ -78,10 +76,7 @@ const styles: ComponentStyles<SelectClassNameContract, DesignSystem> = {
         padding: format("{0} 0", toPx<DesignSystem>(designUnit)),
         maxHeight: "328px",
         overflow: "auto",
-        "@media (-ms-high-contrast:active)": {
-            background: "ButtonFace",
-            border: format<DesignSystem>("{0} solid ButtonText", toPx(outlineWidth)),
-        },
+        ...applyHighContrastBorder(),
     },
     select__multiSelectable: {
         "& $select_menu": {

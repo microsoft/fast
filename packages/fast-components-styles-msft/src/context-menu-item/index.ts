@@ -1,5 +1,5 @@
-import { ContextMenuItemClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import { ComponentStyles } from "@microsoft/fast-jss-manager";
+import { applyCursorPointer } from "../utilities/cursor";
 import { add, applyFocusVisible, format, toPx } from "@microsoft/fast-jss-utilities";
 import { DesignSystem } from "../design-system";
 import { applyCornerRadius, applyFocusPlaceholderBorder } from "../utilities/border";
@@ -9,11 +9,18 @@ import {
     neutralFocus,
     neutralForegroundRest,
 } from "../utilities/color";
-import { applyCursorPointer } from "../utilities/cursor";
+import { ContextMenuItemClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import { height, horizontalSpacingNumber } from "../utilities/density";
 import { designUnit, focusOutlineWidth } from "../utilities/design-system";
 import { applyDisabledState } from "../utilities/disabled";
 import { applyScaledTypeRamp } from "../utilities/typography";
+import {
+    applyHighContrastAdjustStealth,
+    applyHighContrastBorderOnlyFocus,
+    applyHighContrastDisabled,
+    applyHighContrastSelectedHover,
+    highContrastSelector,
+} from "../utilities/high-contrast";
 
 const glyphWidth: number = 16;
 const styles: ComponentStyles<ContextMenuItemClassNameContract, DesignSystem> = {
@@ -41,27 +48,18 @@ const styles: ComponentStyles<ContextMenuItemClassNameContract, DesignSystem> = 
         ...applyFocusPlaceholderBorder(),
         ...applyFocusVisible<DesignSystem>({
             borderColor: neutralFocus,
-            "@media (-ms-high-contrast:active)": {
+            [highContrastSelector]: {
                 boxShadow: format(`0 0 0 {0} inset ButtonText`, toPx(focusOutlineWidth)),
             },
         }),
         "&:hover": {
             background: neutralFillStealthHover,
-            "@media (-ms-high-contrast:active)": {
-                background: "Highlight",
-                color: "HighlightText",
-                fill: "HighlightText",
-            },
+            ...applyHighContrastSelectedHover(),
         },
         "&:active": {
             background: neutralFillStealthActive,
         },
-        "@media (-ms-high-contrast:active)": {
-            border: "none",
-            background: "ButtonFace",
-            color: "ButtonText",
-            "-ms-high-contrast-adjust": "none",
-        },
+        ...applyHighContrastAdjustStealth(),
     },
     contextMenuItem_contentRegion: {
         gridColumnStart: "2",
@@ -71,16 +69,9 @@ const styles: ComponentStyles<ContextMenuItemClassNameContract, DesignSystem> = 
     },
     contextMenuItem__disabled: {
         ...applyDisabledState(),
-        "@media (-ms-high-contrast:active)": {
-            opacity: "1",
-            background: "Background",
-            color: "GrayText",
-            fill: "GrayText",
-            "&:hover": {
-                background: "Background",
-                color: "GrayText",
-                fill: "GrayText",
-            },
+        ...applyHighContrastDisabled(),
+        "&:hover": {
+            ...applyHighContrastDisabled(),
         },
     },
 };

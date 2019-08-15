@@ -13,9 +13,6 @@ const styles: ComponentStyles<NumberFieldClassNameContract, DesignSystem> = {
             format("0 6px 0 {0}", horizontalSpacing()),
             format("0 {0} 0 6px", horizontalSpacing())
         ),
-        "@media (-ms-high-contrast:active)": {
-            borderColor: "ButtonText",
-        },
     },
 };
 

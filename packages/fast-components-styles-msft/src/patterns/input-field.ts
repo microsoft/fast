@@ -1,5 +1,5 @@
-import { horizontalSpacing } from "../utilities/density";
 import { CSSRules } from "@microsoft/fast-jss-manager";
+import { applyCornerRadius } from "../utilities/border";
 import { DesignSystem } from "../design-system";
 import { format, subtract, toPx } from "@microsoft/fast-jss-utilities";
 import {
@@ -15,11 +15,16 @@ import {
     neutralOutlineHover,
     neutralOutlineRest,
 } from "../utilities/color";
-import { applyCornerRadius } from "../utilities/border";
+import { horizontalSpacing } from "../utilities/density";
 import { applyDisabledState } from "../utilities/disabled";
 import { applyScaledTypeRamp } from "../utilities/typography";
 import { applyFontWeightNormal } from "../utilities/fonts";
-import { focusOutlineWidth, outlineWidth } from "../utilities/design-system";
+import { outlineWidth } from "../utilities/design-system";
+import {
+    applyHighContrastDisabledBorder,
+    applyHighContrastInsetFocus,
+    highContrastSelector
+} from "../utilities/high-contrast";
 
 /**
  * Shared input field styles
@@ -46,9 +51,9 @@ export function inputFieldStyles(
         "&:hover:enabled": {
             background: neutralFillInputHover,
             borderColor: neutralOutlineHover,
-            "@media (-ms-high-contrast:active)": {
+            [highContrastSelector]: {
                 background: "Background",
-                border: format("{0} solid ButtonText", toPx<DesignSystem>(outlineWidth)),
+                border: format("{0} solid Highlight", toPx<DesignSystem>(outlineWidth)),
             },
         },
         "&:active:enabled": {
@@ -59,20 +64,11 @@ export function inputFieldStyles(
             boxShadow: format<DesignSystem>("0 0 0 1px {0} inset", neutralFocus),
             borderColor: neutralFocus,
             outline: "none",
-            "@media (-ms-high-contrast:active)": {
-                boxShadow: format(
-                    "0 0 0 {0} ButtonText inset",
-                    toPx<DesignSystem>(subtract(focusOutlineWidth, outlineWidth))
-                ),
-            },
+            ...applyHighContrastInsetFocus(),
         },
         "&:disabled": {
             ...applyDisabledState(),
-            "@media (-ms-high-contrast:active)": {
-                opacity: "1",
-                background: "Background",
-                border: format("{0} solid GrayText", toPx<DesignSystem>(outlineWidth)),
-            },
+            ...applyHighContrastDisabledBorder(),
         },
         "&::placeholder": {
             color: neutralForegroundHint(neutralFillInputRest),

@@ -4,6 +4,7 @@ import { CardClassNameContract } from "@microsoft/fast-components-class-name-con
 import { applyElevatedCornerRadius } from "../utilities/border";
 import { applyElevation, ElevationMultiplier } from "../utilities/elevation";
 import { backgroundColor } from "../utilities/design-system";
+import { applyHighContrastTextBorder } from "../utilities/high-contrast";
 
 const styles: ComponentStyles<CardClassNameContract, DesignSystem> = {
     card: {
@@ -13,9 +14,7 @@ const styles: ComponentStyles<CardClassNameContract, DesignSystem> = {
         ...applyElevatedCornerRadius(),
         ...applyElevation(ElevationMultiplier.e4),
         transition: "all 0.2s ease-in-out",
-        "@media (-ms-high-contrast:active)": {
-            border: "1px solid WindowText",
-        },
+        ...applyHighContrastTextBorder(),
     },
 };
 

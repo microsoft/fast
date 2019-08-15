@@ -1,5 +1,5 @@
+import { applyCursorDefault, applyCursorPointer } from "../utilities/cursor";
 import { SelectOptionClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
-import { ComponentStyles } from "@microsoft/fast-jss-manager";
 import {
     applyFocusVisible,
     directionSwitch,
@@ -16,11 +16,16 @@ import {
     neutralFocus,
     neutralForegroundRest,
 } from "../utilities/color";
-import { applyCursorDefault, applyCursorPointer } from "../utilities/cursor";
+import { ComponentStyles } from "@microsoft/fast-jss-manager";
 import { glyphSize, height, horizontalSpacing } from "../utilities/density";
 import { designUnit, focusOutlineWidth } from "../utilities/design-system";
 import { applyDisabledState } from "../utilities/disabled";
 import { applyScaledTypeRamp } from "../utilities/typography";
+import {
+    applyHighContrastAdjustStealth,
+    applyHighContrastDisabledBorder,
+    applyHighContrastSelectedHover
+} from "../utilities/high-contrast";
 
 const styles: ComponentStyles<SelectOptionClassNameContract, DesignSystem> = {
     selectOption: {
@@ -46,19 +51,9 @@ const styles: ComponentStyles<SelectOptionClassNameContract, DesignSystem> = {
         }),
         "&:hover": {
             background: neutralFillStealthHover,
-            "@media (-ms-high-contrast:active)": {
-                background: "Highlight",
-                color: "HighlightText",
-                fill: "HighlightText",
-            },
+            ...applyHighContrastSelectedHover(),
         },
-        "@media (-ms-high-contrast:active)": {
-            border: "none",
-            background: "ButtonFace",
-            color: "ButtonText",
-            fill: "ButtonText",
-            "-ms-high-contrast-adjust": "none",
-        },
+        ...applyHighContrastAdjustStealth(),
     },
     selectOption_contentRegion: {
         overflow: "hidden",
@@ -79,28 +74,15 @@ const styles: ComponentStyles<SelectOptionClassNameContract, DesignSystem> = {
         ...applyDisabledState(),
         "&, &:hover": {
             background: neutralFillStealthRest,
-            "@media (-ms-high-contrast:active)": {
-                background: "Background",
-                borderColor: "GrayText",
-                color: "GrayText",
-                fill: "GrayText",
-            },
+            ...applyHighContrastDisabledBorder(),
         },
     },
     selectOption__selected: {
         background: neutralFillStealthSelected,
+        ...applyHighContrastSelectedHover(),
         "&:hover": {
             background: neutralFillStealthSelected,
-            "@media (-ms-high-contrast:active)": {
-                background: "Highlight",
-                color: "HighlightText",
-                fill: "HighlightText",
-            },
-        },
-        "@media (-ms-high-contrast:active)": {
-            background: "Highlight",
-            color: "HighlightText",
-            fill: "HighlightText",
+            ...applyHighContrastSelectedHover(),
         },
     },
 };

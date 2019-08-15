@@ -20,6 +20,11 @@ import { applyCornerRadius, applyFocusPlaceholderBorder } from "../utilities/bor
 import { applyScaledTypeRamp } from "../utilities/typography";
 import { focusOutlineWidth } from "../utilities/design-system";
 import { applyCursorPointer } from "../utilities/cursor";
+import {
+    applyHighContrastBorderOnlyFocus,
+    applyHighContrastColorFill,
+    highContrastSelector
+} from "../utilities/high-contrast";
 
 const activeIndicatorHeight: number = 3;
 const styles: ComponentStyles<PivotClassNameContract, DesignSystem> = {
@@ -47,28 +52,22 @@ const styles: ComponentStyles<PivotClassNameContract, DesignSystem> = {
         ...applyCornerRadius(),
         "&:hover": {
             color: neutralForegroundHover,
-            "@media (-ms-high-contrast:active)": {
-                color: "ButtonText",
-            },
+            ...applyHighContrastColorFill(),
         },
         "&:active": {
             color: neutralForegroundActive,
         },
         ...applyFocusVisible<DesignSystem>({
             borderColor: neutralFocus,
-            "@media (-ms-high-contrast:active)": {
-                borderColor: "ButtonText",
-            },
+            ...applyHighContrastBorderOnlyFocus(),
         }),
-        "@media (-ms-high-contrast:active)": {
+        [highContrastSelector]: {
             color: "ButtonText",
             "-ms-high-contrast-adjust": "none",
         },
     },
     pivot_tab__active: {
-        "@media (-ms-high-contrast:active)": {
-            color: "ButtonText",
-        },
+        ...applyHighContrastColorFill(),
     },
     pivot_tabContent: {
         ...applyScaledTypeRamp("t7"),
@@ -85,7 +84,7 @@ const styles: ComponentStyles<PivotClassNameContract, DesignSystem> = {
         height: toPx(activeIndicatorHeight),
         display: "block",
         background: accentFillRest,
-        "@media (-ms-high-contrast:active)": {
+        [highContrastSelector]: {
             background: "Highlight",
         },
     },

@@ -25,6 +25,12 @@ import {
 } from "../utilities/color";
 import { glyphSize } from "../utilities/density";
 import { designUnit } from "../utilities/design-system";
+import {
+    applyHighContrastColorFill,
+    applyHighContrastDisabledFill,
+    applyHighContrastSelectedColorFill,
+    highContrastSelector
+} from "../utilities/high-contrast";
 
 function applyContentRegionTransform(): CSSRules<DesignSystem> {
     return {
@@ -89,9 +95,7 @@ const styles: ComponentStyles<CallToActionClassNameContract, DesignSystem> = {
         "&:hover": {
             "& $callToAction_glyph": {
                 ...applyGlyphTransform(),
-                "@media (-ms-high-contrast:active)": {
-                    fill: "HighlightText",
-                },
+                ...applyHighContrastSelectedColorFill(),
             },
         },
         ...applyFocusVisible("& $callToAction_glyph", {
@@ -108,20 +112,16 @@ const styles: ComponentStyles<CallToActionClassNameContract, DesignSystem> = {
         marginRight: directionSwitch("", "6px"),
         transform: directionSwitch("none", "rotate(180deg)"),
         transition: "all 600ms cubic-bezier(0.19, 1, 0.22, 1)",
-        "@media (-ms-high-contrast:active)": {
-            fill: "ButtonText",
-        },
+        ...applyHighContrastColorFill(),
     },
     callToAction__primary: {
         "& $callToAction_glyph": {
             fill: accentForegroundCut,
-            "@media (-ms-high-contrast:active)": {
-                fill: "HighlightText",
-            },
+            ...applyHighContrastSelectedColorFill(),
         },
         "&:hover": {
             "& $callToAction_glyph": {
-                "@media (-ms-high-contrast:active)": {
+                [highContrastSelector]: {
                     fill: "Highlight",
                 },
             },
@@ -130,16 +130,12 @@ const styles: ComponentStyles<CallToActionClassNameContract, DesignSystem> = {
     callToAction__lightweight: {
         "& $callToAction_glyph": {
             fill: accentForegroundRest,
-            "@media (-ms-high-contrast:active)": {
-                fill: "ButtonText",
-            },
+            ...applyHighContrastColorFill(),
         },
         "&:hover": {
             "& $callToAction_glyph": {
                 fill: accentForegroundHover,
-                "@media (-ms-high-contrast:active)": {
-                    fill: "ButtonText",
-                },
+                ...applyHighContrastColorFill(),
             },
         },
         "&:active": {
@@ -153,16 +149,12 @@ const styles: ComponentStyles<CallToActionClassNameContract, DesignSystem> = {
         paddingLeft: directionSwitch("", translateXValue),
         "& $callToAction_glyph": {
             fill: accentForegroundRest,
-            "@media (-ms-high-contrast:active)": {
-                fill: "ButtonText",
-            },
+            ...applyHighContrastColorFill(),
         },
         "&:hover": {
             "& $callToAction_glyph": {
                 fill: accentForegroundHover,
-                "@media (-ms-high-contrast:active)": {
-                    fill: "ButtonText",
-                },
+                ...applyHighContrastColorFill(),
             },
         },
         "&:active": {
@@ -177,12 +169,11 @@ const styles: ComponentStyles<CallToActionClassNameContract, DesignSystem> = {
         "&:hover": {
             "& $callToAction_glyph": {
                 transform: "none",
+                ...applyHighContrastDisabledFill()
             },
         },
         "& $callToAction_glyph": {
-            "@media (-ms-high-contrast:active)": {
-                fill: "GrayText",
-            },
+            ...applyHighContrastDisabledFill()
         },
     },
 };

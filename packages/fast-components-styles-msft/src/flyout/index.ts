@@ -5,6 +5,7 @@ import { applyFloatingCornerRadius } from "../utilities/border";
 import { applyElevation, ElevationMultiplier } from "../utilities/elevation";
 import { format, toPx } from "@microsoft/fast-jss-utilities";
 import { outlineWidth } from "../utilities/design-system";
+import { applyHighContrastTextBorder } from "../utilities/high-contrast";
 
 const styles: ComponentStyles<FlyoutClassNameContract, DesignSystem> = {
     flyout: {
@@ -18,9 +19,7 @@ const styles: ComponentStyles<FlyoutClassNameContract, DesignSystem> = {
         '&[aria-hidden="false"]': {
             display: "block",
         },
-        "@media (-ms-high-contrast:active)": {
-            border: format("{0} solid WindowText", toPx<DesignSystem>(outlineWidth)),
-        },
+        ...applyHighContrastTextBorder(),
     },
     flyout__top: {},
     flyout__bottom: {},

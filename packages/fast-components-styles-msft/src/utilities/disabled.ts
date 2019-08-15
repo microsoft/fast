@@ -3,6 +3,7 @@ import { DesignSystem } from "../design-system";
 import { applyCursorDisabled } from "./cursor";
 import { disabledOpacity } from "../utilities/design-system";
 import { toString } from "@microsoft/fast-jss-utilities";
+import { highContrastSelector } from "./high-contrast";
 
 export function applyDisabledState(
     config?: DesignSystem /* @deprecated - this function doesn't need an argument */
@@ -10,7 +11,7 @@ export function applyDisabledState(
     return {
         opacity: toString(disabledOpacity),
         ...applyCursorDisabled(),
-        "@media (-ms-high-contrast:active)": {
+        [highContrastSelector]: {
             opacity: "1",
             color: "GrayText",
         },

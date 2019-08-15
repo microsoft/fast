@@ -6,6 +6,7 @@ import { applyElevatedCornerRadius } from "../utilities/border";
 import { applyElevation, ElevationMultiplier } from "../utilities/elevation";
 import { format, toPx } from "@microsoft/fast-jss-utilities";
 import { outlineWidth } from "../utilities/design-system";
+import { applyHighContrastTextBorder } from "../utilities/high-contrast";
 
 /* tslint:disable-next-line */
 const styles: ComponentStyles<DialogClassNameContract, DesignSystem> = (
@@ -20,9 +21,7 @@ const styles: ComponentStyles<DialogClassNameContract, DesignSystem> = (
             '&[aria-hidden="false"]': {
                 display: "block",
             },
-            "@media (-ms-high-contrast:active)": {
-                border: format("{0} solid WindowText", toPx<DesignSystem>(outlineWidth)),
-            },
+            ...applyHighContrastTextBorder(),
         },
         dialog_positioningRegion: {
             display: "flex",

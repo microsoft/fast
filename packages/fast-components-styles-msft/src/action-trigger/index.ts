@@ -13,6 +13,12 @@ import {
     neutralForegroundRest,
 } from "../utilities/color";
 import { glyphSize, horizontalSpacing } from "../utilities/density";
+import {
+    applyHighContrastColorFill,
+    applyHighContrastDisabledFill,
+    applyHighContrastSelectedColorFill,
+    highContrastSelector
+} from "../utilities/high-contrast";
 
 // Since MSFT button is already styled, we need to override in this way to alter button classes
 export const actionTriggerButtonOverrides: ComponentStyles<
@@ -42,37 +48,29 @@ const styles: ComponentStyles<ActionTriggerClassNameContract, DesignSystem> = {
     actionTrigger__primary: {
         "& $actionTrigger_glyph": {
             fill: accentForegroundCut,
-            "@media (-ms-high-contrast:active)": {
-                fill: "HighlightText",
-            },
+            ...applyHighContrastSelectedColorFill(),
         },
         "&:hover": {
             "& $actionTrigger_glyph": {
-                "@media (-ms-high-contrast:active)": {
+                [highContrastSelector]: {
                     fill: "Highlight",
                 },
             },
         },
         "&$actionTrigger__disabled $actionTrigger_glyph": {
             fill: accentForegroundCut,
-            "@media (-ms-high-contrast:active)": {
-                fill: "GrayText",
-            },
+            ...applyHighContrastDisabledFill(),
         },
     },
     actionTrigger__lightweight: {
         "& $actionTrigger_glyph": {
             fill: accentForegroundRest,
-            "@media (-ms-high-contrast:active)": {
-                fill: "ButtonText",
-            },
+            ...applyHighContrastColorFill(),
         },
         "&:hover": {
             "& $actionTrigger_glyph": {
                 fill: accentForegroundHover,
-                "@media (-ms-high-contrast:active)": {
-                    fill: "ButtonText",
-                },
+                ...applyHighContrastColorFill(),
             },
         },
         "&:active": {
@@ -82,24 +80,18 @@ const styles: ComponentStyles<ActionTriggerClassNameContract, DesignSystem> = {
         },
         "&$actionTrigger__disabled $actionTrigger_glyph": {
             fill: accentForegroundRest,
-            "@media (-ms-high-contrast:active)": {
-                fill: "GrayText",
-            },
+            ...applyHighContrastDisabledFill(),
         },
     },
     actionTrigger__justified: {
         "& $actionTrigger_glyph": {
             fill: accentForegroundRest,
-            "@media (-ms-high-contrast:active)": {
-                fill: "ButtonText",
-            },
+            ...applyHighContrastColorFill(),
         },
         "&:hover": {
             "& $actionTrigger_glyph": {
                 fill: accentForegroundHover,
-                "@media (-ms-high-contrast:active)": {
-                    fill: "ButtonText",
-                },
+                ...applyHighContrastColorFill(),
             },
         },
         "&:active": {
@@ -109,58 +101,42 @@ const styles: ComponentStyles<ActionTriggerClassNameContract, DesignSystem> = {
         },
         "&$actionTrigger__disabled $actionTrigger_glyph": {
             fill: accentForegroundRest,
-            "@media (-ms-high-contrast:active)": {
-                fill: "GrayText",
-            },
+            ...applyHighContrastDisabledFill(),
         },
     },
     actionTrigger__outline: {
         "& $actionTrigger_glyph": {
             fill: neutralForegroundRest,
-            "@media (-ms-high-contrast:active)": {
-                fill: "ButtonText",
-            },
+            ...applyHighContrastColorFill(),
         },
         "&:hover": {
             "& $actionTrigger_glyph": {
-                "@media (-ms-high-contrast:active)": {
-                    fill: "HighlightText",
-                },
+                ...applyHighContrastSelectedColorFill(),
             },
         },
         "&$actionTrigger__disabled $actionTrigger_glyph": {
             fill: neutralForegroundRest,
-            "@media (-ms-high-contrast:active)": {
-                fill: "GrayText",
-            },
+            ...applyHighContrastDisabledFill(),
         },
     },
     actionTrigger__stealth: {
         "& $actionTrigger_glyph": {
             fill: neutralForegroundRest,
-            "@media (-ms-high-contrast:active)": {
-                fill: "ButtonText",
-            },
+            ...applyHighContrastColorFill(),
         },
         "&:hover": {
             "& $actionTrigger_glyph": {
-                "@media (-ms-high-contrast:active)": {
-                    fill: "HighlightText",
-                },
+                ...applyHighContrastSelectedColorFill(),
             },
         },
         "&$actionTrigger__disabled $actionTrigger_glyph": {
             fill: neutralForegroundRest,
-            "@media (-ms-high-contrast:active)": {
-                fill: "GrayText",
-            },
+            ...applyHighContrastDisabledFill(),
         },
     },
     actionTrigger__disabled: {
         "& $actionTrigger_glyph": {
-            "@media (-ms-high-contrast:active)": {
-                fill: "GrayText",
-            },
+            ...applyHighContrastDisabledFill(),
         },
     },
     actionTrigger__hasGlyphAndContent: {
