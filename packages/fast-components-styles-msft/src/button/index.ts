@@ -1,18 +1,3 @@
-import { ButtonClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
-import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager";
-import {
-    applyFocusVisible,
-    directionSwitch,
-    format,
-    toPx,
-    subtract,
-} from "@microsoft/fast-jss-utilities";
-import {
-    DesignSystem,
-    DesignSystemResolver,
-    getDesignSystemValue,
-} from "../design-system";
-import { applyCornerRadius, applyFocusPlaceholderBorder } from "../utilities/border";
 import {
     accentFillActive,
     accentFillHover,
@@ -34,6 +19,21 @@ import {
     neutralOutlineHover,
     neutralOutlineRest,
 } from "../utilities/color";
+import { ButtonClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
+import {
+    applyFocusVisible,
+    directionSwitch,
+    format,
+    subtract,
+    toPx,
+} from "@microsoft/fast-jss-utilities";
+import {
+    DesignSystem,
+    DesignSystemResolver,
+    getDesignSystemValue,
+} from "../design-system";
+import { applyCornerRadius, applyFocusPlaceholderBorder } from "../utilities/border";
+import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager";
 import { applyCursorPointer } from "../utilities/cursor";
 import { glyphSize, height, horizontalSpacing } from "../utilities/density";
 import { focusOutlineWidth, outlineWidth } from "../utilities/design-system";
@@ -177,7 +177,11 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = {
             ),
         },
         ...applyFocusVisible<DesignSystem>({
-            boxShadow: format("0 0 0 {0} {1} inset", toPx(subtract(focusOutlineWidth, outlineWidth)), neutralFocus),
+            boxShadow: format(
+                "0 0 0 {0} {1} inset",
+                toPx(subtract(focusOutlineWidth, outlineWidth)),
+                neutralFocus
+            ),
             borderColor: neutralFocus,
         }),
     },

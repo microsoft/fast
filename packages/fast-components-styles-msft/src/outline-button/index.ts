@@ -43,7 +43,11 @@ const styles: ComponentStyles<LightweightButtonClassNameContract, DesignSystem> 
             ),
         },
         ...applyFocusVisible<DesignSystem>({
-            boxShadow: format("0 0 0 {0} {1} inset", toPx(subtract(focusOutlineWidth, outlineWidth)), neutralFocus),
+            boxShadow: format(
+                "0 0 0 {0} {1} inset",
+                toPx(subtract(focusOutlineWidth, outlineWidth)),
+                neutralFocus
+            ),
             borderColor: neutralFocus,
         }),
     },

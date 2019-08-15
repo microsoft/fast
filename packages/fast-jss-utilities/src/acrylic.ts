@@ -28,7 +28,7 @@ try {
     backdropFilterSupport = false;
 }
 
-export { backdropFilterSupport }
+export { backdropFilterSupport };
 
 /*
  * Applies a partially transparent "acrylic" background to an element
