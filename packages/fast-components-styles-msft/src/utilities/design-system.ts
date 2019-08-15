@@ -1,7 +1,6 @@
 import { DesignSystemResolver, getDesignSystemValue } from "../design-system";
 import { Palette } from "../utilities/color/palette";
 import { Direction } from "@microsoft/fast-web-utilities";
-import { FontWeight } from "./fonts";
 
 /**
  * Retrieve the backgroundColor when invoked with a DesignSystem
@@ -91,7 +90,6 @@ export const outlineWidth: DesignSystemResolver<number> = getDesignSystemValue(
 export const focusOutlineWidth: DesignSystemResolver<number> = getDesignSystemValue(
     "focusOutlineWidth"
 );
-
 /**
  * Retrieve the direction from the design system
  */
