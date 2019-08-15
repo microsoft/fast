@@ -129,9 +129,13 @@ const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = {
             background: accentFillRest,
             borderColor: accentFillRest,
             ...applyFocusVisible({
-                boxShadow: format<DesignSystem>("0 0 0 {0} {1} inset, 0 0 0 {2} {3} inset",
-                    toPx(subtract(focusOutlineWidth, outlineWidth)), neutralFocus,
-                    toPx(add(focusOutlineWidth, outlineWidth)), neutralFocusInnerAccent(accentFillRest)),
+                boxShadow: format<DesignSystem>(
+                    "0 0 0 {0} {1} inset, 0 0 0 {2} {3} inset",
+                    toPx(subtract(focusOutlineWidth, outlineWidth)),
+                    neutralFocus,
+                    toPx(add(focusOutlineWidth, outlineWidth)),
+                    neutralFocusInnerAccent(accentFillRest)
+                ),
                 borderColor: neutralFocus,
             }),
             "@media (-ms-high-contrast:active)": {
