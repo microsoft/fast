@@ -70,6 +70,16 @@ export interface CarouselHandledProps extends CarouselManagedClasses {
      * The carousel items
      */
     items: CarouselSlide[];
+
+    /**
+     * The carousel next flipper
+     */
+    nextFlipper?: (onClick: () => void, className?: string) => React.ReactNode;
+
+    /**
+     * The carousel previous flipper
+     */
+    previousFlipper?: (onClick: () => void, className?: string) => React.ReactNode;
 }
 
 export interface CarouselUnhandledProps extends React.HTMLAttributes<HTMLDivElement> {}

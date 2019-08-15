@@ -50,6 +50,8 @@ class Carousel extends Foundation<
         autoplay: void 0,
         autoplayInterval: void 0,
         managedClasses: void 0,
+        nextFlipper: void 0,
+        previousFlipper: void 0,
         label: void 0,
         activeId: void 0,
         onActiveIdUpdate: void 0,
@@ -284,16 +286,27 @@ class Carousel extends Foundation<
      * Generates previous flipper if more than one slide
      */
     private generatePreviousFlipper(): any {
-        if (this.isMultipleSlides) {
+        if (!this.isMultipleSlides) {
+            return;
+        }
+
+        const previousFlipperClassName: string = get(
+            this.props,
+            "managedClasses.carousel_flipperPrevious",
+            ""
+        );
+
+        if (typeof this.props.previousFlipper === "function") {
+            return this.props.previousFlipper(
+                this.previousSlide,
+                previousFlipperClassName
+            );
+        } else {
             return (
                 <Flipper
                     direction={FlipperDirection.previous}
                     onClick={this.previousSlide}
-                    className={get(
-                        this.props,
-                        "managedClasses.carousel_flipperPrevious",
-                        ""
-                    )}
+                    className={previousFlipperClassName}
                 />
             );
         }
@@ -303,12 +316,24 @@ class Carousel extends Foundation<
      * Generates next flipper if more than one slide
      */
     private generateNextFlipper(): any {
-        if (this.isMultipleSlides) {
+        if (!this.isMultipleSlides) {
+            return;
+        }
+
+        const nextFlipperClassName: string = get(
+            this.props,
+            "managedClasses.carousel_flipperNext",
+            ""
+        );
+
+        if (typeof this.props.nextFlipper === "function") {
+            return this.props.nextFlipper(this.nextSlide, nextFlipperClassName);
+        } else {
             return (
                 <Flipper
                     direction={FlipperDirection.next}
                     onClick={this.nextSlide}
-                    className={get(this.props, "managedClasses.carousel_flipperNext", "")}
+                    className={nextFlipperClassName}
                 />
             );
         }
