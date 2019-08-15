@@ -5,6 +5,7 @@ import {
     directionSwitch,
     format,
     toPx,
+    subtract,
 } from "@microsoft/fast-jss-utilities";
 import {
     DesignSystem,
@@ -176,11 +177,7 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = {
             ),
         },
         ...applyFocusVisible<DesignSystem>({
-            boxShadow: (designSystem: DesignSystem): string => {
-                return `0 0 0 ${toPx(
-                    focusOutlineWidth(designSystem) - outlineWidth(designSystem)
-                )} ${neutralFocus(designSystem)} inset`;
-            },
+            boxShadow: format("0 0 0 {0} {1} inset", toPx(subtract(focusOutlineWidth, outlineWidth)), neutralFocus),
             borderColor: neutralFocus,
         }),
     },
