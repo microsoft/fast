@@ -7,6 +7,7 @@ import HorizontalOverflow, {
 } from "./";
 import "raf/polyfill";
 import { ConstructibleResizeObserver, DisplayNamePrefix } from "../utilities";
+import rafThrottle from "raf-throttle";
 
 /*
  * Configure Enzyme
@@ -580,6 +581,30 @@ describe("horizontal overflow", (): void => {
         expect(disconnect).toBeCalledTimes(1);
         // Replace the window to it's original state
         (window as WindowWithResizeObserver).ResizeObserver = ActualObserver;
+    });
+    test("should cancel any queued callbacks on unmount", (): void => {
+        const actualRafThrottle: typeof rafThrottle = rafThrottle;
+        const cancel: jest.Mock = jest.fn();
+        (rafThrottle as typeof rafThrottle) = jest.fn(
+            (): any => {
+                const throttled: any = jest.fn();
+                throttled.cancel = cancel;
+                return throttled;
+            }
+        );
+
+        const rendered: any = mount(
+            <HorizontalOverflow managedClasses={managedClasses}>
+                {imageSet1}
+            </HorizontalOverflow>
+        );
+        // Unmount the component to trigger lifecycle methods
+        rendered.unmount();
+
+        // Once for the resize callback and once for the scroll callback
+        expect(cancel).toHaveBeenCalledTimes(2);
+
+        (rafThrottle as any) = actualRafThrottle;
     });
 });
 /* tslint:enable:no-string-literal */

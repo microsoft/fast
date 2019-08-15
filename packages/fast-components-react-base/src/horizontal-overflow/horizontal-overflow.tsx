@@ -198,6 +198,10 @@ class HorizontalOverflow extends Foundation<
                 this.resizeObserver.disconnect();
                 this.resizeObserver = null;
             }
+
+            // Cancel any pending calls
+            this.throttledResize.cancel();
+            this.throttledScroll.cancel();
         }
     }
 
