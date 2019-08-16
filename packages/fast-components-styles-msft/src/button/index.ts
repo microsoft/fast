@@ -27,10 +27,7 @@ import {
     subtract,
     toPx,
 } from "@microsoft/fast-jss-utilities";
-import {
-    DesignSystem,
-    DesignSystemResolver,
-} from "../design-system";
+import { DesignSystem, DesignSystemResolver } from "../design-system";
 import { getDesignSystemValue } from "../utilities/design-system";
 import { applyCornerRadius, applyFocusPlaceholderBorder } from "../utilities/border";
 import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager";

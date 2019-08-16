@@ -1,4 +1,4 @@
-import  designSystemDefaults, {
+import designSystemDefaults, {
     DesignSystem,
     DesignSystemResolver,
 } from "../design-system";
@@ -213,4 +213,6 @@ export const neutralOutlineHoverDelta: DesignSystemResolver<
 export const neutralOutlineActiveDelta: DesignSystemResolver<
     number
 > = getDesignSystemValue("neutralOutlineActiveDelta");
-export const getFontWeight: DesignSystemResolver<FontWeight> = getDesignSystemValue("fontWeight")
+export const getFontWeight: DesignSystemResolver<FontWeight> = getDesignSystemValue(
+    "fontWeight"
+);

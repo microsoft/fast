@@ -1,5 +1,8 @@
 import { CSSRules } from "@microsoft/fast-jss-manager";
-import designSystemDefaults, { DesignSystem, DesignSystemResolver } from "../design-system";
+import designSystemDefaults, {
+    DesignSystem,
+    DesignSystemResolver,
+} from "../design-system";
 import { getFontWeight } from "./design-system";
 
 export interface FontWeight {
