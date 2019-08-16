@@ -1,6 +1,6 @@
 import React from "react";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
-import { get, isEqual } from "lodash-es";
+import { get, isEqual, isNil } from "lodash-es";
 import { KeyCodes } from "@microsoft/fast-web-utilities";
 import { SelectClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import { SelectHandledProps, SelectProps, SelectUnhandledProps } from "./select.props";
@@ -446,7 +446,6 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
                 increment
             );
         }
-        this.toggleMenu(true);
     };
 
     /**
@@ -464,7 +463,7 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
             childrenAsArray,
             increment
         );
-        if (validOption !== null) {
+        if (!isNil(validOption)) {
             this.updateSelection([(validOption as React.ReactElement<any>).props]);
         }
     };
