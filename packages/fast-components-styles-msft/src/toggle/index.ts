@@ -7,6 +7,7 @@ import {
     neutralFillInputRest,
     neutralFillSelected,
     neutralFocus,
+    neutralFocusInnerAccent,
     neutralForegroundRest,
     neutralOutlineActive,
     neutralOutlineHover,
@@ -27,7 +28,7 @@ import { ToggleClassNameContract } from "@microsoft/fast-components-class-name-c
 import { applyDisabledState } from "../utilities/disabled";
 import { applyScaledTypeRamp } from "../utilities/typography";
 import { densityCategorySwitch, heightNumber } from "../utilities/density";
-import { designUnit, outlineWidth } from "../utilities/design-system";
+import { designUnit, focusOutlineWidth, outlineWidth } from "../utilities/design-system";
 import { applyCursorDisabled, applyCursorPointer } from "../utilities/cursor";
 
 const height: DesignSystemResolver<number> = add(divide(heightNumber(), 2), designUnit);
@@ -128,7 +129,13 @@ const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = {
             background: accentFillRest,
             borderColor: accentFillRest,
             ...applyFocusVisible({
-                boxShadow: format<DesignSystem>("0 0 0 1px {0} inset", neutralFocus),
+                boxShadow: format<DesignSystem>(
+                    "0 0 0 {0} {1} inset, 0 0 0 {2} {3} inset",
+                    toPx(subtract(focusOutlineWidth, outlineWidth)),
+                    neutralFocus,
+                    toPx(add(focusOutlineWidth, outlineWidth)),
+                    neutralFocusInnerAccent(accentFillRest)
+                ),
                 borderColor: neutralFocus,
             }),
             "@media (-ms-high-contrast:active)": {
