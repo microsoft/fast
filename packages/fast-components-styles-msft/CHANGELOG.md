@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.19.2](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-styles-msft@4.19.1...@microsoft/fast-components-styles-msft@4.19.2) (2019-08-16)
+
+
+### Bug Fixes
+
+* add inner focus ring to selected toggle state ([#2138](https://github.com/Microsoft/fast-dna/issues/2138)) ([d06177b](https://github.com/Microsoft/fast-dna/commit/d06177b))
+* dialog elements clipped when zoomed ([#2137](https://github.com/Microsoft/fast-dna/issues/2137)) ([6b4294b](https://github.com/Microsoft/fast-dna/commit/6b4294b))
+
+
+
+
+
 ## [4.19.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-styles-msft@4.19.0...@microsoft/fast-components-styles-msft@4.19.1) (2019-08-09)
 
 **Note:** Version bump only for package @microsoft/fast-components-styles-msft

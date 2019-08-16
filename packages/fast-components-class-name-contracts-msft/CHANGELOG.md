@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.7.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-class-name-contracts-msft@4.7.0...@microsoft/fast-components-class-name-contracts-msft@4.7.1) (2019-08-16)
+
+
+### Bug Fixes
+
+* enumerate select option glyph in classname contract ([#2135](https://github.com/Microsoft/fast-dna/issues/2135)) ([37c8762](https://github.com/Microsoft/fast-dna/commit/37c8762))
+
+
+
+
+
 # [4.7.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-class-name-contracts-msft@4.6.0...@microsoft/fast-components-class-name-contracts-msft@4.7.0) (2019-07-31)
 
 

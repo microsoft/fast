@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.16.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-tooling-react@1.15.3...@microsoft/fast-tooling-react@1.16.0) (2019-08-16)
+
+
+### Features
+
+* increase perf on determining the navigation from the Form ([#2127](https://github.com/Microsoft/fast-dna/issues/2127)) ([292b745](https://github.com/Microsoft/fast-dna/commit/292b745))
+
+
+
+
+
 ## [1.15.3](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-tooling-react@1.15.2...@microsoft/fast-tooling-react@1.15.3) (2019-08-14)
 
 **Note:** Version bump only for package @microsoft/fast-tooling-react

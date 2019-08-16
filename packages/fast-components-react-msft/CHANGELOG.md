@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.17.6](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-msft@4.17.5...@microsoft/fast-components-react-msft@4.17.6) (2019-08-16)
+
+
+### Bug Fixes
+
+* ensure unhandled props are correctly extended for progress component ([#2134](https://github.com/Microsoft/fast-dna/issues/2134)) ([702a1fd](https://github.com/Microsoft/fast-dna/commit/702a1fd))
+
+
+
+
+
 ## [4.17.5](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-msft@4.17.4...@microsoft/fast-components-react-msft@4.17.5) (2019-08-14)
 
 **Note:** Version bump only for package @microsoft/fast-components-react-msft
