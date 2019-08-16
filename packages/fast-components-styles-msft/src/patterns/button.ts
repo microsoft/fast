@@ -8,7 +8,8 @@ import { applyScaledTypeRamp } from "../utilities/typography";
 import { glyphSize, height, horizontalSpacing } from "../utilities/density";
 import { applyDisabledState } from "../utilities/disabled";
 import { ButtonBaseClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
-import { DesignSystemResolver, getDesignSystemValue } from "../design-system";
+import { DesignSystemResolver } from "../design-system";
+import { getDesignSystemValue } from "../utilities/design-system";
 
 const density: DesignSystemResolver<number> = getDesignSystemValue("density");
 

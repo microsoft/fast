@@ -1,6 +1,23 @@
-import { DesignSystemResolver, getDesignSystemValue } from "../design-system";
+import  designSystemDefaults, {
+    DesignSystem,
+    DesignSystemResolver,
+} from "../design-system";
 import { Palette } from "../utilities/color/palette";
 import { Direction } from "@microsoft/fast-web-utilities";
+import { FontWeight } from "./fonts";
+
+/**
+ * Safely retrieves the value from a key of the DesignSystem.
+ */
+export function getDesignSystemValue<T extends DesignSystem, K extends keyof T>(
+    key: K
+): (designSystem?: T) => T[K] {
+    return (designSystem?: T): T[K] => {
+        return designSystem && designSystem[key] !== undefined
+            ? designSystem[key]
+            : (designSystemDefaults as T)[key];
+    };
+}
 
 /**
  * Retrieve the backgroundColor when invoked with a DesignSystem
@@ -196,3 +213,4 @@ export const neutralOutlineHoverDelta: DesignSystemResolver<
 export const neutralOutlineActiveDelta: DesignSystemResolver<
     number
 > = getDesignSystemValue("neutralOutlineActiveDelta");
+export const getFontWeight: DesignSystemResolver<FontWeight> = getDesignSystemValue("fontWeight")

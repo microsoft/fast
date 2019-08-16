@@ -30,8 +30,8 @@ import {
 import {
     DesignSystem,
     DesignSystemResolver,
-    getDesignSystemValue,
 } from "../design-system";
+import { getDesignSystemValue } from "../utilities/design-system";
 import { applyCornerRadius, applyFocusPlaceholderBorder } from "../utilities/border";
 import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager";
 import { applyCursorPointer } from "../utilities/cursor";

@@ -256,19 +256,6 @@ export function getDesignSystemProperty(key: string): DesignSystemResolver<strin
 }
 
 /**
- * Safely retrieves the value from a key of the DesignSystem.
- */
-export function getDesignSystemValue<T extends DesignSystem, K extends keyof T>(
-    key: K
-): (designSystem?: T) => T[K] {
-    return (designSystem?: T): T[K] => {
-        return designSystem && designSystem[key] !== undefined
-            ? designSystem[key]
-            : (designSystemDefaults as T)[key];
-    };
-}
-
-/**
  * Returns the argument if basic, otherwise calls the DesignSystemResolver function.
  *
  * @param arg A value or a DesignSystemResolver function
