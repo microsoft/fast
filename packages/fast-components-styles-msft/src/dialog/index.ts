@@ -21,7 +21,7 @@ const styles: ComponentStyles<DialogClassNameContract, DesignSystem> = (
             '&[aria-hidden="false"]': {
                 display: "block",
             },
-            ...applyHighContrastTextBorder(),
+            ...applyHighContrastTextBorder,
         },
         dialog_positioningRegion: {
             display: "flex",

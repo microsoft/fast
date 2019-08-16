@@ -17,7 +17,7 @@ const styles: ComponentStyles<ContextMenuClassNameContract, DesignSystem> = {
         maxWidth: "368px",
         minWidth: "64px",
         transition: "all 0.2s ease-in-out",
-        ...applyHighContrastBorder(),
+        ...applyHighContrastBorder,
     },
 };
 

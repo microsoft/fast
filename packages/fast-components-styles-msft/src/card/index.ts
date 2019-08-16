@@ -14,7 +14,7 @@ const styles: ComponentStyles<CardClassNameContract, DesignSystem> = {
         ...applyElevatedCornerRadius(),
         ...applyElevation(ElevationMultiplier.e4),
         transition: "all 0.2s ease-in-out",
-        ...applyHighContrastTextBorder(),
+        ...applyHighContrastTextBorder,
     },
 };
 

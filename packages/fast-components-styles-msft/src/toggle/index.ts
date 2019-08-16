@@ -31,7 +31,7 @@ import { densityCategorySwitch, heightNumber } from "../utilities/density";
 import { designUnit, focusOutlineWidth, outlineWidth } from "../utilities/design-system";
 import { applyCursorDisabled, applyCursorPointer } from "../utilities/cursor";
 import {
-    applyHighContrastColorFill,
+    applyHighContrastForeground,
     highContrastSelector,
 } from "../utilities/high-contrast";
 
@@ -57,7 +57,7 @@ const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = {
         display: "inline-block",
         color: neutralForegroundRest,
         transition: "all 0.2s ease-in-out",
-        ...applyHighContrastColorFill(),
+        ...applyHighContrastForeground,
     },
     toggle_label: {
         ...applyCursorPointer(),

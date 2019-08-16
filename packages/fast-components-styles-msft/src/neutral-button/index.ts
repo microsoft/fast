@@ -13,12 +13,11 @@ import {
 import {
     applyHighContrastAdjustOutline,
     applyHighContrastDisabledBorder,
-    applyHighContrastDisabledColor,
-    applyHighContrastDisabledFill,
+    applyHighContrastDisabledForeground,
     applyHighContrastHyperLink,
-    applyHighContrastInsetFocus,
-    applyHighContrastSelectedFillHover,
-    applyHighContrastSelectedHover,
+    applyHighContrastOutlineFocus,
+    applyHighContrastSelectedForeground,
+    applyHighContrastSelection,
 } from "../utilities/high-contrast";
 
 const styles: ComponentStyles<NeutralButtonClassNameContract, DesignSystem> = {
@@ -30,9 +29,9 @@ const styles: ComponentStyles<NeutralButtonClassNameContract, DesignSystem> = {
         background: neutralFillRest,
         "&:hover:enabled": {
             background: neutralFillHover,
-            ...applyHighContrastSelectedHover(),
+            ...applyHighContrastSelection,
             "& $button_beforeContent, & $button_afterContent": {
-                ...applyHighContrastSelectedFillHover(),
+                ...applyHighContrastSelectedForeground,
             },
         },
         "&:active:enabled": {
@@ -40,26 +39,26 @@ const styles: ComponentStyles<NeutralButtonClassNameContract, DesignSystem> = {
         },
         ...applyFocusVisible<DesignSystem>({
             borderColor: neutralFocus,
-            ...applyHighContrastInsetFocus(),
+            ...applyHighContrastOutlineFocus,
         }),
         "&:disabled": {
-            ...applyHighContrastDisabledBorder(),
+            ...applyHighContrastDisabledBorder,
             "a&": {
-                ...applyHighContrastDisabledColor(),
+                ...applyHighContrastDisabledForeground,
             },
         },
         "&::-moz-focus-inner": {
             border: "0",
         },
-        ...applyHighContrastAdjustOutline(),
+        ...applyHighContrastAdjustOutline,
         "a&": {
-            ...applyHighContrastHyperLink(),
+            ...applyHighContrastHyperLink,
             "&$button__disabled": {
-                ...applyHighContrastDisabledBorder(),
+                ...applyHighContrastDisabledBorder,
                 "&:hover": {
-                    ...applyHighContrastDisabledBorder(),
+                    ...applyHighContrastDisabledBorder,
                     "& $button_beforeContent, & $button_afterContent": {
-                        ...applyHighContrastDisabledFill(),
+                        ...applyHighContrastDisabledForeground,
                     },
                 },
             },

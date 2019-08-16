@@ -19,7 +19,7 @@ const styles: ComponentStyles<FlyoutClassNameContract, DesignSystem> = {
         '&[aria-hidden="false"]': {
             display: "block",
         },
-        ...applyHighContrastTextBorder(),
+        ...applyHighContrastTextBorder,
     },
     flyout__top: {},
     flyout__bottom: {},

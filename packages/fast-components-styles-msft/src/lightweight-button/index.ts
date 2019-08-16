@@ -11,8 +11,7 @@ import {
 import { applyFocusVisible, toPx } from "@microsoft/fast-jss-utilities";
 import { focusOutlineWidth } from "../utilities/design-system";
 import {
-    applyHighContrastColorFill,
-    applyHighContrastDisabledColor,
+    applyHighContrastDisabledForeground,
     applyHighContrastHyperLink,
     highContrastSelector,
 } from "../utilities/high-contrast";
@@ -35,7 +34,6 @@ const styles: ComponentStyles<LightweightButtonClassNameContract, DesignSystem> 
                 height: toPx<DesignSystem>(focusOutlineWidth),
                 [highContrastSelector]: {
                     background: "ButtonText",
-                    height: toPx<DesignSystem>(focusOutlineWidth),
                 },
             },
         }),
@@ -55,6 +53,9 @@ const styles: ComponentStyles<LightweightButtonClassNameContract, DesignSystem> 
         },
         "&$button__disabled, &$button__disabled $button_contentRegion::before": {
             backgroundColor: "transparent",
+            "& $button_contentRegion": {
+                ...applyHighContrastDisabledForeground,
+            },
         },
         [highContrastSelector]: {
             border: "none",
@@ -64,7 +65,10 @@ const styles: ComponentStyles<LightweightButtonClassNameContract, DesignSystem> 
             color: accentForegroundHover,
             fill: accentForegroundHover,
             backgroundColor: "transparent",
-            ...applyHighContrastColorFill(),
+            [highContrastSelector]: {
+                color: "ButtonText",
+                fill: "ButtonText",
+            },
         },
         "&:active:enabled": {
             color: accentForegroundActive,
@@ -72,11 +76,11 @@ const styles: ComponentStyles<LightweightButtonClassNameContract, DesignSystem> 
             backgroundColor: "transparent",
         },
         "a&": {
-            ...applyHighContrastHyperLink(),
+            ...applyHighContrastHyperLink,
             "&$button__disabled": {
                 "&:hover": {
                     "& $button_contentRegion": {
-                        ...applyHighContrastDisabledColor(),
+                        ...applyHighContrastDisabledForeground,
                     },
                 },
             },

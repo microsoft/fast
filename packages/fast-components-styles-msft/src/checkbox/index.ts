@@ -132,7 +132,6 @@ const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = {
     checkbox__checked: {
         "& $checkbox_stateIndicator": {
             "&::before": {
-                color: "green",
                 background: format(
                     "url('data:image/svg+xml;utf8,{0}')",
                     indicatorSvg(neutralForegroundRest)
@@ -190,19 +189,7 @@ const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = {
         ...applyDisabledState(),
         "& $checkbox_input, & $checkbox_label": {
             ...applyCursorDisabled(),
-            ...applyHighContrastDisabledBorder(),
-        },
-        "&:hover": {
-            "& $checkbox_stateIndicator": {
-                "&::before": {
-                    [highContrastSelector]: {
-                        background: format(
-                            "url('data:image/svg+xml;utf8,{0}')",
-                            indicatorSvg("transparent")
-                        ),
-                    },
-                },
-            },
+            ...applyHighContrastDisabledBorder,
         },
     },
 };

@@ -149,7 +149,7 @@ const styles: ComponentStyles<RadioClassNameContract, DesignSystem> = {
         ...applyDisabledState(),
         "& $radio_input, & $radio_label": {
             ...applyCursorDisabled(),
-            ...applyHighContrastDisabledBorder(),
+            ...applyHighContrastDisabledBorder,
         },
     },
 };

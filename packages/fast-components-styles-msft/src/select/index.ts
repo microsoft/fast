@@ -25,7 +25,7 @@ import { applyCursorPointer } from "../utilities/cursor";
 import {
     applyHighContrastAdjustOutline,
     applyHighContrastBorder,
-    applyHighContrastColorFill,
+    applyHighContrastForeground,
 } from "../utilities/high-contrast";
 
 const styles: ComponentStyles<SelectClassNameContract, DesignSystem> = {
@@ -38,7 +38,7 @@ const styles: ComponentStyles<SelectClassNameContract, DesignSystem> = {
         height: height(),
         width: "100%",
         ...inputFieldStyles(),
-        ...applyHighContrastAdjustOutline(),
+        ...applyHighContrastAdjustOutline,
     },
     select_buttonContentRegion: {
         display: "grid",
@@ -64,7 +64,7 @@ const styles: ComponentStyles<SelectClassNameContract, DesignSystem> = {
         width: glyphSize,
         height: glyphSize,
         gridColumnStart: "2",
-        ...applyHighContrastColorFill(),
+        ...applyHighContrastForeground,
     },
     select_menu: {
         background: neutralFillStealthRest,
@@ -76,7 +76,7 @@ const styles: ComponentStyles<SelectClassNameContract, DesignSystem> = {
         padding: format("{0} 0", toPx<DesignSystem>(designUnit)),
         maxHeight: "328px",
         overflow: "auto",
-        ...applyHighContrastBorder(),
+        ...applyHighContrastBorder,
     },
     select__multiSelectable: {
         "& $select_menu": {

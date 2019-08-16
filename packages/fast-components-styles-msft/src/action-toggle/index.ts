@@ -18,9 +18,9 @@ import {
 } from "../utilities/color";
 import { glyphSize, horizontalSpacing } from "../utilities/density";
 import {
-    applyHighContrastColorFill,
-    applyHighContrastDisabledFill,
-    applyHighContrastSelectedColorFill,
+    applyHighContrastDisabledForeground,
+    applyHighContrastForeground,
+    applyHighContrastSelectedForeground,
     highContrastSelector,
 } from "../utilities/high-contrast";
 
@@ -58,9 +58,9 @@ const styles: ComponentStyles<ActionToggleClassNameContract, DesignSystem> = {
     actionToggle__primary: {
         "& $actionToggle_selectedGlyph, & $actionToggle_unselectedGlyph": {
             fill: accentForegroundCut,
-            ...applyHighContrastSelectedColorFill(),
+            ...applyHighContrastSelectedForeground,
         },
-        "&:hover": {
+        "&:hover:enabled": {
             "& $actionToggle_selectedGlyph, & $actionToggle_unselectedGlyph": {
                 [highContrastSelector]: {
                     fill: "Highlight",
@@ -69,86 +69,91 @@ const styles: ComponentStyles<ActionToggleClassNameContract, DesignSystem> = {
         },
         "&$actionToggle__disabled $actionToggle_selectedGlyph, &$actionToggle__disabled $actionToggle_unselectedGlyph": {
             fill: accentForegroundCut,
-            ...applyHighContrastDisabledFill(),
+            ...applyHighContrastDisabledForeground,
         },
     },
     actionToggle__lightweight: {
         "& $actionToggle_selectedGlyph, & $actionToggle_unselectedGlyph": {
             fill: accentForegroundRest,
-            ...applyHighContrastColorFill(),
+            ...applyHighContrastForeground,
         },
-        "&:hover": {
+        "&:hover:enabled": {
             "& $actionToggle_selectedGlyph, & $actionToggle_unselectedGlyph": {
                 fill: accentForegroundHover,
-                ...applyHighContrastColorFill(),
+                [highContrastSelector]: {
+                    fill: "Highlight",
+                },
             },
         },
         "&:active": {
             "& $actionToggle_selectedGlyph, & $actionToggle_unselectedGlyph": {
                 fill: accentForegroundActive,
+                ...applyHighContrastForeground,
             },
         },
         "&$actionToggle__disabled $actionToggle_selectedGlyph, &$actionToggle__disabled $actionToggle_unselectedGlyph": {
             fill: accentForegroundRest,
-            ...applyHighContrastDisabledFill(),
+            ...applyHighContrastDisabledForeground,
         },
     },
     actionToggle__justified: {
         "& $actionToggle_selectedGlyph, & $actionToggle_unselectedGlyph": {
             fill: accentForegroundRest,
-            ...applyHighContrastColorFill(),
+            ...applyHighContrastForeground,
         },
-        "&:hover": {
+        "&:hover:enabled": {
             "& $actionToggle_selectedGlyph, & $actionToggle_unselectedGlyph": {
                 fill: accentForegroundHover,
-                ...applyHighContrastColorFill(),
-            },
-        },
-        actionToggle__stealth: {
-            "& $actionToggle_selectedGlyph, & $actionToggle_unselectedGlyph": {
-                fill: neutralForegroundRest,
-                ...applyHighContrastColorFill(),
-            },
-            "&$actionToggle__disabled $actionToggle_selectedGlyph, &$actionToggle__disabled $actionToggle_unselectedGlyph": {
-                fill: neutralForegroundRest,
-                ...applyHighContrastDisabledFill(),
-            },
-        },
-        actionToggle__disabled: {},
-        actionToggle__hasGlyphAndContent: {
-            "& $actionToggle_selectedGlyph, & $actionToggle_unselectedGlyph": {
-                fill: accentForegroundActive,
+                [highContrastSelector]: {
+                    fill: "Highlight",
+                },
             },
         },
         "&$actionToggle__disabled $actionToggle_selectedGlyph, &$actionToggle__disabled $actionToggle_unselectedGlyph": {
             fill: accentForegroundRest,
-            ...applyHighContrastDisabledFill(),
+            ...applyHighContrastDisabledForeground,
+        },
+    },
+    actionToggle__stealth: {
+        "& $actionToggle_selectedGlyph, & $actionToggle_unselectedGlyph": {
+            fill: neutralForegroundRest,
+            ...applyHighContrastForeground,
+        },
+        "&:hover": {
+            "& $actionToggle_selectedGlyph, & $actionToggle_unselectedGlyph": {
+                ...applyHighContrastSelectedForeground,
+            },
+        },
+        "&$actionToggle__disabled $actionToggle_selectedGlyph, &$actionToggle__disabled $actionToggle_unselectedGlyph": {
+            fill: neutralForegroundRest,
+            ...applyHighContrastDisabledForeground,
         },
     },
     actionToggle__outline: {
         "& $actionToggle_selectedGlyph, & $actionToggle_unselectedGlyph": {
             fill: neutralForegroundRest,
-            ...applyHighContrastColorFill(),
+            ...applyHighContrastForeground,
         },
         "&:hover": {
             "& $actionToggle_selectedGlyph, & $actionToggle_unselectedGlyph": {
-                ...applyHighContrastSelectedColorFill(),
+                ...applyHighContrastSelectedForeground,
             },
         },
         "&$actionToggle__disabled $actionToggle_selectedGlyph, &$actionToggle__disabled $actionToggle_unselectedGlyph": {
             fill: neutralForegroundRest,
-            ...applyHighContrastDisabledFill(),
+            ...applyHighContrastDisabledForeground,
         },
     },
     actionToggle__disabled: {
         "& $actionToggle_selectedGlyph, & $actionToggle_unselectedGlyph": {
-            ...applyHighContrastDisabledFill(),
+            ...applyHighContrastDisabledForeground,
         },
     },
     actionToggle__hasGlyphAndContent: {
         "& $actionToggle_selectedGlyph, & $actionToggle_unselectedGlyph": {
             marginRight: directionSwitch(horizontalSpacing(), ""),
             marginLeft: directionSwitch("", horizontalSpacing()),
+            fill: accentForegroundActive,
         },
     },
 };

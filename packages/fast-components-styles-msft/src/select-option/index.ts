@@ -24,7 +24,7 @@ import { applyScaledTypeRamp } from "../utilities/typography";
 import {
     applyHighContrastAdjustStealth,
     applyHighContrastDisabledBorder,
-    applyHighContrastSelectedHover,
+    applyHighContrastSelection,
 } from "../utilities/high-contrast";
 
 const styles: ComponentStyles<SelectOptionClassNameContract, DesignSystem> = {
@@ -51,9 +51,9 @@ const styles: ComponentStyles<SelectOptionClassNameContract, DesignSystem> = {
         }),
         "&:hover": {
             background: neutralFillStealthHover,
-            ...applyHighContrastSelectedHover(),
+            ...applyHighContrastSelection,
         },
-        ...applyHighContrastAdjustStealth(),
+        ...applyHighContrastAdjustStealth,
     },
     selectOption_contentRegion: {
         overflow: "hidden",
@@ -74,15 +74,15 @@ const styles: ComponentStyles<SelectOptionClassNameContract, DesignSystem> = {
         ...applyDisabledState(),
         "&, &:hover": {
             background: neutralFillStealthRest,
-            ...applyHighContrastDisabledBorder(),
+            ...applyHighContrastDisabledBorder,
         },
     },
     selectOption__selected: {
         background: neutralFillStealthSelected,
-        ...applyHighContrastSelectedHover(),
+        ...applyHighContrastSelection,
         "&:hover": {
             background: neutralFillStealthSelected,
-            ...applyHighContrastSelectedHover(),
+            ...applyHighContrastSelection,
         },
     },
 };

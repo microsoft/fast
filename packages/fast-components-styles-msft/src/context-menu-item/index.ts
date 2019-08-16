@@ -16,9 +16,8 @@ import { applyDisabledState } from "../utilities/disabled";
 import { applyScaledTypeRamp } from "../utilities/typography";
 import {
     applyHighContrastAdjustStealth,
-    applyHighContrastBorderOnlyFocus,
     applyHighContrastDisabled,
-    applyHighContrastSelectedHover,
+    applyHighContrastSelection,
     highContrastSelector,
 } from "../utilities/high-contrast";
 
@@ -54,12 +53,12 @@ const styles: ComponentStyles<ContextMenuItemClassNameContract, DesignSystem> = 
         }),
         "&:hover": {
             background: neutralFillStealthHover,
-            ...applyHighContrastSelectedHover(),
+            ...applyHighContrastSelection,
         },
         "&:active": {
             background: neutralFillStealthActive,
         },
-        ...applyHighContrastAdjustStealth(),
+        ...applyHighContrastAdjustStealth,
     },
     contextMenuItem_contentRegion: {
         gridColumnStart: "2",
@@ -69,9 +68,9 @@ const styles: ComponentStyles<ContextMenuItemClassNameContract, DesignSystem> = 
     },
     contextMenuItem__disabled: {
         ...applyDisabledState(),
-        ...applyHighContrastDisabled(),
+        ...applyHighContrastDisabled,
         "&:hover": {
-            ...applyHighContrastDisabled(),
+            ...applyHighContrastDisabled,
         },
     },
 };

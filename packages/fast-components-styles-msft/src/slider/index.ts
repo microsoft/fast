@@ -113,16 +113,16 @@ const styles: ComponentStyles<SliderClassNameContract, DesignSystem> = {
         "& $slider_thumb": {
             "&:hover": {
                 background: neutralForegroundRest,
-                ...applyHighContrastDisabledBackground(),
+                ...applyHighContrastDisabledBackground,
             },
             "&:active": {
                 background: neutralForegroundRest,
-                ...applyHighContrastDisabledBackground(),
+                ...applyHighContrastDisabledBackground,
             },
-            ...applyHighContrastDisabledBackground(),
+            ...applyHighContrastDisabledBackground,
         },
         "& $slider_backgroundTrack": {
-            ...applyHighContrastDisabledBackground(),
+            ...applyHighContrastDisabledBackground,
         },
     },
     slider__horizontal: {
