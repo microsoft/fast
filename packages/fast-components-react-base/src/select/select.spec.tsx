@@ -177,51 +177,45 @@ describe("select", (): void => {
         expect(onValueChange).toHaveBeenCalledTimes(0);
     });
 
-    test("Arrow keys open menu and increment selection in single select mode", (): void => {
+    test("Arrow keys should increment selection without opening menu in single select mode", (): void => {
         const rendered: any = mount(
             <Select>
                 {itemA}
                 {itemB}
                 {itemC}
-            </Select>,
-            { attachTo: container }
+            </Select>
         );
 
         expect(rendered.state("selectedItems").length).toBe(0);
+
+        rendered.simulate("keydown", { keyCode: KeyCodes.arrowDown });
+
+        expect(rendered.state("selectedItems").length).toBe(1);
+        expect(rendered.state("selectedItems")[0].id).toBe("a");
         expect(rendered.state("isMenuOpen")).toBe(false);
 
         rendered.simulate("keydown", { keyCode: KeyCodes.arrowDown });
-        expect(rendered.state("isMenuOpen")).toBe(true);
-        expect(rendered.state("selectedItems").length).toBe(1);
-        expect(rendered.state("selectedItems")[0].id).toBe("a");
 
-        rendered
-            .find('[displayString="a"]')
-            .simulate("keydown", { keyCode: KeyCodes.arrowDown });
         expect(rendered.state("selectedItems").length).toBe(1);
         expect(rendered.state("selectedItems")[0].id).toBe("b");
+        expect(rendered.state("isMenuOpen")).toBe(false);
 
-        rendered
-            .find('[displayString="ab"]')
-            .simulate("keydown", { keyCode: KeyCodes.arrowDown });
+        rendered.simulate("keydown", { keyCode: KeyCodes.arrowDown });
         expect(rendered.state("selectedItems").length).toBe(1);
         expect(rendered.state("selectedItems")[0].id).toBe("c");
-
-        rendered
-            .find('[displayString="abc"]')
-            .simulate("keydown", { keyCode: KeyCodes.arrowDown });
-        expect(rendered.state("selectedItems").length).toBe(1);
-        expect(rendered.state("selectedItems")[0].id).toBe("c");
-
-        rendered
-            .find('[displayString="abc"]')
-            .simulate("keydown", { keyCode: KeyCodes.space });
         expect(rendered.state("isMenuOpen")).toBe(false);
 
         rendered.simulate("keydown", { keyCode: KeyCodes.arrowUp });
-        expect(rendered.state("isMenuOpen")).toBe(true);
+
         expect(rendered.state("selectedItems").length).toBe(1);
         expect(rendered.state("selectedItems")[0].id).toBe("b");
+        expect(rendered.state("isMenuOpen")).toBe(false);
+
+        rendered.simulate("keydown", { keyCode: KeyCodes.arrowUp });
+
+        expect(rendered.state("selectedItems").length).toBe(1);
+        expect(rendered.state("selectedItems")[0].id).toBe("a");
+        expect(rendered.state("isMenuOpen")).toBe(false);
     });
 
     test("Arrow up with no selection opens menu and select last item in single select mode", (): void => {
@@ -237,7 +231,7 @@ describe("select", (): void => {
         expect(rendered.state("isMenuOpen")).toBe(false);
 
         rendered.simulate("keydown", { keyCode: KeyCodes.arrowUp });
-        expect(rendered.state("isMenuOpen")).toBe(true);
+        expect(rendered.state("isMenuOpen")).toBe(false);
         expect(rendered.state("selectedItems").length).toBe(1);
         expect(rendered.state("selectedItems")[0].id).toBe("c");
     });
