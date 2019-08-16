@@ -1,4 +1,4 @@
-import { NavigationItem } from "../utilities";
+import { NavigationItem } from "../utilities/navigation";
 import { FormPlugin, FormPluginProps } from "../plugin";
 import { ErrorObject } from "ajv";
 
