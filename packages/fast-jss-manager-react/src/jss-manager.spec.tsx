@@ -5,6 +5,7 @@ import { configure, mount } from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
 import { DesignSystemProvider } from "./design-system-provider";
 import { values } from "lodash-es";
+import { create } from "jss";
 
 configure({ adapter: new Adapter() });
 /* tslint:disable:max-classes-per-file */
@@ -297,6 +298,24 @@ describe("The JSSManager", (): void => {
 
         const rendered: any = mount(<StyledManager innerRef={ref} />);
         expect(ref.current instanceof StyledComponent).toBe(true);
+    });
+
+    test("should use a custom JSS instance if provided", (): void => {
+        const originalJssInstance: any = JSSManager.jss;
+        const customJssInstance: any = create();
+        customJssInstance.createStyleSheet = jest.fn().mockImplementation(customJssInstance.createStyleSheet)
+
+
+        JSSManager["sheetManager"].clean();
+        JSSManager.jss = customJssInstance;
+
+        const rendered: any = mount(
+            <StyledManager />
+        );
+
+        expect(customJssInstance.createStyleSheet).toHaveBeenCalled()
+
+        JSSManager.jss = originalJssInstance;
     });
 });
 
