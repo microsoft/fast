@@ -23,4 +23,9 @@ export interface SelectOptionClassNameContract extends BaseListboxItemClassNameC
      * Select option content region
      */
     selectOption_contentRegion?: string;
+
+    /**
+     * Select option glyph
+     */
+    selectOption_glyph?: string;
 }
