@@ -41,7 +41,7 @@ export interface RadioHandledProps extends RadioManagedClasses {
     value?: string;
 }
 
-export interface RadioUnhandledProps extends React.AllHTMLAttributes<HTMLElement> {}
+export interface RadioUnhandledProps extends React.HTMLAttributes<HTMLDivElement> {}
 export type RadioOnChange = (event?: React.ChangeEvent<HTMLElement>) => void;
 export interface RadioManagedClasses extends ManagedClasses<RadioClassNameContract> {}
 export type RadioProps = RadioHandledProps & RadioUnhandledProps;
