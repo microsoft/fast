@@ -1,6 +1,6 @@
 import { ButtonBaseClassNameContract as LightweightButtonClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import { ComponentStyles } from "@microsoft/fast-jss-manager";
-import { DesignSystem, ensureDesignSystemDefaults } from "../design-system";
+import { DesignSystem } from "../design-system";
 import { baseButton, buttonStyles } from "../patterns/button";
 import {
     neutralFocus,
@@ -10,8 +10,8 @@ import {
     neutralOutlineRest,
 } from "../utilities/color";
 import { horizontalSpacing } from "../utilities/density";
-import { outlineWidth } from "../utilities/design-system";
-import { applyFocusVisible, format, toPx } from "@microsoft/fast-jss-utilities";
+import { focusOutlineWidth, outlineWidth } from "../utilities/design-system";
+import { applyFocusVisible, format, subtract, toPx } from "@microsoft/fast-jss-utilities";
 
 const styles: ComponentStyles<LightweightButtonClassNameContract, DesignSystem> = {
     ...baseButton,
@@ -43,12 +43,10 @@ const styles: ComponentStyles<LightweightButtonClassNameContract, DesignSystem> 
             ),
         },
         ...applyFocusVisible<DesignSystem>({
-            boxShadow: ensureDesignSystemDefaults(
-                (designSystem: DesignSystem): string => {
-                    return `0 0 0 ${toPx(
-                        designSystem.focusOutlineWidth - designSystem.outlineWidth
-                    )} ${neutralFocus(designSystem)} inset`;
-                }
+            boxShadow: format(
+                "0 0 0 {0} {1} inset",
+                toPx(subtract(focusOutlineWidth, outlineWidth)),
+                neutralFocus
             ),
             borderColor: neutralFocus,
         }),

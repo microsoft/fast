@@ -1,5 +1,5 @@
 import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager";
-import { DesignSystem, ensureDesignSystemDefaults } from "../design-system";
+import { DesignSystem } from "../design-system";
 import { directionSwitch, format, toPx } from "@microsoft/fast-jss-utilities";
 import { applyCornerRadius, applyFocusPlaceholderBorder } from "../utilities/border";
 import { applyCursorPointer } from "../utilities/cursor";
@@ -8,6 +8,10 @@ import { applyScaledTypeRamp } from "../utilities/typography";
 import { glyphSize, height, horizontalSpacing } from "../utilities/density";
 import { applyDisabledState } from "../utilities/disabled";
 import { ButtonBaseClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
+import { DesignSystemResolver } from "../design-system";
+import { getDesignSystemValue } from "../utilities/design-system";
+
+const density: DesignSystemResolver<number> = getDesignSystemValue("density");
 
 export function buttonStyles(): CSSRules<{}> {
     return {
@@ -18,10 +22,8 @@ export function buttonStyles(): CSSRules<{}> {
         fontFamily: "inherit",
         boxSizing: "border-box",
         maxWidth: "374px",
-        minWidth: ensureDesignSystemDefaults(
-            (designSystem: DesignSystem): string =>
-                designSystem.density <= -2 ? "28px" : "32px"
-        ),
+        minWidth: (designSystem: DesignSystem): string =>
+            density(designSystem) <= -2 ? "28px" : "32px",
         padding: format("0 {0}", horizontalSpacing(focusOutlineWidth)),
         display: "inline-flex",
         justifyContent: "center",
