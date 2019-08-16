@@ -22,7 +22,6 @@ const styles: ComponentStyles<DialogClassNameContract, DesignSystem> = (
         dialog_positioningRegion: {
             display: "flex",
             justifyContent: "center",
-            alignItems: "center",
             position: "fixed",
             top: "0",
             bottom: "0",
@@ -39,6 +38,8 @@ const styles: ComponentStyles<DialogClassNameContract, DesignSystem> = (
             ...applyAcrylicMaterial(backgroundColor, 0.6, 0.9, true),
         },
         dialog_contentRegion: {
+            marginTop: "auto",
+            marginBottom: "auto",
             background: backgroundColor,
             ...applyElevatedCornerRadius(),
             ...applyElevation(ElevationMultiplier.e14),
