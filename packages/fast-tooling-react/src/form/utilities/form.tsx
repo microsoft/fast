@@ -3,10 +3,6 @@ import { cloneDeep, get, mergeWith, omit, set, unset } from "lodash-es";
 import { getDataFromSchema } from "../../data-utilities";
 import {
     getChildOptionBySchemaId,
-    getDataLocationsOfChildren,
-    getPartialData,
-    mapSchemaLocationFromDataLocation,
-    normalizeDataLocation,
     squareBracketsRegex,
 } from "../../data-utilities/location";
 import ajv, { ErrorObject, ValidationError } from "ajv";
@@ -27,11 +23,7 @@ import {
     oneOfAnyOfType,
 } from "../form/form-section.props";
 import { FormControlProps } from "../form/form-control.props";
-import {
-    BreadcrumbItemEventHandler,
-    FormChildOptionItem,
-    FormState,
-} from "../form/form.props";
+import { FormChildOptionItem, FormState } from "../form/form.props";
 import { reactChildrenStringSchema } from "../form/form-item.children.text";
 
 /**
@@ -588,21 +580,11 @@ export function getLabel(label: string, title: string): string {
     return label === "" && title !== void 0 ? title : label;
 }
 
-const propsKeyword: string = "props";
+export const propsKeyword: string = "props";
 
 export enum PropertyKeyword {
     properties = "properties",
     reactProperties = "reactProperties",
-}
-
-export interface NavigationItem {
-    dataLocation: string;
-    schemaLocation: string;
-    title: string;
-    data: any;
-    schema: any;
-    invalidMessage?: ValidationError;
-    default: any;
 }
 
 export interface NavigationItemConfig {
@@ -611,27 +593,6 @@ export interface NavigationItemConfig {
     schema: any;
     data: any;
     default: any;
-}
-
-export interface BreadcrumbItem {
-    href: string;
-    text: string;
-    onClick: (e: React.MouseEvent<HTMLAnchorElement>) => void;
-}
-
-export type HandleBreadcrumbClick = (
-    schemaLocation: string,
-    dataLocation: string,
-    schema: any
-) => BreadcrumbItemEventHandler;
-
-/**
- * Resolves arrays when the object is an array and the data passed is an array
- */
-function cachedArrayResolver(objValue: any, srcValue: any): any {
-    if (Array.isArray(objValue) && Array.isArray(srcValue)) {
-        return srcValue;
-    }
 }
 
 /**
@@ -670,162 +631,6 @@ export function getLocationsFromSegments(segments: string[]): string[] {
     return segments.map((location: string, index: number) => {
         return segments.slice(0, index + 1).join(".");
     });
-}
-
-/**
- * Gets the navigational items
- */
-export function getNavigation(
-    dataLocation: string,
-    data: any | void,
-    schema: any,
-    childOptions: FormChildOptionItem[],
-    schemaLocation?: string
-): NavigationItem[] {
-    const allChildOptions: FormChildOptionItem[] = getReactDefaultChildren().concat(
-        childOptions
-    );
-    const dataLocationsOfChildren: string[] = getDataLocationsOfChildren(
-        schema,
-        data,
-        allChildOptions
-    );
-    const normalizedDataLocation: string = !dataLocationsOfChildren.includes(dataLocation)
-        ? normalizeDataLocation(dataLocation, data)
-        : typeof get(data, dataLocation) === "string"
-            ? normalizeDataLocation(dataLocation, data)
-            : `${normalizeDataLocation(dataLocation, data)}.${propsKeyword}`;
-    const dataLocations: Set<string> = new Set(
-        [""].concat(getLocationsFromSegments(normalizedDataLocation.split(".")))
-    );
-    const navigationItems: NavigationItem[] = [];
-    let currentComponentSchema: any = schema;
-    let lastComponentDataLocation: string = "";
-
-    dataLocations.forEach((dataLocationItem: string) => {
-        if (dataLocationsOfChildren.includes(dataLocationItem)) {
-            const isChildString: boolean =
-                typeof get(data, dataLocationItem) === "string";
-            currentComponentSchema = getSchemaByDataLocation(
-                schema,
-                data,
-                dataLocationItem,
-                allChildOptions
-            );
-            lastComponentDataLocation = isChildString
-                ? dataLocationItem
-                : `${dataLocationItem}.${propsKeyword}`;
-
-            if (isChildString) {
-                navigationItems.push(
-                    getNavigationItem({
-                        dataLocation: dataLocationItem,
-                        schemaLocation: "",
-                        schema: reactChildrenStringSchema,
-                        data,
-                        default: get(schema, "default"),
-                    })
-                );
-            }
-        } else {
-            const isRoot: boolean = isRootLocation(lastComponentDataLocation);
-            const rootLocationOfComponent: string = isRoot
-                ? ""
-                : lastComponentDataLocation.replace(dataLocationItem, "");
-            const dataLocationFromLastComponent: string = getCurrentComponentDataLocation(
-                dataLocationItem,
-                lastComponentDataLocation
-            );
-            let currentSchemaLocation: string =
-                schemaLocation ||
-                mapSchemaLocationFromDataLocation(
-                    isRoot ? dataLocationItem : dataLocationFromLastComponent,
-                    currentComponentSchema,
-                    isRoot ? data : get(data, rootLocationOfComponent)
-                );
-            const currentSchemaLocationSegments: string[] = currentSchemaLocation.split(
-                "."
-            );
-            const currentSchemaLocationSegmentsLength: number =
-                currentSchemaLocationSegments.length;
-            if (
-                !isNaN(
-                    parseInt(
-                        currentSchemaLocationSegments[
-                            currentSchemaLocationSegmentsLength - 1
-                        ],
-                        10
-                    )
-                ) &&
-                (currentSchemaLocationSegments[
-                    currentSchemaLocationSegmentsLength - 2
-                ] === "oneOf" ||
-                    currentSchemaLocationSegments[
-                        currentSchemaLocationSegmentsLength - 2
-                    ] === "anyOf")
-            ) {
-                currentSchemaLocation = currentSchemaLocationSegments
-                    .slice(0, currentSchemaLocationSegmentsLength - 2)
-                    .join(".");
-            }
-
-            const currentSchema: any =
-                dataLocationFromLastComponent === ""
-                    ? currentComponentSchema
-                    : get(currentComponentSchema, currentSchemaLocation);
-
-            navigationItems.push(
-                getNavigationItem({
-                    dataLocation: dataLocationItem,
-                    schemaLocation: currentSchemaLocation,
-                    schema: currentSchema,
-                    data,
-                    default:
-                        get(currentSchema, "default") ||
-                        getInheritedDefaultValue(navigationItems, dataLocationItem),
-                })
-            );
-        }
-    });
-
-    return navigationItems;
-}
-
-function getInheritedDefaultValue(
-    navigationItems: NavigationItem[],
-    dataLocation: string
-): any {
-    for (let i: number = navigationItems.length; i--; ) {
-        if (typeof navigationItems[i].default !== "undefined") {
-            const navigationItemDataLocationLength: number =
-                navigationItems[i].dataLocation.length;
-
-            return get(
-                navigationItems[i].default,
-                dataLocation.slice(
-                    navigationItems[i].dataLocation === ""
-                        ? navigationItemDataLocationLength
-                        : navigationItemDataLocationLength + 1
-                )
-            );
-        }
-    }
-
-    return void 0;
-}
-
-/**
- * Get a single navigation item
- */
-export function getNavigationItem(config: NavigationItemConfig): NavigationItem {
-    return {
-        dataLocation: config.dataLocation,
-        schemaLocation: config.schemaLocation,
-        title: get(config, "schema.title") || "Untitled",
-        data: getPartialData(config.dataLocation, config.data),
-        schema: config.schema,
-        default: config.default,
-    };
 }
 
 /**
@@ -880,28 +685,6 @@ export function isDifferentSchema(oldSchema: any, newSchema: any): boolean {
  */
 export function isModifiedSchema(oldSchema: any, newSchema: any): boolean {
     return JSON.stringify(oldSchema) !== JSON.stringify(newSchema);
-}
-
-/**
- * Gets breadcrumbs from navigation items
- */
-export function getBreadcrumbs(
-    navigation: NavigationItem[],
-    handleClick: HandleBreadcrumbClick
-): BreadcrumbItem[] {
-    return navigation.map(
-        (navigationItem: NavigationItem): BreadcrumbItem => {
-            return {
-                href: navigationItem.dataLocation,
-                text: navigationItem.title,
-                onClick: handleClick(
-                    navigationItem.schemaLocation,
-                    navigationItem.dataLocation,
-                    navigationItem.schema
-                ),
-            };
-        }
-    );
 }
 
 /**
