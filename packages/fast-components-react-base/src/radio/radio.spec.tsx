@@ -114,6 +114,24 @@ describe("radio", (): void => {
         expect(rendered.exists(".child")).toBe(false);
     });
 
+    test("should render a ReactNode with a className of `radio_label` when one is passed as to the `label` prop", () => {
+        const label: (className: string) => React.ReactNode = (
+            className: string
+        ): React.ReactNode => (
+            <label className={`customLabel ${className}`} htmlFor={"radio03"}>
+                Label
+            </label>
+        );
+        const rendered: any = mount(
+            <Radio managedClasses={managedClasses} inputId="radio03" label={label} />
+        );
+
+        expect(rendered.find(".customLabel")).not.toBe(undefined);
+        expect(rendered.find(".customLabel").props().className).toContain(
+            managedClasses.radio_label
+        );
+    });
+
     test("should add a `radio_label` className to a child with the `label` slot prop", () => {
         const rendered: any = mount(
             <Radio managedClasses={managedClasses} inputId="radio03">

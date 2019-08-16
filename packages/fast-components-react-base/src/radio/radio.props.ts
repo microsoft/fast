@@ -33,7 +33,7 @@ export interface RadioHandledProps extends RadioManagedClasses {
     /**
      * The radio content
      */
-    children?: React.ReactNode;
+    label?: (className: string) => React.ReactNode;
 
     /**
      * The value of the radio
