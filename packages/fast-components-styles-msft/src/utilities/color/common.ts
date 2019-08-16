@@ -80,6 +80,8 @@ export type ColorRecipe<T> = DesignSystemResolver<T> &
     DesignSystemResolverFromSwatchResolver<T>;
 
 export function colorRecipeFactory<T>(recipe: DesignSystemResolver<T>): ColorRecipe<T> {
+    const memoizedRecipe: typeof recipe = memoize(recipe);
+
     function curryRecipe(designSystem: DesignSystem): T;
     function curryRecipe(
         backgroundResolver: SwatchResolver
@@ -87,14 +89,14 @@ export function colorRecipeFactory<T>(recipe: DesignSystemResolver<T>): ColorRec
     function curryRecipe(arg: any): any {
         if (typeof arg === "function") {
             return (designSystem: DesignSystem): T => {
-                return recipe(
+                return memoizedRecipe(
                     Object.assign({}, designSystem, {
                         backgroundColor: arg(designSystem),
                     })
                 );
             };
         } else {
-            return recipe(arg);
+            return memoizedRecipe(arg);
         }
     }
 
@@ -119,17 +121,18 @@ export function swatchFamilyToSwatchRecipeFactory<T extends SwatchFamily>(
     type: keyof T,
     callback: SwatchFamilyResolver<T>
 ): SwatchRecipe {
+    const memoizedRecipe: typeof callback = memoize(callback);
     return (arg: DesignSystem | SwatchResolver): any => {
         if (typeof arg === "function") {
             return (designSystem: DesignSystem): Swatch => {
-                return callback(
+                return memoizedRecipe(
                     Object.assign({}, designSystem, {
                         backgroundColor: arg(designSystem),
                     })
                 )[type as string];
             };
         } else {
-            return callback(arg)[type];
+            return memoizedRecipe(arg)[type];
         }
     };
 }

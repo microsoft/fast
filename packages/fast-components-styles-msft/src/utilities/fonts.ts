@@ -1,9 +1,9 @@
 import { CSSRules } from "@microsoft/fast-jss-manager";
-import {
+import designSystemDefaults, {
     DesignSystem,
     DesignSystemResolver,
-    ensureDesignSystemDefaults,
 } from "../design-system";
+import { getFontWeight } from "./design-system";
 
 export interface FontWeight {
     light: number;
@@ -26,12 +26,14 @@ export const defaultFontWeights: FontWeight = {
  */
 export const fontWeight: FontWeight = defaultFontWeights;
 
+/**
+ * Retrieve the focusOutlineWidth from the design system
+ */
+
 function weight(index: keyof FontWeight): DesignSystemResolver<string> {
-    return ensureDesignSystemDefaults(
-        (designSystem: DesignSystem): string => {
-            return `${designSystem.fontWeight[index]}`;
-        }
-    );
+    return (designSystem: DesignSystem): string => {
+        return getFontWeight(designSystem)[index].toString();
+    };
 }
 
 export function applyFontWeightLight(): CSSRules<DesignSystem> {

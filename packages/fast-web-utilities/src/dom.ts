@@ -21,16 +21,15 @@ export function canUseFocusVisible(): boolean {
     }
 
     // Check to see if the document supports the focus-visible elemtn
-    const styleElement: HTMLStyleElement = document.createElement("style");
-    document.head.appendChild(styleElement);
 
     try {
+        const styleElement: HTMLStyleElement = document.createElement("style");
+        document.head.appendChild(styleElement);
         (styleElement.sheet as any).insertRule("foo:focus-visible {color:inherit}", 0);
         _canUseFocusVisible = true;
+        document.head.removeChild(styleElement);
     } catch (e) {
         _canUseFocusVisible = false;
-    } finally {
-        document.head.removeChild(styleElement);
     }
 
     return _canUseFocusVisible as boolean;
