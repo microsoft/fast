@@ -20,6 +20,7 @@ import {
     ParagraphSize,
 } from "../index";
 import { DisplayNamePrefix } from "../utilities";
+import { CarouselClassNameContract } from ".";
 
 function contentOne(): (className?: string) => React.ReactNode {
     return (className?: string): React.ReactNode => (
@@ -306,6 +307,114 @@ describe("carousel", (): void => {
             .simulate("click");
 
         expect(onActiveIdUpdateFn.mock.results[0].value).toBe(false);
+    });
+
+    describe("flippers", (): void => {
+        const carouselClasses: CarouselClassNameContract = {
+            carousel: "carousel",
+            carousel_flipperNext: "carousel_next",
+            carousel_flipperPrevious: "carousel_previous",
+        };
+        const nextFlipper: (
+            callback: () => void,
+            className: string
+        ) => React.ReactNode = (
+            callback: () => void,
+            className: string
+        ): React.ReactNode => (
+            <button onClick={callback} className={`customNext ${className}`} />
+        );
+        const previousFlipper: (
+            callback: () => void,
+            className: string
+        ) => React.ReactNode = (
+            callback: () => void,
+            className: string
+        ): React.ReactNode => (
+            <button onClick={callback} className={`customPrevious ${className}`} />
+        );
+        const props: CarouselProps = {
+            ...handledProps,
+            managedClasses: carouselClasses,
+        };
+
+        test("should return a next flipper by default when no `nextFlipper` prop is passed", () => {
+            const rendered: any = mount(<MSFTCarousel {...props} />);
+
+            expect(rendered.find(".carousel_next").first().length).toBe(1);
+        });
+
+        test("should return a previous flipper by default when no `previousFlipper` prop is passed", () => {
+            const rendered: any = mount(<MSFTCarousel {...props} />);
+
+            expect(rendered.find(".carousel_previous").first().length).toBe(1);
+        });
+
+        test("should return a custom next flipper when passed to the `nextFlipper` prop", () => {
+            const rendered: any = mount(
+                <MSFTCarousel {...props} nextFlipper={nextFlipper} />
+            );
+
+            expect(rendered.props().nextFlipper).not.toBe(undefined);
+            expect(rendered.find(".customNext").length).toBe(1);
+        });
+
+        test("should return a custom previous flipper when passed to the `previousFlipper` prop", () => {
+            const rendered: any = mount(
+                <MSFTCarousel {...props} previousFlipper={previousFlipper} />
+            );
+
+            expect(rendered.props().previousFlipper).not.toBe(undefined);
+            expect(rendered.find(".customPrevious").length).toBe(1);
+        });
+
+        test("should add a `carousel_flipperPrevious` className to previous flipper when passed to the `previousFlipper` prop", () => {
+            const rendered: any = mount(
+                <MSFTCarousel {...props} previousFlipper={previousFlipper} />
+            );
+
+            expect(rendered.props().previousFlipper).not.toBe(undefined);
+            expect(rendered.find(".customPrevious").props().className).toContain(
+                carouselClasses.carousel_flipperPrevious
+            );
+        });
+
+        test("should add a `carousel_flipperNext` className to next flipper when passed to the `nextFlipper` prop", () => {
+            const rendered: any = mount(
+                <MSFTCarousel {...props} nextFlipper={nextFlipper} />
+            );
+
+            expect(rendered.props().nextFlipper).not.toBe(undefined);
+            expect(rendered.find(".customNext").props().className).toContain(
+                carouselClasses.carousel_flipperNext
+            );
+        });
+
+        test("should move to previous slide on 'previous' custom flipper click", () => {
+            const rendered: any = mount(
+                <MSFTCarousel {...props} previousFlipper={previousFlipper} />
+            );
+
+            rendered.setState({ activeId: "id02" });
+            rendered
+                .find(".customPrevious")
+                .first()
+                .simulate("click");
+            expect(rendered.state("activeId")).toBe("id01");
+        });
+
+        test("should move to next slide on 'next' custom flipper click", () => {
+            const rendered: any = mount(
+                <MSFTCarousel {...props} nextFlipper={nextFlipper} />
+            );
+
+            rendered.setState({ activeId: "id01" });
+            rendered
+                .find(".customNext")
+                .first()
+                .simulate("click");
+            expect(rendered.state("activeId")).toBe("id02");
+        });
     });
 
     describe("autoplay", (): void => {
