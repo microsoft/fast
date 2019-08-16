@@ -303,17 +303,16 @@ describe("The JSSManager", (): void => {
     test("should use a custom JSS instance if provided", (): void => {
         const originalJssInstance: any = JSSManager.jss;
         const customJssInstance: any = create();
-        customJssInstance.createStyleSheet = jest.fn().mockImplementation(customJssInstance.createStyleSheet)
-
+        customJssInstance.createStyleSheet = jest
+            .fn()
+            .mockImplementation(customJssInstance.createStyleSheet);
 
         JSSManager["sheetManager"].clean();
         JSSManager.jss = customJssInstance;
 
-        const rendered: any = mount(
-            <StyledManager />
-        );
+        const rendered: any = mount(<StyledManager />);
 
-        expect(customJssInstance.createStyleSheet).toHaveBeenCalled()
+        expect(customJssInstance.createStyleSheet).toHaveBeenCalled();
 
         JSSManager.jss = originalJssInstance;
     });

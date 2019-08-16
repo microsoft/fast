@@ -63,7 +63,7 @@ abstract class JSSManager<T, S, C> extends React.Component<ManagedJSSProps<T, S,
      */
     public static set jss(instance: any) {
         JSSManager.sheetManager.jss = instance;
-    };
+    }
 
     /**
      * Get the JSS instance used by all JSSManger instances
