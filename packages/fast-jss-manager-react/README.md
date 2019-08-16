@@ -220,7 +220,9 @@ Style element order is determined by rendering order, where components higher in
 While in general this works, there is a known issue being tracked [here](https://github.com/microsoft/fast-dna/issues/1279) where parents can lose their ability to override child components. This is an unintended side-effect of memozing stylesheets. While not ideal, specificity can usually be added to the selector to mitigate the issue, as the issue only manifests when document order is determining selector specificity.
 
 ### Custom JSS instance
-The JSSManager can be configured to use a custom JSS instance for all instance of the JSSManager. To ensure all components in your app use the same JSS instance to generate stylesheets, you should assign the new JSS instance prior to rendering any components.
+The JSSManager can be configured to use a custom JSS instance for all instances of the JSSManager. To ensure all components in your app use the same JSS instance to generate stylesheets, you should assign the new JSS instance prior to rendering any components.
+
+For more information on how JSS instances can be created, see [https://cssinjs.org/jss-api/?v=v10.0.0-alpha.24#create-an-own-jss-instance](https://cssinjs.org/jss-api/?v=v10.0.0-alpha.24#create-an-own-jss-instance)
 
 ```js
 import {  create } from "jss";
