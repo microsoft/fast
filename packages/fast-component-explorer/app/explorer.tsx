@@ -23,16 +23,15 @@ import {
     mapDataToCodePreview,
     NavigationMenu,
     Viewer,
+    ViewerClassNameContract,
 } from "@microsoft/fast-tooling-react";
-import manageJss, {
-    ComponentStyleSheet,
-    DesignSystemProvider,
-} from "@microsoft/fast-jss-manager-react";
+import manageJss, { ComponentStyleSheet } from "@microsoft/fast-jss-manager-react";
 import ReactDOM from "react-dom";
 import React from "react";
 import { downChevron, upChevron } from "./icons/chevrons";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import {
+    applyCornerRadius,
     createColorPalette,
     DesignSystem,
     DesignSystemDefaults,
@@ -70,7 +69,6 @@ import {
     ToggleClassNameContract,
     Typography,
 } from "@microsoft/fast-components-react-msft";
-import { ViewerManagedClasses } from "@microsoft/fast-tooling-react/dist/viewer/viewer/viewer.props";
 import {
     FormChildOptionItem,
     FormClassNameContract,
@@ -109,15 +107,22 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
         },
     };
 
-    private viewerStyleOverrides: ComponentStyleSheet<
-        ViewerManagedClasses,
-        DesignSystem
-    > = {
-        viewer: {
-            minHeight: "unset",
-            width: "fit-content",
-        },
-    };
+    private viewerStyleOverrides: (
+        background: string
+    ) => ComponentStyleSheet<Partial<ViewerClassNameContract>, DesignSystem> = memoize(
+        (
+            background: string
+        ): ComponentStyleSheet<Partial<ViewerClassNameContract>, DesignSystem> => ({
+            viewer: {
+                minHeight: "unset",
+                width: "fit-content",
+            },
+            viewer_iframe: {
+                backgroundColor: background,
+                ...applyCornerRadius(),
+            },
+        })
+    );
 
     private formStyleOverrides: ComponentStyleSheet<
         Partial<FormClassNameContract>,
@@ -405,7 +410,9 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
                 onUpdateWidth={this.handleUpdateWidth}
                 viewerContentProps={this.state.scenario}
                 responsive={true}
-                jssStyleSheet={this.viewerStyleOverrides}
+                jssStyleSheet={this.viewerStyleOverrides(
+                    get(this.state, "viewConfig.backgroundColor")
+                )}
             />
         );
     }
