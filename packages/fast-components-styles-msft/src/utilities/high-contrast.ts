@@ -48,14 +48,6 @@ export const applyHighContrastSelected: CSSRules<DesignSystem> = {
     },
 };
 
-// Used to remove text backplate and borders
-export const applyHighContrastAdjustNone: CSSRules<DesignSystem> = {
-    [highContrastSelector]: {
-        color: HighContrastColor.buttonText,
-        "-ms-high-contrast-adjust": "none",
-    },
-};
-
 // Used to set a borderless component to disabled color
 export const applyHighContrastDisabled: CSSRules<DesignSystem> = {
     [highContrastSelector]: {

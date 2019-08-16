@@ -1,4 +1,17 @@
+import { applyDisabledState } from "../utilities/disabled";
 import { DesignSystem, DesignSystemResolver } from "../design-system";
+import { ComponentStyles } from "@microsoft/fast-jss-manager";
+import {
+    add,
+    applyFocusVisible,
+    directionSwitch,
+    divide,
+    format,
+    multiply,
+    subtract,
+    toPx,
+} from "@microsoft/fast-jss-utilities";
+import { ToggleClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import {
     accentFillRest,
     accentForegroundCut,
@@ -13,24 +26,12 @@ import {
     neutralOutlineHover,
     neutralOutlineRest,
 } from "../utilities/color";
-import { ComponentStyles } from "@microsoft/fast-jss-manager";
-import {
-    add,
-    applyFocusVisible,
-    directionSwitch,
-    divide,
-    format,
-    multiply,
-    subtract,
-    toPx,
-} from "@microsoft/fast-jss-utilities";
-import { ToggleClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
-import { applyDisabledState } from "../utilities/disabled";
 import { applyScaledTypeRamp } from "../utilities/typography";
 import { densityCategorySwitch, heightNumber } from "../utilities/density";
 import { designUnit, focusOutlineWidth, outlineWidth } from "../utilities/design-system";
 import { applyCursorDisabled, applyCursorPointer } from "../utilities/cursor";
 import {
+    applyHighContrastDoubleFocus,
     applyHighContrastForeground,
     highContrastSelector,
 } from "../utilities/high-contrast";
@@ -145,6 +146,7 @@ const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = {
                     neutralFocusInnerAccent(accentFillRest)
                 ),
                 borderColor: neutralFocus,
+                ...applyHighContrastDoubleFocus,
             }),
             "&:disabled": {
                 [highContrastSelector]: {
