@@ -42,7 +42,7 @@ storiesOf("Checkbox", module)
         }
         return <CheckboxStateHandler>{render}</CheckboxStateHandler>;
     })
-    .add("With label", () => {
+    .add("With slot label", () => {
         const id: string = uniqueId();
         return (
             <Checkbox inputId={id} onChange={action("onChange")}>
@@ -51,4 +51,15 @@ storiesOf("Checkbox", module)
                 </Label>
             </Checkbox>
         );
+    })
+    .add("With label", () => {
+        const id: string = uniqueId();
+        const label: (className: string) => React.ReactNode = (
+            className: string
+        ): React.ReactNode => (
+            <Label className={className} htmlFor={id}>
+                Hello render prop
+            </Label>
+        );
+        return <Checkbox inputId={id} onChange={action("onChnage")} label={label} />;
     });

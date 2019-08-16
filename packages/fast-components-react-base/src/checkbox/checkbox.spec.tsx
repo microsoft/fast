@@ -160,6 +160,29 @@ describe("checkbox", (): void => {
         );
     });
 
+    test("should accept a ReactNode with a className of `label` when passed to the `label` prop", (): void => {
+        const checkboxId: string = "id01";
+        const label: (className: string) => React.ReactNode = (
+            className: string
+        ): React.ReactNode => (
+            <label className={`${className} customLabel`} htmlFor={checkboxId}>
+                Hello World
+            </label>
+        );
+        const rendered: any = mount(
+            <Checkbox
+                managedClasses={managedClasses}
+                inputId={checkboxId}
+                label={label}
+            />
+        );
+
+        expect(rendered.find(".customLabel").length).toBe(1);
+        expect(rendered.find(".customLabel").prop("className")).toContain(
+            managedClasses.checkbox_label
+        );
+    });
+
     test("should apply a value prop to the input element", (): void => {
         const rendered: any = mount(
             <Checkbox managedClasses={managedClasses} inputId="id" value="myValue" />

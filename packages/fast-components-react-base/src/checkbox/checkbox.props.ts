@@ -4,6 +4,11 @@ import {
     ManagedClasses,
 } from "@microsoft/fast-components-class-name-contracts-base";
 
+/**
+ * @deprecated
+ * Slots have been deprecated and will be removed in the next major version
+ * Use the `label` prop instead
+ */
 export enum CheckboxSlot {
     label = "label",
 }
@@ -45,7 +50,7 @@ export interface CheckboxHandledProps extends CheckboxManagedClasses {
     /**
      * The checkbox content
      */
-    children?: React.ReactNode;
+    label?: (className: string) => React.ReactNode;
 
     /**
      * The value of the checkbox
