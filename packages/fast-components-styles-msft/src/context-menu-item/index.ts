@@ -1,5 +1,5 @@
-import { ComponentStyles } from "@microsoft/fast-jss-manager";
 import { applyCursorPointer } from "../utilities/cursor";
+import { ContextMenuItemClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import { add, applyFocusVisible, format, toPx } from "@microsoft/fast-jss-utilities";
 import { DesignSystem } from "../design-system";
 import { applyCornerRadius, applyFocusPlaceholderBorder } from "../utilities/border";
@@ -9,16 +9,16 @@ import {
     neutralFocus,
     neutralForegroundRest,
 } from "../utilities/color";
-import { ContextMenuItemClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
+import { ComponentStyles } from "@microsoft/fast-jss-manager";
 import { height, horizontalSpacingNumber } from "../utilities/density";
 import { designUnit, focusOutlineWidth } from "../utilities/design-system";
 import { applyDisabledState } from "../utilities/disabled";
 import { applyScaledTypeRamp } from "../utilities/typography";
 import {
-    applyHighContrastAdjustStealth,
-    applyHighContrastDisabled,
-    applyHighContrastSelection,
-    highContrastSelector,
+    highContrastDisabled,
+    highContrastOutlineFocus,
+    highContrastSelection,
+    highContrastStealth,
 } from "../utilities/high-contrast";
 
 const glyphWidth: number = 16;
@@ -47,18 +47,16 @@ const styles: ComponentStyles<ContextMenuItemClassNameContract, DesignSystem> = 
         ...applyFocusPlaceholderBorder(),
         ...applyFocusVisible<DesignSystem>({
             borderColor: neutralFocus,
-            [highContrastSelector]: {
-                boxShadow: format(`0 0 0 {0} inset ButtonText`, toPx(focusOutlineWidth)),
-            },
+            ...highContrastOutlineFocus
         }),
         "&:hover": {
             background: neutralFillStealthHover,
-            ...applyHighContrastSelection,
+            ...highContrastSelection,
         },
         "&:active": {
             background: neutralFillStealthActive,
         },
-        ...applyHighContrastAdjustStealth,
+        ...highContrastStealth,
     },
     contextMenuItem_contentRegion: {
         gridColumnStart: "2",
@@ -68,9 +66,9 @@ const styles: ComponentStyles<ContextMenuItemClassNameContract, DesignSystem> = 
     },
     contextMenuItem__disabled: {
         ...applyDisabledState(),
-        ...applyHighContrastDisabled,
+        ...highContrastDisabled,
         "&:hover": {
-            ...applyHighContrastDisabled,
+            ...highContrastDisabled,
         },
     },
 };

@@ -1,9 +1,9 @@
-import { applyScaledTypeRamp } from "../utilities/typography";
 import {
     applyFocusVisible,
     directionSwitch,
     format,
 } from "@microsoft/fast-jss-utilities";
+import { DesignSystem, withDesignSystemDefaults } from "../design-system";
 import { AutoSuggestOptionClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import { height, horizontalSpacing } from "../utilities/density";
 import {
@@ -14,18 +14,18 @@ import {
     neutralForegroundRest,
 } from "../utilities/color";
 import { ComponentStyles, ComponentStyleSheet } from "@microsoft/fast-jss-manager";
-import { DesignSystem, withDesignSystemDefaults } from "../design-system";
+import { applyScaledTypeRamp } from "../utilities/typography";
 import { Direction, ellipsis, toPx } from "@microsoft/fast-jss-utilities";
 import { applyCornerRadius, applyFocusPlaceholderBorder } from "../utilities/border";
 import { applyCursorDefault } from "../utilities/cursor";
 import { applyDisabledState } from "../utilities/disabled";
 import { designUnit } from "../utilities/design-system";
 import {
-    applyHighContrastAdjustStealth,
-    applyHighContrastDisabled,
-    applyHighContrastDisabledForeground,
-    applyHighContrastSelection,
+    HighContrastColor,
+    highContrastDisabled,
+    highContrastSelection,
     highContrastSelector,
+    highContrastStealth,
 } from "../utilities/high-contrast";
 
 const styles: ComponentStyles<AutoSuggestOptionClassNameContract, DesignSystem> = {
@@ -52,15 +52,15 @@ const styles: ComponentStyles<AutoSuggestOptionClassNameContract, DesignSystem> 
         ...applyFocusVisible<DesignSystem>({
             borderColor: neutralFocus,
             [highContrastSelector]: {
-                background: "Highlight",
-                color: "HighlightText",
+                background: HighContrastColor.selectedBackground,
+                color: HighContrastColor.selectedText,
             },
         }),
         "&:hover": {
             background: neutralFillStealthHover,
-            ...applyHighContrastSelection,
+            ...highContrastSelection,
         },
-        ...applyHighContrastAdjustStealth,
+        ...highContrastStealth,
     },
     autoSuggestOption_contentRegion: {
         gridColumnStart: "3",
@@ -69,17 +69,17 @@ const styles: ComponentStyles<AutoSuggestOptionClassNameContract, DesignSystem> 
     },
     autoSuggestOption__disabled: {
         ...applyDisabledState(),
-        ...applyHighContrastDisabledForeground,
+        ...highContrastDisabled,
         "&:hover": {
             background: neutralFillStealthRest,
-            ...applyHighContrastDisabled,
+            ...highContrastDisabled,
         },
     },
     autoSuggestOption__selected: {
         background: neutralFillStealthSelected,
         "&:hover": {
             background: neutralFillStealthSelected,
-            ...applyHighContrastSelection,
+            ...highContrastSelection,
         },
     },
 };

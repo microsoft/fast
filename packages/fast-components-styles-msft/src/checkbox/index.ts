@@ -31,7 +31,7 @@ import { designUnit, outlineWidth } from "../utilities/design-system";
 import { applyCursorDisabled, applyCursorPointer } from "../utilities/cursor";
 import { ColorRecipe } from "src/utilities/color/common";
 import {
-    applyHighContrastDisabledBorder,
+    highContrastDisabledBorder,
     highContrastSelector,
 } from "../utilities/high-contrast";
 
@@ -100,7 +100,7 @@ const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = {
             },
         }),
         [highContrastSelector]: {
-            border: format("{0} solid ButtonText", toPx<DesignSystem>(outlineWidth)),
+            borderColor: "ButtonText",
         },
     },
     checkbox_stateIndicator: {
@@ -189,7 +189,7 @@ const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = {
         ...applyDisabledState(),
         "& $checkbox_input, & $checkbox_label": {
             ...applyCursorDisabled(),
-            ...applyHighContrastDisabledBorder,
+            ...highContrastDisabledBorder,
         },
     },
 };

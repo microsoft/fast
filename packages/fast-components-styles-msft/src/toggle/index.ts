@@ -31,8 +31,7 @@ import { densityCategorySwitch, heightNumber } from "../utilities/density";
 import { designUnit, focusOutlineWidth, outlineWidth } from "../utilities/design-system";
 import { applyCursorDisabled, applyCursorPointer } from "../utilities/cursor";
 import {
-    applyHighContrastDoubleFocus,
-    applyHighContrastForeground,
+    highContrastDoubleFocus,
     highContrastSelector,
 } from "../utilities/high-contrast";
 
@@ -58,7 +57,6 @@ const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = {
         display: "inline-block",
         color: neutralForegroundRest,
         transition: "all 0.2s ease-in-out",
-        ...applyHighContrastForeground,
     },
     toggle_label: {
         ...applyCursorPointer(),
@@ -126,7 +124,7 @@ const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = {
             boxShadow: format<DesignSystem>("0 0 0 1px {0} inset", neutralFocus),
             borderColor: neutralFocus,
             [highContrastSelector]: {
-                boxShadow: format<DesignSystem>("0 0 0 2px ButtonText"),
+                boxShadow: format<DesignSystem>("0 0 0 {0} ButtonText inset", toPx<DesignSystem>(outlineWidth)),
             },
         }),
         [highContrastSelector]: {
@@ -146,29 +144,24 @@ const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = {
                     neutralFocusInnerAccent(accentFillRest)
                 ),
                 borderColor: neutralFocus,
-                ...applyHighContrastDoubleFocus,
+                ...highContrastDoubleFocus,
             }),
             "&:disabled": {
                 [highContrastSelector]: {
-                    background: "GrayText",
-                    borderColor: "GrayText",
+                    background: "GrayText !important",
+                    borderColor: "GrayText !important",
                     "& + span": {
-                        background: "Background",
-                    },
-                },
-                "&:hover": {
-                    [highContrastSelector]: {
-                        background: "GrayText",
-                        borderColor: "GrayText",
-                        "& + span": {
-                            background: "Background",
-                        },
+                        background: "Background !important",
                     },
                 },
             },
             [highContrastSelector]: {
                 background: "Highlight",
                 borderColor: "Highlight",
+                "&:hover": {
+                    background: "HighlightText",
+                    borderColor: "Highlight",
+                },
                 "&:active": {
                     [highContrastSelector]: {
                         background: "Highlight",
@@ -177,12 +170,7 @@ const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = {
                         },
                     },
                 },
-                "&:hover": {
-                    [highContrastSelector]: {
-                        background: "HighlightText",
-                        borderColor: "Highlight",
-                    },
-                },
+                
             },
         },
         "& $toggle_stateIndicator": {
@@ -200,45 +188,17 @@ const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = {
     },
     toggle__disabled: {
         ...applyDisabledState(),
-        "& $toggle_input": {
+        "& $toggle_input, & $toggle_label, & $toggle_statusMessage": {
+            ...applyCursorDisabled(),
             background: neutralFillSelected,
             borderColor: neutralFillSelected,
             [highContrastSelector]: {
-                background: "Background",
-                borderColor: "GrayText",
-                "&:active": {
-                    [highContrastSelector]: {
-                        background: "Background",
-                        "& + span": {
-                            background: "GrayText",
-                        },
-                    },
-                },
-                "&:hover": {
-                    [highContrastSelector]: {
-                        background: "Background",
-                        borderColor: "GrayText",
-                        "& + span": {
-                            background: "GrayText",
-                        },
-                    },
+                background: "Background !important",
+                borderColor: "GrayText !important",
+                "& + span": {
+                    background: "GrayText !important",
                 },
             },
-        },
-        "& $toggle_stateIndicator": {
-            background: neutralForegroundRest,
-            [highContrastSelector]: {
-                background: "GrayText",
-            },
-        },
-        "& $toggle_input, & $toggle_label, & $toggle_statusMessage": {
-            ...applyCursorDisabled(),
-            [highContrastSelector]: {
-                color: "GrayText",
-            },
-        },
-        [highContrastSelector]: {
-            opacity: "1",
         },
     },
     toggle_statusMessage: {

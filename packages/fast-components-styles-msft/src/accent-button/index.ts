@@ -12,12 +12,10 @@ import {
     neutralFocusInnerAccent,
 } from "../utilities/color";
 import {
-    applyHighContrastDisabledBorder,
-    applyHighContrastDisabledForeground,
-    applyHighContrastDoubleFocus,
-    applyHighContrastHyperLink,
-    applyHighContrastSelected,
-    applyHighContrastSelectedForeground,
+    HighContrastColor,
+    highContrastDisabledBorder,
+    highContrastDisabledForeground,
+    highContrastDoubleFocus,
     highContrastSelector,
 } from "../utilities/high-contrast";
 
@@ -31,9 +29,9 @@ const styles: ComponentStyles<AccentButtonClassNameContract, DesignSystem> = {
         "&:hover:enabled": {
             background: accentFillHover,
             [highContrastSelector]: {
-                background: "HighlightText",
-                borderColor: "Highlight",
-                color: "Highlight",
+                background: HighContrastColor.selectedText,
+                borderColor: HighContrastColor.selectedBackground,
+                color: HighContrastColor.selectedBackground,
             },
             "& $button_beforeContent, & $button_afterContent": {
                 [highContrastSelector]: {
@@ -50,31 +48,31 @@ const styles: ComponentStyles<AccentButtonClassNameContract, DesignSystem> = {
                 "0 0 0 2px inset {0}",
                 neutralFocusInnerAccent(accentFillRest)
             ),
-            ...applyHighContrastDoubleFocus,
+            ...highContrastDoubleFocus,
         }),
         "&:disabled": {
-            ...applyHighContrastDisabledBorder,
+            ...highContrastDisabledBorder,
             "& $button_beforeContent, & $button_afterContent": {
-                ...applyHighContrastDisabledForeground,
+                ...highContrastDisabledForeground,
             },
         },
         "& $button_beforeContent, & $button_afterContent": {
             fill: accentForegroundCut,
-            ...applyHighContrastSelectedForeground,
+            [highContrastSelector]: {
+                fill: "HighlightText",
+            },
         },
-        ...applyHighContrastSelected,
+        [highContrastSelector]: {
+            background: HighContrastColor.selectedBackground,
+            borderColor: HighContrastColor.selectedBackground,
+            color: HighContrastColor.selectedText,
+            "-ms-high-contrast-adjust": "none",
+        },
         "a&": {
-            ...applyHighContrastHyperLink,
             "&$button__disabled": {
-                ...applyHighContrastDisabledBorder,
+                ...highContrastDisabledBorder,
                 "& $button_beforeContent, & $button_afterContent": {
-                    ...applyHighContrastDisabledForeground,
-                },
-                "&:hover:enabled": {
-                    ...applyHighContrastDisabledBorder,
-                    "& $button_beforeContent, & $button_afterContent": {
-                        ...applyHighContrastDisabledForeground,
-                    },
+                    ...highContrastDisabledForeground,
                 },
             },
         },

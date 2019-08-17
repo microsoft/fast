@@ -28,7 +28,6 @@ import {
 import { applyDisabledState } from "../utilities/disabled";
 import { applyElevation, ElevationMultiplier } from "../utilities/elevation";
 import {
-    applyHighContrastDisabledBackground,
     highContrastSelector,
 } from "../utilities/high-contrast";
 
@@ -82,10 +81,7 @@ const styles: ComponentStyles<SliderClassNameContract, DesignSystem> = {
         },
         [highContrastSelector]: {
             background: "ButtonText",
-            "&:hover": {
-                background: "Highlight",
-            },
-            "&:active": {
+            "&:hover, &:active": {
                 background: "Highlight",
             },
         },
@@ -110,19 +106,16 @@ const styles: ComponentStyles<SliderClassNameContract, DesignSystem> = {
     },
     slider__disabled: {
         ...applyDisabledState(),
-        "& $slider_thumb": {
+        "& $slider_thumb, & $slider_backgroundTrack": {
+            [highContrastSelector]: {
+                background: "GrayText",
+            },
             "&:hover": {
                 background: neutralForegroundRest,
-                ...applyHighContrastDisabledBackground,
             },
             "&:active": {
                 background: neutralForegroundRest,
-                ...applyHighContrastDisabledBackground,
             },
-            ...applyHighContrastDisabledBackground,
-        },
-        "& $slider_backgroundTrack": {
-            ...applyHighContrastDisabledBackground,
         },
     },
     slider__horizontal: {

@@ -29,7 +29,7 @@ import { applyScaledTypeRamp } from "../utilities/typography";
 import { designUnit, outlineWidth } from "../utilities/design-system";
 import { applyCursorDisabled, applyCursorPointer } from "../utilities/cursor";
 import {
-    applyHighContrastDisabledBorder,
+    highContrastDisabledBorder,
     highContrastSelector,
 } from "../utilities/high-contrast";
 
@@ -149,7 +149,7 @@ const styles: ComponentStyles<RadioClassNameContract, DesignSystem> = {
         ...applyDisabledState(),
         "& $radio_input, & $radio_label": {
             ...applyCursorDisabled(),
-            ...applyHighContrastDisabledBorder,
+            ...highContrastDisabledBorder,
         },
     },
 };

@@ -48,5 +48,14 @@ storiesOf("Toggle", module)
         }
         return <ToggleStateHandler>{render}</ToggleStateHandler>;
     })
+    .add("Handled - disabled", () => {
+        function render(
+            selected: boolean,
+            onChange: React.ChangeEventHandler<HTMLInputElement>
+        ): JSX.Element {
+            return <Toggle {...toggleProps} selected={selected} onChange={onChange} disabled={true}/>;
+        }
+        return <ToggleStateHandler>{render}</ToggleStateHandler>;
+    })
     .add("Disabled", () => <Toggle {...toggleProps} disabled={true} />)
     .add("No Label", () => <Toggle inputId={uniqueId()} />);

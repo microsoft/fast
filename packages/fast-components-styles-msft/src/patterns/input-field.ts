@@ -21,8 +21,8 @@ import { applyScaledTypeRamp } from "../utilities/typography";
 import { applyFontWeightNormal } from "../utilities/fonts";
 import { outlineWidth } from "../utilities/design-system";
 import {
-    applyHighContrastDisabledBorder,
-    applyHighContrastOutlineFocus,
+    highContrastDisabledBorder,
+    highContrastOutlineFocus,
     highContrastSelector,
 } from "../utilities/high-contrast";
 
@@ -64,11 +64,11 @@ export function inputFieldStyles(
             boxShadow: format<DesignSystem>("0 0 0 1px {0} inset", neutralFocus),
             borderColor: neutralFocus,
             outline: "none",
-            ...applyHighContrastOutlineFocus,
+            ...highContrastOutlineFocus,
         },
         "&:disabled": {
             ...applyDisabledState(),
-            ...applyHighContrastDisabledBorder,
+            ...highContrastDisabledBorder,
         },
         "&::placeholder": {
             color: neutralForegroundHint(neutralFillInputRest),

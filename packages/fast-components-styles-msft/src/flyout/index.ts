@@ -3,9 +3,7 @@ import { FlyoutClassNameContract } from "@microsoft/fast-components-class-name-c
 import { DesignSystem, ensureDesignSystemDefaults } from "../design-system";
 import { applyFloatingCornerRadius } from "../utilities/border";
 import { applyElevation, ElevationMultiplier } from "../utilities/elevation";
-import { format, toPx } from "@microsoft/fast-jss-utilities";
-import { outlineWidth } from "../utilities/design-system";
-import { applyHighContrastTextBorder } from "../utilities/high-contrast";
+import { highContrastBorder } from "../utilities/high-contrast";
 
 const styles: ComponentStyles<FlyoutClassNameContract, DesignSystem> = {
     flyout: {
@@ -19,7 +17,7 @@ const styles: ComponentStyles<FlyoutClassNameContract, DesignSystem> = {
         '&[aria-hidden="false"]': {
             display: "block",
         },
-        ...applyHighContrastTextBorder,
+        ...highContrastBorder,
     },
     flyout__top: {},
     flyout__bottom: {},

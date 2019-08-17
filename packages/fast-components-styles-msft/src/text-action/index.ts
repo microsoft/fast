@@ -1,9 +1,9 @@
+import { TextFieldClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import { TextActionClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
-import { applyCornerRadius } from "../utilities/border";
 import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager";
 import { directionSwitch, format, subtract, toPx } from "@microsoft/fast-jss-utilities";
 import { DesignSystem } from "../design-system";
-import { TextFieldClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
+import { applyCornerRadius } from "../utilities/border";
 import {
     neutralFillActive,
     neutralFillHover,
@@ -21,10 +21,9 @@ import { glyphSize, height, horizontalSpacing } from "../utilities/density";
 import { focusOutlineWidth, outlineWidth } from "../utilities/design-system";
 import { applyDisabledState } from "../utilities/disabled";
 import {
-    applyHighContrastDisabled,
-    applyHighContrastDisabledBorder,
-    applyHighContrastDisabledForeground,
-    applyHighContrastForeground,
+    highContrastDisabledBorder,
+    highContrastDisabledForeground,
+    highContrastForeground,
     highContrastSelector,
 } from "../utilities/high-contrast";
 
@@ -58,7 +57,7 @@ const glyphStyles: CSSRules<{}> = {
     height: glyphSize,
     margin: "auto",
     fill: neutralForegroundRest,
-    ...applyHighContrastForeground,
+    ...highContrastForeground,
 };
 
 const styles: ComponentStyles<TextActionClassNameContract, DesignSystem> = {
@@ -125,6 +124,7 @@ const styles: ComponentStyles<TextActionClassNameContract, DesignSystem> = {
     },
     textAction__disabled: {
         ...applyDisabledState(),
+        ...highContrastDisabledBorder,
         "&:hover": {
             background: neutralFillInputRest,
             borderColor: neutralOutlineRest,
@@ -134,9 +134,8 @@ const styles: ComponentStyles<TextActionClassNameContract, DesignSystem> = {
             borderColor: neutralOutlineRest,
         },
         "& $textAction_beforeGlyph, & $textAction_afterGlyph": {
-            ...applyHighContrastDisabledForeground,
+            ...highContrastDisabledForeground
         },
-        ...applyHighContrastDisabledBorder,
     },
     textAction_button: {
         borderColor: "transparent",
@@ -162,9 +161,7 @@ const styles: ComponentStyles<TextActionClassNameContract, DesignSystem> = {
                 fill: "HighlightText",
             },
         },
-        "&:disabled": {
-            ...applyHighContrastDisabled,
-        },
+        "&:disabled": {},
     },
     textAction_beforeGlyph: {
         ...glyphStyles,

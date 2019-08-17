@@ -1,16 +1,12 @@
 import {
     DesignSystem,
     DesignSystemResolver,
-    withDesignSystemDefaults,
 } from "../design-system";
 import {
     ComponentStyles,
-    ComponentStyleSheet,
     CSSRules,
 } from "@microsoft/fast-jss-manager";
 import {
-    applyLocalizedProperty,
-    Direction,
     directionSwitch,
     format,
     toPx,

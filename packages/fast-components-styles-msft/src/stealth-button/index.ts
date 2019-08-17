@@ -11,13 +11,10 @@ import {
 } from "../utilities/color";
 import { baseButton, buttonStyles } from "../patterns/button";
 import {
-    applyHighContrastAdjustStealth,
-    applyHighContrastDisabledBorder,
-    applyHighContrastDisabledForeground,
-    applyHighContrastHyperLink,
-    applyHighContrastOutlineFocus,
-    applyHighContrastSelectedForeground,
-    applyHighContrastSelection,
+    highContrastDisabledBorder,
+    highContrastOutlineFocus,
+    highContrastSelection,
+    highContrastStealth,
 } from "../utilities/high-contrast";
 
 const styles: ComponentStyles<AccentButtonClassNameContract, DesignSystem> = {
@@ -29,35 +26,22 @@ const styles: ComponentStyles<AccentButtonClassNameContract, DesignSystem> = {
         background: neutralFillStealthRest,
         "&:hover:enabled": {
             backgroundColor: neutralFillStealthHover,
-            ...applyHighContrastSelection,
-            "& $button_beforeContent, & $button_afterContent": {
-                ...applyHighContrastSelectedForeground,
-            },
+            ...highContrastSelection,
         },
         "&:active:enabled": {
             backgroundColor: neutralFillStealthActive,
         },
         ...applyFocusVisible<DesignSystem>({
             borderColor: neutralFocus,
-            ...applyHighContrastOutlineFocus,
+            ...highContrastOutlineFocus,
         }),
         "&:disabled": {
-            ...applyHighContrastDisabledBorder,
-            "& $button_beforeContent, & $button_afterContent": {
-                ...applyHighContrastDisabledForeground,
-            },
+            ...highContrastDisabledBorder,
         },
-        ...applyHighContrastAdjustStealth,
+        ...highContrastStealth,
         "a&": {
-            ...applyHighContrastHyperLink,
             "&$button__disabled": {
-                ...applyHighContrastDisabledBorder,
-                "&:hover": {
-                    ...applyHighContrastDisabledBorder,
-                    "& $button_beforeContent, & $button_afterContent": {
-                        ...applyHighContrastDisabledForeground,
-                    },
-                },
+                ...highContrastDisabledBorder,
             },
         },
     },

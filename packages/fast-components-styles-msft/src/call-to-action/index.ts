@@ -26,9 +26,8 @@ import {
 import { glyphSize } from "../utilities/density";
 import { designUnit } from "../utilities/design-system";
 import {
-    applyHighContrastDisabledForeground,
-    applyHighContrastForeground,
-    applyHighContrastSelectedForeground,
+    highContrastDisabledForeground,
+    highContrastForeground,
     highContrastSelector,
 } from "../utilities/high-contrast";
 
@@ -95,7 +94,9 @@ const styles: ComponentStyles<CallToActionClassNameContract, DesignSystem> = {
         "&:hover": {
             "& $callToAction_glyph": {
                 ...applyGlyphTransform(),
-                ...applyHighContrastSelectedForeground,
+                [highContrastSelector]: {
+                    fill: "HighlightText !important",
+                },
             },
         },
         ...applyFocusVisible("& $callToAction_glyph", {
@@ -112,17 +113,19 @@ const styles: ComponentStyles<CallToActionClassNameContract, DesignSystem> = {
         marginRight: directionSwitch("", "6px"),
         transform: directionSwitch("none", "rotate(180deg)"),
         transition: "all 600ms cubic-bezier(0.19, 1, 0.22, 1)",
-        ...applyHighContrastForeground,
+        ...highContrastForeground,
     },
     callToAction__primary: {
         "& $callToAction_glyph": {
             fill: accentForegroundCut,
-            ...applyHighContrastSelectedForeground,
+            [highContrastSelector]: {
+                fill: "HighlightText !important",
+            },
         },
         "&:hover": {
             "& $callToAction_glyph": {
                 [highContrastSelector]: {
-                    fill: "Highlight",
+                    fill: "Highlight !important",
                 },
             },
         },
@@ -130,12 +133,11 @@ const styles: ComponentStyles<CallToActionClassNameContract, DesignSystem> = {
     callToAction__lightweight: {
         "& $callToAction_glyph": {
             fill: accentForegroundRest,
-            ...applyHighContrastForeground,
         },
         "&:hover": {
             "& $callToAction_glyph": {
                 fill: accentForegroundHover,
-                ...applyHighContrastForeground,
+                ...highContrastForeground,
             },
         },
         "&:active": {
@@ -149,31 +151,29 @@ const styles: ComponentStyles<CallToActionClassNameContract, DesignSystem> = {
         paddingLeft: directionSwitch("", translateXValue),
         "& $callToAction_glyph": {
             fill: accentForegroundRest,
-            ...applyHighContrastForeground,
         },
         "&:hover": {
             "& $callToAction_glyph": {
                 fill: accentForegroundHover,
-                ...applyHighContrastForeground,
+                ...highContrastForeground,
             },
         },
         "&:active": {
             "& $callToAction_glyph": {
-                fill: accentForegroundActive,
             },
         },
     },
     callToAction__outline: {},
     callToAction__stealth: {},
     callToAction__disabled: {
+        "& $callToAction_glyph": {
+            ...highContrastDisabledForeground
+        },
         "&:hover": {
             "& $callToAction_glyph": {
                 transform: "none",
-                ...applyHighContrastDisabledForeground,
+                ...highContrastDisabledForeground,
             },
-        },
-        "& $callToAction_glyph": {
-            ...applyHighContrastDisabledForeground,
         },
     },
 };

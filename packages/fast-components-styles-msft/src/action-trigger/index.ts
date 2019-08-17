@@ -14,9 +14,7 @@ import {
 } from "../utilities/color";
 import { glyphSize, horizontalSpacing } from "../utilities/density";
 import {
-    applyHighContrastDisabledForeground,
-    applyHighContrastForeground,
-    applyHighContrastSelectedForeground,
+    highContrastDisabledForeground,
     highContrastSelector,
 } from "../utilities/high-contrast";
 
@@ -37,7 +35,29 @@ export const actionTriggerButtonOverrides: ComponentStyles<
 };
 
 const styles: ComponentStyles<ActionTriggerClassNameContract, DesignSystem> = {
-    actionTrigger: {},
+    actionTrigger: {
+        "& $actionTrigger_glyph": {
+            [highContrastSelector]: {
+                fill: "ButtonText !important"
+            }
+        },
+        "&:hover:enabled": {
+            "& $actionTrigger_glyph": {
+                [highContrastSelector]: {
+                    fill: "HighlightText !important"
+                }
+            },
+        },
+        [`&$actionTrigger__justified, &$actionTrigger__lightweight`]: {
+            "&:hover:enabled": {
+                "& $actionTrigger_glyph": {
+                    [highContrastSelector]: {
+                        fill: "Highlight !important"
+                    }
+                },
+            },
+        },
+    },
     actionTrigger_glyph: {
         display: "inline-block",
         position: "relative",
@@ -48,97 +68,78 @@ const styles: ComponentStyles<ActionTriggerClassNameContract, DesignSystem> = {
     actionTrigger__primary: {
         "& $actionTrigger_glyph": {
             fill: accentForegroundCut,
-            ...applyHighContrastSelectedForeground,
+            [highContrastSelector]: {
+                fill: "HighlightText !important",
+            },
         },
         "&:hover:enabled": {
             "& $actionTrigger_glyph": {
                 [highContrastSelector]: {
-                    fill: "Highlight",
+                    fill: "Highlight !important",
                 },
             },
         },
         "&$actionTrigger__disabled $actionTrigger_glyph": {
             fill: accentForegroundCut,
-            ...applyHighContrastDisabledForeground,
+            ...highContrastDisabledForeground,
         },
     },
     actionTrigger__lightweight: {
         "& $actionTrigger_glyph": {
             fill: accentForegroundRest,
-            ...applyHighContrastForeground,
         },
         "&:hover": {
             "& $actionTrigger_glyph": {
                 fill: accentForegroundHover,
-                ...applyHighContrastForeground,
             },
         },
         "&:active": {
             "& $actionTrigger_glyph": {
                 fill: accentForegroundActive,
-                ...applyHighContrastForeground,
             },
         },
         "&$actionTrigger__disabled $actionTrigger_glyph": {
             fill: accentForegroundRest,
-            ...applyHighContrastDisabledForeground,
         },
     },
     actionTrigger__justified: {
         "& $actionTrigger_glyph": {
             fill: accentForegroundRest,
-            ...applyHighContrastForeground,
         },
         "&:hover": {
             "& $actionTrigger_glyph": {
                 fill: accentForegroundHover,
-                ...applyHighContrastForeground,
             },
         },
         "&:active": {
             "& $actionTrigger_glyph": {
                 fill: accentForegroundActive,
-                ...applyHighContrastForeground,
             },
         },
         "&$actionTrigger__disabled $actionTrigger_glyph": {
             fill: accentForegroundRest,
-            ...applyHighContrastDisabledForeground,
         },
     },
     actionTrigger__outline: {
         "& $actionTrigger_glyph": {
             fill: neutralForegroundRest,
-            ...applyHighContrastForeground,
-        },
-        "&:hover": {
-            "& $actionTrigger_glyph": {
-                ...applyHighContrastSelectedForeground,
-            },
         },
         "&$actionTrigger__disabled $actionTrigger_glyph": {
             fill: neutralForegroundRest,
-            ...applyHighContrastDisabledForeground,
         },
     },
     actionTrigger__stealth: {
         "& $actionTrigger_glyph": {
             fill: neutralForegroundRest,
-            ...applyHighContrastForeground,
-        },
-        "&:hover": {
-            "& $actionTrigger_glyph": {
-                ...applyHighContrastSelectedForeground,
-            },
         },
         "&$actionTrigger__disabled $actionTrigger_glyph": {
             fill: neutralForegroundRest,
-            ...applyHighContrastDisabledForeground,
+            ...highContrastDisabledForeground,
         },
     },
     actionTrigger__disabled: {
         "& $actionTrigger_glyph": {
-            ...applyHighContrastDisabledForeground,
+            ...highContrastDisabledForeground,
         },
     },
     actionTrigger__hasGlyphAndContent: {

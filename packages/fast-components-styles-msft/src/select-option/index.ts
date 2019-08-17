@@ -22,9 +22,10 @@ import { designUnit, focusOutlineWidth } from "../utilities/design-system";
 import { applyDisabledState } from "../utilities/disabled";
 import { applyScaledTypeRamp } from "../utilities/typography";
 import {
-    applyHighContrastAdjustStealth,
-    applyHighContrastDisabledBorder,
-    applyHighContrastSelection,
+    highContrastDisabledBorder,
+    highContrastSelection,
+    highContrastSelector,
+    highContrastStealth,
 } from "../utilities/high-contrast";
 
 const styles: ComponentStyles<SelectOptionClassNameContract, DesignSystem> = {
@@ -51,9 +52,9 @@ const styles: ComponentStyles<SelectOptionClassNameContract, DesignSystem> = {
         }),
         "&:hover": {
             background: neutralFillStealthHover,
-            ...applyHighContrastSelection,
+            ...highContrastSelection,
         },
-        ...applyHighContrastAdjustStealth,
+        ...highContrastStealth,
     },
     selectOption_contentRegion: {
         overflow: "hidden",
@@ -72,17 +73,21 @@ const styles: ComponentStyles<SelectOptionClassNameContract, DesignSystem> = {
     },
     selectOption__disabled: {
         ...applyDisabledState(),
+        ...highContrastDisabledBorder,
         "&, &:hover": {
             background: neutralFillStealthRest,
-            ...applyHighContrastDisabledBorder,
         },
     },
     selectOption__selected: {
+        [highContrastSelector]: {
+            background: "Highlight !important",
+            borderColor: "ButtonText !important",
+            color: "HighlightText !important",
+            fill: "HighlightText !important",
+        },
         background: neutralFillStealthSelected,
-        ...applyHighContrastSelection,
         "&:hover": {
             background: neutralFillStealthSelected,
-            ...applyHighContrastSelection,
         },
     },
 };

@@ -1,14 +1,17 @@
+import { focusOutlineWidth, outlineWidth } from "../utilities/design-system";
 import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager";
-import { DesignSystem, ensureDesignSystemDefaults } from "../design-system";
 import { directionSwitch, format, toPx } from "@microsoft/fast-jss-utilities";
 import { applyCornerRadius, applyFocusPlaceholderBorder } from "../utilities/border";
 import { applyCursorPointer } from "../utilities/cursor";
-import { focusOutlineWidth, outlineWidth } from "../utilities/design-system";
+import { DesignSystem, ensureDesignSystemDefaults } from "../design-system";
 import { applyScaledTypeRamp } from "../utilities/typography";
 import { glyphSize, height, horizontalSpacing } from "../utilities/density";
 import { applyDisabledState } from "../utilities/disabled";
 import { ButtonBaseClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
-import { applyHighContrastDisabledForeground } from "../utilities/high-contrast";
+import {
+    highContrastDisabledBorder,
+    highContrastDisabledForeground
+} from "../utilities/high-contrast";
 
 export function buttonStyles(): CSSRules<{}> {
     return {
@@ -61,9 +64,6 @@ export const baseButton: ComponentStyles<ButtonBaseClassNameContract, DesignSyst
     },
     button__disabled: {
         ...applyDisabledState(),
-        "& $button_beforeContent, & $button_afterContent": {
-            ...applyHighContrastDisabledForeground,
-        },
     },
     button_beforeContent: {
         width: glyphSize,

@@ -11,13 +11,10 @@ import {
     neutralForegroundRest,
 } from "../utilities/color";
 import {
-    applyHighContrastAdjustOutline,
-    applyHighContrastDisabledBorder,
-    applyHighContrastDisabledForeground,
-    applyHighContrastHyperLink,
-    applyHighContrastOutlineFocus,
-    applyHighContrastSelectedForeground,
-    applyHighContrastSelection,
+    highContrastDisabledBorder,
+    highContrastOutline,
+    highContrastOutlineFocus,
+    highContrastSelection,
 } from "../utilities/high-contrast";
 
 const styles: ComponentStyles<NeutralButtonClassNameContract, DesignSystem> = {
@@ -29,38 +26,25 @@ const styles: ComponentStyles<NeutralButtonClassNameContract, DesignSystem> = {
         background: neutralFillRest,
         "&:hover:enabled": {
             background: neutralFillHover,
-            ...applyHighContrastSelection,
-            "& $button_beforeContent, & $button_afterContent": {
-                ...applyHighContrastSelectedForeground,
-            },
+            ...highContrastSelection,
         },
         "&:active:enabled": {
             background: neutralFillActive,
         },
         ...applyFocusVisible<DesignSystem>({
             borderColor: neutralFocus,
-            ...applyHighContrastOutlineFocus,
+            ...highContrastOutlineFocus,
         }),
         "&:disabled": {
-            ...applyHighContrastDisabledBorder,
-            "a&": {
-                ...applyHighContrastDisabledForeground,
-            },
+            ...highContrastDisabledBorder,
         },
         "&::-moz-focus-inner": {
             border: "0",
         },
-        ...applyHighContrastAdjustOutline,
+        ...highContrastOutline,
         "a&": {
-            ...applyHighContrastHyperLink,
             "&$button__disabled": {
-                ...applyHighContrastDisabledBorder,
-                "&:hover": {
-                    ...applyHighContrastDisabledBorder,
-                    "& $button_beforeContent, & $button_afterContent": {
-                        ...applyHighContrastDisabledForeground,
-                    },
-                },
+                ...highContrastDisabledBorder,
             },
         },
     },

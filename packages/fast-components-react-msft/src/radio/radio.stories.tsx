@@ -16,4 +16,14 @@ storiesOf("Radio", module)
                 </Label>
             </Radio>
         );
+    })
+    .add("With label - disabled", () => {
+        const id: string = uniqueId();
+        return (
+            <Radio inputId={id} onChange={action("onChange")} disabled={true}>
+                <Label slot="label" htmlFor={id}>
+                    Hello world
+                </Label>
+            </Radio>
+        );
     });

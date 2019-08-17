@@ -11,8 +11,7 @@ import {
 import { applyFocusVisible, toPx } from "@microsoft/fast-jss-utilities";
 import { focusOutlineWidth } from "../utilities/design-system";
 import {
-    applyHighContrastDisabledForeground,
-    applyHighContrastHyperLink,
+    highContrastDisabledForeground,
     highContrastSelector,
 } from "../utilities/high-contrast";
 
@@ -53,21 +52,14 @@ const styles: ComponentStyles<LightweightButtonClassNameContract, DesignSystem> 
         },
         "&$button__disabled, &$button__disabled $button_contentRegion::before": {
             backgroundColor: "transparent",
-            "& $button_contentRegion": {
-                ...applyHighContrastDisabledForeground,
-            },
-        },
-        [highContrastSelector]: {
-            border: "none",
-            fill: "ButtonText",
+            ...highContrastDisabledForeground,
         },
         "&:hover:enabled": {
             color: accentForegroundHover,
             fill: accentForegroundHover,
             backgroundColor: "transparent",
             [highContrastSelector]: {
-                color: "ButtonText",
-                fill: "ButtonText",
+                fill: "Highlight",
             },
         },
         "&:active:enabled": {
@@ -75,14 +67,13 @@ const styles: ComponentStyles<LightweightButtonClassNameContract, DesignSystem> 
             fill: accentForegroundActive,
             backgroundColor: "transparent",
         },
+        [highContrastSelector]: {
+            border: "none",
+            fill: "ButtonText",
+        },
         "a&": {
-            ...applyHighContrastHyperLink,
             "&$button__disabled": {
-                "&:hover": {
-                    "& $button_contentRegion": {
-                        ...applyHighContrastDisabledForeground,
-                    },
-                },
+                ...highContrastDisabledForeground,
             },
         },
     },
