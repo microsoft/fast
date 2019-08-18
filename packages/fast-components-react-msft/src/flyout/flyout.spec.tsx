@@ -20,7 +20,8 @@ configure({ adapter: new Adapter() });
 
 describe("flyout", (): void => {
     const managedClasses: FlyoutClassNameContract = {
-        flyout: "flyout",
+        flyout_positioner: "flyout_positioner",
+        flyout_visual: "flyout_visual",
         flyout__left: "flyout__left",
         flyout__right: "flyout__right",
         flyout__top: "flyout__top",
@@ -67,7 +68,7 @@ describe("flyout", (): void => {
             />
         );
 
-        expect(rendered.find(`.${managedClasses.flyout}`).prop("aria-disabled")).toEqual(
+        expect(rendered.find(`.${managedClasses.flyout_positioner}`).prop("aria-disabled")).toEqual(
             false
         );
     });
@@ -78,7 +79,7 @@ describe("flyout", (): void => {
             <MSFTFlyout managedClasses={managedClasses} visible={true} label={label} />
         );
 
-        expect(rendered.find(`.${managedClasses.flyout}`).prop("aria-label")).toEqual(
+        expect(rendered.find(`.${managedClasses.flyout_positioner}`).prop("aria-label")).toEqual(
             label
         );
     });
@@ -94,7 +95,7 @@ describe("flyout", (): void => {
         );
 
         expect(
-            rendered.find(`.${managedClasses.flyout}`).prop("aria-labelledby")
+            rendered.find(`.${managedClasses.flyout_positioner}`).prop("aria-labelledby")
         ).toEqual(labelledby);
     });
 
@@ -109,7 +110,7 @@ describe("flyout", (): void => {
         );
 
         expect(
-            rendered.find(`.${managedClasses.flyout}`).prop("aria-describedby")
+            rendered.find(`.${managedClasses.flyout_positioner}`).prop("aria-describedby")
         ).toEqual(describedby);
     });
 

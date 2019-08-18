@@ -180,7 +180,6 @@ storiesOf("Flyout", module)
     .add("with top/right inset", () => (
         <FlyoutTest
             horizontalPositioningMode={FlyoutAxisPositioningMode.inset}
-            defaultHorizontalPosition={FlyoutHorizontalPosition.right}
-            defaultVerticalPosition={FlyoutVerticalPosition.top}
+            verticalPositioningMode={FlyoutAxisPositioningMode.inset}
         />
     ));

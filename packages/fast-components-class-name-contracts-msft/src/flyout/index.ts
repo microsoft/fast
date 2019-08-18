@@ -5,7 +5,12 @@ export interface FlyoutClassNameContract {
     /**
      * The root of the flyout component
      */
-    flyout?: string;
+    flyout_positioner?: string;
+
+    /**
+     * The root of the flyout component
+     */
+    flyout_visual?: string;
 
     /**
      * left flyout horizontal state

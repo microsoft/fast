@@ -7,15 +7,18 @@ import { applyElevation, ElevationMultiplier } from "../utilities/elevation";
 import { highContrastBorder } from "../utilities/high-contrast";
 
 const styles: ComponentStyles<FlyoutClassNameContract, DesignSystem> = {
-    flyout: {
+    flyout_positioner: {
         display: "none",
-        background: backgroundColor,
-        ...applyFloatingCornerRadius(),
-        ...applyElevation(ElevationMultiplier.e14),
-        "z-index": "1",
         '&[aria-hidden="false"]': {
             display: "block",
         },
+    },
+    flyout_visual: {
+        height: "100%",
+        width: "100%",
+        background: backgroundColor,
+        ...applyFloatingCornerRadius(),
+        ...applyElevation(ElevationMultiplier.e14),
         ...highContrastBorder,
     },
     flyout__top: {},

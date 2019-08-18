@@ -7,7 +7,7 @@ import {
     ViewportPositionerHorizontalPosition,
     ViewportPositionerVerticalPosition,
 } from "@microsoft/fast-components-react-base";
-import { keyCodeEscape } from "@microsoft/fast-web-utilities";
+import { classNames, keyCodeEscape } from "@microsoft/fast-web-utilities";
 import { canUseDOM } from "exenv-es6";
 import React from "react";
 import ReactDOM from "react-dom";
@@ -75,11 +75,14 @@ class Flyout extends Foundation<FlyoutHandledProps, FlyoutUnhandledProps, {}> {
      * Renders the component
      */
     public render(): React.ReactElement<HTMLDivElement> {
+
+        const {
+            flyout_visual
+        }: FlyoutClassNameContract = this.props.managedClasses;
+
         return (
             <ViewportPositioner
-                {...this.unhandledProps()}
                 ref={this.rootEl}
-                role="dialog"
                 aria-label={this.props.label}
                 aria-labelledby={this.props.labelledBy}
                 aria-describedby={this.props.describedBy}
@@ -118,7 +121,12 @@ class Flyout extends Foundation<FlyoutHandledProps, FlyoutUnhandledProps, {}> {
                     width: this.props.width,
                 }}
             >
+                <div
+                 className={classNames(flyout_visual)}
+                {...this.unhandledProps()}
+                role="dialog">
                 {this.props.children}
+                </div>
             </ViewportPositioner>
         );
     }
@@ -160,7 +168,6 @@ class Flyout extends Foundation<FlyoutHandledProps, FlyoutUnhandledProps, {}> {
 
     private generateManagedClassNames(): ViewportPositionerClassNameContract {
         const {
-            flyout,
             flyout__left,
             flyout__right,
             flyout__top,
@@ -170,7 +177,6 @@ class Flyout extends Foundation<FlyoutHandledProps, FlyoutUnhandledProps, {}> {
         }: FlyoutClassNameContract = this.props.managedClasses;
 
         return {
-            viewportPositioner: flyout,
             viewportPositioner__left: flyout__left,
             viewportPositioner__right: flyout__right,
             viewportPositioner__top: flyout__top,
