@@ -22,6 +22,7 @@ export interface JSSSheetOptions {
  * when one does not already exist.
  */
 export default class SheetManager {
+    public jss: any = jss;
     private registry: SheetRegistry = new WeakMap();
 
     /**
@@ -123,7 +124,7 @@ export default class SheetManager {
 
             if (tracker[1] === 0) {
                 const sheet: JSSStyleSheet = tracker[0];
-                jss.removeStyleSheet(sheet);
+                this.jss.removeStyleSheet(sheet);
                 stylesheetRegistry.remove(sheet);
 
                 this.registry.get(styles).delete(designSystem);
@@ -185,7 +186,7 @@ export default class SheetManager {
         const stylesheet: ComponentStyleSheet<unknown, unknown> =
             typeof styles === "function" ? styles(designSystem) : styles;
 
-        const sheet: JSSStyleSheet = jss.createStyleSheet(stylesheet, {
+        const sheet: JSSStyleSheet = this.jss.createStyleSheet(stylesheet, {
             link: true,
             ...options,
         });
