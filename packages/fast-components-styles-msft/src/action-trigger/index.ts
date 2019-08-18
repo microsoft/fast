@@ -38,22 +38,22 @@ const styles: ComponentStyles<ActionTriggerClassNameContract, DesignSystem> = {
     actionTrigger: {
         "& $actionTrigger_glyph": {
             [highContrastSelector]: {
-                fill: "ButtonText !important"
-            }
+                fill: "ButtonText !important",
+            },
         },
         "&:hover:enabled": {
             "& $actionTrigger_glyph": {
                 [highContrastSelector]: {
-                    fill: "HighlightText !important"
-                }
+                    fill: "HighlightText !important",
+                },
             },
         },
         [`&$actionTrigger__justified, &$actionTrigger__lightweight`]: {
             "&:hover:enabled": {
                 "& $actionTrigger_glyph": {
                     [highContrastSelector]: {
-                        fill: "Highlight !important"
-                    }
+                        fill: "Highlight !important",
+                    },
                 },
             },
         },

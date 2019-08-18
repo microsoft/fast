@@ -1,16 +1,6 @@
-import {
-    DesignSystem,
-    DesignSystemResolver,
-} from "../design-system";
-import {
-    ComponentStyles,
-    CSSRules,
-} from "@microsoft/fast-jss-manager";
-import {
-    directionSwitch,
-    format,
-    toPx,
-} from "@microsoft/fast-jss-utilities";
+import { DesignSystem, DesignSystemResolver } from "../design-system";
+import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager";
+import { directionSwitch, format, toPx } from "@microsoft/fast-jss-utilities";
 import {
     neutralFillStealthHover,
     neutralFillStealthRest,

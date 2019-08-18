@@ -38,7 +38,6 @@ export const highContrastOutline: CSSRules<DesignSystem> = {
     },
 };
 
-
 // Used to set a borderless component to disabled color
 export const highContrastDisabled: CSSRules<DesignSystem> = {
     [highContrastSelector]: {

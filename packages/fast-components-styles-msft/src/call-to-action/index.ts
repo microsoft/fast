@@ -159,15 +159,14 @@ const styles: ComponentStyles<CallToActionClassNameContract, DesignSystem> = {
             },
         },
         "&:active": {
-            "& $callToAction_glyph": {
-            },
+            "& $callToAction_glyph": {},
         },
     },
     callToAction__outline: {},
     callToAction__stealth: {},
     callToAction__disabled: {
         "& $callToAction_glyph": {
-            ...highContrastDisabledForeground
+            ...highContrastDisabledForeground,
         },
         "&:hover": {
             "& $callToAction_glyph": {

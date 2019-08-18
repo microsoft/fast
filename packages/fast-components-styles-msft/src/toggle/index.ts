@@ -124,7 +124,10 @@ const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = {
             boxShadow: format<DesignSystem>("0 0 0 1px {0} inset", neutralFocus),
             borderColor: neutralFocus,
             [highContrastSelector]: {
-                boxShadow: format<DesignSystem>("0 0 0 {0} ButtonText inset", toPx<DesignSystem>(outlineWidth)),
+                boxShadow: format<DesignSystem>(
+                    "0 0 0 {0} ButtonText inset",
+                    toPx<DesignSystem>(outlineWidth)
+                ),
             },
         }),
         [highContrastSelector]: {
@@ -170,7 +173,6 @@ const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = {
                         },
                     },
                 },
-                
             },
         },
         "& $toggle_stateIndicator": {

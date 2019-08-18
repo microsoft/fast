@@ -134,7 +134,7 @@ const styles: ComponentStyles<TextActionClassNameContract, DesignSystem> = {
             borderColor: neutralOutlineRest,
         },
         "& $textAction_beforeGlyph, & $textAction_afterGlyph": {
-            ...highContrastDisabledForeground
+            ...highContrastDisabledForeground,
         },
     },
     textAction_button: {

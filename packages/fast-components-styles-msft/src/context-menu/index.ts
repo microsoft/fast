@@ -5,10 +5,7 @@ import { DesignSystem } from "../design-system";
 import { applyElevatedCornerRadius } from "../utilities/border";
 import { backgroundColor, designUnit, outlineWidth } from "../utilities/design-system";
 import { applyElevation, ElevationMultiplier } from "../utilities/elevation";
-import {
-    HighContrastColor,
-    highContrastSelector
-} from "../utilities/high-contrast";
+import { HighContrastColor, highContrastSelector } from "../utilities/high-contrast";
 
 const styles: ComponentStyles<ContextMenuClassNameContract, DesignSystem> = {
     contextMenu: {

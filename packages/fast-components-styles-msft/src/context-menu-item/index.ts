@@ -47,7 +47,7 @@ const styles: ComponentStyles<ContextMenuItemClassNameContract, DesignSystem> = 
         ...applyFocusPlaceholderBorder(),
         ...applyFocusVisible<DesignSystem>({
             borderColor: neutralFocus,
-            ...highContrastOutlineFocus
+            ...highContrastOutlineFocus,
         }),
         "&:hover": {
             background: neutralFillStealthHover,

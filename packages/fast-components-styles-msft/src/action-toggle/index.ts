@@ -42,22 +42,22 @@ const styles: ComponentStyles<ActionToggleClassNameContract, DesignSystem> = {
     actionToggle: {
         "& $actionToggle_selectedGlyph, & $actionToggle_unselectedGlyph": {
             [highContrastSelector]: {
-                fill: "ButtonText !important"
-            }
+                fill: "ButtonText !important",
+            },
         },
         "&:hover:enabled": {
             "& $actionToggle_selectedGlyph, & $actionToggle_unselectedGlyph": {
                 [highContrastSelector]: {
-                    fill: "HighlightText !important"
-                }
+                    fill: "HighlightText !important",
+                },
             },
         },
         [`&$actionToggle__justified, &$actionToggle__lightweight`]: {
             "&:hover:enabled": {
                 "& $actionToggle_selectedGlyph, & $actionToggle_unselectedGlyph": {
                     [highContrastSelector]: {
-                        fill: "Highlight !important"
-                    }
+                        fill: "Highlight !important",
+                    },
                 },
             },
         },
@@ -96,7 +96,6 @@ const styles: ComponentStyles<ActionToggleClassNameContract, DesignSystem> = {
     actionToggle__lightweight: {
         "& $actionToggle_selectedGlyph, & $actionToggle_unselectedGlyph": {
             fill: accentForegroundRest,
-            
         },
         "&:hover:enabled": {
             "& $actionToggle_selectedGlyph, & $actionToggle_unselectedGlyph": {
@@ -130,8 +129,7 @@ const styles: ComponentStyles<ActionToggleClassNameContract, DesignSystem> = {
             fill: neutralForegroundRest,
         },
         "&:hover": {
-            "& $actionToggle_selectedGlyph, & $actionToggle_unselectedGlyph": {
-            },
+            "& $actionToggle_selectedGlyph, & $actionToggle_unselectedGlyph": {},
         },
         "&$actionToggle__disabled $actionToggle_selectedGlyph, &$actionToggle__disabled $actionToggle_unselectedGlyph": {
             fill: neutralForegroundRest,
