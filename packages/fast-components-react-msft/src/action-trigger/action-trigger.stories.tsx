@@ -13,15 +13,6 @@ storiesOf("Action trigger", module)
             Download
         </ActionTrigger>
     ))
-    .add("Default - disabled", () => (
-        <ActionTrigger
-            glyph={glyphFactory(SVGGlyph.download)}
-            onClick={action("onClick")}
-            disabled={true}
-        >
-            Download
-        </ActionTrigger>
-    ))
     .add("Icon only", () => (
         <ActionTrigger
             glyph={glyphFactory(SVGGlyph.download)}

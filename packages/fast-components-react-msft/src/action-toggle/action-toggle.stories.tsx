@@ -41,7 +41,7 @@ const playPauseProps: Pick<
 };
 
 storiesOf("Action toggle", module)
-    .add("Uncontrolled", () => <ActionToggle {...playPauseProps} disabled={true}/>)
+    .add("Uncontrolled", () => <ActionToggle {...playPauseProps} />)
     .add("Controlled", () => {
         return (
             <ActionToggleStateHandler>
