@@ -49,7 +49,7 @@ export const paneStyleSheet: ComponentStyles<PaneClassNamesContract, undefined> 
         position: "relative",
         flex: "0 1 auto",
         display: "flex",
-        flexDirection: "column",
+        "flex-direction": "column",
     },
     pane_resizeHandle: {
         position: "absolute",
@@ -58,7 +58,7 @@ export const paneStyleSheet: ComponentStyles<PaneClassNamesContract, undefined> 
         top: "0",
         width: toPx(8),
         height: "100%",
-        zIndex: "1",
+        "z-index": "1",
         transition: "transform .04s ease-in-out",
         outline: "none",
         transform: "scale(.5, 1)",
@@ -87,7 +87,7 @@ export const paneStyleSheet: ComponentStyles<PaneClassNamesContract, undefined> 
     pane__overlay: {
         position: "absolute",
         height: "100%",
-        zIndex: "2",
+        "z-index": "2",
     },
     pane__hidden: {
         display: "none",

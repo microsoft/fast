@@ -41,8 +41,8 @@ const styles: ComponentStyles<RadioClassNameContract, DesignSystem> = {
     radio: {
         position: "relative",
         display: "inline-flex",
-        flexDirection: "row",
-        alignItems: "center",
+        "flex-direction": "row",
+        "align-items": "center",
         transition: "all 0.2s ease-in-out",
     },
     radio_input: {
@@ -50,9 +50,11 @@ const styles: ComponentStyles<RadioClassNameContract, DesignSystem> = {
         width: inputSize,
         height: inputSize,
         appearance: "none",
-        borderRadius: "50%",
+        "-webkit-appearance": "none",
+        "-moz-appearance": "none",
+        "border-radius": "50%",
         margin: "0",
-        zIndex: "1",
+        "z-index": "1",
         background: neutralFillInputRest,
         transition: "all 0.2s ease-in-out",
         border: format(
@@ -65,30 +67,30 @@ const styles: ComponentStyles<RadioClassNameContract, DesignSystem> = {
         },
         "&:hover:enabled": {
             background: neutralFillInputHover,
-            borderColor: neutralOutlineHover,
+            "border-color": neutralOutlineHover,
         },
         "&:active": {
             background: neutralFillInputActive,
-            borderColor: neutralOutlineActive,
+            "border-color": neutralOutlineActive,
         },
         ...applyFocusVisible({
-            boxShadow: format<DesignSystem>("0 0 0 1px {0} inset", neutralFocus),
-            borderColor: neutralFocus,
+            "box-shadow": format<DesignSystem>("0 0 0 1px {0} inset", neutralFocus),
+            "border-color": neutralFocus,
         }),
     },
     radio_stateIndicator: {
         position: "relative",
-        borderRadius: "50%",
+        "border-radius": "50%",
         display: "inline-block",
         width: inputSize,
         height: inputSize,
-        flexShrink: "0",
+        "flex-shrink": "0",
         "&::before": {
-            pointerEvents: "none",
+            "pointer-events": "none",
             position: "absolute",
-            zIndex: "1",
+            "z-index": "1",
             content: '""',
-            borderRadius: "50%",
+            "border-radius": "50%",
             top: indicatorMargin,
             left: indicatorMargin,
             bottom: indicatorMargin,
@@ -100,15 +102,15 @@ const styles: ComponentStyles<RadioClassNameContract, DesignSystem> = {
         ...applyCursorPointer(),
         color: neutralForegroundRest,
         ...applyScaledTypeRamp("t7"),
-        marginLeft: directionSwitch(horizontalSpacing(2), ""),
-        marginRight: directionSwitch("", horizontalSpacing(2)),
+        "margin-left": directionSwitch(horizontalSpacing(2), ""),
+        "margin-right": directionSwitch("", horizontalSpacing(2)),
     },
     radio__checked: {
         "& $radio_stateIndicator": {
             "&::before": {
                 background: neutralForegroundRest,
                 "@media (-ms-high-contrast:active)": {
-                    backgroundColor: "ButtonHighlight",
+                    "background-color": "ButtonHighlight",
                 },
             },
         },

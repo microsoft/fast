@@ -8,12 +8,6 @@ export interface PageClassNamesContract {
 }
 
 export const pageStyleSheet: ComponentStyles<PageClassNamesContract, undefined> = {
-    "@global": {
-        "html, body": {
-            padding: 0,
-            margin: 0,
-        },
-    },
     page: {
         display: "grid",
     },

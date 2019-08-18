@@ -50,7 +50,7 @@ function flipperStyles(): CSSRules<{}> {
     return {
         position: "absolute",
         top: "calc(50% - 20px)",
-        zIndex: "100",
+        "z-index": "100",
         display: "block",
         opacity: "0",
         transition: "all 0.2s ease-in-out",
@@ -72,9 +72,9 @@ const styles: ComponentStyles<CarouselClassNameContract, DesignSystem> = {
         bottom: "8px",
         display: "block",
         padding: "0",
-        textAlign: "center",
+        "text-align": "center",
         width: "100%",
-        zIndex: "100",
+        "z-index": "100",
         "& > :first-child:nth-last-child(1)": {
             display: "none",
         },
@@ -88,7 +88,7 @@ const styles: ComponentStyles<CarouselClassNameContract, DesignSystem> = {
         "&::before": {
             opacity: "0.45",
             border: "1px solid transparent",
-            borderRadius: "40px",
+            "border-radius": "40px",
             content: "''",
             display: "block",
             height: toPx<DesignSystem>(designUnit),
@@ -139,14 +139,14 @@ const styles: ComponentStyles<CarouselClassNameContract, DesignSystem> = {
                 ),
             },
             "& span::before": {
-                borderColor: darkModeNeutralForegroundRest,
+                "border-color": darkModeNeutralForegroundRest,
             },
             "&:hover": {
                 "&::before": {
                     background: neutralFillStealthHover((): string => black),
                 },
                 "& span::before": {
-                    borderColor: darkModeNeutralForegroundRest,
+                    "border-color": darkModeNeutralForegroundRest,
                 },
             },
             "& > svg": {
@@ -156,7 +156,7 @@ const styles: ComponentStyles<CarouselClassNameContract, DesignSystem> = {
         "& $carousel_sequenceIndicator": {
             "&::before": {
                 background: darkModeNeutralFillStealthRest,
-                borderColor: darkModeNeutralOutlineRest,
+                "border-color": darkModeNeutralOutlineRest,
             },
             "&$carousel_sequenceIndicator__active": {
                 "&::before": {
@@ -178,14 +178,14 @@ const styles: ComponentStyles<CarouselClassNameContract, DesignSystem> = {
                 ),
             },
             "& span::before": {
-                borderColor: lightModeNeutralForegroundRest,
+                "border-color": lightModeNeutralForegroundRest,
             },
             "&:hover": {
                 "&::before": {
                     background: neutralFillStealthHover((): string => white),
                 },
                 "& span::before": {
-                    borderColor: lightModeNeutralForegroundRest,
+                    "border-color": lightModeNeutralForegroundRest,
                 },
             },
             "& > svg": {
@@ -195,7 +195,7 @@ const styles: ComponentStyles<CarouselClassNameContract, DesignSystem> = {
         "& $carousel_sequenceIndicator": {
             "&::before": {
                 background: lightModeNeutralFillStealthRest,
-                borderColor: lightModeNeutralOutlineRest,
+                "border-color": lightModeNeutralOutlineRest,
             },
             "&$carousel_sequenceIndicator__active": {
                 "&::before": {

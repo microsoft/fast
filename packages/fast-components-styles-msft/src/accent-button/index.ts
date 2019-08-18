@@ -26,8 +26,8 @@ const styles: ComponentStyles<AccentButtonClassNameContract, DesignSystem> = {
             background: accentFillActive,
         },
         ...applyFocusVisible<DesignSystem>({
-            borderColor: neutralFocus,
-            boxShadow: format(
+            "border-color": neutralFocus,
+            "box-shadow": format(
                 "0 0 0 2px inset {0}",
                 neutralFocusInnerAccent(accentFillRest)
             ),

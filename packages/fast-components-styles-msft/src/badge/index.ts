@@ -34,21 +34,21 @@ const styles: ComponentStyles<BadgeClassNameContract, DesignSystem> = (
             ...ellipsis(),
             overflow: "hidden",
             ...applyCursorDefault(),
-            boxSizing: "border-box",
+            "box-sizing": "border-box",
             display: "inline-block",
-            maxWidth: "215px",
+            "max-width": "215px",
             color: neutralForegroundRest,
             transition: "all 0.2s ease-in-out",
         },
         badge__filled: {
             ...applyCornerRadius(),
             ...applyFontWeightNormal(),
-            backgroundColor: filledBackground,
+            "background-color": filledBackground,
             color: accentForegroundCut((): Swatch => filledBackground),
         },
         badge__small: {
             ...applyScaledTypeRamp("t8"),
-            lineHeight: toPx(smallHeight - 3),
+            "line-height": toPx(smallHeight - 3),
             height: toPx(smallHeight),
             "&$badge__filled": {
                 padding: `1px ${toPx(
@@ -59,7 +59,7 @@ const styles: ComponentStyles<BadgeClassNameContract, DesignSystem> = (
         },
         badge__large: {
             height: toPx(largeHeight),
-            lineHeight: toPx(largeHeight),
+            "line-height": toPx(largeHeight),
             "&$badge__filled": {
                 padding: format("0 {0}", horizontalSpacing()),
             },

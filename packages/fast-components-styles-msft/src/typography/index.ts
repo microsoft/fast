@@ -9,8 +9,8 @@ const styles: ComponentStyles<TypographyClassNameContract, DesignSystem> = {
     typography: {
         ...applyCursorDefault(),
         color: neutralForegroundRest,
-        marginTop: "0",
-        marginBottom: "0",
+        "margin-top": "0",
+        "margin-bottom": "0",
         transition: "all 0.2s ease-in-out",
     },
     typography__1: {
