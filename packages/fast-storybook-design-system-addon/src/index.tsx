@@ -12,7 +12,6 @@ const jssInstance: ReturnType<create> = create();
 jssInstance.use(jssNested());
 JSSManager.jss = jssInstance;
 
-
 interface DesignSystemDecoratorProps {
     channel: ReturnType<typeof addons.getChannel>;
 }

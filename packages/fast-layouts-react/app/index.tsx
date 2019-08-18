@@ -11,7 +11,7 @@ import { Column, ColumnClassNamesContract } from "../src/column";
 import { create } from "jss";
 import jssNested from "jss-plugin-nested";
 
-const jssInstance: ReturnType<create> = create(); 
+const jssInstance: ReturnType<create> = create();
 jssInstance.use(jssNested());
 
 JSSManager.jss = jssInstance;

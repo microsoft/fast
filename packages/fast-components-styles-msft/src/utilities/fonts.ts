@@ -36,8 +36,10 @@ function weight(index: keyof FontWeight): DesignSystemResolver<string> {
     };
 }
 
-function applyFontWeight(weightResolver: DesignSystemResolver<string>): CSSRules<DesignSystem> {
-    return { "font-weight": weightResolver }
+function applyFontWeight(
+    weightResolver: DesignSystemResolver<string>
+): CSSRules<DesignSystem> {
+    return { "font-weight": weightResolver };
 }
 
 export function applyFontWeightLight(): CSSRules<DesignSystem> {
