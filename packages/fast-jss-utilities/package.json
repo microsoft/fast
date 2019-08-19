@@ -2,7 +2,7 @@
   "name": "@microsoft/fast-jss-utilities",
   "description": "Utilities for use with JSS",
   "sideEffects": false,
-  "version": "4.5.5",
+  "version": "4.5.6-jss-perf.10+a342c98",
   "author": {
     "name": "Microsoft",
     "url": "https://discord.gg/FcSNfg4"
@@ -77,5 +77,6 @@
   },
   "peerDependencies": {
     "lodash-es": "^4.17.10"
-  }
+  },
+  "gitHead": "a342c985f74d4f20407398b26d3c98992b3b1040"
 }

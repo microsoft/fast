@@ -2,7 +2,7 @@
   "name": "@microsoft/fast-development-site-react",
   "description": "FAST development testing site for React",
   "sideEffects": false,
-  "version": "4.4.10",
+  "version": "4.4.11-jss-perf.4+a342c98",
   "author": {
     "name": "Microsoft",
     "url": "https://discord.gg/FcSNfg4"
@@ -33,9 +33,9 @@
   },
   "dependencies": {
     "@microsoft/fast-glyphs-msft": "^4.0.2",
-    "@microsoft/fast-jss-utilities": "^4.5.5",
-    "@microsoft/fast-layouts-react": "^4.4.1",
-    "@microsoft/fast-tooling-react": "^1.15.3",
+    "@microsoft/fast-jss-utilities": "^4.5.6-jss-perf.10+a342c98",
+    "@microsoft/fast-layouts-react": "^4.4.2-jss-perf.10+a342c98",
+    "@microsoft/fast-tooling-react": "^1.15.4-jss-perf.4+a342c98",
     "@microsoft/fast-web-utilities": "^4.2.1",
     "react-syntax-highlighter": "^7.0.4"
   },
@@ -75,5 +75,6 @@
     "react": "^16.6.0",
     "react-dom": "^16.6.0",
     "react-router-dom": "^4.2.2"
-  }
+  },
+  "gitHead": "a342c985f74d4f20407398b26d3c98992b3b1040"
 }
