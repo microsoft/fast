@@ -167,7 +167,7 @@ export default class CSSBorderRadius extends Foundation<
     ): (e: React.ChangeEvent<HTMLInputElement>) => void {
         return (e: React.ChangeEvent<HTMLInputElement>): void => {
             const borderRadius: CSSBorderRadiusValues = pick(this.props.data, [
-                "borderRadius"
+                "borderRadius",
             ]);
 
             const validatedValue: string = e.target.value === "" ? "0" : e.target.value;
