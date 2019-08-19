@@ -18,6 +18,7 @@ import { CSSColor, CSSColorValues } from "./color";
 import { CSSBorder, CSSBorderValues } from "./border";
 import { CSSBoxShadow, CSSBoxShadowValues } from "./box-shadow";
 import { CSSBackground, CSSBackgroundValues } from "./background";
+import { CSSBorderRadius, CSSBorderRadiusValues } from "./border-radius";
 
 export default class CSSEditor extends Foundation<
     CSSEditorHandledProps,
@@ -63,6 +64,14 @@ export default class CSSEditor extends Foundation<
 
     private boxShadowPropertyNames: string[] = ["boxShadow"];
 
+    private borderRadiusPropertyNames: string[] = [
+        "borderRadius",
+        "borderTopLeftRadius",
+        "borderTopRightRadius",
+        "borderBottomRightRadius",
+        "borderBottomLeftRadius",
+    ];
+
     public render(): React.ReactNode {
         return (
             <div className={this.props.managedClasses.cssEditor}>
@@ -106,6 +115,10 @@ export default class CSSEditor extends Foundation<
                 <CSSBoxShadow
                     data={this.getBoxShadowData()}
                     onChange={this.handleCSSUpdate(CSSComponent.boxShadow)}
+                />
+                <CSSBorderRadius
+                    data={this.getBorderRadiusData()}
+                    onChange={this.handleCSSUpdate(CSSComponent.borderRadius)}
                 />
             </React.Fragment>
         );
@@ -175,6 +188,13 @@ export default class CSSEditor extends Foundation<
         return pick(this.props.data, this.boxShadowPropertyNames);
     }
 
+    /**
+     * Gets the box shadow value
+     */
+    private getBorderRadiusData(): CSSBorderRadiusValues {
+        return pick(this.props.data, this.borderRadiusPropertyNames);
+    }
+
     private handleCSSUpdate = (
         component: CSSComponent
     ): (<D extends {}>(updatedComponentCSS: D) => void) => {
@@ -188,6 +208,12 @@ export default class CSSEditor extends Foundation<
                         break;
                     case CSSComponent.border:
                         updatedCSS = omit(this.props.data, this.borderPropertyNames);
+                        break;
+                    case CSSComponent.borderRadius:
+                        updatedCSS = omit(
+                            this.props.data,
+                            this.borderRadiusPropertyNames
+                        );
                         break;
                     case CSSComponent.boxShadow:
                         updatedCSS = omit(this.props.data, this.boxShadowPropertyNames);
