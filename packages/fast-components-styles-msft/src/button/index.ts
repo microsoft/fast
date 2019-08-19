@@ -38,7 +38,7 @@ import { applyDisabledState } from "../utilities/disabled";
 import { applyScaledTypeRamp } from "../utilities/typography";
 
 const transparentBackground: CSSRules<DesignSystem> = {
-    backgroundColor: "transparent",
+    "background-color": "transparent",
 };
 
 const density: DesignSystemResolver<number> = getDesignSystemValue("density");
@@ -48,8 +48,8 @@ const applyTransparentBackplateStyles: CSSRules<DesignSystem> = {
     fill: accentForegroundRest,
     ...transparentBackground,
     ...applyFocusVisible({
-        borderColor: "transparent",
-        boxShadow: "none",
+        "border-color": "transparent",
+        "box-shadow": "none",
         "& $button_contentRegion::before": {
             background: neutralForegroundRest,
             height: toPx<DesignSystem>(focusOutlineWidth),
@@ -90,23 +90,23 @@ const applyTransparentBackplateStyles: CSSRules<DesignSystem> = {
 const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = {
     button: {
         ...applyScaledTypeRamp("t7"),
-        fontFamily: "inherit",
+        "font-family": "inherit",
         ...applyCursorPointer(),
-        boxSizing: "border-box",
-        maxWidth: "374px",
-        minWidth: (designSystem: DesignSystem): string =>
+        "box-sizing": "border-box",
+        "max-width": "374px",
+        "min-width": (designSystem: DesignSystem): string =>
             density(designSystem) <= -2 ? "28px" : "32px",
         padding: format("0 {0}", horizontalSpacing(focusOutlineWidth)),
         display: "inline-flex",
-        justifyContent: "center",
-        alignItems: "center",
+        "justify-content": "center",
+        "align-items": "center",
         height: height(),
         ...applyFocusPlaceholderBorder(),
         ...applyCornerRadius(),
-        lineHeight: "1",
+        "line-height": "1",
         overflow: "hidden",
-        textDecoration: "none",
-        whiteSpace: "nowrap",
+        "text-decoration": "none",
+        "white-space": "nowrap",
         transition: "all 0.1s ease-in-out",
         color: neutralForegroundRest,
         fill: neutralForegroundRest,
@@ -118,7 +118,7 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = {
             background: neutralFillActive,
         },
         ...applyFocusVisible<DesignSystem>({
-            borderColor: neutralFocus,
+            "border-color": neutralFocus,
         }),
         "&::-moz-focus-inner": {
             border: "0",
@@ -138,8 +138,8 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = {
             background: accentFillActive,
         },
         ...applyFocusVisible<DesignSystem>({
-            borderColor: neutralFocus,
-            boxShadow: format(
+            "border-color": neutralFocus,
+            "box-shadow": format(
                 "0 0 0 {0} inset {1}",
                 toPx(focusOutlineWidth),
                 neutralFocusInnerAccent(accentFillRest)
@@ -174,12 +174,12 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = {
             ),
         },
         ...applyFocusVisible<DesignSystem>({
-            boxShadow: format(
+            "box-shadow": format(
                 "0 0 0 {0} {1} inset",
                 toPx(subtract(focusOutlineWidth, outlineWidth)),
                 neutralFocus
             ),
-            borderColor: neutralFocus,
+            "border-color": neutralFocus,
         }),
     },
     button__lightweight: {
@@ -187,11 +187,11 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = {
     },
     button__justified: {
         ...applyTransparentBackplateStyles,
-        minWidth: "74px",
-        paddingLeft: "0",
-        paddingRight: "0",
-        borderWidth: "0",
-        justifyContent: "flex-start",
+        "min-width": "74px",
+        "padding-left": "0",
+        "padding-right": "0",
+        "border-width": "0",
+        "justify-content": "flex-start",
     },
     button__stealth: {
         background: neutralFillStealthRest,
@@ -202,7 +202,7 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = {
             backgroundColor: neutralFillStealthActive,
         },
         ...applyFocusVisible<DesignSystem>({
-            borderColor: neutralFocus,
+            "border-color": neutralFocus,
         }),
     },
     button_contentRegion: {

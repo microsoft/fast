@@ -41,7 +41,7 @@ export function applyAcrylicMaterial(
     };
 
     return {
-        borderTop: topHighlight
+        "border-top": topHighlight
             ? `${toPx(1)} solid ${new ColorRGBA64(
                   background.r,
                   background.g,

@@ -19,7 +19,7 @@ export interface GridClassNamesContract {
 export const gridStyleSheet: ComponentStyles<GridClassNamesContract, undefined> = {
     grid: {
         display: "grid",
-        gridAutoRows: "auto",
+        "grid-auto-rows": "auto",
     },
 };
 

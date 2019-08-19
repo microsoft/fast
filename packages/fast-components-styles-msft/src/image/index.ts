@@ -6,7 +6,7 @@ function applyImageStyles(): CSSRules<DesignSystem> {
     return {
         display: "block",
         margin: "0",
-        maxWidth: "100%",
+        "max-width": "100%",
         height: "auto",
     };
 }

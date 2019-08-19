@@ -67,7 +67,9 @@
     "@storybook/components": "^5.1.9",
     "@storybook/core-events": "^5.1.9",
     "@storybook/router": "^5.1.3",
-    "@storybook/theming": "^5.1.3"
+    "@storybook/theming": "^5.1.3",
+    "jss": "^9.8.7",
+    "jss-plugin-nested": "^10.0.0-alpha.7"
   },
   "devDependencies": {
     "@microsoft/fast-jss-manager-react": "^4.3.5",

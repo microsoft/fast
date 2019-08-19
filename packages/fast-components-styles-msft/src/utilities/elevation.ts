@@ -66,7 +66,7 @@ export const directionalShadowConfig: ShadowConfig = {
 export function applyElevation(
     elevationValue: ElevationMultiplier | number
 ): CSSRules<DesignSystem> {
-    return { boxShadow: combinedShadow(elevationValue) };
+    return { "box-shadow": combinedShadow(elevationValue) };
 }
 
 function combinedShadow(
