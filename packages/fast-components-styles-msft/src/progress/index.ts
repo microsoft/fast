@@ -16,18 +16,20 @@ const styles: ComponentStyles<ProgressClassNameContract, DesignSystem> = {
         width: "100%",
         alignItems: "center",
         height: toPx<DesignSystem>(designUnit),
-        textAlign: "left",
+        "text-align": "left",
     },
     progress__circular: {
         height: "unset",
-        "& $progress_valueIndicator": {
+        "& $progress_valueIndicator, & $progress_indicator": {
             fill: "none",
             stroke: accentFillRest,
-            strokeWidth: "2px",
-            strokeLinecap: "round",
-            transformOrigin: "50% 50%",
+            "stroke-width": "2px",
+            "stroke-linecap": "round",
+            "transform-origin": "50% 50%",
             transform: "rotate(-90deg)",
             transition: "all 0.2s ease-in-out",
+        },
+        "& $progress_valueIndicator": {
             [highContrastSelector]: {
                 stroke: "ButtonText",
             },
@@ -36,13 +38,6 @@ const styles: ComponentStyles<ProgressClassNameContract, DesignSystem> = {
             animation: "spin-infinite 2s linear infinite",
         },
         "& $progress_indicator": {
-            fill: "none",
-            stroke: neutralFillRest,
-            strokeWidth: "2px",
-            strokeLinecap: "round",
-            transformOrigin: "50% 50%",
-            transform: "rotate(-90deg)",
-            transition: "all 0.2s ease-in-out",
             [highContrastSelector]: {
                 stroke: "ButtonFace",
             },
@@ -62,7 +57,7 @@ const styles: ComponentStyles<ProgressClassNameContract, DesignSystem> = {
     },
     progress_valueIndicator: {
         background: accentFillRest,
-        borderRadius: "100px",
+        "border-radius": "100px",
         height: "100%",
         transition: "all 0.2s ease-in-out",
         ...highContrastBackground,
@@ -74,11 +69,11 @@ const styles: ComponentStyles<ProgressClassNameContract, DesignSystem> = {
         alignItems: "center",
         width: "100%",
         overflow: "hidden",
-        borderRadius: "100px",
+        "border-radius": "100px",
         height: toPx<DesignSystem>(designUnit),
         background: neutralFillRest,
         transition: "all 0.2s ease-in-out",
-        maskImage: "-webkit-radial-gradient(white, black)",
+        "mask-image": "-webkit-radial-gradient(white, black)",
         [highContrastSelector]: {
             background: "ButtonFace",
             border: "1px solid ButtonText",
@@ -86,7 +81,7 @@ const styles: ComponentStyles<ProgressClassNameContract, DesignSystem> = {
     },
     progress_indicator__determinate: {
         height: toPx<DesignSystem>(designUnit),
-        borderRadius: "2px",
+        "border-radius": "2px",
         [highContrastSelector]: {
             background: "ButtonFace",
             border: "1px solid ButtonText",
@@ -96,9 +91,9 @@ const styles: ComponentStyles<ProgressClassNameContract, DesignSystem> = {
         position: "absolute",
         opacity: "0",
         height: "100%",
-        backgroundColor: accentFillRest,
-        borderRadius: "100px",
-        animationTimingFunction: "cubic-bezier(0.4, 0.0, 0.6, 1.0)",
+        "background-color": accentFillRest,
+        "border-radius": "100px",
+        "animation-timing-function": "cubic-bezier(0.4, 0.0, 0.6, 1.0)",
         [highContrastSelector]: {
             background: "ButtonText",
             opacity: "1 !important",

@@ -32,7 +32,7 @@ const styles: ComponentStyles<NeutralButtonClassNameContract, DesignSystem> = {
             background: neutralFillActive,
         },
         ...applyFocusVisible<DesignSystem>({
-            borderColor: neutralFocus,
+            "border-color": neutralFocus,
             ...highContrastOutlineFocus,
         }),
         "&:disabled": {

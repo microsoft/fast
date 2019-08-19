@@ -14,8 +14,8 @@ const styles: ComponentStyles<ContextMenuClassNameContract, DesignSystem> = {
         ...applyElevation(ElevationMultiplier.e11),
         margin: "0",
         padding: format("{0} 0", toPx<DesignSystem>(designUnit)),
-        maxWidth: "368px",
-        minWidth: "64px",
+        "max-width": "368px",
+        "min-width": "64px",
         transition: "all 0.2s ease-in-out",
         [highContrastSelector]: {
             background: HighContrastColor.buttonBackground,

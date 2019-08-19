@@ -36,22 +36,28 @@ function weight(index: keyof FontWeight): DesignSystemResolver<string> {
     };
 }
 
+function applyFontWeight(
+    weightResolver: DesignSystemResolver<string>
+): CSSRules<DesignSystem> {
+    return { "font-weight": weightResolver };
+}
+
 export function applyFontWeightLight(): CSSRules<DesignSystem> {
-    return { fontWeight: weight("light") };
+    return applyFontWeight(weight("light"));
 }
 
 export function applyFontWeightSemiLight(): CSSRules<DesignSystem> {
-    return { fontWeight: weight("semilight") };
+    return applyFontWeight(weight("semilight"));
 }
 
 export function applyFontWeightNormal(): CSSRules<DesignSystem> {
-    return { fontWeight: weight("normal") };
+    return applyFontWeight(weight("normal"));
 }
 
 export function applyFontWeightSemiBold(): CSSRules<DesignSystem> {
-    return { fontWeight: weight("semibold") };
+    return applyFontWeight(weight("semibold"));
 }
 
 export function applyFontWeightBold(): CSSRules<DesignSystem> {
-    return { fontWeight: weight("bold") };
+    return applyFontWeight(weight("bold"));
 }

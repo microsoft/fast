@@ -30,16 +30,16 @@ import {
 
 const styles: ComponentStyles<SelectOptionClassNameContract, DesignSystem> = {
     selectOption: {
-        listStyleType: "none",
-        boxSizing: "border-box",
+        "list-style-type": "none",
+        "box-sizing": "border-box",
         height: height(),
         display: "flex",
-        alignItems: "center",
+        "align-items": "center",
         padding: format("0 {0}", horizontalSpacing(focusOutlineWidth)),
         margin: format("0 {0}", toPx(designUnit)),
         color: neutralForegroundRest,
         fill: neutralForegroundRest,
-        whiteSpace: "nowrap",
+        "white-space": "nowrap",
         overflow: "hidden",
         ...applyCursorDefault(),
         ...applyScaledTypeRamp("t7"),
@@ -48,7 +48,7 @@ const styles: ComponentStyles<SelectOptionClassNameContract, DesignSystem> = {
         ...applyCornerRadius(),
         ...applyFocusPlaceholderBorder(),
         ...applyFocusVisible<DesignSystem>({
-            borderColor: neutralFocus,
+            "border-color": neutralFocus,
         }),
         "&:hover": {
             background: neutralFillStealthHover,
@@ -65,7 +65,7 @@ const styles: ComponentStyles<SelectOptionClassNameContract, DesignSystem> = {
         position: "relative",
         width: glyphSize,
         height: glyphSize,
-        flexShrink: "0",
+        "flex-shrink": "0",
         margin: directionSwitch(
             format("0 {0} 0 0", horizontalSpacing()),
             format("0 0 0 {0}", horizontalSpacing())
@@ -81,7 +81,7 @@ const styles: ComponentStyles<SelectOptionClassNameContract, DesignSystem> = {
     selectOption__selected: {
         [highContrastSelector]: {
             background: "Highlight !important",
-            borderColor: "ButtonText !important",
+            "border-color": "ButtonText !important",
             color: "HighlightText !important",
             fill: "HighlightText !important",
         },

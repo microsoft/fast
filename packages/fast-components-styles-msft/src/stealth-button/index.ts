@@ -25,14 +25,14 @@ const styles: ComponentStyles<AccentButtonClassNameContract, DesignSystem> = {
         fill: neutralForegroundRest,
         background: neutralFillStealthRest,
         "&:hover:enabled": {
-            backgroundColor: neutralFillStealthHover,
+            "background-color": neutralFillStealthHover,
             ...highContrastSelection,
         },
         "&:active:enabled": {
-            backgroundColor: neutralFillStealthActive,
+            "background-color": neutralFillStealthActive,
         },
         ...applyFocusVisible<DesignSystem>({
-            borderColor: neutralFocus,
+            "border-color": neutralFocus,
             ...highContrastOutlineFocus,
         }),
         "&:disabled": {

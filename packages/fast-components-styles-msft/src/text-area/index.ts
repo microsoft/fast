@@ -10,9 +10,9 @@ const styles: ComponentStyles<TextAreaClassNameContract, DesignSystem> = {
     textArea: {
         ...inputFieldStyles(),
         height: height(2),
-        paddingTop: toPx(multiply(designUnit, 1.5)),
-        paddingBottom: toPx(multiply(designUnit, 1.5)),
-        maxWidth: "100%",
+        "padding-top": toPx(multiply(designUnit, 1.5)),
+        "padding-bottom": toPx(multiply(designUnit, 1.5)),
+        "max-width": "100%",
     },
 };
 

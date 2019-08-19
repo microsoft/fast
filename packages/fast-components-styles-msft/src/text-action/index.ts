@@ -38,15 +38,15 @@ export const textFieldOverrides: ComponentStyles<
         border: "none",
         flex: "1 0 0",
         background: "transparent",
-        minWidth: "inherit",
+        "min-width": "inherit",
         "&:hover, &:hover:enabled, &:disabled, &:active, &:active:enabled, &:focus, &:focus:enabled": {
             background: "none",
             border: "none",
-            boxShadow: "none",
+            "box-shadow": "none",
             [highContrastSelector]: {
                 background: "none",
                 border: "none",
-                boxShadow: "none",
+                "box-shadow": "none",
             },
         },
     },
@@ -62,11 +62,11 @@ const glyphStyles: CSSRules<{}> = {
 
 const styles: ComponentStyles<TextActionClassNameContract, DesignSystem> = {
     textAction: {
-        boxSizing: "border-box",
+        "box-sizing": "border-box",
         position: "relative",
         height: height(),
         margin: "0",
-        minWidth: "92px",
+        "min-width": "92px",
         border: format(
             "{0} solid {1}",
             toPx<DesignSystem>(outlineWidth),
@@ -75,15 +75,15 @@ const styles: ComponentStyles<TextActionClassNameContract, DesignSystem> = {
         background: neutralFillInputRest,
         ...applyCornerRadius(),
         display: "flex",
-        flexDirection: "row",
+        "flex-direction": "row",
         transition: "all 0.2s ease-in-out",
         "&:hover": {
             background: neutralFillInputHover,
-            borderColor: neutralOutlineHover,
+            "border-color": neutralOutlineHover,
         },
         "&:active": {
             background: neutralFillInputActive,
-            borderColor: neutralOutlineActive,
+            "border-color": neutralOutlineActive,
         },
     },
     textAction__filled: {
@@ -91,17 +91,17 @@ const styles: ComponentStyles<TextActionClassNameContract, DesignSystem> = {
         border: format("{0} solid transparent", toPx<DesignSystem>(outlineWidth)),
         "&:hover": {
             background: neutralFillHover,
-            borderColor: "transparent",
+            "border-color": "transparent",
         },
         "&:active": {
             background: neutralFillActive,
-            borderColor: "transparent",
+            "border-color": "transparent",
         },
     },
     textAction__outline: {},
     textAction__focus: {
         "&, &:hover": {
-            boxShadow: format(
+            "box-shadow": format(
                 "0 0 0 {0} {1} inset",
                 toPx<DesignSystem>(subtract(focusOutlineWidth, outlineWidth)),
                 neutralFocus
@@ -114,7 +114,7 @@ const styles: ComponentStyles<TextActionClassNameContract, DesignSystem> = {
         },
         [highContrastSelector]: {
             "&, &:hover": {
-                boxShadow: format(
+                "box-shadow": format(
                     "0 0 0 {0} ButtonText inset",
                     toPx<DesignSystem>(subtract(focusOutlineWidth, outlineWidth))
                 ),
@@ -127,22 +127,22 @@ const styles: ComponentStyles<TextActionClassNameContract, DesignSystem> = {
         ...highContrastDisabledBorder,
         "&:hover": {
             background: neutralFillInputRest,
-            borderColor: neutralOutlineRest,
+            "border-color": neutralOutlineRest,
         },
         "&:active": {
             background: neutralFillInputRest,
-            borderColor: neutralOutlineRest,
+            "border-color": neutralOutlineRest,
         },
         "& $textAction_beforeGlyph, & $textAction_afterGlyph": {
             ...highContrastDisabledForeground,
         },
     },
     textAction_button: {
-        borderColor: "transparent",
+        "border-color": "transparent",
         color: neutralForegroundRest,
         fill: neutralForegroundRest,
         height: format("calc({0} - 6px)", height()),
-        minWidth: "fit-content",
+        "min-width": "fit-content",
         margin: "2px",
         padding: `0 5px`,
         left: directionSwitch("0", ""),

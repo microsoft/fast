@@ -54,18 +54,18 @@ const styles: ComponentStyles<SliderClassNameContract, DesignSystem> = {
         width: thumbSize,
         border: "none",
         background: neutralForegroundRest,
-        borderRadius: "50%",
+        "border-radius": "50%",
         transition: "all 0.1s ease",
         ...applyElevation(ElevationMultiplier.e4),
         ...applyFocusVisible<DesignSystem>({
-            boxShadow: format(
+            "box-shadow": format(
                 `0 0 0 2px {0}, 0 0 0 {2} {1}`,
                 backgroundColor,
                 neutralFocus,
                 toPx(add(focusOutlineWidth, 2))
             ),
             [highContrastSelector]: {
-                boxShadow: format(
+                "box-shadow": format(
                     `0 0 0 2px Background, 0 0 0 {0} ButtonText`,
                     toPx(add(focusOutlineWidth, 2))
                 ),
@@ -117,15 +117,15 @@ const styles: ComponentStyles<SliderClassNameContract, DesignSystem> = {
     slider__horizontal: {
         "&$slider": {
             width: "100%",
-            minHeight: thumbSize,
-            minWidth: minSize,
+            "min-height": thumbSize,
+            "min-width": minSize,
         },
         "& $slider_layoutRegion": {
             margin: format(`0 {0}`, halfThumbSize),
-            gridTemplateRows: format(`{0} 1fr`, thumbSize),
+            "grid-template-rows": format(`{0} 1fr`, thumbSize),
         },
         "& $slider_thumb": {
-            alignSelf: "start",
+            "align-self": "start",
         },
         "& $slider_thumb__upperValue": {
             transform: format(`translateX({0})`, halfThumbSize),
@@ -134,45 +134,45 @@ const styles: ComponentStyles<SliderClassNameContract, DesignSystem> = {
             transform: format(`translateX(-{0})`, halfThumbSize),
         },
         "& $slider_track": {
-            alignSelf: "start",
+            "align-self": "start",
             height: thumbSize,
             width: "100%",
         },
         "& $slider_backgroundTrack": {
-            marginTop: trackOffset,
-            alignSelf: "start",
+            "margin-top": trackOffset,
+            "align-self": "start",
             height: toPx(designUnit),
             left: trackOverhang,
             right: trackOverhang,
         },
         "& $slider_foregroundTrack": {
-            marginTop: trackOffset,
-            alignSelf: "start",
+            "margin-top": trackOffset,
+            "align-self": "start",
             height: toPx(designUnit),
         },
         "&$slider__modeAdjustLower": {
             "& $slider_foregroundTrack": {
-                marginRight: trackOverhang,
+                "margin-right": trackOverhang,
             },
         },
         "&$slider__modeAdjustUpper": {
             "& $slider_foregroundTrack": {
-                marginLeft: trackOverhang,
+                "margin-left": trackOverhang,
             },
         },
     },
     slider__vertical: {
         "&$slider": {
             height: "100%",
-            minHeight: minSize,
-            minWidth: thumbSize,
+            "min-height": minSize,
+            "min-width": thumbSize,
         },
         "& $slider_thumb": {
-            justifySelf: "start",
+            "justify-self": "start",
         },
         "& $slider_layoutRegion": {
             margin: format(`{0} 0`, halfThumbSize),
-            gridTemplateColumns: format(`{0} 1fr`, thumbSize),
+            "grid-template-columns": format(`{0} 1fr`, thumbSize),
         },
         "& $slider_thumb__upperValue": {
             transform: format(`translateY(-{0})`, halfThumbSize),
@@ -181,31 +181,31 @@ const styles: ComponentStyles<SliderClassNameContract, DesignSystem> = {
             transform: format(`translateY({0})`, halfThumbSize),
         },
         "& $slider_track": {
-            justifySelf: "start",
-            marginLeft: trackOffset,
+            "justify-self": "start",
+            "margin-left": trackOffset,
             width: toPx(designUnit),
             height: "100%",
         },
         "& $slider_backgroundTrack": {
-            justifySelf: "start",
-            marginLeft: trackOffset,
+            "justify-self": "start",
+            "margin-left": trackOffset,
             width: toPx(designUnit),
             top: trackOverhang,
             bottom: trackOverhang,
         },
         "& $slider_foregroundTrack": {
-            justifySelf: "start",
-            marginLeft: trackOffset,
+            "justify-self": "start",
+            "margin-left": trackOffset,
             width: toPx(designUnit),
         },
         "&$slider__modeAdjustLower": {
             "& $slider_foregroundTrack": {
-                marginTop: trackOverhang,
+                "margin-top": trackOverhang,
             },
         },
         "&$slider__modeAdjustUpper": {
             "& $slider_foregroundTrack": {
-                marginBottom: trackOverhang,
+                "margin-bottom": trackOverhang,
             },
         },
     },
@@ -219,25 +219,25 @@ const styles: ComponentStyles<SliderClassNameContract, DesignSystem> = {
             },
             "&$slider__modeAdjustLower": {
                 "& $slider_foregroundTrack": {
-                    marginRight: "0",
-                    marginLeft: trackOverhang,
+                    "margin-right": "0",
+                    "margin-left": trackOverhang,
                 },
             },
             "&$slider__modeAdjustUpper": {
                 "& $slider_foregroundTrack": {
-                    marginRight: trackOverhang,
-                    marginLeft: "0",
+                    "margin-right": trackOverhang,
+                    "margin-left": "0",
                 },
             },
         },
         "&$slider__vertical": {
             "& $slider_backgroundTrack": {
-                marginRight: trackOffset,
-                marginLeft: "0",
+                "margin-right": trackOffset,
+                "margin-left": "0",
             },
             "& $slider_foregroundTrack": {
-                marginRight: trackOffset,
-                marginLeft: "0",
+                "margin-right": trackOffset,
+                "margin-left": "0",
             },
         },
     },
@@ -248,34 +248,34 @@ const styles: ComponentStyles<SliderClassNameContract, DesignSystem> = {
         "&$slider__horizontal": {
             "& $slider_thumb__upperValue": {
                 width: halfThumbSize,
-                borderRadius: format(`0px {0} {0} 0px`, halfThumbSize),
+                "border-radius": format(`0px {0} {0} 0px`, halfThumbSize),
             },
             "& $slider_thumb__lowerValue": {
                 width: halfThumbSize,
-                borderRadius: format(`{0} 0px 0px {0}`, halfThumbSize),
+                "border-radius": format(`{0} 0px 0px {0}`, halfThumbSize),
             },
             "&$slider__rtl": {
                 "& $slider_thumb__upperValue": {
-                    borderRadius: format(`{0} 0px 0px {0}`, halfThumbSize),
+                    "border-radius": format(`{0} 0px 0px {0}`, halfThumbSize),
                 },
 
                 "& $slider_thumb__lowerValue": {
-                    borderRadius: format(`0px {0} {0} 0px`, halfThumbSize),
+                    "border-radius": format(`0px {0} {0} 0px`, halfThumbSize),
                 },
             },
         },
         "&$slider__vertical": {
             "& $slider_thumb__upperValue": {
                 height: halfThumbSize,
-                borderRadius: format(`{0} {0} 0px 0px`, halfThumbSize),
+                "border-radius": format(`{0} {0} 0px 0px`, halfThumbSize),
             },
             "& $slider_thumb__lowerValue": {
                 height: halfThumbSize,
-                borderRadius: format(`0px 0px {0} {0}`, halfThumbSize),
+                "border-radius": format(`0px 0px {0} {0}`, halfThumbSize),
             },
         },
         "& $slider_foregroundTrack": {
-            borderRadius: "0",
+            "border-radius": "0",
         },
     },
 };

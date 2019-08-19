@@ -56,7 +56,7 @@ export const callToActionButtonOverrides: ComponentStyles<
     DesignSystem
 > = {
     button: {
-        maxWidth: "100%",
+        "max-width": "100%",
         "&:hover": {
             "& $button_contentRegion": {
                 ...applyContentRegionTransform(),
@@ -87,10 +87,10 @@ const styles: ComponentStyles<CallToActionClassNameContract, DesignSystem> = {
     callToAction: {
         transition: "all 0.2s ease-in-out",
         display: "inline-flex",
-        maxWidth: "100%",
-        lineHeight: "1",
-        textDecoration: "none",
-        whiteSpace: "nowrap",
+        "max-width": "100%",
+        "line-height": "1",
+        "text-decoration": "none",
+        "white-space": "nowrap",
         "&:hover": {
             "& $callToAction_glyph": {
                 ...applyGlyphTransform(),
@@ -109,8 +109,8 @@ const styles: ComponentStyles<CallToActionClassNameContract, DesignSystem> = {
         position: "relative",
         width: glyphSize,
         height: glyphSize,
-        marginLeft: directionSwitch("6px", ""),
-        marginRight: directionSwitch("", "6px"),
+        "margin-left": directionSwitch("6px", ""),
+        "margin-right": directionSwitch("", "6px"),
         transform: directionSwitch("none", "rotate(180deg)"),
         transition: "all 600ms cubic-bezier(0.19, 1, 0.22, 1)",
         ...highContrastForeground,
@@ -145,8 +145,8 @@ const styles: ComponentStyles<CallToActionClassNameContract, DesignSystem> = {
         },
     },
     callToAction__justified: {
-        paddingRight: directionSwitch(translateXValue, ""),
-        paddingLeft: directionSwitch("", translateXValue),
+        "padding-right": directionSwitch(translateXValue, ""),
+        "padding-left": directionSwitch("", translateXValue),
         "& $callToAction_glyph": {
             fill: accentForegroundRest,
         },
