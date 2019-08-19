@@ -1,5 +1,5 @@
+import { PivotClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import { DesignSystem } from "../design-system";
-import { ComponentStyles } from "@microsoft/fast-jss-manager";
 import {
     applyFocusVisible,
     directionSwitch,
@@ -15,15 +15,15 @@ import {
     neutralForegroundHover,
     neutralForegroundRest,
 } from "../utilities/color";
-import { PivotClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
+import { ComponentStyles } from "@microsoft/fast-jss-manager";
 import { applyCornerRadius, applyFocusPlaceholderBorder } from "../utilities/border";
 import { applyScaledTypeRamp } from "../utilities/typography";
 import { focusOutlineWidth } from "../utilities/design-system";
 import { applyCursorPointer } from "../utilities/cursor";
 import {
+    highContrastBorderColor,
     highContrastForeground,
     highContrastSelector,
-    highContrastBorderColor,
 } from "../utilities/high-contrast";
 
 const activeIndicatorHeight: number = 3;
