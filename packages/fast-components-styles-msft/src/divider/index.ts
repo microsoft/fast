@@ -18,7 +18,7 @@ const styles: ComponentStyles<DividerClassNameContract, DesignSystem> = {
             neutralDividerRest
         ),
         transition: "all 0.2s ease-in-out",
-        ...highContrastBorderColor
+        ...highContrastBorderColor,
     },
 };
 

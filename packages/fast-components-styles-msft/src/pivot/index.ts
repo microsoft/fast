@@ -20,7 +20,11 @@ import { applyCornerRadius, applyFocusPlaceholderBorder } from "../utilities/bor
 import { applyScaledTypeRamp } from "../utilities/typography";
 import { focusOutlineWidth } from "../utilities/design-system";
 import { applyCursorPointer } from "../utilities/cursor";
-import { highContrastForeground, highContrastSelector, highContrastBorderColor } from "../utilities/high-contrast";
+import {
+    highContrastForeground,
+    highContrastSelector,
+    highContrastBorderColor,
+} from "../utilities/high-contrast";
 
 const activeIndicatorHeight: number = 3;
 const styles: ComponentStyles<PivotClassNameContract, DesignSystem> = {
@@ -55,7 +59,7 @@ const styles: ComponentStyles<PivotClassNameContract, DesignSystem> = {
         },
         ...applyFocusVisible<DesignSystem>({
             borderColor: neutralFocus,
-            ...highContrastBorderColor
+            ...highContrastBorderColor,
         }),
         [highContrastSelector]: {
             color: "ButtonText",

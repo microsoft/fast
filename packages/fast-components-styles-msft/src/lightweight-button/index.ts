@@ -32,14 +32,14 @@ const styles: ComponentStyles<LightweightButtonClassNameContract, DesignSystem> 
             "& $button_contentRegion::before": {
                 background: neutralForegroundRest,
                 height: toPx<DesignSystem>(focusOutlineWidth),
-                ...highContrastBackground
+                ...highContrastBackground,
             },
         }),
         "a&, button&": {},
         // Underline
         "&:hover $button_contentRegion::before": {
             background: accentForegroundHover,
-            ...highContrastBackground
+            ...highContrastBackground,
         },
         "&:hover$button__disabled $button_contentRegion::before": {
             display: "none",

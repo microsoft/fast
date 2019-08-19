@@ -100,7 +100,7 @@ const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = {
                 boxShadow: format<DesignSystem>("0 0 0 1px ButtonText"),
             },
         }),
-        ...highContrastBorderColor
+        ...highContrastBorderColor,
     },
     checkbox_stateIndicator: {
         position: "relative",

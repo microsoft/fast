@@ -8,10 +8,7 @@ import { accentFillRest, neutralFillRest } from "../utilities/color";
 import { multiply, toPx } from "@microsoft/fast-jss-utilities";
 import { designUnit } from "../utilities/design-system";
 import { glyphSize, height, heightNumber } from "../utilities/density";
-import {
-    highContrastBackground,
-    highContrastSelector
-} from "../utilities/high-contrast";
+import { highContrastBackground, highContrastSelector } from "../utilities/high-contrast";
 
 const styles: ComponentStyles<ProgressClassNameContract, DesignSystem> = {
     progress: {
@@ -68,7 +65,7 @@ const styles: ComponentStyles<ProgressClassNameContract, DesignSystem> = {
         borderRadius: "100px",
         height: "100%",
         transition: "all 0.2s ease-in-out",
-        ...highContrastBackground
+        ...highContrastBackground,
     },
     progress_valueIndicator__indeterminate: {},
     progress_indicator: {

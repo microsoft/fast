@@ -83,7 +83,7 @@ const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = {
         width: toPx(indicatorSize),
         height: toPx(indicatorSize),
         background: neutralForegroundRest,
-        ...highContrastBackground
+        ...highContrastBackground,
     },
     toggle_input: {
         ...applyCursorPointer(),
@@ -130,7 +130,7 @@ const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = {
                 ),
             },
         }),
-        ...highContrastBorderColor
+        ...highContrastBorderColor,
     },
     toggle__checked: {
         "& $toggle_input": {

@@ -31,7 +31,7 @@ const styles: ComponentStyles<SliderLabelClassNameContract, DesignSystem> = {
 
     sliderLabel_tickMark: {
         background: neutralOutlineRest,
-        ...highContrastBackground
+        ...highContrastBackground,
     },
 
     sliderLabel__positionMin: {},

@@ -27,10 +27,7 @@ import {
 } from "../utilities/design-system";
 import { applyDisabledState } from "../utilities/disabled";
 import { applyElevation, ElevationMultiplier } from "../utilities/elevation";
-import {
-    highContrastBackground,
-    highContrastSelector
-} from "../utilities/high-contrast";
+import { highContrastBackground, highContrastSelector } from "../utilities/high-contrast";
 
 const thumbSizeValue: DesignSystemResolver<number> = add(
     divide(heightNumber(), 2),
@@ -93,7 +90,7 @@ const styles: ComponentStyles<SliderClassNameContract, DesignSystem> = {
     slider_backgroundTrack: {
         ...applyCornerRadius(),
         background: neutralOutlineRest,
-        ...highContrastBackground
+        ...highContrastBackground,
     },
     slider_foregroundTrack: {
         ...applyCornerRadius(),
