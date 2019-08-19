@@ -8,11 +8,11 @@ export interface CSSBorderRadiusState {
 }
 
 export enum BorderRadiusValue {
-    borderRadius = "borderRadius",
-    borderTopLeftRadius = "borderTopLeftRadius",
-    borderTopRightRadius = "borderTopRightRadius",
-    borderBottomRightRadius = "borderBottomRightRadius",
-    borderBottomLeftRadius = "borderBottomLeftRadius",
+    borderRadius,
+    borderTopLeftRadius,
+    borderTopRightRadius,
+    borderBottomRightRadius,
+    borderBottomLeftRadius,
 }
 
 export interface CSSBorderRadiusValues {

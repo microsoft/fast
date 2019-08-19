@@ -167,11 +167,7 @@ export default class CSSBorderRadius extends Foundation<
     ): (e: React.ChangeEvent<HTMLInputElement>) => void {
         return (e: React.ChangeEvent<HTMLInputElement>): void => {
             const borderRadius: CSSBorderRadiusValues = pick(this.props.data, [
-                BorderRadiusValue.borderRadius,
-                BorderRadiusValue.borderBottomLeftRadius,
-                BorderRadiusValue.borderBottomRightRadius,
-                BorderRadiusValue.borderTopLeftRadius,
-                BorderRadiusValue.borderTopRightRadius,
+                "borderRadius"
             ]);
 
             const validatedValue: string = e.target.value === "" ? "0" : e.target.value;
@@ -181,7 +177,7 @@ export default class CSSBorderRadius extends Foundation<
             );
             switch (cssKey) {
                 case BorderRadiusValue.borderRadius:
-                    borderRadius[cssKey] = e.target.value;
+                    borderRadius.borderRadius = e.target.value;
                     break;
                 case BorderRadiusValue.borderBottomLeftRadius:
                     borderRadius.borderRadius = `${parsedString[0]} ${parsedString[1]} ${
