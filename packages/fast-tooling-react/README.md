@@ -42,6 +42,7 @@ The tooling available in FAST Tooling React can be used together to create UI fo
         - [Disabled](#disabled)
         - [Examples & default](#examples-&-default)
         - [Badges](#badges)
+        - [Dictionaries](#dictionaries)
     - [JSON schema keywords](#json-schema-keywords)
         - [oneOf & anyOf](#oneof-&-anyof)
         - [Enums](#enums)
