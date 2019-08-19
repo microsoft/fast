@@ -1,5 +1,5 @@
+import { ButtonClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager";
-import { applyCursorPointer } from "../utilities/cursor";
 import {
     applyFocusVisible,
     directionSwitch,
@@ -30,12 +30,13 @@ import {
     neutralOutlineHover,
     neutralOutlineRest,
 } from "../utilities/color";
-import { ButtonClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
+import { applyCursorPointer } from "../utilities/cursor";
 import { glyphSize, height, horizontalSpacing } from "../utilities/density";
 import { focusOutlineWidth, outlineWidth } from "../utilities/design-system";
 import { applyDisabledState } from "../utilities/disabled";
 import { applyScaledTypeRamp } from "../utilities/typography";
 import {
+    highContrastBackground,
     highContrastDisabledBorder,
     highContrastDisabledForeground,
     highContrastDoubleFocus,
@@ -58,17 +59,13 @@ const applyTransparentBackplateStyles: CSSRules<DesignSystem> = {
         "& $button_contentRegion::before": {
             background: neutralForegroundRest,
             height: toPx<DesignSystem>(focusOutlineWidth),
-            [highContrastSelector]: {
-                background: "ButtonText",
-            },
+            ...highContrastBackground
         },
     }),
     // Underline
     "&:hover $button_contentRegion::before": {
         background: accentForegroundHover,
-        [highContrastSelector]: {
-            background: "ButtonText",
-        },
+        ...highContrastBackground
     },
     "&:hover$button__disabled $button_contentRegion::before": {
         display: "none",

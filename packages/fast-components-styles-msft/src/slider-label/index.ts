@@ -7,7 +7,7 @@ import { applyCursorDefault } from "../utilities/cursor";
 import { heightNumber } from "../utilities/density";
 import { designUnit } from "../utilities/design-system";
 import { applyScaledTypeRamp } from "../utilities/typography";
-import { highContrastSelector } from "../utilities/high-contrast";
+import { highContrastBackground } from "../utilities/high-contrast";
 
 function minMaxLabelMargin(config: DesignSystem): string {
     return toPx(((heightNumber()(config) / 2 + designUnit(config)) / 2) * -1);
@@ -31,9 +31,7 @@ const styles: ComponentStyles<SliderLabelClassNameContract, DesignSystem> = {
 
     sliderLabel_tickMark: {
         background: neutralOutlineRest,
-        [highContrastSelector]: {
-            background: "ButtonText",
-        },
+        ...highContrastBackground
     },
 
     sliderLabel__positionMin: {},

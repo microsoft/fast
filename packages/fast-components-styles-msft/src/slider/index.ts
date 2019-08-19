@@ -1,5 +1,5 @@
+import { applyCursorPointer } from "../utilities/cursor";
 import { SliderClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
-import { ComponentStyles } from "@microsoft/fast-jss-manager";
 import {
     add,
     applyFocusVisible,
@@ -18,7 +18,7 @@ import {
     neutralForegroundRest,
     neutralOutlineRest,
 } from "../utilities/color";
-import { applyCursorPointer } from "../utilities/cursor";
+import { ComponentStyles } from "@microsoft/fast-jss-manager";
 import { heightNumber } from "../utilities/density";
 import {
     backgroundColor,
@@ -27,7 +27,10 @@ import {
 } from "../utilities/design-system";
 import { applyDisabledState } from "../utilities/disabled";
 import { applyElevation, ElevationMultiplier } from "../utilities/elevation";
-import { highContrastSelector } from "../utilities/high-contrast";
+import {
+    highContrastBackground,
+    highContrastSelector
+} from "../utilities/high-contrast";
 
 const thumbSizeValue: DesignSystemResolver<number> = add(
     divide(heightNumber(), 2),
@@ -90,9 +93,7 @@ const styles: ComponentStyles<SliderClassNameContract, DesignSystem> = {
     slider_backgroundTrack: {
         ...applyCornerRadius(),
         background: neutralOutlineRest,
-        [highContrastSelector]: {
-            background: "ButtonText",
-        },
+        ...highContrastBackground
     },
     slider_foregroundTrack: {
         ...applyCornerRadius(),

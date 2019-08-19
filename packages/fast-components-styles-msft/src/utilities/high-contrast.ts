@@ -102,7 +102,7 @@ export const highContrastSelection: CSSRules<DesignSystem> = {
     },
 };
 
-// Used to set foreground and glyph to use 'button-text' color
+// Used to set foreground and glyph to be 'button-text' color
 export const highContrastForeground: CSSRules<DesignSystem> = {
     [highContrastSelector]: {
         color: "ButtonText !important",
@@ -110,7 +110,7 @@ export const highContrastForeground: CSSRules<DesignSystem> = {
     },
 };
 
-// Used to set borders to use 'text' color
+// Used to set borders to be 'text' color
 export const highContrastBorder: CSSRules<DesignSystem> = {
     [highContrastSelector]: {
         border: format(
@@ -118,5 +118,19 @@ export const highContrastBorder: CSSRules<DesignSystem> = {
             toPx<DesignSystem>(outlineWidth),
             () => HighContrastColor.text
         ),
+    },
+};
+
+// Used to set border color to be 'button-text' color
+export const highContrastBorderColor: CSSRules<DesignSystem> = {
+    [highContrastSelector]: {
+        borderColor: HighContrastColor.buttonText,
+    },
+};
+
+// Used to set background to be 'button-text' color
+export const highContrastBackground: CSSRules<DesignSystem> = {
+    [highContrastSelector]: {
+        background: HighContrastColor.buttonText,
     },
 };
