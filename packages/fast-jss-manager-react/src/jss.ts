@@ -11,4 +11,7 @@ const jss: any = create(presets());
 const stylesheetManager: any = new SheetsManager();
 const stylesheetRegistry: any = new SheetsRegistry();
 
+/**
+ * TODO: comment only to force change - remove when convenient
+ */
 export { jss, stylesheetManager, stylesheetRegistry };
