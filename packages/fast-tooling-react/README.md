@@ -1160,6 +1160,23 @@ Example:
 }
 ```
 
+#### Dictionaries
+
+The `additionalProperties` JSON schema keyword can be used to create a dictionary of user-input keys on an object. To give these keys a label add the keyword `propertyTitle`, this will create a label for the form element for editing the property key.
+
+Example:
+
+```json
+{
+    "type": "object",
+    "additionalProperties": {
+        "title": "A dictionary of strings",
+        "propertyTitle": "A dictionary key",
+        "type": "string"
+    }
+}
+```
+
 ### JSON schema keywords
 
 Certain JSON schema keywords are interpreted to provide a better UI.

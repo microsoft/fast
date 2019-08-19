@@ -12,8 +12,10 @@ export interface FormItemDictionaryClassNameContract {
     formItemDictionary_controlLabel?: string;
     formItemDictionary_controlAddTrigger?: string;
     formItemDictionary_itemControl?: string;
+    formItemDictionary_itemControlLabel?: string;
     formItemDictionary_itemControlRegion?: string;
     formItemDictionary_itemControlInput?: string;
+    formItemDictionary_itemControlRemoveTrigger?: string;
 }
 
 export interface FormItemDictionaryProps extends FormItemCommon {

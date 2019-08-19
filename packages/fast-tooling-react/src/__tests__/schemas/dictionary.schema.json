@@ -27,6 +27,7 @@
     },
     "additionalProperties": {
         "title": "String item",
+        "propertyTitle": "Item key",
         "type": "string"
     }
 }

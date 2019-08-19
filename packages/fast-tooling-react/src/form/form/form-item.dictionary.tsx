@@ -1,5 +1,5 @@
 import React from "react";
-import { get, omit, uniqueId } from "lodash-es";
+import { get, uniqueId } from "lodash-es";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 import styles from "./form-item.dictionary.style";
@@ -19,6 +19,8 @@ class FormItemDictionary extends FormItemBase<
     FormItemDictionaryProps & ManagedClasses<FormItemDictionaryClassNameContract>,
     {}
 > {
+    public static displayName: string = "FormItemDictionary";
+
     public render(): React.ReactNode {
         return (
             <div className={get(this.props.managedClasses, "formItemDictionary")}>
@@ -58,9 +60,7 @@ class FormItemDictionary extends FormItemBase<
                     )}
                     aria-label={"Select to add item"}
                     onClick={this.handleOnAddItem}
-                >
-                    +
-                </button>
+                />
             </div>
         );
     }
@@ -79,6 +79,14 @@ class FormItemDictionary extends FormItemBase<
                         "formItemDictionary_itemControl"
                     )}
                 >
+                    <label
+                        className={get(
+                            this.props.managedClasses,
+                            "formItemDictionary_itemControlLabel"
+                        )}
+                    >
+                        {this.props.schema.propertyTitle || "Property key"}
+                    </label>
                     <input
                         className={get(
                             this.props.managedClasses,
@@ -87,6 +95,13 @@ class FormItemDictionary extends FormItemBase<
                         type="text"
                         value={propertyName}
                         onChange={this.handleOnKeyChange(propertyName)}
+                    />
+                    <button
+                        className={get(
+                            this.props.managedClasses,
+                            "formItemDictionary_itemControlRemoveTrigger"
+                        )}
+                        onClick={this.handleOnRemoveItem(propertyName)}
                     />
                 </div>
             </div>
@@ -119,6 +134,7 @@ class FormItemDictionary extends FormItemBase<
                             childOptions={this.props.childOptions}
                             required={this.isRequired(additionalPropertyKey)}
                             invalidMessage={this.props.invalidMessage}
+                            softRemove={false}
                         />
                     </div>
                 );
@@ -150,6 +166,19 @@ class FormItemDictionary extends FormItemBase<
                 generateExampleData(this.props.schema, "")
             );
         }
+    };
+
+    private handleOnRemoveItem = (
+        propertyName: string
+    ): ((e: React.MouseEvent<HTMLButtonElement>) => void) => {
+        return (e: React.MouseEvent<HTMLButtonElement>): void => {
+            this.props.onChange(
+                `${
+                    this.props.dataLocation === "" ? "" : `${this.props.dataLocation}.`
+                }${propertyName}`,
+                void 0
+            );
+        };
     };
 
     private handleOnKeyChange = (

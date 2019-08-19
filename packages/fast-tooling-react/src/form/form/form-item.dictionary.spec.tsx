@@ -16,6 +16,8 @@ const managedClasses: FormItemDictionaryClassNameContract = {
     formItemDictionary: "formItemDictionary-class",
     formItemDictionary_controlAddTrigger: "formItemDictionary_controlAddTrigger-class",
     formItemDictionary_itemControlInput: "formItemDictionary_itemControlInput-class",
+    formItemDictionary_itemControlLabel: "formItemDictionary_itemControlLabel-class",
+    formItemDictionary_itemControlRemoveTrigger: "formItemDictionary_itemControlRemoveTrigger-class"
 };
 
 const dictionaryProps: FormItemDictionaryProps = {
@@ -121,6 +123,32 @@ describe("FormItemDictionary", () => {
 
         expect(onChangeCallback).toHaveBeenCalled();
         expect(onChangeCallback.mock.calls[0][1]).toEqual("foobar");
+    });
+    test("should remove a property if the remove trigger is clicked", () => {
+        const onChangeCallback: any = jest.fn();
+        const rendered: any = mount(
+            <FormItemDictionary
+                {...dictionaryProps}
+                managedClasses={managedClasses}
+                onChange={onChangeCallback}
+                data={{
+                    a: "foo",
+                    b: "bar",
+                }}
+                schema={{
+                    type: "string",
+                }}
+            />
+        );
+
+        rendered
+            .find(`.${managedClasses.formItemDictionary_itemControlRemoveTrigger}`)
+            .at(0)
+            .simulate("click");
+
+        expect(onChangeCallback).toHaveBeenCalled();
+        expect(onChangeCallback.mock.calls[0][0]).toEqual("a");
+        expect(onChangeCallback.mock.calls[0][1]).toEqual(void 0);
     });
     test("should update the property key if the property key input is updated", () => {
         const onChangeCallback: any = jest.fn();
