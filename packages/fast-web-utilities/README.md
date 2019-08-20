@@ -160,7 +160,10 @@ const whitespaceToPascal = pascalCase(" my string ");
 ```
 
 #### classNames
-A utility for merging class names into a single string conditionally. Accepts any number of strings, functions that return strings and two index arrays where the first index is a string or function that returns a string, and the second index is a boolean.
+A utility for merging class names into a single string. It can accept any number arguments which can be any of the following:
+- string
+- function that returns a string
+- tuple with the first index being a string or function that returns a string, and the second index being a boolean that when true adds the first index string value to the returned class names
 
 ```
 import { classNames } from "@microsoft/fast-web-utilities";
