@@ -4,6 +4,7 @@ import { DividerClassNameContract } from "@microsoft/fast-components-class-name-
 import { format, toPx } from "@microsoft/fast-jss-utilities";
 import { outlineWidth } from "../utilities/design-system";
 import { neutralDividerRest } from "../utilities/color/neutral-divider";
+import { highContrastBorderColor } from "../utilities/high-contrast";
 
 const styles: ComponentStyles<DividerClassNameContract, DesignSystem> = {
     divider: {
@@ -17,6 +18,7 @@ const styles: ComponentStyles<DividerClassNameContract, DesignSystem> = {
             neutralDividerRest
         ),
         transition: "all 0.2s ease-in-out",
+        ...highContrastBorderColor,
     },
 };
 
