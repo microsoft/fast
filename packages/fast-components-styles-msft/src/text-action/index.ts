@@ -20,6 +20,12 @@ import {
 import { glyphSize, height, horizontalSpacing } from "../utilities/density";
 import { focusOutlineWidth, outlineWidth } from "../utilities/design-system";
 import { applyDisabledState } from "../utilities/disabled";
+import {
+    highContrastDisabledBorder,
+    highContrastDisabledForeground,
+    highContrastForeground,
+    highContrastSelector,
+} from "../utilities/high-contrast";
 
 // Since MSFT text field is already styled, we need to override in this way to alter text field classes
 export const textFieldOverrides: ComponentStyles<
@@ -37,6 +43,11 @@ export const textFieldOverrides: ComponentStyles<
             background: "none",
             border: "none",
             boxShadow: "none",
+            [highContrastSelector]: {
+                background: "none",
+                border: "none",
+                boxShadow: "none",
+            },
         },
     },
 };
@@ -46,6 +57,7 @@ const glyphStyles: CSSRules<{}> = {
     height: glyphSize,
     margin: "auto",
     fill: neutralForegroundRest,
+    ...highContrastForeground,
 };
 
 const styles: ComponentStyles<TextActionClassNameContract, DesignSystem> = {
@@ -100,9 +112,19 @@ const styles: ComponentStyles<TextActionClassNameContract, DesignSystem> = {
                 neutralFocus
             ),
         },
+        [highContrastSelector]: {
+            "&, &:hover": {
+                boxShadow: format(
+                    "0 0 0 {0} ButtonText inset",
+                    toPx<DesignSystem>(subtract(focusOutlineWidth, outlineWidth))
+                ),
+                border: format("{0} solid ButtonText", toPx<DesignSystem>(outlineWidth)),
+            },
+        },
     },
     textAction__disabled: {
         ...applyDisabledState(),
+        ...highContrastDisabledBorder,
         "&:hover": {
             background: neutralFillInputRest,
             borderColor: neutralOutlineRest,
@@ -110,6 +132,9 @@ const styles: ComponentStyles<TextActionClassNameContract, DesignSystem> = {
         "&:active": {
             background: neutralFillInputRest,
             borderColor: neutralOutlineRest,
+        },
+        "& $textAction_beforeGlyph, & $textAction_afterGlyph": {
+            ...highContrastDisabledForeground,
         },
     },
     textAction_button: {
@@ -126,6 +151,17 @@ const styles: ComponentStyles<TextActionClassNameContract, DesignSystem> = {
         transition: "color .1s, background-color .1s, border-color 0.2s ease-in-out",
         flex: "0 0 auto",
         cursor: "pointer",
+        [highContrastSelector]: {
+            background: "ButtonFace",
+            fill: "ButtonText",
+        },
+        "&:hover": {
+            [highContrastSelector]: {
+                background: "Highlight",
+                fill: "HighlightText",
+            },
+        },
+        "&:disabled": {},
     },
     textAction_beforeGlyph: {
         ...glyphStyles,

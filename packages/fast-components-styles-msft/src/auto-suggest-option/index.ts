@@ -15,16 +15,18 @@ import {
 } from "../utilities/color";
 import { ComponentStyles, ComponentStyleSheet } from "@microsoft/fast-jss-manager";
 import { applyScaledTypeRamp } from "../utilities/typography";
-import {
-    applyLocalizedProperty,
-    Direction,
-    ellipsis,
-    toPx,
-} from "@microsoft/fast-jss-utilities";
+import { Direction, ellipsis, toPx } from "@microsoft/fast-jss-utilities";
 import { applyCornerRadius, applyFocusPlaceholderBorder } from "../utilities/border";
 import { applyCursorDefault } from "../utilities/cursor";
 import { applyDisabledState } from "../utilities/disabled";
 import { designUnit } from "../utilities/design-system";
+import {
+    HighContrastColor,
+    highContrastDisabled,
+    highContrastSelection,
+    highContrastSelector,
+    highContrastStealth,
+} from "../utilities/high-contrast";
 
 const styles: ComponentStyles<AutoSuggestOptionClassNameContract, DesignSystem> = {
     autoSuggestOption: {
@@ -49,10 +51,16 @@ const styles: ComponentStyles<AutoSuggestOptionClassNameContract, DesignSystem> 
         ...applyFocusPlaceholderBorder(),
         ...applyFocusVisible<DesignSystem>({
             borderColor: neutralFocus,
+            [highContrastSelector]: {
+                background: HighContrastColor.selectedBackground,
+                color: HighContrastColor.selectedText,
+            },
         }),
         "&:hover": {
             background: neutralFillStealthHover,
+            ...highContrastSelection,
         },
+        ...highContrastStealth,
     },
     autoSuggestOption_contentRegion: {
         gridColumnStart: "3",
@@ -61,14 +69,17 @@ const styles: ComponentStyles<AutoSuggestOptionClassNameContract, DesignSystem> 
     },
     autoSuggestOption__disabled: {
         ...applyDisabledState(),
+        ...highContrastDisabled,
         "&:hover": {
             background: neutralFillStealthRest,
+            ...highContrastDisabled,
         },
     },
     autoSuggestOption__selected: {
         background: neutralFillStealthSelected,
         "&:hover": {
             background: neutralFillStealthSelected,
+            ...highContrastSelection,
         },
     },
 };

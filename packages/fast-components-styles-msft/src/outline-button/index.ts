@@ -11,7 +11,14 @@ import {
 } from "../utilities/color";
 import { horizontalSpacing } from "../utilities/density";
 import { outlineWidth } from "../utilities/design-system";
-import { applyFocusVisible, format, toPx } from "@microsoft/fast-jss-utilities";
+import { applyFocusVisible, format, subtract, toPx } from "@microsoft/fast-jss-utilities";
+import {
+    highContrastDisabledBorder,
+    highContrastDisabledForeground,
+    highContrastOutline,
+    highContrastOutlineFocus,
+    highContrastSelection,
+} from "../utilities/high-contrast";
 
 const styles: ComponentStyles<LightweightButtonClassNameContract, DesignSystem> = {
     ...baseButton,
@@ -33,6 +40,7 @@ const styles: ComponentStyles<LightweightButtonClassNameContract, DesignSystem> 
                 toPx<DesignSystem>(outlineWidth),
                 neutralOutlineHover
             ),
+            ...highContrastSelection,
         },
         "&:active:enabled": {
             background: "transparent",
@@ -51,7 +59,17 @@ const styles: ComponentStyles<LightweightButtonClassNameContract, DesignSystem> 
                 }
             ),
             borderColor: neutralFocus,
+            ...highContrastOutlineFocus,
         }),
+        "&:disabled": {
+            ...highContrastDisabledBorder,
+        },
+        ...highContrastOutline,
+        "a&": {
+            "&$button__disabled": {
+                ...highContrastDisabledBorder,
+            },
+        },
     },
 };
 

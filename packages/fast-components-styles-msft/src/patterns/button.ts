@@ -1,9 +1,9 @@
+import { focusOutlineWidth, outlineWidth } from "../utilities/design-system";
 import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager";
-import { DesignSystem, ensureDesignSystemDefaults } from "../design-system";
 import { directionSwitch, format, toPx } from "@microsoft/fast-jss-utilities";
 import { applyCornerRadius, applyFocusPlaceholderBorder } from "../utilities/border";
 import { applyCursorPointer } from "../utilities/cursor";
-import { focusOutlineWidth, outlineWidth } from "../utilities/design-system";
+import { DesignSystem, ensureDesignSystemDefaults } from "../design-system";
 import { applyScaledTypeRamp } from "../utilities/typography";
 import { glyphSize, height, horizontalSpacing } from "../utilities/density";
 import { applyDisabledState } from "../utilities/disabled";
