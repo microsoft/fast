@@ -196,7 +196,6 @@ export function parseColorWebRGBA(raw: string): ColorRGBA64 | null {
 export function parseColorNamed(
     raw: keyof typeof namedColorsConfigs
 ): ColorRGBA64 | null {
-    // const rawLower: typeof raw =  raw.toLowerCase() : raw.toString();
     const config: typeof namedColorsConfigs[keyof typeof namedColorsConfigs] | void =
         namedColorsConfigs[raw.toLowerCase()];
 
@@ -215,7 +214,7 @@ export function parseColorNamed(
 // #AARRGGBB
 // rgb(RR,GG,BB)
 // rgba(RR,GG,BB,a)
-// or any of the CSS color names https://www.w3schools.com/colors/colors_names.asp
+// or any of the CSS color names https://developer.mozilla.org/en-US/docs/Web/CSS/color_value#Color_keywords
 export function parseColor(raw: string): ColorRGBA64 | null {
     const rawLower: string = raw.toLowerCase();
 

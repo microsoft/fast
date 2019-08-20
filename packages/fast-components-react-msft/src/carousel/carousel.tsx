@@ -192,7 +192,6 @@ class Carousel extends Foundation<
             tabs_tabPanels: carousel_tabPanels,
             tabs_tabList: carousel_sequenceIndicators,
             tabs_tabPanelContent: carousel_tabPanelContent,
-
             tab: carousel_sequenceIndicator,
             tab__active: carousel_sequenceIndicator__active,
             tabPanel: carousel_tabPanel,
