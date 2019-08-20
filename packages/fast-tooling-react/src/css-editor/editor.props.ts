@@ -8,6 +8,7 @@ import { CSSColorValues } from "./color";
 import { CSSBorderValues } from "./border";
 import { CSSBoxShadowValues } from "./box-shadow";
 import { CSSBackgroundValues } from "./background";
+import { CSSBorderRadiusValues } from "./border-radius";
 
 export enum CSSComponent {
     spacing,
@@ -18,6 +19,7 @@ export enum CSSComponent {
     border,
     boxShadow,
     background,
+    borderRadius,
 }
 
 export interface CSSEditorValues
@@ -28,7 +30,8 @@ export interface CSSEditorValues
         CSSColorValues,
         CSSBorderValues,
         CSSBoxShadowValues,
-        CSSBackgroundValues {}
+        CSSBackgroundValues,
+        CSSBorderRadiusValues {}
 
 export type CSSOnChange = (CSS: CSSEditorValues) => void;
 
