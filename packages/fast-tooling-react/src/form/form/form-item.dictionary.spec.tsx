@@ -17,7 +17,8 @@ const managedClasses: FormItemDictionaryClassNameContract = {
     formItemDictionary_controlAddTrigger: "formItemDictionary_controlAddTrigger-class",
     formItemDictionary_itemControlInput: "formItemDictionary_itemControlInput-class",
     formItemDictionary_itemControlLabel: "formItemDictionary_itemControlLabel-class",
-    formItemDictionary_itemControlRemoveTrigger: "formItemDictionary_itemControlRemoveTrigger-class"
+    formItemDictionary_itemControlRemoveTrigger:
+        "formItemDictionary_itemControlRemoveTrigger-class",
 };
 
 const dictionaryProps: FormItemDictionaryProps = {
