@@ -156,8 +156,7 @@ const styles: ComponentStyles<CallToActionClassNameContract, DesignSystem> = {
                 ...highContrastForeground,
             },
         },
-        "&:active": {
-        },
+        "&:active": {},
     },
     callToAction__outline: {},
     callToAction__stealth: {},
