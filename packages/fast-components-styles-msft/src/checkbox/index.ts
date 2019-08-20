@@ -1,5 +1,9 @@
+import {
+    densityCategorySwitch,
+    heightNumber,
+    horizontalSpacing,
+} from "../utilities/density";
 import { DesignSystem, DesignSystemResolver } from "../design-system";
-import { ComponentStyles } from "@microsoft/fast-jss-manager";
 import { CheckboxClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import {
     add,
@@ -20,15 +24,17 @@ import {
     neutralOutlineRest,
 } from "../utilities/color";
 import { applyCornerRadius } from "../utilities/border";
-import {
-    densityCategorySwitch,
-    heightNumber,
-    horizontalSpacing,
-} from "../utilities/density";
+import { ComponentStyles } from "@microsoft/fast-jss-manager";
 import { applyDisabledState } from "../utilities/disabled";
 import { applyScaledTypeRamp } from "../utilities/typography";
 import { designUnit, outlineWidth } from "../utilities/design-system";
 import { applyCursorDisabled, applyCursorPointer } from "../utilities/cursor";
+import { ColorRecipe } from "src/utilities/color/common";
+import {
+    highContrastBorderColor,
+    highContrastDisabledBorder,
+    highContrastSelector,
+} from "../utilities/high-contrast";
 
 const inputSize: DesignSystemResolver<string> = toPx(
     add(divide(heightNumber(), 2), designUnit)
@@ -36,14 +42,18 @@ const inputSize: DesignSystemResolver<string> = toPx(
 const indeterminateIndicatorMargin: DesignSystemResolver<string> = toPx(
     add(designUnit, densityCategorySwitch(0, 1, 2))
 );
-const indicatorSvg: DesignSystemResolver<string> = (
-    designSystem: DesignSystem
-): string => {
-    return `<svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill="${encodeURIComponent(
-        neutralForegroundRest(designSystem)
-    )}" fill-rule="evenodd" clip-rule="evenodd" d="M8.143 12.6697L15.235 4.5L16.8 5.90363L8.23812 15.7667L3.80005 11.2556L5.27591 9.7555L8.143 12.6697Z"/></svg>`;
+const indicatorSvg: (
+    color: ColorRecipe<string> | string
+) => DesignSystemResolver<string> = (
+    color: ColorRecipe<string> | string
+): DesignSystemResolver<string> => {
+    return (designSystem: DesignSystem): string => {
+        const colorEval: string = typeof color === "string" ? color : color(designSystem);
+        return `<svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill="${encodeURIComponent(
+            colorEval
+        )}" fill-rule="evenodd" clip-rule="evenodd" d="M8.143 12.6697L15.235 4.5L16.8 5.90363L8.23812 15.7667L3.80005 11.2556L5.27591 9.7555L8.143 12.6697Z"/></svg>`;
+    };
 };
-const indicatorSvgHc: string = `<svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill="ButtonHighlight" fill-rule="evenodd" clip-rule="evenodd" d="M8.143 12.6697L15.235 4.5L16.8 5.90363L8.23812 15.7667L3.80005 11.2556L5.27591 9.7555L8.143 12.6697Z"/></svg>`;
 const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = {
     checkbox: {
         position: "relative",
@@ -86,7 +96,11 @@ const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = {
         ...applyFocusVisible({
             boxShadow: format<DesignSystem>("0 0 0 1px {0} inset", neutralFocus),
             borderColor: neutralFocus,
+            [highContrastSelector]: {
+                boxShadow: format<DesignSystem>("0 0 0 1px ButtonText"),
+            },
         }),
+        ...highContrastBorderColor,
     },
     checkbox_stateIndicator: {
         position: "relative",
@@ -110,13 +124,44 @@ const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = {
         ...applyCursorPointer(),
         color: neutralForegroundRest,
         ...applyScaledTypeRamp("t7"),
+        [highContrastSelector]: {
+            color: "ButtonText",
+        },
     },
     checkbox__checked: {
         "& $checkbox_stateIndicator": {
             "&::before": {
-                background: format("url('data:image/svg+xml;utf8,{0}')", indicatorSvg),
-                "@media (-ms-high-contrast:active)": {
-                    background: `url('data:image/svg+xml;utf8,${indicatorSvgHc}')`,
+                background: format(
+                    "url('data:image/svg+xml;utf8,{0}')",
+                    indicatorSvg(neutralForegroundRest)
+                ),
+                [highContrastSelector]: {
+                    background: format(
+                        "url('data:image/svg+xml;utf8,{0}')",
+                        indicatorSvg("HighlightText")
+                    ),
+                },
+            },
+        },
+        "&:hover": {
+            "& $checkbox_stateIndicator": {
+                "&::before": {
+                    [highContrastSelector]: {
+                        background: format(
+                            "url('data:image/svg+xml;utf8,{0}')",
+                            indicatorSvg("Highlight")
+                        ),
+                    },
+                },
+            },
+        },
+        "& $checkbox_input": {
+            [highContrastSelector]: {
+                background: "Highlight",
+            },
+            "&:hover": {
+                [highContrastSelector]: {
+                    background: "HighlightText",
                 },
             },
         },
@@ -133,7 +178,7 @@ const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = {
                 width: "auto",
                 height: "auto",
                 background: neutralForegroundRest,
-                "@media (-ms-high-contrast:active)": {
+                [highContrastSelector]: {
                     backgroundColor: "ButtonHighlight",
                 },
             },
@@ -143,6 +188,7 @@ const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = {
         ...applyDisabledState(),
         "& $checkbox_input, & $checkbox_label": {
             ...applyCursorDisabled(),
+            ...highContrastDisabledBorder,
         },
     },
 };

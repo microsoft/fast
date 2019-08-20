@@ -19,9 +19,15 @@ import {
     neutralOutlineRest,
 } from "../utilities/color";
 import { applyElevatedCornerRadius } from "../utilities/border";
-import { designUnit } from "../utilities/design-system";
+import { designUnit, outlineWidth } from "../utilities/design-system";
 import { inputFieldStyles } from "../patterns/input-field";
 import { applyCursorPointer } from "../utilities/cursor";
+import {
+    HighContrastColor,
+    highContrastForeground,
+    highContrastOutline,
+    highContrastSelector,
+} from "../utilities/high-contrast";
 
 const styles: ComponentStyles<SelectClassNameContract, DesignSystem> = {
     select: {
@@ -33,6 +39,7 @@ const styles: ComponentStyles<SelectClassNameContract, DesignSystem> = {
         height: height(),
         width: "100%",
         ...inputFieldStyles(),
+        ...highContrastOutline,
     },
     select_buttonContentRegion: {
         display: "grid",
@@ -58,6 +65,7 @@ const styles: ComponentStyles<SelectClassNameContract, DesignSystem> = {
         width: glyphSize,
         height: glyphSize,
         gridColumnStart: "2",
+        ...highContrastForeground,
     },
     select_menu: {
         background: neutralFillStealthRest,
@@ -69,6 +77,14 @@ const styles: ComponentStyles<SelectClassNameContract, DesignSystem> = {
         padding: format("{0} 0", toPx<DesignSystem>(designUnit)),
         maxHeight: "328px",
         overflow: "auto",
+        [highContrastSelector]: {
+            background: HighContrastColor.buttonBackground,
+            border: format(
+                "{0} solid {1}",
+                toPx<DesignSystem>(outlineWidth),
+                () => HighContrastColor.buttonText
+            ),
+        },
     },
     select__multiSelectable: {
         "& $select_menu": {

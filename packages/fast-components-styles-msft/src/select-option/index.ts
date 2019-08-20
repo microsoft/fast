@@ -1,5 +1,5 @@
+import { applyCursorDefault, applyCursorPointer } from "../utilities/cursor";
 import { SelectOptionClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
-import { ComponentStyles } from "@microsoft/fast-jss-manager";
 import {
     applyFocusVisible,
     directionSwitch,
@@ -16,11 +16,17 @@ import {
     neutralFocus,
     neutralForegroundRest,
 } from "../utilities/color";
-import { applyCursorDefault, applyCursorPointer } from "../utilities/cursor";
+import { ComponentStyles } from "@microsoft/fast-jss-manager";
 import { glyphSize, height, horizontalSpacing } from "../utilities/density";
 import { designUnit, focusOutlineWidth } from "../utilities/design-system";
 import { applyDisabledState } from "../utilities/disabled";
 import { applyScaledTypeRamp } from "../utilities/typography";
+import {
+    highContrastDisabledBorder,
+    highContrastSelection,
+    highContrastSelector,
+    highContrastStealth,
+} from "../utilities/high-contrast";
 
 const styles: ComponentStyles<SelectOptionClassNameContract, DesignSystem> = {
     selectOption: {
@@ -46,7 +52,9 @@ const styles: ComponentStyles<SelectOptionClassNameContract, DesignSystem> = {
         }),
         "&:hover": {
             background: neutralFillStealthHover,
+            ...highContrastSelection,
         },
+        ...highContrastStealth,
     },
     selectOption_contentRegion: {
         overflow: "hidden",
@@ -65,11 +73,18 @@ const styles: ComponentStyles<SelectOptionClassNameContract, DesignSystem> = {
     },
     selectOption__disabled: {
         ...applyDisabledState(),
+        ...highContrastDisabledBorder,
         "&, &:hover": {
             background: neutralFillStealthRest,
         },
     },
     selectOption__selected: {
+        [highContrastSelector]: {
+            background: "Highlight !important",
+            borderColor: "ButtonText !important",
+            color: "HighlightText !important",
+            fill: "HighlightText !important",
+        },
         background: neutralFillStealthSelected,
         "&:hover": {
             background: neutralFillStealthSelected,

@@ -1,5 +1,5 @@
+import { applyCursorPointer } from "../utilities/cursor";
 import { SliderClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
-import { ComponentStyles } from "@microsoft/fast-jss-manager";
 import {
     add,
     applyFocusVisible,
@@ -18,7 +18,7 @@ import {
     neutralForegroundRest,
     neutralOutlineRest,
 } from "../utilities/color";
-import { applyCursorPointer } from "../utilities/cursor";
+import { ComponentStyles } from "@microsoft/fast-jss-manager";
 import { heightNumber } from "../utilities/density";
 import {
     backgroundColor,
@@ -27,6 +27,7 @@ import {
 } from "../utilities/design-system";
 import { applyDisabledState } from "../utilities/disabled";
 import { applyElevation, ElevationMultiplier } from "../utilities/elevation";
+import { highContrastBackground, highContrastSelector } from "../utilities/high-contrast";
 
 const thumbSizeValue: DesignSystemResolver<number> = add(
     divide(heightNumber(), 2),
@@ -63,6 +64,12 @@ const styles: ComponentStyles<SliderClassNameContract, DesignSystem> = {
                 neutralFocus,
                 toPx(add(focusOutlineWidth, 2))
             ),
+            [highContrastSelector]: {
+                boxShadow: format(
+                    `0 0 0 2px Background, 0 0 0 {0} ButtonText`,
+                    toPx(add(focusOutlineWidth, 2))
+                ),
+            },
         }),
         "&:hover": {
             background: neutralForegroundHover,
@@ -70,12 +77,9 @@ const styles: ComponentStyles<SliderClassNameContract, DesignSystem> = {
         "&:active": {
             background: neutralForegroundActive,
         },
-        "@media (-ms-high-contrast:active)": {
+        [highContrastSelector]: {
             background: "ButtonText",
-            "&:hover": {
-                background: "Highlight",
-            },
-            "&:active": {
+            "&:hover, &:active": {
                 background: "Highlight",
             },
         },
@@ -86,21 +90,22 @@ const styles: ComponentStyles<SliderClassNameContract, DesignSystem> = {
     slider_backgroundTrack: {
         ...applyCornerRadius(),
         background: neutralOutlineRest,
-        "@media (-ms-high-contrast:active)": {
-            background: "ButtonText",
-        },
+        ...highContrastBackground,
     },
     slider_foregroundTrack: {
         ...applyCornerRadius(),
         background: neutralForegroundHint,
         transition: "all 0.1s ease",
-        "@media (-ms-high-contrast:active)": {
+        [highContrastSelector]: {
             background: "Highlight",
         },
     },
     slider__disabled: {
         ...applyDisabledState(),
-        "& $slider_thumb": {
+        "& $slider_thumb, & $slider_backgroundTrack": {
+            [highContrastSelector]: {
+                background: "GrayText",
+            },
             "&:hover": {
                 background: neutralForegroundRest,
             },

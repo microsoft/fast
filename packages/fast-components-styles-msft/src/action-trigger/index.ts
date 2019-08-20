@@ -13,6 +13,10 @@ import {
     neutralForegroundRest,
 } from "../utilities/color";
 import { glyphSize, horizontalSpacing } from "../utilities/density";
+import {
+    highContrastDisabledForeground,
+    highContrastSelector,
+} from "../utilities/high-contrast";
 
 // Since MSFT button is already styled, we need to override in this way to alter button classes
 export const actionTriggerButtonOverrides: ComponentStyles<
@@ -31,7 +35,29 @@ export const actionTriggerButtonOverrides: ComponentStyles<
 };
 
 const styles: ComponentStyles<ActionTriggerClassNameContract, DesignSystem> = {
-    actionTrigger: {},
+    actionTrigger: {
+        "& $actionTrigger_glyph": {
+            [highContrastSelector]: {
+                fill: "ButtonText !important",
+            },
+        },
+        "&:hover:enabled": {
+            "& $actionTrigger_glyph": {
+                [highContrastSelector]: {
+                    fill: "HighlightText !important",
+                },
+            },
+        },
+        [`&$actionTrigger__justified, &$actionTrigger__lightweight`]: {
+            "&:hover:enabled": {
+                "& $actionTrigger_glyph": {
+                    [highContrastSelector]: {
+                        fill: "Highlight !important",
+                    },
+                },
+            },
+        },
+    },
     actionTrigger_glyph: {
         display: "inline-block",
         position: "relative",
@@ -42,9 +68,20 @@ const styles: ComponentStyles<ActionTriggerClassNameContract, DesignSystem> = {
     actionTrigger__primary: {
         "& $actionTrigger_glyph": {
             fill: accentForegroundCut,
+            [highContrastSelector]: {
+                fill: "HighlightText !important",
+            },
+        },
+        "&:hover:enabled": {
+            "& $actionTrigger_glyph": {
+                [highContrastSelector]: {
+                    fill: "Highlight !important",
+                },
+            },
         },
         "&$actionTrigger__disabled $actionTrigger_glyph": {
             fill: accentForegroundCut,
+            ...highContrastDisabledForeground,
         },
     },
     actionTrigger__lightweight: {
@@ -97,9 +134,14 @@ const styles: ComponentStyles<ActionTriggerClassNameContract, DesignSystem> = {
         },
         "&$actionTrigger__disabled $actionTrigger_glyph": {
             fill: neutralForegroundRest,
+            ...highContrastDisabledForeground,
         },
     },
-    actionTrigger__disabled: {},
+    actionTrigger__disabled: {
+        "& $actionTrigger_glyph": {
+            ...highContrastDisabledForeground,
+        },
+    },
     actionTrigger__hasGlyphAndContent: {
         "& $actionTrigger_glyph": {
             marginRight: directionSwitch(horizontalSpacing(), ""),

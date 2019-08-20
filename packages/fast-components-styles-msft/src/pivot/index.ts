@@ -1,5 +1,5 @@
+import { PivotClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import { DesignSystem } from "../design-system";
-import { ComponentStyles } from "@microsoft/fast-jss-manager";
 import {
     applyFocusVisible,
     directionSwitch,
@@ -15,11 +15,16 @@ import {
     neutralForegroundHover,
     neutralForegroundRest,
 } from "../utilities/color";
-import { PivotClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
+import { ComponentStyles } from "@microsoft/fast-jss-manager";
 import { applyCornerRadius, applyFocusPlaceholderBorder } from "../utilities/border";
 import { applyScaledTypeRamp } from "../utilities/typography";
 import { focusOutlineWidth } from "../utilities/design-system";
 import { applyCursorPointer } from "../utilities/cursor";
+import {
+    highContrastBorderColor,
+    highContrastForeground,
+    highContrastSelector,
+} from "../utilities/high-contrast";
 
 const activeIndicatorHeight: number = 3;
 const styles: ComponentStyles<PivotClassNameContract, DesignSystem> = {
@@ -47,17 +52,24 @@ const styles: ComponentStyles<PivotClassNameContract, DesignSystem> = {
         ...applyCornerRadius(),
         "&:hover": {
             color: neutralForegroundHover,
+            ...highContrastForeground,
         },
         "&:active": {
             color: neutralForegroundActive,
         },
         ...applyFocusVisible<DesignSystem>({
             borderColor: neutralFocus,
+            ...highContrastBorderColor,
         }),
+        [highContrastSelector]: {
+            color: "ButtonText",
+            "-ms-high-contrast-adjust": "none",
+        },
     },
-    pivot_tab__active: {},
+    pivot_tab__active: {
+        ...highContrastForeground,
+    },
     pivot_tabContent: {
-        transition: "all 0.2s ease-in-out",
         ...applyScaledTypeRamp("t7"),
         position: "relative",
         top: "-2px",
@@ -72,6 +84,9 @@ const styles: ComponentStyles<PivotClassNameContract, DesignSystem> = {
         height: toPx(activeIndicatorHeight),
         display: "block",
         background: accentFillRest,
+        [highContrastSelector]: {
+            background: "Highlight",
+        },
     },
     pivot_tabPanel: {
         display: "block",
