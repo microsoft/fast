@@ -3,8 +3,8 @@ import { TextAreaClassNameContract } from "@microsoft/fast-components-class-name
 import { ComponentStyles, ComponentStyleSheet } from "@microsoft/fast-jss-manager";
 import { height } from "../utilities/density";
 import { inputFieldStyles } from "../patterns/input-field";
-import { format, multiply, toPx } from "@microsoft/fast-jss-utilities";
-import { designUnit, outlineWidth } from "../utilities/design-system";
+import { multiply, toPx } from "@microsoft/fast-jss-utilities";
+import { designUnit } from "../utilities/design-system";
 
 const styles: ComponentStyles<TextAreaClassNameContract, DesignSystem> = {
     textArea: {

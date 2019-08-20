@@ -125,13 +125,9 @@ const styles: ComponentStyles<RadioClassNameContract, DesignSystem> = {
                 },
             },
         },
-        "&:hover": {
-            "& $radio_stateIndicator": {
-                "&::before": {
-                    [highContrastSelector]: {
-                        background: "HighlightText",
-                    },
-                },
+        "&:hover $radio_stateIndicator::before": {
+            [highContrastSelector]: {
+                background: "HighlightText",
             },
         },
         "& $radio_input": {

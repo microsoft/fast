@@ -178,10 +178,10 @@ const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = {
             background: accentForegroundCut,
             [highContrastSelector]: {
                 background: "HighlightText",
-                "&:hover": {
-                    [highContrastSelector]: {
-                        background: "Highlight",
-                    },
+            },
+            "&:hover": {
+                [highContrastSelector]: {
+                    background: "Highlight",
                 },
             },
         },

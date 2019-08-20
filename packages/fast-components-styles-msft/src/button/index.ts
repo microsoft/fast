@@ -161,7 +161,6 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = {
             "&$button__disabled": {
                 "&:hover": {
                     ...highContrastDisabledBorder,
-                    "& $button_beforeContent, & $button_afterContent": {},
                 },
             },
         },
@@ -190,7 +189,6 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = {
             ),
             ...highContrastDoubleFocus,
         }),
-        "&:disabled": {},
         "& $button_beforeContent, & $button_afterContent": {
             fill: accentForegroundCut,
         },
@@ -236,7 +234,6 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = {
             borderColor: neutralFocus,
             ...highContrastOutlineFocus,
         }),
-        "&:disabled": {},
     },
     button__lightweight: {
         ...applyTransparentBackplateStyles,

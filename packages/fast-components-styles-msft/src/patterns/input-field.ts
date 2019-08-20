@@ -1,7 +1,7 @@
 import { CSSRules } from "@microsoft/fast-jss-manager";
 import { applyCornerRadius } from "../utilities/border";
 import { DesignSystem } from "../design-system";
-import { format, subtract, toPx } from "@microsoft/fast-jss-utilities";
+import { format, toPx } from "@microsoft/fast-jss-utilities";
 import {
     neutralFillHover,
     neutralFillInputActive,

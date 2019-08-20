@@ -8,10 +8,6 @@ import { applyScaledTypeRamp } from "../utilities/typography";
 import { glyphSize, height, horizontalSpacing } from "../utilities/density";
 import { applyDisabledState } from "../utilities/disabled";
 import { ButtonBaseClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
-import {
-    highContrastDisabledBorder,
-    highContrastDisabledForeground,
-} from "../utilities/high-contrast";
 
 export function buttonStyles(): CSSRules<{}> {
     return {

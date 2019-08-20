@@ -122,11 +122,9 @@ const styles: ComponentStyles<CallToActionClassNameContract, DesignSystem> = {
                 fill: "HighlightText !important",
             },
         },
-        "&:hover": {
-            "& $callToAction_glyph": {
-                [highContrastSelector]: {
-                    fill: "Highlight !important",
-                },
+        "&:hover $callToAction_glyph": {
+            [highContrastSelector]: {
+                fill: "Highlight !important",
             },
         },
     },
@@ -159,7 +157,6 @@ const styles: ComponentStyles<CallToActionClassNameContract, DesignSystem> = {
             },
         },
         "&:active": {
-            "& $callToAction_glyph": {},
         },
     },
     callToAction__outline: {},
