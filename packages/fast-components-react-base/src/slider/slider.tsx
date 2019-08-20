@@ -414,12 +414,12 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
                           ).concat(" ", thumbBaseClass),
                 sliderTrackItem_horizontal: get(
                     this.props,
-                    "managedClasses.sliderTrackItem_vertical",
+                    "managedClasses.slider_thumb__horizontal",
                     ""
                 ),
                 sliderTrackItem_vertical: get(
                     this.props,
-                    "managedClasses.slider_thumb__orientationVertical",
+                    "managedClasses.slider_thumb__vertical",
                     ""
                 ),
             },
