@@ -11,7 +11,7 @@ export {
      * @deprecated
      * use JSSManager.jss to access the JSS instance
      */
-    jss
+    jss,
 } from "./jss";
 export { ManagedJSSProps } from "./jss-manager";
 export { Consumer as DesignSystemConsumer } from "./context";
