@@ -7,7 +7,7 @@ import {
     subtract,
     toPx,
 } from "@microsoft/fast-jss-utilities";
-import { DesignSystem, ensureDesignSystemDefaults } from "../design-system";
+import { DesignSystem, DesignSystemResolver } from "../design-system";
 import { applyCornerRadius, applyFocusPlaceholderBorder } from "../utilities/border";
 import {
     accentFillActive,
@@ -32,9 +32,12 @@ import {
 } from "../utilities/color";
 import { applyCursorPointer } from "../utilities/cursor";
 import { glyphSize, height, horizontalSpacing } from "../utilities/density";
-import { focusOutlineWidth, outlineWidth } from "../utilities/design-system";
+import {
+    focusOutlineWidth,
+    getDesignSystemValue,
+    outlineWidth,
+} from "../utilities/design-system";
 import { applyDisabledState } from "../utilities/disabled";
-import { applyScaledTypeRamp } from "../utilities/typography";
 import {
     highContrastBackground,
     highContrastDisabledBorder,
@@ -44,10 +47,13 @@ import {
     highContrastSelector,
     highContrastStealth,
 } from "../utilities/high-contrast";
+import { applyScaledTypeRamp } from "../utilities/typography";
 
 const transparentBackground: CSSRules<DesignSystem> = {
     backgroundColor: "transparent",
 };
+
+const density: DesignSystemResolver<number> = getDesignSystemValue("density");
 
 const applyTransparentBackplateStyles: CSSRules<DesignSystem> = {
     color: accentForegroundRest,
@@ -100,10 +106,8 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = {
         ...applyCursorPointer(),
         boxSizing: "border-box",
         maxWidth: "374px",
-        minWidth: ensureDesignSystemDefaults(
-            (designSystem: DesignSystem): string =>
-                designSystem.density <= -2 ? "28px" : "32px"
-        ),
+        minWidth: (designSystem: DesignSystem): string =>
+            density(designSystem) <= -2 ? "28px" : "32px",
         padding: format("0 {0}", horizontalSpacing(focusOutlineWidth)),
         display: "inline-flex",
         justifyContent: "center",
@@ -224,12 +228,10 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = {
             ),
         },
         ...applyFocusVisible<DesignSystem>({
-            boxShadow: ensureDesignSystemDefaults(
-                (designSystem: DesignSystem): string => {
-                    return `0 0 0 ${toPx(
-                        designSystem.focusOutlineWidth - designSystem.outlineWidth
-                    )} ${neutralFocus(designSystem)} inset`;
-                }
+            boxShadow: format(
+                "0 0 0 {0} {1} inset",
+                toPx(subtract(focusOutlineWidth, outlineWidth)),
+                neutralFocus
             ),
             borderColor: neutralFocus,
             ...highContrastOutlineFocus,

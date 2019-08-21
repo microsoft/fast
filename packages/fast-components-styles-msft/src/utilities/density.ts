@@ -2,8 +2,8 @@ import {
     checkDesignSystemResolver,
     DesignSystem,
     DesignSystemResolver,
-    getDesignSystemValue,
 } from "../design-system";
+import { getDesignSystemValue } from "../utilities/design-system";
 import { toPx } from "@microsoft/fast-jss-utilities";
 import {
     baseHeightMultiplier,
