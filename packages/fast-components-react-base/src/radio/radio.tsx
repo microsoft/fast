@@ -122,7 +122,7 @@ class Radio extends Foundation<RadioHandledProps, RadioUnhandledProps, RadioStat
 
     private renderLabel(): React.ReactNode {
         if (typeof this.props.label === "function") {
-            return this.props.label(get(this.props.managedClasses, "radio_label"));
+            return this.props.label(classNames(this.props.managedClasses.radio_label));
         }
     }
 
