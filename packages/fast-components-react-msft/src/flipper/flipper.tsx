@@ -52,7 +52,7 @@ class Flipper extends Foundation<FlipperHandledProps, FlipperUnhandledProps, {}>
         }: FlipperClassNameContract = this.props.managedClasses;
         const isNext: boolean = this.props.direction !== FlipperDirection.previous;
 
-        return classNames(flipper, [flipper__previous, !isNext], [flipper__next, isNext]);
+        return super.generateClassNames(classNames(flipper, [flipper__previous, !isNext], [flipper__next, isNext]));
     }
 
     /**
