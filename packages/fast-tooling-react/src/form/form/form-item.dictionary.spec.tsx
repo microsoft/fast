@@ -172,7 +172,7 @@ describe("FormItemDictionary", () => {
         rendered
             .find(`.${managedClasses.formItemDictionary_itemControlInput}`)
             .at(0)
-            .simulate("change", { target: { value: "c" } });
+            .simulate("blur", { target: { value: "c" } });
 
         expect(onChangeCallback).toHaveBeenCalled();
         expect(onChangeCallback.mock.calls[0][1]).toEqual({ b: "bar", c: "foo" });
@@ -198,7 +198,7 @@ describe("FormItemDictionary", () => {
         rendered
             .find(`.${managedClasses.formItemDictionary_itemControlInput}`)
             .at(0)
-            .simulate("change", { target: { value: "c" } });
+            .simulate("blur", { target: { value: "c" } });
 
         expect(onChangeCallback).toHaveBeenCalled();
         expect(Object.keys(onChangeCallback.mock.calls[0][1])).toEqual(["c", "b"]);

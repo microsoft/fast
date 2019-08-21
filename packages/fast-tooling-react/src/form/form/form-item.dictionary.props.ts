@@ -45,3 +45,15 @@ export interface FormItemDictionaryProps extends FormItemCommon {
      */
     onUpdateActiveSection: updateActiveSection;
 }
+
+export interface FormItemDictionaryState {
+    /**
+     * The current property key being edited
+     */
+    focusedPropertyKey: string | null;
+
+    /**
+     * The current property key value
+     */
+    focusedPropertyKeyValue: string | null;
+}

@@ -6,6 +6,7 @@ import styles from "./form-item.dictionary.style";
 import {
     FormItemDictionaryClassNameContract,
     FormItemDictionaryProps,
+    FormItemDictionaryState,
 } from "./form-item.dictionary.props";
 import FormItemBase from "./form-item.base";
 import FormControl from "./form-control";
@@ -17,9 +18,18 @@ import { generateExampleData } from "../utilities";
  */
 class FormItemDictionary extends FormItemBase<
     FormItemDictionaryProps & ManagedClasses<FormItemDictionaryClassNameContract>,
-    {}
+    FormItemDictionaryState
 > {
     public static displayName: string = "FormItemDictionary";
+
+    constructor(props: FormItemDictionaryProps) {
+        super(props);
+
+        this.state = {
+            focusedPropertyKey: null,
+            focusedPropertyKeyValue: null,
+        };
+    }
 
     public render(): React.ReactNode {
         return (
@@ -93,8 +103,14 @@ class FormItemDictionary extends FormItemBase<
                             "formItemDictionary_itemControlInput"
                         )}
                         type="text"
-                        value={propertyName}
-                        onChange={this.handleOnKeyChange(propertyName)}
+                        value={
+                            this.state.focusedPropertyKey === propertyName
+                                ? this.state.focusedPropertyKeyValue
+                                : propertyName
+                        }
+                        onFocus={this.handleKeyFocus(propertyName)}
+                        onBlur={this.handleKeyBlur(propertyName)}
+                        onChange={this.handleKeyChange(propertyName)}
                     />
                     <button
                         className={get(
@@ -191,10 +207,31 @@ class FormItemDictionary extends FormItemBase<
         };
     };
 
-    private handleOnKeyChange = (
+    private handleKeyChange = (
         propertyName: string
     ): ((e: React.ChangeEvent<HTMLInputElement>) => void) => {
         return (e: React.ChangeEvent<HTMLInputElement>): void => {
+            this.setState({
+                focusedPropertyKeyValue: e.target.value,
+            });
+        };
+    };
+
+    private handleKeyFocus = (
+        propertyName: string
+    ): ((e: React.FocusEvent<HTMLInputElement>) => void) => {
+        return (e: React.FocusEvent<HTMLInputElement>): void => {
+            this.setState({
+                focusedPropertyKey: propertyName,
+                focusedPropertyKeyValue: propertyName,
+            });
+        };
+    };
+
+    private handleKeyBlur = (
+        propertyName: string
+    ): ((e: React.FocusEvent<HTMLInputElement>) => void) => {
+        return (e: React.FocusEvent<HTMLInputElement>): void => {
             const dataKeys: string[] =
                 typeof this.props.data === "undefined"
                     ? []
@@ -208,6 +245,11 @@ class FormItemDictionary extends FormItemBase<
             });
 
             this.props.onChange(this.props.dataLocation, data);
+
+            this.setState({
+                focusedPropertyKey: null,
+                focusedPropertyKeyValue: null,
+            });
         };
     };
 
