@@ -33,6 +33,8 @@ const managedClasses: SliderClassNameContract = {
     slider_thumb: "slider_thumb",
     slider_thumb__upperValue: "slider_thumb__upperValue",
     slider_thumb__lowerValue: "slider_thumb__lowerValue",
+    slider_thumb__horizontal: "slider_thumb__horizontal",
+    slider_thumb__vertical: "slider_thumb__vertical",
     slider__disabled: "slider__disabled",
     slider__rtl: "slider__rtl",
     slider__modeSingle: "slider__modeSingle",
@@ -312,6 +314,32 @@ describe("Slider", (): void => {
             `.${managedClasses.slider_thumb__lowerValue}`
         );
         expect(lowerThumb).toHaveLength(1);
+    });
+
+    test("horizontal thumb modifier applied to thumb in horizontal orientation", (): void => {
+        const rendered: any = mount(
+            <Slider
+                managedClasses={managedClasses}
+                mode={SliderMode.singleValue}
+                orientation={SliderOrientation.horizontal}
+            />
+        );
+
+        const thumb: any = rendered.find(`.${managedClasses.slider_thumb__horizontal}`);
+        expect(thumb).toHaveLength(1);
+    });
+
+    test("vertical thumb modifier applied to thumb in vertical orientation", (): void => {
+        const rendered: any = mount(
+            <Slider
+                managedClasses={managedClasses}
+                mode={SliderMode.singleValue}
+                orientation={SliderOrientation.vertical}
+            />
+        );
+
+        const thumb: any = rendered.find(`.${managedClasses.slider_thumb__vertical}`);
+        expect(thumb).toHaveLength(1);
     });
 
     test("custom thumb render function is called", (): void => {
