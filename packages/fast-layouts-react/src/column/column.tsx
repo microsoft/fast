@@ -26,7 +26,7 @@ export const columnStyleSheet: ComponentStyles<ColumnClassNamesContract, undefin
     column: {
         // Fixes issue found in firefox where columns that have overflow
         // or full width content cause scroll bars
-        minWidth: "0",
+        "min-width": "0",
     },
 };
 

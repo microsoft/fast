@@ -64,22 +64,22 @@ const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = {
         ...applyCursorPointer(),
         ...applyScaledTypeRamp("t7"),
         display: "block",
-        paddingBottom: "7px",
+        "padding-bottom": "7px",
         clear: "both",
     },
     toggle_toggleButton: {
         ...applyCursorPointer(),
         position: "relative",
-        marginTop: "0",
+        "margin-top": "0",
         float: directionSwitch("left", "right"),
     },
     toggle_stateIndicator: {
         position: "absolute",
-        pointerEvents: "none",
+        "pointer-events": "none",
         top: toPx(indicatorMargin),
         left: toPx(indicatorMargin),
         transition: "all .1s ease",
-        borderRadius: toPx(indicatorSize),
+        "border-radius": toPx(indicatorSize),
         width: toPx(indicatorSize),
         height: toPx(indicatorSize),
         background: neutralForegroundRest,
@@ -97,12 +97,14 @@ const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = {
             toPx<DesignSystem>(outlineWidth),
             neutralOutlineRest
         ),
-        borderRadius: toPx(height),
+        "border-radius": toPx(height),
         appearance: "none",
+        "-webkit-appearance": "none",
+        "-moz-appearance": "none",
         outline: "none",
         "&:active": {
             background: neutralFillInputActive,
-            borderColor: neutralOutlineActive,
+            "border-color": neutralOutlineActive,
             [highContrastSelector]: {
                 background: "Highlight",
                 "& + span": {
@@ -112,19 +114,19 @@ const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = {
         },
         "&:hover": {
             background: neutralFillInputHover,
-            borderColor: neutralOutlineHover,
+            "border-color": neutralOutlineHover,
             [highContrastSelector]: {
-                borderColor: "Highlight",
+                "border-color": "Highlight",
                 "& + span": {
                     background: "Highlight",
                 },
             },
         },
         ...applyFocusVisible({
-            boxShadow: format<DesignSystem>("0 0 0 1px {0} inset", neutralFocus),
-            borderColor: neutralFocus,
+            "box-shadow": format<DesignSystem>("0 0 0 1px {0} inset", neutralFocus),
+            "border-color": neutralFocus,
             [highContrastSelector]: {
-                boxShadow: format<DesignSystem>(
+                "box-shadow": format<DesignSystem>(
                     "0 0 0 {0} ButtonText inset",
                     toPx<DesignSystem>(outlineWidth)
                 ),
@@ -135,22 +137,22 @@ const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = {
     toggle__checked: {
         "& $toggle_input": {
             background: accentFillRest,
-            borderColor: accentFillRest,
+            "border-color": accentFillRest,
             ...applyFocusVisible({
-                boxShadow: format<DesignSystem>(
+                "box-shadow": format<DesignSystem>(
                     "0 0 0 {0} {1} inset, 0 0 0 {2} {3} inset",
                     toPx(subtract(focusOutlineWidth, outlineWidth)),
                     neutralFocus,
                     toPx(add(focusOutlineWidth, outlineWidth)),
                     neutralFocusInnerAccent(accentFillRest)
                 ),
-                borderColor: neutralFocus,
+                "border-color": neutralFocus,
                 ...highContrastDoubleFocus,
             }),
             "&:disabled": {
                 [highContrastSelector]: {
                     background: "GrayText !important",
-                    borderColor: "GrayText !important",
+                    "border-color": "GrayText !important",
                     "& + span": {
                         background: "Background !important",
                     },
@@ -158,10 +160,10 @@ const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = {
             },
             [highContrastSelector]: {
                 background: "Highlight",
-                borderColor: "Highlight",
+                "border-color": "Highlight",
                 "&:hover": {
                     background: "HighlightText",
-                    borderColor: "Highlight",
+                    "border-color": "Highlight",
                 },
                 "&:active": {
                     [highContrastSelector]: {
@@ -191,10 +193,10 @@ const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = {
         "& $toggle_input, & $toggle_label, & $toggle_statusMessage": {
             ...applyCursorDisabled(),
             background: neutralFillSelected,
-            borderColor: neutralFillSelected,
+            "border-color": neutralFillSelected,
             [highContrastSelector]: {
                 background: "Background !important",
-                borderColor: "GrayText !important",
+                "border-color": "GrayText !important",
                 "& + span": {
                     background: "GrayText !important",
                 },
@@ -203,13 +205,13 @@ const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = {
     },
     toggle_statusMessage: {
         ...applyScaledTypeRamp("t7"),
-        lineHeight: toPx(height),
+        "line-height": toPx(height),
         float: directionSwitch("left", "right"),
-        paddingLeft: directionSwitch("5px", ""),
-        paddingRight: directionSwitch("", "5px"),
-        userSelect: "none",
-        marginTop: "0",
-        paddingBottom: "0",
+        "padding-left": directionSwitch("5px", ""),
+        "padding-right": directionSwitch("", "5px"),
+        "user-select": "none",
+        "margin-top": "0",
+        "padding-bottom": "0",
     },
 };
 

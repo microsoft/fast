@@ -31,7 +31,7 @@ export const highContrastStealth: CSSRules<DesignSystem> = {
 export const highContrastOutline: CSSRules<DesignSystem> = {
     [highContrastSelector]: {
         background: HighContrastColor.buttonBackground,
-        borderColor: HighContrastColor.buttonText,
+        "border-color": HighContrastColor.buttonText,
         color: HighContrastColor.buttonText,
         fill: HighContrastColor.buttonText,
         "-ms-high-contrast-adjust": "none",
@@ -53,7 +53,7 @@ export const highContrastDisabledBorder: CSSRules<DesignSystem> = {
     [highContrastSelector]: {
         opacity: "1",
         background: "ButtonFace !important",
-        borderColor: HighContrastColor.disabledText,
+        "border-color": HighContrastColor.disabledText,
         color: HighContrastColor.disabledText,
         fill: HighContrastColor.disabledText,
     },
@@ -71,8 +71,8 @@ export const highContrastDisabledForeground: CSSRules<DesignSystem> = {
 // Used to set focus with keyboard focus
 export const highContrastOutlineFocus: CSSRules<DesignSystem> = {
     [highContrastSelector]: {
-        borderColor: HighContrastColor.buttonText,
-        boxShadow: format(
+        "border-color": HighContrastColor.buttonText,
+        "box-shadow": format(
             "0 0 0 {0} inset {1}",
             toPx(outlineWidth),
             () => HighContrastColor.buttonText
@@ -83,8 +83,8 @@ export const highContrastOutlineFocus: CSSRules<DesignSystem> = {
 // Used to set double focus with keyboard focus
 export const highContrastDoubleFocus: CSSRules<DesignSystem> = {
     [highContrastSelector]: {
-        borderColor: "ButtonText !important",
-        boxShadow: format(
+        "border-color": "ButtonText !important",
+        "box-shadow": format(
             "0 0 0 {0} inset {1}",
             toPx(focusOutlineWidth),
             () => HighContrastColor.buttonBackground
@@ -96,7 +96,7 @@ export const highContrastDoubleFocus: CSSRules<DesignSystem> = {
 export const highContrastSelection: CSSRules<DesignSystem> = {
     [highContrastSelector]: {
         background: HighContrastColor.selectedBackground,
-        borderColor: HighContrastColor.buttonText,
+        "border-color": HighContrastColor.buttonText,
         color: HighContrastColor.selectedText,
         fill: HighContrastColor.selectedText,
     },
@@ -124,7 +124,7 @@ export const highContrastBorder: CSSRules<DesignSystem> = {
 // Used to set border color to be 'button-text' color
 export const highContrastBorderColor: CSSRules<DesignSystem> = {
     [highContrastSelector]: {
-        borderColor: HighContrastColor.buttonText,
+        "border-color": HighContrastColor.buttonText,
     },
 };
 

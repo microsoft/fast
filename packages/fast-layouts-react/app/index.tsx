@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { ComponentStyles } from "@microsoft/fast-jss-manager-react";
+import { ComponentStyles, JSSManager } from "@microsoft/fast-jss-manager-react";
 import { Canvas } from "../src/canvas";
 import { Container } from "../src/container";
 import { Row, RowResizeDirection } from "../src/row";
@@ -8,12 +8,19 @@ import { Pane, PaneResizeDirection } from "../src/pane";
 import { Page } from "../src/page";
 import { Grid } from "../src/grid";
 import { Column, ColumnClassNamesContract } from "../src/column";
+import { create } from "jss";
+import jssNested from "jss-plugin-nested";
+
+const jssInstance: ReturnType<create> = create();
+jssInstance.use(jssNested());
+
+JSSManager.jss = jssInstance;
 
 const columnTestStyles: ComponentStyles<ColumnClassNamesContract, undefined> = {
     column: {
-        backgroundColor: `rgba(0, 120, 212, 0.2)`,
+        "background-color": `rgba(0, 120, 212, 0.2)`,
         border: `2px solid rgba(0, 120, 212, 0.2)`,
-        minHeight: "30px",
+        "min-height": "30px",
         margin: "4px 0",
     },
 };

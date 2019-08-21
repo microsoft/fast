@@ -8,11 +8,11 @@ import { highContrastBorderColor } from "../utilities/high-contrast";
 
 const styles: ComponentStyles<DividerClassNameContract, DesignSystem> = {
     divider: {
-        boxSizing: "content-box",
+        "box-sizing": "content-box",
         height: "0",
         margin: "0",
         border: "none",
-        borderTop: format<DesignSystem>(
+        "border-top": format<DesignSystem>(
             "{0} solid {1}",
             toPx(outlineWidth),
             neutralDividerRest
