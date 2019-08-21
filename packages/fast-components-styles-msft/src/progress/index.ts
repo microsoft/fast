@@ -14,7 +14,7 @@ const styles: ComponentStyles<ProgressClassNameContract, DesignSystem> = {
     progress: {
         display: "flex",
         width: "100%",
-        alignItems: "center",
+        "align-items": "center",
         height: toPx<DesignSystem>(designUnit),
         "text-align": "left",
     },
@@ -22,7 +22,6 @@ const styles: ComponentStyles<ProgressClassNameContract, DesignSystem> = {
         height: "unset",
         "& $progress_valueIndicator, & $progress_indicator": {
             fill: "none",
-            stroke: accentFillRest,
             "stroke-width": "2px",
             "stroke-linecap": "round",
             "transform-origin": "50% 50%",
@@ -30,6 +29,7 @@ const styles: ComponentStyles<ProgressClassNameContract, DesignSystem> = {
             transition: "all 0.2s ease-in-out",
         },
         "& $progress_valueIndicator": {
+            stroke: accentFillRest,
             [highContrastSelector]: {
                 stroke: "ButtonText",
             },
@@ -38,6 +38,7 @@ const styles: ComponentStyles<ProgressClassNameContract, DesignSystem> = {
             animation: "spin-infinite 2s linear infinite",
         },
         "& $progress_indicator": {
+            stroke: neutralFillRest,
             [highContrastSelector]: {
                 stroke: "ButtonFace",
             },
@@ -66,13 +67,14 @@ const styles: ComponentStyles<ProgressClassNameContract, DesignSystem> = {
     progress_indicator: {
         position: "relative",
         display: "flex",
-        alignItems: "center",
+        "align-items": "center",
         width: "100%",
         overflow: "hidden",
         "border-radius": "100px",
         height: toPx<DesignSystem>(designUnit),
         background: neutralFillRest,
         transition: "all 0.2s ease-in-out",
+        "-webkit-mask-image": "-webkit-radial-gradient(white, black)",
         "mask-image": "-webkit-radial-gradient(white, black)",
         [highContrastSelector]: {
             background: "ButtonFace",
@@ -111,15 +113,15 @@ const styles: ComponentStyles<ProgressClassNameContract, DesignSystem> = {
     },
     "@keyframes spin-infinite": {
         "0%": {
-            strokeDasharray: "0.01px 43.97px",
+            "stroke-dasharray": "0.01px 43.97px",
             transform: "rotate(0deg)",
         },
         "50%": {
-            strokeDasharray: "21.99px 21.99px",
+            "stroke-dasharray": "21.99px 21.99px",
             transform: "rotate(450deg)",
         },
         "100%": {
-            strokeDasharray: ".01px 43.97px",
+            "stroke-dasharray": ".01px 43.97px",
             transform: "rotate(1080deg)",
         },
     },

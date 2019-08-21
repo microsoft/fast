@@ -71,7 +71,7 @@ const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = {
         width: inputSize,
         height: inputSize,
         appearance: "none",
-        "-webit-appearance": "none",
+        "-webkit-appearance": "none",
         "-moz-appearance": "none",
         ...applyCornerRadius(),
         "box-sizing": "border-box",
