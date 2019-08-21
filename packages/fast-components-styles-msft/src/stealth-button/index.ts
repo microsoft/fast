@@ -1,4 +1,4 @@
-import { ButtonBaseClassNameContract as AccentButtonClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
+import { ButtonBaseClassNameContract as StealthButtonClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import { ComponentStyles } from "@microsoft/fast-jss-manager";
 import { applyFocusVisible, format, toPx } from "@microsoft/fast-jss-utilities";
 import { DesignSystem } from "../design-system";
@@ -17,7 +17,7 @@ import {
     highContrastStealth,
 } from "../utilities/high-contrast";
 
-const styles: ComponentStyles<AccentButtonClassNameContract, DesignSystem> = {
+const styles: ComponentStyles<StealthButtonClassNameContract, DesignSystem> = {
     ...baseButton,
     button: {
         ...buttonStyles(),
