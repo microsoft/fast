@@ -1,13 +1,19 @@
-import { focusOutlineWidth, outlineWidth } from "../utilities/design-system";
+import { ButtonBaseClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager";
 import { directionSwitch, format, toPx } from "@microsoft/fast-jss-utilities";
+import { DesignSystem, DesignSystemResolver } from "../design-system";
 import { applyCornerRadius, applyFocusPlaceholderBorder } from "../utilities/border";
 import { applyCursorPointer } from "../utilities/cursor";
-import { DesignSystem, ensureDesignSystemDefaults } from "../design-system";
-import { applyScaledTypeRamp } from "../utilities/typography";
 import { glyphSize, height, horizontalSpacing } from "../utilities/density";
+import {
+    focusOutlineWidth,
+    getDesignSystemValue,
+    outlineWidth,
+} from "../utilities/design-system";
 import { applyDisabledState } from "../utilities/disabled";
-import { ButtonBaseClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
+import { applyScaledTypeRamp } from "../utilities/typography";
+
+const density: DesignSystemResolver<number> = getDesignSystemValue("density");
 
 export function buttonStyles(): CSSRules<{}> {
     return {
@@ -18,10 +24,8 @@ export function buttonStyles(): CSSRules<{}> {
         fontFamily: "inherit",
         boxSizing: "border-box",
         maxWidth: "374px",
-        minWidth: ensureDesignSystemDefaults(
-            (designSystem: DesignSystem): string =>
-                designSystem.density <= -2 ? "28px" : "32px"
-        ),
+        minWidth: (designSystem: DesignSystem): string =>
+            density(designSystem) <= -2 ? "28px" : "32px",
         padding: format("0 {0}", horizontalSpacing(focusOutlineWidth)),
         display: "inline-flex",
         justifyContent: "center",
