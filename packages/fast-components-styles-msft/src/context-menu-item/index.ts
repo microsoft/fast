@@ -24,22 +24,22 @@ import {
 const glyphWidth: number = 16;
 const styles: ComponentStyles<ContextMenuItemClassNameContract, DesignSystem> = {
     contextMenuItem: {
-        listStyleType: "none",
-        boxSizing: "border-box",
+        "list-style-type": "none",
+        "box-sizing": "border-box",
         height: height(),
         display: "grid",
-        gridTemplateColumns: format(
+        "grid-template-columns": format(
             "{0} auto {0}",
             toPx(add(horizontalSpacingNumber(-2), glyphWidth, horizontalSpacingNumber()))
         ),
-        gridTemplateRows: "auto",
-        justifyItems: "center",
-        alignItems: "center",
+        "grid-template-rows": "auto",
+        "justify-items": "center",
+        "align-items": "center",
         padding: "0",
         margin: format("0 {0}", toPx<DesignSystem>(designUnit)),
         color: neutralForegroundRest,
         fill: neutralForegroundRest,
-        whiteSpace: "nowrap",
+        "white-space": "nowrap",
         overflow: "hidden",
         ...applyCursorPointer(),
         ...applyScaledTypeRamp("t7"),
@@ -59,10 +59,10 @@ const styles: ComponentStyles<ContextMenuItemClassNameContract, DesignSystem> = 
         ...highContrastStealth,
     },
     contextMenuItem_contentRegion: {
-        gridColumnStart: "2",
-        justifySelf: "start",
+        "grid-column-start": "2",
+        "justify-self": "start",
         overflow: "hidden",
-        textOverflow: "ellipsis",
+        "text-overflow": "ellipsis",
     },
     contextMenuItem__disabled: {
         ...applyDisabledState(),

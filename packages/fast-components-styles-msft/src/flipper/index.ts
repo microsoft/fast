@@ -28,8 +28,8 @@ const styles: ComponentStyles<FlipperClassNameContract, DesignSystem> = {
         width: height(),
         height: height(),
         display: "inline-flex",
-        justifyContent: "center",
-        alignItems: "center",
+        "justify-content": "center",
+        "align-items": "center",
         margin: "0",
         position: "relative",
         fill: neutralForegroundRest,
@@ -47,7 +47,7 @@ const styles: ComponentStyles<FlipperClassNameContract, DesignSystem> = {
                 toPx<DesignSystem>(outlineWidth),
                 neutralOutlineRest
             ),
-            borderRadius: "50%",
+            "border-radius": "50%",
             position: "absolute",
             top: "0",
             right: "0",
@@ -60,13 +60,13 @@ const styles: ComponentStyles<FlipperClassNameContract, DesignSystem> = {
         "&:active": {
             "&::before": {
                 background: neutralFillStealthActive,
-                borderColor: neutralOutlineActive,
+                "border-color": neutralOutlineActive,
             },
         },
         "&:hover": {
             "&::before": {
                 background: neutralFillStealthHover,
-                borderColor: neutralOutlineHover,
+                "border-color": neutralOutlineHover,
                 [highContrastSelector]: {
                     background: "Highlight",
                 },
@@ -79,7 +79,7 @@ const styles: ComponentStyles<FlipperClassNameContract, DesignSystem> = {
         },
         ...applyFocusVisible({
             "&::before": {
-                boxShadow: format<DesignSystem>("0 0 0 1px {0} inset", neutralFocus),
+                "box-shadow": format<DesignSystem>("0 0 0 1px {0} inset", neutralFocus),
                 border: neutralFocus,
             },
         }),

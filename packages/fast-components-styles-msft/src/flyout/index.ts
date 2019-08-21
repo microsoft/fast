@@ -12,7 +12,7 @@ const styles: ComponentStyles<FlyoutClassNameContract, DesignSystem> = {
         background: backgroundColor,
         ...applyFloatingCornerRadius(),
         ...applyElevation(ElevationMultiplier.e14),
-        zIndex: "1",
+        "z-index": "1",
         '&[aria-hidden="false"]': {
             display: "block",
         },

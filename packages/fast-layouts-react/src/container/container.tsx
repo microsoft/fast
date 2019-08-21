@@ -18,17 +18,11 @@ export const containerStyleSheet: ComponentStyles<
     ContainerClassNamesContract,
     undefined
 > = {
-    "@global": {
-        "html, body": {
-            padding: 0,
-            margin: 0,
-        },
-    },
     container: {
         display: "flex",
         width: "100vw",
         height: "100vh",
-        flexDirection: "column",
+        "flex-direction": "column",
     },
 };
 

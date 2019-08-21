@@ -28,7 +28,7 @@ import {
 
 const styles: ComponentStyles<SelectClassNameContract, DesignSystem> = {
     select: {
-        maxWidth: "374px",
+        "max-width": "374px",
         height: height(),
     },
     select_button: {
@@ -40,13 +40,13 @@ const styles: ComponentStyles<SelectClassNameContract, DesignSystem> = {
     },
     select_buttonContentRegion: {
         display: "grid",
-        gridTemplateColumns: "1fr auto",
-        alignItems: "center",
-        justifyItems: "start",
+        "grid-template-columns": "1fr auto",
+        "align-items": "center",
+        "justify-items": "start",
     },
     select_buttonDisplayText: {
         ...ellipsis(),
-        textAlign: directionSwitch("left", "right"),
+        "text-align": directionSwitch("left", "right"),
         width: "100%",
     },
     select_toggleGlyph: {
@@ -58,7 +58,7 @@ const styles: ComponentStyles<SelectClassNameContract, DesignSystem> = {
         fill: neutralForegroundRest,
         width: glyphSize,
         height: glyphSize,
-        gridColumnStart: "2",
+        "grid-column-start": "2",
         ...highContrastForeground,
     },
     select_menu: {
@@ -69,7 +69,7 @@ const styles: ComponentStyles<SelectClassNameContract, DesignSystem> = {
         width: "100%",
         margin: "0",
         padding: format("{0} 0", toPx<DesignSystem>(designUnit)),
-        maxHeight: "328px",
+        "max-height": "328px",
         overflow: "auto",
         [highContrastSelector]: {
             background: HighContrastColor.buttonBackground,
@@ -83,9 +83,9 @@ const styles: ComponentStyles<SelectClassNameContract, DesignSystem> = {
     select__multiSelectable: {
         "& $select_menu": {
             position: "static",
-            boxShadow: "none",
+            "box-shadow": "none",
             border: "1px solid",
-            borderColor: neutralOutlineRest,
+            "border-color": neutralOutlineRest,
         },
     },
 };

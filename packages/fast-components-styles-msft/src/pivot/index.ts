@@ -36,18 +36,18 @@ const styles: ComponentStyles<PivotClassNameContract, DesignSystem> = {
     },
     pivot_tabList: {
         display: "flex",
-        boxSizing: "border-box",
+        "box-sizing": "border-box",
     },
     pivot_tab: {
         ...applyCursorPointer(),
         height: height(),
         padding: format("0 {0}", horizontalSpacing(focusOutlineWidth)),
-        whiteSpace: "nowrap",
+        "white-space": "nowrap",
         display: "flex",
         ...applyFocusPlaceholderBorder(),
-        alignItems: "center",
-        boxSizing: "border-box",
-        userSelect: "none",
+        "align-items": "center",
+        "box-sizing": "border-box",
+        "user-select": "none",
         color: neutralForegroundRest,
         ...applyCornerRadius(),
         "&:hover": {
@@ -58,7 +58,7 @@ const styles: ComponentStyles<PivotClassNameContract, DesignSystem> = {
             color: neutralForegroundActive,
         },
         ...applyFocusVisible<DesignSystem>({
-            borderColor: neutralFocus,
+            "border-color": neutralFocus,
             ...highContrastBorderColor,
         }),
         [highContrastSelector]: {
@@ -95,7 +95,7 @@ const styles: ComponentStyles<PivotClassNameContract, DesignSystem> = {
         display: "none",
     },
     pivot_tabPanels: {
-        animationTimingFunction: "cubic-bezier(0.4, 0.0, 0.6, 1.0)",
+        "animation-timing-function": "cubic-bezier(0.4, 0.0, 0.6, 1.0)",
     },
     pivot_tabPanels__animatePrevious: {
         animation: format("{0} 0.2s", directionSwitch("fromLeft", "fromRight")),

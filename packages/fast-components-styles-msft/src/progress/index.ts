@@ -14,20 +14,22 @@ const styles: ComponentStyles<ProgressClassNameContract, DesignSystem> = {
     progress: {
         display: "flex",
         width: "100%",
-        alignItems: "center",
+        "align-items": "center",
         height: toPx<DesignSystem>(designUnit),
-        textAlign: "left",
+        "text-align": "left",
     },
     progress__circular: {
         height: "unset",
-        "& $progress_valueIndicator": {
+        "& $progress_valueIndicator, & $progress_indicator": {
             fill: "none",
-            stroke: accentFillRest,
-            strokeWidth: "2px",
-            strokeLinecap: "round",
-            transformOrigin: "50% 50%",
+            "stroke-width": "2px",
+            "stroke-linecap": "round",
+            "transform-origin": "50% 50%",
             transform: "rotate(-90deg)",
             transition: "all 0.2s ease-in-out",
+        },
+        "& $progress_valueIndicator": {
+            stroke: accentFillRest,
             [highContrastSelector]: {
                 stroke: "ButtonText",
             },
@@ -36,13 +38,7 @@ const styles: ComponentStyles<ProgressClassNameContract, DesignSystem> = {
             animation: "spin-infinite 2s linear infinite",
         },
         "& $progress_indicator": {
-            fill: "none",
             stroke: neutralFillRest,
-            strokeWidth: "2px",
-            strokeLinecap: "round",
-            transformOrigin: "50% 50%",
-            transform: "rotate(-90deg)",
-            transition: "all 0.2s ease-in-out",
             [highContrastSelector]: {
                 stroke: "ButtonFace",
             },
@@ -62,7 +58,7 @@ const styles: ComponentStyles<ProgressClassNameContract, DesignSystem> = {
     },
     progress_valueIndicator: {
         background: accentFillRest,
-        borderRadius: "100px",
+        "border-radius": "100px",
         height: "100%",
         transition: "all 0.2s ease-in-out",
         ...highContrastBackground,
@@ -71,14 +67,15 @@ const styles: ComponentStyles<ProgressClassNameContract, DesignSystem> = {
     progress_indicator: {
         position: "relative",
         display: "flex",
-        alignItems: "center",
+        "align-items": "center",
         width: "100%",
         overflow: "hidden",
-        borderRadius: "100px",
+        "border-radius": "100px",
         height: toPx<DesignSystem>(designUnit),
         background: neutralFillRest,
         transition: "all 0.2s ease-in-out",
-        maskImage: "-webkit-radial-gradient(white, black)",
+        "-webkit-mask-image": "-webkit-radial-gradient(white, black)",
+        "mask-image": "-webkit-radial-gradient(white, black)",
         [highContrastSelector]: {
             background: "ButtonFace",
             border: "1px solid ButtonText",
@@ -86,7 +83,7 @@ const styles: ComponentStyles<ProgressClassNameContract, DesignSystem> = {
     },
     progress_indicator__determinate: {
         height: toPx<DesignSystem>(designUnit),
-        borderRadius: "2px",
+        "border-radius": "2px",
         [highContrastSelector]: {
             background: "ButtonFace",
             border: "1px solid ButtonText",
@@ -96,9 +93,9 @@ const styles: ComponentStyles<ProgressClassNameContract, DesignSystem> = {
         position: "absolute",
         opacity: "0",
         height: "100%",
-        backgroundColor: accentFillRest,
-        borderRadius: "100px",
-        animationTimingFunction: "cubic-bezier(0.4, 0.0, 0.6, 1.0)",
+        "background-color": accentFillRest,
+        "border-radius": "100px",
+        "animation-timing-function": "cubic-bezier(0.4, 0.0, 0.6, 1.0)",
         [highContrastSelector]: {
             background: "ButtonText",
             opacity: "1 !important",
@@ -116,15 +113,15 @@ const styles: ComponentStyles<ProgressClassNameContract, DesignSystem> = {
     },
     "@keyframes spin-infinite": {
         "0%": {
-            strokeDasharray: "0.01px 43.97px",
+            "stroke-dasharray": "0.01px 43.97px",
             transform: "rotate(0deg)",
         },
         "50%": {
-            strokeDasharray: "21.99px 21.99px",
+            "stroke-dasharray": "21.99px 21.99px",
             transform: "rotate(450deg)",
         },
         "100%": {
-            strokeDasharray: ".01px 43.97px",
+            "stroke-dasharray": ".01px 43.97px",
             transform: "rotate(1080deg)",
         },
     },

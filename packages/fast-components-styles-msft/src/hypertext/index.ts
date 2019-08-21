@@ -14,18 +14,18 @@ import { focusOutlineWidth, outlineWidth } from "../utilities/design-system";
 const styles: ComponentStyles<HypertextClassNameContract, DesignSystem> = {
     hypertext: {
         outline: "none",
-        textDecoration: "none",
+        "text-decoration": "none",
         color: neutralForegroundRest,
         transition: "all 0.2s ease-in-out, border 0.03s ease-in-out",
         "&:link, &:visited": {
-            borderBottom: format<DesignSystem>(
+            "border-bottom": format<DesignSystem>(
                 "{0} solid {1}",
                 toPx(outlineWidth),
                 accentForegroundRest
             ),
             color: accentForegroundRest,
             "&:hover": {
-                borderBottom: format<DesignSystem>(
+                "border-bottom": format<DesignSystem>(
                     "{0} solid {1}",
                     toPx(outlineWidth),
                     accentForegroundHover
@@ -33,7 +33,7 @@ const styles: ComponentStyles<HypertextClassNameContract, DesignSystem> = {
                 color: accentForegroundHover,
             },
             "&:active": {
-                borderBottom: format<DesignSystem>(
+                "border-bottom": format<DesignSystem>(
                     "{0} solid {1}",
                     toPx(outlineWidth),
                     accentForegroundActive
@@ -41,7 +41,7 @@ const styles: ComponentStyles<HypertextClassNameContract, DesignSystem> = {
                 color: accentForegroundActive,
             },
             ...applyFocusVisible({
-                borderBottom: format<DesignSystem>(
+                "border-bottom": format<DesignSystem>(
                     "{0} solid {1}",
                     toPx(focusOutlineWidth),
                     neutralFocus

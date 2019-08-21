@@ -28,7 +28,7 @@ export const backdropFilterSupport: boolean =
 export function applyAcrylic<T>(config: AcrylicConfig): CSSRules<T> {
     const backdropFilterStyles: CSSRules<T> = {
         background: config.backgroundColor,
-        backdropFilter: `blur(${config.blurRadius ||
+        "backdrop-filter": `blur(${config.blurRadius ||
             "30px"}) saturate(${config.saturation || "125%"})`,
     };
 
@@ -53,7 +53,7 @@ export function applyAcrylic<T>(config: AcrylicConfig): CSSRules<T> {
             left: "0",
             right: "0",
             opacity: ".02",
-            pointerEvents: "none",
+            "pointer-events": "none",
         },
     };
 }

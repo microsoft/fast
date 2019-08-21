@@ -1,10 +1,16 @@
 import { DesignSystem } from "@microsoft/fast-components-styles-msft";
-import { DesignSystemProvider } from "@microsoft/fast-jss-manager-react";
+import { DesignSystemProvider, JSSManager } from "@microsoft/fast-jss-manager-react";
 import addons, { makeDecorator, StoryContext, StoryGetter } from "@storybook/addons";
 import { addDecorator, MakeDecoratorResult } from "@storybook/react";
 import React from "react";
 import { REQUEST_DESIGN_SYSTEM_EVENT, UPDATE_DESIGN_SYSTEM_EVENT } from "./constants";
 import Channel from "@storybook/channels";
+import { create } from "jss";
+import jssNested from "jss-plugin-nested";
+
+const jssInstance: ReturnType<create> = create();
+jssInstance.use(jssNested());
+JSSManager.jss = jssInstance;
 
 interface DesignSystemDecoratorProps {
     channel: ReturnType<typeof addons.getChannel>;

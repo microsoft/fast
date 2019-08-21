@@ -1,6 +1,10 @@
 import * as CSS from "csstype";
 import { toPx } from "./units";
+import { CSSRules } from "@microsoft/fast-jss-manager";
 
+/**
+ * @deprecated
+ */
 export interface MaxLines {
     overflow: CSS.OverflowProperty;
     boxSizing: CSS.Box;
@@ -8,7 +12,7 @@ export interface MaxLines {
     whiteSpace?: CSS.WhiteSpaceProperty;
 }
 
-export function applyMaxLines(lines: number, lineHeight: number): MaxLines {
+export function applyMaxLines(lines: number, lineHeight: number): CSSRules<any> {
     return {
         overflow: "hidden",
         boxSizing: "content-box",

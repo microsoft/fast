@@ -15,19 +15,19 @@ const styles: ComponentStyles<BreadcrumbClassNameContract, DesignSystem> = {
     breadcrumb_item: {
         display: "inline",
         outline: "none",
-        textDecoration: "none",
+        "text-decoration": "none",
         transition: "all 0.2s ease-in-out, border none",
         "&:link, &:visited": {
-            borderBottom: "0px",
+            "border-bottom": "0px",
         },
     },
     breadcrumb_itemsContainer: {
-        listStyle: "none",
-        paddingLeft: directionSwitch("0", ""),
-        paddingRight: directionSwitch("", "0"),
+        "list-style": "none",
+        "padding-left": directionSwitch("0", ""),
+        "padding-right": directionSwitch("", "0"),
         margin: "0",
         display: "flex",
-        flexWrap: "wrap",
+        "flex-wrap": "wrap",
     },
     breadcrumb_separator: {
         display: "inline-block",
