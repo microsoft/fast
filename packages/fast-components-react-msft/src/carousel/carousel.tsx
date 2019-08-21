@@ -296,7 +296,8 @@ class Carousel extends Foundation<
             return;
         }
 
-        const previousFlipperClassName: string = this.props.managedClasses.carousel_flipperPrevious;
+        const previousFlipperClassName: string = this.props.managedClasses
+            .carousel_flipperPrevious;
 
         if (typeof this.props.previousFlipper === "function") {
             return this.props.previousFlipper(
@@ -322,7 +323,8 @@ class Carousel extends Foundation<
             return;
         }
 
-        const nextFlipperClassName: string = this.props.managedClasses.carousel_flipperNext;
+        const nextFlipperClassName: string = this.props.managedClasses
+            .carousel_flipperNext;
 
         if (typeof this.props.nextFlipper === "function") {
             return this.props.nextFlipper(this.nextSlide, nextFlipperClassName);
