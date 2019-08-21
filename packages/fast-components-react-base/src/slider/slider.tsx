@@ -917,8 +917,8 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
         this.updateSliderDimensions();
         const pixelCoordinate: number =
             this.props.orientation === SliderOrientation.vertical
-                ? event.pageY
-                : event.pageX;
+                ? event.clientY
+                : event.clientX;
         const dragValue: number =
             (this.props.range.maxValue - this.props.range.minValue) *
                 this.convertPixelToPercent(pixelCoordinate) +
