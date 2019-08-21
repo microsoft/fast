@@ -48,7 +48,7 @@ export interface CheckboxHandledProps extends CheckboxManagedClasses {
     onChange?: (event?: React.ChangeEvent<HTMLInputElement>) => void;
 
     /**
-     * The checkbox content
+     * The checkbox label
      */
     label?: (className: string) => React.ReactNode;
 
