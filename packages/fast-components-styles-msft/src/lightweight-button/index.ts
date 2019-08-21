@@ -51,10 +51,6 @@ const styles: ComponentStyles<LightweightButtonClassNameContract, DesignSystem> 
             "background-color": "transparent",
             ...highContrastDisabledForeground,
         },
-        "@media (-ms-high-contrast:active)": {
-            border: "none",
-            fill: "ButtonHighlight",
-        },
         "&:hover:enabled": {
             color: accentForegroundHover,
             fill: accentForegroundHover,
