@@ -1,12 +1,5 @@
 import { ContextMenuClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
-import { keyCodeArrowDown, keyCodeArrowLeft, keyCodeArrowRight, keyCodeArrowUp, keyCodeEnd, keyCodeHome } from "@microsoft/fast-web-utilities";
-import { canUseDOM } from "exenv-es6";
-import { inRange, invert } from "lodash-es";
-import React from "react";
-import { ContextMenuItemProps, ContextMenuItemRole } from "../context-menu-item";
-import { DisplayNamePrefix } from "../utilities";
-import { ContextMenuHandledProps, ContextMenuProps, ContextMenuUnhandledProps } from "./context-menu.props";
 import {
     classNames,
     keyCodeArrowDown,
@@ -16,6 +9,16 @@ import {
     keyCodeEnd,
     keyCodeHome,
 } from "@microsoft/fast-web-utilities";
+import { canUseDOM } from "exenv-es6";
+import { inRange, invert } from "lodash-es";
+import React from "react";
+import { ContextMenuItemProps, ContextMenuItemRole } from "../context-menu-item";
+import { DisplayNamePrefix } from "../utilities";
+import {
+    ContextMenuHandledProps,
+    ContextMenuProps,
+    ContextMenuUnhandledProps,
+} from "./context-menu.props";
 
 export interface ContextMenuState {
     /**
@@ -251,4 +254,3 @@ class ContextMenu extends Foundation<
 export default ContextMenu;
 export * from "./context-menu.props";
 export { ContextMenuClassNameContract };
-
