@@ -27,7 +27,6 @@ import SliderTrackItem, {
     SliderTrackItemManagedClasses,
 } from "../slider-track-item";
 import { classNames } from "@microsoft/fast-web-utilities";
-import { SliderManagedClasses } from "www/dist/src";
 
 export enum SliderThumb {
     upperThumb = "upperThumb",
