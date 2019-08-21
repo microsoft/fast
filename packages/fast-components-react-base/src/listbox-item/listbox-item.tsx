@@ -8,7 +8,7 @@ import {
     ListboxItemUnhandledProps,
 } from "./listbox-item.props";
 import { ListboxContext, ListboxContextType } from "../listbox/listbox-context";
-import { KeyCodes } from "@microsoft/fast-web-utilities";
+import { keyCodeEnter, keyCodeSpace } from "@microsoft/fast-web-utilities";
 import { DisplayNamePrefix } from "../utilities";
 
 class ListboxItem extends Foundation<
@@ -127,8 +127,8 @@ class ListboxItem extends Foundation<
         }
 
         switch (e.keyCode) {
-            case KeyCodes.enter:
-            case KeyCodes.space:
+            case keyCodeEnter:
+            case keyCodeSpace:
                 this.invokeOption(e);
                 break;
         }

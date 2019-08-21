@@ -28,6 +28,10 @@ import { applyDisabledState } from "../utilities/disabled";
 import { applyScaledTypeRamp } from "../utilities/typography";
 import { designUnit, outlineWidth } from "../utilities/design-system";
 import { applyCursorDisabled, applyCursorPointer } from "../utilities/cursor";
+import {
+    highContrastDisabledBorder,
+    highContrastSelector,
+} from "../utilities/high-contrast";
 
 const inputSize: DesignSystemResolver<string> = toPx(
     add(divide(heightNumber(), 2), designUnit)
@@ -74,7 +78,13 @@ const styles: ComponentStyles<RadioClassNameContract, DesignSystem> = {
         ...applyFocusVisible({
             boxShadow: format<DesignSystem>("0 0 0 1px {0} inset", neutralFocus),
             borderColor: neutralFocus,
+            [highContrastSelector]: {
+                boxShadow: "0 0 0 1px ButtonText inset",
+            },
         }),
+        [highContrastSelector]: {
+            border: format("{0} solid ButtonText", toPx<DesignSystem>(outlineWidth)),
+        },
     },
     radio_stateIndicator: {
         position: "relative",
@@ -102,13 +112,31 @@ const styles: ComponentStyles<RadioClassNameContract, DesignSystem> = {
         ...applyScaledTypeRamp("t7"),
         marginLeft: directionSwitch(horizontalSpacing(2), ""),
         marginRight: directionSwitch("", horizontalSpacing(2)),
+        [highContrastSelector]: {
+            color: "ButtonText",
+        },
     },
     radio__checked: {
         "& $radio_stateIndicator": {
             "&::before": {
                 background: neutralForegroundRest,
-                "@media (-ms-high-contrast:active)": {
-                    backgroundColor: "ButtonHighlight",
+                [highContrastSelector]: {
+                    background: "Highlight",
+                },
+            },
+        },
+        "&:hover $radio_stateIndicator::before": {
+            [highContrastSelector]: {
+                background: "HighlightText",
+            },
+        },
+        "& $radio_input": {
+            [highContrastSelector]: {
+                background: "HighlightText",
+            },
+            "&:hover": {
+                [highContrastSelector]: {
+                    background: "Highlight",
                 },
             },
         },
@@ -117,6 +145,7 @@ const styles: ComponentStyles<RadioClassNameContract, DesignSystem> = {
         ...applyDisabledState(),
         "& $radio_input, & $radio_label": {
             ...applyCursorDisabled(),
+            ...highContrastDisabledBorder,
         },
     },
 };

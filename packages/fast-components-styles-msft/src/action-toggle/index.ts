@@ -17,6 +17,10 @@ import {
     neutralForegroundRest,
 } from "../utilities/color";
 import { glyphSize, horizontalSpacing } from "../utilities/density";
+import {
+    highContrastDisabledForeground,
+    highContrastSelector,
+} from "../utilities/high-contrast";
 
 // Since MSFT button is already styled, we need to override in this way to alter button classes
 export const actionToggleButtonOverrides: ComponentStyles<
@@ -35,7 +39,29 @@ export const actionToggleButtonOverrides: ComponentStyles<
 };
 
 const styles: ComponentStyles<ActionToggleClassNameContract, DesignSystem> = {
-    actionToggle: {},
+    actionToggle: {
+        "& $actionToggle_selectedGlyph, & $actionToggle_unselectedGlyph": {
+            [highContrastSelector]: {
+                fill: "ButtonText !important",
+            },
+        },
+        "&:hover:enabled": {
+            "& $actionToggle_selectedGlyph, & $actionToggle_unselectedGlyph": {
+                [highContrastSelector]: {
+                    fill: "HighlightText !important",
+                },
+            },
+        },
+        [`&$actionToggle__justified, &$actionToggle__lightweight`]: {
+            "&:hover:enabled": {
+                "& $actionToggle_selectedGlyph, & $actionToggle_unselectedGlyph": {
+                    [highContrastSelector]: {
+                        fill: "Highlight !important",
+                    },
+                },
+            },
+        },
+    },
     actionToggle__selected: {},
     actionToggle_selectedGlyph: {
         display: "inline-block",
@@ -52,6 +78,16 @@ const styles: ComponentStyles<ActionToggleClassNameContract, DesignSystem> = {
     actionToggle__primary: {
         "& $actionToggle_selectedGlyph, & $actionToggle_unselectedGlyph": {
             fill: accentForegroundCut,
+            [highContrastSelector]: {
+                fill: "HighlightText !important",
+            },
+        },
+        "&:hover:enabled": {
+            "& $actionToggle_selectedGlyph, & $actionToggle_unselectedGlyph": {
+                [highContrastSelector]: {
+                    fill: "Highlight !important",
+                },
+            },
         },
         "&$actionToggle__disabled $actionToggle_selectedGlyph, &$actionToggle__disabled $actionToggle_unselectedGlyph": {
             fill: accentForegroundCut,
@@ -61,7 +97,7 @@ const styles: ComponentStyles<ActionToggleClassNameContract, DesignSystem> = {
         "& $actionToggle_selectedGlyph, & $actionToggle_unselectedGlyph": {
             fill: accentForegroundRest,
         },
-        "&:hover": {
+        "&:hover:enabled": {
             "& $actionToggle_selectedGlyph, & $actionToggle_unselectedGlyph": {
                 fill: accentForegroundHover,
             },
@@ -79,27 +115,24 @@ const styles: ComponentStyles<ActionToggleClassNameContract, DesignSystem> = {
         "& $actionToggle_selectedGlyph, & $actionToggle_unselectedGlyph": {
             fill: accentForegroundRest,
         },
-        "&:hover": {
+        "&:hover:enabled": {
             "& $actionToggle_selectedGlyph, & $actionToggle_unselectedGlyph": {
                 fill: accentForegroundHover,
             },
         },
-        actionToggle__stealth: {
-            "& $actionToggle_selectedGlyph, & $actionToggle_unselectedGlyph": {
-                fill: neutralForegroundRest,
-            },
-            "&$actionToggle__disabled $actionToggle_selectedGlyph, &$actionToggle__disabled $actionToggle_unselectedGlyph": {
-                fill: neutralForegroundRest,
-            },
-        },
-        actionToggle__disabled: {},
-        actionToggle__hasGlyphAndContent: {
-            "& $actionToggle_selectedGlyph, & $actionToggle_unselectedGlyph": {
-                fill: accentForegroundActive,
-            },
-        },
         "&$actionToggle__disabled $actionToggle_selectedGlyph, &$actionToggle__disabled $actionToggle_unselectedGlyph": {
             fill: accentForegroundRest,
+        },
+    },
+    actionToggle__stealth: {
+        "& $actionToggle_selectedGlyph, & $actionToggle_unselectedGlyph": {
+            fill: neutralForegroundRest,
+        },
+        "&:hover": {
+            "& $actionToggle_selectedGlyph, & $actionToggle_unselectedGlyph": {},
+        },
+        "&$actionToggle__disabled $actionToggle_selectedGlyph, &$actionToggle__disabled $actionToggle_unselectedGlyph": {
+            fill: neutralForegroundRest,
         },
     },
     actionToggle__outline: {
@@ -110,7 +143,11 @@ const styles: ComponentStyles<ActionToggleClassNameContract, DesignSystem> = {
             fill: neutralForegroundRest,
         },
     },
-    actionToggle__disabled: {},
+    actionToggle__disabled: {
+        "& $actionToggle_selectedGlyph, & $actionToggle_unselectedGlyph": {
+            ...highContrastDisabledForeground,
+        },
+    },
     actionToggle__hasGlyphAndContent: {
         "& $actionToggle_selectedGlyph, & $actionToggle_unselectedGlyph": {
             marginRight: directionSwitch(horizontalSpacing(), ""),

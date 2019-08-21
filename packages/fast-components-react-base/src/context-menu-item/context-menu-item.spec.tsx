@@ -7,7 +7,7 @@ import ContextMenuItem, {
     ContextMenuItemRole,
     ContextMenuItemUnhandledProps,
 } from "./context-menu-item";
-import { KeyCodes } from "@microsoft/fast-web-utilities";
+import { keyCodeEnter, keyCodeSpace } from "@microsoft/fast-web-utilities";
 import { DisplayNamePrefix } from "../utilities";
 
 /*
@@ -97,7 +97,7 @@ describe("context menu item", (): void => {
         const onInvoke: any = jest.fn();
         const rendered: any = shallow(<ContextMenuItem onInvoke={onInvoke} />);
 
-        rendered.simulate("keydown", { keyCode: KeyCodes.space });
+        rendered.simulate("keydown", { keyCode: keyCodeSpace });
 
         expect(onInvoke).toHaveBeenCalledTimes(1);
     });
@@ -106,7 +106,7 @@ describe("context menu item", (): void => {
         const onInvoke: any = jest.fn();
         const rendered: any = shallow(<ContextMenuItem onInvoke={onInvoke} />);
 
-        rendered.simulate("keydown", { keyCode: KeyCodes.enter });
+        rendered.simulate("keydown", { keyCode: keyCodeEnter });
 
         expect(onInvoke).toHaveBeenCalledTimes(1);
     });
@@ -117,7 +117,7 @@ describe("context menu item", (): void => {
             <ContextMenuItem onInvoke={onInvoke} disabled={true} />
         );
 
-        rendered.simulate("keydown", { keyCode: KeyCodes.enter });
+        rendered.simulate("keydown", { keyCode: keyCodeEnter });
 
         expect(onInvoke).toHaveBeenCalledTimes(0);
     });
@@ -131,7 +131,7 @@ describe("context menu item", (): void => {
             <ContextMenuItem onClick={onClick} onKeyDown={onKeyDown} />
         );
 
-        rendered.simulate("keydown", { keyCode: KeyCodes.enter });
+        rendered.simulate("keydown", { keyCode: keyCodeEnter });
         rendered.simulate("click");
 
         expect(onClick).toBeCalledTimes(1);

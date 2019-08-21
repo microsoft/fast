@@ -3,8 +3,20 @@ import Adapter from "enzyme-adapter-react-16";
 import { configure, mount, render, shallow } from "enzyme";
 import Listbox, { ListboxUnhandledProps } from "./listbox";
 import ListboxItem from "../listbox-item";
-import { KeyCodes } from "@microsoft/fast-web-utilities";
 import { DisplayNamePrefix } from "../utilities";
+import {
+    keyCodeArrowDown,
+    keyCodeArrowLeft,
+    keyCodeArrowRight,
+    keyCodeArrowUp,
+    keyCodeEnd,
+    keyCodeEnter,
+    keyCodeEscape,
+    keyCodeHome,
+    keyCodeSpace,
+    keyCodeTab,
+    startsWith,
+} from "@microsoft/fast-web-utilities";
 
 /*
  * Configure Enzyme
@@ -99,7 +111,7 @@ describe("listbox", (): void => {
         });
 
         expect(rendered.state("focusIndex")).toBe(0);
-        rendered.childAt(0).simulate("keydown", { keyCode: KeyCodes.arrowDown });
+        rendered.childAt(0).simulate("keydown", { keyCode: keyCodeArrowDown });
         expect(rendered.state("focusIndex")).toBe(0);
         rendered.childAt(0).simulate("keydown", { key: "a" });
         expect(rendered.state("focusIndex")).toBe(0);
@@ -113,7 +125,7 @@ describe("listbox", (): void => {
         });
 
         expect(rendered.state("focusIndex")).toBe(0);
-        rendered.childAt(0).simulate("keydown", { keyCode: KeyCodes.arrowDown });
+        rendered.childAt(0).simulate("keydown", { keyCode: keyCodeArrowDown });
         expect(rendered.state("focusIndex")).toBe(0);
         rendered.childAt(0).simulate("keydown", { key: "a" });
         expect(rendered.state("focusIndex")).toBe(0);
@@ -132,7 +144,7 @@ describe("listbox", (): void => {
 
         expect(rendered.state("focusIndex")).toBe(0);
 
-        rendered.childAt(0).simulate("keydown", { keyCode: KeyCodes.arrowDown });
+        rendered.childAt(0).simulate("keydown", { keyCode: keyCodeArrowDown });
         expect(rendered.state("focusIndex")).toBe(1);
 
         rendered.detach();
@@ -149,7 +161,7 @@ describe("listbox", (): void => {
 
         expect(rendered.state("focusIndex")).toBe(0);
 
-        rendered.childAt(0).simulate("keydown", { keyCode: KeyCodes.arrowRight });
+        rendered.childAt(0).simulate("keydown", { keyCode: keyCodeArrowRight });
         expect(rendered.state("focusIndex")).toBe(1);
 
         rendered.detach();
@@ -167,7 +179,7 @@ describe("listbox", (): void => {
         rendered.setState({ focusIndex: 1 });
         expect(rendered.state("focusIndex")).toBe(1);
 
-        rendered.childAt(0).simulate("keydown", { keyCode: KeyCodes.arrowUp });
+        rendered.childAt(0).simulate("keydown", { keyCode: keyCodeArrowUp });
         expect(rendered.state("focusIndex")).toBe(0);
 
         rendered.detach();
@@ -185,7 +197,7 @@ describe("listbox", (): void => {
         rendered.setState({ focusIndex: 1 });
         expect(rendered.state("focusIndex")).toBe(1);
 
-        rendered.childAt(0).simulate("keydown", { keyCode: KeyCodes.arrowUp });
+        rendered.childAt(0).simulate("keydown", { keyCode: keyCodeArrowUp });
         expect(rendered.state("focusIndex")).toBe(0);
 
         rendered.detach();
@@ -204,7 +216,7 @@ describe("listbox", (): void => {
 
         expect(rendered.state("focusIndex")).toBe(0);
 
-        rendered.childAt(0).simulate("keydown", { keyCode: KeyCodes.end });
+        rendered.childAt(0).simulate("keydown", { keyCode: keyCodeEnd });
         expect(rendered.state("focusIndex")).toBe(2);
 
         rendered.detach();
@@ -224,7 +236,7 @@ describe("listbox", (): void => {
         rendered.setState({ focusIndex: 3 });
         expect(rendered.state("focusIndex")).toBe(3);
 
-        rendered.childAt(0).simulate("keydown", { keyCode: KeyCodes.home });
+        rendered.childAt(0).simulate("keydown", { keyCode: keyCodeHome });
         expect(rendered.state("focusIndex")).toBe(1);
 
         rendered.detach();
@@ -246,10 +258,10 @@ describe("listbox", (): void => {
 
         expect(rendered.state("focusIndex")).toBe(1);
 
-        rendered.childAt(0).simulate("keydown", { keyCode: KeyCodes.arrowDown });
+        rendered.childAt(0).simulate("keydown", { keyCode: keyCodeArrowDown });
         expect(rendered.state("focusIndex")).toBe(3);
 
-        rendered.childAt(0).simulate("keydown", { keyCode: KeyCodes.arrowDown });
+        rendered.childAt(0).simulate("keydown", { keyCode: keyCodeArrowDown });
         expect(rendered.state("focusIndex")).toBe(5);
 
         rendered.detach();
@@ -332,7 +344,7 @@ describe("listbox", (): void => {
 
         expect(rendered.childAt(0).prop("aria-activedescendant")).toBe("");
 
-        rendered.childAt(0).simulate("keydown", { keyCode: KeyCodes.arrowDown });
+        rendered.childAt(0).simulate("keydown", { keyCode: keyCodeArrowDown });
         expect(rendered.childAt(0).prop("aria-activedescendant")).toBe("b");
 
         rendered.detach();
@@ -355,13 +367,13 @@ describe("listbox", (): void => {
 
         expect(rendered.state("selectedItems").length).toBe(0);
 
-        rendered.childAt(0).simulate("keydown", { keyCode: KeyCodes.arrowDown });
+        rendered.childAt(0).simulate("keydown", { keyCode: keyCodeArrowDown });
         expect(rendered.state("selectedItems").length).toBe(1);
         expect(rendered.state("selectedItems")[0].id).toBe("b");
         let element: HTMLElement = document.getElementById("b");
         expect(element.getAttribute("aria-selected")).toBe("true");
 
-        rendered.childAt(0).simulate("keydown", { keyCode: KeyCodes.arrowUp });
+        rendered.childAt(0).simulate("keydown", { keyCode: keyCodeArrowUp });
         expect(rendered.state("selectedItems").length).toBe(1);
         expect(rendered.state("selectedItems")[0].id).toBe("a");
         element = document.getElementById("a");
@@ -384,10 +396,10 @@ describe("listbox", (): void => {
 
         expect(rendered.state("selectedItems").length).toBe(0);
 
-        rendered.childAt(0).simulate("keydown", { keyCode: KeyCodes.arrowDown });
+        rendered.childAt(0).simulate("keydown", { keyCode: keyCodeArrowDown });
         expect(rendered.state("selectedItems").length).toBe(0);
 
-        rendered.childAt(0).simulate("keydown", { keyCode: KeyCodes.arrowUp });
+        rendered.childAt(0).simulate("keydown", { keyCode: keyCodeArrowUp });
         expect(rendered.state("selectedItems").length).toBe(0);
 
         rendered.detach();
@@ -407,7 +419,7 @@ describe("listbox", (): void => {
 
         rendered
             .childAt(0)
-            .simulate("keydown", { keyCode: KeyCodes.arrowDown, shiftKey: true });
+            .simulate("keydown", { keyCode: keyCodeArrowDown, shiftKey: true });
         expect(rendered.state("selectedItems").length).toBe(1);
         expect(rendered.state("selectedItems")[0].id).toBe("b");
         let element: HTMLElement = document.getElementById("b");
@@ -415,7 +427,7 @@ describe("listbox", (): void => {
 
         rendered
             .childAt(0)
-            .simulate("keydown", { keyCode: KeyCodes.arrowUp, shiftKey: true });
+            .simulate("keydown", { keyCode: keyCodeArrowUp, shiftKey: true });
         expect(rendered.state("selectedItems").length).toBe(2);
         expect(rendered.state("selectedItems")[0].id).toBe("b");
         expect(rendered.state("selectedItems")[1].id).toBe("a");
@@ -426,7 +438,7 @@ describe("listbox", (): void => {
 
         rendered
             .childAt(0)
-            .simulate("keydown", { keyCode: KeyCodes.arrowDown, shiftKey: true });
+            .simulate("keydown", { keyCode: keyCodeArrowDown, shiftKey: true });
         expect(rendered.state("selectedItems").length).toBe(1);
         expect(rendered.state("selectedItems")[0].id).toBe("a");
         element = document.getElementById("a");
@@ -598,12 +610,12 @@ describe("listbox", (): void => {
             { attachTo: container }
         );
 
-        rendered.childAt(0).simulate("keydown", { keyCode: KeyCodes.arrowDown });
+        rendered.childAt(0).simulate("keydown", { keyCode: keyCodeArrowDown });
         expect(rendered.state("focusIndex")).toBe(1);
         expect(rendered.state("selectedItems").length).toBe(0);
 
         rendered.childAt(0).simulate("keydown", {
-            keyCode: KeyCodes.end,
+            keyCode: keyCodeEnd,
             shiftKey: true,
             ctrlKey: true,
         });
@@ -625,12 +637,12 @@ describe("listbox", (): void => {
             { attachTo: container }
         );
 
-        rendered.childAt(0).simulate("keydown", { keyCode: KeyCodes.arrowDown });
+        rendered.childAt(0).simulate("keydown", { keyCode: keyCodeArrowDown });
         expect(rendered.state("focusIndex")).toBe(1);
         expect(rendered.state("selectedItems").length).toBe(0);
 
         rendered.childAt(0).simulate("keydown", {
-            keyCode: KeyCodes.home,
+            keyCode: keyCodeHome,
             shiftKey: true,
             ctrlKey: true,
         });
@@ -765,7 +777,7 @@ describe("listbox", (): void => {
             .childAt(0)
             .simulate("click");
         expect(onSelectedItemsChanged).toHaveBeenCalledTimes(1);
-        rendered.childAt(0).simulate("keydown", { keyCode: KeyCodes.arrowDown });
+        rendered.childAt(0).simulate("keydown", { keyCode: keyCodeArrowDown });
         expect(onSelectedItemsChanged).toHaveBeenCalledTimes(2);
 
         rendered.detach();

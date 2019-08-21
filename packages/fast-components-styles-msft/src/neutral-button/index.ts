@@ -2,7 +2,7 @@ import { ButtonBaseClassNameContract as NeutralButtonClassNameContract } from "@
 import { ComponentStyles } from "@microsoft/fast-jss-manager";
 import { DesignSystem } from "../design-system";
 import { baseButton, buttonStyles } from "../patterns/button";
-import { applyFocusVisible } from "@microsoft/fast-jss-utilities";
+import { applyFocusVisible, format, toPx } from "@microsoft/fast-jss-utilities";
 import {
     neutralFillActive,
     neutralFillHover,
@@ -10,6 +10,12 @@ import {
     neutralFocus,
     neutralForegroundRest,
 } from "../utilities/color";
+import {
+    highContrastDisabledBorder,
+    highContrastOutline,
+    highContrastOutlineFocus,
+    highContrastSelection,
+} from "../utilities/high-contrast";
 
 const styles: ComponentStyles<NeutralButtonClassNameContract, DesignSystem> = {
     ...baseButton,
@@ -20,18 +26,26 @@ const styles: ComponentStyles<NeutralButtonClassNameContract, DesignSystem> = {
         background: neutralFillRest,
         "&:hover:enabled": {
             background: neutralFillHover,
+            ...highContrastSelection,
         },
         "&:active:enabled": {
             background: neutralFillActive,
         },
         ...applyFocusVisible<DesignSystem>({
             borderColor: neutralFocus,
+            ...highContrastOutlineFocus,
         }),
+        "&:disabled": {
+            ...highContrastDisabledBorder,
+        },
         "&::-moz-focus-inner": {
             border: "0",
         },
-        "@media (-ms-high-contrast:active)": {
-            fill: "ButtonHighlight",
+        ...highContrastOutline,
+        "a&": {
+            "&$button__disabled": {
+                ...highContrastDisabledBorder,
+            },
         },
     },
 };

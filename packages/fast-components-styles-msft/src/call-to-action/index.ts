@@ -25,6 +25,11 @@ import {
 } from "../utilities/color";
 import { glyphSize } from "../utilities/density";
 import { designUnit } from "../utilities/design-system";
+import {
+    highContrastDisabledForeground,
+    highContrastForeground,
+    highContrastSelector,
+} from "../utilities/high-contrast";
 
 function applyContentRegionTransform(): CSSRules<DesignSystem> {
     return {
@@ -89,6 +94,9 @@ const styles: ComponentStyles<CallToActionClassNameContract, DesignSystem> = {
         "&:hover": {
             "& $callToAction_glyph": {
                 ...applyGlyphTransform(),
+                [highContrastSelector]: {
+                    fill: "HighlightText !important",
+                },
             },
         },
         ...applyFocusVisible("& $callToAction_glyph", {
@@ -105,10 +113,19 @@ const styles: ComponentStyles<CallToActionClassNameContract, DesignSystem> = {
         marginRight: directionSwitch("", "6px"),
         transform: directionSwitch("none", "rotate(180deg)"),
         transition: "all 600ms cubic-bezier(0.19, 1, 0.22, 1)",
+        ...highContrastForeground,
     },
     callToAction__primary: {
         "& $callToAction_glyph": {
             fill: accentForegroundCut,
+            [highContrastSelector]: {
+                fill: "HighlightText !important",
+            },
+        },
+        "&:hover $callToAction_glyph": {
+            [highContrastSelector]: {
+                fill: "Highlight !important",
+            },
         },
     },
     callToAction__lightweight: {
@@ -118,6 +135,7 @@ const styles: ComponentStyles<CallToActionClassNameContract, DesignSystem> = {
         "&:hover": {
             "& $callToAction_glyph": {
                 fill: accentForegroundHover,
+                ...highContrastForeground,
             },
         },
         "&:active": {
@@ -135,20 +153,21 @@ const styles: ComponentStyles<CallToActionClassNameContract, DesignSystem> = {
         "&:hover": {
             "& $callToAction_glyph": {
                 fill: accentForegroundHover,
+                ...highContrastForeground,
             },
         },
-        "&:active": {
-            "& $callToAction_glyph": {
-                fill: accentForegroundActive,
-            },
-        },
+        "&:active": {},
     },
     callToAction__outline: {},
     callToAction__stealth: {},
     callToAction__disabled: {
+        "& $callToAction_glyph": {
+            ...highContrastDisabledForeground,
+        },
         "&:hover": {
             "& $callToAction_glyph": {
                 transform: "none",
+                ...highContrastDisabledForeground,
             },
         },
     },
