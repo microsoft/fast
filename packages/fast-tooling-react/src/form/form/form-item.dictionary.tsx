@@ -112,33 +112,43 @@ class FormItemDictionary extends FormItemBase<
         return (typeof this.props.data !== "undefined"
             ? Object.keys(this.props.data)
             : []
-        )
-            .filter((dataKey: string) => {
-                return !this.props.enumeratedProperties.includes(dataKey);
-            })
-            .map((additionalPropertyKey: string, index: number) => {
-                return (
-                    <div key={index}>
-                        {this.renderItemControl(additionalPropertyKey)}
-                        <FormControl
-                            index={index}
-                            untitled={this.props.untitled}
-                            label={get(this.props.schema, "title", this.props)}
-                            onChange={this.props.onChange}
-                            propertyName={additionalPropertyKey}
-                            schemaLocation={this.getSchemaLocation(additionalPropertyKey)}
-                            dataLocation={this.getDataLocation(additionalPropertyKey)}
-                            data={this.getData(additionalPropertyKey)}
-                            schema={this.props.schema}
-                            onUpdateActiveSection={this.props.onUpdateActiveSection}
-                            childOptions={this.props.childOptions}
-                            required={this.isRequired(additionalPropertyKey)}
-                            invalidMessage={this.props.invalidMessage}
-                            softRemove={false}
-                        />
-                    </div>
-                );
-            });
+        ).reduce(
+            (
+                accumulator: React.ReactNode,
+                currentKey: string,
+                index: number
+            ): React.ReactNode => {
+                if (!this.props.enumeratedProperties.includes(currentKey)) {
+                    return (
+                        <React.Fragment>
+                            {accumulator}
+                            <div key={index}>
+                                {this.renderItemControl(currentKey)}
+                                <FormControl
+                                    index={index}
+                                    untitled={this.props.untitled}
+                                    label={get(this.props.schema, "title", this.props)}
+                                    onChange={this.props.onChange}
+                                    propertyName={currentKey}
+                                    schemaLocation={this.getSchemaLocation(currentKey)}
+                                    dataLocation={this.getDataLocation(currentKey)}
+                                    data={this.getData(currentKey)}
+                                    schema={this.props.schema}
+                                    onUpdateActiveSection={
+                                        this.props.onUpdateActiveSection
+                                    }
+                                    childOptions={this.props.childOptions}
+                                    required={this.isRequired(currentKey)}
+                                    invalidMessage={this.props.invalidMessage}
+                                    softRemove={false}
+                                />
+                            </div>
+                        </React.Fragment>
+                    );
+                }
+            },
+            null
+        );
     }
 
     private handleOnAddItem = (e: React.MouseEvent<HTMLButtonElement>): void => {

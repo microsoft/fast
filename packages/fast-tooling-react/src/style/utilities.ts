@@ -308,25 +308,23 @@ export function applyAddItemStyle(): CSSRules<{}> {
             ...insetStrongBoxShadow(accent),
             outline: "none",
         }),
-        "&::before": {
+        "&::before, &::after": {
             position: "absolute",
             content: "''",
             pointerEvents: "none",
+            background: foreground300,
+        },
+        "&::before": {
             width: "9px",
             height: "1px",
             left: "5.5px",
             top: "9.5px",
-            background: foreground300,
         },
         "&::after": {
-            position: "absolute",
-            content: "''",
-            pointerEvents: "none",
             width: "1px",
             height: "9px",
             left: "9.5px",
             top: "5.5px",
-            background: foreground300,
         },
     };
 }
