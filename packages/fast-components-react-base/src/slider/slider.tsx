@@ -1,8 +1,3 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import { get } from "lodash-es";
-import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
-import { KeyCodes } from "@microsoft/fast-web-utilities";
 import {
     SliderHandledProps,
     SliderMode,
@@ -11,6 +6,18 @@ import {
     SliderRange,
     SliderUnhandledProps,
 } from "./slider.props";
+import React from "react";
+import { get } from "lodash-es";
+import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
+import {
+    keyCodeArrowDown,
+    keyCodeArrowLeft,
+    keyCodeArrowRight,
+    keyCodeArrowUp,
+    keyCodePageDown,
+    keyCodePageUp,
+} from "@microsoft/fast-web-utilities";
+import ReactDOM from "react-dom";
 import { SliderClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import { Direction } from "@microsoft/fast-web-utilities";
 import { DisplayNamePrefix } from "../utilities";
@@ -414,12 +421,12 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
                           ).concat(" ", thumbBaseClass),
                 sliderTrackItem_horizontal: get(
                     this.props,
-                    "managedClasses.sliderTrackItem_vertical",
+                    "managedClasses.slider_thumb__horizontal",
                     ""
                 ),
                 sliderTrackItem_vertical: get(
                     this.props,
-                    "managedClasses.slider_thumb__orientationVertical",
+                    "managedClasses.slider_thumb__vertical",
                     ""
                 ),
             },
@@ -838,10 +845,10 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
         this.updateDirection();
 
         switch (event.keyCode) {
-            case KeyCodes.arrowDown:
+            case keyCodeArrowDown:
                 this.startIncrementing(-1, false, thumb, event);
                 break;
-            case KeyCodes.arrowRight:
+            case keyCodeArrowRight:
                 this.startIncrementing(
                     this.direction === Direction.ltr ? 1 : -1,
                     false,
@@ -849,10 +856,10 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
                     event
                 );
                 break;
-            case KeyCodes.arrowUp:
+            case keyCodeArrowUp:
                 this.startIncrementing(1, false, thumb, event);
                 break;
-            case KeyCodes.arrowLeft:
+            case keyCodeArrowLeft:
                 this.startIncrementing(
                     this.direction === Direction.ltr ? -1 : 1,
                     false,
@@ -860,12 +867,12 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
                     event
                 );
                 break;
-            case KeyCodes.pageDown:
+            case keyCodePageDown:
                 if (this.props.pageStep !== undefined) {
                     this.startIncrementing(-1, true, thumb, event);
                 }
                 break;
-            case KeyCodes.pageUp:
+            case keyCodePageUp:
                 if (this.props.pageStep !== undefined) {
                     this.startIncrementing(1, true, thumb, event);
                 }
@@ -910,8 +917,8 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
         this.updateSliderDimensions();
         const pixelCoordinate: number =
             this.props.orientation === SliderOrientation.vertical
-                ? event.pageY
-                : event.pageX;
+                ? event.clientY
+                : event.clientX;
         const dragValue: number =
             (this.props.range.maxValue - this.props.range.minValue) *
                 this.convertPixelToPercent(pixelCoordinate) +
@@ -1081,12 +1088,12 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
      */
     private handleWindowKeyUp = (event: KeyboardEvent): void => {
         switch (event.keyCode) {
-            case KeyCodes.arrowDown:
-            case KeyCodes.arrowRight:
-            case KeyCodes.arrowUp:
-            case KeyCodes.arrowLeft:
-            case KeyCodes.pageDown:
-            case KeyCodes.pageUp:
+            case keyCodeArrowDown:
+            case keyCodeArrowRight:
+            case keyCodeArrowUp:
+            case keyCodeArrowLeft:
+            case keyCodePageDown:
+            case keyCodePageUp:
                 this.stopIncrementing();
                 break;
         }

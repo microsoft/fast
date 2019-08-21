@@ -1,6 +1,13 @@
 import React from "react";
 import { get } from "lodash-es";
-import { KeyCodes } from "@microsoft/fast-web-utilities";
+import {
+    keyCodeArrowDown,
+    keyCodeArrowLeft,
+    keyCodeArrowRight,
+    keyCodeArrowUp,
+    keyCodeEnd,
+    keyCodeHome,
+} from "@microsoft/fast-web-utilities";
 import {
     ManagedClasses,
     TabsClassNameContract,
@@ -307,18 +314,18 @@ class Tabs extends Foundation<TabsHandledProps, TabsUnhandledProps, TabsState> {
      */
     private handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>): void => {
         switch (e.keyCode) {
-            case KeyCodes.arrowLeft:
-            case KeyCodes.arrowUp:
+            case keyCodeArrowLeft:
+            case keyCodeArrowUp:
                 this.activateTab(TabLocation.previous);
                 break;
-            case KeyCodes.arrowRight:
-            case KeyCodes.arrowDown:
+            case keyCodeArrowRight:
+            case keyCodeArrowDown:
                 this.activateTab(TabLocation.next);
                 break;
-            case KeyCodes.home:
+            case keyCodeHome:
                 this.activateTab(TabLocation.first);
                 break;
-            case KeyCodes.end:
+            case keyCodeEnd:
                 this.activateTab(TabLocation.last);
                 break;
         }

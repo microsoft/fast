@@ -10,7 +10,7 @@ import { ChildOptionItem } from "../data-utilities";
 import noChildrenSchema from "../../app/configs/no-children.schema.json";
 import childrenSchema from "../../app/configs/children.schema.json";
 import { NavigationClassNameContract } from "./navigation.style";
-import { KeyCodes } from "@microsoft/fast-web-utilities";
+import { keyCodeEnter, keyCodeSpace } from "@microsoft/fast-web-utilities";
 import { TreeNavigation } from "./";
 
 const childOptions: ChildOptionItem[] = [
@@ -451,7 +451,7 @@ describe("Navigation", () => {
                 .props()["aria-expanded"]
         ).toEqual(false);
 
-        triggerItem.at(0).simulate("keydown", { keyCode: KeyCodes.enter });
+        triggerItem.at(0).simulate("keydown", { keyCode: keyCodeEnter });
 
         expect(
             rendered
@@ -470,7 +470,7 @@ describe("Navigation", () => {
         const rendered: any = mount(<DragDropNavigation {...props} />);
         const triggerItem: any = rendered.find(treeItemListItemSelector);
 
-        triggerItem.at(0).simulate("keydown", { keyCode: KeyCodes.enter });
+        triggerItem.at(0).simulate("keydown", { keyCode: keyCodeEnter });
 
         expect(
             rendered
@@ -480,7 +480,7 @@ describe("Navigation", () => {
                 .props()["aria-expanded"]
         ).toEqual(true);
 
-        triggerItem.at(0).simulate("keydown", { keyCode: KeyCodes.enter });
+        triggerItem.at(0).simulate("keydown", { keyCode: keyCodeEnter });
 
         expect(
             rendered
@@ -506,7 +506,7 @@ describe("Navigation", () => {
                 .props()["aria-expanded"]
         ).toEqual(false);
 
-        triggerItem.at(0).simulate("keydown", { keyCode: KeyCodes.space });
+        triggerItem.at(0).simulate("keydown", { keyCode: keyCodeSpace });
 
         expect(
             rendered
@@ -525,7 +525,7 @@ describe("Navigation", () => {
         const rendered: any = mount(<DragDropNavigation {...props} />);
         const triggerItem: any = rendered.find(treeItemListItemSelector);
 
-        triggerItem.at(0).simulate("keydown", { keyCode: KeyCodes.space });
+        triggerItem.at(0).simulate("keydown", { keyCode: keyCodeSpace });
 
         expect(
             rendered
@@ -535,7 +535,7 @@ describe("Navigation", () => {
                 .props()["aria-expanded"]
         ).toEqual(true);
 
-        triggerItem.at(0).simulate("keydown", { keyCode: KeyCodes.space });
+        triggerItem.at(0).simulate("keydown", { keyCode: keyCodeSpace });
 
         expect(
             rendered
