@@ -1,9 +1,8 @@
-import { horizontalSpacing } from "../utilities/density";
 import { CSSRules } from "@microsoft/fast-jss-manager";
+import { applyCornerRadius } from "../utilities/border";
 import { DesignSystem } from "../design-system";
 import { format, toPx } from "@microsoft/fast-jss-utilities";
 import {
-    neutralFillActive,
     neutralFillHover,
     neutralFillInputActive,
     neutralFillInputHover,
@@ -16,11 +15,16 @@ import {
     neutralOutlineHover,
     neutralOutlineRest,
 } from "../utilities/color";
-import { applyCornerRadius } from "../utilities/border";
+import { horizontalSpacing } from "../utilities/density";
 import { applyDisabledState } from "../utilities/disabled";
 import { applyScaledTypeRamp } from "../utilities/typography";
 import { applyFontWeightNormal } from "../utilities/fonts";
 import { outlineWidth } from "../utilities/design-system";
+import {
+    highContrastDisabledBorder,
+    highContrastOutlineFocus,
+    highContrastSelector,
+} from "../utilities/high-contrast";
 
 /**
  * Shared input field styles
@@ -47,6 +51,10 @@ export function inputFieldStyles(
         "&:hover:enabled": {
             background: neutralFillInputHover,
             borderColor: neutralOutlineHover,
+            [highContrastSelector]: {
+                background: "Background",
+                border: format("{0} solid Highlight", toPx<DesignSystem>(outlineWidth)),
+            },
         },
         "&:active:enabled": {
             background: neutralFillInputActive,
@@ -56,9 +64,11 @@ export function inputFieldStyles(
             boxShadow: format<DesignSystem>("0 0 0 1px {0} inset", neutralFocus),
             borderColor: neutralFocus,
             outline: "none",
+            ...highContrastOutlineFocus,
         },
         "&:disabled": {
             ...applyDisabledState(),
+            ...highContrastDisabledBorder,
         },
         "&::placeholder": {
             color: neutralForegroundHint(neutralFillInputRest),

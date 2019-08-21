@@ -11,6 +11,13 @@ import {
     neutralFocus,
     neutralFocusInnerAccent,
 } from "../utilities/color";
+import {
+    HighContrastColor,
+    highContrastDisabledBorder,
+    highContrastDisabledForeground,
+    highContrastDoubleFocus,
+    highContrastSelector,
+} from "../utilities/high-contrast";
 
 const styles: ComponentStyles<AccentButtonClassNameContract, DesignSystem> = {
     ...baseButton,
@@ -21,6 +28,16 @@ const styles: ComponentStyles<AccentButtonClassNameContract, DesignSystem> = {
         background: accentFillRest,
         "&:hover:enabled": {
             background: accentFillHover,
+            [highContrastSelector]: {
+                background: HighContrastColor.selectedText,
+                borderColor: HighContrastColor.selectedBackground,
+                color: HighContrastColor.selectedBackground,
+            },
+            "& $button_beforeContent, & $button_afterContent": {
+                [highContrastSelector]: {
+                    fill: "Highlight",
+                },
+            },
         },
         "&:active:enabled": {
             background: accentFillActive,
@@ -31,9 +48,33 @@ const styles: ComponentStyles<AccentButtonClassNameContract, DesignSystem> = {
                 "0 0 0 2px inset {0}",
                 neutralFocusInnerAccent(accentFillRest)
             ),
+            ...highContrastDoubleFocus,
         }),
+        "&:disabled": {
+            ...highContrastDisabledBorder,
+            "& $button_beforeContent, & $button_afterContent": {
+                ...highContrastDisabledForeground,
+            },
+        },
         "& $button_beforeContent, & $button_afterContent": {
             fill: accentForegroundCut,
+            [highContrastSelector]: {
+                fill: "HighlightText",
+            },
+        },
+        [highContrastSelector]: {
+            background: HighContrastColor.selectedBackground,
+            borderColor: HighContrastColor.selectedBackground,
+            color: HighContrastColor.selectedText,
+            "-ms-high-contrast-adjust": "none",
+        },
+        "a&": {
+            "&$button__disabled": {
+                ...highContrastDisabledBorder,
+                "& $button_beforeContent, & $button_afterContent": {
+                    ...highContrastDisabledForeground,
+                },
+            },
         },
     },
 };

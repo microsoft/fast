@@ -2,7 +2,7 @@ import React from "react";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import { get } from "lodash-es";
 import { ContextMenuItemClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
-import { KeyCodes } from "@microsoft/fast-web-utilities";
+import { keyCodeEnter, keyCodeSpace } from "@microsoft/fast-web-utilities";
 import {
     ContextMenuItemHandledProps,
     ContextMenuItemProps,
@@ -90,8 +90,8 @@ class ContextMenuItem extends Foundation<
      */
     private handleMenuItemKeyDown = (e: React.KeyboardEvent<HTMLDivElement>): void => {
         switch (e.keyCode) {
-            case KeyCodes.enter:
-            case KeyCodes.space:
+            case keyCodeEnter:
+            case keyCodeSpace:
                 this.handleInvoke(e);
                 break;
         }

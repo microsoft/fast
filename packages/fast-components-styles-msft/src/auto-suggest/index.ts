@@ -6,7 +6,8 @@ import { applyElevatedCornerRadius } from "../utilities/border";
 import { neutralFillStealthRest } from "../utilities/color";
 import { heightNumber } from "../utilities/density";
 import { applyElevation, ElevationMultiplier } from "../utilities/elevation";
-import { designUnit } from "../utilities/design-system";
+import { designUnit, outlineWidth } from "../utilities/design-system";
+import { highContrastSelector } from "../utilities/high-contrast";
 
 const visibleChildCount: number = 10;
 const styles: ComponentStyles<AutoSuggestClassNameContract, DesignSystem> = {
@@ -28,6 +29,10 @@ const styles: ComponentStyles<AutoSuggestClassNameContract, DesignSystem> = {
         maxHeight: toPx(add(heightNumber(visibleChildCount), multiply(designUnit, 2))),
         overflow: "auto",
         ...applyElevatedCornerRadius(),
+        [highContrastSelector]: {
+            background: "ButtonFace",
+            border: format<DesignSystem>("{0} solid ButtonText", toPx(outlineWidth)),
+        },
     },
     autoSuggest__menuOpen: {},
 };

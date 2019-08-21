@@ -44,6 +44,16 @@ export interface SliderClassNameContract {
     slider_thumb?: string;
 
     /**
+     * The thumb vertical orientation modifier
+     */
+    slider_thumb__vertical?: string;
+
+    /**
+     * The thumb horizontal orientation modifier
+     */
+    slider_thumb__horizontal?: string;
+
+    /**
      * The high value thumb
      */
     slider_thumb__upperValue?: string;

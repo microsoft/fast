@@ -3,6 +3,7 @@ import { mergeWith } from "lodash-es";
 import React from "react";
 import { designSystemContext } from "./context";
 import SheetManager from "./sheet-manager";
+import { jss } from "./jss";
 
 /**
  * Describes an interface for adjusting a styled component
@@ -56,6 +57,21 @@ abstract class JSSManager<T, S, C> extends React.Component<ManagedJSSProps<T, S,
      */
 
     public static contextType: React.Context<unknown> = designSystemContext;
+
+    /**
+     * Sets the JSS instance used by all JSSManger instances
+     */
+    public static set jss(instance: any) {
+        JSSManager.sheetManager.jss = instance;
+    }
+
+    /**
+     * Get the JSS instance used by all JSSManger instances
+     */
+    public static get jss(): any {
+        return JSSManager.sheetManager.jss;
+    }
+
     /**
      * JSS allows us to use an index to order the created style elements. The higher the index,
      * the later in the document the style element will be created.

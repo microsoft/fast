@@ -3,7 +3,7 @@ import Adapter from "enzyme-adapter-react-16";
 import { configure, mount, ReactWrapper, shallow } from "enzyme";
 import { CSSPropertyEditor } from "./";
 import { CSSPropertyEditorClassNameContract } from "./property-editor.props";
-import { KeyCodes } from "@microsoft/fast-web-utilities";
+import { keyCodeEnter } from "@microsoft/fast-web-utilities";
 
 /**
  * Configure Enzyme
@@ -189,7 +189,7 @@ describe("CSSPropertyEditor", () => {
         expect(inputs).toHaveLength(4);
         inputs.at(0).simulate("focus");
         inputs.at(0).simulate("change", { target: { value: newKey } });
-        inputs.at(0).simulate("keydown", { keyCode: KeyCodes.enter });
+        inputs.at(0).simulate("keydown", { keyCode: keyCodeEnter });
 
         const updatedDataKeys: string[] = Object.keys(callback.mock.calls[0][0]);
         expect(updatedDataKeys[0]).toEqual("paddingTop");

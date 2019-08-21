@@ -1,5 +1,17 @@
+import {
+    keyCodeArrowDown,
+    keyCodeArrowLeft,
+    keyCodeArrowRight,
+    keyCodeArrowUp,
+    keyCodeEnd,
+    keyCodeEnter,
+    keyCodeEscape,
+    keyCodeHome,
+    keyCodeSpace,
+    keyCodeTab,
+    startsWith,
+} from "@microsoft/fast-web-utilities";
 import ReactDOM from "react-dom";
-import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import { ListboxClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import {
     ListboxHandledProps,
@@ -7,7 +19,7 @@ import {
     ListboxUnhandledProps,
 } from "./listbox.props";
 import React from "react";
-import { KeyCodes, startsWith } from "@microsoft/fast-web-utilities";
+import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import { get, inRange, isEqual } from "lodash-es";
 import { canUseDOM } from "exenv-es6";
 import { ListboxContext, ListboxContextType } from "./listbox-context";
@@ -456,14 +468,14 @@ class Listbox extends Foundation<
         let focusItemId: string;
 
         switch (event.keyCode) {
-            case KeyCodes.escape:
-            case KeyCodes.enter:
-            case KeyCodes.space:
-            case KeyCodes.tab:
+            case keyCodeEscape:
+            case keyCodeEnter:
+            case keyCodeSpace:
+            case keyCodeTab:
                 return;
 
-            case KeyCodes.arrowDown:
-            case KeyCodes.arrowRight:
+            case keyCodeArrowDown:
+            case keyCodeArrowRight:
                 focusItemId = this.setFocus(this.state.focusIndex + 1, 1);
                 if (this.props.multiselectable && event.shiftKey && focusItemId !== "") {
                     const itemProps: ListboxItemProps = Listbox.getItemPropsById(
@@ -477,8 +489,8 @@ class Listbox extends Foundation<
                 event.preventDefault();
                 break;
 
-            case KeyCodes.arrowUp:
-            case KeyCodes.arrowLeft:
+            case keyCodeArrowUp:
+            case keyCodeArrowLeft:
                 focusItemId = this.setFocus(this.state.focusIndex - 1, -1);
                 if (this.props.multiselectable && event.shiftKey && focusItemId !== "") {
                     const itemData: ListboxItemProps = Listbox.getItemPropsById(
@@ -492,7 +504,7 @@ class Listbox extends Foundation<
                 event.preventDefault();
                 break;
 
-            case KeyCodes.end:
+            case keyCodeEnd:
                 if (this.props.multiselectable && event.shiftKey && event.ctrlKey) {
                     this.selectRange(
                         this.state.focusIndex,
@@ -503,7 +515,7 @@ class Listbox extends Foundation<
 
                 break;
 
-            case KeyCodes.home:
+            case keyCodeHome:
                 if (this.props.multiselectable && event.shiftKey && event.ctrlKey) {
                     this.selectRange(0, this.state.focusIndex);
                 }
