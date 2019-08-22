@@ -44,7 +44,7 @@ describe("radio", (): void => {
 
         const rendered: any = mount(<Radio {...props} />);
 
-        expect(rendered.find("span").prop("aria-hidden")).toEqual(true);
+        expect(rendered.find("div").prop("aria-hidden")).toEqual(true);
     });
 
     test("should have correct input type attribute 'radio'", () => {
