@@ -1,17 +1,16 @@
-import React from "react";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
-import {
-    AutoSuggestHandledProps,
-    AutoSuggestManagedClasses,
-    AutoSuggestProps,
-    AutoSuggestUnhandledProps,
-} from "./auto-suggest.props";
 import {
     AutoSuggest as BaseAutoSuggest,
     AutoSuggestState,
 } from "@microsoft/fast-components-react-base";
+import React from "react";
 import { TextAction } from "../text-action";
 import { DisplayNamePrefix } from "../utilities";
+import {
+    AutoSuggestHandledProps,
+    AutoSuggestProps,
+    AutoSuggestUnhandledProps,
+} from "./auto-suggest.props";
 
 class AutoSuggest extends Foundation<
     AutoSuggestHandledProps,
@@ -19,6 +18,10 @@ class AutoSuggest extends Foundation<
     {}
 > {
     public static displayName: string = `${DisplayNamePrefix}AutoSuggest`;
+
+    public static defaultProps: Partial<AutoSuggestProps> = {
+        managedClasses: {},
+    };
 
     protected handledProps: HandledProps<AutoSuggestHandledProps> = {
         listboxId: void 0,

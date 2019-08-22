@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.17.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-tooling-react@1.16.0...@microsoft/fast-tooling-react@1.17.0) (2019-08-22)
+
+
+### Features
+
+* add css border radius component ([#2110](https://github.com/Microsoft/fast-dna/issues/2110)) ([7501b6f](https://github.com/Microsoft/fast-dna/commit/7501b6f))
+* export individual keycodes as named exports and unreference KeyCodes ([327d806](https://github.com/Microsoft/fast-dna/commit/327d806))
+
+
+
+
+
 # [1.16.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-tooling-react@1.15.3...@microsoft/fast-tooling-react@1.16.0) (2019-08-16)
 
 

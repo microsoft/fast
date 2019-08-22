@@ -1,19 +1,10 @@
-import React from "react";
-import { get } from "lodash-es";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
-import {
-    SliderHandledProps,
-    SliderManagedClasses,
-    SliderProps,
-    SliderUnhandledProps,
-} from "./slider.props";
-import {
-    Slider as BaseSlider,
-    SliderTrackItem,
-} from "@microsoft/fast-components-react-base";
-import { DisplayNamePrefix } from "../utilities";
+import { Slider as BaseSlider } from "@microsoft/fast-components-react-base";
 import { DesignSystem } from "@microsoft/fast-components-styles-msft";
 import { DesignSystemConsumer } from "@microsoft/fast-jss-manager-react";
+import React from "react";
+import { DisplayNamePrefix } from "../utilities";
+import { SliderHandledProps, SliderUnhandledProps } from "./slider.props";
 
 class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, {}> {
     public static displayName: string = `${DisplayNamePrefix}Slider`;

@@ -30,18 +30,18 @@ import {
 
 const styles: ComponentStyles<AutoSuggestOptionClassNameContract, DesignSystem> = {
     autoSuggestOption: {
-        listStyleType: "none",
+        "list-style-type": "none",
         height: height(),
         display: "grid",
-        gridTemplateColumns: directionSwitch(
+        "grid-template-columns": directionSwitch(
             format("{0} auto auto 1fr {0}", horizontalSpacing()),
             format("{0} 1fr auto auto {0}", horizontalSpacing())
         ),
-        gridTemplateRows: "auto",
-        alignItems: "center",
+        "grid-template-rows": "auto",
+        "align-items": "center",
         padding: "0",
         margin: format("0 {0}", toPx(designUnit)),
-        whiteSpace: "nowrap",
+        "white-space": "nowrap",
         overflow: "hidden",
         ...applyCursorDefault(),
         color: neutralForegroundRest,
@@ -50,7 +50,7 @@ const styles: ComponentStyles<AutoSuggestOptionClassNameContract, DesignSystem> 
         ...applyCornerRadius(),
         ...applyFocusPlaceholderBorder(),
         ...applyFocusVisible<DesignSystem>({
-            borderColor: neutralFocus,
+            "border-color": neutralFocus,
             [highContrastSelector]: {
                 background: HighContrastColor.selectedBackground,
                 color: HighContrastColor.selectedText,
@@ -63,7 +63,7 @@ const styles: ComponentStyles<AutoSuggestOptionClassNameContract, DesignSystem> 
         ...highContrastStealth,
     },
     autoSuggestOption_contentRegion: {
-        gridColumnStart: "3",
+        "grid-column-start": "3",
         overflow: "hidden",
         ...ellipsis(),
     },

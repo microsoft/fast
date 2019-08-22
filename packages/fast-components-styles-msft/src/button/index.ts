@@ -50,7 +50,7 @@ import {
 import { applyScaledTypeRamp } from "../utilities/typography";
 
 const transparentBackground: CSSRules<DesignSystem> = {
-    backgroundColor: "transparent",
+    "background-color": "transparent",
 };
 
 const density: DesignSystemResolver<number> = getDesignSystemValue("density");
@@ -60,8 +60,8 @@ const applyTransparentBackplateStyles: CSSRules<DesignSystem> = {
     fill: accentForegroundRest,
     ...transparentBackground,
     ...applyFocusVisible({
-        borderColor: "transparent",
-        boxShadow: "none",
+        "border-color": "transparent",
+        "box-shadow": "none",
         "& $button_contentRegion::before": {
             background: neutralForegroundRest,
             height: toPx<DesignSystem>(focusOutlineWidth),
@@ -102,23 +102,23 @@ const applyTransparentBackplateStyles: CSSRules<DesignSystem> = {
 const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = {
     button: {
         ...applyScaledTypeRamp("t7"),
-        fontFamily: "inherit",
+        "font-family": "inherit",
         ...applyCursorPointer(),
-        boxSizing: "border-box",
-        maxWidth: "374px",
-        minWidth: (designSystem: DesignSystem): string =>
+        "box-sizing": "border-box",
+        "max-width": "374px",
+        "min-width": (designSystem: DesignSystem): string =>
             density(designSystem) <= -2 ? "28px" : "32px",
         padding: format("0 {0}", horizontalSpacing(focusOutlineWidth)),
         display: "inline-flex",
-        justifyContent: "center",
-        alignItems: "center",
+        "justify-content": "center",
+        "align-items": "center",
         height: height(),
         ...applyFocusPlaceholderBorder(),
         ...applyCornerRadius(),
-        lineHeight: "1",
+        "line-height": "1",
         overflow: "hidden",
-        textDecoration: "none",
-        whiteSpace: "nowrap",
+        "text-decoration": "none",
+        "white-space": "nowrap",
         transition: "all 0.1s ease-in-out",
         color: neutralForegroundRest,
         fill: neutralForegroundRest,
@@ -127,7 +127,7 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = {
             background: neutralFillHover,
             [highContrastSelector]: {
                 background: "Highlight !important",
-                borderColor: "ButtonText !important",
+                "border-color": "ButtonText !important",
                 color: "HighlightText !important",
             },
             "& $button_beforeContent, & $button_afterContent": {
@@ -141,13 +141,13 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = {
             background: neutralFillActive,
         },
         ...applyFocusVisible<DesignSystem>({
-            borderColor: neutralFocus,
             ...highContrastOutlineFocus,
+            "border-color": neutralFocus,
         }),
         "&:disabled": {
             [highContrastSelector]: {
                 background: "ButtonFace",
-                borderColor: "GrayText",
+                "border-color": "GrayText",
                 color: "GrayText",
             },
         },
@@ -156,7 +156,7 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = {
         },
         [highContrastSelector]: {
             background: "ButtonFace",
-            borderColor: "ButtonText",
+            "border-color": "ButtonText",
             color: "ButtonText",
             fill: "ButtonText",
             "-ms-high-contrast-adjust": "none",
@@ -177,7 +177,7 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = {
             background: accentFillHover,
             [highContrastSelector]: {
                 background: "HighlightText !important",
-                borderColor: "Highlight !important",
+                "border-color": "Highlight !important",
                 color: "Highlight !important",
             },
         },
@@ -185,8 +185,8 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = {
             background: accentFillActive,
         },
         ...applyFocusVisible<DesignSystem>({
-            borderColor: neutralFocus,
-            boxShadow: format(
+            "border-color": neutralFocus,
+            "box-shadow": format(
                 "0 0 0 {0} inset {1}",
                 toPx(focusOutlineWidth),
                 neutralFocusInnerAccent(accentFillRest)
@@ -198,7 +198,7 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = {
         },
         [highContrastSelector]: {
             background: "Highlight !important",
-            borderColor: "Highlight !important",
+            "border-color": "Highlight !important",
             color: "HighlightText !important",
             "-ms-high-contrast-adjust": "none",
         },
@@ -228,13 +228,13 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = {
             ),
         },
         ...applyFocusVisible<DesignSystem>({
-            boxShadow: format(
+            ...highContrastOutlineFocus,
+            "box-shadow": format(
                 "0 0 0 {0} {1} inset",
                 toPx(subtract(focusOutlineWidth, outlineWidth)),
                 neutralFocus
             ),
-            borderColor: neutralFocus,
-            ...highContrastOutlineFocus,
+            "border-color": neutralFocus,
         }),
     },
     button__lightweight: {
@@ -242,23 +242,23 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = {
     },
     button__justified: {
         ...applyTransparentBackplateStyles,
-        minWidth: "74px",
-        paddingLeft: "0",
-        paddingRight: "0",
-        borderWidth: "0",
-        justifyContent: "flex-start",
+        "min-width": "74px",
+        "padding-left": "0",
+        "padding-right": "0",
+        "border-width": "0",
+        "justify-content": "flex-start",
     },
     button__stealth: {
         background: neutralFillStealthRest,
         "&:hover:enabled": {
-            backgroundColor: neutralFillStealthHover,
+            "background-color": neutralFillStealthHover,
         },
         "&:active:enabled": {
-            backgroundColor: neutralFillStealthActive,
+            "background-color": neutralFillStealthActive,
         },
         ...applyFocusVisible<DesignSystem>({
-            borderColor: neutralFocus,
             ...highContrastOutlineFocus,
+            "border-color": neutralFocus,
         }),
         ...highContrastStealth,
     },

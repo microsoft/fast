@@ -42,15 +42,15 @@ export function inputFieldStyles(
             neutralOutlineRest
         ),
         color: neutralForegroundRest,
-        fontFamily: "inherit",
-        boxSizing: "border-box",
+        "font-family": "inherit",
+        "box-sizing": "border-box",
         padding: format("0 {0}", horizontalSpacing(outlineWidth)),
         ...applyCornerRadius(),
         margin: "0",
         transition: "all 0.2s ease-in-out",
         "&:hover:enabled": {
             background: neutralFillInputHover,
-            borderColor: neutralOutlineHover,
+            "border-color": neutralOutlineHover,
             [highContrastSelector]: {
                 background: "Background",
                 border: format("{0} solid Highlight", toPx<DesignSystem>(outlineWidth)),
@@ -58,11 +58,11 @@ export function inputFieldStyles(
         },
         "&:active:enabled": {
             background: neutralFillInputActive,
-            borderColor: neutralOutlineActive,
+            "border-color": neutralOutlineActive,
         },
         "&:focus:enabled": {
-            boxShadow: format<DesignSystem>("0 0 0 1px {0} inset", neutralFocus),
-            borderColor: neutralFocus,
+            "box-shadow": format<DesignSystem>("0 0 0 1px {0} inset", neutralFocus),
+            "border-color": neutralFocus,
             outline: "none",
             ...highContrastOutlineFocus,
         },
@@ -83,13 +83,13 @@ export function filledInputFieldStyles(): CSSRules<{}> {
         border: format("{0} solid transparent", toPx(outlineWidth)),
         "&:hover:enabled": {
             background: neutralFillHover,
-            borderColor: "transparent",
+            "border-color": "transparent",
         },
         "&:active:enabled": {
-            borderColor: "transparent",
+            "border-color": "transparent",
         },
         "&:focus:enabled": {
-            borderColor: neutralFocus,
+            "border-color": neutralFocus,
         },
         "&::placeholder": {
             color: neutralForegroundHint(neutralFillRest),

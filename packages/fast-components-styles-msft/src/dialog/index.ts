@@ -16,7 +16,7 @@ const styles: ComponentStyles<DialogClassNameContract, DesignSystem> = {
     },
     dialog_positioningRegion: {
         display: "flex",
-        justifyContent: "center",
+        "justify-content": "center",
         position: "fixed",
         top: "0",
         bottom: "0",
@@ -33,12 +33,12 @@ const styles: ComponentStyles<DialogClassNameContract, DesignSystem> = {
         background: "rgba(0, 0, 0, 0.3)",
     },
     dialog_contentRegion: {
-        marginTop: "auto",
-        marginBottom: "auto",
+        "margin-top": "auto",
+        "margin-bottom": "auto",
         background: backgroundColor,
         ...applyElevatedCornerRadius(),
         ...applyElevation(ElevationMultiplier.e14),
-        zIndex: "1",
+        "z-index": "1",
     },
 };
 

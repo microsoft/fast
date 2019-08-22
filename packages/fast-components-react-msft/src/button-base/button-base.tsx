@@ -1,13 +1,15 @@
-import React from "react";
-import { get, isNil } from "lodash-es";
+import { ButtonBaseClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
+import { Button as BaseButton } from "@microsoft/fast-components-react-base";
+import { classNames } from "@microsoft/fast-web-utilities";
+import { isNil } from "lodash-es";
+import React from "react";
+import { DisplayNamePrefix } from "../utilities";
 import {
     ButtonBaseHandledProps,
-    ButtonBaseManagedClasses,
+    ButtonBaseProps,
     ButtonBaseUnhandledProps,
 } from "./button-base.props";
-import { Button as BaseButton } from "@microsoft/fast-components-react-base";
-import { DisplayNamePrefix } from "../utilities";
 
 class ButtonBase extends Foundation<
     ButtonBaseHandledProps,
@@ -15,6 +17,10 @@ class ButtonBase extends Foundation<
     {}
 > {
     public static displayName: string = `${DisplayNamePrefix}ButtonBase`;
+
+    public static defaultProps: Partial<ButtonBaseProps> = {
+        managedClasses: {},
+    };
 
     protected handledProps: HandledProps<ButtonBaseHandledProps> = {
         beforeContent: void 0,
@@ -28,16 +34,18 @@ class ButtonBase extends Foundation<
      * Renders the component
      */
     public render(): React.ReactElement<HTMLButtonElement | HTMLAnchorElement> {
+        const managedClasses: ButtonBaseClassNameContract = this.props.managedClasses;
+
         return (
             <BaseButton
                 {...this.unhandledProps()}
-                managedClasses={this.props.managedClasses}
+                managedClasses={managedClasses}
                 className={this.generateClassNames()}
                 href={this.props.href}
                 disabled={this.props.disabled}
             >
                 {this.generateBeforeContent()}
-                <span className={get(this.props, "managedClasses.button_contentRegion")}>
+                <span className={classNames(managedClasses.button_contentRegion)}>
                     {this.props.children}
                 </span>
                 {this.generateAfterContent()}
@@ -46,23 +54,18 @@ class ButtonBase extends Foundation<
     }
 
     protected generateClassNames(): string {
-        let className: string = "";
-
-        if (this.hasBeforeOrAfterAndChildren()) {
-            className = get(
-                this.props.managedClasses,
-                "button__hasBeforeOrAfterAndChildren",
-                ""
-            );
-        }
-
-        return super.generateClassNames(className);
+        return super.generateClassNames(
+            classNames([
+                this.props.managedClasses.button__hasBeforeOrAfterAndChildren,
+                this.hasBeforeOrAfterAndChildren(),
+            ])
+        );
     }
 
     private generateBeforeContent(): React.ReactNode {
         if (typeof this.props.beforeContent === "function") {
             return this.props.beforeContent(
-                get(this.props, "managedClasses.button_beforeContent", "")
+                classNames(this.props.managedClasses.button_beforeContent)
             );
         }
     }
@@ -70,7 +73,7 @@ class ButtonBase extends Foundation<
     private generateAfterContent(): React.ReactNode {
         if (typeof this.props.afterContent === "function") {
             return this.props.afterContent(
-                get(this.props, "managedClasses.button_afterContent", "")
+                classNames(this.props.managedClasses.button_afterContent)
             );
         }
     }

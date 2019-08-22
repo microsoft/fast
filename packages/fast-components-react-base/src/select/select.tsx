@@ -1,6 +1,7 @@
 import { SelectClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import {
+    classNames,
     keyCodeArrowDown,
     keyCodeArrowLeft,
     keyCodeArrowRight,
@@ -33,6 +34,7 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
         disabled: false,
         defaultSelection: [],
         placeholder: "",
+        managedClasses: {},
     };
 
     /**
@@ -152,30 +154,21 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
      * Create class names
      */
     protected generateClassNames(): string {
-        let className: string = get(this.props.managedClasses, "select", "");
+        const {
+            select,
+            select__disabled,
+            select_menu__open,
+            select__multiSelectable,
+        }: SelectClassNameContract = this.props.managedClasses;
 
-        if (this.props.disabled) {
-            className = className.concat(
-                " ",
-                get(this.props.managedClasses, "select__disabled", "")
-            );
-        }
-
-        if (this.state.isMenuOpen) {
-            className = className.concat(
-                " ",
-                get(this.props.managedClasses, "select_menu__open", "")
-            );
-        }
-
-        if (this.props.multiselectable) {
-            className = className.concat(
-                " ",
-                get(this.props.managedClasses, "select__multiSelectable", "")
-            );
-        }
-
-        return super.generateClassNames(className);
+        return super.generateClassNames(
+            classNames(
+                select,
+                [select__disabled, this.props.disabled],
+                [select_menu__open, this.state.isMenuOpen],
+                [select__multiSelectable, this.props.multiselectable]
+            )
+        );
     }
 
     /**

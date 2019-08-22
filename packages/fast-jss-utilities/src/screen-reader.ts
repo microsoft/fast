@@ -1,5 +1,9 @@
 import * as CSS from "csstype";
+import { CSSRules } from "@microsoft/fast-jss-manager";
 
+/**
+ * @deprecated
+ */
 export interface ScreenReaderOnly {
     position: CSS.PositionProperty;
     overflow: CSS.OverflowProperty;
@@ -11,7 +15,7 @@ export interface ScreenReaderOnly {
     margin: CSS.MarginProperty<string>;
 }
 
-export function applyScreenReader(): ScreenReaderOnly {
+export function applyScreenReader(): CSSRules<any> {
     return {
         position: "absolute",
         overflow: "hidden",

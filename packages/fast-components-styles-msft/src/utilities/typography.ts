@@ -171,8 +171,8 @@ export function applyScaledLineHeight(key: keyof TypeRamp): DesignSystemResolver
  */
 export function applyTypeRamp(typeConfig: keyof TypeRamp): CSSRules<DesignSystem> {
     return {
-        fontSize: toPx(typeRamp[typeConfig].fontSize),
-        lineHeight: toPx(typeRamp[typeConfig].lineHeight),
+        "font-size": toPx(typeRamp[typeConfig].fontSize),
+        "line-height": toPx(typeRamp[typeConfig].lineHeight),
     };
 }
 
@@ -181,7 +181,7 @@ export function applyTypeRamp(typeConfig: keyof TypeRamp): CSSRules<DesignSystem
  */
 export function applyScaledTypeRamp(key: keyof TypeRamp): CSSRules<DesignSystem> {
     return {
-        fontSize: applyScaledFontSize(key),
-        lineHeight: applyScaledLineHeight(key),
+        "font-size": applyScaledFontSize(key),
+        "line-height": applyScaledLineHeight(key),
     };
 }
