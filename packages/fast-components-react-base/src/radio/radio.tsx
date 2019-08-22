@@ -18,7 +18,7 @@ interface RadioState {
 
 class Radio extends Foundation<RadioHandledProps, RadioUnhandledProps, RadioState> {
     public static displayName: string = `${DisplayNamePrefix}Radio`;
-    public static defaultProps: Partial<RadioHandledProps> = {
+    public static defaultProps: Partial<RadioProps> = {
         managedClasses: {},
     };
 
@@ -60,7 +60,7 @@ class Radio extends Foundation<RadioHandledProps, RadioUnhandledProps, RadioStat
         };
     }
 
-    public render(): React.ReactElement<HTMLElement> {
+    public render(): JSX.Element {
         const {
             radio_input,
             radio_stateIndicator,
