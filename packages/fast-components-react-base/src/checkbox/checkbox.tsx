@@ -99,10 +99,15 @@ class Checkbox extends Foundation<
      * Renders the component
      */
     public render(): React.ReactElement<HTMLElement> {
+        const {
+            checkbox_input,
+            checkbox_stateIndicator,
+        }: CheckboxClassNameContract = this.props.managedClasses;
+
         return (
             <div {...this.unhandledProps()} className={this.generateClassNames()}>
                 <input
-                    className={this.props.managedClasses.checkbox_input}
+                    className={classNames(checkbox_input)}
                     id={this.props.inputId}
                     name={this.props.name}
                     type="checkbox"
@@ -112,7 +117,7 @@ class Checkbox extends Foundation<
                     checked={this.state.checked}
                     value={this.props.value}
                 />
-                <span className={this.props.managedClasses.checkbox_stateIndicator} />
+                <span className={classNames(checkbox_stateIndicator)} />
                 {this.renderLabelBySlot()}
                 {this.renderLabel()}
             </div>
@@ -166,8 +171,10 @@ class Checkbox extends Foundation<
     }
 
     private renderLabel(): React.ReactNode {
+        const { checkbox_label }: CheckboxClassNameContract = this.props.managedClasses;
+
         if (typeof this.props.label === "function") {
-            return this.props.label(get(this.props.managedClasses, "checkbox_label", ""));
+            return this.props.label(classNames(checkbox_label));
         }
     }
 
