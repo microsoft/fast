@@ -288,19 +288,87 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
         }: SliderClassNameContract = this.props.managedClasses;
         const isVertical: boolean = this.props.orientation === SliderOrientation.vertical;
 
-        return super.generateClassNames(
-            classNames(
-                slider,
-                [slider__disabled, this.props.disabled],
-                [slider__vertical, isVertical],
-                [slider__horizontal, !isVertical],
-                [slider__rtl, this.direction === "rtl"],
-                [slider__modeSingle, this.props.mode === SliderMode.singleValue],
-                [slider__modeAdjustUpper, this.props.mode === SliderMode.adustUpperValue],
-                [slider__modeAdjustLower, this.props.mode === SliderMode.adustLowerValue],
-                [slider__modeAdjustBoth, this.props.mode === SliderMode.adjustBoth]
-            )
-        );
+        if (this.props.disabled) {
+            classNames = `${classNames} ${get(
+                this.props,
+                "managedClasses.slider__disabled",
+                ""
+            )}`;
+        }
+
+        if (this.state.isDragging) {
+            classNames = `${classNames} ${get(
+                this.props,
+                "managedClasses.slider__dragging",
+                ""
+            )}`;
+        }
+
+        if (this.state.isIncrementing) {
+            classNames = `${classNames} ${get(
+                this.props,
+                "managedClasses.slider__incrementing",
+                ""
+            )}`;
+        }
+
+        if (this.props.orientation === SliderOrientation.vertical) {
+            classNames = `${classNames} ${get(
+                this.props,
+                "managedClasses.slider__vertical",
+                ""
+            )}`;
+        } else {
+            classNames = `${classNames} ${get(
+                this.props,
+                "managedClasses.slider__horizontal",
+                ""
+            )}`;
+        }
+
+        if (this.direction === "rtl") {
+            classNames = `${classNames} ${get(
+                this.props,
+                "managedClasses.slider__rtl",
+                ""
+            )}`;
+        }
+
+        switch (this.props.mode) {
+            case SliderMode.singleValue:
+                classNames = `${classNames} ${get(
+                    this.props,
+                    "managedClasses.slider__modeSingle",
+                    ""
+                )}`;
+                break;
+
+            case SliderMode.adustUpperValue:
+                classNames = `${classNames} ${get(
+                    this.props,
+                    "managedClasses.slider__modeAdjustUpper",
+                    ""
+                )}`;
+                break;
+
+            case SliderMode.adustLowerValue:
+                classNames = `${classNames} ${get(
+                    this.props,
+                    "managedClasses.slider__modeAdjustLower",
+                    ""
+                )}`;
+                break;
+
+            case SliderMode.adjustBoth:
+                classNames = `${classNames} ${get(
+                    this.props,
+                    "managedClasses.slider__modeAdjustBoth",
+                    ""
+                )}`;
+                break;
+        }
+
+        return super.generateClassNames(classNames);
     }
 
     /**
@@ -857,6 +925,7 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
             isDragging: true,
             activeThumb: thumb,
         });
+        this.updateDragValue(this.getDragValue(e.nativeEvent, thumb), thumb);
     };
 
     /**
@@ -866,6 +935,16 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
         if (this.props.disabled || event.defaultPrevented) {
             return;
         }
+        this.updateDragValue(
+            this.getDragValue(event, this.state.activeThumb),
+            this.state.activeThumb
+        );
+    };
+
+    /**
+     *  Get dragvalue from mouse event
+     */
+    private getDragValue = (event: MouseEvent, thumb: SliderThumb): number => {
         this.updateDirection();
         this.updateSliderDimensions();
         const pixelCoordinate: number =
@@ -876,13 +955,13 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
             (this.props.range.maxValue - this.props.range.minValue) *
                 this.convertPixelToPercent(pixelCoordinate) +
             this.props.range.minValue;
-        this.updateDragValue(dragValue);
+        return dragValue;
     };
 
     /**
      *  Updates the current drag value
      */
-    private updateDragValue = (dragValue: number): void => {
+    private updateDragValue = (dragValue: number, thumb: SliderThumb): void => {
         const constrainedRange: SliderRange = this.getConstrainedRange(true);
 
         const newDragValue: number = this.constrainToRange(dragValue, constrainedRange);
@@ -891,7 +970,7 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
             dragValue: newDragValue,
         });
 
-        if (this.state.activeThumb === SliderThumb.lowerThumb) {
+        if (thumb === SliderThumb.lowerThumb) {
             this.updateValues(newDragValue, null);
         } else {
             this.updateValues(null, newDragValue);

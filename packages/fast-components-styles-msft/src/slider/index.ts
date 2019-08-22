@@ -114,6 +114,22 @@ const styles: ComponentStyles<SliderClassNameContract, DesignSystem> = {
             },
         },
     },
+    slider__dragging: {
+        "& $slider_thumb": {
+            transition: "none",
+        },
+        "& $slider_foregroundTrack": {
+            transition: "none",
+        },
+    },
+    slider__incrementing: {
+        "& $slider_thumb": {
+            transition: "all 0.1s ease",
+        },
+        "& $slider_foregroundTrack": {
+            transition: "all 0.1s ease",
+        },
+    },
     slider__horizontal: {
         "&$slider": {
             width: "100%",
@@ -241,7 +257,11 @@ const styles: ComponentStyles<SliderClassNameContract, DesignSystem> = {
             },
         },
     },
-    slider__modeSingle: {},
+    slider__modeSingle: {
+        "& $slider_foregroundTrack": {
+            display: "none",
+        },
+    },
     slider__modeAdjustLower: {},
     slider__modeAdjustUpper: {},
     slider__modeAdjustBoth: {
