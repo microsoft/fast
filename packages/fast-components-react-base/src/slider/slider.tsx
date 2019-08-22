@@ -56,7 +56,7 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
             maxValue: 100,
         },
         step: 1,
-        managedClasses: {}
+        managedClasses: {},
     };
 
     private static baseIncrementDelay: number = 300;
