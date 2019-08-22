@@ -1,26 +1,23 @@
+import { AutoSuggestClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
+import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
+import {
+    classNames,
+    keyCodeArrowDown,
+    keyCodeArrowUp,
+    keyCodeEnter,
+    keyCodeEscape,
+} from "@microsoft/fast-web-utilities";
+import React from "react";
+import Listbox from "../listbox";
+import { ListboxItemProps } from "../listbox-item";
+import TextField, { TextFieldType } from "../text-field";
+import { DisplayNamePrefix } from "../utilities";
+import { AutoSuggestContext, AutoSuggestContextType } from "./auto-suggest-context";
 import {
     AutoSuggestHandledProps,
     AutoSuggestProps,
     AutoSuggestUnhandledProps,
 } from "./auto-suggest.props";
-import React from "react";
-import { get, isEqual } from "lodash-es";
-import {
-    keyCodeArrowDown,
-    keyCodeArrowLeft,
-    keyCodeArrowRight,
-    keyCodeArrowUp,
-    keyCodeColon,
-    keyCodeEnter,
-    keyCodeEscape,
-} from "@microsoft/fast-web-utilities";
-import { AutoSuggestClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
-import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
-import { ListboxItemProps } from "../listbox-item";
-import Listbox from "../listbox";
-import TextField, { TextFieldType } from "../text-field";
-import { AutoSuggestContext, AutoSuggestContextType } from "./auto-suggest-context";
-import { DisplayNamePrefix } from "../utilities";
 
 export interface AutoSuggestState {
     value: string;
@@ -39,6 +36,7 @@ class AutoSuggest extends Foundation<
         initialValue: "",
         disabled: false,
         placeholder: "",
+        managedClasses: {},
     };
 
     /**
@@ -130,23 +128,19 @@ class AutoSuggest extends Foundation<
      * Create class names
      */
     protected generateClassNames(): string {
-        let className: string = get(this.props.managedClasses, "autoSuggest", "");
+        const {
+            autoSuggest,
+            autoSuggest__disabled,
+            autoSuggest__menuOpen,
+        }: AutoSuggestClassNameContract = this.props.managedClasses;
 
-        if (this.props.disabled) {
-            className = className.concat(
-                " ",
-                get(this.props.managedClasses, "autoSuggest__disabled", "")
-            );
-        }
-
-        if (this.state.isMenuOpen) {
-            className = className.concat(
-                " ",
-                get(this.props.managedClasses, "autoSuggest__menuOpen", "")
-            );
-        }
-
-        return super.generateClassNames(className);
+        return super.generateClassNames(
+            classNames(
+                autoSuggest,
+                [autoSuggest__disabled, this.props.disabled],
+                [autoSuggest__menuOpen, this.state.isMenuOpen]
+            )
+        );
     }
 
     /**
@@ -178,6 +172,11 @@ class AutoSuggest extends Foundation<
      */
     private renderMenu(): React.ReactNode {
         const shouldFocusOnMenu: boolean = this.shouldFocusMenuOnNextRender;
+        const {
+            autoSuggest_menu,
+            autoSuggest__disabled,
+        }: AutoSuggestClassNameContract = this.props.managedClasses;
+
         this.shouldFocusMenuOnNextRender = false;
 
         if (!this.state.isMenuOpen) {
@@ -197,12 +196,8 @@ class AutoSuggest extends Foundation<
                 onItemInvoked={this.handleItemInvoked}
                 onKeyDown={this.handleMenuKeydown}
                 managedClasses={{
-                    listbox: get(this.props.managedClasses, "autoSuggest_menu", ""),
-                    listbox__disabled: get(
-                        this.props.managedClasses,
-                        "autoSuggest_menuDisabled",
-                        ""
-                    ),
+                    listbox: autoSuggest_menu,
+                    listbox__disabled: autoSuggest__disabled,
                 }}
             >
                 {this.props.children}

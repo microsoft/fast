@@ -1,18 +1,13 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import { get } from "lodash-es";
+import { ProgressClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
+import { classNames } from "@microsoft/fast-web-utilities";
+import React from "react";
+import { DisplayNamePrefix } from "../utilities";
 import {
     ProgressHandledProps,
-    ProgressManagedClasses,
     ProgressProps,
     ProgressUnhandledProps,
 } from "./progress.props";
-import {
-    ManagedClasses,
-    ProgressClassNameContract,
-} from "@microsoft/fast-components-class-name-contracts-base";
-import { DisplayNamePrefix } from "../utilities";
 
 export enum ProgressType {
     determinate = "determinate",
@@ -23,6 +18,7 @@ class Progress extends Foundation<ProgressHandledProps, ProgressUnhandledProps, 
     public static defaultProps: Partial<ProgressProps> = {
         minValue: 0,
         maxValue: 100,
+        managedClasses: {},
     };
 
     public static displayName: string = `${DisplayNamePrefix}Progress`;
@@ -57,7 +53,7 @@ class Progress extends Foundation<ProgressHandledProps, ProgressUnhandledProps, 
      * Generates class names
      */
     protected generateClassNames(): string {
-        return super.generateClassNames(get(this.props, "managedClasses.progress"));
+        return super.generateClassNames(classNames(this.props.managedClasses.progress));
     }
 
     /**

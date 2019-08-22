@@ -62,7 +62,7 @@ describe("text-area", (): void => {
     test("should NOT render with a disabled value if no `disabled` prop is passed", () => {
         const rendered: any = shallow(<TextArea managedClasses={managedClasses} />);
 
-        expect(rendered.prop("disabled")).toBe(null);
+        expect(rendered.prop("disabled")).toBe(undefined);
     });
 
     test("should render with a `disabled` value when `disabled` prop is passed", () => {
@@ -76,7 +76,7 @@ describe("text-area", (): void => {
     test("should NOT render with a placeholder value if no `placeholder` prop is passed", () => {
         const rendered: any = shallow(<TextArea managedClasses={managedClasses} />);
 
-        expect(rendered.prop("placeholder")).toBe(null);
+        expect(rendered.prop("placeholder")).toBe(undefined);
     });
 
     test("should render with a placeholder value when `placeholder` prop is passed", () => {

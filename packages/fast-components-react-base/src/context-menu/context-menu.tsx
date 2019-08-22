@@ -1,14 +1,7 @@
-import ReactDOM from "react-dom";
-import { ContextMenuItemProps, ContextMenuItemRole } from "../context-menu-item";
-import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import { ContextMenuClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
+import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import {
-    ContextMenuHandledProps,
-    ContextMenuProps,
-    ContextMenuUnhandledProps,
-} from "./context-menu.props";
-import React from "react";
-import {
+    classNames,
     keyCodeArrowDown,
     keyCodeArrowLeft,
     keyCodeArrowRight,
@@ -16,9 +9,16 @@ import {
     keyCodeEnd,
     keyCodeHome,
 } from "@microsoft/fast-web-utilities";
-import { get, inRange, invert } from "lodash-es";
 import { canUseDOM } from "exenv-es6";
+import { inRange, invert } from "lodash-es";
+import React from "react";
+import { ContextMenuItemProps, ContextMenuItemRole } from "../context-menu-item";
 import { DisplayNamePrefix } from "../utilities";
+import {
+    ContextMenuHandledProps,
+    ContextMenuProps,
+    ContextMenuUnhandledProps,
+} from "./context-menu.props";
 
 export interface ContextMenuState {
     /**
@@ -33,6 +33,9 @@ class ContextMenu extends Foundation<
     ContextMenuState
 > {
     public static displayName: string = `${DisplayNamePrefix}ContextMenu`;
+    public static defaultProps: Partial<ContextMenuProps> = {
+        managedClasses: {},
+    };
 
     private static focusableElementRoles: { [key: string]: string } = invert(
         ContextMenuItemRole
@@ -100,7 +103,9 @@ class ContextMenu extends Foundation<
      * Create class names
      */
     protected generateClassNames(): string {
-        return super.generateClassNames(get(this.props.managedClasses, "contextMenu"));
+        return super.generateClassNames(
+            classNames(this.props.managedClasses.contextMenu)
+        );
     }
 
     /**
