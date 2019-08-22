@@ -3,6 +3,38 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.19.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-msft@4.19.0...@microsoft/fast-components-react-msft@4.19.1) (2019-08-22)
+
+**Note:** Version bump only for package @microsoft/fast-components-react-msft
+
+
+
+
+
+# [4.19.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-msft@4.18.0...@microsoft/fast-components-react-msft@4.19.0) (2019-08-22)
+
+
+### Features
+
+* add label prop to replace slots in checkbox ([#2142](https://github.com/Microsoft/fast-dna/issues/2142)) ([240e3b7](https://github.com/Microsoft/fast-dna/commit/240e3b7))
+
+
+
+
+
+# [4.18.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-msft@4.17.6...@microsoft/fast-components-react-msft@4.18.0) (2019-08-22)
+
+
+### Features
+
+* adds classNames utility ([#2163](https://github.com/Microsoft/fast-dna/issues/2163)) ([d6a872d](https://github.com/Microsoft/fast-dna/commit/d6a872d))
+* export individual keycodes as named exports and unreference KeyCodes ([327d806](https://github.com/Microsoft/fast-dna/commit/327d806))
+* support custom flippers being passed into carousel ([#2136](https://github.com/Microsoft/fast-dna/issues/2136)) ([c7e1663](https://github.com/Microsoft/fast-dna/commit/c7e1663))
+
+
+
+
+
 ## [4.17.6](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-msft@4.17.5...@microsoft/fast-components-react-msft@4.17.6) (2019-08-16)
 
 

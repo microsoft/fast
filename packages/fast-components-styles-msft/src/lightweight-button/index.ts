@@ -22,13 +22,13 @@ const styles: ComponentStyles<LightweightButtonClassNameContract, DesignSystem> 
         ...buttonStyles(),
         padding: "0",
         border: "0",
-        justifyContent: "flex-start",
-        backgroundColor: "transparent",
+        "justify-content": "flex-start",
+        "background-color": "transparent",
         color: accentForegroundRest,
         fill: accentForegroundRest,
         ...applyFocusVisible({
-            borderColor: "transparent",
-            boxShadow: "none",
+            "border-color": "transparent",
+            "box-shadow": "none",
             "& $button_contentRegion::before": {
                 background: neutralForegroundRest,
                 height: toPx<DesignSystem>(focusOutlineWidth),
@@ -48,13 +48,13 @@ const styles: ComponentStyles<LightweightButtonClassNameContract, DesignSystem> 
             background: accentForegroundActive,
         },
         "&$button__disabled, &$button__disabled $button_contentRegion::before": {
-            backgroundColor: "transparent",
+            "background-color": "transparent",
             ...highContrastDisabledForeground,
         },
         "&:hover:enabled": {
             color: accentForegroundHover,
             fill: accentForegroundHover,
-            backgroundColor: "transparent",
+            "background-color": "transparent",
             [highContrastSelector]: {
                 fill: "Highlight",
             },
@@ -62,7 +62,7 @@ const styles: ComponentStyles<LightweightButtonClassNameContract, DesignSystem> 
         "&:active:enabled": {
             color: accentForegroundActive,
             fill: accentForegroundActive,
-            backgroundColor: "transparent",
+            "background-color": "transparent",
         },
         [highContrastSelector]: {
             border: "none",

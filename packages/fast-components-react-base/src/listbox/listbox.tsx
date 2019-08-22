@@ -1,18 +1,30 @@
-import ReactDOM from "react-dom";
-import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import { ListboxClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
+import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
+import {
+    classNames,
+    keyCodeArrowDown,
+    keyCodeArrowLeft,
+    keyCodeArrowRight,
+    keyCodeArrowUp,
+    keyCodeEnd,
+    keyCodeEnter,
+    keyCodeEscape,
+    keyCodeHome,
+    keyCodeSpace,
+    keyCodeTab,
+    startsWith,
+} from "@microsoft/fast-web-utilities";
+import { canUseDOM } from "exenv-es6";
+import { inRange, isEqual } from "lodash-es";
+import React from "react";
+import { ListboxItemProps } from "../listbox-item";
+import { DisplayNamePrefix } from "../utilities";
+import { ListboxContext, ListboxContextType } from "./listbox-context";
 import {
     ListboxHandledProps,
     ListboxProps,
     ListboxUnhandledProps,
 } from "./listbox.props";
-import React from "react";
-import { KeyCodes, startsWith } from "@microsoft/fast-web-utilities";
-import { get, inRange, isEqual } from "lodash-es";
-import { canUseDOM } from "exenv-es6";
-import { ListboxContext, ListboxContextType } from "./listbox-context";
-import { ListboxItemProps } from "../listbox-item";
-import { DisplayNamePrefix } from "../utilities";
 export interface ListboxState {
     /**
      * The index of the focusable child
@@ -35,6 +47,7 @@ class Listbox extends Foundation<
         typeAheadPropertyKey: "displayString",
         typeAheadEnabled: true,
         focusItemOnMount: false,
+        managedClasses: {},
     };
 
     /**
@@ -275,17 +288,14 @@ class Listbox extends Foundation<
      * Create class names
      */
     protected generateClassNames(): string {
-        let className: string = get(this.props.managedClasses, "listbox", "");
+        const {
+            listbox,
+            listbox__disabled,
+        }: ListboxClassNameContract = this.props.managedClasses;
 
-        if (this.props.disabled) {
-            className = `${className} ${get(
-                this.props,
-                "managedClasses.listbox__disabled",
-                ""
-            )}`;
-        }
-
-        return super.generateClassNames(className);
+        return super.generateClassNames(
+            classNames(listbox, [listbox__disabled, this.props.disabled])
+        );
     }
 
     /**
@@ -456,14 +466,14 @@ class Listbox extends Foundation<
         let focusItemId: string;
 
         switch (event.keyCode) {
-            case KeyCodes.escape:
-            case KeyCodes.enter:
-            case KeyCodes.space:
-            case KeyCodes.tab:
+            case keyCodeEscape:
+            case keyCodeEnter:
+            case keyCodeSpace:
+            case keyCodeTab:
                 return;
 
-            case KeyCodes.arrowDown:
-            case KeyCodes.arrowRight:
+            case keyCodeArrowDown:
+            case keyCodeArrowRight:
                 focusItemId = this.setFocus(this.state.focusIndex + 1, 1);
                 if (this.props.multiselectable && event.shiftKey && focusItemId !== "") {
                     const itemProps: ListboxItemProps = Listbox.getItemPropsById(
@@ -477,8 +487,8 @@ class Listbox extends Foundation<
                 event.preventDefault();
                 break;
 
-            case KeyCodes.arrowUp:
-            case KeyCodes.arrowLeft:
+            case keyCodeArrowUp:
+            case keyCodeArrowLeft:
                 focusItemId = this.setFocus(this.state.focusIndex - 1, -1);
                 if (this.props.multiselectable && event.shiftKey && focusItemId !== "") {
                     const itemData: ListboxItemProps = Listbox.getItemPropsById(
@@ -492,7 +502,7 @@ class Listbox extends Foundation<
                 event.preventDefault();
                 break;
 
-            case KeyCodes.end:
+            case keyCodeEnd:
                 if (this.props.multiselectable && event.shiftKey && event.ctrlKey) {
                     this.selectRange(
                         this.state.focusIndex,
@@ -503,7 +513,7 @@ class Listbox extends Foundation<
 
                 break;
 
-            case KeyCodes.home:
+            case keyCodeHome:
                 if (this.props.multiselectable && event.shiftKey && event.ctrlKey) {
                     this.selectRange(0, this.state.focusIndex);
                 }

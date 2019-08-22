@@ -6,9 +6,9 @@ import ListboxItem, {
     ListboxItemProps,
     ListboxItemUnhandledProps,
 } from "./listbox-item";
-import { KeyCodes } from "@microsoft/fast-web-utilities";
 import { noop } from "lodash-es";
 import { DisplayNamePrefix } from "../utilities";
+import { keyCodeEnter, keyCodeSpace } from "@microsoft/fast-web-utilities";
 
 /*
  * Configure Enzyme
@@ -83,8 +83,8 @@ describe("listbox item", (): void => {
             <ListboxItem onInvoke={onInvoke} onKeyDown={onKeyDown} />
         );
 
-        rendered.simulate("keydown", { keyCode: KeyCodes.enter, preventDefault: noop });
-        rendered.simulate("keydown", { keyCode: KeyCodes.space, preventDefault: noop });
+        rendered.simulate("keydown", { keyCode: keyCodeEnter, preventDefault: noop });
+        rendered.simulate("keydown", { keyCode: keyCodeSpace, preventDefault: noop });
 
         expect(onInvoke).toHaveBeenCalledTimes(2);
         expect(onKeyDown).toHaveBeenCalledTimes(2);
@@ -97,8 +97,8 @@ describe("listbox item", (): void => {
             <ListboxItem onInvoke={onInvoke} onKeyDown={onKeyDown} disabled={true} />
         );
 
-        rendered.simulate("keydown", { keyCode: KeyCodes.enter, preventDefault: noop });
-        rendered.simulate("keydown", { keyCode: KeyCodes.space, preventDefault: noop });
+        rendered.simulate("keydown", { keyCode: keyCodeEnter, preventDefault: noop });
+        rendered.simulate("keydown", { keyCode: keyCodeSpace, preventDefault: noop });
 
         expect(onInvoke).toHaveBeenCalledTimes(0);
         expect(onKeyDown).toHaveBeenCalledTimes(0);

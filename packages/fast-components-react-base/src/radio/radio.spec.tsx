@@ -6,6 +6,7 @@ import Radio, {
     RadioHandledProps,
     RadioProps,
     RadioSlot,
+    RadioUnhandledProps,
 } from "./radio";
 import Label from "../label";
 import { DisplayNamePrefix } from "../utilities";
@@ -28,6 +29,22 @@ describe("radio", (): void => {
 
     test("should have a displayName that matches the component name", () => {
         expect(`${DisplayNamePrefix}${(Radio as any).name}`).toBe(Radio.displayName);
+    });
+
+    test("should accept unhandledProps", () => {
+        const handledProps: RadioHandledProps = {
+            inputId: "foo",
+        };
+
+        const unhandledProps: RadioUnhandledProps = {
+            "aria-hidden": true,
+        };
+
+        const props: RadioProps = { ...handledProps, ...unhandledProps };
+
+        const rendered: any = mount(<Radio {...props} />);
+
+        expect(rendered.find("div").prop("aria-hidden")).toEqual(true);
     });
 
     test("should have correct input type attribute 'radio'", () => {
@@ -87,14 +104,14 @@ describe("radio", (): void => {
     test("should NOT render a child if one is passed as a child without the `label` slot prop", () => {
         const rendered: any = shallow(
             <Radio inputId="radio03">
-                <div>Label</div>
+                <div className="child">Label</div>
             </Radio>
         );
 
         const expected: string =
             '<div><input type="radio" id="radio03"/><span></span></div>';
 
-        expect(rendered.html()).toBe(expected);
+        expect(rendered.exists(".child")).toBe(false);
     });
 
     test("should add a `radio_label` className to a child with the `label` slot prop", () => {

@@ -1,19 +1,15 @@
-import React from "react";
-import ReactDOM from "react-dom";
+import { CheckboxClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
+import { classNames } from "@microsoft/fast-web-utilities";
+import { get } from "lodash-es";
+import React from "react";
+import { DisplayNamePrefix } from "../utilities";
 import {
     CheckboxHandledProps,
-    CheckboxManagedClasses,
     CheckboxProps,
     CheckboxSlot,
     CheckboxUnhandledProps,
 } from "./checkbox.props";
-import {
-    CheckboxClassNameContract,
-    ManagedClasses,
-} from "@microsoft/fast-components-class-name-contracts-base";
-import { get } from "lodash-es";
-import { DisplayNamePrefix } from "../utilities";
 
 /**
  * Checkbox state interface
@@ -28,6 +24,10 @@ class Checkbox extends Foundation<
     CheckboxState
 > {
     public static displayName: string = `${DisplayNamePrefix}Checkbox`;
+
+    public static defaultProps: Partial<CheckboxProps> = {
+        managedClasses: {},
+    };
 
     /**
      * React life-cycle method
@@ -56,6 +56,7 @@ class Checkbox extends Foundation<
         disabled: void 0,
         inputId: void 0,
         indeterminate: void 0,
+        label: void 0,
         managedClasses: void 0,
         name: void 0,
         onChange: void 0,
@@ -98,10 +99,15 @@ class Checkbox extends Foundation<
      * Renders the component
      */
     public render(): React.ReactElement<HTMLElement> {
+        const {
+            checkbox_input,
+            checkbox_stateIndicator,
+        }: CheckboxClassNameContract = this.props.managedClasses;
+
         return (
             <div {...this.unhandledProps()} className={this.generateClassNames()}>
                 <input
-                    className={get(this.props, "managedClasses.checkbox_input")}
+                    className={classNames(checkbox_input)}
                     id={this.props.inputId}
                     name={this.props.name}
                     type="checkbox"
@@ -111,9 +117,8 @@ class Checkbox extends Foundation<
                     checked={this.state.checked}
                     value={this.props.value}
                 />
-                <span
-                    className={get(this.props, "managedClasses.checkbox_stateIndicator")}
-                />
+                <span className={classNames(checkbox_stateIndicator)} />
+                {this.renderLabelBySlot()}
                 {this.renderLabel()}
             </div>
         );
@@ -123,46 +128,32 @@ class Checkbox extends Foundation<
      * Generates class names
      */
     protected generateClassNames(): string {
-        let classes: string = get(this.props, "managedClasses.checkbox", "");
+        const {
+            checkbox,
+            checkbox__disabled,
+            checkbox__checked,
+            checkbox__indeterminate,
+        }: CheckboxClassNameContract = this.props.managedClasses;
 
-        if (this.props.disabled) {
-            classes = `${classes} ${get(
-                this.props,
-                "managedClasses.checkbox__disabled",
-                ""
-            )}`;
-        }
-
-        if (this.state.checked) {
-            classes = `${classes} ${get(
-                this.props,
-                "managedClasses.checkbox__checked",
-                ""
-            )}`;
-        }
-
-        if (this.props.indeterminate) {
-            classes = `${classes} ${get(
-                this.props,
-                "managedClasses.checkbox__indeterminate",
-                ""
-            )}`;
-        }
-
-        return super.generateClassNames(classes);
+        return super.generateClassNames(
+            classNames(
+                checkbox,
+                [checkbox__disabled, this.props.disabled],
+                [checkbox__checked, this.state.checked],
+                [checkbox__indeterminate, this.props.indeterminate]
+            )
+        );
     }
 
     /**
+     * @deprecated - remove this method in next major version
      * Render label if it exists
      */
-    private renderLabel(): Array<React.ReactElement<any>> {
+    private renderLabelBySlot(): Array<React.ReactElement<any>> {
         return React.Children.map(
             this.withSlot(CheckboxSlot.label),
             (label: React.ReactElement<any>): React.ReactElement<any> => {
-                let className: string | undefined = get(
-                    this.props,
-                    "managedClasses.checkbox_label"
-                );
+                let className: string | void = this.props.managedClasses.checkbox_label;
 
                 if (typeof className !== "string") {
                     return label;
@@ -177,6 +168,14 @@ class Checkbox extends Foundation<
                 return React.cloneElement(label, { className });
             }
         );
+    }
+
+    private renderLabel(): React.ReactNode {
+        const { checkbox_label }: CheckboxClassNameContract = this.props.managedClasses;
+
+        if (typeof this.props.label === "function") {
+            return this.props.label(classNames(checkbox_label));
+        }
     }
 
     /**

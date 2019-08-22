@@ -87,7 +87,7 @@ describe("text-field", (): void => {
     test("should NOT render with a disabled value if no `disabled` prop is passed", () => {
         const rendered: any = mount(<TextField managedClasses={managedClasses} />);
 
-        expect(rendered.find("input").prop("disabled")).toBe(null);
+        expect(rendered.find("input").prop("disabled")).toBe(undefined);
     });
 
     test("should render with a `disabled` value when `disabled` prop is passed", () => {
@@ -101,7 +101,7 @@ describe("text-field", (): void => {
     test("should NOT render with a placeholder value if no `placeholder` prop is passed", () => {
         const rendered: any = mount(<TextField managedClasses={managedClasses} />);
 
-        expect(rendered.find("input").prop("placeholder")).toBe(null);
+        expect(rendered.find("input").prop("placeholder")).toBe(undefined);
     });
 
     test("should render with a placeholder value when `placeholder` prop is passed", () => {

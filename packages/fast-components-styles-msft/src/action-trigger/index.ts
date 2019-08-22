@@ -24,13 +24,13 @@ export const actionTriggerButtonOverrides: ComponentStyles<
     DesignSystem
 > = {
     button: {
-        maxWidth: "100%",
-        minWidth: "initial",
+        "max-width": "100%",
+        "min-width": "initial",
     },
     button_contentRegion: {
         transition: "all 600ms cubic-bezier(0.19, 1, 0.22, 1)",
         display: "flex",
-        alignItems: "center",
+        "align-items": "center",
     },
 };
 
@@ -63,7 +63,7 @@ const styles: ComponentStyles<ActionTriggerClassNameContract, DesignSystem> = {
         position: "relative",
         width: glyphSize,
         height: glyphSize,
-        flexShrink: "0",
+        "flex-shrink": "0",
     },
     actionTrigger__primary: {
         "& $actionTrigger_glyph": {
@@ -144,8 +144,8 @@ const styles: ComponentStyles<ActionTriggerClassNameContract, DesignSystem> = {
     },
     actionTrigger__hasGlyphAndContent: {
         "& $actionTrigger_glyph": {
-            marginRight: directionSwitch(horizontalSpacing(), ""),
-            marginLeft: directionSwitch("", horizontalSpacing()),
+            "margin-right": directionSwitch(horizontalSpacing(), ""),
+            "margin-left": directionSwitch("", horizontalSpacing()),
         },
     },
 };

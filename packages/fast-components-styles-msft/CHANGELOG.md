@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.20.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-styles-msft@4.19.2...@microsoft/fast-components-styles-msft@4.20.0) (2019-08-22)
+
+
+### Bug Fixes
+
+* add windows high contrast media query to our components ([#2121](https://github.com/Microsoft/fast-dna/issues/2121)) ([654835e](https://github.com/Microsoft/fast-dna/commit/654835e))
+* correct incorrectly named className contract for stealth button ([#2153](https://github.com/Microsoft/fast-dna/issues/2153)) ([fb12fad](https://github.com/Microsoft/fast-dna/commit/fb12fad))
+* fix camelCase style in context-menu-item ([3ecceba](https://github.com/Microsoft/fast-dna/commit/3ecceba))
+* various performance improvements to stylesheets ([#2159](https://github.com/Microsoft/fast-dna/issues/2159)) ([c8e8636](https://github.com/Microsoft/fast-dna/commit/c8e8636))
+
+
+### Features
+
+* removes plugin dependencies from component stylesheets ([#2165](https://github.com/Microsoft/fast-dna/issues/2165)) ([3a51b32](https://github.com/Microsoft/fast-dna/commit/3a51b32))
+
+
+
+
+
 ## [4.19.2](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-styles-msft@4.19.1...@microsoft/fast-components-styles-msft@4.19.2) (2019-08-16)
 
 

@@ -1,8 +1,4 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import { get, isNil } from "lodash-es";
-import { canUseDOM } from "exenv-es6";
-import { KeyCodes } from "@microsoft/fast-web-utilities";
+import { FlyoutClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import {
     AxisPositioningMode,
@@ -11,20 +7,19 @@ import {
     ViewportPositionerHorizontalPosition,
     ViewportPositionerVerticalPosition,
 } from "@microsoft/fast-components-react-base";
+import { keyCodeEscape } from "@microsoft/fast-web-utilities";
+import { canUseDOM } from "exenv-es6";
+import React from "react";
+import ReactDOM from "react-dom";
+import { DisplayNamePrefix } from "../utilities";
 import {
     FlyoutAxisPositioningMode,
     FlyoutHandledProps,
     FlyoutHorizontalPosition,
-    FlyoutManagedClasses,
     FlyoutProps,
     FlyoutUnhandledProps,
     FlyoutVerticalPosition,
 } from "./flyout.props";
-import {
-    FlyoutClassNameContract,
-    ManagedClasses,
-} from "@microsoft/fast-components-class-name-contracts-msft";
-import { DisplayNamePrefix } from "../utilities";
 
 class Flyout extends Foundation<FlyoutHandledProps, FlyoutUnhandledProps, {}> {
     public static displayName: string = `${DisplayNamePrefix}Flyout`;
@@ -40,6 +35,7 @@ class Flyout extends Foundation<FlyoutHandledProps, FlyoutUnhandledProps, {}> {
         fixedAfterInitialPlacement: false,
         height: "128px",
         width: "280px",
+        managedClasses: {},
     };
 
     protected handledProps: HandledProps<Required<FlyoutHandledProps>> = {
@@ -163,30 +159,24 @@ class Flyout extends Foundation<FlyoutHandledProps, FlyoutUnhandledProps, {}> {
     }
 
     private generateManagedClassNames(): ViewportPositionerClassNameContract {
+        const {
+            flyout,
+            flyout__left,
+            flyout__right,
+            flyout__top,
+            flyout__bottom,
+            flyout__horizontalInset,
+            flyout__verticalInset,
+        }: FlyoutClassNameContract = this.props.managedClasses;
+
         return {
-            viewportPositioner: get(this.props.managedClasses, "flyout", ""),
-            viewportPositioner__left: get(this.props.managedClasses, "flyout__left", ""),
-            viewportPositioner__right: get(
-                this.props.managedClasses,
-                "flyout__right",
-                ""
-            ),
-            viewportPositioner__top: get(this.props.managedClasses, "flyout__top", ""),
-            viewportPositioner__bottom: get(
-                this.props.managedClasses,
-                "flyout__bottom",
-                ""
-            ),
-            viewportPositioner__horizontalInset: get(
-                this.props.managedClasses,
-                "flyout__horizontalInset",
-                ""
-            ),
-            viewportPositioner__verticalInset: get(
-                this.props.managedClasses,
-                "flyout__verticalInset",
-                ""
-            ),
+            viewportPositioner: flyout,
+            viewportPositioner__left: flyout__left,
+            viewportPositioner__right: flyout__right,
+            viewportPositioner__top: flyout__top,
+            viewportPositioner__bottom: flyout__bottom,
+            viewportPositioner__horizontalInset: flyout__horizontalInset,
+            viewportPositioner__verticalInset: flyout__verticalInset,
         };
     }
 
@@ -210,7 +200,7 @@ class Flyout extends Foundation<FlyoutHandledProps, FlyoutUnhandledProps, {}> {
         if (
             typeof this.props.onDismiss === "function" &&
             this.props.visible &&
-            event.keyCode === KeyCodes.escape
+            event.keyCode === keyCodeEscape
         ) {
             this.props.onDismiss(event);
         }

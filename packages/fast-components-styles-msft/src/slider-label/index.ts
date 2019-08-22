@@ -25,7 +25,7 @@ const styles: ComponentStyles<SliderLabelClassNameContract, DesignSystem> = {
 
     sliderLabel_label: {
         ...applyScaledTypeRamp("t9"),
-        whiteSpace: "nowrap",
+        "white-space": "nowrap",
         color: neutralForegroundRest,
     },
 
@@ -40,67 +40,67 @@ const styles: ComponentStyles<SliderLabelClassNameContract, DesignSystem> = {
 
     sliderLabel__horizontal: {
         "&$sliderLabel": {
-            alignSelf: "start",
-            gridRow: "2",
-            marginTop: "-2px",
+            "align-self": "start",
+            "grid-row": "2",
+            "margin-top": "-2px",
         },
 
         "& $sliderLabel_positioningRegion": {
-            gridTemplateColumns: "0",
-            gridTemplateRows: "auto auto",
+            "grid-template-columns": "0",
+            "grid-template-rows": "auto auto",
             width: "0",
-            justifySelf: "center",
+            "justify-self": "center",
 
             "&$sliderLabel__positionMin": {
                 "& $sliderLabel_label": {
-                    marginLeft: minMaxLabelMargin,
-                    justifySelf: "start",
+                    "margin-left": minMaxLabelMargin,
+                    "justify-self": "start",
                 },
             },
 
             "&$sliderLabel__positionMax": {
                 "& $sliderLabel_label": {
-                    marginRight: minMaxLabelMargin,
-                    justifySelf: "end",
+                    "margin-right": minMaxLabelMargin,
+                    "justify-self": "end",
                 },
             },
         },
 
         "& $sliderLabel_label": {
-            justifySelf: "center",
-            gridRow: "2",
+            "justify-self": "center",
+            "grid-row": "2",
         },
 
         "& $sliderLabel_tickMark": {
             height: toPx(designUnit),
             width: "2px",
-            justifySelf: "center",
+            "justify-self": "center",
         },
     },
 
     sliderLabel__vertical: {
         "&$sliderLabel": {
-            gridColumn: "2",
-            marginLeft: "-2px",
+            "grid-column": "2",
+            "margin-left": "-2px",
         },
 
         "& $sliderLabel_positioningRegion": {
-            gridTemplateColumns: "auto auto",
-            gridTemplateRows: "0",
+            "grid-template-columns": "auto auto",
+            "grid-template-rows": "0",
             height: "2px",
-            alignSelf: "center",
+            "align-self": "center",
         },
 
         "& $sliderLabel_label": {
-            gridColumn: "2",
-            alignSelf: "center",
+            "grid-column": "2",
+            "align-self": "center",
             margin: "2px",
         },
 
         "& $sliderLabel_tickMark": {
             height: "2px",
             width: toPx(designUnit),
-            alignSelf: "center",
+            "align-self": "center",
         },
     },
 
@@ -109,17 +109,17 @@ const styles: ComponentStyles<SliderLabelClassNameContract, DesignSystem> = {
             "& $sliderLabel_positioningRegion": {
                 "&$sliderLabel__positionMin": {
                     "& $sliderLabel_label": {
-                        marginRight: "0",
-                        marginLeft: minMaxLabelMargin,
-                        justifySelf: "end",
+                        "margin-right": "0",
+                        "margin-left": minMaxLabelMargin,
+                        "justify-self": "end",
                     },
                 },
 
                 "&$sliderLabel__positionMax": {
                     "& $sliderLabel_label": {
-                        marginRight: "0",
-                        marginLeft: minMaxLabelMargin,
-                        justifySelf: "start",
+                        "margin-right": "0",
+                        "margin-left": minMaxLabelMargin,
+                        "justify-self": "start",
                     },
                 },
             },

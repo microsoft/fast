@@ -1,7 +1,7 @@
 import React from "react";
 import { throttle } from "lodash-es";
 import { Canvas } from "../canvas";
-import { KeyCodes } from "@microsoft/fast-web-utilities";
+import { keyCodeArrowDown, keyCodeArrowUp } from "@microsoft/fast-web-utilities";
 import {
     RowHandledProps,
     RowProps,
@@ -60,8 +60,8 @@ export const rowStyleSheet: ComponentStyles<RowClassNamesContract, undefined> = 
     row: {
         position: "relative",
         display: "flex",
-        flexDirection: "row",
-        flexBasis: "auto",
+        "flex-direction": "row",
+        "flex-basis": "auto",
     },
     row__fill: {
         flex: "1",
@@ -74,7 +74,7 @@ export const rowStyleSheet: ComponentStyles<RowClassNamesContract, undefined> = 
         left: "0",
         height: toPx(8),
         width: "100%",
-        zIndex: "1",
+        "z-index": "1",
         transition: "transform .04s ease-in-out",
         outline: "none",
         transform: "scale(1, .5)",
@@ -103,7 +103,7 @@ export const rowStyleSheet: ComponentStyles<RowClassNamesContract, undefined> = 
     row__overlay: {
         position: "absolute",
         width: "100%",
-        zIndex: "2",
+        "z-index": "2",
     },
     row__hidden: {
         display: "none",
@@ -256,10 +256,10 @@ export class Row extends Foundation<
         let height: number = this.getHeight();
 
         switch (e.keyCode) {
-            case KeyCodes.arrowDown:
+            case keyCodeArrowDown:
                 height = resizeFromNorth ? height - offset : height + offset;
                 break;
-            case KeyCodes.arrowUp:
+            case keyCodeArrowUp:
                 height = resizeFromNorth ? height + offset : height - offset;
                 break;
             default:

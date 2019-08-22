@@ -12,7 +12,7 @@ import { applyFocusVisible, toPx } from "@microsoft/fast-jss-utilities";
 import { ComponentStyles } from "@microsoft/fast-jss-manager-react";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import { canUseDOM } from "exenv-es6";
-import { KeyCodes } from "@microsoft/fast-web-utilities";
+import { keyCodeArrowLeft, keyCodeArrowRight } from "@microsoft/fast-web-utilities";
 import { joinClasses } from "../utilities";
 
 /**
@@ -49,7 +49,7 @@ export const paneStyleSheet: ComponentStyles<PaneClassNamesContract, undefined> 
         position: "relative",
         flex: "0 1 auto",
         display: "flex",
-        flexDirection: "column",
+        "flex-direction": "column",
     },
     pane_resizeHandle: {
         position: "absolute",
@@ -58,7 +58,7 @@ export const paneStyleSheet: ComponentStyles<PaneClassNamesContract, undefined> 
         top: "0",
         width: toPx(8),
         height: "100%",
-        zIndex: "1",
+        "z-index": "1",
         transition: "transform .04s ease-in-out",
         outline: "none",
         transform: "scale(.5, 1)",
@@ -87,7 +87,7 @@ export const paneStyleSheet: ComponentStyles<PaneClassNamesContract, undefined> 
     pane__overlay: {
         position: "absolute",
         height: "100%",
-        zIndex: "2",
+        "z-index": "2",
     },
     pane__hidden: {
         display: "none",
@@ -253,10 +253,10 @@ export class Pane extends Foundation<PaneHandledProps, PaneUnhandledProps, PaneS
         let width: number;
 
         switch (e.keyCode) {
-            case KeyCodes.arrowLeft:
+            case keyCodeArrowLeft:
                 width = this.rootElement.current.clientWidth - offset;
                 break;
-            case KeyCodes.arrowRight:
+            case keyCodeArrowRight:
                 width = this.rootElement.current.clientWidth + offset;
                 break;
             default:

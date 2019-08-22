@@ -12,21 +12,21 @@ import { highContrastSelector } from "../utilities/high-contrast";
 const visibleChildCount: number = 10;
 const styles: ComponentStyles<AutoSuggestClassNameContract, DesignSystem> = {
     autoSuggest: {
-        minWidth: "276px",
-        maxWidth: "374px",
+        "min-width": "276px",
+        "max-width": "374px",
     },
     autoSuggest_menu: {
         ...applyElevation(ElevationMultiplier.e11),
         background: neutralFillStealthRest,
-        zIndex: "1",
+        "z-index": "1",
         position: "absolute",
         width: "100%",
         margin: "0",
         padding: format("{0} 0", toPx(designUnit)),
-        marginTop: toPx(designUnit),
-        maxWidth: "374px",
-        minWidth: "276px",
-        maxHeight: toPx(add(heightNumber(visibleChildCount), multiply(designUnit, 2))),
+        "margin-top": toPx(designUnit),
+        "max-width": "374px",
+        "min-width": "276px",
+        "max-height": toPx(add(heightNumber(visibleChildCount), multiply(designUnit, 2))),
         overflow: "auto",
         ...applyElevatedCornerRadius(),
         [highContrastSelector]: {

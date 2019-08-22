@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.6.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-jss-utilities@4.5.5...@microsoft/fast-jss-utilities@4.6.0) (2019-08-22)
+
+
+### Bug Fixes
+
+* various performance improvements to stylesheets ([#2159](https://github.com/Microsoft/fast-dna/issues/2159)) ([c8e8636](https://github.com/Microsoft/fast-dna/commit/c8e8636))
+
+
+### Features
+
+* removes plugin dependencies from component stylesheets ([#2165](https://github.com/Microsoft/fast-dna/issues/2165)) ([3a51b32](https://github.com/Microsoft/fast-dna/commit/3a51b32))
+
+
+
+
+
 ## [4.5.5](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-jss-utilities@4.5.4...@microsoft/fast-jss-utilities@4.5.5) (2019-08-09)
 
 **Note:** Version bump only for package @microsoft/fast-jss-utilities

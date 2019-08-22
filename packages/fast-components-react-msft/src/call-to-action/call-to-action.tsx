@@ -1,14 +1,17 @@
-import React from "react";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
+import { callToActionButtonOverrides } from "@microsoft/fast-components-styles-msft";
+import { classNames } from "@microsoft/fast-web-utilities";
+import { get } from "lodash-es";
+import React from "react";
+import { CallToActionClassNameContract } from ".";
 import { Button, ButtonAppearance } from "../button";
+import { DisplayNamePrefix } from "../utilities";
 import {
     CallToActionAppearance,
     CallToActionHandledProps,
+    CallToActionProps,
     CallToActionUnhandledProps,
 } from "./call-to-action.props";
-import { get } from "lodash-es";
-import { callToActionButtonOverrides } from "@microsoft/fast-components-styles-msft";
-import { DisplayNamePrefix } from "../utilities";
 
 class CallToAction extends Foundation<
     CallToActionHandledProps,
@@ -16,6 +19,10 @@ class CallToAction extends Foundation<
     {}
 > {
     public static displayName: string = `${DisplayNamePrefix}CallToAction`;
+
+    public static defaultProps: Partial<CallToActionProps> = {
+        managedClasses: {},
+    };
 
     protected handledProps: HandledProps<CallToActionHandledProps> = {
         appearance: void 0,
@@ -49,25 +56,21 @@ class CallToAction extends Foundation<
      * Generates class names
      */
     protected generateClassNames(): string {
-        let classNames: string = get(this.props, "managedClasses.callToAction", "");
+        const {
+            callToAction,
+            callToAction__disabled,
+        }: CallToActionClassNameContract = this.props.managedClasses;
 
-        if (this.props.disabled) {
-            classNames = `${classNames} ${get(
-                this.props,
-                "managedClasses.callToAction__disabled",
-                ""
-            )}`;
-        }
-
-        if (this.props.appearance) {
-            classNames = `${classNames} ${get(
-                this.props,
-                `managedClasses.callToAction__${this.props.appearance}`,
-                ""
-            )}`;
-        }
-
-        return super.generateClassNames(classNames);
+        return super.generateClassNames(
+            classNames(
+                callToAction,
+                [callToAction__disabled, this.props.disabled],
+                [
+                    this.props.managedClasses[`callToAction__${this.props.appearance}`],
+                    !!this.props.appearance,
+                ]
+            )
+        );
     }
 
     private renderAfterContent(): (classname?: string) => React.ReactNode {

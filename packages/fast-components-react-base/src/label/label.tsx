@@ -1,24 +1,24 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import { get, isUndefined } from "lodash-es";
-import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
-import {
-    LabelHandledProps,
-    LabelManagedClasses,
-    LabelProps,
-    LabelTag,
-    LabelUnhandledProps,
-} from "./label.props";
 import {
     LabelClassNameContract,
     ManagedClasses,
 } from "@microsoft/fast-components-class-name-contracts-base";
+import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
+import { classNames } from "@microsoft/fast-web-utilities";
+import { isUndefined } from "lodash-es";
+import React from "react";
 import { DisplayNamePrefix } from "../utilities";
+import {
+    LabelHandledProps,
+    LabelProps,
+    LabelTag,
+    LabelUnhandledProps,
+} from "./label.props";
 class Label extends Foundation<LabelHandledProps, LabelUnhandledProps, {}> {
     public static displayName: string = `${DisplayNamePrefix}Label`;
 
     public static defaultProps: Partial<LabelProps> = {
         tag: LabelTag.label,
+        managedClasses: {},
     };
 
     protected handledProps: HandledProps<
@@ -53,17 +53,14 @@ class Label extends Foundation<LabelHandledProps, LabelUnhandledProps, {}> {
      * Generates class names based on props
      */
     protected generateClassNames(): string {
-        let className: string = get(this.props, "managedClasses.label", "");
+        const {
+            label,
+            label__hidden,
+        }: LabelClassNameContract = this.props.managedClasses;
 
-        if (this.props.hidden) {
-            className = `${className} ${get(
-                this.props,
-                "managedClasses.label__hidden",
-                ""
-            )}`;
-        }
-
-        return super.generateClassNames(className);
+        return super.generateClassNames(
+            classNames(label, [label__hidden, this.props.hidden])
+        );
     }
 }
 

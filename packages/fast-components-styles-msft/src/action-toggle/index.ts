@@ -150,8 +150,8 @@ const styles: ComponentStyles<ActionToggleClassNameContract, DesignSystem> = {
     },
     actionToggle__hasGlyphAndContent: {
         "& $actionToggle_selectedGlyph, & $actionToggle_unselectedGlyph": {
-            marginRight: directionSwitch(horizontalSpacing(), ""),
-            marginLeft: directionSwitch("", horizontalSpacing()),
+            "margin-right": directionSwitch(horizontalSpacing(), ""),
+            "margin-left": directionSwitch("", horizontalSpacing()),
         },
     },
 };

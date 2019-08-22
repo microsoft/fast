@@ -30,7 +30,7 @@ const styles: ComponentStyles<AccentButtonClassNameContract, DesignSystem> = {
             background: accentFillHover,
             [highContrastSelector]: {
                 background: HighContrastColor.selectedText,
-                borderColor: HighContrastColor.selectedBackground,
+                "border-color": HighContrastColor.selectedBackground,
                 color: HighContrastColor.selectedBackground,
             },
             "& $button_beforeContent, & $button_afterContent": {
@@ -43,8 +43,8 @@ const styles: ComponentStyles<AccentButtonClassNameContract, DesignSystem> = {
             background: accentFillActive,
         },
         ...applyFocusVisible<DesignSystem>({
-            borderColor: neutralFocus,
-            boxShadow: format(
+            "border-color": neutralFocus,
+            "box-shadow": format(
                 "0 0 0 2px inset {0}",
                 neutralFocusInnerAccent(accentFillRest)
             ),
@@ -64,7 +64,7 @@ const styles: ComponentStyles<AccentButtonClassNameContract, DesignSystem> = {
         },
         [highContrastSelector]: {
             background: HighContrastColor.selectedBackground,
-            borderColor: HighContrastColor.selectedBackground,
+            "border-color": HighContrastColor.selectedBackground,
             color: HighContrastColor.selectedText,
             "-ms-high-contrast-adjust": "none",
         },

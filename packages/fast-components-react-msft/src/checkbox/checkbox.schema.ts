@@ -34,5 +34,11 @@ export default {
             type: "children",
             formPluginId: "@microsoft/fast-components-react-msft/checkbox/children",
         },
+        label: {
+            title: "Label",
+            type: "children",
+            formPluginId: "@microsoft/fast-components-react-msft/checkbox/label",
+            pluginId: "@microsoft/fast-components-react-msft/checkbox/label",
+        },
     },
 };
