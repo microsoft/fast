@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.19.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-msft@4.18.0...@microsoft/fast-components-react-msft@4.19.0) (2019-08-22)
+
+
+### Features
+
+* add label prop to replace slots in checkbox ([#2142](https://github.com/Microsoft/fast-dna/issues/2142)) ([240e3b7](https://github.com/Microsoft/fast-dna/commit/240e3b7))
+
+
+
+
+
 # [4.18.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-msft@4.17.6...@microsoft/fast-components-react-msft@4.18.0) (2019-08-22)
 
 
