@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.0.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-colors@4.2.1...@microsoft/fast-colors@5.0.0) (2019-08-22)
+
+
+### Features
+
+* remove ColorRGBA64 instance exports [#2164](https://github.com/Microsoft/fast-dna/issues/2164) ([7753b60](https://github.com/Microsoft/fast-dna/commit/7753b60))
+
+
+### BREAKING CHANGES
+
+* removes named color exports.
+
+Use parseColor to retrieve a ColorRGBA64 instance of a named color.
+
+
+
+
+
 ## [4.2.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-colors@4.2.0...@microsoft/fast-colors@4.2.1) (2019-08-09)
 
 

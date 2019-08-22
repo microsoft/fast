@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.4.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-jss-manager-react@4.3.5...@microsoft/fast-jss-manager-react@4.4.0) (2019-08-22)
+
+
+### Features
+
+* support custom jss instance ([#2158](https://github.com/Microsoft/fast-dna/issues/2158)) ([6292949](https://github.com/Microsoft/fast-dna/commit/6292949))
+
+
+
+
+
 ## [4.3.5](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-jss-manager-react@4.3.4...@microsoft/fast-jss-manager-react@4.3.5) (2019-06-25)
 
 

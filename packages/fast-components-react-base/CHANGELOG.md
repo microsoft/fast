@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.13.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-base@4.12.6...@microsoft/fast-components-react-base@4.13.0) (2019-08-22)
+
+
+### Bug Fixes
+
+* correct typing of radio unhandled props ([#2148](https://github.com/Microsoft/fast-dna/issues/2148)) ([48b14e7](https://github.com/Microsoft/fast-dna/commit/48b14e7))
+
+
+### Features
+
+* adds classNames utility ([#2163](https://github.com/Microsoft/fast-dna/issues/2163)) ([d6a872d](https://github.com/Microsoft/fast-dna/commit/d6a872d))
+* export individual keycodes as named exports and unreference KeyCodes ([327d806](https://github.com/Microsoft/fast-dna/commit/327d806))
+* support navigating select options using arrow keys without opening menu ([#2143](https://github.com/Microsoft/fast-dna/issues/2143)) ([9161832](https://github.com/Microsoft/fast-dna/commit/9161832))
+
+
+
+
+
 ## [4.12.6](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-base@4.12.5...@microsoft/fast-components-react-base@4.12.6) (2019-08-16)
 
 **Note:** Version bump only for package @microsoft/fast-components-react-base

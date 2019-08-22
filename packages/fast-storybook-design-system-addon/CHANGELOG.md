@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.2.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-storybook-design-system-addon@1.1.5...@microsoft/fast-storybook-design-system-addon@1.2.0) (2019-08-22)
+
+
+### Features
+
+* removes plugin dependencies from component stylesheets ([#2165](https://github.com/Microsoft/fast-dna/issues/2165)) ([3a51b32](https://github.com/Microsoft/fast-dna/commit/3a51b32))
+
+
+
+
+
 ## [1.1.5](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-storybook-design-system-addon@1.1.4...@microsoft/fast-storybook-design-system-addon@1.1.5) (2019-08-16)
 
 **Note:** Version bump only for package @microsoft/fast-storybook-design-system-addon

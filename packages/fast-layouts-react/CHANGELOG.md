@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.5.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-layouts-react@4.4.1...@microsoft/fast-layouts-react@4.5.0) (2019-08-22)
+
+
+### Features
+
+* export individual keycodes as named exports and unreference KeyCodes ([327d806](https://github.com/Microsoft/fast-dna/commit/327d806))
+* removes plugin dependencies from component stylesheets ([#2165](https://github.com/Microsoft/fast-dna/issues/2165)) ([3a51b32](https://github.com/Microsoft/fast-dna/commit/3a51b32))
+
+
+
+
+
 ## [4.4.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-layouts-react@4.4.0...@microsoft/fast-layouts-react@4.4.1) (2019-08-09)
 
 
