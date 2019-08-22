@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.6.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-jss-utilities@4.6.0...@microsoft/fast-jss-utilities@4.6.1) (2019-08-22)
+
+
+### Bug Fixes
+
+* converting max-lines to dash case [#2179](https://github.com/Microsoft/fast-dna/issues/2179) ([6998b4a](https://github.com/Microsoft/fast-dna/commit/6998b4a))
+
+
+
+
+
 # [4.6.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-jss-utilities@4.5.5...@microsoft/fast-jss-utilities@4.6.0) (2019-08-22)
 
 
