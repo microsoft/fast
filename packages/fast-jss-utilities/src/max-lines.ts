@@ -15,8 +15,8 @@ export interface MaxLines {
 export function applyMaxLines(lines: number, lineHeight: number): CSSRules<any> {
     return {
         overflow: "hidden",
-        boxSizing: "content-box",
-        maxHeight: toPx(lines * lineHeight),
-        whiteSpace: lines === 1 ? "nowrap" : null,
+        "box-sizing": "content-box",
+        "max-height": toPx(lines * lineHeight),
+        "white-space": lines === 1 ? "nowrap" : null,
     };
 }
