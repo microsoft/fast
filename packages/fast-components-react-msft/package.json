@@ -2,7 +2,7 @@
   "name": "@microsoft/fast-components-react-msft",
   "description": "FAST Microsoft components implemented in React",
   "sideEffects": false,
-  "version": "4.19.0",
+  "version": "4.19.1",
   "author": {
     "name": "Microsoft",
     "url": "https://discord.gg/FcSNfg4"
@@ -128,7 +128,7 @@
     "@microsoft/fast-components-class-name-contracts-base": "^4.3.1",
     "@microsoft/fast-components-class-name-contracts-msft": "^4.7.2",
     "@microsoft/fast-components-foundation-react": "^3.1.1",
-    "@microsoft/fast-components-react-base": "^4.14.0",
+    "@microsoft/fast-components-react-base": "^4.14.1",
     "@microsoft/fast-components-styles-msft": "^4.20.0",
     "@microsoft/fast-glyphs-msft": "^4.0.2",
     "@microsoft/fast-jss-utilities": "^4.6.0",

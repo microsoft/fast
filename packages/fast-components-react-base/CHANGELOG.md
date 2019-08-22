@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.14.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-base@4.14.0...@microsoft/fast-components-react-base@4.14.1) (2019-08-22)
+
+
+### Bug Fixes
+
+* define defaultProps type of radio correctly ([#2172](https://github.com/Microsoft/fast-dna/issues/2172)) ([6236dfd](https://github.com/Microsoft/fast-dna/commit/6236dfd))
+
+
+
+
+
 # [4.14.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-base@4.13.0...@microsoft/fast-components-react-base@4.14.0) (2019-08-22)
 
 
