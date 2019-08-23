@@ -3,6 +3,42 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.14.2](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-base@4.14.1...@microsoft/fast-components-react-base@4.14.2) (2019-08-22)
+
+**Note:** Version bump only for package @microsoft/fast-components-react-base
+
+
+
+
+
+## [4.14.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-base@4.14.0...@microsoft/fast-components-react-base@4.14.1) (2019-08-22)
+
+
+### Bug Fixes
+
+* define defaultProps type of radio correctly ([#2172](https://github.com/Microsoft/fast-dna/issues/2172)) ([6236dfd](https://github.com/Microsoft/fast-dna/commit/6236dfd))
+
+
+
+
+
+# [4.14.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-base@4.13.0...@microsoft/fast-components-react-base@4.14.0) (2019-08-22)
+
+
+### Bug Fixes
+
+* check classNames for checkbox state indicator and input using utility ([#2170](https://github.com/Microsoft/fast-dna/issues/2170)) ([774f514](https://github.com/Microsoft/fast-dna/commit/774f514))
+* correct type value for radio on change ([#2167](https://github.com/Microsoft/fast-dna/issues/2167)) ([741760d](https://github.com/Microsoft/fast-dna/commit/741760d))
+
+
+### Features
+
+* add label prop to replace slots in checkbox ([#2142](https://github.com/Microsoft/fast-dna/issues/2142)) ([240e3b7](https://github.com/Microsoft/fast-dna/commit/240e3b7))
+
+
+
+
+
 # [4.13.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-base@4.12.6...@microsoft/fast-components-react-base@4.13.0) (2019-08-22)
 
 
