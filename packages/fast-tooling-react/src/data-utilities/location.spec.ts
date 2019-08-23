@@ -311,6 +311,87 @@ describe("mapSchemaLocationFromDataLocation", () => {
 
         expect(schemaLocation).toBe("");
     });
+    test("should return a schema location with additional properties", () => {
+        const schemaLocation: string = mapSchemaLocationFromDataLocation(
+            "a",
+            {
+                type: "object",
+                additionalProperties: {
+                    type: "string",
+                },
+            },
+            {
+                a: "foo",
+            }
+        );
+
+        expect(schemaLocation).toBe("additionalProperties");
+    });
+    test("should return a schema location with additional properties from a nested location", () => {
+        const schemaLocation: string = mapSchemaLocationFromDataLocation(
+            "foo.a",
+            {
+                type: "object",
+                properties: {
+                    foo: {
+                        type: "object",
+                        additionalProperties: {
+                            type: "string",
+                        },
+                    },
+                },
+            },
+            {
+                foo: {
+                    a: "bar",
+                },
+            }
+        );
+
+        expect(schemaLocation).toBe("properties.foo.additionalProperties");
+    });
+    test("should return a schema location with additional properties when other properties have been specified", () => {
+        const schemaLocation: string = mapSchemaLocationFromDataLocation(
+            "a",
+            {
+                type: "object",
+                properties: {
+                    b: {
+                        type: "string",
+                    },
+                },
+                additionalProperties: {
+                    type: "string",
+                },
+            },
+            {
+                a: "foo",
+            }
+        );
+
+        expect(schemaLocation).toBe("additionalProperties");
+    });
+    test("should return a schema location with additional properties when the data location is enumerated in the properties", () => {
+        const schemaLocation: string = mapSchemaLocationFromDataLocation(
+            "a",
+            {
+                type: "object",
+                properties: {
+                    a: {
+                        type: "string",
+                    },
+                },
+                additionalProperties: {
+                    type: "string",
+                },
+            },
+            {
+                a: "foo",
+            }
+        );
+
+        expect(schemaLocation).toBe("properties.a");
+    });
 });
 
 describe("getDataLocationsOfPlugins", () => {

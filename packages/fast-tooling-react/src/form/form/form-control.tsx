@@ -17,6 +17,10 @@ import { isConst, isSelect } from "../utilities";
 class FormControl extends React.Component<FormControlProps, {}> {
     public static displayName: string = "FormControl";
 
+    public static defaultProps: Partial<FormControlProps> = {
+        softRemove: true,
+    };
+
     public render(): React.ReactNode {
         return <React.Fragment>{this.renderFormItem()}</React.Fragment>;
     }
@@ -203,6 +207,7 @@ class FormControl extends React.Component<FormControlProps, {}> {
             displayValidationBrowserDefault: this.props.displayValidationBrowserDefault,
             displayValidationInline: this.props.displayValidationInline,
             schema: this.props.schema,
+            softRemove: this.props.softRemove,
         };
     }
 }

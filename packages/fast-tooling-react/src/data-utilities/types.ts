@@ -24,6 +24,7 @@ export enum DataType {
 export enum PropertyKeyword {
     properties = "properties",
     reactProperties = "reactProperties",
+    additionalProperties = "additionalProperties",
 }
 
 export enum CombiningKeyword {

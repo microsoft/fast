@@ -10,6 +10,10 @@ import FormItemCommon from "./form-item.props";
  * @extends React.Component
  */
 abstract class FormItemBase<P, S> extends React.Component<P & FormItemCommon, S> {
+    public static defaultProps: Partial<FormItemCommon> = {
+        softRemove: true,
+    };
+
     public buttonRef: React.RefObject<HTMLButtonElement>;
 
     public inputRef: React.RefObject<HTMLInputElement>;
@@ -56,7 +60,7 @@ abstract class FormItemBase<P, S> extends React.Component<P & FormItemCommon, S>
     }
 
     public renderSoftRemove(className: string): React.ReactNode {
-        if (!this.props.required) {
+        if (!this.props.required && this.props.softRemove) {
             return (
                 <SoftRemove
                     className={className}

@@ -40,6 +40,12 @@ export interface FormControlProps extends FormItemCommon {
      * The section update callback
      */
     onUpdateActiveSection: updateActiveSection;
+
+    /**
+     * Allow soft remove
+     * defaults to true
+     */
+    softRemove?: boolean;
 }
 
 /* tslint:disable-next-line */

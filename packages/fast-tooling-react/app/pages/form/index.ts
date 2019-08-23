@@ -118,3 +118,11 @@ import AllControlTypesSchema from "../../../src/__tests__/schemas/all-control-ty
 export const allControlTypes: ExampleComponent = {
     schema: AllControlTypesSchema,
 };
+
+import DictionaryDataSet from "../../../src/__tests__/datasets/dictionary";
+import DictionarySchema from "../../../src/__tests__/schemas/dictionary.schema.json";
+
+export const dictionary: ExampleComponent = {
+    schema: DictionarySchema,
+    data: DictionaryDataSet,
+};
