@@ -31,9 +31,9 @@ export interface RadioHandledProps extends RadioManagedClasses {
     onChange?: React.ChangeEventHandler<HTMLInputElement>;
 
     /**
-     * The radio content
+     * The radio label
      */
-    children?: React.ReactNode;
+    label?: (className: string) => React.ReactNode;
 
     /**
      * The value of the radio
