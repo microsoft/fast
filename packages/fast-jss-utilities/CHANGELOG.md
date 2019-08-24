@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.6.2](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-jss-utilities@4.6.1...@microsoft/fast-jss-utilities@4.6.2) (2019-08-24)
+
+
+### Bug Fixes
+
+* add webkit prefixed backdrop filter property in acrylic utility ([#2182](https://github.com/Microsoft/fast-dna/issues/2182)) ([1f5bd55](https://github.com/Microsoft/fast-dna/commit/1f5bd55))
+
+
+
+
+
 ## [4.6.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-jss-utilities@4.6.0...@microsoft/fast-jss-utilities@4.6.1) (2019-08-22)
 
 
