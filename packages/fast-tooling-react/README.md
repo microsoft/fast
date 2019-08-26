@@ -42,6 +42,7 @@ The tooling available in FAST Tooling React can be used together to create UI fo
         - [Disabled](#disabled)
         - [Examples & default](#examples-&-default)
         - [Badges](#badges)
+        - [Dictionaries](#dictionaries)
     - [JSON schema keywords](#json-schema-keywords)
         - [oneOf & anyOf](#oneof-&-anyof)
         - [Enums](#enums)
@@ -1157,6 +1158,23 @@ Example:
     "type": "string",
     "badge": "warning",
     "badgeDescription": "Setting this field will cause adverse effects"
+}
+```
+
+#### Dictionaries
+
+The `additionalProperties` JSON schema keyword can be used to create a dictionary of user-input keys on an object. To give these keys a label add the keyword `propertyTitle`, this will create a label for the form element for editing the property key.
+
+Example:
+
+```json
+{
+    "type": "object",
+    "additionalProperties": {
+        "title": "A dictionary of strings",
+        "propertyTitle": "A dictionary key",
+        "type": "string"
+    }
 }
 ```
 

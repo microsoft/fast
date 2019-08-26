@@ -79,6 +79,12 @@ export default interface FormItemCommon {
      * Display the validation as browser default tooltips
      */
     displayValidationBrowserDefault?: boolean;
+
+    /**
+     * Enable soft remove
+     * defaults to true
+     */
+    softRemove?: boolean;
 }
 
 export interface CustomFormItemComponent extends FormItemCommon {

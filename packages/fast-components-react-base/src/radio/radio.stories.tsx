@@ -39,14 +39,26 @@ storiesOf("Radio", module)
         return <RadioStateHandler>{render}</RadioStateHandler>;
     })
     .add("Disabled", () => <Radio inputId={uniqueId()} disabled={true} />)
-    .add("With label", () => {
+    .add("With slot label", () => {
         const id: string = uniqueId();
 
         return (
             <Radio inputId={id} checked={true} onChange={action("onChange")}>
                 <Label slot="label" htmlFor={id}>
-                    Hello world
+                    Hello slot
                 </Label>
             </Radio>
         );
+    })
+    .add("With label", () => {
+        const id: string = uniqueId();
+        const label: (className: string) => React.ReactNode = (
+            className: string
+        ): React.ReactNode => (
+            <Label className={className} htmlFor={id}>
+                Hello render prop
+            </Label>
+        );
+
+        return <Radio inputId={id} label={label} onChange={action("onChange")} />;
     });

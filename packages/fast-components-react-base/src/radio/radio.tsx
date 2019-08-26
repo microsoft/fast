@@ -48,7 +48,7 @@ class Radio extends Foundation<RadioHandledProps, RadioUnhandledProps, RadioStat
         managedClasses: void 0,
         name: void 0,
         onChange: void 0,
-        children: void 0,
+        label: void 0,
         value: void 0,
     };
 
@@ -80,6 +80,7 @@ class Radio extends Foundation<RadioHandledProps, RadioUnhandledProps, RadioStat
                 />
                 <span className={classNames(radio_stateIndicator)} />
                 {this.renderChildrenWithSlot(RadioSlot.label)}
+                {this.renderLabel()}
             </div>
         );
     }
@@ -103,6 +104,9 @@ class Radio extends Foundation<RadioHandledProps, RadioUnhandledProps, RadioStat
         );
     }
 
+    /**
+     * @deprecated - remove in next major version
+     */
     private renderChildrenWithSlot(slot: RadioSlot): React.ReactChild[] {
         const node: React.ReactNode = this.withSlot(RadioSlot.label);
 
@@ -114,6 +118,12 @@ class Radio extends Foundation<RadioHandledProps, RadioUnhandledProps, RadioStat
                 ),
             });
         });
+    }
+
+    private renderLabel(): React.ReactNode {
+        if (typeof this.props.label === "function") {
+            return this.props.label(classNames(this.props.managedClasses.radio_label));
+        }
     }
 
     private handleRadioChange = (e: React.ChangeEvent<HTMLInputElement>): void => {

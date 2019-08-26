@@ -305,6 +305,7 @@ function mapSchemaLocationSegmentFromDataLocationSegment(
 ): string | void {
     const modifier: string = schemaLocation === "" ? "" : ".";
     const propertyLocationModifier: string = dataLocationSegment === "" ? "" : ".";
+    const additionalProperty: boolean = isAdditionalProperty(dataLocationSegment, schema);
 
     if (schema.oneOf) {
         const index: number = getValidAnyOfOneOfIndex(oneOfAnyOfType.oneOf, data, schema);
@@ -324,6 +325,8 @@ function mapSchemaLocationSegmentFromDataLocationSegment(
             `${schemaLocation}${modifier}${oneOfAnyOfType.anyOf}.${index}`,
             data
         );
+    } else if (additionalProperty && get(schema, PropertyKeyword.additionalProperties)) {
+        return `${schemaLocation}${modifier}${PropertyKeyword.additionalProperties}`;
     } else if (get(schema, `${PropertyKeyword.properties}.${dataLocationSegment}`)) {
         return `${schemaLocation}${modifier}${
             PropertyKeyword.properties
@@ -342,6 +345,14 @@ function mapSchemaLocationSegmentFromDataLocationSegment(
     }
 
     return `${schemaLocation}${modifier}${dataLocationSegment}`;
+}
+
+function isAdditionalProperty(dataLocationSegment: string, schema: any): boolean {
+    const enumeratedKeys: string[] = Object.keys(
+        get(schema, PropertyKeyword.properties, {})
+    ).concat(Object.keys(get(schema, PropertyKeyword.reactProperties, {})));
+
+    return !enumeratedKeys.includes(dataLocationSegment);
 }
 
 class SchemaLocation {
