@@ -32,6 +32,12 @@ export default {
             formPluginId: "@microsoft/fast-components-react-base/radio/children",
             defaults: ["text"],
         },
+        label: {
+            title: "Label",
+            type: "children",
+            formPluginId: "@microsoft/fast-components-react-base/radio/label",
+            pluginId: "@microsoft/fast-components-react-base/radio/label",
+        },
     },
     required: ["inputId"],
 };

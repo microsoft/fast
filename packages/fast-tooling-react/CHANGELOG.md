@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.18.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-tooling-react@1.17.1...@microsoft/fast-tooling-react@1.18.0) (2019-08-24)
+
+
+### Features
+
+* allow additional properties to be added as a dictionary of keys ([#2150](https://github.com/Microsoft/fast-dna/issues/2150)) ([0a28108](https://github.com/Microsoft/fast-dna/commit/0a28108))
+
+
+
+
+
+## [1.17.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-tooling-react@1.17.0...@microsoft/fast-tooling-react@1.17.1) (2019-08-22)
+
+**Note:** Version bump only for package @microsoft/fast-tooling-react
+
+
+
+
+
 # [1.17.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-tooling-react@1.16.0...@microsoft/fast-tooling-react@1.17.0) (2019-08-22)
 
 

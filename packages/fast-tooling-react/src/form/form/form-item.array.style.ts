@@ -1,7 +1,7 @@
-import { ellipsis, focusVisible } from "@microsoft/fast-jss-utilities";
+import { ellipsis } from "@microsoft/fast-jss-utilities";
 import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager-react";
 import {
-    accent,
+    applyAddItemStyle,
     applyCleanListStyle,
     applyControlRegion,
     applyControlWrapper,
@@ -16,7 +16,6 @@ import {
     applySoftRemoveInput,
     background100,
     foreground300,
-    insetStrongBoxShadow,
 } from "../../style";
 import { FormItemArrayClassNameContract } from "./form-item.array.props";
 
@@ -44,40 +43,7 @@ const styles: ComponentStyles<FormItemArrayClassNameContract, {}> = {
         verticalAlign: "middle",
     },
     formItemArray_addItemButton: {
-        position: "absolute",
-        right: "5px",
-        top: "1px",
-        appearance: "none",
-        background: "none",
-        border: "none",
-        width: "20px",
-        height: "20px",
-        zIndex: "1",
-        borderRadius: "2px",
-        [`&${focusVisible()}`]: {
-            ...insetStrongBoxShadow(accent),
-            outline: "none",
-        },
-        "&::before": {
-            position: "absolute",
-            content: "''",
-            pointerEvents: "none",
-            width: "9px",
-            height: "1px",
-            left: "5.5px",
-            top: "9.5px",
-            background: foreground300,
-        },
-        "&::after": {
-            position: "absolute",
-            content: "''",
-            pointerEvents: "none",
-            width: "1px",
-            height: "9px",
-            left: "9.5px",
-            top: "5.5px",
-            background: foreground300,
-        },
+        ...applyAddItemStyle(),
     },
     formItemArray_controlLabel: {
         ...applyLabelStyle(),
