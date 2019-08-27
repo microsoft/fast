@@ -1,7 +1,7 @@
 # Subheading
 
-Use various *subheading* sizes to create a clear hierarchy within your page. A *Subheading* has proper spacing to follow a *Heading*. If you do not need a *heading* and *subheading* pair, just use a *heading*.
+Displays secondary information associated with a *heading*.
 
-## Usage
+## Style
 
-Use the appropriate numbered tag for the relative importance of each *subheading* compared to other *subheadings* on the page. *Subheadings* should be descriptive summaries of the content below them. Choose a *subheading* size that best organizes your page content. Then choose the *subheading* tag and size to meet your design needs. For example, an [`<h2>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/Heading_Elements) element does not absolutely require a type size of **2**, it could be any of the other sizes as well.
+Specify the `size` prop to snap to that step on the typography ramp. The size is not directly related to the `tag` prop, which maps to html elements [`<h1>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/Heading_Elements) through [`<h6>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/Heading_Elements) and [`<p>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/p).

@@ -1,1 +1,7 @@
-# Justified button
+# Neutral button
+
+Triggers an action or navigation.
+
+## Accessibility
+
+Renders as a [`<button>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button) element, or an [`<a>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a) if the `href` prop is set.
