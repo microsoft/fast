@@ -60,8 +60,8 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
     };
 
     private static baseIncrementDelay: number = 300;
-    private static minIncrementDelay: number = 40;
-    private static incrementAcceleration: number = 40;
+    private static minIncrementDelay: number = 100;
+    private static incrementAcceleration: number = 50;
 
     protected handledProps: HandledProps<SliderHandledProps> = {
         disabled: void 0,
@@ -278,6 +278,8 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
         const {
             slider,
             slider__disabled,
+            slider__dragging,
+            slider__incrementing,
             slider__vertical,
             slider__horizontal,
             slider__rtl,
@@ -288,87 +290,21 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
         }: SliderClassNameContract = this.props.managedClasses;
         const isVertical: boolean = this.props.orientation === SliderOrientation.vertical;
 
-        if (this.props.disabled) {
-            classNames = `${classNames} ${get(
-                this.props,
-                "managedClasses.slider__disabled",
-                ""
-            )}`;
-        }
-
-        if (this.state.isDragging) {
-            classNames = `${classNames} ${get(
-                this.props,
-                "managedClasses.slider__dragging",
-                ""
-            )}`;
-        }
-
-        if (this.state.isIncrementing) {
-            classNames = `${classNames} ${get(
-                this.props,
-                "managedClasses.slider__incrementing",
-                ""
-            )}`;
-        }
-
-        if (this.props.orientation === SliderOrientation.vertical) {
-            classNames = `${classNames} ${get(
-                this.props,
-                "managedClasses.slider__vertical",
-                ""
-            )}`;
-        } else {
-            classNames = `${classNames} ${get(
-                this.props,
-                "managedClasses.slider__horizontal",
-                ""
-            )}`;
-        }
-
-        if (this.direction === "rtl") {
-            classNames = `${classNames} ${get(
-                this.props,
-                "managedClasses.slider__rtl",
-                ""
-            )}`;
-        }
-
-        switch (this.props.mode) {
-            case SliderMode.singleValue:
-                classNames = `${classNames} ${get(
-                    this.props,
-                    "managedClasses.slider__modeSingle",
-                    ""
-                )}`;
-                break;
-
-            case SliderMode.adustUpperValue:
-                classNames = `${classNames} ${get(
-                    this.props,
-                    "managedClasses.slider__modeAdjustUpper",
-                    ""
-                )}`;
-                break;
-
-            case SliderMode.adustLowerValue:
-                classNames = `${classNames} ${get(
-                    this.props,
-                    "managedClasses.slider__modeAdjustLower",
-                    ""
-                )}`;
-                break;
-
-            case SliderMode.adjustBoth:
-                classNames = `${classNames} ${get(
-                    this.props,
-                    "managedClasses.slider__modeAdjustBoth",
-                    ""
-                )}`;
-                break;
-        }
-
-        return super.generateClassNames(classNames);
+        return super.generateClassNames(
+            classNames(
+                slider,
+                [slider__disabled, this.props.disabled],
+                [slider__dragging, this.state.isDragging],
+                [slider__incrementing, this.state.isIncrementing],
+                [slider__vertical, isVertical],
+                [slider__horizontal, !isVertical],
+                [slider__rtl, this.direction === "rtl"],
+                [slider__modeSingle, this.props.mode === SliderMode.singleValue],
+                [slider__modeAdjustUpper, this.props.mode === SliderMode.adustUpperValue],
+                [slider__modeAdjustLower, this.props.mode === SliderMode.adustLowerValue],
+                [slider__modeAdjustBoth, this.props.mode === SliderMode.adjustBoth]
+            )
+        );
     }
 
     /**

@@ -55,7 +55,7 @@ const styles: ComponentStyles<SliderClassNameContract, DesignSystem> = {
         border: "none",
         background: neutralForegroundRest,
         "border-radius": "50%",
-        transition: "all 0.1s ease",
+        transition: "all 0.2s ease",
         ...applyElevation(ElevationMultiplier.e4),
         ...applyFocusVisible<DesignSystem>({
             "box-shadow": format(
@@ -95,7 +95,7 @@ const styles: ComponentStyles<SliderClassNameContract, DesignSystem> = {
     slider_foregroundTrack: {
         ...applyCornerRadius(),
         background: neutralForegroundHint,
-        transition: "all 0.1s ease",
+        transition: "all 0.2s ease",
         [highContrastSelector]: {
             background: "Highlight",
         },
@@ -124,10 +124,10 @@ const styles: ComponentStyles<SliderClassNameContract, DesignSystem> = {
     },
     slider__incrementing: {
         "& $slider_thumb": {
-            transition: "all 0.1s ease",
+            transition: "all 0.10s linear",
         },
         "& $slider_foregroundTrack": {
-            transition: "all 0.1s ease",
+            transition: "all 0.10s linear",
         },
     },
     slider__horizontal: {
