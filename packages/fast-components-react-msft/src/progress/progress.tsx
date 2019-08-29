@@ -19,6 +19,7 @@ class Progress extends Foundation<ProgressHandledProps, ProgressUnhandledProps, 
         minValue: 0,
         maxValue: 100,
         circular: false,
+        paused: false,
         size: ProgressSize.container,
         managedClasses: {},
     };
@@ -34,6 +35,7 @@ class Progress extends Foundation<ProgressHandledProps, ProgressUnhandledProps, 
         maxValue: void 0,
         managedClasses: void 0,
         circular: void 0,
+        paused: void 0,
         size: void 0,
     };
 
@@ -62,10 +64,15 @@ class Progress extends Foundation<ProgressHandledProps, ProgressUnhandledProps, 
         const {
             progress,
             progress__circular,
+            progress__paused,
         }: Partial<ProgressClassNameContract> = this.props.managedClasses;
 
         return super.generateClassNames(
-            classNames(progress, [progress__circular, this.props.circular])
+            classNames(
+                progress,
+                [progress__circular, this.props.circular],
+                [progress__paused, this.props.paused]
+            )
         );
     }
 

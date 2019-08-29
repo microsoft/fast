@@ -14,6 +14,7 @@ configure({ adapter: new Adapter() });
 const managedClasses: ProgressClassNameContract = {
     progress: "progress-class",
     progress__circular: "progress__circular-class",
+    progress__paused: "progress__paused-class",
     progress_circularSVG__control: "progress_circularSVG__control-class",
     progress_circularSVG__container: "progress_circularSVG__container-class",
     progress_circularSVG__page: "progress_circularSVG__page-class",
@@ -65,6 +66,14 @@ describe("progress", (): void => {
         );
 
         expect(rendered.exists("div.progress__circular-class")).toBe(true);
+    });
+
+    test("should use paused class names when paused prop is set to true", () => {
+        const rendered: any = mount(
+            <MSFTProgress managedClasses={managedClasses} paused={true} />
+        );
+
+        expect(rendered.exists("div.progress__paused-class")).toBe(true);
     });
 
     test("should use not use interdeterminate class names when value prop is set", () => {
