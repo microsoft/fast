@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.15.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-base@4.14.3...@microsoft/fast-components-react-base@4.15.0) (2019-08-29)
+
+
+### Features
+
+* add render prop for label instead of slot in radio ([#2149](https://github.com/Microsoft/fast-dna/issues/2149)) ([d5fe9df](https://github.com/Microsoft/fast-dna/commit/d5fe9df))
+
+
+
+
+
 ## [4.14.3](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-base@4.14.2...@microsoft/fast-components-react-base@4.14.3) (2019-08-24)
 
 **Note:** Version bump only for package @microsoft/fast-components-react-base

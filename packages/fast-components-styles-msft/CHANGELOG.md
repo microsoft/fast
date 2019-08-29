@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.21.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-styles-msft@4.20.2...@microsoft/fast-components-styles-msft@4.21.0) (2019-08-29)
+
+
+### Features
+
+* remove references to unnecessary code ([#2161](https://github.com/Microsoft/fast-dna/issues/2161)) ([ade3c86](https://github.com/Microsoft/fast-dna/commit/ade3c86))
+
+
+
+
+
 ## [4.20.2](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-styles-msft@4.20.1...@microsoft/fast-components-styles-msft@4.20.2) (2019-08-24)
 
 **Note:** Version bump only for package @microsoft/fast-components-styles-msft
