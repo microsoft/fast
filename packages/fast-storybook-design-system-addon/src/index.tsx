@@ -1,5 +1,5 @@
 import { DesignSystem } from "@microsoft/fast-components-styles-msft";
-import { DesignSystemProvider, JSSManager } from "@microsoft/fast-jss-manager-react";
+import { ConstructableStyleSheetRenderer, DesignSystemProvider, JSSManager } from "@microsoft/fast-jss-manager-react";
 import addons, { makeDecorator, StoryContext, StoryGetter } from "@storybook/addons";
 import { addDecorator, MakeDecoratorResult } from "@storybook/react";
 import React from "react";
@@ -8,8 +8,16 @@ import Channel from "@storybook/channels";
 import { create } from "jss";
 import jssNested from "jss-plugin-nested";
 
-const jssInstance: ReturnType<create> = create();
-jssInstance.use(jssNested());
+const options: any = {
+    plugins: [jssNested()]
+};
+
+// Use Constructable StyleSheet Renderer when the feature is present
+if ("adoptedStyleSheets" in Document.prototype && "replaceSync" in CSSStyleSheet.prototype) {
+    options.Renderer = ConstructableStyleSheetRenderer;
+}
+
+const jssInstance: ReturnType<create> = create(options);
 JSSManager.jss = jssInstance;
 
 interface DesignSystemDecoratorProps {
