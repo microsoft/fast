@@ -39,11 +39,16 @@ import {
 } from "../utilities/design-system";
 import { applyDisabledState } from "../utilities/disabled";
 import {
+    highContrastAccent,
     highContrastBackground,
     highContrastDisabledBorder,
     highContrastDisabledForeground,
     highContrastDoubleFocus,
+    highContrastOutline,
     highContrastOutlineFocus,
+    highContrastSelection,
+    highContrastSelectionForeground,
+    highContrastSelectionOutline,
     highContrastSelector,
     highContrastStealth,
 } from "../utilities/high-contrast";
@@ -89,6 +94,7 @@ const applyTransparentBackplateStyles: CSSRules<DesignSystem> = {
         [highContrastSelector]: {
             background: "ButtonFace !important",
             color: "ButtonText !important",
+            fill: "Highlight",
         },
     },
     "&:active:enabled": {
@@ -125,16 +131,10 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = {
         background: neutralFillRest,
         "&:hover:enabled": {
             background: neutralFillHover,
-            [highContrastSelector]: {
-                background: "Highlight !important",
-                "border-color": "ButtonText !important",
-                color: "HighlightText !important",
-            },
+            ...highContrastSelectionOutline,
             "& $button_beforeContent, & $button_afterContent": {
                 fill: accentForegroundCut,
-                [highContrastSelector]: {
-                    fill: "HighlightText",
-                },
+                ...highContrastSelectionForeground
             },
         },
         "&:active:enabled": {
@@ -145,22 +145,12 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = {
             "border-color": neutralFocus,
         }),
         "&:disabled": {
-            [highContrastSelector]: {
-                background: "ButtonFace",
-                "border-color": "GrayText",
-                color: "GrayText",
-            },
+            ...highContrastDisabledBorder
         },
         "&::-moz-focus-inner": {
             border: "0",
         },
-        [highContrastSelector]: {
-            background: "ButtonFace",
-            "border-color": "ButtonText",
-            color: "ButtonText",
-            fill: "ButtonText",
-            "-ms-high-contrast-adjust": "none",
-        },
+        ...highContrastOutline,
         "a&": {
             "&$button__disabled": {
                 "&:hover": {
@@ -179,6 +169,7 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = {
                 background: "HighlightText !important",
                 "border-color": "Highlight !important",
                 color: "Highlight !important",
+                fill: "Highlight",
             },
         },
         "&:active:enabled": {
@@ -196,12 +187,7 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = {
         "& $button_beforeContent, & $button_afterContent": {
             fill: accentForegroundCut,
         },
-        [highContrastSelector]: {
-            background: "Highlight !important",
-            "border-color": "Highlight !important",
-            color: "HighlightText !important",
-            "-ms-high-contrast-adjust": "none",
-        },
+        ...highContrastAccent,
     },
     button__outline: {
         background: "transparent",
@@ -218,6 +204,7 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = {
                 toPx<DesignSystem>(outlineWidth),
                 neutralOutlineHover
             ),
+            ...highContrastSelectionOutline
         },
         "&:active:enabled": {
             background: "transparent",
@@ -252,6 +239,7 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = {
         background: neutralFillStealthRest,
         "&:hover:enabled": {
             "background-color": neutralFillStealthHover,
+            ...highContrastSelection
         },
         "&:active:enabled": {
             "background-color": neutralFillStealthActive,

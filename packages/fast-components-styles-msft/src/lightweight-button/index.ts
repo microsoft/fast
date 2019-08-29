@@ -65,7 +65,6 @@ const styles: ComponentStyles<LightweightButtonClassNameContract, DesignSystem> 
             "background-color": "transparent",
         },
         [highContrastSelector]: {
-            border: "none",
             fill: "ButtonText",
         },
         "a&": {
