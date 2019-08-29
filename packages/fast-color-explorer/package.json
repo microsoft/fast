@@ -6,7 +6,8 @@
   "private": true,
   "scripts": {
     "build": "webpack --progress --mode=production",
-    "prettier": "prettier --config ./.prettierrc --write \"**/*.{ts,tsx}\"",
+    "prettier": "prettier --config ../../.prettierrc --write \"**/*.{ts,tsx}\"",
+    "prettier:diff": "prettier --config ../../.prettierrc \"**/*.{ts,tsx}\" --list-different",
     "start": "webpack-dev-server",
     "test": "npm run tslint && npm run build",
     "tslint": "tslint -c ./tslint.json '**/*.ts{,x}'",
