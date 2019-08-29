@@ -55,6 +55,7 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
         onValueChange: void 0,
         placeholder: void 0,
         autoFocus: void 0,
+        onMenuSelectionChange: void 0,
     };
 
     private rootElement: React.RefObject<HTMLDivElement> = React.createRef<
@@ -247,7 +248,8 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
                 multiselectable={this.props.multiselectable}
                 defaultSelection={this.state.selectedItems}
                 selectedItems={this.props.selectedItems}
-                onSelectedItemsChanged={this.updateSelection}
+                onSelectedItemsChanged={this.menuSelectionChange}
+                onItemInvoked={this.menuItemInvoked}
                 onBlur={this.handleMenuBlur}
                 managedClasses={{
                     listbox: get(this.props.managedClasses, "select_menu", ""),
@@ -264,12 +266,39 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
     }
 
     /**
+     * Handles selection changes from menu
+     */
+    private menuSelectionChange = (newSelection: ListboxItemProps[]): void => {
+        if (typeof this.props.onMenuSelectionChange === "function") {
+            this.props.onMenuSelectionChange(newSelection);
+        }
+        if (this.props.multiselectable) {
+            this.updateSelection(newSelection);
+        }
+    };
+
+    /**
+     * Handles selection changes from menu
+     */
+    private menuItemInvoked = (newSelection: ListboxItemProps): void => {
+        if (!this.props.multiselectable) {
+            this.updateSelection([newSelection]);
+        }
+    };
+
+    /**
      * Updates selection state and associated values
      */
     private updateSelection = (newSelection: ListboxItemProps[]): void => {
         newSelection = this.trimSelection(newSelection);
 
         const newValue: string | string[] = this.getValueFromSelection(newSelection);
+
+        if (this.state.value === newValue) {
+            // no change, abort
+            return;
+        }
+
         const newDisplayString: string = this.getFormattedDisplayString(newSelection);
         if (
             typeof this.props.onValueChange === "function" &&
