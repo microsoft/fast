@@ -122,9 +122,7 @@ function setColorActionCreator<T>(
     };
 }
 
-export function setShowOnlyRecommendedBackgrounds(
-    value: boolean
-): ColorExplorerAction<boolean> {
+export function setShowOnlyRecommendedBackgrounds(value: boolean): ColorExplorerAction<boolean> {
     return { type: SET_SHOW_ONLY_APPROVED_BACKGROUNDS, value };
 }
 

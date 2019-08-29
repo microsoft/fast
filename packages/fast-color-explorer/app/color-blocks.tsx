@@ -72,7 +72,7 @@ const styles: ComponentStyleSheet<ColorBlocksClassNameContract, ColorsDesignSyst
     colorBlocks_title: {
         margin: "16px auto 4px",
         fontWeight: fontWeight.semibold.toString(),
-        height: "34px",
+        height: "34px"
     },
     colorBlocks_content: {
         flexGrow: "1",
@@ -243,7 +243,9 @@ class ColorBlocksBase extends React.Component<ColorBlocksProps, ColorBlocksState
                     {this.state.designSystem.backgroundColor.toUpperCase()}
                     {this.props.title ? <br /> : null}
                     {this.props.title ? (
-                        <code style={{ fontWeight: "normal" }}>{this.props.title}</code>
+                        <code style={{ fontWeight: "normal" }}>
+                            {this.props.title}
+                        </code>
                     ) : null}
                 </Caption>
 
