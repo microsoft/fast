@@ -66,7 +66,6 @@ const styles: ComponentStyles<ProgressClassNameContract, DesignSystem> = {
             "animation-play-state": "paused",
             stroke: neutralFillRest,
         },
-        "& $progress__circular": {},
     },
     progress_circularSVG__control: {
         height: glyphSize,
