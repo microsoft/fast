@@ -1,10 +1,15 @@
-import { CSSOMRule, HTMLElementWithStyleMap, JssValue, Rule, StyleSheet, toCssValue } from "jss";
+import {
+    CSSOMRule,
+    HTMLElementWithStyleMap,
+    JssValue,
+    Rule,
+    StyleSheet,
+    toCssValue,
+} from "jss";
 
 declare global {
-
     /** Extending CSSStyleSheet interface. */
     interface CSSStyleSheet {
-
         /** The unique sheet identifier. */
         identifier: number;
 
@@ -23,7 +28,6 @@ declare global {
 
     /** Extending Document interface. */
     interface Document {
-
         /** The adopted style sheet property. */
         adoptedStyleSheets: CSSStyleSheet[];
     }
@@ -32,8 +36,8 @@ declare global {
 /** The CSSRuleTypes. */
 const CSSRuleTypes: any = {
     STYLE_RULE: 1,
-    KEYFRAMES_RULE: 7
-}
+    KEYFRAMES_RULE: 7,
+};
 
 /** All CSSStyleSheets map. */
 let allCssStyleSheets: any = {};
@@ -52,7 +56,6 @@ let renderedInstanceCount: number = 0;
  * @param cssStyleSheet - The CSSStyleSheet
  */
 function addToMap(cssStyleSheet: CSSStyleSheet): void {
-
     if (startIndex === null) {
         startIndex = cssStyleSheet.index;
         endIndex = cssStyleSheet.index;
@@ -74,7 +77,6 @@ function addToMap(cssStyleSheet: CSSStyleSheet): void {
  * @param cssStyleSheet - The CSSStyleSheet
  */
 function removeFromMap(cssStyleSheet: CSSStyleSheet): void {
-
     const sheets: CSSStyleSheet[] = allCssStyleSheets[cssStyleSheet.index];
 
     if (sheets) {
@@ -93,7 +95,6 @@ function removeFromMap(cssStyleSheet: CSSStyleSheet): void {
  * @return CSSStyleSheet array
  */
 function getAllStyleSheets(): CSSStyleSheet[] {
-
     const result: CSSStyleSheet[] = [];
 
     for (let i: number = endIndex; i <= startIndex; i++) {
@@ -118,7 +119,6 @@ function getAllStyleSheets(): CSSStyleSheet[] {
  * See Constructable StyleSheet spec https://wicg.github.io/construct-stylesheets/
  */
 export class ConstructableStyleSheetRenderer {
-
     /** Reset state. This is used by the unit tests. */
     public static reset(): void {
         document.adoptedStyleSheets = [];
@@ -176,20 +176,24 @@ export class ConstructableStyleSheetRenderer {
      * @param value - The style property value
      * @returns True when successfully applied, otherwise false
      */
-    public setProperty(cssRule: HTMLElementWithStyleMap | CSSStyleRule | CSSKeyframeRule, prop: string, value: JssValue): boolean {
+    public setProperty(
+        cssRule: HTMLElementWithStyleMap | CSSStyleRule | CSSKeyframeRule,
+        prop: string,
+        value: JssValue
+    ): boolean {
         try {
             let cssValue: string = value;
 
             if (Array.isArray(value)) {
                 cssValue = toCssValue(value, true);
 
-                if (value[value.length - 1] === '!important') {
-                    cssRule.style.setProperty(prop, cssValue, 'important')
-                    return true
+                if (value[value.length - 1] === "!important") {
+                    cssRule.style.setProperty(prop, cssValue, "important");
+                    return true;
                 }
             }
 
-            cssRule.style.setProperty(prop, cssValue)
+            cssRule.style.setProperty(prop, cssValue);
         } catch (err) {
             return false;
         }
@@ -203,7 +207,10 @@ export class ConstructableStyleSheetRenderer {
      * @param prop - The style property
      * @returns The style property value
      */
-    public getPropertyValue(cssRule: HTMLElementWithStyleMap | CSSStyleRule | CSSKeyframeRule, prop: string): string {
+    public getPropertyValue(
+        cssRule: HTMLElementWithStyleMap | CSSStyleRule | CSSKeyframeRule,
+        prop: string
+    ): string {
         try {
             return cssRule.style.getPropertyValue(prop);
         } catch (err) {
@@ -216,12 +223,19 @@ export class ConstructableStyleSheetRenderer {
      * @param cssRule - The CSSRule
      * @param prop - The style property
      */
-    public removeProperty(cssRule: HTMLElementWithStyleMap | CSSStyleRule | CSSKeyframeRule, prop: string): void {
+    public removeProperty(
+        cssRule: HTMLElementWithStyleMap | CSSStyleRule | CSSKeyframeRule,
+        prop: string
+    ): void {
         try {
-            cssRule.style.removeProperty(prop)
+            cssRule.style.removeProperty(prop);
         } catch (err) {
             // tslint:disable-next-line:no-console
-            console.warn(`[JSS] DOMException ${err.message} was thrown. Tried to remove property ${prop}`);
+            console.warn(
+                `[JSS] DOMException ${
+                    err.message
+                } was thrown. Tried to remove property ${prop}`
+            );
         }
     }
 
@@ -232,10 +246,10 @@ export class ConstructableStyleSheetRenderer {
      * @returns True when selector is set, otherwise false
      */
     public setSelector(cssRule: CSSStyleRule, selectorText: string): boolean {
-        cssRule.selectorText = selectorText
+        cssRule.selectorText = selectorText;
 
         // Return false if setter was not successful. Currently only works in chrome.
-        return cssRule.selectorText === selectorText
+        return cssRule.selectorText === selectorText;
     }
 
     /**
@@ -256,7 +270,7 @@ export class ConstructableStyleSheetRenderer {
         }
 
         const { cssText }: { cssText: string } = cssRule;
-        return cssText.substr(0, cssText.indexOf('{') - 1);
+        return cssText.substr(0, cssText.indexOf("{") - 1);
     }
 
     /**
@@ -267,7 +281,7 @@ export class ConstructableStyleSheetRenderer {
      */
     public insertRule(rule: Rule, index?: number): false | CSSStyleRule {
         const { cssRules }: { cssRules: CSSRuleList } = this.cssStyleSheet;
-        const str: string = rule.toString()
+        const str: string = rule.toString();
 
         if (!index) {
             index = cssRules.length;
@@ -278,7 +292,7 @@ export class ConstructableStyleSheetRenderer {
         }
 
         try {
-            this.cssStyleSheet.insertRule(str, index)
+            this.cssStyleSheet.insertRule(str, index);
         } catch (err) {
             // tslint:disable-next-line:no-console
             console.warn(`[JSS] Can not insert an unsupported rule ${str}`);
@@ -363,16 +377,14 @@ export class ConstructableStyleSheetRenderer {
             const rule: Rule = rules[i];
 
             if (rule.type !== "style") {
-                continue
+                continue;
             }
 
             const { selector }: { selector: string } = rule;
 
             // Only unescape selector over CSSOM if it contains a back slash.
-            if (selector && selector.indexOf('\\') !== -1) {
-
+            if (selector && selector.indexOf("\\") !== -1) {
                 if (this.cssStyleSheet) {
-
                     const { cssRules }: { cssRules: CSSRuleList } = this.cssStyleSheet;
 
                     if (cssRules) {

@@ -12,22 +12,26 @@ class MockRule {
 }
 
 describe("Constructable Stylesheet Renderer", (): void => {
-
     const options: any = {
         meta: "MyButton",
-        index: -1001
+        index: -1001,
     };
 
     beforeEach(() => {
-        CSSStyleSheet.prototype.replaceSync = jest.fn((content: string): void => { /* noop */ });
+        CSSStyleSheet.prototype.replaceSync = jest.fn(
+            (content: string): void => {
+                /* noop */
+            }
+        );
 
         ConstructableStyleSheetRenderer.reset();
     });
 
     describe("Attach stylesheet, Detach stylesheet, Ordered stylesheets", (): void => {
         test("Attach a stylesheet", (): void => {
-
-            const renderer: ConstructableStyleSheetRenderer = new ConstructableStyleSheetRenderer(jss.createStyleSheet({}, options));
+            const renderer: ConstructableStyleSheetRenderer = new ConstructableStyleSheetRenderer(
+                jss.createStyleSheet({}, options)
+            );
             renderer.attach();
 
             const count: number = document.adoptedStyleSheets.length;
@@ -36,8 +40,9 @@ describe("Constructable Stylesheet Renderer", (): void => {
         });
 
         test("Detach a stylesheet", (): void => {
-
-            const renderer: ConstructableStyleSheetRenderer = new ConstructableStyleSheetRenderer(jss.createStyleSheet({}, options));
+            const renderer: ConstructableStyleSheetRenderer = new ConstructableStyleSheetRenderer(
+                jss.createStyleSheet({}, options)
+            );
             renderer.attach();
 
             const attchedCount: number = document.adoptedStyleSheets.length;
@@ -51,18 +56,23 @@ describe("Constructable Stylesheet Renderer", (): void => {
         });
 
         test("Stylesheets are added in the correct order", (): void => {
-
-            const renderer1: ConstructableStyleSheetRenderer = new ConstructableStyleSheetRenderer(jss.createStyleSheet({}, { meta: "MyButton1", index: -1001 }));
+            const renderer1: ConstructableStyleSheetRenderer = new ConstructableStyleSheetRenderer(
+                jss.createStyleSheet({}, { meta: "MyButton1", index: -1001 })
+            );
             renderer1.attach();
 
             let count: number = document.adoptedStyleSheets.length;
 
-            const renderer2: ConstructableStyleSheetRenderer = new ConstructableStyleSheetRenderer(jss.createStyleSheet({}, { meta: "MyButton2", index: -1002 }));
+            const renderer2: ConstructableStyleSheetRenderer = new ConstructableStyleSheetRenderer(
+                jss.createStyleSheet({}, { meta: "MyButton2", index: -1002 })
+            );
             renderer2.attach();
 
             count = document.adoptedStyleSheets.length;
 
-            const renderer3: ConstructableStyleSheetRenderer = new ConstructableStyleSheetRenderer(jss.createStyleSheet({}, { meta: "MyButton1-1", index: -1001 }));
+            const renderer3: ConstructableStyleSheetRenderer = new ConstructableStyleSheetRenderer(
+                jss.createStyleSheet({}, { meta: "MyButton1-1", index: -1001 })
+            );
             renderer3.attach();
 
             count = document.adoptedStyleSheets.length;
@@ -81,8 +91,9 @@ describe("Constructable Stylesheet Renderer", (): void => {
 
     describe("Update Stylesheet", (): void => {
         test("CssRule: get property", (): void => {
-
-            const renderer: ConstructableStyleSheetRenderer = new ConstructableStyleSheetRenderer(jss.createStyleSheet({}, options));
+            const renderer: ConstructableStyleSheetRenderer = new ConstructableStyleSheetRenderer(
+                jss.createStyleSheet({}, options)
+            );
             const sheet: any = new CSSStyleSheet();
             sheet.insertRule("button-1 { color: blue }", 0);
             const value: string = renderer.getPropertyValue(sheet.cssRules[0], "color");
@@ -91,8 +102,9 @@ describe("Constructable Stylesheet Renderer", (): void => {
         });
 
         test("CssRule: set property", (): void => {
-
-            const renderer: ConstructableStyleSheetRenderer = new ConstructableStyleSheetRenderer(jss.createStyleSheet({}, options));
+            const renderer: ConstructableStyleSheetRenderer = new ConstructableStyleSheetRenderer(
+                jss.createStyleSheet({}, options)
+            );
             const sheet: any = new CSSStyleSheet();
             sheet.insertRule("button-1 { color: blue }", 0);
             const cssRule: any = sheet.cssRules[0];
@@ -103,22 +115,30 @@ describe("Constructable Stylesheet Renderer", (): void => {
         });
 
         test("CssRule: set property by array", (): void => {
-
-            const renderer: ConstructableStyleSheetRenderer = new ConstructableStyleSheetRenderer(jss.createStyleSheet({}, options));
+            const renderer: ConstructableStyleSheetRenderer = new ConstructableStyleSheetRenderer(
+                jss.createStyleSheet({}, options)
+            );
 
             const sheet: any = new CSSStyleSheet();
             sheet.insertRule("button-1 { color: blue }", 0);
 
             const cssRule: any = sheet.cssRules[0];
-            const result: boolean = renderer.setProperty(cssRule, "padding", ["12px", "10px", "5px", "1px", "!important"]);
+            const result: boolean = renderer.setProperty(cssRule, "padding", [
+                "12px",
+                "10px",
+                "5px",
+                "1px",
+                "!important",
+            ]);
 
             expect(result).toBe(true);
             expect(cssRule.style.padding).toBe("12px, 10px, 5px, 1px");
         });
 
         test("CssRule: remove property", (): void => {
-
-            const renderer: ConstructableStyleSheetRenderer = new ConstructableStyleSheetRenderer(jss.createStyleSheet({}, options));
+            const renderer: ConstructableStyleSheetRenderer = new ConstructableStyleSheetRenderer(
+                jss.createStyleSheet({}, options)
+            );
 
             const sheet: any = new CSSStyleSheet();
             sheet.insertRule("button-1 { color: blue }", 0);
@@ -130,8 +150,9 @@ describe("Constructable Stylesheet Renderer", (): void => {
         });
 
         test("CssRule: set selector", (): void => {
-
-            const renderer: ConstructableStyleSheetRenderer = new ConstructableStyleSheetRenderer(jss.createStyleSheet({}, options));
+            const renderer: ConstructableStyleSheetRenderer = new ConstructableStyleSheetRenderer(
+                jss.createStyleSheet({}, options)
+            );
 
             const sheet: any = new CSSStyleSheet();
             sheet.insertRule("button-1 { color: blue }", 0);
@@ -144,8 +165,9 @@ describe("Constructable Stylesheet Renderer", (): void => {
         });
 
         test("CssRule: get key for CSSStyleRule", (): void => {
-
-            const renderer: ConstructableStyleSheetRenderer = new ConstructableStyleSheetRenderer(jss.createStyleSheet({}, options));
+            const renderer: ConstructableStyleSheetRenderer = new ConstructableStyleSheetRenderer(
+                jss.createStyleSheet({}, options)
+            );
 
             const sheet: any = new CSSStyleSheet();
             sheet.insertRule("button-1 { color: blue }", 0);
@@ -155,19 +177,24 @@ describe("Constructable Stylesheet Renderer", (): void => {
         });
 
         test("CssRule: get key for CSSKeyframesRule", (): void => {
-
-            const renderer: ConstructableStyleSheetRenderer = new ConstructableStyleSheetRenderer(jss.createStyleSheet({}, options));
+            const renderer: ConstructableStyleSheetRenderer = new ConstructableStyleSheetRenderer(
+                jss.createStyleSheet({}, options)
+            );
 
             const sheet: any = new CSSStyleSheet();
-            sheet.insertRule("@keyframes button-1 { from {top: 0px;} to {top: 200px;} }", 0);
+            sheet.insertRule(
+                "@keyframes button-1 { from {top: 0px;} to {top: 200px;} }",
+                0
+            );
 
             const key: string = renderer.getKey(sheet.cssRules[0]);
             expect(key).toBe("@keyframes button-1");
         });
 
         test("Rules: get all rules", (): void => {
-
-            const renderer: ConstructableStyleSheetRenderer = new ConstructableStyleSheetRenderer(jss.createStyleSheet({}, options));
+            const renderer: ConstructableStyleSheetRenderer = new ConstructableStyleSheetRenderer(
+                jss.createStyleSheet({}, options)
+            );
             let allRules: any = renderer.getRules();
 
             expect(allRules).toBe(undefined);
@@ -182,8 +209,9 @@ describe("Constructable Stylesheet Renderer", (): void => {
         });
 
         test("Rules: delete existing rule", (): void => {
-
-            const renderer: ConstructableStyleSheetRenderer = new ConstructableStyleSheetRenderer(jss.createStyleSheet({}, options));
+            const renderer: ConstructableStyleSheetRenderer = new ConstructableStyleSheetRenderer(
+                jss.createStyleSheet({}, options)
+            );
             const sheet: any = new CSSStyleSheet();
             sheet.insertRule("button-1 { color: blue }", 0);
             renderer.attach(sheet);
@@ -195,8 +223,9 @@ describe("Constructable Stylesheet Renderer", (): void => {
         });
 
         test("Rules: delete non existing rule", (): void => {
-
-            const renderer: ConstructableStyleSheetRenderer = new ConstructableStyleSheetRenderer(jss.createStyleSheet({}, options));
+            const renderer: ConstructableStyleSheetRenderer = new ConstructableStyleSheetRenderer(
+                jss.createStyleSheet({}, options)
+            );
 
             const sheet: any = new CSSStyleSheet();
             sheet.insertRule("button-1 { color: blue }", 0);
@@ -213,8 +242,9 @@ describe("Constructable Stylesheet Renderer", (): void => {
         });
 
         test("Rules: insert empty rule", (): void => {
-
-            const renderer: ConstructableStyleSheetRenderer = new ConstructableStyleSheetRenderer(jss.createStyleSheet({}, options));
+            const renderer: ConstructableStyleSheetRenderer = new ConstructableStyleSheetRenderer(
+                jss.createStyleSheet({}, options)
+            );
             const sheet: any = new CSSStyleSheet();
             renderer.attach(sheet);
 
@@ -226,8 +256,9 @@ describe("Constructable Stylesheet Renderer", (): void => {
         });
 
         test("Rules: insert rule", (): void => {
-
-            const renderer: ConstructableStyleSheetRenderer = new ConstructableStyleSheetRenderer(jss.createStyleSheet({}, options));
+            const renderer: ConstructableStyleSheetRenderer = new ConstructableStyleSheetRenderer(
+                jss.createStyleSheet({}, options)
+            );
             const sheet: any = new CSSStyleSheet();
             renderer.attach(sheet);
 
@@ -238,8 +269,9 @@ describe("Constructable Stylesheet Renderer", (): void => {
         });
 
         test("Rules: replace rule", (): void => {
-
-            const renderer: ConstructableStyleSheetRenderer = new ConstructableStyleSheetRenderer(jss.createStyleSheet({}, options));
+            const renderer: ConstructableStyleSheetRenderer = new ConstructableStyleSheetRenderer(
+                jss.createStyleSheet({}, options)
+            );
             const sheet: any = new CSSStyleSheet();
             sheet.insertRule("button-1 { color: blue }", 0);
             renderer.attach(sheet);
