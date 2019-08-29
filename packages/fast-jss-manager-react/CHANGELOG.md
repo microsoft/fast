@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.4.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-jss-manager-react@4.4.0...@microsoft/fast-jss-manager-react@4.4.1) (2019-08-29)
+
+
+### Bug Fixes
+
+* Typo in README. ([#2190](https://github.com/Microsoft/fast-dna/issues/2190)) ([073da3e](https://github.com/Microsoft/fast-dna/commit/073da3e))
+
+
+
+
+
 # [4.4.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-jss-manager-react@4.3.5...@microsoft/fast-jss-manager-react@4.4.0) (2019-08-22)
 
 
