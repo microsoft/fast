@@ -28,6 +28,11 @@ export interface ProgressHandledProps
     circular?: boolean;
 
     /**
+     * The progess paused prop
+     */
+    paused?: boolean;
+
+    /**
      * The progess size prop
      */
     size?: ProgressSize;
