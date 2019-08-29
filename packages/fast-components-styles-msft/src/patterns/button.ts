@@ -73,4 +73,14 @@ export const baseButton: ComponentStyles<ButtonBaseClassNameContract, DesignSyst
         width: glyphSize,
         height: glyphSize,
     },
+    button__hasBeforeOrAfterAndChildren: {
+        "& $button_beforeContent": {
+            "margin-right": directionSwitch(horizontalSpacing(), ""),
+            "margin-left": directionSwitch("", horizontalSpacing()),
+        },
+        "& $button_afterContent": {
+            "margin-right": directionSwitch("", horizontalSpacing()),
+            "margin-left": directionSwitch(horizontalSpacing(), ""),
+        },
+    },
 };
