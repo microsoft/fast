@@ -12,6 +12,7 @@
                 "backgroundColor": {
                     "title": "Background color",
                     "type": "string",
+                    "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$",
                     "default": "#FFFFFF"
                 },
                 "contrast": {
@@ -92,6 +93,11 @@
                     "title": "Corner radius",
                     "type": "number",
                     "default": 2
+                },
+                "elevatedCornerRadius": {
+                    "title": "Elevated corner radius",
+                    "type": "number",
+                    "default": 4
                 },
                 "outlineWidth": {
                     "title": "Outline width",
@@ -208,16 +214,6 @@
                     "type": "number",
                     "default": 2
                 },
-                "neutralForegroundDarkIndex": {
-                    "title": "Neutral foreground dark index",
-                    "type": "number",
-                    "default": 58
-                },
-                "neutralForegroundLightIndex": {
-                    "title": "Neutral foreground light index",
-                    "type": "number",
-                    "default": 0
-                },
                 "neutralForegroundHoverDelta": {
                     "title": "Neutral foreground hover delta",
                     "type": "number",
@@ -242,6 +238,12 @@
                     "title": "Neutral outline active delta",
                     "type": "number",
                     "default": 18
+                },
+                "accentBaseColor": {
+                    "title": "Accent base color",
+                    "type": "string",
+                    "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$",
+                    "default": "#0078D4"
                 }
             }
         }
