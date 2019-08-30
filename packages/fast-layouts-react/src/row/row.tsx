@@ -240,7 +240,7 @@ export class Row extends Foundation<
                 className={this.props.managedClasses.row_resizeHandle}
                 onMouseDown={this.onMouseDown}
                 onKeyDown={this.onKeyDown}
-                aria-hidden={true}
+                role={"separator"}
             />
         );
     }

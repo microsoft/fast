@@ -12,7 +12,6 @@ const styles: ComponentStyles<DialogClassNameContract, DesignSystem> = {
         '&[aria-hidden="false"]': {
             display: "block",
         },
-        ...highContrastBorder,
     },
     dialog_positioningRegion: {
         display: "flex",
@@ -39,6 +38,7 @@ const styles: ComponentStyles<DialogClassNameContract, DesignSystem> = {
         ...applyElevatedCornerRadius(),
         ...applyElevation(ElevationMultiplier.e14),
         "z-index": "1",
+        ...highContrastBorder,
     },
 };
 

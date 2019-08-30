@@ -5,13 +5,17 @@ import {
     neutralOutlineRest,
 } from "./neutral-outline";
 import designSystemDefaults, { DesignSystem } from "../../design-system";
-import { palette, Palette, PaletteType } from "./palette";
+import { Palette } from "./palette";
 import { Swatch, SwatchFamily } from "./common";
 import { isColorStringHexRGB } from "@microsoft/fast-colors";
+import {
+    accentPalette as getAccentPalette,
+    neutralPalette as getNeutralPalette,
+} from "../design-system";
 
 describe("neutralOutline", (): void => {
-    const neutralPalette: Palette = palette(PaletteType.neutral)(designSystemDefaults);
-    const accentPalette: Palette = palette(PaletteType.accent)(designSystemDefaults);
+    const neutralPalette: Palette = getNeutralPalette(designSystemDefaults);
+    const accentPalette: Palette = getAccentPalette(designSystemDefaults);
 
     test("should return by default", (): void => {
         expect(neutralOutlineRest({} as DesignSystem)).toBe(

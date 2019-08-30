@@ -37,8 +37,8 @@ const buttonStyles = {
     button: {
         color: "white",
         background: "blue",
-        border: "none"
-    }
+        border: "none",
+    },
 };
 ```
 
@@ -48,13 +48,13 @@ Import the `manageJss` function and use it to create a new, styled `Button` comp
 
 ```jsx
 import manageJss from "@microsoft/fast-jss-manager-react";
-improt buttonStyles from "./buttonStyles";
+import buttonStyles from "./buttonStyles";
 import Button from "./button";
 
 const StyledButton = manageJss(buttonStyles)(Button);
 
 // Render
-<StyledButton>Hello world</StyledButton>
+<StyledButton>Hello world</StyledButton>;
 ```
 
 ### Instance stylesheet
@@ -65,63 +65,52 @@ There is a good chance you will need to customize some CSS properties for a styl
 const stylesheetOverride = {
     button: {
         color: "green",
-        background: "gray"
-    }
+        background: "gray",
+    },
 };
 
-<StyledButton
-    jssStyleSheet={ stylesheetOverride }
->
-    Hello world
-</StyledButton>
+<StyledButton jssStyleSheet={stylesheetOverride}>Hello world</StyledButton>;
 ```
 
 ### Design System Provider
 
-One of the biggest benefits to JSS is the ability to generate styles dynamically by assigning a property in a JSS stylesheet a function value. Going even further, JSS provides a mechanism for providing input data as the sole argument to these functions - we call this input data the "design system". 
+One of the biggest benefits to JSS is the ability to generate styles dynamically by assigning a property in a JSS stylesheet a function value. Going even further, JSS provides a mechanism for providing input data as the sole argument to these functions - we call this input data the "design system".
 
 The `DesignSystemProvider` provides a mechanism to set the design system a component's stylesheet is generated with. This is done by assigning a `designSystem` property to the `DesignSystemProvider`:
 
 ```jsx
-
 const designSystem = {
     backgroundColor: "#FFF",
-    fontFamily: "Comic Sans"
+    fontFamily: "Comic Sans",
 };
 
 <DesignSystemProvider designSystem={designSystem}>
     <StyledButton>Hello world</StyledButton>
-</DesignSystemProvider>
-
+</DesignSystemProvider>;
 ```
 
 The `DesignSystemProvider` can also be nested within other `DesignSystemProvider`s. When nested, the `designSystem` value is merged with it's parent `designSystem`. This allows simple overrides of specific values while inheriting all other parent values.
 
 ```jsx
-
 const designSystem = {
     backgroundColor: "#FFF",
-    fontFamily: "Comic Sans"
+    fontFamily: "Comic Sans",
 };
 
 const designSystemOverrides = {
-    backgroundColor: "#EEE"
+    backgroundColor: "#EEE",
 };
 
 // Each StyledButton here is generated with a different backgroundColor property, but both of them
 // see a fontFamily property of "Comic Sans".
 
 <DesignSystemProvider designSystem={designSystem}>
-    <StyledButton>
-        My backgroundColor is #FFF
-    </StyledButton>
+    <StyledButton>My backgroundColor is #FFF</StyledButton>
 
     <DesignSystemProvider designSystem={designSystemOverrides}>
-        <StyledButton>
-            My backgroundColor is #EEE
-        </StyledButton>
+        <StyledButton>My backgroundColor is #EEE</StyledButton>
     </DesignSystemProvider>
-</DesignSystemProvider>
+</DesignSystemProvider>;
 ```
 
 ### Design System Consumer
@@ -130,7 +119,9 @@ The design system value provided by the `DesignSystemProvider` can be accessed i
 
 ```jsx
 <DesignSystemConsumer>
-{ (designSystem) => { /* do stuff and return a React.ReactNode */ } }
+    {designSystem => {
+        /* do stuff and return a React.ReactNode */
+    }}
 </DesignSystemConsumer>
 ```
 
@@ -148,11 +139,12 @@ const serverSideCss = stylesheetRegistry.toString();
 ```
 
 ## Optimizing performance
+
 ### Stylesheet memoization
 
 To improve performance of rendering a component multiple times, the `manageJss` HOC implements a mechanism for memoizing stylesheets - only generating the stylesheet once and providing subsequent instances with class names from the first instance of the component. This makes subsequent component instances render much more quickly.
- 
-To determine if a stylesheet can be re-used by a subsequent component, the HOC determines if a given style object provided to the HOC has been previously generated *with its given design system*. It is important to note that the HOC compares both the style object and the design system object *by identity* - if both the style object and the design system object share identity with objects previously used to generate a stylesheet, then the HOC will **not** generate a new stylesheet.
+
+To determine if a stylesheet can be re-used by a subsequent component, the HOC determines if a given style object provided to the HOC has been previously generated _with its given design system_. It is important to note that the HOC compares both the style object and the design system object _by identity_ - if both the style object and the design system object share identity with objects previously used to generate a stylesheet, then the HOC will **not** generate a new stylesheet.
 
 ```jsx
 // These two components use the same style object and are genereated in the same design system context.
@@ -179,10 +171,10 @@ To determine if a stylesheet can be re-used by a subsequent component, the HOC d
 
 ### Stylesheet updates
 
-Because style objects can be generated with input data, we know whenever that input data changes that we need to update our stylesheet. This means that whenever a `manageJss` component receives a **different** design system than it had during the previous render cycle it will update the stylesheet and generate new class names. The HOC determines if the design system is different using object *identity*. A common mistake that results in needless re-generation of stylesheets is to provide the `DesignSystemProvider` with a *new* object every render cycle:
+Because style objects can be generated with input data, we know whenever that input data changes that we need to update our stylesheet. This means that whenever a `manageJss` component receives a **different** design system than it had during the previous render cycle it will update the stylesheet and generate new class names. The HOC determines if the design system is different using object _identity_. A common mistake that results in needless re-generation of stylesheets is to provide the `DesignSystemProvider` with a _new_ object every render cycle:
 
 ```jsx
-<DesignSystemProvider designSystem={{backgroundColor: "#FFF"}}>
+<DesignSystemProvider designSystem={{ backgroundColor: "#FFF" }}>
     <FancyButton />
 </DesignSystemProvider>
 ```
@@ -202,15 +194,15 @@ This same issue can surface with the `jssStyleSheet` prop - if the object provid
 
 ```jsx
 // The prop is assigned a **new** object every render, preventing re-use of the style object across renders
-<FancyButton jssStyleSheet={{fancyButton: { color: "red" }}} />
+<FancyButton jssStyleSheet={{ fancyButton: { color: "red" } }} />
 ```
 
 ```jsx
 // The stylesheet reference is maintained across renders, meaning the stylesheet can be reused across render cycles
-const instanceStyles = {fancyButton: { color: "red" }};
+const instanceStyles = { fancyButton: { color: "red" } };
 
 // ...
-<FancyButton jssStyleSheet={instanceStyles} />
+<FancyButton jssStyleSheet={instanceStyles} />;
 ```
 
 ### Specificity and style element order
@@ -220,14 +212,14 @@ Style element order is determined by rendering order, where components higher in
 While in general this works, there is a known issue being tracked [here](https://github.com/microsoft/fast-dna/issues/1279) where parents can lose their ability to override child components. This is an unintended side-effect of memozing stylesheets. While not ideal, specificity can usually be added to the selector to mitigate the issue, as the issue only manifests when document order is determining selector specificity.
 
 ### Custom JSS instance
+
 The JSSManager can be configured to use a custom JSS instance for all instances of the JSSManager. To ensure all components in your app use the same JSS instance to generate stylesheets, you should assign the new JSS instance prior to rendering any components.
 
 For more information on how JSS instances can be created, see [https://cssinjs.org/jss-api/?v=v10.0.0-alpha.24#create-an-own-jss-instance](https://cssinjs.org/jss-api/?v=v10.0.0-alpha.24#create-an-own-jss-instance)
 
 ```js
-import {  create } from "jss";
+import { create } from "jss";
 import { JSSManager } from "@microsoft/fast-jss-manager-react";
-
 
 JSSManager.jss = create(); // Assign a custom JSS instance. This instance will be used for *all* components created by the `manageJss` HOC.
 ```
