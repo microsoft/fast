@@ -9,17 +9,21 @@ import {
     accentFillSelected,
 } from "./accent-fill";
 import designSystemDefaults, { DesignSystem } from "../../design-system";
-import { findClosestSwatchIndex, palette, Palette, PaletteType } from "./palette";
+import { findClosestSwatchIndex, Palette } from "./palette";
 import { contrast, Swatch } from "./common";
 import { accentForegroundCut } from "./accent-foreground-cut";
 import { accentBaseColor } from "../design-system";
+import {
+    accentPalette as getAccentPalette,
+    neutralPalette as getNeutralPalette,
+} from "../design-system";
 
 describe("accentFill", (): void => {
-    const neutralPalette: Palette = palette(PaletteType.neutral)(designSystemDefaults);
-    const accentPalette: Palette = palette(PaletteType.accent)(designSystemDefaults);
+    const neutralPalette: Palette = getNeutralPalette(designSystemDefaults);
+    const accentPalette: Palette = getAccentPalette(designSystemDefaults);
 
     const accentIndex: number = findClosestSwatchIndex(
-        PaletteType.accent,
+        getAccentPalette,
         accentBaseColor(designSystemDefaults)
     )(designSystemDefaults);
 

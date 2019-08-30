@@ -23,6 +23,11 @@ export default {
             type: "boolean",
             default: false,
         },
+        paused: {
+            title: "Paused",
+            type: "boolean",
+            default: false,
+        },
         size: {
             title: "Circular progress size",
             type: "string",
