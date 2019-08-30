@@ -39,11 +39,11 @@ export const actionToggleButtonOverrides: ComponentStyles<
 const styles: ComponentStyles<ActionToggleClassNameContract, DesignSystem> = {
     actionToggle: {
         "& $actionToggle_selectedGlyph, & $actionToggle_unselectedGlyph": {
-            ...highContrastForeground
+            ...highContrastForeground,
         },
         "&:hover:enabled": {
             "& $actionToggle_selectedGlyph, & $actionToggle_unselectedGlyph": {
-                ...highContrastSelectionForeground
+                ...highContrastSelectionForeground,
             },
         },
         [`&$actionToggle__justified, &$actionToggle__lightweight`]: {
@@ -72,7 +72,7 @@ const styles: ComponentStyles<ActionToggleClassNameContract, DesignSystem> = {
     actionToggle__primary: {
         "& $actionToggle_selectedGlyph, & $actionToggle_unselectedGlyph": {
             fill: accentForegroundCut,
-            ...highContrastSelectionForeground
+            ...highContrastSelectionForeground,
         },
         "&:hover:enabled": {
             "& $actionToggle_selectedGlyph, & $actionToggle_unselectedGlyph": {

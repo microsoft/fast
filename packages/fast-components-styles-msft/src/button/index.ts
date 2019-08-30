@@ -134,7 +134,7 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = {
             ...highContrastSelectionOutline,
             "& $button_beforeContent, & $button_afterContent": {
                 fill: accentForegroundCut,
-                ...highContrastSelectionForeground
+                ...highContrastSelectionForeground,
             },
         },
         "&:active:enabled": {
@@ -145,7 +145,7 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = {
             "border-color": neutralFocus,
         }),
         "&:disabled": {
-            ...highContrastDisabledBorder
+            ...highContrastDisabledBorder,
         },
         "&::-moz-focus-inner": {
             border: "0",
@@ -204,7 +204,7 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = {
                 toPx<DesignSystem>(outlineWidth),
                 neutralOutlineHover
             ),
-            ...highContrastSelectionOutline
+            ...highContrastSelectionOutline,
         },
         "&:active:enabled": {
             background: "transparent",
@@ -239,7 +239,7 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = {
         background: neutralFillStealthRest,
         "&:hover:enabled": {
             "background-color": neutralFillStealthHover,
-            ...highContrastSelection
+            ...highContrastSelection,
         },
         "&:active:enabled": {
             "background-color": neutralFillStealthActive,

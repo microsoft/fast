@@ -40,13 +40,13 @@ const styles: ComponentStyles<ActionTriggerClassNameContract, DesignSystem> = {
     actionTrigger: {
         "& $actionTrigger_glyph": {
             [highContrastSelector]: {
-                ...highContrastForeground
+                ...highContrastForeground,
             },
         },
         "&:hover:enabled": {
             "& $actionTrigger_glyph": {
                 [highContrastSelector]: {
-                    ...highContrastSelectionForeground
+                    ...highContrastSelectionForeground,
                 },
             },
         },
@@ -71,7 +71,7 @@ const styles: ComponentStyles<ActionTriggerClassNameContract, DesignSystem> = {
         "& $actionTrigger_glyph": {
             fill: accentForegroundCut,
             [highContrastSelector]: {
-                ...highContrastSelectionForeground
+                ...highContrastSelectionForeground,
             },
         },
         "&:hover:enabled": {
