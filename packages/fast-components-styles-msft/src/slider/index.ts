@@ -123,6 +123,14 @@ const styles: ComponentStyles<SliderClassNameContract, DesignSystem> = {
             transition: "none",
         },
     },
+    slider__touchDragging: {
+        "& $slider_thumb": {
+            transition: "none",
+        },
+        "& $slider_foregroundTrack": {
+            transition: "none",
+        },
+    },
     slider__incrementing: {
         "& $slider_thumb": {
             transition: "all 0.10s linear",

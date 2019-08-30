@@ -32,6 +32,7 @@ describe("slider track item", (): void => {
         lowerValue: 0,
         activeThumb: null,
         isDragging: false,
+        isTouchDragging: false,
         isIncrementing: false,
         incrementDirection: 1,
         usePageStep: false,

@@ -44,7 +44,8 @@ export interface SliderHandledProps extends SliderManagedClasses {
         state: SliderState,
         mouseDownCallback: (event: React.MouseEvent) => void,
         keyDownCallback: (event: React.KeyboardEvent) => void,
-        thumb: SliderThumb
+        thumb: SliderThumb,
+        touchStartCallback?: (event: React.TouchEvent) => void
     ) => React.ReactNode;
 
     /**
