@@ -44,9 +44,7 @@ storiesOf("Button", module)
         </Button>
     ))
     .add("Stealth", () => (
-        <Button appearance={ButtonAppearance.stealth}>
-            Stealth Button
-        </Button>
+        <Button appearance={ButtonAppearance.stealth}>Stealth Button</Button>
     ))
     .add("Stealth - disabled", () => (
         <Button appearance={ButtonAppearance.stealth} disabled={true}>
