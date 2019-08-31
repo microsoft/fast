@@ -14,7 +14,7 @@ import {
     highContrastDisabledBorder,
     highContrastOutline,
     highContrastOutlineFocus,
-    highContrastSelection,
+    highContrastSelected,
 } from "../utilities/high-contrast";
 
 const styles: ComponentStyles<NeutralButtonClassNameContract, DesignSystem> = {
@@ -26,7 +26,7 @@ const styles: ComponentStyles<NeutralButtonClassNameContract, DesignSystem> = {
         background: neutralFillRest,
         "&:hover:enabled": {
             background: neutralFillHover,
-            ...highContrastSelection,
+            ...highContrastSelected,
         },
         "&:active:enabled": {
             background: neutralFillActive,

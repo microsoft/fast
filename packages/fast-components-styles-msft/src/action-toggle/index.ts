@@ -16,7 +16,7 @@ import { glyphSize, horizontalSpacing } from "../utilities/density";
 import {
     highContrastDisabledForeground,
     highContrastForeground,
-    highContrastSelectionForeground,
+    highContrastSelectedForeground,
     highContrastSelector,
 } from "../utilities/high-contrast";
 
@@ -43,7 +43,7 @@ const styles: ComponentStyles<ActionToggleClassNameContract, DesignSystem> = {
         },
         "&:hover:enabled": {
             "& $actionToggle_selectedGlyph, & $actionToggle_unselectedGlyph": {
-                ...highContrastSelectionForeground,
+                ...highContrastSelectedForeground,
             },
         },
         [`&$actionToggle__justified, &$actionToggle__lightweight`]: {
@@ -72,7 +72,7 @@ const styles: ComponentStyles<ActionToggleClassNameContract, DesignSystem> = {
     actionToggle__primary: {
         "& $actionToggle_selectedGlyph, & $actionToggle_unselectedGlyph": {
             fill: accentForegroundCut,
-            ...highContrastSelectionForeground,
+            ...highContrastSelectedForeground,
         },
         "&:hover:enabled": {
             "& $actionToggle_selectedGlyph, & $actionToggle_unselectedGlyph": {

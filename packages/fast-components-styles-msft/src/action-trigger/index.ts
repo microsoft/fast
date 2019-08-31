@@ -16,7 +16,7 @@ import { glyphSize, horizontalSpacing } from "../utilities/density";
 import {
     highContrastDisabledForeground,
     highContrastForeground,
-    highContrastSelectionForeground,
+    highContrastSelectedForeground,
     highContrastSelector,
 } from "../utilities/high-contrast";
 
@@ -39,14 +39,12 @@ export const actionTriggerButtonOverrides: ComponentStyles<
 const styles: ComponentStyles<ActionTriggerClassNameContract, DesignSystem> = {
     actionTrigger: {
         "& $actionTrigger_glyph": {
-            [highContrastSelector]: {
-                ...highContrastForeground,
-            },
+            ...highContrastForeground,
         },
         "&:hover:enabled": {
             "& $actionTrigger_glyph": {
                 [highContrastSelector]: {
-                    ...highContrastSelectionForeground,
+                    ...highContrastSelectedForeground,
                 },
             },
         },
@@ -71,7 +69,7 @@ const styles: ComponentStyles<ActionTriggerClassNameContract, DesignSystem> = {
         "& $actionTrigger_glyph": {
             fill: accentForegroundCut,
             [highContrastSelector]: {
-                ...highContrastSelectionForeground,
+                ...highContrastSelectedForeground,
             },
         },
         "&:hover:enabled": {

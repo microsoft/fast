@@ -23,7 +23,7 @@ import { applyDisabledState } from "../utilities/disabled";
 import { applyScaledTypeRamp } from "../utilities/typography";
 import {
     highContrastDisabledBorder,
-    highContrastSelection,
+    highContrastSelected,
     highContrastSelector,
     highContrastStealth,
 } from "../utilities/high-contrast";
@@ -52,7 +52,7 @@ const styles: ComponentStyles<SelectOptionClassNameContract, DesignSystem> = {
         }),
         "&:hover": {
             background: neutralFillStealthHover,
-            ...highContrastSelection,
+            ...highContrastSelected,
         },
         ...highContrastStealth,
     },

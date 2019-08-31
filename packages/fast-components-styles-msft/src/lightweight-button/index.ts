@@ -13,7 +13,9 @@ import { focusOutlineWidth } from "../utilities/design-system";
 import {
     highContrastBackground,
     highContrastDisabledForeground,
-    highContrastSelector,
+    highContrastForeground,
+    highContrastHighlightBackground,
+    highContrastHighlightForeground,
 } from "../utilities/high-contrast";
 
 const styles: ComponentStyles<LightweightButtonClassNameContract, DesignSystem> = {
@@ -39,7 +41,7 @@ const styles: ComponentStyles<LightweightButtonClassNameContract, DesignSystem> 
         // Underline
         "&:hover $button_contentRegion::before": {
             background: accentForegroundHover,
-            ...highContrastBackground,
+            ...highContrastHighlightBackground,
         },
         "&:hover$button__disabled $button_contentRegion::before": {
             display: "none",
@@ -55,18 +57,14 @@ const styles: ComponentStyles<LightweightButtonClassNameContract, DesignSystem> 
             color: accentForegroundHover,
             fill: accentForegroundHover,
             "background-color": "transparent",
-            [highContrastSelector]: {
-                fill: "Highlight",
-            },
+            ...highContrastHighlightForeground,
         },
         "&:active:enabled": {
             color: accentForegroundActive,
             fill: accentForegroundActive,
             "background-color": "transparent",
         },
-        [highContrastSelector]: {
-            fill: "ButtonText",
-        },
+        ...highContrastForeground,
         "a&": {
             "&$button__disabled": {
                 ...highContrastDisabledForeground,

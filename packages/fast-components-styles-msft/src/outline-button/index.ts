@@ -16,7 +16,7 @@ import {
     highContrastDisabledBorder,
     highContrastOutline,
     highContrastOutlineFocus,
-    highContrastSelection,
+    highContrastSelected,
 } from "../utilities/high-contrast";
 
 const styles: ComponentStyles<LightweightButtonClassNameContract, DesignSystem> = {
@@ -39,7 +39,7 @@ const styles: ComponentStyles<LightweightButtonClassNameContract, DesignSystem> 
                 toPx<DesignSystem>(outlineWidth),
                 neutralOutlineHover
             ),
-            ...highContrastSelection,
+            ...highContrastSelected,
         },
         "&:active:enabled": {
             background: "transparent",

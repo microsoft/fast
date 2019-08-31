@@ -16,6 +16,10 @@ export enum HighContrastColor {
     background = "Background",
 }
 
+function ImportantColor(color: HighContrastColor): string {
+    return color + "!important";
+}
+
 // Used to remove text backplate and borders in 'button-text' colors
 export const highContrastStealth: CSSRules<DesignSystem> = {
     [highContrastSelector]: {
@@ -63,7 +67,7 @@ export const highContrastDisabled: CSSRules<DesignSystem> = {
 export const highContrastDisabledBorder: CSSRules<DesignSystem> = {
     [highContrastSelector]: {
         opacity: "1",
-        background: "ButtonFace !important",
+        background: ImportantColor(HighContrastColor.buttonBackground),
         "border-color": HighContrastColor.disabledText,
         color: HighContrastColor.disabledText,
         fill: HighContrastColor.disabledText,
@@ -94,7 +98,7 @@ export const highContrastOutlineFocus: CSSRules<DesignSystem> = {
 // Used to set double focus with keyboard focus
 export const highContrastDoubleFocus: CSSRules<DesignSystem> = {
     [highContrastSelector]: {
-        "border-color": "ButtonText !important",
+        "border-color": ImportantColor(HighContrastColor.buttonText),
         "box-shadow": format(
             "0 0 0 {0} inset {1}",
             toPx(focusOutlineWidth),
@@ -104,7 +108,7 @@ export const highContrastDoubleFocus: CSSRules<DesignSystem> = {
 };
 
 // Used to set 'selected-text' color
-export const highContrastSelection: CSSRules<DesignSystem> = {
+export const highContrastSelected: CSSRules<DesignSystem> = {
     [highContrastSelector]: {
         background: HighContrastColor.selectedBackground,
         color: HighContrastColor.selectedText,
@@ -112,29 +116,37 @@ export const highContrastSelection: CSSRules<DesignSystem> = {
     },
 };
 
-// Used to set 'selected-text' color with an outline
-export const highContrastSelectionOutline: CSSRules<DesignSystem> = {
+// Used to set 'selected-background' color with an outline
+export const highContrastSelectedOutline: CSSRules<DesignSystem> = {
     [highContrastSelector]: {
-        background: HighContrastColor.selectedBackground,
-        "border-color": HighContrastColor.buttonText,
-        color: HighContrastColor.selectedText,
-        fill: HighContrastColor.selectedText,
+        background: HighContrastColor.selectedText,
+        "border-color": HighContrastColor.selectedBackground,
+        color: HighContrastColor.selectedBackground,
+        fill: HighContrastColor.selectedBackground,
     },
 };
 
 // Used to set foreground and glyph to be 'button-text' color
 export const highContrastForeground: CSSRules<DesignSystem> = {
     [highContrastSelector]: {
-        color: "ButtonText !important",
-        fill: "ButtonText !important",
+        color: ImportantColor(HighContrastColor.buttonText),
+        fill: ImportantColor(HighContrastColor.buttonText),
     },
 };
 
 // Used to set foreground and glyph to be 'select-text' color
-export const highContrastSelectionForeground: CSSRules<DesignSystem> = {
+export const highContrastSelectedForeground: CSSRules<DesignSystem> = {
     [highContrastSelector]: {
-        color: "HighlightText !important",
-        fill: "HighlightText !important",
+        color: ImportantColor(HighContrastColor.selectedText),
+        fill: ImportantColor(HighContrastColor.selectedText),
+    },
+};
+
+// Used to set foreground and glyph to be 'highlight' color
+export const highContrastHighlightForeground: CSSRules<DesignSystem> = {
+    [highContrastSelector]: {
+        color: ImportantColor(HighContrastColor.selectedBackground),
+        fill: ImportantColor(HighContrastColor.selectedBackground),
     },
 };
 
@@ -167,5 +179,12 @@ export const highContrastBackground: CSSRules<DesignSystem> = {
 export const highContrastSelectionBackground: CSSRules<DesignSystem> = {
     [highContrastSelector]: {
         background: HighContrastColor.selectedText,
+    },
+};
+
+// Used to set background to be 'highlight' color
+export const highContrastHighlightBackground: CSSRules<DesignSystem> = {
+    [highContrastSelector]: {
+        background: HighContrastColor.selectedBackground,
     },
 };

@@ -44,12 +44,13 @@ import {
     highContrastDisabledBorder,
     highContrastDisabledForeground,
     highContrastDoubleFocus,
+    highContrastHighlightBackground,
+    highContrastHighlightForeground,
     highContrastOutline,
     highContrastOutlineFocus,
-    highContrastSelection,
-    highContrastSelectionForeground,
-    highContrastSelectionOutline,
-    highContrastSelector,
+    highContrastSelected,
+    highContrastSelectedForeground,
+    highContrastSelectedOutline,
     highContrastStealth,
 } from "../utilities/high-contrast";
 import { applyScaledTypeRamp } from "../utilities/typography";
@@ -76,7 +77,7 @@ const applyTransparentBackplateStyles: CSSRules<DesignSystem> = {
     // Underline
     "&:hover $button_contentRegion::before": {
         background: accentForegroundHover,
-        ...highContrastBackground,
+        ...highContrastHighlightBackground,
     },
     "&:hover$button__disabled $button_contentRegion::before": {
         display: "none",
@@ -89,12 +90,11 @@ const applyTransparentBackplateStyles: CSSRules<DesignSystem> = {
     },
     "&:hover:enabled": {
         color: accentForegroundHover,
-        fill: accentForegroundHover,
         ...transparentBackground,
-        [highContrastSelector]: {
-            background: "ButtonFace !important",
-            color: "ButtonText !important",
-            fill: "Highlight",
+        ...highContrastHighlightForeground,
+        "& $button_beforeContent, & $button_afterContent": {
+            fill: accentForegroundHover,
+            ...highContrastHighlightForeground,
         },
     },
     "&:active:enabled": {
@@ -131,10 +131,10 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = {
         background: neutralFillRest,
         "&:hover:enabled": {
             background: neutralFillHover,
-            ...highContrastSelectionOutline,
+            ...highContrastSelected,
             "& $button_beforeContent, & $button_afterContent": {
                 fill: accentForegroundCut,
-                ...highContrastSelectionForeground,
+                ...highContrastSelectedForeground,
             },
         },
         "&:active:enabled": {
@@ -165,12 +165,7 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = {
         background: accentFillRest,
         "&:hover:enabled": {
             background: accentFillHover,
-            [highContrastSelector]: {
-                background: "HighlightText !important",
-                "border-color": "Highlight !important",
-                color: "Highlight !important",
-                fill: "Highlight",
-            },
+            ...highContrastSelectedOutline,
         },
         "&:active:enabled": {
             background: accentFillActive,
@@ -204,7 +199,7 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = {
                 toPx<DesignSystem>(outlineWidth),
                 neutralOutlineHover
             ),
-            ...highContrastSelectionOutline,
+            ...highContrastSelected,
         },
         "&:active:enabled": {
             background: "transparent",
@@ -239,7 +234,7 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = {
         background: neutralFillStealthRest,
         "&:hover:enabled": {
             "background-color": neutralFillStealthHover,
-            ...highContrastSelection,
+            ...highContrastSelected,
         },
         "&:active:enabled": {
             "background-color": neutralFillStealthActive,
