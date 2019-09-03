@@ -60,7 +60,10 @@ export function findSwatchIndex(
             return -1;
         }
 
-        const colorPalette: Palette = checkDesignSystemResolver(paletteResolver, designSystem);
+        const colorPalette: Palette = checkDesignSystemResolver(
+            paletteResolver,
+            designSystem
+        );
         const index: number = colorPalette.indexOf(swatch);
 
         // If we don't find the string exactly, it might be because of color formatting differences
@@ -86,7 +89,10 @@ export function findClosestSwatchIndex(
     swatch: Swatch
 ): DesignSystemResolver<number> {
     return (designSystem: DesignSystem): number => {
-        const resolvedPalette: Palette = checkDesignSystemResolver(paletteResolver, designSystem);
+        const resolvedPalette: Palette = checkDesignSystemResolver(
+            paletteResolver,
+            designSystem
+        );
         const index: number = findSwatchIndex(resolvedPalette, swatch)(designSystem);
         let swatchLuminance: number;
 
@@ -237,8 +243,14 @@ export function swatchByContrast(referenceColor: string | SwatchResolver) {
                      * we return the color
                      */
                     return (designSystem: DesignSystem): Swatch => {
-                        const color: Swatch = checkDesignSystemResolver(referenceColor, designSystem);
-                        const sourcePalette: Palette = checkDesignSystemResolver(paletteResolver, designSystem);
+                        const color: Swatch = checkDesignSystemResolver(
+                            referenceColor,
+                            designSystem
+                        );
+                        const sourcePalette: Palette = checkDesignSystemResolver(
+                            paletteResolver,
+                            designSystem
+                        );
                         const initialSearchIndex: number = clamp(
                             indexResolver(color, sourcePalette, designSystem),
                             0,

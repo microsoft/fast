@@ -14,7 +14,13 @@ import {
 import { accessibleAlgorithm } from "./recipe";
 
 export const neutralFillToggle: SwatchFamilyResolver = colorRecipeFactory(
-    accessibleAlgorithm(neutralPalette, neutralFillToggleRestContrast, 0, neutralFillToggleHoverDelta, neutralFillToggleActiveDelta)
+    accessibleAlgorithm(
+        neutralPalette,
+        neutralFillToggleRestContrast,
+        0,
+        neutralFillToggleHoverDelta,
+        neutralFillToggleActiveDelta
+    )
 );
 
 export const neutralFillToggleRest: SwatchRecipe = swatchFamilyToSwatchRecipeFactory(

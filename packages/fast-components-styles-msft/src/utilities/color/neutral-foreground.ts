@@ -13,7 +13,13 @@ import {
 import { accessibleAlgorithm } from "./recipe";
 
 export const neutralForeground: SwatchFamilyResolver = colorRecipeFactory(
-    accessibleAlgorithm(neutralPalette, 14, 0, neutralForegroundHoverDelta, neutralForegroundActiveDelta)
+    accessibleAlgorithm(
+        neutralPalette,
+        14,
+        0,
+        neutralForegroundHoverDelta,
+        neutralForegroundActiveDelta
+    )
 );
 
 export const neutralForegroundRest: SwatchRecipe = swatchFamilyToSwatchRecipeFactory(

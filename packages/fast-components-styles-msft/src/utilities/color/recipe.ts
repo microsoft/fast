@@ -1,7 +1,18 @@
-import { checkDesignSystemResolver, DesignSystem, DesignSystemResolver } from "../../design-system";
+import {
+    checkDesignSystemResolver,
+    DesignSystem,
+    DesignSystemResolver,
+} from "../../design-system";
 import { backgroundColor } from "../design-system";
 import { Swatch, SwatchFamily } from "./common";
-import { findClosestSwatchIndex, findSwatchIndex, getSwatch, isDarkMode, Palette, swatchByContrast } from "./palette";
+import {
+    findClosestSwatchIndex,
+    findSwatchIndex,
+    getSwatch,
+    isDarkMode,
+    Palette,
+    swatchByContrast,
+} from "./palette";
 
 /**
  * Resolves the index that the contrast search algorithm should start at
@@ -20,21 +31,25 @@ function contrastTargetFactory(
     return (instanceContrast: number): boolean => instanceContrast >= targetContrast;
 }
 
-function indexToSwatchFamily(accessibleIndex: number, palette: Palette, direction: number, restDelta: number, hoverDelta: number, activeDelta: number): SwatchFamily {
+function indexToSwatchFamily(
+    accessibleIndex: number,
+    palette: Palette,
+    direction: number,
+    restDelta: number,
+    hoverDelta: number,
+    activeDelta: number
+): SwatchFamily {
     // One of the indexes will be rest, the other will be hover. Depends on the offsets and the direction.
-    const accessibleIndex2: number = accessibleIndex + direction * Math.abs(restDelta - hoverDelta);
+    const accessibleIndex2: number =
+        accessibleIndex + direction * Math.abs(restDelta - hoverDelta);
 
     const indexOneIsRestState: boolean =
         direction === 1
             ? restDelta < hoverDelta
             : direction * restDelta > direction * hoverDelta;
 
-    const restIndex: number = indexOneIsRestState
-        ? accessibleIndex
-        : accessibleIndex2;
-    const hoverIndex: number = indexOneIsRestState
-        ? accessibleIndex2
-        : accessibleIndex;
+    const restIndex: number = indexOneIsRestState ? accessibleIndex : accessibleIndex2;
+    const hoverIndex: number = indexOneIsRestState ? accessibleIndex2 : accessibleIndex;
 
     const activeIndex: number = restIndex + direction * activeDelta;
 
@@ -76,11 +91,23 @@ export function accessibleAlgorithm(
             designSystem // Pass the design system
         );
 
-        const accessibleIndex: number = findSwatchIndex(palette, accessibleSwatch)(designSystem);
+        const accessibleIndex: number = findSwatchIndex(palette, accessibleSwatch)(
+            designSystem
+        );
         const resolvedRest: number = checkDesignSystemResolver(restDelta, designSystem);
         const resolvedHover: number = checkDesignSystemResolver(hoverDelta, designSystem);
-        const resolvedActive: number = checkDesignSystemResolver(activeDelta, designSystem);
-        
-        return indexToSwatchFamily(accessibleIndex, resolvedPalette, direction, resolvedRest, resolvedHover, resolvedActive);
+        const resolvedActive: number = checkDesignSystemResolver(
+            activeDelta,
+            designSystem
+        );
+
+        return indexToSwatchFamily(
+            accessibleIndex,
+            resolvedPalette,
+            direction,
+            resolvedRest,
+            resolvedHover,
+            resolvedActive
+        );
     };
 }

@@ -1,11 +1,19 @@
 import { DesignSystemResolver } from "../../design-system";
-import { colorRecipeFactory, SwatchFamily, swatchFamilyToSwatchRecipeFactory, SwatchFamilyType, SwatchRecipe } from "./common";
+import {
+    colorRecipeFactory,
+    SwatchFamily,
+    swatchFamilyToSwatchRecipeFactory,
+    SwatchFamilyType,
+    SwatchRecipe,
+} from "./common";
 import { neutralPalette } from "../design-system";
 import { accessibleAlgorithm } from "./recipe";
 
-function neutralForegroundHintAlgorithm(targetContrast: number): DesignSystemResolver<SwatchFamily> {
+function neutralForegroundHintAlgorithm(
+    targetContrast: number
+): DesignSystemResolver<SwatchFamily> {
     return accessibleAlgorithm(neutralPalette, targetContrast, 0, 0, 0);
-} 
+}
 
 /**
  * Hint text for normal sized text, less than 18pt normal weight
