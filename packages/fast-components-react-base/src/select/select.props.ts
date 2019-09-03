@@ -80,6 +80,11 @@ export interface SelectHandledProps extends SelectManagedClasses {
     ) => void;
 
     /**
+     * The onMenuSelectionChange event handler
+     */
+    onMenuSelectionChange?: (selectedItems: ListboxItemProps[]) => void;
+
+    /**
      * Whether a listitem should automatically get focus when this component is mounted
      * (multi-select only)
      */
