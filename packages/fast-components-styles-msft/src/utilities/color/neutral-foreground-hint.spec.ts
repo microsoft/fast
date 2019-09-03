@@ -3,12 +3,15 @@ import {
     neutralForegroundHintLarge,
 } from "./neutral-foreground-hint";
 import designSystemDefaults from "../../design-system";
-import { Palette, palette, PaletteType } from "./palette";
+import { Palette } from "./palette";
 import { contrast, Swatch, SwatchRecipe } from "./common";
-
+import {
+    accentPalette as getAccentPalette,
+    neutralPalette as getNeutralPalette,
+} from "../design-system";
 describe("neutralForegroundHint", (): void => {
-    const neutralPalette: Palette = palette(PaletteType.neutral)(designSystemDefaults);
-    const accentPalette: Palette = palette(PaletteType.accent)(designSystemDefaults);
+    const neutralPalette: Palette = getNeutralPalette(designSystemDefaults);
+    const accentPalette: Palette = getAccentPalette(designSystemDefaults);
 
     // test("should return a swatch when argument is a ")
     test("should implement design system defaults", (): void => {

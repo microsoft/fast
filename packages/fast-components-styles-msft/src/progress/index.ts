@@ -4,7 +4,11 @@ import designSystemDefaults, {
 } from "../design-system";
 import { ComponentStyles, ComponentStyleSheet } from "@microsoft/fast-jss-manager";
 import { ProgressClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
-import { accentFillRest, neutralFillRest } from "../utilities/color";
+import {
+    accentFillRest,
+    neutralFillRest,
+    neutralForegroundHint,
+} from "../utilities/color";
 import { multiply, toPx } from "@microsoft/fast-jss-utilities";
 import { designUnit } from "../utilities/design-system";
 import { glyphSize, height, heightNumber } from "../utilities/density";
@@ -42,6 +46,25 @@ const styles: ComponentStyles<ProgressClassNameContract, DesignSystem> = {
             [highContrastSelector]: {
                 stroke: "ButtonFace",
             },
+        },
+    },
+    progress__paused: {
+        "& $progress_valueIndicator": {
+            background: neutralForegroundHint,
+            stroke: neutralForegroundHint,
+        },
+        "& $progress_dot": {
+            "background-color": neutralFillRest,
+        },
+        "& $progress_dot__1": {
+            "animation-play-state": "paused",
+        },
+        "& $progress_dot__2": {
+            "animation-play-state": "paused",
+        },
+        "& $progress_valueIndicator__indeterminate": {
+            "animation-play-state": "paused",
+            stroke: neutralFillRest,
         },
     },
     progress_circularSVG__control: {

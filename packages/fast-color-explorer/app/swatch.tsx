@@ -150,11 +150,11 @@ function iconStyleOverrides(
                   backgroundColor: fillRecipe(designSystem),
               }
             : type === SwatchTypes.foreground
-                ? {
-                      color: foregroundRecipe(designSystem),
-                      background: fillRecipe(designSystem),
-                  }
-                : { background: fillRecipe(designSystem) };
+            ? {
+                  color: foregroundRecipe(designSystem),
+                  background: fillRecipe(designSystem),
+              }
+            : { background: fillRecipe(designSystem) };
     };
 }
 
@@ -169,14 +169,9 @@ function formatContrast(
         b: ColorRecipe<string>
     ): DesignSystemResolver<string> => {
         return (designSystem: ColorsDesignSystem): string => {
-            return format(
-                message,
-                (formatDesignSystem: ColorsDesignSystem): string => {
-                    return contrast(a(formatDesignSystem), b(formatDesignSystem)).toFixed(
-                        2
-                    );
-                }
-            )(designSystem);
+            return format(message, (formatDesignSystem: ColorsDesignSystem): string => {
+                return contrast(a(formatDesignSystem), b(formatDesignSystem)).toFixed(2);
+            })(designSystem);
         };
     };
 }
@@ -200,8 +195,8 @@ function iconFactoryByType(type: SwatchTypes): SwatchIconFactory {
                 type === SwatchTypes.foreground
                     ? foregroundRecipe
                     : type === SwatchTypes.outline && typeof outlineRecipe === "function"
-                        ? outlineRecipe
-                        : fillRecipe,
+                    ? outlineRecipe
+                    : fillRecipe,
                 type === SwatchTypes.foreground || type === SwatchTypes.outline
                     ? fillRecipe
                     : backgroundColor
@@ -245,8 +240,8 @@ function colorByType(
         return type === SwatchTypes.outline && typeof outlineRecipe === "function"
             ? outlineRecipe
             : type === SwatchTypes.foreground
-                ? foregroundRecipe
-                : fillRecipe;
+            ? foregroundRecipe
+            : fillRecipe;
     };
 }
 

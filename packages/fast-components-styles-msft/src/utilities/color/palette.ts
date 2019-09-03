@@ -17,6 +17,7 @@ import { black, white } from "./color-constants";
 
 /**
  * The named palettes of the MSFT design system
+ * @deprecated - use neutralPalette and accentPalette functions instead
  */
 export enum PaletteType {
     neutral = "neutral",
@@ -31,6 +32,7 @@ export type Palette = Swatch[];
 /**
  * Retrieves a palette by name. This function returns a function that accepts
  * a design system, returning a palette a palette or null
+ * @deprecated - use neutralPalette and accentPalette functions instead
  */
 export function palette(paletteType: PaletteType): DesignSystemResolver<Palette> {
     return (designSystem: DesignSystem | undefined): Palette => {
@@ -49,7 +51,7 @@ export function palette(paletteType: PaletteType): DesignSystemResolver<Palette>
  * otherwise it will return -1
  */
 export function findSwatchIndex(
-    paletteType: PaletteType,
+    paletteResolver: DesignSystemResolver<Palette>,
     swatch: Swatch
 ): DesignSystemResolver<number> {
     return (designSystem: DesignSystem): number => {
@@ -57,7 +59,7 @@ export function findSwatchIndex(
             return -1;
         }
 
-        const colorPalette: Palette = palette(paletteType)(designSystem);
+        const colorPalette: Palette = paletteResolver(designSystem);
         const index: number = colorPalette.indexOf(swatch);
 
         // If we don't find the string exactly, it might be because of color formatting differences
@@ -79,11 +81,11 @@ export function findSwatchIndex(
  * If the input swatch cannot be converted to a color, 0 will be returned
  */
 export function findClosestSwatchIndex(
-    paletteType: PaletteType,
+    paletteResolver: DesignSystemResolver<Palette>,
     swatch: Swatch
 ): DesignSystemResolver<number> {
     return (designSystem: DesignSystem): number => {
-        const index: number = findSwatchIndex(paletteType, swatch)(designSystem);
+        const index: number = findSwatchIndex(paletteResolver, swatch)(designSystem);
         let swatchLuminance: number;
 
         if (index !== -1) {
@@ -105,7 +107,7 @@ export function findClosestSwatchIndex(
             index: number;
         }
 
-        return palette(paletteType)(designSystem)
+        return paletteResolver(designSystem)
             .map(
                 (mappedSwatch: Swatch, mappedIndex: number): LuminanceMap => {
                     return {
@@ -153,30 +155,23 @@ export function getSwatch(index: number, colorPalette: Palette): Swatch {
 }
 
 export function swatchByMode(
-    paletteName: PaletteType
+    paletteResolver: DesignSystemResolver<Palette>
 ): (
     a: number | DesignSystemResolver<number>,
     b: number | DesignSystemResolver<number>
 ) => DesignSystemResolver<Swatch> {
-    const paletteKey: keyof DesignSystem =
-        paletteName === PaletteType.accent ? "accentPalette" : "neutralPalette";
-
     return (
         valueA: number | DesignSystemResolver<number>,
         valueB?: number | DesignSystemResolver<number>
     ): DesignSystemResolver<Swatch> => {
         return (designSystem: DesignSystem): Swatch => {
-            const currentPalette: Palette =
-                (designSystem && designSystem[paletteKey]) ||
-                defaultDesignSystem[paletteKey];
-
+            const currentPalette: Palette = paletteResolver(designSystem);
             const bEval: number =
                 typeof valueB === "function" ? valueB(designSystem) : valueB;
             const aEval: number =
                 typeof valueA === "function" ? valueA(designSystem) : valueA;
-            return isDarkMode(designSystem)
-                ? getSwatch(bEval, currentPalette)
-                : getSwatch(aEval, currentPalette);
+
+            return getSwatch(isDarkMode(designSystem) ? bEval : aEval, currentPalette);
         };
     };
 }
@@ -279,7 +274,7 @@ export function swatchByContrast(referenceColor: string | SwatchResolver) {
 
 /* tslint:enable:typedef */
 export function findClosestBackgroundIndex(designSystem: DesignSystem): number {
-    return findClosestSwatchIndex(PaletteType.neutral, backgroundColor(designSystem))(
+    return findClosestSwatchIndex(neutralPalette, backgroundColor(designSystem))(
         designSystem
     );
 }
