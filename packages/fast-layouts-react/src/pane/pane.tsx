@@ -239,7 +239,7 @@ export class Pane extends Foundation<PaneHandledProps, PaneUnhandledProps, PaneS
                 className={this.props.managedClasses.pane_resizeHandle}
                 onMouseDown={this.onMouseDown}
                 onKeyDown={this.onKeyDown}
-                aria-hidden={true}
+                role={"separator"}
             />
         );
     }

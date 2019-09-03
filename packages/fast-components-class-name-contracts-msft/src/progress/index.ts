@@ -10,6 +10,11 @@ export interface ProgressClassNameContract extends BaseProgressClassNameContract
     progress__circular?: string;
 
     /**
+     * The root progress paused modifier
+     */
+    progress__paused?: string;
+
+    /**
      * The progress size control modifier
      */
     progress_circularSVG__control: string;

@@ -283,17 +283,20 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = {
         ...applyDisabledState(),
         ...highContrastDisabledBorder,
         "& $button_beforeContent, & $button_afterContent": {
-            fill: "ButtonHighlight",
             ...highContrastDisabledForeground,
         },
     },
     button_beforeContent: {
         width: glyphSize,
         height: glyphSize,
+        "margin-right": directionSwitch(horizontalSpacing(), ""),
+        "margin-left": directionSwitch("", horizontalSpacing()),
     },
     button_afterContent: {
         width: glyphSize,
         height: glyphSize,
+        "margin-right": directionSwitch("", horizontalSpacing()),
+        "margin-left": directionSwitch(horizontalSpacing(), ""),
     },
 };
 
