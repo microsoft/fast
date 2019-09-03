@@ -36,6 +36,8 @@ const managedClasses: SliderClassNameContract = {
     slider_thumb__horizontal: "slider_thumb__horizontal",
     slider_thumb__vertical: "slider_thumb__vertical",
     slider__disabled: "slider__disabled",
+    slider__dragging: "slider__dragging",
+    slider__incrementing: "slider__incrementing",
     slider__rtl: "slider__rtl",
     slider__modeSingle: "slider__modeSingle",
     slider__modeAdjustLower: "slider__modeAdjustLower",

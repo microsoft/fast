@@ -69,6 +69,16 @@ export interface SliderClassNameContract {
     slider__disabled?: string;
 
     /**
+     * The dragging modifier
+     */
+    slider__dragging?: string;
+
+    /**
+     * The incrmenting modifier
+     */
+    slider__incrementing?: string;
+
+    /**
      * rtl modifier
      */
     slider__rtl?: string;

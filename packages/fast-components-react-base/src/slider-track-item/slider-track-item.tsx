@@ -3,6 +3,7 @@ import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-
 import { classNames } from "@microsoft/fast-web-utilities";
 import React from "react";
 import { SliderContext, SliderContextType } from "../slider/slider-context";
+import { SliderThumb } from "../slider/slider";
 import { SliderOrientation } from "../slider/slider.props";
 import { DisplayNamePrefix } from "../utilities";
 import {
@@ -58,7 +59,8 @@ class SliderTrackItem extends Foundation<
             sliderTrackItem_vertical,
             sliderTrackItem_horizontal,
         }: SliderTrackItemClassNameContract = this.props.managedClasses;
-        const orientation: SliderOrientation = this.context.sliderOrientation;
+        const orientation: SliderOrientation =
+            this.context.sliderOrientation || SliderOrientation.horizontal;
 
         return super.generateClassNames(
             classNames(
@@ -117,12 +119,18 @@ class SliderTrackItem extends Foundation<
         switch (anchor) {
             case SliderTrackItemAnchor.selectedRangeMax:
                 return this.context.sliderValueAsPercent(
-                    this.context.sliderState.upperValue
+                    this.context.sliderState.isDragging &&
+                    this.context.sliderState.activeThumb === SliderThumb.upperThumb
+                        ? this.context.sliderState.dragValue
+                        : this.context.sliderState.upperValue
                 );
 
             case SliderTrackItemAnchor.selectedRangeMin:
                 return this.context.sliderValueAsPercent(
-                    this.context.sliderState.lowerValue
+                    this.context.sliderState.isDragging &&
+                    this.context.sliderState.activeThumb === SliderThumb.lowerThumb
+                        ? this.context.sliderState.dragValue
+                        : this.context.sliderState.lowerValue
                 );
 
             case SliderTrackItemAnchor.totalRangeMax:

@@ -60,8 +60,8 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
     };
 
     private static baseIncrementDelay: number = 300;
-    private static minIncrementDelay: number = 40;
-    private static incrementAcceleration: number = 40;
+    private static minIncrementDelay: number = 100;
+    private static incrementAcceleration: number = 50;
 
     protected handledProps: HandledProps<SliderHandledProps> = {
         disabled: void 0,
@@ -278,6 +278,8 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
         const {
             slider,
             slider__disabled,
+            slider__dragging,
+            slider__incrementing,
             slider__vertical,
             slider__horizontal,
             slider__rtl,
@@ -292,6 +294,8 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
             classNames(
                 slider,
                 [slider__disabled, this.props.disabled],
+                [slider__dragging, this.state.isDragging],
+                [slider__incrementing, this.state.isIncrementing],
                 [slider__vertical, isVertical],
                 [slider__horizontal, !isVertical],
                 [slider__rtl, this.direction === "rtl"],
@@ -857,6 +861,7 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
             isDragging: true,
             activeThumb: thumb,
         });
+        this.updateDragValue(this.getDragValue(e.nativeEvent, thumb), thumb);
     };
 
     /**
@@ -866,6 +871,16 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
         if (this.props.disabled || event.defaultPrevented) {
             return;
         }
+        this.updateDragValue(
+            this.getDragValue(event, this.state.activeThumb),
+            this.state.activeThumb
+        );
+    };
+
+    /**
+     *  Get dragvalue from mouse event
+     */
+    private getDragValue = (event: MouseEvent, thumb: SliderThumb): number => {
         this.updateDirection();
         this.updateSliderDimensions();
         const pixelCoordinate: number =
@@ -876,13 +891,13 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
             (this.props.range.maxValue - this.props.range.minValue) *
                 this.convertPixelToPercent(pixelCoordinate) +
             this.props.range.minValue;
-        this.updateDragValue(dragValue);
+        return dragValue;
     };
 
     /**
      *  Updates the current drag value
      */
-    private updateDragValue = (dragValue: number): void => {
+    private updateDragValue = (dragValue: number, thumb: SliderThumb): void => {
         const constrainedRange: SliderRange = this.getConstrainedRange(true);
 
         const newDragValue: number = this.constrainToRange(dragValue, constrainedRange);
@@ -891,7 +906,7 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
             dragValue: newDragValue,
         });
 
-        if (this.state.activeThumb === SliderThumb.lowerThumb) {
+        if (thumb === SliderThumb.lowerThumb) {
             this.updateValues(newDragValue, null);
         } else {
             this.updateValues(null, newDragValue);
