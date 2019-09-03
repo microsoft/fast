@@ -176,6 +176,16 @@ export const neutralFillStealthSelectedDelta: DesignSystemResolver<
     number
 > = getDesignSystemValue("neutralFillStealthSelectedDelta");
 
+export const neutralFillToggleRestContrast: DesignSystemResolver<
+    number
+> = getDesignSystemValue("neutralFillToggleRestContrast");
+export const neutralFillToggleHoverDelta: DesignSystemResolver<
+    number
+> = getDesignSystemValue("neutralFillToggleHoverDelta");
+export const neutralFillToggleActiveDelta: DesignSystemResolver<
+    number
+> = getDesignSystemValue("neutralFillToggleActiveDelta");
+
 export const neutralFillCardDelta: DesignSystemResolver<number> = getDesignSystemValue(
     "neutralFillCardDelta"
 );

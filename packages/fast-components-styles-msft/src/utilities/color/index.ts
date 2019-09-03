@@ -46,6 +46,13 @@ export {
 } from "./neutral-fill-stealth";
 
 export {
+    neutralFillToggle,
+    neutralFillToggleRest,
+    neutralFillToggleHover,
+    neutralFillToggleActive,
+} from "./neutral-fill-toggle";
+
+export {
     neutralFillInput,
     neutralFillInputRest,
     neutralFillInputHover,

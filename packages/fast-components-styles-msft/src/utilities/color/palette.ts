@@ -1,5 +1,9 @@
-import { clamp, values } from "lodash-es";
-import { DesignSystem, DesignSystemResolver } from "../../design-system";
+import { clamp } from "lodash-es";
+import {
+    checkDesignSystemResolver,
+    DesignSystem,
+    DesignSystemResolver,
+} from "../../design-system";
 import { backgroundColor } from "../../utilities/design-system";
 import { accentPalette, neutralPalette } from "../design-system";
 import {
@@ -48,7 +52,7 @@ export function palette(paletteType: PaletteType): DesignSystemResolver<Palette>
  * otherwise it will return -1
  */
 export function findSwatchIndex(
-    paletteResolver: DesignSystemResolver<Palette>,
+    paletteResolver: Palette | DesignSystemResolver<Palette>,
     swatch: Swatch
 ): DesignSystemResolver<number> {
     return (designSystem: DesignSystem): number => {
@@ -56,7 +60,7 @@ export function findSwatchIndex(
             return -1;
         }
 
-        const colorPalette: Palette = paletteResolver(designSystem);
+        const colorPalette: Palette = checkDesignSystemResolver(paletteResolver, designSystem);
         const index: number = colorPalette.indexOf(swatch);
 
         // If we don't find the string exactly, it might be because of color formatting differences
@@ -78,11 +82,12 @@ export function findSwatchIndex(
  * If the input swatch cannot be converted to a color, 0 will be returned
  */
 export function findClosestSwatchIndex(
-    paletteResolver: DesignSystemResolver<Palette>,
+    paletteResolver: Palette | DesignSystemResolver<Palette>,
     swatch: Swatch
 ): DesignSystemResolver<number> {
     return (designSystem: DesignSystem): number => {
-        const index: number = findSwatchIndex(paletteResolver, swatch)(designSystem);
+        const resolvedPalette: Palette = checkDesignSystemResolver(paletteResolver, designSystem);
+        const index: number = findSwatchIndex(resolvedPalette, swatch)(designSystem);
         let swatchLuminance: number;
 
         if (index !== -1) {
@@ -104,7 +109,7 @@ export function findClosestSwatchIndex(
             index: number;
         }
 
-        return paletteResolver(designSystem)
+        return resolvedPalette
             .map(
                 (mappedSwatch: Swatch, mappedIndex: number): LuminanceMap => {
                     return {
@@ -163,11 +168,8 @@ export function swatchByMode(
     ): DesignSystemResolver<Swatch> => {
         return (designSystem: DesignSystem): Swatch => {
             const currentPalette: Palette = paletteResolver(designSystem);
-            const bEval: number =
-                typeof valueB === "function" ? valueB(designSystem) : valueB;
-            const aEval: number =
-                typeof valueA === "function" ? valueA(designSystem) : valueA;
-
+            const bEval: number = checkDesignSystemResolver(valueB, designSystem);
+            const aEval: number = checkDesignSystemResolver(valueA, designSystem);
             return getSwatch(isDarkMode(designSystem) ? bEval : aEval, currentPalette);
         };
     };
@@ -198,7 +200,7 @@ export function swatchByContrast(referenceColor: string | SwatchResolver) {
     /**
      * A function that expects a function that resolves a palette
      */
-    return (paletteResolver: DesignSystemResolver<Palette>) => {
+    return (paletteResolver: Palette | DesignSystemResolver<Palette>) => {
         /**
          * A function that expects a function that resolves the index
          * of the palette that the algorithm should begin looking for a swatch at
@@ -235,12 +237,8 @@ export function swatchByContrast(referenceColor: string | SwatchResolver) {
                      * we return the color
                      */
                     return (designSystem: DesignSystem): Swatch => {
-                        const color: Swatch =
-                            typeof referenceColor === "function"
-                                ? referenceColor(designSystem)
-                                : referenceColor;
-                        const sourcePalette: Palette = paletteResolver(designSystem);
-                        const length: number = sourcePalette.length;
+                        const color: Swatch = checkDesignSystemResolver(referenceColor, designSystem);
+                        const sourcePalette: Palette = checkDesignSystemResolver(paletteResolver, designSystem);
                         const initialSearchIndex: number = clamp(
                             indexResolver(color, sourcePalette, designSystem),
                             0,
