@@ -110,7 +110,7 @@ describe("select", (): void => {
         expect(rendered.state("selectedItems").length).toBe(1);
     });
 
-    test("provided callback function is called and value changes when selection changes", (): void => {
+    test("onValueChange callback function is called and value changes when selection changes", (): void => {
         const onValueChange: any = jest.fn();
         const rendered: any = mount(
             <Select onValueChange={onValueChange} defaultSelection={["b"]}>
@@ -134,7 +134,7 @@ describe("select", (): void => {
         expect(onValueChange).toHaveBeenCalledTimes(1);
     });
 
-    test("provided callback function is called and value does not change when selection changes in controlled mode", (): void => {
+    test("onValueChange callback function is called and value does not change when selection changes in controlled mode", (): void => {
         const onValueChange: any = jest.fn();
         const rendered: any = mount(
             <Select onValueChange={onValueChange} selectedItems={["b"]}>
@@ -158,10 +158,14 @@ describe("select", (): void => {
         expect(onValueChange).toHaveBeenCalledTimes(1);
     });
 
-    test("provided callback function is not called when selected item is reselected", (): void => {
+    test("onValueChange callback function is not called when selected item is reselected", (): void => {
         const onValueChange: any = jest.fn();
         const rendered: any = mount(
-            <Select onValueChange={onValueChange} defaultSelection={["b"]}>
+            <Select
+                onValueChange={onValueChange}
+                defaultSelection={["a"]}
+                isMenuOpen={true}
+            >
                 {itemA}
                 {itemB}
                 {itemC}
@@ -171,14 +175,50 @@ describe("select", (): void => {
         expect(rendered.state("selectedItems").length).toBe(1);
         expect(onValueChange).toHaveBeenCalledTimes(0);
 
-        rendered.simulate("click");
-        expect(rendered.state("isMenuOpen")).toBe(true);
+        rendered
+            .find('[displayString="ab"]')
+            .simulate("keydown", { keyCode: keyCodeSpace });
+        expect(rendered.state("selectedItems").length).toBe(1);
+        expect(onValueChange).toHaveBeenCalledTimes(1);
 
         rendered
             .find('[displayString="ab"]')
             .simulate("keydown", { keyCode: keyCodeSpace });
         expect(rendered.state("selectedItems").length).toBe(1);
-        expect(onValueChange).toHaveBeenCalledTimes(0);
+        expect(onValueChange).toHaveBeenCalledTimes(1);
+    });
+
+    test("onMenuSelectionChange callback function is called when menu focus changes", (): void => {
+        const onMenuSelectionChange: any = jest.fn();
+        const rendered: any = mount(
+            <Select
+                onMenuSelectionChange={onMenuSelectionChange}
+                defaultSelection={["a"]}
+                isMenuOpen={true}
+            >
+                {itemA}
+                {itemB}
+                {itemC}
+            </Select>
+        );
+
+        expect(rendered.state("selectedItems").length).toBe(1);
+        expect(onMenuSelectionChange).toHaveBeenCalledTimes(0);
+
+        rendered
+            .find('[displayString="a"]')
+            .simulate("keydown", { keyCode: keyCodeSpace });
+        expect(onMenuSelectionChange).toHaveBeenCalledTimes(0);
+
+        rendered
+            .find('[displayString="ab"]')
+            .simulate("keydown", { keyCode: keyCodeSpace });
+        expect(onMenuSelectionChange).toHaveBeenCalledTimes(1);
+
+        rendered
+            .find('[displayString="a"]')
+            .simulate("keydown", { keyCode: keyCodeSpace });
+        expect(onMenuSelectionChange).toHaveBeenCalledTimes(2);
     });
 
     test("Arrow keys should increment selection without opening menu in single select mode", (): void => {
