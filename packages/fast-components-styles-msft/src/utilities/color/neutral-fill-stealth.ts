@@ -29,7 +29,7 @@ const neutralFillStealthSwapThreshold: DesignSystemResolver<
     neutralFillStealthActiveDelta
 );
 
-function neutralFillStealthAlogrithm(
+function neutralFillStealthAlgorithm(
     deltaResolver: DesignSystemResolver<number>
 ): DesignSystemResolver<Swatch> {
     return (designSystem: DesignSystem): Swatch => {
@@ -57,14 +57,14 @@ export const neutralFillStealth: ColorRecipe<FillSwatchFamily> = colorRecipeFact
 );
 
 export const neutralFillStealthRest: ColorRecipe<Swatch> = colorRecipeFactory(
-    neutralFillStealthAlogrithm(neutralFillStealthRestDelta)
+    neutralFillStealthAlgorithm(neutralFillStealthRestDelta)
 );
 export const neutralFillStealthHover: ColorRecipe<Swatch> = colorRecipeFactory(
-    neutralFillStealthAlogrithm(neutralFillStealthHoverDelta)
+    neutralFillStealthAlgorithm(neutralFillStealthHoverDelta)
 );
 export const neutralFillStealthActive: ColorRecipe<Swatch> = colorRecipeFactory(
-    neutralFillStealthAlogrithm(neutralFillStealthActiveDelta)
+    neutralFillStealthAlgorithm(neutralFillStealthActiveDelta)
 );
 export const neutralFillStealthSelected: ColorRecipe<Swatch> = colorRecipeFactory(
-    neutralFillStealthAlogrithm(neutralFillStealthSelectedDelta)
+    neutralFillStealthAlgorithm(neutralFillStealthSelectedDelta)
 );

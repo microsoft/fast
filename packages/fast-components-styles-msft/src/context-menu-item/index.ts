@@ -11,7 +11,7 @@ import {
 } from "../utilities/color";
 import { ComponentStyles } from "@microsoft/fast-jss-manager";
 import { height, horizontalSpacingNumber } from "../utilities/density";
-import { designUnit, focusOutlineWidth } from "../utilities/design-system";
+import { designUnit } from "../utilities/design-system";
 import { applyDisabledState } from "../utilities/disabled";
 import { applyScaledTypeRamp } from "../utilities/typography";
 import {

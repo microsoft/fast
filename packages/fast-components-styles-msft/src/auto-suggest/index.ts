@@ -1,5 +1,5 @@
-import { DesignSystem, withDesignSystemDefaults } from "../design-system";
-import { ComponentStyles, ComponentStyleSheet } from "@microsoft/fast-jss-manager";
+import { DesignSystem } from "../design-system";
+import { ComponentStyles } from "@microsoft/fast-jss-manager";
 import { AutoSuggestClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import { add, format, multiply, toPx } from "@microsoft/fast-jss-utilities";
 import { applyElevatedCornerRadius } from "../utilities/border";

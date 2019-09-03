@@ -3,7 +3,6 @@ import {
     accentBaseColor,
     accentFillActiveDelta,
     accentFillHoverDelta,
-    accentFillRestDelta,
     accentFillSelectedDelta,
     accentPalette,
     neutralFillActiveDelta,

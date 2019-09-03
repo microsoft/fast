@@ -1,15 +1,10 @@
-import {
-    ComponentStyles,
-    ComponentStyleSheet,
-    CSSRules,
-} from "@microsoft/fast-jss-manager";
+import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager";
 import {
     ButtonClassNameContract,
     CallToActionClassNameContract,
 } from "@microsoft/fast-components-class-name-contracts-msft";
 import {
     applyFocusVisible,
-    Direction,
     directionSwitch,
     format,
     multiply,

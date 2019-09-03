@@ -24,7 +24,7 @@ import {
 } from "./palette";
 
 /**
- * Resolves the index that the contrast serach algorithm should start at
+ * Resolves the index that the contrast search algorithm should start at
  */
 function neutralForegroundInitialIndexResolver(
     referenceColor: string,

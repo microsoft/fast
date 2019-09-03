@@ -1,6 +1,6 @@
 import { AcrylicConfig, applyAcrylic, toPx } from "@microsoft/fast-jss-utilities";
 import { CSSRules } from "@microsoft/fast-jss-manager";
-import designSystemDefaults, { DesignSystem } from "../design-system";
+import { DesignSystem } from "../design-system";
 import { parseColorString } from "../utilities/color/common";
 import { ColorRGBA64 } from "@microsoft/fast-colors";
 

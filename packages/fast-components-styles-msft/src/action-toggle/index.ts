@@ -1,14 +1,10 @@
-import { ComponentStyles, ComponentStyleSheet } from "@microsoft/fast-jss-manager";
+import { ComponentStyles } from "@microsoft/fast-jss-manager";
 import {
     ActionToggleClassNameContract,
     ButtonClassNameContract,
 } from "@microsoft/fast-components-class-name-contracts-msft";
-import {
-    applyLocalizedProperty,
-    Direction,
-    directionSwitch,
-} from "@microsoft/fast-jss-utilities";
-import { DesignSystem, withDesignSystemDefaults } from "../design-system/index";
+import { directionSwitch } from "@microsoft/fast-jss-utilities";
+import { DesignSystem } from "../design-system/index";
 import {
     accentForegroundActive,
     accentForegroundCut,
