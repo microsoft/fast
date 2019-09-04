@@ -256,7 +256,7 @@ export function getNormalizedLocation(
     let normalizedProperty: string = "";
     let normalizedLocation: string =
         location === "" || property === "" ? location : `${location}.`;
-    normalizedProperty = property.split(".").join(".properties.");
+    normalizedProperty = property.split(".").join(`.${PropertyKeyword.properties}.`);
     normalizedLocation =
         typeof property !== "undefined"
             ? `${normalizedLocation}${normalizedProperty}`
@@ -332,9 +332,9 @@ export function getArraySchemaLocation(
     }
 
     if (propertyName !== "") {
-        arraySchemaLocation += `${
-            arraySchemaLocation === "" ? "" : "."
-        }properties.${propertyName}`;
+        arraySchemaLocation += `${arraySchemaLocation === "" ? "" : "."}${
+            PropertyKeyword.properties
+        }.${propertyName}`;
     }
 
     return arraySchemaLocation;

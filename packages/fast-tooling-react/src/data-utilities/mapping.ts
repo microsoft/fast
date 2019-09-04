@@ -19,7 +19,6 @@ import {
     getDataLocationsOfPlugins,
     mapSchemaLocationFromDataLocation,
     pluginFindIndexCallback,
-    squareBracketsRegex,
 } from "./location";
 import { Arguments } from "../typings";
 import { isPrimitiveReactNode } from "./node-types";
@@ -110,7 +109,7 @@ function getPluginResolverDataMap(
                             childOptions,
                             dataLocation
                         ),
-                        dataLocation: `${dataLocation}.${index}`,
+                        dataLocation: `${dataLocation}[${index}]`,
                     });
                 }
             );
