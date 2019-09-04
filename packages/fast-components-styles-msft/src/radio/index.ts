@@ -1,9 +1,9 @@
+import { ComponentStyles } from "@microsoft/fast-jss-manager";
 import {
     densityCategorySwitch,
     heightNumber,
     horizontalSpacing,
 } from "../utilities/density";
-import { DesignSystem, DesignSystemResolver } from "../design-system";
 import { RadioClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import {
     add,
@@ -23,16 +23,16 @@ import {
     neutralOutlineHover,
     neutralOutlineRest,
 } from "../utilities/color";
-import { ComponentStyles } from "@microsoft/fast-jss-manager";
+import { DesignSystem, DesignSystemResolver } from "../design-system";
 import { applyDisabledState } from "../utilities/disabled";
 import { applyScaledTypeRamp } from "../utilities/typography";
 import { designUnit, outlineWidth } from "../utilities/design-system";
 import { applyCursorDisabled, applyCursorPointer } from "../utilities/cursor";
 import {
     highContrastDisabledBorder,
+    highContrastHighlightBackground,
     highContrastSelectedBackground,
     highContrastSelector,
-    highContrastHighlightBackground,
 } from "../utilities/high-contrast";
 
 const inputSize: DesignSystemResolver<string> = toPx(
