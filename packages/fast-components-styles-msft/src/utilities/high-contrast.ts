@@ -17,7 +17,7 @@ export enum HighContrastColor {
 }
 
 function ImportantColor(color: HighContrastColor): string {
-    return color + "!important";
+    return `${color} !important`;
 }
 
 // Used to remove text backplate and borders in 'button-text' colors
@@ -107,6 +107,18 @@ export const highContrastDoubleFocus: CSSRules<DesignSystem> = {
     },
 };
 
+/**
+ * @deprecated Use 'highContrastSelected' instead
+ */
+export const highContrastSelection: CSSRules<DesignSystem> = {
+    [highContrastSelector]: {
+        background: HighContrastColor.selectedBackground,
+        "border-color": HighContrastColor.buttonText,
+        color: HighContrastColor.selectedText,
+        fill: HighContrastColor.selectedText,
+    },
+};
+
 // Used to set 'selected-text' color
 export const highContrastSelected: CSSRules<DesignSystem> = {
     [highContrastSelector]: {
@@ -176,7 +188,7 @@ export const highContrastBackground: CSSRules<DesignSystem> = {
 };
 
 // Used to set background to be 'selected-text' color
-export const highContrastSelectionBackground: CSSRules<DesignSystem> = {
+export const highContrastSelectedBackground: CSSRules<DesignSystem> = {
     [highContrastSelector]: {
         background: HighContrastColor.selectedText,
     },

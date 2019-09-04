@@ -1,4 +1,3 @@
-import { DesignSystem, DesignSystemResolver } from "../design-system";
 import {
     accentFillRest,
     accentForegroundCut,
@@ -13,6 +12,7 @@ import {
     neutralOutlineHover,
     neutralOutlineRest,
 } from "../utilities/color";
+import { applyDisabledState } from "../utilities/disabled";
 import { ComponentStyles } from "@microsoft/fast-jss-manager";
 import {
     add,
@@ -25,7 +25,7 @@ import {
     toPx,
 } from "@microsoft/fast-jss-utilities";
 import { ToggleClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
-import { applyDisabledState } from "../utilities/disabled";
+import { DesignSystem, DesignSystemResolver } from "../design-system";
 import { applyScaledTypeRamp } from "../utilities/typography";
 import { densityCategorySwitch, heightNumber } from "../utilities/density";
 import { designUnit, focusOutlineWidth, outlineWidth } from "../utilities/design-system";
@@ -34,6 +34,8 @@ import {
     highContrastBackground,
     highContrastBorderColor,
     highContrastDoubleFocus,
+    highContrastHighlightBackground,
+    highContrastSelectedBackground,
     highContrastSelector,
 } from "../utilities/high-contrast";
 
@@ -178,13 +180,9 @@ const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = {
         "& $toggle_stateIndicator": {
             left: toPx(indicatorCheckedLeft),
             background: accentForegroundCut,
-            [highContrastSelector]: {
-                background: "HighlightText",
-            },
+            ...highContrastSelectedBackground,
             "&:hover": {
-                [highContrastSelector]: {
-                    background: "Highlight",
-                },
+                ...highContrastHighlightBackground,
             },
         },
     },
