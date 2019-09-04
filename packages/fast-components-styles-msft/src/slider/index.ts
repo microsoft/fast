@@ -1,5 +1,5 @@
+import { SliderClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import { ComponentStyles } from "@microsoft/fast-jss-manager";
-import { applyCursorPointer } from "../utilities/cursor";
 import {
     add,
     applyFocusVisible,
@@ -18,7 +18,7 @@ import {
     neutralForegroundRest,
     neutralOutlineRest,
 } from "../utilities/color";
-import { SliderClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
+import { applyCursorPointer } from "../utilities/cursor";
 import { heightNumber } from "../utilities/density";
 import {
     backgroundColor,
@@ -29,6 +29,7 @@ import { applyDisabledState } from "../utilities/disabled";
 import { applyElevation, ElevationMultiplier } from "../utilities/elevation";
 import {
     highContrastBackground,
+    highContrastDisabledBackground,
     highContrastHighlightBackground,
     highContrastSelector,
 } from "../utilities/high-contrast";
@@ -105,9 +106,7 @@ const styles: ComponentStyles<SliderClassNameContract, DesignSystem> = {
     slider__disabled: {
         ...applyDisabledState(),
         "& $slider_thumb, & $slider_backgroundTrack": {
-            [highContrastSelector]: {
-                background: "GrayText",
-            },
+            ...highContrastDisabledBackground,
             "&:hover": {
                 background: neutralForegroundRest,
             },

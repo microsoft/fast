@@ -66,7 +66,7 @@ const styles: ComponentStyles<LightweightButtonClassNameContract, DesignSystem> 
         },
         ...highContrastForeground,
         "a&": {
-            "&$button__disabled": {
+            "&:hover$button__disabled": {
                 ...highContrastDisabledForeground,
             },
         },
