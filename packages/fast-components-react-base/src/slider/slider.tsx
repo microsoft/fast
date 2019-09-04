@@ -416,7 +416,7 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
         const touchStartCallback: (event: React.TouchEvent) => void =
             thumb === SliderThumb.upperThumb
                 ? this.handleUpperThumbTouchStart
-                : this.handleLowerThumbMouseTouchStart;
+                : this.handleLowerThumbTouchStart;
 
         if (typeof this.props.thumb === "function") {
             return this.props.thumb(
@@ -875,7 +875,7 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
             isDragging: true,
             activeThumb: thumb,
         });
-        this.updateDragValue(this.getMouseDragValue(e.nativeEvent, thumb), thumb);
+        this.updateDragValue(this.getDragValue(e.nativeEvent, thumb), thumb);
     };
 
     /**
@@ -886,15 +886,15 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
             return;
         }
         this.updateDragValue(
-            this.getMouseDragValue(event, this.state.activeThumb),
+            this.getDragValue(event, this.state.activeThumb),
             this.state.activeThumb
         );
     };
 
     /**
-     *  Get dragvalue from mouse event
+     *  Get dragvalue from mouse event or touch
      */
-    private getMouseDragValue = (event: MouseEvent, thumb: SliderThumb): number => {
+    private getDragValue = (event: MouseEvent | Touch, thumb: SliderThumb): number => {
         this.updateDirection();
         this.updateSliderDimensions();
         const pixelCoordinate: number =
@@ -915,7 +915,7 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
         this.handleThumbTouchStart(e, SliderThumb.upperThumb);
     };
 
-    private handleLowerThumbMouseTouchStart = (e: React.TouchEvent): void => {
+    private handleLowerThumbTouchStart = (e: React.TouchEvent): void => {
         this.handleThumbTouchStart(e, SliderThumb.lowerThumb);
     };
 
@@ -934,7 +934,7 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
             activeThumb: thumb,
         });
         const thisTouch: Touch = e.nativeEvent.touches.item(0);
-        this.updateDragValue(this.getTouchDragValue(thisTouch, thumb), thumb);
+        this.updateDragValue(this.getDragValue(thisTouch, thumb), thumb);
     };
 
     /**
@@ -944,7 +944,10 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
         if (isNil(this.rootElement.current)) {
             return null;
         }
-        for (let i: number = 0; i < event.touches.length; i++) {
+
+        const touchCount: number = event.touches.length;
+
+        for (let i: number = 0; i < touchCount; i++) {
             const thisTouch: Touch = event.touches.item(i);
             const touchElement: HTMLElement = thisTouch.target as HTMLElement;
             if (
@@ -959,7 +962,7 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
     };
 
     /**
-     *  Handle mouse moves during a thumb drag operation
+     *  Handle touch moves during a thumb drag operation
      */
     private handleTouchMove = (event: TouchEvent): void => {
         if (this.props.disabled || event.defaultPrevented) {
@@ -967,30 +970,14 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
         }
         const validTouch: Touch = this.getValidTouch(event);
         if (validTouch === null) {
+            this.stopTouchDragging();
             return;
         }
 
         this.updateDragValue(
-            this.getTouchDragValue(validTouch, this.state.activeThumb),
+            this.getDragValue(validTouch, this.state.activeThumb),
             this.state.activeThumb
         );
-    };
-
-    /**
-     *  Get dragvalue from touch event
-     */
-    private getTouchDragValue = (touch: Touch, thumb: SliderThumb): number => {
-        this.updateDirection();
-        this.updateSliderDimensions();
-        const pixelCoordinate: number =
-            this.props.orientation === SliderOrientation.vertical
-                ? touch.clientY
-                : touch.clientX;
-        const dragValue: number =
-            (this.props.range.maxValue - this.props.range.minValue) *
-                this.convertPixelToPercent(pixelCoordinate) +
-            this.props.range.minValue;
-        return dragValue;
     };
 
     /**
