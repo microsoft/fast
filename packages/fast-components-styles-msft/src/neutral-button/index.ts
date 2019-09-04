@@ -2,7 +2,7 @@ import { ButtonBaseClassNameContract as NeutralButtonClassNameContract } from "@
 import { ComponentStyles } from "@microsoft/fast-jss-manager";
 import { DesignSystem } from "../design-system";
 import { baseButton, buttonStyles } from "../patterns/button";
-import { applyFocusVisible, format, toPx } from "@microsoft/fast-jss-utilities";
+import { applyFocusVisible } from "@microsoft/fast-jss-utilities";
 import {
     neutralFillActive,
     neutralFillHover,

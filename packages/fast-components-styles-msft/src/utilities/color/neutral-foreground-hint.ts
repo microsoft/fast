@@ -4,7 +4,7 @@ import { colorRecipeFactory, SwatchRecipe } from "./common";
 import { backgroundColor, neutralPalette } from "../design-system";
 
 /**
- * Resolves the index that the contrast serach algorithm should start at
+ * Resolves the index that the contrast search algorithm should start at
  */
 function neutralForegroundHintInitialIndexResolver(
     referenceColor: string,
@@ -17,7 +17,7 @@ function neutralForegroundHintInitialIndexResolver(
 /**
  * resolves the direction to look for accessible swatches
  */
-function neturalForegroundHintDirectionResolver(
+function neutralForegroundHintDirectionResolver(
     referenceIndex: number,
     sourcePalette: Palette,
     designSystem: DesignSystem
@@ -29,7 +29,7 @@ const neutralForegroundHintAlgorithm: ReturnType<
     ReturnType<ReturnType<ReturnType<typeof swatchByContrast>>>
 > = swatchByContrast(backgroundColor)(neutralPalette)(
     neutralForegroundHintInitialIndexResolver
-)(neturalForegroundHintDirectionResolver);
+)(neutralForegroundHintDirectionResolver);
 
 function contrastTargetFactory(
     targetContrast: number

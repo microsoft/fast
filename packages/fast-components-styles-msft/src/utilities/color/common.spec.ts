@@ -48,7 +48,7 @@ describe("parseColorHexRGB", (): void => {
     test("should parse #RRGGBB color strings", (): void => {
         expect(parseColorString("#001122") instanceof ColorRGBA64).toBe(true);
     });
-    test("should throw if the color is a malformed shothand hex", (): void => {
+    test("should throw if the color is a malformed shorthand hex", (): void => {
         expect(
             (): void => {
                 parseColorString("#GGG");

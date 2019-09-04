@@ -28,7 +28,7 @@ describe("neutralLayer", (): void => {
                 designSystemDefaults.neutralPalette[NeutralPaletteDarkModeLayers.L1]
             );
         });
-        test("should opperate on a provided background color", (): void => {
+        test("should operate on a provided background color", (): void => {
             expect(neutralLayerL1((): string => "#000000")(designSystemDefaults)).toBe(
                 designSystemDefaults.neutralPalette[NeutralPaletteDarkModeLayers.L1]
             );
@@ -49,7 +49,7 @@ describe("neutralLayer", (): void => {
                 designSystemDefaults.neutralPalette[NeutralPaletteDarkModeLayers.L1Alt]
             );
         });
-        test("should opperate on a provided background color", (): void => {
+        test("should operate on a provided background color", (): void => {
             expect(neutralLayerL1Alt((): string => "#000000")(designSystemDefaults)).toBe(
                 designSystemDefaults.neutralPalette[NeutralPaletteDarkModeLayers.L1Alt]
             );
@@ -72,7 +72,7 @@ describe("neutralLayer", (): void => {
                 designSystemDefaults.neutralPalette[NeutralPaletteDarkModeLayers.L2]
             );
         });
-        test("should opperate on a provided background color", (): void => {
+        test("should operate on a provided background color", (): void => {
             expect(neutralLayerL2((): string => "#000000")(designSystemDefaults)).toBe(
                 designSystemDefaults.neutralPalette[NeutralPaletteDarkModeLayers.L2]
             );
@@ -93,7 +93,7 @@ describe("neutralLayer", (): void => {
                 designSystemDefaults.neutralPalette[NeutralPaletteDarkModeLayers.L3]
             );
         });
-        test("should opperate on a provided background color", (): void => {
+        test("should operate on a provided background color", (): void => {
             expect(neutralLayerL3((): string => "#000000")(designSystemDefaults)).toBe(
                 designSystemDefaults.neutralPalette[NeutralPaletteDarkModeLayers.L3]
             );
@@ -114,7 +114,7 @@ describe("neutralLayer", (): void => {
                 designSystemDefaults.neutralPalette[NeutralPaletteDarkModeLayers.L4]
             );
         });
-        test("should opperate on a provided background color", (): void => {
+        test("should operate on a provided background color", (): void => {
             expect(neutralLayerL4((): string => "#000000")(designSystemDefaults)).toBe(
                 designSystemDefaults.neutralPalette[NeutralPaletteDarkModeLayers.L4]
             );
@@ -133,7 +133,7 @@ describe("neutralLayer", (): void => {
             ).toBeTruthy();
         });
 
-        test("should opperate on a provided background color", (): void => {
+        test("should operate on a provided background color", (): void => {
             const color: string = neutralLayerFloating((): string => "#000000")(
                 designSystemDefaults
             );
@@ -150,7 +150,7 @@ describe("neutralLayer", (): void => {
                 )
             ).toBeTruthy();
         });
-        test("should opperate on a provided background color", (): void => {
+        test("should operate on a provided background color", (): void => {
             const color: string = neutralLayerCardContainer((): string => "#000000")(
                 designSystemDefaults
             );
@@ -167,7 +167,7 @@ describe("neutralLayer", (): void => {
                 )
             ).toBeTruthy();
         });
-        test("should opperate on a provided background color", (): void => {
+        test("should operate on a provided background color", (): void => {
             const color: string = neutralLayerCard((): string => "#000000")(
                 designSystemDefaults
             );

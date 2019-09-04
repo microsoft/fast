@@ -1,5 +1,5 @@
-import { DesignSystem, withDesignSystemDefaults } from "../design-system";
-import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager";
+import { DesignSystem } from "../design-system";
+import { ComponentStyles } from "@microsoft/fast-jss-manager";
 import { HeadingClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import { applyFontWeightSemiBold } from "../utilities/fonts";
 

@@ -1,8 +1,5 @@
 import { clamp, inRange } from "lodash-es";
-import defaultDesignSystem, {
-    DesignSystem,
-    DesignSystemResolver,
-} from "../../design-system";
+import { DesignSystem, DesignSystemResolver } from "../../design-system";
 import { backgroundColor } from "../../utilities/design-system";
 import { accentPalette, neutralPalette } from "../design-system";
 import {

@@ -1,9 +1,5 @@
 import { BadgeClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
-import {
-    ComponentStyles,
-    ComponentStyleSheet,
-    CSSRules,
-} from "@microsoft/fast-jss-manager";
+import { ComponentStyles, ComponentStyleSheet } from "@microsoft/fast-jss-manager";
 import { ellipsis, format, toPx } from "@microsoft/fast-jss-utilities";
 import { DesignSystem, withDesignSystemDefaults } from "../design-system/index";
 import { applyCornerRadius } from "../utilities/border";

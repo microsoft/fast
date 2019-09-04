@@ -1,5 +1,5 @@
-import { DesignSystem, withDesignSystemDefaults } from "../design-system";
-import { ComponentStyles, ComponentStyleSheet } from "@microsoft/fast-jss-manager";
+import { DesignSystem } from "../design-system";
+import { ComponentStyles } from "@microsoft/fast-jss-manager";
 import { LabelClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import { applyScreenReader } from "@microsoft/fast-jss-utilities";
 import { neutralForegroundRest } from "../utilities/color";
