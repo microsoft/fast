@@ -143,12 +143,19 @@ class Navigation {
         return this.resolveDataLocations(this.dataLocation)
             .map(
                 (dataLocation: string): NavigationItem => {
+                    const normalizedDataLocation: string = normalizeDataLocation(
+                        dataLocation,
+                        this.config.data,
+                        this.config.schema
+                    );
                     // return a previously resolved navigation item
-                    if (typeof this.navigationMap[dataLocation] === "undefined") {
-                        this.setItemToNavigationMap(dataLocation);
+                    if (
+                        typeof this.navigationMap[normalizedDataLocation] === "undefined"
+                    ) {
+                        this.setItemToNavigationMap(normalizedDataLocation);
                     }
 
-                    return this.navigationMap[dataLocation];
+                    return this.navigationMap[normalizedDataLocation];
                 }
             )
             .map(this.updateDefaultValues);
@@ -182,25 +189,25 @@ class Navigation {
         );
     }
 
+    /**
+     * Normalize the data location to use bracket notation for arrays
+     */
     private normalizeDataLocation(dataLocation: string): string {
         const normalizedDataLocation: string = normalizeDataLocation(
             dataLocation,
-            this.config.data
+            this.config.data,
+            this.config.schema
         );
 
-        return !this.reactChildrenDataLocations.includes(dataLocation) ||
-            typeof get(this.config.data, dataLocation) === "string"
+        return !this.reactChildrenDataLocations.includes(normalizedDataLocation) ||
+            typeof get(this.config.data, normalizedDataLocation) === "string"
             ? normalizedDataLocation
             : `${normalizedDataLocation}.${propsKeyword}`;
     }
 
     private getDataLocations(dataLocation: string): Set<string> {
         return new Set(
-            [""].concat(
-                this.getLocationsFromSegments(
-                    this.resolveNormalizeDataLocation(dataLocation).split(".")
-                )
-            )
+            [""].concat(this.getLocationsFromSegments(dataLocation.split(".")))
         );
     }
 
@@ -220,7 +227,12 @@ class Navigation {
      * Sets the navigation map for any undefined items
      */
     private setItemToNavigationMap(dataLocation: string): void {
-        if (typeof this.navigationMap[dataLocation] === "undefined") {
+        const normalizedDataLocation: string = normalizeDataLocation(
+            dataLocation,
+            this.config.data,
+            this.config.schema
+        );
+        if (typeof this.navigationMap[normalizedDataLocation] === "undefined") {
             const data: unknown = getPartialData(dataLocation, this.config.data);
             const component: Component = this.getSchemaByDataLocation(
                 this.config.schema,
@@ -233,8 +245,8 @@ class Navigation {
                 component
             );
 
-            this.navigationMap[dataLocation] = {
-                dataLocation,
+            this.navigationMap[normalizedDataLocation] = {
+                dataLocation: normalizedDataLocation,
                 schemaLocation: relativeSchemaLocation,
                 title: get(
                     component.schema,
