@@ -923,7 +923,7 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
         if (e.defaultPrevented || this.isBusyOrDisabled()) {
             return;
         }
-        
+
         e.preventDefault();
         (e.target as HTMLElement).focus();
         window.addEventListener("touchend", this.handleTouchEnd);
