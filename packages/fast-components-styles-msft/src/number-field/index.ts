@@ -13,6 +13,11 @@ const styles: ComponentStyles<NumberFieldClassNameContract, DesignSystem> = {
             format("0 6px 0 {0}", horizontalSpacing()),
             format("0 {0} 0 6px", horizontalSpacing())
         ),
+        "-moz-appearance": "textfield",
+        "&::-webkit-inner-spin-button": {
+            appearance: "none",
+            "-webkit-appearance": "none",
+        },
     },
 };
 
