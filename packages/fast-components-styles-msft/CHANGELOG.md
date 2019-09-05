@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.21.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-styles-msft@4.21.0...@microsoft/fast-components-styles-msft@4.21.1) (2019-09-05)
+
+
+### Bug Fixes
+
+* add paused state to progress ([#2197](https://github.com/Microsoft/fast-dna/issues/2197)) ([f08b28e](https://github.com/Microsoft/fast-dna/commit/f08b28e))
+* button before and after content missing margin and remove incorrect high contrast selector ([#2196](https://github.com/Microsoft/fast-dna/issues/2196)) ([62b50cc](https://github.com/Microsoft/fast-dna/commit/62b50cc))
+* button min-width set equal to height to maintain correct proportions. ([#2185](https://github.com/Microsoft/fast-dna/issues/2185)) ([cdeed84](https://github.com/Microsoft/fast-dna/commit/cdeed84))
+* improve slider thumb animations ([#2187](https://github.com/Microsoft/fast-dna/issues/2187)) ([71ffcd8](https://github.com/Microsoft/fast-dna/commit/71ffcd8))
+
+
+
+
+
 # [4.21.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-styles-msft@4.20.2...@microsoft/fast-components-styles-msft@4.21.0) (2019-08-29)
 
 

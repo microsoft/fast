@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.20.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-msft@4.20.0...@microsoft/fast-components-react-msft@4.20.1) (2019-09-05)
+
+
+### Bug Fixes
+
+* add paused state to progress ([#2197](https://github.com/Microsoft/fast-dna/issues/2197)) ([f08b28e](https://github.com/Microsoft/fast-dna/commit/f08b28e))
+
+
+
+
+
 # [4.20.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-msft@4.19.3...@microsoft/fast-components-react-msft@4.20.0) (2019-08-29)
 
 
