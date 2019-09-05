@@ -28,17 +28,18 @@ function CheckboxStateHandler(props: {
 }
 
 storiesOf("Checkbox", module)
-    .add("Unhandled", () => (
-        <Checkbox inputId={uniqueId()} onChange={action("onChange")} />
-    ))
+    .add("Unhandled", () => {
+        const id: string = uniqueId();
+
+        return <Checkbox inputId={id} onChange={action("onChange")} />;
+    })
     .add("Handled", () => {
+        const id: string = uniqueId();
         function render(
             checked: boolean,
             onChange: React.ChangeEventHandler<HTMLInputElement>
         ): JSX.Element {
-            return (
-                <Checkbox inputId={uniqueId()} checked={checked} onChange={onChange} />
-            );
+            return <Checkbox inputId={id} checked={checked} onChange={onChange} />;
         }
         return <CheckboxStateHandler>{render}</CheckboxStateHandler>;
     })

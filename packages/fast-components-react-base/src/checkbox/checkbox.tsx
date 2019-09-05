@@ -114,8 +114,9 @@ class Checkbox extends Foundation<
                     ref={this.inputRef}
                     onChange={this.handleCheckboxChange}
                     disabled={this.props.disabled || null}
-                    checked={this.state.checked}
+                    defaultChecked={this.state.checked}
                     value={this.props.value}
+                    key={this.props.inputId}
                 />
                 <span className={classNames(checkbox_stateIndicator)} />
                 {this.renderLabelBySlot()}

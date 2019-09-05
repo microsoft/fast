@@ -87,12 +87,27 @@ describe("checkbox", (): void => {
         expect(rendered.find(".input-class").prop("name")).toBe(checkboxName);
     });
 
-    test("should initialize as unchecked if the `checked` prop is not provided", () => {
+    test("should add `checked` attribute to the input element when the checked prop is passed", () => {
+        const rendered: any = shallow(
+            <Checkbox managedClasses={managedClasses} checked={true} inputId={"id"} />
+        );
+
+        expect(rendered.find(".input-class").prop("defaultChecked")).toBe(true);
         expect(
-            shallow(<Checkbox managedClasses={managedClasses} inputId="id" />).state(
-                "checked"
-            )
-        ).toBe(false);
+            rendered
+                .find(".input-class")
+                .html()
+                .includes("checked")
+        ).toBe(true);
+    });
+
+    test("should initialize as unchecked if the `checked` prop is not provided", () => {
+        const rendered: any = shallow(
+            <Checkbox managedClasses={managedClasses} inputId="id" />
+        );
+
+        expect(rendered.state("checked")).toBe(false);
+        expect(rendered.find(".input-class").prop("defaultChecked")).toBe(false);
     });
 
     test("should allow a change event to update the checked state when no `checked` prop is provided", () => {
@@ -101,10 +116,24 @@ describe("checkbox", (): void => {
         );
 
         expect(rendered.state("checked")).toBe(false);
+        expect(rendered.find(".input-class").prop("defaultChecked")).toBe(false);
+        expect(
+            rendered
+                .find(".input-class")
+                .html()
+                .includes("checked")
+        ).toBe(false);
 
         rendered.find(inputSelector).simulate("change");
 
         expect(rendered.state("checked")).toBe(true);
+        expect(rendered.find(".input-class").prop("defaultChecked")).toBe(true);
+        expect(
+            rendered
+                .find(".input-class")
+                .html()
+                .includes("checked")
+        ).toBe(true);
     });
 
     test("should call a registerd callback after a change event", () => {
