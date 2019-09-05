@@ -1,6 +1,6 @@
 import { ButtonBaseClassNameContract as StealthButtonClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import { ComponentStyles } from "@microsoft/fast-jss-manager";
-import { applyFocusVisible, format, toPx } from "@microsoft/fast-jss-utilities";
+import { applyFocusVisible } from "@microsoft/fast-jss-utilities";
 import { DesignSystem } from "../design-system";
 import {
     neutralFillStealthActive,

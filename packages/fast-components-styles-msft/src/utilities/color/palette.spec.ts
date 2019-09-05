@@ -59,7 +59,7 @@ describe("palette", (): void => {
 describe("findSwatchIndex", (): void => {
     const accent: string = accentBaseColor(designSystemDefaults);
 
-    test("should impelment design-system defaults", (): void => {
+    test("should implement design-system defaults", (): void => {
         expect(findSwatchIndex(neutralPalette, "#FFF")({} as DesignSystem)).toBe(0);
         expect(
             findSwatchIndex(accentPalette, accentBaseColor({} as DesignSystem))(
@@ -223,7 +223,7 @@ describe("swatchByContrast", (): void => {
             expect(directionResolver).toHaveBeenCalledTimes(1);
             expect(directionResolver.mock.calls[0][0]).toBe(index);
         });
-        test("should recieve the palette length - 1 if the resolved index is greater than the palette length", (): void => {
+        test("should receive the palette length - 1 if the resolved index is greater than the palette length", (): void => {
             const index: number = 105;
             const indexResolver: jest.SpyInstance = jest.fn(() => index);
             const directionResolver: jest.SpyInstance = jest.fn(() => 1);
@@ -237,7 +237,7 @@ describe("swatchByContrast", (): void => {
                 neutralPalette({} as DesignSystem).length - 1
             );
         });
-        test("should recieve recieve 0 if the resolved index is less than 0", (): void => {
+        test("should receive 0 if the resolved index is less than 0", (): void => {
             const index: number = -20;
             const indexResolver: jest.SpyInstance = jest.fn(() => index);
             const directionResolver: jest.SpyInstance = jest.fn(() => 1);
@@ -275,7 +275,7 @@ describe("swatchByContrast", (): void => {
         });
     });
 
-    test("should return the color at the inital index if it satisfies the predicate", (): void => {
+    test("should return the color at the initial index if it satisfies the predicate", (): void => {
         const indexResolver: () => number = (): number => 0;
         const directionResolver: () => 1 | -1 = (): 1 | -1 => 1;
         const contrastCondition: () => boolean = (): boolean => true;

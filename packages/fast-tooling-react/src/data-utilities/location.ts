@@ -21,6 +21,7 @@ import { isPrimitiveReactNode } from "./node-types";
  */
 
 export const squareBracketsRegex: RegExp = /\[(\d+)\]/g;
+export const firstCharacterDotRegex: RegExp = /^(\.)/;
 
 /**
  * Finds the child option using the schema id
@@ -121,7 +122,7 @@ export function getDataLocationsOfChildren(
     });
 
     return dataLocationsOfChildren.map((dataLocationOfChildren: string) => {
-        return normalizeDataLocation(dataLocationOfChildren, data);
+        return normalizeDataLocation(dataLocationOfChildren, data, schema);
     });
 }
 
@@ -151,7 +152,8 @@ export function getDataLocationsOfPlugins(
                 schemaLocation === "" ? schema : get(schema, schemaLocation);
             const normalizedDataLocation: string = normalizeDataLocation(
                 dataLocation,
-                data
+                data,
+                schema
             );
             const dataLocationOfPlugin: string =
                 dataLocationPrefix === ""
@@ -313,7 +315,7 @@ function mapSchemaLocationSegmentFromDataLocationSegment(
         return mapSchemaLocationSegmentFromDataLocationSegment(
             schema.oneOf[index],
             dataLocationSegment,
-            `${schemaLocation}${modifier}${oneOfAnyOfType.oneOf}.${index}`,
+            `${schemaLocation}${modifier}${oneOfAnyOfType.oneOf}[${index}]`,
             data
         );
     } else if (schema.anyOf) {
@@ -322,7 +324,7 @@ function mapSchemaLocationSegmentFromDataLocationSegment(
         return mapSchemaLocationSegmentFromDataLocationSegment(
             schema.anyOf[index],
             dataLocationSegment,
-            `${schemaLocation}${modifier}${oneOfAnyOfType.anyOf}.${index}`,
+            `${schemaLocation}${modifier}${oneOfAnyOfType.anyOf}[${index}]`,
             data
         );
     } else if (additionalProperty && get(schema, PropertyKeyword.additionalProperties)) {
@@ -662,21 +664,21 @@ function getSchemaOneOfAnyOfLocationSegments(schema: any, data: any): string[] {
 
     if (!!schema[CombiningKeyword.anyOf]) {
         schemaLocationSegments.push(
-            `${CombiningKeyword.anyOf}.${getValidAnyOfOneOfIndex(
+            `${CombiningKeyword.anyOf}[${getValidAnyOfOneOfIndex(
                 CombiningKeyword.anyOf,
                 data,
                 schema
-            )}`
+            )}]`
         );
     }
 
     if (!!schema[CombiningKeyword.oneOf]) {
         schemaLocationSegments.push(
-            `${CombiningKeyword.oneOf}.${getValidAnyOfOneOfIndex(
+            `${CombiningKeyword.oneOf}[${getValidAnyOfOneOfIndex(
                 CombiningKeyword.oneOf,
                 data,
                 schema
-            )}`
+            )}]`
         );
     }
 
@@ -703,37 +705,84 @@ export function getPartialData(location: string, data: any): any {
 }
 
 /**
+ * Converts all property locations to dot notation
+ */
+export function normalizeDataLocationToDotNotation(dataLocation: string): string {
+    return dataLocation
+        .replace(squareBracketsRegex, `.$1`)
+        .replace(firstCharacterDotRegex, "");
+}
+
+/**
  * Converts all property locations to dot notation and all array item references to bracket notation
  */
-export function normalizeDataLocation(dataLocation: string, data: any): string {
-    const normalizedDataLocation: string = dataLocation.replace(
-        squareBracketsRegex,
-        `.$1`
-    ); // convert all [ ] to . notation
-    return arrayItemsToBracketNotation(normalizedDataLocation, data); // convert back all array items to use [ ]
+export function normalizeDataLocation(
+    dataLocation: string,
+    data: any,
+    schema: any
+): string {
+    return arrayItemsToBracketNotation(
+        normalizeDataLocationToDotNotation(dataLocation),
+        data,
+        schema
+    );
+}
+
+function containsBrackets(dataLocation: string): boolean {
+    return dataLocation.match(squareBracketsRegex) !== null;
 }
 
 /**
  * Converts a data location strings array items into bracket notation
  */
-function arrayItemsToBracketNotation(dataLocation: string, data: any): string {
+function arrayItemsToBracketNotation(
+    dataLocation: string,
+    data: any,
+    schema: any
+): string {
     const normalizedDataLocation: string[] = [];
-    const dataLocations: string[] = dataLocation.split(".");
+    const dataLocations: string[] = [""].concat(dataLocation.split("."));
+    const isSchemaDefined: boolean = !!schema;
 
     for (let i: number = 0; i < dataLocations.length; i++) {
-        const currentDataLocation: string = dataLocations.slice(0, i + 1).join(".");
-        const subData: any = get(data, currentDataLocation);
+        const isRoot: boolean = i === 0;
+        const currentDataLocation: string = dataLocations
+            .slice(0, i + 1)
+            .join(".")
+            .replace(firstCharacterDotRegex, "");
+        const subData: any = isRoot ? data : get(data, currentDataLocation);
+        let subSchemaType: any = "object";
 
-        // if the data is an array and not a react property
-        if (Array.isArray(subData) && dataLocations[i + 1] !== undefined) {
+        if (isSchemaDefined) {
+            subSchemaType = isRoot
+                ? get(schema, typeKeyword)
+                : get(
+                      schema,
+                      `${mapSchemaLocationFromDataLocation(
+                          currentDataLocation,
+                          schema,
+                          data
+                      )}.${typeKeyword}`
+                  );
+        }
+
+        // if the data is an array
+        if (
+            dataLocations[i + 1] !== void 0 &&
+            ((isSchemaDefined &&
+                (subSchemaType === "array" ||
+                    (subSchemaType === "children" &&
+                        !isNaN(parseInt(dataLocations[i + 1], 10))))) ||
+                Array.isArray(subData))
+        ) {
             normalizedDataLocation.push(`${dataLocations[i]}[${dataLocations[i + 1]}]`);
-            i++;
+            i++; // skip over the next item since we are adding it now
         } else {
             normalizedDataLocation.push(dataLocations[i]);
         }
     }
 
-    return normalizedDataLocation.join(".");
+    return normalizedDataLocation.join(".").replace(firstCharacterDotRegex, "");
 }
 
 /**

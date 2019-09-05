@@ -5,6 +5,7 @@ import { reactChildrenStringSchema } from "../form/form-item.children.text";
 import oneOfSchema from "../../__tests__/schemas/one-of.schema.json";
 import childrenSchema from "../../__tests__/schemas/children.schema.json";
 import textFieldSchema from "../../__tests__/schemas/textarea.schema.json";
+import generalSchema from "../../__tests__/schemas/general.schema.json";
 import deeplyNestedOneOfSchema from "../../__tests__/schemas/one-of-deeply-nested.schema.json";
 
 /**
@@ -21,6 +22,11 @@ describe("Navigation", () => {
             name: textFieldSchema.id,
             component: null,
             schema: textFieldSchema,
+        },
+        {
+            name: generalSchema.id,
+            component: null,
+            schema: generalSchema,
         },
         { name: oneOfSchema.id, component: null, schema: oneOfSchema },
     ];
@@ -163,7 +169,7 @@ describe("Navigation", () => {
         const nav: Navigation = new Navigation({
             data,
             schema,
-            dataLocation: "items.0",
+            dataLocation: "items[0]",
             childOptions: [],
         });
 
@@ -243,7 +249,7 @@ describe("Navigation", () => {
         });
         expect(navItems[1]).toEqual({
             dataLocation: "foo",
-            schemaLocation: "anyOf.0.properties.foo",
+            schemaLocation: "anyOf[0].properties.foo",
             title: "Untitled",
             schema,
             data: data.foo,
@@ -307,7 +313,7 @@ describe("Navigation", () => {
         });
         expect(navItems[1]).toEqual({
             dataLocation: "bar",
-            schemaLocation: "oneOf.1.properties.bar",
+            schemaLocation: "oneOf[1].properties.bar",
             title: "Untitled",
             schema,
             data: data.bar,
@@ -398,7 +404,7 @@ describe("Navigation", () => {
             title: textFieldSchema.title,
         });
     });
-    test("should return navigation items for a nested array of children", () => {
+    test("should return navigation items for children nested in an array of children", () => {
         const data: any = {
             children: [
                 {
@@ -413,7 +419,7 @@ describe("Navigation", () => {
             ],
         };
         const nav: Navigation = new Navigation({
-            dataLocation: "children[0].props.children.props",
+            dataLocation: "children.0.props.children.props",
             data,
             schema: childrenSchema,
             childOptions,
@@ -443,6 +449,54 @@ describe("Navigation", () => {
             schema: textFieldSchema,
             title: textFieldSchema.title,
             data: data.children[0].props.children.props,
+            default: void 0,
+        });
+    });
+    test("should return navigation items for an array of children nested in children", () => {
+        const data: any = {
+            children: {
+                id: childrenSchema.id,
+                props: {
+                    restrictedWithChildren: [
+                        {
+                            id: textFieldSchema.id,
+                            props: {},
+                        },
+                    ],
+                },
+            },
+        };
+        const nav: Navigation = new Navigation({
+            dataLocation: "children.props.restrictedWithChildren.0.props",
+            data,
+            schema: generalSchema,
+            childOptions,
+        });
+        const navItems: NavigationItem[] = nav.get();
+
+        expect(navItems.length).toBe(3);
+        expect(navItems[0]).toEqual({
+            dataLocation: "",
+            schemaLocation: "",
+            schema: generalSchema,
+            title: generalSchema.title,
+            data,
+            default: void 0,
+        });
+        expect(navItems[1]).toEqual({
+            dataLocation: "children.props",
+            schemaLocation: "",
+            schema: childrenSchema,
+            title: childrenSchema.title,
+            data: data.children.props,
+            default: void 0,
+        });
+        expect(navItems[2]).toEqual({
+            dataLocation: "children.props.restrictedWithChildren[0].props",
+            schemaLocation: "",
+            schema: textFieldSchema,
+            title: textFieldSchema.title,
+            data: data.children.props.restrictedWithChildren[0].props,
             default: void 0,
         });
     });
@@ -646,7 +700,7 @@ describe("Navigation", () => {
         });
         expect(navItems[1]).toEqual({
             dataLocation: "numberOrString",
-            schemaLocation: "oneOf.2.properties.numberOrString",
+            schemaLocation: "oneOf[2].properties.numberOrString",
             data: data.numberOrString,
             schema: oneOfSchema,
             title: oneOfSchema.oneOf[2].properties.numberOrString.title,
@@ -654,7 +708,8 @@ describe("Navigation", () => {
         });
         expect(navItems[2]).toEqual({
             dataLocation: "numberOrString.object",
-            schemaLocation: "oneOf.2.properties.numberOrString.oneOf.2.properties.object",
+            schemaLocation:
+                "oneOf[2].properties.numberOrString.oneOf[2].properties.object",
             data: data.numberOrString.object,
             schema: oneOfSchema,
             title:
@@ -686,7 +741,7 @@ describe("Navigation", () => {
         });
         expect(navItems[1]).toEqual({
             dataLocation: "numberOrString[0]",
-            schemaLocation: "oneOf.2.properties.numberOrString.oneOf.3.items",
+            schemaLocation: "oneOf[2].properties.numberOrString.oneOf[3].items",
             data: data.numberOrString[0],
             schema: oneOfSchema,
             title: oneOfSchema.oneOf[2].properties.numberOrString.oneOf[3].items.title,
@@ -733,7 +788,7 @@ describe("Navigation", () => {
         });
         expect(navItems[2]).toEqual({
             dataLocation: "children.props.numberOrString",
-            schemaLocation: "oneOf.2.properties.numberOrString",
+            schemaLocation: "oneOf[2].properties.numberOrString",
             data: data.children.props.numberOrString,
             schema: oneOfSchema,
             title: oneOfSchema.oneOf[2].properties.numberOrString.title,
@@ -741,7 +796,8 @@ describe("Navigation", () => {
         });
         expect(navItems[3]).toEqual({
             dataLocation: "children.props.numberOrString.object",
-            schemaLocation: "oneOf.2.properties.numberOrString.oneOf.2.properties.object",
+            schemaLocation:
+                "oneOf[2].properties.numberOrString.oneOf[2].properties.object",
             data: data.children.props.numberOrString.object,
             schema: oneOfSchema,
             title:
@@ -785,7 +841,7 @@ describe("Navigation", () => {
         });
         expect(navItems[2]).toEqual({
             dataLocation: "propertyKey.propertyKey1",
-            schemaLocation: "properties.propertyKey.oneOf.0.properties.propertyKey1",
+            schemaLocation: "properties.propertyKey.oneOf[0].properties.propertyKey1",
             data: data.propertyKey.propertyKey1,
             schema: deeplyNestedOneOfSchema,
             title:
@@ -796,7 +852,7 @@ describe("Navigation", () => {
         expect(navItems[3]).toEqual({
             dataLocation: "propertyKey.propertyKey1.propertyKey2",
             schemaLocation:
-                "properties.propertyKey.oneOf.0.properties.propertyKey1.properties.propertyKey2",
+                "properties.propertyKey.oneOf[0].properties.propertyKey1.properties.propertyKey2",
             data: data.propertyKey.propertyKey1.propertyKey2,
             schema: deeplyNestedOneOfSchema,
             title:
@@ -853,7 +909,7 @@ describe("Navigation", () => {
         });
         expect(navItems[1]).toEqual({
             dataLocation: "propertyKey",
-            schemaLocation: "oneOf.0.oneOf.1.properties.propertyKey",
+            schemaLocation: "oneOf[0].oneOf[1].properties.propertyKey",
             data: data.propertyKey,
             schema,
             title: "Untitled",
@@ -921,6 +977,7 @@ describe("Navigation", () => {
     test("should return navigation items of arrays with inherited default values", () => {
         const defaultValue1: string = "a";
         const schema: any = {
+            type: "object",
             properties: {
                 foo: {
                     type: "array",
@@ -934,16 +991,16 @@ describe("Navigation", () => {
             },
         };
         const nav: Navigation = new Navigation({
-            dataLocation: "foo.0",
+            dataLocation: "foo[0]",
             data: {},
             schema,
             childOptions,
         });
         const navItems: NavigationItem[] = nav.get();
 
-        expect(navItems.length).toBe(3);
-        expect(navItems[2]).toEqual({
-            dataLocation: "foo.0",
+        expect(navItems.length).toBe(2);
+        expect(navItems[1]).toEqual({
+            dataLocation: "foo[0]",
             schemaLocation: "properties.foo.items",
             data: void 0,
             schema,
@@ -976,9 +1033,9 @@ describe("Navigation", () => {
         });
         const navItems: NavigationItem[] = nav.get();
 
-        expect(navItems.length).toBe(3);
-        expect(navItems[2]).toEqual({
-            dataLocation: "foo.0",
+        expect(navItems.length).toBe(2);
+        expect(navItems[1]).toEqual({
+            dataLocation: "foo[0]",
             schemaLocation: "properties.foo.items",
             data: void 0,
             schema,

@@ -1,5 +1,5 @@
 import { CSSRules } from "@microsoft/fast-jss-manager";
-import { DesignSystem, withDesignSystemDefaults } from "../design-system";
+import { DesignSystem } from "../design-system";
 
 export function applyCursorDefault(): CSSRules<DesignSystem> {
     return {

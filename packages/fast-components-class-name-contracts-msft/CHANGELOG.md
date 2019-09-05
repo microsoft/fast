@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.7.3](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-class-name-contracts-msft@4.7.2...@microsoft/fast-components-class-name-contracts-msft@4.7.3) (2019-09-05)
+
+
+### Bug Fixes
+
+* add paused state to progress ([#2197](https://github.com/Microsoft/fast-dna/issues/2197)) ([f08b28e](https://github.com/Microsoft/fast-dna/commit/f08b28e))
+
+
+
+
+
 ## [4.7.2](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-class-name-contracts-msft@4.7.1...@microsoft/fast-components-class-name-contracts-msft@4.7.2) (2019-08-22)
 
 **Note:** Version bump only for package @microsoft/fast-components-class-name-contracts-msft

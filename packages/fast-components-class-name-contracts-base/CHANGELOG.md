@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.3.2](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-class-name-contracts-base@4.3.1...@microsoft/fast-components-class-name-contracts-base@4.3.2) (2019-09-05)
+
+
+### Bug Fixes
+
+* improve slider thumb animations ([#2187](https://github.com/Microsoft/fast-dna/issues/2187)) ([71ffcd8](https://github.com/Microsoft/fast-dna/commit/71ffcd8))
+
+
+
+
+
 ## [4.3.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-class-name-contracts-base@4.3.0...@microsoft/fast-components-class-name-contracts-base@4.3.1) (2019-08-22)
 
 **Note:** Version bump only for package @microsoft/fast-components-class-name-contracts-base

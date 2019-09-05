@@ -18,7 +18,7 @@ describe("mapPluginsToSchema", () => {
         set(updatedSchema, "properties.pluginModifiedString.type", "number");
         set(
             updatedSchema,
-            "properties.oneOfs.oneOf.0.properties.pluginModifiedString.type",
+            "properties.oneOfs.oneOf[0].properties.pluginModifiedString.type",
             "number"
         );
 
@@ -39,7 +39,7 @@ describe("mapPluginsToSchema", () => {
         set(updatedSchema, "properties.pluginModifiedString.type", "number");
         set(
             updatedSchema,
-            "properties.oneOfs.oneOf.0.properties.pluginModifiedString.type",
+            "properties.oneOfs.oneOf[0].properties.pluginModifiedString.type",
             "number"
         );
         set(updatedSchema, "properties.pluginModifiedBoolean.type", "number");
@@ -61,7 +61,10 @@ describe("mapPluginsToSchema", () => {
 
         const updatedSchema: any = cloneDeep(pluginSchema);
         unset(updatedSchema, "properties.pluginModifiedString");
-        unset(updatedSchema, "properties.oneOfs.oneOf.0.properties.pluginModifiedString");
+        unset(
+            updatedSchema,
+            "properties.oneOfs.oneOf[0].properties.pluginModifiedString"
+        );
 
         expect(
             mapPluginsToSchema(pluginSchema, {}, [
@@ -92,7 +95,7 @@ describe("mapPluginsToSchema", () => {
         set(beforeDataUpdateSchema, "properties.pluginModifiedString.type", "number");
         set(
             beforeDataUpdateSchema,
-            "properties.oneOfs.oneOf.0.properties.pluginModifiedString.type",
+            "properties.oneOfs.oneOf[0].properties.pluginModifiedString.type",
             "number"
         );
 
@@ -104,7 +107,7 @@ describe("mapPluginsToSchema", () => {
         unset(afterDataUpdateSchema, "properties.pluginModifiedString");
         unset(
             afterDataUpdateSchema,
-            "properties.oneOfs.oneOf.0.properties.pluginModifiedString"
+            "properties.oneOfs.oneOf[0].properties.pluginModifiedString"
         );
 
         const updatedMappedSchema: any = mapPluginsToSchema(

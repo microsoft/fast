@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.18.2](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-tooling-react@1.18.1...@microsoft/fast-tooling-react@1.18.2) (2019-09-05)
+
+
+### Bug Fixes
+
+* update to use bracket notation on arrays when exporting data locations ([#2184](https://github.com/Microsoft/fast-dna/issues/2184)) ([2768e55](https://github.com/Microsoft/fast-dna/commit/2768e55))
+
+
+
+
+
 ## [1.18.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-tooling-react@1.18.0...@microsoft/fast-tooling-react@1.18.1) (2019-08-29)
 
 **Note:** Version bump only for package @microsoft/fast-tooling-react

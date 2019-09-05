@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.5.4](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-layouts-react@4.5.3...@microsoft/fast-layouts-react@4.5.4) (2019-09-05)
+
+
+### Bug Fixes
+
+* separator announced as button ([#2193](https://github.com/Microsoft/fast-dna/issues/2193)) ([265ccd9](https://github.com/Microsoft/fast-dna/commit/265ccd9))
+
+
+
+
+
 ## [4.5.3](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-layouts-react@4.5.2...@microsoft/fast-layouts-react@4.5.3) (2019-08-29)
 
 **Note:** Version bump only for package @microsoft/fast-layouts-react

@@ -3,6 +3,8 @@ import {
     getDataLocationsOfChildren,
     getDataLocationsOfPlugins,
     mapSchemaLocationFromDataLocation,
+    normalizeDataLocation,
+    normalizeDataLocationToDotNotation,
 } from "./location";
 import { ChildOptionItem } from ".";
 import { PluginLocation } from "./types";
@@ -76,7 +78,7 @@ describe("mapSchemaLocationFromDataLocation", () => {
         );
 
         expect(schemaLocationRoot).toBe("");
-        expect(schemaLocation).toBe("anyOf.1.properties.number");
+        expect(schemaLocation).toBe("anyOf[1].properties.number");
     });
     test("should return a schema location from oneOf locations", () => {
         const schemaLocationRoot: string = mapSchemaLocationFromDataLocation(
@@ -91,7 +93,7 @@ describe("mapSchemaLocationFromDataLocation", () => {
         );
 
         expect(schemaLocationRoot).toBe("");
-        expect(schemaLocation).toBe("oneOf.1.properties.number");
+        expect(schemaLocation).toBe("oneOf[1].properties.number");
     });
     test("should return a schema location from a nested anyOf location", () => {
         const schemaLocationRootProperty: string = mapSchemaLocationFromDataLocation(
@@ -105,9 +107,9 @@ describe("mapSchemaLocationFromDataLocation", () => {
             { nestedAnyOf: { string: "foo" } }
         );
 
-        expect(schemaLocationRootProperty).toBe("anyOf.4.properties.nestedAnyOf");
+        expect(schemaLocationRootProperty).toBe("anyOf[4].properties.nestedAnyOf");
         expect(schemaLocation).toBe(
-            "anyOf.4.properties.nestedAnyOf.anyOf.1.properties.string"
+            "anyOf[4].properties.nestedAnyOf.anyOf[1].properties.string"
         );
     });
     test("should return a schema location from a nested oneOf location", () => {
@@ -123,7 +125,7 @@ describe("mapSchemaLocationFromDataLocation", () => {
         );
 
         expect(schemaLocationRootProperty).toBe("");
-        expect(schemaLocation).toBe("oneOf.2.properties.numberOrString");
+        expect(schemaLocation).toBe("oneOf[2].properties.numberOrString");
     });
     test("should return a schema location from a non-object anyOf location", () => {
         const schemaLocationNumber: string = mapSchemaLocationFromDataLocation(
@@ -137,8 +139,8 @@ describe("mapSchemaLocationFromDataLocation", () => {
             { numberOrString: "foo" }
         );
 
-        expect(schemaLocationNumber).toBe("anyOf.5.properties.numberOrString");
-        expect(schemaLocationString).toBe("anyOf.5.properties.numberOrString");
+        expect(schemaLocationNumber).toBe("anyOf[5].properties.numberOrString");
+        expect(schemaLocationString).toBe("anyOf[5].properties.numberOrString");
     });
     test("should return a schema location from a non-object anyOf location in an array", () => {
         const schemaLocationArrayOfStrings: string = mapSchemaLocationFromDataLocation(
@@ -158,13 +160,13 @@ describe("mapSchemaLocationFromDataLocation", () => {
         );
 
         expect(schemaLocationArrayOfStrings).toBe(
-            "anyOf.5.properties.numberOrString.anyOf.2.items"
+            "anyOf[5].properties.numberOrString.anyOf[2].items"
         );
         expect(schemaLocationArrayOfObjects).toBe(
-            "anyOf.5.properties.numberOrString.anyOf.3.items.anyOf.0.properties.string"
+            "anyOf[5].properties.numberOrString.anyOf[3].items.anyOf[0].properties.string"
         );
         expect(schemaLocationArrayOfNumbers).toBe(
-            "anyOf.5.properties.numberOrString.anyOf.3.items"
+            "anyOf[5].properties.numberOrString.anyOf[3].items"
         );
     });
     test("should return a schema location from a non-object oneOf location in an array", () => {
@@ -180,10 +182,10 @@ describe("mapSchemaLocationFromDataLocation", () => {
         );
 
         expect(schemaLocationArrayOfStrings).toBe(
-            "oneOf.2.properties.numberOrString.oneOf.3.items"
+            "oneOf[2].properties.numberOrString.oneOf[3].items"
         );
         expect(schemaLocationArrayOfNumbers).toBe(
-            "oneOf.2.properties.numberOrString.oneOf.3.items"
+            "oneOf[2].properties.numberOrString.oneOf[3].items"
         );
     });
     test("should return a schema location from a deeply nested oneOf location", () => {
@@ -202,7 +204,7 @@ describe("mapSchemaLocationFromDataLocation", () => {
         );
 
         expect(schemaLocation).toBe(
-            "properties.propertyKey.oneOf.0.properties.propertyKey1.properties.propertyKey2.oneOf.1.properties.foo"
+            "properties.propertyKey.oneOf[0].properties.propertyKey1.properties.propertyKey2.oneOf[1].properties.foo"
         );
     });
     test("should return a schema location from a child location when the child is a component", () => {
@@ -292,7 +294,7 @@ describe("mapSchemaLocationFromDataLocation", () => {
             }
         );
 
-        expect(schemaLocation).toBe("properties.propertyKey.oneOf.0.foo");
+        expect(schemaLocation).toBe("properties.propertyKey.oneOf[0].foo");
     });
     test("should return a schema location early if no schema has been passed", () => {
         const schemaLocation: string = mapSchemaLocationFromDataLocation(
@@ -969,5 +971,69 @@ describe("getDataLocationsOfChildren", () => {
         expect(dataLocationsOfReactChildren[3]).toBe(
             "children[0].props.children.props.children[1]"
         );
+    });
+});
+
+describe("normalizeDataLocation", () => {
+    describe("when the data is undefined", () => {
+        test("should convert a dot location to a bracket location if the schema type is an array", () => {
+            expect(normalizeDataLocation("0", void 0, { type: "array" })).toEqual("[0]");
+        });
+        test("should not convert a dot location to a bracket location if the schema type is not an array", () => {
+            expect(normalizeDataLocation("0", void 0, { type: "object" })).toEqual("0");
+        });
+        test("should convert a dot location to a bracket location if the schema type is children", () => {
+            expect(normalizeDataLocation("0", void 0, { type: "children" })).toEqual(
+                "[0]"
+            );
+        });
+        test("should convert a dot location to a bracket location if the array is a property on an object", () => {
+            expect(
+                normalizeDataLocation("bar.0", void 0, {
+                    type: "object",
+                    properties: { bar: { type: "array" } },
+                })
+            ).toEqual("bar[0]");
+        });
+        test("should convert a dot location to a bracket location that is nested in properties", () => {
+            expect(
+                normalizeDataLocation("foo.0.bar", void 0, {
+                    type: "object",
+                    properties: {
+                        foo: {
+                            type: "array",
+                            items: {
+                                type: "object",
+                                properties: {
+                                    bar: {},
+                                },
+                            },
+                        },
+                    },
+                })
+            ).toEqual("foo[0].bar");
+            expect(normalizeDataLocation("0.foo.bar", void 0, { type: "array" })).toEqual(
+                "[0].foo.bar"
+            );
+        });
+    });
+});
+
+describe("normalizeDataLocationToDotLocation", () => {
+    test("should convert a bracket location to a dot location", () => {
+        expect(normalizeDataLocationToDotNotation("[0]")).toEqual("0");
+    });
+    test("should convert a bracket location to a dot location if the array is a property on an object", () => {
+        expect(normalizeDataLocationToDotNotation("foo[0]")).toEqual("foo.0");
+    });
+    test("should convert a bracket location that is nested in properties to a dot location", () => {
+        expect(normalizeDataLocationToDotNotation("foo[0].bar")).toEqual("foo.0.bar");
+        expect(normalizeDataLocationToDotNotation("[0].foo.bar")).toEqual("0.foo.bar");
+    });
+    test("should not perform conversions on locations that are already dot locations", () => {
+        expect(normalizeDataLocationToDotNotation("0")).toEqual("0");
+        expect(normalizeDataLocationToDotNotation("foo.0")).toEqual("foo.0");
+        expect(normalizeDataLocationToDotNotation("foo.0.bar")).toEqual("foo.0.bar");
+        expect(normalizeDataLocationToDotNotation("0.foo.bar")).toEqual("0.foo.bar");
     });
 });

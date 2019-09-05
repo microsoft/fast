@@ -1,5 +1,3 @@
-import { Palette } from "./palette";
-import { neutralPalette } from "../design-system";
 import { neutralFillCard } from "./neutral-fill-card";
 import defaultDesignSystem, { DesignSystem } from "../../design-system";
 
