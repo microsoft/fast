@@ -28,7 +28,7 @@ class BreakpointTracker {
     /**
      * The subscriptions
      */
-    private subscriptions: BreakpointTrackerCallback[];
+    private subscriptions: BreakpointTrackerCallback[] = [];
 
     /**
      * Constructor for the BreakpointTracker component.
@@ -38,7 +38,6 @@ class BreakpointTracker {
             return;
         }
 
-        this.subscriptions = [];
         this.breakpoint = identifyBreakpoint(window.innerWidth, this._breakpoints);
 
         window.addEventListener("resize", this.requestFrame);
