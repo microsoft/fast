@@ -1,6 +1,7 @@
 import { storiesOf } from "@storybook/react";
 import React from "react";
-import ViewportPositioner, { AxisPositioningMode, ViewportPositionerProps } from "./";
+import { AxisPositioningMode } from "./viewport-positioner.props";
+import ViewportPositioner, { AxisPositioningMode, ViewportContext, ViewportPositionerProps } from "./";
 import Foundation from "@microsoft/fast-components-foundation-react";
 import { ViewportPositionerVerticalPosition } from "./viewport-positioner.props";
 import { isNil } from "lodash-es";

@@ -8,6 +8,7 @@ import {
     FlyoutProps,
     FlyoutVerticalPosition,
 } from "./";
+import {ViewportContext} from "@microsoft/fast-components-react-base";
 import { FlyoutAxisPositioningMode } from "./flyout.props";
 import { Heading, HeadingSize } from "../heading";
 import { Paragraph, ParagraphSize } from "../paragraph";
@@ -24,27 +25,61 @@ interface FlyoutTestState {
 class FlyoutTest extends React.Component<Omit<FlyoutProps, "anchor">, FlyoutTestState> {
     private anchor: React.RefObject<any>;
 
+    private rootElement: React.RefObject<HTMLDivElement> = React.createRef<HTMLDivElement>();
+
     constructor(props: FlyoutProps) {
         super(props);
 
         this.anchor = React.createRef();
+
         this.state = {
             visible: false,
         };
     }
 
+    public componentDidMount(): void {
+        this.rootElement.current.scrollTop = 100;
+        this.rootElement.current.scrollLeft = 100;
+    }
+
     public render(): JSX.Element {
         return (
-            <React.Fragment>
-                <AccentButton
-                    ref={this.anchor}
-                    onClick={this.updateFlyoutState}
-                    style={{ margin: "0 auto" }}
+            <ViewportContext.Provider
+                value={{
+                    viewport: this.rootElement
+                }}
+            >
+                <div
+                    ref={this.rootElement}
+                    style={{
+                        margin: "20px 0",
+                        position: "relative",
+                        height: "400px",
+                        width: "600px",
+                        overflow: "scroll",
+                        whiteSpace: "nowrap"
+                    }}
                 >
-                    Flyout anchor
-                </AccentButton>
-                {this.renderFlyout()}
-            </React.Fragment>
+                    <div
+                        style={{
+                            height: "500px",
+                            width: "800px",
+                            background: "blue",
+                        }}
+                    >
+                        <AccentButton
+                            style={{
+                                margin: "230px 0 0 380px",
+                            }}
+                            ref={this.anchor}
+                            onClick={this.updateFlyoutState}
+                        >
+                            Flyout anchor
+                        </AccentButton>
+                        {this.renderFlyout()}
+                    </div>
+                </div>
+            </ViewportContext.Provider>
         );
     }
 
@@ -54,10 +89,9 @@ class FlyoutTest extends React.Component<Omit<FlyoutProps, "anchor">, FlyoutTest
         }
 
         const { children, visible, ...props }: Partial<FlyoutProps> = this.props;
-        const anchor: HTMLElement = ReactDOM.findDOMNode(this.anchor.current);
 
         return (
-            <Flyout anchor={anchor} visible={this.state.visible} {...props}>
+            <Flyout anchor={this.anchor} visible={this.state.visible} {...props}>
                 {children}
             </Flyout>
         );
@@ -71,25 +105,45 @@ class FlyoutTest extends React.Component<Omit<FlyoutProps, "anchor">, FlyoutTest
 }
 
 storiesOf("Flyout", module)
-    .add("Default", () => <FlyoutTest />)
-    .add("with Children", () => (
-        <FlyoutTest>
-            <Heading size={HeadingSize._5}>Flyout</Heading>
-            <Paragraph size={ParagraphSize._3}>This is a flyout component.</Paragraph>
-            <AccentButton>Accept</AccentButton>
-        </FlyoutTest>
-    ))
-    .add("with soft dismiss", () => (
-        /* tslint:disable-next-line:jsx-no-lambda */
-        <FlyoutTest onDismiss={(): void => alert("soft dismiss")} />
-    ))
-    .add("with Height", () => <FlyoutTest height={"100px"} />)
-    .add("with Width", () => <FlyoutTest width={"200px"} />)
-    .add("with Height and Width", () => <FlyoutTest height={"100px"} width={"200px"} />)
-    .add("with horizontal always in view", () => (
-        <FlyoutTest horizontalAlwaysInView={true} />
-    ))
-    .add("with vertical always in view", () => <FlyoutTest verticalAlwaysInView={true} />)
+    .add("Default", () => (
+        <div>
+            <Heading
+                size={HeadingSize._4}
+            >
+                By default the flyout's only sets the vertical axis positioning mode to "adjacent" which places above or below the anchor based on available space (default placement is below the anchor).
+            </Heading>
+            <FlyoutTest>
+                <Heading size={HeadingSize._5}>Flyout</Heading>
+            </FlyoutTest>
+        </div>))
+    .add("Flyout aligned vertically", () => (
+        <div>
+        <Heading
+            size={HeadingSize._4}
+        >
+            Setting the horizonal axis positioning mode to "inset" aligns the flyout with the anchor horizontally as well as vertically
+        </Heading>
+        <FlyoutTest
+                horizontalPositioningMode={FlyoutAxisPositioningMode.inset}
+                verticalPositioningMode={FlyoutAxisPositioningMode.adjacent}
+            >
+                <Heading size={HeadingSize._5}>Flyout</Heading>
+            </FlyoutTest>
+    </div>))
+    .add("Flyout aligned horizontally", () => (
+            <div>
+            <Heading
+                size={HeadingSize._4}
+            >
+                Setting the verical axis positioning mode to "inset" and the horizontal mode to "adjacent" places the flyout beside the anchor
+            </Heading>
+            <FlyoutTest
+                    horizontalPositioningMode={FlyoutAxisPositioningMode.adjacent}
+                    verticalPositioningMode={FlyoutAxisPositioningMode.inset}
+                >
+                    <Heading size={HeadingSize._5}>Flyout</Heading>
+                </FlyoutTest>
+        </div>))
     .add("with bottom/left adjacent", () => (
         <FlyoutTest
             horizontalPositioningMode={FlyoutAxisPositioningMode.adjacent}
@@ -183,4 +237,15 @@ storiesOf("Flyout", module)
             defaultHorizontalPosition={FlyoutHorizontalPosition.right}
             defaultVerticalPosition={FlyoutVerticalPosition.top}
         />
+    ))
+    .add("with Height", () => <FlyoutTest height={"100px"} />)
+    .add("with Width", () => <FlyoutTest width={"200px"} />)
+    .add("with Height and Width", () => <FlyoutTest height={"100px"} width={"200px"} />)
+    .add("with horizontal always in view", () => (
+        <FlyoutTest horizontalAlwaysInView={true} />
+    ))
+    .add("with vertical always in view", () => <FlyoutTest verticalAlwaysInView={true} />)
+    .add("with soft dismiss", () => (
+        /* tslint:disable-next-line:jsx-no-lambda */
+        <FlyoutTest onDismiss={(): void => alert("soft dismiss")} />
     ));
