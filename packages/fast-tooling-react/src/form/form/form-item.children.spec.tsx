@@ -6,7 +6,7 @@ import {
     keyCodeArrowUp,
     keyCodeEnter,
 } from "@microsoft/fast-web-utilities";
-import { FormItemChildren } from "./form-item.children";
+import { TestFormItemChildren as FormItemChildren } from "./form-item.children";
 import {
     FormItemChildrenClassNameContract,
     FormItemChildrenProps,

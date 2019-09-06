@@ -116,12 +116,12 @@ class Form extends React.Component<
     /**
      * React lifecycle hook
      */
-    public componentWillReceiveProps(nextProps: FormProps): void {
+    public componentDidUpdate(prevProps: FormProps): void {
         const state: Partial<FormState> = this.updateStateForNewProps(
-            nextProps,
-            this.props.data !== nextProps.data,
-            isDifferentSchema(this.props.schema, nextProps.schema),
-            this.props.location !== nextProps.location
+            this.props,
+            prevProps.data !== this.props.data,
+            isDifferentSchema(prevProps.schema, this.props.schema),
+            prevProps.location !== this.props.location
         );
 
         if (state) {

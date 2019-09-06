@@ -115,7 +115,6 @@
     "exenv-es6": "^1.0.0",
     "raf-throttle": "^2.0.3",
     "react-dnd": "^7.4.5",
-    "react-sortable-hoc": "^0.6.8",
     "utility-types": "^3.4.1"
   }
 }
