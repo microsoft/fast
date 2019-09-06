@@ -1,9 +1,5 @@
-import {
-    densityCategorySwitch,
-    heightNumber,
-    horizontalSpacing,
-} from "../utilities/density";
 import { DesignSystem, DesignSystemResolver } from "../design-system";
+import { ComponentStyles } from "@microsoft/fast-jss-manager";
 import { CheckboxClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import {
     add,
@@ -24,7 +20,11 @@ import {
     neutralOutlineRest,
 } from "../utilities/color";
 import { applyCornerRadius } from "../utilities/border";
-import { ComponentStyles } from "@microsoft/fast-jss-manager";
+import {
+    densityCategorySwitch,
+    heightNumber,
+    horizontalSpacing,
+} from "../utilities/density";
 import { applyDisabledState } from "../utilities/disabled";
 import { applyScaledTypeRamp } from "../utilities/typography";
 import { designUnit, outlineWidth } from "../utilities/design-system";
@@ -33,6 +33,8 @@ import { ColorRecipe } from "src/utilities/color/common";
 import {
     highContrastBorderColor,
     highContrastDisabledBorder,
+    highContrastHighlightBackground,
+    highContrastSelectedBackground,
     highContrastSelector,
 } from "../utilities/high-contrast";
 
@@ -158,13 +160,9 @@ const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = {
             },
         },
         "& $checkbox_input": {
-            [highContrastSelector]: {
-                background: "Highlight",
-            },
+            ...highContrastHighlightBackground,
             "&:hover": {
-                [highContrastSelector]: {
-                    background: "HighlightText",
-                },
+                ...highContrastSelectedBackground,
             },
         },
     },

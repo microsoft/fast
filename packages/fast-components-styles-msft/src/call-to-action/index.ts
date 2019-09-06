@@ -23,6 +23,8 @@ import { designUnit } from "../utilities/design-system";
 import {
     highContrastDisabledForeground,
     highContrastForeground,
+    highContrastHighlightForeground,
+    highContrastSelectedForeground,
     highContrastSelector,
 } from "../utilities/high-contrast";
 
@@ -89,9 +91,7 @@ const styles: ComponentStyles<CallToActionClassNameContract, DesignSystem> = {
         "&:hover": {
             "& $callToAction_glyph": {
                 ...applyGlyphTransform(),
-                [highContrastSelector]: {
-                    fill: "HighlightText !important",
-                },
+                ...highContrastSelectedForeground,
             },
         },
         ...applyFocusVisible("& $callToAction_glyph", {
@@ -113,14 +113,10 @@ const styles: ComponentStyles<CallToActionClassNameContract, DesignSystem> = {
     callToAction__primary: {
         "& $callToAction_glyph": {
             fill: accentForegroundCut,
-            [highContrastSelector]: {
-                fill: "HighlightText !important",
-            },
+            ...highContrastSelectedForeground,
         },
         "&:hover $callToAction_glyph": {
-            [highContrastSelector]: {
-                fill: "Highlight !important",
-            },
+            ...highContrastHighlightForeground,
         },
     },
     callToAction__lightweight: {
@@ -130,7 +126,7 @@ const styles: ComponentStyles<CallToActionClassNameContract, DesignSystem> = {
         "&:hover": {
             "& $callToAction_glyph": {
                 fill: accentForegroundHover,
-                ...highContrastForeground,
+                ...highContrastHighlightForeground,
             },
         },
         "&:active": {
@@ -148,7 +144,7 @@ const styles: ComponentStyles<CallToActionClassNameContract, DesignSystem> = {
         "&:hover": {
             "& $callToAction_glyph": {
                 fill: accentForegroundHover,
-                ...highContrastForeground,
+                ...highContrastHighlightForeground,
             },
         },
         "&:active": {},

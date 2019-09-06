@@ -20,7 +20,10 @@ import {
 import { glyphSize, height } from "../utilities/density";
 import { outlineWidth } from "../utilities/design-system";
 import { applyCursorPointer } from "../utilities/cursor";
-import { highContrastSelector } from "../utilities/high-contrast";
+import {
+    highContrastHighlightBackground,
+    highContrastSelector,
+} from "../utilities/high-contrast";
 
 const styles: ComponentStyles<FlipperClassNameContract, DesignSystem> = {
     flipper: {
@@ -67,9 +70,7 @@ const styles: ComponentStyles<FlipperClassNameContract, DesignSystem> = {
             "&::before": {
                 background: neutralFillStealthHover,
                 "border-color": neutralOutlineHover,
-                [highContrastSelector]: {
-                    background: "Highlight",
-                },
+                ...highContrastHighlightBackground,
             },
             "& $flipper_glyph": {
                 [highContrastSelector]: {

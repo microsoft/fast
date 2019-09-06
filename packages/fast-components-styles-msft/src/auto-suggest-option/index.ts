@@ -23,7 +23,7 @@ import { designUnit } from "../utilities/design-system";
 import {
     HighContrastColor,
     highContrastDisabled,
-    highContrastSelection,
+    highContrastSelected,
     highContrastSelector,
     highContrastStealth,
 } from "../utilities/high-contrast";
@@ -58,7 +58,7 @@ const styles: ComponentStyles<AutoSuggestOptionClassNameContract, DesignSystem> 
         }),
         "&:hover": {
             background: neutralFillStealthHover,
-            ...highContrastSelection,
+            ...highContrastSelected,
         },
         ...highContrastStealth,
     },
@@ -79,7 +79,7 @@ const styles: ComponentStyles<AutoSuggestOptionClassNameContract, DesignSystem> 
         background: neutralFillStealthSelected,
         "&:hover": {
             background: neutralFillStealthSelected,
-            ...highContrastSelection,
+            ...highContrastSelected,
         },
     },
 };

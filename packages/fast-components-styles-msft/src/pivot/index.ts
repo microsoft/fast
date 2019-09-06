@@ -1,5 +1,5 @@
+import { ComponentStyles } from "@microsoft/fast-jss-manager";
 import { PivotClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
-import { DesignSystem } from "../design-system";
 import {
     applyFocusVisible,
     directionSwitch,
@@ -15,7 +15,7 @@ import {
     neutralForegroundHover,
     neutralForegroundRest,
 } from "../utilities/color";
-import { ComponentStyles } from "@microsoft/fast-jss-manager";
+import { DesignSystem } from "../design-system";
 import { applyCornerRadius, applyFocusPlaceholderBorder } from "../utilities/border";
 import { applyScaledTypeRamp } from "../utilities/typography";
 import { focusOutlineWidth } from "../utilities/design-system";
@@ -23,6 +23,7 @@ import { applyCursorPointer } from "../utilities/cursor";
 import {
     highContrastBorderColor,
     highContrastForeground,
+    highContrastHighlightBackground,
     highContrastSelector,
 } from "../utilities/high-contrast";
 
@@ -84,9 +85,7 @@ const styles: ComponentStyles<PivotClassNameContract, DesignSystem> = {
         height: toPx(activeIndicatorHeight),
         display: "block",
         background: accentFillRest,
-        [highContrastSelector]: {
-            background: "Highlight",
-        },
+        ...highContrastHighlightBackground,
     },
     pivot_tabPanel: {
         display: "block",
