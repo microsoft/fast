@@ -36,7 +36,7 @@ export enum SliderThumb {
 export interface SliderState {
     upperValue: number;
     lowerValue: number;
-    isDragging: boolean;
+    isMouseDragging: boolean;
     isTouchDragging: boolean;
     dragValue: number;
     activeThumb: SliderThumb;
@@ -166,7 +166,7 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
             upperValue: initialValue.maxValue,
             lowerValue: initialValue.minValue,
             activeThumb: null,
-            isDragging: false,
+            isMouseDragging: false,
             isTouchDragging: false,
             isIncrementing: false,
             incrementDirection: 1,
@@ -298,7 +298,7 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
             classNames(
                 slider,
                 [slider__disabled, this.props.disabled],
-                [slider__dragging, this.state.isDragging],
+                [slider__dragging, this.state.isMouseDragging || this.state.isTouchDragging],
                 [slider__touchDragging, this.state.isTouchDragging],
                 [slider__incrementing, this.state.isIncrementing],
                 [slider__vertical, isVertical],
@@ -872,7 +872,7 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
         window.addEventListener("mouseup", this.handleWindowMouseUp);
         window.addEventListener("mousemove", this.handleMouseMove);
         this.setState({
-            isDragging: true,
+            isMouseDragging: true,
             activeThumb: thumb,
         });
         this.updateDragValue(this.getDragValue(e.nativeEvent, thumb), thumb);
@@ -940,7 +940,7 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
     /**
      *  Returns first valid touch found in a touch event
      */
-    private getValidTouch = (event: TouchEvent): Touch => {
+    private getValidTouch = (event: TouchEvent): Touch | null => {
         if (isNil(this.rootElement.current)) {
             return null;
         }
@@ -1165,13 +1165,13 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
      *  Ends a thumb drag operation
      */
     private stopDragging = (): void => {
-        if (!this.state.isDragging) {
+        if (!this.state.isMouseDragging) {
             return;
         }
         window.removeEventListener("mouseup", this.handleWindowMouseUp);
         window.removeEventListener("mousemove", this.handleMouseMove);
         this.setState({
-            isDragging: false,
+            isMouseDragging: false,
         });
     };
 
@@ -1257,7 +1257,7 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
     private isBusyOrDisabled = (): boolean => {
         if (
             this.props.disabled ||
-            this.state.isDragging ||
+            this.state.isMouseDragging ||
             this.state.isIncrementing ||
             this.state.isTouchDragging
         ) {

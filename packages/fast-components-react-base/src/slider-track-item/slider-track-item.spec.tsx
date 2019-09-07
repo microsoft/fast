@@ -31,7 +31,7 @@ describe("slider track item", (): void => {
         upperValue: 100,
         lowerValue: 0,
         activeThumb: null,
-        isDragging: false,
+        isMouseDragging: false,
         isTouchDragging: false,
         isIncrementing: false,
         incrementDirection: 1,
