@@ -348,15 +348,7 @@ class FormItemChildren extends FormItemBase<
                             dragStart={this.handleDragStart}
                             dragEnd={this.handleDragEnd}
                         >
-                            <span
-                                className={
-                                    this.props.managedClasses
-                                        .formItemChildren_existingChildrenItemName
-                                }
-                            >
-                                {this.generateChildOptionText(data)}
-                            </span>
-                            {this.renderExistingChildCaption(data)}
+                            {this.renderChildrenListItem(data)}
                         </DragItem>
                     );
                 }
@@ -374,15 +366,7 @@ class FormItemChildren extends FormItemBase<
                         }
                         onClick={this.clickEditComponentFactory(this.props.data)}
                     >
-                        <span
-                            className={
-                                this.props.managedClasses
-                                    .formItemChildren_existingChildrenItemName
-                            }
-                        >
-                            {this.generateChildOptionText(this.props.data)}
-                        </span>
-                        {this.renderExistingChildCaption(this.props.data)}
+                        {this.renderChildrenListItem(this.props.data)}
                     </a>
                     {this.renderExistingChildDelete()}
                 </li>
@@ -390,6 +374,22 @@ class FormItemChildren extends FormItemBase<
         }
 
         return null;
+    }
+
+    private renderChildrenListItem(data: ChildComponent): React.ReactNode {
+        return (
+            <React.Fragment>
+                <span
+                    className={
+                        this.props.managedClasses
+                            .formItemChildren_existingChildrenItemName
+                    }
+                >
+                    {this.generateChildOptionText(data)}
+                </span>
+                {this.renderExistingChildCaption(data)}
+            </React.Fragment>
+        );
     }
 
     /**
