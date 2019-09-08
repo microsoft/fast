@@ -298,7 +298,10 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
             classNames(
                 slider,
                 [slider__disabled, this.props.disabled],
-                [slider__dragging, this.state.isMouseDragging || this.state.isTouchDragging],
+                [
+                    slider__dragging,
+                    this.state.isMouseDragging || this.state.isTouchDragging,
+                ],
                 [slider__touchDragging, this.state.isTouchDragging],
                 [slider__incrementing, this.state.isIncrementing],
                 [slider__vertical, isVertical],
