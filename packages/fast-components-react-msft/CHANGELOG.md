@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.20.2](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-msft@4.20.1...@microsoft/fast-components-react-msft@4.20.2) (2019-09-09)
+
+
+### Bug Fixes
+
+* high-contrast style in Button, AccentButton, ActionToggle, ActionTrigger, Call to Action, NeutralButton, LightweightButton, OutlineButton, and StealthButton to support Edge icon components and add more common constants to high-contrast utility file. ([#2203](https://github.com/Microsoft/fast-dna/issues/2203)) ([91fb7cb](https://github.com/Microsoft/fast-dna/commit/91fb7cb))
+
+
+
+
+
 ## [4.20.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-msft@4.20.0...@microsoft/fast-components-react-msft@4.20.1) (2019-09-05)
 
 

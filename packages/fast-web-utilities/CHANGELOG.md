@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.3.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-web-utilities@4.3.0...@microsoft/fast-web-utilities@4.3.1) (2019-09-09)
+
+
+### Bug Fixes
+
+* exit focus visible utility immediately with false value if DOM is unavailable ([#2223](https://github.com/Microsoft/fast-dna/issues/2223)) ([3fbd6c2](https://github.com/Microsoft/fast-dna/commit/3fbd6c2))
+
+
+
+
+
 # [4.3.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-web-utilities@4.2.1...@microsoft/fast-web-utilities@4.3.0) (2019-08-22)
 
 
