@@ -18,9 +18,11 @@ export function canUseFocusVisible(): boolean {
 
     if (!canUseDOM()) {
         _canUseFocusVisible = false;
+
+        return _canUseFocusVisible;
     }
 
-    // Check to see if the document supports the focus-visible elemtn
+    // Check to see if the document supports the focus-visible element
     const styleElement: HTMLStyleElement = document.createElement("style");
     document.head.appendChild(styleElement);
 
