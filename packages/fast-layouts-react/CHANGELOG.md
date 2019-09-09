@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.5.5](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-layouts-react@4.5.4...@microsoft/fast-layouts-react@4.5.5) (2019-09-09)
+
+
+### Bug Fixes
+
+* set default value for breakpoint tracker subscriptions to prevent exceptions when server side rendering ([#2222](https://github.com/Microsoft/fast-dna/issues/2222)) ([e8c9826](https://github.com/Microsoft/fast-dna/commit/e8c9826))
+
+
+
+
+
 ## [4.5.4](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-layouts-react@4.5.3...@microsoft/fast-layouts-react@4.5.4) (2019-09-05)
 
 
