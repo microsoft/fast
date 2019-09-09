@@ -17,7 +17,7 @@ import { applyScaledTypeRamp } from "../utilities/typography";
 import {
     highContrastDisabled,
     highContrastOutlineFocus,
-    highContrastSelection,
+    highContrastSelected,
     highContrastStealth,
 } from "../utilities/high-contrast";
 
@@ -51,7 +51,7 @@ const styles: ComponentStyles<ContextMenuItemClassNameContract, DesignSystem> = 
         }),
         "&:hover": {
             background: neutralFillStealthHover,
-            ...highContrastSelection,
+            ...highContrastSelected,
         },
         "&:active": {
             background: neutralFillStealthActive,

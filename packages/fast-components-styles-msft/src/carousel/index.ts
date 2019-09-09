@@ -9,7 +9,10 @@ import {
 } from "../utilities/color";
 import { CarouselClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import { designUnit, outlineWidth } from "../utilities/design-system";
-import { highContrastSelector } from "../utilities/high-contrast";
+import {
+    highContrastHighlightBackground,
+    highContrastSelector,
+} from "../utilities/high-contrast";
 
 const white: string = "#FFF";
 const black: string = "#101010";
@@ -171,9 +174,7 @@ const styles: ComponentStyles<CarouselClassNameContract, DesignSystem> = {
             "&$carousel_sequenceIndicator__active": {
                 "&::before": {
                     background: darkModeNeutralFillStealthRest,
-                    [highContrastSelector]: {
-                        background: "Highlight",
-                    },
+                    ...highContrastHighlightBackground,
                 },
             },
         },
@@ -223,9 +224,7 @@ const styles: ComponentStyles<CarouselClassNameContract, DesignSystem> = {
             "&$carousel_sequenceIndicator__active": {
                 "&::before": {
                     background: lightModeNeutralFillStealthRest,
-                    [highContrastSelector]: {
-                        background: "Highlight",
-                    },
+                    ...highContrastHighlightBackground,
                 },
             },
         },

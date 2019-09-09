@@ -1,4 +1,5 @@
 import { CSSRules } from "@microsoft/fast-jss-manager";
+import { canUseDOM } from "exenv-es6";
 
 /*
  * - textureImage?: Optionally add a background image to provide texture for the acrylic
@@ -20,7 +21,7 @@ export interface AcrylicConfig {
  * Check for backdrop-filter support within the current browser
  */
 export const backdropFilterSupport: boolean =
-    "backdrop-filter" in document.documentElement.style ||
+    (canUseDOM() && "backdrop-filter" in document.documentElement.style) ||
     "-webkit-backdrop-filter" in document.documentElement.style;
 /*
  * Applies a partially transparent "acrylic" background to an element

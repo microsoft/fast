@@ -15,6 +15,8 @@ import {
 import { glyphSize, horizontalSpacing } from "../utilities/density";
 import {
     highContrastDisabledForeground,
+    highContrastForeground,
+    highContrastSelectedForeground,
     highContrastSelector,
 } from "../utilities/high-contrast";
 
@@ -37,15 +39,11 @@ export const actionToggleButtonOverrides: ComponentStyles<
 const styles: ComponentStyles<ActionToggleClassNameContract, DesignSystem> = {
     actionToggle: {
         "& $actionToggle_selectedGlyph, & $actionToggle_unselectedGlyph": {
-            [highContrastSelector]: {
-                fill: "ButtonText !important",
-            },
+            ...highContrastForeground,
         },
         "&:hover:enabled": {
             "& $actionToggle_selectedGlyph, & $actionToggle_unselectedGlyph": {
-                [highContrastSelector]: {
-                    fill: "HighlightText !important",
-                },
+                ...highContrastSelectedForeground,
             },
         },
         [`&$actionToggle__justified, &$actionToggle__lightweight`]: {
@@ -74,9 +72,7 @@ const styles: ComponentStyles<ActionToggleClassNameContract, DesignSystem> = {
     actionToggle__primary: {
         "& $actionToggle_selectedGlyph, & $actionToggle_unselectedGlyph": {
             fill: accentForegroundCut,
-            [highContrastSelector]: {
-                fill: "HighlightText !important",
-            },
+            ...highContrastSelectedForeground,
         },
         "&:hover:enabled": {
             "& $actionToggle_selectedGlyph, & $actionToggle_unselectedGlyph": {

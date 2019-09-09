@@ -232,5 +232,6 @@ export * from "./utilities/disabled";
 export * from "./utilities/elevation";
 export * from "./utilities/fonts";
 export * from "./utilities/high-contrast";
+export * from "./utilities/important";
 export * from "./utilities/keyof-to-type";
 export * from "./utilities/typography";

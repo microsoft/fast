@@ -12,6 +12,7 @@ import {
     neutralFocusInnerAccent,
 } from "../utilities/color";
 import {
+    highContrastAccent,
     HighContrastColor,
     highContrastDisabledBorder,
     highContrastDisabledForeground,
@@ -32,6 +33,7 @@ const styles: ComponentStyles<AccentButtonClassNameContract, DesignSystem> = {
                 background: HighContrastColor.selectedText,
                 "border-color": HighContrastColor.selectedBackground,
                 color: HighContrastColor.selectedBackground,
+                fill: HighContrastColor.selectedBackground,
             },
             "& $button_beforeContent, & $button_afterContent": {
                 [highContrastSelector]: {
@@ -62,12 +64,7 @@ const styles: ComponentStyles<AccentButtonClassNameContract, DesignSystem> = {
                 fill: "HighlightText",
             },
         },
-        [highContrastSelector]: {
-            background: HighContrastColor.selectedBackground,
-            "border-color": HighContrastColor.selectedBackground,
-            color: HighContrastColor.selectedText,
-            "-ms-high-contrast-adjust": "none",
-        },
+        ...highContrastAccent,
         "a&": {
             "&$button__disabled": {
                 ...highContrastDisabledBorder,

@@ -43,9 +43,12 @@ storiesOf("Button", module)
             Justified Button
         </Button>
     ))
+    .add("Stealth", () => (
+        <Button appearance={ButtonAppearance.stealth}>Stealth Button</Button>
+    ))
     .add("Stealth - disabled", () => (
         <Button appearance={ButtonAppearance.stealth} disabled={true}>
-            Justified Button
+            Stealth Button
         </Button>
     ))
     .add("Before content", () => (

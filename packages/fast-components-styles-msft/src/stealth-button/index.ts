@@ -13,7 +13,7 @@ import { baseButton, buttonStyles } from "../patterns/button";
 import {
     highContrastDisabledBorder,
     highContrastOutlineFocus,
-    highContrastSelection,
+    highContrastSelected,
     highContrastStealth,
 } from "../utilities/high-contrast";
 
@@ -26,7 +26,7 @@ const styles: ComponentStyles<StealthButtonClassNameContract, DesignSystem> = {
         background: neutralFillStealthRest,
         "&:hover:enabled": {
             "background-color": neutralFillStealthHover,
-            ...highContrastSelection,
+            ...highContrastSelected,
         },
         "&:active:enabled": {
             "background-color": neutralFillStealthActive,

@@ -1,5 +1,9 @@
-import { DesignSystem, DesignSystemResolver } from "../design-system";
 import { ComponentStyles } from "@microsoft/fast-jss-manager";
+import {
+    densityCategorySwitch,
+    heightNumber,
+    horizontalSpacing,
+} from "../utilities/density";
 import { RadioClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import {
     add,
@@ -19,17 +23,15 @@ import {
     neutralOutlineHover,
     neutralOutlineRest,
 } from "../utilities/color";
-import {
-    densityCategorySwitch,
-    heightNumber,
-    horizontalSpacing,
-} from "../utilities/density";
+import { DesignSystem, DesignSystemResolver } from "../design-system";
 import { applyDisabledState } from "../utilities/disabled";
 import { applyScaledTypeRamp } from "../utilities/typography";
 import { designUnit, outlineWidth } from "../utilities/design-system";
 import { applyCursorDisabled, applyCursorPointer } from "../utilities/cursor";
 import {
     highContrastDisabledBorder,
+    highContrastHighlightBackground,
+    highContrastSelectedBackground,
     highContrastSelector,
 } from "../utilities/high-contrast";
 
@@ -122,24 +124,16 @@ const styles: ComponentStyles<RadioClassNameContract, DesignSystem> = {
         "& $radio_stateIndicator": {
             "&::before": {
                 background: neutralForegroundRest,
-                [highContrastSelector]: {
-                    background: "Highlight",
-                },
+                ...highContrastHighlightBackground,
             },
         },
         "&:hover $radio_stateIndicator::before": {
-            [highContrastSelector]: {
-                background: "HighlightText",
-            },
+            ...highContrastSelectedBackground,
         },
         "& $radio_input": {
-            [highContrastSelector]: {
-                background: "HighlightText",
-            },
+            ...highContrastSelectedBackground,
             "&:hover": {
-                [highContrastSelector]: {
-                    background: "Highlight",
-                },
+                ...highContrastHighlightBackground,
             },
         },
     },
