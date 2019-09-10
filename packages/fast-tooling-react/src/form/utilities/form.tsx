@@ -10,21 +10,21 @@ import {
     AttributeSettingsMappingToPropertyNames,
     FormOrderByPropertyNamesCategories,
     FormOrderByPropertyNamesProps,
-} from "../form/form.props";
+} from "../form.props";
 import {
     AssignedCategoryParams,
     AssignedParamsByCategoryConfig,
     FormCategoryProps,
-    FormItemParameters,
-    FormItemsWithConfigOptions,
+    FormControlParameters,
+    FormControlsWithConfigOptions,
     FormSectionProps,
     InitialOneOfAnyOfState,
     OneOfAnyOf,
     oneOfAnyOfType,
-} from "../form/form-section.props";
-import { FormControlProps } from "../form/form-control.props";
-import { FormChildOptionItem, FormState } from "../form/form.props";
-import { reactChildrenStringSchema } from "../form/form-item.children.text";
+} from "../form-section.props";
+import { FormControlSwitchProps } from "../form-control-switch.props";
+import { FormChildOptionItem, FormState } from "../form.props";
+import { reactChildrenStringSchema } from "../controls/control.children.text";
 
 /**
  * Gets the array link data
@@ -343,7 +343,7 @@ export function getArraySchemaLocation(
 /**
  * Assigns an attribute value based on property names
  */
-export function formItemAttributeMapping(
+export function formControlAttributeMapping(
     config: AttributeSettingsMappingToPropertyNames,
     propertyName: string
 ): number | null {
@@ -378,7 +378,7 @@ export function checkIsDifferentData(currentData: any, nextData: any): boolean {
 
 export function getOneOfAnyOfState(
     oneOfAnyOf: OneOfAnyOf,
-    nextProps: FormSectionProps | FormControlProps
+    nextProps: FormSectionProps | FormControlSwitchProps
 ): OneOfAnyOf {
     const oneOfAnyOfState: Partial<OneOfAnyOf> = {};
 
@@ -442,7 +442,7 @@ export function findAssignedParamsByCategoryProperties(
     config: AssignedParamsByCategoryConfig
 ): AssignedCategoryParams {
     for (const propertyName of config.categoryProperties) {
-        if (propertyName === config.formItemParameter.propertyName) {
+        if (propertyName === config.formControlParameter.propertyName) {
             return {
                 category: config.category.title,
                 expandable: config.category.expandable,
@@ -469,18 +469,18 @@ export function getCategoryIndex(
 }
 
 export function checkCategoryConfigPropertyCount(
-    formItems: FormItemsWithConfigOptions,
+    formControls: FormControlsWithConfigOptions,
     orderByPropertyNames: FormOrderByPropertyNamesProps
 ): boolean {
     return (
         typeof orderByPropertyNames.showCategoriesAtPropertyCount === "number" &&
-        orderByPropertyNames.showCategoriesAtPropertyCount >= formItems.items.length
+        orderByPropertyNames.showCategoriesAtPropertyCount >= formControls.items.length
     );
 }
 
 export function findOrderedByPropertyNames(
     category: FormOrderByPropertyNamesCategories,
-    formItemParameter: FormItemParameters,
+    formControlParameter: FormControlParameters,
     assignedItemWeight: number
 ): AssignedCategoryParams {
     for (const categoryProperty of category.properties) {
@@ -491,7 +491,7 @@ export function findOrderedByPropertyNames(
         const assignedParamsByCategoryProperties: AssignedCategoryParams = findAssignedParamsByCategoryProperties(
             {
                 categoryProperties,
-                formItemParameter,
+                formControlParameter,
                 category,
                 categoryProperty,
                 assignedItemWeight,
@@ -505,19 +505,19 @@ export function findOrderedByPropertyNames(
 }
 
 function getAssignedCategoryParams(
-    formItemParameter: FormItemParameters,
+    formControlParameter: FormControlParameters,
     assignedItemWeight: number,
     orderByPropertyNames: FormOrderByPropertyNamesProps
 ): AssignedCategoryParams {
     for (const category of orderByPropertyNames.categories) {
-        const formItemOrderedByPropertyNames: AssignedCategoryParams = findOrderedByPropertyNames(
+        const formControlOrderedByPropertyNames: AssignedCategoryParams = findOrderedByPropertyNames(
             category,
-            formItemParameter,
+            formControlParameter,
             assignedItemWeight
         );
 
-        if (Boolean(formItemOrderedByPropertyNames)) {
-            return formItemOrderedByPropertyNames;
+        if (Boolean(formControlOrderedByPropertyNames)) {
+            return formControlOrderedByPropertyNames;
         }
     }
 
@@ -529,14 +529,14 @@ function getAssignedCategoryParams(
 }
 
 export function getCategoryParams(
-    formItemParameters: FormItemParameters[],
+    formControlParameters: FormControlParameters[],
     orderByPropertyNames: FormOrderByPropertyNamesProps
 ): FormCategoryProps[] {
     const categoryParams: FormCategoryProps[] = [];
 
-    for (const formItemParameter of formItemParameters) {
+    for (const formControlParameter of formControlParameters) {
         const assignedCategoryParams: AssignedCategoryParams = getAssignedCategoryParams(
-            formItemParameter,
+            formControlParameter,
             0,
             orderByPropertyNames
         );
@@ -548,7 +548,7 @@ export function getCategoryParams(
         if (typeof categoryIndex === "number") {
             categoryParams[categoryIndex].items.push({
                 weight: assignedCategoryParams.itemWeight,
-                params: formItemParameter,
+                params: formControlParameter,
             });
         } else {
             categoryParams.push({
@@ -558,7 +558,7 @@ export function getCategoryParams(
                 items: [
                     {
                         weight: assignedCategoryParams.itemWeight,
-                        params: formItemParameter,
+                        params: formControlParameter,
                     },
                 ],
             });

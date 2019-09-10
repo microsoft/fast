@@ -1,7 +1,7 @@
 import "jest";
 import Navigation, { NavigationItem } from "./navigation";
-import { FormChildOptionItem } from "../form/form.props";
-import { reactChildrenStringSchema } from "../form/form-item.children.text";
+import { FormChildOptionItem } from "../form.props";
+import { reactChildrenStringSchema } from "../controls/control.children.text";
 import oneOfSchema from "../../__tests__/schemas/one-of.schema.json";
 import childrenSchema from "../../__tests__/schemas/children.schema.json";
 import textFieldSchema from "../../__tests__/schemas/textarea.schema.json";

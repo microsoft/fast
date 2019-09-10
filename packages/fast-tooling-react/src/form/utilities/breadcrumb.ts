@@ -1,4 +1,4 @@
-import { BreadcrumbItemEventHandler } from "../form/form.props";
+import { BreadcrumbItemEventHandler } from "../form.props";
 import { NavigationItem } from "./navigation";
 
 export interface BreadcrumbItem {
