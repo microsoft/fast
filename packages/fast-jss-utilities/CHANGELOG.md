@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.6.4](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-jss-utilities@4.6.3...@microsoft/fast-jss-utilities@4.6.4) (2019-09-09)
+
+
+### Bug Fixes
+
+* check for DOM in backdropFilterSupport prior to accessing document properties ([#2224](https://github.com/Microsoft/fast-dna/issues/2224)) ([41c15c3](https://github.com/Microsoft/fast-dna/commit/41c15c3))
+
+
+
+
+
 ## [4.6.3](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-jss-utilities@4.6.2...@microsoft/fast-jss-utilities@4.6.3) (2019-09-05)
 
 **Note:** Version bump only for package @microsoft/fast-jss-utilities

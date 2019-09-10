@@ -55,11 +55,11 @@ class FormSection extends React.Component<
     /**
      * React lifecycle hook
      */
-    public componentWillUpdate(nextProps: FormSectionProps): void {
-        if (checkIsDifferentSchema(this.props.schema, nextProps.schema)) {
+    public componentDidUpdate(prevProps: FormSectionProps): void {
+        if (checkIsDifferentSchema(prevProps.schema, this.props.schema)) {
             const initialOneOfAnyOfState: InitialOneOfAnyOfState = getInitialOneOfAnyOfState(
-                nextProps.schema,
-                nextProps.data
+                this.props.schema,
+                this.props.data
             );
 
             this.setState(initialOneOfAnyOfState);

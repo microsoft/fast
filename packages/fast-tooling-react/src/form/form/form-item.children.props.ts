@@ -1,6 +1,7 @@
 import { updateActiveSection } from "./form-section.props";
 import FormItemCommon from "./form-item.props";
 import { DataOnChange, FormChildOptionItem } from "./form.props";
+import { DragState } from "./form-item.drag-item.props";
 
 /**
  * Children class name contract
@@ -77,7 +78,7 @@ export enum Action {
 /**
  * State object for the FormItemChildren component
  */
-export interface FormItemChildrenState {
+export interface FormItemChildrenState extends DragState {
     childrenSearchTerm: string;
     indexOfSelectedFilteredChildOption: number;
     filteredChildOptions: FormChildOptionItem[];

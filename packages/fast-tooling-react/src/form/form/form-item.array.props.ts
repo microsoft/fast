@@ -1,5 +1,6 @@
 import FormItemCommon from "./form-item.props";
 import { updateActiveSection } from "./form-section.props";
+import { DragState } from "./form-item.drag-item.props";
 
 /**
  * Array class name contract
@@ -58,3 +59,6 @@ export interface FormItemArrayProps extends FormItemCommon {
      */
     onUpdateActiveSection: updateActiveSection;
 }
+
+/* tslint:disable */
+export interface FormItemArrayState extends DragState {}

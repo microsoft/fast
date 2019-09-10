@@ -1,7 +1,8 @@
+import { generateExampleData } from "../utilities";
 import React from "react";
-import { canUseDOM } from "exenv-es6";
-import { arrayMove, SortableContainer, SortableElement } from "react-sortable-hoc";
-import { cloneDeep, get, inRange, uniqueId } from "lodash-es";
+import { cloneDeep, get, uniqueId } from "lodash-es";
+import HTML5Backend from "react-dnd-html5-backend";
+import { ContextComponent, DragDropContext } from "react-dnd";
 import {
     keyCodeArrowDown,
     keyCodeArrowUp,
@@ -10,9 +11,8 @@ import {
 } from "@microsoft/fast-web-utilities";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
-import { generateExampleData } from "../utilities";
+import { canUseDOM } from "exenv-es6";
 import { getChildOptionBySchemaId } from "../../data-utilities/location";
-import { SortableListItem, sortingProps } from "./sorting";
 import { FormChildOptionItem } from "./form.props";
 import { reactChildrenStringSchema } from "./form-item.children.text";
 import styles from "./form-item.children.style";
@@ -24,6 +24,8 @@ import {
     FormItemChildrenProps,
     FormItemChildrenState,
 } from "./form-item.children.props";
+import DragItem from "./form-item.drag-item";
+import { ArrayAction } from "./form-item.array.props";
 
 /**
  * Schema form component definition
@@ -92,6 +94,8 @@ class FormItemChildren extends FormItemBase<
             filteredChildOptions: this.childOptions,
             hideChildrenList: true,
             editChildIndex: -1,
+            isDragging: false,
+            data: [].concat(props.data || []),
         };
     }
 
@@ -157,6 +161,15 @@ class FormItemChildren extends FormItemBase<
                     editChildIndex: -1,
                 });
             }
+        }
+
+        if (
+            Array.isArray(this.props.data) &&
+            this.props.data.length !== this.state.data.length
+        ) {
+            this.setState({
+                data: [].concat(this.props.data),
+            });
         }
     }
 
@@ -274,51 +287,15 @@ class FormItemChildren extends FormItemBase<
     }
 
     /**
-     * Renders an existing child item
-     */
-    private renderExistingChild = (item: ChildComponent, index?: number): JSX.Element => {
-        // The "react-sortable-hoc" library has an issue where a wrapping element
-        // must be supplied in order to accurately show drag movement
-        // see: https://github.com/clauderic/react-sortable-hoc/issues/305
-        return (
-            <SortableListItem
-                className={this.getExistingChildItemClassNames()}
-                key={`item-${index}`}
-                id={uniqueId(index ? index.toString() : "")}
-            >
-                <a
-                    aria-label={"Select to edit"}
-                    className={
-                        this.props.managedClasses
-                            .formItemChildren_existingChildrenItemLink
-                    }
-                    onClick={this.clickEditComponentFactory(item, index)}
-                >
-                    <span
-                        className={
-                            this.props.managedClasses
-                                .formItemChildren_existingChildrenItemName
-                        }
-                    >
-                        {this.generateChildOptionText(item)}
-                    </span>
-                    {this.renderExistingChildCaption(item)}
-                </a>
-                {this.renderExistingChildDelete(index)}
-            </SortableListItem>
-        );
-    };
-
-    /**
      * Renders the delete button for an existing child
      */
-    private renderExistingChildDelete(index: number): JSX.Element {
+    private renderExistingChildDelete(): JSX.Element {
         return (
             <button
                 type="button" // Ensure the form doesn't see this as a submit button
                 aria-label={"Select to remove"}
                 className={this.props.managedClasses.formItemChildren_deleteButton}
-                onClick={this.clickDeleteComponentFactory(index)}
+                onClick={this.clickDeleteComponentFactory(ArrayAction.remove)}
             />
         );
     }
@@ -346,72 +323,92 @@ class FormItemChildren extends FormItemBase<
     /**
      * Generate all items for the list of existing children
      */
-    private renderExistingChildItems(): JSX.Element | JSX.Element[] {
-        const currentChildren: ChildComponent = this.props.data;
-        const currentChildrenArray: ChildComponent[] = this.currentChildrenArray();
-
-        if (currentChildren) {
-            return currentChildrenArray.map(
-                (item: ChildComponent, index: number): JSX.Element => {
-                    const options: any = {
-                        key: `item-${index}`,
-                        index,
-                        value:
-                            typeof item === "object"
-                                ? this.generateChildOptionText(item)
-                                : item,
-                    };
-
-                    return React.createElement(
-                        SortableElement(
-                            this.renderExistingChild.bind(
-                                this,
-                                item,
-                                currentChildrenArray.length > 1 ? index : undefined
-                            )
-                        ),
-                        options
+    private renderExistingChildItems(): React.ReactNode {
+        if (Array.isArray(this.props.data)) {
+            return this.state.data.map(
+                (data: ChildComponent, index: number): React.ReactNode => {
+                    return (
+                        <DragItem
+                            key={index}
+                            itemClassName={this.getExistingChildItemClassNames()}
+                            itemLinkClassName={
+                                this.props.managedClasses
+                                    .formItemChildren_existingChildrenItemLink
+                            }
+                            itemRemoveClassName={
+                                this.props.managedClasses.formItemChildren_deleteButton
+                            }
+                            minItems={0}
+                            itemLength={this.props.data.length}
+                            index={index}
+                            onClick={this.clickEditComponentFactory}
+                            removeDragItem={this.clickDeleteComponentFactory}
+                            moveDragItem={this.handleMoveDragItem}
+                            dropDragItem={this.handleDropDragItem}
+                            dragStart={this.handleDragStart}
+                            dragEnd={this.handleDragEnd}
+                        >
+                            {this.renderChildrenListItem(data)}
+                        </DragItem>
                     );
                 }
+            );
+        }
+
+        if (typeof this.props.data !== "undefined") {
+            return (
+                <li className={this.getExistingChildItemClassNames()}>
+                    <a
+                        aria-label={"Select to edit"}
+                        className={
+                            this.props.managedClasses
+                                .formItemChildren_existingChildrenItemLink
+                        }
+                        onClick={this.clickEditComponentFactory(this.props.data)}
+                    >
+                        {this.renderChildrenListItem(this.props.data)}
+                    </a>
+                    {this.renderExistingChildDelete()}
+                </li>
             );
         }
 
         return null;
     }
 
+    private renderChildrenListItem(data: ChildComponent): React.ReactNode {
+        return (
+            <React.Fragment>
+                <span
+                    className={
+                        this.props.managedClasses
+                            .formItemChildren_existingChildrenItemName
+                    }
+                >
+                    {this.generateChildOptionText(data)}
+                </span>
+                {this.renderExistingChildCaption(data)}
+            </React.Fragment>
+        );
+    }
+
     /**
      * Render the list of existing children for a component
      */
-    private renderExistingChildren(): JSX.Element {
-        const props: any = Object.assign({}, sortingProps, {
-            onSortEnd: this.handleSort,
-            helperClass: this.props.managedClasses
-                .formItemChildren_existingChildrenItem__sorting,
-        });
-
-        const childItems: JSX.Element | JSX.Element[] = this.renderExistingChildItems();
+    private renderExistingChildren(): React.ReactNode {
+        const childItems: React.ReactNode = this.renderExistingChildItems();
 
         if (childItems) {
-            return React.createElement(
-                SortableContainer(
-                    (): JSX.Element => {
-                        return (
-                            <ul
-                                className={
-                                    this.props.managedClasses
-                                        .formItemChildren_existingChildren
-                                }
-                            >
-                                {childItems}
-                            </ul>
-                        );
+            return (
+                <ul
+                    className={
+                        this.props.managedClasses.formItemChildren_existingChildren
                     }
-                ),
-                props
+                >
+                    {childItems}
+                </ul>
             );
         }
-
-        return null;
     }
 
     /**
@@ -496,6 +493,35 @@ class FormItemChildren extends FormItemBase<
         return classes;
     }
 
+    private handleDragStart = (): void => {
+        this.setState({
+            isDragging: true,
+            data: [].concat(this.props.data || []),
+        });
+    };
+
+    private handleDragEnd = (): void => {
+        this.setState({
+            isDragging: false,
+        });
+    };
+
+    private handleDropDragItem = (): void => {
+        this.props.onChange(this.props.dataLocation, this.state.data);
+    };
+
+    private handleMoveDragItem = (sourceIndex: number, targetIndex: number): void => {
+        const currentData: unknown[] = [].concat(this.props.data);
+
+        if (sourceIndex !== targetIndex) {
+            currentData.splice(targetIndex, 0, currentData.splice(sourceIndex, 1)[0]);
+        }
+
+        this.setState({
+            data: currentData,
+        });
+    };
+
     /**
      * Keydown handler for the child option filter
      */
@@ -562,20 +588,6 @@ class FormItemChildren extends FormItemBase<
     private handleWindowClick = (e: MouseEvent): void => {
         if (this.isTargetingChildrenList(e)) {
             this.setState({ hideChildrenList: true });
-        }
-    };
-
-    /**
-     * Callback to call when children sorting has occured
-     */
-    private handleSort = ({ oldIndex, newIndex }: any): void => {
-        const childrenData: any = cloneDeep(this.props.data);
-
-        if (Boolean(childrenData)) {
-            this.props.onChange(
-                this.props.dataLocation,
-                arrayMove(childrenData, oldIndex, newIndex)
-            );
         }
     };
 
@@ -689,13 +701,15 @@ class FormItemChildren extends FormItemBase<
      * Click factory for editing a child item
      */
     private clickEditComponentFactory = (
-        component: ChildComponent,
         index?: number
     ): ((e: React.MouseEvent<HTMLAnchorElement>) => void) => {
         return (e: React.MouseEvent<HTMLAnchorElement>): void => {
             e.preventDefault();
 
-            this.onEditComponent(component, index);
+            this.onEditComponent(
+                typeof index === "number" ? this.props.data[index] : this.props.data,
+                index
+            );
         };
     };
 
@@ -703,12 +717,15 @@ class FormItemChildren extends FormItemBase<
      * Click factory for removing a child item
      */
     private clickDeleteComponentFactory = (
+        type: ArrayAction,
         index?: number
     ): ((e: React.MouseEvent<HTMLButtonElement>) => void) => {
         return (e: React.MouseEvent<HTMLButtonElement>): void => {
             e.preventDefault();
 
-            this.onDeleteComponent(index);
+            if (type === ArrayAction.remove) {
+                this.onDeleteComponent(index);
+            }
         };
     };
 
@@ -844,5 +861,8 @@ class FormItemChildren extends FormItemBase<
     }
 }
 
-export { FormItemChildren };
-export default manageJss(styles)(FormItemChildren);
+const TestFormItemChildren: typeof FormItemChildren &
+    ContextComponent<any> = DragDropContext(HTML5Backend)(FormItemChildren);
+
+export { TestFormItemChildren };
+export default DragDropContext(HTML5Backend)(manageJss(styles)(FormItemChildren));
