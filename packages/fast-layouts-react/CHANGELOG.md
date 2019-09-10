@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.5.6](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-layouts-react@4.5.5...@microsoft/fast-layouts-react@4.5.6) (2019-09-10)
+
+
+### Bug Fixes
+
+* add prefix for ms-grid in fast-layouts-react page and grid components ([#2234](https://github.com/Microsoft/fast-dna/issues/2234)) ([65be256](https://github.com/Microsoft/fast-dna/commit/65be256))
+
+
+
+
+
 ## [4.5.5](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-layouts-react@4.5.4...@microsoft/fast-layouts-react@4.5.5) (2019-09-09)
 
 

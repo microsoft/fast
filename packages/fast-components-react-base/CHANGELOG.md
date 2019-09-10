@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.15.3](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-base@4.15.2...@microsoft/fast-components-react-base@4.15.3) (2019-09-10)
+
+
+### Bug Fixes
+
+* Enable slider touch dragging ([#2213](https://github.com/Microsoft/fast-dna/issues/2213)) ([70983fa](https://github.com/Microsoft/fast-dna/commit/70983fa))
+
+
+
+
+
 ## [4.15.2](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-base@4.15.1...@microsoft/fast-components-react-base@4.15.2) (2019-09-09)
 
 **Note:** Version bump only for package @microsoft/fast-components-react-base

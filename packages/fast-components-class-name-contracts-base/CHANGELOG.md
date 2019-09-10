@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.3.3](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-class-name-contracts-base@4.3.2...@microsoft/fast-components-class-name-contracts-base@4.3.3) (2019-09-10)
+
+
+### Bug Fixes
+
+* Enable slider touch dragging ([#2213](https://github.com/Microsoft/fast-dna/issues/2213)) ([70983fa](https://github.com/Microsoft/fast-dna/commit/70983fa))
+
+
+
+
+
 ## [4.3.2](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-class-name-contracts-base@4.3.1...@microsoft/fast-components-class-name-contracts-base@4.3.2) (2019-09-05)
 
 

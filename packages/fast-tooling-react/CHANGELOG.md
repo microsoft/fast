@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.18.4](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-tooling-react@1.18.3...@microsoft/fast-tooling-react@1.18.4) (2019-09-10)
+
+
+### Bug Fixes
+
+* consolidate drag and drop dependencies ([#2228](https://github.com/Microsoft/fast-dna/issues/2228)) ([24dfc1a](https://github.com/Microsoft/fast-dna/commit/24dfc1a))
+
+
+
+
+
 ## [1.18.3](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-tooling-react@1.18.2...@microsoft/fast-tooling-react@1.18.3) (2019-09-09)
 
 **Note:** Version bump only for package @microsoft/fast-tooling-react
