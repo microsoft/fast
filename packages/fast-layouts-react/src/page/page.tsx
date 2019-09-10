@@ -9,7 +9,10 @@ export interface PageClassNamesContract {
 
 export const pageStyleSheet: ComponentStyles<PageClassNamesContract, undefined> = {
     page: {
-        display: "grid",
+        display: "-ms-grid",
+        "@supports(display: grid)": {
+            display: "grid",
+        },
     },
 };
 

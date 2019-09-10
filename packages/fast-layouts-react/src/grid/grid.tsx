@@ -18,7 +18,10 @@ export interface GridClassNamesContract {
 
 export const gridStyleSheet: ComponentStyles<GridClassNamesContract, undefined> = {
     grid: {
-        display: "grid",
+        display: "-ms-grid",
+        "@supports(display: grid)": {
+            display: "grid",
+        },
         "grid-auto-rows": "auto",
     },
 };
