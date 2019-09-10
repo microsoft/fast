@@ -133,7 +133,6 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = {
             background: neutralFillHover,
             ...highContrastSelected,
             "& $button_beforeContent, & $button_afterContent": {
-                fill: accentForegroundCut,
                 ...highContrastSelectedForeground,
             },
         },
