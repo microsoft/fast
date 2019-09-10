@@ -7,7 +7,7 @@ import {
     SwatchRecipe,
 } from "./common";
 import { neutralPalette } from "../design-system";
-import { accessibleAlgorithm } from "./recipe";
+import { accessibleAlgorithm } from "./accessible-recipe";
 
 function neutralForegroundHintAlgorithm(
     targetContrast: number

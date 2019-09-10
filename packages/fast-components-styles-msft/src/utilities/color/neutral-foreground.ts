@@ -10,7 +10,7 @@ import {
     SwatchFamilyType,
     SwatchRecipe,
 } from "./common";
-import { accessibleAlgorithm } from "./recipe";
+import { accessibleAlgorithm } from "./accessible-recipe";
 
 export const neutralForeground: SwatchFamilyResolver = colorRecipeFactory(
     accessibleAlgorithm(

@@ -150,7 +150,6 @@ export interface DesignSystem {
     /**
      * Configuration for the neutral-fill-toggle recipe.
      */
-    neutralFillToggleRestContrast: number;
     neutralFillToggleHoverDelta: number;
     neutralFillToggleActiveDelta: number;
 
@@ -238,7 +237,6 @@ const designSystemDefaults: DesignSystem = {
     neutralFillStealthActiveDelta: 3,
     neutralFillStealthSelectedDelta: 7,
 
-    neutralFillToggleRestContrast: 4.5,
     neutralFillToggleHoverDelta: 8,
     neutralFillToggleActiveDelta: -5,
 

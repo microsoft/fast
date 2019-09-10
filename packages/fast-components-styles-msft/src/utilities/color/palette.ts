@@ -216,7 +216,7 @@ export function swatchByContrast(referenceColor: string | SwatchResolver) {
                 referenceColor: string,
                 palette: Palette,
                 designSystem: DesignSystem
-            ) => number
+            ) => number = referenceColorInitialIndexResolver
         ) => {
             /**
              * A function that expects a function that determines which direction in the
@@ -262,7 +262,7 @@ export function swatchByContrast(referenceColor: string | SwatchResolver) {
                             designSystem
                         );
 
-                        function contrastSeachCondition(
+                        function contrastSearchCondition(
                             valueToCheckAgainst: Swatch
                         ): boolean {
                             return contrastCondition(
@@ -285,7 +285,7 @@ export function swatchByContrast(referenceColor: string | SwatchResolver) {
 
                         return binarySearch(
                             constrainedSourcePalette,
-                            contrastSeachCondition,
+                            contrastSearchCondition,
                             startSearchIndex,
                             endSearchIndex
                         );
@@ -327,9 +327,26 @@ function binarySearch<T>(
     }
 }
 
+/**
+ * Resolves the index that the contrast search algorithm should start at
+ */
+function referenceColorInitialIndexResolver(
+    referenceColor: string,
+    sourcePalette: Palette,
+    designSystem: DesignSystem
+): number {
+    return findClosestSwatchIndex(sourcePalette, referenceColor)(designSystem);
+}
+
 /* tslint:enable:typedef */
 export function findClosestBackgroundIndex(designSystem: DesignSystem): number {
     return findClosestSwatchIndex(neutralPalette, backgroundColor(designSystem))(
         designSystem
     );
+}
+
+export function minContrastTargetFactory(
+    targetContrast: number
+): (instanceContrast: number) => boolean {
+    return (instanceContrast: number): boolean => instanceContrast >= targetContrast;
 }

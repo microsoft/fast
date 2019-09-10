@@ -6,30 +6,13 @@ import {
 import { backgroundColor } from "../design-system";
 import { Swatch, SwatchFamily } from "./common";
 import {
-    findClosestSwatchIndex,
     findSwatchIndex,
     getSwatch,
     isDarkMode,
+    minContrastTargetFactory,
     Palette,
     swatchByContrast,
 } from "./palette";
-
-/**
- * Resolves the index that the contrast search algorithm should start at
- */
-function referenceColorInitialIndexResolver(
-    referenceColor: string,
-    sourcePalette: Palette,
-    designSystem: DesignSystem
-): number {
-    return findClosestSwatchIndex(sourcePalette, referenceColor)(designSystem);
-}
-
-function contrastTargetFactory(
-    targetContrast: number
-): (instanceContrast: number) => boolean {
-    return (instanceContrast: number): boolean => instanceContrast >= targetContrast;
-}
 
 function indexToSwatchFamily(
     accessibleIndex: number,
@@ -81,12 +64,11 @@ export function accessibleAlgorithm(
             backgroundColor // Compare swatches against the background
         )(
             resolvedPalette // Use the provided palette
-        )(
-            referenceColorInitialIndexResolver // Begin searching from the background color
-        )(
+        )()(
+        // Default: begin searching from the background color
             () => direction // Search direction based on light/dark mode
         )(
-            contrastTargetFactory(checkDesignSystemResolver(minContrast, designSystem)) // A swatch is only valid if the contrast is greater than indicated
+            minContrastTargetFactory(checkDesignSystemResolver(minContrast, designSystem)) // A swatch is only valid if the contrast is greater than indicated
         )(
             designSystem // Pass the design system
         );

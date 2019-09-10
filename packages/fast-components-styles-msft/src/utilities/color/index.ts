@@ -8,6 +8,11 @@ export {
     neutralForegroundActive,
 } from "./neutral-foreground";
 
+export {
+    neutralForegroundToggle,
+    neutralForegroundToggleLarge,
+} from "./neutral-foreground-toggle";
+
 export { accentForegroundCut, accentForegroundCutLarge } from "./accent-foreground-cut";
 
 export {

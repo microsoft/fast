@@ -1,7 +1,6 @@
 import {
     neutralFillToggleActiveDelta,
     neutralFillToggleHoverDelta,
-    neutralFillToggleRestContrast,
     neutralPalette,
 } from "../design-system";
 import {
@@ -11,12 +10,12 @@ import {
     SwatchFamilyType,
     SwatchRecipe,
 } from "./common";
-import { accessibleAlgorithm } from "./recipe";
+import { accessibleAlgorithm } from "./accessible-recipe";
 
 export const neutralFillToggle: SwatchFamilyResolver = colorRecipeFactory(
     accessibleAlgorithm(
         neutralPalette,
-        neutralFillToggleRestContrast,
+        4.5,
         0,
         neutralFillToggleHoverDelta,
         neutralFillToggleActiveDelta
