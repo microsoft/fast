@@ -7,7 +7,7 @@ import {
     SliderUnhandledProps,
 } from "./slider.props";
 import React from "react";
-import { get } from "lodash-es";
+import { get, isNil } from "lodash-es";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import {
     keyCodeArrowDown,
@@ -36,7 +36,8 @@ export enum SliderThumb {
 export interface SliderState {
     upperValue: number;
     lowerValue: number;
-    isDragging: boolean;
+    isMouseDragging: boolean;
+    isTouchDragging: boolean;
     dragValue: number;
     activeThumb: SliderThumb;
     isIncrementing: boolean;
@@ -62,6 +63,7 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
     private static baseIncrementDelay: number = 300;
     private static minIncrementDelay: number = 100;
     private static incrementAcceleration: number = 50;
+    private static rolePropName: string = "role";
 
     protected handledProps: HandledProps<SliderHandledProps> = {
         disabled: void 0,
@@ -164,7 +166,8 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
             upperValue: initialValue.maxValue,
             lowerValue: initialValue.minValue,
             activeThumb: null,
-            isDragging: false,
+            isMouseDragging: false,
+            isTouchDragging: false,
             isIncrementing: false,
             incrementDirection: 1,
             usePageStep: false,
@@ -279,6 +282,7 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
             slider,
             slider__disabled,
             slider__dragging,
+            slider__touchDragging,
             slider__incrementing,
             slider__vertical,
             slider__horizontal,
@@ -294,7 +298,11 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
             classNames(
                 slider,
                 [slider__disabled, this.props.disabled],
-                [slider__dragging, this.state.isDragging],
+                [
+                    slider__dragging,
+                    this.state.isMouseDragging || this.state.isTouchDragging,
+                ],
+                [slider__touchDragging, this.state.isTouchDragging],
                 [slider__incrementing, this.state.isIncrementing],
                 [slider__vertical, isVertical],
                 [slider__horizontal, !isVertical],
@@ -408,13 +416,19 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
                 ? this.handleUpperThumbKeyDown
                 : this.handleLowerThumbKeyDown;
 
+        const touchStartCallback: (event: React.TouchEvent) => void =
+            thumb === SliderThumb.upperThumb
+                ? this.handleUpperThumbTouchStart
+                : this.handleLowerThumbTouchStart;
+
         if (typeof this.props.thumb === "function") {
             return this.props.thumb(
                 this.props,
                 this.state,
                 mouseDownCallback,
                 keyDownCallback,
-                thumb
+                thumb,
+                touchStartCallback
             );
         } else {
             return this.renderDefaultThumb(
@@ -422,7 +436,8 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
                 this.state,
                 mouseDownCallback,
                 keyDownCallback,
-                thumb
+                thumb,
+                touchStartCallback
             );
         }
     }
@@ -435,7 +450,8 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
         state: SliderState,
         mouseDownCallback: (event: React.MouseEvent) => void,
         keyDownCallback: (event: React.KeyboardEvent) => void,
-        thumb: SliderThumb
+        thumb: SliderThumb,
+        touchStartCallback: (event: React.TouchEvent) => void
     ): React.ReactNode {
         return (
             <SliderTrackItem
@@ -455,6 +471,7 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
                 tabIndex={props.disabled === true ? null : 0}
                 onKeyDown={keyDownCallback}
                 onMouseDown={mouseDownCallback}
+                onTouchStart={touchStartCallback}
                 aria-valuemin={
                     typeof props.displayValueConverter === "function"
                         ? props.displayValueConverter(props.range.minValue)
@@ -858,7 +875,7 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
         window.addEventListener("mouseup", this.handleWindowMouseUp);
         window.addEventListener("mousemove", this.handleMouseMove);
         this.setState({
-            isDragging: true,
+            isMouseDragging: true,
             activeThumb: thumb,
         });
         this.updateDragValue(this.getDragValue(e.nativeEvent, thumb), thumb);
@@ -878,9 +895,9 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
     };
 
     /**
-     *  Get dragvalue from mouse event
+     *  Get dragvalue from mouse event or touch
      */
-    private getDragValue = (event: MouseEvent, thumb: SliderThumb): number => {
+    private getDragValue = (event: MouseEvent | Touch, thumb: SliderThumb): number => {
         this.updateDirection();
         this.updateSliderDimensions();
         const pixelCoordinate: number =
@@ -892,6 +909,86 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
                 this.convertPixelToPercent(pixelCoordinate) +
             this.props.range.minValue;
         return dragValue;
+    };
+
+    /**
+     * Handles touch dragging
+     */
+    private handleUpperThumbTouchStart = (e: React.TouchEvent): void => {
+        this.handleThumbTouchStart(e, SliderThumb.upperThumb);
+    };
+
+    private handleLowerThumbTouchStart = (e: React.TouchEvent): void => {
+        this.handleThumbTouchStart(e, SliderThumb.lowerThumb);
+    };
+
+    private handleThumbTouchStart = (e: React.TouchEvent, thumb: SliderThumb): void => {
+        if (e.defaultPrevented || this.isBusyOrDisabled()) {
+            return;
+        }
+
+        e.preventDefault();
+        (e.target as HTMLElement).focus();
+        window.addEventListener("touchend", this.handleTouchEnd);
+        window.addEventListener("touchcancel", this.handleTouchEnd);
+        window.addEventListener("touchmove", this.handleTouchMove);
+        this.setState({
+            isTouchDragging: true,
+            activeThumb: thumb,
+        });
+        const thisTouch: Touch = e.nativeEvent.touches.item(0);
+        this.updateDragValue(this.getDragValue(thisTouch, thumb), thumb);
+    };
+
+    /**
+     *  Returns first valid touch found in a touch event
+     */
+    private getValidTouch = (event: TouchEvent): Touch | null => {
+        if (isNil(this.rootElement.current)) {
+            return null;
+        }
+
+        const touchCount: number = event.touches.length;
+
+        for (let i: number = 0; i < touchCount; i++) {
+            const thisTouch: Touch = event.touches.item(i);
+            const touchElement: HTMLElement = thisTouch.target as HTMLElement;
+            if (
+                touchElement.attributes[Slider.rolePropName].value === "slider" &&
+                touchElement.tabIndex === 0 &&
+                this.rootElement.current.contains(touchElement)
+            ) {
+                return thisTouch;
+            }
+        }
+        return null;
+    };
+
+    /**
+     *  Handle touch moves during a thumb drag operation
+     */
+    private handleTouchMove = (event: TouchEvent): void => {
+        if (this.props.disabled || event.defaultPrevented) {
+            return;
+        }
+        const validTouch: Touch = this.getValidTouch(event);
+        if (validTouch === null) {
+            this.stopTouchDragging();
+            return;
+        }
+
+        this.updateDragValue(
+            this.getDragValue(validTouch, this.state.activeThumb),
+            this.state.activeThumb
+        );
+    };
+
+    /**
+     * Handle touch end
+     */
+    private handleTouchEnd = (event: TouchEvent): void => {
+        event.preventDefault();
+        this.stopTouchDragging();
     };
 
     /**
@@ -1071,13 +1168,28 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
      *  Ends a thumb drag operation
      */
     private stopDragging = (): void => {
-        if (!this.state.isDragging) {
+        if (!this.state.isMouseDragging) {
             return;
         }
         window.removeEventListener("mouseup", this.handleWindowMouseUp);
         window.removeEventListener("mousemove", this.handleMouseMove);
         this.setState({
-            isDragging: false,
+            isMouseDragging: false,
+        });
+    };
+
+    /**
+     *  Ends a thumb touch drag operation
+     */
+    private stopTouchDragging = (): void => {
+        if (!this.state.isTouchDragging) {
+            return;
+        }
+        window.removeEventListener("touchend", this.handleTouchEnd);
+        window.removeEventListener("touchcancel", this.handleTouchEnd);
+        window.removeEventListener("touchmove", this.handleTouchMove);
+        this.setState({
+            isTouchDragging: false,
         });
     };
 
@@ -1086,6 +1198,7 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
      */
     private suspendActiveOperations = (): void => {
         this.stopDragging();
+        this.stopTouchDragging();
         this.stopIncrementing();
     };
 
@@ -1145,7 +1258,12 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
      *  Checks if the component is busy with an active operation or disabled
      */
     private isBusyOrDisabled = (): boolean => {
-        if (this.props.disabled || this.state.isDragging || this.state.isIncrementing) {
+        if (
+            this.props.disabled ||
+            this.state.isMouseDragging ||
+            this.state.isIncrementing ||
+            this.state.isTouchDragging
+        ) {
             return true;
         }
         return false;

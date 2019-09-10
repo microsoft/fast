@@ -37,6 +37,7 @@ const managedClasses: SliderClassNameContract = {
     slider_thumb__vertical: "slider_thumb__vertical",
     slider__disabled: "slider__disabled",
     slider__dragging: "slider__dragging",
+    slider__touchDragging: "slider__touchDragging",
     slider__incrementing: "slider__incrementing",
     slider__rtl: "slider__rtl",
     slider__modeSingle: "slider__modeSingle",
@@ -629,7 +630,6 @@ describe("Slider", (): void => {
     test("thumb gains focus on mouse down", (): void => {
         const container: HTMLDivElement = document.createElement("div");
         document.body.appendChild(container);
-        const preventDefaultFn: any = jest.fn();
 
         const rendered: any = mount(
             <Slider

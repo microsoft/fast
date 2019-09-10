@@ -74,6 +74,11 @@ export interface SliderClassNameContract {
     slider__dragging?: string;
 
     /**
+     * The touch dragging modifier
+     */
+    slider__touchDragging?: string;
+
+    /**
      * The incrmenting modifier
      */
     slider__incrementing?: string;
