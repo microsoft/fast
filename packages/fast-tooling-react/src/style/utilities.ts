@@ -52,7 +52,7 @@ export function applyTriggerStyle(color: string): CSSRules<{}> {
     };
 }
 
-export function applyInteractiveFormItemIndicator(): CSSRules<{}> {
+export function applyInteractiveFormControlIndicator(): CSSRules<{}> {
     return {
         display: "flex",
         padding: "0",
@@ -77,7 +77,7 @@ export function applyInteractiveFormItemIndicator(): CSSRules<{}> {
     };
 }
 
-export function applyFormItemIndicator(): CSSRules<{}> {
+export function applyFormControlIndicator(): CSSRules<{}> {
     return {
         fill: foreground800,
         padding: "0 4px",
@@ -86,7 +86,7 @@ export function applyFormItemIndicator(): CSSRules<{}> {
     };
 }
 
-export function applyFormItemDisabled(): CSSRules<{}> {
+export function applyFormControlDisabled(): CSSRules<{}> {
     return {
         opacity: `${disabledOpacity}`,
         cursor: "not-allowed",

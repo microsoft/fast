@@ -9,7 +9,7 @@ import {
     FormLocation,
     FormOrderByPropertyNamesProps,
     FormProps,
-} from "../../src/form/form/form.props";
+} from "../../src/form/form.props";
 import * as testConfigs from "./form/";
 import { StringUpdateSchemaPlugin } from "./form/plugin/plugin";
 

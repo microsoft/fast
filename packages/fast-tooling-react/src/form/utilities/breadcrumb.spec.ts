@@ -1,4 +1,4 @@
-import { BreadcrumbItemEventHandler, FormChildOptionItem } from "../form/form.props";
+import { BreadcrumbItemEventHandler, FormChildOptionItem } from "../form.props";
 
 import arraysSchema from "../../__tests__/schemas/arrays.schema.json";
 import generalSchema from "../../__tests__/schemas/general.schema.json";
@@ -7,7 +7,7 @@ import childrenSchema from "../../__tests__/schemas/children.schema.json";
 import textFieldSchema from "../../__tests__/schemas/text-field.schema.json";
 import oneOfSchema from "../../__tests__/schemas/one-of.schema.json";
 import deeplyNestedOneOfSchema from "../../__tests__/schemas/one-of-deeply-nested.schema.json";
-import { reactChildrenStringSchema } from "../form/form-item.children.text";
+import { reactChildrenStringSchema } from "../controls/control.children.text";
 import anyOfSchema from "../../__tests__/schemas/any-of.schema.json";
 
 import Navigation, { NavigationItem } from "./navigation";

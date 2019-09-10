@@ -13,7 +13,7 @@ import {
     typeKeyword,
 } from "./types";
 import { ChildOptionItem } from "./";
-import { oneOfAnyOfType } from "../form/form/form-section.props";
+import { oneOfAnyOfType } from "../form/form-section.props";
 import { isPrimitiveReactNode } from "./node-types";
 
 /**

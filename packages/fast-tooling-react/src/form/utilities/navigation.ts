@@ -5,9 +5,9 @@ import {
     mapSchemaLocationFromDataLocation,
     normalizeDataLocation,
 } from "../../data-utilities/location";
-import { FormChildOptionItem } from "../form";
+import { FormChildOptionItem } from "../form.props";
 import { getReactDefaultChildren, propsKeyword } from "./form";
-import { reactChildrenStringSchema } from "../form/form-item.children.text";
+import { reactChildrenStringSchema } from "../controls/control.children.text";
 
 export interface NavigationItemConfig {
     dataLocation: string;
