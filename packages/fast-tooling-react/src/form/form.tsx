@@ -1,12 +1,13 @@
+import ajv, { Ajv, ErrorObject, ValidateFunction } from "ajv";
 import { ChildComponent } from "./controls/control.children.props";
-import React from "react";
 import { cloneDeep, get, set, unset } from "lodash-es";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 import FormSection from "./form-section";
-import ajv, { Ajv, ErrorObject, ValidateFunction } from "ajv";
+import React from "react";
 import {
     BreadcrumbItemEventHandler,
+    FormChildOptionItem,
     FormClassNameContract,
     FormLocation,
     FormProps,
@@ -459,4 +460,5 @@ class Form extends React.Component<
     };
 }
 
+export { FormChildOptionItem, FormClassNameContract };
 export default manageJss(styles)(Form);
