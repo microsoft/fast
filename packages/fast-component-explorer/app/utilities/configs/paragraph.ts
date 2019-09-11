@@ -15,21 +15,21 @@ const paragraphConfig: ComponentViewConfig<ParagraphProps> = {
         {
             displayName: "Paragraph 1",
             data: {
-                children: "Paragraph 1",
+                children: "Paragraph",
                 size: ParagraphSize._1,
             },
         },
         {
             displayName: "Paragraph 2",
             data: {
-                children: "Paragraph 2",
+                children: "Paragraph",
                 size: ParagraphSize._2,
             },
         },
         {
             displayName: "Paragraph 3",
             data: {
-                children: "Paragraph 3",
+                children: "Paragraph",
                 size: ParagraphSize._3,
             },
         },

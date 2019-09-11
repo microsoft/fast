@@ -10,7 +10,7 @@ const checkboxConfig: ComponentViewConfig<LabelProps> = {
         {
             displayName: "Basic",
             data: {
-                children: "Default label",
+                children: "Label",
             },
         },
     ],

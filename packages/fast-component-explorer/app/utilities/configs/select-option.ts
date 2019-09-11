@@ -16,16 +16,16 @@ const selectOptionConfig: ComponentViewConfig<SelectOptionProps> = {
         {
             displayName: "Basic",
             data: {
-                value: "Default",
-                displayString: "Default",
+                value: "Select Option",
+                displayString: "Select Option",
                 id: uniqueId(),
             },
         },
         {
-            displayName: "Glyph",
+            displayName: "With glyph",
             data: {
-                value: "Default",
-                displayString: "With glyph",
+                value: "Select Option",
+                displayString: "Select Option",
                 glyph: {
                     id: glyphSchema.id,
                     props: {
@@ -38,8 +38,8 @@ const selectOptionConfig: ComponentViewConfig<SelectOptionProps> = {
         {
             displayName: "Disabled",
             data: {
-                value: "Default",
-                displayString: "Disabled",
+                value: "Select Option",
+                displayString: "Select Option",
                 disabled: true,
                 id: uniqueId(),
             },

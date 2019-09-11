@@ -15,27 +15,27 @@ const stealthButtonConfig: ComponentViewConfig<StealthButtonProps> = {
         {
             displayName: "Default",
             data: {
-                children: "Default stealth button",
+                children: "Stealth button",
             },
         },
         {
             displayName: "Anchor",
             data: {
                 href: "#",
-                children: "Anchor stealth button",
+                children: "Stealth button",
             },
         },
         {
             displayName: "Disabled",
             data: {
                 disabled: true,
-                children: "Disabled stealth button",
+                children: "Stealth button",
             },
         },
         {
             displayName: "Glyph before text",
             data: {
-                children: "Glyph before text stealth button",
+                children: "Stealth button",
                 beforeContent: {
                     id: glyphSchema.id,
                     props: {
@@ -47,7 +47,7 @@ const stealthButtonConfig: ComponentViewConfig<StealthButtonProps> = {
         {
             displayName: "Glyph after text",
             data: {
-                children: "Glyph after text stealth button",
+                children: "Stealth button",
                 afterContent: {
                     id: glyphSchema.id,
                     props: {

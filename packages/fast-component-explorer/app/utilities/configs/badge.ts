@@ -15,21 +15,21 @@ const badgeConfig: ComponentViewConfig<BadgeProps> = {
         {
             displayName: "Small",
             data: {
-                children: "Small badge",
+                children: "Badge",
                 size: BadgeSize.small,
             },
         },
         {
             displayName: "Large",
             data: {
-                children: "Large badge",
+                children: "Badge",
                 size: BadgeSize.large,
             },
         },
         {
             displayName: "Unfilled",
             data: {
-                children: "Unfilled badge",
+                children: "Badge",
                 filled: false,
             },
         },
