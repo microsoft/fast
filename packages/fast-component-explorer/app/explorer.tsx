@@ -92,22 +92,20 @@ const componentViewConfigs: ObjectOfComponentViewConfigs = {};
 
 // Prepends the custom scenario to each components list fo scenarios
 function setViewConfigsWithCustomConfig(viewConfigs: ObjectOfComponentViewConfigs): void {
-    Object.keys(viewConfigs).forEach(
-        (viewConfigKey: string): void => {
-            componentViewConfigs[viewConfigKey] = Object.assign(
-                {},
-                viewConfigs[viewConfigKey],
-                {
-                    scenarios: [
-                        {
-                            displayName: "Custom",
-                            data: viewConfigs[viewConfigKey].scenarios[0],
-                        },
-                    ].concat(viewConfigs[viewConfigKey].scenarios),
-                }
-            );
-        }
-    );
+    Object.keys(viewConfigs).forEach((viewConfigKey: string): void => {
+        componentViewConfigs[viewConfigKey] = Object.assign(
+            {},
+            viewConfigs[viewConfigKey],
+            {
+                scenarios: [
+                    {
+                        displayName: "Custom",
+                        data: viewConfigs[viewConfigKey].scenarios[0],
+                    },
+                ].concat(viewConfigs[viewConfigKey].scenarios),
+            }
+        );
+    });
 }
 
 setViewConfigsWithCustomConfig(componentViewConfigsWithoutCustomConfig);
