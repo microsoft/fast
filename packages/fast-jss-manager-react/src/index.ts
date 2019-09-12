@@ -16,6 +16,5 @@ export {
 export { ManagedJSSProps } from "./jss-manager";
 export { Consumer as DesignSystemConsumer } from "./context";
 export { JSSManager } from "./jss-manager";
-export { ConstructableStyleSheetRenderer } from "./constructable-stylesheet-renderer";
 export * from "./design-system-provider";
 export * from "@microsoft/fast-jss-manager";

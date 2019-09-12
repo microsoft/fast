@@ -4,6 +4,7 @@ import React from "react";
 import { designSystemContext } from "./context";
 import SheetManager from "./sheet-manager";
 import { jss } from "./jss";
+import { tsExpressionWithTypeArguments } from "@babel/types";
 
 /**
  * Describes an interface for adjusting a styled component
@@ -72,6 +73,10 @@ abstract class JSSManager<T, S, C> extends React.Component<ManagedJSSProps<T, S,
         return JSSManager.sheetManager.jss;
     }
 
+    public static set attachOnMount(value: boolean) {
+        JSSManager.onMount = value;
+    }
+
     /**
      * JSS allows us to use an index to order the created style elements. The higher the index,
      * the later in the document the style element will be created.
@@ -86,6 +91,8 @@ abstract class JSSManager<T, S, C> extends React.Component<ManagedJSSProps<T, S,
      * https://github.com/cssinjs/react-jss/blob/master/src/injectSheet.js
      */
     private static index: number = -1000;
+
+    private static onMount: boolean = false;
 
     /**
      * Manages stylesheets
@@ -127,6 +134,11 @@ abstract class JSSManager<T, S, C> extends React.Component<ManagedJSSProps<T, S,
      */
     private designSystem: C;
 
+    private primaryStylesheetAttached: boolean = false;
+    private primaryStylesheet: JSSStyleSheet = null;
+    private secondaryStylesheetAttached: boolean = false;
+    private secondaryStylesheet: JSSStyleSheet = null;
+
     constructor(props: ManagedJSSProps<T, S, C>, context: C) {
         super(props, context);
 
@@ -137,7 +149,7 @@ abstract class JSSManager<T, S, C> extends React.Component<ManagedJSSProps<T, S,
     public render(): JSX.Element {
         if (!this.hasCreatedIntialStyleSheets) {
             if (!!this.styles) {
-                JSSManager.sheetManager.add(this.styles, this.designSystem, {
+                this.primaryStylesheet = JSSManager.sheetManager.add(this.styles, this.designSystem, !JSSManager.onMount, {
                     meta: this.managedComponent.displayName || this.managedComponent.name,
                     index: this.index,
                 });
@@ -151,6 +163,24 @@ abstract class JSSManager<T, S, C> extends React.Component<ManagedJSSProps<T, S,
         }
 
         return React.createElement(this.managedComponent, this.managedComponentProps());
+    }
+
+    public componentDidMount(): void {
+        if (JSSManager.onMount) {
+            if (!this.primaryStylesheetAttached) {
+                this.primaryStylesheetAttached = true;
+                if (this.primaryStylesheet) {
+                    this.primaryStylesheet.attach();
+                }
+            }
+
+            if (!this.secondaryStylesheetAttached) {
+                this.secondaryStylesheetAttached = true;
+                if (this.secondaryStylesheet) {
+                    this.secondaryStylesheet.attach();
+                }
+            }
+        }
     }
 
     public componentDidUpdate(prevProps: ManagedJSSProps<T, S, C>): void {
@@ -290,7 +320,7 @@ abstract class JSSManager<T, S, C> extends React.Component<ManagedJSSProps<T, S,
     private createPropStyleSheet(designSystem: C = this.designSystem): void {
         const stylesheet: any = this.primaryStyleSheet();
 
-        JSSManager.sheetManager.add(this.props.jssStyleSheet, designSystem, {
+        this.secondaryStylesheet = JSSManager.sheetManager.add(this.props.jssStyleSheet, designSystem, !JSSManager.onMount, {
             meta: `${this.managedComponent.displayName ||
                 this.managedComponent.name} - jssStyleSheet`,
             index: stylesheet ? stylesheet.options.index + 1 : this.index + 1,

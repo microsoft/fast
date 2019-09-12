@@ -33,14 +33,15 @@ export default class SheetManager {
     public add(
         styles: ComponentStyles<unknown, unknown>,
         designSystem: any,
+        attach: boolean = true,
         options?: JSSSheetOptions
-    ): void {
+    ): JSSStyleSheet {
         const tracker: SheetTracker | void = this.getTracker(styles, designSystem);
 
         if (Array.isArray(tracker)) {
             tracker[1]++;
 
-            return;
+            return tracker[0];
         }
 
         let designSystemRegistry: DesignSystemRegistry | void = this.registry.get(styles);
@@ -52,9 +53,11 @@ export default class SheetManager {
             this.registry.set(styles, designSystemRegistry);
         }
 
-        this.registry
-            .get(styles)
-            .set(designSystem, [this.createStyleSheet(styles, designSystem, options), 1]);
+        const stylesheet: JSSStyleSheet = this.createStyleSheet(styles, designSystem, options, attach)
+        const dsRegistry: DesignSystemRegistry = this.registry.get(styles);
+        dsRegistry.set(designSystem, [stylesheet, 1]);
+
+        return stylesheet;
     }
 
     /**
@@ -108,7 +111,7 @@ export default class SheetManager {
             this.registry.get(styles).set(nextDesignSystem, tracker);
         } else {
             this.remove(styles, previousDesignSystem);
-            this.add(styles, nextDesignSystem, tracker[0].options);
+            this.add(styles, nextDesignSystem, true, tracker[0].options);
         }
     }
 
@@ -181,7 +184,8 @@ export default class SheetManager {
     private createStyleSheet(
         styles: ComponentStyles<unknown, unknown>,
         designSystem: any,
-        options: JSSSheetOptions = {}
+        options: JSSSheetOptions = {},
+        attach: boolean = true
     ): JSSStyleSheet {
         const stylesheet: ComponentStyleSheet<unknown, unknown> =
             typeof styles === "function" ? styles(designSystem) : styles;
@@ -191,7 +195,15 @@ export default class SheetManager {
             ...options,
         });
 
-        sheet.update(designSystem).attach();
+        sheet.update(designSystem);
+
+        // @ts-ignore
+        sheet.deploy();
+
+        if (attach) {
+            sheet.attach();
+        }
+
         stylesheetRegistry.add(sheet);
 
         return sheet;
