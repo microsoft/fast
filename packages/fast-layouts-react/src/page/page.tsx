@@ -8,15 +8,6 @@ export interface PageClassNamesContract {
     page?: string;
 }
 
-// export const pageStyleSheet: ComponentStyles<PageClassNamesContract, undefined> = {
-//     page: {
-//         display: "-ms-grid",
-//         "@supports(display: grid)": {
-//             display: "grid",
-//         },
-//     },
-// };
-
 export class Page extends Foundation<PageHandledProps, PageUnhandledProps, {}> {
     public static displayName: string = "Page";
 

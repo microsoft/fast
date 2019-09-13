@@ -22,15 +22,6 @@ import { canUseCssGrid } from "@microsoft/fast-web-utilities";
 export interface ColumnClassNamesContract {
     column: string;
 }
-
-// export const columnStyleSheet: ComponentStyles<ColumnClassNamesContract, undefined> = {
-//     column: {
-//         // Fixes issue found in firefox where columns that have overflow
-//         // or full width content cause scroll bars
-//         "min-width": "0",
-//     },
-// };
-
 export class Column extends Foundation<ColumnHandledProps, ColumnUnhandledProps, {}> {
     public static displayName: string = "Column";
 

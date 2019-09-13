@@ -18,16 +18,6 @@ export interface GridClassNamesContract {
     grid?: string;
 }
 
-// export const gridStyleSheet: ComponentStyles<GridClassNamesContract, undefined> = {
-//     grid: {
-//         display: "-ms-grid",
-//         "@supports(display: grid)": {
-//             display: "grid",
-//         },
-//         "grid-auto-rows": "auto",
-//     },
-// };
-
 export class Grid extends Foundation<GridHandledProps, GridUnhandledProps, {}> {
     /**
      * Stores HTML tag for use in render

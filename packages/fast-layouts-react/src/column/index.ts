@@ -6,7 +6,6 @@ import {
     ColumnHandledProps as BaseColumnHandledProps,
     ColumnManagedClasses,
     ColumnProps as BaseColumnProps,
-    //     columnStyleSheet,
     ColumnUnhandledProps,
 } from "./column";
 import { Subtract } from "utility-types";
