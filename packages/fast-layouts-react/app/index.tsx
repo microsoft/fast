@@ -63,7 +63,7 @@ function render(): void {
                     />
                     <Canvas>
                         <Page>
-                            <Grid key={"breakpoint-specific-spans"} row={1}>
+                            <Grid key={"breakpoint-specific-spans"} row={1} gridColumn={2}>
                                 <Column jssStyleSheet={columnTestStyles} span={12} />
                                 <Column
                                     jssStyleSheet={columnTestStyles}
@@ -86,6 +86,7 @@ function render(): void {
                                     <Column
                                         jssStyleSheet={columnTestStyles}
                                         span={[12, 6, 6, 4]}
+                                        row={3}
                                     >
                                         A
                                     </Column>

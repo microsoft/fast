@@ -2,19 +2,20 @@ import React from "react";
 import { ComponentStyles } from "@microsoft/fast-jss-manager-react";
 import { PageHandledProps, PageProps, PageUnhandledProps } from "./page.props";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
+import { canUseCssGrid } from "@microsoft/fast-web-utilities";
 
 export interface PageClassNamesContract {
     page?: string;
 }
 
-export const pageStyleSheet: ComponentStyles<PageClassNamesContract, undefined> = {
-    page: {
-        display: "-ms-grid",
-        "@supports(display: grid)": {
-            display: "grid",
-        },
-    },
-};
+// export const pageStyleSheet: ComponentStyles<PageClassNamesContract, undefined> = {
+//     page: {
+//         display: "-ms-grid",
+//         "@supports(display: grid)": {
+//             display: "grid",
+//         },
+//     },
+// };
 
 export class Page extends Foundation<PageHandledProps, PageUnhandledProps, {}> {
     public static displayName: string = "Page";
@@ -23,6 +24,8 @@ export class Page extends Foundation<PageHandledProps, PageUnhandledProps, {}> {
         margin: "minmax(5vw, 1fr)",
         maxWidth: "1600px",
     };
+
+    private static display: string = canUseCssGrid() ? "grid" : "-ms-grid"
 
     protected handledProps: HandledProps<PageHandledProps> = {
         managedClasses: void 0,
@@ -53,6 +56,7 @@ export class Page extends Foundation<PageHandledProps, PageUnhandledProps, {}> {
                 // attributes.style has to be spread here again in order to
                 // merge the styles attribute, otherwise it is just overriden
                 ...attributes.style,
+                display: Page.display,
                 gridTemplateColumns: columns,
                 msGridColumns: columns,
             },

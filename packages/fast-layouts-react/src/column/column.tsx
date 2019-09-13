@@ -17,18 +17,19 @@ import Foundation, {
     HandledProps,
 } from "@microsoft/fast-components-foundation-react";
 import { ColumnHandledProps, ColumnProps, ColumnUnhandledProps } from "./column.props";
+import { canUseCssGrid } from "@microsoft/fast-web-utilities";
 
 export interface ColumnClassNamesContract {
     column: string;
 }
 
-export const columnStyleSheet: ComponentStyles<ColumnClassNamesContract, undefined> = {
-    column: {
-        // Fixes issue found in firefox where columns that have overflow
-        // or full width content cause scroll bars
-        "min-width": "0",
-    },
-};
+// export const columnStyleSheet: ComponentStyles<ColumnClassNamesContract, undefined> = {
+//     column: {
+//         // Fixes issue found in firefox where columns that have overflow
+//         // or full width content cause scroll bars
+//         "min-width": "0",
+//     },
+// };
 
 export class Column extends Foundation<ColumnHandledProps, ColumnUnhandledProps, {}> {
     public static displayName: string = "Column";
@@ -190,13 +191,23 @@ export class Column extends Foundation<ColumnHandledProps, ColumnUnhandledProps,
                 : this.props.order;
         }
 
+        const gridStyles: React.CSSProperties = canUseCssGrid()
+            ? {
+                  gridColumn: gridColumnValue,
+                  gridRowStart: row,
+              }
+            : {
+                  ["msGridColumn" as any]: this.augmentMsGrid(position),
+                  ["msGridColumnSpan" as any]: this.augmentMsGrid(span),
+                  ["msGridRow" as any]: row,
+              };
+
         return Object.assign({}, this.unhandledProps().style, {
-            gridColumn: gridColumnValue,
-            gridRowStart: row,
-            msGridColumn: this.augmentMsGrid(position),
-            msGridColumnSpan: this.augmentMsGrid(span),
-            msGridRow: row,
+            ...gridStyles,
             order: typeof order === "number" ? order : null,
+            // Fixes issue found in firefox where columns that have overflow
+            // or full width content cause scroll bars
+            minwidth: "0",
         });
     }
 

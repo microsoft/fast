@@ -11,30 +11,31 @@ import {
 } from "./grid.props";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import { Column } from "../column";
+import { canUseCssGrid } from "@microsoft/fast-web-utilities";
+import { toPx } from "@microsoft/fast-jss-utilities";
 
 export interface GridClassNamesContract {
     grid?: string;
 }
 
-export const gridStyleSheet: ComponentStyles<GridClassNamesContract, undefined> = {
-    grid: {
-        display: "-ms-grid",
-        "@supports(display: grid)": {
-            display: "grid",
-        },
-        "grid-auto-rows": "auto",
-    },
-};
+// export const gridStyleSheet: ComponentStyles<GridClassNamesContract, undefined> = {
+//     grid: {
+//         display: "-ms-grid",
+//         "@supports(display: grid)": {
+//             display: "grid",
+//         },
+//         "grid-auto-rows": "auto",
+//     },
+// };
 
 export class Grid extends Foundation<GridHandledProps, GridUnhandledProps, {}> {
-    public static displayName: string = "Grid";
-
     /**
      * Stores HTML tag for use in render
      */
     private get tag(): any {
         return this.generateHTMLTag();
     }
+    public static displayName: string = "Grid";
 
     public static defaultProps: Partial<GridProps> = {
         tag: GridTag.div,
@@ -44,6 +45,8 @@ export class Grid extends Foundation<GridHandledProps, GridUnhandledProps, {}> {
         horizontalAlign: GridAlignment.stretch,
         columnCount: 12,
     };
+
+    private static display: string = canUseCssGrid() ? "grid" : "-ms-grid";
 
     protected handledProps: HandledProps<GridHandledProps> = {
         columnCount: void 0,
@@ -143,18 +146,34 @@ export class Grid extends Foundation<GridHandledProps, GridUnhandledProps, {}> {
     };
 
     private generateStyleAttributes(): React.CSSProperties {
+        const foo: string = `1fr (${this.generateGutter()})[${this.props.columnCount - 1}]`;
+
         return {
             ...this.unhandledProps().style,
+            display: Grid.display,
+            ...(canUseCssGrid() ? this.cssGridStyles() : this.msGridStyles())
+        };
+    }
+
+    private cssGridStyles(): React.CSSProperties {
+        return {
+            alignItems: this.generateAlignment(this.props.verticalAlign),
+            gridAutoRows: "auto",
             gridColumn: this.props.gridColumn,
-            gridTemplateColumns: `repeat(${this.props.columnCount}, 1fr)`,
             gridColumnGap: `${this.generateGutter()}px`,
             gridRow: this.props.row,
+            gridTemplateColumns: `repeat(${this.props.columnCount}, 1fr)`,
             justifyItems: this.generateAlignment(this.props.horizontalAlign),
-            alignItems: this.generateAlignment(this.props.verticalAlign),
-            msGridColumns: `1fr (${this.generateGutter()})[${this.props.columnCount -
-                1}]`,
+        }
+    }
+
+    private msGridStyles(): React.CSSProperties {
+        return {
+            msGridColumns: `1fr (${toPx(this.generateGutter())} 1fr)[${this.props.columnCount -
+            1}]`,
             ["msGridRow" as any]: this.props.row,
-        };
+            [ "msGridColumn" as any ]: this.props.gridColumn,
+        }
     }
 
     /**
@@ -165,6 +184,13 @@ export class Grid extends Foundation<GridHandledProps, GridUnhandledProps, {}> {
     }
 
     private renderChildren(): React.ReactNode | React.ReactNode[] {
+        // We only need to communicate gutters size to ms-grid columns because
+        // css grid gives us a css property to set for gutter. If we support
+        // css grid, we can safely return children w/o gutter augmentation.
+        if (canUseCssGrid()) {
+            return this.props.children
+        }
+
         return React.Children.map(
             this.props.children,
             (child: React.ReactNode | React.ReactNode[]) => {

@@ -6,13 +6,13 @@ import {
     PageHandledProps as BasePageHandledProps,
     PageManagedClasses,
     PageProps as BasePageProps,
-    pageStyleSheet,
+    //    pageStyleSheet,
     PageUnhandledProps,
 } from "./page";
 import { Subtract } from "utility-types";
 
 /* tslint:disable-next-line:typedef */
-const Page = manageJss(pageStyleSheet)(BasePage);
+const Page = manageJss()(BasePage);
 type Page = typeof Page;
 
 interface PageHandledProps extends Subtract<BasePageHandledProps, PageManagedClasses> {}
