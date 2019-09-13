@@ -1,3 +1,6 @@
+// import "core-js/stable";
+// import "regenerator-runtime/runtime";
+import "@babel/polyfill";
 import React from "react";
 import ReactDOM from "react-dom";
 import { ComponentStyles, JSSManager } from "@microsoft/fast-jss-manager-react";
@@ -18,8 +21,8 @@ JSSManager.jss = jssInstance;
 
 const columnTestStyles: ComponentStyles<ColumnClassNamesContract, undefined> = {
     column: {
-        "background-color": `rgba(0, 120, 212, 0.2)`,
-        border: `2px solid rgba(0, 120, 212, 0.2)`,
+        "background-color": "rgba(0, 120, 212, 0.2)",
+        border: "2px solid rgba(0, 120, 212, 0.2)",
         "min-height": "30px",
         margin: "4px 0",
     },
