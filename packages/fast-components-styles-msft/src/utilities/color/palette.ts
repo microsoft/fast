@@ -1,4 +1,4 @@
-import { clamp, inRange } from "lodash-es";
+import { clamp } from "lodash-es";
 import { DesignSystem, DesignSystemResolver } from "../../design-system";
 import { backgroundColor } from "../../utilities/design-system";
 import { accentPalette, neutralPalette } from "../design-system";
@@ -251,22 +251,72 @@ export function swatchByContrast(referenceColor: string | SwatchResolver) {
                             designSystem
                         );
                         const length: number = sourcePalette.length;
-                        let index: number = initialSearchIndex;
 
-                        while (
-                            inRange(index + direction, 0, length) &&
-                            inRange(index, 0, length) &&
-                            !contrastCondition(contrast(color, sourcePalette[index]))
-                        ) {
-                            index = index + direction;
+                        function contrastSeachCondition(
+                            valueToCheckAgainst: Swatch
+                        ): boolean {
+                            return contrastCondition(
+                                contrast(color, valueToCheckAgainst)
+                            );
                         }
 
-                        return sourcePalette[index];
+                        let constrainedSourcePalette: Palette = [];
+
+                        if (direction === 1) {
+                            constrainedSourcePalette = sourcePalette.slice(
+                                initialSearchIndex,
+                                length
+                            );
+                        } else {
+                            constrainedSourcePalette = sourcePalette.slice(
+                                0,
+                                initialSearchIndex + 1
+                            );
+                            // reverse the palette array when the direction that
+                            // the contrast resolves for is reversed
+                            constrainedSourcePalette.reverse();
+                        }
+
+                        return binarySearch(
+                            constrainedSourcePalette,
+                            contrastSeachCondition
+                        );
                     };
                 };
             };
         };
     };
+}
+
+function binarySearch<T>(
+    valuesToSearch: T[],
+    searchCondition: (value: T) => boolean,
+    startIndex: number = 0,
+    endIndex: number = valuesToSearch.length - 1
+): T {
+    if (endIndex === startIndex) {
+        return valuesToSearch[startIndex];
+    }
+
+    const middleIndex: number = Math.ceil(endIndex - startIndex / 2) + startIndex - 1;
+
+    // Check to see if this passes on the item in the center of the array
+    // if it does check the previous values
+    if (searchCondition(valuesToSearch[middleIndex])) {
+        return binarySearch(
+            valuesToSearch,
+            searchCondition,
+            startIndex,
+            middleIndex // include this index because it passed the search condition
+        );
+    } else {
+        return binarySearch(
+            valuesToSearch,
+            searchCondition,
+            middleIndex + 1, // exclude this index because it failed the search condition
+            endIndex
+        );
+    }
 }
 
 /* tslint:enable:typedef */
