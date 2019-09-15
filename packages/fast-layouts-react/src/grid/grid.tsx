@@ -136,12 +136,13 @@ export class Grid extends Foundation<GridHandledProps, GridUnhandledProps, {}> {
     };
 
     private generateStyleAttributes(): React.CSSProperties {
-        const foo: string = `1fr (${this.generateGutter()})[${this.props.columnCount - 1}]`;
+        const foo: string = `1fr (${this.generateGutter()})[${this.props.columnCount -
+            1}]`;
 
         return {
             ...this.unhandledProps().style,
             display: Grid.display,
-            ...(canUseCssGrid() ? this.cssGridStyles() : this.msGridStyles())
+            ...(canUseCssGrid() ? this.cssGridStyles() : this.msGridStyles()),
         };
     }
 
@@ -154,16 +155,16 @@ export class Grid extends Foundation<GridHandledProps, GridUnhandledProps, {}> {
             gridRow: this.props.row,
             gridTemplateColumns: `repeat(${this.props.columnCount}, 1fr)`,
             justifyItems: this.generateAlignment(this.props.horizontalAlign),
-        }
+        };
     }
 
     private msGridStyles(): React.CSSProperties {
         return {
-            msGridColumns: `1fr (${toPx(this.generateGutter())} 1fr)[${this.props.columnCount -
-            1}]`,
+            msGridColumns: `1fr (${toPx(this.generateGutter())} 1fr)[${this.props
+                .columnCount - 1}]`,
             ["msGridRow" as any]: this.props.row,
-            [ "msGridColumn" as any ]: this.props.gridColumn,
-        }
+            ["msGridColumn" as any]: this.props.gridColumn,
+        };
     }
 
     /**
@@ -178,7 +179,7 @@ export class Grid extends Foundation<GridHandledProps, GridUnhandledProps, {}> {
         // css grid gives us a css property to set for gutter. If we support
         // css grid, we can safely return children w/o gutter augmentation.
         if (canUseCssGrid()) {
-            return this.props.children
+            return this.props.children;
         }
 
         return React.Children.map(

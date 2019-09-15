@@ -16,7 +16,7 @@ export class Page extends Foundation<PageHandledProps, PageUnhandledProps, {}> {
         maxWidth: "1600px",
     };
 
-    private static display: string = canUseCssGrid() ? "grid" : "-ms-grid"
+    private static display: string = canUseCssGrid() ? "grid" : "-ms-grid";
 
     protected handledProps: HandledProps<PageHandledProps> = {
         managedClasses: void 0,
