@@ -6,13 +6,12 @@ import {
     ColumnHandledProps as BaseColumnHandledProps,
     ColumnManagedClasses,
     ColumnProps as BaseColumnProps,
-    columnStyleSheet,
     ColumnUnhandledProps,
 } from "./column";
 import { Subtract } from "utility-types";
 
 /* tslint:disable-next-line:typedef */
-const Column = manageJss(columnStyleSheet)(BaseColumn);
+const Column = manageJss()(BaseColumn);
 type Column = typeof Column;
 
 interface ColumnHandledProps

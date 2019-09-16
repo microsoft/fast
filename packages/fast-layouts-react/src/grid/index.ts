@@ -8,14 +8,13 @@ import {
     GridHandledProps as BaseGridHandledProps,
     GridManagedClasses,
     GridProps as BaseGridProps,
-    gridStyleSheet,
     GridTag,
     GridUnhandledProps,
 } from "./grid";
 import { Subtract } from "utility-types";
 
 /* tslint:disable-next-line:typedef */
-const Grid = manageJss(gridStyleSheet)(BaseGrid);
+const Grid = manageJss()(BaseGrid);
 type Grid = typeof Grid;
 
 interface GridHandledProps extends Subtract<BaseGridHandledProps, GridManagedClasses> {}

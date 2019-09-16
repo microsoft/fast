@@ -1,4 +1,6 @@
 import { canUseDOM } from "exenv-es6";
+import { isBoolean } from "lodash-es";
+
 /**
  * Gets the numeric key code associated with a keyboard event. This method is for use with DOM level 3 events
  * that still use the deprecated keyCode property.
@@ -12,7 +14,7 @@ export function getKeyCode(event: KeyboardEvent): number {
  */
 let _canUseFocusVisible: boolean;
 export function canUseFocusVisible(): boolean {
-    if (typeof _canUseFocusVisible === "boolean") {
+    if (isBoolean(_canUseFocusVisible)) {
         return _canUseFocusVisible;
     }
 
@@ -36,4 +38,19 @@ export function canUseFocusVisible(): boolean {
     }
 
     return _canUseFocusVisible as boolean;
+}
+
+let _canUseCssGrid: boolean;
+export function canUseCssGrid(): boolean {
+    if (isBoolean(_canUseCssGrid)) {
+        return _canUseCssGrid;
+    }
+
+    try {
+        _canUseCssGrid = CSS.supports("display", "grid");
+    } catch {
+        _canUseCssGrid = false;
+    }
+
+    return _canUseCssGrid;
 }

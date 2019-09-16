@@ -21,13 +21,22 @@ module.exports = {
                 test: /\.tsx?$/,
                 use: [
                     {
+                        loader: 'babel-loader'
+                    },
+                    {
                         loader: 'ts-loader',
                         options: {
-                            transpileOnly: true
-                        }
+                            transpileOnly: true,
+                        },
                     },
-                    
+
                 ],
+            },
+            {
+                test: /\.jsx?$/,
+                use: {
+                    loader: 'babel-loader'
+                }
             }
         ]
     },

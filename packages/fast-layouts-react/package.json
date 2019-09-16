@@ -67,6 +67,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.0.0",
+    "@babel/polyfill": "^7.6.0",
     "@babel/preset-env": "^7.1.0",
     "@babel/preset-react": "^7.0.0",
     "@microsoft/fast-jss-manager-react": "^4.4.3",
@@ -77,6 +78,7 @@
     "@types/react": "^16.4.18",
     "babel-core": "^7.0.0-bridge.0",
     "babel-jest": "^24.5.0",
+    "babel-loader": "^8.0.6",
     "fork-ts-checker-webpack-plugin": "^0.4.1",
     "html-webpack-plugin": "^3.2.0",
     "jest": "^24.5.0",
