@@ -18,7 +18,7 @@ const subheadingConfig: ComponentViewConfig<SubheadingProps> = {
             data: {
                 tag: SubheadingTag.h1,
                 size: SubheadingSize._1,
-                children: "Subheading 1",
+                children: "Subheading",
             },
         },
         {
@@ -26,7 +26,7 @@ const subheadingConfig: ComponentViewConfig<SubheadingProps> = {
             data: {
                 tag: SubheadingTag.h2,
                 size: SubheadingSize._2,
-                children: "Subheading 2",
+                children: "Subheading",
             },
         },
         {
@@ -34,7 +34,7 @@ const subheadingConfig: ComponentViewConfig<SubheadingProps> = {
             data: {
                 tag: SubheadingTag.h3,
                 size: SubheadingSize._3,
-                children: "Subheading 3",
+                children: "Subheading",
             },
         },
         {
@@ -42,7 +42,7 @@ const subheadingConfig: ComponentViewConfig<SubheadingProps> = {
             data: {
                 tag: SubheadingTag.h4,
                 size: SubheadingSize._4,
-                children: "Subheading 4",
+                children: "Subheading",
             },
         },
         {
@@ -50,7 +50,7 @@ const subheadingConfig: ComponentViewConfig<SubheadingProps> = {
             data: {
                 tag: SubheadingTag.h5,
                 size: SubheadingSize._5,
-                children: "Subheading 5",
+                children: "Subheading",
             },
         },
         {
@@ -58,14 +58,14 @@ const subheadingConfig: ComponentViewConfig<SubheadingProps> = {
             data: {
                 tag: SubheadingTag.h6,
                 size: SubheadingSize._6,
-                children: "Subheading 6",
+                children: "Subheading",
             },
         },
         {
             displayName: "Subheading p",
             data: {
                 tag: SubheadingTag.p,
-                children: "Subheading p",
+                children: "Subheading",
             },
         },
     ],

@@ -14,7 +14,7 @@ const metatextConfig: ComponentViewConfig<MetatextProps> = {
         {
             displayName: "Basic",
             data: {
-                children: "Default metatext",
+                children: "Metatext",
             },
         },
     ],

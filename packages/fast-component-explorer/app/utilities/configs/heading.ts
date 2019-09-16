@@ -18,7 +18,7 @@ const headingConfig: ComponentViewConfig<HeadingProps> = {
             data: {
                 tag: HeadingTag.h1,
                 size: HeadingSize._1,
-                children: "Heading 1",
+                children: "Heading",
             },
         },
         {
@@ -26,7 +26,7 @@ const headingConfig: ComponentViewConfig<HeadingProps> = {
             data: {
                 tag: HeadingTag.h2,
                 size: HeadingSize._2,
-                children: "Heading 2",
+                children: "Heading",
             },
         },
         {
@@ -34,7 +34,7 @@ const headingConfig: ComponentViewConfig<HeadingProps> = {
             data: {
                 tag: HeadingTag.h3,
                 size: HeadingSize._3,
-                children: "Heading 3",
+                children: "Heading",
             },
         },
         {
@@ -42,7 +42,7 @@ const headingConfig: ComponentViewConfig<HeadingProps> = {
             data: {
                 tag: HeadingTag.h4,
                 size: HeadingSize._4,
-                children: "Heading 4",
+                children: "Heading",
             },
         },
         {
@@ -50,7 +50,7 @@ const headingConfig: ComponentViewConfig<HeadingProps> = {
             data: {
                 tag: HeadingTag.h5,
                 size: HeadingSize._5,
-                children: "Heading 5",
+                children: "Heading",
             },
         },
         {
@@ -58,7 +58,7 @@ const headingConfig: ComponentViewConfig<HeadingProps> = {
             data: {
                 tag: HeadingTag.h6,
                 size: HeadingSize._6,
-                children: "Heading 6",
+                children: "Heading",
             },
         },
     ],

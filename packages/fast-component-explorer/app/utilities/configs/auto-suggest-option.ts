@@ -22,7 +22,7 @@ const autoSuggestOptionConfig: ComponentViewConfig<AutoSuggestOptionProps> = {
         {
             displayName: "Disabled",
             data: {
-                value: "Disabled",
+                value: "Value",
                 disabled: true,
                 id: uniqueId(),
             },

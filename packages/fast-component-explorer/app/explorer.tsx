@@ -76,13 +76,41 @@ import {
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import syntaxHighlighterStyles from "./syntax-highlighting-style";
 import { childOptions, history, menu } from "./config";
-import * as componentViewConfigs from "./utilities/configs";
-import { Scenario } from "./utilities/configs/data.props";
+import * as componentViewConfigsWithoutCustomConfig from "./utilities/configs";
+import { ComponentViewConfig, Scenario } from "./utilities/configs/data.props";
 import { MemoizedFunction, uniqueId } from "lodash";
 import { Direction } from "@microsoft/fast-web-utilities";
 import { ColorRGBA64, parseColor } from "@microsoft/fast-colors";
 import { format, multiply, toPx } from "@microsoft/fast-jss-utilities";
 import { NavigationMenuClassNameContract } from "@microsoft/fast-tooling-react/dist/navigation-menu/navigation-menu.style";
+
+interface ObjectOfComponentViewConfigs {
+    [key: string]: ComponentViewConfig<any>;
+}
+
+// Prepends the custom scenario to each components list fo scenarios
+function setViewConfigsWithCustomConfig(
+    viewConfigs: ObjectOfComponentViewConfigs
+): ObjectOfComponentViewConfigs {
+    const componentViewConfigs: ObjectOfComponentViewConfigs = {};
+
+    Object.keys(viewConfigs).forEach((viewConfigKey: string): void => {
+        componentViewConfigs[viewConfigKey] = Object.assign(
+            {},
+            viewConfigs[viewConfigKey],
+            {
+                scenarios: [
+                    {
+                        displayName: "Custom",
+                        data: viewConfigs[viewConfigKey].scenarios[0].data,
+                    },
+                ].concat(viewConfigs[viewConfigKey].scenarios),
+            }
+        );
+    });
+
+    return componentViewConfigs;
+}
 
 const dark: string = `#333333`;
 const light: string = "#FFFFFF";
@@ -232,8 +260,10 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
             width: 0,
             height: 0,
             scenario: this.getScenarioData(
-                this.getComponentNameSpinalCaseByPath(locationPathname)
+                this.getComponentNameSpinalCaseByPath(locationPathname),
+                1
             ),
+            selectedScenarioIndex: 1,
             locationPathname,
             theme: ThemeName.light,
             viewConfig: DesignSystemDefaults,
@@ -544,10 +574,12 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
                         this.state.locationPathname
                     );
                     const Guidance: React.ComponentClass = get(
-                        componentViewConfigs,
+                        setViewConfigsWithCustomConfig(
+                            componentViewConfigsWithoutCustomConfig
+                        ),
                         `${camelCase(componentName)}Config.guidance`,
                         null
-                    );
+                    ) as any;
 
                     return (
                         <div className={className}>
@@ -592,7 +624,9 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
             this.state.locationPathname
         );
         const scenarioOptions: Array<Scenario<any>> = get(
-            componentViewConfigs[`${camelCase(componentName)}Config`],
+            setViewConfigsWithCustomConfig(componentViewConfigsWithoutCustomConfig)[
+                `${camelCase(componentName)}Config`
+            ],
             "scenarios"
         );
 
@@ -601,7 +635,10 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
                 <Select
                     jssStyleSheet={this.selectStyleOverrides}
                     onValueChange={this.handleUpdateScenario}
-                    defaultSelection={[scenarioOptions[0].displayName]}
+                    defaultSelection={[scenarioOptions[1].displayName]}
+                    selectedItems={[
+                        scenarioOptions[this.state.selectedScenarioIndex].displayName,
+                    ]}
                 >
                     {this.renderScenarioOptions(scenarioOptions)}
                 </Select>
@@ -660,21 +697,27 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
         // a mutation happening in one of the Form
         return {
             id: get(
-                componentViewConfigs[`${camelCase(componentName)}Config`],
+                setViewConfigsWithCustomConfig(componentViewConfigsWithoutCustomConfig)[
+                    `${camelCase(componentName)}Config`
+                ],
                 "schema.id"
             ),
             props:
                 typeof index === "number"
-                    ? get(
-                          componentViewConfigs,
+                    ? (get(
+                          setViewConfigsWithCustomConfig(
+                              componentViewConfigsWithoutCustomConfig
+                          ),
                           `${camelCase(componentName)}Config.scenarios[${index}].data`,
                           {}
-                      )
-                    : get(
-                          componentViewConfigs,
+                      ) as T)
+                    : (get(
+                          setViewConfigsWithCustomConfig(
+                              componentViewConfigsWithoutCustomConfig
+                          ),
                           `${camelCase(componentName)}Config.scenarios[0].data`,
                           {}
-                      ),
+                      ) as T),
         };
     }
 
@@ -699,6 +742,7 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
                 this.getComponentNameSpinalCaseByPath(this.state.locationPathname),
                 parseInt(selectedItems[0].value, 10)
             ),
+            selectedScenarioIndex: parseInt(selectedItems[0].value, 10),
         });
     };
 
@@ -708,6 +752,7 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
                 id: get(this.state.scenario, "id"),
                 props: data,
             },
+            selectedScenarioIndex: 0,
         });
     };
 
@@ -734,8 +779,10 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
             {
                 locationPathname: route,
                 scenario: this.getScenarioData(
-                    this.getComponentNameSpinalCaseByPath(route)
+                    this.getComponentNameSpinalCaseByPath(route),
+                    1
                 ),
+                selectedScenarioIndex: 1,
             },
             () => {
                 history.push(route);
