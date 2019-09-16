@@ -1,4 +1,4 @@
-import { clamp } from "lodash-es";
+import { clamp, values } from "lodash-es";
 import { DesignSystem, DesignSystemResolver } from "../../design-system";
 import { backgroundColor } from "../../utilities/design-system";
 import { accentPalette, neutralPalette } from "../design-system";
@@ -240,17 +240,17 @@ export function swatchByContrast(referenceColor: string | SwatchResolver) {
                                 ? referenceColor(designSystem)
                                 : referenceColor;
                         const sourcePalette: Palette = paletteResolver(designSystem);
+                        const length: number = sourcePalette.length;
                         const initialSearchIndex: number = clamp(
                             indexResolver(color, sourcePalette, designSystem),
                             0,
-                            sourcePalette.length - 1
+                            length - 1
                         );
                         const direction: 1 | -1 = directionResolver(
                             initialSearchIndex,
                             sourcePalette,
                             designSystem
                         );
-                        const length: number = sourcePalette.length;
 
                         function contrastSeachCondition(
                             valueToCheckAgainst: Swatch
@@ -260,26 +260,24 @@ export function swatchByContrast(referenceColor: string | SwatchResolver) {
                             );
                         }
 
-                        let constrainedSourcePalette: Palette = [];
+                        const constrainedSourcePalette: Palette = [].concat(
+                            sourcePalette
+                        );
+                        const endSearchIndex: number = length - 1;
+                        let startSearchIndex: number = initialSearchIndex;
 
-                        if (direction === 1) {
-                            constrainedSourcePalette = sourcePalette.slice(
-                                initialSearchIndex,
-                                length
-                            );
-                        } else {
-                            constrainedSourcePalette = sourcePalette.slice(
-                                0,
-                                initialSearchIndex + 1
-                            );
+                        if (direction === -1) {
                             // reverse the palette array when the direction that
                             // the contrast resolves for is reversed
                             constrainedSourcePalette.reverse();
+                            startSearchIndex = endSearchIndex - startSearchIndex;
                         }
 
                         return binarySearch(
                             constrainedSourcePalette,
-                            contrastSeachCondition
+                            contrastSeachCondition,
+                            startSearchIndex,
+                            endSearchIndex
                         );
                     };
                 };
@@ -298,7 +296,7 @@ function binarySearch<T>(
         return valuesToSearch[startIndex];
     }
 
-    const middleIndex: number = Math.ceil(endIndex - startIndex / 2) + startIndex - 1;
+    const middleIndex: number = Math.floor((endIndex - startIndex) / 2) + startIndex;
 
     // Check to see if this passes on the item in the center of the array
     // if it does check the previous values
