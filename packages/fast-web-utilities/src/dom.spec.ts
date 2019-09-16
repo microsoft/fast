@@ -1,4 +1,4 @@
-import { canUseFocusVisible, getKeyCode } from "./dom";
+import { canUseCssGrid, canUseFocusVisible, getKeyCode } from "./dom";
 import { KeyCodes } from "./key-codes";
 
 describe("getKeyCode", () => {
@@ -167,5 +167,13 @@ describe("canUseFocusVisible", () => {
     });
     test("should return true if the environment supports focus-visible selectors", () => {
         expect(canUseFocusVisible()).toBe(true);
+    });
+});
+
+describe("canUseCssGrid", () => {
+    test("should not throw", () => {
+        expect(() => {
+            canUseCssGrid();
+        }).not.toThrow();
     });
 });
