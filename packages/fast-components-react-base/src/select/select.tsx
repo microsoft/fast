@@ -11,7 +11,7 @@ import {
     keyCodeSpace,
 } from "@microsoft/fast-web-utilities";
 import { canUseDOM } from "exenv-es6";
-import { get, isEqual, isNil } from "lodash-es";
+import { get, isEqual, isNil, memoize } from "lodash-es";
 import React from "react";
 import Button from "../button";
 import Listbox from "../listbox";
@@ -24,6 +24,8 @@ export interface SelectState {
     displayString: string;
     selectedItems: ListboxItemProps[];
     isMenuOpen: boolean;
+    selectedItemIndex: number | null;
+    selectableItemCount: number;
 }
 
 class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, SelectState> {
@@ -81,11 +83,15 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
             initialSelection = initialSelection.slice(0, 1);
         }
 
+        const validOptions: React.ReactNode[] = this.getValidOptions();
+
         this.state = {
             selectedItems: initialSelection,
             value: this.getValueFromSelection(initialSelection),
             displayString: this.getFormattedDisplayString(initialSelection),
             isMenuOpen: this.validateMenuState(false),
+            selectedItemIndex: this.getSelectedItemIndex(validOptions, initialSelection),
+            selectableItemCount: validOptions.length
         };
     }
 
@@ -138,11 +144,16 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
         return (
             <div
                 {...this.unhandledProps()}
-                aria-disabled={this.props.disabled || null}
                 ref={this.rootElement}
                 className={this.generateClassNames()}
                 onKeyDown={this.handleKeydown}
                 onClick={this.handleClick}
+                role="listbox"
+                aria-disabled={this.props.disabled || null}
+                aria-expanded={this.state.isMenuOpen}
+                aria-labelledby={this.props.labelledBy || null}
+                aria-describedby="selectedoption"
+                data-is-focusable={true}
             >
                 {this.renderTrigger()}
                 {this.renderHiddenSelectElement()}
@@ -308,10 +319,13 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
         }
 
         if (this.props.selectedItems === undefined) {
+            const validOptions: React.ReactNode[] = this.getValidOptions();
             this.setState({
                 selectedItems: newSelection,
                 value: newValue,
                 displayString: newDisplayString,
+                selectedItemIndex: this.getSelectedItemIndex(validOptions, newSelection),
+                selectableItemCount: validOptions.length
             });
         }
     };
@@ -361,6 +375,24 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
     };
 
     /**
+     * get the index of the provided selection 
+     * (excludes children that aren't valid options)
+     */
+    private getSelectedItemIndex = (options: React.ReactNode[], selection: ListboxItemProps[]): number | null => {
+        if (!this.props.multiselectable && selection.length === 1) {
+
+            const selectionId: string = selection[0].id;
+            for (let i: number = 0; i !== selection.length; i++) {
+                const thisOption: React.ReactElement<any> = options[i] as React.ReactElement<any>;
+                if (thisOption.props[Listbox.idPropertyKey] === selectionId) {
+                    return i;
+                }
+            } 
+        }
+        return null;
+    }
+
+    /**
      * The default function that renders an unstyled content display
      */
     private defaultTriggerRenderFunction = (
@@ -372,9 +404,9 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
         }
         return (
             <Button
+                role="combobox"
                 disabled={props.disabled}
                 aria-labelledby={props.labelledBy || null}
-                aria-haspopup={true}
                 aria-expanded={state.isMenuOpen}
             >
                 {state.displayString}
@@ -581,6 +613,15 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
         if (triggerButton !== null) {
             triggerButton.focus();
         }
+    };
+
+    /**
+     * get valid options
+     */
+    private getValidOptions = (): React.ReactNode[] => {
+        return Listbox.getValidOptions(
+            React.Children.toArray(this.props.children)
+        );
     };
 }
 

@@ -57,12 +57,19 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, {}> {
             <button
                 disabled={props.disabled}
                 className={classNames(select_button)}
-                aria-labelledby={props.labelledBy || null}
-                aria-haspopup={true}
-                aria-expanded={state.isMenuOpen}
+                id="selectedoption"
+                role="option"
+                aria-atomic={true}
+                aria-label={state.displayString}
+                aria-selected={true}
+                aria-posinset={state.selectedItemIndex}
+                aria-setsize={state.selectableItemCount}
+                aria-live="off"
             >
                 <span className={classNames(select_buttonContentRegion)}>
-                    <div className={classNames(select_buttonDisplayText)}>
+                    <div
+                        className={classNames(select_buttonDisplayText)}
+                    >
                         {state.displayString}
                     </div>
                     {this.generateGlyph()}

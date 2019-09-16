@@ -66,7 +66,7 @@ class Listbox extends Foundation<
     }
 
     /**
-     * returns the the first selectable item in the provided array of children
+     * returns the first selectable item in the provided array of children
      */
     public static getFirstValidOptionInRange = (
         startIndex: number,
@@ -81,6 +81,22 @@ class Listbox extends Foundation<
             }
             return null;
         }
+    };
+
+    /**
+     * returns all the selectable items in the provided array of children
+     */
+    public static getValidOptions = (
+        childrenAsArray: React.ReactNode[]
+    ): React.ReactNode[] => {
+        return childrenAsArray.filter(
+            (itemNode: React.ReactNode) => {
+                if (Listbox.isValidSelectedItem(itemNode as React.ReactElement<any>)) {
+                    return true;
+                }
+                return false;
+            }
+        );
     };
 
     /**
@@ -101,8 +117,8 @@ class Listbox extends Foundation<
         );
     }
 
-    private static valuePropertyKey: string = "value";
-    private static idPropertyKey: string = "id";
+    public static valuePropertyKey: string = "value";
+    public static idPropertyKey: string = "id";
     private static displayStringPropertyKey: string = "displayString";
     private static disabledPropertyKey: string = "disabled";
 
