@@ -88,10 +88,12 @@ interface ObjectOfComponentViewConfigs {
     [key: string]: ComponentViewConfig<any>;
 }
 
-const componentViewConfigs: ObjectOfComponentViewConfigs = {};
-
 // Prepends the custom scenario to each components list fo scenarios
-function setViewConfigsWithCustomConfig(viewConfigs: ObjectOfComponentViewConfigs): void {
+function setViewConfigsWithCustomConfig(
+    viewConfigs: ObjectOfComponentViewConfigs
+): ObjectOfComponentViewConfigs {
+    const componentViewConfigs: ObjectOfComponentViewConfigs = {};
+
     Object.keys(viewConfigs).forEach((viewConfigKey: string): void => {
         componentViewConfigs[viewConfigKey] = Object.assign(
             {},
@@ -100,15 +102,15 @@ function setViewConfigsWithCustomConfig(viewConfigs: ObjectOfComponentViewConfig
                 scenarios: [
                     {
                         displayName: "Custom",
-                        data: viewConfigs[viewConfigKey].scenarios[0],
+                        data: viewConfigs[viewConfigKey].scenarios[0].data,
                     },
                 ].concat(viewConfigs[viewConfigKey].scenarios),
             }
         );
     });
-}
 
-setViewConfigsWithCustomConfig(componentViewConfigsWithoutCustomConfig);
+    return componentViewConfigs;
+}
 
 const dark: string = `#333333`;
 const light: string = "#FFFFFF";
@@ -572,7 +574,9 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
                         this.state.locationPathname
                     );
                     const Guidance: React.ComponentClass = get(
-                        componentViewConfigs,
+                        setViewConfigsWithCustomConfig(
+                            componentViewConfigsWithoutCustomConfig
+                        ),
                         `${camelCase(componentName)}Config.guidance`,
                         null
                     ) as any;
@@ -620,7 +624,9 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
             this.state.locationPathname
         );
         const scenarioOptions: Array<Scenario<any>> = get(
-            componentViewConfigs[`${camelCase(componentName)}Config`],
+            setViewConfigsWithCustomConfig(componentViewConfigsWithoutCustomConfig)[
+                `${camelCase(componentName)}Config`
+            ],
             "scenarios"
         );
 
@@ -691,18 +697,24 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
         // a mutation happening in one of the Form
         return {
             id: get(
-                componentViewConfigs[`${camelCase(componentName)}Config`],
+                setViewConfigsWithCustomConfig(componentViewConfigsWithoutCustomConfig)[
+                    `${camelCase(componentName)}Config`
+                ],
                 "schema.id"
             ),
             props:
                 typeof index === "number"
                     ? (get(
-                          componentViewConfigs,
+                          setViewConfigsWithCustomConfig(
+                              componentViewConfigsWithoutCustomConfig
+                          ),
                           `${camelCase(componentName)}Config.scenarios[${index}].data`,
                           {}
                       ) as T)
                     : (get(
-                          componentViewConfigs,
+                          setViewConfigsWithCustomConfig(
+                              componentViewConfigsWithoutCustomConfig
+                          ),
                           `${camelCase(componentName)}Config.scenarios[0].data`,
                           {}
                       ) as T),
