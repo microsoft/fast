@@ -22,7 +22,7 @@ const buttonConfig: ComponentViewConfig<ButtonProps> = {
             displayName: "Anchor",
             data: {
                 href: "#",
-                children: "Anchor button",
+                children: "Button",
             },
         },
         {
@@ -30,7 +30,7 @@ const buttonConfig: ComponentViewConfig<ButtonProps> = {
             data: {
                 appearance: ButtonAppearance.primary,
                 disabled: true,
-                children: "Disabled button",
+                children: "Button",
             },
         },
     ],

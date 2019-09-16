@@ -66,6 +66,11 @@ export interface ExplorerState {
     scenario: ComponentProps<unknown> | void;
 
     /**
+     * The selected scenario index
+     */
+    selectedScenarioIndex: number;
+
+    /**
      * The configuration for the view
      */
     viewConfig: ViewConfig;

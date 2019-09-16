@@ -14,7 +14,7 @@ const captionConfig: ComponentViewConfig<CaptionProps> = {
         {
             displayName: "Basic",
             data: {
-                children: "Default caption",
+                children: "Caption",
             },
         },
     ],

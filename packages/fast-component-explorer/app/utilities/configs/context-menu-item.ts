@@ -14,7 +14,7 @@ const contextMenuItemConfig: ComponentViewConfig<ContextMenuItemProps> = {
         {
             displayName: "Basic",
             data: {
-                children: "Default menu item",
+                children: "Context menu item",
             },
         },
     ],
