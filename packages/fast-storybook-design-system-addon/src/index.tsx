@@ -1,7 +1,7 @@
 import { DesignSystem } from "@microsoft/fast-components-styles-msft";
 import { DesignSystemProvider, JSSManager } from "@microsoft/fast-jss-manager-react";
 import addons, { makeDecorator, StoryContext, StoryGetter } from "@storybook/addons";
-import { addDecorator, MakeDecoratorResult } from "@storybook/react";
+import { addDecorator } from "@storybook/react";
 import React from "react";
 import { REQUEST_DESIGN_SYSTEM_EVENT, UPDATE_DESIGN_SYSTEM_EVENT } from "./constants";
 import Channel from "@storybook/channels";
@@ -65,7 +65,7 @@ class DesignSystemDecorator<T> extends React.Component<
     };
 }
 
-const decorator: MakeDecoratorResult = makeDecorator({
+const decorator: ReturnType<typeof makeDecorator> = makeDecorator({
     name: "withDesignSystem",
     parameterName: "designSystem",
     wrapper: (getStory: StoryGetter, context: StoryContext): ReturnType<StoryGetter> => {
