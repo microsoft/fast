@@ -148,6 +148,12 @@ export interface DesignSystem {
     neutralFillStealthSelectedDelta: number;
 
     /**
+     * Configuration for the neutral-fill-toggle recipe.
+     */
+    neutralFillToggleHoverDelta: number;
+    neutralFillToggleActiveDelta: number;
+
+    /**
      * Color swatch deltas for the neutral-fill-card recipe.
      */
     neutralFillCardDelta: number;
@@ -230,6 +236,9 @@ const designSystemDefaults: DesignSystem = {
     neutralFillStealthHoverDelta: 5,
     neutralFillStealthActiveDelta: 3,
     neutralFillStealthSelectedDelta: 7,
+
+    neutralFillToggleHoverDelta: 8,
+    neutralFillToggleActiveDelta: -5,
 
     neutralFillCardDelta: 3,
 

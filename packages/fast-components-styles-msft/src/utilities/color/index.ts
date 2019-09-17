@@ -8,6 +8,11 @@ export {
     neutralForegroundActive,
 } from "./neutral-foreground";
 
+export {
+    neutralForegroundToggle,
+    neutralForegroundToggleLarge,
+} from "./neutral-foreground-toggle";
+
 export { accentForegroundCut, accentForegroundCutLarge } from "./accent-foreground-cut";
 
 export {
@@ -44,6 +49,13 @@ export {
     neutralFillStealthActive,
     neutralFillStealthSelected,
 } from "./neutral-fill-stealth";
+
+export {
+    neutralFillToggle,
+    neutralFillToggleRest,
+    neutralFillToggleHover,
+    neutralFillToggleActive,
+} from "./neutral-fill-toggle";
 
 export {
     neutralFillInput,

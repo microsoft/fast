@@ -1,42 +1,3 @@
-import React from "react";
-import {
-    ButtonClassNameContract,
-    DividerClassNameContract,
-} from "@microsoft/fast-components-react-base";
-import {
-    accentFillActive,
-    accentFillHover,
-    accentFillRest,
-    accentFillSelected,
-    accentForegroundActive,
-    accentForegroundCut,
-    accentForegroundHover,
-    accentForegroundRest,
-    backgroundColor,
-    fontWeight,
-    neutralDividerRest,
-    neutralFillActive,
-    neutralFillHover,
-    neutralFillInputRest,
-    neutralFillRest,
-    neutralFillSelected,
-    neutralFillStealthActive,
-    neutralFillStealthHover,
-    neutralFillStealthRest,
-    neutralFillStealthSelected,
-    neutralFocus,
-    neutralFocusInnerAccent,
-    neutralForegroundActive,
-    neutralForegroundHint,
-    neutralForegroundHover,
-    neutralForegroundRest,
-    neutralOutlineActive,
-    neutralOutlineHover,
-    neutralOutlineRest,
-} from "@microsoft/fast-components-styles-msft";
-import manageJss, { ComponentStyleSheet } from "@microsoft/fast-jss-manager-react";
-import classnames from "classnames";
-import { get, isEqual, uniqueId } from "lodash-es";
 import {
     Background,
     Button,
@@ -50,6 +11,50 @@ import {
     ParagraphClassNameContract,
     TextField,
 } from "@microsoft/fast-components-react-msft";
+import React from "react";
+import {
+    accentFillActive,
+    accentFillHover,
+    accentFillRest,
+    accentFillSelected,
+    accentForegroundActive,
+    accentForegroundCut,
+    accentForegroundHover,
+    accentForegroundRest,
+    backgroundColor,
+    DesignSystem,
+    fontWeight,
+    neutralDividerRest,
+    neutralFillActive,
+    neutralFillHover,
+    neutralFillInputRest,
+    neutralFillRest,
+    neutralFillSelected,
+    neutralFillStealthActive,
+    neutralFillStealthHover,
+    neutralFillStealthRest,
+    neutralFillStealthSelected,
+    neutralFillToggleActive,
+    neutralFillToggleHover,
+    neutralFillToggleRest,
+    neutralFocus,
+    neutralFocusInnerAccent,
+    neutralForegroundActive,
+    neutralForegroundHint,
+    neutralForegroundHover,
+    neutralForegroundRest,
+    neutralForegroundToggle,
+    neutralOutlineActive,
+    neutralOutlineHover,
+    neutralOutlineRest,
+} from "@microsoft/fast-components-styles-msft";
+import manageJss, { ComponentStyleSheet } from "@microsoft/fast-jss-manager-react";
+import classnames from "classnames";
+import { get, isEqual, uniqueId } from "lodash-es";
+import {
+    CheckboxClassNameContract,
+    DividerClassNameContract,
+} from "@microsoft/fast-components-react-base";
 import { connect } from "react-redux";
 import { Omit } from "utility-types";
 import { ColorsDesignSystem } from "./design-system";
@@ -204,6 +209,34 @@ class ColorBlocksBase extends React.Component<ColorBlocksProps, ColorBlocksState
     > = {
         caption: {
             color: neutralForegroundHint,
+        },
+    };
+
+    private checkboxStyleOverrides: ComponentStyleSheet<
+        CheckboxClassNameContract,
+        ColorsDesignSystem
+    > = {
+        checkbox_input: {},
+        checkbox_stateIndicator: {},
+        checkbox__checked: {
+            "& $checkbox_input": {
+                background: neutralFillToggleRest,
+                "border-color": "transparent",
+                "&:hover": {
+                    background: neutralFillToggleHover,
+                },
+                "&:active": {
+                    background: neutralFillToggleActive,
+                },
+            },
+            "& $checkbox_stateIndicator": {
+                "&::before": {
+                    background: (designSystem: DesignSystem): string =>
+                        `url('data:image/svg+xml;utf8,<svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill="${encodeURIComponent(
+                            neutralForegroundToggle(designSystem)
+                        )}" fill-rule="evenodd" clip-rule="evenodd" d="M8.143 12.6697L15.235 4.5L16.8 5.90363L8.23812 15.7667L3.80005 11.2556L5.27591 9.7555L8.143 12.6697Z"/></svg>')`,
+                },
+            },
         },
     };
 
@@ -535,7 +568,10 @@ class ColorBlocksBase extends React.Component<ColorBlocksProps, ColorBlocksState
                 />
                 <FocusSwatch />
                 {this.renderExample(
-                    <Checkbox inputId={uniqueId()}>
+                    <Checkbox
+                        inputId={uniqueId()}
+                        jssStyleSheet={this.checkboxStyleOverrides}
+                    >
                         <label slot="label">Checkbox</label>
                     </Checkbox>
                 )}
@@ -543,6 +579,24 @@ class ColorBlocksBase extends React.Component<ColorBlocksProps, ColorBlocksState
                     type={SwatchTypes.fill}
                     fillRecipe={neutralFillInputRest}
                     recipeName="neutralFillInputRest"
+                    foregroundRecipe={neutralForegroundRest}
+                />
+                <Swatch
+                    type={SwatchTypes.fill}
+                    fillRecipe={neutralFillToggleRest}
+                    recipeName="neutralFillToggleRest"
+                    foregroundRecipe={neutralForegroundRest}
+                />
+                <Swatch
+                    type={SwatchTypes.fill}
+                    fillRecipe={neutralFillToggleHover}
+                    recipeName="neutralFillToggleHover"
+                    foregroundRecipe={neutralForegroundRest}
+                />
+                <Swatch
+                    type={SwatchTypes.fill}
+                    fillRecipe={neutralFillToggleActive}
+                    recipeName="neutralFillToggleActive"
                     foregroundRecipe={neutralForegroundRest}
                 />
                 <Swatch
