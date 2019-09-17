@@ -197,7 +197,7 @@ export function swatchByMode(
  *          )(
  *              () => 1 // While searching, search in the direction toward the end of the array (-1 moves towards the beginning of the array)
  *          )(
- *              (contrast: number) => contrast >= 4.5 // A swatch is only valid if the contrast is greater than 4.5
+ *              minContrastTargetFactory(4.5) // A swatch is only valid if the contrast is greater than 4.5
  *          )(
  *              designSystem // Pass the design-system. The first swatch that passes the previous condition will be returned from this function
  *          )
@@ -216,7 +216,7 @@ export function swatchByContrast(referenceColor: string | SwatchResolver) {
                 referenceColor: string,
                 palette: Palette,
                 designSystem: DesignSystem
-            ) => number = referenceColorInitialIndexResolver
+            ) => number
         ) => {
             /**
              * A function that expects a function that determines which direction in the
@@ -331,7 +331,7 @@ function binarySearch<T>(
 /**
  * Resolves the index that the contrast search algorithm should start at
  */
-function referenceColorInitialIndexResolver(
+export function referenceColorInitialIndexResolver(
     referenceColor: string,
     sourcePalette: Palette,
     designSystem: DesignSystem

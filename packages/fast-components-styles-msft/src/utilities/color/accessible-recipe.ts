@@ -11,6 +11,7 @@ import {
     isDarkMode,
     minContrastTargetFactory,
     Palette,
+    referenceColorInitialIndexResolver,
     swatchByContrast,
 } from "./palette";
 
@@ -65,7 +66,7 @@ export function accessibleAlgorithm(
         )(
             resolvedPalette // Use the provided palette
         )(
-            // Default: begin searching from the background color
+            referenceColorInitialIndexResolver // Begin searching from the background color
         )(
             () => direction // Search direction based on light/dark mode
         )(
