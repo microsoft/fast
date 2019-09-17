@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.5.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-component-explorer@0.4.15...@microsoft/fast-component-explorer@0.5.0) (2019-09-17)
+
+
+### Features
+
+* set scenario to custom / update scenarios ([#2236](https://github.com/Microsoft/fast-dna/issues/2236)) ([f343d4c](https://github.com/Microsoft/fast-dna/commit/f343d4c))
+
+
+
+
+
 ## [0.4.15](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-component-explorer@0.4.14...@microsoft/fast-component-explorer@0.4.15) (2019-09-10)
 
 **Note:** Version bump only for package @microsoft/fast-component-explorer

@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.2.7](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-storybook-design-system-addon@1.2.6...@microsoft/fast-storybook-design-system-addon@1.2.7) (2019-09-17)
+
+
+### Bug Fixes
+
+* add webpack typings to prevent storybook build break [#2243](https://github.com/Microsoft/fast-dna/issues/2243) ([d560235](https://github.com/Microsoft/fast-dna/commit/d560235))
+* building some fast packages failed because of missing dependency ref ([#2244](https://github.com/Microsoft/fast-dna/issues/2244)) ([5eb7a07](https://github.com/Microsoft/fast-dna/commit/5eb7a07))
+
+
+
+
+
 ## [1.2.6](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-storybook-design-system-addon@1.2.5...@microsoft/fast-storybook-design-system-addon@1.2.6) (2019-09-10)
 
 **Note:** Version bump only for package @microsoft/fast-storybook-design-system-addon

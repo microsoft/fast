@@ -1,6 +1,6 @@
 {
   "name": "@microsoft/fast-layouts-react",
-  "version": "4.5.6",
+  "version": "4.5.7",
   "description": "FAST layout components written in React",
   "sideEffects": false,
   "author": {
@@ -106,8 +106,8 @@
   },
   "dependencies": {
     "@microsoft/fast-components-foundation-react": "^3.1.1",
-    "@microsoft/fast-jss-utilities": "^4.6.5",
-    "@microsoft/fast-web-utilities": "^4.3.1",
+    "@microsoft/fast-jss-utilities": "^4.6.6",
+    "@microsoft/fast-web-utilities": "^4.3.2",
     "exenv-es6": "^1.0.0",
     "raf-throttle": "^2.0.3",
     "utility-types": "^2.1.0"

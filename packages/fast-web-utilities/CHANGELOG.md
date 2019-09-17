@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.3.2](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-web-utilities@4.3.1...@microsoft/fast-web-utilities@4.3.2) (2019-09-17)
+
+
+### Bug Fixes
+
+* improve render performance of page, grid, and column components ([#2241](https://github.com/Microsoft/fast-dna/issues/2241)) ([7936adc](https://github.com/Microsoft/fast-dna/commit/7936adc))
+
+
+
+
+
 ## [4.3.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-web-utilities@4.3.0...@microsoft/fast-web-utilities@4.3.1) (2019-09-09)
 
 

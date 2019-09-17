@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.13](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-storybook-presets@1.1.12...@microsoft/fast-storybook-presets@1.1.13) (2019-09-17)
+
+
+### Bug Fixes
+
+* add webpack typings to prevent storybook build break [#2243](https://github.com/Microsoft/fast-dna/issues/2243) ([d560235](https://github.com/Microsoft/fast-dna/commit/d560235))
+
+
+
+
+
 ## [1.1.12](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-storybook-presets@1.1.11...@microsoft/fast-storybook-presets@1.1.12) (2019-09-10)
 
 **Note:** Version bump only for package @microsoft/fast-storybook-presets

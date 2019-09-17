@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.21.4](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-styles-msft@4.21.3...@microsoft/fast-components-styles-msft@4.21.4) (2019-09-17)
+
+
+### Bug Fixes
+
+* remove circular dependency ([#2245](https://github.com/Microsoft/fast-dna/issues/2245)) ([76e5452](https://github.com/Microsoft/fast-dna/commit/76e5452))
+* use binary search as a lookup in swatchByContrast utility ([#2242](https://github.com/Microsoft/fast-dna/issues/2242)) ([21bf06a](https://github.com/Microsoft/fast-dna/commit/21bf06a))
+
+
+
+
+
 ## [4.21.3](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-styles-msft@4.21.2...@microsoft/fast-components-styles-msft@4.21.3) (2019-09-10)
 
 **Note:** Version bump only for package @microsoft/fast-components-styles-msft

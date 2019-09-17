@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.5.7](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-layouts-react@4.5.6...@microsoft/fast-layouts-react@4.5.7) (2019-09-17)
+
+
+### Bug Fixes
+
+* improve render performance of page, grid, and column components ([#2241](https://github.com/Microsoft/fast-dna/issues/2241)) ([7936adc](https://github.com/Microsoft/fast-dna/commit/7936adc))
+
+
+
+
+
 ## [4.5.6](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-layouts-react@4.5.5...@microsoft/fast-layouts-react@4.5.6) (2019-09-10)
 
 
