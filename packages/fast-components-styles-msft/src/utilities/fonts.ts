@@ -10,19 +10,6 @@ export interface FontWeight {
     bold: number;
 }
 
-export const defaultFontWeights: FontWeight = {
-    light: 100,
-    semilight: 200,
-    normal: 400,
-    semibold: 600,
-    bold: 700,
-};
-
-/**
- * @deprecated - use applyFontWeight instead
- */
-export const fontWeight: FontWeight = defaultFontWeights;
-
 /**
  * Retrieve the focusOutlineWidth from the design system
  */
