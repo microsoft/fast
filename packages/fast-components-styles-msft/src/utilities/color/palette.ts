@@ -1,4 +1,4 @@
-import { clamp, inRange } from "lodash-es";
+import { clamp, values } from "lodash-es";
 import { DesignSystem, DesignSystemResolver } from "../../design-system";
 import { backgroundColor } from "../../utilities/design-system";
 import { accentPalette, neutralPalette } from "../design-system";
@@ -240,33 +240,81 @@ export function swatchByContrast(referenceColor: string | SwatchResolver) {
                                 ? referenceColor(designSystem)
                                 : referenceColor;
                         const sourcePalette: Palette = paletteResolver(designSystem);
+                        const length: number = sourcePalette.length;
                         const initialSearchIndex: number = clamp(
                             indexResolver(color, sourcePalette, designSystem),
                             0,
-                            sourcePalette.length - 1
+                            length - 1
                         );
                         const direction: 1 | -1 = directionResolver(
                             initialSearchIndex,
                             sourcePalette,
                             designSystem
                         );
-                        const length: number = sourcePalette.length;
-                        let index: number = initialSearchIndex;
 
-                        while (
-                            inRange(index + direction, 0, length) &&
-                            inRange(index, 0, length) &&
-                            !contrastCondition(contrast(color, sourcePalette[index]))
-                        ) {
-                            index = index + direction;
+                        function contrastSeachCondition(
+                            valueToCheckAgainst: Swatch
+                        ): boolean {
+                            return contrastCondition(
+                                contrast(color, valueToCheckAgainst)
+                            );
                         }
 
-                        return sourcePalette[index];
+                        const constrainedSourcePalette: Palette = [].concat(
+                            sourcePalette
+                        );
+                        const endSearchIndex: number = length - 1;
+                        let startSearchIndex: number = initialSearchIndex;
+
+                        if (direction === -1) {
+                            // reverse the palette array when the direction that
+                            // the contrast resolves for is reversed
+                            constrainedSourcePalette.reverse();
+                            startSearchIndex = endSearchIndex - startSearchIndex;
+                        }
+
+                        return binarySearch(
+                            constrainedSourcePalette,
+                            contrastSeachCondition,
+                            startSearchIndex,
+                            endSearchIndex
+                        );
                     };
                 };
             };
         };
     };
+}
+
+function binarySearch<T>(
+    valuesToSearch: T[],
+    searchCondition: (value: T) => boolean,
+    startIndex: number = 0,
+    endIndex: number = valuesToSearch.length - 1
+): T {
+    if (endIndex === startIndex) {
+        return valuesToSearch[startIndex];
+    }
+
+    const middleIndex: number = Math.floor((endIndex - startIndex) / 2) + startIndex;
+
+    // Check to see if this passes on the item in the center of the array
+    // if it does check the previous values
+    if (searchCondition(valuesToSearch[middleIndex])) {
+        return binarySearch(
+            valuesToSearch,
+            searchCondition,
+            startIndex,
+            middleIndex // include this index because it passed the search condition
+        );
+    } else {
+        return binarySearch(
+            valuesToSearch,
+            searchCondition,
+            middleIndex + 1, // exclude this index because it failed the search condition
+            endIndex
+        );
+    }
 }
 
 /* tslint:enable:typedef */
