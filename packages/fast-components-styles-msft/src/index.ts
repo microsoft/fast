@@ -67,7 +67,7 @@ export { DesignSystemDefaults };
 export const fontWeight: FontWeight = defaultFontWeights;
 // Delete when `fontWeight` export is removed
 import { defaultFontWeights } from "./design-system";
-import { FontWeight } from "./utilities/fonts"
+import { FontWeight } from "./utilities/fonts";
 
 /**
  * Export dialog styles
