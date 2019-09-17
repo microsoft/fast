@@ -7,8 +7,16 @@ import {
 } from "@microsoft/fast-colors";
 import { Palette } from "../utilities/color/palette";
 import { withDefaults } from "@microsoft/fast-jss-utilities";
-import { defaultFontWeights, FontWeight } from "../utilities/fonts";
+import { FontWeight } from "../utilities/fonts";
 import designSystemSchema from "./design-system.schema";
+
+export const defaultFontWeights: FontWeight = {
+    light: 100,
+    semilight: 200,
+    normal: 400,
+    semibold: 600,
+    bold: 700,
+};
 
 export { designSystemSchema };
 

@@ -57,9 +57,17 @@ export { ContextMenuItemStyles };
 /**
  * Export design system defaults and typings
  */
-import DesignSystemDefaults, { DesignSystem } from "./design-system";
+import DesignSystemDefaults from "./design-system";
 export * from "./design-system";
 export { DesignSystemDefaults };
+
+/**
+ * @deprecated - use applyFontWeight instead
+ */
+export const fontWeight: FontWeight = defaultFontWeights;
+// Delete when `fontWeight` export is removed
+import { defaultFontWeights } from "./design-system";
+import { FontWeight } from "./utilities/fonts";
 
 /**
  * Export dialog styles
