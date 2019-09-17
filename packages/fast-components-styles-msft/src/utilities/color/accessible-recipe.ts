@@ -64,8 +64,9 @@ export function accessibleAlgorithm(
             backgroundColor // Compare swatches against the background
         )(
             resolvedPalette // Use the provided palette
-        )()(
+        )(
             // Default: begin searching from the background color
+        )(
             () => direction // Search direction based on light/dark mode
         )(
             minContrastTargetFactory(checkDesignSystemResolver(minContrast, designSystem)) // A swatch is only valid if the contrast is greater than indicated

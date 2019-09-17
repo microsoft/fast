@@ -251,6 +251,7 @@ export function swatchByContrast(referenceColor: string | SwatchResolver) {
                             paletteResolver,
                             designSystem
                         );
+                        const length: number = sourcePalette.length;
                         const initialSearchIndex: number = clamp(
                             indexResolver(color, sourcePalette, designSystem),
                             0,
