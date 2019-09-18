@@ -9,6 +9,7 @@ import { Palette } from "../utilities/color/palette";
 import { withDefaults } from "@microsoft/fast-jss-utilities";
 import { FontWeight } from "../utilities/fonts";
 import designSystemSchema from "./design-system.schema";
+import { accentPalette, neutralPalette } from "../default-palette";
 
 export const defaultFontWeights: FontWeight = {
     light: 100,
@@ -186,12 +187,6 @@ export interface DesignSystem {
     neutralOutlineActiveDelta: number;
 }
 
-export function createColorPalette(baseColor: ColorRGBA64): Palette {
-    return new ComponentStateColorPalette({
-        baseColor,
-    }).palette.map((color: ColorRGBA64) => color.toStringHexRGB().toUpperCase());
-}
-
 const designSystemDefaults: DesignSystem = {
     backgroundColor: white,
     contrast: 0,
@@ -206,8 +201,8 @@ const designSystemDefaults: DesignSystem = {
     fontWeight: defaultFontWeights,
     disabledOpacity: 0.3,
     outlineWidth: 1,
-    neutralPalette: createColorPalette(parseColorHexRGB("#808080")),
-    accentPalette: createColorPalette(parseColorHexRGB("#0078D4")),
+    neutralPalette,
+    accentPalette,
     accentBaseColor: "#0078D4",
 
     /**
