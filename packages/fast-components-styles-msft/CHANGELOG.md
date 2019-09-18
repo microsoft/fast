@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.22.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-styles-msft@4.21.4...@microsoft/fast-components-styles-msft@4.22.0) (2019-09-18)
+
+
+### Features
+
+* added input toggle fill recipe. ([#2210](https://github.com/Microsoft/fast-dna/issues/2210)) ([1a8bac7](https://github.com/Microsoft/fast-dna/commit/1a8bac7))
+* export static palette ([#2248](https://github.com/Microsoft/fast-dna/issues/2248)) ([1207c4d](https://github.com/Microsoft/fast-dna/commit/1207c4d))
+
+
+
+
+
 ## [4.21.4](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-styles-msft@4.21.3...@microsoft/fast-components-styles-msft@4.21.4) (2019-09-17)
 
 

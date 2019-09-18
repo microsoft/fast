@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.3.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-color-explorer@1.2.22...@microsoft/fast-color-explorer@1.3.0) (2019-09-18)
+
+
+### Features
+
+* added input toggle fill recipe. ([#2210](https://github.com/Microsoft/fast-dna/issues/2210)) ([1a8bac7](https://github.com/Microsoft/fast-dna/commit/1a8bac7))
+
+
+
+
+
 ## [1.2.22](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-color-explorer@1.2.21...@microsoft/fast-color-explorer@1.2.22) (2019-09-17)
 
 **Note:** Version bump only for package @microsoft/fast-color-explorer
