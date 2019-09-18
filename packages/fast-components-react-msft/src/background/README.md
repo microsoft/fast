@@ -18,18 +18,19 @@ import { DesignSystemDefaults } from "@microsoft/fast-components-styles-msft";
 
 ## value
 
-The *background* expects a `value` property that can be either a color string or a number. When the value is a color string, the color will be used directly and applied to CSS and the DesignSystem. When the value is a number, that number will be treated as an index and used to obtain a color from the `DesignSystem.neutralPalette`.
+The *background* expects a `value` property that can be a color recipe, color string, or a number. When the value is a color recipe it will be evaluated within the context of the design system. A color string will be used directly and applied to CSS and the DesignSystem. Using a number is not recommended because it doesn't scale with variable length palettes, however, a number will be treated as an index and used to obtain a color from the `DesignSystem.neutralPalette`.
 
-For convince, we've also exported both light-mode and dark-mode enums with common background colors, `LightModeBackgrounds` and `DarkModeBackgrounds` respectively. Each of these objects has the following properties:
+The recommended usage is to provide one of the layer recipes:
 
-- `L1`
-- `L1Alt`
-- `L2`
-- `L3`
-- `L4`
+- `neutralLayerFloating`
+- `neutralLayerCardContainer`
+- `neutralLayerL1`
+- `neutralLayerL2`
+- `neutralLayerL3`
+- `neutralLayerL4`
 
 ```jsx
-<Background value={DarkModeBackgrounds.L1}>
+<Background value={neutralLayerL1}>
     <Heading>Hello world</Heading>
 </Background>
 ```

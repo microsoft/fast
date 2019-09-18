@@ -2,12 +2,10 @@
 /* tslint:disable:no-empty */
 import { Canvas, Container, Row } from "@microsoft/fast-layouts-react";
 import {
-    DesignSystem,
     neutralLayerCard,
     neutralLayerCardContainer,
     neutralLayerFloating,
     neutralLayerL1,
-    neutralLayerL1Alt,
     neutralLayerL2,
     neutralLayerL3,
     neutralLayerL4,
@@ -24,8 +22,6 @@ import { AppState } from "./state";
 import { connect } from "react-redux";
 import {
     Background,
-    DarkModeBackgrounds,
-    LightModeBackgrounds,
 } from "@microsoft/fast-components-react-msft";
 import { FixedSizeList } from "react-window";
 import AutoSizer from "react-virtualized-auto-sizer";
@@ -59,7 +55,7 @@ class App extends React.Component<AppProps, {}> {
         [neutralLayerCardContainer, "neutralLayerCardContainer"],
         [neutralLayerL1, "neutralLayerL1"],
         [neutralLayerL2, "neutralLayerL2"],
-        [neutralLayerL3, "neutralLlayerL3"],
+        [neutralLayerL3, "neutralLayerL3"],
         [neutralLayerL4, "neutralLayerL4"],
     ];
 
@@ -100,7 +96,7 @@ class App extends React.Component<AppProps, {}> {
                                 </Row>
                             </Container>
                         </Canvas>
-                        <Background value={DarkModeBackgrounds.L4}>
+                        <Background value={neutralLayerL4}>
                             <ControlPane />
                         </Background>
                     </Row>

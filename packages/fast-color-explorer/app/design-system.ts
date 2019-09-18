@@ -11,6 +11,7 @@ export const colorsDesignSystem: ColorsDesignSystem = Object.assign(
     {},
     DesignSystemDefaults,
     {
+        backgroundColor: "#000000",
         neutralPalette: createColorPalette(parseColorHexRGB(
             defaultNeutralColor
         ) as ColorRGBA64),
