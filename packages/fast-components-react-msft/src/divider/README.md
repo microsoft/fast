@@ -1,7 +1,5 @@
 # Divider
 
-Separates items or sections.
-
 ## Accessibility
 
 Renders as an [`<hr>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/hr) element with `role="separator"`.

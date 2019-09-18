@@ -1,7 +1,5 @@
 # Progress
 
-Displays the progress of a long-running task.
-
 ## Accessibility
 
 Renders as a [`<div>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/div) element with the [`progressbar`](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/ARIA_Techniques/Using_the_progressbar_role) role.

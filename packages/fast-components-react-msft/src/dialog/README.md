@@ -1,7 +1,5 @@
 # Dialog
 
-A modal or non-modal dialog.
-
 ## Accessibility
 
 A *dialog* must include one focusable control. When the dialog appears on the screen, keyboard focus should move to the first focusable element.

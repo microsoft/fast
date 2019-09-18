@@ -1,7 +1,5 @@
 # Breadcrumb
 
-Displays and enables navigation within a hierarchy.
-
 ## Accessibility
 
 Follows the [breadcrumb](https://www.w3.org/TR/2017/NOTE-wai-aria-practices-1.1-20171214/examples/breadcrumb/index.html) pattern.
@@ -12,8 +10,8 @@ The last child will get an `aria-current` attribute set to "page" to indicate th
 
 ## Style
 
-Set the optional `separator` prop to customize the ReactNode that will be rendered between navigation elements.
+Set the optional `separator` prop to customize what is rendered between navigation elements.
 
 ## Implementing
 
-Will accept any children, but is built to work with [`<a>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a) elements.
+Accepts any children, but built to work with [`<a>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a) elements.

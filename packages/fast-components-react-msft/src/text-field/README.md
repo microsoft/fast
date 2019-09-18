@@ -1,7 +1,5 @@
 # Text field
 
-Input and edit textual data.
-
 ## Accessibility
 
 Provide hint text by setting the `placeholder` prop.

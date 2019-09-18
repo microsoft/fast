@@ -1,7 +1,5 @@
 # Image
 
-Displays a picture or graphic.
-
 ## Accessibility
 
 Renders as an [`<img>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/img) or [`<picture>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/picture) element. A picture element can be created by passing one or more [`<source>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/source) elements as children with a prop of `slot="source"`.

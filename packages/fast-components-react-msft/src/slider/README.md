@@ -1,7 +1,5 @@
 # Slider
 
-Provide a single or upper and lower values from a constrained range.
-
 ## Accessibility
 
 Follows the [slider](http://w3c.github.io/aria-practices/examples/slider/multithumb-slider.html) pattern.
@@ -9,3 +7,7 @@ Follows the [slider](http://w3c.github.io/aria-practices/examples/slider/multith
 ## Style
 
 Can be oriented vertically or horizontally by setting the `orientation` prop.  Horizontal is the default.
+
+## Usage
+
+Optionally use with *slider label*.

@@ -1,10 +1,8 @@
 # Action toggle
 
-Switches between two states.
-
 ## Accessibility
 
-When using a glyph only, add a tooltip so there is a secondary means for identifying the functionality.
+When using a glyph only, provide a `title` prop to add a tooltip so there is a secondary means for identifying the functionality.
 
 The values provided in the `selectedLabel` and `unselectedLabel` props sets the [`aria-label`](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/ARIA_Techniques/Using_the_aria-label_attribute) attribute for assistive technologies.
 

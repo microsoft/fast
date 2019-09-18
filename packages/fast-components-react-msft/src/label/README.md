@@ -1,7 +1,5 @@
 # Label
 
-Provides context to an input field.
-
 ## Accessibility
 
 Renders as a [`<label>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/label) or [`<legend>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/legend) element.

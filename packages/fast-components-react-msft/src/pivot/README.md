@@ -1,7 +1,5 @@
 # Pivot
 
-A paged or tabbed interface over multiple sections of content.
-
 ## Accessibility
 
 Follows the [tab panel](https://www.w3.org/TR/wai-aria-practices-1.1/#tabpanel) pattern.
