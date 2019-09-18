@@ -51,7 +51,7 @@ describe("Background", (): void => {
             mount(<Background />)
                 .find("div")
                 .prop("style").backgroundColor
-        ).toBe(DesignSystemDefaults.neutralPalette[Background.defaultProps.value]);
+        ).toBe(Background.defaultProps.value(DesignSystemDefaults));
     });
     test("should assign a background color directly when it is a string", (): void => {
         expect(
@@ -125,9 +125,9 @@ describe("Background", (): void => {
             mount(<Background value={-1} />)
                 .find("div")
                 .prop("style").backgroundColor
-        ).toBe(DesignSystemDefaults.neutralPalette[Background.defaultProps.value]);
+        ).toBe(Background.defaultProps.value(DesignSystemDefaults));
     });
-    test("should use a custom desgin system merging function if provided", (): void => {
+    test("should use a custom design system merging function if provided", (): void => {
         const spy: jest.SpyInstance = jest.fn();
         const designSystem: any = { a: true };
 
