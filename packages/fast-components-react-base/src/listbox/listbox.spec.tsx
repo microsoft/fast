@@ -384,6 +384,27 @@ describe("listbox", (): void => {
         rendered.detach();
     });
 
+    test("should not move selection with focus in single select mode when selectOnFocus prop is false", (): void => {
+        const rendered: any = mount(
+            <Listbox selectOnFocus={false}>
+                {itemA}
+                {itemB}
+                {itemC}
+            </Listbox>,
+            { attachTo: container }
+        );
+
+        expect(rendered.state("selectedItems").length).toBe(0);
+
+        rendered.childAt(0).simulate("keydown", { keyCode: keyCodeArrowDown });
+        expect(rendered.state("selectedItems").length).toBe(0);
+
+        rendered.childAt(0).simulate("keydown", { keyCode: keyCodeArrowUp });
+        expect(rendered.state("selectedItems").length).toBe(0);
+
+        rendered.detach();
+    });
+
     test("should not move selection with focus in multiple select mode", (): void => {
         const rendered: any = mount(
             <Listbox multiselectable={true}>

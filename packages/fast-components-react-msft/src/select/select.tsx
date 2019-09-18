@@ -57,14 +57,14 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, {}> {
             <button
                 disabled={props.disabled}
                 className={classNames(select_button)}
-                id="selectedoption"
+                id={state.triggerId}
                 role="option"
                 aria-atomic={true}
                 aria-label={state.displayString}
-                aria-selected={true}
-                aria-posinset={state.selectedItemIndex}
-                aria-setsize={state.selectableItemCount}
-                aria-live="off"
+                aria-expanded={state.isMenuOpen}
+                aria-selected={state.selectedItemIndex !== 0 ? true : false }
+                aria-posinset={state.selectedItemIndex !== 0 ? state.selectedItemIndex : null}
+                aria-setsize={state.selectedItemIndex !== 0 ? state.selectableItemCount : null}
             >
                 <span className={classNames(select_buttonContentRegion)}>
                     <div

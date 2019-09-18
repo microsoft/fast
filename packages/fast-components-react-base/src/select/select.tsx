@@ -11,7 +11,7 @@ import {
     keyCodeSpace,
 } from "@microsoft/fast-web-utilities";
 import { canUseDOM } from "exenv-es6";
-import { get, isEqual, isNil, memoize } from "lodash-es";
+import { get, isEqual, isNil, uniqueId } from "lodash-es";
 import React from "react";
 import Button from "../button";
 import Listbox from "../listbox";
@@ -24,8 +24,9 @@ export interface SelectState {
     displayString: string;
     selectedItems: ListboxItemProps[];
     isMenuOpen: boolean;
-    selectedItemIndex: number | null;
+    selectedItemIndex: number;
     selectableItemCount: number;
+    triggerId: string;
 }
 
 class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, SelectState> {
@@ -38,6 +39,9 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
         placeholder: "",
         managedClasses: {},
     };
+
+    private static idPropertyKey: string = "id";
+    private static triggerUniqueIdPrefix: string = "selecttrigger-"
 
     /**
      * Handled props instantiation
@@ -90,8 +94,9 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
             value: this.getValueFromSelection(initialSelection),
             displayString: this.getFormattedDisplayString(initialSelection),
             isMenuOpen: this.validateMenuState(false),
-            selectedItemIndex: this.getSelectedItemIndex(validOptions, initialSelection),
-            selectableItemCount: validOptions.length
+            selectedItemIndex: this.getSelectedItemPosInSet(validOptions, initialSelection),
+            selectableItemCount: validOptions.length,
+            triggerId: uniqueId(Select.triggerUniqueIdPrefix)
         };
     }
 
@@ -148,12 +153,12 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
                 className={this.generateClassNames()}
                 onKeyDown={this.handleKeydown}
                 onClick={this.handleClick}
+                onFocus={this.handleFocus}
                 role="listbox"
-                aria-disabled={this.props.disabled || null}
+                aria-disabled={this.props.disabled}
                 aria-expanded={this.state.isMenuOpen}
                 aria-labelledby={this.props.labelledBy || null}
-                aria-describedby="selectedoption"
-                data-is-focusable={true}
+                aria-describedby={this.state.triggerId}
             >
                 {this.renderTrigger()}
                 {this.renderHiddenSelectElement()}
@@ -260,8 +265,8 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
                 defaultSelection={this.state.selectedItems}
                 selectedItems={this.props.selectedItems}
                 onSelectedItemsChanged={this.menuSelectionChange}
-                onItemInvoked={this.menuItemInvoked}
                 onBlur={this.handleMenuBlur}
+                selectOnFocus={false}
                 managedClasses={{
                     listbox: get(this.props.managedClasses, "select_menu", ""),
                     listbox__disabled: get(
@@ -283,18 +288,7 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
         if (typeof this.props.onMenuSelectionChange === "function") {
             this.props.onMenuSelectionChange(newSelection);
         }
-        if (this.props.multiselectable) {
-            this.updateSelection(newSelection);
-        }
-    };
-
-    /**
-     * Handles selection changes from menu
-     */
-    private menuItemInvoked = (newSelection: ListboxItemProps): void => {
-        if (!this.props.multiselectable) {
-            this.updateSelection([newSelection]);
-        }
+        this.updateSelection(newSelection);
     };
 
     /**
@@ -324,7 +318,7 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
                 selectedItems: newSelection,
                 value: newValue,
                 displayString: newDisplayString,
-                selectedItemIndex: this.getSelectedItemIndex(validOptions, newSelection),
+                selectedItemIndex: this.getSelectedItemPosInSet(validOptions, newSelection),
                 selectableItemCount: validOptions.length
             });
         }
@@ -378,18 +372,17 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
      * get the index of the provided selection 
      * (excludes children that aren't valid options)
      */
-    private getSelectedItemIndex = (options: React.ReactNode[], selection: ListboxItemProps[]): number | null => {
+    private getSelectedItemPosInSet = (options: React.ReactNode[], selection: ListboxItemProps[]): number => {
         if (!this.props.multiselectable && selection.length === 1) {
-
             const selectionId: string = selection[0].id;
-            for (let i: number = 0; i !== selection.length; i++) {
+            for (let i: number = 0; i < options.length; i++) {
                 const thisOption: React.ReactElement<any> = options[i] as React.ReactElement<any>;
-                if (thisOption.props[Listbox.idPropertyKey] === selectionId) {
-                    return i;
+                if (thisOption.props[Select.idPropertyKey] === selectionId) {
+                    return i + 1;
                 }
             } 
         }
-        return null;
+        return 0;
     }
 
     /**
@@ -404,10 +397,15 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
         }
         return (
             <Button
-                role="combobox"
                 disabled={props.disabled}
-                aria-labelledby={props.labelledBy || null}
+                id={state.triggerId}
+                role="option"
+                aria-atomic={true}
+                aria-label={state.displayString}
                 aria-expanded={state.isMenuOpen}
+                aria-selected={state.selectedItemIndex !== 0 ? true : false }
+                aria-posinset={state.selectedItemIndex !== 0 ? state.selectedItemIndex : null}
+                aria-setsize={state.selectedItemIndex !== 0 ? state.selectableItemCount : null}
             >
                 {state.displayString}
             </Button>
@@ -477,6 +475,18 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
                     this.incrementSelectedOption(-1);
                 }
                 break;
+        }
+    };
+
+    /**
+     * Handles focus
+     */
+    private handleFocus = (e: React.FocusEvent): void => {
+        if (this.props.disabled || e.defaultPrevented) {
+            return;
+        }
+        if (!this.props.multiselectable && this.state.selectedItems.length === 0) {
+            this.incrementSelectedOption(+1);
         }
     };
 

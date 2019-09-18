@@ -48,6 +48,7 @@ class Listbox extends Foundation<
         typeAheadEnabled: true,
         focusItemOnMount: false,
         managedClasses: {},
+        selectOnFocus: true
     };
 
     /**
@@ -117,8 +118,8 @@ class Listbox extends Foundation<
         );
     }
 
-    public static valuePropertyKey: string = "value";
-    public static idPropertyKey: string = "id";
+    private static valuePropertyKey: string = "value";
+    private static idPropertyKey: string = "id";
     private static displayStringPropertyKey: string = "displayString";
     private static disabledPropertyKey: string = "disabled";
 
@@ -229,6 +230,7 @@ class Listbox extends Foundation<
         typeAheadEnabled: void 0,
         typeAheadPropertyKey: void 0,
         focusItemOnMount: void 0,
+        selectOnFocus: void 0,
     };
 
     private rootElement: React.RefObject<HTMLDivElement> = React.createRef<
@@ -463,7 +465,7 @@ class Listbox extends Foundation<
             focussedItemId: item.id,
         });
 
-        if (!this.props.multiselectable) {
+        if (!this.props.multiselectable && this.props.selectOnFocus) {
             this.updateSelection([item]);
         }
     };
