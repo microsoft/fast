@@ -20,9 +20,7 @@ import { ControlPane } from "./control-pane";
 import React from "react";
 import { AppState } from "./state";
 import { connect } from "react-redux";
-import {
-    Background,
-} from "@microsoft/fast-components-react-msft";
+import { Background } from "@microsoft/fast-components-react-msft";
 import { FixedSizeList } from "react-window";
 import AutoSizer from "react-virtualized-auto-sizer";
 import {

@@ -11,7 +11,7 @@ import { DesignSystemMergingFunction } from "@microsoft/fast-jss-manager-react";
  * Friendly names for the indexes of light mode backgrounds
  * on the neutral ramp. These values are designed to work with
  * the default neutral ramp provided by the DesignSystem
- * 
+ *
  * @deprecated Use the recipes because they can be more dynamic for different ramps
  */
 export enum LightModeBackgrounds {
@@ -26,7 +26,7 @@ export enum LightModeBackgrounds {
  * Friendly names for the indexes of dark mode backgrounds
  * on the neutral ramp. These values are designed to work with
  * the default neutral ramp provided by the DesignSystem
- * 
+ *
  * @deprecated Use the recipes because they can be more dynamic for different ramps
  */
 export enum DarkModeBackgrounds {

@@ -12,10 +12,7 @@ import {
 import { get, has, memoize } from "lodash-es";
 import React from "react";
 import { Omit } from "utility-types";
-import {
-    BackgroundHandledProps,
-    BackgroundUnhandledProps,
-} from "./background.props";
+import { BackgroundHandledProps, BackgroundUnhandledProps } from "./background.props";
 
 export default class Background extends Foundation<
     BackgroundHandledProps,
