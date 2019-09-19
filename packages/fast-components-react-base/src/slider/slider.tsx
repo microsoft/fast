@@ -14,6 +14,8 @@ import {
     keyCodeArrowLeft,
     keyCodeArrowRight,
     keyCodeArrowUp,
+    keyCodeEnd,
+    keyCodeHome,
     keyCodePageDown,
     keyCodePageUp,
 } from "@microsoft/fast-web-utilities";
@@ -851,6 +853,39 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
                     this.startIncrementing(1, true, thumb, event);
                 }
                 break;
+            case keyCodeHome:
+                this.setMinValue(thumb);
+                break;
+
+            case keyCodeEnd:
+                this.setMaxValue(thumb);
+                break;
+        }
+    };
+
+    /**
+     * sets the active thumb to it's minimum value
+     */
+    private setMinValue = (thumb: SliderThumb): void => {
+        const thumbRange: SliderRange = this.getConstrainedRange(true);
+
+        if (thumb === SliderThumb.upperThumb) {
+            this.updateValues(null, thumbRange.minValue);
+        } else {
+            this.updateValues(thumbRange.minValue, null);
+        }
+    };
+
+    /**
+     * sets the active thumb to it's maximum value
+     */
+    private setMaxValue = (thumb: SliderThumb): void => {
+        const thumbRange: SliderRange = this.getConstrainedRange(true);
+
+        if (thumb === SliderThumb.upperThumb) {
+            this.updateValues(null, thumbRange.maxValue);
+        } else {
+            this.updateValues(thumbRange.maxValue, null);
         }
     };
 

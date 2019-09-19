@@ -11,9 +11,11 @@ import {
     keyCodeArrowLeft,
     keyCodeArrowRight,
     keyCodeArrowUp,
+    keyCodeEnd,
+    keyCodeHome,
     keyCodePageDown,
-    keyCodePageUp,
-} from "@microsoft/fast-web-utilities";
+    keyCodePageUp
+    } from "@microsoft/fast-web-utilities";
 import { DisplayNamePrefix } from "../utilities";
 import { SliderMode, SliderOrientation } from "./slider.props";
 
@@ -725,6 +727,24 @@ describe("Slider", (): void => {
         // where value is the number to be constrained and step the step increment
         expect(rendered.instance()["constrainToStep"](14, 10)).toBe(10);
         expect(rendered.instance()["constrainToStep"](16, 10)).toBe(20);
+    });
+
+    test("home and end keys set values to either end of range", (): void => {
+        const container: HTMLDivElement = document.createElement("div");
+        document.body.appendChild(container);
+
+        const rendered: any = mount(<Slider managedClasses={managedClasses} initialValue={50} />, {
+            attachTo: container,
+        });
+
+        const thumb: any = rendered.find(`.${managedClasses.slider_thumb__upperValue}`);
+        expect(rendered.state("upperValue")).toBe(50);
+        thumb.simulate("keydown", { keyCode: keyCodeHome, defaultPrevented: false});
+        expect(rendered.state("upperValue")).toBe(0);
+        thumb.simulate("keydown", { keyCode: keyCodeEnd });
+        expect(rendered.state("upperValue")).toBe(100);
+
+        document.body.removeChild(container);
     });
 
     // tslint:disable-next-line:no-shadowed-variable
