@@ -61,11 +61,11 @@ storiesOf("Select", module)
                 size={HeadingSize._4}
                 id="selectHeading"
                 style={{
-                    margin: "0 0 20px 0"
+                    margin: "0 0 20px 0",
                 }}
             >
                 Select heading
-        </Heading>
+            </Heading>
             <Select
                 labelledBy="selectHeading"
                 placeholder="Select an option"

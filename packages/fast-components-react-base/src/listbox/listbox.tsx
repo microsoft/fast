@@ -48,7 +48,7 @@ class Listbox extends Foundation<
         typeAheadEnabled: true,
         focusItemOnMount: false,
         managedClasses: {},
-        selectOnFocus: true
+        selectOnFocus: true,
     };
 
     /**
@@ -90,14 +90,12 @@ class Listbox extends Foundation<
     public static getValidOptions = (
         childrenAsArray: React.ReactNode[]
     ): React.ReactNode[] => {
-        return childrenAsArray.filter(
-            (itemNode: React.ReactNode) => {
-                if (Listbox.isValidSelectedItem(itemNode as React.ReactElement<any>)) {
-                    return true;
-                }
-                return false;
+        return childrenAsArray.filter((itemNode: React.ReactNode) => {
+            if (Listbox.isValidSelectedItem(itemNode as React.ReactElement<any>)) {
+                return true;
             }
-        );
+            return false;
+        });
     };
 
     /**

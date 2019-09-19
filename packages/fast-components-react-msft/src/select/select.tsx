@@ -62,14 +62,16 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, {}> {
                 aria-atomic={true}
                 aria-label={state.displayString}
                 aria-expanded={state.isMenuOpen}
-                aria-selected={state.selectedItemIndex !== 0 ? true : false }
-                aria-posinset={state.selectedItemIndex !== 0 ? state.selectedItemIndex : null}
-                aria-setsize={state.selectedItemIndex !== 0 ? state.selectableItemCount : null}
+                aria-selected={state.selectedItemIndex !== 0 ? true : false}
+                aria-posinset={
+                    state.selectedItemIndex !== 0 ? state.selectedItemIndex : null
+                }
+                aria-setsize={
+                    state.selectedItemIndex !== 0 ? state.selectableItemCount : null
+                }
             >
                 <span className={classNames(select_buttonContentRegion)}>
-                    <div
-                        className={classNames(select_buttonDisplayText)}
-                    >
+                    <div className={classNames(select_buttonDisplayText)}>
                         {state.displayString}
                     </div>
                     {this.generateGlyph()}

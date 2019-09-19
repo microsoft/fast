@@ -41,7 +41,7 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
     };
 
     private static idPropertyKey: string = "id";
-    private static triggerUniqueIdPrefix: string = "selecttrigger-"
+    private static triggerUniqueIdPrefix: string = "selecttrigger-";
 
     /**
      * Handled props instantiation
@@ -94,9 +94,12 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
             value: this.getValueFromSelection(initialSelection),
             displayString: this.getFormattedDisplayString(initialSelection),
             isMenuOpen: this.validateMenuState(false),
-            selectedItemIndex: this.getSelectedItemPosInSet(validOptions, initialSelection),
+            selectedItemIndex: this.getSelectedItemPosInSet(
+                validOptions,
+                initialSelection
+            ),
             selectableItemCount: validOptions.length,
-            triggerId: uniqueId(Select.triggerUniqueIdPrefix)
+            triggerId: uniqueId(Select.triggerUniqueIdPrefix),
         };
     }
 
@@ -318,8 +321,11 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
                 selectedItems: newSelection,
                 value: newValue,
                 displayString: newDisplayString,
-                selectedItemIndex: this.getSelectedItemPosInSet(validOptions, newSelection),
-                selectableItemCount: validOptions.length
+                selectedItemIndex: this.getSelectedItemPosInSet(
+                    validOptions,
+                    newSelection
+                ),
+                selectableItemCount: validOptions.length,
             });
         }
     };
@@ -369,21 +375,26 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
     };
 
     /**
-     * get the index of the provided selection 
+     * get the index of the provided selection
      * (excludes children that aren't valid options)
      */
-    private getSelectedItemPosInSet = (options: React.ReactNode[], selection: ListboxItemProps[]): number => {
+    private getSelectedItemPosInSet = (
+        options: React.ReactNode[],
+        selection: ListboxItemProps[]
+    ): number => {
         if (!this.props.multiselectable && selection.length === 1) {
             const selectionId: string = selection[0].id;
             for (let i: number = 0; i < options.length; i++) {
-                const thisOption: React.ReactElement<any> = options[i] as React.ReactElement<any>;
+                const thisOption: React.ReactElement<any> = options[
+                    i
+                ] as React.ReactElement<any>;
                 if (thisOption.props[Select.idPropertyKey] === selectionId) {
                     return i + 1;
                 }
-            } 
+            }
         }
         return 0;
-    }
+    };
 
     /**
      * The default function that renders an unstyled content display
@@ -403,9 +414,13 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
                 aria-atomic={true}
                 aria-label={state.displayString}
                 aria-expanded={state.isMenuOpen}
-                aria-selected={state.selectedItemIndex !== 0 ? true : false }
-                aria-posinset={state.selectedItemIndex !== 0 ? state.selectedItemIndex : null}
-                aria-setsize={state.selectedItemIndex !== 0 ? state.selectableItemCount : null}
+                aria-selected={state.selectedItemIndex !== 0 ? true : false}
+                aria-posinset={
+                    state.selectedItemIndex !== 0 ? state.selectedItemIndex : null
+                }
+                aria-setsize={
+                    state.selectedItemIndex !== 0 ? state.selectableItemCount : null
+                }
             >
                 {state.displayString}
             </Button>
@@ -629,9 +644,7 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
      * get valid options
      */
     private getValidOptions = (): React.ReactNode[] => {
-        return Listbox.getValidOptions(
-            React.Children.toArray(this.props.children)
-        );
+        return Listbox.getValidOptions(React.Children.toArray(this.props.children));
     };
 }
 
