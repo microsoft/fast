@@ -14,8 +14,8 @@ import {
     keyCodeEnd,
     keyCodeHome,
     keyCodePageDown,
-    keyCodePageUp
-    } from "@microsoft/fast-web-utilities";
+    keyCodePageUp,
+} from "@microsoft/fast-web-utilities";
 import { DisplayNamePrefix } from "../utilities";
 import { SliderMode, SliderOrientation } from "./slider.props";
 
@@ -733,13 +733,16 @@ describe("Slider", (): void => {
         const container: HTMLDivElement = document.createElement("div");
         document.body.appendChild(container);
 
-        const rendered: any = mount(<Slider managedClasses={managedClasses} initialValue={50} />, {
-            attachTo: container,
-        });
+        const rendered: any = mount(
+            <Slider managedClasses={managedClasses} initialValue={50} />,
+            {
+                attachTo: container,
+            }
+        );
 
         const thumb: any = rendered.find(`.${managedClasses.slider_thumb__upperValue}`);
         expect(rendered.state("upperValue")).toBe(50);
-        thumb.simulate("keydown", { keyCode: keyCodeHome, defaultPrevented: false});
+        thumb.simulate("keydown", { keyCode: keyCodeHome, defaultPrevented: false });
         expect(rendered.state("upperValue")).toBe(0);
         thumb.simulate("keydown", { keyCode: keyCodeEnd });
         expect(rendered.state("upperValue")).toBe(100);
