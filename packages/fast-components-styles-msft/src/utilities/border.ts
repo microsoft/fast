@@ -22,6 +22,13 @@ export function applyElevatedCornerRadius(): CSSRules<DesignSystem> {
 }
 
 /**
+ * Sets the border radius for pill-shaped controls.
+ */
+export function applyPillCornerRadius(): CSSRules<DesignSystem> {
+    return { "border-radius": "999px" };
+}
+
+/**
  * @deprecated Use applyElevatedCornerRadius instead.
  */
 export function applyFloatingCornerRadius(): CSSRules<DesignSystem> {
