@@ -118,3 +118,4 @@ export { neutralFocus, neutralFocusInnerAccent } from "./neutral-focus";
  */
 export { neutralPaletteConfig, accentPaletteConfig } from "./color-constants";
 export { isDarkMode, palette, PaletteType, Palette } from "./palette";
+export { createColorPalette } from "./create-color-palette";
