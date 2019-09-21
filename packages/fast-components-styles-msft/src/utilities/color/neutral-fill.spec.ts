@@ -1,6 +1,7 @@
 import {
     neutralFill,
     neutralFillActive,
+    neutralFillFocus,
     neutralFillHover,
     neutralFillRest,
     neutralFillSelected,
@@ -27,6 +28,9 @@ describe("neutralFill", (): void => {
         expect(neutralFillActive({} as DesignSystem)).toBe(
             neutralPalette[designSystemDefaults.neutralFillActiveDelta]
         );
+        expect(neutralFillFocus({} as DesignSystem)).toBe(
+            neutralPalette[designSystemDefaults.neutralFillFocusDelta]
+        );
         expect(neutralFillSelected({} as DesignSystem)).toBe(
             neutralPalette[designSystemDefaults.neutralFillSelectedDelta]
         );
@@ -41,6 +45,9 @@ describe("neutralFill", (): void => {
         );
         expect(neutralFillActive(designSystemDefaults)).toBe(
             neutralPalette[designSystemDefaults.neutralFillActiveDelta]
+        );
+        expect(neutralFillFocus(designSystemDefaults)).toBe(
+            neutralPalette[designSystemDefaults.neutralFillFocusDelta]
         );
         expect(neutralFillRest(() => neutralPalette[1])(designSystemDefaults)).toBe(
             neutralPalette[designSystemDefaults.neutralFillRestDelta + 1]
@@ -80,6 +87,13 @@ describe("neutralFill", (): void => {
                         })
                     )
                 );
+                expect(neutralFillFocus(() => swatch)(designSystemDefaults)).toBe(
+                    neutralFillFocus(
+                        Object.assign({}, designSystemDefaults, {
+                            backgroundColor: swatch,
+                        })
+                    )
+                );
                 expect(neutralFillSelected(() => swatch)(designSystemDefaults)).toBe(
                     neutralFillSelected(
                         Object.assign({}, designSystemDefaults, {
@@ -104,6 +118,9 @@ describe("neutralFill", (): void => {
                 const active: Swatch = neutralFillActive(() => swatch)(
                     designSystemDefaults
                 );
+                const focus: Swatch = neutralFillFocus(() => swatch)(
+                    designSystemDefaults
+                );
                 const selected: Swatch = neutralFillSelected(() => swatch)(
                     designSystemDefaults
                 );
@@ -111,6 +128,7 @@ describe("neutralFill", (): void => {
                 expect(backplates.rest).toBe(rest);
                 expect(backplates.hover).toBe(hover);
                 expect(backplates.active).toBe(active);
+                expect(backplates.focus).toBe(focus);
                 expect(backplates.selected).toBe(selected);
             }
         );

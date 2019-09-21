@@ -1,9 +1,11 @@
 import { DesignSystem, DesignSystemResolver } from "../../design-system";
 import {
     neutralFillActiveDelta,
+    neutralFillFocusDelta,
     neutralFillHoverDelta,
     neutralFillRestDelta,
     neutralFillStealthActiveDelta,
+    neutralFillStealthFocusDelta,
     neutralFillStealthHoverDelta,
     neutralFillStealthRestDelta,
     neutralFillStealthSelectedDelta,
@@ -24,9 +26,11 @@ const neutralFillStealthSwapThreshold: DesignSystemResolver<
     neutralFillRestDelta,
     neutralFillHoverDelta,
     neutralFillActiveDelta,
+    neutralFillFocusDelta,
     neutralFillStealthRestDelta,
     neutralFillStealthHoverDelta,
-    neutralFillStealthActiveDelta
+    neutralFillStealthActiveDelta,
+    neutralFillStealthFocusDelta
 );
 
 function neutralFillStealthAlgorithm(
@@ -51,6 +55,7 @@ export const neutralFillStealth: ColorRecipe<FillSwatchFamily> = colorRecipeFact
             rest: neutralFillStealthRest(designSystem),
             hover: neutralFillStealthHover(designSystem),
             active: neutralFillStealthActive(designSystem),
+            focus: neutralFillStealthFocus(designSystem),
             selected: neutralFillStealthSelected(designSystem),
         };
     }
@@ -64,6 +69,9 @@ export const neutralFillStealthHover: ColorRecipe<Swatch> = colorRecipeFactory(
 );
 export const neutralFillStealthActive: ColorRecipe<Swatch> = colorRecipeFactory(
     neutralFillStealthAlgorithm(neutralFillStealthActiveDelta)
+);
+export const neutralFillStealthFocus: ColorRecipe<Swatch> = colorRecipeFactory(
+    neutralFillStealthAlgorithm(neutralFillStealthFocusDelta)
 );
 export const neutralFillStealthSelected: ColorRecipe<Swatch> = colorRecipeFactory(
     neutralFillStealthAlgorithm(neutralFillStealthSelectedDelta)

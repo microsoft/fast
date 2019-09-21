@@ -12,7 +12,7 @@ import { accessibleAlgorithm } from "./accessible-recipe";
 function neutralForegroundHintAlgorithm(
     targetContrast: number
 ): DesignSystemResolver<SwatchFamily> {
-    return accessibleAlgorithm(neutralPalette, targetContrast, 0, 0, 0);
+    return accessibleAlgorithm(neutralPalette, targetContrast, 0, 0, 0, 0);
 }
 
 /**

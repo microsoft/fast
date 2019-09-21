@@ -21,7 +21,8 @@ function indexToSwatchFamily(
     direction: number,
     restDelta: number,
     hoverDelta: number,
-    activeDelta: number
+    activeDelta: number,
+    focusDelta: number
 ): SwatchFamily {
     // One of the indexes will be rest, the other will be hover. Depends on the offsets and the direction.
     const accessibleIndex2: number =
@@ -36,11 +37,13 @@ function indexToSwatchFamily(
     const hoverIndex: number = indexOneIsRestState ? accessibleIndex2 : accessibleIndex;
 
     const activeIndex: number = restIndex + direction * activeDelta;
+    const focusIndex: number = restIndex + direction * focusDelta;
 
     return {
         rest: getSwatch(restIndex, palette),
         hover: getSwatch(hoverIndex, palette),
         active: getSwatch(activeIndex, palette),
+        focus: getSwatch(focusIndex, palette),
     };
 }
 
@@ -55,7 +58,8 @@ export function accessibleAlgorithm(
     minContrast: number | DesignSystemResolver<number>,
     restDelta: number | DesignSystemResolver<number>,
     hoverDelta: number | DesignSystemResolver<number>,
-    activeDelta: number | DesignSystemResolver<number>
+    activeDelta: number | DesignSystemResolver<number>,
+    focusDelta: number | DesignSystemResolver<number>
 ): DesignSystemResolver<SwatchFamily> {
     return (designSystem: DesignSystem): SwatchFamily => {
         const resolvedPalette: Palette = checkDesignSystemResolver(palette, designSystem);
@@ -84,6 +88,7 @@ export function accessibleAlgorithm(
             activeDelta,
             designSystem
         );
+        const resolvedFocus: number = checkDesignSystemResolver(focusDelta, designSystem);
 
         return indexToSwatchFamily(
             accessibleIndex,
@@ -91,7 +96,8 @@ export function accessibleAlgorithm(
             direction,
             resolvedRest,
             resolvedHover,
-            resolvedActive
+            resolvedActive,
+            resolvedFocus
         );
     };
 }

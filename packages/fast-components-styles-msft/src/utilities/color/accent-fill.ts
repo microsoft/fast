@@ -2,6 +2,7 @@ import { DesignSystem, DesignSystemResolver } from "../../design-system";
 import {
     accentBaseColor,
     accentFillActiveDelta,
+    accentFillFocusDelta,
     accentFillHoverDelta,
     accentFillSelectedDelta,
     accentPalette,
@@ -76,11 +77,14 @@ function accentFillAlgorithm(
         const restIndex: number = hoverIndex + direction * -1 * hoverDelta;
         const activeIndex: number =
             restIndex + direction * accentFillActiveDelta(designSystem);
+        const focusIndex: number =
+            restIndex + direction * accentFillFocusDelta(designSystem);
 
         return {
             rest: getSwatch(restIndex, palette),
             hover: getSwatch(hoverIndex, palette),
             active: getSwatch(activeIndex, palette),
+            focus: getSwatch(focusIndex, palette),
             selected: getSwatch(
                 restIndex +
                     (isDarkMode(designSystem)
@@ -109,7 +113,9 @@ export const accentFillHover: SwatchRecipe = swatchFamilyToSwatchRecipeFactory<
 export const accentFillActive: SwatchRecipe = swatchFamilyToSwatchRecipeFactory<
     FillSwatchFamily
 >(SwatchFamilyType.active, accentFill);
-
+export const accentFillFocus: SwatchRecipe = swatchFamilyToSwatchRecipeFactory<
+    FillSwatchFamily
+>(SwatchFamilyType.focus, accentFill);
 export const accentFillSelected: SwatchRecipe = swatchFamilyToSwatchRecipeFactory<
     FillSwatchFamily
 >(SwatchFamilyType.selected, accentFill);
@@ -123,6 +129,9 @@ export const accentFillLargeHover: SwatchRecipe = swatchFamilyToSwatchRecipeFact
 export const accentFillLargeActive: SwatchRecipe = swatchFamilyToSwatchRecipeFactory<
     FillSwatchFamily
 >(SwatchFamilyType.active, accentFillLarge);
+export const accentFillLargeFocus: SwatchRecipe = swatchFamilyToSwatchRecipeFactory<
+    FillSwatchFamily
+>(SwatchFamilyType.focus, accentFillLarge);
 export const accentFillLargeSelected: SwatchRecipe = swatchFamilyToSwatchRecipeFactory<
     FillSwatchFamily
 >(SwatchFamilyType.selected, accentFillLarge);
