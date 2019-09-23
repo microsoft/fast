@@ -729,7 +729,7 @@ describe("Slider", (): void => {
         expect(rendered.instance()["constrainToStep"](16, 10)).toBe(20);
     });
 
-    test("home and end keys set values to either end of range", (): void => {
+    test("home key sets value to start of range", (): void => {
         const container: HTMLDivElement = document.createElement("div");
         document.body.appendChild(container);
 
@@ -744,6 +744,23 @@ describe("Slider", (): void => {
         expect(rendered.state("upperValue")).toBe(50);
         thumb.simulate("keydown", { keyCode: keyCodeHome, defaultPrevented: false });
         expect(rendered.state("upperValue")).toBe(0);
+
+        document.body.removeChild(container);
+    });
+
+    test("end key sets value to end of range", (): void => {
+        const container: HTMLDivElement = document.createElement("div");
+        document.body.appendChild(container);
+
+        const rendered: any = mount(
+            <Slider managedClasses={managedClasses} initialValue={50} />,
+            {
+                attachTo: container,
+            }
+        );
+
+        const thumb: any = rendered.find(`.${managedClasses.slider_thumb__upperValue}`);
+        expect(rendered.state("upperValue")).toBe(50);
         thumb.simulate("keydown", { keyCode: keyCodeEnd });
         expect(rendered.state("upperValue")).toBe(100);
 
