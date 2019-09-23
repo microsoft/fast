@@ -9,7 +9,10 @@ import {
     keyCodeSpace,
 } from "@microsoft/fast-web-utilities";
 import { DisplayNamePrefix } from "../utilities";
-import { AxisPositioningMode, ViewportPositionerVerticalPosition } from "../viewport-positioner";
+import {
+    AxisPositioningMode,
+    ViewportPositionerVerticalPosition,
+} from "../viewport-positioner";
 
 /*
  * Configure Enzyme
@@ -34,8 +37,9 @@ const managedClasses: SelectClassNameContract = {
     select_viewportPositioner__right: "select_viewportPositioner__right",
     select_viewportPositioner__top: "select_viewportPositioner__top",
     select_viewportPositioner__bottom: "select_viewportPositioner__bottom",
-    select_viewportPositioner__horizontalInset: "select_viewportPositioner__horizontalInset",
-    select_viewportPositioner__verticalInset: "select_viewportPositioner__verticalInset"
+    select_viewportPositioner__horizontalInset:
+        "select_viewportPositioner__horizontalInset",
+    select_viewportPositioner__verticalInset: "select_viewportPositioner__verticalInset",
 };
 
 const container: HTMLDivElement = document.createElement("div");
@@ -462,10 +466,7 @@ describe("select", (): void => {
 
     test("Default menuFlyoutConfig leaves both axis uncontrolled and is applied", (): void => {
         const rendered: any = mount(
-            <Select
-                isMenuOpen={true}
-                managedClasses={managedClasses}
-            >
+            <Select isMenuOpen={true} managedClasses={managedClasses}>
                 {itemA}
                 {itemB}
                 {itemC}
@@ -473,8 +474,12 @@ describe("select", (): void => {
         );
 
         const positioner: any = rendered.find("BaseViewportPositioner");
-        expect(positioner.prop("horizontalPositioningMode")).toBe(AxisPositioningMode.uncontrolled);
-        expect(positioner.prop("verticalPositioningMode")).toBe(AxisPositioningMode.uncontrolled);
+        expect(positioner.prop("horizontalPositioningMode")).toBe(
+            AxisPositioningMode.uncontrolled
+        );
+        expect(positioner.prop("verticalPositioningMode")).toBe(
+            AxisPositioningMode.uncontrolled
+        );
     });
 
     test("Custom menuFlyoutConfig is applied to positioner", (): void => {
@@ -494,7 +499,11 @@ describe("select", (): void => {
         );
 
         const positioner: any = rendered.find("BaseViewportPositioner");
-        expect(positioner.prop("horizontalPositioningMode")).toBe(AxisPositioningMode.inset);
-        expect(positioner.prop("verticalPositioningMode")).toBe(AxisPositioningMode.inset);
+        expect(positioner.prop("horizontalPositioningMode")).toBe(
+            AxisPositioningMode.inset
+        );
+        expect(positioner.prop("verticalPositioningMode")).toBe(
+            AxisPositioningMode.inset
+        );
     });
 });

@@ -334,17 +334,17 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
     }
 
     /**
-     * 
+     *
      */
     private getFlyoutMenuConfig = (): SelectMenuFlyoutConfig => {
         if (isNil(this.props.menuFlyoutConfig)) {
             return {
                 verticalPositioningMode: AxisPositioningMode.uncontrolled,
                 horizontalPositioningMode: AxisPositioningMode.uncontrolled,
-            }
+            };
         }
         return this.props.menuFlyoutConfig;
-    }
+    };
 
     /**
      * Handles selection changes from menu
