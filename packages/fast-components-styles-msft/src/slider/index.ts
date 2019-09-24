@@ -6,10 +6,11 @@ import {
     divide,
     format,
     multiply,
+    subtract,
     toPx,
 } from "@microsoft/fast-jss-utilities";
 import { DesignSystem, DesignSystemResolver } from "../design-system";
-import { applyCornerRadius } from "../utilities/border";
+import { applyPillCornerRadius } from "../utilities/border";
 import {
     neutralFocus,
     neutralForegroundActive,
@@ -19,7 +20,7 @@ import {
     neutralOutlineRest,
 } from "../utilities/color";
 import { applyCursorPointer } from "../utilities/cursor";
-import { heightNumber } from "../utilities/density";
+import { densityCategorySwitch, heightNumber } from "../utilities/density";
 import {
     backgroundColor,
     designUnit,
@@ -34,13 +35,18 @@ import {
     highContrastSelector,
 } from "../utilities/high-contrast";
 
-const thumbSizeValue: DesignSystemResolver<number> = add(
-    divide(heightNumber(), 2),
-    designUnit
-);
+const thumbSizeValue: DesignSystemResolver<number> = divide(heightNumber(), 2);
 const thumbSize: DesignSystemResolver<string> = toPx(thumbSizeValue);
 const halfThumbSize: DesignSystemResolver<string> = toPx(divide(thumbSizeValue, 2));
-const trackOffset: DesignSystemResolver<string> = toPx(divide(heightNumber(), 4));
+const trackSizeValue: DesignSystemResolver<number> = densityCategorySwitch(
+    divide(designUnit, 2),
+    designUnit,
+    multiply(designUnit, 1.5)
+);
+const trackSize: DesignSystemResolver<string> = toPx(trackSizeValue);
+const trackOffset: DesignSystemResolver<string> = toPx(
+    divide(subtract(thumbSizeValue, trackSizeValue), 2)
+);
 const trackOverhang: DesignSystemResolver<string> = toPx(
     multiply(divide(designUnit, 2), -1)
 );
@@ -93,12 +99,12 @@ const styles: ComponentStyles<SliderClassNameContract, DesignSystem> = {
     slider_thumb__upperValue: {},
     slider_track: {},
     slider_backgroundTrack: {
-        ...applyCornerRadius(),
+        ...applyPillCornerRadius(),
         background: neutralOutlineRest,
         ...highContrastBackground,
     },
     slider_foregroundTrack: {
-        ...applyCornerRadius(),
+        ...applyPillCornerRadius(),
         background: neutralForegroundHint,
         transition: "all 0.2s ease",
         ...highContrastHighlightBackground,
@@ -158,14 +164,14 @@ const styles: ComponentStyles<SliderClassNameContract, DesignSystem> = {
         "& $slider_backgroundTrack": {
             "margin-top": trackOffset,
             "align-self": "start",
-            height: toPx(designUnit),
+            height: trackSize,
             left: trackOverhang,
             right: trackOverhang,
         },
         "& $slider_foregroundTrack": {
             "margin-top": trackOffset,
             "align-self": "start",
-            height: toPx(designUnit),
+            height: trackSize,
         },
         "&$slider__modeAdjustLower": {
             "& $slider_foregroundTrack": {
@@ -200,20 +206,20 @@ const styles: ComponentStyles<SliderClassNameContract, DesignSystem> = {
         "& $slider_track": {
             "justify-self": "start",
             "margin-left": trackOffset,
-            width: toPx(designUnit),
+            width: trackSize,
             height: "100%",
         },
         "& $slider_backgroundTrack": {
             "justify-self": "start",
             "margin-left": trackOffset,
-            width: toPx(designUnit),
+            width: trackSize,
             top: trackOverhang,
             bottom: trackOverhang,
         },
         "& $slider_foregroundTrack": {
             "justify-self": "start",
             "margin-left": trackOffset,
-            width: toPx(designUnit),
+            width: trackSize,
         },
         "&$slider__modeAdjustLower": {
             "& $slider_foregroundTrack": {
