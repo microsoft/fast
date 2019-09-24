@@ -11,8 +11,9 @@ import {
     keyCodeSpace,
 } from "@microsoft/fast-web-utilities";
 import { canUseDOM } from "exenv-es6";
-import { clone, get, isEqual, isNil, uniqueId } from "lodash-es";
+import { get, isEqual, isNil } from "lodash-es";
 import React from "react";
+import Button from "../button";
 import Listbox from "../listbox";
 import { ListboxItemProps } from "../listbox-item";
 import { DisplayNamePrefix } from "../utilities";
@@ -473,7 +474,7 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
         }
         const isItemSelected: boolean = state.selectedItemIndex !== 0;
         return (
-            <button
+            <Button
                 disabled={props.disabled}
                 id={triggerId}
                 role="option"
@@ -485,7 +486,7 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
                 aria-setsize={isItemSelected ? state.selectableItemCount : null}
             >
                 {state.displayString}
-            </button>
+            </Button>
         );
     };
 
