@@ -123,6 +123,9 @@ export const accentFillHoverDelta: DesignSystemResolver<number> = getDesignSyste
 export const accentFillActiveDelta: DesignSystemResolver<number> = getDesignSystemValue(
     "accentFillActiveDelta"
 );
+export const accentFillFocusDelta: DesignSystemResolver<number> = getDesignSystemValue(
+    "accentFillFocusDelta"
+);
 export const accentFillSelectedDelta: DesignSystemResolver<number> = getDesignSystemValue(
     "accentFillSelectedDelta"
 );
@@ -136,6 +139,9 @@ export const accentForegroundHoverDelta: DesignSystemResolver<
 export const accentForegroundActiveDelta: DesignSystemResolver<
     number
 > = getDesignSystemValue("accentForegroundActiveDelta");
+export const accentForegroundFocusDelta: DesignSystemResolver<
+    number
+> = getDesignSystemValue("accentForegroundFocusDelta");
 
 export const neutralFillRestDelta: DesignSystemResolver<number> = getDesignSystemValue(
     "neutralFillRestDelta"
@@ -145,6 +151,9 @@ export const neutralFillHoverDelta: DesignSystemResolver<number> = getDesignSyst
 );
 export const neutralFillActiveDelta: DesignSystemResolver<number> = getDesignSystemValue(
     "neutralFillActiveDelta"
+);
+export const neutralFillFocusDelta: DesignSystemResolver<number> = getDesignSystemValue(
+    "neutralFillFocusDelta"
 );
 export const neutralFillSelectedDelta: DesignSystemResolver<
     number
@@ -159,6 +168,9 @@ export const neutralFillInputHoverDelta: DesignSystemResolver<
 export const neutralFillInputActiveDelta: DesignSystemResolver<
     number
 > = getDesignSystemValue("neutralFillInputActiveDelta");
+export const neutralFillInputFocusDelta: DesignSystemResolver<
+    number
+> = getDesignSystemValue("neutralFillInputFocusDelta");
 export const neutralFillInputSelectedDelta: DesignSystemResolver<
     number
 > = getDesignSystemValue("neutralFillInputSelectedDelta");
@@ -172,6 +184,9 @@ export const neutralFillStealthHoverDelta: DesignSystemResolver<
 export const neutralFillStealthActiveDelta: DesignSystemResolver<
     number
 > = getDesignSystemValue("neutralFillStealthActiveDelta");
+export const neutralFillStealthFocusDelta: DesignSystemResolver<
+    number
+> = getDesignSystemValue("neutralFillStealthFocusDelta");
 export const neutralFillStealthSelectedDelta: DesignSystemResolver<
     number
 > = getDesignSystemValue("neutralFillStealthSelectedDelta");
@@ -182,6 +197,9 @@ export const neutralFillToggleHoverDelta: DesignSystemResolver<
 export const neutralFillToggleActiveDelta: DesignSystemResolver<
     number
 > = getDesignSystemValue("neutralFillToggleActiveDelta");
+export const neutralFillToggleFocusDelta: DesignSystemResolver<
+    number
+> = getDesignSystemValue("neutralFillToggleFocusDelta");
 
 export const neutralFillCardDelta: DesignSystemResolver<number> = getDesignSystemValue(
     "neutralFillCardDelta"
@@ -206,6 +224,9 @@ export const neutralForegroundHoverDelta: DesignSystemResolver<
 export const neutralForegroundActiveDelta: DesignSystemResolver<
     number
 > = getDesignSystemValue("neutralForegroundActiveDelta");
+export const neutralForegroundFocusDelta: DesignSystemResolver<
+    number
+> = getDesignSystemValue("neutralForegroundFocusDelta");
 
 export const neutralDividerRestDelta: DesignSystemResolver<number> = getDesignSystemValue(
     "neutralDividerRestDelta"
@@ -223,3 +244,6 @@ export const neutralOutlineActiveDelta: DesignSystemResolver<
 export const getFontWeight: DesignSystemResolver<FontWeight> = getDesignSystemValue(
     "fontWeight"
 );
+export const neutralOutlineFocusDelta: DesignSystemResolver<
+    number
+> = getDesignSystemValue("neutralOutlineFocusDelta");

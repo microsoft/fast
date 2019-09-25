@@ -9,6 +9,7 @@ import {
 } from "./common";
 import {
     neutralFillInputActiveDelta,
+    neutralFillInputFocusDelta,
     neutralFillInputHoverDelta,
     neutralFillInputRestDelta,
     neutralFillInputSelectedDelta,
@@ -37,6 +38,7 @@ export const neutralFillInput: ColorRecipe<FillSwatchFamily> = colorRecipeFactor
             rest: neutralFillInputRest(designSystem),
             hover: neutralFillInputHover(designSystem),
             active: neutralFillInputActive(designSystem),
+            focus: neutralFillInputFocus(designSystem),
             selected: neutralFillInputSelected(designSystem),
         };
     }
@@ -50,6 +52,9 @@ export const neutralFillInputHover: SwatchRecipe = colorRecipeFactory(
 );
 export const neutralFillInputActive: SwatchRecipe = colorRecipeFactory(
     neutralFillInputAlgorithm(neutralFillInputActiveDelta)
+);
+export const neutralFillInputFocus: SwatchRecipe = colorRecipeFactory(
+    neutralFillInputAlgorithm(neutralFillInputFocusDelta)
 );
 export const neutralFillInputSelected: SwatchRecipe = colorRecipeFactory(
     neutralFillInputAlgorithm(neutralFillInputSelectedDelta)

@@ -1,5 +1,6 @@
 import {
     neutralFillToggleActiveDelta,
+    neutralFillToggleFocusDelta,
     neutralFillToggleHoverDelta,
     neutralPalette,
 } from "../design-system";
@@ -18,7 +19,8 @@ export const neutralFillToggle: SwatchFamilyResolver = colorRecipeFactory(
         4.5,
         0,
         neutralFillToggleHoverDelta,
-        neutralFillToggleActiveDelta
+        neutralFillToggleActiveDelta,
+        neutralFillToggleFocusDelta
     )
 );
 
@@ -32,5 +34,9 @@ export const neutralFillToggleHover: SwatchRecipe = swatchFamilyToSwatchRecipeFa
 );
 export const neutralFillToggleActive: SwatchRecipe = swatchFamilyToSwatchRecipeFactory(
     SwatchFamilyType.active,
+    neutralFillToggle
+);
+export const neutralFillToggleFocus: SwatchRecipe = swatchFamilyToSwatchRecipeFactory(
+    SwatchFamilyType.focus,
     neutralFillToggle
 );

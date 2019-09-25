@@ -115,6 +115,7 @@ export interface DesignSystem {
     accentFillRestDelta: number;
     accentFillHoverDelta: number;
     accentFillActiveDelta: number;
+    accentFillFocusDelta: number;
     accentFillSelectedDelta: number;
 
     /**
@@ -123,6 +124,7 @@ export interface DesignSystem {
     accentForegroundRestDelta: number;
     accentForegroundHoverDelta: number;
     accentForegroundActiveDelta: number;
+    accentForegroundFocusDelta: number;
 
     /*
      * Color swatch deltas for the neutral-fill recipe.
@@ -130,6 +132,7 @@ export interface DesignSystem {
     neutralFillRestDelta: number;
     neutralFillHoverDelta: number;
     neutralFillActiveDelta: number;
+    neutralFillFocusDelta: number;
     neutralFillSelectedDelta: number;
 
     /**
@@ -138,6 +141,7 @@ export interface DesignSystem {
     neutralFillInputRestDelta: number;
     neutralFillInputHoverDelta: number;
     neutralFillInputActiveDelta: number;
+    neutralFillInputFocusDelta: number;
     neutralFillInputSelectedDelta: number;
 
     /**
@@ -146,6 +150,7 @@ export interface DesignSystem {
     neutralFillStealthRestDelta: number;
     neutralFillStealthHoverDelta: number;
     neutralFillStealthActiveDelta: number;
+    neutralFillStealthFocusDelta: number;
     neutralFillStealthSelectedDelta: number;
 
     /**
@@ -153,6 +158,7 @@ export interface DesignSystem {
      */
     neutralFillToggleHoverDelta: number;
     neutralFillToggleActiveDelta: number;
+    neutralFillToggleFocusDelta: number;
 
     /**
      * Color swatch deltas for the neutral-fill-card recipe.
@@ -173,6 +179,7 @@ export interface DesignSystem {
 
     neutralForegroundHoverDelta: number;
     neutralForegroundActiveDelta: number;
+    neutralForegroundFocusDelta: number;
 
     /**
      * Color swatch delta for the neutral-divider recipe.
@@ -185,6 +192,7 @@ export interface DesignSystem {
     neutralOutlineRestDelta: number;
     neutralOutlineHoverDelta: number;
     neutralOutlineActiveDelta: number;
+    neutralOutlineFocusDelta: number;
 }
 
 const designSystemDefaults: DesignSystem = {
@@ -211,29 +219,35 @@ const designSystemDefaults: DesignSystem = {
     accentFillRestDelta: 0,
     accentFillHoverDelta: 4,
     accentFillActiveDelta: -5,
+    accentFillFocusDelta: 0,
     accentFillSelectedDelta: 12,
 
     accentForegroundRestDelta: 0,
     accentForegroundHoverDelta: 6,
     accentForegroundActiveDelta: -4,
+    accentForegroundFocusDelta: 0,
 
     neutralFillRestDelta: 7,
     neutralFillHoverDelta: 10,
     neutralFillActiveDelta: 5,
+    neutralFillFocusDelta: 0,
     neutralFillSelectedDelta: 7,
 
     neutralFillInputRestDelta: 0,
     neutralFillInputHoverDelta: 0,
     neutralFillInputActiveDelta: 0,
+    neutralFillInputFocusDelta: 0,
     neutralFillInputSelectedDelta: 0,
 
     neutralFillStealthRestDelta: 0,
     neutralFillStealthHoverDelta: 5,
     neutralFillStealthActiveDelta: 3,
+    neutralFillStealthFocusDelta: 0,
     neutralFillStealthSelectedDelta: 7,
 
     neutralFillToggleHoverDelta: 8,
     neutralFillToggleActiveDelta: -5,
+    neutralFillToggleFocusDelta: 0,
 
     neutralFillCardDelta: 3,
 
@@ -242,12 +256,14 @@ const designSystemDefaults: DesignSystem = {
 
     neutralForegroundHoverDelta: 0,
     neutralForegroundActiveDelta: 0,
+    neutralForegroundFocusDelta: 0,
 
     neutralDividerRestDelta: 6,
 
     neutralOutlineRestDelta: 25,
     neutralOutlineHoverDelta: 40,
     neutralOutlineActiveDelta: 16,
+    neutralOutlineFocusDelta: 25,
 };
 
 /**

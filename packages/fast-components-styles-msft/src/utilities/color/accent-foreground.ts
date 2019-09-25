@@ -19,6 +19,7 @@ import {
 import {
     accentBaseColor,
     accentForegroundActiveDelta,
+    accentForegroundFocusDelta,
     accentForegroundHoverDelta,
     accentForegroundRestDelta,
     accentPalette,
@@ -39,6 +40,7 @@ function accentForegroundAlgorithm(
             rest: accentForegroundRestDelta(designSystem),
             hover: accentForegroundHoverDelta(designSystem),
             active: accentForegroundActiveDelta(designSystem),
+            focus: accentForegroundFocusDelta(designSystem),
         };
 
         const direction: 1 | -1 = isDarkMode(designSystem) ? -1 : 1;
@@ -83,11 +85,13 @@ function accentForegroundAlgorithm(
             : accessibleIndex1;
 
         const activeIndex: number = restIndex + direction * stateDeltas.active;
+        const focusIndex: number = restIndex + direction * stateDeltas.focus;
 
         return {
             rest: getSwatch(restIndex, palette),
             hover: getSwatch(hoverIndex, palette),
             active: getSwatch(activeIndex, palette),
+            focus: getSwatch(focusIndex, palette),
         };
     };
 }
@@ -111,6 +115,10 @@ export const accentForegroundActive: SwatchRecipe = swatchFamilyToSwatchRecipeFa
     SwatchFamilyType.active,
     accentForeground
 );
+export const accentForegroundFocus: SwatchRecipe = swatchFamilyToSwatchRecipeFactory(
+    SwatchFamilyType.focus,
+    accentForeground
+);
 
 export const accentForegroundLargeRest: SwatchRecipe = swatchFamilyToSwatchRecipeFactory(
     SwatchFamilyType.rest,
@@ -122,5 +130,9 @@ export const accentForegroundLargeHover: SwatchRecipe = swatchFamilyToSwatchReci
 );
 export const accentForegroundLargeActive: SwatchRecipe = swatchFamilyToSwatchRecipeFactory(
     SwatchFamilyType.active,
+    accentForegroundLarge
+);
+export const accentForegroundLargeFocus: SwatchRecipe = swatchFamilyToSwatchRecipeFactory(
+    SwatchFamilyType.focus,
     accentForegroundLarge
 );

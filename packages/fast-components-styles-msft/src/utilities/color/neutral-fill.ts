@@ -1,6 +1,7 @@
 import { DesignSystem, DesignSystemResolver } from "../../design-system";
 import {
     neutralFillActiveDelta,
+    neutralFillFocusDelta,
     neutralFillHoverDelta,
     neutralFillRestDelta,
     neutralFillSelectedDelta,
@@ -19,7 +20,8 @@ import { findClosestBackgroundIndex, getSwatch } from "./palette";
 const neutralFillThreshold: DesignSystemResolver<number> = designSystemResolverMax(
     neutralFillRestDelta,
     neutralFillHoverDelta,
-    neutralFillActiveDelta
+    neutralFillActiveDelta,
+    neutralFillFocusDelta
 );
 
 function neutralFillAlgorithm(
@@ -43,6 +45,7 @@ export const neutralFill: ColorRecipe<FillSwatchFamily> = colorRecipeFactory(
             rest: neutralFillRest(designSystem),
             hover: neutralFillHover(designSystem),
             active: neutralFillActive(designSystem),
+            focus: neutralFillFocus(designSystem),
             selected: neutralFillSelected(designSystem),
         };
     }
@@ -56,6 +59,9 @@ export const neutralFillHover: SwatchRecipe = colorRecipeFactory(
 );
 export const neutralFillActive: SwatchRecipe = colorRecipeFactory(
     neutralFillAlgorithm(neutralFillActiveDelta)
+);
+export const neutralFillFocus: SwatchRecipe = colorRecipeFactory(
+    neutralFillAlgorithm(neutralFillFocusDelta)
 );
 export const neutralFillSelected: SwatchRecipe = colorRecipeFactory(
     neutralFillAlgorithm(neutralFillSelectedDelta)

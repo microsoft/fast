@@ -1,6 +1,7 @@
 import {
     neutralOutline,
     neutralOutlineActive,
+    neutralOutlineFocus,
     neutralOutlineHover,
     neutralOutlineRest,
 } from "./neutral-outline";
@@ -26,6 +27,9 @@ describe("neutralOutline", (): void => {
         );
         expect(neutralOutlineActive({} as DesignSystem)).toBe(
             neutralPalette[designSystemDefaults.neutralOutlineActiveDelta]
+        );
+        expect(neutralOutlineFocus({} as DesignSystem)).toBe(
+            neutralPalette[designSystemDefaults.neutralOutlineFocusDelta]
         );
     });
 
@@ -65,6 +69,13 @@ describe("neutralOutline", (): void => {
                         })
                     )
                 );
+                expect(neutralOutlineFocus(() => swatch)(designSystemDefaults)).toBe(
+                    neutralOutlineFocus(
+                        Object.assign({}, designSystemDefaults, {
+                            backgroundColor: swatch,
+                        })
+                    )
+                );
             }
         );
     });
@@ -84,10 +95,14 @@ describe("neutralOutline", (): void => {
                 const active: Swatch = neutralOutlineActive(() => swatch)(
                     designSystemDefaults
                 );
+                const focus: Swatch = neutralOutlineFocus(() => swatch)(
+                    designSystemDefaults
+                );
 
                 expect(backplates.rest).toBe(rest);
                 expect(backplates.hover).toBe(hover);
                 expect(backplates.active).toBe(active);
+                expect(backplates.focus).toBe(focus);
             }
         );
     });
