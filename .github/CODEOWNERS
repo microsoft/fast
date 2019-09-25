@@ -28,11 +28,11 @@
 /packages/fast-colors/ @nicholasrice @chrisdholt
 
 # fast-components-*
-/packages/fast-components-class-name-contracts-base/ @chrisdholt @janechu
-/packages/fast-components-class-name-contracts-msft/ @chrisdholt @janechu
-/packages/fast-components-react-base/ @chrisdholt @janechu
-/packages/fast-components-react-msft/ @chrisdholt @janechu
-/packages/fast-components-styles-msft/ @chrisdholt @janechu
+/packages/fast-components-class-name-contracts-base/ @chrisdholt @janechu @nicholasrice
+/packages/fast-components-class-name-contracts-msft/ @chrisdholt @janechu @nicholasrice
+/packages/fast-components-react-base/ @chrisdholt @janechu @nicholasrice
+/packages/fast-components-react-msft/ @chrisdholt @janechu @nicholasrice
+/packages/fast-components-styles-msft/ @chrisdholt @janechu @nicholasrice
 
 # fast-development-site
 /packages/fast-development-site/ @nicholasrice @chrisdholt @janechu
