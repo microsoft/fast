@@ -501,9 +501,8 @@ class ViewportPositioner extends Foundation<
     private getHorizontalPositionAvailableWidth = (
         positionOption: ViewportPositionerHorizontalPositionLabel
     ): number => {
-        const spaceLeft: number = this.anchorLeft - this.viewportRect.left;
-        const spaceRight: number =
-            this.viewportRect.right - (this.anchorLeft + this.anchorWidth);
+        const spaceLeft: number = this.anchorLeft;
+        const spaceRight: number = this.viewportRect.width - spaceLeft - this.anchorWidth;
 
         switch (positionOption) {
             case ViewportPositionerHorizontalPositionLabel.left:
@@ -523,9 +522,9 @@ class ViewportPositioner extends Foundation<
     private getVerticalPositionAvailableHeight = (
         positionOption: ViewportPositionerVerticalPositionLabel
     ): number => {
-        const spaceAbove: number = this.anchorTop - this.viewportRect.top;
+        const spaceAbove: number = this.anchorTop;
         const spaceBelow: number =
-            this.viewportRect.bottom - (this.anchorTop + this.anchorHeight);
+            this.viewportRect.height - spaceAbove - this.anchorHeight;
 
         switch (positionOption) {
             case ViewportPositionerVerticalPositionLabel.top:
