@@ -193,13 +193,15 @@ export class Column extends Foundation<ColumnHandledProps, ColumnUnhandledProps,
                   ["msGridRow" as any]: row,
               };
 
-        return Object.assign({}, this.unhandledProps().style, {
+        return {
             ...gridStyles,
             order: typeof order === "number" ? order : null,
             // Fixes issue found in firefox where columns that have overflow
             // or full width content cause scroll bars
-            minwidth: "0",
-        });
+            minWidth: "0",
+           ...this.unhandledProps().style
+            
+        }
     }
 
     /**
