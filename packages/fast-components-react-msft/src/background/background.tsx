@@ -3,6 +3,7 @@ import {
     DesignSystem,
     DesignSystemDefaults,
     DesignSystemResolver,
+    neutralLayerL1,
 } from "@microsoft/fast-components-styles-msft";
 import {
     DesignSystemConsumer,
@@ -11,11 +12,7 @@ import {
 import { get, has, memoize } from "lodash-es";
 import React from "react";
 import { Omit } from "utility-types";
-import {
-    BackgroundHandledProps,
-    BackgroundUnhandledProps,
-    LightModeBackgrounds,
-} from "./background.props";
+import { BackgroundHandledProps, BackgroundUnhandledProps } from "./background.props";
 
 export default class Background extends Foundation<
     BackgroundHandledProps,
@@ -23,10 +20,10 @@ export default class Background extends Foundation<
     {}
 > {
     public static defaultProps: Partial<
-        Omit<BackgroundHandledProps, "value"> & { value: LightModeBackgrounds }
+        Omit<BackgroundHandledProps, "value"> & { value: DesignSystemResolver<string> }
     > = {
         tag: "div",
-        value: LightModeBackgrounds.L1,
+        value: neutralLayerL1,
         drawBackground: true,
     };
     protected handledProps: HandledProps<Required<BackgroundHandledProps>> = {
@@ -57,9 +54,7 @@ export default class Background extends Foundation<
                     : has(designSystem.neutralPalette, background)
                         ? get(designSystem.neutralPalette, background)
                         : DesignSystemDefaults.neutralPalette[background] ||
-                          DesignSystemDefaults.neutralPalette[
-                              Background.defaultProps.value
-                          ];
+                          Background.defaultProps.value(DesignSystemDefaults);
 
         const style: React.CSSProperties = Object.assign(
             {},
