@@ -199,9 +199,8 @@ export class Column extends Foundation<ColumnHandledProps, ColumnUnhandledProps,
             // Fixes issue found in firefox where columns that have overflow
             // or full width content cause scroll bars
             minWidth: "0",
-           ...this.unhandledProps().style
-            
-        }
+            ...this.unhandledProps().style,
+        };
     }
 
     /**
