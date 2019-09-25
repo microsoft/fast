@@ -18,6 +18,7 @@ import {
     ViewportPositionerUnhandledProps,
     ViewportPositionerVerticalPosition,
 } from "./viewport-positioner.props";
+import { ThemeProvider } from "emotion-theming";
 
 export interface Dimension {
     height: number;
