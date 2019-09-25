@@ -2,7 +2,7 @@
   "name": "@microsoft/fast-components-react-base",
   "description": "FAST base components implemented in React.",
   "sideEffects": false,
-  "version": "4.15.5",
+  "version": "4.15.6",
   "author": {
     "name": "Microsoft",
     "url": "https://discord.gg/FcSNfg4"
@@ -69,7 +69,7 @@
     "@babel/core": "^7.0.0",
     "@babel/preset-env": "^7.1.0",
     "@babel/preset-react": "^7.0.0",
-    "@microsoft/fast-storybook-presets": "^1.1.14",
+    "@microsoft/fast-storybook-presets": "^1.1.15",
     "@microsoft/fast-tooling-react": "^1.18.5",
     "@microsoft/fast-tslint-rules": "^3.0.3",
     "@storybook/addon-actions": "^5.1.9",

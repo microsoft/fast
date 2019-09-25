@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.21.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-msft@4.20.5...@microsoft/fast-components-react-msft@4.21.0) (2019-09-25)
+
+
+### Features
+
+* deprecated and updated references to LightModeBackgrounds and DarkModeBackgrounds ([#2247](https://github.com/Microsoft/fast-dna/issues/2247)) ([42495d3](https://github.com/Microsoft/fast-dna/commit/42495d3))
+* update component docs for simplicity in Explorer UI ([#2186](https://github.com/Microsoft/fast-dna/issues/2186)) ([64b7124](https://github.com/Microsoft/fast-dna/commit/64b7124))
+
+
+
+
+
 ## [4.20.5](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-msft@4.20.4...@microsoft/fast-components-react-msft@4.20.5) (2019-09-18)
 
 **Note:** Version bump only for package @microsoft/fast-components-react-msft

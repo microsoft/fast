@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.5.8](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-layouts-react@4.5.7...@microsoft/fast-layouts-react@4.5.8) (2019-09-25)
+
+
+### Bug Fixes
+
+* ensure experience-defined styles override page/grid/column inline styles ([#2271](https://github.com/Microsoft/fast-dna/issues/2271)) ([c0d7652](https://github.com/Microsoft/fast-dna/commit/c0d7652))
+
+
+
+
+
 ## [4.5.7](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-layouts-react@4.5.6...@microsoft/fast-layouts-react@4.5.7) (2019-09-17)
 
 
