@@ -1,6 +1,7 @@
 import {
     neutralFillInput,
     neutralFillInputActive,
+    neutralFillInputFocus,
     neutralFillInputHover,
     neutralFillInputRest,
     neutralFillInputSelected,
@@ -22,6 +23,7 @@ describe("neutralFillInput", (): void => {
         expect(neutralFillInputRest({} as DesignSystem)).toBe(neutralPalette[0]);
         expect(neutralFillInputHover({} as DesignSystem)).toBe(neutralPalette[0]);
         expect(neutralFillInputActive({} as DesignSystem)).toBe(neutralPalette[0]);
+        expect(neutralFillInputFocus({} as DesignSystem)).toBe(neutralPalette[0]);
         expect(neutralFillInputSelected({} as DesignSystem)).toBe(neutralPalette[0]);
     });
 
@@ -71,6 +73,13 @@ describe("neutralFillInput", (): void => {
                         })
                     )
                 );
+                expect(neutralFillInputFocus(() => swatch)(designSystemDefaults)).toBe(
+                    neutralFillInputFocus(
+                        Object.assign({}, designSystemDefaults, {
+                            backgroundColor: swatch,
+                        })
+                    )
+                );
                 expect(neutralFillInputSelected(() => swatch)(designSystemDefaults)).toBe(
                     neutralFillInputSelected(
                         Object.assign({}, designSystemDefaults, {
@@ -97,6 +106,9 @@ describe("neutralFillInput", (): void => {
                 const active: Swatch = neutralFillInputActive(() => swatch)(
                     designSystemDefaults
                 );
+                const focus: Swatch = neutralFillInputFocus(() => swatch)(
+                    designSystemDefaults
+                );
                 const selected: Swatch = neutralFillInputSelected(() => swatch)(
                     designSystemDefaults
                 );
@@ -104,6 +116,7 @@ describe("neutralFillInput", (): void => {
                 expect(backplates.rest).toBe(rest);
                 expect(backplates.hover).toBe(hover);
                 expect(backplates.active).toBe(active);
+                expect(backplates.focus).toBe(focus);
                 expect(backplates.selected).toBe(selected);
             }
         );

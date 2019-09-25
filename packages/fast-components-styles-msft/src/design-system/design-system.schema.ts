@@ -117,6 +117,11 @@ export default {
             type: "number",
             default: 4,
         },
+        accentFillFocusDelta: {
+            title: "Accent fill focus delta",
+            type: "number",
+            default: 0,
+        },
         accentFillSelectedDelta: {
             title: "Accent fill selected delta",
             type: "number",
@@ -137,6 +142,11 @@ export default {
             type: "number",
             default: 8,
         },
+        accentForegroundFocusDelta: {
+            title: "Accent foreground focus delta",
+            type: "number",
+            default: 0,
+        },
         neutralFillRestDelta: {
             title: "Neutral fill rest delta",
             type: "number",
@@ -151,6 +161,11 @@ export default {
             title: "Neutral fill active delta",
             type: "number",
             default: 2,
+        },
+        neutralFillFocusDelta: {
+            title: "Neutral fill focus delta",
+            type: "number",
+            default: 4,
         },
         neutralFillSelectedDelta: {
             title: "Neutral fill selected delta",
@@ -169,6 +184,11 @@ export default {
         },
         neutralFillInputActiveDelta: {
             title: "Neutral fill input active delta",
+            type: "number",
+            default: 4,
+        },
+        neutralFillInputFocusDelta: {
+            title: "Neutral fill input focus delta",
             type: "number",
             default: 4,
         },
@@ -192,10 +212,30 @@ export default {
             type: "number",
             default: 2,
         },
+        neutralFillStealthFocusDelta: {
+            title: "Neutral fill stealth focus delta",
+            type: "number",
+            default: 0,
+        },
         neutralFillStealthSelectedDelta: {
             title: "Neutral fill stealth selected delta",
             type: "number",
             default: 8,
+        },
+        neutralFillToggleHoverDelta: {
+            title: "Neutral fill toggle hover delta",
+            type: "number",
+            default: 8,
+        },
+        neutralFillToggleActiveDelta: {
+            title: "Neutral fill toggle active delta",
+            type: "number",
+            default: -5,
+        },
+        neutralFillToggleFocusDelta: {
+            title: "Neutral fill toggle focus delta",
+            type: "number",
+            default: 0,
         },
         neutralFillCardDelta: {
             title: "Neutral fill card delta",
@@ -211,6 +251,11 @@ export default {
             title: "Neutral foreground active delta",
             type: "number",
             default: 16,
+        },
+        neutralForegroundFocusDelta: {
+            title: "Neutral foreground focus delta",
+            type: "number",
+            default: 0,
         },
         neutralDividerRestDelta: {
             title: "Neutral divider rest delta",
@@ -231,6 +276,11 @@ export default {
             title: "Neutral outline active delta",
             type: "number",
             default: 18,
+        },
+        neutralOutlineFocusDelta: {
+            title: "Neutral outline focus delta",
+            type: "number",
+            default: 12,
         },
         accentBaseColor: {
             title: "Accent base color",
