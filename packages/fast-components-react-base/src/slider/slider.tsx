@@ -864,7 +864,7 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
     };
 
     /**
-     * sets the active thumb to it's minimum value
+     * sets the active thumb to its minimum value
      */
     private setMinValue = (thumb: SliderThumb): void => {
         const thumbRange: SliderRange = this.getConstrainedRange(true);
