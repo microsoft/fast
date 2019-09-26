@@ -17,6 +17,11 @@ export interface SelectHandledProps extends SelectManagedClasses {
     trigger?: (props: SelectProps, state: SelectState) => React.ReactNode;
 
     /**
+     * Custom function to render the menu of the control
+     */
+    menu?: (props: SelectProps, state: SelectState, defaultMenu: React.ReactNode) => React.ReactNode;
+
+    /**
      * Function which converts and formats the string may be displayed in the ui
      * in the UI
      */
