@@ -15,6 +15,7 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, {}> {
     protected handledProps: HandledProps<SelectHandledProps> = {
         disabled: void 0,
         managedClasses: void 0,
+        menu: void 0,
     };
 
     /**
@@ -26,12 +27,12 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, {}> {
                 {...this.unhandledProps()}
                 managedClasses={this.props.managedClasses}
                 disabled={this.props.disabled}
+                menu={this.props.menu}
                 trigger={
                     typeof this.props.trigger === "function"
                         ? this.props.trigger
                         : this.defaultTriggerRenderFunction
                 }
-                menu={this.props.menu}
             >
                 {this.props.children}
             </BaseSelect>
