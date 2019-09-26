@@ -79,10 +79,7 @@ describe("button", (): void => {
             </Select>
         );
 
-        expect(rendered.state("isMenuOpen")).toBe(false);
-        expect(menuRenderFn).toHaveBeenCalledTimes(0);
         rendered.simulate("click");
-        expect(rendered.state("isMenuOpen")).toBe(true);
         expect(menuRenderFn).toHaveBeenCalledTimes(1);
     });
 });
