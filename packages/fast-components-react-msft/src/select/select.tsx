@@ -31,6 +31,7 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, {}> {
                         ? this.props.trigger
                         : this.defaultTriggerRenderFunction
                 }
+                menu={this.props.menu}
             >
                 {this.props.children}
             </BaseSelect>

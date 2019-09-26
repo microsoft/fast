@@ -264,7 +264,7 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
                 {this.props.children}
             </Listbox>
         );
-        if (typeof this.props.menu === 'function') {
+        if (typeof this.props.menu === "function") {
             return this.props.menu(this.props, this.state, defaultMenu);
         } else {
             return defaultMenu;
