@@ -21,11 +21,13 @@ import {
  */
 configure({ adapter: new Adapter() });
 
+// viewport rect is deliberately offset so we are testing that 
+// calculations are correct when the viewport is not positioned at origin (i.e. x and y = 0)
 const viewportRect: ClientRect = {
-    top: 0,
-    right: 100,
-    bottom: 100,
-    left: 0,
+    top: 100,
+    right: 250,
+    bottom: 200,
+    left: 150,
     height: 100,
     width: 100,
 };
@@ -708,10 +710,10 @@ describe("viewport positioner", (): void => {
         const positioner: any = rendered.find("BaseViewportPositioner");
 
         positioner.instance().viewportRect = viewportRect;
-        positioner.instance().anchorTop = 200;
-        positioner.instance().anchorRight = 210;
-        positioner.instance().anchorBottom = 210;
-        positioner.instance().anchorLeft = 200;
+        positioner.instance().anchorTop = 210;
+        positioner.instance().anchorRight = 270;
+        positioner.instance().anchorBottom = 220;
+        positioner.instance().anchorLeft = 260;
         positioner.instance().setState({ noObserverMode: false });
         expect(positioner.instance().state.noObserverMode).toBe(false);
 
@@ -721,22 +723,45 @@ describe("viewport positioner", (): void => {
                 ["getHorizontalTranslate"](
                     ViewportPositionerHorizontalPositionLabel.insetLeft
                 )
-        ).toBe(-111);
+        ).toBe(-21);
         expect(
             positioner
                 .instance()
                 ["getHorizontalTranslate"](ViewportPositionerHorizontalPosition.left)
-        ).toBe(-101);
+        ).toBe(-11);
         expect(
             positioner
                 .instance()
                 ["getVerticalTranslate"](ViewportPositionerVerticalPositionLabel.insetTop)
-        ).toBe(-111);
+        ).toBe(-21);
         expect(
             positioner
                 .instance()
                 ["getVerticalTranslate"](ViewportPositionerVerticalPosition.top)
-        ).toBe(-101);
+        ).toBe(-11);
+
+        expect(
+            positioner
+                .instance()
+                ["getHorizontalTranslate"](
+                    ViewportPositionerHorizontalPositionLabel.insetRight
+                )
+        ).toBe(0);
+        expect(
+            positioner
+                .instance()
+                ["getHorizontalTranslate"](ViewportPositionerHorizontalPosition.right)
+        ).toBe(0);
+        expect(
+            positioner
+                .instance()
+                ["getVerticalTranslate"](ViewportPositionerVerticalPositionLabel.insetBottom)
+        ).toBe(0);
+        expect(
+            positioner
+                .instance()
+                ["getVerticalTranslate"](ViewportPositionerVerticalPosition.bottom)
+        ).toBe(0);
     });
 
     test("Translate transforms calculated correctly - bottom/right", (): void => {
@@ -773,10 +798,10 @@ describe("viewport positioner", (): void => {
         const positioner: any = rendered.find("BaseViewportPositioner");
 
         positioner.instance().viewportRect = viewportRect;
-        positioner.instance().anchorTop = -210;
-        positioner.instance().anchorRight = -200;
-        positioner.instance().anchorBottom = -200;
-        positioner.instance().anchorLeft = -210;
+        positioner.instance().anchorTop = 80;
+        positioner.instance().anchorRight = 140;
+        positioner.instance().anchorBottom = 90;
+        positioner.instance().anchorLeft = 130;
 
         expect(
             positioner
@@ -784,24 +809,47 @@ describe("viewport positioner", (): void => {
                 ["getHorizontalTranslate"](
                     ViewportPositionerHorizontalPositionLabel.insetRight
                 )
-        ).toBe(211);
+        ).toBe(21);
         expect(
             positioner
                 .instance()
                 ["getHorizontalTranslate"](ViewportPositionerHorizontalPosition.right)
-        ).toBe(201);
+        ).toBe(11);
         expect(
             positioner
                 .instance()
                 ["getVerticalTranslate"](
                     ViewportPositionerVerticalPositionLabel.insetBottom
                 )
-        ).toBe(211);
+        ).toBe(21);
         expect(
             positioner
                 .instance()
                 ["getVerticalTranslate"](ViewportPositionerVerticalPosition.bottom)
-        ).toBe(201);
+        ).toBe(11);
+
+        expect(
+            positioner
+                .instance()
+                ["getHorizontalTranslate"](
+                    ViewportPositionerHorizontalPositionLabel.insetLeft
+                )
+        ).toBe(0);
+        expect(
+            positioner
+                .instance()
+                ["getHorizontalTranslate"](ViewportPositionerHorizontalPosition.left)
+        ).toBe(0);
+        expect(
+            positioner
+                .instance()
+                ["getVerticalTranslate"](ViewportPositionerVerticalPositionLabel.insetTop)
+        ).toBe(0);
+        expect(
+            positioner
+                .instance()
+                ["getVerticalTranslate"](ViewportPositionerVerticalPosition.top)
+        ).toBe(0);
     });
 
     test("Positioner moves to biggest area on updateLayout() when spacing changes", (): void => {
