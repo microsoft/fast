@@ -42,7 +42,8 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, {}> {
      */
     private defaultTriggerRenderFunction = (
         props: SelectProps,
-        state: SelectState
+        state: SelectState,
+        triggerId?: string
     ): React.ReactNode => {
         if (props.multiselectable) {
             return null;
@@ -53,22 +54,21 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, {}> {
             select_buttonContentRegion,
             select_buttonDisplayText,
         }: SelectClassNameContract = this.props.managedClasses;
+
+        const isItemSelected: boolean = state.selectedItemIndex !== 0;
+
         return (
             <button
                 disabled={props.disabled}
                 className={classNames(select_button)}
-                id={state.triggerId}
+                id={triggerId}
                 role="option"
                 aria-atomic={true}
                 aria-label={state.displayString}
                 aria-expanded={state.isMenuOpen}
-                aria-selected={state.selectedItemIndex !== 0 ? true : false}
-                aria-posinset={
-                    state.selectedItemIndex !== 0 ? state.selectedItemIndex : null
-                }
-                aria-setsize={
-                    state.selectedItemIndex !== 0 ? state.selectableItemCount : null
-                }
+                aria-selected={isItemSelected}
+                aria-posinset={isItemSelected ? state.selectedItemIndex : null}
+                aria-setsize={isItemSelected ? state.selectableItemCount : null}
             >
                 <span className={classNames(select_buttonContentRegion)}>
                     <div className={classNames(select_buttonDisplayText)}>

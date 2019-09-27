@@ -26,7 +26,6 @@ export interface SelectState {
     isMenuOpen: boolean;
     selectedItemIndex: number;
     selectableItemCount: number;
-    triggerId: string;
 }
 
 class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, SelectState> {
@@ -68,6 +67,8 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
         HTMLDivElement
     >();
 
+    private triggerId: string = uniqueId(Select.triggerUniqueIdPrefix);
+
     /**
      * constructor
      */
@@ -99,7 +100,6 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
                 initialSelection
             ),
             selectableItemCount: validOptions.length,
-            triggerId: uniqueId(Select.triggerUniqueIdPrefix),
         };
     }
 
@@ -161,7 +161,7 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
                 aria-disabled={this.props.disabled}
                 aria-expanded={this.state.isMenuOpen}
                 aria-labelledby={this.props.labelledBy || null}
-                aria-describedby={this.state.triggerId}
+                aria-describedby={this.triggerId}
             >
                 {this.renderTrigger()}
                 {this.renderHiddenSelectElement()}
@@ -240,9 +240,13 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
      */
     private renderTrigger(): React.ReactNode {
         if (this.props.trigger !== undefined) {
-            return this.props.trigger(this.props, this.state);
+            return this.props.trigger(this.props, this.state, this.triggerId);
         } else {
-            return this.defaultTriggerRenderFunction(this.props, this.state);
+            return this.defaultTriggerRenderFunction(
+                this.props,
+                this.state,
+                this.triggerId
+            );
         }
     }
 
@@ -384,11 +388,13 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
     ): number => {
         if (!this.props.multiselectable && selection.length === 1) {
             const selectionId: string = selection[0].id;
-            for (let i: number = 0; i < options.length; i++) {
-                const thisOption: React.ReactElement<any> = options[
-                    i
-                ] as React.ReactElement<any>;
-                if (thisOption.props[Select.idPropertyKey] === selectionId) {
+            const optionCount: number = options.length;
+            for (let i: number = 0; i < optionCount; i++) {
+                if (
+                    (options[i] as React.ReactElement<any>).props[
+                        Select.idPropertyKey
+                    ] === selectionId
+                ) {
                     return i + 1;
                 }
             }
@@ -401,29 +407,27 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
      */
     private defaultTriggerRenderFunction = (
         props: SelectProps,
-        state: SelectState
+        state: SelectState,
+        triggerId: string
     ): React.ReactNode => {
         if (props.multiselectable) {
             return null;
         }
+        const isItemSelected: boolean = state.selectedItemIndex !== 0;
         return (
-            <Button
+            <button
                 disabled={props.disabled}
-                id={state.triggerId}
+                id={triggerId}
                 role="option"
                 aria-atomic={true}
                 aria-label={state.displayString}
                 aria-expanded={state.isMenuOpen}
-                aria-selected={state.selectedItemIndex !== 0 ? true : false}
-                aria-posinset={
-                    state.selectedItemIndex !== 0 ? state.selectedItemIndex : null
-                }
-                aria-setsize={
-                    state.selectedItemIndex !== 0 ? state.selectableItemCount : null
-                }
+                aria-selected={isItemSelected}
+                aria-posinset={isItemSelected ? state.selectedItemIndex : null}
+                aria-setsize={isItemSelected ? state.selectableItemCount : null}
             >
                 {state.displayString}
-            </Button>
+            </button>
         );
     };
 
@@ -501,7 +505,7 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
             return;
         }
         if (!this.props.multiselectable && this.state.selectedItems.length === 0) {
-            this.incrementSelectedOption(+1);
+            this.incrementSelectedOption(1);
         }
     };
 
