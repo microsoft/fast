@@ -11,6 +11,8 @@ import {
     keyCodeArrowLeft,
     keyCodeArrowRight,
     keyCodeArrowUp,
+    keyCodeEnd,
+    keyCodeHome,
     keyCodePageDown,
     keyCodePageUp,
 } from "@microsoft/fast-web-utilities";
@@ -725,6 +727,44 @@ describe("Slider", (): void => {
         // where value is the number to be constrained and step the step increment
         expect(rendered.instance()["constrainToStep"](14, 10)).toBe(10);
         expect(rendered.instance()["constrainToStep"](16, 10)).toBe(20);
+    });
+
+    test("home key sets value to start of range", (): void => {
+        const container: HTMLDivElement = document.createElement("div");
+        document.body.appendChild(container);
+
+        const rendered: any = mount(
+            <Slider managedClasses={managedClasses} initialValue={50} />,
+            {
+                attachTo: container,
+            }
+        );
+
+        const thumb: any = rendered.find(`.${managedClasses.slider_thumb__upperValue}`);
+        expect(rendered.state("upperValue")).toBe(50);
+        thumb.simulate("keydown", { keyCode: keyCodeHome, defaultPrevented: false });
+        expect(rendered.state("upperValue")).toBe(0);
+
+        document.body.removeChild(container);
+    });
+
+    test("end key sets value to end of range", (): void => {
+        const container: HTMLDivElement = document.createElement("div");
+        document.body.appendChild(container);
+
+        const rendered: any = mount(
+            <Slider managedClasses={managedClasses} initialValue={50} />,
+            {
+                attachTo: container,
+            }
+        );
+
+        const thumb: any = rendered.find(`.${managedClasses.slider_thumb__upperValue}`);
+        expect(rendered.state("upperValue")).toBe(50);
+        thumb.simulate("keydown", { keyCode: keyCodeEnd });
+        expect(rendered.state("upperValue")).toBe(100);
+
+        document.body.removeChild(container);
     });
 
     // tslint:disable-next-line:no-shadowed-variable

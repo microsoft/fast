@@ -103,6 +103,20 @@ storiesOf("Slider", module)
             <SliderLabel valuePositionBinding={100} label="High" />
         </Slider>
     ))
+    .add("Multiple", () => (
+        <Slider
+            range={{ minValue: 0, maxValue: 100 }}
+            mode={SliderMode.adjustBoth}
+            jssStyleSheet={vertcialSliderStyles}
+            onValueChange={action("onValueChange")}
+        >
+            <SliderLabel valuePositionBinding={0} label="Low" />
+            <SliderLabel valuePositionBinding={25} label="25" />
+            <SliderLabel valuePositionBinding={50} label="50" />
+            <SliderLabel valuePositionBinding={75} label="75" />
+            <SliderLabel valuePositionBinding={100} label="High" />
+        </Slider>
+    ))
     .add("Disabled", () => (
         <Slider
             range={{ minValue: 0, maxValue: 100 }}
