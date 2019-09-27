@@ -3,8 +3,8 @@ export default {
     title: "Select",
     description: "A select component's schema definition.",
     type: "object",
-    id: "@microsoft/fast-components-react-base/select",
-    formPluginId: "@microsoft/fast-components-react-base/select",
+    id: "@microsoft/fast-components-react-msft/select",
+    formPluginId: "@microsoft/fast-components-react-msft/select",
     properties: {
         placeholder: {
             title: "Placeholder",
@@ -110,7 +110,8 @@ export default {
         children: {
             title: "Building blocks",
             type: "children",
-            formPluginId: "@microsoft/fast-components-react-base/select/children",
+            formPluginId: "@microsoft/fast-components-react-msft/select/children",
+            ids: ["@microsoft/fast-components-react-msft/select-option"],
             defaults: ["listbox-item"],
         },
     },

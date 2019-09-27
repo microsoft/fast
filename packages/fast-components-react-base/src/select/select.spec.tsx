@@ -29,7 +29,7 @@ const itemC: JSX.Element = <ListboxItem id="c" value="c" displayString="abc" />;
 const managedClasses: SelectClassNameContract = {
     select: "select",
     select__disabled: "select__disabled",
-    select_menu: "elect_menu",
+    select_menu: "select_menu",
     select_menu__open: "select_menu__open",
     select__multiSelectable: "select__multiSelectable",
     select_viewportPositioner: "select_viewportPositioner",

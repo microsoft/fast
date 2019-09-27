@@ -188,7 +188,7 @@ export interface SelectHandledProps extends SelectManagedClasses {
     labelledBy?: string;
 
     /**
-     * The onValueChange event handler
+     * Configuration props for flyout menu positioning
      */
     menuFlyoutConfig?: SelectMenuFlyoutConfig;
 }
