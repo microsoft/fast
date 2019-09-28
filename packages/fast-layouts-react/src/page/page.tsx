@@ -44,12 +44,12 @@ export class Page extends Foundation<PageHandledProps, PageUnhandledProps, {}> {
         return {
             ...attributes,
             style: {
-                // attributes.style has to be spread here again in order to
-                // merge the styles attribute, otherwise it is just overriden
-                ...attributes.style,
                 display: Page.display,
                 gridTemplateColumns: columns,
                 msGridColumns: columns,
+                // attributes.style has to be spread here again in order to
+                // merge the styles attribute, otherwise it is just overriden
+                ...attributes.style,
             },
         };
     }

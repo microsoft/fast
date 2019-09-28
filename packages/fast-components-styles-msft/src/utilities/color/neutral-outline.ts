@@ -11,6 +11,7 @@ import {
 } from "./common";
 import {
     neutralOutlineActiveDelta,
+    neutralOutlineFocusDelta,
     neutralOutlineHoverDelta,
     neutralOutlineRestDelta,
     neutralPalette,
@@ -29,11 +30,14 @@ const neutralOutlineAlgorithm: SwatchFamilyResolver = (
     const hoverIndex: number = restIndex + direction * (hoverDelta - restDelta);
     const activeDelta: number = neutralOutlineActiveDelta(designSystem);
     const activeIndex: number = restIndex + direction * (activeDelta - restDelta);
+    const focusDelta: number = neutralOutlineFocusDelta(designSystem);
+    const focusIndex: number = restIndex + direction * (focusDelta - restDelta);
 
     return {
         rest: getSwatch(restIndex, palette),
         hover: getSwatch(hoverIndex, palette),
         active: getSwatch(activeIndex, palette),
+        focus: getSwatch(focusIndex, palette),
     };
 };
 
@@ -50,5 +54,9 @@ export const neutralOutlineHover: SwatchRecipe = swatchFamilyToSwatchRecipeFacto
 );
 export const neutralOutlineActive: SwatchRecipe = swatchFamilyToSwatchRecipeFactory(
     SwatchFamilyType.active,
+    neutralOutline
+);
+export const neutralOutlineFocus: SwatchRecipe = swatchFamilyToSwatchRecipeFactory(
+    SwatchFamilyType.focus,
     neutralOutline
 );

@@ -224,6 +224,9 @@ export function applyInputStyle(): CSSRules<{}> {
         "&:invalid": {
             border: `1px solid ${error}`,
         },
+        "&::placeholder": {
+            color: "#767676",
+        },
     };
 }
 

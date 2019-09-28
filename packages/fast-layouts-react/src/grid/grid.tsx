@@ -140,9 +140,9 @@ export class Grid extends Foundation<GridHandledProps, GridUnhandledProps, {}> {
             1}]`;
 
         return {
-            ...this.unhandledProps().style,
             display: Grid.display,
             ...(canUseCssGrid() ? this.cssGridStyles() : this.msGridStyles()),
+            ...this.unhandledProps().style,
         };
     }
 

@@ -1,5 +1,6 @@
 import {
     neutralForegroundActiveDelta,
+    neutralForegroundFocusDelta,
     neutralForegroundHoverDelta,
     neutralPalette,
 } from "../design-system";
@@ -18,7 +19,8 @@ export const neutralForeground: SwatchFamilyResolver = colorRecipeFactory(
         14,
         0,
         neutralForegroundHoverDelta,
-        neutralForegroundActiveDelta
+        neutralForegroundActiveDelta,
+        neutralForegroundFocusDelta
     )
 );
 
@@ -32,5 +34,9 @@ export const neutralForegroundHover: SwatchRecipe = swatchFamilyToSwatchRecipeFa
 );
 export const neutralForegroundActive: SwatchRecipe = swatchFamilyToSwatchRecipeFactory(
     SwatchFamilyType.active,
+    neutralForeground
+);
+export const neutralForegroundFocus: SwatchRecipe = swatchFamilyToSwatchRecipeFactory(
+    SwatchFamilyType.focus,
     neutralForeground
 );

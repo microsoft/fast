@@ -33,6 +33,11 @@ export interface SwatchFamily {
      * The swatch to apply to the active state
      */
     active: Swatch;
+
+    /**
+     * The swatch to apply to the focus state
+     */
+    focus: Swatch;
 }
 
 /**
@@ -73,6 +78,7 @@ export enum SwatchFamilyType {
     rest = "rest",
     hover = "hover",
     active = "active",
+    focus = "focus",
     selected = "selected",
 }
 
