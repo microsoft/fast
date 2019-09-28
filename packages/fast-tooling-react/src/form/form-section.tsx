@@ -30,7 +30,7 @@ import {
 } from "./form-section.props";
 import FormControlSwitch from "./form-control-switch";
 import FormOneOfAnyOf from "./form-one-of-any-of";
-import DictionaryFormControl from "./controls/control.dictionary";
+import FormDictionary from "./form-dictionary";
 
 /**
  * Schema form component definition
@@ -76,7 +76,10 @@ class FormSection extends React.Component<
         );
         const updatedData: any = generateExampleData(updatedSchema, "");
 
-        this.props.onChange(this.props.dataLocation, updatedData);
+        this.props.onChange({
+            dataLocation: this.props.dataLocation,
+            value: updatedData,
+        });
 
         this.setState({
             schema: updatedSchema,
@@ -107,7 +110,6 @@ class FormSection extends React.Component<
      */
     private renderFormControl(
         schema: any,
-        index: number,
         propertyName: string,
         schemaLocation: string,
         dataLocation: string,
@@ -122,7 +124,7 @@ class FormSection extends React.Component<
         return (
             <FormControlSwitch
                 key={[this.props.dataLocation, propertyName].join(".")}
-                index={index}
+                controls={this.props.controls}
                 untitled={this.props.untitled}
                 required={required}
                 default={get(this.props.default, propertyName)}
@@ -134,7 +136,7 @@ class FormSection extends React.Component<
                 propertyName={propertyName}
                 schema={schema}
                 onChange={this.props.onChange}
-                onUpdateActiveSection={this.props.onUpdateActiveSection}
+                onUpdateSection={this.props.onUpdateSection}
                 invalidMessage={invalidMessage}
                 displayValidationBrowserDefault={
                     this.props.displayValidationBrowserDefault
@@ -175,7 +177,6 @@ class FormSection extends React.Component<
         return items.map((item: FormCategoryItems) => {
             return this.renderFormControl(
                 item.params.schema,
-                item.params.index,
                 item.params.propertyName,
                 item.params.schemaLocation,
                 item.params.dataLocation,
@@ -255,7 +256,6 @@ class FormSection extends React.Component<
                             formControls.items.push(
                                 this.renderFormControl(
                                     params.property,
-                                    params.index,
                                     params.propertyName,
                                     params.schemaLocation,
                                     params.dataLocation,
@@ -360,19 +360,21 @@ class FormSection extends React.Component<
 
         if (typeof schema.additionalProperties === "object") {
             return (
-                <DictionaryFormControl
+                <FormDictionary
                     index={0}
-                    untitled={this.props.untitled}
+                    controls={this.props.controls}
                     dataLocation={this.props.dataLocation}
                     schemaLocation={this.getSchemaLocation()}
-                    schema={schema.additionalProperties}
+                    examples={get(schema, "examples")}
+                    propertyLabel={get(schema, "propertyTitle", "Property key")}
+                    additionalProperties={schema.additionalProperties}
                     enumeratedProperties={this.getEnumeratedProperties(schema)}
                     data={this.props.data}
                     required={schema.required}
                     label={schema.title || this.props.untitled}
                     childOptions={this.props.childOptions}
                     onChange={this.props.onChange}
-                    onUpdateActiveSection={this.props.onUpdateActiveSection}
+                    onUpdateSection={this.props.onUpdateSection}
                     invalidMessage={getErrorFromDataLocation(
                         this.props.dataLocation,
                         this.props.validationErrors
@@ -395,7 +397,6 @@ class FormSection extends React.Component<
                     {this.renderAnyOfOneOfSelect()}
                     {this.renderFormControl(
                         this.state.schema,
-                        0,
                         "",
                         this.getSchemaLocation(),
                         this.props.dataLocation,

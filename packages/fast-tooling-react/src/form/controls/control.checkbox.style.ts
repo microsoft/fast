@@ -1,41 +1,17 @@
 import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager-react";
-import { CheckboxFormControlClassNameContract } from "./control.checkbox.props";
 import { applyFocusVisible } from "@microsoft/fast-jss-utilities";
-import {
-    applyControlSingleLineWrapper,
-    applyFormControlDisabled,
-    applyFormControlIndicator,
-    applyInteractiveFormControlIndicator,
-    applyInvalidMessage,
-    applyLabelStyle,
-    applySoftRemove,
-    applySoftRemoveInput,
-    error,
-    foreground300,
-    foreground800,
-    insetStrongBoxShadow,
-} from "../../style";
+import { error, foreground300, foreground800, insetStrongBoxShadow } from "../../style";
 
-const styles: ComponentStyles<CheckboxFormControlClassNameContract, {}> = {
-    checkboxFormControl: {},
-    checkboxFormControl_control: {
-        ...applyControlSingleLineWrapper(),
-        position: "relative",
-    },
-    checkboxFormControl__disabled: {
-        ...applyFormControlDisabled(),
-    },
-    checkboxFormControl_badge: {
-        ...applyFormControlIndicator(),
-    },
-    checkboxFormControl_defaultValueIndicator: {
-        ...applyInteractiveFormControlIndicator(),
-    },
-    checkboxFormControl_label: {
-        ...applyLabelStyle(),
-        marginLeft: "8px",
-    },
-    checkboxFormControl_input: {
+/**
+ * Checkbox class name contract
+ */
+export interface CheckboxControlClassNameContract {
+    checkboxControl?: string;
+    checkboxControl__disabled?: string;
+}
+
+const styles: ComponentStyles<CheckboxControlClassNameContract, {}> = {
+    checkboxControl: {
         appearance: "none",
         minWidth: "14px",
         height: "14px",
@@ -87,15 +63,7 @@ const styles: ComponentStyles<CheckboxFormControlClassNameContract, {}> = {
             borderColor: error,
         },
     },
-    checkboxFormControl_invalidMessage: {
-        ...applyInvalidMessage(),
-    },
-    checkboxFormControl_softRemove: {
-        ...applySoftRemove(),
-    },
-    checkboxFormControl_softRemoveInput: {
-        ...applySoftRemoveInput(),
-    },
+    checkboxControl__disabled: {},
 };
 
 export default styles;

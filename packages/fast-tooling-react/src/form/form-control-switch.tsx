@@ -1,18 +1,11 @@
 import React from "react";
 import { get } from "lodash-es";
-import SectionLinkFormControl from "./controls/control.section-link";
-import NumberFieldFormControl from "./controls/control.number-field";
-import ArrayFormControl from "./controls/control.array";
-import TextareaFormControl from "./controls/control.textarea";
-import SelectFormControl from "./controls/control.select";
-import ChildrenFormControl from "./controls/control.children";
-import CheckboxFormControl from "./controls/control.checkbox";
-import DisplayFormControl from "./controls/control.display";
-import ButtonFormControl from "./controls/control.button";
 import { FormControlSwitchProps } from "./form-control-switch.props";
-import { CommonFormControlProps } from "./controls/control.props";
+import { ControlTemplateUtilitiesProps, StandardControlPlugin } from "./templates";
 import { FormChildOptionItem } from "./form.props";
-import { isConst, isSelect } from "./utilities";
+import { generateExampleData, isConst, isSelect } from "./utilities";
+import { ItemConstraints } from "./controls/control.array.props";
+import { SingleLineControlPlugin } from "./templates/plugin.control.single-line";
 
 class FormControlSwitch extends React.Component<FormControlSwitchProps, {}> {
     public static displayName: string = "FormControlSwitch";
@@ -22,13 +15,13 @@ class FormControlSwitch extends React.Component<FormControlSwitchProps, {}> {
     };
 
     public render(): React.ReactNode {
-        return <React.Fragment>{this.renderFormControl()}</React.Fragment>;
+        return <React.Fragment>{this.renderControl()}</React.Fragment>;
     }
 
     /**
      * Renders form items
      */
-    private renderFormControl(): React.ReactNode {
+    private renderControl(): React.ReactNode {
         const hasEnum: boolean = isSelect({ enum: this.props.schema.enum });
 
         if (
@@ -65,50 +58,70 @@ class FormControlSwitch extends React.Component<FormControlSwitchProps, {}> {
     }
 
     private renderChildren(): React.ReactNode {
-        return (
-            <ChildrenFormControl
-                {...this.getCommonFormControlPropsProps()}
-                required={false}
-                defaultChildOptions={this.props.schema.defaults || null}
-                childOptions={this.getChildOptions()}
-                onUpdateActiveSection={this.props.onUpdateActiveSection}
-            />
+        const standardControl: StandardControlPlugin = this.props.controls.children;
+
+        standardControl.updateProps(
+            Object.assign(
+                {
+                    childOptions: this.getChildOptions(),
+                    defaultChildOptions: this.props.schema.defaults || null,
+                },
+                this.getCommonControlProps()
+            )
         );
+
+        return standardControl.render();
     }
 
     /**
      * Renders the array form item
      */
     private renderArray(): React.ReactNode {
-        return (
-            <ArrayFormControl
-                schemaLocation={this.props.schemaLocation}
-                untitled={this.props.untitled}
-                onUpdateActiveSection={this.props.onUpdateActiveSection}
-                {...this.getCommonFormControlPropsProps()}
-            />
+        const standardControl: StandardControlPlugin = this.props.controls.array;
+
+        standardControl.updateProps(
+            Object.assign(
+                {
+                    minItems: get(this.props.schema, ItemConstraints.minItems, 0),
+                    maxItems: get(this.props.schema, ItemConstraints.maxItems, Infinity),
+                    onAddExampleData: this.handleAddExampleData,
+                },
+                this.getCommonControlProps()
+            )
         );
+
+        return standardControl.render();
     }
 
     /**
      * Renders the number field form item
      */
     private renderNumberField(): React.ReactNode {
-        return (
-            <NumberFieldFormControl
-                min={this.props.schema.minimum}
-                max={this.props.schema.maximum}
-                step={this.props.schema.multipleOf}
-                {...this.getCommonFormControlPropsProps()}
-            />
+        const standardControl: StandardControlPlugin = this.props.controls.numberField;
+
+        standardControl.updateProps(
+            Object.assign(
+                {
+                    min: this.props.schema.minimum,
+                    max: this.props.schema.maximum,
+                    step: this.props.schema.multipleOf,
+                },
+                this.getCommonControlProps()
+            )
         );
+
+        return standardControl.render();
     }
 
     /**
      * Renders the checkbox form item
      */
     private renderCheckbox(): React.ReactNode {
-        return <CheckboxFormControl {...this.getCommonFormControlPropsProps()} />;
+        const singleLineControl: SingleLineControlPlugin = this.props.controls.checkbox;
+
+        singleLineControl.updateProps(this.getCommonControlProps());
+
+        return singleLineControl.render();
     }
 
     /**
@@ -116,66 +129,78 @@ class FormControlSwitch extends React.Component<FormControlSwitchProps, {}> {
      * that are objects
      */
     private renderSectionLink(): React.ReactNode {
-        return (
-            <SectionLinkFormControl
-                onUpdateSection={this.handleSectionLinkClick}
-                schemaLocation={this.props.schemaLocation}
-                {...this.getCommonFormControlPropsProps()}
-            />
-        );
+        const standardControl: StandardControlPlugin = this.props.controls.sectionLink;
+
+        standardControl.updateProps(this.getCommonControlProps());
+
+        return standardControl.render();
     }
 
     /**
      * Renders the textarea form item
      */
     private renderTextarea(): React.ReactNode {
-        return <TextareaFormControl {...this.getCommonFormControlPropsProps()} />;
+        const rows: number | undefined = this.props.schema.rows || void 0;
+
+        const standardControl: StandardControlPlugin = this.props.controls.textarea;
+
+        standardControl.updateProps(
+            Object.assign(
+                {
+                    rows,
+                },
+                this.getCommonControlProps()
+            )
+        );
+
+        return standardControl.render();
     }
 
     /**
      * Renders the select form item
      */
     private renderSelect(): React.ReactNode {
-        const options: any[] = this.props.schema.enum;
+        const options: any[] = this.props.schema.enum || [];
 
         if (!this.props.required && typeof options[0] !== "undefined") {
             options.unshift(void 0);
         }
 
-        return (
-            <SelectFormControl
-                options={options}
-                {...this.getCommonFormControlPropsProps()}
-            />
+        const standardControl: StandardControlPlugin = this.props.controls.select;
+
+        standardControl.updateProps(
+            Object.assign(
+                {
+                    options,
+                },
+                this.getCommonControlProps()
+            )
         );
+
+        return standardControl.render();
     }
 
     /**
      * Renders the display form item
      */
     private renderDisplay(): React.ReactNode {
-        return <DisplayFormControl {...this.getCommonFormControlPropsProps()} />;
+        const standardControl: StandardControlPlugin = this.props.controls.display;
+
+        standardControl.updateProps(this.getCommonControlProps());
+
+        return standardControl.render();
     }
 
     private renderButton(): React.ReactNode {
-        return <ButtonFormControl {...this.getCommonFormControlPropsProps()} />;
+        const standardControl: StandardControlPlugin = this.props.controls.button;
+
+        standardControl.updateProps(this.getCommonControlProps());
+
+        return standardControl.render();
     }
 
-    /**
-     * Handles updating to another active section
-     */
-    private handleUpdateSection(schemaLocation: string, dataLocation: string): void {
-        this.props.onUpdateActiveSection(schemaLocation, dataLocation, this.props.schema);
-    }
-
-    /**
-     * Handles the onClick of the section link, changes from controlled to uncontrolled if location is passed
-     */
-    private handleSectionLinkClick = (
-        schemaLocation: string,
-        dataLocation: string
-    ): void => {
-        this.handleUpdateSection(schemaLocation, dataLocation);
+    private handleAddExampleData = (additionalSchemaPathSyntax: string): any => {
+        return generateExampleData(this.props.schema, additionalSchemaPathSyntax);
     };
 
     /**
@@ -194,24 +219,28 @@ class FormControlSwitch extends React.Component<FormControlSwitchProps, {}> {
     }
 
     /**
-     * Gets the common form item props
+     * Gets the common form control props
      */
-    private getCommonFormControlPropsProps(): CommonFormControlProps {
+    private getCommonControlProps(): ControlTemplateUtilitiesProps {
+        const schema: any = get(this.props, "schema", {});
+
         return {
             index: this.props.index,
             dataLocation: this.props.dataLocation,
+            schemaLocation: this.props.schemaLocation,
             data: this.props.data,
             required: this.props.required,
-            label: get(this.props, "schema.title"),
-            disabled: get(this.props, "schema.disabled"),
+            label: schema.title || schema.description || this.props.untitled,
+            disabled: schema.disabled,
             onChange: this.props.onChange,
-            default: get(this.props, "schema.default") || this.props.default,
-            badge: get(this.props, "schema.badge"),
-            badgeDescription: get(this.props, "schema.badgeDescription"),
+            default: schema.default || this.props.default,
+            const: schema.const || this.props.const,
+            badge: schema.badge,
+            badgeDescription: schema.badgeDescription,
             invalidMessage: this.props.invalidMessage,
             displayValidationBrowserDefault: this.props.displayValidationBrowserDefault,
             displayValidationInline: this.props.displayValidationInline,
-            schema: this.props.schema,
+            onUpdateSection: this.props.onUpdateSection,
             softRemove: this.props.softRemove,
         };
     }

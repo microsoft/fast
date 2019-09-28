@@ -2,12 +2,14 @@ import AbstractControlTemplate from "./template.control.utilities";
 import StandardControlTemplate from "./template.control.standard";
 import { StandardControlPlugin } from "./plugin.control.standard";
 import SingleLineControlTemplate from "./template.control.single-line";
+import { SingleLineControlPlugin } from "./plugin.control.single-line";
 
 export {
     AbstractControlTemplate,
     StandardControlTemplate,
     StandardControlPlugin,
     SingleLineControlTemplate,
+    SingleLineControlPlugin,
 };
 
 export * from "./template.control.utilities.props";

@@ -1,124 +1,70 @@
 import React from "react";
-import { get } from "lodash-es";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 import styles from "./control.select.style";
-import {
-    SelectFormControlClassNameContract,
-    SelectFormControlProps,
-} from "./control.select.props";
-import BaseFormControl from "./template.control.abstract";
+import { SelectControlProps } from "./control.select.props";
+import { SelectControlClassNameContract } from "./control.select.style";
+import { classNames } from "@microsoft/fast-web-utilities";
 
 /**
- * Schema form component definition
- * @extends React.Component
+ * Form control definition
  */
 /* tslint:disable-next-line */
-class SelectFormControl extends BaseFormControl<
-    SelectFormControlProps & ManagedClasses<SelectFormControlClassNameContract>,
+class SelectControl extends React.Component<
+    SelectControlProps & ManagedClasses<SelectControlClassNameContract>,
     {}
 > {
-    public static displayName: string = "SelectFormControl";
+    public static displayName: string = "SelectControl";
+
+    public static defaultProps: Partial<
+        SelectControlProps & ManagedClasses<SelectControlClassNameContract>
+    > = {
+        managedClasses: {},
+    };
 
     /**
      * Renders the component
      */
-    public render(): JSX.Element {
-        const value: any =
-            typeof this.props.data !== "undefined"
-                ? this.props.data
-                : this.props.default || "";
+    public render(): React.ReactNode {
+        const {
+            selectControl,
+            selectControl__disabled,
+            selectControl_input,
+        }: SelectControlClassNameContract = this.props.managedClasses;
 
         return (
-            <div className={this.generateClassNames()}>
-                <div
-                    className={this.props.managedClasses.selectFormControl_controlRegion}
+            <span
+                className={classNames(selectControl, [
+                    selectControl__disabled,
+                    this.props.disabled,
+                ])}
+            >
+                <select
+                    className={selectControl_input}
+                    onChange={this.handleChange()}
+                    value={this.getValue()}
+                    disabled={this.props.disabled}
+                    ref={this.props.elementRef as React.Ref<HTMLSelectElement>}
+                    onBlur={this.props.updateValidity}
+                    onFocus={this.props.reportValidity}
                 >
-                    <div className={this.props.managedClasses.selectFormControl_control}>
-                        <div
-                            className={get(
-                                this.props,
-                                "managedClasses.selectFormControl_controlLabelRegion"
-                            )}
-                        >
-                            <label
-                                className={
-                                    this.props.managedClasses
-                                        .selectFormControl_controlLabel
-                                }
-                            >
-                                {this.props.label}
-                            </label>
-                            {this.renderDefaultValueIndicator(
-                                get(
-                                    this.props,
-                                    "managedClasses.selectFormControl_defaultValueIndicator"
-                                )
-                            )}
-                            {this.renderBadge(
-                                get(this.props, "managedClasses.selectFormControl_badge")
-                            )}
-                        </div>
-                        <span className={this.generateControlSpanClassNames()}>
-                            <select
-                                className={
-                                    this.props.managedClasses
-                                        .selectFormControl_controlInput
-                                }
-                                onChange={this.handleChange}
-                                value={JSON.stringify(value)}
-                                disabled={this.props.disabled}
-                                ref={this.selectRef}
-                                onBlur={this.updateValidity}
-                                onFocus={this.reportValidity}
-                            >
-                                {this.renderOptions()}
-                            </select>
-                        </span>
-                    </div>
-                    <div
-                        className={this.props.managedClasses.selectFormControl_softRemove}
-                    >
-                        {this.renderSoftRemove(
-                            this.props.managedClasses.selectFormControl_softRemoveInput
-                        )}
-                    </div>
-                </div>
-                {this.renderInvalidMessage(
-                    get(this.props, "managedClasses.selectFormControl_invalidMessage")
-                )}
-            </div>
+                    {this.renderOptions()}
+                </select>
+            </span>
         );
     }
 
-    /**
-     * Generates class names
-     */
-    protected generateControlSpanClassNames(): string {
-        return get(this.props, "managedClasses.selectFormControl_controlSpan");
-    }
-
-    private generateClassNames(): string {
-        let classes: string = get(this.props, "managedClasses.selectFormControl");
-
-        if (this.props.disabled) {
-            classes += ` ${get(
-                this.props,
-                "managedClasses.selectFormControl__disabled"
-            )}`;
-        }
-
-        return classes;
-    }
-
-    /**
-     * Handles the onChange of the select element
-     */
-    private handleChange = (event: React.FormEvent<HTMLSelectElement>): void => {
-        this.props.onChange(
-            this.props.dataLocation,
-            this.parse((event.target as HTMLSelectElement).value)
-        );
+    private handleChange = (): ((e: React.ChangeEvent<HTMLSelectElement>) => void) => {
+        return (e: React.ChangeEvent<HTMLSelectElement>): void => {
+            const value: any = this.props.options.find(
+                (option: any): any => {
+                    return typeof option === "string"
+                        ? option === e.target.value
+                        : JSON.stringify(option) === e.target.value;
+                }
+            );
+            this.props.onChange({ value });
+        };
     };
 
     /**
@@ -132,33 +78,29 @@ class SelectFormControl extends BaseFormControl<
         }
     }
 
-    /**
-     * Parse the select value
-     */
-    private parse(value: string): any {
-        try {
-            return JSON.parse(value);
-        } catch (e) {
-            return value;
-        }
+    private getValue(): any {
+        return typeof this.props.value !== "undefined"
+            ? this.props.value
+            : typeof this.props.default !== "undefined"
+                ? this.props.default
+                : void 0;
     }
 
     /**
      * Renders the selects option elements
      */
-    private renderOptions(): JSX.Element[] {
+    private renderOptions(): React.ReactNode {
         return this.props.options.map((item: any, index: number) => {
-            const stringifiedItem: string = this.stringify(item);
             return (
-                <option key={index} value={stringifiedItem}>
+                <option key={index} value={item}>
                     {typeof item === "string" || typeof item === "number"
                         ? item
-                        : stringifiedItem}
+                        : this.stringify(item)}
                 </option>
             );
         });
     }
 }
 
-export { SelectFormControl };
-export default manageJss(styles)(SelectFormControl);
+export { SelectControl };
+export default manageJss(styles)(SelectControl);
