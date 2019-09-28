@@ -43,7 +43,7 @@ describe("Form", () => {
 
         expect(form.state("navigation")).toHaveLength(1);
 
-        form.find("SectionLinkFormControl")
+        form.find("SectionLinkControl")
             .at(0)
             .find("a")
             .simulate("click");
@@ -69,7 +69,7 @@ describe("Form", () => {
 
         expect(form.state("navigation")).toHaveLength(1);
 
-        form.find("SectionLinkFormControl")
+        form.find("SectionLinkControl")
             .at(0)
             .find("a")
             .simulate("click");
@@ -92,7 +92,7 @@ describe("Form", () => {
 
         expect(form.state("navigation")).toHaveLength(1);
 
-        form.find("ArrayFormControl")
+        form.find("ArrayControl")
             .at(0)
             .find("a")
             .at(0)
@@ -119,7 +119,7 @@ describe("Form", () => {
 
         expect(form.state("navigation")).toHaveLength(1);
 
-        form.find("ArrayFormControl")
+        form.find("ArrayControl")
             .at(0)
             .find("a")
             .at(0)
@@ -143,7 +143,7 @@ describe("Form", () => {
 
         expect(form.state("navigation")).toHaveLength(1);
 
-        form.find("ChildrenFormControl")
+        form.find("ChildrenControl")
             .at(0)
             .find("a")
             .at(0)
@@ -170,7 +170,7 @@ describe("Form", () => {
 
         expect(form.state("navigation")).toHaveLength(1);
 
-        form.find("ChildrenFormControl")
+        form.find("ChildrenControl")
             .at(0)
             .find("a")
             .at(0)
@@ -194,7 +194,7 @@ describe("Form", () => {
 
         expect(form.state("navigation")).toHaveLength(1);
 
-        form.find("SectionLinkFormControl")
+        form.find("SectionLinkControl")
             .at(0)
             .find("a")
             .simulate("click");
@@ -398,12 +398,12 @@ describe("Form", () => {
             />
         );
 
-        expect(rendered.find("SelectFormControl")).toHaveLength(2);
+        expect(rendered.find("SelectControl")).toHaveLength(2);
 
         rendered.setProps({ data: { pluginModifiedNumber: 2 } });
         rendered.update();
 
-        expect(rendered.find("SelectFormControl")).toHaveLength(1);
+        expect(rendered.find("SelectControl")).toHaveLength(1);
     });
     test("should show an updated schema form item if the schema has been changed by plugins and `onSchemaChange` has not been provided", () => {
         const plugins: any = [
@@ -420,11 +420,11 @@ describe("Form", () => {
             />
         );
 
-        expect(rendered.find("SelectFormControl")).toHaveLength(2);
+        expect(rendered.find("SelectControl")).toHaveLength(2);
 
         rendered.setProps({ data: { pluginModifiedNumber: 2 } });
         rendered.update();
 
-        expect(rendered.find("SelectFormControl")).toHaveLength(1);
+        expect(rendered.find("SelectControl")).toHaveLength(1);
     });
 });

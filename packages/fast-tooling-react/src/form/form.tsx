@@ -23,6 +23,9 @@ import styles from "./form.style";
 import { mapPluginsToSchema } from "./utilities";
 import Navigation, { NavigationItem } from "./utilities/navigation";
 import { BreadcrumbItem, getBreadcrumbs } from "./utilities/breadcrumb";
+import { DragDropContext } from "react-dnd";
+import HTML5Backend from "react-dnd-html5-backend";
+import { OnChangeConfig, UpdateSectionConfig } from "./templates";
 
 /**
  * Schema form component definition
@@ -354,7 +357,7 @@ class Form extends React.Component<
                     currentSchema
                 )}
                 onChange={this.handleOnChange}
-                onUpdateActiveSection={this.handleUpdateActiveSection}
+                onUpdateSection={this.handleUpdateActiveSection}
                 data={this.getData("data", "props")}
                 schemaLocation={lastNavigationItem.schemaLocation}
                 default={lastNavigationItem.default}
@@ -378,46 +381,39 @@ class Form extends React.Component<
         return (e: React.MouseEvent): void => {
             e.preventDefault();
 
-            this.handleUpdateActiveSection(schemaLocation, dataLocation, schema);
+            this.handleUpdateActiveSection({ schemaLocation, dataLocation, schema });
         };
     };
 
-    private handleOnChange = (
-        location: string,
-        data: any,
-        isArray: boolean,
-        index: number,
-        isChildren?: boolean
-    ): void => {
+    private handleOnChange = (config: OnChangeConfig): void => {
         let obj: any = cloneDeep(this.props.data);
-        const currentData: any = location === "" ? obj : get(obj, location);
+        const currentData: any =
+            config.dataLocation === "" ? obj : get(obj, config.dataLocation);
 
-        if (isArray) {
+        if (config.isArray) {
             let newArray: any[];
 
-            if (typeof index !== "undefined") {
+            if (typeof config.index !== "undefined") {
                 newArray = currentData.filter((item: any, itemIndex: number) => {
-                    return itemIndex !== index;
+                    return itemIndex !== config.index;
                 });
             } else {
                 newArray = currentData;
-                newArray.push(data);
+                newArray.push(config.value);
             }
 
-            location === "" ? (obj = newArray) : set(obj, location, newArray);
+            config.dataLocation === ""
+                ? (obj = newArray)
+                : set(obj, config.dataLocation, newArray);
         } else {
-            if (typeof data === "undefined") {
-                location === "" ? (obj = void 0) : unset(obj, location);
+            if (typeof config.value === "undefined") {
+                config.dataLocation === ""
+                    ? (obj = void 0)
+                    : unset(obj, config.dataLocation);
             } else {
-                location === "" ? (obj = data) : set(obj, location, data);
-            }
-        }
-
-        if (isChildren) {
-            const children: ChildComponent | ChildComponent[] = get(obj, location);
-
-            if (Array.isArray(children) && children.length === 1) {
-                set(obj, location, children[0]);
+                config.dataLocation === ""
+                    ? (obj = config.value)
+                    : set(obj, config.dataLocation, config.value);
             }
         }
 
@@ -434,22 +430,18 @@ class Form extends React.Component<
     /**
      * Handles an update to the active section and component
      */
-    private handleUpdateActiveSection = (
-        schemaLocation: string,
-        dataLocation: string,
-        schema: any
-    ): void => {
+    private handleUpdateActiveSection = (config: UpdateSectionConfig): void => {
         if (this.props.location && this.props.location.onChange) {
-            this.props.location.onChange(dataLocation);
+            this.props.location.onChange(config.dataLocation);
         } else {
             const state: Partial<FormState> = getActiveComponentAndSection(
-                schemaLocation,
-                dataLocation,
-                schema
+                config.schemaLocation,
+                config.dataLocation,
+                config.schema
             );
 
             this.navigation.updateDataLocation(
-                dataLocation,
+                config.dataLocation,
                 (updatedNavigation: NavigationItem[]) => {
                     state.navigation = updatedNavigation;
                 }
@@ -461,4 +453,4 @@ class Form extends React.Component<
 }
 
 export { FormChildOptionItem, FormClassNameContract };
-export default manageJss(styles)(Form);
+export default DragDropContext(HTML5Backend)(manageJss(styles)(Form));

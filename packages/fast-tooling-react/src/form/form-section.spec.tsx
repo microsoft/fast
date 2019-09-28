@@ -17,7 +17,7 @@ const formSectionProps: FormSectionProps = {
     data: "",
     untitled: "",
     onChange: jest.fn(),
-    onUpdateActiveSection: jest.fn(),
+    onUpdateSection: jest.fn(),
     validationErrors: null,
     default: {},
 };

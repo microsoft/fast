@@ -16,7 +16,7 @@ import oneOfSchema from "../__tests__/schemas/one-of.schema.json";
  */
 configure({ adapter: new Adapter() });
 
-const formControlProps: FormControlSwitchProps = {
+const formControlSwitchProps: FormControlSwitchProps = {
     index: 0,
     propertyName: "",
     label: "Label",
@@ -27,21 +27,21 @@ const formControlProps: FormControlSwitchProps = {
     schemaLocation: "",
     dataLocation: "",
     childOptions: [],
-    onUpdateActiveSection: null,
+    onUpdateSection: null,
     onChange: null,
     invalidMessage: "",
 };
 
-describe("FormControl", () => {
+describe("FormControlSwitch", () => {
     test("should not throw", () => {
         expect(() => {
-            mount(<FormControlSwitch {...formControlProps} />);
+            mount(<FormControlSwitch {...formControlSwitchProps} />);
         }).not.toThrow();
     });
     test("should render a number field when a number type is available", () => {
         const rendered: any = mount(
             <FormControlSwitch
-                {...formControlProps}
+                {...formControlSwitchProps}
                 schema={numberFieldSchema.properties.quantity}
                 schemaLocation={"properties.quantity"}
                 dataLocation={"quantity"}
@@ -50,12 +50,12 @@ describe("FormControl", () => {
             />
         );
 
-        expect(rendered.find("NumberFieldFormControl")).toHaveLength(1);
+        expect(rendered.find("NumberFieldControl")).toHaveLength(1);
     });
     test("should render a textarea when a string type is available", () => {
         const rendered: any = mount(
             <FormControlSwitch
-                {...formControlProps}
+                {...formControlSwitchProps}
                 schema={textareaSchema.properties.textWithDefault}
                 schemaLocation={"properties.text"}
                 dataLocation={"text"}
@@ -64,12 +64,12 @@ describe("FormControl", () => {
             />
         );
 
-        expect(rendered.find("TextareaFormControl")).toHaveLength(1);
+        expect(rendered.find("TextareaControl")).toHaveLength(1);
     });
     test("should render a checkbox when a boolean type is available", () => {
         const rendered: any = mount(
             <FormControlSwitch
-                {...formControlProps}
+                {...formControlSwitchProps}
                 schema={checkboxSchema.properties.toggle}
                 schemaLocation={"properties.toggle"}
                 dataLocation={"toggle"}
@@ -78,12 +78,12 @@ describe("FormControl", () => {
             />
         );
 
-        expect(rendered.find("CheckboxFormControl")).toHaveLength(1);
+        expect(rendered.find("CheckboxControl")).toHaveLength(1);
     });
     test("should render a link when an object type is available", () => {
         const rendered: any = mount(
             <FormControlSwitch
-                {...formControlProps}
+                {...formControlSwitchProps}
                 schema={objectSchema.properties.objectNoRequired}
                 schemaLocation={"properties.objectNoRequired"}
                 dataLocation={"objectNoRequired"}
@@ -92,12 +92,12 @@ describe("FormControl", () => {
             />
         );
 
-        expect(rendered.find("SectionLinkFormControl")).toHaveLength(1);
+        expect(rendered.find("SectionLinkControl")).toHaveLength(1);
     });
     test("should render the array UI when an array type is available", () => {
         const rendered: any = mount(
             <FormControlSwitch
-                {...formControlProps}
+                {...formControlSwitchProps}
                 schema={arraySchema.properties.strings}
                 schemaLocation={"properties.strings"}
                 dataLocation={"strings"}
@@ -106,12 +106,12 @@ describe("FormControl", () => {
             />
         );
 
-        expect(rendered.find("ArrayFormControl")).toHaveLength(1);
+        expect(rendered.find("ArrayControl")).toHaveLength(1);
     });
     test("should render the children UI when a children type is available", () => {
         const rendered: any = mount(
             <FormControlSwitch
-                {...formControlProps}
+                {...formControlSwitchProps}
                 schema={childrenSchema.reactProperties.children}
                 schemaLocation={"reactProperties.children"}
                 dataLocation={"children"}
@@ -120,12 +120,12 @@ describe("FormControl", () => {
             />
         );
 
-        expect(rendered.find("ChildrenFormControl")).toHaveLength(1);
+        expect(rendered.find("ChildrenControl")).toHaveLength(1);
     });
     test("should render a select when enums are available", () => {
         const rendered: any = mount(
             <FormControlSwitch
-                {...formControlProps}
+                {...formControlSwitchProps}
                 schema={textareaSchema.properties.tag}
                 schemaLocation={"properties.tag"}
                 dataLocation={"tag"}
@@ -134,12 +134,12 @@ describe("FormControl", () => {
             />
         );
 
-        expect(rendered.find("SelectFormControl")).toHaveLength(1);
+        expect(rendered.find("SelectControl")).toHaveLength(1);
     });
     test("should restrict the child options if ids have been passed", () => {
         const renderedWithDefault: any = mount(
             <FormControlSwitch
-                {...formControlProps}
+                {...formControlSwitchProps}
                 childOptions={[
                     {
                         component: null,
@@ -164,7 +164,7 @@ describe("FormControl", () => {
 
         const renderedWithoutDefaultAndIds: any = mount(
             <FormControlSwitch
-                {...formControlProps}
+                {...formControlSwitchProps}
                 childOptions={[
                     {
                         component: null,
@@ -191,7 +191,7 @@ describe("FormControl", () => {
 
         const renderedWithDefaultAndIds: any = mount(
             <FormControlSwitch
-                {...formControlProps}
+                {...formControlSwitchProps}
                 childOptions={[
                     {
                         component: null,

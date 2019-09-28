@@ -1,9 +1,9 @@
 import {
-    DataOnChange,
     FormOrderByPropertyNamesCategories,
     FormOrderByPropertyNamesProperties,
     FormOrderByPropertyNamesProps,
 } from "./form.props";
+import { OnChangeConfig, UpdateSectionConfig } from "./templates";
 import { ErrorObject } from "ajv";
 
 /**
@@ -45,12 +45,6 @@ export interface OneOfAnyOf {
      */
     activeIndex: number;
 }
-
-export type updateActiveSection = (
-    schemaLocation: string,
-    dataLocation: string,
-    schema?: any
-) => void;
 
 export type AddExampleData = (
     propertyLocation: string,
@@ -94,12 +88,12 @@ export interface FormSectionProps {
     /**
      * The onChange event to trigger a data update
      */
-    onChange: DataOnChange;
+    onChange: (config: OnChangeConfig) => void;
 
     /**
      * The update event to trigger a new active section and/or component
      */
-    onUpdateActiveSection: updateActiveSection;
+    onUpdateSection: (config: UpdateSectionConfig) => void;
 
     /**
      * The string to be used if a prop is untitled
