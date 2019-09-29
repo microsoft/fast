@@ -164,7 +164,7 @@ export interface DesignSystem {
     /**
      * The luminance value to base layer recipes on.
      * Sets the luminance value for the L1 layer recipe in a manner that can adjust to variable contrast.
-     * 
+     *
      * Currently defaults to -1 to turn the feature off and use backgroundColor for layer colors instead.
      */
     baseLayerLuminance: number; // 0...1

@@ -47,10 +47,15 @@ export enum StandardLuminance {
     DarkMode = 0.23,
 }
 
-function luminanceOrBackgroundColor(luminanceRecipe: DesignSystemResolver<string>, backgroundRecipe: DesignSystemResolver<string>): DesignSystemResolver<string> {
+function luminanceOrBackgroundColor(
+    luminanceRecipe: DesignSystemResolver<string>,
+    backgroundRecipe: DesignSystemResolver<string>
+): DesignSystemResolver<string> {
     return (designSystem: DesignSystem): string => {
-        return baseLayerLuminance(designSystem) === -1 ? backgroundRecipe(designSystem) : luminanceRecipe(designSystem);
-    }
+        return baseLayerLuminance(designSystem) === -1
+            ? backgroundRecipe(designSystem)
+            : luminanceRecipe(designSystem);
+    };
 }
 
 /**
@@ -166,7 +171,7 @@ export const neutralLayerCardContainer: ColorRecipe<Swatch> = colorRecipeFactory
  */
 export const neutralLayerL1: ColorRecipe<Swatch> = colorRecipeFactory(
     luminanceOrBackgroundColor(
-        getSwatch(baseLayerLuminanceIndex, neutralPalette, "L1"),
+        getSwatch(baseLayerLuminanceIndex, neutralPalette),
         swatchByMode(neutralPalette)(
             0,
             subtract(darkNeutralLayerL4, multiply(neutralFillCardDelta, 3))
@@ -212,7 +217,10 @@ export const neutralLayerL3: ColorRecipe<Swatch> = colorRecipeFactory(
  */
 export const neutralLayerL4: ColorRecipe<Swatch> = colorRecipeFactory(
     luminanceOrBackgroundColor(
-        getSwatch(add(neutralLayerL2Index, multiply(neutralFillCardDelta, 2)), neutralPalette),
+        getSwatch(
+            add(neutralLayerL2Index, multiply(neutralFillCardDelta, 2)),
+            neutralPalette
+        ),
         swatchByMode(neutralPalette)(
             add(lightNeutralLayerL2, multiply(neutralFillCardDelta, 2)),
             darkNeutralLayerL4

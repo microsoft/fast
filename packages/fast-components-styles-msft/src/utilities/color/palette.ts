@@ -162,12 +162,12 @@ export function isLightMode(designSystem: DesignSystem): boolean {
  * Safely retrieves an index of a palette. The index is clamped to valid
  * array indexes so that a swatch is always returned
  */
-export function getSwatch(index: number, colorPalette: Palette, label?: string): Swatch;
+export function getSwatch(index: number, colorPalette: Palette): Swatch;
 export function getSwatch(
     index: DesignSystemResolver<number>,
-    colorPalette: DesignSystemResolver<Palette>, label?: string
+    colorPalette: DesignSystemResolver<Palette>
 ): DesignSystemResolver<Swatch>;
-export function getSwatch(index: any, colorPalette: any, label: string = ""): any {
+export function getSwatch(index: any, colorPalette: any): any {
     if (typeof index === "function") {
         return (designSystem: DesignSystem): Swatch => {
             return colorPalette(designSystem)[
