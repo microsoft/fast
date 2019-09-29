@@ -201,6 +201,9 @@ export const neutralFillToggleFocusDelta: DesignSystemResolver<
     number
 > = getDesignSystemValue("neutralFillToggleFocusDelta");
 
+export const baseLayerLuminance: DesignSystemResolver<number> = getDesignSystemValue(
+    "baseLayerLuminance"
+);
 export const neutralFillCardDelta: DesignSystemResolver<number> = getDesignSystemValue(
     "neutralFillCardDelta"
 );

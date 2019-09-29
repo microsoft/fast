@@ -30,18 +30,17 @@ class Preview extends Foundation<{}, {}, PreviewState> {
 
     public render(): React.ReactNode {
         return (
-            <Background
-                className={get(this.props, "managedClasses.preview")}
-                value={this.state.backgroundColor}
-                dir={this.state.direction}
-            >
-                <DesignSystemProvider designSystem={this.state}>
+            <DesignSystemProvider designSystem={this.state}>
+                <Background
+                    className={get(this.props, "managedClasses.preview")}
+                    dir={this.state.direction}
+                >
                     <ViewerContent
                         components={childOptions}
                         plugins={initializedPlugins}
                     />
-                </DesignSystemProvider>
-            </Background>
+                </Background>
+            </DesignSystemProvider>
         );
     }
 

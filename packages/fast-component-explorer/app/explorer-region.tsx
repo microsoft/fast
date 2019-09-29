@@ -7,6 +7,7 @@ import {
     DesignSystemDefaults,
 } from "@microsoft/fast-components-styles-msft";
 import Explorer from "./explorer";
+import { StandardLuminance } from "@microsoft/fast-components-styles-msft/dist/utilities/color/neutral-layer";
 
 const accent: string = "#FB356D";
 const accentPaletteSource: ColorRGBA64 | null = parseColor(accent);
@@ -18,10 +19,7 @@ if (accentPaletteSource !== null) {
         density: -2,
         accentBaseColor: accent,
         accentPalette: palette,
-        backgroundColor:
-            DesignSystemDefaults.neutralPalette[
-                DesignSystemDefaults.neutralPalette.length - 1
-            ],
+        baseLayerLuminance: StandardLuminance.DarkMode,
     });
 }
 

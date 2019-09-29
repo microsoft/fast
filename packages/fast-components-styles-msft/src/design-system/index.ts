@@ -162,6 +162,14 @@ export interface DesignSystem {
     neutralFillToggleFocusDelta: number;
 
     /**
+     * The luminance value to base layer recipes on.
+     * Sets the luminance value for the L1 layer recipe in a manner that can adjust to variable contrast.
+     * 
+     * Currently defaults to -1 to turn the feature off and use backgroundColor for layer colors instead.
+     */
+    baseLayerLuminance: number; // 0...1
+
+    /**
      * Color swatch deltas for the neutral-fill-card recipe.
      */
     neutralFillCardDelta: number;
@@ -250,6 +258,7 @@ const designSystemDefaults: DesignSystem = {
     neutralFillToggleActiveDelta: -5,
     neutralFillToggleFocusDelta: 0,
 
+    baseLayerLuminance: -1,
     neutralFillCardDelta: 3,
 
     neutralForegroundDarkIndex: 93,
