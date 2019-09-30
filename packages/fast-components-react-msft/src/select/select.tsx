@@ -30,7 +30,7 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, {}> {
                 managedClasses={this.props.managedClasses}
                 disabled={this.props.disabled}
                 menu={
-                    typeof this.props.menu === 'function'
+                    typeof this.props.menu === "function"
                         ? this.props.menu
                         : this.defaultMenuRenderFunction
                 }
@@ -84,12 +84,8 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, {}> {
         state: SelectState,
         defaultMenu: React.ReactNode
     ): React.ReactNode => {
-        return (
-            <Background value={neutralLayerFloating}>
-                {defaultMenu}
-            </Background>
-        );
-    }
+        return <Background value={neutralLayerFloating}>{defaultMenu}</Background>;
+    };
 
     /**
      * Gets the dropdown glyph
