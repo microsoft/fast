@@ -91,10 +91,7 @@ class Listbox extends Foundation<
         childrenAsArray: React.ReactNode[]
     ): React.ReactNode[] => {
         return childrenAsArray.filter((itemNode: React.ReactNode) => {
-            if (Listbox.isValidSelectedItem(itemNode as React.ReactElement<any>)) {
-                return true;
-            }
-            return false;
+            return Listbox.isValidSelectedItem(itemNode as React.ReactElement<any>);
         });
     };
 
