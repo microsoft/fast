@@ -1,13 +1,13 @@
 import React from "react";
-import AbstractControlPlugin, {
-    AbstractControlPluginProps,
-} from "./plugin.control.abstract";
+import ControlPluginUtilities, {
+    ControlPluginUtilitiesProps,
+} from "./plugin.control.utilities";
 import SingleLineControlTemplate from "./template.control.single-line";
 
 /* tslint:disable */
-export interface SingleLineControlPluginProps extends AbstractControlPluginProps {}
+export interface SingleLineControlPluginProps extends ControlPluginUtilitiesProps {}
 
-export class SingleLineControlPlugin extends AbstractControlPlugin<
+export class SingleLineControlPlugin extends ControlPluginUtilities<
     SingleLineControlPluginProps
 > {
     public render(): React.ReactNode {

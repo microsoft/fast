@@ -1,11 +1,11 @@
 import React from "react";
-import AbstractControlPlugin, {
-    AbstractControlPluginProps,
-} from "./plugin.control.abstract";
+import ControlPluginUtilities, {
+    ControlPluginUtilitiesProps,
+} from "./plugin.control.utilities";
 import StandardControlTemplate from "./template.control.standard";
 import { ControlContext } from "./template.control.standard.props";
 
-export interface StandardControlPluginProps extends AbstractControlPluginProps {
+export interface StandardControlPluginProps extends ControlPluginUtilitiesProps {
     /**
      * The context of the control, used for affecting
      * positioning and layout
@@ -13,7 +13,7 @@ export interface StandardControlPluginProps extends AbstractControlPluginProps {
     context?: ControlContext;
 }
 
-export class StandardControlPlugin extends AbstractControlPlugin<
+export class StandardControlPlugin extends ControlPluginUtilities<
     StandardControlPluginProps
 > {
     public render(): React.ReactNode {

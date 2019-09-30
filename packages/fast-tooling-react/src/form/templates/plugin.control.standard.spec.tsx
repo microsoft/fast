@@ -2,7 +2,7 @@ import React from "react";
 import Adapter from "enzyme-adapter-react-16";
 import { configure, mount, shallow } from "enzyme";
 import { StandardControlPlugin } from "./";
-import { ControlConfig } from "./template.control.abstract.props";
+import { ControlConfig } from "./template.control.utilities.props";
 
 /*
  * Configure Enzyme
@@ -35,7 +35,7 @@ describe("StandardControlPlugin", () => {
                 return (
                     <input
                         className={className}
-                        onChange={config.onChange}
+                        onChange={jest.fn()}
                         type={"number"}
                         onFocus={config.reportValidity}
                         onBlur={config.updateValidity}

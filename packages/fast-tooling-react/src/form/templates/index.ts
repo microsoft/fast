@@ -1,4 +1,4 @@
-import AbstractControlTemplate from "./template.control.abstract";
+import AbstractControlTemplate from "./template.control.utilities";
 import StandardControlTemplate from "./template.control.standard";
 import { StandardControlPlugin } from "./plugin.control.standard";
 import SingleLineControlTemplate from "./template.control.single-line";
@@ -10,7 +10,7 @@ export {
     SingleLineControlTemplate,
 };
 
-export * from "./template.control.abstract.props";
+export * from "./template.control.utilities.props";
 export * from "./template.control.single-line.props";
 export * from "./template.control.single-line.style";
 export * from "./template.control.standard.props";

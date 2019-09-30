@@ -1,6 +1,6 @@
 import React from "react";
 import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
-import AbstractControlTemplate from "./template.control.abstract";
+import ControlTemplateUtilities from "./template.control.utilities";
 import style, {
     SingleLineControlTemplateClassNameContract,
 } from "./template.control.single-line.style";
@@ -11,7 +11,7 @@ import { classNames } from "@microsoft/fast-web-utilities";
 /**
  * Control template definition
  */
-class SingleLineControlTemplate extends AbstractControlTemplate<
+class SingleLineControlTemplate extends ControlTemplateUtilities<
     SingleLineControlTemplateProps &
         ManagedClasses<SingleLineControlTemplateClassNameContract>,
     {}

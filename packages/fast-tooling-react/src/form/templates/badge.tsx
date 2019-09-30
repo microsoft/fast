@@ -1,6 +1,6 @@
 import React from "react";
 import { BadgeProps } from "./badge.props";
-import { BadgeType } from "./template.control.abstract.props";
+import { BadgeType } from "./template.control.utilities.props";
 
 export default class Badge extends React.Component<BadgeProps, {}> {
     public render(): React.ReactNode {

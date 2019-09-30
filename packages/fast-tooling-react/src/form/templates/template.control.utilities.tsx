@@ -1,20 +1,21 @@
 import React from "react";
-import { get } from "lodash-es";
 import Badge from "./badge";
 import DefaultValue from "./default-value";
 import ConstValue from "./const-value";
 import SoftRemove from "./soft-remove";
 import {
-    AbstractControlTemplateProps,
     ControlConfig,
-} from "./template.control.abstract.props";
-import { FormHTMLElement } from "./template.control.abstract.props";
+    ControlTemplateUtilitiesProps,
+    OnChangeConfig,
+} from "./template.control.utilities.props";
+import { FormHTMLElement } from "./template.control.utilities.props";
 
 /**
- * Abstract control template definition
+ * Control template definition
+ * This should be extended to create custom templates
  */
-abstract class AbstractControlTemplate<P, S> extends React.Component<
-    P & AbstractControlTemplateProps,
+abstract class ControlTemplateUtilities<P, S> extends React.Component<
+    P & ControlTemplateUtilitiesProps,
     S
 > {
     public ref: React.RefObject<FormHTMLElement> = React.createRef<FormHTMLElement>();
@@ -25,7 +26,7 @@ abstract class AbstractControlTemplate<P, S> extends React.Component<
         this.updateValidity();
     }
 
-    public componentDidUpdate(prevProps: P & AbstractControlTemplateProps): void {
+    public componentDidUpdate(prevProps: P & ControlTemplateUtilitiesProps): void {
         if (prevProps.invalidMessage !== this.props.invalidMessage) {
             this.updateValidity();
         }
@@ -82,25 +83,42 @@ abstract class AbstractControlTemplate<P, S> extends React.Component<
         }
     }
 
-    public handleChange = (value: any, isArray?: boolean, index?: number): any => {
-        return this.props.onChange(this.props.dataLocation, value, isArray, index);
+    public handleChange = (config: OnChangeConfig): any => {
+        return this.props.onChange({
+            dataLocation: this.props.dataLocation,
+            value: config.value,
+            isArray: config.isArray,
+            index: config.index,
+        });
     };
 
     public handleSetDefaultValue = (): void => {
-        this.props.onChange(this.props.dataLocation, this.props.default);
+        this.props.onChange({
+            dataLocation: this.props.dataLocation,
+            value: this.props.default,
+        });
     };
 
     public handleSetConstValue = (): void => {
-        this.props.onChange(this.props.dataLocation, this.props.const);
+        this.props.onChange({
+            dataLocation: this.props.dataLocation,
+            value: this.props.const,
+        });
     };
 
     public handleSoftRemove = (): void => {
         if (typeof this.props.data !== "undefined") {
             this.cache = this.props.data;
 
-            return this.props.onChange(this.props.dataLocation, undefined);
+            return this.props.onChange({
+                dataLocation: this.props.dataLocation,
+                value: undefined,
+            });
         } else {
-            return this.props.onChange(this.props.dataLocation, this.cache);
+            return this.props.onChange({
+                dataLocation: this.props.dataLocation,
+                value: this.cache,
+            });
         }
     };
 
@@ -117,7 +135,7 @@ abstract class AbstractControlTemplate<P, S> extends React.Component<
      * updates the validity
      */
     public updateValidity = (): void => {
-        const formControlElement: HTMLElement = get(this, "ref.current");
+        const formControlElement: HTMLElement = this.ref.current;
 
         if (formControlElement !== null && typeof formControlElement !== "undefined") {
             this.ref.current.setCustomValidity(this.props.invalidMessage);
@@ -166,8 +184,11 @@ abstract class AbstractControlTemplate<P, S> extends React.Component<
      * Explicitly updates the default value as the value
      */
     public handleUpdateValueToDefaultValue = (): void => {
-        this.props.onChange(this.props.dataLocation, this.props.default);
+        this.props.onChange({
+            dataLocation: this.props.dataLocation,
+            value: this.props.default,
+        });
     };
 }
 
-export default AbstractControlTemplate;
+export default ControlTemplateUtilities;

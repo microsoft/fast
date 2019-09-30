@@ -1,9 +1,9 @@
 import {
-    AbstractControlTemplateProps,
     ControlConfig,
-} from "./template.control.abstract.props";
+    ControlTemplateUtilitiesProps,
+} from "./template.control.utilities.props";
 
-export interface SingleLineControlTemplateProps extends AbstractControlTemplateProps {
+export interface SingleLineControlTemplateProps extends ControlTemplateUtilitiesProps {
     /**
      * This is the control interface that selects
      * the value to be updated in the UI

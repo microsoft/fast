@@ -116,7 +116,7 @@ describe("StandardControlTemplate", () => {
             .simulate("change");
 
         expect(handleChange).toHaveBeenCalledTimes(2);
-        expect(handleChange.mock.calls[1][1]).toBe(data);
+        expect(handleChange.mock.calls[1][0].value).toBe(data);
     });
     test("should have an invalid message element if an invalid message is passed", () => {
         const invalidMessage: string = "Foo";
@@ -246,7 +246,7 @@ describe("StandardControlTemplate", () => {
             .simulate("click");
 
         expect(callback).toHaveBeenCalledTimes(1);
-        expect(callback.mock.calls[0][0]).toEqual("");
-        expect(callback.mock.calls[0][1]).toEqual(defaultValue);
+        expect(callback.mock.calls[0][0].dataLocation).toEqual("");
+        expect(callback.mock.calls[0][0].value).toEqual(defaultValue);
     });
 });

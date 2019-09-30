@@ -1,8 +1,8 @@
 import React from "react";
 import Adapter from "enzyme-adapter-react-16";
 import { configure, mount, shallow } from "enzyme";
-import AbstractControlTemplate from "./template.control.abstract";
-import { BadgeType, ControlConfig } from "./template.control.abstract.props";
+import ControlTemplateUtilities from "./template.control.utilities";
+import { BadgeType, ControlConfig } from "./template.control.utilities.props";
 
 /*
  * Configure Enzyme
@@ -10,7 +10,7 @@ import { BadgeType, ControlConfig } from "./template.control.abstract.props";
 configure({ adapter: new Adapter() });
 
 /* tslint:disable-next-line */
-class TestClass extends AbstractControlTemplate<{}, {}> {}
+class TestClass extends ControlTemplateUtilities<{}, {}> {}
 
 const config: any = {
     index: 0,
@@ -24,7 +24,7 @@ const config: any = {
     invalidMessage: "",
 };
 
-describe("AbstractControlPlugin", () => {
+describe("ControlPlugin", () => {
     test("should render a soft remove trigger if required is false and softRemove is true", () => {
         const testClass: TestClass = new TestClass({
             ...config,

@@ -2,11 +2,14 @@ import React from "react";
 import {
     ConnectDragSource,
     ConnectDropTarget,
+    DragElementWrapper,
+    DragPreviewOptions,
+    DragSourceOptions,
     DropTargetMonitor,
     useDrag,
     useDrop,
 } from "react-dnd";
-import { ArrayAction } from "./template.control.abstract.props";
+import { ArrayAction } from "./template.control.utilities.props";
 import { DragItem, DragItemProps, ItemType } from "./drag-item.props";
 
 const DragItem: React.FC<DragItemProps> = ({
@@ -24,7 +27,11 @@ const DragItem: React.FC<DragItemProps> = ({
     dragStart,
     dragEnd,
 }: React.PropsWithChildren<DragItemProps>): React.ReactElement => {
-    const drag: unknown[] = useDrag({
+    const drag: [
+        unknown,
+        DragElementWrapper<DragSourceOptions>,
+        DragElementWrapper<DragPreviewOptions>
+    ] = useDrag({
         item: {
             type: ItemType.ListItem,
             index,
@@ -38,7 +45,12 @@ const DragItem: React.FC<DragItemProps> = ({
     });
     const dragSource: ConnectDragSource = drag[1] as ConnectDragSource;
 
-    const drop: unknown[] = useDrop({
+    const drop: [
+        {
+            isOver: boolean;
+        },
+        DragElementWrapper<any>
+    ] = useDrop({
         accept: ItemType.ListItem,
         hover({ index: draggedIndex }: DragItem): void {
             moveDragItem(draggedIndex, index);
@@ -54,14 +66,6 @@ const DragItem: React.FC<DragItemProps> = ({
     });
     const dropTarget: ConnectDropTarget = drop[1] as ConnectDropTarget;
     const isOver: boolean = (drop[0] as { isOver: boolean }).isOver;
-
-    let style: React.CSSProperties = {};
-
-    if (isOver) {
-        style = {
-            opacity: 0,
-        };
-    }
 
     const renderDeleteArrayItemTrigger: (itemIndex: number) => React.ReactNode = (
         itemIndex: number
@@ -84,7 +88,7 @@ const DragItem: React.FC<DragItemProps> = ({
             ref={(node: HTMLLIElement): React.ReactElement =>
                 dragSource(dropTarget(node))
             }
-            style={style}
+            style={isOver ? { opacity: 0 } : null}
             className={itemClassName}
         >
             <a className={itemLinkClassName} onClick={onClick(index)}>

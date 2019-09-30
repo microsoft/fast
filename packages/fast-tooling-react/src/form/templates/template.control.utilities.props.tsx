@@ -12,13 +12,54 @@ export enum ArrayAction {
     remove = "remove",
 }
 
+export interface UpdateSectionConfig {
+    /**
+     * The lodash path location of the data in the schema
+     */
+    schemaLocation: string;
+
+    /**
+     * The lodash path location of the data
+     */
+    dataLocation: string;
+
+    /**
+     * The JSON schema
+     */
+    schema?: any;
+}
+
+export interface OnChangeConfig extends ControlOnChangeConfig {
+    /**
+     * The lodash path location of the data
+     */
+    dataLocation: string;
+}
+
+export interface ControlOnChangeConfig {
+    /**
+     * The new value for the supplied data location
+     */
+    value: any;
+
+    /**
+     * Whether this data is an array
+     */
+    isArray?: boolean;
+
+    /**
+     * The index if this data is an array
+     */
+    index?: number;
+}
+
 export type FormHTMLElement =
     | HTMLTextAreaElement
     | HTMLInputElement
     | HTMLSelectElement
     | HTMLButtonElement;
 
-export interface AbstractControlTemplateProps
+export interface ControlTemplateUtilitiesProps
     extends NumberTypeControlOptions,
         ListControlOptions,
         TextboxControlOptions,
@@ -64,17 +105,12 @@ export interface AbstractControlTemplateProps
     /**
      * The passed onChange function
      */
-    onChange: (
-        dataLocation: string,
-        value: any,
-        isArray?: boolean,
-        index?: number
-    ) => void;
+    onChange: (config: OnChangeConfig) => void;
 
     /**
      * The update section callback
      */
-    onUpdateSection: (schemaLocation: string, dataLocation: string, schema?: any) => void;
+    onUpdateSection: (config: UpdateSectionConfig) => void;
 
     /**
      * The default data (if available)
@@ -159,7 +195,7 @@ export interface CommonControlConfig {
     /**
      * Callback for handling the updating of the value
      */
-    onChange: (value: any, isArray?: boolean, index?: number) => void;
+    onChange: (config: ControlOnChangeConfig) => void;
 }
 
 export interface NumberTypeControlOptions {
@@ -213,11 +249,7 @@ export interface LinkControlOptions {
     /**
      * The update section callback
      */
-    onUpdateSection?: (
-        schemaLocation: string,
-        dataLocation: string,
-        schema?: any
-    ) => void;
+    onUpdateSection?: (config: UpdateSectionConfig) => void;
 }
 
 export interface ArrayControlOptions {
@@ -239,11 +271,7 @@ export interface ArrayControlOptions {
     /**
      * The update section callback
      */
-    onUpdateSection?: (
-        schemaLocation: string,
-        dataLocation: string,
-        schema?: any
-    ) => void;
+    onUpdateSection?: (config: UpdateSectionConfig) => void;
 
     /**
      * The location of the data
@@ -271,11 +299,7 @@ export interface ChildrenControlOptions {
     /**
      * The update section callback
      */
-    onUpdateSection?: (
-        schemaLocation: string,
-        dataLocation: string,
-        schema?: any
-    ) => void;
+    onUpdateSection?: (config: UpdateSectionConfig) => void;
 }
 
 export type NumberTypeControlConfig = CommonControlConfig & NumberTypeControlOptions;

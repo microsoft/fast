@@ -1,6 +1,6 @@
 import React from "react";
 import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
-import AbstractControlTemplate from "./template.control.abstract";
+import ControlTemplateUtilities from "./template.control.utilities";
 import style, {
     StandardControlTemplateClassNameContract,
 } from "./template.control.standard.style";
@@ -14,7 +14,7 @@ import { classNames } from "@microsoft/fast-web-utilities";
 /**
  * Control template definition
  */
-class StandardControlTemplate extends AbstractControlTemplate<
+class StandardControlTemplate extends ControlTemplateUtilities<
     StandardControlTemplateProps &
         ManagedClasses<StandardControlTemplateClassNameContract>,
     {}
@@ -68,26 +68,20 @@ class StandardControlTemplate extends AbstractControlTemplate<
                             )}
                             {this.renderBadge(standardControlTemplate_badge)}
                         </div>
-                        {this.renderControlInDefaultContext()}
+                        {this.renderControl(ControlContext.default)}
                     </div>
                     <div className={standardControlTemplate_softRemove}>
                         {this.renderSoftRemove(standardControlTemplate_softRemoveInput)}
                     </div>
                 </div>
-                {this.renderControlInFillContext()}
+                {this.renderControl(ControlContext.fill)}
                 {this.renderInvalidMessage(standardControlTemplate_invalidMessage)}
             </div>
         );
     }
 
-    private renderControlInDefaultContext(): React.ReactNode {
-        return this.props.context === ControlContext.default
-            ? this.props.control(this.getConfig())
-            : null;
-    }
-
-    private renderControlInFillContext(): React.ReactNode {
-        return this.props.context === ControlContext.fill
+    private renderControl(context: ControlContext): React.ReactNode {
+        return context === ControlContext.default
             ? this.props.control(this.getConfig())
             : null;
     }

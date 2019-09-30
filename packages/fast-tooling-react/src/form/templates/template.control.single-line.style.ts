@@ -39,7 +39,7 @@ const style: ComponentStyles<SingleLineControlTemplateClassNameContract, {}> = {
     },
     singleLineControlTemplate_label: {
         ...applyLabelStyle(),
-        marginLeft: "8px",
+        "margin-left": "8px",
     },
     singleLineControlTemplate_invalidMessage: {
         ...applyInvalidMessage(),
