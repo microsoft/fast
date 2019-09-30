@@ -6,11 +6,10 @@ import Foundation from "@microsoft/fast-components-foundation-react";
 const anchorElement: React.RefObject<HTMLDivElement> = React.createRef<HTMLDivElement>();
 
 interface TestViewportProps {
-    positionerProps: ViewportPositionerProps
+    positionerProps: ViewportPositionerProps;
 }
 
 class TestViewport extends React.Component<TestViewportProps, {}> {
-
     private rootElement: React.RefObject<HTMLDivElement> = React.createRef<
         HTMLDivElement
     >();
@@ -18,8 +17,7 @@ class TestViewport extends React.Component<TestViewportProps, {}> {
     constructor(props: TestViewportProps) {
         super(props);
 
-        this.state = {
-        };
+        this.state = {};
     }
 
     public render(): JSX.Element {
@@ -37,7 +35,7 @@ class TestViewport extends React.Component<TestViewportProps, {}> {
                 <div
                     style={{
                         height: "0",
-                        width: "0"
+                        width: "0",
                     }}
                 >
                     <ViewportPositioner
@@ -46,7 +44,7 @@ class TestViewport extends React.Component<TestViewportProps, {}> {
                         style={{
                             height: "100px",
                             width: "100px",
-                            background: "yellow"
+                            background: "yellow",
                         }}
                     >
                         Positioner
@@ -57,97 +55,97 @@ class TestViewport extends React.Component<TestViewportProps, {}> {
     }
 }
 
-
-storiesOf("Viewport Positioner", module).add("Default", () => (
-    <TestViewport
-        positionerProps={{
-            verticalPositioningMode:AxisPositioningMode.adjacent,
-            horizontalPositioningMode:AxisPositioningMode.adjacent,
-            verticalThreshold: 0,
-            horizontalThreshold: 0,
-            anchor:anchorElement
-        }}
-    >
-    <div
-        style={{
-            height: "1200px",
-            width: "1200px",
-            padding: "550px",
-            background: "blue",
-        }}
-    >
-        <div
-            ref={anchorElement}
-            style={{
-                height: "100px",
-                width: "100px",
-                background: "green",
-            }}
-        >
-            Anchor
-        </div>
-    </div>
-    </TestViewport>
-))
-.add("Always in view - adjacent", () => (
-    <TestViewport
-        positionerProps={{
-            verticalPositioningMode: AxisPositioningMode.adjacent,
-            horizontalPositioningMode: AxisPositioningMode.adjacent,
-            verticalAlwaysInView: true,
-            horizontalAlwaysInView: true,
-            anchor: anchorElement
-        }}
-    >
-        <div
-            style={{
-                height: "1200px",
-                width: "1200px",
-                padding: "550px",
-                background: "blue",
+storiesOf("Viewport Positioner", module)
+    .add("Default", () => (
+        <TestViewport
+            positionerProps={{
+                verticalPositioningMode: AxisPositioningMode.adjacent,
+                horizontalPositioningMode: AxisPositioningMode.adjacent,
+                verticalThreshold: 0,
+                horizontalThreshold: 0,
+                anchor: anchorElement,
             }}
         >
             <div
-                ref={anchorElement}
                 style={{
-                    height: "100px",
-                    width: "100px",
-                    background: "green",
+                    height: "1200px",
+                    width: "1200px",
+                    padding: "550px",
+                    background: "blue",
                 }}
             >
-                Anchor
+                <div
+                    ref={anchorElement}
+                    style={{
+                        height: "100px",
+                        width: "100px",
+                        background: "green",
+                    }}
+                >
+                    Anchor
+                </div>
             </div>
-        </div>
-    </TestViewport>
-))
-.add("Always in view - inset", () => (
-    <TestViewport
-        positionerProps={{
-            verticalPositioningMode: AxisPositioningMode.inset,
-            horizontalPositioningMode: AxisPositioningMode.inset,
-            verticalAlwaysInView: true,
-            horizontalAlwaysInView: true,
-            anchor: anchorElement
-        }}
-    >
-        <div
-            style={{
-                height: "1200px",
-                width: "1200px",
-                padding: "550px",
-                background: "blue",
+        </TestViewport>
+    ))
+    .add("Always in view - adjacent", () => (
+        <TestViewport
+            positionerProps={{
+                verticalPositioningMode: AxisPositioningMode.adjacent,
+                horizontalPositioningMode: AxisPositioningMode.adjacent,
+                verticalAlwaysInView: true,
+                horizontalAlwaysInView: true,
+                anchor: anchorElement,
             }}
         >
             <div
-                ref={anchorElement}
                 style={{
-                    height: "100px",
-                    width: "100px",
-                    background: "green",
+                    height: "1200px",
+                    width: "1200px",
+                    padding: "550px",
+                    background: "blue",
                 }}
             >
-                Anchor
+                <div
+                    ref={anchorElement}
+                    style={{
+                        height: "100px",
+                        width: "100px",
+                        background: "green",
+                    }}
+                >
+                    Anchor
+                </div>
             </div>
-        </div>
-    </TestViewport>
-));
+        </TestViewport>
+    ))
+    .add("Always in view - inset", () => (
+        <TestViewport
+            positionerProps={{
+                verticalPositioningMode: AxisPositioningMode.inset,
+                horizontalPositioningMode: AxisPositioningMode.inset,
+                verticalAlwaysInView: true,
+                horizontalAlwaysInView: true,
+                anchor: anchorElement,
+            }}
+        >
+            <div
+                style={{
+                    height: "1200px",
+                    width: "1200px",
+                    padding: "550px",
+                    background: "blue",
+                }}
+            >
+                <div
+                    ref={anchorElement}
+                    style={{
+                        height: "100px",
+                        width: "100px",
+                        background: "green",
+                    }}
+                >
+                    Anchor
+                </div>
+            </div>
+        </TestViewport>
+    ));

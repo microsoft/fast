@@ -21,7 +21,7 @@ import {
  */
 configure({ adapter: new Adapter() });
 
-// viewport rect is deliberately offset so we are testing that 
+// viewport rect is deliberately offset so we are testing that
 // calculations are correct when the viewport is not positioned at origin (i.e. x and y = 0)
 const viewportRect: ClientRect = {
     top: 100,
@@ -755,7 +755,9 @@ describe("viewport positioner", (): void => {
         expect(
             positioner
                 .instance()
-                ["getVerticalTranslate"](ViewportPositionerVerticalPositionLabel.insetBottom)
+                ["getVerticalTranslate"](
+                    ViewportPositionerVerticalPositionLabel.insetBottom
+                )
         ).toBe(0);
         expect(
             positioner
