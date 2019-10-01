@@ -48,6 +48,7 @@ class Listbox extends Foundation<
         typeAheadEnabled: true,
         focusItemOnMount: false,
         managedClasses: {},
+        selectOnFocus: true,
     };
 
     /**
@@ -66,7 +67,7 @@ class Listbox extends Foundation<
     }
 
     /**
-     * returns the the first selectable item in the provided array of children
+     * returns the first selectable item in the provided array of children
      */
     public static getFirstValidOptionInRange = (
         startIndex: number,
@@ -81,6 +82,17 @@ class Listbox extends Foundation<
             }
             return null;
         }
+    };
+
+    /**
+     * returns all the selectable items in the provided array of children
+     */
+    public static getValidOptions = (
+        childrenAsArray: React.ReactNode[]
+    ): React.ReactNode[] => {
+        return childrenAsArray.filter((itemNode: React.ReactNode) => {
+            return Listbox.isValidSelectedItem(itemNode as React.ReactElement<any>);
+        });
     };
 
     /**
@@ -213,6 +225,7 @@ class Listbox extends Foundation<
         typeAheadEnabled: void 0,
         typeAheadPropertyKey: void 0,
         focusItemOnMount: void 0,
+        selectOnFocus: void 0,
     };
 
     private rootElement: React.RefObject<HTMLDivElement> = React.createRef<
@@ -447,7 +460,7 @@ class Listbox extends Foundation<
             focussedItemId: item.id,
         });
 
-        if (!this.props.multiselectable) {
+        if (!this.props.multiselectable && this.props.selectOnFocus) {
             this.updateSelection([item]);
         }
     };

@@ -40,21 +40,6 @@ describe("button", (): void => {
         expect(rendered.first().prop("aria-label")).toEqual("label");
     });
 
-    test("default trigger attributes are set correctly", (): void => {
-        const rendered: any = mount(
-            <Select labelledBy="test-labelledBy">
-                {itemA}
-                {itemB}
-                {itemC}
-            </Select>
-        );
-
-        const trigger: any = rendered.find("button");
-        expect(trigger.prop("aria-labelledby")).toEqual("test-labelledBy");
-        expect(trigger.prop("aria-haspopup")).toEqual(true);
-        expect(trigger.prop("aria-expanded")).toEqual(false);
-    });
-
     test("Custom trigger render function is called", (): void => {
         const triggerRenderFn: any = jest.fn();
         triggerRenderFn.mockReturnValue("Test");
@@ -66,6 +51,26 @@ describe("button", (): void => {
             </Select>
         );
         expect(triggerRenderFn).toHaveBeenCalledTimes(1);
+    });
+
+    test("default trigger aria tags are set correctly", (): void => {
+        const rendered: any = mount(
+            <Select selectedItems={["a"]}>
+                {itemA}
+                {itemB}
+                {itemC}
+            </Select>
+        );
+
+        const trigger: any = rendered.find("button");
+        expect(trigger.prop("role")).toEqual("option");
+        expect(trigger.prop("aria-expanded")).toEqual(false);
+        expect(trigger.prop("aria-atomic")).toEqual(true);
+        expect(trigger.prop("aria-label")).toEqual("a");
+        expect(trigger.prop("aria-expanded")).toEqual(false);
+        expect(trigger.prop("aria-selected")).toEqual(true);
+        expect(trigger.prop("aria-posinset")).toEqual(1);
+        expect(trigger.prop("aria-setsize")).toEqual(3);
     });
 
     test("Custom menu render function is called", (): void => {
