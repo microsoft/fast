@@ -52,6 +52,11 @@ export type updateActiveSection = (
     schema?: any
 ) => void;
 
+export type AddExampleData = (
+    propertyLocation: string,
+    additionalSchemaPathSyntax?: string
+) => void;
+
 /* tslint:disable-next-line */
 export interface FormSectionState extends InitialOneOfAnyOfState {}
 
