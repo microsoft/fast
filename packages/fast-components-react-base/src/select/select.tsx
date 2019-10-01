@@ -11,7 +11,7 @@ import {
     keyCodeSpace,
 } from "@microsoft/fast-web-utilities";
 import { canUseDOM } from "exenv-es6";
-import { get, isEqual, isNil } from "lodash-es";
+import { get, isEqual, isNil, uniqueId } from "lodash-es";
 import React from "react";
 import Button from "../button";
 import Listbox from "../listbox";
@@ -297,16 +297,20 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
                 {this.props.children}
             </Listbox>
         );
-        <ViewportPositioner
-            anchor={this.rootElement}
-            {...this.getFlyoutMenuConfig()}
-            managedClasses={this.generateViewportPositionerClassNames()}
-        />
-        if (typeof this.props.menu === "function") {
-            return this.props.menu(this.props, this.state, defaultMenu);
-        } else {
-            return defaultMenu;
-        }
+
+        const customMenu: React.ReactNode = (typeof this.props.menu === "function")
+            ? this.props.menu(this.props, this.state, defaultMenu)
+            : defaultMenu;
+
+        return (
+            <ViewportPositioner
+                anchor={this.rootElement}
+                {...this.getFlyoutMenuConfig()}
+                managedClasses={this.generateViewportPositionerClassNames()}
+            >
+                {customMenu}
+            </ViewportPositioner>
+        );
     }
 
     /**
