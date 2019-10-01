@@ -50,7 +50,7 @@ const indicatorSize: DesignSystemResolver<number> = subtract(
     height,
     multiply(indicatorMargin, 2)
 );
-const indicatorCheckedLeft: DesignSystemResolver<number> = subtract(
+const indicatorCheckedOffset: DesignSystemResolver<number> = subtract(
     width,
     indicatorMargin,
     indicatorSize
@@ -79,7 +79,8 @@ const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = {
         position: "absolute",
         "pointer-events": "none",
         top: toPx(indicatorMargin),
-        left: toPx(indicatorMargin),
+        left: directionSwitch(toPx(indicatorMargin), "unset"),
+        right: directionSwitch("unset", toPx(indicatorMargin)),
         transition: "all .1s ease",
         "border-radius": toPx(indicatorSize),
         width: toPx(indicatorSize),
@@ -178,7 +179,8 @@ const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = {
             },
         },
         "& $toggle_stateIndicator": {
-            left: toPx(indicatorCheckedLeft),
+            left: directionSwitch(toPx(indicatorCheckedOffset), "unset"),
+            right: directionSwitch("unset", toPx(indicatorCheckedOffset)),
             background: accentForegroundCut,
             ...highContrastSelectedBackground,
             "&:hover": {
