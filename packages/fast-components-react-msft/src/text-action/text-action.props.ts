@@ -66,6 +66,11 @@ export interface TextActionHandledProps
      * Overall disabled attribute that controls both the input and button disabled states
      */
     disabled?: boolean;
+
+    /**
+     * The class name applied to the root element
+     */
+    className?: string;
 }
 
 export type TextActionProps = TextActionHandledProps & TextActionUnhandledProps;

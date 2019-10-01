@@ -38,6 +38,7 @@ class TextAction extends Foundation<
         beforeGlyph: void 0,
         button: void 0,
         buttonPosition: void 0,
+        className: void 0,
         managedClasses: void 0,
     };
 
