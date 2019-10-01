@@ -147,7 +147,7 @@ class FileUploadControl extends React.Component<
         return [
             typeof this.props.value === "string" ? (
                 <img
-                    key="thumbnail"
+                    key={"thumbnail"}
                     src={this.props.value}
                     alt={"Image upload thumbnail"}
                 />

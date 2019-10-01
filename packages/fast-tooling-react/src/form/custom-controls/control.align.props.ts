@@ -1,6 +1,6 @@
 import { ListControlConfig } from "../templates";
 
-export enum AlignDirection {
+export enum Alignment {
     top = "top",
     center = "center",
     bottom = "bottom",

@@ -2,7 +2,7 @@ import React from "react";
 import Adapter from "enzyme-adapter-react-16";
 import { configure, mount, shallow, ShallowWrapper } from "enzyme";
 import { AlignControl as StyledAlignControl, AlignControlProps } from "./index";
-import { AlignDirection } from "./control.align.props";
+import { Alignment } from "./control.align.props";
 import { AlignControl } from "./control.align";
 import { AlignControlClassNameContract } from "./control.align.style";
 
@@ -12,7 +12,7 @@ import { AlignControlClassNameContract } from "./control.align.style";
 configure({ adapter: new Adapter() });
 
 const alignControlProps: AlignControlProps = {
-    options: [AlignDirection.top, AlignDirection.center, AlignDirection.bottom],
+    options: [Alignment.top, Alignment.center, Alignment.bottom],
     dataLocation: "",
     value: "",
     onChange: jest.fn(),

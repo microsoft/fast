@@ -2,7 +2,7 @@ import React from "react";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 import styles, { AlignControlClassNameContract } from "./control.align.style";
-import { AlignControlProps, AlignDirection } from "./control.align.props";
+import { AlignControlProps, Alignment } from "./control.align.props";
 import { classNames } from "@microsoft/fast-web-utilities";
 
 /**
@@ -29,9 +29,9 @@ class AlignControl extends React.Component<
                     this.props.disabled,
                 ])}
             >
-                {this.renderInput(AlignDirection.top)}
-                {this.renderInput(AlignDirection.center)}
-                {this.renderInput(AlignDirection.bottom)}
+                {this.renderInput(Alignment.top)}
+                {this.renderInput(Alignment.center)}
+                {this.renderInput(Alignment.bottom)}
             </div>
         );
     }
@@ -49,7 +49,7 @@ class AlignControl extends React.Component<
         };
     }
 
-    private renderInput(direction: AlignDirection): React.ReactNode {
+    private renderInput(direction: Alignment): React.ReactNode {
         if (this.props.options && Array.isArray(this.props.options)) {
             const option: string = this.props.options.find((item: string) => {
                 return item === direction;
@@ -63,15 +63,15 @@ class AlignControl extends React.Component<
                                 this.props.managedClasses.alignControl_input,
                                 [
                                     this.props.managedClasses.alignControl_input__bottom,
-                                    direction === AlignDirection.bottom,
+                                    direction === Alignment.bottom,
                                 ],
                                 [
                                     this.props.managedClasses.alignControl_input__center,
-                                    direction === AlignDirection.center,
+                                    direction === Alignment.center,
                                 ],
                                 [
                                     this.props.managedClasses.alignControl_input__top,
-                                    direction === AlignDirection.top,
+                                    direction === Alignment.top,
                                 ]
                             )}
                             id={this.props.dataLocation}
