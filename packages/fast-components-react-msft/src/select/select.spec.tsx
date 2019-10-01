@@ -72,4 +72,19 @@ describe("button", (): void => {
         expect(trigger.prop("aria-posinset")).toEqual(1);
         expect(trigger.prop("aria-setsize")).toEqual(3);
     });
+
+    test("Custom menu render function is called", (): void => {
+        const menuRenderFn: jest.Mock = jest.fn();
+        menuRenderFn.mockReturnValue("Test");
+        const rendered: any = mount(
+            <Select menu={menuRenderFn}>
+                {itemA}
+                {itemB}
+                {itemC}
+            </Select>
+        );
+
+        rendered.simulate("click");
+        expect(menuRenderFn).toHaveBeenCalledTimes(1);
+    });
 });

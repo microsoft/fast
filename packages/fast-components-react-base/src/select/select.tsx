@@ -53,6 +53,7 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
         labelledBy: void 0,
         multiselectable: void 0,
         trigger: void 0,
+        menu: void 0,
         required: void 0,
         managedClasses: void 0,
         selectedItems: void 0,
@@ -263,7 +264,7 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
         if (this.props.multiselectable && this.props.autoFocus) {
             shouldFocusOnMount = this.props.multiselectable;
         }
-        return (
+        const defaultMenu: React.ReactNode = (
             <Listbox
                 labelledBy={this.props.labelledBy}
                 disabled={this.props.disabled}
@@ -286,6 +287,11 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
                 {this.props.children}
             </Listbox>
         );
+        if (typeof this.props.menu === "function") {
+            return this.props.menu(this.props, this.state, defaultMenu);
+        } else {
+            return defaultMenu;
+        }
     }
 
     /**
