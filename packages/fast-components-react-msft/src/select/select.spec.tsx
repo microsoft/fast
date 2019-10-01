@@ -67,4 +67,19 @@ describe("button", (): void => {
         );
         expect(triggerRenderFn).toHaveBeenCalledTimes(1);
     });
+
+    test("Custom menu render function is called", (): void => {
+        const menuRenderFn: jest.Mock = jest.fn();
+        menuRenderFn.mockReturnValue("Test");
+        const rendered: any = mount(
+            <Select menu={menuRenderFn}>
+                {itemA}
+                {itemB}
+                {itemC}
+            </Select>
+        );
+
+        rendered.simulate("click");
+        expect(menuRenderFn).toHaveBeenCalledTimes(1);
+    });
 });
