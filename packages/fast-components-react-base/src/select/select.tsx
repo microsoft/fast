@@ -335,7 +335,8 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
     }
 
     /**
-     *
+     * Gets the menu flyout config and applies defaults version
+     * if there is none provided in props
      */
     private getFlyoutMenuConfig = (): SelectMenuFlyoutConfig => {
         if (isNil(this.props.menuFlyoutConfig)) {
