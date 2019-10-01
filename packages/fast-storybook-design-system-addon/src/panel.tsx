@@ -100,7 +100,7 @@ export class DesignSystemPanel extends React.Component<
             <React.Fragment>
                 <Global
                     styles={(theme: Theme): any => ({
-                        [`#storybook-preview-background`]: {
+                        [`#storybook-preview-wrapper`]: {
                             background: `${this.state.designSystem.backgroundColor}`,
                         },
                     })}
