@@ -298,9 +298,10 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
             </Listbox>
         );
 
-        const customMenu: React.ReactNode = (typeof this.props.menu === "function")
-            ? this.props.menu(this.props, this.state, defaultMenu)
-            : defaultMenu;
+        const customMenu: React.ReactNode =
+            typeof this.props.menu === "function"
+                ? this.props.menu(this.props, this.state, defaultMenu)
+                : defaultMenu;
 
         return (
             <ViewportPositioner
