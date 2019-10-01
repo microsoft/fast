@@ -1,6 +1,7 @@
 import { storiesOf } from "@storybook/react";
 import React from "react";
 import { SelectOption } from "../select-option";
+import { Heading, HeadingSize } from "../heading";
 import { Select } from "./";
 import { uniqueId } from "lodash-es";
 import { action } from "@storybook/addon-actions";
@@ -53,6 +54,45 @@ storiesOf("Select", module)
                 displayString="Select option 4"
             />
         </Select>
+    ))
+    .add("With label", () => (
+        <div>
+            <Heading
+                size={HeadingSize._4}
+                id="selectHeading"
+                style={{
+                    margin: "0 0 20px 0",
+                }}
+            >
+                Select heading
+            </Heading>
+            <Select
+                labelledBy="selectHeading"
+                placeholder="Select an option"
+                onValueChange={action("onValueChange")}
+            >
+                <SelectOption
+                    id={uniqueId()}
+                    value="Select option 1"
+                    displayString="Select option 1"
+                />
+                <SelectOption
+                    id={uniqueId()}
+                    value="Select option 2"
+                    displayString="Select option 2"
+                />
+                <SelectOption
+                    id={uniqueId()}
+                    value="Select option 3"
+                    displayString="Select option 3"
+                />
+                <SelectOption
+                    id={uniqueId()}
+                    value="Select option 4"
+                    displayString="Select option 4"
+                />
+            </Select>
+        </div>
     ))
     .add("Open", () => (
         <Select

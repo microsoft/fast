@@ -14,7 +14,11 @@ export interface SelectHandledProps extends SelectManagedClasses {
      * Custom function to render the trigger of the control
      * (ie. the ui that typically displays the current value and opens the menu in single select mode)
      */
-    trigger?: (props: SelectProps, state: SelectState) => React.ReactNode;
+    trigger?: (
+        props: SelectProps,
+        state: SelectState,
+        triggerId?: string
+    ) => React.ReactNode;
 
     /**
      * Custom function to render the menu of the control

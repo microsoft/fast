@@ -60,6 +60,11 @@ export interface ListboxHandledProps extends ListboxManagedClasses {
     focusItemOnMount?: boolean;
 
     /**
+     * Whether a listitem should automatically get selected when it is focused (single select only, default is true)
+     */
+    selectOnFocus?: boolean;
+
+    /**
      * Specifies that the control is disabled
      */
     disabled?: boolean;
