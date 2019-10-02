@@ -123,6 +123,7 @@ class ViewportPositioner extends Foundation<
         verticalLockToDefault: false,
         horizontalLockToDefault: false,
         fixedAfterInitialPlacement: false,
+        scaleToAvailableSpace: false,
         managedClasses: {},
     };
 
@@ -141,6 +142,7 @@ class ViewportPositioner extends Foundation<
         verticalAlwaysInView: void 0,
         verticalLockToDefault: void 0,
         fixedAfterInitialPlacement: void 0,
+        scaleToAvailableSpace: void 0,
         disabled: void 0,
     };
 
@@ -320,12 +322,12 @@ class ViewportPositioner extends Foundation<
             (isNil(this.positionerRect) && !this.state.noObserverMode);
 
         return {
-            height: isNil(this.props.verticalThreshold)
-                ? null
-                : `${this.state.verticalSelectedPositionHeight}px`,
-            width: isNil(this.props.horizontalThreshold)
-                ? null
-                : `${this.state.horizontalSelectedPositionWidth}px`,
+            height: this.props.scaleToAvailableSpace
+                ? `${this.state.verticalSelectedPositionHeight}px`
+                : null,
+            width: this.props.scaleToAvailableSpace
+                ? `${this.state.horizontalSelectedPositionWidth}px`
+                : null,
             opacity: shouldHide ? 0 : undefined,
             position: "relative",
             transformOrigin: `${this.state.xTransformOrigin} ${
@@ -912,7 +914,7 @@ class ViewportPositioner extends Foundation<
         desiredHorizontalPosition: ViewportPositionerHorizontalPositionLabel
     ): number => {
         let newPositionerRectWidth: number = this.positionerRect.width;
-        if (!isNil(this.props.horizontalThreshold)) {
+        if (this.props.scaleToAvailableSpace) {
             const availableWidth: number = this.getAvailableWidth(
                 desiredHorizontalPosition
             );
@@ -931,7 +933,7 @@ class ViewportPositioner extends Foundation<
         desiredVerticalPosition: ViewportPositionerVerticalPositionLabel
     ): number => {
         let newPositionerRectHeight: number = this.positionerRect.height;
-        if (!isNil(this.props.verticalThreshold)) {
+        if (this.props.scaleToAvailableSpace) {
             const availableHeight: number = this.getAvailableHeight(
                 desiredVerticalPosition
             );
