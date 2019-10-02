@@ -24,7 +24,7 @@ import {
     SelectUnhandledProps,
 } from "./select.props";
 import ViewportPositioner, {
-    ViewportPositionerClassNameContract
+    ViewportPositionerClassNameContract,
 } from "../viewport-positioner";
 
 export interface SelectState {
@@ -301,7 +301,7 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
                 : defaultMenu;
 
         if (isNil(this.props.menuFlyoutConfig)) {
-            return (customMenu);
+            return customMenu;
         } else {
             return (
                 <ViewportPositioner
