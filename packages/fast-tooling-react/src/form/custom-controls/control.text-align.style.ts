@@ -9,7 +9,6 @@ import {
     applySoftRemoveInput,
     neutralLayerL4,
 } from "../../style";
-import { TextAlignFormControlClassNameContract } from "./control.text-align.props";
 
 /* tslint:disable */
 const leftLight: string =
@@ -23,50 +22,41 @@ const justifyLight: string =
     "url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIiIGhlaWdodD0iMTAiIHZpZXdCb3g9IjAgMCAxMiAxMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTAgMEgxMlYxSDBWMFoiIGZpbGw9IiNDNEM0QzQiLz4KPHBhdGggZD0iTTAgNkgxMlY3SDBWNloiIGZpbGw9IiNDNEM0QzQiLz4KPHBhdGggZD0iTTAgM0gxMlY0SDBWM1oiIGZpbGw9IiNDNEM0QzQiLz4KPHBhdGggZD0iTTAgOUgxMlYxMEgwVjlaIiBmaWxsPSIjQzRDNEM0Ii8+Cjwvc3ZnPgo=) center no-repeat";
 /* tslint:enable */
 
-const styles: ComponentStyles<TextAlignFormControlClassNameContract, {}> = {
-    textAlignFormControl: {
-        display: "flex",
-        ...applyControlWrapper(),
-    },
-    textAlignFormControl_control: {
-        ...applyControl(),
-    },
-    textAlignFormControl_controlLabel: {
-        ...applyLabelStyle(),
-    },
-    textAlignFormControl_controlInputContainer: {
+/**
+ * Align horizontal class name contract
+ */
+export interface TextAlignControlClassNameContract {
+    textAlignControl?: string;
+    textAlignControl__disabled?: string;
+    textAlignControl_input?: string;
+    textAlignControl_input__left?: string;
+    textAlignControl_input__center?: string;
+    textAlignControl_input__right?: string;
+}
+
+const styles: ComponentStyles<TextAlignControlClassNameContract, {}> = {
+    textAlignControl: {
         height: "20px",
     },
-    textAlignFormControl_controlInput__left: {
+    textAlignControl__disabled: {},
+    textAlignControl_input: {
         ...applyInputBackplateStyle(),
-        borderRadius: "2px 0px 0px 2px",
-        background: leftLight,
         "&:checked": {
             backgroundColor: accent,
         },
     },
-    textAlignFormControl_controlInput__center: {
-        ...applyInputBackplateStyle(),
+    textAlignControl_input__left: {
+        borderRadius: "2px 0px 0px 2px",
+        background: leftLight,
+    },
+    textAlignControl_input__center: {
         borderRight: `1px solid ${neutralLayerL4}`,
         borderLeft: `1px solid ${neutralLayerL4}`,
         background: centerLight,
-        "&:checked": {
-            backgroundColor: accent,
-        },
     },
-    textAlignFormControl_controlInput__right: {
-        ...applyInputBackplateStyle(),
+    textAlignControl_input__right: {
         borderRadius: "0px 2px 2px 0px",
         background: rightLight,
-        "&:checked": {
-            backgroundColor: accent,
-        },
-    },
-    textAlignFormControl_softRemove: {
-        ...applySoftRemove(),
-    },
-    textAlignFormControl_softRemoveInput: {
-        ...applySoftRemoveInput(),
     },
 };
 

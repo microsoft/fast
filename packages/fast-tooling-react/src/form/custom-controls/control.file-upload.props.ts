@@ -1,4 +1,6 @@
-export interface FileUploadFormControlState {
+import { CommonControlConfig } from "../templates";
+
+export interface FileUploadControlState {
     /**
      * If the file-upload is being dragged over
      */
@@ -9,3 +11,6 @@ export interface FileUploadFormControlState {
      */
     processing: boolean;
 }
+
+/* tslint:disable-next-line */
+export interface FileUploadControlProps extends CommonControlConfig {}
