@@ -2,6 +2,8 @@ import React from "react";
 import Adapter from "enzyme-adapter-react-16";
 import { configure, mount, render, shallow } from "enzyme";
 import FormControlSwitch, { FormControlSwitchProps } from "./form-control-switch";
+import { ContextComponent, DragDropContext } from "react-dnd";
+import HTML5Backend from "react-dnd-html5-backend";
 
 import numberFieldSchema from "../__tests__/schemas/number-field.schema.json";
 import textareaSchema from "../__tests__/schemas/textarea.schema.json";
@@ -10,6 +12,9 @@ import objectSchema from "../__tests__/schemas/objects.schema.json";
 import arraySchema from "../__tests__/schemas/arrays.schema.json";
 import childrenSchema from "../__tests__/schemas/children.schema.json";
 import oneOfSchema from "../__tests__/schemas/one-of.schema.json";
+
+const TestFormControlSwitch: typeof FormControlSwitch &
+    ContextComponent<any> = DragDropContext(HTML5Backend)(FormControlSwitch);
 
 /*
  * Configure Enzyme
@@ -35,12 +40,12 @@ const formControlProps: FormControlSwitchProps = {
 describe("FormControl", () => {
     test("should not throw", () => {
         expect(() => {
-            mount(<FormControlSwitch {...formControlProps} />);
+            mount(<TestFormControlSwitch {...formControlProps} />);
         }).not.toThrow();
     });
     test("should render a number field when a number type is available", () => {
         const rendered: any = mount(
-            <FormControlSwitch
+            <TestFormControlSwitch
                 {...formControlProps}
                 schema={numberFieldSchema.properties.quantity}
                 schemaLocation={"properties.quantity"}
@@ -54,7 +59,7 @@ describe("FormControl", () => {
     });
     test("should render a textarea when a string type is available", () => {
         const rendered: any = mount(
-            <FormControlSwitch
+            <TestFormControlSwitch
                 {...formControlProps}
                 schema={textareaSchema.properties.textWithDefault}
                 schemaLocation={"properties.text"}
@@ -68,7 +73,7 @@ describe("FormControl", () => {
     });
     test("should render a checkbox when a boolean type is available", () => {
         const rendered: any = mount(
-            <FormControlSwitch
+            <TestFormControlSwitch
                 {...formControlProps}
                 schema={checkboxSchema.properties.toggle}
                 schemaLocation={"properties.toggle"}
@@ -82,7 +87,7 @@ describe("FormControl", () => {
     });
     test("should render a link when an object type is available", () => {
         const rendered: any = mount(
-            <FormControlSwitch
+            <TestFormControlSwitch
                 {...formControlProps}
                 schema={objectSchema.properties.objectNoRequired}
                 schemaLocation={"properties.objectNoRequired"}
@@ -96,7 +101,7 @@ describe("FormControl", () => {
     });
     test("should render the array UI when an array type is available", () => {
         const rendered: any = mount(
-            <FormControlSwitch
+            <TestFormControlSwitch
                 {...formControlProps}
                 schema={arraySchema.properties.strings}
                 schemaLocation={"properties.strings"}
@@ -110,7 +115,7 @@ describe("FormControl", () => {
     });
     test("should render the children UI when a children type is available", () => {
         const rendered: any = mount(
-            <FormControlSwitch
+            <TestFormControlSwitch
                 {...formControlProps}
                 schema={childrenSchema.reactProperties.children}
                 schemaLocation={"reactProperties.children"}
@@ -124,7 +129,7 @@ describe("FormControl", () => {
     });
     test("should render a select when enums are available", () => {
         const rendered: any = mount(
-            <FormControlSwitch
+            <TestFormControlSwitch
                 {...formControlProps}
                 schema={textareaSchema.properties.tag}
                 schemaLocation={"properties.tag"}
@@ -138,7 +143,7 @@ describe("FormControl", () => {
     });
     test("should restrict the child options if ids have been passed", () => {
         const renderedWithDefault: any = mount(
-            <FormControlSwitch
+            <TestFormControlSwitch
                 {...formControlProps}
                 childOptions={[
                     {
@@ -163,7 +168,7 @@ describe("FormControl", () => {
         );
 
         const renderedWithoutDefaultAndIds: any = mount(
-            <FormControlSwitch
+            <TestFormControlSwitch
                 {...formControlProps}
                 childOptions={[
                     {
@@ -190,7 +195,7 @@ describe("FormControl", () => {
         );
 
         const renderedWithDefaultAndIds: any = mount(
-            <FormControlSwitch
+            <TestFormControlSwitch
                 {...formControlProps}
                 childOptions={[
                     {

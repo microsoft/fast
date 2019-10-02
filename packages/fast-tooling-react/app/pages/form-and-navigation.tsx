@@ -1,7 +1,7 @@
 import React from "react";
 import { DesignSystemProvider } from "@microsoft/fast-jss-manager-react";
 import { getDataFromSchema } from "../../src/data-utilities";
-import { Form, FormPlugin, FormPluginProps, Navigation } from "../../src";
+import { BareForm, FormPlugin, FormPluginProps, Navigation } from "../../src";
 import {
     FormAttributeSettingsMappingToPropertyNames,
     FormChildOptionItem,
@@ -163,7 +163,7 @@ class FormAndNavigationTestPage extends React.Component<{}, FormTestPageState> {
                                 "Segoe UI, SegoeUI, Helvetica Neue, Helvetica, Arial, sans-serif",
                         }}
                     >
-                        <Form {...this.coerceFormProps()} />
+                        <BareForm {...this.coerceFormProps()} />
                     </div>
                 </div>
             </DesignSystemProvider>
@@ -179,6 +179,7 @@ class FormAndNavigationTestPage extends React.Component<{}, FormTestPageState> {
                 onLocationUpdate={this.handleLocationOnChange}
                 dataLocation={this.state.dataLocation}
                 onChange={this.handleDataOnChange}
+                dragAndDropReordering={true}
             />
         );
     }
