@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.22.2](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-styles-msft@4.22.1...@microsoft/fast-components-styles-msft@4.22.2) (2019-10-02)
+
+
+### Bug Fixes
+
+* adds proper RTL styles for toggle state indicator ([#2282](https://github.com/Microsoft/fast-dna/issues/2282)) ([b00de5d](https://github.com/Microsoft/fast-dna/commit/b00de5d))
+* correct export order of style exports ([#2256](https://github.com/Microsoft/fast-dna/issues/2256)) ([1ef9734](https://github.com/Microsoft/fast-dna/commit/1ef9734))
+
+
+
+
+
 ## [4.22.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-styles-msft@4.22.0...@microsoft/fast-components-styles-msft@4.22.1) (2019-09-25)
 
 **Note:** Version bump only for package @microsoft/fast-components-styles-msft
