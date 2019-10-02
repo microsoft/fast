@@ -464,7 +464,7 @@ describe("select", (): void => {
         expect(rendered.state("isMenuOpen")).toBe(false);
     });
 
-    test("Default menuFlyoutConfig leaves both axis uncontrolled and is applied", (): void => {
+    test("Flyout positioner not added to dom when no config provided", (): void => {
         const rendered: any = mount(
             <Select isMenuOpen={true} managedClasses={managedClasses}>
                 {itemA}
@@ -474,12 +474,7 @@ describe("select", (): void => {
         );
 
         const positioner: any = rendered.find("BaseViewportPositioner");
-        expect(positioner.prop("horizontalPositioningMode")).toBe(
-            AxisPositioningMode.uncontrolled
-        );
-        expect(positioner.prop("verticalPositioningMode")).toBe(
-            AxisPositioningMode.uncontrolled
-        );
+        expect(positioner.length).toBe(0);
     });
 
     test("Custom menuFlyoutConfig is applied to positioner", (): void => {

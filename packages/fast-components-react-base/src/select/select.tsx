@@ -24,10 +24,7 @@ import {
     SelectUnhandledProps,
 } from "./select.props";
 import ViewportPositioner, {
-    AxisPositioningMode,
-    ViewportPositionerClassNameContract,
-    ViewportPositionerHorizontalPosition,
-    ViewportPositionerVerticalPosition,
+    ViewportPositionerClassNameContract
 } from "../viewport-positioner";
 
 export interface SelectState {
@@ -303,15 +300,19 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
                 ? this.props.menu(this.props, this.state, defaultMenu)
                 : defaultMenu;
 
-        return (
-            <ViewportPositioner
-                anchor={this.rootElement}
-                {...this.getFlyoutMenuConfig()}
-                managedClasses={this.generateViewportPositionerClassNames()}
-            >
-                {customMenu}
-            </ViewportPositioner>
-        );
+        if (isNil(this.props.menuFlyoutConfig)) {
+            return (customMenu);
+        } else {
+            return (
+                <ViewportPositioner
+                    anchor={this.rootElement}
+                    {...this.props.menuFlyoutConfig}
+                    managedClasses={this.generateViewportPositionerClassNames()}
+                >
+                    {customMenu}
+                </ViewportPositioner>
+            );
+        }
     }
 
     /**
@@ -338,20 +339,6 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
             viewportPositioner__verticalInset: select_viewportPositioner__verticalInset,
         };
     }
-
-    /**
-     * Gets the menu flyout config and applies defaults version
-     * if there is none provided in props
-     */
-    private getFlyoutMenuConfig = (): SelectMenuFlyoutConfig => {
-        if (isNil(this.props.menuFlyoutConfig)) {
-            return {
-                verticalPositioningMode: AxisPositioningMode.uncontrolled,
-                horizontalPositioningMode: AxisPositioningMode.uncontrolled,
-            };
-        }
-        return this.props.menuFlyoutConfig;
-    };
 
     /**
      * Handles selection changes from menu
