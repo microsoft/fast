@@ -7,6 +7,7 @@ import { FormProps } from "./form.props";
 import objectSchema from "../__tests__/schemas/objects.schema.json";
 import arraySchema from "../__tests__/schemas/arrays.schema.json";
 import childrenSchema from "../__tests__/schemas/children.schema.json";
+import invalidDataSchema from "../__tests__/schemas/invalid-data.schema.json";
 import pluginSchema from "../__tests__/schemas/plugin.schema.json";
 
 import { StringUpdateSchemaPlugin } from "../../app/pages/form/plugin/plugin";
@@ -426,5 +427,38 @@ describe("Form", () => {
         rendered.update();
 
         expect(rendered.find("SelectFormControl")).toHaveLength(1);
+    });
+    test("should set validation errors to the form state.", () => {
+        const data: any = {
+            validBooleanRequired: true,
+            invalidBooleanWrongType: "foo",
+            invalidNullWrongType: "bar",
+            invalidStringWrongType: false,
+            invalidNumberWrongType: "bar",
+            invalidEnumWrongType: "hello",
+            invalidObjectWrongType: true,
+            invalidArrayWrongType: "world",
+            objectExample: {
+                invalidBooleanWrongType: "bat",
+            },
+            arrayExample: [true],
+        };
+
+        const rendered: any = mount(
+            <Form
+                schema={invalidDataSchema}
+                data={data}
+                onChange={jest.fn()}
+                displayValidationInline={true}
+            />
+        );
+
+        expect(rendered.find("ArrayFormControl")).toHaveLength(2);
+        expect(rendered.find("ArrayFormControl").get(0).props.invalidMessage).toEqual(
+            "should be array"
+        );
+        expect(rendered.find("ArrayFormControl").get(1).props.invalidMessage).toEqual(
+            "Contains invalid data"
+        );
     });
 });

@@ -99,7 +99,7 @@ class Form extends React.Component<
                     ? props.location
                     : "",
             navigation: this.navigation.get(),
-            validationErrors: void 0,
+            validationErrors: this.getValidationErrors(props),
         };
     }
 
