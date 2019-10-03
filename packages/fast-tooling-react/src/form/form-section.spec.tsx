@@ -3,6 +3,12 @@ import Adapter from "enzyme-adapter-react-16";
 import { configure, mount } from "enzyme";
 import FormSection from "./form-section";
 import { FormSectionProps } from "./form-section.props";
+import { ContextComponent, DragDropContext } from "react-dnd";
+import HTML5Backend from "react-dnd-html5-backend";
+
+const TestFormSection: typeof FormSection & ContextComponent<any> = DragDropContext(
+    HTML5Backend
+)(FormSection);
 
 /*
  * Configure Enzyme
@@ -25,7 +31,7 @@ const formSectionProps: FormSectionProps = {
 describe("FormSection", () => {
     test("should not throw", () => {
         expect(() => {
-            mount(<FormSection {...formSectionProps} />);
+            mount(<TestFormSection {...formSectionProps} />);
         }).not.toThrow();
     });
 });

@@ -33,6 +33,7 @@ The tooling available in FAST Tooling React can be used together to create UI fo
     - [Width](#width)
     - [Height](#height)
 - [Form](#form)
+    - [Drag and drop](#drag-and-drop)
     - [Using form plugins](#using-form-plugins)
     - [React children as options](#react-children-as-options)
     - [Controlling the visible section](#controlling-the-visible-section)
@@ -912,6 +913,10 @@ handleChange = (data) => {
     });
 }
 ```
+
+### Drag and drop
+
+Drag and drop is provided to the `Form` using the `react-dnd` package as well as the `HTML5Backend`. If you are using `react-dnd` somewhere else and need to implement the backend once, use the secondary export `BareForm`.
 
 ### Using form plugins
 

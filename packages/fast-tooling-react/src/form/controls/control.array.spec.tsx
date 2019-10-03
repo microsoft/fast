@@ -1,13 +1,16 @@
 import React from "react";
 import Adapter from "enzyme-adapter-react-16";
 import { configure, mount } from "enzyme";
-import ArrayFormControlStyled, {
-    TestArrayFormControl as ArrayFormControl,
-} from "./control.array";
+import ArrayFormControlStyled, { ArrayFormControl } from "./control.array";
+import HTML5Backend from "react-dnd-html5-backend";
+import { ContextComponent, DragDropContext } from "react-dnd";
 import {
     ArrayFormControlClassNameContract,
     ArrayFormControlProps,
 } from "./control.array.props";
+
+const TestArrayFormControl: typeof ArrayFormControl &
+    ContextComponent<any> = DragDropContext(HTML5Backend)(ArrayFormControl);
 
 /*
  * Configure Enzyme
@@ -70,7 +73,7 @@ describe("ArrayFormControl", () => {
     });
     test("should generate a button to add an array item if the maximum number of items has not been reached", () => {
         const rendered: any = mount(
-            <ArrayFormControl
+            <TestArrayFormControl
                 {...arrayProps}
                 schema={{ maxItems: 2 }}
                 data={["foo"]}
@@ -84,7 +87,7 @@ describe("ArrayFormControl", () => {
     });
     test("should generate a button to add an array item if no maximum number of items has been specified", () => {
         const rendered: any = mount(
-            <ArrayFormControl
+            <TestArrayFormControl
                 {...arrayProps}
                 data={["foo"]}
                 managedClasses={managedClasses}
@@ -97,7 +100,7 @@ describe("ArrayFormControl", () => {
     });
     test("should not generate a button to add an array item if the maximum number of items has been reached", () => {
         const rendered: any = mount(
-            <ArrayFormControl
+            <TestArrayFormControl
                 {...arrayProps}
                 schema={{ maxItems: 2 }}
                 data={["foo", "bar"]}
@@ -112,7 +115,7 @@ describe("ArrayFormControl", () => {
     test("should add an item to the array if the add button has been clicked", () => {
         const callback: any = jest.fn();
         const rendered: any = mount(
-            <ArrayFormControl
+            <TestArrayFormControl
                 {...arrayProps}
                 schema={schema}
                 data={["foo"]}
@@ -134,7 +137,7 @@ describe("ArrayFormControl", () => {
     test("should show a remove button on an existing array item if the minimum number of items has not been reached", () => {
         const callback: any = jest.fn();
         const rendered: any = mount(
-            <ArrayFormControl
+            <TestArrayFormControl
                 {...arrayProps}
                 schema={schema}
                 data={["foo", "bar", "bat"]}
@@ -151,7 +154,7 @@ describe("ArrayFormControl", () => {
     test("should show a remove button on an existing array item if the minimum number of items has not been specified", () => {
         const callback: any = jest.fn();
         const rendered: any = mount(
-            <ArrayFormControl
+            <TestArrayFormControl
                 {...arrayProps}
                 data={["foo", "bar"]}
                 managedClasses={managedClasses}
@@ -167,7 +170,7 @@ describe("ArrayFormControl", () => {
     test("should not show a remove button on existing array items if the minimum number of items has been reached", () => {
         const callback: any = jest.fn();
         const rendered: any = mount(
-            <ArrayFormControl
+            <TestArrayFormControl
                 {...arrayProps}
                 schema={schema}
                 data={["foo", "bar"]}
@@ -184,7 +187,7 @@ describe("ArrayFormControl", () => {
     test("should remove an array item if the remove button has been clicked", () => {
         const callback: any = jest.fn();
         const rendered: any = mount(
-            <ArrayFormControl
+            <TestArrayFormControl
                 {...arrayProps}
                 schema={schema}
                 data={["foo", "bar", "bat"]}
@@ -206,7 +209,7 @@ describe("ArrayFormControl", () => {
     test("should remove the data if the soft remove is triggered", () => {
         const callback: any = jest.fn();
         const rendered: any = mount(
-            <ArrayFormControl
+            <TestArrayFormControl
                 {...arrayProps}
                 schema={schema}
                 data={["foo", "bar", "bat"]}
@@ -227,7 +230,7 @@ describe("ArrayFormControl", () => {
         const callback: any = jest.fn();
         const data: string[] = ["foo", "bar", "bat"];
         const rendered: any = mount(
-            <ArrayFormControl
+            <TestArrayFormControl
                 {...arrayProps}
                 schema={schema}
                 data={data}
@@ -254,7 +257,7 @@ describe("ArrayFormControl", () => {
     test("should not show an invalid message inline if `invalidMessage` is passed and `displayValidationInline` is undefined", () => {
         const invalidMessage: string = "Foo";
         const rendered: any = mount(
-            <ArrayFormControl
+            <TestArrayFormControl
                 {...arrayProps}
                 managedClasses={managedClasses}
                 invalidMessage={invalidMessage}
@@ -266,7 +269,7 @@ describe("ArrayFormControl", () => {
     test("should show an invalid message inline if `invalidMessage` is passed and `displayValidationInline` is true", () => {
         const invalidMessage: string = "Foo";
         const rendered: any = mount(
-            <ArrayFormControl
+            <TestArrayFormControl
                 {...arrayProps}
                 managedClasses={managedClasses}
                 invalidMessage={invalidMessage}
@@ -280,7 +283,7 @@ describe("ArrayFormControl", () => {
         const invalidMessage1: string = "Foo";
         const invalidMessage2: string = "Bar";
         const rendered: any = mount(
-            <ArrayFormControl
+            <TestArrayFormControl
                 {...arrayProps}
                 managedClasses={managedClasses}
                 invalidMessage={invalidMessage1}
@@ -297,7 +300,7 @@ describe("ArrayFormControl", () => {
     test("should add an invalid data class if there is an invalid message", () => {
         const invalidMessage: string = "Foo";
         const rendered: any = mount(
-            <ArrayFormControl
+            <TestArrayFormControl
                 {...arrayProps}
                 managedClasses={managedClasses}
                 invalidMessage={invalidMessage}
@@ -311,7 +314,7 @@ describe("ArrayFormControl", () => {
     test("should not add an invalid data class if an invalid message has not been passed", () => {
         const invalidMessage: string = "";
         const rendered: any = mount(
-            <ArrayFormControl
+            <TestArrayFormControl
                 {...arrayProps}
                 managedClasses={managedClasses}
                 invalidMessage={invalidMessage}
@@ -324,7 +327,7 @@ describe("ArrayFormControl", () => {
     });
     test("should show a default indicator if default values exist and no data is available", () => {
         const rendered: any = mount(
-            <ArrayFormControl
+            <TestArrayFormControl
                 {...arrayProps}
                 data={undefined}
                 default={[]}
@@ -338,7 +341,7 @@ describe("ArrayFormControl", () => {
     });
     test("should not show a default indicator if data exists", () => {
         const rendered: any = mount(
-            <ArrayFormControl
+            <TestArrayFormControl
                 {...arrayProps}
                 data={[]}
                 default={[]}
@@ -354,7 +357,7 @@ describe("ArrayFormControl", () => {
         const defaultValue: string[] = [];
         const callback: any = jest.fn();
         const rendered: any = mount(
-            <ArrayFormControl
+            <TestArrayFormControl
                 {...arrayProps}
                 onChange={callback}
                 data={undefined}
@@ -379,7 +382,7 @@ describe("ArrayFormControl", () => {
         const defaultArrayItem1: string = "foo";
         const defaultArrayItem2: string = "bar";
         const rendered: any = mount(
-            <ArrayFormControl
+            <TestArrayFormControl
                 {...arrayProps}
                 data={undefined}
                 default={[defaultArrayItem1, defaultArrayItem2]}
@@ -396,7 +399,7 @@ describe("ArrayFormControl", () => {
         const defaultArrayItem1: string = "hello";
         const defaultArrayItem2: string = "world";
         const rendered: any = mount(
-            <ArrayFormControl
+            <TestArrayFormControl
                 {...arrayProps}
                 data={[arrayItem1, arrayItem2]}
                 default={[defaultArrayItem1, defaultArrayItem2]}

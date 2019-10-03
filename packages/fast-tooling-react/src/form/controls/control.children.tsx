@@ -1,8 +1,6 @@
 import { generateExampleData } from "../utilities";
 import React from "react";
-import { cloneDeep, get, uniqueId } from "lodash-es";
-import HTML5Backend from "react-dnd-html5-backend";
-import { ContextComponent, DragDropContext } from "react-dnd";
+import { get, uniqueId } from "lodash-es";
 import {
     keyCodeArrowDown,
     keyCodeArrowUp,
@@ -864,8 +862,5 @@ class ChildrenFormControl extends BaseFormControl<
     }
 }
 
-const TestChildrenFormControl: typeof ChildrenFormControl &
-    ContextComponent<any> = DragDropContext(HTML5Backend)(ChildrenFormControl);
-
-export { TestChildrenFormControl };
-export default DragDropContext(HTML5Backend)(manageJss(styles)(ChildrenFormControl));
+export { ChildrenFormControl };
+export default manageJss(styles)(ChildrenFormControl);
