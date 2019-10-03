@@ -1,7 +1,5 @@
 import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 import React from "react";
-import HTML5Backend from "react-dnd-html5-backend";
-import { ContextComponent, DragDropContext } from "react-dnd";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { get, uniqueId } from "lodash-es";
 import { generateExampleData, getArrayLinks, isRootLocation } from "../utilities";
@@ -377,8 +375,5 @@ class ArrayFormControl extends BaseFormControl<
     };
 }
 
-const TestArrayFormControl: typeof ArrayFormControl &
-    ContextComponent<any> = DragDropContext(HTML5Backend)(ArrayFormControl);
-
-export { TestArrayFormControl };
-export default DragDropContext(HTML5Backend)(manageJss(styles)(ArrayFormControl));
+export { ArrayFormControl };
+export default manageJss(styles)(ArrayFormControl);

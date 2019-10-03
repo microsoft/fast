@@ -1,5 +1,5 @@
 import React from "react";
-import { get, omit, uniqueId } from "lodash-es";
+import { get, omit } from "lodash-es";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 import FormCategory from "./form-category";

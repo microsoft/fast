@@ -1,16 +1,21 @@
 import React from "react";
 import Adapter from "enzyme-adapter-react-16";
 import { configure, mount, ReactWrapper } from "enzyme";
+import HTML5Backend from "react-dnd-html5-backend";
+import { ContextComponent, DragDropContext } from "react-dnd";
 import {
     keyCodeArrowDown,
     keyCodeArrowUp,
     keyCodeEnter,
 } from "@microsoft/fast-web-utilities";
-import { TestChildrenFormControl as ChildrenFormControl } from "./control.children";
+import { ChildrenFormControl } from "./control.children";
 import {
     ChildrenFormControlClassNameContract,
     ChildrenFormControlProps,
 } from "./control.children.props";
+
+const ChildrenFormControlWithDragAndDrop: typeof ChildrenFormControl &
+    ContextComponent<any> = DragDropContext(HTML5Backend)(ChildrenFormControl);
 
 /*
  * Configure Enzyme
@@ -96,20 +101,29 @@ describe("ChildrenFormControl", () => {
     test("should not throw", () => {
         expect(() => {
             mount(
-                <ChildrenFormControl {...childrenProps} managedClasses={managedClasses} />
+                <ChildrenFormControlWithDragAndDrop
+                    {...childrenProps}
+                    managedClasses={managedClasses}
+                />
             );
         }).not.toThrow();
     });
     test("should generate a text input", () => {
         const rendered: any = mount(
-            <ChildrenFormControl {...childrenProps} managedClasses={managedClasses} />
+            <ChildrenFormControlWithDragAndDrop
+                {...childrenProps}
+                managedClasses={managedClasses}
+            />
         );
 
         expect(rendered.find("input")).toHaveLength(1);
     });
     test("should add an `aria-autocomplete` with `list` value on a text input", () => {
         const rendered: any = mount(
-            <ChildrenFormControl {...childrenProps} managedClasses={managedClasses} />
+            <ChildrenFormControlWithDragAndDrop
+                {...childrenProps}
+                managedClasses={managedClasses}
+            />
         );
         const input: any = rendered.find("input");
 
@@ -117,21 +131,30 @@ describe("ChildrenFormControl", () => {
     });
     test("should generate a button", () => {
         const rendered: any = mount(
-            <ChildrenFormControl {...childrenProps} managedClasses={managedClasses} />
+            <ChildrenFormControlWithDragAndDrop
+                {...childrenProps}
+                managedClasses={managedClasses}
+            />
         );
 
         expect(rendered.find("button")).toHaveLength(1);
     });
     test("should generate a label", () => {
         const rendered: any = mount(
-            <ChildrenFormControl {...childrenProps} managedClasses={managedClasses} />
+            <ChildrenFormControlWithDragAndDrop
+                {...childrenProps}
+                managedClasses={managedClasses}
+            />
         );
 
         expect(rendered.find("label")).toHaveLength(1);
     });
     test("should generate a listbox", () => {
         const rendered: any = mount(
-            <ChildrenFormControl {...childrenProps} managedClasses={managedClasses} />
+            <ChildrenFormControlWithDragAndDrop
+                {...childrenProps}
+                managedClasses={managedClasses}
+            />
         );
         const listbox: any = rendered.find("ul");
 
@@ -140,7 +163,10 @@ describe("ChildrenFormControl", () => {
     });
     test("should add an `aria-controls` on a text input with the same value as the id of the `listbox`", () => {
         const rendered: any = mount(
-            <ChildrenFormControl {...childrenProps} managedClasses={managedClasses} />
+            <ChildrenFormControlWithDragAndDrop
+                {...childrenProps}
+                managedClasses={managedClasses}
+            />
         );
         const inputAriaControls: string = rendered.find("input").props()["aria-controls"];
         const listboxId: string = rendered.find("ul").props()["id"];
@@ -149,7 +175,10 @@ describe("ChildrenFormControl", () => {
     });
     test("should add an `aria-labelledby` on a text input with the same value as the id of the `label`", () => {
         const rendered: any = mount(
-            <ChildrenFormControl {...childrenProps} managedClasses={managedClasses} />
+            <ChildrenFormControlWithDragAndDrop
+                {...childrenProps}
+                managedClasses={managedClasses}
+            />
         );
         const inputAriaLabelledby: string = rendered.find("input").props()[
             "aria-labelledby"
@@ -160,7 +189,10 @@ describe("ChildrenFormControl", () => {
     });
     test("should have a listbox with an `aria-hidden` attribute set to `true`", () => {
         const rendered: any = mount(
-            <ChildrenFormControl {...childrenProps} managedClasses={managedClasses} />
+            <ChildrenFormControlWithDragAndDrop
+                {...childrenProps}
+                managedClasses={managedClasses}
+            />
         );
         const listbox: any = rendered.find("ul");
 
@@ -168,7 +200,10 @@ describe("ChildrenFormControl", () => {
     });
     test("should have a listbox with an `aria-hidden` attribute set to `false` when the button is clicked", () => {
         const rendered: any = mount(
-            <ChildrenFormControl {...childrenProps} managedClasses={managedClasses} />
+            <ChildrenFormControlWithDragAndDrop
+                {...childrenProps}
+                managedClasses={managedClasses}
+            />
         );
         const button: any = rendered.find("button");
 
@@ -180,7 +215,10 @@ describe("ChildrenFormControl", () => {
     });
     test("should generate options based on the `childOptions` provided", () => {
         const rendered: any = mount(
-            <ChildrenFormControl {...childrenProps} managedClasses={managedClasses} />
+            <ChildrenFormControlWithDragAndDrop
+                {...childrenProps}
+                managedClasses={managedClasses}
+            />
         );
         const listboxItems: any = rendered.find("ul li");
 
@@ -188,7 +226,10 @@ describe("ChildrenFormControl", () => {
     });
     test("should generate options based on the `childOptions` provided and filtered by a search term", () => {
         const rendered: any = mount(
-            <ChildrenFormControl {...childrenProps} managedClasses={managedClasses} />
+            <ChildrenFormControlWithDragAndDrop
+                {...childrenProps}
+                managedClasses={managedClasses}
+            />
         );
         const input: any = rendered.find("input");
 
@@ -200,7 +241,10 @@ describe("ChildrenFormControl", () => {
     });
     test("should have a listbox that can be navigated by the `down` key", () => {
         const rendered: any = mount(
-            <ChildrenFormControl {...childrenProps} managedClasses={managedClasses} />
+            <ChildrenFormControlWithDragAndDrop
+                {...childrenProps}
+                managedClasses={managedClasses}
+            />
         );
         const button: any = rendered.find("button");
         const input: any = rendered.find("input");
@@ -261,7 +305,10 @@ describe("ChildrenFormControl", () => {
     });
     test("should have a listbox that can be navigated by the `up` key", () => {
         const rendered: any = mount(
-            <ChildrenFormControl {...childrenProps} managedClasses={managedClasses} />
+            <ChildrenFormControlWithDragAndDrop
+                {...childrenProps}
+                managedClasses={managedClasses}
+            />
         );
         const button: any = rendered.find("button");
         const input: any = rendered.find("input");
@@ -322,7 +369,7 @@ describe("ChildrenFormControl", () => {
     });
     test("should show if children are present in the data as an item with a button", () => {
         const renderedWithOneChild: any = mount(
-            <ChildrenFormControl
+            <ChildrenFormControlWithDragAndDrop
                 {...childrenProps}
                 data={{ id: "alpha", props: {} }}
                 managedClasses={managedClasses}
@@ -337,7 +384,7 @@ describe("ChildrenFormControl", () => {
         ).toHaveLength(1);
 
         const renderedWithOneChildString: any = mount(
-            <ChildrenFormControl
+            <ChildrenFormControlWithDragAndDrop
                 {...childrenProps}
                 data={"hello world"}
                 managedClasses={managedClasses}
@@ -352,7 +399,7 @@ describe("ChildrenFormControl", () => {
         ).toHaveLength(1);
 
         const renderedWithThreeChildren: any = mount(
-            <ChildrenFormControl
+            <ChildrenFormControlWithDragAndDrop
                 {...childrenProps}
                 managedClasses={managedClasses}
                 data={[
@@ -379,7 +426,7 @@ describe("ChildrenFormControl", () => {
     test("should fire a callback to update the data when an `option` in the `listbox` is clicked", () => {
         const callback: any = jest.fn();
         const rendered: any = mount(
-            <ChildrenFormControl
+            <ChildrenFormControlWithDragAndDrop
                 {...childrenProps}
                 onChange={callback}
                 managedClasses={managedClasses}
@@ -400,7 +447,7 @@ describe("ChildrenFormControl", () => {
     test("should fire a callback to update the data when a default text `option` in the `listbox` is clicked", () => {
         const callback: any = jest.fn();
         const rendered: any = mount(
-            <ChildrenFormControl
+            <ChildrenFormControlWithDragAndDrop
                 {...childrenProps}
                 managedClasses={managedClasses}
                 defaultChildOptions={["text"]}
@@ -424,7 +471,7 @@ describe("ChildrenFormControl", () => {
         const childItem: any = Symbol();
         const callback: any = jest.fn();
         const rendered: ReactWrapper = mount(
-            <ChildrenFormControl
+            <ChildrenFormControlWithDragAndDrop
                 {...childrenProps}
                 onUpdateActiveSection={callback}
                 managedClasses={managedClasses}
@@ -451,7 +498,7 @@ describe("ChildrenFormControl", () => {
     test("should update active section to item clicked when ctrl key is pressed and a new item is provided to an existing set of items", () => {
         const callback: any = jest.fn();
         const rendered: ReactWrapper = mount(
-            <ChildrenFormControl
+            <ChildrenFormControlWithDragAndDrop
                 {...childrenProps}
                 data={[Symbol(), Symbol()]}
                 onUpdateActiveSection={callback}
@@ -479,7 +526,7 @@ describe("ChildrenFormControl", () => {
     test("should not add a child option to the data when a value has been added to the `input` that is an empty string", () => {
         const callback: any = jest.fn();
         const rendered: any = mount(
-            <ChildrenFormControl
+            <ChildrenFormControlWithDragAndDrop
                 {...childrenProps}
                 onChange={callback}
                 managedClasses={managedClasses}
@@ -494,7 +541,7 @@ describe("ChildrenFormControl", () => {
     test("should not add a child option to the data when a value has been added to the `input` that does not partially match any of the options", () => {
         const callback: any = jest.fn();
         const rendered: any = mount(
-            <ChildrenFormControl
+            <ChildrenFormControlWithDragAndDrop
                 {...childrenProps}
                 onChange={callback}
                 managedClasses={managedClasses}
@@ -509,7 +556,7 @@ describe("ChildrenFormControl", () => {
     test("should add a child option to the data when a value has been added to the `input` that at least partially matches one of the options", () => {
         const callback: any = jest.fn();
         const rendered: any = mount(
-            <ChildrenFormControl
+            <ChildrenFormControlWithDragAndDrop
                 {...childrenProps}
                 onChange={callback}
                 managedClasses={managedClasses}
@@ -525,7 +572,7 @@ describe("ChildrenFormControl", () => {
     test("should remove a child option from the data when the remove button has been clicked", () => {
         const callback: any = jest.fn();
         const renderedWithTwoChildren: any = mount(
-            <ChildrenFormControl
+            <ChildrenFormControlWithDragAndDrop
                 {...childrenProps}
                 managedClasses={managedClasses}
                 data={[
@@ -556,7 +603,7 @@ describe("ChildrenFormControl", () => {
     });
     test("should show a default indicator if default values exist and no data is available", () => {
         const rendered: any = mount(
-            <ChildrenFormControl
+            <ChildrenFormControlWithDragAndDrop
                 {...childrenProps}
                 managedClasses={managedClasses}
                 data={undefined}
@@ -570,7 +617,7 @@ describe("ChildrenFormControl", () => {
     });
     test("should not show a default indicator if data exists", () => {
         const rendered: any = mount(
-            <ChildrenFormControl
+            <ChildrenFormControlWithDragAndDrop
                 {...childrenProps}
                 managedClasses={managedClasses}
                 data={"foo"}
@@ -586,7 +633,7 @@ describe("ChildrenFormControl", () => {
         const defaultValue: string = "foo";
         const callback: any = jest.fn();
         const rendered: any = mount(
-            <ChildrenFormControl
+            <ChildrenFormControlWithDragAndDrop
                 {...childrenProps}
                 managedClasses={managedClasses}
                 data={undefined}
@@ -608,7 +655,7 @@ describe("ChildrenFormControl", () => {
     test("should show default values if they exist and no data is available", () => {
         const children: string = "foo";
         const rendered: any = mount(
-            <ChildrenFormControl
+            <ChildrenFormControlWithDragAndDrop
                 {...childrenProps}
                 managedClasses={managedClasses}
                 data={undefined}
@@ -622,7 +669,7 @@ describe("ChildrenFormControl", () => {
         const children: string = "foo";
         const defaultChildren: string = "bar";
         const rendered: any = mount(
-            <ChildrenFormControl
+            <ChildrenFormControlWithDragAndDrop
                 {...childrenProps}
                 managedClasses={managedClasses}
                 data={children}
