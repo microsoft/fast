@@ -453,11 +453,11 @@ describe("Form", () => {
             />
         );
 
-        expect(rendered.find("ArrayFormControl")).toHaveLength(2);
-        expect(rendered.find("ArrayFormControl").get(0).props.invalidMessage).toEqual(
+        expect(rendered.find("ArrayControl")).toHaveLength(2);
+        expect(rendered.find("ArrayControl").get(0).props.invalidMessage).toEqual(
             "should be array"
         );
-        expect(rendered.find("ArrayFormControl").get(1).props.invalidMessage).toEqual(
+        expect(rendered.find("ArrayControl").get(1).props.invalidMessage).toEqual(
             "Contains invalid data"
         );
     });
