@@ -7,19 +7,10 @@ import { REQUEST_DESIGN_SYSTEM_EVENT, UPDATE_DESIGN_SYSTEM_EVENT } from "./const
 import Channel from "@storybook/channels";
 import { create } from "jss";
 import jssNested from "jss-plugin-nested";
-import { uniqueId } from "lodash-es";
 
 const jssInstance: ReturnType<create> = create();
 jssInstance.use(jssNested());
 JSSManager.jss = jssInstance;
-JSSManager.generateClassNameFactory = (designSystem: any): any => {
-    console.log("WTF")
-    return (sheet: any, rules: any): any => {
-        console.log(designSystem, sheet, rules);
-
-        return uniqueId("foobar");
-    }
-}
 
 interface DesignSystemDecoratorProps {
     channel: ReturnType<typeof addons.getChannel>;

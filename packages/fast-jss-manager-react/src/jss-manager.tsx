@@ -151,7 +151,7 @@ abstract class JSSManager<T, S, C> extends React.Component<ManagedJSSProps<T, S,
                 }
 
                 if (typeof JSSManager.generateClassNameFactory === "function") {
-                    options.generateClassNames = JSSManager.generateClassNameFactory(this.designSystem);
+                    options.generateClassName = JSSManager.generateClassNameFactory(this.designSystem);
                 }
 
                 JSSManager.sheetManager.add(this.styles, this.designSystem, options);
@@ -311,7 +311,7 @@ abstract class JSSManager<T, S, C> extends React.Component<ManagedJSSProps<T, S,
         }
 
         if (typeof JSSManager.generateClassNameFactory === "function") {
-            options.generateClassNames = JSSManager.generateClassNameFactory(designSystem);
+            options.generateClassName = JSSManager.generateClassNameFactory(designSystem);
         }
 
         JSSManager.sheetManager.add(this.props.jssStyleSheet, designSystem, options);
