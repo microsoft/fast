@@ -1,93 +1,56 @@
 import React from "react";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
-import { get } from "lodash-es";
-import styles from "./control.section-link.style";
-import {
-    SectionLinkFormControlClassNameContract,
-    SectionLinkFormControlProps,
-} from "./control.section-link.props";
-import BaseFormControl from "./template.control.abstract";
+import { classNames } from "@microsoft/fast-web-utilities";
+import styles, {
+    SectionLinkControlClassNameContract,
+} from "./control.section-link.style";
+import { SectionLinkControlProps } from "./control.section-link.props";
 
 /**
- * Schema form component definition
- * @extends BaseFormControl
+ * Form control definition
  */
 /* tslint:disable-next-line */
-class SectionLinkFormControl extends BaseFormControl<
-    SectionLinkFormControlProps & ManagedClasses<SectionLinkFormControlClassNameContract>,
+class SectionLinkControl extends React.Component<
+    SectionLinkControlProps & ManagedClasses<SectionLinkControlClassNameContract>,
     {}
 > {
-    public static displayName: string = "SectionLinkFormControl";
+    public static displayName: string = "SectionLinkControl";
 
-    /**
-     * Renders the component
-     */
-    public render(): JSX.Element {
+    public static defaultProps: Partial<
+        SectionLinkControlProps & ManagedClasses<SectionLinkControlClassNameContract>
+    > = {
+        managedClasses: {},
+    };
+
+    public render(): React.ReactNode {
+        const {
+            sectionLinkControl,
+            sectionLinkControl__disabled,
+            sectionLinkControl__invalid,
+        }: SectionLinkControlClassNameContract = this.props.managedClasses;
+
         return (
-            <div className={this.props.managedClasses.sectionLinkFormControl}>
-                <div
-                    className={get(
-                        this.props,
-                        "managedClasses.sectionLinkFormControl_controlRegion"
-                    )}
-                >
-                    <a
-                        className={this.getAnchorClassNames()}
-                        onClick={this.handleUpdateSection}
-                    >
-                        {this.props.label}
-                    </a>
-                    {this.renderDefaultValueIndicator(
-                        get(
-                            this.props,
-                            "managedClasses.sectionLinkFormControl_defaultValueIndicator"
-                        )
-                    )}
-                    {this.renderBadge(
-                        get(this.props, "managedClasses.sectionLinkFormControl_badge")
-                    )}
-                    <div
-                        className={
-                            this.props.managedClasses.sectionLinkFormControl_softRemove
-                        }
-                    >
-                        {this.renderSoftRemove(
-                            this.props.managedClasses
-                                .sectionLinkFormControl_softRemoveInput
-                        )}
-                    </div>
-                </div>
-                {this.renderInvalidMessage(
-                    get(
-                        this.props,
-                        "managedClasses.sectionLinkFormControl_invalidMessage"
-                    )
+            <a
+                className={classNames(
+                    sectionLinkControl,
+                    [sectionLinkControl__disabled, this.props.disabled],
+                    [sectionLinkControl__invalid, this.props.invalidMessage !== ""]
                 )}
-            </div>
+                onClick={this.handleUpdateSection}
+            >
+                Edit: {this.props.label}
+            </a>
         );
     }
 
     private handleUpdateSection = (e: React.MouseEvent<HTMLAnchorElement>): void => {
-        this.props.onUpdateSection(this.props.schemaLocation, this.props.dataLocation);
+        this.props.onUpdateSection({
+            schemaLocation: this.props.schemaLocation,
+            dataLocation: this.props.dataLocation,
+        });
     };
-
-    private getAnchorClassNames(): string {
-        let classes: string = get(
-            this.props,
-            "managedClasses.sectionLinkFormControl_anchor"
-        );
-
-        if (this.props.invalidMessage !== "") {
-            classes += ` ${get(
-                this.props,
-                "managedClasses.sectionLinkFormControl_anchor__invalid"
-            )}`;
-        }
-
-        return classes;
-    }
 }
 
-export { SectionLinkFormControl };
-export default manageJss(styles)(SectionLinkFormControl);
+export { SectionLinkControl };
+export default manageJss(styles)(SectionLinkControl);

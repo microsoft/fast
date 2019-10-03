@@ -14,14 +14,6 @@ export type PropsOnChange = (data: any) => void;
 
 export type SchemaOnChange = (schema: any) => void;
 
-export type DataOnChange = (
-    location: string,
-    data: any,
-    isArray?: boolean,
-    index?: number,
-    isChildren?: boolean
-) => void;
-
 export type LocationOnChange = (dataLocation: string) => void;
 
 export type BreadcrumbItemEventHandler = (e: React.MouseEvent<HTMLAnchorElement>) => void;

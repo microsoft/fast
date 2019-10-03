@@ -9,6 +9,7 @@ import HTML5Backend from "react-dnd-html5-backend";
 const TestFormSection: typeof FormSection & ContextComponent<any> = DragDropContext(
     HTML5Backend
 )(FormSection);
+import { controls } from "./form-control-switch.spec";
 
 /*
  * Configure Enzyme
@@ -18,12 +19,13 @@ configure({ adapter: new Adapter() });
 const formSectionProps: FormSectionProps = {
     dataLocation: "",
     schemaLocation: "",
+    controls,
     childOptions: [],
     schema: {},
     data: "",
     untitled: "",
     onChange: jest.fn(),
-    onUpdateActiveSection: jest.fn(),
+    onUpdateSection: jest.fn(),
     validationErrors: null,
     default: {},
 };

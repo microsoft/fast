@@ -1,59 +1,21 @@
 import { ComponentStyles } from "@microsoft/fast-jss-manager-react";
-import {
-    applyControl,
-    applyControlRegion,
-    applyControlWrapper,
-    applyFormControlDisabled,
-    applyFormControlIndicator,
-    applyInputStyle,
-    applyInteractiveFormControlIndicator,
-    applyInvalidMessage,
-    applyLabelRegionStyle,
-    applyLabelStyle,
-    applySoftRemove,
-    applySoftRemoveInput,
-} from "../../style";
-import { ButtonFormControlClassNameContract } from "./control.button.props";
+import { applyInputStyle } from "../../style";
 
-const styles: ComponentStyles<ButtonFormControlClassNameContract, {}> = {
-    buttonFormControl: {
-        ...applyControlWrapper(),
-    },
-    buttonFormControl__disabled: {
-        ...applyFormControlDisabled(),
-    },
-    buttonFormControl_badge: {
-        ...applyFormControlIndicator(),
-    },
-    buttonFormControl_control: {
-        ...applyControl(),
-    },
-    buttonFormControl_controlRegion: {
-        ...applyControlRegion(),
-    },
-    buttonFormControl_controlLabel: {
-        ...applyLabelStyle(),
-    },
-    buttonFormControl_controlLabelRegion: {
-        ...applyLabelRegionStyle(),
-    },
-    buttonFormControl_controlInput: {
+/**
+ * Button class name contract
+ */
+export interface ButtonControlClassNameContract {
+    buttonControl?: string;
+    buttonControl__disabled?: string;
+}
+
+const styles: ComponentStyles<ButtonControlClassNameContract, {}> = {
+    buttonControl: {
         ...applyInputStyle(),
         width: "100%",
         textAlign: "start",
     },
-    buttonFormControl_defaultValueIndicator: {
-        ...applyInteractiveFormControlIndicator(),
-    },
-    buttonFormControl_softRemove: {
-        ...applySoftRemove(),
-    },
-    buttonFormControl_softRemoveInput: {
-        ...applySoftRemoveInput(),
-    },
-    buttonFormControl_invalidMessage: {
-        ...applyInvalidMessage(),
-    },
+    buttonControl__disabled: {},
 };
 
 export default styles;
