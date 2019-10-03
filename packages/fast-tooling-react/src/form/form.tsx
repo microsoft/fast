@@ -553,4 +553,4 @@ class Form extends React.Component<
 }
 
 export { FormChildOptionItem, FormClassNameContract };
-export default DragDropContext(HTML5Backend)(manageJss(styles)(Form));
+export default manageJss(styles)(Form);
