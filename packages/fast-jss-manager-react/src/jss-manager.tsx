@@ -76,7 +76,7 @@ abstract class JSSManager<T, S, C> extends React.Component<ManagedJSSProps<T, S,
      * Retrieves a class name generation function that can be informed by the contextual design system.
      * Note that class-names are only generated once per sheet even if the contextual design system changes
      */
-    public static generateClassNameFactory: (
+    public static createGenerateClassName: (
         designSystem: unknown
     ) => (sheet: unknown, rules: unknown) => string;
 
@@ -150,8 +150,8 @@ abstract class JSSManager<T, S, C> extends React.Component<ManagedJSSProps<T, S,
                     index: this.index,
                 }
 
-                if (typeof JSSManager.generateClassNameFactory === "function") {
-                    options.generateClassName = JSSManager.generateClassNameFactory(this.designSystem);
+                if (typeof JSSManager.createGenerateClassName === "function") {
+                    options.generateClassName = JSSManager.createGenerateClassName(this.designSystem);
                 }
 
                 JSSManager.sheetManager.add(this.styles, this.designSystem, options);
@@ -310,8 +310,8 @@ abstract class JSSManager<T, S, C> extends React.Component<ManagedJSSProps<T, S,
             index: stylesheet ? stylesheet.options.index + 1 : this.index + 1,
         }
 
-        if (typeof JSSManager.generateClassNameFactory === "function") {
-            options.generateClassName = JSSManager.generateClassNameFactory(designSystem);
+        if (typeof JSSManager.createGenerateClassName === "function") {
+            options.generateClassName = JSSManager.createGenerateClassName(designSystem);
         }
 
         JSSManager.sheetManager.add(this.props.jssStyleSheet, designSystem, options);
