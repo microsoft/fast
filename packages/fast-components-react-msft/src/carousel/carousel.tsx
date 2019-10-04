@@ -27,6 +27,7 @@ class Carousel extends Foundation<
     public static defaultProps: Partial<CarouselProps> = {
         autoplay: false,
         autoplayInterval: 6000,
+        loop: true,
         managedClasses: {},
     };
 
@@ -56,6 +57,7 @@ class Carousel extends Foundation<
         nextFlipper: void 0,
         previousFlipper: void 0,
         label: void 0,
+        loop: void 0,
         activeId: void 0,
         onActiveIdUpdate: void 0,
         items: void 0,
@@ -224,6 +226,33 @@ class Carousel extends Foundation<
     }
 
     /**
+     * Check if it is the FIRST slide for looping
+     */
+    private get isFirstSlide(): boolean {
+        if (this.props.items.length) {
+            const firstSlideId: string = this.props.items[0].id;
+            if (firstSlideId) {
+                return firstSlideId === this.state.activeId;
+            }
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Check if it is the LAST slide for looping
+     */
+    private get isLastSlide(): boolean {
+        const lastItemKey: number = this.props.items.length - 1;
+        if (lastItemKey >= 0) {
+            const lastSlideId: string = this.props.items[lastItemKey].id;
+            return lastSlideId === this.state.activeId;
+        } else {
+            return false;
+        }
+    }
+
+    /**
      * Get the active slide index
      */
     private getActiveIndex(): number {
@@ -295,6 +324,9 @@ class Carousel extends Foundation<
         if (!this.isMultipleSlides) {
             return;
         }
+        if (this.isFirstSlide && !this.props.loop) {
+            return;
+        }
 
         const previousFlipperClassName: string = this.props.managedClasses
             .carousel_flipperPrevious;
@@ -320,6 +352,9 @@ class Carousel extends Foundation<
      */
     private generateNextFlipper(): any {
         if (!this.isMultipleSlides) {
+            return;
+        }
+        if (this.isLastSlide && !this.props.loop) {
             return;
         }
 

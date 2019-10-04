@@ -340,13 +340,11 @@ describe("carousel", (): void => {
 
         test("should return a next flipper by default when no `nextFlipper` prop is passed", () => {
             const rendered: any = mount(<MSFTCarousel {...props} />);
-
             expect(rendered.find(".carousel_next").first().length).toBe(1);
         });
 
         test("should return a previous flipper by default when no `previousFlipper` prop is passed", () => {
             const rendered: any = mount(<MSFTCarousel {...props} />);
-
             expect(rendered.find(".carousel_previous").first().length).toBe(1);
         });
 
@@ -486,6 +484,46 @@ describe("carousel", (): void => {
             rendered.simulate("mouseLeave");
 
             expect(mockLeave).toHaveBeenCalledTimes(1);
+        });
+    });
+
+    describe("loop", (): void => {
+        const props: CarouselProps = {
+            ...handledProps,
+            managedClasses: {
+                carousel: "carousel",
+                carousel_flipperNext: "carousel_next",
+                carousel_flipperPrevious: "carousel_previous",
+            },
+        };
+
+        test("should initialize with `loop` defaulted to true", () => {
+            const rendered: any = mount(<MSFTCarousel {...props} />);
+
+            expect(rendered.props().loop).toBe(true);
+        });
+
+        test("should set `loop` to false when `loop` is passed as false", () => {
+            const rendered: any = mount(<MSFTCarousel {...props} loop={false} />);
+
+            expect(rendered.props().loop).toBe(false);
+        });
+
+        test("should not generate a previous flipper for first slide when `loop` is passed as false", () => {
+            const rendered: any = mount(<MSFTCarousel {...props} loop={false} />);
+
+            expect(rendered.state("activeId")).toBe("id01");
+            expect(rendered.exists(".carousel_next")).toBe(true);
+            expect(rendered.exists(".carousel_previous")).toBe(false);
+        });
+
+        test("should not generate a next flipper for last slide when `loop` is passed as false", () => {
+            const rendered: any = mount(<MSFTCarousel {...props} loop={false} />);
+            rendered.setState({ activeId: "id03" });
+
+            expect(rendered.state("activeId")).toBe("id03");
+            expect(rendered.exists(".carousel_previous")).toBe(true);
+            expect(rendered.exists(".carousel_next")).toBe(false);
         });
     });
 });

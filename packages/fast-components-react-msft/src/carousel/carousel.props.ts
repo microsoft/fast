@@ -72,6 +72,11 @@ export interface CarouselHandledProps extends CarouselManagedClasses {
     items: CarouselSlide[];
 
     /**
+     * Loop the carousel
+     */
+    loop?: boolean;
+
+    /**
      * The carousel next flipper
      */
     nextFlipper?: (
