@@ -5,25 +5,25 @@ import FormControlSwitch, { FormControlSwitchProps } from "./form-control-switch
 import { ContextComponent, DragDropContext } from "react-dnd";
 import HTML5Backend from "react-dnd-html5-backend";
 
+import numberFieldSchema from "../__tests__/schemas/number-field.schema.json";
 import textareaSchema from "../__tests__/schemas/textarea.schema.json";
-import oneOfSchema from "../__tests__/schemas/one-of.schema.json";
 import checkboxSchema from "../__tests__/schemas/checkbox.schema.json";
 import objectSchema from "../__tests__/schemas/objects.schema.json";
 import arraySchema from "../__tests__/schemas/arrays.schema.json";
 import childrenSchema from "../__tests__/schemas/children.schema.json";
-import numberFieldSchema from "../__tests__/schemas/number-field.schema.json";
+import oneOfSchema from "../__tests__/schemas/one-of.schema.json";
 import {
     ArrayControlConfig,
     ChildrenControlConfig,
     CommonControlConfig,
     ControlConfig,
     ControlContext,
-    LinkControlConfig,
     ListControlConfig,
-    NumberTypeControlConfig,
+    NumberFieldTypeControlConfig,
+    SectionLinkControlConfig,
     SingleLineControlPlugin,
     StandardControlPlugin,
-    TextboxControlConfig,
+    TextareaControlConfig,
 } from "./templates";
 import {
     ArrayControl,
@@ -56,7 +56,7 @@ const childrenControl: StandardControlPlugin = new StandardControlPlugin({
     },
 });
 const numberFieldControl: StandardControlPlugin = new StandardControlPlugin({
-    control: (config: NumberTypeControlConfig): React.ReactNode => {
+    control: (config: NumberFieldTypeControlConfig): React.ReactNode => {
         return <NumberFieldControl {...config} />;
     },
 });
@@ -66,12 +66,12 @@ const checkboxControl: SingleLineControlPlugin = new SingleLineControlPlugin({
     },
 });
 const sectionLinkControl: StandardControlPlugin = new StandardControlPlugin({
-    control: (config: LinkControlConfig): React.ReactNode => {
+    control: (config: SectionLinkControlConfig): React.ReactNode => {
         return <SectionLinkControl {...config} />;
     },
 });
 const textareaControl: StandardControlPlugin = new StandardControlPlugin({
-    control: (config: TextboxControlConfig): React.ReactNode => {
+    control: (config: TextareaControlConfig): React.ReactNode => {
         return <TextareaControl {...config} />;
     },
 });

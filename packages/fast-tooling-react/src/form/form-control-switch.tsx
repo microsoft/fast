@@ -6,6 +6,9 @@ import { FormChildOptionItem } from "./form.props";
 import { generateExampleData, isConst, isSelect } from "./utilities";
 import { ItemConstraints } from "./controls/control.array.props";
 import { SingleLineControlPlugin } from "./templates/plugin.control.single-line";
+import ControlPluginUtilities, {
+    ControlPluginUtilitiesProps,
+} from "./templates/plugin.control.utilities";
 
 class FormControlSwitch extends React.Component<FormControlSwitchProps, {}> {
     public static displayName: string = "FormControlSwitch";
@@ -22,43 +25,75 @@ class FormControlSwitch extends React.Component<FormControlSwitchProps, {}> {
      * Renders form items
      */
     private renderControl(): React.ReactNode {
+        let control: ControlPluginUtilities<ControlPluginUtilitiesProps>;
+
+        // Check to see if there is any associated `formControlId`
+        // then check for the id within the passed controlPlugins
+        if (typeof this.props.schema.formControlId === "string") {
+            control = this.props.controlPlugins.find(
+                (controlPlugin: StandardControlPlugin) => {
+                    return controlPlugin.matchesId(this.props.schema.formControlId);
+                }
+            );
+        }
+
         const hasEnum: boolean = isSelect({ enum: this.props.schema.enum });
 
         if (
             isConst(this.props.schema) ||
             (hasEnum && this.props.schema.enum.length === 1)
         ) {
-            return this.renderDisplay();
+            return this.renderDisplay(
+                control !== undefined ? control : this.props.controls.display
+            );
         }
 
         if (hasEnum) {
-            return this.renderSelect();
+            return this.renderSelect(
+                control !== undefined ? control : this.props.controls.select
+            );
         }
 
         if (this.props.schema.oneOf || this.props.schema.anyOf) {
-            return this.renderSectionLink();
+            return this.renderSectionLink(
+                control !== undefined ? control : this.props.controls.sectionLink
+            );
         }
 
         switch (this.props.schema.type) {
             case "boolean":
-                return this.renderCheckbox();
+                return this.renderCheckbox(
+                    control !== undefined ? control : this.props.controls.checkbox
+                );
             case "number":
-                return this.renderNumberField();
+                return this.renderNumberField(
+                    control !== undefined ? control : this.props.controls.numberField
+                );
             case "string":
-                return this.renderTextarea();
+                return this.renderTextarea(
+                    control !== undefined ? control : this.props.controls.textarea
+                );
             case "array":
-                return this.renderArray();
+                return this.renderArray(
+                    control !== undefined ? control : this.props.controls.array
+                );
             case "children":
-                return this.renderChildren();
+                return this.renderChildren(
+                    control !== undefined ? control : this.props.controls.children
+                );
             case "null":
-                return this.renderButton();
+                return this.renderButton(
+                    control !== undefined ? control : this.props.controls.button
+                );
             default:
-                return this.renderSectionLink();
+                return this.renderSectionLink(
+                    control !== undefined ? control : this.props.controls.sectionLink
+                );
         }
     }
 
-    private renderChildren(): React.ReactNode {
-        const standardControl: StandardControlPlugin = this.props.controls.children;
+    private renderChildren(control: StandardControlPlugin): React.ReactNode {
+        const standardControl: StandardControlPlugin = control;
 
         standardControl.updateProps(
             Object.assign(
@@ -76,8 +111,8 @@ class FormControlSwitch extends React.Component<FormControlSwitchProps, {}> {
     /**
      * Renders the array form item
      */
-    private renderArray(): React.ReactNode {
-        const standardControl: StandardControlPlugin = this.props.controls.array;
+    private renderArray(control: StandardControlPlugin): React.ReactNode {
+        const standardControl: StandardControlPlugin = control;
 
         standardControl.updateProps(
             Object.assign(
@@ -96,8 +131,8 @@ class FormControlSwitch extends React.Component<FormControlSwitchProps, {}> {
     /**
      * Renders the number field form item
      */
-    private renderNumberField(): React.ReactNode {
-        const standardControl: StandardControlPlugin = this.props.controls.numberField;
+    private renderNumberField(control: StandardControlPlugin): React.ReactNode {
+        const standardControl: StandardControlPlugin = control;
 
         standardControl.updateProps(
             Object.assign(
@@ -116,8 +151,8 @@ class FormControlSwitch extends React.Component<FormControlSwitchProps, {}> {
     /**
      * Renders the checkbox form item
      */
-    private renderCheckbox(): React.ReactNode {
-        const singleLineControl: SingleLineControlPlugin = this.props.controls.checkbox;
+    private renderCheckbox(control: StandardControlPlugin): React.ReactNode {
+        const singleLineControl: SingleLineControlPlugin = control;
 
         singleLineControl.updateProps(this.getCommonControlProps());
 
@@ -128,8 +163,8 @@ class FormControlSwitch extends React.Component<FormControlSwitchProps, {}> {
      * Renders a section link for properties
      * that are objects
      */
-    private renderSectionLink(): React.ReactNode {
-        const standardControl: StandardControlPlugin = this.props.controls.sectionLink;
+    private renderSectionLink(control: StandardControlPlugin): React.ReactNode {
+        const standardControl: StandardControlPlugin = control;
 
         standardControl.updateProps(this.getCommonControlProps());
 
@@ -139,10 +174,10 @@ class FormControlSwitch extends React.Component<FormControlSwitchProps, {}> {
     /**
      * Renders the textarea form item
      */
-    private renderTextarea(): React.ReactNode {
+    private renderTextarea(control: StandardControlPlugin): React.ReactNode {
         const rows: number | undefined = this.props.schema.rows || void 0;
 
-        const standardControl: StandardControlPlugin = this.props.controls.textarea;
+        const standardControl: StandardControlPlugin = control;
 
         standardControl.updateProps(
             Object.assign(
@@ -159,14 +194,14 @@ class FormControlSwitch extends React.Component<FormControlSwitchProps, {}> {
     /**
      * Renders the select form item
      */
-    private renderSelect(): React.ReactNode {
+    private renderSelect(control: StandardControlPlugin): React.ReactNode {
         const options: any[] = this.props.schema.enum || [];
 
         if (!this.props.required && typeof options[0] !== "undefined") {
             options.unshift(void 0);
         }
 
-        const standardControl: StandardControlPlugin = this.props.controls.select;
+        const standardControl: StandardControlPlugin = control;
 
         standardControl.updateProps(
             Object.assign(
@@ -183,16 +218,16 @@ class FormControlSwitch extends React.Component<FormControlSwitchProps, {}> {
     /**
      * Renders the display form item
      */
-    private renderDisplay(): React.ReactNode {
-        const standardControl: StandardControlPlugin = this.props.controls.display;
+    private renderDisplay(control: StandardControlPlugin): React.ReactNode {
+        const standardControl: StandardControlPlugin = control;
 
         standardControl.updateProps(this.getCommonControlProps());
 
         return standardControl.render();
     }
 
-    private renderButton(): React.ReactNode {
-        const standardControl: StandardControlPlugin = this.props.controls.button;
+    private renderButton(control: StandardControlPlugin): React.ReactNode {
+        const standardControl: StandardControlPlugin = control;
 
         standardControl.updateProps(this.getCommonControlProps());
 

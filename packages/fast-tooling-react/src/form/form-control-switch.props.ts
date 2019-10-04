@@ -1,4 +1,4 @@
-import { ControlTemplateUtilitiesProps } from "./templates";
+import { ControlTemplateUtilitiesProps, StandardControlPlugin } from "./templates";
 import {
     FormAttributeSettingsMappingToPropertyNames,
     FormChildOptionItem,
@@ -15,6 +15,12 @@ export interface FormControlSwitchProps extends ControlTemplateUtilitiesProps {
      * Control plugins
      */
     controls: Controls;
+
+    /**
+     * The custom control plugins which will be used
+     * instead of the default control plugins
+     */
+    controlPlugins?: StandardControlPlugin[];
 
     /**
      * The schema to be used
