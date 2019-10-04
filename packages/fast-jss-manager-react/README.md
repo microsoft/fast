@@ -138,6 +138,32 @@ import { stylesheetRegistry } from "@microsoft/fast-jss-manager-react";
 const serverSideCss = stylesheetRegistry.toString();
 ```
 
+## Configuration
+
+### JSS instance
+
+The JSS instance used by the JSSManager can be configured globally by assigning the JSSManager constructor a JSS instance. The JSSManager will use this instance for all sheet generation.
+
+```js
+import { JSSManager } from "@microsoft/fast-jss-manager-react";
+import { create } from "jss";
+
+const jssInstance: ReturnType<create> = create();
+
+JSSManager.jss = jssInstance;
+```
+
+### Class name generation
+
+The JSSManager can be assigned a `createGenerateClassName` function to provide a class name generation function to JSS. The function will be applied to JSS in the options object, meaning it will override the `generateClassName` function on the JSS instance itself. When invoked, `JSSManager.createGenerateClassName` will be provided the current `DesignSystem` context object, and expects the return value to be a function will return the string class name value.
+
+```js
+import { JSSManager } from "@microsoft/fast-jss-manager-react";
+import { uniqueId } from "lodash-es";
+
+JSSManager.createGenerateClassName = (designSystem) => (rule, sheet) => "my-class-name" + uniqueId()
+```
+
 ## Optimizing performance
 
 ### Stylesheet memoization
