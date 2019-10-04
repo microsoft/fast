@@ -11,7 +11,7 @@ import {
     keyCodeSpace,
 } from "@microsoft/fast-web-utilities";
 import { canUseDOM } from "exenv-es6";
-import { get, isEqual, isNil } from "lodash-es";
+import { get, isEqual, isNil, uniqueId } from "lodash-es";
 import React from "react";
 import Button from "../button";
 import Listbox from "../listbox";
@@ -24,6 +24,8 @@ export interface SelectState {
     displayString: string;
     selectedItems: ListboxItemProps[];
     isMenuOpen: boolean;
+    selectedItemIndex: number;
+    selectableItemCount: number;
 }
 
 class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, SelectState> {
@@ -37,6 +39,9 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
         managedClasses: {},
     };
 
+    private static idPropertyKey: string = "id";
+    private static triggerUniqueIdPrefix: string = "selecttrigger-";
+
     /**
      * Handled props instantiation
      */
@@ -48,6 +53,7 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
         labelledBy: void 0,
         multiselectable: void 0,
         trigger: void 0,
+        menu: void 0,
         required: void 0,
         managedClasses: void 0,
         selectedItems: void 0,
@@ -61,6 +67,8 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
     private rootElement: React.RefObject<HTMLDivElement> = React.createRef<
         HTMLDivElement
     >();
+
+    private triggerId: string = uniqueId(Select.triggerUniqueIdPrefix);
 
     /**
      * constructor
@@ -81,11 +89,18 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
             initialSelection = initialSelection.slice(0, 1);
         }
 
+        const validOptions: React.ReactNode[] = this.getValidOptions();
+
         this.state = {
             selectedItems: initialSelection,
             value: this.getValueFromSelection(initialSelection),
             displayString: this.getFormattedDisplayString(initialSelection),
             isMenuOpen: this.validateMenuState(false),
+            selectedItemIndex: this.getSelectedItemPosInSet(
+                validOptions,
+                initialSelection
+            ),
+            selectableItemCount: validOptions.length,
         };
     }
 
@@ -138,11 +153,16 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
         return (
             <div
                 {...this.unhandledProps()}
-                aria-disabled={this.props.disabled || null}
                 ref={this.rootElement}
                 className={this.generateClassNames()}
                 onKeyDown={this.handleKeydown}
                 onClick={this.handleClick}
+                onFocus={this.handleFocus}
+                role="listbox"
+                aria-disabled={this.props.disabled}
+                aria-expanded={this.state.isMenuOpen}
+                aria-labelledby={this.props.labelledBy || null}
+                aria-describedby={this.triggerId}
             >
                 {this.renderTrigger()}
                 {this.renderHiddenSelectElement()}
@@ -221,9 +241,13 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
      */
     private renderTrigger(): React.ReactNode {
         if (this.props.trigger !== undefined) {
-            return this.props.trigger(this.props, this.state);
+            return this.props.trigger(this.props, this.state, this.triggerId);
         } else {
-            return this.defaultTriggerRenderFunction(this.props, this.state);
+            return this.defaultTriggerRenderFunction(
+                this.props,
+                this.state,
+                this.triggerId
+            );
         }
     }
 
@@ -240,7 +264,7 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
         if (this.props.multiselectable && this.props.autoFocus) {
             shouldFocusOnMount = this.props.multiselectable;
         }
-        return (
+        const defaultMenu: React.ReactNode = (
             <Listbox
                 labelledBy={this.props.labelledBy}
                 disabled={this.props.disabled}
@@ -249,8 +273,8 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
                 defaultSelection={this.state.selectedItems}
                 selectedItems={this.props.selectedItems}
                 onSelectedItemsChanged={this.menuSelectionChange}
-                onItemInvoked={this.menuItemInvoked}
                 onBlur={this.handleMenuBlur}
+                selectOnFocus={false}
                 managedClasses={{
                     listbox: get(this.props.managedClasses, "select_menu", ""),
                     listbox__disabled: get(
@@ -263,6 +287,11 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
                 {this.props.children}
             </Listbox>
         );
+        if (typeof this.props.menu === "function") {
+            return this.props.menu(this.props, this.state, defaultMenu);
+        } else {
+            return defaultMenu;
+        }
     }
 
     /**
@@ -272,18 +301,7 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
         if (typeof this.props.onMenuSelectionChange === "function") {
             this.props.onMenuSelectionChange(newSelection);
         }
-        if (this.props.multiselectable) {
-            this.updateSelection(newSelection);
-        }
-    };
-
-    /**
-     * Handles selection changes from menu
-     */
-    private menuItemInvoked = (newSelection: ListboxItemProps): void => {
-        if (!this.props.multiselectable) {
-            this.updateSelection([newSelection]);
-        }
+        this.updateSelection(newSelection);
     };
 
     /**
@@ -308,10 +326,16 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
         }
 
         if (this.props.selectedItems === undefined) {
+            const validOptions: React.ReactNode[] = this.getValidOptions();
             this.setState({
                 selectedItems: newSelection,
                 value: newValue,
                 displayString: newDisplayString,
+                selectedItemIndex: this.getSelectedItemPosInSet(
+                    validOptions,
+                    newSelection
+                ),
+                selectableItemCount: validOptions.length,
             });
         }
     };
@@ -361,24 +385,55 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
     };
 
     /**
+     * get the index of the provided selection
+     * (excludes children that aren't valid options)
+     */
+    private getSelectedItemPosInSet = (
+        options: React.ReactNode[],
+        selection: ListboxItemProps[]
+    ): number => {
+        if (!this.props.multiselectable && selection.length === 1) {
+            const selectionId: string = selection[0].id;
+            const optionCount: number = options.length;
+            for (let i: number = 0; i < optionCount; i++) {
+                if (
+                    (options[i] as React.ReactElement<any>).props[
+                        Select.idPropertyKey
+                    ] === selectionId
+                ) {
+                    return i + 1;
+                }
+            }
+        }
+        return 0;
+    };
+
+    /**
      * The default function that renders an unstyled content display
      */
     private defaultTriggerRenderFunction = (
         props: SelectProps,
-        state: SelectState
+        state: SelectState,
+        triggerId: string
     ): React.ReactNode => {
         if (props.multiselectable) {
             return null;
         }
+        const isItemSelected: boolean = state.selectedItemIndex !== 0;
         return (
-            <Button
+            <button
                 disabled={props.disabled}
-                aria-labelledby={props.labelledBy || null}
-                aria-haspopup={true}
+                id={triggerId}
+                role="option"
+                aria-atomic={true}
+                aria-label={state.displayString}
                 aria-expanded={state.isMenuOpen}
+                aria-selected={isItemSelected}
+                aria-posinset={isItemSelected ? state.selectedItemIndex : null}
+                aria-setsize={isItemSelected ? state.selectableItemCount : null}
             >
                 {state.displayString}
-            </Button>
+            </button>
         );
     };
 
@@ -445,6 +500,18 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
                     this.incrementSelectedOption(-1);
                 }
                 break;
+        }
+    };
+
+    /**
+     * Handles focus
+     */
+    private handleFocus = (e: React.FocusEvent): void => {
+        if (this.props.disabled || e.defaultPrevented) {
+            return;
+        }
+        if (!this.props.multiselectable && this.state.selectedItems.length === 0) {
+            this.incrementSelectedOption(1);
         }
     };
 
@@ -581,6 +648,13 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
         if (triggerButton !== null) {
             triggerButton.focus();
         }
+    };
+
+    /**
+     * get valid options
+     */
+    private getValidOptions = (): React.ReactNode[] => {
+        return Listbox.getValidOptions(React.Children.toArray(this.props.children));
     };
 }
 

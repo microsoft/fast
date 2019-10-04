@@ -10,7 +10,6 @@ import {
     foreground300,
 } from "../../style";
 import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager-react";
-import { ThemeFormControlClassNameContract } from "./control.theme.props";
 
 /**
  * Base64 encoded svgs
@@ -40,33 +39,33 @@ function applyThemeInputBackplateStyle(): CSSRules<{}> {
     };
 }
 
-const styles: ComponentStyles<ThemeFormControlClassNameContract, {}> = {
-    themeFormControl: {
+/**
+ * ThemeControl class name contract
+ */
+export interface ThemeControlClassNameContract {
+    themeControl?: string;
+    themeControl__disabled?: string;
+    themeControl_input?: string;
+    themeControl_input__light?: string;
+    themeControl_input__dark?: string;
+}
+
+const styles: ComponentStyles<ThemeControlClassNameContract, {}> = {
+    themeControl: {
         display: "flex",
         ...applyControlWrapper(),
     },
-    themeFormControl_control: {
-        ...applyControl(),
-    },
-    themeFormControl_controlLabel: {
-        ...applyLabelStyle(),
-    },
-    themeFormControl_controlInputContainer: {},
-    themeFormControl_controlInput__light: {
+    themeControl__disabled: {},
+    themeControl_input: {
         ...applyThemeInputBackplateStyle(),
+    },
+    themeControl_input__light: {
         background: lightTheme,
         backgroundColor: foreground300,
     },
-    themeFormControl_controlInput__dark: {
-        ...applyThemeInputBackplateStyle(),
+    themeControl_input__dark: {
         background: darkTheme,
         backgroundColor: background000,
-    },
-    themeFormControl_softRemove: {
-        ...applySoftRemove(),
-    },
-    themeFormControl_softRemoveInput: {
-        ...applySoftRemoveInput(),
     },
 };
 

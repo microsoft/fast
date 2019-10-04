@@ -1,10 +1,11 @@
 import {
-    DataOnChange,
     FormOrderByPropertyNamesCategories,
     FormOrderByPropertyNamesProperties,
     FormOrderByPropertyNamesProps,
 } from "./form.props";
+import { OnChangeConfig, StandardControlPlugin, UpdateSectionConfig } from "./templates";
 import { ErrorObject } from "ajv";
+import { SingleLineControlPlugin } from "./templates/plugin.control.single-line";
 
 /**
  * Section class name contract
@@ -46,20 +47,71 @@ export interface OneOfAnyOf {
     activeIndex: number;
 }
 
-export type updateActiveSection = (
-    schemaLocation: string,
-    dataLocation: string,
-    schema?: any
+export type AddExampleData = (
+    propertyLocation: string,
+    additionalSchemaPathSyntax?: string
 ) => void;
 
 /* tslint:disable-next-line */
 export interface FormSectionState extends InitialOneOfAnyOfState {}
+
+export interface Controls {
+    /**
+     * The button control
+     */
+    button: StandardControlPlugin;
+
+    /**
+     * The array control
+     */
+    array: StandardControlPlugin;
+
+    /**
+     * The checkbox control
+     */
+    checkbox: SingleLineControlPlugin;
+
+    /**
+     * The children control
+     */
+    children: StandardControlPlugin;
+
+    /**
+     * The display control
+     */
+    display: StandardControlPlugin;
+
+    /**
+     * The textarea control
+     */
+    textarea: StandardControlPlugin;
+
+    /**
+     * The select control
+     */
+    select: StandardControlPlugin;
+
+    /**
+     * The section link control
+     */
+    sectionLink: StandardControlPlugin;
+
+    /**
+     * The number field control
+     */
+    numberField: StandardControlPlugin;
+}
 
 export interface FormSectionProps {
     /**
      * The location of the data
      */
     dataLocation: string;
+
+    /**
+     * Control plugins
+     */
+    controls: Controls;
 
     /**
      * The default values
@@ -89,12 +141,12 @@ export interface FormSectionProps {
     /**
      * The onChange event to trigger a data update
      */
-    onChange: DataOnChange;
+    onChange: (config: OnChangeConfig) => void;
 
     /**
      * The update event to trigger a new active section and/or component
      */
-    onUpdateActiveSection: updateActiveSection;
+    onUpdateSection: (config: UpdateSectionConfig) => void;
 
     /**
      * The string to be used if a prop is untitled

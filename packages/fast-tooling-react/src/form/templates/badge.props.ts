@@ -1,4 +1,4 @@
-import { BadgeType } from "./control.props";
+import { BadgeType } from "./template.control.utilities.props";
 
 export interface BadgeProps {
     /**

@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.16.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-base@4.15.6...@microsoft/fast-components-react-base@4.16.0) (2019-10-02)
+
+
+### Bug Fixes
+
+* enable home and end keys on slider ([#2253](https://github.com/Microsoft/fast-dna/issues/2253)) ([bb18f19](https://github.com/Microsoft/fast-dna/commit/bb18f19))
+* improve select narrator behavior ([#2249](https://github.com/Microsoft/fast-dna/issues/2249)) ([42cdec0](https://github.com/Microsoft/fast-dna/commit/42cdec0))
+
+
+### Features
+
+* support custom menu render functions in Select ([#2274](https://github.com/Microsoft/fast-dna/issues/2274)) ([64e3976](https://github.com/Microsoft/fast-dna/commit/64e3976))
+
+
+
+
+
 ## [4.15.6](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-base@4.15.5...@microsoft/fast-components-react-base@4.15.6) (2019-09-25)
 
 **Note:** Version bump only for package @microsoft/fast-components-react-base

@@ -2,7 +2,7 @@
   "name": "@microsoft/fast-tooling-react",
   "description": "FAST Tooling React",
   "sideEffects": false,
-  "version": "1.18.5",
+  "version": "1.18.6",
   "author": {
     "name": "Microsoft",
     "url": "https://discord.gg/FcSNfg4"

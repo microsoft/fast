@@ -1,15 +1,5 @@
 import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager-react";
-import {
-    accent,
-    applyControl,
-    applyControlWrapper,
-    applyInputBackplateStyle,
-    applyLabelStyle,
-    applySoftRemove,
-    applySoftRemoveInput,
-    neutralLayerL4,
-} from "../../style";
-import { AlignFormControlClassNameContract } from "./control.align.props";
+import { accent, applyInputBackplateStyle, neutralLayerL4 } from "../../style";
 
 /* tslint:disable */
 const topLight: string =
@@ -20,50 +10,38 @@ const bottomLight: string =
     "url(data:image/svg+xml;base64,PHN2ZyBpZD0iTGF5ZXJfMSIgZmlsbD0id2hpdGUiIGRhdGEtbmFtZT0iTGF5ZXIgMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB2aWV3Qm94PSIwIDAgMTYgMTYiPjx0aXRsZT52YjI8L3RpdGxlPjxwYXRoIGQ9Ik0xMS42MywxMXYuNDZINC4zN1YxMVptLTQuMDktLjQ3SDUuNzJWNC41Nkg3LjU0Wk03LjA3LDVINi4xNHY1aC45M1ptMy4yMSw1LjQ5SDguNDZWNi40MmgxLjgyWk05LjgxLDYuODRIOC44OHYzLjIxaC45M1oiLz48L3N2Zz4=) center no-repeat";
 /* tslint:enable */
 
-const styles: ComponentStyles<AlignFormControlClassNameContract, {}> = {
-    alignFormControl: {
-        display: "flex",
-        ...applyControlWrapper(),
-    },
-    alignFormControl_control: {
-        ...applyControl(),
-    },
-    alignFormControl_controlLabel: {
-        ...applyLabelStyle(),
-    },
-    alignFormControl_controlInputContainer: {
+export interface AlignControlClassNameContract {
+    alignControl?: string;
+    alignControl__disabled?: string;
+    alignControl_input?: string;
+    alignControl_input__top?: string;
+    alignControl_input__center?: string;
+    alignControl_input__bottom?: string;
+}
+
+const styles: ComponentStyles<AlignControlClassNameContract, {}> = {
+    alignControl: {
         height: "20px",
     },
-    alignFormControl_controlInput__top: {
+    alignControl__disabled: {},
+    alignControl_input: {
         ...applyInputBackplateStyle(),
-        borderRadius: "2px 0px 0px 2px",
-        background: topLight,
         "&:checked": {
             backgroundColor: accent,
         },
     },
-    alignFormControl_controlInput__center: {
-        ...applyInputBackplateStyle(),
+    alignControl_input__top: {
+        borderRadius: "2px 0px 0px 2px",
+        background: topLight,
+    },
+    alignControl_input__center: {
         borderRight: `1px solid ${neutralLayerL4}`,
         borderLeft: `1px solid ${neutralLayerL4}`,
         background: centerLight,
-        "&:checked": {
-            backgroundColor: accent,
-        },
     },
-    alignFormControl_controlInput__bottom: {
-        ...applyInputBackplateStyle(),
+    alignControl_input__bottom: {
         borderRadius: "0px 2px 2px 0px",
         background: bottomLight,
-        "&:checked": {
-            backgroundColor: accent,
-        },
-    },
-    alignFormControl_softRemove: {
-        ...applySoftRemove(),
-    },
-    alignFormControl_softRemoveInput: {
-        ...applySoftRemoveInput(),
     },
 };
 

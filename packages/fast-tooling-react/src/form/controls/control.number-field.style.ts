@@ -1,58 +1,20 @@
 import { ComponentStyles } from "@microsoft/fast-jss-manager-react";
-import {
-    applyControl,
-    applyControlRegion,
-    applyControlWrapper,
-    applyFormControlDisabled,
-    applyFormControlIndicator,
-    applyInputStyle,
-    applyInteractiveFormControlIndicator,
-    applyInvalidMessage,
-    applyLabelRegionStyle,
-    applyLabelStyle,
-    applySoftRemove,
-    applySoftRemoveInput,
-} from "../../style";
-import { NumberFieldClassNameContractFormControl } from "./control.number-field.props";
+import { applyInputStyle } from "../../style";
 
-const styles: ComponentStyles<NumberFieldClassNameContractFormControl, {}> = {
-    numberFieldFormControl: {
-        ...applyControlWrapper(),
-    },
-    numberFieldFormControl__disabled: {
-        ...applyFormControlDisabled(),
-    },
-    numberFieldFormControl_badge: {
-        ...applyFormControlIndicator(),
-    },
-    numberFieldFormControl_control: {
-        ...applyControl(),
-    },
-    numberFieldFormControl_controlRegion: {
-        ...applyControlRegion(),
-    },
-    numberFieldFormControl_controlLabel: {
-        ...applyLabelStyle(),
-    },
-    numberFieldFormControl_controlLabelRegion: {
-        ...applyLabelRegionStyle(),
-    },
-    numberFieldFormControl_controlInput: {
+/**
+ * Number field class name contract
+ */
+export interface NumberFieldControlClassNameContract {
+    numberFieldControl?: string;
+    numberFieldControl__disabled?: string;
+}
+
+const styles: ComponentStyles<NumberFieldControlClassNameContract, {}> = {
+    numberFieldControl: {
         ...applyInputStyle(),
         width: "100%",
     },
-    numberFieldFormControl_defaultValueIndicator: {
-        ...applyInteractiveFormControlIndicator(),
-    },
-    numberFieldFormControl_softRemove: {
-        ...applySoftRemove(),
-    },
-    numberFieldFormControl_softRemoveInput: {
-        ...applySoftRemoveInput(),
-    },
-    numberFieldFormControl_invalidMessage: {
-        ...applyInvalidMessage(),
-    },
+    numberFieldControl__disabled: {},
 };
 
 export default styles;

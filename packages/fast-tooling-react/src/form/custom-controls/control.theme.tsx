@@ -1,71 +1,58 @@
 import React from "react";
-import { CustomFormControlProps } from "../controls/control.props";
-import styles from "./control.theme.style";
-import { ThemeFormControlClassNameContract } from "./control.theme.props";
+import styles, { ThemeControlClassNameContract } from "./control.theme.style";
+import { ThemeControlProps } from "./control.theme.props";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
-import BaseFormControl from "../controls/template.control.abstract";
+import { classNames } from "@microsoft/fast-web-utilities";
 
 /**
- * Schema form component definition
- * @extends React.Component
+ * Custom form control definition
  */
 /* tslint:disable-next-line */
-class ThemeFormControl extends BaseFormControl<
-    CustomFormControlProps & ManagedClasses<ThemeFormControlClassNameContract>,
+class ThemeControl extends React.Component<
+    ThemeControlProps & ManagedClasses<ThemeControlClassNameContract>,
     {}
 > {
-    public static displayName: string = "ThemeFormControl";
+    public static displayName: string = "ThemeControl";
 
-    public render(): JSX.Element {
+    public static defaultProps: Partial<
+        ThemeControlProps & ManagedClasses<ThemeControlClassNameContract>
+    > = {
+        managedClasses: {},
+    };
+
+    public render(): React.ReactNode {
         return (
-            <div className={this.props.managedClasses.themeFormControl}>
-                <div className={this.props.managedClasses.themeFormControl_control}>
-                    <label
-                        className={
-                            this.props.managedClasses.themeFormControl_controlLabel
-                        }
-                        htmlFor={this.props.dataLocation}
-                    >
-                        {this.props.label}
-                    </label>
-                    <div
-                        className={
-                            this.props.managedClasses
-                                .themeFormControl_controlInputContainer
-                        }
-                    >
-                        {this.renderInput("light", 1)}
-                        {this.renderInput("dark", 2)}
-                    </div>
-                </div>
-                <div className={this.props.managedClasses.themeFormControl_softRemove}>
-                    {this.renderSoftRemove(
-                        this.props.managedClasses.themeFormControl_softRemoveInput
-                    )}
-                </div>
+            <div
+                className={classNames(this.props.managedClasses.themeControl, [
+                    this.props.managedClasses.themeControl__disabled,
+                    this.props.disabled,
+                ])}
+            >
+                {this.renderInput("light")}
+                {this.renderInput("dark")}
             </div>
         );
     }
 
     private onChange = (value: string): void => {
-        this.props.onChange(this.props.dataLocation, value);
+        this.props.onChange({ value });
     };
 
     private isChecked(theme: string): boolean {
         return (
-            this.props.data === theme ||
-            (typeof this.props.data === "undefined" && this.props.default === theme)
+            this.props.value === theme ||
+            (typeof this.props.value === "undefined" && this.props.default === theme)
         );
     }
 
     private getInputClassName(theme: string): string {
         return theme === "dark"
-            ? this.props.managedClasses.themeFormControl_controlInput__dark
-            : this.props.managedClasses.themeFormControl_controlInput__light;
+            ? this.props.managedClasses.themeControl_input__dark
+            : this.props.managedClasses.themeControl_input__light;
     }
 
-    private renderInput(theme: string, index: number): JSX.Element {
+    private renderInput(theme: string): JSX.Element {
         if (this.props.options && Array.isArray(this.props.options)) {
             const option: any = this.props.options.find(
                 (item: string): any => {
@@ -74,18 +61,20 @@ class ThemeFormControl extends BaseFormControl<
             );
 
             if (typeof option !== "undefined") {
-                const className: string = this.getInputClassName(theme);
-
                 return (
                     <input
-                        className={className}
+                        className={classNames(
+                            this.props.managedClasses.themeControl_input,
+                            this.getInputClassName(theme)
+                        )}
                         id={this.props.dataLocation}
-                        type="radio"
+                        type={"radio"}
                         value={theme}
-                        name="theme"
+                        name={this.props.dataLocation}
                         aria-label={`theme ${theme}`}
                         onChange={this.onChange.bind(this, theme)}
                         checked={this.isChecked(theme)}
+                        disabled={this.props.disabled}
                     />
                 );
             }
@@ -93,4 +82,5 @@ class ThemeFormControl extends BaseFormControl<
     }
 }
 
-export default manageJss(styles)(ThemeFormControl);
+export { ThemeControl };
+export default manageJss(styles)(ThemeControl);

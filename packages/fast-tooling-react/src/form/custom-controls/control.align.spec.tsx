@@ -1,55 +1,62 @@
 import React from "react";
 import Adapter from "enzyme-adapter-react-16";
 import { configure, mount, shallow, ShallowWrapper } from "enzyme";
-import { AlignFormControl } from "./index";
-import { CustomFormControlProps } from "../controls/control.props";
+import { AlignControl as StyledAlignControl, AlignControlProps } from "./index";
+import { Alignment } from "./control.align.props";
+import { AlignControl } from "./control.align";
+import { AlignControlClassNameContract } from "./control.align.style";
 
 /*
  * Configure Enzyme
  */
 configure({ adapter: new Adapter() });
 
-const alignFormControlProps: CustomFormControlProps = {
-    options: ["top", "center", "bottom"],
-    index: 1,
+const alignControlProps: AlignControlProps = {
+    options: [Alignment.top, Alignment.center, Alignment.bottom],
     dataLocation: "",
-    data: "",
-    required: false,
-    label: "",
+    value: "",
     onChange: jest.fn(),
-    invalidMessage: "",
-    schema: {},
+    disabled: false,
+    elementRef: null,
+    reportValidity: jest.fn(),
+    updateValidity: jest.fn(),
 };
 
-describe("AlignFormControl", () => {
+const managedClasses: AlignControlClassNameContract = {
+    alignControl: "alignControl",
+    alignControl__disabled: "alignControl__disabled",
+    alignControl_input: "alignControl_input",
+    alignControl_input__bottom: "alignControl_input__bottom",
+    alignControl_input__center: "alignControl_input__center",
+    alignControl_input__top: "alignControl_input__top",
+};
+
+describe("AlignControl", () => {
     test("should not throw", () => {
         expect(() => {
-            shallow(<AlignFormControl {...alignFormControlProps} />);
+            shallow(<StyledAlignControl {...alignControlProps} />);
         }).not.toThrow();
     });
     test("should generate HTML input elements", () => {
-        const rendered: any = mount(<AlignFormControl {...alignFormControlProps} />);
+        const rendered: any = mount(<AlignControl {...alignControlProps} />);
 
-        expect(rendered.find("input")).toHaveLength(4);
+        expect(rendered.find("input")).toHaveLength(3);
     });
-    test("should generate an HTML label element", () => {
-        const rendered: any = mount(<AlignFormControl {...alignFormControlProps} />);
-
-        expect(rendered.find("label")).toHaveLength(1);
-    });
-    test("should have an `id` attribute on the HTML input elements and a corresponding `for` attribute on the HTML label element", () => {
-        const rendered: any = mount(<AlignFormControl {...alignFormControlProps} />);
-        const label: any = rendered.find("label");
+    test("should have an `id` attribute on the HTML input elements corresponding to the dataLocation", () => {
+        const dataLocation: string = "foo";
+        const rendered: any = mount(
+            <AlignControl dataLocation={dataLocation} {...alignControlProps} />
+        );
         const inputs: any = rendered.find("input");
 
-        expect(label.prop("htmlFor")).toMatch(inputs.at(0).prop("id"));
-        expect(label.prop("htmlFor")).toMatch(inputs.at(1).prop("id"));
-        expect(label.prop("htmlFor")).toMatch(inputs.at(2).prop("id"));
+        expect(dataLocation).toMatch(inputs.at(0).prop("id"));
+        expect(dataLocation).toMatch(inputs.at(1).prop("id"));
+        expect(dataLocation).toMatch(inputs.at(2).prop("id"));
     });
     test("should fire an `onChange` callback when an input has been changed", () => {
         const handleChange: any = jest.fn();
         const rendered: any = mount(
-            <AlignFormControl {...alignFormControlProps} onChange={handleChange} />
+            <AlignControl {...alignControlProps} onChange={handleChange} />
         );
 
         rendered
@@ -58,61 +65,23 @@ describe("AlignFormControl", () => {
             .simulate("change");
 
         expect(handleChange).toHaveBeenCalled();
-        expect(handleChange.mock.calls[0][1]).toEqual("top");
+        expect(handleChange.mock.calls[0][0]).toEqual({ value: "top" });
     });
     test("should be disabled if disabled props is passed", () => {
         const rendered: any = mount(
-            <AlignFormControl {...alignFormControlProps} disabled={true} />
+            <AlignControl
+                {...alignControlProps}
+                managedClasses={managedClasses}
+                disabled={true}
+            />
         );
         const inputs: ShallowWrapper = rendered.find("input");
 
-        expect(inputs).toHaveLength(4);
         expect(inputs.at(0).prop("disabled")).toBeTruthy();
         expect(inputs.at(1).prop("disabled")).toBeTruthy();
         expect(inputs.at(2).prop("disabled")).toBeTruthy();
-    });
-    test("should remove the data if the soft remove is triggered", () => {
-        const handleChange: any = jest.fn();
-        const rendered: any = mount(
-            <AlignFormControl
-                {...alignFormControlProps}
-                data={"top"}
-                onChange={handleChange}
-            />
+        expect(rendered.find(`.${managedClasses.alignControl__disabled}`)).toHaveLength(
+            1
         );
-
-        rendered
-            .find("input")
-            .at(3)
-            .simulate("change");
-
-        expect(handleChange).toHaveBeenCalled();
-        expect(handleChange.mock.calls[0][1]).toEqual(undefined);
-    });
-    test("should add the previous data that was removed if the soft remove is triggered", () => {
-        const handleChange: any = jest.fn();
-        const data: string = "top";
-        const rendered: any = mount(
-            <AlignFormControl
-                {...alignFormControlProps}
-                data={data}
-                onChange={handleChange}
-            />
-        );
-
-        rendered
-            .find("input")
-            .at(3)
-            .simulate("change");
-
-        rendered.setProps({ data: handleChange.mock.calls[0][1] });
-
-        rendered
-            .find("input")
-            .at(3)
-            .simulate("change");
-
-        expect(handleChange).toHaveBeenCalledTimes(2);
-        expect(handleChange.mock.calls[1][1]).toBe(data);
     });
 });
