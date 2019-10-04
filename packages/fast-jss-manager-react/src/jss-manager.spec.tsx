@@ -316,6 +316,17 @@ describe("The JSSManager", (): void => {
 
         JSSManager.jss = originalJssInstance;
     });
+
+    test("should use a custom generateClassName function when provided", (): void => {
+        const classNameGenerator: jest.Mock = jest.fn().mockImplementation((rule: any, sheet: any) => rule.key);
+        JSSManager.createGenerateClassName = (designSystem: unknown): (rule: any, sheet: any) => string => classNameGenerator;
+        JSSManager["sheetManager"].clean();
+
+        const rendered: any = mount(<StyledManager />);
+
+        expect(classNameGenerator).toHaveBeenCalledTimes(1)
+
+    });
 });
 
 describe("mergeClassNames", (): void => {
