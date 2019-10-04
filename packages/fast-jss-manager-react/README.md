@@ -148,7 +148,7 @@ The JSS instance used by the JSSManager can be configured globally by assigning 
 import { JSSManager } from "@microsoft/fast-jss-manager-react";
 import { create } from "jss";
 
-const jssInstance: ReturnType<create> = create();
+const jssInstance = create();
 
 JSSManager.jss = jssInstance;
 ```
