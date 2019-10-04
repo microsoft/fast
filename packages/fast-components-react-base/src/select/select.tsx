@@ -320,23 +320,21 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
      */
     private generateViewportPositionerClassNames(): ViewportPositionerClassNameContract {
         const {
-            select_viewportPositioner,
-            select_viewportPositioner__left,
-            select_viewportPositioner__right,
-            select_viewportPositioner__top,
-            select_viewportPositioner__bottom,
-            select_viewportPositioner__horizontalInset,
-            select_viewportPositioner__verticalInset,
+            select__menuPositionLeft,
+            select__menuPositionRight,
+            select__menuPositionTop,
+            select__menuPositionBottom,
+            select__menuPositionHorizontalInset,
+            select__menuPositionVerticalInset,
         }: SelectClassNameContract = this.props.managedClasses;
 
         return {
-            viewportPositioner: select_viewportPositioner,
-            viewportPositioner__left: select_viewportPositioner__left,
-            viewportPositioner__right: select_viewportPositioner__right,
-            viewportPositioner__top: select_viewportPositioner__top,
-            viewportPositioner__bottom: select_viewportPositioner__bottom,
-            viewportPositioner__horizontalInset: select_viewportPositioner__horizontalInset,
-            viewportPositioner__verticalInset: select_viewportPositioner__verticalInset,
+            viewportPositioner__left: select__menuPositionLeft,
+            viewportPositioner__right: select__menuPositionRight,
+            viewportPositioner__top: select__menuPositionTop,
+            viewportPositioner__bottom: select__menuPositionBottom,
+            viewportPositioner__horizontalInset: select__menuPositionHorizontalInset,
+            viewportPositioner__verticalInset: select__menuPositionVerticalInset,
         };
     }
 
@@ -467,7 +465,7 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
         }
         const isItemSelected: boolean = state.selectedItemIndex !== 0;
         return (
-            <Button
+            <button
                 disabled={props.disabled}
                 id={triggerId}
                 role="option"
@@ -479,7 +477,7 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
                 aria-setsize={isItemSelected ? state.selectableItemCount : null}
             >
                 {state.displayString}
-            </Button>
+            </button>
         );
     };
 

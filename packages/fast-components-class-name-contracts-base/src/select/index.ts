@@ -28,37 +28,32 @@ export interface SelectClassNameContract {
     select__multiSelectable?: string;
 
     /**
-     * The root of the select's viewport positioner component
-     */
-    select_viewportPositioner?: string;
-
-    /**
      * left positioner horizontal state
      */
-    select_viewportPositioner__left?: string;
+    select__menuPositionLeft?: string;
 
     /**
      * right positioner horizontal state
      */
-    select_viewportPositioner__right?: string;
+    select__menuPositionRight?: string;
 
     /**
      * top positioner vertical state
      */
-    select_viewportPositioner__top?: string;
+    select__menuPositionTop?: string;
 
     /**
      * bottom positioner vertical state
      */
-    select_viewportPositioner__bottom?: string;
+    select__menuPositionBottom?: string;
 
     /**
      * horizontal flip inward state
      */
-    select_viewportPositioner__horizontalInset?: string;
+    select__menuPositionHorizontalInset?: string;
 
     /**
      * vertical flip inward state
      */
-    select_viewportPositioner__verticalInset?: string;
+    select__menuPositionVerticalInset?: string;
 }

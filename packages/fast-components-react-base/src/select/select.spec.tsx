@@ -32,14 +32,12 @@ const managedClasses: SelectClassNameContract = {
     select_menu: "select_menu",
     select_menu__open: "select_menu__open",
     select__multiSelectable: "select__multiSelectable",
-    select_viewportPositioner: "select_viewportPositioner",
-    select_viewportPositioner__left: "select_viewportPositioner__left",
-    select_viewportPositioner__right: "select_viewportPositioner__right",
-    select_viewportPositioner__top: "select_viewportPositioner__top",
-    select_viewportPositioner__bottom: "select_viewportPositioner__bottom",
-    select_viewportPositioner__horizontalInset:
-        "select_viewportPositioner__horizontalInset",
-    select_viewportPositioner__verticalInset: "select_viewportPositioner__verticalInset",
+    select__menuPositionLeft: "select__menuPositionLeft",
+    select__menuPositionRight: "select__menuPositionRight",
+    select__menuPositionTop: "select__menuPositionTop",
+    select__menuPositionBottom: "select__menuPositionBottom",
+    select__menuPositionHorizontalInset: "select__menuPositionHorizontalInset",
+    select__menuPositionVerticalInset: "select__menuPositionVerticalInset",
 };
 
 const container: HTMLDivElement = document.createElement("div");
