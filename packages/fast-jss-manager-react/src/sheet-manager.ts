@@ -12,6 +12,7 @@ export type SheetRegistry = WeakMap<
 export interface JSSSheetOptions {
     meta?: string;
     index?: number;
+    generateClassName?: (sheet: unknown, rules: unknown) => string;
 }
 
 /**
