@@ -155,7 +155,7 @@ JSSManager.jss = jssInstance;
 
 ### Class name generation
 
-The JSSManager can be assigned a `createGenerateClassName` function to provide a class name generation function to JSS. The function will be applied to JSS in the options object, meaning it will override the `generateClassName` function on the JSS instance itself. When invoked, `JSSManager.createGenerateClassName` will be provided the current `DesignSystem` context object, and expects the return value to be a function will return the string class name value.
+The JSSManager can be assigned a `createGenerateClassName` function to provide a class name generation function to JSS. The function will be applied to JSS in the options object, meaning it will override the `generateClassName` function on the JSS instance itself. When invoked, `JSSManager.createGenerateClassName` will be provided the current `DesignSystem` context object, and expects the return value to be a function which will return the string class name value.
 
 ```js
 import { JSSManager } from "@microsoft/fast-jss-manager-react";
