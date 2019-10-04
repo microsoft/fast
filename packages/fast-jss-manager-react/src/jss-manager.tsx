@@ -148,10 +148,12 @@ abstract class JSSManager<T, S, C> extends React.Component<ManagedJSSProps<T, S,
                 const options: JSSSheetOptions = {
                     meta: this.managedComponent.displayName || this.managedComponent.name,
                     index: this.index,
-                }
+                };
 
                 if (typeof JSSManager.createGenerateClassName === "function") {
-                    options.generateClassName = JSSManager.createGenerateClassName(this.designSystem);
+                    options.generateClassName = JSSManager.createGenerateClassName(
+                        this.designSystem
+                    );
                 }
 
                 JSSManager.sheetManager.add(this.styles, this.designSystem, options);
@@ -308,7 +310,7 @@ abstract class JSSManager<T, S, C> extends React.Component<ManagedJSSProps<T, S,
             meta: `${this.managedComponent.displayName ||
                 this.managedComponent.name} - jssStyleSheet`,
             index: stylesheet ? stylesheet.options.index + 1 : this.index + 1,
-        }
+        };
 
         if (typeof JSSManager.createGenerateClassName === "function") {
             options.generateClassName = JSSManager.createGenerateClassName(designSystem);
