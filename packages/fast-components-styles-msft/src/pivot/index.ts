@@ -65,6 +65,7 @@ const styles: ComponentStyles<PivotClassNameContract, DesignSystem> = {
         [highContrastSelector]: {
             color: "ButtonText",
             "-ms-high-contrast-adjust": "none",
+            "forced-color-adjust": "none"
         },
     },
     pivot_tab__active: {

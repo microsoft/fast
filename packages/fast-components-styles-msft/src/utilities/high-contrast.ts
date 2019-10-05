@@ -4,17 +4,24 @@ import { format, toPx } from "@microsoft/fast-jss-utilities";
 import { focusOutlineWidth, outlineWidth } from "./design-system";
 import { importantValue } from "./important";
 
-export const highContrastSelector: string = "@media (-ms-high-contrast:active)";
+export function applyHighContrastSelector(): string {
+    return window.matchMedia("(forced-colors: none)").matches ||
+           window.matchMedia("(forced-colors: active)").matches 
+           ? "@media (forced-colors: active)" 
+           : "@media (-ms-high-contrast: active)";
+}
+
+export const highContrastSelector: string = applyHighContrastSelector();
 
 export enum HighContrastColor {
-    text = "WindowText",
+    text = "Text",
     hyperLinks = "LinkText",
     disabledText = "GrayText",
     selectedText = "HighlightText",
     selectedBackground = "Highlight",
     buttonText = "ButtonText",
     buttonBackground = "ButtonFace",
-    background = "Background",
+    background = "Canvas",
 }
 
 // Used to remove text backplate and borders in 'button-text' colors
@@ -25,6 +32,7 @@ export const highContrastStealth: CSSRules<DesignSystem> = {
         color: HighContrastColor.buttonText,
         fill: HighContrastColor.buttonText,
         "-ms-high-contrast-adjust": "none",
+        "forced-color-adjust": "none"
     },
 };
 
@@ -36,6 +44,7 @@ export const highContrastOutline: CSSRules<DesignSystem> = {
         color: HighContrastColor.buttonText,
         fill: HighContrastColor.buttonText,
         "-ms-high-contrast-adjust": "none",
+        "forced-color-adjust": "none"
     },
 };
 
@@ -47,6 +56,7 @@ export const highContrastAccent: CSSRules<DesignSystem> = {
         color: HighContrastColor.selectedText,
         fill: HighContrastColor.selectedText,
         "-ms-high-contrast-adjust": "none",
+        "forced-color-adjust": "none"
     },
 };
 

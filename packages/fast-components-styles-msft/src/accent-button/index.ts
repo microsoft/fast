@@ -13,11 +13,12 @@ import {
 } from "../utilities/color";
 import {
     highContrastAccent,
-    HighContrastColor,
     highContrastDisabledBorder,
     highContrastDisabledForeground,
     highContrastDoubleFocus,
-    highContrastSelector,
+    highContrastHighlightForeground,
+    highContrastSelectedForeground,
+    highContrastSelectedOutline,
 } from "../utilities/high-contrast";
 
 const styles: ComponentStyles<AccentButtonClassNameContract, DesignSystem> = {
@@ -29,16 +30,9 @@ const styles: ComponentStyles<AccentButtonClassNameContract, DesignSystem> = {
         background: accentFillRest,
         "&:hover:enabled": {
             background: accentFillHover,
-            [highContrastSelector]: {
-                background: HighContrastColor.selectedText,
-                "border-color": HighContrastColor.selectedBackground,
-                color: HighContrastColor.selectedBackground,
-                fill: HighContrastColor.selectedBackground,
-            },
+            ...highContrastSelectedOutline,
             "& $button_beforeContent, & $button_afterContent": {
-                [highContrastSelector]: {
-                    fill: "Highlight",
-                },
+                ...highContrastHighlightForeground,
             },
         },
         "&:active:enabled": {
@@ -60,12 +54,16 @@ const styles: ComponentStyles<AccentButtonClassNameContract, DesignSystem> = {
         },
         "& $button_beforeContent, & $button_afterContent": {
             fill: accentForegroundCut,
-            [highContrastSelector]: {
-                fill: "HighlightText",
-            },
+            ...highContrastSelectedForeground,
         },
         ...highContrastAccent,
         "a&": {
+            "&:hover:enabled": {
+                ...highContrastSelectedOutline,
+                "& $button_beforeContent, & $button_afterContent": {
+                    ...highContrastHighlightForeground,
+                },
+            },
             "&$button__disabled": {
                 ...highContrastDisabledBorder,
                 "& $button_beforeContent, & $button_afterContent": {
