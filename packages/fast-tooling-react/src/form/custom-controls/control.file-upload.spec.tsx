@@ -2,10 +2,8 @@ import React from "react";
 import Adapter from "enzyme-adapter-react-16";
 import { configure, mount } from "enzyme";
 import { FileUploadControl } from "./control.file-upload";
-import {
-    FileUploadControl as StyledFileUploadControl,
-    FileUploadControlProps,
-} from "./index";
+import { FileUploadControl as StyledFileUploadControl } from "./control.file-upload";
+import { FileUploadControlProps } from "./control.file-upload.props";
 
 /*
  * Configure Enzyme

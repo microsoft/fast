@@ -60,10 +60,10 @@ export type FormHTMLElement =
     | HTMLButtonElement;
 
 export interface ControlTemplateUtilitiesProps
-    extends NumberTypeControlOptions,
+    extends NumberFieldTypeControlOptions,
         ListControlOptions,
-        TextboxControlOptions,
-        LinkControlOptions,
+        TextareaControlOptions,
+        SectionLinkControlOptions,
         ArrayControlOptions,
         ChildrenControlOptions {
     /**
@@ -198,7 +198,7 @@ export interface CommonControlConfig {
     onChange: (config: ControlOnChangeConfig) => void;
 }
 
-export interface NumberTypeControlOptions {
+export interface NumberFieldTypeControlOptions {
     /**
      * The minimum value allowed
      */
@@ -222,14 +222,14 @@ export interface ListControlOptions {
     options?: any[];
 }
 
-export interface TextboxControlOptions {
+export interface TextareaControlOptions {
     /**
      * The number of rows to assign to the textarea
      */
     rows?: number;
 }
 
-export interface LinkControlOptions {
+export interface SectionLinkControlOptions {
     /**
      * The location of the data
      * in respect to the schema
@@ -302,16 +302,17 @@ export interface ChildrenControlOptions {
     onUpdateSection?: (config: UpdateSectionConfig) => void;
 }
 
-export type NumberTypeControlConfig = CommonControlConfig & NumberTypeControlOptions;
+export type NumberFieldTypeControlConfig = CommonControlConfig &
+    NumberFieldTypeControlOptions;
 export type ListControlConfig = CommonControlConfig & ListControlOptions;
-export type TextboxControlConfig = CommonControlConfig & TextboxControlOptions;
-export type LinkControlConfig = CommonControlConfig & LinkControlOptions;
+export type TextareaControlConfig = CommonControlConfig & TextareaControlOptions;
+export type SectionLinkControlConfig = CommonControlConfig & SectionLinkControlOptions;
 export type ArrayControlConfig = CommonControlConfig & ArrayControlOptions;
 export type ChildrenControlConfig = CommonControlConfig & ChildrenControlOptions;
 export type ControlConfig = CommonControlConfig &
-    NumberTypeControlOptions &
+    NumberFieldTypeControlOptions &
     ListControlOptions &
-    TextboxControlOptions &
-    LinkControlOptions &
+    TextareaControlOptions &
+    SectionLinkControlOptions &
     ArrayControlOptions &
     ChildrenControlConfig;

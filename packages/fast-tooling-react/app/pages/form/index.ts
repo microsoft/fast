@@ -126,3 +126,9 @@ export const dictionary: ExampleComponent = {
     schema: DictionarySchema,
     data: DictionaryDataSet,
 };
+
+import CustomControlSchema from "../../../src/__tests__/schemas/control-plugin.schema.json";
+
+export const customControl: ExampleComponent = {
+    schema: CustomControlSchema,
+};
