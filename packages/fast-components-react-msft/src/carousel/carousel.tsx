@@ -231,9 +231,7 @@ class Carousel extends Foundation<
     private get isFirstSlide(): boolean {
         if (this.props.items.length) {
             const firstSlideId: string = this.props.items[0].id;
-            if (firstSlideId) {
-                return firstSlideId === this.state.activeId;
-            }
+            return firstSlideId === this.state.activeId;
         } else {
             return false;
         }
