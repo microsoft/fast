@@ -10,7 +10,9 @@ import {
 import { CarouselClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import { designUnit, outlineWidth } from "../utilities/design-system";
 import {
+    HighContrastColor,
     highContrastHighlightBackground,
+    highContrastOptOutProperty,
     highContrastSelector,
 } from "../utilities/high-contrast";
 
@@ -55,6 +57,9 @@ const styles: ComponentStyles<CarouselClassNameContract, DesignSystem> = {
                 opacity: "1",
             },
         },
+        [highContrastSelector]: {
+            ...highContrastOptOutProperty,
+        }
     },
     carousel_slides: {},
     carousel_sequenceIndicators: {
@@ -140,6 +145,9 @@ const styles: ComponentStyles<CarouselClassNameContract, DesignSystem> = {
                     toPx<DesignSystem>(outlineWidth),
                     darkModeNeutralOutlineRest
                 ),
+                [highContrastSelector]: {
+                    background: "none"
+                }
             },
             "& span::before": {
                 "border-color": darkModeNeutralForegroundRest,
@@ -162,9 +170,12 @@ const styles: ComponentStyles<CarouselClassNameContract, DesignSystem> = {
             "& > svg": {
                 fill: darkModeNeutralForegroundRest,
                 [highContrastSelector]: {
-                    fill: "ButtonText",
+                    fill: HighContrastColor.buttonBackground,
                 },
             },
+            [highContrastSelector]: {
+                background: "none"
+            }
         },
         "& $carousel_sequenceIndicator": {
             "&::before": {
@@ -190,6 +201,9 @@ const styles: ComponentStyles<CarouselClassNameContract, DesignSystem> = {
                     toPx<DesignSystem>(outlineWidth),
                     lightModeNeutralOutlineRest
                 ),
+                [highContrastSelector]: {
+                    background: "none"
+                }
             },
             "& span::before": {
                 "border-color": lightModeNeutralForegroundRest,
@@ -212,9 +226,12 @@ const styles: ComponentStyles<CarouselClassNameContract, DesignSystem> = {
             "& > svg": {
                 fill: lightModeNeutralForegroundRest,
                 [highContrastSelector]: {
-                    fill: "ButtonText",
+                    fill: HighContrastColor.buttonText,
                 },
             },
+            [highContrastSelector]: {
+                background: "none"
+            }
         },
         "& $carousel_sequenceIndicator": {
             "&::before": {

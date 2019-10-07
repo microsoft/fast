@@ -62,4 +62,15 @@ storiesOf("Checkbox", module)
             </Label>
         );
         return <Checkbox inputId={id} onChange={action("onChnage")} label={label} />;
-    });
+    })
+    .add("Disabled with label", () => {
+        const id: string = uniqueId();
+        const label: (className: string) => React.ReactNode = (
+            className: string
+        ): React.ReactNode => (
+            <Label className={className} htmlFor={id}>
+                Hello render prop
+            </Label>
+        );
+        return <Checkbox inputId={id} onChange={action("onChnage")} label={label} disabled={true}/>;
+    });;

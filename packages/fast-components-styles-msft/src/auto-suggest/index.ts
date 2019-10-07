@@ -7,7 +7,7 @@ import { neutralFillStealthRest } from "../utilities/color";
 import { heightNumber } from "../utilities/density";
 import { applyElevation, ElevationMultiplier } from "../utilities/elevation";
 import { designUnit, outlineWidth } from "../utilities/design-system";
-import { highContrastSelector } from "../utilities/high-contrast";
+import { HighContrastColor, highContrastSelector } from "../utilities/high-contrast";
 
 const visibleChildCount: number = 10;
 const styles: ComponentStyles<AutoSuggestClassNameContract, DesignSystem> = {
@@ -30,8 +30,12 @@ const styles: ComponentStyles<AutoSuggestClassNameContract, DesignSystem> = {
         overflow: "auto",
         ...applyElevatedCornerRadius(),
         [highContrastSelector]: {
-            background: "ButtonFace",
-            border: format<DesignSystem>("{0} solid ButtonText", toPx(outlineWidth)),
+            background: HighContrastColor.background,
+            border: format<DesignSystem>(
+                "{0} solid {1}",
+                toPx(outlineWidth),
+                () => HighContrastColor.buttonText
+            ),
         },
     },
     autoSuggest__menuOpen: {},

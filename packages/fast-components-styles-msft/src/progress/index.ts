@@ -6,10 +6,15 @@ import {
     neutralFillRest,
     neutralForegroundHint,
 } from "../utilities/color";
-import { multiply, toPx } from "@microsoft/fast-jss-utilities";
-import { designUnit } from "../utilities/design-system";
+import { format, multiply, toPx } from "@microsoft/fast-jss-utilities";
+import { designUnit, outlineWidth } from "../utilities/design-system";
 import { glyphSize, height, heightNumber } from "../utilities/density";
-import { highContrastBackground, highContrastSelector } from "../utilities/high-contrast";
+import {
+    highContrastBackground,
+    HighContrastColor,
+    highContrastOptOutProperty,
+    highContrastSelector
+} from "../utilities/high-contrast";
 
 const styles: ComponentStyles<ProgressClassNameContract, DesignSystem> = {
     progress: {
@@ -18,6 +23,9 @@ const styles: ComponentStyles<ProgressClassNameContract, DesignSystem> = {
         "align-items": "center",
         height: toPx<DesignSystem>(designUnit),
         "text-align": "left",
+        [highContrastSelector]: {
+            ...highContrastOptOutProperty
+        },
     },
     progress__circular: {
         height: "unset",
@@ -32,7 +40,7 @@ const styles: ComponentStyles<ProgressClassNameContract, DesignSystem> = {
         "& $progress_valueIndicator": {
             stroke: accentFillRest,
             [highContrastSelector]: {
-                stroke: "ButtonText",
+                stroke: HighContrastColor.buttonText,
             },
         },
         "& $progress_valueIndicator__indeterminate": {
@@ -41,7 +49,7 @@ const styles: ComponentStyles<ProgressClassNameContract, DesignSystem> = {
         "& $progress_indicator": {
             stroke: neutralFillRest,
             [highContrastSelector]: {
-                stroke: "ButtonFace",
+                stroke: HighContrastColor.buttonBackground,
             },
         },
     },
@@ -97,16 +105,24 @@ const styles: ComponentStyles<ProgressClassNameContract, DesignSystem> = {
         "-webkit-mask-image": "-webkit-radial-gradient(white, black)",
         "mask-image": "-webkit-radial-gradient(white, black)",
         [highContrastSelector]: {
-            background: "ButtonFace",
-            border: "1px solid ButtonText",
+            background: HighContrastColor.buttonBackground,
+            border: format<DesignSystem>(
+                "{0} solid {1}",
+                toPx(outlineWidth),
+                () => HighContrastColor.buttonText
+            ),
         },
     },
     progress_indicator__determinate: {
         height: toPx<DesignSystem>(designUnit),
         "border-radius": "2px",
         [highContrastSelector]: {
-            background: "ButtonFace",
-            border: "1px solid ButtonText",
+            background: HighContrastColor.buttonBackground,
+            border: format<DesignSystem>(
+                "{0} solid {1}",
+                toPx(outlineWidth),
+                () => HighContrastColor.buttonText
+            ),
         },
     },
     progress_dot: {
@@ -117,7 +133,7 @@ const styles: ComponentStyles<ProgressClassNameContract, DesignSystem> = {
         "border-radius": "100px",
         "animation-timing-function": "cubic-bezier(0.4, 0.0, 0.6, 1.0)",
         [highContrastSelector]: {
-            background: "ButtonText",
+            background: HighContrastColor.buttonText,
             opacity: "1 !important",
         },
     },

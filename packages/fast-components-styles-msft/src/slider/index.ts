@@ -1,5 +1,5 @@
-import { SliderClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import { ComponentStyles } from "@microsoft/fast-jss-manager";
+import { applyCursorPointer } from "../utilities/cursor";
 import {
     add,
     applyFocusVisible,
@@ -19,7 +19,7 @@ import {
     neutralForegroundRest,
     neutralOutlineRest,
 } from "../utilities/color";
-import { applyCursorPointer } from "../utilities/cursor";
+import { SliderClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import { densityCategorySwitch, heightNumber } from "../utilities/density";
 import {
     backgroundColor,
@@ -30,10 +30,13 @@ import { applyDisabledState } from "../utilities/disabled";
 import { applyElevation, ElevationMultiplier } from "../utilities/elevation";
 import {
     highContrastBackground,
+    HighContrastColor,
     highContrastDisabledBackground,
     highContrastHighlightBackground,
+    highContrastOptOutProperty,
     highContrastSelector,
 } from "../utilities/high-contrast";
+import { importantValue } from "../utilities/important";
 
 const thumbSizeValue: DesignSystemResolver<number> = divide(heightNumber(), 2);
 const thumbSize: DesignSystemResolver<string> = toPx(thumbSizeValue);
@@ -56,6 +59,9 @@ const styles: ComponentStyles<SliderClassNameContract, DesignSystem> = {
     slider: {
         display: "inline-grid",
         ...applyCursorPointer(),
+        [highContrastSelector]: {
+            ...highContrastOptOutProperty,
+        },
     },
     slider_layoutRegion: {
         display: "grid",
@@ -77,8 +83,9 @@ const styles: ComponentStyles<SliderClassNameContract, DesignSystem> = {
             ),
             [highContrastSelector]: {
                 "box-shadow": format(
-                    `0 0 0 2px Background, 0 0 0 {0} ButtonText`,
-                    toPx(add(focusOutlineWidth, 2))
+                    `0 0 0 2px Background, 0 0 0 {0} {1}`,
+                    toPx(add(focusOutlineWidth, 2)),
+                    () => HighContrastColor.buttonText
                 ),
             },
         }),
@@ -89,9 +96,9 @@ const styles: ComponentStyles<SliderClassNameContract, DesignSystem> = {
             background: neutralForegroundActive,
         },
         [highContrastSelector]: {
-            background: "ButtonText",
+            background: HighContrastColor.buttonText,
             "&:hover, &:active": {
-                background: "Highlight",
+                background: HighContrastColor.selectedBackground,
             },
         },
     },
@@ -118,6 +125,14 @@ const styles: ComponentStyles<SliderClassNameContract, DesignSystem> = {
             },
             "&:active": {
                 background: neutralForegroundRest,
+            },
+        },
+        "& $slider_layoutRegion": {
+            "& div > span": {
+                color: importantValue(HighContrastColor.disabledText),
+            },
+            "& div > div": {
+                background: importantValue(HighContrastColor.disabledText),
             },
         },
     },

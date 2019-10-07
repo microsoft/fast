@@ -21,9 +21,11 @@ import {
 import { glyphSize } from "../utilities/density";
 import { designUnit } from "../utilities/design-system";
 import {
+    HighContrastColor,
     highContrastDisabledForeground,
     highContrastForeground,
     highContrastHighlightForeground,
+    highContrastOptOutProperty,
     highContrastSelectedForeground,
     highContrastSelector,
 } from "../utilities/high-contrast";
@@ -97,6 +99,9 @@ const styles: ComponentStyles<CallToActionClassNameContract, DesignSystem> = {
         ...applyFocusVisible("& $callToAction_glyph", {
             ...applyGlyphTransform(),
         }),
+        [highContrastSelector]: {
+            ...highContrastOptOutProperty
+        },
     },
     callToAction_glyph: {
         fill: neutralForegroundRest,
@@ -115,8 +120,14 @@ const styles: ComponentStyles<CallToActionClassNameContract, DesignSystem> = {
             fill: accentForegroundCut,
             ...highContrastSelectedForeground,
         },
-        "&:hover $callToAction_glyph": {
-            ...highContrastHighlightForeground,
+        "&:hover": {
+            [highContrastSelector]: {
+                background: HighContrastColor.selectedText,
+                "border-color": HighContrastColor.selectedBackground,
+            },
+            "a&, & $button_contentRegion, & $callToAction_glyph": {
+                ...highContrastHighlightForeground
+            }
         },
     },
     callToAction__lightweight: {

@@ -1,5 +1,5 @@
+import { ComponentStyles } from "@microsoft/fast-jss-manager";
 import { applyCursorDefault, applyCursorPointer } from "../utilities/cursor";
-import { SelectOptionClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import {
     applyFocusVisible,
     directionSwitch,
@@ -16,17 +16,19 @@ import {
     neutralFocus,
     neutralForegroundRest,
 } from "../utilities/color";
-import { ComponentStyles } from "@microsoft/fast-jss-manager";
+import { SelectOptionClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import { glyphSize, height, horizontalSpacing } from "../utilities/density";
 import { designUnit, focusOutlineWidth } from "../utilities/design-system";
 import { applyDisabledState } from "../utilities/disabled";
 import { applyScaledTypeRamp } from "../utilities/typography";
 import {
+    HighContrastColor,
     highContrastDisabledBorder,
     highContrastSelected,
     highContrastSelector,
     highContrastStealth,
 } from "../utilities/high-contrast";
+import { importantValue } from "../utilities/important";
 
 const styles: ComponentStyles<SelectOptionClassNameContract, DesignSystem> = {
     selectOption: {
@@ -80,10 +82,10 @@ const styles: ComponentStyles<SelectOptionClassNameContract, DesignSystem> = {
     },
     selectOption__selected: {
         [highContrastSelector]: {
-            background: "Highlight !important",
-            "border-color": "ButtonText !important",
-            color: "HighlightText !important",
-            fill: "HighlightText !important",
+            background: importantValue(HighContrastColor.selectedBackground),
+            "border-color": importantValue(HighContrastColor.buttonText),
+            color: importantValue(HighContrastColor.selectedText),
+            fill: importantValue(HighContrastColor.selectedText),
         },
         background: neutralFillStealthSelected,
         "&:hover": {

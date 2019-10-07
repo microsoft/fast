@@ -1,4 +1,18 @@
+import { applyScaledTypeRamp } from "../utilities/typography";
 import { DesignSystem, DesignSystemResolver } from "../design-system";
+import { ComponentStyles } from "@microsoft/fast-jss-manager";
+import {
+    add,
+    applyFocusVisible,
+    directionSwitch,
+    divide,
+    format,
+    multiply,
+    subtract,
+    toPx,
+} from "@microsoft/fast-jss-utilities";
+import { ToggleClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
+import { applyDisabledState } from "../utilities/disabled";
 import {
     accentFillRest,
     accentForegroundCut,
@@ -13,28 +27,17 @@ import {
     neutralOutlineHover,
     neutralOutlineRest,
 } from "../utilities/color";
-import { ComponentStyles } from "@microsoft/fast-jss-manager";
-import {
-    add,
-    applyFocusVisible,
-    directionSwitch,
-    divide,
-    format,
-    multiply,
-    subtract,
-    toPx,
-} from "@microsoft/fast-jss-utilities";
-import { ToggleClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
-import { applyDisabledState } from "../utilities/disabled";
-import { applyScaledTypeRamp } from "../utilities/typography";
 import { densityCategorySwitch, heightNumber } from "../utilities/density";
 import { designUnit, focusOutlineWidth, outlineWidth } from "../utilities/design-system";
 import { applyCursorDisabled, applyCursorPointer } from "../utilities/cursor";
 import {
     HighContrastColor,
     highContrastDoubleFocus,
+    highContrastOptOutProperty,
     highContrastSelector,
+    highContrastTextForeground,
 } from "../utilities/high-contrast";
+import { importantValue } from "../utilities/important";
 
 const height: DesignSystemResolver<number> = add(divide(heightNumber(), 2), designUnit);
 const width: DesignSystemResolver<number> = multiply(height, 2);
@@ -58,6 +61,9 @@ const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = {
         display: "inline-block",
         color: neutralForegroundRest,
         transition: "all 0.2s ease-in-out",
+        [highContrastSelector]: {
+            ...highContrastOptOutProperty,
+        },
     },
     toggle_label: {
         ...applyCursorPointer(),
@@ -65,19 +71,12 @@ const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = {
         display: "block",
         "padding-bottom": "7px",
         clear: "both",
-        [highContrastSelector]: {
-            color: HighContrastColor.text,
-        },
     },
     toggle_toggleButton: {
         ...applyCursorPointer(),
         position: "relative",
         "margin-top": "0",
         float: directionSwitch("left", "right"),
-        [highContrastSelector]: {
-            "-ms-high-contrast-adjust": "none",
-            "forced-color-adjust": "none",
-        }
     },
     toggle_stateIndicator: {
         position: "absolute",
@@ -112,10 +111,10 @@ const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = {
             background: neutralFillInputActive,
             "border-color": neutralOutlineActive,
             [highContrastSelector]: {
-                background: "Highlight",
-                "border-color": "Highlight",
+                background: HighContrastColor.selectedBackground,
+                "border-color": HighContrastColor.selectedText,
                 "& + span": {
-                    background: "HighlightText",
+                    background: HighContrastColor.selectedText,
                 },
             },
         },
@@ -123,10 +122,10 @@ const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = {
             background: neutralFillInputHover,
             "border-color": neutralOutlineHover,
             [highContrastSelector]: {
-                background: "HighlightText",
-                "border-color": "Highlight",
+                background: HighContrastColor.selectedText,
+                "border-color": HighContrastColor.selectedBackground,
                 "& + span": {
-                    background: "Highlight",
+                    background: HighContrastColor.selectedBackground,
                 },
             },
         },
@@ -135,8 +134,9 @@ const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = {
             "border-color": neutralFocus,
             [highContrastSelector]: {
                 "box-shadow": format<DesignSystem>(
-                    "0 0 0 {0} ButtonText inset",
-                    toPx<DesignSystem>(outlineWidth)
+                    "0 0 0 {0} {1} inset",
+                    toPx<DesignSystem>(outlineWidth),
+                    () => HighContrastColor.buttonText
                 ),
             },
         }),
@@ -164,37 +164,40 @@ const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = {
                 ...highContrastDoubleFocus,
             }),
             "&:disabled": {
-                [highContrastSelector]: {
-                    background: "GrayText !important",
-                    "border-color": "GrayText !important",
-                    "& + span": {
-                        background: "Background !important",
+                "& $toggle_input, & $toggle_label, & $toggle_statusMessage": {
+                    [highContrastSelector]: {
+                        background: "none",
+                        "border-color": importantValue(HighContrastColor.disabledText),
+                        color: importantValue(HighContrastColor.disabledText),
+                        "& + span": {
+                            background: importantValue(HighContrastColor.disabledText),
+                        },
                     },
-                },
+                }
             },
             "&:hover": {
                 [highContrastSelector]: {
-                    background: "HighlightText",
-                    "border-color": "Highlight",
+                    background: HighContrastColor.selectedText,
+                    "border-color": HighContrastColor.selectedBackground,
                     "& + span": {
-                        background: "Highlight",
+                        background: HighContrastColor.selectedBackground,
                     },
                 }
             },
             "&:active": {
                 [highContrastSelector]: {
-                    background: "Highlight !important",
-                    "border-color": "Highlight !important",
+                    background: importantValue(HighContrastColor.selectedBackground),
+                    "border-color": importantValue(HighContrastColor.selectedBackground),
                     "& + span": {
-                        background: "HighlightText !important",
+                        background: importantValue(HighContrastColor.selectedText),
                     },
                 },
             },
             [highContrastSelector]: {
-                background: "Highlight",
-                "border-color": "Highlight",
+                background: HighContrastColor.selectedBackground,
+                "border-color": HighContrastColor.selectedBackground,
                 "& + span": {
-                    background: "HighlightText",
+                    background: HighContrastColor.selectedText,
                 },
             },
         },
@@ -211,10 +214,11 @@ const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = {
             background: neutralFillSelected,
             "border-color": neutralFillSelected,
             [highContrastSelector]: {
-                background: "Background !important",
-                "border-color": "GrayText !important",
+                background: "none",
+                "border-color": importantValue(HighContrastColor.disabledText),
+                color: importantValue(HighContrastColor.disabledText),
                 "& + span": {
-                    background: "GrayText !important",
+                    background: importantValue(HighContrastColor.disabledText),
                 },
             },
         },
@@ -228,6 +232,7 @@ const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = {
         "user-select": "none",
         "margin-top": "0",
         "padding-bottom": "0",
+        ...highContrastTextForeground
     },
 };
 

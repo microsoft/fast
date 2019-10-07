@@ -21,6 +21,7 @@ import { applyScaledTypeRamp } from "../utilities/typography";
 import { applyFontWeightNormal } from "../utilities/fonts";
 import { outlineWidth } from "../utilities/design-system";
 import {
+    HighContrastColor,
     highContrastDisabledBorder,
     highContrastOutlineFocus,
     highContrastSelector,
@@ -52,8 +53,12 @@ export function inputFieldStyles(
             background: neutralFillInputHover,
             "border-color": neutralOutlineHover,
             [highContrastSelector]: {
-                background: "Background",
-                border: format("{0} solid Highlight", toPx<DesignSystem>(outlineWidth)),
+                background: "none",
+                border: format(
+                    "{0} solid {1}",
+                    toPx<DesignSystem>(outlineWidth),
+                    () => HighContrastColor.selectedBackground
+                ),
             },
         },
         "&:active:enabled": {
@@ -72,6 +77,9 @@ export function inputFieldStyles(
         },
         "&::placeholder": {
             color: neutralForegroundHint(neutralFillInputRest),
+            [highContrastSelector]: {
+                color: HighContrastColor.disabledText,
+            }
         },
     };
 }
@@ -84,6 +92,14 @@ export function filledInputFieldStyles(): CSSRules<{}> {
         "&:hover:enabled": {
             background: neutralFillHover,
             "border-color": "transparent",
+            [highContrastSelector]: {
+                background: "none",
+                border: format(
+                    "{0} solid {1}",
+                    toPx<DesignSystem>(outlineWidth),
+                    () => HighContrastColor.selectedBackground
+                ),
+            },
         },
         "&:active:enabled": {
             "border-color": "transparent",
@@ -93,6 +109,9 @@ export function filledInputFieldStyles(): CSSRules<{}> {
         },
         "&::placeholder": {
             color: neutralForegroundHint(neutralFillRest),
+            [highContrastSelector]: {
+                color: HighContrastColor.disabledText,
+            }
         },
     };
 }

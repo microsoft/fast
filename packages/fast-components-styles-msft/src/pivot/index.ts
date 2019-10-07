@@ -22,8 +22,10 @@ import { focusOutlineWidth } from "../utilities/design-system";
 import { applyCursorPointer } from "../utilities/cursor";
 import {
     highContrastBorderColor,
+    HighContrastColor,
     highContrastForeground,
     highContrastHighlightBackground,
+    highContrastOptOutProperty,
     highContrastSelector,
 } from "../utilities/high-contrast";
 
@@ -34,6 +36,9 @@ const styles: ComponentStyles<PivotClassNameContract, DesignSystem> = {
         overflow: "hidden",
         color: neutralForegroundRest,
         transition: "all 0.2s ease-in-out",
+        [highContrastSelector]: {
+            ...highContrastOptOutProperty,
+        },
     },
     pivot_tabList: {
         display: "flex",
@@ -63,9 +68,7 @@ const styles: ComponentStyles<PivotClassNameContract, DesignSystem> = {
             ...highContrastBorderColor,
         }),
         [highContrastSelector]: {
-            color: "ButtonText",
-            "-ms-high-contrast-adjust": "none",
-            "forced-color-adjust": "none"
+            color: HighContrastColor.buttonText,
         },
     },
     pivot_tab__active: {

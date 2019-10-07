@@ -48,5 +48,7 @@ storiesOf("Toggle", module)
         }
         return <ToggleStateHandler>{render}</ToggleStateHandler>;
     })
-    .add("Disabled", () => <Toggle {...toggleProps} disabled={true} />)
-    .add("No Label", () => <Toggle inputId={uniqueId()} />);
+    .add("No Label", () => <Toggle inputId={uniqueId()} />)
+    .add("Disabled unhandled", () => <Toggle {...toggleProps} disabled={true} />)
+    .add("Disabled handled", () => <Toggle {...toggleProps} selected={true} disabled={true}/>);
+    

@@ -14,11 +14,13 @@ import {
 } from "../utilities/color";
 import { glyphSize, horizontalSpacing } from "../utilities/density";
 import {
+    HighContrastColor,
     highContrastDisabledForeground,
     highContrastForeground,
     highContrastSelectedForeground,
     highContrastSelector,
 } from "../utilities/high-contrast";
+import { importantValue } from "../utilities/important";
 
 // Since MSFT button is already styled, we need to override in this way to alter button classes
 export const actionTriggerButtonOverrides: ComponentStyles<
@@ -52,7 +54,7 @@ const styles: ComponentStyles<ActionTriggerClassNameContract, DesignSystem> = {
             "&:hover:enabled": {
                 "& $actionTrigger_glyph": {
                     [highContrastSelector]: {
-                        fill: "Highlight !important",
+                        fill: importantValue(HighContrastColor.selectedBackground),
                     },
                 },
             },
@@ -75,7 +77,7 @@ const styles: ComponentStyles<ActionTriggerClassNameContract, DesignSystem> = {
         "&:hover:enabled": {
             "& $actionTrigger_glyph": {
                 [highContrastSelector]: {
-                    fill: "Highlight !important",
+                    fill: importantValue(HighContrastColor.selectedBackground),
                 },
             },
         },

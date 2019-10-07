@@ -1,9 +1,9 @@
-import { TextFieldClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
-import { TextActionClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
-import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager";
-import { directionSwitch, format, subtract, toPx } from "@microsoft/fast-jss-utilities";
-import { DesignSystem } from "../design-system";
 import { applyCornerRadius } from "../utilities/border";
+import { TextFieldClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
+import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager";
+import { applyFocusVisible, directionSwitch, format, subtract, toPx } from "@microsoft/fast-jss-utilities";
+import { DesignSystem } from "../design-system";
+import { TextActionClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import {
     neutralFillActive,
     neutralFillHover,
@@ -21,11 +21,14 @@ import { glyphSize, height, horizontalSpacing } from "../utilities/density";
 import { focusOutlineWidth, outlineWidth } from "../utilities/design-system";
 import { applyDisabledState } from "../utilities/disabled";
 import {
+    HighContrastColor,
     highContrastDisabledBorder,
     highContrastDisabledForeground,
     highContrastForeground,
+    highContrastOutline,
     highContrastSelector,
 } from "../utilities/high-contrast";
+import { importantValue } from "../utilities/important";
 
 // Since MSFT text field is already styled, we need to override in this way to alter text field classes
 export const textFieldOverrides: ComponentStyles<
@@ -43,12 +46,8 @@ export const textFieldOverrides: ComponentStyles<
             background: "none",
             border: "none",
             "box-shadow": "none",
-            [highContrastSelector]: {
-                background: "none",
-                border: "none",
-                "box-shadow": "none",
-            },
         },
+        ...highContrastForeground,
     },
 };
 
@@ -80,11 +79,16 @@ const styles: ComponentStyles<TextActionClassNameContract, DesignSystem> = {
         "&:hover": {
             background: neutralFillInputHover,
             "border-color": neutralOutlineHover,
+            [highContrastSelector]: {
+                background: "none",
+                "border-color": HighContrastColor.selectedBackground
+            }
         },
         "&:active": {
             background: neutralFillInputActive,
             "border-color": neutralOutlineActive,
         },
+        ...highContrastOutline
     },
     textAction__filled: {
         background: neutralFillRest,
@@ -92,10 +96,22 @@ const styles: ComponentStyles<TextActionClassNameContract, DesignSystem> = {
         "&:hover": {
             background: neutralFillHover,
             "border-color": "transparent",
+            [highContrastSelector]: {
+                background: "none",
+                "border-color": HighContrastColor.selectedBackground
+            },
         },
         "&:active": {
             background: neutralFillActive,
             "border-color": "transparent",
+        },
+        [highContrastSelector]: {
+            background: "none",
+            border: format(
+                "{0} solid {1}",
+                toPx<DesignSystem>(outlineWidth),
+                () => HighContrastColor.buttonText
+            ),
         },
     },
     textAction__outline: {},
@@ -115,10 +131,15 @@ const styles: ComponentStyles<TextActionClassNameContract, DesignSystem> = {
         [highContrastSelector]: {
             "&, &:hover": {
                 "box-shadow": format(
-                    "0 0 0 {0} ButtonText inset",
-                    toPx<DesignSystem>(subtract(focusOutlineWidth, outlineWidth))
+                    "0 0 0 {0} {1} inset",
+                    toPx<DesignSystem>(subtract(focusOutlineWidth, outlineWidth)),
+                    () => HighContrastColor.buttonText
                 ),
-                border: format("{0} solid ButtonText", toPx<DesignSystem>(outlineWidth)),
+                border: format(
+                    "{0} solid {1}",
+                    toPx<DesignSystem>(outlineWidth),
+                    () => HighContrastColor.buttonText    
+                ),
             },
         },
     },
@@ -152,16 +173,33 @@ const styles: ComponentStyles<TextActionClassNameContract, DesignSystem> = {
         flex: "0 0 auto",
         cursor: "pointer",
         [highContrastSelector]: {
-            background: "ButtonFace",
-            fill: "ButtonText",
+            fill: HighContrastColor.buttonText,
         },
         "&:hover": {
             [highContrastSelector]: {
-                background: "Highlight",
-                fill: "HighlightText",
+                background: HighContrastColor.selectedBackground,
+                fill: HighContrastColor.selectedText,
+            },
+        },
+        "&:active": {
+            [highContrastSelector]: {
+                background: HighContrastColor.selectedBackground,
+                fill: HighContrastColor.selectedText,
             },
         },
         "&:disabled": {},
+        ...applyFocusVisible<DesignSystem>({
+            [highContrastSelector]: {
+                background: HighContrastColor.selectedBackground,
+                fill: HighContrastColor.selectedText,
+                "border-color": importantValue(HighContrastColor.buttonText),
+                "box-shadow": format(
+                    "0 0 0 {0} inset {1}",
+                    toPx(focusOutlineWidth),
+                    () => HighContrastColor.buttonBackground
+                ),
+            },
+        }),
     },
     textAction_beforeGlyph: {
         ...glyphStyles,

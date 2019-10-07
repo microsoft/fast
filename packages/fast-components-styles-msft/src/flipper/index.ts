@@ -22,6 +22,8 @@ import { outlineWidth } from "../utilities/design-system";
 import { applyCursorPointer } from "../utilities/cursor";
 import {
     highContrastHighlightBackground,
+    highContrastOutline,
+    highContrastSelectedForeground,
     highContrastSelector,
 } from "../utilities/high-contrast";
 
@@ -57,7 +59,7 @@ const styles: ComponentStyles<FlipperClassNameContract, DesignSystem> = {
             bottom: "0",
             left: "0",
             [highContrastSelector]: {
-                background: "ButtonFace",
+                background: "none",
             },
         },
         "&:active": {
@@ -70,12 +72,10 @@ const styles: ComponentStyles<FlipperClassNameContract, DesignSystem> = {
             "&::before": {
                 background: neutralFillStealthHover,
                 "border-color": neutralOutlineHover,
-                ...highContrastHighlightBackground,
+                ...highContrastHighlightBackground
             },
             "& $flipper_glyph": {
-                [highContrastSelector]: {
-                    fill: "HighlightText",
-                },
+                ...highContrastSelectedForeground
             },
         },
         ...applyFocusVisible({
@@ -87,9 +87,7 @@ const styles: ComponentStyles<FlipperClassNameContract, DesignSystem> = {
         "&::-moz-focus-inner": {
             border: "0",
         },
-        [highContrastSelector]: {
-            fill: "ButtonText",
-        },
+        ...highContrastOutline
     },
     flipper_glyph: {
         position: "relative",

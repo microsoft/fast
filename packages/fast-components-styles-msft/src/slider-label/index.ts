@@ -1,13 +1,18 @@
+import { applyCursorDefault } from "../utilities/cursor";
 import { SliderLabelClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
-import { ComponentStyles } from "@microsoft/fast-jss-manager";
 import { toPx } from "@microsoft/fast-jss-utilities";
 import { DesignSystem } from "../design-system";
 import { neutralForegroundRest, neutralOutlineRest } from "../utilities/color";
-import { applyCursorDefault } from "../utilities/cursor";
+import { ComponentStyles } from "@microsoft/fast-jss-manager";
 import { heightNumber } from "../utilities/density";
 import { designUnit } from "../utilities/design-system";
 import { applyScaledTypeRamp } from "../utilities/typography";
-import { highContrastBackground } from "../utilities/high-contrast";
+import {
+    highContrastBackground,
+    highContrastOptOutProperty,
+    highContrastSelector,
+    highContrastTextForeground
+} from "../utilities/high-contrast";
 
 function minMaxLabelMargin(config: DesignSystem): string {
     return toPx(((heightNumber()(config) / 2 + designUnit(config)) / 2) * -1);
@@ -17,6 +22,9 @@ const styles: ComponentStyles<SliderLabelClassNameContract, DesignSystem> = {
     sliderLabel: {
         display: "grid",
         ...applyCursorDefault(),
+        [highContrastSelector]: {
+            ...highContrastOptOutProperty,
+        },
     },
 
     sliderLabel_positioningRegion: {
@@ -27,6 +35,7 @@ const styles: ComponentStyles<SliderLabelClassNameContract, DesignSystem> = {
         ...applyScaledTypeRamp("t9"),
         "white-space": "nowrap",
         color: neutralForegroundRest,
+        ...highContrastTextForeground,
     },
 
     sliderLabel_tickMark: {
