@@ -11,7 +11,7 @@ import {
     highContrastBackground,
     highContrastOptOutProperty,
     highContrastSelector,
-    highContrastTextForeground
+    highContrastTextForeground,
 } from "../utilities/high-contrast";
 
 function minMaxLabelMargin(config: DesignSystem): string {

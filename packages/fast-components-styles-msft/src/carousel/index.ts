@@ -59,7 +59,7 @@ const styles: ComponentStyles<CarouselClassNameContract, DesignSystem> = {
         },
         [highContrastSelector]: {
             ...highContrastOptOutProperty,
-        }
+        },
     },
     carousel_slides: {},
     carousel_sequenceIndicators: {
@@ -146,8 +146,8 @@ const styles: ComponentStyles<CarouselClassNameContract, DesignSystem> = {
                     darkModeNeutralOutlineRest
                 ),
                 [highContrastSelector]: {
-                    background: "none"
-                }
+                    background: "none",
+                },
             },
             "& span::before": {
                 "border-color": darkModeNeutralForegroundRest,
@@ -174,8 +174,8 @@ const styles: ComponentStyles<CarouselClassNameContract, DesignSystem> = {
                 },
             },
             [highContrastSelector]: {
-                background: "none"
-            }
+                background: "none",
+            },
         },
         "& $carousel_sequenceIndicator": {
             "&::before": {
@@ -202,8 +202,8 @@ const styles: ComponentStyles<CarouselClassNameContract, DesignSystem> = {
                     lightModeNeutralOutlineRest
                 ),
                 [highContrastSelector]: {
-                    background: "none"
-                }
+                    background: "none",
+                },
             },
             "& span::before": {
                 "border-color": lightModeNeutralForegroundRest,
@@ -230,8 +230,8 @@ const styles: ComponentStyles<CarouselClassNameContract, DesignSystem> = {
                 },
             },
             [highContrastSelector]: {
-                background: "none"
-            }
+                background: "none",
+            },
         },
         "& $carousel_sequenceIndicator": {
             "&::before": {

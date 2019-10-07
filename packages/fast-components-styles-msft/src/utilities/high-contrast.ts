@@ -18,9 +18,9 @@ export enum HighContrastColor {
 // Function used to to set high contrast media query
 export function applyHighContrastSelector(): string {
     return window.matchMedia("(forced-colors: none)").matches ||
-           window.matchMedia("(forced-colors: active)").matches 
-           ? "@media (forced-colors: active)" 
-           : "@media (-ms-high-contrast: active)";
+        window.matchMedia("(forced-colors: active)").matches
+        ? "@media (forced-colors: active)"
+        : "@media (-ms-high-contrast: active)";
 }
 
 // Used to to set high contrast media query
@@ -30,7 +30,7 @@ export const highContrastSelector: string = applyHighContrastSelector();
 export function applyhighContrastOptOutProperty(): CSSRules<{}> {
     return {
         "-ms-high-contrast-adjust": "none",
-        "forced-color-adjust": "none"
+        "forced-color-adjust": "none",
     };
 }
 

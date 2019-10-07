@@ -72,10 +72,10 @@ const styles: ComponentStyles<FlipperClassNameContract, DesignSystem> = {
             "&::before": {
                 background: neutralFillStealthHover,
                 "border-color": neutralOutlineHover,
-                ...highContrastHighlightBackground
+                ...highContrastHighlightBackground,
             },
             "& $flipper_glyph": {
-                ...highContrastSelectedForeground
+                ...highContrastSelectedForeground,
             },
         },
         ...applyFocusVisible({
@@ -87,7 +87,7 @@ const styles: ComponentStyles<FlipperClassNameContract, DesignSystem> = {
         "&::-moz-focus-inner": {
             border: "0",
         },
-        ...highContrastOutline
+        ...highContrastOutline,
     },
     flipper_glyph: {
         position: "relative",

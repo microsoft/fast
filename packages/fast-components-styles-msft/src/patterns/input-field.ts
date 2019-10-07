@@ -79,7 +79,7 @@ export function inputFieldStyles(
             color: neutralForegroundHint(neutralFillInputRest),
             [highContrastSelector]: {
                 color: HighContrastColor.disabledText,
-            }
+            },
         },
     };
 }
@@ -111,7 +111,7 @@ export function filledInputFieldStyles(): CSSRules<{}> {
             color: neutralForegroundHint(neutralFillRest),
             [highContrastSelector]: {
                 color: HighContrastColor.disabledText,
-            }
+            },
         },
     };
 }

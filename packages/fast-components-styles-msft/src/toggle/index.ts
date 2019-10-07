@@ -173,7 +173,7 @@ const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = {
                             background: importantValue(HighContrastColor.disabledText),
                         },
                     },
-                }
+                },
             },
             "&:hover": {
                 [highContrastSelector]: {
@@ -182,7 +182,7 @@ const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = {
                     "& + span": {
                         background: HighContrastColor.selectedBackground,
                     },
-                }
+                },
             },
             "&:active": {
                 [highContrastSelector]: {
@@ -232,7 +232,7 @@ const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = {
         "user-select": "none",
         "margin-top": "0",
         "padding-bottom": "0",
-        ...highContrastTextForeground
+        ...highContrastTextForeground,
     },
 };
 

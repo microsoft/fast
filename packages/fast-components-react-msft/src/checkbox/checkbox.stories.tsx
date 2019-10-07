@@ -72,5 +72,12 @@ storiesOf("Checkbox", module)
                 Hello render prop
             </Label>
         );
-        return <Checkbox inputId={id} onChange={action("onChnage")} label={label} disabled={true}/>;
-    });;
+        return (
+            <Checkbox
+                inputId={id}
+                onChange={action("onChnage")}
+                label={label}
+                disabled={true}
+            />
+        );
+    });

@@ -53,7 +53,7 @@ const styles: ComponentStyles<RadioClassNameContract, DesignSystem> = {
         "align-items": "center",
         transition: "all 0.2s ease-in-out",
         [highContrastSelector]: {
-            ...highContrastOptOutProperty
+            ...highContrastOptOutProperty,
         },
     },
     radio_input: {
@@ -81,7 +81,11 @@ const styles: ComponentStyles<RadioClassNameContract, DesignSystem> = {
             "border-color": neutralOutlineHover,
             [highContrastSelector]: {
                 background: "none",
-                border: format("{0} solid {1}", toPx<DesignSystem>(outlineWidth), () => HighContrastColor.selectedBackground),
+                border: format(
+                    "{0} solid {1}",
+                    toPx<DesignSystem>(outlineWidth),
+                    () => HighContrastColor.selectedBackground
+                ),
             },
         },
         "&:active": {
@@ -92,12 +96,19 @@ const styles: ComponentStyles<RadioClassNameContract, DesignSystem> = {
             "box-shadow": format<DesignSystem>("0 0 0 1px {0} inset", neutralFocus),
             "border-color": neutralFocus,
             [highContrastSelector]: {
-                "box-shadow": format<DesignSystem>("0 0 0 1px {0}", () => HighContrastColor.buttonText),
+                "box-shadow": format<DesignSystem>(
+                    "0 0 0 1px {0}",
+                    () => HighContrastColor.buttonText
+                ),
             },
         }),
         [highContrastSelector]: {
             background: "none",
-            border: format("{0} solid {1}", toPx<DesignSystem>(outlineWidth), () => HighContrastColor.buttonText),
+            border: format(
+                "{0} solid {1}",
+                toPx<DesignSystem>(outlineWidth),
+                () => HighContrastColor.buttonText
+            ),
         },
     },
     radio_stateIndicator: {

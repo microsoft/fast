@@ -71,7 +71,7 @@ const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = {
             "padding-right": directionSwitch("", horizontalSpacing(2)),
         },
         [highContrastSelector]: {
-            ...highContrastOptOutProperty
+            ...highContrastOptOutProperty,
         },
     },
     checkbox_input: {
@@ -111,11 +111,14 @@ const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = {
             "box-shadow": format<DesignSystem>("0 0 0 1px {0} inset", neutralFocus),
             "border-color": neutralFocus,
             [highContrastSelector]: {
-                "box-shadow": format<DesignSystem>("0 0 0 1px {0}", () => HighContrastColor.buttonText),
+                "box-shadow": format<DesignSystem>(
+                    "0 0 0 1px {0}",
+                    () => HighContrastColor.buttonText
+                ),
             },
         }),
         [highContrastSelector]: {
-            background: "none"
+            background: "none",
         },
     },
     checkbox_stateIndicator: {
@@ -140,7 +143,7 @@ const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = {
         ...applyCursorPointer(),
         color: neutralForegroundRest,
         ...applyScaledTypeRamp("t7"),
-        ...highContrastTextForeground
+        ...highContrastTextForeground,
     },
     checkbox__checked: {
         "& $checkbox_stateIndicator": {

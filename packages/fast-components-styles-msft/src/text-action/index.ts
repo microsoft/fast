@@ -1,7 +1,13 @@
 import { applyCornerRadius } from "../utilities/border";
 import { TextFieldClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager";
-import { applyFocusVisible, directionSwitch, format, subtract, toPx } from "@microsoft/fast-jss-utilities";
+import {
+    applyFocusVisible,
+    directionSwitch,
+    format,
+    subtract,
+    toPx,
+} from "@microsoft/fast-jss-utilities";
 import { DesignSystem } from "../design-system";
 import { TextActionClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import {
@@ -81,14 +87,14 @@ const styles: ComponentStyles<TextActionClassNameContract, DesignSystem> = {
             "border-color": neutralOutlineHover,
             [highContrastSelector]: {
                 background: "none",
-                "border-color": HighContrastColor.selectedBackground
-            }
+                "border-color": HighContrastColor.selectedBackground,
+            },
         },
         "&:active": {
             background: neutralFillInputActive,
             "border-color": neutralOutlineActive,
         },
-        ...highContrastOutline
+        ...highContrastOutline,
     },
     textAction__filled: {
         background: neutralFillRest,
@@ -98,7 +104,7 @@ const styles: ComponentStyles<TextActionClassNameContract, DesignSystem> = {
             "border-color": "transparent",
             [highContrastSelector]: {
                 background: "none",
-                "border-color": HighContrastColor.selectedBackground
+                "border-color": HighContrastColor.selectedBackground,
             },
         },
         "&:active": {
@@ -138,7 +144,7 @@ const styles: ComponentStyles<TextActionClassNameContract, DesignSystem> = {
                 border: format(
                     "{0} solid {1}",
                     toPx<DesignSystem>(outlineWidth),
-                    () => HighContrastColor.buttonText    
+                    () => HighContrastColor.buttonText
                 ),
             },
         },

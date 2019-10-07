@@ -100,7 +100,7 @@ const styles: ComponentStyles<CallToActionClassNameContract, DesignSystem> = {
             ...applyGlyphTransform(),
         }),
         [highContrastSelector]: {
-            ...highContrastOptOutProperty
+            ...highContrastOptOutProperty,
         },
     },
     callToAction_glyph: {
@@ -126,8 +126,8 @@ const styles: ComponentStyles<CallToActionClassNameContract, DesignSystem> = {
                 "border-color": HighContrastColor.selectedBackground,
             },
             "a&, & $button_contentRegion, & $callToAction_glyph": {
-                ...highContrastHighlightForeground
-            }
+                ...highContrastHighlightForeground,
+            },
         },
     },
     callToAction__lightweight: {
