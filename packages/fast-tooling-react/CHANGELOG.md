@@ -3,6 +3,32 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.19.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-tooling-react@1.18.6...@microsoft/fast-tooling-react@1.19.0) (2019-10-07)
+
+
+### Bug Fixes
+
+* check for different schemas by reference ([#2293](https://github.com/Microsoft/fast-dna/issues/2293)) ([52ad6b6](https://github.com/Microsoft/fast-dna/commit/52ad6b6))
+* validation errors are not displayed on component creation in the form ([#2288](https://github.com/Microsoft/fast-dna/issues/2288)) ([0868734](https://github.com/Microsoft/fast-dna/commit/0868734))
+
+
+### Features
+
+* add a BareForm secondary export without drag and drop context ([#2291](https://github.com/Microsoft/fast-dna/issues/2291)) ([98cfef1](https://github.com/Microsoft/fast-dna/commit/98cfef1))
+* implement templates and plugins in the form for default controls ([#2292](https://github.com/Microsoft/fast-dna/issues/2292)) ([442df5e](https://github.com/Microsoft/fast-dna/commit/442df5e))
+
+
+
+
+
+## [1.18.6](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-tooling-react@1.18.5...@microsoft/fast-tooling-react@1.18.6) (2019-10-02)
+
+**Note:** Version bump only for package @microsoft/fast-tooling-react
+
+
+
+
+
 ## [1.18.5](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-tooling-react@1.18.4...@microsoft/fast-tooling-react@1.18.5) (2019-09-17)
 
 **Note:** Version bump only for package @microsoft/fast-tooling-react

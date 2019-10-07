@@ -1,127 +1,60 @@
 import React from "react";
-import { get } from "lodash-es";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 import styles from "./control.textarea.style";
-import {
-    TextareaFormControlClassNameContract,
-    TextareaFormControlProps,
-} from "./control.textarea.props";
-import BaseFormControl from "./template.control.abstract";
+import { TextareaControlProps } from "./control.textarea.props";
+import { TextareaControlClassNameContract } from "./control.textarea.style";
+import { classNames } from "@microsoft/fast-web-utilities";
 
 /**
- * Schema form component definition
- * @extends React.Component
+ * Form control definition
  */
-class TextareaFormControl extends BaseFormControl<
-    TextareaFormControlProps & ManagedClasses<TextareaFormControlClassNameContract>,
+class TextareaControl extends React.Component<
+    TextareaControlProps & ManagedClasses<TextareaControlClassNameContract>,
     {}
 > {
-    public static displayName: string = "TextareaFormControl";
+    public static displayName: string = "TextareaControl";
 
-    public render(): JSX.Element {
+    public static defaultProps: Partial<
+        TextareaControlProps & ManagedClasses<TextareaControlClassNameContract>
+    > = {
+        managedClasses: {},
+    };
+
+    public render(): React.ReactNode {
         return (
-            <div className={this.generateClassNames()}>
-                <div
-                    className={
-                        this.props.managedClasses.textareaFormControl_controlRegion
-                    }
-                >
-                    <div
-                        className={this.props.managedClasses.textareaFormControl_control}
-                    >
-                        <div
-                            className={get(
-                                this.props,
-                                "managedClasses.textareaFormControl_controlLabelRegion"
-                            )}
-                        >
-                            <label
-                                htmlFor={this.props.dataLocation}
-                                className={
-                                    this.props.managedClasses
-                                        .textareaFormControl_controlLabel
-                                }
-                            >
-                                {this.props.label}
-                            </label>
-                            {this.renderDefaultValueIndicator(
-                                get(
-                                    this.props,
-                                    "managedClasses.textareaFormControl_defaultValueIndicator"
-                                )
-                            )}
-                            {this.renderBadge(
-                                get(
-                                    this.props,
-                                    "managedClasses.textareaFormControl_badge"
-                                )
-                            )}
-                        </div>
-                        <textarea
-                            className={
-                                this.props.managedClasses
-                                    .textareaFormControl_controlTextarea
-                            }
-                            id={this.props.dataLocation}
-                            name={this.props.dataLocation}
-                            rows={
-                                typeof this.props.rows === "number" ? this.props.rows : 3
-                            }
-                            value={this.getValue()}
-                            onChange={this.handleChange}
-                            disabled={this.props.disabled}
-                            ref={this.textAreaRef}
-                            onFocus={this.reportValidity}
-                            onBlur={this.updateValidity}
-                        />
-                    </div>
-                    <div
-                        className={
-                            this.props.managedClasses.textareaFormControl_softRemove
-                        }
-                    >
-                        {this.renderSoftRemove(
-                            this.props.managedClasses.textareaFormControl_softRemoveInput
-                        )}
-                    </div>
-                </div>
-                {this.renderInvalidMessage(
-                    get(this.props, "managedClasses.textareaFormControl_invalidMessage")
-                )}
-            </div>
+            <textarea
+                className={classNames(this.props.managedClasses.textareaControl, [
+                    this.props.managedClasses.textareaControl__disabled,
+                    this.props.disabled,
+                ])}
+                id={this.props.dataLocation}
+                name={this.props.dataLocation}
+                rows={this.getRows()}
+                value={this.getValue()}
+                onChange={this.handleChange()}
+                disabled={this.props.disabled}
+                ref={this.props.elementRef as React.Ref<HTMLTextAreaElement>}
+                onFocus={this.props.reportValidity}
+                onBlur={this.props.updateValidity}
+            />
         );
     }
 
-    private handleChange = ({ target: { value } }: any): any => {
-        return this.props.onChange(this.props.dataLocation, value);
-    };
-
-    private generateClassNames(): string {
-        let classes: string = get(this.props, "managedClasses.textareaFormControl");
-
-        if (this.props.disabled) {
-            classes += ` ${get(
-                this.props,
-                "managedClasses.textareaFormControl__disabled"
-            )}`;
-        }
-
-        return classes;
+    private getRows(): number {
+        return typeof this.props.rows === "number" ? this.props.rows : 3;
     }
 
     private getValue(): string {
-        if (typeof this.props.data === "undefined") {
-            if (typeof this.props.default === "string") {
-                return this.props.default;
-            }
-
-            return "";
-        }
-
-        return this.props.data;
+        return this.props.value || this.props.default || "";
     }
+
+    private handleChange = (): ((e: React.ChangeEvent<HTMLTextAreaElement>) => void) => {
+        return (e: React.ChangeEvent<HTMLTextAreaElement>): void => {
+            this.props.onChange({ value: e.target.value });
+        };
+    };
 }
 
-export { TextareaFormControl };
-export default manageJss(styles)(TextareaFormControl);
+export { TextareaControl };
+export default manageJss(styles)(TextareaControl);

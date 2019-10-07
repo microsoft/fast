@@ -3,6 +3,31 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.22.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-msft@4.22.0...@microsoft/fast-components-react-msft@4.22.1) (2019-10-07)
+
+**Note:** Version bump only for package @microsoft/fast-components-react-msft
+
+
+
+
+
+# [4.22.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-msft@4.21.0...@microsoft/fast-components-react-msft@4.22.0) (2019-10-02)
+
+
+### Bug Fixes
+
+* enable home and end keys on slider ([#2253](https://github.com/Microsoft/fast-dna/issues/2253)) ([bb18f19](https://github.com/Microsoft/fast-dna/commit/bb18f19))
+* improve select narrator behavior ([#2249](https://github.com/Microsoft/fast-dna/issues/2249)) ([42cdec0](https://github.com/Microsoft/fast-dna/commit/42cdec0))
+
+
+### Features
+
+* support custom menu render functions in Select ([#2274](https://github.com/Microsoft/fast-dna/issues/2274)) ([64e3976](https://github.com/Microsoft/fast-dna/commit/64e3976))
+
+
+
+
+
 # [4.21.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-msft@4.20.5...@microsoft/fast-components-react-msft@4.21.0) (2019-09-25)
 
 

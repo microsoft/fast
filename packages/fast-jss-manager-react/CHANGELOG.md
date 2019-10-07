@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.5.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-jss-manager-react@4.4.3...@microsoft/fast-jss-manager-react@4.5.0) (2019-10-07)
+
+
+### Features
+
+* contextual class name generation ([#2296](https://github.com/Microsoft/fast-dna/issues/2296)) ([95b6b60](https://github.com/Microsoft/fast-dna/commit/95b6b60))
+
+
+
+
+
 ## [4.4.3](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-jss-manager-react@4.4.2...@microsoft/fast-jss-manager-react@4.4.3) (2019-09-10)
 
 **Note:** Version bump only for package @microsoft/fast-jss-manager-react

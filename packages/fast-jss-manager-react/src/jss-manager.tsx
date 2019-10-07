@@ -2,7 +2,7 @@ import { ComponentStyles, ManagedClasses } from "@microsoft/fast-jss-manager";
 import { mergeWith } from "lodash-es";
 import React from "react";
 import { designSystemContext } from "./context";
-import SheetManager from "./sheet-manager";
+import SheetManager, { JSSSheetOptions } from "./sheet-manager";
 import { jss } from "./jss";
 
 /**
@@ -73,6 +73,14 @@ abstract class JSSManager<T, S, C> extends React.Component<ManagedJSSProps<T, S,
     }
 
     /**
+     * Retrieves a class name generation function that can be informed by the contextual design system.
+     * Note that class-names are only generated once per sheet even if the contextual design system changes
+     */
+    public static createGenerateClassName: (
+        designSystem: unknown
+    ) => (sheet: unknown, rules: unknown) => string;
+
+    /**
      * JSS allows us to use an index to order the created style elements. The higher the index,
      * the later in the document the style element will be created.
      *
@@ -137,10 +145,18 @@ abstract class JSSManager<T, S, C> extends React.Component<ManagedJSSProps<T, S,
     public render(): JSX.Element {
         if (!this.hasCreatedIntialStyleSheets) {
             if (!!this.styles) {
-                JSSManager.sheetManager.add(this.styles, this.designSystem, {
+                const options: JSSSheetOptions = {
                     meta: this.managedComponent.displayName || this.managedComponent.name,
                     index: this.index,
-                });
+                };
+
+                if (typeof JSSManager.createGenerateClassName === "function") {
+                    options.generateClassName = JSSManager.createGenerateClassName(
+                        this.designSystem
+                    );
+                }
+
+                JSSManager.sheetManager.add(this.styles, this.designSystem, options);
             }
 
             if (this.props.jssStyleSheet) {
@@ -290,11 +306,17 @@ abstract class JSSManager<T, S, C> extends React.Component<ManagedJSSProps<T, S,
     private createPropStyleSheet(designSystem: C = this.designSystem): void {
         const stylesheet: any = this.primaryStyleSheet();
 
-        JSSManager.sheetManager.add(this.props.jssStyleSheet, designSystem, {
+        const options: JSSSheetOptions = {
             meta: `${this.managedComponent.displayName ||
                 this.managedComponent.name} - jssStyleSheet`,
             index: stylesheet ? stylesheet.options.index + 1 : this.index + 1,
-        });
+        };
+
+        if (typeof JSSManager.createGenerateClassName === "function") {
+            options.generateClassName = JSSManager.createGenerateClassName(designSystem);
+        }
+
+        JSSManager.sheetManager.add(this.props.jssStyleSheet, designSystem, options);
     }
 }
 
