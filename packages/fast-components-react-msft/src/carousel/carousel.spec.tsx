@@ -525,5 +525,20 @@ describe("carousel", (): void => {
             expect(rendered.exists(".carousel_previous")).toBe(true);
             expect(rendered.exists(".carousel_next")).toBe(false);
         });
+
+        test("should generate a previous flipper for first slide when `loop` default to true", () => {
+            const rendered: any = mount(<MSFTCarousel {...props}/>);
+
+            expect(rendered.state("activeId")).toBe("id01");
+            expect(rendered.exists(".carousel_previous")).toBe(true);
+        });
+
+        test("should generate a next flipper for last slide when `loop` default to true", () => {
+            const rendered: any = mount(<MSFTCarousel {...props}/>);
+            rendered.setState({ activeId: "id03" });
+
+            expect(rendered.state("activeId")).toBe("id03");
+            expect(rendered.exists(".carousel_next")).toBe(true);
+        });
     });
 });
