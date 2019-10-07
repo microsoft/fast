@@ -93,9 +93,7 @@ class FormControlSwitch extends React.Component<FormControlSwitchProps, {}> {
     }
 
     private renderChildren(control: StandardControlPlugin): React.ReactNode {
-        const standardControl: StandardControlPlugin = control;
-
-        standardControl.updateProps(
+        control.updateProps(
             Object.assign(
                 {
                     childOptions: this.getChildOptions(),
@@ -105,16 +103,14 @@ class FormControlSwitch extends React.Component<FormControlSwitchProps, {}> {
             )
         );
 
-        return standardControl.render();
+        return control.render();
     }
 
     /**
      * Renders the array form item
      */
     private renderArray(control: StandardControlPlugin): React.ReactNode {
-        const standardControl: StandardControlPlugin = control;
-
-        standardControl.updateProps(
+        control.updateProps(
             Object.assign(
                 {
                     minItems: get(this.props.schema, ItemConstraints.minItems, 0),
@@ -125,16 +121,14 @@ class FormControlSwitch extends React.Component<FormControlSwitchProps, {}> {
             )
         );
 
-        return standardControl.render();
+        return control.render();
     }
 
     /**
      * Renders the number field form item
      */
     private renderNumberField(control: StandardControlPlugin): React.ReactNode {
-        const standardControl: StandardControlPlugin = control;
-
-        standardControl.updateProps(
+        control.updateProps(
             Object.assign(
                 {
                     min: this.props.schema.minimum,
@@ -145,18 +139,16 @@ class FormControlSwitch extends React.Component<FormControlSwitchProps, {}> {
             )
         );
 
-        return standardControl.render();
+        return control.render();
     }
 
     /**
      * Renders the checkbox form item
      */
-    private renderCheckbox(control: StandardControlPlugin): React.ReactNode {
-        const singleLineControl: SingleLineControlPlugin = control;
+    private renderCheckbox(control: SingleLineControlPlugin): React.ReactNode {
+        control.updateProps(this.getCommonControlProps());
 
-        singleLineControl.updateProps(this.getCommonControlProps());
-
-        return singleLineControl.render();
+        return control.render();
     }
 
     /**
@@ -164,11 +156,9 @@ class FormControlSwitch extends React.Component<FormControlSwitchProps, {}> {
      * that are objects
      */
     private renderSectionLink(control: StandardControlPlugin): React.ReactNode {
-        const standardControl: StandardControlPlugin = control;
+        control.updateProps(this.getCommonControlProps());
 
-        standardControl.updateProps(this.getCommonControlProps());
-
-        return standardControl.render();
+        return control.render();
     }
 
     /**
@@ -177,9 +167,7 @@ class FormControlSwitch extends React.Component<FormControlSwitchProps, {}> {
     private renderTextarea(control: StandardControlPlugin): React.ReactNode {
         const rows: number | undefined = this.props.schema.rows || void 0;
 
-        const standardControl: StandardControlPlugin = control;
-
-        standardControl.updateProps(
+        control.updateProps(
             Object.assign(
                 {
                     rows,
@@ -188,7 +176,7 @@ class FormControlSwitch extends React.Component<FormControlSwitchProps, {}> {
             )
         );
 
-        return standardControl.render();
+        return control.render();
     }
 
     /**
@@ -201,9 +189,7 @@ class FormControlSwitch extends React.Component<FormControlSwitchProps, {}> {
             options.unshift(void 0);
         }
 
-        const standardControl: StandardControlPlugin = control;
-
-        standardControl.updateProps(
+        control.updateProps(
             Object.assign(
                 {
                     options,
@@ -212,26 +198,22 @@ class FormControlSwitch extends React.Component<FormControlSwitchProps, {}> {
             )
         );
 
-        return standardControl.render();
+        return control.render();
     }
 
     /**
      * Renders the display form item
      */
     private renderDisplay(control: StandardControlPlugin): React.ReactNode {
-        const standardControl: StandardControlPlugin = control;
+        control.updateProps(this.getCommonControlProps());
 
-        standardControl.updateProps(this.getCommonControlProps());
-
-        return standardControl.render();
+        return control.render();
     }
 
     private renderButton(control: StandardControlPlugin): React.ReactNode {
-        const standardControl: StandardControlPlugin = control;
+        control.updateProps(this.getCommonControlProps());
 
-        standardControl.updateProps(this.getCommonControlProps());
-
-        return standardControl.render();
+        return control.render();
     }
 
     private handleAddExampleData = (additionalSchemaPathSyntax: string): any => {
