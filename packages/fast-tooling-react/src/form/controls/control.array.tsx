@@ -1,98 +1,54 @@
+import { uniqueId } from "lodash-es";
 import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
-import React from "react";
-import HTML5Backend from "react-dnd-html5-backend";
-import { ContextComponent, DragDropContext } from "react-dnd";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
-import { get, uniqueId } from "lodash-es";
-import { generateExampleData, getArrayLinks, isRootLocation } from "../utilities";
-import styles from "./control.array.style";
-import DragItem from "./drag-item";
-import BaseFormControl from "./template.control.abstract";
-import {
-    ArrayFormControlClassNameContract,
-    ArrayFormControlProps,
-    ArrayFormControlState,
-    ItemConstraints,
-} from "./control.array.props";
-import { ArrayAction } from "./control.props";
+import React from "react";
+import { getArrayLinks, isRootLocation } from "../utilities";
+import styles, { ArrayControlClassNameContract } from "./control.array.style";
+import { ArrayControlProps, ArrayControlState } from "./control.array.props";
+import { ArrayAction, DragItem } from "../templates";
+import { classNames } from "@microsoft/fast-web-utilities";
 
 /**
- * Schema form component definition
- * @extends React.Component
+ * Form control definition
  */
-class ArrayFormControl extends BaseFormControl<
-    ArrayFormControlProps & ManagedClasses<ArrayFormControlClassNameContract>,
-    ArrayFormControlState
+class ArrayControl extends React.Component<
+    ArrayControlProps & ManagedClasses<ArrayControlClassNameContract>,
+    ArrayControlState
 > {
-    public static displayName: string = "ArrayFormControl";
+    public static displayName: string = "ArrayControl";
 
-    constructor(props: ArrayFormControlProps) {
+    public static defaultProps: Partial<
+        ArrayControlProps & ManagedClasses<ArrayControlClassNameContract>
+    > = {
+        managedClasses: {},
+    };
+
+    constructor(props: ArrayControlProps) {
         super(props);
 
         this.state = {
-            data: props.data,
+            data: props.value,
             isDragging: false,
         };
     }
 
     public render(): React.ReactNode {
         return (
-            <div className={this.props.managedClasses.arrayFormControl}>
-                {this.renderLabel()}
+            <div
+                className={classNames(
+                    this.props.managedClasses.arrayControl,
+                    [
+                        this.props.managedClasses.arrayControl__disabled,
+                        this.props.disabled,
+                    ],
+                    [
+                        this.props.managedClasses.arrayControl__invalid,
+                        this.props.invalidMessage !== "",
+                    ]
+                )}
+            >
                 {this.renderAddArrayItem()}
                 {this.renderExistingArrayItems()}
-            </div>
-        );
-    }
-
-    private renderLabel(): React.ReactNode {
-        const label: string =
-            get(this.props.schema, "title") ||
-            get(this.props.schema, "description") ||
-            this.props.untitled;
-
-        return (
-            <div className={this.props.managedClasses.arrayFormControl_control}>
-                <div
-                    className={get(
-                        this.props,
-                        "managedClasses.arrayFormControl_controlRegion"
-                    )}
-                >
-                    <div
-                        className={get(
-                            this.props,
-                            "managedClasses.arrayFormControl_controlLabelRegion"
-                        )}
-                    >
-                        <label className={this.getLabelClassNames()}>{label}</label>
-                        {this.renderDefaultValueIndicator(
-                            get(
-                                this.props,
-                                "managedClasses.arrayFormControl_defaultValueIndicator"
-                            )
-                        )}
-                        {this.renderBadge(
-                            get(this.props, "managedClasses.arrayFormControl_badge")
-                        )}
-                    </div>
-                    <div
-                        className={get(
-                            this.props,
-                            "managedClasses.arrayFormControl_softRemove"
-                        )}
-                    >
-                        {this.renderSoftRemove(
-                            get(
-                                this.props,
-                                "managedClasses.arrayFormControl_softRemoveInput"
-                            )
-                        )}
-                    </div>
-                </div>
-                {this.renderInvalidMessage(
-                    get(this.props, "managedClasses.arrayFormControl_invalidMessage")
-                )}
             </div>
         );
     }
@@ -103,10 +59,7 @@ class ArrayFormControl extends BaseFormControl<
     private renderAddArrayItemTrigger(): React.ReactNode {
         return (
             <button
-                className={get(
-                    this.props,
-                    "managedClasses.arrayFormControl_addItemButton"
-                )}
+                className={this.props.managedClasses.arrayControl_addItemButton}
                 aria-label={"Select to add item"}
                 onClick={this.arrayItemClickHandlerFactory(ArrayAction.add)}
             />
@@ -117,28 +70,18 @@ class ArrayFormControl extends BaseFormControl<
      * Render an add array item section
      */
     private renderAddArrayItem(): React.ReactNode {
-        const maxItemLength: number = get(
-            this.props.schema,
-            ItemConstraints.maxItems,
-            Infinity
-        );
-        const existingItemLength: number = Array.isArray(this.props.data)
-            ? this.props.data.length
+        const existingItemLength: number = Array.isArray(this.props.value)
+            ? this.props.value.length
             : 0;
+        const {
+            arrayControl_addItem,
+            arrayControl_addItemLabel,
+        }: ArrayControlClassNameContract = this.props.managedClasses;
 
-        if (maxItemLength > existingItemLength) {
+        if (this.props.maxItems > existingItemLength) {
             return (
-                <div
-                    className={get(this.props, "managedClasses.arrayFormControl_addItem")}
-                >
-                    <div
-                        className={get(
-                            this.props,
-                            "managedClasses.arrayFormControl_addItemLabel"
-                        )}
-                    >
-                        Add item
-                    </div>
+                <div className={arrayControl_addItem}>
+                    <div className={arrayControl_addItemLabel}>Add item</div>
                     {this.renderAddArrayItemTrigger()}
                 </div>
             );
@@ -149,15 +92,26 @@ class ArrayFormControl extends BaseFormControl<
      * Renders an default array link item
      */
     private renderDefaultArrayLinkItem = (value: any, index: number): React.ReactNode => {
+        const {
+            arrayControl_existingItemListItem,
+            arrayControl_existingItemListItemLink,
+            arrayControl_existingItemListItemLink__default,
+        }: ArrayControlClassNameContract = this.props.managedClasses;
+
         return (
             <li
-                className={
-                    this.props.managedClasses.arrayFormControl_existingItemListItem
-                }
+                className={arrayControl_existingItemListItem}
                 key={`item-${index}`}
                 id={uniqueId(index.toString())}
             >
-                <span className={this.getArrayItemClassNames(true)}>{value}</span>
+                <span
+                    className={classNames(
+                        arrayControl_existingItemListItemLink,
+                        arrayControl_existingItemListItemLink__default
+                    )}
+                >
+                    {value}
+                </span>
             </li>
         );
     };
@@ -177,16 +131,12 @@ class ArrayFormControl extends BaseFormControl<
      * Renders the links to an array section to be activated
      */
     private renderExistingArrayItems(): React.ReactNode {
-        const hasData: boolean = Array.isArray(this.props.data);
+        const hasData: boolean = Array.isArray(this.props.value);
         const hasDefault: boolean = Array.isArray(this.props.default);
 
         if (hasData) {
             return (
-                <ul
-                    className={
-                        this.props.managedClasses.arrayFormControl_existingItemList
-                    }
-                >
+                <ul className={this.props.managedClasses.arrayControl_existingItemList}>
                     {this.renderArrayLinkItems()}
                 </ul>
             );
@@ -194,11 +144,7 @@ class ArrayFormControl extends BaseFormControl<
 
         if (hasDefault) {
             return (
-                <ul
-                    className={
-                        this.props.managedClasses.arrayFormControl_existingItemList
-                    }
-                >
+                <ul className={this.props.managedClasses.arrayControl_existingItemList}>
                     {this.renderDefaultArrayLinkItems()}
                 </ul>
             );
@@ -209,12 +155,14 @@ class ArrayFormControl extends BaseFormControl<
      * Render UI for all items in an array
      */
     private renderArrayLinkItems(): React.ReactNode {
-        const data: unknown[] = this.state.isDragging ? this.state.data : this.props.data;
+        const data: unknown[] = this.state.isDragging
+            ? this.state.data
+            : this.props.value;
         const {
-            arrayFormControl_existingItemRemoveButton,
-            arrayFormControl_existingItemListItem,
-            arrayFormControl_existingItemListItemLink,
-        }: Partial<ArrayFormControlClassNameContract> = this.props.managedClasses;
+            arrayControl_existingItemRemoveButton,
+            arrayControl_existingItemListItem,
+            arrayControl_existingItemListItemLink,
+        }: Partial<ArrayControlClassNameContract> = this.props.managedClasses;
 
         return getArrayLinks(data).map(
             (text: string, index: number): React.ReactNode => {
@@ -222,11 +170,11 @@ class ArrayFormControl extends BaseFormControl<
                     <DragItem
                         key={index}
                         index={index}
-                        minItems={get(this.props.schema, ItemConstraints.minItems)}
+                        minItems={this.props.minItems}
                         itemLength={getArrayLinks(data).length}
-                        itemRemoveClassName={arrayFormControl_existingItemRemoveButton}
-                        itemClassName={arrayFormControl_existingItemListItem}
-                        itemLinkClassName={arrayFormControl_existingItemListItemLink}
+                        itemRemoveClassName={arrayControl_existingItemRemoveButton}
+                        itemClassName={arrayControl_existingItemListItem}
+                        itemLinkClassName={arrayControl_existingItemListItemLink}
                         removeDragItem={this.arrayItemClickHandlerFactory}
                         onClick={this.arrayClickHandlerFactory}
                         moveDragItem={this.handleMoveDragItem}
@@ -241,38 +189,6 @@ class ArrayFormControl extends BaseFormControl<
         );
     }
 
-    private getArrayItemClassNames(isDefault?: boolean): string {
-        let classes: string = get(
-            this.props,
-            "managedClasses.arrayFormControl_existingItemListItemLink"
-        );
-
-        if (isDefault) {
-            classes = `${classes} ${get(
-                this.props,
-                "managedClasses.arrayFormControl_existingItemListItemLink__default"
-            )}`;
-        }
-
-        return classes;
-    }
-
-    private getLabelClassNames(): string {
-        let classes: string = get(
-            this.props,
-            "managedClasses.arrayFormControl_controlLabel"
-        );
-
-        if (this.props.invalidMessage !== "") {
-            classes += ` ${get(
-                this.props,
-                "managedClasses.arrayFormControl_controlLabel__invalid"
-            )}`;
-        }
-
-        return classes;
-    }
-
     /**
      * Array add/remove item click handler factory
      */
@@ -284,8 +200,8 @@ class ArrayFormControl extends BaseFormControl<
             e.preventDefault();
 
             type === ArrayAction.add
-                ? this.handleAddArrayItem(this.props.dataLocation)
-                : this.handleRemoveArrayItem(this.props.dataLocation, index);
+                ? this.handleAddArrayItem()
+                : this.handleRemoveArrayItem(index);
         };
     };
 
@@ -302,36 +218,32 @@ class ArrayFormControl extends BaseFormControl<
                 ? "items"
                 : `${this.props.schemaLocation}.items`;
 
-            this.props.onUpdateActiveSection(
+            this.props.onUpdateSection({
                 schemaLocation,
-                `${this.props.dataLocation}[${index}]`,
-                this.props.schema
-            );
+                dataLocation: `${this.props.dataLocation}[${index}]`,
+            });
         };
     };
 
     /**
      * Handles adding an array item
      */
-    private handleAddArrayItem(dataLocation: string): void {
-        if (typeof this.props.data === "undefined") {
-            this.props.onChange(dataLocation, [
-                generateExampleData(this.props.schema, "items"),
-            ]);
+    private handleAddArrayItem(): void {
+        if (typeof this.props.value === "undefined") {
+            this.props.onChange({ value: [this.props.onAddExampleData("items")] });
         } else {
-            this.props.onChange(
-                dataLocation,
-                generateExampleData(this.props.schema, "items"),
-                true
-            );
+            this.props.onChange({
+                value: this.props.onAddExampleData("items"),
+                isArray: true,
+            });
         }
     }
 
     /**
      * Handles removing an array item
      */
-    private handleRemoveArrayItem(dataLocation: string, index: number): void {
-        this.props.onChange(dataLocation, void 0, true, index);
+    private handleRemoveArrayItem(index: number): void {
+        this.props.onChange({ value: void 0, isArray: true, index });
     }
 
     /**
@@ -340,7 +252,7 @@ class ArrayFormControl extends BaseFormControl<
     private handleDragStart = (): void => {
         this.setState({
             isDragging: true,
-            data: [].concat(this.props.data || []),
+            data: [].concat(this.props.value || []),
         });
     };
 
@@ -357,7 +269,7 @@ class ArrayFormControl extends BaseFormControl<
      * Handle moving the drag item
      */
     private handleMoveDragItem = (sourceIndex: number, targetIndex: number): void => {
-        const currentData: unknown[] = [].concat(this.props.data);
+        const currentData: unknown[] = [].concat(this.props.value);
 
         if (sourceIndex !== targetIndex) {
             currentData.splice(targetIndex, 0, currentData.splice(sourceIndex, 1)[0]);
@@ -373,12 +285,9 @@ class ArrayFormControl extends BaseFormControl<
      * Triggers the onChange
      */
     private handleDropDragItem = (): void => {
-        this.props.onChange(this.props.dataLocation, this.state.data);
+        this.props.onChange({ value: this.state.data });
     };
 }
 
-const TestArrayFormControl: typeof ArrayFormControl &
-    ContextComponent<any> = DragDropContext(HTML5Backend)(ArrayFormControl);
-
-export { TestArrayFormControl };
-export default DragDropContext(HTML5Backend)(manageJss(styles)(ArrayFormControl));
+export { ArrayControl };
+export default manageJss(styles)(ArrayControl);

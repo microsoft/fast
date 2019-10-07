@@ -8,19 +8,30 @@ export interface ControlPluginUtilitiesProps {
     control: (config: ControlConfig) => React.ReactNode;
 }
 
-export default abstract class ControlPlugin<C extends ControlPluginUtilitiesProps> {
-    public props: C;
-    public config: ControlTemplateUtilitiesProps;
+export default abstract class ControlPluginUtilities<
+    C extends ControlPluginUtilitiesProps
+> {
+    /**
+     * props are the properties for the control template component
+     * these are passed to the plugin via the Form
+     */
+    public props: ControlTemplateUtilitiesProps;
 
-    constructor(props: C) {
-        this.updateProps(props);
+    /**
+     * config are the configuration options supplied to the plugin at intialization,
+     * this including the control and any other user configurations
+     */
+    public config: C;
+
+    constructor(config: C) {
+        this.updateConfig(config);
     }
 
-    public updateConfig(config: ControlTemplateUtilitiesProps): void {
+    public updateConfig(config: C): void {
         this.config = Object.assign({}, config);
     }
 
-    public updateProps(props: C): void {
+    public updateProps(props: ControlTemplateUtilitiesProps): void {
         this.props = Object.assign({}, props);
     }
 

@@ -1,60 +1,22 @@
 import { ComponentStyles } from "@microsoft/fast-jss-manager-react";
-import {
-    applyControl,
-    applyControlRegion,
-    applyControlWrapper,
-    applyFormControlDisabled,
-    applyFormControlIndicator,
-    applyInputStyle,
-    applyInteractiveFormControlIndicator,
-    applyInvalidMessage,
-    applyLabelRegionStyle,
-    applyLabelStyle,
-    applySoftRemove,
-    applySoftRemoveInput,
-} from "../../style";
-import { TextareaFormControlClassNameContract } from "./control.textarea.props";
+import { applyInputStyle } from "../../style";
 
-const styles: ComponentStyles<TextareaFormControlClassNameContract, {}> = {
-    textareaFormControl: {
-        ...applyControlWrapper(),
-    },
-    textareaFormControl_invalidMessage: {
-        ...applyInvalidMessage(),
-    },
-    textareaFormControl__disabled: {
-        ...applyFormControlDisabled(),
-    },
-    textareaFormControl_badge: {
-        ...applyFormControlIndicator(),
-    },
-    textareaFormControl_control: {
-        ...applyControl(),
-    },
-    textareaFormControl_controlRegion: {
-        ...applyControlRegion(),
-    },
-    textareaFormControl_controlLabel: {
-        ...applyLabelStyle(),
-    },
-    textareaFormControl_controlLabelRegion: {
-        ...applyLabelRegionStyle(),
-    },
-    textareaFormControl_controlTextarea: {
+/**
+ * Textarea class name contract
+ */
+export interface TextareaControlClassNameContract {
+    textareaControl?: string;
+    textareaControl__disabled?: string;
+}
+
+const styles: ComponentStyles<TextareaControlClassNameContract, {}> = {
+    textareaControl: {
         ...applyInputStyle(),
         width: "100%",
         resize: "none",
         fontFamily: "inherit",
     },
-    textareaFormControl_defaultValueIndicator: {
-        ...applyInteractiveFormControlIndicator(),
-    },
-    textareaFormControl_softRemove: {
-        ...applySoftRemove(),
-    },
-    textareaFormControl_softRemoveInput: {
-        ...applySoftRemoveInput(),
-    },
+    textareaControl__disabled: {},
 };
 
 export default styles;

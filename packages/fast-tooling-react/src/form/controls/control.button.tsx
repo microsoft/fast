@@ -1,112 +1,59 @@
 import React from "react";
-import { get } from "lodash-es";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
-import styles from "./control.button.style";
-import { getStringValue } from "../utilities";
-import {
-    ButtonFormControlClassNameContract,
-    ButtonFormControlProps,
-} from "./control.button.props";
-import BaseFormControl from "./template.control.abstract";
+import styles, { ButtonControlClassNameContract } from "./control.button.style";
+import { ButtonControlProps } from "./control.button.props";
+import { classNames } from "@microsoft/fast-web-utilities";
 
 /**
- * Schema form component definition
+ * Form control definition
  * @extends React.Component
  */
-class ButtonFormControl extends BaseFormControl<
-    ButtonFormControlProps & ManagedClasses<ButtonFormControlClassNameContract>,
+class ButtonControl extends React.Component<
+    ButtonControlProps & ManagedClasses<ButtonControlClassNameContract>,
     {}
 > {
-    public static displayName: string = "ButtonFormControl";
+    public static displayName: string = "ButtonControl";
+
+    public static defaultProps: Partial<
+        ButtonControlProps & ManagedClasses<ButtonControlClassNameContract>
+    > = {
+        managedClasses: {},
+    };
 
     public render(): React.ReactNode {
-        if (this.props.required && this.props.invalidMessage === "") {
-            return null;
-        }
-
         return (
-            <div className={this.generateClassNames()}>
-                <div
-                    className={get(
-                        this.props,
-                        "managedClasses.buttonFormControl_controlRegion"
-                    )}
+            <React.Fragment>
+                <button
+                    className={classNames(this.props.managedClasses.buttonControl, [
+                        this.props.managedClasses.buttonControl__disabled,
+                        this.props.disabled,
+                    ])}
+                    ref={this.props.elementRef as React.Ref<HTMLButtonElement>}
+                    onBlur={this.props.updateValidity}
+                    onFocus={this.props.reportValidity}
+                    onClick={this.handleButtonClick()}
+                    disabled={this.props.disabled}
                 >
-                    <div
-                        className={get(
-                            this.props,
-                            "managedClasses.buttonFormControl_control"
-                        )}
-                    >
-                        <div
-                            className={get(
-                                this.props,
-                                "managedClasses.buttonFormControl_controlLabelRegion"
-                            )}
-                        >
-                            <label
-                                className={get(
-                                    this.props,
-                                    "managedClasses.buttonFormControl_controlLabel"
-                                )}
-                                htmlFor={this.props.dataLocation}
-                            >
-                                {this.props.label}
-                            </label>
-                            {this.renderDefaultValueIndicator(
-                                get(
-                                    this.props,
-                                    "managedClasses.buttonFormControl_defaultValueIndicator"
-                                )
-                            )}
-                            {this.renderBadge(
-                                get(this.props, "managedClasses.buttonFormControl_badge")
-                            )}
-                        </div>
-                        <button
-                            className={get(
-                                this.props,
-                                "managedClasses.buttonFormControl_controlInput"
-                            )}
-                            ref={this.buttonRef}
-                            onBlur={this.updateValidity}
-                            onFocus={this.reportValidity}
-                            onClick={this.handleButtonClick}
-                            disabled={this.props.disabled}
-                        >
-                            Set to null
-                        </button>
-                        <input
-                            id={this.props.dataLocation}
-                            hidden={true}
-                            value={this.getValue()}
-                            onChange={this.handleInputChange}
-                        />
-                    </div>
-                    <div
-                        className={get(
-                            this.props,
-                            "managedClasses.buttonFormControl_softRemove"
-                        )}
-                    >
-                        {this.renderSoftRemove(
-                            get(
-                                this.props,
-                                "managedClasses.buttonFormControl_softRemoveInput"
-                            )
-                        )}
-                    </div>
-                </div>
-                {this.renderInvalidMessage(
-                    get(this.props, "managedClasses.buttonFormControl_invalidMessage")
-                )}
-            </div>
+                    Set to null
+                </button>
+                <input
+                    id={this.props.dataLocation}
+                    hidden={true}
+                    value={this.props.value || ""}
+                    onChange={this.handleInputChange}
+                    disabled={this.props.disabled}
+                />
+            </React.Fragment>
         );
     }
 
-    private handleButtonClick = (): void => {
-        this.props.onChange(this.props.dataLocation, null);
+    private handleButtonClick = (): ((
+        e: React.MouseEvent<HTMLButtonElement>
+    ) => void) => {
+        return (e: React.MouseEvent<HTMLButtonElement>): void => {
+            this.props.onChange({ value: null });
+        };
     };
 
     /**
@@ -118,30 +65,7 @@ class ButtonFormControl extends BaseFormControl<
      */
     /* tslint:disable-next-line */
     private handleInputChange = (): void => {};
-
-    private getValue(): string {
-        if (this.props.data === null) {
-            return JSON.stringify(this.props.data);
-        } else if (typeof this.props.data !== "undefined") {
-            return this.props.data;
-        }
-
-        return "";
-    }
-
-    private generateClassNames(): string {
-        let classes: string = get(this.props, "managedClasses.buttonFormControl");
-
-        if (this.props.disabled) {
-            classes += ` ${get(
-                this.props,
-                "managedClasses.buttonFormControl__disabled"
-            )}`;
-        }
-
-        return classes;
-    }
 }
 
-export { ButtonFormControl };
-export default manageJss(styles)(ButtonFormControl);
+export { ButtonControl };
+export default manageJss(styles)(ButtonControl);

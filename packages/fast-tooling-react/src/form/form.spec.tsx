@@ -1,12 +1,13 @@
 import React from "react";
 import Adapter from "enzyme-adapter-react-16";
 import { configure, mount } from "enzyme";
-import Form from "./form";
+import { Form } from "./";
 import { FormProps } from "./form.props";
 
 import objectSchema from "../__tests__/schemas/objects.schema.json";
 import arraySchema from "../__tests__/schemas/arrays.schema.json";
 import childrenSchema from "../__tests__/schemas/children.schema.json";
+import invalidDataSchema from "../__tests__/schemas/invalid-data.schema.json";
 import pluginSchema from "../__tests__/schemas/plugin.schema.json";
 
 import { StringUpdateSchemaPlugin } from "../../app/pages/form/plugin/plugin";
@@ -43,7 +44,7 @@ describe("Form", () => {
 
         expect(form.state("navigation")).toHaveLength(1);
 
-        form.find("SectionLinkFormControl")
+        form.find("SectionLinkControl")
             .at(0)
             .find("a")
             .simulate("click");
@@ -69,7 +70,7 @@ describe("Form", () => {
 
         expect(form.state("navigation")).toHaveLength(1);
 
-        form.find("SectionLinkFormControl")
+        form.find("SectionLinkControl")
             .at(0)
             .find("a")
             .simulate("click");
@@ -92,7 +93,7 @@ describe("Form", () => {
 
         expect(form.state("navigation")).toHaveLength(1);
 
-        form.find("ArrayFormControl")
+        form.find("ArrayControl")
             .at(0)
             .find("a")
             .at(0)
@@ -119,7 +120,7 @@ describe("Form", () => {
 
         expect(form.state("navigation")).toHaveLength(1);
 
-        form.find("ArrayFormControl")
+        form.find("ArrayControl")
             .at(0)
             .find("a")
             .at(0)
@@ -143,7 +144,7 @@ describe("Form", () => {
 
         expect(form.state("navigation")).toHaveLength(1);
 
-        form.find("ChildrenFormControl")
+        form.find("ChildrenControl")
             .at(0)
             .find("a")
             .at(0)
@@ -170,7 +171,7 @@ describe("Form", () => {
 
         expect(form.state("navigation")).toHaveLength(1);
 
-        form.find("ChildrenFormControl")
+        form.find("ChildrenControl")
             .at(0)
             .find("a")
             .at(0)
@@ -194,7 +195,7 @@ describe("Form", () => {
 
         expect(form.state("navigation")).toHaveLength(1);
 
-        form.find("SectionLinkFormControl")
+        form.find("SectionLinkControl")
             .at(0)
             .find("a")
             .simulate("click");
@@ -398,12 +399,12 @@ describe("Form", () => {
             />
         );
 
-        expect(rendered.find("SelectFormControl")).toHaveLength(2);
+        expect(rendered.find("SelectControl")).toHaveLength(2);
 
         rendered.setProps({ data: { pluginModifiedNumber: 2 } });
         rendered.update();
 
-        expect(rendered.find("SelectFormControl")).toHaveLength(1);
+        expect(rendered.find("SelectControl")).toHaveLength(1);
     });
     test("should show an updated schema form item if the schema has been changed by plugins and `onSchemaChange` has not been provided", () => {
         const plugins: any = [
@@ -420,11 +421,44 @@ describe("Form", () => {
             />
         );
 
-        expect(rendered.find("SelectFormControl")).toHaveLength(2);
+        expect(rendered.find("SelectControl")).toHaveLength(2);
 
         rendered.setProps({ data: { pluginModifiedNumber: 2 } });
         rendered.update();
 
-        expect(rendered.find("SelectFormControl")).toHaveLength(1);
+        expect(rendered.find("SelectControl")).toHaveLength(1);
+    });
+    test("should set validation errors to the form state.", () => {
+        const data: any = {
+            validBooleanRequired: true,
+            invalidBooleanWrongType: "foo",
+            invalidNullWrongType: "bar",
+            invalidStringWrongType: false,
+            invalidNumberWrongType: "bar",
+            invalidEnumWrongType: "hello",
+            invalidObjectWrongType: true,
+            invalidArrayWrongType: "world",
+            objectExample: {
+                invalidBooleanWrongType: "bat",
+            },
+            arrayExample: [true],
+        };
+
+        const rendered: any = mount(
+            <Form
+                schema={invalidDataSchema}
+                data={data}
+                onChange={jest.fn()}
+                displayValidationInline={true}
+            />
+        );
+
+        expect(rendered.find("ArrayControl")).toHaveLength(2);
+        expect(rendered.find("ArrayControl").get(0).props.invalidMessage).toEqual(
+            "should be array"
+        );
+        expect(rendered.find("ArrayControl").get(1).props.invalidMessage).toEqual(
+            "Contains invalid data"
+        );
     });
 });
