@@ -114,6 +114,12 @@ export interface FormSectionProps {
     controls: Controls;
 
     /**
+     * The custom control plugins which will be used
+     * instead of the default control plugins
+     */
+    controlPlugins?: StandardControlPlugin[];
+
+    /**
      * The default values
      */
     default: any;

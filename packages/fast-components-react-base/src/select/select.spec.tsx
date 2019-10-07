@@ -73,6 +73,17 @@ describe("select", (): void => {
         expect(rendered.first().prop("aria-disabled")).toEqual(false);
     });
 
+    test("root element has a tabindex of -1", (): void => {
+        const rendered: any = shallow(
+            <Select>
+                {itemA}
+                {itemB}
+                {itemC}
+            </Select>
+        );
+        expect(rendered.first().prop("tabIndex")).toEqual(-1);
+    });
+
     test("default trigger aria tags are set correctly", (): void => {
         const rendered: any = mount(
             <Select selectedItems={["a"]}>

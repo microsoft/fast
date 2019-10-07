@@ -1,4 +1,4 @@
-import { NumberTypeControlConfig } from "../templates";
+import { NumberFieldTypeControlConfig } from "../templates";
 
 /* tslint:disable */
-export interface NumberFieldControlProps extends NumberTypeControlConfig {}
+export interface NumberFieldControlProps extends NumberFieldTypeControlConfig {}

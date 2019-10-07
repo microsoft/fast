@@ -1,7 +1,7 @@
 import React from "react";
 import Adapter from "enzyme-adapter-react-16";
 import { configure, mount } from "enzyme";
-import { Form } from "./";
+import { BareForm, Form } from "./";
 import { FormProps } from "./form.props";
 
 import objectSchema from "../__tests__/schemas/objects.schema.json";
@@ -11,6 +11,7 @@ import invalidDataSchema from "../__tests__/schemas/invalid-data.schema.json";
 import pluginSchema from "../__tests__/schemas/plugin.schema.json";
 
 import { StringUpdateSchemaPlugin } from "../../app/pages/form/plugin/plugin";
+import { ControlConfig, ControlType, StandardControlPlugin } from "./templates";
 
 /*
  * Configure Enzyme
@@ -460,5 +461,85 @@ describe("Form", () => {
         expect(rendered.find("ArrayControl").get(1).props.invalidMessage).toEqual(
             "Contains invalid data"
         );
+    });
+    test("should show a custom form control by id when a custom form control has been passed", () => {
+        const id1: string = "foo";
+        const id2: string = "bat";
+        const id3: string = "none";
+        const schema: any = {
+            type: "object",
+            properties: {
+                foo: {
+                    type: "string",
+                    formControlId: id1,
+                },
+                bat: {
+                    type: "string",
+                    formControlId: id2,
+                },
+                bar: {
+                    type: "string",
+                    formControlId: id3,
+                },
+            },
+        };
+        const rendered: any = mount(
+            <BareForm
+                schema={schema}
+                data={{}}
+                onChange={jest.fn()}
+                controlPlugins={[
+                    new StandardControlPlugin({
+                        id: id1,
+                        control: (config: ControlConfig): React.ReactNode => {
+                            return <div id={id1} />;
+                        },
+                    }),
+                    new StandardControlPlugin({
+                        id: id2,
+                        control: (config: ControlConfig): React.ReactNode => {
+                            return <div id={id2} />;
+                        },
+                    }),
+                ]}
+            />
+        );
+
+        expect(rendered.find(`#${id1}`)).toHaveLength(1);
+        expect(rendered.find(`#${id2}`)).toHaveLength(1);
+        expect(rendered.find(`#${id3}`)).toHaveLength(0);
+    });
+    test("should show a custom form control by type when a custom form control has been passed", () => {
+        const id1: string = "foo";
+        const rendered: any = mount(
+            <BareForm
+                schema={{
+                    type: "object",
+                    properties: {
+                        foo: {
+                            type: "string",
+                        },
+                        bar: {
+                            type: "string",
+                        },
+                        bat: {
+                            type: "boolean",
+                        },
+                    },
+                }}
+                data={{}}
+                onChange={jest.fn()}
+                controlPlugins={[
+                    new StandardControlPlugin({
+                        type: ControlType.textarea,
+                        control: (config: ControlConfig): React.ReactNode => {
+                            return <div id={id1} />;
+                        },
+                    }),
+                ]}
+            />
+        );
+
+        expect(rendered.find(`#${id1}`)).toHaveLength(2);
     });
 });

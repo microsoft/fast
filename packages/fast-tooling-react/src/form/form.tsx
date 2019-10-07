@@ -1,10 +1,4 @@
-import styles from "./form.style";
 import ajv, { Ajv, ErrorObject, ValidateFunction } from "ajv";
-import { cloneDeep, get, set, unset } from "lodash-es";
-import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
-import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
-import FormSection from "./form-section";
-import React from "react";
 import {
     BreadcrumbItemEventHandler,
     FormChildOptionItem,
@@ -13,6 +7,12 @@ import {
     FormProps,
     FormState,
 } from "./form.props";
+import { cloneDeep, get, set, unset } from "lodash-es";
+import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
+import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
+import FormSection from "./form-section";
+import React from "react";
+import styles from "./form.style";
 import {
     getActiveComponentAndSection,
     isDifferentSchema,
@@ -22,20 +22,19 @@ import {
 import { mapPluginsToSchema } from "./utilities";
 import Navigation, { NavigationItem } from "./utilities/navigation";
 import { BreadcrumbItem, getBreadcrumbs } from "./utilities/breadcrumb";
-import { DragDropContext } from "react-dnd";
-import HTML5Backend from "react-dnd-html5-backend";
 import {
     ArrayControlConfig,
     ChildrenControlConfig,
     CommonControlConfig,
     ControlConfig,
     ControlContext,
-    LinkControlConfig,
+    ControlType,
     ListControlConfig,
-    NumberTypeControlConfig,
+    NumberFieldTypeControlConfig,
     OnChangeConfig,
+    SectionLinkControlConfig,
     StandardControlPlugin,
-    TextboxControlConfig,
+    TextareaControlConfig,
     UpdateSectionConfig,
 } from "./templates";
 import {
@@ -129,7 +128,7 @@ class Form extends React.Component<
             this.props.onSchemaChange(this.rootSchema);
         }
 
-        this.initializeControls();
+        this.updateControls();
 
         this.state = {
             titleProps:
@@ -160,6 +159,10 @@ class Form extends React.Component<
      * React lifecycle hook
      */
     public componentDidUpdate(prevProps: FormProps): void {
+        if (prevProps.controlPlugins !== this.props.controlPlugins) {
+            this.updateControls();
+        }
+
         const state: Partial<FormState> = this.updateStateForNewProps(
             this.props,
             prevProps.data !== this.props.data,
@@ -172,54 +175,134 @@ class Form extends React.Component<
         }
     }
 
-    private initializeControls(): void {
-        this.selectControl = new StandardControlPlugin({
-            control: (config: ListControlConfig): React.ReactNode => {
-                return <SelectControl {...config} />;
-            },
-        });
-        this.arrayControl = new StandardControlPlugin({
-            context: ControlContext.fill,
-            control: (config: ArrayControlConfig): React.ReactNode => {
-                return <ArrayControl {...config} />;
-            },
-        });
-        this.childrenControl = new StandardControlPlugin({
-            context: ControlContext.fill,
-            control: (config: ChildrenControlConfig): React.ReactNode => {
-                return <ChildrenControl {...config} />;
-            },
-        });
-        this.numberFieldControl = new StandardControlPlugin({
-            control: (config: NumberTypeControlConfig): React.ReactNode => {
-                return <NumberFieldControl {...config} />;
-            },
-        });
-        this.checkboxControl = new SingleLineControlPlugin({
-            control: (config: CommonControlConfig): React.ReactNode => {
-                return <CheckboxControl {...config} />;
-            },
-        });
-        this.sectionLinkControl = new StandardControlPlugin({
-            control: (config: LinkControlConfig): React.ReactNode => {
-                return <SectionLinkControl {...config} />;
-            },
-        });
-        this.textareaControl = new StandardControlPlugin({
-            control: (config: TextboxControlConfig): React.ReactNode => {
-                return <TextareaControl {...config} />;
-            },
-        });
-        this.displayControl = new StandardControlPlugin({
-            control: (config: ControlConfig): React.ReactNode => {
-                return <DisplayControl {...config} />;
-            },
-        });
-        this.buttonControl = new StandardControlPlugin({
-            control: (config: ControlConfig): React.ReactNode => {
-                return <ButtonControl {...config} />;
-            },
-        });
+    /**
+     * Find all type controls passed and use them in
+     * place of the default controls
+     */
+    private findControlPlugin(
+        hasCustomControlPlugins: boolean,
+        type: ControlType
+    ): StandardControlPlugin {
+        if (hasCustomControlPlugins) {
+            const controlPlugin: StandardControlPlugin = this.props.controlPlugins.find(
+                (control: StandardControlPlugin): boolean => {
+                    return control.matchesType(type);
+                }
+            );
+
+            if (controlPlugin !== undefined) {
+                return controlPlugin;
+            }
+        }
+
+        switch (type) {
+            case ControlType.select:
+                return new StandardControlPlugin({
+                    type: ControlType.select,
+                    control: (config: ListControlConfig): React.ReactNode => {
+                        return <SelectControl {...config} />;
+                    },
+                });
+            case ControlType.array:
+                return new StandardControlPlugin({
+                    context: ControlContext.fill,
+                    type: ControlType.array,
+                    control: (config: ArrayControlConfig): React.ReactNode => {
+                        return <ArrayControl {...config} />;
+                    },
+                });
+            case ControlType.children:
+                return new StandardControlPlugin({
+                    context: ControlContext.fill,
+                    type: ControlType.children,
+                    control: (config: ChildrenControlConfig): React.ReactNode => {
+                        return <ChildrenControl {...config} />;
+                    },
+                });
+            case ControlType.numberField:
+                return new StandardControlPlugin({
+                    type: ControlType.numberField,
+                    control: (config: NumberFieldTypeControlConfig): React.ReactNode => {
+                        return <NumberFieldControl {...config} />;
+                    },
+                });
+            case ControlType.checkbox:
+                return new SingleLineControlPlugin({
+                    type: ControlType.checkbox,
+                    control: (config: CommonControlConfig): React.ReactNode => {
+                        return <CheckboxControl {...config} />;
+                    },
+                });
+            case ControlType.sectionLink:
+                return new StandardControlPlugin({
+                    type: ControlType.sectionLink,
+                    control: (config: SectionLinkControlConfig): React.ReactNode => {
+                        return <SectionLinkControl {...config} />;
+                    },
+                });
+            case ControlType.textarea:
+                return new StandardControlPlugin({
+                    type: ControlType.textarea,
+                    control: (config: TextareaControlConfig): React.ReactNode => {
+                        return <TextareaControl {...config} />;
+                    },
+                });
+            case ControlType.display:
+                return new StandardControlPlugin({
+                    type: ControlType.display,
+                    control: (config: ControlConfig): React.ReactNode => {
+                        return <DisplayControl {...config} />;
+                    },
+                });
+            case ControlType.button:
+                return new StandardControlPlugin({
+                    type: ControlType.button,
+                    control: (config: ControlConfig): React.ReactNode => {
+                        return <ButtonControl {...config} />;
+                    },
+                });
+        }
+    }
+
+    private updateControls(): void {
+        const hasCustomControlPlugins: boolean = Array.isArray(this.props.controlPlugins);
+
+        this.selectControl = this.findControlPlugin(
+            hasCustomControlPlugins,
+            ControlType.select
+        );
+        this.arrayControl = this.findControlPlugin(
+            hasCustomControlPlugins,
+            ControlType.array
+        );
+        this.childrenControl = this.findControlPlugin(
+            hasCustomControlPlugins,
+            ControlType.children
+        );
+        this.numberFieldControl = this.findControlPlugin(
+            hasCustomControlPlugins,
+            ControlType.numberField
+        );
+        this.checkboxControl = this.findControlPlugin(
+            hasCustomControlPlugins,
+            ControlType.checkbox
+        );
+        this.sectionLinkControl = this.findControlPlugin(
+            hasCustomControlPlugins,
+            ControlType.sectionLink
+        );
+        this.textareaControl = this.findControlPlugin(
+            hasCustomControlPlugins,
+            ControlType.textarea
+        );
+        this.displayControl = this.findControlPlugin(
+            hasCustomControlPlugins,
+            ControlType.display
+        );
+        this.buttonControl = this.findControlPlugin(
+            hasCustomControlPlugins,
+            ControlType.button
+        );
     }
 
     private getClassNames(): string {
@@ -456,6 +539,7 @@ class Form extends React.Component<
                     sectionLink: this.sectionLinkControl,
                     numberField: this.numberFieldControl,
                 }}
+                controlPlugins={this.props.controlPlugins}
                 onChange={this.handleOnChange}
                 onUpdateSection={this.handleUpdateActiveSection}
                 data={this.getData("data", "props")}
