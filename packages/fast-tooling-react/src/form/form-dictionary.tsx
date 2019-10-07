@@ -113,6 +113,7 @@ class FormDictionary extends React.Component<
                                 <FormControlSwitch
                                     index={index}
                                     controls={this.props.controls}
+                                    controlPlugins={this.props.controlPlugins}
                                     label={this.props.label}
                                     onChange={this.props.onChange}
                                     propertyName={currentKey}

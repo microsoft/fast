@@ -1,6 +1,7 @@
 import { NavigationItem } from "./utilities/navigation";
 import { FormPlugin, FormPluginProps } from "./plugin";
 import { ErrorObject } from "ajv";
+import { StandardControlPlugin } from "./templates";
 
 /**
  * Form class name contract
@@ -96,6 +97,12 @@ export interface FormProps {
      * Display the validation as browser default tooltips
      */
     displayValidationBrowserDefault?: boolean;
+
+    /**
+     * The custom control plugins which will be used
+     * instead of the default control plugins
+     */
+    controlPlugins?: StandardControlPlugin[];
 }
 
 /**

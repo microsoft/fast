@@ -34,7 +34,9 @@ The tooling available in FAST Tooling React can be used together to create UI fo
     - [Height](#height)
 - [Form](#form)
     - [Drag and drop](#drag-and-drop)
-    - [Using form plugins](#using-form-plugins)
+    - [Using form control plugins](#using-form-control-plugins)
+        - [List of control types](#list-of-control-types)
+    - [Using form schema plugins](#using-form-schema-plugins)
     - [React children as options](#react-children-as-options)
     - [Controlling the visible section](#controlling-the-visible-section)
     - [Validation](#validation)
@@ -918,7 +920,96 @@ handleChange = (data) => {
 
 Drag and drop is provided to the `Form` using the `react-dnd` package as well as the `HTML5Backend`. If you are using `react-dnd` somewhere else and need to implement the backend once, use the secondary export `BareForm`.
 
-### Using form plugins
+### Using form control plugins
+
+All necessary form controls are built in by default but can be overriden either through the schema by adding a `formControlId` property with a string value or a control type defined [below](#list-of-control-types).
+
+To make a custom control, use the secondary export `StandardControlPlugin` which will take care of all standard form actions such as setting default, resetting data, etc. You will need to provide the necessary functionality to the `control` as JSX.
+
+When the plugin instance is passed to the `<Form />` 
+either the id or the type is then referenced and will cause the control to render.
+
+A config is passed to the control, the specifications of this can be found [here](https://github.com/microsoft/fast-dna/blob/master/packages/fast-tooling-react/src/form/templates/template.control.utilities.props.tsx). Note that the `ControlConfig` interface may include extra properties depending on the control type being used.
+
+Example id plugin:
+
+JSON Schema:
+```json
+{
+    "type": "object",
+    "properties": {
+        "foo": {
+            "type": "string",
+            "formControlId": "foo"
+        }
+    }
+}
+```
+
+JSX:
+```jsx
+<Form
+    schema={schema}
+    data={this.state.data}
+    onChange={this.handleChange}
+    controlPlugins={[
+        new StandardControlPlugin({
+            id: "foo",
+            control: (config) => {
+                return (
+                    <input
+                        value={config.value}
+                    />
+                )
+            }
+        })
+    ]}
+/>
+```
+
+Example type plugin:
+
+```jsx
+<Form
+    schema={schema}
+    data={this.state.data}
+    onChange={this.handleChange}
+    controlPlugins={[
+        new StandardControlPlugin({
+            type: ControlType.textarea,
+            control: (config) => {
+                return (
+                    <input
+                        value={config.value}
+                    />
+                )
+            }
+        })
+    ]}
+/>
+
+```
+
+#### List of control types
+
+Control types are available as an enum provided as a secondary export `ControlTypes` and consist of the following:
+
+```js
+import { ControlTypes } from "@microsoft/fast-tooling-react";
+
+// Available types
+ControlTypes.select
+ControlTypes.array
+ControlTypes.children
+ControlTypes.checkbox
+ControlTypes.numberField
+ControlTypes.sectionLink
+ControlTypes.display
+ControlTypes.button
+ControlTypes.textarea
+```
+
+### Using form schema plugins
 
 Plugins may be created to determine if a form should change based on data. You can identify a piece of schema that should be updated by adding a unique key to your JSON schema `formPluginId`. When you initialize a custom plugin you will need to pass that same id to the plugin as part of its configuration.
 
