@@ -1,94 +1,79 @@
 import React from "react";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
-import { CustomFormControlProps } from "../controls/control.props";
-import styles from "./control.text-align.style";
-import { TextAlignFormControlClassNameContract } from "./control.text-align.props";
-import BaseFormControl from "../controls/template.control.abstract";
+import styles, { TextAlignControlClassNameContract } from "./control.text-align.style";
+import { TextAlignControlProps } from "./control.text-align.props";
+import { classNames } from "@microsoft/fast-web-utilities";
 
 /**
- * Schema form component definition
- * @extends React.Component
+ * Custom form control definition
  */
 /* tslint:disable-next-line */
-class TextAlignFormControl extends BaseFormControl<
-    CustomFormControlProps & ManagedClasses<TextAlignFormControlClassNameContract>,
+class TextAlignControl extends React.Component<
+    TextAlignControlProps & ManagedClasses<TextAlignControlClassNameContract>,
     {}
 > {
-    public static displayName: string = "TextAlignFormControl";
+    public static displayName: string = "TextAlignControl";
 
-    public render(): JSX.Element {
+    public static defaultProps: Partial<
+        TextAlignControlProps & ManagedClasses<TextAlignControlClassNameContract>
+    > = {
+        managedClasses: {},
+    };
+
+    public render(): React.ReactNode {
         return (
-            <div className={this.props.managedClasses.textAlignFormControl}>
-                <div className={this.props.managedClasses.textAlignFormControl_control}>
-                    <label
-                        className={
-                            this.props.managedClasses.textAlignFormControl_controlLabel
-                        }
-                        htmlFor={this.props.dataLocation}
-                    >
-                        {this.props.label}
-                    </label>
-                    <div
-                        className={
-                            this.props.managedClasses
-                                .textAlignFormControl_controlInputContainer
-                        }
-                    >
-                        {this.renderInput("left", 1)}
-                        {this.renderInput("center", 2)}
-                        {this.renderInput("right", 3)}
-                    </div>
-                </div>
-                <div
-                    className={this.props.managedClasses.textAlignFormControl_softRemove}
-                >
-                    {this.renderSoftRemove(
-                        this.props.managedClasses.textAlignFormControl_softRemoveInput
-                    )}
-                </div>
+            <div
+                className={classNames(this.props.managedClasses.textAlignControl, [
+                    this.props.managedClasses.textAlignControl__disabled,
+                    this.props.disabled,
+                ])}
+            >
+                {this.renderInput("left")}
+                {this.renderInput("center")}
+                {this.renderInput("right")}
             </div>
         );
     }
 
     private onChange = (value: string): void => {
-        this.props.onChange(this.props.dataLocation, value);
+        this.props.onChange({ value });
     };
 
     private isChecked(direction: string): boolean {
         return (
-            this.props.data === direction ||
-            (typeof this.props.data === "undefined" && this.props.default === direction)
+            this.props.value === direction ||
+            (typeof this.props.value === "undefined" && this.props.default === direction)
         );
     }
 
     private getInputClassName(direction: string): string {
         switch (direction) {
             case "left":
-                return this.props.managedClasses.textAlignFormControl_controlInput__left;
+                return this.props.managedClasses.textAlignControl_input__left;
             case "center":
-                return this.props.managedClasses
-                    .textAlignFormControl_controlInput__center;
+                return this.props.managedClasses.textAlignControl_input__center;
             case "right":
-                return this.props.managedClasses.textAlignFormControl_controlInput__right;
+                return this.props.managedClasses.textAlignControl_input__right;
         }
     }
 
-    private renderInput(direction: string, index: number): JSX.Element {
+    private renderInput(direction: string): React.ReactNode {
         if (this.props.options && Array.isArray(this.props.options)) {
             const option: string = this.props.options.find((item: string) => {
                 return item === direction;
             });
 
             if (typeof option !== "undefined") {
-                const className: string = this.getInputClassName(direction);
-
                 return (
                     <span>
                         <input
-                            className={className}
+                            className={classNames(
+                                this.props.managedClasses.textAlignControl_input,
+                                this.getInputClassName(direction)
+                            )}
                             id={this.props.dataLocation}
-                            type="radio"
+                            type={"radio"}
                             value={direction}
                             name={this.props.dataLocation}
                             aria-label={`${direction} align`}
@@ -103,4 +88,5 @@ class TextAlignFormControl extends BaseFormControl<
     }
 }
 
-export default manageJss(styles)(TextAlignFormControl);
+export { TextAlignControl };
+export default manageJss(styles)(TextAlignControl);

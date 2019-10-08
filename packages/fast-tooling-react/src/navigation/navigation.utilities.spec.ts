@@ -110,17 +110,17 @@ describe("getNavigationFromData", () => {
         expect(navigationFromData[0].items).toHaveLength(3);
         expect(navigationFromData[0].items[0].text).toEqual(childOptions[0].schema.title);
         expect(navigationFromData[0].items[0].type).toEqual(NavigationDataType.component);
-        expect(navigationFromData[0].items[0].dataLocation).toEqual("children.0.props");
+        expect(navigationFromData[0].items[0].dataLocation).toEqual("children[0].props");
         expect(navigationFromData[0].items[0].items).toEqual(void 0);
         expect(navigationFromData[0].items[1].text).toEqual(childOptions[0].schema.title);
         expect(navigationFromData[0].items[1].type).toEqual(NavigationDataType.component);
-        expect(navigationFromData[0].items[1].dataLocation).toEqual("children.1.props");
+        expect(navigationFromData[0].items[1].dataLocation).toEqual("children[1].props");
         expect(navigationFromData[0].items[1].items).toEqual(void 0);
         expect(navigationFromData[0].items[2].text).toEqual(childrenText);
         expect(navigationFromData[0].items[2].type).toEqual(
             NavigationDataType.primitiveChild
         );
-        expect(navigationFromData[0].items[2].dataLocation).toEqual("children.2");
+        expect(navigationFromData[0].items[2].dataLocation).toEqual("children[2]");
         expect(navigationFromData[0].items[2].items).toEqual(undefined);
     });
     test("should return a nested item if nested children have been passed", () => {
@@ -219,7 +219,7 @@ describe("getNavigationFromData", () => {
         );
         expect(navigationFromData[0].items[0].items[0].items).toHaveLength(2);
         expect(navigationFromData[0].items[0].items[0].items[0].dataLocation).toEqual(
-            "children.props.children.0.props"
+            "children.props.children[0].props"
         );
         expect(navigationFromData[0].items[0].items[0].items[0].text).toEqual(
             childOptions[0].schema.title
@@ -229,7 +229,7 @@ describe("getNavigationFromData", () => {
         );
         expect(navigationFromData[0].items[0].items[0].items[0].items).toEqual(void 0);
         expect(navigationFromData[0].items[0].items[0].items[1].dataLocation).toEqual(
-            "children.props.children.1.props"
+            "children.props.children[1].props"
         );
         expect(navigationFromData[0].items[0].items[0].items[1].text).toEqual(
             childOptions[0].schema.title
@@ -294,6 +294,60 @@ describe("getNavigationFromData", () => {
         expect(navigationFromData.type).toEqual(NavigationDataType.array);
         expect(navigationFromData.items).toEqual(void 0);
     });
+    test("should return an array item with square brackets for the data location if an array item is passed", () => {
+        const data: any = [{ a: "bar" }];
+        const navigationFromData: TreeNavigation = getNavigationFromData(
+            data,
+            {
+                title: "root title",
+                type: "array",
+                items: {
+                    title: "foo title",
+                    type: "object",
+                    properties: {
+                        a: {
+                            type: "string",
+                        },
+                    },
+                },
+            },
+            childOptions
+        );
+
+        expect(navigationFromData.items[0].dataLocation).toEqual("[0]");
+
+        const dataWithArrayInObject: any = {
+            foo: [
+                {
+                    a: "bar",
+                },
+            ],
+        };
+        const navigationFromDataArrayInObject: TreeNavigation = getNavigationFromData(
+            dataWithArrayInObject,
+            {
+                type: "object",
+                properties: {
+                    foo: {
+                        type: "array",
+                        items: {
+                            type: "object",
+                            properties: {
+                                a: {
+                                    type: "string",
+                                },
+                            },
+                        },
+                    },
+                },
+            },
+            childOptions
+        );
+
+        expect(navigationFromDataArrayInObject.items[0].items[0].dataLocation).toEqual(
+            "foo[0]"
+        );
+    });
     test("should return deeply nested array items that terminate in a single children item", () => {
         const data: any = {
             children: {
@@ -334,22 +388,22 @@ describe("getNavigationFromData", () => {
             "children.props.children"
         );
         expect(navigationFromData[0].items[0].items[0].items[0].dataLocation).toEqual(
-            "children.props.children.0.props"
+            "children.props.children[0].props"
         );
         expect(navigationFromData[0].items[0].items[0].items[1].dataLocation).toEqual(
-            "children.props.children.1"
+            "children.props.children[1]"
         );
         expect(
             navigationFromData[0].items[0].items[0].items[0].items[0].dataLocation
-        ).toEqual("children.props.children.0.props.children");
+        ).toEqual("children.props.children[0].props.children");
         expect(
             navigationFromData[0].items[0].items[0].items[0].items[0].items[0]
                 .dataLocation
-        ).toEqual("children.props.children.0.props.children.props");
+        ).toEqual("children.props.children[0].props.children.props");
         expect(
             navigationFromData[0].items[0].items[0].items[0].items[0].items[0].items[0]
                 .dataLocation
-        ).toEqual("children.props.children.0.props.children.props.children");
+        ).toEqual("children.props.children[0].props.children.props.children");
     });
 });
 

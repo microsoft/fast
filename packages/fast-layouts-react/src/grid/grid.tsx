@@ -1,5 +1,4 @@
 import React from "react";
-import { ComponentStyles } from "@microsoft/fast-jss-manager-react";
 import BreakpointTracker from "../utilities/breakpoint-tracker";
 import { getValueByBreakpoint } from "../utilities/breakpoints";
 import {
@@ -11,7 +10,7 @@ import {
 } from "./grid.props";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import { Column } from "../column";
-import { canUseCssGrid } from "@microsoft/fast-web-utilities";
+import { canUseCssGrid, classNames } from "@microsoft/fast-web-utilities";
 import { toPx } from "@microsoft/fast-jss-utilities";
 
 export interface GridClassNamesContract {
@@ -34,6 +33,7 @@ export class Grid extends Foundation<GridHandledProps, GridUnhandledProps, {}> {
         verticalAlign: GridAlignment.stretch,
         horizontalAlign: GridAlignment.stretch,
         columnCount: 12,
+        managedClasses: {},
     };
 
     private static display: string = canUseCssGrid() ? "grid" : "-ms-grid";
@@ -99,9 +99,7 @@ export class Grid extends Foundation<GridHandledProps, GridUnhandledProps, {}> {
     }
 
     protected generateClassNames(): string {
-        const className: string = this.props.managedClasses.grid;
-
-        return super.generateClassNames(className);
+        return super.generateClassNames(classNames(this.props.managedClasses.grid));
     }
 
     /**

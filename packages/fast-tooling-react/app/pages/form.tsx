@@ -1,7 +1,7 @@
 import React from "react";
 import { DesignSystemProvider } from "@microsoft/fast-jss-manager-react";
 import { getDataFromSchema } from "../../src/data-utilities";
-import { Form, FormPlugin, FormPluginProps } from "../../src";
+import { AlignControl, ControlType, Form, FormPlugin, FormPluginProps } from "../../src";
 import {
     FormAttributeSettingsMappingToPropertyNames,
     FormChildOptionItem,
@@ -12,6 +12,7 @@ import {
 } from "../../src/form/form.props";
 import * as testConfigs from "./form/";
 import { OneOfUpdateSchemaPlugin, StringUpdateSchemaPlugin } from "./form/plugin/plugin";
+import { ControlConfig, StandardControlPlugin, TextAlignControl } from "../../src";
 
 export type componentDataOnChange = (e: React.ChangeEvent<HTMLFormElement>) => void;
 
@@ -92,6 +93,11 @@ class FormTestPage extends React.Component<{}, FormTestPageState> {
      */
     private plugins: Array<FormPlugin<FormPluginProps>>;
 
+    /**
+     * The custom control plugins used in the form
+     */
+    private controlPlugins: StandardControlPlugin[];
+
     constructor(props: {}) {
         super(props);
 
@@ -103,6 +109,21 @@ class FormTestPage extends React.Component<{}, FormTestPageState> {
             }),
             new OneOfUpdateSchemaPlugin({
                 id: "oneOfs/plugins/pluginModifiedString",
+            }),
+        ];
+
+        this.controlPlugins = [
+            new StandardControlPlugin({
+                id: testConfigs.customControl.schema.properties.textAlign.formControlId,
+                control: (config: ControlConfig): React.ReactNode => {
+                    return <TextAlignControl {...config} />;
+                },
+            }),
+            new StandardControlPlugin({
+                id: testConfigs.customControl.schema.properties.align.formControlId,
+                control: (config: ControlConfig): React.ReactNode => {
+                    return <AlignControl {...config} />;
+                },
             }),
         ];
 
@@ -258,6 +279,7 @@ class FormTestPage extends React.Component<{}, FormTestPageState> {
             plugins: this.plugins,
             onSchemaChange: this.handleSchemaChange,
             childOptions: this.childOptions,
+            controlPlugins: this.controlPlugins,
         };
 
         if (typeof this.state.defaultBrowserErrors === "boolean") {

@@ -1,10 +1,4 @@
 import ajv, { Ajv, ErrorObject, ValidateFunction } from "ajv";
-import { ChildComponent } from "./controls/control.children.props";
-import { cloneDeep, get, set, unset } from "lodash-es";
-import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
-import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
-import FormSection from "./form-section";
-import React from "react";
 import {
     BreadcrumbItemEventHandler,
     FormChildOptionItem,
@@ -13,16 +7,48 @@ import {
     FormProps,
     FormState,
 } from "./form.props";
+import { cloneDeep, get, set, unset } from "lodash-es";
+import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
+import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
+import FormSection from "./form-section";
+import React from "react";
+import styles from "./form.style";
 import {
     getActiveComponentAndSection,
     isDifferentSchema,
     isModifiedSchema,
     isRootLocation,
 } from "./utilities";
-import styles from "./form.style";
 import { mapPluginsToSchema } from "./utilities";
 import Navigation, { NavigationItem } from "./utilities/navigation";
 import { BreadcrumbItem, getBreadcrumbs } from "./utilities/breadcrumb";
+import {
+    ArrayControlConfig,
+    ChildrenControlConfig,
+    CommonControlConfig,
+    ControlConfig,
+    ControlContext,
+    ControlType,
+    ListControlConfig,
+    NumberFieldTypeControlConfig,
+    OnChangeConfig,
+    SectionLinkControlConfig,
+    StandardControlPlugin,
+    TextareaControlConfig,
+    UpdateSectionConfig,
+} from "./templates";
+import {
+    ArrayControl,
+    ButtonControl,
+    CheckboxControl,
+    ChildrenControl,
+    DisplayControl,
+    NumberFieldControl,
+    SectionLinkControl,
+    SelectControl,
+    TextareaControl,
+} from "./controls";
+import { SingleLineControlPlugin } from "./templates/plugin.control.single-line";
 
 /**
  * Schema form component definition
@@ -52,6 +78,19 @@ class Form extends React.Component<
      * The navigation instance
      */
     private navigation: Navigation;
+
+    /**
+     * The default form controls
+     */
+    private selectControl: StandardControlPlugin;
+    private displayControl: StandardControlPlugin;
+    private sectionLinkControl: StandardControlPlugin;
+    private checkboxControl: SingleLineControlPlugin;
+    private numberFieldControl: StandardControlPlugin;
+    private textareaControl: StandardControlPlugin;
+    private arrayControl: StandardControlPlugin;
+    private childrenControl: StandardControlPlugin;
+    private buttonControl: StandardControlPlugin;
 
     /**
      * The schema
@@ -89,6 +128,8 @@ class Form extends React.Component<
             this.props.onSchemaChange(this.rootSchema);
         }
 
+        this.updateControls();
+
         this.state = {
             titleProps:
                 this.rootSchema && this.rootSchema.title
@@ -99,7 +140,7 @@ class Form extends React.Component<
                     ? props.location
                     : "",
             navigation: this.navigation.get(),
-            validationErrors: void 0,
+            validationErrors: this.getValidationErrors(props),
         };
     }
 
@@ -118,6 +159,10 @@ class Form extends React.Component<
      * React lifecycle hook
      */
     public componentDidUpdate(prevProps: FormProps): void {
+        if (prevProps.controlPlugins !== this.props.controlPlugins) {
+            this.updateControls();
+        }
+
         const state: Partial<FormState> = this.updateStateForNewProps(
             this.props,
             prevProps.data !== this.props.data,
@@ -128,6 +173,136 @@ class Form extends React.Component<
         if (state) {
             this.setState(state as FormState);
         }
+    }
+
+    /**
+     * Find all type controls passed and use them in
+     * place of the default controls
+     */
+    private findControlPlugin(
+        hasCustomControlPlugins: boolean,
+        type: ControlType
+    ): StandardControlPlugin {
+        if (hasCustomControlPlugins) {
+            const controlPlugin: StandardControlPlugin = this.props.controlPlugins.find(
+                (control: StandardControlPlugin): boolean => {
+                    return control.matchesType(type);
+                }
+            );
+
+            if (controlPlugin !== undefined) {
+                return controlPlugin;
+            }
+        }
+
+        switch (type) {
+            case ControlType.select:
+                return new StandardControlPlugin({
+                    type: ControlType.select,
+                    control: (config: ListControlConfig): React.ReactNode => {
+                        return <SelectControl {...config} />;
+                    },
+                });
+            case ControlType.array:
+                return new StandardControlPlugin({
+                    context: ControlContext.fill,
+                    type: ControlType.array,
+                    control: (config: ArrayControlConfig): React.ReactNode => {
+                        return <ArrayControl {...config} />;
+                    },
+                });
+            case ControlType.children:
+                return new StandardControlPlugin({
+                    context: ControlContext.fill,
+                    type: ControlType.children,
+                    control: (config: ChildrenControlConfig): React.ReactNode => {
+                        return <ChildrenControl {...config} />;
+                    },
+                });
+            case ControlType.numberField:
+                return new StandardControlPlugin({
+                    type: ControlType.numberField,
+                    control: (config: NumberFieldTypeControlConfig): React.ReactNode => {
+                        return <NumberFieldControl {...config} />;
+                    },
+                });
+            case ControlType.checkbox:
+                return new SingleLineControlPlugin({
+                    type: ControlType.checkbox,
+                    control: (config: CommonControlConfig): React.ReactNode => {
+                        return <CheckboxControl {...config} />;
+                    },
+                });
+            case ControlType.sectionLink:
+                return new StandardControlPlugin({
+                    type: ControlType.sectionLink,
+                    control: (config: SectionLinkControlConfig): React.ReactNode => {
+                        return <SectionLinkControl {...config} />;
+                    },
+                });
+            case ControlType.textarea:
+                return new StandardControlPlugin({
+                    type: ControlType.textarea,
+                    control: (config: TextareaControlConfig): React.ReactNode => {
+                        return <TextareaControl {...config} />;
+                    },
+                });
+            case ControlType.display:
+                return new StandardControlPlugin({
+                    type: ControlType.display,
+                    control: (config: ControlConfig): React.ReactNode => {
+                        return <DisplayControl {...config} />;
+                    },
+                });
+            case ControlType.button:
+                return new StandardControlPlugin({
+                    type: ControlType.button,
+                    control: (config: ControlConfig): React.ReactNode => {
+                        return <ButtonControl {...config} />;
+                    },
+                });
+        }
+    }
+
+    private updateControls(): void {
+        const hasCustomControlPlugins: boolean = Array.isArray(this.props.controlPlugins);
+
+        this.selectControl = this.findControlPlugin(
+            hasCustomControlPlugins,
+            ControlType.select
+        );
+        this.arrayControl = this.findControlPlugin(
+            hasCustomControlPlugins,
+            ControlType.array
+        );
+        this.childrenControl = this.findControlPlugin(
+            hasCustomControlPlugins,
+            ControlType.children
+        );
+        this.numberFieldControl = this.findControlPlugin(
+            hasCustomControlPlugins,
+            ControlType.numberField
+        );
+        this.checkboxControl = this.findControlPlugin(
+            hasCustomControlPlugins,
+            ControlType.checkbox
+        );
+        this.sectionLinkControl = this.findControlPlugin(
+            hasCustomControlPlugins,
+            ControlType.sectionLink
+        );
+        this.textareaControl = this.findControlPlugin(
+            hasCustomControlPlugins,
+            ControlType.textarea
+        );
+        this.displayControl = this.findControlPlugin(
+            hasCustomControlPlugins,
+            ControlType.display
+        );
+        this.buttonControl = this.findControlPlugin(
+            hasCustomControlPlugins,
+            ControlType.button
+        );
     }
 
     private getClassNames(): string {
@@ -353,8 +528,20 @@ class Form extends React.Component<
                     lastNavigationItem.schemaLocation,
                     currentSchema
                 )}
+                controls={{
+                    button: this.buttonControl,
+                    array: this.arrayControl,
+                    checkbox: this.checkboxControl,
+                    children: this.childrenControl,
+                    display: this.displayControl,
+                    textarea: this.textareaControl,
+                    select: this.selectControl,
+                    sectionLink: this.sectionLinkControl,
+                    numberField: this.numberFieldControl,
+                }}
+                controlPlugins={this.props.controlPlugins}
                 onChange={this.handleOnChange}
-                onUpdateActiveSection={this.handleUpdateActiveSection}
+                onUpdateSection={this.handleUpdateActiveSection}
                 data={this.getData("data", "props")}
                 schemaLocation={lastNavigationItem.schemaLocation}
                 default={lastNavigationItem.default}
@@ -378,46 +565,39 @@ class Form extends React.Component<
         return (e: React.MouseEvent): void => {
             e.preventDefault();
 
-            this.handleUpdateActiveSection(schemaLocation, dataLocation, schema);
+            this.handleUpdateActiveSection({ schemaLocation, dataLocation, schema });
         };
     };
 
-    private handleOnChange = (
-        location: string,
-        data: any,
-        isArray: boolean,
-        index: number,
-        isChildren?: boolean
-    ): void => {
+    private handleOnChange = (config: OnChangeConfig): void => {
         let obj: any = cloneDeep(this.props.data);
-        const currentData: any = location === "" ? obj : get(obj, location);
+        const currentData: any =
+            config.dataLocation === "" ? obj : get(obj, config.dataLocation);
 
-        if (isArray) {
+        if (config.isArray) {
             let newArray: any[];
 
-            if (typeof index !== "undefined") {
+            if (typeof config.index !== "undefined") {
                 newArray = currentData.filter((item: any, itemIndex: number) => {
-                    return itemIndex !== index;
+                    return itemIndex !== config.index;
                 });
             } else {
                 newArray = currentData;
-                newArray.push(data);
+                newArray.push(config.value);
             }
 
-            location === "" ? (obj = newArray) : set(obj, location, newArray);
+            config.dataLocation === ""
+                ? (obj = newArray)
+                : set(obj, config.dataLocation, newArray);
         } else {
-            if (typeof data === "undefined") {
-                location === "" ? (obj = void 0) : unset(obj, location);
+            if (typeof config.value === "undefined") {
+                config.dataLocation === ""
+                    ? (obj = void 0)
+                    : unset(obj, config.dataLocation);
             } else {
-                location === "" ? (obj = data) : set(obj, location, data);
-            }
-        }
-
-        if (isChildren) {
-            const children: ChildComponent | ChildComponent[] = get(obj, location);
-
-            if (Array.isArray(children) && children.length === 1) {
-                set(obj, location, children[0]);
+                config.dataLocation === ""
+                    ? (obj = config.value)
+                    : set(obj, config.dataLocation, config.value);
             }
         }
 
@@ -434,22 +614,18 @@ class Form extends React.Component<
     /**
      * Handles an update to the active section and component
      */
-    private handleUpdateActiveSection = (
-        schemaLocation: string,
-        dataLocation: string,
-        schema: any
-    ): void => {
+    private handleUpdateActiveSection = (config: UpdateSectionConfig): void => {
         if (this.props.location && this.props.location.onChange) {
-            this.props.location.onChange(dataLocation);
+            this.props.location.onChange(config.dataLocation);
         } else {
             const state: Partial<FormState> = getActiveComponentAndSection(
-                schemaLocation,
-                dataLocation,
-                schema
+                config.schemaLocation,
+                config.dataLocation,
+                config.schema
             );
 
             this.navigation.updateDataLocation(
-                dataLocation,
+                config.dataLocation,
                 (updatedNavigation: NavigationItem[]) => {
                     state.navigation = updatedNavigation;
                 }

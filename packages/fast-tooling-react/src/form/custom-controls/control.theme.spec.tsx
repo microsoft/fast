@@ -1,54 +1,60 @@
 import React from "react";
 import Adapter from "enzyme-adapter-react-16";
-import { configure, mount, shallow } from "enzyme";
-import { ThemeFormControl } from "./index";
-import { CustomFormControlProps } from "../controls/control.props";
+import { configure, mount, shallow, ShallowWrapper } from "enzyme";
+import { ThemeControl as StyledThemeControl } from "./control.theme";
+import { ThemeControlProps } from "./control.theme.props";
+import { ThemeControl } from "./control.theme";
+import { ThemeControlClassNameContract } from "./control.theme.style";
 
 /*
  * Configure Enzyme
  */
 configure({ adapter: new Adapter() });
 
-const themeProps: CustomFormControlProps = {
+const themeProps: ThemeControlProps = {
     options: ["dark", "light"],
-    index: 1,
     dataLocation: "",
-    data: "",
-    required: false,
-    label: "",
+    value: "",
     onChange: jest.fn(),
-    invalidMessage: "",
-    schema: {},
+    reportValidity: jest.fn(),
+    updateValidity: jest.fn(),
+    disabled: false,
+    elementRef: null,
 };
 
-describe("ThemeFormControl", () => {
+const managedClasses: ThemeControlClassNameContract = {
+    themeControl: "themeControl",
+    themeControl__disabled: "themeControl__disabled",
+    themeControl_input: "themeControl_input",
+    themeControl_input__dark: "themeControl_input__dark",
+    themeControl_input__light: "themeControl_input__light",
+};
+
+describe("ThemeControl", () => {
     test("should not throw", () => {
         expect(() => {
-            shallow(<ThemeFormControl {...themeProps} />);
+            shallow(<StyledThemeControl {...themeProps} />);
         }).not.toThrow();
     });
     test("should generate HTML input elements", () => {
-        const rendered: any = mount(<ThemeFormControl {...themeProps} />);
+        const rendered: any = mount(<ThemeControl {...themeProps} />);
 
-        expect(rendered.find("input")).toHaveLength(3);
+        expect(rendered.find("input")).toHaveLength(2);
     });
-    test("should generate an HTML label element", () => {
-        const rendered: any = mount(<ThemeFormControl {...themeProps} />);
-
-        expect(rendered.find("label")).toHaveLength(1);
-    });
-    test("should have an `id` attribute on the HTML input elements and a corresponding `for` attribute on the HTML label element", () => {
-        const rendered: any = mount(<ThemeFormControl {...themeProps} />);
+    test("should have an `id` attribute on the HTML input elements and a corresponding dataLocation", () => {
+        const dataLocation: string = "foo";
+        const rendered: any = mount(
+            <ThemeControl {...themeProps} dataLocation={dataLocation} />
+        );
         const inputs: any = rendered.find("input");
-        const label: any = rendered.find("label");
 
-        expect(label.prop("htmlFor")).toMatch(inputs.at(0).prop("id"));
-        expect(label.prop("htmlFor")).toMatch(inputs.at(1).prop("id"));
+        expect(dataLocation).toMatch(inputs.at(0).prop("id"));
+        expect(dataLocation).toMatch(inputs.at(1).prop("id"));
     });
     test("should fire an `onChange` callback when the inputs are selected", () => {
         const handleChange: any = jest.fn();
         const rendered: any = mount(
-            <ThemeFormControl {...themeProps} onChange={handleChange} />
+            <ThemeControl {...themeProps} onChange={handleChange} />
         );
 
         rendered
@@ -57,42 +63,22 @@ describe("ThemeFormControl", () => {
             .simulate("change");
 
         expect(handleChange).toHaveBeenCalled();
-        expect(handleChange.mock.calls[0][1]).toEqual("light");
+        expect(handleChange.mock.calls[0][0]).toEqual({ value: "light" });
     });
-    test("should remove the data if the soft remove is triggered", () => {
-        const handleChange: any = jest.fn();
+    test("should be disabled if disabled props is passed", () => {
         const rendered: any = mount(
-            <ThemeFormControl {...themeProps} data={"light"} onChange={handleChange} />
+            <ThemeControl
+                {...themeProps}
+                managedClasses={managedClasses}
+                disabled={true}
+            />
         );
+        const inputs: ShallowWrapper = rendered.find("input");
 
-        rendered
-            .find("input")
-            .at(2)
-            .simulate("change");
-
-        expect(handleChange).toHaveBeenCalled();
-        expect(handleChange.mock.calls[0][1]).toEqual(undefined);
-    });
-    test("should add the previous data that was removed if the soft remove is triggered", () => {
-        const handleChange: any = jest.fn();
-        const data: string = "light";
-        const rendered: any = mount(
-            <ThemeFormControl {...themeProps} data={data} onChange={handleChange} />
+        expect(inputs.at(0).prop("disabled")).toBeTruthy();
+        expect(inputs.at(1).prop("disabled")).toBeTruthy();
+        expect(rendered.find(`.${managedClasses.themeControl__disabled}`)).toHaveLength(
+            1
         );
-
-        rendered
-            .find("input")
-            .at(2)
-            .simulate("change");
-
-        rendered.setProps({ data: handleChange.mock.calls[0][1] });
-
-        rendered
-            .find("input")
-            .at(2)
-            .simulate("change");
-
-        expect(handleChange).toHaveBeenCalledTimes(2);
-        expect(handleChange.mock.calls[1][1]).toBe(data);
     });
 });

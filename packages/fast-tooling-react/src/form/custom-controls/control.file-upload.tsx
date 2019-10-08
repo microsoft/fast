@@ -1,17 +1,28 @@
 import React from "react";
+import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
+import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
+import styles, { FileUploadControlClassNameContract } from "./control.file-upload.style";
 import { uniqueId } from "lodash-es";
-import { FileUploadFormControlState } from "./control.file-upload.props";
-import { CustomFormControlProps } from "../controls/control.props";
+import {
+    FileUploadControlProps,
+    FileUploadControlState,
+} from "./control.file-upload.props";
+import { classNames } from "@microsoft/fast-web-utilities";
 
 /**
- * Schema form component definition
- * @extends React.Component
+ * Custom form control definition
  */
-class FileUploadFormControl extends React.Component<
-    CustomFormControlProps,
-    FileUploadFormControlState
+class FileUploadControl extends React.Component<
+    FileUploadControlProps & ManagedClasses<FileUploadControlClassNameContract>,
+    FileUploadControlState
 > {
-    public static displayName: string = "FileUploadFormControl";
+    public static displayName: string = "FileUploadControl";
+
+    public static defaultProps: Partial<
+        FileUploadControlProps & ManagedClasses<FileUploadControlClassNameContract>
+    > = {
+        managedClasses: {},
+    };
 
     /**
      * The id of the file input
@@ -23,7 +34,7 @@ class FileUploadFormControl extends React.Component<
      */
     private reader: FileReader = new FileReader();
 
-    constructor(props: CustomFormControlProps) {
+    constructor(props: FileUploadControlProps) {
         super(props);
 
         this.fileId = uniqueId();
@@ -36,20 +47,21 @@ class FileUploadFormControl extends React.Component<
     /**
      * Render the component
      */
-    public render(): JSX.Element {
+    public render(): React.ReactNode {
         return (
-            <div>
-                <label htmlFor={this.fileId}>{this.props.label}</label>
-                <div
-                    onDragEnter={this.cancelEvent}
-                    onDragOver={this.dragOver}
-                    onDragLeave={this.dragLeave}
-                    onDrop={this.onDrop}
-                >
-                    {this.state.processing
-                        ? this.generateProcessingUI()
-                        : this.generateStaticUI()}
-                </div>
+            <div
+                className={classNames(this.props.managedClasses.fileUploadControl, [
+                    this.props.managedClasses.fileUploadControl__disabled,
+                    this.props.disabled,
+                ])}
+                onDragEnter={this.cancelEvent}
+                onDragOver={this.dragOver}
+                onDragLeave={this.dragLeave}
+                onDrop={this.onDrop}
+            >
+                {this.state.processing
+                    ? this.generateProcessingUI()
+                    : this.generateStaticUI()}
             </div>
         );
     }
@@ -73,7 +85,7 @@ class FileUploadFormControl extends React.Component<
      */
     private handleReaderLoad = (): void => {
         this.setState({ processing: false });
-        this.props.onChange(this.props.dataLocation, this.reader.result);
+        this.props.onChange({ value: this.reader.result });
     };
 
     /**
@@ -131,18 +143,23 @@ class FileUploadFormControl extends React.Component<
         this.updateWithFile(e.target.files[0]);
     };
 
-    private generateStaticUI(): JSX.Element[] {
+    private generateStaticUI(): React.ReactNode {
         return [
-            typeof this.props.data === "string" ? (
-                <img key="thumbnail" src={this.props.data} alt="Image upload thumbnail" />
+            typeof this.props.value === "string" ? (
+                <img
+                    key={"thumbnail"}
+                    src={this.props.value}
+                    alt={"Image upload thumbnail"}
+                />
             ) : null,
             <input
-                key="input"
-                type="file"
+                key={"input"}
+                className={this.props.managedClasses.fileUploadControl_input}
+                type={"file"}
                 id={this.fileId}
                 onChange={this.handleInputOnChange}
             />,
-            <p key="info">
+            <p key={"info"}>
                 Drag your asset here or{" "}
                 <label htmlFor={this.fileId}>browse your files.</label>
             </p>,
@@ -154,4 +171,5 @@ class FileUploadFormControl extends React.Component<
     }
 }
 
-export default FileUploadFormControl;
+export { FileUploadControl };
+export default manageJss(styles)(FileUploadControl);

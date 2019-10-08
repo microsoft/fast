@@ -165,6 +165,7 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
                 onKeyDown={this.handleKeydown}
                 onClick={this.handleClick}
                 onFocus={this.handleFocus}
+                tabIndex={-1}
                 role="listbox"
                 aria-disabled={this.props.disabled}
                 aria-expanded={this.state.isMenuOpen}

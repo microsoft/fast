@@ -1,42 +1,43 @@
+import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 import { generateExampleData } from "../utilities";
 import React from "react";
-import { cloneDeep, get, uniqueId } from "lodash-es";
-import HTML5Backend from "react-dnd-html5-backend";
-import { ContextComponent, DragDropContext } from "react-dnd";
+import { get, uniqueId } from "lodash-es";
 import {
+    classNames,
     keyCodeArrowDown,
     keyCodeArrowUp,
     keyCodeEnter,
     keyCodeTab,
 } from "@microsoft/fast-web-utilities";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
-import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 import { canUseDOM } from "exenv-es6";
 import { getChildOptionBySchemaId } from "../../data-utilities/location";
 import { FormChildOptionItem } from "../form.props";
 import { reactChildrenStringSchema } from "./control.children.text";
-import styles from "./control.children.style";
-import BaseFormControl from "./template.control.abstract";
+import styles, { ChildrenControlClassNameContract } from "./control.children.style";
 import {
     ChildComponent,
     ChildComponentConfig,
-    ChildrenFormControlClassNameContract,
-    ChildrenFormControlProps,
-    ChildrenFormControlState,
+    ChildrenControlProps,
+    ChildrenControlState,
 } from "./control.children.props";
-import DragItem from "./drag-item";
-import { ArrayAction } from "./control.props";
+import { ArrayAction, DragItem } from "../templates";
 
 /**
- * Schema form component definition
- * @extends React.Component
+ * Form control definition
  */
 /* tslint:disable-next-line */
-class ChildrenFormControl extends BaseFormControl<
-    ChildrenFormControlProps & ManagedClasses<ChildrenFormControlClassNameContract>,
-    ChildrenFormControlState
+class ChildrenControl extends React.Component<
+    ChildrenControlProps & ManagedClasses<ChildrenControlClassNameContract>,
+    ChildrenControlState
 > {
-    public static displayName: string = "ChildrenFormControl";
+    public static displayName: string = "ChildrenControl";
+
+    public static defaultProps: Partial<
+        ChildrenControlProps & ManagedClasses<ChildrenControlClassNameContract>
+    > = {
+        managedClasses: {},
+    };
 
     /**
      * Store a reference to the children list
@@ -64,8 +65,7 @@ class ChildrenFormControl extends BaseFormControl<
     private childOptions: FormChildOptionItem[];
 
     constructor(
-        props: ChildrenFormControlProps &
-            ManagedClasses<ChildrenFormControlClassNameContract>
+        props: ChildrenControlProps & ManagedClasses<ChildrenControlClassNameContract>
     ) {
         super(props);
 
@@ -96,40 +96,14 @@ class ChildrenFormControl extends BaseFormControl<
             hideChildrenList: true,
             editChildIndex: -1,
             isDragging: false,
-            data: [].concat(props.data || []),
+            data: [].concat(props.value || []),
         };
     }
 
-    public render(): JSX.Element {
+    public render(): React.ReactNode {
         // Convert to search component when #3006 has been completed
         return (
-            <div className={this.props.managedClasses.childrenFormControl}>
-                <div className={this.props.managedClasses.childrenFormControl_control}>
-                    <div
-                        className={get(
-                            this.props,
-                            "managedClasses.childrenFormControl_controlLabelRegion"
-                        )}
-                    >
-                        <label
-                            className={
-                                this.props.managedClasses.childrenFormControl_controlLabel
-                            }
-                            id={this.getLabelId()}
-                        >
-                            {this.props.label}
-                        </label>
-                        {this.renderDefaultValueIndicator(
-                            get(
-                                this.props,
-                                "managedClasses.childrenFormControl_defaultValueIndicator"
-                            )
-                        )}
-                        {this.renderBadge(
-                            get(this.props, "managedClasses.childrenFormControl_badge")
-                        )}
-                    </div>
-                </div>
+            <div className={this.props.managedClasses.childrenControl}>
                 {this.renderDefaultChildren()}
                 {this.renderExistingChildren()}
                 {this.renderAddChild()}
@@ -153,7 +127,7 @@ class ChildrenFormControl extends BaseFormControl<
             if (childToEdit !== undefined) {
                 this.onEditComponent(
                     childToEdit,
-                    editIndex === 0 && !Array.isArray(this.props.data)
+                    editIndex === 0 && !Array.isArray(this.props.value)
                         ? undefined
                         : editIndex
                 );
@@ -165,11 +139,11 @@ class ChildrenFormControl extends BaseFormControl<
         }
 
         if (
-            Array.isArray(this.props.data) &&
-            this.props.data.length !== this.state.data.length
+            Array.isArray(this.props.value) &&
+            this.props.value.length !== this.state.data.length
         ) {
             this.setState({
-                data: [].concat(this.props.data),
+                data: [].concat(this.props.value),
             });
         }
     }
@@ -189,29 +163,27 @@ class ChildrenFormControl extends BaseFormControl<
             <div>
                 <div
                     className={
-                        this.props.managedClasses.childrenFormControl_childrenListControl
+                        this.props.managedClasses.childrenControl_childrenListControl
                     }
                 >
                     <input
                         className={
-                            this.props.managedClasses
-                                .childrenFormControl_childrenListInput
+                            this.props.managedClasses.childrenControl_childrenListInput
                         }
                         type={"text"}
                         aria-autocomplete={"list"}
                         aria-controls={this.getFilteredChildrenInputId()}
                         aria-labelledby={this.getLabelId()}
                         value={this.state.childrenSearchTerm}
-                        placeholder="Add"
+                        placeholder={"Add"}
                         onChange={this.handleChildOptionFilterInputChange}
                         onKeyDown={this.handleChildrenListInputKeydown}
                         ref={this.filteredChildrenInput}
                     />
                     <button
-                        type="button" // Ensure the form doesn't see this as a submit button
+                        type={"button"} // Ensure the form doesn't see this as a submit button
                         className={
-                            this.props.managedClasses
-                                .childrenFormControl_childrenListTrigger
+                            this.props.managedClasses.childrenControl_childrenListTrigger
                         }
                         tabIndex={-1}
                         aria-label={"Show children options"}
@@ -223,7 +195,7 @@ class ChildrenFormControl extends BaseFormControl<
                     id={this.getFilteredChildrenInputId()}
                     aria-labelledby={this.getLabelId()}
                     aria-hidden={this.state.hideChildrenList}
-                    className={this.props.managedClasses.childrenFormControl_childrenList}
+                    className={this.props.managedClasses.childrenControl_childrenList}
                     role={"listbox"}
                     ref={this.filteredChildrenList}
                 >
@@ -247,7 +219,7 @@ class ChildrenFormControl extends BaseFormControl<
                 return (
                     <li
                         className={
-                            this.props.managedClasses.childrenFormControl_childrenListItem
+                            this.props.managedClasses.childrenControl_childrenListItem
                         }
                         key={uniqueId()}
                         role={"option"}
@@ -277,7 +249,7 @@ class ChildrenFormControl extends BaseFormControl<
                     <i
                         className={
                             this.props.managedClasses
-                                .childrenFormControl_existingChildrenItemContent
+                                .childrenControl_existingChildrenItemContent
                         }
                     >
                         {(instance as ChildComponentConfig).props.text}
@@ -295,9 +267,9 @@ class ChildrenFormControl extends BaseFormControl<
     private renderExistingChildDelete(): JSX.Element {
         return (
             <button
-                type="button" // Ensure the form doesn't see this as a submit button
+                type={"button"} // Ensure the form doesn't see this as a submit button
                 aria-label={"Select to remove"}
-                className={this.props.managedClasses.childrenFormControl_deleteButton}
+                className={this.props.managedClasses.childrenControl_deleteButton}
                 onClick={this.clickDeleteComponentFactory(ArrayAction.remove)}
             />
         );
@@ -320,29 +292,30 @@ class ChildrenFormControl extends BaseFormControl<
     }
 
     private currentChildrenArray(): ChildComponent[] {
-        return Array.isArray(this.props.data) ? this.props.data : [this.props.data];
+        return Array.isArray(this.props.value) ? this.props.value : [this.props.value];
     }
 
     /**
      * Generate all items for the list of existing children
      */
     private renderExistingChildItems(): React.ReactNode {
-        if (Array.isArray(this.props.data)) {
+        if (Array.isArray(this.props.value)) {
+            const {
+                childrenControl_existingChildrenItem,
+                childrenControl_existingChildrenItemLink,
+                childrenControl_deleteButton,
+            }: ChildrenControlClassNameContract = this.props.managedClasses;
+
             return this.state.data.map(
                 (data: ChildComponent, index: number): React.ReactNode => {
                     return (
                         <DragItem
                             key={index}
-                            itemClassName={this.getExistingChildItemClassNames()}
-                            itemLinkClassName={
-                                this.props.managedClasses
-                                    .childrenFormControl_existingChildrenItemLink
-                            }
-                            itemRemoveClassName={
-                                this.props.managedClasses.childrenFormControl_deleteButton
-                            }
+                            itemClassName={childrenControl_existingChildrenItem}
+                            itemLinkClassName={childrenControl_existingChildrenItemLink}
+                            itemRemoveClassName={childrenControl_deleteButton}
                             minItems={0}
-                            itemLength={this.props.data.length}
+                            itemLength={this.props.value.length}
                             index={index}
                             onClick={this.clickEditComponentFactory}
                             removeDragItem={this.clickDeleteComponentFactory}
@@ -358,18 +331,20 @@ class ChildrenFormControl extends BaseFormControl<
             );
         }
 
-        if (typeof this.props.data !== "undefined") {
+        if (typeof this.props.value !== "undefined") {
+            const {
+                childrenControl_existingChildrenItem,
+                childrenControl_existingChildrenItemLink,
+            }: ChildrenControlClassNameContract = this.props.managedClasses;
+
             return (
-                <li className={this.getExistingChildItemClassNames()}>
+                <li className={childrenControl_existingChildrenItem}>
                     <a
                         aria-label={"Select to edit"}
-                        className={
-                            this.props.managedClasses
-                                .childrenFormControl_existingChildrenItemLink
-                        }
-                        onClick={this.clickEditComponentFactory(this.props.data)}
+                        className={childrenControl_existingChildrenItemLink}
+                        onClick={this.clickEditComponentFactory(this.props.value)}
                     >
-                        {this.renderChildrenListItem(this.props.data)}
+                        {this.renderChildrenListItem(this.props.value)}
                     </a>
                     {this.renderExistingChildDelete()}
                 </li>
@@ -384,8 +359,7 @@ class ChildrenFormControl extends BaseFormControl<
             <React.Fragment>
                 <span
                     className={
-                        this.props.managedClasses
-                            .childrenFormControl_existingChildrenItemName
+                        this.props.managedClasses.childrenControl_existingChildrenItemName
                     }
                 >
                     {this.generateChildOptionText(data)}
@@ -404,9 +378,7 @@ class ChildrenFormControl extends BaseFormControl<
         if (childItems) {
             return (
                 <ul
-                    className={
-                        this.props.managedClasses.childrenFormControl_existingChildren
-                    }
+                    className={this.props.managedClasses.childrenControl_existingChildren}
                 >
                     {childItems}
                 </ul>
@@ -419,7 +391,7 @@ class ChildrenFormControl extends BaseFormControl<
      */
     private renderDefaultChildren(): React.ReactNode {
         if (
-            typeof this.props.data === "undefined" &&
+            typeof this.props.value === "undefined" &&
             typeof this.props.default !== "undefined"
         ) {
             const defaultValue: any[] = Array.isArray(this.props.default)
@@ -432,9 +404,7 @@ class ChildrenFormControl extends BaseFormControl<
 
             return (
                 <ul
-                    className={
-                        this.props.managedClasses.childrenFormControl_existingChildren
-                    }
+                    className={this.props.managedClasses.childrenControl_existingChildren}
                 >
                     {defaultChildItems}
                 </ul>
@@ -452,24 +422,23 @@ class ChildrenFormControl extends BaseFormControl<
                     typeof defaultItem === "object"
                         ? this.generateChildOptionText(defaultItem)
                         : defaultItem;
+                const {
+                    childrenControl_existingChildrenItem,
+                    childrenControl_existingChildrenItem__default,
+                    childrenControl_existingChildrenItemLink,
+                    childrenControl_existingChildrenItemName,
+                }: ChildrenControlClassNameContract = this.props.managedClasses;
 
                 return (
                     <li
                         key={`item-${index}`}
-                        className={this.getExistingChildItemClassNames(true)}
+                        className={classNames(
+                            childrenControl_existingChildrenItem,
+                            childrenControl_existingChildrenItem__default
+                        )}
                     >
-                        <span
-                            className={
-                                this.props.managedClasses
-                                    .childrenFormControl_existingChildrenItemLink
-                            }
-                        >
-                            <span
-                                className={
-                                    this.props.managedClasses
-                                        .childrenFormControl_existingChildrenItemName
-                                }
-                            >
+                        <span className={childrenControl_existingChildrenItemLink}>
+                            <span className={childrenControl_existingChildrenItemName}>
                                 {displayValue}
                             </span>
                             {this.renderExistingChildCaption(defaultItem)}
@@ -480,26 +449,10 @@ class ChildrenFormControl extends BaseFormControl<
         );
     }
 
-    private getExistingChildItemClassNames(isDefault?: boolean): string {
-        let classes: string = get(
-            this.props,
-            "managedClasses.childrenFormControl_existingChildrenItem"
-        );
-
-        if (isDefault) {
-            classes = `${classes} ${get(
-                this.props,
-                "managedClasses.childrenFormControl_existingChildrenItem__default"
-            )}`;
-        }
-
-        return classes;
-    }
-
     private handleDragStart = (): void => {
         this.setState({
             isDragging: true,
-            data: [].concat(this.props.data || []),
+            data: [].concat(this.props.value || []),
         });
     };
 
@@ -510,11 +463,11 @@ class ChildrenFormControl extends BaseFormControl<
     };
 
     private handleDropDragItem = (): void => {
-        this.props.onChange(this.props.dataLocation, this.state.data);
+        this.props.onChange({ value: this.state.data });
     };
 
     private handleMoveDragItem = (sourceIndex: number, targetIndex: number): void => {
-        const currentData: unknown[] = [].concat(this.props.data);
+        const currentData: unknown[] = [].concat(this.props.value);
 
         if (sourceIndex !== targetIndex) {
             currentData.splice(targetIndex, 0, currentData.splice(sourceIndex, 1)[0]);
@@ -635,20 +588,18 @@ class ChildrenFormControl extends BaseFormControl<
 
         const dataLocation: string = this.getDataLocation(component, index);
 
-        this.props.onUpdateActiveSection("", dataLocation, childSchema);
+        this.props.onUpdateSection({
+            schemaLocation: "",
+            dataLocation,
+            schema: childSchema,
+        });
     }
 
     /**
      * Click handler for deleting a component
      */
     private onDeleteComponent(index?: number): void {
-        this.props.onChange(
-            this.props.dataLocation,
-            undefined,
-            typeof index === "number",
-            index,
-            true
-        );
+        this.props.onChange({ value: void 0, isArray: typeof index === "number", index });
     }
 
     /**
@@ -656,7 +607,7 @@ class ChildrenFormControl extends BaseFormControl<
      */
     private onAddComponent(item: FormChildOptionItem, navigateToItem: boolean): void {
         const currentChildren: ChildComponent[] = this.getCurrentChildren(
-            this.props.data
+            this.props.value
         );
         const items: null | string | ChildComponent[] | ChildComponentConfig =
             typeof item === "object" && item !== null
@@ -666,13 +617,7 @@ class ChildrenFormControl extends BaseFormControl<
                     : null;
 
         if (items !== null) {
-            this.props.onChange(
-                this.props.dataLocation,
-                items,
-                undefined,
-                undefined,
-                true
-            );
+            this.props.onChange({ value: items, isArray: void 0, index: void 0 });
 
             if (navigateToItem) {
                 this.setState({
@@ -710,7 +655,7 @@ class ChildrenFormControl extends BaseFormControl<
             e.preventDefault();
 
             this.onEditComponent(
-                typeof index === "number" ? this.props.data[index] : this.props.data,
+                typeof index === "number" ? this.props.value[index] : this.props.value,
                 index
             );
         };
@@ -864,8 +809,5 @@ class ChildrenFormControl extends BaseFormControl<
     }
 }
 
-const TestChildrenFormControl: typeof ChildrenFormControl &
-    ContextComponent<any> = DragDropContext(HTML5Backend)(ChildrenFormControl);
-
-export { TestChildrenFormControl };
-export default DragDropContext(HTML5Backend)(manageJss(styles)(ChildrenFormControl));
+export { ChildrenControl };
+export default manageJss(styles)(ChildrenControl);

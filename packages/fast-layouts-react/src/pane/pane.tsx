@@ -12,7 +12,11 @@ import { applyFocusVisible, toPx } from "@microsoft/fast-jss-utilities";
 import { ComponentStyles } from "@microsoft/fast-jss-manager-react";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import { canUseDOM } from "exenv-es6";
-import { keyCodeArrowLeft, keyCodeArrowRight } from "@microsoft/fast-web-utilities";
+import {
+    classNames,
+    keyCodeArrowLeft,
+    keyCodeArrowRight,
+} from "@microsoft/fast-web-utilities";
 import { joinClasses } from "../utilities";
 
 /**
@@ -109,6 +113,7 @@ export class Pane extends Foundation<PaneHandledProps, PaneUnhandledProps, PaneS
         collapsed: false,
         overlay: false,
         hidden: false,
+        managedClasses: {},
     };
 
     /**
@@ -360,18 +365,13 @@ export class Pane extends Foundation<PaneHandledProps, PaneUnhandledProps, PaneS
         }: PaneClassNamesContract = this.props.managedClasses;
         const resizeFrom: PaneResizeDirection = this.props.resizeFrom;
 
-        let classes: string = joinClasses(
-            resizeFrom === PaneResizeDirection.east,
+        const classes: string = classNames(
             pane,
-            pane__resizeEast
+            [pane__resizeEast, resizeFrom === PaneResizeDirection.east],
+            [pane__resizeWest, resizeFrom === PaneResizeDirection.west],
+            [pane__overlay, this.props.overlay],
+            [pane__hidden, this.props.hidden]
         );
-        classes = joinClasses(
-            resizeFrom === PaneResizeDirection.west,
-            classes,
-            pane__resizeWest
-        );
-        classes = joinClasses(this.props.overlay, classes, pane__overlay);
-        classes = joinClasses(this.props.hidden, classes, pane__hidden);
 
         return super.generateClassNames(classes);
     }

@@ -1,15 +1,26 @@
-import { CommonFormControlProps } from "./controls/control.props";
+import { ControlTemplateUtilitiesProps, StandardControlPlugin } from "./templates";
 import {
     FormAttributeSettingsMappingToPropertyNames,
     FormChildOptionItem,
 } from "./form.props";
-import { InitialOneOfAnyOfState, updateActiveSection } from "./form-section.props";
+import { Controls } from "./form-section.props";
 
-export interface FormControlSwitchProps extends CommonFormControlProps {
+export interface FormControlSwitchProps extends ControlTemplateUtilitiesProps {
     /**
      * The name of the property
      */
     propertyName: string;
+
+    /**
+     * Control plugins
+     */
+    controls: Controls;
+
+    /**
+     * The custom control plugins which will be used
+     * instead of the default control plugins
+     */
+    controlPlugins?: StandardControlPlugin[];
 
     /**
      * The schema to be used
@@ -35,11 +46,6 @@ export interface FormControlSwitchProps extends CommonFormControlProps {
      * The additional attributes mapped to a property name
      */
     attributeSettingsMappingToPropertyNames?: FormAttributeSettingsMappingToPropertyNames;
-
-    /**
-     * The section update callback
-     */
-    onUpdateActiveSection: updateActiveSection;
 
     /**
      * Allow soft remove

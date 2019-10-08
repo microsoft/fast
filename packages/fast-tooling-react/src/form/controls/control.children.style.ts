@@ -4,56 +4,39 @@ import {
     accent,
     applyAriaHiddenStyles,
     applyCleanListStyle,
-    applyControl,
-    applyControlWrapper,
-    applyFormControlIndicator,
-    applyGlobalStyle,
     applyInputStyle,
-    applyInteractiveFormControlIndicator,
-    applyLabelRegionStyle,
-    applyLabelStyle,
     applyRemoveItemStyle,
     applySoftRemove,
     background100,
     foreground300,
 } from "../../style";
-import { ChildrenFormControlClassNameContract } from "./control.children.props";
 
-const styles: ComponentStyles<ChildrenFormControlClassNameContract, {}> = {
-    "@global": {
-        ...applyGlobalStyle(),
-    },
-    childrenFormControl: {
-        position: "relative",
-        display: "flex",
-        flexDirection: "column",
-        ...applyControlWrapper(),
-    },
-    childrenFormControl_badge: {
-        ...applyFormControlIndicator(),
-    },
-    childrenFormControl_control: {
-        ...applyControl(),
-        verticalAlign: "middle",
-    },
-    childrenFormControl_controlLabel: {
-        ...applyLabelStyle(),
-    },
-    childrenFormControl_controlLabelRegion: {
-        ...applyLabelRegionStyle(),
-    },
-    childrenFormControl_defaultValueIndicator: {
-        ...applyInteractiveFormControlIndicator(),
-    },
-    childrenFormControl_existingChildren: {
+/**
+ * Children class name contract
+ */
+export interface ChildrenControlClassNameContract {
+    childrenControl?: string;
+    childrenControl_existingChildren?: string;
+    childrenControl_existingChildrenItem?: string;
+    childrenControl_existingChildrenItem__default?: string;
+    childrenControl_existingChildrenItemLink?: string;
+    childrenControl_existingChildrenItemContent?: string;
+    childrenControl_existingChildrenItemName?: string;
+    childrenControl_childrenList?: string;
+    childrenControl_childrenListControl?: string;
+    childrenControl_childrenListInput?: string;
+    childrenControl_childrenListItem?: string;
+    childrenControl_childrenListTrigger?: string;
+    childrenControl_delete?: string;
+    childrenControl_deleteButton?: string;
+}
+
+const styles: ComponentStyles<ChildrenControlClassNameContract, {}> = {
+    childrenControl: {},
+    childrenControl_existingChildren: {
         ...applyCleanListStyle(),
     },
-    childrenFormControl_existingChildrenItem__sorting: {
-        fontSize: "12px",
-        color: foreground300,
-        cursor: "pointer",
-    },
-    childrenFormControl_existingChildrenItem: {
+    childrenControl_existingChildrenItem: {
         position: "relative",
         height: "30px",
         marginLeft: "-10px",
@@ -62,35 +45,32 @@ const styles: ComponentStyles<ChildrenFormControlClassNameContract, {}> = {
         cursor: "pointer",
         display: "flex",
         alignItems: "center",
-        "&$childrenFormControl_existingChildrenItem__sorting": {
-            backgroundColor: background100,
-        },
-        "&$childrenFormControl_existingChildrenItem__default": {
+        "&$childrenControl_existingChildrenItem__default": {
             cursor: "auto",
         },
         "&:hover": {
             backgroundColor: "rgba(255, 255, 255, 0.04)",
         },
     },
-    childrenFormControl_existingChildrenItem__default: {},
-    childrenFormControl_existingChildrenItemLink: {
+    childrenControl_existingChildrenItem__default: {},
+    childrenControl_existingChildrenItemLink: {
         width: "calc(100% - 36px)",
-        "&$childrenFormControl_existingChildrenItemName, &$childrenFormControl_existingChildrenItemContent": {
+        "&$childrenControl_existingChildrenItemName, &$childrenControl_existingChildrenItemContent": {
             ...ellipsis(),
             width: "100%",
             display: "inline-block",
             verticalAlign: "bottom",
         },
     },
-    childrenFormControl_existingChildrenItemName: {
+    childrenControl_existingChildrenItemName: {
         overflow: "hidden",
         display: "inline-block",
         width: "100%",
         textOverflow: "ellipsis",
         whiteSpace: "nowrap",
     },
-    childrenFormControl_existingChildrenItemContent: {},
-    childrenFormControl_childrenList: {
+    childrenControl_existingChildrenItemContent: {},
+    childrenControl_childrenList: {
         ...applyCleanListStyle(),
         ...applyAriaHiddenStyles(),
         color: foreground300,
@@ -107,7 +87,7 @@ const styles: ComponentStyles<ChildrenFormControlClassNameContract, {}> = {
             width: "0 !important",
         },
     },
-    childrenFormControl_childrenListItem: {
+    childrenControl_childrenListItem: {
         minHeight: "30px",
         fontSize: "12px",
         lineHeight: "16px",
@@ -118,16 +98,16 @@ const styles: ComponentStyles<ChildrenFormControlClassNameContract, {}> = {
             background: accent,
         },
     },
-    childrenFormControl_childrenListControl: {
+    childrenControl_childrenListControl: {
         position: "relative",
         width: "calc(100% - 30px)",
     },
-    childrenFormControl_childrenListInput: {
+    childrenControl_childrenListInput: {
         ...applyInputStyle(),
         paddingRight: "36px",
         width: "100%",
     },
-    childrenFormControl_childrenListTrigger: {
+    childrenControl_childrenListTrigger: {
         position: "absolute",
         right: "0",
         bottom: "0",
@@ -146,13 +126,13 @@ const styles: ComponentStyles<ChildrenFormControlClassNameContract, {}> = {
             borderTop: `3px solid ${foreground300}`,
         },
     },
-    childrenFormControl_delete: {
+    childrenControl_delete: {
         ...applySoftRemove(),
         cursor: "pointer",
         position: "relative",
         verticalAlign: "middle",
     },
-    childrenFormControl_deleteButton: {
+    childrenControl_deleteButton: {
         ...applyRemoveItemStyle(),
         cursor: "pointer",
     },
