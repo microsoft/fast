@@ -121,6 +121,7 @@ export class Row extends Foundation<
         collapsed: false,
         overlay: false,
         hidden: false,
+        managedClasses: {},
     };
 
     protected handledProps: HandledProps<Required<RowHandledProps>> = {

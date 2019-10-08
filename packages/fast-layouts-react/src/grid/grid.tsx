@@ -33,6 +33,7 @@ export class Grid extends Foundation<GridHandledProps, GridUnhandledProps, {}> {
         verticalAlign: GridAlignment.stretch,
         horizontalAlign: GridAlignment.stretch,
         columnCount: 12,
+        managedClasses: {},
     };
 
     private static display: string = canUseCssGrid() ? "grid" : "-ms-grid";

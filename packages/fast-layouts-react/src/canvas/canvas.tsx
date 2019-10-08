@@ -25,6 +25,7 @@ export class Canvas extends Foundation<CanvasHandledProps, CanvasUnhandledProps,
      * Default props for the Canvas component
      */
     public static defaultProps: CanvasHandledProps = {
+        managedClasses: {},
         minWidth: 300,
     };
 
