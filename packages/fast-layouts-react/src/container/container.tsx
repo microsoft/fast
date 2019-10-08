@@ -28,6 +28,8 @@ export class Container extends Foundation<
     ContainerUnhandledProps,
     undefined
 > {
+    public static displayName: string = "Container";
+
     protected handledProps: HandledProps<ContainerHandledProps> = {
         managedClasses: void 0,
     };
