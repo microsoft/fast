@@ -75,8 +75,6 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
 
     private rootElement: React.RefObject<HTMLDivElement> = React.createRef();
 
-    private triggerId: string = uniqueId(Select.triggerUniqueIdPrefix);
-
     /**
      * constructor
      */
@@ -166,11 +164,10 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
                 onClick={this.handleClick}
                 onFocus={this.handleFocus}
                 tabIndex={-1}
-                role="listbox"
+                role="combobox"
                 aria-disabled={this.props.disabled}
                 aria-expanded={this.state.isMenuOpen}
                 aria-labelledby={this.props.labelledBy || null}
-                aria-describedby={this.triggerId}
             >
                 {this.renderTrigger()}
                 {this.renderHiddenSelectElement()}
@@ -229,6 +226,7 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
                 multiple={this.props.multiselectable || null}
                 disabled={this.props.disabled || null}
                 onChange={this.onSelectValueChange}
+                aria-hidden={true}
                 style={{
                     display: "none",
                 }}
@@ -249,13 +247,9 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
      */
     private renderTrigger(): React.ReactNode {
         if (this.props.trigger !== undefined) {
-            return this.props.trigger(this.props, this.state, this.triggerId);
+            return this.props.trigger(this.props, this.state, null);
         } else {
-            return this.defaultTriggerRenderFunction(
-                this.props,
-                this.state,
-                this.triggerId
-            );
+            return this.defaultTriggerRenderFunction(this.props, this.state);
         }
     }
 
@@ -458,26 +452,24 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
      */
     private defaultTriggerRenderFunction = (
         props: SelectProps,
-        state: SelectState,
-        triggerId: string
+        state: SelectState
     ): React.ReactNode => {
         if (props.multiselectable) {
             return null;
         }
+
         const isItemSelected: boolean = state.selectedItemIndex !== 0;
         return (
             <button
                 disabled={props.disabled}
-                id={triggerId}
-                role="option"
-                aria-atomic={true}
-                aria-label={state.displayString}
-                aria-expanded={state.isMenuOpen}
-                aria-selected={isItemSelected}
-                aria-posinset={isItemSelected ? state.selectedItemIndex : null}
-                aria-setsize={isItemSelected ? state.selectableItemCount : null}
+                aria-disabled={this.props.disabled}
+                aria-expanded={this.state.isMenuOpen}
+                aria-labelledby={this.props.labelledBy || null}
+                aria-multiline={false}
+                value={state.displayString}
+                role="textbox"
             >
-                {state.displayString}
+                <div>{state.displayString}</div>
             </button>
         );
     };

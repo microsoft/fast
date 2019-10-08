@@ -5,12 +5,7 @@ import {
 } from "@microsoft/fast-components-class-name-contracts-base";
 import { ListboxItemProps } from "../listbox-item";
 import { SelectState } from "./select";
-import {
-    AxisPositioningMode,
-    ViewportPositionerHorizontalPosition,
-    ViewportPositionerProps,
-    ViewportPositionerVerticalPosition,
-} from "../viewport-positioner";
+import { ViewportPositionerProps } from "../viewport-positioner";
 import { Omit } from "utility-types";
 
 export interface SelectManagedClasses extends ManagedClasses<SelectClassNameContract> {}
@@ -22,11 +17,13 @@ export interface SelectHandledProps extends SelectManagedClasses {
     /**
      * Custom function to render the trigger of the control
      * (ie. the ui that typically displays the current value and opens the menu in single select mode)
+     * Note: the optional triggerId param has been depracated and will always be null until it is removed
+     * in a future major version update
      */
     trigger?: (
         props: SelectProps,
         state: SelectState,
-        triggerId?: string
+        triggerId?: string //depracated
     ) => React.ReactNode;
 
     /**
