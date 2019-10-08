@@ -13,6 +13,7 @@ export class Page extends Foundation<PageHandledProps, PageUnhandledProps, {}> {
     public static defaultProps: Partial<PageProps> = {
         margin: "minmax(5vw, 1fr)",
         maxWidth: "1600px",
+        managedClasses: {},
     };
 
     private static display: string = canUseCssGrid() ? "grid" : "-ms-grid";

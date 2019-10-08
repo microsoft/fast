@@ -1,6 +1,10 @@
 import React from "react";
 import { ComponentStyles } from "@microsoft/fast-jss-manager-react";
-import { ContainerHandledProps, ContainerUnhandledProps } from "./container.props";
+import {
+    ContainerHandledProps,
+    ContainerProps,
+    ContainerUnhandledProps,
+} from "./container.props";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import { classNames } from "@microsoft/fast-web-utilities";
 
@@ -29,6 +33,10 @@ export class Container extends Foundation<
     undefined
 > {
     public static displayName: string = "Container";
+
+    public static defaultProps: Partial<ContainerProps> = {
+        managedClasses: {},
+    };
 
     protected handledProps: HandledProps<ContainerHandledProps> = {
         managedClasses: void 0,

@@ -16,6 +16,7 @@ export class Column extends Foundation<ColumnHandledProps, ColumnUnhandledProps,
      * Define default props
      */
     public static defaultProps: Partial<ColumnProps> = {
+        managedClasses: {},
         span: 12,
     };
 

@@ -113,6 +113,7 @@ export class Pane extends Foundation<PaneHandledProps, PaneUnhandledProps, PaneS
         collapsed: false,
         overlay: false,
         hidden: false,
+        managedClasses: {},
     };
 
     /**
