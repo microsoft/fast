@@ -14,6 +14,9 @@ storiesOf("Button", module)
     .add("Primary", () => (
         <Button appearance={ButtonAppearance.primary}>Primary Button</Button>
     ))
+    .add("Primary Anchor", () => (
+        <Button appearance={ButtonAppearance.primary} href={"#"}>Primary Anchor</Button>
+    ))
     .add("Primary - disabled", () => (
         <Button appearance={ButtonAppearance.primary} disabled={true}>
             Primary Button

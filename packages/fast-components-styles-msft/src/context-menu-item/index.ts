@@ -11,15 +11,20 @@ import {
 } from "../utilities/color";
 import { ComponentStyles } from "@microsoft/fast-jss-manager";
 import { height, horizontalSpacingNumber } from "../utilities/density";
-import { designUnit } from "../utilities/design-system";
+import { designUnit, focusOutlineWidth, outlineWidth } from "../utilities/design-system";
 import { applyDisabledState } from "../utilities/disabled";
 import { applyScaledTypeRamp } from "../utilities/typography";
 import {
+    HighContrastColor,
     highContrastDisabled,
+    highContrastDoubleFocus,
+    highContrastOptOutProperty,
     highContrastOutlineFocus,
     highContrastSelected,
+    highContrastSelector,
     highContrastStealth,
 } from "../utilities/high-contrast";
+import { importantValue } from "../utilities/important";
 
 const glyphWidth: number = 16;
 const styles: ComponentStyles<ContextMenuItemClassNameContract, DesignSystem> = {
@@ -47,7 +52,21 @@ const styles: ComponentStyles<ContextMenuItemClassNameContract, DesignSystem> = 
         ...applyFocusPlaceholderBorder(),
         ...applyFocusVisible<DesignSystem>({
             "border-color": neutralFocus,
-            ...highContrastOutlineFocus,
+            [highContrastSelector]: {
+                color: HighContrastColor.selectedText,
+                fill: HighContrastColor.selectedText,
+                background: HighContrastColor.selectedBackground,
+                border: format(
+                    "{0} solid {1}",
+                    toPx<DesignSystem>(outlineWidth),
+                    () => HighContrastColor.buttonText
+                ),
+                "box-shadow": format(
+                    "0 0 0 {0} inset {1}",
+                    toPx(focusOutlineWidth),
+                    () => HighContrastColor.selectedText
+                ),
+            },
         }),
         "&:hover": {
             background: neutralFillStealthHover,
@@ -55,6 +74,7 @@ const styles: ComponentStyles<ContextMenuItemClassNameContract, DesignSystem> = 
         },
         "&:active": {
             background: neutralFillStealthActive,
+            ...highContrastSelected,
         },
         ...highContrastStealth,
     },

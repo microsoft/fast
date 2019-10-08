@@ -11,7 +11,6 @@ import { CarouselClassNameContract } from "@microsoft/fast-components-class-name
 import { designUnit, outlineWidth } from "../utilities/design-system";
 import {
     HighContrastColor,
-    highContrastHighlightBackground,
     highContrastOptOutProperty,
     highContrastSelector,
 } from "../utilities/high-contrast";
@@ -89,11 +88,6 @@ const styles: ComponentStyles<CarouselClassNameContract, DesignSystem> = {
             height: toPx<DesignSystem>(designUnit),
             width: "32px",
             transition: "all 0.05s ease-in-out",
-            [highContrastSelector]: {
-                opacity: "1",
-                background: "ButtonFace",
-                "border-color": "ButtonText",
-            },
         },
         "&:not($carousel_sequenceIndicator__active)": {
             "&:hover": {
@@ -101,8 +95,8 @@ const styles: ComponentStyles<CarouselClassNameContract, DesignSystem> = {
                     opacity: "0.9",
                     [highContrastSelector]: {
                         opacity: "1",
-                        background: "Highlight",
-                        "border-color": "HighlightText",
+                        background: HighContrastColor.selectedBackground,
+                        "border-color": HighContrastColor.selectedText,
                     },
                 },
             },
@@ -111,9 +105,6 @@ const styles: ComponentStyles<CarouselClassNameContract, DesignSystem> = {
     carousel_sequenceIndicator__active: {
         "&::before": {
             opacity: "1",
-            [highContrastSelector]: {
-                "border-color": "HighlightText",
-            },
         },
     },
     carousel_tabPanel: {
@@ -156,10 +147,11 @@ const styles: ComponentStyles<CarouselClassNameContract, DesignSystem> = {
                 "&::before": {
                     background: neutralFillStealthHover((): string => black),
                     [highContrastSelector]: {
-                        background: "Highlight",
+                        background: HighContrastColor.selectedBackground,
                         border: format(
-                            "{0} solid HighlightText",
-                            toPx<DesignSystem>(outlineWidth)
+                            "{0} solid {1}",
+                            toPx<DesignSystem>(outlineWidth),
+                            () => HighContrastColor.selectedText
                         ),
                     },
                 },
@@ -181,11 +173,20 @@ const styles: ComponentStyles<CarouselClassNameContract, DesignSystem> = {
             "&::before": {
                 background: darkModeNeutralFillStealthRest,
                 "border-color": darkModeNeutralOutlineRest,
+                [highContrastSelector]: {
+                    opacity: "1",
+                    background: HighContrastColor.buttonBackground,
+                    "border-color": HighContrastColor.buttonText,
+                },
             },
             "&$carousel_sequenceIndicator__active": {
                 "&::before": {
                     background: darkModeNeutralFillStealthRest,
-                    ...highContrastHighlightBackground,
+                    [highContrastSelector]: {
+                        opacity: "1",
+                        background: HighContrastColor.selectedBackground,
+                        "border-color": HighContrastColor.selectedText,
+                    },
                 },
             },
         },
@@ -214,8 +215,9 @@ const styles: ComponentStyles<CarouselClassNameContract, DesignSystem> = {
                     [highContrastSelector]: {
                         background: "Highlight",
                         border: format(
-                            "{0} solid HighlightText",
-                            toPx<DesignSystem>(outlineWidth)
+                            "{0} solid {1}",
+                            toPx<DesignSystem>(outlineWidth),
+                            () => HighContrastColor.selectedText
                         ),
                     },
                 },
@@ -237,11 +239,20 @@ const styles: ComponentStyles<CarouselClassNameContract, DesignSystem> = {
             "&::before": {
                 background: lightModeNeutralFillStealthRest,
                 "border-color": lightModeNeutralOutlineRest,
+                [highContrastSelector]: {
+                    opacity: "1",
+                    background: HighContrastColor.buttonBackground,
+                    "border-color": HighContrastColor.buttonText,
+                },
             },
             "&$carousel_sequenceIndicator__active": {
                 "&::before": {
                     background: lightModeNeutralFillStealthRest,
-                    ...highContrastHighlightBackground,
+                    [highContrastSelector]: {
+                        opacity: "1",
+                        background: HighContrastColor.selectedBackground,
+                        "border-color": HighContrastColor.selectedText,
+                    },
                 },
             },
         },

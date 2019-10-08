@@ -5,7 +5,7 @@ import { focusOutlineWidth, outlineWidth } from "./design-system";
 import { importantValue } from "./important";
 
 export enum HighContrastColor {
-    text = "WindowText",
+    text = "Text",
     hyperLinks = "LinkText",
     disabledText = "GrayText",
     selectedText = "HighlightText",
@@ -184,6 +184,14 @@ export const highContrastTextForeground: CSSRules<DesignSystem> = {
     [highContrastSelector]: {
         color: importantValue(HighContrastColor.text),
         fill: importantValue(HighContrastColor.text),
+    },
+};
+
+// Used to set foreground and glyph to be 'link' color
+export const highContrastLinkForeground: CSSRules<DesignSystem> = {
+    [highContrastSelector]: {
+        color: importantValue(HighContrastColor.hyperLinks),
+        fill: importantValue(HighContrastColor.hyperLinks),
     },
 };
 

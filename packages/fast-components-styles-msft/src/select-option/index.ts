@@ -1,5 +1,5 @@
+import { SelectOptionClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import { ComponentStyles } from "@microsoft/fast-jss-manager";
-import { applyCursorDefault, applyCursorPointer } from "../utilities/cursor";
 import {
     applyFocusVisible,
     directionSwitch,
@@ -16,7 +16,7 @@ import {
     neutralFocus,
     neutralForegroundRest,
 } from "../utilities/color";
-import { SelectOptionClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
+import { applyCursorDefault, applyCursorPointer } from "../utilities/cursor";
 import { glyphSize, height, horizontalSpacing } from "../utilities/density";
 import { designUnit, focusOutlineWidth } from "../utilities/design-system";
 import { applyDisabledState } from "../utilities/disabled";
@@ -24,6 +24,7 @@ import { applyScaledTypeRamp } from "../utilities/typography";
 import {
     HighContrastColor,
     highContrastDisabledBorder,
+    highContrastOutlineFocus,
     highContrastSelected,
     highContrastSelector,
     highContrastStealth,
@@ -51,6 +52,7 @@ const styles: ComponentStyles<SelectOptionClassNameContract, DesignSystem> = {
         ...applyFocusPlaceholderBorder(),
         ...applyFocusVisible<DesignSystem>({
             "border-color": neutralFocus,
+            ...highContrastOutlineFocus
         }),
         "&:hover": {
             background: neutralFillStealthHover,

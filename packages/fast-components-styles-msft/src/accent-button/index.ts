@@ -13,12 +13,15 @@ import {
 } from "../utilities/color";
 import {
     highContrastAccent,
+    HighContrastColor,
     highContrastDisabledBorder,
     highContrastDisabledForeground,
     highContrastDoubleFocus,
     highContrastHighlightForeground,
+    highContrastOptOutProperty,
     highContrastSelectedForeground,
     highContrastSelectedOutline,
+    highContrastSelector,
 } from "../utilities/high-contrast";
 
 const styles: ComponentStyles<AccentButtonClassNameContract, DesignSystem> = {
@@ -58,6 +61,12 @@ const styles: ComponentStyles<AccentButtonClassNameContract, DesignSystem> = {
         },
         ...highContrastAccent,
         "a&": {
+            [highContrastSelector]: {
+                background: "none",
+                "border-color": HighContrastColor.hyperLinks,
+                color: HighContrastColor.hyperLinks,
+                fill: HighContrastColor.hyperLinks,
+            },
             "&:hover:enabled": {
                 ...highContrastSelectedOutline,
                 "& $button_beforeContent, & $button_afterContent": {

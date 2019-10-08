@@ -25,6 +25,7 @@ import {
     highContrastDisabledForeground,
     highContrastForeground,
     highContrastHighlightForeground,
+    highContrastLinkForeground,
     highContrastOptOutProperty,
     highContrastSelectedForeground,
     highContrastSelector,
@@ -116,18 +117,20 @@ const styles: ComponentStyles<CallToActionClassNameContract, DesignSystem> = {
         ...highContrastForeground,
     },
     callToAction__primary: {
-        "& $callToAction_glyph": {
+        "& $button_contentRegion, $callToAction_glyph": {
             fill: accentForegroundCut,
             ...highContrastSelectedForeground,
         },
         "&:hover": {
             [highContrastSelector]: {
-                background: HighContrastColor.selectedText,
                 "border-color": HighContrastColor.selectedBackground,
             },
             "a&, & $button_contentRegion, & $callToAction_glyph": {
-                ...highContrastHighlightForeground,
+                ...highContrastHighlightForeground
             },
+        },
+        "a&, & $button_contentRegion, & $callToAction_glyph": {
+            ...highContrastLinkForeground
         },
     },
     callToAction__lightweight: {

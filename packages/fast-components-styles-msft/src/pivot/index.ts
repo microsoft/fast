@@ -27,6 +27,7 @@ import {
     highContrastHighlightBackground,
     highContrastOptOutProperty,
     highContrastSelector,
+    highContrastTextForeground,
 } from "../utilities/high-contrast";
 
 const activeIndicatorHeight: number = 3;
@@ -106,7 +107,11 @@ const styles: ComponentStyles<PivotClassNameContract, DesignSystem> = {
     pivot_tabPanels__animateNext: {
         animation: format("{0} 0.2s", directionSwitch("fromRight", "fromLeft")),
     },
-    pivot_tabPanelContent: {},
+    pivot_tabPanelContent: {
+        [highContrastSelector]: {
+            color: HighContrastColor.text
+        }
+    },
     "@keyframes fromRight": {
         "0%": {
             opacity: "0",

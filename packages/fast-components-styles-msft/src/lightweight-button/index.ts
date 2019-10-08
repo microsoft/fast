@@ -70,6 +70,7 @@ const styles: ComponentStyles<LightweightButtonClassNameContract, DesignSystem> 
         "a&": {
             [highContrastSelector]: {
                 color: HighContrastColor.hyperLinks,
+                fill: HighContrastColor.hyperLinks,
             },
             // Underline
             "&:hover $button_contentRegion::before": {
