@@ -229,8 +229,8 @@ class Carousel extends Foundation<
      * Check if it is the FIRST slide for looping
      */
     private get isFirstSlide(): boolean {
-        if (this.props.items.length) {
-            const firstSlideId: string = this.props.items[0].id;
+        if (this.slides.length) {
+            const firstSlideId: string = this.slides[0].id;
             return firstSlideId === this.state.activeId;
         } else {
             return false;
@@ -241,9 +241,9 @@ class Carousel extends Foundation<
      * Check if it is the LAST slide for looping
      */
     private get isLastSlide(): boolean {
-        const lastItemKey: number = this.props.items.length - 1;
+        const lastItemKey: number = this.slides.length - 1;
         if (lastItemKey >= 0) {
-            const lastSlideId: string = this.props.items[lastItemKey].id;
+            const lastSlideId: string = this.slides[lastItemKey].id;
             return lastSlideId === this.state.activeId;
         } else {
             return false;
@@ -319,10 +319,7 @@ class Carousel extends Foundation<
      * Generates previous flipper if more than one slide
      */
     private generatePreviousFlipper(): any {
-        if (!this.isMultipleSlides) {
-            return;
-        }
-        if (this.isFirstSlide && !this.props.loop) {
+        if (!this.isMultipleSlides || (this.isFirstSlide && !this.props.loop)) {
             return;
         }
 
@@ -349,10 +346,7 @@ class Carousel extends Foundation<
      * Generates next flipper if more than one slide
      */
     private generateNextFlipper(): any {
-        if (!this.isMultipleSlides) {
-            return;
-        }
-        if (this.isLastSlide && !this.props.loop) {
+        if (!this.isMultipleSlides || (this.isLastSlide && !this.props.loop)) {
             return;
         }
 
