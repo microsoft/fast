@@ -626,7 +626,12 @@ function getSchemaLocationSegmentsFromDataLocationSegments(
         data
     );
 
-    for (let i: number = 0; i < dataLocationSegments.length; i++) {
+    for (
+        let i: number = 0,
+            dataLocationSegmentsLength: number = dataLocationSegments.length;
+        i < dataLocationSegmentsLength;
+        i++
+    ) {
         const partialData: any = getPartialData(
             dataLocationSegments.slice(0, i).join("."),
             data
@@ -744,7 +749,11 @@ function arrayItemsToBracketNotation(
     const dataLocations: string[] = [""].concat(dataLocation.split("."));
     const isSchemaDefined: boolean = !!schema;
 
-    for (let i: number = 0; i < dataLocations.length; i++) {
+    for (
+        let i: number = 0, dataLocationsLength: number = dataLocations.length;
+        i < dataLocationsLength;
+        i++
+    ) {
         const isRoot: boolean = i === 0;
         const currentDataLocation: string = dataLocations
             .slice(0, i + 1)
