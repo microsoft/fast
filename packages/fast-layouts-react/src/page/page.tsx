@@ -1,8 +1,7 @@
 import React from "react";
-import { ComponentStyles } from "@microsoft/fast-jss-manager-react";
 import { PageHandledProps, PageProps, PageUnhandledProps } from "./page.props";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
-import { canUseCssGrid } from "@microsoft/fast-web-utilities";
+import { canUseCssGrid, classNames } from "@microsoft/fast-web-utilities";
 
 export interface PageClassNamesContract {
     page?: string;
@@ -38,7 +37,9 @@ export class Page extends Foundation<PageHandledProps, PageUnhandledProps, {}> {
 
         const attributes: React.HTMLAttributes<HTMLDivElement> = {
             ...this.unhandledProps(),
-            className: super.generateClassNames(this.props.managedClasses.page),
+            className: super.generateClassNames(
+                classNames(this.props.managedClasses.page)
+            ),
         };
 
         return {

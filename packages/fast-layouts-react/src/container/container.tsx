@@ -1,14 +1,8 @@
 import React from "react";
 import { ComponentStyles } from "@microsoft/fast-jss-manager-react";
-import {
-    ContainerHandledProps,
-    ContainerProps,
-    ContainerUnhandledProps,
-} from "./container.props";
-import Foundation, {
-    FoundationProps,
-    HandledProps,
-} from "@microsoft/fast-components-foundation-react";
+import { ContainerHandledProps, ContainerUnhandledProps } from "./container.props";
+import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
+import { classNames } from "@microsoft/fast-web-utilities";
 
 export interface ContainerClassNamesContract {
     container?: string;
@@ -45,7 +39,9 @@ export class Container extends Foundation<
         return (
             <div
                 {...this.unhandledProps()}
-                className={super.generateClassNames(this.props.managedClasses.container)}
+                className={super.generateClassNames(
+                    classNames(this.props.managedClasses.container)
+                )}
             >
                 {this.props.children}
             </div>
