@@ -75,10 +75,7 @@ class Flyout extends Foundation<FlyoutHandledProps, FlyoutUnhandledProps, {}> {
      * Renders the component
      */
     public render(): React.ReactElement<HTMLDivElement> {
-
-        const {
-            flyout_visual
-        }: FlyoutClassNameContract = this.props.managedClasses;
+        const { flyout_visual }: FlyoutClassNameContract = this.props.managedClasses;
 
         return (
             <ViewportPositioner
@@ -122,10 +119,11 @@ class Flyout extends Foundation<FlyoutHandledProps, FlyoutUnhandledProps, {}> {
                 }}
             >
                 <div
-                 className={classNames(flyout_visual)}
-                {...this.unhandledProps()}
-                role="dialog">
-                {this.props.children}
+                    className={classNames(flyout_visual)}
+                    {...this.unhandledProps()}
+                    role="dialog"
+                >
+                    {this.props.children}
                 </div>
             </ViewportPositioner>
         );

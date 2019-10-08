@@ -68,9 +68,9 @@ describe("flyout", (): void => {
             />
         );
 
-        expect(rendered.find(`.${managedClasses.flyout_positioner}`).prop("aria-disabled")).toEqual(
-            false
-        );
+        expect(
+            rendered.find(`.${managedClasses.flyout_positioner}`).prop("aria-disabled")
+        ).toEqual(false);
     });
 
     test("should add an `aria-label` attribute to the `flyout` element when the `label` prop is provided", () => {
@@ -79,9 +79,9 @@ describe("flyout", (): void => {
             <MSFTFlyout managedClasses={managedClasses} visible={true} label={label} />
         );
 
-        expect(rendered.find(`.${managedClasses.flyout_positioner}`).prop("aria-label")).toEqual(
-            label
-        );
+        expect(
+            rendered.find(`.${managedClasses.flyout_positioner}`).prop("aria-label")
+        ).toEqual(label);
     });
 
     test("should add an `aria-labelledby` attribute to the `flyout` element when the `labelledby` prop is provided", () => {

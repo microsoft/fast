@@ -5,10 +5,10 @@ export interface FlyoutClassNameContract {
     /**
      * The root of the flyout component
      */
-    flyout_positioner?: string;
+    flyout_wrapper?: string;
 
     /**
-     * The root of the flyout component
+     * The flyout visual
      */
     flyout_visual?: string;
 
