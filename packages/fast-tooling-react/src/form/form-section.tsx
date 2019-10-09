@@ -460,4 +460,5 @@ class FormSection extends React.Component<
     }
 }
 
+export { FormSection };
 export default manageJss(styles)(FormSection);

@@ -1,8 +1,5 @@
 import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager-react";
-import {
-    applyInvalidMessage,
-    error,
-} from "../style";
+import { applyInvalidMessage, error } from "../style";
 import { FormSectionClassNameContract } from "./form-section.props";
 
 const styles: ComponentStyles<FormSectionClassNameContract, {}> = {
