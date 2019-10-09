@@ -2,8 +2,12 @@ import React from "react";
 import Adapter from "enzyme-adapter-react-16";
 import { configure, mount, shallow } from "enzyme";
 import { StandardControlTemplate } from "./template.control.standard";
-import { StandardControlTemplateProps } from "./template.control.standard.props";
+import {
+    ControlContext,
+    StandardControlTemplateProps,
+} from "./template.control.standard.props";
 import { StandardControlTemplateClassNameContract } from "./template.control.standard.style";
+import { ControlConfig } from "./template.control.utilities.props";
 
 /*
  * Configure Enzyme
@@ -248,5 +252,79 @@ describe("StandardControlTemplate", () => {
         expect(callback).toHaveBeenCalledTimes(1);
         expect(callback.mock.calls[0][0].dataLocation).toEqual("");
         expect(callback.mock.calls[0][0].value).toEqual(defaultValue);
+    });
+    test("should show the control in default context when no context has been passed", () => {
+        const id: string = "foo";
+        const myControl: any = (config: ControlConfig): React.ReactNode => (
+            <div id={id} />
+        );
+        const rendered: any = mount(
+            <StandardControlTemplate
+                {...props}
+                managedClasses={managedClasses}
+                control={myControl}
+            />
+        );
+
+        expect(
+            rendered.find(
+                `.${managedClasses.standardControlTemplate_controlLabelRegion} + #${id}`
+            )
+        ).toHaveLength(1);
+        expect(
+            rendered.find(
+                `.${managedClasses.standardControlTemplate_controlRegion} + #${id}`
+            )
+        ).toHaveLength(0);
+    });
+    test("should show the control in default context when default context has been passed", () => {
+        const id: string = "foo";
+        const myControl: any = (config: ControlConfig): React.ReactNode => (
+            <div id={id} />
+        );
+        const rendered: any = mount(
+            <StandardControlTemplate
+                {...props}
+                context={ControlContext.default}
+                managedClasses={managedClasses}
+                control={myControl}
+            />
+        );
+
+        expect(
+            rendered.find(
+                `.${managedClasses.standardControlTemplate_controlLabelRegion} + #${id}`
+            )
+        ).toHaveLength(1);
+        expect(
+            rendered.find(
+                `.${managedClasses.standardControlTemplate_controlRegion} + #${id}`
+            )
+        ).toHaveLength(0);
+    });
+    test("should show the control in fill context when fill context has been passed", () => {
+        const id: string = "foo";
+        const myControl: any = (config: ControlConfig): React.ReactNode => (
+            <div id={id} />
+        );
+        const rendered: any = mount(
+            <StandardControlTemplate
+                {...props}
+                context={ControlContext.fill}
+                managedClasses={managedClasses}
+                control={myControl}
+            />
+        );
+
+        expect(
+            rendered.find(
+                `.${managedClasses.standardControlTemplate_controlLabelRegion} + #${id}`
+            )
+        ).toHaveLength(0);
+        expect(
+            rendered.find(
+                `.${managedClasses.standardControlTemplate_controlRegion} + #${id}`
+            )
+        ).toHaveLength(1);
     });
 });
