@@ -31,6 +31,7 @@ import {
 import FormControlSwitch from "./form-control-switch";
 import FormOneOfAnyOf from "./form-one-of-any-of";
 import FormDictionary from "./form-dictionary";
+import { classNames } from "@microsoft/fast-web-utilities";
 
 /**
  * Schema form component definition
@@ -42,6 +43,12 @@ class FormSection extends React.Component<
 > {
     public static displayName: string = "FormSection";
 
+    public static defaultProps: Partial<
+        FormSectionProps & ManagedClasses<FormSectionClassNameContract>
+    > = {
+        managedClasses: {},
+    };
+
     constructor(props: FormSectionProps & ManagedClasses<FormSectionClassNameContract>) {
         super(props);
 
@@ -49,7 +56,17 @@ class FormSection extends React.Component<
     }
 
     public render(): React.ReactNode {
-        return <div>{this.renderFormSection()}</div>;
+        const invalidMessage: string = getErrorFromDataLocation(
+            this.props.dataLocation,
+            this.props.validationErrors
+        );
+
+        return (
+            <div className={classNames(this.props.managedClasses.formSection)}>
+                {this.renderFormValidation(invalidMessage)}
+                {this.renderFormSection(invalidMessage)}
+            </div>
+        );
     }
 
     /**
@@ -352,7 +369,7 @@ class FormSection extends React.Component<
     /**
      * Renders additional properties if they have been declared
      */
-    private renderAdditionalProperties(): React.ReactNode {
+    private renderAdditionalProperties(invalidMessage: string): React.ReactNode {
         const schema: any = get(
             this.props.schema,
             this.getSchemaLocation(),
@@ -378,10 +395,7 @@ class FormSection extends React.Component<
                     childOptions={this.props.childOptions}
                     onChange={this.props.onChange}
                     onUpdateSection={this.props.onUpdateSection}
-                    invalidMessage={getErrorFromDataLocation(
-                        this.props.dataLocation,
-                        this.props.validationErrors
-                    )}
+                    invalidMessage={invalidMessage}
                     displayValidationBrowserDefault={
                         this.props.displayValidationBrowserDefault
                     }
@@ -393,7 +407,17 @@ class FormSection extends React.Component<
         return null;
     }
 
-    private renderFormSection(): React.ReactNode {
+    private renderFormValidation(invalidMessage: string): React.ReactNode {
+        if (invalidMessage !== "") {
+            return (
+                <div className={this.props.managedClasses.formSection_invalidMessage}>
+                    {invalidMessage}
+                </div>
+            );
+        }
+    }
+
+    private renderFormSection(invalidMessage: string): React.ReactNode {
         return (
             <div>
                 <div>
@@ -405,12 +429,9 @@ class FormSection extends React.Component<
                         this.props.dataLocation,
                         true,
                         "",
-                        getErrorFromDataLocation(
-                            this.props.dataLocation,
-                            this.props.validationErrors
-                        )
+                        invalidMessage
                     )}
-                    {this.renderAdditionalProperties()}
+                    {this.renderAdditionalProperties(invalidMessage)}
                 </div>
             </div>
         );
