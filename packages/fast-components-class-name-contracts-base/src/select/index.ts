@@ -26,4 +26,34 @@ export interface SelectClassNameContract {
      * The multi select modifier
      */
     select__multiSelectable?: string;
+
+    /**
+     * left positioner horizontal state
+     */
+    select__menuPositionLeft?: string;
+
+    /**
+     * right positioner horizontal state
+     */
+    select__menuPositionRight?: string;
+
+    /**
+     * top positioner vertical state
+     */
+    select__menuPositionTop?: string;
+
+    /**
+     * bottom positioner vertical state
+     */
+    select__menuPositionBottom?: string;
+
+    /**
+     * horizontal flip inward state
+     */
+    select__menuPositionHorizontalInset?: string;
+
+    /**
+     * vertical flip inward state
+     */
+    select__menuPositionVerticalInset?: string;
 }

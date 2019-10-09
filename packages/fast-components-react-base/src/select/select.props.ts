@@ -5,9 +5,18 @@ import {
 } from "@microsoft/fast-components-class-name-contracts-base";
 import { ListboxItemProps } from "../listbox-item";
 import { SelectState } from "./select";
+import {
+    AxisPositioningMode,
+    ViewportPositionerHorizontalPosition,
+    ViewportPositionerProps,
+    ViewportPositionerVerticalPosition,
+} from "../viewport-positioner";
+import { Omit } from "utility-types";
 
 export interface SelectManagedClasses extends ManagedClasses<SelectClassNameContract> {}
 export interface SelectUnhandledProps extends React.HTMLAttributes<HTMLDivElement> {}
+
+export interface SelectMenuFlyoutConfig extends Omit<ViewportPositionerProps, "anchor"> {}
 
 export interface SelectHandledProps extends SelectManagedClasses {
     /**
@@ -52,6 +61,12 @@ export interface SelectHandledProps extends SelectManagedClasses {
      * Specifies that the drop-down list is open
      */
     isMenuOpen?: boolean;
+
+    /**
+     * Whether to use viewport aware positioning
+     * (ie. can open above the trigger if it needs the room)
+     */
+    enableViewportPositioning?: boolean;
 
     /**
      * Specifies that the control is disabled
@@ -108,6 +123,11 @@ export interface SelectHandledProps extends SelectManagedClasses {
      * element that provides it an accessible name
      */
     labelledBy?: string;
+
+    /**
+     * Configuration props for flyout menu positioning
+     */
+    menuFlyoutConfig?: SelectMenuFlyoutConfig;
 }
 
 export type SelectProps = SelectHandledProps & SelectUnhandledProps;

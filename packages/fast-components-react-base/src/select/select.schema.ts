@@ -50,6 +50,61 @@ export default {
             title: "Labelled by",
             type: "string",
         },
+        menuFlyoutConfig: {
+            title: "Flyout menu configuration",
+            type: "object",
+            description: "Configures the viewport positioner used by the flyout menu",
+            properties: {
+                disabled: {
+                    title: "Disabled",
+                    type: "boolean",
+                },
+                horizontalPositioningMode: {
+                    title: "Horizontal positioning mode",
+                    type: "string",
+                    default: "uncontrolled",
+                    enum: ["uncontrolled", "adjacent", "inset"],
+                },
+                defaultHorizontalPosition: {
+                    title: "Default horizontal position",
+                    type: "string",
+                    default: "uncontrolled",
+                    enum: ["left", "right", "uncontrolled"],
+                },
+                horizontalThreshold: {
+                    title: "Horizontal threshold",
+                    type: "number",
+                },
+                horizontalAlwaysInView: {
+                    title: "Horizontal always in view",
+                    type: "boolean",
+                },
+                verticalPositioningMode: {
+                    title: "Vertical positioning mode",
+                    type: "string",
+                    default: "uncontrolled",
+                    enum: ["uncontrolled", "adjacent", "inset"],
+                },
+                defaultVerticalPosition: {
+                    title: "Default vertical position",
+                    type: "string",
+                    default: "uncontrolled",
+                    enum: ["top", "bottom", "uncontrolled"],
+                },
+                verticalThreshold: {
+                    title: "Vertical threshold",
+                    type: "number",
+                },
+                verticalAlwaysInView: {
+                    title: "Vertical always in view",
+                    type: "boolean",
+                },
+                fixedAfterInitialPlacement: {
+                    title: "Fixed after initial placement",
+                    type: "boolean",
+                },
+            },
+        },
     },
     reactProperties: {
         children: {
