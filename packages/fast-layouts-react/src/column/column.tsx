@@ -1,23 +1,10 @@
 import React from "react";
-import manageJss, {
-    ComponentStyles,
-    CSSRules,
-    ManagedClasses,
-    ManagedJSSProps,
-} from "@microsoft/fast-jss-manager-react";
 import BreakpointTracker from "../utilities/breakpoint-tracker";
-import {
-    Breakpoint,
-    getValueByBreakpoint,
-    identifyBreakpoint,
-} from "../utilities/breakpoints";
+import { Breakpoint, identifyBreakpoint } from "../utilities/breakpoints";
 import { canUseDOM, canUseViewport } from "exenv-es6";
-import Foundation, {
-    FoundationProps,
-    HandledProps,
-} from "@microsoft/fast-components-foundation-react";
+import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import { ColumnHandledProps, ColumnProps, ColumnUnhandledProps } from "./column.props";
-import { canUseCssGrid } from "@microsoft/fast-web-utilities";
+import { canUseCssGrid, classNames } from "@microsoft/fast-web-utilities";
 
 export interface ColumnClassNamesContract {
     column: string;
@@ -29,6 +16,7 @@ export class Column extends Foundation<ColumnHandledProps, ColumnUnhandledProps,
      * Define default props
      */
     public static defaultProps: Partial<ColumnProps> = {
+        managedClasses: {},
         span: 12,
     };
 
@@ -94,7 +82,7 @@ export class Column extends Foundation<ColumnHandledProps, ColumnUnhandledProps,
      * Generates the column classes
      */
     protected generateClassNames(): string {
-        return super.generateClassNames(this.props.managedClasses.column);
+        return super.generateClassNames(classNames(this.props.managedClasses.column));
     }
 
     /**

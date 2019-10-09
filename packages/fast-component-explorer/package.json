@@ -1,6 +1,6 @@
 {
   "name": "@microsoft/fast-component-explorer",
-  "version": "0.5.4",
+  "version": "0.5.5",
   "description": "Component exploration",
   "sideEffects": false,
   "private": true,
@@ -116,10 +116,10 @@
   },
   "dependencies": {
     "@microsoft/fast-colors": "^5.0.0",
-    "@microsoft/fast-components-react-base": "^4.16.1",
-    "@microsoft/fast-components-react-msft": "^4.22.1",
+    "@microsoft/fast-components-react-base": "^4.16.2",
+    "@microsoft/fast-components-react-msft": "^4.22.2",
     "@microsoft/fast-components-styles-msft": "^4.22.2",
-    "@microsoft/fast-tooling-react": "^1.19.0",
+    "@microsoft/fast-tooling-react": "^1.20.0",
     "@microsoft/fast-web-utilities": "^4.3.2",
     "react-dnd-html5-backend": "^7.4.4",
     "react-sortable-hoc": "^1.9.1"
