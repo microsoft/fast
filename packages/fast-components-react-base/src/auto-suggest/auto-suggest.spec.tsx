@@ -1,6 +1,6 @@
 import React from "react";
 import Adapter from "enzyme-adapter-react-16";
-import { configure, mount, render, shallow } from "enzyme";
+import { configure, mount, ReactWrapper, render, shallow } from "enzyme";
 import AutoSuggest, { AutoSuggestUnhandledProps } from "./auto-suggest";
 import ListboxItem from "../listbox-item";
 import {
@@ -11,6 +11,7 @@ import {
     keyCodeColon,
     keyCodeEnter,
     keyCodeEscape,
+    keyCodeTab,
 } from "@microsoft/fast-web-utilities";
 import { DisplayNamePrefix } from "../utilities";
 
@@ -407,6 +408,34 @@ describe("auto suggest", (): void => {
             { attachTo: container }
         );
         expect(inputRenderFn).toHaveBeenCalledTimes(1);
+
+        document.body.removeChild(container);
+    });
+
+    test("Default tab behaviour is not modified in controlled mode", (): void => {
+        const container: HTMLDivElement = document.createElement("div");
+        document.body.append(container);
+
+        const onValueChange: jest.Mock = jest.fn();
+        const rendered: ReactWrapper = mount(
+            <AutoSuggest
+                listboxId="listboxId"
+                onValueChange={onValueChange}
+                value={"controlled value"}
+            >
+                {itemA}
+                {itemB}
+                {itemC}
+            </AutoSuggest>,
+            { attachTo: container }
+        );
+
+        const input: ReactWrapper = rendered.find("input");
+        const preventDefault: jest.Mock = jest.fn();
+        input.simulate("keydown", { keyCode: keyCodeTab, preventDefault });
+
+        expect(onValueChange).not.toHaveBeenCalled(); // Value change should not be called
+        expect(preventDefault).not.toHaveBeenCalled(); // Default behavior should not be prevented
 
         document.body.removeChild(container);
     });
