@@ -1,7 +1,7 @@
 import React from "react";
 import Adapter from "enzyme-adapter-react-16";
 import { configure, mount, render, shallow } from "enzyme";
-import Select, { SelectUnhandledProps } from "./select";
+import Select, { SelectClassNameContract, SelectUnhandledProps } from "./select";
 import ListboxItem from "../listbox-item";
 import {
     keyCodeArrowDown,
@@ -9,6 +9,10 @@ import {
     keyCodeSpace,
 } from "@microsoft/fast-web-utilities";
 import { DisplayNamePrefix } from "../utilities";
+import {
+    AxisPositioningMode,
+    ViewportPositionerVerticalPosition,
+} from "../viewport-positioner";
 
 /*
  * Configure Enzyme
@@ -21,6 +25,20 @@ const itemADisabled: JSX.Element = (
 );
 const itemB: JSX.Element = <ListboxItem id="b" value="b" displayString="ab" />;
 const itemC: JSX.Element = <ListboxItem id="c" value="c" displayString="abc" />;
+
+const managedClasses: SelectClassNameContract = {
+    select: "select",
+    select__disabled: "select__disabled",
+    select_menu: "select_menu",
+    select_menu__open: "select_menu__open",
+    select__multiSelectable: "select__multiSelectable",
+    select__menuPositionLeft: "select__menuPositionLeft",
+    select__menuPositionRight: "select__menuPositionRight",
+    select__menuPositionTop: "select__menuPositionTop",
+    select__menuPositionBottom: "select__menuPositionBottom",
+    select__menuPositionHorizontalInset: "select__menuPositionHorizontalInset",
+    select__menuPositionVerticalInset: "select__menuPositionVerticalInset",
+};
 
 const container: HTMLDivElement = document.createElement("div");
 document.body.appendChild(container);
@@ -453,5 +471,43 @@ describe("select", (): void => {
         );
 
         expect(rendered.state("isMenuOpen")).toBe(false);
+    });
+
+    test("Flyout positioner not added to dom when no config provided", (): void => {
+        const rendered: any = mount(
+            <Select isMenuOpen={true} managedClasses={managedClasses}>
+                {itemA}
+                {itemB}
+                {itemC}
+            </Select>
+        );
+
+        const positioner: any = rendered.find("BaseViewportPositioner");
+        expect(positioner.length).toBe(0);
+    });
+
+    test("Custom menuFlyoutConfig is applied to positioner", (): void => {
+        const rendered: any = mount(
+            <Select
+                isMenuOpen={true}
+                menuFlyoutConfig={{
+                    horizontalPositioningMode: AxisPositioningMode.inset,
+                    verticalPositioningMode: AxisPositioningMode.inset,
+                }}
+                managedClasses={managedClasses}
+            >
+                {itemA}
+                {itemB}
+                {itemC}
+            </Select>
+        );
+
+        const positioner: any = rendered.find("BaseViewportPositioner");
+        expect(positioner.prop("horizontalPositioningMode")).toBe(
+            AxisPositioningMode.inset
+        );
+        expect(positioner.prop("verticalPositioningMode")).toBe(
+            AxisPositioningMode.inset
+        );
     });
 });
