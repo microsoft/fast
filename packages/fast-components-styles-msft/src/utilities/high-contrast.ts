@@ -5,7 +5,7 @@ import { focusOutlineWidth, outlineWidth } from "./design-system";
 import { importantValue } from "./important";
 
 export enum HighContrastColor {
-    text = "Text",
+    text = "WindowText",
     hyperLinks = "LinkText",
     disabledText = "GrayText",
     selectedText = "HighlightText",
@@ -41,7 +41,7 @@ export const highContrastOptOutProperty: CSSRules<{}> = applyhighContrastOptOutP
 export const highContrastStealth: CSSRules<DesignSystem> = {
     [highContrastSelector]: {
         background: HighContrastColor.buttonBackground,
-        border: "none",
+        border: "transparent",
         color: HighContrastColor.buttonText,
         fill: HighContrastColor.buttonText,
         ...highContrastOptOutProperty,
@@ -187,14 +187,6 @@ export const highContrastTextForeground: CSSRules<DesignSystem> = {
     },
 };
 
-// Used to set foreground and glyph to be 'link' color
-export const highContrastLinkForeground: CSSRules<DesignSystem> = {
-    [highContrastSelector]: {
-        color: importantValue(HighContrastColor.hyperLinks),
-        fill: importantValue(HighContrastColor.hyperLinks),
-    },
-};
-
 // Used to set borders to be 'text' color
 export const highContrastBorder: CSSRules<DesignSystem> = {
     [highContrastSelector]: {
@@ -231,5 +223,34 @@ export const highContrastSelectedBackground: CSSRules<DesignSystem> = {
 export const highContrastHighlightBackground: CSSRules<DesignSystem> = {
     [highContrastSelector]: {
         background: HighContrastColor.selectedBackground,
+    },
+};
+
+// Used to set button to 'link' color
+export const highContrastLinkOutline: CSSRules<DesignSystem> = {
+    [highContrastSelector]: {
+        background: HighContrastColor.background,
+        "border-color": HighContrastColor.hyperLinks,
+        color: HighContrastColor.hyperLinks,
+        fill: HighContrastColor.hyperLinks,
+    },
+}
+
+// Used to set border color to be 'link' color
+export const highContrastLinkBorder: CSSRules<DesignSystem> = {
+    [highContrastSelector]: {
+        "box-shadow": format(
+            "0 0 0 {0} inset {1}",
+            toPx(focusOutlineWidth),
+            () => HighContrastColor.hyperLinks
+        ),
+    },
+};
+
+// Used to set foreground and glyph to be 'link' color
+export const highContrastLinkForeground: CSSRules<DesignSystem> = {
+    [highContrastSelector]: {
+        color: importantValue(HighContrastColor.hyperLinks),
+        fill: importantValue(HighContrastColor.hyperLinks),
     },
 };

@@ -122,15 +122,23 @@ const styles: ComponentStyles<CallToActionClassNameContract, DesignSystem> = {
             ...highContrastSelectedForeground,
         },
         "&:hover": {
-            [highContrastSelector]: {
-                "border-color": HighContrastColor.selectedBackground,
-            },
-            "a&, & $button_contentRegion, & $callToAction_glyph": {
+            "& $callToAction_glyph": {
                 ...highContrastHighlightForeground
             },
         },
-        "a&, & $button_contentRegion, & $callToAction_glyph": {
-            ...highContrastLinkForeground
+        "a&": {
+            "& $button_contentRegion, & $callToAction_glyph": {
+                ...highContrastLinkForeground,
+            },
+            "&:hover": {
+                [highContrastSelector]: {
+                    "box-shadow": "none"
+                },
+                "a& & $button_contentRegion, & $callToAction_glyph": {
+                    ...highContrastLinkForeground
+                },
+            }
+            
         },
     },
     callToAction__lightweight: {

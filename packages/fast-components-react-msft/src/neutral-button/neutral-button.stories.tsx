@@ -5,7 +5,14 @@ import { glyphFactory, SVGGlyph } from "../../assets/svg-element";
 
 storiesOf("Neutral button", module)
     .add("Default", () => <NeutralButton>Neutral button</NeutralButton>)
-    .add("Anchor", () => <NeutralButton href="#">Anchor button</NeutralButton>)
+    .add("Anchor", () => 
+        <NeutralButton 
+            href="#"
+            beforeContent={glyphFactory(SVGGlyph.download)}
+            afterContent={glyphFactory(SVGGlyph.user)}
+        >
+            Anchor button
+        </NeutralButton>)
     .add("Before content", () => (
         <NeutralButton beforeContent={glyphFactory(SVGGlyph.download)}>
             With before content

@@ -1,5 +1,5 @@
+import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager";
 import { applyCursorPointer } from "../utilities/cursor";
-import { ButtonClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import {
     applyFocusVisible,
     directionSwitch,
@@ -30,7 +30,7 @@ import {
     neutralOutlineHover,
     neutralOutlineRest,
 } from "../utilities/color";
-import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager";
+import { ButtonClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import { glyphSize, height, horizontalSpacing } from "../utilities/density";
 import {
     focusOutlineWidth,
@@ -41,12 +41,13 @@ import { applyDisabledState } from "../utilities/disabled";
 import {
     highContrastAccent,
     highContrastBackground,
-    HighContrastColor,
     highContrastDisabledBorder,
     highContrastDisabledForeground,
     highContrastDoubleFocus,
     highContrastHighlightBackground,
     highContrastHighlightForeground,
+    highContrastLinkBorder,
+    highContrastLinkOutline,
     highContrastOutline,
     highContrastOutlineFocus,
     highContrastSelected,
@@ -153,16 +154,16 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = {
         },
         ...highContrastOutline,
         "a&": {
-            [highContrastSelector]: {
-                background: HighContrastColor.buttonBackground,
-                "border-color": HighContrastColor.hyperLinks,
-                color: HighContrastColor.hyperLinks,
-                fill: HighContrastColor.hyperLinks,
+            ...highContrastLinkOutline,
+            "&:hover": {
+                ...highContrastLinkBorder
             },
             "&$button__disabled": {
                 "&:hover": {
-                    ...highContrastDisabledBorder,
-                },
+                    [highContrastSelector]: {
+                        "box-shadow": "none"
+                    }
+                }
             },
         },
     },

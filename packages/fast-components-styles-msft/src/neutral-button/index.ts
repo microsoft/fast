@@ -11,8 +11,9 @@ import {
     neutralForegroundRest,
 } from "../utilities/color";
 import {
-    HighContrastColor,
     highContrastDisabledBorder,
+    highContrastLinkBorder,
+    highContrastLinkOutline,
     highContrastOutline,
     highContrastOutlineFocus,
     highContrastSelected,
@@ -45,13 +46,17 @@ const styles: ComponentStyles<NeutralButtonClassNameContract, DesignSystem> = {
         },
         ...highContrastOutline,
         "a&": {
-            [highContrastSelector]: {
-                "border-color": HighContrastColor.hyperLinks,
-                color: HighContrastColor.hyperLinks,
-                fill: HighContrastColor.hyperLinks,
+            ...highContrastLinkOutline,
+            "&:hover": {
+                ...highContrastLinkBorder
             },
             "&$button__disabled": {
                 ...highContrastDisabledBorder,
+                "&:hover": {
+                    [highContrastSelector]: {
+                        "box-shadow": "none"
+                    }
+                }
             },
         },
     },
