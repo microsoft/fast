@@ -416,10 +416,12 @@ describe("auto suggest", (): void => {
         const container: HTMLDivElement = document.createElement("div");
         document.body.append(container);
 
+        const onInvoked: jest.Mock = jest.fn();
         const onValueChange: jest.Mock = jest.fn();
         const rendered: ReactWrapper = mount(
             <AutoSuggest
                 listboxId="listboxId"
+                onInvoked={onInvoked}
                 onValueChange={onValueChange}
                 value={"controlled value"}
             >
@@ -434,6 +436,7 @@ describe("auto suggest", (): void => {
         const preventDefault: jest.Mock = jest.fn();
         input.simulate("keydown", { keyCode: keyCodeTab, preventDefault });
 
+        expect(onInvoked).not.toHaveBeenCalled(); // Invoke should not be called
         expect(onValueChange).not.toHaveBeenCalled(); // Value change should not be called
         expect(preventDefault).not.toHaveBeenCalled(); // Default behavior should not be prevented
 
