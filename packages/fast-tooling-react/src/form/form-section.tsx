@@ -125,6 +125,7 @@ class FormSection extends React.Component<
             <FormControlSwitch
                 key={[this.props.dataLocation, propertyName].join(".")}
                 controls={this.props.controls}
+                controlPlugins={this.props.controlPlugins}
                 untitled={this.props.untitled}
                 required={required}
                 default={get(this.props.default, propertyName)}
@@ -363,6 +364,8 @@ class FormSection extends React.Component<
                 <FormDictionary
                     index={0}
                     controls={this.props.controls}
+                    controlPlugins={this.props.controlPlugins}
+                    formControlId={this.props.schema.formControlId}
                     dataLocation={this.props.dataLocation}
                     schemaLocation={this.getSchemaLocation()}
                     examples={get(schema, "examples")}

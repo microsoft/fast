@@ -5,10 +5,8 @@ import {
     ContainerProps,
     ContainerUnhandledProps,
 } from "./container.props";
-import Foundation, {
-    FoundationProps,
-    HandledProps,
-} from "@microsoft/fast-components-foundation-react";
+import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
+import { classNames } from "@microsoft/fast-web-utilities";
 
 export interface ContainerClassNamesContract {
     container?: string;
@@ -34,6 +32,12 @@ export class Container extends Foundation<
     ContainerUnhandledProps,
     undefined
 > {
+    public static displayName: string = "Container";
+
+    public static defaultProps: Partial<ContainerProps> = {
+        managedClasses: {},
+    };
+
     protected handledProps: HandledProps<ContainerHandledProps> = {
         managedClasses: void 0,
     };
@@ -45,7 +49,9 @@ export class Container extends Foundation<
         return (
             <div
                 {...this.unhandledProps()}
-                className={super.generateClassNames(this.props.managedClasses.container)}
+                className={super.generateClassNames(
+                    classNames(this.props.managedClasses.container)
+                )}
             >
                 {this.props.children}
             </div>

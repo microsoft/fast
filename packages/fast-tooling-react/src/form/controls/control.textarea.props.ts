@@ -1,4 +1,4 @@
-import { TextboxControlConfig } from "../templates";
+import { TextareaControlConfig } from "../templates";
 
 /* tslint:disable */
-export interface TextareaControlProps extends TextboxControlConfig {}
+export interface TextareaControlProps extends TextareaControlConfig {}

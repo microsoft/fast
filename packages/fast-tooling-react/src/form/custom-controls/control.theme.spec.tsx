@@ -1,7 +1,8 @@
 import React from "react";
 import Adapter from "enzyme-adapter-react-16";
 import { configure, mount, shallow, ShallowWrapper } from "enzyme";
-import { ThemeControl as StyledThemeControl, ThemeControlProps } from "./index";
+import { ThemeControl as StyledThemeControl } from "./control.theme";
+import { ThemeControlProps } from "./control.theme.props";
 import { ThemeControl } from "./control.theme";
 import { ThemeControlClassNameContract } from "./control.theme.style";
 

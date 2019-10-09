@@ -10,10 +10,10 @@ import { ThemeControlProps } from "./control.theme.props";
 export {
     AlignControl,
     AlignControlProps,
-    FileUploadControl,
-    FileUploadControlProps,
+    // FileUploadControl, // TODO: this needs a visual pass
+    // FileUploadControlProps,
     TextAlignControl,
     TextAlignControlProps,
-    ThemeControl,
-    ThemeControlProps,
+    // ThemeControl, // TODO: this needs a visual pass
+    // ThemeControlProps,
 };

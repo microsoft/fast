@@ -64,7 +64,8 @@ function getNavigationFromDataLocations(
     schema: any,
     childOptions: ChildOptionItem[],
     dataLocation: string = "",
-    relativeDataLocation: string = "" // This data location is relative to the current schema
+    relativeDataLocation: string = "", // This data location is relative to the current schema
+    isArrayItem: boolean
 ): TreeNavigation[] | void {
     if (typeof data !== "object" && data !== null) {
         return void 0;
@@ -79,10 +80,15 @@ function getNavigationFromDataLocations(
             relativeDataLocation === ""
                 ? dataPropertyKeys[i]
                 : [relativeDataLocation, dataPropertyKeys[i]].join(".");
+        const dataFromDataLocation: any = get(data, updatedRelativeDataLocation);
         const updatedDataLocation: string =
-            dataLocation === ""
-                ? dataPropertyKeys[i]
-                : [dataLocation, dataPropertyKeys[i]].join(".");
+            dataLocation === "" && isArrayItem
+                ? `[${dataPropertyKeys[i]}]`
+                : dataLocation === ""
+                    ? dataPropertyKeys[i]
+                    : isArrayItem
+                        ? `${dataLocation}[${dataPropertyKeys[i]}]`
+                        : [dataLocation, dataPropertyKeys[i]].join(".");
         const schemaLocation: string = mapSchemaLocationFromDataLocation(
             updatedRelativeDataLocation,
             schema,
@@ -91,7 +97,6 @@ function getNavigationFromDataLocations(
         const subSchema: any = get(schema, schemaLocation);
         const dataType: NavigationDataType | null =
             typeof subSchema !== "undefined" ? getNavigationDataType(subSchema) : null;
-        const dataFromDataLocation: any = get(data, updatedRelativeDataLocation);
         let text: string;
 
         switch (dataType) {
@@ -117,7 +122,9 @@ function getNavigationFromDataLocations(
                         get(data, updatedRelativeDataLocation),
                         get(schema, schemaLocation),
                         childOptions,
-                        updatedDataLocation
+                        updatedDataLocation,
+                        "",
+                        Array.isArray(dataFromDataLocation)
                     ),
                 });
                 break;
@@ -148,9 +155,7 @@ function getNavigationFromChildren(config: NavigationFromChildrenConfig): TreeNa
                 getNavigationFromChildrenItem({
                     data: config.data[i],
                     schema: config.schema,
-                    dataLocation: `${config.dataLocation}${
-                        config.dataLocation !== "" ? "." : ""
-                    }${i}`,
+                    dataLocation: `${config.dataLocation}[${i}]`,
                     childOptions: config.childOptions,
                 })
             );
@@ -200,7 +205,9 @@ function getNavigationFromChildrenItem(
             get(config.data, propsKeyword),
             childSchema,
             config.childOptions,
-            updatedDataLocation
+            updatedDataLocation,
+            "",
+            false
         );
     }
 
@@ -218,7 +225,10 @@ export function getNavigationFromData(
     const navigation: TreeNavigation[] | void = getNavigationFromDataLocations(
         data,
         schema,
-        childOptions
+        childOptions,
+        "",
+        "",
+        Array.isArray(data)
     );
 
     return {

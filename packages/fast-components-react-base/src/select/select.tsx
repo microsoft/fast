@@ -17,7 +17,15 @@ import Button from "../button";
 import Listbox from "../listbox";
 import { ListboxItemProps } from "../listbox-item";
 import { DisplayNamePrefix } from "../utilities";
-import { SelectHandledProps, SelectProps, SelectUnhandledProps } from "./select.props";
+import {
+    SelectHandledProps,
+    SelectMenuFlyoutConfig,
+    SelectProps,
+    SelectUnhandledProps,
+} from "./select.props";
+import ViewportPositioner, {
+    ViewportPositionerClassNameContract,
+} from "../viewport-positioner";
 
 export interface SelectState {
     value: string | string[];
@@ -61,12 +69,11 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
         onValueChange: void 0,
         placeholder: void 0,
         autoFocus: void 0,
+        menuFlyoutConfig: void 0,
         onMenuSelectionChange: void 0,
     };
 
-    private rootElement: React.RefObject<HTMLDivElement> = React.createRef<
-        HTMLDivElement
-    >();
+    private rootElement: React.RefObject<HTMLDivElement> = React.createRef();
 
     private triggerId: string = uniqueId(Select.triggerUniqueIdPrefix);
 
@@ -288,11 +295,48 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
                 {this.props.children}
             </Listbox>
         );
-        if (typeof this.props.menu === "function") {
-            return this.props.menu(this.props, this.state, defaultMenu);
+
+        const customMenu: React.ReactNode =
+            typeof this.props.menu === "function"
+                ? this.props.menu(this.props, this.state, defaultMenu)
+                : defaultMenu;
+
+        if (isNil(this.props.menuFlyoutConfig)) {
+            return customMenu;
         } else {
-            return defaultMenu;
+            return (
+                <ViewportPositioner
+                    anchor={this.rootElement}
+                    {...this.props.menuFlyoutConfig}
+                    managedClasses={this.generateViewportPositionerClassNames()}
+                >
+                    {customMenu}
+                </ViewportPositioner>
+            );
         }
+    }
+
+    /**
+     * Returns viewport positioner managedclasses for select
+     */
+    private generateViewportPositionerClassNames(): ViewportPositionerClassNameContract {
+        const {
+            select__menuPositionLeft,
+            select__menuPositionRight,
+            select__menuPositionTop,
+            select__menuPositionBottom,
+            select__menuPositionHorizontalInset,
+            select__menuPositionVerticalInset,
+        }: SelectClassNameContract = this.props.managedClasses;
+
+        return {
+            viewportPositioner__left: select__menuPositionLeft,
+            viewportPositioner__right: select__menuPositionRight,
+            viewportPositioner__top: select__menuPositionTop,
+            viewportPositioner__bottom: select__menuPositionBottom,
+            viewportPositioner__horizontalInset: select__menuPositionHorizontalInset,
+            viewportPositioner__verticalInset: select__menuPositionVerticalInset,
+        };
     }
 
     /**

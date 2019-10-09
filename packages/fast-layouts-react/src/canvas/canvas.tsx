@@ -1,14 +1,8 @@
 import React from "react";
 import { CanvasHandledProps, CanvasProps, CanvasUnhandledProps } from "./canvas.props";
-import manageJss, {
-    ComponentStyles,
-    ManagedClasses,
-    ManagedJSSProps,
-} from "@microsoft/fast-jss-manager-react";
-import Foundation, {
-    FoundationProps,
-    HandledProps,
-} from "@microsoft/fast-components-foundation-react";
+import { ComponentStyles } from "@microsoft/fast-jss-manager-react";
+import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
+import { classNames } from "@microsoft/fast-web-utilities";
 
 export interface CanvasClassNamesContract {
     canvas: string;
@@ -31,6 +25,7 @@ export class Canvas extends Foundation<CanvasHandledProps, CanvasUnhandledProps,
      * Default props for the Canvas component
      */
     public static defaultProps: CanvasHandledProps = {
+        managedClasses: {},
         minWidth: 300,
     };
 
@@ -58,7 +53,9 @@ export class Canvas extends Foundation<CanvasHandledProps, CanvasUnhandledProps,
         return (
             <div
                 {...this.unhandledProps()}
-                className={super.generateClassNames(this.props.managedClasses.canvas)}
+                className={super.generateClassNames(
+                    classNames(this.props.managedClasses.canvas)
+                )}
                 data-grid-app="canvas"
                 style={this.renderStyleAttribute()}
             >

@@ -1,23 +1,14 @@
 import React from "react";
 import { throttle } from "lodash-es";
-import { Canvas } from "../canvas";
-import { keyCodeArrowDown, keyCodeArrowUp } from "@microsoft/fast-web-utilities";
 import {
-    RowHandledProps,
-    RowProps,
-    RowResizeDirection,
-    RowUnhandledProps,
-} from "./row.props";
+    classNames,
+    keyCodeArrowDown,
+    keyCodeArrowUp,
+} from "@microsoft/fast-web-utilities";
+import { RowHandledProps, RowProps, RowResizeDirection } from "./row.props";
 import { toPx } from "@microsoft/fast-jss-utilities";
-import manageJss, {
-    ComponentStyles,
-    ManagedClasses,
-    ManagedJSSProps,
-} from "@microsoft/fast-jss-manager-react";
-import Foundation, {
-    FoundationProps,
-    HandledProps,
-} from "@microsoft/fast-components-foundation-react";
+import { ComponentStyles } from "@microsoft/fast-jss-manager-react";
+import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import { canUseDOM } from "exenv-es6";
 import { joinClasses } from "../utilities";
 
@@ -130,6 +121,7 @@ export class Row extends Foundation<
         collapsed: false,
         overlay: false,
         hidden: false,
+        managedClasses: {},
     };
 
     protected handledProps: HandledProps<Required<RowHandledProps>> = {
@@ -363,19 +355,14 @@ export class Row extends Foundation<
         }: RowClassNamesContract = this.props.managedClasses;
         const resizeFrom: RowResizeDirection = this.props.resizeFrom;
 
-        let classes: string = joinClasses(
-            resizeFrom === RowResizeDirection.north,
+        const classes: string = classNames(
             row,
-            row__resizeNorth
+            [row__resizeNorth, resizeFrom === RowResizeDirection.north],
+            [row__resizeSouth, resizeFrom === RowResizeDirection.south],
+            [row__overlay, this.props.overlay],
+            [row__hidden, this.props.hidden],
+            [row__fill, this.props.fill]
         );
-        classes = joinClasses(
-            resizeFrom === RowResizeDirection.south,
-            classes,
-            row__resizeSouth
-        );
-        classes = joinClasses(this.props.overlay, classes, row__overlay);
-        classes = joinClasses(this.props.hidden, classes, row__hidden);
-        classes = joinClasses(this.props.fill, classes, row__fill);
 
         return super.generateClassNames(classes);
     }
