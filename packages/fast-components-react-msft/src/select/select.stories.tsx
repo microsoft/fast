@@ -5,6 +5,7 @@ import { Heading, HeadingSize } from "../heading";
 import { Select } from "./";
 import { uniqueId } from "lodash-es";
 import { action } from "@storybook/addon-actions";
+import { AxisPositioningMode } from "@microsoft/fast-components-react-base";
 
 storiesOf("Select", module)
     .add("Default", () => (
@@ -127,6 +128,37 @@ storiesOf("Select", module)
             placeholder="Select an option"
             onValueChange={action("onValueChange")}
             multiselectable={true}
+        >
+            <SelectOption
+                id={uniqueId()}
+                value="Select option 1"
+                displayString="Select option 1"
+            />
+            <SelectOption
+                id={uniqueId()}
+                value="Select option 2"
+                displayString="Select option 2"
+            />
+            <SelectOption
+                id={uniqueId()}
+                value="Select option 3"
+                displayString="Select option 3"
+            />
+            <SelectOption
+                id={uniqueId()}
+                value="Select option 4"
+                displayString="Select option 4"
+            />
+        </Select>
+    ))
+    .add("Adjacent", () => (
+        <Select
+            placeholder="Select an option"
+            onValueChange={action("onValueChange")}
+            menuFlyoutConfig={{
+                horizontalPositioningMode: AxisPositioningMode.adjacent,
+                verticalPositioningMode: AxisPositioningMode.inset,
+            }}
         >
             <SelectOption
                 id={uniqueId()}
