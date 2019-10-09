@@ -217,7 +217,7 @@ export class Pane extends Foundation<PaneHandledProps, PaneUnhandledProps, PaneS
         const styles: React.CSSProperties = {};
 
         styles.minWidth = this.props.collapsed
-            ? this.props.collapsedWidth
+            ? toPx(this.props.collapsedWidth)
             : this.props.resizable
                 ? toPx(this.props.minWidth)
                 : width;
