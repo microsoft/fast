@@ -50,6 +50,23 @@
             "title": "Invalid object wrong type",
             "type": "object"
         },
+        "invalidObjectMissingProperty": {
+            "title": "Invalid object missing property",
+            "type": "object",
+            "properties": {
+                "foo": {
+                    "title": "String",
+                    "type": "string"
+                },
+                "bar": {
+                    "title": "Missing required property",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "bar"
+            ]
+        },
         "objectExample": {
             "title": "Object",
             "type": "object",
