@@ -112,7 +112,7 @@
     "tslint-loader": "^3.6.0",
     "typescript": "3.3.3",
     "webpack": "^4.1.0",
-    "webpack-bundle-analyzer": "^2.13.1",
+    "webpack-bundle-analyzer": "^3.5.2",
     "webpack-cli": "^3.1.1",
     "webpack-dev-server": "^3.1.0",
     "webpack-shell-plugin": "^0.5.0",
