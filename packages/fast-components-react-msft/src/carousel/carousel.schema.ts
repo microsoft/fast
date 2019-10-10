@@ -53,6 +53,11 @@ export default {
                 },
             },
         },
+        loop: {
+            title: "Loop",
+            type: "boolean",
+            default: true,
+        },
     },
     required: ["content"],
 };
