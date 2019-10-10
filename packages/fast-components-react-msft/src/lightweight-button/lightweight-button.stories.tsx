@@ -5,14 +5,15 @@ import { glyphFactory, SVGGlyph } from "../../assets/svg-element";
 
 storiesOf("Lightweight button", module)
     .add("Default", () => <LightweightButton>Lightweight button</LightweightButton>)
-    .add("Anchor", () => 
+    .add("Anchor", () => (
         <LightweightButton
             href="#"
             beforeContent={glyphFactory(SVGGlyph.download)}
             afterContent={glyphFactory(SVGGlyph.user)}
         >
             Anchor button
-        </LightweightButton>)
+        </LightweightButton>
+    ))
     .add("Before content", () => (
         <LightweightButton beforeContent={glyphFactory(SVGGlyph.download)}>
             With before content

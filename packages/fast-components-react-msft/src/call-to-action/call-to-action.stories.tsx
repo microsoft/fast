@@ -8,7 +8,9 @@ storiesOf("Call to action", module)
         <CallToAction appearance={CallToActionAppearance.primary}>Buy now</CallToAction>
     ))
     .add(" Primary Anchor", () => (
-        <CallToAction appearance={CallToActionAppearance.primary} href="#">Buy now</CallToAction>
+        <CallToAction appearance={CallToActionAppearance.primary} href="#">
+            Buy now
+        </CallToAction>
     ))
     .add("Justified", () => (
         <CallToAction appearance={CallToActionAppearance.justified}>Buy now</CallToAction>

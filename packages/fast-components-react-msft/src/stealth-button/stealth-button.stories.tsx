@@ -5,14 +5,15 @@ import { glyphFactory, SVGGlyph } from "../../assets/svg-element";
 
 storiesOf("Stealth button", module)
     .add("Default", () => <StealthButton>Stealth button</StealthButton>)
-    .add("Anchor", () => 
-        <StealthButton 
+    .add("Anchor", () => (
+        <StealthButton
             href="#"
             beforeContent={glyphFactory(SVGGlyph.download)}
             afterContent={glyphFactory(SVGGlyph.user)}
         >
             Anchor button
-        </StealthButton>)
+        </StealthButton>
+    ))
     .add("Before content", () => (
         <StealthButton beforeContent={glyphFactory(SVGGlyph.download)}>
             With before content

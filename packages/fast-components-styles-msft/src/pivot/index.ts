@@ -109,8 +109,8 @@ const styles: ComponentStyles<PivotClassNameContract, DesignSystem> = {
     },
     pivot_tabPanelContent: {
         [highContrastSelector]: {
-            color: HighContrastColor.text
-        }
+            color: HighContrastColor.text,
+        },
     },
     "@keyframes fromRight": {
         "0%": {

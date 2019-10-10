@@ -68,15 +68,15 @@ const styles: ComponentStyles<LightweightButtonClassNameContract, DesignSystem> 
         "a&": {
             ...highContrastLinkOutline,
             "&:hover": {
-                ...highContrastLinkBorder
+                ...highContrastLinkBorder,
             },
             "&$button__disabled": {
                 ...highContrastDisabledBorder,
                 "&:hover": {
                     [highContrastSelector]: {
-                        "box-shadow": "none !important"
-                    }
-                }
+                        "box-shadow": "none !important",
+                    },
+                },
             },
         },
     },

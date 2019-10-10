@@ -156,14 +156,14 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = {
         "a&": {
             ...highContrastLinkOutline,
             "&:hover": {
-                ...highContrastLinkBorder
+                ...highContrastLinkBorder,
             },
             "&$button__disabled": {
                 "&:hover": {
                     [highContrastSelector]: {
-                        "box-shadow": "none !important"
-                    }
-                }
+                        "box-shadow": "none !important",
+                    },
+                },
             },
         },
     },

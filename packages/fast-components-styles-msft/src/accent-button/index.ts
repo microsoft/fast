@@ -79,12 +79,12 @@ const styles: ComponentStyles<AccentButtonClassNameContract, DesignSystem> = {
                 },
                 "&:hover": {
                     [highContrastSelector]: {
-                        "box-shadow": "none !important"
+                        "box-shadow": "none !important",
                     },
                     "& $button_beforeContent, & $button_afterContent": {
                         ...highContrastDisabledForeground,
                     },
-                }
+                },
             },
         },
     },

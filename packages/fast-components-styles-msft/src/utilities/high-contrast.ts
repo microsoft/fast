@@ -246,7 +246,7 @@ export const highContrastLinkOutline: CSSRules<DesignSystem> = {
         color: highContrastLinkValue,
         fill: highContrastLinkValue,
     },
-}
+};
 
 // Used to set border color to be 'link' color
 export const highContrastLinkBorder: CSSRules<DesignSystem> = {

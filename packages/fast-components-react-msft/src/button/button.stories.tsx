@@ -5,14 +5,15 @@ import { glyphFactory, SVGGlyph } from "../../assets/svg-element";
 
 storiesOf("Button", module)
     .add("Default", () => <Button>Button</Button>)
-    .add("Anchor", () => 
-        <Button 
+    .add("Anchor", () => (
+        <Button
             href="#"
             beforeContent={glyphFactory(SVGGlyph.user)}
             afterContent={glyphFactory(SVGGlyph.download)}
         >
             Anchor button
-        </Button>)
+        </Button>
+    ))
     .add("Anchor - disabled", () => (
         <Button href="#" disabled={true}>
             Anchor button
@@ -22,7 +23,9 @@ storiesOf("Button", module)
         <Button appearance={ButtonAppearance.primary}>Primary Button</Button>
     ))
     .add("Primary Anchor", () => (
-        <Button appearance={ButtonAppearance.primary} href={"#"}>Primary Anchor</Button>
+        <Button appearance={ButtonAppearance.primary} href={"#"}>
+            Primary Anchor
+        </Button>
     ))
     .add("Primary - disabled", () => (
         <Button appearance={ButtonAppearance.primary} disabled={true}>

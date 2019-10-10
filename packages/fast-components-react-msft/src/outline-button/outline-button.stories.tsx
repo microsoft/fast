@@ -5,14 +5,15 @@ import { glyphFactory, SVGGlyph } from "../../assets/svg-element";
 
 storiesOf("Outline button", module)
     .add("Default", () => <OutlineButton>Outline button</OutlineButton>)
-    .add("Anchor", () => 
-        <OutlineButton 
+    .add("Anchor", () => (
+        <OutlineButton
             href="#"
             beforeContent={glyphFactory(SVGGlyph.download)}
             afterContent={glyphFactory(SVGGlyph.user)}
         >
             Anchor button
-        </OutlineButton>)
+        </OutlineButton>
+    ))
     .add("Before content", () => (
         <OutlineButton beforeContent={glyphFactory(SVGGlyph.download)}>
             With before content

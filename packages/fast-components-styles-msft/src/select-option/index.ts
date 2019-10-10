@@ -52,7 +52,7 @@ const styles: ComponentStyles<SelectOptionClassNameContract, DesignSystem> = {
         ...applyFocusPlaceholderBorder(),
         ...applyFocusVisible<DesignSystem>({
             "border-color": neutralFocus,
-            ...highContrastOutlineFocus
+            ...highContrastOutlineFocus,
         }),
         "&:hover": {
             background: neutralFillStealthHover,
