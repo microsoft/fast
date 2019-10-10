@@ -1,35 +1,18 @@
 import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager-react";
-import {
-    applyControl,
-    applyControlWrapper,
-    applyLabelStyle,
-    applySelectInputStyles,
-    applySelectSpanStyles,
-    background800,
-} from "../style";
+import { applyInvalidMessage, error } from "../style";
 import { FormSectionClassNameContract } from "./form-section.props";
 
 const styles: ComponentStyles<FormSectionClassNameContract, {}> = {
-    formSection: {
-        display: "block",
-        "& h3": {
-            borderBottom: `1px solid ${background800}`,
-            paddingBottom: "12px",
-            marginBottom: "0",
-        },
-    },
-    formSection_selectWrapper: {
-        ...applyControl(),
-        ...applyControlWrapper(),
-    },
-    formSection_selectSpan: {
-        ...applySelectSpanStyles(),
-    },
-    formSection_selectInput: {
-        ...applySelectInputStyles(),
-    },
-    formSection_selectLabel: {
-        ...applyLabelStyle(),
+    formSection: {},
+    formSection_invalidMessage: {
+        ...applyInvalidMessage(),
+        border: `1px solid ${error}`,
+        padding: "10px",
+        "line-height": "11px",
+        margin: "10px 30px 10px 0",
+        "margin-right": undefined,
+        "border-radius": "2px",
+        background: "rgba(255,0,0,0.1)",
     },
 };
 
