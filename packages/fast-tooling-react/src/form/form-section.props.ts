@@ -12,10 +12,7 @@ import { SingleLineControlPlugin } from "./templates/plugin.control.single-line"
  */
 export interface FormSectionClassNameContract {
     formSection: string;
-    formSection_selectWrapper: string;
-    formSection_selectInput: string;
-    formSection_selectSpan: string;
-    formSection_selectLabel: string;
+    formSection_invalidMessage: string;
 }
 
 export enum oneOfAnyOfType {

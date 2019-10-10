@@ -6,6 +6,9 @@ export default {
     invalidNumberWrongType: "bar",
     invalidEnumWrongType: "hello",
     invalidObjectWrongType: true,
+    invalidObjectMissingProperty: {
+        foo: "bar",
+    },
     invalidArrayWrongType: "world",
     objectExample: {
         invalidBooleanWrongType: "bat",
