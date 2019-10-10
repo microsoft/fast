@@ -27,6 +27,7 @@ class Carousel extends Foundation<
     public static defaultProps: Partial<CarouselProps> = {
         autoplay: false,
         autoplayInterval: 6000,
+        loop: true,
         managedClasses: {},
     };
 
@@ -56,6 +57,7 @@ class Carousel extends Foundation<
         nextFlipper: void 0,
         previousFlipper: void 0,
         label: void 0,
+        loop: void 0,
         activeId: void 0,
         onActiveIdUpdate: void 0,
         items: void 0,
@@ -224,6 +226,31 @@ class Carousel extends Foundation<
     }
 
     /**
+     * Check if it is the FIRST slide for looping
+     */
+    private get isFirstSlide(): boolean {
+        if (this.slides.length) {
+            const firstSlideId: string = this.slides[0].id;
+            return firstSlideId === this.state.activeId;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Check if it is the LAST slide for looping
+     */
+    private get isLastSlide(): boolean {
+        const lastItemKey: number = this.slides.length - 1;
+        if (lastItemKey >= 0) {
+            const lastSlideId: string = this.slides[lastItemKey].id;
+            return lastSlideId === this.state.activeId;
+        } else {
+            return false;
+        }
+    }
+
+    /**
      * Get the active slide index
      */
     private getActiveIndex(): number {
@@ -292,7 +319,7 @@ class Carousel extends Foundation<
      * Generates previous flipper if more than one slide
      */
     private generatePreviousFlipper(): any {
-        if (!this.isMultipleSlides) {
+        if (!this.isMultipleSlides || (this.isFirstSlide && !this.props.loop)) {
             return;
         }
 
@@ -319,7 +346,7 @@ class Carousel extends Foundation<
      * Generates next flipper if more than one slide
      */
     private generateNextFlipper(): any {
-        if (!this.isMultipleSlides) {
+        if (!this.isMultipleSlides || (this.isLastSlide && !this.props.loop)) {
             return;
         }
 
