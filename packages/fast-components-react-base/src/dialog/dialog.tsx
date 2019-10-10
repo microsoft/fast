@@ -92,7 +92,7 @@ class Dialog extends Foundation<DialogHandledProps, DialogUnhandledProps, {}> {
             if (!prevProps.onDismiss && this.props.onDismiss) {
                 window.addEventListener("keydown", this.handleWindowKeyDown);
             } else if (prevProps.onDismiss && !this.props.onDismiss) {
-                document.removeEventListener("keydown", this.handleWindowKeyDown);
+                window.removeEventListener("keydown", this.handleWindowKeyDown);
             }
         }
     }
