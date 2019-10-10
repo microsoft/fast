@@ -2,9 +2,9 @@ import { storiesOf } from "@storybook/react";
 import React from "react";
 import Dialog from "./";
 
-storiesOf("Context menu", module)
+storiesOf("Dialog", module)
     .add("Default", () => <Dialog />)
-    .add("With modal", () => <Dialog />)
+    .add("Modal", () => <Dialog visible={true} modal={true} />)
     .add("With width", () => <Dialog contentWidth={"300px"} />)
     .add("With height", () => <Dialog contentHeight={"500px"} />)
     .add("With width and height", () => (

@@ -5,6 +5,7 @@ import { canUseDOM } from "exenv-es6";
 import React from "react";
 import { DisplayNamePrefix } from "../utilities";
 import { DialogHandledProps, DialogProps, DialogUnhandledProps } from "./dialog.props";
+import { isNil } from "lodash-es";
 
 class Dialog extends Foundation<DialogHandledProps, DialogUnhandledProps, {}> {
     public static defaultProps: Partial<DialogProps> = {
@@ -28,6 +29,12 @@ class Dialog extends Foundation<DialogHandledProps, DialogUnhandledProps, {}> {
         visible: void 0,
     };
 
+    private rootElement: React.RefObject<HTMLDivElement> = React.createRef<
+    HTMLDivElement
+>();
+
+    private watchingDocumentFocus = false;
+
     /**
      * Renders the component
      */
@@ -39,6 +46,7 @@ class Dialog extends Foundation<DialogHandledProps, DialogUnhandledProps, {}> {
 
         return (
             <div
+                ref={this.rootElement}
                 {...this.unhandledProps()}
                 className={this.generateClassNames()}
                 aria-hidden={!this.props.visible}
@@ -71,6 +79,9 @@ class Dialog extends Foundation<DialogHandledProps, DialogUnhandledProps, {}> {
         if (canUseDOM() && this.props.onDismiss) {
             window.addEventListener("keydown", this.handleWindowKeyDown);
         }
+        if (canUseDOM() && this.props.modal) {
+            document.addEventListener("focusin", this.handleDocumentFocus);
+        }
     }
 
     /**
@@ -81,7 +92,7 @@ class Dialog extends Foundation<DialogHandledProps, DialogUnhandledProps, {}> {
             if (!prevProps.onDismiss && this.props.onDismiss) {
                 window.addEventListener("keydown", this.handleWindowKeyDown);
             } else if (prevProps.onDismiss && !this.props.onDismiss) {
-                window.removeEventListener("keydown", this.handleWindowKeyDown);
+                document.removeEventListener("keydown", this.handleWindowKeyDown);
             }
         }
     }
@@ -92,6 +103,10 @@ class Dialog extends Foundation<DialogHandledProps, DialogUnhandledProps, {}> {
     public componentWillUnmount(): void {
         if (canUseDOM() && this.props.onDismiss) {
             window.removeEventListener("keydown", this.handleWindowKeyDown);
+        }
+
+        if (canUseDOM() && this.props.modal) {
+            document.removeEventListener("focusin", this.handleDocumentFocus);
         }
     }
 
@@ -140,6 +155,18 @@ class Dialog extends Foundation<DialogHandledProps, DialogUnhandledProps, {}> {
             this.props.onDismiss(event);
         }
     };
+
+    private handleDocumentFocus = (event: FocusEvent): void => {
+       if (isNil(this.rootElement.current)) {
+           return;
+       } 
+       if (
+           this.props.visible &&
+           !(this.rootElement.current as HTMLElement).contains(event.relatedTarget as HTMLElement)
+       ) {
+           this.rootElement.current.focus();
+       }
+    }
 }
 
 export default Dialog;
