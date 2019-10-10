@@ -30,8 +30,8 @@ class Dialog extends Foundation<DialogHandledProps, DialogUnhandledProps, {}> {
     };
 
     private rootElement: React.RefObject<HTMLDivElement> = React.createRef<
-    HTMLDivElement
->();
+        HTMLDivElement
+    >();
 
     private watchingDocumentFocus = false;
 
@@ -157,16 +157,18 @@ class Dialog extends Foundation<DialogHandledProps, DialogUnhandledProps, {}> {
     };
 
     private handleDocumentFocus = (event: FocusEvent): void => {
-       if (isNil(this.rootElement.current)) {
-           return;
-       } 
-       if (
-           this.props.visible &&
-           !(this.rootElement.current as HTMLElement).contains(event.relatedTarget as HTMLElement)
-       ) {
-           this.rootElement.current.focus();
-       }
-    }
+        if (isNil(this.rootElement.current)) {
+            return;
+        }
+        if (
+            this.props.visible &&
+            !(this.rootElement.current as HTMLElement).contains(
+                event.relatedTarget as HTMLElement
+            )
+        ) {
+            this.rootElement.current.focus();
+        }
+    };
 }
 
 export default Dialog;
