@@ -174,7 +174,7 @@ describe("Row", (): void => {
     });
 
     describe("resize", () => {
-        test("should render a `resize control` when `resize` prop is true", () => {
+        test("should render a `resize control` when `resizable` prop is true", () => {
             const rendered: any = mount(
                 <Row resizable={true} managedClasses={managedClasses} />
             );
@@ -182,13 +182,13 @@ describe("Row", (): void => {
             expect(rendered.find(`.${managedClasses.row_resizeHandle}`)).toHaveLength(1);
         });
 
-        test("should NOT render a `resize control` when `resize` prop is false", () => {
+        test("should NOT render a `resize control` when `resizable` prop is false", () => {
             const rendered: any = mount(<Row managedClasses={managedClasses} />);
 
             expect(rendered.find(`.${managedClasses.row_resizeHandle}`)).toHaveLength(0);
         });
 
-        test("should NOT render a `resize control` when `resize` prop is true and `collapsed` is true", () => {
+        test("should NOT render a `resize control` when `resizable` prop is true and `collapsed` is true", () => {
             const rendered: any = mount(<Row managedClasses={managedClasses} />);
 
             expect(rendered.find(`.${managedClasses.row_resizeHandle}`)).toHaveLength(0);

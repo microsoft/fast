@@ -90,4 +90,19 @@ describe("Page", (): void => {
 
         expect(rendered.props().margin).toBe("10%");
     });
+
+    test("should set an inline style of `gridTemplateColumns` when CSS grid is supported", () => {
+        const expectedMargin: string = "0";
+        const expectedMaxWidth: string = "1200px";
+        const rendered: any = shallow(
+            <Page margin={expectedMargin} maxWidth={expectedMaxWidth} />
+        );
+        function gridTemplateColumnsFormatter(margin: string, maxWidth: string): string {
+            return `${margin} minmax(0, ${maxWidth}) ${margin}`;
+        }
+
+        expect(rendered.props().style.gridTemplateColumns).toEqual(
+            gridTemplateColumnsFormatter(expectedMargin, expectedMaxWidth)
+        );
+    });
 });

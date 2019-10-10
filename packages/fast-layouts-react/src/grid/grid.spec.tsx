@@ -140,11 +140,12 @@ describe("Grid", (): void => {
     });
 
     test("should set a tag value equal to the `tag` prop when passed", () => {
-        const rendered: any = mount(
+        const rendered: any = shallow(
             <Grid tag={GridTag.main} managedClasses={managedClasses} />
         );
 
-        expect(rendered.props().tag).toBe(GridTag.main);
+        expect(rendered.instance().props.tag).toBe(GridTag.main);
+        expect(rendered.type()).toEqual(GridTag.main);
     });
 
     test("should set a default gridColumn value if no `gridColumn` prop is passed", () => {

@@ -67,7 +67,7 @@ describe("Column", (): void => {
         expect(rendered.props().span).toBe(2);
     });
 
-    test("should set an inline style for gridColumn equal to the `gridColumn` prop when passed", () => {
+    test("should set an inline style for gridColumn equal to the `span` prop when passed", () => {
         const rendered: any = shallow(
             <Column span={1} managedClasses={managedClasses} />
         );
@@ -92,7 +92,7 @@ describe("Column", (): void => {
         expect(rendered.props().span).toStrictEqual([12, 10, 8]);
     });
 
-    test("should set `gridColumn` inline style value in pixels relative to the index of the current breakpoint", () => {
+    test("should set `gridColumn` inline style value relative to the index of the current breakpoint", () => {
         const rendered: any = shallow(
             <Column span={[12, 10, 6]} managedClasses={managedClasses} />
         );
@@ -116,6 +116,14 @@ describe("Column", (): void => {
         expect(rendered.props().position).toBe(2);
     });
 
+    test("should set `gridColumn` inline style value with position value when `position` prop is passed", () => {
+        const rendered: any = shallow(
+            <Column span={12} position={1} managedClasses={managedClasses} />
+        );
+
+        expect(rendered.props().style.gridColumn).toEqual("1 / span 12");
+    });
+
     test("should accept an array of position values", () => {
         const rendered: any = mount(
             <Column position={[8, 9]} managedClasses={managedClasses} />
@@ -123,6 +131,29 @@ describe("Column", (): void => {
 
         expect(() => rendered).not.toThrow();
         expect(rendered.props().position).toStrictEqual([8, 9]);
+    });
+
+    test("should set `gridColumn` inline style value with position value relative to the index of the current breakpoint", () => {
+        /*tslint:disable-next-line:no-string-literal*/
+        (window as any)["innerWidth"] = 1399;
+
+        const rendered: any = shallow(
+            <Column
+                span={[12, 10, 6]}
+                position={[1, 2, 3]}
+                managedClasses={managedClasses}
+            />
+        );
+
+        expect(rendered.props().style.gridColumn).toEqual("3 / span 6");
+
+        /*tslint:disable-next-line:no-string-literal*/
+        (window as any)["innerWidth"] = 0;
+
+        // set props to force an update
+        rendered.setProps({});
+
+        expect(rendered.props().style.gridColumn).toEqual("1 / span 12");
     });
 
     test("should set a row value equal to the `row` prop when passed", () => {

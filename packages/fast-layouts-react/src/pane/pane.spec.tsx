@@ -256,7 +256,7 @@ describe("Pane", (): void => {
     });
 
     describe("resize", () => {
-        test("should render a `resize control` when `resize` prop is true", () => {
+        test("should render a `resize control` when `resizable` prop is true", () => {
             const rendered: any = mount(
                 <Pane resizable={true} managedClasses={managedClasses} />
             );
@@ -264,13 +264,13 @@ describe("Pane", (): void => {
             expect(rendered.find(`.${managedClasses.pane_resizeHandle}`)).toHaveLength(1);
         });
 
-        test("should NOT render a `resize control` when `resize` prop is false", () => {
+        test("should NOT render a `resize control` when `resizable` prop is false", () => {
             const rendered: any = mount(<Pane managedClasses={managedClasses} />);
 
             expect(rendered.find(`.${managedClasses.pane_resizeHandle}`)).toHaveLength(0);
         });
 
-        test("should NOT render a `resize control` when `resize` prop is true and `collapsed` is true", () => {
+        test("should NOT render a `resize control` when `resizable` prop is true and `collapsed` is true", () => {
             const rendered: any = mount(<Pane managedClasses={managedClasses} />);
 
             expect(rendered.find(`.${managedClasses.pane_resizeHandle}`)).toHaveLength(0);
@@ -322,6 +322,8 @@ describe("Pane", (): void => {
                 .simulate("keyDown", { keyCode: KeyCodes.arrowRight });
 
             expect(rendered.state().width).toBe(initialWidth + 1);
+
+            rendered.update();
         });
 
         test("should decrement `width` in state when a user presses left arrow on `resize control`", () => {
