@@ -1,13 +1,9 @@
-import { CSSRules, ComponentStyles } from "@microsoft/fast-jss-manager";
+import { TextFieldClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
+import { TextActionClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
+import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager";
 import { directionSwitch, format, subtract, toPx } from "@microsoft/fast-jss-utilities";
-import { focusOutlineWidth, outlineWidth } from "../utilities/design-system";
-import { glyphSize, height, horizontalSpacing } from "../utilities/density";
-import {
-    highContrastDisabledBorder,
-    highContrastDisabledForeground,
-    highContrastForeground,
-    highContrastSelector,
-} from "../utilities/high-contrast";
+import { DesignSystem } from "../design-system";
+import { applyCornerRadius } from "../utilities/border";
 import {
     neutralFillActive,
     neutralFillHover,
@@ -21,12 +17,15 @@ import {
     neutralOutlineHover,
     neutralOutlineRest,
 } from "../utilities/color";
-
-import { DesignSystem } from "../design-system";
-import { TextActionClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
-import { TextFieldClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
-import { applyCornerRadius } from "../utilities/border";
+import { glyphSize, height, horizontalSpacing } from "../utilities/density";
+import { focusOutlineWidth, outlineWidth } from "../utilities/design-system";
 import { applyDisabledState } from "../utilities/disabled";
+import {
+    highContrastDisabledBorder,
+    highContrastDisabledForeground,
+    highContrastForeground,
+    highContrastSelector,
+} from "../utilities/high-contrast";
 
 // Since MSFT text field is already styled, we need to override in this way to alter text field classes
 export const textFieldOverrides: ComponentStyles<
