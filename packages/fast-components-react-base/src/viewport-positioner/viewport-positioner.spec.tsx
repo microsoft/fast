@@ -1346,7 +1346,7 @@ describe("viewport positioner", (): void => {
         expect(positioner.instance().baseVerticalOffset).toBe(-10);
     });
 
-    test("Positioner scaled sizes calculated correctly", (): void => {
+    test("Should scale positioner dimenstions to match the viewports height when scaleTofit is set to true", (): void => {
         const anchorElement: React.RefObject<HTMLDivElement> = React.createRef<
             HTMLDivElement
         >();
@@ -1371,7 +1371,7 @@ describe("viewport positioner", (): void => {
                     anchor={anchorElement}
                     viewport={document.firstElementChild as HTMLElement}
                     managedClasses={managedClasses}
-                    scaleToAvailableSpace={true}
+                    scaleToFit={true}
                 />
             </div>
         );
@@ -1462,7 +1462,7 @@ describe("viewport positioner", (): void => {
                     anchor={anchorElement}
                     viewport={document.firstElementChild as HTMLElement}
                     managedClasses={managedClasses}
-                    scaleToAvailableSpace={true}
+                    scaleToFit={true}
                 />
             </div>
         );

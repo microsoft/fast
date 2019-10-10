@@ -53,6 +53,10 @@ export default {
             title: "Fixed after initial placement",
             type: "boolean",
         },
+        scaleToFit: {
+            title: "Scale to fit",
+            type: "boolean",
+        },
     },
     reactProperties: {
         children: {

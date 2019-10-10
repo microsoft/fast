@@ -102,7 +102,7 @@ export interface ViewportPositionerHandledProps extends ViewportPositionerManage
      * Whether the positioner should scale to fill all the available space relative to the anchor.
      * Otherwise the positioner is sized to match content.  Default is false.
      */
-    scaleToAvailableSpace?: boolean;
+    scaleToFit?: boolean;
 
     /**
      * The children of the viewport positioner

@@ -100,7 +100,7 @@ storiesOf("Viewport Positioner", module)
                 verticalPositioningMode: AxisPositioningMode.adjacent,
                 horizontalPositioningMode: AxisPositioningMode.adjacent,
                 defaultVerticalPosition: ViewportPositionerVerticalPosition.uncontrolled,
-                scaleToAvailableSpace: true,
+                scaleToFit: true,
                 anchor: anchorElement,
             }}
         >

@@ -123,7 +123,7 @@ class ViewportPositioner extends Foundation<
         verticalLockToDefault: false,
         horizontalLockToDefault: false,
         fixedAfterInitialPlacement: false,
-        scaleToAvailableSpace: false,
+        scaleToFit: false,
         managedClasses: {},
     };
 
@@ -142,7 +142,7 @@ class ViewportPositioner extends Foundation<
         verticalAlwaysInView: void 0,
         verticalLockToDefault: void 0,
         fixedAfterInitialPlacement: void 0,
-        scaleToAvailableSpace: void 0,
+        scaleToFit: void 0,
         disabled: void 0,
     };
 
@@ -322,10 +322,10 @@ class ViewportPositioner extends Foundation<
             (isNil(this.positionerRect) && !this.state.noObserverMode);
 
         return {
-            height: this.props.scaleToAvailableSpace
+            height: this.props.scaleToFit
                 ? `${this.state.verticalSelectedPositionHeight}px`
                 : null,
-            width: this.props.scaleToAvailableSpace
+            width: this.props.scaleToFit
                 ? `${this.state.horizontalSelectedPositionWidth}px`
                 : null,
             opacity: shouldHide ? 0 : undefined,
@@ -914,7 +914,7 @@ class ViewportPositioner extends Foundation<
         desiredHorizontalPosition: ViewportPositionerHorizontalPositionLabel
     ): number => {
         let newPositionerRectWidth: number = this.positionerRect.width;
-        if (this.props.scaleToAvailableSpace) {
+        if (this.props.scaleToFit) {
             const availableWidth: number = this.getAvailableWidth(
                 desiredHorizontalPosition
             );
@@ -933,7 +933,7 @@ class ViewportPositioner extends Foundation<
         desiredVerticalPosition: ViewportPositionerVerticalPositionLabel
     ): number => {
         let newPositionerRectHeight: number = this.positionerRect.height;
-        if (this.props.scaleToAvailableSpace) {
+        if (this.props.scaleToFit) {
             const availableHeight: number = this.getAvailableHeight(
                 desiredVerticalPosition
             );
