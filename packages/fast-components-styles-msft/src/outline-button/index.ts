@@ -74,7 +74,7 @@ const styles: ComponentStyles<LightweightButtonClassNameContract, DesignSystem> 
                 ...highContrastDisabledBorder,
                 "&:hover": {
                     [highContrastSelector]: {
-                        "box-shadow": "none"
+                        "box-shadow": "none !important"
                     }
                 }
             },

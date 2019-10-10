@@ -51,7 +51,7 @@ const styles: ComponentStyles<StealthButtonClassNameContract, DesignSystem> = {
                 ...highContrastDisabledBorder,
                 "&:hover": {
                     [highContrastSelector]: {
-                        "box-shadow": "none"
+                        "box-shadow": "none !important"
                     }
                 }
             },

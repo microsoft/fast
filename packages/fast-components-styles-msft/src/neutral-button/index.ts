@@ -54,7 +54,7 @@ const styles: ComponentStyles<NeutralButtonClassNameContract, DesignSystem> = {
                 ...highContrastDisabledBorder,
                 "&:hover": {
                     [highContrastSelector]: {
-                        "box-shadow": "none"
+                        "box-shadow": "none !important"
                     }
                 }
             },

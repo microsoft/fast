@@ -161,7 +161,7 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = {
             "&$button__disabled": {
                 "&:hover": {
                     [highContrastSelector]: {
-                        "box-shadow": "none"
+                        "box-shadow": "none !important"
                     }
                 }
             },

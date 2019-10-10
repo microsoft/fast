@@ -12,10 +12,10 @@ import { applyFocusVisible, toPx } from "@microsoft/fast-jss-utilities";
 import { focusOutlineWidth } from "../utilities/design-system";
 import {
     highContrastBackground,
-    HighContrastColor,
     highContrastDisabledForeground,
     highContrastHighlightBackground,
     highContrastHighlightForeground,
+    highContrastLinkValue,
     highContrastSelector,
     highContrastStealth,
 } from "../utilities/high-contrast";
@@ -69,12 +69,12 @@ const styles: ComponentStyles<LightweightButtonClassNameContract, DesignSystem> 
         ...highContrastStealth,
         "a&": {
             [highContrastSelector]: {
-                color: HighContrastColor.hyperLinks,
-                fill: HighContrastColor.hyperLinks,
+                color: highContrastLinkValue,
+                fill: highContrastLinkValue,
             },
             // Underline
             "&:hover $button_contentRegion::before": {
-                background: HighContrastColor.hyperLinks,
+                background: highContrastLinkValue,
             },
             "&:hover$button__disabled": {
                 ...highContrastDisabledForeground,
