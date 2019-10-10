@@ -1,9 +1,13 @@
-import { TextFieldClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
-import { TextActionClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
-import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager";
+import { CSSRules, ComponentStyles } from "@microsoft/fast-jss-manager";
 import { directionSwitch, format, subtract, toPx } from "@microsoft/fast-jss-utilities";
-import { DesignSystem } from "../design-system";
-import { applyCornerRadius } from "../utilities/border";
+import { focusOutlineWidth, outlineWidth } from "../utilities/design-system";
+import { glyphSize, height, horizontalSpacing } from "../utilities/density";
+import {
+    highContrastDisabledBorder,
+    highContrastDisabledForeground,
+    highContrastForeground,
+    highContrastSelector,
+} from "../utilities/high-contrast";
 import {
     neutralFillActive,
     neutralFillHover,
@@ -17,15 +21,12 @@ import {
     neutralOutlineHover,
     neutralOutlineRest,
 } from "../utilities/color";
-import { glyphSize, height, horizontalSpacing } from "../utilities/density";
-import { focusOutlineWidth, outlineWidth } from "../utilities/design-system";
+
+import { DesignSystem } from "../design-system";
+import { TextActionClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
+import { TextFieldClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
+import { applyCornerRadius } from "../utilities/border";
 import { applyDisabledState } from "../utilities/disabled";
-import {
-    highContrastDisabledBorder,
-    highContrastDisabledForeground,
-    highContrastForeground,
-    highContrastSelector,
-} from "../utilities/high-contrast";
 
 // Since MSFT text field is already styled, we need to override in this way to alter text field classes
 export const textFieldOverrides: ComponentStyles<
@@ -36,7 +37,7 @@ export const textFieldOverrides: ComponentStyles<
         height: "calc(100% - 4px)",
         margin: "2px 1px",
         border: "none",
-        flex: "1 0 0",
+        flex: "1 0 0px", // IE 11 does not accept "0" for flex-basis. Using "0px" for compatibility.
         background: "transparent",
         "min-width": "inherit",
         "&:hover, &:hover:enabled, &:disabled, &:active, &:active:enabled, &:focus, &:focus:enabled": {
