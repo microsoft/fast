@@ -1,5 +1,9 @@
-import { DesignSystem, DesignSystemResolver } from "../design-system";
 import { ComponentStyles } from "@microsoft/fast-jss-manager";
+import {
+    densityCategorySwitch,
+    heightNumber,
+    horizontalSpacing,
+} from "../utilities/density";
 import { CheckboxClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import {
     add,
@@ -20,11 +24,7 @@ import {
     neutralOutlineRest,
 } from "../utilities/color";
 import { applyCornerRadius } from "../utilities/border";
-import {
-    densityCategorySwitch,
-    heightNumber,
-    horizontalSpacing,
-} from "../utilities/density";
+import { DesignSystem, DesignSystemResolver } from "../design-system";
 import { applyDisabledState } from "../utilities/disabled";
 import { applyScaledTypeRamp } from "../utilities/typography";
 import { designUnit, outlineWidth } from "../utilities/design-system";
@@ -32,10 +32,14 @@ import { applyCursorDisabled, applyCursorPointer } from "../utilities/cursor";
 import { ColorRecipe } from "src/utilities/color/common";
 import {
     highContrastBorderColor,
+    HighContrastColor,
     highContrastDisabledBorder,
     highContrastHighlightBackground,
+    ...highContrastOptOutProperty,
     highContrastSelectedBackground,
     highContrastSelector,
+    highContrastTextForeground,
+    highContrastTransparentBackground,
 } from "../utilities/high-contrast";
 
 const inputSize: DesignSystemResolver<string> = toPx(
@@ -67,6 +71,9 @@ const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = {
             "padding-left": directionSwitch(horizontalSpacing(2), ""),
             "padding-right": directionSwitch("", horizontalSpacing(2)),
         },
+        [highContrastSelector]: {
+            ...highContrastOptOutProperty
+        }
     },
     checkbox_input: {
         position: "absolute",
@@ -92,6 +99,10 @@ const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = {
         "&:hover:enabled": {
             background: neutralFillInputHover,
             "border-color": neutralOutlineHover,
+            [highContrastSelector]: {
+                background: "none",
+                "border-color": HighContrastColor.selectedBackground,
+            },
         },
         "&:active:enabled": {
             background: neutralFillInputActive,
@@ -101,10 +112,13 @@ const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = {
             "box-shadow": format<DesignSystem>("0 0 0 1px {0} inset", neutralFocus),
             "border-color": neutralFocus,
             [highContrastSelector]: {
-                "box-shadow": format<DesignSystem>("0 0 0 1px ButtonText"),
+                "box-shadow": format<DesignSystem>(
+                    "0 0 0 1px {0}",
+                    () => HighContrastColor.buttonText
+                ),
             },
         }),
-        ...highContrastBorderColor,
+        ...highContrastTransparentBackground
     },
     checkbox_stateIndicator: {
         position: "relative",
@@ -128,9 +142,7 @@ const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = {
         ...applyCursorPointer(),
         color: neutralForegroundRest,
         ...applyScaledTypeRamp("t7"),
-        [highContrastSelector]: {
-            color: "ButtonText",
-        },
+        ...highContrastTextForeground,
     },
     checkbox__checked: {
         "& $checkbox_stateIndicator": {
@@ -142,7 +154,7 @@ const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = {
                 [highContrastSelector]: {
                     background: format(
                         "url('data:image/svg+xml;utf8,{0}')",
-                        indicatorSvg("HighlightText")
+                        indicatorSvg(HighContrastColor.selectedText)
                     ),
                 },
             },
@@ -153,7 +165,7 @@ const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = {
                     [highContrastSelector]: {
                         background: format(
                             "url('data:image/svg+xml;utf8,{0}')",
-                            indicatorSvg("Highlight")
+                            indicatorSvg(HighContrastColor.selectedBackground)
                         ),
                     },
                 },
@@ -179,7 +191,7 @@ const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = {
                 height: "auto",
                 background: neutralForegroundRest,
                 [highContrastSelector]: {
-                    backgroundColor: "ButtonHighlight",
+                    backgroundColor: HighContrastColor.selectedBackground,
                 },
             },
         },

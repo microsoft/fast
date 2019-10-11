@@ -7,7 +7,12 @@ import { applyCursorDefault } from "../utilities/cursor";
 import { heightNumber } from "../utilities/density";
 import { designUnit } from "../utilities/design-system";
 import { applyScaledTypeRamp } from "../utilities/typography";
-import { highContrastBackground } from "../utilities/high-contrast";
+import {
+    highContrastBackground,
+    ...highContrastOptOutProperty,
+    highContrastSelector,
+    highContrastTextForeground
+} from "../utilities/high-contrast";
 
 function minMaxLabelMargin(config: DesignSystem): string {
     return toPx(((heightNumber()(config) / 2 + designUnit(config)) / 2) * -1);
@@ -17,6 +22,9 @@ const styles: ComponentStyles<SliderLabelClassNameContract, DesignSystem> = {
     sliderLabel: {
         display: "grid",
         ...applyCursorDefault(),
+        [highContrastSelector]: {
+            ...highContrastOptOutProperty,
+        },
     },
 
     sliderLabel_positioningRegion: {
@@ -27,6 +35,7 @@ const styles: ComponentStyles<SliderLabelClassNameContract, DesignSystem> = {
         ...applyScaledTypeRamp("t9"),
         "white-space": "nowrap",
         color: neutralForegroundRest,
+        ...highContrastTextForeground,
     },
 
     sliderLabel_tickMark: {
