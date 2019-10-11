@@ -12,6 +12,8 @@ import {
     divide,
     format,
     toPx,
+    subtract,
+    multiply,
 } from "@microsoft/fast-jss-utilities";
 import {
     neutralFillInputActive,
@@ -40,7 +42,7 @@ const inputSize: DesignSystemResolver<string> = toPx(
 );
 
 const indicatorMargin: DesignSystemResolver<string> = toPx(
-    add(designUnit, densityCategorySwitch(0, 1, 2))
+    add(subtract(designUnit, multiply(outlineWidth, 2)), densityCategorySwitch(0, 1, 2))
 );
 
 const styles: ComponentStyles<RadioClassNameContract, DesignSystem> = {
@@ -55,12 +57,10 @@ const styles: ComponentStyles<RadioClassNameContract, DesignSystem> = {
         position: "absolute",
         width: inputSize,
         height: inputSize,
-        appearance: "none",
         "-webkit-appearance": "none",
         "-moz-appearance": "none",
         "border-radius": "50%",
         margin: "0",
-        "z-index": "1",
         background: neutralFillInputRest,
         transition: "all 0.2s ease-in-out",
         border: format(
@@ -93,22 +93,14 @@ const styles: ComponentStyles<RadioClassNameContract, DesignSystem> = {
     radio_stateIndicator: {
         position: "relative",
         "border-radius": "50%",
-        display: "inline-block",
         width: inputSize,
         height: inputSize,
-        "flex-shrink": "0",
-        "&::before": {
-            "pointer-events": "none",
-            position: "absolute",
-            "z-index": "1",
-            content: '""',
-            "border-radius": "50%",
-            top: indicatorMargin,
-            left: indicatorMargin,
-            bottom: indicatorMargin,
-            right: indicatorMargin,
-            background: "transparent",
-        },
+        border: format(
+            "{0} solid transparent",
+            toPx<DesignSystem>(outlineWidth)
+        ),
+        "box-sizing": "border-box",
+        "pointer-events": "none",
     },
     radio_label: {
         ...applyCursorPointer(),
@@ -122,13 +114,25 @@ const styles: ComponentStyles<RadioClassNameContract, DesignSystem> = {
     },
     radio__checked: {
         "& $radio_stateIndicator": {
-            "&::before": {
-                background: neutralForegroundRest,
-                ...highContrastHighlightBackground,
-            },
+            background: neutralForegroundRest,
+            "box-shadow": format("inset 0 0 0 {0} {1}", indicatorMargin, neutralFillInputRest),
+            ...highContrastHighlightBackground,
+            border: format(
+                "{0} solid {1}",
+                toPx<DesignSystem>(outlineWidth),
+                neutralOutlineRest
+            ),
         },
-        "&:hover $radio_stateIndicator::before": {
+        "&:hover $radio_stateIndicator": {
             ...highContrastSelectedBackground,
+            "box-shadow": format("inset 0 0 0 {0} {1}", indicatorMargin, neutralFillInputHover),
+            
+        },
+        "&:hover:enabled $radio_stateIndicator": {
+            "box-shadow": format("inset 0 0 0 {0} {1}", indicatorMargin, neutralFillInputHover),
+        },
+        "&:active $radio_stateIndicator": {
+            "box-shadow": format("inset 0 0 0 {0} {1}", indicatorMargin, neutralFillInputActive),
         },
         "& $radio_input": {
             ...highContrastSelectedBackground,
