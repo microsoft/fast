@@ -89,12 +89,8 @@ class Progress extends Foundation<ProgressHandledProps, ProgressUnhandledProps, 
     }
 
     private generateSVGClassNames(): string {
-        const managedClasses: Partial<ProgressClassNameContract> = this.props
-            .managedClasses;
-
         return classNames(
-            managedClasses.progress_circularSVG__container,
-            managedClasses[`progress_circularSVG__${this.props.size}`]
+            this.props.managedClasses[`progress_circularSVG__${this.props.size}`]
         );
     }
 
