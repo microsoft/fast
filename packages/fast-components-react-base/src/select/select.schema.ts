@@ -103,10 +103,11 @@ export default {
                     title: "Fixed after initial placement",
                     type: "boolean",
                 },
-                scaleToFit:{
+                scaleToFit: {
                     title: "Scale to fit",
                     type: "boolean",
-                }
+                    default: "false",
+                },
             },
         },
     },
