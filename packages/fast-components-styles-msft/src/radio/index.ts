@@ -11,9 +11,9 @@ import {
     directionSwitch,
     divide,
     format,
-    toPx,
-    subtract,
     multiply,
+    subtract,
+    toPx,
 } from "@microsoft/fast-jss-utilities";
 import {
     neutralFillInputActive,
@@ -95,10 +95,7 @@ const styles: ComponentStyles<RadioClassNameContract, DesignSystem> = {
         "border-radius": "50%",
         width: inputSize,
         height: inputSize,
-        border: format(
-            "{0} solid transparent",
-            toPx<DesignSystem>(outlineWidth)
-        ),
+        border: format("{0} solid transparent", toPx<DesignSystem>(outlineWidth)),
         "box-sizing": "border-box",
         "pointer-events": "none",
     },
@@ -115,7 +112,11 @@ const styles: ComponentStyles<RadioClassNameContract, DesignSystem> = {
     radio__checked: {
         "& $radio_stateIndicator": {
             background: neutralForegroundRest,
-            "box-shadow": format("inset 0 0 0 {0} {1}", indicatorMargin, neutralFillInputRest),
+            "box-shadow": format(
+                "inset 0 0 0 {0} {1}",
+                indicatorMargin,
+                neutralFillInputRest
+            ),
             ...highContrastHighlightBackground,
             border: format(
                 "{0} solid {1}",
@@ -125,14 +126,25 @@ const styles: ComponentStyles<RadioClassNameContract, DesignSystem> = {
         },
         "&:hover $radio_stateIndicator": {
             ...highContrastSelectedBackground,
-            "box-shadow": format("inset 0 0 0 {0} {1}", indicatorMargin, neutralFillInputHover),
-            
+            "box-shadow": format(
+                "inset 0 0 0 {0} {1}",
+                indicatorMargin,
+                neutralFillInputHover
+            ),
         },
         "&:hover:enabled $radio_stateIndicator": {
-            "box-shadow": format("inset 0 0 0 {0} {1}", indicatorMargin, neutralFillInputHover),
+            "box-shadow": format(
+                "inset 0 0 0 {0} {1}",
+                indicatorMargin,
+                neutralFillInputHover
+            ),
         },
         "&:active $radio_stateIndicator": {
-            "box-shadow": format("inset 0 0 0 {0} {1}", indicatorMargin, neutralFillInputActive),
+            "box-shadow": format(
+                "inset 0 0 0 {0} {1}",
+                indicatorMargin,
+                neutralFillInputActive
+            ),
         },
         "& $radio_input": {
             ...highContrastSelectedBackground,
