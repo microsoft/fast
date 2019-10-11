@@ -81,7 +81,7 @@ class StandardControlTemplate extends ControlTemplateUtilities<
     }
 
     private renderControl(context: ControlContext): React.ReactNode {
-        return context === ControlContext.default
+        return context === this.props.context
             ? this.props.control(this.getConfig())
             : null;
     }

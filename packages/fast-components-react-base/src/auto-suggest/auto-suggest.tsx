@@ -6,6 +6,7 @@ import {
     keyCodeArrowUp,
     keyCodeEnter,
     keyCodeEscape,
+    keyCodeTab,
 } from "@microsoft/fast-web-utilities";
 import React from "react";
 import Listbox from "../listbox";
@@ -328,6 +329,10 @@ class AutoSuggest extends Foundation<
             case keyCodeArrowUp:
                 this.focusOnMenu(-1);
                 e.preventDefault();
+                break;
+
+            case keyCodeTab:
+                // Prevent default case handling for tab
                 break;
 
             default:
