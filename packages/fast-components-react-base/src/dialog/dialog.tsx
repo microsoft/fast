@@ -33,8 +33,6 @@ class Dialog extends Foundation<DialogHandledProps, DialogUnhandledProps, {}> {
         HTMLDivElement
     >();
 
-    private watchingDocumentFocus = false;
-
     /**
      * Renders the component
      */
