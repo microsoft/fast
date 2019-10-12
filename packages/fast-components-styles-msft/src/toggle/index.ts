@@ -33,7 +33,7 @@ import { applyCursorDisabled, applyCursorPointer } from "../utilities/cursor";
 import {
     HighContrastColor,
     highContrastDoubleFocus,
-    ...highContrastOptOutProperty,
+    highContrastOptOutProperty,
     highContrastSelector,
     highContrastTextForeground,
 } from "../utilities/high-contrast";

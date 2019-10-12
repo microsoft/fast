@@ -31,15 +31,14 @@ import { designUnit, outlineWidth } from "../utilities/design-system";
 import { applyCursorDisabled, applyCursorPointer } from "../utilities/cursor";
 import { ColorRecipe } from "src/utilities/color/common";
 import {
-    highContrastBorderColor,
     HighContrastColor,
     highContrastDisabledBorder,
     highContrastHighlightBackground,
-    ...highContrastOptOutProperty,
+    highContrastOptOutProperty,
     highContrastSelectedBackground,
     highContrastSelector,
     highContrastTextForeground,
-    highContrastTransparentBackground,
+    highContrastColorBackground,
 } from "../utilities/high-contrast";
 
 const inputSize: DesignSystemResolver<string> = toPx(
@@ -100,7 +99,7 @@ const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = {
             background: neutralFillInputHover,
             "border-color": neutralOutlineHover,
             [highContrastSelector]: {
-                background: "none",
+                background: HighContrastColor.background,
                 "border-color": HighContrastColor.selectedBackground,
             },
         },
@@ -118,7 +117,7 @@ const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = {
                 ),
             },
         }),
-        ...highContrastTransparentBackground
+        ...highContrastColorBackground
     },
     checkbox_stateIndicator: {
         position: "relative",

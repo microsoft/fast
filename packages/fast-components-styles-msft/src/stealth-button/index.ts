@@ -12,8 +12,11 @@ import {
 import { baseButton, buttonStyles } from "../patterns/button";
 import {
     highContrastDisabledBorder,
+    highContrastLinkBorder,
+    highContrastLinkOutline,
     highContrastOutlineFocus,
     highContrastSelected,
+    highContrastSelector,
     highContrastStealth,
 } from "../utilities/high-contrast";
 
@@ -40,8 +43,17 @@ const styles: ComponentStyles<StealthButtonClassNameContract, DesignSystem> = {
         },
         ...highContrastStealth,
         "a&": {
+            ...highContrastLinkOutline,
+            "&:hover": {
+                ...highContrastLinkBorder,
+            },
             "&$button__disabled": {
                 ...highContrastDisabledBorder,
+                "&:hover": {
+                    [highContrastSelector]: {
+                        "box-shadow": "none !important",
+                    },
+                },
             },
         },
     },

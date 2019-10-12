@@ -24,7 +24,7 @@ import {
     highContrastHighlightBackground,
     highContrastOutline,
     highContrastSelectedForeground,
-    highContrastTransparentBackground,
+    highContrastColorBackground,
 } from "../utilities/high-contrast";
 
 const styles: ComponentStyles<FlipperClassNameContract, DesignSystem> = {
@@ -58,7 +58,7 @@ const styles: ComponentStyles<FlipperClassNameContract, DesignSystem> = {
             right: "0",
             bottom: "0",
             left: "0",
-            ...highContrastTransparentBackground
+            ...highContrastColorBackground
         },
         "&:active": {
             "&::before": {

@@ -8,7 +8,8 @@ export const highContrastSelector: string = "@media (-ms-high-contrast:active)";
 
 export enum HighContrastColor {
     text = "WindowText",
-    hyperLinks = "Hotlight",
+    forcedColorLink = "LinkText",
+    msLink = "-ms-hotlight",
     disabledText = "GrayText",
     selectedText = "HighlightText",
     selectedBackground = "Highlight",
@@ -23,9 +24,18 @@ export function applyhighContrastOptOutProperty(): CSSRules<{}> {
         "-ms-high-contrast-adjust": "none",
     };
 }
-
 // Used to to opt-out of high contrast color scheme
 export const highContrastOptOutProperty: CSSRules<{}> = applyhighContrastOptOutProperty();
+
+// Function used to to set link color base on 'forced-color' query
+export function applyHighContrastlinkValue(): string {
+    return window.matchMedia("(forced-colors: none)").matches ||
+        window.matchMedia("(forced-colors: active)").matches
+        ? "LinkText !important"
+        : "-ms-hotlight !important";
+}
+// Used to to set high contrast base on 'forced-color' query
+export const highContrastLinkValue: string = applyHighContrastlinkValue();
 
 // Used to remove text backplate and borders in 'ButtonText' colors
 export const highContrastStealth: CSSRules<DesignSystem> = {
@@ -57,6 +67,16 @@ export const highContrastAccent: CSSRules<DesignSystem> = {
         color: HighContrastColor.selectedText,
         fill: HighContrastColor.selectedText,
         ...highContrastOptOutProperty
+    },
+};
+
+// Used to set button with a border to 'link' color
+export const highContrastLinkOutline: CSSRules<DesignSystem> = {
+    [highContrastSelector]: {
+        background: HighContrastColor.background,
+        "border-color": highContrastLinkValue,
+        color: highContrastLinkValue,
+        fill: highContrastLinkValue,
     },
 };
 
@@ -122,7 +142,7 @@ export const highContrastDoubleFocus: CSSRules<DesignSystem> = {
     },
 };
 
-// Used to set 'HighlightText' color
+// Used to set background to 'Highlight' foreground to 'HighlightText'
 export const highContrastSelected: CSSRules<DesignSystem> = {
     [highContrastSelector]: {
         background: HighContrastColor.selectedBackground,
@@ -177,6 +197,14 @@ export const highContrastHighlightForeground: CSSRules<DesignSystem> = {
     },
 };
 
+// Used to set foreground and glyph to be 'link' color
+export const highContrastLinkForeground: CSSRules<DesignSystem> = {
+    [highContrastSelector]: {
+        color: highContrastLinkValue,
+        fill: highContrastLinkValue,
+    },
+};
+
 // Used to set borders to be 'WindowText' color
 export const highContrastBorder: CSSRules<DesignSystem> = {
     [highContrastSelector]: {
@@ -195,10 +223,21 @@ export const highContrastBorderColor: CSSRules<DesignSystem> = {
     },
 };
 
-// Used to set transparent background
-export const highContrastTransparentBackground: CSSRules<DesignSystem> = {
+// Used to set box-shadow border color to be 'link' color
+export const highContrastLinkBorder: CSSRules<DesignSystem> = {
     [highContrastSelector]: {
-        background: "transparent",
+        "box-shadow": format(
+            "0 0 0 {0} inset {1}",
+            toPx(outlineWidth),
+            () => highContrastLinkValue
+        ),
+    },
+};
+
+// Used to set background to be 'Window' color
+export const highContrastColorBackground: CSSRules<DesignSystem> = {
+    [highContrastSelector]: {
+        background: HighContrastColor.background,
     },
 };
 
@@ -220,6 +259,13 @@ export const highContrastSelectedBackground: CSSRules<DesignSystem> = {
 export const highContrastHighlightBackground: CSSRules<DesignSystem> = {
     [highContrastSelector]: {
         background: HighContrastColor.selectedBackground,
+    },
+};
+
+// Used to set background to be 'link' color
+export const highContrastLinkBackground: CSSRules<DesignSystem> = {
+    [highContrastSelector]: {
+        background: highContrastLinkValue
     },
 };
 

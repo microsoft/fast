@@ -32,7 +32,7 @@ import {
     HighContrastColor,
     highContrastDisabledBorder,
     highContrastHighlightBackground,
-    ...highContrastOptOutProperty,
+    highContrastOptOutProperty,
     highContrastSelectedBackground,
     highContrastSelector,
 } from "../utilities/high-contrast";

@@ -33,7 +33,7 @@ import {
     HighContrastColor,
     highContrastDisabledBackground,
     highContrastHighlightBackground,
-    ...highContrastOptOutProperty,
+    highContrastOptOutProperty,
     highContrastSelector,
 } from "../utilities/high-contrast";
 import { importantValue } from "../utilities/important";

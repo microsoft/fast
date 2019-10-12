@@ -1,3 +1,4 @@
+import { TextActionClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import {
     neutralFillActive,
     neutralFillHover,
@@ -11,12 +12,11 @@ import {
     neutralOutlineHover,
     neutralOutlineRest,
 } from "../utilities/color";
-import { TextFieldClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager";
 import { applyFocusVisible, directionSwitch, format, subtract, toPx } from "@microsoft/fast-jss-utilities";
 import { DesignSystem } from "../design-system";
 import { applyCornerRadius } from "../utilities/border";
-import { TextActionClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
+import { TextFieldClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import { glyphSize, height, horizontalSpacing } from "../utilities/density";
 import { focusOutlineWidth, outlineWidth } from "../utilities/design-system";
 import { applyDisabledState } from "../utilities/disabled";
@@ -26,8 +26,8 @@ import {
     highContrastDisabledForeground,
     highContrastForeground,
     highContrastOutline,
-    highContrastSelector,
     highContrastSelected,
+    highContrastSelector,
 } from "../utilities/high-contrast";
 import { importantValue } from "../utilities/important";
 
@@ -44,7 +44,7 @@ export const textFieldOverrides: ComponentStyles<
         background: "transparent",
         "min-width": "inherit",
         "&:hover, &:hover:enabled, &:disabled, &:active, &:active:enabled, &:focus, &:focus:enabled": {
-            background: "none",
+            background: HighContrastColor.background,
             border: "none",
             "box-shadow": "none",
         },

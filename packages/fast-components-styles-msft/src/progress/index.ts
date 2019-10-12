@@ -12,7 +12,7 @@ import { glyphSize, height, heightNumber } from "../utilities/density";
 import {
     highContrastBackground,
     HighContrastColor,
-    ...highContrastOptOutProperty,
+    highContrastOptOutProperty,
     highContrastSelector
 } from "../utilities/high-contrast";
 

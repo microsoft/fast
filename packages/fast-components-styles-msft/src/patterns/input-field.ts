@@ -93,7 +93,7 @@ export function filledInputFieldStyles(): CSSRules<{}> {
             background: neutralFillHover,
             "border-color": "transparent",
             [highContrastSelector]: {
-                background: "none",
+                background: HighContrastColor.background,
                 border: format(
                     "{0} solid {1}",
                     toPx<DesignSystem>(outlineWidth),

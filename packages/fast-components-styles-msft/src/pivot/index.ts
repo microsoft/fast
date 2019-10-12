@@ -22,10 +22,9 @@ import { focusOutlineWidth } from "../utilities/design-system";
 import { applyCursorPointer } from "../utilities/cursor";
 import {
     highContrastBorderColor,
-    HighContrastColor,
     highContrastForeground,
     highContrastHighlightBackground,
-    ...highContrastOptOutProperty,
+    highContrastOptOutProperty,
     highContrastSelector,
 } from "../utilities/high-contrast";
 

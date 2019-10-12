@@ -12,11 +12,11 @@ import { designUnit, outlineWidth } from "../utilities/design-system";
 import {
     highContrastButtonColorIndicator,
     HighContrastColor,
+    highContrastColorBackground,
     highContrastForeground,
     highContrastHighlightColorIndicator,
-    ...highContrastOptOutProperty,
+    highContrastOptOutProperty,
     highContrastSelector,
-    highContrastTransparentBackground,
 } from "../utilities/high-contrast";
 
 const white: string = "#FFF";
@@ -135,7 +135,7 @@ const styles: ComponentStyles<CarouselClassNameContract, DesignSystem> = {
                     toPx<DesignSystem>(outlineWidth),
                     darkModeNeutralOutlineRest
                 ),
-                ...highContrastTransparentBackground
+                ...highContrastColorBackground
             },
             "& span::before": {
                 "border-color": darkModeNeutralForegroundRest,
@@ -158,11 +158,11 @@ const styles: ComponentStyles<CarouselClassNameContract, DesignSystem> = {
             },
             "& > svg": {
                 fill: darkModeNeutralForegroundRest,
-                [highContrastSelector]: {
-                    fill: HighContrastColor.buttonBackground,
-                },
+                ...highContrastForeground
             },
-            ...highContrastTransparentBackground
+            [highContrastSelector]: {
+                background: "none"
+            }
         },
         "& $carousel_sequenceIndicator": {
             "&::before": {
@@ -189,7 +189,7 @@ const styles: ComponentStyles<CarouselClassNameContract, DesignSystem> = {
                     toPx<DesignSystem>(outlineWidth),
                     lightModeNeutralOutlineRest
                 ),
-                ...highContrastTransparentBackground
+                ...highContrastColorBackground
             },
             "& span::before": {
                 "border-color": lightModeNeutralForegroundRest,
@@ -214,7 +214,9 @@ const styles: ComponentStyles<CarouselClassNameContract, DesignSystem> = {
                 fill: lightModeNeutralForegroundRest,
                 ...highContrastForeground
             },
-            ...highContrastTransparentBackground
+            [highContrastSelector]: {
+                background: "none"
+            }
         },
         "& $carousel_sequenceIndicator": {
             "&::before": {

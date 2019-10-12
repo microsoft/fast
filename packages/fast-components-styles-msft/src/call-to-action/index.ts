@@ -24,6 +24,8 @@ import {
     highContrastDisabledForeground,
     highContrastForeground,
     highContrastHighlightForeground,
+    highContrastLinkForeground,
+    highContrastOptOutProperty,
     highContrastSelectedForeground,
     highContrastSelector,
 } from "../utilities/high-contrast";
@@ -97,6 +99,9 @@ const styles: ComponentStyles<CallToActionClassNameContract, DesignSystem> = {
         ...applyFocusVisible("& $callToAction_glyph", {
             ...applyGlyphTransform(),
         }),
+        [highContrastSelector]: {
+            ...highContrastOptOutProperty,
+        },
     },
     callToAction_glyph: {
         fill: neutralForegroundRest,
@@ -111,12 +116,27 @@ const styles: ComponentStyles<CallToActionClassNameContract, DesignSystem> = {
         ...highContrastForeground,
     },
     callToAction__primary: {
-        "& $callToAction_glyph": {
+        "& $button_contentRegion, $callToAction_glyph": {
             fill: accentForegroundCut,
             ...highContrastSelectedForeground,
         },
-        "&:hover $callToAction_glyph": {
-            ...highContrastHighlightForeground,
+        "&:hover": {
+            "& $callToAction_glyph": {
+                ...highContrastHighlightForeground,
+            },
+        },
+        "a&": {
+            "& $button_contentRegion, & $callToAction_glyph": {
+                ...highContrastLinkForeground,
+            },
+            "&:hover": {
+                [highContrastSelector]: {
+                    "box-shadow": "none !important",
+                },
+                "a& & $button_contentRegion, & $callToAction_glyph": {
+                    ...highContrastLinkForeground,
+                },
+            },
         },
     },
     callToAction__lightweight: {

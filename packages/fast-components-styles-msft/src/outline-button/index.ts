@@ -14,9 +14,12 @@ import { horizontalSpacing } from "../utilities/density";
 import { focusOutlineWidth, outlineWidth } from "../utilities/design-system";
 import {
     highContrastDisabledBorder,
+    highContrastLinkBorder,
+    highContrastLinkOutline,
     highContrastOutline,
     highContrastOutlineFocus,
     highContrastSelected,
+    highContrastSelector,
 } from "../utilities/high-contrast";
 
 const styles: ComponentStyles<LightweightButtonClassNameContract, DesignSystem> = {
@@ -63,8 +66,17 @@ const styles: ComponentStyles<LightweightButtonClassNameContract, DesignSystem> 
         },
         ...highContrastOutline,
         "a&": {
+            ...highContrastLinkOutline,
+            "&:hover": {
+                ...highContrastLinkBorder,
+            },
             "&$button__disabled": {
                 ...highContrastDisabledBorder,
+                "&:hover": {
+                    [highContrastSelector]: {
+                        "box-shadow": "none !important",
+                    },
+                },
             },
         },
     },

@@ -23,7 +23,12 @@ storiesOf("Button", module)
         <Button appearance={ButtonAppearance.primary}>Primary Button</Button>
     ))
     .add("Primary Anchor", () => (
-        <Button appearance={ButtonAppearance.primary} href={"#"}>
+        <Button
+            appearance={ButtonAppearance.primary}
+            href="#"
+            beforeContent={glyphFactory(SVGGlyph.user)}
+            afterContent={glyphFactory(SVGGlyph.download)}
+        >
             Primary Anchor
         </Button>
     ))
@@ -45,6 +50,21 @@ storiesOf("Button", module)
     ))
     .add("Lightweight - disabled", () => (
         <Button appearance={ButtonAppearance.lightweight} disabled={true}>
+            Lightweight Button
+        </Button>
+    ))
+    .add("Lightweight Anchor", () => (
+        <Button
+            appearance={ButtonAppearance.lightweight}
+            href="#"
+            beforeContent={glyphFactory(SVGGlyph.user)}
+            afterContent={glyphFactory(SVGGlyph.download)}
+        >
+            Lightweight Button
+        </Button>
+    ))
+    .add("Lightweight Anchor - disabled", () => (
+        <Button appearance={ButtonAppearance.lightweight} href="#" disabled={true}>
             Lightweight Button
         </Button>
     ))

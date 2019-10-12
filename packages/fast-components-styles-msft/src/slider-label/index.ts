@@ -9,7 +9,7 @@ import { designUnit } from "../utilities/design-system";
 import { applyScaledTypeRamp } from "../utilities/typography";
 import {
     highContrastBackground,
-    ...highContrastOptOutProperty,
+    highContrastOptOutProperty,
     highContrastSelector,
     highContrastTextForeground
 } from "../utilities/high-contrast";

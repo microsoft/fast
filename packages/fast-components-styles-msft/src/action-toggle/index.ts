@@ -14,11 +14,13 @@ import {
 } from "../utilities/color";
 import { glyphSize, horizontalSpacing } from "../utilities/density";
 import {
+    HighContrastColor,
     highContrastDisabledForeground,
     highContrastForeground,
     highContrastSelectedForeground,
     highContrastSelector,
 } from "../utilities/high-contrast";
+import { importantValue } from "../utilities/important";
 
 // Since MSFT button is already styled, we need to override in this way to alter button classes
 export const actionToggleButtonOverrides: ComponentStyles<
@@ -50,7 +52,7 @@ const styles: ComponentStyles<ActionToggleClassNameContract, DesignSystem> = {
             "&:hover:enabled": {
                 "& $actionToggle_selectedGlyph, & $actionToggle_unselectedGlyph": {
                     [highContrastSelector]: {
-                        fill: "Highlight !important",
+                        fill: importantValue(HighContrastColor.selectedBackground),
                     },
                 },
             },
@@ -77,7 +79,7 @@ const styles: ComponentStyles<ActionToggleClassNameContract, DesignSystem> = {
         "&:hover:enabled": {
             "& $actionToggle_selectedGlyph, & $actionToggle_unselectedGlyph": {
                 [highContrastSelector]: {
-                    fill: "Highlight !important",
+                    fill: importantValue(HighContrastColor.selectedBackground),
                 },
             },
         },
