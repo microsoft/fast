@@ -36,7 +36,7 @@ export const textFieldOverrides: ComponentStyles<
         height: "calc(100% - 4px)",
         margin: "2px 1px",
         border: "none",
-        flex: "1 0 0",
+        flex: "1 0 0px", // IE 11 does not accept "0" for flex-basis. Using "0px" for compatibility.
         background: "transparent",
         "min-width": "inherit",
         "&:hover, &:hover:enabled, &:disabled, &:active, &:active:enabled, &:focus, &:focus:enabled": {
