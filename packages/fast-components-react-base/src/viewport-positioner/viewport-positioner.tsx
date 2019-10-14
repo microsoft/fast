@@ -255,35 +255,37 @@ class ViewportPositioner extends Foundation<
             horizontalPosition === ViewportPositionerHorizontalPositionLabel.insetLeft ||
             horizontalPosition === ViewportPositionerHorizontalPositionLabel.insetRight;
 
-            return super.generateClassNames(
-                classNames(
-                    viewportPositioner,
-                    [
-                        viewportPositioner__left,
+        return super.generateClassNames(
+            classNames(
+                viewportPositioner,
+                [
+                    viewportPositioner__left,
+                    horizontalPosition ===
+                        ViewportPositionerHorizontalPositionLabel.left ||
                         horizontalPosition ===
-                            ViewportPositionerHorizontalPositionLabel.left ||
+                            ViewportPositionerHorizontalPositionLabel.insetLeft,
+                ],
+                [
+                    viewportPositioner__right,
+                    horizontalPosition ===
+                        ViewportPositionerHorizontalPositionLabel.right ||
                         horizontalPosition ===
-                            ViewportPositionerHorizontalPositionLabel.insetLeft
-                    ],
-                    [
-                        viewportPositioner__right,
-                        horizontalPosition ===
-                            ViewportPositionerHorizontalPositionLabel.right ||
-                        horizontalPosition ===
-                            ViewportPositionerHorizontalPositionLabel.insetRight
-                    ],
-                    [viewportPositioner__horizontalInset, isHorizontalInset],
-                    [
-                        viewportPositioner__top,
-                        verticalPosition === ViewportPositionerVerticalPositionLabel.top ||
-                        verticalPosition === ViewportPositionerVerticalPositionLabel.insetTop
-                    ],
-                    [
-                        viewportPositioner__bottom,
-                        verticalPosition === ViewportPositionerVerticalPositionLabel.bottom ||
-                        verticalPosition === ViewportPositionerVerticalPositionLabel.insetBottom
-                    ],
-                    [viewportPositioner__verticalInset, isVerticalInset]
+                            ViewportPositionerHorizontalPositionLabel.insetRight,
+                ],
+                [viewportPositioner__horizontalInset, isHorizontalInset],
+                [
+                    viewportPositioner__top,
+                    verticalPosition === ViewportPositionerVerticalPositionLabel.top ||
+                        verticalPosition ===
+                            ViewportPositionerVerticalPositionLabel.insetTop,
+                ],
+                [
+                    viewportPositioner__bottom,
+                    verticalPosition === ViewportPositionerVerticalPositionLabel.bottom ||
+                        verticalPosition ===
+                            ViewportPositionerVerticalPositionLabel.insetBottom,
+                ],
+                [viewportPositioner__verticalInset, isVerticalInset]
             )
         );
     }
