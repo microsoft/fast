@@ -166,7 +166,7 @@ describe("viewport positioner", (): void => {
         expect(positioner.instance().state.disabled).toBe(true);
     });
 
-    test("positioning values applied correctly for specified default position - pt1", (): void => {
+    test("positioning values applied correctly for specified default position - adjacent + top + left", (): void => {
         const anchorElement: React.RefObject<HTMLDivElement> = React.createRef<
             HTMLDivElement
         >();
@@ -197,6 +197,12 @@ describe("viewport positioner", (): void => {
         expect(positioner.instance().rootElement.current.className).toContain(
             managedClasses.viewportPositioner__left
         );
+        expect(positioner.instance().rootElement.current.className).not.toContain(
+            managedClasses.viewportPositioner__right
+        );
+        expect(positioner.instance().rootElement.current.className).not.toContain(
+            managedClasses.viewportPositioner__horizontalInset
+        );
 
         expect(positioner.instance().state.currentVerticalPosition).toBe(
             ViewportPositionerVerticalPosition.top
@@ -207,9 +213,15 @@ describe("viewport positioner", (): void => {
         expect(positioner.instance().rootElement.current.className).toContain(
             managedClasses.viewportPositioner__top
         );
+        expect(positioner.instance().rootElement.current.className).not.toContain(
+            managedClasses.viewportPositioner__bottom
+        );
+        expect(positioner.instance().rootElement.current.className).not.toContain(
+            managedClasses.viewportPositioner__verticalInset
+        );
     });
 
-    test("positioning values applied correctly for specified default position - pt2", (): void => {
+    test("positioning values applied correctly for specified default position - adjacent + bottom + right", (): void => {
         const anchorElement: React.RefObject<HTMLDivElement> = React.createRef<
             HTMLDivElement
         >();
@@ -240,6 +252,12 @@ describe("viewport positioner", (): void => {
         expect(positioner.instance().rootElement.current.className).toContain(
             managedClasses.viewportPositioner__right
         );
+        expect(positioner.instance().rootElement.current.className).not.toContain(
+            managedClasses.viewportPositioner__left
+        );
+        expect(positioner.instance().rootElement.current.className).not.toContain(
+            managedClasses.viewportPositioner__horizontalInset
+        );
 
         expect(positioner.instance().state.currentVerticalPosition).toBe(
             ViewportPositionerVerticalPosition.bottom
@@ -250,9 +268,15 @@ describe("viewport positioner", (): void => {
         expect(positioner.instance().rootElement.current.className).toContain(
             managedClasses.viewportPositioner__bottom
         );
+        expect(positioner.instance().rootElement.current.className).not.toContain(
+            managedClasses.viewportPositioner__top
+        );
+        expect(positioner.instance().rootElement.current.className).not.toContain(
+            managedClasses.viewportPositioner__verticalInset
+        );
     });
 
-    test("positioning values applied correctly for specified default position - pt3", (): void => {
+    test("positioning values applied correctly for specified default position - inset + top + left", (): void => {
         const anchorElement: React.RefObject<HTMLDivElement> = React.createRef<
             HTMLDivElement
         >();
@@ -283,6 +307,9 @@ describe("viewport positioner", (): void => {
         expect(positioner.instance().rootElement.current.className).toContain(
             managedClasses.viewportPositioner__left
         );
+        expect(positioner.instance().rootElement.current.className).not.toContain(
+            managedClasses.viewportPositioner__right
+        );
         expect(positioner.instance().rootElement.current.className).toContain(
             managedClasses.viewportPositioner__horizontalInset
         );
@@ -296,12 +323,15 @@ describe("viewport positioner", (): void => {
         expect(positioner.instance().rootElement.current.className).toContain(
             managedClasses.viewportPositioner__top
         );
+        expect(positioner.instance().rootElement.current.className).not.toContain(
+            managedClasses.viewportPositioner__bottom
+        );
         expect(positioner.instance().rootElement.current.className).toContain(
             managedClasses.viewportPositioner__verticalInset
         );
     });
 
-    test("positioning values applied correctly for specified default position - pt4", (): void => {
+    test("positioning values applied correctly for specified default position - inset + bottom + right", (): void => {
         const anchorElement: React.RefObject<HTMLDivElement> = React.createRef<
             HTMLDivElement
         >();
@@ -332,6 +362,9 @@ describe("viewport positioner", (): void => {
         expect(positioner.instance().rootElement.current.className).toContain(
             managedClasses.viewportPositioner__right
         );
+        expect(positioner.instance().rootElement.current.className).not.toContain(
+            managedClasses.viewportPositioner__left
+        );
         expect(positioner.instance().rootElement.current.className).toContain(
             managedClasses.viewportPositioner__horizontalInset
         );
@@ -344,6 +377,9 @@ describe("viewport positioner", (): void => {
         expect(positioner.instance().state.yTransformOrigin).toBe("top");
         expect(positioner.instance().rootElement.current.className).toContain(
             managedClasses.viewportPositioner__bottom
+        );
+        expect(positioner.instance().rootElement.current.className).not.toContain(
+            managedClasses.viewportPositioner__top
         );
         expect(positioner.instance().rootElement.current.className).toContain(
             managedClasses.viewportPositioner__verticalInset
