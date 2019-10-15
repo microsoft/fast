@@ -30,9 +30,7 @@ export const highContrastOptOutProperty: CSSRules<{}> = applyhighContrastOptOutP
 
 // Function used to to set link color base on 'forced-color' query
 export function applyHighContrastLinkValue(): string {
-    return canUsedForcedColors()
-        ? "LinkText !important"
-        : "-ms-hotlight !important";
+    return canUsedForcedColors() ? "LinkText !important" : "-ms-hotlight !important";
 }
 // Used to to set high contrast base on 'forced-color' query
 export const highContrastLinkValue: string = applyHighContrastLinkValue();

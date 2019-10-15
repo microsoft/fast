@@ -54,7 +54,7 @@ export const textFieldOverrides: ComponentStyles<
             background: "none",
             border: "none",
             "box-shadow": "none",
-            ...highContrastButtonBackground
+            ...highContrastButtonBackground,
         },
         ...highContrastForeground,
     },

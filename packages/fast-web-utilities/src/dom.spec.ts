@@ -1,4 +1,9 @@
-import { canUseCssGrid, canUsedForcedColors, canUseFocusVisible, getKeyCode } from "./dom";
+import {
+    canUseCssGrid,
+    canUsedForcedColors,
+    canUseFocusVisible,
+    getKeyCode,
+} from "./dom";
 import { KeyCodes } from "./key-codes";
 
 describe("getKeyCode", () => {
