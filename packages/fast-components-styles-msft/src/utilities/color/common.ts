@@ -148,10 +148,16 @@ export function swatchFamilyToSwatchRecipeFactory<T extends SwatchFamily>(
  * Supports #RRGGBB and rgb(r, g, b) formats
  */
 export function parseColorString(color: string): ColorRGBA64 {
-    if (isColorStringHexRGB(color)) {
-        return parseColorHexRGB(color);
-    } else if (isColorStringWebRGB(color)) {
-        return parseColorWebRGB(color);
+    let parsed: ColorRGBA64 | null = parseColorHexRGB(color);
+
+    if (color !== null) {
+        return parsed;
+    } else {
+        parsed = parseColorWebRGB(color);
+
+        if (parsed !== null) {
+            return parsed;
+        }
     }
 
     throw new Error(
