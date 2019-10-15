@@ -5,7 +5,7 @@ import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-
 import { classNames } from "@microsoft/fast-web-utilities";
 
 export interface CanvasClassNamesContract {
-    canvas: string;
+    canvas?: string;
 }
 
 export const canvasStyleSheet: ComponentStyles<CanvasClassNamesContract, undefined> = {

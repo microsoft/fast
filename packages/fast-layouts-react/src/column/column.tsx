@@ -7,7 +7,7 @@ import { ColumnHandledProps, ColumnProps, ColumnUnhandledProps } from "./column.
 import { canUseCssGrid, classNames } from "@microsoft/fast-web-utilities";
 
 export interface ColumnClassNamesContract {
-    column: string;
+    column?: string;
 }
 export class Column extends Foundation<ColumnHandledProps, ColumnUnhandledProps, {}> {
     public static displayName: string = "Column";
