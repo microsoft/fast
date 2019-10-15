@@ -1,4 +1,3 @@
-import { clamp } from "lodash-es";
 import {
     checkDesignSystemResolver,
     DesignSystem,
@@ -7,6 +6,7 @@ import {
 import { backgroundColor } from "../../utilities/design-system";
 import { accentPalette, neutralPalette } from "../design-system";
 import {
+    clamp,
     colorMatches,
     contrast,
     isValidColor,
@@ -14,7 +14,6 @@ import {
     Swatch,
     SwatchResolver,
 } from "./common";
-import { black, white } from "./color-constants";
 
 /**
  * The named palettes of the MSFT design system
