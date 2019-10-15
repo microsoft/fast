@@ -209,6 +209,42 @@ describe("Pane", (): void => {
         expect(rendered.props().overlay).toBe(true);
     });
 
+    test("should add a `pane__overlay`className when the `overlay` prop is passed", () => {
+        const rendered: any = shallow(
+            <Pane overlay={true} managedClasses={managedClasses} />
+        );
+
+        expect(rendered.prop("className")).toContain("pane__overlay");
+    });
+
+    test("should set a inline style value for width when the `overlay` prop is passed", () => {
+        const rendered: any = shallow(
+            <Pane
+                overlay={true}
+                minWidth={1}
+                initialWidth={1}
+                managedClasses={managedClasses}
+            />
+        );
+
+        expect(rendered.props().style.width).toStrictEqual(`${rendered.state().width}px`);
+    });
+
+    test("should set a inline style value for flexBasis equal to the width when the `overlay` prop is FALSE", () => {
+        const rendered: any = shallow(
+            <Pane
+                overlay={false}
+                minWidth={1}
+                initialWidth={1}
+                managedClasses={managedClasses}
+            />
+        );
+
+        expect(rendered.props().style.flexBasis).toStrictEqual(
+            `${rendered.state().width}px`
+        );
+    });
+
     test("should default `hidden` to false if no `hidden` prop is passed", () => {
         const rendered: any = mount(<Pane managedClasses={managedClasses} />);
 
