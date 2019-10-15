@@ -41,7 +41,6 @@ function flipperStyles(): CSSRules<{}> {
         position: "absolute",
         top: "calc(50% - 20px)",
         "z-index": "100",
-        display: "block",
         opacity: "0",
         transition: "all 0.2s ease-in-out",
     };
