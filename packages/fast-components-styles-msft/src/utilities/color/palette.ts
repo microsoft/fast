@@ -140,11 +140,13 @@ export function findClosestSwatchIndex(
 
 /**
  * Determines if the design-system should be considered in "dark mode".
+ * We're in dark mode if we have more contrast between #000000 and our background
+ * color than #FFFFFF and our background color. That threshold can be expressed as a relative luminance
+ * using the contrast formula as (1 + 0.5) / (bg + 0.05) === (bg + 0.05) / (0 + 0.05),
+ * which reduces to the following, where bg is the relative luminance of the background color
  */
 export function isDarkMode(designSystem: DesignSystem): boolean {
-    const bg: string = backgroundColor(designSystem);
-
-    return contrast(white, bg) >= contrast(black, bg);
+    return luminance(backgroundColor(designSystem)) <= (-0.1 + Math.sqrt(0.21)) / 2;
 }
 
 /**
@@ -173,10 +175,12 @@ export function swatchByMode(
         valueB?: number | DesignSystemResolver<number>
     ): DesignSystemResolver<Swatch> => {
         return (designSystem: DesignSystem): Swatch => {
-            const currentPalette: Palette = paletteResolver(designSystem);
-            const bEval: number = checkDesignSystemResolver(valueB, designSystem);
-            const aEval: number = checkDesignSystemResolver(valueA, designSystem);
-            return getSwatch(isDarkMode(designSystem) ? bEval : aEval, currentPalette);
+            return getSwatch(
+                isDarkMode(designSystem)
+                    ? checkDesignSystemResolver(valueB, designSystem)
+                    : checkDesignSystemResolver(valueA, designSystem),
+                paletteResolver(designSystem)
+            );
         };
     };
 }
