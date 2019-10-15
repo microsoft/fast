@@ -21,10 +21,10 @@ import { glyphSize, height } from "../utilities/density";
 import { outlineWidth } from "../utilities/design-system";
 import { applyCursorPointer } from "../utilities/cursor";
 import {
+    highContrastColorBackground,
     highContrastHighlightBackground,
     highContrastOutline,
     highContrastSelectedForeground,
-    highContrastColorBackground,
 } from "../utilities/high-contrast";
 
 const styles: ComponentStyles<FlipperClassNameContract, DesignSystem> = {
@@ -58,7 +58,7 @@ const styles: ComponentStyles<FlipperClassNameContract, DesignSystem> = {
             right: "0",
             bottom: "0",
             left: "0",
-            ...highContrastColorBackground
+            ...highContrastColorBackground,
         },
         "&:active": {
             "&::before": {

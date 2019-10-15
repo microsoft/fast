@@ -66,7 +66,7 @@ const styles: ComponentStyles<PivotClassNameContract, DesignSystem> = {
             "border-color": neutralFocus,
             ...highContrastBorderColor,
         }),
-        ...highContrastForeground
+        ...highContrastForeground,
     },
     pivot_tab__active: {
         ...highContrastForeground,

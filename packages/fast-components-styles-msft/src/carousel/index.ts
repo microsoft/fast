@@ -96,7 +96,7 @@ const styles: ComponentStyles<CarouselClassNameContract, DesignSystem> = {
             "&:hover": {
                 "&::before": {
                     opacity: "0.9",
-                    ...highContrastHighlightColorIndicator
+                    ...highContrastHighlightColorIndicator,
                 },
             },
         },
@@ -135,7 +135,7 @@ const styles: ComponentStyles<CarouselClassNameContract, DesignSystem> = {
                     toPx<DesignSystem>(outlineWidth),
                     darkModeNeutralOutlineRest
                 ),
-                ...highContrastColorBackground
+                ...highContrastColorBackground,
             },
             "& span::before": {
                 "border-color": darkModeNeutralForegroundRest,
@@ -158,22 +158,22 @@ const styles: ComponentStyles<CarouselClassNameContract, DesignSystem> = {
             },
             "& > svg": {
                 fill: darkModeNeutralForegroundRest,
-                ...highContrastForeground
+                ...highContrastForeground,
             },
             [highContrastSelector]: {
-                background: "none"
-            }
+                background: "none",
+            },
         },
         "& $carousel_sequenceIndicator": {
             "&::before": {
                 background: darkModeNeutralFillStealthRest,
                 "border-color": darkModeNeutralOutlineRest,
-                ...highContrastButtonColorIndicator
+                ...highContrastButtonColorIndicator,
             },
             "&$carousel_sequenceIndicator__active": {
                 "&::before": {
                     background: darkModeNeutralFillStealthRest,
-                    ...highContrastHighlightColorIndicator
+                    ...highContrastHighlightColorIndicator,
                 },
             },
         },
@@ -189,7 +189,7 @@ const styles: ComponentStyles<CarouselClassNameContract, DesignSystem> = {
                     toPx<DesignSystem>(outlineWidth),
                     lightModeNeutralOutlineRest
                 ),
-                ...highContrastColorBackground
+                ...highContrastColorBackground,
             },
             "& span::before": {
                 "border-color": lightModeNeutralForegroundRest,
@@ -212,22 +212,22 @@ const styles: ComponentStyles<CarouselClassNameContract, DesignSystem> = {
             },
             "& > svg": {
                 fill: lightModeNeutralForegroundRest,
-                ...highContrastForeground
+                ...highContrastForeground,
             },
             [highContrastSelector]: {
-                background: "none"
-            }
+                background: "none",
+            },
         },
         "& $carousel_sequenceIndicator": {
             "&::before": {
                 background: lightModeNeutralFillStealthRest,
                 "border-color": lightModeNeutralOutlineRest,
-                ...highContrastButtonColorIndicator
+                ...highContrastButtonColorIndicator,
             },
             "&$carousel_sequenceIndicator__active": {
                 "&::before": {
                     background: lightModeNeutralFillStealthRest,
-                    ...highContrastHighlightColorIndicator
+                    ...highContrastHighlightColorIndicator,
                 },
             },
         },

@@ -44,7 +44,7 @@ export const highContrastStealth: CSSRules<DesignSystem> = {
         border: "none",
         color: HighContrastColor.buttonText,
         fill: HighContrastColor.buttonText,
-        ...highContrastOptOutProperty
+        ...highContrastOptOutProperty,
     },
 };
 
@@ -55,7 +55,7 @@ export const highContrastOutline: CSSRules<DesignSystem> = {
         "border-color": HighContrastColor.buttonText,
         color: HighContrastColor.buttonText,
         fill: HighContrastColor.buttonText,
-        ...highContrastOptOutProperty
+        ...highContrastOptOutProperty,
     },
 };
 
@@ -66,7 +66,7 @@ export const highContrastAccent: CSSRules<DesignSystem> = {
         "border-color": HighContrastColor.selectedBackground,
         color: HighContrastColor.selectedText,
         fill: HighContrastColor.selectedText,
-        ...highContrastOptOutProperty
+        ...highContrastOptOutProperty,
     },
 };
 
@@ -248,6 +248,13 @@ export const highContrastBackground: CSSRules<DesignSystem> = {
     },
 };
 
+// Used to set background to be 'ButtonFace' color
+export const highContrastButtonBackground: CSSRules<DesignSystem> = {
+    [highContrastSelector]: {
+        background: HighContrastColor.buttonBackground,
+    },
+};
+
 // Used to set background to be 'HighlightText' color
 export const highContrastSelectedBackground: CSSRules<DesignSystem> = {
     [highContrastSelector]: {
@@ -265,7 +272,7 @@ export const highContrastHighlightBackground: CSSRules<DesignSystem> = {
 // Used to set background to be 'link' color
 export const highContrastLinkBackground: CSSRules<DesignSystem> = {
     [highContrastSelector]: {
-        background: highContrastLinkValue
+        background: highContrastLinkValue,
     },
 };
 
@@ -276,7 +283,7 @@ export const highContrastButtonColorIndicator: CSSRules<DesignSystem> = {
         background: HighContrastColor.buttonBackground,
         "border-color": HighContrastColor.selectedText,
     },
-}
+};
 
 // Used to set background to be 'Highlight' and border to 'HighlightText'
 export const highContrastHighlightColorIndicator: CSSRules<DesignSystem> = {
@@ -285,4 +292,4 @@ export const highContrastHighlightColorIndicator: CSSRules<DesignSystem> = {
         background: HighContrastColor.selectedBackground,
         "border-color": HighContrastColor.selectedText,
     },
-}
+};

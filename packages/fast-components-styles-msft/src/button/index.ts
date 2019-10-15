@@ -196,7 +196,7 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = {
         ...highContrastAccent,
         "a&": {
             "& $button_beforeContent, & $button_afterContent": {
-                ...highContrastLinkForeground
+                ...highContrastLinkForeground,
             },
         },
     },
@@ -234,6 +234,7 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = {
             ),
             "border-color": neutralFocus,
         }),
+        ...highContrastOutline,
     },
     button__lightweight: {
         ...applyTransparentBackplateStyles,
@@ -244,7 +245,7 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = {
                 },
                 "& $button_contentRegion::before": {
                     background: highContrastLinkValue,
-                }
+                },
             },
             "&$button__disabled": {
                 ...highContrastDisabledBorder,
@@ -265,7 +266,7 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = {
                 },
                 "& $button_contentRegion::before": {
                     background: highContrastLinkValue,
-                }
+                },
             },
             "&$button__disabled": {
                 ...highContrastDisabledBorder,

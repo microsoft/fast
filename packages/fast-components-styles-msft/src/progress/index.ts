@@ -13,7 +13,7 @@ import {
     highContrastBackground,
     HighContrastColor,
     highContrastOptOutProperty,
-    highContrastSelector
+    highContrastSelector,
 } from "../utilities/high-contrast";
 
 const styles: ComponentStyles<ProgressClassNameContract, DesignSystem> = {

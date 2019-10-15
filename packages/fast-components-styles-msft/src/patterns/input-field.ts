@@ -1,5 +1,5 @@
-import { horizontalSpacing } from "../utilities/density";
 import { CSSRules } from "@microsoft/fast-jss-manager";
+import { applyCornerRadius } from "../utilities/border";
 import { DesignSystem } from "../design-system";
 import { format, toPx } from "@microsoft/fast-jss-utilities";
 import {
@@ -15,14 +15,16 @@ import {
     neutralOutlineHover,
     neutralOutlineRest,
 } from "../utilities/color";
-import { applyCornerRadius } from "../utilities/border";
+import { horizontalSpacing } from "../utilities/density";
 import { applyDisabledState } from "../utilities/disabled";
 import { applyScaledTypeRamp } from "../utilities/typography";
 import { applyFontWeightNormal } from "../utilities/fonts";
 import { outlineWidth } from "../utilities/design-system";
 import {
+    highContrastButtonBackground,
     HighContrastColor,
     highContrastDisabledBorder,
+    highContrastOptOutProperty,
     highContrastOutlineFocus,
     highContrastSelector,
 } from "../utilities/high-contrast";
@@ -53,7 +55,7 @@ export function inputFieldStyles(
             background: neutralFillInputHover,
             "border-color": neutralOutlineHover,
             [highContrastSelector]: {
-                background: "transparent",
+                background: HighContrastColor.buttonBackground,
                 border: format(
                     "{0} solid {1}",
                     toPx<DesignSystem>(outlineWidth),
@@ -81,6 +83,11 @@ export function inputFieldStyles(
                 color: HighContrastColor.disabledText,
             },
         },
+        [highContrastSelector]: {
+            ...highContrastOptOutProperty,
+            background: HighContrastColor.buttonBackground,
+            "border-color": HighContrastColor.buttonText,
+        },
     };
 }
 
@@ -93,7 +100,7 @@ export function filledInputFieldStyles(): CSSRules<{}> {
             background: neutralFillHover,
             "border-color": "transparent",
             [highContrastSelector]: {
-                background: HighContrastColor.background,
+                background: HighContrastColor.buttonBackground,
                 border: format(
                     "{0} solid {1}",
                     toPx<DesignSystem>(outlineWidth),
@@ -112,6 +119,11 @@ export function filledInputFieldStyles(): CSSRules<{}> {
             [highContrastSelector]: {
                 color: HighContrastColor.disabledText,
             },
+        },
+        [highContrastSelector]: {
+            ...highContrastOptOutProperty,
+            background: HighContrastColor.buttonBackground,
+            "border-color": HighContrastColor.buttonText,
         },
     };
 }

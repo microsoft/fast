@@ -13,7 +13,13 @@ import {
     neutralOutlineRest,
 } from "../utilities/color";
 import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager";
-import { applyFocusVisible, directionSwitch, format, subtract, toPx } from "@microsoft/fast-jss-utilities";
+import {
+    applyFocusVisible,
+    directionSwitch,
+    format,
+    subtract,
+    toPx,
+} from "@microsoft/fast-jss-utilities";
 import { DesignSystem } from "../design-system";
 import { applyCornerRadius } from "../utilities/border";
 import { TextFieldClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
@@ -44,7 +50,7 @@ export const textFieldOverrides: ComponentStyles<
         background: "transparent",
         "min-width": "inherit",
         "&:hover, &:hover:enabled, &:disabled, &:active, &:active:enabled, &:focus, &:focus:enabled": {
-            background: HighContrastColor.background,
+            background: HighContrastColor.buttonBackground,
             border: "none",
             "box-shadow": "none",
         },
@@ -98,7 +104,7 @@ const styles: ComponentStyles<TextActionClassNameContract, DesignSystem> = {
             background: neutralFillHover,
             "border-color": "transparent",
             [highContrastSelector]: {
-                background: "transparent",
+                background: HighContrastColor.buttonBackground,
                 "border-color": HighContrastColor.selectedBackground,
             },
         },
@@ -107,7 +113,7 @@ const styles: ComponentStyles<TextActionClassNameContract, DesignSystem> = {
             "border-color": "transparent",
         },
         [highContrastSelector]: {
-            background: "transparent",
+            background: HighContrastColor.buttonBackground,
             border: format(
                 "{0} solid {1}",
                 toPx<DesignSystem>(outlineWidth),
@@ -178,10 +184,10 @@ const styles: ComponentStyles<TextActionClassNameContract, DesignSystem> = {
             fill: HighContrastColor.buttonText,
         },
         "&:hover": {
-            ...highContrastSelected
+            ...highContrastSelected,
         },
         "&:active": {
-            ...highContrastSelected
+            ...highContrastSelected,
         },
         "&:disabled": {},
         ...applyFocusVisible<DesignSystem>({

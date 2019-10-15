@@ -1,4 +1,5 @@
 import React from "react";
+import "../utilities/match-media";
 import * as ShallowRenderer from "react-test-renderer/shallow";
 import Adapter from "enzyme-adapter-react-16/build";
 import { configure, mount, shallow } from "enzyme";

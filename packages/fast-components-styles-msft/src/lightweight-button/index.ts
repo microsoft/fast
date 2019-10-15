@@ -12,6 +12,7 @@ import { applyFocusVisible, toPx } from "@microsoft/fast-jss-utilities";
 import { focusOutlineWidth } from "../utilities/design-system";
 import {
     highContrastBackground,
+    HighContrastColor,
     highContrastDisabledForeground,
     highContrastHighlightBackground,
     highContrastHighlightForeground,
@@ -69,6 +70,7 @@ const styles: ComponentStyles<LightweightButtonClassNameContract, DesignSystem> 
         ...highContrastStealth,
         "a&": {
             [highContrastSelector]: {
+                background: HighContrastColor.background,
                 color: highContrastLinkValue,
                 fill: highContrastLinkValue,
             },

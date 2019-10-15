@@ -1,9 +1,5 @@
+import { DesignSystem, DesignSystemResolver } from "../design-system";
 import { ComponentStyles } from "@microsoft/fast-jss-manager";
-import {
-    densityCategorySwitch,
-    heightNumber,
-    horizontalSpacing,
-} from "../utilities/density";
 import { CheckboxClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import {
     add,
@@ -24,7 +20,11 @@ import {
     neutralOutlineRest,
 } from "../utilities/color";
 import { applyCornerRadius } from "../utilities/border";
-import { DesignSystem, DesignSystemResolver } from "../design-system";
+import {
+    densityCategorySwitch,
+    heightNumber,
+    horizontalSpacing,
+} from "../utilities/density";
 import { applyDisabledState } from "../utilities/disabled";
 import { applyScaledTypeRamp } from "../utilities/typography";
 import { designUnit, outlineWidth } from "../utilities/design-system";
@@ -32,13 +32,13 @@ import { applyCursorDisabled, applyCursorPointer } from "../utilities/cursor";
 import { ColorRecipe } from "src/utilities/color/common";
 import {
     HighContrastColor,
+    highContrastColorBackground,
     highContrastDisabledBorder,
     highContrastHighlightBackground,
     highContrastOptOutProperty,
     highContrastSelectedBackground,
     highContrastSelector,
     highContrastTextForeground,
-    highContrastColorBackground,
 } from "../utilities/high-contrast";
 
 const inputSize: DesignSystemResolver<string> = toPx(
@@ -71,8 +71,8 @@ const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = {
             "padding-right": directionSwitch("", horizontalSpacing(2)),
         },
         [highContrastSelector]: {
-            ...highContrastOptOutProperty
-        }
+            ...highContrastOptOutProperty,
+        },
     },
     checkbox_input: {
         position: "absolute",
@@ -117,7 +117,7 @@ const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = {
                 ),
             },
         }),
-        ...highContrastColorBackground
+        ...highContrastColorBackground,
     },
     checkbox_stateIndicator: {
         position: "relative",

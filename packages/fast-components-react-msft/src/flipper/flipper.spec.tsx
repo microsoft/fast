@@ -1,4 +1,5 @@
 import React from "react";
+import "../utilities/match-media";
 import Adapter from "enzyme-adapter-react-16";
 import { configure, mount, shallow } from "enzyme";
 import MSFTFlipper, { FlipperHandledProps, FlipperUnhandledProps } from "./flipper";
