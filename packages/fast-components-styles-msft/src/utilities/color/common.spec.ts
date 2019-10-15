@@ -41,7 +41,7 @@ describe("colorMatches", (): void => {
     });
 });
 
-describe("parseColorHexRGB", (): void => {
+describe("parseColorString", (): void => {
     test("should parse #RGB color strings", (): void => {
         expect(parseColorString("#FFF") instanceof ColorRGBA64).toBe(true);
     });

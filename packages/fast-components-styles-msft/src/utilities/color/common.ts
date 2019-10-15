@@ -150,14 +150,14 @@ export function swatchFamilyToSwatchRecipeFactory<T extends SwatchFamily>(
 export function parseColorString(color: string): ColorRGBA64 {
     let parsed: ColorRGBA64 | null = parseColorHexRGB(color);
 
-    if (color !== null) {
+    if (parsed !== null) {
         return parsed;
-    } else {
-        parsed = parseColorWebRGB(color);
+    } 
 
-        if (parsed !== null) {
-            return parsed;
-        }
+    parsed = parseColorWebRGB(color);
+
+    if (parsed !== null) {
+        return parsed;
     }
 
     throw new Error(
