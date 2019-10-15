@@ -122,7 +122,7 @@ const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = {
             background: neutralFillInputHover,
             "border-color": neutralOutlineHover,
             [highContrastSelector]: {
-                background: HighContrastColor.selectedText,
+                background: HighContrastColor.background,
                 "border-color": HighContrastColor.selectedBackground,
                 "& + span": {
                     background: HighContrastColor.selectedBackground,
@@ -141,7 +141,7 @@ const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = {
             },
         }),
         [highContrastSelector]: {
-            background: HighContrastColor.buttonBackground,
+            background: HighContrastColor.background,
             "border-color": HighContrastColor.buttonText,
             "& + span": {
                 background: HighContrastColor.buttonText,
@@ -211,8 +211,6 @@ const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = {
         ...applyDisabledState(),
         "& $toggle_input, & $toggle_label, & $toggle_statusMessage": {
             ...applyCursorDisabled(),
-            background: neutralFillSelected,
-            "border-color": neutralFillSelected,
             [highContrastSelector]: {
                 background: "transparent",
                 "border-color": importantValue(HighContrastColor.disabledText),

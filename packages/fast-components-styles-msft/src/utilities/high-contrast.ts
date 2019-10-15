@@ -1,6 +1,7 @@
 import { CSSRules } from "@microsoft/fast-jss-manager";
 import { DesignSystem } from "../design-system";
 import { format, toPx } from "@microsoft/fast-jss-utilities";
+import { canUsedForcedColors } from "@microsoft/fast-web-utilities";
 import { focusOutlineWidth, outlineWidth } from "./design-system";
 import { importantValue } from "./important";
 
@@ -19,7 +20,7 @@ export enum HighContrastColor {
 }
 
 // Function used to to opt-out of high contrast color scheme for '-ms' prefixes
-export function applyhighContrastOptOutProperty(): CSSRules<{}> {
+function applyhighContrastOptOutProperty(): CSSRules<{}> {
     return {
         "-ms-high-contrast-adjust": "none",
     };
@@ -28,14 +29,13 @@ export function applyhighContrastOptOutProperty(): CSSRules<{}> {
 export const highContrastOptOutProperty: CSSRules<{}> = applyhighContrastOptOutProperty();
 
 // Function used to to set link color base on 'forced-color' query
-export function applyHighContrastlinkValue(): string {
-    return window.matchMedia("(forced-colors: none)").matches ||
-        window.matchMedia("(forced-colors: active)").matches
+export function applyHighContrastLinkValue(): string {
+    return canUsedForcedColors()
         ? "LinkText !important"
         : "-ms-hotlight !important";
 }
 // Used to to set high contrast base on 'forced-color' query
-export const highContrastLinkValue: string = applyHighContrastlinkValue();
+export const highContrastLinkValue: string = applyHighContrastLinkValue();
 
 // Used to remove text backplate and borders in 'ButtonText' colors
 export const highContrastStealth: CSSRules<DesignSystem> = {

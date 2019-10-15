@@ -1,4 +1,4 @@
-import { canUseCssGrid, canUseFocusVisible, getKeyCode } from "./dom";
+import { canUseCssGrid, canUsedForcedColors, canUseFocusVisible, getKeyCode } from "./dom";
 import { KeyCodes } from "./key-codes";
 
 describe("getKeyCode", () => {
@@ -175,5 +175,35 @@ describe("canUseCssGrid", () => {
         expect(() => {
             canUseCssGrid();
         }).not.toThrow();
+    });
+});
+
+describe("canUseForcedColors", () => {
+    beforeEach(() => {
+        // tslint:disable-next-line:typedef
+        window.matchMedia = jest.fn().mockImplementation(query => {
+            return {
+                matches: true,
+                media: query,
+            };
+        });
+    });
+    test("should return true if forced color is enabled", () => {
+        expect(canUsedForcedColors()).toBe(true);
+    });
+});
+
+describe("canUseForcedColors", () => {
+    beforeEach(() => {
+        // tslint:disable-next-line:typedef
+        window.matchMedia = jest.fn().mockImplementation(query => {
+            return {
+                matches: false,
+                media: query,
+            };
+        });
+    });
+    test("should return false if forced color is not enabled", () => {
+        expect(canUsedForcedColors()).toBe(false);
     });
 });
