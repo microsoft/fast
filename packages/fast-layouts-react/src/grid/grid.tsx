@@ -134,9 +134,6 @@ export class Grid extends Foundation<GridHandledProps, GridUnhandledProps, {}> {
     };
 
     private generateStyleAttributes(): React.CSSProperties {
-        const foo: string = `1fr (${this.generateGutter()})[${this.props.columnCount -
-            1}]`;
-
         return {
             display: Grid.display,
             ...(canUseCssGrid() ? this.cssGridStyles() : this.msGridStyles()),
