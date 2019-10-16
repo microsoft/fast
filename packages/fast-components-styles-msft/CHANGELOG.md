@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.22.3](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-styles-msft@4.22.2...@microsoft/fast-components-styles-msft@4.22.3) (2019-10-16)
+
+
+### Bug Fixes
+
+* remove incorrectly applied display value of block from flipper style in carousel ([#2331](https://github.com/Microsoft/fast-dna/issues/2331)) ([59ab13f](https://github.com/Microsoft/fast-dna/commit/59ab13f))
+* text-action compatibility with ie11 ([#2317](https://github.com/Microsoft/fast-dna/issues/2317)) ([466098c](https://github.com/Microsoft/fast-dna/commit/466098c))
+
+
+
+
+
 ## [4.22.2](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-styles-msft@4.22.1...@microsoft/fast-components-styles-msft@4.22.2) (2019-10-02)
 
 
