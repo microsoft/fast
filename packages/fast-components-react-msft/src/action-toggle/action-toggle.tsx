@@ -147,7 +147,7 @@ class ActionToggle extends Foundation<
      * Handles onClick
      */
     private handleToggleChange = (e: React.MouseEvent<HTMLElement>): void => {
-        if (isBoolean(this.props.selected) && isFunction(this.props.selected)) {
+        if (!isBoolean(this.props.selected)) {
             this.setState({
                 selected: !this.state.selected,
             });

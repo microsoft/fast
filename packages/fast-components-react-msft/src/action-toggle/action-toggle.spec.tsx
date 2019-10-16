@@ -28,6 +28,7 @@ describe("action toggle", (): void => {
         actionToggle__primary: "actionToggle__primary",
         actionToggle__stealth: "actionToggle__stealth",
         actionToggle__disabled: "actionToggle__disabled",
+        actionToggle__selected: "actionToggle__selected"
     };
 
     test("should have a displayName that matches the component name", () => {
@@ -247,12 +248,15 @@ describe("action toggle", (): void => {
     });
 
     test("should apply selected class after click event", () => {
+        const onToggle: any = jest.fn();
         const props: ActionToggleHandledProps = {
             selectedLabel: "selected",
             unselectedLabel: "unselected",
+            managedClasses: classes,
+            onToggle
         };
-        const onToggle: any = jest.fn();
-        const rendered: any = mount(<ActionToggle {...props} onToggle={onToggle} />);
+
+        const rendered: any = mount(<MSFTActionToggle {...props} />);
 
         expect(rendered.find("button").prop("className")).not.toContain(
             "actionToggle__selected"
