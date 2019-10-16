@@ -10,6 +10,12 @@ import { ComponentStyles } from "@microsoft/fast-jss-manager";
 import { HypertextClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import { applyFocusVisible, format, toPx } from "@microsoft/fast-jss-utilities";
 import { focusOutlineWidth, outlineWidth } from "../utilities/design-system";
+import {
+    HighContrastColor,
+    highContrastLinkValue,
+    highContrastOptOutProperty,
+    highContrastSelector
+} from "../utilities/high-contrast";
 
 const styles: ComponentStyles<HypertextClassNameContract, DesignSystem> = {
     hypertext: {
@@ -31,6 +37,14 @@ const styles: ComponentStyles<HypertextClassNameContract, DesignSystem> = {
                     accentForegroundHover
                 ),
                 color: accentForegroundHover,
+                [highContrastSelector]: {
+                    "border-bottom": format<DesignSystem>(
+                        "{0} solid {1}",
+                        toPx(focusOutlineWidth),
+                        () => highContrastLinkValue
+                    ),
+                    color: highContrastLinkValue,
+                }
             },
             "&:active": {
                 "border-bottom": format<DesignSystem>(
@@ -46,8 +60,29 @@ const styles: ComponentStyles<HypertextClassNameContract, DesignSystem> = {
                     toPx(focusOutlineWidth),
                     neutralFocus
                 ),
+                [highContrastSelector]: {
+                    "border-bottom": format<DesignSystem>(
+                        "{0} solid {1}",
+                        toPx(focusOutlineWidth),
+                        () => highContrastLinkValue
+                    ),
+                    color: highContrastLinkValue,
+                }
             }),
+            [highContrastSelector]: {
+                "border-bottom": format<DesignSystem>(
+                    "{0} solid {1}",
+                    toPx(outlineWidth),
+                    () => highContrastLinkValue
+                ),
+                color: highContrastLinkValue,
+
+            }
         },
+        [highContrastSelector]: {
+            ...highContrastOptOutProperty,
+            color: HighContrastColor.text
+        }
     },
 };
 

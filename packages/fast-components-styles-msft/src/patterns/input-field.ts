@@ -21,7 +21,6 @@ import { applyScaledTypeRamp } from "../utilities/typography";
 import { applyFontWeightNormal } from "../utilities/fonts";
 import { outlineWidth } from "../utilities/design-system";
 import {
-    highContrastButtonBackground,
     HighContrastColor,
     highContrastDisabledBorder,
     highContrastOptOutProperty,
@@ -87,6 +86,7 @@ export function inputFieldStyles(
             ...highContrastOptOutProperty,
             background: HighContrastColor.buttonBackground,
             "border-color": HighContrastColor.buttonText,
+            color: HighContrastColor.buttonText,
         },
     };
 }
