@@ -81,7 +81,7 @@
     "lodash-es": "^4.0.0",
     "prettier": "1.14.3",
     "react": "^16.3.0",
-    "react-dnd-html5-backend": "^7.4.4",
+    "react-dnd-html5-backend": "^7.7.0",
     "react-dom": "^16.6.0",
     "react-redux": "^5.0.7",
     "react-router-dom": "^4.2.2",
@@ -114,7 +114,7 @@
     "ajv": "^6.10.0",
     "exenv-es6": "^1.0.0",
     "raf-throttle": "^2.0.3",
-    "react-dnd": "^7.4.5",
+    "react-dnd": "^7.7.0",
     "utility-types": "^3.4.1"
   }
 }
