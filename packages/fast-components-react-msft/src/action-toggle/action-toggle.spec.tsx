@@ -28,7 +28,7 @@ describe("action toggle", (): void => {
         actionToggle__primary: "actionToggle__primary",
         actionToggle__stealth: "actionToggle__stealth",
         actionToggle__disabled: "actionToggle__disabled",
-        actionToggle__selected: "actionToggle__selected"
+        actionToggle__selected: "actionToggle__selected",
     };
 
     test("should have a displayName that matches the component name", () => {
@@ -253,7 +253,7 @@ describe("action toggle", (): void => {
             selectedLabel: "selected",
             unselectedLabel: "unselected",
             managedClasses: classes,
-            onToggle
+            onToggle,
         };
 
         const rendered: any = mount(<MSFTActionToggle {...props} />);
