@@ -106,7 +106,7 @@ export default {
                 scaleToFit: {
                     title: "Scale to fit",
                     type: "boolean",
-                    default: "false",
+                    default: false,
                 },
             },
         },

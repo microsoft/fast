@@ -18,7 +18,11 @@ import {
     ViewportPositionerUnhandledProps,
     ViewportPositionerVerticalPosition,
 } from "./viewport-positioner.props";
-import { ThemeProvider } from "emotion-theming";
+
+export interface Dimension {
+    height: number;
+    width: number;
+}
 
 export interface ViewportPositionerState {
     disabled: boolean;
@@ -897,78 +901,87 @@ class ViewportPositioner extends Foundation<
             }
         }
 
+        const nextPositionerDimension: Dimension = this.getNextPositionerDimension(
+            desiredHorizontalPosition,
+            desiredVerticalPosition
+        );
+
         this.setState(Object.assign(
             {
                 xTranslate: this.getHorizontalTranslate(desiredHorizontalPosition),
                 yTranslate: this.getVerticalTranslate(desiredVerticalPosition),
                 initialLayoutComplete: true,
             },
-            this.getHorizontalPositioningState(desiredHorizontalPosition),
-            this.getVerticalPositioningState(desiredVerticalPosition)
+            this.getHorizontalPositioningState(
+                desiredHorizontalPosition,
+                nextPositionerDimension
+            ),
+            this.getVerticalPositioningState(
+                desiredVerticalPosition,
+                nextPositionerDimension
+            )
         ) as ViewportPositionerState);
     };
 
     /**
-     * Get width of positioner for next render
+     * Get positioner dimensions for next render
      */
-    private getNextPositionerWidth = (
-        desiredHorizontalPosition: ViewportPositionerHorizontalPositionLabel
-    ): number => {
-        let newPositionerRectWidth: number = this.positionerRect.width;
+    private getNextPositionerDimension = (
+        desiredHorizontalPosition: ViewportPositionerHorizontalPositionLabel,
+        desiredVerticalPosition: ViewportPositionerVerticalPositionLabel
+    ): Dimension => {
+        const newPositionerDimension: Dimension = {
+            height: this.positionerRect.height,
+            width: this.positionerRect.width,
+        };
+
         if (this.props.scaleToFit) {
-            const availableWidth: number = this.getAvailableWidth(
-                desiredHorizontalPosition
+            newPositionerDimension.height = this.getConstrainedAxisDimension(
+                this.getAvailableHeight(desiredVerticalPosition),
+                this.viewportRect.height
             );
-            newPositionerRectWidth =
-                availableWidth > this.viewportRect.width
-                    ? this.viewportRect.width
-                    : availableWidth;
+            newPositionerDimension.width = this.getConstrainedAxisDimension(
+                this.getAvailableWidth(desiredHorizontalPosition),
+                this.viewportRect.width
+            );
         }
-        return newPositionerRectWidth;
+
+        return newPositionerDimension;
     };
 
     /**
-     * Get height of positioner for next render
+     * Constrains axis dimension to max value
      */
-    private getNextPositionerHeight = (
-        desiredVerticalPosition: ViewportPositionerVerticalPositionLabel
+    private getConstrainedAxisDimension = (
+        availableSpace: number,
+        maxValue: number
     ): number => {
-        let newPositionerRectHeight: number = this.positionerRect.height;
-        if (this.props.scaleToFit) {
-            const availableHeight: number = this.getAvailableHeight(
-                desiredVerticalPosition
-            );
-            newPositionerRectHeight =
-                availableHeight > this.viewportRect.height
-                    ? this.viewportRect.height
-                    : availableHeight;
-        }
-        return newPositionerRectHeight;
+        return availableSpace > maxValue ? maxValue : availableSpace;
     };
 
     /**
      * Get horizontal positioning state based on desired position
      */
     private getHorizontalPositioningState = (
-        desiredHorizontalPosition: ViewportPositionerHorizontalPositionLabel
+        desiredHorizontalPosition: ViewportPositionerHorizontalPositionLabel,
+        nextPositionerDimension: Dimension
     ): Partial<ViewportPositionerState> => {
         let right: number = null;
         let left: number = null;
         let xTransformOrigin: string = Location.left;
-        const nextPositionerWidth: number = this.getNextPositionerWidth(
-            desiredHorizontalPosition
-        );
 
         switch (desiredHorizontalPosition) {
             case ViewportPositionerHorizontalPositionLabel.left:
                 xTransformOrigin = Location.right;
-                right = nextPositionerWidth - this.baseHorizontalOffset;
+                right = nextPositionerDimension.width - this.baseHorizontalOffset;
                 break;
 
             case ViewportPositionerHorizontalPositionLabel.insetLeft:
                 xTransformOrigin = Location.right;
                 right =
-                    nextPositionerWidth - this.anchorWidth - this.baseHorizontalOffset;
+                    nextPositionerDimension.width -
+                    this.anchorWidth -
+                    this.baseHorizontalOffset;
                 break;
 
             case ViewportPositionerHorizontalPositionLabel.insetRight:
@@ -987,7 +1000,7 @@ class ViewportPositioner extends Foundation<
             right,
             left,
             currentHorizontalPosition: desiredHorizontalPosition,
-            horizontalSelectedPositionWidth: nextPositionerWidth,
+            horizontalSelectedPositionWidth: nextPositionerDimension.width,
         };
     };
 
@@ -995,25 +1008,25 @@ class ViewportPositioner extends Foundation<
      * Get vertical positioning state based on desired position
      */
     private getVerticalPositioningState = (
-        desiredVerticalPosition: ViewportPositionerVerticalPositionLabel
+        desiredVerticalPosition: ViewportPositionerVerticalPositionLabel,
+        nextPositionerDimension: Dimension
     ): Partial<ViewportPositionerState> => {
         let top: number = null;
         let bottom: number = null;
         let yTransformOrigin: string = Location.top;
-        const nextPositionerHeight: number = this.getNextPositionerHeight(
-            desiredVerticalPosition
-        );
 
         switch (desiredVerticalPosition) {
             case ViewportPositionerVerticalPositionLabel.top:
                 yTransformOrigin = Location.bottom;
                 bottom =
-                    nextPositionerHeight + this.anchorHeight - this.baseVerticalOffset;
+                    nextPositionerDimension.height +
+                    this.anchorHeight -
+                    this.baseVerticalOffset;
                 break;
 
             case ViewportPositionerVerticalPositionLabel.insetTop:
                 yTransformOrigin = Location.bottom;
-                bottom = nextPositionerHeight - this.baseVerticalOffset;
+                bottom = nextPositionerDimension.height - this.baseVerticalOffset;
                 break;
 
             case ViewportPositionerVerticalPositionLabel.insetBottom:
@@ -1031,7 +1044,7 @@ class ViewportPositioner extends Foundation<
             top,
             bottom,
             currentVerticalPosition: desiredVerticalPosition,
-            verticalSelectedPositionHeight: nextPositionerHeight,
+            verticalSelectedPositionHeight: nextPositionerDimension.height,
         };
     };
 

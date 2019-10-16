@@ -12,9 +12,7 @@ interface TestViewportProps {
 }
 
 class TestViewport extends React.Component<TestViewportProps, {}> {
-    private rootElement: React.RefObject<HTMLDivElement> = React.createRef<
-        HTMLDivElement
-    >();
+    private rootElement: React.RefObject<HTMLDivElement>;
 
     constructor(props: TestViewportProps) {
         super(props);

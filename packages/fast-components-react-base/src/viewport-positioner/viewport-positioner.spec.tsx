@@ -2,6 +2,7 @@ import React from "react";
 import Adapter from "enzyme-adapter-react-16";
 import { configure, mount, shallow } from "enzyme";
 import ViewportPositioner, {
+    Dimension,
     ViewportPositionerClassNameContract,
     ViewportPositionerHandledProps,
     ViewportPositionerHorizontalPositionLabel,
@@ -1165,11 +1166,17 @@ describe("viewport positioner", (): void => {
         positioner.instance().baseHorizontalOffset = 10;
         positioner.instance().baseVerticalOffset = 10;
 
+        const positionerDimension: Dimension = {
+            width: 10,
+            height: 10,
+        };
+
         expect(
             positioner
                 .instance()
                 ["getHorizontalPositioningState"](
-                    ViewportPositionerHorizontalPositionLabel.right
+                    ViewportPositionerHorizontalPositionLabel.right,
+                    positionerDimension
                 )["left"]
         ).toBe(20);
 
@@ -1177,7 +1184,8 @@ describe("viewport positioner", (): void => {
             positioner
                 .instance()
                 ["getHorizontalPositioningState"](
-                    ViewportPositionerHorizontalPositionLabel.left
+                    ViewportPositionerHorizontalPositionLabel.left,
+                    positionerDimension
                 )["right"]
         ).toBe(0);
 
@@ -1185,7 +1193,8 @@ describe("viewport positioner", (): void => {
             positioner
                 .instance()
                 ["getHorizontalPositioningState"](
-                    ViewportPositionerHorizontalPositionLabel.insetRight
+                    ViewportPositionerHorizontalPositionLabel.insetRight,
+                    positionerDimension
                 )["left"]
         ).toBe(10);
 
@@ -1193,7 +1202,8 @@ describe("viewport positioner", (): void => {
             positioner
                 .instance()
                 ["getHorizontalPositioningState"](
-                    ViewportPositionerHorizontalPositionLabel.insetLeft
+                    ViewportPositionerHorizontalPositionLabel.insetLeft,
+                    positionerDimension
                 )["right"]
         ).toBe(-10);
 
@@ -1201,7 +1211,8 @@ describe("viewport positioner", (): void => {
             positioner
                 .instance()
                 ["getVerticalPositioningState"](
-                    ViewportPositionerVerticalPositionLabel.top
+                    ViewportPositionerVerticalPositionLabel.top,
+                    positionerDimension
                 )["bottom"]
         ).toBe(10);
 
@@ -1209,7 +1220,8 @@ describe("viewport positioner", (): void => {
             positioner
                 .instance()
                 ["getVerticalPositioningState"](
-                    ViewportPositionerVerticalPositionLabel.bottom
+                    ViewportPositionerVerticalPositionLabel.bottom,
+                    positionerDimension
                 )["top"]
         ).toBe(10);
 
@@ -1217,7 +1229,8 @@ describe("viewport positioner", (): void => {
             positioner
                 .instance()
                 ["getVerticalPositioningState"](
-                    ViewportPositionerVerticalPositionLabel.insetTop
+                    ViewportPositionerVerticalPositionLabel.insetTop,
+                    positionerDimension
                 )["bottom"]
         ).toBe(0);
 
@@ -1225,7 +1238,8 @@ describe("viewport positioner", (): void => {
             positioner
                 .instance()
                 ["getVerticalPositioningState"](
-                    ViewportPositionerVerticalPositionLabel.insetBottom
+                    ViewportPositionerVerticalPositionLabel.insetBottom,
+                    positionerDimension
                 )["top"]
         ).toBe(0);
     });
@@ -1386,55 +1400,43 @@ describe("viewport positioner", (): void => {
         positioner.instance().anchorWidth = 10;
         positioner.instance().anchorHeight = 10;
 
-        expect(
-            positioner
-                .instance()
-                ["getNextPositionerWidth"](
-                    ViewportPositionerHorizontalPositionLabel.insetRight
-                )
-        ).toBe(100);
-        expect(
-            positioner
-                .instance()
-                ["getNextPositionerWidth"](ViewportPositionerHorizontalPosition.right)
-        ).toBe(90);
-        expect(
-            positioner
-                .instance()
-                ["getNextPositionerHeight"](
-                    ViewportPositionerVerticalPositionLabel.insetBottom
-                )
-        ).toBe(100);
-        expect(
-            positioner
-                .instance()
-                ["getNextPositionerHeight"](ViewportPositionerVerticalPosition.bottom)
-        ).toBe(90);
+        let positionerDimension: Dimension;
 
-        expect(
-            positioner
-                .instance()
-                ["getNextPositionerWidth"](
-                    ViewportPositionerHorizontalPositionLabel.insetLeft
-                )
-        ).toBe(10);
-        expect(
-            positioner
-                .instance()
-                ["getNextPositionerWidth"](ViewportPositionerHorizontalPosition.left)
-        ).toBe(0);
-        expect(
-            positioner
-                .instance()
-                ["getNextPositionerHeight"](
-                    ViewportPositionerVerticalPositionLabel.insetTop
-                )
-        ).toBe(10);
-        expect(
-            positioner
-                .instance()
-                ["getNextPositionerHeight"](ViewportPositionerVerticalPosition.top)
-        ).toBe(0);
+        positionerDimension = positioner
+            .instance()
+            ["getNextPositionerDimension"](
+                ViewportPositionerHorizontalPositionLabel.insetRight,
+                ViewportPositionerVerticalPositionLabel.insetBottom
+            );
+        expect(positionerDimension.width).toBe(100);
+        expect(positionerDimension.height).toBe(100);
+
+        positionerDimension = positioner
+            .instance()
+            ["getNextPositionerDimension"](
+                ViewportPositionerHorizontalPositionLabel.right,
+                ViewportPositionerVerticalPositionLabel.bottom
+            );
+        expect(positionerDimension.width).toBe(90);
+        expect(positionerDimension.height).toBe(90);
+
+        positionerDimension = positioner
+            .instance()
+            ["getNextPositionerDimension"](
+                ViewportPositionerHorizontalPositionLabel.insetLeft,
+                ViewportPositionerVerticalPositionLabel.insetTop
+            );
+        expect(positionerDimension.width).toBe(10);
+        expect(positionerDimension.height).toBe(10);
+
+        positionerDimension = positioner
+            .instance()
+            ["getNextPositionerDimension"](
+                ViewportPositionerHorizontalPositionLabel.left,
+                ViewportPositionerVerticalPositionLabel.top
+            );
+        expect(positionerDimension.width).toBe(0);
+        expect(positionerDimension.height).toBe(0);
     });
 
     test("Positioner scaled sizes limited to viewport width", (): void => {
@@ -1467,6 +1469,7 @@ describe("viewport positioner", (): void => {
             </div>
         );
 
+        let positionerDimension: Dimension;
         const positioner: any = rendered.find("BaseViewportPositioner");
 
         positioner.instance().viewportRect = viewportRect;
@@ -1477,59 +1480,45 @@ describe("viewport positioner", (): void => {
         positioner.instance().anchorWidth = 10;
         positioner.instance().anchorHeight = 10;
 
-        expect(
-            positioner
-                .instance()
-                ["getNextPositionerWidth"](
-                    ViewportPositionerHorizontalPositionLabel.insetRight
-                )
-        ).toBe(100);
-        expect(
-            positioner
-                .instance()
-                ["getNextPositionerWidth"](ViewportPositionerHorizontalPosition.right)
-        ).toBe(100);
-        expect(
-            positioner
-                .instance()
-                ["getNextPositionerHeight"](
-                    ViewportPositionerVerticalPositionLabel.insetBottom
-                )
-        ).toBe(100);
-        expect(
-            positioner
-                .instance()
-                ["getNextPositionerHeight"](ViewportPositionerVerticalPosition.bottom)
-        ).toBe(100);
+        positionerDimension = positioner
+            .instance()
+            ["getNextPositionerDimension"](
+                ViewportPositionerHorizontalPositionLabel.insetRight,
+                ViewportPositionerVerticalPositionLabel.insetBottom
+            );
+        expect(positionerDimension.width).toBe(100);
+        expect(positionerDimension.height).toBe(100);
+
+        positionerDimension = positioner
+            .instance()
+            ["getNextPositionerDimension"](
+                ViewportPositionerHorizontalPositionLabel.right,
+                ViewportPositionerVerticalPositionLabel.bottom
+            );
+        expect(positionerDimension.width).toBe(100);
+        expect(positionerDimension.height).toBe(100);
 
         positioner.instance().anchorTop = 300;
         positioner.instance().anchorRight = 360;
         positioner.instance().anchorBottom = 310;
         positioner.instance().anchorLeft = 3350;
 
-        expect(
-            positioner
-                .instance()
-                ["getNextPositionerWidth"](
-                    ViewportPositionerHorizontalPositionLabel.insetLeft
-                )
-        ).toBe(100);
-        expect(
-            positioner
-                .instance()
-                ["getNextPositionerWidth"](ViewportPositionerHorizontalPosition.left)
-        ).toBe(100);
-        expect(
-            positioner
-                .instance()
-                ["getNextPositionerHeight"](
-                    ViewportPositionerVerticalPositionLabel.insetTop
-                )
-        ).toBe(100);
-        expect(
-            positioner
-                .instance()
-                ["getNextPositionerHeight"](ViewportPositionerVerticalPosition.top)
-        ).toBe(100);
+        positionerDimension = positioner
+            .instance()
+            ["getNextPositionerDimension"](
+                ViewportPositionerHorizontalPositionLabel.insetLeft,
+                ViewportPositionerVerticalPositionLabel.insetTop
+            );
+        expect(positionerDimension.width).toBe(100);
+        expect(positionerDimension.height).toBe(100);
+
+        positionerDimension = positioner
+            .instance()
+            ["getNextPositionerDimension"](
+                ViewportPositionerHorizontalPositionLabel.left,
+                ViewportPositionerVerticalPositionLabel.top
+            );
+        expect(positionerDimension.width).toBe(100);
+        expect(positionerDimension.height).toBe(100);
     });
 });
