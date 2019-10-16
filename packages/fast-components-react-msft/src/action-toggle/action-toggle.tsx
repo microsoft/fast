@@ -2,7 +2,7 @@ import { ActionToggleClassNameContract } from "@microsoft/fast-components-class-
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import { actionToggleButtonOverrides } from "@microsoft/fast-components-styles-msft";
 import { classNames } from "@microsoft/fast-web-utilities";
-import { isNil } from "lodash-es";
+import { isBoolean, isFunction, isNil } from "lodash-es";
 import React from "react";
 import { Button, ButtonAppearance } from "../button";
 import { DisplayNamePrefix } from "../utilities";
@@ -35,16 +35,11 @@ class ActionToggle extends Foundation<
         nextProps: ActionToggleProps,
         prevState: ActionToggleState
     ): null | Partial<ActionToggleState> {
-        if (
-            typeof nextProps.selected === "boolean" &&
-            nextProps.selected !== prevState.selected
-        ) {
-            return {
-                selected: nextProps.selected,
-            };
-        }
+        const selected: boolean = nextProps.selected;
 
-        return null;
+        return isBoolean(selected) && selected !== prevState.selected
+            ? { selected }
+            : null;
     }
 
     protected handledProps: HandledProps<ActionToggleHandledProps> = {
@@ -111,12 +106,9 @@ class ActionToggle extends Foundation<
         return super.generateClassNames(
             classNames(
                 actionToggle,
+                this.props.managedClasses[`actionToggle__${this.props.appearance}`],
                 [actionToggle__disabled, this.props.disabled],
                 [actionToggle__selected, this.state.selected],
-                [
-                    this.props.managedClasses[`actionToggle__${this.props.appearance}`],
-                    typeof this.props.appearance === "string",
-                ],
                 [actionToggle__hasGlyphAndContent, this.hasGlyphAndContent()]
             )
         );
@@ -137,7 +129,7 @@ class ActionToggle extends Foundation<
             className = this.props.managedClasses.actionToggle_unselectedGlyph;
         }
 
-        return typeof this.props.selectedGlyph === "function"
+        return isFunction(this.props.selectedGlyph)
             ? glyph(classNames(this.props.managedClasses.actionToggle_glyph, className))
             : null;
     };
@@ -155,10 +147,7 @@ class ActionToggle extends Foundation<
      * Handles onClick
      */
     private handleToggleChange = (e: React.MouseEvent<HTMLElement>): void => {
-        if (
-            typeof this.props.selected !== "boolean" &&
-            typeof this.props.selected !== "function"
-        ) {
+        if (isBoolean(this.props.selected) && isFunction(this.props.selected)) {
             this.setState({
                 selected: !this.state.selected,
             });

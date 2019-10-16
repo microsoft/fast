@@ -43,7 +43,7 @@ const styles: ComponentStyles<ActionToggleClassNameContract, DesignSystem> = {
                 ...highContrastSelectedForeground,
             },
         },
-        [`&$actionToggle__justified, &$actionToggle__lightweight`]: {
+        "&$actionToggle__justified, &$actionToggle__lightweight": {
             "&:hover:enabled": {
                 "& $actionToggle_glyph": {
                     [highContrastSelector]: {
