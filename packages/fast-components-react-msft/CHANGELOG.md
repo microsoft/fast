@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.23.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-msft@4.22.2...@microsoft/fast-components-react-msft@4.23.0) (2019-10-16)
+
+
+### Bug Fixes
+
+* prevent duplicate class-names on text-action  ([6eb10b3](https://github.com/Microsoft/fast-dna/commit/6eb10b3))
+* progress `size` class names conflicting ([#2316](https://github.com/Microsoft/fast-dna/issues/2316)) ([34d3738](https://github.com/Microsoft/fast-dna/commit/34d3738))
+
+
+### Features
+
+* add looping to carousel as optional prop ([#2297](https://github.com/Microsoft/fast-dna/issues/2297)) ([5e180e3](https://github.com/Microsoft/fast-dna/commit/5e180e3))
+* add viewport positioner to select menu ([#2263](https://github.com/Microsoft/fast-dna/issues/2263)) ([af5f04a](https://github.com/Microsoft/fast-dna/commit/af5f04a))
+
+
+
+
+
 ## [4.22.2](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-msft@4.22.1...@microsoft/fast-components-react-msft@4.22.2) (2019-10-07)
 
 **Note:** Version bump only for package @microsoft/fast-components-react-msft

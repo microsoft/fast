@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.6.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-layouts-react@4.5.9...@microsoft/fast-layouts-react@4.6.0) (2019-10-16)
+
+
+### Bug Fixes
+
+* add missing display name for container in fast-layouts ([#2300](https://github.com/Microsoft/fast-dna/issues/2300)) ([a911f17](https://github.com/Microsoft/fast-dna/commit/a911f17))
+* default managedClasses to an empty object in fast-layouts-react components ([#2301](https://github.com/Microsoft/fast-dna/issues/2301)) ([eb5cf1d](https://github.com/Microsoft/fast-dna/commit/eb5cf1d))
+* ensure minWidth value is passed as pixels in pane ([#2306](https://github.com/Microsoft/fast-dna/issues/2306)) ([56fc9a0](https://github.com/Microsoft/fast-dna/commit/56fc9a0))
+
+
+### Features
+
+* add classNames utility to fast-layouts ([#2299](https://github.com/Microsoft/fast-dna/issues/2299)) ([d67971b](https://github.com/Microsoft/fast-dna/commit/d67971b))
+
+
+
+
+
 ## [4.5.9](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-layouts-react@4.5.8...@microsoft/fast-layouts-react@4.5.9) (2019-10-07)
 
 **Note:** Version bump only for package @microsoft/fast-layouts-react
