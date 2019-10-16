@@ -262,24 +262,28 @@ class ViewportPositioner extends Foundation<
                     viewportPositioner__left,
                     horizontalPosition ===
                         ViewportPositionerHorizontalPositionLabel.left ||
-                        isHorizontalInset,
+                        horizontalPosition ===
+                            ViewportPositionerHorizontalPositionLabel.insetLeft,
                 ],
                 [
                     viewportPositioner__right,
                     horizontalPosition ===
                         ViewportPositionerHorizontalPositionLabel.right ||
-                        isHorizontalInset,
+                        horizontalPosition ===
+                            ViewportPositionerHorizontalPositionLabel.insetRight,
                 ],
                 [viewportPositioner__horizontalInset, isHorizontalInset],
                 [
                     viewportPositioner__top,
                     verticalPosition === ViewportPositionerVerticalPositionLabel.top ||
-                        isVerticalInset,
+                        verticalPosition ===
+                            ViewportPositionerVerticalPositionLabel.insetTop,
                 ],
                 [
                     viewportPositioner__bottom,
                     verticalPosition === ViewportPositionerVerticalPositionLabel.bottom ||
-                        isVerticalInset,
+                        verticalPosition ===
+                            ViewportPositionerVerticalPositionLabel.insetBottom,
                 ],
                 [viewportPositioner__verticalInset, isVerticalInset]
             )
