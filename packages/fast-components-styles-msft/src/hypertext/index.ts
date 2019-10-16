@@ -14,7 +14,7 @@ import {
     HighContrastColor,
     highContrastLinkValue,
     highContrastOptOutProperty,
-    highContrastSelector
+    highContrastSelector,
 } from "../utilities/high-contrast";
 
 const styles: ComponentStyles<HypertextClassNameContract, DesignSystem> = {
@@ -44,7 +44,7 @@ const styles: ComponentStyles<HypertextClassNameContract, DesignSystem> = {
                         () => highContrastLinkValue
                     ),
                     color: highContrastLinkValue,
-                }
+                },
             },
             "&:active": {
                 "border-bottom": format<DesignSystem>(
@@ -67,7 +67,7 @@ const styles: ComponentStyles<HypertextClassNameContract, DesignSystem> = {
                         () => highContrastLinkValue
                     ),
                     color: highContrastLinkValue,
-                }
+                },
             }),
             [highContrastSelector]: {
                 "border-bottom": format<DesignSystem>(
@@ -76,13 +76,12 @@ const styles: ComponentStyles<HypertextClassNameContract, DesignSystem> = {
                     () => highContrastLinkValue
                 ),
                 color: highContrastLinkValue,
-
-            }
+            },
         },
         [highContrastSelector]: {
             ...highContrastOptOutProperty,
-            color: HighContrastColor.text
-        }
+            color: HighContrastColor.text,
+        },
     },
 };
 
