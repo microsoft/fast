@@ -12,9 +12,12 @@ import {
 } from "../utilities/color";
 import {
     highContrastDisabledBorder,
+    highContrastLinkBorder,
+    highContrastLinkOutline,
     highContrastOutline,
     highContrastOutlineFocus,
     highContrastSelected,
+    highContrastSelector,
 } from "../utilities/high-contrast";
 
 const styles: ComponentStyles<NeutralButtonClassNameContract, DesignSystem> = {
@@ -43,8 +46,17 @@ const styles: ComponentStyles<NeutralButtonClassNameContract, DesignSystem> = {
         },
         ...highContrastOutline,
         "a&": {
+            ...highContrastLinkOutline,
+            "&:hover": {
+                ...highContrastLinkBorder,
+            },
             "&$button__disabled": {
                 ...highContrastDisabledBorder,
+                "&:hover": {
+                    [highContrastSelector]: {
+                        "box-shadow": "none !important",
+                    },
+                },
             },
         },
     },

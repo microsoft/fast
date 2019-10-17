@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.4.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-class-name-contracts-base@4.3.3...@microsoft/fast-components-class-name-contracts-base@4.4.0) (2019-10-16)
+
+
+### Features
+
+* add viewport positioner to select menu ([#2263](https://github.com/Microsoft/fast-dna/issues/2263)) ([af5f04a](https://github.com/Microsoft/fast-dna/commit/af5f04a))
+
+
+
+
+
 ## [4.3.3](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-class-name-contracts-base@4.3.2...@microsoft/fast-components-class-name-contracts-base@4.3.3) (2019-09-10)
 
 

@@ -28,4 +28,14 @@ storiesOf("Radio", module)
         );
 
         return <Radio inputId={id} label={label} onChange={action("onChange")} />;
+    })
+    .add("Disabled with slot label", () => {
+        const id: string = uniqueId();
+        return (
+            <Radio inputId={id} onChange={action("onChange")} disabled={true}>
+                <Label slot="label" htmlFor={id}>
+                    Hello slot
+                </Label>
+            </Radio>
+        );
     });

@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.21.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-tooling-react@1.20.0...@microsoft/fast-tooling-react@1.21.0) (2019-10-16)
+
+
+### Bug Fixes
+
+* store the length of the arrays when converting data locations ([#2305](https://github.com/Microsoft/fast-dna/issues/2305)) ([3cf5d57](https://github.com/Microsoft/fast-dna/commit/3cf5d57))
+* update the react-dnd dependencies to the correct version since form is using the new hooks features ([#2334](https://github.com/Microsoft/fast-dna/issues/2334)) ([0c5418e](https://github.com/Microsoft/fast-dna/commit/0c5418e))
+* updates controls to show in the default context ([#2308](https://github.com/Microsoft/fast-dna/issues/2308)) ([b9a1136](https://github.com/Microsoft/fast-dna/commit/b9a1136))
+
+
+### Features
+
+* add validation errors to a section ([#2307](https://github.com/Microsoft/fast-dna/issues/2307)) ([31bad95](https://github.com/Microsoft/fast-dna/commit/31bad95))
+
+
+
+
+
 # [1.20.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-tooling-react@1.19.0...@microsoft/fast-tooling-react@1.20.0) (2019-10-07)
 
 

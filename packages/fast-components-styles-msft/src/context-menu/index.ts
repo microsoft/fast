@@ -5,7 +5,11 @@ import { DesignSystem } from "../design-system";
 import { applyElevatedCornerRadius } from "../utilities/border";
 import { backgroundColor, designUnit, outlineWidth } from "../utilities/design-system";
 import { applyElevation, ElevationMultiplier } from "../utilities/elevation";
-import { HighContrastColor, highContrastSelector } from "../utilities/high-contrast";
+import {
+    HighContrastColor,
+    highContrastOptOutProperty,
+    highContrastSelector,
+} from "../utilities/high-contrast";
 
 const styles: ComponentStyles<ContextMenuClassNameContract, DesignSystem> = {
     contextMenu: {
@@ -18,6 +22,7 @@ const styles: ComponentStyles<ContextMenuClassNameContract, DesignSystem> = {
         "min-width": "64px",
         transition: "all 0.2s ease-in-out",
         [highContrastSelector]: {
+            ...highContrastOptOutProperty,
             background: HighContrastColor.buttonBackground,
             border: format(
                 "{0} solid {1}",

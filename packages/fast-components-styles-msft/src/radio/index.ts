@@ -1,9 +1,5 @@
+import { DesignSystem, DesignSystemResolver } from "../design-system";
 import { ComponentStyles } from "@microsoft/fast-jss-manager";
-import {
-    densityCategorySwitch,
-    heightNumber,
-    horizontalSpacing,
-} from "../utilities/density";
 import { RadioClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import {
     add,
@@ -23,14 +19,20 @@ import {
     neutralOutlineHover,
     neutralOutlineRest,
 } from "../utilities/color";
-import { DesignSystem, DesignSystemResolver } from "../design-system";
+import {
+    densityCategorySwitch,
+    heightNumber,
+    horizontalSpacing,
+} from "../utilities/density";
 import { applyDisabledState } from "../utilities/disabled";
 import { applyScaledTypeRamp } from "../utilities/typography";
 import { designUnit, outlineWidth } from "../utilities/design-system";
 import { applyCursorDisabled, applyCursorPointer } from "../utilities/cursor";
 import {
+    HighContrastColor,
     highContrastDisabledBorder,
     highContrastHighlightBackground,
+    highContrastOptOutProperty,
     highContrastSelectedBackground,
     highContrastSelector,
 } from "../utilities/high-contrast";
@@ -50,6 +52,9 @@ const styles: ComponentStyles<RadioClassNameContract, DesignSystem> = {
         "flex-direction": "row",
         "align-items": "center",
         transition: "all 0.2s ease-in-out",
+        [highContrastSelector]: {
+            ...highContrastOptOutProperty,
+        },
     },
     radio_input: {
         position: "absolute",
@@ -74,6 +79,14 @@ const styles: ComponentStyles<RadioClassNameContract, DesignSystem> = {
         "&:hover:enabled": {
             background: neutralFillInputHover,
             "border-color": neutralOutlineHover,
+            [highContrastSelector]: {
+                background: "transparent",
+                border: format(
+                    "{0} solid {1}",
+                    toPx<DesignSystem>(outlineWidth),
+                    () => HighContrastColor.selectedBackground
+                ),
+            },
         },
         "&:active": {
             background: neutralFillInputActive,
@@ -83,11 +96,19 @@ const styles: ComponentStyles<RadioClassNameContract, DesignSystem> = {
             "box-shadow": format<DesignSystem>("0 0 0 1px {0} inset", neutralFocus),
             "border-color": neutralFocus,
             [highContrastSelector]: {
-                "box-shadow": "0 0 0 1px ButtonText inset",
+                "box-shadow": format<DesignSystem>(
+                    "0 0 0 1px {0}",
+                    () => HighContrastColor.buttonText
+                ),
             },
         }),
         [highContrastSelector]: {
-            border: format("{0} solid ButtonText", toPx<DesignSystem>(outlineWidth)),
+            background: "transparent",
+            border: format(
+                "{0} solid {1}",
+                toPx<DesignSystem>(outlineWidth),
+                () => HighContrastColor.buttonText
+            ),
         },
     },
     radio_stateIndicator: {
@@ -117,14 +138,17 @@ const styles: ComponentStyles<RadioClassNameContract, DesignSystem> = {
         "margin-left": directionSwitch(horizontalSpacing(2), ""),
         "margin-right": directionSwitch("", horizontalSpacing(2)),
         [highContrastSelector]: {
-            color: "ButtonText",
+            background: "transparent",
+            color: HighContrastColor.text,
         },
     },
     radio__checked: {
         "& $radio_stateIndicator": {
             "&::before": {
                 background: neutralForegroundRest,
-                ...highContrastHighlightBackground,
+                [highContrastSelector]: {
+                    background: HighContrastColor.selectedBackground,
+                },
             },
         },
         "&:hover $radio_stateIndicator::before": {
