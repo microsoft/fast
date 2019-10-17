@@ -327,4 +327,20 @@ describe("StandardControlTemplate", () => {
             )
         ).toHaveLength(1);
     });
+    test("should add a title attribute to the label if the labelTooltip has been passed", () => {
+        const tooltip: string = "foo";
+        const rendered: any = mount(
+            <StandardControlTemplate
+                {...props}
+                managedClasses={managedClasses}
+                labelTooltip={tooltip}
+            />
+        );
+
+        expect(
+            rendered
+                .find(`.${managedClasses.standardControlTemplate_controlLabel}`)
+                .prop("title")
+        ).toEqual(tooltip);
+    });
 });
