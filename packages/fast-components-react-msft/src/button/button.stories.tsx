@@ -5,7 +5,15 @@ import { glyphFactory, SVGGlyph } from "../../assets/svg-element";
 
 storiesOf("Button", module)
     .add("Default", () => <Button>Button</Button>)
-    .add("Anchor", () => <Button href="#">Anchor button</Button>)
+    .add("Anchor", () => (
+        <Button
+            href="#"
+            beforeContent={glyphFactory(SVGGlyph.user)}
+            afterContent={glyphFactory(SVGGlyph.download)}
+        >
+            Anchor button
+        </Button>
+    ))
     .add("Anchor - disabled", () => (
         <Button href="#" disabled={true}>
             Anchor button
@@ -13,6 +21,16 @@ storiesOf("Button", module)
     ))
     .add("Primary", () => (
         <Button appearance={ButtonAppearance.primary}>Primary Button</Button>
+    ))
+    .add("Primary Anchor", () => (
+        <Button
+            appearance={ButtonAppearance.primary}
+            href="#"
+            beforeContent={glyphFactory(SVGGlyph.user)}
+            afterContent={glyphFactory(SVGGlyph.download)}
+        >
+            Primary Anchor
+        </Button>
     ))
     .add("Primary - disabled", () => (
         <Button appearance={ButtonAppearance.primary} disabled={true}>
@@ -32,6 +50,21 @@ storiesOf("Button", module)
     ))
     .add("Lightweight - disabled", () => (
         <Button appearance={ButtonAppearance.lightweight} disabled={true}>
+            Lightweight Button
+        </Button>
+    ))
+    .add("Lightweight Anchor", () => (
+        <Button
+            appearance={ButtonAppearance.lightweight}
+            href="#"
+            beforeContent={glyphFactory(SVGGlyph.user)}
+            afterContent={glyphFactory(SVGGlyph.download)}
+        >
+            Lightweight Button
+        </Button>
+    ))
+    .add("Lightweight Anchor - disabled", () => (
+        <Button appearance={ButtonAppearance.lightweight} href="#" disabled={true}>
             Lightweight Button
         </Button>
     ))

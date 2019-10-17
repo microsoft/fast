@@ -181,4 +181,7 @@ storiesOf("Select", module)
                 displayString="Select option 4"
             />
         </Select>
+    ))
+    .add("Disabled", () => (
+        <Select onValueChange={action("onValueChange")} disabled={true} />
     ));

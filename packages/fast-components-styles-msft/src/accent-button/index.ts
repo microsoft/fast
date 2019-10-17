@@ -13,10 +13,15 @@ import {
 } from "../utilities/color";
 import {
     highContrastAccent,
-    HighContrastColor,
     highContrastDisabledBorder,
     highContrastDisabledForeground,
     highContrastDoubleFocus,
+    highContrastHighlightForeground,
+    highContrastLinkBorder,
+    highContrastLinkForeground,
+    highContrastLinkOutline,
+    highContrastSelectedForeground,
+    highContrastSelectedOutline,
     highContrastSelector,
 } from "../utilities/high-contrast";
 
@@ -29,16 +34,9 @@ const styles: ComponentStyles<AccentButtonClassNameContract, DesignSystem> = {
         background: accentFillRest,
         "&:hover:enabled": {
             background: accentFillHover,
-            [highContrastSelector]: {
-                background: HighContrastColor.selectedText,
-                "border-color": HighContrastColor.selectedBackground,
-                color: HighContrastColor.selectedBackground,
-                fill: HighContrastColor.selectedBackground,
-            },
+            ...highContrastSelectedOutline,
             "& $button_beforeContent, & $button_afterContent": {
-                [highContrastSelector]: {
-                    fill: "Highlight",
-                },
+                ...highContrastHighlightForeground,
             },
         },
         "&:active:enabled": {
@@ -60,16 +58,32 @@ const styles: ComponentStyles<AccentButtonClassNameContract, DesignSystem> = {
         },
         "& $button_beforeContent, & $button_afterContent": {
             fill: accentForegroundCut,
-            [highContrastSelector]: {
-                fill: "HighlightText",
-            },
+            ...highContrastSelectedForeground,
         },
         ...highContrastAccent,
         "a&": {
+            ...highContrastLinkOutline,
+            "& $button_beforeContent, & $button_afterContent": {
+                ...highContrastLinkForeground,
+            },
+            "&:hover": {
+                ...highContrastLinkBorder,
+                "& $button_beforeContent, & $button_afterContent": {
+                    ...highContrastLinkForeground,
+                },
+            },
             "&$button__disabled": {
                 ...highContrastDisabledBorder,
                 "& $button_beforeContent, & $button_afterContent": {
                     ...highContrastDisabledForeground,
+                },
+                "&:hover": {
+                    [highContrastSelector]: {
+                        "box-shadow": "none !important",
+                    },
+                    "& $button_beforeContent, & $button_afterContent": {
+                        ...highContrastDisabledForeground,
+                    },
                 },
             },
         },

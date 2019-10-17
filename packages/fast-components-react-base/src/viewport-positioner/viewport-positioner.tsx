@@ -19,6 +19,11 @@ import {
     ViewportPositionerVerticalPosition,
 } from "./viewport-positioner.props";
 
+export interface Dimension {
+    height: number;
+    width: number;
+}
+
 export interface ViewportPositionerState {
     disabled: boolean;
 
@@ -59,6 +64,12 @@ export interface ViewportPositionerState {
      */
     defaultVerticalPosition: ViewportPositionerVerticalPositionLabel;
     defaultHorizontalPosition: ViewportPositionerHorizontalPositionLabel;
+
+    /**
+     * the size (pixels) of the selected position on each axis
+     */
+    horizontalSelectedPositionWidth: number | null;
+    verticalSelectedPositionHeight: number | null;
 
     /**
      * indicates that an initial positioning pass on layout has completed
@@ -116,6 +127,7 @@ class ViewportPositioner extends Foundation<
         verticalLockToDefault: false,
         horizontalLockToDefault: false,
         fixedAfterInitialPlacement: false,
+        scaleToFit: false,
         managedClasses: {},
     };
 
@@ -134,6 +146,7 @@ class ViewportPositioner extends Foundation<
         verticalAlwaysInView: void 0,
         verticalLockToDefault: void 0,
         fixedAfterInitialPlacement: void 0,
+        scaleToFit: void 0,
         disabled: void 0,
     };
 
@@ -147,7 +160,9 @@ class ViewportPositioner extends Foundation<
     private resizeDetector: ResizeObserverClassDefinition;
 
     private viewportRect: ClientRect | DOMRect;
+
     private positionerRect: ClientRect | DOMRect;
+
     private anchorTop: number = 0;
     private anchorRight: number = 0;
     private anchorBottom: number = 0;
@@ -192,6 +207,8 @@ class ViewportPositioner extends Foundation<
                 this.props.verticalPositioningMode,
                 this.props.defaultVerticalPosition
             ),
+            horizontalSelectedPositionWidth: null,
+            verticalSelectedPositionHeight: null,
             initialLayoutComplete: false,
             validRefChecksRemaining: 2,
         };
@@ -262,24 +279,28 @@ class ViewportPositioner extends Foundation<
                     viewportPositioner__left,
                     horizontalPosition ===
                         ViewportPositionerHorizontalPositionLabel.left ||
-                        isHorizontalInset,
+                        horizontalPosition ===
+                            ViewportPositionerHorizontalPositionLabel.insetLeft,
                 ],
                 [
                     viewportPositioner__right,
                     horizontalPosition ===
                         ViewportPositionerHorizontalPositionLabel.right ||
-                        isHorizontalInset,
+                        horizontalPosition ===
+                            ViewportPositionerHorizontalPositionLabel.insetRight,
                 ],
                 [viewportPositioner__horizontalInset, isHorizontalInset],
                 [
                     viewportPositioner__top,
                     verticalPosition === ViewportPositionerVerticalPositionLabel.top ||
-                        isVerticalInset,
+                        verticalPosition ===
+                            ViewportPositionerVerticalPositionLabel.insetTop,
                 ],
                 [
                     viewportPositioner__bottom,
                     verticalPosition === ViewportPositionerVerticalPositionLabel.bottom ||
-                        isVerticalInset,
+                        verticalPosition ===
+                            ViewportPositionerVerticalPositionLabel.insetBottom,
                 ],
                 [viewportPositioner__verticalInset, isVerticalInset]
             )
@@ -303,6 +324,12 @@ class ViewportPositioner extends Foundation<
             (isNil(this.positionerRect) && !this.state.noObserverMode);
 
         return {
+            ...(this.props.scaleToFit
+                ? {
+                      height: `${this.state.verticalSelectedPositionHeight}px`,
+                      width: `${this.state.horizontalSelectedPositionWidth}px`,
+                  }
+                : {}),
             opacity: shouldHide ? 0 : undefined,
             position: "relative",
             transformOrigin: `${this.state.xTransformOrigin} ${
@@ -345,11 +372,14 @@ class ViewportPositioner extends Foundation<
      *  Enable the component
      */
     private enableComponent = (): void => {
+        const viewportElement: HTMLElement | null = this.getViewportElement();
+        const anchorElement: HTMLElement | null = this.getAnchorElement();
+
         if (
             !this.state.disabled ||
             this.props.disabled ||
-            isNil(this.getAnchorElement()) ||
-            isNil(this.getViewportElement()) ||
+            isNil(anchorElement) ||
+            isNil(viewportElement) ||
             isNil(this.rootElement.current)
         ) {
             return;
@@ -372,20 +402,20 @@ class ViewportPositioner extends Foundation<
         this.collisionDetector = new (window as WindowWithIntersectionObserver).IntersectionObserver(
             this.handleCollision,
             {
-                root: this.getViewportElement(),
+                root: viewportElement,
                 rootMargin: "0px",
                 threshold: [0, 1],
             }
         );
         this.collisionDetector.observe(this.rootElement.current);
-        this.collisionDetector.observe(this.getAnchorElement());
+        this.collisionDetector.observe(anchorElement);
 
         this.resizeDetector = new (window as WindowWithResizeObserver).ResizeObserver(
             this.handleAnchorResize
         );
-        this.resizeDetector.observe(this.getAnchorElement());
+        this.resizeDetector.observe(anchorElement);
 
-        this.getViewportElement().addEventListener("scroll", this.handleScroll);
+        viewportElement.addEventListener("scroll", this.handleScroll);
     };
 
     /**
@@ -498,7 +528,7 @@ class ViewportPositioner extends Foundation<
     /**
      *  Get the width available for a particular horizontal position
      */
-    private getHorizontalPositionAvailableWidth = (
+    private getAvailableWidth = (
         positionOption: ViewportPositionerHorizontalPositionLabel
     ): number => {
         const spaceLeft: number = this.anchorLeft - this.viewportRect.left;
@@ -520,7 +550,7 @@ class ViewportPositioner extends Foundation<
     /**
      *  Get the height available for a particular vertical position
      */
-    private getVerticalPositionAvailableHeight = (
+    private getAvailableHeight = (
         positionOption: ViewportPositionerVerticalPositionLabel
     ): number => {
         const spaceAbove: number = this.anchorTop - this.viewportRect.top;
@@ -594,8 +624,12 @@ class ViewportPositioner extends Foundation<
             }
         });
 
-        this.scrollTop = this.getViewportElement().scrollTop;
-        this.scrollLeft = this.getViewportElement().scrollLeft;
+        const viewPortElement: HTMLElement | null = this.getViewportElement();
+
+        if (!isNil(viewPortElement)) {
+            this.scrollTop = viewPortElement.scrollTop;
+            this.scrollLeft = viewPortElement.scrollLeft;
+        }
 
         if (entries.length === 2) {
             this.updatePositionerOffset();
@@ -833,12 +867,12 @@ class ViewportPositioner extends Foundation<
                 desiredHorizontalPosition ===
                     ViewportPositionerHorizontalPositionLabel.undefined ||
                 (!this.props.horizontalLockToDefault &&
-                    this.getHorizontalPositionAvailableWidth(desiredHorizontalPosition) <
+                    this.getAvailableWidth(desiredHorizontalPosition) <
                         horizontalThreshold)
             ) {
                 desiredHorizontalPosition =
-                    this.getHorizontalPositionAvailableWidth(horizontalOptions[0]) >
-                    this.getHorizontalPositionAvailableWidth(horizontalOptions[1])
+                    this.getAvailableWidth(horizontalOptions[0]) >
+                    this.getAvailableWidth(horizontalOptions[1])
                         ? horizontalOptions[0]
                         : horizontalOptions[1];
             }
@@ -857,16 +891,20 @@ class ViewportPositioner extends Foundation<
                 desiredVerticalPosition ===
                     ViewportPositionerVerticalPositionLabel.undefined ||
                 (!this.props.verticalLockToDefault &&
-                    this.getVerticalPositionAvailableHeight(desiredVerticalPosition) <
-                        verticalThreshold)
+                    this.getAvailableHeight(desiredVerticalPosition) < verticalThreshold)
             ) {
                 desiredVerticalPosition =
-                    this.getVerticalPositionAvailableHeight(verticalOptions[0]) >
-                    this.getVerticalPositionAvailableHeight(verticalOptions[1])
+                    this.getAvailableHeight(verticalOptions[0]) >
+                    this.getAvailableHeight(verticalOptions[1])
                         ? verticalOptions[0]
                         : verticalOptions[1];
             }
         }
+
+        const nextPositionerDimension: Dimension = this.getNextPositionerDimension(
+            desiredHorizontalPosition,
+            desiredVerticalPosition
+        );
 
         this.setState(Object.assign(
             {
@@ -874,16 +912,49 @@ class ViewportPositioner extends Foundation<
                 yTranslate: this.getVerticalTranslate(desiredVerticalPosition),
                 initialLayoutComplete: true,
             },
-            this.getHorizontalPositioningState(desiredHorizontalPosition),
-            this.getVerticalPositioningState(desiredVerticalPosition)
+            this.getHorizontalPositioningState(
+                desiredHorizontalPosition,
+                nextPositionerDimension
+            ),
+            this.getVerticalPositioningState(
+                desiredVerticalPosition,
+                nextPositionerDimension
+            )
         ) as ViewportPositionerState);
+    };
+
+    /**
+     * Get positioner dimensions for next render
+     */
+    private getNextPositionerDimension = (
+        desiredHorizontalPosition: ViewportPositionerHorizontalPositionLabel,
+        desiredVerticalPosition: ViewportPositionerVerticalPositionLabel
+    ): Dimension => {
+        const newPositionerDimension: Dimension = {
+            height: this.positionerRect.height,
+            width: this.positionerRect.width,
+        };
+
+        if (this.props.scaleToFit) {
+            newPositionerDimension.height = Math.min(
+                this.getAvailableHeight(desiredVerticalPosition),
+                this.viewportRect.height
+            );
+            newPositionerDimension.width = Math.min(
+                this.getAvailableWidth(desiredHorizontalPosition),
+                this.viewportRect.width
+            );
+        }
+
+        return newPositionerDimension;
     };
 
     /**
      * Get horizontal positioning state based on desired position
      */
     private getHorizontalPositioningState = (
-        desiredHorizontalPosition: ViewportPositionerHorizontalPositionLabel
+        desiredHorizontalPosition: ViewportPositionerHorizontalPositionLabel,
+        nextPositionerDimension: Dimension
     ): Partial<ViewportPositionerState> => {
         let right: number = null;
         let left: number = null;
@@ -892,13 +963,13 @@ class ViewportPositioner extends Foundation<
         switch (desiredHorizontalPosition) {
             case ViewportPositionerHorizontalPositionLabel.left:
                 xTransformOrigin = Location.right;
-                right = this.positionerRect.width - this.baseHorizontalOffset;
+                right = nextPositionerDimension.width - this.baseHorizontalOffset;
                 break;
 
             case ViewportPositionerHorizontalPositionLabel.insetLeft:
                 xTransformOrigin = Location.right;
                 right =
-                    this.positionerRect.width -
+                    nextPositionerDimension.width -
                     this.anchorWidth -
                     this.baseHorizontalOffset;
                 break;
@@ -919,6 +990,7 @@ class ViewportPositioner extends Foundation<
             right,
             left,
             currentHorizontalPosition: desiredHorizontalPosition,
+            horizontalSelectedPositionWidth: nextPositionerDimension.width,
         };
     };
 
@@ -926,7 +998,8 @@ class ViewportPositioner extends Foundation<
      * Get vertical positioning state based on desired position
      */
     private getVerticalPositioningState = (
-        desiredVerticalPosition: ViewportPositionerVerticalPositionLabel
+        desiredVerticalPosition: ViewportPositionerVerticalPositionLabel,
+        nextPositionerDimension: Dimension
     ): Partial<ViewportPositionerState> => {
         let top: number = null;
         let bottom: number = null;
@@ -936,14 +1009,14 @@ class ViewportPositioner extends Foundation<
             case ViewportPositionerVerticalPositionLabel.top:
                 yTransformOrigin = Location.bottom;
                 bottom =
-                    this.positionerRect.height +
+                    nextPositionerDimension.height +
                     this.anchorHeight -
                     this.baseVerticalOffset;
                 break;
 
             case ViewportPositionerVerticalPositionLabel.insetTop:
                 yTransformOrigin = Location.bottom;
-                bottom = this.positionerRect.height - this.baseVerticalOffset;
+                bottom = nextPositionerDimension.height - this.baseVerticalOffset;
                 break;
 
             case ViewportPositionerVerticalPositionLabel.insetBottom:
@@ -961,6 +1034,7 @@ class ViewportPositioner extends Foundation<
             top,
             bottom,
             currentVerticalPosition: desiredVerticalPosition,
+            verticalSelectedPositionHeight: nextPositionerDimension.height,
         };
     };
 
@@ -1051,7 +1125,7 @@ class ViewportPositioner extends Foundation<
     /**
      * get the anchor element
      */
-    private getAnchorElement = (): HTMLElement => {
+    private getAnchorElement = (): HTMLElement | null => {
         if (isNil(this.props.anchor)) {
             return null;
         }
@@ -1066,7 +1140,7 @@ class ViewportPositioner extends Foundation<
     /**
      * get the viewport element
      */
-    private getViewportElement = (): HTMLElement => {
+    private getViewportElement = (): HTMLElement | null => {
         if (isNil(this.props.viewport)) {
             if (document.scrollingElement instanceof HTMLElement) {
                 return document.scrollingElement as HTMLElement;
