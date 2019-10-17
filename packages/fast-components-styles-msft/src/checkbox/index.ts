@@ -31,11 +31,14 @@ import { designUnit, outlineWidth } from "../utilities/design-system";
 import { applyCursorDisabled, applyCursorPointer } from "../utilities/cursor";
 import { ColorRecipe } from "src/utilities/color/common";
 import {
-    highContrastBorderColor,
+    HighContrastColor,
+    highContrastColorBackground,
     highContrastDisabledBorder,
     highContrastHighlightBackground,
+    highContrastOptOutProperty,
     highContrastSelectedBackground,
     highContrastSelector,
+    highContrastTextForeground,
 } from "../utilities/high-contrast";
 
 const inputSize: DesignSystemResolver<string> = toPx(
@@ -67,6 +70,9 @@ const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = {
             "padding-left": directionSwitch(horizontalSpacing(2), ""),
             "padding-right": directionSwitch("", horizontalSpacing(2)),
         },
+        [highContrastSelector]: {
+            ...highContrastOptOutProperty,
+        },
     },
     checkbox_input: {
         position: "absolute",
@@ -92,6 +98,10 @@ const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = {
         "&:hover:enabled": {
             background: neutralFillInputHover,
             "border-color": neutralOutlineHover,
+            [highContrastSelector]: {
+                background: HighContrastColor.background,
+                "border-color": HighContrastColor.selectedBackground,
+            },
         },
         "&:active:enabled": {
             background: neutralFillInputActive,
@@ -101,10 +111,13 @@ const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = {
             "box-shadow": format<DesignSystem>("0 0 0 1px {0} inset", neutralFocus),
             "border-color": neutralFocus,
             [highContrastSelector]: {
-                "box-shadow": format<DesignSystem>("0 0 0 1px ButtonText"),
+                "box-shadow": format<DesignSystem>(
+                    "0 0 0 1px {0}",
+                    () => HighContrastColor.buttonText
+                ),
             },
         }),
-        ...highContrastBorderColor,
+        ...highContrastColorBackground,
     },
     checkbox_stateIndicator: {
         position: "relative",
@@ -128,9 +141,7 @@ const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = {
         ...applyCursorPointer(),
         color: neutralForegroundRest,
         ...applyScaledTypeRamp("t7"),
-        [highContrastSelector]: {
-            color: "ButtonText",
-        },
+        ...highContrastTextForeground,
     },
     checkbox__checked: {
         "& $checkbox_stateIndicator": {
@@ -142,7 +153,7 @@ const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = {
                 [highContrastSelector]: {
                     background: format(
                         "url('data:image/svg+xml;utf8,{0}')",
-                        indicatorSvg("HighlightText")
+                        indicatorSvg(HighContrastColor.selectedText)
                     ),
                 },
             },
@@ -153,7 +164,7 @@ const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = {
                     [highContrastSelector]: {
                         background: format(
                             "url('data:image/svg+xml;utf8,{0}')",
-                            indicatorSvg("Highlight")
+                            indicatorSvg(HighContrastColor.selectedBackground)
                         ),
                     },
                 },
@@ -179,7 +190,7 @@ const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = {
                 height: "auto",
                 background: neutralForegroundRest,
                 [highContrastSelector]: {
-                    backgroundColor: "ButtonHighlight",
+                    backgroundColor: HighContrastColor.selectedBackground,
                 },
             },
         },

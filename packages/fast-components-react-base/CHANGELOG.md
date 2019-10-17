@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.17.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-base@4.16.2...@microsoft/fast-components-react-base@4.17.0) (2019-10-16)
+
+
+### Bug Fixes
+
+* allow tabbing away from controlled auto-suggest without opening menu ([#2310](https://github.com/Microsoft/fast-dna/issues/2310)) ([a5f5a99](https://github.com/Microsoft/fast-dna/commit/a5f5a99))
+* viewport positioner adds incorrect classnames ([#2328](https://github.com/Microsoft/fast-dna/issues/2328)) ([81e6ed5](https://github.com/Microsoft/fast-dna/commit/81e6ed5))
+
+
+### Features
+
+* add viewport positioner to select menu ([#2263](https://github.com/Microsoft/fast-dna/issues/2263)) ([af5f04a](https://github.com/Microsoft/fast-dna/commit/af5f04a))
+
+
+
+
+
 ## [4.16.2](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-base@4.16.1...@microsoft/fast-components-react-base@4.16.2) (2019-10-07)
 
 

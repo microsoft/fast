@@ -54,3 +54,10 @@ export function canUseCssGrid(): boolean {
 
     return _canUseCssGrid;
 }
+
+export function canUsedForcedColors(): boolean {
+    return (
+        window.matchMedia("(forced-colors: none)").matches ||
+        window.matchMedia("(forced-colors: active)").matches
+    );
+}

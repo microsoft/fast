@@ -1,6 +1,7 @@
 import { CSSRules } from "@microsoft/fast-jss-manager";
 import { DesignSystem } from "../design-system";
 import { format, toPx } from "@microsoft/fast-jss-utilities";
+import { canUsedForcedColors } from "@microsoft/fast-web-utilities";
 import { focusOutlineWidth, outlineWidth } from "./design-system";
 import { importantValue } from "./important";
 
@@ -8,45 +9,72 @@ export const highContrastSelector: string = "@media (-ms-high-contrast:active)";
 
 export enum HighContrastColor {
     text = "WindowText",
-    hyperLinks = "LinkText",
+    forcedColorLink = "LinkText",
+    msLink = "-ms-hotlight",
     disabledText = "GrayText",
     selectedText = "HighlightText",
     selectedBackground = "Highlight",
     buttonText = "ButtonText",
     buttonBackground = "ButtonFace",
-    background = "Background",
+    background = "Window",
 }
 
-// Used to remove text backplate and borders in 'button-text' colors
+// Function used to to opt-out of high contrast color scheme for '-ms' prefixes
+function applyhighContrastOptOutProperty(): CSSRules<{}> {
+    return {
+        "-ms-high-contrast-adjust": "none",
+    };
+}
+// Used to to opt-out of high contrast color scheme
+export const highContrastOptOutProperty: CSSRules<{}> = applyhighContrastOptOutProperty();
+
+// Function used to to set link color base on 'forced-color' query
+export function applyHighContrastLinkValue(): string {
+    return canUsedForcedColors() ? "LinkText !important" : "-ms-hotlight !important";
+}
+// Used to to set high contrast base on 'forced-color' query
+export const highContrastLinkValue: string = applyHighContrastLinkValue();
+
+// Used to remove text backplate and borders in 'ButtonText' colors
 export const highContrastStealth: CSSRules<DesignSystem> = {
     [highContrastSelector]: {
         background: HighContrastColor.buttonBackground,
         border: "none",
         color: HighContrastColor.buttonText,
         fill: HighContrastColor.buttonText,
-        "-ms-high-contrast-adjust": "none",
+        ...highContrastOptOutProperty,
     },
 };
 
-// Used to remove text backplate in 'button-text' and 'button-background' colors
+// Used to remove text backplate in 'ButtonText' and 'ButtonFace' colors
 export const highContrastOutline: CSSRules<DesignSystem> = {
     [highContrastSelector]: {
         background: HighContrastColor.buttonBackground,
         "border-color": HighContrastColor.buttonText,
         color: HighContrastColor.buttonText,
         fill: HighContrastColor.buttonText,
-        "-ms-high-contrast-adjust": "none",
+        ...highContrastOptOutProperty,
     },
 };
 
-// Used to remove text backplate in 'select-text' and 'selected-background' colors
+// Used to remove text backplate in 'HighlightText' and 'Highlight' colors
 export const highContrastAccent: CSSRules<DesignSystem> = {
     [highContrastSelector]: {
         background: HighContrastColor.selectedBackground,
         "border-color": HighContrastColor.selectedBackground,
         color: HighContrastColor.selectedText,
         fill: HighContrastColor.selectedText,
-        "-ms-high-contrast-adjust": "none",
+        ...highContrastOptOutProperty,
+    },
+};
+
+// Used to set button with a border to 'link' color
+export const highContrastLinkOutline: CSSRules<DesignSystem> = {
+    [highContrastSelector]: {
+        background: HighContrastColor.background,
+        "border-color": highContrastLinkValue,
+        color: highContrastLinkValue,
+        fill: highContrastLinkValue,
     },
 };
 
@@ -112,7 +140,7 @@ export const highContrastDoubleFocus: CSSRules<DesignSystem> = {
     },
 };
 
-// Used to set 'selected-text' color
+// Used to set background to 'Highlight' foreground to 'HighlightText'
 export const highContrastSelected: CSSRules<DesignSystem> = {
     [highContrastSelector]: {
         background: HighContrastColor.selectedBackground,
@@ -125,7 +153,7 @@ export const highContrastSelected: CSSRules<DesignSystem> = {
  */
 export const highContrastSelection: CSSRules<DesignSystem> = highContrastSelected;
 
-// Used to set 'selected-background' color with an outline
+// Used to set 'Highlight' color with an outline
 export const highContrastSelectedOutline: CSSRules<DesignSystem> = {
     [highContrastSelector]: {
         background: HighContrastColor.selectedText,
@@ -135,7 +163,15 @@ export const highContrastSelectedOutline: CSSRules<DesignSystem> = {
     },
 };
 
-// Used to set foreground and glyph to be 'button-text' color
+// Used to set foreground and glyph to be 'WindowText' color
+export const highContrastTextForeground: CSSRules<DesignSystem> = {
+    [highContrastSelector]: {
+        color: importantValue(HighContrastColor.text),
+        fill: importantValue(HighContrastColor.text),
+    },
+};
+
+// Used to set foreground and glyph to be 'ButtonText' color
 export const highContrastForeground: CSSRules<DesignSystem> = {
     [highContrastSelector]: {
         color: importantValue(HighContrastColor.buttonText),
@@ -143,7 +179,7 @@ export const highContrastForeground: CSSRules<DesignSystem> = {
     },
 };
 
-// Used to set foreground and glyph to be 'select-text' color
+// Used to set foreground and glyph to be 'HighlightText' color
 export const highContrastSelectedForeground: CSSRules<DesignSystem> = {
     [highContrastSelector]: {
         color: importantValue(HighContrastColor.selectedText),
@@ -151,7 +187,7 @@ export const highContrastSelectedForeground: CSSRules<DesignSystem> = {
     },
 };
 
-// Used to set foreground and glyph to be 'highlight' color
+// Used to set foreground and glyph to be 'Highlight' color
 export const highContrastHighlightForeground: CSSRules<DesignSystem> = {
     [highContrastSelector]: {
         color: importantValue(HighContrastColor.selectedBackground),
@@ -159,7 +195,15 @@ export const highContrastHighlightForeground: CSSRules<DesignSystem> = {
     },
 };
 
-// Used to set borders to be 'text' color
+// Used to set foreground and glyph to be 'link' color
+export const highContrastLinkForeground: CSSRules<DesignSystem> = {
+    [highContrastSelector]: {
+        color: highContrastLinkValue,
+        fill: highContrastLinkValue,
+    },
+};
+
+// Used to set borders to be 'WindowText' color
 export const highContrastBorder: CSSRules<DesignSystem> = {
     [highContrastSelector]: {
         border: format(
@@ -170,30 +214,80 @@ export const highContrastBorder: CSSRules<DesignSystem> = {
     },
 };
 
-// Used to set border color to be 'button-text' color
+// Used to set border color to be 'ButtonText' color
 export const highContrastBorderColor: CSSRules<DesignSystem> = {
     [highContrastSelector]: {
         "border-color": HighContrastColor.buttonText,
     },
 };
 
-// Used to set background to be 'button-text' color
+// Used to set box-shadow border color to be 'link' color
+export const highContrastLinkBorder: CSSRules<DesignSystem> = {
+    [highContrastSelector]: {
+        "box-shadow": format(
+            "0 0 0 {0} inset {1}",
+            toPx(outlineWidth),
+            () => highContrastLinkValue
+        ),
+    },
+};
+
+// Used to set background to be 'Window' color
+export const highContrastColorBackground: CSSRules<DesignSystem> = {
+    [highContrastSelector]: {
+        background: HighContrastColor.background,
+    },
+};
+
+// Used to set background to be 'ButtonText' color
 export const highContrastBackground: CSSRules<DesignSystem> = {
     [highContrastSelector]: {
         background: HighContrastColor.buttonText,
     },
 };
 
-// Used to set background to be 'selected-text' color
+// Used to set background to be 'ButtonFace' color
+export const highContrastButtonBackground: CSSRules<DesignSystem> = {
+    [highContrastSelector]: {
+        background: HighContrastColor.buttonBackground,
+    },
+};
+
+// Used to set background to be 'HighlightText' color
 export const highContrastSelectedBackground: CSSRules<DesignSystem> = {
     [highContrastSelector]: {
         background: HighContrastColor.selectedText,
     },
 };
 
-// Used to set background to be 'highlight' color
+// Used to set background to be 'Highlight' color
 export const highContrastHighlightBackground: CSSRules<DesignSystem> = {
     [highContrastSelector]: {
         background: HighContrastColor.selectedBackground,
+    },
+};
+
+// Used to set background to be 'link' color
+export const highContrastLinkBackground: CSSRules<DesignSystem> = {
+    [highContrastSelector]: {
+        background: highContrastLinkValue,
+    },
+};
+
+// Used to set background to be 'ButtonFace' and border to 'HighlightText'
+export const highContrastButtonColorIndicator: CSSRules<DesignSystem> = {
+    [highContrastSelector]: {
+        opacity: "1",
+        background: HighContrastColor.buttonBackground,
+        "border-color": HighContrastColor.selectedText,
+    },
+};
+
+// Used to set background to be 'Highlight' and border to 'HighlightText'
+export const highContrastHighlightColorIndicator: CSSRules<DesignSystem> = {
+    [highContrastSelector]: {
+        opacity: "1",
+        background: HighContrastColor.selectedBackground,
+        "border-color": HighContrastColor.selectedText,
     },
 };

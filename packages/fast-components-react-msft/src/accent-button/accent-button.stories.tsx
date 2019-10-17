@@ -5,7 +5,15 @@ import { glyphFactory, SVGGlyph } from "../../assets/svg-element";
 
 storiesOf("Accent button", module)
     .add("Default", () => <AccentButton>Accent button</AccentButton>)
-    .add("Anchor", () => <AccentButton href="#">Anchor button</AccentButton>)
+    .add("Anchor", () => (
+        <AccentButton
+            href="#"
+            beforeContent={glyphFactory(SVGGlyph.download)}
+            afterContent={glyphFactory(SVGGlyph.user)}
+        >
+            Anchor button
+        </AccentButton>
+    ))
     .add("Before content", () => (
         <AccentButton beforeContent={glyphFactory(SVGGlyph.download)}>
             With before content
