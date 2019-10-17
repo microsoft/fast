@@ -30,6 +30,7 @@
   },
   "license": "MIT",
   "jest": {
+    "setupFilesAfterEnv": ["./mock.js"],
     "collectCoverage": true,
     "coverageThreshold": {
       "global": {

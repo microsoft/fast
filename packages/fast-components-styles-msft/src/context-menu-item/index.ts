@@ -1,5 +1,5 @@
+import { ComponentStyles } from "@microsoft/fast-jss-manager";
 import { applyCursorPointer } from "../utilities/cursor";
-import { ContextMenuItemClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import { add, applyFocusVisible, format, toPx } from "@microsoft/fast-jss-utilities";
 import { DesignSystem } from "../design-system";
 import { applyCornerRadius, applyFocusPlaceholderBorder } from "../utilities/border";
@@ -9,15 +9,16 @@ import {
     neutralFocus,
     neutralForegroundRest,
 } from "../utilities/color";
-import { ComponentStyles } from "@microsoft/fast-jss-manager";
+import { ContextMenuItemClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import { height, horizontalSpacingNumber } from "../utilities/density";
-import { designUnit } from "../utilities/design-system";
+import { designUnit, focusOutlineWidth, outlineWidth } from "../utilities/design-system";
 import { applyDisabledState } from "../utilities/disabled";
 import { applyScaledTypeRamp } from "../utilities/typography";
 import {
+    HighContrastColor,
     highContrastDisabled,
-    highContrastOutlineFocus,
     highContrastSelected,
+    highContrastSelector,
     highContrastStealth,
 } from "../utilities/high-contrast";
 
@@ -47,7 +48,16 @@ const styles: ComponentStyles<ContextMenuItemClassNameContract, DesignSystem> = 
         ...applyFocusPlaceholderBorder(),
         ...applyFocusVisible<DesignSystem>({
             "border-color": neutralFocus,
-            ...highContrastOutlineFocus,
+            [highContrastSelector]: {
+                color: HighContrastColor.selectedText,
+                fill: HighContrastColor.selectedText,
+                background: HighContrastColor.selectedBackground,
+                "box-shadow": format(
+                    "0 0 0 {0} inset {1}",
+                    toPx(focusOutlineWidth),
+                    () => HighContrastColor.buttonText
+                ),
+            },
         }),
         "&:hover": {
             background: neutralFillStealthHover,
@@ -55,6 +65,7 @@ const styles: ComponentStyles<ContextMenuItemClassNameContract, DesignSystem> = 
         },
         "&:active": {
             background: neutralFillStealthActive,
+            ...highContrastSelected,
         },
         ...highContrastStealth,
     },
