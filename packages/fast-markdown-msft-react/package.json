@@ -2,7 +2,7 @@
   "name": "@microsoft/fast-markdown-msft-react",
   "description": "Converter for markdown files to JSX as a string which can be embedded in a site",
   "sideEffects": false,
-  "version": "4.1.47",
+  "version": "4.1.48",
   "author": {
     "name": "Microsoft",
     "url": "https://discord.gg/FcSNfg4"
@@ -31,7 +31,9 @@
     "watch": "npm run build -- -w --preserveWatchOutput"
   },
   "jest": {
-    "setupFilesAfterEnv": ["./mock.js"],
+    "setupFilesAfterEnv": [
+      "./mock.js"
+    ],
     "collectCoverage": true,
     "coverageThreshold": {
       "global": {
@@ -87,8 +89,8 @@
     "react-dom": "^16.3.0"
   },
   "dependencies": {
-    "@microsoft/fast-components-react-base": "^4.17.0",
-    "@microsoft/fast-components-react-msft": "^4.23.0",
+    "@microsoft/fast-components-react-base": "^4.18.0",
+    "@microsoft/fast-components-react-msft": "^4.24.0",
     "markdown-it": "^8.4.0"
   }
 }

@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.24.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-msft@4.23.0...@microsoft/fast-components-react-msft@4.24.0) (2019-10-17)
+
+
+### Bug Fixes
+
+* components are not showing correct high contrast colors in Edge chromium, removed hard code value, and add more examples ([#2327](https://github.com/Microsoft/fast-dna/issues/2327)) ([125a85c](https://github.com/Microsoft/fast-dna/commit/125a85c))
+
+
+### Features
+
+* add dynamic scaling capability to viewport positioner ([#2290](https://github.com/Microsoft/fast-dna/issues/2290)) ([45eb5b7](https://github.com/Microsoft/fast-dna/commit/45eb5b7))
+
+
+
+
+
 # [4.23.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-msft@4.22.2...@microsoft/fast-components-react-msft@4.23.0) (2019-10-16)
 
 
