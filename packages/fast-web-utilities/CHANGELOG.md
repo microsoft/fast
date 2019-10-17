@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.3.3](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-web-utilities@4.3.2...@microsoft/fast-web-utilities@4.3.3) (2019-10-17)
+
+
+### Bug Fixes
+
+* components are not showing correct high contrast colors in Edge chromium, removed hard code value, and add more examples ([#2327](https://github.com/Microsoft/fast-dna/issues/2327)) ([125a85c](https://github.com/Microsoft/fast-dna/commit/125a85c))
+
+
+
+
+
 ## [4.3.2](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-web-utilities@4.3.1...@microsoft/fast-web-utilities@4.3.2) (2019-09-17)
 
 

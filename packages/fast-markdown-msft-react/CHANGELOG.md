@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.1.48](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-markdown-msft-react@4.1.47...@microsoft/fast-markdown-msft-react@4.1.48) (2019-10-17)
+
+
+### Bug Fixes
+
+* components are not showing correct high contrast colors in Edge chromium, removed hard code value, and add more examples ([#2327](https://github.com/Microsoft/fast-dna/issues/2327)) ([125a85c](https://github.com/Microsoft/fast-dna/commit/125a85c))
+
+
+
+
+
 ## [4.1.47](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-markdown-msft-react@4.1.46...@microsoft/fast-markdown-msft-react@4.1.47) (2019-10-16)
 
 **Note:** Version bump only for package @microsoft/fast-markdown-msft-react

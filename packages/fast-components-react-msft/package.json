@@ -2,7 +2,7 @@
   "name": "@microsoft/fast-components-react-msft",
   "description": "FAST Microsoft components implemented in React",
   "sideEffects": false,
-  "version": "4.23.0",
+  "version": "4.24.0",
   "author": {
     "name": "Microsoft",
     "url": "https://discord.gg/FcSNfg4"
@@ -36,7 +36,9 @@
     "watch": "tsc -p ./tsconfig.build.json -w --preserveWatchOutput"
   },
   "jest": {
-    "setupFilesAfterEnv": ["./mock.js"],
+    "setupFilesAfterEnv": [
+      "./mock.js"
+    ],
     "collectCoverage": true,
     "coverageThreshold": {
       "global": {
@@ -78,8 +80,8 @@
     "@babel/preset-react": "^7.0.0",
     "@microsoft/fast-colors": "^5.0.0",
     "@microsoft/fast-jss-manager-react": "^4.5.1",
-    "@microsoft/fast-storybook-presets": "^1.1.18",
-    "@microsoft/fast-tooling-react": "^1.21.0",
+    "@microsoft/fast-storybook-presets": "^1.1.19",
+    "@microsoft/fast-tooling-react": "^1.21.1",
     "@microsoft/fast-tslint-rules": "^3.0.3",
     "@storybook/addon-actions": "^5.1.9",
     "@storybook/preset-typescript": "^1.0.0",
@@ -129,11 +131,11 @@
     "@microsoft/fast-components-class-name-contracts-base": "^4.4.0",
     "@microsoft/fast-components-class-name-contracts-msft": "^4.7.5",
     "@microsoft/fast-components-foundation-react": "^3.1.1",
-    "@microsoft/fast-components-react-base": "^4.17.0",
-    "@microsoft/fast-components-styles-msft": "^4.22.3",
+    "@microsoft/fast-components-react-base": "^4.18.0",
+    "@microsoft/fast-components-styles-msft": "^4.22.4",
     "@microsoft/fast-glyphs-msft": "^4.0.2",
-    "@microsoft/fast-jss-utilities": "^4.6.7",
-    "@microsoft/fast-web-utilities": "^4.3.2",
+    "@microsoft/fast-jss-utilities": "^4.6.8",
+    "@microsoft/fast-web-utilities": "^4.3.3",
     "exenv-es6": "^1.0.0",
     "utility-types": "^2.1.0"
   }
