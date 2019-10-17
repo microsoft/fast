@@ -128,15 +128,10 @@ const styles: ComponentStyles<CallToActionClassNameContract, DesignSystem> = {
                 [highContrastSelector]: {
                     "box-shadow": "none !important",
                 },
-                "a& & $button_contentRegion, & $callToAction_glyph": {
-                    ...highContrastLinkForeground,
-                },
             },
         },
-        "a&": {
-            "& $button_contentRegion, & $callToAction_glyph": {
-                ...highContrastLinkForeground,
-            },
+        "a& $button_contentRegion, a& $callToAction_glyph, a&:hover $button_contentRegion, a&:hover $callToAction_glyph": {
+            ...highContrastLinkForeground,
         },
     },
     callToAction__lightweight: {
