@@ -36,6 +36,7 @@
     "watch": "tsc -p ./tsconfig.build.json -w --preserveWatchOutput"
   },
   "jest": {
+    "setupFilesAfterEnv": ["./mock.js"],
     "collectCoverage": true,
     "coverageThreshold": {
       "global": {

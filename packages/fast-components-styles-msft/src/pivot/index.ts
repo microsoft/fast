@@ -1,5 +1,5 @@
-import { ComponentStyles } from "@microsoft/fast-jss-manager";
 import { PivotClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
+import { DesignSystem } from "../design-system";
 import {
     applyFocusVisible,
     directionSwitch,
@@ -15,7 +15,7 @@ import {
     neutralForegroundHover,
     neutralForegroundRest,
 } from "../utilities/color";
-import { DesignSystem } from "../design-system";
+import { ComponentStyles } from "@microsoft/fast-jss-manager";
 import { applyCornerRadius, applyFocusPlaceholderBorder } from "../utilities/border";
 import { applyScaledTypeRamp } from "../utilities/typography";
 import { focusOutlineWidth } from "../utilities/design-system";
@@ -24,6 +24,7 @@ import {
     highContrastBorderColor,
     highContrastForeground,
     highContrastHighlightBackground,
+    highContrastOptOutProperty,
     highContrastSelector,
 } from "../utilities/high-contrast";
 
@@ -34,6 +35,9 @@ const styles: ComponentStyles<PivotClassNameContract, DesignSystem> = {
         overflow: "hidden",
         color: neutralForegroundRest,
         transition: "all 0.2s ease-in-out",
+        [highContrastSelector]: {
+            ...highContrastOptOutProperty,
+        },
     },
     pivot_tabList: {
         display: "flex",
@@ -62,10 +66,7 @@ const styles: ComponentStyles<PivotClassNameContract, DesignSystem> = {
             "border-color": neutralFocus,
             ...highContrastBorderColor,
         }),
-        [highContrastSelector]: {
-            color: "ButtonText",
-            "-ms-high-contrast-adjust": "none",
-        },
+        ...highContrastForeground,
     },
     pivot_tab__active: {
         ...highContrastForeground,

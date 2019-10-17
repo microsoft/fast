@@ -31,6 +31,7 @@
     "watch": "npm run build -- -w --preserveWatchOutput"
   },
   "jest": {
+    "setupFilesAfterEnv": ["./mock.js"],
     "collectCoverage": true,
     "coverageThreshold": {
       "global": {

@@ -1,5 +1,9 @@
-import DesignSystemDefaults, { DesignSystem } from "../design-system";
 import { ComponentStyles } from "@microsoft/fast-jss-manager";
+import {
+    neutralFillStealthRest,
+    neutralForegroundRest,
+    neutralOutlineRest,
+} from "../utilities/color";
 import {
     directionSwitch,
     ellipsis,
@@ -10,18 +14,16 @@ import {
 import { SelectClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import { glyphSize, height, horizontalSpacing } from "../utilities/density";
 import { applyElevation, ElevationMultiplier } from "../utilities/elevation";
-import {
-    neutralFillStealthRest,
-    neutralForegroundRest,
-    neutralOutlineRest,
-} from "../utilities/color";
+import DesignSystemDefaults, { DesignSystem } from "../design-system";
 import { applyElevatedCornerRadius } from "../utilities/border";
 import { designUnit, outlineWidth } from "../utilities/design-system";
 import { inputFieldStyles } from "../patterns/input-field";
 import { applyCursorPointer } from "../utilities/cursor";
 import {
     HighContrastColor,
+    highContrastDisabledForeground,
     highContrastForeground,
+    highContrastOptOutProperty,
     highContrastOutline,
     highContrastSelector,
 } from "../utilities/high-contrast";
@@ -37,6 +39,9 @@ const styles: ComponentStyles<SelectClassNameContract, DesignSystem> = {
         width: "100%",
         ...inputFieldStyles(),
         ...highContrastOutline,
+        "&:disabled > span > svg": {
+            ...highContrastDisabledForeground,
+        },
     },
     select_buttonContentRegion: {
         display: "grid",
@@ -72,6 +77,7 @@ const styles: ComponentStyles<SelectClassNameContract, DesignSystem> = {
         "max-height": "328px",
         overflow: "auto",
         [highContrastSelector]: {
+            ...highContrastOptOutProperty,
             background: HighContrastColor.buttonBackground,
             border: format(
                 "{0} solid {1}",
