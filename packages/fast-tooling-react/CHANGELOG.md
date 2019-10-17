@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.21.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-tooling-react@1.21.0...@microsoft/fast-tooling-react@1.21.1) (2019-10-17)
+
+**Note:** Version bump only for package @microsoft/fast-tooling-react
+
+
+
+
+
 # [1.21.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-tooling-react@1.20.0...@microsoft/fast-tooling-react@1.21.0) (2019-10-16)
 
 
