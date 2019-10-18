@@ -465,16 +465,14 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
     }
 
     private renderDesignSystemEditor(): React.ReactNode {
-        if (true) {
-            return (
-                <Form
-                    jssStyleSheet={this.formStyleOverrides}
-                    schema={designSystemSchema}
-                    data={this.state.viewConfig}
-                    onChange={this.handleUpdateDesignSystem}
-                />
-            );
-        }
+        return (
+            <Form
+                jssStyleSheet={this.formStyleOverrides}
+                schema={designSystemSchema}
+                data={this.state.viewConfig}
+                onChange={this.handleUpdateDesignSystem}
+            />
+        );
     }
 
     private renderAccentColorPicker(): React.ReactNode {
