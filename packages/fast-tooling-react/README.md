@@ -42,6 +42,7 @@ The tooling available in FAST Tooling React can be used together to create UI fo
     - [Validation](#validation)
     - [JSON schema metadata](#json-schema-metadata)
         - [Title](#title)
+        - [Description](#description)
         - [Disabled](#disabled)
         - [Examples & default](#examples-&-default)
         - [Badges](#badges)
@@ -1160,6 +1161,40 @@ Example:
         },
         "weight": {
             "title": "Weight",
+            "type": "string",
+            "enum": [
+                "heavy"
+            ]
+        }
+    },
+    "required": [
+        "text"
+    ]
+}
+```
+
+#### Description
+
+Using a description will add a HTML attribute `title` to the label, resulting in a browser tooltip. This should be used for supplemental information that may not be apparent in the title.
+
+Example:
+
+```json
+{
+    "$schema": "http://json-schema.org/schema#",
+    "id": "my-component",
+    "title": "My component",
+    "type": "object",
+    "properties": {
+        "text": {
+            "title": "Text",
+            "description": "The text appearing in the body",
+            "type": "string",
+            "example": "Hello world"
+        },
+        "weight": {
+            "title": "Weight",
+            "description": "The weight of the text",
             "type": "string",
             "enum": [
                 "heavy"

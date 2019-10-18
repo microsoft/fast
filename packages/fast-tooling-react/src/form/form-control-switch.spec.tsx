@@ -5,15 +5,16 @@ import FormControlSwitch, { FormControlSwitchProps } from "./form-control-switch
 import { ContextComponent, DragDropContext } from "react-dnd";
 import HTML5Backend from "react-dnd-html5-backend";
 
+import oneOfSchema from "../__tests__/schemas/one-of.schema.json";
 import numberFieldSchema from "../__tests__/schemas/number-field.schema.json";
-import textareaSchema from "../__tests__/schemas/textarea.schema.json";
 import checkboxSchema from "../__tests__/schemas/checkbox.schema.json";
 import objectSchema from "../__tests__/schemas/objects.schema.json";
 import arraySchema from "../__tests__/schemas/arrays.schema.json";
 import childrenSchema from "../__tests__/schemas/children.schema.json";
-import oneOfSchema from "../__tests__/schemas/one-of.schema.json";
+import textareaSchema from "../__tests__/schemas/textarea.schema.json";
 import {
     ArrayControlConfig,
+    BadgeType,
     ChildrenControlConfig,
     CommonControlConfig,
     ControlConfig,
@@ -37,6 +38,7 @@ import { SectionLinkControl } from "./controls/control.section-link";
 import { CheckboxControl } from "./controls/control.checkbox";
 import { DisplayControl } from "./controls/control.display";
 import { Controls } from "./form-section.props";
+import { reactChildrenStringSchema } from "./controls/control.children.text";
 
 const selectControl: StandardControlPlugin = new StandardControlPlugin({
     control: (config: ListControlConfig): React.ReactNode => {
@@ -308,5 +310,255 @@ describe("FormControlSwitch", () => {
         expect(renderedWithDefault.find("li")).toHaveLength(4);
         expect(renderedWithoutDefaultAndIds.find("li")).toHaveLength(1);
         expect(renderedWithDefaultAndIds.find("li")).toHaveLength(3);
+    });
+    describe("should pass all config properties to the template", () => {
+        describe("common properties", () => {
+            test("dataLocation", () => {
+                const dataLocation: string = "text";
+                const rendered: any = mount(
+                    <TestFormControlSwitch
+                        {...formControlSwitchProps}
+                        schema={textareaSchema.properties.textWithDefault}
+                        schemaLocation={"properties.text"}
+                        dataLocation={dataLocation}
+                        propertyName={"text"}
+                        data={"Foo"}
+                    />
+                );
+
+                expect(
+                    rendered.find("StandardControlTemplate").prop("dataLocation")
+                ).toEqual(dataLocation);
+            });
+            test("schemaLocation", () => {
+                const schemaLocation: string = "properties.text";
+                const rendered: any = mount(
+                    <TestFormControlSwitch
+                        {...formControlSwitchProps}
+                        schema={textareaSchema.properties.textWithDefault}
+                        schemaLocation={schemaLocation}
+                        dataLocation={"text"}
+                        propertyName={"text"}
+                        data={"Foo"}
+                    />
+                );
+
+                expect(
+                    rendered.find("StandardControlTemplate").prop("schemaLocation")
+                ).toEqual(schemaLocation);
+            });
+            test("data", () => {
+                const data: string = "Foo";
+                const rendered: any = mount(
+                    <TestFormControlSwitch
+                        {...formControlSwitchProps}
+                        schema={textareaSchema.properties.textWithDefault}
+                        schemaLocation={"properties.text"}
+                        dataLocation={"text"}
+                        propertyName={"text"}
+                        data={data}
+                    />
+                );
+
+                expect(rendered.find("StandardControlTemplate").prop("data")).toEqual(
+                    data
+                );
+            });
+            test("required", () => {
+                const rendered: any = mount(
+                    <TestFormControlSwitch {...formControlSwitchProps} required={true} />
+                );
+
+                expect(rendered.find("StandardControlTemplate").prop("required")).toEqual(
+                    true
+                );
+            });
+            test("label", () => {
+                const label: string = "Foo";
+                const rendered: any = mount(
+                    <TestFormControlSwitch
+                        {...formControlSwitchProps}
+                        schema={{
+                            title: label,
+                        }}
+                    />
+                );
+
+                expect(rendered.find("StandardControlTemplate").prop("label")).toEqual(
+                    label
+                );
+            });
+            test("labelTooltip", () => {
+                const labelTooltip: string = "Foo";
+                const rendered: any = mount(
+                    <TestFormControlSwitch
+                        {...formControlSwitchProps}
+                        schema={{
+                            description: labelTooltip,
+                        }}
+                    />
+                );
+
+                expect(
+                    rendered.find("StandardControlTemplate").prop("labelTooltip")
+                ).toEqual(labelTooltip);
+            });
+            test("disabled", () => {
+                const disabled: boolean = true;
+                const rendered: any = mount(
+                    <TestFormControlSwitch
+                        {...formControlSwitchProps}
+                        schema={{
+                            disabled,
+                        }}
+                    />
+                );
+
+                expect(rendered.find("StandardControlTemplate").prop("disabled")).toEqual(
+                    disabled
+                );
+            });
+            test("onChange", () => {
+                const onChange: any = jest.fn();
+                const rendered: any = mount(
+                    <TestFormControlSwitch
+                        {...formControlSwitchProps}
+                        onChange={onChange}
+                    />
+                );
+
+                expect(rendered.find("StandardControlTemplate").prop("onChange")).toEqual(
+                    onChange
+                );
+            });
+            test("default", () => {
+                const defaultValue: string = "Bar";
+                const rendered: any = mount(
+                    <TestFormControlSwitch
+                        {...formControlSwitchProps}
+                        schema={{
+                            default: defaultValue,
+                        }}
+                    />
+                );
+
+                expect(rendered.find("StandardControlTemplate").prop("default")).toEqual(
+                    defaultValue
+                );
+            });
+            test("const", () => {
+                const constValue: string = "Bar";
+                const rendered: any = mount(
+                    <TestFormControlSwitch
+                        {...formControlSwitchProps}
+                        schema={{
+                            const: constValue,
+                        }}
+                    />
+                );
+
+                expect(rendered.find("StandardControlTemplate").prop("const")).toEqual(
+                    constValue
+                );
+            });
+            test("badge", () => {
+                const rendered: any = mount(
+                    <TestFormControlSwitch
+                        {...formControlSwitchProps}
+                        schema={{
+                            badge: BadgeType.locked,
+                        }}
+                    />
+                );
+
+                expect(rendered.find("StandardControlTemplate").prop("badge")).toEqual(
+                    BadgeType.locked
+                );
+            });
+            test("badgeDescription", () => {
+                const badgeDescription: string = "Foo";
+                const rendered: any = mount(
+                    <TestFormControlSwitch
+                        {...formControlSwitchProps}
+                        schema={{
+                            badgeDescription,
+                        }}
+                    />
+                );
+
+                expect(
+                    rendered.find("StandardControlTemplate").prop("badgeDescription")
+                ).toEqual(badgeDescription);
+            });
+            test("invalidMessage", () => {
+                const invalidMessage: string = "Foo";
+                const rendered: any = mount(
+                    <TestFormControlSwitch
+                        {...formControlSwitchProps}
+                        invalidMessage={invalidMessage}
+                    />
+                );
+
+                expect(
+                    rendered.find("StandardControlTemplate").prop("invalidMessage")
+                ).toEqual(invalidMessage);
+            });
+            test("displayValidationBrowserDefault", () => {
+                const displayValidationBrowserDefault: boolean = true;
+                const rendered: any = mount(
+                    <TestFormControlSwitch
+                        {...formControlSwitchProps}
+                        displayValidationBrowserDefault={displayValidationBrowserDefault}
+                    />
+                );
+
+                expect(
+                    rendered
+                        .find("StandardControlTemplate")
+                        .prop("displayValidationBrowserDefault")
+                ).toEqual(displayValidationBrowserDefault);
+            });
+            test("displayValidationInline", () => {
+                const displayValidationInline: boolean = true;
+                const rendered: any = mount(
+                    <TestFormControlSwitch
+                        {...formControlSwitchProps}
+                        displayValidationInline={displayValidationInline}
+                    />
+                );
+
+                expect(
+                    rendered
+                        .find("StandardControlTemplate")
+                        .prop("displayValidationInline")
+                ).toEqual(displayValidationInline);
+            });
+            test("displayValidationInline", () => {
+                const onUpdateSection: any = jest.fn();
+                const rendered: any = mount(
+                    <TestFormControlSwitch
+                        {...formControlSwitchProps}
+                        onUpdateSection={onUpdateSection}
+                    />
+                );
+
+                expect(
+                    rendered.find("StandardControlTemplate").prop("onUpdateSection")
+                ).toEqual(onUpdateSection);
+            });
+            test("softRemove", () => {
+                const softRemove: boolean = true;
+                const rendered: any = mount(
+                    <TestFormControlSwitch
+                        {...formControlSwitchProps}
+                        softRemove={softRemove}
+                    />
+                );
+
+                expect(
+                    rendered.find("StandardControlTemplate").prop("softRemove")
+                ).toEqual(softRemove);
+            });
+        });
     });
 });

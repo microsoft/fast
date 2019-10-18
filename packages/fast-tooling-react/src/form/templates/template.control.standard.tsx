@@ -57,6 +57,7 @@ class StandardControlTemplate extends ControlTemplateUtilities<
                             <label
                                 htmlFor={this.props.dataLocation}
                                 className={standardControlTemplate_controlLabel}
+                                title={this.props.labelTooltip}
                             >
                                 {this.props.label}
                             </label>
