@@ -132,3 +132,9 @@ import CustomControlSchema from "../../../src/__tests__/schemas/control-plugin.s
 export const customControl: ExampleComponent = {
     schema: CustomControlSchema,
 };
+
+import TooltipSchema from "../../../src/__tests__/schemas/tooltip.schema.json";
+
+export const tooltip: ExampleComponent = {
+    schema: TooltipSchema,
+};

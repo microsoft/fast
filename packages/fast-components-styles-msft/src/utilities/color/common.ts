@@ -1,5 +1,3 @@
-import { DesignSystem, DesignSystemResolver } from "../../design-system";
-import { memoize } from "lodash-es";
 import {
     ColorRGBA64,
     contrastRatio,
@@ -9,6 +7,8 @@ import {
     parseColorWebRGB,
     rgbToRelativeLuminance,
 } from "@microsoft/fast-colors";
+import { memoize } from "lodash-es";
+import { DesignSystem, DesignSystemResolver } from "../../design-system";
 
 /**
  * Describes the format of a single color in a palette
@@ -147,17 +147,25 @@ export function swatchFamilyToSwatchRecipeFactory<T extends SwatchFamily>(
  * Converts a color string into a ColorRGBA64 instance.
  * Supports #RRGGBB and rgb(r, g, b) formats
  */
-export function parseColorString(color: string): ColorRGBA64 {
-    if (isColorStringHexRGB(color)) {
-        return parseColorHexRGB(color);
-    } else if (isColorStringWebRGB(color)) {
-        return parseColorWebRGB(color);
-    }
+export const parseColorString: (color: string) => ColorRGBA64 = memoize(
+    (color: string): ColorRGBA64 => {
+        let parsed: ColorRGBA64 | null = parseColorHexRGB(color);
 
-    throw new Error(
-        `${color} cannot be converted to a ColorRGBA64. Color strings must be one of the following formats: "#RGB", "#RRGGBB", or "rgb(r, g, b)"`
-    );
-}
+        if (parsed !== null) {
+            return parsed;
+        }
+
+        parsed = parseColorWebRGB(color);
+
+        if (parsed !== null) {
+            return parsed;
+        }
+
+        throw new Error(
+            `${color} cannot be converted to a ColorRGBA64. Color strings must be one of the following formats: "#RGB", "#RRGGBB", or "rgb(r, g, b)"`
+        );
+    }
+);
 
 /**
  * Determines if a string value represents a color
@@ -176,15 +184,12 @@ export function colorMatches(a: string, b: string): boolean {
 }
 
 /**
- * Returns the contrast value between two colors. If either value is not a color, -1 will be returned
- * Supports #RRGGBB and rgb(r, g, b) formats
+ * Returns the contrast value between two color strings.
+ * Supports #RRGGBB and rgb(r, g, b) formats.
  */
 export const contrast: (a: string, b: string) => number = memoize(
     (a: string, b: string): number => {
-        const alpha: ColorRGBA64 = parseColorString(a);
-        const beta: ColorRGBA64 = parseColorString(b);
-
-        return contrastRatio(alpha, beta);
+        return contrastRatio(parseColorString(a), parseColorString(b));
     },
     (a: string, b: string): string => a + b
 );
@@ -206,3 +211,9 @@ export function designSystemResolverMax(
             args.map((fn: DesignSystemResolver<number>) => fn(designSystem))
         );
 }
+
+export const clamp: (value: number, min: number, max: number) => number = (
+    value: number,
+    min: number,
+    max: number
+): number => Math.min(Math.max(value, min), max);

@@ -50,6 +50,7 @@ class SingleLineControlTemplate extends ControlTemplateUtilities<
                     <label
                         className={singleLineControlTemplate_label}
                         htmlFor={this.props.dataLocation}
+                        title={this.props.labelTooltip}
                     >
                         {this.props.label}
                     </label>

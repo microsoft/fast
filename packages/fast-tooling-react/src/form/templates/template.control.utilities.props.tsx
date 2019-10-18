@@ -98,6 +98,11 @@ export interface ControlTemplateUtilitiesProps
     label: string;
 
     /**
+     * The label tooltip
+     */
+    labelTooltip?: string;
+
+    /**
      * Whether this item is disabled
      */
     disabled?: boolean;
