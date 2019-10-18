@@ -2,7 +2,7 @@ import { ActionToggleClassNameContract } from "@microsoft/fast-components-class-
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import { actionToggleButtonOverrides } from "@microsoft/fast-components-styles-msft";
 import { classNames } from "@microsoft/fast-web-utilities";
-import { isNil } from "lodash-es";
+import { isBoolean, isFunction, isNil } from "lodash-es";
 import React from "react";
 import { Button, ButtonAppearance } from "../button";
 import { DisplayNamePrefix } from "../utilities";
@@ -35,16 +35,11 @@ class ActionToggle extends Foundation<
         nextProps: ActionToggleProps,
         prevState: ActionToggleState
     ): null | Partial<ActionToggleState> {
-        if (
-            typeof nextProps.selected === "boolean" &&
-            nextProps.selected !== prevState.selected
-        ) {
-            return {
-                selected: nextProps.selected,
-            };
-        }
+        const selected: boolean = nextProps.selected;
 
-        return null;
+        return isBoolean(selected) && selected !== prevState.selected
+            ? { selected }
+            : null;
     }
 
     protected handledProps: HandledProps<ActionToggleHandledProps> = {
@@ -67,7 +62,7 @@ class ActionToggle extends Foundation<
         super(props);
 
         this.state = {
-            selected: this.props.selected || false,
+            selected: !!this.props.selected,
         };
     }
 
@@ -75,20 +70,24 @@ class ActionToggle extends Foundation<
      * Renders the component
      */
     public render(): JSX.Element {
+        const selected: boolean = this.state.selected;
+
         return (
             <Button
                 {...this.unhandledProps()}
                 className={this.generateClassNames()}
                 disabled={this.props.disabled}
                 onClick={this.handleToggleChange}
-                aria-label={this.renderARIALabel()}
+                aria-label={
+                    selected ? this.props.selectedLabel : this.props.unselectedLabel
+                }
                 appearance={
                     ButtonAppearance[ActionToggleAppearance[this.props.appearance]]
                 }
                 jssStyleSheet={actionToggleButtonOverrides}
                 beforeContent={this.renderGlyph}
             >
-                {this.renderLabel()}
+                {selected ? this.props.selectedContent : this.props.unselectedContent}
             </Button>
         );
     }
@@ -107,69 +106,33 @@ class ActionToggle extends Foundation<
         return super.generateClassNames(
             classNames(
                 actionToggle,
+                this.props.managedClasses[`actionToggle__${this.props.appearance}`],
                 [actionToggle__disabled, this.props.disabled],
                 [actionToggle__selected, this.state.selected],
-                [
-                    this.props.managedClasses[`actionToggle__${this.props.appearance}`],
-                    typeof this.props.appearance === "string",
-                ],
                 [actionToggle__hasGlyphAndContent, this.hasGlyphAndContent()]
             )
         );
     }
 
     /**
-     * Returns the appropriate ARIA label
-     */
-    private renderARIALabel(): string {
-        if (this.state.selected) {
-            return this.props.selectedLabel;
-        }
-
-        return this.props.unselectedLabel;
-    }
-
-    /**
-     * Returns the appropriate text label
-     */
-    private renderLabel(): React.ReactNode {
-        if (this.state.selected) {
-            return this.props.selectedContent;
-        }
-
-        return this.props.unselectedContent;
-    }
-
-    /**
      * Render Glyphs
      */
     private renderGlyph = (): React.ReactNode => {
+        let glyph: (className: string) => React.ReactNode;
+        let className: string;
+
         if (this.state.selected) {
-            return this.renderSelectedGlyph();
+            glyph = this.props.selectedGlyph;
+            className = this.props.managedClasses.actionToggle_selectedGlyph;
+        } else {
+            glyph = this.props.unselectedGlyph;
+            className = this.props.managedClasses.actionToggle_unselectedGlyph;
         }
 
-        return this.renderUnselectedGlyph();
+        return isFunction(this.props.selectedGlyph)
+            ? glyph(classNames(this.props.managedClasses.actionToggle_glyph, className))
+            : null;
     };
-
-    private renderSelectedGlyph(): React.ReactNode {
-        if (typeof this.props.selectedGlyph === "function") {
-            return this.props.selectedGlyph(
-                classNames(this.props.managedClasses.actionToggle_selectedGlyph)
-            );
-        }
-
-        return null;
-    }
-
-    private renderUnselectedGlyph(): React.ReactNode {
-        if (typeof this.props.unselectedGlyph === "function") {
-            return this.props.unselectedGlyph(
-                classNames(this.props.managedClasses.actionToggle_unselectedGlyph)
-            );
-        }
-
-        return null;
-    }
 
     /**
      * Checks to see if the toggle is displaying both glyph and content or not
@@ -184,10 +147,7 @@ class ActionToggle extends Foundation<
      * Handles onClick
      */
     private handleToggleChange = (e: React.MouseEvent<HTMLElement>): void => {
-        if (
-            typeof this.props.selected !== "boolean" &&
-            typeof this.props.selected !== "function"
-        ) {
+        if (!isBoolean(this.props.selected)) {
             this.setState({
                 selected: !this.state.selected,
             });

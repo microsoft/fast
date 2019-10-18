@@ -42,6 +42,19 @@ const playPauseProps: Pick<
 
 storiesOf("Action toggle", module)
     .add("Uncontrolled", () => <ActionToggle {...playPauseProps} />)
+    .add("Uncontrolled - disabled", () => (
+        <ActionToggle disabled={true} {...playPauseProps} />
+    ))
+    .add("Justified", () => (
+        <ActionToggle appearance={ActionToggleAppearance.justified} {...playPauseProps} />
+    ))
+    .add("Justified - disabled", () => (
+        <ActionToggle
+            disabled={true}
+            appearance={ActionToggleAppearance.justified}
+            {...playPauseProps}
+        />
+    ))
     .add("Controlled", () => {
         return (
             <ActionToggleStateHandler>
@@ -61,8 +74,22 @@ storiesOf("Action toggle", module)
     .add("Primary", () => (
         <ActionToggle appearance={ActionToggleAppearance.primary} {...playPauseProps} />
     ))
+    .add("Primary - disabled", () => (
+        <ActionToggle
+            disabled={true}
+            appearance={ActionToggleAppearance.primary}
+            {...playPauseProps}
+        />
+    ))
     .add("Lightweight", () => (
         <ActionToggle
+            appearance={ActionToggleAppearance.lightweight}
+            {...playPauseProps}
+        />
+    ))
+    .add("Lightweight - disabled", () => (
+        <ActionToggle
+            disabled={true}
             appearance={ActionToggleAppearance.lightweight}
             {...playPauseProps}
         />
@@ -70,9 +97,30 @@ storiesOf("Action toggle", module)
     .add("Outline", () => (
         <ActionToggle appearance={ActionToggleAppearance.outline} {...playPauseProps} />
     ))
+    .add("Outline - disabled", () => (
+        <ActionToggle
+            disabled={true}
+            appearance={ActionToggleAppearance.outline}
+            {...playPauseProps}
+        />
+    ))
     .add("Stealth", () => (
         <ActionToggle appearance={ActionToggleAppearance.stealth} {...playPauseProps} />
     ))
+    .add("Stealth - disabled", () => (
+        <ActionToggle
+            disabled={true}
+            appearance={ActionToggleAppearance.stealth}
+            {...playPauseProps}
+        />
+    ))
     .add("Justified", () => (
         <ActionToggle appearance={ActionToggleAppearance.justified} {...playPauseProps} />
+    ))
+    .add("Justified - disabled", () => (
+        <ActionToggle
+            disabled={true}
+            appearance={ActionToggleAppearance.justified}
+            {...playPauseProps}
+        />
     ));

@@ -13,6 +13,11 @@ export interface ActionToggleClassNameContract {
     actionToggle__selected?: string;
 
     /**
+     * Applied to both selected and unselected glyphs
+     */
+    actionToggle_glyph?: string;
+
+    /**
      * The action toggle selected glyph
      */
     actionToggle_selectedGlyph?: string;
