@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.6.9](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-jss-utilities@4.6.8...@microsoft/fast-jss-utilities@4.6.9) (2019-10-18)
+
+
+### Bug Fixes
+
+* isomorphic check in acrylic.js ([#2357](https://github.com/Microsoft/fast-dna/issues/2357)) ([fe55a76](https://github.com/Microsoft/fast-dna/commit/fe55a76))
+
+
+
+
+
+## [4.6.8](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-jss-utilities@4.6.7...@microsoft/fast-jss-utilities@4.6.8) (2019-10-17)
+
+**Note:** Version bump only for package @microsoft/fast-jss-utilities
+
+
+
+
+
 ## [4.6.7](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-jss-utilities@4.6.6...@microsoft/fast-jss-utilities@4.6.7) (2019-10-16)
 
 **Note:** Version bump only for package @microsoft/fast-jss-utilities

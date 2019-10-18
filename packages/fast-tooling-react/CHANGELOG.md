@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.22.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-tooling-react@1.21.1...@microsoft/fast-tooling-react@1.22.0) (2019-10-18)
+
+
+### Features
+
+* use descriptions as title attributes on labels so they appear as tooltips ([#2320](https://github.com/Microsoft/fast-dna/issues/2320)) ([a135c4f](https://github.com/Microsoft/fast-dna/commit/a135c4f))
+
+
+
+
+
+## [1.21.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-tooling-react@1.21.0...@microsoft/fast-tooling-react@1.21.1) (2019-10-17)
+
+**Note:** Version bump only for package @microsoft/fast-tooling-react
+
+
+
+
+
 # [1.21.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-tooling-react@1.20.0...@microsoft/fast-tooling-react@1.21.0) (2019-10-16)
 
 

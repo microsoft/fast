@@ -231,4 +231,20 @@ describe("SingleLineControlTemplate", () => {
         expect(callback.mock.calls[0][0].dataLocation).toEqual("");
         expect(callback.mock.calls[0][0].value).toEqual(defaultValue);
     });
+    test("should add a title attribute to the label if the labelTooltip has been passed", () => {
+        const tooltip: string = "foo";
+        const rendered: any = mount(
+            <SingleLineControlTemplate
+                {...props}
+                managedClasses={managedClasses}
+                labelTooltip={tooltip}
+            />
+        );
+
+        expect(
+            rendered
+                .find(`.${managedClasses.singleLineControlTemplate_label}`)
+                .prop("title")
+        ).toEqual(tooltip);
+    });
 });
