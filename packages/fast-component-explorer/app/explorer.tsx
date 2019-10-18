@@ -35,6 +35,7 @@ import {
     createColorPalette,
     DesignSystem,
     DesignSystemDefaults,
+    designSystemSchema,
     designUnit,
     horizontalSpacing,
     neutralDividerRest,
@@ -387,15 +388,11 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
                             resizeFrom={PaneResizeDirection.west}
                         >
                             <Background value={neutralLayerL3}>
-                                <div
-                                    className={get(
-                                        this.props,
-                                        "managedClasses.explorer_paneTitleContainer"
-                                    )}
-                                >
-                                    <Heading size={HeadingSize._6}>Properties</Heading>
-                                </div>
-                                {this.renderForm()}
+                                <Pivot
+                                    label={"properties"}
+                                    items={this.renderPropertyItems()}
+                                    jssStyleSheet={this.pivotStyleOverrides}
+                                />
                             </Background>
                         </Pane>
                     </Row>
@@ -462,6 +459,19 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
                     }}
                     childOptions={childOptions}
                     jssStyleSheet={this.formStyleOverrides}
+                />
+            );
+        }
+    }
+
+    private renderDesignSystemEditor(): React.ReactNode {
+        if (true) {
+            return (
+                <Form
+                    jssStyleSheet={this.formStyleOverrides}
+                    schema={designSystemSchema}
+                    data={this.state.viewConfig}
+                    onChange={this.handleUpdateDesignSystem}
                 />
             );
         }
@@ -619,6 +629,43 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
         ];
     }
 
+    private renderPropertyItems(): TabsItem[] {
+        return [
+            {
+                tab: (className: string): React.ReactNode => {
+                    return (
+                        <Typography className={className} size={TypographySize._8}>
+                            Properties
+                        </Typography>
+                    );
+                },
+                content: (className: string): React.ReactNode => {
+                    return <div className={className}>{this.renderForm()}</div>;
+                },
+                id: "properties",
+            },
+            {
+                tab: (className: string): React.ReactNode => {
+                    return (
+                        <Typography
+                            className={className}
+                            size={TypographySize._8}
+                            onClick={this.handleDevToolsTabTriggerClick}
+                        >
+                            Design system
+                        </Typography>
+                    );
+                },
+                content: (className: string): React.ReactNode => {
+                    return (
+                        <div className={className}>{this.renderDesignSystemEditor()}</div>
+                    );
+                },
+                id: "designSystem",
+            },
+        ];
+    }
+
     private renderScenarioSelect(): React.ReactNode {
         const componentName: string = this.getComponentNameSpinalCaseByPath(
             this.state.locationPathname
@@ -753,6 +800,12 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
                 props: data,
             },
             selectedScenarioIndex: 0,
+        });
+    };
+
+    private handleUpdateDesignSystem = (data: any): void => {
+        this.setState({
+            viewConfig: data,
         });
     };
 
