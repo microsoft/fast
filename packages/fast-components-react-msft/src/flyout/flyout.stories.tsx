@@ -8,7 +8,7 @@ import {
     FlyoutProps,
     FlyoutVerticalPosition,
 } from "./";
-import {ViewportContext} from "@microsoft/fast-components-react-base";
+import { ViewportContext } from "@microsoft/fast-components-react-base";
 import { FlyoutAxisPositioningMode } from "./flyout.props";
 import { Heading, HeadingSize } from "../heading";
 import { Paragraph, ParagraphSize } from "../paragraph";
@@ -25,7 +25,9 @@ interface FlyoutTestState {
 class FlyoutTest extends React.Component<Omit<FlyoutProps, "anchor">, FlyoutTestState> {
     private anchor: React.RefObject<any>;
 
-    private rootElement: React.RefObject<HTMLDivElement> = React.createRef<HTMLDivElement>();
+    private rootElement: React.RefObject<HTMLDivElement> = React.createRef<
+        HTMLDivElement
+    >();
 
     constructor(props: FlyoutProps) {
         super(props);
@@ -46,7 +48,7 @@ class FlyoutTest extends React.Component<Omit<FlyoutProps, "anchor">, FlyoutTest
         return (
             <ViewportContext.Provider
                 value={{
-                    viewport: this.rootElement
+                    viewport: this.rootElement,
                 }}
             >
                 <div
@@ -57,7 +59,7 @@ class FlyoutTest extends React.Component<Omit<FlyoutProps, "anchor">, FlyoutTest
                         height: "400px",
                         width: "600px",
                         overflow: "scroll",
-                        whiteSpace: "nowrap"
+                        whiteSpace: "nowrap",
                     }}
                 >
                     <div
@@ -107,43 +109,44 @@ class FlyoutTest extends React.Component<Omit<FlyoutProps, "anchor">, FlyoutTest
 storiesOf("Flyout", module)
     .add("Default", () => (
         <div>
-            <Heading
-                size={HeadingSize._4}
-            >
-                By default the flyout's only sets the vertical axis positioning mode to "adjacent" which places above or below the anchor based on available space (default placement is below the anchor).
+            <Heading size={HeadingSize._4}>
+                By default the flyout's only sets the vertical axis positioning mode to
+                "adjacent" which places above or below the anchor based on available space
+                (default placement is below the anchor).
             </Heading>
             <FlyoutTest>
                 <Heading size={HeadingSize._5}>Flyout</Heading>
             </FlyoutTest>
-        </div>))
+        </div>
+    ))
     .add("Flyout aligned vertically", () => (
         <div>
-        <Heading
-            size={HeadingSize._4}
-        >
-            Setting the horizonal axis positioning mode to "inset" aligns the flyout with the anchor horizontally as well as vertically
-        </Heading>
-        <FlyoutTest
+            <Heading size={HeadingSize._4}>
+                Setting the horizonal axis positioning mode to "inset" aligns the flyout
+                with the anchor horizontally as well as vertically
+            </Heading>
+            <FlyoutTest
                 horizontalPositioningMode={FlyoutAxisPositioningMode.inset}
                 verticalPositioningMode={FlyoutAxisPositioningMode.adjacent}
             >
                 <Heading size={HeadingSize._5}>Flyout</Heading>
             </FlyoutTest>
-    </div>))
+        </div>
+    ))
     .add("Flyout aligned horizontally", () => (
-            <div>
-            <Heading
-                size={HeadingSize._4}
-            >
-                Setting the verical axis positioning mode to "inset" and the horizontal mode to "adjacent" places the flyout beside the anchor
+        <div>
+            <Heading size={HeadingSize._4}>
+                Setting the verical axis positioning mode to "inset" and the horizontal
+                mode to "adjacent" places the flyout beside the anchor
             </Heading>
             <FlyoutTest
-                    horizontalPositioningMode={FlyoutAxisPositioningMode.adjacent}
-                    verticalPositioningMode={FlyoutAxisPositioningMode.inset}
-                >
-                    <Heading size={HeadingSize._5}>Flyout</Heading>
-                </FlyoutTest>
-        </div>))
+                horizontalPositioningMode={FlyoutAxisPositioningMode.adjacent}
+                verticalPositioningMode={FlyoutAxisPositioningMode.inset}
+            >
+                <Heading size={HeadingSize._5}>Flyout</Heading>
+            </FlyoutTest>
+        </div>
+    ))
     .add("with bottom/left adjacent", () => (
         <FlyoutTest
             horizontalPositioningMode={FlyoutAxisPositioningMode.adjacent}

@@ -20,7 +20,7 @@ import {
     ViewportPositionerVerticalPosition,
 } from "./viewport-positioner.props";
 import { ThemeProvider } from "emotion-theming";
-import { ViewportContext, ViewportContextType} from "./viewport-context";
+import { ViewportContext, ViewportContextType } from "./viewport-context";
 
 export interface Dimension {
     height: number;
@@ -431,7 +431,7 @@ class ViewportPositioner extends Foundation<
         const viewportElement: HTMLElement = this.getViewportElement();
         const anchorElement: HTMLElement = this.getAnchorElement();
 
-        if (isNil(viewportElement) || isNil(anchorElement)){
+        if (isNil(viewportElement) || isNil(anchorElement)) {
             return;
         }
 
@@ -1181,14 +1181,17 @@ class ViewportPositioner extends Foundation<
     /**
      *
      */
-    private extractElementFromRef = (sourceRef: React.RefObject<any>): HTMLElement | null => {
-
+    private extractElementFromRef = (
+        sourceRef: React.RefObject<any>
+    ): HTMLElement | null => {
         if (!isNil(sourceRef.current)) {
             if (sourceRef.current instanceof HTMLElement) {
                 return sourceRef.current;
             }
 
-            const foundNode: Element | Text | null = ReactDOM.findDOMNode(sourceRef.current);
+            const foundNode: Element | Text | null = ReactDOM.findDOMNode(
+                sourceRef.current
+            );
 
             if (foundNode instanceof HTMLElement) {
                 return foundNode;
@@ -1196,7 +1199,7 @@ class ViewportPositioner extends Foundation<
         }
 
         return null;
-    }
+    };
 
     /**
      * Converts simple horizontal position to a position label based on AxisPositioningMode
@@ -1253,4 +1256,4 @@ class ViewportPositioner extends Foundation<
 ViewportPositioner.contextType = ViewportContext;
 export default ViewportPositioner;
 export * from "./viewport-positioner.props";
-export { ViewportPositionerClassNameContract, ViewportContext, ViewportContextType  };
+export { ViewportPositionerClassNameContract, ViewportContext, ViewportContextType };

@@ -1,6 +1,10 @@
 import { storiesOf } from "@storybook/react";
 import React from "react";
-import ViewportPositioner, { AxisPositioningMode, ViewportContext, ViewportPositionerProps } from "./";
+import ViewportPositioner, {
+    AxisPositioningMode,
+    ViewportContext,
+    ViewportPositionerProps,
+} from "./";
 import Foundation from "@microsoft/fast-components-foundation-react";
 import { ViewportPositionerVerticalPosition } from "./viewport-positioner.props";
 
@@ -44,9 +48,7 @@ class TestViewport extends React.Component<TestViewportProps, {}> {
                             width: "0",
                         }}
                     >
-                        <ViewportPositioner
-                            {...this.props.positionerProps}
-                        >
+                        <ViewportPositioner {...this.props.positionerProps}>
                             <div
                                 style={{
                                     height: "100%",
@@ -55,7 +57,7 @@ class TestViewport extends React.Component<TestViewportProps, {}> {
                                 }}
                             >
                                 Positioner
-                        </div>
+                            </div>
                         </ViewportPositioner>
                     </div>
                 </div>
