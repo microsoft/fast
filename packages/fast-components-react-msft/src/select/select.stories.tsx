@@ -7,6 +7,8 @@ import { uniqueId } from "lodash-es";
 import { action } from "@storybook/addon-actions";
 import { AxisPositioningMode } from "@microsoft/fast-components-react-base";
 
+const rootElement: React.RefObject<HTMLDivElement> = React.createRef<HTMLDivElement>();
+
 storiesOf("Select", module)
     .add("Default", () => (
         <Select onValueChange={action("onValueChange")}>
@@ -181,6 +183,103 @@ storiesOf("Select", module)
                 displayString="Select option 4"
             />
         </Select>
+    ))
+    .add("Scaling", () => (
+        <div
+            ref={rootElement}
+            style={{
+                height: "400px",
+                width: "400px",
+                margin: "50px",
+                overflow: "scroll",
+            }}
+        >
+            <div
+                style={{
+                    height: "1200px",
+                    width: "1200px",
+                    padding: "500px",
+                    background: "blue",
+                }}
+            >
+                <Select
+                    style={{
+                        width: "180px",
+                    }}
+                    placeholder="Select an option"
+                    onValueChange={action("onValueChange")}
+                    menuFlyoutConfig={{
+                        viewport: rootElement,
+                        horizontalPositioningMode: AxisPositioningMode.adjacent,
+                        verticalPositioningMode: AxisPositioningMode.inset,
+                        horizontalThreshold: 200,
+                        verticalThreshold: 60,
+                        scaleToFit: true,
+                    }}
+                >
+                    <SelectOption
+                        id={uniqueId()}
+                        value="Select option 1"
+                        displayString="Select option 1"
+                    />
+                    <SelectOption
+                        id={uniqueId()}
+                        value="Select option 2"
+                        displayString="Select option 2"
+                    />
+                    <SelectOption
+                        id={uniqueId()}
+                        value="Select option 3"
+                        displayString="Select option 3"
+                    />
+                    <SelectOption
+                        id={uniqueId()}
+                        value="Select option 4"
+                        displayString="Select option 4"
+                    />
+                    <SelectOption
+                        id={uniqueId()}
+                        value="Select option 1"
+                        displayString="Select option 1"
+                    />
+                    <SelectOption
+                        id={uniqueId()}
+                        value="Select option 2"
+                        displayString="Select option 2"
+                    />
+                    <SelectOption
+                        id={uniqueId()}
+                        value="Select option 3"
+                        displayString="Select option 3"
+                    />
+                    <SelectOption
+                        id={uniqueId()}
+                        value="Select option 4"
+                        displayString="Select option 4"
+                    />
+                    <SelectOption
+                        id={uniqueId()}
+                        value="Select option 1"
+                        displayString="Select option 1"
+                    />
+                    <SelectOption
+                        id={uniqueId()}
+                        value="Select option 2"
+                        displayString="Select option 2"
+                    />
+                    <SelectOption
+                        id={uniqueId()}
+                        value="Select option 3"
+                        displayString="Select option 3"
+                    />
+                    <SelectOption
+                        id={uniqueId()}
+                        value="Select option 4"
+                        displayString="Select option 4"
+                    />
+                </Select>
+            </div>
+        </div>
     ))
     .add("Disabled", () => (
         <Select onValueChange={action("onValueChange")} disabled={true} />
