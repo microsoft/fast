@@ -67,7 +67,9 @@ const styles: ComponentStyles<SelectClassNameContract, DesignSystem> = {
         ...highContrastForeground,
     },
     select_menu: {
-        background: neutralFillStealthRest,
+        background: (designSystem: DesignSystem): string => {
+            return designSystem.backgroundColor;
+        },
         ...applyElevatedCornerRadius(),
         ...applyElevation(ElevationMultiplier.e11),
         position: "relative",

@@ -93,7 +93,11 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, {}> {
         state: SelectState,
         defaultMenu: React.ReactNode
     ): React.ReactNode => {
-        return <Background value={neutralLayerFloating}>{defaultMenu}</Background>;
+        return (
+            <Background value={neutralLayerFloating} tag={null}>
+                {defaultMenu}
+            </Background>
+        );
     };
 
     /**
