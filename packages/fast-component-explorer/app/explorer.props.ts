@@ -14,8 +14,12 @@ export interface ComponentProps<T> {
 /**
  * The view config
  */
-/* tslint:disable-next-line */
-export interface ViewConfig extends DesignSystem {}
+export interface ViewConfig extends DesignSystem {
+    /**
+     * Viewer has transparent background
+     */
+    transparentBackground: boolean;
+}
 
 /* tslint:disable-next-line */
 export interface ExplorerManagedClasses

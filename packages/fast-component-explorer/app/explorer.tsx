@@ -5,6 +5,7 @@ import {
     ExplorerState,
     Theme,
     ThemeName,
+    ViewConfig,
 } from "./explorer.props";
 import { CodePreviewChildOption } from "@microsoft/fast-tooling-react/dist/data-utilities/mapping";
 import { camelCase, get, memoize, merge } from "lodash-es";
@@ -134,18 +135,27 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
         },
     };
 
+    /* tslint:disable-next-line */
+    private checker: string =
+        "url('data:image/gif;base64,R0lGODlhEAAQAPAAANfX1wAAACH5BAEAAAEALAAAAAAQABAAAAIfhG+hq4jM3IFLJhoswNly/XkcBpIiVaInlLJr9FZWAQAh/wtYTVAgRGF0YVhNUDw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+Cjx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNi1jMTM4IDc5LjE1OTgyNCwgMjAxNi8wOS8xNC0wMTowOTowMSAgICAgICAgIj4KIDxyZGY6UkRGIHhtbG5zOnJkZj0iaHR0cDovL3d3dy53My5vcmcvMTk5OS8wMi8yMi1yZGYtc3ludGF4LW5zIyI+CiAgPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIvPgogPC9yZGY6UkRGPgo8L3g6eG1wbWV0YT4KPD94cGFja2V0IGVuZD0iciI/PgH//v38+/r5+Pf29fTz8vHw7+7t7Ovq6ejn5uXk4+Lh4N/e3dzb2tnY19bV1NPS0dDPzs3My8rJyMfGxcTDwsHAv769vLu6ubi3trW0s7KxsK+urayrqqmop6alpKOioaCfnp2cm5qZmJeWlZSTkpGQj46NjIuKiYiHhoWEg4KBgH9+fXx7enl4d3Z1dHNycXBvbm1sa2ppaGdmZWRjYmFgX15dXFtaWVhXVlVUU1JRUE9OTUxLSklIR0ZFRENCQUA/Pj08Ozo5ODc2NTQzMjEwLy4tLCsqKSgnJiUkIyIhIB8eHRwbGhkYFxYVFBMSERAPDg0MCwoJCAcGBQQDAgEAADs=')";
+
     private viewerStyleOverrides: (
-        background: string
+        viewConfig: ViewConfig
     ) => ComponentStyleSheet<Partial<ViewerClassNameContract>, DesignSystem> = memoize(
         (
-            background: string
+            viewConfig: ViewConfig
         ): ComponentStyleSheet<Partial<ViewerClassNameContract>, DesignSystem> => ({
             viewer: {
                 minHeight: "unset",
                 width: "fit-content",
             },
             viewer_iframe: {
-                backgroundColor: background,
+                backgroundColor: viewConfig.transparentBackground
+                    ? "#FFFFFF"
+                    : viewConfig.backgroundColor,
+                background: viewConfig.transparentBackground
+                    ? `transparent ${toPx(8)}/${toPx(8)} ${this.checker} repeat`
+                    : "unset",
                 ...applyCornerRadius(),
             },
         })
@@ -265,7 +275,10 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
             selectedScenarioIndex: 1,
             locationPathname,
             theme: ThemeName.light,
-            viewConfig: DesignSystemDefaults,
+            viewConfig: {
+                ...DesignSystemDefaults,
+                transparentBackground: false,
+            },
             devToolsVisible: true,
         };
     }
@@ -321,6 +334,7 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
                                         )}
                                     >
                                         {this.renderScenarioSelect()}
+                                        {this.renderTransparencyToggle()}
                                         {this.renderThemeToggle()}
                                         {this.renderDirectionToggle()}
                                         {this.renderAccentColorPicker()}
@@ -436,7 +450,7 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
                 viewerContentProps={this.state.scenario}
                 responsive={true}
                 jssStyleSheet={this.viewerStyleOverrides(
-                    neutralLayerL1(this.state.viewConfig)
+                    this.state.viewConfig
                 )}
             />
         );
@@ -530,6 +544,27 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
                     selectedMessage={""}
                     unselectedMessage={""}
                     statusMessageId={"theme"}
+                />
+            </div>
+        );
+    }
+
+    private renderTransparencyToggle(): React.ReactNode {
+        const id: string = uniqueId("transparency");
+        return (
+            <div
+                className={get(this.props, "managedClasses.explorer_viewerControlRegion")}
+            >
+                <Label jssStyleSheet={this.labelStyleOverrides} htmlFor={id}>
+                    Transparent
+                </Label>
+                <Toggle
+                    jssStyleSheet={this.toggleStyleOverrides}
+                    inputId={id}
+                    onClick={this.handleUpdateTransparency}
+                    selectedMessage={""}
+                    unselectedMessage={""}
+                    statusMessageId={"transparency"}
                 />
             </div>
         );
@@ -848,6 +883,14 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
             theme: isLightMode ? ThemeName.dark : ThemeName.light,
             viewConfig: merge({}, this.state.viewConfig, {
                 baseLayerLuminance: updatedLuminance,
+            }),
+        });
+    };
+
+    private handleUpdateTransparency = (): void => {
+        this.setState({
+            viewConfig: merge({}, this.state.viewConfig, {
+                transparentBackground: !this.state.viewConfig.transparentBackground,
             }),
         });
     };
