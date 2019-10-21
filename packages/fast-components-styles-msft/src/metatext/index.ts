@@ -6,7 +6,6 @@ import { applyScaledTypeRamp } from "../utilities/typography";
 
 const styles: ComponentStyles<MetatextClassNameContract, DesignSystem> = {
     metatext: {
-        ...applyScaledTypeRamp("t7"),
         color: neutralForegroundHint,
     },
 };
