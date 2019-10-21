@@ -399,7 +399,7 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
                             resizable={true}
                             resizeFrom={PaneResizeDirection.west}
                         >
-                            <Background value={neutralLayerL3}>
+                            <Background value={neutralLayerL3} drawBackground={false}>
                                 <Pivot
                                     label={"properties"}
                                     items={this.renderPropertyItems()}
