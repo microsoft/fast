@@ -936,13 +936,19 @@ class ViewportPositioner extends Foundation<
         };
 
         if (this.props.scaleToFit) {
-            newPositionerDimension.height = Math.min(
-                this.getAvailableHeight(desiredVerticalPosition),
-                this.viewportRect.height
+            newPositionerDimension.height = Math.max(
+                Math.min(
+                    this.getAvailableHeight(desiredVerticalPosition),
+                    this.viewportRect.height
+                ),
+                isNil(this.props.verticalThreshold) ? 0 : this.props.verticalThreshold
             );
-            newPositionerDimension.width = Math.min(
-                this.getAvailableWidth(desiredHorizontalPosition),
-                this.viewportRect.width
+            newPositionerDimension.width = Math.max(
+                Math.min(
+                    this.getAvailableWidth(desiredHorizontalPosition),
+                    this.viewportRect.width
+                ),
+                isNil(this.props.horizontalThreshold) ? 0 : this.props.horizontalThreshold
             );
         }
 

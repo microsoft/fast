@@ -1521,4 +1521,89 @@ describe("viewport positioner", (): void => {
         expect(positionerDimension.width).toBe(100);
         expect(positionerDimension.height).toBe(100);
     });
+
+    test("Positioner scaled sizes can't be smaller than threshold values", (): void => {
+        const anchorElement: React.RefObject<HTMLDivElement> = React.createRef<
+            HTMLDivElement
+        >();
+
+        const rendered: any = mount(
+            <div
+                style={{
+                    height: "100px",
+                    width: "100px",
+                }}
+            >
+                <div
+                    style={{
+                        height: "10px",
+                        width: "10px",
+                    }}
+                    ref={anchorElement}
+                />
+                <ViewportPositioner
+                    horizontalPositioningMode={AxisPositioningMode.inset}
+                    verticalPositioningMode={AxisPositioningMode.inset}
+                    horizontalThreshold={110}
+                    verticalThreshold={110}
+                    anchor={anchorElement}
+                    viewport={document.firstElementChild as HTMLElement}
+                    managedClasses={managedClasses}
+                    scaleToFit={true}
+                />
+            </div>
+        );
+
+        let positionerDimension: Dimension;
+        const positioner: any = rendered.find("BaseViewportPositioner");
+
+        positioner.instance().viewportRect = viewportRect;
+        positioner.instance().anchorTop = 0;
+        positioner.instance().anchorRight = 60;
+        positioner.instance().anchorBottom = 10;
+        positioner.instance().anchorLeft = 50;
+        positioner.instance().anchorWidth = 10;
+        positioner.instance().anchorHeight = 10;
+
+        positionerDimension = positioner
+            .instance()
+            ["getNextPositionerDimension"](
+                ViewportPositionerHorizontalPositionLabel.insetRight,
+                ViewportPositionerVerticalPositionLabel.insetBottom
+            );
+        expect(positionerDimension.width).toBe(110);
+        expect(positionerDimension.height).toBe(110);
+
+        positionerDimension = positioner
+            .instance()
+            ["getNextPositionerDimension"](
+                ViewportPositionerHorizontalPositionLabel.right,
+                ViewportPositionerVerticalPositionLabel.bottom
+            );
+        expect(positionerDimension.width).toBe(110);
+        expect(positionerDimension.height).toBe(110);
+
+        positioner.instance().anchorTop = 300;
+        positioner.instance().anchorRight = 360;
+        positioner.instance().anchorBottom = 310;
+        positioner.instance().anchorLeft = 3350;
+
+        positionerDimension = positioner
+            .instance()
+            ["getNextPositionerDimension"](
+                ViewportPositionerHorizontalPositionLabel.insetLeft,
+                ViewportPositionerVerticalPositionLabel.insetTop
+            );
+        expect(positionerDimension.width).toBe(110);
+        expect(positionerDimension.height).toBe(110);
+
+        positionerDimension = positioner
+            .instance()
+            ["getNextPositionerDimension"](
+                ViewportPositionerHorizontalPositionLabel.left,
+                ViewportPositionerVerticalPositionLabel.top
+            );
+        expect(positionerDimension.width).toBe(110);
+        expect(positionerDimension.height).toBe(110);
+    });
 });
