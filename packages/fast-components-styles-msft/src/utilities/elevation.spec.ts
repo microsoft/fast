@@ -48,16 +48,16 @@ describe("applyElevation", () => {
     });
     test("should calculate elevation value correctly", () => {
         expect(
-            (applyElevation(ElevationMultiplier.e13)["box-shadow"] as DesignSystemResolver<
-                string
-            >)(defaultDesignSystem)
+            (applyElevation(ElevationMultiplier.e13)[
+                "box-shadow"
+            ] as DesignSystemResolver<string>)(defaultDesignSystem)
         ).toBe("0px 19.2px 43.2px rgba(0,0,0,0.22), 0px 3.6px 10.8px rgba(0,0,0,0.18)");
     });
     test("should calculate elevation value correctly", () => {
         expect(
-            (applyElevation(ElevationMultiplier.e17)["box-shadow"] as DesignSystemResolver<
-                string
-            >)(defaultDesignSystem)
+            (applyElevation(ElevationMultiplier.e17)[
+                "box-shadow"
+            ] as DesignSystemResolver<string>)(defaultDesignSystem)
         ).toBe("0px 76.8px 172.8px rgba(0,0,0,0.22), 0px 14.4px 43.2px rgba(0,0,0,0.18)");
     });
 });
