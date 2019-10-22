@@ -20,7 +20,6 @@
     "url": "https://github.com/Microsoft/fast-dna/issues/new/choose"
   },
   "scripts": {
-    "bootstrap": "lerna bootstrap --no-ci --loglevel=silly",
     "docs:build": "node build/documentation/generate-typedocs.js",
     "docs:build:api": "node build/documentation/generate-typedocs.js",
     "docs:build:dry-run": "node build/documentation/generate-typedocs.js --dry-run",
