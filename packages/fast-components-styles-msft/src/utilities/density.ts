@@ -4,7 +4,7 @@ import {
     DesignSystemResolver,
 } from "../design-system";
 import { getDesignSystemValue } from "../utilities/design-system";
-import { toPx } from "@microsoft/fast-jss-utilities";
+import { toPx, toUnit } from "@microsoft/fast-jss-utilities";
 import {
     baseHeightMultiplier,
     baseHorizontalSpacingMultiplier,
@@ -24,10 +24,8 @@ export enum DensityCategory {
  * @param unit The unit of measurement; px by default.
  */
 export function height(lines: number = 1, unit?: string): DesignSystemResolver<string> {
-    return (designSystem: DesignSystem): string => {
-        const value: number = heightNumber(lines)(designSystem);
-        return typeof unit === "string" ? `${value}${unit}` : toPx(value);
-    };
+    return (designSystem: DesignSystem): string =>
+        toUnit(unit)(heightNumber(lines)(designSystem));
 }
 
 /**
@@ -37,12 +35,12 @@ export function height(lines: number = 1, unit?: string): DesignSystemResolver<s
  */
 export function heightNumber(lines: number = 1): DesignSystemResolver<number> {
     return (designSystem: DesignSystem): number => {
-        const densityValue: number = getDesignSystemValue("density")(designSystem);
-        const value: number =
-            (baseHeightMultiplier(designSystem) + densityValue) *
+        return (
+            (baseHeightMultiplier(designSystem) +
+                getDesignSystemValue("density")(designSystem)) *
             designUnit(designSystem) *
-            lines;
-        return value;
+            lines
+        );
     };
 }
 
@@ -53,13 +51,11 @@ export function heightNumber(lines: number = 1): DesignSystemResolver<number> {
  */
 export function getDensityCategory(designSystem: DesignSystem): DensityCategory {
     const densityValue: number = getDesignSystemValue("density")(designSystem);
-    const category: DensityCategory =
-        densityValue >= 2
-            ? DensityCategory.spacious
-            : densityValue <= -2
-                ? DensityCategory.compact
-                : DensityCategory.normal;
-    return category;
+    return densityValue >= 2
+        ? DensityCategory.spacious
+        : densityValue <= -2
+            ? DensityCategory.compact
+            : DensityCategory.normal;
 }
 
 /**
@@ -77,13 +73,14 @@ export function densityCategorySwitch<T = number>(
 ): DesignSystemResolver<T> {
     return (designSystem: DesignSystem): T => {
         const category: DensityCategory = getDensityCategory(designSystem);
-        const value: T =
+        return checkDesignSystemResolver(
             category === DensityCategory.compact
-                ? checkDesignSystemResolver<T>(compactValue, designSystem)
+                ? compactValue
                 : category === DensityCategory.spacious
-                    ? checkDesignSystemResolver<T>(spaciousValue, designSystem)
-                    : checkDesignSystemResolver<T>(normalValue, designSystem);
-        return value;
+                    ? spaciousValue
+                    : normalValue,
+            designSystem
+        );
     };
 }
 
@@ -98,11 +95,11 @@ export function horizontalSpacing(
     unit?: string
 ): DesignSystemResolver<string> {
     return (designSystem: DesignSystem): string => {
-        const value: number =
-            typeof adjustment === "function"
-                ? horizontalSpacingNumber(adjustment(designSystem))(designSystem)
-                : horizontalSpacingNumber(adjustment)(designSystem);
-        return typeof unit === "string" ? `${value}${unit}` : toPx(value);
+        return toUnit(unit)(
+            horizontalSpacingNumber(checkDesignSystemResolver(adjustment, designSystem))(
+                designSystem
+            )
+        );
     };
 }
 
@@ -115,37 +112,24 @@ export function horizontalSpacingNumber(
     adjustment: number = 0
 ): DesignSystemResolver<number> {
     return (designSystem: DesignSystem): number => {
-        const densityOffset: number = densityCategorySwitch(-1, 0, 1)(designSystem);
-        const value: number =
-            (baseHorizontalSpacingMultiplier(designSystem) + densityOffset) *
+        return (
+            (baseHorizontalSpacingMultiplier(designSystem) +
+                densityCategorySwitch(-1, 0, 1)(designSystem)) *
                 designUnit(designSystem) -
-            adjustment;
-        return value;
+            adjustment
+        );
     };
 }
 
 /**
  * Returns the width and height for an icon formatted in pixels.
- *
- * @param designSystem The design system config.
  */
 export function glyphSize(designSystem: DesignSystem): string;
-
-/**
- * Returns the width and height for an icon formatted in the provided unit.
- *
- * @param unit The unit of measurement; px by default.
- */
 export function glyphSize(unit: string): DesignSystemResolver<string>;
-
-/**
- * Returns the width and height for an icon.
- *
- * @param arg The design system config or the unit of measurement.
- */
 export function glyphSize(arg: any): any {
     return typeof arg === "string"
-        ? (designSystem: DesignSystem): string => `${glyphSizeNumber(designSystem)}${arg}`
+        ? (designSystem: DesignSystem): string =>
+              toUnit(arg)(glyphSizeNumber(designSystem))
         : toPx(glyphSizeNumber(arg));
 }
 
@@ -159,9 +143,9 @@ export function glyphSizeNumber(designSystem: DesignSystem): number {
         0,
         halfDesignUnit
     )(designSystem);
-    const value: number =
-        (baseHeightMultiplier(designSystem) / 2) * designUnit(designSystem) + sizeOffset;
-    return value;
+    return (
+        (baseHeightMultiplier(designSystem) / 2) * designUnit(designSystem) + sizeOffset
+    );
 }
 
 /**
@@ -170,8 +154,5 @@ export function glyphSizeNumber(designSystem: DesignSystem): number {
  * @param unit
  */
 export function density(value: number, unit?: string): (config: DesignSystem) => string {
-    return (config: DesignSystem): string => {
-        const augmented: number = value * 1;
-        return typeof unit === "string" ? `${augmented}${unit}` : toPx(augmented);
-    };
+    return (config: DesignSystem): string => toUnit(unit)(value * 1);
 }
