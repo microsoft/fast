@@ -1,10 +1,21 @@
 import { storiesOf } from "@storybook/react";
 import React from "react";
 import Dialog from "./";
+import Button from "../button";
 
 storiesOf("Dialog", module)
     .add("Default", () => <Dialog />)
-    .add("Modal", () => <Dialog visible={true} modal={true} />)
+    .add("Modal", () => (
+        <div>
+            <Button>Outside Button 1</Button>
+            <Dialog visible={true} modal={true}>
+                <Button>Button 1</Button>
+                <Button>Button 2</Button>
+                <Button>Button 3</Button>
+            </Dialog>
+            <Button>Outside Button 2</Button>
+        </div>
+    ))
     .add("With width", () => <Dialog contentWidth={"300px"} />)
     .add("With height", () => <Dialog contentHeight={"500px"} />)
     .add("With width and height", () => (
