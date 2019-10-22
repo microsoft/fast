@@ -14,7 +14,6 @@ jobs:
     build_dependencies:
         <<: *container_config
         steps:
-            - *lerna_install
             - checkout
             - restore_cache:
                 name: Restore Yarn Package Cache

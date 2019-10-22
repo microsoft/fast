@@ -20,11 +20,12 @@
     "url": "https://github.com/Microsoft/fast-dna/issues/new/choose"
   },
   "scripts": {
+    "bootstrap": "lerna bootstrap --no-ci --loglevel=silly",
     "docs:build": "node build/documentation/generate-typedocs.js",
-    "docs:build:dry-run": "node build/documentation/generate-typedocs.js --dry-run",
-    "docs:build:verbose": "node build/documentation/generate-typedocs.js --verbose",
-    "docs:build:readme": "node build/documentation/copy-package-readme.js",
     "docs:build:api": "node build/documentation/generate-typedocs.js",
+    "docs:build:dry-run": "node build/documentation/generate-typedocs.js --dry-run",
+    "docs:build:readme": "node build/documentation/copy-package-readme.js",
+    "docs:build:verbose": "node build/documentation/generate-typedocs.js --verbose",
     "integration-tests:alpha": "node build/testing/sauce-labs/test-browsers.js alpha",
     "integration-tests:beta": "node build/testing/sauce-labs/test-browsers.js beta",
     "integration-tests:release": "node build/testing/sauce-labs/test-browsers.js release",
