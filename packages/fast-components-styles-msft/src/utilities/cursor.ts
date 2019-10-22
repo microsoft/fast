@@ -1,20 +1,18 @@
 import { CSSRules } from "@microsoft/fast-jss-manager";
 import { DesignSystem } from "../design-system";
 
+function applyCursor(value: string): CSSRules<DesignSystem> {
+    return { cursor: value }
+}
+
 export function applyCursorDefault(): CSSRules<DesignSystem> {
-    return {
-        cursor: "default",
-    };
+    return applyCursor("default");
 }
 
 export function applyCursorDisabled(): CSSRules<DesignSystem> {
-    return {
-        cursor: "not-allowed !important",
-    };
+    return applyCursor("not-allowed !important");
 }
 
 export function applyCursorPointer(): CSSRules<DesignSystem> {
-    return {
-        cursor: "pointer",
-    };
+    return applyCursor("pointer");
 }
