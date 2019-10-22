@@ -54,6 +54,7 @@ const styles: ComponentStyles<HypertextClassNameContract, DesignSystem> = {
                 },
             }),
             [highContrastSelector]: {
+                color: highContrastLinkValue,
                 "border-bottom-color": highContrastLinkValue,
             },
         },
