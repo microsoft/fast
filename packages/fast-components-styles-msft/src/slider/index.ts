@@ -8,6 +8,7 @@ import {
     multiply,
     subtract,
     toPx,
+    important,
 } from "@microsoft/fast-jss-utilities";
 import { DesignSystem, DesignSystemResolver } from "../design-system";
 import { applyPillCornerRadius } from "../utilities/border";
@@ -36,7 +37,6 @@ import {
     highContrastOptOutProperty,
     highContrastSelector,
 } from "../utilities/high-contrast";
-import { importantValue } from "../utilities/important";
 
 const thumbSizeValue: DesignSystemResolver<number> = divide(heightNumber(), 2);
 const thumbSize: DesignSystemResolver<string> = toPx(thumbSizeValue);
@@ -129,10 +129,10 @@ const styles: ComponentStyles<SliderClassNameContract, DesignSystem> = {
         },
         "& $slider_layoutRegion": {
             "& div > span": {
-                color: importantValue(HighContrastColor.disabledText),
+                color: important(HighContrastColor.disabledText),
             },
             "& div > div": {
-                background: importantValue(HighContrastColor.disabledText),
+                background: important(HighContrastColor.disabledText),
             },
         },
     },

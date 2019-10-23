@@ -1,9 +1,8 @@
 import { CSSRules } from "@microsoft/fast-jss-manager";
 import { DesignSystem } from "../design-system";
-import { format, toPx } from "@microsoft/fast-jss-utilities";
+import { format, toPx, important } from "@microsoft/fast-jss-utilities";
 import { canUsedForcedColors } from "@microsoft/fast-web-utilities";
 import { focusOutlineWidth, outlineWidth } from "./design-system";
-import { importantValue } from "./important";
 
 export const highContrastSelector: string = "@media (-ms-high-contrast:active)";
 
@@ -82,9 +81,9 @@ export const highContrastLinkOutline: CSSRules<DesignSystem> = {
 export const highContrastDisabled: CSSRules<DesignSystem> = {
     [highContrastSelector]: {
         opacity: "1",
-        background: importantValue(HighContrastColor.buttonBackground),
-        color: importantValue(HighContrastColor.disabledText),
-        fill: importantValue(HighContrastColor.disabledText),
+        background: important(HighContrastColor.buttonBackground),
+        color: important(HighContrastColor.disabledText),
+        fill: important(HighContrastColor.disabledText),
     },
 };
 
@@ -92,10 +91,10 @@ export const highContrastDisabled: CSSRules<DesignSystem> = {
 export const highContrastDisabledBorder: CSSRules<DesignSystem> = {
     [highContrastSelector]: {
         opacity: "1",
-        background: importantValue(HighContrastColor.buttonBackground),
-        color: importantValue(HighContrastColor.disabledText),
-        fill: importantValue(HighContrastColor.disabledText),
-        "border-color": importantValue(HighContrastColor.disabledText),
+        background: important(HighContrastColor.buttonBackground),
+        color: important(HighContrastColor.disabledText),
+        fill: important(HighContrastColor.disabledText),
+        "border-color": important(HighContrastColor.disabledText),
     },
 };
 
@@ -103,8 +102,8 @@ export const highContrastDisabledBorder: CSSRules<DesignSystem> = {
 export const highContrastDisabledForeground: CSSRules<DesignSystem> = {
     [highContrastSelector]: {
         opacity: "1",
-        color: importantValue(HighContrastColor.disabledText),
-        fill: importantValue(HighContrastColor.disabledText),
+        color: important(HighContrastColor.disabledText),
+        fill: important(HighContrastColor.disabledText),
     },
 };
 
@@ -112,7 +111,7 @@ export const highContrastDisabledForeground: CSSRules<DesignSystem> = {
 export const highContrastDisabledBackground: CSSRules<DesignSystem> = {
     [highContrastSelector]: {
         opacity: "1",
-        background: importantValue(HighContrastColor.disabledText),
+        background: important(HighContrastColor.disabledText),
     },
 };
 
@@ -131,7 +130,7 @@ export const highContrastOutlineFocus: CSSRules<DesignSystem> = {
 // Used to set double focus with keyboard focus
 export const highContrastDoubleFocus: CSSRules<DesignSystem> = {
     [highContrastSelector]: {
-        "border-color": importantValue(HighContrastColor.buttonText),
+        "border-color": important(HighContrastColor.buttonText),
         "box-shadow": format(
             "0 0 0 {0} inset {1}",
             toPx(focusOutlineWidth),
@@ -166,32 +165,32 @@ export const highContrastSelectedOutline: CSSRules<DesignSystem> = {
 // Used to set foreground and glyph to be 'WindowText' color
 export const highContrastTextForeground: CSSRules<DesignSystem> = {
     [highContrastSelector]: {
-        color: importantValue(HighContrastColor.text),
-        fill: importantValue(HighContrastColor.text),
+        color: important(HighContrastColor.text),
+        fill: important(HighContrastColor.text),
     },
 };
 
 // Used to set foreground and glyph to be 'ButtonText' color
 export const highContrastForeground: CSSRules<DesignSystem> = {
     [highContrastSelector]: {
-        color: importantValue(HighContrastColor.buttonText),
-        fill: importantValue(HighContrastColor.buttonText),
+        color: important(HighContrastColor.buttonText),
+        fill: important(HighContrastColor.buttonText),
     },
 };
 
 // Used to set foreground and glyph to be 'HighlightText' color
 export const highContrastSelectedForeground: CSSRules<DesignSystem> = {
     [highContrastSelector]: {
-        color: importantValue(HighContrastColor.selectedText),
-        fill: importantValue(HighContrastColor.selectedText),
+        color: important(HighContrastColor.selectedText),
+        fill: important(HighContrastColor.selectedText),
     },
 };
 
 // Used to set foreground and glyph to be 'Highlight' color
 export const highContrastHighlightForeground: CSSRules<DesignSystem> = {
     [highContrastSelector]: {
-        color: importantValue(HighContrastColor.selectedBackground),
-        fill: importantValue(HighContrastColor.selectedBackground),
+        color: important(HighContrastColor.selectedBackground),
+        fill: important(HighContrastColor.selectedBackground),
     },
 };
 

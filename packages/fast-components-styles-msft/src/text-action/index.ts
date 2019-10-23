@@ -7,6 +7,7 @@ import {
     format,
     subtract,
     toPx,
+    important,
 } from "@microsoft/fast-jss-utilities";
 import { DesignSystem } from "../design-system";
 import { applyCornerRadius } from "../utilities/border";
@@ -36,7 +37,6 @@ import {
     highContrastSelected,
     highContrastSelector,
 } from "../utilities/high-contrast";
-import { importantValue } from "../utilities/important";
 
 // Since MSFT text field is already styled, we need to override in this way to alter text field classes
 export const textFieldOverrides: ComponentStyles<
@@ -196,7 +196,7 @@ const styles: ComponentStyles<TextActionClassNameContract, DesignSystem> = {
             [highContrastSelector]: {
                 background: HighContrastColor.selectedBackground,
                 fill: HighContrastColor.selectedText,
-                "border-color": importantValue(HighContrastColor.buttonText),
+                "border-color": important(HighContrastColor.buttonText),
                 "box-shadow": format(
                     "0 0 0 {0} inset {1}",
                     toPx(focusOutlineWidth),

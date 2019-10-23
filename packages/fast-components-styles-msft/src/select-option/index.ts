@@ -6,6 +6,7 @@ import {
     ellipsis,
     format,
     toPx,
+    important,
 } from "@microsoft/fast-jss-utilities";
 import { DesignSystem } from "../design-system";
 import { applyCornerRadius, applyFocusPlaceholderBorder } from "../utilities/border";
@@ -29,7 +30,6 @@ import {
     highContrastSelector,
     highContrastStealth,
 } from "../utilities/high-contrast";
-import { importantValue } from "../utilities/important";
 
 const styles: ComponentStyles<SelectOptionClassNameContract, DesignSystem> = {
     selectOption: {
@@ -84,10 +84,10 @@ const styles: ComponentStyles<SelectOptionClassNameContract, DesignSystem> = {
     },
     selectOption__selected: {
         [highContrastSelector]: {
-            background: importantValue(HighContrastColor.selectedBackground),
-            "border-color": importantValue(HighContrastColor.buttonText),
-            color: importantValue(HighContrastColor.selectedText),
-            fill: importantValue(HighContrastColor.selectedText),
+            background: important(HighContrastColor.selectedBackground),
+            "border-color": important(HighContrastColor.buttonText),
+            color: important(HighContrastColor.selectedText),
+            fill: important(HighContrastColor.selectedText),
         },
         background: neutralFillStealthSelected,
         "&:hover": {
