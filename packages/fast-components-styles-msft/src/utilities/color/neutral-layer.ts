@@ -1,4 +1,4 @@
-import { findClosestSwatchIndex, getSwatch, swatchByMode } from "./palette";
+import { findClosestSwatchIndex, getSwatch, Palette, swatchByMode } from "./palette";
 import {
     ColorRecipe,
     colorRecipeFactory,
@@ -63,33 +63,32 @@ function luminanceOrBackgroundColor(
  */
 const baseLayerLuminanceSwatch: DesignSystemResolver<Swatch> = (
     designSystem: DesignSystem
-): Swatch =>
-    new ColorRGBA64(
-        baseLayerLuminance(designSystem),
-        baseLayerLuminance(designSystem),
-        baseLayerLuminance(designSystem),
-        1
-    ).toStringHexRGB();
+): Swatch => {
+    const luminance: number = baseLayerLuminance(designSystem);
+    return new ColorRGBA64(luminance, luminance, luminance, 1).toStringHexRGB();
+};
 
 /**
  * Get the index of the base layer palette color.
  */
-const baseLayerLuminanceIndex: DesignSystemResolver<number> = (
-    designSystem: DesignSystem
-): number =>
-    findClosestSwatchIndex(neutralPalette, baseLayerLuminanceSwatch)(designSystem);
+const baseLayerLuminanceIndex: DesignSystemResolver<number> = findClosestSwatchIndex(
+    neutralPalette,
+    baseLayerLuminanceSwatch
+);
 
 /**
  * Get the actual value of the card layer index, clamped so we can use it to base other layers from.
  */
 const neutralLayerCardIndex: DesignSystemResolver<number> = (
     designSystem: DesignSystem
-): number =>
-    clamp(
+): number => {
+    const palette: Palette = neutralPalette(designSystem);
+    return clamp(
         subtract(baseLayerLuminanceIndex, neutralFillCardDelta)(designSystem),
         0,
-        neutralPalette.length - 1
+        palette.length - 1
     );
+};
 
 /**
  * Light mode L2 is significant because it happens at the same point as the neutral fill flip. Use this as the minimum index for L2.
@@ -101,15 +100,12 @@ const lightNeutralLayerL2: DesignSystemResolver<number> = designSystemResolverMa
 );
 
 /**
- *
+ * The index for L2 based on luminance, adjusted for the flip in light mode if necessary.
  */
-const neutralLayerL2Index: DesignSystemResolver<number> = (
-    designSystem: DesignSystem
-): number =>
-    Math.max(
-        add(baseLayerLuminanceIndex, neutralFillCardDelta)(designSystem),
-        lightNeutralLayerL2(designSystem)
-    );
+const neutralLayerL2Index: DesignSystemResolver<number> = designSystemResolverMax(
+    add(baseLayerLuminanceIndex, neutralFillCardDelta),
+    lightNeutralLayerL2
+);
 
 /**
  * Dark mode L4 is the darkest recommended background in the standard guidance, which is
