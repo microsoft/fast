@@ -74,18 +74,17 @@ function combinedShadow(
     color: string = black
 ): DesignSystemResolver<string> {
     return (designSystem: DesignSystem): string => {
-        const ambientShadow: string = elevationShadow(
+        const fn: (
+            conf: ShadowConfig
+        ) => DesignSystemResolver<string> = elevationShadow.bind(
+            null,
             elevationValue,
-            color,
-            ambientShadowConfig
-        )(designSystem);
-        const directionalShadow: string = elevationShadow(
-            elevationValue,
-            color,
-            directionalShadowConfig
-        )(designSystem);
+            color
+        );
 
-        return `${directionalShadow}, ${ambientShadow}`;
+        return [directionalShadowConfig, ambientShadowConfig]
+            .map((conf: ShadowConfig) => fn(conf)(designSystem))
+            .join(", ");
     };
 }
 
@@ -100,19 +99,8 @@ export function elevation(
     color: string = black
 ): (config: DesignSystem) => CSSRules<DesignSystem> {
     return (config: DesignSystem): CSSRules<DesignSystem> => {
-        const ambientShadow: string = elevationShadow(
-            elevationValue,
-            color,
-            ambientShadowConfig
-        )(config);
-        const directionalShadow: string = elevationShadow(
-            elevationValue,
-            color,
-            directionalShadowConfig
-        )(config);
-
         return {
-            "box-shadow": `${directionalShadow}, ${ambientShadow}`,
+            "box-shadow": combinedShadow(elevationValue, color),
         };
     };
 }
@@ -127,23 +115,26 @@ export function elevationShadow(
     shadowConfig: ShadowConfig
 ): (config: DesignSystem) => string {
     return (config: DesignSystem): string => {
-        const xValue: number = parseFloat(
-            (shadowConfig.xOffsetMultiplier * elevationValue).toFixed(1)
-        );
-        const yValue: number = parseFloat(
-            (shadowConfig.yOffsetMultiplier * elevationValue).toFixed(1)
-        );
+        const { r, g, b }: ColorRGBA64 = parseColorString(color);
+        const {
+            xOffsetMultiplier,
+            yOffsetMultiplier,
+            opacity,
+            blurMultiplier,
+        }: ShadowConfig = shadowConfig;
 
-        const xOffset: string = toPx(xValue);
-        const yOffset: string = toPx(yValue);
-        const blur: string = toPx(shadowConfig.blurMultiplier * elevationValue);
-        const opacity: number =
-            elevationValue > 24
-                ? shadowConfig.opacity
-                : Math.round(shadowConfig.opacity * 100 * 0.6) / 100;
-
-        return `${xOffset} ${yOffset} ${blur} ${ColorRGBA64.fromObject(
-            Object.assign(parseColorString(color).toObject(), { a: opacity })
-        ).toStringWebRGBA()}`;
+        return [xOffsetMultiplier, yOffsetMultiplier]
+            .map((val: number) => parseFloat((val * elevationValue).toFixed(1)))
+            .concat(blurMultiplier * elevationValue)
+            .map(toPx)
+            .concat(
+                new ColorRGBA64(
+                    r,
+                    g,
+                    b,
+                    elevationValue > 24 ? opacity : Math.round(opacity * 60) / 100
+                ).toStringWebRGBA()
+            )
+            .join(" ");
     };
 }
