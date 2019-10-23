@@ -73,7 +73,7 @@ describe("toString", (): void => {
 });
 
 describe("important", () => {
-    test("should apped ' !important' to a string argument", () => {
+    test("should appned ' !important' to a string argument", () => {
         expect(important("hello world")).toBe("hello world !important");
     });
     test("should return a function that appends ' !important' to the result of a callback argument", () => {
