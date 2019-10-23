@@ -1,6 +1,5 @@
 import { HypertextClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
-import { get } from "lodash-es";
 import React from "react";
 import { DisplayNamePrefix } from "../utilities";
 import {
@@ -25,11 +24,7 @@ class Hypertext extends Foundation<HypertextHandledProps, HypertextUnhandledProp
      */
     public render(): React.ReactElement<HTMLAnchorElement> {
         return (
-            <a
-                {...this.unhandledProps()}
-                href={get(this.props, "href", null)}
-                className={this.generateClassNames()}
-            >
+            <a {...this.unhandledProps()} className={this.generateClassNames()}>
                 {this.props.children}
             </a>
         );
