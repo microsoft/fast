@@ -67,7 +67,7 @@ describe("hypertext", (): void => {
     test("should NOT render with an attribute of `href` if `href` prop is NOT passed", () => {
         const rendered: any = shallow(<Hypertext managedClasses={managedClasses} />);
 
-        expect(rendered.prop("href")).toBe(null);
+        expect(rendered.prop("href")).toBe(undefined);
     });
 
     test("should correctly handle children", () => {
