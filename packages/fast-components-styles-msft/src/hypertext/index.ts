@@ -31,27 +31,15 @@ const styles: ComponentStyles<HypertextClassNameContract, DesignSystem> = {
             ),
             color: accentForegroundRest,
             "&:hover": {
-                "border-bottom": format<DesignSystem>(
-                    "{0} solid {1}",
-                    toPx(outlineWidth),
-                    accentForegroundHover
-                ),
+                "border-bottom-color": accentForegroundHover,
                 color: accentForegroundHover,
                 [highContrastSelector]: {
-                    "border-bottom": format<DesignSystem>(
-                        "{0} solid {1}",
-                        toPx(focusOutlineWidth),
-                        () => highContrastLinkValue
-                    ),
+                    "border-bottom-color": highContrastLinkValue,
                     color: highContrastLinkValue,
                 },
             },
             "&:active": {
-                "border-bottom": format<DesignSystem>(
-                    "{0} solid {1}",
-                    toPx(outlineWidth),
-                    accentForegroundActive
-                ),
+                "border-bottom-color": accentForegroundActive,
                 color: accentForegroundActive,
             },
             ...applyFocusVisible({
@@ -61,21 +49,13 @@ const styles: ComponentStyles<HypertextClassNameContract, DesignSystem> = {
                     neutralFocus
                 ),
                 [highContrastSelector]: {
-                    "border-bottom": format<DesignSystem>(
-                        "{0} solid {1}",
-                        toPx(focusOutlineWidth),
-                        () => highContrastLinkValue
-                    ),
+                    "border-bottom-color": highContrastLinkValue,
                     color: highContrastLinkValue,
                 },
             }),
             [highContrastSelector]: {
-                "border-bottom": format<DesignSystem>(
-                    "{0} solid {1}",
-                    toPx(outlineWidth),
-                    () => highContrastLinkValue
-                ),
                 color: highContrastLinkValue,
+                "border-bottom-color": highContrastLinkValue,
             },
         },
         [highContrastSelector]: {

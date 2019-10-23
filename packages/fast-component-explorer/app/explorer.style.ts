@@ -107,8 +107,10 @@ const style: ComponentStyles<ExplorerClassNameContract, DesignSystem> = {
     },
     explorer_propertiesPanel: {
         background: neutralLayerL3,
+        overflow: "auto",
         boxShadow:
             "0.6px 0px 1.8px rgba(0, 0, 0, 0.11) inset, 3.2px 0px 7.2px rgba(0, 0, 0, 0.13) inset",
+        ...applyScrollbarStyle(),
     },
     explorer_toolbar: {
         padding: "0 8px",

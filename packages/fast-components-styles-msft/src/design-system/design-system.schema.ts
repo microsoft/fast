@@ -20,7 +20,6 @@ export default {
         density: {
             title: "Density",
             type: "number",
-            disabled: true,
             enum: [-3, -2, -1, 0, 1, 2, 3],
             default: 0,
         },
@@ -287,6 +286,7 @@ export default {
             type: "string",
             pattern: "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$",
             default: "#0078D4",
+            disabled: true,
         },
     },
 };
