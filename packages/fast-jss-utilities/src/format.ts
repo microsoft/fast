@@ -32,5 +32,5 @@ export function important<T>(value: (arg: T) => string): (arg: T) => string;
 export function important<T>(value: any): any {
     return isString(value)
         ? `${value} !important`
-        : (arg: T): string => important(value(arg))
+        : (arg: T): string => important(value(arg));
 }
