@@ -8,6 +8,9 @@
   },
   "license": "MIT",
   "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Microsoft/fast-dna.git"
@@ -24,7 +27,7 @@
     "integration-tests:alpha": "node build/testing/sauce-labs/test-browsers.js alpha",
     "integration-tests:beta": "node build/testing/sauce-labs/test-browsers.js beta",
     "integration-tests:release": "node build/testing/sauce-labs/test-browsers.js release",
-    "test": "npm run tslint && npm run unit-tests",
+    "test": "yarn tslint && yarn unit-tests",
     "tslint": "tslint -c ./tslint.json 'build/**/*.ts'",
     "tslint:fix": "tslint -c ./tslint.json --fix 'build/**/*.ts'",
     "unit-tests": "jest --maxWorkers=4",
@@ -77,6 +80,9 @@
       "prettier --write",
       "git add"
     ]
+  },
+  "resolutions": {
+    "@types/react": "*"
   },
   "devDependencies": {
     "@microsoft/fast-tslint-rules": "^3.0.0",
