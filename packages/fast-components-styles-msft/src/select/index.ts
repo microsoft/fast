@@ -3,6 +3,7 @@ import {
     neutralFillStealthRest,
     neutralForegroundRest,
     neutralOutlineRest,
+    neutralLayerFloating,
 } from "../utilities/color";
 import {
     directionSwitch,
@@ -67,9 +68,7 @@ const styles: ComponentStyles<SelectClassNameContract, DesignSystem> = {
         ...highContrastForeground,
     },
     select_menu: {
-        background: (designSystem: DesignSystem): string => {
-            return designSystem.backgroundColor;
-        },
+        background: neutralLayerFloating,
         ...applyElevatedCornerRadius(),
         ...applyElevation(ElevationMultiplier.e11),
         position: "relative",
