@@ -166,7 +166,7 @@ describe("dialog", (): void => {
         const preventDefaultFn: any = jest.fn();
         const map: any = {};
 
-        // Mock window.removeEventListener
+        // Mock document.removeEventListener
         document.removeEventListener = jest.fn((event: string, callback: any) => {
             map[event] = callback;
         });
@@ -185,5 +185,72 @@ describe("dialog", (): void => {
         map.keydown({ keyCode: keyCodeEscape, preventDefault: preventDefaultFn});
 
         expect(onDismiss).toHaveBeenCalledTimes(1);
+    });
+
+    test("modal dialogs should add document 'focusin' listener on mount", () => {
+        const map: any = {};
+
+        const mockAddListenerFn: any = jest.fn((event: string, callback: any) => {
+            map[event] = callback;
+        });
+
+        document.addEventListener = mockAddListenerFn;
+
+        const rendered: any = mount(
+            <Dialog
+                managedClasses={managedClasses}
+                modal={true}
+                visible={true}
+            />
+        );
+
+        expect(mockAddListenerFn).toHaveBeenCalledTimes(2);
+        expect(mockAddListenerFn.mock.calls[1][0]).toBe("focusin");
+
+        rendered.unmount();
+
+    });
+
+    test("non modal dialogs should not add document 'focusin' listener on mount", () => {
+        const map: any = {};
+
+        const mockAddListenerFn: any = jest.fn((event: string, callback: any) => {
+            map[event] = callback;
+        });
+
+        document.addEventListener = mockAddListenerFn;
+
+        const rendered: any = mount(
+            <Dialog
+                managedClasses={managedClasses}
+                visible={true}
+            />
+        );
+
+        expect(mockAddListenerFn).toHaveBeenCalledTimes(1);
+        expect(mockAddListenerFn.mock.calls[0][0]).not.toBe("focusin");
+    });
+
+    test("modal dialogs should remove document 'focusin' listener on dismount", () => {
+        const map: any = {};
+
+        const mockRemoveListenerFn: any = jest.fn((event: string, callback: any) => {
+            map[event] = callback;
+        });
+
+        document.removeEventListener = mockRemoveListenerFn;
+
+        const rendered: any = mount(
+            <Dialog
+                managedClasses={managedClasses}
+                modal={true}
+                visible={true}
+            />
+        );
+
+        rendered.unmount();
+
+        expect(mockRemoveListenerFn).toHaveBeenCalledTimes(2);
+        expect(mockRemoveListenerFn.mock.calls[1][0]).toBe("focusin");
     });
 });
