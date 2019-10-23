@@ -36,44 +36,23 @@ export interface TypeRamp {
 /**
  * The type ramp configuration
  */
-export const typeRamp: TypeRamp = {
-    t1: {
-        fontSize: 60,
-        lineHeight: 72,
-    },
-    t2: {
-        fontSize: 46,
-        lineHeight: 56,
-    },
-    t3: {
-        fontSize: 34,
-        lineHeight: 44,
-    },
-    t4: {
-        fontSize: 28,
-        lineHeight: 36,
-    },
-    t5: {
-        fontSize: 20,
-        lineHeight: 28,
-    },
-    t6: {
-        fontSize: 16,
-        lineHeight: 24,
-    },
-    t7: {
-        fontSize: 14,
-        lineHeight: 20,
-    },
-    t8: {
-        fontSize: 12,
-        lineHeight: 16,
-    },
-    t9: {
-        fontSize: 10,
-        lineHeight: 16,
-    },
-};
+export const typeRamp: TypeRamp = [
+    [60, 72], // t1
+    [46, 56], // t2
+    [34, 44], // t3
+    [28, 36], // t4
+    [20, 28], // t5
+    [16, 24], // t6
+    [14, 20], // t7
+    [12, 16], // t8
+    [10, 16], // t9
+].reduce<TypeRamp>(
+    (accum: TypeRamp, val: [number, number], index: number): TypeRamp =>
+        Object.assign(accum, {
+            [`t${index + 1}`]: { fontSize: val[0], lineHeight: val[1] },
+        }),
+    {} as TypeRamp
+);
 
 /**
  * Scales a typeramp ID by density
@@ -95,14 +74,6 @@ function sanitizeTypeRampId(key: keyof TypeRamp): keyof TypeRamp {
 }
 
 /**
- * Takes a param of type ramp key (string) and returns a type ramp configuration
- * @deprecated - please use applyTypeRamp
- */
-export function applyTypeRampConfig(typeConfig: keyof TypeRamp): CSSRules<DesignSystem> {
-    return applyTypeRamp(typeConfig);
-}
-
-/**
  * Retrieves the font-size from a TypeRamp ID
  */
 export function getFontSize(key: keyof TypeRamp): number {
@@ -120,14 +91,14 @@ export function getLineHeight(key: keyof TypeRamp): number {
  * Retrieves the formatted font-size from a TypeRamp ID
  */
 export function applyFontSize(key: keyof TypeRamp): string {
-    return toPx(typeRamp[sanitizeTypeRampId(key)].fontSize);
+    return toPx(getFontSize(key));
 }
 
 /**
  * Retrieves the formatted line-height from a TypeRamp ID
  */
 export function applyLineHeight(key: keyof TypeRamp): string {
-    return toPx(typeRamp[sanitizeTypeRampId(key)].lineHeight);
+    return toPx(getLineHeight(key));
 }
 
 /**
@@ -161,27 +132,35 @@ export function applyScaledFontSize(key: keyof TypeRamp): DesignSystemResolver<s
  * Retrieves the formatted line-height from a TypeRamp ID, scaled with the design-system density
  */
 export function applyScaledLineHeight(key: keyof TypeRamp): DesignSystemResolver<string> {
-    return (designSystem: DesignSystem): string => {
-        return applyLineHeight(scaleTypeRampId(key)(designSystem));
-    };
+    return (designSystem: DesignSystem): string =>
+        applyLineHeight(scaleTypeRampId(key)(designSystem));
 }
 
+function applyTypeRampFactory(
+    fontSizeGetter: (key: keyof TypeRamp) => string | DesignSystemResolver<string>,
+    lineHeightGetter: (key: keyof TypeRamp) => string | DesignSystemResolver<string>
+): (key: keyof TypeRamp) => CSSRules<DesignSystem> {
+    return (key: keyof TypeRamp): CSSRules<DesignSystem> => ({
+        "font-size": fontSizeGetter(key),
+        "line-height": lineHeightGetter(key),
+    });
+}
 /**
  * Applies font size and line-height properties from the typeramp
  */
-export function applyTypeRamp(typeConfig: keyof TypeRamp): CSSRules<DesignSystem> {
-    return {
-        "font-size": toPx(typeRamp[typeConfig].fontSize),
-        "line-height": toPx(typeRamp[typeConfig].lineHeight),
-    };
-}
+export const applyTypeRamp: ReturnType<
+    typeof applyTypeRampFactory
+> = applyTypeRampFactory(applyFontSize, applyLineHeight);
 
 /**
  * Applies font size and line-height from the type ramp, scaled with design system density
  */
-export function applyScaledTypeRamp(key: keyof TypeRamp): CSSRules<DesignSystem> {
-    return {
-        "font-size": applyScaledFontSize(key),
-        "line-height": applyScaledLineHeight(key),
-    };
-}
+export const applyScaledTypeRamp: ReturnType<
+    typeof applyTypeRampFactory
+> = applyTypeRampFactory(applyScaledFontSize, applyScaledLineHeight);
+
+/**
+ * Takes a param of type ramp key (string) and returns a type ramp configuration
+ * @deprecated - please use applyTypeRamp
+ */
+export const applyTypeRampConfig: typeof applyTypeRamp = applyTypeRamp;

@@ -1,17 +1,22 @@
 import { CSSRules } from "@microsoft/fast-jss-manager";
 import { format, toPx } from "@microsoft/fast-jss-utilities";
-import { DesignSystem } from "../design-system";
+import { DesignSystem, DesignSystemResolver } from "../design-system";
 import {
     cornerRadius,
     elevatedCornerRadius,
     focusOutlineWidth,
 } from "../utilities/design-system";
 
+function cornerRadiusRule(
+    value: string | DesignSystemResolver<string>
+): CSSRules<DesignSystem> {
+    return { "border-radius": value };
+}
 /**
  * Sets the border radius for controls.
  */
 export function applyCornerRadius(): CSSRules<DesignSystem> {
-    return { "border-radius": toPx(cornerRadius) };
+    return cornerRadiusRule(toPx(cornerRadius));
 }
 
 /**
@@ -25,14 +30,14 @@ export function applyElevatedCornerRadius(): CSSRules<DesignSystem> {
  * Sets the border radius for pill-shaped controls.
  */
 export function applyPillCornerRadius(): CSSRules<DesignSystem> {
-    return { "border-radius": "999px" };
+    return cornerRadiusRule("999px");
 }
 
 /**
  * @deprecated Use applyElevatedCornerRadius instead.
  */
 export function applyFloatingCornerRadius(): CSSRules<DesignSystem> {
-    return { "border-radius": toPx(elevatedCornerRadius) };
+    return cornerRadiusRule(toPx(elevatedCornerRadius));
 }
 
 /**

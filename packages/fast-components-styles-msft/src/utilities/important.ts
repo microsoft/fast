@@ -6,6 +6,7 @@ import {
 
 /**
  * Sets a css value to be '!important'.
+ * @deprecated - use "important" from @microsoft/fast-jss-utilities
  */
 export function importantValue(
     value: string | DesignSystemResolver<string>

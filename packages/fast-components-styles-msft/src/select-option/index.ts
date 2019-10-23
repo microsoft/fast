@@ -1,10 +1,11 @@
+import { SelectOptionClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import { ComponentStyles } from "@microsoft/fast-jss-manager";
-import { applyCursorDefault, applyCursorPointer } from "../utilities/cursor";
 import {
     applyFocusVisible,
     directionSwitch,
     ellipsis,
     format,
+    important,
     toPx,
 } from "@microsoft/fast-jss-utilities";
 import { DesignSystem } from "../design-system";
@@ -16,7 +17,7 @@ import {
     neutralFocus,
     neutralForegroundRest,
 } from "../utilities/color";
-import { SelectOptionClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
+import { applyCursorDefault, applyCursorPointer } from "../utilities/cursor";
 import { glyphSize, height, horizontalSpacing } from "../utilities/density";
 import { designUnit, focusOutlineWidth } from "../utilities/design-system";
 import { applyDisabledState } from "../utilities/disabled";
@@ -29,7 +30,6 @@ import {
     highContrastSelector,
     highContrastStealth,
 } from "../utilities/high-contrast";
-import { importantValue } from "../utilities/important";
 
 const styles: ComponentStyles<SelectOptionClassNameContract, DesignSystem> = {
     selectOption: {
@@ -84,10 +84,10 @@ const styles: ComponentStyles<SelectOptionClassNameContract, DesignSystem> = {
     },
     selectOption__selected: {
         [highContrastSelector]: {
-            background: importantValue(HighContrastColor.selectedBackground),
-            "border-color": importantValue(HighContrastColor.buttonText),
-            color: importantValue(HighContrastColor.selectedText),
-            fill: importantValue(HighContrastColor.selectedText),
+            background: important(HighContrastColor.selectedBackground),
+            "border-color": important(HighContrastColor.buttonText),
+            color: important(HighContrastColor.selectedText),
+            fill: important(HighContrastColor.selectedText),
         },
         background: neutralFillStealthSelected,
         "&:hover": {
