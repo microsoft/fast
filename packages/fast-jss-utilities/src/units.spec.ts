@@ -24,4 +24,4 @@ describe("toUnit", () => {
     test("should append a custom defined unit", () => {
         expect(toUnit("deg")(18)).toBe("18deg");
     });
-})
+});
