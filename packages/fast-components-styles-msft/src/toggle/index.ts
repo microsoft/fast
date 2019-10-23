@@ -1,4 +1,18 @@
+import { DesignSystem, DesignSystemResolver } from "../design-system";
 import { applyScaledTypeRamp } from "../utilities/typography";
+import { ComponentStyles } from "@microsoft/fast-jss-manager";
+import {
+    add,
+    applyFocusVisible,
+    directionSwitch,
+    divide,
+    format,
+    important,
+    multiply,
+    subtract,
+    toPx,
+} from "@microsoft/fast-jss-utilities";
+import { ToggleClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import {
     accentFillRest,
     accentForegroundCut,
@@ -13,20 +27,6 @@ import {
     neutralOutlineHover,
     neutralOutlineRest,
 } from "../utilities/color";
-import { ComponentStyles } from "@microsoft/fast-jss-manager";
-import {
-    add,
-    applyFocusVisible,
-    directionSwitch,
-    divide,
-    format,
-    multiply,
-    subtract,
-    toPx,
-    important,
-} from "@microsoft/fast-jss-utilities";
-import { ToggleClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
-import { DesignSystem, DesignSystemResolver } from "../design-system";
 import { applyDisabledState } from "../utilities/disabled";
 import { densityCategorySwitch, heightNumber } from "../utilities/density";
 import { designUnit, focusOutlineWidth, outlineWidth } from "../utilities/design-system";

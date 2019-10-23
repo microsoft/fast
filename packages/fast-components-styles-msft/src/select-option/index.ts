@@ -1,12 +1,12 @@
+import { SelectOptionClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import { ComponentStyles } from "@microsoft/fast-jss-manager";
-import { applyCursorDefault, applyCursorPointer } from "../utilities/cursor";
 import {
     applyFocusVisible,
     directionSwitch,
     ellipsis,
     format,
-    toPx,
     important,
+    toPx,
 } from "@microsoft/fast-jss-utilities";
 import { DesignSystem } from "../design-system";
 import { applyCornerRadius, applyFocusPlaceholderBorder } from "../utilities/border";
@@ -17,7 +17,7 @@ import {
     neutralFocus,
     neutralForegroundRest,
 } from "../utilities/color";
-import { SelectOptionClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
+import { applyCursorDefault, applyCursorPointer } from "../utilities/cursor";
 import { glyphSize, height, horizontalSpacing } from "../utilities/density";
 import { designUnit, focusOutlineWidth } from "../utilities/design-system";
 import { applyDisabledState } from "../utilities/disabled";
