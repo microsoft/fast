@@ -132,9 +132,8 @@ export function applyScaledFontSize(key: keyof TypeRamp): DesignSystemResolver<s
  * Retrieves the formatted line-height from a TypeRamp ID, scaled with the design-system density
  */
 export function applyScaledLineHeight(key: keyof TypeRamp): DesignSystemResolver<string> {
-    return (designSystem: DesignSystem): string => 
-         applyLineHeight(scaleTypeRampId(key)(designSystem));
-    ;
+    return (designSystem: DesignSystem): string =>
+        applyLineHeight(scaleTypeRampId(key)(designSystem));
 }
 
 function applyTypeRampFactory(
@@ -149,12 +148,16 @@ function applyTypeRampFactory(
 /**
  * Applies font size and line-height properties from the typeramp
  */
-export const applyTypeRamp: ReturnType<typeof applyTypeRampFactory> = applyTypeRampFactory(applyFontSize, applyLineHeight);
+export const applyTypeRamp: ReturnType<
+    typeof applyTypeRampFactory
+> = applyTypeRampFactory(applyFontSize, applyLineHeight);
 
 /**
  * Applies font size and line-height from the type ramp, scaled with design system density
  */
-export const applyScaledTypeRamp: ReturnType<typeof applyTypeRampFactory> = applyTypeRampFactory(applyScaledFontSize, applyScaledLineHeight);
+export const applyScaledTypeRamp: ReturnType<
+    typeof applyTypeRampFactory
+> = applyTypeRampFactory(applyScaledFontSize, applyScaledLineHeight);
 
 /**
  * Takes a param of type ramp key (string) and returns a type ramp configuration

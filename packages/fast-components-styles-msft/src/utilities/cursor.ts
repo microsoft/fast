@@ -2,7 +2,7 @@ import { CSSRules } from "@microsoft/fast-jss-manager";
 import { DesignSystem } from "../design-system";
 
 function applyCursor(value: string): CSSRules<DesignSystem> {
-    return { cursor: value }
+    return { cursor: value };
 }
 
 export function applyCursorDefault(): CSSRules<DesignSystem> {

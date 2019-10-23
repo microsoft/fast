@@ -7,8 +7,10 @@ import {
     focusOutlineWidth,
 } from "../utilities/design-system";
 
-function cornerRadiusRule(value: string | DesignSystemResolver<string>): CSSRules<DesignSystem> {
-    return { "border-radius": value }
+function cornerRadiusRule(
+    value: string | DesignSystemResolver<string>
+): CSSRules<DesignSystem> {
+    return { "border-radius": value };
 }
 /**
  * Sets the border radius for controls.
@@ -35,7 +37,7 @@ export function applyPillCornerRadius(): CSSRules<DesignSystem> {
  * @deprecated Use applyElevatedCornerRadius instead.
  */
 export function applyFloatingCornerRadius(): CSSRules<DesignSystem> {
-    return cornerRadiusRule(toPx(elevatedCornerRadius))
+    return cornerRadiusRule(toPx(elevatedCornerRadius));
 }
 
 /**

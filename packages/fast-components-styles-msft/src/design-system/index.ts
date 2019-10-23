@@ -294,7 +294,7 @@ export function checkDesignSystemResolver<T>(
     arg: T | DesignSystemResolver<T>,
     designSystem: DesignSystem
 ): T {
-    return isFunction(arg) ? arg(designSystem) : arg
+    return isFunction(arg) ? arg(designSystem) : arg;
 }
 
 /**
