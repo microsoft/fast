@@ -1,4 +1,4 @@
-import { format, toString } from "./format";
+import { format, important, toString } from "./format";
 
 interface DesignSystem {
     value: string;
@@ -69,5 +69,14 @@ describe("toString", (): void => {
         expect(typeof toString(() => 12)()).toBe("string");
         expect(typeof toString(() => ({ foo: "bar" }))()).toBe("string");
         expect(typeof toString(() => [0, "foo"])()).toBe("string");
+    });
+});
+
+describe("important", () => {
+    test("should appned ' !important' to a string argument", () => {
+        expect(important("hello world")).toBe("hello world !important");
+    });
+    test("should return a function that appends ' !important' to the result of a callback argument", () => {
+        expect(important(() => "goodbye world")({})).toBe("goodbye world !important");
     });
 });

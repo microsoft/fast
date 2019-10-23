@@ -206,7 +206,7 @@ The `toString` function is used to convert the return value of a function that a
 ```
 
 ### add / subtract / multiply / divide
-the `add`, `subtract`, `multiply`, and `divide` functions are used to operate on numbers or functions that accept design-systems and return numbers. They accept any number of arguments and perform their operations from left to right, starting with the first argument. eg, subtract(10, 2) => 10 - 2 => 8
+The `add`, `subtract`, `multiply`, and `divide` functions are used to operate on numbers or functions that accept design-systems and return numbers. They accept any number of arguments and perform their operations from left to right, starting with the first argument. eg, subtract(10, 2) => 10 - 2 => 8
 
 ```ts
 function fontSize(designSystem): number {
@@ -218,4 +218,13 @@ function fontSize(designSystem): number {
    fontSize: multiply(fontSize, 2)
 }
 
+```
+### important
+The `important` function appends the string `" !important"` to a string when provided a string argument, or to the result of a function that resolves a string when provided a function argument.
+
+```ts
+{
+    color: important("#fff"), // "#fff !important",
+    background: important((designSystem) => "#aaa")(designSystem), // #aaa !important
+}
 ```

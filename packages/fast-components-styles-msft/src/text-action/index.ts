@@ -1,15 +1,16 @@
+import { applyCornerRadius } from "../utilities/border";
 import { TextFieldClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
-import { TextActionClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager";
 import {
     applyFocusVisible,
     directionSwitch,
     format,
+    important,
     subtract,
     toPx,
 } from "@microsoft/fast-jss-utilities";
 import { DesignSystem } from "../design-system";
-import { applyCornerRadius } from "../utilities/border";
+import { TextActionClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import {
     neutralFillActive,
     neutralFillHover,
@@ -36,7 +37,6 @@ import {
     highContrastSelected,
     highContrastSelector,
 } from "../utilities/high-contrast";
-import { importantValue } from "../utilities/important";
 
 // Since MSFT text field is already styled, we need to override in this way to alter text field classes
 export const textFieldOverrides: ComponentStyles<
@@ -196,7 +196,7 @@ const styles: ComponentStyles<TextActionClassNameContract, DesignSystem> = {
             [highContrastSelector]: {
                 background: HighContrastColor.selectedBackground,
                 fill: HighContrastColor.selectedText,
-                "border-color": importantValue(HighContrastColor.buttonText),
+                "border-color": important(HighContrastColor.buttonText),
                 "box-shadow": format(
                     "0 0 0 {0} inset {1}",
                     toPx(focusOutlineWidth),

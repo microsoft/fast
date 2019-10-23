@@ -3,7 +3,7 @@ import {
     ActionToggleClassNameContract,
     ButtonClassNameContract,
 } from "@microsoft/fast-components-class-name-contracts-msft";
-import { directionSwitch } from "@microsoft/fast-jss-utilities";
+import { directionSwitch, important } from "@microsoft/fast-jss-utilities";
 import { DesignSystem } from "../design-system/index";
 import {
     accentForegroundActive,
@@ -20,7 +20,6 @@ import {
     highContrastSelectedForeground,
     highContrastSelector,
 } from "../utilities/high-contrast";
-import { importantValue } from "../utilities/important";
 
 // Since MSFT button is already styled, we need to override in this way to alter button classes
 export const actionToggleButtonOverrides: ComponentStyles<
@@ -49,7 +48,7 @@ const styles: ComponentStyles<ActionToggleClassNameContract, DesignSystem> = {
             "&:hover:enabled": {
                 "& $actionToggle_glyph": {
                     [highContrastSelector]: {
-                        fill: importantValue(HighContrastColor.selectedBackground),
+                        fill: important(HighContrastColor.selectedBackground),
                     },
                 },
             },
@@ -70,7 +69,7 @@ const styles: ComponentStyles<ActionToggleClassNameContract, DesignSystem> = {
         "&:hover:enabled": {
             "& $actionToggle_glyph": {
                 [highContrastSelector]: {
-                    fill: importantValue(HighContrastColor.selectedBackground),
+                    fill: important(HighContrastColor.selectedBackground),
                 },
             },
         },
