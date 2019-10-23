@@ -22,7 +22,6 @@ describe("elevationShadow", () => {
         ).toBe("0px 0.3px 0.9px rgba(0,0,0,0.11)");
     });
     test("should calculate elevation value e13 correctly", () => {
-
         expect(
             elevationShadow(ElevationMultiplier.e13, "#000", ambientShadowConfig)(
                 defaultDesignSystem
@@ -30,7 +29,6 @@ describe("elevationShadow", () => {
         ).toBe("0px 3.6px 10.8px rgba(0,0,0,0.18)");
     });
     test("should calculate elevation value e17 correctly", () => {
-
         expect(
             elevationShadow(ElevationMultiplier.e17, "#000", ambientShadowConfig)(
                 defaultDesignSystem
