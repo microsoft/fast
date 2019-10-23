@@ -172,7 +172,9 @@ class App extends React.Component<AppProps, {}> {
               });
     }
 
-    private resolveRecipes = (luminance: number): Array<{ color: string; title: string }> => {
+    private resolveRecipes = (
+        luminance: number
+    ): Array<{ color: string; title: string }> => {
         const designSystem: DesignSystem = Object.assign({}, this.props.designSystem, {
             baseLayerLuminance: luminance,
         });
