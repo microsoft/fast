@@ -137,10 +137,11 @@ describe("dialog", (): void => {
 
     test("should call the `onDismiss` callback when escape key is pressed and `visible` prop is true", () => {
         const onDismiss: any = jest.fn();
+        const preventDefaultFn: any = jest.fn();
         const map: any = {};
 
         // Mock window.addEventListener
-        window.addEventListener = jest.fn((event: string, callback: any) => {
+        document.addEventListener = jest.fn((event: string, callback: any) => {
             map[event] = callback;
         });
 
@@ -148,24 +149,25 @@ describe("dialog", (): void => {
             <Dialog managedClasses={managedClasses} modal={true} onDismiss={onDismiss} />
         );
 
-        map.keydown({ keyCode: keyCodeEscape });
+        map.keydown({ keyCode: keyCodeEscape, preventDefault: preventDefaultFn});
 
         expect(onDismiss).toHaveBeenCalledTimes(0);
 
         // set visible prop
         rendered.setProps({ visible: true });
 
-        map.keydown({ keyCode: keyCodeEscape });
+        map.keydown({ keyCode: keyCodeEscape, preventDefault: preventDefaultFn });
 
         expect(onDismiss).toHaveBeenCalledTimes(1);
     });
 
     test("should remove keydown event listener for the `onDismiss` callback when component unmounts", () => {
         const onDismiss: any = jest.fn();
+        const preventDefaultFn: any = jest.fn();
         const map: any = {};
 
         // Mock window.removeEventListener
-        window.removeEventListener = jest.fn((event: string, callback: any) => {
+        document.removeEventListener = jest.fn((event: string, callback: any) => {
             map[event] = callback;
         });
 
@@ -180,7 +182,7 @@ describe("dialog", (): void => {
 
         rendered.unmount();
 
-        map.keydown({ keyCode: keyCodeEscape });
+        map.keydown({ keyCode: keyCodeEscape, preventDefault: preventDefaultFn});
 
         expect(onDismiss).toHaveBeenCalledTimes(1);
     });

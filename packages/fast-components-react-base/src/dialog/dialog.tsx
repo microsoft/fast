@@ -221,11 +221,16 @@ class Dialog extends Foundation<DialogHandledProps, DialogUnhandledProps, {}> {
      * focus on first element of tab queue
      */
     private focusOnFirstElement = (): void => {
-        const tabbableElements: HTMLElement[] = Tabbable(this.rootElement.current);
-        if (tabbableElements.length === 0) {
-            this.tryFocusOnRootElement();
-        } else {
-            tabbableElements[0].focus();
+        if (
+            canUseDOM() &&
+            !isNil(this.rootElement.current)
+        ) {
+            const tabbableElements: HTMLElement[] = Tabbable(this.rootElement.current);
+            if (tabbableElements.length === 0) {
+                this.tryFocusOnRootElement();
+            } else {
+                tabbableElements[0].focus();
+            }
         }
     };
 
