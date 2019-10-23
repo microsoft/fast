@@ -5,7 +5,7 @@ import { canUseDOM } from "exenv-es6";
 import React from "react";
 import { DisplayNamePrefix } from "../utilities";
 import { DialogHandledProps, DialogProps, DialogUnhandledProps } from "./dialog.props";
-import { isNil } from "lodash-es";
+import { isFunction } from "lodash-es";
 import Tabbable from "tabbable";
 
 class Dialog extends Foundation<DialogHandledProps, DialogUnhandledProps, {}> {
@@ -157,8 +157,7 @@ class Dialog extends Foundation<DialogHandledProps, DialogUnhandledProps, {}> {
             switch (event.keyCode) {
                 case keyCodeEscape:
                     if (
-                        this.props.onDismiss &&
-                        typeof this.props.onDismiss === "function"
+                        isFunction(this.props.onDismiss)
                     ) {
                         this.props.onDismiss(event);
                     }
@@ -207,7 +206,7 @@ class Dialog extends Foundation<DialogHandledProps, DialogUnhandledProps, {}> {
         if (
             this.props.visible &&
             !event.defaultPrevented &&
-            !isNil(this.rootElement.current) &&
+            this.rootElement.current instanceof HTMLElement &&
             !(this.rootElement.current as HTMLElement).contains(
                 event.target as HTMLElement
             )
@@ -223,7 +222,7 @@ class Dialog extends Foundation<DialogHandledProps, DialogUnhandledProps, {}> {
     private focusOnFirstElement = (): void => {
         if (
             canUseDOM() &&
-            !isNil(this.rootElement.current)
+            this.rootElement.current instanceof HTMLElement
         ) {
             const tabbableElements: HTMLElement[] = Tabbable(this.rootElement.current);
             if (tabbableElements.length === 0) {
@@ -239,7 +238,7 @@ class Dialog extends Foundation<DialogHandledProps, DialogUnhandledProps, {}> {
      * generally a modal dialog should be expected to have a focusable element
      */
     private tryFocusOnRootElement = (): void => {
-        if (!isNil(this.rootElement.current)) {
+        if (this.rootElement.current instanceof HTMLElement) {
             this.rootElement.current.focus();
         }
     };
