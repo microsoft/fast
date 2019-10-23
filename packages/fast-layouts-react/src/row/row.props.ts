@@ -3,16 +3,33 @@ import { RowClassNamesContract } from "./row";
 import { ManagedClasses } from "@microsoft/fast-jss-manager-react";
 
 /**
- * Defines the possible props for the Row component
- * @interface
- */
-
-/**
  * The resize direction options: 'north' | 'south'
  */
 export enum RowResizeDirection {
     north = "north",
     south = "south",
+}
+
+export interface RowResizeControlProps {
+    /**
+     * The className passed to the resize handler
+     */
+    className?: string;
+
+    /**
+     * The mouse down event handler
+     */
+    onMouseDown?: (e?: React.MouseEvent<HTMLButtonElement>) => void;
+
+    /**
+     * The keydown event handler
+     */
+    onKeyDown?: (e?: React.KeyboardEvent<HTMLButtonElement>) => void;
+
+    /**
+     * The accessible role for the resize handler
+     */
+    role?: string;
 }
 
 export interface RowManagedClasses extends ManagedClasses<RowClassNamesContract> {}
@@ -85,6 +102,11 @@ export interface RowHandledProps extends RowManagedClasses {
         e: MouseEvent | React.KeyboardEvent<HTMLButtonElement>,
         height?: number
     ) => void;
+
+    /**
+     * The optional custom resize handler
+     */
+    resizeControl?: (props: RowResizeControlProps) => React.ReactNode;
 }
 
 export type RowProps = RowHandledProps & RowUnhandledProps;
