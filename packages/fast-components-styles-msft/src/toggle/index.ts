@@ -1,4 +1,18 @@
+import { DesignSystem, DesignSystemResolver } from "../design-system";
 import { applyScaledTypeRamp } from "../utilities/typography";
+import { ComponentStyles } from "@microsoft/fast-jss-manager";
+import {
+    add,
+    applyFocusVisible,
+    directionSwitch,
+    divide,
+    format,
+    important,
+    multiply,
+    subtract,
+    toPx,
+} from "@microsoft/fast-jss-utilities";
+import { ToggleClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import {
     accentFillRest,
     accentForegroundCut,
@@ -13,19 +27,6 @@ import {
     neutralOutlineHover,
     neutralOutlineRest,
 } from "../utilities/color";
-import { ComponentStyles } from "@microsoft/fast-jss-manager";
-import {
-    add,
-    applyFocusVisible,
-    directionSwitch,
-    divide,
-    format,
-    multiply,
-    subtract,
-    toPx,
-} from "@microsoft/fast-jss-utilities";
-import { ToggleClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
-import { DesignSystem, DesignSystemResolver } from "../design-system";
 import { applyDisabledState } from "../utilities/disabled";
 import { densityCategorySwitch, heightNumber } from "../utilities/density";
 import { designUnit, focusOutlineWidth, outlineWidth } from "../utilities/design-system";
@@ -37,7 +38,6 @@ import {
     highContrastSelector,
     highContrastTextForeground,
 } from "../utilities/high-contrast";
-import { importantValue } from "../utilities/important";
 
 const height: DesignSystemResolver<number> = add(divide(heightNumber(), 2), designUnit);
 const width: DesignSystemResolver<number> = multiply(height, 2);
@@ -167,10 +167,10 @@ const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = {
                 "& $toggle_input, & $toggle_label, & $toggle_statusMessage": {
                     [highContrastSelector]: {
                         background: "transparent",
-                        "border-color": importantValue(HighContrastColor.disabledText),
-                        color: importantValue(HighContrastColor.disabledText),
+                        "border-color": important(HighContrastColor.disabledText),
+                        color: important(HighContrastColor.disabledText),
                         "& + span": {
-                            background: importantValue(HighContrastColor.disabledText),
+                            background: important(HighContrastColor.disabledText),
                         },
                     },
                 },
@@ -186,10 +186,10 @@ const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = {
             },
             "&:active": {
                 [highContrastSelector]: {
-                    background: importantValue(HighContrastColor.selectedBackground),
-                    "border-color": importantValue(HighContrastColor.selectedBackground),
+                    background: important(HighContrastColor.selectedBackground),
+                    "border-color": important(HighContrastColor.selectedBackground),
                     "& + span": {
-                        background: importantValue(HighContrastColor.selectedText),
+                        background: important(HighContrastColor.selectedText),
                     },
                 },
             },
@@ -213,10 +213,10 @@ const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = {
             ...applyCursorDisabled(),
             [highContrastSelector]: {
                 background: "transparent",
-                "border-color": importantValue(HighContrastColor.disabledText),
-                color: importantValue(HighContrastColor.disabledText),
+                "border-color": important(HighContrastColor.disabledText),
+                color: important(HighContrastColor.disabledText),
                 "& + span": {
-                    background: importantValue(HighContrastColor.disabledText),
+                    background: important(HighContrastColor.disabledText),
                 },
             },
         },
