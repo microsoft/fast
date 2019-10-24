@@ -76,7 +76,9 @@ class Dialog extends Foundation<DialogHandledProps, DialogUnhandledProps, {}> {
      */
     public componentDidMount(): void {
         if (canUseDOM()) {
-            document.addEventListener("keydown", this.handleDocumentKeyDown);
+            if (this.shouldAddKeyListener(this.props)) {
+                document.addEventListener("keydown", this.handleDocumentKeyDown);
+            }
             if (this.props.modal) {
                 document.addEventListener("focusin", this.handleDocumentFocus);
                 this.focusOnFirstElement();
@@ -95,6 +97,12 @@ class Dialog extends Foundation<DialogHandledProps, DialogUnhandledProps, {}> {
             } else if (prevProps.modal && !this.props.modal) {
                 document.removeEventListener("focusin", this.handleDocumentFocus);
             }
+
+            if (!this.shouldAddKeyListener(prevProps) && this.shouldAddKeyListener(this.props)) {
+                document.addEventListener("keydown", this.handleDocumentKeyDown);
+            } else if (this.shouldAddKeyListener(prevProps) && !this.shouldAddKeyListener(this.props)) {
+                document.removeEventListener("keydown", this.handleDocumentKeyDown);
+            }
         }
     }
 
@@ -103,7 +111,9 @@ class Dialog extends Foundation<DialogHandledProps, DialogUnhandledProps, {}> {
      */
     public componentWillUnmount(): void {
         if (canUseDOM()) {
-            document.removeEventListener("keydown", this.handleDocumentKeyDown);
+            if (this.shouldAddKeyListener(this.props)) {
+                document.removeEventListener("keydown", this.handleDocumentKeyDown);
+            }
 
             if (this.props.modal) {
                 document.removeEventListener("focusin", this.handleDocumentFocus);
@@ -134,6 +144,16 @@ class Dialog extends Foundation<DialogHandledProps, DialogUnhandledProps, {}> {
                 tabIndex={-1}
             />
         );
+    }
+
+    /**
+     * Check if props demand a key listener
+     */
+    private shouldAddKeyListener = (props: DialogProps): boolean => {
+        if (props.modal || props.onDismiss) {
+            return true;
+        }
+        return false;
     }
 
     /**

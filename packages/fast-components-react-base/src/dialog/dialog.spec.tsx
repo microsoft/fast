@@ -18,6 +18,9 @@ import { DisplayNamePrefix } from "../utilities";
  */
 configure({ adapter: new Adapter() });
 
+const container: HTMLDivElement = document.createElement("div");
+document.body.appendChild(container);
+
 describe("dialog", (): void => {
     const managedClasses: DialogClassNameContract = {
         dialog: "dialog-class",
@@ -227,8 +230,7 @@ describe("dialog", (): void => {
             />
         );
 
-        expect(mockAddListenerFn).toHaveBeenCalledTimes(1);
-        expect(mockAddListenerFn.mock.calls[0][0]).not.toBe("focusin");
+        expect(mockAddListenerFn).toHaveBeenCalledTimes(0);
     });
 
     test("modal dialogs should remove document 'focusin' listener on dismount", () => {
