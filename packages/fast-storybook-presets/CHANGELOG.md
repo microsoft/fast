@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.21](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-storybook-presets@1.1.20...@microsoft/fast-storybook-presets@1.1.21) (2019-10-24)
+
+**Note:** Version bump only for package @microsoft/fast-storybook-presets
+
+
+
+
+
 ## [1.1.20](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-storybook-presets@1.1.19...@microsoft/fast-storybook-presets@1.1.20) (2019-10-18)
 
 **Note:** Version bump only for package @microsoft/fast-storybook-presets

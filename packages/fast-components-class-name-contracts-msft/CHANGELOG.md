@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.7.6](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-class-name-contracts-msft@4.7.5...@microsoft/fast-components-class-name-contracts-msft@4.7.6) (2019-10-24)
+
+
+### Bug Fixes
+
+* refactor action toggle ([#2333](https://github.com/Microsoft/fast-dna/issues/2333)) ([2bef0fa](https://github.com/Microsoft/fast-dna/commit/2bef0fab1ed3ef2936952a79e8ba2cc5f67006c2))
+
+
+
+
+
 ## [4.7.5](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-class-name-contracts-msft@4.7.4...@microsoft/fast-components-class-name-contracts-msft@4.7.5) (2019-10-16)
 
 **Note:** Version bump only for package @microsoft/fast-components-class-name-contracts-msft
