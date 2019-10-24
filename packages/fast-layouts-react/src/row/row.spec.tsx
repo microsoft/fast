@@ -4,6 +4,7 @@ import { configure, mount, shallow } from "enzyme";
 import { Row, RowClassNamesContract, RowHandledProps, RowUnhandledProps } from "./row";
 import { KeyCodes } from "@microsoft/fast-web-utilities";
 import { RowResizeDirection } from "./row.props";
+import { RowResizeControlProps } from ".";
 
 /**
  * Configure Enzyme
@@ -192,6 +193,36 @@ describe("Row", (): void => {
             const rendered: any = mount(<Row managedClasses={managedClasses} />);
 
             expect(rendered.find(`.${managedClasses.row_resizeHandle}`)).toHaveLength(0);
+        });
+
+        test("should render a custom `resize` control when passed via the `resizeControl` prop", () => {
+            const customControl: (props: RowResizeControlProps) => React.ReactNode = (
+                props: RowResizeControlProps
+            ): React.ReactNode => <button id={"foo"} {...props} />;
+            const rendered: any = mount(
+                <Row
+                    managedClasses={managedClasses}
+                    resizable={true}
+                    resizeControl={customControl}
+                />
+            );
+
+            expect(rendered.find("#foo")).toHaveLength(1);
+        });
+
+        test("should NOT render a custom `resize` control when `resizeControl` prop is passed and `resizable` is false", () => {
+            const customControl: (props: RowResizeControlProps) => React.ReactNode = (
+                props: RowResizeControlProps
+            ): React.ReactNode => <button id={"foo"} {...props} />;
+            const rendered: any = mount(
+                <Row
+                    managedClasses={managedClasses}
+                    resizable={false}
+                    resizeControl={customControl}
+                />
+            );
+
+            expect(rendered.find("#foo")).toHaveLength(0);
         });
 
         test("should have role of separator", () => {

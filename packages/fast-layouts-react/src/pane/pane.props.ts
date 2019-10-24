@@ -10,6 +10,28 @@ export enum PaneResizeDirection {
     west = "west",
 }
 
+export interface PaneResizeControlProps {
+    /**
+     * The className passed to the resize handler
+     */
+    className?: string;
+
+    /**
+     * The mouse down event handler
+     */
+    onMouseDown?: (e?: React.MouseEvent<HTMLButtonElement>) => void;
+
+    /**
+     * The keydown event handler
+     */
+    onKeyDown?: (e?: React.KeyboardEvent<HTMLButtonElement>) => void;
+
+    /**
+     * The accessible role for the resize handler
+     */
+    role?: string;
+}
+
 export interface PaneManagedClasses extends ManagedClasses<PaneClassNamesContract> {}
 export interface PaneUnhandledProps extends React.HTMLAttributes<HTMLDivElement> {}
 export interface PaneHandledProps extends PaneManagedClasses {
@@ -79,6 +101,11 @@ export interface PaneHandledProps extends PaneManagedClasses {
         e: MouseEvent | React.KeyboardEvent<HTMLButtonElement>,
         width?: number
     ) => void;
+
+    /**
+     * The optional custom resize handler
+     */
+    resizeControl?: (props: PaneResizeControlProps) => React.ReactNode;
 }
 
 export type PaneProps = PaneHandledProps & PaneUnhandledProps;

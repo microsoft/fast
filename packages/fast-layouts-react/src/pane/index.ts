@@ -6,6 +6,7 @@ import {
     PaneHandledProps as BasePaneHandledProps,
     PaneManagedClasses,
     PaneProps as BasePaneProps,
+    PaneResizeControlProps,
     PaneResizeDirection,
     paneStyleSheet,
     PaneUnhandledProps,
@@ -26,4 +27,5 @@ export {
     PaneUnhandledProps,
     PaneClassNamesContract,
     PaneResizeDirection,
+    PaneResizeControlProps,
 };
