@@ -106,6 +106,7 @@ export {
     neutralLayerL4,
     NeutralPaletteLightModeLayers,
     NeutralPaletteDarkModeLayers,
+    StandardLuminance,
 } from "./neutral-layer";
 
 /**

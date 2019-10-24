@@ -236,6 +236,11 @@ export default {
             type: "number",
             default: 0,
         },
+        baseLayerLuminance: {
+            title: "Base layer luminance",
+            type: "number",
+            default: -1,
+        },
         neutralFillCardDelta: {
             title: "Neutral fill card delta",
             type: "number",
