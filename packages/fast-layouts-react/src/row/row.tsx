@@ -5,12 +5,16 @@ import {
     keyCodeArrowDown,
     keyCodeArrowUp,
 } from "@microsoft/fast-web-utilities";
-import { RowHandledProps, RowProps, RowResizeDirection } from "./row.props";
+import {
+    RowHandledProps,
+    RowProps,
+    RowResizeControlProps,
+    RowResizeDirection,
+} from "./row.props";
 import { toPx } from "@microsoft/fast-jss-utilities";
 import { ComponentStyles } from "@microsoft/fast-jss-manager-react";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import { canUseDOM } from "exenv-es6";
-import { joinClasses } from "../utilities";
 
 export const east: string = "east";
 export const west: string = "west";
@@ -136,6 +140,7 @@ export class Row extends Foundation<
         maxHeight: void 0,
         minHeight: void 0,
         onResize: void 0,
+        resizeControl: void 0,
         overlay: void 0,
         resizable: void 0,
         resizeFrom: void 0,
@@ -222,19 +227,25 @@ export class Row extends Foundation<
     /**
      * Render the resize button
      */
-    public renderResizeControl(): React.ReactElement<HTMLButtonElement> {
+    public renderResizeControl():
+        | React.ReactNode
+        | React.ReactElement<HTMLButtonElement> {
         if (!this.props.resizable || this.props.collapsed) {
             return null;
         }
 
-        return (
-            <button
-                className={this.props.managedClasses.row_resizeHandle}
-                onMouseDown={this.onMouseDown}
-                onKeyDown={this.onKeyDown}
-                role={"separator"}
-            />
-        );
+        const resizeProps: RowResizeControlProps = {
+            className: this.props.managedClasses.row_resizeHandle,
+            onMouseDown: this.onMouseDown,
+            onKeyDown: this.onKeyDown,
+            role: "separator",
+        };
+
+        if (typeof this.props.resizeControl === "function") {
+            return this.props.resizeControl(resizeProps);
+        } else {
+            return <button {...resizeProps} />;
+        }
     }
 
     /**
