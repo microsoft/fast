@@ -3,19 +3,12 @@ aliases:
         docker:
             - image: "circleci/node:latest"
         working_directory: ~/fast-dna
-      
-    - &node_install
-        run: 
-            name: Install Node
-            command: |
-                sudo npm i npm@latest -g
-                npm update rc --depth 4
 
     - &lerna_install
         run: 
             name: Install Lerna
             command: |
-                sudo npm i lerna@3.11.1 -g
+                yarn install lerna@3.11.1 -g
 
 version: 2
 jobs:
@@ -27,11 +20,11 @@ jobs:
             - run: 
                 name: Install package dependencies
                 command: |
-                    npm i
-            - run: 
-                name: Bootstrap dependencies
-                command: |
-                    lerna bootstrap --no-ci
+                    yarn install
+            # - run: 
+            #     name: Bootstrap dependencies
+            #     command: |
+            #         lerna bootstrap --no-ci
             - run: 
                 name: Ensure prettier formatting
                 command: |
