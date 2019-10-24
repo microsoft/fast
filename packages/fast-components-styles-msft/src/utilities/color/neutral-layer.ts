@@ -81,7 +81,7 @@ const baseLayerLuminanceIndex: DesignSystemResolver<number> = findClosestSwatchI
  */
 const neutralLayerCardIndex: DesignSystemResolver<number> = (
     designSystem: DesignSystem
-): number => 
+): number =>
     clamp(
         subtract(baseLayerLuminanceIndex, neutralFillCardDelta)(designSystem),
         0,
