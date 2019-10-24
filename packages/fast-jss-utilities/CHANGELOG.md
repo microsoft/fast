@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.7.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-jss-utilities@4.6.9...@microsoft/fast-jss-utilities@4.7.0) (2019-10-24)
+
+
+### Bug Fixes
+
+* various bundle size reductions ([#2369](https://github.com/Microsoft/fast-dna/issues/2369)) ([f0e3ccd](https://github.com/Microsoft/fast-dna/commit/f0e3ccd9ae7b40d8de7d9dddfe440d65dc70f10c))
+
+
+### Features
+
+* add new important utility ([#2373](https://github.com/Microsoft/fast-dna/issues/2373)) ([e31eef7](https://github.com/Microsoft/fast-dna/commit/e31eef7866ae0c20d3afb7aed3835c3ededbd918))
+
+
+
+
+
 ## [4.6.9](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-jss-utilities@4.6.8...@microsoft/fast-jss-utilities@4.6.9) (2019-10-18)
 
 

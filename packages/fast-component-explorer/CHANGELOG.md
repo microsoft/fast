@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.6.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-component-explorer@0.5.8...@microsoft/fast-component-explorer@0.6.0) (2019-10-24)
+
+
+### Features
+
+* add design system editing to component explorer site ([#2358](https://github.com/Microsoft/fast-dna/issues/2358)) ([fed20cc](https://github.com/Microsoft/fast-dna/commit/fed20cc61940f06fffb628223b3ffc1ca042eaf1))
+
+
+
+
+
 ## [0.5.8](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-component-explorer@0.5.7...@microsoft/fast-component-explorer@0.5.8) (2019-10-18)
 
 **Note:** Version bump only for package @microsoft/fast-component-explorer
