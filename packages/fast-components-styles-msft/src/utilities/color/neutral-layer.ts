@@ -81,14 +81,12 @@ const baseLayerLuminanceIndex: DesignSystemResolver<number> = findClosestSwatchI
  */
 const neutralLayerCardIndex: DesignSystemResolver<number> = (
     designSystem: DesignSystem
-): number => {
-    const palette: Palette = neutralPalette(designSystem);
-    return clamp(
+): number => 
+    clamp(
         subtract(baseLayerLuminanceIndex, neutralFillCardDelta)(designSystem),
         0,
-        palette.length - 1
+        neutralPalette(designSystem).length - 1
     );
-};
 
 /**
  * Light mode L2 is significant because it happens at the same point as the neutral fill flip. Use this as the minimum index for L2.

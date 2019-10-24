@@ -28,7 +28,7 @@ import {
     ColorRecipe,
     Swatch,
 } from "@microsoft/fast-components-styles-msft/dist/utilities/color/common";
-import { StandardLuminance } from "@microsoft/fast-components-styles-msft/dist/utilities/color/neutral-layer";
+import { StandardLuminance } from "@microsoft/fast-components-styles-msft";
 
 interface AppProps {
     designSystem: ColorsDesignSystem;
