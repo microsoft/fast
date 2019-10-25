@@ -308,12 +308,13 @@ class Navigation {
                 }
             );
 
-        const subData: any = get(data, childrenDataLocation);
+        const componentDataLocation: any = get(data, childrenDataLocation);
+        const stringChildrenDataLocation: any = get(data, dataLocation);
         const id: string | undefined =
-            typeof subData === "string"
+            typeof stringChildrenDataLocation === "string"
                 ? reactChildrenStringSchema.id
-                : get(subData, "id")
-                    ? subData.id
+                : get(componentDataLocation, "id")
+                    ? componentDataLocation.id
                     : void 0;
         const childOptionWithMatchingSchemaId: FormChildOptionItem = childOptions.find(
             (childOption: FormChildOptionItem) => {
@@ -324,7 +325,7 @@ class Navigation {
         return childOptionWithMatchingSchemaId
             ? {
                   schema: childOptionWithMatchingSchemaId.schema,
-                  dataLocation: `${childrenDataLocation}${
+                  dataLocation: `${dataLocation}${
                       id === reactChildrenStringSchema.id ? "" : `.${propsKeyword}`
                   }`,
               }
