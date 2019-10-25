@@ -655,7 +655,9 @@ export default class Navigation extends Foundation<
 
         if (typeof this.props.onChange === "function") {
             const isPrimitive: boolean = type === NavigationDataType.primitiveChild;
-            const dataLocationAsDotNotation: string = normalizeDataLocationToDotNotation(dataLocation);
+            const dataLocationAsDotNotation: string = normalizeDataLocationToDotNotation(
+                dataLocation
+            );
             const dataLocationSegments: string[] = dataLocationAsDotNotation.split(".");
             dataLocationSegments.pop();
             // The root data location ensures that if the data location includes ".props" as part
@@ -672,7 +674,10 @@ export default class Navigation extends Foundation<
                     : `${dataLocationSegments.join(".")}[0]`;
 
             this.props.onChange(
-                getDataWithDuplicate(isPrimitive ? dataLocation : rootDataLocation, this.props.data),
+                getDataWithDuplicate(
+                    isPrimitive ? dataLocation : rootDataLocation,
+                    this.props.data
+                ),
                 rootDataLocation
             );
         }

@@ -1,5 +1,9 @@
 import "jest";
-import { getDataWithDuplicate, getNavigationFromData, getUpdatedData } from "./navigation.utilities";
+import {
+    getDataWithDuplicate,
+    getNavigationFromData,
+    getUpdatedData,
+} from "./navigation.utilities";
 import { NavigationDataType, TreeNavigation } from "./navigation.props";
 import { ChildOptionItem } from "../data-utilities";
 
@@ -1178,71 +1182,60 @@ describe("getUpdatedData", () => {
 describe("getDataWithDuplicate", () => {
     test("should duplicate data inside an array", () => {
         const data: any = {
-            foo: [
-                "Hello"
-            ]
-        }
+            foo: ["Hello"],
+        };
         const updatedData: any = getDataWithDuplicate("foo[0]", data);
 
         expect(updatedData).toEqual({ foo: ["Hello", "Hello"] });
     });
     test("should duplicate a string and convert the target string to an array", () => {
         const data: any = {
-            foo: "Hello"
-        }
+            foo: "Hello",
+        };
         const updatedData: any = getDataWithDuplicate("foo", data);
 
         expect(updatedData).toEqual({ foo: ["Hello", "Hello"] });
     });
     test("should duplicate an object and convert the target object to an array", () => {
         const data: any = {
-            foo: { bar: "Hello"}
-        }
+            foo: { bar: "Hello" },
+        };
         const updatedData: any = getDataWithDuplicate("foo", data);
 
         expect(updatedData).toEqual({
-            foo: [
-                { bar: "Hello"},
-                { bar: "Hello"}
-            ]
+            foo: [{ bar: "Hello" }, { bar: "Hello" }],
         });
     });
     test("should duplicate component data inside an array", () => {
         const componentData: any = {
             id: "foo",
             props: {
-                children: "bar"
-            }
+                children: "bar",
+            },
         };
         const data: any = {
-            foo: [componentData]
-        }
+            foo: [componentData],
+        };
         const updatedData: any = getDataWithDuplicate("foo[0]", data);
 
         expect(updatedData).toEqual({
-            foo: [
-                componentData,
-                componentData
-            ]
+            foo: [componentData, componentData],
         });
     });
     test("should duplicate comopnent data inside an object", () => {
         const componentData: any = {
             id: "foo",
             props: {
-                children: "bar"
-            }
+                children: "bar",
+            },
         };
         const data: any = {
-            foo: componentData
-        }
+            foo: componentData,
+        };
         const updatedData: any = getDataWithDuplicate("foo", data);
 
         expect(updatedData).toEqual({
-            foo: [
-                componentData,
-                componentData
-            ]
+            foo: [componentData, componentData],
         });
     });
 });
