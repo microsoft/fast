@@ -34,6 +34,7 @@ class Preview extends Foundation<{}, {}, PreviewState> {
                 <Background
                     className={get(this.props, "managedClasses.preview")}
                     dir={this.state.direction}
+                    drawBackground={false}
                 >
                     <ViewerContent
                         components={childOptions}
