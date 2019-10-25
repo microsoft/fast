@@ -9,6 +9,7 @@ import {
 } from "./pane";
 import { KeyCodes } from "@microsoft/fast-web-utilities";
 import { PaneResizeDirection } from "./pane.props";
+import { PaneResizeControlProps } from ".";
 
 /**
  * Configure Enzyme
@@ -292,7 +293,7 @@ describe("Pane", (): void => {
     });
 
     describe("resize", () => {
-        test("should render a `resize control` when `resizable` prop is true", () => {
+        test("should render a `resize control` by default when `resizable` prop is true", () => {
             const rendered: any = mount(
                 <Pane resizable={true} managedClasses={managedClasses} />
             );
@@ -304,6 +305,36 @@ describe("Pane", (): void => {
             const rendered: any = mount(<Pane managedClasses={managedClasses} />);
 
             expect(rendered.find(`.${managedClasses.pane_resizeHandle}`)).toHaveLength(0);
+        });
+
+        test("should render a custom `resize` control when passed via the `resizeControl` prop", () => {
+            const customControl: (props: PaneResizeControlProps) => React.ReactNode = (
+                props: PaneResizeControlProps
+            ): React.ReactNode => <button id={"foo"} {...props} />;
+            const rendered: any = mount(
+                <Pane
+                    managedClasses={managedClasses}
+                    resizable={true}
+                    resizeControl={customControl}
+                />
+            );
+
+            expect(rendered.find("#foo")).toHaveLength(1);
+        });
+
+        test("should NOT render a custom `resize` control when `resizeControl` prop is passed and `resizable` is false", () => {
+            const customControl: (props: PaneResizeControlProps) => React.ReactNode = (
+                props: PaneResizeControlProps
+            ): React.ReactNode => <button id={"foo"} {...props} />;
+            const rendered: any = mount(
+                <Pane
+                    managedClasses={managedClasses}
+                    resizable={false}
+                    resizeControl={customControl}
+                />
+            );
+
+            expect(rendered.find("#foo")).toHaveLength(0);
         });
 
         test("should NOT render a `resize control` when `resizable` prop is true and `collapsed` is true", () => {

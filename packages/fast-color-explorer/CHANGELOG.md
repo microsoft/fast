@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.5.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-color-explorer@1.4.7...@microsoft/fast-color-explorer@1.5.0) (2019-10-25)
+
+
+### Features
+
+* add luminance to design system ([#2277](https://github.com/Microsoft/fast-dna/issues/2277)) ([ceb8577](https://github.com/Microsoft/fast-dna/commit/ceb8577cac0ed36562bbe4c71d72bc25a1c5ec2e))
+
+
+
+
+
+## [1.4.7](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-color-explorer@1.4.6...@microsoft/fast-color-explorer@1.4.7) (2019-10-24)
+
+**Note:** Version bump only for package @microsoft/fast-color-explorer
+
+
+
+
+
 ## [1.4.6](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-color-explorer@1.4.5...@microsoft/fast-color-explorer@1.4.6) (2019-10-18)
 
 **Note:** Version bump only for package @microsoft/fast-color-explorer

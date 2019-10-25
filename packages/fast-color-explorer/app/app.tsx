@@ -2,6 +2,7 @@
 /* tslint:disable:no-empty */
 import { Canvas, Container, Row } from "@microsoft/fast-layouts-react";
 import {
+    DesignSystem,
     neutralLayerCard,
     neutralLayerCardContainer,
     neutralLayerFloating,
@@ -27,6 +28,7 @@ import {
     ColorRecipe,
     Swatch,
 } from "@microsoft/fast-components-styles-msft/dist/utilities/color/common";
+import { StandardLuminance } from "@microsoft/fast-components-styles-msft";
 
 interface AppProps {
     designSystem: ColorsDesignSystem;
@@ -170,13 +172,18 @@ class App extends React.Component<AppProps, {}> {
               });
     }
 
-    private resolveRecipes = (color: string): Array<{ color: string; title: string }> => {
+    private resolveRecipes = (
+        luminance: number
+    ): Array<{ color: string; title: string }> => {
+        const designSystem: DesignSystem = Object.assign({}, this.props.designSystem, {
+            baseLayerLuminance: luminance,
+        });
         return this.backgroundRecipes
             .map((conf: [ColorRecipe<string>, string]): {
                 color: string;
                 title: string;
             } => ({
-                color: conf[0]((): string => color)(this.props.designSystem),
+                color: conf[0](designSystem),
                 title: conf[1],
             }))
             .reduce(
@@ -209,12 +216,11 @@ class App extends React.Component<AppProps, {}> {
     };
 
     private get lightModeLayers(): Array<{ color: string; title: string }> {
-        return this.resolveRecipes(this.props.designSystem.neutralPalette[0]);
+        return this.resolveRecipes(StandardLuminance.LightMode);
     }
 
     private get darkModeLayers(): Array<{ color: string; title: string }> {
-        const neutralPalette: string[] = this.props.designSystem.neutralPalette;
-        return this.resolveRecipes(neutralPalette[neutralPalette.length - 1]);
+        return this.resolveRecipes(StandardLuminance.DarkMode);
     }
 }
 

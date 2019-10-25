@@ -85,14 +85,17 @@ export function findSwatchIndex(
  */
 export function findClosestSwatchIndex(
     paletteResolver: Palette | DesignSystemResolver<Palette>,
-    swatch: Swatch
+    swatch: Swatch | DesignSystemResolver<Swatch>
 ): DesignSystemResolver<number> {
     return (designSystem: DesignSystem): number => {
         const resolvedPalette: Palette = checkDesignSystemResolver(
             paletteResolver,
             designSystem
         );
-        const index: number = findSwatchIndex(resolvedPalette, swatch)(designSystem);
+        const resolvedSwatch: Swatch = checkDesignSystemResolver(swatch, designSystem);
+        const index: number = findSwatchIndex(resolvedPalette, resolvedSwatch)(
+            designSystem
+        );
         let swatchLuminance: number;
 
         if (index !== -1) {
@@ -159,8 +162,21 @@ export function isLightMode(designSystem: DesignSystem): boolean {
  * Safely retrieves an index of a palette. The index is clamped to valid
  * array indexes so that a swatch is always returned
  */
-export function getSwatch(index: number, colorPalette: Palette): Swatch {
-    return colorPalette[clamp(index, 0, colorPalette.length - 1)];
+export function getSwatch(index: number, colorPalette: Palette): Swatch;
+export function getSwatch(
+    index: DesignSystemResolver<number>,
+    colorPalette: DesignSystemResolver<Palette>
+): DesignSystemResolver<Swatch>;
+export function getSwatch(index: any, colorPalette: any): any {
+    if (typeof index === "function") {
+        return (designSystem: DesignSystem): Swatch => {
+            return colorPalette(designSystem)[
+                clamp(index(designSystem), 0, colorPalette(designSystem).length - 1)
+            ];
+        };
+    } else {
+        return colorPalette[clamp(index, 0, colorPalette.length - 1)];
+    }
 }
 
 export function swatchByMode(

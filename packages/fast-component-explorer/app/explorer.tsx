@@ -3,8 +3,10 @@ import {
     ExplorerHandledProps,
     ExplorerProps,
     ExplorerState,
+    ExplorerUnhandledProps,
     Theme,
     ThemeName,
+    ViewConfig,
 } from "./explorer.props";
 import { CodePreviewChildOption } from "@microsoft/fast-tooling-react/dist/data-utilities/mapping";
 import { camelCase, get, memoize, merge } from "lodash-es";
@@ -84,6 +86,7 @@ import { Direction } from "@microsoft/fast-web-utilities";
 import { ColorRGBA64, parseColor } from "@microsoft/fast-colors";
 import { format, multiply, toPx } from "@microsoft/fast-jss-utilities";
 import { NavigationMenuClassNameContract } from "@microsoft/fast-tooling-react/dist/navigation-menu/navigation-menu.style";
+import { StandardLuminance } from "@microsoft/fast-components-styles-msft/dist/utilities/color/neutral-layer";
 
 interface ObjectOfComponentViewConfigs {
     [key: string]: ComponentViewConfig<any>;
@@ -116,7 +119,11 @@ function setViewConfigsWithCustomConfig(
 const dark: string = `#333333`;
 const light: string = "#FFFFFF";
 
-class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
+class Explorer extends Foundation<
+    ExplorerHandledProps,
+    ExplorerUnhandledProps,
+    ExplorerState
+> {
     public static displayName: string = "Explorer";
 
     protected handledProps: HandledProps<ExplorerHandledProps> = {
@@ -136,18 +143,26 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
         },
     };
 
+    /* tslint:disable-next-line */
+    private checker: string =
+        "url('data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMiAyIiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxwYXRoIGQ9Ik0xIDJWMGgxdjFIMHYxaDF6IiBmaWxsPSIjMDAwIiBmaWxsLW9wYWNpdHk9Ii4xNSIvPjxwYXRoIGQ9Ik0xIDJWMEgwdjFoMnYxSDF6IiBmaWxsPSIjZmZmIiBmaWxsLW9wYWNpdHk9Ii4xNSIvPjwvc3ZnPg==')";
+
     private viewerStyleOverrides: (
-        background: string
+        viewConfig: ViewConfig
     ) => ComponentStyleSheet<Partial<ViewerClassNameContract>, DesignSystem> = memoize(
         (
-            background: string
+            viewConfig: ViewConfig
         ): ComponentStyleSheet<Partial<ViewerClassNameContract>, DesignSystem> => ({
             viewer: {
                 minHeight: "unset",
                 width: "fit-content",
             },
             viewer_iframe: {
-                backgroundColor: background,
+                "background-size": "8px 8px",
+                backgroundColor: neutralLayerL1(viewConfig.designSystem),
+                background: viewConfig.transparentBackground
+                    ? `transparent ${toPx(8)}/${toPx(8)} ${this.checker} repeat`
+                    : "unset",
                 ...applyCornerRadius(),
             },
         })
@@ -267,7 +282,10 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
             selectedScenarioIndex: 1,
             locationPathname,
             theme: ThemeName.light,
-            viewConfig: DesignSystemDefaults,
+            viewConfig: {
+                designSystem: DesignSystemDefaults,
+                transparentBackground: false,
+            },
             devToolsVisible: true,
         };
     }
@@ -283,7 +301,7 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
         }
 
         return (
-            <Background value={neutralLayerL1}>
+            <Background {...this.unhandledProps()} value={neutralLayerL1}>
                 <Container className={get(this.props, "managedClasses.explorer")}>
                     <Row style={{ flex: "1" }}>
                         <Pane
@@ -323,6 +341,7 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
                                         )}
                                     >
                                         {this.renderScenarioSelect()}
+                                        {this.renderTransparencyToggle()}
                                         {this.renderThemeToggle()}
                                         {this.renderDirectionToggle()}
                                         {this.renderAccentColorPicker()}
@@ -387,7 +406,7 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
                             resizable={true}
                             resizeFrom={PaneResizeDirection.west}
                         >
-                            <Background value={neutralLayerL3}>
+                            <Background value={neutralLayerL3} drawBackground={false}>
                                 <Pivot
                                     label={"properties"}
                                     items={this.renderPropertyItems()}
@@ -430,16 +449,14 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
         return (
             <Viewer
                 iframeSrc={"/preview"}
-                iframePostMessage={this.state.viewConfig}
+                iframePostMessage={this.state.viewConfig.designSystem}
                 width={this.state.width}
                 height={this.state.height}
                 onUpdateHeight={this.handleUpdateHeight}
                 onUpdateWidth={this.handleUpdateWidth}
                 viewerContentProps={this.state.scenario}
                 responsive={true}
-                jssStyleSheet={this.viewerStyleOverrides(
-                    get(this.state, "viewConfig.backgroundColor")
-                )}
+                jssStyleSheet={this.viewerStyleOverrides(this.state.viewConfig)}
             />
         );
     }
@@ -469,7 +486,7 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
             <Form
                 jssStyleSheet={this.formStyleOverrides}
                 schema={designSystemSchema}
-                data={this.state.viewConfig}
+                data={this.state.viewConfig.designSystem}
                 onChange={this.handleUpdateDesignSystem}
             />
         );
@@ -488,7 +505,7 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
                     type={"color"}
                     id={id}
                     className={get(this.props, "managedClasses.explorer_colorPicker")}
-                    value={this.state.viewConfig.accentBaseColor}
+                    value={this.state.viewConfig.designSystem.accentBaseColor}
                     onChange={this.handleAccentColorPickerChange}
                 />
             </div>
@@ -532,6 +549,27 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
                     selectedMessage={""}
                     unselectedMessage={""}
                     statusMessageId={"theme"}
+                />
+            </div>
+        );
+    }
+
+    private renderTransparencyToggle(): React.ReactNode {
+        const id: string = uniqueId("transparency");
+        return (
+            <div
+                className={get(this.props, "managedClasses.explorer_viewerControlRegion")}
+            >
+                <Label jssStyleSheet={this.labelStyleOverrides} htmlFor={id}>
+                    Transparent
+                </Label>
+                <Toggle
+                    jssStyleSheet={this.toggleStyleOverrides}
+                    inputId={id}
+                    onClick={this.handleUpdateTransparency}
+                    selectedMessage={""}
+                    unselectedMessage={""}
+                    statusMessageId={"transparency"}
                 />
             </div>
         );
@@ -768,12 +806,16 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
 
     private handleUpdateDirection = (): void => {
         this.setState({
-            viewConfig: Object.assign({}, this.state.viewConfig, {
-                direction:
-                    this.state.viewConfig.direction === Direction.ltr
-                        ? Direction.rtl
-                        : Direction.ltr,
-            }),
+            viewConfig: {
+                designSystem: {
+                    ...this.state.viewConfig.designSystem,
+                    direction:
+                        this.state.viewConfig.designSystem.direction === Direction.ltr
+                            ? Direction.rtl
+                            : Direction.ltr,
+                },
+                transparentBackground: this.state.viewConfig.transparentBackground,
+            },
         });
     };
 
@@ -801,9 +843,12 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
         });
     };
 
-    private handleUpdateDesignSystem = (data: any): void => {
+    private handleUpdateDesignSystem = (data: DesignSystem): void => {
         this.setState({
-            viewConfig: data,
+            viewConfig: {
+                designSystem: data,
+                transparentBackground: this.state.viewConfig.transparentBackground,
+            },
         });
     };
 
@@ -842,13 +887,32 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
     };
 
     private handleUpdateTheme = (): void => {
-        const isLightTheme: boolean = this.state.theme === ThemeName.light;
-        const updatedThemeColor: string = isLightTheme ? dark : light;
+        const isLightMode: boolean = this.state.theme === ThemeName.light;
+        const updatedThemeColor: string = isLightMode ? dark : light;
+        const updatedLuminance: number = isLightMode
+            ? StandardLuminance.DarkMode
+            : StandardLuminance.LightMode;
         this.setState({
-            theme: isLightTheme ? ThemeName.dark : ThemeName.light,
-            viewConfig: merge({}, this.state.viewConfig, {
-                backgroundColor: updatedThemeColor,
-            }),
+            theme: isLightMode ? ThemeName.dark : ThemeName.light,
+            viewConfig: {
+                designSystem: {
+                    ...this.state.viewConfig.designSystem,
+                    baseLayerLuminance: updatedLuminance,
+                    backgroundColor: updatedThemeColor,
+                },
+                transparentBackground: this.state.viewConfig.transparentBackground,
+            },
+        });
+    };
+
+    private handleUpdateTransparency = (): void => {
+        this.setState({
+            viewConfig: {
+                designSystem: {
+                    ...this.state.viewConfig.designSystem,
+                },
+                transparentBackground: !this.state.viewConfig.transparentBackground,
+            },
         });
     };
 
@@ -863,10 +927,14 @@ class Explorer extends Foundation<ExplorerHandledProps, {}, ExplorerState> {
         if (accentPaletteSource !== null) {
             const palette: string[] = createColorPalette(accentPaletteSource);
             this.setState({
-                viewConfig: merge({}, this.state.viewConfig, {
-                    accentBaseColor: value.toUpperCase(),
-                    accentPalette: palette,
-                }),
+                viewConfig: {
+                    designSystem: {
+                        ...this.state.viewConfig.designSystem,
+                        accentBaseColor: value.toUpperCase(),
+                        accentPalette: palette,
+                    },
+                    transparentBackground: this.state.viewConfig.transparentBackground,
+                },
             });
         }
     };

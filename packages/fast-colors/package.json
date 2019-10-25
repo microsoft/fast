@@ -2,7 +2,7 @@
   "name": "@microsoft/fast-colors",
   "description": "A color utility for generating a range of colors from a single color",
   "sideEffects": false,
-  "version": "5.0.0",
+  "version": "5.0.1",
   "author": {
     "name": "Microsoft",
     "url": "https://discord.gg/FcSNfg4"
@@ -26,7 +26,7 @@
     "test": "npm run tslint && npm run unit-tests",
     "tslint": "tslint -c ./tslint.json '**/*.ts'",
     "tslint:fix": "tslint -c ./tslint.json --fix '**/*.ts'",
-    "unit-tests": "jest --maxWorkers=2",
+    "unit-tests": "jest --runInBand",
     "unit-tests:watch": "jest --watch",
     "watch": "npm run build -- -w --preserveWatchOutput"
   },

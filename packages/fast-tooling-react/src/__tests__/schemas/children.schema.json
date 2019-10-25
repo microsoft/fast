@@ -10,7 +10,8 @@
             "type": "children",
             "defaults": [
                 "text"
-            ]
+            ],
+            "examples": ["Foo"]
         },
         "restrictedWithChildren": {
             "title": "Restricted children with react defaults",
@@ -56,5 +57,8 @@
                 }
             }
         }
-    }
+    },
+    "required": [
+        "children"
+    ]
 }

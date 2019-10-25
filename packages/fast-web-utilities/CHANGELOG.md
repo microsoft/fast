@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.3.5](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-web-utilities@4.3.4...@microsoft/fast-web-utilities@4.3.5) (2019-10-25)
+
+**Note:** Version bump only for package @microsoft/fast-web-utilities
+
+
+
+
+
+## [4.3.4](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-web-utilities@4.3.3...@microsoft/fast-web-utilities@4.3.4) (2019-10-24)
+
+
+### Bug Fixes
+
+* canUsedForcedColors function is not isomorphic ([#2378](https://github.com/Microsoft/fast-dna/issues/2378)) ([0c929c8](https://github.com/Microsoft/fast-dna/commit/0c929c8a333f810d95d43b09d171e71e55276f16))
+
+
+
+
+
 ## [4.3.3](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-web-utilities@4.3.2...@microsoft/fast-web-utilities@4.3.3) (2019-10-17)
 
 

@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.7.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-layouts-react@4.7.0...@microsoft/fast-layouts-react@4.7.1) (2019-10-25)
+
+**Note:** Version bump only for package @microsoft/fast-layouts-react
+
+
+
+
+
+# [4.7.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-layouts-react@4.6.2...@microsoft/fast-layouts-react@4.7.0) (2019-10-24)
+
+
+### Features
+
+* add ability to pass custom resize control to pane and row ([#2375](https://github.com/Microsoft/fast-dna/issues/2375)) ([f8ac9f3](https://github.com/Microsoft/fast-dna/commit/f8ac9f3e63d0f3964dcb0e57fb5c84fe7e4c706d))
+
+
+
+
+
 ## [4.6.2](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-layouts-react@4.6.1...@microsoft/fast-layouts-react@4.6.2) (2019-10-18)
 
 **Note:** Version bump only for package @microsoft/fast-layouts-react

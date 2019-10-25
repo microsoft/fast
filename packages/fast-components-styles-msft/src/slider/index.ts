@@ -1,10 +1,11 @@
+import { ComponentStyles } from "@microsoft/fast-jss-manager";
 import { applyCursorPointer } from "../utilities/cursor";
-import { SliderClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import {
     add,
     applyFocusVisible,
     divide,
     format,
+    important,
     multiply,
     subtract,
     toPx,
@@ -19,7 +20,7 @@ import {
     neutralForegroundRest,
     neutralOutlineRest,
 } from "../utilities/color";
-import { ComponentStyles } from "@microsoft/fast-jss-manager";
+import { SliderClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import { densityCategorySwitch, heightNumber } from "../utilities/density";
 import {
     backgroundColor,
@@ -36,7 +37,6 @@ import {
     highContrastOptOutProperty,
     highContrastSelector,
 } from "../utilities/high-contrast";
-import { importantValue } from "../utilities/important";
 
 const thumbSizeValue: DesignSystemResolver<number> = divide(heightNumber(), 2);
 const thumbSize: DesignSystemResolver<string> = toPx(thumbSizeValue);
@@ -129,10 +129,10 @@ const styles: ComponentStyles<SliderClassNameContract, DesignSystem> = {
         },
         "& $slider_layoutRegion": {
             "& div > span": {
-                color: importantValue(HighContrastColor.disabledText),
+                color: important(HighContrastColor.disabledText),
             },
             "& div > div": {
-                background: importantValue(HighContrastColor.disabledText),
+                background: important(HighContrastColor.disabledText),
             },
         },
     },

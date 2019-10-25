@@ -620,10 +620,10 @@ describe("Navigation", () => {
         });
         expect(navItems[2]).toEqual({
             dataLocation: "children.props.objectContainingNestedChildren",
-            schemaLocation: "properties.objectContainingNestedChildren",
+            schemaLocation: "",
             schema: childrenSchema,
             data: data.children.props.objectContainingNestedChildren,
-            title: childrenSchema.properties.objectContainingNestedChildren.title,
+            title: childrenSchema.title,
             default: void 0,
         });
         expect(navItems[3]).toEqual({
@@ -788,21 +788,18 @@ describe("Navigation", () => {
         });
         expect(navItems[2]).toEqual({
             dataLocation: "children.props.numberOrString",
-            schemaLocation: "oneOf[2].properties.numberOrString",
+            schemaLocation: "",
             data: data.children.props.numberOrString,
             schema: oneOfSchema,
-            title: oneOfSchema.oneOf[2].properties.numberOrString.title,
+            title: oneOfSchema.title,
             default: void 0,
         });
         expect(navItems[3]).toEqual({
             dataLocation: "children.props.numberOrString.object",
-            schemaLocation:
-                "oneOf[2].properties.numberOrString.oneOf[2].properties.object",
+            schemaLocation: "",
             data: data.children.props.numberOrString.object,
             schema: oneOfSchema,
-            title:
-                oneOfSchema.oneOf[2].properties.numberOrString.oneOf[2].properties.object
-                    .title,
+            title: oneOfSchema.title,
             default: void 0,
         });
     });

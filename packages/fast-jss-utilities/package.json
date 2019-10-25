@@ -2,7 +2,7 @@
   "name": "@microsoft/fast-jss-utilities",
   "description": "Utilities for use with JSS",
   "sideEffects": false,
-  "version": "4.6.9",
+  "version": "4.7.1",
   "author": {
     "name": "Microsoft",
     "url": "https://discord.gg/FcSNfg4"
@@ -26,7 +26,7 @@
     "test": "npm run tslint && npm run unit-tests",
     "tslint": "tslint -c ./tslint.json '**/*.ts'",
     "tslint:fix": "tslint -c ./tslint.json --fix '**/*.ts'",
-    "unit-tests": "jest --maxWorkers=2",
+    "unit-tests": "jest --runInBand",
     "watch": "npm run build -- -w --preserveWatchOutput"
   },
   "jest": {
@@ -69,9 +69,9 @@
     "typescript": "3.3.3"
   },
   "dependencies": {
-    "@microsoft/fast-colors": "^5.0.0",
+    "@microsoft/fast-colors": "^5.0.1",
     "@microsoft/fast-jss-manager": "^4.1.8",
-    "@microsoft/fast-web-utilities": "^4.3.3",
+    "@microsoft/fast-web-utilities": "^4.3.5",
     "csstype": "^2.3.0",
     "exenv-es6": "^1.0.0"
   },

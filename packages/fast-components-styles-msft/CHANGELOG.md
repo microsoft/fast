@@ -3,6 +3,40 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.24.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-styles-msft@4.23.0...@microsoft/fast-components-styles-msft@4.24.0) (2019-10-25)
+
+
+### Features
+
+* add luminance to design system ([#2277](https://github.com/Microsoft/fast-dna/issues/2277)) ([ceb8577](https://github.com/Microsoft/fast-dna/commit/ceb8577cac0ed36562bbe4c71d72bc25a1c5ec2e))
+
+
+
+
+
+# [4.23.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-styles-msft@4.22.5...@microsoft/fast-components-styles-msft@4.23.0) (2019-10-24)
+
+
+### Bug Fixes
+
+* optimize several color utilities ([#2332](https://github.com/Microsoft/fast-dna/issues/2332)) ([22f1736](https://github.com/Microsoft/fast-dna/commit/22f17368c445c83504c6d174cc1ab4ec118c6d88))
+* refactor action toggle ([#2333](https://github.com/Microsoft/fast-dna/issues/2333)) ([2bef0fa](https://github.com/Microsoft/fast-dna/commit/2bef0fab1ed3ef2936952a79e8ba2cc5f67006c2))
+* refactor badge styles [#2362](https://github.com/Microsoft/fast-dna/issues/2362) ([2f33c4d](https://github.com/Microsoft/fast-dna/commit/2f33c4dfa832c7c14ae34dc9bcf1433b1e7ec6ee))
+* refactor hypertext ([#2365](https://github.com/Microsoft/fast-dna/issues/2365)) ([a440636](https://github.com/Microsoft/fast-dna/commit/a440636974d255818634faf3fcfa5ac55ed47ae4))
+* refactoring elevation utilities ([#2367](https://github.com/Microsoft/fast-dna/issues/2367)) ([007635e](https://github.com/Microsoft/fast-dna/commit/007635e810a8c7a42ceb177ce53e92edc36a2c18))
+* remove font-size styles from metatext [#2363](https://github.com/Microsoft/fast-dna/issues/2363) ([94077b4](https://github.com/Microsoft/fast-dna/commit/94077b4ee4f79d2c2a1c35ad67a13be38a3fbb67))
+* various bundle size reductions ([#2369](https://github.com/Microsoft/fast-dna/issues/2369)) ([f0e3ccd](https://github.com/Microsoft/fast-dna/commit/f0e3ccd9ae7b40d8de7d9dddfe440d65dc70f10c))
+
+
+### Features
+
+* add design system editing to component explorer site ([#2358](https://github.com/Microsoft/fast-dna/issues/2358)) ([fed20cc](https://github.com/Microsoft/fast-dna/commit/fed20cc61940f06fffb628223b3ffc1ca042eaf1))
+* add new important utility ([#2373](https://github.com/Microsoft/fast-dna/issues/2373)) ([e31eef7](https://github.com/Microsoft/fast-dna/commit/e31eef7866ae0c20d3afb7aed3835c3ededbd918))
+
+
+
+
+
 ## [4.22.5](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-styles-msft@4.22.4...@microsoft/fast-components-styles-msft@4.22.5) (2019-10-18)
 
 **Note:** Version bump only for package @microsoft/fast-components-styles-msft

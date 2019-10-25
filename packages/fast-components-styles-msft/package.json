@@ -2,7 +2,7 @@
   "name": "@microsoft/fast-components-styles-msft",
   "description": "Javascript style sheets for FAST components",
   "sideEffects": false,
-  "version": "4.22.5",
+  "version": "4.24.0",
   "author": {
     "name": "Microsoft",
     "url": "https://discord.gg/FcSNfg4"
@@ -28,7 +28,7 @@
     "prepare": "npm run clean:dist && npm run build",
     "prettier": "prettier --config ../../.prettierrc --write \"**/*.ts\"",
     "prettier:diff": "prettier --config ../../.prettierrc \"**/*.ts\" --list-different",
-    "unit-tests": "jest --maxWorkers=2",
+    "unit-tests": "jest --runInBand",
     "unit-tests:watch": "jest --watch",
     "watch": "npm run build -- -w --preserveWatchOutput",
     "generate-palettes": "rollup --config && node .tmp/generate-palettes.js && npm run clean:tmp"
@@ -81,12 +81,12 @@
     "typescript": "3.3.3"
   },
   "dependencies": {
-    "@microsoft/fast-colors": "^5.0.0",
+    "@microsoft/fast-colors": "^5.0.1",
     "@microsoft/fast-components-class-name-contracts-base": "^4.4.0",
-    "@microsoft/fast-components-class-name-contracts-msft": "^4.7.5",
+    "@microsoft/fast-components-class-name-contracts-msft": "^4.7.6",
     "@microsoft/fast-jss-manager": "^4.1.8",
-    "@microsoft/fast-jss-utilities": "^4.6.9",
-    "@microsoft/fast-web-utilities": "^4.3.3"
+    "@microsoft/fast-jss-utilities": "^4.7.1",
+    "@microsoft/fast-web-utilities": "^4.3.5"
   },
   "peerDependencies": {
     "lodash-es": "^4.0.0"

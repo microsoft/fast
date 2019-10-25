@@ -14,18 +14,27 @@ export interface ComponentProps<T> {
 /**
  * The view config
  */
-/* tslint:disable-next-line */
-export interface ViewConfig extends DesignSystem {}
+export interface ViewConfig {
+    /**
+     * Viewer design system
+     */
+    designSystem: DesignSystem;
+    /**
+     * Viewer has transparent background
+     */
+    transparentBackground: boolean;
+}
 
 /* tslint:disable-next-line */
 export interface ExplorerManagedClasses
     extends ManagedClasses<ExplorerClassNameContract> {}
 
+export interface ExplorerUnhandledProps extends React.HTMLAttributes<HTMLDivElement> {}
+
 /* tslint:disable-next-line */
 export interface ExplorerHandledProps extends ExplorerManagedClasses {}
 
-/* tslint:disable-next-line */
-export interface ExplorerProps extends ExplorerHandledProps {}
+export type ExplorerProps = ExplorerHandledProps & ExplorerUnhandledProps;
 
 export interface Theme {
     id: string;

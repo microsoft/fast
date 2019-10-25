@@ -2,7 +2,7 @@
   "name": "@microsoft/fast-components-foundation-react",
   "description": "FAST component foundation implemented in React.",
   "sideEffects": false,
-  "version": "3.1.1",
+  "version": "3.1.2",
   "author": {
     "name": "Microsoft",
     "url": "https://discord.gg/FcSNfg4"
@@ -26,7 +26,7 @@
     "test": "npm run tslint && npm run unit-tests",
     "tslint": "tslint -c ./tslint.json 'src/**/*.ts{,x}' '**/*.ts{,x}'",
     "tslint:fix": "tslint -c ./tslint.json --fix 'src/**/*.ts{,x}' '**/*.ts{,x}'",
-    "unit-tests": "jest --maxWorkers=2 --env=jsdom",
+    "unit-tests": "jest --runInBand --env=jsdom",
     "unit-tests:watch": "jest --watch",
     "watch": "tsc -p ./tsconfig -w --preserveWatchOutput"
   },

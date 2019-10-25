@@ -2,7 +2,7 @@
   "name": "@microsoft/fast-components-react-msft",
   "description": "FAST Microsoft components implemented in React",
   "sideEffects": false,
-  "version": "4.24.1",
+  "version": "4.24.3",
   "author": {
     "name": "Microsoft",
     "url": "https://discord.gg/FcSNfg4"
@@ -31,7 +31,7 @@
     "test": "npm run convert:readme && npm run tslint && npm run unit-tests",
     "tslint": "tslint -c ./tslint.json '**/*.ts{,x}'",
     "tslint:fix": "tslint -c ./tslint.json --fix '**/*.ts{,x}'",
-    "unit-tests": "jest --maxWorkers=2",
+    "unit-tests": "jest --runInBand",
     "unit-tests:watch": "jest --watch",
     "watch": "tsc -p ./tsconfig.build.json -w --preserveWatchOutput"
   },
@@ -78,10 +78,10 @@
     "@babel/core": "^7.0.0",
     "@babel/preset-env": "^7.1.0",
     "@babel/preset-react": "^7.0.0",
-    "@microsoft/fast-colors": "^5.0.0",
-    "@microsoft/fast-jss-manager-react": "^4.5.1",
-    "@microsoft/fast-storybook-presets": "^1.1.20",
-    "@microsoft/fast-tooling-react": "^1.22.0",
+    "@microsoft/fast-colors": "^5.0.1",
+    "@microsoft/fast-jss-manager-react": "^4.5.2",
+    "@microsoft/fast-storybook-presets": "^1.1.22",
+    "@microsoft/fast-tooling-react": "^1.22.2",
     "@microsoft/fast-tslint-rules": "^3.0.3",
     "@storybook/addon-actions": "^5.1.9",
     "@storybook/preset-typescript": "^1.0.0",
@@ -129,13 +129,13 @@
   },
   "dependencies": {
     "@microsoft/fast-components-class-name-contracts-base": "^4.4.0",
-    "@microsoft/fast-components-class-name-contracts-msft": "^4.7.5",
-    "@microsoft/fast-components-foundation-react": "^3.1.1",
-    "@microsoft/fast-components-react-base": "^4.18.1",
-    "@microsoft/fast-components-styles-msft": "^4.22.5",
+    "@microsoft/fast-components-class-name-contracts-msft": "^4.7.6",
+    "@microsoft/fast-components-foundation-react": "^3.1.2",
+    "@microsoft/fast-components-react-base": "^4.18.3",
+    "@microsoft/fast-components-styles-msft": "^4.24.0",
     "@microsoft/fast-glyphs-msft": "^4.0.2",
-    "@microsoft/fast-jss-utilities": "^4.6.9",
-    "@microsoft/fast-web-utilities": "^4.3.3",
+    "@microsoft/fast-jss-utilities": "^4.7.1",
+    "@microsoft/fast-web-utilities": "^4.3.5",
     "exenv-es6": "^1.0.0",
     "utility-types": "^2.1.0"
   }
