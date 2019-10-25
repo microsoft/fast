@@ -160,12 +160,10 @@ class ChildrenControl extends React.Component<
      */
     private renderAddChild(): React.ReactNode {
         return (
-            <div>
-                <div
-                    className={
-                        this.props.managedClasses.childrenControl_childrenListControl
-                    }
-                >
+            <div
+                className={this.props.managedClasses.childrenControl_childrenListControl}
+            >
+                <div>
                     <input
                         className={
                             this.props.managedClasses.childrenControl_childrenListInput

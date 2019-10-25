@@ -78,7 +78,7 @@ const styles: ComponentStyles<ChildrenControlClassNameContract, {}> = {
         background: background100,
         maxHeight: "200px",
         position: "absolute",
-        width: "calc(100% - 30px)",
+        width: "100%",
         right: "0",
         left: "0",
         zIndex: "1",
