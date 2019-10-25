@@ -1222,7 +1222,7 @@ describe("getDataWithDuplicate", () => {
             foo: [componentData, componentData],
         });
     });
-    test("should duplicate comopnent data inside an object", () => {
+    test("should duplicate component data inside an object", () => {
         const componentData: any = {
             id: "foo",
             props: {
