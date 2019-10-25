@@ -311,7 +311,8 @@ class Navigation {
         const componentDataLocation: any = get(data, childrenDataLocation);
         const stringChildrenDataLocation: any = get(data, dataLocation);
         const id: string | undefined =
-            typeof stringChildrenDataLocation === "string"
+            typeof stringChildrenDataLocation === "string" &&
+            childrenDataLocation === dataLocation
                 ? reactChildrenStringSchema.id
                 : get(componentDataLocation, "id")
                     ? componentDataLocation.id
