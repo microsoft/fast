@@ -1179,7 +1179,7 @@ class ViewportPositioner extends Foundation<
     };
 
     /**
-     *
+     * returns an html element from a ref
      */
     private extractElementFromRef = (
         sourceRef: React.RefObject<any>
