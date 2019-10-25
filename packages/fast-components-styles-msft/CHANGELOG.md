@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.24.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-styles-msft@4.23.0...@microsoft/fast-components-styles-msft@4.24.0) (2019-10-25)
+
+
+### Features
+
+* add luminance to design system ([#2277](https://github.com/Microsoft/fast-dna/issues/2277)) ([ceb8577](https://github.com/Microsoft/fast-dna/commit/ceb8577cac0ed36562bbe4c71d72bc25a1c5ec2e))
+
+
+
+
+
 # [4.23.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-styles-msft@4.22.5...@microsoft/fast-components-styles-msft@4.23.0) (2019-10-24)
 
 

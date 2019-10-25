@@ -2,7 +2,7 @@
   "name": "@microsoft/fast-development-site-react",
   "description": "FAST development testing site for React",
   "sideEffects": false,
-  "version": "4.4.27",
+  "version": "4.4.28",
   "author": {
     "name": "Microsoft",
     "url": "https://discord.gg/FcSNfg4"
@@ -33,16 +33,16 @@
   },
   "dependencies": {
     "@microsoft/fast-glyphs-msft": "^4.0.2",
-    "@microsoft/fast-jss-utilities": "^4.7.0",
-    "@microsoft/fast-layouts-react": "^4.7.0",
-    "@microsoft/fast-tooling-react": "^1.22.1",
-    "@microsoft/fast-web-utilities": "^4.3.4",
+    "@microsoft/fast-jss-utilities": "^4.7.1",
+    "@microsoft/fast-layouts-react": "^4.7.1",
+    "@microsoft/fast-tooling-react": "^1.22.2",
+    "@microsoft/fast-web-utilities": "^4.3.5",
     "react-syntax-highlighter": "^7.0.4"
   },
   "devDependencies": {
     "@microsoft/fast-components-class-name-contracts-base": "^4.4.0",
     "@microsoft/fast-jss-manager": "^4.1.8",
-    "@microsoft/fast-jss-manager-react": "^4.5.1",
+    "@microsoft/fast-jss-manager-react": "^4.5.2",
     "@microsoft/fast-tslint-rules": "^3.0.3",
     "@polymer/polymer": "^3.0.0-pre.10",
     "@types/lodash-es": "^4.17.0",

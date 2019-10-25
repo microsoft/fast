@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.7.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-component-explorer@0.6.0...@microsoft/fast-component-explorer@0.7.0) (2019-10-25)
+
+
+### Features
+
+* add luminance to design system ([#2277](https://github.com/Microsoft/fast-dna/issues/2277)) ([ceb8577](https://github.com/Microsoft/fast-dna/commit/ceb8577cac0ed36562bbe4c71d72bc25a1c5ec2e))
+* add transparency toggle to component explorer ([#2366](https://github.com/Microsoft/fast-dna/issues/2366)) ([f7ed671](https://github.com/Microsoft/fast-dna/commit/f7ed671deb62b9d80e897fd43bf85f683b2fcf60))
+
+
+
+
+
 # [0.6.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-component-explorer@0.5.8...@microsoft/fast-component-explorer@0.6.0) (2019-10-24)
 
 

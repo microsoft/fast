@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.22.2](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-tooling-react@1.22.1...@microsoft/fast-tooling-react@1.22.2) (2019-10-25)
+
+
+### Bug Fixes
+
+* addresses a positioning issue for the form children control ([#2385](https://github.com/Microsoft/fast-dna/issues/2385)) ([81e5097](https://github.com/Microsoft/fast-dna/commit/81e50970d5938a879541df37a7f1aa98ea4d4528))
+* addresses an issue where navigation to string children was causing an error to throw ([#2389](https://github.com/Microsoft/fast-dna/issues/2389)) ([09903e6](https://github.com/Microsoft/fast-dna/commit/09903e6e0940873a729a7194d3d0510bc18e8753))
+* use dot notation for manipulating objects and arrays during duplication ([#2384](https://github.com/Microsoft/fast-dna/issues/2384)) ([86fad8e](https://github.com/Microsoft/fast-dna/commit/86fad8eb251b892772b6f8a51dcf82d720369e91))
+
+
+
+
+
 ## [1.22.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-tooling-react@1.22.0...@microsoft/fast-tooling-react@1.22.1) (2019-10-24)
 
 **Note:** Version bump only for package @microsoft/fast-tooling-react

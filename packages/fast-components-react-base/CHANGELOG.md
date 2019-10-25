@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.18.3](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-base@4.18.2...@microsoft/fast-components-react-base@4.18.3) (2019-10-25)
+
+**Note:** Version bump only for package @microsoft/fast-components-react-base
+
+
+
+
+
 ## [4.18.2](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-base@4.18.1...@microsoft/fast-components-react-base@4.18.2) (2019-10-24)
 
 
