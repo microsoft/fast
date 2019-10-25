@@ -152,7 +152,7 @@ describe("dialog", (): void => {
             <Dialog managedClasses={managedClasses} modal={true} onDismiss={onDismiss} />
         );
 
-        map.keydown({ keyCode: keyCodeEscape, preventDefault: preventDefaultFn});
+        map.keydown({ keyCode: keyCodeEscape, preventDefault: preventDefaultFn });
 
         expect(onDismiss).toHaveBeenCalledTimes(0);
 
@@ -185,7 +185,7 @@ describe("dialog", (): void => {
 
         rendered.unmount();
 
-        map.keydown({ keyCode: keyCodeEscape, preventDefault: preventDefaultFn});
+        map.keydown({ keyCode: keyCodeEscape, preventDefault: preventDefaultFn });
 
         expect(onDismiss).toHaveBeenCalledTimes(1);
     });
@@ -200,18 +200,13 @@ describe("dialog", (): void => {
         document.addEventListener = mockAddListenerFn;
 
         const rendered: any = mount(
-            <Dialog
-                managedClasses={managedClasses}
-                modal={true}
-                visible={true}
-            />
+            <Dialog managedClasses={managedClasses} modal={true} visible={true} />
         );
 
         expect(mockAddListenerFn).toHaveBeenCalledTimes(2);
         expect(mockAddListenerFn.mock.calls[1][0]).toBe("focusin");
 
         rendered.unmount();
-
     });
 
     test("non modal dialogs should not add document 'focusin' listener on mount", () => {
@@ -224,10 +219,7 @@ describe("dialog", (): void => {
         document.addEventListener = mockAddListenerFn;
 
         const rendered: any = mount(
-            <Dialog
-                managedClasses={managedClasses}
-                visible={true}
-            />
+            <Dialog managedClasses={managedClasses} visible={true} />
         );
 
         expect(mockAddListenerFn).toHaveBeenCalledTimes(0);
@@ -243,11 +235,7 @@ describe("dialog", (): void => {
         document.removeEventListener = mockRemoveListenerFn;
 
         const rendered: any = mount(
-            <Dialog
-                managedClasses={managedClasses}
-                modal={true}
-                visible={true}
-            />
+            <Dialog managedClasses={managedClasses} modal={true} visible={true} />
         );
 
         rendered.unmount();

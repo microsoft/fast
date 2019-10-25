@@ -98,9 +98,15 @@ class Dialog extends Foundation<DialogHandledProps, DialogUnhandledProps, {}> {
                 document.removeEventListener("focusin", this.handleDocumentFocus);
             }
 
-            if (!this.shouldAddKeyListener(prevProps) && this.shouldAddKeyListener(this.props)) {
+            if (
+                !this.shouldAddKeyListener(prevProps) &&
+                this.shouldAddKeyListener(this.props)
+            ) {
                 document.addEventListener("keydown", this.handleDocumentKeyDown);
-            } else if (this.shouldAddKeyListener(prevProps) && !this.shouldAddKeyListener(this.props)) {
+            } else if (
+                this.shouldAddKeyListener(prevProps) &&
+                !this.shouldAddKeyListener(this.props)
+            ) {
                 document.removeEventListener("keydown", this.handleDocumentKeyDown);
             }
         }
@@ -154,7 +160,7 @@ class Dialog extends Foundation<DialogHandledProps, DialogUnhandledProps, {}> {
             return true;
         }
         return false;
-    }
+    };
 
     /**
      * handles mouse clicks on modal overlay
@@ -176,9 +182,7 @@ class Dialog extends Foundation<DialogHandledProps, DialogUnhandledProps, {}> {
         if (!event.defaultPrevented && this.props.visible) {
             switch (event.keyCode) {
                 case keyCodeEscape:
-                    if (
-                        isFunction(this.props.onDismiss)
-                    ) {
+                    if (isFunction(this.props.onDismiss)) {
                         this.props.onDismiss(event);
                     }
                     event.preventDefault();
@@ -240,10 +244,7 @@ class Dialog extends Foundation<DialogHandledProps, DialogUnhandledProps, {}> {
      * focus on first element of tab queue
      */
     private focusOnFirstElement = (): void => {
-        if (
-            canUseDOM() &&
-            this.rootElement.current instanceof HTMLElement
-        ) {
+        if (canUseDOM() && this.rootElement.current instanceof HTMLElement) {
             const tabbableElements: HTMLElement[] = Tabbable(this.rootElement.current);
             if (tabbableElements.length === 0) {
                 this.tryFocusOnRootElement();
@@ -254,7 +255,7 @@ class Dialog extends Foundation<DialogHandledProps, DialogUnhandledProps, {}> {
     };
 
     /**
-     * if no tabbable elements try to focus root element 
+     * if no tabbable elements try to focus root element
      * generally a modal dialog should be expected to have a focusable element
      */
     private tryFocusOnRootElement = (): void => {
