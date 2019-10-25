@@ -33,6 +33,7 @@ import {
     NavigationTreeItemProps,
     VerticalDragDirection,
 } from "./navigation-tree-item.props";
+import { normalizeDataLocationToDotNotation } from "../data-utilities/location";
 
 export default class Navigation extends Foundation<
     NavigationHandledProps,
@@ -653,22 +654,26 @@ export default class Navigation extends Foundation<
         }
 
         if (typeof this.props.onChange === "function") {
-            const dataLocationSegments: string[] = dataLocation.split(".");
+            const isPrimitive: boolean = type === NavigationDataType.primitiveChild;
+            const dataLocationAsDotNotation: string = normalizeDataLocationToDotNotation(dataLocation);
+            const dataLocationSegments: string[] = dataLocationAsDotNotation.split(".");
             dataLocationSegments.pop();
-            const updatedDataLocation: string = isInArray(
+            // The root data location ensures that if the data location includes ".props" as part
+            // of its path, this is ignored so that a full component object is copied
+            const rootDataLocation: string = isInArray(
                 this.props.data,
-                dataLocation.endsWith("props")
+                dataLocationAsDotNotation.endsWith("props")
                     ? dataLocationSegments.join(".")
-                    : dataLocation
+                    : dataLocationAsDotNotation
             )
-                ? dataLocation
-                : type === NavigationDataType.primitiveChild
-                    ? `${dataLocation}.0`
-                    : `${dataLocationSegments.join(".")}.0.props`;
+                ? dataLocationSegments.join(".")
+                : isPrimitive
+                    ? `${dataLocationAsDotNotation}[0]`
+                    : `${dataLocationSegments.join(".")}[0]`;
 
             this.props.onChange(
-                getDataWithDuplicate(dataLocation, this.props.data),
-                updatedDataLocation
+                getDataWithDuplicate(isPrimitive ? dataLocation : rootDataLocation, this.props.data),
+                rootDataLocation
             );
         }
     };

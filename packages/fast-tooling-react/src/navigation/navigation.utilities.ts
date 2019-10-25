@@ -1,6 +1,6 @@
 import { cloneDeep, get, set, unset } from "lodash-es";
 import { ChildOptionItem } from "../data-utilities";
-import { mapSchemaLocationFromDataLocation } from "../data-utilities/location";
+import { mapSchemaLocationFromDataLocation, normalizeDataLocationToDotNotation } from "../data-utilities/location";
 import { NavigationDataType, TreeNavigation } from "./navigation.props";
 import {
     idKeyword,
@@ -407,7 +407,8 @@ function isTargetInSourceArray(
  * The target is in an array
  */
 export function isInArray(data: unknown, dataLocation: string): boolean {
-    const dataLocationSegments: string[] = dataLocation.split(".");
+    const dataLocationAsDotNotation: string = normalizeDataLocationToDotNotation(dataLocation);
+    const dataLocationSegments: string[] = dataLocationAsDotNotation.split(".");
     const parentDataLocation: string = dataLocationSegments.slice(0, -1).join(".");
 
     return (
@@ -761,7 +762,7 @@ function setDataWhenTargetIsUndefined(
 
 export function getDataWithDuplicate<T>(sourceDataLocation: string, data: T): T {
     const clonedData: T = cloneDeep(data) as T;
-    const normalizedSourceDataLocation: string = getDataLocationNormalized(
+    const normalizedSourceDataLocation: string = normalizeDataLocationToDotNotation(
         sourceDataLocation
     );
 
