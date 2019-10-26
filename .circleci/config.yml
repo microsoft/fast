@@ -28,7 +28,7 @@ jobs:
             - run: 
                 name: Build yarn workspaces
                 command: |
-                    lerna run build
+                    lerna run prepare
             - run: 
                 name: Ensure prettier formatting
                 command: |
