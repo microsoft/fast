@@ -8,7 +8,7 @@ aliases:
         run: 
             name: Install Lerna
             command: |
-                yarn install lerna@3.11.1 -g
+                yarn global add lerna@3.11.1
 
 version: 2
 jobs:
