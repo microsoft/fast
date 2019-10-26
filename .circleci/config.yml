@@ -26,6 +26,10 @@ jobs:
                 command: |
                     yarn install --frozen-lockfile
             - run: 
+                name: Build yarn workspaces
+                command: |
+                    lerna run build
+            - run: 
                 name: Ensure prettier formatting
                 command: |
                     lerna run prettier:diff
