@@ -47,7 +47,7 @@
       "js"
     ],
     "preset": "jest-preset-angular",
-    "setupTestFrameworkScriptFile": "./build/setup-jest.ts",
+    "setupFilesAfterEnv": ["./build/setup-jest.ts"],
     "testPathIgnorePatterns": [
       "/node_modules/",
       "/dist/"

@@ -32,7 +32,7 @@ abstract class ControlTemplateUtilities<P, S> extends React.Component<
         }
     }
 
-    public renderSoftRemove(className: string): React.ReactNode {
+    public renderSoftRemove(className: string): JSX.Element {
         if (!this.props.required && this.props.softRemove) {
             return (
                 <SoftRemove
@@ -45,7 +45,7 @@ abstract class ControlTemplateUtilities<P, S> extends React.Component<
         }
     }
 
-    public renderBadge(className: string): React.ReactNode {
+    public renderBadge(className: string): JSX.Element {
         if (this.props.badge) {
             return (
                 <Badge
@@ -57,7 +57,7 @@ abstract class ControlTemplateUtilities<P, S> extends React.Component<
         }
     }
 
-    public renderConstValueIndicator(className: string): React.ReactNode {
+    public renderConstValueIndicator(className: string): JSX.Element {
         if (this.props.const !== undefined && this.props.data !== this.props.const) {
             return (
                 <ConstValue className={className} onChange={this.handleSetConstValue} />
@@ -69,7 +69,7 @@ abstract class ControlTemplateUtilities<P, S> extends React.Component<
      * Renders an indicator that signifies that the value
      * displayed is a default value
      */
-    public renderDefaultValueIndicator(className: string): React.ReactNode {
+    public renderDefaultValueIndicator(className: string): JSX.Element {
         if (
             typeof this.props.default !== "undefined" &&
             this.props.data !== this.props.default
@@ -125,7 +125,7 @@ abstract class ControlTemplateUtilities<P, S> extends React.Component<
     /**
      * Renders an invalid message
      */
-    public renderInvalidMessage = (className: string): React.ReactNode => {
+    public renderInvalidMessage = (className: string): JSX.Element => {
         if (this.props.invalidMessage !== "" && this.props.displayValidationInline) {
             return <div className={className}>{this.props.invalidMessage}</div>;
         }

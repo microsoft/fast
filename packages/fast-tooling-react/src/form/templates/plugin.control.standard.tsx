@@ -16,7 +16,7 @@ export interface StandardControlPluginProps extends ControlPluginUtilitiesProps 
 export class StandardControlPlugin extends ControlPluginUtilities<
     StandardControlPluginProps
 > {
-    public render(): React.ReactNode {
+    public render(): JSX.Element {
         return <StandardControlTemplate {...this.props} {...this.config} />;
     }
 }

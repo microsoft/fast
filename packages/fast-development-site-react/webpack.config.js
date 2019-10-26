@@ -15,11 +15,6 @@ module.exports = {
     },
     resolve: {
         extensions: [".js", ".ts", ".tsx"],
-        alias: {
-            "lodash-es": path.resolve("./node_modules/lodash-es"),
-            react: path.resolve("./node_modules/react"),
-            "react-dom": path.resolve("./node_modules/react-dom"),
-        },
     },
     module: {
         rules: [

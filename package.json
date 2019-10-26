@@ -8,9 +8,10 @@
   },
   "license": "MIT",
   "private": true,
-  "workspaces": [
-    "packages/*"
-  ],
+  "workspaces": {
+    "packages": ["packages/*"],
+    "nohoist": ["**/jest-preset-angular", "**/jest-preset-angular/**"]
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Microsoft/fast-dna.git"

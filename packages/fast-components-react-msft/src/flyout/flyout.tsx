@@ -190,8 +190,12 @@ class Flyout extends Foundation<FlyoutHandledProps, FlyoutUnhandledProps, {}> {
         if (
             typeof this.props.onDismiss === "function" &&
             this.props.visible && // this fires when the prop changes to visible
-            !ReactDOM.findDOMNode(this.rootEl.current).contains(event.target) &&
-            !ReactDOM.findDOMNode(anchor).contains(event.target)
+            !ReactDOM.findDOMNode(this.rootEl.current).contains(
+                event.target as HTMLElement
+            ) &&
+            !ReactDOM.findDOMNode(anchor as HTMLElement).contains(
+                event.target as HTMLElement
+            )
         ) {
             this.props.onDismiss(event);
         }

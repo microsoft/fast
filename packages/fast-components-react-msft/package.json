@@ -58,7 +58,6 @@
     },
     "transformIgnorePatterns": [
       "!<rootDir>/node_modules/lodash-es",
-      "node_modules/jss-*",
       "node_modules/css-vendor"
     ],
     "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
@@ -68,10 +67,6 @@
       "js",
       "jsx",
       "json"
-    ],
-    "moduleDirectories": [
-      "node_modules",
-      "src"
     ]
   },
   "devDependencies": {

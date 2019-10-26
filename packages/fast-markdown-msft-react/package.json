@@ -57,10 +57,6 @@
       "ts",
       "js"
     ],
-    "moduleDirectories": [
-      "node_modules",
-      "src"
-    ],
     "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(js|ts)$"
   },
   "devDependencies": {
