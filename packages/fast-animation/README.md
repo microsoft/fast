@@ -17,7 +17,7 @@ Fast Animation is a library for simplifying the creation of animations and inter
 ### Installation
 
 ```bash
-npm i @microsoft/fast-animation
+yarn install @microsoft/fast-animation
 ```
 
 ### Getting started
@@ -136,8 +136,8 @@ If `onFinish: () => void` is provided, `onFinish` is called when the animation h
 
 ### Testing
 
-* Run `npm run dev-server:react` to view the React examples (localhost:9005).
-* Run `npm run test` to run unit-tests.
+* Run `yarn dev-server:react` to view the React examples (localhost:9005).
+* Run `yarn test` to run unit-tests.
 
 ## Dependencies
 

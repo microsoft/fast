@@ -4,7 +4,7 @@ This package is a collection of utilities intended to be used for web projects.
 
 ## Installation
 
-`npm i --save @microsoft/fast-web-utilities`
+`yarn i --save @microsoft/fast-web-utilities`
 
 ## Usage
 

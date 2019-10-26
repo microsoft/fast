@@ -40,7 +40,7 @@ module.exports = {
             template: path.resolve(__dirname, "./app/index.html"),
         }),
         new WebpackShellPlugin({
-            onBuildStart: [`npm run convert:readme`],
+            onBuildStart: [`yarn convert:readme`],
         }),
     ],
     devServer: {

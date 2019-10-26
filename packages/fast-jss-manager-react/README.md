@@ -4,7 +4,7 @@
 
 ## Installation
 
-`npm i --save @microsoft/fast-jss-manager-react`
+`yarn i --save @microsoft/fast-jss-manager-react`
 
 ## Usage
 

@@ -4,7 +4,7 @@ The foundation component for FAST component packages in React. The default expor
 
 ## Installation
 
-`npm i --save @microsoft/fast-components-foundation-react`
+`yarn i --save @microsoft/fast-components-foundation-react`
 
 ## Usage
 

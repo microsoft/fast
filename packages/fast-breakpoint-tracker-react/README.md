@@ -4,7 +4,7 @@ A library for managing viewport breakpoints. Given a set of breakpoints, this co
 
 ## Installation
 
-`npm i --save @microsoft/fast-breakpoint-tracker-react`
+`yarn i --save @microsoft/fast-breakpoint-tracker-react`
 
 ## Breakpoints
 

@@ -12,7 +12,7 @@ They can be embedded into webpages via a build process or for example in React u
 
 ## Installation
 
-`npm i --save @microsoft/fast-glyphs-msft`
+`yarn i --save @microsoft/fast-glyphs-msft`
 
 ## Usage
 

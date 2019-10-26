@@ -5,7 +5,7 @@
 ## Usage
 
 Install the package
-`npm i -D @microsoft/fast-sketch-library`
+`yarn i -D @microsoft/fast-sketch-library`
 
 Set up a node script to extract symbols from a library
 

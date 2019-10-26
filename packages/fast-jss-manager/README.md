@@ -4,4 +4,4 @@ FAST JSS manager provides common code used by implementations of a JSS Manager a
 
 ## Installation
 
-`npm i --save @microsoft/fast-jss-manager`
+`yarn i --save @microsoft/fast-jss-manager`

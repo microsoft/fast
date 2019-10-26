@@ -7,7 +7,7 @@ A Chrome extension for testing real-world localization, theming, and other produ
 
 Obtain a _chrome.pem_ key and save it in a convenient and secure location, you will need it later.
 
-Run `npm run dev:chrome`.
+Run `yarn dev:chrome`.
 
 Navigate to [chrome://extensions](chrome://extensions) in the Chrome browser.
 

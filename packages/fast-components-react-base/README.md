@@ -4,7 +4,7 @@ Base components are the structural, semantic, and interactive core of a piece of
 
 ## Installation
 
-`npm i --save @microsoft/fast-components-react-base`
+`yarn i --save @microsoft/fast-components-react-base`
 
 ## Usage
 

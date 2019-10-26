@@ -73,7 +73,7 @@ module.exports = (env, args) => {
                 contentBase: outDir,
             }),
             new WebpackShellPlugin({
-                onBuildStart: [`npm run convert:readme`],
+                onBuildStart: [`yarn convert:readme`],
             }),
             new BundleAnalyzerPlugin({
                 // Remove this to inspect bundle sizes.
