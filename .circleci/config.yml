@@ -28,7 +28,7 @@ jobs:
             - run: 
                 name: Run unit tests
                 command: |
-                    lerna run test --stream
+                    lerna run test
                 no_output_timeout: 20m
             - persist_to_workspace:
                 root: ~/fast-dna

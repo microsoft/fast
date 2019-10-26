@@ -60,8 +60,7 @@
       "jsx"
     ],
     "moduleDirectories": [
-      "node_modules",
-      "src"
+      "node_modules"
     ]
   },
   "devDependencies": {
@@ -72,7 +71,6 @@
     "@microsoft/fast-components-class-name-contracts-base": "^4.4.0",
     "@microsoft/fast-components-class-name-contracts-msft": "^4.7.6",
     "@microsoft/fast-components-foundation-react": "^3.1.2",
-    "@microsoft/fast-jss-manager-react": "^4.5.2",
     "@microsoft/fast-jss-utilities": "^4.7.1",
     "@microsoft/fast-layouts-react": "^4.7.1",
     "@microsoft/fast-tslint-rules": "^3.0.3",
@@ -122,6 +120,7 @@
     "@microsoft/fast-components-react-base": "^4.18.3",
     "@microsoft/fast-components-react-msft": "^4.24.3",
     "@microsoft/fast-components-styles-msft": "^4.24.0",
+    "@microsoft/fast-jss-manager-react": "^4.5.2",
     "@microsoft/fast-tooling-react": "^1.22.2",
     "@microsoft/fast-web-utilities": "^4.3.5",
     "react-dnd-html5-backend": "^7.4.4",

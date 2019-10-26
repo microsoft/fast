@@ -6,6 +6,7 @@ const CleanWebpackPlugin = require("clean-webpack-plugin");
 const WorkboxPlugin = require("workbox-webpack-plugin");
 const FaviconsWebpackPlugin = require("favicons-webpack-plugin");
 
+const rootNodeModules = path.resolve(__dirname, "../../node_modules");
 const appDir = path.resolve(__dirname, "./app");
 const outDir = path.resolve(__dirname, "./www");
 
@@ -17,8 +18,8 @@ module.exports = (env, args) => {
             main: path.resolve(appDir, "index.tsx"),
             serviceWorker: path.resolve(appDir, "service-worker-registration.ts"),
             focusVisible: path.resolve(
-                __dirname,
-                "node_modules/focus-visible/dist/focus-visible.min.js"
+                rootNodeModules,
+                "focus-visible/dist/focus-visible.min.js"
             ),
         },
         output: {
@@ -86,11 +87,8 @@ module.exports = (env, args) => {
         resolve: {
             extensions: [".js", ".tsx", ".ts", ".json"],
             alias: {
-                lodash: path.resolve("./node_modules/lodash-es"),
-                "lodash-es": path.resolve("./node_modules/lodash-es"),
-                react: path.resolve("./node_modules/react"),
-                "react-dom": path.resolve("./node_modules/react-dom"),
-                "react-dnd": path.resolve("./node_modules/react-dnd"),
+                lodash: path.resolve(rootNodeModules, "lodash-es"),
+                "lodash-es": path.resolve(rootNodeModules, "lodash-es"),
             },
         },
         devServer: {
