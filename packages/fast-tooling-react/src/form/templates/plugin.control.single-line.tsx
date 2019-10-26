@@ -7,7 +7,7 @@ import SingleLineControlTemplate from "./template.control.single-line";
 export class SingleLineControlPlugin extends ControlPluginUtilities<
     ControlPluginUtilitiesProps
 > {
-    public render(): JSX.Element {
+    public render(): React.ReactNode {
         return <SingleLineControlTemplate {...this.props} {...this.config} />;
     }
 }
