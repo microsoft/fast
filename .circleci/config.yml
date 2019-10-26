@@ -17,10 +17,14 @@ jobs:
         steps:
             - *lerna_install
             - checkout
+            - restore_cache:
+                name: Restore Yarn Package Cache
+                keys:
+                    - yarn-packages-{{ checksum "yarn.lock" }}
             - run: 
                 name: Install package dependencies
                 command: |
-                    yarn install
+                    yarn install --frozen-lockfile
             - run: 
                 name: Ensure prettier formatting
                 command: |
