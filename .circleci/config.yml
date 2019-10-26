@@ -10,21 +10,24 @@ aliases:
             command: |
                 yarn global add lerna@3.11.1
 
+    - &prettier_install
+        run: 
+            name: Install Prettier
+            command: |
+                yarn global add prettier@1.14.3
+
 version: 2
 jobs:
     build_dependencies:
         <<: *container_config
         steps:
             - *lerna_install
+            - *prettier_install
             - checkout
             - run: 
                 name: Install package dependencies
                 command: |
                     yarn install
-            # - run: 
-            #     name: Bootstrap dependencies
-            #     command: |
-            #         lerna bootstrap --no-ci
             - run: 
                 name: Ensure prettier formatting
                 command: |
