@@ -42,16 +42,23 @@ Before submitting a pull request, [rebase](https://www.atlassian.com/git/tutoria
 
 All "packages" share common script names for consistency along with their documentation guides.
 
-To clean all packages:
+To clean all packages node_modules:
 
 ```bash
 lerna clean
 ```
 
+To clean dependencies hoisted by yarn, navigate to the root of the project and run:
+
+```bash
+rm -rf node_modules
+```
+
 Install remote dependencies, build, and symlink local dependencies:
 
 ```bash
-lerna bootstrap
+yarn install
+lerna run prepare
 ```
 
 To run all tests on all packages:
@@ -64,13 +71,13 @@ To run all tests on a single package:
 
 ```bash
 cd packages/package-name
-npm run test
+yarn test
 ```
 
 Most packages have a _watch_ command that rebuilds the package's distribution when a file changes. This process can be useful when doing development across multiple packages:
 
 ```bash
-npm run watch
+yarn watch
 ```
 
 ## Troubleshooting
@@ -81,8 +88,7 @@ Delete root node_modules (`fast-dna/node_modules`) then:
 
 ```bash
 lerna clean
-npm i
-lerna bootstrap
+yarn install
 lerna run test
 ```
 
