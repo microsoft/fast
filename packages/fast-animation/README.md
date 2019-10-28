@@ -17,7 +17,7 @@ Fast Animation is a library for simplifying the creation of animations and inter
 ### Installation
 
 ```bash
-yarn install @microsoft/fast-animation
+npm install @microsoft/fast-animation
 ```
 
 ### Getting started
