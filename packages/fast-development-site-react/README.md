@@ -6,7 +6,7 @@ A boilerplate development site that can be used to show a library of React compo
 
 ## Installation
 
-`yarn i --save @microsoft/fast-development-site-react`
+`npm i --save @microsoft/fast-development-site-react`
 
 ## Usage
 

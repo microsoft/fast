@@ -4,7 +4,7 @@ A set of React components which implements the Microsoft styling.
 
 ## Installation
 
-`yarn i --save @microsoft/fast-components-react-msft`
+`npm i --save @microsoft/fast-components-react-msft`
 
 ## Usage
 

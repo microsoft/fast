@@ -4,7 +4,7 @@ A collection of JSS (JavaScript Style Sheets) objects and style utilities that p
 
 ## Installation
 
-`yarn i --save @microsoft/fast-components-styles-msft`
+`npm i --save @microsoft/fast-components-styles-msft`
 
 ## Usage
 

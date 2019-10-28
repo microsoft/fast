@@ -4,7 +4,7 @@ An Angular directive and component library for managing component JSS (JavaScrip
 
 ## Installation
 
-`yarn i --save @microsoft/fast-jss-manager-angular`
+`npm i --save @microsoft/fast-jss-manager-angular`
 
 ## Usage
 

@@ -65,7 +65,7 @@ The FAST Tooling can be used in any combination for the following scenarios:
 
 ## Installation
 
-`yarn i --save @microsoft/fast-tooling-react`
+`npm i --save @microsoft/fast-tooling-react`
 
 ## Concepts
 

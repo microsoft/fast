@@ -4,7 +4,7 @@ This package is a collection of utilities intended to be used with JSS (JavaScri
 
 ## Installation
 
-`yarn i --save @microsoft/fast-jss-utilities`
+`npm i --save @microsoft/fast-jss-utilities`
 
 ## Usage
 

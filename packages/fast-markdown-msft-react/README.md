@@ -4,7 +4,7 @@ This is a plugin for [markdown-it](https://github.com/markdown-it/markdown-it) a
 
 ## Installation
 
-`yarn i --save @microsoft/fast-markdown-msft-react`
+`npm i --save @microsoft/fast-markdown-msft-react`
 
 ## Usage
 
