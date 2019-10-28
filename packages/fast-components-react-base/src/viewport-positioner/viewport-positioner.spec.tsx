@@ -16,6 +16,7 @@ import {
     ViewportPositionerHorizontalPosition,
     ViewportPositionerVerticalPosition,
 } from "./viewport-positioner.props";
+import Button from "../button";
 
 /*
  * Configure Enzyme
