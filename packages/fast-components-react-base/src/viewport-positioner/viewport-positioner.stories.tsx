@@ -1,9 +1,12 @@
 import { storiesOf } from "@storybook/react";
 import React from "react";
-import ViewportPositioner, { AxisPositioningMode, ViewportPositionerProps } from "./";
+import ViewportPositioner, {
+    AxisPositioningMode,
+    ViewportContext,
+    ViewportPositionerProps,
+} from "./";
 import Foundation from "@microsoft/fast-components-foundation-react";
 import { ViewportPositionerVerticalPosition } from "./viewport-positioner.props";
-import { isNil } from "lodash-es";
 
 const anchorElement: React.RefObject<HTMLDivElement> = React.createRef<HTMLDivElement>();
 
@@ -24,38 +27,41 @@ class TestViewport extends React.Component<TestViewportProps, {}> {
 
     public render(): JSX.Element {
         return (
-            <div
-                ref={this.rootElement}
-                style={{
-                    height: "400px",
-                    width: "400px",
-                    margin: "50px",
-                    overflow: "scroll",
+            <ViewportContext.Provider
+                value={{
+                    viewport: this.rootElement,
                 }}
             >
-                {this.props.children}
                 <div
+                    ref={this.rootElement}
                     style={{
-                        height: "0",
-                        width: "0",
+                        height: "400px",
+                        width: "400px",
+                        margin: "50px",
+                        overflow: "scroll",
                     }}
                 >
-                    <ViewportPositioner
-                        {...this.props.positionerProps}
-                        viewport={this.rootElement}
+                    {this.props.children}
+                    <div
+                        style={{
+                            height: "0",
+                            width: "0",
+                        }}
                     >
-                        <div
-                            style={{
-                                height: "100%",
-                                width: "100%",
-                                background: "yellow",
-                            }}
-                        >
-                            Positioner
-                        </div>
-                    </ViewportPositioner>
+                        <ViewportPositioner {...this.props.positionerProps}>
+                            <div
+                                style={{
+                                    height: "100%",
+                                    width: "100%",
+                                    background: "yellow",
+                                }}
+                            >
+                                Positioner
+                            </div>
+                        </ViewportPositioner>
+                    </div>
                 </div>
-            </div>
+            </ViewportContext.Provider>
         );
     }
 }
