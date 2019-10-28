@@ -125,6 +125,39 @@ storiesOf("Viewport Positioner", module)
             </div>
         </TestViewport>
     ))
+    .add("Squishy region with thresholds", () => (
+        <TestViewport
+            positionerProps={{
+                verticalPositioningMode: AxisPositioningMode.adjacent,
+                horizontalPositioningMode: AxisPositioningMode.adjacent,
+                horizontalThreshold: 100,
+                verticalThreshold: 100,
+                defaultVerticalPosition: ViewportPositionerVerticalPosition.uncontrolled,
+                scaleToFit: true,
+                anchor: anchorElement,
+            }}
+        >
+            <div
+                style={{
+                    height: "1200px",
+                    width: "1200px",
+                    padding: "550px",
+                    background: "blue",
+                }}
+            >
+                <div
+                    ref={anchorElement}
+                    style={{
+                        height: "100px",
+                        width: "100px",
+                        background: "green",
+                    }}
+                >
+                    Anchor
+                </div>
+            </div>
+        </TestViewport>
+    ))
     .add("Always in view - adjacent", () => (
         <TestViewport
             positionerProps={{
