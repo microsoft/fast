@@ -19,7 +19,7 @@ describe("getDataUpdatedWithSourceData", () => {
         const updatedData: unknown = getDataUpdatedWithSourceData({
             data,
             targetDataType: DataType.object,
-            targetPosition: TargetPosition.inside,
+            targetPosition: TargetPosition.insert,
             sourceData,
             targetDataLocation,
         });
@@ -38,7 +38,7 @@ describe("getDataUpdatedWithSourceData", () => {
         const updatedData: unknown = getDataUpdatedWithSourceData({
             data,
             targetDataType: DataType.array,
-            targetPosition: TargetPosition.inside,
+            targetPosition: TargetPosition.insert,
             sourceData,
             targetDataLocation,
         });
@@ -58,7 +58,7 @@ describe("getDataUpdatedWithSourceData", () => {
             sourceData,
             targetDataLocation,
             targetDataType: DataType.array,
-            targetPosition: TargetPosition.above,
+            targetPosition: TargetPosition.prepend,
         });
 
         expect(updatedData).toEqual({
@@ -76,7 +76,7 @@ describe("getDataUpdatedWithSourceData", () => {
             sourceData,
             targetDataLocation,
             targetDataType: DataType.array,
-            targetPosition: TargetPosition.below,
+            targetPosition: TargetPosition.append,
         });
 
         expect(updatedData).toEqual({

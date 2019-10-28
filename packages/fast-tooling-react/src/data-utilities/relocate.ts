@@ -8,9 +8,9 @@ import { normalizeDataLocationToDotNotation } from "./location";
 import { DataType } from "./types";
 
 export enum TargetPosition {
-    above,
-    below,
-    inside,
+    prepend,
+    append,
+    insert,
 }
 
 export interface UpdateDataWithSourceConfig {
@@ -61,7 +61,7 @@ export function getDataUpdatedWithSourceData(
  * Gets updated array data with source data
  */
 function getArrayDataUpdatedWithSourceData(config: UpdateDataWithSourceConfig): unknown {
-    const isTargetingArray: boolean = config.targetPosition === TargetPosition.inside;
+    const isTargetingArray: boolean = config.targetPosition === TargetPosition.insert;
     let targetIndex: number;
     const dataLocationOfArray: string = isTargetingArray
         ? config.targetDataLocation
@@ -82,7 +82,7 @@ function getArrayDataUpdatedWithSourceData(config: UpdateDataWithSourceConfig): 
         newTargetArray = [config.sourceData, ...(newTargetArray as unknown[])];
     } else {
         (newTargetArray as unknown[]).splice(
-            config.targetPosition === TargetPosition.above
+            config.targetPosition === TargetPosition.prepend
                 ? targetIndex
                 : targetIndex + 1,
             0,
