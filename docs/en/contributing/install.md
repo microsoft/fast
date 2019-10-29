@@ -8,7 +8,7 @@ sidebar_label: Install
 
 ## Prerequisites
 
-Before setting up FAST-DNA, install Git and [npm](https://www.npmjs.com/get-npm).
+Before setting up FAST-DNA, install Git and [yarn](https://yarnpkg.com/en/docs/install).
 
 ## Setup the source repository
 
@@ -17,21 +17,26 @@ Clone the repository, `cd` into the project, install [Lerna](https://github.com/
 ```shell
 git clone https://github.com/Microsoft/fast-dna.git
 cd fast-dna
-npm i --global lerna
-npm i
+yarn global add lerna
 ```
 
-Install all Lerna dependencies:
+Install all dependencies:
 
 ```shell
-lerna bootstrap
+yarn install
 ```
 
-- `npm run tslint` or `npm run tslint:fix` runs tslint on all typescript in the project.
-- `npm run unit-tests` runs all unit-tests.
-- `npm run test` runs all processes required to pass prior to check-in. Generally includes building, linting, and unit-testing.
+Prepare the workspaces:
 
-To run these processes across *all* projects, substitute `npm` for `lerna`:
+```shell
+lerna run prepare
+```
+
+- `yarn tslint` or `yarn tslint:fix` runs tslint on typescript in a given package.
+- `yarn unit-tests` runs unit-tests for the package.
+- `yarn test` runs processes in a package required to pass prior to check-in. Generally includes building, linting, and unit-testing.
+
+To run these processes across *all* projects, substitute `yarn` for `lerna run ____`:
 
 ```shell
 lerna run test

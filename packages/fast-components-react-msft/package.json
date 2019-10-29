@@ -18,17 +18,17 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "build": "tsc -p ./tsconfig.build.json && npm run copy:all",
+    "build": "tsc -p ./tsconfig.build.json && yarn copy:all",
     "clean:dist": "node ../../build/clean.js dist",
     "convert:readme": "node ../../build/convert-readme.js .tmp",
-    "copy:all": "npm run convert:json-schema && npm run copy:readme",
+    "copy:all": "yarn convert:json-schema && yarn copy:readme",
     "convert:json-schema": "node ../../build/convert-schemas.js",
     "copy:readme": "node ../../build/copy-readme.js",
-    "prepare": "npm run clean:dist && npm run build",
+    "prepare": "yarn clean:dist && yarn build",
     "prettier": "prettier --config ../../.prettierrc --write \"**/*.{ts,tsx}\"",
     "prettier:diff": "prettier --config ../../.prettierrc \"**/*.{ts,tsx}\" --list-different",
     "start": "start-storybook",
-    "test": "npm run convert:readme && npm run tslint && npm run unit-tests",
+    "test": "yarn convert:readme && yarn tslint && yarn unit-tests",
     "tslint": "tslint -c ./tslint.json '**/*.ts{,x}'",
     "tslint:fix": "tslint -c ./tslint.json --fix '**/*.ts{,x}'",
     "unit-tests": "jest --runInBand",
@@ -58,7 +58,6 @@
     },
     "transformIgnorePatterns": [
       "!<rootDir>/node_modules/lodash-es",
-      "node_modules/jss-*",
       "node_modules/css-vendor"
     ],
     "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
@@ -68,10 +67,6 @@
       "js",
       "jsx",
       "json"
-    ],
-    "moduleDirectories": [
-      "node_modules",
-      "src"
     ]
   },
   "devDependencies": {

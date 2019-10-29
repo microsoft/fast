@@ -2,7 +2,7 @@ import React from "react";
 import { DesignSystemProvider } from "./design-system-provider";
 import * as ShallowRenderer from "react-test-renderer/shallow";
 import Adapter from "enzyme-adapter-react-16";
-import { configure, mount, shallow, ShallowWrapper } from "enzyme";
+import { configure, mount, ReactWrapper, shallow } from "enzyme";
 import { Consumer, designSystemContext } from "./context";
 
 configure({ adapter: new Adapter() });
@@ -11,7 +11,7 @@ describe("DesignSystemProvider", (): void => {
     test("should render children", (): void => {
         const text: string = "aRrAyS sTaRt At OnE";
         const children: React.ReactNode = <p>{text}</p>;
-        const provider: ShallowWrapper = mount(
+        const provider: ReactWrapper = mount(
             <DesignSystemProvider designSystem={{}}>
                 <p>{text}</p>
             </DesignSystemProvider>
@@ -31,7 +31,7 @@ describe("DesignSystemProvider", (): void => {
             return value.success.toString();
         }
 
-        const tree: ShallowWrapper = mount(
+        const tree: ReactWrapper = mount(
             <DesignSystemProvider designSystem={{ success: true }}>
                 <Consumer>{render}</Consumer>
             </DesignSystemProvider>
@@ -45,7 +45,7 @@ describe("DesignSystemProvider", (): void => {
             return value.success;
         }
 
-        const tree: ShallowWrapper = mount(
+        const tree: ReactWrapper = mount(
             <DesignSystemProvider designSystem={{ success: "unsuccessfull" }}>
                 <DesignSystemProvider designSystem={{ success: "successful" }}>
                     <Consumer>{render}</Consumer>
@@ -64,7 +64,7 @@ describe("DesignSystemProvider", (): void => {
             return `${value.a}, ${value.b}`;
         }
 
-        const tree: ShallowWrapper = mount(
+        const tree: ReactWrapper = mount(
             <DesignSystemProvider designSystem={{ a: "a", b: "b" }}>
                 <Consumer>{renderOne}</Consumer>
                 <DesignSystemProvider designSystem={{ a: "A" }}>
@@ -83,7 +83,7 @@ describe("DesignSystemProvider", (): void => {
         const render: any = jest.fn();
         const designSystem: any = { a: "a", b: "b" };
 
-        const tree: ShallowWrapper = mount(
+        const tree: ReactWrapper = mount(
             <div>
                 <DesignSystemProvider designSystem={designSystem}>
                     <Consumer>{render}</Consumer>

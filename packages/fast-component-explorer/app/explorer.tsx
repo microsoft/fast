@@ -86,7 +86,7 @@ import { Direction } from "@microsoft/fast-web-utilities";
 import { ColorRGBA64, parseColor } from "@microsoft/fast-colors";
 import { format, multiply, toPx } from "@microsoft/fast-jss-utilities";
 import { NavigationMenuClassNameContract } from "@microsoft/fast-tooling-react/dist/navigation-menu/navigation-menu.style";
-import { StandardLuminance } from "@microsoft/fast-components-styles-msft/dist/utilities/color/neutral-layer";
+import { StandardLuminance } from "@microsoft/fast-components-styles-msft";
 
 interface ObjectOfComponentViewConfigs {
     [key: string]: ComponentViewConfig<any>;

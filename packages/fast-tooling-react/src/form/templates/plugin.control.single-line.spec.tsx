@@ -15,7 +15,7 @@ describe("SingleLineControlPlugin", () => {
         });
 
         expect(() => {
-            mount(plugin.render());
+            mount(plugin.render() as JSX.Element);
         }).not.toThrow();
     });
     test("should render a SingleLineControlTemplate", () => {
@@ -23,7 +23,7 @@ describe("SingleLineControlPlugin", () => {
             control: jest.fn(),
         });
 
-        const render: any = mount(plugin.render());
+        const render: any = mount(plugin.render() as JSX.Element);
 
         expect(render.find("SingleLineControlTemplate")).toHaveLength(1);
     });
