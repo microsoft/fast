@@ -578,6 +578,148 @@ describe("Navigation", () => {
             default: void 0,
         });
     });
+    test("should return navigation items for nested text children", () => {
+        const data: any = {
+            children: {
+                id: childrenSchema.id,
+                props: {
+                    children: "example text",
+                },
+            },
+        };
+        const nav: Navigation = new Navigation({
+            dataLocation: "children.props.children",
+            data,
+            schema: childrenSchema,
+            childOptions,
+        });
+        const navItems: NavigationItem[] = nav.get();
+
+        expect(navItems.length).toBe(3);
+        expect(navItems[0]).toEqual({
+            dataLocation: "",
+            schemaLocation: "",
+            schema: childrenSchema,
+            data,
+            title: childrenSchema.title,
+            default: void 0,
+        });
+        expect(navItems[1]).toEqual({
+            dataLocation: "children.props",
+            schemaLocation: "",
+            schema: childrenSchema,
+            data: data.children.props,
+            title: childrenSchema.title,
+            default: void 0,
+        });
+        expect(navItems[2]).toEqual({
+            dataLocation: "children.props.children",
+            schemaLocation: "",
+            schema: reactChildrenStringSchema,
+            data: data.children.props.children,
+            title: reactChildrenStringSchema.title,
+            default: void 0,
+        });
+    });
+    test("should return navigation items for nested text children within an array of children", () => {
+        const data: any = {
+            children: [
+                {
+                    id: childrenSchema.id,
+                    props: {
+                        children: "example text",
+                    },
+                },
+            ],
+        };
+        const nav: Navigation = new Navigation({
+            dataLocation: "children[0].props.children",
+            data,
+            schema: childrenSchema,
+            childOptions,
+        });
+        const navItems: NavigationItem[] = nav.get();
+        expect(navItems.length).toBe(3);
+        expect(navItems[0]).toEqual({
+            dataLocation: "",
+            schemaLocation: "",
+            schema: childrenSchema,
+            data,
+            title: childrenSchema.title,
+            default: void 0,
+        });
+        expect(navItems[1]).toEqual({
+            dataLocation: "children[0].props",
+            schemaLocation: "",
+            schema: childrenSchema,
+            data: data.children[0].props,
+            title: childrenSchema.title,
+            default: void 0,
+        });
+        expect(navItems[2]).toEqual({
+            dataLocation: "children[0].props.children",
+            schemaLocation: "",
+            schema: reactChildrenStringSchema,
+            data: data.children[0].props.children,
+            title: reactChildrenStringSchema.title,
+            default: void 0,
+        });
+    });
+    test("should return navigation items for nested text children in properties", () => {
+        const data: any = {
+            objectContainingNestedChildren: {
+                nestedObjectChildren: {
+                    id: childrenSchema.id,
+                    props: {
+                        children: "example text",
+                    },
+                },
+            },
+        };
+        const nav: Navigation = new Navigation({
+            dataLocation:
+                "objectContainingNestedChildren.nestedObjectChildren.props.children",
+            data,
+            schema: childrenSchema,
+            childOptions,
+        });
+        const navItems: NavigationItem[] = nav.get();
+
+        expect(navItems.length).toBe(4);
+        expect(navItems[0]).toEqual({
+            dataLocation: "",
+            schemaLocation: "",
+            schema: childrenSchema,
+            data,
+            title: childrenSchema.title,
+            default: void 0,
+        });
+        expect(navItems[1]).toEqual({
+            dataLocation: "objectContainingNestedChildren",
+            schemaLocation: "properties.objectContainingNestedChildren",
+            schema: childrenSchema,
+            data: data.objectContainingNestedChildren,
+            title: childrenSchema.properties.objectContainingNestedChildren.title,
+            default: void 0,
+        });
+        expect(navItems[2]).toEqual({
+            dataLocation: "objectContainingNestedChildren.nestedObjectChildren.props",
+            schemaLocation: "",
+            schema: childrenSchema,
+            data: data.objectContainingNestedChildren.nestedObjectChildren.props,
+            title: childrenSchema.title,
+            default: void 0,
+        });
+        expect(navItems[3]).toEqual({
+            dataLocation:
+                "objectContainingNestedChildren.nestedObjectChildren.props.children",
+            schemaLocation: "",
+            schema: reactChildrenStringSchema,
+            data: data.objectContainingNestedChildren.nestedObjectChildren.props.children,
+            title: reactChildrenStringSchema.title,
+            default: void 0,
+        });
+    });
     test("should return navigation items for nested children with properties", () => {
         const data: any = {
             children: {
@@ -620,10 +762,10 @@ describe("Navigation", () => {
         });
         expect(navItems[2]).toEqual({
             dataLocation: "children.props.objectContainingNestedChildren",
-            schemaLocation: "",
+            schemaLocation: "properties.objectContainingNestedChildren",
             schema: childrenSchema,
             data: data.children.props.objectContainingNestedChildren,
-            title: childrenSchema.title,
+            title: childrenSchema.properties.objectContainingNestedChildren.title,
             default: void 0,
         });
         expect(navItems[3]).toEqual({
@@ -788,18 +930,21 @@ describe("Navigation", () => {
         });
         expect(navItems[2]).toEqual({
             dataLocation: "children.props.numberOrString",
-            schemaLocation: "",
+            schemaLocation: "oneOf[2].properties.numberOrString",
             data: data.children.props.numberOrString,
             schema: oneOfSchema,
-            title: oneOfSchema.title,
+            title: oneOfSchema.oneOf[2].properties.numberOrString.title,
             default: void 0,
         });
         expect(navItems[3]).toEqual({
             dataLocation: "children.props.numberOrString.object",
-            schemaLocation: "",
+            schemaLocation:
+                "oneOf[2].properties.numberOrString.oneOf[2].properties.object",
             data: data.children.props.numberOrString.object,
             schema: oneOfSchema,
-            title: oneOfSchema.title,
+            title:
+                oneOfSchema.oneOf[2].properties.numberOrString.oneOf[2].properties.object
+                    .title,
             default: void 0,
         });
     });
@@ -1090,6 +1235,63 @@ describe("Navigation", () => {
             data,
             schema,
             title: "Untitled",
+            default: void 0,
+        });
+    });
+    test("should update the data location to text children if the data location has been updated", () => {
+        const data: any = {
+            children: {
+                id: childrenSchema.id,
+                props: {
+                    children: "example text",
+                },
+            },
+        };
+        const nav: Navigation = new Navigation({
+            dataLocation: "",
+            data,
+            schema: childrenSchema,
+            childOptions,
+        });
+        let navItems: NavigationItem[] = nav.get();
+
+        expect(navItems.length).toBe(1);
+        expect(navItems[0]).toEqual({
+            dataLocation: "",
+            schemaLocation: "",
+            schema: childrenSchema,
+            data,
+            title: childrenSchema.title,
+            default: void 0,
+        });
+        nav.updateDataLocation(
+            "children.props",
+            (updatedNavigation: NavigationItem[]) => {
+                navItems = updatedNavigation;
+            }
+        );
+        expect(navItems.length).toBe(2);
+        expect(navItems[1]).toEqual({
+            dataLocation: "children.props",
+            schemaLocation: "",
+            schema: childrenSchema,
+            data: data.children.props,
+            title: childrenSchema.title,
+            default: void 0,
+        });
+        nav.updateDataLocation(
+            "children.props.children",
+            (updatedNavigation: NavigationItem[]) => {
+                navItems = updatedNavigation;
+            }
+        );
+        expect(navItems.length).toBe(3);
+        expect(navItems[2]).toEqual({
+            dataLocation: "children.props.children",
+            schemaLocation: "",
+            schema: reactChildrenStringSchema,
+            data: data.children.props.children,
+            title: reactChildrenStringSchema.title,
             default: void 0,
         });
     });
