@@ -1,15 +1,7 @@
-import React from "react";
-import { get, omit } from "lodash-es";
-import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
-import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
-import FormCategory from "./form-category";
-import styles from "./form-section.style";
 import {
-    checkCategoryConfigPropertyCount,
     checkIsDifferentSchema,
     checkIsObject,
     generateExampleData,
-    getCategoryParams,
     getData,
     getErrorFromDataLocation,
     getInitialOneOfAnyOfState,
@@ -17,11 +9,17 @@ import {
     getIsRequired,
     getLabel,
     getOneOfAnyOfSelectOptions,
+    PropertyKeyword,
 } from "./utilities";
+import React from "react";
+import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
+import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
+import FormCategory from "./form-category";
+import styles from "./form-section.style";
+import { get, omit } from "lodash-es";
 import {
-    FormCategoryItems,
-    FormCategoryProps,
-    FormControlParameters,
+    FormCategoryConfig,
+    FormControlItem,
     FormControlsWithConfigOptions,
     FormSectionClassNameContract,
     FormSectionProps,
@@ -110,22 +108,18 @@ class FormSection extends React.Component<
     /**
      * Renders the form
      */
-    private renderForm(dataLocation: string, schema: any): React.ReactNode {
-        // check to see if this is a root level object
-        // if so, use it to generate the form and do not generate a link
-        if (dataLocation === "") {
-            return this.generateFormObject(
-                schema,
-                schema.required || undefined,
-                schema.not ? schema.not.required : undefined
-            );
-        }
+    private renderRootObject(dataLocation: string, schema: any): React.ReactNode {
+        return this.generateFormObject(
+            schema,
+            schema.required || undefined,
+            schema.not ? schema.not.required : undefined
+        );
     }
 
     /**
      * Generates form elements based on field type
      */
-    private renderFormControl(
+    private renderFormControl = (
         schema: any,
         propertyName: string,
         schemaLocation: string,
@@ -133,9 +127,10 @@ class FormSection extends React.Component<
         required: boolean,
         label: string,
         invalidMessage: string | null
-    ): React.ReactNode {
+    ): React.ReactNode => {
+        // if this is a root level object use it to generate the form and do not generate a link
         if (schema.type === "object" && propertyName === "") {
-            return this.renderForm(propertyName, schema);
+            return this.renderRootObject(propertyName, schema);
         }
 
         return (
@@ -162,50 +157,76 @@ class FormSection extends React.Component<
                 displayValidationInline={this.props.displayValidationInline}
             />
         );
-    }
+    };
 
     /**
      * Renders form items into categories
      */
     private renderCategories(
-        formControlParameters: FormControlParameters[]
+        categories: FormCategoryConfig[] = [],
+        controls: FormControlsWithConfigOptions
     ): React.ReactNode {
-        const categoryParams: FormCategoryProps[] = getCategoryParams(
-            formControlParameters,
-            this.props.orderByPropertyNames
-        );
+        return this.getAllCategories(categories).map(
+            (category: FormCategoryConfig, index: number): React.ReactNode => {
+                if (category.title === null) {
+                    return controls.items.map(
+                        (controlItem: FormControlItem): React.ReactNode => {
+                            if (category.items.indexOf(controlItem.propertyName) > -1) {
+                                return controlItem.render;
+                            }
+                        }
+                    );
+                }
 
-        return categoryParams.map((categoryParam: FormCategoryProps, index: number) => {
-            return (
-                <FormCategory
-                    key={index}
-                    expandable={categoryParam.expandable}
-                    title={categoryParam.title}
-                >
-                    {this.renderCategoryItems(categoryParam.items)}
-                </FormCategory>
-            );
-        });
+                return (
+                    <FormCategory
+                        key={index}
+                        expandable={category.expandable}
+                        title={category.title}
+                    >
+                        {this.getCategoryItems(controls, category)}
+                    </FormCategory>
+                );
+            }
+        );
     }
 
-    /**
-     * Renders category items
-     */
-    private renderCategoryItems(items: FormCategoryItems[]): React.ReactNode {
-        return items.map((item: FormCategoryItems) => {
-            return this.renderFormControl(
-                item.params.schema,
-                item.params.propertyName,
-                item.params.schemaLocation,
-                item.params.dataLocation,
-                item.params.isRequired,
-                item.params.title,
-                getErrorFromDataLocation(
-                    item.params.dataLocation,
-                    this.props.validationErrors
-                )
-            );
-        });
+    private getCategoryItems(
+        controls: FormControlsWithConfigOptions,
+        category: FormCategoryConfig
+    ): React.ReactNode {
+        return controls.items.map(
+            (controlItem: FormControlItem): React.ReactNode => {
+                if (category.items.indexOf(controlItem.propertyName) > -1) {
+                    return controlItem.render;
+                }
+            }
+        );
+    }
+
+    private getAllCategories(categories: FormCategoryConfig[]): FormCategoryConfig[] {
+        // All categorized properties
+        const categorized: string[] = categories.reduce<string[]>(
+            (accumulator: string[], category: FormCategoryConfig): string[] => {
+                return accumulator.concat(category.items);
+            },
+            []
+        );
+        // All uncategorized properties
+        const uncategorized: string[] = Object.keys(
+            get(this.props.schema, PropertyKeyword.reactProperties, {})
+        )
+            .concat(Object.keys(get(this.props.schema, PropertyKeyword.properties, {})))
+            .filter((category: string) => {
+                return categorized.indexOf(category) < 0;
+            });
+        // All categorized and uncategorized properties
+        return [
+            {
+                title: null,
+                items: uncategorized,
+            },
+        ].concat(categories);
     }
 
     private getFormControlsAndConfigurationOptions(
@@ -215,7 +236,6 @@ class FormSection extends React.Component<
     ): FormControlsWithConfigOptions {
         const formControls: FormControlsWithConfigOptions = {
             items: [],
-            parameters: [],
         };
 
         const propertyKeys: string[] = [];
@@ -271,8 +291,9 @@ class FormSection extends React.Component<
                                 ),
                             };
 
-                            formControls.items.push(
-                                this.renderFormControl(
+                            formControls.items.push({
+                                propertyName: params.propertyName,
+                                render: this.renderFormControl(
                                     params.property,
                                     params.propertyName,
                                     params.schemaLocation,
@@ -280,15 +301,8 @@ class FormSection extends React.Component<
                                     params.isRequired,
                                     params.title,
                                     params.invalidMessage
-                                )
-                            );
-
-                            if (
-                                params.property.type !== "object" &&
-                                typeof params.property[propertyKey] === "undefined"
-                            ) {
-                                formControls.parameters.push(params);
-                            }
+                                ),
+                            });
                         }
                     }
                 );
@@ -296,25 +310,6 @@ class FormSection extends React.Component<
         );
 
         return formControls;
-    }
-
-    private getFormObjectItemsOrConfigCategories(
-        formControls: FormControlsWithConfigOptions
-    ): React.ReactNode {
-        if (this.props.orderByPropertyNames) {
-            if (
-                checkCategoryConfigPropertyCount(
-                    formControls,
-                    this.props.orderByPropertyNames
-                )
-            ) {
-                return formControls.items;
-            }
-
-            return this.renderCategories(formControls.parameters);
-        }
-
-        return formControls.items;
     }
 
     /**
@@ -335,7 +330,10 @@ class FormSection extends React.Component<
                 not
             );
 
-            return this.getFormObjectItemsOrConfigCategories(formControls);
+            return this.renderCategories(
+                get(this.props.schema, "formConfig.categories"),
+                formControls
+            );
         }
     }
 

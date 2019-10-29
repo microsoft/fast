@@ -138,3 +138,9 @@ import TooltipSchema from "../../../src/__tests__/schemas/tooltip.schema.json";
 export const tooltip: ExampleComponent = {
     schema: TooltipSchema,
 };
+
+import CategoriesSchema from "../../../src/__tests__/schemas/categories.schema.json";
+
+export const categories: ExampleComponent = {
+    schema: CategoriesSchema,
+};

@@ -13,18 +13,14 @@ export interface FormCategoryClassNameContract {
 export interface FormCategoryProps {
     /**
      * Passes the category title
+     * If the title is null, this should not render in a category
      */
-    title: string;
+    title: string | null;
 
     /**
      * Is the category expandable
      */
     expandable?: boolean;
-
-    /**
-     * Passes the id
-     */
-    id?: string;
 }
 
 export interface FormCategoryState {
