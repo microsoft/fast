@@ -20,15 +20,15 @@
   "scripts": {
     "build": "tsc -p ./tsconfig.build.json",
     "clean:dist": "node ../../build/clean.js dist",
-    "prepare": "npm run clean:dist && npm run build",
+    "prepare": "yarn clean:dist && yarn build",
     "prettier": "prettier --config ../../.prettierrc --write \"**/*.ts\"",
     "prettier:diff": "prettier --config ../../.prettierrc \"**/*.ts\" --list-different",
-    "test": "npm run tslint && npm run unit-tests",
+    "test": "yarn tslint && yarn unit-tests",
     "tslint": "tslint -c ./tslint.json '**/*.ts{,x}'",
     "tslint:fix": "tslint -c ./tslint.json --fix '**/*.ts{,x}'",
     "unit-tests": "jest --runInBand",
     "unit-tests:watch": "jest --watch",
-    "watch": "npm run build -- -w --preserveWatchOutput"
+    "watch": "yarn build -- -w --preserveWatchOutput"
   },
   "jest": {
     "collectCoverage": true,

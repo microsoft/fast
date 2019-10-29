@@ -22,14 +22,14 @@
     "build:app": "webpack --progress --mode=production",
     "clean:dist": "node ../../build/clean.js dist",
     "convert:readme": "node ../../build/convert-readme.js --src=app/**/README.md .tmp",
-    "prepare": "npm run clean:dist && npm run build",
+    "prepare": "yarn clean:dist && yarn build",
     "prettier": "prettier --config ../../.prettierrc --write \"**/*.{ts,tsx}\"",
     "prettier:diff": "prettier --config ../../.prettierrc \"**/*.{ts,tsx}\" --list-different",
     "start": "webpack-dev-server --progress",
-    "test": "npm run convert:readme && npm run tslint && npm run build:app",
+    "test": "yarn convert:readme && yarn tslint && yarn build:app",
     "tslint": "tslint -c ./tslint.json '**/*.ts{,x}'",
     "tslint:fix": "tslint -c ./tslint.json --fix '**/*.ts{,x}'",
-    "watch": "npm run build -- -w --preserveWatchOutput"
+    "watch": "yarn build -- -w --preserveWatchOutput"
   },
   "dependencies": {
     "@microsoft/fast-glyphs-msft": "^4.0.2",
