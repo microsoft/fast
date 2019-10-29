@@ -17,7 +17,7 @@ module.exports = (env, args) => {
             serviceWorker: path.resolve(appDir, "service-worker-registration.ts"),
             focusVisible: path.resolve(
                 __dirname,
-                "node_modules/focus-visible/dist/focus-visible.min.js"
+                "../../node_modules/focus-visible/dist/focus-visible.min.js"
             ),
         },
         output: {

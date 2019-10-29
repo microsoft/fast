@@ -15,11 +15,6 @@ module.exports = {
     },
     resolve: {
         extensions: [".js", ".ts", ".tsx"],
-        alias: {
-            "lodash-es": path.resolve("./node_modules/lodash-es"),
-            react: path.resolve("./node_modules/react"),
-            "react-dom": path.resolve("./node_modules/react-dom"),
-        },
     },
     module: {
         rules: [
@@ -45,7 +40,7 @@ module.exports = {
             template: path.resolve(__dirname, "./app/index.html"),
         }),
         new WebpackShellPlugin({
-            onBuildStart: [`npm run convert:readme`],
+            onBuildStart: [`yarn convert:readme`],
         }),
     ],
     devServer: {

@@ -16,7 +16,7 @@ describe("StandardControlPlugin", () => {
         });
 
         expect(() => {
-            mount(plugin.render());
+            mount(plugin.render() as JSX.Element);
         }).not.toThrow();
     });
     test("should render a StandardControlTemplate", () => {
@@ -24,7 +24,7 @@ describe("StandardControlPlugin", () => {
             control: jest.fn(),
         });
 
-        const render: any = mount(plugin.render());
+        const render: any = mount(plugin.render() as JSX.Element);
 
         expect(render.find("StandardControlTemplate")).toHaveLength(1);
     });
@@ -46,7 +46,7 @@ describe("StandardControlPlugin", () => {
             },
         });
 
-        const render: any = mount(plugin.render());
+        const render: any = mount(plugin.render() as JSX.Element);
 
         expect(render.find(`.${className}`)).toHaveLength(1);
     });

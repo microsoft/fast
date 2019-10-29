@@ -9,7 +9,7 @@ This project provides [tslint](https://github.com/palantir/tslint) rules for all
 Install the package:
 
 ```shell
-npm i @microsoft/fast-tslint-rules
+npm install @microsoft/fast-tslint-rules
 ```
 
 ### Configure your tslint config

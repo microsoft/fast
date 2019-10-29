@@ -31,7 +31,9 @@ describe("ControlPlugin", () => {
             softRemove: true,
         });
 
-        const renderSoftRemove: any = mount(testClass.renderSoftRemove("foo"));
+        const renderSoftRemove: any = mount(testClass.renderSoftRemove(
+            "foo"
+        ) as JSX.Element);
 
         expect(renderSoftRemove.find("SoftRemove")).toHaveLength(1);
     });
@@ -41,7 +43,7 @@ describe("ControlPlugin", () => {
             badge: BadgeType.info,
         });
 
-        const renderBadge: any = mount(testClass.renderBadge("foo"));
+        const renderBadge: any = mount(testClass.renderBadge("foo") as JSX.Element);
 
         expect(renderBadge.find("Badge")).toHaveLength(1);
     });
@@ -60,7 +62,9 @@ describe("ControlPlugin", () => {
             const: "bar",
         });
 
-        const renderConstTrigger: any = mount(testClass.renderConstValueIndicator("foo"));
+        const renderConstTrigger: any = mount(testClass.renderConstValueIndicator(
+            "foo"
+        ) as JSX.Element);
 
         expect(renderConstTrigger.find("ConstValue")).toHaveLength(1);
     });
@@ -81,9 +85,9 @@ describe("ControlPlugin", () => {
             default: "bar",
         });
 
-        const renderDefaultTrigger: any = mount(
-            testClass.renderDefaultValueIndicator("foo")
-        );
+        const renderDefaultTrigger: any = mount(testClass.renderDefaultValueIndicator(
+            "foo"
+        ) as JSX.Element);
 
         expect(renderDefaultTrigger.find("DefaultValue")).toHaveLength(1);
     });
@@ -106,9 +110,9 @@ describe("ControlPlugin", () => {
             displayValidationInline: true,
         });
 
-        const renderInvalidMessage: any = mount(
-            testClass.renderInvalidMessage(className)
-        );
+        const renderInvalidMessage: any = mount(testClass.renderInvalidMessage(
+            className
+        ) as JSX.Element);
 
         expect(renderInvalidMessage.find(`.${className}`)).toHaveLength(1);
     });

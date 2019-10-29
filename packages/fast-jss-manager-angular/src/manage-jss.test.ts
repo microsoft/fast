@@ -1,6 +1,5 @@
 import { Component, ElementRef, Input } from "@angular/core";
 import { async, TestBed } from "@angular/core/testing";
-import { ComponentStyles } from "@microsoft/fast-jss-manager";
 import manageJss from "./manage-jss";
 import { DesignSystemDirective } from "./design-system.directive";
 
