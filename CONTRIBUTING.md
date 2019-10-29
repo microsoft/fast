@@ -16,6 +16,11 @@ Install all package dependencies:
 yarn install
 ```
 
+Build the workspaces (local dependencies)
+```bash
+lerna run prepare
+```
+
 Learn more about [installing](https://www.fast.design/docs/en/contributing/install).
 
 ### Testing
