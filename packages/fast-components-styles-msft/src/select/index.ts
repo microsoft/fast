@@ -101,7 +101,6 @@ const styles: ComponentStyles<SelectClassNameContract, DesignSystem> = {
     },
     select__menuPositionLeft: {
         "grid-template-columns": "1fr auto",
-
         "& $select_menu": {
             "grid-column": "2",
         },
