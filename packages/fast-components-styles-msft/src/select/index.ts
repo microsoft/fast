@@ -1,9 +1,8 @@
 import { ComponentStyles } from "@microsoft/fast-jss-manager";
 import {
-    neutralFillStealthRest,
     neutralForegroundRest,
-    neutralOutlineRest,
     neutralLayerFloating,
+    neutralOutlineRest,
 } from "../utilities/color";
 import {
     directionSwitch,
