@@ -75,6 +75,8 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
 
     private rootElement: React.RefObject<HTMLDivElement> = React.createRef();
 
+    private triggerId: string = uniqueId(Select.triggerUniqueIdPrefix);
+
     /**
      * constructor
      */
@@ -247,9 +249,13 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
      */
     private renderTrigger(): React.ReactNode {
         if (this.props.trigger !== undefined) {
-            return this.props.trigger(this.props, this.state, null);
+            return this.props.trigger(this.props, this.state, this.triggerId);
         } else {
-            return this.defaultTriggerRenderFunction(this.props, this.state);
+            return this.defaultTriggerRenderFunction(
+                this.props,
+                this.state,
+                this.triggerId
+            );
         }
     }
 
@@ -452,7 +458,8 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
      */
     private defaultTriggerRenderFunction = (
         props: SelectProps,
-        state: SelectState
+        state: SelectState,
+        triggerId: string
     ): React.ReactNode => {
         if (props.multiselectable) {
             return null;
@@ -461,6 +468,7 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
         const isItemSelected: boolean = state.selectedItemIndex !== 0;
         return (
             <button
+                id={triggerId}
                 disabled={props.disabled}
                 aria-disabled={this.props.disabled}
                 aria-expanded={this.state.isMenuOpen}

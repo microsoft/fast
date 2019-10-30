@@ -50,7 +50,8 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, {}> {
      */
     private defaultTriggerRenderFunction = (
         props: SelectProps,
-        state: SelectState
+        state: SelectState,
+        triggerId: string
     ): React.ReactNode => {
         if (props.multiselectable) {
             return null;
@@ -64,6 +65,7 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, {}> {
 
         return (
             <button
+                id={triggerId}
                 className={classNames(select_button)}
                 disabled={props.disabled}
                 aria-disabled={props.disabled}
