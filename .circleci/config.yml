@@ -8,8 +8,7 @@ aliases:
         run: 
             name: Install Lerna
             command: |
-                sudo yarn global add lerna@3.11.1
-
+                sudo yarn global add lerna@3.18.2
 version: 2
 jobs:
     build_dependencies:
