@@ -63,6 +63,10 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, {}> {
             select_buttonDisplayText,
         }: SelectClassNameContract = this.props.managedClasses;
 
+        // we give the trigger button the role of "textbox" in order to get
+        // because Aria expects elements with role of "combobox", as is the case
+        // the select parent, to own a textbox from which assistive technologies get
+        // the current value.
         return (
             <button
                 id={triggerId}

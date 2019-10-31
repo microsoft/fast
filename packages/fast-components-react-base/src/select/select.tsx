@@ -157,6 +157,8 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
      * Renders the component
      */
     public render(): React.ReactElement<HTMLDivElement> {
+        // we set role="combobox" in order to get assistive technologies to enumerurate
+        // a focussed trigger element as "label", "value", "role", "isexpanded"
         return (
             <div
                 {...this.unhandledProps()}
@@ -466,6 +468,11 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
         }
 
         const isItemSelected: boolean = state.selectedItemIndex !== 0;
+
+        // we give the trigger button the role of textbox in order to get
+        // because Aria expects elements with role of "combobox", as is the case
+        // the select parent, to own a textbox from which assistive technologies get
+        // the current value.
         return (
             <button
                 id={triggerId}
