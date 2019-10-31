@@ -3,17 +3,9 @@ import Adapter from "enzyme-adapter-react-16";
 import { configure, mount, shallow } from "enzyme";
 import SliderTrackItem, {
     SliderTrackItemAnchor,
-    SliderTrackItemHandledProps,
-    SliderTrackItemProps,
     SliderTrackItemUnhandledProps,
 } from "./slider-track-item";
-import {
-    SliderContext,
-    SliderMode,
-    SliderOrientation,
-    SliderRange,
-    SliderThumb,
-} from "../slider";
+import { SliderContext, SliderMode, SliderOrientation } from "../slider";
 import { DisplayNamePrefix } from "../utilities";
 import { SliderState } from "../slider/slider";
 import { Direction } from "@microsoft/fast-web-utilities";
@@ -36,6 +28,7 @@ describe("slider track item", (): void => {
         isIncrementing: false,
         incrementDirection: 1,
         usePageStep: false,
+        direction: Direction.ltr,
     };
 
     test("should have a displayName that matches the component name", () => {
