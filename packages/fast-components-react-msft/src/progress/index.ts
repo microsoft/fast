@@ -33,5 +33,6 @@ export {
     ProgressUnhandledProps,
     ProgressHandledProps,
     progressSchema,
+    ProgressSize,
     ProgressClassNameContract,
 };
