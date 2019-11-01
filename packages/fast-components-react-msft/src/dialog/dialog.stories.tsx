@@ -1,18 +1,40 @@
 import { storiesOf } from "@storybook/react";
 import React from "react";
 import { Dialog } from "./";
-import { Button } from "../button";
+import { AccentButton } from "../accent-button";
+import { height } from "@microsoft/fast-components-styles-msft";
 
 storiesOf("Dialog", module)
     .add("Default", () => <Dialog visible={true} />)
     .add("Modal", () => (
-        <div>
-            <Button>Outside Button 1</Button>
+        <div
+            style={{
+                height: "100%",
+                width: "100%",
+            }}
+        >
+            <AccentButton>Test button</AccentButton>
+            <div
+                draggable={true}
+                style={{
+                    background: "green",
+                    width: "120px",
+                }}
+            >
+                Drag me
+            </div>
             <Dialog visible={true} modal={true}>
-                <Button>Button 1</Button>
-                <Button>Button 2</Button>
+                <AccentButton>Test button</AccentButton>
+                <div
+                    draggable={true}
+                    style={{
+                        background: "green",
+                        width: "120px",
+                    }}
+                >
+                    Drag me
+                </div>
             </Dialog>
-            <Button>Outside Button 2</Button>
         </div>
     ))
     .add("Custom size", () => (

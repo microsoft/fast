@@ -146,6 +146,7 @@ class Dialog extends Foundation<DialogHandledProps, DialogUnhandledProps, {}> {
             <div
                 className={classNames(this.props.managedClasses.dialog_modalOverlay)}
                 onClick={this.handleOverlayClick}
+                onTouchStart={this.handleOverlayTouch}
                 role={"presentation"}
                 tabIndex={-1}
             />
@@ -162,9 +163,12 @@ class Dialog extends Foundation<DialogHandledProps, DialogUnhandledProps, {}> {
         return false;
     };
 
-    /**
-     * handles mouse clicks on modal overlay
-     */
+    private handleOverlayTouch = (event: React.TouchEvent): void => {
+        if (this.props.modal) {
+            event.preventDefault();
+        }
+    };
+
     private handleOverlayClick = (event: React.MouseEvent): void => {
         if (
             this.props.onDismiss &&
