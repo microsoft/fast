@@ -315,7 +315,7 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
                 [slider__incrementing, this.state.isIncrementing],
                 [slider__vertical, isVertical],
                 [slider__horizontal, !isVertical],
-                [slider__rtl, this.state.direction === "rtl"],
+                [slider__rtl, this.state.direction === Direction.rtl],
                 [slider__modeSingle, this.props.mode === SliderMode.singleValue],
                 [slider__modeAdjustUpper, this.props.mode === SliderMode.adustUpperValue],
                 [slider__modeAdjustLower, this.props.mode === SliderMode.adustLowerValue],
@@ -656,13 +656,10 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
 
         const closest: Element = this.rootElement.current.closest(`[dir]`);
 
-        if (closest === null) {
-            return Direction.ltr;
-        }
-
-        return closest.getAttribute(Slider.dirPropName) === "rtl"
-            ? Direction.rtl
-            : Direction.ltr;
+        return closest === null ||
+            closest.getAttribute(Slider.dirPropName) === Direction.ltr
+            ? Direction.ltr
+            : Direction.rtl;
     };
 
     /**
@@ -805,7 +802,7 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
         }
 
         if (
-            this.state.direction === "rtl" &&
+            this.state.direction === Direction.rtl &&
             this.props.orientation !== SliderOrientation.vertical
         ) {
             pct = 1 - pct;
