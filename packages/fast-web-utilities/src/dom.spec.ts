@@ -1,9 +1,4 @@
-import {
-    canUseCssGrid,
-    canUsedForcedColors,
-    canUseFocusVisible,
-    getKeyCode,
-} from "./dom";
+import { canUseCssGrid, canUseFocusVisible, canUseForcedColors, getKeyCode } from "./dom";
 import { KeyCodes } from "./key-codes";
 
 describe("getKeyCode", () => {
@@ -194,7 +189,7 @@ describe("canUseForcedColors", () => {
         });
     });
     test("should return true if forced color is enabled", () => {
-        expect(canUsedForcedColors()).toBe(true);
+        expect(canUseForcedColors()).toBe(true);
     });
 });
 
@@ -209,6 +204,6 @@ describe("canUseForcedColors", () => {
         });
     });
     test("should return false if forced color is not enabled", () => {
-        expect(canUsedForcedColors()).toBe(false);
+        expect(canUseForcedColors()).toBe(false);
     });
 });
