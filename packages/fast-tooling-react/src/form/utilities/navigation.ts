@@ -99,6 +99,7 @@ class Navigation {
         dataLocation: string,
         callback: (updatedNav: NavigationItem[]) => void
     ): void {
+        this.updateChildrenLocations(); // children may have been added/removed
         this.dataLocation = this.resolveNormalizeDataLocation(dataLocation);
 
         if (
@@ -113,10 +114,10 @@ class Navigation {
     /**
      * Update data at the current data location
      */
-    public updateData(
+    public updateData = (
         data: unknown,
         callback: (updatedNav: NavigationItem[]) => void
-    ): void {
+    ): void => {
         this.config.data = cloneDeep(data);
         this.updateChildrenLocations(); // children may have been added/removed
 
@@ -134,7 +135,7 @@ class Navigation {
         });
 
         callback(this.get());
-    }
+    };
 
     /**
      * Gets an array of navigation items
@@ -276,6 +277,10 @@ class Navigation {
             relativeComponentDataLocation = relativeComponentDataLocation.slice(1);
         }
 
+        if (component.schema === reactChildrenStringSchema) {
+            relativeComponentDataLocation = "";
+        }
+
         return mapSchemaLocationFromDataLocation(
             relativeComponentDataLocation,
             component.schema,
@@ -308,14 +313,18 @@ class Navigation {
                 }
             );
 
-        const componentDataLocation: any = get(data, childrenDataLocation);
-        const stringChildrenDataLocation: any = get(data, dataLocation);
+        // Store a dataLocation of the closest component child
+        const componentChildrenData: any = get(data, childrenDataLocation);
+        // Store data directly from the given data location
+        const stringChildrenData: any = get(data, dataLocation);
+        // Get the ID of the component this belongs to, use the react children string schema
+        // if this is a string use the internal react string children schema
         const id: string | undefined =
-            typeof stringChildrenDataLocation === "string" &&
-            childrenDataLocation === dataLocation
+            typeof stringChildrenData === "string" &&
+            dataLocation === childrenDataLocation
                 ? reactChildrenStringSchema.id
-                : get(componentDataLocation, "id")
-                    ? componentDataLocation.id
+                : get(componentChildrenData, "id")
+                    ? componentChildrenData.id
                     : void 0;
         const childOptionWithMatchingSchemaId: FormChildOptionItem = childOptions.find(
             (childOption: FormChildOptionItem) => {
@@ -326,7 +335,7 @@ class Navigation {
         return childOptionWithMatchingSchemaId
             ? {
                   schema: childOptionWithMatchingSchemaId.schema,
-                  dataLocation: `${dataLocation}${
+                  dataLocation: `${childrenDataLocation}${
                       id === reactChildrenStringSchema.id ? "" : `.${propsKeyword}`
                   }`,
               }

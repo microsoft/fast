@@ -22,16 +22,16 @@
     "clean:tmp": "node ../../build/clean.js .tmp",
     "tslint": "tslint -c ./tslint.json '**/*.ts'",
     "tslint:fix": "tslint -c ./tslint.json --fix '**/*.ts'",
-    "test": "npm run tslint && npm run unit-tests",
-    "build": "npm run generate-palettes && tsc -p ./tsconfig.build.json",
-    "build:watch": "npm run build -- -w",
-    "prepare": "npm run clean:dist && npm run build",
+    "test": "yarn tslint && yarn unit-tests",
+    "build": "yarn generate-palettes && tsc -p ./tsconfig.build.json",
+    "build:watch": "yarn build -- -w",
+    "prepare": "yarn clean:dist && yarn build",
     "prettier": "prettier --config ../../.prettierrc --write \"**/*.ts\"",
     "prettier:diff": "prettier --config ../../.prettierrc \"**/*.ts\" --list-different",
     "unit-tests": "jest --runInBand",
     "unit-tests:watch": "jest --watch",
-    "watch": "npm run build -- -w --preserveWatchOutput",
-    "generate-palettes": "rollup --config && node .tmp/generate-palettes.js && npm run clean:tmp"
+    "watch": "yarn build -- -w --preserveWatchOutput",
+    "generate-palettes": "rollup --config && node .tmp/generate-palettes.js && yarn clean:tmp"
   },
   "jest": {
     "collectCoverage": true,

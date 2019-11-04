@@ -7,19 +7,18 @@
 Once the repo has been cloned, install Lerna:
 
 ```bash
-npm install -g lerna
+yarn global add lerna
 ```
 
-Install dependencies in the root directory:
+Install all package dependencies:
 
 ```bash
-npm install
+yarn install
 ```
 
-Install dependencies for packages within the project:
-
+Build the workspaces (local dependencies)
 ```bash
-lerna bootstrap
+lerna run prepare
 ```
 
 Learn more about [installing](https://www.fast.design/docs/en/contributing/install).

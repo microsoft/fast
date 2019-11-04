@@ -98,13 +98,7 @@ export class DesignSystemPanel extends React.Component<
     public render(): JSX.Element {
         return (
             <React.Fragment>
-                <Global
-                    styles={(theme: Theme): any => ({
-                        [`#storybook-preview-wrapper`]: {
-                            background: `${this.state.designSystem.backgroundColor}`,
-                        },
-                    })}
-                />
+                <Global styles={this.getGlobalStyles} />
                 {this.props.active ? this.renderForm() : null}
             </React.Fragment>
         );
@@ -121,6 +115,14 @@ export class DesignSystemPanel extends React.Component<
             .getChannel()
             .removeListener(REQUEST_DESIGN_SYSTEM_EVENT, this.emitDesignSystemUpdate);
     }
+
+    private getGlobalStyles = (theme: Theme): any => {
+        return {
+            [`#storybook-preview-wrapper`]: {
+                background: `${this.state.designSystem.backgroundColor}`,
+            },
+        };
+    };
 
     private renderForm(): JSX.Element {
         return (

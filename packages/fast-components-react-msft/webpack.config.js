@@ -1,8 +1,8 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const WebpackShellPlugin = require("webpack-shell-plugin");
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
-const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
+const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
+const FaviconsWebpackPlugin = require("favicons-webpack-plugin");
 
 const appDir = path.resolve(__dirname, "./app");
 const outDir = path.resolve(__dirname, "./www");
@@ -14,12 +14,15 @@ module.exports = (env, args) => {
         devtool: isProduction ? "none" : "inline-source-map",
         entry: {
             app: path.resolve(appDir, "index.tsx"),
-            focusVisible: path.resolve(__dirname, "node_modules/focus-visible/dist/focus-visible.min.js")
+            focusVisible: path.resolve(
+                __dirname,
+                "node_modules/focus-visible/dist/focus-visible.min.js"
+            ),
         },
         output: {
             path: outDir,
             publicPath: "/",
-            filename: isProduction ? "[name]-[contenthash].js" : "[name].js"
+            filename: isProduction ? "[name]-[contenthash].js" : "[name].js",
         },
         mode: args.mode || "development",
         optimization: {
@@ -30,7 +33,7 @@ module.exports = (env, args) => {
                         test: /[\\/]node_modules[\\/]/,
                     },
                 },
-            }
+            },
         },
         module: {
             rules: [
@@ -42,9 +45,9 @@ module.exports = (env, args) => {
                             options: {
                                 compilerOptions: {
                                     declaration: false,
-                                }
-                            }
-                        }
+                                },
+                            },
+                        },
                     ],
                 },
                 {
@@ -53,12 +56,12 @@ module.exports = (env, args) => {
                         {
                             loader: "file-loader",
                             options: {
-                                name: "[path][name].[ext]"
-                            }
-                        }
-                    ]
-                }
-            ]
+                                name: "[path][name].[ext]",
+                            },
+                        },
+                    ],
+                },
+            ],
         },
         plugins: [
             new HtmlWebpackPlugin({
@@ -66,30 +69,28 @@ module.exports = (env, args) => {
                 contentBase: outDir,
             }),
             new WebpackShellPlugin({
-                onBuildStart: [
-                    `npm run convert:readme`
-                ]
+                onBuildStart: [`yarn convert:readme`],
             }),
             new BundleAnalyzerPlugin({
                 // Remove this to inspect bundle sizes.
-                analyzerMode: "disabled"
+                analyzerMode: "disabled",
             }),
-            new FaviconsWebpackPlugin(path.resolve(__dirname, "favicon.png"))
+            new FaviconsWebpackPlugin(path.resolve(__dirname, "favicon.png")),
         ],
         resolve: {
             extensions: [".js", ".tsx", ".ts", ".json"],
             alias: {
-                'lodash-es': path.resolve('./node_modules/lodash-es'),
-                react: path.resolve('./node_modules/react'),
-                'react-dom': path.resolve('./node_modules/react-dom'),
-            }
+                "lodash-es": path.resolve("./node_modules/lodash-es"),
+                react: path.resolve("./node_modules/react"),
+                "react-dom": path.resolve("./node_modules/react-dom"),
+            },
         },
         devServer: {
             compress: false,
             historyApiFallback: true,
             open: true,
             overlay: true,
-            port: 7001
-        }
-    }
-}
+            port: 7001,
+        },
+    };
+};
