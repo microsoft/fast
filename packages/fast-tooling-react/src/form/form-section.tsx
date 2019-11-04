@@ -347,6 +347,9 @@ class FormSection extends React.Component<
             typeof this.state.oneOfAnyOf !== "undefined" &&
             this.props.schema[this.state.oneOfAnyOf.type]
         ) {
+            const unselectedOption: React.ReactNode = (
+                <option value={-1}>{"Select an option"}</option>
+            );
             const options: React.ReactNode = getOneOfAnyOfSelectOptions(
                 this.props.schema,
                 this.state
@@ -358,6 +361,7 @@ class FormSection extends React.Component<
                     activeIndex={this.state.oneOfAnyOf.activeIndex}
                     onUpdate={this.handleAnyOfOneOfClick}
                 >
+                    {unselectedOption}
                     {options}
                 </FormOneOfAnyOf>
             );
