@@ -66,6 +66,4 @@ export function canUseForcedColors(): boolean {
 /**
  * @deprecated Use 'canUseForcedColors' instead
  */
-export function canUsedForcedColors(): boolean {
-    return canUseForcedColors();
-}
+export const canUsedForcedColors: typeof canUseForcedColors = canUseForcedColors;
