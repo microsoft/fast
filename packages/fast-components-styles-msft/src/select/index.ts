@@ -1,7 +1,7 @@
 import { ComponentStyles } from "@microsoft/fast-jss-manager";
 import {
-    neutralFillStealthRest,
     neutralForegroundRest,
+    neutralLayerFloating,
     neutralOutlineRest,
 } from "../utilities/color";
 import {
@@ -67,7 +67,7 @@ const styles: ComponentStyles<SelectClassNameContract, DesignSystem> = {
         ...highContrastForeground,
     },
     select_menu: {
-        background: neutralFillStealthRest,
+        background: neutralLayerFloating,
         ...applyElevatedCornerRadius(),
         ...applyElevation(ElevationMultiplier.e11),
         position: "relative",

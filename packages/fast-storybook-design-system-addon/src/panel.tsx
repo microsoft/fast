@@ -116,13 +116,13 @@ export class DesignSystemPanel extends React.Component<
             .removeListener(REQUEST_DESIGN_SYSTEM_EVENT, this.emitDesignSystemUpdate);
     }
 
-    private getGlobalStyles(theme: Theme): any {
+    private getGlobalStyles = (theme: Theme): any => {
         return {
             [`#storybook-preview-wrapper`]: {
                 background: `${this.state.designSystem.backgroundColor}`,
             },
         };
-    }
+    };
 
     private renderForm(): JSX.Element {
         return (
