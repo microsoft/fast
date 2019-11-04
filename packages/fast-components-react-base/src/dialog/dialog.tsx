@@ -149,6 +149,9 @@ class Dialog extends Foundation<DialogHandledProps, DialogUnhandledProps, {}> {
                 onTouchStart={this.handleOverlayTouch}
                 role={"presentation"}
                 tabIndex={-1}
+                style={{
+                    touchAction: "none",
+                }}
             />
         );
     }
@@ -163,39 +166,26 @@ class Dialog extends Foundation<DialogHandledProps, DialogUnhandledProps, {}> {
         return false;
     };
 
+    /**
+     * Handle overlay touch
+     */
     private handleOverlayTouch = (event: React.TouchEvent): void => {
-        if (this.props.modal) {
-            event.preventDefault();
-        }
-    };
-
-    private handleOverlayClick = (event: React.MouseEvent): void => {
-        if (
-            this.props.onDismiss &&
-            typeof this.props.onDismiss === "function" &&
-            this.props.visible
-        ) {
-            this.props.onDismiss(event);
-        }
+        this.checkForSoftDismiss(event);
     };
 
     /**
-     * handles document key down events
+     * Handle overlay click
      */
-    private handleDocumentKeyDown = (event: KeyboardEvent): void => {
-        if (!event.defaultPrevented && this.props.visible) {
-            switch (event.keyCode) {
-                case keyCodeEscape:
-                    if (isFunction(this.props.onDismiss)) {
-                        this.props.onDismiss(event);
-                    }
-                    event.preventDefault();
-                    break;
+    private handleOverlayClick = (event: React.MouseEvent): void => {
+        this.checkForSoftDismiss(event);
+    };
 
-                case keyCodeTab:
-                    this.handleTabKeyDown(event);
-                    break;
-            }
+    /**
+     * Handle key events
+     */
+    private handleWindowKeyDown = (event: KeyboardEvent): void => {
+        if (event.keyCode === keyCodeEscape) {
+            this.checkForSoftDismiss(event);
         }
     };
 

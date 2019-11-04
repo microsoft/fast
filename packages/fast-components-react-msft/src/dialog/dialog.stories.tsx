@@ -2,28 +2,22 @@ import { storiesOf } from "@storybook/react";
 import React from "react";
 import { Dialog } from "./";
 import { AccentButton } from "../accent-button";
-import { height } from "@microsoft/fast-components-styles-msft";
 
 storiesOf("Dialog", module)
     .add("Default", () => <Dialog visible={true} />)
     .add("Modal", () => (
         <div
             style={{
-                height: "100%",
-                width: "100%",
+                overflow: "scroll",
+                height: "600px",
             }}
         >
-            <AccentButton>Test button</AccentButton>
             <div
-                draggable={true}
                 style={{
-                    background: "green",
-                    width: "120px",
+                    height: "1200px",
+                    width: "100%",
                 }}
             >
-                Drag me
-            </div>
-            <Dialog visible={true} modal={true}>
                 <AccentButton>Test button</AccentButton>
                 <div
                     draggable={true}
@@ -34,7 +28,33 @@ storiesOf("Dialog", module)
                 >
                     Drag me
                 </div>
-            </Dialog>
+                <Dialog visible={true} modal={true}>
+                    <div
+                        style={{
+                            height: "100%",
+                            overflow: "auto",
+                        }}
+                    >
+                        <div
+                            style={{
+                                height: "800px",
+                                overflow: "auto",
+                            }}
+                        >
+                            <AccentButton>Test button</AccentButton>
+                            <div
+                                draggable={true}
+                                style={{
+                                    background: "green",
+                                    width: "120px",
+                                }}
+                            >
+                                Drag me
+                            </div>
+                        </div>
+                    </div>
+                </Dialog>
+            </div>
         </div>
     ))
     .add("Custom size", () => (
