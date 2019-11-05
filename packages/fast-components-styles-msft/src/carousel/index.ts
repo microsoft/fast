@@ -73,7 +73,7 @@ const styles: ComponentStyles<CarouselClassNameContract, DesignSystem> = {
         "z-index": "100",
         "max-width": "100%",
         left: "50%",
-        transform: "translate(-50%, 0) ",
+        transform: "translate(-50%, -50%)",
         "& > :first-child:nth-last-child(1)": {
             display: "none",
         },
