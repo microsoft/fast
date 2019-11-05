@@ -145,8 +145,8 @@ class Dialog extends Foundation<DialogHandledProps, DialogUnhandledProps, {}> {
         return (
             <div
                 className={classNames(this.props.managedClasses.dialog_modalOverlay)}
-                onClick={this.handleOverlayClick}
-                onTouchStart={this.handleOverlayTouch}
+                onClick={this.handleOverlaySelection}
+                onTouchStart={this.handleOverlaySelection}
                 role={"presentation"}
                 tabIndex={-1}
                 style={{
@@ -167,25 +167,43 @@ class Dialog extends Foundation<DialogHandledProps, DialogUnhandledProps, {}> {
     };
 
     /**
-     * Handle overlay touch
+     * Handle overlay touch and clicks
      */
-    private handleOverlayTouch = (event: React.TouchEvent): void => {
+    private handleOverlaySelection = (
+        event: React.TouchEvent | React.MouseEvent
+    ): void => {
         this.checkForSoftDismiss(event);
     };
 
     /**
-     * Handle overlay click
+     * handles document key down events
      */
-    private handleOverlayClick = (event: React.MouseEvent): void => {
-        this.checkForSoftDismiss(event);
+    private handleDocumentKeyDown = (event: KeyboardEvent): void => {
+        if (!event.defaultPrevented && this.props.visible) {
+            switch (event.keyCode) {
+                case keyCodeEscape:
+                    this.checkForSoftDismiss(event);
+                    break;
+
+                case keyCodeTab:
+                    this.handleTabKeyDown(event);
+                    break;
+            }
+        }
     };
 
     /**
-     * Handle key events
+     * Invokes dialog soft dismiss if appropriate
      */
-    private handleWindowKeyDown = (event: KeyboardEvent): void => {
-        if (event.keyCode === keyCodeEscape) {
-            this.checkForSoftDismiss(event);
+    private checkForSoftDismiss = (
+        event: KeyboardEvent | React.MouseEvent | React.TouchEvent
+    ): void => {
+        if (
+            this.props.onDismiss &&
+            typeof this.props.onDismiss === "function" &&
+            this.props.visible
+        ) {
+            this.props.onDismiss(event);
         }
     };
 
