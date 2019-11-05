@@ -1,10 +1,12 @@
 import { DialogClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
-import { classNames, keyCodeEscape } from "@microsoft/fast-web-utilities";
+import { classNames, keyCodeEscape, keyCodeTab } from "@microsoft/fast-web-utilities";
 import { canUseDOM } from "exenv-es6";
 import React from "react";
 import { DisplayNamePrefix } from "../utilities";
 import { DialogHandledProps, DialogProps, DialogUnhandledProps } from "./dialog.props";
+import { isFunction } from "lodash-es";
+import Tabbable from "tabbable";
 
 class Dialog extends Foundation<DialogHandledProps, DialogUnhandledProps, {}> {
     public static defaultProps: Partial<DialogProps> = {
@@ -28,6 +30,10 @@ class Dialog extends Foundation<DialogHandledProps, DialogUnhandledProps, {}> {
         visible: void 0,
     };
 
+    private rootElement: React.RefObject<HTMLDivElement> = React.createRef<
+        HTMLDivElement
+    >();
+
     /**
      * Renders the component
      */
@@ -39,6 +45,7 @@ class Dialog extends Foundation<DialogHandledProps, DialogUnhandledProps, {}> {
 
         return (
             <div
+                ref={this.rootElement}
                 {...this.unhandledProps()}
                 className={this.generateClassNames()}
                 aria-hidden={!this.props.visible}
@@ -68,8 +75,14 @@ class Dialog extends Foundation<DialogHandledProps, DialogUnhandledProps, {}> {
      * React life-cycle method
      */
     public componentDidMount(): void {
-        if (canUseDOM() && this.props.onDismiss) {
-            window.addEventListener("keydown", this.handleWindowKeyDown);
+        if (canUseDOM()) {
+            if (this.shouldAddKeyListener(this.props)) {
+                document.addEventListener("keydown", this.handleDocumentKeyDown);
+            }
+            if (this.props.modal) {
+                document.addEventListener("focusin", this.handleDocumentFocus);
+                this.focusOnFirstElement();
+            }
         }
     }
 
@@ -78,10 +91,23 @@ class Dialog extends Foundation<DialogHandledProps, DialogUnhandledProps, {}> {
      */
     public componentDidUpdate(prevProps: Partial<DialogHandledProps>): void {
         if (canUseDOM()) {
-            if (!prevProps.onDismiss && this.props.onDismiss) {
-                window.addEventListener("keydown", this.handleWindowKeyDown);
-            } else if (prevProps.onDismiss && !this.props.onDismiss) {
-                window.removeEventListener("keydown", this.handleWindowKeyDown);
+            if (!prevProps.modal && this.props.modal) {
+                document.addEventListener("focusin", this.handleDocumentFocus);
+                this.focusOnFirstElement();
+            } else if (prevProps.modal && !this.props.modal) {
+                document.removeEventListener("focusin", this.handleDocumentFocus);
+            }
+
+            if (
+                !this.shouldAddKeyListener(prevProps) &&
+                this.shouldAddKeyListener(this.props)
+            ) {
+                document.addEventListener("keydown", this.handleDocumentKeyDown);
+            } else if (
+                this.shouldAddKeyListener(prevProps) &&
+                !this.shouldAddKeyListener(this.props)
+            ) {
+                document.removeEventListener("keydown", this.handleDocumentKeyDown);
             }
         }
     }
@@ -90,8 +116,14 @@ class Dialog extends Foundation<DialogHandledProps, DialogUnhandledProps, {}> {
      * React life-cycle method
      */
     public componentWillUnmount(): void {
-        if (canUseDOM() && this.props.onDismiss) {
-            window.removeEventListener("keydown", this.handleWindowKeyDown);
+        if (canUseDOM()) {
+            if (this.shouldAddKeyListener(this.props)) {
+                document.removeEventListener("keydown", this.handleDocumentKeyDown);
+            }
+
+            if (this.props.modal) {
+                document.removeEventListener("focusin", this.handleDocumentFocus);
+            }
         }
     }
 
@@ -120,6 +152,19 @@ class Dialog extends Foundation<DialogHandledProps, DialogUnhandledProps, {}> {
         );
     }
 
+    /**
+     * Check if props demand a key listener
+     */
+    private shouldAddKeyListener = (props: DialogProps): boolean => {
+        if (props.modal || props.onDismiss) {
+            return true;
+        }
+        return false;
+    };
+
+    /**
+     * handles mouse clicks on modal overlay
+     */
     private handleOverlayClick = (event: React.MouseEvent): void => {
         if (
             this.props.onDismiss &&
@@ -130,14 +175,92 @@ class Dialog extends Foundation<DialogHandledProps, DialogUnhandledProps, {}> {
         }
     };
 
-    private handleWindowKeyDown = (event: KeyboardEvent): void => {
-        if (
-            this.props.onDismiss &&
-            typeof this.props.onDismiss === "function" &&
-            this.props.visible &&
-            event.keyCode === keyCodeEscape
+    /**
+     * handles document key down events
+     */
+    private handleDocumentKeyDown = (event: KeyboardEvent): void => {
+        if (!event.defaultPrevented && this.props.visible) {
+            switch (event.keyCode) {
+                case keyCodeEscape:
+                    if (isFunction(this.props.onDismiss)) {
+                        this.props.onDismiss(event);
+                    }
+                    event.preventDefault();
+                    break;
+
+                case keyCodeTab:
+                    this.handleTabKeyDown(event);
+                    break;
+            }
+        }
+    };
+
+    /**
+     * process tab key down events
+     */
+    private handleTabKeyDown = (event: KeyboardEvent): void => {
+        if (!this.props.modal) {
+            // only handle tab keystrokes when modal
+            return;
+        }
+        const tabbableElements: HTMLElement[] = Tabbable(this.rootElement.current);
+        const tabbableElementCount: number = tabbableElements.length;
+        if (tabbableElementCount === 0) {
+            this.tryFocusOnRootElement();
+            event.preventDefault();
+            return;
+        }
+        // intervene in normal tab order for first and last items in list
+        if (event.shiftKey && event.target === tabbableElements[0]) {
+            tabbableElements[tabbableElementCount - 1].focus();
+            event.preventDefault();
+        } else if (
+            !event.shiftKey &&
+            event.target === tabbableElements[tabbableElementCount - 1]
         ) {
-            this.props.onDismiss(event);
+            tabbableElements[0].focus();
+            event.preventDefault();
+        }
+    };
+
+    /**
+     * forces focus to first tabbable element of modal dialog if document gains focus while dialog is open
+     */
+    private handleDocumentFocus = (event: FocusEvent): void => {
+        if (
+            this.props.visible &&
+            !event.defaultPrevented &&
+            this.rootElement.current instanceof HTMLElement &&
+            !(this.rootElement.current as HTMLElement).contains(
+                event.target as HTMLElement
+            )
+        ) {
+            this.focusOnFirstElement();
+            event.preventDefault();
+        }
+    };
+
+    /**
+     * focus on first element of tab queue
+     */
+    private focusOnFirstElement = (): void => {
+        if (canUseDOM() && this.rootElement.current instanceof HTMLElement) {
+            const tabbableElements: HTMLElement[] = Tabbable(this.rootElement.current);
+            if (tabbableElements.length === 0) {
+                this.tryFocusOnRootElement();
+            } else {
+                tabbableElements[0].focus();
+            }
+        }
+    };
+
+    /**
+     * if no tabbable elements try to focus root element
+     * generally a modal dialog should be expected to have a focusable element
+     */
+    private tryFocusOnRootElement = (): void => {
+        if (this.rootElement.current instanceof HTMLElement) {
+            this.rootElement.current.focus();
         }
     };
 }

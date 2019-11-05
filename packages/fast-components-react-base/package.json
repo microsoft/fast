@@ -80,6 +80,7 @@
     "@types/lodash-es": "^4.17.0",
     "@types/node": "^9.4.6",
     "@types/react": "^16.3.6",
+    "@types/tabbable": "^3.1.0",
     "babel-core": "^7.0.0-bridge.0",
     "babel-jest": "^24.5.0",
     "babel-loader": "^8.0.6",
@@ -117,6 +118,7 @@
     "@microsoft/fast-web-utilities": "^4.3.5",
     "exenv-es6": "^1.0.0",
     "raf-throttle": "^2.0.3",
+    "tabbable": "^4.0.0",
     "utility-types": "^2.1.0"
   }
 }
