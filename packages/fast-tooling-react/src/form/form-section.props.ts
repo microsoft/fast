@@ -157,11 +157,6 @@ export interface FormSectionProps {
     untitled: string;
 
     /**
-     * The configuration for ordering properties by their names
-     */
-    orderByPropertyNames?: FormOrderByPropertyNamesProps;
-
-    /**
      * The validation errors
      */
     validationErrors: ErrorObject[] | void;
@@ -177,36 +172,19 @@ export interface FormSectionProps {
     displayValidationBrowserDefault?: boolean;
 }
 
-export interface FormCategoryItems {
+export interface FormCategoryConfig {
     /**
-     * The items weight
+     * The display name, used as a category label
      */
-    weight: number;
+    title: string | null;
 
     /**
-     * The parameters to pass to generate the form item
+     * Category property keys
      */
-    params: FormControlParameters;
-}
-
-export interface FormCategoryProps {
-    /**
-     * The category weight
-     */
-    weight: number;
+    items: string[];
 
     /**
-     * The category form items
-     */
-    items: FormCategoryItems[];
-
-    /**
-     * The category title
-     */
-    title: string;
-
-    /**
-     * Allows category to be expandable
+     * Expandable
      */
     expandable?: boolean;
 }
@@ -272,16 +250,23 @@ export interface AssignedCategoryParams {
     expandable?: boolean;
 }
 
-export interface FormControlsWithConfigOptions {
+export interface FormControlItem {
     /**
-     * Parameters such as weight, attribute assignment etc
+     * The property name
      */
-    parameters: FormControlParameters[];
+    propertyName: string;
 
+    /**
+     * The rendered control
+     */
+    render: React.ReactNode;
+}
+
+export interface FormControlsWithConfigOptions {
     /**
      * Form items which conform to a section
      */
-    items: React.ReactNode[];
+    items: FormControlItem[];
 }
 
 export interface OptionalToggleConfig {
