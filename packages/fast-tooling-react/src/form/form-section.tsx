@@ -108,10 +108,15 @@ class FormSection extends React.Component<
     /**
      * Renders the form
      */
-    private renderRootObject(dataLocation: string, schema: any): React.ReactNode {
+    private renderRootObject(
+        dataLocation: string,
+        schema: any,
+        invalidMessage: string
+    ): React.ReactNode {
         return this.generateFormObject(
             schema,
             schema.required || undefined,
+            invalidMessage,
             schema.not ? schema.not.required : undefined
         );
     }
@@ -130,7 +135,7 @@ class FormSection extends React.Component<
     ): React.ReactNode => {
         // if this is a root level object use it to generate the form and do not generate a link
         if (schema.type === "object" && propertyName === "") {
-            return this.renderRootObject(propertyName, schema);
+            return this.renderRootObject(propertyName, schema, invalidMessage);
         }
 
         return (
@@ -164,18 +169,36 @@ class FormSection extends React.Component<
      */
     private renderCategories(
         categories: FormCategoryConfig[] = [],
-        controls: FormControlsWithConfigOptions
+        controls: FormControlsWithConfigOptions,
+        invalidMessage: string
     ): React.ReactNode {
         return this.getAllCategories(categories).map(
             (category: FormCategoryConfig, index: number): React.ReactNode => {
                 if (category.title === null) {
-                    return controls.items.map(
-                        (controlItem: FormControlItem): React.ReactNode => {
-                            if (category.items.indexOf(controlItem.propertyName) > -1) {
-                                return controlItem.render;
+                    return controls.items
+                        .concat([
+                            {
+                                propertyName: void 0,
+                                render: this.renderAdditionalProperties(invalidMessage),
+                            },
+                        ])
+                        .map(
+                            (
+                                controlItem: FormControlItem,
+                                itemIndex: number
+                            ): React.ReactNode => {
+                                if (
+                                    category.items.includes(controlItem.propertyName) ||
+                                    controlItem.propertyName === undefined
+                                ) {
+                                    return (
+                                        <React.Fragment key={itemIndex}>
+                                            {controlItem.render}
+                                        </React.Fragment>
+                                    );
+                                }
                             }
-                        }
-                    );
+                        );
                 }
 
                 return (
@@ -197,7 +220,7 @@ class FormSection extends React.Component<
     ): React.ReactNode {
         return controls.items.map(
             (controlItem: FormControlItem): React.ReactNode => {
-                if (category.items.indexOf(controlItem.propertyName) > -1) {
+                if (category.items.includes(controlItem.propertyName)) {
                     return controlItem.render;
                 }
             }
@@ -318,6 +341,7 @@ class FormSection extends React.Component<
     private generateFormObject(
         schema: any,
         required: string[],
+        invalidMessage: string,
         not?: string[]
     ): React.ReactNode {
         let formControls: FormControlsWithConfigOptions;
@@ -332,7 +356,8 @@ class FormSection extends React.Component<
 
             return this.renderCategories(
                 get(this.props.schema, "formConfig.categories"),
-                formControls
+                formControls,
+                invalidMessage
             );
         }
     }
@@ -368,11 +393,8 @@ class FormSection extends React.Component<
      * Renders additional properties if they have been declared
      */
     private renderAdditionalProperties(invalidMessage: string): React.ReactNode {
-        const schema: any = get(
-            this.props.schema,
-            this.getSchemaLocation(),
-            this.props.schema
-        );
+        const schemaLocation: string = this.getSchemaLocation();
+        const schema: any = get(this.props.schema, schemaLocation, this.props.schema);
 
         if (typeof schema.additionalProperties === "object") {
             return (
@@ -382,9 +404,9 @@ class FormSection extends React.Component<
                     controlPlugins={this.props.controlPlugins}
                     formControlId={this.props.schema.formControlId}
                     dataLocation={this.props.dataLocation}
-                    schemaLocation={this.getSchemaLocation()}
+                    schemaLocation={schemaLocation}
                     examples={get(schema, "examples")}
-                    propertyLabel={get(schema, "propertyTitle", "Property key")}
+                    propertyLabel={get(schema, `propertyTitle`, "Property key")}
                     additionalProperties={schema.additionalProperties}
                     enumeratedProperties={this.getEnumeratedProperties(schema)}
                     data={this.props.data}
@@ -429,7 +451,6 @@ class FormSection extends React.Component<
                         "",
                         invalidMessage
                     )}
-                    {this.renderAdditionalProperties(invalidMessage)}
                 </div>
             </div>
         );
