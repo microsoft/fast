@@ -18,6 +18,9 @@ import { DisplayNamePrefix } from "../utilities";
  */
 configure({ adapter: new Adapter() });
 
+const container: HTMLDivElement = document.createElement("div");
+document.body.appendChild(container);
+
 describe("dialog", (): void => {
     const managedClasses: DialogClassNameContract = {
         dialog: "dialog-class",
@@ -137,10 +140,11 @@ describe("dialog", (): void => {
 
     test("should call the `onDismiss` callback when escape key is pressed and `visible` prop is true", () => {
         const onDismiss: any = jest.fn();
+        const preventDefaultFn: any = jest.fn();
         const map: any = {};
 
         // Mock window.addEventListener
-        window.addEventListener = jest.fn((event: string, callback: any) => {
+        document.addEventListener = jest.fn((event: string, callback: any) => {
             map[event] = callback;
         });
 
@@ -148,24 +152,25 @@ describe("dialog", (): void => {
             <Dialog managedClasses={managedClasses} modal={true} onDismiss={onDismiss} />
         );
 
-        map.keydown({ keyCode: keyCodeEscape });
+        map.keydown({ keyCode: keyCodeEscape, preventDefault: preventDefaultFn });
 
         expect(onDismiss).toHaveBeenCalledTimes(0);
 
         // set visible prop
         rendered.setProps({ visible: true });
 
-        map.keydown({ keyCode: keyCodeEscape });
+        map.keydown({ keyCode: keyCodeEscape, preventDefault: preventDefaultFn });
 
         expect(onDismiss).toHaveBeenCalledTimes(1);
     });
 
     test("should remove keydown event listener for the `onDismiss` callback when component unmounts", () => {
         const onDismiss: any = jest.fn();
+        const preventDefaultFn: any = jest.fn();
         const map: any = {};
 
-        // Mock window.removeEventListener
-        window.removeEventListener = jest.fn((event: string, callback: any) => {
+        // Mock document.removeEventListener
+        document.removeEventListener = jest.fn((event: string, callback: any) => {
             map[event] = callback;
         });
 
@@ -180,8 +185,62 @@ describe("dialog", (): void => {
 
         rendered.unmount();
 
-        map.keydown({ keyCode: keyCodeEscape });
+        map.keydown({ keyCode: keyCodeEscape, preventDefault: preventDefaultFn });
 
         expect(onDismiss).toHaveBeenCalledTimes(1);
+    });
+
+    test("modal dialogs should add document 'focusin' listener on mount", () => {
+        const map: any = {};
+
+        const mockAddListenerFn: any = jest.fn((event: string, callback: any) => {
+            map[event] = callback;
+        });
+
+        document.addEventListener = mockAddListenerFn;
+
+        const rendered: any = mount(
+            <Dialog managedClasses={managedClasses} modal={true} visible={true} />
+        );
+
+        expect(mockAddListenerFn).toHaveBeenCalledTimes(2);
+        expect(mockAddListenerFn.mock.calls[1][0]).toBe("focusin");
+
+        rendered.unmount();
+    });
+
+    test("non modal dialogs should not add document 'focusin' listener on mount", () => {
+        const map: any = {};
+
+        const mockAddListenerFn: any = jest.fn((event: string, callback: any) => {
+            map[event] = callback;
+        });
+
+        document.addEventListener = mockAddListenerFn;
+
+        const rendered: any = mount(
+            <Dialog managedClasses={managedClasses} visible={true} />
+        );
+
+        expect(mockAddListenerFn).toHaveBeenCalledTimes(0);
+    });
+
+    test("modal dialogs should remove document 'focusin' listener on dismount", () => {
+        const map: any = {};
+
+        const mockRemoveListenerFn: any = jest.fn((event: string, callback: any) => {
+            map[event] = callback;
+        });
+
+        document.removeEventListener = mockRemoveListenerFn;
+
+        const rendered: any = mount(
+            <Dialog managedClasses={managedClasses} modal={true} visible={true} />
+        );
+
+        rendered.unmount();
+
+        expect(mockRemoveListenerFn).toHaveBeenCalledTimes(2);
+        expect(mockRemoveListenerFn.mock.calls[1][0]).toBe("focusin");
     });
 });
