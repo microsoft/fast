@@ -1,4 +1,5 @@
 import React from "react";
+import { uniqueId } from "lodash-es";
 import styles from "./form-category.style";
 import {
     FormCategoryClassNameContract,
@@ -18,6 +19,8 @@ class FormCategory extends React.Component<
     FormCategoryState
 > {
     public static displayName: string = "FormCategory";
+
+    private id: string = uniqueId("category");
 
     constructor(
         props: FormCategoryProps & ManagedClasses<FormCategoryClassNameContract>
@@ -49,7 +52,7 @@ class FormCategory extends React.Component<
 
     private generateContainerAttributes(): React.HtmlHTMLAttributes<HTMLDivElement> {
         const attributes: Partial<React.HtmlHTMLAttributes<HTMLDivElement>> = {
-            id: this.props.id,
+            id: this.id,
         };
 
         if (this.props.expandable) {
@@ -76,7 +79,7 @@ class FormCategory extends React.Component<
             <button
                 onClick={this.handleCategoryCollapse}
                 aria-expanded={this.state.expanded}
-                aria-controls={this.props.id}
+                aria-controls={this.id}
                 className={this.props.managedClasses.formCategory_button}
             >
                 {this.props.title}
