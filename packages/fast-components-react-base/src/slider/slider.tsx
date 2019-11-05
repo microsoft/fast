@@ -21,14 +21,17 @@ import {
 } from "@microsoft/fast-web-utilities";
 import ReactDOM from "react-dom";
 import { SliderClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
-import { Direction } from "@microsoft/fast-web-utilities";
+import {
+    classNames,
+    Direction,
+    DirectionAttributeName,
+} from "@microsoft/fast-web-utilities";
 import { DisplayNamePrefix } from "../utilities";
 import { SliderContext, SliderContextType } from "./slider-context";
 import SliderTrackItem, {
     SliderTrackItemAnchor,
     SliderTrackItemManagedClasses,
 } from "../slider-track-item";
-import { classNames } from "@microsoft/fast-web-utilities";
 
 export enum SliderThumb {
     upperThumb = "upperThumb",
@@ -67,7 +70,6 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
     private static minIncrementDelay: number = 100;
     private static incrementAcceleration: number = 50;
     private static rolePropName: string = "role";
-    private static dirPropName: string = "dir";
 
     protected handledProps: HandledProps<SliderHandledProps> = {
         disabled: void 0,
@@ -654,10 +656,12 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
             return Direction.ltr;
         }
 
-        const closest: Element = this.rootElement.current.closest(`[dir]`);
+        const closest: Element = this.rootElement.current.closest(
+            `[${DirectionAttributeName}]`
+        );
 
         return closest === null ||
-            closest.getAttribute(Slider.dirPropName) === Direction.ltr
+            closest.getAttribute(DirectionAttributeName) === Direction.ltr
             ? Direction.ltr
             : Direction.rtl;
     };
