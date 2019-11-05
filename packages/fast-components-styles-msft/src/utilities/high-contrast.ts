@@ -1,7 +1,7 @@
 import { CSSRules } from "@microsoft/fast-jss-manager";
 import { DesignSystem } from "../design-system";
 import { format, important, toPx } from "@microsoft/fast-jss-utilities";
-import { canUsedForcedColors } from "@microsoft/fast-web-utilities";
+import { canUseForcedColors } from "@microsoft/fast-web-utilities";
 import { focusOutlineWidth, outlineWidth } from "./design-system";
 
 export const highContrastSelector: string = "@media (-ms-high-contrast:active)";
@@ -29,7 +29,7 @@ export const highContrastOptOutProperty: CSSRules<{}> = applyhighContrastOptOutP
 
 // Function used to to set link color base on 'forced-color' query
 export function applyHighContrastLinkValue(): string {
-    return canUsedForcedColors() ? "LinkText !important" : "-ms-hotlight !important";
+    return canUseForcedColors() ? "LinkText !important" : "-ms-hotlight !important";
 }
 // Used to to set high contrast base on 'forced-color' query
 export const highContrastLinkValue: string = applyHighContrastLinkValue();

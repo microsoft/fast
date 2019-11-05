@@ -55,10 +55,15 @@ export function canUseCssGrid(): boolean {
     return _canUseCssGrid;
 }
 
-export function canUsedForcedColors(): boolean {
+export function canUseForcedColors(): boolean {
     return (
         canUseDOM() &&
         (window.matchMedia("(forced-colors: none)").matches ||
             window.matchMedia("(forced-colors: active)").matches)
     );
 }
+
+/**
+ * @deprecated Use 'canUseForcedColors' instead
+ */
+export const canUsedForcedColors: typeof canUseForcedColors = canUseForcedColors;
