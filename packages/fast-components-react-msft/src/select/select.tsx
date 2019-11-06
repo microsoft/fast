@@ -63,10 +63,8 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, {}> {
             select_buttonDisplayText,
         }: SelectClassNameContract = this.props.managedClasses;
 
-        // we give the trigger button the role of "textbox" in order to get
-        // because Aria expects elements with role of "combobox", as is the case
-        // the select parent, to own a textbox from which assistive technologies get
-        // the current value.
+        // we give the trigger button the role of "textbox"
+        // because Aria expects elements with role of "combobox" to contain a textbox
         return (
             <button
                 id={triggerId}
@@ -76,7 +74,8 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, {}> {
                 aria-expanded={state.isMenuOpen}
                 aria-labelledby={props.labelledBy || null}
                 aria-multiline={false}
-                value={state.displayString}
+                aria-valuetext={state.displayString}
+                aria-live="polite"
                 role="textbox"
             >
                 <span className={classNames(select_buttonContentRegion)}>
