@@ -21,11 +21,7 @@ import {
 } from "@microsoft/fast-web-utilities";
 import ReactDOM from "react-dom";
 import { SliderClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
-import {
-    classNames,
-    Direction,
-    DirectionAttributeName,
-} from "@microsoft/fast-web-utilities";
+import { classNames, Direction } from "@microsoft/fast-web-utilities";
 import { DisplayNamePrefix } from "../utilities";
 import { SliderContext, SliderContextType } from "./slider-context";
 import SliderTrackItem, {
@@ -70,6 +66,7 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
     private static minIncrementDelay: number = 100;
     private static incrementAcceleration: number = 50;
     private static rolePropName: string = "role";
+    private static DirectionAttributeName: string = "dir";
 
     protected handledProps: HandledProps<SliderHandledProps> = {
         disabled: void 0,
@@ -657,11 +654,11 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
         }
 
         const closest: Element = this.rootElement.current.closest(
-            `[${DirectionAttributeName}]`
+            `[${Slider.DirectionAttributeName}]`
         );
 
         return closest === null ||
-            closest.getAttribute(DirectionAttributeName) === Direction.ltr
+            closest.getAttribute(Slider.DirectionAttributeName) === Direction.ltr
             ? Direction.ltr
             : Direction.rtl;
     };

@@ -5,5 +5,3 @@ export enum Direction {
     ltr = "ltr",
     rtl = "rtl",
 }
-
-export const DirectionAttributeName: string = "dir";
