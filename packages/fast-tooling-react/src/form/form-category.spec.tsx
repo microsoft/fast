@@ -10,8 +10,7 @@ import { FormCategoryProps } from "./form-category.props";
 configure({ adapter: new Adapter() });
 
 const formCategoryProps: FormCategoryProps = {
-    title: "",
-    id: "Foo",
+    title: "Category",
 };
 
 describe("FormCategory", () => {

@@ -47,6 +47,7 @@ The tooling available in FAST Tooling React can be used together to create UI fo
         - [Examples & default](#examples-&-default)
         - [Badges](#badges)
         - [Dictionaries](#dictionaries)
+        - [Categories](#categories)
     - [JSON schema keywords](#json-schema-keywords)
         - [oneOf & anyOf](#oneof-&-anyof)
         - [Enums](#enums)
@@ -1305,6 +1306,45 @@ Example:
         "title": "A dictionary of strings",
         "propertyTitle": "A dictionary key",
         "type": "string"
+    }
+}
+```
+
+#### Categories
+
+To allow properties in an object to be categorized, the JSON schema can be amended with a `formConfig` property at the same level of the object. These categories can be expandable and will appear in the order they appear in the array.
+
+Example:
+
+```json
+{
+    "type": "object",
+    "properties": {
+        "foo": {
+            "title": "String Property Foo",
+            "type": "string"
+        },
+        "bar": {
+            "title": "String Property Bar",
+            "type": "string"
+        }
+    },
+    "formConfig": {
+        "categories": [
+            {
+                "title": "Category A",
+                "expandable": true,
+                "items": [
+                    "foo"
+                ]
+            },
+            {
+                "title": "Category A",
+                "items": [
+                    "bar"
+                ]
+            }
+        ]
     }
 }
 ```

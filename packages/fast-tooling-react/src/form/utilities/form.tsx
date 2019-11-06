@@ -6,17 +6,8 @@ import {
     squareBracketsRegex,
 } from "../../data-utilities/location";
 import ajv, { ErrorObject, ValidationError } from "ajv";
+import { AttributeSettingsMappingToPropertyNames } from "../form.props";
 import {
-    AttributeSettingsMappingToPropertyNames,
-    FormOrderByPropertyNamesCategories,
-    FormOrderByPropertyNamesProps,
-} from "../form.props";
-import {
-    AssignedCategoryParams,
-    AssignedParamsByCategoryConfig,
-    FormCategoryProps,
-    FormControlParameters,
-    FormControlsWithConfigOptions,
     FormSectionProps,
     InitialOneOfAnyOfState,
     OneOfAnyOf,
@@ -415,157 +406,8 @@ export function isConst(property: any): boolean {
     return typeof property.const !== "undefined";
 }
 
-/**
- * Organizes the categories and items by weight
- */
-export function getWeightedCategoriesAndItems(
-    categoryParams: FormCategoryProps[]
-): FormCategoryProps[] {
-    categoryParams.sort(function(a: any, b: any): number {
-        return b.weight - a.weight;
-    });
-
-    for (const categoryParam of categoryParams) {
-        categoryParam.items.sort(function(a: any, b: any): number {
-            return b.weight - a.weight;
-        });
-    }
-
-    return categoryParams;
-}
-
 export function checkIsObject(property: any, schema: any): boolean {
     return (property.properties || property.type === "object") && property === schema;
-}
-
-export function findAssignedParamsByCategoryProperties(
-    config: AssignedParamsByCategoryConfig
-): AssignedCategoryParams {
-    for (const propertyName of config.categoryProperties) {
-        if (propertyName === config.formControlParameter.propertyName) {
-            return {
-                category: config.category.title,
-                expandable: config.category.expandable,
-                categoryWeight: config.category.weight,
-                itemWeight: config.categoryProperty.weight || config.assignedItemWeight,
-            };
-        }
-    }
-}
-
-export function getCategoryIndex(
-    assignedCategoryParams: AssignedCategoryParams,
-    categoryParams: FormCategoryProps[]
-): number {
-    for (
-        let i: number = 0, categoryParamsLength: number = categoryParams.length;
-        i < categoryParamsLength;
-        i++
-    ) {
-        if (assignedCategoryParams.category === categoryParams[i].title) {
-            return i;
-        }
-    }
-}
-
-export function checkCategoryConfigPropertyCount(
-    formControls: FormControlsWithConfigOptions,
-    orderByPropertyNames: FormOrderByPropertyNamesProps
-): boolean {
-    return (
-        typeof orderByPropertyNames.showCategoriesAtPropertyCount === "number" &&
-        orderByPropertyNames.showCategoriesAtPropertyCount >= formControls.items.length
-    );
-}
-
-export function findOrderedByPropertyNames(
-    category: FormOrderByPropertyNamesCategories,
-    formControlParameter: FormControlParameters,
-    assignedItemWeight: number
-): AssignedCategoryParams {
-    for (const categoryProperty of category.properties) {
-        const categoryProperties: string[] = Array.isArray(categoryProperty.propertyName)
-            ? categoryProperty.propertyName
-            : [categoryProperty.propertyName];
-
-        const assignedParamsByCategoryProperties: AssignedCategoryParams = findAssignedParamsByCategoryProperties(
-            {
-                categoryProperties,
-                formControlParameter,
-                category,
-                categoryProperty,
-                assignedItemWeight,
-            }
-        );
-
-        if (Boolean(assignedParamsByCategoryProperties)) {
-            return assignedParamsByCategoryProperties;
-        }
-    }
-}
-
-function getAssignedCategoryParams(
-    formControlParameter: FormControlParameters,
-    assignedItemWeight: number,
-    orderByPropertyNames: FormOrderByPropertyNamesProps
-): AssignedCategoryParams {
-    for (const category of orderByPropertyNames.categories) {
-        const formControlOrderedByPropertyNames: AssignedCategoryParams = findOrderedByPropertyNames(
-            category,
-            formControlParameter,
-            assignedItemWeight
-        );
-
-        if (Boolean(formControlOrderedByPropertyNames)) {
-            return formControlOrderedByPropertyNames;
-        }
-    }
-
-    return {
-        category: "Default",
-        categoryWeight: orderByPropertyNames.defaultCategoryWeight || 0,
-        itemWeight: 0,
-    };
-}
-
-export function getCategoryParams(
-    formControlParameters: FormControlParameters[],
-    orderByPropertyNames: FormOrderByPropertyNamesProps
-): FormCategoryProps[] {
-    const categoryParams: FormCategoryProps[] = [];
-
-    for (const formControlParameter of formControlParameters) {
-        const assignedCategoryParams: AssignedCategoryParams = getAssignedCategoryParams(
-            formControlParameter,
-            0,
-            orderByPropertyNames
-        );
-        const categoryIndex: number = getCategoryIndex(
-            assignedCategoryParams,
-            categoryParams
-        );
-
-        if (typeof categoryIndex === "number") {
-            categoryParams[categoryIndex].items.push({
-                weight: assignedCategoryParams.itemWeight,
-                params: formControlParameter,
-            });
-        } else {
-            categoryParams.push({
-                title: assignedCategoryParams.category,
-                weight: assignedCategoryParams.categoryWeight,
-                expandable: assignedCategoryParams.expandable,
-                items: [
-                    {
-                        weight: assignedCategoryParams.itemWeight,
-                        params: formControlParameter,
-                    },
-                ],
-            });
-        }
-    }
-
-    return getWeightedCategoriesAndItems(categoryParams);
 }
 
 export function handleToggleClick(value: any, id: string, updateRequested: any): any {
