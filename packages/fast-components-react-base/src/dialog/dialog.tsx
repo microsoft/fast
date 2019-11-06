@@ -145,8 +145,8 @@ class Dialog extends Foundation<DialogHandledProps, DialogUnhandledProps, {}> {
         return (
             <div
                 className={classNames(this.props.managedClasses.dialog_modalOverlay)}
-                onClick={this.handleOverlaySelection}
-                onTouchStart={this.handleOverlaySelection}
+                onClick={this.checkForSoftDismiss}
+                onTouchStart={this.checkForSoftDismiss}
                 role={"presentation"}
                 tabIndex={-1}
                 style={{
@@ -164,15 +164,6 @@ class Dialog extends Foundation<DialogHandledProps, DialogUnhandledProps, {}> {
             return true;
         }
         return false;
-    };
-
-    /**
-     * Handle overlay touch and clicks
-     */
-    private handleOverlaySelection = (
-        event: React.TouchEvent | React.MouseEvent
-    ): void => {
-        this.checkForSoftDismiss(event);
     };
 
     /**
