@@ -30,7 +30,7 @@ export interface SelectClassNameContract {
     /**
      * select menu positioning wrapper
      */
-    select__menuPositioningWrapper?: string;
+    select__menuPositioningRegion?: string;
 
     /**
      * left positioner horizontal state
