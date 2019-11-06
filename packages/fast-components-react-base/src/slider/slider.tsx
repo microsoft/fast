@@ -21,14 +21,13 @@ import {
 } from "@microsoft/fast-web-utilities";
 import ReactDOM from "react-dom";
 import { SliderClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
-import { Direction } from "@microsoft/fast-web-utilities";
+import { classNames, Direction } from "@microsoft/fast-web-utilities";
 import { DisplayNamePrefix } from "../utilities";
 import { SliderContext, SliderContextType } from "./slider-context";
 import SliderTrackItem, {
     SliderTrackItemAnchor,
     SliderTrackItemManagedClasses,
 } from "../slider-track-item";
-import { classNames } from "@microsoft/fast-web-utilities";
 
 export enum SliderThumb {
     upperThumb = "upperThumb",
@@ -45,6 +44,7 @@ export interface SliderState {
     isIncrementing: boolean;
     incrementDirection: number;
     usePageStep: boolean;
+    direction: Direction;
 }
 
 class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, SliderState> {
@@ -66,6 +66,7 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
     private static minIncrementDelay: number = 100;
     private static incrementAcceleration: number = 50;
     private static rolePropName: string = "role";
+    private static DirectionAttributeName: string = "dir";
 
     protected handledProps: HandledProps<SliderHandledProps> = {
         disabled: void 0,
@@ -100,7 +101,6 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
     private barMinPixel: number = 0;
     private incrementTimer: NodeJS.Timer;
     private lastIncrementDelay: number = Slider.baseIncrementDelay;
-    private direction: Direction = Direction.ltr;
 
     /**
      * constructor
@@ -173,12 +173,17 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
             isIncrementing: false,
             incrementDirection: 1,
             usePageStep: false,
+            direction: Direction.ltr,
         };
     }
 
     /**
      * React lifecycle methods
      */
+    public componentDidMount(): void {
+        this.updateDirection();
+    }
+
     public componentWillUnmount(): void {
         this.suspendActiveOperations();
     }
@@ -210,13 +215,14 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
             this.suspendActiveOperations();
             this.updateValuesForModeSwitch();
         }
+
+        this.updateDirection();
     }
 
     /**
      * Renders the component
      */
     public render(): React.ReactElement<HTMLDivElement> {
-        this.updateDirection();
         return (
             <div
                 {...this.unhandledProps()}
@@ -230,7 +236,7 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
                         sliderState: this.state,
                         sliderConstrainedRange: this.props.constrainedRange,
                         sliderValueAsPercent: this.valueAsPercent,
-                        sliderDirection: this.direction,
+                        sliderDirection: this.state.direction,
                     }}
                 >
                     <div
@@ -308,7 +314,7 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
                 [slider__incrementing, this.state.isIncrementing],
                 [slider__vertical, isVertical],
                 [slider__horizontal, !isVertical],
-                [slider__rtl, this.direction === "rtl"],
+                [slider__rtl, this.state.direction === Direction.rtl],
                 [slider__modeSingle, this.props.mode === SliderMode.singleValue],
                 [slider__modeAdjustUpper, this.props.mode === SliderMode.adustUpperValue],
                 [slider__modeAdjustLower, this.props.mode === SliderMode.adustLowerValue],
@@ -579,7 +585,6 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
             return;
         }
         event.preventDefault();
-        this.updateDirection();
         this.updateSliderDimensions();
         const pixelCoordinate: number =
             this.props.orientation === SliderOrientation.vertical
@@ -628,22 +633,34 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
     };
 
     /**
-     *  Updates the direction
+     *  updates the direction in state if necessary
      */
     private updateDirection = (): void => {
+        const newDirection: Direction = this.getDirection();
+        if (newDirection !== this.state.direction) {
+            this.suspendActiveOperations();
+            this.setState({
+                direction: newDirection,
+            });
+        }
+    };
+
+    /**
+     *  gets the current direction
+     */
+    private getDirection = (): Direction | null => {
         if (this.rootElement.current === null) {
-            return;
+            return Direction.ltr;
         }
 
-        const closest: Element = this.rootElement.current.closest(`[dir]`);
+        const closest: Element = this.rootElement.current.closest(
+            `[${Slider.DirectionAttributeName}]`
+        );
 
-        if (closest === null) {
-            this.direction = Direction.ltr;
-            return;
-        }
-
-        this.direction =
-            closest.getAttribute("dir") === "rtl" ? Direction.rtl : Direction.ltr;
+        return closest === null ||
+            closest.getAttribute(Slider.DirectionAttributeName) === Direction.ltr
+            ? Direction.ltr
+            : Direction.rtl;
     };
 
     /**
@@ -786,7 +803,7 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
         }
 
         if (
-            this.direction === "rtl" &&
+            this.state.direction === Direction.rtl &&
             this.props.orientation !== SliderOrientation.vertical
         ) {
             pct = 1 - pct;
@@ -818,7 +835,6 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
             event.preventDefault();
             return;
         }
-        this.updateDirection();
 
         switch (event.keyCode) {
             case keyCodeArrowDown:
@@ -826,7 +842,7 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
                 break;
             case keyCodeArrowRight:
                 this.startIncrementing(
-                    this.direction === Direction.ltr ? 1 : -1,
+                    this.state.direction === Direction.ltr ? 1 : -1,
                     false,
                     thumb,
                     event
@@ -837,7 +853,7 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
                 break;
             case keyCodeArrowLeft:
                 this.startIncrementing(
-                    this.direction === Direction.ltr ? -1 : 1,
+                    this.state.direction === Direction.ltr ? -1 : 1,
                     false,
                     thumb,
                     event
@@ -933,7 +949,6 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
      *  Get dragvalue from mouse event or touch
      */
     private getDragValue = (event: MouseEvent | Touch, thumb: SliderThumb): number => {
-        this.updateDirection();
         this.updateSliderDimensions();
         const pixelCoordinate: number =
             this.props.orientation === SliderOrientation.vertical
