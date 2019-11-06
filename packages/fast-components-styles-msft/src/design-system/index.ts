@@ -268,7 +268,7 @@ const designSystemDefaults: DesignSystem = {
     neutralForegroundActiveDelta: 0,
     neutralForegroundFocusDelta: 0,
 
-    neutralDividerRestDelta: 6,
+    neutralDividerRestDelta: 8,
 
     neutralOutlineRestDelta: 25,
     neutralOutlineHoverDelta: 40,
