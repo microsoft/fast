@@ -1,4 +1,6 @@
+
 # FAST JSS manager Angular
+**_This package has been deprecated and is no longer under active development_.**
 
 An Angular directive and component library for managing component JSS (JavaScript Style Sheets). It allows top-down variable injection into JSS stylesheet functions using the exported `DesignSystem`.
 

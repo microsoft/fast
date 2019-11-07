@@ -95,7 +95,7 @@ describe("getInitialOneOfAnyOfState", () => {
 
         expect(initialOneOfAnyOfNoData.oneOfAnyOf).toEqual({
             type: oneOfAnyOfType.oneOf,
-            activeIndex: 0,
+            activeIndex: -1,
         });
         expect(initialOneOfAnyOfWithData.oneOfAnyOf).toEqual({
             type: oneOfAnyOfType.oneOf,

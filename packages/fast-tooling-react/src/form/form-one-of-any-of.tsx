@@ -35,13 +35,17 @@ class FormOneOfAnyOf extends React.Component<
                         className={this.props.managedClasses.formOneOfAnyOf_select}
                         id={id}
                         onChange={this.handleChange}
-                        value={this.props.activeIndex || 0}
+                        value={this.getActiveIndex()}
                     >
                         {this.props.children}
                     </select>
                 </span>
             </div>
         );
+    }
+
+    private getActiveIndex(): number {
+        return typeof this.props.activeIndex === "number" ? this.props.activeIndex : -1;
     }
 
     private handleChange = (e: React.ChangeEvent<HTMLSelectElement>): void => {
