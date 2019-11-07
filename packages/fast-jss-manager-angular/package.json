@@ -2,7 +2,7 @@
   "name": "@microsoft/fast-jss-manager-angular",
   "description": "Angular directive and component for managing component JSS stylesheets",
   "sideEffects": false,
-  "version": "4.1.10",
+  "version": "4.1.11",
   "author": {
     "name": "Microsoft",
     "url": "https://discord.gg/FcSNfg4"
@@ -47,7 +47,9 @@
       "js"
     ],
     "preset": "jest-preset-angular",
-    "setupFilesAfterEnv": ["./build/setup-jest.ts"],
+    "setupFilesAfterEnv": [
+      "./build/setup-jest.ts"
+    ],
     "testPathIgnorePatterns": [
       "/node_modules/",
       "/dist/"
@@ -68,7 +70,7 @@
     "@angular/platform-browser": "^5.2.9",
     "@angular/platform-browser-dynamic": "^5.2.9",
     "@babel/preset-env": "^7.1.0",
-    "@microsoft/fast-tslint-rules": "^3.0.3",
+    "@microsoft/fast-tslint-rules": "^3.0.4",
     "@types/jest": "^24.0.11",
     "@types/lodash-es": "^4.17.0",
     "@types/node": "^9.4.6",
@@ -96,7 +98,7 @@
     "lodash-es": "^4.0.0"
   },
   "dependencies": {
-    "@microsoft/fast-jss-manager": "^4.1.8",
+    "@microsoft/fast-jss-manager": "^4.1.9",
     "core-js": "^2.4.1",
     "jss": "^9.8.0",
     "jss-preset-default": "^4.3.0",
