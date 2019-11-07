@@ -19,6 +19,8 @@ export default {
                         "selectedRangeMax",
                         "totalRangeMin",
                         "totalRangeMax",
+                        "constrainedRangeMin",
+                        "constrainedRangeMax",
                     ],
                 },
             ],
@@ -26,6 +28,7 @@ export default {
         showTickmark: {
             title: "Show tick mark",
             type: "boolean",
+            default: true,
         },
         label: {
             title: "Label",
