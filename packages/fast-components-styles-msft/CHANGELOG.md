@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.25.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-styles-msft@4.24.0...@microsoft/fast-components-styles-msft@4.25.0) (2019-11-07)
+
+
+### Bug Fixes
+
+* canUsedForcedColors should be called canUseForcedColors ([#2403](https://github.com/Microsoft/fast-dna/issues/2403)) ([8904df4](https://github.com/Microsoft/fast-dna/commit/8904df4d8af78d917a3aa6104f34ad45e12bfda5))
+* use only context and jss styles to apply select menu background ([#2360](https://github.com/Microsoft/fast-dna/issues/2360)) ([a456656](https://github.com/Microsoft/fast-dna/commit/a456656ae7c585d10b849dfccfb98c7e96daa239))
+
+
+### Features
+
+* select class and style support for scaling menus ([#2397](https://github.com/Microsoft/fast-dna/issues/2397)) ([d9b4c84](https://github.com/Microsoft/fast-dna/commit/d9b4c841e38dcf837f0159cf9928cceda0bb9de8))
+
+
+
+
+
 # [4.24.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-styles-msft@4.23.0...@microsoft/fast-components-styles-msft@4.24.0) (2019-10-25)
 
 

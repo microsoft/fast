@@ -92,6 +92,7 @@ const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = {
     },
     toggle_input: {
         ...applyCursorPointer(),
+        display: "block",
         position: "relative",
         margin: "0",
         width: toPx(width),

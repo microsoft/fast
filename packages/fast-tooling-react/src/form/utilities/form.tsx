@@ -71,10 +71,15 @@ export function getInitialOneOfAnyOfState(
     if (schema.oneOf || schema.anyOf) {
         oneOfAnyOf = schema.oneOf ? oneOfAnyOfType.oneOf : oneOfAnyOfType.anyOf;
         activeIndex = getOneOfAnyOfActiveIndex(oneOfAnyOf, schema, data);
-        updatedSchema = Object.assign(
-            omit(schema, [oneOfAnyOf]),
-            schema[oneOfAnyOf][activeIndex]
-        );
+        updatedSchema =
+            typeof activeIndex === "undefined"
+                ? {
+                      type: "undefined",
+                  }
+                : Object.assign(
+                      omit(schema, [oneOfAnyOf]),
+                      schema[oneOfAnyOf][activeIndex]
+                  );
         oneOfAnyOfState = {
             type: oneOfAnyOf,
             activeIndex,
@@ -171,7 +176,7 @@ function checkSchemaTypeIsArray(schema: any, type: string): boolean {
  * Find out what the active index should be based on the data
  */
 export function getOneOfAnyOfActiveIndex(type: string, schema: any, data: any): number {
-    let activeIndex: number = 0;
+    let activeIndex: number = -1;
 
     if (checkSchemaTypeIsArray(schema, type)) {
         const newData: any = removeUndefinedKeys(data);

@@ -94,6 +94,38 @@ const styles: ComponentStyles<SelectClassNameContract, DesignSystem> = {
             "border-color": neutralOutlineRest,
         },
     },
+    select__menuPositioningRegion: {
+        display: "grid",
+        "grid-template-columns": "1fr",
+        "grid-template-rows": "1fr",
+    },
+    select__menuPositionLeft: {
+        "grid-template-columns": "1fr auto",
+        "& $select_menu": {
+            "grid-column": "2",
+        },
+    },
+    select__menuPositionRight: {
+        "grid-template-columns": "auto 1fr",
+        "& $select_menu": {
+            "grid-column": "1",
+        },
+    },
+    select__menuPositionTop: {
+        "grid-template-rows": "1fr auto",
+
+        "& $select_menu": {
+            "grid-row": "2",
+            "margin-top": "12px",
+        },
+    },
+    select__menuPositionBottom: {
+        "grid-template-rows": "auto 1fr",
+        "& $select_menu": {
+            "grid-row": "1",
+            "margin-bottom": "12px",
+        },
+    },
 };
 
 export default styles;
