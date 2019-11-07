@@ -67,11 +67,13 @@ const styles: ComponentStyles<CarouselClassNameContract, DesignSystem> = {
     carousel_sequenceIndicators: {
         position: "absolute",
         bottom: "8px",
-        display: "block",
+        display: "inline-flex",
         padding: "0",
         "text-align": "center",
-        width: "100%",
         "z-index": "100",
+        "max-width": "100%",
+        left: "50%",
+        transform: "translate(-50%, -50%)",
         "& > :first-child:nth-last-child(1)": {
             display: "none",
         },
