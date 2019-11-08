@@ -542,4 +542,104 @@ describe("Form", () => {
 
         expect(rendered.find(`#${id1}`)).toHaveLength(2);
     });
+    test("should show controls in categories if categories are passed", () => {
+        const rendered: any = mount(
+            <BareForm
+                schema={{
+                    type: "object",
+                    properties: {
+                        foo: {
+                            type: "string",
+                        },
+                        bar: {
+                            type: "number",
+                        },
+                        bat: {
+                            type: "boolean",
+                        },
+                    },
+                    formConfig: {
+                        categories: [
+                            {
+                                title: "Category A",
+                                expandable: true,
+                                items: ["foo"],
+                            },
+                            {
+                                title: "Category B",
+                                items: ["bar"],
+                            },
+                        ],
+                    },
+                }}
+                data={{}}
+                onChange={jest.fn()}
+            />
+        );
+
+        const categories: any = rendered.find("FormCategory");
+
+        expect(categories).toHaveLength(2);
+        expect(categories.at(0).find("TextareaControl")).toHaveLength(1);
+        expect(categories.at(1).find("NumberFieldControl")).toHaveLength(1);
+        expect(rendered.find("CheckboxControl")).toHaveLength(1);
+    });
+    test("should update controls if oneOf select has a value change", () => {
+        const rendered: any = mount(
+            <BareForm
+                schema={{
+                    oneOf: [
+                        {
+                            type: "object",
+                            properties: {
+                                foo: {
+                                    type: "string",
+                                },
+                                bar: {
+                                    type: "number",
+                                },
+                                bat: {
+                                    type: "boolean",
+                                },
+                            },
+                            required: ["foo", "bar", "bat"],
+                            formConfig: {
+                                categories: [
+                                    {
+                                        title: "Category A",
+                                        expandable: true,
+                                        items: ["foo"],
+                                    },
+                                    {
+                                        title: "Category B",
+                                        items: ["bar"],
+                                    },
+                                ],
+                            },
+                        },
+                    ],
+                }}
+                data={undefined}
+                onChange={jest.fn()}
+            />
+        );
+
+        const categoriesBefore: any = rendered.find("FormCategory");
+
+        expect(categoriesBefore).toHaveLength(0);
+        expect(categoriesBefore.at(0).find("TextareaControl")).toHaveLength(0);
+        expect(categoriesBefore.at(1).find("NumberFieldControl")).toHaveLength(0);
+        expect(rendered.find("CheckboxControl")).toHaveLength(0);
+
+        const select: any = rendered.find("select");
+
+        select.simulate("change", { target: { value: "0" } });
+
+        const categoriesAfter: any = rendered.find("FormCategory");
+
+        expect(categoriesAfter).toHaveLength(2);
+        expect(categoriesAfter.at(0).find("TextareaControl")).toHaveLength(1);
+        expect(categoriesAfter.at(1).find("NumberFieldControl")).toHaveLength(1);
+        expect(rendered.find("CheckboxControl")).toHaveLength(1);
+    });
 });
