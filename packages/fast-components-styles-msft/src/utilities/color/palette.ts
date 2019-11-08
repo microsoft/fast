@@ -103,7 +103,7 @@ export function findClosestSwatchIndex(
         }
 
         try {
-            swatchLuminance = luminance(swatch);
+            swatchLuminance = luminance(resolvedSwatch);
         } catch (e) {
             swatchLuminance = -1;
         }
