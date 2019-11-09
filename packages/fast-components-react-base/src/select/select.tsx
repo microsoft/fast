@@ -532,17 +532,20 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
                 }
                 break;
             case keyCodeEscape:
+                e.preventDefault();
                 this.toggleMenu(false);
                 this.focusTriggerElement();
                 break;
             case keyCodeArrowDown:
             case keyCodeArrowRight:
+                e.preventDefault();
                 if (!this.props.multiselectable && !this.state.isMenuOpen) {
                     this.incrementSelectedOption(+1);
                 }
                 break;
             case keyCodeArrowUp:
             case keyCodeArrowLeft:
+                e.preventDefault();
                 if (!this.props.multiselectable && !this.state.isMenuOpen) {
                     this.incrementSelectedOption(-1);
                 }
