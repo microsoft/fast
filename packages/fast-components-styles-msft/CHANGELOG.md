@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.25.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-styles-msft@4.25.0...@microsoft/fast-components-styles-msft@4.25.1) (2019-11-11)
+
+
+### Bug Fixes
+
+* correct alignment of toggle handle when browser font size is customized [#2414](https://github.com/Microsoft/fast-dna/issues/2414) ([3b59e63](https://github.com/Microsoft/fast-dna/commit/3b59e631956100820d7b0a1150826ac02f9547a2))
+* update carousel sequence indicator to be centered without using full width of parent ([#2405](https://github.com/Microsoft/fast-dna/issues/2405)) ([12aed9e](https://github.com/Microsoft/fast-dna/commit/12aed9e44b5a918ded7e44bed57700d004ac9385))
+
+
+
+
+
 # [4.25.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-styles-msft@4.24.0...@microsoft/fast-components-styles-msft@4.25.0) (2019-11-07)
 
 
