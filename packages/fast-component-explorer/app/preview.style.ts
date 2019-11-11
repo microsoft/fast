@@ -2,7 +2,7 @@ import { ComponentStyles } from "@microsoft/fast-jss-manager-react";
 import { DesignSystem } from "@microsoft/fast-components-styles-msft";
 
 export interface PreviewClassNameContract {
-    preview?: string;
+    preview: string;
 }
 
 const style: ComponentStyles<PreviewClassNameContract, DesignSystem> = {
