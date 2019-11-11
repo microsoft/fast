@@ -28,6 +28,11 @@ export interface SelectClassNameContract {
     select__multiSelectable?: string;
 
     /**
+     * select menu positioning wrapper
+     */
+    select__menuPositioningRegion?: string;
+
+    /**
      * left positioner horizontal state
      */
     select__menuPositionLeft?: string;

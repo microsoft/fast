@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.19.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-base@4.18.3...@microsoft/fast-components-react-base@4.19.0) (2019-11-07)
+
+
+### Bug Fixes
+
+* modal dialogs actively take focus ([#2319](https://github.com/Microsoft/fast-dna/issues/2319)) ([920ceb3](https://github.com/Microsoft/fast-dna/commit/920ceb3e33d388a056c072c77ce70805972e30e3))
+* slider can miss dir setting on initial render. ([#2399](https://github.com/Microsoft/fast-dna/issues/2399)) ([8ea0222](https://github.com/Microsoft/fast-dna/commit/8ea022285c4cdb38a01778a3af71b6f01d6691cc))
+
+
+### Features
+
+* add viewport context ([#2359](https://github.com/Microsoft/fast-dna/issues/2359)) ([fab852e](https://github.com/Microsoft/fast-dna/commit/fab852e825dca642182621980d9ea2f90964b206))
+* select class and style support for scaling menus ([#2397](https://github.com/Microsoft/fast-dna/issues/2397)) ([d9b4c84](https://github.com/Microsoft/fast-dna/commit/d9b4c841e38dcf837f0159cf9928cceda0bb9de8))
+
+
+
+
+
 ## [4.18.3](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-base@4.18.2...@microsoft/fast-components-react-base@4.18.3) (2019-10-25)
 
 **Note:** Version bump only for package @microsoft/fast-components-react-base

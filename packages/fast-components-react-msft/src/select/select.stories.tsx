@@ -6,6 +6,9 @@ import { Select } from "./";
 import { uniqueId } from "lodash-es";
 import { action } from "@storybook/addon-actions";
 import { AxisPositioningMode } from "@microsoft/fast-components-react-base";
+import { Dialog } from "../dialog";
+
+const rootElement: React.RefObject<HTMLDivElement> = React.createRef<HTMLDivElement>();
 
 storiesOf("Select", module)
     .add("Default", () => (
@@ -181,6 +184,101 @@ storiesOf("Select", module)
                 displayString="Select option 4"
             />
         </Select>
+    ))
+    .add("Scaling in dialog", () => (
+        <Dialog modal={true} visible={true}>
+            <div
+                ref={rootElement}
+                style={{
+                    height: "100%",
+                    width: "100%",
+                    overflowY: "scroll",
+                    overflowX: "hidden",
+                }}
+            >
+                <div
+                    style={{
+                        height: "1000px",
+                    }}
+                >
+                    <Select
+                        style={{
+                            margin: "350px 0 0 20px",
+                            width: "180px",
+                        }}
+                        placeholder="Select an option"
+                        onValueChange={action("onValueChange")}
+                        menuFlyoutConfig={{
+                            viewport: rootElement,
+                            horizontalPositioningMode: AxisPositioningMode.uncontrolled,
+                            verticalPositioningMode: AxisPositioningMode.adjacent,
+                            scaleToFit: true,
+                        }}
+                    >
+                        <SelectOption
+                            id={uniqueId()}
+                            value="Select option 1"
+                            displayString="Select option 1"
+                        />
+                        <SelectOption
+                            id={uniqueId()}
+                            value="Select option 2"
+                            displayString="Select option 2"
+                        />
+                        <SelectOption
+                            id={uniqueId()}
+                            value="Select option 3"
+                            displayString="Select option 3"
+                        />
+                        <SelectOption
+                            id={uniqueId()}
+                            value="Select option 4"
+                            displayString="Select option 4"
+                        />
+                        <SelectOption
+                            id={uniqueId()}
+                            value="Select option 1"
+                            displayString="Select option 1"
+                        />
+                        <SelectOption
+                            id={uniqueId()}
+                            value="Select option 2"
+                            displayString="Select option 2"
+                        />
+                        <SelectOption
+                            id={uniqueId()}
+                            value="Select option 3"
+                            displayString="Select option 3"
+                        />
+                        <SelectOption
+                            id={uniqueId()}
+                            value="Select option 4"
+                            displayString="Select option 4"
+                        />
+                        <SelectOption
+                            id={uniqueId()}
+                            value="Select option 1"
+                            displayString="Select option 1"
+                        />
+                        <SelectOption
+                            id={uniqueId()}
+                            value="Select option 2"
+                            displayString="Select option 2"
+                        />
+                        <SelectOption
+                            id={uniqueId()}
+                            value="Select option 3"
+                            displayString="Select option 3"
+                        />
+                        <SelectOption
+                            id={uniqueId()}
+                            value="Select option 4"
+                            displayString="Select option 4"
+                        />
+                    </Select>
+                </div>
+            </div>
+        </Dialog>
     ))
     .add("Disabled", () => (
         <Select onValueChange={action("onValueChange")} disabled={true} />

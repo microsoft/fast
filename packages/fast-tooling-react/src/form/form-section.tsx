@@ -237,9 +237,9 @@ class FormSection extends React.Component<
         );
         // All uncategorized properties
         const uncategorized: string[] = Object.keys(
-            get(this.props.schema, PropertyKeyword.reactProperties, {})
+            get(this.state.schema, PropertyKeyword.reactProperties, {})
         )
-            .concat(Object.keys(get(this.props.schema, PropertyKeyword.properties, {})))
+            .concat(Object.keys(get(this.state.schema, PropertyKeyword.properties, {})))
             .filter((category: string) => {
                 return categorized.indexOf(category) < 0;
             });
@@ -355,7 +355,7 @@ class FormSection extends React.Component<
             );
 
             return this.renderCategories(
-                get(this.props.schema, "formConfig.categories"),
+                get(schema, "formConfig.categories"),
                 formControls,
                 invalidMessage
             );
@@ -370,6 +370,9 @@ class FormSection extends React.Component<
             typeof this.state.oneOfAnyOf !== "undefined" &&
             this.props.schema[this.state.oneOfAnyOf.type]
         ) {
+            const unselectedOption: React.ReactNode = (
+                <option value={-1}>{"Select an option"}</option>
+            );
             const options: React.ReactNode = getOneOfAnyOfSelectOptions(
                 this.props.schema,
                 this.state
@@ -381,6 +384,7 @@ class FormSection extends React.Component<
                     activeIndex={this.state.oneOfAnyOf.activeIndex}
                     onUpdate={this.handleAnyOfOneOfClick}
                 >
+                    {unselectedOption}
                     {options}
                 </FormOneOfAnyOf>
             );
@@ -394,7 +398,7 @@ class FormSection extends React.Component<
      */
     private renderAdditionalProperties(invalidMessage: string): React.ReactNode {
         const schemaLocation: string = this.getSchemaLocation();
-        const schema: any = get(this.props.schema, schemaLocation, this.props.schema);
+        const schema: any = get(this.state.schema, schemaLocation, this.state.schema);
 
         if (typeof schema.additionalProperties === "object") {
             return (
@@ -402,7 +406,7 @@ class FormSection extends React.Component<
                     index={0}
                     controls={this.props.controls}
                     controlPlugins={this.props.controlPlugins}
-                    formControlId={this.props.schema.formControlId}
+                    formControlId={this.state.schema.formControlId}
                     dataLocation={this.props.dataLocation}
                     schemaLocation={schemaLocation}
                     examples={get(schema, "examples")}

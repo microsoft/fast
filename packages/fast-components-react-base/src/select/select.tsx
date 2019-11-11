@@ -323,6 +323,7 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
      */
     private generateViewportPositionerClassNames(): ViewportPositionerClassNameContract {
         const {
+            select__menuPositioningRegion,
             select__menuPositionLeft,
             select__menuPositionRight,
             select__menuPositionTop,
@@ -332,6 +333,7 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
         }: SelectClassNameContract = this.props.managedClasses;
 
         return {
+            viewportPositioner: select__menuPositioningRegion,
             viewportPositioner__left: select__menuPositionLeft,
             viewportPositioner__right: select__menuPositionRight,
             viewportPositioner__top: select__menuPositionTop,

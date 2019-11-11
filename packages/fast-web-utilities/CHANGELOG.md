@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.3.6](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-web-utilities@4.3.5...@microsoft/fast-web-utilities@4.3.6) (2019-11-07)
+
+
+### Bug Fixes
+
+* canUsedForcedColors should be called canUseForcedColors ([#2403](https://github.com/Microsoft/fast-dna/issues/2403)) ([8904df4](https://github.com/Microsoft/fast-dna/commit/8904df4d8af78d917a3aa6104f34ad45e12bfda5))
+
+
+
+
+
 ## [4.3.5](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-web-utilities@4.3.4...@microsoft/fast-web-utilities@4.3.5) (2019-10-25)
 
 **Note:** Version bump only for package @microsoft/fast-web-utilities
