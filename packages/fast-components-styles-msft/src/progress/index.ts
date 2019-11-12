@@ -6,7 +6,7 @@ import {
     neutralFillRest,
     neutralForegroundHint,
 } from "../utilities/color";
-import { format, multiply, toPx } from "@microsoft/fast-jss-utilities";
+import { directionSwitch, format, multiply, toPx } from "@microsoft/fast-jss-utilities";
 import { designUnit, outlineWidth } from "../utilities/design-system";
 import { glyphSize, height, heightNumber } from "../utilities/density";
 import {
@@ -39,6 +39,7 @@ const styles: ComponentStyles<ProgressClassNameContract, DesignSystem> = {
         },
         "& $progress_valueIndicator": {
             stroke: accentFillRest,
+            transform: directionSwitch("", "scale(1)"),
             [highContrastSelector]: {
                 stroke: HighContrastColor.buttonText,
             },
@@ -139,18 +140,18 @@ const styles: ComponentStyles<ProgressClassNameContract, DesignSystem> = {
     },
     progress_dot__1: {
         width: "40%",
-        transform: "translateX(-100%)",
+        // transform: directionSwitch("translateX(-100%)", "translateX(100%)"),
         animation: "indeterminate-1 2s infinite",
     },
     progress_dot__2: {
         width: "60%",
-        transform: "translateX(-150%)",
+        // transform: directionSwitch("translateX(-150%)","translateX(-150%)"),
         animation: "indeterminate-2 2s infinite",
     },
     "@keyframes spin-infinite": {
         "0%": {
             "stroke-dasharray": "0.01px 43.97px",
-            transform: "rotate(0deg)",
+            transform: directionSwitch("rotate(0deg)", "rotate(1080deg)"),
         },
         "50%": {
             "stroke-dasharray": "21.99px 21.99px",
@@ -158,40 +159,40 @@ const styles: ComponentStyles<ProgressClassNameContract, DesignSystem> = {
         },
         "100%": {
             "stroke-dasharray": ".01px 43.97px",
-            transform: "rotate(1080deg)",
+            transform: directionSwitch("rotate(1080deg)", "rotate(0deg)"),
         },
     },
     "@keyframes indeterminate-1": {
         "0%": {
             opacity: "1",
-            transform: "translateX(-100%)",
+            transform: directionSwitch("translateX(-100%)", "translateX(100%)"),
         },
         "70%": {
             opacity: "1",
-            transform: "translateX(300%)",
+            transform: directionSwitch("translateX(300%)", "translateX(-300%)"),
         },
         "70.01%": {
             opacity: "0",
         },
         "100%": {
             opacity: "0",
-            transform: "translateX(300%)",
+            transform: directionSwitch("translateX(300%)", "translateX(-300%)"),
         },
     },
     "@keyframes indeterminate-2": {
         "0%": {
             opacity: "0",
-            transform: "translateX(-150%)",
+            transform: directionSwitch("translateX(-150%)", "translateX(150%)"),
         },
         "29.99%": {
             opacity: "0",
         },
         "30%": {
             opacity: "1",
-            transform: "translateX(-150%)",
+            transform: directionSwitch("translateX(-150%)", "translateX(150%)"),
         },
         "100%": {
-            transform: "translateX(166.66%)",
+            transform: directionSwitch("translateX(166.66%)", "translateX(-166.66%)"),
             opacity: "1",
         },
     },
