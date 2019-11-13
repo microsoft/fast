@@ -39,4 +39,17 @@ describe("FormOneOfAnyOf", () => {
         expect(callback).toHaveBeenCalled();
         expect(callback.mock.calls[0][0]).toEqual(50);
     });
+    test("should show an unselected option if the contents are undefined", () => {
+        const callback: any = jest.fn();
+        const rendered: any = mount(
+            <FormOneOfAnyOf
+                {...formOneOfAnyOfProps}
+                activeIndex={-1}
+                onUpdate={callback}
+            />
+        );
+        const select: any = rendered.find("select");
+
+        expect(select.value).toEqual(undefined);
+    });
 });

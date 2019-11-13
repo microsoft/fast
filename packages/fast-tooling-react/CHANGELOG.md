@@ -3,6 +3,35 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.23.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-tooling-react@1.23.0...@microsoft/fast-tooling-react@1.23.1) (2019-11-11)
+
+
+### Bug Fixes
+
+* ensure categories are included when the schema also includes oneOf ([#2416](https://github.com/Microsoft/fast-dna/issues/2416)) ([ca6a106](https://github.com/Microsoft/fast-dna/commit/ca6a106bed94a60a7704814c72470cd361a845eb))
+
+
+
+
+
+# [1.23.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-tooling-react@1.22.2...@microsoft/fast-tooling-react@1.23.0) (2019-11-07)
+
+
+### Bug Fixes
+
+* address a case where string components were untitled in the breadcrumb navigation ([#2390](https://github.com/Microsoft/fast-dna/issues/2390)) ([99032bf](https://github.com/Microsoft/fast-dna/commit/99032bf49f074e84491e65810f174b27af21d03e))
+* allows oneOfs to be undefined if no values have been set ([#2404](https://github.com/Microsoft/fast-dna/issues/2404)) ([d6bc35a](https://github.com/Microsoft/fast-dna/commit/d6bc35a05cb16ccf683ae3ba7ea9caa4c30cb525))
+
+
+### Features
+
+* add new utilities for commonly used data manipulation ([#2383](https://github.com/Microsoft/fast-dna/issues/2383)) ([cbb7e7f](https://github.com/Microsoft/fast-dna/commit/cbb7e7fca7ab96ef8ffeb572745d111c15b462c3))
+* allow properties to be categorized ([#2394](https://github.com/Microsoft/fast-dna/issues/2394)) ([095cdc9](https://github.com/Microsoft/fast-dna/commit/095cdc9781c2c615edf7ce8197b42318a51b6c18))
+
+
+
+
+
 ## [1.22.2](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-tooling-react@1.22.1...@microsoft/fast-tooling-react@1.22.2) (2019-10-25)
 
 

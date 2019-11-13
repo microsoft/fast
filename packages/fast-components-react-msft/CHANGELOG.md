@@ -3,6 +3,32 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.25.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-msft@4.25.0...@microsoft/fast-components-react-msft@4.25.1) (2019-11-11)
+
+**Note:** Version bump only for package @microsoft/fast-components-react-msft
+
+
+
+
+
+# [4.25.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-msft@4.24.3...@microsoft/fast-components-react-msft@4.25.0) (2019-11-07)
+
+
+### Bug Fixes
+
+* modal dialogs actively take focus ([#2319](https://github.com/Microsoft/fast-dna/issues/2319)) ([920ceb3](https://github.com/Microsoft/fast-dna/commit/920ceb3e33d388a056c072c77ce70805972e30e3))
+* use only context and jss styles to apply select menu background ([#2360](https://github.com/Microsoft/fast-dna/issues/2360)) ([a456656](https://github.com/Microsoft/fast-dna/commit/a456656ae7c585d10b849dfccfb98c7e96daa239))
+
+
+### Features
+
+* add viewport context ([#2359](https://github.com/Microsoft/fast-dna/issues/2359)) ([fab852e](https://github.com/Microsoft/fast-dna/commit/fab852e825dca642182621980d9ea2f90964b206))
+* select class and style support for scaling menus ([#2397](https://github.com/Microsoft/fast-dna/issues/2397)) ([d9b4c84](https://github.com/Microsoft/fast-dna/commit/d9b4c841e38dcf837f0159cf9928cceda0bb9de8))
+
+
+
+
+
 ## [4.24.3](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-msft@4.24.2...@microsoft/fast-components-react-msft@4.24.3) (2019-10-25)
 
 **Note:** Version bump only for package @microsoft/fast-components-react-msft

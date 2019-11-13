@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.5.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-class-name-contracts-base@4.4.0...@microsoft/fast-components-class-name-contracts-base@4.5.0) (2019-11-07)
+
+
+### Features
+
+* select class and style support for scaling menus ([#2397](https://github.com/Microsoft/fast-dna/issues/2397)) ([d9b4c84](https://github.com/Microsoft/fast-dna/commit/d9b4c841e38dcf837f0159cf9928cceda0bb9de8))
+
+
+
+
+
 # [4.4.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-class-name-contracts-base@4.3.3...@microsoft/fast-components-class-name-contracts-base@4.4.0) (2019-10-16)
 
 

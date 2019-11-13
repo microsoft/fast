@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.2.18](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-storybook-design-system-addon@1.2.17...@microsoft/fast-storybook-design-system-addon@1.2.18) (2019-11-11)
+
+**Note:** Version bump only for package @microsoft/fast-storybook-design-system-addon
+
+
+
+
+
+## [1.2.17](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-storybook-design-system-addon@1.2.16...@microsoft/fast-storybook-design-system-addon@1.2.17) (2019-11-07)
+
+
+### Bug Fixes
+
+* fix msft components storybook site ([#2396](https://github.com/Microsoft/fast-dna/issues/2396)) ([a55d265](https://github.com/Microsoft/fast-dna/commit/a55d265ccfb03c9b4ad236450778e146b45dac02))
+
+
+
+
+
 ## [1.2.16](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-storybook-design-system-addon@1.2.15...@microsoft/fast-storybook-design-system-addon@1.2.16) (2019-10-25)
 
 **Note:** Version bump only for package @microsoft/fast-storybook-design-system-addon

@@ -109,6 +109,31 @@
             "required": [
                 "numberOrString"
             ]
+        },
+        {
+            "description": "category",
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "foo": {
+                    "title": "string",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "foo"
+            ],
+            "formConfig": {
+                "categories": [
+                    {
+                        "title": "Category A",
+                        "expandable": true,
+                        "items": [
+                            "foo"
+                        ]
+                    }
+                ]
+            }
         }
     ]
 }
