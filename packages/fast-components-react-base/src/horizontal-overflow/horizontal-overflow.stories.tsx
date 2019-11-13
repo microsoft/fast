@@ -4,7 +4,6 @@ import HorizontalOverflow, { OverflowChange } from "./";
 import Button from "../button";
 import Image from "../image";
 import { action } from "@storybook/addon-actions";
-import { isNil } from "lodash-es";
 
 const images: JSX.Element[] = [
     "https://placehold.it/120x100/414141/?text=1",
@@ -24,21 +23,6 @@ const images: JSX.Element[] = [
         return <Image src={src} key={src} alt="Placeholder image" />;
     }
 );
-
-// const TestOverflow: React.FC = ({ children }) => {
-//     const [{ overflowStart, overflowEnd }, setOverflowState] = useState<OverflowChange>({
-//         overflowStart: false,
-//         overflowEnd: false,
-//     });
-
-//     return (
-//         <HorizontalOverflow onOverflowChange={setOverflowState}>
-//             {children}
-//             {overflowStart && <Button slot="previous">Previous</Button>}
-//             {overflowEnd && <Button slot="next">Next</Button>}
-//         </HorizontalOverflow>
-//     );
-// };
 
 interface TestOverflowState {
     overflowStart: boolean;
@@ -89,7 +73,7 @@ storiesOf("Horizontal overflow", module)
         </HorizontalOverflow>
     ))
     .add("Custom scroll duration", () => (
-        <div dir="rtl">
+        <div>
             <HorizontalOverflow
                 onScrollChange={action("onScrollChange")}
                 onOverflowChange={action("onOverflowChange")}

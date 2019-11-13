@@ -4,6 +4,8 @@ import {
     classNames,
     Direction,
     getClientRectWithMargin,
+    getScrollLeft,
+    setScrollLeft,
 } from "@microsoft/fast-web-utilities";
 import { canUseDOM } from "exenv-es6";
 import { get, isNil } from "lodash-es";
@@ -660,9 +662,11 @@ class HorizontalOverflow extends Foundation<
             return 0;
         }
 
-        return this.state.direction === Direction.ltr
-            ? this.horizontalOverflowItemsRef.current.scrollLeft
-            : -this.horizontalOverflowItemsRef.current.scrollLeft;
+        let scrollLeft: number = getScrollLeft(
+            this.horizontalOverflowItemsRef.current,
+            this.state.direction
+        );
+        return this.state.direction === Direction.rtl ? -scrollLeft : scrollLeft;
     };
 
     /**
@@ -670,8 +674,11 @@ class HorizontalOverflow extends Foundation<
      */
     private setScrollPosition = (newScrollValue: number): void => {
         if (!isNil(this.horizontalOverflowItemsRef.current)) {
-            this.horizontalOverflowItemsRef.current.scrollLeft =
-                this.state.direction === Direction.ltr ? newScrollValue : -newScrollValue;
+            setScrollLeft(
+                this.horizontalOverflowItemsRef.current,
+                this.state.direction === Direction.rtl ? -newScrollValue : newScrollValue,
+                this.state.direction
+            );
         }
     };
 
