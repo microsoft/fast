@@ -140,12 +140,10 @@ const styles: ComponentStyles<ProgressClassNameContract, DesignSystem> = {
     },
     progress_dot__1: {
         width: "40%",
-        // transform: directionSwitch("translateX(-100%)", "translateX(100%)"),
         animation: "indeterminate-1 2s infinite",
     },
     progress_dot__2: {
         width: "60%",
-        // transform: directionSwitch("translateX(-150%)","translateX(-150%)"),
         animation: "indeterminate-2 2s infinite",
     },
     "@keyframes spin-infinite": {

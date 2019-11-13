@@ -1,8 +1,14 @@
 import { storiesOf } from "@storybook/react";
 import React from "react";
 import { Progress } from "./";
+import { ComponentStyleSheet } from "@microsoft/fast-jss-manager";
+import { ProgressClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
+import { DesignSystem } from "@microsoft/fast-components-styles-msft";
 
-const progressStyle: any = {
+const progressStyle: ComponentStyleSheet<
+    Partial<ProgressClassNameContract>,
+    DesignSystem
+> = {
     progress: {
         width: "400px",
     },
