@@ -145,9 +145,13 @@ class Dialog extends Foundation<DialogHandledProps, DialogUnhandledProps, {}> {
         return (
             <div
                 className={classNames(this.props.managedClasses.dialog_modalOverlay)}
-                onClick={this.handleOverlayClick}
+                onClick={this.checkForSoftDismiss}
+                onTouchStart={this.checkForSoftDismiss}
                 role={"presentation"}
                 tabIndex={-1}
+                style={{
+                    touchAction: "none",
+                }}
             />
         );
     }
@@ -163,35 +167,34 @@ class Dialog extends Foundation<DialogHandledProps, DialogUnhandledProps, {}> {
     };
 
     /**
-     * handles mouse clicks on modal overlay
-     */
-    private handleOverlayClick = (event: React.MouseEvent): void => {
-        if (
-            this.props.onDismiss &&
-            typeof this.props.onDismiss === "function" &&
-            this.props.visible
-        ) {
-            this.props.onDismiss(event);
-        }
-    };
-
-    /**
      * handles document key down events
      */
     private handleDocumentKeyDown = (event: KeyboardEvent): void => {
         if (!event.defaultPrevented && this.props.visible) {
             switch (event.keyCode) {
                 case keyCodeEscape:
-                    if (isFunction(this.props.onDismiss)) {
-                        this.props.onDismiss(event);
-                    }
-                    event.preventDefault();
+                    this.checkForSoftDismiss(event);
                     break;
 
                 case keyCodeTab:
                     this.handleTabKeyDown(event);
                     break;
             }
+        }
+    };
+
+    /**
+     * Invokes dialog soft dismiss if appropriate
+     */
+    private checkForSoftDismiss = (
+        event: KeyboardEvent | React.MouseEvent | React.TouchEvent
+    ): void => {
+        if (
+            this.props.onDismiss &&
+            typeof this.props.onDismiss === "function" &&
+            this.props.visible
+        ) {
+            this.props.onDismiss(event);
         }
     };
 
