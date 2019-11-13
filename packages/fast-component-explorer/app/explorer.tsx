@@ -98,22 +98,20 @@ function setViewConfigsWithCustomConfig(
 ): ObjectOfComponentViewConfigs {
     const componentViewConfigs: ObjectOfComponentViewConfigs = {};
 
-    Object.keys(viewConfigs).forEach(
-        (viewConfigKey: string): void => {
-            componentViewConfigs[viewConfigKey] = Object.assign(
-                {},
-                viewConfigs[viewConfigKey],
-                {
-                    scenarios: [
-                        {
-                            displayName: "Custom",
-                            data: viewConfigs[viewConfigKey].scenarios[0].data,
-                        },
-                    ].concat(viewConfigs[viewConfigKey].scenarios),
-                }
-            );
-        }
-    );
+    Object.keys(viewConfigs).forEach((viewConfigKey: string): void => {
+        componentViewConfigs[viewConfigKey] = Object.assign(
+            {},
+            viewConfigs[viewConfigKey],
+            {
+                scenarios: [
+                    {
+                        displayName: "Custom",
+                        data: viewConfigs[viewConfigKey].scenarios[0].data,
+                    },
+                ].concat(viewConfigs[viewConfigKey].scenarios),
+            }
+        );
+    });
 
     return componentViewConfigs;
 }
