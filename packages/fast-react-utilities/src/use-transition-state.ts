@@ -20,14 +20,14 @@ export function getTransitionState(prev: boolean, next: boolean): TransitionStat
 }
 
 export function useTransitionState(
-    value: boolean,
+    active: boolean,
     duration: number | [number, number]
 ): TransitionStates {
-    const [valueState, setValueState]: [
+    const [activeState, setactiveState]: [
         boolean,
         React.Dispatch<React.SetStateAction<boolean>>
-    ] = useState<boolean>(value);
-    const transitionState: TransitionStates = getTransitionState(valueState, value);
+    ] = useState<boolean>(active);
+    const transitionState: TransitionStates = getTransitionState(activeState, active);
 
     const _duration: number = isNumber(duration)
         ? duration
@@ -37,12 +37,12 @@ export function useTransitionState(
 
     useTimeout(
         () => {
-            if (value !== valueState) {
-                setValueState(value);
+            if (active !== activeState) {
+                setactiveState(active);
             }
         },
         _duration,
-        [value, valueState]
+        [active, activeState]
     );
 
     return transitionState;

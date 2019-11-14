@@ -8,7 +8,7 @@ A set of general purpose React utilities.
 
 ## Exports
 ### Hooks
-#### useTimeout(callback, delay, [memoKeys...])
+#### `useTimeout(callback: () => void, delay: number | null, memoKeys?: any[]): void`
 A React hook to declaritivly invoke a timeout function. The callback be invoked once after `delay` - measured in miliseconds. Once the timeout is invoked, no other timeout will be registerd unless duration changes.
 
 To force a new timeout to be registed with a previous duration, supply *new* values to the `memoKeys`. This is similar to how React's `useEffect` works.
@@ -47,5 +47,20 @@ function FancyButton() {
     }, 200, [Symbol()]);
 
     return <button>hello world</button>
+}
+```
+
+#### `useTransitionState(active: boolean, duration: number | [number, number]): TransitionStates`
+A React hook used to track the state of a transition based on initial and incoming `active` values. `useTransitionState` will return a value from the `TransitionStates` object, representing "inactive", "active", "activating", and "deactivating". When the incoming `active` argument changes from one render to the next, the return value will change to one of the *middle* states, "activating" or "deactivating" depending on if the value is going from `false`->`true` or `true`->`false`. After the supplied duration, the hook will invoke a `setState` and return the state represented by the incoming `active` value.
+
+When two duration values are provided, the first will be used when `active` goes from `false`->`true` and the second will be used when `active` goes from `true`->`false`.
+
+```js
+function FancyDialog(props) {
+    const state = useTransitionState(props.visible); 
+
+    // eg, apply classes dependent on if the dialog is
+    // resting in an active / inactive state or if it is in the
+    // middle of trasitioning to active / inactive
 }
 ```
