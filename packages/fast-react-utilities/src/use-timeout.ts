@@ -6,7 +6,7 @@ import { useEffect, useRef } from "react";
 export function useTimeout(
     callback: () => void,
     delay: number | null,
-    memoKeys: any[] = []
+    dependencies: any[] = []
 ): void {
     const savedCallback: React.MutableRefObject<(() => any)> = useRef(callback);
 
@@ -26,5 +26,37 @@ export function useTimeout(
             const id: number = window.setTimeout(tick, delay);
             return (): void => window.clearTimeout(id);
         }
-    }, [delay].concat(memoKeys));
+    }, [delay].concat(dependencies));
+}
+
+export interface UseTimeoutProps {
+    /**
+     * The callback to invoke after delay
+     */
+    callback: () => void;
+
+    /**
+     * The number of miliseconds to wait before callback invocation
+     */
+    delay: number | null;
+
+    /**
+     * Dependencies that, when changed, will cause the timeout to be
+     * re-registered
+     */
+    dependencies?: any[];
+}
+
+/**
+ * Functional component implementing useTimeout for implementation in
+ * class components
+ */
+export function UseTimeout(
+    props: React.PropsWithChildren<UseTimeoutProps>
+): React.ReactNode {
+    const { callback, delay, dependencies }: UseTimeoutProps = props;
+
+    useTimeout(callback, delay, dependencies);
+
+    return props.children;
 }

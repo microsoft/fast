@@ -4,7 +4,8 @@ import { configure, mount, ReactWrapper } from "enzyme";
 import {
     getTransitionState,
     TransitionStates,
-    useTransitionState,
+    UseTransitionState,
+    UseTransitionStateProps,
 } from "./use-transition-state";
 
 /*
@@ -17,17 +18,21 @@ configure({ adapter: new Adapter() });
  */
 jest.useFakeTimers();
 
-function UseTransitionState(props: {
-    value: boolean;
-    duration: number | [number, number];
-}): JSX.Element {
-    return <div>{useTransitionState(props.value, props.duration)}</div>;
+function render(state: TransitionStates): JSX.Element {
+    return <div>{state}</div>;
 }
 
 describe("useTransitionState", (): void => {
     test("should return 'inactive' state when initialized with a falsey value", (): void => {
         const rendered: ReactWrapper = mount(
-            <UseTransitionState duration={300} value={false} />
+            React.createElement(
+                UseTransitionState as (props: UseTransitionStateProps) => JSX.Element,
+                {
+                    duration: 300,
+                    active: false,
+                    children: render,
+                }
+            )
         );
 
         expect(rendered.find("div").text()).toBe(TransitionStates.inactive.toString());
@@ -35,7 +40,14 @@ describe("useTransitionState", (): void => {
 
     test("should return 'inactive' state when initialized with a falsey value", (): void => {
         const rendered: ReactWrapper = mount(
-            <UseTransitionState duration={300} value={false} />
+            React.createElement(
+                UseTransitionState as (props: UseTransitionStateProps) => JSX.Element,
+                {
+                    duration: 300,
+                    active: false,
+                    children: render,
+                }
+            )
         );
 
         expect(rendered.find("div").text()).toBe(TransitionStates.inactive.toString());
@@ -43,50 +55,78 @@ describe("useTransitionState", (): void => {
 
     test("should return 'active' state when initialized with a falsey value", (): void => {
         const rendered: ReactWrapper = mount(
-            <UseTransitionState duration={300} value={true} />
+            React.createElement(
+                UseTransitionState as (props: UseTransitionStateProps) => JSX.Element,
+                {
+                    duration: 300,
+                    active: true,
+                    children: render,
+                }
+            )
         );
 
         expect(rendered.find("div").text()).toBe(TransitionStates.active.toString());
     });
 
-    test("should return an 'enter' state when initialized with a truthy value", (): void => {
+    test("should return an 'active' state when initialized with a truthy value", (): void => {
         const rendered: ReactWrapper = mount(
-            <UseTransitionState duration={300} value={false} />
+            React.createElement(
+                UseTransitionState as (props: UseTransitionStateProps) => JSX.Element,
+                {
+                    duration: 300,
+                    active: false,
+                    children: render,
+                }
+            )
         );
 
         expect(rendered.find("div").text()).toBe(TransitionStates.inactive.toString());
         jest.runAllTimers();
 
-        rendered.setProps({ value: true });
+        rendered.setProps({ active: true });
         expect(rendered.find("div").text()).toBe(TransitionStates.activating.toString());
 
         jest.runAllTimers();
         expect(rendered.find("div").text()).toBe(TransitionStates.active.toString());
     });
 
-    test("should move from a 'from' state to a 'enter' state when value goes from false -> true", (): void => {
+    test("should move from a 'from' state to a 'active' state when value goes from false -> true", (): void => {
         const rendered: ReactWrapper = mount(
-            <UseTransitionState duration={300} value={false} />
+            React.createElement(
+                UseTransitionState as (props: UseTransitionStateProps) => JSX.Element,
+                {
+                    duration: 300,
+                    active: false,
+                    children: render,
+                }
+            )
         );
 
         jest.runAllTimers();
         expect(rendered.find("div").text()).toBe(TransitionStates.inactive.toString());
 
-        rendered.setProps({ value: true });
+        rendered.setProps({ active: true });
         expect(rendered.find("div").text()).toBe(TransitionStates.activating.toString());
         jest.runAllTimers();
         expect(rendered.find("div").text()).toBe(TransitionStates.active.toString());
     });
 
-    test("should move from a 'enter' state to a 'leave' state when value goes from true -> false", (): void => {
+    test("should move from a 'active' state to a 'inactive' state when value goes from true -> false", (): void => {
         const rendered: ReactWrapper = mount(
-            <UseTransitionState duration={300} value={true} />
+            React.createElement(
+                UseTransitionState as (props: UseTransitionStateProps) => JSX.Element,
+                {
+                    duration: 300,
+                    active: true,
+                    children: render,
+                }
+            )
         );
 
         jest.runAllTimers();
         expect(rendered.find("div").text()).toBe(TransitionStates.active.toString());
 
-        rendered.setProps({ value: false });
+        rendered.setProps({ active: false });
 
         expect(rendered.find("div").text()).toBe(
             TransitionStates.deactivating.toString()
@@ -95,19 +135,26 @@ describe("useTransitionState", (): void => {
         expect(rendered.find("div").text()).toBe(TransitionStates.inactive.toString());
     });
 
-    test("should use first duration for inactive -> active and second duration for active -> inactive", (): void => {
+    test("should use first duration for 'inactive' -> 'active' and second duration for 'active' -> 'inactive'", (): void => {
         const rendered: ReactWrapper = mount(
-            <UseTransitionState duration={[1000, 500]} value={false} />
+            React.createElement(
+                UseTransitionState as (props: UseTransitionStateProps) => JSX.Element,
+                {
+                    duration: [1000, 500],
+                    active: false,
+                    children: render,
+                }
+            )
         );
 
         expect(rendered.find("div").text()).toBe(TransitionStates.inactive.toString());
-        rendered.setProps({ value: true });
+        rendered.setProps({ active: true });
         expect(rendered.find("div").text()).toBe(TransitionStates.activating.toString());
 
         jest.advanceTimersByTime(1000);
         expect(rendered.find("div").text()).toBe(TransitionStates.active.toString());
 
-        rendered.setProps({ value: false });
+        rendered.setProps({ active: false });
         expect(rendered.find("div").text()).toBe(
             TransitionStates.deactivating.toString()
         );
@@ -118,16 +165,16 @@ describe("useTransitionState", (): void => {
 });
 
 describe("getTransitionState", (): void => {
-    test("should return inactive if both current and previous values are false", (): void => {
+    test("should return 'inactive' if both current and previous values are false", (): void => {
         expect(getTransitionState(false, false)).toBe(TransitionStates.inactive);
     });
-    test("should return active if both current and previous values are true", (): void => {
+    test("should return 'active' if both current and previous values are true", (): void => {
         expect(getTransitionState(true, true)).toBe(TransitionStates.active);
     });
-    test("should return activating if the previous value is false and current value is true", (): void => {
+    test("should return 'activating' if the previous value is false and current value is true", (): void => {
         expect(getTransitionState(false, true)).toBe(TransitionStates.activating);
     });
-    test("should return deactiving if the previous value is true and current value is false", (): void => {
+    test("should return 'deactiving' if the previous value is true and current value is false", (): void => {
         expect(getTransitionState(true, false)).toBe(TransitionStates.deactivating);
     });
 });

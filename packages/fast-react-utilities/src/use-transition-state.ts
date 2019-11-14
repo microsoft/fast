@@ -47,3 +47,28 @@ export function useTransitionState(
 
     return transitionState;
 }
+
+export interface UseTransitionStateProps {
+    /**
+     * Indicate if the entity being tracked should be active or not.
+     */
+    active: boolean;
+
+    /**
+     * The duration of the transition. This will determine for how long the intermittent states
+     * will persist. When two values are provided, the first will be used for inactive -> active
+     * and the second will be used for active -> inactive
+     */
+    duration: number | [number, number];
+
+    /**
+     * Callback to receive the current transition state
+     */
+    children: (state: TransitionStates) => React.ReactNode;
+}
+
+export function UseTransitionState(props: UseTransitionStateProps): React.ReactNode {
+    const { active, duration, children }: UseTransitionStateProps = props;
+
+    return children(useTransitionState(active, duration));
+}
