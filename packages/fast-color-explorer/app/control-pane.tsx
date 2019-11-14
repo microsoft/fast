@@ -79,6 +79,7 @@ const styles: any = (
             body: {
                 fontFamily: '"Segoe UI", Arial, sans-serif',
                 fontSize: "14px",
+                margin: "0",
             },
             ".sketch-picker": {
                 display: "flex",
