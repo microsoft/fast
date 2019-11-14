@@ -47,6 +47,17 @@ class FormSection extends React.Component<
         managedClasses: {},
     };
 
+    public static getDerivedStateFromProps(
+        props: FormSectionProps,
+        state: FormSectionState
+    ): Partial<FormSectionState> {
+        if (props.schema !== state.schema) {
+            return getInitialOneOfAnyOfState(props.schema, props.data);
+        }
+
+        return null;
+    }
+
     constructor(props: FormSectionProps & ManagedClasses<FormSectionClassNameContract>) {
         super(props);
 
