@@ -1,36 +1,51 @@
-# FAST Components React MSFT
+# FAST React Utilities
 
-A set of React components which implements the Microsoft styling.
+A set of general purpose React utilities.
 
 ## Installation
 
-`npm i --save @microsoft/fast-components-react-msft`
+`npm i --save @microsoft/fast-react-utilities`
 
-## Usage
+## Exports
+### Hooks
+#### useTimeout(callback, delay, [memoKeys...])
+A React hook to declaritivly invoke a timeout function. The callback be invoked once after `delay` - measured in miliseconds. Once the timeout is invoked, no other timeout will be registerd unless duration changes.
 
-An example of using one of the components from the `@microsoft/fast-components-react-msft` package:
+To force a new timeout to be registed with a previous duration, supply *new* values to the `memoKeys`. This is similar to how React's `useEffect` works.
 
-```tsx
-import React from "react";
-import ReactDOM from "react-dom";
-import { Button, ButtonAppearance } from "@microsoft/fast-components-react-msft";
+##### Single execution of callback
+```js
+function FancyButton() {
+    // Execute a callback invoked after 200ms. Callback will only be called once (unless duration changes)
+    useTimeout(() => {
+        alert("I'm a button")
+    }, 200);
 
-const root = document.createElement("div");
-root.setAttribute("id", "root");
-document.body.appendChild(root);
-
-function render(): void {
-    ReactDOM.render(
-        <Button appearance={ButtonAppearance.primary}>
-            Click me!
-        </Button>,
-        root
-    );
+    return <button>hello world</button>
 }
+```
+##### Execute callback whenever prop is changed
+```js
+function FancyButton() {
+    // Execute a callback 200ms after render. A new callback will be registered
+    // when props.value changes
+    useTimeout((props) => {
+        alert("I'm a button")
+    }, 200, [props.value]);
 
-render();
+    return <button>hello world</button>
+}
 ```
 
-## Documentation site
+##### Execute callback every render
+```js
+function FancyButton() {
+    // Execute a callback 200ms after every render. If render happens before the delay,
+    // the previous render's timeout will be canceled.
+    useTimeout(() => {
+        alert("I'm a button")
+    }, 200, [Symbol()]);
 
-[FAST Components React Microsoft](https://msft-docs.azurewebsites.net/)
+    return <button>hello world</button>
+}
+```

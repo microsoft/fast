@@ -16,9 +16,9 @@ jest.useFakeTimers();
 function UseTimeout(props: {
     timeout: number | null;
     callback: () => any;
-    reregister?: any[];
+    memoKeys?: any[];
 }): JSX.Element {
-    useTimeout(props.callback, props.timeout, props.reregister);
+    useTimeout(props.callback, props.timeout, props.memoKeys);
 
     return <div />;
 }
@@ -93,7 +93,7 @@ describe("use-timeout", (): void => {
     test("should reregister timeout function after first invocation if new reregister keys are provided", (): void => {
         const spy: jest.Mock = jest.fn();
         const rendered: ReactWrapper = mount(
-            <UseTimeout timeout={300} callback={spy} reregister={[Symbol()]} />
+            <UseTimeout timeout={300} callback={spy} memoKeys={[Symbol()]} />
         );
         jest.runAllTimers();
         rendered.update();

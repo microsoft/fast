@@ -6,7 +6,7 @@ import { useEffect, useRef } from "react";
 export function useTimeout(
     callback: () => void,
     delay: number | null,
-    reregister: any[] = []
+    memoKeys: any[] = []
 ): void {
     const savedCallback: React.MutableRefObject<(() => any)> = useRef(callback);
 
@@ -26,5 +26,5 @@ export function useTimeout(
             const id: number = window.setTimeout(tick, delay);
             return (): void => window.clearTimeout(id);
         }
-    }, [delay].concat(reregister));
+    }, [delay].concat(memoKeys));
 }
