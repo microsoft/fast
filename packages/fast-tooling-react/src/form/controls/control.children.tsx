@@ -800,10 +800,12 @@ class ChildrenControl extends React.Component<
         return `${this.props.dataLocation}${propLocation}`;
     }
 
-    private getChildOptionTextString(item: any): string {
-        const textString: string = typeof item.props === "string" ? item.props : item;
-
-        return textString ? textString : "Untitled";
+    private getChildOptionTextString(item: string | ChildComponentConfig): string {
+        return typeof item === "string"
+            ? item
+            : typeof item.props === "string"
+                ? item.props
+                : "Untitled";
     }
 }
 

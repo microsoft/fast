@@ -1,4 +1,4 @@
-import { NavigationItem } from "./utilities/navigation";
+import Navigation, { NavigationItem } from "./utilities/navigation";
 import { FormPlugin, FormPluginProps } from "./plugin";
 import { ErrorObject } from "ajv";
 import { StandardControlPlugin } from "./templates";
@@ -118,6 +118,16 @@ export interface FormState {
      * Current active data location
      */
     activeDataLocation: string;
+
+    /**
+     * The Navigation class instance
+     */
+    navigationInstance: Navigation;
+
+    /**
+     * The schema, used to check if the schema has been updated
+     */
+    schema: any;
 
     /**
      * The navigation items used for the breadcrumb links
