@@ -620,9 +620,12 @@ describe("Form", () => {
                     ],
                 }}
                 data={undefined}
-                onChange={jest.fn()}
+                onChange={callback}
             />
         );
+        function callback(data: any): void {
+            rendered.setProps({ data });
+        }
 
         const categoriesBefore: any = rendered.find("FormCategory");
 
