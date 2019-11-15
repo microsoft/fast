@@ -22,7 +22,7 @@ const styles: any = {
             content: "''",
             opacity: "0.7",
             position: "relative",
-            border: "solid 1px currentColor",
+            border: "solid 1px currentcolor",
             borderRadius: "50%",
             display: "block",
             alignSelf: "center",
