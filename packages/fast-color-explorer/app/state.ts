@@ -46,10 +46,6 @@ export interface AppState {
     showOnlyRecommendedBackgrounds: boolean;
 }
 
-export interface Action {
-    type: symbol;
-}
-
 /**
  * Re-assign a palette value based on an input color reference
  */
