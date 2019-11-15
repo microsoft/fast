@@ -32,7 +32,6 @@ var verbose = false;
 const excludedPackages = [
     "fast-browser-extensions",
     "fast-color-explorer",
-    "fast-development-site-react",
     "fast-permutator",
     "fast-tslint-rules",
 ];

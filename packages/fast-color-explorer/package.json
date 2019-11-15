@@ -45,7 +45,7 @@
     "jss-preset-default": "^4.5.0",
     "lint-staged": "^8.1.0",
     "lodash-es": "^4.17.11",
-    "prettier": "^1.15.3",
+    "prettier": "1.14.3",
     "react": "^16.6.3",
     "react-color": "^2.17.1",
     "react-dom": "^16.6.3",

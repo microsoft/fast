@@ -64,6 +64,32 @@ class Form extends React.Component<
         displayValidationBrowserDefault: true,
     };
 
+    public static getDerivedStateFromProps(
+        props: FormProps,
+        state: FormState
+    ): Partial<FormState> {
+        if (state.schema !== props.schema) {
+            const navigationInstance: Navigation = new Navigation({
+                dataLocation: "",
+                schema: props.schema,
+                data: props.data,
+                childOptions: props.childOptions ? props.childOptions : [],
+            });
+            const updatedState: Partial<FormState> = {
+                titleProps:
+                    props.schema && props.schema.title ? props.schema.title : "Untitled",
+                activeDataLocation: "",
+                navigationInstance,
+                schema: props.schema,
+                navigation: navigationInstance.get(),
+            };
+
+            return updatedState;
+        }
+
+        return null;
+    }
+
     /**
      * The default untitled string
      */
@@ -73,11 +99,6 @@ class Form extends React.Component<
      * The validator
      */
     private validator: Ajv;
-
-    /**
-     * The navigation instance
-     */
-    private navigation: Navigation;
 
     /**
      * The default form controls
@@ -114,7 +135,7 @@ class Form extends React.Component<
             this.props.data,
             this.props.plugins
         );
-        this.navigation = new Navigation({
+        const navigationInstance: Navigation = new Navigation({
             dataLocation: typeof dataLocation === "string" ? dataLocation : "",
             data: this.props.data,
             schema: this.props.schema,
@@ -139,7 +160,9 @@ class Form extends React.Component<
                 props.location && typeof props.location === "string"
                     ? props.location
                     : "",
-            navigation: this.navigation.get(),
+            schema: this.props.schema,
+            navigationInstance,
+            navigation: navigationInstance.get(),
             validationErrors: this.getValidationErrors(props),
         };
     }
@@ -359,23 +382,8 @@ class Form extends React.Component<
             }
         }
 
-        if (updateData) {
+        if (!updateSchema && updateData) {
             state = this.getStateForUpdatedData(props, state);
-        }
-
-        if (updateSchema) {
-            this.navigation = new Navigation({
-                dataLocation: "",
-                schema: props.schema,
-                data: props.data,
-                childOptions: props.childOptions || [],
-            });
-
-            state = Object.assign(
-                {},
-                state,
-                this.getStateWithUpdatedFormProps(props, state)
-            );
         }
 
         if (updateLocation) {
@@ -402,30 +410,14 @@ class Form extends React.Component<
             validationErrors: this.getValidationErrors(props),
         };
 
-        this.navigation.updateData(props.data, (navigation: NavigationItem[]) => {
-            updatedState.navigation = navigation;
-        });
+        this.state.navigationInstance.updateData(
+            props.data,
+            (navigation: NavigationItem[]) => {
+                updatedState.navigation = navigation;
+            }
+        );
 
         return Object.assign({}, state, updatedState);
-    }
-
-    /**
-     * Gets the state object with updated locations, title and breadcrumbs
-     */
-    private getStateWithUpdatedFormProps(
-        props: FormProps,
-        state: Partial<FormState>
-    ): Partial<FormState> {
-        const updatedState: Partial<FormState> = {
-            titleProps:
-                this.rootSchema && this.rootSchema.title
-                    ? this.rootSchema.title
-                    : this.untitled,
-            activeDataLocation: "",
-            navigation: this.navigation.get(),
-        };
-
-        return Object.assign({}, state, updatedState) as Partial<FormState>;
     }
 
     /**
@@ -451,7 +443,7 @@ class Form extends React.Component<
         };
 
         if (typeof dataLocation !== "undefined") {
-            this.navigation.updateDataLocation(
+            this.state.navigationInstance.updateDataLocation(
                 dataLocation,
                 (updatedNavigation: NavigationItem[]) => {
                     locationState.navigation = updatedNavigation;
@@ -624,7 +616,7 @@ class Form extends React.Component<
                 config.schema
             );
 
-            this.navigation.updateDataLocation(
+            this.state.navigationInstance.updateDataLocation(
                 config.dataLocation,
                 (updatedNavigation: NavigationItem[]) => {
                     state.navigation = updatedNavigation;
