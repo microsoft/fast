@@ -34,9 +34,6 @@
 /packages/fast-components-react-msft/ @chrisdholt @janechu @nicholasrice
 /packages/fast-components-styles-msft/ @chrisdholt @janechu @nicholasrice
 
-# fast-development-site
-/packages/fast-development-site/ @nicholasrice @chrisdholt @janechu
-
 # fast-glyphs
 /packages/fast-glyphs/ @janechu @chrisdholt
 

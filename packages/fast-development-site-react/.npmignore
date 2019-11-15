@@ -1,9 +1,0 @@
-# Source files
-app/
-src/
-www/
-
-# config
-tslint.json
-tsconfig.json
-webpack.config.js
