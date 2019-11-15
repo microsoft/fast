@@ -57,7 +57,9 @@ class BaseGradient extends React.Component<GradientProps, {}> {
                 this.props.markedColor !== undefined &&
                 item.toUpperCase() === this.props.markedColor.toUpperCase()
             ) {
-                classNames = `${classNames} ${this.props.managedClasses.gradient_item__marked}`;
+                classNames = `${classNames} ${
+                    this.props.managedClasses.gradient_item__marked
+                }`;
             }
 
             return (
