@@ -156,20 +156,22 @@ class App extends React.Component<AppProps, {}> {
 
         return this.props.showOnlyRecommendedBackgrounds
             ? neutralLayers
-            : neutralPalette.map((color: string): { color: string; title?: string } => {
-                  const neutralLayerIndex: number = neutralLayers.findIndex(
-                      (config: { color: string; title: string }): boolean =>
-                          config.color === color
-                  );
+            : neutralPalette.map(
+                  (color: string): { color: string; title?: string } => {
+                      const neutralLayerIndex: number = neutralLayers.findIndex(
+                          (config: { color: string; title: string }): boolean =>
+                              config.color === color
+                      );
 
-                  return {
-                      color,
-                      title:
-                          neutralLayerIndex !== -1
-                              ? neutralLayers[neutralLayerIndex].title
-                              : undefined,
-                  };
-              });
+                      return {
+                          color,
+                          title:
+                              neutralLayerIndex !== -1
+                                  ? neutralLayers[neutralLayerIndex].title
+                                  : undefined,
+                      };
+                  }
+              );
     }
 
     private resolveRecipes = (
@@ -179,13 +181,17 @@ class App extends React.Component<AppProps, {}> {
             baseLayerLuminance: luminance,
         });
         return this.backgroundRecipes
-            .map((conf: [ColorRecipe<string>, string]): {
-                color: string;
-                title: string;
-            } => ({
-                color: conf[0](designSystem),
-                title: conf[1],
-            }))
+            .map(
+                (
+                    conf: [ColorRecipe<string>, string]
+                ): {
+                    color: string;
+                    title: string;
+                } => ({
+                    color: conf[0](designSystem),
+                    title: conf[1],
+                })
+            )
             .reduce(
                 (
                     accum: Array<{ color: string; title: string }>,
