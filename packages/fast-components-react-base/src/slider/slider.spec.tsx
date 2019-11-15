@@ -767,6 +767,21 @@ describe("Slider", (): void => {
         document.body.removeChild(container);
     });
 
+    test("first render state flag is false after component has mounted", (): void => {
+        const container: HTMLDivElement = document.createElement("div");
+        document.body.appendChild(container);
+
+        const rendered: any = mount(
+            <Slider managedClasses={managedClasses} initialValue={50} />,
+            {
+                attachTo: container,
+            }
+        );
+
+        expect(rendered.state("isFirstRender")).toBe(false);
+        document.body.removeChild(container);
+    });
+
     // tslint:disable-next-line:no-shadowed-variable
     window.removeEventListener = jest.fn((event: string, callback: any) => {
         map[event] = callback;
