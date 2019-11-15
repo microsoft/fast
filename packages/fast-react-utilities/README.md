@@ -39,6 +39,8 @@ function FancyButton() {
 
 ##### Execute callback every render
 ```js
+import { useTransitionState, TransitionStates } from "@microsoft/fast-react-utilities";
+
 function FancyButton() {
     // Execute a callback 200ms after every render. If render happens before the delay,
     // the previous render's timeout will be canceled.
@@ -56,11 +58,24 @@ A React hook used to track the state of a transition based on initial and incomi
 When two duration values are provided, the first will be used when activating and the second will be used when deactivating.
 
 ```js
-function FancyDialog(props) {
-    const state = useTransitionState(props.visible); 
+import { classNames } from "@microsoft/fast-web-utilities";
+import { useTransitionState, TransitionStates } from "@microsoft/fast-react-utilities";
 
-    // eg, apply classes dependent on if the dialog is
-    // resting in an active / inactive state or if it is in the
-    // middle of trasitioning to active / inactive
+function FancyDialog(props) {
+    const state = useTransitionState(props.visible, [300, 400]);
+
+    return (
+        <div
+            role="dialog"
+            className={classNames(
+                "dialog",
+                ["dialog_inactive", state === TransitionStates.inactive],
+                ["dialog_active", state === TransitionStates.active],
+                ["dialog_activating", state === TransitionStates.activating],
+                ["dialog_deactivating", state === TransitionStates.deactivating]
+            )}
+            children={props.children}
+        />
+    );
 }
 ```
