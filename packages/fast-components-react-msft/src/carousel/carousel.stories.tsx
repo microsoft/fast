@@ -1,19 +1,27 @@
 import { storiesOf } from "@storybook/react";
 import React from "react";
-import { Carousel, CarouselSlideTheme } from "./";
+import {
+    Carousel,
+    CarouselClassNameContract,
+    CarouselSlide,
+    CarouselSlideTheme,
+} from "./";
 import { uniqueId } from "lodash-es";
 import CarouselHero from "../../assets/carousel-hero-content";
 import { HeadingSize, ParagraphSize } from "../../src";
+import { ComponentStyles } from "@microsoft/fast-jss-manager";
+import { DesignSystem } from "@microsoft/fast-components-styles-msft";
 
 function itemsFiller(
     itemCount: number,
     headerContent?: string,
     paragraphContent?: string,
     extraButtons?: boolean
-): any[] {
-    const fillerArray: any[] = [];
+): CarouselSlide[] {
+    const fillerArray: CarouselSlide[] = [];
     for (let i: number = 0, x: number = 1; i < itemCount; i++, x *= -1) {
-        const theme: any = x > 0 ? CarouselSlideTheme.light : CarouselSlideTheme.dark;
+        const theme: CarouselSlideTheme =
+            x > 0 ? CarouselSlideTheme.light : CarouselSlideTheme.dark;
         fillerArray.push({
             id: uniqueId(),
             theme,
@@ -45,7 +53,10 @@ function itemsFiller(
     return fillerArray;
 }
 
-const carouselSequenceStylesOverrides: any = {
+const carouselSequenceStylesOverrides: ComponentStyles<
+    CarouselClassNameContract,
+    DesignSystem
+> = {
     carousel_sequenceIndicator: {
         "&::before": {
             width: "10px",

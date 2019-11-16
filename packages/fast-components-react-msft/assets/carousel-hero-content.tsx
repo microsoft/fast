@@ -1,6 +1,7 @@
-import React, { Fragment } from "react";
+import React from "react";
 import {
-    Button,
+    AccentButton,
+    AccentButtonClassNameContract,
     CallToAction,
     CallToActionAppearance,
     CallToActionProps,
@@ -12,6 +13,8 @@ import {
     Paragraph,
     ParagraphProps,
 } from "../src";
+import { ComponentStyles } from "@microsoft/fast-jss-manager";
+import { DesignSystem } from "@microsoft/fast-components-styles-msft";
 
 export interface CarouselHeroContentProps {
     heading?: HeadingProps;
@@ -53,7 +56,10 @@ export default class CarouselHeroContent extends React.Component<
             ? "http://placehold.it/1399x600/2F2F2F/171717"
             : "http://placehold.it/1399x600/";
 
-    private extraButtonRightStyle: any = {
+    private extraButtonRightStyle: ComponentStyles<
+        AccentButtonClassNameContract,
+        DesignSystem
+    > = {
         button: {
             float: "right",
         },
@@ -113,12 +119,12 @@ export default class CarouselHeroContent extends React.Component<
                 </div>
                 <Image src={this.imageSrc} alt={this.props.image.alt} />
                 {this.props.extraButtons && (
-                    <Fragment>
-                        <Button jssStyleSheet={this.extraButtonRightStyle}>
+                    <React.Fragment>
+                        <AccentButton jssStyleSheet={this.extraButtonRightStyle}>
                             Right Test
-                        </Button>
-                        <Button>Left Test</Button>
-                    </Fragment>
+                        </AccentButton>
+                        <AccentButton>Left Test</AccentButton>
+                    </React.Fragment>
                 )}
             </div>
         );
