@@ -53,7 +53,7 @@ import {
     TypographyClassNameContract,
     TypographySize,
 } from "@microsoft/fast-components-react-base";
-import style, { applyScrollbarStyle } from "./explorer.style";
+import style, { applyScrollbarStyle, ExplorerClassNameContract } from "./explorer.style";
 import {
     ActionToggle,
     ActionToggleAppearance,
@@ -82,7 +82,7 @@ import { childOptions, history, menu } from "./config";
 import * as componentViewConfigsWithoutCustomConfig from "./utilities/configs";
 import { ComponentViewConfig, Scenario } from "./utilities/configs/data.props";
 import { MemoizedFunction, uniqueId } from "lodash";
-import { Direction } from "@microsoft/fast-web-utilities";
+import { classNames, Direction } from "@microsoft/fast-web-utilities";
 import { ColorRGBA64, parseColor } from "@microsoft/fast-colors";
 import { format, multiply, toPx } from "@microsoft/fast-jss-utilities";
 import { NavigationMenuClassNameContract } from "@microsoft/fast-tooling-react/dist/navigation-menu/navigation-menu.style";
@@ -300,25 +300,27 @@ class Explorer extends Foundation<
             );
         }
 
+        const {
+            explorer,
+            explorer_devToolsPanel,
+            explorer_navigationPanel,
+            explorer_paneTitleContainer,
+            explorer_propertiesPanel,
+            explorer_toolbar,
+            explorer_viewerRegion,
+        }: Partial<ExplorerClassNameContract> = this.props.managedClasses;
+
         return (
             <Background {...this.unhandledProps()} value={neutralLayerL1}>
-                <Container className={get(this.props, "managedClasses.explorer")}>
+                <Container className={classNames(explorer)}>
                     <Row style={{ flex: "1" }}>
                         <Pane
-                            className={get(
-                                this.props,
-                                "managedClasses.explorer_navigationPanel"
-                            )}
+                            className={classNames(explorer_navigationPanel)}
                             resizable={true}
                             resizeFrom={PaneResizeDirection.east}
                         >
                             <Background value={neutralLayerL3} drawBackground={false}>
-                                <div
-                                    className={get(
-                                        this.props,
-                                        "managedClasses.explorer_paneTitleContainer"
-                                    )}
-                                >
+                                <div className={classNames(explorer_paneTitleContainer)}>
                                     <Heading size={HeadingSize._6}>FAST Explorer</Heading>
                                 </div>
                                 <NavigationMenu
@@ -335,10 +337,7 @@ class Explorer extends Foundation<
                                 <div style={{ overflow: "auto", width: "100%" }}>
                                     <Background
                                         value={neutralLayerL2}
-                                        className={get(
-                                            this.props,
-                                            "managedClasses.explorer_toolbar"
-                                        )}
+                                        className={classNames(explorer_toolbar)}
                                     >
                                         {this.renderScenarioSelect()}
                                         {this.renderTransparencyToggle()}
@@ -348,10 +347,7 @@ class Explorer extends Foundation<
                                     </Background>
                                     <div
                                         ref={this.viewerContainerRef}
-                                        className={get(
-                                            this.props,
-                                            "managedClasses.explorer_viewerRegion"
-                                        )}
+                                        className={classNames(explorer_viewerRegion)}
                                     >
                                         <div
                                             style={{
@@ -375,10 +371,7 @@ class Explorer extends Foundation<
                             >
                                 <Background
                                     value={neutralLayerL2}
-                                    className={get(
-                                        this.props,
-                                        "managedClasses.explorer_devToolsPanel"
-                                    )}
+                                    className={classNames(explorer_devToolsPanel)}
                                 >
                                     <Pivot
                                         label={"documentation"}
@@ -399,10 +392,7 @@ class Explorer extends Foundation<
                             </Row>
                         </Canvas>
                         <Pane
-                            className={get(
-                                this.props,
-                                "managedClasses.explorer_propertiesPanel"
-                            )}
+                            className={classNames(explorer_propertiesPanel)}
                             resizable={true}
                             resizeFrom={PaneResizeDirection.west}
                         >
@@ -494,17 +484,20 @@ class Explorer extends Foundation<
 
     private renderAccentColorPicker(): React.ReactNode {
         const id: string = uniqueId("accent-color-picker");
+        const {
+            explorer_colorPicker,
+            explorer_viewerControlRegion,
+        }: Partial<ExplorerClassNameContract> = this.props.managedClasses;
+
         return (
-            <div
-                className={get(this.props, "managedClasses.explorer_viewerControlRegion")}
-            >
+            <div className={classNames(explorer_viewerControlRegion)}>
                 <Label jssStyleSheet={this.labelStyleOverrides} htmlFor={id}>
                     Accent color
                 </Label>
                 <input
                     type={"color"}
                     id={id}
-                    className={get(this.props, "managedClasses.explorer_colorPicker")}
+                    className={classNames(explorer_colorPicker)}
                     value={this.state.viewConfig.designSystem.accentBaseColor}
                     onChange={this.handleAccentColorPickerChange}
                 />
@@ -516,7 +509,9 @@ class Explorer extends Foundation<
         const id: string = uniqueId("direction");
         return (
             <div
-                className={get(this.props, "managedClasses.explorer_viewerControlRegion")}
+                className={classNames(
+                    this.props.managedClasses.explorer_viewerControlRegion
+                )}
             >
                 <Label jssStyleSheet={this.labelStyleOverrides} htmlFor={id}>
                     RTL
@@ -537,7 +532,9 @@ class Explorer extends Foundation<
         const id: string = uniqueId("theme");
         return (
             <div
-                className={get(this.props, "managedClasses.explorer_viewerControlRegion")}
+                className={classNames(
+                    this.props.managedClasses.explorer_viewerControlRegion
+                )}
             >
                 <Label jssStyleSheet={this.labelStyleOverrides} htmlFor={id}>
                     Dark mode
@@ -558,7 +555,9 @@ class Explorer extends Foundation<
         const id: string = uniqueId("transparency");
         return (
             <div
-                className={get(this.props, "managedClasses.explorer_viewerControlRegion")}
+                className={classNames(
+                    this.props.managedClasses.explorer_viewerControlRegion
+                )}
             >
                 <Label jssStyleSheet={this.labelStyleOverrides} htmlFor={id}>
                     Transparent

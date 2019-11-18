@@ -25,14 +25,11 @@ export interface ViewConfig {
     transparentBackground: boolean;
 }
 
-/* tslint:disable-next-line */
-export interface ExplorerManagedClasses
-    extends ManagedClasses<ExplorerClassNameContract> {}
-
 export interface ExplorerUnhandledProps extends React.HTMLAttributes<HTMLDivElement> {}
 
-/* tslint:disable-next-line */
-export interface ExplorerHandledProps extends ExplorerManagedClasses {}
+export interface ExplorerHandledProps {
+    managedClasses: ExplorerClassNameContract;
+}
 
 export type ExplorerProps = ExplorerHandledProps & ExplorerUnhandledProps;
 
