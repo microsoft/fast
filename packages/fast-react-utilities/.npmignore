@@ -1,0 +1,18 @@
+# Tests
+__test__/
+*.spec.*
+*.test.*
+
+# Source files
+app/
+www/
+build/
+coverage/
+src/
+assets/
+
+# config
+babel.config.js
+tslint.json
+tsconfig.json
+webpack.config.js

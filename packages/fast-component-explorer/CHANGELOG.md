@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.7.2](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-component-explorer@0.7.1...@microsoft/fast-component-explorer@0.7.2) (2019-11-11)
+
+**Note:** Version bump only for package @microsoft/fast-component-explorer
+
+
+
+
+
+## [0.7.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-component-explorer@0.7.0...@microsoft/fast-component-explorer@0.7.1) (2019-11-07)
+
+**Note:** Version bump only for package @microsoft/fast-component-explorer
+
+
+
+
+
 # [0.7.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-component-explorer@0.6.0...@microsoft/fast-component-explorer@0.7.0) (2019-10-25)
 
 

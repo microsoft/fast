@@ -198,7 +198,7 @@ export const contrast: (a: string, b: string) => number = memoize(
  * Returns the relative luminance of a color. If the value is not a color, -1 will be returned
  * Supports #RRGGBB and rgb(r, g, b) formats
  */
-export function luminance(color: any): number {
+export function luminance(color: string): number {
     return rgbToRelativeLuminance(parseColorString(color));
 }
 

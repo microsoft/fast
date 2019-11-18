@@ -1,6 +1,7 @@
 import React from "react";
 import manageJss from "@microsoft/fast-jss-manager-react";
 import { isEqual } from "lodash-es";
+import { DesignSystemDefaults, isDarkMode } from "@microsoft/fast-components-styles-msft";
 
 const styles: any = {
     gradient: {
@@ -19,9 +20,9 @@ const styles: any = {
             height: "6px",
             margin: "0 auto",
             content: "''",
-            opacity: "0.5",
+            opacity: "0.7",
             position: "relative",
-            border: "solid 1px white",
+            border: "solid 1px currentcolor",
             borderRadius: "50%",
             display: "block",
             alignSelf: "center",
@@ -57,7 +58,9 @@ class BaseGradient extends React.Component<GradientProps, {}> {
                 this.props.markedColor !== undefined &&
                 item.toUpperCase() === this.props.markedColor.toUpperCase()
             ) {
-                classNames = `${classNames} ${this.props.managedClasses.gradient_item__marked}`;
+                classNames = `${classNames} ${
+                    this.props.managedClasses.gradient_item__marked
+                }`;
             }
 
             return (
@@ -66,6 +69,13 @@ class BaseGradient extends React.Component<GradientProps, {}> {
                     className={classNames}
                     style={{
                         background: this.props.colors[index],
+                        color: isDarkMode(
+                            Object.assign({}, DesignSystemDefaults, {
+                                backgroundColor: this.props.colors[index],
+                            })
+                        )
+                            ? "white"
+                            : "black",
                     }}
                     title={index.toString().concat(": ", item.toUpperCase())}
                     href={this.props.createAnchors ? `${item.toUpperCase()}` : undefined}

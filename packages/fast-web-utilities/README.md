@@ -162,9 +162,10 @@ const whitespaceToPascal = pascalCase(" my string ");
 #### classNames
 A utility for merging class names into a single string conditionally. Accepts any number of strings, functions that return strings and two index arrays where the first index is a string or function that returns a string, and the second index is a boolean.
 
-```
+```js
 import { classNames } from "@microsoft/fast-web-utilities";
 
+// evaluates to "classOne classTwo classThree classFive"
 const myJoinedClassNames = classNames(
     "classOne",
     () => "classTwo",
@@ -172,5 +173,5 @@ const myJoinedClassNames = classNames(
     ["classFour", false]
     [() => "classFive", true],
     [() => "classSix", false]
-) // evaluates to "classOne classTwo classThree classFive"
+)
 ```
