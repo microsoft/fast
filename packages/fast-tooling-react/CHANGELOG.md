@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.23.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-tooling-react@1.23.0...@microsoft/fast-tooling-react@1.23.1) (2019-11-11)
+
+
+### Bug Fixes
+
+* ensure categories are included when the schema also includes oneOf ([#2416](https://github.com/Microsoft/fast-dna/issues/2416)) ([ca6a106](https://github.com/Microsoft/fast-dna/commit/ca6a106bed94a60a7704814c72470cd361a845eb))
+
+
+
+
+
 # [1.23.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-tooling-react@1.22.2...@microsoft/fast-tooling-react@1.23.0) (2019-11-07)
 
 

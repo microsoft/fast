@@ -68,7 +68,7 @@
     "@types/jest": "^24.0.11",
     "@types/lodash-es": "^4.17.0",
     "@types/node": "^9.4.6",
-    "@types/react": "^16.4.18",
+    "@types/react": "^16.8.0",
     "babel-core": "^7.0.0-bridge.0",
     "babel-jest": "^24.5.0",
     "enzyme": "^3.3.0",
@@ -76,8 +76,8 @@
     "jest": "^24.5.0",
     "lodash-es": "^4.0.0",
     "prettier": "1.14.3",
-    "react": "^16.6.0",
-    "react-dom": "^16.6.0",
+    "react": "^16.8.0",
+    "react-dom": "^16.8.0",
     "react-test-renderer": "^16.2.0",
     "ts-jest": "^24.0.0",
     "tslint": "^5.9.1",
@@ -87,7 +87,7 @@
   },
   "peerDependencies": {
     "lodash-es": "^4.0.0",
-    "react": "^16.6.0"
+    "react": "^16.8.0"
   },
   "dependencies": {
     "@microsoft/fast-jss-manager": "^4.1.9",

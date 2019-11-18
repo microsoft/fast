@@ -2,7 +2,7 @@
   "name": "@microsoft/fast-components-react-base",
   "description": "FAST base components implemented in React.",
   "sideEffects": false,
-  "version": "4.19.0",
+  "version": "4.19.1",
   "author": {
     "name": "Microsoft",
     "url": "https://discord.gg/FcSNfg4"
@@ -69,8 +69,8 @@
     "@babel/core": "^7.0.0",
     "@babel/preset-env": "^7.1.0",
     "@babel/preset-react": "^7.0.0",
-    "@microsoft/fast-storybook-presets": "^1.1.23",
-    "@microsoft/fast-tooling-react": "^1.23.0",
+    "@microsoft/fast-storybook-presets": "^1.1.24",
+    "@microsoft/fast-tooling-react": "^1.23.1",
     "@microsoft/fast-tslint-rules": "^3.0.4",
     "@storybook/addon-actions": "^5.1.9",
     "@storybook/preset-typescript": "^1.1.0",
@@ -79,7 +79,7 @@
     "@types/jest": "^24.0.11",
     "@types/lodash-es": "^4.17.0",
     "@types/node": "^9.4.6",
-    "@types/react": "^16.3.6",
+    "@types/react": "^16.8.0",
     "@types/tabbable": "^3.1.0",
     "babel-core": "^7.0.0-bridge.0",
     "babel-jest": "^24.5.0",
@@ -92,9 +92,9 @@
     "lodash-es": "^4.0.0",
     "prettier": "1.14.3",
     "raf-polyfill": "^1.0.0",
-    "react": "^16.3.0",
+    "react": "^16.8.0",
     "react-docgen-typescript-loader": "^3.1.0",
-    "react-dom": "^16.3.0",
+    "react-dom": "^16.8.0",
     "react-test-renderer": "^16.3.0",
     "regenerator-runtime": "^0.11.1",
     "rimraf": "^2.6.2",
@@ -109,8 +109,8 @@
   },
   "peerDependencies": {
     "lodash-es": "^4.0.0",
-    "react": "^16.3.0",
-    "react-dom": "^16.3.0"
+    "react": "^16.8.0",
+    "react-dom": "^16.8.0"
   },
   "dependencies": {
     "@microsoft/fast-components-class-name-contracts-base": "^4.5.0",
