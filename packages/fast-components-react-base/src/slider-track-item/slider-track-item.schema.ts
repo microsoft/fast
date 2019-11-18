@@ -14,6 +14,8 @@ export default {
                 "selectedRangeMax",
                 "totalRangeMin",
                 "totalRangeMax",
+                "constrainedRangeMin",
+                "constrainedRangeMax",
             ],
         },
         minValuePositionBinding: {
@@ -24,6 +26,8 @@ export default {
                 "selectedRangeMax",
                 "totalRangeMin",
                 "totalRangeMax",
+                "constrainedRangeMin",
+                "constrainedRangeMax",
             ],
         },
     },

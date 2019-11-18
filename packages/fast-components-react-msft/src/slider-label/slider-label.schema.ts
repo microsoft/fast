@@ -6,25 +6,33 @@ export default {
     id: "@microsoft/fast-components-react-msft/slider-label",
     formPluginId: "@microsoft/fast-components-react-base/slider-label",
     properties: {
-        maxValuePositionBinding: {
-            title: "Upper value position binding",
-            type: "string",
-            enum: [
-                "selectedRangeMin",
-                "selectedRangeMax",
-                "totalRangeMin",
-                "totalRangeMax",
+        valuePositionBinding: {
+            title: "Value position binding",
+            oneOf: [
+                {
+                    type: "number",
+                },
+                {
+                    type: "string",
+                    enum: [
+                        "selectedRangeMin",
+                        "selectedRangeMax",
+                        "totalRangeMin",
+                        "totalRangeMax",
+                        "constrainedRangeMin",
+                        "constrainedRangeMax",
+                    ],
+                },
             ],
         },
-        minValuePositionBinding: {
-            title: "Lower value position binding",
+        showTickmark: {
+            title: "Show tick mark",
+            type: "boolean",
+            default: true,
+        },
+        label: {
+            title: "Label",
             type: "string",
-            enum: [
-                "selectedRangeMin",
-                "selectedRangeMax",
-                "totalRangeMin",
-                "totalRangeMax",
-            ],
         },
     },
     reactProperties: {
