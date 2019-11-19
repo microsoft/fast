@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.25.2](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-styles-msft@4.25.1...@microsoft/fast-components-styles-msft@4.25.2) (2019-11-19)
+
+
+### Bug Fixes
+
+* added support for RTL to indeterminate animations and circular progress ([#2419](https://github.com/Microsoft/fast-dna/issues/2419)) ([6b10a72](https://github.com/Microsoft/fast-dna/commit/6b10a72a7b8b85c5f5f7370edcde25a080d25ebc))
+
+
+
+
+
 ## [4.25.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-styles-msft@4.25.0...@microsoft/fast-components-styles-msft@4.25.1) (2019-11-11)
 
 

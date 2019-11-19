@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.2.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-breakpoint-tracker-react@2.1.3...@microsoft/fast-breakpoint-tracker-react@2.2.0) (2019-11-19)
+
+
+### Features
+
+* update React peer dependencies  ([6ac2327](https://github.com/Microsoft/fast-dna/commit/6ac232744a4c2a7c2ce903b6719213ded838d557))
+
+
+
+
+
 ## [2.1.3](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-breakpoint-tracker-react@2.1.2...@microsoft/fast-breakpoint-tracker-react@2.1.3) (2019-11-07)
 
 **Note:** Version bump only for package @microsoft/fast-breakpoint-tracker-react
