@@ -51,7 +51,7 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, {}> {
     private defaultTriggerRenderFunction = (
         props: SelectProps,
         state: SelectState,
-        triggerId: string
+        triggerId?: string
     ): React.ReactNode => {
         if (props.multiselectable) {
             return null;
@@ -63,20 +63,20 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, {}> {
             select_buttonDisplayText,
         }: SelectClassNameContract = this.props.managedClasses;
 
-        // we give the trigger button the role of "textbox"
-        // because Aria expects elements with role of "combobox" to contain a textbox
+        const isItemSelected: boolean = state.selectedItemIndex !== 0;
+
         return (
             <button
-                id={triggerId}
-                className={classNames(select_button)}
                 disabled={props.disabled}
-                aria-disabled={props.disabled}
+                className={classNames(select_button)}
+                id={triggerId}
+                role="option"
+                aria-atomic={true}
+                aria-label={state.displayString}
                 aria-expanded={state.isMenuOpen}
-                aria-labelledby={props.labelledBy || null}
-                aria-multiline={false}
-                aria-valuetext={state.displayString}
-                aria-live="polite"
-                role="textbox"
+                aria-selected={isItemSelected}
+                aria-posinset={isItemSelected ? state.selectedItemIndex : null}
+                aria-setsize={isItemSelected ? state.selectableItemCount : null}
             >
                 <span className={classNames(select_buttonContentRegion)}>
                     <div className={classNames(select_buttonDisplayText)}>
