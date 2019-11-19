@@ -461,7 +461,6 @@ export function getActiveComponentAndSection(
 
     // if the schema is undefined its most likely an array
     if (typeof schema !== "undefined") {
-        state.schema = schema;
         state.titleProps = schema.title || "Untitled";
     }
 

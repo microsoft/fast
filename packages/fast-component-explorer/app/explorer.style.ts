@@ -14,16 +14,16 @@ import {
 import { format } from "@microsoft/fast-jss-utilities";
 
 export interface ExplorerClassNameContract {
-    explorer?: string;
-    explorer_colorPicker?: string;
-    explorer_devToolsPanel?: string;
-    explorer_navigationPanel?: string;
-    explorer_paneTitleContainer?: string;
-    explorer_propertiesPanel?: string;
-    explorer_toolbar?: string;
-    explorer_viewerRegion?: string;
-    explorer_viewerControlRegion?: string;
-    explorer_viewerControls?: string;
+    explorer: string;
+    explorer_colorPicker: string;
+    explorer_devToolsPanel: string;
+    explorer_navigationPanel: string;
+    explorer_paneTitleContainer: string;
+    explorer_propertiesPanel: string;
+    explorer_toolbar: string;
+    explorer_viewerRegion: string;
+    explorer_viewerControlRegion: string;
+    explorer_viewerControls: string;
 }
 
 export function applyScrollbarStyle(): CSSRules<{}> {

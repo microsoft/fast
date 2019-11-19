@@ -2,7 +2,11 @@ import { storiesOf } from "@storybook/react";
 import React from "react";
 import { Slider, SliderClassNameContract } from "./";
 import { SliderLabel } from "../slider-label";
-import { SliderMode, SliderOrientation } from "@microsoft/fast-components-react-base";
+import {
+    SliderMode,
+    SliderOrientation,
+    SliderTrackItemAnchor,
+} from "@microsoft/fast-components-react-base";
 import { ComponentStyleSheet } from "@microsoft/fast-jss-manager-react";
 import { DesignSystem, designUnit } from "@microsoft/fast-components-styles-msft";
 import { multiply, toPx } from "@microsoft/fast-jss-utilities";
@@ -30,11 +34,17 @@ storiesOf("Slider", module)
             range={{ minValue: 0, maxValue: 100 }}
             onValueChange={action("onValueChange")}
         >
-            <SliderLabel valuePositionBinding={0} label="Low" />
+            <SliderLabel
+                valuePositionBinding={SliderTrackItemAnchor.totalRangeMin}
+                label="Low"
+            />
             <SliderLabel valuePositionBinding={25} label="25" />
             <SliderLabel valuePositionBinding={50} label="50" />
             <SliderLabel valuePositionBinding={75} label="75" />
-            <SliderLabel valuePositionBinding={100} label="High" />
+            <SliderLabel
+                valuePositionBinding={SliderTrackItemAnchor.totalRangeMax}
+                label="High"
+            />
         </Slider>
     ))
     .add("Range", () => (
@@ -43,11 +53,17 @@ storiesOf("Slider", module)
             mode={SliderMode.adjustBoth}
             onValueChange={action("onValueChange")}
         >
-            <SliderLabel valuePositionBinding={0} label="Low" />
+            <SliderLabel
+                valuePositionBinding={SliderTrackItemAnchor.totalRangeMin}
+                label="Low"
+            />
             <SliderLabel valuePositionBinding={25} label="25" />
             <SliderLabel valuePositionBinding={50} label="50" />
             <SliderLabel valuePositionBinding={75} label="75" />
-            <SliderLabel valuePositionBinding={100} label="High" />
+            <SliderLabel
+                valuePositionBinding={SliderTrackItemAnchor.totalRangeMax}
+                label="High"
+            />
         </Slider>
     ))
     .add("Range - lower adjustment", () => (
@@ -56,11 +72,17 @@ storiesOf("Slider", module)
             mode={SliderMode.adustLowerValue}
             onValueChange={action("onValueChange")}
         >
-            <SliderLabel valuePositionBinding={0} label="Low" />
+            <SliderLabel
+                valuePositionBinding={SliderTrackItemAnchor.totalRangeMin}
+                label="Low"
+            />
             <SliderLabel valuePositionBinding={25} label="25" />
             <SliderLabel valuePositionBinding={50} label="50" />
             <SliderLabel valuePositionBinding={75} label="75" />
-            <SliderLabel valuePositionBinding={100} label="High" />
+            <SliderLabel
+                valuePositionBinding={SliderTrackItemAnchor.totalRangeMax}
+                label="High"
+            />
         </Slider>
     ))
     .add("Range - higher adjustment", () => (
@@ -69,11 +91,17 @@ storiesOf("Slider", module)
             mode={SliderMode.adustUpperValue}
             onValueChange={action("onValueChange")}
         >
-            <SliderLabel valuePositionBinding={0} label="Low" />
+            <SliderLabel
+                valuePositionBinding={SliderTrackItemAnchor.totalRangeMin}
+                label="Low"
+            />
             <SliderLabel valuePositionBinding={25} label="25" />
             <SliderLabel valuePositionBinding={50} label="50" />
             <SliderLabel valuePositionBinding={75} label="75" />
-            <SliderLabel valuePositionBinding={100} label="High" />
+            <SliderLabel
+                valuePositionBinding={SliderTrackItemAnchor.totalRangeMax}
+                label="High"
+            />
         </Slider>
     ))
     .add("Stepped", () => (
@@ -82,11 +110,17 @@ storiesOf("Slider", module)
             step={25}
             onValueChange={action("onValueChange")}
         >
-            <SliderLabel valuePositionBinding={0} label="Low" />
+            <SliderLabel
+                valuePositionBinding={SliderTrackItemAnchor.totalRangeMin}
+                label="Low"
+            />
             <SliderLabel valuePositionBinding={25} label="25" />
             <SliderLabel valuePositionBinding={50} label="50" />
             <SliderLabel valuePositionBinding={75} label="75" />
-            <SliderLabel valuePositionBinding={100} label="High" />
+            <SliderLabel
+                valuePositionBinding={SliderTrackItemAnchor.totalRangeMax}
+                label="High"
+            />
         </Slider>
     ))
     .add("Vertical", () => (
@@ -96,11 +130,17 @@ storiesOf("Slider", module)
             jssStyleSheet={vertcialSliderStyles}
             onValueChange={action("onValueChange")}
         >
-            <SliderLabel valuePositionBinding={0} label="Low" />
+            <SliderLabel
+                valuePositionBinding={SliderTrackItemAnchor.totalRangeMin}
+                label="Low"
+            />
             <SliderLabel valuePositionBinding={25} label="25" />
             <SliderLabel valuePositionBinding={50} label="50" />
             <SliderLabel valuePositionBinding={75} label="75" />
-            <SliderLabel valuePositionBinding={100} label="High" />
+            <SliderLabel
+                valuePositionBinding={SliderTrackItemAnchor.totalRangeMax}
+                label="High"
+            />
         </Slider>
     ))
     .add("Multiple", () => (
@@ -110,11 +150,17 @@ storiesOf("Slider", module)
             jssStyleSheet={vertcialSliderStyles}
             onValueChange={action("onValueChange")}
         >
-            <SliderLabel valuePositionBinding={0} label="Low" />
+            <SliderLabel
+                valuePositionBinding={SliderTrackItemAnchor.totalRangeMin}
+                label="Low"
+            />
             <SliderLabel valuePositionBinding={25} label="25" />
             <SliderLabel valuePositionBinding={50} label="50" />
             <SliderLabel valuePositionBinding={75} label="75" />
-            <SliderLabel valuePositionBinding={100} label="High" />
+            <SliderLabel
+                valuePositionBinding={SliderTrackItemAnchor.totalRangeMax}
+                label="High"
+            />
         </Slider>
     ))
     .add("Disabled", () => (
@@ -123,10 +169,16 @@ storiesOf("Slider", module)
             disabled={true}
             onValueChange={action("onValueChange")}
         >
-            <SliderLabel valuePositionBinding={0} label="Low" />
+            <SliderLabel
+                valuePositionBinding={SliderTrackItemAnchor.totalRangeMin}
+                label="Low"
+            />
             <SliderLabel valuePositionBinding={25} label="25" />
             <SliderLabel valuePositionBinding={50} label="50" />
             <SliderLabel valuePositionBinding={75} label="75" />
-            <SliderLabel valuePositionBinding={100} label="High" />
+            <SliderLabel
+                valuePositionBinding={SliderTrackItemAnchor.totalRangeMax}
+                label="High"
+            />
         </Slider>
     ));

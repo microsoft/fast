@@ -49,7 +49,7 @@ export interface DialogHandledProps extends DialogManagedClasses {
      * The onDismiss callback
      * Callback is registered on click of the modal overlay or when escape key is pressed
      */
-    onDismiss?: (e?: React.MouseEvent | KeyboardEvent) => void;
+    onDismiss?: (e?: React.MouseEvent | KeyboardEvent | React.TouchEvent) => void;
 
     /**
      * Sets the visibility of the dialog to assistive technologies
