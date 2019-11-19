@@ -460,18 +460,15 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
         if (props.multiselectable) {
             return null;
         }
-        const isItemSelected: boolean = state.selectedItemIndex !== 0;
+        const labelledBy: string = `${this.props.labelledBy} ${triggerId}`;
         return (
             <button
                 disabled={props.disabled}
                 id={triggerId}
-                role="option"
-                aria-atomic={true}
-                aria-label={state.displayString}
+                aria-haspopup="listbox"
+                aria-labelledby={labelledBy}
                 aria-expanded={state.isMenuOpen}
-                aria-selected={isItemSelected}
-                aria-posinset={isItemSelected ? state.selectedItemIndex : null}
-                aria-setsize={isItemSelected ? state.selectableItemCount : null}
+                aria-live="polite"
             >
                 {state.displayString}
             </button>
