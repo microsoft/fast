@@ -98,10 +98,9 @@ function invertedGetRtlScrollConverter(scrolledElement: Element): number {
 }
 
 function reverseGetRtlScrollConverter(scrolledElement: Element): number {
-    return -Math.abs(
-        scrolledElement.scrollWidth -
-            scrolledElement.clientWidth -
-            scrolledElement.scrollLeft
+    return (
+        scrolledElement.scrollLeft -
+        (scrolledElement.scrollWidth - scrolledElement.clientWidth)
     );
 }
 
@@ -134,7 +133,6 @@ function reverseSetRtlScrollConverter(
     scrolledElement: Element,
     newScrollValue: number
 ): void {
-    scrolledElement.scrollLeft = Math.abs(
-        scrolledElement.scrollWidth - scrolledElement.clientWidth - newScrollValue
-    );
+    const maxScroll: number = scrolledElement.scrollWidth - scrolledElement.clientWidth;
+    scrolledElement.scrollLeft = maxScroll + newScrollValue;
 }
