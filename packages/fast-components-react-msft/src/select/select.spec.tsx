@@ -63,9 +63,14 @@ describe("button", (): void => {
         );
 
         const trigger: any = rendered.find("button");
-        expect(trigger.prop("role")).toEqual("textbox");
+        expect(trigger.prop("role")).toEqual("option");
         expect(trigger.prop("aria-expanded")).toEqual(false);
-        expect(trigger.prop("aria-multiline")).toEqual(false);
+        expect(trigger.prop("aria-atomic")).toEqual(true);
+        expect(trigger.prop("aria-label")).toEqual("a");
+        expect(trigger.prop("aria-expanded")).toEqual(false);
+        expect(trigger.prop("aria-selected")).toEqual(true);
+        expect(trigger.prop("aria-posinset")).toEqual(1);
+        expect(trigger.prop("aria-setsize")).toEqual(3);
     });
 
     test("Custom menu render function is called", (): void => {

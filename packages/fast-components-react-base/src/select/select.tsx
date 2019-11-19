@@ -157,8 +157,6 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
      * Renders the component
      */
     public render(): React.ReactElement<HTMLDivElement> {
-        // we set role="combobox" in order to match how native select elements
-        // are described by assistive technologies
         return (
             <div
                 {...this.unhandledProps()}
@@ -168,10 +166,11 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
                 onClick={this.handleClick}
                 onFocus={this.handleFocus}
                 tabIndex={-1}
-                role="combobox"
+                role="listbox"
                 aria-disabled={this.props.disabled}
                 aria-expanded={this.state.isMenuOpen}
                 aria-labelledby={this.props.labelledBy || null}
+                aria-describedby={this.triggerId}
             >
                 {this.renderTrigger()}
                 {this.renderHiddenSelectElement()}
@@ -230,7 +229,6 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
                 multiple={this.props.multiselectable || null}
                 disabled={this.props.disabled || null}
                 onChange={this.onSelectValueChange}
-                aria-hidden={true}
                 style={{
                     display: "none",
                 }}
@@ -468,24 +466,20 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
         if (props.multiselectable) {
             return null;
         }
-
         const isItemSelected: boolean = state.selectedItemIndex !== 0;
-
-        // we give the trigger button the role of "textbox"
-        // because Aria expects elements with role of "combobox" to contain a textbox
         return (
             <button
-                id={triggerId}
                 disabled={props.disabled}
-                aria-disabled={this.props.disabled}
-                aria-expanded={this.state.isMenuOpen}
-                aria-labelledby={this.props.labelledBy || null}
-                aria-multiline={false}
-                aria-valuetext={state.displayString}
-                aria-live="polite"
-                role="textbox"
+                id={triggerId}
+                role="option"
+                aria-atomic={true}
+                aria-label={state.displayString}
+                aria-expanded={state.isMenuOpen}
+                aria-selected={isItemSelected}
+                aria-posinset={isItemSelected ? state.selectedItemIndex : null}
+                aria-setsize={isItemSelected ? state.selectableItemCount : null}
             >
-                <div>{state.displayString}</div>
+                {state.displayString}
             </button>
         );
     };

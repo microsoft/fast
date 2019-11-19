@@ -84,8 +84,9 @@ describe("select", (): void => {
                 {itemC}
             </Select>
         );
-        expect(rendered.first().prop("role")).toEqual("combobox");
+        expect(rendered.first().prop("role")).toEqual("listbox");
         expect(rendered.first().prop("aria-labelledby")).toEqual("test-labelledBy");
+        expect(rendered.first().prop("aria-describedby")).toContain("selecttrigger-");
         expect(rendered.first().prop("aria-expanded")).toEqual(false);
         expect(rendered.first().prop("aria-disabled")).toEqual(false);
     });
@@ -111,9 +112,14 @@ describe("select", (): void => {
         );
 
         const trigger: any = rendered.find("button");
-        expect(trigger.prop("role")).toEqual("textbox");
+        expect(trigger.prop("role")).toEqual("option");
         expect(trigger.prop("aria-expanded")).toEqual(false);
+        expect(trigger.prop("aria-atomic")).toEqual(true);
+        expect(trigger.prop("aria-label")).toEqual("a");
         expect(trigger.prop("aria-expanded")).toEqual(false);
+        expect(trigger.prop("aria-selected")).toEqual(true);
+        expect(trigger.prop("aria-posinset")).toEqual(1);
+        expect(trigger.prop("aria-setsize")).toEqual(3);
     });
 
     test("menu should open and close on select click in single mode and aria-expanded is set properly", (): void => {
