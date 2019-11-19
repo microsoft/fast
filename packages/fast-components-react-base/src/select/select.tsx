@@ -164,13 +164,7 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
                 className={this.generateClassNames()}
                 onKeyDown={this.handleKeydown}
                 onClick={this.handleClick}
-                onFocus={this.handleFocus}
                 tabIndex={-1}
-                role="listbox"
-                aria-disabled={this.props.disabled}
-                aria-expanded={this.state.isMenuOpen}
-                aria-labelledby={this.props.labelledBy || null}
-                aria-describedby={this.triggerId}
             >
                 {this.renderTrigger()}
                 {this.renderHiddenSelectElement()}
@@ -550,18 +544,6 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
                     this.incrementSelectedOption(-1);
                 }
                 break;
-        }
-    };
-
-    /**
-     * Handles focus
-     */
-    private handleFocus = (e: React.FocusEvent): void => {
-        if (this.props.disabled || e.defaultPrevented) {
-            return;
-        }
-        if (!this.props.multiselectable && this.state.selectedItems.length === 0) {
-            this.incrementSelectedOption(1);
         }
     };
 
