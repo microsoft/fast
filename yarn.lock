@@ -2822,7 +2822,7 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react@*", "@types/react@^15", "@types/react@^15.0.24", "@types/react@^16.3.6", "@types/react@^16.4.18", "@types/react@^16.7.17", "@types/react@^16.8.19":
+"@types/react@*", "@types/react@^15", "@types/react@^15.0.24", "@types/react@^16.3.6", "@types/react@^16.4.18", "@types/react@^16.7.17", "@types/react@^16.8.0", "@types/react@^16.8.19":
   version "16.9.11"
   resolved "https://registry.yarnpkg.com/@types/react/-/react-16.9.11.tgz#70e0b7ad79058a7842f25ccf2999807076ada120"
   integrity sha512-UBT4GZ3PokTXSWmdgC/GeCGEJXE5ofWyibCcecRLUVN2ZBpXQGVgQGtG2foS7CrTKFKlQVVswLvf7Js6XA/CVQ==
@@ -13389,7 +13389,7 @@ react-dom@^15.6.2:
     object-assign "^4.1.0"
     prop-types "^15.5.10"
 
-react-dom@^16.3.0, react-dom@^16.6.0, react-dom@^16.6.3, react-dom@^16.8.0, react-dom@^16.8.3:
+react-dom@^16.6.0, react-dom@^16.6.3, react-dom@^16.8.0, react-dom@^16.8.3:
   version "16.12.0"
   resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-16.12.0.tgz#0da4b714b8d13c2038c9396b54a92baea633fe11"
   integrity sha512-LMxFfAGrcS3kETtQaCkTKjMiifahaMySFDn71fZUNpPHZQEzmk/GiAeIT8JSOrHB23fnuCOMruL2a8NYlw+8Gw==
@@ -13629,7 +13629,7 @@ react@^15.6.2:
     object-assign "^4.1.0"
     prop-types "^15.5.10"
 
-react@^16.3.0, react@^16.6.0, react@^16.6.3, react@^16.8.0, react@^16.8.3, react@^16.8.6:
+react@^16.6.0, react@^16.6.3, react@^16.8.0, react@^16.8.3, react@^16.8.6:
   version "16.12.0"
   resolved "https://registry.yarnpkg.com/react/-/react-16.12.0.tgz#0c0a9c6a142429e3614834d5a778e18aa78a0b83"
   integrity sha512-fglqy3k5E+81pA8s+7K0/T3DBCF0ZDOher1elBFzF7O6arXJgzyu/FW+COxFvAWXJoJN9KIZbT2LXlukwphYTA==
