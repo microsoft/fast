@@ -30,6 +30,11 @@ export enum GridAlignment {
  */
 export type GridGutter = 0 | 2 | 3 | 6 | 12;
 
+/**
+ * The CSS grid display style
+ */
+export type GridDisplay = "grid" | "-ms-grid";
+
 export interface GridManagedClasses extends ManagedClasses<GridClassNamesContract> {}
 export interface GridUnhandledProps extends React.HTMLAttributes<HTMLElement> {}
 export interface GridHandledProps extends GridManagedClasses {
@@ -69,6 +74,12 @@ export interface GridHandledProps extends GridManagedClasses {
      * Use this property to support -ms-grid when Grid is a child of an element who's display property is set to -ms-grid
      */
     row?: number;
+
+    /**
+     * The CSS grid display, "grid" when true and "-ms-grid" when false
+     * Provide this prop when doing server side rendering
+     */
+    display?: GridDisplay;
 }
 
 export type GridProps = GridHandledProps & GridUnhandledProps;
