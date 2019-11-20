@@ -3,6 +3,29 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.20.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-base@4.19.1...@microsoft/fast-components-react-base@4.20.0) (2019-11-19)
+
+
+### Bug Fixes
+
+* improve select aria ([#2393](https://github.com/Microsoft/fast-dna/issues/2393)) ([59a790b](https://github.com/Microsoft/fast-dna/commit/59a790b39f8fa63b93acf2f42edb3c7fff630288))
+* modal dialog now blocks touch events ([#2401](https://github.com/Microsoft/fast-dna/issues/2401)) ([2c5501f](https://github.com/Microsoft/fast-dna/commit/2c5501f6f607ecb4fd9d07768878fbde7b5006a2))
+* update stories, read me, and schema in slider ([#2410](https://github.com/Microsoft/fast-dna/issues/2410)) ([d672080](https://github.com/Microsoft/fast-dna/commit/d67208088eb48542f77ff626d48672963dd60194))
+
+
+### Features
+
+* update React peer dependencies  ([6ac2327](https://github.com/Microsoft/fast-dna/commit/6ac232744a4c2a7c2ce903b6719213ded838d557))
+
+
+### Reverts
+
+* "fix: improve select aria ([#2393](https://github.com/Microsoft/fast-dna/issues/2393))" ([#2455](https://github.com/Microsoft/fast-dna/issues/2455)) ([36890d4](https://github.com/Microsoft/fast-dna/commit/36890d4ca4d4ce9abe6444ac21ed8924357b64b8))
+
+
+
+
+
 ## [4.19.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-base@4.19.0...@microsoft/fast-components-react-base@4.19.1) (2019-11-11)
 
 **Note:** Version bump only for package @microsoft/fast-components-react-base
