@@ -44,8 +44,7 @@ export interface SliderState {
     isIncrementing: boolean;
     incrementDirection: number;
     usePageStep: boolean;
-    direction: Direction;
-    isFirstRender: boolean;
+    direction: Direction | null;
 }
 
 class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, SliderState> {
@@ -174,8 +173,7 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
             isIncrementing: false,
             incrementDirection: 1,
             usePageStep: false,
-            direction: Direction.ltr,
-            isFirstRender: true,
+            direction: null,
         };
     }
 
@@ -184,9 +182,6 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
      */
     public componentDidMount(): void {
         this.updateDirection();
-        this.setState({
-            isFirstRender: false,
-        });
     }
 
     public componentWillUnmount(): void {
@@ -286,7 +281,7 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
      * (avoids transition animations to get the layout right to begin with)
      */
     private renderSliderInternals = (): React.ReactNode => {
-        if (this.state.isFirstRender) {
+        if (this.state.direction === null) {
             return null;
         }
 

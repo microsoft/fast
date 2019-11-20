@@ -7,6 +7,7 @@ import Slider, {
     SliderUnhandledProps,
 } from "./slider";
 import {
+    Direction,
     keyCodeArrowDown,
     keyCodeArrowLeft,
     keyCodeArrowRight,
@@ -767,7 +768,7 @@ describe("Slider", (): void => {
         document.body.removeChild(container);
     });
 
-    test("first render state flag is false after component has mounted", (): void => {
+    test("direction is set after component has mounted", (): void => {
         const container: HTMLDivElement = document.createElement("div");
         document.body.appendChild(container);
 
@@ -778,7 +779,7 @@ describe("Slider", (): void => {
             }
         );
 
-        expect(rendered.state("isFirstRender")).toBe(false);
+        expect(rendered.state("direction")).toBe(Direction.ltr);
         document.body.removeChild(container);
     });
 
