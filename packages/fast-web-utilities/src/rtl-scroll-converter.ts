@@ -12,8 +12,8 @@ import { Direction } from "./localization";
  * The functions initially assigned trigger a browser check when called which sets
  * the correct function based on browser and then invokes it
  */
-let GetRtlScrollLeft: (scrolledElement: Element) => number = initialGetRtlScrollConverter;
-let SetRtlScrollLeft: (
+let getRtlScrollLeft: (scrolledElement: Element) => number = initialGetRtlScrollConverter;
+let setRtlScrollLeft: (
     scrolledElement: Element,
     scrollValue: number
 ) => void = initialSetRtlScrollConverter;
@@ -23,7 +23,7 @@ let SetRtlScrollLeft: (
  */
 export function getScrollLeft(scrolledElement: Element, direction: Direction): number {
     if (direction === Direction.rtl) {
-        return GetRtlScrollLeft(scrolledElement);
+        return getRtlScrollLeft(scrolledElement);
     }
     return scrolledElement.scrollLeft;
 }
@@ -37,7 +37,7 @@ export function setScrollLeft(
     direction: Direction
 ): void {
     if (direction === Direction.rtl) {
-        SetRtlScrollLeft(scrolledElement, scrollValue);
+        setRtlScrollLeft(scrolledElement, scrollValue);
         return;
     }
     scrolledElement.scrollLeft = scrollValue;
@@ -51,7 +51,7 @@ function initializeRtlScrollConverters(): void {
     if (canUseDOM()) {
         const dummy = document.createElement("div");
         dummy.appendChild(document.createTextNode("ABCD"));
-        dummy.dir = "rtl";
+        dummy.dir = Direction.rtl;
         dummy.style.fontSize = "14px";
         dummy.style.width = "4px";
         dummy.style.height = "1px";
@@ -61,41 +61,56 @@ function initializeRtlScrollConverters(): void {
         document.body.appendChild(dummy);
 
         if (dummy.scrollLeft > 0) {
-            SetRtlScrollLeft = reverseSetRtlScrollConverter;
-            GetRtlScrollLeft = reverseGetRtlScrollConverter;
+            setRtlScrollLeft = reverseSetRtlScrollConverter;
+            getRtlScrollLeft = reverseGetRtlScrollConverter;
         } else {
             dummy.scrollLeft = 1;
             if (dummy.scrollLeft === 1) {
-                SetRtlScrollLeft = invertedSetRtlScrollConverter;
-                GetRtlScrollLeft = invertedGetRtlScrollConverter;
+                setRtlScrollLeft = invertedSetRtlScrollConverter;
+                getRtlScrollLeft = invertedGetRtlScrollConverter;
             } else {
-                SetRtlScrollLeft = directSetRtlScrollConverter;
-                GetRtlScrollLeft = directGetRtlScrollConverter;
+                setRtlScrollLeft = directSetRtlScrollConverter;
+                getRtlScrollLeft = directGetRtlScrollConverter;
             }
         }
         document.body.removeChild(dummy);
     } else {
-        SetRtlScrollLeft = directSetRtlScrollConverter;
-        GetRtlScrollLeft = directGetRtlScrollConverter;
+        setRtlScrollLeft = directSetRtlScrollConverter;
+        getRtlScrollLeft = directGetRtlScrollConverter;
     }
 }
 
 /**
- * Rtl scroll getter functions
+ * The initial rtl scroll converter getter function, it calls the browser test to set the correct converter
+ * functions and then invokes the getter
  */
 function initialGetRtlScrollConverter(scrolledElement: Element): number {
     initializeRtlScrollConverters();
-    return GetRtlScrollLeft(scrolledElement);
+    return getRtlScrollLeft(scrolledElement);
 }
 
+/**
+ * The "direct" rtl get scroll converter does not need to tamper with the scrollLeft
+ * values as the browser is already doing the right thing.  Content start = 0 and
+ * scrolling left goes negative.
+ */
 function directGetRtlScrollConverter(scrolledElement: Element): number {
     return scrolledElement.scrollLeft;
 }
 
+/**
+ * The "inverted" get scroll converter is used when the browser reports scroll left
+ * as a positive maximum scroll value at content start and then goes to zero as content
+ * is scrolled left
+ */
 function invertedGetRtlScrollConverter(scrolledElement: Element): number {
     return -Math.abs(scrolledElement.scrollLeft);
 }
 
+/**
+ * The "reverse" get scroll converter is used when the browser reports scroll left
+ * as 0 at content start and then goes positive as content is scrolled left
+ */
 function reverseGetRtlScrollConverter(scrolledElement: Element): number {
     return (
         scrolledElement.scrollLeft -
@@ -104,16 +119,22 @@ function reverseGetRtlScrollConverter(scrolledElement: Element): number {
 }
 
 /**
- * Rtl scroll setter functions
+ * The initial rtl scroll converter setter function, it calls the browser test to set the correct converter
+ * functions and then invokes the setter
  */
 function initialSetRtlScrollConverter(
     scrolledElement: Element,
     newScrollValue: number
 ): void {
     initializeRtlScrollConverters();
-    SetRtlScrollLeft(scrolledElement, newScrollValue);
+    setRtlScrollLeft(scrolledElement, newScrollValue);
 }
 
+/**
+ * The "direct" rtl set scroll converter does not need to tamper with the scrollLeft
+ * values as the browser is already doing the right thing.  Content start = 0 and
+ * scrolling left goes negative.
+ */
 function directSetRtlScrollConverter(
     scrolledElement: Element,
     newScrollValue: number
@@ -121,6 +142,11 @@ function directSetRtlScrollConverter(
     scrolledElement.scrollLeft = newScrollValue;
 }
 
+/**
+ * The "inverted" set scroll converter is used when the browser reports scroll left
+ * as a positive maximum scroll value at content start and then goes to zero as content
+ * is scrolled left
+ */
 function invertedSetRtlScrollConverter(
     scrolledElement: Element,
     newScrollValue: number
@@ -128,6 +154,10 @@ function invertedSetRtlScrollConverter(
     scrolledElement.scrollLeft = Math.abs(newScrollValue);
 }
 
+/**
+ * The "reverse" set scroll converter is used when the browser reports scroll left
+ * as 0 at content start and then goes positive as content is scrolled left
+ */
 function reverseSetRtlScrollConverter(
     scrolledElement: Element,
     newScrollValue: number
