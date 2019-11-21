@@ -79,7 +79,7 @@ export interface GridHandledProps extends GridManagedClasses {
      * The CSS grid display, "grid" when true and "-ms-grid" when false
      * Provide this prop when doing server side rendering
      */
-    display?: GridDisplay;
+    displayType?: GridDisplay;
 }
 
 export type GridProps = GridHandledProps & GridUnhandledProps;

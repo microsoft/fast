@@ -47,7 +47,7 @@ export class Grid extends Foundation<GridHandledProps, GridUnhandledProps, {}> {
         managedClasses: void 0,
         tag: void 0,
         verticalAlign: void 0,
-        display: void 0,
+        displayType: void 0,
     };
 
     /**
@@ -136,7 +136,7 @@ export class Grid extends Foundation<GridHandledProps, GridUnhandledProps, {}> {
     };
 
     private generateStyleAttributes(): React.CSSProperties {
-        const displayStyle: GridDisplay = this.props.display || Grid.display;
+        const displayStyle: GridDisplay = this.props.displayType || Grid.display;
         return {
             display: displayStyle,
             ...(displayStyle === "grid" ? this.cssGridStyles() : this.msGridStyles()),

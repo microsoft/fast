@@ -233,17 +233,17 @@ describe("Grid", (): void => {
         expect(rendered.props().columnCount).toBe(5);
     });
 
-    test("should set a display value equal to the `display` prop when passed", () => {
+    test("should set a display value equal to the `displayType` prop when passed", () => {
         const rendered: any = mount(
-            <Grid display={"-ms-grid"} managedClasses={managedClasses} />
+            <Grid displayType={"-ms-grid"} managedClasses={managedClasses} />
         );
 
-        expect(rendered.props().display).toBe("-ms-grid");
+        expect(rendered.props().displayType).toBe("-ms-grid");
     });
 
-    test("should set the CSS display style to a value that equals the `display` prop when passed", () => {
+    test("should set the CSS display style to a value that equals the `displayType` prop when passed", () => {
         const rendered: any = shallow(
-            <Grid display={"-ms-grid"} managedClasses={managedClasses} />
+            <Grid displayType={"-ms-grid"} managedClasses={managedClasses} />
         );
 
         expect(rendered.props().style.display).toBe("-ms-grid");
