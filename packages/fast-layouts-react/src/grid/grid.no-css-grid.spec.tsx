@@ -79,7 +79,7 @@ describe("Grid - without CSS grid support", (): void => {
     });
 });
 
-describe("Grid - without CSS grid support but `display` prop is `grid`", (): void => {
+describe("Grid - without CSS grid support but `cssGridPropertyName` prop is `grid`", (): void => {
     const managedClasses: GridClassNamesContract = {
         grid: "grid",
     };
@@ -112,7 +112,7 @@ describe("Grid - without CSS grid support but `display` prop is `grid`", (): voi
         expect(rendered.props().style.msGridRow).toBe(undefined);
     });
 
-    test("should set an inline style for alignItems with a value equal to the `verticalAlign` prop when CSS grid is NOT supported but the `display` prop passed is equal to `grid`", () => {
+    test("should set an inline style for alignItems with a value equal to the `verticalAlign` prop when CSS grid is NOT supported but the `cssGridPropertyName` prop passed is equal to `grid`", () => {
         const rendered: any = shallow(
             <Grid
                 cssGridPropertyName={"grid"}
