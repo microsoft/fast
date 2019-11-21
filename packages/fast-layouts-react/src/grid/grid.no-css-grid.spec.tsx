@@ -84,24 +84,28 @@ describe("Grid - without CSS grid support but `display` prop is `grid`", (): voi
         grid: "grid",
     };
 
-    test("should set an inline style of `display: grid` when CSS grid is NOT supported but the `displayType` prop passed is `grid`", () => {
-        const rendered: any = shallow(<Grid displayType={"grid"} />);
+    test("should set an inline style of `display: grid` when CSS grid is NOT supported but the `cssGridPropertyName` prop passed is `grid`", () => {
+        const rendered: any = shallow(<Grid cssGridPropertyName={"grid"} />);
 
         expect(rendered.props().style.display).toEqual("grid");
     });
 
-    test("should set an inline style for `gridColumn` with a value equal to the `gridColumn` prop when  CSS grid is NOT supported but the `displayType` prop passed is equal to `grid`", () => {
+    test("should set an inline style for `gridColumn` with a value equal to the `gridColumn` prop when  CSS grid is NOT supported but the `cssGridPropertyName` prop passed is equal to `grid`", () => {
         const rendered: any = shallow(
-            <Grid displayType={"grid"} gridColumn={2} managedClasses={managedClasses} />
+            <Grid
+                cssGridPropertyName={"grid"}
+                gridColumn={2}
+                managedClasses={managedClasses}
+            />
         );
 
         expect(rendered.props().style.gridColumn).toBe(2);
         expect(rendered.props().style.msGridColumn).toBe(undefined);
     });
 
-    test("should set an inline style for `gridRow` with a value equal to the `gridColumn` prop when CSS grid is NOT supported but the `displayType` prop passed is equal to `grid`", () => {
+    test("should set an inline style for `gridRow` with a value equal to the `gridColumn` prop when CSS grid is NOT supported but the `cssGridPropertyName` prop passed is equal to `grid`", () => {
         const rendered: any = shallow(
-            <Grid displayType={"grid"} row={2} managedClasses={managedClasses} />
+            <Grid cssGridPropertyName={"grid"} row={2} managedClasses={managedClasses} />
         );
 
         expect(rendered.props().style.gridRow).toBe(2);
@@ -111,7 +115,7 @@ describe("Grid - without CSS grid support but `display` prop is `grid`", (): voi
     test("should set an inline style for alignItems with a value equal to the `verticalAlign` prop when CSS grid is NOT supported but the `display` prop passed is equal to `grid`", () => {
         const rendered: any = shallow(
             <Grid
-                displayType={"grid"}
+                cssGridPropertyName={"grid"}
                 verticalAlign={GridAlignment.center}
                 managedClasses={managedClasses}
             />
@@ -120,10 +124,10 @@ describe("Grid - without CSS grid support but `display` prop is `grid`", (): voi
         expect(rendered.props().style.alignItems).toBe(GridAlignment.center);
     });
 
-    test("should set an inline style for justifyItems with a value equal to the `horizontalAlign` prop when CSS grid is NOT supported but the `displayType` prop passed is equal to `grid`", () => {
+    test("should set an inline style for justifyItems with a value equal to the `horizontalAlign` prop when CSS grid is NOT supported but the `cssGridPropertyName` prop passed is equal to `grid`", () => {
         const rendered: any = shallow(
             <Grid
-                displayType={"grid"}
+                cssGridPropertyName={"grid"}
                 horizontalAlign={GridAlignment.center}
                 managedClasses={managedClasses}
             />
@@ -132,9 +136,13 @@ describe("Grid - without CSS grid support but `display` prop is `grid`", (): voi
         expect(rendered.props().style.justifyItems).toBe(GridAlignment.center);
     });
 
-    test("should set an inline style for gridTemplateColumns with a repeating column count equal to the `columnCount` prop when CSS grid is NOT supported but the `displayType` prop passed is equal to `grid`", () => {
+    test("should set an inline style for gridTemplateColumns with a repeating column count equal to the `columnCount` prop when CSS grid is NOT supported but the `cssGridPropertyName` prop passed is equal to `grid`", () => {
         const rendered: any = shallow(
-            <Grid displayType={"grid"} columnCount={5} managedClasses={managedClasses} />
+            <Grid
+                cssGridPropertyName={"grid"}
+                columnCount={5}
+                managedClasses={managedClasses}
+            />
         );
 
         expect(rendered.props().style.gridTemplateColumns).toBe(`repeat(5, 1fr)`);
@@ -142,7 +150,11 @@ describe("Grid - without CSS grid support but `display` prop is `grid`", (): voi
 
     test("should set an inline style for gridColumnGap in pixels equal to the `gutter` prop when passed", () => {
         const rendered: any = shallow(
-            <Grid displayType={"grid"} gutter={1} managedClasses={managedClasses} />
+            <Grid
+                cssGridPropertyName={"grid"}
+                gutter={1}
+                managedClasses={managedClasses}
+            />
         );
 
         expect(rendered.props().style.gridColumnGap).toBe("1px");
