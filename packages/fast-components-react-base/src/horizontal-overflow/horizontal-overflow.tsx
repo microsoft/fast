@@ -4,8 +4,7 @@ import {
     classNames,
     Direction,
     getClientRectWithMargin,
-    getScrollLeft,
-    setScrollLeft,
+    RtlScrollConverter,
 } from "@microsoft/fast-web-utilities";
 import { canUseDOM } from "exenv-es6";
 import { get, isNil } from "lodash-es";
@@ -419,7 +418,7 @@ class HorizontalOverflow extends Foundation<
     /**
      * Gets the distance to scroll based on the direction
      */
-    private getScrollDistanceFromDirection(
+    private getScrollDistanceFromButtonDirection(
         buttonDirection: ButtonDirection,
         availableWidth: number,
         itemWidths: number[],
@@ -564,10 +563,10 @@ class HorizontalOverflow extends Foundation<
     /**
      * Handler for the click event fired after next or previous has been clicked
      */
-    private handleClick(direction: ButtonDirection): void {
+    private handleClick(buttonDirection: ButtonDirection): void {
         this.setScrollDistance(
-            this.getScrollDistanceFromDirection(
-                direction,
+            this.getScrollDistanceFromButtonDirection(
+                buttonDirection,
                 this.getAvailableWidth(),
                 this.getItemWidths(),
                 this.getScrollPosition()
@@ -662,7 +661,7 @@ class HorizontalOverflow extends Foundation<
             return 0;
         }
 
-        let scrollLeft: number = getScrollLeft(
+        let scrollLeft: number = RtlScrollConverter.getScrollLeft(
             this.horizontalOverflowItemsRef.current,
             this.state.direction
         );
@@ -674,7 +673,7 @@ class HorizontalOverflow extends Foundation<
      */
     private setScrollPosition = (newScrollValue: number): void => {
         if (!isNil(this.horizontalOverflowItemsRef.current)) {
-            setScrollLeft(
+            RtlScrollConverter.setScrollLeft(
                 this.horizontalOverflowItemsRef.current,
                 this.state.direction === Direction.rtl ? -newScrollValue : newScrollValue,
                 this.state.direction
