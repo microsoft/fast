@@ -608,7 +608,7 @@ handleUpdateViewerWidth = (newViewerWidth) => {
 
 ### Custom messaging
 
-A custom post message may be sent through the viewer to the iframe via the `viewerMessage` prop. Anytime this prop is update a message will be sent.
+A custom post message may be sent through the viewer to the iframe via the `iframePostMessage` prop. Anytime this prop is update a message will be sent.
 
 ### Viewer content
 
