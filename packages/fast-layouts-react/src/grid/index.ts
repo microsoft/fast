@@ -4,6 +4,7 @@ import {
     Grid as BaseGrid,
     GridAlignment,
     GridClassNamesContract,
+    GridDisplay,
     GridGutter,
     GridHandledProps as BaseGridHandledProps,
     GridManagedClasses,
@@ -29,4 +30,5 @@ export {
     GridTag,
     GridAlignment,
     GridGutter,
+    GridDisplay,
 };
