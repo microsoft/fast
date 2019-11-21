@@ -232,4 +232,20 @@ describe("Grid", (): void => {
 
         expect(rendered.props().columnCount).toBe(5);
     });
+
+    test("should set a display value equal to the `cssGridPropertyName` prop when passed", () => {
+        const rendered: any = mount(
+            <Grid cssGridPropertyName={"-ms-grid"} managedClasses={managedClasses} />
+        );
+
+        expect(rendered.props().cssGridPropertyName).toBe("-ms-grid");
+    });
+
+    test("should set the CSS display style to a value that equals the `cssGridPropertyName` prop when passed", () => {
+        const rendered: any = shallow(
+            <Grid cssGridPropertyName={"-ms-grid"} managedClasses={managedClasses} />
+        );
+
+        expect(rendered.props().style.display).toBe("-ms-grid");
+    });
 });

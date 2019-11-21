@@ -3,6 +3,7 @@ import BreakpointTracker from "../utilities/breakpoint-tracker";
 import { getValueByBreakpoint } from "../utilities/breakpoints";
 import {
     GridAlignment,
+    GridDisplay,
     GridHandledProps,
     GridProps,
     GridTag,
@@ -36,7 +37,7 @@ export class Grid extends Foundation<GridHandledProps, GridUnhandledProps, {}> {
         managedClasses: {},
     };
 
-    private static display: string = canUseCssGrid() ? "grid" : "-ms-grid";
+    private static display: GridDisplay = canUseCssGrid() ? "grid" : "-ms-grid";
 
     protected handledProps: HandledProps<GridHandledProps> = {
         columnCount: void 0,
@@ -46,6 +47,7 @@ export class Grid extends Foundation<GridHandledProps, GridUnhandledProps, {}> {
         managedClasses: void 0,
         tag: void 0,
         verticalAlign: void 0,
+        cssGridPropertyName: void 0,
     };
 
     /**
@@ -134,9 +136,10 @@ export class Grid extends Foundation<GridHandledProps, GridUnhandledProps, {}> {
     };
 
     private generateStyleAttributes(): React.CSSProperties {
+        const displayStyle: GridDisplay = this.props.cssGridPropertyName || Grid.display;
         return {
-            display: Grid.display,
-            ...(canUseCssGrid() ? this.cssGridStyles() : this.msGridStyles()),
+            display: displayStyle,
+            ...(displayStyle === "grid" ? this.cssGridStyles() : this.msGridStyles()),
             ...this.unhandledProps().style,
         };
     }
