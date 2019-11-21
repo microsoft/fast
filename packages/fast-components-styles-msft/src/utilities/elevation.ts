@@ -3,13 +3,15 @@ import { CSSRules } from "@microsoft/fast-jss-manager";
 import { DesignSystem, DesignSystemResolver } from "../design-system";
 import { black } from "../utilities/color/color-constants";
 import { parseColorString } from "../utilities/color/common";
-import { ColorRGBA64 } from "@microsoft/fast-colors";
+import { ColorRGBA64, rgbToRelativeLuminance } from "@microsoft/fast-colors";
+import { backgroundColor } from "./design-system";
 
 /**
  * Shadow config
  */
 export interface ShadowConfig {
     blurMultiplier: number;
+    blurBase: number;
     opacity: number;
     xOffsetMultiplier: number;
     yOffsetMultiplier: number;
@@ -43,9 +45,10 @@ export enum ElevationMultiplier {
  */
 export const ambientShadowConfig: ShadowConfig = {
     blurMultiplier: 0.225,
+    blurBase: 2,
     xOffsetMultiplier: 0,
-    yOffsetMultiplier: 0.075,
-    opacity: 0.18,
+    yOffsetMultiplier: 0,
+    opacity: 0.11,
 };
 
 /**
@@ -53,9 +56,10 @@ export const ambientShadowConfig: ShadowConfig = {
  */
 export const directionalShadowConfig: ShadowConfig = {
     blurMultiplier: 0.9,
+    blurBase: 0,
     xOffsetMultiplier: 0,
     yOffsetMultiplier: 0.4,
-    opacity: 0.22,
+    opacity: 0.13,
 };
 
 /**
@@ -121,20 +125,18 @@ export function elevationShadow(
             yOffsetMultiplier,
             opacity,
             blurMultiplier,
+            blurBase,
         }: ShadowConfig = shadowConfig;
 
+        const lum: number = rgbToRelativeLuminance(
+            parseColorString(backgroundColor(config))
+        );
+        const opacityMultiple: number = 2 - lum; // white (1) = 1; black (0) = 2;
         return [xOffsetMultiplier, yOffsetMultiplier]
             .map((val: number) => parseFloat((val * elevationValue).toFixed(1)))
-            .concat(blurMultiplier * elevationValue)
+            .concat(blurBase + blurMultiplier * elevationValue)
             .map(toPx)
-            .concat(
-                new ColorRGBA64(
-                    r,
-                    g,
-                    b,
-                    elevationValue > 24 ? opacity : Math.round(opacity * 60) / 100
-                ).toStringWebRGBA()
-            )
+            .concat(new ColorRGBA64(r, g, b, opacity * opacityMultiple).toStringWebRGBA())
             .join(" ");
     };
 }
