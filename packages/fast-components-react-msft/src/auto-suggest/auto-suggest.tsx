@@ -59,7 +59,8 @@ class AutoSuggest extends Foundation<
         state: AutoSuggestState,
         onChange: (event: React.ChangeEvent) => void,
         onClick: (event: React.MouseEvent) => void,
-        onKeyDown: (event: React.KeyboardEvent) => void
+        onKeyDown: (event: React.KeyboardEvent) => void,
+        onFocus: (event: React.FocusEvent) => void
     ): React.ReactNode => {
         const listboxId: string = state.isMenuOpen ? props.listboxId : null;
         const activedescendantId: string =
@@ -70,6 +71,7 @@ class AutoSuggest extends Foundation<
                 onChange={onChange}
                 onClick={onClick}
                 onKeyDown={onKeyDown}
+                onFocus={onFocus}
                 value={state.value}
                 placeholder={props.placeholder}
                 beforeGlyph={this.generateGlyph}

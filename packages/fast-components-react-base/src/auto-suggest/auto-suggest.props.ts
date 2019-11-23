@@ -6,6 +6,11 @@ import {
 import { ListboxItemProps } from "../listbox-item";
 import { AutoSuggestState } from "./auto-suggest";
 
+export enum MenuTriggers {
+    onFocus,
+    onKeyDown,
+}
+
 export interface AutoSuggestManagedClasses
     extends ManagedClasses<AutoSuggestClassNameContract> {}
 export interface AutoSuggestUnhandledProps extends React.HTMLAttributes<HTMLDivElement> {}
@@ -19,7 +24,8 @@ export interface AutoSuggestHandledProps extends AutoSuggestManagedClasses {
         state: AutoSuggestState,
         changeCallback: (event: React.ChangeEvent) => void,
         buttonClickCallback: (event: React.MouseEvent) => void,
-        keyDownCallback: (event: React.KeyboardEvent) => void
+        keyDownCallback: (event: React.KeyboardEvent) => void,
+        focusCallback?: (event: React.FocusEvent) => void
     ) => React.ReactNode;
 
     /**
@@ -69,6 +75,16 @@ export interface AutoSuggestHandledProps extends AutoSuggestManagedClasses {
      * The unique id that will be assigned to the listbox created by this component
      */
     listboxId: string;
+
+    /**
+     * The action that triggers the visibility of the menu
+     */
+    menuTrigger?: MenuTriggers;
+
+    /**
+     * Specifies whether the suggestions dhould filter
+     */
+    filterSuggestions?: boolean;
 }
 
 export type AutoSuggestProps = AutoSuggestHandledProps & AutoSuggestUnhandledProps;

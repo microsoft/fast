@@ -14,6 +14,8 @@ import {
     keyCodeTab,
 } from "@microsoft/fast-web-utilities";
 import { DisplayNamePrefix } from "../utilities";
+import { MenuTriggers } from "./auto-suggest.props";
+import { Listbox } from "../index";
 
 /*
  * Configure Enzyme
@@ -220,12 +222,30 @@ describe("auto suggest", (): void => {
         expect(listbox.prop("id")).toBe("listboxId");
     });
 
+    test("menu should open and have correct id on input region focus when menuTrigger is set to onFocus", (): void => {
+        const rendered: any = mount(
+            <AutoSuggest menuTrigger={MenuTriggers.onFocus} listboxId="listboxId">
+                {itemA}
+                {itemB}
+                {itemC}
+            </AutoSuggest>
+        );
+
+        const input: any = rendered.find("input");
+        expect(rendered.state("isMenuOpen")).toBe(false);
+        input.simulate("focus");
+        expect(rendered.state("isMenuOpen")).toBe(true);
+
+        const listbox: any = rendered.find('[role="listbox"]');
+        expect(listbox.prop("id")).toBe("listboxId");
+    });
+
     test("arrow keys properly traverse the listbox and input region and cause focus and value to changes appropriately", (): void => {
         const container: HTMLDivElement = document.createElement("div");
         document.body.appendChild(container);
 
         const rendered: any = mount(
-            <AutoSuggest listboxId="listboxId">
+            <AutoSuggest listboxId="listboxId" initialValue="search">
                 {itemA}
                 {itemB}
                 {itemC}
@@ -234,7 +254,7 @@ describe("auto suggest", (): void => {
         );
         const input: any = rendered.find("input");
         expect(document.activeElement.id).toBe("");
-        expect(rendered.state("value")).toEqual("");
+        expect(rendered.state("value")).toEqual("search");
         input.simulate("keydown", { keyCode: keyCodeArrowDown });
         expect(document.activeElement.id).toBe("a");
         expect(rendered.state("value")).toEqual("a");
@@ -255,7 +275,7 @@ describe("auto suggest", (): void => {
             .find(ListboxItem.displayName)
             .simulate("keydown", { keyCode: keyCodeArrowDown });
         expect(document.activeElement.id).toBe("");
-        expect(rendered.state("value")).toEqual("c");
+        expect(rendered.state("value")).toEqual("search");
         input.simulate("keydown", { keyCode: keyCodeArrowUp });
         expect(document.activeElement.id).toBe("c");
         expect(rendered.state("value")).toEqual("c");
@@ -276,7 +296,7 @@ describe("auto suggest", (): void => {
             .find(ListboxItem.displayName)
             .simulate("keydown", { keyCode: keyCodeArrowUp });
         expect(document.activeElement.id).toBe("");
-        expect(rendered.state("value")).toEqual("a");
+        expect(rendered.state("value")).toEqual("search");
 
         document.body.removeChild(container);
     });
@@ -441,5 +461,23 @@ describe("auto suggest", (): void => {
         expect(preventDefault).not.toHaveBeenCalled(); // Default behavior should not be prevented
 
         document.body.removeChild(container);
+    });
+
+    test("intialValue prop applied correctly", (): void => {
+        const rendered: any = mount(
+            <AutoSuggest
+                listboxId="listboxId"
+                isMenuOpen={true}
+                initialValue="a"
+                filterSuggestions={true}
+            >
+                {itemA}
+                {itemB}
+                {itemC}
+                <button>Test</button>
+            </AutoSuggest>
+        );
+
+        expect(rendered.find(Listbox.displayName).get(0).props.children).toHaveLength(2);
     });
 });

@@ -9,15 +9,14 @@ import {
     keyCodeTab,
 } from "@microsoft/fast-web-utilities";
 import React from "react";
-import Listbox from "../listbox";
-import { ListboxItemProps } from "../listbox-item";
-import TextField, { TextFieldType } from "../text-field";
+import { Listbox, ListboxItemProps, TextField, TextFieldType } from "../index";
 import { DisplayNamePrefix } from "../utilities";
 import { AutoSuggestContext, AutoSuggestContextType } from "./auto-suggest-context";
 import {
     AutoSuggestHandledProps,
     AutoSuggestProps,
     AutoSuggestUnhandledProps,
+    MenuTriggers,
 } from "./auto-suggest.props";
 
 export interface AutoSuggestState {
@@ -38,7 +37,11 @@ class AutoSuggest extends Foundation<
         disabled: false,
         placeholder: "",
         managedClasses: {},
+        menuTrigger: MenuTriggers.onKeyDown,
+        filterSuggestions: false,
     };
+
+    private static valuePropertyKey: string = "value";
 
     /**
      * Handled props instantiation
@@ -55,6 +58,8 @@ class AutoSuggest extends Foundation<
         onInvoked: void 0,
         placeholder: void 0,
         listboxId: void 0,
+        menuTrigger: void 0,
+        filterSuggestions: void 0,
     };
 
     private rootElement: React.RefObject<HTMLDivElement> = React.createRef<
@@ -62,6 +67,8 @@ class AutoSuggest extends Foundation<
     >();
 
     private shouldFocusMenuOnNextRender: boolean = false;
+
+    private storedSearchString: string;
 
     /**
      * constructor
@@ -77,6 +84,8 @@ class AutoSuggest extends Foundation<
             focusedItem: null,
             isMenuOpen: this.validateMenuState(false),
         };
+
+        this.storedSearchString = this.state.value;
     }
 
     public componentDidUpdate(prevProps: AutoSuggestProps): void {
@@ -115,7 +124,7 @@ class AutoSuggest extends Foundation<
             >
                 <AutoSuggestContext.Provider
                     value={{
-                        currentValue: this.state.value,
+                        currentValue: this.storedSearchString,
                     }}
                 >
                     {this.renderInputRegion()}
@@ -155,7 +164,8 @@ class AutoSuggest extends Foundation<
                 this.state,
                 this.handleChange,
                 this.handleInputRegionClick,
-                this.handleInputRegionKeydown
+                this.handleInputRegionKeydown,
+                this.handleInputRegionFocus
             );
         } else {
             return this.defaultInputRegionRenderFunction(
@@ -163,7 +173,8 @@ class AutoSuggest extends Foundation<
                 this.state,
                 this.handleChange,
                 this.handleInputRegionClick,
-                this.handleInputRegionKeydown
+                this.handleInputRegionKeydown,
+                this.handleInputRegionFocus
             );
         }
     }
@@ -201,9 +212,39 @@ class AutoSuggest extends Foundation<
                     listbox__disabled: autoSuggest__disabled,
                 }}
             >
-                {this.props.children}
+                {this.renderChildren()}
             </Listbox>
         );
+    }
+
+    private renderChildren(): React.ReactNode {
+        if (this.props.filterSuggestions) {
+            const children: React.ReactNode = this.props.children;
+            return React.Children.map(
+                children,
+                (node: React.ReactElement<any>): React.ReactNode | null => {
+                    if (node.props !== undefined) {
+                        if (node.props[AutoSuggest.valuePropertyKey] === undefined) {
+                            return node;
+                        }
+                        return this.isMatch(node.props) ? node : null;
+                    }
+                }
+            );
+        } else {
+            return this.props.children;
+        }
+    }
+
+    /**
+     * Determine if a single node is a match
+     */
+    private isMatch(node: ListboxItemProps): boolean {
+        if (this.storedSearchString !== undefined) {
+            return node.value
+                .toLowerCase()
+                .includes(this.storedSearchString.toLowerCase());
+        }
     }
 
     /**
@@ -214,17 +255,33 @@ class AutoSuggest extends Foundation<
         state: AutoSuggestState,
         onChange: (event: React.ChangeEvent) => void,
         onClick: (event: React.MouseEvent) => void,
-        onKeyDown: (event: React.KeyboardEvent) => void
+        onKeyDown: (event: React.KeyboardEvent) => void,
+        onFocus: (event: React.FocusEvent) => void
     ): React.ReactNode => {
         const listboxId: string = state.isMenuOpen ? props.listboxId : null;
         const activedescendantId: string =
             state.focusedItem !== null ? state.focusedItem.id : null;
+        let menuTriggerProps: Partial<AutoSuggestUnhandledProps>;
+        switch (this.props.menuTrigger) {
+            case MenuTriggers.onFocus:
+                menuTriggerProps = {
+                    onFocus,
+                    onKeyDown,
+                };
+                break;
+
+            default:
+                menuTriggerProps = {
+                    onClick,
+                    onKeyDown,
+                };
+                break;
+        }
         return (
             <TextField
                 disabled={props.disabled}
                 onChange={onChange}
-                onClick={onClick}
-                onKeyDown={onKeyDown}
+                {...menuTriggerProps}
                 value={state.value}
                 type={TextFieldType.text}
                 role="combobox"
@@ -264,10 +321,21 @@ class AutoSuggest extends Foundation<
     };
 
     /**
+     * Handles focus
+     */
+    private handleInputRegionFocus = (e: React.FocusEvent): void => {
+        if (this.props.disabled || e.defaultPrevented) {
+            return;
+        }
+        this.toggleMenu(true);
+    };
+
+    /**
      * Handles item invoked
      */
     private handleItemInvoked = (item: ListboxItemProps): void => {
         this.invoke(item.value, item);
+        this.storedSearchString = this.state.value;
         this.toggleMenu(false);
     };
 
@@ -285,6 +353,7 @@ class AutoSuggest extends Foundation<
      */
     private handleChange = (e: React.ChangeEvent): void => {
         const newValue: string = (e.target as HTMLInputElement).value;
+        this.storedSearchString = newValue;
         this.updateValue(newValue, false);
     };
 
@@ -403,17 +472,20 @@ class AutoSuggest extends Foundation<
         }
 
         const childrenAsArray: React.ReactNode[] = React.Children.toArray(
-            this.props.children
+            this.renderChildren()
         );
 
         const currentItemIndex: number = Listbox.getItemIndexById(
             this.state.focusedItem.id,
-            this.props.children
+            this.renderChildren()
         );
 
         const startIndex: number = currentItemIndex + increment;
 
         if (startIndex > childrenAsArray.length - 1 || startIndex < 0) {
+            this.setState({
+                value: this.storedSearchString,
+            });
             // at the end of the list, focus on input
             this.focusOnInput();
             return true;
@@ -432,6 +504,9 @@ class AutoSuggest extends Foundation<
             nextFocusableItem === null ||
             nextFocusableItem.id === this.state.focusedItem.id
         ) {
+            this.setState({
+                value: this.storedSearchString,
+            });
             // at the end of the list, focus on input
             this.focusOnInput();
             return true;
@@ -444,8 +519,9 @@ class AutoSuggest extends Foundation<
      * Opens menu and focuses on first or last valid item
      */
     private focusOnMenu = (increment: number): void => {
+        this.storedSearchString = this.state.value;
         const childrenAsArray: React.ReactNode[] = React.Children.toArray(
-            this.props.children
+            this.renderChildren()
         );
 
         if (childrenAsArray.length === 0) {
@@ -490,6 +566,9 @@ class AutoSuggest extends Foundation<
                 isMenuOpen: updatedIsMenuOpen,
             });
             if (this.state.isMenuOpen && !updatedIsMenuOpen) {
+                this.setState({
+                    value: this.storedSearchString,
+                });
                 this.focusOnInput();
             }
         }
@@ -517,7 +596,7 @@ class AutoSuggest extends Foundation<
     private validateMenuState = (desiredMenuState: boolean): boolean => {
         return typeof this.props.isMenuOpen === "boolean"
             ? this.props.isMenuOpen
-            : React.Children.count(this.props.children) === 0
+            : React.Children.count(this.renderChildren()) === 0
                 ? false
                 : desiredMenuState;
     };

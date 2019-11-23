@@ -4,6 +4,7 @@ import { uniqueId } from "lodash-es";
 import React, { useState } from "react";
 import AutoSuggest, { AutoSuggestProps } from "./";
 import ListboxItem from "../listbox-item";
+import { MenuTriggers } from "./auto-suggest.props";
 
 /**
  * Simple state manager to track and update value properties
@@ -102,6 +103,42 @@ storiesOf("AutoSuggest", module)
             onValueChange={action("onValueChange")}
             onInvoked={action("onInvoked")}
             disabled={true}
+        >
+            <ListboxItem id={uniqueId()} value="Cat">
+                Cat
+            </ListboxItem>
+            <ListboxItem id={uniqueId()} value="Dog">
+                Dog
+            </ListboxItem>
+            <ListboxItem id={uniqueId()} value="Turtle">
+                Turtle
+            </ListboxItem>
+        </AutoSuggest>
+    ))
+    .add("on Focus", () => (
+        <AutoSuggest
+            {...favoriteAnimalProps}
+            onValueChange={action("onValueChange")}
+            onInvoked={action("onInvoked")}
+            menuTrigger={MenuTriggers.onFocus}
+        >
+            <ListboxItem id={uniqueId()} value="Cat">
+                Cat
+            </ListboxItem>
+            <ListboxItem id={uniqueId()} value="Dog">
+                Dog
+            </ListboxItem>
+            <ListboxItem id={uniqueId()} value="Turtle">
+                Turtle
+            </ListboxItem>
+        </AutoSuggest>
+    ))
+    .add("filter", () => (
+        <AutoSuggest
+            {...favoriteAnimalProps}
+            onValueChange={action("onValueChange")}
+            onInvoked={action("onInvoked")}
+            filterSuggestions={true}
         >
             <ListboxItem id={uniqueId()} value="Cat">
                 Cat
