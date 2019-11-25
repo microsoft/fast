@@ -661,7 +661,7 @@ class HorizontalOverflow extends Foundation<
             return 0;
         }
 
-        let scrollLeft: number = RtlScrollConverter.getScrollLeft(
+        const scrollLeft: number = RtlScrollConverter.getScrollLeft(
             this.horizontalOverflowItemsRef.current,
             this.state.direction
         );
