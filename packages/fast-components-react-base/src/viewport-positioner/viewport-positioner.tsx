@@ -160,8 +160,8 @@ class ViewportPositioner extends Foundation<
 
     private openRequestAnimationFrame: number = null;
 
-    private collisionDetector: IntersectionObserver;
-    private resizeDetector: ResizeObserverClassDefinition;
+    private collisionDetector: IntersectionObserver = null;
+    private resizeDetector: ResizeObserverClassDefinition = null;
 
     private viewportRect: ClientRect | DOMRect;
 
@@ -318,15 +318,6 @@ class ViewportPositioner extends Foundation<
         // Check if there is already a style object being passed as props
         const styleProps: React.CSSProperties = get(this.props, "style");
 
-        // determine if we should hide the positioner because we don't have data to position it yet
-        // (avoiding flicker)
-        const shouldHide: boolean =
-            (this.state.disabled &&
-                ((this.props.disabled === undefined || this.props.disabled === false) &&
-                    isNil(this.positionerRect) &&
-                    this.getAnchorElement() !== null)) ||
-            (isNil(this.positionerRect) && !this.state.noObserverMode);
-
         return {
             ...(this.props.scaleToFit
                 ? {
@@ -334,7 +325,9 @@ class ViewportPositioner extends Foundation<
                       width: `${this.state.horizontalSelectedPositionWidth}px`,
                   }
                 : {}),
-            opacity: shouldHide ? 0 : undefined,
+            // hide the component until afer initial layout attempst (to avoid a flicker)
+            opacity:
+                !this.props.disabled && !this.state.initialLayoutComplete ? 0 : undefined,
             position: "relative",
             transformOrigin: `${this.state.xTransformOrigin} ${
                 this.state.yTransformOrigin
@@ -364,6 +357,8 @@ class ViewportPositioner extends Foundation<
             if (this.state.validRefChecksRemaining > 0) {
                 this.setState({
                     validRefChecksRemaining: this.state.validRefChecksRemaining - 1,
+                    initialLayoutComplete:
+                        this.state.validRefChecksRemaining > 1 ? false : true,
                 });
                 return;
             }
