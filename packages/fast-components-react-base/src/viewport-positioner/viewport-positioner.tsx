@@ -160,8 +160,8 @@ class ViewportPositioner extends Foundation<
 
     private openRequestAnimationFrame: number = null;
 
-    private collisionDetector: IntersectionObserver = null;
-    private resizeDetector: ResizeObserverClassDefinition = null;
+    private collisionDetector: IntersectionObserver;
+    private resizeDetector: ResizeObserverClassDefinition;
 
     private viewportRect: ClientRect | DOMRect;
 
