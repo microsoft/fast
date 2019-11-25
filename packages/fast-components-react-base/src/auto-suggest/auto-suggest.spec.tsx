@@ -463,7 +463,7 @@ describe("auto suggest", (): void => {
         document.body.removeChild(container);
     });
 
-    test("intialValue prop applied correctly", (): void => {
+    test("Should render none listbox item when filterSuggestions id set to true", (): void => {
         const rendered: any = mount(
             <AutoSuggest
                 listboxId="listboxId"

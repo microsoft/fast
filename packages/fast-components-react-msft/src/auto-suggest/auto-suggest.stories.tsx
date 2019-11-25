@@ -111,7 +111,7 @@ storiesOf("Auto suggest", module)
             filterSuggestions={true}
         >
             <AutoSuggestOption id={uniqueId()} value="Cat" />
-            <AutoSuggestOption id={uniqueId()} value="Ceetah" />
+            <AutoSuggestOption id={uniqueId()} value="Cheetah" />
             <AutoSuggestOption id={uniqueId()} value="Dog" />
             <AutoSuggestOption id={uniqueId()} value="Elephant" />
             <AutoSuggestOption id={uniqueId()} value="Leopard" />
