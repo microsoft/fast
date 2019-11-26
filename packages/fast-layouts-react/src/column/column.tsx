@@ -27,6 +27,7 @@ export class Column extends Foundation<ColumnHandledProps, ColumnUnhandledProps,
         row: void 0,
         order: void 0,
         gutter: void 0,
+        cssGridPropertyName: void 0,
     };
 
     /**
@@ -160,17 +161,13 @@ export class Column extends Foundation<ColumnHandledProps, ColumnUnhandledProps,
             .join(" / ");
         let order: number | null;
 
-        if (!canUseDOM()) {
-            order = Array.isArray(this.props.order)
-                ? this.props.order[0]
-                : this.props.order;
-        } else {
-            order = Array.isArray(this.props.order)
-                ? this.getValueByBreakpoint(this.props.order)
-                : this.props.order;
-        }
+        order = Array.isArray(this.props.order)
+            ? this.getValueByBreakpoint(this.props.order)
+            : this.props.order;
 
-        const gridStyles: React.CSSProperties = canUseCssGrid()
+        const canUseCssGridStyle: boolean =
+            this.props.cssGridPropertyName === "grid" ? true : canUseCssGrid();
+        const gridStyles: React.CSSProperties = canUseCssGridStyle
             ? {
                   gridColumn: gridColumnValue,
                   gridRowStart: row,
