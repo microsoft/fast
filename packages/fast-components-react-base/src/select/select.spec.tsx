@@ -89,17 +89,23 @@ describe("select", (): void => {
 
     test("default trigger aria tags are set correctly", (): void => {
         const rendered: any = mount(
-            <Select selectedItems={["a"]}>
+            <Select selectedItems={["a"]} labelledBy="testLabellledBy">
                 {itemA}
                 {itemB}
                 {itemC}
             </Select>
         );
 
+        const triggerId: string = rendered.instance().triggerId;
+
         const trigger: any = rendered.find("button");
         expect(trigger.prop("aria-expanded")).toEqual(false);
         expect(trigger.prop("aria-haspopup")).toEqual("listbox");
         expect(trigger.prop("aria-live")).toEqual("polite");
+        expect(trigger.prop("aria-labelledby").split(" ")).toEqual([
+            "testLabellledBy",
+            rendered.instance().triggerId,
+        ]);
     });
 
     test("menu should open and close on select click in single mode and aria-expanded is set properly", (): void => {
