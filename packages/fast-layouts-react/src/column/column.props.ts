@@ -31,6 +31,12 @@ export interface ColumnHandledProps extends ColumnManagedClasses {
      * The gutter size of the parent Grid component
      */
     gutter?: GridGutter;
+
+    /**
+     * The default breakpoint (useful when server side rendering)
+     * Defaults to 0
+     */
+    defaultBreakpoint?: number;
 }
 
 export type ColumnProps = ColumnHandledProps & ColumnUnhandledProps;
