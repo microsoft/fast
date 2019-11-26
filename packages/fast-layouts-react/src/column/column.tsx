@@ -161,9 +161,15 @@ export class Column extends Foundation<ColumnHandledProps, ColumnUnhandledProps,
             .join(" / ");
         let order: number | null;
 
-        order = Array.isArray(this.props.order)
-            ? this.getValueByBreakpoint(this.props.order)
-            : this.props.order;
+        if (!canUseDOM()) {
+            order = Array.isArray(this.props.order)
+                ? this.props.order[0]
+                : this.props.order;
+        } else {
+            order = Array.isArray(this.props.order)
+                ? this.getValueByBreakpoint(this.props.order)
+                : this.props.order;
+        }
 
         const canUseCssGridStyle: boolean =
             this.props.cssGridPropertyName === "grid" ? true : canUseCssGrid();
