@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.5.3](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-color-explorer@1.5.2...@microsoft/fast-color-explorer@1.5.3) (2019-11-19)
+
+
+### Bug Fixes
+
+* color explorer marker colors don't show on light colors ([#2426](https://github.com/Microsoft/fast-dna/issues/2426)) ([bf9d2b1](https://github.com/Microsoft/fast-dna/commit/bf9d2b1609a50791760096789f9e1e5810be2ed0))
+
+
+
+
+
 ## [1.5.2](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-color-explorer@1.5.1...@microsoft/fast-color-explorer@1.5.2) (2019-11-11)
 
 **Note:** Version bump only for package @microsoft/fast-color-explorer

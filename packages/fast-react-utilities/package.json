@@ -2,7 +2,7 @@
   "name": "@microsoft/fast-react-utilities",
   "description": "Utilities and tools for React development",
   "sideEffects": false,
-  "version": "1.0.0",
+  "version": "1.1.0",
   "author": {
     "name": "Microsoft",
     "url": "https://discord.gg/FcSNfg4"
@@ -89,6 +89,5 @@
     "lodash-es": "^4.0.0",
     "react": "^16.8.0",
     "react-dom": "^16.8.0"
-  },
-  "dependencies": {}
+  }
 }

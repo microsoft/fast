@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.24.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-tooling-react@1.23.1...@microsoft/fast-tooling-react@1.24.0) (2019-11-19)
+
+
+### Bug Fixes
+
+* update state for sections and children control when schemas or data have been updated ([#2425](https://github.com/Microsoft/fast-dna/issues/2425)) ([473e8f8](https://github.com/Microsoft/fast-dna/commit/473e8f89187e446bf2fd86fd967966eb6d12ce16))
+
+
+### Features
+
+* update React peer dependencies  ([6ac2327](https://github.com/Microsoft/fast-dna/commit/6ac232744a4c2a7c2ce903b6719213ded838d557))
+
+
+
+
+
 ## [1.23.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-tooling-react@1.23.0...@microsoft/fast-tooling-react@1.23.1) (2019-11-11)
 
 

@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.7.3](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-jss-utilities@4.7.2...@microsoft/fast-jss-utilities@4.7.3) (2019-11-19)
+
+**Note:** Version bump only for package @microsoft/fast-jss-utilities
+
+
+
+
+
 ## [4.7.2](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-jss-utilities@4.7.1...@microsoft/fast-jss-utilities@4.7.2) (2019-11-07)
 
 **Note:** Version bump only for package @microsoft/fast-jss-utilities

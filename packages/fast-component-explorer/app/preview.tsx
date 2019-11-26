@@ -10,17 +10,25 @@ import {
     DesignSystem,
     DesignSystemDefaults,
 } from "@microsoft/fast-components-styles-msft";
+import {
+    PreviewHandledProps,
+    PreviewProps,
+    PreviewState,
+    PreviewUnhandledProps,
+} from "./preview.props";
 import { get } from "lodash-es";
-
-/* tslint:disable-next-line */
-export interface PreviewState extends DesignSystem {}
+import { classNames } from "@microsoft/fast-web-utilities";
 
 /**
  * The preview component exists on a route inside an iframe
  * This allows for an isolated view of any component or components.
  */
-class Preview extends Foundation<{}, {}, PreviewState> {
-    constructor(props: {}) {
+class Preview extends Foundation<
+    PreviewHandledProps,
+    PreviewUnhandledProps,
+    PreviewState
+> {
+    constructor(props: PreviewProps) {
         super(props);
 
         this.state = {
@@ -32,7 +40,7 @@ class Preview extends Foundation<{}, {}, PreviewState> {
         return (
             <DesignSystemProvider designSystem={this.state}>
                 <Background
-                    className={get(this.props, "managedClasses.preview")}
+                    className={classNames(this.props.managedClasses.preview)}
                     dir={this.state.direction}
                     drawBackground={false}
                 >
