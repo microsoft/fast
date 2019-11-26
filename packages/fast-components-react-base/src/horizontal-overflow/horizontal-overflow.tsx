@@ -114,7 +114,10 @@ class HorizontalOverflow extends Foundation<
             >
                 <div
                     style={{
-                        height: `${this.state.itemsHeight}px`,
+                        height:
+                            this.state.itemsHeight !== null
+                                ? `${this.state.itemsHeight}px`
+                                : "unset",
                         position: "relative",
                         overflow: "hidden",
                     }}
