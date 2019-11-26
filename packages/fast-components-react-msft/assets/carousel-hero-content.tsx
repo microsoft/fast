@@ -1,19 +1,20 @@
 import React from "react";
 import {
+    AccentButton,
+    AccentButtonClassNameContract,
     CallToAction,
     CallToActionAppearance,
     CallToActionProps,
     CarouselSlideTheme,
     Heading,
     HeadingProps,
-    HeadingSize,
-    HeadingTag,
     Image,
     ImageProps,
     Paragraph,
     ParagraphProps,
-    ParagraphSize,
 } from "../src";
+import { ComponentStyles } from "@microsoft/fast-jss-manager";
+import { DesignSystem } from "@microsoft/fast-components-styles-msft";
 
 export interface CarouselHeroContentProps {
     heading?: HeadingProps;
@@ -22,6 +23,7 @@ export interface CarouselHeroContentProps {
     image?: ImageProps;
     className?: string;
     theme?: CarouselSlideTheme;
+    extraButtons?: boolean;
 }
 
 /**
@@ -46,6 +48,7 @@ export default class CarouselHeroContent extends React.Component<
             href: "#",
             appearance: CallToActionAppearance.primary,
         },
+        extraButtons: false,
     };
 
     private imageSrc: string =
@@ -53,9 +56,26 @@ export default class CarouselHeroContent extends React.Component<
             ? "http://placehold.it/1399x600/2F2F2F/171717"
             : "http://placehold.it/1399x600/";
 
+    private extraButtonRightStyle: ComponentStyles<
+        AccentButtonClassNameContract,
+        DesignSystem
+    > = {
+        button: {
+            float: "right",
+        },
+    };
+
+    private containerBackgroundColor: string =
+        this.props.theme === CarouselSlideTheme.light
+            ? "rgb(47,47,47)"
+            : "rgb(204,204,204)";
+
     public render(): React.ReactNode {
         return (
-            <div className={this.props.className}>
+            <div
+                className={this.props.className}
+                style={{ backgroundColor: this.containerBackgroundColor }}
+            >
                 <div
                     style={{
                         justifyContent: "center",
@@ -81,13 +101,13 @@ export default class CarouselHeroContent extends React.Component<
                         }}
                     >
                         <Heading
-                            tag={HeadingTag.h2}
-                            size={HeadingSize._3}
+                            tag={this.props.heading.tag}
+                            size={this.props.heading.size}
                             children={this.props.heading.children}
                         />
                         <Paragraph
-                            size={ParagraphSize._1}
-                            children={"Sample hero paragraph text"}
+                            size={this.props.paragraph.size}
+                            children={this.props.paragraph.children}
                         />
                         <CallToAction
                             style={{ marginTop: "16px" }}
@@ -98,6 +118,14 @@ export default class CarouselHeroContent extends React.Component<
                     </div>
                 </div>
                 <Image src={this.imageSrc} alt={this.props.image.alt} />
+                {this.props.extraButtons && (
+                    <React.Fragment>
+                        <AccentButton jssStyleSheet={this.extraButtonRightStyle}>
+                            Right Test
+                        </AccentButton>
+                        <AccentButton>Left Test</AccentButton>
+                    </React.Fragment>
+                )}
             </div>
         );
     }
