@@ -1,6 +1,6 @@
 import { storiesOf } from "@storybook/react";
 import React, { useState } from "react";
-import HorizontalOverflow from "./";
+import HorizontalOverflow, { OverflowChange } from "./";
 import Button from "../button";
 import Image from "../image";
 import { action } from "@storybook/addon-actions";
@@ -24,6 +24,43 @@ const images: JSX.Element[] = [
     }
 );
 
+interface TestOverflowState {
+    overflowStart: boolean;
+    overflowEnd: boolean;
+}
+
+class TestOverflow extends React.Component<{}, TestOverflowState> {
+    private rootElement: React.RefObject<HTMLDivElement> = React.createRef<
+        HTMLDivElement
+    >();
+
+    constructor(props: {}) {
+        super(props);
+
+        this.state = {
+            overflowStart: false,
+            overflowEnd: false,
+        };
+    }
+
+    public render(): JSX.Element {
+        return (
+            <HorizontalOverflow onOverflowChange={this.setOverflowState}>
+                {this.props.children}
+                {this.state.overflowStart && <Button slot="previous">Previous</Button>}
+                {this.state.overflowEnd && <Button slot="next">Next</Button>}
+            </HorizontalOverflow>
+        );
+    }
+
+    private setOverflowState = (overflow: OverflowChange): void => {
+        this.setState({
+            overflowStart: overflow.overflowStart,
+            overflowEnd: overflow.overflowEnd,
+        });
+    };
+}
+
 storiesOf("Horizontal overflow", module)
     .add("Default", () => (
         <HorizontalOverflow
@@ -36,13 +73,20 @@ storiesOf("Horizontal overflow", module)
         </HorizontalOverflow>
     ))
     .add("Custom scroll duration", () => (
-        <HorizontalOverflow
-            onScrollChange={action("onScrollChange")}
-            onOverflowChange={action("onOverflowChange")}
-            scrollDuration={5000}
-        >
-            <Button slot="previous">Previous</Button>
-            <Button slot="next">Next</Button>
-            {images}
-        </HorizontalOverflow>
+        <div>
+            <HorizontalOverflow
+                onScrollChange={action("onScrollChange")}
+                onOverflowChange={action("onOverflowChange")}
+                scrollDuration={5000}
+            >
+                <Button slot="previous">Previous</Button>
+                <Button slot="next">Next</Button>
+                {images}
+            </HorizontalOverflow>
+        </div>
+    ))
+    .add("RTL ", () => (
+        <div dir="rtl">
+            <TestOverflow>{images}</TestOverflow>
+        </div>
     ));
