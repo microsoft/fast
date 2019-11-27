@@ -44,7 +44,7 @@ export interface SliderState {
     isIncrementing: boolean;
     incrementDirection: number;
     usePageStep: boolean;
-    direction: Direction;
+    direction: Direction | null;
 }
 
 class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, SliderState> {
@@ -173,7 +173,7 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
             isIncrementing: false,
             incrementDirection: 1,
             usePageStep: false,
-            direction: Direction.ltr,
+            direction: null,
         };
     }
 
@@ -229,55 +229,7 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
                 ref={this.rootElement}
                 className={this.generateClassNames()}
             >
-                <SliderContext.Provider
-                    value={{
-                        sliderOrientation: this.props.orientation,
-                        sliderMode: this.props.mode,
-                        sliderState: this.state,
-                        sliderConstrainedRange: this.props.constrainedRange,
-                        sliderValueAsPercent: this.valueAsPercent,
-                        sliderDirection: this.state.direction,
-                    }}
-                >
-                    <div
-                        className={classNames(
-                            this.props.managedClasses.slider_layoutRegion
-                        )}
-                        style={{
-                            position: "relative",
-                        }}
-                    >
-                        <div
-                            className={classNames(
-                                this.props.managedClasses.slider_backgroundTrack
-                            )}
-                            style={{
-                                position: "absolute",
-                            }}
-                        />
-                        <SliderTrackItem
-                            className={this.props.managedClasses.slider_foregroundTrack}
-                            maxValuePositionBinding={
-                                SliderTrackItemAnchor.selectedRangeMax
-                            }
-                            minValuePositionBinding={
-                                SliderTrackItemAnchor.selectedRangeMin
-                            }
-                        />
-                        <div
-                            ref={this.sliderTrackElement}
-                            onMouseDown={this.handleTrackMouseDown}
-                            className={classNames(this.props.managedClasses.slider_track)}
-                            style={{
-                                position: "absolute",
-                            }}
-                        />
-                        {this.props.children}
-                        {this.renderThumb(SliderThumb.upperThumb)}
-                        {this.renderThumb(SliderThumb.lowerThumb)}
-                    </div>
-                    {this.renderHiddenInputElement()}
-                </SliderContext.Provider>
+                {this.renderSliderInternals()}
             </div>
         );
     }
@@ -322,6 +274,63 @@ class Slider extends Foundation<SliderHandledProps, SliderUnhandledProps, Slider
             )
         );
     }
+
+    /**
+     * Renders the internals of the component but skips the
+     * first render so we can determine direction before doing layout
+     * (avoids transition animations to get the layout right to begin with)
+     */
+    private renderSliderInternals = (): React.ReactNode => {
+        if (this.state.direction === null) {
+            return null;
+        }
+
+        return (
+            <SliderContext.Provider
+                value={{
+                    sliderOrientation: this.props.orientation,
+                    sliderMode: this.props.mode,
+                    sliderState: this.state,
+                    sliderConstrainedRange: this.props.constrainedRange,
+                    sliderValueAsPercent: this.valueAsPercent,
+                    sliderDirection: this.state.direction,
+                }}
+            >
+                <div
+                    className={classNames(this.props.managedClasses.slider_layoutRegion)}
+                    style={{
+                        position: "relative",
+                    }}
+                >
+                    <div
+                        className={classNames(
+                            this.props.managedClasses.slider_backgroundTrack
+                        )}
+                        style={{
+                            position: "absolute",
+                        }}
+                    />
+                    <SliderTrackItem
+                        className={this.props.managedClasses.slider_foregroundTrack}
+                        maxValuePositionBinding={SliderTrackItemAnchor.selectedRangeMax}
+                        minValuePositionBinding={SliderTrackItemAnchor.selectedRangeMin}
+                    />
+                    <div
+                        ref={this.sliderTrackElement}
+                        onMouseDown={this.handleTrackMouseDown}
+                        className={classNames(this.props.managedClasses.slider_track)}
+                        style={{
+                            position: "absolute",
+                        }}
+                    />
+                    {this.props.children}
+                    {this.renderThumb(SliderThumb.upperThumb)}
+                    {this.renderThumb(SliderThumb.lowerThumb)}
+                </div>
+                {this.renderHiddenInputElement()}
+            </SliderContext.Provider>
+        );
+    };
 
     /**
      * Updates values when mode is switched in props
