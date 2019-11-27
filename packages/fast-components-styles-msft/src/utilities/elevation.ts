@@ -11,7 +11,7 @@ import { backgroundColor } from "./design-system";
  */
 export interface ShadowConfig {
     blurMultiplier: number;
-    blurBase: number;
+    blurBase?: number;
     opacity: number;
     xOffsetMultiplier: number;
     yOffsetMultiplier: number;
@@ -125,8 +125,9 @@ export function elevationShadow(
             yOffsetMultiplier,
             opacity,
             blurMultiplier,
-            blurBase,
+            blurBase = 0,
         }: ShadowConfig = shadowConfig;
+        // TODO: (Breaking) Remove default https://github.com/microsoft/fast-dna/issues/2469
 
         const lum: number = rgbToRelativeLuminance(
             parseColorString(backgroundColor(config))
