@@ -19,7 +19,8 @@ export interface AutoSuggestHandledProps extends AutoSuggestManagedClasses {
         state: AutoSuggestState,
         changeCallback: (event: React.ChangeEvent) => void,
         buttonClickCallback: (event: React.MouseEvent) => void,
-        keyDownCallback: (event: React.KeyboardEvent) => void
+        keyDownCallback: (event: React.KeyboardEvent) => void,
+        focusCallback?: (event: React.FocusEvent) => void
     ) => React.ReactNode;
 
     /**
@@ -69,6 +70,11 @@ export interface AutoSuggestHandledProps extends AutoSuggestManagedClasses {
      * The unique id that will be assigned to the listbox created by this component
      */
     listboxId: string;
+
+    /**
+     * Specifies whether the suggestions should filter
+     */
+    filterSuggestions?: boolean;
 }
 
 export type AutoSuggestProps = AutoSuggestHandledProps & AutoSuggestUnhandledProps;
