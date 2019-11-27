@@ -1,5 +1,3 @@
-import { canUseDOM } from "exenv-es6";
-
 /**
  * Expose ltr and rtl strings
  */

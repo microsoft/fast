@@ -279,19 +279,20 @@ class HorizontalOverflow extends Foundation<
      * Get the scroll change data
      */
     private getPositionData = (): PositionChange => {
+        const scrollPosition: number = this.getScrollPosition();
         const distanceRemaining: number =
-            this.horizontalOverflowItemsRef.current.scrollWidth -
-            this.getScrollPosition();
+            this.horizontalOverflowItemsRef.current.scrollWidth - scrollPosition;
 
-        if (this.getScrollPosition() === 0) {
-            return { start: false, end: true };
-        } else if (
-            distanceRemaining === this.horizontalOverflowItemsRef.current.clientWidth
-        ) {
-            return { start: true, end: false };
-        } else {
-            return { start: true, end: true };
-        }
+        const scrollPositionIsAtBeginning: boolean = scrollPosition === 0;
+        const scrollPositionIsAtEnd: boolean =
+            distanceRemaining === this.horizontalOverflowItemsRef.current.clientWidth;
+        const scrollPositionIsInMiddle: boolean =
+            !scrollPositionIsAtEnd && !scrollPositionIsAtBeginning;
+
+        return {
+            start: scrollPositionIsInMiddle ? false : scrollPositionIsAtBeginning,
+            end: scrollPositionIsInMiddle ? false : scrollPositionIsAtEnd,
+        };
     };
 
     /**
