@@ -4,7 +4,6 @@ import { AutoSuggest, AutoSuggestProps } from "./";
 import { AutoSuggestOption } from "../auto-suggest-option";
 import { uniqueId } from "lodash-es";
 import { action } from "@storybook/addon-actions";
-import { MenuTriggers } from "@microsoft/fast-components-react-base";
 import { Button } from "../";
 
 /**
@@ -85,18 +84,6 @@ storiesOf("Auto suggest", module)
             onValueChange={action("onValueChange")}
             onInvoked={action("onInvoked")}
             disabled={true}
-        >
-            <AutoSuggestOption id={uniqueId()} value="Cat" />
-            <AutoSuggestOption id={uniqueId()} value="Dog" />
-            <AutoSuggestOption id={uniqueId()} value="Turtle" />
-        </AutoSuggest>
-    ))
-    .add("On Focus", () => (
-        <AutoSuggest
-            {...favoriteAnimalProps}
-            onValueChange={action("onValueChange")}
-            onInvoked={action("onInvoked")}
-            menuTrigger={MenuTriggers.onFocus}
         >
             <AutoSuggestOption id={uniqueId()} value="Cat" />
             <AutoSuggestOption id={uniqueId()} value="Dog" />

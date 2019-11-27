@@ -16,8 +16,8 @@ import {
     AutoSuggestHandledProps,
     AutoSuggestProps,
     AutoSuggestUnhandledProps,
-    MenuTriggers,
 } from "./auto-suggest.props";
+import { isNil } from "lodash-es";
 
 export interface AutoSuggestState {
     value: string;
@@ -37,7 +37,6 @@ class AutoSuggest extends Foundation<
         disabled: false,
         placeholder: "",
         managedClasses: {},
-        menuTrigger: MenuTriggers.onKeyDown,
         filterSuggestions: false,
     };
 
@@ -58,7 +57,6 @@ class AutoSuggest extends Foundation<
         onInvoked: void 0,
         placeholder: void 0,
         listboxId: void 0,
-        menuTrigger: void 0,
         filterSuggestions: void 0,
     };
 
@@ -85,7 +83,7 @@ class AutoSuggest extends Foundation<
             isMenuOpen: this.validateMenuState(false),
         };
 
-        this.storedValueString = this.state.value;
+        this.storedValueString = value;
     }
 
     public componentDidUpdate(prevProps: AutoSuggestProps): void {
@@ -164,8 +162,7 @@ class AutoSuggest extends Foundation<
                 this.state,
                 this.handleChange,
                 this.handleInputRegionClick,
-                this.handleInputRegionKeydown,
-                this.handleInputRegionFocus
+                this.handleInputRegionKeydown
             );
         } else {
             return this.defaultInputRegionRenderFunction(
@@ -173,8 +170,7 @@ class AutoSuggest extends Foundation<
                 this.state,
                 this.handleChange,
                 this.handleInputRegionClick,
-                this.handleInputRegionKeydown,
-                this.handleInputRegionFocus
+                this.handleInputRegionKeydown
             );
         }
     }
@@ -223,7 +219,7 @@ class AutoSuggest extends Foundation<
             return React.Children.map(
                 children,
                 (node: React.ReactElement<any>): React.ReactNode | null => {
-                    if (node.props !== undefined) {
+                    if (!isNil(node.props)) {
                         if (node.props[AutoSuggest.valuePropertyKey] === undefined) {
                             return node;
                         }
@@ -240,7 +236,7 @@ class AutoSuggest extends Foundation<
      * Determine if a single node is a match
      */
     private isMatch(node: ListboxItemProps): boolean {
-        if (this.storedValueString !== undefined) {
+        if (!isNil(this.storedValueString)) {
             return node.value
                 .toLowerCase()
                 .includes(this.storedValueString.toLowerCase());
@@ -255,33 +251,17 @@ class AutoSuggest extends Foundation<
         state: AutoSuggestState,
         onChange: (event: React.ChangeEvent) => void,
         onClick: (event: React.MouseEvent) => void,
-        onKeyDown: (event: React.KeyboardEvent) => void,
-        onFocus: (event: React.FocusEvent) => void
+        onKeyDown: (event: React.KeyboardEvent) => void
     ): React.ReactNode => {
         const listboxId: string = state.isMenuOpen ? props.listboxId : null;
         const activedescendantId: string =
             state.focusedItem !== null ? state.focusedItem.id : null;
-        let menuTriggerProps: Partial<AutoSuggestUnhandledProps>;
-        switch (this.props.menuTrigger) {
-            case MenuTriggers.onFocus:
-                menuTriggerProps = {
-                    onFocus,
-                    onKeyDown,
-                };
-                break;
-
-            default:
-                menuTriggerProps = {
-                    onClick,
-                    onKeyDown,
-                };
-                break;
-        }
         return (
             <TextField
                 disabled={props.disabled}
                 onChange={onChange}
-                {...menuTriggerProps}
+                onClick={onClick}
+                onKeyDown={onKeyDown}
                 value={state.value}
                 type={TextFieldType.text}
                 role="combobox"
@@ -314,16 +294,6 @@ class AutoSuggest extends Foundation<
      * Handles clicks
      */
     private handleInputRegionClick = (e: React.MouseEvent): void => {
-        if (this.props.disabled || e.defaultPrevented) {
-            return;
-        }
-        this.toggleMenu(true);
-    };
-
-    /**
-     * Handles focus
-     */
-    private handleInputRegionFocus = (e: React.FocusEvent): void => {
         if (this.props.disabled || e.defaultPrevented) {
             return;
         }
@@ -365,7 +335,7 @@ class AutoSuggest extends Foundation<
             this.props.onValueChange(newValue, isFromSuggestedOption);
         }
 
-        if (this.props.value !== undefined || newValue !== this.state.value) {
+        if (!isNil(this.props.value) || newValue !== this.state.value) {
             this.toggleMenu(true);
             this.setState({
                 value: newValue,

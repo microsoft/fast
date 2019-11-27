@@ -14,7 +14,6 @@ import {
     keyCodeTab,
 } from "@microsoft/fast-web-utilities";
 import { DisplayNamePrefix } from "../utilities";
-import { MenuTriggers } from "./auto-suggest.props";
 import { Listbox } from "../index";
 
 /*
@@ -216,24 +215,6 @@ describe("auto suggest", (): void => {
         const input: any = rendered.find("input");
         expect(rendered.state("isMenuOpen")).toBe(false);
         input.simulate("click");
-        expect(rendered.state("isMenuOpen")).toBe(true);
-
-        const listbox: any = rendered.find('[role="listbox"]');
-        expect(listbox.prop("id")).toBe("listboxId");
-    });
-
-    test("menu should open and have correct id on input region focus when menuTrigger is set to onFocus", (): void => {
-        const rendered: any = mount(
-            <AutoSuggest menuTrigger={MenuTriggers.onFocus} listboxId="listboxId">
-                {itemA}
-                {itemB}
-                {itemC}
-            </AutoSuggest>
-        );
-
-        const input: any = rendered.find("input");
-        expect(rendered.state("isMenuOpen")).toBe(false);
-        input.simulate("focus");
         expect(rendered.state("isMenuOpen")).toBe(true);
 
         const listbox: any = rendered.find('[role="listbox"]');
