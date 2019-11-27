@@ -604,7 +604,7 @@ describe("horizontal overflow", (): void => {
 
         (rafThrottle as any) = actualRafThrottle;
     });
-    test("getPositionData returns correct values as scrollLeft value changes", (): void => {
+    test("getPositionData returns correct value when scrolled to beginning", (): void => {
         const rendered: any = mount(
             <HorizontalOverflow managedClasses={managedClasses}>
                 {imageSet1}
@@ -620,17 +620,39 @@ describe("horizontal overflow", (): void => {
             start: false,
             end: true,
         });
+    });
+    test("getPositionData returns correct value when scrolled to middle", (): void => {
+        const rendered: any = mount(
+            <HorizontalOverflow managedClasses={managedClasses}>
+                {imageSet1}
+            </HorizontalOverflow>
+        );
 
-        rendered.instance().horizontalOverflowItemsRef.current.scrollLeft = 100;
-        expect(rendered.instance()["getPositionData"]()).toEqual({
-            start: true,
-            end: false,
-        });
-
-        rendered.instance().horizontalOverflowItemsRef.current.scrollLeft = 50;
+        rendered.instance().horizontalOverflowItemsRef.current = {
+            scrollWidth: 200,
+            clientWidth: 100,
+            scrollLeft: 50,
+        };
         expect(rendered.instance()["getPositionData"]()).toEqual({
             start: true,
             end: true,
+        });
+    });
+    test("getPositionData returns correct value when scrolled to the end", (): void => {
+        const rendered: any = mount(
+            <HorizontalOverflow managedClasses={managedClasses}>
+                {imageSet1}
+            </HorizontalOverflow>
+        );
+
+        rendered.instance().horizontalOverflowItemsRef.current = {
+            scrollWidth: 200,
+            clientWidth: 100,
+            scrollLeft: 100,
+        };
+        expect(rendered.instance()["getPositionData"]()).toEqual({
+            start: true,
+            end: false,
         });
     });
 });
