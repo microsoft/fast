@@ -783,6 +783,25 @@ describe("Slider", (): void => {
         document.body.removeChild(container);
     });
 
+    test("slider internals do not render while direction state is null", (): void => {
+        const container: HTMLDivElement = document.createElement("div");
+        document.body.appendChild(container);
+
+        const rendered: any = mount(<Slider managedClasses={managedClasses} />, {
+            attachTo: container,
+        });
+
+        let renderResults: React.ReactElement<HTMLDivElement> = rendered
+            .instance()
+            ["render"]();
+        expect(React.Children.toArray(renderResults.props.children)).toHaveLength(1);
+        rendered.state().direction = null;
+        renderResults = rendered.instance()["render"]();
+        expect(React.Children.toArray(renderResults.props.children)).toHaveLength(0);
+
+        document.body.removeChild(container);
+    });
+
     // tslint:disable-next-line:no-shadowed-variable
     window.removeEventListener = jest.fn((event: string, callback: any) => {
         map[event] = callback;
