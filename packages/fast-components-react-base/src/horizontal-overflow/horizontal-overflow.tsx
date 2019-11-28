@@ -267,8 +267,8 @@ class HorizontalOverflow extends Foundation<
         if (typeof this.props.onOverflowChange === "function") {
             const positionData: PositionChange = this.getPositionData();
             if (
-                this.overflowStart === positionData.start ||
-                this.overflowEnd === positionData.end
+                this.overflowStart === !positionData.start ||
+                this.overflowEnd === !positionData.end
             ) {
                 this.handleOverflowChange();
             }
@@ -286,13 +286,7 @@ class HorizontalOverflow extends Foundation<
             this.horizontalOverflowItemsRef.current.scrollWidth - scrollPosition ===
             this.horizontalOverflowItemsRef.current.clientWidth;
 
-        if (isAtBeginning) {
-            return { start: false, end: true };
-        } else if (isAtEnd) {
-            return { start: true, end: false };
-        } else {
-            return { start: true, end: true };
-        }
+        return { start: isAtBeginning, end: isAtEnd };
     };
 
     /**
@@ -353,8 +347,8 @@ class HorizontalOverflow extends Foundation<
 
         if (this.overflow) {
             const positionData: PositionChange = this.getPositionData();
-            this.overflowStart = positionData.start;
-            this.overflowEnd = positionData.end;
+            this.overflowStart = !positionData.start;
+            this.overflowEnd = !positionData.end;
         } else {
             this.overflowStart = false;
             this.overflowEnd = false;

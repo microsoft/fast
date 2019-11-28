@@ -617,8 +617,8 @@ describe("horizontal overflow", (): void => {
             scrollLeft: 0,
         };
         expect(rendered.instance()["getPositionData"]()).toEqual({
-            start: false,
-            end: true,
+            start: true,
+            end: false,
         });
     });
     test("getPositionData returns correct value when scrolled to middle", (): void => {
@@ -634,8 +634,8 @@ describe("horizontal overflow", (): void => {
             scrollLeft: 50,
         };
         expect(rendered.instance()["getPositionData"]()).toEqual({
-            start: true,
-            end: true,
+            start: false,
+            end: false,
         });
     });
     test("getPositionData returns correct value when scrolled to the end", (): void => {
@@ -651,8 +651,25 @@ describe("horizontal overflow", (): void => {
             scrollLeft: 100,
         };
         expect(rendered.instance()["getPositionData"]()).toEqual({
+            start: false,
+            end: true,
+        });
+    });
+    test("getPositionData returns correct value when container does not scroll", (): void => {
+        const rendered: any = mount(
+            <HorizontalOverflow managedClasses={managedClasses}>
+                {imageSet1}
+            </HorizontalOverflow>
+        );
+
+        rendered.instance().horizontalOverflowItemsRef.current = {
+            scrollWidth: 100,
+            clientWidth: 100,
+            scrollLeft: 0,
+        };
+        expect(rendered.instance()["getPositionData"]()).toEqual({
             start: true,
-            end: false,
+            end: true,
         });
     });
 });
