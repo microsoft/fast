@@ -242,3 +242,12 @@ describe("Column", (): void => {
         expect(rendered.props().gutter).toBe(2);
     });
 });
+
+describe("Column - without CSS grid support but `cssGridPropertyName` prop is `grid`", (): void => {
+    test("should set an inline style for `gridColumn` with a value equal to the `gridColumn` prop when CSS grid is NOT supported but the `cssGridPropertyName` prop passed is equal to `grid`", () => {
+        const rendered: any = shallow(<Column cssGridPropertyName={"grid"} />);
+
+        expect(rendered.props().style.gridColumn).toBe("span 12");
+        expect(rendered.props().style.msGridColumn).toBe(undefined);
+    });
+});
