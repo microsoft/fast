@@ -1,17 +1,22 @@
+import React from "react";
 import BareForm from "./form";
 import { FormPlugin, FormPluginProps } from "./plugin";
 import {
     ControlConfig,
     ControlTemplateUtilities,
     ControlType,
-    StandardControlPlugin,
+    StandardControlPlugin
 } from "./templates";
-import { ContextComponent, DragDropContext } from "react-dnd";
+import { DndProvider } from "react-dnd";
 import HTML5Backend from "react-dnd-html5-backend";
 
-const Form: typeof BareForm & ContextComponent<any> = DragDropContext(HTML5Backend)(
-    BareForm
-);
+const Form: React.FC<any> = (props: React.PropsWithChildren<any>): React.ReactElement => {
+    return (
+        <DndProvider backend={HTML5Backend}>
+            <BareForm {...props} />
+        </DndProvider>
+    );
+};
 
 export * from "./custom-controls";
 export * from "./controls";

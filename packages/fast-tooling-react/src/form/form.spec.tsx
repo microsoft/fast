@@ -44,7 +44,7 @@ describe("Form", () => {
                 }}
             />
         );
-        const form: any = rendered.find("Form");
+        const form: any = rendered.find("Form").at(1);
 
         expect(form.state("navigation")).toHaveLength(1);
 
@@ -70,7 +70,7 @@ describe("Form", () => {
                 }}
             />
         );
-        const form: any = rendered.find("Form");
+        const form: any = rendered.find("Form").at(1);
 
         expect(form.state("navigation")).toHaveLength(1);
 
@@ -93,7 +93,7 @@ describe("Form", () => {
                 }}
             />
         );
-        const form: any = rendered.find("Form");
+        const form: any = rendered.find("Form").at(1);
 
         expect(form.state("navigation")).toHaveLength(1);
 
@@ -120,7 +120,7 @@ describe("Form", () => {
                 }}
             />
         );
-        const form: any = rendered.find("Form");
+        const form: any = rendered.find("Form").at(1);
 
         expect(form.state("navigation")).toHaveLength(1);
 
@@ -144,7 +144,7 @@ describe("Form", () => {
                 }}
             />
         );
-        const form: any = rendered.find("Form");
+        const form: any = rendered.find("Form").at(1);
 
         expect(form.state("navigation")).toHaveLength(1);
 
@@ -171,7 +171,7 @@ describe("Form", () => {
                 }}
             />
         );
-        const form: any = rendered.find("Form");
+        const form: any = rendered.find("Form").at(1);
 
         expect(form.state("navigation")).toHaveLength(1);
 
@@ -195,7 +195,7 @@ describe("Form", () => {
                 }}
             />
         );
-        const form: any = rendered.find("Form");
+        const form: any = rendered.find("Form").at(1);
 
         expect(form.state("navigation")).toHaveLength(1);
 
@@ -229,7 +229,7 @@ describe("Form", () => {
                 }}
             />
         );
-        const form: any = rendered.find("Form");
+        const form: any = rendered.find("Form").at(1);
 
         expect(form.state("navigation")).toHaveLength(2);
 
