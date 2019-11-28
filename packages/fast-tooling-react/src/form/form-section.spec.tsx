@@ -3,12 +3,19 @@ import Adapter from "enzyme-adapter-react-16";
 import { configure, mount } from "enzyme";
 import StyledFormSection, { FormSection } from "./form-section";
 import { FormSectionClassNameContract, FormSectionProps } from "./form-section.props";
-import { ContextComponent, DragDropContext } from "react-dnd";
+import { DndProvider } from "react-dnd";
 import HTML5Backend from "react-dnd-html5-backend";
 
-const TestFormSection: typeof StyledFormSection & ContextComponent<any> = DragDropContext(
-    HTML5Backend
-)(StyledFormSection);
+const TestFormSection: React.FC<FormSectionProps> = (
+    props: React.PropsWithChildren<FormSectionProps>
+): React.ReactElement => {
+    return (
+        <DndProvider backend={HTML5Backend}>
+            <StyledFormSection {...props} />
+        </DndProvider>
+    );
+};
+
 import { controls } from "./form-control-switch.spec";
 import ajv, { Ajv, ValidateFunction } from "ajv";
 
