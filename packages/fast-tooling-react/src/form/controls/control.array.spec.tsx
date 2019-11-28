@@ -5,13 +5,19 @@ import ArrayControlStyled, { ArrayControl } from "./control.array";
 import { ArrayControlProps } from "./control.array.props";
 import { ArrayControlClassNameContract } from "./control.array.style";
 import HTML5Backend from "react-dnd-html5-backend";
-import { ContextComponent, DragDropContext } from "react-dnd";
+import { DndProvider } from "react-dnd";
 import { ErrorObject } from "ajv";
 import { ControlType } from "../templates";
 
-const TestArrayControl: typeof ArrayControl & ContextComponent<any> = DragDropContext(
-    HTML5Backend
-)(ArrayControl);
+const TestArrayControl: React.FC<any> = (
+    props: React.PropsWithChildren<any>
+): React.ReactElement => {
+    return (
+        <DndProvider backend={HTML5Backend}>
+            <ArrayControl {...props} />
+        </DndProvider>
+    );
+};
 
 /*
  * Configure Enzyme
