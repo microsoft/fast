@@ -3,9 +3,9 @@ import { Breakpoints, defaultBreakpoints } from "./breakpoints";
 
 /* tslint:disable:no-string-literal */
 describe("breakpointTracker", (): void => {
+    const breakpointTracker: BreakpointTracker = new BreakpointTracker();
     let subscriber: any;
     let callback: any;
-    let breakpointTracker: BreakpointTracker = new BreakpointTracker();
 
     beforeEach(() => {
         subscriber = {
