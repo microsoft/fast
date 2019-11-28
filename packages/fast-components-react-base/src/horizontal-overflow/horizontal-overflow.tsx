@@ -27,7 +27,7 @@ export enum ButtonDirection {
 }
 
 export interface HorizontalOverflowState {
-    itemsHeight: number;
+    itemsHeight?: number;
 }
 
 class HorizontalOverflow extends Foundation<
@@ -92,7 +92,7 @@ class HorizontalOverflow extends Foundation<
         this.overflow = false;
 
         this.state = {
-            itemsHeight: 0,
+            itemsHeight: null,
         };
     }
 

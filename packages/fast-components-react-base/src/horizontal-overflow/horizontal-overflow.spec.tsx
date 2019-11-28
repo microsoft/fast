@@ -197,7 +197,7 @@ describe("horizontal overflow", (): void => {
             <HorizontalOverflow managedClasses={managedClasses} />
         );
 
-        expect(rendered.state("itemsHeight")).toBe(0);
+        expect(rendered.state("itemsHeight")).toBe(null);
     });
     test("should update the rendering of a series of items if they are modified", () => {
         const renderedWithImages: any = mount(
