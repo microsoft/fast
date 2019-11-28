@@ -35,9 +35,9 @@
     "coverageThreshold": {
       "global": {
         "statements": 97,
-        "branches": 96,
+        "branches": 95,
         "functions": 100,
-        "lines": 98
+        "lines": 97
       }
     },
     "testURL": "http://localhost",

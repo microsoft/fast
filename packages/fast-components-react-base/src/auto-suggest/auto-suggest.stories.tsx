@@ -113,4 +113,22 @@ storiesOf("AutoSuggest", module)
                 Turtle
             </ListboxItem>
         </AutoSuggest>
+    ))
+    .add("filter", () => (
+        <AutoSuggest
+            {...favoriteAnimalProps}
+            onValueChange={action("onValueChange")}
+            onInvoked={action("onInvoked")}
+            filterSuggestions={true}
+        >
+            <ListboxItem id={uniqueId()} value="Cat">
+                Cat
+            </ListboxItem>
+            <ListboxItem id={uniqueId()} value="Dog">
+                Dog
+            </ListboxItem>
+            <ListboxItem id={uniqueId()} value="Turtle">
+                Turtle
+            </ListboxItem>
+        </AutoSuggest>
     ));

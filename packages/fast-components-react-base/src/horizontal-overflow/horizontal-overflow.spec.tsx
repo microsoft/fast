@@ -227,7 +227,7 @@ describe("horizontal overflow", (): void => {
         expect(
             renderedWithImages
                 .instance()
-                ["getScrollDistanceFromDirection"](
+                ["getScrollDistanceFromButtonDirection"](
                     ButtonDirection.next,
                     50,
                     [10, 20, 20, 50, 20],
@@ -239,7 +239,7 @@ describe("horizontal overflow", (): void => {
         expect(
             renderedWithImages
                 .instance()
-                ["getScrollDistanceFromDirection"](
+                ["getScrollDistanceFromButtonDirection"](
                     ButtonDirection.next,
                     40,
                     [10, 20, 10, 30, 20, 10],
@@ -250,7 +250,7 @@ describe("horizontal overflow", (): void => {
         expect(
             renderedWithImages
                 .instance()
-                ["getScrollDistanceFromDirection"](
+                ["getScrollDistanceFromButtonDirection"](
                     ButtonDirection.next,
                     40,
                     [10, 20, 10, 30, 20, 10, 20, 10],
@@ -261,7 +261,7 @@ describe("horizontal overflow", (): void => {
         expect(
             renderedWithImages
                 .instance()
-                ["getScrollDistanceFromDirection"](
+                ["getScrollDistanceFromButtonDirection"](
                     ButtonDirection.next,
                     40,
                     [10, 20, 10, 30, 20, 10, 20, 10],
@@ -280,7 +280,7 @@ describe("horizontal overflow", (): void => {
         expect(
             renderedWithImages
                 .instance()
-                ["getScrollDistanceFromDirection"](
+                ["getScrollDistanceFromButtonDirection"](
                     ButtonDirection.next,
                     50,
                     [10.01, 20.3, 20.5, 50.2, 20.9],
@@ -299,24 +299,24 @@ describe("horizontal overflow", (): void => {
         expect(
             renderedWithImages
                 .instance()
-                ["getScrollDistanceFromDirection"](
+                ["getScrollDistanceFromButtonDirection"](
                     ButtonDirection.previous,
                     50,
                     [10, 20, 20, 50, 20],
                     10
                 )
-        ).toBe(0);
+        ).toBe(-0);
 
         expect(
             renderedWithImages
                 .instance()
-                ["getScrollDistanceFromDirection"](
+                ["getScrollDistanceFromButtonDirection"](
                     ButtonDirection.previous,
                     50,
                     [50, 50, 50, 50],
                     100
                 )
-        ).toBe(50);
+        ).toBe(-50);
     });
     test("should an state property `itemsHeight`", () => {
         const renderedWithImages: any = mount(
@@ -395,7 +395,7 @@ describe("horizontal overflow", (): void => {
         expect(
             renderedWithImagesAndNextAndPrevious
                 .instance()
-                ["getScrollDistanceFromDirection"]("next", 500, [], 0)
+                ["getScrollDistanceFromButtonDirection"]("next", 500, [], 0)
         ).toBe(0);
     });
     test("should set a max/min distance without additional calculations", () => {
@@ -453,9 +453,7 @@ describe("horizontal overflow", (): void => {
             ".horizontal-overflow-items-class"
         );
 
-        expect(renderedWithImages.instance()["scrollLeft"](itemsElement, 50, 0)).toBe(
-            undefined
-        );
+        expect(renderedWithImages.instance()["scrollContent"](50, 0)).toBe(undefined);
     });
     test("should allow clicks on previous and next buttons", () => {
         const renderedWithImagesAndNextAndPrevious: any = mount(
