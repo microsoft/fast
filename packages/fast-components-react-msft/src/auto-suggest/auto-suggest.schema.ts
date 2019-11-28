@@ -33,6 +33,11 @@ export default {
             title: "Listbox Id",
             type: "string",
         },
+        filterSuggestions: {
+            title: "Filter suggestions",
+            type: "boolean",
+            default: "false",
+        },
     },
     reactProperties: {
         children: {
