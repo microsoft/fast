@@ -4,6 +4,7 @@ import { AutoSuggest, AutoSuggestProps } from "./";
 import { AutoSuggestOption } from "../auto-suggest-option";
 import { uniqueId } from "lodash-es";
 import { action } from "@storybook/addon-actions";
+import { Button } from "../";
 
 /**
  * Simple state manager to track and update value properties
@@ -86,6 +87,22 @@ storiesOf("Auto suggest", module)
         >
             <AutoSuggestOption id={uniqueId()} value="Cat" />
             <AutoSuggestOption id={uniqueId()} value="Dog" />
+            <AutoSuggestOption id={uniqueId()} value="Turtle" />
+        </AutoSuggest>
+    ))
+    .add("Filter", () => (
+        <AutoSuggest
+            {...favoriteAnimalProps}
+            onValueChange={action("onValueChange")}
+            onInvoked={action("onInvoked")}
+            filterSuggestions={true}
+        >
+            <AutoSuggestOption id={uniqueId()} value="Cat" />
+            <AutoSuggestOption id={uniqueId()} value="Cheetah" />
+            <AutoSuggestOption id={uniqueId()} value="Dog" />
+            <AutoSuggestOption id={uniqueId()} value="Elephant" />
+            <AutoSuggestOption id={uniqueId()} value="Leopard" />
+            <AutoSuggestOption id={uniqueId()} value="Penguin" />
             <AutoSuggestOption id={uniqueId()} value="Turtle" />
         </AutoSuggest>
     ));

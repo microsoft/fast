@@ -7,6 +7,7 @@ import Slider, {
     SliderUnhandledProps,
 } from "./slider";
 import {
+    Direction,
     keyCodeArrowDown,
     keyCodeArrowLeft,
     keyCodeArrowRight,
@@ -763,6 +764,40 @@ describe("Slider", (): void => {
         expect(rendered.state("upperValue")).toBe(50);
         thumb.simulate("keydown", { keyCode: keyCodeEnd });
         expect(rendered.state("upperValue")).toBe(100);
+
+        document.body.removeChild(container);
+    });
+
+    test("direction is set after component has mounted", (): void => {
+        const container: HTMLDivElement = document.createElement("div");
+        document.body.appendChild(container);
+
+        const rendered: any = mount(
+            <Slider managedClasses={managedClasses} initialValue={50} />,
+            {
+                attachTo: container,
+            }
+        );
+
+        expect(rendered.state("direction")).toBe(Direction.ltr);
+        document.body.removeChild(container);
+    });
+
+    test("slider internals do not render while direction state is null", (): void => {
+        const container: HTMLDivElement = document.createElement("div");
+        document.body.appendChild(container);
+
+        const rendered: any = mount(<Slider managedClasses={managedClasses} />, {
+            attachTo: container,
+        });
+
+        let renderResults: React.ReactElement<HTMLDivElement> = rendered
+            .instance()
+            ["render"]();
+        expect(React.Children.toArray(renderResults.props.children)).toHaveLength(1);
+        rendered.state().direction = null;
+        renderResults = rendered.instance()["render"]();
+        expect(React.Children.toArray(renderResults.props.children)).toHaveLength(0);
 
         document.body.removeChild(container);
     });
