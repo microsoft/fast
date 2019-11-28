@@ -43,7 +43,7 @@ export class BreakpointTracker {
         this.defaultBreakpoint = defaultBreakpoint;
 
         this.breakpoint = canUseDOM()
-            ? identifyBreakpoint(innerWidth, this._breakpoints)
+            ? identifyBreakpoint(window.innerWidth, this._breakpoints)
             : this.defaultBreakpoint;
 
         if (canUseDOM()) {
