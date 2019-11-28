@@ -2,7 +2,7 @@ import React from "react";
 import Adapter from "enzyme-adapter-react-16";
 import { configure, mount, ReactWrapper } from "enzyme";
 import HTML5Backend from "react-dnd-html5-backend";
-import { ContextComponent, DragDropContext } from "react-dnd";
+import { DndProvider } from "react-dnd";
 import {
     keyCodeArrowDown,
     keyCodeArrowUp,
@@ -13,8 +13,15 @@ import { ChildrenControlProps } from "./control.children.props";
 import { ChildrenControlClassNameContract } from "./control.children.style";
 import { ControlType } from "../templates";
 
-const ChildrenFormControlWithDragAndDrop: typeof ChildrenControl &
-    ContextComponent<any> = DragDropContext(HTML5Backend)(ChildrenControl);
+const ChildrenFormControlWithDragAndDrop: React.FC<any> = (
+    props: React.PropsWithChildren<any>
+): React.ReactElement => {
+    return (
+        <DndProvider backend={HTML5Backend}>
+            <ChildrenControl {...props} />
+        </DndProvider>
+    );
+};
 
 /*
  * Configure Enzyme

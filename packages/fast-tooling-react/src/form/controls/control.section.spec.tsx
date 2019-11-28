@@ -6,7 +6,7 @@ import {
     SectionControlClassNameContract,
     SectionControlProps,
 } from "./control.section.props";
-import { ContextComponent, DragDropContext } from "react-dnd";
+import { DndProvider } from "react-dnd";
 import HTML5Backend from "react-dnd-html5-backend";
 import { controls } from "./utilities/control-switch.spec";
 import ajv, { Ajv, ValidateFunction } from "ajv";
@@ -23,8 +23,15 @@ import {
     TextareaControl,
 } from "../index";
 
-const TestSectionControl: typeof StyledSectionControl &
-    ContextComponent<any> = DragDropContext(HTML5Backend)(StyledSectionControl);
+const TestSectionControl: any = (
+        props: React.PropsWithChildren<SectionControlProps>
+    ): React.ReactElement => {
+        return (
+            <DndProvider backend={HTML5Backend}>
+                <StyledSectionControl {...props} />
+            </DndProvider>
+        );
+    };
 
 /*
  * Configure Enzyme
