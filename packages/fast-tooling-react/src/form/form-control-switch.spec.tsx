@@ -2,7 +2,7 @@ import React from "react";
 import Adapter from "enzyme-adapter-react-16";
 import { configure, mount, render, shallow } from "enzyme";
 import FormControlSwitch, { FormControlSwitchProps } from "./form-control-switch";
-import { ContextComponent, DragDropContext } from "react-dnd";
+import { DndProvider } from "react-dnd";
 import HTML5Backend from "react-dnd-html5-backend";
 
 import oneOfSchema from "../__tests__/schemas/one-of.schema.json";
@@ -100,8 +100,15 @@ export const controls: Controls = {
     numberField: numberFieldControl,
 };
 
-const TestFormControlSwitch: typeof FormControlSwitch &
-    ContextComponent<any> = DragDropContext(HTML5Backend)(FormControlSwitch);
+const TestFormControlSwitch: React.FC<FormControlSwitchProps> = (
+    props: React.PropsWithChildren<FormControlSwitchProps>
+): React.ReactElement => {
+    return (
+        <DndProvider backend={HTML5Backend}>
+            <FormControlSwitch {...props} />
+        </DndProvider>
+    );
+};
 
 /*
  * Configure Enzyme

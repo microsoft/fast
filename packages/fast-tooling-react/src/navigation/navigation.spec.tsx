@@ -1,7 +1,7 @@
 import React from "react";
 import Adapter from "enzyme-adapter-react-16";
 import { configure, mount, render, shallow } from "enzyme";
-import { DragDropContext } from "react-dnd";
+import { DndProvider } from "react-dnd";
 import HTML5Backend from "react-dnd-html5-backend";
 import { NavigationProps } from "./navigation.props";
 import Navigation from "./navigation";
@@ -80,21 +80,15 @@ const treeItemEndPointSelector: string = `a${treeItemSelector}`;
 const treeItemListItemSelector: string = `div${treeItemSelector} > span`;
 const treeItemExpandListTriggerSelector: string = `div${treeItemSelector} > span > button`;
 
-// context singleton
-let context: any;
-
-export function withDragDropContext<P>(
-    Component: React.ComponentClass<P> | React.StatelessComponent<P>
-): React.ComponentClass<P> {
-    // ensure a singleton instance of the context exists
-    if (!context) {
-        context = DragDropContext(HTML5Backend);
-    }
-
-    return context(Component);
-}
-
-const DragDropNavigation: any = withDragDropContext<NavigationProps>(Navigation);
+const DragDropNavigation: React.FC<NavigationProps> = (
+    props: React.PropsWithChildren<NavigationProps>
+): React.ReactElement => {
+    return (
+        <DndProvider backend={HTML5Backend}>
+            <Navigation {...props} />
+        </DndProvider>
+    );
+};
 
 describe("Navigation", () => {
     test("should not throw", () => {
