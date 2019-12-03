@@ -434,7 +434,7 @@ class HorizontalOverflow extends Foundation<
                 maxDistance
             );
         } else {
-            distance = -this.getWithinMinDistance(
+            distance = this.getWithinMinDistance(
                 scrollPosition,
                 availableWidth,
                 itemWidths
