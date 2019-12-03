@@ -305,7 +305,7 @@ describe("horizontal overflow", (): void => {
                     [10, 20, 20, 50, 20],
                     10
                 )
-        ).toBe(-0);
+        ).toBe(0);
 
         expect(
             renderedWithImages
@@ -316,7 +316,7 @@ describe("horizontal overflow", (): void => {
                     [50, 50, 50, 50],
                     100
                 )
-        ).toBe(-50);
+        ).toBe(50);
     });
     test("should an state property `itemsHeight`", () => {
         const renderedWithImages: any = mount(
