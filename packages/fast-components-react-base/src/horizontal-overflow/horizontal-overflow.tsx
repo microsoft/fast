@@ -41,14 +41,17 @@ class HorizontalOverflow extends Foundation<
 
     public static defaultProps: Partial<HorizontalOverflowProps> = {
         managedClasses: {},
+        nextItemPeek: 50,
     };
     private static DirectionAttributeName: string = "dir";
+    private static defaultScrollAnimDuration: number = 500;
 
     protected handledProps: HandledProps<HorizontalOverflowHandledProps> = {
         scrollDuration: void 0,
         managedClasses: void 0,
         onScrollChange: void 0,
         onOverflowChange: void 0,
+        nextItemPeek: void 0,
     };
 
     private horizontalOverflowItemsRef: React.RefObject<HTMLUListElement>;
@@ -82,6 +85,26 @@ class HorizontalOverflow extends Foundation<
      * Store a reference to a constructed resize observer
      */
     private resizeObserver?: ResizeObserverClassDefinition;
+
+    /**
+     * Stores pending animation frame requests
+     */
+    private openRequestAnimationFrame: number | null = null;
+
+    /**
+     *  The position the current scroll animation started at
+     */
+    private currentScrollAnimStartPosition: number;
+
+    /**
+     * The target position of the current scroll animation
+     */
+    private currentScrollAnimEndPosition: number;
+
+    /**
+     * Start time for current scroll animation
+     */
+    private currentScrollAnimStartTime: number;
 
     /**
      * Constructor
@@ -258,6 +281,45 @@ class HorizontalOverflow extends Foundation<
     }
 
     /**
+     * A child item got focus make sure it is in view
+     */
+    private onItemFocus = (event: React.FocusEvent): void => {
+        if (!this.isOverflow()) {
+            return;
+        }
+
+        const scrollPosition: number = this.getScrollPosition();
+        const itemLeft: number = (event.currentTarget as HTMLElement).offsetLeft;
+        const itemWidth: number = (event.currentTarget as HTMLElement).clientWidth;
+        const itemRight: number = itemLeft + itemWidth;
+
+        const viewportWidth: number = this.getAvailableWidth();
+        const peek: number = this.getScrollPeek(itemWidth);
+
+        if (itemLeft - scrollPosition < 0) {
+            this.scrollContent(itemLeft - peek);
+        } else if (itemRight - scrollPosition > viewportWidth) {
+            this.scrollContent(itemRight - viewportWidth + peek);
+        }
+    };
+
+    /**
+     *  Compares viewport width, item width and desired peek value to come up with
+     *  peek value to use. We don't want to clip focused item to get peek on next/previous item.
+     */
+    private getScrollPeek = (itemWidth: number): number => {
+        const viewportWidth: number = this.getAvailableWidth();
+
+        let maxPeek: number = viewportWidth - itemWidth;
+        maxPeek = maxPeek < 0 ? 0 : maxPeek;
+
+        const peek: number =
+            this.props.nextItemPeek > maxPeek ? maxPeek : this.props.nextItemPeek;
+
+        return peek;
+    };
+
+    /**
      * Callback for on scroll change
      */
     private onScrollChange = (): void => {
@@ -282,6 +344,9 @@ class HorizontalOverflow extends Foundation<
      * Get the scroll change data
      */
     private getPositionData = (): PositionChange => {
+        if (isNil(this.horizontalOverflowItemsRef.current)) {
+            return { start: true, end: true };
+        }
         const scrollPosition: number = this.getScrollPosition();
 
         const isAtBeginning: boolean = scrollPosition === 0;
@@ -370,6 +435,7 @@ class HorizontalOverflow extends Foundation<
      */
     private getItemMaxHeight(): number {
         let itemMaxHeight: number = 0;
+
         const children: HTMLElement = get(
             this.horizontalOverflowItemsRef,
             "current.childNodes"
@@ -398,9 +464,13 @@ class HorizontalOverflow extends Foundation<
     private getItems(): React.ReactNode {
         return React.Children.map(
             this.withoutSlot([ButtonDirection.previous, ButtonDirection.next]),
-            (child: React.ReactNode): React.ReactElement<HTMLLIElement> => {
+            (
+                child: React.ReactNode,
+                index: number
+            ): React.ReactElement<HTMLLIElement> => {
                 return (
                     <li
+                        onFocusCapture={this.onItemFocus}
                         className={classNames(
                             this.props.managedClasses.horizontalOverflow_item
                         )}
@@ -418,7 +488,6 @@ class HorizontalOverflow extends Foundation<
      */
     private getScrollDistanceFromButtonDirection(
         buttonDirection: ButtonDirection,
-        availableWidth: number,
         itemWidths: number[],
         scrollPosition: number
     ): number {
@@ -427,21 +496,11 @@ class HorizontalOverflow extends Foundation<
         }
 
         let distance: number = 0;
-        const maxDistance: number = this.getMaxScrollDistance(availableWidth, itemWidths);
 
         if (buttonDirection === ButtonDirection.next) {
-            distance = this.getWithinMaxDistance(
-                scrollPosition,
-                availableWidth,
-                itemWidths,
-                maxDistance
-            );
+            distance = this.getWithinMaxDistance(scrollPosition, itemWidths);
         } else {
-            distance = this.getWithinMinDistance(
-                scrollPosition,
-                availableWidth,
-                itemWidths
-            );
+            distance = this.getWithinMinDistance(scrollPosition, itemWidths);
         }
 
         return Math.ceil(distance);
@@ -450,21 +509,13 @@ class HorizontalOverflow extends Foundation<
     /**
      * Gets the distance unless it is over the maximum distance, then use maximum distance instead
      */
-    private getWithinMaxDistance(
-        scrollPosition: number,
-        availableWidth: number,
-        itemWidths: number[],
-        maxDistance: number
-    ): number {
+    private getWithinMaxDistance(scrollPosition: number, itemWidths: number[]): number {
+        const maxDistance: number = this.getMaxScrollDistance();
         if (scrollPosition === maxDistance) {
             return maxDistance;
         }
 
-        const distance: number = this.getNextDistance(
-            availableWidth,
-            itemWidths,
-            scrollPosition
-        );
+        const distance: number = this.getNextDistance(itemWidths, scrollPosition);
 
         return distance >= maxDistance ? maxDistance : distance;
     }
@@ -472,31 +523,19 @@ class HorizontalOverflow extends Foundation<
     /**
      * Gets the distance unless it is under the minimum distance, then use minimum distance instead
      */
-    private getWithinMinDistance(
-        scrollPosition: number,
-        availableWidth: number,
-        itemWidths: number[]
-    ): number {
+    private getWithinMinDistance(scrollPosition: number, itemWidths: number[]): number {
         if (scrollPosition === 0) {
             return 0;
         }
 
-        const distance: number = this.getPreviousDistance(
-            availableWidth,
-            itemWidths,
-            scrollPosition
-        );
+        const distance: number = this.getPreviousDistance(itemWidths, scrollPosition);
         return distance <= 0 ? 0 : distance;
     }
 
     /**
      * Gets the distance to scroll if the next button has been clicked
      */
-    private getNextDistance(
-        availableWidth: number,
-        itemWidths: number[],
-        scrollPosition: number
-    ): number {
+    private getNextDistance(itemWidths: number[], scrollPosition: number): number {
         let distance: number = 0;
 
         for (
@@ -505,49 +544,46 @@ class HorizontalOverflow extends Foundation<
             i++
         ) {
             if (
-                distance + itemWidths[i] > scrollPosition + availableWidth &&
+                distance + itemWidths[i] > scrollPosition + this.getAvailableWidth() &&
                 distance !== scrollPosition
             ) {
-                return distance;
+                return distance + this.getScrollPeek(itemWidths[i]);
             }
-
             distance += itemWidths[i];
         }
-
         return distance;
     }
 
     /**
      * Gets the distance to scroll if the previous button has been clicked
      */
-    private getPreviousDistance(
-        availableWidth: number,
-        itemWidths: number[],
-        scrollPosition: number
-    ): number {
-        let distance: number =
-            this.getMaxScrollDistance(availableWidth, itemWidths) + availableWidth;
+    private getPreviousDistance(itemWidths: number[], scrollPosition: number): number {
+        const availableWidth: number = this.getAvailableWidth();
+
+        let distance: number = this.getMaxScrollDistance() + availableWidth;
 
         for (let i: number = itemWidths.length - 1; i >= 0; i--) {
             if (
                 distance - itemWidths[i] < scrollPosition - availableWidth &&
                 distance !== scrollPosition
             ) {
-                return distance;
+                return distance - this.getScrollPeek(itemWidths[i]);
             }
-
             distance -= itemWidths[i];
         }
-
         return distance;
     }
 
     /**
      * Gets the maximum distance that can be scrolled
      */
-    private getMaxScrollDistance(availableWidth: number, itemWidths: number[]): number {
-        const totalWidth: number = itemWidths.reduce((a: number, b: number) => a + b);
-        return totalWidth - availableWidth;
+    private getMaxScrollDistance(): number {
+        if (isNil(this.horizontalOverflowItemsRef.current)) {
+            return 0;
+        }
+        return (
+            this.horizontalOverflowItemsRef.current.scrollWidth - this.getAvailableWidth()
+        );
     }
 
     /**
@@ -568,10 +604,9 @@ class HorizontalOverflow extends Foundation<
      * Handler for the click event fired after next or previous has been clicked
      */
     private handleClick(buttonDirection: ButtonDirection): void {
-        this.setScrollDistance(
+        this.scrollContent(
             this.getScrollDistanceFromButtonDirection(
                 buttonDirection,
-                this.getAvailableWidth(),
                 this.getItemWidths(),
                 this.getScrollPosition()
             )
@@ -582,13 +617,19 @@ class HorizontalOverflow extends Foundation<
      * Returns the available content region width
      */
     private getAvailableWidth(): number {
-        return getClientRectWithMargin(this.horizontalOverflowItemsRef.current).width;
+        if (isNil(this.horizontalOverflowItemsRef.current)) {
+            return 0;
+        }
+        return this.horizontalOverflowItemsRef.current.clientWidth;
     }
 
     /**
      * Returns the items widths
      */
     private getItemWidths(): number[] {
+        if (isNil(this.horizontalOverflowItemsRef.current)) {
+            return null;
+        }
         const items: HTMLElement[] = Array.prototype.slice.call(
             this.horizontalOverflowItemsRef.current.childNodes
         );
@@ -599,16 +640,6 @@ class HorizontalOverflow extends Foundation<
         }
 
         return itemWidths;
-    }
-
-    /**
-     * Sets the scroll distance for the items list
-     */
-    private setScrollDistance(updatedDistance: number): void {
-        this.scrollContent(
-            updatedDistance,
-            this.props.scrollDuration ? this.props.scrollDuration : 500
-        );
     }
 
     /**
@@ -635,27 +666,55 @@ class HorizontalOverflow extends Foundation<
     /**
      * Scrolls the container for the items list
      */
-    private scrollContent(scrollPosition: number, duration: number): void {
-        const start: number = this.getScrollPosition();
-        const change: number = scrollPosition - start;
-        const startDate: number = new Date().getTime();
-        const animateScroll: () => void = (): void => {
-            const currentDate: number = new Date().getTime();
-            const currentTime: number = currentDate - startDate;
+    private scrollContent(scrollPosition: number): void {
+        const newScrollPosition: number = Math.max(
+            0,
+            Math.min(scrollPosition, this.getMaxScrollDistance())
+        );
 
-            this.setScrollPosition(
-                this.easeInOutQuad(currentTime, start, change, duration)
-            );
-
-            if (currentTime < duration) {
-                requestAnimationFrame(animateScroll);
-            } else {
-                this.setScrollPosition(scrollPosition);
-            }
-        };
-
-        animateScroll();
+        this.currentScrollAnimStartPosition = this.getScrollPosition();
+        this.currentScrollAnimEndPosition = newScrollPosition;
+        this.currentScrollAnimStartTime = new Date().getTime();
+        this.requestFrame();
     }
+
+    /**
+     * Request's an animation frame if there are currently no open animation frame requests
+     */
+    private requestFrame = (): void => {
+        if (this.openRequestAnimationFrame === null) {
+            this.openRequestAnimationFrame = window.requestAnimationFrame(
+                this.updateScrollAnimation
+            );
+        }
+    };
+
+    /**
+     *  Animate one frame of scrolling
+     */
+    private updateScrollAnimation = (): void => {
+        this.openRequestAnimationFrame = null;
+        const duration: number = this.props.scrollDuration
+            ? this.props.scrollDuration
+            : HorizontalOverflow.defaultScrollAnimDuration;
+        const currentDate: number = new Date().getTime();
+        const currentTime: number = currentDate - this.currentScrollAnimStartTime;
+
+        if (currentTime < duration) {
+            this.setScrollPosition(
+                this.easeInOutQuad(
+                    currentTime,
+                    this.currentScrollAnimStartPosition,
+                    this.currentScrollAnimEndPosition -
+                        this.currentScrollAnimStartPosition,
+                    duration
+                )
+            );
+            this.requestFrame();
+        } else {
+            this.setScrollPosition(this.currentScrollAnimEndPosition);
+        }
+    };
 
     /**
      *  Gets the scroll position and accounts for direction
@@ -675,11 +734,11 @@ class HorizontalOverflow extends Foundation<
     /**
      *  Sets the scroll position and accounts for direction
      */
-    private setScrollPosition = (newScrollValue: number): void => {
+    private setScrollPosition = (scrollValue: number): void => {
         if (!isNil(this.horizontalOverflowItemsRef.current)) {
             RtlScrollConverter.setScrollLeft(
                 this.horizontalOverflowItemsRef.current,
-                this.state.direction === Direction.rtl ? -newScrollValue : newScrollValue,
+                this.state.direction === Direction.rtl ? -scrollValue : scrollValue,
                 this.state.direction
             );
         }
