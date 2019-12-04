@@ -224,35 +224,39 @@ describe("horizontal overflow", (): void => {
             </HorizontalOverflow>
         );
 
+        renderedWithImages.instance()["getAvailableWidth"] = (): number => 50;
+        renderedWithImages.instance()["getMaxScrollDistance"] = (): number => 70;
+        renderedWithImages.instance()["getScrollPeek"] = (): number => 0;
         expect(
             renderedWithImages
                 .instance()
                 ["getScrollDistanceFromButtonDirection"](
                     ButtonDirection.next,
-                    50,
                     [10, 20, 20, 50, 20],
                     0
                 )
         ).toBe(50);
 
         // reaches the max distance and uses that instead
+        renderedWithImages.instance()["getAvailableWidth"] = (): number => 40;
+        renderedWithImages.instance()["getMaxScrollDistance"] = (): number => 60;
         expect(
             renderedWithImages
                 .instance()
                 ["getScrollDistanceFromButtonDirection"](
                     ButtonDirection.next,
-                    40,
                     [10, 20, 10, 30, 20, 10],
                     30
                 )
         ).toBe(60);
 
+        renderedWithImages.instance()["getAvailableWidth"] = (): number => 40;
+        renderedWithImages.instance()["getMaxScrollDistance"] = (): number => 90;
         expect(
             renderedWithImages
                 .instance()
                 ["getScrollDistanceFromButtonDirection"](
                     ButtonDirection.next,
-                    40,
                     [10, 20, 10, 30, 20, 10, 20, 10],
                     30
                 )
@@ -263,7 +267,6 @@ describe("horizontal overflow", (): void => {
                 .instance()
                 ["getScrollDistanceFromButtonDirection"](
                     ButtonDirection.next,
-                    40,
                     [10, 20, 10, 30, 20, 10, 20, 10],
                     40
                 )
@@ -277,12 +280,15 @@ describe("horizontal overflow", (): void => {
             </HorizontalOverflow>
         );
 
+        renderedWithImages.instance()["getAvailableWidth"] = (): number => 50;
+        renderedWithImages.instance()["getMaxScrollDistance"] = (): number => 71;
+        renderedWithImages.instance()["getScrollPeek"] = (): number => 0;
+
         expect(
             renderedWithImages
                 .instance()
                 ["getScrollDistanceFromButtonDirection"](
                     ButtonDirection.next,
-                    50,
                     [10.01, 20.3, 20.5, 50.2, 20.9],
                     0
                 )
@@ -296,23 +302,25 @@ describe("horizontal overflow", (): void => {
             </HorizontalOverflow>
         );
 
+        renderedWithImages.instance()["getAvailableWidth"] = (): number => 50;
+        renderedWithImages.instance()["getMaxScrollDistance"] = (): number => 70;
+        renderedWithImages.instance()["getScrollPeek"] = (): number => 0;
         expect(
             renderedWithImages
                 .instance()
                 ["getScrollDistanceFromButtonDirection"](
                     ButtonDirection.previous,
-                    50,
                     [10, 20, 20, 50, 20],
                     10
                 )
         ).toBe(0);
 
+        renderedWithImages.instance()["getMaxScrollDistance"] = (): number => 150;
         expect(
             renderedWithImages
                 .instance()
                 ["getScrollDistanceFromButtonDirection"](
                     ButtonDirection.previous,
-                    50,
                     [50, 50, 50, 50],
                     100
                 )
@@ -352,11 +360,19 @@ describe("horizontal overflow", (): void => {
             </HorizontalOverflow>
         );
 
+        renderedWithImagesAndNextAndPrevious.instance()[
+            "getAvailableWidth"
+        ] = (): number => 500;
+        renderedWithImagesAndNextAndPrevious.instance()[
+            "getMaxScrollDistance"
+        ] = (): number => 1600;
+        renderedWithImagesAndNextAndPrevious.instance()["getScrollPeek"] = (): number =>
+            0;
+
         expect(
             renderedWithImagesAndNextAndPrevious
                 .instance()
                 ["getNextDistance"](
-                    500,
                     [120, 140, 80, 220, 210, 100, 90, 200, 190, 170, 180, 210, 190],
                     0
                 )
@@ -366,7 +382,6 @@ describe("horizontal overflow", (): void => {
             renderedWithImagesAndNextAndPrevious
                 .instance()
                 ["getNextDistance"](
-                    500,
                     [120, 140, 80, 220, 210, 100, 90, 200, 190, 170, 180, 210, 190],
                     2100
                 )
@@ -376,7 +391,6 @@ describe("horizontal overflow", (): void => {
             renderedWithImagesAndNextAndPrevious
                 .instance()
                 ["getPreviousDistance"](
-                    500,
                     [120, 140, 80, 220, 210, 100, 90, 200, 190, 170, 180, 210, 190],
                     560
                 )
@@ -386,7 +400,6 @@ describe("horizontal overflow", (): void => {
             renderedWithImagesAndNextAndPrevious
                 .instance()
                 ["getPreviousDistance"](
-                    500,
                     [120, 140, 80, 220, 210, 100, 90, 200, 190, 170, 180, 210, 190],
                     0
                 )
@@ -395,7 +408,7 @@ describe("horizontal overflow", (): void => {
         expect(
             renderedWithImagesAndNextAndPrevious
                 .instance()
-                ["getScrollDistanceFromButtonDirection"]("next", 500, [], 0)
+                ["getScrollDistanceFromButtonDirection"]("next", [], 0)
         ).toBe(0);
     });
     test("getNextDistance should not get hung up on elements wider than the viewport", () => {
@@ -448,7 +461,7 @@ describe("horizontal overflow", (): void => {
         const renderedWithImagesAndNextAndPrevious: any = mount(
             <HorizontalOverflow managedClasses={managedClasses}>
                 <button id="testButtonNext" slot="next">
-                    next
+                    nexte4
                 </button>
                 <button id="testButtonPrevious" slot="previous">
                     previous
@@ -457,16 +470,23 @@ describe("horizontal overflow", (): void => {
             </HorizontalOverflow>
         );
 
-        expect(
-            renderedWithImagesAndNextAndPrevious
-                .instance()
-                ["getWithinMaxDistance"](400, 500, [], 400)
-        ).toBe(400);
+        renderedWithImagesAndNextAndPrevious.instance()[
+            "getAvailableWidth"
+        ] = (): number => 500;
+        renderedWithImagesAndNextAndPrevious.instance()[
+            "getMaxScrollDistance"
+        ] = (): number => 400;
+        renderedWithImagesAndNextAndPrevious.instance()["getScrollPeek"] = (): number =>
+            0;
 
         expect(
             renderedWithImagesAndNextAndPrevious
                 .instance()
-                ["getWithinMinDistance"](0, 500, [])
+                ["getWithinMaxDistance"](400, [])
+        ).toBe(400);
+
+        expect(
+            renderedWithImagesAndNextAndPrevious.instance()["getWithinMinDistance"](0, [])
         ).toBe(0);
     });
     test("should have an `onLoad` method", () => {
