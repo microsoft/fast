@@ -21,6 +21,11 @@ export class BreakpointTracker {
     private breakpoint: number;
 
     /**
+     * Default breakpoint that can be set, used when the DOM is unavailable (useful for server side rendering)
+     */
+    private _defaultBreakpoint: Breakpoint = 0;
+
+    /**
      * Track if we have an open animation frame request
      */
     private openRequestAnimationFrame: boolean;
@@ -31,17 +36,10 @@ export class BreakpointTracker {
     private subscriptions: BreakpointTrackerCallback[] = [];
 
     /**
-     * Default breakpoint that can be set (useful for server side rendering)
-     */
-    private defaultBreakpoint: number = 0;
-
-    /**
      * Constructor for the BreakpointTracker component.
      * @param defaultBreakpoint?: number - optional breakpoint that can be used instead of window.innerWidth
      */
-    constructor(defaultBreakpoint?: number) {
-        this.defaultBreakpoint = defaultBreakpoint;
-
+    constructor() {
         this.breakpoint = canUseDOM()
             ? identifyBreakpoint(window.innerWidth, this._breakpoints)
             : this.defaultBreakpoint;
@@ -67,6 +65,24 @@ export class BreakpointTracker {
         this.breakpoint = canUseDOM()
             ? identifyBreakpoint(window.innerWidth, this._breakpoints)
             : this.defaultBreakpoint;
+    }
+
+    /**
+     * Gets the default breakpoint value
+     */
+    public get defaultBreakpoint(): Breakpoint {
+        return this._defaultBreakpoint;
+    }
+
+    /**
+     * Sets the default breakpoint value
+     */
+    public set defaultBreakpoint(breakpoint: Breakpoint) {
+        this._defaultBreakpoint = breakpoint;
+
+        if (!canUseDOM()) {
+            this.breakpoint = this.defaultBreakpoint;
+        }
     }
 
     /**
@@ -134,3 +150,5 @@ export class BreakpointTracker {
         }
     };
 }
+
+export default new BreakpointTracker();

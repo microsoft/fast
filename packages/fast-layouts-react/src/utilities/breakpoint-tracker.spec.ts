@@ -1,9 +1,8 @@
-import { BreakpointTracker, BreakpointTrackerCallback } from "./breakpoint-tracker";
-import { Breakpoints, defaultBreakpoints } from "./breakpoints";
+import BreakpointTracker, { BreakpointTrackerCallback } from "./breakpoint-tracker";
+import { Breakpoint, Breakpoints, defaultBreakpoints } from "./breakpoints";
 
 /* tslint:disable:no-string-literal */
 describe("breakpointTracker", (): void => {
-    const breakpointTracker: BreakpointTracker = new BreakpointTracker();
     let subscriber: any;
     let callback: any;
 
@@ -18,49 +17,49 @@ describe("breakpointTracker", (): void => {
     });
 
     test("should successfully track subscribers", (): void => {
-        breakpointTracker.subscribe(callback);
-        breakpointTracker.notifySubscribers(1);
+        BreakpointTracker.subscribe(callback);
+        BreakpointTracker.notifySubscribers(1);
 
         expect(callback).toBeCalled();
     });
 
     test("should successfully remove subscribers", (): void => {
-        breakpointTracker.subscribe(callback);
-        breakpointTracker.unsubscribe(callback);
-        breakpointTracker.notifySubscribers(2);
+        BreakpointTracker.subscribe(callback);
+        BreakpointTracker.unsubscribe(callback);
+        BreakpointTracker.notifySubscribers(2);
 
         expect(callback).not.toBeCalled();
     });
 
     test("should initialize with default breakpoint values", (): void => {
-        breakpointTracker.subscribe(subscriber.onBreakpointChange);
+        BreakpointTracker.subscribe(subscriber.onBreakpointChange);
 
-        expect(breakpointTracker.breakpoints).toEqual(defaultBreakpoints);
+        expect(BreakpointTracker.breakpoints).toEqual(defaultBreakpoints);
     });
 
     test("should provide a breakpoint value when `currentBreakpoint` is called", (): void => {
-        breakpointTracker.subscribe(subscriber.onBreakpointChange);
+        BreakpointTracker.subscribe(subscriber.onBreakpointChange);
 
-        expect(typeof breakpointTracker.currentBreakpoint() === "number").toBe(true);
+        expect(typeof BreakpointTracker.currentBreakpoint() === "number").toBe(true);
     });
 
     test("should set new breakpoint values when provided", (): void => {
         const newBreakpoints: Breakpoints = [0, 500, 900, 1400];
 
         // Expect default values
-        expect(breakpointTracker.breakpoints).toEqual(defaultBreakpoints);
+        expect(BreakpointTracker.breakpoints).toEqual(defaultBreakpoints);
 
         // Set new values
-        breakpointTracker.breakpoints = newBreakpoints;
+        BreakpointTracker.breakpoints = newBreakpoints;
 
         // Expect new values
-        expect(breakpointTracker.breakpoints).toEqual(newBreakpoints);
+        expect(BreakpointTracker.breakpoints).toEqual(newBreakpoints);
 
         // Update to default values
-        breakpointTracker.breakpoints = defaultBreakpoints;
+        BreakpointTracker.breakpoints = defaultBreakpoints;
 
         // Expect default values
-        expect(breakpointTracker.breakpoints).toEqual(defaultBreakpoints);
+        expect(BreakpointTracker.breakpoints).toEqual(defaultBreakpoints);
     });
 
     test("should update `currentBreakpoint` value when new breakpoint values provided", (): void => {
@@ -71,18 +70,18 @@ describe("breakpointTracker", (): void => {
         (window as any)["innerWidth"] = 700;
 
         // Set breakpoints set one
-        breakpointTracker.breakpoints = breakpointsOne;
+        BreakpointTracker.breakpoints = breakpointsOne;
 
         // Expect new values
-        expect(breakpointTracker.currentBreakpoint()).toEqual(1);
+        expect(BreakpointTracker.currentBreakpoint()).toEqual(1);
 
         // Set breakpoints set two
-        breakpointTracker.breakpoints = breakpointsTwo;
+        BreakpointTracker.breakpoints = breakpointsTwo;
 
         // Expect new values
-        expect(breakpointTracker.currentBreakpoint()).toEqual(3);
+        expect(BreakpointTracker.currentBreakpoint()).toEqual(3);
 
         // Update to default values
-        breakpointTracker.breakpoints = defaultBreakpoints;
+        BreakpointTracker.breakpoints = defaultBreakpoints;
     });
 });

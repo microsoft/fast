@@ -1,5 +1,5 @@
 import React from "react";
-import { BreakpointTracker } from "../utilities/breakpoint-tracker";
+import BreakpointTracker from "../utilities/breakpoint-tracker";
 import { getValueByBreakpoint } from "../utilities/breakpoints";
 import {
     GridAlignment,
@@ -50,8 +50,6 @@ export class Grid extends Foundation<GridHandledProps, GridUnhandledProps, {}> {
         cssGridPropertyName: void 0,
     };
 
-    private breakpointTracker: BreakpointTracker = new BreakpointTracker();
-
     /**
      * Renders the Grid markup
      */
@@ -72,7 +70,7 @@ export class Grid extends Foundation<GridHandledProps, GridUnhandledProps, {}> {
      */
     public componentDidMount(): void {
         if (this.shouldTrackBreakpoints(this.props)) {
-            this.breakpointTracker.subscribe(this.update);
+            BreakpointTracker.subscribe(this.update);
         }
     }
 
@@ -80,7 +78,7 @@ export class Grid extends Foundation<GridHandledProps, GridUnhandledProps, {}> {
      * Component will be unmounted
      */
     public componentWillUnmount(): void {
-        this.breakpointTracker.unsubscribe(this.update);
+        BreakpointTracker.unsubscribe(this.update);
     }
 
     /**
@@ -92,13 +90,13 @@ export class Grid extends Foundation<GridHandledProps, GridUnhandledProps, {}> {
             !this.shouldTrackBreakpoints(previousProps)
         ) {
             // If we should be tracking breakpoints but previously weren't, subscribe to changes
-            this.breakpointTracker.subscribe(this.update);
+            BreakpointTracker.subscribe(this.update);
         } else if (
             !this.shouldTrackBreakpoints(this.props) &&
             this.shouldTrackBreakpoints(previousProps)
         ) {
             // If we were tracking breakpoints but we shouldn't be now, unsubscribe from changes
-            this.breakpointTracker.unsubscribe(this.update);
+            BreakpointTracker.unsubscribe(this.update);
         }
     }
 
