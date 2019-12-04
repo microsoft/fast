@@ -88,12 +88,12 @@ describe("breakpointTracker", (): void => {
 
     test("should return the default breakpoint set when the DOM is unavailable", (): void => {
         // make DOM unavailable for test
-        const canUseDOMSpy: jest.SpyInstance<any> = jest.spyOn(
+        const windowSpy: jest.SpyInstance<any> = jest.spyOn(
             global as any,
             "window",
             "get"
         );
-        canUseDOMSpy.mockImplementation(() => ({ undefined }));
+        windowSpy.mockImplementation(() => ({ undefined }));
         expect(canUseDOM()).toEqual(false);
 
         // Set some default breakpoints
