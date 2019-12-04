@@ -1,0 +1,16 @@
+export default {
+    $schema: "http://json-schema.org/schema#",
+    title: "Tree view",
+    description: "A tree view schema definition.",
+    type: "object",
+    id: "@microsoft/fast-components-react-base/tree-view",
+    formPluginId: "@microsoft/fast-components-react-base/tree-view",
+    properties: {},
+    reactProperties: {
+        children: {
+            title: "Child nodes",
+            type: "children",
+            ids: ["@microsoft/fast-components-react-base/tree-view-item"],
+        },
+    },
+};

@@ -14,6 +14,8 @@ const initializedPlugins: Array<Plugin<PluginProps>> = [
             "@microsoft/fast-components-react-msft/select-option/glyph",
             "@microsoft/fast-components-react-msft/text-action/button",
             "@microsoft/fast-components-react-msft/text-action/beforeGlyph",
+            "@microsoft/fast-components-react-msft/tree-view-item/afterContent",
+            "@microsoft/fast-components-react-msft/tree-view-item/beforeContent",
         ],
     }),
 ];

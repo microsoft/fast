@@ -25,5 +25,7 @@ export * from "./tabs";
 export * from "./text-area";
 export * from "./text-field";
 export * from "./toggle";
+export * from "./tree-view";
+export * from "./tree-view-item";
 export * from "./typography";
 export * from "./viewport-positioner";
