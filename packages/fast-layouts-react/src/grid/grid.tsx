@@ -3,12 +3,12 @@ import BreakpointTracker from "../utilities/breakpoint-tracker";
 import { getValueByBreakpoint } from "../utilities/breakpoints";
 import {
     GridAlignment,
-    GridDisplay,
     GridHandledProps,
     GridProps,
     GridTag,
     GridUnhandledProps,
 } from "./grid.props";
+import { GridDisplay } from "../utilities";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import { Column } from "../column";
 import { canUseCssGrid, classNames } from "@microsoft/fast-web-utilities";

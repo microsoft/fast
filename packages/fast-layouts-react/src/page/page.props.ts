@@ -1,5 +1,5 @@
 import React from "react";
-import { GridDisplay } from "../grid/grid.props";
+import { GridDisplay } from "../utilities";
 import { ManagedClasses } from "@microsoft/fast-jss-manager-react";
 import { PageClassNamesContract } from "./page";
 
@@ -17,7 +17,7 @@ export interface PageHandledProps extends PageManagedClasses {
     maxWidth?: string;
 
     /**
-     * The CSS grid display, "grid" when true and "-ms-grid" when false
+     * The value assigned to the CSS display property
      * Provide this prop when doing server side rendering
      */
     cssGridPropertyName?: GridDisplay;

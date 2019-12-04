@@ -172,7 +172,12 @@ export class Column extends Foundation<ColumnHandledProps, ColumnUnhandledProps,
         }
 
         const canUseCssGridStyle: boolean =
-            this.props.cssGridPropertyName === "grid" ? true : canUseCssGrid();
+            this.props.cssGridPropertyName === "grid"
+                ? true
+                : this.props.cssGridPropertyName === "-ms-grid"
+                    ? false
+                    : canUseCssGrid();
+
         const gridStyles: React.CSSProperties = canUseCssGridStyle
             ? {
                   gridColumn: gridColumnValue,
