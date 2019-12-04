@@ -738,5 +738,42 @@ describe("horizontal overflow", (): void => {
             end: true,
         });
     });
+    test("getDirection returns correct value when set to ltr", (): void => {
+        const rendered: any = mount(
+            <HorizontalOverflow managedClasses={managedClasses} dir="ltr">
+                {imageSet1}
+            </HorizontalOverflow>
+        );
+        expect(rendered.instance()["getDirection"]()).toEqual("ltr");
+    });
+    test("getDirection returns correct value when set to rtl", (): void => {
+        const rendered: any = mount(
+            <HorizontalOverflow managedClasses={managedClasses} dir="rtl">
+                {imageSet1}
+            </HorizontalOverflow>
+        );
+        expect(rendered.instance()["getDirection"]()).toEqual("rtl");
+    });
+    test("settting and getting scroll position works correctly in ltr", (): void => {
+        const rendered: any = mount(
+            <HorizontalOverflow managedClasses={managedClasses} dir="ltr">
+                {imageSet1}
+            </HorizontalOverflow>
+        );
+        expect(rendered.instance()["getScrollPosition"]()).toEqual(0);
+        rendered.instance()["setScrollPosition"](100);
+        expect(rendered.instance()["getScrollPosition"]()).toEqual(100);
+    });
+    test("getting and setting scroll position returns 0 when horizontalOverflowItemsRef isn't populated ", (): void => {
+        const rendered: any = mount(
+            <HorizontalOverflow managedClasses={managedClasses}>
+                {imageSet1}
+            </HorizontalOverflow>
+        );
+        rendered.instance().horizontalOverflowItemsRef.current = null;
+        expect(rendered.instance()["getScrollPosition"]()).toEqual(0);
+        rendered.instance()["setScrollPosition"](100);
+        expect(rendered.instance()["getScrollPosition"]()).toEqual(0);
+    });
 });
 /* tslint:enable:no-string-literal */

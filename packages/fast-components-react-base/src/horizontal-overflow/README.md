@@ -4,5 +4,18 @@ The *horizontal overflow* component accepts items as children. A child can have 
 ### Usage guidance
 The *horizontal overflow* component always initializes at the start of the overflow content &mdash; left side in LTR and right side in RTL. Several callbacks are supplied to provide the consumer with overflow and scroll data. The not fully supported [ResizeObserver](https://developers.google.com/web/updates/2016/10/resizeobserver) is used (supported in Chrome), so it is necessary to apply a polyfill if more thorough browser support is needed (Safari and Firefox). Full adaptation is expected soon.
 
+The "onOverflowChange" callback is provided to enable developers to react to changes in overflow.  The retured "OverflowChange" object describes overflow as follows
+ - When both "onOverflowChange" and "overflowEnd" are false, there is no overflow
+ - When both are true, there is overflow on either side
+ - 'overflowStart' is true when there are items to the left in LTR (right in RTL)
+ - 'overflowEnd' is true when there are items to the right in LTR (left in RTL)
+
+ The "onScrollChange" callback is expected to be depracated in a future release and should be avoided, use "onOverflowChange" instead.
+
+ The "scrollDuration" prop enables authors to specify a custom duration for scroll animations in milliseconds.  Default is 500ms.
+
+ The "nextItemPeek" prop defines how many pixels of the next or previous item is partially visible when the component scrolls content.  The default value is 50 pixels.  The component only provides this peek if there is ennough room to accomodate the currently focused item.  Developers should note that when focus goes to an item that is fully offscreen browsers will rapidly move the item into view and bypass this component's scroll animations.
+
+
 ## Accessibility
 The 'next' and 'previous' buttons are only useful for sighted users, since overflow is a purely visual construct, so they should be hidden from screen readers.
