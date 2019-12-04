@@ -14,8 +14,7 @@ The "onOverflowChange" callback is provided to enable developers to react to cha
 
  The "scrollDuration" prop enables authors to specify a custom duration for scroll animations in milliseconds.  Default is 500ms.
 
- The "nextItemPeek" prop defines how many pixels of the next or previous item is partially visible when the component scrolls content.  The default value is 50 pixels.  The component only provides this peek if there is ennough room to accomodate the currently focused item.  Developers should note that when focus goes to an item that is fully offscreen browsers will rapidly move the item into view and bypass this component's scroll animations.
-
+ The "nextItemPeek" prop defines how many pixels of the next or previous item is partially visible when the component scrolls content.  The default value is 50 pixels.  The component only provides this peek if there is ennough room to accomodate the currently focused item. 
 
 ## Accessibility
 The 'next' and 'previous' buttons are only useful for sighted users, since overflow is a purely visual construct, so they should be hidden from screen readers.
