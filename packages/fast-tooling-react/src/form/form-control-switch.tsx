@@ -249,7 +249,7 @@ class FormControlSwitch extends React.Component<FormControlSwitchProps, {}> {
             required: this.props.required,
             label: schema.title || schema.description || this.props.untitled,
             labelTooltip: schema.description,
-            disabled: schema.disabled,
+            disabled: this.props.disabled || schema.disabled,
             onChange: this.props.onChange,
             default: schema.default || this.props.default,
             const: schema.const || this.props.const,
