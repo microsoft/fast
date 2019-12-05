@@ -2,6 +2,31 @@ import { canUseDOM } from "exenv-es6";
 import { isBoolean } from "lodash-es";
 
 /**
+ * A test that ensures that all arguments are HTML Elements
+ */
+export function isHTMLElement(...args: any[]): boolean {
+    return args.every((arg: any) => arg instanceof HTMLElement);
+}
+
+/**
+ * Returns all displayed elements inside of a root node that match a provided selector
+ */
+export function getDisplayedNodes(
+    rootNode: HTMLElement,
+    selector: string
+): HTMLElement[] | void {
+    if (!isHTMLElement(rootNode)) {
+        return;
+    }
+
+    const nodes: HTMLElement[] = Array.from(rootNode.querySelectorAll(selector));
+
+    // offsetParent will be null if the element isn't currently displayed,
+    // so this will allow us to operate only on visible nodes
+    return nodes.filter((node: HTMLElement) => node.offsetParent !== null);
+}
+
+/**
  * Gets the numeric key code associated with a keyboard event. This method is for use with DOM level 3 events
  * that still use the deprecated keyCode property.
  */
