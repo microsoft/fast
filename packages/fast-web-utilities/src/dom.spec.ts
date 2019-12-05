@@ -24,11 +24,7 @@ describe("isHTMLElement", () => {
         expect(isHTMLElement(document.getElementById("element"))).toBe(true);
     });
     test("should return false if all arguments are NOT HTML elements", () => {
-        expect(
-            isHTMLElement(
-                Array.prototype.slice.call(document.getElementById("element").childNodes)
-            )
-        ).toBe(false);
+        expect(isHTMLElement(document.getElementById("element").childNodes)).toBe(false);
     });
 });
 
