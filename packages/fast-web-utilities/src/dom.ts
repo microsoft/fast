@@ -4,14 +4,17 @@ import { isBoolean } from "lodash-es";
 /**
  * A test that ensures that all arguments are HTML Elements
  */
-export function isHTMLElement(...args: unknown[]): boolean {
-    return args.every((arg: unknown) => arg instanceof HTMLElement);
+export function isHTMLElement(...args: HTMLElement[]): boolean {
+    return args.every((arg: HTMLElement) => arg instanceof HTMLElement);
 }
 
 /**
  * Returns all displayed elements inside of a root node that match a provided selector
  */
-export function getDisplayedNodes(rootNode: Element, selector: string): HTMLElement[] {
+export function getDisplayedNodes(
+    rootNode: HTMLElement,
+    selector: string
+): HTMLElement[] {
     if (!isHTMLElement(rootNode)) {
         return;
     }
