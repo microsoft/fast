@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.21.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-base@4.20.0...@microsoft/fast-components-react-base@4.21.0) (2019-12-05)
+
+
+### Bug Fixes
+
+*  horizontal overflow position data error, add test ([#2471](https://github.com/Microsoft/fast-dna/issues/2471)) ([631f88b](https://github.com/Microsoft/fast-dna/commit/631f88ba364226362860547c751a83fe13c4ed2a))
+* delay rendering slider internals until after direction check ([#2441](https://github.com/Microsoft/fast-dna/issues/2441)) ([52bb0c2](https://github.com/Microsoft/fast-dna/commit/52bb0c20dc680c1b2de8d865a8c58acb6d38c34a))
+* horizontal overflow rtl scroll behavior and add rtl scrollLeft utility ([#2462](https://github.com/Microsoft/fast-dna/issues/2462)) ([0cc2da5](https://github.com/Microsoft/fast-dna/commit/0cc2da5fde2abe23da987c216e03d73370cd4ad3))
+
+
+### Features
+
+* add filtering and onFocus to autoSuggest ([#2466](https://github.com/Microsoft/fast-dna/issues/2466)) ([2aa55de](https://github.com/Microsoft/fast-dna/commit/2aa55de4ba4fd2ca95756bcc733d891f836ed744))
+* add name prop to toggle ([#2488](https://github.com/Microsoft/fast-dna/issues/2488)) ([854dc14](https://github.com/Microsoft/fast-dna/commit/854dc14b9c5405cd84ec51fd9a2ab9a65e3f9cc0))
+
+
+
+
+
 # [4.20.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-base@4.19.1...@microsoft/fast-components-react-base@4.20.0) (2019-11-19)
 
 
