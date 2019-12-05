@@ -425,6 +425,7 @@ class FormSection extends React.Component<
                     additionalProperties={schema.additionalProperties}
                     enumeratedProperties={this.getEnumeratedProperties(schema)}
                     data={this.props.data}
+                    schema={schema}
                     required={schema.required}
                     label={schema.title || this.props.untitled}
                     childOptions={this.props.childOptions}

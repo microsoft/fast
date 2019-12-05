@@ -17,6 +17,7 @@ const config: any = {
     dataLocation: "",
     schemaLocation: "",
     data: "foo",
+    schema: {},
     required: false,
     label: "",
     onChange: jest.fn(),

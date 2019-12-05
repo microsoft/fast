@@ -364,6 +364,24 @@ describe("FormControlSwitch", () => {
                     data
                 );
             });
+            test("schema", () => {
+                const schema: any = textareaSchema.properties.textWithDefault;
+                const rendered: any = mount(
+                    <TestFormControlSwitch
+                        {...formControlSwitchProps}
+                        schema={schema}
+                        schemaLocation={"properties.text"}
+                        dataLocation={"text"}
+                        propertyName={"text"}
+                        data={"Foo"}
+                    />
+                );
+
+                expect(rendered.find("StandardControlTemplate").prop("schema")).toEqual(
+                    schema
+                );
+                expect(rendered.find("TextareaControl").prop("schema")).toEqual(schema);
+            });
             test("required", () => {
                 const rendered: any = mount(
                     <TestFormControlSwitch {...formControlSwitchProps} required={true} />
