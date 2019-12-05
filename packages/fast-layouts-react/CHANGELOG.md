@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.9.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-layouts-react@4.8.0...@microsoft/fast-layouts-react@4.9.0) (2019-12-05)
+
+
+### Features
+
+* add display prop to Grid component for SSR support ([#2459](https://github.com/Microsoft/fast-dna/issues/2459)) ([a8ee7cf](https://github.com/Microsoft/fast-dna/commit/a8ee7cfb18546503d1f4f3c8628c31d41c38ebae))
+
+
+
+
+
 # [4.8.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-layouts-react@4.7.2...@microsoft/fast-layouts-react@4.8.0) (2019-11-19)
 
 

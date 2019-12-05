@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.27.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-msft@4.26.0...@microsoft/fast-components-react-msft@4.27.0) (2019-12-05)
+
+
+### Features
+
+* add filtering and onFocus to autoSuggest ([#2466](https://github.com/Microsoft/fast-dna/issues/2466)) ([2aa55de](https://github.com/Microsoft/fast-dna/commit/2aa55de4ba4fd2ca95756bcc733d891f836ed744))
+* add name prop to toggle ([#2488](https://github.com/Microsoft/fast-dna/issues/2488)) ([854dc14](https://github.com/Microsoft/fast-dna/commit/854dc14b9c5405cd84ec51fd9a2ab9a65e3f9cc0))
+
+
+
+
+
 # [4.26.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-msft@4.25.1...@microsoft/fast-components-react-msft@4.26.0) (2019-11-19)
 
 
