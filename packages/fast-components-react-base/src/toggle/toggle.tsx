@@ -46,6 +46,7 @@ class Toggle extends Foundation<ToggleHandledProps, ToggleUnhandledProps, Toggle
         disabled: void 0,
         inputId: void 0,
         labelId: void 0,
+        name: void 0,
         selected: void 0,
         selectedMessage: void 0,
         statusMessageId: void 0,
@@ -88,6 +89,7 @@ class Toggle extends Foundation<ToggleHandledProps, ToggleUnhandledProps, Toggle
                         id={this.props.inputId}
                         aria-describedby={this.props.statusMessageId}
                         disabled={this.props.disabled}
+                        name={this.props.name}
                         value={this.generateToggleStateLabel()}
                         onChange={this.handleToggleChange}
                         checked={this.state.selected}
