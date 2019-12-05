@@ -7,7 +7,7 @@ sidebar_label: Design system
 # Design System
 
 ## Working with the design system provider
-The `DesignSystemProvider` is a React component that provides, via React context, the *design-system* object to descendent context consumers.
+The `DesignSystemProvider` is a React component that provides, via [React context](https://reactjs.org/docs/context.html), the *design-system* object to descendent context consumers.
 
 It accepts a `designSystem` property:
 ```jsx

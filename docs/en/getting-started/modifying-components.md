@@ -16,14 +16,14 @@ Each component will have its own set of [props](https://reactjs.org/docs/compone
 </AccentButton>
 ```
 ## Unhandled props
-FAST components implement a model of props know as *handled* and *unhandled* props. *Handled* props can be thought of as first-class props explicitly used or expected by the component. *Unhandled* props are all other props. In general, all *unhandled* props will be passed along to the root element of the component, and are generally used to address instance accessibility requirements, and custom event listeners, and add telemetry meta-data.
+FAST components implement a model of props know as *handled* and *unhandled* props. *Handled* props can be thought of as first-class props explicitly used or expected by the component. *Unhandled* props are all other props. In general, all *unhandled* props will be passed along to the root element of the component, and are generally used to address instance accessibility requirements, custom event listeners, and add telemetry meta-data.
 
 ```jsx
 /*
  * aria-label is an unhandled prop, so it gets
  * applied to the root of the Button component
  */
-<AccentButton aria-label="Custom accessible label">
+<AccentButton aria-label={"Custom accessible label"}>
     Hello world
 </AccentButton>
 ```
