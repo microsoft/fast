@@ -108,7 +108,7 @@ class FormDictionary extends React.Component<
                     return (
                         <React.Fragment>
                             {accumulator}
-                            <div key={index}>
+                            <div key={this.props.schemaLocation + index}>
                                 {this.renderItemControl(currentKey)}
                                 <FormControlSwitch
                                     index={index}
@@ -131,6 +131,7 @@ class FormDictionary extends React.Component<
                         </React.Fragment>
                     );
                 }
+                return accumulator;
             },
             null
         );
