@@ -1,7 +1,7 @@
-import React from "react";
-import { DesignSystemProvider } from "@microsoft/fast-jss-manager-react";
-import { getDataFromSchema } from "../../src/data-utilities";
+import * as testConfigs from "./form/";
+
 import { AlignControl, ControlType, Form, FormPlugin, FormPluginProps } from "../../src";
+import { ControlConfig, StandardControlPlugin, TextAlignControl } from "../../src";
 import {
     FormAttributeSettingsMappingToPropertyNames,
     FormChildOptionItem,
@@ -10,9 +10,11 @@ import {
     FormOrderByPropertyNamesProps,
     FormProps,
 } from "../../src/form/form.props";
-import * as testConfigs from "./form/";
 import { OneOfUpdateSchemaPlugin, StringUpdateSchemaPlugin } from "./form/plugin/plugin";
-import { ControlConfig, StandardControlPlugin, TextAlignControl } from "../../src";
+
+import { DesignSystemProvider } from "@microsoft/fast-jss-manager-react";
+import React from "react";
+import { getDataFromSchema } from "../../src/data-utilities";
 
 export type componentDataOnChange = (e: React.ChangeEvent<HTMLFormElement>) => void;
 

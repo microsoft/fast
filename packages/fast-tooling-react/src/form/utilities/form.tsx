@@ -1,21 +1,24 @@
-import React from "react";
-import { cloneDeep, get, mergeWith, omit, set, unset } from "lodash-es";
-import { getDataFromSchema } from "../../data-utilities";
-import {
-    getChildOptionBySchemaId,
-    squareBracketsRegex,
-} from "../../data-utilities/location";
-import ajv, { ErrorObject, ValidationError } from "ajv";
-import { AttributeSettingsMappingToPropertyNames } from "../form.props";
+import { FormChildOptionItem, FormState } from "../form.props";
 import {
     FormSectionProps,
     InitialOneOfAnyOfState,
     OneOfAnyOf,
     oneOfAnyOfType,
 } from "../form-section.props";
+import { cloneDeep, get, mergeWith, omit, set, unset } from "lodash-es";
+import {
+    getChildOptionBySchemaId,
+    squareBracketsRegex,
+} from "../../data-utilities/location";
+
+import { AttributeSettingsMappingToPropertyNames } from "../form.props";
+import { ErrorObject } from "ajv";
 import { FormControlSwitchProps } from "../form-control-switch.props";
-import { FormChildOptionItem, FormState } from "../form.props";
+import React from "react";
+import { getDataFromSchema } from "../../data-utilities";
 import { reactChildrenStringSchema } from "../controls/control.children.text";
+import stringify from "fast-json-stable-stringify";
+import { validateData } from "../../utilities/ajv-validation";
 
 /**
  * Gets the array link data
@@ -90,14 +93,6 @@ export function getInitialOneOfAnyOfState(
         schema: updatedSchema,
         oneOfAnyOf: oneOfAnyOfState,
     };
-}
-
-/**
- * Validate a schema against a set of data
- */
-export function validateSchema(schema: any, data: any): boolean | PromiseLike<any> {
-    const validation: ajv.Ajv = new ajv({ schemaId: "auto", allErrors: true });
-    return validation.validate(schema, data) || false;
 }
 
 /**
@@ -187,7 +182,7 @@ export function getOneOfAnyOfActiveIndex(type: string, schema: any, data: any): 
                 oneOfAnyOfItem
             );
 
-            if (validateSchema(updatedSchema, newData)) {
+            if (validateData(updatedSchema, newData)) {
                 activeIndex = index;
                 return;
             }
@@ -231,7 +226,7 @@ function cachedDataResolver(objValue: any, srcValue: any, key: number, object: a
         const newObj: any = cloneDeep(object);
         set(newObj, key, srcValue);
 
-        if (!validateSchema(this, newObj)) {
+        if (!validateData(this, newObj)) {
             return objValue;
         }
 
@@ -527,7 +522,7 @@ export function isDifferentSchema(oldSchema: any, newSchema: any): boolean {
  * Check to see if this schema has been modified
  */
 export function isModifiedSchema(oldSchema: any, newSchema: any): boolean {
-    return JSON.stringify(oldSchema) !== JSON.stringify(newSchema);
+    return stringify(oldSchema) !== stringify(newSchema);
 }
 
 /**
