@@ -1,5 +1,41 @@
-import { canUseCssGrid, canUseFocusVisible, canUseForcedColors, getKeyCode } from "./dom";
+import {
+    canUseCssGrid,
+    canUseFocusVisible,
+    canUseForcedColors,
+    getDisplayedNodes,
+    getKeyCode,
+    isHTMLElement,
+} from "./dom";
 import { KeyCodes } from "./key-codes";
+
+describe("isHTMLElement", () => {
+    document.body.innerHTML = `
+        <div id="element">
+            Child
+        </div>
+    `;
+
+    test("should not throw", () => {
+        expect(() => {
+            isHTMLElement();
+        }).not.toThrow();
+    });
+    test("should return true if all arguments are HTML elements", () => {
+        expect(isHTMLElement(document.getElementById("element"))).toBe(true);
+    });
+    test("should return false if all arguments are NOT HTML elements", () => {
+        expect(isHTMLElement(document.getElementById("element").childNodes)).toBe(false);
+    });
+});
+
+describe("getDisplayedNodes", () => {
+    test("should not throw if both arguments are null or undefined", () => {
+        expect(() => {
+            getDisplayedNodes(null, null);
+            getDisplayedNodes(undefined, undefined);
+        }).not.toThrow();
+    });
+});
 
 describe("getKeyCode", () => {
     test("should correctly handle null", () => {
