@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.4.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-web-utilities@4.3.7...@microsoft/fast-web-utilities@4.4.0) (2019-12-05)
+
+
+### Bug Fixes
+
+* horizontal overflow rtl scroll behavior and add rtl scrollLeft utility ([#2462](https://github.com/Microsoft/fast-dna/issues/2462)) ([0cc2da5](https://github.com/Microsoft/fast-dna/commit/0cc2da5fde2abe23da987c216e03d73370cd4ad3))
+
+
+### Features
+
+* add new utilities for checking HTML elements ([#2481](https://github.com/Microsoft/fast-dna/issues/2481)) ([15de67e](https://github.com/Microsoft/fast-dna/commit/15de67e207796c0b799827f33cdb47a8e32432e3))
+
+
+
+
+
 ## [4.3.7](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-web-utilities@4.3.6...@microsoft/fast-web-utilities@4.3.7) (2019-11-19)
 
 **Note:** Version bump only for package @microsoft/fast-web-utilities
