@@ -20,6 +20,7 @@ import { get, omit } from "lodash-es";
 import {
     FormCategoryConfig,
     FormControlItem,
+    FormControlParameters,
     FormControlsWithConfigOptions,
     FormSectionClassNameContract,
     FormSectionProps,
@@ -69,12 +70,19 @@ class FormSection extends React.Component<
             this.props.dataLocation,
             this.props.validationErrors
         );
+        const isDisabled: boolean = this.isDisabled();
 
         return (
-            <div className={classNames(this.props.managedClasses.formSection)}>
+            <fieldset
+                className={classNames(this.props.managedClasses.formSection, [
+                    this.props.managedClasses.formSection__disabled,
+                    isDisabled,
+                ])}
+                disabled={isDisabled}
+            >
                 {this.renderFormValidation(invalidMessage)}
                 {this.renderFormSection(invalidMessage)}
-            </div>
+            </fieldset>
         );
     }
 
@@ -141,6 +149,7 @@ class FormSection extends React.Component<
         schemaLocation: string,
         dataLocation: string,
         required: boolean,
+        disabled: boolean,
         label: string,
         invalidMessage: string | null
     ): React.ReactNode => {
@@ -156,6 +165,7 @@ class FormSection extends React.Component<
                 controlPlugins={this.props.controlPlugins}
                 untitled={this.props.untitled}
                 required={required}
+                disabled={disabled}
                 default={get(this.props.default, propertyName)}
                 label={getLabel(label, this.state.schema.title)}
                 data={getData(propertyName, this.props.data)}
@@ -305,17 +315,14 @@ class FormSection extends React.Component<
                                 : propertyName;
 
                         if (!isNotRequired) {
-                            const params: any = {
-                                property: schema[propertyKey][propertyName],
+                            const params: FormControlParameters = {
                                 index,
                                 schemaLocation,
                                 dataLocation,
                                 propertyName,
-                                schema: get(
-                                    this.state.schema,
-                                    `${propertyKey}.${propertyName}`
-                                ),
+                                schema: schema[propertyKey][propertyName],
                                 isRequired,
+                                isDisabled: this.isDisabled(),
                                 title:
                                     schema[propertyKey][propertyName].title ||
                                     this.props.untitled,
@@ -328,11 +335,12 @@ class FormSection extends React.Component<
                             formControls.items.push({
                                 propertyName: params.propertyName,
                                 render: this.renderFormControl(
-                                    params.property,
+                                    params.schema,
                                     params.propertyName,
                                     params.schemaLocation,
                                     params.dataLocation,
                                     params.isRequired,
+                                    params.isDisabled,
                                     params.title,
                                     params.invalidMessage
                                 ),
@@ -463,6 +471,7 @@ class FormSection extends React.Component<
                         this.getSchemaLocation(),
                         this.props.dataLocation,
                         true,
+                        this.props.disabled || this.state.schema.disabled,
                         "",
                         invalidMessage
                     )}
@@ -491,6 +500,10 @@ class FormSection extends React.Component<
         } else {
             return this.props.schemaLocation;
         }
+    }
+
+    private isDisabled(): boolean {
+        return this.props.disabled || this.state.schema.disabled;
     }
 }
 
