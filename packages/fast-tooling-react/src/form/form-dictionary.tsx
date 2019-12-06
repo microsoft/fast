@@ -5,7 +5,7 @@ import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-
 import styles, { FormDictionaryClassNameContract } from "./form-dictionary.style";
 import { FormDictionaryProps, FormDictionaryState } from "./form-dictionary.props";
 import FormControlSwitch from "./form-control-switch";
-import { generateExampleData } from "./utilities";
+import { generateExampleData, getErrorFromDataLocation } from "./utilities";
 
 /**
  * Form control definition
@@ -15,6 +15,10 @@ class FormDictionary extends React.Component<
     FormDictionaryState
 > {
     public static displayName: string = "FormDictionary";
+
+    private elementRef: React.RefObject<HTMLDivElement> = React.createRef<
+        HTMLDivElement
+    >();
 
     constructor(props: FormDictionaryProps) {
         super(props);
@@ -27,11 +31,38 @@ class FormDictionary extends React.Component<
 
     public render(): React.ReactNode {
         return (
-            <div className={this.props.managedClasses.formDictionary}>
+            <div
+                className={this.props.managedClasses.formDictionary}
+                ref={this.elementRef}
+            >
                 {this.renderControl()}
                 {this.renderFormControls()}
             </div>
         );
+    }
+
+    public componentDidMount(): void {
+        this.updateValidity();
+    }
+
+    public componentDidUpdate(): void {
+        this.updateValidity();
+    }
+
+    private updateValidity(): void {
+        if (this.props.additionalProperties === false) {
+            const {
+                formDictionary_itemControlInput,
+            }: FormDictionaryClassNameContract = this.props.managedClasses;
+
+            this.elementRef.current
+                .querySelectorAll<HTMLInputElement>(`.${formDictionary_itemControlInput}`)
+                .forEach((itemControlInput: HTMLInputElement) => {
+                    itemControlInput.setCustomValidity(
+                        "should NOT have additional properties"
+                    );
+                });
+        }
     }
 
     private renderControl(): React.ReactNode {
@@ -42,20 +73,22 @@ class FormDictionary extends React.Component<
             formDictionary_controlRegion,
         }: FormDictionaryClassNameContract = this.props.managedClasses;
 
-        return (
-            <div className={formDictionary_controlRegion}>
-                <div className={formDictionary_control}>
-                    <label className={formDictionary_controlLabel}>
-                        {this.props.label}
-                    </label>
+        if (typeof this.props.additionalProperties === "object") {
+            return (
+                <div className={formDictionary_controlRegion}>
+                    <div className={formDictionary_control}>
+                        <label className={formDictionary_controlLabel}>
+                            {this.props.label}
+                        </label>
+                    </div>
+                    <button
+                        className={formDictionary_controlAddTrigger}
+                        aria-label={"Select to add item"}
+                        onClick={this.handleOnAddItem}
+                    />
                 </div>
-                <button
-                    className={formDictionary_controlAddTrigger}
-                    aria-label={"Select to add item"}
-                    onClick={this.handleOnAddItem}
-                />
-            </div>
-        );
+            );
+        }
     }
 
     private renderItemControl(propertyName: string): React.ReactNode {
@@ -105,6 +138,13 @@ class FormDictionary extends React.Component<
                 index: number
             ): React.ReactNode => {
                 if (!this.props.enumeratedProperties.includes(currentKey)) {
+                    const invalidMessage: string = getErrorFromDataLocation(
+                        `${this.props.dataLocation}${
+                            this.props.dataLocation !== "" ? "." : ""
+                        }${currentKey}`,
+                        this.props.validationErrors
+                    );
+
                     return (
                         <React.Fragment>
                             {accumulator}
@@ -121,10 +161,11 @@ class FormDictionary extends React.Component<
                                     dataLocation={this.getDataLocation(currentKey)}
                                     data={this.getData(currentKey)}
                                     schema={this.props.additionalProperties}
+                                    disabled={this.props.additionalProperties === false}
                                     onUpdateSection={this.props.onUpdateSection}
                                     childOptions={this.props.childOptions}
                                     required={this.isRequired(currentKey)}
-                                    invalidMessage={this.props.invalidMessage}
+                                    invalidMessage={invalidMessage}
                                     softRemove={false}
                                 />
                             </div>

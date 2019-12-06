@@ -1,4 +1,13 @@
-import { FormChildOptionItem, FormState } from "../form.props";
+import React from "react";
+import { cloneDeep, get, mergeWith, omit, set, unset } from "lodash-es";
+import { getDataFromSchema } from "../../data-utilities";
+import {
+    getChildOptionBySchemaId,
+    normalizeDataLocationToDotNotation,
+    squareBracketsRegex,
+} from "../../data-utilities/location";
+import ajv, { ErrorObject, ValidationError } from "ajv";
+import { AttributeSettingsMappingToPropertyNames, FormChildOptionItem, FormState } from "../form.props";
 import {
     FormSectionProps,
     InitialOneOfAnyOfState,
@@ -593,13 +602,27 @@ export function getErrorFromDataLocation(
                     ) {
                         error = validationError.message;
                     }
-                } else if (
-                    validationError.dataPath.slice(
-                        0,
-                        matchingDataLocationToDataPath.length
-                    ) === matchingDataLocationToDataPath
-                ) {
-                    error = "Contains invalid data";
+                } else {
+                    const dataLocationItems: string[] = `.${normalizeDataLocationToDotNotation(
+                        validationError.dataPath
+                    )}`.split(".");
+                    let containsInvalidData: boolean = false;
+
+                    dataLocationItems.forEach(
+                        (dataLocationItem: string, index: number) => {
+                            if (
+                                matchingDataLocationToDataPath ===
+                                dataLocationItems.slice(0, index + 1).join(".")
+                            ) {
+                                containsInvalidData = true;
+                                return;
+                            }
+                        }
+                    );
+
+                    if (containsInvalidData) {
+                        error = "Contains invalid data";
+                    }
                 }
             }
         );
