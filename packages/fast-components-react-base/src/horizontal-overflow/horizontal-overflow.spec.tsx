@@ -347,6 +347,21 @@ describe("horizontal overflow", (): void => {
             0.0004
         );
     });
+    test("getScrollAnimPosition returns correct start and end values", () => {
+        const renderedWithImages: any = mount(
+            <HorizontalOverflow managedClasses={managedClasses}>
+                {imageSet1}
+            </HorizontalOverflow>
+        );
+
+        renderedWithImages.instance().currentScrollAnimStartPosition = 0;
+        renderedWithImages.instance().currentScrollAnimEndPosition = 100;
+
+        expect(renderedWithImages.instance()["getScrollAnimPosition"](0, 1000)).toBe(0);
+        expect(renderedWithImages.instance()["getScrollAnimPosition"](1000, 1000)).toBe(
+            100
+        );
+    });
     test("should get the distance when moving next/previous", () => {
         const renderedWithImagesAndNextAndPrevious: any = mount(
             <HorizontalOverflow managedClasses={managedClasses}>
@@ -774,6 +789,48 @@ describe("horizontal overflow", (): void => {
         expect(rendered.instance()["getScrollPosition"]()).toEqual(0);
         rendered.instance()["setScrollPosition"](100);
         expect(rendered.instance()["getScrollPosition"]()).toEqual(0);
+    });
+    test("getDirection returns correct direction in ltr mode", (): void => {
+        const rendered: any = mount(
+            <HorizontalOverflow managedClasses={managedClasses} dir="ltr">
+                {imageSet1}
+            </HorizontalOverflow>
+        );
+        expect(rendered.instance()["getDirection"]()).toEqual("ltr");
+    });
+    test("getDirection returns correct direction in rtl mode", (): void => {
+        const rendered: any = mount(
+            <HorizontalOverflow managedClasses={managedClasses} dir="rtl">
+                {imageSet1}
+            </HorizontalOverflow>
+        );
+        expect(rendered.instance()["getDirection"]()).toEqual("rtl");
+    });
+    test("getDirection defaults to ltr when no valid ref", (): void => {
+        const rendered: any = mount(
+            <HorizontalOverflow managedClasses={managedClasses} dir="rtl">
+                {imageSet1}
+            </HorizontalOverflow>
+        );
+        rendered.instance().horizontalOverflowItemsRef.current = null;
+        expect(rendered.instance()["getDirection"]()).toEqual("ltr");
+    });
+    test("updateScrollAnimation marks scrollAnimating as complete when time reaches duration", (): void => {
+        const rendered: any = mount(
+            <HorizontalOverflow managedClasses={managedClasses}>
+                {imageSet1}
+            </HorizontalOverflow>
+        );
+
+        let currentTime: number = new Date().getTime();
+        rendered.instance().currentScrollAnimStartTime = currentTime;
+        rendered.instance().isScrollAnimating = true;
+        const targetDelayTime: number = currentTime + 500;
+        while (currentTime < targetDelayTime) {
+            currentTime = new Date().getTime();
+        }
+        rendered.instance()["updateScrollAnimation"]();
+        expect(rendered.instance().isScrollAnimating).toEqual(false);
     });
 });
 /* tslint:enable:no-string-literal */
