@@ -357,8 +357,7 @@ class ViewportPositioner extends Foundation<
             if (this.state.validRefChecksRemaining > 0) {
                 this.setState({
                     validRefChecksRemaining: this.state.validRefChecksRemaining - 1,
-                    initialLayoutComplete:
-                        this.state.validRefChecksRemaining > 1 ? false : true,
+                    initialLayoutComplete: this.state.validRefChecksRemaining <= 1,
                 });
                 return;
             }
