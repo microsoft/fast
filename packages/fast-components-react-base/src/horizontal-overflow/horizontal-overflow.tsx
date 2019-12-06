@@ -106,6 +106,14 @@ class HorizontalOverflow extends Foundation<
      */
     private currentScrollAnimStartTime: number;
 
+    /**
+     * Flag indicates if a scroll animation is in progress
+     */
+    private isScrollAnimating: boolean = false;
+
+    /**
+     * Stores last scroll position from scroll events
+     */
     private lastRecordedScroll: number = 0;
 
     /**
@@ -284,6 +292,9 @@ class HorizontalOverflow extends Foundation<
         );
     }
 
+    /**
+     * Track scroll position
+     */
     private onScrollCapture = (event: React.UIEvent): void => {
         this.lastRecordedScroll = this.getScrollPosition();
     };
@@ -303,10 +314,22 @@ class HorizontalOverflow extends Foundation<
         const viewportWidth: number = this.getAvailableWidth();
         const peek: number = this.getScrollPeek(itemWidth);
 
+        let scrollStart: number = this.lastRecordedScroll;
+
+        if (this.isScrollAnimating) {
+            const duration: number = this.props.scrollDuration
+                ? this.props.scrollDuration
+                : HorizontalOverflow.defaultScrollAnimDuration;
+            const currentDate: number = new Date().getTime();
+            const currentTime: number = currentDate - this.currentScrollAnimStartTime;
+
+            scrollStart = this.getScrollAnimPosition(currentTime, duration);
+        }
+
         if (itemLeft - this.lastRecordedScroll < 0) {
-            this.scrollContent(itemLeft - peek);
-        } else if (itemRight - this.lastRecordedScroll > viewportWidth) {
-            this.scrollContent(itemRight - viewportWidth + peek);
+            this.scrollContent(scrollStart, itemLeft - peek);
+        } else if (itemRight - scrollStart > viewportWidth) {
+            this.scrollContent(scrollStart, itemRight - viewportWidth + peek);
         }
     };
 
@@ -612,6 +635,7 @@ class HorizontalOverflow extends Foundation<
      */
     private handleClick(buttonDirection: ButtonDirection): void {
         this.scrollContent(
+            this.getScrollPosition(),
             this.getScrollDistanceFromButtonDirection(
                 buttonDirection,
                 this.getItemWidths(),
@@ -673,13 +697,17 @@ class HorizontalOverflow extends Foundation<
     /**
      * Scrolls the container for the items list
      */
-    private scrollContent(scrollPosition: number): void {
+    private scrollContent(
+        startScrollPosition: number,
+        targetScrollPosition: number
+    ): void {
         const newScrollPosition: number = Math.max(
             0,
-            Math.min(scrollPosition, this.getMaxScrollDistance())
+            Math.min(targetScrollPosition, this.getMaxScrollDistance())
         );
 
-        this.currentScrollAnimStartPosition = this.lastRecordedScroll;
+        this.isScrollAnimating = true;
+        this.currentScrollAnimStartPosition = startScrollPosition;
         this.currentScrollAnimEndPosition = newScrollPosition;
         this.currentScrollAnimStartTime = new Date().getTime();
         this.requestFrame();
@@ -707,19 +735,28 @@ class HorizontalOverflow extends Foundation<
         const currentDate: number = new Date().getTime();
         const currentTime: number = currentDate - this.currentScrollAnimStartTime;
 
+        this.setScrollPosition(this.getScrollAnimPosition(currentTime, duration));
+
         if (currentTime < duration) {
-            this.setScrollPosition(
-                this.easeInOutQuad(
-                    currentTime,
-                    this.currentScrollAnimStartPosition,
-                    this.currentScrollAnimEndPosition -
-                        this.currentScrollAnimStartPosition,
-                    duration
-                )
-            );
             this.requestFrame();
         } else {
-            this.setScrollPosition(this.currentScrollAnimEndPosition);
+            this.isScrollAnimating = false;
+        }
+    };
+
+    /**
+     *  get scroll animation position for the provided time
+     */
+    private getScrollAnimPosition = (currentTime: number, duration: number): number => {
+        if (currentTime < duration) {
+            return this.easeInOutQuad(
+                currentTime,
+                this.currentScrollAnimStartPosition,
+                this.currentScrollAnimEndPosition - this.currentScrollAnimStartPosition,
+                duration
+            );
+        } else {
+            return this.currentScrollAnimEndPosition;
         }
     };
 
