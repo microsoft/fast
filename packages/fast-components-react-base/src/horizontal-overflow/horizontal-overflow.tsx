@@ -501,7 +501,10 @@ class HorizontalOverflow extends Foundation<
             i < itemWidthsLength;
             i++
         ) {
-            if (distance + itemWidths[i] > scrollPosition + availableWidth) {
+            if (
+                distance + itemWidths[i] > scrollPosition + availableWidth &&
+                distance !== scrollPosition
+            ) {
                 return distance;
             }
 
@@ -523,7 +526,10 @@ class HorizontalOverflow extends Foundation<
             this.getMaxScrollDistance(availableWidth, itemWidths) + availableWidth;
 
         for (let i: number = itemWidths.length - 1; i >= 0; i--) {
-            if (distance - itemWidths[i] < scrollPosition - availableWidth) {
+            if (
+                distance - itemWidths[i] < scrollPosition - availableWidth &&
+                distance !== scrollPosition
+            ) {
                 return distance;
             }
 
