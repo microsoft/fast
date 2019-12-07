@@ -1,7 +1,7 @@
 import { ManagedClasses } from "@microsoft/fast-jss-manager-react";
 import { CSSColorClassNameContract } from "./color.style";
 import { ControlOnChangeConfig } from "src/form/templates";
-import { FormEvent } from "react";
+import { Omit } from "utility-types";
 
 export interface CSSColorValues {
     color?: string;
