@@ -1,9 +1,9 @@
 import { ComponentStyles } from "@microsoft/fast-jss-manager-react";
-import { CSSPositionClassNameContract } from "./position/position.style";
 import { foreground300, neutralLayerL4 } from "../style";
 
-export interface CSSEditorClassNameContract extends CSSPositionClassNameContract {
+export interface CSSEditorClassNameContract {
     cssEditor?: string;
+    cssEditor_form?: string;
 }
 
 const styles: ComponentStyles<CSSEditorClassNameContract, {}> = {
@@ -13,6 +13,7 @@ const styles: ComponentStyles<CSSEditorClassNameContract, {}> = {
         height: "100%",
         padding: "0 10px",
     },
+    cssEditor_form: {},
 };
 
 export default styles;

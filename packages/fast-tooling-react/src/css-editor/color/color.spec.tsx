@@ -15,7 +15,6 @@ describe("CSSColor", () => {
         cssColor_colorInputRegion: "cssColor_colorInputRegion",
         cssColor_control: "cssColor_control",
         cssColor_input: "cssColor_input",
-        cssColor_label: "cssColor_label",
     };
 
     test("should not throw", () => {
@@ -32,7 +31,7 @@ describe("CSSColor", () => {
             <CSSColor
                 data={{ color: colorValue }}
                 managedClasses={managedClasses}
-                onChange={jest.fn()}
+                onColorChange={jest.fn()}
             />
         );
 
@@ -48,7 +47,7 @@ describe("CSSColor", () => {
             <CSSColor
                 data={{ color: colorValue }}
                 managedClasses={managedClasses}
-                onChange={callback}
+                onColorChange={callback}
             />
         );
 
@@ -59,7 +58,7 @@ describe("CSSColor", () => {
             .simulate("change", { target: { value: newColorValue } });
 
         expect(callback).toHaveBeenCalledTimes(1);
-        expect(callback.mock.calls[0][0]).toEqual({ color: newColorValue });
+        expect(callback.mock.calls[0][0]).toEqual({ value: newColorValue });
     });
     test("should not change the input from controlled to uncontrolled", () => {
         const colorValue: string = "#FFF";
@@ -69,7 +68,7 @@ describe("CSSColor", () => {
             <CSSColor
                 data={{ color: colorValue }}
                 managedClasses={managedClasses}
-                onChange={callback}
+                onColorChange={callback}
             />
         );
 
@@ -80,7 +79,7 @@ describe("CSSColor", () => {
             .simulate("change", { target: { value: newColorValue } });
 
         expect(callback).toHaveBeenCalledTimes(1);
-        expect(callback.mock.calls[0][0]).toEqual({ color: newColorValue });
+        expect(callback.mock.calls[0][0]).toEqual({ value: newColorValue });
 
         rendered.setProps({
             data: {},

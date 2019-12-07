@@ -1,17 +1,11 @@
 import { ComponentStyles } from "@microsoft/fast-jss-manager-react";
-import {
-    applyControlRegion,
-    applyControlWrapper,
-    applyInputStyle,
-    applyLabelStyle,
-} from "../../style";
+import { applyControlRegion, applyControlWrapper, applyInputStyle } from "../../style";
 
 export interface CSSColorClassNameContract {
     cssColor?: string;
     cssColor_colorInputRegion?: string;
     cssColor_control?: string;
     cssColor_input?: string;
-    cssColor_label?: string;
 }
 
 const styles: ComponentStyles<CSSColorClassNameContract, {}> = {
@@ -30,9 +24,6 @@ const styles: ComponentStyles<CSSColorClassNameContract, {}> = {
         ...applyInputStyle(),
         marginLeft: "4px",
         width: "83%",
-    },
-    cssColor_label: {
-        ...applyLabelStyle(),
     },
 };
 
