@@ -73,6 +73,24 @@
             "default": {
                 "foo": "bar"
             }
+        },
+        "optionalObjectDisabled": {
+            "title": "object disabled",
+            "type": "object",
+            "disabled": true,
+            "properties": {
+                "foo": {
+                    "title": "Disabled textarea",
+                    "type": "string"
+                },
+                "bar": {
+                    "title": "Disabled numberfield",
+                    "type": "number"
+                }
+            },
+            "default": {
+                "foo": "bar"
+            }
         }
     },
     "required": [

@@ -19,6 +19,7 @@ const checkboxProps: CheckboxControlProps = {
     dataLocation: "",
     onChange: jest.fn(),
     value: false,
+    schema: {},
     disabled: false,
     elementRef: null,
     reportValidity: jest.fn(),

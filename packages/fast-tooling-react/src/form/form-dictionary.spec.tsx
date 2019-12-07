@@ -26,6 +26,7 @@ const dictionaryProps: FormDictionaryProps = {
     dataLocation: "",
     schemaLocation: "",
     data: "",
+    schema: {},
     required: false,
     label: "",
     onChange: jest.fn(),

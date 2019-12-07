@@ -74,6 +74,7 @@ const childrenProps: ChildrenControlProps = {
     ],
     dataLocation: "locationOfChildren",
     value: undefined,
+    schema: {},
     onChange: jest.fn(),
     onUpdateSection: jest.fn(),
     reportValidity: jest.fn(),
