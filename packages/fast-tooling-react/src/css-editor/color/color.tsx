@@ -19,7 +19,7 @@ export default class CSSColor extends Foundation<
 
     protected handledProps: HandledProps<CSSColorHandledProps> = {
         data: void 0,
-        onColorChange: void 0,
+        onChange: void 0,
         managedClasses: void 0,
     };
 
@@ -55,7 +55,7 @@ export default class CSSColor extends Foundation<
     }
 
     private handleColorOnChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
-        this.props.onColorChange({
+        this.props.onChange({
             value: e.target.value || void 0,
         });
     };

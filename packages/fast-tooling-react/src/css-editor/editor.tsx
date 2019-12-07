@@ -45,12 +45,7 @@ export default class CSSEditor extends Foundation<
             new StandardControlPlugin({
                 id: "color",
                 control: (config: ControlConfig): React.ReactNode => {
-                    return (
-                        <CSSColor
-                            data={this.props.data}
-                            onColorChange={config.onChange}
-                        />
-                    );
+                    return <CSSColor data={this.props.data} onChange={config.onChange} />;
                 },
             }),
         ];

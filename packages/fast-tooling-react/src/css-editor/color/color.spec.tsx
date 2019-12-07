@@ -31,7 +31,7 @@ describe("CSSColor", () => {
             <CSSColor
                 data={{ color: colorValue }}
                 managedClasses={managedClasses}
-                onColorChange={jest.fn()}
+                onChange={jest.fn()}
             />
         );
 
@@ -47,7 +47,7 @@ describe("CSSColor", () => {
             <CSSColor
                 data={{ color: colorValue }}
                 managedClasses={managedClasses}
-                onColorChange={callback}
+                onChange={callback}
             />
         );
 
@@ -68,7 +68,7 @@ describe("CSSColor", () => {
             <CSSColor
                 data={{ color: colorValue }}
                 managedClasses={managedClasses}
-                onColorChange={callback}
+                onChange={callback}
             />
         );
 

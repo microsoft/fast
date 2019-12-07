@@ -7,7 +7,8 @@ export interface CSSColorValues {
     color?: string;
 }
 
-export interface CSSColorUnhandledProps extends React.HTMLAttributes<HTMLDivElement> {}
+export interface CSSColorUnhandledProps
+    extends Omit<React.HTMLAttributes<HTMLDivElement>, "onChange"> {}
 
 export interface CSSColorHandledProps extends ManagedClasses<CSSColorClassNameContract> {
     /**
@@ -18,7 +19,7 @@ export interface CSSColorHandledProps extends ManagedClasses<CSSColorClassNameCo
     /**
      * The onChange callback
      */
-    onColorChange?: (config: ControlOnChangeConfig) => void;
+    onChange?: (config: ControlOnChangeConfig) => void;
 }
 
 export type CSSColorProps = CSSColorHandledProps & CSSColorUnhandledProps;
