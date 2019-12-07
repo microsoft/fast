@@ -19,6 +19,7 @@ const buttonProps: ButtonControlProps = {
     dataLocation: "",
     onChange: jest.fn(),
     value: "",
+    schema: {},
     disabled: false,
     reportValidity: jest.fn(),
     updateValidity: jest.fn(),

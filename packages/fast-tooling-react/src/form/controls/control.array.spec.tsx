@@ -20,6 +20,7 @@ const arrayProps: ArrayControlProps = {
     dataLocation: "",
     schemaLocation: "",
     value: "",
+    schema: {},
     minItems: 0,
     maxItems: Infinity,
     onChange: jest.fn(),

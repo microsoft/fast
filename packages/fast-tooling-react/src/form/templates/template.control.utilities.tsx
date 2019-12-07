@@ -159,6 +159,7 @@ abstract class ControlTemplateUtilities<P, S> extends React.Component<
             schemaLocation: this.props.schemaLocation,
             disabled: this.props.disabled,
             value: this.props.data,
+            schema: this.props.schema,
             elementRef: this.ref,
             reportValidity: this.reportValidity,
             updateValidity: this.updateValidity,

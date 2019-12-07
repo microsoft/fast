@@ -19,6 +19,7 @@ const textareaProps: TextareaControlProps = {
     dataLocation: "",
     onChange: jest.fn(),
     value: "",
+    schema: {},
     disabled: false,
     elementRef: null,
     reportValidity: jest.fn(),
