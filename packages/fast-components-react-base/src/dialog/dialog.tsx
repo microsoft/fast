@@ -5,7 +5,7 @@ import { canUseDOM } from "exenv-es6";
 import React from "react";
 import { DisplayNamePrefix } from "../utilities";
 import { DialogHandledProps, DialogProps, DialogUnhandledProps } from "./dialog.props";
-import { isFunction } from "lodash-es";
+import { isFunction, isNil } from "lodash-es";
 import Tabbable from "tabbable";
 
 class Dialog extends Foundation<DialogHandledProps, DialogUnhandledProps, {}> {
@@ -81,7 +81,9 @@ class Dialog extends Foundation<DialogHandledProps, DialogUnhandledProps, {}> {
             }
             if (this.props.modal) {
                 document.addEventListener("focusin", this.handleDocumentFocus);
-                this.focusOnFirstElement();
+                if (this.shouldForceFocus(document.activeElement)) {
+                    this.focusOnFirstElement();
+                }
             }
         }
     }
@@ -231,16 +233,26 @@ class Dialog extends Foundation<DialogHandledProps, DialogUnhandledProps, {}> {
      */
     private handleDocumentFocus = (event: FocusEvent): void => {
         if (
-            this.props.visible &&
             !event.defaultPrevented &&
-            this.rootElement.current instanceof HTMLElement &&
-            !(this.rootElement.current as HTMLElement).contains(
-                event.target as HTMLElement
-            )
+            this.shouldForceFocus(event.target as HTMLElement)
         ) {
             this.focusOnFirstElement();
             event.preventDefault();
         }
+    };
+
+    /**
+     * test to avoid forcing focus when focus is already within
+     */
+    private shouldForceFocus = (currentFocusElement: Element): boolean => {
+        if (
+            this.props.visible &&
+            this.rootElement.current instanceof HTMLElement &&
+            !(this.rootElement.current as HTMLElement).contains(currentFocusElement)
+        ) {
+            return true;
+        }
+        return false;
     };
 
     /**

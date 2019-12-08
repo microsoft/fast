@@ -18,9 +18,7 @@ import { DisplayNamePrefix } from "../utilities";
  */
 configure({ adapter: new Adapter() });
 
-const container: HTMLDivElement = document.createElement("div");
-document.body.appendChild(container);
-
+/* tslint:disable:no-string-literal */
 describe("dialog", (): void => {
     const managedClasses: DialogClassNameContract = {
         dialog: "dialog-class",
@@ -242,5 +240,27 @@ describe("dialog", (): void => {
 
         expect(mockRemoveListenerFn).toHaveBeenCalledTimes(2);
         expect(mockRemoveListenerFn.mock.calls[1][0]).toBe("focusin");
+    });
+    test("shouldForceFocus correctly detects whether the prodided element is in or out of dialog", () => {
+        const container: HTMLDivElement = document.createElement("div");
+        document.body.appendChild(container);
+
+        const rendered: any = mount(
+            <div>
+                <Dialog managedClasses={managedClasses} modal={true} visible={true}>
+                    <button id="innerButton" />
+                </Dialog>
+                <button id="outerButton" />
+            </div>,
+            { attachTo: container }
+        );
+
+        const dialog: any = rendered.find("BaseDialog");
+        const innerButton: Element = document.getElementById("innerButton");
+        const outerButton: Element = document.getElementById("outerButton");
+        expect(dialog.instance()["shouldForceFocus"](innerButton)).toEqual(false);
+        expect(dialog.instance()["shouldForceFocus"](outerButton)).toEqual(true);
+
+        document.body.removeChild(container);
     });
 });
