@@ -24,7 +24,7 @@ export interface SliderLabelClassNameContract
      * The label position min modifier,
      * applied to positioning panel at min end of range
      */
-    sliderLabel__positionMin: string;
+    sliderLabel__positionMin?: string;
 
     /**
      * The label position max modifier
