@@ -305,7 +305,7 @@ describe("horizontal overflow", (): void => {
                     [10, 20, 20, 50, 20],
                     10
                 )
-        ).toBe(-0);
+        ).toBe(0);
 
         expect(
             renderedWithImages
@@ -316,7 +316,7 @@ describe("horizontal overflow", (): void => {
                     [50, 50, 50, 50],
                     100
                 )
-        ).toBe(-50);
+        ).toBe(50);
     });
     test("should an state property `itemsHeight`", () => {
         const renderedWithImages: any = mount(
@@ -603,6 +603,74 @@ describe("horizontal overflow", (): void => {
         expect(cancel).toHaveBeenCalledTimes(2);
 
         (rafThrottle as any) = actualRafThrottle;
+    });
+    test("getPositionData returns correct value when scrolled to beginning", (): void => {
+        const rendered: any = mount(
+            <HorizontalOverflow managedClasses={managedClasses}>
+                {imageSet1}
+            </HorizontalOverflow>
+        );
+
+        rendered.instance().horizontalOverflowItemsRef.current = {
+            scrollWidth: 200,
+            clientWidth: 100,
+            scrollLeft: 0,
+        };
+        expect(rendered.instance()["getPositionData"]()).toEqual({
+            start: true,
+            end: false,
+        });
+    });
+    test("getPositionData returns correct value when scrolled to middle", (): void => {
+        const rendered: any = mount(
+            <HorizontalOverflow managedClasses={managedClasses}>
+                {imageSet1}
+            </HorizontalOverflow>
+        );
+
+        rendered.instance().horizontalOverflowItemsRef.current = {
+            scrollWidth: 200,
+            clientWidth: 100,
+            scrollLeft: 50,
+        };
+        expect(rendered.instance()["getPositionData"]()).toEqual({
+            start: false,
+            end: false,
+        });
+    });
+    test("getPositionData returns correct value when scrolled to the end", (): void => {
+        const rendered: any = mount(
+            <HorizontalOverflow managedClasses={managedClasses}>
+                {imageSet1}
+            </HorizontalOverflow>
+        );
+
+        rendered.instance().horizontalOverflowItemsRef.current = {
+            scrollWidth: 200,
+            clientWidth: 100,
+            scrollLeft: 100,
+        };
+        expect(rendered.instance()["getPositionData"]()).toEqual({
+            start: false,
+            end: true,
+        });
+    });
+    test("getPositionData returns correct value when container does not scroll", (): void => {
+        const rendered: any = mount(
+            <HorizontalOverflow managedClasses={managedClasses}>
+                {imageSet1}
+            </HorizontalOverflow>
+        );
+
+        rendered.instance().horizontalOverflowItemsRef.current = {
+            scrollWidth: 100,
+            clientWidth: 100,
+            scrollLeft: 0,
+        };
+        expect(rendered.instance()["getPositionData"]()).toEqual({
+            start: true,
+            end: true,
+        });
     });
 });
 /* tslint:enable:no-string-literal */

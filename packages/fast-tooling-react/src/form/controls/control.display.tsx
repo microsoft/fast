@@ -3,7 +3,6 @@ import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 import styles, { DisplayControlClassNameContract } from "./control.display.style";
 import { DisplayControlProps } from "./control.display.props";
-import { HandledProps } from "@microsoft/fast-components-foundation-react";
 import { classNames } from "@microsoft/fast-web-utilities";
 
 /**
@@ -19,17 +18,6 @@ class DisplayControl extends React.Component<
         DisplayControlProps & ManagedClasses<DisplayControlClassNameContract>
     > = {
         managedClasses: {},
-    };
-
-    protected handledProps: HandledProps<DisplayControlProps> = {
-        elementRef: void 0,
-        updateValidity: void 0,
-        reportValidity: void 0,
-        value: void 0,
-        default: void 0,
-        disabled: void 0,
-        onChange: void 0,
-        dataLocation: void 0,
     };
 
     public render(): React.ReactNode {

@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.26.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-styles-msft@4.25.2...@microsoft/fast-components-styles-msft@4.26.0) (2019-12-05)
+
+
+### Bug Fixes
+
+* remove cursor pointer from typography and apply to semantic components ([#2468](https://github.com/Microsoft/fast-dna/issues/2468)) ([6ae4c42](https://github.com/Microsoft/fast-dna/commit/6ae4c42c4e6ca84639de31dbbd495a16478a9c93))
+
+
+### Features
+
+* update elevation shadow ([#2463](https://github.com/Microsoft/fast-dna/issues/2463)) ([0a48d41](https://github.com/Microsoft/fast-dna/commit/0a48d419a91664a33710b94b2b13c21825e5ec33))
+
+
+
+
+
 ## [4.25.2](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-styles-msft@4.25.1...@microsoft/fast-components-styles-msft@4.25.2) (2019-11-19)
 
 

@@ -152,4 +152,14 @@ describe("toggle", (): void => {
         expect(span.prop("id")).toEqual("status-message-id");
         expect(input.prop("aria-describedby")).toEqual("status-message-id");
     });
+
+    test("should render an input with an `name` prop when an `name` prop is passed", () => {
+        const testId: string = "toggle";
+        const toggleName: string = "toggleName";
+        const rendered: any = shallow(
+            <Toggle managedClasses={managedClasses} inputId={testId} name={toggleName} />
+        );
+
+        expect(rendered.find(inputSelector).prop("name")).toBe(toggleName);
+    });
 });

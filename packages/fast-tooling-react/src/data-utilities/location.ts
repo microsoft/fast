@@ -1,5 +1,4 @@
 import { get, isPlainObject } from "lodash-es";
-import ajv from "ajv";
 import {
     CombiningKeyword,
     DataResolverType,
@@ -15,6 +14,7 @@ import {
 import { ChildOptionItem } from "./";
 import { oneOfAnyOfType } from "../form/form-section.props";
 import { isPrimitiveReactNode } from "./node-types";
+import { validateData } from "../utilities/ajv-validation";
 
 /**
  * This file contains all functionality for the manipulation of lodash paths
@@ -694,9 +694,8 @@ function getSchemaOneOfAnyOfLocationSegments(schema: any, data: any): string[] {
  * Gets the index from a JSON schemas oneOf/anyOf array that validates against the data
  */
 function getValidAnyOfOneOfIndex(oneOfAnyOf: string, data: any, schema: any): number {
-    const validation: ajv.Ajv = new ajv({ schemaId: "auto" });
     const index: number = schema[oneOfAnyOf].findIndex(
-        (item: any): boolean | PromiseLike<any> => validation.validate(item, data)
+        (item: any): boolean | PromiseLike<any> => validateData(item, data)
     );
 
     return index === -1 ? 0 : index;
