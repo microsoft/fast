@@ -26,6 +26,7 @@ const dictionaryProps: FormDictionaryProps = {
     dataLocation: "",
     schemaLocation: "",
     data: "",
+    schema: {},
     required: false,
     label: "",
     onChange: jest.fn(),
@@ -242,6 +243,29 @@ describe("FormDictionary", () => {
                     a: "foo",
                     b: "bar",
                 }}
+                additionalProperties={{
+                    type: "string",
+                    examples: ["foobar"],
+                }}
+            />
+        );
+
+        const formControls: any = rendered.find("TextareaControl");
+
+        expect(formControls).toHaveLength(2);
+    });
+    test("should show all dictionary keys no matter the order", () => {
+        const rendered: any = mount(
+            <FormDictionary
+                {...dictionaryProps}
+                managedClasses={managedClasses}
+                data={{
+                    foo: "a",
+                    a: "foo",
+                    bar: "b",
+                    b: "bar",
+                }}
+                enumeratedProperties={["foo", "bar"]}
                 additionalProperties={{
                     type: "string",
                     examples: ["foobar"],

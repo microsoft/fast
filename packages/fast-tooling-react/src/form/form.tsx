@@ -537,6 +537,7 @@ class Form extends React.Component<
                 data={this.getData("data", "props")}
                 schemaLocation={lastNavigationItem.schemaLocation}
                 default={lastNavigationItem.default}
+                disabled={currentSchema.disabled}
                 dataLocation={this.state.activeDataLocation}
                 untitled={this.untitled}
                 childOptions={this.props.childOptions}
