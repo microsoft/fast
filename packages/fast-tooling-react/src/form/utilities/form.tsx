@@ -1,13 +1,9 @@
 import React from "react";
-import { cloneDeep, get, mergeWith, omit, set, unset } from "lodash-es";
-import { getDataFromSchema } from "../../data-utilities";
 import {
-    getChildOptionBySchemaId,
-    normalizeDataLocationToDotNotation,
-    squareBracketsRegex,
-} from "../../data-utilities/location";
-import ajv, { ErrorObject, ValidationError } from "ajv";
-import { AttributeSettingsMappingToPropertyNames, FormChildOptionItem, FormState } from "../form.props";
+    AttributeSettingsMappingToPropertyNames,
+    FormChildOptionItem,
+    FormState,
+} from "../form.props";
 import {
     FormSectionProps,
     InitialOneOfAnyOfState,
@@ -17,13 +13,11 @@ import {
 import { cloneDeep, get, mergeWith, omit, set, unset } from "lodash-es";
 import {
     getChildOptionBySchemaId,
+    normalizeDataLocationToDotNotation,
     squareBracketsRegex,
 } from "../../data-utilities/location";
-
-import { AttributeSettingsMappingToPropertyNames } from "../form.props";
 import { ErrorObject } from "ajv";
 import { FormControlSwitchProps } from "../form-control-switch.props";
-import React from "react";
 import { getDataFromSchema } from "../../data-utilities";
 import { reactChildrenStringSchema } from "../controls/control.children.text";
 import stringify from "fast-json-stable-stringify";

@@ -480,11 +480,9 @@ class FormSection extends React.Component<
      * Get all enumerated properties for the object
      */
     private getEnumeratedProperties(schema: any): string[] {
-        if (schema.properties === undefined) {
-            return [];
-        }
-
-        return Object.keys(schema.properties);
+        return Object.keys(schema.properties || {}).concat(
+            Object.keys(schema.reactProperties || {})
+        );
     }
 
     private getSchemaLocation(): string {
