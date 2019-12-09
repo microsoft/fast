@@ -23,19 +23,15 @@ let validateFunctionDictionary: { [key: string]: ValidateFunction } = {};
  */
 export function validateData(schema: any, data: any): boolean | PromiseLike<any> {
     const schemaRefKey: string = stringify(schema);
-    let dataValidationResult: boolean | PromiseLike<any>;
 
-    if (validateFunctionDictionary[schemaRefKey]) {
-        dataValidationResult = validateFunctionDictionary[schemaRefKey](data) || false;
-    } else {
+    if (!validateFunctionDictionary[schemaRefKey]) {
         ajvDictionary[schemaRefKey] = new ajv({ schemaId: "auto", allErrors: true });
         validateFunctionDictionary[schemaRefKey] = ajvDictionary[schemaRefKey].compile(
             schema
         );
-        dataValidationResult = validateFunctionDictionary[schemaRefKey](data) || false;
     }
 
-    return dataValidationResult;
+    return validateFunctionDictionary[schemaRefKey](data) || false;
 }
 
 /**
