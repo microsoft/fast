@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.24.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-tooling-react@1.24.0...@microsoft/fast-tooling-react@1.24.1) (2019-12-05)
+
+
+### Bug Fixes
+
+* update the README ([#2456](https://github.com/Microsoft/fast-dna/issues/2456)) ([1896857](https://github.com/Microsoft/fast-dna/commit/189685717cc46b04b35003bb6878a03014b7da21))
+
+
+
+
+
 # [1.24.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-tooling-react@1.23.1...@microsoft/fast-tooling-react@1.24.0) (2019-11-19)
 
 

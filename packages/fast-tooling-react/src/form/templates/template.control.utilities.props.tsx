@@ -88,6 +88,11 @@ export interface ControlTemplateUtilitiesProps
     data: any;
 
     /**
+     * The schema
+     */
+    schema: any;
+
+    /**
      * Whether this item is required
      */
     required: boolean;
@@ -169,6 +174,11 @@ export interface CommonControlConfig {
      * The value of the data to be assigned to the control
      */
     value: any;
+
+    /**
+     * The schema
+     */
+    schema: any;
 
     /**
      * The default value

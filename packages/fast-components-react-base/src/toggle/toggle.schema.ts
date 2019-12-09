@@ -18,6 +18,11 @@ export default {
             title: "HTML label id attribute",
             type: "string",
         },
+        name: {
+            title: "Name",
+            type: "string",
+            examples: ["name"],
+        },
         selected: {
             title: "Selected",
             type: "boolean",

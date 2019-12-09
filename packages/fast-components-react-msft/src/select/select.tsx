@@ -63,20 +63,17 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, {}> {
             select_buttonDisplayText,
         }: SelectClassNameContract = this.props.managedClasses;
 
-        const isItemSelected: boolean = state.selectedItemIndex !== 0;
+        const labelledBy: string = `${this.props.labelledBy} ${triggerId}`;
 
         return (
             <button
+                id={triggerId}
                 disabled={props.disabled}
                 className={classNames(select_button)}
-                id={triggerId}
-                role="option"
-                aria-atomic={true}
-                aria-label={state.displayString}
+                aria-haspopup="listbox"
+                aria-labelledby={labelledBy}
                 aria-expanded={state.isMenuOpen}
-                aria-selected={isItemSelected}
-                aria-posinset={isItemSelected ? state.selectedItemIndex : null}
-                aria-setsize={isItemSelected ? state.selectableItemCount : null}
+                aria-live="polite"
             >
                 <span className={classNames(select_buttonContentRegion)}>
                     <div className={classNames(select_buttonDisplayText)}>

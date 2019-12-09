@@ -18,6 +18,7 @@ const managedClasses: DisplayControlClassNameContract = {
 const displayProps: DisplayControlProps = {
     dataLocation: "",
     value: "",
+    schema: {},
     disabled: false,
     reportValidity: jest.fn(),
     updateValidity: jest.fn(),

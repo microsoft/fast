@@ -28,6 +28,11 @@ export interface ToggleHandledProps extends ToggleManagedClasses {
     labelId?: string;
 
     /**
+     * The name of the input
+     */
+    name?: string;
+
+    /**
      * The onChange event handler
      */
     onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;

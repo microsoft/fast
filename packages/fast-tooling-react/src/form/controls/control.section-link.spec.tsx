@@ -21,6 +21,7 @@ const sectionLinkProps: SectionLinkControlProps = {
     schemaLocation: "",
     label: "",
     value: {},
+    schema: {},
     disabled: false,
     elementRef: null,
     reportValidity: jest.fn(),
