@@ -1,5 +1,6 @@
 import React from "react";
 import { ManagedClasses } from "@microsoft/fast-jss-manager-react";
+import { GridDisplay } from "../utilities";
 import { GridClassNamesContract } from "./grid";
 /**
  * The HTML tag for the Grid column: 'div' | 'section' | 'form' | 'article' | 'main';
@@ -29,11 +30,6 @@ export enum GridAlignment {
  * The scale factor for the grid gutter
  */
 export type GridGutter = 0 | 2 | 3 | 6 | 12;
-
-/**
- * The CSS grid display style
- */
-export type GridDisplay = "grid" | "-ms-grid";
 
 export interface GridManagedClasses extends ManagedClasses<GridClassNamesContract> {}
 export interface GridUnhandledProps extends React.HTMLAttributes<HTMLElement> {}
@@ -76,7 +72,7 @@ export interface GridHandledProps extends GridManagedClasses {
     row?: number;
 
     /**
-     * The CSS grid display, "grid" when true and "-ms-grid" when false
+     * The value assigned to the CSS display property
      * Provide this prop when doing server side rendering
      */
     cssGridPropertyName?: GridDisplay;

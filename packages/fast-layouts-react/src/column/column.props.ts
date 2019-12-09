@@ -1,4 +1,5 @@
 import React from "react";
+import { GridDisplay } from "../utilities";
 import { GridGutter } from "../grid/grid.props";
 import { ColumnClassNamesContract } from "./column";
 import { ManagedClasses } from "@microsoft/fast-jss-manager-react";
@@ -31,6 +32,12 @@ export interface ColumnHandledProps extends ColumnManagedClasses {
      * The gutter size of the parent Grid component
      */
     gutter?: GridGutter;
+
+    /**
+     * The value assigned to the CSS display property
+     * Provide this prop when doing server side rendering
+     */
+    cssGridPropertyName?: GridDisplay;
 }
 
 export type ColumnProps = ColumnHandledProps & ColumnUnhandledProps;
