@@ -95,7 +95,6 @@ describe("viewport positioner", (): void => {
             },
         };
         const expectedStyles: Partial<React.CSSProperties> = {
-            opacity: 0,
             position: "relative",
             transformOrigin: "left top",
             transform: `translate(

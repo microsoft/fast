@@ -15,6 +15,7 @@ const themeProps: ThemeControlProps = {
     options: ["dark", "light"],
     dataLocation: "",
     value: "",
+    schema: {},
     onChange: jest.fn(),
     reportValidity: jest.fn(),
     updateValidity: jest.fn(),

@@ -3,7 +3,12 @@ import { applyInvalidMessage, error } from "../style";
 import { FormSectionClassNameContract } from "./form-section.props";
 
 const styles: ComponentStyles<FormSectionClassNameContract, {}> = {
-    formSection: {},
+    formSection: {
+        margin: "0",
+        padding: "0",
+        border: "none",
+    },
+    formSection__disabled: {},
     formSection_invalidMessage: {
         ...applyInvalidMessage(),
         border: `1px solid ${error}`,
