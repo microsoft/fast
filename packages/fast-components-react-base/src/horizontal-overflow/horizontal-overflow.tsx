@@ -28,7 +28,7 @@ export enum ButtonDirection {
 }
 
 export interface HorizontalOverflowState {
-    itemsHeight?: number | null;
+    itemsHeight: number | null;
     direction: Direction;
 }
 
