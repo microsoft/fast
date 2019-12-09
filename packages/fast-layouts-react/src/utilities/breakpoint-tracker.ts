@@ -61,10 +61,7 @@ class BreakpointTracker {
      */
     public set breakpoints(breakpointConfig: Breakpoints) {
         this._breakpoints = breakpointConfig;
-
-        this.breakpoint = canUseDOM()
-            ? identifyBreakpoint(window.innerWidth, this._breakpoints)
-            : this.defaultBreakpoint;
+        this.update();
     }
 
     /**
@@ -79,10 +76,7 @@ class BreakpointTracker {
      */
     public set defaultBreakpoint(breakpoint: Breakpoint) {
         this._defaultBreakpoint = breakpoint;
-
-        if (!canUseDOM()) {
-            this.breakpoint = this.defaultBreakpoint;
-        }
+        this.update();
     }
 
     /**

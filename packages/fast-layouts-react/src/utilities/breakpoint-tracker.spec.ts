@@ -8,6 +8,13 @@ describe("breakpointTracker", (): void => {
     let callback: any;
 
     beforeEach(() => {
+        // reset the BreakpointTracker singleton private fields between each test
+        BreakpointTracker["_breakpoints"] = defaultBreakpoints;
+        BreakpointTracker["_breakpoint"] = 0;
+        BreakpointTracker["_defaultBreakpoint"] = 0;
+        BreakpointTracker["subscriptions"] = [];
+        BreakpointTracker["openRequestAnimationFrame"] = false;
+
         subscriber = {
             onBreakpointChanged: (notification: BreakpointTrackerCallback): void => {
                 return;
