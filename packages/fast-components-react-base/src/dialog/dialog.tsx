@@ -245,14 +245,11 @@ class Dialog extends Foundation<DialogHandledProps, DialogUnhandledProps, {}> {
      * test to avoid forcing focus when focus is already within
      */
     private shouldForceFocus = (currentFocusElement: Element): boolean => {
-        if (
+        return (
             this.props.visible &&
             this.rootElement.current instanceof HTMLElement &&
             !(this.rootElement.current as HTMLElement).contains(currentFocusElement)
-        ) {
-            return true;
-        }
-        return false;
+        );
     };
 
     /**
