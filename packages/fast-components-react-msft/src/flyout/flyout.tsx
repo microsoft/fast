@@ -130,7 +130,7 @@ class Flyout extends Foundation<FlyoutHandledProps, FlyoutUnhandledProps, {}> {
     public componentDidMount(): void {
         if (canUseDOM() && this.props.onDismiss) {
             window.addEventListener("keydown", this.handleWindowKeyDown);
-            window.addEventListener("click", this.handleWindowClick);
+            window.addEventListener("pointerdown", this.handleWindowPointerDown);
         }
     }
 
@@ -141,10 +141,10 @@ class Flyout extends Foundation<FlyoutHandledProps, FlyoutUnhandledProps, {}> {
         if (canUseDOM()) {
             if (!prevProps.onDismiss && this.props.onDismiss) {
                 window.addEventListener("keydown", this.handleWindowKeyDown);
-                window.addEventListener("click", this.handleWindowClick);
+                window.addEventListener("pointerdown", this.handleWindowPointerDown);
             } else if (prevProps.onDismiss && !this.props.onDismiss) {
                 window.removeEventListener("keydown", this.handleWindowKeyDown);
-                window.removeEventListener("click", this.handleWindowClick);
+                window.removeEventListener("pointerdown", this.handleWindowPointerDown);
             }
         }
     }
@@ -155,7 +155,7 @@ class Flyout extends Foundation<FlyoutHandledProps, FlyoutUnhandledProps, {}> {
     public componentWillUnmount(): void {
         if (canUseDOM() && this.props.onDismiss) {
             window.removeEventListener("keydown", this.handleWindowKeyDown);
-            window.removeEventListener("click", this.handleWindowClick);
+            window.removeEventListener("pointerdown", this.handleWindowPointerDown);
         }
     }
 
@@ -181,7 +181,7 @@ class Flyout extends Foundation<FlyoutHandledProps, FlyoutUnhandledProps, {}> {
         };
     }
 
-    private handleWindowClick = (event: MouseEvent): void => {
+    private handleWindowPointerDown = (event: PointerEvent): void => {
         const anchor: React.RefObject<any> | HTMLElement =
             this.props.anchor instanceof HTMLElement
                 ? this.props.anchor
