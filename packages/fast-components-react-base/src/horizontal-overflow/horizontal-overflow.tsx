@@ -267,8 +267,8 @@ class HorizontalOverflow extends Foundation<
         if (typeof this.props.onOverflowChange === "function") {
             const positionData: PositionChange = this.getPositionData();
             if (
-                this.overflowStart === positionData.start ||
-                this.overflowEnd === positionData.end
+                this.overflowStart === !positionData.start ||
+                this.overflowEnd === !positionData.end
             ) {
                 this.handleOverflowChange();
             }
@@ -280,19 +280,13 @@ class HorizontalOverflow extends Foundation<
      */
     private getPositionData = (): PositionChange => {
         const scrollPosition: number = this.getScrollPosition();
-        const distanceRemaining: number =
-            this.horizontalOverflowItemsRef.current.scrollWidth - scrollPosition;
 
-        const scrollPositionIsAtBeginning: boolean = scrollPosition === 0;
-        const scrollPositionIsAtEnd: boolean =
-            distanceRemaining === this.horizontalOverflowItemsRef.current.clientWidth;
-        const scrollPositionIsInMiddle: boolean =
-            !scrollPositionIsAtEnd && !scrollPositionIsAtBeginning;
+        const isAtBeginning: boolean = scrollPosition === 0;
+        const isAtEnd: boolean =
+            this.horizontalOverflowItemsRef.current.scrollWidth - scrollPosition ===
+            this.horizontalOverflowItemsRef.current.clientWidth;
 
-        return {
-            start: scrollPositionIsInMiddle ? false : scrollPositionIsAtBeginning,
-            end: scrollPositionIsInMiddle ? false : scrollPositionIsAtEnd,
-        };
+        return { start: isAtBeginning, end: isAtEnd };
     };
 
     /**
@@ -353,8 +347,8 @@ class HorizontalOverflow extends Foundation<
 
         if (this.overflow) {
             const positionData: PositionChange = this.getPositionData();
-            this.overflowStart = positionData.start;
-            this.overflowEnd = positionData.end;
+            this.overflowStart = !positionData.start;
+            this.overflowEnd = !positionData.end;
         } else {
             this.overflowStart = false;
             this.overflowEnd = false;
@@ -440,7 +434,7 @@ class HorizontalOverflow extends Foundation<
                 maxDistance
             );
         } else {
-            distance = -this.getWithinMinDistance(
+            distance = this.getWithinMinDistance(
                 scrollPosition,
                 availableWidth,
                 itemWidths
