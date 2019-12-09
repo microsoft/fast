@@ -600,17 +600,12 @@ export function getErrorFromDataLocation(
                     const dataLocationItems: string[] = `.${normalizeDataLocationToDotNotation(
                         validationError.dataPath
                     )}`.split(".");
-                    let containsInvalidData: boolean = false;
-
-                    dataLocationItems.forEach(
-                        (dataLocationItem: string, index: number) => {
-                            if (
+                    const containsInvalidData: boolean = dataLocationItems.some(
+                        (value: string, index: number) => {
+                            return (
                                 matchingDataLocationToDataPath ===
                                 dataLocationItems.slice(0, index + 1).join(".")
-                            ) {
-                                containsInvalidData = true;
-                                return;
-                            }
+                            );
                         }
                     );
 

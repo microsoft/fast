@@ -1,5 +1,5 @@
 import React from "react";
-import { uniqueId } from "lodash-es";
+import { isPlainObject, uniqueId } from "lodash-es";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 import styles, { FormDictionaryClassNameContract } from "./form-dictionary.style";
@@ -16,7 +16,7 @@ class FormDictionary extends React.Component<
 > {
     public static displayName: string = "FormDictionary";
 
-    private elementRef: React.RefObject<HTMLDivElement> = React.createRef<
+    private rootElementRef: React.RefObject<HTMLDivElement> = React.createRef<
         HTMLDivElement
     >();
 
@@ -33,7 +33,7 @@ class FormDictionary extends React.Component<
         return (
             <div
                 className={this.props.managedClasses.formDictionary}
-                ref={this.elementRef}
+                ref={this.rootElementRef}
             >
                 {this.renderControl()}
                 {this.renderFormControls()}
@@ -55,7 +55,7 @@ class FormDictionary extends React.Component<
                 formDictionary_itemControlInput,
             }: FormDictionaryClassNameContract = this.props.managedClasses;
 
-            this.elementRef.current
+            this.rootElementRef.current
                 .querySelectorAll<HTMLInputElement>(`.${formDictionary_itemControlInput}`)
                 .forEach((itemControlInput: HTMLInputElement) => {
                     itemControlInput.setCustomValidity(
@@ -73,7 +73,7 @@ class FormDictionary extends React.Component<
             formDictionary_controlRegion,
         }: FormDictionaryClassNameContract = this.props.managedClasses;
 
-        if (typeof this.props.additionalProperties === "object") {
+        if (isPlainObject(this.props.additionalProperties)) {
             return (
                 <div className={formDictionary_controlRegion}>
                     <div className={formDictionary_control}>
