@@ -1,22 +1,18 @@
 import { ManagedClasses } from "@microsoft/fast-jss-manager-react";
 import { CSSColorClassNameContract } from "./color.style";
+import { CommonControlConfig } from "../../form/templates";
+import { Omit } from "utility-types";
 
 export interface CSSColorValues {
     color?: string;
 }
 
-export interface CSSColorUnhandledProps extends React.HTMLAttributes<HTMLDivElement> {}
+export interface CSSColorUnhandledProps
+    extends Omit<React.HTMLAttributes<HTMLDivElement>, "onChange"> {}
 
-export interface CSSColorHandledProps extends ManagedClasses<CSSColorClassNameContract> {
-    /**
-     * The data
-     */
-    data?: CSSColorValues;
-
-    /**
-     * The onChange callback
-     */
-    onChange?: (color: CSSColorValues) => void;
-}
+/* tslint:disable-next-line */
+export interface CSSColorHandledProps
+    extends CommonControlConfig,
+        ManagedClasses<CSSColorClassNameContract> {}
 
 export type CSSColorProps = CSSColorHandledProps & CSSColorUnhandledProps;

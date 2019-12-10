@@ -9,61 +9,10 @@
             "title": "CSS Values",
             "type": "object",
             "properties": {
-                "position": {
-                    "title": "Position",
+                "color": {
+                    "title": "Color",
                     "type": "string",
-                    "enum": [
-                        "absolute",
-                        "static"
-                    ]
-                },
-                "left": {
-                    "title": "Left",
-                    "type": "string"
-                },
-                "right": {
-                    "title": "Right",
-                    "type": "string"
-                },
-                "top": {
-                    "title": "Top",
-                    "type": "string"
-                },
-                "bottom": {
-                    "title": "Bottom",
-                    "type": "string"
-                },
-                "marginTop": {
-                    "title": "Margin top",
-                    "type": "string"
-                },
-                "marginBottom": {
-                    "title": "Margin bottom",
-                    "type": "string"
-                },
-                "marginLeft": {
-                    "title": "Margin left",
-                    "type": "string"
-                },
-                "marginRight": {
-                    "title": "Margin right",
-                    "type": "string"
-                },
-                "paddingTop": {
-                    "title": "Padding top",
-                    "type": "string"
-                },
-                "paddingBottom": {
-                    "title": "Padding bottom",
-                    "type": "string"
-                },
-                "paddingLeft": {
-                    "title": "Padding left",
-                    "type": "string"
-                },
-                "paddingRight": {
-                    "title": "Padding right",
-                    "type": "string"
+                    "formControlId": "color"
                 }
             }
         }
