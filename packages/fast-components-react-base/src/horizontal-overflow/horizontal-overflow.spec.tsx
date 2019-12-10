@@ -398,6 +398,52 @@ describe("horizontal overflow", (): void => {
                 ["getScrollDistanceFromButtonDirection"]("next", 500, [], 0)
         ).toBe(0);
     });
+    test("getNextDistance should not get hung up on elements wider than the viewport", () => {
+        const renderedWithImagesAndNextAndPrevious: any = mount(
+            <HorizontalOverflow managedClasses={managedClasses}>
+                <button id="testButtonNext" slot="next">
+                    next
+                </button>
+                <button id="testButtonPrevious" slot="previous">
+                    previous
+                </button>
+                {imageSet1}
+            </HorizontalOverflow>
+        );
+
+        expect(
+            renderedWithImagesAndNextAndPrevious
+                .instance()
+                ["getNextDistance"](
+                    500,
+                    [120, 1400, 80, 220, 210, 100, 90, 200, 190, 170, 180, 210, 190],
+                    120
+                )
+        ).toBe(1520);
+    });
+    test("getPreviousDistance should not get hung up on elements wider than the viewport", () => {
+        const renderedWithImagesAndNextAndPrevious: any = mount(
+            <HorizontalOverflow managedClasses={managedClasses}>
+                <button id="testButtonNext" slot="next">
+                    next
+                </button>
+                <button id="testButtonPrevious" slot="previous">
+                    previous
+                </button>
+                {imageSet1}
+            </HorizontalOverflow>
+        );
+
+        expect(
+            renderedWithImagesAndNextAndPrevious
+                .instance()
+                ["getPreviousDistance"](
+                    500,
+                    [120, 1400, 80, 220, 210, 100, 90, 200, 190, 170, 180, 210, 190],
+                    1520
+                )
+        ).toBe(120);
+    });
     test("should set a max/min distance without additional calculations", () => {
         const renderedWithImagesAndNextAndPrevious: any = mount(
             <HorizontalOverflow managedClasses={managedClasses}>
