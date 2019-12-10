@@ -113,7 +113,7 @@ describe("flyout", (): void => {
         ).toEqual(describedby);
     });
 
-    test("should call the `onDismiss` callback after a click event on the window when `visible` prop is true", () => {
+    test("should call the `onDismiss` callback after a pointer down event on the window when `visible` prop is true", () => {
         const onDismiss: any = jest.fn();
         const map: any = {};
 
@@ -129,7 +129,7 @@ describe("flyout", (): void => {
             </div>
         );
 
-        map.click({});
+        map.pointerdown({});
 
         expect(onDismiss).toHaveBeenCalledTimes(1);
     });
@@ -201,7 +201,7 @@ describe("flyout", (): void => {
         expect(onDismiss).toHaveBeenCalledTimes(1);
     });
 
-    test("should add click event listener for the `onDismiss` callback if `onDismiss` prop is added to the component", () => {
+    test("should add pointer down event listener for the `onDismiss` callback if `onDismiss` prop is added to the component", () => {
         const onDismiss: any = jest.fn();
         const map: any = {};
 
@@ -214,12 +214,12 @@ describe("flyout", (): void => {
 
         // map does not exist
         /* tslint:disable-next-line:no-string-literal */
-        expect(map["click"]).toBe(undefined);
+        expect(map["pointerdown"]).toBe(undefined);
 
         rendered.setProps({ onDismiss });
 
         // map exists
-        map.click({});
+        map.pointerdown({});
 
         expect(onDismiss).toHaveBeenCalledTimes(1);
     });
@@ -254,7 +254,7 @@ describe("flyout", (): void => {
         expect(onDismiss).toHaveBeenCalledTimes(1);
     });
 
-    test("should remove click event listener for the `onDismiss` callback if `onDismiss` prop is removed from the component", () => {
+    test("should remove pointer down event listener for the `onDismiss` callback if `onDismiss` prop is removed from the component", () => {
         const onDismiss: any = jest.fn();
         const map: any = {};
 
@@ -273,14 +273,14 @@ describe("flyout", (): void => {
         );
 
         // map exists
-        map.click({});
+        map.pointerdown({});
 
         expect(onDismiss).toHaveBeenCalledTimes(1);
 
         rendered.setProps({ onDismiss: void 0 });
 
         /* tslint:disable-next-line:no-string-literal */
-        map.click({});
+        map.pointerdown({});
 
         expect(onDismiss).toHaveBeenCalledTimes(1);
     });
