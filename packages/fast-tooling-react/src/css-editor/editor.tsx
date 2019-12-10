@@ -7,9 +7,7 @@ import {
 } from "./editor.props";
 import cssEditorDataSchema from "./editor-data.schema";
 import { CSSColor } from "./color";
-import { getDataFromSchema } from "../../src/data-utilities";
-import { ControlConfig, Form, StandardControlPlugin } from "../../src/form";
-import { isNil } from "lodash-es";
+import { ControlConfig, Form, StandardControlPlugin } from "../form/";
 import { colorPlugInId } from "./editor.constants";
 
 export default class CSSEditor extends Foundation<
