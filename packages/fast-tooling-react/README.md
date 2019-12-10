@@ -893,7 +893,7 @@ export class Example extends React.Component {
 
 ### Color
 
-The `CSSColor` component shows a color picker wirth an input and has a callback that will be fired when the value is updated.
+The `CSSColor` component shows a color picker with an input and has a callback that will be fired when the value is updated.
 
 Example:
 ```jsx
@@ -905,16 +905,14 @@ export class Example extends React.Component {
         super(props);
 
         this.state = {
-            cssValues: {
-                color: "#000000"
-            }
+            cssValues: "#000000"
         }
     }
 
     render() {
         return (
             <CSSColor
-                data={this.state.cssValues}
+                value={this.state.cssValues}
                 onChange={this.handleCSSValueUpdate}
             />
         );
