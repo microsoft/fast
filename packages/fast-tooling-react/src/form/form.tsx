@@ -365,6 +365,8 @@ class Form extends React.Component<
             // the correct schema is used for state navigation
             this.rootSchema = updatedSchema;
 
+            state.validationErrors = getValidationErrors(this.rootSchema, props.data);
+
             if (typeof props.onSchemaChange === "function") {
                 props.onSchemaChange(this.rootSchema);
             }

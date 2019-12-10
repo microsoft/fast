@@ -2,6 +2,9 @@ import { storiesOf } from "@storybook/react";
 import React from "react";
 import Dialog from "./";
 import Button from "../button";
+import Select from "../select";
+import ListboxItem from "../listbox-item";
+import { uniqueId } from "lodash-es";
 
 storiesOf("Dialog", module)
     .add("Default", () => <Dialog />)
@@ -32,4 +35,37 @@ storiesOf("Dialog", module)
             <h2 id={"dialogLabelledBy01"}>Dialog</h2>
             <p id={"dialogDescribedBy"}>Dialog description</p>
         </Dialog>
+    ))
+    .add("Modal with autofocus select", () => (
+        <div>
+            <Button>Outside Button 1</Button>
+            <Dialog visible={true} modal={true}>
+                <Button>Button 1</Button>
+                <Button>Button 2</Button>
+                <Button>Button 3</Button>
+                <Select multiselectable={true} autoFocus={true}>
+                    <ListboxItem
+                        id={uniqueId()}
+                        value="Select option 1"
+                        children="Select option 1"
+                    />
+                    <ListboxItem
+                        id={uniqueId()}
+                        value="Select option 2"
+                        children="Select option 2"
+                    />
+                    <ListboxItem
+                        id={uniqueId()}
+                        value="Select option 3"
+                        children="Select option 3"
+                    />
+                    <ListboxItem
+                        id={uniqueId()}
+                        value="Select option 4"
+                        children="Select option 4"
+                    />
+                </Select>
+            </Dialog>
+            <Button>Outside Button 2</Button>
+        </div>
     ));

@@ -131,6 +131,13 @@ describe("FormControlSwitch", () => {
             mount(<TestFormControlSwitch {...formControlSwitchProps} />);
         }).not.toThrow();
     });
+    test("should NOT render any controls when the schema is false", () => {
+        const rendered: any = mount(
+            <TestFormControlSwitch {...formControlSwitchProps} schema={false} />
+        );
+
+        expect(rendered.html()).toEqual("");
+    });
     test("should render a number field when a number type is available", () => {
         const rendered: any = mount(
             <TestFormControlSwitch
