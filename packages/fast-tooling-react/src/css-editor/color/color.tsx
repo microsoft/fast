@@ -26,30 +26,28 @@ export default class CSSColor extends Foundation<
     public render(): React.ReactNode {
         return (
             <div className={get(this.props, "managedClasses.cssColor")}>
-                <div className={get(this.props, "managedClasses.cssColor_control")}>
-                    <div
-                        className={get(
-                            this.props,
-                            "managedClasses.cssColor_colorInputRegion"
-                        )}
-                        style={{
-                            background: get(this.props.data, "color", ""),
-                        }}
-                    >
-                        <input
-                            type={"color"}
-                            style={{ opacity: 0, width: "100%" }}
-                            onChange={this.handleColorOnChange}
-                            value={get(this.props.data, "color", "")}
-                        />
-                    </div>
+                <div
+                    className={get(
+                        this.props,
+                        "managedClasses.cssColor_colorInputRegion"
+                    )}
+                    style={{
+                        background: get(this.props.data, "color", ""),
+                    }}
+                >
                     <input
-                        className={get(this.props, "managedClasses.cssColor_input")}
-                        type={"text"}
-                        value={get(this.props.data, "color", "")}
+                        type={"color"}
+                        style={{ opacity: 0, width: "100%" }}
                         onChange={this.handleColorOnChange}
+                        value={get(this.props.data, "color", "")}
                     />
                 </div>
+                <input
+                    className={get(this.props, "managedClasses.cssColor_input")}
+                    type={"text"}
+                    value={get(this.props.data, "color", "")}
+                    onChange={this.handleColorOnChange}
+                />
             </div>
         );
     }

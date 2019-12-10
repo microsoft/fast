@@ -3,7 +3,6 @@ import { foreground300, neutralLayerL4 } from "../style";
 
 export interface CSSEditorClassNameContract {
     cssEditor?: string;
-    cssEditor_form?: string;
 }
 
 const styles: ComponentStyles<CSSEditorClassNameContract, {}> = {
@@ -13,7 +12,6 @@ const styles: ComponentStyles<CSSEditorClassNameContract, {}> = {
         height: "100%",
         padding: "0 10px",
     },
-    cssEditor_form: {},
 };
 
 export default styles;

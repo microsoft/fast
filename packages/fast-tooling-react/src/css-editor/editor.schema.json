@@ -5,10 +5,16 @@
     "id": "@microsoft/fast-tooling-react/css-editor",
     "type": "object",
     "properties": {
-        "color": {
-            "title": "Color",
-            "type": "string",
-            "formControlId": "color"
+        "data": {
+            "title": "CSS Values",
+            "type": "object",
+            "properties": {
+                "color": {
+                    "title": "Color",
+                    "type": "string",
+                    "formControlId": "color"
+                }
+            }
         }
     }
 }

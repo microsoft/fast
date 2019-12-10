@@ -13,7 +13,6 @@ describe("CSSColor", () => {
     const managedClasses: CSSColorClassNameContract = {
         cssColor: "cssColor",
         cssColor_colorInputRegion: "cssColor_colorInputRegion",
-        cssColor_control: "cssColor_control",
         cssColor_input: "cssColor_input",
     };
 

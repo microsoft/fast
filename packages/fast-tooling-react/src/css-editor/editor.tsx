@@ -5,10 +5,12 @@ import {
     CSSEditorProps,
     CSSEditorUnhandledProps,
 } from "./editor.props";
-import cssEditorSchema from "./editor.schema.json";
+import cssEditorDataSchema from "./editor-data.schema";
 import { CSSColor } from "./color";
 import { getDataFromSchema } from "../../src/data-utilities";
 import { ControlConfig, Form, StandardControlPlugin } from "../../src/form";
+import { get, isNil } from "lodash-es";
+import { colorPlugInId } from "./editor.constants";
 
 export interface CSSEditorState {
     data: any;
@@ -35,17 +37,17 @@ export default class CSSEditor extends Foundation<
     constructor(props: CSSEditorProps) {
         super(props);
 
-        const exampleData: any = getDataFromSchema(cssEditorSchema);
+        const exampleData: any = getDataFromSchema(cssEditorDataSchema);
 
         this.state = {
-            data: exampleData,
+            data: isNil(this.props.data) ? exampleData : this.props.data,
         };
 
         this.controlPlugins = [
             new StandardControlPlugin({
-                id: "color",
+                id: colorPlugInId,
                 control: (config: ControlConfig): React.ReactNode => {
-                    return <CSSColor data={this.props.data} onChange={config.onChange} />;
+                    return <CSSColor data={this.props.data} {...config} />;
                 },
             }),
         ];
@@ -55,8 +57,7 @@ export default class CSSEditor extends Foundation<
         return (
             <div className={this.props.managedClasses.cssEditor}>
                 <Form
-                    className={this.props.managedClasses.cssEditor_form}
-                    schema={cssEditorSchema}
+                    schema={cssEditorDataSchema}
                     data={this.state.data}
                     onChange={this.handleUpdateData}
                     controlPlugins={this.controlPlugins}
@@ -69,8 +70,9 @@ export default class CSSEditor extends Foundation<
         this.setState({
             data,
         });
+
         if (typeof this.props.onChange === "function") {
-            this.props.onChange(Object.assign({}, this.props.data, data));
+            this.props.onChange(data);
         }
     };
 }
