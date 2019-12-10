@@ -20,8 +20,9 @@
   "scripts": {
     "build": "tsc -p ./tsconfig.build.json",
     "build:app": "webpack --progress --mode=production",
+    "build:message-system": "tsc -p ./tsconfig.build.message-system.json",
     "clean:dist": "node ../../build/clean.js dist",
-    "prepare": "yarn clean:dist && yarn build",
+    "prepare": "yarn clean:dist && yarn build && yarn build:message-system",
     "prettier": "prettier --config ../../.prettierrc --write \"**/*.{ts,tsx}\"",
     "prettier:diff": "prettier --config ../../.prettierrc \"**/*.{ts,tsx}\" --list-different",
     "start": "webpack-dev-server",
@@ -112,6 +113,7 @@
     "@microsoft/fast-jss-utilities": "^4.7.5",
     "@microsoft/fast-web-utilities": "^4.4.0",
     "ajv": "^6.10.0",
+    "copy-webpack-plugin": "^5.0.5",
     "exenv-es6": "^1.0.0",
     "raf-throttle": "^2.0.3",
     "react-dnd": "^7.7.0",
