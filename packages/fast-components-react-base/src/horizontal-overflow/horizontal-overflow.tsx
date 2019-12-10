@@ -28,7 +28,7 @@ export enum ButtonDirection {
 }
 
 export interface HorizontalOverflowState {
-    itemsHeight: number;
+    itemsHeight: number | null;
     direction: Direction;
 }
 
@@ -96,7 +96,7 @@ class HorizontalOverflow extends Foundation<
 
         this.state = {
             direction: Direction.ltr,
-            itemsHeight: 0,
+            itemsHeight: null,
         };
     }
 
@@ -118,7 +118,10 @@ class HorizontalOverflow extends Foundation<
             >
                 <div
                     style={{
-                        height: `${this.state.itemsHeight}px`,
+                        height:
+                            this.state.itemsHeight !== null
+                                ? `${this.state.itemsHeight}px`
+                                : "auto",
                         position: "relative",
                         overflow: "hidden",
                     }}
@@ -501,7 +504,10 @@ class HorizontalOverflow extends Foundation<
             i < itemWidthsLength;
             i++
         ) {
-            if (distance + itemWidths[i] > scrollPosition + availableWidth) {
+            if (
+                distance + itemWidths[i] > scrollPosition + availableWidth &&
+                distance !== scrollPosition
+            ) {
                 return distance;
             }
 
@@ -523,7 +529,10 @@ class HorizontalOverflow extends Foundation<
             this.getMaxScrollDistance(availableWidth, itemWidths) + availableWidth;
 
         for (let i: number = itemWidths.length - 1; i >= 0; i--) {
-            if (distance - itemWidths[i] < scrollPosition - availableWidth) {
+            if (
+                distance - itemWidths[i] < scrollPosition - availableWidth &&
+                distance !== scrollPosition
+            ) {
                 return distance;
             }
 

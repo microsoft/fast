@@ -1,4 +1,9 @@
-import { FormChildOptionItem, FormState } from "../form.props";
+import React from "react";
+import {
+    AttributeSettingsMappingToPropertyNames,
+    FormChildOptionItem,
+    FormState,
+} from "../form.props";
 import {
     FormSectionProps,
     InitialOneOfAnyOfState,
@@ -8,13 +13,11 @@ import {
 import { cloneDeep, get, mergeWith, omit, set, unset } from "lodash-es";
 import {
     getChildOptionBySchemaId,
+    normalizeDataLocationToDotNotation,
     squareBracketsRegex,
 } from "../../data-utilities/location";
-
-import { AttributeSettingsMappingToPropertyNames } from "../form.props";
 import { ErrorObject } from "ajv";
 import { FormControlSwitchProps } from "../form-control-switch.props";
-import React from "react";
 import { getDataFromSchema } from "../../data-utilities";
 import { reactChildrenStringSchema } from "../controls/control.children.text";
 import stringify from "fast-json-stable-stringify";
@@ -593,13 +596,22 @@ export function getErrorFromDataLocation(
                     ) {
                         error = validationError.message;
                     }
-                } else if (
-                    validationError.dataPath.slice(
-                        0,
-                        matchingDataLocationToDataPath.length
-                    ) === matchingDataLocationToDataPath
-                ) {
-                    error = "Contains invalid data";
+                } else {
+                    const dataLocationItems: string[] = `.${normalizeDataLocationToDotNotation(
+                        validationError.dataPath
+                    )}`.split(".");
+                    const containsInvalidData: boolean = dataLocationItems.some(
+                        (value: string, index: number) => {
+                            return (
+                                matchingDataLocationToDataPath ===
+                                dataLocationItems.slice(0, index + 1).join(".")
+                            );
+                        }
+                    );
+
+                    if (containsInvalidData) {
+                        error = "Contains invalid data";
+                    }
                 }
             }
         );
