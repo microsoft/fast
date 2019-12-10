@@ -77,3 +77,10 @@ export interface MessageSystemMoveData {
     sourceDataLocation: string;
     value: unknown;
 }
+
+export type MessageSystemData =
+    | MessageSystemRegisterComponent
+    | MessageSystemDeregisterComponent
+    | MessageSystemUpdateData
+    | MessageSystemDuplicateData
+    | MessageSystemMoveData;

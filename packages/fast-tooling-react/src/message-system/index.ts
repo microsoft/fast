@@ -2,6 +2,7 @@
 
 import {
     MessageSystemComponentTypeAction,
+    MessageSystemData,
     MessageSystemType,
 } from "./message-system.props";
 
@@ -19,7 +20,7 @@ import {
 const registeredComponents: object = {};
 
 onmessage = function(e: MessageEvent): void {
-    switch (e.data.type) {
+    switch ((e.data as MessageSystemData).type) {
         case MessageSystemType.component:
             switch (e.data.action) {
                 case MessageSystemComponentTypeAction.register:
