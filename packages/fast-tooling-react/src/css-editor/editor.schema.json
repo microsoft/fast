@@ -13,6 +13,11 @@
                     "title": "Color",
                     "type": "string",
                     "formControlId": "color"
+                },
+                "width": {
+                    "title": "Width",
+                    "type": "string",
+                    "formControlId": "width"
                 }
             }
         }
