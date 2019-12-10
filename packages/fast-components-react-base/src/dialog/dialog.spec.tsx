@@ -241,7 +241,7 @@ describe("dialog", (): void => {
         expect(mockRemoveListenerFn).toHaveBeenCalledTimes(2);
         expect(mockRemoveListenerFn.mock.calls[1][0]).toBe("focusin");
     });
-    test("shouldForceFocus correctly detects whether the prodided element is in or out of dialog", () => {
+    test("should detect whether the provided element is in or out of dialog", () => {
         const container: HTMLDivElement = document.createElement("div");
         document.body.appendChild(container);
 
