@@ -9,19 +9,19 @@ import cssEditorDataSchema from "./editor-data.schema";
 import { CSSColor } from "./color";
 import { getDataFromSchema } from "../../src/data-utilities";
 import { ControlConfig, Form, StandardControlPlugin } from "../../src/form";
-import { get, isNil } from "lodash-es";
+import { isNil } from "lodash-es";
 import { colorPlugInId } from "./editor.constants";
-
-export interface CSSEditorState {
-    data: any;
-}
 
 export default class CSSEditor extends Foundation<
     CSSEditorHandledProps,
     CSSEditorUnhandledProps,
-    CSSEditorState
+    {}
 > {
     public static displayName: string = "CSSEditor";
+
+    public static defaultProps: Partial<CSSEditorProps> = {
+        managedClasses: {},
+    };
 
     protected handledProps: HandledProps<CSSEditorHandledProps> = {
         data: void 0,
@@ -37,17 +37,11 @@ export default class CSSEditor extends Foundation<
     constructor(props: CSSEditorProps) {
         super(props);
 
-        const exampleData: any = getDataFromSchema(cssEditorDataSchema);
-
-        this.state = {
-            data: isNil(this.props.data) ? exampleData : this.props.data,
-        };
-
         this.controlPlugins = [
             new StandardControlPlugin({
                 id: colorPlugInId,
                 control: (config: ControlConfig): React.ReactNode => {
-                    return <CSSColor data={this.props.data} {...config} />;
+                    return <CSSColor value={this.props.data} {...config} />;
                 },
             }),
         ];
@@ -58,7 +52,7 @@ export default class CSSEditor extends Foundation<
             <div className={this.props.managedClasses.cssEditor}>
                 <Form
                     schema={cssEditorDataSchema}
-                    data={this.state.data}
+                    data={this.props.data}
                     onChange={this.handleUpdateData}
                     controlPlugins={this.controlPlugins}
                 />
