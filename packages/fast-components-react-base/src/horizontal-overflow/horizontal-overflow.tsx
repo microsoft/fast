@@ -121,7 +121,7 @@ class HorizontalOverflow extends Foundation<
                         height:
                             this.state.itemsHeight !== null
                                 ? `${this.state.itemsHeight}px`
-                                : "undefined",
+                                : "auto",
                         position: "relative",
                         overflow: "hidden",
                     }}
