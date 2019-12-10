@@ -347,7 +347,7 @@ describe("horizontal overflow", (): void => {
             0.0004
         );
     });
-    test("getScrollAnimPosition returns correct start and end values", () => {
+    test("getScrollAnimationPosition returns correct start and end values", () => {
         const renderedWithImages: any = mount(
             <HorizontalOverflow managedClasses={managedClasses}>
                 {imageSet1}
@@ -357,10 +357,12 @@ describe("horizontal overflow", (): void => {
         renderedWithImages.instance().currentScrollAnimStartPosition = 0;
         renderedWithImages.instance().currentScrollAnimEndPosition = 100;
 
-        expect(renderedWithImages.instance()["getScrollAnimPosition"](0, 1000)).toBe(0);
-        expect(renderedWithImages.instance()["getScrollAnimPosition"](1000, 1000)).toBe(
-            100
+        expect(renderedWithImages.instance()["getScrollAnimationPosition"](0, 1000)).toBe(
+            0
         );
+        expect(
+            renderedWithImages.instance()["getScrollAnimationPosition"](1000, 1000)
+        ).toBe(100);
     });
     test("should get the distance when moving next/previous", () => {
         const renderedWithImagesAndNextAndPrevious: any = mount(
@@ -790,7 +792,7 @@ describe("horizontal overflow", (): void => {
         rendered.instance()["setScrollPosition"](100);
         expect(rendered.instance()["getScrollPosition"]()).toEqual(0);
     });
-    test("getDirection returns correct direction in ltr mode", (): void => {
+    test("getDirection should return direction value when the ltr prop is passed", (): void => {
         const rendered: any = mount(
             <HorizontalOverflow managedClasses={managedClasses} dir="ltr">
                 {imageSet1}
@@ -798,7 +800,7 @@ describe("horizontal overflow", (): void => {
         );
         expect(rendered.instance()["getDirection"]()).toEqual("ltr");
     });
-    test("getDirection returns correct direction in rtl mode", (): void => {
+    test("getDirection should return direction value when the rtl prop is passed", (): void => {
         const rendered: any = mount(
             <HorizontalOverflow managedClasses={managedClasses} dir="rtl">
                 {imageSet1}
@@ -806,7 +808,7 @@ describe("horizontal overflow", (): void => {
         );
         expect(rendered.instance()["getDirection"]()).toEqual("rtl");
     });
-    test("getDirection defaults to ltr when no valid ref", (): void => {
+    test("getDirection should return direction ltr when current ref is invalid", (): void => {
         const rendered: any = mount(
             <HorizontalOverflow managedClasses={managedClasses} dir="rtl">
                 {imageSet1}

@@ -323,7 +323,7 @@ class HorizontalOverflow extends Foundation<
             const currentDate: number = new Date().getTime();
             const currentTime: number = currentDate - this.currentScrollAnimStartTime;
 
-            scrollStart = this.getScrollAnimPosition(currentTime, duration);
+            scrollStart = this.getScrollAnimationPosition(currentTime, duration);
         }
 
         if (itemLeft - this.lastRecordedScroll < 0) {
@@ -735,7 +735,7 @@ class HorizontalOverflow extends Foundation<
         const currentDate: number = new Date().getTime();
         const currentTime: number = currentDate - this.currentScrollAnimStartTime;
 
-        this.setScrollPosition(this.getScrollAnimPosition(currentTime, duration));
+        this.setScrollPosition(this.getScrollAnimationPosition(currentTime, duration));
 
         if (currentTime < duration) {
             this.requestFrame();
@@ -747,7 +747,10 @@ class HorizontalOverflow extends Foundation<
     /**
      *  get scroll animation position for the provided time
      */
-    private getScrollAnimPosition = (currentTime: number, duration: number): number => {
+    private getScrollAnimationPosition = (
+        currentTime: number,
+        duration: number
+    ): number => {
         if (currentTime < duration) {
             return this.easeInOutQuad(
                 currentTime,
