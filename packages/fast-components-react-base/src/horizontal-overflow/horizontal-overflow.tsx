@@ -28,7 +28,7 @@ export enum ButtonDirection {
 }
 
 export interface HorizontalOverflowState {
-    itemsHeight: number;
+    itemsHeight: number | null;
     direction: Direction;
 }
 
@@ -96,7 +96,7 @@ class HorizontalOverflow extends Foundation<
 
         this.state = {
             direction: Direction.ltr,
-            itemsHeight: 0,
+            itemsHeight: null,
         };
     }
 
@@ -118,7 +118,10 @@ class HorizontalOverflow extends Foundation<
             >
                 <div
                     style={{
-                        height: `${this.state.itemsHeight}px`,
+                        height:
+                            this.state.itemsHeight !== null
+                                ? `${this.state.itemsHeight}px`
+                                : "auto",
                         position: "relative",
                         overflow: "hidden",
                     }}
