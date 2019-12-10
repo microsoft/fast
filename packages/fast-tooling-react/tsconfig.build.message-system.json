@@ -1,0 +1,18 @@
+{
+    "extends": "../../tsconfig.json",
+    "compilerOptions": {
+        "target": "es6",
+        "outDir": "./dist/message-system",
+        "types": ["node"],
+        "lib": ["webworker", "es6"]
+    },
+    "include": [
+        "src/message-system/**/*"
+    ],
+    "exclude": [
+        "node_modules",
+        "**/*.spec.ts",
+        "**/*.spec.tsx",
+        "**/__tests__/**"
+    ]
+  }
