@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.2.21](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-storybook-design-system-addon@1.2.20...@microsoft/fast-storybook-design-system-addon@1.2.21) (2019-12-11)
+
+**Note:** Version bump only for package @microsoft/fast-storybook-design-system-addon
+
+
+
+
+
 ## [1.2.20](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-storybook-design-system-addon@1.2.19...@microsoft/fast-storybook-design-system-addon@1.2.20) (2019-12-05)
 
 **Note:** Version bump only for package @microsoft/fast-storybook-design-system-addon

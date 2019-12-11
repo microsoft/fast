@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.25.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-tooling-react@1.24.1...@microsoft/fast-tooling-react@1.25.0) (2019-12-11)
+
+
+### Bug Fixes
+
+* addresses an issue where items in another part of the object updating would remove the dictionary keys being displayed ([#2489](https://github.com/Microsoft/fast-dna/issues/2489)) ([486345f](https://github.com/Microsoft/fast-dna/commit/486345f123f23848f57e4508180ba724d3de13eb))
+
+
+### Features
+
+* allow an object to be disabled, which will disable all of its properties and sub-properties ([#2486](https://github.com/Microsoft/fast-dna/issues/2486)) ([30c686a](https://github.com/Microsoft/fast-dna/commit/30c686a39a828b9e49271812ac4814aec78d6569))
+* pass the schema to the control to allow arbitrary metadata to be accessed ([#2487](https://github.com/Microsoft/fast-dna/issues/2487)) ([8b9ba19](https://github.com/Microsoft/fast-dna/commit/8b9ba199dbff306ee39d05950ab266ae100ed20f))
+* performance enhancement when the JSON schema has deeply nested oneOfs ([#2491](https://github.com/Microsoft/fast-dna/issues/2491)) ([b8ff537](https://github.com/Microsoft/fast-dna/commit/b8ff5373129a0e2f636848d51c982d1b7869a26b))
+* show additional properties when false and present a way to remove them ([#2490](https://github.com/Microsoft/fast-dna/issues/2490)) ([774fd39](https://github.com/Microsoft/fast-dna/commit/774fd390859e05abc92408e24924e397f06224db))
+
+
+
+
+
 ## [1.24.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-tooling-react@1.24.0...@microsoft/fast-tooling-react@1.24.1) (2019-12-05)
 
 

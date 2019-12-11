@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.10.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-layouts-react@4.9.0...@microsoft/fast-layouts-react@4.10.0) (2019-12-11)
+
+
+### Features
+
+* add cssGridPropertyName to Column and Page for Server Sider Rendering ([#2473](https://github.com/Microsoft/fast-dna/issues/2473)) ([672dd87](https://github.com/Microsoft/fast-dna/commit/672dd874c4293ddaf15a5e5511cc950226b2d698))
+* Add default breakpoint to BreakpointManager ([#2474](https://github.com/Microsoft/fast-dna/issues/2474)) ([284196a](https://github.com/Microsoft/fast-dna/commit/284196a7e7d32cbe5f7867b29449df007749ca41))
+
+
+
+
+
 # [4.9.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-layouts-react@4.8.0...@microsoft/fast-layouts-react@4.9.0) (2019-12-05)
 
 
