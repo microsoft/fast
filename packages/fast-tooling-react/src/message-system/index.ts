@@ -4,12 +4,15 @@ import {
     ComponentMessageIncoming,
     DataMessageIncoming,
     DeregisterComponentMessageOutgoing,
+    DuplicateDataMessageOutgoing,
     InitializeMessageOutgoing,
     MessageSystemComponentTypeAction,
+    MessageSystemDataTypeAction,
     MessageSystemIncoming,
     MessageSystemType,
     RegisterComponentMessageOutgoing,
 } from "./message-system.props";
+import { getDataWithDuplicate } from "../data-utilities/duplicate";
 
 /**
  * This is the Message System, through which:
@@ -55,7 +58,7 @@ function handleComponentMessage(data: ComponentMessageIncoming): void {
 
             postMessage({
                 type: MessageSystemType.component,
-                action: MessageSystemComponentTypeAction.registered,
+                action: MessageSystemComponentTypeAction.register,
                 id: data.id,
             } as RegisterComponentMessageOutgoing);
             break;
@@ -64,7 +67,7 @@ function handleComponentMessage(data: ComponentMessageIncoming): void {
 
             postMessage({
                 type: MessageSystemType.component,
-                action: MessageSystemComponentTypeAction.deregistered,
+                action: MessageSystemComponentTypeAction.deregister,
                 id: data.id,
             } as DeregisterComponentMessageOutgoing);
             break;
@@ -75,5 +78,16 @@ function handleComponentMessage(data: ComponentMessageIncoming): void {
  * Handles all data manipulation messages
  */
 function handleDataMessage(data: DataMessageIncoming): void {
-    // TODO: update data
+    switch (data.action) {
+        case MessageSystemDataTypeAction.duplicate:
+            dataBlob = getDataWithDuplicate(data.sourceDataLocation, dataBlob);
+
+            postMessage({
+                type: MessageSystemType.data,
+                action: MessageSystemDataTypeAction.duplicate,
+                sourceDataLocation: data.sourceDataLocation,
+                data: dataBlob,
+            } as DuplicateDataMessageOutgoing);
+            break;
+    }
 }
