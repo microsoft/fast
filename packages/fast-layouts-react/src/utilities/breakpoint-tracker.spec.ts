@@ -1,5 +1,6 @@
 import BreakpointTracker, { BreakpointTrackerCallback } from "./breakpoint-tracker";
 import { Breakpoint, Breakpoints, defaultBreakpoints } from "./breakpoints";
+import { canUseDOM } from "exenv-es6";
 
 /* tslint:disable:no-string-literal */
 describe("breakpointTracker", (): void => {
@@ -7,6 +8,13 @@ describe("breakpointTracker", (): void => {
     let callback: any;
 
     beforeEach(() => {
+        // reset the BreakpointTracker singleton private fields between each test
+        BreakpointTracker["_breakpoints"] = defaultBreakpoints;
+        BreakpointTracker["breakpoint"] = 0;
+        BreakpointTracker["_defaultBreakpoint"] = 0;
+        BreakpointTracker["openRequestAnimationFrame"] = false;
+        BreakpointTracker["subscriptions"] = [];
+
         subscriber = {
             onBreakpointChanged: (notification: BreakpointTrackerCallback): void => {
                 return;
@@ -83,5 +91,29 @@ describe("breakpointTracker", (): void => {
 
         // Update to default values
         BreakpointTracker.breakpoints = defaultBreakpoints;
+    });
+
+    test("should return the default breakpoint set when the DOM is unavailable", (): void => {
+        // make DOM unavailable for test
+        const windowSpy: jest.SpyInstance<any> = jest.spyOn(
+            global as any,
+            "window",
+            "get"
+        );
+        windowSpy.mockImplementation(() => ({ undefined }));
+        expect(canUseDOM()).toEqual(false);
+
+        // Set some default breakpoints
+        const breakpoints: Breakpoints = [0, 500, 900, 1400];
+        BreakpointTracker.breakpoints = breakpoints;
+
+        // no default breakpoint specified, default breakpoint defaults to zero
+        expect(BreakpointTracker.currentBreakpoint()).toEqual(0);
+
+        // Update the default breakpoint
+        BreakpointTracker.defaultBreakpoint = 3;
+
+        // Expect breakpoint to have updated
+        expect(BreakpointTracker.currentBreakpoint()).toEqual(3);
     });
 });

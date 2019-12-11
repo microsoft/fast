@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.21.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-base@4.21.0...@microsoft/fast-components-react-base@4.21.1) (2019-12-11)
+
+
+### Bug Fixes
+
+* adjust select Aria ([#2457](https://github.com/Microsoft/fast-dna/issues/2457)) ([d66b3df](https://github.com/Microsoft/fast-dna/commit/d66b3df5e295640706a010c01cfddca00ffdb8ba))
+* modal dialogs do not move focus if already within ([#2498](https://github.com/Microsoft/fast-dna/issues/2498)) ([ed1b707](https://github.com/Microsoft/fast-dna/commit/ed1b7075ab799a411c2b31524a0b468110445b1b))
+* simplify viewport-positioner flicker avoidance logic and remove dom ref ([#2467](https://github.com/Microsoft/fast-dna/issues/2467)) ([c508b04](https://github.com/Microsoft/fast-dna/commit/c508b045bfa1842b372d8a4b2c47d0b91fac674f))
+* update horizontal-overflow default height to null instead of 0px ([#2472](https://github.com/Microsoft/fast-dna/issues/2472)) ([ac52c4a](https://github.com/Microsoft/fast-dna/commit/ac52c4a2aaff5f1934f1c166641ad0ee4c71c041))
+
+
+
+
+
 # [4.21.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-base@4.20.0...@microsoft/fast-components-react-base@4.21.0) (2019-12-05)
 
 

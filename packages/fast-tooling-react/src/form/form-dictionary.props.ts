@@ -1,8 +1,11 @@
 import { ControlTemplateUtilitiesProps, StandardControlPlugin } from "./templates";
 import { FormChildOptionItem } from "./form.props";
 import { Controls } from "./form-section.props";
+import { Omit } from "utility-types";
+import ajv from "ajv";
 
-export interface FormDictionaryProps extends ControlTemplateUtilitiesProps {
+export interface FormDictionaryProps
+    extends Omit<ControlTemplateUtilitiesProps, "invalidMessage"> {
     /**
      * The possible child options
      */
@@ -46,6 +49,11 @@ export interface FormDictionaryProps extends ControlTemplateUtilitiesProps {
      * The additional properties in JSON schema
      */
     additionalProperties: any;
+
+    /**
+     * The validation errors
+     */
+    validationErrors: ajv.ErrorObject[] | void;
 }
 
 export interface FormDictionaryState {

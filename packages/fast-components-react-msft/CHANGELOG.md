@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.27.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-msft@4.27.0...@microsoft/fast-components-react-msft@4.27.1) (2019-12-11)
+
+
+### Bug Fixes
+
+* adjust select Aria ([#2457](https://github.com/Microsoft/fast-dna/issues/2457)) ([d66b3df](https://github.com/Microsoft/fast-dna/commit/d66b3df5e295640706a010c01cfddca00ffdb8ba))
+
+
+
+
+
 # [4.27.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-msft@4.26.0...@microsoft/fast-components-react-msft@4.27.0) (2019-12-05)
 
 

@@ -16,12 +16,11 @@ export class Page extends Foundation<PageHandledProps, PageUnhandledProps, {}> {
         managedClasses: {},
     };
 
-    private static display: string = canUseCssGrid() ? "grid" : "-ms-grid";
-
     protected handledProps: HandledProps<PageHandledProps> = {
         managedClasses: void 0,
         margin: void 0,
         maxWidth: void 0,
+        cssGridPropertyName: void 0,
     };
 
     /**
@@ -46,7 +45,10 @@ export class Page extends Foundation<PageHandledProps, PageUnhandledProps, {}> {
         return {
             ...attributes,
             style: {
-                display: Page.display,
+                display:
+                    this.props.cssGridPropertyName || canUseCssGrid()
+                        ? "grid"
+                        : "-ms-grid",
                 gridTemplateColumns: columns,
                 msGridColumns: columns,
                 // attributes.style has to be spread here again in order to

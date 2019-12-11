@@ -60,6 +60,10 @@ class FormControlSwitch extends React.Component<FormControlSwitchProps, {}> {
             );
         }
 
+        if (this.props.schema === false) {
+            return null;
+        }
+
         switch (this.props.schema.type) {
             case "boolean":
                 return this.renderCheckbox(
