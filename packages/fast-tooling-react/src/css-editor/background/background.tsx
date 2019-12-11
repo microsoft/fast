@@ -9,6 +9,8 @@ import {
     CSSBackgroundProps,
     CSSBackgroundUnhandledProps,
 } from "./background.props";
+import { CSSBackgroundClassNameContract } from "./background.style";
+import { classNames } from "@microsoft/fast-web-utilities";
 
 export default class CSSBackground extends Foundation<
     CSSBackgroundHandledProps,
@@ -17,49 +19,84 @@ export default class CSSBackground extends Foundation<
 > {
     public static displayName: string = "CSSBackground";
 
+    public static defaultProps: Partial<CSSBackgroundProps> = {
+        value: "",
+        managedClasses: {},
+    };
+
     protected handledProps: HandledProps<CSSBackgroundHandledProps> = {
-        data: void 0,
         onChange: void 0,
         managedClasses: void 0,
+        dataLocation: void 0,
+        value: void 0,
+        disabled: void 0,
+        elementRef: void 0,
+        reportValidity: void 0,
+        updateValidity: void 0,
     };
 
     public render(): React.ReactNode {
+        const {
+            cssBackground_colorInputRegion,
+            cssBackground_input,
+        }: Partial<CSSBackgroundClassNameContract> = this.props.managedClasses;
+
+        const {
+            dataLocation,
+            disabled,
+            elementRef,
+            reportValidity,
+            updateValidity,
+            value,
+        }: CSSBackgroundProps = this.props;
+
         return (
-            <div className={get(this.props, "managedClasses.cssBackground")}>
-                <label className={get(this.props, "managedClasses.cssBackground_label")}>
-                    Background
-                </label>
-                <div className={get(this.props, "managedClasses.cssBackground_control")}>
-                    <div
-                        className={get(
-                            this.props,
-                            "managedClasses.cssBackground_colorInputRegion"
-                        )}
-                        style={{
-                            background: get(this.props.data, "background", ""),
-                        }}
-                    >
-                        <input
-                            type={"color"}
-                            style={{ opacity: 0, width: "100%" }}
-                            onChange={this.handleBackgroundOnChange}
-                            value={get(this.props.data, "background", "")}
-                        />
-                    </div>
+            <div className={this.generateClassNames()}>
+                <div
+                    className={cssBackground_colorInputRegion}
+                    style={{
+                        background: value,
+                    }}
+                >
                     <input
-                        className={get(this.props, "managedClasses.cssBackground_input")}
-                        type={"text"}
-                        value={get(this.props.data, "background", "")}
+                        type={"color"}
+                        style={{ opacity: 0, width: "100%" }}
                         onChange={this.handleBackgroundOnChange}
+                        value={value}
+                        disabled={disabled}
+                        onFocus={reportValidity}
+                        onBlur={updateValidity}
                     />
                 </div>
+                <input
+                    className={cssBackground_input}
+                    type={"text"}
+                    id={dataLocation}
+                    value={value}
+                    disabled={disabled}
+                    ref={elementRef as React.Ref<HTMLInputElement>}
+                    onChange={this.handleBackgroundOnChange}
+                    onFocus={reportValidity}
+                    onBlur={updateValidity}
+                />
             </div>
+        );
+    }
+
+    protected generateClassNames(): string {
+        const {
+            cssBackground,
+            cssBackground__disabled,
+        }: Partial<CSSBackgroundClassNameContract> = this.props.managedClasses;
+
+        return super.generateClassNames(
+            classNames(cssBackground, [cssBackground__disabled, this.props.disabled])
         );
     }
 
     private handleBackgroundOnChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
         this.props.onChange({
-            background: e.target.value || void 0,
+            value: e.target.value || void 0,
         });
     };
 }

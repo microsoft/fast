@@ -18,3 +18,4 @@ export * from "./spacing";
 export * from "./height";
 export * from "./width";
 export * from "./color";
+export * from "./background";

@@ -6,11 +6,17 @@ import {
     CSSEditorUnhandledProps,
 } from "./editor.props";
 import cssEditorDataSchema from "./editor-data.schema";
+import { CSSBackground } from "./background";
 import { CSSColor } from "./color";
 import { CSSWidth } from "./width";
 import { CSSHeight } from "./height";
 import { ControlConfig, Form, StandardControlPlugin } from "../form/";
-import { colorPlugInId, heightPluginId, widthPluginId } from "./editor.constants";
+import {
+    backgroundPlugInId,
+    colorPlugInId,
+    heightPluginId,
+    widthPluginId,
+} from "./editor.constants";
 
 export default class CSSEditor extends Foundation<
     CSSEditorHandledProps,
@@ -39,21 +45,27 @@ export default class CSSEditor extends Foundation<
 
         this.controlPlugins = [
             new StandardControlPlugin({
+                id: backgroundPlugInId,
+                control: (config: ControlConfig): React.ReactNode => {
+                    return <CSSBackground value={this.props.data} {...config} />;
+                },
+            }),
+            new StandardControlPlugin({
                 id: colorPlugInId,
                 control: (config: ControlConfig): React.ReactNode => {
                     return <CSSColor value={this.props.data} {...config} />;
                 },
             }),
             new StandardControlPlugin({
-                id: widthPluginId,
-                control: (config: ControlConfig): React.ReactNode => {
-                    return <CSSWidth value={this.props.data} {...config} />;
-                },
-            }),
-            new StandardControlPlugin({
                 id: heightPluginId,
                 control: (config: ControlConfig): React.ReactNode => {
                     return <CSSHeight value={this.props.data} {...config} />;
+                },
+            }),
+            new StandardControlPlugin({
+                id: widthPluginId,
+                control: (config: ControlConfig): React.ReactNode => {
+                    return <CSSWidth value={this.props.data} {...config} />;
                 },
             }),
         ];
