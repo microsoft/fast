@@ -441,11 +441,13 @@ describe("horizontal overflow", (): void => {
             </HorizontalOverflow>
         );
 
+        renderedWithImagesAndNextAndPrevious.instance()["getScrollPeek"] = (): number =>
+            0;
+
         expect(
             renderedWithImagesAndNextAndPrevious
                 .instance()
                 ["getNextDistance"](
-                    500,
                     [120, 1400, 80, 220, 210, 100, 90, 200, 190, 170, 180, 210, 190],
                     120
                 )
@@ -464,11 +466,19 @@ describe("horizontal overflow", (): void => {
             </HorizontalOverflow>
         );
 
+        renderedWithImagesAndNextAndPrevious.instance()[
+            "getAvailableWidth"
+        ] = (): number => 500;
+        renderedWithImagesAndNextAndPrevious.instance()[
+            "getMaxScrollDistance"
+        ] = (): number => 2860;
+        renderedWithImagesAndNextAndPrevious.instance()["getScrollPeek"] = (): number =>
+            0;
+
         expect(
             renderedWithImagesAndNextAndPrevious
                 .instance()
                 ["getPreviousDistance"](
-                    500,
                     [120, 1400, 80, 220, 210, 100, 90, 200, 190, 170, 180, 210, 190],
                     1520
                 )

@@ -44,7 +44,7 @@ class HorizontalOverflow extends Foundation<
         nextItemPeek: 50,
     };
     private static DirectionAttributeName: string = "dir";
-    private static defaultScrollAnimDuration: number = 500;
+    private static defaultScrollAnimationDuration: number = 500;
 
     protected handledProps: HandledProps<HorizontalOverflowHandledProps> = {
         scrollDuration: void 0,
@@ -319,7 +319,7 @@ class HorizontalOverflow extends Foundation<
         if (this.isScrollAnimating) {
             const duration: number = this.props.scrollDuration
                 ? this.props.scrollDuration
-                : HorizontalOverflow.defaultScrollAnimDuration;
+                : HorizontalOverflow.defaultScrollAnimationDuration;
             const currentDate: number = new Date().getTime();
             const currentTime: number = currentDate - this.currentScrollAnimStartTime;
 
@@ -731,7 +731,7 @@ class HorizontalOverflow extends Foundation<
         this.openRequestAnimationFrame = null;
         const duration: number = this.props.scrollDuration
             ? this.props.scrollDuration
-            : HorizontalOverflow.defaultScrollAnimDuration;
+            : HorizontalOverflow.defaultScrollAnimationDuration;
         const currentDate: number = new Date().getTime();
         const currentTime: number = currentDate - this.currentScrollAnimStartTime;
 
