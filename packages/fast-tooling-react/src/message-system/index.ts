@@ -1,9 +1,14 @@
 /// <reference lib="webworker" />
 
 import {
+    ComponentMessageIncoming,
+    DataMessageIncoming,
+    DeregisterComponentMessageOutgoing,
+    InitializeMessageOutgoing,
     MessageSystemComponentTypeAction,
-    MessageSystemData,
+    MessageSystemIncoming,
     MessageSystemType,
+    RegisterComponentMessageOutgoing,
 } from "./message-system.props";
 
 /**
@@ -18,31 +23,57 @@ import {
  */
 
 const registeredComponents: object = {};
+let dataBlob: any = {};
 
 onmessage = function(e: MessageEvent): void {
-    switch ((e.data as MessageSystemData).type) {
+    switch ((e.data as MessageSystemIncoming).type) {
         case MessageSystemType.component:
-            switch (e.data.action) {
-                case MessageSystemComponentTypeAction.register:
-                    registeredComponents[e.data.id] = {
-                        self: e.data.id,
-                    };
+            handleComponentMessage(e.data);
+            break;
+        case MessageSystemType.data:
+            handleDataMessage(e.data);
+            break;
+        case MessageSystemType.initialize:
+            dataBlob = e.data.data;
 
-                    postMessage({
-                        type: "component",
-                        action: "registered",
-                        id: e.data.id,
-                    });
-                    break;
-                case MessageSystemComponentTypeAction.deregister:
-                    delete registeredComponents[e.data.id];
-
-                    postMessage({
-                        type: "component",
-                        action: "de-registered",
-                        id: e.data.id,
-                    });
-                    break;
-            }
+            postMessage({
+                type: MessageSystemType.initialize,
+                data: e.data.data,
+            } as InitializeMessageOutgoing);
     }
 };
+
+/**
+ * Handles all component related messages
+ */
+function handleComponentMessage(data: ComponentMessageIncoming): void {
+    switch (data.action) {
+        case MessageSystemComponentTypeAction.register:
+            registeredComponents[data.id] = {
+                self: data.id,
+            };
+
+            postMessage({
+                type: MessageSystemType.component,
+                action: MessageSystemComponentTypeAction.registered,
+                id: data.id,
+            } as RegisterComponentMessageOutgoing);
+            break;
+        case MessageSystemComponentTypeAction.deregister:
+            delete registeredComponents[data.id];
+
+            postMessage({
+                type: MessageSystemType.component,
+                action: MessageSystemComponentTypeAction.deregistered,
+                id: data.id,
+            } as DeregisterComponentMessageOutgoing);
+            break;
+    }
+}
+
+/**
+ * Handles all data manipulation messages
+ */
+function handleDataMessage(data: DataMessageIncoming): void {
+    // TODO: update data
+}
