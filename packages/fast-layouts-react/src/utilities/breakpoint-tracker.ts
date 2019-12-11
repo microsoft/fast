@@ -40,12 +40,11 @@ class BreakpointTracker {
      * @param defaultBreakpoint?: number - optional breakpoint that can be used instead of window.innerWidth
      */
     constructor() {
-        this.breakpoint = canUseDOM()
-            ? identifyBreakpoint(window.innerWidth, this._breakpoints)
-            : this.defaultBreakpoint;
-
         if (canUseDOM()) {
+            this.breakpoint = identifyBreakpoint(window.innerWidth, this._breakpoints);
             window.addEventListener("resize", this.requestFrame);
+        } else {
+            this.breakpoint = this.defaultBreakpoint;
         }
     }
 
@@ -138,10 +137,7 @@ class BreakpointTracker {
         }
 
         this.openRequestAnimationFrame = true;
-
-        if (canUseDOM()) {
-            window.requestAnimationFrame(this.update);
-        }
+        window.requestAnimationFrame(this.update);
     };
 }
 
