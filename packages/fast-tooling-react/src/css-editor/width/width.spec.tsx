@@ -14,7 +14,7 @@ describe("CSSWidth", () => {
     const managedClasses: CSSWidthClassNameContract = {
         cssWidth: "cssWidth",
         cssWidth_input: "cssWidth_input",
-        cssWidth_disabled: "cssWidth_disabled",
+        cssWidth__disabled: "cssWidth__disabled",
     };
 
     const widthProps: CSSWidthProps = {
@@ -102,7 +102,7 @@ describe("CSSWidth", () => {
             <CSSWidth {...widthProps} disabled={true} managedClasses={managedClasses} />
         );
 
-        expect(rendered.find(`.${managedClasses.cssWidth_disabled}`)).toHaveLength(1);
+        expect(rendered.find(`.${managedClasses.cssWidth__disabled}`)).toHaveLength(1);
         expect(
             rendered
                 .find("input")

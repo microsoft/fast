@@ -38,14 +38,14 @@ export default class CSSHeight extends Foundation<
     public render(): React.ReactNode {
         const {
             cssHeight,
-            cssHeight_disabled,
+            cssHeight__disabled,
             cssHeight_input,
         }: Partial<CSSHeightClassNameContract> = this.props.managedClasses;
 
         return (
             <div
                 className={classNames(cssHeight, [
-                    cssHeight_disabled,
+                    cssHeight__disabled,
                     this.props.disabled,
                 ])}
             >

@@ -4,14 +4,14 @@ import { applyControlWrapper, applyInputStyle } from "../../style";
 export interface CSSWidthClassNameContract {
     cssWidth?: string;
     cssWidth_input?: string;
-    cssWidth_disabled?: string;
+    cssWidth__disabled?: string;
 }
 
 const styles: ComponentStyles<CSSWidthClassNameContract, {}> = {
     cssWidth: {
         ...applyControlWrapper(),
     },
-    cssWidth_disabled: {},
+    cssWidth__disabled: {},
     cssWidth_input: {
         ...applyInputStyle(),
         width: "50%",

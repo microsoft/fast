@@ -34,13 +34,16 @@ export default class CSSWidth extends Foundation<
     public render(): React.ReactNode {
         const {
             cssWidth,
-            cssWidth_disabled,
+            cssWidth__disabled,
             cssWidth_input,
         }: Partial<CSSWidthClassNameContract> = this.props.managedClasses;
 
         return (
             <div
-                className={classNames(cssWidth, [cssWidth_disabled, this.props.disabled])}
+                className={classNames(cssWidth, [
+                    cssWidth__disabled,
+                    this.props.disabled,
+                ])}
             >
                 <input
                     className={cssWidth_input}

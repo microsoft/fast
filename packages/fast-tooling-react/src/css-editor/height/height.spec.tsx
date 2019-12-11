@@ -14,7 +14,7 @@ describe("CSSHeight", () => {
     const managedClasses: CSSHeightClassNameContract = {
         cssHeight: "cssHeight",
         cssHeight_input: "cssHeight_input",
-        cssHeight_disabled: "cssHeight_disabled",
+        cssHeight__disabled: "cssHeight__disabled",
     };
 
     const heightProps: CSSHeightProps = {
@@ -104,7 +104,7 @@ describe("CSSHeight", () => {
             <CSSHeight {...heightProps} disabled={true} managedClasses={managedClasses} />
         );
 
-        expect(rendered.find(`.${managedClasses.cssHeight_disabled}`)).toHaveLength(1);
+        expect(rendered.find(`.${managedClasses.cssHeight__disabled}`)).toHaveLength(1);
         expect(
             rendered
                 .find("input")
