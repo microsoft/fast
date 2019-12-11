@@ -1,21 +1,41 @@
 export enum MessageSystemComponentTypeAction {
     register = "register",
     deregister = "deregister",
+    registered = "registered",
+    deregistered = "deregistered",
 }
 
 export enum MessageSystemDataTypeAction {
     update = "update",
     move = "move",
     duplicate = "duplicate",
+    duplicated = "duplicated",
 }
 
 export enum MessageSystemType {
     component = "component",
     data = "data",
+    initialize = "initialize",
 }
 
 export enum MessageSystemSubscriptionType {
     data = "data",
+}
+
+/**
+ * Initializing with data
+ */
+export interface InitializeMessageIncoming {
+    type: MessageSystemType.initialize;
+    data: any;
+}
+
+/**
+ * The message that the message system has been initialized
+ */
+export interface InitializeMessageOutgoing {
+    type: MessageSystemType.initialize;
+    data: any;
 }
 
 /**
@@ -29,7 +49,7 @@ export interface MessageSystemSubscription {
 /**
  * The message to register a component
  */
-export interface MessageSystemRegisterComponent {
+export interface RegisterComponentIncoming {
     type: MessageSystemType.component;
     action: MessageSystemComponentTypeAction.register;
     subscribe: MessageSystemSubscription[];
@@ -39,20 +59,38 @@ export interface MessageSystemRegisterComponent {
 /**
  * The message to deregister a component
  */
-export interface MessageSystemDeregisterComponent {
+export interface DeregisterComponentIncoming {
     type: MessageSystemType.component;
     action: MessageSystemComponentTypeAction.deregister;
     id: string;
 }
 
-export type MessageSystemComponentType =
-    | MessageSystemRegisterComponent
-    | MessageSystemDeregisterComponent;
+/**
+ * The message that the component has been registered
+ */
+export interface RegisterComponentMessageOutgoing {
+    type: MessageSystemType.component;
+    action: MessageSystemComponentTypeAction.registered;
+    id: string;
+}
+
+/**
+ * The message that the component has been deregistered
+ */
+export interface DeregisterComponentMessageOutgoing {
+    type: MessageSystemType.component;
+    action: MessageSystemComponentTypeAction.deregistered;
+    id: string;
+}
+
+export type ComponentMessageIncoming =
+    | RegisterComponentIncoming
+    | DeregisterComponentIncoming;
 
 /**
  * The message to update data
  */
-export interface MessageSystemUpdateData {
+export interface UpdateDataMessageIncoming {
     type: MessageSystemType.data;
     action: MessageSystemDataTypeAction.update;
     sourceDataLocation: string;
@@ -62,25 +100,53 @@ export interface MessageSystemUpdateData {
 /**
  * The message to duplicate data
  */
-export interface MessageSystemDuplicateData {
+export interface DuplicateDataMessageIncoming {
     type: MessageSystemType.data;
     action: MessageSystemDataTypeAction.duplicate;
     sourceDataLocation: string;
 }
 
 /**
+ * The message that the data has been duplicated
+ * with updated data
+ */
+export interface DuplicateDataMessageOutgoing {
+    type: MessageSystemType.data;
+    action: MessageSystemDataTypeAction.duplicated;
+    sourceDataLocation: string;
+    value: unknown;
+}
+
+/**
  * The message to move data to a new location
  */
-export interface MessageSystemMoveData {
+export interface MoveDataMessageIncoming {
     type: MessageSystemType.data;
     action: MessageSystemDataTypeAction.move;
     sourceDataLocation: string;
     value: unknown;
 }
 
-export type MessageSystemData =
-    | MessageSystemRegisterComponent
-    | MessageSystemDeregisterComponent
-    | MessageSystemUpdateData
-    | MessageSystemDuplicateData
-    | MessageSystemMoveData;
+/**
+ * Incoming data messages to the message system
+ */
+export type DataMessageIncoming =
+    | UpdateDataMessageIncoming
+    | DuplicateDataMessageIncoming
+    | MoveDataMessageIncoming;
+
+/**
+ * Incoming messages to the message system
+ */
+export type MessageSystemIncoming =
+    | InitializeMessageIncoming
+    | ComponentMessageIncoming
+    | DataMessageIncoming;
+
+/**
+ * Outgoing messages from the message system
+ */
+export type MessageSystemOutgoing =
+    | RegisterComponentMessageOutgoing
+    | DeregisterComponentMessageOutgoing
+    | DuplicateDataMessageOutgoing;
