@@ -21,6 +21,11 @@ class BreakpointTracker {
     private breakpoint: number;
 
     /**
+     * Default breakpoint that can be set, used when the DOM is unavailable (useful for server side rendering)
+     */
+    private _defaultBreakpoint: Breakpoint = 0;
+
+    /**
      * Track if we have an open animation frame request
      */
     private openRequestAnimationFrame: boolean;
@@ -32,15 +37,15 @@ class BreakpointTracker {
 
     /**
      * Constructor for the BreakpointTracker component.
+     * @param defaultBreakpoint?: number - optional breakpoint that can be used instead of window.innerWidth
      */
     constructor() {
-        if (!canUseDOM()) {
-            return;
+        if (canUseDOM()) {
+            this.breakpoint = identifyBreakpoint(window.innerWidth, this._breakpoints);
+            window.addEventListener("resize", this.requestFrame);
+        } else {
+            this.breakpoint = this.defaultBreakpoint;
         }
-
-        this.breakpoint = identifyBreakpoint(window.innerWidth, this._breakpoints);
-
-        window.addEventListener("resize", this.requestFrame);
     }
 
     /**
@@ -55,8 +60,22 @@ class BreakpointTracker {
      */
     public set breakpoints(breakpointConfig: Breakpoints) {
         this._breakpoints = breakpointConfig;
+        this.update();
+    }
 
-        this.breakpoint = identifyBreakpoint(window.innerWidth, this._breakpoints);
+    /**
+     * Gets the default breakpoint value
+     */
+    public get defaultBreakpoint(): Breakpoint {
+        return this._defaultBreakpoint;
+    }
+
+    /**
+     * Sets the default breakpoint value
+     */
+    public set defaultBreakpoint(breakpoint: Breakpoint) {
+        this._defaultBreakpoint = breakpoint;
+        this.update();
     }
 
     /**
@@ -81,8 +100,9 @@ class BreakpointTracker {
      * Notifies subscribes if a breakpoint threshold has been crossed
      */
     public update = (): void => {
-        const windowWidth: number = window.innerWidth;
-        const breakpoint: Breakpoint = identifyBreakpoint(windowWidth, this._breakpoints);
+        const breakpoint: Breakpoint = canUseDOM()
+            ? identifyBreakpoint(window.innerWidth, this._breakpoints)
+            : this.defaultBreakpoint;
 
         if (this.breakpoint !== breakpoint) {
             this.breakpoint = breakpoint;
