@@ -18,6 +18,11 @@
                     "title": "Width",
                     "type": "string",
                     "formControlId": "width"
+                },
+                "height": {
+                    "title": "Height",
+                    "type": "string",
+                    "formControlId": "height"
                 }
             }
         }

@@ -840,7 +840,7 @@ export class Example extends React.Component {
     render() {
         return (
             <CSSWidth
-                data={this.state.cssValues}
+                value={this.state.cssValues}
                 onChange={this.handleCSSValueUpdate}
             />
         );
@@ -877,7 +877,7 @@ export class Example extends React.Component {
     render() {
         return (
             <CSSHeight
-                data={this.state.cssValues}
+                value={this.state.cssValues}
                 onChange={this.handleCSSValueUpdate}
             />
         );

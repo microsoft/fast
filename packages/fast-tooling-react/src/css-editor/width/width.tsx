@@ -37,6 +37,7 @@ export default class CSSWidth extends Foundation<
             cssWidth_disabled,
             cssWidth_input,
         }: Partial<CSSWidthClassNameContract> = this.props.managedClasses;
+
         return (
             <div
                 className={classNames(cssWidth, [cssWidth_disabled, this.props.disabled])}

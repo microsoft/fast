@@ -3,6 +3,7 @@ import Adapter from "enzyme-adapter-react-16";
 import { configure, mount, shallow } from "enzyme";
 import CSSHeight from "./height";
 import { CSSHeightClassNameContract } from "./height.style";
+import { CSSHeightProps } from "./height.props";
 
 /**
  * Configure Enzyme
@@ -12,26 +13,35 @@ configure({ adapter: new Adapter() });
 describe("CSSHeight", () => {
     const managedClasses: CSSHeightClassNameContract = {
         cssHeight: "cssHeight",
-        cssHeight_control: "cssHeight_control",
         cssHeight_input: "cssHeight_input",
-        cssHeight_label: "cssHeight_label",
+        cssHeight_disabled: "cssHeight_disabled",
+    };
+
+    const heightProps: CSSHeightProps = {
+        dataLocation: "",
+        onChange: jest.fn(),
+        value: "",
+        disabled: false,
+        reportValidity: jest.fn(),
+        updateValidity: jest.fn(),
+        elementRef: null,
     };
 
     test("should not throw", () => {
         expect(() => {
-            shallow(<CSSHeight />);
+            shallow(<CSSHeight {...heightProps} />);
         }).not.toThrow();
     });
     test("should have a displayName that matches the component name", () => {
         expect((CSSHeight as any).name).toBe(CSSHeight.displayName);
     });
-    test("should use the `data` prop as the input value if the `height` is provided", () => {
+    test("should use the `value` prop as the input value if the `height` is provided", () => {
         const heightValue: string = "12px";
         const rendered: any = mount(
             <CSSHeight
-                data={{ height: heightValue }}
                 managedClasses={managedClasses}
-                onChange={jest.fn()}
+                {...heightProps}
+                value={heightValue}
             />
         );
 
@@ -45,7 +55,7 @@ describe("CSSHeight", () => {
         const callback: any = jest.fn();
         const rendered: any = mount(
             <CSSHeight
-                data={{ height: heightValue }}
+                value={heightValue}
                 managedClasses={managedClasses}
                 onChange={callback}
             />
@@ -58,7 +68,7 @@ describe("CSSHeight", () => {
             .simulate("change", { target: { value: newHeightValue } });
 
         expect(callback).toHaveBeenCalledTimes(1);
-        expect(callback.mock.calls[0][0]).toEqual({ height: newHeightValue });
+        expect(callback.mock.calls[0][0]).toEqual({ value: newHeightValue });
     });
     test("should not change the input from controlled to uncontrolled", () => {
         const heightValue: string = "12px";
@@ -66,7 +76,7 @@ describe("CSSHeight", () => {
         const callback: any = jest.fn();
         const rendered: any = mount(
             <CSSHeight
-                data={{ height: heightValue }}
+                value={heightValue}
                 managedClasses={managedClasses}
                 onChange={callback}
             />
@@ -82,11 +92,24 @@ describe("CSSHeight", () => {
         expect(callback.mock.calls[0][0]).toEqual({ height: newHeightValue });
 
         rendered.setProps({
-            data: {},
+            value: "",
         });
 
         expect(rendered.find(`.${managedClasses.cssHeight_input}`).prop("value")).toBe(
             ""
         );
+    });
+    test("should be disabled when disabled props is passed", () => {
+        const rendered: any = mount(
+            <CSSHeight {...heightProps} disabled={true} managedClasses={managedClasses} />
+        );
+
+        expect(rendered.find(`.${managedClasses.cssHeight_disabled}`)).toHaveLength(1);
+        expect(
+            rendered
+                .find("input")
+                .at(0)
+                .prop("disabled")
+        ).toBeTruthy();
     });
 });

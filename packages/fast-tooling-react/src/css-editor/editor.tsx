@@ -8,8 +8,9 @@ import {
 import cssEditorDataSchema from "./editor-data.schema";
 import { CSSColor } from "./color";
 import { CSSWidth } from "./width";
+import { CSSHeight } from "./height";
 import { ControlConfig, Form, StandardControlPlugin } from "../form/";
-import { colorPlugInId, widthPluginId } from "./editor.constants";
+import { colorPlugInId, heightPluginId, widthPluginId } from "./editor.constants";
 
 export default class CSSEditor extends Foundation<
     CSSEditorHandledProps,
@@ -47,6 +48,12 @@ export default class CSSEditor extends Foundation<
                 id: widthPluginId,
                 control: (config: ControlConfig): React.ReactNode => {
                     return <CSSWidth value={this.props.data} {...config} />;
+                },
+            }),
+            new StandardControlPlugin({
+                id: heightPluginId,
+                control: (config: ControlConfig): React.ReactNode => {
+                    return <CSSHeight value={this.props.data} {...config} />;
                 },
             }),
         ];

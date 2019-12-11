@@ -1,23 +1,17 @@
 import { ManagedClasses } from "@microsoft/fast-jss-manager-react";
 import { CSSHeightClassNameContract } from "./height.style";
+import { CommonControlConfig } from "../../form/templates";
+import { Omit } from "utility-types";
 
 export interface CSSHeightValues {
     height?: string;
 }
 
-export interface CSSHeightUnhandledProps extends React.HTMLAttributes<HTMLDivElement> {}
+export interface CSSHeightUnhandledProps
+    extends Omit<React.HTMLAttributes<HTMLDivElement>, "onChange"> {}
 
 export interface CSSHeightHandledProps
-    extends ManagedClasses<CSSHeightClassNameContract> {
-    /**
-     * The data
-     */
-    data?: CSSHeightValues;
-
-    /**
-     * The onChange callback
-     */
-    onChange?: (height: CSSHeightValues) => void;
-}
+    extends CommonControlConfig,
+        ManagedClasses<CSSHeightClassNameContract> {}
 
 export type CSSHeightProps = CSSHeightHandledProps & CSSHeightUnhandledProps;

@@ -35,7 +35,7 @@ describe("CSSWidth", () => {
     test("should have a displayName that matches the component name", () => {
         expect((CSSWidth as any).name).toBe(CSSWidth.displayName);
     });
-    test("should use the `data` prop as the input value if the `width` is provided", () => {
+    test("should use the `value` prop as the input value if the `width` is provided", () => {
         const widthValue: string = "12px";
         const rendered: any = mount(
             <CSSWidth
@@ -55,9 +55,9 @@ describe("CSSWidth", () => {
         const callback: any = jest.fn();
         const rendered: any = mount(
             <CSSWidth
+                value={widthValue}
                 managedClasses={managedClasses}
                 onChange={callback}
-                value={widthValue}
             />
         );
 
@@ -76,9 +76,9 @@ describe("CSSWidth", () => {
         const callback: any = jest.fn();
         const rendered: any = mount(
             <CSSWidth
+                value={widthValue}
                 managedClasses={managedClasses}
                 onChange={callback}
-                value={widthValue}
             />
         );
 

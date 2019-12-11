@@ -12,15 +12,6 @@ export interface CSSWidthUnhandledProps
 
 export interface CSSWidthHandledProps
     extends CommonControlConfig,
-        ManagedClasses<CSSWidthClassNameContract> {
-    // /**
-    //  * The data
-    //  */
-    // data?: CSSWidthValues;
-    // /**
-    //  * The onChange callback
-    //  */
-    // onChange?: (config: CommonControlConfig) => void;
-}
+        ManagedClasses<CSSWidthClassNameContract> {}
 
 export type CSSWidthProps = CSSWidthHandledProps & CSSWidthUnhandledProps;
