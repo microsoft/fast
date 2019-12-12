@@ -8,7 +8,6 @@ import {
     FormSectionProps,
     InitialOneOfAnyOfState,
     OneOfAnyOf,
-    oneOfAnyOfType,
 } from "../form-section.props";
 import { cloneDeep, get, isEmpty, mergeWith, omit, set, unset } from "lodash-es";
 import {
@@ -16,6 +15,7 @@ import {
     normalizeDataLocationToDotNotation,
     squareBracketsRegex,
 } from "../../data-utilities/location";
+import { oneOfAnyOfType } from "../../data-utilities/schema";
 import { ErrorObject } from "ajv";
 import { FormControlSwitchProps } from "../form-control-switch.props";
 import { getDataFromSchema } from "../../data-utilities";

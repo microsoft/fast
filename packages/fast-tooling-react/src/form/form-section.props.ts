@@ -3,6 +3,7 @@ import {
     FormOrderByPropertyNamesProperties,
     FormOrderByPropertyNamesProps,
 } from "./form.props";
+import { oneOfAnyOfType } from "../data-utilities/schema";
 import { OnChangeConfig, StandardControlPlugin, UpdateSectionConfig } from "./templates";
 import { ErrorObject } from "ajv";
 import { SingleLineControlPlugin } from "./templates/plugin.control.single-line";
@@ -14,11 +15,6 @@ export interface FormSectionClassNameContract {
     formSection: string;
     formSection__disabled: string;
     formSection_invalidMessage: string;
-}
-
-export enum oneOfAnyOfType {
-    anyOf = "anyOf",
-    oneOf = "oneOf",
 }
 
 export interface InitialOneOfAnyOfState {

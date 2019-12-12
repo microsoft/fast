@@ -8,9 +8,10 @@ import {
 import mergedOneOfSchema from "../../__tests__/schemas/merged-one-of.schema.json";
 import childrenSchema from "../../__tests__/schemas/children.schema.json";
 import textFieldSchema from "../../__tests__/schemas/textarea.schema.json";
-import { InitialOneOfAnyOfState, oneOfAnyOfType } from "../form-section.props";
 import ajv, { ValidationError } from "ajv";
 import { getValidationErrors } from "../../utilities/ajv-validation";
+import { InitialOneOfAnyOfState } from "../form-section.props";
+import { oneOfAnyOfType } from "../../data-utilities/schema";
 
 /**
  * Gets a schema by data location (lodash path syntax)
