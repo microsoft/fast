@@ -1,22 +1,28 @@
 import { ComponentStyles } from "@microsoft/fast-jss-manager-react";
-import { applyControlRegion, applyInputStyle, applyLabelStyle } from "../../style";
+import {
+    applyControlRegion,
+    applyControlWrapper,
+    applyInputStyle,
+    applyLabelStyle,
+} from "../../style";
 
 export interface CSSBoxShadowClassNameContract {
     cssBoxShadow?: string;
     cssBoxShadow_colorInputRegion?: string;
     cssBoxShadow_control?: string;
     cssBoxShadow_controlRegion?: string;
-    cssBoxShadow_colorRegion?: string;
     cssBoxShadow_opacityInput?: string;
     cssBoxShadow_xInput?: string;
     cssBoxShadow_yInput?: string;
     cssBoxShadow_blurInput?: string;
     cssBoxShadow_label?: string;
+    cssBoxShadow__disabled?: string;
 }
 
 const styles: ComponentStyles<CSSBoxShadowClassNameContract, {}> = {
     cssBoxShadow: {
-        display: "flex",
+        ...applyControlWrapper(),
+        ...applyControlRegion(),
     },
     cssBoxShadow_colorInputRegion: {
         borderRadius: "2px",
@@ -33,11 +39,11 @@ const styles: ComponentStyles<CSSBoxShadowClassNameContract, {}> = {
             pointerEvents: "none",
         },
     },
-    cssBoxShadow_colorRegion: {
-        width: "37%",
-    },
     cssBoxShadow_control: {
         ...applyControlRegion(),
+        display: "flex",
+        alignItems: "flex-end",
+        width: "37%",
     },
     cssBoxShadow_controlRegion: {
         display: "flex",
@@ -65,6 +71,7 @@ const styles: ComponentStyles<CSSBoxShadowClassNameContract, {}> = {
     cssBoxShadow_label: {
         ...applyLabelStyle(),
     },
+    cssBoxShadow__disabled: {},
 };
 
 export default styles;

@@ -13,10 +13,12 @@ import { CSSHeight } from "./height";
 import { ControlConfig, Form, StandardControlPlugin } from "../form/";
 import {
     backgroundPlugInId,
+    boxShadowPlugInId,
     colorPlugInId,
     heightPluginId,
     widthPluginId,
 } from "./editor.constants";
+import { CSSBoxShadow } from "./box-shadow";
 
 export default class CSSEditor extends Foundation<
     CSSEditorHandledProps,
@@ -67,6 +69,12 @@ export default class CSSEditor extends Foundation<
                 control: (config: ControlConfig): React.ReactNode => {
                     return <CSSWidth value={this.props.data} {...config} />;
                 },
+            }),
+            new StandardControlPlugin({
+                id: boxShadowPlugInId,
+                control: (config: ControlConfig): React.ReactNode => {
+                    return <CSSBoxShadow value={this.props.data} {...config} />;
+                }
             }),
         ];
     }
