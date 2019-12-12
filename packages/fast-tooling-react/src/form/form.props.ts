@@ -70,11 +70,13 @@ export interface FormProps {
 
     /**
      * The plugins to update the schema
+     * @deprecated
      */
     plugins?: Array<FormPlugin<FormPluginProps>>;
 
     /**
      * The change event for updating the schema
+     * @deprecated
      */
     onSchemaChange?: SchemaOnChange;
 
