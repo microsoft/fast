@@ -1,3 +1,4 @@
+import { ErrorObject } from "ajv";
 import { AddExampleData } from "../form-section.props";
 import { FormChildOptionItem } from "../form";
 
@@ -148,6 +149,11 @@ export interface ControlTemplateUtilitiesProps
     invalidMessage: string;
 
     /**
+     * The provided error message from ajv
+     */
+    validationErrors: ErrorObject[] | void;
+
+    /**
      * Display the validation inline
      */
     displayValidationInline?: boolean;
@@ -194,6 +200,16 @@ export interface CommonControlConfig {
      * The ref belonging to the form element injected as part of the control
      */
     elementRef: React.Ref<FormHTMLElement>;
+
+    /**
+     * The invalid error object
+     */
+    validationErrors: ErrorObject[] | void;
+
+    /**
+     * Display the validation inline
+     */
+    displayValidationInline?: boolean;
 
     /**
      * Callback for reporting validity on

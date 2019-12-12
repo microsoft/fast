@@ -123,6 +123,7 @@ const formControlSwitchProps: FormControlSwitchProps = {
     onUpdateSection: null,
     onChange: null,
     invalidMessage: "",
+    validationErrors: [],
 };
 
 describe("FormControlSwitch", () => {

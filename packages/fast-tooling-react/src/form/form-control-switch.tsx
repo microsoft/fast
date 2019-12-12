@@ -261,6 +261,7 @@ class FormControlSwitch extends React.Component<FormControlSwitchProps, {}> {
             badge: schema.badge,
             badgeDescription: schema.badgeDescription,
             invalidMessage: this.props.invalidMessage,
+            validationErrors: this.props.validationErrors,
             displayValidationBrowserDefault: this.props.displayValidationBrowserDefault,
             displayValidationInline: this.props.displayValidationInline,
             onUpdateSection: this.props.onUpdateSection,

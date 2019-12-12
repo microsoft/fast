@@ -7,6 +7,7 @@ import styles, { ArrayControlClassNameContract } from "./control.array.style";
 import { ArrayControlProps, ArrayControlState } from "./control.array.props";
 import { ArrayAction, DragItem } from "../templates";
 import { classNames } from "@microsoft/fast-web-utilities";
+import { ErrorObject } from "ajv";
 
 /**
  * Form control definition
@@ -43,7 +44,8 @@ class ArrayControl extends React.Component<
                     ],
                     [
                         this.props.managedClasses.arrayControl__invalid,
-                        this.props.invalidMessage !== "",
+                        this.props.invalidMessage !== "" &&
+                            !!this.props.displayValidationInline,
                     ]
                 )}
             >
@@ -161,32 +163,61 @@ class ArrayControl extends React.Component<
         const {
             arrayControl_existingItemRemoveButton,
             arrayControl_existingItemListItem,
+            arrayControl_existingItemListItem__invalid,
             arrayControl_existingItemListItemLink,
         }: Partial<ArrayControlClassNameContract> = this.props.managedClasses;
 
         return getArrayLinks(data).map(
             (text: string, index: number): React.ReactNode => {
+                const invalidError: React.ReactNode = this.renderValidationError(index);
+
                 return (
-                    <DragItem
-                        key={index}
-                        index={index}
-                        minItems={this.props.minItems}
-                        itemLength={getArrayLinks(data).length}
-                        itemRemoveClassName={arrayControl_existingItemRemoveButton}
-                        itemClassName={arrayControl_existingItemListItem}
-                        itemLinkClassName={arrayControl_existingItemListItemLink}
-                        removeDragItem={this.arrayItemClickHandlerFactory}
-                        onClick={this.arrayClickHandlerFactory}
-                        moveDragItem={this.handleMoveDragItem}
-                        dropDragItem={this.handleDropDragItem}
-                        dragStart={this.handleDragStart}
-                        dragEnd={this.handleDragEnd}
-                    >
-                        {text}
-                    </DragItem>
+                    <React.Fragment key={this.props.dataLocation + index}>
+                        <DragItem
+                            key={index}
+                            index={index}
+                            minItems={this.props.minItems}
+                            itemLength={getArrayLinks(data).length}
+                            itemRemoveClassName={arrayControl_existingItemRemoveButton}
+                            itemClassName={classNames(arrayControl_existingItemListItem, [
+                                arrayControl_existingItemListItem__invalid,
+                                invalidError !== null,
+                            ])}
+                            itemLinkClassName={arrayControl_existingItemListItemLink}
+                            removeDragItem={this.arrayItemClickHandlerFactory}
+                            onClick={this.arrayClickHandlerFactory}
+                            moveDragItem={this.handleMoveDragItem}
+                            dropDragItem={this.handleDropDragItem}
+                            dragStart={this.handleDragStart}
+                            dragEnd={this.handleDragEnd}
+                        >
+                            {text}
+                        </DragItem>
+                        {!!this.props.displayValidationInline ? invalidError : null}
+                    </React.Fragment>
                 );
             }
         );
+    }
+
+    private renderValidationError(index: number): React.ReactNode {
+        if (typeof this.props.validationErrors === "undefined") {
+            return null;
+        }
+
+        for (const error of this.props.validationErrors) {
+            if (error.dataPath.startsWith(`.${this.props.dataLocation}[${index}]`)) {
+                return (
+                    <div
+                        className={this.props.managedClasses.arrayControl_invalidMessage}
+                    >
+                        {error.message}
+                    </div>
+                );
+            }
+        }
+
+        return null;
     }
 
     /**
