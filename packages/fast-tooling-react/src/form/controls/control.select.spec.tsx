@@ -26,6 +26,7 @@ const selectProps: SelectControlProps = {
     value: "",
     schema: {},
     elementRef: null,
+    validationErrors: [],
 };
 
 describe("SelectControl", () => {

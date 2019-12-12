@@ -21,6 +21,7 @@ const themeProps: ThemeControlProps = {
     updateValidity: jest.fn(),
     disabled: false,
     elementRef: null,
+    validationErrors: [],
 };
 
 const managedClasses: ThemeControlClassNameContract = {

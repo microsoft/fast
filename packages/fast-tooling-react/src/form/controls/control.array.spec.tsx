@@ -6,6 +6,7 @@ import { ArrayControlProps } from "./control.array.props";
 import { ArrayControlClassNameContract } from "./control.array.style";
 import HTML5Backend from "react-dnd-html5-backend";
 import { ContextComponent, DragDropContext } from "react-dnd";
+import { ErrorObject } from "ajv";
 
 const TestArrayControl: typeof ArrayControl & ContextComponent<any> = DragDropContext(
     HTML5Backend
@@ -30,12 +31,16 @@ const arrayProps: ArrayControlProps = {
     disabled: false,
     elementRef: null,
     updateValidity: jest.fn(),
+    validationErrors: [],
 };
 
 const managedClasses: ArrayControlClassNameContract = {
     arrayControl: "arrayControl-class",
     arrayControl__disabled: "arrayControl__disabled-class",
     arrayControl__invalid: "arrayControl__disabled-class",
+    arrayControl_invalidMessage: "arrayControl_invalidMessage-class",
+    arrayControl_existingItemListItem__invalid:
+        "arrayControl_existingItemListItem__invalid-class",
     arrayControl_addItem: "arrayControl_addItem-class",
     arrayControl_addItemLabel: "arrayControl_addItemLabel-class",
     arrayControl_addItemButton: "arrayControl_addItemButton-class",
@@ -269,5 +274,45 @@ describe("ArrayControl", () => {
         );
 
         expect(rendered.find(`.${managedClasses.arrayControl__invalid}`)).toBeTruthy();
+    });
+    test("should add an invalid class on each array item that is invalid", () => {
+        const rendered: any = mount(
+            <TestArrayControl
+                {...arrayProps}
+                invalidMessage={"foo"}
+                validationErrors={[
+                    { dataPath: ".foo[0]", message: "bar" } as ErrorObject,
+                ]}
+                managedClasses={managedClasses}
+                dataLocation={"foo"}
+                value={["foo", true]}
+            />
+        );
+
+        expect(
+            rendered.find(`.${managedClasses.arrayControl_existingItemListItem__invalid}`)
+        ).toHaveLength(1);
+    });
+    test("should show an invalid message on each invalid array item if the displayInlineValidation prop is passed", () => {
+        const invalidItemMessage: string = "foobarbat";
+        const rendered: any = mount(
+            <TestArrayControl
+                {...arrayProps}
+                invalidMessage={"foo"}
+                validationErrors={[
+                    { dataPath: ".foo[0]", message: invalidItemMessage } as ErrorObject,
+                ]}
+                displayValidationInline={true}
+                managedClasses={managedClasses}
+                dataLocation={"foo"}
+                value={["foo", true]}
+            />
+        );
+
+        const invalidItem: any = rendered.find(
+            `.${managedClasses.arrayControl_invalidMessage}`
+        );
+
+        expect(invalidItem.text()).toEqual(invalidItemMessage);
     });
 });

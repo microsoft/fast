@@ -13,5 +13,5 @@ export default {
     objectExample: {
         invalidBooleanWrongType: "bat",
     },
-    arrayExample: [true],
+    arrayExample: [true, "foo", false, "bar", 3],
 };
