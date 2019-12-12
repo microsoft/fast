@@ -61,6 +61,13 @@ export interface HorizontalOverflowHandledProps extends HorizontalOverflowManage
      * Use `onScrollChange` to receive if scroll is at the start or end of the overflow set
      */
     onScrollChange?: (scrollObject: PositionChange) => void;
+
+    /**
+     * When the component scrolls focused content into view how many pixels should the next item "peek" into view
+     * Default is 50. Note that peek values that are too small can result in browsers rapidly moving focused items into
+     * view and skipping the scroll animation
+     */
+    nextItemPeek?: number;
 }
 
 export type HorizontalOverflowProps = HorizontalOverflowHandledProps &
