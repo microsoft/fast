@@ -52,6 +52,7 @@ import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-
 import React from "react";
 import { SingleLineControlPlugin } from "./templates/plugin.control.single-line";
 import { mapPluginsToSchema } from "./utilities";
+import stringify from "fast-json-stable-stringify";
 import styles from "./form.style";
 
 /**
@@ -72,7 +73,7 @@ class Form extends React.Component<
         props: FormProps,
         state: FormState
     ): Partial<FormState> {
-        if (state.schema !== props.schema) {
+        if (stringify(state.schema) !== stringify(props.schema)) {
             const navigationInstance: Navigation = new Navigation({
                 dataLocation: "",
                 schema: props.schema,
