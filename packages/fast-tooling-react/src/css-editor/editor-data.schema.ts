@@ -32,6 +32,7 @@ export default {
             title: "Width",
             type: "string",
             formControlId: widthPluginId,
+        },
         shadow: {
             title: "Shadow",
             type: "string",
