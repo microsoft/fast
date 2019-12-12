@@ -24,6 +24,7 @@ const buttonProps: ButtonControlProps = {
     reportValidity: jest.fn(),
     updateValidity: jest.fn(),
     elementRef: null,
+    validationErrors: [],
 };
 
 describe("ButtonControl", () => {

@@ -172,6 +172,7 @@ class FormSection extends React.Component<
                 onChange={this.props.onChange}
                 onUpdateSection={this.props.onUpdateSection}
                 invalidMessage={invalidMessage}
+                validationErrors={this.props.validationErrors}
                 displayValidationBrowserDefault={
                     this.props.displayValidationBrowserDefault
                 }

@@ -172,6 +172,8 @@ abstract class ControlTemplateUtilities<P, S> extends React.Component<
             label: this.props.label,
             onUpdateSection: this.props.onUpdateSection,
             invalidMessage: this.props.invalidMessage,
+            validationErrors: this.props.validationErrors,
+            displayValidationInline: this.props.displayValidationInline,
             minItems: this.props.minItems,
             maxItems: this.props.maxItems,
             onAddExampleData: this.props.onAddExampleData,
