@@ -56,7 +56,11 @@
                 "title": "With default",
                 "type": "string",
                 "default": "correct"
-            }
+            },
+            "default": [
+                "correct",
+                "correct"
+            ]
         }
     },
     "default": {

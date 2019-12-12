@@ -81,6 +81,7 @@ const childrenProps: ChildrenControlProps = {
     updateValidity: jest.fn(),
     disabled: false,
     elementRef: null,
+    validationErrors: [],
 };
 
 /* tslint:disable:no-string-literal */

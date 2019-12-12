@@ -36,6 +36,7 @@ const props: SingleLineControlTemplateProps = {
     onChange: jest.fn(),
     onUpdateSection: jest.fn(),
     invalidMessage: "",
+    validationErrors: [],
 };
 
 describe("SingleLineControlTemplate", () => {
