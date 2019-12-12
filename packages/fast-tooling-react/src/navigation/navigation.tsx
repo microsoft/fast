@@ -22,12 +22,9 @@ import {
     NavigationState,
     TreeNavigation,
 } from "./navigation.props";
-import {
-    getDataWithDuplicate,
-    getNavigationFromData,
-    getUpdatedData,
-    isInArray,
-} from "./navigation.utilities";
+import { getNavigationFromData, getUpdatedData } from "./navigation.utilities";
+import { getDataWithDuplicate } from "../data-utilities/duplicate";
+import { isInArray } from "../data-utilities/array";
 import { DraggableNavigationTreeItem, NavigationTreeItem } from "./navigation-tree-item";
 import {
     NavigationTreeItemProps,

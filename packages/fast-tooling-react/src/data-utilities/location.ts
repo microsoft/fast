@@ -12,7 +12,7 @@ import {
     typeKeyword,
 } from "./types";
 import { ChildOptionItem } from "./";
-import { oneOfAnyOfType } from "../form/form-section.props";
+import { oneOfAnyOfType } from "./schema";
 import { isPrimitiveReactNode } from "./node-types";
 import { validateData } from "../utilities/ajv-validation";
 
