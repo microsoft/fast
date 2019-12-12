@@ -1,15 +1,12 @@
 export enum MessageSystemComponentTypeAction {
     register = "register",
     deregister = "deregister",
-    registered = "registered",
-    deregistered = "deregistered",
 }
 
 export enum MessageSystemDataTypeAction {
     update = "update",
     move = "move",
     duplicate = "duplicate",
-    duplicated = "duplicated",
 }
 
 export enum MessageSystemType {
@@ -70,7 +67,7 @@ export interface DeregisterComponentIncoming {
  */
 export interface RegisterComponentMessageOutgoing {
     type: MessageSystemType.component;
-    action: MessageSystemComponentTypeAction.registered;
+    action: MessageSystemComponentTypeAction.register;
     id: string;
 }
 
@@ -79,7 +76,7 @@ export interface RegisterComponentMessageOutgoing {
  */
 export interface DeregisterComponentMessageOutgoing {
     type: MessageSystemType.component;
-    action: MessageSystemComponentTypeAction.deregistered;
+    action: MessageSystemComponentTypeAction.deregister;
     id: string;
 }
 
@@ -112,9 +109,9 @@ export interface DuplicateDataMessageIncoming {
  */
 export interface DuplicateDataMessageOutgoing {
     type: MessageSystemType.data;
-    action: MessageSystemDataTypeAction.duplicated;
+    action: MessageSystemDataTypeAction.duplicate;
     sourceDataLocation: string;
-    value: unknown;
+    data: unknown;
 }
 
 /**
@@ -124,7 +121,7 @@ export interface MoveDataMessageIncoming {
     type: MessageSystemType.data;
     action: MessageSystemDataTypeAction.move;
     sourceDataLocation: string;
-    value: unknown;
+    data: unknown;
 }
 
 /**
