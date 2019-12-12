@@ -1,4 +1,4 @@
-import { colorPlugInId } from "./editor.constants";
+import { colorPlugInId, heightPluginId, widthPluginId } from "./editor.constants";
 
 export default {
     title: "CSS Values",
@@ -11,6 +11,16 @@ export default {
             title: "Color",
             type: "string",
             formControlId: colorPlugInId,
+        },
+        width: {
+            title: "Width",
+            type: "string",
+            formControlId: widthPluginId,
+        },
+        height: {
+            title: "Height",
+            type: "string",
+            formControlId: heightPluginId,
         },
     },
 };

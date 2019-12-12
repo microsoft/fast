@@ -1,10 +1,12 @@
 import React from "react";
-import { get } from "lodash-es";
-import Foundation, {
-    FoundationProps,
-    HandledProps,
-} from "@microsoft/fast-components-foundation-react";
-import { CSSWidthHandledProps, CSSWidthUnhandledProps } from "./width.props";
+import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
+import {
+    CSSWidthHandledProps,
+    CSSWidthProps,
+    CSSWidthUnhandledProps,
+} from "./width.props";
+import { CSSWidthClassNameContract } from "./width.style";
+import { classNames } from "@microsoft/fast-web-utilities";
 
 export default class CSSWidth extends Foundation<
     CSSWidthHandledProps,
@@ -13,33 +15,54 @@ export default class CSSWidth extends Foundation<
 > {
     public static displayName: string = "CSSWidth";
 
+    public static defaultProps: Partial<CSSWidthProps> = {
+        value: "",
+        managedClasses: {},
+    };
+
     protected handledProps: HandledProps<CSSWidthHandledProps> = {
-        data: void 0,
         onChange: void 0,
         managedClasses: void 0,
+        dataLocation: void 0,
+        value: void 0,
+        disabled: void 0,
+        elementRef: void 0,
+        reportValidity: void 0,
+        updateValidity: void 0,
     };
 
     public render(): React.ReactNode {
+        const {
+            cssWidth,
+            cssWidth__disabled,
+            cssWidth_input,
+        }: Partial<CSSWidthClassNameContract> = this.props.managedClasses;
+
         return (
-            <div className={get(this.props, "managedClasses.cssWidth")}>
-                <div className={get(this.props, "managedClasses.cssWidth_control")}>
-                    <label className={get(this.props, "managedClasses.cssWidth_label")}>
-                        Width
-                    </label>
-                    <input
-                        className={get(this.props, "managedClasses.cssWidth_input")}
-                        type={"text"}
-                        value={get(this.props.data, "width", "")}
-                        onChange={this.handleWidthOnChange}
-                    />
-                </div>
+            <div
+                className={classNames(cssWidth, [
+                    cssWidth__disabled,
+                    this.props.disabled,
+                ])}
+            >
+                <input
+                    className={cssWidth_input}
+                    type={"text"}
+                    id={this.props.dataLocation}
+                    value={this.props.value}
+                    disabled={this.props.disabled}
+                    onChange={this.handleWidthOnChange}
+                    onFocus={this.props.reportValidity}
+                    onBlur={this.props.updateValidity}
+                    ref={this.props.elementRef as React.Ref<HTMLInputElement>}
+                />
             </div>
         );
     }
 
     private handleWidthOnChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
         this.props.onChange({
-            width: e.target.value || void 0,
+            value: e.target.value || void 0,
         });
     };
 }
