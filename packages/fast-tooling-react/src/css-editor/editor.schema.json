@@ -9,20 +9,25 @@
             "title": "CSS Values",
             "type": "object",
             "properties": {
+                "background": {
+                    "title": "Background",
+                    "type": "string",
+                    "formControlId": "background"
+                },
                 "color": {
                     "title": "Color",
                     "type": "string",
                     "formControlId": "color"
                 },
-                "width": {
-                    "title": "Width",
-                    "type": "string",
-                    "formControlId": "width"
-                },
                 "height": {
                     "title": "Height",
                     "type": "string",
                     "formControlId": "height"
+                },
+                "width": {
+                    "title": "Width",
+                    "type": "string",
+                    "formControlId": "width"
                 }
             }
         }

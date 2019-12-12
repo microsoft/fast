@@ -1,24 +1,17 @@
 import { ManagedClasses } from "@microsoft/fast-jss-manager-react";
 import { CSSBackgroundClassNameContract } from "./background.style";
+import { CommonControlConfig } from "../../form/templates";
+import { Omit } from "utility-types";
 
 export interface CSSBackgroundValues {
     background?: string;
 }
 
 export interface CSSBackgroundUnhandledProps
-    extends React.HTMLAttributes<HTMLDivElement> {}
+    extends Omit<React.HTMLAttributes<HTMLDivElement>, "onChange"> {}
 
 export interface CSSBackgroundHandledProps
-    extends ManagedClasses<CSSBackgroundClassNameContract> {
-    /**
-     * The data
-     */
-    data?: CSSBackgroundValues;
-
-    /**
-     * The onChange callback
-     */
-    onChange?: (background: CSSBackgroundValues) => void;
-}
+    extends CommonControlConfig,
+        ManagedClasses<CSSBackgroundClassNameContract> {}
 
 export type CSSBackgroundProps = CSSBackgroundHandledProps & CSSBackgroundUnhandledProps;
