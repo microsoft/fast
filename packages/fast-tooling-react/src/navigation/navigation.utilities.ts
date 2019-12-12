@@ -1,9 +1,6 @@
 import { cloneDeep, get, set, unset } from "lodash-es";
 import { ChildOptionItem } from "../data-utilities";
-import {
-    mapSchemaLocationFromDataLocation,
-    normalizeDataLocationToDotNotation,
-} from "../data-utilities/location";
+import { mapSchemaLocationFromDataLocation } from "../data-utilities/location";
 import { NavigationDataType, TreeNavigation } from "./navigation.props";
 import {
     idKeyword,
@@ -11,6 +8,7 @@ import {
     PropertyKeyword,
     typeKeyword,
 } from "../data-utilities/types";
+import { isInArray } from "../data-utilities/array";
 import { VerticalDragDirection } from "./navigation-tree-item.props";
 
 const propsKeyword: string = "props";
@@ -406,22 +404,6 @@ function isTargetInSourceArray(
     return targetParentDataLocation === sourceParentDataLocation;
 }
 
-/**
- * The target is in an array
- */
-export function isInArray(data: unknown, dataLocation: string): boolean {
-    const dataLocationAsDotNotation: string = normalizeDataLocationToDotNotation(
-        dataLocation
-    );
-    const dataLocationSegments: string[] = dataLocationAsDotNotation.split(".");
-    const parentDataLocation: string = dataLocationSegments.slice(0, -1).join(".");
-
-    return (
-        !isNaN(parseInt(dataLocationSegments[dataLocationSegments.length - 1], 10)) &&
-        Array.isArray(get(data, parentDataLocation))
-    );
-}
-
 function setDataOnDropVerticalCenter(
     data: any,
     targetData: any,
@@ -763,49 +745,4 @@ function setDataWhenTargetIsUndefined(
 
     unset(data, sourceDataLocation);
     set(data as object, targetDataLocation, sourceData);
-}
-
-export function getDataWithDuplicate<T>(sourceDataLocation: string, data: T): T {
-    const clonedData: T = cloneDeep(data) as T;
-    const normalizedSourceDataLocation: string = normalizeDataLocationToDotNotation(
-        sourceDataLocation
-    );
-
-    if (isInArray(clonedData, normalizedSourceDataLocation)) {
-        duplicateDataInArray(clonedData, normalizedSourceDataLocation);
-    } else {
-        duplicateData(clonedData, normalizedSourceDataLocation);
-    }
-
-    return clonedData;
-}
-
-function duplicateData(data: unknown, sourceDataLocation: string): void {
-    const sourceData: unknown = get(data as object, sourceDataLocation);
-    const targetData: unknown[] = [sourceData, sourceData];
-
-    set(data as object, sourceDataLocation, targetData);
-}
-
-function duplicateDataInArray(data: unknown, sourceDataLocation: string): void {
-    const sourceData: unknown = get(data as object, sourceDataLocation);
-    const sourceDataLocationSegments: string[] = sourceDataLocation.split(".");
-    const parentSourceDataLocation: string = sourceDataLocationSegments
-        .slice(0, -1)
-        .join(".");
-    const parentSourceData: unknown | unknown[] = get(data, parentSourceDataLocation);
-    let sourceDataLocationIndex: number = 0;
-
-    sourceDataLocationIndex = parseInt(
-        sourceDataLocationSegments[sourceDataLocationSegments.length - 1],
-        10
-    );
-
-    (parentSourceData as unknown[]).splice(
-        sourceDataLocationIndex + 1,
-        0,
-        cloneDeep(sourceData)
-    );
-
-    set(data as object, parentSourceDataLocation, parentSourceData as object[]);
 }
