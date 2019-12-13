@@ -518,7 +518,7 @@ export function isRootLocation(location: string): boolean {
  * Check to see if this schema is the same as another schema
  */
 export function isDifferentSchema(oldSchema: any, newSchema: any): boolean {
-    return oldSchema !== newSchema;
+    return stringify(oldSchema) !== stringify(newSchema);
 }
 
 /**
