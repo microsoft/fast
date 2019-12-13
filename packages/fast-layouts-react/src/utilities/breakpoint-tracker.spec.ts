@@ -1,6 +1,7 @@
 import BreakpointTracker, { BreakpointTrackerCallback } from "./breakpoint-tracker";
 import { Breakpoint, Breakpoints, defaultBreakpoints } from "./breakpoints";
 import { canUseDOM } from "exenv-es6";
+jest.mock("exenv-es6", () => ({ canUseDOM: jest.fn() }));
 
 /* tslint:disable:no-string-literal */
 describe("breakpointTracker", (): void => {
@@ -14,6 +15,7 @@ describe("breakpointTracker", (): void => {
         BreakpointTracker["_defaultBreakpoint"] = 0;
         BreakpointTracker["openRequestAnimationFrame"] = false;
         BreakpointTracker["subscriptions"] = [];
+        canUseDOM["mockImplementation"](() => true);
 
         subscriber = {
             onBreakpointChanged: (notification: BreakpointTrackerCallback): void => {
@@ -95,12 +97,7 @@ describe("breakpointTracker", (): void => {
 
     test("should return the default breakpoint set when the DOM is unavailable", (): void => {
         // make DOM unavailable for test
-        const windowSpy: jest.SpyInstance<any> = jest.spyOn(
-            global as any,
-            "window",
-            "get"
-        );
-        windowSpy.mockImplementation(() => ({ undefined }));
+        canUseDOM["mockImplementation"](() => false);
         expect(canUseDOM()).toEqual(false);
 
         // Set some default breakpoints
