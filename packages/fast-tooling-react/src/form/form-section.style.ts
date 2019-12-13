@@ -7,6 +7,7 @@ const styles: ComponentStyles<FormSectionClassNameContract, {}> = {
         margin: "0",
         padding: "0",
         border: "none",
+        "min-inline-size": "unset", // override for fieldsets inherited style
     },
     formSection__disabled: {},
     formSection_invalidMessage: {
