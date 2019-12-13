@@ -35,7 +35,7 @@ const styles: ComponentStyles<CSSBoxShadowClassNameContract, {}> = {
             fontSize: "12px",
             position: "absolute",
             right: "-38px",
-            top: "4px",
+            top: "6px",
             pointerEvents: "none",
         },
     },
@@ -54,19 +54,20 @@ const styles: ComponentStyles<CSSBoxShadowClassNameContract, {}> = {
     cssBoxShadow_opacityInput: {
         ...applyInputStyle(),
         width: "51%",
-        height: "25px",
+        height: "27px",
+        marginLeft: "4px",
     },
     cssBoxShadow_xInput: {
         ...applyInputStyle(),
-        height: "25px",
+        height: "27px",
     },
     cssBoxShadow_yInput: {
         ...applyInputStyle(),
-        height: "25px",
+        height: "27px",
     },
     cssBoxShadow_blurInput: {
         ...applyInputStyle(),
-        height: "25px",
+        height: "27px",
     },
     cssBoxShadow_label: {
         ...applyLabelStyle(),

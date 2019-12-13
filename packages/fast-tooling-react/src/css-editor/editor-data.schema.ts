@@ -33,7 +33,7 @@ export default {
             type: "string",
             formControlId: widthPluginId,
         },
-        shadow: {
+        boxShadow: {
             title: "Shadow",
             type: "string",
             formControlId: boxShadowPlugInId,
