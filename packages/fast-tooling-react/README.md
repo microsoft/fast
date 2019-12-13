@@ -1013,6 +1013,8 @@ ControlTypes.textarea
 
 ### Using form schema plugins
 
+**NOTE: Schema plugins are DEPRECATED and will be removed in the 2.0.0**
+
 Plugins may be created to determine if a form should change based on data. You can identify a piece of schema that should be updated by adding a unique key to your JSON schema `formPluginId`. When you initialize a custom plugin you will need to pass that same id to the plugin as part of its configuration.
 
 Example schema:
@@ -1069,6 +1071,8 @@ export class MyCustomSchemaPlugin extends FormPlugin {
 Example implementation with the `Form`:
 
 *Note: When the plugins are used the schema used to render the `Form` is internally updated. To get the plugin-modified schema, you can optionally add the `onSchemaChange` callback which will return the newly updated schema.*
+
+**NOTE: The `onSchemaChange` callback is DEPRECATED and will be removed in the 2.0.0**
 
 ```jsx
 import Form from "@microsoft/fast-tooling-react";
