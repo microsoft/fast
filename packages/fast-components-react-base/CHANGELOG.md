@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.22.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-base@4.21.1...@microsoft/fast-components-react-base@4.22.0) (2019-12-13)
+
+
+### Features
+
+* horizontal overflow smooth scrolling ([#2492](https://github.com/Microsoft/fast-dna/issues/2492)) ([5ab1a8e](https://github.com/Microsoft/fast-dna/commit/5ab1a8e597742c7ad2833fa8c593d8fb5ab5ac14))
+
+
+
+
+
 ## [4.21.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-base@4.21.0...@microsoft/fast-components-react-base@4.21.1) (2019-12-11)
 
 

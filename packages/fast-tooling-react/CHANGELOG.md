@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.26.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-tooling-react@1.25.0...@microsoft/fast-tooling-react@1.26.0) (2019-12-13)
+
+
+### Bug Fixes
+
+* account for nested oneOfs when generating example data ([#2512](https://github.com/Microsoft/fast-dna/issues/2512)) ([353a8f5](https://github.com/Microsoft/fast-dna/commit/353a8f56cb2df165db5f11cbfa67856f9845345d))
+* address an overflow issue in form validation messages when displayed inline ([#2516](https://github.com/Microsoft/fast-dna/issues/2516)) ([8427db7](https://github.com/Microsoft/fast-dna/commit/8427db7ecf5da9b2d77a652bb01738209d00a92b))
+* losing focus in oneOfs when editing the form ([#2499](https://github.com/Microsoft/fast-dna/issues/2499)) ([b88b3fe](https://github.com/Microsoft/fast-dna/commit/b88b3fe7e49b8be7fee829d138b7f86616f720c4))
+
+
+### Features
+
+* deprecate the form plugins and onSchemaChange callback ([#2515](https://github.com/Microsoft/fast-dna/issues/2515)) ([633233e](https://github.com/Microsoft/fast-dna/commit/633233e9bc30ed7cf03e5410a4a48778279b8062))
+* display errors next to each array item in the Form ([#2514](https://github.com/Microsoft/fast-dna/issues/2514)) ([2aa6f63](https://github.com/Microsoft/fast-dna/commit/2aa6f63ef863d0dd7217aac2c717354b03dff22c))
+
+
+
+
+
 # [1.25.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-tooling-react@1.24.1...@microsoft/fast-tooling-react@1.25.0) (2019-12-11)
 
 
