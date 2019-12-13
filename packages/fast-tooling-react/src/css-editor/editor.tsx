@@ -73,7 +73,7 @@ export default class CSSEditor extends Foundation<
             new StandardControlPlugin({
                 id: boxShadowPlugInId,
                 control: (config: ControlConfig): React.ReactNode => {
-                    return <CSSBoxShadow value={this.props.data} {...config} />;
+                    return <CSSBoxShadow {...config} />;
                 },
             }),
         ];

@@ -29,7 +29,7 @@
                     "type": "string",
                     "formControlId": "width"
                 },
-                "boxSshadow": {
+                "boxShadow": {
                     "title": "Shadow",
                     "type": "string",
                     "formControlId": "shadow"

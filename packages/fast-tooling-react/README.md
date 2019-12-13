@@ -961,14 +961,14 @@ export class Example extends React.Component {
 }
 ```
 
-### Shadow
+### Box Shadow
 
-The `CSSBoxShadow` component shows an input for a color picker and has a callback that will be fired when the value is updated. In addition, there are also inputs to adjust the, opacity, X, Y, and blur properties on the box-shadow.
+The `CSSBoxShadow` component shows an input for a color picker and has a callback that will be fired when the value is updated. In addition, there are also inputs to adjust the opacity, X, Y, and blur properties on the box-shadow.
 
 Example:
 ```jsx
 import React from "react";
-import { CSSColor } from "@microsoft/fast-tooling-react";
+import { CSSBoxShadow } from "@microsoft/fast-tooling-react";
 
 export class Example extends React.Component {
     constructor(props) {
