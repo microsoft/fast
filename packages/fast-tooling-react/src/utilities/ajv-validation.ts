@@ -46,6 +46,7 @@ export function getValidationErrors(schema: any, data: any): ErrorObject[] {
 
     if (!!!validateData(schema, data)) {
         const schemaRefKey: string = stringify(schema);
+        validateFunctionDictionary[schemaRefKey](data);
         validationErrors = validateFunctionDictionary[schemaRefKey].errors;
     }
 
