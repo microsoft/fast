@@ -2,7 +2,7 @@ import { get } from "lodash-es";
 import { CombiningKeyword, DataType, PropertyKeyword } from "./types";
 import { ChildOptionItem } from ".";
 import { getChildOptionBySchemaId } from "./location";
-import { oneOfAnyOfType } from "../form/form-section.props";
+import { oneOfAnyOfType } from "../data-utilities/schema";
 
 /**
  * This file contains all functionality for generating data
