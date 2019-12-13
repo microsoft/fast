@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.26.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-tooling-react@1.26.0...@microsoft/fast-tooling-react@1.26.1) (2019-12-13)
+
+
+### Bug Fixes
+
+* validation error are not updated after property value change ([#2518](https://github.com/Microsoft/fast-dna/issues/2518)) ([051d5a3](https://github.com/Microsoft/fast-dna/commit/051d5a3e8feab5662d9c9438790c1b9bba142692))
+
+
+
+
+
 # [1.26.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-tooling-react@1.25.0...@microsoft/fast-tooling-react@1.26.0) (2019-12-13)
 
 
