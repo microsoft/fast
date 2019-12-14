@@ -46,7 +46,6 @@ import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 
 import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 import React from "react";
-import { mapPluginsToSchema } from "./utilities";
 import stringify from "fast-json-stable-stringify";
 import styles from "./form.style";
 
@@ -133,24 +132,13 @@ class Form extends React.Component<
         const dataLocation: string | void = get(this.props, "location.dataLocation");
 
         this.untitled = "Untitled";
-        this.rootSchema = mapPluginsToSchema(
-            this.props.schema,
-            this.props.data,
-            this.props.plugins
-        );
+        this.rootSchema = this.props.schema;
         const navigationInstance: Navigation = new Navigation({
             dataLocation: typeof dataLocation === "string" ? dataLocation : "",
             data: this.props.data,
             schema: this.props.schema,
             childOptions: this.props.childOptions ? this.props.childOptions : [],
         });
-
-        if (
-            typeof this.props.onSchemaChange === "function" &&
-            isModifiedSchema(this.rootSchema, this.props.schema)
-        ) {
-            this.props.onSchemaChange(this.rootSchema);
-        }
 
         this.updateControls();
 
@@ -392,28 +380,19 @@ class Form extends React.Component<
                 activeDataLocation: updateSchema ? "" : this.state.activeDataLocation,
             }
         );
-        const updatedSchema: any = mapPluginsToSchema(
-            props.schema,
-            props.data,
-            props.plugins
-        );
 
-        if (isModifiedSchema(this.rootSchema, updatedSchema)) {
+        if (isDifferentSchema(this.rootSchema, props.schema)) {
             // Clean cache for validation if root schema is changed to free memory.
             removeAllCachedValidation();
 
             // The schema must be set before any other state updates occur so that
             // the correct schema is used for state navigation
-            this.rootSchema = updatedSchema;
+            this.rootSchema = props.schema;
 
             state.validationErrors = getValidationErrors(
                 this.rootSchema,
                 this.getDataForValidation(props)
             );
-
-            if (typeof props.onSchemaChange === "function") {
-                props.onSchemaChange(this.rootSchema);
-            }
         }
 
         if (!updateSchema && updateData) {
@@ -554,15 +533,11 @@ class Form extends React.Component<
         const lastNavigationItem: NavigationItem = this.state.navigation[
             this.state.navigation.length - 1
         ];
-        const currentSchema: any = mapPluginsToSchema(
-            lastNavigationItem.schema,
-            this.props.data,
-            this.props.plugins
-        );
+
         const sectionSchema: any = get(
-            currentSchema,
+            lastNavigationItem.schema,
             lastNavigationItem.schemaLocation,
-            currentSchema
+            lastNavigationItem.schema
         );
 
         // Check to see if there is any associated `formControlId`
@@ -602,7 +577,7 @@ class Form extends React.Component<
             data: this.getData("data", "props"),
             schemaLocation: lastNavigationItem.schemaLocation,
             default: lastNavigationItem.default,
-            disabled: currentSchema.disabled,
+            disabled: get(lastNavigationItem, "schema.disabled"),
             dataLocation: this.state.activeDataLocation,
             untitled: this.untitled,
             childOptions: this.props.childOptions,

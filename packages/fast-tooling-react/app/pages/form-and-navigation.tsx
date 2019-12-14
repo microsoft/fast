@@ -1,7 +1,7 @@
 import React from "react";
 import { DesignSystemProvider } from "@microsoft/fast-jss-manager-react";
 import { getDataFromSchema } from "../../src/data-utilities";
-import { BareForm, FormPlugin, FormPluginProps, Navigation } from "../../src";
+import { BareForm, Navigation } from "../../src";
 import {
     FormComponentMappingToPropertyNamesProps,
     FormLocation,
@@ -13,7 +13,6 @@ import {
     FormChildOptionItem,
 } from "../../src/form/types";
 import * as testConfigs from "./form/";
-import { StringUpdateSchemaPlugin } from "./form/plugin/plugin";
 
 export type componentDataOnChange = (e: React.ChangeEvent<HTMLFormElement>) => void;
 
@@ -53,21 +52,10 @@ class FormAndNavigationTestPage extends React.Component<{}, FormTestPageState> {
      */
     private childOptions: FormChildOptionItem[];
 
-    /**
-     * The plugins initialized for the mapPluginsToForm mapper
-     */
-    private plugins: Array<FormPlugin<FormPluginProps>>;
-
     constructor(props: {}) {
         super(props);
 
         this.childOptions = this.getChildOptions();
-
-        this.plugins = [
-            new StringUpdateSchemaPlugin({
-                id: "plugins/pluginModifiedString",
-            }),
-        ];
 
         const exampleData: any = getDataFromSchema(testConfigs.textField.schema);
 
@@ -222,8 +210,6 @@ class FormAndNavigationTestPage extends React.Component<{}, FormTestPageState> {
             schema: this.state.schema,
             data: this.state.data,
             onChange: this.state.onChange,
-            plugins: this.plugins,
-            onSchemaChange: this.handleSchemaChange,
             childOptions: this.childOptions,
         };
 
