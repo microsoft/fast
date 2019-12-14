@@ -36,7 +36,6 @@ The tooling available in FAST Tooling React can be used together to create UI fo
     - [Drag and drop](#drag-and-drop)
     - [Using form control plugins](#using-form-control-plugins)
         - [List of control types](#list-of-control-types)
-    - [Using form schema plugins](#using-form-schema-plugins)
     - [React children as options](#react-children-as-options)
     - [Controlling the visible section](#controlling-the-visible-section)
     - [Validation](#validation)
