@@ -1,6 +1,6 @@
 import * as testConfigs from "./form/";
 
-import { AlignControl, ControlType, Form, FormPlugin, FormPluginProps } from "../../src";
+import { AlignControl, Form } from "../../src";
 import { ControlConfig, StandardControlPlugin, TextAlignControl } from "../../src";
 import {
     FormAttributeSettingsMappingToPropertyNames,
@@ -10,7 +10,6 @@ import {
     FormOrderByPropertyNamesProps,
     FormProps,
 } from "../../src/form/form.props";
-import { OneOfUpdateSchemaPlugin, StringUpdateSchemaPlugin } from "./form/plugin/plugin";
 
 import { DesignSystemProvider } from "@microsoft/fast-jss-manager-react";
 import React from "react";
@@ -91,11 +90,6 @@ class FormTestPage extends React.Component<{}, FormTestPageState> {
     private childOptions: FormChildOptionItem[];
 
     /**
-     * The plugins initialized for the mapPluginsToForm mapper
-     */
-    private plugins: Array<FormPlugin<FormPluginProps>>;
-
-    /**
      * The custom control plugins used in the form
      */
     private controlPlugins: StandardControlPlugin[];
@@ -104,15 +98,6 @@ class FormTestPage extends React.Component<{}, FormTestPageState> {
         super(props);
 
         this.childOptions = this.getChildOptions();
-
-        this.plugins = [
-            new StringUpdateSchemaPlugin({
-                id: "plugins/pluginModifiedString",
-            }),
-            new OneOfUpdateSchemaPlugin({
-                id: "oneOfs/plugins/pluginModifiedString",
-            }),
-        ];
 
         this.controlPlugins = [
             new StandardControlPlugin({
@@ -278,8 +263,6 @@ class FormTestPage extends React.Component<{}, FormTestPageState> {
             schema: this.state.schema,
             data: this.state.data,
             onChange: this.state.onChange,
-            plugins: this.plugins,
-            onSchemaChange: this.handleSchemaChange,
             childOptions: this.childOptions,
             controlPlugins: this.controlPlugins,
         };
