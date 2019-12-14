@@ -1,5 +1,4 @@
 import Navigation, { NavigationItem } from "./utilities/navigation";
-import { FormPlugin, FormPluginProps } from "./plugin";
 import { ErrorObject } from "ajv";
 import { SingleLineControlPlugin, StandardControlPlugin } from "./templates";
 import { ControlContext } from "./templates/types";
@@ -14,8 +13,6 @@ export interface FormClassNameContract {
 }
 
 export type PropsOnChange = (data: any) => void;
-
-export type SchemaOnChange = (schema: any) => void;
 
 export type LocationOnChange = (dataLocation: string) => void;
 
@@ -53,18 +50,6 @@ export interface FormProps {
      * The onChange event for updating the data
      */
     onChange: PropsOnChange;
-
-    /**
-     * The plugins to update the schema
-     * @deprecated
-     */
-    plugins?: Array<FormPlugin<FormPluginProps>>;
-
-    /**
-     * The change event for updating the schema
-     * @deprecated
-     */
-    onSchemaChange?: SchemaOnChange;
 
     /**
      * The optional components to be added as children
