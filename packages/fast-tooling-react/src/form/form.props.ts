@@ -82,6 +82,7 @@ export interface FormProps {
 
     /**
      * The optional components to be added as children
+     * @deprecated
      */
     childOptions?: FormChildOptionItem[];
 
