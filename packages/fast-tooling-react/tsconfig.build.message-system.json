@@ -2,7 +2,7 @@
     "extends": "../../tsconfig.json",
     "compilerOptions": {
         "target": "es6",
-        "outDir": "./dist/message-system",
+        "outDir": "./dist/webworker",
         "types": ["node"],
         "lib": ["webworker", "es6"]
     },
