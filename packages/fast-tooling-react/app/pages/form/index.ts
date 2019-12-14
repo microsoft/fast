@@ -75,12 +75,6 @@ export const generalExample: ExampleComponent = {
     schema: GeneralSchema,
 };
 
-import PluginSchema from "../../../src/__tests__/schemas/plugin.schema.json";
-
-export const plugin: ExampleComponent = {
-    schema: PluginSchema,
-};
-
 import BadgeSchema from "../../../src/__tests__/schemas/badge.schema.json";
 
 export const badge: ExampleComponent = {
