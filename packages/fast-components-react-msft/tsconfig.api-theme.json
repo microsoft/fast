@@ -1,0 +1,13 @@
+{
+    "extends": "./tsconfig.json",
+    "include": [
+        "./typedoc-theme/helpers-src/*.ts"
+    ],
+    "moduleResolutions": "Node",
+    "compilerOptions": {
+        "module": "CommonJs",
+        "outDir": "./typedoc-theme/helpers/",
+        "declaration": false,
+        "skipLibCheck": true
+    }
+}

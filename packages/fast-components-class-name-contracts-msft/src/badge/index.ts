@@ -17,5 +17,5 @@ export interface BadgeClassNameContract extends BaseBadgeClassNameContract {
     /**
      * The filled backplate appearance style
      */
-    badge__filled: string;
+    badge__filled?: string;
 }

@@ -19,6 +19,8 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc -p ./tsconfig.build.json && yarn copy:all",
+    "build:api": "npm run build:theme && typedoc --tsconfig ./tsconfig.build.json",
+    "build:theme": "tsc -p ./tsconfig.api-theme.json",
     "clean:dist": "node ../../build/clean.js dist",
     "convert:readme": "node ../../build/convert-readme.js .tmp",
     "copy:all": "yarn convert:json-schema && yarn copy:readme",
@@ -106,7 +108,10 @@
     "tslint": "^5.9.1",
     "tslint-config-prettier": "^1.15.0",
     "tslint-loader": "^3.6.0",
-    "typescript": "3.3.3",
+    "typedoc": "^0.15.4",
+    "typedoc-plugin-external-module-name": "^2.1.0",
+    "typedoc-plugin-markdown": "^2.2.14",
+    "typescript": "3.5.1",
     "yargs": "^11.0.0"
   },
   "peerDependencies": {
@@ -124,6 +129,8 @@
     "@microsoft/fast-jss-utilities": "^4.7.5",
     "@microsoft/fast-web-utilities": "^4.4.0",
     "exenv-es6": "^1.0.0",
+    "global": "^4.4.0",
+    "typedoc": "^0.15.4",
     "utility-types": "^2.1.0"
   }
 }
