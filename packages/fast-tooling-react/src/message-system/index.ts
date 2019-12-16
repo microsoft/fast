@@ -1,6 +1,7 @@
 /// <reference lib="webworker" />
 
 import {
+    AddDataMessageOutgoing,
     ComponentMessageIncoming,
     DataMessageIncoming,
     DeregisterComponentMessageOutgoing,
@@ -11,8 +12,13 @@ import {
     MessageSystemIncoming,
     MessageSystemType,
     RegisterComponentMessageOutgoing,
+    RemoveDataMessageOutgoing,
 } from "./message-system.props";
 import { getDataWithDuplicate } from "../data-utilities/duplicate";
+import {
+    getDataUpdatedWithoutSourceData,
+    getDataUpdatedWithSourceData,
+} from "../data-utilities/relocate";
 
 /**
  * This is the Message System, through which:
@@ -88,6 +94,32 @@ function handleDataMessage(data: DataMessageIncoming): void {
                 sourceDataLocation: data.sourceDataLocation,
                 data: dataBlob,
             } as DuplicateDataMessageOutgoing);
+            break;
+        case MessageSystemDataTypeAction.remove:
+            dataBlob = getDataUpdatedWithoutSourceData({
+                sourceDataLocation: data.dataLocation,
+                data,
+            });
+
+            postMessage({
+                type: MessageSystemType.data,
+                action: MessageSystemDataTypeAction.remove,
+                data: dataBlob,
+            } as RemoveDataMessageOutgoing);
+            break;
+        case MessageSystemDataTypeAction.add:
+            dataBlob = getDataUpdatedWithSourceData({
+                targetDataLocation: data.dataLocation,
+                targetDataType: data.dataType,
+                sourceData: data.data,
+                data: dataBlob,
+            });
+
+            postMessage({
+                type: MessageSystemType.data,
+                action: MessageSystemDataTypeAction.add,
+                data: dataBlob,
+            } as AddDataMessageOutgoing);
             break;
     }
 }
