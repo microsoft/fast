@@ -50,7 +50,7 @@ module.exports = {
         }),
         new CopyWebpackPlugin([
             {
-                from: "./dist/message-system/index.js",
+                from: "./dist/webworker/message-system/index.js",
                 to: `${outDir}/message-system.js`,
             },
         ]),
