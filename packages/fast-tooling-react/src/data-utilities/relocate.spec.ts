@@ -19,7 +19,6 @@ describe("getDataUpdatedWithSourceData", () => {
         const updatedData: unknown = getDataUpdatedWithSourceData({
             data,
             targetDataType: DataType.object,
-            targetPosition: TargetPosition.insert,
             sourceData,
             targetDataLocation,
         });
@@ -33,12 +32,11 @@ describe("getDataUpdatedWithSourceData", () => {
         const data: Dictionary<unknown> = {
             foo: ["bar"],
         };
-        const targetDataLocation: string = "foo";
+        const targetDataLocation: string = "foo[0]";
         const sourceData: string = "Hello world";
         const updatedData: unknown = getDataUpdatedWithSourceData({
             data,
             targetDataType: DataType.array,
-            targetPosition: TargetPosition.insert,
             sourceData,
             targetDataLocation,
         });
@@ -58,7 +56,6 @@ describe("getDataUpdatedWithSourceData", () => {
             sourceData,
             targetDataLocation,
             targetDataType: DataType.array,
-            targetPosition: TargetPosition.prepend,
         });
 
         expect(updatedData).toEqual({
@@ -69,14 +66,13 @@ describe("getDataUpdatedWithSourceData", () => {
         const data: Dictionary<unknown> = {
             foo: ["a", "b", "d"],
         };
-        const targetDataLocation: string = "foo[1]";
+        const targetDataLocation: string = "foo[2]";
         const sourceData: string = "c";
         const updatedData: unknown = getDataUpdatedWithSourceData({
             data,
             sourceData,
             targetDataLocation,
             targetDataType: DataType.array,
-            targetPosition: TargetPosition.append,
         });
 
         expect(updatedData).toEqual({
