@@ -107,7 +107,7 @@ export class Column extends Foundation<ColumnHandledProps, ColumnUnhandledProps,
             return this.props.span;
         }
 
-        if (!canUseViewport() || !Array.isArray(this.props.span)) {
+        if (!Array.isArray(this.props.span)) {
             return Column.defaultProps.span as number;
         }
 
@@ -160,15 +160,9 @@ export class Column extends Foundation<ColumnHandledProps, ColumnUnhandledProps,
             .join(" / ");
         let order: number | null;
 
-        if (!canUseDOM()) {
-            order = Array.isArray(this.props.order)
-                ? this.props.order[0]
-                : this.props.order;
-        } else {
-            order = Array.isArray(this.props.order)
-                ? this.getValueByBreakpoint(this.props.order)
-                : this.props.order;
-        }
+        order = Array.isArray(this.props.order)
+            ? this.getValueByBreakpoint(this.props.order)
+            : this.props.order;
 
         const gridStyles: React.CSSProperties = canUseCssGrid()
             ? {
