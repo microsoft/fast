@@ -10,6 +10,11 @@ import {
 } from "./column";
 
 /**
+ * Mock and allow control of the canUseDOM function
+ */
+jest.mock("exenv-es6", () => ({ canUseDOM: jest.fn() }));
+
+/**
  * Mock and allow control of canUseCssGrid return value
  */
 jest.mock("@microsoft/fast-web-utilities", () => {
@@ -24,7 +29,12 @@ jest.mock("@microsoft/fast-web-utilities", () => {
  */
 configure({ adapter: new Adapter() });
 
+/* tslint:disable:no-string-literal */
 describe("Column", (): void => {
+    beforeEach(() => {
+        canUseDOM["mockImplementation"](() => true);
+    });
+
     const managedClasses: ColumnClassNamesContract = {
         column: "column",
     };
@@ -245,12 +255,7 @@ describe("Column", (): void => {
 
     test("column should use a default breakpoint of zero when the DOM is unavailable and default breakpoint is unset", () => {
         // make DOM unavailable for test
-        const windowSpy: jest.SpyInstance<any> = jest.spyOn(
-            global as any,
-            "window",
-            "get"
-        );
-        windowSpy.mockImplementation(() => ({ undefined }));
+        canUseDOM["mockImplementation"](() => false);
         expect(canUseDOM()).toEqual(false);
 
         // do not specify a default breakpoint to test that the default breakpoint defaults to zero
@@ -266,12 +271,7 @@ describe("Column", (): void => {
 
     test("column should use the set default breakpoint when the DOM is unavailable", () => {
         // make DOM unavailable for test
-        const windowSpy: jest.SpyInstance<any> = jest.spyOn(
-            global as any,
-            "window",
-            "get"
-        );
-        windowSpy.mockImplementation(() => ({ undefined }));
+        canUseDOM["mockImplementation"](() => false);
         expect(canUseDOM()).toEqual(false);
 
         // no default breakpoint specified, default breakpoint defaults to zero
@@ -292,6 +292,10 @@ describe("Column", (): void => {
 });
 
 describe("Column - without CSS grid support but `cssGridPropertyName` prop is `grid`", (): void => {
+    beforeEach(() => {
+        canUseDOM["mockImplementation"](() => true);
+    });
+
     test("should set an inline style for `gridColumn` with a value equal to the `gridColumn` prop when CSS grid is NOT supported but the `cssGridPropertyName` prop passed is equal to `grid`", () => {
         const rendered: any = shallow(<Column cssGridPropertyName={"grid"} />);
 
