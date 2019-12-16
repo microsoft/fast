@@ -1,3 +1,5 @@
+import { DataType } from "../data-utilities/types";
+
 export enum MessageSystemComponentTypeAction {
     register = "register",
     deregister = "deregister",
@@ -5,7 +7,8 @@ export enum MessageSystemComponentTypeAction {
 
 export enum MessageSystemDataTypeAction {
     update = "update",
-    move = "move",
+    remove = "remove",
+    add = "add",
     duplicate = "duplicate",
 }
 
@@ -115,12 +118,43 @@ export interface DuplicateDataMessageOutgoing {
 }
 
 /**
- * The message to move data to a new location
+ * The message to remove data
  */
-export interface MoveDataMessageIncoming {
+export interface RemoveDataMessageIncoming {
     type: MessageSystemType.data;
-    action: MessageSystemDataTypeAction.move;
-    sourceDataLocation: string;
+    action: MessageSystemDataTypeAction.remove;
+    dataLocation: string;
+    data: unknown;
+}
+
+/**
+ * The message that the data has been removed
+ * with updated data
+ */
+export interface RemoveDataMessageOutgoing {
+    type: MessageSystemType.data;
+    action: MessageSystemDataTypeAction.remove;
+    data: unknown;
+}
+
+/**
+ * The message to add data
+ */
+export interface AddDataMessageIncoming {
+    type: MessageSystemType.data;
+    action: MessageSystemDataTypeAction.add;
+    dataLocation: string;
+    data: unknown;
+    dataType: DataType;
+}
+
+/**
+ * The message that the data has been added
+ * with updated data
+ */
+export interface AddDataMessageOutgoing {
+    type: MessageSystemType.data;
+    action: MessageSystemDataTypeAction.add;
     data: unknown;
 }
 
@@ -130,7 +164,8 @@ export interface MoveDataMessageIncoming {
 export type DataMessageIncoming =
     | UpdateDataMessageIncoming
     | DuplicateDataMessageIncoming
-    | MoveDataMessageIncoming;
+    | RemoveDataMessageIncoming
+    | AddDataMessageIncoming;
 
 /**
  * Incoming messages to the message system
@@ -146,4 +181,6 @@ export type MessageSystemIncoming =
 export type MessageSystemOutgoing =
     | RegisterComponentMessageOutgoing
     | DeregisterComponentMessageOutgoing
-    | DuplicateDataMessageOutgoing;
+    | DuplicateDataMessageOutgoing
+    | RemoveDataMessageOutgoing
+    | AddDataMessageOutgoing;
