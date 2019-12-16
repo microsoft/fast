@@ -123,6 +123,7 @@ const formControlSwitchProps: FormControlSwitchProps = {
     onUpdateSection: null,
     onChange: null,
     invalidMessage: "",
+    validationErrors: [],
 };
 
 describe("FormControlSwitch", () => {
@@ -130,6 +131,13 @@ describe("FormControlSwitch", () => {
         expect(() => {
             mount(<TestFormControlSwitch {...formControlSwitchProps} />);
         }).not.toThrow();
+    });
+    test("should NOT render any controls when the schema is false", () => {
+        const rendered: any = mount(
+            <TestFormControlSwitch {...formControlSwitchProps} schema={false} />
+        );
+
+        expect(rendered.html()).toEqual("");
     });
     test("should render a number field when a number type is available", () => {
         const rendered: any = mount(
@@ -363,6 +371,24 @@ describe("FormControlSwitch", () => {
                 expect(rendered.find("StandardControlTemplate").prop("data")).toEqual(
                     data
                 );
+            });
+            test("schema", () => {
+                const schema: any = textareaSchema.properties.textWithDefault;
+                const rendered: any = mount(
+                    <TestFormControlSwitch
+                        {...formControlSwitchProps}
+                        schema={schema}
+                        schemaLocation={"properties.text"}
+                        dataLocation={"text"}
+                        propertyName={"text"}
+                        data={"Foo"}
+                    />
+                );
+
+                expect(rendered.find("StandardControlTemplate").prop("schema")).toEqual(
+                    schema
+                );
+                expect(rendered.find("TextareaControl").prop("schema")).toEqual(schema);
             });
             test("required", () => {
                 const rendered: any = mount(

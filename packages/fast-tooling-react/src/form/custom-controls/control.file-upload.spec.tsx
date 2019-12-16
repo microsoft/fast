@@ -15,9 +15,11 @@ const fileUploadControlProps: FileUploadControlProps = {
     disabled: false,
     elementRef: null,
     value: "",
+    schema: {},
     onChange: jest.fn(),
     reportValidity: jest.fn(),
     updateValidity: jest.fn(),
+    validationErrors: [],
 };
 
 describe("FileUploadControl", () => {

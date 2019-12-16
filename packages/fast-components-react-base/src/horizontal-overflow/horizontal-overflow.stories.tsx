@@ -10,7 +10,7 @@ const images: JSX.Element[] = [
     "https://placehold.it/180x100?text=2",
     "https://placehold.it/240x100/414141/?text=3",
     "https://placehold.it/120x100?text=4",
-    "https://placehold.it/140x100/414141/?text=5",
+    "https://placehold.it/840x100/414141/?text=5",
     "https://placehold.it/200x100?text=6",
     "https://placehold.it/220x100/414141/?text=7",
     "https://placehold.it/170x100?text=8",
@@ -89,4 +89,40 @@ storiesOf("Horizontal overflow", module)
         <div dir="rtl">
             <TestOverflow>{images}</TestOverflow>
         </div>
+    ))
+    .add("With buttons", () => (
+        <HorizontalOverflow>
+            <Button slot="previous">Previous</Button>
+            <Button slot="next">Next</Button>
+            <Button>
+                <img src="https://placehold.it/220x100/414141/?text=1" />
+            </Button>
+            <Button>
+                <img src="https://placehold.it/220x100/414141/?text=2" />
+            </Button>
+            <Button>
+                <img src="https://placehold.it/220x100/414141/?text=3" />
+            </Button>
+            <Button>
+                <img src="https://placehold.it/220x100/414141/?text=4" />
+            </Button>
+            <Button>
+                <img src="https://placehold.it/220x100/414141/?text=5" />
+            </Button>
+            <Button>
+                <img src="https://placehold.it/220x100/414141/?text=6" />
+            </Button>
+            <Button>
+                <img src="https://placehold.it/220x100/414141/?text=7" />
+            </Button>
+            <Button>
+                <img src="https://placehold.it/420x100/414141/?text=8" />
+            </Button>
+            <Button>
+                <img src="https://placehold.it/120x100/414141/?text=9" />
+            </Button>
+            <Button>
+                <img src="https://placehold.it/220x100/414141/?text=10" />
+            </Button>
+        </HorizontalOverflow>
     ));

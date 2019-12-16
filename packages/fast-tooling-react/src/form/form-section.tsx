@@ -20,6 +20,7 @@ import { get, omit } from "lodash-es";
 import {
     FormCategoryConfig,
     FormControlItem,
+    FormControlParameters,
     FormControlsWithConfigOptions,
     FormSectionClassNameContract,
     FormSectionProps,
@@ -69,12 +70,19 @@ class FormSection extends React.Component<
             this.props.dataLocation,
             this.props.validationErrors
         );
+        const isDisabled: boolean = this.isDisabled();
 
         return (
-            <div className={classNames(this.props.managedClasses.formSection)}>
+            <fieldset
+                className={classNames(this.props.managedClasses.formSection, [
+                    this.props.managedClasses.formSection__disabled,
+                    isDisabled,
+                ])}
+                disabled={isDisabled}
+            >
                 {this.renderFormValidation(invalidMessage)}
                 {this.renderFormSection(invalidMessage)}
-            </div>
+            </fieldset>
         );
     }
 
@@ -119,15 +127,10 @@ class FormSection extends React.Component<
     /**
      * Renders the form
      */
-    private renderRootObject(
-        dataLocation: string,
-        schema: any,
-        invalidMessage: string
-    ): React.ReactNode {
+    private renderRootObject(schema: any): React.ReactNode {
         return this.generateFormObject(
             schema,
             schema.required || undefined,
-            invalidMessage,
             schema.not ? schema.not.required : undefined
         );
     }
@@ -141,12 +144,13 @@ class FormSection extends React.Component<
         schemaLocation: string,
         dataLocation: string,
         required: boolean,
+        disabled: boolean,
         label: string,
         invalidMessage: string | null
     ): React.ReactNode => {
         // if this is a root level object use it to generate the form and do not generate a link
         if (schema.type === "object" && propertyName === "") {
-            return this.renderRootObject(propertyName, schema, invalidMessage);
+            return this.renderRootObject(schema);
         }
 
         return (
@@ -156,6 +160,7 @@ class FormSection extends React.Component<
                 controlPlugins={this.props.controlPlugins}
                 untitled={this.props.untitled}
                 required={required}
+                disabled={disabled}
                 default={get(this.props.default, propertyName)}
                 label={getLabel(label, this.state.schema.title)}
                 data={getData(propertyName, this.props.data)}
@@ -167,6 +172,7 @@ class FormSection extends React.Component<
                 onChange={this.props.onChange}
                 onUpdateSection={this.props.onUpdateSection}
                 invalidMessage={invalidMessage}
+                validationErrors={this.props.validationErrors}
                 displayValidationBrowserDefault={
                     this.props.displayValidationBrowserDefault
                 }
@@ -180,8 +186,7 @@ class FormSection extends React.Component<
      */
     private renderCategories(
         categories: FormCategoryConfig[] = [],
-        controls: FormControlsWithConfigOptions,
-        invalidMessage: string
+        controls: FormControlsWithConfigOptions
     ): React.ReactNode {
         return this.getAllCategories(categories).map(
             (category: FormCategoryConfig, index: number): React.ReactNode => {
@@ -190,7 +195,7 @@ class FormSection extends React.Component<
                         .concat([
                             {
                                 propertyName: void 0,
-                                render: this.renderAdditionalProperties(invalidMessage),
+                                render: this.renderAdditionalProperties(),
                             },
                         ])
                         .map(
@@ -305,17 +310,14 @@ class FormSection extends React.Component<
                                 : propertyName;
 
                         if (!isNotRequired) {
-                            const params: any = {
-                                property: schema[propertyKey][propertyName],
+                            const params: FormControlParameters = {
                                 index,
                                 schemaLocation,
                                 dataLocation,
                                 propertyName,
-                                schema: get(
-                                    this.state.schema,
-                                    `${propertyKey}.${propertyName}`
-                                ),
+                                schema: schema[propertyKey][propertyName],
                                 isRequired,
+                                isDisabled: this.isDisabled(),
                                 title:
                                     schema[propertyKey][propertyName].title ||
                                     this.props.untitled,
@@ -328,11 +330,12 @@ class FormSection extends React.Component<
                             formControls.items.push({
                                 propertyName: params.propertyName,
                                 render: this.renderFormControl(
-                                    params.property,
+                                    params.schema,
                                     params.propertyName,
                                     params.schemaLocation,
                                     params.dataLocation,
                                     params.isRequired,
+                                    params.isDisabled,
                                     params.title,
                                     params.invalidMessage
                                 ),
@@ -352,7 +355,6 @@ class FormSection extends React.Component<
     private generateFormObject(
         schema: any,
         required: string[],
-        invalidMessage: string,
         not?: string[]
     ): React.ReactNode {
         let formControls: FormControlsWithConfigOptions;
@@ -367,8 +369,7 @@ class FormSection extends React.Component<
 
             return this.renderCategories(
                 get(schema, "formConfig.categories"),
-                formControls,
-                invalidMessage
+                formControls
             );
         }
     }
@@ -407,11 +408,14 @@ class FormSection extends React.Component<
     /**
      * Renders additional properties if they have been declared
      */
-    private renderAdditionalProperties(invalidMessage: string): React.ReactNode {
+    private renderAdditionalProperties(): React.ReactNode {
         const schemaLocation: string = this.getSchemaLocation();
         const schema: any = get(this.state.schema, schemaLocation, this.state.schema);
 
-        if (typeof schema.additionalProperties === "object") {
+        if (
+            typeof schema.additionalProperties === "object" ||
+            schema.additionalProperties === false
+        ) {
             return (
                 <FormDictionary
                     index={0}
@@ -425,12 +429,13 @@ class FormSection extends React.Component<
                     additionalProperties={schema.additionalProperties}
                     enumeratedProperties={this.getEnumeratedProperties(schema)}
                     data={this.props.data}
+                    schema={schema}
                     required={schema.required}
                     label={schema.title || this.props.untitled}
                     childOptions={this.props.childOptions}
                     onChange={this.props.onChange}
                     onUpdateSection={this.props.onUpdateSection}
-                    invalidMessage={invalidMessage}
+                    validationErrors={this.props.validationErrors}
                     displayValidationBrowserDefault={
                         this.props.displayValidationBrowserDefault
                     }
@@ -463,6 +468,7 @@ class FormSection extends React.Component<
                         this.getSchemaLocation(),
                         this.props.dataLocation,
                         true,
+                        this.props.disabled || this.state.schema.disabled,
                         "",
                         invalidMessage
                     )}
@@ -475,11 +481,9 @@ class FormSection extends React.Component<
      * Get all enumerated properties for the object
      */
     private getEnumeratedProperties(schema: any): string[] {
-        if (schema.properties === undefined) {
-            return [];
-        }
-
-        return Object.keys(schema.properties);
+        return Object.keys(schema.properties || {}).concat(
+            Object.keys(schema.reactProperties || {})
+        );
     }
 
     private getSchemaLocation(): string {
@@ -491,6 +495,10 @@ class FormSection extends React.Component<
         } else {
             return this.props.schemaLocation;
         }
+    }
+
+    private isDisabled(): boolean {
+        return this.props.disabled || this.state.schema.disabled;
     }
 }
 

@@ -12,6 +12,7 @@ import { SingleLineControlPlugin } from "./templates/plugin.control.single-line"
  */
 export interface FormSectionClassNameContract {
     formSection: string;
+    formSection__disabled: string;
     formSection_invalidMessage: string;
 }
 
@@ -142,6 +143,11 @@ export interface FormSectionProps {
     schema: any;
 
     /**
+     * The disabled prop which is passed down to each control
+     */
+    disabled: boolean;
+
+    /**
      * The onChange event to trigger a data update
      */
     onChange: (config: OnChangeConfig) => void;
@@ -221,9 +227,19 @@ export interface FormControlParameters {
     isRequired: boolean;
 
     /**
+     * The disabled status of this property
+     */
+    isDisabled: boolean;
+
+    /**
      * The title, to be used as a label or as a breadcrumb
      */
     title: string;
+
+    /**
+     * The invalid message for this property
+     */
+    invalidMessage: string;
 }
 
 export interface AssignedCategoryParams {

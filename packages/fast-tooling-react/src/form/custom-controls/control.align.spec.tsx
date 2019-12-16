@@ -15,11 +15,13 @@ const alignControlProps: AlignControlProps = {
     options: [Alignment.top, Alignment.center, Alignment.bottom],
     dataLocation: "",
     value: "",
+    schema: {},
     onChange: jest.fn(),
     disabled: false,
     elementRef: null,
     reportValidity: jest.fn(),
     updateValidity: jest.fn(),
+    validationErrors: [],
 };
 
 const managedClasses: AlignControlClassNameContract = {

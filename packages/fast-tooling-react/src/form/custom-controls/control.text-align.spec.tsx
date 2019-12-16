@@ -15,11 +15,13 @@ const textAlignControlProps: TextAlignControlProps = {
     options: ["left", "center", "right"],
     dataLocation: "",
     value: "",
+    schema: {},
     onChange: jest.fn(),
     disabled: false,
     elementRef: null,
     reportValidity: jest.fn(),
     updateValidity: jest.fn(),
+    validationErrors: [],
 };
 
 const managedClasses: TextAlignControlClassNameContract = {

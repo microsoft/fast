@@ -10,6 +10,10 @@ export default {
             title: "Scroll duration",
             type: "number",
         },
+        nextItemPeek: {
+            title: "Next item peek",
+            type: "number",
+        },
     },
     reactProperties: {
         children: {

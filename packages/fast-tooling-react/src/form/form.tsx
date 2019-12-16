@@ -1,27 +1,14 @@
-import ajv, { Ajv, ErrorObject, ValidateFunction } from "ajv";
 import {
-    BreadcrumbItemEventHandler,
-    FormChildOptionItem,
-    FormClassNameContract,
-    FormLocation,
-    FormProps,
-    FormState,
-} from "./form.props";
-import { cloneDeep, get, set, unset } from "lodash-es";
-import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
-import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
-import FormSection from "./form-section";
-import React from "react";
-import styles from "./form.style";
-import {
-    getActiveComponentAndSection,
-    isDifferentSchema,
-    isModifiedSchema,
-    isRootLocation,
-} from "./utilities";
-import { mapPluginsToSchema } from "./utilities";
-import Navigation, { NavigationItem } from "./utilities/navigation";
-import { BreadcrumbItem, getBreadcrumbs } from "./utilities/breadcrumb";
+    ArrayControl,
+    ButtonControl,
+    CheckboxControl,
+    ChildrenControl,
+    DisplayControl,
+    NumberFieldControl,
+    SectionLinkControl,
+    SelectControl,
+    TextareaControl,
+} from "./controls";
 import {
     ArrayControlConfig,
     ChildrenControlConfig,
@@ -37,18 +24,36 @@ import {
     TextareaControlConfig,
     UpdateSectionConfig,
 } from "./templates";
+import { BreadcrumbItem, getBreadcrumbs } from "./utilities/breadcrumb";
 import {
-    ArrayControl,
-    ButtonControl,
-    CheckboxControl,
-    ChildrenControl,
-    DisplayControl,
-    NumberFieldControl,
-    SectionLinkControl,
-    SelectControl,
-    TextareaControl,
-} from "./controls";
+    BreadcrumbItemEventHandler,
+    FormChildOptionItem,
+    FormClassNameContract,
+    FormLocation,
+    FormProps,
+    FormState,
+} from "./form.props";
+import Navigation, { NavigationItem } from "./utilities/navigation";
+import { cloneDeep, get, set, unset } from "lodash-es";
+import {
+    getActiveComponentAndSection,
+    isDifferentSchema,
+    isModifiedSchema,
+    isRootLocation,
+} from "./utilities";
+import {
+    getValidationErrors,
+    removeAllCachedValidation,
+} from "../utilities/ajv-validation";
+import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
+
+import FormSection from "./form-section";
+import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
+import React from "react";
 import { SingleLineControlPlugin } from "./templates/plugin.control.single-line";
+import { mapPluginsToSchema } from "./utilities";
+import stringify from "fast-json-stable-stringify";
+import styles from "./form.style";
 
 /**
  * Schema form component definition
@@ -68,7 +73,7 @@ class Form extends React.Component<
         props: FormProps,
         state: FormState
     ): Partial<FormState> {
-        if (state.schema !== props.schema) {
+        if (stringify(state.schema) !== stringify(props.schema)) {
             const navigationInstance: Navigation = new Navigation({
                 dataLocation: "",
                 schema: props.schema,
@@ -94,11 +99,6 @@ class Form extends React.Component<
      * The default untitled string
      */
     private untitled: string;
-
-    /**
-     * The validator
-     */
-    private validator: Ajv;
 
     /**
      * The default form controls
@@ -129,7 +129,6 @@ class Form extends React.Component<
         const dataLocation: string | void = get(this.props, "location.dataLocation");
 
         this.untitled = "Untitled";
-        this.validator = new ajv({ schemaId: "auto", allErrors: true });
         this.rootSchema = mapPluginsToSchema(
             this.props.schema,
             this.props.data,
@@ -163,7 +162,7 @@ class Form extends React.Component<
             schema: this.props.schema,
             navigationInstance,
             navigation: navigationInstance.get(),
-            validationErrors: this.getValidationErrors(props),
+            validationErrors: getValidationErrors(this.rootSchema, props.data),
         };
     }
 
@@ -339,19 +338,6 @@ class Form extends React.Component<
     }
 
     /**
-     * Gets the validation errors
-     */
-    private getValidationErrors(props: FormProps): ErrorObject[] | void {
-        this.validator.removeSchema(this.rootSchema.id);
-        const validate: ValidateFunction = this.validator.compile(this.rootSchema);
-        const isValid: boolean | PromiseLike<any> = validate(props.data);
-
-        if (!!!isValid) {
-            return validate.errors;
-        }
-    }
-
-    /**
      * Update the state when a new schema is given
      */
     private updateStateForNewProps(
@@ -373,9 +359,14 @@ class Form extends React.Component<
         );
 
         if (isModifiedSchema(this.rootSchema, updatedSchema)) {
+            // Clean cache for validation if root schema is changed to free memory.
+            removeAllCachedValidation();
+
             // The schema must be set before any other state updates occur so that
             // the correct schema is used for state navigation
             this.rootSchema = updatedSchema;
+
+            state.validationErrors = getValidationErrors(this.rootSchema, props.data);
 
             if (typeof props.onSchemaChange === "function") {
                 props.onSchemaChange(this.rootSchema);
@@ -407,7 +398,7 @@ class Form extends React.Component<
         state: Partial<FormState>
     ): Partial<FormState> {
         const updatedState: Partial<FormState> = {
-            validationErrors: this.getValidationErrors(props),
+            validationErrors: getValidationErrors(this.rootSchema, props.data),
         };
 
         this.state.navigationInstance.updateData(
@@ -537,6 +528,7 @@ class Form extends React.Component<
                 data={this.getData("data", "props")}
                 schemaLocation={lastNavigationItem.schemaLocation}
                 default={lastNavigationItem.default}
+                disabled={currentSchema.disabled}
                 dataLocation={this.state.activeDataLocation}
                 untitled={this.untitled}
                 childOptions={this.props.childOptions}

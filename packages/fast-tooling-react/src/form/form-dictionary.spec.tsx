@@ -1,6 +1,6 @@
 import React from "react";
 import Adapter from "enzyme-adapter-react-16";
-import { configure, mount, shallow } from "enzyme";
+import { configure, mount, render, shallow } from "enzyme";
 import { controls } from "./form-control-switch.spec";
 import { FormDictionary } from "./form-dictionary";
 import { FormDictionaryProps } from "./form-dictionary.props";
@@ -26,11 +26,11 @@ const dictionaryProps: FormDictionaryProps = {
     dataLocation: "",
     schemaLocation: "",
     data: "",
+    schema: {},
     required: false,
     label: "",
     onChange: jest.fn(),
     onUpdateSection: jest.fn(),
-    invalidMessage: "",
     examples: void 0,
     propertyLabel: "",
     additionalProperties: {
@@ -38,6 +38,7 @@ const dictionaryProps: FormDictionaryProps = {
     },
     enumeratedProperties: [],
     childOptions: [],
+    validationErrors: undefined,
 };
 
 describe("FormDictionary", () => {
@@ -252,5 +253,51 @@ describe("FormDictionary", () => {
         const formControls: any = rendered.find("TextareaControl");
 
         expect(formControls).toHaveLength(2);
+    });
+    test("should show all dictionary keys no matter the order", () => {
+        const rendered: any = mount(
+            <FormDictionary
+                {...dictionaryProps}
+                managedClasses={managedClasses}
+                data={{
+                    foo: "a",
+                    a: "foo",
+                    bar: "b",
+                    b: "bar",
+                }}
+                enumeratedProperties={["foo", "bar"]}
+                additionalProperties={{
+                    type: "string",
+                    examples: ["foobar"],
+                }}
+            />
+        );
+
+        const formControls: any = rendered.find("TextareaControl");
+
+        expect(formControls).toHaveLength(2);
+    });
+    test("should show only property key inputs if the additionalProperties is false", () => {
+        const rendered: any = mount(
+            <FormDictionary
+                {...dictionaryProps}
+                managedClasses={managedClasses}
+                data={{
+                    a: "foo",
+                    b: "bar",
+                }}
+                additionalProperties={false}
+            />
+        );
+
+        const propertyKeyInputs: any = rendered.find(
+            `.${managedClasses.formDictionary_itemControlInput}`
+        );
+        const formControlSwitch: any = rendered.find(
+            `.${managedClasses.formDictionary_controlRegion}`
+        );
+
+        expect(propertyKeyInputs).toHaveLength(2);
+        expect(formControlSwitch).toHaveLength(0);
     });
 });

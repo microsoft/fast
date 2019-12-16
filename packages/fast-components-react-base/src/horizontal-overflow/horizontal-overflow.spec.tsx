@@ -197,7 +197,7 @@ describe("horizontal overflow", (): void => {
             <HorizontalOverflow managedClasses={managedClasses} />
         );
 
-        expect(rendered.state("itemsHeight")).toBe(0);
+        expect(rendered.state("itemsHeight")).toBe(null);
     });
     test("should update the rendering of a series of items if they are modified", () => {
         const renderedWithImages: any = mount(
@@ -224,35 +224,39 @@ describe("horizontal overflow", (): void => {
             </HorizontalOverflow>
         );
 
+        renderedWithImages.instance()["getAvailableWidth"] = (): number => 50;
+        renderedWithImages.instance()["getMaxScrollDistance"] = (): number => 70;
+        renderedWithImages.instance()["getScrollPeek"] = (): number => 0;
         expect(
             renderedWithImages
                 .instance()
                 ["getScrollDistanceFromButtonDirection"](
                     ButtonDirection.next,
-                    50,
                     [10, 20, 20, 50, 20],
                     0
                 )
         ).toBe(50);
 
         // reaches the max distance and uses that instead
+        renderedWithImages.instance()["getAvailableWidth"] = (): number => 40;
+        renderedWithImages.instance()["getMaxScrollDistance"] = (): number => 60;
         expect(
             renderedWithImages
                 .instance()
                 ["getScrollDistanceFromButtonDirection"](
                     ButtonDirection.next,
-                    40,
                     [10, 20, 10, 30, 20, 10],
                     30
                 )
         ).toBe(60);
 
+        renderedWithImages.instance()["getAvailableWidth"] = (): number => 40;
+        renderedWithImages.instance()["getMaxScrollDistance"] = (): number => 90;
         expect(
             renderedWithImages
                 .instance()
                 ["getScrollDistanceFromButtonDirection"](
                     ButtonDirection.next,
-                    40,
                     [10, 20, 10, 30, 20, 10, 20, 10],
                     30
                 )
@@ -263,7 +267,6 @@ describe("horizontal overflow", (): void => {
                 .instance()
                 ["getScrollDistanceFromButtonDirection"](
                     ButtonDirection.next,
-                    40,
                     [10, 20, 10, 30, 20, 10, 20, 10],
                     40
                 )
@@ -277,12 +280,15 @@ describe("horizontal overflow", (): void => {
             </HorizontalOverflow>
         );
 
+        renderedWithImages.instance()["getAvailableWidth"] = (): number => 50;
+        renderedWithImages.instance()["getMaxScrollDistance"] = (): number => 71;
+        renderedWithImages.instance()["getScrollPeek"] = (): number => 0;
+
         expect(
             renderedWithImages
                 .instance()
                 ["getScrollDistanceFromButtonDirection"](
                     ButtonDirection.next,
-                    50,
                     [10.01, 20.3, 20.5, 50.2, 20.9],
                     0
                 )
@@ -296,27 +302,29 @@ describe("horizontal overflow", (): void => {
             </HorizontalOverflow>
         );
 
+        renderedWithImages.instance()["getAvailableWidth"] = (): number => 50;
+        renderedWithImages.instance()["getMaxScrollDistance"] = (): number => 70;
+        renderedWithImages.instance()["getScrollPeek"] = (): number => 0;
         expect(
             renderedWithImages
                 .instance()
                 ["getScrollDistanceFromButtonDirection"](
                     ButtonDirection.previous,
-                    50,
                     [10, 20, 20, 50, 20],
                     10
                 )
-        ).toBe(-0);
+        ).toBe(0);
 
+        renderedWithImages.instance()["getMaxScrollDistance"] = (): number => 150;
         expect(
             renderedWithImages
                 .instance()
                 ["getScrollDistanceFromButtonDirection"](
                     ButtonDirection.previous,
-                    50,
                     [50, 50, 50, 50],
                     100
                 )
-        ).toBe(-50);
+        ).toBe(50);
     });
     test("should an state property `itemsHeight`", () => {
         const renderedWithImages: any = mount(
@@ -339,6 +347,23 @@ describe("horizontal overflow", (): void => {
             0.0004
         );
     });
+    test("getScrollAnimationPosition returns correct start and end values", () => {
+        const renderedWithImages: any = mount(
+            <HorizontalOverflow managedClasses={managedClasses}>
+                {imageSet1}
+            </HorizontalOverflow>
+        );
+
+        renderedWithImages.instance().currentScrollAnimStartPosition = 0;
+        renderedWithImages.instance().currentScrollAnimEndPosition = 100;
+
+        expect(renderedWithImages.instance()["getScrollAnimationPosition"](0, 1000)).toBe(
+            0
+        );
+        expect(
+            renderedWithImages.instance()["getScrollAnimationPosition"](1000, 1000)
+        ).toBe(100);
+    });
     test("should get the distance when moving next/previous", () => {
         const renderedWithImagesAndNextAndPrevious: any = mount(
             <HorizontalOverflow managedClasses={managedClasses}>
@@ -352,11 +377,19 @@ describe("horizontal overflow", (): void => {
             </HorizontalOverflow>
         );
 
+        renderedWithImagesAndNextAndPrevious.instance()[
+            "getAvailableWidth"
+        ] = (): number => 500;
+        renderedWithImagesAndNextAndPrevious.instance()[
+            "getMaxScrollDistance"
+        ] = (): number => 1600;
+        renderedWithImagesAndNextAndPrevious.instance()["getScrollPeek"] = (): number =>
+            0;
+
         expect(
             renderedWithImagesAndNextAndPrevious
                 .instance()
                 ["getNextDistance"](
-                    500,
                     [120, 140, 80, 220, 210, 100, 90, 200, 190, 170, 180, 210, 190],
                     0
                 )
@@ -366,7 +399,6 @@ describe("horizontal overflow", (): void => {
             renderedWithImagesAndNextAndPrevious
                 .instance()
                 ["getNextDistance"](
-                    500,
                     [120, 140, 80, 220, 210, 100, 90, 200, 190, 170, 180, 210, 190],
                     2100
                 )
@@ -376,7 +408,6 @@ describe("horizontal overflow", (): void => {
             renderedWithImagesAndNextAndPrevious
                 .instance()
                 ["getPreviousDistance"](
-                    500,
                     [120, 140, 80, 220, 210, 100, 90, 200, 190, 170, 180, 210, 190],
                     560
                 )
@@ -386,7 +417,6 @@ describe("horizontal overflow", (): void => {
             renderedWithImagesAndNextAndPrevious
                 .instance()
                 ["getPreviousDistance"](
-                    500,
                     [120, 140, 80, 220, 210, 100, 90, 200, 190, 170, 180, 210, 190],
                     0
                 )
@@ -395,10 +425,10 @@ describe("horizontal overflow", (): void => {
         expect(
             renderedWithImagesAndNextAndPrevious
                 .instance()
-                ["getScrollDistanceFromButtonDirection"]("next", 500, [], 0)
+                ["getScrollDistanceFromButtonDirection"]("next", [], 0)
         ).toBe(0);
     });
-    test("should set a max/min distance without additional calculations", () => {
+    test("getNextDistance should not get hung up on elements wider than the viewport", () => {
         const renderedWithImagesAndNextAndPrevious: any = mount(
             <HorizontalOverflow managedClasses={managedClasses}>
                 <button id="testButtonNext" slot="next">
@@ -411,16 +441,79 @@ describe("horizontal overflow", (): void => {
             </HorizontalOverflow>
         );
 
-        expect(
-            renderedWithImagesAndNextAndPrevious
-                .instance()
-                ["getWithinMaxDistance"](400, 500, [], 400)
-        ).toBe(400);
+        renderedWithImagesAndNextAndPrevious.instance()["getScrollPeek"] = (): number =>
+            0;
 
         expect(
             renderedWithImagesAndNextAndPrevious
                 .instance()
-                ["getWithinMinDistance"](0, 500, [])
+                ["getNextDistance"](
+                    [120, 1400, 80, 220, 210, 100, 90, 200, 190, 170, 180, 210, 190],
+                    120
+                )
+        ).toBe(1520);
+    });
+    test("getPreviousDistance should not get hung up on elements wider than the viewport", () => {
+        const renderedWithImagesAndNextAndPrevious: any = mount(
+            <HorizontalOverflow managedClasses={managedClasses}>
+                <button id="testButtonNext" slot="next">
+                    next
+                </button>
+                <button id="testButtonPrevious" slot="previous">
+                    previous
+                </button>
+                {imageSet1}
+            </HorizontalOverflow>
+        );
+
+        renderedWithImagesAndNextAndPrevious.instance()[
+            "getAvailableWidth"
+        ] = (): number => 500;
+        renderedWithImagesAndNextAndPrevious.instance()[
+            "getMaxScrollDistance"
+        ] = (): number => 2860;
+        renderedWithImagesAndNextAndPrevious.instance()["getScrollPeek"] = (): number =>
+            0;
+
+        expect(
+            renderedWithImagesAndNextAndPrevious
+                .instance()
+                ["getPreviousDistance"](
+                    [120, 1400, 80, 220, 210, 100, 90, 200, 190, 170, 180, 210, 190],
+                    1520
+                )
+        ).toBe(120);
+    });
+    test("should set a max/min distance without additional calculations", () => {
+        const renderedWithImagesAndNextAndPrevious: any = mount(
+            <HorizontalOverflow managedClasses={managedClasses}>
+                <button id="testButtonNext" slot="next">
+                    nexte4
+                </button>
+                <button id="testButtonPrevious" slot="previous">
+                    previous
+                </button>
+                {imageSet1}
+            </HorizontalOverflow>
+        );
+
+        renderedWithImagesAndNextAndPrevious.instance()[
+            "getAvailableWidth"
+        ] = (): number => 500;
+        renderedWithImagesAndNextAndPrevious.instance()[
+            "getMaxScrollDistance"
+        ] = (): number => 400;
+        renderedWithImagesAndNextAndPrevious.instance()["getScrollPeek"] = (): number =>
+            0;
+
+        expect(
+            renderedWithImagesAndNextAndPrevious
+                .instance()
+                ["getWithinMaxDistance"](400, [])
+        ).toBe(400);
+
+        expect(
+            renderedWithImagesAndNextAndPrevious.instance()["getWithinMinDistance"](0, [])
         ).toBe(0);
     });
     test("should have an `onLoad` method", () => {
@@ -603,6 +696,153 @@ describe("horizontal overflow", (): void => {
         expect(cancel).toHaveBeenCalledTimes(2);
 
         (rafThrottle as any) = actualRafThrottle;
+    });
+    test("getPositionData returns correct value when scrolled to beginning", (): void => {
+        const rendered: any = mount(
+            <HorizontalOverflow managedClasses={managedClasses}>
+                {imageSet1}
+            </HorizontalOverflow>
+        );
+
+        rendered.instance().horizontalOverflowItemsRef.current = {
+            scrollWidth: 200,
+            clientWidth: 100,
+            scrollLeft: 0,
+        };
+        expect(rendered.instance()["getPositionData"]()).toEqual({
+            start: true,
+            end: false,
+        });
+    });
+    test("getPositionData returns correct value when scrolled to middle", (): void => {
+        const rendered: any = mount(
+            <HorizontalOverflow managedClasses={managedClasses}>
+                {imageSet1}
+            </HorizontalOverflow>
+        );
+
+        rendered.instance().horizontalOverflowItemsRef.current = {
+            scrollWidth: 200,
+            clientWidth: 100,
+            scrollLeft: 50,
+        };
+        expect(rendered.instance()["getPositionData"]()).toEqual({
+            start: false,
+            end: false,
+        });
+    });
+    test("getPositionData returns correct value when scrolled to the end", (): void => {
+        const rendered: any = mount(
+            <HorizontalOverflow managedClasses={managedClasses}>
+                {imageSet1}
+            </HorizontalOverflow>
+        );
+
+        rendered.instance().horizontalOverflowItemsRef.current = {
+            scrollWidth: 200,
+            clientWidth: 100,
+            scrollLeft: 100,
+        };
+        expect(rendered.instance()["getPositionData"]()).toEqual({
+            start: false,
+            end: true,
+        });
+    });
+    test("getPositionData returns correct value when container does not scroll", (): void => {
+        const rendered: any = mount(
+            <HorizontalOverflow managedClasses={managedClasses}>
+                {imageSet1}
+            </HorizontalOverflow>
+        );
+
+        rendered.instance().horizontalOverflowItemsRef.current = {
+            scrollWidth: 100,
+            clientWidth: 100,
+            scrollLeft: 0,
+        };
+        expect(rendered.instance()["getPositionData"]()).toEqual({
+            start: true,
+            end: true,
+        });
+    });
+    test("getDirection returns correct value when set to ltr", (): void => {
+        const rendered: any = mount(
+            <HorizontalOverflow managedClasses={managedClasses} dir="ltr">
+                {imageSet1}
+            </HorizontalOverflow>
+        );
+        expect(rendered.instance()["getDirection"]()).toEqual("ltr");
+    });
+    test("getDirection returns correct value when set to rtl", (): void => {
+        const rendered: any = mount(
+            <HorizontalOverflow managedClasses={managedClasses} dir="rtl">
+                {imageSet1}
+            </HorizontalOverflow>
+        );
+        expect(rendered.instance()["getDirection"]()).toEqual("rtl");
+    });
+    test("settting and getting scroll position works correctly in ltr", (): void => {
+        const rendered: any = mount(
+            <HorizontalOverflow managedClasses={managedClasses} dir="ltr">
+                {imageSet1}
+            </HorizontalOverflow>
+        );
+        expect(rendered.instance()["getScrollPosition"]()).toEqual(0);
+        rendered.instance()["setScrollPosition"](100);
+        expect(rendered.instance()["getScrollPosition"]()).toEqual(100);
+    });
+    test("getting and setting scroll position returns 0 when horizontalOverflowItemsRef isn't populated ", (): void => {
+        const rendered: any = mount(
+            <HorizontalOverflow managedClasses={managedClasses}>
+                {imageSet1}
+            </HorizontalOverflow>
+        );
+        rendered.instance().horizontalOverflowItemsRef.current = null;
+        expect(rendered.instance()["getScrollPosition"]()).toEqual(0);
+        rendered.instance()["setScrollPosition"](100);
+        expect(rendered.instance()["getScrollPosition"]()).toEqual(0);
+    });
+    test("getDirection should return direction value when the ltr prop is passed", (): void => {
+        const rendered: any = mount(
+            <HorizontalOverflow managedClasses={managedClasses} dir="ltr">
+                {imageSet1}
+            </HorizontalOverflow>
+        );
+        expect(rendered.instance()["getDirection"]()).toEqual("ltr");
+    });
+    test("getDirection should return direction value when the rtl prop is passed", (): void => {
+        const rendered: any = mount(
+            <HorizontalOverflow managedClasses={managedClasses} dir="rtl">
+                {imageSet1}
+            </HorizontalOverflow>
+        );
+        expect(rendered.instance()["getDirection"]()).toEqual("rtl");
+    });
+    test("getDirection should return direction ltr when current ref is invalid", (): void => {
+        const rendered: any = mount(
+            <HorizontalOverflow managedClasses={managedClasses} dir="rtl">
+                {imageSet1}
+            </HorizontalOverflow>
+        );
+        rendered.instance().horizontalOverflowItemsRef.current = null;
+        expect(rendered.instance()["getDirection"]()).toEqual("ltr");
+    });
+    test("updateScrollAnimation marks scrollAnimating as complete when time reaches duration", (): void => {
+        const rendered: any = mount(
+            <HorizontalOverflow managedClasses={managedClasses}>
+                {imageSet1}
+            </HorizontalOverflow>
+        );
+
+        let currentTime: number = new Date().getTime();
+        rendered.instance().currentScrollAnimStartTime = currentTime;
+        rendered.instance().isScrollAnimating = true;
+        const targetDelayTime: number = currentTime + 500;
+        while (currentTime < targetDelayTime) {
+            currentTime = new Date().getTime();
+        }
+        rendered.instance()["updateScrollAnimation"]();
+        expect(rendered.instance().isScrollAnimating).toEqual(false);
     });
 });
 /* tslint:enable:no-string-literal */

@@ -106,3 +106,11 @@ describe("Page", (): void => {
         );
     });
 });
+
+describe("Page - without CSS grid support but `cssGridPropertyName` prop is `grid`", (): void => {
+    test("should set an inline style of `display: grid` when CSS grid is NOT supported but the `cssGridPropertyName` prop passed is `grid`", () => {
+        const rendered: any = shallow(<Page cssGridPropertyName={"grid"} />);
+
+        expect(rendered.props().style.display).toEqual("grid");
+    });
+});

@@ -60,6 +60,10 @@ class FormControlSwitch extends React.Component<FormControlSwitchProps, {}> {
             );
         }
 
+        if (this.props.schema === false) {
+            return null;
+        }
+
         switch (this.props.schema.type) {
             case "boolean":
                 return this.renderCheckbox(
@@ -246,16 +250,18 @@ class FormControlSwitch extends React.Component<FormControlSwitchProps, {}> {
             dataLocation: this.props.dataLocation,
             schemaLocation: this.props.schemaLocation,
             data: this.props.data,
+            schema,
             required: this.props.required,
             label: schema.title || schema.description || this.props.untitled,
             labelTooltip: schema.description,
-            disabled: schema.disabled,
+            disabled: this.props.disabled || schema.disabled,
             onChange: this.props.onChange,
             default: schema.default || this.props.default,
             const: schema.const || this.props.const,
             badge: schema.badge,
             badgeDescription: schema.badgeDescription,
             invalidMessage: this.props.invalidMessage,
+            validationErrors: this.props.validationErrors,
             displayValidationBrowserDefault: this.props.displayValidationBrowserDefault,
             displayValidationInline: this.props.displayValidationInline,
             onUpdateSection: this.props.onUpdateSection,

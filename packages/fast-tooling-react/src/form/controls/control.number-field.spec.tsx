@@ -22,10 +22,12 @@ const numberFieldProps: NumberFieldControlProps = {
     max: Infinity,
     step: 1,
     value: 0,
+    schema: {},
     disabled: false,
     elementRef: null,
     reportValidity: jest.fn(),
     updateValidity: jest.fn(),
+    validationErrors: [],
 };
 
 describe("NumberFieldControl", () => {

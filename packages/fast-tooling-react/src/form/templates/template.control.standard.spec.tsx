@@ -38,11 +38,13 @@ const props: StandardControlTemplateProps = {
     schemaLocation: "",
     control: jest.fn(),
     data: void 0,
+    schema: {},
     required: void 0,
     label: "foo",
     onChange: jest.fn(),
     onUpdateSection: jest.fn(),
     invalidMessage: "",
+    validationErrors: [],
 };
 
 describe("StandardControlTemplate", () => {

@@ -3,6 +3,66 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.26.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-tooling-react@1.26.0...@microsoft/fast-tooling-react@1.26.1) (2019-12-13)
+
+
+### Bug Fixes
+
+* validation error are not updated after property value change ([#2518](https://github.com/Microsoft/fast-dna/issues/2518)) ([051d5a3](https://github.com/Microsoft/fast-dna/commit/051d5a3e8feab5662d9c9438790c1b9bba142692))
+
+
+
+
+
+# [1.26.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-tooling-react@1.25.0...@microsoft/fast-tooling-react@1.26.0) (2019-12-13)
+
+
+### Bug Fixes
+
+* account for nested oneOfs when generating example data ([#2512](https://github.com/Microsoft/fast-dna/issues/2512)) ([353a8f5](https://github.com/Microsoft/fast-dna/commit/353a8f56cb2df165db5f11cbfa67856f9845345d))
+* address an overflow issue in form validation messages when displayed inline ([#2516](https://github.com/Microsoft/fast-dna/issues/2516)) ([8427db7](https://github.com/Microsoft/fast-dna/commit/8427db7ecf5da9b2d77a652bb01738209d00a92b))
+* losing focus in oneOfs when editing the form ([#2499](https://github.com/Microsoft/fast-dna/issues/2499)) ([b88b3fe](https://github.com/Microsoft/fast-dna/commit/b88b3fe7e49b8be7fee829d138b7f86616f720c4))
+
+
+### Features
+
+* deprecate the form plugins and onSchemaChange callback ([#2515](https://github.com/Microsoft/fast-dna/issues/2515)) ([633233e](https://github.com/Microsoft/fast-dna/commit/633233e9bc30ed7cf03e5410a4a48778279b8062))
+* display errors next to each array item in the Form ([#2514](https://github.com/Microsoft/fast-dna/issues/2514)) ([2aa6f63](https://github.com/Microsoft/fast-dna/commit/2aa6f63ef863d0dd7217aac2c717354b03dff22c))
+
+
+
+
+
+# [1.25.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-tooling-react@1.24.1...@microsoft/fast-tooling-react@1.25.0) (2019-12-11)
+
+
+### Bug Fixes
+
+* addresses an issue where items in another part of the object updating would remove the dictionary keys being displayed ([#2489](https://github.com/Microsoft/fast-dna/issues/2489)) ([486345f](https://github.com/Microsoft/fast-dna/commit/486345f123f23848f57e4508180ba724d3de13eb))
+
+
+### Features
+
+* allow an object to be disabled, which will disable all of its properties and sub-properties ([#2486](https://github.com/Microsoft/fast-dna/issues/2486)) ([30c686a](https://github.com/Microsoft/fast-dna/commit/30c686a39a828b9e49271812ac4814aec78d6569))
+* pass the schema to the control to allow arbitrary metadata to be accessed ([#2487](https://github.com/Microsoft/fast-dna/issues/2487)) ([8b9ba19](https://github.com/Microsoft/fast-dna/commit/8b9ba199dbff306ee39d05950ab266ae100ed20f))
+* performance enhancement when the JSON schema has deeply nested oneOfs ([#2491](https://github.com/Microsoft/fast-dna/issues/2491)) ([b8ff537](https://github.com/Microsoft/fast-dna/commit/b8ff5373129a0e2f636848d51c982d1b7869a26b))
+* show additional properties when false and present a way to remove them ([#2490](https://github.com/Microsoft/fast-dna/issues/2490)) ([774fd39](https://github.com/Microsoft/fast-dna/commit/774fd390859e05abc92408e24924e397f06224db))
+
+
+
+
+
+## [1.24.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-tooling-react@1.24.0...@microsoft/fast-tooling-react@1.24.1) (2019-12-05)
+
+
+### Bug Fixes
+
+* update the README ([#2456](https://github.com/Microsoft/fast-dna/issues/2456)) ([1896857](https://github.com/Microsoft/fast-dna/commit/189685717cc46b04b35003bb6878a03014b7da21))
+
+
+
+
+
 # [1.24.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-tooling-react@1.23.1...@microsoft/fast-tooling-react@1.24.0) (2019-11-19)
 
 

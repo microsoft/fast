@@ -28,6 +28,7 @@ export class Column extends Foundation<ColumnHandledProps, ColumnUnhandledProps,
         row: void 0,
         order: void 0,
         gutter: void 0,
+        cssGridPropertyName: void 0,
         defaultBreakpoint: void 0,
     };
 
@@ -164,7 +165,14 @@ export class Column extends Foundation<ColumnHandledProps, ColumnUnhandledProps,
             ? this.getValueByBreakpoint(this.props.order)
             : this.props.order;
 
-        const gridStyles: React.CSSProperties = canUseCssGrid()
+        const canUseCssGridStyle: boolean =
+            this.props.cssGridPropertyName === "grid"
+                ? true
+                : this.props.cssGridPropertyName === "-ms-grid"
+                    ? false
+                    : canUseCssGrid();
+
+        const gridStyles: React.CSSProperties = canUseCssGridStyle
             ? {
                   gridColumn: gridColumnValue,
                   gridRowStart: row,

@@ -364,4 +364,30 @@ describe("getDataFromSchema", () => {
             foo: { id: "bar", props: { text: "Hello world" } },
         });
     });
+    test("should return data when the schema contains nested oneOfs", () => {
+        const schemaWithNestedOneOfs: any = {
+            type: "object",
+            properties: {
+                foo: {
+                    oneOf: [
+                        {
+                            type: "string",
+                        },
+                        {
+                            type: "boolean",
+                        },
+                    ],
+                },
+                bar: {
+                    type: "boolean",
+                },
+            },
+            required: ["foo", "bar"],
+        };
+
+        expect(getDataFromSchema(schemaWithNestedOneOfs, [])).toEqual({
+            foo: "example text",
+            bar: true,
+        });
+    });
 });

@@ -24,7 +24,9 @@ const selectProps: SelectControlProps = {
     updateValidity: jest.fn(),
     reportValidity: jest.fn(),
     value: "",
+    schema: {},
     elementRef: null,
+    validationErrors: [],
 };
 
 describe("SelectControl", () => {
