@@ -18,6 +18,7 @@ export class Column extends Foundation<ColumnHandledProps, ColumnUnhandledProps,
     public static defaultProps: Partial<ColumnProps> = {
         managedClasses: {},
         span: 12,
+        defaultBreakpoint: 0,
     };
 
     protected handledProps: HandledProps<ColumnHandledProps> = {
@@ -27,6 +28,7 @@ export class Column extends Foundation<ColumnHandledProps, ColumnUnhandledProps,
         row: void 0,
         order: void 0,
         gutter: void 0,
+        defaultBreakpoint: void 0,
     };
 
     /**
@@ -90,11 +92,9 @@ export class Column extends Foundation<ColumnHandledProps, ColumnUnhandledProps,
      * or the nearest preceding break-point if no entry exists for the current break-point
      */
     private getValueByBreakpoint<T>(breakpointSet: T[]): T {
-        if (!canUseDOM()) {
-            return breakpointSet[0];
-        }
-
-        const breakpoint: Breakpoint = identifyBreakpoint(window.innerWidth);
+        const breakpoint: Breakpoint = canUseDOM()
+            ? identifyBreakpoint(window.innerWidth)
+            : this.props.defaultBreakpoint;
 
         return breakpointSet.slice(0, breakpoint + 1).pop();
     }
