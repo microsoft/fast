@@ -159,9 +159,8 @@ export class Column extends Foundation<ColumnHandledProps, ColumnUnhandledProps,
         const gridColumnValue: string = [position, `span ${span}`]
             .filter((item: string | number) => Boolean(item))
             .join(" / ");
-        let order: number | null;
 
-        order = Array.isArray(this.props.order)
+        const order: number | null = Array.isArray(this.props.order)
             ? this.getValueByBreakpoint(this.props.order)
             : this.props.order;
 

@@ -1,5 +1,6 @@
 import React from "react";
 import Adapter from "enzyme-adapter-react-16";
+import { canUseDOM } from "exenv-es6";
 import { configure, mount, shallow } from "enzyme";
 import {
     Column,
@@ -240,6 +241,53 @@ describe("Column", (): void => {
         );
 
         expect(rendered.props().gutter).toBe(2);
+    });
+
+    test("column should use a default breakpoint of zero when the DOM is unavailable and default breakpoint is unset", () => {
+        // make DOM unavailable for test
+        const windowSpy: jest.SpyInstance<any> = jest.spyOn(
+            global as any,
+            "window",
+            "get"
+        );
+        windowSpy.mockImplementation(() => ({ undefined }));
+        expect(canUseDOM()).toEqual(false);
+
+        // do not specify a default breakpoint to test that the default breakpoint defaults to zero
+        const rendered: any = shallow(
+            <Column span={[7, 8, 9]} row={[10, 11, 12]} order={[13, 14, 15]} />
+        );
+
+        // when breakpoint is zero, GridColumn, GridRowStart and order styles should use the default (0th) value
+        expect(rendered.props().style.gridColumn).toBe("span 7");
+        expect(rendered.props().style.gridRowStart).toBe("10");
+        expect(rendered.props().style.order).toBe(13);
+    });
+
+    test("column should use the set default breakpoint when the DOM is unavailable", () => {
+        // make DOM unavailable for test
+        const windowSpy: jest.SpyInstance<any> = jest.spyOn(
+            global as any,
+            "window",
+            "get"
+        );
+        windowSpy.mockImplementation(() => ({ undefined }));
+        expect(canUseDOM()).toEqual(false);
+
+        // no default breakpoint specified, default breakpoint defaults to zero
+        const rendered: any = shallow(
+            <Column
+                defaultBreakpoint={2}
+                span={[7, 8, 9]}
+                row={[10, 11, 12]}
+                order={[13, 14, 15]}
+            />
+        );
+
+        // when breakpoint is zero, GridColumn, GridRowStart and order styles should use the default breakpoint value
+        expect(rendered.props().style.gridColumn).toBe("span 9");
+        expect(rendered.props().style.gridRowStart).toBe("12");
+        expect(rendered.props().style.order).toBe(15);
     });
 });
 
