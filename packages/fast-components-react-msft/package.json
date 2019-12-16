@@ -18,7 +18,7 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "build": "tsc -p ./tsconfig.build.json && yarn copy:all",
+    "build": "tsc -p ./tsconfig.build.json && yarn copy:all && npm run build:api",
     "build:api": "npm run build:theme && typedoc --tsconfig ./tsconfig.build.json",
     "build:theme": "tsc -p ./tsconfig.api-theme.json",
     "clean:dist": "node ../../build/clean.js dist",
