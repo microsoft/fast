@@ -4,5 +4,4 @@ module.exports = {
     theme: "./typedoc-theme",
     readme: "none",
     plugin: "typedoc-plugin-markdown",
-    excludeNotExported: true,
 };

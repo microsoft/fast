@@ -1,1 +1,0 @@
-export { ButtonProps } from "./index";

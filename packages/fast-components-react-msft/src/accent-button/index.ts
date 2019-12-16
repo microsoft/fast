@@ -22,7 +22,7 @@ const AccentButton = manageJss(AccentButtonStyles)(ButtonBase);
 type AccentButton = InstanceType<typeof AccentButton>;
 
 interface AccentButtonHandledProps
-    extends Subtract<ButtonBaseHandledProps, ButtonBaseManagedClasses> {}
+    extends Omit<ButtonBaseHandledProps, "managedClasses"> {}
 type AccentButtonProps = ManagedJSSProps<
     ButtonBaseProps,
     AccentButtonClassNameContract,
