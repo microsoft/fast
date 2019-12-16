@@ -16,9 +16,8 @@ export enum TargetPosition {
 export interface UpdateDataWithSourceConfig {
     targetDataLocation: string;
     targetDataType: DataType;
-    sourceData: string;
+    sourceData: unknown;
     data: unknown;
-    targetPosition: TargetPosition;
 }
 
 export interface UpdateDataWithoutSourceConfig {
@@ -61,16 +60,13 @@ export function getDataUpdatedWithSourceData(
  * Gets updated array data with source data
  */
 function getArrayDataUpdatedWithSourceData(config: UpdateDataWithSourceConfig): unknown {
-    const isTargetingArray: boolean = config.targetPosition === TargetPosition.insert;
     let targetIndex: number;
-    const dataLocationOfArray: string = isTargetingArray
-        ? config.targetDataLocation
-        : getParentDataLocation(
-              config.targetDataLocation,
-              (index: number): void => {
-                  targetIndex = index;
-              }
-          );
+    const dataLocationOfArray: string = getParentDataLocation(
+        config.targetDataLocation,
+        (index: number): void => {
+            targetIndex = index;
+        }
+    );
     const dataLocationIsRoot: boolean = dataLocationOfArray === "";
     let newTargetArray: unknown = dataLocationIsRoot
         ? config.data
@@ -78,16 +74,8 @@ function getArrayDataUpdatedWithSourceData(config: UpdateDataWithSourceConfig): 
 
     if (newTargetArray === undefined) {
         newTargetArray = [config.sourceData];
-    } else if (isTargetingArray) {
-        newTargetArray = [config.sourceData, ...(newTargetArray as unknown[])];
     } else {
-        (newTargetArray as unknown[]).splice(
-            config.targetPosition === TargetPosition.prepend
-                ? targetIndex
-                : targetIndex + 1,
-            0,
-            config.sourceData
-        );
+        (newTargetArray as unknown[]).splice(targetIndex, 0, config.sourceData);
     }
 
     if (dataLocationIsRoot) {
