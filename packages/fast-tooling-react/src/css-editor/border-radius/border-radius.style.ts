@@ -9,10 +9,8 @@ import {
 
 export interface CSSBorderRadiusClassNameContract {
     cssBorderRadius?: string;
-    cssBorderRadius_control?: string;
     cssBorderRadius_input?: string;
     cssBorderRadius_individualInput?: string;
-    cssBorderRadius_label?: string;
     cssBorderRadius_toggleButton?: string;
     cssBorderRadius_toggleButton__selected?: string;
     cssBorderRadius_toggleButtonGlyph?: string;
@@ -22,8 +20,6 @@ export interface CSSBorderRadiusClassNameContract {
 const styles: ComponentStyles<CSSBorderRadiusClassNameContract, {}> = {
     cssBorderRadius: {
         ...applyControlWrapper(),
-    },
-    cssBorderRadius_control: {
         ...applyControlRegion(),
     },
     cssBorderRadius_input: {
@@ -35,9 +31,6 @@ const styles: ComponentStyles<CSSBorderRadiusClassNameContract, {}> = {
         ...applyInputStyle(),
         marginRight: "4px",
         width: "inherit",
-    },
-    cssBorderRadius_label: {
-        ...applyLabelStyle(),
     },
     cssBorderRadius_toggleButton: {
         ...applyInputStyle(),

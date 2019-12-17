@@ -33,6 +33,11 @@
                     "title": "Shadow",
                     "type": "string",
                     "formControlId": "shadow"
+                },
+                "borderRadius": {
+                    "title": "Border radius",
+                    "type": "string",
+                    "formControlId": "borderRadius"
                 }
             }
         }

@@ -3,7 +3,7 @@ import Adapter from "enzyme-adapter-react-16";
 import { configure, mount, shallow } from "enzyme";
 import CSSBorderRadius from "./border-radius";
 import { CSSBorderRadiusClassNameContract } from "./border-radius.style";
-import { BorderRadiusValue } from "./border-radius.props";
+import { BorderRadiusValue, CSSBorderRadiusProps } from "./border-radius.props";
 
 /**
  * Configure Enzyme
@@ -13,9 +13,17 @@ configure({ adapter: new Adapter() });
 describe("CSSBorderRadius", () => {
     const managedClasses: CSSBorderRadiusClassNameContract = {
         cssBorderRadius: "cssBorderRadius",
-        cssBorderRadius_control: "cssBorderRadius_control",
         cssBorderRadius_input: "cssBorderRadius_input",
-        cssBorderRadius_label: "cssBorderRadius_label",
+    };
+
+    const backgroundProps: CSSBorderRadiusProps = {
+        dataLocation: "",
+        onChange: jest.fn(),
+        value: "",
+        disabled: false,
+        reportValidity: jest.fn(),
+        updateValidity: jest.fn(),
+        elementRef: null,
     };
 
     test("should not throw", () => {
@@ -23,15 +31,15 @@ describe("CSSBorderRadius", () => {
             shallow(<CSSBorderRadius />);
         }).not.toThrow();
     });
-    test("should not throw if data is empty", () => {
+    test("should not throw if value is empty", () => {
         expect(() => {
-            shallow(<CSSBorderRadius data={{}} />);
+            shallow(<CSSBorderRadius value={{}} />);
         }).not.toThrow();
     });
     test("should have a displayName that matches the component name", () => {
         expect((CSSBorderRadius as any).name).toBe(CSSBorderRadius.displayName);
     });
-    test("should use the `data` prop as the input value if the `borderRadius` is provided", () => {
+    test("should use the `value` prop as the input value if the `borderRadius` is provided", () => {
         const borderRadiusValue: string = "12px 12px 12px 12px";
         const rendered: any = mount(
             <CSSBorderRadius

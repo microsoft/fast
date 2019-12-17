@@ -21,10 +21,20 @@ export default class CSSBorderRadius extends Foundation<
 > {
     public static displayName: string = "CSSBorderRadius";
 
+    public static defaultProps: Partial<CSSBorderRadiusProps> = {
+        value: "",
+        managedClasses: {},
+    };
+
     protected handledProps: HandledProps<CSSBorderRadiusHandledProps> = {
-        data: void 0,
         onChange: void 0,
         managedClasses: void 0,
+        dataLocation: void 0,
+        value: void 0,
+        disabled: void 0,
+        elementRef: void 0,
+        reportValidity: void 0,
+        updateValidity: void 0,
     };
 
     constructor(props: CSSBorderRadiusProps) {
@@ -33,29 +43,20 @@ export default class CSSBorderRadius extends Foundation<
         this.state = {
             individualValues: false,
             hasFocus: void 0,
-            data: this.props.data,
+            data: this.props.value,
         };
     }
 
     public render(): React.ReactNode {
         return (
             <div className={get(this.props, "managedClasses.cssBorderRadius")}>
-                <label
-                    className={get(this.props, "managedClasses.cssBorderRadius_label")}
+                {this.renderInputs()}
+                <button
+                    className={this.generateToggleClassNames()}
+                    onClick={this.toggleInputs}
                 >
-                    BorderRadius
-                </label>
-                <div
-                    className={get(this.props, "managedClasses.cssBorderRadius_control")}
-                >
-                    {this.renderInputs()}
-                    <button
-                        className={this.generateToggleClassNames()}
-                        onClick={this.toggleInputs}
-                    >
-                        {this.renderBorderRadiusGlyph()}
-                    </button>
-                </div>
+                    {this.renderBorderRadiusGlyph()}
+                </button>
             </div>
         );
     }

@@ -1,6 +1,7 @@
 import {
     backgroundPlugInId,
     boxShadowPlugInId,
+    borderRadiusPlugInId,
     colorPlugInId,
     heightPluginId,
     widthPluginId,
@@ -37,6 +38,11 @@ export default {
             title: "Shadow",
             type: "string",
             formControlId: boxShadowPlugInId,
+        },
+        borderRadius: {
+            title: "Border radius",
+            type: "string",
+            formControlId: borderRadiusPlugInId,
         },
     },
 };
