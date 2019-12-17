@@ -284,7 +284,7 @@ describe("Column", (): void => {
             />
         );
 
-        // when breakpoint is zero, GridColumn, GridRowStart and order styles should use the default breakpoint value
+        // when the DOM is unavailable, GridColumn, GridRowStart and order styles should use the default breakpoint value
         expect(rendered.props().style.gridColumn).toBe("span 9");
         expect(rendered.props().style.gridRowStart).toBe("12");
         expect(rendered.props().style.order).toBe(15);
