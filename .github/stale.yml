@@ -1,10 +1,10 @@
 pulls:
   # Number of days of inactivity before an issue or pull request becomes stale.
-  daysUntilStale: 5
+  daysUntilStale: 14
 
   # Number of days of inactivity before a stale issue or pull request is closed.
   # Set to false to disable. If disabled, issues still need to be closed manually but remain marked as stale.
-  daysUntilClose: false
+  daysUntilClose: 7
 
   # Comment to post when marking as stale. Set to `false` to disable.
   markComment: >
