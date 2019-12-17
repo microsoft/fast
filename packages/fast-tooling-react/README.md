@@ -1093,6 +1093,8 @@ import { MyCustomSchemaPlugin } from "./my-custom-schema-plugin";
 
 ### React children as options
 
+**NOTE: Child options are DEPRECATED and will be removed in the 2.0.0**
+
 Children by default only include text elements. If you want to add some child components you are providing, you can do this through the `childOptions`.
 
 ```jsx
@@ -1422,6 +1424,8 @@ Any enums will be converted to a select dropdown.
 ```
 
 #### React children
+
+**NOTE: reactProperties and type "children" are DEPRECATED and will be removed in the 2.0.0**
 
 React children are treated as special objects instead of simple properties and can be defined in an object as `reactProperties`. They can specify `ids` from the given `childOptions` and can be given defaults, currently there is one default `text`. If no `ids` are specified all `childOptions` are considered valid.
 
