@@ -4,10 +4,12 @@ import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { BadgeStyles, DesignSystem } from "@microsoft/fast-components-styles-msft";
 import MSFTBadge, {
     BadgeHandledProps as MSFTBadgeHandledProps,
+    BadgeManagedClasses,
     BadgeProps as MSFTBadgeProps,
     BadgeSize,
     BadgeUnhandledProps,
 } from "./badge";
+import { Subtract } from "utility-types";
 import badgeSchema from "./badge.schema";
 
 /*
@@ -18,7 +20,8 @@ import badgeSchema from "./badge.schema";
 const Badge = manageJss(BadgeStyles)(MSFTBadge);
 type Badge = InstanceType<typeof Badge>;
 
-interface BadgeHandledProps extends Omit<MSFTBadgeHandledProps, "managedClasses"> {}
+interface BadgeHandledProps
+    extends Subtract<MSFTBadgeHandledProps, BadgeManagedClasses> {}
 type BadgeProps = ManagedJSSProps<MSFTBadgeProps, BadgeClassNameContract, DesignSystem>;
 
 export {

@@ -1,16 +1,15 @@
 import React from "react";
 import { BadgeClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
+import { ManagedClasses } from "@microsoft/fast-jss-manager-react";
 
-interface ManagedClasses<T> {
-    managedClasses: T;
-}
+export interface BadgeManagedClasses extends ManagedClasses<BadgeClassNameContract> {}
 
 export enum BadgeSize {
     small = "small",
     large = "large",
 }
 
-export interface BadgeHandledProps extends ManagedClasses<BadgeClassNameContract> {
+export interface BadgeHandledProps extends BadgeManagedClasses {
     /**
      * The badge backplate appearance
      */
