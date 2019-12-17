@@ -107,9 +107,7 @@ export default class CSSBorderRadius extends Foundation<
 
     private renderInputs(): React.ReactFragment {
         if (this.state.individualValues === true) {
-            const parsedString: string[] = parseCSSString(
-                get(this.props.value, "borderRadius", "")
-            );
+            const parsedString: string[] = parseCSSString(this.props.value);
             return (
                 <React.Fragment>
                     {this.renderIndividualInputs(
@@ -136,7 +134,7 @@ export default class CSSBorderRadius extends Foundation<
             <input
                 className={get(this.props, "managedClasses.cssBorderRadius_input")}
                 type={"text"}
-                value={get(this.props.value, "borderRadius", "")}
+                value={this.props.value}
                 onChange={this.handleBorderRadiusOnChange(BorderRadiusValue.borderRadius)}
                 disabled={this.props.disabled}
                 onFocus={this.props.reportValidity}
@@ -178,9 +176,7 @@ export default class CSSBorderRadius extends Foundation<
 
             const validatedValue: string = e.target.value === "" ? "0" : e.target.value;
 
-            const parsedString: string[] = parseCSSString(
-                get(this.props.value, "borderRadius", "")
-            );
+            const parsedString: string[] = parseCSSString(this.props.value);
             switch (cssKey) {
                 case BorderRadiusValue.borderRadius:
                     borderRadius.borderRadius = e.target.value;
@@ -206,7 +202,7 @@ export default class CSSBorderRadius extends Foundation<
                     } ${parsedString[3]}`;
                     break;
             }
-            this.props.onChange({ value: borderRadius });
+            this.props.onChange({ value: borderRadius.borderRadius });
         };
     }
 
