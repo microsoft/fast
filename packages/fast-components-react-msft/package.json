@@ -109,7 +109,6 @@
     "tslint-config-prettier": "^1.15.0",
     "tslint-loader": "^3.6.0",
     "typedoc": "^0.15.4",
-    "typedoc-plugin-external-module-name": "^2.1.0",
     "typedoc-plugin-markdown": "^2.2.14",
     "typescript": "3.5.1",
     "yargs": "^11.0.0"
