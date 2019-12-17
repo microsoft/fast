@@ -38,6 +38,12 @@ export interface ColumnHandledProps extends ColumnManagedClasses {
      * Provide this prop when doing server side rendering
      */
     cssGridPropertyName?: GridDisplay;
+
+    /**
+     * The default breakpoint (helpful when rendering server-side)
+     * Default to 0
+     */
+    defaultBreakpoint?: number;
 }
 
 export type ColumnProps = ColumnHandledProps & ColumnUnhandledProps;

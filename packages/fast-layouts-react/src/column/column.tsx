@@ -18,6 +18,7 @@ export class Column extends Foundation<ColumnHandledProps, ColumnUnhandledProps,
     public static defaultProps: Partial<ColumnProps> = {
         managedClasses: {},
         span: 12,
+        defaultBreakpoint: 0,
     };
 
     protected handledProps: HandledProps<ColumnHandledProps> = {
@@ -28,6 +29,7 @@ export class Column extends Foundation<ColumnHandledProps, ColumnUnhandledProps,
         order: void 0,
         gutter: void 0,
         cssGridPropertyName: void 0,
+        defaultBreakpoint: void 0,
     };
 
     /**
@@ -91,11 +93,9 @@ export class Column extends Foundation<ColumnHandledProps, ColumnUnhandledProps,
      * or the nearest preceding break-point if no entry exists for the current break-point
      */
     private getValueByBreakpoint<T>(breakpointSet: T[]): T {
-        if (!canUseDOM()) {
-            return breakpointSet[0];
-        }
-
-        const breakpoint: Breakpoint = identifyBreakpoint(window.innerWidth);
+        const breakpoint: Breakpoint = canUseDOM()
+            ? identifyBreakpoint(window.innerWidth)
+            : this.props.defaultBreakpoint;
 
         return breakpointSet.slice(0, breakpoint + 1).pop();
     }
@@ -108,7 +108,7 @@ export class Column extends Foundation<ColumnHandledProps, ColumnUnhandledProps,
             return this.props.span;
         }
 
-        if (!canUseViewport() || !Array.isArray(this.props.span)) {
+        if (!Array.isArray(this.props.span)) {
             return Column.defaultProps.span as number;
         }
 
@@ -159,17 +159,10 @@ export class Column extends Foundation<ColumnHandledProps, ColumnUnhandledProps,
         const gridColumnValue: string = [position, `span ${span}`]
             .filter((item: string | number) => Boolean(item))
             .join(" / ");
-        let order: number | null;
 
-        if (!canUseDOM()) {
-            order = Array.isArray(this.props.order)
-                ? this.props.order[0]
-                : this.props.order;
-        } else {
-            order = Array.isArray(this.props.order)
-                ? this.getValueByBreakpoint(this.props.order)
-                : this.props.order;
-        }
+        const order: number | null = Array.isArray(this.props.order)
+            ? this.getValueByBreakpoint(this.props.order)
+            : this.props.order;
 
         const canUseCssGridStyle: boolean =
             this.props.cssGridPropertyName === "grid"

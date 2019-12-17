@@ -1,5 +1,6 @@
 import React from "react";
 import Adapter from "enzyme-adapter-react-16";
+import { canUseDOM } from "exenv-es6";
 import { configure, mount, shallow } from "enzyme";
 import {
     Column,
@@ -7,6 +8,11 @@ import {
     ColumnHandledProps,
     ColumnUnhandledProps,
 } from "./column";
+
+/**
+ * Mock and allow control of the canUseDOM function
+ */
+jest.mock("exenv-es6", () => ({ canUseDOM: jest.fn() }));
 
 /**
  * Mock and allow control of canUseCssGrid return value
@@ -23,7 +29,12 @@ jest.mock("@microsoft/fast-web-utilities", () => {
  */
 configure({ adapter: new Adapter() });
 
+/* tslint:disable:no-string-literal */
 describe("Column", (): void => {
+    beforeEach(() => {
+        canUseDOM["mockImplementation"](() => true);
+    });
+
     const managedClasses: ColumnClassNamesContract = {
         column: "column",
     };
@@ -241,9 +252,50 @@ describe("Column", (): void => {
 
         expect(rendered.props().gutter).toBe(2);
     });
+
+    test("column should use a default breakpoint of zero when the DOM is unavailable and default breakpoint is unset", () => {
+        // make DOM unavailable for test
+        canUseDOM["mockImplementation"](() => false);
+        expect(canUseDOM()).toEqual(false);
+
+        // do not specify a default breakpoint to test that the default breakpoint defaults to zero
+        const rendered: any = shallow(
+            <Column span={[7, 8, 9]} row={[10, 11, 12]} order={[13, 14, 15]} />
+        );
+
+        // when breakpoint is zero, GridColumn, GridRowStart and order styles should use the default (0th) value
+        expect(rendered.props().style.gridColumn).toBe("span 7");
+        expect(rendered.props().style.gridRowStart).toBe("10");
+        expect(rendered.props().style.order).toBe(13);
+    });
+
+    test("column should use the set default breakpoint when the DOM is unavailable", () => {
+        // make DOM unavailable for test
+        canUseDOM["mockImplementation"](() => false);
+        expect(canUseDOM()).toEqual(false);
+
+        // no default breakpoint specified, default breakpoint defaults to zero
+        const rendered: any = shallow(
+            <Column
+                defaultBreakpoint={2}
+                span={[7, 8, 9]}
+                row={[10, 11, 12]}
+                order={[13, 14, 15]}
+            />
+        );
+
+        // when the DOM is unavailable, GridColumn, GridRowStart and order styles should use the default breakpoint value
+        expect(rendered.props().style.gridColumn).toBe("span 9");
+        expect(rendered.props().style.gridRowStart).toBe("12");
+        expect(rendered.props().style.order).toBe(15);
+    });
 });
 
 describe("Column - without CSS grid support but `cssGridPropertyName` prop is `grid`", (): void => {
+    beforeEach(() => {
+        canUseDOM["mockImplementation"](() => true);
+    });
+
     test("should set an inline style for `gridColumn` with a value equal to the `gridColumn` prop when CSS grid is NOT supported but the `cssGridPropertyName` prop passed is equal to `grid`", () => {
         const rendered: any = shallow(<Column cssGridPropertyName={"grid"} />);
 
