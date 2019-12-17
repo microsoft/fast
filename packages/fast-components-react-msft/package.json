@@ -90,6 +90,7 @@
     "babel-core": "^7.0.0-bridge.0",
     "babel-jest": "^24.5.0",
     "babel-loader": "^8.0.6",
+    "concat-md": "^0.3.2",
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-16": "^1.1.1",
     "eyes.images": "3.6.2",
