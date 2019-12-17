@@ -108,7 +108,7 @@ export default class CSSBorderRadius extends Foundation<
     private renderInputs(): React.ReactFragment {
         if (this.state.individualValues === true) {
             const parsedString: string[] = parseCSSString(
-                get(this.props.data, "borderRadius", "")
+                get(this.props.value, "borderRadius", "")
             );
             return (
                 <React.Fragment>
@@ -136,8 +136,12 @@ export default class CSSBorderRadius extends Foundation<
             <input
                 className={get(this.props, "managedClasses.cssBorderRadius_input")}
                 type={"text"}
-                value={get(this.props.data, "borderRadius", "")}
+                value={get(this.props.value, "borderRadius", "")}
                 onChange={this.handleBorderRadiusOnChange(BorderRadiusValue.borderRadius)}
+                disabled={this.props.disabled}
+                onFocus={this.props.reportValidity}
+                onBlur={this.props.updateValidity}
+                ref={this.props.elementRef as React.Ref<HTMLInputElement>}
             />
         );
     }
@@ -159,6 +163,7 @@ export default class CSSBorderRadius extends Foundation<
                 type={"text"}
                 value={normalizedValue}
                 onChange={this.handleBorderRadiusOnChange(position)}
+                disabled={this.props.disabled}
             />
         );
     }
@@ -167,14 +172,14 @@ export default class CSSBorderRadius extends Foundation<
         cssKey: BorderRadiusValue
     ): (e: React.ChangeEvent<HTMLInputElement>) => void {
         return (e: React.ChangeEvent<HTMLInputElement>): void => {
-            const borderRadius: CSSBorderRadiusValues = pick(this.props.data, [
+            const borderRadius: CSSBorderRadiusValues = pick(this.props.value, [
                 "borderRadius",
             ]);
 
             const validatedValue: string = e.target.value === "" ? "0" : e.target.value;
 
             const parsedString: string[] = parseCSSString(
-                get(this.props.data, "borderRadius", "")
+                get(this.props.value, "borderRadius", "")
             );
             switch (cssKey) {
                 case BorderRadiusValue.borderRadius:
@@ -201,7 +206,7 @@ export default class CSSBorderRadius extends Foundation<
                     } ${parsedString[3]}`;
                     break;
             }
-            this.props.onChange(borderRadius);
+            this.props.onChange({ value: borderRadius });
         };
     }
 

@@ -16,7 +16,7 @@ describe("CSSBorderRadius", () => {
         cssBorderRadius_input: "cssBorderRadius_input",
     };
 
-    const backgroundProps: CSSBorderRadiusProps = {
+    const borderRadiusProps: CSSBorderRadiusProps = {
         dataLocation: "",
         onChange: jest.fn(),
         value: "",
@@ -43,7 +43,7 @@ describe("CSSBorderRadius", () => {
         const borderRadiusValue: string = "12px 12px 12px 12px";
         const rendered: any = mount(
             <CSSBorderRadius
-                data={{ borderRadius: borderRadiusValue }}
+                value={{ borderRadius: borderRadiusValue }}
                 managedClasses={managedClasses}
                 onChange={jest.fn()}
             />
@@ -59,7 +59,7 @@ describe("CSSBorderRadius", () => {
         const callback: any = jest.fn();
         const rendered: any = mount(
             <CSSBorderRadius
-                data={{ borderRadius: borderRadiusValue }}
+                value={{ borderRadius: borderRadiusValue }}
                 managedClasses={managedClasses}
                 onChange={callback}
             />
@@ -72,7 +72,9 @@ describe("CSSBorderRadius", () => {
             .simulate("change", { target: { value: newBorderRadiusValue } });
 
         expect(callback).toHaveBeenCalledTimes(1);
-        expect(callback.mock.calls[0][0]).toEqual({ borderRadius: newBorderRadiusValue });
+        expect(callback.mock.calls[0][0]).toEqual({
+            value: { borderRadius: newBorderRadiusValue },
+        });
     });
     test("should not change the input from controlled to uncontrolled", () => {
         const borderRadiusValue: string = "12px 12px 12px 12px";
@@ -80,7 +82,7 @@ describe("CSSBorderRadius", () => {
         const callback: any = jest.fn();
         const rendered: any = mount(
             <CSSBorderRadius
-                data={{ borderRadius: borderRadiusValue }}
+                value={{ borderRadius: borderRadiusValue }}
                 managedClasses={managedClasses}
                 onChange={callback}
             />
@@ -93,10 +95,12 @@ describe("CSSBorderRadius", () => {
             .simulate("change", { target: { value: newBorderRadiusValue } });
 
         expect(callback).toHaveBeenCalledTimes(1);
-        expect(callback.mock.calls[0][0]).toEqual({ borderRadius: newBorderRadiusValue });
+        expect(callback.mock.calls[0][0]).toEqual({
+            value: { borderRadius: newBorderRadiusValue },
+        });
 
         rendered.setProps({
-            data: {},
+            value: {},
         });
 
         expect(
@@ -104,14 +108,14 @@ describe("CSSBorderRadius", () => {
         ).toBe("");
     });
 
-    test("should parse the `data` prop and assign individual values when 1 value is passed", () => {
+    test("should parse the `value` prop and assign individual values when 1 value is passed", () => {
         const borderRadiusValue: string = "12px";
         const rendered: any = mount(
-            <CSSBorderRadius managedClasses={managedClasses} onChange={jest.fn()} />
+            <CSSBorderRadius managedClasses={managedClasses} {...borderRadiusProps} />
         );
 
         rendered.setProps({
-            data: {
+            value: {
                 borderRadius: borderRadiusValue,
             },
         });
@@ -144,14 +148,14 @@ describe("CSSBorderRadius", () => {
         ).toBe("12px");
     });
 
-    test("should parse the `data` prop and assign individual values when 2 values are passed", () => {
+    test("should parse the `value` prop and assign individual values when 2 values are passed", () => {
         const borderRadiusValue: string = "12px 8px";
         const rendered: any = mount(
-            <CSSBorderRadius managedClasses={managedClasses} onChange={jest.fn()} />
+            <CSSBorderRadius managedClasses={managedClasses} {...borderRadiusProps} />
         );
 
         rendered.setProps({
-            data: {
+            value: {
                 borderRadius: borderRadiusValue,
             },
         });
@@ -184,14 +188,14 @@ describe("CSSBorderRadius", () => {
         ).toBe("8px");
     });
 
-    test("should parse the `data` prop and assign individual values when 3 values are passed", () => {
+    test("should parse the `value` prop and assign individual values when 3 values are passed", () => {
         const borderRadiusValue: string = "12px 8px 3px";
         const rendered: any = mount(
-            <CSSBorderRadius managedClasses={managedClasses} onChange={jest.fn()} />
+            <CSSBorderRadius managedClasses={managedClasses} {...borderRadiusProps} />
         );
 
         rendered.setProps({
-            data: {
+            value: {
                 borderRadius: borderRadiusValue,
             },
         });
@@ -224,14 +228,14 @@ describe("CSSBorderRadius", () => {
         ).toBe("8px");
     });
 
-    test("should parse the `data` prop and assign individual values when 4 values are passed", () => {
+    test("should parse the `value` prop and assign individual values when 4 values are passed", () => {
         const borderRadiusValue: string = "12px 8px 3px 7px";
         const rendered: any = mount(
-            <CSSBorderRadius managedClasses={managedClasses} onChange={jest.fn()} />
+            <CSSBorderRadius managedClasses={managedClasses} {...borderRadiusProps} />
         );
 
         rendered.setProps({
-            data: {
+            value: {
                 borderRadius: borderRadiusValue,
             },
         });
@@ -350,7 +354,7 @@ describe("CSSBorderRadius", () => {
             <CSSBorderRadius
                 managedClasses={managedClasses}
                 onChange={callback}
-                data={{ borderRadius: "1px 1px 1px 1px" }}
+                value={{ borderRadius: "1px 1px 1px 1px" }}
             />
         );
 
@@ -365,7 +369,7 @@ describe("CSSBorderRadius", () => {
 
         expect(callback).toHaveBeenCalledTimes(1);
         expect(callback.mock.calls[0][0]).toStrictEqual({
-            borderRadius: "10px 1px 1px 1px",
+            value: { borderRadius: "10px 1px 1px 1px" },
         });
     });
 
@@ -376,7 +380,7 @@ describe("CSSBorderRadius", () => {
             <CSSBorderRadius
                 managedClasses={managedClasses}
                 onChange={callback}
-                data={{ borderRadius: "1px 1px 1px 1px" }}
+                value={{ borderRadius: "1px 1px 1px 1px" }}
             />
         );
 
@@ -391,7 +395,7 @@ describe("CSSBorderRadius", () => {
 
         expect(callback).toHaveBeenCalledTimes(1);
         expect(callback.mock.calls[0][0]).toStrictEqual({
-            borderRadius: "1px 10px 1px 1px",
+            value: { borderRadius: "1px 10px 1px 1px" },
         });
     });
 
@@ -402,7 +406,7 @@ describe("CSSBorderRadius", () => {
             <CSSBorderRadius
                 managedClasses={managedClasses}
                 onChange={callback}
-                data={{ borderRadius: "1px 1px 1px 1px" }}
+                value={{ borderRadius: "1px 1px 1px 1px" }}
             />
         );
 
@@ -417,7 +421,7 @@ describe("CSSBorderRadius", () => {
 
         expect(callback).toHaveBeenCalledTimes(1);
         expect(callback.mock.calls[0][0]).toStrictEqual({
-            borderRadius: "1px 1px 10px 1px",
+            value: { borderRadius: "1px 1px 10px 1px" },
         });
     });
 
@@ -428,7 +432,7 @@ describe("CSSBorderRadius", () => {
             <CSSBorderRadius
                 managedClasses={managedClasses}
                 onChange={callback}
-                data={{ borderRadius: "1px 1px 1px 1px" }}
+                value={{ borderRadius: "1px 1px 1px 1px" }}
             />
         );
 
@@ -443,7 +447,7 @@ describe("CSSBorderRadius", () => {
 
         expect(callback).toHaveBeenCalledTimes(1);
         expect(callback.mock.calls[0][0]).toStrictEqual({
-            borderRadius: "1px 1px 1px 10px",
+            value: { borderRadius: "1px 1px 1px 10px" },
         });
     });
 });
