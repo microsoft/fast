@@ -43,8 +43,7 @@ issues:
   # Issues or pull requests with these labels will never be considered stale. Set to `[]` to disable.
   exemptLabels:
     - "issue : task"
-    - "discuss : feature request"
-    - "[Status] Maybe Later"
+    - "feature request"
 
   # Label to use when marking as stale.
   staleLabel: "reason : stale"
