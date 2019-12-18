@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.11.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-layouts-react@4.10.0...@microsoft/fast-layouts-react@4.11.0) (2019-12-18)
+
+
+### Features
+
+* add default breakpoint for fast-layouts-react column ([#2531](https://github.com/Microsoft/fast-dna/issues/2531)) ([553657d](https://github.com/Microsoft/fast-dna/commit/553657df572eb9ed906d60689084212b468c8349))
+
+
+
+
+
 # [4.10.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-layouts-react@4.9.0...@microsoft/fast-layouts-react@4.10.0) (2019-12-11)
 
 
