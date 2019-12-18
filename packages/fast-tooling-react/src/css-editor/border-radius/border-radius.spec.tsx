@@ -14,6 +14,13 @@ describe("CSSBorderRadius", () => {
     const managedClasses: CSSBorderRadiusClassNameContract = {
         cssBorderRadius: "cssBorderRadius",
         cssBorderRadius_input: "cssBorderRadius_input",
+        cssBorderRadius_individualInput: "cssBorderRadius_individualInput",
+        cssBorderRadius_toggleButton: "cssBorderRadius_toggleButton",
+        cssBorderRadius_toggleButton__selected: "cssBorderRadius_toggleButton__selected",
+        cssBorderRadius_toggleButtonGlyph: "cssBorderRadius_toggleButtonGlyph",
+        cssBorderRadius_toggleButtonGlyphPath__highlight:
+            "cssBorderRadius_toggleButtonGlyphPath__highlight",
+        cssBorderRadius__disabled: "cssBorderRadius__disabled",
     };
 
     const borderRadiusProps: CSSBorderRadiusProps = {
