@@ -25,6 +25,7 @@
     "convert:readme": "node ../../build/convert-readme.js .tmp",
     "copy:all": "yarn convert:json-schema && yarn copy:readme",
     "convert:json-schema": "node ../../build/convert-schemas.js",
+    "convert:api": "node ./build/create-component-api-documents.js --ignore-dir utilities --component-dir ./src --typedoc-src ./api",
     "copy:readme": "node ../../build/copy-readme.js",
     "prepare": "yarn clean:dist && yarn build",
     "prettier": "prettier --config ../../.prettierrc --write \"**/*.{ts,tsx}\"",
@@ -96,6 +97,7 @@
     "eyes.images": "3.6.2",
     "file-loader": "^1.1.11",
     "focus-visible": "^4.1.5",
+    "glob": "^7.1.6",
     "jest": "^24.5.0",
     "linkify-it": "^2.2.0",
     "lodash-es": "^4.0.0",
@@ -131,6 +133,7 @@
     "@microsoft/fast-web-utilities": "^4.4.0",
     "exenv-es6": "^1.0.0",
     "global": "^4.4.0",
+    "transform-markdown-links": "^2.0.0",
     "typedoc": "^0.15.4",
     "utility-types": "^2.1.0"
   }

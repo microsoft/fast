@@ -8,6 +8,8 @@
  */
 const { readdirSync } = require("fs");
 const path = require("path");
+const glob = require("glob");
+const transformMarkdownLinks = require("transform-markdown-links");
 
 /**
  * Retrieves arguments by name
@@ -66,4 +68,12 @@ const entryMatchNames = componentDirectories.map(value => {
     );
 });
 
-console.log(entryMatchNames);
+entryMatchNames.forEach(entries => {
+    glob(`**/*(${entries.join("|")}).md`, { cwd: typedocSource }, (err, files) => {
+        if (err) {
+            throw err;
+        }
+
+        const fullpaths = files.map(filepath => path.resolve(typedocSource, filepath));
+    });
+});
