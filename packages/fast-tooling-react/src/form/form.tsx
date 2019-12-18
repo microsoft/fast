@@ -156,8 +156,8 @@ class Form extends React.Component<
                     ? this.rootSchema.title
                     : this.untitled,
             activeDataLocation:
-                props.location && typeof props.location === "string"
-                    ? props.location
+                props.location && props.location.dataLocation
+                    ? props.location.dataLocation
                     : "",
             schema: this.props.schema,
             navigationInstance,
