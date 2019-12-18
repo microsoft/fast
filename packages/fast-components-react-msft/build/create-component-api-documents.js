@@ -6,7 +6,7 @@
  * @param component-dir - the source directory holding components
  * @param typedoc-src - the source of generated typedoc API data
  */
-const { readdirSync } = require("fs");
+const { readdirSync, readFile } = require("fs");
 const path = require("path");
 const glob = require("glob");
 const transformMarkdownLinks = require("transform-markdown-links");
@@ -75,5 +75,78 @@ entryMatchNames.forEach(entries => {
         }
 
         const fullpaths = files.map(filepath => path.resolve(typedocSource, filepath));
+
+        fullpaths.forEach(filepath => {
+            console.log(filepath);
+            resolveDependencies(filepath);
+            // console.log(resolveDependencies(filepath));
+            //             transformMarkdownLinks(readFileSync(filepath).toString(), (link, text) => {
+            //                 console.log(link);
+            //
+            //                 return link;
+            //             })
+        });
     });
 });
+
+/**
+ * Resolves dependent files from a file input
+ * @return Promise
+ * TODO
+ * This function needs to be adjusted to accept a list of previously resolved paths
+ * to omit so we don't get circular dependencies. It then needs to resolve files synchronously
+ * so that we can inform each file of all the links found
+ */
+function resolveDependencies(filepath) {
+    return new Promise((resolve, reject) => {
+        const parsedPath = path.parse(filepath);
+        const idLink = /\.md#.+$/;
+
+        if (parsedPath.ext.match(idLink)) {
+            filepath = filepath.replace(idLink, ".md");
+        }
+
+        readFile(filepath, (err, data) => {
+            if (err) {
+                reject(err);
+            }
+
+            if (!data || !data.toString()) {
+                console.log("no data found for file", filepath);
+                resolve([]);
+            }
+
+            const links = [];
+            const dependencies = transformMarkdownLinks(data.toString(), link =>
+                links.push(link)
+            );
+
+            if (links.length) {
+                Promise.all(
+                    links
+                        .map(linkpath => {
+                            const srcDir = path.parse(filepath).dir;
+
+                            return path.resolve(srcDir, linkpath);
+                        })
+                        .map(resolveDependencies)
+                )
+                    .then(values => {
+                        console.log(values);
+                        // resolve(
+                        //     new Set(
+                        //         values
+                        //             .reduce((prev, current) => prev.concat(current))
+                        //             .concat(links)
+                        //     ).values()
+                        // );
+                    })
+                    .catch(err => {
+                        throw err;
+                    });
+            } else {
+                resolve(links);
+            }
+        });
+    });
+}
