@@ -19,6 +19,7 @@ import {
     getDataUpdatedWithoutSourceData,
     getDataUpdatedWithSourceData,
 } from "../data-utilities/relocate";
+import Plugin, { PluginProps } from "./plugin";
 
 /**
  * This is the Message System, through which:
@@ -33,6 +34,7 @@ import {
 
 const registeredComponents: object = {};
 let dataBlob: any = {};
+let plugins: Array<Plugin<PluginProps>> = [];
 
 onmessage = function(e: MessageEvent): void {
     switch ((e.data as MessageSystemIncoming).type) {
@@ -44,10 +46,12 @@ onmessage = function(e: MessageEvent): void {
             break;
         case MessageSystemType.initialize:
             dataBlob = e.data.data;
+            plugins = e.data.plugins || [];
 
             postMessage({
                 type: MessageSystemType.initialize,
-                data: e.data.data,
+                data: dataBlob,
+                plugins,
             } as InitializeMessageOutgoing);
     }
 };
