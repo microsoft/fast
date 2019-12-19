@@ -1,4 +1,5 @@
 import { DataType } from "../data-utilities/types";
+import Plugin, { PluginProps } from "./plugin";
 
 export enum MessageSystemComponentTypeAction {
     register = "register",
@@ -28,6 +29,7 @@ export enum MessageSystemSubscriptionType {
 export interface InitializeMessageIncoming {
     type: MessageSystemType.initialize;
     data: any;
+    plugins: Array<Plugin<PluginProps>>;
 }
 
 /**
@@ -36,6 +38,7 @@ export interface InitializeMessageIncoming {
 export interface InitializeMessageOutgoing {
     type: MessageSystemType.initialize;
     data: any;
+    plugins: Array<Plugin<PluginProps>>;
 }
 
 /**
