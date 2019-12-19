@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.27.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-tooling-react@1.26.1...@microsoft/fast-tooling-react@1.27.0) (2019-12-18)
+
+
+### Features
+
+* mark child options and react properties as deprecated ([#2527](https://github.com/Microsoft/fast-dna/issues/2527)) ([814ff90](https://github.com/Microsoft/fast-dna/commit/814ff90ff00c44163210d072cb0c00d6e2e74cf1))
+
+
+
+
+
 ## [1.26.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-tooling-react@1.26.0...@microsoft/fast-tooling-react@1.26.1) (2019-12-13)
 
 
