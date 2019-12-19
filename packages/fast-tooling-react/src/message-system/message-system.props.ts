@@ -29,7 +29,7 @@ export enum MessageSystemSubscriptionType {
 export interface InitializeMessageIncoming {
     type: MessageSystemType.initialize;
     data: any;
-    plugins: Plugin<PluginProps>[];
+    plugins: Array<Plugin<PluginProps>>;
 }
 
 /**
@@ -38,7 +38,7 @@ export interface InitializeMessageIncoming {
 export interface InitializeMessageOutgoing {
     type: MessageSystemType.initialize;
     data: any;
-    plugins: Plugin<PluginProps>[];
+    plugins: Array<Plugin<PluginProps>>;
 }
 
 /**

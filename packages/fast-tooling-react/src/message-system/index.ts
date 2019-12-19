@@ -34,7 +34,7 @@ import Plugin, { PluginProps } from "./plugin";
 
 const registeredComponents: object = {};
 let dataBlob: any = {};
-let plugins: Plugin<PluginProps>[] = [];
+let plugins: Array<Plugin<PluginProps>> = [];
 
 onmessage = function(e: MessageEvent): void {
     switch ((e.data as MessageSystemIncoming).type) {
