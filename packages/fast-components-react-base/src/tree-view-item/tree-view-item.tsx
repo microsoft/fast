@@ -67,14 +67,10 @@ class TreeViewItem extends Foundation<
 
     constructor(props: TreeViewItemProps) {
         super(props);
-        // we need to check for children and if we are selected or if a child is selected...
-        const expanded: boolean | undefined = this.hasChildNodes()
-            ? this.props.defaultExpanded
-            : undefined;
 
         this.state = {
             focusable: false,
-            expanded,
+            expanded: this.hasChildNodes() ? this.props.defaultExpanded : undefined,
         };
     }
 
@@ -82,7 +78,7 @@ class TreeViewItem extends Foundation<
         if (this.hasChildNodes()) {
             this.adjustNestedTreeItemCount(1);
 
-            if (this.hasSelectedChild()) {
+            if (this.hasSelectedChild() && !this.state.expanded) {
                 this.setExpanded(true);
             }
         }
@@ -98,7 +94,11 @@ class TreeViewItem extends Foundation<
         const hasChildNodes: boolean = this.hasChildNodes();
 
         if (hasChildNodes && !hadChildNodes) {
-            this.setState({ expanded: this.props.defaultExpanded });
+            // if defaultExpanded is false and a child node is selected, set expanded (triggers callback)
+            // if not, set expanded state to this.props.defaultExpanded
+            this.props.defaultExpanded === false && this.hasSelectedChild()
+                ? this.setExpanded(true)
+                : this.setState({ expanded: this.props.defaultExpanded });
             this.adjustNestedTreeItemCount(1);
         } else if (hadChildNodes && !hasChildNodes) {
             this.adjustNestedTreeItemCount(-1);
