@@ -28,6 +28,7 @@ const styles: ComponentStyles<CSSBoxShadowClassNameContract, {}> = {
         borderRadius: "2px",
         boxShadow: "0 0 0 1px inset rgba(255, 255, 255, 0.19)",
         width: "49%",
+        height: "29px",
         position: "relative",
         "&::after": {
             fontFamily: "Segoe UI, SegoeUI, Helvetica Neue, Helvetica, Arial, sans-serif",

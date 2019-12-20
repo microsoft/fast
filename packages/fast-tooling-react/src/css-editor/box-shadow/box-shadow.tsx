@@ -108,6 +108,7 @@ export default class CSSBoxShadow extends Foundation<
                             disabled={this.props.disabled}
                             onFocus={this.props.reportValidity}
                             onBlur={this.props.updateValidity}
+                            ref={this.props.elementRef as React.Ref<HTMLInputElement>}
                         />
                     </div>
                     <input
@@ -120,9 +121,6 @@ export default class CSSBoxShadow extends Foundation<
                         value={Math.round(this.state.boxShadowOpacity * 100)}
                         onChange={this.handleBoxShadowOpacityOnChange}
                         disabled={this.props.disabled}
-                        onFocus={this.props.reportValidity}
-                        onBlur={this.props.updateValidity}
-                        ref={this.props.elementRef as React.Ref<HTMLInputElement>}
                     />
                 </div>
                 <div className={cssBoxShadow_controlRegion}>
@@ -134,9 +132,6 @@ export default class CSSBoxShadow extends Foundation<
                         value={this.state.boxShadowOffsetX}
                         onChange={this.handleBoxShadowXOnChange}
                         disabled={this.props.disabled}
-                        onFocus={this.props.reportValidity}
-                        onBlur={this.props.updateValidity}
-                        ref={this.props.elementRef as React.Ref<HTMLInputElement>}
                     />
                 </div>
                 <div className={cssBoxShadow_controlRegion}>
@@ -148,9 +143,6 @@ export default class CSSBoxShadow extends Foundation<
                         value={this.state.boxShadowOffsetY}
                         onChange={this.handleBoxShadowYOnChange}
                         disabled={this.props.disabled}
-                        onFocus={this.props.reportValidity}
-                        onBlur={this.props.updateValidity}
-                        ref={this.props.elementRef as React.Ref<HTMLInputElement>}
                     />
                 </div>
                 <div className={cssBoxShadow_controlRegion}>
@@ -162,9 +154,6 @@ export default class CSSBoxShadow extends Foundation<
                         value={this.state.boxShadowBlurRadius}
                         onChange={this.handleBoxShadowBlurOnChange}
                         disabled={this.props.disabled}
-                        onFocus={this.props.reportValidity}
-                        onBlur={this.props.updateValidity}
-                        ref={this.props.elementRef as React.Ref<HTMLInputElement>}
                     />
                 </div>
             </div>

@@ -975,7 +975,7 @@ export class Example extends React.Component {
         super(props);
 
         this.state = {
-            cssValues: "#000000"
+            cssValues: "0 4px 4px rgba(0,0,0,0.25)"
         }
     }
 
