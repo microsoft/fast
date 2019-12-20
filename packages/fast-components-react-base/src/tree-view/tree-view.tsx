@@ -71,8 +71,8 @@ class ChildNodeCountTracker {
         return this._count;
     }
 
-    public adjust(): void {
-        this._count += 1;
+    public adjust(delta: number): void {
+        this._count += delta;
     }
 }
 

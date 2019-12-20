@@ -33,6 +33,7 @@ const nestedExample: React.ReactNode = [
             <TreeViewItem
                 titleContent="Sports"
                 key={uniqueId()}
+                selected={true}
                 children={[
                     <TreeViewItem titleContent="Football" key={uniqueId()} />,
                     <TreeViewItem titleContent="Formula 1" key={uniqueId()} />,
