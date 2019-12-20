@@ -44,6 +44,66 @@ const nestedExample: React.ReactNode = [
     <TreeViewItem titleContent="Other Favs" key={uniqueId()} />,
 ];
 
+const deepNestedExample: React.ReactNode = [
+    <TreeViewItem
+        titleContent="Favorites Bar"
+        key={uniqueId()}
+        beforeContent={generateBeforeOrAfterContent}
+        children={[
+            <TreeViewItem
+                titleContent="Shopping"
+                key={uniqueId()}
+                beforeContent={generateBeforeOrAfterContent}
+            />,
+            <TreeViewItem
+                titleContent="Sports"
+                key={uniqueId()}
+                beforeContent={generateBeforeOrAfterContent}
+                children={[
+                    <TreeViewItem
+                        titleContent="Football"
+                        key={uniqueId()}
+                        beforeContent={generateBeforeOrAfterContent}
+                        children={[
+                            <TreeViewItem
+                                titleContent={"Team 1"}
+                                key={uniqueId()}
+                                beforeContent={generateBeforeOrAfterContent}
+                            />,
+                            <TreeViewItem
+                                titleContent={"Team 2"}
+                                key={uniqueId()}
+                                selected={true}
+                                beforeContent={generateBeforeOrAfterContent}
+                            />,
+                            <TreeViewItem
+                                titleContent={"Team 3"}
+                                key={uniqueId()}
+                                beforeContent={generateBeforeOrAfterContent}
+                            />,
+                        ]}
+                    />,
+                    <TreeViewItem
+                        titleContent="Formula 1"
+                        beforeContent={generateBeforeOrAfterContent}
+                        key={uniqueId()}
+                    />,
+                ]}
+            />,
+        ]}
+    />,
+    <TreeViewItem
+        titleContent="Read later"
+        key={uniqueId()}
+        beforeContent={generateBeforeOrAfterContent}
+    />,
+    <TreeViewItem
+        titleContent="Other Favs"
+        key={uniqueId()}
+        beforeContent={generateBeforeOrAfterContent}
+    />,
+];
+
 const nestedExampleWithBeforeContent: React.ReactNode = [
     <TreeViewItem
         titleContent="Favorites Bar"
@@ -134,6 +194,9 @@ storiesOf("Tree View", module)
     .add("Nested and default expanded", () => <TreeView children={nestedExample} />)
     .add("Nested, beforeContent, selected child", () => (
         <TreeView children={nestedExampleWithBeforeContent} />
+    ))
+    .add("Deeply nested, beforeContent, selected child", () => (
+        <TreeView children={deepNestedExample} />
     ))
     .add("Nested, afterContent, default expanded", () => (
         <TreeView children={nestedExampleWithAfterContent} />
