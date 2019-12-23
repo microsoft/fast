@@ -1,6 +1,6 @@
 import { ComponentStyles } from "@microsoft/fast-jss-manager";
 import { TreeViewItemClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
-import { DesignSystem } from "../design-system";
+import { DesignSystem, DesignSystemResolver } from "../design-system";
 import {
     add,
     applyFocusVisible,
@@ -44,10 +44,6 @@ import {
     getScaledLineHeight,
 } from "../utilities/typography";
 import { applyFontWeightNormal } from "../utilities/fonts";
-
-const nestedNodeOffest: (designSystem?: DesignSystem) => string = toPx(
-    add(designUnit, glyphSizeNumber)
-);
 
 const styles: ComponentStyles<TreeViewItemClassNameContract, DesignSystem> = {
     // Container for item AND any children
@@ -133,7 +129,10 @@ const styles: ComponentStyles<TreeViewItemClassNameContract, DesignSystem> = {
     // Container for all child nodes of an item
     treeViewItem_childNodeRegion: {
         display: "none",
-        "font-size": `calc(1em + ${nestedNodeOffest()})`,
+        "font-size": format<DesignSystem>(
+            "calc(1em + {0})",
+            toPx(add(designUnit, glyphSizeNumber))
+        ),
         "& $treeViewItem_contentRegion": {
             "&::before": {
                 width: "1em",
