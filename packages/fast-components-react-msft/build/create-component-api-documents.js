@@ -6,10 +6,18 @@
  * @param component-dir - the source directory holding components
  * @param typedoc-src - the source of generated typedoc API data
  */
-const { readdirSync, readFile, readFileSync } = require("fs");
+const {
+    createWriteStream,
+    readdirSync,
+    readFileSync,
+    copyFileSync,
+    writeFileSync,
+} = require("fs");
 const path = require("path");
 const glob = require("glob");
 const transformMarkdownLinks = require("transform-markdown-links");
+const mkdirp = require("mkdirp");
+const uniqueId = require("lodash").uniqueId;
 
 /**
  * Retrieves arguments by name
@@ -47,6 +55,7 @@ const componentSource = path.resolve(
     process.cwd(),
     getArg("--component-dir", true)
 );
+
 const typedocSource = path.resolve(
     __dirname,
     process.cwd(),
@@ -94,27 +103,29 @@ entryMatchNames.forEach(entries => {
             });
         }
 
-        console.log(resolvedDependencies.entries());
+        const tempDir = path.resolve(process.cwd(), `./.tmp/${uniqueId()}/API.md`);
 
-        /**
-         * For all paths, aggregate all dependency files into a single set.
-         * When all direct dependencies of the first set are resolved, inspect the
-         * resolved files for dependencies and aggregate them into a single set
-         *
-         * repeat until no dependencies are found
-         */
-        // fullpaths.forEach(filepath => {
-        //     console.log(filepath);
-        //     resolveDependencies(filepath);
-        //     // console.log(resolveDependencies(filepath));
-        //     //             transformMarkdownLinks(readFileSync(filepath).toString(), (link, text) => {
-        //     //                 console.log(link);
-        //     //
-        //     //                 return link;
-        //     //             })
-        // });
+        const out = createWriteStream(tempDir);
+
+        resolvedDependencies.forEach(src => {
+            out.write(`<a name="${fileId(src)}"></a>\n`);
+
+            out.write(
+                transformMarkdownLinks(readFileSync(src).toString(), link =>
+                    fileId(link)
+                ) + "\n"
+            );
+        });
+
+        out.close();
     });
 });
+
+function fileId(filepath) {
+    const parsed = path.parse(filepath);
+    console.log(parsed.ext);
+    return parsed.name + parsed.ext.replace(".", "");
+}
 
 /**
  * Converts a relative file path found in markdown files
