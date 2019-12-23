@@ -121,5 +121,11 @@ export { textFieldConfig };
 import toggleConfig from "./toggle";
 export { toggleConfig };
 
+import treeViewConfig from "./tree-view";
+export { treeViewConfig };
+
+import treeViewItemConfig from "./tree-view-item";
+export { treeViewItemConfig };
+
 import typographyConfig from "./typography";
 export { typographyConfig };

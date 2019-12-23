@@ -7,7 +7,16 @@ export default {
         path: {
             title: "Icon",
             type: "string",
-            enum: ["play", "pause", "robot", "user", "arrow", "download"],
+            enum: [
+                "play",
+                "pause",
+                "robot",
+                "user",
+                "arrow",
+                "download",
+                "favorite",
+                "folder",
+            ],
             default: "play",
         },
     },
