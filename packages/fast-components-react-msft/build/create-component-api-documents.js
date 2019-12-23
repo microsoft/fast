@@ -12,6 +12,7 @@ const {
     readFileSync,
     copyFileSync,
     writeFileSync,
+    rmdirSync,
 } = require("fs");
 const path = require("path");
 const glob = require("glob");
@@ -72,13 +73,17 @@ const componentDirectories = getDirectories(componentSource).filter(
 );
 const entryMatchNames = componentDirectories.map(value => {
     const sanatized = value.replace("-", "").replace("_", "");
-    return ["handledprops", "unhandledprops", "classnamecontract"].map(val =>
-        sanatized.concat(val)
-    );
+
+    return {
+        folderName: value,
+        entries: ["handledprops", "unhandledprops", "classnamecontract"].map(val =>
+            sanatized.concat(val)
+        ),
+    };
 });
 
-entryMatchNames.forEach(entries => {
-    glob(`**/*(${entries.join("|")}).md`, { cwd: typedocSource }, (err, files) => {
+entryMatchNames.forEach(entry => {
+    glob(`**/*(${entry.entries.join("|")}).md`, { cwd: typedocSource }, (err, files) => {
         if (err) {
             throw err;
         }
@@ -103,9 +108,11 @@ entryMatchNames.forEach(entries => {
             });
         }
 
-        const tempDir = path.resolve(process.cwd(), `./.tmp/${uniqueId()}/API.md`);
+        const outpath = path.resolve(componentSource, entry.folderName, "./.tmp/API.md");
 
-        const out = createWriteStream(tempDir);
+        mkdirp.sync(path.parse(outpath).dir);
+
+        const out = createWriteStream(outpath);
 
         resolvedDependencies.forEach(src => {
             out.write(`<a name="${fileId(src)}"></a>\n`);
@@ -123,7 +130,6 @@ entryMatchNames.forEach(entries => {
 
 function fileId(filepath) {
     const parsed = path.parse(filepath);
-    console.log(parsed.ext);
     return parsed.name + parsed.ext.replace(".", "");
 }
 
