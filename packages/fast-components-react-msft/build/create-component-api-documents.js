@@ -6,7 +6,7 @@
  * @param component-dir - the source directory holding components
  * @param typedoc-src - the source of generated typedoc API data
  */
-const { readdirSync, readFile } = require("fs");
+const { readdirSync, readFile, readFileSync } = require("fs");
 const path = require("path");
 const glob = require("glob");
 const transformMarkdownLinks = require("transform-markdown-links");
@@ -74,79 +74,91 @@ entryMatchNames.forEach(entries => {
             throw err;
         }
 
-        const fullpaths = files.map(filepath => path.resolve(typedocSource, filepath));
+        const sourcePaths = files.map(filepath => path.resolve(typedocSource, filepath));
+        let resolvedDependencies = new Set();
+        let unresolvedDependencies = new Set(sourcePaths);
 
-        fullpaths.forEach(filepath => {
-            console.log(filepath);
-            resolveDependencies(filepath);
-            // console.log(resolveDependencies(filepath));
-            //             transformMarkdownLinks(readFileSync(filepath).toString(), (link, text) => {
-            //                 console.log(link);
-            //
-            //                 return link;
-            //             })
-        });
+        while (unresolvedDependencies.size > 0) {
+            unresolvedDependencies.forEach(filepath => {
+                // Skip processing if we've already resolved this dependency
+                if (resolvedDependencies.has(filepath)) {
+                    return;
+                }
+
+                getDependentFiles(filepath)
+                    .filter(newPath => !resolvedDependencies.has(newPath))
+                    .forEach(newPath => unresolvedDependencies.add(newPath));
+
+                unresolvedDependencies.delete(filepath);
+                resolvedDependencies.add(filepath);
+            });
+        }
+
+        console.log(resolvedDependencies.entries());
+
+        /**
+         * For all paths, aggregate all dependency files into a single set.
+         * When all direct dependencies of the first set are resolved, inspect the
+         * resolved files for dependencies and aggregate them into a single set
+         *
+         * repeat until no dependencies are found
+         */
+        // fullpaths.forEach(filepath => {
+        //     console.log(filepath);
+        //     resolveDependencies(filepath);
+        //     // console.log(resolveDependencies(filepath));
+        //     //             transformMarkdownLinks(readFileSync(filepath).toString(), (link, text) => {
+        //     //                 console.log(link);
+        //     //
+        //     //                 return link;
+        //     //             })
+        // });
     });
 });
 
 /**
- * Resolves dependent files from a file input
- * @return Promise
- * TODO
- * This function needs to be adjusted to accept a list of previously resolved paths
- * to omit so we don't get circular dependencies. It then needs to resolve files synchronously
- * so that we can inform each file of all the links found
+ * Converts a relative file path found in markdown files
+ * to an absolute path, trimming any ID links from the end
+ * of the filepath, eg ../foo/bar.md#someId -> /root/foo/bar.md
  */
-function resolveDependencies(filepath) {
-    return new Promise((resolve, reject) => {
-        const parsedPath = path.parse(filepath);
-        const idLink = /\.md#.+$/;
+function normalizeDependencyPath(sourceFilePath, filepath) {
+    const parsedPath = path.parse(filepath);
+    const idLinkMatcher = /\.md#.+$/; // Matches .md filepaths with a ID, eg /foo/bar.md#someId
 
-        if (parsedPath.ext.match(idLink)) {
-            filepath = filepath.replace(idLink, ".md");
-        }
+    if (parsedPath.ext.match(idLinkMatcher)) {
+        filepath = filepath.replace(idLinkMatcher, ".md");
+    }
+}
 
-        readFile(filepath, (err, data) => {
-            if (err) {
-                reject(err);
-            }
+/**
+ * Removes ID values from paths to get the
+ * sanitized filepath. eg ../foo/bar.md@someId -> ../foo/bar.md
+ */
+function sanitizeFileName(filepath) {
+    const parsedPath = path.parse(filepath);
+    const idLinkMatcher = /\.md#.+$/; // Matches .md filepaths with a ID, eg /foo/bar.md#someId
 
-            if (!data || !data.toString()) {
-                console.log("no data found for file", filepath);
-                resolve([]);
-            }
+    return parsedPath.ext.match(idLinkMatcher)
+        ? filepath.replace(idLinkMatcher, ".md")
+        : filepath;
+}
 
-            const links = [];
-            const dependencies = transformMarkdownLinks(data.toString(), link =>
-                links.push(link)
-            );
+/**
+ * Resolves dependent filepaths from a file input
+ */
+function getDependentFiles(filepath) {
+    filepath = sanitizeFileName(filepath);
 
-            if (links.length) {
-                Promise.all(
-                    links
-                        .map(linkpath => {
-                            const srcDir = path.parse(filepath).dir;
+    const filedata = readFileSync(filepath, { encoding: "utf8" });
 
-                            return path.resolve(srcDir, linkpath);
-                        })
-                        .map(resolveDependencies)
-                )
-                    .then(values => {
-                        console.log(values);
-                        // resolve(
-                        //     new Set(
-                        //         values
-                        //             .reduce((prev, current) => prev.concat(current))
-                        //             .concat(links)
-                        //     ).values()
-                        // );
-                    })
-                    .catch(err => {
-                        throw err;
-                    });
-            } else {
-                resolve(links);
-            }
+    if (filedata) {
+        let links = [];
+        transformMarkdownLinks(filedata, val => {
+            links.push(path.resolve(path.parse(filepath).dir, sanitizeFileName(val)));
         });
-    });
+
+        return links;
+    } else {
+        return [];
+    }
 }
