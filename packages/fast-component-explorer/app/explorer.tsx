@@ -72,6 +72,8 @@ import {
     ToggleClassNameContract,
     Typography,
 } from "@microsoft/fast-components-react-msft";
+// have to drill in to get the package.json file
+import { version } from "@microsoft/fast-components-react-base/package.json";
 import {
     FormChildOptionItem,
     FormClassNameContract,
@@ -98,20 +100,22 @@ function setViewConfigsWithCustomConfig(
 ): ObjectOfComponentViewConfigs {
     const componentViewConfigs: ObjectOfComponentViewConfigs = {};
 
-    Object.keys(viewConfigs).forEach((viewConfigKey: string): void => {
-        componentViewConfigs[viewConfigKey] = Object.assign(
-            {},
-            viewConfigs[viewConfigKey],
-            {
-                scenarios: [
-                    {
-                        displayName: "Custom",
-                        data: viewConfigs[viewConfigKey].scenarios[0].data,
-                    },
-                ].concat(viewConfigs[viewConfigKey].scenarios),
-            }
-        );
-    });
+    Object.keys(viewConfigs).forEach(
+        (viewConfigKey: string): void => {
+            componentViewConfigs[viewConfigKey] = Object.assign(
+                {},
+                viewConfigs[viewConfigKey],
+                {
+                    scenarios: [
+                        {
+                            displayName: "Custom",
+                            data: viewConfigs[viewConfigKey].scenarios[0].data,
+                        },
+                    ].concat(viewConfigs[viewConfigKey].scenarios),
+                }
+            );
+        }
+    );
 
     return componentViewConfigs;
 }
@@ -125,6 +129,8 @@ class Explorer extends Foundation<
     ExplorerState
 > {
     public static displayName: string = "Explorer";
+
+    public static version: string = version;
 
     protected handledProps: HandledProps<ExplorerHandledProps> = {
         managedClasses: void 0,
@@ -321,7 +327,10 @@ class Explorer extends Foundation<
                         >
                             <Background value={neutralLayerL3} drawBackground={false}>
                                 <div className={classNames(explorer_paneTitleContainer)}>
-                                    <Heading size={HeadingSize._6}>FAST Explorer</Heading>
+                                    <Heading
+                                        size={HeadingSize._6}
+                                        children={`FAST Explorer | v${version}`}
+                                    />
                                 </div>
                                 <NavigationMenu
                                     menu={menu}
