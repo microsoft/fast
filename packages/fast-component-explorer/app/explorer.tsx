@@ -100,22 +100,20 @@ function setViewConfigsWithCustomConfig(
 ): ObjectOfComponentViewConfigs {
     const componentViewConfigs: ObjectOfComponentViewConfigs = {};
 
-    Object.keys(viewConfigs).forEach(
-        (viewConfigKey: string): void => {
-            componentViewConfigs[viewConfigKey] = Object.assign(
-                {},
-                viewConfigs[viewConfigKey],
-                {
-                    scenarios: [
-                        {
-                            displayName: "Custom",
-                            data: viewConfigs[viewConfigKey].scenarios[0].data,
-                        },
-                    ].concat(viewConfigs[viewConfigKey].scenarios),
-                }
-            );
-        }
-    );
+    Object.keys(viewConfigs).forEach((viewConfigKey: string): void => {
+        componentViewConfigs[viewConfigKey] = Object.assign(
+            {},
+            viewConfigs[viewConfigKey],
+            {
+                scenarios: [
+                    {
+                        displayName: "Custom",
+                        data: viewConfigs[viewConfigKey].scenarios[0].data,
+                    },
+                ].concat(viewConfigs[viewConfigKey].scenarios),
+            }
+        );
+    });
 
     return componentViewConfigs;
 }
@@ -329,8 +327,10 @@ class Explorer extends Foundation<
                                 <div className={classNames(explorer_paneTitleContainer)}>
                                     <Heading
                                         size={HeadingSize._6}
-                                        children={`FAST Explorer | v${version}`}
-                                    />
+                                        title={`Version ${version}`}
+                                    >
+                                        FAST Explorer
+                                    </Heading>
                                 </div>
                                 <NavigationMenu
                                     menu={menu}
