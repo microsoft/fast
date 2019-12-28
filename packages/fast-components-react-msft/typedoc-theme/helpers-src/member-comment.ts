@@ -1,5 +1,5 @@
 import { DeclarationReflection } from "typedoc";
 
-export function memberComment(this: DeclarationReflection) {
+export function memberComment(this: DeclarationReflection): string {
     return this.comment && this.comment.shortText ? this.comment.shortText : "";
 }
