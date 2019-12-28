@@ -1,8 +1,14 @@
 import { storiesOf } from "@storybook/react";
 import React from "react";
 import { Image, ImageSlot } from "./";
+import API from "./.tmp/API.md";
 
 storiesOf("Image", module)
+    .addParameters({
+        readme: {
+            sidebar: API,
+        },
+    })
     .add("Default", () => (
         <Image
             src="https://placehold.it/300x300/3E3E3E/171717"

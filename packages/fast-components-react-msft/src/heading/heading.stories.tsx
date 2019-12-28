@@ -1,8 +1,14 @@
 import { storiesOf } from "@storybook/react";
 import React from "react";
 import { Heading, HeadingSize, HeadingTag } from "./";
+import API from "./.tmp/API.md";
 
 storiesOf("Heading", module)
+    .addParameters({
+        readme: {
+            sidebar: API,
+        },
+    })
     .add("Default", () => <Heading>Default heading</Heading>)
     .add("Heading 1", () => (
         <Heading tag={HeadingTag.h1} size={HeadingSize._1}>

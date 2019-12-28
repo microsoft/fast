@@ -3,8 +3,14 @@ import React, { useState } from "react";
 import { ActionTrigger, ActionTriggerAppearance } from "./";
 import { glyphFactory, SVGGlyph } from "../../assets/svg-element";
 import { action } from "@storybook/addon-actions";
+import API from "./.tmp/API.md";
 
 storiesOf("Action trigger", module)
+    .addParameters({
+        readme: {
+            sidebar: API,
+        },
+    })
     .add("Default", () => (
         <ActionTrigger
             glyph={glyphFactory(SVGGlyph.download)}

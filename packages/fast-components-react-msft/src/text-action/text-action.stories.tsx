@@ -3,6 +3,7 @@ import React from "react";
 import { glyphFactory, SVGGlyph } from "../../assets/svg-element";
 import { Button } from "../button";
 import { TextAction, TextActionAppearance, TextActionButtonPosition } from "./";
+import API from "./.tmp/API.md";
 
 function textActionButton(className?: string, disabled?: boolean): React.ReactNode {
     return (
@@ -14,6 +15,11 @@ function textActionButton(className?: string, disabled?: boolean): React.ReactNo
     );
 }
 storiesOf("Text action", module)
+    .addParameters({
+        readme: {
+            sidebar: API,
+        },
+    })
     .add("Default", () => <TextAction />)
     .add("Filled", () => (
         <TextAction button={textActionButton} appearance={TextActionAppearance.filled} />

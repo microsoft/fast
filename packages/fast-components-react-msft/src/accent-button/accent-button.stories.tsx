@@ -2,8 +2,14 @@ import { storiesOf } from "@storybook/react";
 import React from "react";
 import { AccentButton } from "./";
 import { glyphFactory, SVGGlyph } from "../../assets/svg-element";
+import API from "./.tmp/API.md";
 
 storiesOf("Accent button", module)
+    .addParameters({
+        readme: {
+            sidebar: API,
+        },
+    })
     .add("Default", () => <AccentButton>Accent button</AccentButton>)
     .add("Anchor", () => (
         <AccentButton

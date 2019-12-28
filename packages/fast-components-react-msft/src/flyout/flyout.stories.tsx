@@ -14,6 +14,7 @@ import { Heading, HeadingSize } from "../heading";
 import { Paragraph, ParagraphSize } from "../paragraph";
 import { AccentButton } from "../accent-button";
 import { Omit } from "utility-types";
+import API from "./.tmp/API.md";
 
 interface FlyoutTestState {
     /**
@@ -107,6 +108,11 @@ class FlyoutTest extends React.Component<Omit<FlyoutProps, "anchor">, FlyoutTest
 }
 
 storiesOf("Flyout", module)
+    .addParameters({
+        readme: {
+            sidebar: API,
+        },
+    })
     .add("Default", () => (
         <div>
             <Heading size={HeadingSize._4}>

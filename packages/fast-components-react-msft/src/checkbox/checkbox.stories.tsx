@@ -4,6 +4,7 @@ import { Checkbox } from "./";
 import { uniqueId } from "lodash-es";
 import { Label } from "../label";
 import { action } from "@storybook/addon-actions";
+import API from "./.tmp/API.md";
 
 /**
  * Simple state manager to track and update checked properties
@@ -28,6 +29,11 @@ function CheckboxStateHandler(props: {
 }
 
 storiesOf("Checkbox", module)
+    .addParameters({
+        readme: {
+            sidebar: API,
+        },
+    })
     .add("Unhandled", () => (
         <Checkbox inputId={uniqueId()} onChange={action("onChange")} />
     ))

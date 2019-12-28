@@ -2,8 +2,14 @@ import { storiesOf } from "@storybook/react";
 import React from "react";
 import { LightweightButton } from "./";
 import { glyphFactory, SVGGlyph } from "../../assets/svg-element";
+import API from "./.tmp/API.md";
 
 storiesOf("Lightweight button", module)
+    .addParameters({
+        readme: {
+            sidebar: API,
+        },
+    })
     .add("Default", () => <LightweightButton>Lightweight button</LightweightButton>)
     .add("Anchor", () => (
         <LightweightButton

@@ -1,6 +1,7 @@
 import { storiesOf } from "@storybook/react";
 import React from "react";
 import { SliderLabel } from "./";
+import API from "./.tmp/API.md";
 
 const Center: React.FunctionComponent = (props: {
     children: React.ReactNode;
@@ -13,6 +14,11 @@ const Center: React.FunctionComponent = (props: {
 };
 
 storiesOf("Slider label", module)
+    .addParameters({
+        readme: {
+            sidebar: API,
+        },
+    })
     .add("Default", () => (
         <Center>
             <SliderLabel label="Label" />

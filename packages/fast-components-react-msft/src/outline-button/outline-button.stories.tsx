@@ -2,8 +2,14 @@ import { storiesOf } from "@storybook/react";
 import React from "react";
 import { OutlineButton } from "./";
 import { glyphFactory, SVGGlyph } from "../../assets/svg-element";
+import API from "./.tmp/API.md";
 
 storiesOf("Outline button", module)
+    .addParameters({
+        readme: {
+            sidebar: API,
+        },
+    })
     .add("Default", () => <OutlineButton>Outline button</OutlineButton>)
     .add("Anchor", () => (
         <OutlineButton

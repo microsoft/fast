@@ -4,6 +4,7 @@ import { Divider, DividerClassNameContract, DividerRoles } from "./";
 import { DesignSystem, designUnit } from "@microsoft/fast-components-styles-msft";
 import { ComponentStyleSheet } from "../../../fast-jss-manager/dist";
 import { multiply, toPx } from "@microsoft/fast-jss-utilities";
+import API from "./.tmp/API.md";
 
 const styles: ComponentStyleSheet<DividerClassNameContract, DesignSystem> = {
     divider: {
@@ -12,6 +13,11 @@ const styles: ComponentStyleSheet<DividerClassNameContract, DesignSystem> = {
 };
 
 storiesOf("Divider", module)
+    .addParameters({
+        readme: {
+            sidebar: API,
+        },
+    })
     .add("Default", () => <Divider jssStyleSheet={styles} />)
     .add("Presentation role", () => (
         <Divider role={DividerRoles.presentation} jssStyleSheet={styles} />

@@ -1,8 +1,14 @@
 import { storiesOf } from "@storybook/react";
 import React from "react";
 import { Caption, CaptionSize, CaptionTag } from "./";
+import API from "./.tmp/API.md";
 
 storiesOf("Caption", module)
+    .addParameters({
+        readme: {
+            sidebar: API,
+        },
+    })
     .add("Default", () => <Caption>Default caption</Caption>)
     .add("Size one", () => <Caption size={CaptionSize._1}>Size one caption</Caption>)
     .add("Size two", () => <Caption size={CaptionSize._2}>Size two caption</Caption>)

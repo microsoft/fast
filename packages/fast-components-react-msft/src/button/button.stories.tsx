@@ -2,8 +2,14 @@ import { storiesOf } from "@storybook/react";
 import React from "react";
 import { Button, ButtonAppearance } from "./";
 import { glyphFactory, SVGGlyph } from "../../assets/svg-element";
+import API from "./.tmp/API.md";
 
 storiesOf("Button", module)
+    .addParameters({
+        readme: {
+            sidebar: API,
+        },
+    })
     .add("Default", () => <Button>Button</Button>)
     .add("Anchor", () => (
         <Button

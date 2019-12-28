@@ -7,6 +7,7 @@ import { ComponentStyleSheet } from "@microsoft/fast-jss-manager-react";
 import { DesignSystem, designUnit } from "@microsoft/fast-components-styles-msft";
 import { DividerManagedClasses } from "@microsoft/fast-components-react-base";
 import { format, toPx } from "@microsoft/fast-jss-utilities";
+import API from "./.tmp/API.md";
 
 const styles: ComponentStyleSheet<DividerManagedClasses, DesignSystem> = {
     divider: {
@@ -15,6 +16,11 @@ const styles: ComponentStyleSheet<DividerManagedClasses, DesignSystem> = {
 };
 
 storiesOf("Context menu", module)
+    .addParameters({
+        readme: {
+            sidebar: API,
+        },
+    })
     .add("Default", () => (
         <ContextMenu>
             <ContextMenuItem>Menu item 1</ContextMenuItem>

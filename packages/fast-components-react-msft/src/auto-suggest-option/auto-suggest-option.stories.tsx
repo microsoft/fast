@@ -2,9 +2,14 @@ import { storiesOf } from "@storybook/react";
 import React, { useState } from "react";
 import { AutoSuggestOption } from "./";
 import { uniqueId } from "lodash-es";
-import { action } from "@storybook/addon-actions";
+import API from "./.tmp/API.md";
 
 storiesOf("Auto suggest option ", module)
+    .addParameters({
+        readme: {
+            sidebar: API,
+        },
+    })
     .add("Default", () => <AutoSuggestOption value={"Value"} id={uniqueId()} />)
     .add("Disabled", () => (
         <AutoSuggestOption value={"Disabled"} id={uniqueId()} disabled={true} />

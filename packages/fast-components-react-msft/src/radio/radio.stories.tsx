@@ -4,8 +4,14 @@ import { Radio } from "./";
 import { uniqueId } from "lodash-es";
 import { Label } from "../label";
 import { action } from "@storybook/addon-actions";
+import API from "./.tmp/API.md";
 
 storiesOf("Radio", module)
+    .addParameters({
+        readme: {
+            sidebar: API,
+        },
+    })
     .add("Unhandled", () => <Radio inputId={uniqueId()} onChange={action("onChange")} />)
     .add("With slot label", () => {
         const id: string = uniqueId();

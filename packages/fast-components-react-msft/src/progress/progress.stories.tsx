@@ -4,6 +4,7 @@ import { Progress } from "./";
 import { ComponentStyleSheet } from "@microsoft/fast-jss-manager";
 import { ProgressClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import { DesignSystem } from "@microsoft/fast-components-styles-msft";
+import API from "./.tmp/API.md";
 
 const progressStyle: ComponentStyleSheet<
     Partial<ProgressClassNameContract>,
@@ -15,6 +16,11 @@ const progressStyle: ComponentStyleSheet<
 };
 
 storiesOf("Progress", module)
+    .addParameters({
+        readme: {
+            sidebar: API,
+        },
+    })
     .add("Indeterminate", () => <Progress />)
     .add("Indeterminate narrow Width", () => <Progress jssStyleSheet={progressStyle} />)
     .add("Min, max, and value", () => <Progress minValue={0} maxValue={100} value={72} />)

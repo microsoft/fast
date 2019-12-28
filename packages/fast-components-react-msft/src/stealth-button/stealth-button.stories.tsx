@@ -2,8 +2,14 @@ import { storiesOf } from "@storybook/react";
 import React from "react";
 import { StealthButton } from "./";
 import { glyphFactory, SVGGlyph } from "../../assets/svg-element";
+import API from "./.tmp/API.md";
 
 storiesOf("Stealth button", module)
+    .addParameters({
+        readme: {
+            sidebar: API,
+        },
+    })
     .add("Default", () => <StealthButton>Stealth button</StealthButton>)
     .add("Anchor", () => (
         <StealthButton

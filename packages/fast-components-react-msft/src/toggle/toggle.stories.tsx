@@ -4,6 +4,7 @@ import { Toggle, ToggleHandledProps } from "./";
 import { uniqueId } from "lodash-es";
 import { Label } from "../label";
 import { action } from "@storybook/addon-actions";
+import API from "./.tmp/API.md";
 
 /**
  * Simple state manager to track and update selected properties
@@ -38,6 +39,11 @@ const toggleProps: Pick<
 };
 
 storiesOf("Toggle", module)
+    .addParameters({
+        readme: {
+            sidebar: API,
+        },
+    })
     .add("Unhandled", () => <Toggle {...toggleProps} />)
     .add("Handled", () => {
         function render(

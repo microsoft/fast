@@ -1,8 +1,14 @@
 import { storiesOf } from "@storybook/react";
 import React from "react";
 import { NumberField } from "./";
+import API from "./.tmp/API.md";
 
 storiesOf("Number field", module)
+    .addParameters({
+        readme: {
+            sidebar: API,
+        },
+    })
     .add("Default", () => <NumberField name="numberField" />)
     .add("Placeholder", () => (
         <NumberField name="NumberField" placeholder="Placeholder" />

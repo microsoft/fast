@@ -1,8 +1,14 @@
 import { storiesOf } from "@storybook/react";
 import React from "react";
 import { CallToAction, CallToActionAppearance } from "./";
+import API from "./.tmp/API.md";
 
 storiesOf("Call to action", module)
+    .addParameters({
+        readme: {
+            sidebar: API,
+        },
+    })
     .add("Default", () => <CallToAction>Buy now</CallToAction>)
     .add("Primary", () => (
         <CallToAction appearance={CallToActionAppearance.primary}>Buy now</CallToAction>

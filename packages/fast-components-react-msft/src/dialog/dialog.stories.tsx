@@ -2,8 +2,14 @@ import { storiesOf } from "@storybook/react";
 import React from "react";
 import { Dialog } from "./";
 import { AccentButton } from "../accent-button";
+import API from "./.tmp/API.md";
 
 storiesOf("Dialog", module)
+    .addParameters({
+        readme: {
+            sidebar: API,
+        },
+    })
     .add("Default", () => <Dialog visible={true} />)
     .add("Modal", () => (
         <div

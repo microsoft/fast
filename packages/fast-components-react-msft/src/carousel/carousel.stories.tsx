@@ -11,6 +11,7 @@ import CarouselHero from "../../assets/carousel-hero-content";
 import { HeadingSize, ParagraphSize } from "../../src";
 import { ComponentStyles } from "@microsoft/fast-jss-manager";
 import { DesignSystem } from "@microsoft/fast-components-styles-msft";
+import API from "./.tmp/API.md";
 
 function itemsFiller(
     itemCount: number,
@@ -65,6 +66,11 @@ const carouselSequenceStylesOverrides: ComponentStyles<
 };
 
 storiesOf("Carousel", module)
+    .addParameters({
+        readme: {
+            sidebar: API,
+        },
+    })
     .add("Default", () => (
         <Carousel label="A carousel of items" autoplay={true} items={itemsFiller(6)} />
     ))

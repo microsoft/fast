@@ -1,8 +1,14 @@
 import { storiesOf } from "@storybook/react";
 import React from "react";
 import { Typography, TypographySize, TypographyTag } from "./";
+import API from "./.tmp/API.md";
 
 storiesOf("Typography", module)
+    .addParameters({
+        readme: {
+            sidebar: API,
+        },
+    })
     .add("Default", () => <Typography>Default typography</Typography>)
     .add("Typography 1", () => (
         <Typography tag={TypographyTag.h1} size={TypographySize._1}>

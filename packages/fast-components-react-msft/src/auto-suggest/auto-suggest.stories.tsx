@@ -4,7 +4,7 @@ import { AutoSuggest, AutoSuggestProps } from "./";
 import { AutoSuggestOption } from "../auto-suggest-option";
 import { uniqueId } from "lodash-es";
 import { action } from "@storybook/addon-actions";
-import { Button } from "../";
+import API from "./.tmp/API.md";
 
 /**
  * Simple state manager to track and update value properties
@@ -37,6 +37,11 @@ const favoriteAnimalProps: Pick<
 };
 
 storiesOf("Auto suggest", module)
+    .addParameters({
+        readme: {
+            sidebar: API,
+        },
+    })
     .add("Uncontrolled", () => (
         <AutoSuggest
             {...favoriteAnimalProps}

@@ -1,8 +1,14 @@
 import { storiesOf } from "@storybook/react";
 import React from "react";
 import { Subheading, SubheadingSize, SubheadingTag } from "./";
+import API from "./.tmp/API.md";
 
 storiesOf("Subheading", module)
+    .addParameters({
+        readme: {
+            sidebar: API,
+        },
+    })
     .add("Default", () => <Subheading>Default subheading</Subheading>)
     .add("Subheading 1", () => (
         <Subheading size={SubheadingSize._1}>Subheading 1</Subheading>
