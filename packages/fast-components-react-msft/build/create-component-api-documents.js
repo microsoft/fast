@@ -6,19 +6,11 @@
  * @param component-dir - the source directory holding components
  * @param typedoc-src - the source of generated typedoc API data
  */
-const {
-    createWriteStream,
-    readdirSync,
-    readFileSync,
-    copyFileSync,
-    writeFileSync,
-    rmdirSync,
-} = require("fs");
+const { createWriteStream, readdirSync, readFileSync } = require("fs");
 const path = require("path");
 const glob = require("glob");
 const transformMarkdownLinks = require("transform-markdown-links");
 const mkdirp = require("mkdirp");
-const uniqueId = require("lodash").uniqueId;
 
 /**
  * Retrieves arguments by name
@@ -131,20 +123,6 @@ entryMatchNames.forEach(entry => {
 function fileId(filepath) {
     const parsed = path.parse(filepath);
     return parsed.name + parsed.ext.replace(".", "");
-}
-
-/**
- * Converts a relative file path found in markdown files
- * to an absolute path, trimming any ID links from the end
- * of the filepath, eg ../foo/bar.md#someId -> /root/foo/bar.md
- */
-function normalizeDependencyPath(sourceFilePath, filepath) {
-    const parsedPath = path.parse(filepath);
-    const idLinkMatcher = /\.md#.+$/; // Matches .md filepaths with a ID, eg /foo/bar.md#someId
-
-    if (parsedPath.ext.match(idLinkMatcher)) {
-        filepath = filepath.replace(idLinkMatcher, ".md");
-    }
 }
 
 /**
