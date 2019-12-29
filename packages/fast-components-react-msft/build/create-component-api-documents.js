@@ -100,7 +100,7 @@ entryMatchNames.forEach(entry => {
             });
         }
 
-        const outpath = path.resolve(componentSource, entry.folderName, "./.tmp/API.md");
+        const outpath = path.resolve(componentSource, entry.folderName, "./API.md");
 
         mkdirp.sync(path.parse(outpath).dir);
 

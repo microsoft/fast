@@ -98,5 +98,11 @@ docs/en/packages/*/README.md
 docs/en/packages/*/api/
 
 # MSFT Documentation
+## Ignore compiled helper files
 packages/fast-components-react-msft/typedoc-theme/helpers/*
-packages/fast-components-react-msft/api
+
+## Ignore typedoc output
+packages/fast-components-react-msft/api/
+
+## Ignore generated API documentation files
+packages/fast-components-react-msft/src/**/API.md

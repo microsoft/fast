@@ -10,6 +10,8 @@ build/
 coverage/
 src/
 assets/
+api/
+typedoc-theme/
 
 # config
 babel.config.js
