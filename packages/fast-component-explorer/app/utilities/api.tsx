@@ -7,7 +7,11 @@ export default function API(
     return class APIRenderer extends React.Component<{}, {}> {
         public render(): JSX.Element {
             return (
-                <React.Suspense fallback={<Progress />}>
+                <React.Suspense
+                    fallback={
+                        <Progress circular={true} style={{ margin: "24px auto 0" }} />
+                    }
+                >
                     <Component />
                 </React.Suspense>
             );

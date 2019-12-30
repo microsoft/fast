@@ -107,11 +107,12 @@ entryMatchNames.forEach(entry => {
         const out = createWriteStream(outpath);
 
         resolvedDependencies.forEach(src => {
-            out.write(`<a name="${fileId(src)}"></a>\n`);
+            out.write(`<div id="${fileId(src)}" />\n\n`);
 
             out.write(
-                transformMarkdownLinks(readFileSync(src).toString(), link =>
-                    fileId(link)
+                transformMarkdownLinks(
+                    readFileSync(src).toString(),
+                    link => "#" + fileId(link)
                 ) + "\n"
             );
         });
