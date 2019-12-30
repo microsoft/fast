@@ -8,6 +8,7 @@ import {
 } from "@microsoft/fast-components-react-msft";
 import { uniqueId } from "lodash-es";
 import Guidance from "../../.tmp/auto-suggest/guidance";
+import API from "../../.tmp/auto-suggest/api";
 
 function autoSuggestOptionPropFactory(value: string): AutoSuggestOptionProps {
     return {
@@ -18,6 +19,7 @@ function autoSuggestOptionPropFactory(value: string): AutoSuggestOptionProps {
 }
 
 const autoSuggestConfig: ComponentViewConfig<AutoSuggestProps> = {
+    api: API,
     schema: autoSuggestSchema,
     component: AutoSuggest,
     guidance: Guidance,

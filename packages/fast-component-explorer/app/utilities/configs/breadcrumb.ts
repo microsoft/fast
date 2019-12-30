@@ -7,8 +7,10 @@ import {
 } from "@microsoft/fast-components-react-msft";
 import { groupSchema } from "../../../app/components/group";
 import Guidance from "../../.tmp/breadcrumb/guidance";
+import API from "../../.tmp/breadcrumb/api";
 
 const breadcrumbConfig: ComponentViewConfig<BreadcrumbProps> = {
+    api: API,
     schema: breadcrumbSchema,
     component: Breadcrumb,
     guidance: Guidance,

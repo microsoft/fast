@@ -3,6 +3,7 @@ import { TabsItem } from "@microsoft/fast-components-react-base";
 import { Pivot, PivotProps, pivotSchema } from "@microsoft/fast-components-react-msft";
 import { groupSchema } from "../../../app/components/group";
 import Guidance from "../../.tmp/pivot/guidance";
+import API from "../../.tmp/pivot/api";
 import { uniqueId } from "lodash-es";
 
 const pivotItem1: TabsItem = {
@@ -72,6 +73,7 @@ const pivotItem4: TabsItem = {
 const defaultPivotItems: TabsItem[] = [pivotItem1, pivotItem2, pivotItem3, pivotItem4];
 
 const pivotConfig: ComponentViewConfig<PivotProps> = {
+    api: API,
     schema: pivotSchema,
     component: Pivot,
     guidance: Guidance,

@@ -6,6 +6,7 @@ import {
     dividerSchema,
 } from "@microsoft/fast-components-react-msft";
 import Guidance from "../../.tmp/divider/guidance";
+import API from "../../.tmp/divider/api";
 import { DesignSystem } from "@microsoft/fast-components-styles-msft";
 import { ComponentStyleSheet } from "@microsoft/fast-jss-manager-react";
 
@@ -16,6 +17,7 @@ const styles: ComponentStyleSheet<DividerClassNameContract, DesignSystem> = {
 };
 
 const dividerConfig: ComponentViewConfig<DividerProps> = {
+    api: API,
     schema: dividerSchema,
     component: Divider,
     guidance: Guidance,

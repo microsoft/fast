@@ -11,7 +11,7 @@ import { ComponentStyleSheet } from "@microsoft/fast-jss-manager-react";
 import { DesignSystem, designUnit } from "@microsoft/fast-components-styles-msft";
 import { multiply, toPx } from "@microsoft/fast-jss-utilities";
 import { action } from "@storybook/addon-actions";
-import API from "./.tmp/API.md";
+import API from "./API.md";
 
 const vertcialSliderStyles: ComponentStyleSheet<SliderClassNameContract, DesignSystem> = {
     slider: {

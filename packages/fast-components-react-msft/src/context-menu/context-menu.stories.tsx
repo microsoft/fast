@@ -7,7 +7,7 @@ import { ComponentStyleSheet } from "@microsoft/fast-jss-manager-react";
 import { DesignSystem, designUnit } from "@microsoft/fast-components-styles-msft";
 import { DividerManagedClasses } from "@microsoft/fast-components-react-base";
 import { format, toPx } from "@microsoft/fast-jss-utilities";
-import API from "./.tmp/API.md";
+import API from "./API.md";
 
 const styles: ComponentStyleSheet<DividerManagedClasses, DesignSystem> = {
     divider: {

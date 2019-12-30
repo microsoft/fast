@@ -12,6 +12,11 @@ export interface Scenario<D> {
 
 export interface ComponentViewConfig<D> {
     /**
+     * React component with API data
+     */
+    api: React.ComponentClass;
+
+    /**
      * The JSON schema associated with the component
      */
     schema: any;

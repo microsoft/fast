@@ -2,7 +2,7 @@ import { storiesOf } from "@storybook/react";
 import React from "react";
 import { Flipper, FlipperDirection } from "./";
 import { action } from "@storybook/addon-actions";
-import API from "./.tmp/API.md";
+import API from "./API.md";
 
 storiesOf("Flipper", module)
     .addParameters({

@@ -59,7 +59,7 @@ module.exports = (env, args) => {
                     ],
                 },
                 {
-                    test: /\.m?js$/,
+                    test: /\.m?jsx?$/,
                     use: {
                         loader: "babel-loader",
                     },
@@ -73,7 +73,7 @@ module.exports = (env, args) => {
                 contentBase: outDir,
             }),
             new WebpackShellPlugin({
-                onBuildStart: [`yarn convert:readme`],
+                onBuildStart: [`yarn convert:readme`, `yarn convert:api`],
             }),
             new BundleAnalyzerPlugin({
                 // Remove this to inspect bundle sizes.
@@ -85,7 +85,7 @@ module.exports = (env, args) => {
             new FaviconsWebpackPlugin(path.resolve(__dirname, "favicon.png")),
         ],
         resolve: {
-            extensions: [".js", ".tsx", ".ts", ".json"],
+            extensions: [".js", ".jsx", ".tsx", ".ts", ".json"],
             alias: {
                 lodash: path.resolve(rootNodeModules, "lodash-es"),
                 "lodash-es": path.resolve(rootNodeModules, "lodash-es"),

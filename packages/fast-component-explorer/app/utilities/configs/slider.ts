@@ -6,8 +6,10 @@ import {
     sliderSchema,
 } from "@microsoft/fast-components-react-msft";
 import Guidance from "../../.tmp/slider/guidance";
+import API from "../../.tmp/slider/api";
 
 const sliderConfig: ComponentViewConfig<SliderProps> = {
+    api: API,
     schema: sliderSchema,
     component: Slider,
     guidance: Guidance,

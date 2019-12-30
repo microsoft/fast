@@ -2,7 +2,7 @@ import { storiesOf } from "@storybook/react";
 import React from "react";
 import { StealthButton } from "./";
 import { glyphFactory, SVGGlyph } from "../../assets/svg-element";
-import API from "./.tmp/API.md";
+import API from "./API.md";
 
 storiesOf("Stealth button", module)
     .addParameters({

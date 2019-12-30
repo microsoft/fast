@@ -5,8 +5,10 @@ import {
     captionSchema,
 } from "@microsoft/fast-components-react-msft";
 import Guidance from "../../.tmp/caption/guidance";
+import API from "../../.tmp/caption/api";
 
 const captionConfig: ComponentViewConfig<CaptionProps> = {
+    api: API,
     schema: captionSchema,
     component: Caption,
     guidance: Guidance,

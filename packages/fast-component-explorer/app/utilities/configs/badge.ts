@@ -6,8 +6,10 @@ import {
     BadgeSize,
 } from "@microsoft/fast-components-react-msft";
 import Guidance from "../../.tmp/badge/guidance";
+import API from "../../.tmp/badge/api";
 
 const badgeConfig: ComponentViewConfig<BadgeProps> = {
+    api: API,
     schema: badgeSchema,
     component: Badge,
     guidance: Guidance,

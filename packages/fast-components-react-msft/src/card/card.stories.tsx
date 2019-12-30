@@ -3,7 +3,7 @@ import React from "react";
 import { Card } from "./";
 import { Image } from "../image";
 import { Heading, HeadingSize, HeadingTag } from "../heading";
-import API from "./.tmp/API.md";
+import API from "./API.md";
 
 storiesOf("Card", module)
     .addParameters({

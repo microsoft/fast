@@ -11,7 +11,7 @@ import CarouselHero from "../../assets/carousel-hero-content";
 import { HeadingSize, ParagraphSize } from "../../src";
 import { ComponentStyles } from "@microsoft/fast-jss-manager";
 import { DesignSystem } from "@microsoft/fast-components-styles-msft";
-import API from "./.tmp/API.md";
+import API from "./API.md";
 
 function itemsFiller(
     itemCount: number,

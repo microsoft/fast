@@ -2,7 +2,7 @@ import { storiesOf } from "@storybook/react";
 import React from "react";
 import { Breadcrumb } from "./";
 import { Hypertext } from "../hypertext";
-import API from "./.tmp/API.md";
+import API from "./API.md";
 
 function separator(className?: string): JSX.Element {
     return <span className={className}>/</span>;

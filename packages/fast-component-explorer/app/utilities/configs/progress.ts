@@ -5,8 +5,10 @@ import {
     progressSchema,
 } from "@microsoft/fast-components-react-msft";
 import Guidance from "../../.tmp/progress/guidance";
+import API from "../../.tmp/progress/api";
 
 const progressConfig: ComponentViewConfig<ProgressProps> = {
+    api: API,
     schema: progressSchema,
     component: Progress,
     guidance: Guidance,

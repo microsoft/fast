@@ -18,6 +18,7 @@ function selectOptionPropFactory(value: string): SelectOptionProps {
 }
 
 const selectConfig: ComponentViewConfig<SelectProps> = {
+    api: ((): string => "Coming soon") as any, // TODO Select's API is malformed for some reason, need to look into why
     schema: selectSchema,
     component: Select,
     guidance: Guidance,

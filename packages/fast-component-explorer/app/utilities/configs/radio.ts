@@ -7,10 +7,12 @@ import {
 } from "@microsoft/fast-components-react-msft";
 import { uniqueId } from "lodash-es";
 import Guidance from "../../.tmp/radio/guidance";
+import API from "../../.tmp/radio/api";
 
 const id: string = uniqueId();
 
 const radioConfig: ComponentViewConfig<RadioProps> = {
+    api: API,
     schema: radioSchema,
     component: Radio,
     guidance: Guidance,

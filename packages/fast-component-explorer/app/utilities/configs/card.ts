@@ -6,8 +6,10 @@ import {
     imageSchema,
 } from "@microsoft/fast-components-react-msft";
 import Guidance from "../../.tmp/card/guidance";
+import API from "../../.tmp/card/api";
 
 const cardConfig: ComponentViewConfig<CardProps> = {
+    api: API,
     schema: cardSchema,
     component: Card,
     guidance: Guidance,

@@ -7,8 +7,10 @@ import {
     HeadingTag,
 } from "@microsoft/fast-components-react-msft";
 import Guidance from "../../.tmp/heading/guidance";
+import API from "../../.tmp/heading/api";
 
 const headingConfig: ComponentViewConfig<HeadingProps> = {
+    api: API,
     schema: headingSchema,
     component: Heading,
     guidance: Guidance,

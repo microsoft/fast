@@ -8,6 +8,7 @@
         "strictNullChecks": true,
         "esModuleInterop": true,
         "allowSyntheticDefaultImports": true,
+        "allowJs": true,
         "resolveJsonModule": true
     },
     "include": [
@@ -16,6 +17,7 @@
     "exclude": [
         "node_modules",
         "**/*.spec.ts",
-        "**/*.spec.tsx"
+        "**/*.spec.tsx",
+        "app/.tmp/**"
     ]
 }

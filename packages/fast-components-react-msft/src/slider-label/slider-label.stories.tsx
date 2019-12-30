@@ -1,7 +1,7 @@
 import { storiesOf } from "@storybook/react";
 import React from "react";
 import { SliderLabel } from "./";
-import API from "./.tmp/API.md";
+import API from "./API.md";
 
 const Center: React.FunctionComponent = (props: {
     children: React.ReactNode;

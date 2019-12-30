@@ -4,7 +4,7 @@ import { AutoSuggest, AutoSuggestProps } from "./";
 import { AutoSuggestOption } from "../auto-suggest-option";
 import { uniqueId } from "lodash-es";
 import { action } from "@storybook/addon-actions";
-import API from "./.tmp/API.md";
+import API from "./API.md";
 
 /**
  * Simple state manager to track and update value properties

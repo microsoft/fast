@@ -4,7 +4,7 @@ import { Radio } from "./";
 import { uniqueId } from "lodash-es";
 import { Label } from "../label";
 import { action } from "@storybook/addon-actions";
-import API from "./.tmp/API.md";
+import API from "./API.md";
 
 storiesOf("Radio", module)
     .addParameters({

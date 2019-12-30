@@ -6,8 +6,10 @@ import {
     TextFieldType,
 } from "@microsoft/fast-components-react-msft";
 import Guidance from "../../.tmp/text-field/guidance";
+import API from "../../.tmp/text-field/api";
 
 const textFieldConfig: ComponentViewConfig<TextFieldProps> = {
+    api: API,
     schema: textFieldSchema,
     component: TextField,
     guidance: Guidance,

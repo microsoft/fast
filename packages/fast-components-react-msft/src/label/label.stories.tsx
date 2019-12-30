@@ -1,7 +1,7 @@
 import { storiesOf } from "@storybook/react";
 import React from "react";
 import { Label, LabelTag } from "./";
-import API from "./.tmp/API.md";
+import API from "./API.md";
 
 storiesOf("Label", module)
     .addParameters({

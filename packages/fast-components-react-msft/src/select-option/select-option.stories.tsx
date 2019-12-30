@@ -3,7 +3,7 @@ import React from "react";
 import { SelectOption } from "./";
 import { uniqueId } from "lodash-es";
 import { glyphFactory, SVGGlyph } from "../../assets/svg-element";
-import API from "./.tmp/API.md";
+import API from "./API.md";
 
 storiesOf("Select option", module)
     .addParameters({

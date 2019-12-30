@@ -3,7 +3,7 @@ import React from "react";
 import { glyphFactory, SVGGlyph } from "../../assets/svg-element";
 import { Button } from "../button";
 import { TextAction, TextActionAppearance, TextActionButtonPosition } from "./";
-import API from "./.tmp/API.md";
+import API from "./API.md";
 
 function textActionButton(className?: string, disabled?: boolean): React.ReactNode {
     return (

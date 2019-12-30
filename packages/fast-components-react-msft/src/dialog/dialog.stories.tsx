@@ -2,7 +2,7 @@ import { storiesOf } from "@storybook/react";
 import React from "react";
 import { Dialog } from "./";
 import { AccentButton } from "../accent-button";
-import API from "./.tmp/API.md";
+import API from "./API.md";
 
 storiesOf("Dialog", module)
     .addParameters({

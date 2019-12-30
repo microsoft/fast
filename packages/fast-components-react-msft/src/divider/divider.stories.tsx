@@ -4,7 +4,7 @@ import { Divider, DividerClassNameContract, DividerRoles } from "./";
 import { DesignSystem, designUnit } from "@microsoft/fast-components-styles-msft";
 import { ComponentStyleSheet } from "../../../fast-jss-manager/dist";
 import { multiply, toPx } from "@microsoft/fast-jss-utilities";
-import API from "./.tmp/API.md";
+import API from "./API.md";
 
 const styles: ComponentStyleSheet<DividerClassNameContract, DesignSystem> = {
     divider: {

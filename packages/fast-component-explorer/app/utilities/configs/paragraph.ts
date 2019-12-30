@@ -6,8 +6,10 @@ import {
     ParagraphSize,
 } from "@microsoft/fast-components-react-msft";
 import Guidance from "../../.tmp/paragraph/guidance";
+import API from "../../.tmp/paragraph/api";
 
 const paragraphConfig: ComponentViewConfig<ParagraphProps> = {
+    api: API,
     schema: paragraphSchema,
     component: Paragraph,
     guidance: Guidance,

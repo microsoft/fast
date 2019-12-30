@@ -4,10 +4,12 @@ import {
     StealthButtonProps,
     stealthButtonSchema,
 } from "@microsoft/fast-components-react-msft";
-import Guidance from "../../.tmp/accent-button/guidance";
+import Guidance from "../../.tmp/stealth-button/guidance";
+import API from "../../.tmp/stealth-button/api";
 import { glyphSchema, Icon } from "../../../app/components/glyph";
 
 const stealthButtonConfig: ComponentViewConfig<StealthButtonProps> = {
+    api: API,
     schema: stealthButtonSchema,
     component: StealthButton,
     guidance: Guidance,

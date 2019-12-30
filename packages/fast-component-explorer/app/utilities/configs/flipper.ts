@@ -6,8 +6,10 @@ import {
     flipperSchema,
 } from "@microsoft/fast-components-react-msft";
 import Guidance from "../../.tmp/flipper/guidance";
+import API from "../../.tmp/flipper/api";
 
 const flipperConfig: ComponentViewConfig<FlipperProps> = {
+    api: API,
     schema: flipperSchema,
     component: Flipper,
     guidance: Guidance,

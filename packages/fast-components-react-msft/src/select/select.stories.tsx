@@ -7,7 +7,7 @@ import { uniqueId } from "lodash-es";
 import { action } from "@storybook/addon-actions";
 import { AxisPositioningMode } from "@microsoft/fast-components-react-base";
 import { Dialog } from "../dialog";
-import API from "./.tmp/API.md";
+import API from "./API.md";
 
 const rootElement: React.RefObject<HTMLDivElement> = React.createRef<HTMLDivElement>();
 

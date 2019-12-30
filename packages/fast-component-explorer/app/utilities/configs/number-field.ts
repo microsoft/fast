@@ -5,8 +5,10 @@ import {
     numberFieldSchema,
 } from "@microsoft/fast-components-react-msft";
 import Guidance from "../../.tmp/number-field/guidance";
+import API from "../../.tmp/number-field/api";
 
 const numberFieldConfig: ComponentViewConfig<NumberFieldProps> = {
+    api: API,
     schema: numberFieldSchema,
     component: NumberField,
     guidance: Guidance,

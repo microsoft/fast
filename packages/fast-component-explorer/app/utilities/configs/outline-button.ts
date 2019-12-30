@@ -4,10 +4,12 @@ import {
     OutlineButtonProps,
     outlineButtonSchema,
 } from "@microsoft/fast-components-react-msft";
-import Guidance from "../../.tmp/accent-button/guidance";
+import Guidance from "../../.tmp/outline-button/guidance";
+import API from "../../.tmp/outline-button/api";
 import { glyphSchema, Icon } from "../../../app/components/glyph";
 
 const outlineButtonConfig: ComponentViewConfig<OutlineButtonProps> = {
+    api: API,
     schema: outlineButtonSchema,
     component: OutlineButton,
     guidance: Guidance,

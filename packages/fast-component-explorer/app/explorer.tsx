@@ -98,20 +98,22 @@ function setViewConfigsWithCustomConfig(
 ): ObjectOfComponentViewConfigs {
     const componentViewConfigs: ObjectOfComponentViewConfigs = {};
 
-    Object.keys(viewConfigs).forEach((viewConfigKey: string): void => {
-        componentViewConfigs[viewConfigKey] = Object.assign(
-            {},
-            viewConfigs[viewConfigKey],
-            {
-                scenarios: [
-                    {
-                        displayName: "Custom",
-                        data: viewConfigs[viewConfigKey].scenarios[0].data,
-                    },
-                ].concat(viewConfigs[viewConfigKey].scenarios),
-            }
-        );
-    });
+    Object.keys(viewConfigs).forEach(
+        (viewConfigKey: string): void => {
+            componentViewConfigs[viewConfigKey] = Object.assign(
+                {},
+                viewConfigs[viewConfigKey],
+                {
+                    scenarios: [
+                        {
+                            displayName: "Custom",
+                            data: viewConfigs[viewConfigKey].scenarios[0].data,
+                        },
+                    ].concat(viewConfigs[viewConfigKey].scenarios),
+                }
+            );
+        }
+    );
 
     return componentViewConfigs;
 }
@@ -660,6 +662,43 @@ class Explorer extends Foundation<
                     }
                 },
                 id: "schema",
+            },
+            {
+                tab: (className: string): React.ReactNode => {
+                    return (
+                        <Typography
+                            className={className}
+                            size={TypographySize._8}
+                            onClick={this.handleDevToolsTabTriggerClick}
+                        >
+                            API
+                        </Typography>
+                    );
+                },
+                content: (className: string): React.ReactNode => {
+                    const componentName: string = this.getComponentNameSpinalCaseByPath(
+                        this.state.locationPathname
+                    );
+                    console.log(
+                        setViewConfigsWithCustomConfig(
+                            componentViewConfigsWithoutCustomConfig
+                        )
+                    );
+                    const Guidance: React.ComponentClass = get(
+                        setViewConfigsWithCustomConfig(
+                            componentViewConfigsWithoutCustomConfig
+                        ),
+                        `${camelCase(componentName)}Config.api`,
+                        null
+                    ) as any;
+
+                    return (
+                        <div className={className}>
+                            <Guidance />
+                        </div>
+                    );
+                },
+                id: "api",
             },
         ];
     }

@@ -4,7 +4,7 @@ import { ActionToggle, ActionToggleAppearance, ActionToggleProps } from "./";
 import { glyphFactory, SVGGlyph } from "../../assets/svg-element";
 import { action } from "@storybook/addon-actions";
 import { ActionToggleHandledProps } from "./action-toggle.props";
-import API from "./.tmp/API.md";
+import API from "./API.md";
 
 /**
  * Simple state manager to track and update checked properties

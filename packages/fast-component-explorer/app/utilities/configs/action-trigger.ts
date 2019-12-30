@@ -7,8 +7,9 @@ import {
 } from "@microsoft/fast-components-react-msft";
 import { glyphSchema, Icon } from "../../../app/components/glyph";
 import Guidance from "../../.tmp/action-trigger/guidance";
-
+import API from "../../.tmp/action-trigger/api";
 const actionTriggerConfig: ComponentViewConfig<ActionTriggerProps> = {
+    api: API,
     schema: actionTriggerSchema,
     component: ActionTrigger,
     guidance: Guidance,

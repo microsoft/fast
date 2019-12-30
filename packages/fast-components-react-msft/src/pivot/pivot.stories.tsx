@@ -2,7 +2,7 @@ import { storiesOf } from "@storybook/react";
 import React from "react";
 import { Pivot } from "./";
 import { uniqueId } from "lodash-es";
-import API from "./.tmp/API.md";
+import API from "./API.md";
 
 storiesOf("Pivot", module)
     .addParameters({

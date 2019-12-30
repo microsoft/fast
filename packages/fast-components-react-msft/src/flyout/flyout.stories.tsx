@@ -14,7 +14,7 @@ import { Heading, HeadingSize } from "../heading";
 import { Paragraph, ParagraphSize } from "../paragraph";
 import { AccentButton } from "../accent-button";
 import { Omit } from "utility-types";
-import API from "./.tmp/API.md";
+import API from "./API.md";
 
 interface FlyoutTestState {
     /**

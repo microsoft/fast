@@ -3,7 +3,7 @@ import React from "react";
 import { Divider } from "../divider";
 import { ContextMenuItem } from "./";
 import { glyphFactory, SVGGlyph } from "../../assets/svg-element";
-import API from "./.tmp/API.md";
+import API from "./API.md";
 
 storiesOf("Context menu item", module)
     .addParameters({

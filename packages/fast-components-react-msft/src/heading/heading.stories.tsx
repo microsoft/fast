@@ -1,7 +1,7 @@
 import { storiesOf } from "@storybook/react";
 import React from "react";
 import { Heading, HeadingSize, HeadingTag } from "./";
-import API from "./.tmp/API.md";
+import API from "./API.md";
 
 storiesOf("Heading", module)
     .addParameters({

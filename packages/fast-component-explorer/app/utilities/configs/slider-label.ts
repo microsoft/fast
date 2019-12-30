@@ -6,6 +6,7 @@ import {
     sliderLabelSchema,
 } from "@microsoft/fast-components-react-msft";
 import Guidance from "../../.tmp/slider-label/guidance";
+import API from "../../.tmp/slider-label/api";
 import { DesignSystem } from "@microsoft/fast-components-styles-msft";
 import { ComponentStyleSheet } from "@microsoft/fast-jss-manager-react";
 
@@ -17,6 +18,7 @@ const styles: ComponentStyleSheet<SliderLabelClassNameContract, DesignSystem> = 
 };
 
 const sliderLabelConfig: ComponentViewConfig<SliderLabelProps> = {
+    api: API,
     schema: sliderLabelSchema,
     component: SliderLabel,
     guidance: Guidance,

@@ -6,8 +6,10 @@ import {
     contextMenuSchema,
 } from "@microsoft/fast-components-react-msft";
 import Guidance from "../../.tmp/context-menu/guidance";
+import API from "../../.tmp/context-menu/api";
 
 const contextMenuConfig: ComponentViewConfig<ContextMenuProps> = {
+    api: API,
     schema: contextMenuSchema,
     component: ContextMenu,
     guidance: Guidance,

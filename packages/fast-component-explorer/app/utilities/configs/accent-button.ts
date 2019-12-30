@@ -5,9 +5,11 @@ import {
     accentButtonSchema,
 } from "@microsoft/fast-components-react-msft";
 import Guidance from "../../.tmp/accent-button/guidance";
+import API from "../../.tmp/accent-button/api";
 import { glyphSchema, Icon } from "../../../app/components/glyph";
 
 const accentButtonConfig: ComponentViewConfig<AccentButtonProps> = {
+    api: API,
     schema: accentButtonSchema,
     component: AccentButton,
     guidance: Guidance,

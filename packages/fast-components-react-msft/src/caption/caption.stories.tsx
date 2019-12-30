@@ -1,7 +1,7 @@
 import { storiesOf } from "@storybook/react";
 import React from "react";
 import { Caption, CaptionSize, CaptionTag } from "./";
-import API from "./.tmp/API.md";
+import API from "./API.md";
 
 storiesOf("Caption", module)
     .addParameters({

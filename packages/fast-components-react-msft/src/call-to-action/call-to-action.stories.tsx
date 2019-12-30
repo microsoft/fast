@@ -1,7 +1,7 @@
 import { storiesOf } from "@storybook/react";
 import React from "react";
 import { CallToAction, CallToActionAppearance } from "./";
-import API from "./.tmp/API.md";
+import API from "./API.md";
 
 storiesOf("Call to action", module)
     .addParameters({

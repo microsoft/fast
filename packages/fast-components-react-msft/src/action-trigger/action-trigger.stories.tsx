@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { ActionTrigger, ActionTriggerAppearance } from "./";
 import { glyphFactory, SVGGlyph } from "../../assets/svg-element";
 import { action } from "@storybook/addon-actions";
-import API from "./.tmp/API.md";
+import API from "./API.md";
 
 storiesOf("Action trigger", module)
     .addParameters({

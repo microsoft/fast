@@ -7,6 +7,7 @@ import {
 } from "@microsoft/fast-components-react-msft";
 import { uniqueId } from "lodash-es";
 import Guidance from "../../.tmp/toggle/guidance";
+import API from "../../.tmp/toggle/api";
 
 const toggleProps: Pick<
     ToggleHandledProps,
@@ -19,6 +20,7 @@ const toggleProps: Pick<
 };
 
 const toggleConfig: ComponentViewConfig<ToggleProps> = {
+    api: API,
     schema: toggleSchema,
     component: Toggle,
     guidance: Guidance,
