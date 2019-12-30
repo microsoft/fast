@@ -8,6 +8,7 @@ import {
 } from "@microsoft/fast-components-react-msft";
 import { uniqueId } from "lodash-es";
 import Guidance from "../../.tmp/select/guidance";
+import API from "../../.tmp/select/api";
 
 function selectOptionPropFactory(value: string): SelectOptionProps {
     return {
