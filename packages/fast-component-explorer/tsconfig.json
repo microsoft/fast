@@ -1,8 +1,8 @@
 {
     "compilerOptions": {
         "moduleResolution": "node",
-        "module": "ES6",
-        "target": "ES6",
+        "module": "esnext",
+        "target": "es6",
         "baseUrl": ".",
         "jsx": "react",
         "strictNullChecks": true,
@@ -17,7 +17,6 @@
     "exclude": [
         "node_modules",
         "**/*.spec.ts",
-        "**/*.spec.tsx",
-        "app/.tmp/**"
+        "**/*.spec.tsx"
     ]
 }

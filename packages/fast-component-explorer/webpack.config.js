@@ -26,6 +26,7 @@ module.exports = (env, args) => {
             path: outDir,
             publicPath: "/",
             filename: "[name]-[contenthash].js",
+            chunkFilename: "[name].bundle.js",
         },
         optimization: {
             runtimeChunk: "single",
@@ -47,12 +48,16 @@ module.exports = (env, args) => {
                 },
             },
         },
+
         mode: args.mode || "development",
         module: {
             rules: [
                 {
                     test: /.tsx?$/,
                     use: [
+                        {
+                            loader: "babel-loader",
+                        },
                         {
                             loader: "ts-loader",
                         },
