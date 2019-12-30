@@ -1,3 +1,4 @@
+import React from "react";
 import { ComponentViewConfig } from "./data.props";
 import {
     ActionTrigger,
@@ -7,9 +8,10 @@ import {
 } from "@microsoft/fast-components-react-msft";
 import { glyphSchema, Icon } from "../../../app/components/glyph";
 import Guidance from "../../.tmp/action-trigger/guidance";
-import API from "../../.tmp/action-trigger/api";
+import API from "../api";
+
 const actionTriggerConfig: ComponentViewConfig<ActionTriggerProps> = {
-    api: API,
+    api: API(React.lazy(() => import("../../.tmp/action-trigger/guidance"))),
     schema: actionTriggerSchema,
     component: ActionTrigger,
     guidance: Guidance,

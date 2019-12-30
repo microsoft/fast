@@ -1,3 +1,4 @@
+import React from "react";
 import { ComponentViewConfig } from "./data.props";
 import {
     ActionToggle,
@@ -7,10 +8,10 @@ import {
 } from "@microsoft/fast-components-react-msft";
 import { glyphSchema, Icon } from "../../../app/components/glyph";
 import Guidance from "../../.tmp/action-toggle/guidance";
-import API from "../../.tmp/action-toggle/api";
+import API from "../api";
 
 const actionToggleConfig: ComponentViewConfig<ActionToggleProps> = {
-    api: API,
+    api: API(React.lazy(() => import("../../.tmp/action-toggle/api"))),
     schema: actionToggleSchema,
     component: ActionToggle,
     guidance: Guidance,

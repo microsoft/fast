@@ -1,3 +1,4 @@
+import React from "react";
 import { ComponentViewConfig } from "./data.props";
 import {
     Typography,
@@ -5,10 +6,10 @@ import {
     typographySchema,
 } from "@microsoft/fast-components-react-msft";
 import Guidance from "../../.tmp/typography/guidance";
-import API from "../../.tmp/typography/api";
+import API from "../api";
 
 const typographyConfig: ComponentViewConfig<TypographyProps> = {
-    api: API,
+    api: API(React.lazy(() => import("../../.tmp/typography/api"))),
     schema: typographySchema,
     component: Typography,
     guidance: Guidance,

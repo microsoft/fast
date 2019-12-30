@@ -1,3 +1,4 @@
+import React from "react";
 import { ComponentViewConfig } from "./data.props";
 import {
     AccentButton,
@@ -5,11 +6,13 @@ import {
     accentButtonSchema,
 } from "@microsoft/fast-components-react-msft";
 import Guidance from "../../.tmp/accent-button/guidance";
-import API from "../../.tmp/accent-button/api";
 import { glyphSchema, Icon } from "../../../app/components/glyph";
+import API from "../api";
+
+const Foo: any = React.lazy(() => import("../../.tmp/accent-button/api"));
 
 const accentButtonConfig: ComponentViewConfig<AccentButtonProps> = {
-    api: API,
+    api: API(Foo),
     schema: accentButtonSchema,
     component: AccentButton,
     guidance: Guidance,

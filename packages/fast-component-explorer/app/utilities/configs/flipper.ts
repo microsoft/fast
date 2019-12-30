@@ -1,3 +1,4 @@
+import React from "react";
 import { ComponentViewConfig } from "./data.props";
 import {
     Flipper,
@@ -6,10 +7,10 @@ import {
     flipperSchema,
 } from "@microsoft/fast-components-react-msft";
 import Guidance from "../../.tmp/flipper/guidance";
-import API from "../../.tmp/flipper/api";
+import API from "../api";
 
 const flipperConfig: ComponentViewConfig<FlipperProps> = {
-    api: API,
+    api: API(React.lazy(() => import("../../.tmp/flipper/api"))),
     schema: flipperSchema,
     component: Flipper,
     guidance: Guidance,

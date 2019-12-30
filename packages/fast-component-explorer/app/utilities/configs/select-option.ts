@@ -1,3 +1,4 @@
+import React from "react";
 import { ComponentViewConfig } from "./data.props";
 import {
     SelectOption,
@@ -7,10 +8,10 @@ import {
 import { uniqueId } from "lodash-es";
 import { glyphSchema, Icon } from "../../../app/components/glyph";
 import Guidance from "../../.tmp/select-option/guidance";
-import API from "../../.tmp/select-option/api";
+import API from "../api";
 
 const selectOptionConfig: ComponentViewConfig<SelectOptionProps> = {
-    api: API,
+    api: API(React.lazy(() => import("../../.tmp/select-option/api"))),
     schema: selectOptionSchema,
     component: SelectOption,
     guidance: Guidance,

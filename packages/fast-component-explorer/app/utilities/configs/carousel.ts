@@ -1,3 +1,4 @@
+import React from "react";
 import { ComponentViewConfig } from "./data.props";
 import {
     CallToActionAppearance,
@@ -10,7 +11,7 @@ import {
 } from "@microsoft/fast-components-react-msft";
 import { uniqueId } from "lodash-es";
 import Guidance from "../../.tmp/carousel/guidance";
-import API from "../../.tmp/carousel/api";
+import API from "../api";
 
 const darkImageProps: object = {
     props: {
@@ -70,7 +71,7 @@ const defaultTabItems: CarouselSlide[] = [
 ];
 
 const carouselConfig: ComponentViewConfig<CarouselProps> = {
-    api: API,
+    api: API(React.lazy(() => import("../../.tmp/carousel/api"))),
     schema: carouselSchema,
     component: Carousel,
     guidance: Guidance,

@@ -1,3 +1,4 @@
+import React from "react";
 import { ComponentViewConfig } from "./data.props";
 import {
     Heading,
@@ -7,10 +8,10 @@ import {
     HeadingTag,
 } from "@microsoft/fast-components-react-msft";
 import Guidance from "../../.tmp/heading/guidance";
-import API from "../../.tmp/heading/api";
+import API from "../api";
 
 const headingConfig: ComponentViewConfig<HeadingProps> = {
-    api: API,
+    api: API(React.lazy(() => import("../../.tmp/heading/api"))),
     schema: headingSchema,
     component: Heading,
     guidance: Guidance,

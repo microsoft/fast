@@ -1,3 +1,4 @@
+import React from "react";
 import { ComponentViewConfig } from "./data.props";
 import {
     CallToAction,
@@ -6,10 +7,10 @@ import {
     callToActionSchema,
 } from "@microsoft/fast-components-react-msft";
 import Guidance from "../../.tmp/call-to-action/guidance";
-import API from "../../.tmp/call-to-action/api";
+import API from "../api";
 
 const callToActionConfig: ComponentViewConfig<CallToActionProps> = {
-    api: API,
+    api: API(React.lazy(() => import("../../.tmp/call-to-action/api"))),
     schema: callToActionSchema,
     component: CallToAction,
     guidance: Guidance,

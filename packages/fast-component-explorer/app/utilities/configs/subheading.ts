@@ -1,3 +1,4 @@
+import React from "react";
 import { ComponentViewConfig } from "./data.props";
 import {
     Subheading,
@@ -7,10 +8,10 @@ import {
     SubheadingTag,
 } from "@microsoft/fast-components-react-msft";
 import Guidance from "../../.tmp/subheading/guidance";
-import API from "../../.tmp/subheading/api";
+import API from "../api";
 
 const subheadingConfig: ComponentViewConfig<SubheadingProps> = {
-    api: API,
+    api: API(React.lazy(() => import("../../.tmp/subheading/api"))),
     schema: subheadingSchema,
     component: Subheading,
     guidance: Guidance,

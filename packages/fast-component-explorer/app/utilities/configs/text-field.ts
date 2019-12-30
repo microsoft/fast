@@ -1,3 +1,4 @@
+import React from "react";
 import { ComponentViewConfig } from "./data.props";
 import {
     TextField,
@@ -6,10 +7,10 @@ import {
     TextFieldType,
 } from "@microsoft/fast-components-react-msft";
 import Guidance from "../../.tmp/text-field/guidance";
-import API from "../../.tmp/text-field/api";
+import API from "../api";
 
 const textFieldConfig: ComponentViewConfig<TextFieldProps> = {
-    api: API,
+    api: API(React.lazy(() => import("../../.tmp/text-field/api"))),
     schema: textFieldSchema,
     component: TextField,
     guidance: Guidance,

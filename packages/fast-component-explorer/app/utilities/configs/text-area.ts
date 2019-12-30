@@ -1,3 +1,4 @@
+import React from "react";
 import { ComponentViewConfig } from "./data.props";
 import {
     TextArea,
@@ -5,10 +6,10 @@ import {
     textAreaSchema,
 } from "@microsoft/fast-components-react-msft";
 import Guidance from "../../.tmp/text-area/guidance";
-import API from "../../.tmp/text-area/api";
+import API from "../api";
 
 const textAreaConfig: ComponentViewConfig<TextAreaProps> = {
-    api: API,
+    api: API(React.lazy(() => import("../../.tmp/text-area/api"))),
     schema: textAreaSchema,
     component: TextArea,
     guidance: Guidance,

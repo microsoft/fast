@@ -1,3 +1,4 @@
+import React from "react";
 import { ComponentViewConfig } from "./data.props";
 import {
     ContextMenuItem,
@@ -5,10 +6,10 @@ import {
     contextMenuItemSchema,
 } from "@microsoft/fast-components-react-msft";
 import Guidance from "../../.tmp/context-menu-item/guidance";
-import API from "../../.tmp/context-menu-item/api";
+import API from "../api";
 
 const contextMenuItemConfig: ComponentViewConfig<ContextMenuItemProps> = {
-    api: API,
+    api: API(React.lazy(() => import("../../.tmp/context-menu-item/api"))),
     schema: contextMenuItemSchema,
     component: ContextMenuItem,
     guidance: Guidance,

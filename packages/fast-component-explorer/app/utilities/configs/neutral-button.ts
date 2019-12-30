@@ -1,3 +1,4 @@
+import React from "react";
 import { ComponentViewConfig } from "./data.props";
 import {
     NeutralButton,
@@ -5,11 +6,11 @@ import {
     neutralButtonSchema,
 } from "@microsoft/fast-components-react-msft";
 import Guidance from "../../.tmp/accent-button/guidance";
-import API from "../../.tmp/accent-button/api";
+import API from "../api";
 import { glyphSchema, Icon } from "../../../app/components/glyph";
 
 const neutralButtonConfig: ComponentViewConfig<NeutralButtonProps> = {
-    api: API,
+    api: API(React.lazy(() => import("../../.tmp/neutral-button/api"))),
     schema: neutralButtonSchema,
     component: NeutralButton,
     guidance: Guidance,

@@ -1,3 +1,4 @@
+import React from "react";
 import { ComponentViewConfig } from "./data.props";
 import {
     Card,
@@ -6,10 +7,10 @@ import {
     imageSchema,
 } from "@microsoft/fast-components-react-msft";
 import Guidance from "../../.tmp/card/guidance";
-import API from "../../.tmp/card/api";
+import API from "../api";
 
 const cardConfig: ComponentViewConfig<CardProps> = {
-    api: API,
+    api: API(React.lazy(() => import("../../.tmp/card/api"))),
     schema: cardSchema,
     component: Card,
     guidance: Guidance,

@@ -1,3 +1,4 @@
+import React from "react";
 import { ComponentViewConfig } from "./data.props";
 import {
     TreeViewItem,
@@ -5,11 +6,11 @@ import {
     treeViewItemSchema,
 } from "@microsoft/fast-components-react-msft";
 import Guidance from "../../.tmp/tree-view-item/guidance";
-import API from "../../.tmp/tree-view-item/api";
+import API from "../api";
 import { glyphSchema, Icon } from "../../../app/components/glyph";
 
 const treeViewItemConfig: ComponentViewConfig<TreeViewItemProps> = {
-    api: API,
+    api: API(React.lazy(() => import("../../.tmp/tree-view-item/api"))),
     schema: treeViewItemSchema,
     component: TreeViewItem,
     guidance: Guidance,

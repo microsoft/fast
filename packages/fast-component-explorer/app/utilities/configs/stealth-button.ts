@@ -1,3 +1,4 @@
+import React from "react";
 import { ComponentViewConfig } from "./data.props";
 import {
     StealthButton,
@@ -5,11 +6,11 @@ import {
     stealthButtonSchema,
 } from "@microsoft/fast-components-react-msft";
 import Guidance from "../../.tmp/stealth-button/guidance";
-import API from "../../.tmp/stealth-button/api";
+import API from "../api";
 import { glyphSchema, Icon } from "../../../app/components/glyph";
 
 const stealthButtonConfig: ComponentViewConfig<StealthButtonProps> = {
-    api: API,
+    api: API(React.lazy(() => import("../../.tmp/stealth-button/api"))),
     schema: stealthButtonSchema,
     component: StealthButton,
     guidance: Guidance,

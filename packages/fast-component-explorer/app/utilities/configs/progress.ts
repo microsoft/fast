@@ -1,3 +1,4 @@
+import React from "react";
 import { ComponentViewConfig } from "./data.props";
 import {
     Progress,
@@ -5,10 +6,10 @@ import {
     progressSchema,
 } from "@microsoft/fast-components-react-msft";
 import Guidance from "../../.tmp/progress/guidance";
-import API from "../../.tmp/progress/api";
+import API from "../api";
 
 const progressConfig: ComponentViewConfig<ProgressProps> = {
-    api: API,
+    api: API(React.lazy(() => import("../../.tmp/progress/api"))),
     schema: progressSchema,
     component: Progress,
     guidance: Guidance,

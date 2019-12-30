@@ -1,3 +1,4 @@
+import React from "react";
 import { ComponentViewConfig } from "./data.props";
 import {
     Caption,
@@ -5,10 +6,10 @@ import {
     captionSchema,
 } from "@microsoft/fast-components-react-msft";
 import Guidance from "../../.tmp/caption/guidance";
-import API from "../../.tmp/caption/api";
+import API from "../api";
 
 const captionConfig: ComponentViewConfig<CaptionProps> = {
-    api: API,
+    api: API(React.lazy(() => import("../../.tmp/caption/api"))),
     schema: captionSchema,
     component: Caption,
     guidance: Guidance,

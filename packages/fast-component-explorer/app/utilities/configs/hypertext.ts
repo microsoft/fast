@@ -1,3 +1,4 @@
+import React from "react";
 import { ComponentViewConfig } from "./data.props";
 import {
     Hypertext,
@@ -5,10 +6,10 @@ import {
     hypertextSchema,
 } from "@microsoft/fast-components-react-msft";
 import Guidance from "../../.tmp/hypertext/guidance";
-import API from "../../.tmp/hypertext/api";
+import API from "../api";
 
 const hypertextConfig: ComponentViewConfig<HypertextProps> = {
-    api: API,
+    api: API(React.lazy(() => import("../../.tmp/hypertext/api"))),
     schema: hypertextSchema,
     component: Hypertext,
     guidance: Guidance,

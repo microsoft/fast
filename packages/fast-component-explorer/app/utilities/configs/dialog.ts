@@ -1,10 +1,11 @@
+import React from "react";
 import { ComponentViewConfig } from "./data.props";
 import { Dialog, DialogProps, dialogSchema } from "@microsoft/fast-components-react-msft";
 import Guidance from "../../.tmp/dialog/guidance";
-import API from "../../.tmp/dialog/api";
+import API from "../api";
 
 const dialogConfig: ComponentViewConfig<DialogProps> = {
-    api: API,
+    api: API(React.lazy(() => import("../../.tmp/dialog/api"))),
     schema: dialogSchema,
     component: Dialog,
     guidance: Guidance,

@@ -1,3 +1,4 @@
+import React from "react";
 import { ComponentViewConfig } from "./data.props";
 import {
     LightweightButton,
@@ -5,11 +6,11 @@ import {
     lightweightButtonSchema,
 } from "@microsoft/fast-components-react-msft";
 import Guidance from "../../.tmp/accent-button/guidance";
-import API from "../../.tmp/accent-button/api";
+import API from "../api";
 import { glyphSchema, Icon } from "../../../app/components/glyph";
 
 const lightweightButtonConfig: ComponentViewConfig<LightweightButtonProps> = {
-    api: API,
+    api: API(React.lazy(() => import("../../.tmp/lightweight-button/api"))),
     schema: lightweightButtonSchema,
     component: LightweightButton,
     guidance: Guidance,

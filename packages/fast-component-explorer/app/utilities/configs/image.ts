@@ -1,10 +1,11 @@
+import React from "react";
 import { ComponentViewConfig } from "./data.props";
 import { Image, ImageProps, imageSchema } from "@microsoft/fast-components-react-msft";
 import Guidance from "../../.tmp/image/guidance";
-import API from "../../.tmp/image/api";
+import API from "../api";
 
 const imageConfig: ComponentViewConfig<ImageProps> = {
-    api: API,
+    api: API(React.lazy(() => import("../../.tmp/image/api"))),
     schema: imageSchema,
     component: Image,
     guidance: Guidance,

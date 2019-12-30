@@ -1,3 +1,4 @@
+import React from "react";
 import { ComponentViewConfig } from "./data.props";
 import {
     OutlineButton,
@@ -5,11 +6,11 @@ import {
     outlineButtonSchema,
 } from "@microsoft/fast-components-react-msft";
 import Guidance from "../../.tmp/outline-button/guidance";
-import API from "../../.tmp/outline-button/api";
+import API from "../api";
 import { glyphSchema, Icon } from "../../../app/components/glyph";
 
 const outlineButtonConfig: ComponentViewConfig<OutlineButtonProps> = {
-    api: API,
+    api: API(React.lazy(() => import("../../.tmp/outline-button/api"))),
     schema: outlineButtonSchema,
     component: OutlineButton,
     guidance: Guidance,

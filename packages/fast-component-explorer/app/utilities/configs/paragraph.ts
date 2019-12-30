@@ -1,3 +1,4 @@
+import React from "react";
 import { ComponentViewConfig } from "./data.props";
 import {
     Paragraph,
@@ -6,10 +7,10 @@ import {
     ParagraphSize,
 } from "@microsoft/fast-components-react-msft";
 import Guidance from "../../.tmp/paragraph/guidance";
-import API from "../../.tmp/paragraph/api";
+import API from "../api";
 
 const paragraphConfig: ComponentViewConfig<ParagraphProps> = {
-    api: API,
+    api: API(React.lazy(() => import("../../.tmp/paragraph/api"))),
     schema: paragraphSchema,
     component: Paragraph,
     guidance: Guidance,

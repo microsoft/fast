@@ -1,3 +1,4 @@
+import React from "react";
 import { ComponentViewConfig } from "./data.props";
 import {
     labelSchema,
@@ -7,12 +8,12 @@ import {
 } from "@microsoft/fast-components-react-msft";
 import { uniqueId } from "lodash-es";
 import Guidance from "../../.tmp/radio/guidance";
-import API from "../../.tmp/radio/api";
+import API from "../api";
 
 const id: string = uniqueId();
 
 const radioConfig: ComponentViewConfig<RadioProps> = {
-    api: API,
+    api: API(React.lazy(() => import("../../.tmp/radio/api"))),
     schema: radioSchema,
     component: Radio,
     guidance: Guidance,

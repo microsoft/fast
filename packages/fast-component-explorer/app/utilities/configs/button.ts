@@ -1,3 +1,4 @@
+import React from "react";
 import { ComponentViewConfig } from "./data.props";
 import {
     Button,
@@ -6,10 +7,10 @@ import {
     buttonSchema,
 } from "@microsoft/fast-components-react-msft";
 import Guidance from "../../.tmp/button/guidance";
-import API from "../../.tmp/button/api";
+import API from "../api";
 
 const buttonConfig: ComponentViewConfig<ButtonProps> = {
-    api: API,
+    api: API(React.lazy(() => import("../../.tmp/button/api"))),
     schema: buttonSchema,
     component: Button,
     guidance: Guidance,

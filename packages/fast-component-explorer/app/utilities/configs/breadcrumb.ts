@@ -1,3 +1,4 @@
+import React from "react";
 import { ComponentViewConfig } from "./data.props";
 import {
     Breadcrumb,
@@ -7,10 +8,10 @@ import {
 } from "@microsoft/fast-components-react-msft";
 import { groupSchema } from "../../../app/components/group";
 import Guidance from "../../.tmp/breadcrumb/guidance";
-import API from "../../.tmp/breadcrumb/api";
+import API from "../api";
 
 const breadcrumbConfig: ComponentViewConfig<BreadcrumbProps> = {
-    api: API,
+    api: API(React.lazy(() => import("../../.tmp/breadcrumb/api"))),
     schema: breadcrumbSchema,
     component: Breadcrumb,
     guidance: Guidance,

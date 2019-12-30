@@ -1,3 +1,4 @@
+import React from "react";
 import { ComponentViewConfig } from "./data.props";
 import {
     AutoSuggestOption,
@@ -6,9 +7,10 @@ import {
 } from "@microsoft/fast-components-react-msft";
 import { uniqueId } from "lodash-es";
 import Guidance from "../../.tmp/auto-suggest-option/guidance";
-import API from "../../.tmp/auto-suggest-option/api";
+import API from "../api";
+
 const autoSuggestOptionConfig: ComponentViewConfig<AutoSuggestOptionProps> = {
-    api: API,
+    api: API(React.lazy(() => import("../../.tmp/auto-suggest-option/api"))),
     schema: autoSuggestOptionSchema,
     component: AutoSuggestOption,
     guidance: Guidance,

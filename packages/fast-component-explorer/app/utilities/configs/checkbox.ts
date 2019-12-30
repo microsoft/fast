@@ -1,3 +1,4 @@
+import React from "react";
 import { ComponentViewConfig } from "./data.props";
 import {
     Checkbox,
@@ -7,12 +8,12 @@ import {
 } from "@microsoft/fast-components-react-msft";
 import { uniqueId } from "lodash-es";
 import Guidance from "../../.tmp/checkbox/guidance";
-import API from "../../.tmp/checkbox/api";
+import API from "../api";
 
 const id: string = uniqueId();
 
 const checkboxConfig: ComponentViewConfig<CheckboxProps> = {
-    api: API,
+    api: API(React.lazy(() => import("../../.tmp/checkbox/api"))),
     schema: checkboxSchema,
     component: Checkbox,
     guidance: Guidance,

@@ -1,3 +1,4 @@
+import React from "react";
 import { ComponentViewConfig } from "./data.props";
 import {
     Divider,
@@ -6,7 +7,7 @@ import {
     dividerSchema,
 } from "@microsoft/fast-components-react-msft";
 import Guidance from "../../.tmp/divider/guidance";
-import API from "../../.tmp/divider/api";
+import API from "../api";
 import { DesignSystem } from "@microsoft/fast-components-styles-msft";
 import { ComponentStyleSheet } from "@microsoft/fast-jss-manager-react";
 
@@ -17,7 +18,7 @@ const styles: ComponentStyleSheet<DividerClassNameContract, DesignSystem> = {
 };
 
 const dividerConfig: ComponentViewConfig<DividerProps> = {
-    api: API,
+    api: API(React.lazy(() => import("../../.tmp/dialog/api"))),
     schema: dividerSchema,
     component: Divider,
     guidance: Guidance,

@@ -1,3 +1,4 @@
+import React from "react";
 import { ComponentViewConfig } from "./data.props";
 import {
     SliderLabel,
@@ -6,7 +7,7 @@ import {
     sliderLabelSchema,
 } from "@microsoft/fast-components-react-msft";
 import Guidance from "../../.tmp/slider-label/guidance";
-import API from "../../.tmp/slider-label/api";
+import API from "../api";
 import { DesignSystem } from "@microsoft/fast-components-styles-msft";
 import { ComponentStyleSheet } from "@microsoft/fast-jss-manager-react";
 
@@ -18,7 +19,7 @@ const styles: ComponentStyleSheet<SliderLabelClassNameContract, DesignSystem> = 
 };
 
 const sliderLabelConfig: ComponentViewConfig<SliderLabelProps> = {
-    api: API,
+    api: API(React.lazy(() => import("../../.tmp/slider-label/api"))),
     schema: sliderLabelSchema,
     component: SliderLabel,
     guidance: Guidance,

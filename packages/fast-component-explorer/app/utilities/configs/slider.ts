@@ -1,3 +1,4 @@
+import React from "react";
 import { ComponentViewConfig } from "./data.props";
 import {
     Slider,
@@ -6,10 +7,10 @@ import {
     sliderSchema,
 } from "@microsoft/fast-components-react-msft";
 import Guidance from "../../.tmp/slider/guidance";
-import API from "../../.tmp/slider/api";
+import API from "../api";
 
 const sliderConfig: ComponentViewConfig<SliderProps> = {
-    api: API,
+    api: API(React.lazy(() => import("../../.tmp/slider/api"))),
     schema: sliderSchema,
     component: Slider,
     guidance: Guidance,
