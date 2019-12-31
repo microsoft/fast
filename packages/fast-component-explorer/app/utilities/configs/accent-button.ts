@@ -9,10 +9,8 @@ import Guidance from "../../.tmp/accent-button/guidance";
 import { glyphSchema, Icon } from "../../../app/components/glyph";
 import API from "../api";
 
-const Foo: any = React.lazy(() => import("../../.tmp/accent-button/api"));
-
 const accentButtonConfig: ComponentViewConfig<AccentButtonProps> = {
-    api: API(Foo),
+    api: API(React.lazy(() => import("../../.tmp/accent-button/api"))),
     schema: accentButtonSchema,
     component: AccentButton,
     guidance: Guidance,

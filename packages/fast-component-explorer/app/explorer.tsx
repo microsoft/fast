@@ -679,12 +679,7 @@ class Explorer extends Foundation<
                     const componentName: string = this.getComponentNameSpinalCaseByPath(
                         this.state.locationPathname
                     );
-                    console.log(
-                        setViewConfigsWithCustomConfig(
-                            componentViewConfigsWithoutCustomConfig
-                        )
-                    );
-                    const Guidance: React.ComponentClass = get(
+                    const API: React.ComponentClass = get(
                         setViewConfigsWithCustomConfig(
                             componentViewConfigsWithoutCustomConfig
                         ),
@@ -694,7 +689,7 @@ class Explorer extends Foundation<
 
                     return (
                         <div className={className}>
-                            <Guidance />
+                            <API />
                         </div>
                     );
                 },

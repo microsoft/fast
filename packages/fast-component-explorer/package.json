@@ -39,7 +39,7 @@
       "global": {
         "statements": 50,
         "branches": 5,
-        "functions": 15,
+        "functions": 9,
         "lines": 20
       }
     },
