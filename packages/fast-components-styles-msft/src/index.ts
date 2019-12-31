@@ -222,6 +222,18 @@ import TextFieldStyles from "./text-field";
 export { TextFieldStyles };
 
 /**
+ * Export tree view styles
+ */
+import TreeViewStyles from "./tree-view";
+export { TreeViewStyles };
+
+/**
+ * Export tree view item styles
+ */
+import TreeViewItemStyles from "./tree-view-item";
+export { TreeViewItemStyles };
+
+/**
  * Export typography styles
  */
 import TypographyStyles from "./typography";

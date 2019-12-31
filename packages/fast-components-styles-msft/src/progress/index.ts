@@ -29,6 +29,8 @@ const styles: ComponentStyles<ProgressClassNameContract, DesignSystem> = {
     },
     progress__circular: {
         height: "unset",
+        width: "unset",
+        display: "inline-block",
         "& $progress_valueIndicator, & $progress_indicator": {
             fill: "none",
             "stroke-width": "2px",

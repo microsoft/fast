@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.8.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-component-explorer@0.7.8...@microsoft/fast-component-explorer@0.8.0) (2019-12-23)
+
+
+### Features
+
+* add tree view as a new component ([#2510](https://github.com/Microsoft/fast-dna/issues/2510)) ([1a1d465](https://github.com/Microsoft/fast-dna/commit/1a1d46566dc6c378a0f1981341a36dcb9897226f))
+
+
+
+
+
 ## [0.7.8](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-component-explorer@0.7.7...@microsoft/fast-component-explorer@0.7.8) (2019-12-18)
 
 **Note:** Version bump only for package @microsoft/fast-component-explorer

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.23.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-base@4.22.2...@microsoft/fast-components-react-base@4.23.0) (2019-12-23)
+
+
+### Features
+
+* add tree view as a new component ([#2510](https://github.com/Microsoft/fast-dna/issues/2510)) ([1a1d465](https://github.com/Microsoft/fast-dna/commit/1a1d46566dc6c378a0f1981341a36dcb9897226f))
+
+
+
+
+
 ## [4.22.2](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-base@4.22.1...@microsoft/fast-components-react-base@4.22.2) (2019-12-18)
 
 **Note:** Version bump only for package @microsoft/fast-components-react-base
