@@ -19,7 +19,7 @@ function selectOptionPropFactory(value: string): SelectOptionProps {
 }
 
 const selectConfig: ComponentViewConfig<SelectProps> = {
-    api: null, // TODO Select's API is malformed for some reason, need to look into why
+    api: null, // TODO: https://github.com/microsoft/fast-dna/issues/2544
     schema: selectSchema,
     component: Select,
     guidance: Guidance,
