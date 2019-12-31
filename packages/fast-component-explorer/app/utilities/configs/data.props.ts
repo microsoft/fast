@@ -14,7 +14,7 @@ export interface ComponentViewConfig<D> {
     /**
      * React component with API data
      */
-    api: React.ComponentClass;
+    api: React.ComponentClass | null;
 
     /**
      * The JSON schema associated with the component
