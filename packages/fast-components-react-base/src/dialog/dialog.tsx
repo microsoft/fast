@@ -20,6 +20,7 @@ class Dialog extends Foundation<DialogHandledProps, DialogUnhandledProps, {}> {
 
     protected handledProps: HandledProps<DialogHandledProps> = {
         describedBy: void 0,
+        elementToFocusOnUnmount: void 0,
         label: void 0,
         labelledBy: void 0,
         contentWidth: void 0,
@@ -125,6 +126,15 @@ class Dialog extends Foundation<DialogHandledProps, DialogUnhandledProps, {}> {
 
             if (this.props.modal) {
                 document.removeEventListener("focusin", this.handleDocumentFocus);
+            }
+
+            // Must be after the focusin listener is removed else the modal
+            // will take focus again
+            if (
+                this.props.elementToFocusOnUnmount &&
+                typeof this.props.elementToFocusOnUnmount.focus === "function"
+            ) {
+                this.props.elementToFocusOnUnmount.focus();
             }
         }
     }

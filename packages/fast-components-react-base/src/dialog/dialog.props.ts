@@ -56,6 +56,13 @@ export interface DialogHandledProps extends DialogManagedClasses {
      * If true, aria-hidden is false
      */
     visible?: boolean;
+
+    /**
+     * Element to focus after the dialog is unmounted.
+     * Used to bypass the document focus listener which traps focus inside
+     * the modal while it is valid.
+     */
+    elementToFocusOnUnmount?: { focus: () => void };
 }
 
 export type DialogProps = DialogHandledProps & DialogUnhandledProps;

@@ -263,4 +263,55 @@ describe("dialog", (): void => {
 
         document.body.removeChild(container);
     });
+    test("should focus an element on unmount of non-modal dialogs", () => {
+        // tslint:disable-next-line: typedef
+        const mockFocusableElement = {
+            focus: jest.fn(),
+        };
+
+        const rendered: any = mount(
+            <Dialog
+                managedClasses={managedClasses}
+                modal={false}
+                visible={true}
+                elementToFocusOnUnmount={mockFocusableElement}
+            />
+        );
+
+        rendered.unmount();
+        expect(mockFocusableElement.focus).toHaveBeenCalledTimes(1);
+    });
+    test("should focus an element after unregistering 'focusin' on unmount of modal dialogs", () => {
+        let listenerRemoved: boolean = false;
+
+        const mockRemoveListenerFn: any = jest.fn((event: string, callback: any) => {
+            listenerRemoved = true;
+        });
+
+        // tslint:disable-next-line: typedef
+        const mockFocusableElement = {
+            focus: jest.fn(
+                (): void => {
+                    expect(listenerRemoved).toBeTruthy();
+                }
+            ),
+        };
+
+        document.removeEventListener = mockRemoveListenerFn;
+
+        const rendered: any = mount(
+            <Dialog
+                managedClasses={managedClasses}
+                modal={true}
+                visible={true}
+                elementToFocusOnUnmount={mockFocusableElement}
+            />
+        );
+
+        rendered.unmount();
+
+        expect(mockRemoveListenerFn).toHaveBeenCalledTimes(2);
+        expect(mockRemoveListenerFn.mock.calls[1][0]).toBe("focusin");
+        expect(mockFocusableElement.focus).toHaveBeenCalledTimes(1);
+    });
 });
