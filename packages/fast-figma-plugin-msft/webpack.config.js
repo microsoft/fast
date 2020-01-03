@@ -1,8 +1,8 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const HtmlWebpackInlineSourcePlugin = require("html-webpack-inline-source-plugin");
 const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
-// const CopyPlugin = require("copy-webpack-plugin");
 
 const appDir = path.resolve(__dirname, "./src");
 const outDir = path.resolve(__dirname, "./dist");
@@ -13,7 +13,8 @@ module.exports = (env, args) => {
     return {
         devtool: isProduction ? "none" : "inline-source-map",
         entry: {
-            main: path.resolve(appDir, "index.ts"),
+            main: path.resolve(appDir, "main.ts"),
+            ui: path.resolve(appDir, "ui.tsx"),
         },
         output: {
             path: outDir,
@@ -41,14 +42,14 @@ module.exports = (env, args) => {
             new HtmlWebpackPlugin({
                 title: "FAST MSFT Figma Plugin",
                 contentBase: outDir,
+                chunks: ["ui"],
+                inlineSource: "(js)$",
             }),
+            new HtmlWebpackInlineSourcePlugin(),
             new BundleAnalyzerPlugin({
                 // Remove this to inspect bundle sizes.
                 analyzerMode: "disabled",
             }),
-            // new CopyPlugin([
-            //     { from: path.resolve(__dirname, "./figma-manifest.json"), to: path.resolve(outDir, "manifest.json")}
-            // ])
         ],
         resolve: {
             extensions: [".js", ".jsx", ".tsx", ".ts"],
