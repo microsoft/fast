@@ -961,6 +961,41 @@ export class Example extends React.Component {
 }
 ```
 
+### Box Shadow
+
+The `CSSBoxShadow` component shows an input for a color picker and has a callback that will be fired when the value is updated. In addition, there are also inputs to adjust the opacity, X, Y, and blur properties on the box-shadow.
+
+Example:
+```jsx
+import React from "react";
+import { CSSBoxShadow } from "@microsoft/fast-tooling-react";
+
+export class Example extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            cssValues: "0 4px 4px rgba(0,0,0,0.25)"
+        }
+    }
+
+    render() {
+        return (
+            <CSSBoxShadow
+                value={this.state.cssValues}
+                onChange={this.handleCSSValueUpdate}
+            />
+        );
+    }
+
+    handleCSSValueUpdate = (updatedValues) => {
+        this.setState({
+            cssValues: updatedValues
+        });
+    }
+}
+```
+
 ## Form
 
 The required properties are the `data`, `schema`, and `onChange` function. The data should be tied to your state as the data will change when editing the form. The `onChange` is used as a callback, it should take one argument that is the data that should be updated when any data has been changed from within the generated form.

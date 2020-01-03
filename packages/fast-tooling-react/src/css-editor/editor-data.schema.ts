@@ -1,5 +1,6 @@
 import {
     backgroundPlugInId,
+    boxShadowPlugInId,
     colorPlugInId,
     heightPluginId,
     widthPluginId,
@@ -31,6 +32,11 @@ export default {
             title: "Width",
             type: "string",
             formControlId: widthPluginId,
+        },
+        boxShadow: {
+            title: "Shadow",
+            type: "string",
+            formControlId: boxShadowPlugInId,
         },
     },
 };

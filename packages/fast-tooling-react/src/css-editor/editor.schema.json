@@ -28,6 +28,11 @@
                     "title": "Width",
                     "type": "string",
                     "formControlId": "width"
+                },
+                "boxShadow": {
+                    "title": "Shadow",
+                    "type": "string",
+                    "formControlId": "shadow"
                 }
             }
         }

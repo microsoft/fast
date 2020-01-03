@@ -1,5 +1,4 @@
 import React from "react";
-import { get } from "lodash-es";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import {
     CSSBoxShadowHandledProps,
@@ -7,6 +6,8 @@ import {
     CSSBoxShadowState,
     CSSBoxShadowUnhandledProps,
 } from "./box-shadow.props";
+import { CSSBoxShadowClassNameContract } from "./box-shadow.style";
+import { classNames } from "@microsoft/fast-web-utilities";
 import { ColorRGBA64, parseColorHexRGB } from "@microsoft/fast-colors";
 
 export default class CSSBoxShadow extends Foundation<
@@ -16,10 +17,20 @@ export default class CSSBoxShadow extends Foundation<
 > {
     public static displayName: string = "CSSBoxShadow";
 
+    public static defaultProps: Partial<CSSBoxShadowProps> = {
+        value: "",
+        managedClasses: {},
+    };
+
     protected handledProps: HandledProps<CSSBoxShadowHandledProps> = {
-        data: void 0,
         onChange: void 0,
         managedClasses: void 0,
+        dataLocation: void 0,
+        value: void 0,
+        disabled: void 0,
+        elementRef: void 0,
+        reportValidity: void 0,
+        updateValidity: void 0,
     };
 
     private defaultBoxShadowColor: string = "#000";
@@ -61,7 +72,7 @@ export default class CSSBoxShadow extends Foundation<
             ];
 
             this.props.onChange({
-                boxShadow: boxShadowArray.reduce(
+                value: boxShadowArray.reduce(
                     (accum: string, current: string): string => {
                         return current.length ? accum.concat(" ", current.trim()) : accum;
                     }
@@ -71,109 +82,92 @@ export default class CSSBoxShadow extends Foundation<
     }
 
     public render(): React.ReactNode {
+        const {
+            cssBoxShadow_control,
+            cssBoxShadow_colorInputRegion,
+            cssBoxShadow_opacityInput,
+            cssBoxShadow_controlRegion,
+            cssBoxShadow_label,
+            cssBoxShadow_xInput,
+            cssBoxShadow_yInput,
+            cssBoxShadow_blurInput,
+        }: Partial<CSSBoxShadowClassNameContract> = this.props.managedClasses;
+
         return (
-            <div className={get(this.props, "managedClasses.cssBoxShadow")}>
-                <div
-                    className={get(this.props, "managedClasses.cssBoxShadow_colorRegion")}
-                >
-                    <label
-                        className={get(this.props, "managedClasses.cssBoxShadow_label")}
-                    >
-                        Shadow
-                    </label>
+            <div className={this.generateClassNames()}>
+                <div className={cssBoxShadow_control}>
                     <div
-                        className={get(this.props, "managedClasses.cssBoxShadow_control")}
+                        className={cssBoxShadow_colorInputRegion}
+                        style={{ background: this.state.boxShadowColor }}
                     >
-                        <div
-                            className={get(
-                                this.props,
-                                "managedClasses.cssBoxShadow_colorInputRegion"
-                            )}
-                            style={{ background: this.state.boxShadowColor }}
-                        >
-                            <input
-                                type={"color"}
-                                style={{ opacity: 0, width: "100%" }}
-                                value={this.state.boxShadowColor}
-                                onChange={this.handleBoxShadowColorOnChange}
-                            />
-                        </div>
                         <input
-                            className={get(
-                                this.props,
-                                "managedClasses.cssBoxShadow_opacityInput"
-                            )}
-                            type={"number"}
-                            min={0}
-                            max={100}
-                            step={1}
-                            placeholder={"50"}
-                            value={Math.round(this.state.boxShadowOpacity * 100)}
-                            onChange={this.handleBoxShadowOpacityOnChange}
+                            type={"color"}
+                            style={{ opacity: 0, width: "100%" }}
+                            value={this.state.boxShadowColor}
+                            onChange={this.handleBoxShadowColorOnChange}
+                            disabled={this.props.disabled}
+                            onFocus={this.props.reportValidity}
+                            onBlur={this.props.updateValidity}
+                            ref={this.props.elementRef as React.Ref<HTMLInputElement>}
                         />
                     </div>
-                </div>
-                <div
-                    className={get(
-                        this.props,
-                        "managedClasses.cssBoxShadow_controlRegion"
-                    )}
-                >
-                    <label
-                        className={get(this.props, "managedClasses.cssBoxShadow_label")}
-                    >
-                        X
-                    </label>
                     <input
-                        className={get(this.props, "managedClasses.cssBoxShadow_xInput")}
+                        className={cssBoxShadow_opacityInput}
+                        type={"number"}
+                        min={0}
+                        max={100}
+                        step={1}
+                        placeholder={"50"}
+                        value={Math.round(this.state.boxShadowOpacity * 100)}
+                        onChange={this.handleBoxShadowOpacityOnChange}
+                        disabled={this.props.disabled}
+                    />
+                </div>
+                <div className={cssBoxShadow_controlRegion}>
+                    <label className={cssBoxShadow_label}>X</label>
+                    <input
+                        className={cssBoxShadow_xInput}
                         type={"text"}
                         placeholder={"5px"}
                         value={this.state.boxShadowOffsetX}
                         onChange={this.handleBoxShadowXOnChange}
+                        disabled={this.props.disabled}
                     />
                 </div>
-                <div
-                    className={get(
-                        this.props,
-                        "managedClasses.cssBoxShadow_controlRegion"
-                    )}
-                >
-                    <label
-                        className={get(this.props, "managedClasses.cssBoxShadow_label")}
-                    >
-                        Y
-                    </label>
+                <div className={cssBoxShadow_controlRegion}>
+                    <label className={cssBoxShadow_label}>Y</label>
                     <input
-                        className={get(this.props, "managedClasses.cssBoxShadow_yInput")}
+                        className={cssBoxShadow_yInput}
                         type={"text"}
                         placeholder={"5px"}
                         value={this.state.boxShadowOffsetY}
                         onChange={this.handleBoxShadowYOnChange}
+                        disabled={this.props.disabled}
                     />
                 </div>
-                <div
-                    className={get(
-                        this.props,
-                        "managedClasses.cssBoxShadow_controlRegion"
-                    )}
-                >
-                    <label
-                        className={get(this.props, "managedClasses.cssBoxShadow_label")}
-                    >
-                        Blur
-                    </label>
+                <div className={cssBoxShadow_controlRegion}>
+                    <label className={cssBoxShadow_label}>Blur</label>
                     <input
-                        className={get(
-                            this.props,
-                            "managedClasses.cssBoxShadow_blurInput"
-                        )}
+                        className={cssBoxShadow_blurInput}
                         type={"text"}
                         placeholder={"0"}
                         value={this.state.boxShadowBlurRadius}
                         onChange={this.handleBoxShadowBlurOnChange}
+                        disabled={this.props.disabled}
                     />
                 </div>
             </div>
+        );
+    }
+
+    protected generateClassNames(): string {
+        const {
+            cssBoxShadow,
+            cssBoxShadow__disabled,
+        }: Partial<CSSBoxShadowClassNameContract> = this.props.managedClasses;
+
+        return super.generateClassNames(
+            classNames(cssBoxShadow, [cssBoxShadow__disabled, this.props.disabled])
         );
     }
 
