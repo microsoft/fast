@@ -14,8 +14,8 @@ import { CSSHeight } from "./height";
 import { ControlConfig, Form, StandardControlPlugin } from "../form/";
 import {
     backgroundPlugInId,
-    boxShadowPlugInId,
     borderRadiusPlugInId,
+    boxShadowPlugInId,
     colorPlugInId,
     heightPluginId,
     widthPluginId,

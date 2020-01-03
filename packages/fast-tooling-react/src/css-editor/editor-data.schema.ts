@@ -1,7 +1,7 @@
 import {
     backgroundPlugInId,
-    boxShadowPlugInId,
     borderRadiusPlugInId,
+    boxShadowPlugInId,
     colorPlugInId,
     heightPluginId,
     widthPluginId,
