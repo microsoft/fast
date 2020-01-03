@@ -1,0 +1,47 @@
+{
+  "name": "@microsoft/fast-figma-plugin-msft",
+  "version": "1.5.9",
+  "description": "A Figma plugin for designing MSFT experiences",
+  "sideEffects": false,
+  "private": true,
+  "scripts": {
+    "build": "webpack --progress --mode=production",
+    "prettier": "prettier --config ../../.prettierrc --write \"**/*.{ts,tsx}\"",
+    "prettier:diff": "prettier --config ../../.prettierrc \"**/*.{ts,tsx}\" --list-different",
+    "test": "yarn tslint && yarn build",
+    "tslint": "tslint -c ./tslint.json '**/*.ts{,x}'",
+    "tslint:fix": "tslint -c ./tslint.json --fix '**/*.ts{,x}'"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Microsoft/fast-dna.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Microsoft/fast-dna/issues/new/choose"
+  },
+  "author": {
+    "name": "Microsoft",
+    "url": "https://discord.gg/FcSNfg4"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "@babel/core": "^7.7.7",
+    "@babel/preset-env": "^7.7.7",
+    "@types/figma": "^1.0.2",
+    "@types/node": "^10.12.12",
+    "babel-loader": "^8.0.6",
+    "clean-webpack-plugin": "^3.0.0",
+    "copy-webpack-plugin": "^5.1.1",
+    "prettier": "1.14.3",
+    "tslint": "^5.11.0",
+    "tslint-config-prettier": "^1.18.0",
+    "typescript": "^3.2.2",
+    "webpack": "^4.41.5",
+    "webpack-bundle-analyzer": "^3.6.0",
+    "webpack-cli": "^3.3.10"
+  },
+  "dependencies": {
+    "@microsoft/fast-colors": "^5.0.2",
+    "@microsoft/fast-components-styles-msft": "^4.27.0"
+  }
+}

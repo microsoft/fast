@@ -1,0 +1,7 @@
+{
+  "name": "fast-figma-plugin-msft",
+  "id": "793973834862799797",
+  "api": "1.0.0",
+  "main": "main.js",
+  "ui": "index.html"
+}
