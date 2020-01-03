@@ -12,7 +12,7 @@
     "prettier": "prettier --config ../../.prettierrc --write \"**/*.{ts,tsx}\"",
     "prettier:diff": "prettier --config ../../.prettierrc \"**/*.{ts,tsx}\" --list-different",
     "start": "webpack-dev-server",
-    "test": "yarn convert:readme && yarn tslint && yarn unit-tests && yarn build:app",
+    "test": "yarn convert:readme && yarn convert:api && yarn tslint && yarn unit-tests && yarn build:app",
     "unit-tests": "jest --runInBand",
     "unit-tests:watch": "jest --watch",
     "tslint": "tslint -c ./tslint.json '**/*.ts{,x}'",
