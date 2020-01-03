@@ -1,6 +1,15 @@
 import { DataType } from "../data-utilities/types";
 import Plugin, { PluginProps } from "./plugin";
 
+export type ComponentsRegisteredBySubscription = {
+    [key in MessageSystemAction]: WeakMap<ComponentRegistry, string>
+};
+
+export interface ComponentRegistry {
+    self: string;
+    subscribe: MessageSystemAction[];
+}
+
 export enum MessageSystemComponentTypeAction {
     register = "register",
     deregister = "deregister",
@@ -13,14 +22,14 @@ export enum MessageSystemDataTypeAction {
     duplicate = "duplicate",
 }
 
+export type MessageSystemAction =
+    | MessageSystemComponentTypeAction
+    | MessageSystemDataTypeAction;
+
 export enum MessageSystemType {
     component = "component",
     data = "data",
     initialize = "initialize",
-}
-
-export enum MessageSystemSubscriptionType {
-    data = "data",
 }
 
 /**
@@ -29,6 +38,7 @@ export enum MessageSystemSubscriptionType {
 export interface InitializeMessageIncoming {
     type: MessageSystemType.initialize;
     data: any;
+    schema: any;
     plugins: Array<Plugin<PluginProps>>;
 }
 
@@ -38,15 +48,8 @@ export interface InitializeMessageIncoming {
 export interface InitializeMessageOutgoing {
     type: MessageSystemType.initialize;
     data: any;
+    schema: any;
     plugins: Array<Plugin<PluginProps>>;
-}
-
-/**
- * Subscription to messages
- */
-export interface MessageSystemSubscription {
-    type: MessageSystemSubscriptionType;
-    actions: MessageSystemDataTypeAction[];
 }
 
 /**
@@ -55,7 +58,7 @@ export interface MessageSystemSubscription {
 export interface RegisterComponentIncoming {
     type: MessageSystemType.component;
     action: MessageSystemComponentTypeAction.register;
-    subscribe: MessageSystemSubscription[];
+    subscribe: MessageSystemAction[];
     id: string;
 }
 
@@ -71,24 +74,36 @@ export interface DeregisterComponentIncoming {
 /**
  * The message that the component has been registered
  */
-export interface RegisterComponentMessageOutgoing {
+export interface RegisterComponentOutgoing {
     type: MessageSystemType.component;
     action: MessageSystemComponentTypeAction.register;
+    registry: string[];
     id: string;
 }
 
 /**
  * The message that the component has been deregistered
  */
-export interface DeregisterComponentMessageOutgoing {
+export interface DeregisterComponentOutgoing {
     type: MessageSystemType.component;
     action: MessageSystemComponentTypeAction.deregister;
+    registry: string[];
     id: string;
 }
 
+/**
+ * Incoming component messages to the message system
+ */
 export type ComponentMessageIncoming =
     | RegisterComponentIncoming
     | DeregisterComponentIncoming;
+
+/**
+ * Outgoing component messages to the message system
+ */
+export type ComponentMessageOutgoing =
+    | RegisterComponentOutgoing
+    | DeregisterComponentOutgoing;
 
 /**
  * The message to update data
@@ -96,8 +111,17 @@ export type ComponentMessageIncoming =
 export interface UpdateDataMessageIncoming {
     type: MessageSystemType.data;
     action: MessageSystemDataTypeAction.update;
-    sourceDataLocation: string;
-    targetDataLocation: string;
+    dataLocation: string;
+    data: unknown;
+}
+
+/**
+ * The message that the data has been updated
+ */
+export interface UpdateDataMessageOutgoing {
+    type: MessageSystemType.data;
+    action: MessageSystemDataTypeAction.update;
+    data: unknown;
 }
 
 /**
@@ -127,7 +151,6 @@ export interface RemoveDataMessageIncoming {
     type: MessageSystemType.data;
     action: MessageSystemDataTypeAction.remove;
     dataLocation: string;
-    data: unknown;
 }
 
 /**
@@ -171,6 +194,15 @@ export type DataMessageIncoming =
     | AddDataMessageIncoming;
 
 /**
+ * Outgoing data messages to the message system
+ */
+export type DataMessageOutgoing =
+    | DuplicateDataMessageOutgoing
+    | RemoveDataMessageOutgoing
+    | AddDataMessageOutgoing
+    | UpdateDataMessageOutgoing;
+
+/**
  * Incoming messages to the message system
  */
 export type MessageSystemIncoming =
@@ -182,8 +214,6 @@ export type MessageSystemIncoming =
  * Outgoing messages from the message system
  */
 export type MessageSystemOutgoing =
-    | RegisterComponentMessageOutgoing
-    | DeregisterComponentMessageOutgoing
-    | DuplicateDataMessageOutgoing
-    | RemoveDataMessageOutgoing
-    | AddDataMessageOutgoing;
+    | InitializeMessageOutgoing
+    | ComponentMessageOutgoing
+    | DataMessageOutgoing;
