@@ -20,6 +20,11 @@ export enum ViewerMessageType {
      * Update a components props
      */
     updateProps = "@microsoft/fast-tooling-react/update-component-props",
+
+    /**
+     * Custom message
+     */
+    custom = "@microsoft/fast-tooling-react/custom",
 }
 
 export enum ViewerMessageTarget {
@@ -55,6 +60,21 @@ export interface ComponentViewerMessage {
  * This is a custom message to be sent via postMessage
  * and will be stringified and sent to the iframe.
  */
-export type CustomViewerMessage = any;
+export interface CustomViewerMessage {
+    /**
+     * The target of the message
+     */
+    target: ViewerMessageTarget;
 
-export type ViewerMessage = ComponentViewerMessage | CustomViewerMessage;
+    /**
+     * The message type
+     */
+    type: ViewerMessageType.custom;
+
+    /**
+     * The data
+     */
+    data: any;
+}
+
+export type ViewerMessage = ComponentViewerMessage | CustomViewerMessage | any;

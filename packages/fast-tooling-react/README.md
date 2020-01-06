@@ -610,6 +610,25 @@ handleUpdateViewerWidth = (newViewerWidth) => {
 
 A custom post message may be sent through the viewer to the iframe via the `iframePostMessage` prop. Anytime this prop is update a message will be sent.
 
+A custom post message may be recieved through the viewer from the iframe and returned via the `onMessage` callback prop. This must be defined as a custom message.
+
+Example message sent from the iframe src:
+
+```js
+import { ViewerMessageType, ViewerMessageTarget } from "@microsoft/fast-tooling-react";
+
+...
+
+window.postMessage(
+    JSON.stringify({
+        type: ViewerMessageType.custom,
+        target: ViewerMessageTarget.viewer,
+        data: "foo", // your custom data
+    }),
+    "*"
+);
+```
+
 ### Viewer content
 
 A `ViewerContent` component is available to provide some basic functionality in conjunction with the `Viewer`.
