@@ -27,7 +27,7 @@ class CustomMessagePageViewerContent extends React.Component<
                 JSON.stringify({
                     type: ViewerMessageType.custom,
                     target: ViewerMessageTarget.viewer,
-                    data: "foo",
+                    data: "Custom message data",
                 }),
                 "*"
             );
