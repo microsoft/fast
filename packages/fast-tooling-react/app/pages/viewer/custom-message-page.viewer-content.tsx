@@ -1,5 +1,5 @@
 import React from "react";
-import { ViewerMessageType, ViewerMessageTarget } from "../../../src/viewer";
+import { ViewerMessageTarget, ViewerMessageType } from "../../../src/viewer";
 
 interface CustomMessagePageViewerContentState {
     message: any;

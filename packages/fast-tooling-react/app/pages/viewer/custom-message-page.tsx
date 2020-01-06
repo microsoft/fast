@@ -1,5 +1,5 @@
 import React from "react";
-import { Viewer, CustomViewerMessage } from "../../../src";
+import { CustomViewerMessage, Viewer } from "../../../src";
 
 export interface PageState {
     height: number;
