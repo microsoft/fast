@@ -207,8 +207,7 @@ class ViewportPositioner extends Foundation<
             prevProps.anchor !== this.props.anchor ||
             prevProps.viewport !== this.props.viewport
         ) {
-            this.disconnectObservers();
-            this.disconnectViewport(prevProps.viewport);
+            this.detachListeners(prevProps.viewport);
 
             this.setState(this.getInitialState());
             return;
@@ -452,9 +451,7 @@ class ViewportPositioner extends Foundation<
             return;
         }
 
-        this.disconnectObservers();
-
-        this.disconnectViewport(this.props.viewport);
+        this.detachListeners(this.props.viewport);
 
         this.setState({
             disabled: true,
@@ -463,21 +460,14 @@ class ViewportPositioner extends Foundation<
     };
 
     /**
-     *  removes event listeners from viewport
+     *  removes event listeners and observers when component is being unmounted or reset
      */
-    private disconnectViewport = (
-        viewportRef: React.RefObject<any> | HTMLElement
-    ): void => {
+    private detachListeners = (viewportRef: React.RefObject<any> | HTMLElement): void => {
         const viewPortElement: HTMLElement = this.getViewportElement(viewportRef);
         if (!isNil(viewPortElement)) {
             viewPortElement.removeEventListener("scroll", this.handleScroll);
         }
-    };
 
-    /**
-     *  disconnect resize/intersection observer
-     */
-    private disconnectObservers = (): void => {
         if (
             this.collisionDetector &&
             typeof this.collisionDetector.disconnect === "function"
