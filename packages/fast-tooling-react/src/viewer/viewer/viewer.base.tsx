@@ -83,7 +83,7 @@ export class Viewer extends Foundation<
     }
 
     public componentDidMount(): void {
-        if (canUseDOM() && this.props.viewerContentProps) {
+        if (canUseDOM() && get(this.iframeRef, "current.contentWindow")) {
             this.iframeRef.current.contentWindow.addEventListener(
                 "message",
                 this.handleMessage
@@ -277,6 +277,18 @@ export class Viewer extends Foundation<
                         this.props.onUpdateViewerContentProps(updateMessage);
                     } else {
                         this.postMessage(updateMessage);
+                    }
+
+                    break;
+                case ViewerMessageType.custom:
+                    const customMessage: CustomViewerMessage = {
+                        type: ViewerMessageType.custom,
+                        target: ViewerMessageTarget.viewer,
+                        data: (message as CustomViewerMessage).data,
+                    };
+
+                    if (typeof this.props.onMessage === "function") {
+                        this.props.onMessage(customMessage);
                     }
 
                     break;

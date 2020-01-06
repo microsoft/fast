@@ -1,4 +1,5 @@
 import React from "react";
+import { ViewerMessageTarget, ViewerMessageType } from "../../../src/viewer";
 
 interface CustomMessagePageViewerContentState {
     message: any;
@@ -21,7 +22,17 @@ class CustomMessagePageViewerContent extends React.Component<
     }
 
     public componentDidMount(): void {
-        window.addEventListener("message", this.handleMessage);
+        if (window) {
+            window.postMessage(
+                JSON.stringify({
+                    type: ViewerMessageType.custom,
+                    target: ViewerMessageTarget.viewer,
+                    data: "Custom message data",
+                }),
+                "*"
+            );
+            window.addEventListener("message", this.handleMessage);
+        }
     }
 
     private handleMessage = (e: any): void => {

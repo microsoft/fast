@@ -162,7 +162,10 @@ class Form extends React.Component<
             schema: this.props.schema,
             navigationInstance,
             navigation: navigationInstance.get(),
-            validationErrors: getValidationErrors(this.rootSchema, props.data),
+            validationErrors: getValidationErrors(
+                this.rootSchema,
+                this.getDataForValidation(props)
+            ),
         };
     }
 
@@ -366,7 +369,10 @@ class Form extends React.Component<
             // the correct schema is used for state navigation
             this.rootSchema = updatedSchema;
 
-            state.validationErrors = getValidationErrors(this.rootSchema, props.data);
+            state.validationErrors = getValidationErrors(
+                this.rootSchema,
+                this.getDataForValidation(props)
+            );
 
             if (typeof props.onSchemaChange === "function") {
                 props.onSchemaChange(this.rootSchema);
@@ -398,7 +404,10 @@ class Form extends React.Component<
         state: Partial<FormState>
     ): Partial<FormState> {
         const updatedState: Partial<FormState> = {
-            validationErrors: getValidationErrors(this.rootSchema, props.data),
+            validationErrors: getValidationErrors(
+                this.rootSchema,
+                this.getDataForValidation(props)
+            ),
         };
 
         this.state.navigationInstance.updateData(
@@ -409,6 +418,15 @@ class Form extends React.Component<
         );
 
         return Object.assign({}, state, updatedState);
+    }
+
+    /**
+     * Gets the data to use for validation against the JSON schema
+     */
+    private getDataForValidation(props: FormProps): any {
+        return typeof props._UNSAFE_validationData !== "undefined"
+            ? props._UNSAFE_validationData
+            : props.data;
     }
 
     /**
