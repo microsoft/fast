@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.3](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-browser-extensions@4.0.2...@microsoft/fast-browser-extensions@4.0.3) (2020-01-06)
+
+
+### Bug Fixes
+
+* deprecate fast-glyphs, fast-jest-snapshots-react, and fast-browser-extensions packages ([#2553](https://github.com/Microsoft/fast-dna/issues/2553)) ([422c800](https://github.com/Microsoft/fast-dna/commit/422c800354430e38b2dbfcb5b0ce59f3df079e60))
+
+
+
+
+
 ## [4.0.2](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-browser-extensions@4.0.1...@microsoft/fast-browser-extensions@4.0.2) (2019-11-07)
 
 **Note:** Version bump only for package @microsoft/fast-browser-extensions

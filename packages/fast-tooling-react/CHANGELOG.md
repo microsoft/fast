@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.27.2](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-tooling-react@1.27.1...@microsoft/fast-tooling-react@1.27.2) (2020-01-06)
+
+
+### Bug Fixes
+
+* [object:Object] shows up when change is saved ([#2534](https://github.com/Microsoft/fast-dna/issues/2534)) ([d5fcc11](https://github.com/Microsoft/fast-dna/commit/d5fcc11752b658a5610062b67ec4138841d90451))
+
+
+
+
+
 ## [1.27.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-tooling-react@1.27.0...@microsoft/fast-tooling-react@1.27.1) (2019-12-23)
 
 **Note:** Version bump only for package @microsoft/fast-tooling-react
