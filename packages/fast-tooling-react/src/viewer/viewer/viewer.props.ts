@@ -26,7 +26,7 @@ export interface ViewerHandledProps extends ViewerManagedClasses {
     /**
      * Custom message to pass to the iframe
      */
-    iframePostMessage?: CustomViewerMessage;
+    iframePostMessage?: any;
 
     /**
      * The responsive, resizable functionality for the viewer
@@ -62,6 +62,11 @@ export interface ViewerHandledProps extends ViewerManagedClasses {
      * A callback for when content props are requested to be initialized
      */
     onInitializeViewerContentProps?: (message: ViewerMessage) => void;
+
+    /**
+     * A callback for any custom message sent to the iframe
+     */
+    onMessage?: (message: CustomViewerMessage) => void;
 }
 
 export type ViewerProps = ViewerUnhandledProps & ViewerHandledProps;
