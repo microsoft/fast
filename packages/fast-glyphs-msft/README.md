@@ -1,5 +1,5 @@
 # FAST Glyphs MSFT
-
+**_This package has been deprecated and is no longer under active development_.**
 This is a distribution of Microsoft glyphs which are exported as strings.
 
 Example:
