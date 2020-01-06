@@ -64,6 +64,13 @@ export interface FormProps {
     data: any;
 
     /**
+     * The data to use for validation instead of the data
+     * Do not use this unless you know
+     * what you're doing, this prop could be removed at any time.
+     */
+    _UNSAFE_validationData?: any;
+
+    /**
      * The onChange event for updating the data
      */
     onChange: PropsOnChange;

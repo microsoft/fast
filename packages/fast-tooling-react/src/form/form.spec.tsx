@@ -645,4 +645,38 @@ describe("Form", () => {
         expect(categoriesAfter.at(1).find("NumberFieldControl")).toHaveLength(1);
         expect(rendered.find("CheckboxControl")).toHaveLength(1);
     });
+    test("should allow different data validation if the _UNSAFE_validationData prop has been passed", () => {
+        const data: any = {
+            validBooleanRequired: true,
+            invalidBooleanWrongType: "foo",
+            invalidNullWrongType: "bar",
+            invalidStringWrongType: false,
+            invalidNumberWrongType: "bar",
+            invalidEnumWrongType: "hello",
+            invalidObjectWrongType: true,
+            invalidArrayWrongType: "world",
+            objectExample: {
+                invalidBooleanWrongType: "bat",
+            },
+            arrayExample: [true],
+        };
+
+        const rendered: any = mount(
+            <Form
+                schema={invalidDataSchema}
+                data={{}}
+                _UNSAFE_validationData={data}
+                onChange={jest.fn()}
+                displayValidationInline={true}
+            />
+        );
+
+        expect(rendered.find("ArrayControl")).toHaveLength(2);
+        expect(rendered.find("ArrayControl").get(0).props.invalidMessage).toEqual(
+            "should be array"
+        );
+        expect(rendered.find("ArrayControl").get(1).props.invalidMessage).toEqual(
+            "Contains invalid data"
+        );
+    });
 });
