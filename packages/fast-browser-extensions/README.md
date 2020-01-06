@@ -1,6 +1,6 @@
 
 # FAST Browser extensions
-
+**_This package has been deprecated and is no longer under active development_.**
 A Chrome extension for testing real-world localization, theming, and other production type scenarios in web development.
 
 ## Getting started

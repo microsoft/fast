@@ -1,5 +1,5 @@
 # FAST Jest snapshots React
-
+**_This package has been deprecated and is no longer under active development_.**
 `@microsoft/fast-jest-snapshots-react` is a small utility library for creating snapshot Jest tests for React components.
 Given a single component, the `generateSnapshots` function will iterate over a set of prop data and create a snapshot test for each `prop` instance.
 

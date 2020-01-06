@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.28.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-msft@4.28.0...@microsoft/fast-components-react-msft@4.28.1) (2020-01-06)
+
+
+### Bug Fixes
+
+* deprecate fast-glyphs, fast-jest-snapshots-react, and fast-browser-extensions packages ([#2553](https://github.com/Microsoft/fast-dna/issues/2553)) ([422c800](https://github.com/Microsoft/fast-dna/commit/422c800354430e38b2dbfcb5b0ce59f3df079e60))
+
+
+
+
+
 # [4.28.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-msft@4.27.4...@microsoft/fast-components-react-msft@4.28.0) (2019-12-23)
 
 
