@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.27.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-styles-msft@4.27.0...@microsoft/fast-components-styles-msft@4.27.1) (2020-01-06)
+
+
+### Bug Fixes
+
+* circluar progress is 100% width ([#2537](https://github.com/Microsoft/fast-dna/issues/2537)) ([215eba8](https://github.com/Microsoft/fast-dna/commit/215eba8f70e16d0742359fd813e35481a2e9645e))
+
+
+
+
+
 # [4.27.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-styles-msft@4.26.1...@microsoft/fast-components-styles-msft@4.27.0) (2019-12-23)
 
 
