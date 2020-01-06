@@ -83,7 +83,7 @@ export class Viewer extends Foundation<
     }
 
     public componentDidMount(): void {
-        if (canUseDOM()) {
+        if (canUseDOM() && get(this.iframeRef, "current.contentWindow")) {
             this.iframeRef.current.contentWindow.addEventListener(
                 "message",
                 this.handleMessage
