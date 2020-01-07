@@ -106,4 +106,59 @@ describe("TextareaControl", () => {
                 .prop("value")
         ).toBe(value);
     });
+    test("should show value if value is empty string", () => {
+        const value: string = "";
+        const defaultValue: string = "bar";
+        const rendered: any = mount(
+            <TextareaControl
+                {...textareaProps}
+                managedClasses={managedClasses}
+                value={value}
+                default={defaultValue}
+            />
+        );
+        expect(
+            rendered
+                .find("textarea")
+                .at(0)
+                .prop("value")
+        ).toBe(value);
+    });
+    test("should show default if value is undefined and default is an empty string", () => {
+        const value: string = void 0;
+        const defaultValue: string = "";
+        const rendered: any = mount(
+            <TextareaControl
+                {...textareaProps}
+                managedClasses={managedClasses}
+                value={value}
+                default={defaultValue}
+            />
+        );
+        expect(
+            rendered
+                .find("textarea")
+                .at(0)
+                .prop("value")
+        ).toBe(defaultValue);
+    });
+    test("should show empty string if value or default is not provided", () => {
+        const value: string = void 0;
+        const defaultValue: string = void 0;
+        const emptyString: string = "";
+        const rendered: any = mount(
+            <TextareaControl
+                {...textareaProps}
+                managedClasses={managedClasses}
+                value={value}
+                default={defaultValue}
+            />
+        );
+        expect(
+            rendered
+                .find("textarea")
+                .at(0)
+                .prop("value")
+        ).toBe(emptyString);
+    });
 });
