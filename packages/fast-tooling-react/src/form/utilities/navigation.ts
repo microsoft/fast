@@ -371,10 +371,6 @@ class Navigation {
         component: Component,
         navigationItems: NavigationItem[]
     ): unknown {
-        if (navigationItems.length === 1) {
-            return void 0;
-        }
-
         const navigationItemsLength: number = navigationItems.length - 1;
 
         for (let i: number = navigationItemsLength; i >= 0; i--) {
