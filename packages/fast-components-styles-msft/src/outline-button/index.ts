@@ -3,13 +3,7 @@ import { ComponentStyles } from "@microsoft/fast-jss-manager";
 import { applyFocusVisible, format, subtract, toPx } from "@microsoft/fast-jss-utilities";
 import { DesignSystem } from "../design-system";
 import { baseButton, buttonStyles } from "../patterns/button";
-import {
-    neutralFocus,
-    neutralForegroundRest,
-    neutralOutlineActive,
-    neutralOutlineHover,
-    neutralOutlineRest,
-} from "../utilities/color";
+import { neutralFocus, neutralForegroundRest, neutralOutline } from "../utilities/color";
 import { horizontalSpacing } from "../utilities/density";
 import { focusOutlineWidth, outlineWidth } from "../utilities/design-system";
 import {
@@ -21,6 +15,7 @@ import {
     highContrastSelected,
     highContrastSelector,
 } from "../utilities/high-contrast";
+import { active, hover, rest } from "../utilities/color/common";
 
 const styles: ComponentStyles<LightweightButtonClassNameContract, DesignSystem> = {
     ...baseButton,
@@ -32,7 +27,7 @@ const styles: ComponentStyles<LightweightButtonClassNameContract, DesignSystem> 
         border: format(
             "{0} solid {1}",
             toPx<DesignSystem>(outlineWidth),
-            neutralOutlineRest
+            rest(neutralOutline)
         ),
         padding: format("0 {0}", horizontalSpacing(outlineWidth)),
         "&:hover:enabled": {
@@ -40,7 +35,7 @@ const styles: ComponentStyles<LightweightButtonClassNameContract, DesignSystem> 
             border: format(
                 "{0} solid {1}",
                 toPx<DesignSystem>(outlineWidth),
-                neutralOutlineHover
+                hover(neutralOutline)
             ),
             ...highContrastSelected,
         },
@@ -49,7 +44,7 @@ const styles: ComponentStyles<LightweightButtonClassNameContract, DesignSystem> 
             border: format(
                 "{0} solid {1}",
                 toPx<DesignSystem>(outlineWidth),
-                neutralOutlineActive
+                active(neutralOutline)
             ),
         },
         ...applyFocusVisible<DesignSystem>({

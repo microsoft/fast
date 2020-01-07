@@ -143,6 +143,28 @@ export function swatchFamilyToSwatchRecipeFactory<T extends SwatchFamily>(
     };
 }
 
+export function rest(swatchFamilyResolver: SwatchFamilyResolver): SwatchRecipe {
+    return swatchFamilyToSwatchRecipeFactory(SwatchFamilyType.rest, swatchFamilyResolver);
+}
+export function hover(swatchFamilyResolver: SwatchFamilyResolver): SwatchRecipe {
+    return swatchFamilyToSwatchRecipeFactory(
+        SwatchFamilyType.hover,
+        swatchFamilyResolver
+    );
+}
+export function active(swatchFamilyResolver: SwatchFamilyResolver): SwatchRecipe {
+    return swatchFamilyToSwatchRecipeFactory(
+        SwatchFamilyType.active,
+        swatchFamilyResolver
+    );
+}
+export function focus(swatchFamilyResolver: SwatchFamilyResolver): SwatchRecipe {
+    return swatchFamilyToSwatchRecipeFactory(
+        SwatchFamilyType.focus,
+        swatchFamilyResolver
+    );
+}
+
 /**
  * Converts a color string into a ColorRGBA64 instance.
  * Supports #RRGGBB and rgb(r, g, b) formats

@@ -11,6 +11,8 @@ import { FontWeight } from "../utilities/fonts";
 import designSystemSchema from "./design-system.schema";
 import { accentPalette, neutralPalette } from "../default-palette";
 import { isFunction } from "lodash-es";
+import { ColorRecipe, colorRecipeFactory, SwatchFamily } from "../utilities/color/common";
+import { offsetsAlgorithm } from "../utilities/color/offsets-algorithm";
 
 export const defaultFontWeights: FontWeight = {
     light: 100,
@@ -202,6 +204,8 @@ export interface DesignSystem {
     neutralOutlineHoverDelta: number;
     neutralOutlineActiveDelta: number;
     neutralOutlineFocusDelta: number;
+
+    neutralOutline: ColorRecipe<SwatchFamily>;
 }
 
 const designSystemDefaults: DesignSystem = {
@@ -270,10 +274,20 @@ const designSystemDefaults: DesignSystem = {
 
     neutralDividerRestDelta: 8,
 
+    /**
+     * These would be deprecated / removed
+     */
     neutralOutlineRestDelta: 25,
     neutralOutlineHoverDelta: 40,
     neutralOutlineActiveDelta: 16,
     neutralOutlineFocusDelta: 25,
+
+    /**
+     * Recipes would be configured more like this. Is there a pattern we've used
+     * to define interface types like this in the schema instead of the properties
+     * that go into it?
+     */
+    neutralOutline: colorRecipeFactory(offsetsAlgorithm(neutralPalette, 25, 40, 16, 25)),
 };
 
 /**
