@@ -1185,6 +1185,39 @@ describe("Navigation", () => {
             default: defaultValue2,
         });
     });
+    test("should return navigation items with default values at the root object", () => {
+        const defaultValue1: any = {
+            foo: "hello world",
+        };
+        const schema: any = {
+            properties: {
+                foo: {
+                    type: "string",
+                },
+                bar: {
+                    type: "number",
+                },
+            },
+            default: defaultValue1,
+        };
+
+        const nav: Navigation = new Navigation({
+            dataLocation: "",
+            data: {},
+            schema,
+            childOptions,
+        });
+        const navItems: NavigationItem[] = nav.get();
+        expect(navItems.length).toBe(1);
+        expect(navItems[0]).toEqual({
+            dataLocation: "",
+            schemaLocation: "",
+            data: {},
+            schema,
+            title: "Untitled",
+            default: defaultValue1,
+        });
+    });
     test("should update the navigation if the data location has been update", () => {
         const callback: any = jest.fn();
         const data: any = {
