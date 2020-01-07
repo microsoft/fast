@@ -1,5 +1,5 @@
 /**
- * This file is responsible for rendering the plugin dialog / UI. This script is exectued
+ * This file is responsible for rendering the plugin dialog / UI. This script is executed
  * within an iframe so it has limited access to the Figma document, and must rely on mostMessage APIs
  * to communicate with the parent script.
  */
