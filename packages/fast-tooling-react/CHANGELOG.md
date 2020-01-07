@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.28.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-tooling-react@1.27.2...@microsoft/fast-tooling-react@1.28.0) (2020-01-07)
+
+
+### Features
+
+* add an unsafe prop to use for validation instead of the provided data ([#2550](https://github.com/Microsoft/fast-dna/issues/2550)) ([6bd8646](https://github.com/Microsoft/fast-dna/commit/6bd8646bf95f19733d3770c996d1773ddbdde2a7))
+* allow custom messages to be sent from the Viewer iframe ([#2551](https://github.com/Microsoft/fast-dna/issues/2551)) ([e2e721b](https://github.com/Microsoft/fast-dna/commit/e2e721b138485d363b46def95860e7af9449ac5a))
+
+
+
+
+
 ## [1.27.2](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-tooling-react@1.27.1...@microsoft/fast-tooling-react@1.27.2) (2020-01-06)
 
 
