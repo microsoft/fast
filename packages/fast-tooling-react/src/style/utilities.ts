@@ -62,8 +62,10 @@ export function applyInteractiveFormControlIndicator(): CSSRules<{}> {
         borderRadius: "2px",
         "& svg": {
             fill: foreground800,
-            minWidth: "14px",
-            padding: "1px 4px",
+            "min-height": "18px",
+            "min-width": "18px",
+            "box-sizing": "border-box",
+            padding: "1px 0",
         },
         "&:hover": {
             "& svg": {
@@ -81,8 +83,9 @@ export function applyFormControlIndicator(): CSSRules<{}> {
     return {
         fill: foreground800,
         padding: "0 4px",
-        alignSelf: "center",
-        minWidth: "14px",
+        "align-self": "center",
+        "min-width": "14px",
+        "min-height": "14px",
     };
 }
 
@@ -380,14 +383,15 @@ export function applySoftRemoveInput(): CSSRules<{}> {
         width: "20px",
         margin: "0",
         height: "20px",
-        zIndex: "1",
-        borderRadius: "2px",
+        "z-index": "1",
+        "border-radius": "2px",
         ...applyFocusVisible({
             ...insetStrongBoxShadow(accent),
             outline: "none",
         }),
         "& + svg": {
             fill: foreground800,
+            "padding-top": "1px",
         },
         "&:disabled + svg": {
             opacity: `${disabledOpacity}`,
