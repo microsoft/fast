@@ -1,0 +1,6 @@
+{
+  "name": "fast-figma-plugin-msft",
+  "api": "1.0.0",
+  "main": "./dist/main.js",
+  "ui": "./dist/index.html"
+}
