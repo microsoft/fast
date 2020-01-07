@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.5.12](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-color-explorer@1.5.11...@microsoft/fast-color-explorer@1.5.12) (2020-01-07)
+
+**Note:** Version bump only for package @microsoft/fast-color-explorer
+
+
+
+
+
 ## [1.5.11](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-color-explorer@1.5.10...@microsoft/fast-color-explorer@1.5.11) (2020-01-07)
 
 **Note:** Version bump only for package @microsoft/fast-color-explorer

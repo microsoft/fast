@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.27.2](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-styles-msft@4.27.1...@microsoft/fast-components-styles-msft@4.27.2) (2020-01-07)
+
+
+### Bug Fixes
+
+* update imports to correct pathing ([#2549](https://github.com/Microsoft/fast-dna/issues/2549)) ([0093c50](https://github.com/Microsoft/fast-dna/commit/0093c5098935be1c8079af0fd2ca20fa4f0eaf98))
+
+
+
+
+
 ## [4.27.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-styles-msft@4.27.0...@microsoft/fast-components-styles-msft@4.27.1) (2020-01-06)
 
 

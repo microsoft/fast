@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.28.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-tooling-react@1.28.0...@microsoft/fast-tooling-react@1.28.1) (2020-01-07)
+
+
+### Bug Fixes
+
+* adjust and harden some small style properties on control indicators in the form ([#2556](https://github.com/Microsoft/fast-dna/issues/2556)) ([12726e8](https://github.com/Microsoft/fast-dna/commit/12726e8bb82eeba5792c327bfce7fa993b13ebb1))
+* allow empty strings in the textarea form control for value and default ([#2557](https://github.com/Microsoft/fast-dna/issues/2557)) ([e508fdb](https://github.com/Microsoft/fast-dna/commit/e508fdbf66228df72b0a9600537fda88de7475d4))
+* ensure root level items in the form have default ([#2555](https://github.com/Microsoft/fast-dna/issues/2555)) ([8c4bce4](https://github.com/Microsoft/fast-dna/commit/8c4bce42b232439b26fff51ce49ec3b259a57df9))
+
+
+
+
+
 # [1.28.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-tooling-react@1.27.2...@microsoft/fast-tooling-react@1.28.0) (2020-01-07)
 
 
