@@ -29,7 +29,7 @@ import { applyDisabledState } from "../utilities/disabled";
 import { applyScaledTypeRamp } from "../utilities/typography";
 import { designUnit, outlineWidth } from "../utilities/design-system";
 import { applyCursorDisabled, applyCursorPointer } from "../utilities/cursor";
-import { ColorRecipe } from "src/utilities/color/common";
+import { ColorRecipe } from "../utilities/color/common";
 import {
     HighContrastColor,
     highContrastColorBackground,
