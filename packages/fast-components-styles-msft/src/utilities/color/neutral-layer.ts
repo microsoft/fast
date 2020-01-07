@@ -14,7 +14,7 @@ import {
     neutralPalette,
 } from "../design-system";
 import { add, multiply, subtract } from "@microsoft/fast-jss-utilities";
-import { DesignSystem, DesignSystemResolver } from "src/design-system";
+import { DesignSystem, DesignSystemResolver } from "../../design-system";
 import { clamp, ColorRGBA64 } from "@microsoft/fast-colors";
 
 /**
