@@ -429,7 +429,7 @@ describe("Form", () => {
 
         expect(rendered.find("SelectControl")).toHaveLength(1);
     });
-    test("should set validation errors to the form state.", () => {
+    test("should set validation errors to the form state", () => {
         const data: any = {
             validBooleanRequired: true,
             invalidBooleanWrongType: "foo",
