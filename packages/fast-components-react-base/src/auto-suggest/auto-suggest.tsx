@@ -38,6 +38,7 @@ class AutoSuggest extends Foundation<
         placeholder: "",
         managedClasses: {},
         filterSuggestions: false,
+        menuItemsAffectValue: true,
     };
 
     private static valuePropertyKey: string = "value";
@@ -58,6 +59,7 @@ class AutoSuggest extends Foundation<
         placeholder: void 0,
         listboxId: void 0,
         filterSuggestions: void 0,
+        menuItemsAffectValue: void 0,
     };
 
     private rootElement: React.RefObject<HTMLDivElement> = React.createRef<
@@ -335,7 +337,11 @@ class AutoSuggest extends Foundation<
             this.props.onValueChange(newValue, isFromSuggestedOption);
         }
 
-        if (!isNil(this.props.value) || newValue !== this.state.value) {
+        if (
+            isNil(this.props.value) &&
+            newValue !== this.state.value &&
+            !(!this.props.menuItemsAffectValue && isFromSuggestedOption)
+        ) {
             this.toggleMenu(true);
             this.setState({
                 value: newValue,

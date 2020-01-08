@@ -131,4 +131,22 @@ storiesOf("AutoSuggest", module)
                 Turtle
             </ListboxItem>
         </AutoSuggest>
+    ))
+    .add("menu items don't affect value", () => (
+        <AutoSuggest
+            {...favoriteAnimalProps}
+            onValueChange={action("onValueChange")}
+            onInvoked={action("onInvoked")}
+            menuItemsAffectValue={false}
+        >
+            <ListboxItem id={uniqueId()} value="Cat">
+                Cat
+            </ListboxItem>
+            <ListboxItem id={uniqueId()} value="Dog">
+                Dog
+            </ListboxItem>
+            <ListboxItem id={uniqueId()} value="Turtle">
+                Turtle
+            </ListboxItem>
+        </AutoSuggest>
     ));

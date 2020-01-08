@@ -72,9 +72,16 @@ export interface AutoSuggestHandledProps extends AutoSuggestManagedClasses {
     listboxId: string;
 
     /**
-     * Specifies whether the suggestions should filter
+     * Specifies whether the suggestions should filter, default is false
      */
     filterSuggestions?: boolean;
+
+    /**
+     * Specifies whether interactions with the menu items change the component value
+     * (ie. when false the items can still be invoked and acted upon, but the value of the component does not change because of it)
+     * default is true
+     */
+    menuItemsAffectValue?: boolean;
 }
 
 export type AutoSuggestProps = AutoSuggestHandledProps & AutoSuggestUnhandledProps;

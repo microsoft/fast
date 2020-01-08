@@ -461,4 +461,65 @@ describe("auto suggest", (): void => {
 
         expect(rendered.find(Listbox.displayName).get(0).props.children).toHaveLength(2);
     });
+
+    test("onInvoked event handler called on keydown of list item when menuItemsAffectValue set to false", (): void => {
+        const container: HTMLDivElement = document.createElement("div");
+        document.body.appendChild(container);
+
+        const onInvoked: any = jest.fn();
+        const rendered: any = mount(
+            <AutoSuggest
+                listboxId="listboxId"
+                onInvoked={onInvoked}
+                menuItemsAffectValue={false}
+            >
+                {itemA}
+                {itemB}
+                {itemC}
+            </AutoSuggest>,
+            { attachTo: container }
+        );
+
+        expect(onInvoked).toHaveBeenCalledTimes(0);
+        const input: any = rendered.find("input");
+        input.simulate("keydown", { keyCode: keyCodeArrowDown });
+        rendered
+            .find({ id: "a" })
+            .find(ListboxItem.displayName)
+            .simulate("keydown", { keyCode: keyCodeEnter });
+        expect(onInvoked).toHaveBeenCalledTimes(1);
+
+        document.body.removeChild(container);
+    });
+
+    test("traversing the listbox with arrow keys does not change component value when menuItemsAffectValue set to false", (): void => {
+        const container: HTMLDivElement = document.createElement("div");
+        document.body.appendChild(container);
+
+        const rendered: any = mount(
+            <AutoSuggest
+                listboxId="listboxId"
+                initialValue="search"
+                menuItemsAffectValue={false}
+            >
+                {itemA}
+                {itemB}
+                {itemC}
+            </AutoSuggest>,
+            { attachTo: container }
+        );
+        const input: any = rendered.find("input");
+        expect(document.activeElement.id).toBe("");
+        expect(rendered.state("value")).toEqual("search");
+        input.simulate("keydown", { keyCode: keyCodeArrowDown });
+        expect(document.activeElement.id).toBe("a");
+        expect(rendered.state("value")).toEqual("search");
+        rendered
+            .find({ id: "a" })
+            .find(ListboxItem.displayName)
+            .simulate("keydown", { keyCode: keyCodeArrowDown });
+        expect(document.activeElement.id).toBe("b");
+        expect(rendered.state("value")).toEqual("search");
+        document.body.removeChild(container);
+    });
 });
