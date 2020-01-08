@@ -64,6 +64,18 @@ describe("auto suggest", (): void => {
         expect(rendered.state("isMenuOpen")).toBe(false);
     });
 
+    test("value prop is applied", (): void => {
+        const rendered: any = mount(
+            <AutoSuggest listboxId="listboxId" value="test value">
+                {itemA}
+                {itemB}
+                {itemC}
+            </AutoSuggest>
+        );
+
+        expect(rendered.state("value")).toBe("test value");
+    });
+
     test("input region accessibility attributes are set correctly (autocomplete='both', )", (): void => {
         const rendered: any = mount(
             <AutoSuggest listboxId="listboxId">
