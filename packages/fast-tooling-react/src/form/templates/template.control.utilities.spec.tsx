@@ -83,7 +83,12 @@ describe("ControlPlugin", () => {
     test("should render a default value trigger if the default is passed and data is not equal to default", () => {
         const testClass: TestClass = new TestClass({
             ...config,
-            default: "bar",
+            data: {
+                foo: "hello",
+            },
+            default: {
+                foo: "world",
+            },
         });
 
         const renderDefaultTrigger: any = mount(testClass.renderDefaultValueIndicator(
@@ -91,6 +96,19 @@ describe("ControlPlugin", () => {
         ) as JSX.Element);
 
         expect(renderDefaultTrigger.find("DefaultValue")).toHaveLength(1);
+    });
+    test("should not render a default value trigger if the default is passed and data is equal to default", () => {
+        const testClass: TestClass = new TestClass({
+            ...config,
+            data: {
+                foo: "bar",
+            },
+            default: {
+                foo: "bar",
+            },
+        });
+
+        expect(testClass.renderDefaultValueIndicator("foo")).toEqual(void 0);
     });
     test("should not render a default indicator if data is the same as default", () => {
         const testClass: TestClass = new TestClass({

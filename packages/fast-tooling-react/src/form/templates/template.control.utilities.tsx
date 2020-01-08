@@ -1,4 +1,5 @@
 import React from "react";
+import { isEqual } from "lodash-es";
 import Badge from "./badge";
 import DefaultValue from "./default-value";
 import ConstValue from "./const-value";
@@ -72,7 +73,7 @@ abstract class ControlTemplateUtilities<P, S> extends React.Component<
     public renderDefaultValueIndicator(className: string): React.ReactNode {
         if (
             typeof this.props.default !== "undefined" &&
-            this.props.data !== this.props.default
+            !isEqual(this.props.data, this.props.default)
         ) {
             return (
                 <DefaultValue
