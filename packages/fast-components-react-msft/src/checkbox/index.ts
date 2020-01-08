@@ -10,6 +10,7 @@ import {
     CheckboxUnhandledProps,
 } from "@microsoft/fast-components-react-base";
 import checkboxSchema from "./checkbox.schema";
+import checkboxSchema2 from "./checkbox.schema.2";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { CheckboxStyles, DesignSystem } from "@microsoft/fast-components-styles-msft";
 import { Subtract } from "utility-types";
@@ -35,6 +36,7 @@ export {
     CheckboxProps,
     CheckboxHandledProps,
     checkboxSchema,
+    checkboxSchema2,
     CheckboxUnhandledProps,
     CheckboxClassNameContract,
     CheckboxSlot,

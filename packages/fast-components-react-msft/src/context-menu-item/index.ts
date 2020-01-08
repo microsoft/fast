@@ -7,6 +7,7 @@ import MSFTContextMenuItem, {
     ContextMenuItemUnhandledProps,
 } from "./context-menu-item";
 import contextMenuItemSchema from "./context-menu-item.schema";
+import contextMenuItemSchema2 from "./context-menu-item.schema.2";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { ContextMenuItemClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import {
@@ -34,5 +35,6 @@ export {
     ContextMenuItemClassNameContract,
     ContextMenuItemHandledProps,
     contextMenuItemSchema,
+    contextMenuItemSchema2,
     ContextMenuItemUnhandledProps,
 };

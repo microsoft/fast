@@ -6,6 +6,7 @@ import MSFTPivot, {
     PivotUnhandledProps,
 } from "./pivot";
 import pivotSchema from "./pivot.schema";
+import pivotSchema2 from "./pivot.schema.2";
 import { PivotClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { DesignSystem, PivotStyles } from "@microsoft/fast-components-styles-msft";
@@ -25,5 +26,6 @@ export {
     PivotProps,
     PivotHandledProps,
     pivotSchema,
+    pivotSchema2,
     PivotUnhandledProps,
 };

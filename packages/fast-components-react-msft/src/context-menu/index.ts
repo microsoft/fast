@@ -8,6 +8,7 @@ import {
     ContextMenuUnhandledProps,
 } from "@microsoft/fast-components-react-base";
 import contextMenuSchema from "./context-menu.schema";
+import contextMenuSchema2 from "./context-menu.schema.2";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { ContextMenuStyles, DesignSystem } from "@microsoft/fast-components-styles-msft";
 import { Subtract } from "utility-types";
@@ -30,5 +31,6 @@ export {
     ContextMenuClassNameContract,
     ContextMenuHandledProps,
     contextMenuSchema,
+    contextMenuSchema2,
     ContextMenuUnhandledProps,
 };

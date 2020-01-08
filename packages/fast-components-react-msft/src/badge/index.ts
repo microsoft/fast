@@ -10,6 +10,7 @@ import MSFTBadge, {
     BadgeUnhandledProps,
 } from "./badge";
 import badgeSchema from "./badge.schema";
+import badgeSchema2 from "./badge.schema.2";
 import { Subtract } from "utility-types";
 
 /*
@@ -30,6 +31,7 @@ export {
     BadgeClassNameContract,
     BadgeHandledProps,
     badgeSchema,
+    badgeSchema2,
     BadgeSize,
     BadgeUnhandledProps,
 };

@@ -9,6 +9,7 @@ import {
     ToggleUnhandledProps,
 } from "@microsoft/fast-components-react-base";
 import toggleSchema from "./toggle.schema";
+import toggleSchema2 from "./toggle.schema.2";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { DesignSystem, ToggleStyles } from "@microsoft/fast-components-styles-msft";
 import { Subtract } from "utility-types";
@@ -36,4 +37,5 @@ export {
     ToggleUnhandledProps,
     ToggleClassNameContract,
     toggleSchema,
+    toggleSchema2,
 };

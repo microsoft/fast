@@ -6,6 +6,7 @@ import MSFTSelectOption, {
     SelectOptionUnhandledProps,
 } from "./select-option";
 import selectOptionSchema from "./select-option.schema";
+import selectOptionSchema2 from "./select-option.schema.2";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { SelectOptionClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import { DesignSystem, SelectOptionStyles } from "@microsoft/fast-components-styles-msft";
@@ -29,5 +30,6 @@ export {
     SelectOptionClassNameContract,
     SelectOptionHandledProps,
     selectOptionSchema,
+    selectOptionSchema2,
     SelectOptionUnhandledProps,
 };

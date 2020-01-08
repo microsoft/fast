@@ -13,6 +13,7 @@ import {
     ButtonBaseUnhandledProps as StealthButtonUnhandledProps,
 } from "../button-base";
 import stealthButtonSchema from "./stealth-button.schema";
+import stealthButtonSchema2 from "./stealth-button.schema.2";
 import { Subtract } from "utility-types";
 import { DisplayNamePrefix } from "../utilities";
 
@@ -44,4 +45,5 @@ export {
     StealthButtonHandledProps,
     StealthButtonUnhandledProps,
     stealthButtonSchema,
+    stealthButtonSchema2,
 };
