@@ -1,6 +1,6 @@
 # FAST Tooling
 
-FAST Tooling is a non-javascript library specific set of utilities to assist in creating web UI.
+FAST Tooling is a library agnostic specific set of utilities to assist in creating web UI.
 
 ![JavaScript](https://img.shields.io/badge/ES6-Supported-yellow.svg?style=for-the-badge&logo=JavaScript) &nbsp; ![TypeScript](https://img.shields.io/badge/TypeScript-Supported-blue.svg?style=for-the-badge)
 
