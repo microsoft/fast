@@ -621,15 +621,22 @@ export function getErrorFromDataLocation(
                     error = validationError.message;
                 }
             } else {
-                const dataLocationItems: string[] = `${normalizedDataPath}`.split(".");
-                const containsInvalidData: boolean = dataLocationItems.some(
-                    (value: string, index: number) => {
-                        return (
-                            normalizedDataPath ===
-                            dataLocationItems.slice(0, index + 1).join(".")
-                        );
-                    }
-                );
+                let containsInvalidData: boolean;
+
+                if (normalizedDataLocation === "") {
+                    containsInvalidData = true;
+                } else {
+                    const dataPathItems: string[] = normalizedDataPath.split(".");
+
+                    containsInvalidData = dataPathItems.some(
+                        (value: string, index: number) => {
+                            return (
+                                normalizedDataLocation ===
+                                dataPathItems.slice(0, index + 1).join(".")
+                            );
+                        }
+                    );
+                }
 
                 if (error === "" && containsInvalidData) {
                     error = containsInvalidDataMessage;

@@ -243,6 +243,33 @@ describe("getErrorFromDataLocation", () => {
             "should match exactly one schema in oneOf"
         );
     });
+    test("should get an error from an item in additionalProperties", () => {
+        const schema: any = {
+            type: "object",
+            properties: {
+                foo: {
+                    type: "string",
+                },
+            },
+            additionalProperties: {
+                type: "number",
+            },
+        };
+        const data: any = {
+            foo: "bar",
+            additionalProp: "a string",
+        };
+
+        const validationErrors: ajv.ErrorObject[] = getValidationErrors(schema, data);
+
+        expect(validationErrors).toHaveLength(1);
+        expect(getErrorFromDataLocation("", validationErrors)).toEqual(
+            "Contains invalid data"
+        );
+        expect(getErrorFromDataLocation("additionalProp", validationErrors)).toEqual(
+            "should be number"
+        );
+    });
     test("should get an error from a nested item in additionalProperties", () => {
         const schema: any = {
             type: "object",
@@ -274,11 +301,16 @@ describe("getErrorFromDataLocation", () => {
 
         const validationErrors: ajv.ErrorObject[] = getValidationErrors(schema, data);
 
+        expect(validationErrors).toHaveLength(1);
         expect(getErrorFromDataLocation("", validationErrors)).toEqual(
             "Contains invalid data"
         );
         expect(getErrorFromDataLocation("additionalProp", validationErrors)).toEqual(
             "Contains invalid data"
         );
+        expect(getErrorFromDataLocation("additionalProp.bar", validationErrors)).toEqual(
+            "should be equal to one of the allowed values"
+        );
+        expect(getErrorFromDataLocation("foo", validationErrors)).toEqual("");
     });
 });
