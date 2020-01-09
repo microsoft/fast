@@ -313,4 +313,30 @@ describe("getErrorFromDataLocation", () => {
         );
         expect(getErrorFromDataLocation("foo", validationErrors)).toEqual("");
     });
+    test("should detect nested invalid data", () => {
+        const schema: any = {
+            type: "object",
+            properties: {
+                foo: {
+                    type: "object",
+                    properties: {
+                        bar: {
+                            type: "string",
+                        },
+                    },
+                    required: ["bar"],
+                },
+            },
+        };
+        const data: any = {
+            foo: {},
+        };
+
+        const validationErrors: ajv.ErrorObject[] = getValidationErrors(schema, data);
+
+        expect(validationErrors).toHaveLength(1);
+        expect(getErrorFromDataLocation("", validationErrors)).toEqual(
+            "Contains invalid data"
+        );
+    });
 });
