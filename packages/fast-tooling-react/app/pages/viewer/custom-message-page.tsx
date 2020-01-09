@@ -4,7 +4,6 @@ import { CustomViewerMessage, Viewer } from "../../../src";
 export interface PageState {
     height: number;
     width: number;
-    message: boolean;
     customMessage: any;
 }
 
@@ -15,17 +14,14 @@ class CustomMessagePage extends React.Component<{}, PageState> {
         this.state = {
             height: 800,
             width: 800,
-            message: true,
-            customMessage: void 0,
+            customMessage: "",
         };
     }
 
     public render(): JSX.Element {
         return (
             <div style={{ width: "100%", height: "calc(100vh - 200px)" }}>
-                <button onClick={this.handleMessageClick(true)}>message "true"</button>
-                <button onClick={this.handleMessageClick(false)}>message "false"</button>
-                <span>recieved message: {this.state.customMessage}</span>
+                <input onChange={this.handleChange} value={this.state.customMessage} />
                 <Viewer
                     height={this.state.height}
                     width={this.state.width}
@@ -33,22 +29,18 @@ class CustomMessagePage extends React.Component<{}, PageState> {
                     responsive={true}
                     onUpdateHeight={this.handleUpdatedHeight}
                     onUpdateWidth={this.handleUpdatedWidth}
-                    iframePostMessage={this.state.message}
+                    iframePostMessage={this.state.customMessage}
                     onMessage={this.handleMessage}
                 />
             </div>
         );
     }
 
-    private handleMessageClick(
-        message: boolean
-    ): (e: React.MouseEvent<HTMLButtonElement>) => void {
-        return (e: React.MouseEvent<HTMLButtonElement>): void => {
-            this.setState({
-                message,
-            });
-        };
-    }
+    private handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+        this.setState({
+            customMessage: e.target.value,
+        });
+    };
 
     private handleMessage = (message: CustomViewerMessage): void => {
         this.setState({

@@ -13,35 +13,41 @@ class CustomMessagePageViewerContent extends React.Component<
         super(props);
 
         this.state = {
-            message: true,
+            message: "",
         };
     }
 
     public render(): JSX.Element {
-        return <pre>{JSON.stringify(this.state.message)}</pre>;
+        return (
+            <div>
+                <input onChange={this.handleChange} value={this.state.message} />
+            </div>
+        );
     }
 
     public componentDidMount(): void {
+        if (window) {
+            window.addEventListener("message", this.handleMessage);
+        }
+    }
+
+    private handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
         if (window) {
             window.postMessage(
                 JSON.stringify({
                     type: ViewerMessageType.custom,
                     target: ViewerMessageTarget.viewer,
-                    data: "Custom message data",
+                    data: e.target.value,
                 }),
                 "*"
             );
-            window.addEventListener("message", this.handleMessage);
         }
-    }
+    };
 
-    private handleMessage = (e: any): void => {
-        const messageData: boolean | void =
-            e.data === "true" ? true : e.data === "false" ? false : undefined;
-
-        if (typeof messageData === "boolean") {
+    private handleMessage = (e: MessageEvent): void => {
+        if (typeof e.data === "string") {
             this.setState({
-                message: messageData,
+                message: JSON.parse(e.data),
             });
         }
     };
