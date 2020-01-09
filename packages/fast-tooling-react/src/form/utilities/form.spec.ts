@@ -1,10 +1,16 @@
 import "jest";
-import { getInitialOneOfAnyOfState, getSchemaByDataLocation } from "./form";
+import {
+    getErrorFromDataLocation,
+    getInitialOneOfAnyOfState,
+    getSchemaByDataLocation,
+} from "./form";
 
 import mergedOneOfSchema from "../../__tests__/schemas/merged-one-of.schema.json";
 import childrenSchema from "../../__tests__/schemas/children.schema.json";
 import textFieldSchema from "../../__tests__/schemas/textarea.schema.json";
 import { InitialOneOfAnyOfState, oneOfAnyOfType } from "../form-section.props";
+import ajv, { ValidationError } from "ajv";
+import { getValidationErrors } from "../../utilities/ajv-validation";
 
 /**
  * Gets a schema by data location (lodash path syntax)
@@ -109,5 +115,202 @@ describe("getInitialOneOfAnyOfState", () => {
         );
 
         expect(initialOneOfAnyOfNoData.schema.required).toEqual(["a", "b"]);
+    });
+});
+
+/**
+ * Gets errors for a data location
+ */
+describe("getErrorFromDataLocation", () => {
+    test("should not get an error if no errors are available", () => {
+        expect(getErrorFromDataLocation("", [])).toEqual("");
+    });
+    test("should get an error that matches a data location", () => {
+        const schema: any = {
+            type: "object",
+            properties: {
+                foo: {
+                    type: "string",
+                },
+            },
+        };
+        const data: any = "foo";
+        const validationErrors: ajv.ErrorObject[] = getValidationErrors(schema, data);
+
+        expect(getErrorFromDataLocation("", validationErrors)).toEqual(
+            "should be object"
+        );
+    });
+    test("should get an error nested inside a data location", () => {
+        const schema: any = {
+            type: "object",
+            properties: {
+                foo: {
+                    type: "string",
+                    const: "bar",
+                },
+            },
+        };
+        const data: any = {
+            foo: "bat",
+        };
+        const validationErrors: ajv.ErrorObject[] = getValidationErrors(schema, data);
+
+        expect(getErrorFromDataLocation("", validationErrors)).toEqual(
+            "Contains invalid data"
+        );
+        expect(getErrorFromDataLocation("foo", validationErrors)).toEqual(
+            "should be equal to constant"
+        );
+    });
+    test("should get an error when multiple errors are generated with similar paths", () => {
+        const schema: any = {
+            type: "object",
+            properties: {
+                foo: {
+                    oneOf: [
+                        {
+                            type: "object",
+                            properties: {
+                                bar: {
+                                    type: "string",
+                                    const: "bar",
+                                },
+                            },
+                        },
+                        {
+                            type: "number",
+                        },
+                    ],
+                },
+            },
+        };
+        const data: any = {
+            foo: {
+                bar: "bat",
+            },
+        };
+        const validationErrors: ajv.ErrorObject[] = getValidationErrors(schema, data);
+
+        expect(getErrorFromDataLocation("", validationErrors)).toEqual(
+            "Contains invalid data"
+        );
+        expect(getErrorFromDataLocation("foo", validationErrors)).toEqual(
+            "should match exactly one schema in oneOf"
+        );
+    });
+    test("should get an error that is the closest error to the data location", () => {
+        const schema: any = {
+            type: "object",
+            properties: {
+                foo: {
+                    type: "array",
+                    items: {
+                        oneOf: [
+                            {
+                                type: "number",
+                            },
+                            {
+                                type: "object",
+                                properties: {
+                                    bar: {
+                                        type: "string",
+                                        const: "bar",
+                                    },
+                                },
+                            },
+                        ],
+                    },
+                },
+            },
+        };
+        const data: any = {
+            foo: [
+                {
+                    bar: "bat",
+                },
+            ],
+        };
+        const validationErrors: ajv.ErrorObject[] = getValidationErrors(schema, data);
+
+        expect(getErrorFromDataLocation("", validationErrors)).toEqual(
+            "Contains invalid data"
+        );
+        expect(getErrorFromDataLocation("foo", validationErrors)).toEqual(
+            "Contains invalid data"
+        );
+        expect(getErrorFromDataLocation("foo[0]", validationErrors)).toEqual(
+            "should match exactly one schema in oneOf"
+        );
+    });
+    test("should get an error from an item in additionalProperties", () => {
+        const schema: any = {
+            type: "object",
+            properties: {
+                foo: {
+                    type: "string",
+                },
+            },
+            additionalProperties: {
+                type: "number",
+            },
+        };
+        const data: any = {
+            foo: "bar",
+            additionalProp: "a string",
+        };
+
+        const validationErrors: ajv.ErrorObject[] = getValidationErrors(schema, data);
+
+        expect(validationErrors).toHaveLength(1);
+        expect(getErrorFromDataLocation("", validationErrors)).toEqual(
+            "Contains invalid data"
+        );
+        expect(getErrorFromDataLocation("additionalProp", validationErrors)).toEqual(
+            "should be number"
+        );
+    });
+    test("should get an error from a nested item in additionalProperties", () => {
+        const schema: any = {
+            type: "object",
+            properties: {
+                foo: {
+                    type: "string",
+                },
+            },
+            additionalProperties: {
+                type: "object",
+                properties: {
+                    foo: {
+                        type: "number",
+                    },
+                    bar: {
+                        type: "string",
+                        enum: ["hello", "world"],
+                    },
+                },
+            },
+        };
+        const data: any = {
+            foo: "bar",
+            additionalProp: {
+                foo: 5,
+                bar: "bat",
+            },
+        };
+
+        const validationErrors: ajv.ErrorObject[] = getValidationErrors(schema, data);
+
+        expect(validationErrors).toHaveLength(1);
+        expect(getErrorFromDataLocation("", validationErrors)).toEqual(
+            "Contains invalid data"
+        );
+        expect(getErrorFromDataLocation("additionalProp", validationErrors)).toEqual(
+            "Contains invalid data"
+        );
+        expect(getErrorFromDataLocation("additionalProp.bar", validationErrors)).toEqual(
+            "should be equal to one of the allowed values"
+        );
+        expect(getErrorFromDataLocation("foo", validationErrors)).toEqual("");
     });
 });
