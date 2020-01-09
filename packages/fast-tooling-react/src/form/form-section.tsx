@@ -27,10 +27,12 @@ import {
     FormSectionState,
     InitialOneOfAnyOfState,
 } from "./form-section.props";
+import FormSectionValidation from "./form-section-validation";
 import FormControlSwitch from "./form-control-switch";
 import FormOneOfAnyOf from "./form-one-of-any-of";
 import FormDictionary from "./form-dictionary";
 import { classNames } from "@microsoft/fast-web-utilities";
+import { ErrorObject } from "ajv";
 
 /**
  * Schema form component definition
@@ -450,9 +452,11 @@ class FormSection extends React.Component<
     private renderFormValidation(invalidMessage: string): React.ReactNode {
         if (invalidMessage !== "") {
             return (
-                <div className={this.props.managedClasses.formSection_invalidMessage}>
-                    {invalidMessage}
-                </div>
+                <FormSectionValidation
+                    invalidMessage={invalidMessage}
+                    validationErrors={this.getValidationErrorsForSectionValidation()}
+                    dataLocation={this.props.dataLocation}
+                />
             );
         }
     }
@@ -475,6 +479,21 @@ class FormSection extends React.Component<
                 </div>
             </div>
         );
+    }
+
+    /**
+     * Gets the validation errors for the top level section,
+     * these should only be passed if they are arrays with 2 or more items
+     */
+    private getValidationErrorsForSectionValidation(): ErrorObject[] {
+        if (
+            Array.isArray(this.props.validationErrors) &&
+            this.props.validationErrors.length > 1
+        ) {
+            return this.props.validationErrors;
+        }
+
+        return [];
     }
 
     /**
