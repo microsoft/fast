@@ -9,6 +9,7 @@ const Form: typeof BareForm & ContextComponent<any> = DragDropContext(HTML5Backe
 );
 
 export * from "./custom-controls";
+export * from "./controls";
 export {
     ControlConfig,
     ControlType,

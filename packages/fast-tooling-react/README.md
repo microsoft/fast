@@ -1013,21 +1013,60 @@ Example type plugin:
 
 #### List of control types
 
-Control types are available as an enum provided as a secondary export `ControlTypes` and consist of the following:
+Control types are available as an enum provided as a secondary export `ControlType` and consist of the following:
 
 ```js
-import { ControlTypes } from "@microsoft/fast-tooling-react";
+import { ControlType } from "@microsoft/fast-tooling-react";
 
 // Available types
-ControlTypes.select
-ControlTypes.array
-ControlTypes.children
-ControlTypes.checkbox
-ControlTypes.numberField
-ControlTypes.sectionLink
-ControlTypes.display
-ControlTypes.button
-ControlTypes.textarea
+ControlType.select
+ControlType.array
+ControlType.children
+ControlType.checkbox
+ControlType.numberField
+ControlType.sectionLink
+ControlType.display
+ControlType.button
+ControlType.textarea
+```
+
+These control types can be paired with our default controls, the following of which are available:
+
+- `SelectControl`
+- `ArrayControl`
+- `ChildrenControl`
+- `CheckboxControl`
+- `NumberFieldControl`
+- `SectionLinkControl`
+- `DisplayControl`
+- `ButtonControl`
+- `TextareaControl`
+
+Example:
+
+```jsx
+import { ControlType, TextareaControl } from "@microsoft/fast-tooling-react";
+
+...
+
+<Form
+    schema={schema}
+    data={this.state.data}
+    onChange={this.handleChange}
+    controlPlugins={[
+        new StandardControlPlugin({
+            type: ControlType.textarea,
+            control: (config) => {
+                return (
+                    <React.Fragment>
+                        <span>Hello world!</span>
+                        <TextareaControl {...config} />
+                    </React.Fragement>
+                );
+            }
+        })
+    ]}
+/>
 ```
 
 ### Using form schema plugins
