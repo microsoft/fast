@@ -26,3 +26,5 @@ figma.on("selectionchange", () => {
         console.log(getPluginData(figma.currentPage.selection[0], "fillName"));
     }
 });
+
+figma.ui.postMessage("YOU'VE GOT MAIL");
