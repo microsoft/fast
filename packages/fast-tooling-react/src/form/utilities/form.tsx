@@ -600,26 +600,7 @@ export function getErrorFromDataLocation(
             );
 
             if (normalizedDataLocation === normalizedDataPath) {
-                if (
-                    error === "" ||
-                    error === containsInvalidDataMessage ||
-                    validationError.keyword === "oneOf"
-                ) {
-                    error = validationError.message;
-                }
-            } else if (validationError.keyword === "required") {
-                const dataLocationItems: string[] = [""].concat(
-                    normalizedDataLocation.split(".")
-                );
-
-                if (
-                    error === "" &&
-                    dataLocationItems.slice(0, -1).join(".") === normalizedDataPath &&
-                    get(validationError, "params.missingProperty") ===
-                        dataLocationItems[dataLocationItems.length - 1]
-                ) {
-                    error = validationError.message;
-                }
+                error = validationError.message;
             } else {
                 let containsInvalidData: boolean;
 
