@@ -84,9 +84,6 @@ const styles: ComponentStyles<LightweightButtonClassNameContract, DesignSystem> 
             "&:hover $button_contentRegion::before": {
                 background: highContrastLinkValue,
             },
-            "&:hover$button__disabled": {
-                ...highContrastDisabledForeground,
-            },
             "& $button_contentRegion::before": {
                 [highContrastSelector]: {
                     background: "transparent",
