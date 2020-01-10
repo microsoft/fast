@@ -8,6 +8,7 @@ import MSFTCaption, {
     CaptionUnhandledProps,
 } from "./caption";
 import captionSchema from "./caption.schema";
+import captionSchema2 from "./caption.schema.2";
 import { CaptionClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { CaptionStyles, DesignSystem } from "@microsoft/fast-components-styles-msft";
@@ -37,5 +38,6 @@ export {
     CaptionClassNameContract,
     CaptionHandledProps,
     captionSchema,
+    captionSchema2,
     CaptionUnhandledProps,
 };
