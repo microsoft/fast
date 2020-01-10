@@ -9,6 +9,7 @@ import MSFTAutoSuggest, {
     AutoSuggestUnhandledProps,
 } from "./auto-suggest";
 import autoSuggestSchema from "./auto-suggest.schema";
+import autoSuggestSchema2 from "./auto-suggest.schema.2";
 import { Subtract } from "utility-types";
 
 /*
@@ -33,5 +34,6 @@ export {
     AutoSuggestClassNameContract,
     AutoSuggestHandledProps,
     autoSuggestSchema,
+    autoSuggestSchema2,
     AutoSuggestUnhandledProps,
 };

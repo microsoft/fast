@@ -11,6 +11,7 @@ import {
     TypographyUnhandledProps,
 } from "@microsoft/fast-components-react-base";
 import typographySchema from "./typography.schema";
+import typographySchema2 from "./typography.schema.2";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { DesignSystem, TypographyStyles } from "@microsoft/fast-components-styles-msft";
 import { Subtract } from "utility-types";
@@ -38,6 +39,7 @@ export {
     Typography,
     TypographyProps,
     typographySchema,
+    typographySchema2,
     /**
      * @deprecated
      */

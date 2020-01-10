@@ -13,6 +13,7 @@ import {
     ButtonBaseUnhandledProps as NeutralButtonUnhandledProps,
 } from "../button-base";
 import neutralButtonSchema from "./neutral-button.schema";
+import neutralButtonSchema2 from "./neutral-button.schema.2";
 import { Subtract } from "utility-types";
 import { DisplayNamePrefix } from "../utilities";
 
@@ -44,4 +45,5 @@ export {
     NeutralButtonHandledProps,
     NeutralButtonUnhandledProps,
     neutralButtonSchema,
+    neutralButtonSchema2,
 };

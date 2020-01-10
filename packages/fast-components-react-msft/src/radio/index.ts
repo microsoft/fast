@@ -9,6 +9,7 @@ import {
     RadioUnhandledProps,
 } from "@microsoft/fast-components-react-base";
 import radioSchema from "./radio.schema";
+import radioSchema2 from "./radio.schema.2";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { DesignSystem, RadioStyles } from "@microsoft/fast-components-styles-msft";
 import { Subtract } from "utility-types";
@@ -32,5 +33,6 @@ export {
     RadioUnhandledProps,
     RadioProps,
     radioSchema,
+    radioSchema2,
     RadioSlot,
 };
