@@ -1,0 +1,10 @@
+# Source files
+src/
+
+#  Tests
+__tests__/
+*.spec.*
+*.test.*
+
+# config
+tslint.json
