@@ -10,6 +10,7 @@ import MSFTSubheading, {
     SubheadingUnhandledProps,
 } from "./subheading";
 import subheadingSchema from "./subheading.schema";
+import subheadingSchema2 from "./subheading.schema.2";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { DesignSystem, SubheadingStyles } from "@microsoft/fast-components-styles-msft";
 import { Subtract } from "utility-types";
@@ -38,5 +39,6 @@ export {
     SubheadingHandledProps,
     SubheadingUnhandledProps,
     subheadingSchema,
+    subheadingSchema2,
     SubheadingClassNameContract,
 };

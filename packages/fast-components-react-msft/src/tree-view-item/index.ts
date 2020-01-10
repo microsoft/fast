@@ -7,6 +7,7 @@ import MSFTTreeViewItem, {
     TreeViewItemUnhandledProps,
 } from "./tree-view-item";
 import treeViewItemSchema from "./tree-view-item.schema";
+import treeViewItemSchema2 from "./tree-view-item.schema.2";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { DesignSystem, TreeViewItemStyles } from "@microsoft/fast-components-styles-msft";
 import { Subtract } from "utility-types";
@@ -34,4 +35,5 @@ export {
     TreeViewItem,
     TreeViewItemProps,
     treeViewItemSchema,
+    treeViewItemSchema2,
 };
