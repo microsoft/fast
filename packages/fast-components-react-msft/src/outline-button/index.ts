@@ -13,6 +13,7 @@ import {
     ButtonBaseUnhandledProps as OutlineButtonUnhandledProps,
 } from "../button-base";
 import outlineButtonSchema from "./outline-button.schema";
+import outlineButtonSchema2 from "./outline-button.schema.2";
 import { Subtract } from "utility-types";
 import { DisplayNamePrefix } from "../utilities";
 
@@ -44,4 +45,5 @@ export {
     OutlineButtonHandledProps,
     OutlineButtonUnhandledProps,
     outlineButtonSchema,
+    outlineButtonSchema2,
 };

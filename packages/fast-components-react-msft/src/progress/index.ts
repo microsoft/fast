@@ -10,6 +10,7 @@ import MSFTProgress, {
     ProgressUnhandledProps,
 } from "./progress";
 import progressSchema from "./progress.schema";
+import progressSchema2 from "./progress.schema.2";
 import { Subtract } from "utility-types";
 /*
  * The type returned by manageJss type is very complicated so we'll let the
@@ -33,6 +34,7 @@ export {
     ProgressUnhandledProps,
     ProgressHandledProps,
     progressSchema,
+    progressSchema2,
     ProgressSize,
     ProgressClassNameContract,
 };

@@ -8,6 +8,7 @@ import {
     DialogUnhandledProps,
 } from "@microsoft/fast-components-react-base";
 import dialogSchema from "./dialog.schema";
+import dialogSchema2 from "./dialog.schema.2";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { DesignSystem, DialogStyles } from "@microsoft/fast-components-styles-msft";
 import { Subtract } from "utility-types";
@@ -33,6 +34,7 @@ export {
     DialogProps,
     DialogHandledProps,
     dialogSchema,
+    dialogSchema2,
     DialogUnhandledProps,
     DialogClassNameContract,
 };
