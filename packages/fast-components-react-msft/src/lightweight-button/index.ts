@@ -13,6 +13,7 @@ import {
     ButtonBaseUnhandledProps as LightweightButtonUnhandledProps,
 } from "../button-base";
 import lightweightButtonSchema from "./lightweight-button.schema";
+import lightweightButtonSchema2 from "./lightweight-button.schema.2";
 import { Subtract } from "utility-types";
 import { DisplayNamePrefix } from "../utilities";
 
@@ -44,4 +45,5 @@ export {
     LightweightButtonHandledProps,
     LightweightButtonUnhandledProps,
     lightweightButtonSchema,
+    lightweightButtonSchema2,
 };

@@ -13,6 +13,7 @@ import MSFTFlyout, {
     FlyoutVerticalPosition,
 } from "./flyout";
 import flyoutSchema from "./flyout.schema";
+import flyoutSchema2 from "./flyout.schema.2";
 import { Subtract } from "utility-types";
 
 /*
@@ -39,6 +40,7 @@ export {
     FlyoutVerticalPosition,
     FlyoutHandledProps,
     flyoutSchema,
+    flyoutSchema2,
     FlyoutUnhandledProps,
     FlyoutClassNameContract,
 };
