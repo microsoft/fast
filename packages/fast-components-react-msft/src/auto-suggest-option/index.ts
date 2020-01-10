@@ -6,6 +6,7 @@ import MSFTAutoSuggestOption, {
     AutoSuggestOptionUnhandledProps,
 } from "./auto-suggest-option";
 import autoSuggestOptionSchema from "./auto-suggest-option.schema";
+import autoSuggestOptionSchema2 from "./auto-suggest-option.schema.2";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { AutoSuggestOptionClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import {
@@ -35,5 +36,6 @@ export {
     AutoSuggestOptionClassNameContract,
     AutoSuggestOptionHandledProps,
     autoSuggestOptionSchema,
+    autoSuggestOptionSchema2,
     AutoSuggestOptionUnhandledProps,
 };
