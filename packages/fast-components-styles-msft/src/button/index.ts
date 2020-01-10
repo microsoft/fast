@@ -40,7 +40,7 @@ import {
 import { applyDisabledState } from "../utilities/disabled";
 import {
     highContrastAccent,
-    highContrastBackground,
+    HighContrastColor,
     highContrastDisabledBorder,
     highContrastDisabledForeground,
     highContrastDoubleFocus,
@@ -73,13 +73,19 @@ const applyTransparentBackplateStyles: CSSRules<DesignSystem> = {
     ...applyFocusVisible({
         "border-color": "transparent",
         "box-shadow": "none",
+        ...highContrastHighlightForeground,
         "& $button_contentRegion::before": {
             background: neutralForegroundRest,
             height: toPx<DesignSystem>(focusOutlineWidth),
-            ...highContrastBackground,
+            ...highContrastHighlightBackground,
         },
     }),
     // Underline
+    "& $button_contentRegion::before": {
+        [highContrastSelector]: {
+            background: HighContrastColor.buttonText,
+        },
+    },
     "&:hover $button_contentRegion::before": {
         background: accentForegroundHover,
         ...highContrastHighlightBackground,
@@ -249,6 +255,11 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = {
             },
             "&$button__disabled": {
                 ...highContrastDisabledBorder,
+            },
+            "& $button_contentRegion::before": {
+                [highContrastSelector]: {
+                    background: "transparent",
+                },
             },
         },
     },
