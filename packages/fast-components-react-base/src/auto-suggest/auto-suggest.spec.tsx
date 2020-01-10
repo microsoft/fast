@@ -473,4 +473,29 @@ describe("auto suggest", (): void => {
 
         expect(rendered.find(Listbox.displayName).get(0).props.children).toHaveLength(2);
     });
+
+    test("closing menu focuses on input element", (): void => {
+        const container: HTMLDivElement = document.createElement("div");
+        document.body.appendChild(container);
+
+        const rendered: any = mount(
+            <AutoSuggest listboxId="listboxId" initialValue="search">
+                {itemA}
+                {itemB}
+                {itemC}
+            </AutoSuggest>,
+            { attachTo: container }
+        );
+        const input: any = rendered.find("input");
+        expect(document.activeElement.id).toBe("");
+        expect(rendered.state("value")).toEqual("search");
+        input.simulate("keydown", { keyCode: keyCodeArrowDown });
+        expect(document.activeElement.id).toBe("a");
+        rendered
+            .find({ id: "a" })
+            .find(ListboxItem.displayName)
+            .simulate("keydown", { keyCode: keyCodeEscape });
+        expect(document.activeElement.getAttribute("role")).toBe("combobox");
+        document.body.removeChild(container);
+    });
 });
