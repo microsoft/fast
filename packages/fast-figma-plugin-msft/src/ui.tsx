@@ -7,7 +7,8 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { Paragraph } from "@microsoft/fast-components-react-msft";
 import { stringById } from "./strings";
-import { isPluginMessageEvent } from "./message";
+import { isPluginMessageEvent, PluginMessageData } from "./messaging/common";
+import { SET_ACTIVE_NODE_TYPE, SetActiveNodeTypeEvent } from "./messaging/canvas";
 
 // Import with require so the dependency doesn't get tree-shaken
 // tslint:disable-next-line
@@ -28,6 +29,18 @@ interface PluginUIState {
 }
 
 class PluginUI extends React.Component<{}, PluginUIState> {
+    /**
+     * Register a message handler to a message event ID.
+     * When a message from the canvas is recieved that matches
+     * the ID, the callback will be invoked
+     */
+    private messageHandlers: {
+        [key: string]: (message: PluginMessageData<any>) => void;
+    } = {
+        [SET_ACTIVE_NODE_TYPE]: (message: SetActiveNodeTypeEvent): void =>
+            this.setState({ activeNodeType: message.value }),
+    };
+
     constructor(props: {}) {
         super(props);
 
@@ -42,9 +55,11 @@ class PluginUI extends React.Component<{}, PluginUIState> {
     public render(): JSX.Element {
         return (
             <div>
-                {this.state.activeNodeType === null
-                    ? this.renderNoValidSelection()
-                    : null}
+                {this.state.activeNodeType === null ? (
+                    this.renderNoValidSelection()
+                ) : (
+                    <p>{this.state.activeNodeType}</p>
+                )}
             </div>
         );
     }
@@ -56,6 +71,12 @@ class PluginUI extends React.Component<{}, PluginUIState> {
     private handleOnMessage = (e: MessageEvent): void => {
         if (!isPluginMessageEvent(e)) {
             return; // Exit if the MessageEvent should not be handled by our UI
+        } else {
+            const message: PluginMessageData<any> = JSON.parse(e.data.pluginMessage);
+
+            if (typeof this.messageHandlers[message.type] === "function") {
+                this.messageHandlers[message.type](message);
+            }
         }
     };
 }
