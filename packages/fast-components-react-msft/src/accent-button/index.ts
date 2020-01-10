@@ -10,6 +10,7 @@ import {
     ButtonBaseUnhandledProps as AccentButtonUnhandledProps,
 } from "../button-base";
 import accentButtonSchema from "./accent-button.schema";
+import accentButtonSchema2 from "./accent-button.schema.2";
 import { Subtract } from "utility-types";
 import { DisplayNamePrefix } from "../utilities";
 
@@ -41,4 +42,5 @@ export {
     AccentButtonHandledProps,
     AccentButtonUnhandledProps,
     accentButtonSchema,
+    accentButtonSchema2,
 };
