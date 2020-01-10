@@ -12,6 +12,7 @@ import MSFTButton, {
     ButtonProps as MSFTButtonProps,
 } from "./button";
 import buttonSchema from "./button.schema";
+import buttonSchema2 from "./button.schema.2";
 
 /*
  * The type returned by manageJss type is very complicated so we'll let the
@@ -35,5 +36,6 @@ export {
     ButtonClassNameContract,
     ButtonHandledProps,
     buttonSchema,
+    buttonSchema2,
     ButtonUnhandledProps,
 };

@@ -11,6 +11,7 @@ import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { BreadcrumbStyles, DesignSystem } from "@microsoft/fast-components-styles-msft";
 import { Subtract } from "utility-types";
 import breadcrumbSchema from "./breadcrumb.schema";
+import breadcrumbSchema2 from "./breadcrumb.schema.2";
 
 const Breadcrumb = manageJss(BreadcrumbStyles)(BaseBreadcrumb);
 type Breadcrumb = InstanceType<typeof Breadcrumb>;
@@ -31,5 +32,6 @@ export {
     BreadcrumbClassNameContract,
     BreadcrumbHandledProps,
     breadcrumbSchema,
+    breadcrumbSchema2,
     BreadcrumbUnhandledProps,
 };

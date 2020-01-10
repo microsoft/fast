@@ -115,6 +115,7 @@
     "@microsoft/fast-components-class-name-contracts-base": "^4.6.3",
     "@microsoft/fast-components-foundation-react": "^3.1.5",
     "@microsoft/fast-react-utilities": "^1.1.2",
+    "@microsoft/fast-tooling": "^0.0.0",
     "@microsoft/fast-web-utilities": "^4.4.2",
     "exenv-es6": "^1.0.0",
     "raf-throttle": "^2.0.3",

@@ -4,6 +4,7 @@ import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { CarouselStyles, DesignSystem } from "@microsoft/fast-components-styles-msft";
 import { Subtract } from "utility-types";
 import carouselSchema from "./carousel.schema";
+import carouselSchema2 from "./carousel.schema.2";
 import MSFTCarousel, {
     CarouselManagedClasses,
     CarouselSlide,
@@ -34,6 +35,7 @@ export {
     CarouselClassNameContract,
     CarouselHandledProps,
     carouselSchema,
+    carouselSchema2,
     CarouselState,
     CarouselSlide,
     CarouselSlideTheme,

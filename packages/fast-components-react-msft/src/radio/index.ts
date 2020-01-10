@@ -12,6 +12,7 @@ import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { DesignSystem, RadioStyles } from "@microsoft/fast-components-styles-msft";
 import { Subtract } from "utility-types";
 import radioSchema from "./radio.schema";
+import radioSchema2 from "./radio.schema.2";
 
 /*
  * The type returned by manageJss type is very complicated so we'll let the
@@ -30,5 +31,6 @@ export {
     RadioUnhandledProps,
     RadioProps,
     radioSchema,
+    radioSchema2,
     RadioSlot,
 };

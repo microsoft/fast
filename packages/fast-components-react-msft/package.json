@@ -120,6 +120,7 @@
     "@microsoft/fast-components-react-base": "^4.25.7",
     "@microsoft/fast-components-styles-msft": "^4.28.6",
     "@microsoft/fast-jss-utilities": "^4.7.9",
+    "@microsoft/fast-tooling": "^0.0.0",
     "@microsoft/fast-web-utilities": "^4.4.2",
     "exenv-es6": "^1.0.0",
     "utility-types": "^2.1.0"

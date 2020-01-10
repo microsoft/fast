@@ -4,6 +4,7 @@ import { SelectOptionClassNameContract } from "@microsoft/fast-components-class-
 import { DesignSystem, SelectOptionStyles } from "@microsoft/fast-components-styles-msft";
 import { Subtract } from "utility-types";
 import selectOptionSchema from "./select-option.schema";
+import selectOptionSchema2 from "./select-option.schema.2";
 import MSFTSelectOption, {
     SelectOptionHandledProps as MSFTSelectOptionHandledProps,
     SelectOptionProps as MSFTSelectOptionProps,
@@ -30,5 +31,6 @@ export {
     SelectOptionClassNameContract,
     SelectOptionHandledProps,
     selectOptionSchema,
+    selectOptionSchema2,
     SelectOptionUnhandledProps,
 };

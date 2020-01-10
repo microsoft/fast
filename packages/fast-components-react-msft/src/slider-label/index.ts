@@ -4,6 +4,7 @@ import { SliderLabelClassNameContract } from "@microsoft/fast-components-class-n
 import { DesignSystem, SliderLabelStyles } from "@microsoft/fast-components-styles-msft";
 import { Subtract } from "utility-types";
 import sliderLabelSchema from "./slider-label.schema";
+import sliderLabelSchema2 from "./slider-label.schema.2";
 import MSFTSliderLabel, {
     SliderLabelHandledProps as MSFTSliderLabelHandledProps,
     SliderLabelProps as MSFTSliderLabelProps,
@@ -30,5 +31,6 @@ export {
     SliderLabelClassNameContract,
     SliderLabelHandledProps,
     sliderLabelSchema,
+    sliderLabelSchema2,
     SliderLabelUnhandledProps,
 };

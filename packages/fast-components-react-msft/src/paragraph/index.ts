@@ -5,6 +5,7 @@ import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { DesignSystem, ParagraphStyles } from "@microsoft/fast-components-styles-msft";
 import { Subtract } from "utility-types";
 import paragraphSchema from "./paragraph.schema";
+import paragraphSchema2 from "./paragraph.schema.2";
 import MSFTParagraph, {
     ParagraphHandledProps as MSFTParagraphHandledProps,
     ParagraphProps as MSFTParagraphProps,
@@ -33,6 +34,7 @@ export {
     ParagraphProps,
     ParagraphHandledProps,
     paragraphSchema,
+    paragraphSchema2,
     ParagraphUnhandledProps,
     ParagraphClassNameContract,
 };
