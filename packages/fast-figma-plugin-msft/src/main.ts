@@ -1,5 +1,5 @@
 import { getPluginData } from "./plugin-data";
-import { setActiveNodeTypeCreator } from "./messaging/canvas";
+import { setUIStateDataMessageCreator } from "./messaging/canvas";
 
 /**
  * Main plugin file responsible for Figma document manipulation.
@@ -29,7 +29,9 @@ function onSelectionChange(): void {
         // We have on item selected so do shit with the UI
         // figma.ui.postMessage(figma.currentPage.selection[0], "fillName"));
         figma.ui.postMessage(
-            setActiveNodeTypeCreator(figma.currentPage.selection[0].type)
+            setUIStateDataMessageCreator({
+                activeNodeType: figma.currentPage.selection[0].type,
+            })
         );
     }
 }

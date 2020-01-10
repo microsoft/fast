@@ -1,23 +1,28 @@
 import { PluginMessageData } from "./common";
+import { PluginUIState } from "../interface/plugin-ui.state";
 
 /**
- * Data interface, action creator, and ID for informing
- * the UI about the type of node currently selected
+ * Message utilities for setting UI state from the main application
  */
+export const SET_UI_STATE = "CANVAS_EVENT_SET_UI_STATE";
+export interface SetUIStateData {
+    type: PluginMessageData<typeof SET_UI_STATE>;
 
-export interface SetActiveNodeTypeEvent
-    extends PluginMessageData<typeof SET_ACTIVE_NODE_TYPE> {
-    value: NodeType;
+    /**
+     * Serializable state data to be parsed and
+     * set by the UI component
+     */
+    value: PluginUIState;
 }
-export const SET_ACTIVE_NODE_TYPE = "CANVAS_EVENT_SET_ACTIVE_NODE_TYPE";
-export function setActiveNodeTypeCreator(value: NodeType): string {
+
+export function setUIStateDataMessageCreator(value: PluginUIState): string {
     return JSON.stringify({
-        type: SET_ACTIVE_NODE_TYPE,
+        type: SET_UI_STATE,
         value,
     });
 }
-export function isSetActiveNodeType(
-    data: PluginMessageData<any>
-): data is SetActiveNodeTypeEvent {
-    return data.type === SET_ACTIVE_NODE_TYPE;
+export function isSetUIStateMessage(
+    value: PluginMessageData<any>
+): value is SetUIStateData {
+    return value.type === SET_UI_STATE;
 }
