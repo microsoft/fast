@@ -7,7 +7,11 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { Paragraph } from "@microsoft/fast-components-react-msft";
 import { stringById } from "./strings";
-import { isPluginMessageEvent, PluginMessageData } from "./messaging/common";
+import {
+    isPluginMessageEvent,
+    PluginMessageData,
+    PluginMessageEvent,
+} from "./messaging/common";
 import { SET_ACTIVE_NODE_TYPE, SetActiveNodeTypeEvent } from "./messaging/canvas";
 
 // Import with require so the dependency doesn't get tree-shaken
@@ -16,13 +20,6 @@ const styles = require("./global.css");
 
 const root: HTMLDivElement = document.createElement("div");
 document.body.appendChild(root);
-
-interface PluginMessageEvent extends MessageEvent {
-    data: {
-        pluginMessage: any; // TODO
-        pluginId: string;
-    };
-}
 
 interface PluginUIState {
     activeNodeType: NodeType | null;
