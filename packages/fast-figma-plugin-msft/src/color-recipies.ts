@@ -50,13 +50,13 @@ export const fillRecipies = {
     neutralLayerL4,
 };
 
-export const outlineRecipies = {
+export const strokeRecipies = {
     neutralFocus,
     neutralFocusInnerAccent,
     neutralOutline,
 };
 
-export const textRecipies = {
+export const textFillRecipies = {
     accentForeground,
     accentForegroundCut,
     accentForegroundCutLarge,

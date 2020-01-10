@@ -20,18 +20,19 @@ onSelectionChange();
  */
 figma.on("selectionchange", onSelectionChange);
 
+/**
+ * Handles node selection changes.
+ */
 function onSelectionChange(): void {
     const { selection }: typeof figma.currentPage = figma.currentPage;
 
-    if (selection.length !== 1) {
-        // we have multiple items or no items selected so we need to disable the ui and clear any values set
-    } else {
-        // We have on item selected so do shit with the UI
-        // figma.ui.postMessage(figma.currentPage.selection[0], "fillName"));
-        figma.ui.postMessage(
-            setUIStateDataMessageCreator({
-                activeNodeType: figma.currentPage.selection[0].type,
-            })
-        );
-    }
+    figma.ui.postMessage(
+        setUIStateDataMessageCreator({
+            activeNodeType: selection.length === 1 ? selection[0].type : null,
+            fills: [],
+            activeFill: null,
+            strokes: [],
+            activeStroke: null,
+        })
+    );
 }

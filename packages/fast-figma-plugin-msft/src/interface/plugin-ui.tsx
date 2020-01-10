@@ -21,6 +21,10 @@ export class PluginUI extends React.Component<{}, PluginUIState> {
 
         this.state = {
             activeNodeType: null,
+            fills: [],
+            activeFill: null,
+            strokes: [],
+            activeStroke: null,
         };
 
         // Register message listener to react to messages from main.ts
