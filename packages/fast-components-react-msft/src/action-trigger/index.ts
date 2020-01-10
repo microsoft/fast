@@ -14,6 +14,7 @@ import MSFTActionTrigger, {
     ActionTriggerProps as MSFTActionTriggerProps,
 } from "./action-trigger";
 import actionTriggerSchema from "./action-trigger.schema";
+import actionTriggerSchema2 from "./action-trigger.schema.2";
 
 /*
  * The type returned by manageJss type is very complicated so we'll let the
@@ -39,5 +40,6 @@ export {
     ActionTriggerClassNameContract,
     ActionTriggerHandledProps,
     actionTriggerSchema,
+    actionTriggerSchema2,
     ActionTriggerUnhandledProps,
 };

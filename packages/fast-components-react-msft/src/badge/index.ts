@@ -11,6 +11,7 @@ import MSFTBadge, {
     BadgeProps as MSFTBadgeProps,
 } from "./badge";
 import badgeSchema from "./badge.schema";
+import badgeSchema2 from "./badge.schema.2";
 
 /*
  * The type returned by manageJss type is very complicated so we'll let the
@@ -28,6 +29,7 @@ export {
     BadgeClassNameContract,
     BadgeHandledProps,
     badgeSchema,
+    badgeSchema2,
     BadgeSize,
     BadgeUnhandledProps,
 };

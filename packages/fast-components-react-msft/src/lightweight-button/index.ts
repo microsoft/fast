@@ -15,6 +15,7 @@ import {
 } from "../button-base";
 import { DisplayNamePrefix } from "../utilities";
 import lightweightButtonSchema from "./lightweight-button.schema";
+import lightweightButtonSchema2 from "./lightweight-button.schema.2";
 
 /*
  * The type returned by manageJss type is very complicated so we'll let the
@@ -45,4 +46,5 @@ export {
     LightweightButtonHandledProps,
     LightweightButtonUnhandledProps,
     lightweightButtonSchema,
+    lightweightButtonSchema2,
 };

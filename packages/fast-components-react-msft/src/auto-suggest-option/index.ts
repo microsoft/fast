@@ -7,6 +7,7 @@ import {
 } from "@microsoft/fast-components-styles-msft";
 import { Subtract } from "utility-types";
 import autoSuggestOptionSchema from "./auto-suggest-option.schema";
+import autoSuggestOptionSchema2 from "./auto-suggest-option.schema.2";
 import MSFTAutoSuggestOption, {
     AutoSuggestOptionManagedClasses,
     AutoSuggestOptionUnhandledProps,
@@ -33,5 +34,6 @@ export {
     AutoSuggestOptionClassNameContract,
     AutoSuggestOptionHandledProps,
     autoSuggestOptionSchema,
+    autoSuggestOptionSchema2,
     AutoSuggestOptionUnhandledProps,
 };

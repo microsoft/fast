@@ -8,6 +8,7 @@ import {
 } from "@microsoft/fast-components-styles-msft";
 import { Subtract } from "utility-types";
 import contextMenuItemSchema from "./context-menu-item.schema";
+import contextMenuItemSchema2 from "./context-menu-item.schema.2";
 import MSFTContextMenuItem, {
     ContextMenuItemManagedClasses,
     ContextMenuItemUnhandledProps,
@@ -35,5 +36,6 @@ export {
     ContextMenuItemClassNameContract,
     ContextMenuItemHandledProps,
     contextMenuItemSchema,
+    contextMenuItemSchema2,
     ContextMenuItemUnhandledProps,
 };

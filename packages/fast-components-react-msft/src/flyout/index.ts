@@ -14,6 +14,7 @@ import MSFTFlyout, {
     FlyoutProps as MSFTFlyoutProps,
 } from "./flyout";
 import flyoutSchema from "./flyout.schema";
+import flyoutSchema2 from "./flyout.schema.2";
 
 /*
  * The type returned by manageJss type is very complicated so we'll let the
@@ -37,6 +38,7 @@ export {
     FlyoutVerticalPosition,
     FlyoutHandledProps,
     flyoutSchema,
+    flyoutSchema2,
     FlyoutUnhandledProps,
     FlyoutClassNameContract,
 };

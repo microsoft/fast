@@ -4,6 +4,7 @@ import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { DesignSystem, PivotStyles } from "@microsoft/fast-components-styles-msft";
 import { Subtract } from "utility-types";
 import pivotSchema from "./pivot.schema";
+import pivotSchema2 from "./pivot.schema.2";
 import MSFTPivot, {
     PivotHandledProps as MSFTPivotHandledProps,
     PivotProps as MSFTPivotProps,
@@ -23,5 +24,6 @@ export {
     PivotProps,
     PivotHandledProps,
     pivotSchema,
+    pivotSchema2,
     PivotUnhandledProps,
 };

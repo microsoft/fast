@@ -12,6 +12,7 @@ import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { CardStyles, DesignSystem } from "@microsoft/fast-components-styles-msft";
 import { Subtract } from "utility-types";
 import cardSchema from "./card.schema";
+import cardSchema2 from "./card.schema.2";
 
 const Card = manageJss(CardStyles)(BaseCard);
 type Card = InstanceType<typeof Card>;
@@ -26,5 +27,6 @@ export {
     CardClassNameContract,
     CardHandledProps,
     cardSchema,
+    cardSchema2,
     CardUnhandledProps,
 };
