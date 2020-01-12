@@ -10,6 +10,7 @@ import { PluginUI } from "./interface/plugin-ui";
 const styles = require("./global.css");
 
 const root: HTMLDivElement = document.createElement("div");
+root.setAttribute("id", "root");
 document.body.appendChild(root);
 
 // Render UI

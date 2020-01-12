@@ -43,27 +43,28 @@ export interface PluginUIState {
 }
 
 /**
- * mobx class to manage UI state
+ * mobx class to manage UI state. The value of the getState method
+ * is sent to the UI layer via postMessage whenever a change is made
  */
 export class PluginUIStateStore implements PluginUIState {
     @computed
     public get strokes(): Array<keyof typeof strokeRecipies> {
         return this.activeNodeType !== null && canHaveStroke(this.activeNodeType)
-            ? (Object.keys(strokeRecipies) as any)
-            : null;
+            ? (Object.keys(strokeRecipies) as Array<keyof typeof strokeRecipies>)
+            : [];
     }
 
     @computed
     public get fills(): Array<keyof typeof fillRecipies> {
         return this.activeNodeType !== null && canHaveFill(this.activeNodeType)
-            ? (Object.keys(fillRecipies) as any)
+            ? (Object.keys(fillRecipies) as Array<keyof typeof fillRecipies>)
             : [];
     }
 
     @computed
     get textFills(): Array<keyof typeof textFillRecipies> {
         return this.activeNodeType !== null && canHaveTextFill(this.activeNodeType)
-            ? (Object.keys(textFillRecipies) as any)
+            ? (Object.keys(textFillRecipies) as Array<keyof typeof textFillRecipies>)
             : [];
     }
 

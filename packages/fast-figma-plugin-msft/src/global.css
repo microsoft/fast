@@ -2,3 +2,7 @@
 body {
     font-family: Segoe UI, sans-serif;
 }
+
+#root {
+    height: 100%;
+}

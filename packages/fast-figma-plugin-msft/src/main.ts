@@ -3,6 +3,13 @@ import { setUIStateDataMessageCreator } from "./messaging/canvas";
 import { PluginUIState, PluginUIStateStore } from "./interface/plugin-ui.state";
 
 /**
+ * Show UI on plugin launch
+ */
+figma.showUI(__html__, {
+    height: 600,
+});
+
+/**
  * Main plugin file responsible for Figma document manipulation.
  * This file has full access to the Figma API.
  */
@@ -13,10 +20,6 @@ const pluginUIStateStore: PluginUIStateStore = new PluginUIStateStore(
     }
 );
 
-/**
- * Show UI on plugin launch
- */
-figma.showUI(__html__);
 // Manually trigger selection change flow when UI launches.
 onSelectionChange();
 
@@ -32,5 +35,7 @@ figma.on("selectionchange", onSelectionChange);
  */
 function onSelectionChange(): void {
     const { selection }: typeof figma.currentPage = figma.currentPage;
+
+    // Limit showing UI to when a single node is selected.
     pluginUIStateStore.activeNodeType = selection.length === 1 ? selection[0].type : null;
 }
