@@ -4,7 +4,8 @@
         "target": "es5",
         "baseUrl": ".",
         "outDir": "./dist",
-        "declaration": false
+        "declaration": false,
+        "experimentalDecorators": true
     },
     "include": ["./src"]
 }

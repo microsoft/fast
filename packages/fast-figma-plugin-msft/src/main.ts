@@ -1,10 +1,17 @@
 import { getPluginData } from "./plugin-data";
 import { setUIStateDataMessageCreator } from "./messaging/canvas";
+import { PluginUIState, PluginUIStateStore } from "./interface/plugin-ui.state";
 
 /**
  * Main plugin file responsible for Figma document manipulation.
  * This file has full access to the Figma API.
  */
+
+const pluginUIStateStore: PluginUIStateStore = new PluginUIStateStore(
+    (state: PluginUIState): void => {
+        figma.ui.postMessage(setUIStateDataMessageCreator(state));
+    }
+);
 
 /**
  * Show UI on plugin launch
@@ -25,14 +32,5 @@ figma.on("selectionchange", onSelectionChange);
  */
 function onSelectionChange(): void {
     const { selection }: typeof figma.currentPage = figma.currentPage;
-
-    figma.ui.postMessage(
-        setUIStateDataMessageCreator({
-            activeNodeType: selection.length === 1 ? selection[0].type : null,
-            fills: [],
-            activeFill: null,
-            strokes: [],
-            activeStroke: null,
-        })
-    );
+    pluginUIStateStore.activeNodeType = selection.length === 1 ? selection[0].type : null;
 }

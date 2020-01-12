@@ -32,6 +32,9 @@ module.exports = (env, args) => {
                         },
                         {
                             loader: "ts-loader",
+                            options: {
+                                transpileOnly: args.checkTs === "false", // There are some types broken in mobx, so disable this for development but enable while testing
+                            },
                         },
                     ],
                 },

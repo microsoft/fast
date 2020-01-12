@@ -32,6 +32,7 @@ export class PluginUI extends React.Component<{}, PluginUIState> {
     }
 
     public render(): JSX.Element {
+        console.log(this.state);
         return (
             <div>
                 {this.state.activeNodeType === null ? (
