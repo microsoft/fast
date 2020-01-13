@@ -5,6 +5,8 @@ import {
 } from "../color-recipies";
 import { autorun, computed, observable } from "mobx";
 import { canHaveFill, canHaveStroke, canHaveTextFill } from "../utilities/node";
+import { getPluginData } from "../plugin-data";
+import { setUIStateDataMessageCreator } from "../messaging/canvas";
 
 /**
  * Define the react state object for the Plugin UI
@@ -46,61 +48,44 @@ export interface PluginUIState {
     activeTextFill: string;
 }
 
-/**
- * mobx class to manage UI state. The value of the getState method
- * is sent to the UI layer via postMessage whenever a change is made
- *
- * TODO: Write test to ensure sets always start with "" to denote no selection
- */
-export class PluginUIStateStore implements PluginUIState {
-    @computed
-    public get strokes(): string[] {
-        return this.activeNodeType !== null && canHaveStroke(this.activeNodeType)
-            ? [""].concat(getStrokeRecipeNames())
-            : [];
-    }
+function nodeIsNull<T>(node: T | null): node is null {
+    return node === null;
+}
 
-    @computed
-    public get fills(): string[] {
-        return this.activeNodeType !== null && canHaveFill(this.activeNodeType)
-            ? [""].concat(getFillRecipeNames())
-            : [];
-    }
+export async function getPluginUIState<T extends SceneNode>(
+    node: T | null
+): Promise<PluginUIState> {
+    const activeNodeType: null | NodeType = node === null ? null : node.type;
 
-    @computed
-    get textFills(): string[] {
-        return this.activeNodeType !== null && canHaveTextFill(this.activeNodeType)
-            ? [""].concat(getTextFillRecipeNames())
-            : [];
-    }
+    return {
+        activeNodeType,
+        activeFill: node === null ? "" : getPluginData(node, "fill"),
+        activeStroke: node === null ? "" : getPluginData(node, "stroke"),
+        activeTextFill: node === null ? "" : getPluginData(node, "textFill"),
+        fills:
+            activeNodeType !== null && canHaveFill(activeNodeType)
+                ? [""].concat(await getFillRecipeNames())
+                : [],
+        strokes:
+            activeNodeType !== null && canHaveStroke(activeNodeType)
+                ? [""].concat(await getStrokeRecipeNames())
+                : [],
+        textFills:
+            activeNodeType !== null && canHaveTextFill(activeNodeType)
+                ? [""].concat(await getTextFillRecipeNames())
+                : [],
+    };
+}
 
-    @observable
-    public activeNodeType: NodeType | null = null;
-
-    @observable
-    public activeFill: string = "";
-
-    @observable
-    public activeStroke: string = "";
-
-    @observable
-    public activeTextFill: string = "";
-
-    constructor(onChange: (state: PluginUIState) => void) {
-        autorun(() => {
-            onChange(this.getState());
+export function setPluginUIState(stateResolver: Promise<PluginUIState>): void {
+    stateResolver
+        .then(
+            (state: PluginUIState): void => {
+                figma.ui.postMessage(setUIStateDataMessageCreator(state));
+            }
+        )
+        .catch((reason: any) => {
+            // tslint:disable-next-line
+            console.warn("Plugin UI data could not be set");
         });
-    }
-
-    private getState(): PluginUIState {
-        return {
-            activeFill: this.activeFill,
-            activeNodeType: this.activeNodeType,
-            activeStroke: this.activeStroke,
-            activeTextFill: this.activeTextFill,
-            fills: this.fills,
-            strokes: this.strokes,
-            textFills: this.textFills,
-        };
-    }
 }

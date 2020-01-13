@@ -1,20 +1,13 @@
-import {
-    FillRecipe,
-    fillRecipies,
-    StrokeRecipe,
-    strokeRecipies,
-    TextFillRecipe,
-    textFillRecipies,
-} from "./color-recipies";
+import { getPluginUIState, setPluginUIState } from "./interface/plugin-ui.state";
 
 /**
  * Describes the data stored by the plugin with https://www.figma.com/plugin-docs/api/properties/nodes-setplugindata/
  */
 
 export interface PluginData {
-    fill: FillRecipe | "";
-    textFill: TextFillRecipe | "";
-    stroke: StrokeRecipe | "";
+    fill: string;
+    textFill: string;
+    stroke: string;
 }
 
 /**
@@ -29,9 +22,13 @@ export function getPluginData<T extends keyof PluginData>(
 }
 
 export function setPluginData<T extends keyof PluginData>(
-    node: BaseNodeMixin,
+    node: SceneNode,
     key: T,
     value: PluginData[T]
 ): void {
     node.setPluginData(key, value);
+
+    // Update the UI when we make changes to plugin data. We may need to adjust this
+    // to only update UI on certain changes
+    setPluginUIState(getPluginUIState(node));
 }

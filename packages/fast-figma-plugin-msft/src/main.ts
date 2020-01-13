@@ -1,6 +1,10 @@
 import { getPluginData, setPluginData } from "./plugin-data";
 import { setUIStateDataMessageCreator } from "./messaging/canvas";
-import { PluginUIState, PluginUIStateStore } from "./interface/plugin-ui.state";
+import {
+    PluginUIState,
+    setPluginUIState,
+    getPluginUIState,
+} from "./interface/plugin-ui.state";
 import {
     SET_FILL_RECIPE,
     SET_STROKE_RECIPE,
@@ -20,17 +24,6 @@ figma.showUI(__html__, {
 });
 
 /**
- * Main plugin file responsible for Figma document manipulation.
- * This file has full access to the Figma API.
- */
-
-const pluginUIStateStore: PluginUIStateStore = new PluginUIStateStore(
-    (state: PluginUIState): void => {
-        figma.ui.postMessage(setUIStateDataMessageCreator(state));
-    }
-);
-
-/**
  * Returns the selected node if a single node is
  * selected, otherwise returns null
  */
@@ -45,55 +38,31 @@ function getActiveNode(): SceneNode | null {
  */
 function onSelectionChange(): void {
     const node: SceneNode | null = getActiveNode();
-
-    // Limit showing UI to when a single node is selected.
-    pluginUIStateStore.activeNodeType = node === null ? null : node.type;
-
-    if (node !== null) {
-        // Check node for plugin data and ensure UI represents that state
-        const fill = getPluginData(node, "fill");
-        const textFill = getPluginData(node, "textFill");
-        const stroke = getPluginData(node, "stroke");
-
-        if (fill !== pluginUIStateStore.activeFill) {
-            pluginUIStateStore.activeFill = fill;
-        }
-
-        if (textFill !== pluginUIStateStore.activeTextFill) {
-            pluginUIStateStore.activeTextFill = textFill;
-        }
-
-        if (stroke !== pluginUIStateStore.activeStroke) {
-            pluginUIStateStore.activeStroke = stroke;
-        }
-    }
+    setPluginUIState(getPluginUIState(node));
 }
 
 function onMessage(
     message: SetFillRecipeData | SetTextFillRecipeData | SetStrokeRecipeData
 ): void {
-    const currentNode: SceneNode | null = getActiveNode();
+    const node: SceneNode | null = getActiveNode();
 
     /**
      * If we somehow get into a state where we're setting properties on an invalid selection,
      * we shouldn't save any changes.
      */
-    if (currentNode === null) {
+    if (node === null) {
         return;
     }
 
     switch (message.type) {
         case SET_FILL_RECIPE:
-            pluginUIStateStore.activeFill = message.value;
-            setPluginData(currentNode, "fill", message.value);
+            setPluginData(node, "fill", message.value);
             break;
         case SET_TEXT_FILL_RECIPE:
-            pluginUIStateStore.activeTextFill = message.value;
-            setPluginData(currentNode, "textFill", message.value);
+            setPluginData(node, "textFill", message.value);
             break;
         case SET_STROKE_RECIPE:
-            pluginUIStateStore.activeStroke = message.value;
-            setPluginData(currentNode, "stroke", message.value);
+            setPluginData(node, "stroke", message.value);
             break;
     }
 }
@@ -108,28 +77,3 @@ onSelectionChange();
  */
 figma.on("selectionchange", onSelectionChange);
 figma.ui.onmessage = onMessage;
-
-// /**
-//  * Function to derive the parent context design system for a node.
-//  *
-//  * 1. Starting with the immediate parent node, collect recipe names
-//  * of all parent nodes for a given fill.
-//  * 2. When the document is reached, begin creating a design system
-//  */
-
-// function deriveDesignSystem<T extends SceneNode>(node: T): DesignSystem {
-//     let parent: typeof node.parent = node.parent;
-//     const recipes:  Array<FillRecipe | ""> = [];
-
-//     while (parent !== null) {
-//         recipes.push(getPluginData(parent, "fill"))
-
-//         parent = parent.parent;
-//     }
-
-//     return recipes.filter((name: string) => name.length).reduce((prev: DesignSystem, current: FillRecipe): DesignSystem => {
-//         return {...prev, backgroundColor: fillRecipies[current](prev)}
-//     }, DesignSystemDefaults);
-
-//     return {} as DesignSystem;
-// }

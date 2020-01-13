@@ -41,7 +41,6 @@
     "copy-webpack-plugin": "^5.1.1",
     "css-loader": "^3.4.1",
     "html-webpack-inline-source-plugin": "^0.0.10",
-    "mobx": "^5.15.1",
     "prettier": "1.14.3",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",

@@ -76,30 +76,23 @@ const fillRecipeNames: string[] = Object.keys(fillRecipes);
 const strokeRecipeNames: string[] = Object.keys(strokeRecipes);
 const textFillRecipeNames: string[] = Object.keys(textFillRecipes);
 
-function getRecipeFactory<
-    T extends { [key: string]: DesignSystemResolver<string | SwatchFamily> }
->(
-    recipes: T
-): (name: keyof T | string) => DesignSystemResolver<string | SwatchFamily> | null {
-    return (
-        name: keyof T | string
-    ): DesignSystemResolver<string | SwatchFamily> | null => {
-        return recipes.hasOwnProperty(name) ? recipes[name] : null;
-    };
-}
-
-/**
- * Functions to get recipe functions by name
- */
-export const getFillRecipe = getRecipeFactory(fillRecipes);
-export const getStrokeRecipe = getRecipeFactory(strokeRecipes);
-export const getTextFillRecipe = getRecipeFactory(textFillRecipes);
-
 /**
  * Functions to get recipe names.
  *
  * Each returns a new array to avoid exposing the original array to the rest of the application
  */
-export const getFillRecipeNames = (): string[] => fillRecipeNames.concat();
-export const getStrokeRecipeNames = (): string[] => strokeRecipeNames.concat();
-export const getTextFillRecipeNames = (): string[] => textFillRecipeNames.concat();
+
+// Thin async wrapper to facilitate prep for service-based recipes
+function recipeNamesFactory(names: string[]): () => Promise<string[]> {
+    return (): Promise<string[]> => {
+        return new Promise(
+            (resolve: (names: string[]) => void): void => {
+                resolve(names);
+            }
+        );
+    };
+}
+
+export const getFillRecipeNames = recipeNamesFactory(fillRecipeNames.concat());
+export const getStrokeRecipeNames = recipeNamesFactory(strokeRecipeNames.concat());
+export const getTextFillRecipeNames = recipeNamesFactory(textFillRecipeNames.concat());
