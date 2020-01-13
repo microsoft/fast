@@ -1,5 +1,3 @@
-import React from "react";
-import { PluginUIState } from "./plugin-ui.state";
 import {
     Caption,
     Divider,
@@ -10,18 +8,29 @@ import {
     Select,
     SelectOption,
 } from "@microsoft/fast-components-react-msft";
-import { stringById } from "./strings";
-import { isPluginMessageEvent, PluginMessageData } from "../messaging/common";
-import { isSetUIStateMessage } from "../messaging/canvas";
-import { SET_UI_STATE } from "src/messaging/canvas";
-import {
-    ComponentStyleSheet,
-    DesignSystemProvider,
-} from "@microsoft/fast-jss-manager-react";
 import {
     DesignSystem,
     DesignSystemDefaults,
 } from "@microsoft/fast-components-styles-msft";
+import {
+    ComponentStyleSheet,
+    DesignSystemProvider,
+} from "@microsoft/fast-jss-manager-react";
+import React from "react";
+import { isSetUIStateMessage } from "../messaging/canvas";
+import { isPluginMessageEvent, PluginMessageData } from "../messaging/common";
+import {
+    SET_FILL_RECIPE,
+    SET_STROKE_RECIPE,
+    SET_TEXT_FILL_RECIPE,
+    SetFillRecipeData,
+    SetStrokeRecipeData,
+    SetTextFillRecipeData,
+} from "../messaging/ui";
+import { PluginUIState } from "./plugin-ui.state";
+import { stringById } from "./strings";
+import { PluginData } from "../plugin-data";
+import { fillRecipies } from "src/color-recipies";
 
 const designSystem: DesignSystem = { ...DesignSystemDefaults, density: -2 };
 const dividerStyleOverrides: ComponentStyleSheet<
@@ -58,11 +67,11 @@ export class PluginUI extends React.Component<{}, PluginUIState> {
         this.state = {
             activeNodeType: null,
             fills: [],
-            activeFill: null,
+            activeFill: "",
             strokes: [],
-            activeStroke: null,
+            activeStroke: "",
             textFills: [],
-            activeTextFill: null,
+            activeTextFill: "",
         };
 
         // Register message listener to react to messages from main.ts
@@ -123,7 +132,7 @@ export class PluginUI extends React.Component<{}, PluginUIState> {
                           id: "fill",
                           selectOptions: this.state.fills,
                           active: this.state.activeFill,
-                          action: "TODO:SET_FILL_ACTION",
+                          action: SET_FILL_RECIPE,
                       })
                     : null}
                 {this.state.strokes.length > 0
@@ -132,7 +141,7 @@ export class PluginUI extends React.Component<{}, PluginUIState> {
                           id: "stroke",
                           selectOptions: this.state.strokes,
                           active: this.state.activeStroke,
-                          action: "TODO:SET_STROKE_ACTION",
+                          action: SET_STROKE_RECIPE,
                       })
                     : null}
                 {this.state.textFills.length > 0
@@ -141,22 +150,20 @@ export class PluginUI extends React.Component<{}, PluginUIState> {
                           id: "text-fill",
                           selectOptions: this.state.textFills,
                           active: this.state.activeTextFill,
-                          action: "TODO:SET_TEXT_FILL_ACTION",
+                          action: SET_TEXT_FILL_RECIPE,
                       })
                     : null}
             </div>
         );
     }
 
-    private renderRecipeSelector(options: {
+    private renderRecipeSelector<T extends any[]>(options: {
         label: string;
         id: string;
         selectOptions: string[];
-        active: string | null;
+        active: string;
         action: any;
     }): JSX.Element {
-        const defaultSelected: string = "unset";
-
         return (
             <React.Fragment>
                 <Label htmlFor={options.id} jssStyleSheet={recipeLabelStyleOverrides}>
@@ -164,13 +171,13 @@ export class PluginUI extends React.Component<{}, PluginUIState> {
                 </Label>
                 <Select
                     id={options.id}
-                    selectedItems={[
-                        options.active === null ? defaultSelected : options.active,
-                    ]}
+                    selectedItems={[options.active]}
+                    onValueChange={this.handleRecipeValueChange.bind(
+                        this,
+                        options.action
+                    )}
                 >
-                    {[defaultSelected]
-                        .concat(options.selectOptions)
-                        .map(this.renderRecipeOption)}
+                    {options.selectOptions.map(this.renderRecipeOption)}
                 </Select>
             </React.Fragment>
         );
@@ -178,5 +185,9 @@ export class PluginUI extends React.Component<{}, PluginUIState> {
 
     private renderRecipeOption(option: string): JSX.Element {
         return <SelectOption id={option} key={option} value={option} children={option} />;
+    }
+
+    private handleRecipeValueChange(type: string, value: string): void {
+        parent.postMessage({ pluginMessage: { type, value } }, "*");
     }
 }

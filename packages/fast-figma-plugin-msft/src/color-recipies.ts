@@ -50,11 +50,15 @@ export const fillRecipies = {
     neutralLayerL4,
 };
 
+export type FillRecipe = keyof typeof fillRecipies;
+
 export const strokeRecipies = {
     neutralFocus,
     neutralFocusInnerAccent,
     neutralOutline,
 };
+
+export type StrokeRecipe = keyof typeof strokeRecipies;
 
 export const textFillRecipies = {
     accentForeground,
@@ -64,3 +68,5 @@ export const textFillRecipies = {
     neutralForegroundHint,
     neutralForegroundHintLarge,
 };
+
+export type TextFillRecipe = keyof typeof textFillRecipies;

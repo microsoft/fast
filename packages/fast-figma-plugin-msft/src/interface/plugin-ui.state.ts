@@ -1,4 +1,11 @@
-import { fillRecipies, strokeRecipies, textFillRecipies } from "../color-recipies";
+import {
+    FillRecipe,
+    fillRecipies,
+    StrokeRecipe,
+    strokeRecipies,
+    TextFillRecipe,
+    textFillRecipies,
+} from "../color-recipies";
 import { autorun, computed, observable } from "mobx";
 import { canHaveFill, canHaveStroke, canHaveTextFill } from "../utilities/node";
 
@@ -14,57 +21,59 @@ export interface PluginUIState {
     /**
      * The set of fills available to the node
      */
-    fills: Array<keyof typeof fillRecipies>;
+    fills: Array<FillRecipe & "">;
 
     /**
      * The currently active fill if any, otherwise null
      */
-    activeFill: keyof typeof fillRecipies | null;
+    activeFill: FillRecipe | "";
 
     /**
      * The set of strokes available to the node
      */
-    strokes: Array<keyof typeof strokeRecipies>;
+    strokes: StrokeRecipe[];
 
     /**
      * The currently active stroke if any, otherwise null
      */
-    activeStroke: keyof typeof strokeRecipies | null;
+    activeStroke: StrokeRecipe | "";
 
     /**
      * The set of text fills available to the node
      */
-    textFills: Array<keyof typeof textFillRecipies>;
+    textFills: TextFillRecipe[];
 
     /**
      * The currently active textFill if any, otherwise null
      */
-    activeTextFill: keyof typeof textFillRecipies | null;
+    activeTextFill: TextFillRecipe | "";
 }
 
 /**
  * mobx class to manage UI state. The value of the getState method
  * is sent to the UI layer via postMessage whenever a change is made
+ *
+ * TODO: Write test to ensure sets always start with "" to denote no selection
  */
 export class PluginUIStateStore implements PluginUIState {
     @computed
-    public get strokes(): Array<keyof typeof strokeRecipies> {
+    public get strokes(): Array<StrokeRecipe & ""> {
         return this.activeNodeType !== null && canHaveStroke(this.activeNodeType)
-            ? (Object.keys(strokeRecipies) as Array<keyof typeof strokeRecipies>)
+            ? ([""].concat(Object.keys(strokeRecipies)) as any)
             : [];
     }
 
     @computed
-    public get fills(): Array<keyof typeof fillRecipies> {
+    public get fills(): Array<FillRecipe & ""> {
         return this.activeNodeType !== null && canHaveFill(this.activeNodeType)
-            ? (Object.keys(fillRecipies) as Array<keyof typeof fillRecipies>)
+            ? ([""].concat(Object.keys(fillRecipies) as FillRecipe[]) as any)
             : [];
     }
 
     @computed
-    get textFills(): Array<keyof typeof textFillRecipies> {
+    get textFills(): Array<TextFillRecipe & ""> {
         return this.activeNodeType !== null && canHaveTextFill(this.activeNodeType)
-            ? (Object.keys(textFillRecipies) as Array<keyof typeof textFillRecipies>)
+            ? ([""].concat(Object.keys(textFillRecipies) as TextFillRecipe[]) as any)
             : [];
     }
 
@@ -72,13 +81,13 @@ export class PluginUIStateStore implements PluginUIState {
     public activeNodeType: NodeType | null = null;
 
     @observable
-    public activeFill: (keyof typeof fillRecipies) | null = null;
+    public activeFill: (keyof typeof fillRecipies) | "" = "";
 
     @observable
-    public activeStroke: (keyof typeof strokeRecipies) | null = null;
+    public activeStroke: (keyof typeof strokeRecipies) | "" = "";
 
     @observable
-    public activeTextFill: (keyof typeof textFillRecipies) | null = null;
+    public activeTextFill: (keyof typeof textFillRecipies) | "" = "";
 
     constructor(onChange: (state: PluginUIState) => void) {
         autorun(() => {

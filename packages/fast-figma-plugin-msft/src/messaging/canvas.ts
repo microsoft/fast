@@ -5,9 +5,7 @@ import { PluginUIState } from "../interface/plugin-ui.state";
  * Message utilities for setting UI state from the main application
  */
 export const SET_UI_STATE = "CANVAS_EVENT_SET_UI_STATE";
-export interface SetUIStateData {
-    type: PluginMessageData<typeof SET_UI_STATE>;
-
+export interface SetUIStateData extends PluginMessageData<typeof SET_UI_STATE> {
     /**
      * Serializable state data to be parsed and
      * set by the UI component
