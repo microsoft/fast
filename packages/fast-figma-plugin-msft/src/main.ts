@@ -9,6 +9,8 @@ import {
     SetStrokeRecipeData,
     SetTextFillRecipeData,
 } from "./messaging/ui";
+import { DesignSystem } from "@microsoft/fast-components-styles-msft";
+import { DesignSystemDefaults } from "@microsoft/fast-components-styles-msft";
 
 /**
  * Show UI on plugin launch
@@ -106,3 +108,28 @@ onSelectionChange();
  */
 figma.on("selectionchange", onSelectionChange);
 figma.ui.onmessage = onMessage;
+
+// /**
+//  * Function to derive the parent context design system for a node.
+//  *
+//  * 1. Starting with the immediate parent node, collect recipe names
+//  * of all parent nodes for a given fill.
+//  * 2. When the document is reached, begin creating a design system
+//  */
+
+// function deriveDesignSystem<T extends SceneNode>(node: T): DesignSystem {
+//     let parent: typeof node.parent = node.parent;
+//     const recipes:  Array<FillRecipe | ""> = [];
+
+//     while (parent !== null) {
+//         recipes.push(getPluginData(parent, "fill"))
+
+//         parent = parent.parent;
+//     }
+
+//     return recipes.filter((name: string) => name.length).reduce((prev: DesignSystem, current: FillRecipe): DesignSystem => {
+//         return {...prev, backgroundColor: fillRecipies[current](prev)}
+//     }, DesignSystemDefaults);
+
+//     return {} as DesignSystem;
+// }

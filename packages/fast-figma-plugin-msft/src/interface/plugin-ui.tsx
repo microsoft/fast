@@ -23,14 +23,9 @@ import {
     SET_FILL_RECIPE,
     SET_STROKE_RECIPE,
     SET_TEXT_FILL_RECIPE,
-    SetFillRecipeData,
-    SetStrokeRecipeData,
-    SetTextFillRecipeData,
 } from "../messaging/ui";
 import { PluginUIState } from "./plugin-ui.state";
 import { stringById } from "./strings";
-import { PluginData } from "../plugin-data";
-import { fillRecipies } from "src/color-recipies";
 import { ListboxItemProps } from "@microsoft/fast-components-react-base";
 
 const designSystem: DesignSystem = { ...DesignSystemDefaults, density: -2 };
