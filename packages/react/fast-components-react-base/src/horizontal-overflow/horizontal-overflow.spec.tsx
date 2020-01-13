@@ -541,15 +541,6 @@ describe("horizontal overflow", (): void => {
 
         expect(renderedWithImages.instance().state.itemsHeight).toBe(0);
     });
-    test("should execute a scroll animation on the element", () => {
-        const renderedWithImages: any = mount(
-            <HorizontalOverflow managedClasses={managedClasses}>
-                {imageSet1}
-            </HorizontalOverflow>
-        );
-
-        expect(renderedWithImages.instance()["scrollContent"](50, 0)).toBe(undefined);
-    });
     test("should allow clicks on previous and next buttons", () => {
         const renderedWithImagesAndNextAndPrevious: any = mount(
             <HorizontalOverflow managedClasses={managedClasses}>
@@ -855,6 +846,23 @@ describe("horizontal overflow", (): void => {
         }
         rendered.instance()["updateScrollAnimation"]();
         expect(rendered.instance().isScrollAnimating).toEqual(false);
+    });
+    test("scrollContent properly configures a smooth scrolling animation", () => {
+        const maxScrollFn: any = jest.fn();
+        maxScrollFn.mockReturnValue(1000);
+
+        const rendered: any = mount(
+            <HorizontalOverflow managedClasses={managedClasses}>
+                {imageSet1}
+            </HorizontalOverflow>
+        );
+        expect(rendered.instance().isScrollAnimating).toEqual(false);
+        rendered.instance().getMaxScrollDistance = maxScrollFn;
+        rendered.instance().requestFrame = jest.fn();
+        rendered.instance()["scrollContent"](0, 100);
+        expect(rendered.instance().isScrollAnimating).toEqual(true);
+        expect(rendered.instance().currentScrollAnimStartPosition).toEqual(0);
+        expect(rendered.instance().currentScrollAnimEndPosition).toEqual(100);
     });
     test("scrollContent properly configures a smooth scrolling animation", () => {
         const maxScrollFn: any = jest.fn();

@@ -14,9 +14,9 @@ import {
 } from "../utilities";
 import {
     StackPanelHandledProps,
+    stackPanelOrientation,
     StackPanelProps,
     StackPanelUnhandledProps,
-    stackPanelOrientation,
 } from "./stack-panel.props";
 import { isFunction } from "util";
 
@@ -40,7 +40,6 @@ class StackPanel extends Foundation<
     StackPanelState
 > {
     public static displayName: string = `${DisplayNamePrefix}StackPanel`;
-    private static DirectionAttributeName: string = "dir";
 
     public static defaultProps: Partial<StackPanelProps> = {
         managedClasses: {},
@@ -54,6 +53,8 @@ class StackPanel extends Foundation<
         enableSmoothScrolling: true,
         scrollDuration: 500,
     };
+
+    private static DirectionAttributeName: string = "dir";
 
     protected handledProps: HandledProps<StackPanelHandledProps> = {
         nextItemPeek: void 0,
@@ -331,6 +332,9 @@ class StackPanel extends Foundation<
      *  Get the size of the viewport along the panel's axis
      */
     private getViewportSpan = (): number => {
+        if (isNil(this.rootElement.current)) {
+            return 0;
+        }
         if (this.props.orientation === stackPanelOrientation.horizontal) {
             return this.rootElement.current.clientWidth;
         } else {
@@ -706,13 +710,11 @@ class StackPanel extends Foundation<
      * (including peek)
      */
     private getScrollIntoViewPosition = (index: number): number => {
-        if (this.itemPositions.length < this.props.initiallyVisibleItemIndex) {
+        if (index >= this.itemPositions.length) {
             return 0;
         }
 
-        const itemPosition: ItemPosition = this.itemPositions[
-            this.props.initiallyVisibleItemIndex
-        ];
+        const itemPosition: ItemPosition = this.itemPositions[index];
         const peek: number = this.getScrollPeek(itemPosition.span);
         const newScrollPosition: number = Math.max(
             0,
