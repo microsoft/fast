@@ -16,14 +16,4 @@ export interface StackPanelClassNameContract {
      *
      */
     stackPanel__isScrolling?: string;
-
-    /**
-     *
-     */
-    stackPanel_item?: string;
-
-    /**
-     *
-     */
-    stackPanel_item__focusWithin?: string;
 }

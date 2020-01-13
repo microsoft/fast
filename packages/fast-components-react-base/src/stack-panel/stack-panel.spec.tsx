@@ -3,13 +3,22 @@ import Adapter from "enzyme-adapter-react-16";
 import { configure, mount, shallow } from "enzyme";
 import Button from "../button";
 import { ConstructibleResizeObserver, DisplayNamePrefix } from "../utilities";
-import StackPanel, { StackPanelUnhandledProps } from "./stack-panel";
+import StackPanel, {
+    StackPanelClassNameContract,
+    StackPanelUnhandledProps,
+} from "./stack-panel";
 import { ItemSpanOverride, stackPanelOrientation } from "./stack-panel.props";
 
 /*
  * Configure Enzyme
  */
 configure({ adapter: new Adapter() });
+
+const managedClasses: StackPanelClassNameContract = {
+    stackPanel: "stackPanel",
+    stackPanel__isScrolling: "stackPanel__isScrolling",
+    stackPanel_itemContainer: "stackPanel_itemContainer",
+};
 
 const itemSpans: ItemSpanOverride = {
     0: 120,
