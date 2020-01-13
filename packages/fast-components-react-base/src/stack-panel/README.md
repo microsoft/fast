@@ -1,5 +1,7 @@
 ## Stack Panel
 
+NOTE: this component is in initial development and should not yet be considered stable.
+
 The *stack panel* component is a container that enables smooth scrolling and virtualization of child elements arranged horizontally or vertically.
 
 ### Usage

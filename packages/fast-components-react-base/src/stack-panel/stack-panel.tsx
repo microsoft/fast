@@ -130,6 +130,10 @@ class StackPanel extends Foundation<
      * Renders the component
      */
     public render(): React.ReactElement<HTMLDivElement> {
+        const {
+            stackPanel_itemContainer,
+        }: StackPanelClassNameContract = this.props.managedClasses;
+
         return (
             <div
                 {...this.unhandledProps()}
@@ -139,7 +143,7 @@ class StackPanel extends Foundation<
                 onScrollCapture={this.onScrollCapture}
             >
                 <div
-                    // className={classNames(stackPanel_itemContainer)}
+                    className={classNames(stackPanel_itemContainer)}
                     ref={this.itemContainerElement}
                     tabIndex={-1}
                     style={{
@@ -238,9 +242,14 @@ class StackPanel extends Foundation<
      * Create class-names
      */
     protected generateClassNames(): string {
-        const { stackPanel }: StackPanelClassNameContract = this.props.managedClasses;
+        const {
+            stackPanel,
+            stackPanel__isScrolling,
+        }: StackPanelClassNameContract = this.props.managedClasses;
 
-        return super.generateClassNames(classNames(stackPanel));
+        return super.generateClassNames(
+            classNames(stackPanel, [stackPanel__isScrolling, this.state.isScrolling])
+        );
     }
 
     /**
