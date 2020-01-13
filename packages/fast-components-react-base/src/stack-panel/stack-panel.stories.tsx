@@ -3,7 +3,7 @@ import React from "react";
 import StackPanel, { StackPanelProps } from "./";
 import { isNil } from "lodash-es";
 import Foundation from "@microsoft/fast-components-foundation-react";
-import { stackPanelOrientation, ItemSpanOverride } from "./stack-panel.props";
+import { ItemSpanOverride, stackPanelOrientation } from "./stack-panel.props";
 import Button from "../button";
 
 const itemSpans: ItemSpanOverride = {
@@ -35,9 +35,10 @@ const horizontalImages: JSX.Element[] = [
     "https://placehold.it/110x100/414141/?text=11",
     "https://placehold.it/270x100?text=12",
 ].map(
-    (src: string): JSX.Element => {
+    (src: string, index: number): JSX.Element => {
         return (
             <Button
+                key={index}
                 style={{
                     padding: "0px",
                     height: "100px",
@@ -70,9 +71,10 @@ const verticalImages: JSX.Element[] = [
     "https://placehold.it/100x110/414141/?text=11",
     "https://placehold.it/100x270?text=12",
 ].map(
-    (src: string): JSX.Element => {
+    (src: string, index: number): JSX.Element => {
         return (
             <Button
+                key={index}
                 style={{
                     padding: "0px",
                     width: "100px",
@@ -105,9 +107,10 @@ const uniformImages: JSX.Element[] = [
     "https://placehold.it/100x100/414141/?text=11",
     "https://placehold.it/100x100?text=12",
 ].map(
-    (src: string): JSX.Element => {
+    (src: string, index: number): JSX.Element => {
         return (
             <Button
+                key={index}
                 style={{
                     padding: "0px",
                     width: "100px",
