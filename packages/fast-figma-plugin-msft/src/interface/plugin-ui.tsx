@@ -31,6 +31,7 @@ import { PluginUIState } from "./plugin-ui.state";
 import { stringById } from "./strings";
 import { PluginData } from "../plugin-data";
 import { fillRecipies } from "src/color-recipies";
+import { ListboxItemProps } from "@microsoft/fast-components-react-base";
 
 const designSystem: DesignSystem = { ...DesignSystemDefaults, density: -2 };
 const dividerStyleOverrides: ComponentStyleSheet<
@@ -176,6 +177,7 @@ export class PluginUI extends React.Component<{}, PluginUIState> {
                         this,
                         options.action
                     )}
+                    displayStringFormatter={this.recipeSelectorDisplayStringFormatter}
                 >
                     {options.selectOptions.map(this.renderRecipeOption)}
                 </Select>
@@ -184,10 +186,25 @@ export class PluginUI extends React.Component<{}, PluginUIState> {
     }
 
     private renderRecipeOption(option: string): JSX.Element {
-        return <SelectOption id={option} key={option} value={option} children={option} />;
+        return (
+            <SelectOption
+                id={option}
+                key={option}
+                value={option}
+                children={option === "" ? "-" : option}
+            />
+        );
     }
 
     private handleRecipeValueChange(type: string, value: string): void {
         parent.postMessage({ pluginMessage: { type, value } }, "*");
+    }
+
+    private recipeSelectorDisplayStringFormatter(
+        selectedOptions: ListboxItemProps[]
+    ): string {
+        return selectedOptions
+            .map((option: ListboxItemProps): string => option.children as string)
+            .join(" ");
     }
 }
