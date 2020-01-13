@@ -406,7 +406,7 @@ describe("stack panel", (): void => {
         expect(scrollContentFn.mock.calls[0][1]).toBe(350);
     });
 
-    test("on onItemFocus correctly scrolls content - horizontal, element left of viewport ", () => {
+    test("on onItemFocus correctly scrolls content - horizontal, element left of viewport", () => {
         const rendered: any = mount(
             <StackPanel orientation={stackPanelOrientation.horizontal} nextItemPeek={0}>
                 {sampleStackPanelItems}
@@ -429,5 +429,37 @@ describe("stack panel", (): void => {
         });
         expect(scrollContentFn.mock.calls[0][0]).toBe(300);
         expect(scrollContentFn.mock.calls[0][1]).toBe(100);
+    });
+
+    test("Root classnames are applied", () => {
+        const rendered: any = mount(
+            <StackPanel managedClasses={managedClasses}>
+                {sampleStackPanelItems}
+            </StackPanel>
+        );
+        expect(rendered.instance().rootElement.current.className).toContain(
+            managedClasses.stackPanel
+        );
+        expect(rendered.instance().rootElement.current.className).toContain(
+            managedClasses.stackPanel__isScrolling
+        );
+    });
+
+    test("Item container classname is applied", () => {
+        const rendered: any = mount(
+            <StackPanel managedClasses={managedClasses}>
+                {sampleStackPanelItems}
+            </StackPanel>
+        );
+        expect(rendered.instance().itemContainerElement.current.className).toContain(
+            managedClasses.stackPanel_itemContainer
+        );
+    });
+
+    test("isScrolling classname not applied when component does not need to scroll", () => {
+        const rendered: any = mount(<StackPanel managedClasses={managedClasses} />);
+        expect(rendered.instance().rootElement.current.className).not.toContain(
+            managedClasses.stackPanel__isScrolling
+        );
     });
 });
