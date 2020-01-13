@@ -347,6 +347,24 @@ describe("horizontal overflow", (): void => {
             0.0004
         );
     });
+    test("should ease the animation correctly when at animation start time", () => {
+        const renderedWithImages: any = mount(
+            <HorizontalOverflow managedClasses={managedClasses}>
+                {imageSet1}
+            </HorizontalOverflow>
+        );
+
+        expect(renderedWithImages.instance()["easeInOutQuad"](0, 0, 0.5, 50)).toBe(0);
+    });
+    test("should ease the animation correctly when at animation end time", () => {
+        const renderedWithImages: any = mount(
+            <HorizontalOverflow managedClasses={managedClasses}>
+                {imageSet1}
+            </HorizontalOverflow>
+        );
+
+        expect(renderedWithImages.instance()["easeInOutQuad"](50, 0, 0.5, 50)).toBe(0.5);
+    });
     test("getScrollAnimationPosition returns correct start and end values", () => {
         const renderedWithImages: any = mount(
             <HorizontalOverflow managedClasses={managedClasses}>
@@ -534,19 +552,6 @@ describe("horizontal overflow", (): void => {
         renderedWithImages.find("div.foo").simulate("load", {});
 
         expect(renderedWithImages.instance().state.itemsHeight).toBe(0);
-    });
-    test("should execute a scroll animation on the element", () => {
-        const renderedWithImages: any = mount(
-            <HorizontalOverflow managedClasses={managedClasses}>
-                {imageSet1}
-            </HorizontalOverflow>
-        );
-
-        const itemsElement: HTMLDivElement = renderedWithImages.find(
-            ".horizontal-overflow-items-class"
-        );
-
-        expect(renderedWithImages.instance()["scrollContent"](50, 0)).toBe(undefined);
     });
     test("should allow clicks on previous and next buttons", () => {
         const renderedWithImagesAndNextAndPrevious: any = mount(
@@ -791,6 +796,16 @@ describe("horizontal overflow", (): void => {
         rendered.instance()["setScrollPosition"](100);
         expect(rendered.instance()["getScrollPosition"]()).toEqual(100);
     });
+    test("settting and getting scroll position works correctly in rtl", (): void => {
+        const rendered: any = mount(
+            <HorizontalOverflow managedClasses={managedClasses} dir="rtl">
+                {imageSet1}
+            </HorizontalOverflow>
+        );
+        expect(rendered.instance()["getScrollPosition"]()).toEqual(-0);
+        rendered.instance()["setScrollPosition"](100);
+        expect(rendered.instance()["getScrollPosition"]()).toEqual(100);
+    });
     test("getting and setting scroll position returns 0 when horizontalOverflowItemsRef isn't populated ", (): void => {
         const rendered: any = mount(
             <HorizontalOverflow managedClasses={managedClasses}>
@@ -843,6 +858,23 @@ describe("horizontal overflow", (): void => {
         }
         rendered.instance()["updateScrollAnimation"]();
         expect(rendered.instance().isScrollAnimating).toEqual(false);
+    });
+    test("scrollContent properly configures a smooth scrolling animation", () => {
+        const maxScrollFn: any = jest.fn();
+        maxScrollFn.mockReturnValue(1000);
+
+        const rendered: any = mount(
+            <HorizontalOverflow managedClasses={managedClasses}>
+                {imageSet1}
+            </HorizontalOverflow>
+        );
+        expect(rendered.instance().isScrollAnimating).toEqual(false);
+        rendered.instance().getMaxScrollDistance = maxScrollFn;
+        rendered.instance().requestFrame = jest.fn();
+        rendered.instance()["scrollContent"](0, 100);
+        expect(rendered.instance().isScrollAnimating).toEqual(true);
+        expect(rendered.instance().currentScrollAnimStartPosition).toEqual(0);
+        expect(rendered.instance().currentScrollAnimEndPosition).toEqual(100);
     });
 });
 /* tslint:enable:no-string-literal */
