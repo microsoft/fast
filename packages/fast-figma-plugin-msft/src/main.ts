@@ -12,7 +12,7 @@ import { getActiveNode, setFill, setStroke } from "./utilities/node";
 import { getDesignSystem } from "./utilities/design-system";
 import { ColorRGBA64, parseColorHexRGB } from "@microsoft/fast-colors";
 import { DesignSystem } from "@microsoft/fast-components-styles-msft";
-import { getFillValue, getTextFillValue, getStrokeValue } from "./color-recipies";
+import { getFillValue, getStrokeValue, getTextFillValue } from "./color-recipies";
 
 /**
  * Show UI on plugin launch
