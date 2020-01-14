@@ -53,6 +53,10 @@ async function onMessage(
         if (color !== null) {
             setFill(node as any, color);
         }
+
+        // TODO we need to find all child nodes to update when this happens...
+        // There could be many nodes though, so we need to find a way to do this efficiently
+        // Perhaphs store edited nodes in a WeakMap or somthing?
     } else if (message.type === SET_TEXT_FILL_RECIPE) {
         setPluginData(node, "textFill", message.value);
         setPluginUIState(getPluginUIState(node));
