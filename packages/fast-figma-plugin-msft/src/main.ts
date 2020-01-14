@@ -8,7 +8,11 @@ import {
     SetTextFillRecipeData,
 } from "./messaging/ui";
 import { setPluginData } from "./plugin-data";
-import { getActiveNode } from "./utilities/node";
+import { getActiveNode, setFill, setStroke } from "./utilities/node";
+import { getDesignSystem } from "./utilities/design-system";
+import { ColorRGBA64, parseColorHexRGB } from "@microsoft/fast-colors";
+import { DesignSystem } from "@microsoft/fast-components-styles-msft";
+import { getFillValue, getTextFillValue, getStrokeValue } from "./color-recipies";
 
 /**
  * Show UI on plugin launch
@@ -25,9 +29,9 @@ function onSelectionChange(): void {
     setPluginUIState(getPluginUIState(node));
 }
 
-function onMessage(
+async function onMessage(
     message: SetFillRecipeData | SetTextFillRecipeData | SetStrokeRecipeData
-): void {
+): Promise<void> {
     const node: SceneNode | null = getActiveNode();
 
     /**
@@ -38,19 +42,36 @@ function onMessage(
         return;
     }
 
-    switch (message.type) {
-        case SET_FILL_RECIPE:
-            setPluginData(node, "fill", message.value);
-            setPluginUIState(getPluginUIState(node));
-            break;
-        case SET_TEXT_FILL_RECIPE:
-            setPluginData(node, "textFill", message.value);
-            setPluginUIState(getPluginUIState(node));
-            break;
-        case SET_STROKE_RECIPE:
-            setPluginData(node, "stroke", message.value);
-            setPluginUIState(getPluginUIState(node));
-            break;
+    const designSystem: DesignSystem = await getDesignSystem(node);
+
+    if (message.type === SET_FILL_RECIPE) {
+        setPluginData(node, "fill", message.value);
+        setPluginUIState(getPluginUIState(node));
+        const hex: string = await getFillValue(message.value, designSystem);
+        const color: ColorRGBA64 | null = parseColorHexRGB(hex);
+
+        if (color !== null) {
+            setFill(node as any, color);
+        }
+    } else if (message.type === SET_TEXT_FILL_RECIPE) {
+        setPluginData(node, "textFill", message.value);
+        setPluginUIState(getPluginUIState(node));
+        setPluginUIState(getPluginUIState(node));
+        const hex: string = await getTextFillValue(message.value, designSystem);
+        const color: ColorRGBA64 | null = parseColorHexRGB(hex);
+
+        if (color !== null) {
+            setFill(node as any, color);
+        }
+    } else if (message.type === SET_STROKE_RECIPE) {
+        setPluginData(node, "stroke", message.value);
+        setPluginUIState(getPluginUIState(node));
+        const hex: string = await getStrokeValue(message.value, designSystem);
+        const color: ColorRGBA64 | null = parseColorHexRGB(hex);
+
+        if (color !== null) {
+            setStroke(node as any, color);
+        }
     }
 }
 

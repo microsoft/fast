@@ -96,7 +96,10 @@ export class PluginUI extends React.Component<{}, PluginUIState> {
                     </div>
                     <div>
                         <Divider jssStyleSheet={dividerStyleOverrides} />
-                        <Caption>{this.state.activeNodeType}</Caption>
+                        <Caption>
+                            {this.state.activeNodeType ||
+                                stringById("invalidActiveNodeType")}
+                        </Caption>
                     </div>
                 </div>
             </DesignSystemProvider>

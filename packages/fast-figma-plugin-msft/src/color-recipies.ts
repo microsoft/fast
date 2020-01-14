@@ -100,12 +100,12 @@ function getRecipeValueFactory(recipes: {
 }): (name: string, designSystem: DesignSystem) => Promise<string> {
     return (name: string, designSystem: DesignSystem): Promise<string> => {
         return new Promise(
-            (resolve: (value: string) => void, reject: () => void): void => {
+            (resolve: (value: string) => void, reject: (e: Error) => void): void => {
                 if (recipes.hasOwnProperty(name) && typeof recipes[name] === "function") {
                     const value: string | SwatchFamily = recipes[name](designSystem);
                     resolve(typeof value === "string" ? value : value.rest); // TODO: this hardcodes a "rest" state for all recipes. We will eventually need to open this up
                 } else {
-                    reject();
+                    reject(new Error(`Could not find recipe '${name}'`));
                 }
             }
         );
