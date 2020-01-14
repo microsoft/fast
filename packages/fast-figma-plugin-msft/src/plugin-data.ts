@@ -1,9 +1,9 @@
 import { getPluginUIState, setPluginUIState } from "./interface/plugin-ui.state";
+import { getDesignSystem } from "./utilities/design-system";
 
 /**
  * Describes the data stored by the plugin with https://www.figma.com/plugin-docs/api/properties/nodes-setplugindata/
  */
-
 export interface PluginData {
     fill: string;
     textFill: string;
@@ -27,8 +27,4 @@ export function setPluginData<T extends keyof PluginData>(
     value: PluginData[T]
 ): void {
     node.setPluginData(key, value);
-
-    // Update the UI when we make changes to plugin data. We may need to adjust this
-    // to only update UI on certain changes
-    setPluginUIState(getPluginUIState(node));
 }

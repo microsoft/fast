@@ -1,6 +1,5 @@
-import { PluginMessageData } from "./common";
-import { fillRecipies, strokeRecipies, textFillRecipies } from "src/color-recipies";
 import { PluginData } from "../plugin-data";
+import { PluginMessageData } from "./common";
 
 /**
  * Message utilities for setting UI state from the main application

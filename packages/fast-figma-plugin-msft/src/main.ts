@@ -1,10 +1,4 @@
-import { getPluginData, setPluginData } from "./plugin-data";
-import { setUIStateDataMessageCreator } from "./messaging/canvas";
-import {
-    PluginUIState,
-    setPluginUIState,
-    getPluginUIState,
-} from "./interface/plugin-ui.state";
+import { getPluginUIState, setPluginUIState } from "./interface/plugin-ui.state";
 import {
     SET_FILL_RECIPE,
     SET_STROKE_RECIPE,
@@ -13,8 +7,8 @@ import {
     SetStrokeRecipeData,
     SetTextFillRecipeData,
 } from "./messaging/ui";
-import { DesignSystem } from "@microsoft/fast-components-styles-msft";
-import { DesignSystemDefaults } from "@microsoft/fast-components-styles-msft";
+import { setPluginData } from "./plugin-data";
+import { getActiveNode } from "./utilities/node";
 
 /**
  * Show UI on plugin launch
@@ -22,16 +16,6 @@ import { DesignSystemDefaults } from "@microsoft/fast-components-styles-msft";
 figma.showUI(__html__, {
     height: 600,
 });
-
-/**
- * Returns the selected node if a single node is
- * selected, otherwise returns null
- */
-function getActiveNode(): SceneNode | null {
-    const { selection }: typeof figma.currentPage = figma.currentPage;
-
-    return selection.length === 1 ? selection[0] : null;
-}
 
 /**
  * Handles node selection changes.
@@ -57,12 +41,15 @@ function onMessage(
     switch (message.type) {
         case SET_FILL_RECIPE:
             setPluginData(node, "fill", message.value);
+            setPluginUIState(getPluginUIState(node));
             break;
         case SET_TEXT_FILL_RECIPE:
             setPluginData(node, "textFill", message.value);
+            setPluginUIState(getPluginUIState(node));
             break;
         case SET_STROKE_RECIPE:
             setPluginData(node, "stroke", message.value);
+            setPluginUIState(getPluginUIState(node));
             break;
     }
 }

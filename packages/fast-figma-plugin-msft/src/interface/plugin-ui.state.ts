@@ -3,10 +3,9 @@ import {
     getStrokeRecipeNames,
     getTextFillRecipeNames,
 } from "../color-recipies";
-import { autorun, computed, observable } from "mobx";
-import { canHaveFill, canHaveStroke, canHaveTextFill } from "../utilities/node";
-import { getPluginData } from "../plugin-data";
 import { setUIStateDataMessageCreator } from "../messaging/canvas";
+import { getPluginData } from "../plugin-data";
+import { canHaveFill, canHaveStroke, canHaveTextFill } from "../utilities/node";
 
 /**
  * Define the react state object for the Plugin UI
@@ -48,35 +47,49 @@ export interface PluginUIState {
     activeTextFill: string;
 }
 
-function nodeIsNull<T>(node: T | null): node is null {
-    return node === null;
+const defaultState: PluginUIState = {
+    activeNodeType: null,
+    activeFill: "",
+    activeStroke: "",
+    activeTextFill: "",
+    fills: [],
+    strokes: [],
+    textFills: [],
+};
+
+/**
+ * Derives a stage object to provide to the Plugin UI.
+ */
+export async function getPluginUIState(node: BaseNode | null): Promise<PluginUIState> {
+    if (node === null) {
+        return defaultState;
+    } else {
+        const activeNodeType: null | NodeType = node === null ? null : node.type;
+
+        return {
+            activeNodeType,
+            activeFill: node === null ? "" : getPluginData(node, "fill"),
+            activeStroke: node === null ? "" : getPluginData(node, "stroke"),
+            activeTextFill: node === null ? "" : getPluginData(node, "textFill"),
+            fills:
+                activeNodeType !== null && canHaveFill(activeNodeType)
+                    ? [""].concat(await getFillRecipeNames())
+                    : [],
+            strokes:
+                activeNodeType !== null && canHaveStroke(activeNodeType)
+                    ? [""].concat(await getStrokeRecipeNames())
+                    : [],
+            textFills:
+                activeNodeType !== null && canHaveTextFill(activeNodeType)
+                    ? [""].concat(await getTextFillRecipeNames())
+                    : [],
+        };
+    }
 }
 
-export async function getPluginUIState<T extends SceneNode>(
-    node: T | null
-): Promise<PluginUIState> {
-    const activeNodeType: null | NodeType = node === null ? null : node.type;
-
-    return {
-        activeNodeType,
-        activeFill: node === null ? "" : getPluginData(node, "fill"),
-        activeStroke: node === null ? "" : getPluginData(node, "stroke"),
-        activeTextFill: node === null ? "" : getPluginData(node, "textFill"),
-        fills:
-            activeNodeType !== null && canHaveFill(activeNodeType)
-                ? [""].concat(await getFillRecipeNames())
-                : [],
-        strokes:
-            activeNodeType !== null && canHaveStroke(activeNodeType)
-                ? [""].concat(await getStrokeRecipeNames())
-                : [],
-        textFills:
-            activeNodeType !== null && canHaveTextFill(activeNodeType)
-                ? [""].concat(await getTextFillRecipeNames())
-                : [],
-    };
-}
-
+/**
+ * Derives the UI state and sends the state object to the Plugin UI
+ */
 export function setPluginUIState(stateResolver: Promise<PluginUIState>): void {
     stateResolver
         .then(

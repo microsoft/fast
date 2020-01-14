@@ -5,6 +5,7 @@ import {
     accentForegroundCut,
     accentForegroundCutLarge,
     accentForegroundLarge,
+    DesignSystem,
     DesignSystemResolver,
     neutralFill,
     neutralFillCard,
@@ -78,11 +79,8 @@ const textFillRecipeNames: string[] = Object.keys(textFillRecipes);
 
 /**
  * Functions to get recipe names.
- *
- * Each returns a new array to avoid exposing the original array to the rest of the application
+ * The exported functions are async to prep for service-based recipes
  */
-
-// Thin async wrapper to facilitate prep for service-based recipes
 function recipeNamesFactory(names: string[]): () => Promise<string[]> {
     return (): Promise<string[]> => {
         return new Promise(
@@ -92,6 +90,31 @@ function recipeNamesFactory(names: string[]): () => Promise<string[]> {
         );
     };
 }
+
+/**
+ * Functions to get the value of a recipe by name
+ * The exported functions are async to prep for service-based recipes
+ */
+function getRecipeValueFactory(recipes: {
+    [key: string]: DesignSystemResolver<string | SwatchFamily>;
+}): (name: string, designSystem: DesignSystem) => Promise<string> {
+    return (name: string, designSystem: DesignSystem): Promise<string> => {
+        return new Promise(
+            (resolve: (value: string) => void, reject: () => void): void => {
+                if (recipes.hasOwnProperty(name) && typeof recipes[name] === "function") {
+                    const value: string | SwatchFamily = recipes[name](designSystem);
+                    resolve(typeof value === "string" ? value : value.rest); // TODO: this hardcodes a "rest" state for all recipes. We will eventually need to open this up
+                } else {
+                    reject();
+                }
+            }
+        );
+    };
+}
+
+export const getFillValue = getRecipeValueFactory(fillRecipes);
+export const getStrokeValue = getRecipeValueFactory(strokeRecipes);
+export const getTextFillValue = getRecipeValueFactory(textFillRecipes);
 
 export const getFillRecipeNames = recipeNamesFactory(fillRecipeNames.concat());
 export const getStrokeRecipeNames = recipeNamesFactory(strokeRecipeNames.concat());

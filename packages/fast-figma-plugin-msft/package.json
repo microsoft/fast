@@ -5,9 +5,8 @@
   "sideEffects": false,
   "private": true,
   "scripts": {
-    "build": "webpack --progress --mode=production --checkTs=false",
-    "build:test": "webpack --progress --mode=production --checkTs=true",
-    "watch": "webpack --progress --watch --mode=production --checkTs=false",
+    "build": "webpack --progress --mode=production",
+    "watch": "webpack --progress --watch --mode=production",
     "prettier": "prettier --config ../../.prettierrc --write \"**/*.{ts,tsx}\"",
     "prettier:diff": "prettier --config ../../.prettierrc \"**/*.{ts,tsx}\" --list-different",
     "test": "yarn tslint && yarn build:test",

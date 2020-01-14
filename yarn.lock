@@ -11888,11 +11888,6 @@ mkdirp@*, mkdirp@0.5.1, mkdirp@0.x, mkdirp@^0.5.0, mkdirp@^0.5.1, mkdirp@~0.5.0,
   dependencies:
     minimist "0.0.8"
 
-mobx@^5.15.1:
-  version "5.15.1"
-  resolved "https://registry.yarnpkg.com/mobx/-/mobx-5.15.1.tgz#ba07807808b3f9dc3e6b0a74ba69bcccc6df4ece"
-  integrity sha512-o4aN0GqKcDmKwu2wVsqbujU4F63ZvmbBLSc7WhzuAu9S9eF2wgNjqIkzrb/kbY3C9/mGYG4k1M0KbCuG1GJ7IQ==
-
 modernizr-webpack-plugin@^1.0.5:
   version "1.0.7"
   resolved "https://registry.yarnpkg.com/modernizr-webpack-plugin/-/modernizr-webpack-plugin-1.0.7.tgz#a82e800b2ea2ba8172ae190b5c4bd4d93fd82537"
