@@ -6,6 +6,7 @@ import styles, {
     SectionLinkControlClassNameContract,
 } from "./control.section-link.style";
 import { SectionLinkControlProps } from "./control.section-link.props";
+import { isDefault } from "../utilities";
 
 /**
  * Form control definition
@@ -27,6 +28,7 @@ class SectionLinkControl extends React.Component<
         const {
             sectionLinkControl,
             sectionLinkControl__disabled,
+            sectionLinkControl__default,
             sectionLinkControl__invalid,
         }: SectionLinkControlClassNameContract = this.props.managedClasses;
 
@@ -35,7 +37,11 @@ class SectionLinkControl extends React.Component<
                 className={classNames(
                     sectionLinkControl,
                     [sectionLinkControl__disabled, this.props.disabled],
-                    [sectionLinkControl__invalid, this.props.invalidMessage !== ""]
+                    [sectionLinkControl__invalid, this.props.invalidMessage !== ""],
+                    [
+                        sectionLinkControl__default,
+                        isDefault(this.props.value, this.props.default),
+                    ]
                 )}
                 onClick={this.handleUpdateSection}
             >

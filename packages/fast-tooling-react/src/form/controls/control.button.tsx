@@ -4,6 +4,7 @@ import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-
 import styles, { ButtonControlClassNameContract } from "./control.button.style";
 import { ButtonControlProps } from "./control.button.props";
 import { classNames } from "@microsoft/fast-web-utilities";
+import { isDefault } from "../utilities";
 
 /**
  * Form control definition
@@ -25,10 +26,17 @@ class ButtonControl extends React.Component<
         return (
             <React.Fragment>
                 <button
-                    className={classNames(this.props.managedClasses.buttonControl, [
-                        this.props.managedClasses.buttonControl__disabled,
-                        this.props.disabled,
-                    ])}
+                    className={classNames(
+                        this.props.managedClasses.buttonControl,
+                        [
+                            this.props.managedClasses.buttonControl__disabled,
+                            this.props.disabled,
+                        ],
+                        [
+                            this.props.managedClasses.buttonControl__default,
+                            isDefault(this.props.value, this.props.default),
+                        ]
+                    )}
                     ref={this.props.elementRef as React.Ref<HTMLButtonElement>}
                     onBlur={this.props.updateValidity}
                     onFocus={this.props.reportValidity}

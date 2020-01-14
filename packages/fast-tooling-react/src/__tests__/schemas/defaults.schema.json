@@ -61,6 +61,31 @@
                 "correct",
                 "correct"
             ]
+        },
+        "f": {
+            "title": "With default",
+            "type": "string",
+            "enum": [
+                "foo",
+                "bar"
+            ],
+            "default": "bar"
+        },
+        "g": {
+            "title": "With default",
+            "type": "boolean",
+            "default": true
+        },
+        "h": {
+            "title": "With default",
+            "type": "string",
+            "default": "foo",
+            "const": "foo"
+        },
+        "i": {
+            "title": "With default",
+            "type": "null",
+            "default": null
         }
     },
     "default": {
