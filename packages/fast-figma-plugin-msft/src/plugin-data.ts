@@ -14,7 +14,7 @@ export interface PluginData {
  * Light wrapper around the Figma getPluginData and setPluginData API to provide type safety
  */
 export function getPluginData<T extends keyof PluginData>(
-    node: BaseNodeMixin,
+    node: SceneNode,
     key: T
 ): PluginData[T] {
     // "as any here because figma types this as a simple string, whereas we're being more strict

@@ -60,29 +60,20 @@ const defaultState: PluginUIState = {
 /**
  * Derives a stage object to provide to the Plugin UI.
  */
-export async function getPluginUIState(node: BaseNode | null): Promise<PluginUIState> {
+export async function getPluginUIState(node: SceneNode | null): Promise<PluginUIState> {
     if (node === null) {
         return defaultState;
     } else {
-        const activeNodeType: null | NodeType = node === null ? null : node.type;
-
         return {
-            activeNodeType,
-            activeFill: node === null ? "" : getPluginData(node, "fill"),
-            activeStroke: node === null ? "" : getPluginData(node, "stroke"),
-            activeTextFill: node === null ? "" : getPluginData(node, "textFill"),
-            fills:
-                activeNodeType !== null && canHaveFill(activeNodeType)
-                    ? [""].concat(await getFillRecipeNames())
-                    : [],
-            strokes:
-                activeNodeType !== null && canHaveStroke(activeNodeType)
-                    ? [""].concat(await getStrokeRecipeNames())
-                    : [],
-            textFills:
-                activeNodeType !== null && canHaveTextFill(activeNodeType)
-                    ? [""].concat(await getTextFillRecipeNames())
-                    : [],
+            activeNodeType: node.type,
+            activeFill: getPluginData(node, "fill"),
+            activeStroke: getPluginData(node, "stroke"),
+            activeTextFill: getPluginData(node, "textFill"),
+            fills: canHaveFill(node) ? [""].concat(await getFillRecipeNames()) : [],
+            strokes: canHaveStroke(node) ? [""].concat(await getStrokeRecipeNames()) : [],
+            textFills: canHaveTextFill(node)
+                ? [""].concat(await getTextFillRecipeNames())
+                : [],
         };
     }
 }
