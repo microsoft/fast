@@ -8,6 +8,7 @@ import {
     neutralFillStealthHover,
     neutralFocus,
     neutralForegroundRest,
+    neutralLayerFloating,
 } from "../utilities/color";
 import { ContextMenuItemClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import { height, horizontalSpacingNumber } from "../utilities/density";
@@ -60,11 +61,11 @@ const styles: ComponentStyles<ContextMenuItemClassNameContract, DesignSystem> = 
             },
         }),
         "&:hover": {
-            background: neutralFillStealthHover,
+            background: neutralFillStealthHover(neutralLayerFloating),
             ...highContrastSelected,
         },
         "&:active": {
-            background: neutralFillStealthActive,
+            background: neutralFillStealthActive(neutralLayerFloating),
             ...highContrastSelected,
         },
         ...highContrastStealth,
