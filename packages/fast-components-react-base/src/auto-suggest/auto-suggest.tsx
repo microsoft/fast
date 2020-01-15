@@ -101,8 +101,6 @@ class AutoSuggest extends Foundation<
             updatedMenuVisibility = true;
         }
 
-        updatedMenuVisibility = this.validateMenuState(updatedMenuVisibility);
-
         if (updatedMenuVisibility !== this.state.isMenuOpen) {
             this.toggleMenu(updatedMenuVisibility);
         }
