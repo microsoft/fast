@@ -108,6 +108,14 @@ export interface ViewportPositionerHandledProps extends ViewportPositionerManage
      * The children of the viewport positioner
      */
     children?: React.ReactNode;
+
+    /**
+     * When true the children of the positioner will not be rendered until the component has been positioned
+     * relative to its anchor.  This may be useful in cases where the browser auto scrolls to bring a
+     * focused child into view before it has been positioned, for example.  Default is false.
+     * This flag may be removed in a future version and become the default behavior.
+     */
+    delayContentInstanciation?: boolean;
 }
 
 export type ViewportPositionerProps = ViewportPositionerHandledProps &

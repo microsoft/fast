@@ -61,6 +61,7 @@ class Flyout extends Foundation<FlyoutHandledProps, FlyoutUnhandledProps, {}> {
         verticalThreshold: void 0,
         viewport: void 0,
         width: void 0,
+        delayContentInstanciation: void 0,
         scaleToFit: void 0,
     };
 

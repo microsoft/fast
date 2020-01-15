@@ -13,10 +13,12 @@ const anchorElement2: React.RefObject<HTMLDivElement> = React.createRef<HTMLDivE
 
 interface TestViewportProps {
     positionerProps: ViewportPositionerProps[];
+    positionerContents: React.ReactNode[];
 }
 
 interface TestViewportState {
     currentDataSetIndex: number;
+    currentContentsIndex: number;
 }
 
 class TestViewport extends React.Component<TestViewportProps, TestViewportState> {
@@ -29,6 +31,7 @@ class TestViewport extends React.Component<TestViewportProps, TestViewportState>
 
         this.state = {
             currentDataSetIndex: 0,
+            currentContentsIndex: 0,
         };
     }
 
@@ -40,7 +43,8 @@ class TestViewport extends React.Component<TestViewportProps, TestViewportState>
                     width: "100%",
                 }}
             >
-                {this.renderSwitcherUi()}
+                {this.renderPropsSwitcherUi()}
+                {this.renderContentSwitcherUi()}
                 <ViewportContext.Provider
                     value={{
                         viewport: this.rootElement,
@@ -67,15 +71,11 @@ class TestViewport extends React.Component<TestViewportProps, TestViewportState>
                                     this.state.currentDataSetIndex
                                 ]}
                             >
-                                <div
-                                    style={{
-                                        height: "100%",
-                                        width: "100%",
-                                        background: "yellow",
-                                    }}
-                                >
-                                    Positioner
-                                </div>
+                                {
+                                    this.props.positionerContents[
+                                        this.state.currentContentsIndex
+                                    ]
+                                }
                             </ViewportPositioner>
                         </div>
                     </div>
@@ -84,18 +84,29 @@ class TestViewport extends React.Component<TestViewportProps, TestViewportState>
         );
     }
 
-    private renderSwitcherUi = (): ReactNode => {
+    private renderPropsSwitcherUi = (): ReactNode => {
         if (this.props.positionerProps.length < 2) {
             return null;
         }
         return (
             <div>
-                <button onClick={this.onClick}>Switch data</button>
+                <button onClick={this.onNextPropsClick}>Switch data</button>
             </div>
         );
     };
 
-    private onClick = (event: React.MouseEvent): void => {
+    private renderContentSwitcherUi = (): ReactNode => {
+        if (this.props.positionerContents.length < 2) {
+            return null;
+        }
+        return (
+            <div>
+                <button onClick={this.onNextContentsClick}>Switch Contents</button>
+            </div>
+        );
+    };
+
+    private onNextPropsClick = (event: React.MouseEvent): void => {
         const nextDataSetIndex: number = this.state.currentDataSetIndex + 1;
         this.setState({
             currentDataSetIndex:
@@ -104,16 +115,39 @@ class TestViewport extends React.Component<TestViewportProps, TestViewportState>
                     : 0,
         });
     };
+
+    private onNextContentsClick = (event: React.MouseEvent): void => {
+        const nextContentsIndex: number = this.state.currentContentsIndex + 1;
+        this.setState({
+            currentContentsIndex:
+                nextContentsIndex < this.props.positionerContents.length
+                    ? nextContentsIndex
+                    : 0,
+        });
+    };
 }
 
 storiesOf("Viewport Positioner", module)
     .add("Default", () => (
         <TestViewport
+            positionerContents={[
+                <div
+                    key="c1.1"
+                    style={{
+                        height: "100%",
+                        width: "100%",
+                        background: "yellow",
+                    }}
+                >
+                    Positioner
+                </div>,
+            ]}
             positionerProps={[
                 {
                     verticalPositioningMode: AxisPositioningMode.adjacent,
                     horizontalPositioningMode: AxisPositioningMode.adjacent,
                     anchor: anchorElement,
+                    delayContentInstanciation: true,
                     style: {
                         height: "100px",
                         width: "100px",
@@ -144,6 +178,18 @@ storiesOf("Viewport Positioner", module)
     ))
     .add("Squishy region", () => (
         <TestViewport
+            positionerContents={[
+                <div
+                    key="c2.1"
+                    style={{
+                        height: "100%",
+                        width: "100%",
+                        background: "yellow",
+                    }}
+                >
+                    Positioner
+                </div>,
+            ]}
             positionerProps={[
                 {
                     verticalPositioningMode: AxisPositioningMode.adjacent,
@@ -152,6 +198,7 @@ storiesOf("Viewport Positioner", module)
                         ViewportPositionerVerticalPosition.uncontrolled,
                     scaleToFit: true,
                     anchor: anchorElement,
+                    delayContentInstanciation: true,
                 },
             ]}
         >
@@ -178,6 +225,18 @@ storiesOf("Viewport Positioner", module)
     ))
     .add("Squishy region with thresholds", () => (
         <TestViewport
+            positionerContents={[
+                <div
+                    key="c3.1"
+                    style={{
+                        height: "100%",
+                        width: "100%",
+                        background: "yellow",
+                    }}
+                >
+                    Positioner
+                </div>,
+            ]}
             positionerProps={[
                 {
                     verticalPositioningMode: AxisPositioningMode.adjacent,
@@ -188,6 +247,7 @@ storiesOf("Viewport Positioner", module)
                         ViewportPositionerVerticalPosition.uncontrolled,
                     scaleToFit: true,
                     anchor: anchorElement,
+                    delayContentInstanciation: true,
                 },
             ]}
         >
@@ -214,6 +274,18 @@ storiesOf("Viewport Positioner", module)
     ))
     .add("Always in view - adjacent", () => (
         <TestViewport
+            positionerContents={[
+                <div
+                    key="c4.1"
+                    style={{
+                        height: "100%",
+                        width: "100%",
+                        background: "yellow",
+                    }}
+                >
+                    Positioner
+                </div>,
+            ]}
             positionerProps={[
                 {
                     verticalPositioningMode: AxisPositioningMode.adjacent,
@@ -221,6 +293,7 @@ storiesOf("Viewport Positioner", module)
                     verticalAlwaysInView: true,
                     horizontalAlwaysInView: true,
                     anchor: anchorElement,
+                    delayContentInstanciation: true,
                     style: {
                         height: "100px",
                         width: "100px",
@@ -251,6 +324,18 @@ storiesOf("Viewport Positioner", module)
     ))
     .add("Always in view - inset", () => (
         <TestViewport
+            positionerContents={[
+                <div
+                    key="c5.1"
+                    style={{
+                        height: "100%",
+                        width: "100%",
+                        background: "yellow",
+                    }}
+                >
+                    Positioner
+                </div>,
+            ]}
             positionerProps={[
                 {
                     verticalPositioningMode: AxisPositioningMode.inset,
@@ -258,6 +343,7 @@ storiesOf("Viewport Positioner", module)
                     verticalAlwaysInView: true,
                     horizontalAlwaysInView: true,
                     anchor: anchorElement,
+                    delayContentInstanciation: true,
                     style: {
                         height: "100px",
                         width: "100px",
@@ -288,11 +374,24 @@ storiesOf("Viewport Positioner", module)
     ))
     .add("Change anchors", () => (
         <TestViewport
+            positionerContents={[
+                <div
+                    key="c6.1"
+                    style={{
+                        height: "100%",
+                        width: "100%",
+                        background: "yellow",
+                    }}
+                >
+                    Positioner
+                </div>,
+            ]}
             positionerProps={[
                 {
                     verticalPositioningMode: AxisPositioningMode.adjacent,
                     horizontalPositioningMode: AxisPositioningMode.adjacent,
                     anchor: anchorElement,
+                    delayContentInstanciation: true,
                     style: {
                         height: "100px",
                         width: "100px",
@@ -302,6 +401,7 @@ storiesOf("Viewport Positioner", module)
                     verticalPositioningMode: AxisPositioningMode.adjacent,
                     horizontalPositioningMode: AxisPositioningMode.adjacent,
                     anchor: anchorElement2,
+                    delayContentInstanciation: true,
                     style: {
                         height: "100px",
                         width: "100px",
@@ -337,6 +437,63 @@ storiesOf("Viewport Positioner", module)
                     }}
                 >
                     Anchor2
+                </div>
+            </div>
+        </TestViewport>
+    ))
+    .add("resizing", () => (
+        <TestViewport
+            positionerContents={[
+                <div
+                    key="c7.1"
+                    style={{
+                        height: "100px",
+                        width: "100px",
+                        background: "yellow",
+                    }}
+                >
+                    Positioner
+                </div>,
+                <div
+                    key="c7.2"
+                    style={{
+                        height: "150px",
+                        width: "150px",
+                        background: "orange",
+                    }}
+                >
+                    Positioner
+                </div>,
+            ]}
+            positionerProps={[
+                {
+                    verticalPositioningMode: AxisPositioningMode.adjacent,
+                    horizontalPositioningMode: AxisPositioningMode.adjacent,
+                    anchor: anchorElement,
+                    delayContentInstanciation: true,
+                    style: {
+                        display: "inline-block",
+                    },
+                },
+            ]}
+        >
+            <div
+                style={{
+                    height: "1200px",
+                    width: "1200px",
+                    padding: "500px",
+                    background: "blue",
+                }}
+            >
+                <div
+                    ref={anchorElement}
+                    style={{
+                        height: "100px",
+                        width: "100px",
+                        background: "green",
+                    }}
+                >
+                    Anchor
                 </div>
             </div>
         </TestViewport>

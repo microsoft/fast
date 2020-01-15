@@ -1341,7 +1341,7 @@ describe("viewport positioner", (): void => {
         expect(positioner.instance().state.currentVerticalPosition).toBe(
             ViewportPositionerVerticalPositionLabel.bottom
         );
-        positioner.instance()["updatePositionerOffset"]();
+        positioner.instance()["updatePositionerOffset"](positionerRectX70Y70);
         expect(positioner.instance().baseHorizontalOffset).toBe(0);
         expect(positioner.instance().baseVerticalOffset).toBe(0);
 
@@ -1359,7 +1359,7 @@ describe("viewport positioner", (): void => {
         expect(positioner.instance().state.currentVerticalPosition).toBe(
             ViewportPositionerVerticalPositionLabel.insetBottom
         );
-        positioner.instance()["updatePositionerOffset"]();
+        positioner.instance()["updatePositionerOffset"](positionerRectX70Y70);
         expect(positioner.instance().baseHorizontalOffset).toBe(-10);
         expect(positioner.instance().baseVerticalOffset).toBe(-10);
 
@@ -1376,7 +1376,7 @@ describe("viewport positioner", (): void => {
         expect(positioner.instance().state.currentVerticalPosition).toBe(
             ViewportPositionerVerticalPositionLabel.top
         );
-        positioner.instance()["updatePositionerOffset"]();
+        positioner.instance()["updatePositionerOffset"](positionerRectX70Y70);
         expect(positioner.instance().baseHorizontalOffset).toBe(-20);
         expect(positioner.instance().baseVerticalOffset).toBe(-20);
 
@@ -1394,7 +1394,7 @@ describe("viewport positioner", (): void => {
         expect(positioner.instance().state.currentVerticalPosition).toBe(
             ViewportPositionerVerticalPositionLabel.insetTop
         );
-        positioner.instance()["updatePositionerOffset"]();
+        positioner.instance()["updatePositionerOffset"](positionerRectX70Y70);
         expect(positioner.instance().baseHorizontalOffset).toBe(-10);
         expect(positioner.instance().baseVerticalOffset).toBe(-10);
     });

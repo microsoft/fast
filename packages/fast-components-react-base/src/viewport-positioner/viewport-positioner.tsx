@@ -132,6 +132,7 @@ class ViewportPositioner extends Foundation<
         horizontalLockToDefault: false,
         fixedAfterInitialPlacement: false,
         scaleToFit: false,
+        delayContentInstanciation: false,
         managedClasses: {},
     };
 
@@ -151,6 +152,7 @@ class ViewportPositioner extends Foundation<
         verticalLockToDefault: void 0,
         fixedAfterInitialPlacement: void 0,
         scaleToFit: void 0,
+        delayContentInstanciation: void 0,
         disabled: void 0,
     };
 
@@ -165,7 +167,8 @@ class ViewportPositioner extends Foundation<
 
     private viewportRect: ClientRect | DOMRect;
 
-    private positionerRect: ClientRect | DOMRect;
+    // private positionerRect: ClientRect | DOMRect;
+    private positionerDimension: Dimension;
 
     private anchorTop: number = 0;
     private anchorRight: number = 0;
@@ -198,7 +201,9 @@ class ViewportPositioner extends Foundation<
     }
 
     public componentWillUnmount(): void {
-        this.disable();
+        if (!this.state.disabled) {
+            this.detachListeners(this.props.viewport);
+        }
     }
 
     public componentDidUpdate(prevProps: ViewportPositionerProps): void {
@@ -235,7 +240,11 @@ class ViewportPositioner extends Foundation<
                 className={this.generateClassNames()}
                 style={this.getPositioningStyles()}
             >
-                {this.props.children}
+                {!this.props.disabled &&
+                !this.state.initialLayoutComplete &&
+                this.props.delayContentInstanciation
+                    ? null
+                    : this.props.children}
             </div>
         );
     }
@@ -402,9 +411,10 @@ class ViewportPositioner extends Foundation<
         this.collisionDetector.observe(anchorElement);
 
         this.resizeDetector = new (window as WindowWithResizeObserver).ResizeObserver(
-            this.handleAnchorResize
+            this.handleResize
         );
         this.resizeDetector.observe(anchorElement);
+        this.resizeDetector.observe(this.rootElement.current);
 
         viewportElement.addEventListener("scroll", this.handleScroll);
     };
@@ -421,7 +431,15 @@ class ViewportPositioner extends Foundation<
             return;
         }
 
-        this.positionerRect = this.rootElement.current.getBoundingClientRect();
+        const positionerRect:
+            | DOMRect
+            | ClientRect = this.rootElement.current.getBoundingClientRect();
+
+        this.positionerDimension = {
+            height: positionerRect.height,
+            width: positionerRect.width,
+        };
+
         this.viewportRect = viewportElement.getBoundingClientRect();
         const anchorRect: ClientRect | DOMRect = anchorElement.getBoundingClientRect();
 
@@ -432,7 +450,7 @@ class ViewportPositioner extends Foundation<
         this.anchorWidth = anchorRect.width;
         this.anchorHeight = anchorRect.height;
 
-        this.updatePositionerOffset();
+        this.updatePositionerOffset(positionerRect);
 
         this.setState({
             validRefChecksRemaining: 0,
@@ -577,10 +595,36 @@ class ViewportPositioner extends Foundation<
     };
 
     /**
+     *  Handle resize events
+     */
+    private handleResize = (entries: ResizeObserverEntry[]): void => {
+        entries.forEach((entry: ResizeObserverEntry) => {
+            if (entry.target === this.rootElement.current) {
+                this.handlePositionerResize(entry);
+            } else {
+                this.handleAnchorResize(entry);
+            }
+        });
+    };
+
+    /**
+     *  Handle positioner resize events
+     */
+    private handlePositionerResize = (entry: ResizeObserverEntry): void => {
+        if (this.props.scaleToFit) {
+            return;
+        }
+        this.positionerDimension = {
+            height: entry.contentRect.height,
+            width: entry.contentRect.width,
+        };
+        this.requestFrame();
+    };
+
+    /**
      *  Handle anchor resize events
      */
-    private handleAnchorResize = (entries: ResizeObserverEntry[]): void => {
-        const entry: ResizeObserverEntry = entries[0];
+    private handleAnchorResize = (entry: ResizeObserverEntry): void => {
         this.anchorHeight = entry.contentRect.height;
         this.anchorWidth = entry.contentRect.width;
 
@@ -616,9 +660,11 @@ class ViewportPositioner extends Foundation<
         entries: IntersectionObserverEntry[],
         observer: IntersectionObserver
     ): void => {
+        let positionerRect: DOMRect | ClientRect = null;
         entries.forEach((entry: IntersectionObserverEntry) => {
             if (entry.target === this.rootElement.current) {
                 this.handlePositionerCollision(entry, entries.length === 1);
+                positionerRect = entry.boundingClientRect;
             } else {
                 this.handleAnchorCollision(entry);
             }
@@ -633,8 +679,8 @@ class ViewportPositioner extends Foundation<
             this.scrollLeft = viewPortElement.scrollLeft;
         }
 
-        if (entries.length === 2) {
-            this.updatePositionerOffset();
+        if (entries.length === 2 && positionerRect !== null) {
+            this.updatePositionerOffset(positionerRect);
         }
 
         this.requestFrame();
@@ -661,50 +707,53 @@ class ViewportPositioner extends Foundation<
         shouldDeriveAnchorPosition: boolean
     ): void => {
         this.viewportRect = positionerEntry.rootBounds;
-        this.positionerRect = positionerEntry.boundingClientRect;
+        const positionerRect: ClientRect | DOMRect = positionerEntry.boundingClientRect;
+        this.positionerDimension = {
+            height: positionerRect.height,
+            width: positionerRect.width,
+        };
 
         if (shouldDeriveAnchorPosition) {
             switch (this.state.currentVerticalPosition) {
                 case ViewportPositionerVerticalPositionLabel.top:
-                    this.anchorTop = this.positionerRect.bottom - this.state.yTranslate;
+                    this.anchorTop = positionerRect.bottom - this.state.yTranslate;
                     this.anchorBottom = this.anchorTop + this.anchorHeight;
                     break;
 
                 case ViewportPositionerVerticalPositionLabel.insetTop:
-                    this.anchorBottom =
-                        this.positionerRect.bottom - this.state.yTranslate;
+                    this.anchorBottom = positionerRect.bottom - this.state.yTranslate;
                     this.anchorTop = this.anchorBottom - this.anchorHeight;
                     break;
 
                 case ViewportPositionerVerticalPositionLabel.insetBottom:
-                    this.anchorTop = this.positionerRect.top - this.state.yTranslate;
+                    this.anchorTop = positionerRect.top - this.state.yTranslate;
                     this.anchorBottom = this.anchorTop + this.anchorHeight;
                     break;
 
                 case ViewportPositionerVerticalPositionLabel.bottom:
-                    this.anchorBottom = this.positionerRect.top - this.state.yTranslate;
+                    this.anchorBottom = positionerRect.top - this.state.yTranslate;
                     this.anchorTop = this.anchorBottom - this.anchorHeight;
                     break;
             }
 
             switch (this.state.currentHorizontalPosition) {
                 case ViewportPositionerHorizontalPositionLabel.left:
-                    this.anchorLeft = this.positionerRect.right - this.state.xTranslate;
+                    this.anchorLeft = positionerRect.right - this.state.xTranslate;
                     this.anchorRight = this.anchorLeft + this.anchorWidth;
                     break;
 
                 case ViewportPositionerHorizontalPositionLabel.insetLeft:
-                    this.anchorRight = this.positionerRect.right - this.state.xTranslate;
+                    this.anchorRight = positionerRect.right - this.state.xTranslate;
                     this.anchorLeft = this.anchorRight - this.anchorWidth;
                     break;
 
                 case ViewportPositionerHorizontalPositionLabel.insetRight:
-                    this.anchorLeft = this.positionerRect.left - this.state.xTranslate;
+                    this.anchorLeft = positionerRect.left - this.state.xTranslate;
                     this.anchorRight = this.anchorLeft + this.anchorWidth;
                     break;
 
                 case ViewportPositionerHorizontalPositionLabel.right:
-                    this.anchorRight = this.positionerRect.left - this.state.xTranslate;
+                    this.anchorRight = positionerRect.left - this.state.xTranslate;
                     this.anchorLeft = this.anchorRight - this.anchorWidth;
                     break;
             }
@@ -714,69 +763,55 @@ class ViewportPositioner extends Foundation<
     /**
      *  Update the offset values
      */
-    private updatePositionerOffset = (): void => {
+    private updatePositionerOffset = (positionerRect: DOMRect | ClientRect): void => {
         if (this.props.horizontalPositioningMode === AxisPositioningMode.uncontrolled) {
-            this.baseHorizontalOffset = this.anchorLeft - this.positionerRect.left;
+            this.baseHorizontalOffset = this.anchorLeft - positionerRect.left;
         } else {
             switch (this.state.currentHorizontalPosition) {
                 case ViewportPositionerHorizontalPositionLabel.undefined:
                     this.baseHorizontalOffset =
-                        this.anchorLeft +
-                        this.state.xTranslate -
-                        this.positionerRect.left;
+                        this.anchorLeft + this.state.xTranslate - positionerRect.left;
                     break;
 
                 case ViewportPositionerHorizontalPositionLabel.left:
                     this.baseHorizontalOffset =
                         this.baseHorizontalOffset +
-                        (this.anchorLeft +
-                            this.state.xTranslate -
-                            this.positionerRect.right);
+                        (this.anchorLeft + this.state.xTranslate - positionerRect.right);
                     break;
 
                 case ViewportPositionerHorizontalPositionLabel.insetLeft:
                     this.baseHorizontalOffset =
                         this.baseHorizontalOffset +
-                        (this.anchorRight +
-                            this.state.xTranslate -
-                            this.positionerRect.right);
+                        (this.anchorRight + this.state.xTranslate - positionerRect.right);
                     break;
 
                 case ViewportPositionerHorizontalPositionLabel.insetRight:
                     this.baseHorizontalOffset =
                         this.baseHorizontalOffset +
-                        (this.anchorLeft +
-                            this.state.xTranslate -
-                            this.positionerRect.left);
+                        (this.anchorLeft + this.state.xTranslate - positionerRect.left);
                     break;
 
                 case ViewportPositionerHorizontalPositionLabel.right:
                     this.baseHorizontalOffset =
                         this.baseHorizontalOffset +
-                        (this.anchorRight +
-                            this.state.xTranslate -
-                            this.positionerRect.left);
+                        (this.anchorRight + this.state.xTranslate - positionerRect.left);
                     break;
             }
         }
 
         if (this.props.verticalPositioningMode === AxisPositioningMode.uncontrolled) {
-            this.baseVerticalOffset = this.anchorBottom - this.positionerRect.top;
+            this.baseVerticalOffset = this.anchorBottom - positionerRect.top;
         } else {
             switch (this.state.currentVerticalPosition) {
                 case ViewportPositionerVerticalPositionLabel.undefined:
                     this.baseVerticalOffset =
-                        this.anchorBottom +
-                        this.state.yTranslate -
-                        this.positionerRect.top;
+                        this.anchorBottom + this.state.yTranslate - positionerRect.top;
                     break;
 
                 case ViewportPositionerVerticalPositionLabel.top:
                     this.baseVerticalOffset =
                         this.baseVerticalOffset +
-                        (this.anchorTop +
-                            this.state.yTranslate -
-                            this.positionerRect.bottom);
+                        (this.anchorTop + this.state.yTranslate - positionerRect.bottom);
                     break;
 
                 case ViewportPositionerVerticalPositionLabel.insetTop:
@@ -784,23 +819,19 @@ class ViewportPositioner extends Foundation<
                         this.baseVerticalOffset +
                         (this.anchorBottom +
                             this.state.yTranslate -
-                            this.positionerRect.bottom);
+                            positionerRect.bottom);
                     break;
 
                 case ViewportPositionerVerticalPositionLabel.insetBottom:
                     this.baseVerticalOffset =
                         this.baseVerticalOffset +
-                        (this.anchorTop +
-                            this.state.yTranslate -
-                            this.positionerRect.top);
+                        (this.anchorTop + this.state.yTranslate - positionerRect.top);
                     break;
 
                 case ViewportPositionerVerticalPositionLabel.bottom:
                     this.baseVerticalOffset =
                         this.baseVerticalOffset +
-                        (this.anchorBottom +
-                            this.state.yTranslate -
-                            this.positionerRect.top);
+                        (this.anchorBottom + this.state.yTranslate - positionerRect.top);
                     break;
             }
         }
@@ -842,7 +873,7 @@ class ViewportPositioner extends Foundation<
         if (
             this.state.disabled ||
             isNil(this.viewportRect) ||
-            isNil(this.positionerRect) ||
+            isNil(this.positionerDimension) ||
             (this.props.fixedAfterInitialPlacement && this.state.initialLayoutComplete) ||
             (this.state.noObserverMode && this.state.initialLayoutComplete)
         ) {
@@ -863,7 +894,7 @@ class ViewportPositioner extends Foundation<
             const horizontalThreshold: number =
                 this.props.horizontalThreshold !== undefined
                     ? this.props.horizontalThreshold
-                    : this.positionerRect.width;
+                    : this.positionerDimension.width;
 
             if (
                 desiredHorizontalPosition ===
@@ -887,7 +918,7 @@ class ViewportPositioner extends Foundation<
             const verticalThreshold: number =
                 this.props.verticalThreshold !== undefined
                     ? this.props.verticalThreshold
-                    : this.positionerRect.height;
+                    : this.positionerDimension.height;
 
             if (
                 desiredVerticalPosition ===
@@ -933,8 +964,8 @@ class ViewportPositioner extends Foundation<
         desiredVerticalPosition: ViewportPositionerVerticalPositionLabel
     ): Dimension => {
         const newPositionerDimension: Dimension = {
-            height: this.positionerRect.height,
-            width: this.positionerRect.width,
+            height: this.positionerDimension.height,
+            width: this.positionerDimension.width,
         };
 
         if (this.props.scaleToFit) {
