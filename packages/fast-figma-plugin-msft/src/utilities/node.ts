@@ -1,18 +1,25 @@
 import { ColorRGBA64 } from "@microsoft/fast-colors";
 
-// TODO: needed?
-export function canHaveStroke(node: SceneNode): boolean {
-    return ["FRAME", "RECTANGLE", "POLYGON", "STAR"].includes(node.type);
+/**
+ * Determines if a node supports a fill recipe
+ */
+export function supportsFillRecipe(
+    node: BaseNode
+): node is FrameNode | RectangleNode | PolygonNode | StarNode {
+    return [isFrameNode, isRectangleNode, isPolygonNode, isStarNode].some(
+        (test: (node: BaseNode) => boolean) => test(node)
+    );
 }
 
-// TODO: needed?
-// Currently these follow the same rules.
-export const canHaveFill = canHaveStroke;
+/**
+ * Determines if a node supports a stroke recipe
+ */
+export const supportsStrokeRecipe = supportsFillRecipe;
 
-// TODO: needed?
-export function canHaveTextFill(node: SceneNode): node is TextNode {
-    return node.type === "TEXT";
-}
+/**
+ * Determines if a node supports a stroke recipe
+ */
+export const supportsTextFillRecipe = isTextNode;
 
 /**
  * Returns the selected node if a single node is
@@ -148,5 +155,17 @@ export function isSceneNode(node: BaseNode): node is SceneNode {
         isPolygonNode,
         isRectangleNode,
         isTextNode,
+    ].some((test: (node: BaseNode) => boolean) => test(node));
+}
+
+export function canHaveChildren(
+    node: BaseNode
+): node is DocumentNode | PageNode | FrameNode | GroupNode | BooleanOperationNode {
+    return [
+        isDocumentNode,
+        isPageNode,
+        isFrameNode,
+        isGroupNode,
+        isBooleanOperationNode,
     ].some((test: (node: BaseNode) => boolean) => test(node));
 }

@@ -2,28 +2,25 @@ import {
     DesignSystem,
     DesignSystemDefaults,
 } from "@microsoft/fast-components-styles-msft";
-import { getPluginData } from "../plugin-data";
-import {
-    canHaveFill,
-    canHaveStroke,
-    canHaveTextFill,
-    isSceneNode,
-} from "../utilities/node";
+import { getPluginData, supportsFillRecipe } from "../plugin-data";
+import { isSceneNode } from "../utilities/node";
 import { getFillRecipeNames, getFillValue } from "../color-recipies";
 
 /**
  * Determine the contextual design system merging all upstream design systems
  */
-export async function getDesignSystem(node: SceneNode): Promise<DesignSystem> {
+export async function getDesignSystem(node: BaseNode): Promise<DesignSystem> {
     let parent = node.parent;
     const fills: string[] = [];
     const validFills: string[] = await getFillRecipeNames();
 
     while (parent !== null && isSceneNode(parent)) {
-        const fillRecipe = getPluginData(parent, "fill");
+        if (supportsFillRecipe(parent)) {
+            const fillRecipe = getPluginData(parent, "fill");
 
-        if (fillRecipe.length && canHaveFill(node) && validFills.includes(fillRecipe)) {
-            fills.push(fillRecipe);
+            if (validFills.includes(fillRecipe)) {
+                fills.push(fillRecipe);
+            }
         }
 
         parent = parent.parent;

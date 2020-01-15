@@ -24,7 +24,7 @@ import {
     SET_STROKE_RECIPE,
     SET_TEXT_FILL_RECIPE,
 } from "../messaging/ui";
-import { PluginUIState } from "./plugin-ui.state";
+import { defaultState, PluginUIState } from "./plugin-ui.state";
 import { stringById } from "./strings";
 import { ListboxItemProps } from "@microsoft/fast-components-react-base";
 
@@ -60,15 +60,7 @@ export class PluginUI extends React.Component<{}, PluginUIState> {
     constructor(props: {}) {
         super(props);
 
-        this.state = {
-            activeNodeType: null,
-            fills: [],
-            activeFill: "",
-            strokes: [],
-            activeStroke: "",
-            textFills: [],
-            activeTextFill: "",
-        };
+        this.state = { ...defaultState };
 
         // Register message listener to react to messages from main.ts
         window.onmessage = this.handleOnMessage;

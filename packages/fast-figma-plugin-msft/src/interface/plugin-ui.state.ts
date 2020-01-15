@@ -4,8 +4,13 @@ import {
     getTextFillRecipeNames,
 } from "../color-recipies";
 import { setUIStateDataMessageCreator } from "../messaging/canvas";
-import { getPluginData } from "../plugin-data";
-import { canHaveFill, canHaveStroke, canHaveTextFill } from "../utilities/node";
+import {
+    getPluginData,
+    supportsFillRecipe,
+    supportsStrokeRecipe,
+    supportsTextFillRecipe,
+    supportsPluginData,
+} from "../plugin-data";
 
 /**
  * Define the react state object for the Plugin UI
@@ -47,7 +52,7 @@ export interface PluginUIState {
     activeTextFill: string;
 }
 
-const defaultState: PluginUIState = {
+export const defaultState: PluginUIState = {
     activeNodeType: null,
     activeFill: "",
     activeStroke: "",
@@ -61,7 +66,7 @@ const defaultState: PluginUIState = {
  * Derives a stage object to provide to the Plugin UI.
  */
 export async function getPluginUIState(node: SceneNode | null): Promise<PluginUIState> {
-    if (node === null) {
+    if (node === null || !supportsPluginData(node)) {
         return defaultState;
     } else {
         return {
@@ -69,11 +74,15 @@ export async function getPluginUIState(node: SceneNode | null): Promise<PluginUI
             activeFill: getPluginData(node, "fill"),
             activeStroke: getPluginData(node, "stroke"),
             activeTextFill: getPluginData(node, "textFill"),
-            fills: canHaveFill(node) ? [""].concat(await getFillRecipeNames()) : [],
-            strokes: canHaveStroke(node) ? [""].concat(await getStrokeRecipeNames()) : [],
-            textFills: canHaveTextFill(node)
+            fills: supportsFillRecipe(node)
+                ? [""].concat(await getFillRecipeNames())
+                : defaultState.fills,
+            strokes: supportsStrokeRecipe(node)
+                ? [""].concat(await getStrokeRecipeNames())
+                : defaultState.strokes,
+            textFills: supportsTextFillRecipe(node)
                 ? [""].concat(await getTextFillRecipeNames())
-                : [],
+                : defaultState.textFills,
         };
     }
 }
@@ -90,6 +99,6 @@ export function setPluginUIState(stateResolver: Promise<PluginUIState>): void {
         )
         .catch((reason: any) => {
             // tslint:disable-next-line
-            console.warn("Plugin UI data could not be set");
+            console.warn("Plugin UI data could not be set", reason);
         });
 }
