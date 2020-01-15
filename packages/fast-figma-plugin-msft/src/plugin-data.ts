@@ -38,26 +38,23 @@ export type TextFillRecipeNode = TextNode;
 export type PluginDataNode = FillRecipeNode | StrokeRecipeNode | TextFillRecipeNode;
 
 /**
- * Determines if a node supports a fill recipe
+ * Test if a node supports a type of data
  */
-export function supportsFillRecipe(node: BaseNode): node is FillRecipeNode {
-    return [isFrameNode, isRectangleNode, isPolygonNode, isStarNode].some(
-        (test: (node: BaseNode) => boolean) => test(node)
-    );
+export function supports(node: BaseNode, type: "backgroundFill"): node is FillRecipeNode;
+export function supports(node: BaseNode, type: "strokeFill"): node is StrokeRecipeNode;
+export function supports(node: BaseNode, type: "textFill"): node is TextFillRecipeNode;
+export function supports(node: BaseNode, type: keyof PluginData): boolean {
+    return type === "backgroundFill" || type === "strokeFill"
+        ? [isFrameNode, isRectangleNode, isPolygonNode, isStarNode].some(
+              (test: (node: BaseNode) => boolean) => test(node)
+          )
+        : isTextNode(node);
 }
 
-/**
- * Determines if a node supports a stroke recipe
- */
-export const supportsStrokeRecipe = supportsFillRecipe;
-
-/**
- * Determines if a node supports a stroke recipe
- */
-export const supportsTextFillRecipe = isTextNode;
-
 export function supportsPluginData(node: BaseNode): node is PluginDataNode {
-    return [supportsTextFillRecipe, supportsFillRecipe, supportsStrokeRecipe].some(
-        (test: (node: BaseNode) => boolean) => test(node)
+    return (
+        supports(node, "backgroundFill") ||
+        supports(node, "strokeFill") ||
+        supports(node, "textFill")
     );
 }

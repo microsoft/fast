@@ -11,10 +11,8 @@ import {
     getPluginData,
     PluginData,
     setPluginData,
-    supportsFillRecipe,
+    supports,
     supportsPluginData,
-    supportsStrokeRecipe,
-    supportsTextFillRecipe,
 } from "./plugin-data";
 import { canHaveChildren, getActiveNode } from "./utilities/node";
 import { getDesignSystem } from "./utilities/design-system";
@@ -52,7 +50,7 @@ async function onMessage(
 
     const designSystem: DesignSystem = await getDesignSystem(node);
 
-    if (message.type === SET_FILL_RECIPE && supportsFillRecipe(node)) {
+    if (message.type === SET_FILL_RECIPE && supports(node, "backgroundFill")) {
         const recipeType: ColorRecipeType = "backgroundFill";
 
         setPluginData(node, recipeType, message.value);
@@ -65,7 +63,7 @@ async function onMessage(
         }
 
         await updateTree(node);
-    } else if (message.type === SET_TEXT_FILL_RECIPE && supportsTextFillRecipe(node)) {
+    } else if (message.type === SET_TEXT_FILL_RECIPE && supports(node, "textFill")) {
         const recipeType: ColorRecipeType = "textFill";
         setPluginData(node, recipeType, message.value);
         setPluginUIState(getPluginUIState(node));
@@ -75,7 +73,7 @@ async function onMessage(
         if (color !== null) {
             paintNode(node, recipeType, color);
         }
-    } else if (message.type === SET_STROKE_RECIPE && supportsStrokeRecipe(node)) {
+    } else if (message.type === SET_STROKE_RECIPE && supports(node, "strokeFill")) {
         const recipeType: ColorRecipeType = "strokeFill";
         setPluginData(node, recipeType, message.value);
         setPluginUIState(getPluginUIState(node));
@@ -103,7 +101,7 @@ async function updateTree(node: BaseNode): Promise<void> {
             const stroke: string = getPluginData(child, "strokeFill");
             const textFill: string = getPluginData(child, "textFill");
 
-            if (supportsFillRecipe(child) && fill.length) {
+            if (supports(child, "backgroundFill") && fill.length) {
                 const hex: string = await getRecipeValue(
                     "backgroundFill",
                     fill,
@@ -116,7 +114,7 @@ async function updateTree(node: BaseNode): Promise<void> {
                 }
             }
 
-            if (supportsStrokeRecipe(child) && stroke.length) {
+            if (supports(child, "strokeFill") && stroke.length) {
                 const hex: string = await getRecipeValue(
                     "strokeFill",
                     stroke,
@@ -129,7 +127,7 @@ async function updateTree(node: BaseNode): Promise<void> {
                 }
             }
 
-            if (supportsTextFillRecipe(child) && textFill.length) {
+            if (supports(child, "textFill") && textFill.length) {
                 const hex: string = await getRecipeValue(
                     "textFill",
                     textFill,

@@ -1,12 +1,6 @@
 import { getRecipeNames } from "../color-recipies";
 import { setUIStateDataMessageCreator } from "../messaging/canvas";
-import {
-    getPluginData,
-    supportsFillRecipe,
-    supportsPluginData,
-    supportsStrokeRecipe,
-    supportsTextFillRecipe,
-} from "../plugin-data";
+import { getPluginData, supportsPluginData, supports } from "../plugin-data";
 
 /**
  * Define the react state object for the Plugin UI
@@ -70,13 +64,13 @@ export async function getPluginUIState(node: SceneNode | null): Promise<PluginUI
             activeFill: getPluginData(node, "backgroundFill"),
             activeStroke: getPluginData(node, "strokeFill"),
             activeTextFill: getPluginData(node, "textFill"),
-            fills: supportsFillRecipe(node)
+            fills: supports(node, "backgroundFill")
                 ? [""].concat(await getRecipeNames("backgroundFill"))
                 : defaultState.fills,
-            strokes: supportsStrokeRecipe(node)
+            strokes: supports(node, "strokeFill")
                 ? [""].concat(await getRecipeNames("strokeFill"))
                 : defaultState.strokes,
-            textFills: supportsTextFillRecipe(node)
+            textFills: supports(node, "textFill")
                 ? [""].concat(await getRecipeNames("textFill"))
                 : defaultState.textFills,
         };

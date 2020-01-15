@@ -2,7 +2,7 @@ import {
     DesignSystem,
     DesignSystemDefaults,
 } from "@microsoft/fast-components-styles-msft";
-import { getPluginData, supportsFillRecipe } from "../plugin-data";
+import { getPluginData, supports } from "../plugin-data";
 import { isSceneNode } from "../utilities/node";
 import { getRecipeNames, getRecipeValue } from "../color-recipies";
 
@@ -15,7 +15,7 @@ export async function getDesignSystem(node: BaseNode): Promise<DesignSystem> {
     const validFills: string[] = await getRecipeNames("backgroundFill");
 
     while (parent !== null && isSceneNode(parent)) {
-        if (supportsFillRecipe(parent)) {
+        if (supports(parent, "backgroundFill")) {
             const fillRecipe = getPluginData(parent, "backgroundFill");
 
             if (validFills.includes(fillRecipe)) {
