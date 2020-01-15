@@ -1,15 +1,11 @@
-import {
-    getFillRecipeNames,
-    getStrokeRecipeNames,
-    getTextFillRecipeNames,
-} from "../color-recipies";
+import { getRecipeNames } from "../color-recipies";
 import { setUIStateDataMessageCreator } from "../messaging/canvas";
 import {
     getPluginData,
     supportsFillRecipe,
+    supportsPluginData,
     supportsStrokeRecipe,
     supportsTextFillRecipe,
-    supportsPluginData,
 } from "../plugin-data";
 
 /**
@@ -71,17 +67,17 @@ export async function getPluginUIState(node: SceneNode | null): Promise<PluginUI
     } else {
         return {
             activeNodeType: node.type,
-            activeFill: getPluginData(node, "fill"),
-            activeStroke: getPluginData(node, "stroke"),
+            activeFill: getPluginData(node, "backgroundFill"),
+            activeStroke: getPluginData(node, "strokeFill"),
             activeTextFill: getPluginData(node, "textFill"),
             fills: supportsFillRecipe(node)
-                ? [""].concat(await getFillRecipeNames())
+                ? [""].concat(await getRecipeNames("backgroundFill"))
                 : defaultState.fills,
             strokes: supportsStrokeRecipe(node)
-                ? [""].concat(await getStrokeRecipeNames())
+                ? [""].concat(await getRecipeNames("strokeFill"))
                 : defaultState.strokes,
             textFills: supportsTextFillRecipe(node)
-                ? [""].concat(await getTextFillRecipeNames())
+                ? [""].concat(await getRecipeNames("textFill"))
                 : defaultState.textFills,
         };
     }

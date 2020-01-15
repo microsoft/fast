@@ -7,15 +7,12 @@ import {
     isStarNode,
     isTextNode,
 } from "./utilities/node";
+import { ColorRecipeType } from "./color-recipies";
 
 /**
  * Describes the data stored by the plugin with https://www.figma.com/plugin-docs/api/properties/nodes-setplugindata/
  */
-export interface PluginData {
-    fill: string;
-    textFill: string;
-    stroke: string;
-}
+export type PluginData = Record<ColorRecipeType, string>;
 
 /**
  * Light wrapper around the Figma getPluginData and setPluginData API to provide type safety

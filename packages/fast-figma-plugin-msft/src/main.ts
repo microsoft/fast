@@ -11,16 +11,16 @@ import {
     getPluginData,
     PluginData,
     setPluginData,
-    supportsPluginData,
     supportsFillRecipe,
-    supportsTextFillRecipe,
+    supportsPluginData,
     supportsStrokeRecipe,
+    supportsTextFillRecipe,
 } from "./plugin-data";
 import { canHaveChildren, getActiveNode, setFill, setStroke } from "./utilities/node";
 import { getDesignSystem } from "./utilities/design-system";
 import { ColorRGBA64, parseColorHexRGB } from "@microsoft/fast-colors";
 import { DesignSystem } from "@microsoft/fast-components-styles-msft";
-import { getFillValue, getStrokeValue, getTextFillValue } from "./color-recipies";
+import { getRecipeValue } from "./color-recipies";
 
 /**
  * Show UI on plugin launch
@@ -53,9 +53,13 @@ async function onMessage(
     const designSystem: DesignSystem = await getDesignSystem(node);
 
     if (message.type === SET_FILL_RECIPE && supportsFillRecipe(node)) {
-        setPluginData(node, "fill", message.value);
+        setPluginData(node, "backgroundFill", message.value);
         setPluginUIState(getPluginUIState(node));
-        const hex: string = await getFillValue(message.value, designSystem);
+        const hex: string = await getRecipeValue(
+            "backgroundFill",
+            message.value,
+            designSystem
+        );
         const color: ColorRGBA64 | null = parseColorHexRGB(hex);
 
         if (color !== null) {
@@ -66,16 +70,20 @@ async function onMessage(
     } else if (message.type === SET_TEXT_FILL_RECIPE && supportsTextFillRecipe(node)) {
         setPluginData(node, "textFill", message.value);
         setPluginUIState(getPluginUIState(node));
-        const hex: string = await getTextFillValue(message.value, designSystem);
+        const hex: string = await getRecipeValue("textFill", message.value, designSystem);
         const color: ColorRGBA64 | null = parseColorHexRGB(hex);
 
         if (color !== null) {
             setFill(node, color);
         }
     } else if (message.type === SET_STROKE_RECIPE && supportsStrokeRecipe(node)) {
-        setPluginData(node, "stroke", message.value);
+        setPluginData(node, "strokeFill", message.value);
         setPluginUIState(getPluginUIState(node));
-        const hex: string = await getStrokeValue(message.value, designSystem);
+        const hex: string = await getRecipeValue(
+            "strokeFill",
+            message.value,
+            designSystem
+        );
         const color: ColorRGBA64 | null = parseColorHexRGB(hex);
 
         if (color !== null) {
@@ -95,12 +103,16 @@ async function updateTree(node: BaseNode): Promise<void> {
     for (const child of node.children) {
         if (supportsPluginData(child)) {
             const designSystem: DesignSystem = await getDesignSystem(child);
-            const fill: string = getPluginData(child, "fill");
-            const stroke: string = getPluginData(child, "stroke");
+            const fill: string = getPluginData(child, "backgroundFill");
+            const stroke: string = getPluginData(child, "strokeFill");
             const textFill: string = getPluginData(child, "textFill");
 
             if (fill.length) {
-                const hex: string = await getFillValue(fill, designSystem);
+                const hex: string = await getRecipeValue(
+                    "backgroundFill",
+                    fill,
+                    designSystem
+                );
                 const color: ColorRGBA64 | null = parseColorHexRGB(hex);
 
                 if (color !== null) {
@@ -109,7 +121,11 @@ async function updateTree(node: BaseNode): Promise<void> {
             }
 
             if (stroke.length) {
-                const hex: string = await getStrokeValue(stroke, designSystem);
+                const hex: string = await getRecipeValue(
+                    "strokeFill",
+                    stroke,
+                    designSystem
+                );
                 const color: ColorRGBA64 | null = parseColorHexRGB(hex);
 
                 if (color !== null) {
@@ -118,7 +134,11 @@ async function updateTree(node: BaseNode): Promise<void> {
             }
 
             if (textFill.length) {
-                const hex: string = await getTextFillValue(textFill, designSystem);
+                const hex: string = await getRecipeValue(
+                    "textFill",
+                    textFill,
+                    designSystem
+                );
                 const color: ColorRGBA64 | null = parseColorHexRGB(hex);
 
                 if (color !== null) {

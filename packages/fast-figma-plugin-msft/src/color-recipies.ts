@@ -31,6 +31,11 @@ import {
 import { SwatchFamily } from "@microsoft/fast-components-styles-msft/dist/utilities/color/common";
 
 /**
+ * Defines the names used for color recipes through the app
+ */
+export type ColorRecipeType = "backgroundFill" | "textFill" | "strokeFill";
+
+/**
  * Define the recipes that can be used. These are surfaced in
  * the plugin UI and can be assigned to a node.
  *
@@ -77,45 +82,43 @@ const fillRecipeNames: string[] = Object.keys(fillRecipes);
 const strokeRecipeNames: string[] = Object.keys(strokeRecipes);
 const textFillRecipeNames: string[] = Object.keys(textFillRecipes);
 
-/**
- * Functions to get recipe names.
- * The exported functions are async to prep for service-based recipes
- */
-function recipeNamesFactory(names: string[]): () => Promise<string[]> {
-    return (): Promise<string[]> => {
-        return new Promise(
-            (resolve: (names: string[]) => void): void => {
-                resolve(names);
-            }
-        );
-    };
+export async function getRecipeValue(
+    type: ColorRecipeType,
+    name: string,
+    designSystem: DesignSystem
+): Promise<string> {
+    let recipes: {
+        [key: string]: DesignSystemResolver<string | SwatchFamily>;
+    } | null = null;
+
+    switch (type) {
+        case "backgroundFill":
+            recipes = fillRecipes;
+            break;
+        case "textFill":
+            recipes = textFillRecipes;
+            break;
+        case "strokeFill":
+            recipes = strokeRecipes;
+            break;
+    }
+
+    if (recipes !== null && typeof recipes[name] === "function") {
+        const value: string | SwatchFamily = recipes[name](designSystem);
+
+        return typeof value === "string" ? value : value.rest; // TODO: We're hard coding rest values here. We'll likely want a way to configure this
+    } else {
+        throw new Error(`No ${type} recipe of name ${name} found.`);
+    }
 }
 
-/**
- * Functions to get the value of a recipe by name
- * The exported functions are async to prep for service-based recipes
- */
-function getRecipeValueFactory(recipes: {
-    [key: string]: DesignSystemResolver<string | SwatchFamily>;
-}): (name: string, designSystem: DesignSystem) => Promise<string> {
-    return (name: string, designSystem: DesignSystem): Promise<string> => {
-        return new Promise(
-            (resolve: (value: string) => void, reject: (e: Error) => void): void => {
-                if (recipes.hasOwnProperty(name) && typeof recipes[name] === "function") {
-                    const value: string | SwatchFamily = recipes[name](designSystem);
-                    resolve(typeof value === "string" ? value : value.rest); // TODO: this hardcodes a "rest" state for all recipes. We will eventually need to open this up
-                } else {
-                    reject(new Error(`Could not find recipe '${name}'`));
-                }
-            }
-        );
-    };
+export async function getRecipeNames(type: ColorRecipeType): Promise<string[]> {
+    switch (type) {
+        case "backgroundFill":
+            return fillRecipeNames;
+        case "textFill":
+            return textFillRecipeNames;
+        case "strokeFill":
+            return strokeRecipeNames;
+    }
 }
-
-export const getFillValue = getRecipeValueFactory(fillRecipes);
-export const getStrokeValue = getRecipeValueFactory(strokeRecipes);
-export const getTextFillValue = getRecipeValueFactory(textFillRecipes);
-
-export const getFillRecipeNames = recipeNamesFactory(fillRecipeNames.concat());
-export const getStrokeRecipeNames = recipeNamesFactory(strokeRecipeNames.concat());
-export const getTextFillRecipeNames = recipeNamesFactory(textFillRecipeNames.concat());
