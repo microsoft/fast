@@ -186,7 +186,7 @@ describe("viewport positioner", (): void => {
         );
 
         const positioner: any = rendered.find("BaseViewportPositioner");
-        expect(positioner.instance()["getInitialState"]()).toEqual({
+        expect(positioner.instance()["generateInitialState"]()).toEqual({
             disabled: true,
             noObserverMode: false,
             xTransformOrigin: "left",

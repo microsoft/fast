@@ -189,7 +189,7 @@ class ViewportPositioner extends Foundation<
     constructor(props: ViewportPositionerProps) {
         super(props);
 
-        this.state = this.getInitialState();
+        this.state = this.generateInitialState();
     }
 
     public componentDidMount(): void {
@@ -209,7 +209,7 @@ class ViewportPositioner extends Foundation<
         ) {
             this.detachListeners(prevProps.viewport);
 
-            this.setState(this.getInitialState());
+            this.setState(this.generateInitialState());
             return;
         }
 
@@ -1241,7 +1241,7 @@ class ViewportPositioner extends Foundation<
     /**
      * Gets the uninitialized state
      */
-    private getInitialState = (): ViewportPositionerState => {
+    private generateInitialState = (): ViewportPositionerState => {
         return {
             disabled: true,
             noObserverMode: false,
