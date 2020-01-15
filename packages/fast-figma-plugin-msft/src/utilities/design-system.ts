@@ -27,7 +27,8 @@ export async function getDesignSystem(node: BaseNode): Promise<DesignSystem> {
     }
 
     const reversedFills = fills.reverse();
-    let backgroundColor: string = DesignSystemDefaults.backgroundColor; // TODO this should come from somewhere configurable
+    // TODO: https://github.com/microsoft/fast-dna/issues/2589
+    let backgroundColor: string = DesignSystemDefaults.backgroundColor;
 
     for (const name of reversedFills) {
         backgroundColor = await getRecipeValue("backgroundFill", name, {

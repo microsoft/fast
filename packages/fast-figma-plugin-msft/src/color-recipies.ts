@@ -112,7 +112,8 @@ export async function getRecipeValue(
     if (recipes !== null && typeof recipes[name] === "function") {
         const value: string | SwatchFamily = recipes[name](designSystem);
 
-        return typeof value === "string" ? value : value.rest; // TODO: We're hard coding rest values here. We'll likely want a way to configure this
+        // TODO: https://github.com/microsoft/fast-dna/issues/2588
+        return typeof value === "string" ? value : value.rest;
     } else {
         throw new Error(`No ${type} recipe of name ${name} found.`);
     }
