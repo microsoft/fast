@@ -61,11 +61,11 @@ const styles: ComponentStyles<ContextMenuItemClassNameContract, DesignSystem> = 
             },
         }),
         "&:hover": {
-            background: neutralFillStealthHover(neutralLayerFloating),
+            background: neutralFillStealthHover,
             ...highContrastSelected,
         },
         "&:active": {
-            background: neutralFillStealthActive(neutralLayerFloating),
+            background: neutralFillStealthActive,
             ...highContrastSelected,
         },
         ...highContrastStealth,
