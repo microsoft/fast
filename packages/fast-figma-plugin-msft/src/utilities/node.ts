@@ -1,27 +1,6 @@
 import { ColorRGBA64 } from "@microsoft/fast-colors";
 
 /**
- * Determines if a node supports a fill recipe
- */
-export function supportsFillRecipe(
-    node: BaseNode
-): node is FrameNode | RectangleNode | PolygonNode | StarNode {
-    return [isFrameNode, isRectangleNode, isPolygonNode, isStarNode].some(
-        (test: (node: BaseNode) => boolean) => test(node)
-    );
-}
-
-/**
- * Determines if a node supports a stroke recipe
- */
-export const supportsStrokeRecipe = supportsFillRecipe;
-
-/**
- * Determines if a node supports a stroke recipe
- */
-export const supportsTextFillRecipe = isTextNode;
-
-/**
  * Returns the selected node if a single node is
  * selected, otherwise returns null
  */
