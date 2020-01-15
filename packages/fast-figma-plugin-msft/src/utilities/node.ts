@@ -58,7 +58,7 @@ export function setFill<T extends GeometryMixin>(node: T, color: ColorRGBA64): v
                 g: colorObject.g,
                 b: colorObject.b,
             },
-        },
+        } as SolidPaint,
     ];
 }
 
@@ -81,6 +81,6 @@ export function setStroke<T extends GeometryMixin>(node: T, color: ColorRGBA64):
                 g: colorObject.g,
                 b: colorObject.b,
             },
-        },
+        } as SolidPaint,
     ];
 }

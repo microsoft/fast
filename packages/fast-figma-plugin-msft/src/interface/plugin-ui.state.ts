@@ -57,10 +57,6 @@ const defaultState: PluginUIState = {
     textFills: [],
 };
 
-function trace(a: any): any {
-    console.log(a);
-    return a;
-}
 /**
  * Derives a stage object to provide to the Plugin UI.
  */
@@ -68,7 +64,7 @@ export async function getPluginUIState(node: SceneNode | null): Promise<PluginUI
     if (node === null) {
         return defaultState;
     } else {
-        return trace({
+        return {
             activeNodeType: node.type,
             activeFill: getPluginData(node, "fill"),
             activeStroke: getPluginData(node, "stroke"),
@@ -78,7 +74,7 @@ export async function getPluginUIState(node: SceneNode | null): Promise<PluginUI
             textFills: canHaveTextFill(node)
                 ? [""].concat(await getTextFillRecipeNames())
                 : [],
-        });
+        };
     }
 }
 

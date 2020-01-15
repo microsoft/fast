@@ -7,7 +7,7 @@ import {
     SetStrokeRecipeData,
     SetTextFillRecipeData,
 } from "./messaging/ui";
-import { setPluginData } from "./plugin-data";
+import { setPluginData, getPluginData, PluginData } from "./plugin-data";
 import { getActiveNode, setFill, setStroke } from "./utilities/node";
 import { getDesignSystem } from "./utilities/design-system";
 import { ColorRGBA64, parseColorHexRGB } from "@microsoft/fast-colors";
@@ -57,9 +57,9 @@ async function onMessage(
         // TODO we need to find all child nodes to update when this happens...
         // There could be many nodes though, so we need to find a way to do this efficiently
         // Perhaphs store edited nodes in a WeakMap or somthing?
+        await updateTree(node as any);
     } else if (message.type === SET_TEXT_FILL_RECIPE) {
         setPluginData(node, "textFill", message.value);
-        setPluginUIState(getPluginUIState(node));
         setPluginUIState(getPluginUIState(node));
         const hex: string = await getTextFillValue(message.value, designSystem);
         const color: ColorRGBA64 | null = parseColorHexRGB(hex);
@@ -75,6 +75,49 @@ async function onMessage(
 
         if (color !== null) {
             setStroke(node as any, color);
+        }
+    }
+}
+
+/**
+ * Re-evaluates all of the assigned recipies inside a given node.
+ */
+async function updateTree<T extends ChildrenMixin & SceneNode>(node: T): Promise<void> {
+    for (const child of node.children) {
+        const designSystem: DesignSystem = await getDesignSystem(child);
+        const fill: string = getPluginData(child, "fill");
+        const stroke: string = getPluginData(child, "stroke");
+        const textFill: string = getPluginData(child, "textFill");
+
+        if (fill.length) {
+            const hex: string = await getFillValue(fill, designSystem);
+            const color: ColorRGBA64 | null = parseColorHexRGB(hex);
+
+            if (color !== null) {
+                setFill(child as any, color);
+            }
+        }
+
+        if (stroke.length) {
+            const hex: string = await getStrokeValue(stroke, designSystem);
+            const color: ColorRGBA64 | null = parseColorHexRGB(hex);
+
+            if (color !== null) {
+                setStroke(child as any, color);
+            }
+        }
+
+        if (textFill.length) {
+            const hex: string = await getTextFillValue(textFill, designSystem);
+            const color: ColorRGBA64 | null = parseColorHexRGB(hex);
+
+            if (color !== null) {
+                setFill(child as any, color);
+            }
+        }
+
+        if ((child as any).children) {
+            await updateTree(child as any);
         }
     }
 }
