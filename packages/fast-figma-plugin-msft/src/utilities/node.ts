@@ -32,52 +32,6 @@ export function getActiveNode(): SceneNode | null {
 }
 
 /**
- * Sets the fill of a node to a color.
- * TODO: Figma can have multiple fills - what should happen if there are multiple? Clobber completely for now.
- *
- * note: Groups have a behavior where a background is supplied to it's children. Limit this for now
- */
-export function setFill<T extends GeometryMixin>(node: T, color: ColorRGBA64): void {
-    const colorObject = color.toObject();
-    node.fills = [
-        {
-            type: "SOLID",
-            visible: true,
-            opacity: colorObject.a,
-            blendMode: "NORMAL",
-            color: {
-                r: colorObject.r,
-                g: colorObject.g,
-                b: colorObject.b,
-            },
-        } as SolidPaint,
-    ];
-}
-
-/**
- * Sets the fill of a node to a color.
- * TODO: Figma can have multiple fills - what should happen if there are multiple? Clobber completely for now.
- *
- * note: Groups have a behavior where a background is supplied to it's children. Limit this for now
- */
-export function setStroke<T extends GeometryMixin>(node: T, color: ColorRGBA64): void {
-    const colorObject = color.toObject();
-    node.strokes = [
-        {
-            type: "SOLID",
-            visible: true,
-            opacity: colorObject.a,
-            blendMode: "NORMAL",
-            color: {
-                r: colorObject.r,
-                g: colorObject.g,
-                b: colorObject.b,
-            },
-        } as SolidPaint,
-    ];
-}
-
-/**
  * Strict type assertions for Figma nodes
  */
 export function isDocumentNode(node: BaseNode): node is DocumentNode {
