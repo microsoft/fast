@@ -12,6 +12,8 @@ Smooth scrolling: When smooth scrolling is enabled the component monitors focus 
 
 Authors should be aware that this component writes to the width/left or top/height css style attributes of children on render depending on the orientation of the stack panel.
 
+Keys: authors should strongly consider providing keys (https://reactjs.org/docs/lists-and-keys.html) to child elements to maintain stable identies for child items. 
+
 ### Props
 
  enableVirtualization:  Whether child elements are virtualized or not. Defaults to true.
