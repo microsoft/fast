@@ -1,11 +1,10 @@
 {
     "extends": "../../tsconfig.json",
     "compilerOptions": {
-        "target": "es5",
+        "target": "es6",
         "baseUrl": ".",
         "outDir": "./dist",
         "declaration": false,
-        "experimentalDecorators": true,
         "strictNullChecks": true
     },
     "include": ["./src"]
