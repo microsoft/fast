@@ -10,7 +10,7 @@ export interface StackPanelClassNameContract {
     /**
      * the container that contains the stack panel items
      */
-    stackPanel_itemContainer?: string;
+    stackPanel_items?: string;
 
     /**
      *
