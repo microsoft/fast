@@ -1,6 +1,6 @@
 import { getRecipeNames } from "../color-recipies";
 import { setUIStateDataMessageCreator } from "../messaging/canvas";
-import { getPluginData, supportsPluginData, supports } from "../plugin-data";
+import { getPluginData, supports, supportsPluginData } from "../plugin-data";
 
 /**
  * Define the react state object for the Plugin UI
