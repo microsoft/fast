@@ -8,7 +8,6 @@ import {
     neutralFillStealthHover,
     neutralFocus,
     neutralForegroundRest,
-    neutralLayerFloating,
 } from "../utilities/color";
 import { ContextMenuItemClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import { height, horizontalSpacingNumber } from "../utilities/density";
