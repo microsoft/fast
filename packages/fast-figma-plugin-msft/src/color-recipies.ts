@@ -129,6 +129,9 @@ export async function getRecipeNames(type: ColorRecipeType): Promise<string[]> {
     }
 }
 
+/**
+ * Applies color to a node, where what it paints depends on the ColorRecipeType
+ */
 export function paintNode(
     node: FillRecipeNode,
     type: "backgroundFill",
