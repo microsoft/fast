@@ -5,6 +5,7 @@ import designSystemDefaults, {
 import { Palette } from "../utilities/color/palette";
 import { Direction } from "@microsoft/fast-web-utilities";
 import { FontWeight } from "./fonts";
+import { SwatchFamilyResolver } from "./color/common";
 
 /**
  * Safely retrieves the value from a key of the DesignSystem.
@@ -250,3 +251,7 @@ export const getFontWeight: DesignSystemResolver<FontWeight> = getDesignSystemVa
 export const neutralOutlineFocusDelta: DesignSystemResolver<
     number
 > = getDesignSystemValue("neutralOutlineFocusDelta");
+
+export const neutralOutlineRecipe: DesignSystemResolver<
+    SwatchFamilyResolver
+> = getDesignSystemValue("neutralOutline");

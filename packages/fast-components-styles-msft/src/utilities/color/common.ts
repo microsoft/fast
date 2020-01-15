@@ -143,23 +143,54 @@ export function swatchFamilyToSwatchRecipeFactory<T extends SwatchFamily>(
     };
 }
 
-export function rest(swatchFamilyResolver: SwatchFamilyResolver): SwatchRecipe {
-    return swatchFamilyToSwatchRecipeFactory(SwatchFamilyType.rest, swatchFamilyResolver);
+function swatchFamilyResolverToSwatchRecipeFactory<T extends SwatchFamily>(
+    type: keyof T,
+    callback: DesignSystemResolver<SwatchFamilyResolver<T>>
+): SwatchRecipe {
+    const memoizedRecipe: typeof callback = memoize(callback);
+    return (arg: DesignSystem | SwatchResolver): any => {
+        if (typeof arg === "function") {
+            return (designSystem: DesignSystem): Swatch => {
+                return memoizedRecipe(
+                    Object.assign({}, designSystem, {
+                        backgroundColor: arg(designSystem),
+                    })
+                )(designSystem)[type as string];
+            };
+        } else {
+            return memoizedRecipe(arg)(arg)[type];
+        }
+    };
 }
-export function hover(swatchFamilyResolver: SwatchFamilyResolver): SwatchRecipe {
-    return swatchFamilyToSwatchRecipeFactory(
+
+export function rest(
+    swatchFamilyResolver: DesignSystemResolver<SwatchFamilyResolver>
+): SwatchRecipe {
+    return swatchFamilyResolverToSwatchRecipeFactory(
+        SwatchFamilyType.rest,
+        swatchFamilyResolver
+    );
+}
+export function hover(
+    swatchFamilyResolver: DesignSystemResolver<SwatchFamilyResolver>
+): SwatchRecipe {
+    return swatchFamilyResolverToSwatchRecipeFactory(
         SwatchFamilyType.hover,
         swatchFamilyResolver
     );
 }
-export function active(swatchFamilyResolver: SwatchFamilyResolver): SwatchRecipe {
-    return swatchFamilyToSwatchRecipeFactory(
+export function active(
+    swatchFamilyResolver: DesignSystemResolver<SwatchFamilyResolver>
+): SwatchRecipe {
+    return swatchFamilyResolverToSwatchRecipeFactory(
         SwatchFamilyType.active,
         swatchFamilyResolver
     );
 }
-export function focus(swatchFamilyResolver: SwatchFamilyResolver): SwatchRecipe {
-    return swatchFamilyToSwatchRecipeFactory(
+export function focus(
+    swatchFamilyResolver: DesignSystemResolver<SwatchFamilyResolver>
+): SwatchRecipe {
+    return swatchFamilyResolverToSwatchRecipeFactory(
         SwatchFamilyType.focus,
         swatchFamilyResolver
     );

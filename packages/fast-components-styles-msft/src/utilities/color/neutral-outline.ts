@@ -24,6 +24,9 @@ const neutralOutlineAlgorithm: SwatchFamilyResolver = offsetsAlgorithm(
     neutralOutlineFocusDelta
 );
 
+/**
+ * @deprecated
+ */
 export const neutralOutline: ColorRecipe<SwatchFamily> = colorRecipeFactory(
     neutralOutlineAlgorithm
 );
@@ -33,26 +36,26 @@ export const neutralOutline: ColorRecipe<SwatchFamily> = colorRecipeFactory(
  */
 export const neutralOutlineRest: SwatchRecipe = swatchFamilyToSwatchRecipeFactory(
     SwatchFamilyType.rest,
-    neutralOutline
+    neutralOutlineAlgorithm
 );
 /**
  * @deprecated
  */
 export const neutralOutlineHover: SwatchRecipe = swatchFamilyToSwatchRecipeFactory(
     SwatchFamilyType.hover,
-    neutralOutline
+    neutralOutlineAlgorithm
 );
 /**
  * @deprecated
  */
 export const neutralOutlineActive: SwatchRecipe = swatchFamilyToSwatchRecipeFactory(
     SwatchFamilyType.active,
-    neutralOutline
+    neutralOutlineAlgorithm
 );
 /**
  * @deprecated
  */
 export const neutralOutlineFocus: SwatchRecipe = swatchFamilyToSwatchRecipeFactory(
     SwatchFamilyType.focus,
-    neutralOutline
+    neutralOutlineAlgorithm
 );

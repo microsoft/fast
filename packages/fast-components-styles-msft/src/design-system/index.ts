@@ -11,7 +11,7 @@ import { FontWeight } from "../utilities/fonts";
 import designSystemSchema from "./design-system.schema";
 import { accentPalette, neutralPalette } from "../default-palette";
 import { isFunction } from "lodash-es";
-import { ColorRecipe, colorRecipeFactory, SwatchFamily } from "../utilities/color/common";
+import { SwatchFamilyResolver } from "../utilities/color/common";
 import { offsetsAlgorithm } from "../utilities/color/offsets-algorithm";
 
 export const defaultFontWeights: FontWeight = {
@@ -205,7 +205,7 @@ export interface DesignSystem {
     neutralOutlineActiveDelta: number;
     neutralOutlineFocusDelta: number;
 
-    neutralOutline: ColorRecipe<SwatchFamily>;
+    neutralOutline: SwatchFamilyResolver;
 }
 
 const designSystemDefaults: DesignSystem = {
@@ -287,7 +287,7 @@ const designSystemDefaults: DesignSystem = {
      * to define interface types like this in the schema instead of the properties
      * that go into it?
      */
-    neutralOutline: colorRecipeFactory(offsetsAlgorithm(neutralPalette, 25, 40, 16, 25)),
+    neutralOutline: offsetsAlgorithm(neutralPalette, 25, 40, 16, 25),
 };
 
 /**
