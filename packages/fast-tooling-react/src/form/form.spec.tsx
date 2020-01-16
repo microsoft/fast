@@ -12,6 +12,9 @@ import pluginSchema from "../__tests__/schemas/plugin.schema.json";
 
 import { StringUpdateSchemaPlugin } from "../../app/pages/form/plugin/plugin";
 import { ControlConfig, ControlType, StandardControlPlugin } from "./templates";
+import { TextareaControl } from "./controls/control.textarea";
+import { CheckboxControl } from "./controls/control.checkbox";
+import { ButtonControl } from "./controls/control.button";
 
 /*
  * Configure Enzyme
@@ -541,6 +544,178 @@ describe("Form", () => {
         );
 
         expect(rendered.find(`#${id1}`)).toHaveLength(2);
+    });
+    test("should show a custom form control for all types when a custom form control has been passed", () => {
+        const id1: string = "foo";
+        const rendered: any = mount(
+            <BareForm
+                schema={{
+                    type: "object",
+                    properties: {
+                        foo: {
+                            type: "string",
+                        },
+                        bar: {
+                            type: "string",
+                        },
+                        bat: {
+                            type: "boolean",
+                        },
+                    },
+                }}
+                data={{}}
+                onChange={jest.fn()}
+                controlPlugins={[
+                    new StandardControlPlugin({
+                        control: (config: ControlConfig): React.ReactNode => {
+                            return <div className={id1} />;
+                        },
+                    }),
+                ]}
+            />
+        );
+
+        expect(rendered.find(`.${id1}`)).toHaveLength(3);
+    });
+    test("should pass a control to the config that would have been used for the type", () => {
+        const rendered: any = mount(
+            <BareForm
+                schema={{
+                    type: "object",
+                    properties: {
+                        foo: {
+                            type: "number",
+                        },
+                    },
+                }}
+                data={{}}
+                onChange={jest.fn()}
+                controlPlugins={[
+                    new StandardControlPlugin({
+                        component: TextareaControl,
+                        control: (config: ControlConfig): React.ReactNode => {
+                            return <config.component {...config as any} />;
+                        },
+                    }),
+                ]}
+            />
+        );
+
+        expect(rendered.find("TextareaControl")).toHaveLength(1);
+    });
+    test("should use a custom control for a specific type control when both a specific type and all type controls are passed", () => {
+        const rendered: any = mount(
+            <BareForm
+                schema={{
+                    type: "object",
+                    properties: {
+                        foo: {
+                            type: "number",
+                        },
+                        bar: {
+                            type: "boolean",
+                        },
+                    },
+                }}
+                data={{}}
+                onChange={jest.fn()}
+                controlPlugins={[
+                    new StandardControlPlugin({
+                        component: TextareaControl,
+                        control: (config: ControlConfig): React.ReactNode => {
+                            return <config.component {...config as any} />;
+                        },
+                    }),
+                    new StandardControlPlugin({
+                        type: ControlType.checkbox,
+                        component: ButtonControl,
+                        control: (config: ControlConfig): React.ReactNode => {
+                            return <config.component {...config as any} />;
+                        },
+                    }),
+                ]}
+            />
+        );
+
+        expect(rendered.find("TextareaControl")).toHaveLength(1);
+        expect(rendered.find("ButtonControl")).toHaveLength(1);
+    });
+    test("should use a custom control for a specific id control when a specific type control is passed", () => {
+        const id1: string = "foo";
+        const htmlId1: string = "bar";
+        const htmlId2: string = "bar2";
+        const rendered: any = mount(
+            <BareForm
+                schema={{
+                    type: "object",
+                    properties: {
+                        foo: {
+                            type: "boolean",
+                        },
+                        bar: {
+                            formControlId: id1,
+                            type: "boolean",
+                        },
+                    },
+                }}
+                data={{}}
+                onChange={jest.fn()}
+                controlPlugins={[
+                    new StandardControlPlugin({
+                        type: ControlType.checkbox,
+                        component: CheckboxControl,
+                        control: (config: ControlConfig): React.ReactNode => {
+                            return <config.component {...config as any} id={htmlId2} />;
+                        },
+                    }),
+                    new StandardControlPlugin({
+                        id: id1,
+                        component: null,
+                        control: (config: ControlConfig): React.ReactNode => {
+                            return <div id={htmlId1} />;
+                        },
+                    }),
+                ]}
+            />
+        );
+
+        expect(rendered.find(`#${htmlId1}`)).toHaveLength(1);
+        expect(rendered.find(`#${htmlId2}`)).toHaveLength(1);
+    });
+    test("should pass default components if the component has not been passed to a plugin", () => {
+        const rendered: any = mount(
+            <BareForm
+                schema={{
+                    type: "object",
+                    properties: {
+                        foo: {
+                            type: "null",
+                        },
+                        bar: {
+                            type: "boolean",
+                        },
+                    },
+                }}
+                data={{}}
+                onChange={jest.fn()}
+                controlPlugins={[
+                    new StandardControlPlugin({
+                        control: (config: ControlConfig): React.ReactNode => {
+                            return <config.component {...config as any} />;
+                        },
+                    }),
+                    new StandardControlPlugin({
+                        type: ControlType.checkbox,
+                        control: (config: ControlConfig): React.ReactNode => {
+                            return <config.component {...config as any} />;
+                        },
+                    }),
+                ]}
+            />
+        );
+
+        expect(rendered.find("ButtonControl")).toHaveLength(1);
+        expect(rendered.find("CheckboxControl")).toHaveLength(1);
     });
     test("should show controls in categories if categories are passed", () => {
         const rendered: any = mount(

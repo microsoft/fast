@@ -23,6 +23,11 @@ export interface FormDictionaryProps
     controlPlugins?: StandardControlPlugin[];
 
     /**
+     * A component dictionary to be used by type
+     */
+    controlComponents: { [key: string]: React.ComponentClass | React.FunctionComponent };
+
+    /**
      * A string identifying a custom form control
      * as identified in the JSON schema by the `formControlId`
      * property

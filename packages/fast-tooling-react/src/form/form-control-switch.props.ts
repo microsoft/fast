@@ -23,6 +23,11 @@ export interface FormControlSwitchProps extends ControlTemplateUtilitiesProps {
     controlPlugins?: StandardControlPlugin[];
 
     /**
+     * A component dictionary to be used by type
+     */
+    controlComponents: { [key: string]: React.ComponentClass | React.FunctionComponent };
+
+    /**
      * The schema to be used
      */
     schema: any;

@@ -1,6 +1,7 @@
 import { ErrorObject } from "ajv";
 import { AddExampleData } from "../form-section.props";
 import { FormChildOptionItem } from "../form";
+import { ControlType } from "./plugin.control.utilities";
 
 export enum BadgeType {
     warning = "warning",
@@ -333,6 +334,10 @@ export interface ChildrenControlOptions {
     onUpdateSection?: (config: UpdateSectionConfig) => void;
 }
 
+export interface AdditionalControlConfigOptions {
+    component: React.ComponentClass | React.FunctionComponent;
+}
+
 export type NumberFieldTypeControlConfig = CommonControlConfig &
     NumberFieldTypeControlOptions;
 export type ListControlConfig = CommonControlConfig & ListControlOptions;
@@ -346,4 +351,5 @@ export type ControlConfig = CommonControlConfig &
     TextareaControlOptions &
     SectionLinkControlOptions &
     ArrayControlOptions &
-    ChildrenControlConfig;
+    ChildrenControlConfig &
+    AdditionalControlConfigOptions;

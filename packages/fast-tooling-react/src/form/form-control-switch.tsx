@@ -1,13 +1,18 @@
 import React from "react";
 import { get } from "lodash-es";
 import { FormControlSwitchProps } from "./form-control-switch.props";
-import { ControlTemplateUtilitiesProps, StandardControlPlugin } from "./templates";
+import {
+    AdditionalControlConfigOptions,
+    ControlTemplateUtilitiesProps,
+    StandardControlPlugin,
+} from "./templates";
 import { FormChildOptionItem } from "./form.props";
 import { generateExampleData, isConst, isSelect } from "./utilities";
 import { ItemConstraints } from "./controls/control.array.props";
 import { SingleLineControlPlugin } from "./templates/plugin.control.single-line";
 import ControlPluginUtilities, {
     ControlPluginUtilitiesProps,
+    ControlType,
 } from "./templates/plugin.control.utilities";
 
 class FormControlSwitch extends React.Component<FormControlSwitchProps, {}> {
@@ -103,7 +108,7 @@ class FormControlSwitch extends React.Component<FormControlSwitchProps, {}> {
                     childOptions: this.getChildOptions(),
                     defaultChildOptions: this.props.schema.defaults || null,
                 },
-                this.getCommonControlProps()
+                this.getCommonControlProps(ControlType.children)
             )
         );
 
@@ -121,7 +126,7 @@ class FormControlSwitch extends React.Component<FormControlSwitchProps, {}> {
                     maxItems: get(this.props.schema, ItemConstraints.maxItems, Infinity),
                     onAddExampleData: this.handleAddExampleData,
                 },
-                this.getCommonControlProps()
+                this.getCommonControlProps(ControlType.array)
             )
         );
 
@@ -139,7 +144,7 @@ class FormControlSwitch extends React.Component<FormControlSwitchProps, {}> {
                     max: this.props.schema.maximum,
                     step: this.props.schema.multipleOf,
                 },
-                this.getCommonControlProps()
+                this.getCommonControlProps(ControlType.numberField)
             )
         );
 
@@ -150,7 +155,7 @@ class FormControlSwitch extends React.Component<FormControlSwitchProps, {}> {
      * Renders the checkbox form item
      */
     private renderCheckbox(control: SingleLineControlPlugin): React.ReactNode {
-        control.updateProps(this.getCommonControlProps());
+        control.updateProps(this.getCommonControlProps(ControlType.checkbox));
 
         return control.render();
     }
@@ -160,7 +165,7 @@ class FormControlSwitch extends React.Component<FormControlSwitchProps, {}> {
      * that are objects
      */
     private renderSectionLink(control: StandardControlPlugin): React.ReactNode {
-        control.updateProps(this.getCommonControlProps());
+        control.updateProps(this.getCommonControlProps(ControlType.sectionLink));
 
         return control.render();
     }
@@ -176,7 +181,7 @@ class FormControlSwitch extends React.Component<FormControlSwitchProps, {}> {
                 {
                     rows,
                 },
-                this.getCommonControlProps()
+                this.getCommonControlProps(ControlType.textarea)
             )
         );
 
@@ -198,7 +203,7 @@ class FormControlSwitch extends React.Component<FormControlSwitchProps, {}> {
                 {
                     options,
                 },
-                this.getCommonControlProps()
+                this.getCommonControlProps(ControlType.select)
             )
         );
 
@@ -209,13 +214,13 @@ class FormControlSwitch extends React.Component<FormControlSwitchProps, {}> {
      * Renders the display form item
      */
     private renderDisplay(control: StandardControlPlugin): React.ReactNode {
-        control.updateProps(this.getCommonControlProps());
+        control.updateProps(this.getCommonControlProps(ControlType.display));
 
         return control.render();
     }
 
     private renderButton(control: StandardControlPlugin): React.ReactNode {
-        control.updateProps(this.getCommonControlProps());
+        control.updateProps(this.getCommonControlProps(ControlType.button));
 
         return control.render();
     }
@@ -242,7 +247,9 @@ class FormControlSwitch extends React.Component<FormControlSwitchProps, {}> {
     /**
      * Gets the common form control props
      */
-    private getCommonControlProps(): ControlTemplateUtilitiesProps {
+    private getCommonControlProps(
+        type: ControlType
+    ): ControlTemplateUtilitiesProps & AdditionalControlConfigOptions {
         const schema: any = get(this.props, "schema", {});
 
         return {
@@ -266,6 +273,7 @@ class FormControlSwitch extends React.Component<FormControlSwitchProps, {}> {
             displayValidationInline: this.props.displayValidationInline,
             onUpdateSection: this.props.onUpdateSection,
             softRemove: this.props.softRemove,
+            component: this.props.controlComponents[type],
         };
     }
 }
