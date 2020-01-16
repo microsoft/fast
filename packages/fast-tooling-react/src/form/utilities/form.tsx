@@ -10,7 +10,7 @@ import {
     OneOfAnyOf,
     oneOfAnyOfType,
 } from "../form-section.props";
-import { cloneDeep, get, mergeWith, omit, set, unset } from "lodash-es";
+import { cloneDeep, get, isEmpty, mergeWith, omit, set, unset } from "lodash-es";
 import {
     getChildOptionBySchemaId,
     normalizeDataLocationToDotNotation,
@@ -22,6 +22,8 @@ import { getDataFromSchema } from "../../data-utilities";
 import { reactChildrenStringSchema } from "../controls/control.children.text";
 import stringify from "fast-json-stable-stringify";
 import { validateData } from "../../utilities/ajv-validation";
+
+const containsInvalidDataMessage: string = "Contains invalid data";
 
 /**
  * Gets the array link data
@@ -567,6 +569,18 @@ export function getComponentByDataLocation(
 }
 
 /**
+ * Normalize the dataPaths provided by Ajv to the dataLocation path syntax
+ */
+export function normalizeAjvDataPath(dataPath: string): string {
+    return normalizeDataLocationToDotNotation(
+        dataPath
+            .replace(/(\[')/g, ".")
+            .replace(/('\])/g, "")
+            .replace(/^(\.+)/, "")
+    );
+}
+
+/**
  * Gets the validation error message using a data location
  */
 export function getErrorFromDataLocation(
@@ -576,45 +590,40 @@ export function getErrorFromDataLocation(
     let error: string = "";
 
     if (Array.isArray(validationErrors)) {
-        validationErrors.forEach(
-            (validationError: ErrorObject): void => {
-                const matchingDataLocationToDataPath: string =
-                    dataLocation === "" ? dataLocation : `.${dataLocation}`;
+        const normalizedDataLocation: string = normalizeDataLocationToDotNotation(
+            dataLocation
+        );
 
-                if (matchingDataLocationToDataPath === validationError.dataPath) {
-                    error = validationError.message;
-                } else if (validationError.keyword === "required") {
-                    const dataLocationItems: string[] = matchingDataLocationToDataPath.split(
-                        "."
-                    );
+        for (const validationError of validationErrors) {
+            const normalizedDataPath: string = normalizeAjvDataPath(
+                validationError.dataPath
+            );
 
-                    if (
-                        dataLocationItems.slice(0, -1).join(".") ===
-                            validationError.dataPath &&
-                        get(validationError, "params.missingProperty") ===
-                            dataLocationItems[dataLocationItems.length - 1]
-                    ) {
-                        error = validationError.message;
-                    }
+            if (normalizedDataLocation === normalizedDataPath) {
+                error = validationError.message;
+            } else {
+                let containsInvalidData: boolean;
+
+                if (normalizedDataLocation === "") {
+                    containsInvalidData = true;
                 } else {
-                    const dataLocationItems: string[] = `.${normalizeDataLocationToDotNotation(
-                        validationError.dataPath
-                    )}`.split(".");
-                    const containsInvalidData: boolean = dataLocationItems.some(
+                    const dataPathItems: string[] = normalizedDataPath.split(".");
+
+                    containsInvalidData = dataPathItems.some(
                         (value: string, index: number) => {
                             return (
-                                matchingDataLocationToDataPath ===
-                                dataLocationItems.slice(0, index + 1).join(".")
+                                normalizedDataLocation ===
+                                dataPathItems.slice(0, index + 1).join(".")
                             );
                         }
                     );
+                }
 
-                    if (containsInvalidData) {
-                        error = "Contains invalid data";
-                    }
+                if (error === "" && containsInvalidData) {
+                    error = containsInvalidDataMessage;
                 }
             }
-        );
+        }
     }
 
     return error;

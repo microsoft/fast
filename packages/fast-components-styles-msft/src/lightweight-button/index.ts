@@ -11,7 +11,6 @@ import {
 import { applyFocusVisible, toPx } from "@microsoft/fast-jss-utilities";
 import { focusOutlineWidth } from "../utilities/design-system";
 import {
-    highContrastBackground,
     HighContrastColor,
     highContrastDisabledForeground,
     highContrastHighlightBackground,
@@ -34,14 +33,20 @@ const styles: ComponentStyles<LightweightButtonClassNameContract, DesignSystem> 
         ...applyFocusVisible({
             "border-color": "transparent",
             "box-shadow": "none",
+            ...highContrastHighlightForeground,
             "& $button_contentRegion::before": {
                 background: neutralForegroundRest,
                 height: toPx<DesignSystem>(focusOutlineWidth),
-                ...highContrastBackground,
+                ...highContrastHighlightBackground,
             },
         }),
         "a&, button&": {},
         // Underline
+        "& $button_contentRegion::before": {
+            [highContrastSelector]: {
+                background: HighContrastColor.buttonText,
+            },
+        },
         "&:hover $button_contentRegion::before": {
             background: accentForegroundHover,
             ...highContrastHighlightBackground,
@@ -51,6 +56,7 @@ const styles: ComponentStyles<LightweightButtonClassNameContract, DesignSystem> 
         },
         "&:active $button_contentRegion::before": {
             background: accentForegroundActive,
+            ...highContrastHighlightBackground,
         },
         "&$button__disabled, &$button__disabled $button_contentRegion::before": {
             "background-color": "transparent",
@@ -78,8 +84,10 @@ const styles: ComponentStyles<LightweightButtonClassNameContract, DesignSystem> 
             "&:hover $button_contentRegion::before": {
                 background: highContrastLinkValue,
             },
-            "&:hover$button__disabled": {
-                ...highContrastDisabledForeground,
+            "& $button_contentRegion::before": {
+                [highContrastSelector]: {
+                    background: "transparent",
+                },
             },
         },
     },

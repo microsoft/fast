@@ -35,7 +35,6 @@ const formSectionProps: FormSectionProps = {
 const managedClasses: FormSectionClassNameContract = {
     formSection: "formSection",
     formSection__disabled: "formSection__disabeld",
-    formSection_invalidMessage: "formSection_invalidMessage",
 };
 
 describe("FormSection", () => {
@@ -202,9 +201,7 @@ describe("FormSection", () => {
             />
         );
 
-        expect(
-            rendered.find(`.${managedClasses.formSection_invalidMessage}`)
-        ).toHaveLength(1);
+        expect(rendered.find("FormSectionValidation")).toHaveLength(1);
     });
     test("should not show an invalid message if no validation errors have been passed", () => {
         const schema: any = {
@@ -234,8 +231,6 @@ describe("FormSection", () => {
             />
         );
 
-        expect(
-            rendered.find(`.${managedClasses.formSection_invalidMessage}`)
-        ).toHaveLength(0);
+        expect(rendered.find("FormSectionValidation")).toHaveLength(0);
     });
 });

@@ -52,6 +52,8 @@ class ButtonControl extends React.Component<
         e: React.MouseEvent<HTMLButtonElement>
     ) => void) => {
         return (e: React.MouseEvent<HTMLButtonElement>): void => {
+            e.preventDefault();
+
             this.props.onChange({ value: null });
         };
     };

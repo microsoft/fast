@@ -3,17 +3,18 @@ import { ComponentStyles } from "@microsoft/fast-jss-manager";
 import { format, toPx } from "@microsoft/fast-jss-utilities";
 import { DesignSystem } from "../design-system";
 import { applyElevatedCornerRadius } from "../utilities/border";
-import { backgroundColor, designUnit, outlineWidth } from "../utilities/design-system";
+import { designUnit, outlineWidth } from "../utilities/design-system";
 import { applyElevation, ElevationMultiplier } from "../utilities/elevation";
 import {
     HighContrastColor,
     highContrastOptOutProperty,
     highContrastSelector,
 } from "../utilities/high-contrast";
+import { neutralLayerFloating } from "../utilities/color";
 
 const styles: ComponentStyles<ContextMenuClassNameContract, DesignSystem> = {
     contextMenu: {
-        background: backgroundColor,
+        background: neutralLayerFloating,
         ...applyElevatedCornerRadius(),
         ...applyElevation(ElevationMultiplier.e11),
         margin: "0",

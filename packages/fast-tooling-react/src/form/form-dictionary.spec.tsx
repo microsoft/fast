@@ -5,6 +5,8 @@ import { controls } from "./form-control-switch.spec";
 import { FormDictionary } from "./form-dictionary";
 import { FormDictionaryProps } from "./form-dictionary.props";
 import { FormDictionaryClassNameContract } from "./form-dictionary.style";
+import { getValidationErrors } from "../utilities/ajv-validation";
+import { getErrorFromDataLocation } from "./utilities";
 
 /*
  * Configure Enzyme
@@ -299,5 +301,33 @@ describe("FormDictionary", () => {
 
         expect(propertyKeyInputs).toHaveLength(2);
         expect(formControlSwitch).toHaveLength(0);
+    });
+    test("should show invalid message when the invalid message has been passed", () => {
+        const schema: any = {
+            type: "object",
+            additionalProperties: {
+                type: "number",
+            },
+        };
+        const data: any = {
+            randoma: "foo",
+            b: "bar",
+        };
+        const validationErrors: any = getValidationErrors(schema, data);
+        const rendered: any = render(
+            <FormDictionary
+                {...dictionaryProps}
+                managedClasses={managedClasses}
+                data={data}
+                schema={schema}
+                validationErrors={validationErrors}
+                additionalProperties={{
+                    type: "number",
+                }}
+                displayValidationInline={true}
+            />
+        );
+
+        expect(rendered.html()).toContain("should be number");
     });
 });
