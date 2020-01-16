@@ -1243,6 +1243,10 @@ class ViewportPositioner extends Foundation<
      */
     private generateInitialState = (): ViewportPositionerState => {
         return {
+            // Note: when the component is initialized or reset we start with a the disabled state set to true.
+            // This gets set to fals during component initialization assuming the disabled prop is not set to true and
+            // that required resources load correctly (ie an invalid anchor or viewport ref could prevent the component
+            // from ever becoming enabled regardless of the disable prop)
             disabled: true,
             noObserverMode: false,
             xTransformOrigin: Location.left,
