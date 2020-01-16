@@ -189,33 +189,7 @@ class ViewportPositioner extends Foundation<
     constructor(props: ViewportPositionerProps) {
         super(props);
 
-        this.state = {
-            disabled: true,
-            noObserverMode: false,
-            xTransformOrigin: Location.left,
-            yTransformOrigin: Location.top,
-            xTranslate: 0,
-            yTranslate: 0,
-            top: null,
-            right: null,
-            bottom: null,
-            left: null,
-            currentHorizontalPosition:
-                ViewportPositionerHorizontalPositionLabel.undefined,
-            currentVerticalPosition: ViewportPositionerVerticalPositionLabel.undefined,
-            defaultHorizontalPosition: this.getHorizontalPositionToLabel(
-                this.props.horizontalPositioningMode,
-                this.props.defaultHorizontalPosition
-            ),
-            defaultVerticalPosition: this.getVerticalPositionToLabel(
-                this.props.verticalPositioningMode,
-                this.props.defaultVerticalPosition
-            ),
-            horizontalSelectedPositionWidth: null,
-            verticalSelectedPositionHeight: null,
-            initialLayoutComplete: false,
-            validRefChecksRemaining: 2,
-        };
+        this.state = this.generateInitialState();
     }
 
     public componentDidMount(): void {
@@ -228,12 +202,26 @@ class ViewportPositioner extends Foundation<
     }
 
     public componentDidUpdate(prevProps: ViewportPositionerProps): void {
+        // if anchor or viewport changes the component needs to reset
+        if (
+            prevProps.anchor !== this.props.anchor ||
+            prevProps.viewport !== this.props.viewport
+        ) {
+            this.detachListeners(prevProps.viewport);
+
+            this.setState(this.generateInitialState());
+            return;
+        }
+
         if (
             prevProps.disabled !== this.props.disabled ||
             this.state.validRefChecksRemaining > 0
         ) {
             this.updateDisabledState();
+            return;
         }
+
+        this.requestFrame();
     }
 
     /**
@@ -353,7 +341,10 @@ class ViewportPositioner extends Foundation<
             return;
         }
 
-        if (this.getAnchorElement() === null || this.getViewportElement() === null) {
+        if (
+            this.getAnchorElement() === null ||
+            this.getViewportElement(this.props.viewport) === null
+        ) {
             if (this.state.validRefChecksRemaining > 0) {
                 this.setState({
                     validRefChecksRemaining: this.state.validRefChecksRemaining - 1,
@@ -370,7 +361,9 @@ class ViewportPositioner extends Foundation<
      *  Enable the component
      */
     private enableComponent = (): void => {
-        const viewportElement: HTMLElement | null = this.getViewportElement();
+        const viewportElement: HTMLElement | null = this.getViewportElement(
+            this.props.viewport
+        );
         const anchorElement: HTMLElement | null = this.getAnchorElement();
 
         if (
@@ -421,7 +414,7 @@ class ViewportPositioner extends Foundation<
      *  once to get correct initial placement
      */
     private setNoObserverMode = (): void => {
-        const viewportElement: HTMLElement = this.getViewportElement();
+        const viewportElement: HTMLElement = this.getViewportElement(this.props.viewport);
         const anchorElement: HTMLElement = this.getAnchorElement();
 
         if (isNil(viewportElement) || isNil(anchorElement)) {
@@ -457,17 +450,28 @@ class ViewportPositioner extends Foundation<
         if (this.state.disabled) {
             return;
         }
+
+        this.detachListeners(this.props.viewport);
+
         this.setState({
             disabled: true,
             validRefChecksRemaining: 0,
         });
+    };
+
+    /**
+     *  removes event listeners and observers when component is being unmounted or reset
+     */
+    private detachListeners = (viewportRef: React.RefObject<any> | HTMLElement): void => {
+        const viewPortElement: HTMLElement = this.getViewportElement(viewportRef);
+        if (!isNil(viewPortElement)) {
+            viewPortElement.removeEventListener("scroll", this.handleScroll);
+        }
 
         if (
             this.collisionDetector &&
             typeof this.collisionDetector.disconnect === "function"
         ) {
-            this.collisionDetector.unobserve(this.rootElement.current);
-            this.collisionDetector.unobserve(this.getAnchorElement());
             this.collisionDetector.disconnect();
             this.collisionDetector = null;
         }
@@ -478,14 +482,8 @@ class ViewportPositioner extends Foundation<
         // https://bugzilla.mozilla.org/show_bug.cgi?id=1272409
         // https://bugs.webkit.org/show_bug.cgi?id=157743
         if (this.resizeDetector && typeof this.resizeDetector.disconnect === "function") {
-            this.resizeDetector.unobserve(this.getAnchorElement());
             this.resizeDetector.disconnect();
             this.resizeDetector = null;
-        }
-
-        const viewPortElement: HTMLElement = this.getViewportElement();
-        if (!isNil(viewPortElement)) {
-            viewPortElement.removeEventListener("scroll", this.handleScroll);
         }
     };
 
@@ -626,7 +624,9 @@ class ViewportPositioner extends Foundation<
             }
         });
 
-        const viewPortElement: HTMLElement | null = this.getViewportElement();
+        const viewPortElement: HTMLElement | null = this.getViewportElement(
+            this.props.viewport
+        );
 
         if (!isNil(viewPortElement)) {
             this.scrollTop = viewPortElement.scrollTop;
@@ -810,7 +810,7 @@ class ViewportPositioner extends Foundation<
      * Check for scroll changes in viewport and adjust position data
      */
     private updateForScrolling = (): void => {
-        const scrollingContainer: Element = this.getViewportElement();
+        const scrollingContainer: Element = this.getViewportElement(this.props.viewport);
 
         if (isNil(scrollingContainer) || isNaN(scrollingContainer.scrollTop)) {
             return;
@@ -1137,32 +1137,21 @@ class ViewportPositioner extends Foundation<
         if (isNil(this.props.anchor)) {
             return null;
         }
-
-        if (this.props.anchor instanceof HTMLElement) {
-            return this.props.anchor;
-        } else {
-            return this.extractElementFromRef(this.props.anchor);
-        }
+        return this.extractElementFromRef(this.props.anchor);
     };
 
     /**
      * get the viewport element, prefer one provided in props, then context, then document root
      */
-    private getViewportElement = (): HTMLElement | null => {
-        if (!isNil(this.props.viewport)) {
-            if (this.props.viewport instanceof HTMLElement) {
-                return this.props.viewport;
-            } else {
-                return this.extractElementFromRef(this.props.viewport);
-            }
+    private getViewportElement = (
+        viewportRef: React.RefObject<any> | HTMLElement
+    ): HTMLElement | null => {
+        if (!isNil(viewportRef)) {
+            return this.extractElementFromRef(viewportRef);
         }
 
         if (!isNil(this.context.viewport)) {
-            if (this.context.viewport instanceof HTMLElement) {
-                return this.context.viewport;
-            } else {
-                return this.extractElementFromRef(this.context.viewport);
-            }
+            return this.extractElementFromRef(this.context.viewport);
         }
 
         if (document.scrollingElement instanceof HTMLElement) {
@@ -1175,8 +1164,11 @@ class ViewportPositioner extends Foundation<
      * returns an html element from a ref
      */
     private extractElementFromRef = (
-        sourceRef: React.RefObject<any>
+        sourceRef: React.RefObject<any> | HTMLElement
     ): HTMLElement | null => {
+        if (sourceRef instanceof HTMLElement) {
+            return sourceRef;
+        }
         if (!isNil(sourceRef.current)) {
             if (sourceRef.current instanceof HTMLElement) {
                 return sourceRef.current;
@@ -1244,6 +1236,43 @@ class ViewportPositioner extends Foundation<
             case AxisPositioningMode.uncontrolled:
                 return ViewportPositionerVerticalPositionLabel.undefined;
         }
+    };
+
+    /**
+     * Gets the uninitialized state
+     */
+    private generateInitialState = (): ViewportPositionerState => {
+        return {
+            // Note: when the component is initialized or reset we start with a the disabled state set to true.
+            // This gets set to fals during component initialization assuming the disabled prop is not set to true and
+            // that required resources load correctly (ie an invalid anchor or viewport ref could prevent the component
+            // from ever becoming enabled regardless of the disable prop)
+            disabled: true,
+            noObserverMode: false,
+            xTransformOrigin: Location.left,
+            yTransformOrigin: Location.top,
+            xTranslate: 0,
+            yTranslate: 0,
+            top: null,
+            right: null,
+            bottom: null,
+            left: null,
+            currentHorizontalPosition:
+                ViewportPositionerHorizontalPositionLabel.undefined,
+            currentVerticalPosition: ViewportPositionerVerticalPositionLabel.undefined,
+            defaultHorizontalPosition: this.getHorizontalPositionToLabel(
+                this.props.horizontalPositioningMode,
+                this.props.defaultHorizontalPosition
+            ),
+            defaultVerticalPosition: this.getVerticalPositionToLabel(
+                this.props.verticalPositioningMode,
+                this.props.defaultVerticalPosition
+            ),
+            horizontalSelectedPositionWidth: null,
+            verticalSelectedPositionHeight: null,
+            initialLayoutComplete: false,
+            validRefChecksRemaining: 2,
+        };
     };
 }
 ViewportPositioner.contextType = ViewportContext;
