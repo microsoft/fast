@@ -335,6 +335,47 @@ export function applyAddItemStyle(): CSSRules<{}> {
     };
 }
 
+export const chevronDown: CSSRules<{}> = {
+    position: "absolute",
+    right: "5px",
+    top: "1px",
+    appearance: "none",
+    background: "none",
+    border: "none",
+    width: "20px",
+    height: "20px",
+    zIndex: "1",
+    borderRadius: "2px",
+    ...applyFocusVisible({
+        ...insetStrongBoxShadow(accent),
+        outline: "none",
+    }),
+    "&::before, &::after": {
+        position: "absolute",
+        content: "''",
+        pointerEvents: "none",
+        background: foreground300,
+        transform: "rotate(45deg)",
+    },
+    "&::before": {
+        width: "7px",
+        height: "1px",
+        left: "3.5px",
+        top: "9.5px",
+    },
+    "&::after": {
+        width: "1px",
+        height: "7px",
+        left: "11.5px",
+        top: "6.5px",
+    },
+};
+
+export const chevronUp: CSSRules<{}> = {
+    ...chevronDown,
+    transform: "rotate(180deg)",
+};
+
 export function applyControlWrapper(): CSSRules<{}> {
     return {
         paddingTop: "7px",
