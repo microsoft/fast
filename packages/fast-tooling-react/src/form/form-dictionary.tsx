@@ -6,6 +6,7 @@ import styles, { FormDictionaryClassNameContract } from "./form-dictionary.style
 import { FormDictionaryProps, FormDictionaryState } from "./form-dictionary.props";
 import FormControlSwitch from "./form-control-switch";
 import { generateExampleData, getErrorFromDataLocation } from "./utilities";
+import { PropertyKeyword } from "../data-utilities/types";
 
 /**
  * Form control definition
@@ -138,15 +139,14 @@ class FormDictionary extends React.Component<
                 index: number
             ): React.ReactNode => {
                 if (!this.props.enumeratedProperties.includes(currentKey)) {
+                    const dataLocation: string = this.getDataLocation(currentKey);
                     const invalidMessage: string = getErrorFromDataLocation(
-                        `${this.props.dataLocation}${
-                            this.props.dataLocation !== "" ? "." : ""
-                        }${currentKey}`,
+                        dataLocation,
                         this.props.validationErrors
                     );
 
                     return (
-                        <React.Fragment>
+                        <React.Fragment key={dataLocation}>
                             {accumulator}
                             <div key={this.props.schemaLocation + index}>
                                 {this.renderItemControl(currentKey)}
@@ -158,7 +158,7 @@ class FormDictionary extends React.Component<
                                     onChange={this.props.onChange}
                                     propertyName={currentKey}
                                     schemaLocation={this.getSchemaLocation(currentKey)}
-                                    dataLocation={this.getDataLocation(currentKey)}
+                                    dataLocation={dataLocation}
                                     data={this.getData(currentKey)}
                                     schema={this.props.additionalProperties}
                                     disabled={this.props.additionalProperties === false}
@@ -167,6 +167,12 @@ class FormDictionary extends React.Component<
                                     required={this.isRequired(currentKey)}
                                     invalidMessage={invalidMessage}
                                     softRemove={false}
+                                    displayValidationInline={
+                                        this.props.displayValidationInline
+                                    }
+                                    displayValidationBrowserDefault={
+                                        this.props.displayValidationBrowserDefault
+                                    }
                                 />
                             </div>
                         </React.Fragment>
@@ -267,12 +273,12 @@ class FormDictionary extends React.Component<
     private getSchemaLocation(propertyName: string): string {
         return `${
             this.props.schemaLocation === "" ? "" : `${this.props.schemaLocation}.`
-        }additionalProperties.${propertyName}`;
+        }${PropertyKeyword.additionalProperties}.${propertyName}`;
     }
 
     private getDataLocation(propertyName: string): string {
-        return `${
-            this.props.dataLocation === "" ? "" : `${this.props.dataLocation}.`
+        return `${this.props.dataLocation}${
+            this.props.dataLocation !== "" ? "." : ""
         }${propertyName}`;
     }
 

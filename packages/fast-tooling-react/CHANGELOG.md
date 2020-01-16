@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.29.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-tooling-react@1.28.1...@microsoft/fast-tooling-react@1.29.0) (2020-01-09)
+
+
+### Bug Fixes
+
+* adjust precision when assigning errors to data locations ([#2564](https://github.com/Microsoft/fast-dna/issues/2564)) ([83c22e8](https://github.com/Microsoft/fast-dna/commit/83c22e8307ce656840d92abafeffc1b04acc4a87))
+* check the data against the defaults for all data types ([#2562](https://github.com/Microsoft/fast-dna/issues/2562)) ([df5062a](https://github.com/Microsoft/fast-dna/commit/df5062af3de92c1972c091903c79063f33f975f1))
+* remove redundant checks when assigning validation errors to invalid messages ([#2570](https://github.com/Microsoft/fast-dna/issues/2570)) ([92214d3](https://github.com/Microsoft/fast-dna/commit/92214d31cc678eb422590a345537243b8eda2a2d))
+
+
+### Features
+
+* add default controls to the export and fix documentation for overriding controls with types ([#2563](https://github.com/Microsoft/fast-dna/issues/2563)) ([e0a9c38](https://github.com/Microsoft/fast-dna/commit/e0a9c3834c65999ced2051b0a1e15b1937c610d7))
+
+
+
+
+
 ## [1.28.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-tooling-react@1.28.0...@microsoft/fast-tooling-react@1.28.1) (2020-01-07)
 
 
