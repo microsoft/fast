@@ -67,7 +67,8 @@ export interface ControlTemplateUtilitiesProps
         TextareaControlOptions,
         SectionLinkControlOptions,
         ArrayControlOptions,
-        ChildrenControlOptions {
+        ChildrenControlOptions,
+        AdditionalControlConfigOptions {
     /**
      * The index to assign as a React key for mapping
      */

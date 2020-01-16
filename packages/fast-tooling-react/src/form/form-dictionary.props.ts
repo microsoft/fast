@@ -5,7 +5,7 @@ import { Omit } from "utility-types";
 import ajv from "ajv";
 
 export interface FormDictionaryProps
-    extends Omit<ControlTemplateUtilitiesProps, "invalidMessage"> {
+    extends Omit<ControlTemplateUtilitiesProps, "invalidMessage" | "component"> {
     /**
      * The possible child options
      */

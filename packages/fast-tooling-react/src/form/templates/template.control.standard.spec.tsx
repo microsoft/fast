@@ -45,6 +45,7 @@ const props: StandardControlTemplateProps = {
     onUpdateSection: jest.fn(),
     invalidMessage: "",
     validationErrors: [],
+    component: null,
 };
 
 describe("StandardControlTemplate", () => {
