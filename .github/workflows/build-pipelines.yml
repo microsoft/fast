@@ -8,13 +8,9 @@ on:
 
 stages:
 - stage: A build
-  jobs:
-  job_a:
     name: 'Build across platforms'
     steps:
       - uses: actions/checkout@v1
     
       - name: Install Lerna
         run: sudo yarn global add lerna@3.18.2 
-  job_b:
-    name: 'Test across platforms'
