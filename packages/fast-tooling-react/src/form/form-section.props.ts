@@ -13,7 +13,6 @@ import { SingleLineControlPlugin } from "./templates/plugin.control.single-line"
 export interface FormSectionClassNameContract {
     formSection: string;
     formSection__disabled: string;
-    formSection_invalidMessage: string;
 }
 
 export enum oneOfAnyOfType {

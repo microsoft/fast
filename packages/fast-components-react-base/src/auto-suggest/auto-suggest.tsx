@@ -335,7 +335,7 @@ class AutoSuggest extends Foundation<
             this.props.onValueChange(newValue, isFromSuggestedOption);
         }
 
-        if (!isNil(this.props.value) || newValue !== this.state.value) {
+        if (isNil(this.props.value) && newValue !== this.state.value) {
             this.toggleMenu(true);
             this.setState({
                 value: newValue,
