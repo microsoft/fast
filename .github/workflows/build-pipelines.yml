@@ -10,7 +10,7 @@ stages:
 - stage: A build
   name: 'Build across platforms'
   jobs:
-    job: 'Job one'
+  - job: 'Job one'
     steps:
     - uses: actions/checkout@v1
     - name: Install Lerna
