@@ -11,9 +11,9 @@ on:
       - releases/*
         
 jobs:
-  build:
+  build_windows:
 
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
     - uses: actions/checkout@v1
@@ -34,4 +34,25 @@ jobs:
       run: lerna run test --stream
       timeout-minutes: 20
     
+  build_macos:
+
+    runs-on: mac-latest
+
+    steps:
+    - uses: actions/checkout@v1
     
+    - name: Install Lerna
+      run: sudo yarn global add lerna@3.18.2  
+    
+    - name: Install package dependencies
+      run: yarn install --frozen-lockfile
+    
+    - name: Build Yarn workspaces
+      run: lerna run prepare
+      
+    - name: Ensure Prettier formatting
+      run: lerna run prettier:diff
+      
+    - name: Execute unit tests
+      run: lerna run test --stream
+      timeout-minutes: 20
