@@ -1,0 +1,37 @@
+name: Azure Pipelines Action
+
+on:
+  push: 
+    branches:
+    - master
+    - releases/*
+  pull_request:
+    branches:
+      - master
+      - releases/*
+        
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v1
+    
+    - name: Install Lerna
+      run: sudo yarn global add lerna@3.18.2  
+    
+    - name: Install package dependencies
+      run: yarn install --frozen-lockfile
+    
+    - name: Build Yarn workspaces
+      run: lerna run prepare
+      
+    - name: Ensure Prettier formatting
+      run: lerna run prettier:diff
+      
+    - name: Execute unit tests
+      run: lerna run test --stream
+      timeout-minutes: 20
+    
+    
