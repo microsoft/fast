@@ -3,9 +3,9 @@ name: Azure Pipelines Action
 strategy:
   matrix:
     linux: ubuntu-latest
-    mac: mac-latest
+    mac: macOS-latest
     windows: windows-latest
-    
+
 on:
   pull_request:
     branches:
