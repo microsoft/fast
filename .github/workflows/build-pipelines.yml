@@ -9,14 +9,15 @@ on:
 stages:
 - stage: A
 
-  jobs: #      runs-on: ubuntu-latest
+  jobs: 
+ 
   - job: Build across platforms
     strategy:
       parallel:
         linux: ubuntu-latest
         mac: macOS-latest
         windows: windows-latest
-        
+
   build:
     steps:
     - uses: actions/checkout@v1
@@ -37,4 +38,4 @@ stages:
       run: lerna run test --stream
       timeout-minutes: 20
     
-    
+     #      runs-on: ubuntu-latest
