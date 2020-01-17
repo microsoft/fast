@@ -6,16 +6,18 @@ on:
       - master
       - releases/*
 
-jobs:
-  strategy:
-    matrix:
-      linux: ubuntu-latest
-      mac: macOS-latest
-      windows: windows-latest
-#      runs-on: ubuntu-latest
+stages:
+- stage: A
 
+  jobs: #      runs-on: ubuntu-latest
+  - job: Build across platforms
+    strategy:
+      parallel:
+        linux: ubuntu-latest
+        mac: macOS-latest
+        windows: windows-latest
+        
   build:
-
     steps:
     - uses: actions/checkout@v1
     
