@@ -24,9 +24,6 @@ jobs:
     - name: Install package dependencies
       run: yarn install --frozen-lockfile
     
-    - name: action-lerna
-      uses: m19c/action-lerna@1.0.0
-    
     - name: Build Yarn workspaces
       run: lerna run prepare
       
