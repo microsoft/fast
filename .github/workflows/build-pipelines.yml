@@ -7,8 +7,11 @@ on:
       - releases/*
 
 stages:
-- stage: A
+- stage: A build
   jobs:
-  - job: Build across platforms
-  - job: Test across platforms    
-- stage: B
+  - job: 'Build across platforms'
+  - job: 'Test across platforms'
+- stage: B build
+  jobs:
+  - job: 'Build across platforms'
+  - job: 'Test across platforms'
