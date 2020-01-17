@@ -1,21 +1,20 @@
 name: Azure Pipelines Action
 
-strategy:
-  matrix:
-    linux: ubuntu-latest
-    mac: macOS-latest
-    windows: windows-latest
-
 on:
   pull_request:
     branches:
       - master
       - releases/*
-        
-jobs:
-  build:
 
-    runs-on: ubuntu-latest
+jobs:
+  strategy:
+    matrix:
+      linux: ubuntu-latest
+      mac: macOS-latest
+      windows: windows-latest
+#      runs-on: ubuntu-latest
+
+  build:
 
     steps:
     - uses: actions/checkout@v1
