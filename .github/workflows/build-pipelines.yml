@@ -1,10 +1,6 @@
 name: Azure Pipelines Action
 
 on:
-  push: 
-    branches:
-    - master
-    - releases/*
   pull_request:
     branches:
       - master
