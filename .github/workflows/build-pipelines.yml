@@ -19,10 +19,13 @@ jobs:
     - uses: actions/checkout@v1
     
     - name: Install Lerna
-      run: yarn add lerna@3.18.2  
+      run: yarn global add lerna 
     
     - name: Install package dependencies
       run: yarn install --frozen-lockfile
+    
+    - name: action-lerna
+      uses: m19c/action-lerna@1.0.0
     
     - name: Build Yarn workspaces
       run: lerna run prepare
