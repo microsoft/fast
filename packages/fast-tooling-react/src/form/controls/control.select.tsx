@@ -83,7 +83,7 @@ class SelectControl extends React.Component<
             ? this.props.value
             : typeof this.props.default !== "undefined"
                 ? this.props.default
-                : void 0;
+                : "";
     }
 
     /**
