@@ -210,4 +210,26 @@ describe("pivot", (): void => {
                 .prop("className")
         ).toContain(`${managedClasses.pivot_tabPanel}`);
     });
+
+    test("should invoke an author-defined onUpdate callback when the Pivot changes the active tab", () => {
+        const onUpdate: jest.Mock<any, any> = jest.fn();
+        const rendered: any = mount(
+            <MSFTPivot
+                label={"foo"}
+                items={detailPivotItemData}
+                onUpdate={onUpdate as any}
+            />
+        );
+
+        expect(rendered.state("activeId")).toBe(id0);
+
+        rendered
+            .find('[role="tab"]')
+            .at(1)
+            .simulate("click");
+        expect(rendered.state("activeId")).toBe(id1);
+
+        expect(onUpdate).toHaveBeenCalledTimes(1);
+        expect(onUpdate).toHaveBeenCalledWith(id1);
+    });
 });

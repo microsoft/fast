@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.29.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-msft@4.28.4...@microsoft/fast-components-react-msft@4.29.0) (2020-01-21)
+
+
+### Bug Fixes
+
+* pivot onUpdate function should be called on update [#2595](https://github.com/Microsoft/fast-dna/issues/2595) ([431cfa5](https://github.com/Microsoft/fast-dna/commit/431cfa512c21c8620b8e15e32e2ea58380e3ac0a))
+
+
+### Features
+
+* update ContextMenu to neutralLayerFloating ([#2582](https://github.com/Microsoft/fast-dna/issues/2582)) ([8092042](https://github.com/Microsoft/fast-dna/commit/8092042dd19c0c4bde6add39c1c7e4407459e371))
+
+
+
+
+
 ## [4.28.4](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-msft@4.28.3...@microsoft/fast-components-react-msft@4.28.4) (2020-01-09)
 
 **Note:** Version bump only for package @microsoft/fast-components-react-msft
