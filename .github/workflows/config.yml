@@ -1,9 +1,14 @@
 name: Azure DevOps Actions
 
 on:
-  push:
+  push: 
     branches:
-      - master
+    - master
+    - releases/*
+  pull_request:
+    branches:
+    - master
+    - releases/*
 
 jobs:
   build_azure_pipelines:
