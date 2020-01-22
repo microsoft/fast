@@ -46,6 +46,14 @@ export interface DialogHandledProps extends DialogManagedClasses {
     modal?: boolean;
 
     /**
+     * Defines where focus goes when the dialog is unmounted.
+     * This is useful because modal dialogs will take focus back until that point in their life cycle.
+     * The element or ref provided will be focused when the dialog unmounts.
+     * Alternatively, providing a callback function gives developers more flexibility if needed.
+     */
+    refocusTarget?: React.RefObject<any> | HTMLElement | (() => void);
+
+    /**
      * The onDismiss callback
      * Callback is registered on click of the modal overlay or when escape key is pressed
      */

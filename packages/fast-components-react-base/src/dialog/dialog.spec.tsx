@@ -291,4 +291,37 @@ describe("dialog", (): void => {
 
         document.body.removeChild(container);
     });
+
+    test("should invoke refocus function on unmount of non-modal dialogs", () => {
+        const mockRefocusFn: any = jest.fn();
+
+        const rendered: any = mount(
+            <Dialog
+                managedClasses={managedClasses}
+                modal={false}
+                refocusTarget={mockRefocusFn}
+            />
+        );
+
+        rendered.unmount();
+        expect(mockRefocusFn).toHaveBeenCalledTimes(1);
+    });
+
+    test("should invoke refocus function after unregistering 'focusin' on unmount of modal dialogs", () => {
+        const mockRemoveListenerFn: any = jest.fn();
+
+        const mockRefocusFn: any = jest.fn();
+        document.removeEventListener = mockRemoveListenerFn;
+        const rendered: any = mount(
+            <Dialog
+                managedClasses={managedClasses}
+                modal={true}
+                refocusTarget={mockRefocusFn}
+            />
+        );
+        rendered.unmount();
+        expect(mockRemoveListenerFn).toHaveBeenCalledTimes(2);
+        expect(mockRemoveListenerFn.mock.calls[1][0]).toBe("focusin");
+        expect(mockRefocusFn).toHaveBeenCalledTimes(1);
+    });
 });
