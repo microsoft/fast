@@ -1,6 +1,6 @@
 name: Azure DevOps Actions
 
-on: 
+on:
   push:
     branches:
     - master
@@ -9,7 +9,7 @@ on:
 jobs:
   build_azure_pipelines:
     name: Build Azure Pipelines
-    runs-on: ubuntu-latest  
+    runs-on: ubuntu-latest
     
     steps:
      - name: Trigger an Azure Pipeline
