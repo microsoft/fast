@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.28.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-styles-msft@4.27.2...@microsoft/fast-components-styles-msft@4.28.0) (2020-01-21)
+
+
+### Bug Fixes
+
+* lightweight button looks like plain text in high contrast mode ([#2571](https://github.com/Microsoft/fast-dna/issues/2571)) ([951d9eb](https://github.com/Microsoft/fast-dna/commit/951d9ebec94029f4d88226dfa7cf7b91148a7c48))
+
+
+### Features
+
+* update ContextMenu to neutralLayerFloating ([#2582](https://github.com/Microsoft/fast-dna/issues/2582)) ([8092042](https://github.com/Microsoft/fast-dna/commit/8092042dd19c0c4bde6add39c1c7e4407459e371))
+
+
+
+
+
 ## [4.27.2](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-styles-msft@4.27.1...@microsoft/fast-components-styles-msft@4.27.2) (2020-01-07)
 
 
