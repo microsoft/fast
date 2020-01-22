@@ -16,11 +16,6 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-    
-    - name: Setup Node 10.x
-      uses: actions/setup-node@v1
-      with:
-        node-version: '10.x'
 
     - name: 'Trigger an Azure Pipeline'
       uses: azure/pipelines@v1
