@@ -2,7 +2,7 @@
   "name": "@microsoft/fast-markdown-msft-react",
   "description": "Converter for markdown files to JSX as a string which can be embedded in a site",
   "sideEffects": false,
-  "version": "4.1.64",
+  "version": "4.1.65",
   "author": {
     "name": "Microsoft",
     "url": "https://discord.gg/FcSNfg4"
@@ -85,8 +85,8 @@
     "react-dom": "^16.3.0"
   },
   "dependencies": {
-    "@microsoft/fast-components-react-base": "^4.23.4",
-    "@microsoft/fast-components-react-msft": "^4.28.4",
+    "@microsoft/fast-components-react-base": "^4.23.5",
+    "@microsoft/fast-components-react-msft": "^4.29.0",
     "markdown-it": "^8.4.0"
   }
 }

@@ -174,9 +174,8 @@ export const neutralLayerL1: ColorRecipe<Swatch> = colorRecipeFactory(
 );
 
 /**
- * Previously used as the background color for card containers.
- *
- * @deprecated Use neutralLayerCardContainer instead.
+ * Alternate darker color for L1 surfaces. Currently the same as card container, but use
+ * the most applicable semantic named recipe.
  */
 export const neutralLayerL1Alt: ColorRecipe<Swatch> = neutralLayerCardContainer;
 

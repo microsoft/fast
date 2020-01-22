@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.30.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-tooling-react@1.29.0...@microsoft/fast-tooling-react@1.30.0) (2020-01-21)
+
+
+### Bug Fixes
+
+* ensure that setting a value to null does not trigger any default button click behavior ([#2573](https://github.com/Microsoft/fast-dna/issues/2573)) ([8999afd](https://github.com/Microsoft/fast-dna/commit/8999afd5d6d87c9c174057b9c4e13b89989c1d47))
+
+
+### Features
+
+* allow viewing of all validation errors present on an object ([#2572](https://github.com/Microsoft/fast-dna/issues/2572)) ([129020e](https://github.com/Microsoft/fast-dna/commit/129020e2b0261c2ce0650de587427a4442b22aa5))
+
+
+
+
+
 # [1.29.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-tooling-react@1.28.1...@microsoft/fast-tooling-react@1.29.0) (2020-01-09)
 
 
