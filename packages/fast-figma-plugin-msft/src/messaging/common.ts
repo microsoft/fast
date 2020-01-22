@@ -33,8 +33,8 @@ export function isPluginMessageEvent(
 }
 
 /**
- * Expand uppon the browser's MessageEvent object to define
- * align to Figma
+ * Extend upon the browser's MessageEvent interface to
+ * align to the message structure sent by Figma
  */
 export interface PluginMessageEvent extends MessageEvent {
     data: {
