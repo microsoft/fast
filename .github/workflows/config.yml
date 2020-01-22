@@ -23,3 +23,7 @@ jobs:
         azure-devops-project-url: https://dev.azure.com/edgewebui/FAST
         azure-pipeline-name: fast.web.build
         azure-devops-token: ${{ secrets.AZURE_DEVOPS_TOKEN }}
+    
+    - name: 'Validation Step'
+      if: success()
+      run: echo ADO has Succeeded
