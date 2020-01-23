@@ -82,13 +82,14 @@ describe("CheckboxControl", () => {
             />
         );
 
+        const wrapper: any = rendered.find("div");
         const input: any = rendered.find("input");
 
         expect(input).toHaveLength(1);
         expect(input.prop("disabled")).toBeTruthy();
-        expect(
-            rendered.find(`.${managedClasses.checkboxControl__disabled}`)
-        ).toHaveLength(1);
+        expect(wrapper.find(`.${managedClasses.checkboxControl__disabled}`)).toHaveLength(
+            1
+        );
     });
     test("should show default values if they exist and no data is available", () => {
         const rendered: any = mount(

@@ -571,7 +571,7 @@ export function getComponentByDataLocation(
 /**
  * Normalize the dataPaths provided by Ajv to the dataLocation path syntax
  */
-function normalizeAjvDataPath(dataPath: string): string {
+export function normalizeAjvDataPath(dataPath: string): string {
     return normalizeDataLocationToDotNotation(
         dataPath
             .replace(/(\[')/g, ".")

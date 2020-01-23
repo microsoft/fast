@@ -11,6 +11,18 @@ const TestFormSection: typeof StyledFormSection & ContextComponent<any> = DragDr
 )(StyledFormSection);
 import { controls } from "./form-control-switch.spec";
 import ajv, { Ajv, ValidateFunction } from "ajv";
+import {
+    ArrayControl,
+    ButtonControl,
+    CheckboxControl,
+    ChildrenControl,
+    ControlType,
+    DisplayControl,
+    NumberFieldControl,
+    SectionLinkControl,
+    SelectControl,
+    TextareaControl,
+} from "./";
 
 /*
  * Configure Enzyme
@@ -30,12 +42,22 @@ const formSectionProps: FormSectionProps = {
     onUpdateSection: jest.fn(),
     validationErrors: null,
     default: {},
+    controlComponents: {
+        [ControlType.array]: ArrayControl,
+        [ControlType.button]: ButtonControl,
+        [ControlType.checkbox]: CheckboxControl,
+        [ControlType.children]: ChildrenControl,
+        [ControlType.display]: DisplayControl,
+        [ControlType.numberField]: NumberFieldControl,
+        [ControlType.sectionLink]: SectionLinkControl,
+        [ControlType.select]: SelectControl,
+        [ControlType.textarea]: TextareaControl,
+    },
 };
 
 const managedClasses: FormSectionClassNameContract = {
     formSection: "formSection",
     formSection__disabled: "formSection__disabeld",
-    formSection_invalidMessage: "formSection_invalidMessage",
 };
 
 describe("FormSection", () => {
@@ -202,9 +224,7 @@ describe("FormSection", () => {
             />
         );
 
-        expect(
-            rendered.find(`.${managedClasses.formSection_invalidMessage}`)
-        ).toHaveLength(1);
+        expect(rendered.find("FormSectionValidation")).toHaveLength(1);
     });
     test("should not show an invalid message if no validation errors have been passed", () => {
         const schema: any = {
@@ -234,8 +254,6 @@ describe("FormSection", () => {
             />
         );
 
-        expect(
-            rendered.find(`.${managedClasses.formSection_invalidMessage}`)
-        ).toHaveLength(0);
+        expect(rendered.find("FormSectionValidation")).toHaveLength(0);
     });
 });

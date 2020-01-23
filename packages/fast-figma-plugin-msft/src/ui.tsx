@@ -1,21 +1,17 @@
 /**
- * This file is responsible for rendering the plugin dialog / UI. This script is executed
- * within an iframe so it has limited access to the Figma document, and must rely on mostMessage APIs
  * to communicate with the parent script.
  */
 import React from "react";
 import ReactDOM from "react-dom";
+import { PluginUI } from "./interface/plugin-ui";
+
+// Import with require so the dependency doesn't get tree-shaken
+// tslint:disable-next-line
+const styles = require("./global.css");
 
 const root: HTMLDivElement = document.createElement("div");
+root.setAttribute("id", "root");
 document.body.appendChild(root);
 
-function UserInterface(): JSX.Element {
-    return (
-        <div>
-            <h1>Hello world</h1>
-        </div>
-    );
-}
-
 // Render UI
-ReactDOM.render(<UserInterface />, root);
+ReactDOM.render(<PluginUI />, root);

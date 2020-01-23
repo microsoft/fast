@@ -169,6 +169,45 @@ describe("viewport positioner", (): void => {
         expect(positioner.instance().state.disabled).toBe(true);
     });
 
+    test("initial state function returns correct initial state", (): void => {
+        const anchorElement: React.RefObject<HTMLDivElement> = React.createRef<
+            HTMLDivElement
+        >();
+
+        const rendered: any = mount(
+            <div>
+                <div ref={anchorElement} />
+                <ViewportPositioner
+                    viewport={document.firstElementChild as HTMLElement}
+                    anchor={anchorElement}
+                    managedClasses={managedClasses}
+                />
+            </div>
+        );
+
+        const positioner: any = rendered.find("BaseViewportPositioner");
+        expect(positioner.instance()["generateInitialState"]()).toEqual({
+            disabled: true,
+            noObserverMode: false,
+            xTransformOrigin: "left",
+            yTransformOrigin: "top",
+            xTranslate: 0,
+            yTranslate: 0,
+            top: null,
+            right: null,
+            bottom: null,
+            left: null,
+            currentHorizontalPosition: "undefined",
+            currentVerticalPosition: "undefined",
+            defaultHorizontalPosition: "undefined",
+            defaultVerticalPosition: "bottom",
+            horizontalSelectedPositionWidth: null,
+            verticalSelectedPositionHeight: null,
+            initialLayoutComplete: false,
+            validRefChecksRemaining: 2,
+        });
+    });
+
     test("positioning values applied correctly for specified default position - adjacent + top + left", (): void => {
         const anchorElement: React.RefObject<HTMLDivElement> = React.createRef<
             HTMLDivElement
@@ -1605,5 +1644,50 @@ describe("viewport positioner", (): void => {
             );
         expect(positionerDimension.width).toBe(110);
         expect(positionerDimension.height).toBe(110);
+    });
+
+    test("extractElementFromRef function returns element passed in directly", (): void => {
+        const anchorElement: React.RefObject<HTMLDivElement> = React.createRef<
+            HTMLDivElement
+        >();
+
+        const rendered: any = mount(
+            <div>
+                <div ref={anchorElement} />
+                <ViewportPositioner
+                    viewport={document.firstElementChild as HTMLElement}
+                    anchor={anchorElement}
+                    managedClasses={managedClasses}
+                />
+            </div>
+        );
+
+        const positioner: any = rendered.find("BaseViewportPositioner");
+        const testElement: Element = document.createElement("div");
+        expect(positioner.instance()["extractElementFromRef"](testElement)).toBe(
+            testElement
+        );
+    });
+
+    test("extractElementFromRef function returns element passed in as a ref", (): void => {
+        const anchorElement: React.RefObject<HTMLDivElement> = React.createRef<
+            HTMLDivElement
+        >();
+
+        const rendered: any = mount(
+            <div>
+                <div ref={anchorElement} />
+                <ViewportPositioner
+                    viewport={document.firstElementChild as HTMLElement}
+                    anchor={anchorElement}
+                    managedClasses={managedClasses}
+                />
+            </div>
+        );
+
+        const positioner: any = rendered.find("BaseViewportPositioner");
+        expect(positioner.instance()["extractElementFromRef"](anchorElement)).toBe(
+            anchorElement.current
+        );
     });
 });

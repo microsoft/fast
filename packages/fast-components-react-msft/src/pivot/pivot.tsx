@@ -149,6 +149,10 @@ class Pivot extends Foundation<PivotHandledProps, PivotUnhandledProps, PivotStat
         this.setState({
             activeId: activeTabId,
         });
+
+        if (typeof this.props.onUpdate === "function") {
+            this.props.onUpdate(activeTabId);
+        }
     };
 
     private isSelected(element: HTMLElement): boolean {

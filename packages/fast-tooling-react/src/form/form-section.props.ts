@@ -13,7 +13,6 @@ import { SingleLineControlPlugin } from "./templates/plugin.control.single-line"
 export interface FormSectionClassNameContract {
     formSection: string;
     formSection__disabled: string;
-    formSection_invalidMessage: string;
 }
 
 export enum oneOfAnyOfType {
@@ -116,6 +115,11 @@ export interface FormSectionProps {
      * instead of the default control plugins
      */
     controlPlugins?: StandardControlPlugin[];
+
+    /**
+     * A component dictionary to be used by type
+     */
+    controlComponents: { [key: string]: React.ComponentClass | React.FunctionComponent };
 
     /**
      * The default values

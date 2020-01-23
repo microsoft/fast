@@ -27,6 +27,7 @@ import {
 import { BreadcrumbItem, getBreadcrumbs } from "./utilities/breadcrumb";
 import {
     BreadcrumbItemEventHandler,
+    ControlPluginConfig,
     FormChildOptionItem,
     FormClassNameContract,
     FormLocation,
@@ -112,6 +113,14 @@ class Form extends React.Component<
     private arrayControl: StandardControlPlugin;
     private childrenControl: StandardControlPlugin;
     private buttonControl: StandardControlPlugin;
+
+    /**
+     * The default form components as a dictionary
+     * by type
+     */
+    private controlComponents: {
+        [key: string]: React.ComponentClass | React.FunctionComponent;
+    } = {};
 
     /**
      * The schema
@@ -208,6 +217,8 @@ class Form extends React.Component<
         hasCustomControlPlugins: boolean,
         type: ControlType
     ): StandardControlPlugin {
+        const controlPluginConfig: ControlPluginConfig = this.getComponentByType(type);
+
         if (hasCustomControlPlugins) {
             const controlPlugin: StandardControlPlugin = this.props.controlPlugins.find(
                 (control: StandardControlPlugin): boolean => {
@@ -216,76 +227,97 @@ class Form extends React.Component<
             );
 
             if (controlPlugin !== undefined) {
+                this.controlComponents[type] =
+                    controlPlugin.config.component !== undefined
+                        ? controlPlugin.config.component
+                        : controlPluginConfig.component;
+
                 return controlPlugin;
+            }
+
+            const allControlsPlugin: StandardControlPlugin = this.props.controlPlugins.find(
+                (control: StandardControlPlugin): boolean => {
+                    return control.matchesAllTypes();
+                }
+            );
+
+            if (allControlsPlugin !== undefined) {
+                this.controlComponents[type] =
+                    allControlsPlugin.config.component !== undefined
+                        ? allControlsPlugin.config.component
+                        : controlPluginConfig.component;
+
+                return allControlsPlugin;
             }
         }
 
+        this.controlComponents[type] = controlPluginConfig.component;
+
+        return new controlPluginConfig.plugin({
+            type,
+            component: controlPluginConfig.component,
+            control: (config: ControlConfig): React.ReactNode => {
+                return <controlPluginConfig.component {...config} />;
+            },
+        });
+    }
+
+    private getComponentByType(type: ControlType): ControlPluginConfig {
         switch (type) {
             case ControlType.select:
-                return new StandardControlPlugin({
-                    type: ControlType.select,
-                    control: (config: ListControlConfig): React.ReactNode => {
-                        return <SelectControl {...config} />;
-                    },
-                });
+                return {
+                    plugin: StandardControlPlugin,
+                    component: SelectControl,
+                    context: ControlContext.default,
+                };
             case ControlType.array:
-                return new StandardControlPlugin({
+                return {
+                    plugin: StandardControlPlugin,
+                    component: ArrayControl,
                     context: ControlContext.fill,
-                    type: ControlType.array,
-                    control: (config: ArrayControlConfig): React.ReactNode => {
-                        return <ArrayControl {...config} />;
-                    },
-                });
+                };
             case ControlType.children:
-                return new StandardControlPlugin({
+                return {
+                    plugin: StandardControlPlugin,
+                    component: ChildrenControl,
                     context: ControlContext.fill,
-                    type: ControlType.children,
-                    control: (config: ChildrenControlConfig): React.ReactNode => {
-                        return <ChildrenControl {...config} />;
-                    },
-                });
+                };
             case ControlType.numberField:
-                return new StandardControlPlugin({
-                    type: ControlType.numberField,
-                    control: (config: NumberFieldTypeControlConfig): React.ReactNode => {
-                        return <NumberFieldControl {...config} />;
-                    },
-                });
+                return {
+                    plugin: StandardControlPlugin,
+                    component: NumberFieldControl,
+                    context: ControlContext.default,
+                };
             case ControlType.checkbox:
-                return new SingleLineControlPlugin({
-                    type: ControlType.checkbox,
-                    control: (config: CommonControlConfig): React.ReactNode => {
-                        return <CheckboxControl {...config} />;
-                    },
-                });
+                return {
+                    plugin: SingleLineControlPlugin,
+                    component: CheckboxControl,
+                    context: ControlContext.default,
+                };
             case ControlType.sectionLink:
-                return new StandardControlPlugin({
-                    type: ControlType.sectionLink,
-                    control: (config: SectionLinkControlConfig): React.ReactNode => {
-                        return <SectionLinkControl {...config} />;
-                    },
-                });
+                return {
+                    plugin: StandardControlPlugin,
+                    component: SectionLinkControl,
+                    context: ControlContext.default,
+                };
             case ControlType.textarea:
-                return new StandardControlPlugin({
-                    type: ControlType.textarea,
-                    control: (config: TextareaControlConfig): React.ReactNode => {
-                        return <TextareaControl {...config} />;
-                    },
-                });
+                return {
+                    plugin: StandardControlPlugin,
+                    component: TextareaControl,
+                    context: ControlContext.default,
+                };
             case ControlType.display:
-                return new StandardControlPlugin({
-                    type: ControlType.display,
-                    control: (config: ControlConfig): React.ReactNode => {
-                        return <DisplayControl {...config} />;
-                    },
-                });
+                return {
+                    plugin: StandardControlPlugin,
+                    component: DisplayControl,
+                    context: ControlContext.default,
+                };
             case ControlType.button:
-                return new StandardControlPlugin({
-                    type: ControlType.button,
-                    control: (config: ControlConfig): React.ReactNode => {
-                        return <ButtonControl {...config} />;
-                    },
-                });
+                return {
+                    plugin: StandardControlPlugin,
+                    component: ButtonControl,
+                    context: ControlContext.default,
+                };
         }
     }
 
@@ -541,6 +573,7 @@ class Form extends React.Component<
                     numberField: this.numberFieldControl,
                 }}
                 controlPlugins={this.props.controlPlugins}
+                controlComponents={this.controlComponents}
                 onChange={this.handleOnChange}
                 onUpdateSection={this.handleUpdateActiveSection}
                 data={this.getData("data", "props")}
