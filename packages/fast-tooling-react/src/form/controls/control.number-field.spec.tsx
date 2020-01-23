@@ -29,6 +29,7 @@ const numberFieldProps: NumberFieldControlProps = {
     reportValidity: jest.fn(),
     updateValidity: jest.fn(),
     validationErrors: [],
+    required: false,
 };
 
 describe("NumberFieldControl", () => {

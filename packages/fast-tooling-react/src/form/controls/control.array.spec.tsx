@@ -32,6 +32,7 @@ const arrayProps: ArrayControlProps = {
     elementRef: null,
     updateValidity: jest.fn(),
     validationErrors: [],
+    required: false,
 };
 
 const managedClasses: ArrayControlClassNameContract = {

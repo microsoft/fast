@@ -51,6 +51,7 @@ class ButtonControl extends React.Component<
                     value={this.props.value || ""}
                     onChange={this.handleInputChange}
                     disabled={this.props.disabled}
+                    required={this.props.required}
                 />
             </React.Fragment>
         );

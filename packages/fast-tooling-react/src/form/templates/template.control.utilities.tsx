@@ -183,6 +183,7 @@ abstract class ControlTemplateUtilities<P, S> extends React.Component<
             defaultChildOptions: this.props.defaultChildOptions,
             childOptions: this.props.childOptions,
             component: this.props.component,
+            required: this.props.required,
         };
     }
 

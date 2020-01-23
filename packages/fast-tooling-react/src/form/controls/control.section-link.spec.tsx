@@ -31,6 +31,7 @@ const sectionLinkProps: SectionLinkControlProps = {
     onUpdateSection: jest.fn(),
     invalidMessage: "",
     validationErrors: [],
+    required: false,
 };
 
 describe("SectionLinkControl", () => {

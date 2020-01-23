@@ -53,6 +53,7 @@ class SelectControl extends React.Component<
                     ref={this.props.elementRef as React.Ref<HTMLSelectElement>}
                     onBlur={this.props.updateValidity}
                     onFocus={this.props.reportValidity}
+                    required={this.props.required}
                 >
                     {this.renderOptions()}
                 </select>

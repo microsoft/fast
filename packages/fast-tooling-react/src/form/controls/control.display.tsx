@@ -42,6 +42,7 @@ class DisplayControl extends React.Component<
                 value={this.getDisplayValue(this.props.value)}
                 onChange={this.handleInputChange}
                 disabled={this.props.disabled}
+                required={this.props.required}
             />
         );
     }

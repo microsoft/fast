@@ -199,6 +199,11 @@ export interface CommonControlConfig {
     disabled: boolean;
 
     /**
+     * The required prop for this control
+     */
+    required: boolean;
+
+    /**
      * The ref belonging to the form element injected as part of the control
      */
     elementRef: React.Ref<FormHTMLElement>;
