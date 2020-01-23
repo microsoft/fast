@@ -318,10 +318,13 @@ class Tabs extends Foundation<TabsHandledProps, TabsUnhandledProps, TabsState> {
         switch (e.keyCode) {
             case keyCodeArrowLeft:
             case keyCodeArrowUp:
+                e.preventDefault();
                 this.activateTab(TabLocation.previous);
                 break;
             case keyCodeArrowRight:
             case keyCodeArrowDown:
+                e.preventDefault();
+
                 this.activateTab(TabLocation.next);
                 break;
             case keyCodeHome:
