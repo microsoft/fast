@@ -1,7 +1,9 @@
 import { getPluginUIState, setPluginUIState } from "./interface/plugin-ui.state";
 import { getDesignSystem } from "./utilities/design-system";
 import {
+    isComponentNode,
     isFrameNode,
+    isInstanceNode,
     isPolygonNode,
     isRectangleNode,
     isStarNode,
@@ -45,9 +47,14 @@ export function supports(node: BaseNode, type: "strokeFill"): node is StrokeReci
 export function supports(node: BaseNode, type: "textFill"): node is TextFillRecipeNode;
 export function supports(node: BaseNode, type: keyof PluginData): boolean {
     return type === "backgroundFill" || type === "strokeFill"
-        ? [isFrameNode, isRectangleNode, isPolygonNode, isStarNode].some(
-              (test: (node: BaseNode) => boolean) => test(node)
-          )
+        ? [
+              isComponentNode,
+              isFrameNode,
+              isInstanceNode,
+              isRectangleNode,
+              isPolygonNode,
+              isStarNode,
+          ].some((test: (node: BaseNode) => boolean) => test(node))
         : isTextNode(node);
 }
 
