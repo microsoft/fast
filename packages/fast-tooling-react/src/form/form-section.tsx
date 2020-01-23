@@ -160,6 +160,7 @@ class FormSection extends React.Component<
                 key={[this.props.dataLocation, propertyName].join(".")}
                 controls={this.props.controls}
                 controlPlugins={this.props.controlPlugins}
+                controlComponents={this.props.controlComponents}
                 untitled={this.props.untitled}
                 required={required}
                 disabled={disabled}
@@ -423,6 +424,7 @@ class FormSection extends React.Component<
                     index={0}
                     controls={this.props.controls}
                     controlPlugins={this.props.controlPlugins}
+                    controlComponents={this.props.controlComponents}
                     formControlId={this.state.schema.formControlId}
                     dataLocation={this.props.dataLocation}
                     schemaLocation={schemaLocation}

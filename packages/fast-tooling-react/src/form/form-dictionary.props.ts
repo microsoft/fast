@@ -5,7 +5,7 @@ import { Omit } from "utility-types";
 import ajv from "ajv";
 
 export interface FormDictionaryProps
-    extends Omit<ControlTemplateUtilitiesProps, "invalidMessage"> {
+    extends Omit<ControlTemplateUtilitiesProps, "invalidMessage" | "component"> {
     /**
      * The possible child options
      */
@@ -21,6 +21,11 @@ export interface FormDictionaryProps
      * instead of the default control plugins
      */
     controlPlugins?: StandardControlPlugin[];
+
+    /**
+     * A component dictionary to be used by type
+     */
+    controlComponents: { [key: string]: React.ComponentClass | React.FunctionComponent };
 
     /**
      * A string identifying a custom form control

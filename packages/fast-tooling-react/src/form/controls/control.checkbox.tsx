@@ -30,21 +30,26 @@ class CheckboxControl extends React.Component<
                     : false;
 
         return (
-            <input
+            <div
                 className={classNames(this.props.managedClasses.checkboxControl, [
                     this.props.managedClasses.checkboxControl__disabled,
                     this.props.disabled,
                 ])}
-                id={this.props.dataLocation}
-                type={"checkbox"}
-                value={value.toString()}
-                onChange={this.handleChange()}
-                checked={value}
-                disabled={this.props.disabled}
-                ref={this.props.elementRef as React.Ref<HTMLInputElement>}
-                onFocus={this.props.reportValidity}
-                onBlur={this.props.updateValidity}
-            />
+            >
+                <input
+                    className={this.props.managedClasses.checkboxControl_input}
+                    id={this.props.dataLocation}
+                    type={"checkbox"}
+                    value={value.toString()}
+                    onChange={this.handleChange()}
+                    checked={value}
+                    disabled={this.props.disabled}
+                    ref={this.props.elementRef as React.Ref<HTMLInputElement>}
+                    onFocus={this.props.reportValidity}
+                    onBlur={this.props.updateValidity}
+                />
+                <span className={this.props.managedClasses.checkboxControl_checkmark} />
+            </div>
         );
     }
 
