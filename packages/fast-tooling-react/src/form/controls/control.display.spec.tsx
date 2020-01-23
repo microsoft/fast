@@ -13,6 +13,7 @@ configure({ adapter: new Adapter() });
 const managedClasses: DisplayControlClassNameContract = {
     displayControl: "displayControl",
     displayControl__disabled: "displayControl__disabled",
+    displayControl__default: "displayControl__default",
 };
 
 const displayProps: DisplayControlProps = {
@@ -53,6 +54,20 @@ describe("DisplayControl", () => {
             1
         );
         expect(rendered.find("input").prop("disabled")).toBeTruthy();
+    });
+    test("should have the default class when default prop is passed", () => {
+        const rendered: any = mount(
+            <DisplayControl
+                {...displayProps}
+                value={undefined}
+                default={"foo"}
+                managedClasses={managedClasses}
+            />
+        );
+
+        expect(rendered.find(`.${managedClasses.displayControl__default}`)).toHaveLength(
+            1
+        );
     });
     test("should show default values if they exist and no data is available", () => {
         const defaultValue: string = "bar";

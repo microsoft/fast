@@ -13,6 +13,7 @@ configure({ adapter: new Adapter() });
 const managedClasses: NumberFieldControlClassNameContract = {
     numberFieldControl: "numberFieldControl-class",
     numberFieldControl__disabled: "numberFieldControl__disabled-class",
+    numberFieldControl__default: "numberFieldControl__default-class",
 };
 
 const numberFieldProps: NumberFieldControlProps = {
@@ -60,6 +61,20 @@ describe("NumberFieldControl", () => {
         expect(rendered.find("input").prop("disabled")).toBeTruthy();
         expect(
             rendered.find(`.${managedClasses.numberFieldControl__disabled}`)
+        ).toHaveLength(1);
+    });
+    test("should have the default class when default prop is passed", () => {
+        const rendered: any = mount(
+            <NumberFieldControl
+                {...numberFieldProps}
+                value={undefined}
+                default={42}
+                managedClasses={managedClasses}
+            />
+        );
+
+        expect(
+            rendered.find(`.${managedClasses.numberFieldControl__default}`)
         ).toHaveLength(1);
     });
     test("should fire an `onChange` callback with the input is changed", () => {

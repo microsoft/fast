@@ -13,6 +13,7 @@ configure({ adapter: new Adapter() });
 const managedClasses: CheckboxControlClassNameContract = {
     checkboxControl: "checkboxControl-class",
     checkboxControl__disabled: "checkboxControl__disabled-class",
+    checkboxControl__default: "checkboxControl__default-class",
 };
 
 const checkboxProps: CheckboxControlProps = {
@@ -88,6 +89,20 @@ describe("CheckboxControl", () => {
         expect(input).toHaveLength(1);
         expect(input.prop("disabled")).toBeTruthy();
         expect(wrapper.find(`.${managedClasses.checkboxControl__disabled}`)).toHaveLength(
+            1
+        );
+    });
+    test("should have the default class when default prop is passed", () => {
+        const rendered: any = mount(
+            <CheckboxControl
+                {...checkboxProps}
+                value={undefined}
+                default={true}
+                managedClasses={managedClasses}
+            />
+        );
+
+        expect(rendered.find(`.${managedClasses.checkboxControl__default}`)).toHaveLength(
             1
         );
     });

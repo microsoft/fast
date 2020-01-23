@@ -13,6 +13,7 @@ configure({ adapter: new Adapter() });
 const managedClasses: SelectControlClassNameContract = {
     selectControl: "selectControl-class",
     selectControl__disabled: "selectControl__disabled-class",
+    selectControl__default: "selectControl__default-class",
     selectControl_input: "selectControl_input-class",
 };
 
@@ -121,6 +122,21 @@ describe("SelectControl", () => {
         expect(rendered.find("select")).toHaveLength(1);
         expect(rendered.find("select").prop("disabled")).toBeTruthy();
         expect(rendered.find(`.${managedClasses.selectControl__disabled}`)).toHaveLength(
+            1
+        );
+    });
+    test("should have the default class when default prop is passed", () => {
+        const rendered: any = mount(
+            <SelectControl
+                {...selectProps}
+                value={undefined}
+                default={"foo"}
+                options={["foo", "bar"]}
+                managedClasses={managedClasses}
+            />
+        );
+
+        expect(rendered.find(`.${managedClasses.selectControl__default}`)).toHaveLength(
             1
         );
     });
