@@ -628,3 +628,7 @@ export function getErrorFromDataLocation(
 
     return error;
 }
+
+export function isDefault<T>(value: T | void, defaultValue: T | void): boolean {
+    return typeof value === "undefined" && typeof defaultValue !== "undefined";
+}
