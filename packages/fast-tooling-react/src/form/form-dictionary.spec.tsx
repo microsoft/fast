@@ -7,6 +7,18 @@ import { FormDictionaryProps } from "./form-dictionary.props";
 import { FormDictionaryClassNameContract } from "./form-dictionary.style";
 import { getValidationErrors } from "../utilities/ajv-validation";
 import { getErrorFromDataLocation } from "./utilities";
+import { ControlType } from "./templates";
+import {
+    ArrayControl,
+    ButtonControl,
+    CheckboxControl,
+    ChildrenControl,
+    DisplayControl,
+    NumberFieldControl,
+    SectionLinkControl,
+    SelectControl,
+    TextareaControl,
+} from "./";
 
 /*
  * Configure Enzyme
@@ -41,6 +53,17 @@ const dictionaryProps: FormDictionaryProps = {
     enumeratedProperties: [],
     childOptions: [],
     validationErrors: undefined,
+    controlComponents: {
+        [ControlType.array]: ArrayControl,
+        [ControlType.button]: ButtonControl,
+        [ControlType.checkbox]: CheckboxControl,
+        [ControlType.children]: ChildrenControl,
+        [ControlType.display]: DisplayControl,
+        [ControlType.numberField]: NumberFieldControl,
+        [ControlType.sectionLink]: SectionLinkControl,
+        [ControlType.select]: SelectControl,
+        [ControlType.textarea]: TextareaControl,
+    },
 };
 
 describe("FormDictionary", () => {

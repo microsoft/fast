@@ -46,7 +46,6 @@ class SingleLineControlTemplate extends ControlTemplateUtilities<
             >
                 <div className={singleLineControlTemplate_control}>
                     {this.props.control(this.getConfig())}
-                    <span />
                     <label
                         className={singleLineControlTemplate_label}
                         htmlFor={this.props.dataLocation}

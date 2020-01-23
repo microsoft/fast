@@ -1,7 +1,11 @@
 import Navigation, { NavigationItem } from "./utilities/navigation";
 import { FormPlugin, FormPluginProps } from "./plugin";
 import { ErrorObject } from "ajv";
-import { StandardControlPlugin } from "./templates";
+import {
+    ControlContext,
+    SingleLineControlPlugin,
+    StandardControlPlugin,
+} from "./templates";
 
 /**
  * Form class name contract
@@ -304,4 +308,10 @@ export interface FormOrderByPropertyNamesProps {
      * The categories to drop properties into
      */
     categories: FormOrderByPropertyNamesCategories[];
+}
+
+export interface ControlPluginConfig {
+    plugin: typeof StandardControlPlugin | typeof SingleLineControlPlugin;
+    component: React.ComponentClass;
+    context: ControlContext;
 }

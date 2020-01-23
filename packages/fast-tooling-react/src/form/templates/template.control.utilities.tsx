@@ -5,6 +5,7 @@ import DefaultValue from "./default-value";
 import ConstValue from "./const-value";
 import SoftRemove from "./soft-remove";
 import {
+    AdditionalControlConfigOptions,
     ControlConfig,
     ControlTemplateUtilitiesProps,
     OnChangeConfig,
@@ -16,7 +17,7 @@ import { FormHTMLElement } from "./template.control.utilities.props";
  * This should be extended to create custom templates
  */
 abstract class ControlTemplateUtilities<P, S> extends React.Component<
-    P & ControlTemplateUtilitiesProps,
+    P & ControlTemplateUtilitiesProps & AdditionalControlConfigOptions,
     S
 > {
     public ref: React.RefObject<FormHTMLElement> = React.createRef<FormHTMLElement>();
@@ -181,6 +182,7 @@ abstract class ControlTemplateUtilities<P, S> extends React.Component<
             default: this.props.default,
             defaultChildOptions: this.props.defaultChildOptions,
             childOptions: this.props.childOptions,
+            component: this.props.component,
         };
     }
 

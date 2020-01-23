@@ -83,14 +83,14 @@ class SelectControl extends React.Component<
             ? this.props.value
             : typeof this.props.default !== "undefined"
                 ? this.props.default
-                : void 0;
+                : "";
     }
 
     /**
      * Renders the selects option elements
      */
     private renderOptions(): React.ReactNode {
-        return this.props.options.map((item: any, index: number) => {
+        return (this.props.options || []).map((item: any, index: number) => {
             return (
                 <option key={index} value={item}>
                     {typeof item === "string" || typeof item === "number"

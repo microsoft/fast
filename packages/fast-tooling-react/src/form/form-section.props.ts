@@ -117,6 +117,11 @@ export interface FormSectionProps {
     controlPlugins?: StandardControlPlugin[];
 
     /**
+     * A component dictionary to be used by type
+     */
+    controlComponents: { [key: string]: React.ComponentClass | React.FunctionComponent };
+
+    /**
      * The default values
      */
     default: any;
