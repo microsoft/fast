@@ -166,8 +166,6 @@ class ViewportPositioner extends Foundation<
     private resizeDetector: ResizeObserverClassDefinition;
 
     private viewportRect: ClientRect | DOMRect;
-
-    // private positionerRect: ClientRect | DOMRect;
     private positionerDimension: Dimension;
 
     private anchorTop: number = 0;
