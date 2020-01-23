@@ -21,19 +21,19 @@ class TestClass extends React.Component<{}, {}> {
 }
 
 describe("extract-element", (): void => {
-    test("extractElementFromRef function returns element passed in directly", (): void => {
+    test("extractHtmlElement function returns element passed in directly", (): void => {
         const testElement: HTMLDivElement = document.createElement("div");
         expect(extractHtmlElement(testElement)).toBe(testElement);
     });
 
-    test("extractElementFromRef function returns element passed in as a ref", (): void => {
+    test("extractHtmlElement function returns element passed in as a ref", (): void => {
         const rendered: any = shallow(<TestClass />);
 
         const extracted: HTMLElement = extractHtmlElement(rendered.instance().testRef);
         expect(extracted).toEqual(rendered.instance().testRef.current);
     });
 
-    test("extractElementFromRef function returns null from uninitialized ref object", (): void => {
+    test("extractHtmlElement function returns null from uninitialized ref object", (): void => {
         const testRef: React.RefObject<HTMLDivElement> = React.createRef<
             HTMLDivElement
         >();
