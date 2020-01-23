@@ -25,6 +25,7 @@ const displayProps: DisplayControlProps = {
     onChange: jest.fn(),
     elementRef: null,
     validationErrors: [],
+    required: false,
 };
 
 describe("DisplayControl", () => {

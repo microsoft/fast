@@ -22,6 +22,7 @@ const textAlignControlProps: TextAlignControlProps = {
     reportValidity: jest.fn(),
     updateValidity: jest.fn(),
     validationErrors: [],
+    required: false,
 };
 
 const managedClasses: TextAlignControlClassNameContract = {

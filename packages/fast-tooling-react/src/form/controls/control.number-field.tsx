@@ -44,6 +44,7 @@ class NumberFieldControl extends React.Component<
                 ref={this.props.elementRef as React.Ref<HTMLInputElement>}
                 onBlur={this.props.updateValidity}
                 onFocus={this.props.reportValidity}
+                required={this.props.required}
             />
         );
     }

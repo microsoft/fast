@@ -47,6 +47,7 @@ class CheckboxControl extends React.Component<
                     ref={this.props.elementRef as React.Ref<HTMLInputElement>}
                     onFocus={this.props.reportValidity}
                     onBlur={this.props.updateValidity}
+                    required={this.props.required}
                 />
                 <span className={this.props.managedClasses.checkboxControl_checkmark} />
             </div>

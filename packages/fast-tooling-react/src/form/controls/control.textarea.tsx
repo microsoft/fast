@@ -37,6 +37,7 @@ class TextareaControl extends React.Component<
                 ref={this.props.elementRef as React.Ref<HTMLTextAreaElement>}
                 onFocus={this.props.reportValidity}
                 onBlur={this.props.updateValidity}
+                required={this.props.required}
             />
         );
     }

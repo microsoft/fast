@@ -72,6 +72,7 @@ const childrenProps: ChildrenControlProps = {
             },
         },
     ],
+    required: false,
     dataLocation: "locationOfChildren",
     value: undefined,
     schema: {},
