@@ -1,4 +1,4 @@
-import { accent, applyCleanListStyle, foreground300, neutralLayerL4 } from "../style";
+import { accent, cleanListStyle, foreground300, neutralLayerL4 } from "../style";
 import { ComponentStyles } from "@microsoft/fast-jss-manager-react";
 import { FormClassNameContract } from "./form.props";
 
@@ -17,7 +17,7 @@ const styles: ComponentStyles<FormClassNameContract, {}> = {
         "font-size": "12px",
         "line-height": "16px",
         "padding-bottom": "12px",
-        ...applyCleanListStyle(),
+        ...cleanListStyle,
         "& li": {
             display: "inline-block",
             "padding-right": "8px",

@@ -1,5 +1,5 @@
 import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager-react";
-import { accent, applyInputBackplateStyle, neutralLayerL4 } from "../../style";
+import { accent, inputBackplateStyle, neutralLayerL4 } from "../../style";
 
 /* tslint:disable */
 const topLight: string =
@@ -25,7 +25,7 @@ const styles: ComponentStyles<AlignControlClassNameContract, {}> = {
     },
     alignControl__disabled: {},
     alignControl_input: {
-        ...applyInputBackplateStyle(),
+        ...inputBackplateStyle,
         "&:checked": {
             backgroundColor: accent,
         },

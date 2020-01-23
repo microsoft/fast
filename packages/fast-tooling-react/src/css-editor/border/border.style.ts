@@ -1,11 +1,11 @@
 import { ComponentStyles } from "@microsoft/fast-jss-manager-react";
 import {
-    applyControlRegion,
-    applyControlWrapper,
-    applyInputStyle,
-    applyLabelStyle,
-    applySelectInputStyles,
-    applySelectSpanStyles,
+    controlRegionStyle,
+    controlWrapperStyle,
+    inputStyle,
+    labelStyle,
+    selectInputStyle,
+    selectSpanStyle,
 } from "../../style";
 
 export interface CSSBorderClassNameContract {
@@ -20,7 +20,7 @@ export interface CSSBorderClassNameContract {
 
 const styles: ComponentStyles<CSSBorderClassNameContract, {}> = {
     cssBorder: {
-        ...applyControlWrapper(),
+        ...controlWrapperStyle,
     },
     cssBorder_colorInputRegion: {
         borderRadius: "2px",
@@ -29,23 +29,23 @@ const styles: ComponentStyles<CSSBorderClassNameContract, {}> = {
         width: "18%",
     },
     cssBorder_control: {
-        ...applyControlRegion(),
+        ...controlRegionStyle,
     },
     cssBorder_input: {
-        ...applyInputStyle(),
+        ...inputStyle,
         width: "22%",
         marginLeft: "4px",
     },
     cssBorder_label: {
-        ...applyLabelStyle(),
+        ...labelStyle,
     },
     cssBorder_selectControl: {
-        ...applySelectSpanStyles(),
+        ...selectSpanStyle,
         marginLeft: "4px",
         width: "60%",
     },
     cssBorder_select: {
-        ...applySelectInputStyles(),
+        ...selectInputStyle,
         padding: "3px 15px 2px 5px",
     },
 };

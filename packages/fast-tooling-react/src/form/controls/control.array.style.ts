@@ -1,12 +1,12 @@
 import { ellipsis } from "@microsoft/fast-jss-utilities";
 import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager-react";
 import {
-    applyAddItemStyle,
-    applyCleanListStyle,
-    applyInvalidMessage,
-    applyLabelRegionStyle,
-    applyLabelStyle,
-    applyRemoveItemStyle,
+    addItemStyle,
+    cleanListStyle,
+    invalidMessageStyle,
+    labelRegionStyle,
+    labelStyle,
+    removeItemStyle,
 } from "../../style";
 
 /**
@@ -39,23 +39,23 @@ const styles: ComponentStyles<ArrayControlClassNameContract, {}> = {
         },
     },
     arrayControl_invalidMessage: {
-        ...applyInvalidMessage(),
+        ...invalidMessageStyle,
         "padding-bottom": "5px",
         "margin-top": "-5px",
     },
     arrayControl_addItem: {
-        ...applyLabelRegionStyle(),
+        ...labelRegionStyle,
         position: "relative",
     },
     arrayControl_addItemLabel: {
-        ...applyLabelStyle(),
+        ...labelStyle,
         "max-width": "calc(100% - 30px)",
     },
     arrayControl_addItemButton: {
-        ...applyAddItemStyle(),
+        ...addItemStyle,
     },
     arrayControl_existingItemList: {
-        ...applyCleanListStyle(),
+        ...cleanListStyle,
         "font-size": "12px",
         position: "relative",
         "&::before": {
@@ -108,7 +108,7 @@ const styles: ComponentStyles<ArrayControlClassNameContract, {}> = {
         cursor: "auto",
     },
     arrayControl_existingItemRemoveButton: {
-        ...applyRemoveItemStyle(),
+        ...removeItemStyle,
         cursor: "pointer",
     },
 };

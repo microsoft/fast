@@ -1,5 +1,5 @@
 import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager-react";
-import { applySelectInputStyles, applySelectSpanStyles } from "../../style";
+import { selectInputStyle, selectSpanStyle } from "../../style";
 
 /**
  * Select class name contract
@@ -12,11 +12,11 @@ export interface SelectControlClassNameContract {
 
 const styles: ComponentStyles<SelectControlClassNameContract, {}> = {
     selectControl: {
-        ...applySelectSpanStyles(),
+        ...selectSpanStyle,
     },
     selectControl__disabled: {},
     selectControl_input: {
-        ...applySelectInputStyles(),
+        ...selectInputStyle,
     },
 };
 

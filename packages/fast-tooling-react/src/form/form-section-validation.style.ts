@@ -1,6 +1,6 @@
 import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager-react";
 import { ellipsis } from "@microsoft/fast-jss-utilities";
-import { applyInvalidMessage, chevronDown, chevronUp, error } from "../style";
+import { chevronDownStyle, chevronUpStyle, error, invalidMessageStyle } from "../style";
 import { FormSectionValidationClassNameContract } from "./form-section-validation.props";
 
 const styles: ComponentStyles<FormSectionValidationClassNameContract, {}> = {
@@ -9,7 +9,7 @@ const styles: ComponentStyles<FormSectionValidationClassNameContract, {}> = {
         position: "relative",
     },
     formSectionValidation_controlRegion: {
-        ...applyInvalidMessage(),
+        ...invalidMessageStyle,
         border: `1px solid ${error}`,
         padding: "10px",
         margin: "10px 30px 10px 0",
@@ -21,9 +21,9 @@ const styles: ComponentStyles<FormSectionValidationClassNameContract, {}> = {
         ...ellipsis(),
     },
     formSectionValidation_expandTrigger: {
-        ...chevronDown,
+        ...chevronDownStyle,
         "&$formSectionValidation_expandTrigger__active": {
-            ...chevronUp,
+            ...chevronUpStyle,
         },
     },
     formSectionValidation_expandTrigger__active: {},

@@ -1,9 +1,9 @@
 import { ComponentStyles } from "@microsoft/fast-jss-manager-react";
 import {
-    applyControlRegion,
-    applyControlWrapper,
-    applyInputStyle,
-    applyLabelStyle,
+    controlRegionStyle,
+    controlWrapperStyle,
+    inputStyle,
+    labelStyle,
 } from "../../style";
 
 export interface CSSWidthClassNameContract {
@@ -15,18 +15,18 @@ export interface CSSWidthClassNameContract {
 
 const styles: ComponentStyles<CSSWidthClassNameContract, {}> = {
     cssWidth: {
-        ...applyControlWrapper(),
+        ...controlWrapperStyle,
     },
     cssWidth_control: {
-        ...applyControlRegion(),
+        ...controlRegionStyle,
     },
     cssWidth_input: {
-        ...applyInputStyle(),
+        ...inputStyle,
         width: "50%",
         marginLeft: "4px",
     },
     cssWidth_label: {
-        ...applyLabelStyle(),
+        ...labelStyle,
         width: "50%",
     },
 };

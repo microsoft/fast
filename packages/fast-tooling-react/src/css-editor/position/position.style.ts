@@ -1,11 +1,11 @@
 import { ComponentStyles } from "@microsoft/fast-jss-manager-react";
 import {
-    applyControlWrapper,
-    applyInputStyle,
-    applySelectInputStyles,
-    applySelectSpanStyles,
     background800,
+    controlWrapperStyle,
     foreground800,
+    inputStyle,
+    selectInputStyle,
+    selectSpanStyle,
 } from "../../style";
 
 export interface CSSPositionClassNameContract {
@@ -26,16 +26,16 @@ export interface CSSPositionClassNameContract {
 const styles: ComponentStyles<CSSPositionClassNameContract, {}> = {
     cssPosition: {
         fontSize: "11px",
-        ...applyControlWrapper(),
+        ...controlWrapperStyle,
     },
     cssPosition_control: {
-        ...applySelectSpanStyles(),
+        ...selectSpanStyle,
     },
     cssPosition_select: {
-        ...applySelectInputStyles(),
+        ...selectInputStyle,
     },
     cssPosition_input: {
-        ...applyInputStyle(),
+        ...inputStyle,
         alignSelf: "center",
         width: "45px",
     },
