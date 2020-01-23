@@ -19,3 +19,4 @@ export * from "./resize-observer";
 export * from "./resize-observer-entry";
 export * from "./intersection-observer";
 export * from "./intersection-observer-entry";
+export * from "./extract-element";
