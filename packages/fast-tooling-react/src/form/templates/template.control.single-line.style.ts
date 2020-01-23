@@ -1,13 +1,13 @@
 import { ComponentStyles } from "@microsoft/fast-jss-manager-react";
 import {
-    applyControlSingleLineWrapper,
-    applyFormControlDisabled,
-    applyFormControlIndicator,
-    applyInteractiveFormControlIndicator,
-    applyInvalidMessage,
-    applyLabelStyle,
-    applySoftRemove,
-    applySoftRemoveInput,
+    controlSingleLineWrapperStyle,
+    formControlDisabledStyle,
+    formControlIndicatorStyle,
+    interactiveFormControlIndicatorStyle,
+    invalidMessageStyle,
+    labelStyle,
+    softRemoveInputStyle,
+    softRemoveStyle,
 } from "../../style";
 
 export interface SingleLineControlTemplateClassNameContract {
@@ -25,30 +25,30 @@ export interface SingleLineControlTemplateClassNameContract {
 const style: ComponentStyles<SingleLineControlTemplateClassNameContract, {}> = {
     singleLineControlTemplate: {},
     singleLineControlTemplate_control: {
-        ...applyControlSingleLineWrapper(),
+        ...controlSingleLineWrapperStyle,
         position: "relative",
     },
     singleLineControlTemplate__disabled: {
-        ...applyFormControlDisabled(),
+        ...formControlDisabledStyle,
     },
     singleLineControlTemplate_badge: {
-        ...applyFormControlIndicator(),
+        ...formControlIndicatorStyle,
     },
     singleLineControlTemplate_defaultValueIndicator: {
-        ...applyInteractiveFormControlIndicator(),
+        ...interactiveFormControlIndicatorStyle,
     },
     singleLineControlTemplate_label: {
-        ...applyLabelStyle(),
+        ...labelStyle,
         "margin-left": "8px",
     },
     singleLineControlTemplate_invalidMessage: {
-        ...applyInvalidMessage(),
+        ...invalidMessageStyle,
     },
     singleLineControlTemplate_softRemove: {
-        ...applySoftRemove(),
+        ...softRemoveStyle,
     },
     singleLineControlTemplate_softRemoveInput: {
-        ...applySoftRemoveInput(),
+        ...softRemoveInputStyle,
     },
 };
 

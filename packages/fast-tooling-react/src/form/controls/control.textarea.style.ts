@@ -1,5 +1,5 @@
 import { ComponentStyles } from "@microsoft/fast-jss-manager-react";
-import { applyInputStyle } from "../../style";
+import { inputStyle } from "../../style";
 
 /**
  * Textarea class name contract
@@ -11,7 +11,7 @@ export interface TextareaControlClassNameContract {
 
 const styles: ComponentStyles<TextareaControlClassNameContract, {}> = {
     textareaControl: {
-        ...applyInputStyle(),
+        ...inputStyle,
         width: "100%",
         resize: "none",
         fontFamily: "inherit",

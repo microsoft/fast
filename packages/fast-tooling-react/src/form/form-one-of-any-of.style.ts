@@ -1,26 +1,26 @@
 import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager-react";
 import { FormOneOfAnyOfClassNameContract } from "./form-one-of-any-of.props";
 import {
-    applyControl,
-    applyControlWrapper,
-    applyLabelStyle,
-    applySelectInputStyles,
-    applySelectSpanStyles,
+    controlStyle,
+    controlWrapperStyle,
+    labelStyle,
+    selectInputStyle,
+    selectSpanStyle,
 } from "../style";
 
 const styles: ComponentStyles<FormOneOfAnyOfClassNameContract, {}> = {
     formOneOfAnyOf: {
-        ...applyControl(),
-        ...applyControlWrapper(),
+        ...controlStyle,
+        ...controlWrapperStyle,
     },
     formOneOfAnyOf_selectSpan: {
-        ...applySelectSpanStyles(),
+        ...selectSpanStyle,
     },
     formOneOfAnyOf_select: {
-        ...applySelectInputStyles(),
+        ...selectInputStyle,
     },
     formOneOfAnyOf_label: {
-        ...applyLabelStyle(),
+        ...labelStyle,
     },
 };
 

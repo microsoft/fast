@@ -1,5 +1,5 @@
 import { ComponentStyles } from "@microsoft/fast-jss-manager-react";
-import { applyInputStyle } from "../../style";
+import { inputStyle } from "../../style";
 
 /**
  * Button class name contract
@@ -11,7 +11,7 @@ export interface ButtonControlClassNameContract {
 
 const styles: ComponentStyles<ButtonControlClassNameContract, {}> = {
     buttonControl: {
-        ...applyInputStyle(),
+        ...inputStyle,
         width: "100%",
         textAlign: "start",
     },

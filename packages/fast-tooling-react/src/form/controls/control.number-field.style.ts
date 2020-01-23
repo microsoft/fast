@@ -1,5 +1,5 @@
 import { ComponentStyles } from "@microsoft/fast-jss-manager-react";
-import { applyInputStyle } from "../../style";
+import { inputStyle } from "../../style";
 
 /**
  * Number field class name contract
@@ -11,7 +11,7 @@ export interface NumberFieldControlClassNameContract {
 
 const styles: ComponentStyles<NumberFieldControlClassNameContract, {}> = {
     numberFieldControl: {
-        ...applyInputStyle(),
+        ...inputStyle,
         width: "100%",
     },
     numberFieldControl__disabled: {},

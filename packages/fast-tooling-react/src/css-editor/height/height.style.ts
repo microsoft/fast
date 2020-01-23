@@ -1,9 +1,9 @@
 import { ComponentStyles } from "@microsoft/fast-jss-manager-react";
 import {
-    applyControlRegion,
-    applyControlWrapper,
-    applyInputStyle,
-    applyLabelStyle,
+    controlRegionStyle,
+    controlWrapperStyle,
+    inputStyle,
+    labelStyle,
 } from "../../style";
 
 export interface CSSHeightClassNameContract {
@@ -15,18 +15,18 @@ export interface CSSHeightClassNameContract {
 
 const styles: ComponentStyles<CSSHeightClassNameContract, {}> = {
     cssHeight: {
-        ...applyControlWrapper(),
+        ...controlWrapperStyle,
     },
     cssHeight_control: {
-        ...applyControlRegion(),
+        ...controlRegionStyle,
     },
     cssHeight_input: {
-        ...applyInputStyle(),
+        ...inputStyle,
         width: "50%",
         marginLeft: "4px",
     },
     cssHeight_label: {
-        ...applyLabelStyle(),
+        ...labelStyle,
         width: "50%",
     },
 };

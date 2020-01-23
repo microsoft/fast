@@ -2,13 +2,13 @@ import { ellipsis } from "@microsoft/fast-jss-utilities";
 import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager-react";
 import {
     accent,
-    applyAriaHiddenStyles,
-    applyCleanListStyle,
-    applyInputStyle,
-    applyRemoveItemStyle,
-    applySoftRemove,
+    ariaHiddenStyle,
     background100,
+    cleanListStyle,
     foreground300,
+    inputStyle,
+    removeItemStyle,
+    softRemoveStyle,
 } from "../../style";
 
 /**
@@ -34,7 +34,7 @@ export interface ChildrenControlClassNameContract {
 const styles: ComponentStyles<ChildrenControlClassNameContract, {}> = {
     childrenControl: {},
     childrenControl_existingChildren: {
-        ...applyCleanListStyle(),
+        ...cleanListStyle,
     },
     childrenControl_existingChildrenItem: {
         position: "relative",
@@ -71,8 +71,8 @@ const styles: ComponentStyles<ChildrenControlClassNameContract, {}> = {
     },
     childrenControl_existingChildrenItemContent: {},
     childrenControl_childrenList: {
-        ...applyCleanListStyle(),
-        ...applyAriaHiddenStyles(),
+        ...cleanListStyle,
+        ...ariaHiddenStyle,
         color: foreground300,
         msOverflowStyle: "none",
         background: background100,
@@ -103,7 +103,7 @@ const styles: ComponentStyles<ChildrenControlClassNameContract, {}> = {
         width: "calc(100% - 30px)",
     },
     childrenControl_childrenListInput: {
-        ...applyInputStyle(),
+        ...inputStyle,
         paddingRight: "36px",
         width: "100%",
     },
@@ -127,13 +127,13 @@ const styles: ComponentStyles<ChildrenControlClassNameContract, {}> = {
         },
     },
     childrenControl_delete: {
-        ...applySoftRemove(),
+        ...softRemoveStyle,
         cursor: "pointer",
         position: "relative",
         verticalAlign: "middle",
     },
     childrenControl_deleteButton: {
-        ...applyRemoveItemStyle(),
+        ...removeItemStyle,
         cursor: "pointer",
     },
 };
