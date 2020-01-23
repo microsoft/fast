@@ -1,6 +1,11 @@
 import BareForm from "./form";
 import { FormPlugin, FormPluginProps } from "./plugin";
-import { ControlConfig, ControlType, StandardControlPlugin } from "./templates";
+import {
+    ControlConfig,
+    ControlTemplateUtilities,
+    ControlType,
+    StandardControlPlugin,
+} from "./templates";
 import { ContextComponent, DragDropContext } from "react-dnd";
 import HTML5Backend from "react-dnd-html5-backend";
 
@@ -18,4 +23,5 @@ export {
     FormPlugin,
     FormPluginProps,
     StandardControlPlugin,
+    ControlTemplateUtilities,
 };
