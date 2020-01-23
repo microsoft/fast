@@ -4,7 +4,7 @@ import { isNil } from "lodash-es";
 /**
  * extracts the html element from React ref or simply returns html element passed in
  */
-export function extractElementFromRef(
+export function extractHtmlElement(
     sourceRef: React.RefObject<HTMLElement> | HTMLElement
 ): HTMLElement | null {
     if (sourceRef instanceof HTMLElement) {

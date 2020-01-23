@@ -1,7 +1,7 @@
 import React from "react";
 import Adapter from "enzyme-adapter-react-16";
 import { configure, mount, shallow } from "enzyme";
-import { extractElementFromRef } from "./extract-element";
+import { extractHtmlElement } from "./extract-element";
 
 /*
  * Configure Enzyme
@@ -23,13 +23,13 @@ class TestClass extends React.Component<{}, {}> {
 describe("extract-element", (): void => {
     test("extractElementFromRef function returns element passed in directly", (): void => {
         const testElement: HTMLDivElement = document.createElement("div");
-        expect(extractElementFromRef(testElement)).toBe(testElement);
+        expect(extractHtmlElement(testElement)).toBe(testElement);
     });
 
     test("extractElementFromRef function returns element passed in as a ref", (): void => {
         const rendered: any = shallow(<TestClass />);
 
-        const extracted: HTMLElement = extractElementFromRef(rendered.instance().testRef);
+        const extracted: HTMLElement = extractHtmlElement(rendered.instance().testRef);
         expect(extracted).toEqual(rendered.instance().testRef.current);
     });
 
@@ -38,6 +38,6 @@ describe("extract-element", (): void => {
             HTMLDivElement
         >();
 
-        expect(extractElementFromRef(testRef)).toBe(null);
+        expect(extractHtmlElement(testRef)).toBe(null);
     });
 });
