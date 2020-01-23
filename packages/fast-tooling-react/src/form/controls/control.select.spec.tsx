@@ -161,4 +161,33 @@ describe("SelectControl", () => {
                 .prop("value")
         ).toBe(value);
     });
+    test("should reset the value to an empty string if the value and default are undefined", () => {
+        const value: string = "foo";
+        const rendered: any = mount(
+            <SelectControl
+                {...selectProps}
+                managedClasses={managedClasses}
+                value={value}
+            />
+        );
+        expect(
+            rendered
+                .find("select")
+                .at(0)
+                .prop("value")
+        ).toBe(value);
+
+        rendered.setProps({
+            ...selectProps,
+            managedClasses,
+            value: void 0,
+        });
+
+        expect(
+            rendered
+                .find("select")
+                .at(0)
+                .prop("value")
+        ).toBe("");
+    });
 });
