@@ -11,6 +11,18 @@ const TestFormSection: typeof StyledFormSection & ContextComponent<any> = DragDr
 )(StyledFormSection);
 import { controls } from "./form-control-switch.spec";
 import ajv, { Ajv, ValidateFunction } from "ajv";
+import {
+    ArrayControl,
+    ButtonControl,
+    CheckboxControl,
+    ChildrenControl,
+    ControlType,
+    DisplayControl,
+    NumberFieldControl,
+    SectionLinkControl,
+    SelectControl,
+    TextareaControl,
+} from "./";
 
 /*
  * Configure Enzyme
@@ -30,6 +42,17 @@ const formSectionProps: FormSectionProps = {
     onUpdateSection: jest.fn(),
     validationErrors: null,
     default: {},
+    controlComponents: {
+        [ControlType.array]: ArrayControl,
+        [ControlType.button]: ButtonControl,
+        [ControlType.checkbox]: CheckboxControl,
+        [ControlType.children]: ChildrenControl,
+        [ControlType.display]: DisplayControl,
+        [ControlType.numberField]: NumberFieldControl,
+        [ControlType.sectionLink]: SectionLinkControl,
+        [ControlType.select]: SelectControl,
+        [ControlType.textarea]: TextareaControl,
+    },
 };
 
 const managedClasses: FormSectionClassNameContract = {

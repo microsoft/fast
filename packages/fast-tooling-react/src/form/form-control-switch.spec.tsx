@@ -19,6 +19,7 @@ import {
     CommonControlConfig,
     ControlConfig,
     ControlContext,
+    ControlType,
     ListControlConfig,
     NumberFieldTypeControlConfig,
     SectionLinkControlConfig,
@@ -26,19 +27,19 @@ import {
     StandardControlPlugin,
     TextareaControlConfig,
 } from "./templates";
+import { Controls } from "./form-section.props";
+import { reactChildrenStringSchema } from "./controls/control.children.text";
 import {
     ArrayControl,
     ButtonControl,
+    CheckboxControl,
     ChildrenControl,
+    DisplayControl,
     NumberFieldControl,
+    SectionLinkControl,
     SelectControl,
     TextareaControl,
-} from "./controls";
-import { SectionLinkControl } from "./controls/control.section-link";
-import { CheckboxControl } from "./controls/control.checkbox";
-import { DisplayControl } from "./controls/control.display";
-import { Controls } from "./form-section.props";
-import { reactChildrenStringSchema } from "./controls/control.children.text";
+} from "./";
 
 const selectControl: StandardControlPlugin = new StandardControlPlugin({
     control: (config: ListControlConfig): React.ReactNode => {
@@ -124,6 +125,17 @@ const formControlSwitchProps: FormControlSwitchProps = {
     onChange: null,
     invalidMessage: "",
     validationErrors: [],
+    controlComponents: {
+        [ControlType.array]: ArrayControl,
+        [ControlType.button]: ButtonControl,
+        [ControlType.checkbox]: CheckboxControl,
+        [ControlType.children]: ChildrenControl,
+        [ControlType.display]: DisplayControl,
+        [ControlType.numberField]: NumberFieldControl,
+        [ControlType.sectionLink]: SectionLinkControl,
+        [ControlType.select]: SelectControl,
+        [ControlType.textarea]: TextareaControl,
+    },
 };
 
 describe("FormControlSwitch", () => {

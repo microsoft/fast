@@ -90,7 +90,7 @@ class SelectControl extends React.Component<
      * Renders the selects option elements
      */
     private renderOptions(): React.ReactNode {
-        return this.props.options.map((item: any, index: number) => {
+        return (this.props.options || []).map((item: any, index: number) => {
             return (
                 <option key={index} value={item}>
                     {typeof item === "string" || typeof item === "number"

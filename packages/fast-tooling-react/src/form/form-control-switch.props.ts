@@ -4,8 +4,10 @@ import {
     FormChildOptionItem,
 } from "./form.props";
 import { Controls } from "./form-section.props";
+import { Omit } from "utility-types";
 
-export interface FormControlSwitchProps extends ControlTemplateUtilitiesProps {
+export interface FormControlSwitchProps
+    extends Omit<ControlTemplateUtilitiesProps, "component"> {
     /**
      * The name of the property
      */
@@ -21,6 +23,11 @@ export interface FormControlSwitchProps extends ControlTemplateUtilitiesProps {
      * instead of the default control plugins
      */
     controlPlugins?: StandardControlPlugin[];
+
+    /**
+     * A component dictionary to be used by type
+     */
+    controlComponents: { [key: string]: React.ComponentClass | React.FunctionComponent };
 
     /**
      * The schema to be used

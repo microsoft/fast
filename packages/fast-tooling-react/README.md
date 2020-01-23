@@ -1042,7 +1042,9 @@ These control types can be paired with our default controls, the following of wh
 - `ButtonControl`
 - `TextareaControl`
 
-Example:
+**Note: If the id and type are not specified, all controls will be replaced with the control.**
+
+Example of a replacement type:
 
 ```jsx
 import { ControlType, TextareaControl } from "@microsoft/fast-tooling-react";
@@ -1061,6 +1063,28 @@ import { ControlType, TextareaControl } from "@microsoft/fast-tooling-react";
                     <React.Fragment>
                         <span>Hello world!</span>
                         <TextareaControl {...config} />
+                    </React.Fragement>
+                );
+            }
+        })
+    ]}
+/>
+```
+
+Example of a replacement for all controls, using the component for the default control:
+
+```jsx
+<Form
+    schema={schema}
+    data={this.state.data}
+    onChange={this.handleChange}
+    controlPlugins={[
+        new StandardControlPlugin({
+            control: (config) => {
+                return (
+                    <React.Fragment>
+                        <span>Hello world!</span>
+                        <config.component {...config} />
                     </React.Fragement>
                 );
             }
