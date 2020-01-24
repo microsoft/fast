@@ -254,8 +254,8 @@ class Form extends React.Component<
         this.controlComponents[type] = controlPluginConfig.component;
 
         return new controlPluginConfig.plugin({
+            ...controlPluginConfig,
             type,
-            component: controlPluginConfig.component,
             control: (config: ControlConfig): React.ReactNode => {
                 return <controlPluginConfig.component {...config} />;
             },

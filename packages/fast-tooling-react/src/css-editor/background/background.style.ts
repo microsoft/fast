@@ -1,9 +1,9 @@
 import { ComponentStyles } from "@microsoft/fast-jss-manager-react";
 import {
-    applyControlRegion,
-    applyControlWrapper,
-    applyInputStyle,
-    applyLabelStyle,
+    controlRegionStyle,
+    controlWrapperStyle,
+    inputStyle,
+    labelStyle,
 } from "../../style";
 
 export interface CSSBackgroundClassNameContract {
@@ -16,7 +16,7 @@ export interface CSSBackgroundClassNameContract {
 
 const styles: ComponentStyles<CSSBackgroundClassNameContract, {}> = {
     cssBackground: {
-        ...applyControlWrapper(),
+        ...controlWrapperStyle,
     },
     cssBackground_colorInputRegion: {
         borderRadius: "2px",
@@ -24,15 +24,15 @@ const styles: ComponentStyles<CSSBackgroundClassNameContract, {}> = {
         width: "18%",
     },
     cssBackground_control: {
-        ...applyControlRegion(),
+        ...controlRegionStyle,
     },
     cssBackground_input: {
-        ...applyInputStyle(),
+        ...inputStyle,
         marginLeft: "4px",
         width: "83%",
     },
     cssBackground_label: {
-        ...applyLabelStyle(),
+        ...labelStyle,
     },
 };
 

@@ -1,10 +1,10 @@
 import { ComponentStyles } from "@microsoft/fast-jss-manager-react";
 import {
-    applyControlRegion,
-    applyControlWrapper,
-    applyInputBackplateStyle,
-    applyInputStyle,
-    applyLabelStyle,
+    controlRegionStyle,
+    controlWrapperStyle,
+    inputBackplateStyle,
+    inputStyle,
+    labelStyle,
 } from "../../style";
 
 export interface CSSBorderRadiusClassNameContract {
@@ -21,26 +21,26 @@ export interface CSSBorderRadiusClassNameContract {
 
 const styles: ComponentStyles<CSSBorderRadiusClassNameContract, {}> = {
     cssBorderRadius: {
-        ...applyControlWrapper(),
+        ...controlWrapperStyle,
     },
     cssBorderRadius_control: {
-        ...applyControlRegion(),
+        ...controlRegionStyle,
     },
     cssBorderRadius_input: {
-        ...applyInputStyle(),
+        ...inputStyle,
         marginRight: "4px",
         width: "inherit",
     },
     cssBorderRadius_individualInput: {
-        ...applyInputStyle(),
+        ...inputStyle,
         marginRight: "4px",
         width: "inherit",
     },
     cssBorderRadius_label: {
-        ...applyLabelStyle(),
+        ...labelStyle,
     },
     cssBorderRadius_toggleButton: {
-        ...applyInputStyle(),
+        ...inputStyle,
         backgroundColor: "transparent",
         display: "flex",
         alignContent: "center",
@@ -49,7 +49,7 @@ const styles: ComponentStyles<CSSBorderRadiusClassNameContract, {}> = {
         minWidth: "12%",
     },
     cssBorderRadius_toggleButton__selected: {
-        ...applyInputStyle(),
+        ...inputStyle,
     },
     cssBorderRadius_toggleButtonGlyph: {
         fill: "rgba(255,255,255, 0.5)",

@@ -10,9 +10,9 @@ import {
 } from "@microsoft/fast-jss-utilities";
 import { SelectDeviceClassNameContract } from "./select-device.class-name-contract";
 import {
-    applySelectInputStyles,
-    applySelectSpanStyles,
     DesignSystem,
+    selectInputStyle,
+    selectSpanStyle,
     withDesignSystemDefaults,
 } from "../../style";
 
@@ -35,10 +35,10 @@ const styles: ComponentStyles<
             ...ellipsis(),
         },
         selectDevice_contentRegion: {
-            ...applySelectSpanStyles(),
+            ...selectSpanStyle,
         },
         selectDevice_select: {
-            ...applySelectInputStyles(),
+            ...selectInputStyle,
             paddingRight: "15px",
         },
     };

@@ -1,11 +1,11 @@
 import { ComponentStyles } from "@microsoft/fast-jss-manager-react";
 import {
-    applyAddItemStyle,
-    applyControl,
-    applyControlRegion,
-    applyInputStyle,
-    applyLabelStyle,
-    applyRemoveItemStyle,
+    addItemStyle,
+    controlRegionStyle,
+    controlStyle,
+    inputStyle,
+    labelStyle,
+    removeItemStyle,
 } from "../style";
 
 /**
@@ -27,33 +27,33 @@ export interface FormDictionaryClassNameContract {
 const styles: ComponentStyles<FormDictionaryClassNameContract, {}> = {
     formDictionary: {},
     formDictionary_itemControl: {
-        ...applyControl(),
+        ...controlStyle,
     },
     formDictionary_itemControlLabel: {
-        ...applyLabelStyle(),
+        ...labelStyle,
     },
     formDictionary_itemControlRegion: {
-        ...applyControlRegion(),
+        ...controlRegionStyle,
     },
     formDictionary_itemControlInput: {
-        ...applyInputStyle(),
+        ...inputStyle,
         width: "100%",
     },
     formDictionary_itemControlRemoveTrigger: {
-        ...applyRemoveItemStyle(),
+        ...removeItemStyle,
         top: "2px",
     },
     formDictionary_control: {
-        ...applyControl(),
+        ...controlStyle,
     },
     formDictionary_controlRegion: {
-        ...applyControlRegion(),
+        ...controlRegionStyle,
     },
     formDictionary_controlAddTrigger: {
-        ...applyAddItemStyle(),
+        ...addItemStyle,
     },
     formDictionary_controlLabel: {
-        ...applyLabelStyle(),
+        ...labelStyle,
         width: "100%",
     },
 };

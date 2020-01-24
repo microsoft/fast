@@ -1,13 +1,10 @@
 import {
     accent,
-    applyControl,
-    applyControlWrapper,
-    applyLabelStyle,
-    applySoftRemove,
-    applySoftRemoveInput,
     background000,
+    controlWrapperStyle,
     foreground200,
     foreground300,
+    labelStyle,
 } from "../../style";
 import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager-react";
 
@@ -53,7 +50,7 @@ export interface ThemeControlClassNameContract {
 const styles: ComponentStyles<ThemeControlClassNameContract, {}> = {
     themeControl: {
         display: "flex",
-        ...applyControlWrapper(),
+        ...controlWrapperStyle,
     },
     themeControl__disabled: {},
     themeControl_input: {

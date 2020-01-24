@@ -1,12 +1,9 @@
 import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager-react";
 import {
     accent,
-    applyControl,
-    applyControlWrapper,
-    applyInputBackplateStyle,
-    applyLabelStyle,
-    applySoftRemove,
-    applySoftRemoveInput,
+    controlWrapperStyle,
+    inputBackplateStyle,
+    labelStyle,
     neutralLayerL4,
 } from "../../style";
 
@@ -40,7 +37,7 @@ const styles: ComponentStyles<TextAlignControlClassNameContract, {}> = {
     },
     textAlignControl__disabled: {},
     textAlignControl_input: {
-        ...applyInputBackplateStyle(),
+        ...inputBackplateStyle,
         "&:checked": {
             backgroundColor: accent,
         },

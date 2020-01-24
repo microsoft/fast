@@ -1,16 +1,16 @@
 import { ComponentStyles } from "@microsoft/fast-jss-manager-react";
 import {
-    applyControl,
-    applyControlRegion,
-    applyControlWrapper,
-    applyFormControlDisabled,
-    applyFormControlIndicator,
-    applyInteractiveFormControlIndicator,
-    applyInvalidMessage,
-    applyLabelRegionStyle,
-    applyLabelStyle,
-    applySoftRemove,
-    applySoftRemoveInput,
+    controlRegionStyle,
+    controlStyle,
+    controlWrapperStyle,
+    formControlDisabledStyle,
+    formControlIndicatorStyle,
+    interactiveFormControlIndicatorStyle,
+    invalidMessageStyle,
+    labelRegionStyle,
+    labelStyle,
+    softRemoveInputStyle,
+    softRemoveStyle,
 } from "../../style";
 
 export interface StandardControlTemplateClassNameContract {
@@ -30,40 +30,40 @@ export interface StandardControlTemplateClassNameContract {
 
 const style: ComponentStyles<StandardControlTemplateClassNameContract, {}> = {
     standardControlTemplate: {
-        ...applyControlWrapper(),
+        ...controlWrapperStyle,
     },
     standardControlTemplate_invalidMessage: {
-        ...applyInvalidMessage(),
+        ...invalidMessageStyle,
     },
     standardControlTemplate__disabled: {
-        ...applyFormControlDisabled(),
+        ...formControlDisabledStyle,
     },
     standardControlTemplate_badge: {
-        ...applyFormControlIndicator(),
+        ...formControlIndicatorStyle,
     },
     standardControlTemplate_control: {
-        ...applyControl(),
+        ...controlStyle,
     },
     standardControlTemplate_controlRegion: {
-        ...applyControlRegion(),
+        ...controlRegionStyle,
     },
     standardControlTemplate_controlLabel: {
-        ...applyLabelStyle(),
+        ...labelStyle,
     },
     standardControlTemplate_controlLabelRegion: {
-        ...applyLabelRegionStyle(),
+        ...labelRegionStyle,
     },
     standardControlTemplate_constValueIndicator: {
-        ...applyInteractiveFormControlIndicator(),
+        ...interactiveFormControlIndicatorStyle,
     },
     standardControlTemplate_defaultValueIndicator: {
-        ...applyInteractiveFormControlIndicator(),
+        ...interactiveFormControlIndicatorStyle,
     },
     standardControlTemplate_softRemove: {
-        ...applySoftRemove(),
+        ...softRemoveStyle,
     },
     standardControlTemplate_softRemoveInput: {
-        ...applySoftRemoveInput(),
+        ...softRemoveInputStyle,
     },
 };
 

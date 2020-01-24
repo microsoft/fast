@@ -7,6 +7,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import {
     DisplayNamePrefix,
+    extractHtmlElement,
     IntersectionObserverEntry,
     ResizeObserverClassDefinition,
     ResizeObserverEntry,
@@ -1137,7 +1138,7 @@ class ViewportPositioner extends Foundation<
         if (isNil(this.props.anchor)) {
             return null;
         }
-        return this.extractElementFromRef(this.props.anchor);
+        return extractHtmlElement(this.props.anchor);
     };
 
     /**
@@ -1147,42 +1148,16 @@ class ViewportPositioner extends Foundation<
         viewportRef: React.RefObject<any> | HTMLElement
     ): HTMLElement | null => {
         if (!isNil(viewportRef)) {
-            return this.extractElementFromRef(viewportRef);
+            return extractHtmlElement(viewportRef);
         }
 
         if (!isNil(this.context.viewport)) {
-            return this.extractElementFromRef(this.context.viewport);
+            return extractHtmlElement(this.context.viewport);
         }
 
         if (document.scrollingElement instanceof HTMLElement) {
             return document.scrollingElement as HTMLElement;
         }
-        return null;
-    };
-
-    /**
-     * returns an html element from a ref
-     */
-    private extractElementFromRef = (
-        sourceRef: React.RefObject<any> | HTMLElement
-    ): HTMLElement | null => {
-        if (sourceRef instanceof HTMLElement) {
-            return sourceRef;
-        }
-        if (!isNil(sourceRef.current)) {
-            if (sourceRef.current instanceof HTMLElement) {
-                return sourceRef.current;
-            }
-
-            const foundNode: Element | Text | null = ReactDOM.findDOMNode(
-                sourceRef.current
-            );
-
-            if (foundNode instanceof HTMLElement) {
-                return foundNode;
-            }
-        }
-
         return null;
     };
 

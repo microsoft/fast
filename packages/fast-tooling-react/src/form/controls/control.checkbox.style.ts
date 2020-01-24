@@ -1,6 +1,12 @@
 import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager-react";
 import { applyFocusVisible } from "@microsoft/fast-jss-utilities";
-import { error, foreground300, foreground800, insetStrongBoxShadow } from "../../style";
+import {
+    defaultColor,
+    error,
+    foreground300,
+    foreground800,
+    insetStrongBoxShadow,
+} from "../../style";
 
 /**
  * Checkbox class name contract
@@ -10,6 +16,7 @@ export interface CheckboxControlClassNameContract {
     checkboxControl__disabled?: string;
     checkboxControl_input?: string;
     checkboxControl_checkmark?: string;
+    checkboxControl__default?: string;
 }
 
 const styles: ComponentStyles<CheckboxControlClassNameContract, {}> = {
@@ -57,6 +64,14 @@ const styles: ComponentStyles<CheckboxControlClassNameContract, {}> = {
         "&:invalid": {
             borderColor: error,
         },
+        "&$checkboxControl__default": {
+            "border-color": defaultColor,
+            "& + span": {
+                "&::after, &::before": {
+                    background: defaultColor,
+                },
+            },
+        },
     },
     checkboxControl_checkmark: {
         position: "absolute",
@@ -72,6 +87,7 @@ const styles: ComponentStyles<CheckboxControlClassNameContract, {}> = {
         },
     },
     checkboxControl__disabled: {},
+    checkboxControl__default: {},
 };
 
 export default styles;

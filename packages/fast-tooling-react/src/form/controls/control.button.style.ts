@@ -1,5 +1,5 @@
 import { ComponentStyles } from "@microsoft/fast-jss-manager-react";
-import { applyInputStyle } from "../../style";
+import { defaultFontStyle, inputStyle } from "../../style";
 
 /**
  * Button class name contract
@@ -7,15 +7,20 @@ import { applyInputStyle } from "../../style";
 export interface ButtonControlClassNameContract {
     buttonControl?: string;
     buttonControl__disabled?: string;
+    buttonControl__default?: string;
 }
 
 const styles: ComponentStyles<ButtonControlClassNameContract, {}> = {
     buttonControl: {
-        ...applyInputStyle(),
+        ...inputStyle,
         width: "100%",
         textAlign: "start",
+        "&$buttonControl__default": {
+            ...defaultFontStyle,
+        },
     },
     buttonControl__disabled: {},
+    buttonControl__default: {},
 };
 
 export default styles;
