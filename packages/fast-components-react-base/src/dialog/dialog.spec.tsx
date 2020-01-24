@@ -119,6 +119,34 @@ describe("dialog", (): void => {
         );
     });
 
+    test('should have an attribute of `aria-modal="true"` when the `modal` prop is true', () => {
+        const rendered: any = shallow(
+            <Dialog managedClasses={managedClasses} modal={true} />
+        );
+
+        expect(
+            rendered.find(`.${managedClasses.dialog_contentRegion}`).prop("aria-modal")
+        ).toEqual(true);
+    });
+
+    test('should NOT have an attribute of `aria-modal="false"` when the `modal` prop is false', () => {
+        const rendered: any = shallow(
+            <Dialog managedClasses={managedClasses} modal={false} />
+        );
+
+        expect(
+            rendered.find(`.${managedClasses.dialog_contentRegion}`).prop("aria-modal")
+        ).toEqual(false);
+    });
+
+    test("should NOT have an attribute of `aria-modal` when the `modal` prop is not provided", () => {
+        const rendered: any = shallow(<Dialog managedClasses={managedClasses} />);
+
+        expect(
+            rendered.find(`.${managedClasses.dialog_contentRegion}`).prop("aria-modal")
+        ).toEqual(undefined);
+    });
+
     test("should call the `onDismiss` callback after a click event on the modal overlay when `visible` prop is true", () => {
         const onDismiss: any = jest.fn();
         const rendered: any = shallow(
