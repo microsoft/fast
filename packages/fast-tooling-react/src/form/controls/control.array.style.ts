@@ -3,6 +3,7 @@ import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager-react";
 import {
     addItemStyle,
     cleanListStyle,
+    defaultFontStyle,
     invalidMessageStyle,
     labelRegionStyle,
     labelStyle,
@@ -103,10 +104,12 @@ const styles: ComponentStyles<ArrayControlClassNameContract, {}> = {
         width: "calc(100% - 40px)",
         padding: "0 5px",
         "background-color": "rgba(255, 255, 255, 0.04)",
+        "&$arrayControl_existingItemListItemLink__default": {
+            ...defaultFontStyle,
+            cursor: "auto",
+        },
     },
-    arrayControl_existingItemListItemLink__default: {
-        cursor: "auto",
-    },
+    arrayControl_existingItemListItemLink__default: {},
     arrayControl_existingItemRemoveButton: {
         ...removeItemStyle,
         cursor: "pointer",

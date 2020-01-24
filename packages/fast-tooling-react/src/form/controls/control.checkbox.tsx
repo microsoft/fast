@@ -4,6 +4,7 @@ import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-
 import styles, { CheckboxControlClassNameContract } from "./control.checkbox.style";
 import { CheckboxControlProps } from "./control.checkbox.props";
 import { classNames } from "@microsoft/fast-web-utilities";
+import { isDefault } from "../utilities";
 
 /**
  * Form control definition
@@ -31,10 +32,17 @@ class CheckboxControl extends React.Component<
 
         return (
             <div
-                className={classNames(this.props.managedClasses.checkboxControl, [
-                    this.props.managedClasses.checkboxControl__disabled,
-                    this.props.disabled,
-                ])}
+                className={classNames(
+                    this.props.managedClasses.checkboxControl,
+                    [
+                        this.props.managedClasses.checkboxControl__disabled,
+                        this.props.disabled,
+                    ],
+                    [
+                        this.props.managedClasses.checkboxControl__default,
+                        isDefault(this.props.value, this.props.default),
+                    ]
+                )}
             >
                 <input
                     className={this.props.managedClasses.checkboxControl_input}
@@ -47,6 +55,7 @@ class CheckboxControl extends React.Component<
                     ref={this.props.elementRef as React.Ref<HTMLInputElement>}
                     onFocus={this.props.reportValidity}
                     onBlur={this.props.updateValidity}
+                    required={this.props.required}
                 />
                 <span className={this.props.managedClasses.checkboxControl_checkmark} />
             </div>

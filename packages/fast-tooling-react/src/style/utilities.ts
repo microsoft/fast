@@ -9,6 +9,7 @@ import {
 import {
     accent,
     background800,
+    defaultColor,
     disabledOpacity,
     error,
     foreground200,
@@ -242,6 +243,11 @@ export const ariaHiddenStyle: CSSRules<{}> = {
     '&[aria-hidden="false"]': {
         display: "block",
     },
+};
+
+export const defaultFontStyle: CSSRules<{}> = {
+    color: defaultColor,
+    "font-style": "italic",
 };
 
 export const removeItemStyle: CSSRules<{}> = {

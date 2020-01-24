@@ -4,6 +4,7 @@ import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-
 import styles, { DisplayControlClassNameContract } from "./control.display.style";
 import { DisplayControlProps } from "./control.display.props";
 import { classNames } from "@microsoft/fast-web-utilities";
+import { isDefault } from "../utilities";
 
 /**
  * Form control definition
@@ -23,10 +24,17 @@ class DisplayControl extends React.Component<
     public render(): React.ReactNode {
         return (
             <input
-                className={classNames(this.props.managedClasses.displayControl, [
-                    this.props.managedClasses.displayControl__disabled,
-                    this.props.disabled,
-                ])}
+                className={classNames(
+                    this.props.managedClasses.displayControl,
+                    [
+                        this.props.managedClasses.displayControl__disabled,
+                        this.props.disabled,
+                    ],
+                    [
+                        this.props.managedClasses.displayControl__default,
+                        isDefault(this.props.value, this.props.default),
+                    ]
+                )}
                 type={"text"}
                 ref={this.props.elementRef as React.Ref<HTMLInputElement>}
                 onBlur={this.props.updateValidity}
@@ -34,6 +42,7 @@ class DisplayControl extends React.Component<
                 value={this.getDisplayValue(this.props.value)}
                 onChange={this.handleInputChange}
                 disabled={this.props.disabled}
+                required={this.props.required}
             />
         );
     }
