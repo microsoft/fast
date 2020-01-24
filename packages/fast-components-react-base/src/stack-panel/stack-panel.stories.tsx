@@ -224,7 +224,7 @@ storiesOf("Stack Panel", module)
     .add("Disable virtualization", () => (
         <StackPanel
             defaultItemSpan={100}
-            enableVirtualization={false}
+            virtualize={false}
             style={{
                 width: "117px",
                 height: "400px",
@@ -332,7 +332,7 @@ storiesOf("Stack Panel", module)
         <TestStackPanel
             stackPanelProps={{
                 itemSpanOverrides: itemSpans,
-                enableVirtualization: true,
+                virtualize: true,
                 preloadBufferLength: 6,
                 neverVirtualizeIndexes: [0, 9999],
             }}

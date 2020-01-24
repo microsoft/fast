@@ -11,6 +11,12 @@ import { ItemSpanOverride, stackPanelOrientation } from "./stack-panel.props";
  */
 configure({ adapter: new Adapter() });
 
+const managedClasses: StackPanelClassNameContract = {
+    stackPanel: "stackPanel",
+    stackPanel__isScrolling: "stackPanel__isScrolling",
+    stackPanel_items: "stackPanel_itemContainer",
+};
+
 const itemSpans: ItemSpanOverride = {
     0: 120,
     1: 180,
@@ -420,5 +426,37 @@ describe("stack panel", (): void => {
         });
         expect(scrollContentFn.mock.calls[0][0]).toBe(300);
         expect(scrollContentFn.mock.calls[0][1]).toBe(100);
+    });
+
+    test("Root classnames are applied", () => {
+        const rendered: any = mount(
+            <StackPanel managedClasses={managedClasses}>
+                {sampleStackPanelItems}
+            </StackPanel>
+        );
+        expect(rendered.instance().rootElement.current.className).toContain(
+            managedClasses.stackPanel
+        );
+        expect(rendered.instance().rootElement.current.className).toContain(
+            managedClasses.stackPanel__isScrolling
+        );
+    });
+
+    test("Item container classname is applied", () => {
+        const rendered: any = mount(
+            <StackPanel managedClasses={managedClasses}>
+                {sampleStackPanelItems}
+            </StackPanel>
+        );
+        expect(rendered.instance().itemContainerElement.current.className).toContain(
+            managedClasses.stackPanel_items
+        );
+    });
+
+    test("isScrolling classname not applied when component does not need to scroll", () => {
+        const rendered: any = mount(<StackPanel managedClasses={managedClasses} />);
+        expect(rendered.instance().rootElement.current.className).not.toContain(
+            managedClasses.stackPanel__isScrolling
+        );
     });
 });
