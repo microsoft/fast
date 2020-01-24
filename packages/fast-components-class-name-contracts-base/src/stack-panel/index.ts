@@ -13,7 +13,8 @@ export interface StackPanelClassNameContract {
     stackPanel_items?: string;
 
     /**
-     *
+     * indicates that the panel is scrollable
+     * (ie. contents exceed height of container)
      */
-    stackPanel__isScrolling?: string;
+    stackPanel__scrolling?: string;
 }
