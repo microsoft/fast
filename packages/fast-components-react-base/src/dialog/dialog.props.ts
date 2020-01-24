@@ -51,7 +51,7 @@ export interface DialogHandledProps extends DialogManagedClasses {
      * The element or ref provided will be focused when the dialog unmounts.
      * Alternatively, providing a callback function gives developers more flexibility if needed.
      */
-    refocusTarget?: React.RefObject<any> | HTMLElement | (() => void);
+    focusTargetOnClose?: React.RefObject<any> | HTMLElement | (() => void);
 
     /**
      * The onDismiss callback
