@@ -22,7 +22,7 @@ export interface StackPanelHandledProps extends StackPanelManagedClasses {
      * Whether items outside the viewport should be rendered or not
      * default is true
      */
-    enableVirtualization?: boolean;
+    virtualize?: boolean;
 
     /**
      *  the indexes of children that should always be rendered

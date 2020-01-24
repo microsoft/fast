@@ -17,7 +17,7 @@ configure({ adapter: new Adapter() });
 const managedClasses: StackPanelClassNameContract = {
     stackPanel: "stackPanel",
     stackPanel__isScrolling: "stackPanel__isScrolling",
-    stackPanel_itemContainer: "stackPanel_itemContainer",
+    stackPanel_items: "stackPanel_itemContainer",
 };
 
 const itemSpans: ItemSpanOverride = {
@@ -452,7 +452,7 @@ describe("stack panel", (): void => {
             </StackPanel>
         );
         expect(rendered.instance().itemContainerElement.current.className).toContain(
-            managedClasses.stackPanel_itemContainer
+            managedClasses.stackPanel_items
         );
     });
 
