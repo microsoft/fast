@@ -61,6 +61,14 @@ export interface StackPanelHandledProps extends StackPanelManagedClasses {
     onScrollChange?: (newScrollValue: number, scrollMaxValue: number) => void;
 
     /**
+     * Callback for when the range of rendered items changes
+     */
+    onRenderedRangeChange?: (
+        renderedRangeStart: number,
+        renderedRangeEnd: number
+    ) => void;
+
+    /**
      * When the component scrolls focused content into view how many pixels should the next item "peek" into view
      */
     nextItemPeek?: number;

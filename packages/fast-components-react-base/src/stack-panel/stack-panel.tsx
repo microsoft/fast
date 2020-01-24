@@ -71,6 +71,8 @@ class StackPanel extends Foundation<
         scrollDuration: void 0,
         managedClasses: void 0,
         initiallyVisibleItemIndex: void 0,
+        onRenderedRangeChange: void 0,
+        onScrollChange: void 0,
     };
 
     private rootElement: React.RefObject<HTMLDivElement> = React.createRef<
@@ -416,6 +418,11 @@ class StackPanel extends Foundation<
         if (renderEndIndex > lastIndex) {
             renderEndIndex = lastIndex;
         }
+
+        if (isFunction(this.props.onRenderedRangeChange)) {
+            this.props.onRenderedRangeChange(renderStartIndex, renderEndIndex);
+        }
+
         this.setState({
             renderedRangeStartIndex: renderStartIndex,
             renderedRangeEndIndex: renderEndIndex,
