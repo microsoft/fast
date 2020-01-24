@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.2.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-figma-plugin-msft@0.1.2...@microsoft/fast-figma-plugin-msft@0.2.0) (2020-01-24)
+
+
+### Features
+
+* adds background fill, text fill, and stroke fill capabilities to Figma plugin ([#2587](https://github.com/Microsoft/fast-dna/issues/2587)) ([a008ab2](https://github.com/Microsoft/fast-dna/commit/a008ab295d975f167db481c417ac1bf9f6cc2002))
+
+
+
+
+
 ## [0.1.2](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-figma-plugin-msft@0.1.1...@microsoft/fast-figma-plugin-msft@0.1.2) (2020-01-21)
 
 **Note:** Version bump only for package @microsoft/fast-figma-plugin-msft
