@@ -46,7 +46,7 @@ class StackPanel extends Foundation<
 
     public static defaultProps: Partial<StackPanelProps> = {
         managedClasses: {},
-        enableVirtualization: true,
+        virtualize: true,
         neverVirtualizeIndexes: [],
         defaultItemSpan: 100,
         preloadBufferLength: 1,
@@ -62,7 +62,7 @@ class StackPanel extends Foundation<
     protected handledProps: HandledProps<StackPanelHandledProps> = {
         nextItemPeek: void 0,
         defaultItemSpan: void 0,
-        enableVirtualization: void 0,
+        virtualize: void 0,
         neverVirtualizeIndexes: void 0,
         itemSpanOverrides: void 0,
         preloadBufferLength: void 0,
@@ -268,7 +268,7 @@ class StackPanel extends Foundation<
      */
     private renderItem = (item: React.ReactNode, index: number): React.ReactChild => {
         if (
-            this.props.enableVirtualization &&
+            this.props.virtualize &&
             !this.props.neverVirtualizeIndexes.includes(index) &&
             (index < this.state.renderedRangeStartIndex ||
                 index > this.state.renderedRangeEndIndex)
