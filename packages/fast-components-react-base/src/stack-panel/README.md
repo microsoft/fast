@@ -18,11 +18,11 @@ Keys: authors should strongly consider providing keys (https://reactjs.org/docs/
 
  enableVirtualization:  Whether child elements are virtualized or not. Defaults to true.
 
- neverVirtualizeIndexes: Authors can provide an array of indexes which flag child indexes that should not be virtualized.  For example providing [0, 10] to this prop would mean that child items at indexes 0 and 10 would be rendered.
+ neverVirtualizeIndexes: Authors can provide an array of indexes which flag child indexes that should not be virtualized.  For example providing "[0, 10]" to this prop would mean that child items at indexes 0 and 10 would be rendered.
 
  defaultItemSpan:  The default span of the child items in pixels, this can be overriden on an item by item basis using the "itemSpanOverrides" prop. Default is 100. 
 
- itemSpanOverrides: An object where the keys correspond to child indexes and the values to the span to be used to calculate layout for the child at that index. For example {1:200, 5:500} would specify that the child item at index 1 has a span of 200 pixels and the one at index 5 has a span of 500 pixels.
+ itemSpanOverrides: An object where the keys correspond to child indexes and the values to the span to be used to calculate layout for the child at that index.
 
 preloadBufferLength: How many out of view child items to render on either side of the viewport. Default is 1.
 

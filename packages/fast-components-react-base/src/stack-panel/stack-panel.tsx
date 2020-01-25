@@ -2,13 +2,12 @@ import { StackPanelClassNameContract } from "@microsoft/fast-components-class-na
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import { classNames, Direction, RtlScrollConverter } from "@microsoft/fast-web-utilities";
 import { canUseDOM } from "exenv-es6";
-import { get, isEqual, isNil, memoize, merge } from "lodash-es";
+import { get, isNil, merge } from "lodash-es";
 import React from "react";
 import ReactDOM from "react-dom";
 import { toPx } from "@microsoft/fast-jss-utilities";
 import {
     DisplayNamePrefix,
-    IntersectionObserverEntry,
     ResizeObserverClassDefinition,
     ResizeObserverEntry,
 } from "../utilities";
@@ -246,11 +245,14 @@ class StackPanel extends Foundation<
     protected generateClassNames(): string {
         const {
             stackPanel,
-            stackPanel__isScrolling,
-        }: StackPanelClassNameContract = this.props.managedClasses;
+        }: // stackPanel__scrolling,
+        StackPanelClassNameContract = this.props.managedClasses;
 
         return super.generateClassNames(
-            classNames(stackPanel, [stackPanel__isScrolling, this.state.isScrolling])
+            classNames(
+                stackPanel
+                // [stackPanel__scrolling, this.state.isScrolling]
+            )
         );
     }
 
