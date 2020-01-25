@@ -246,13 +246,15 @@ class StackPanel extends Foundation<
     /**
      * Render the items
      */
-    private renderItems(): React.ReactFragment[] {
+    private renderItems = (): React.ReactFragment[] => {
         return React.Children.map(this.props.children, this.renderItem);
-    }
+    };
 
-    private isClonableElement(node: React.ReactNode): node is React.ReactElement<any> {
+    private isClonableElement = (
+        node: React.ReactNode
+    ): node is React.ReactElement<any> => {
         return React.isValidElement(node);
-    }
+    };
 
     /**
      * Render a single item
