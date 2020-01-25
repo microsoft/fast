@@ -16,7 +16,7 @@ configure({ adapter: new Adapter() });
 
 const managedClasses: StackPanelClassNameContract = {
     stackPanel: "stackPanel",
-    stackPanel__isScrolling: "stackPanel__isScrolling",
+    stackPanel__scrolling: "stackPanel__scrolling",
     stackPanel_items: "stackPanel_itemContainer",
 };
 
@@ -441,7 +441,7 @@ describe("stack panel", (): void => {
             managedClasses.stackPanel
         );
         expect(rendered.instance().rootElement.current.className).toContain(
-            managedClasses.stackPanel__isScrolling
+            managedClasses.stackPanel__scrolling
         );
     });
 
@@ -459,7 +459,7 @@ describe("stack panel", (): void => {
     test("isScrolling classname not applied when component does not need to scroll", () => {
         const rendered: any = mount(<StackPanel managedClasses={managedClasses} />);
         expect(rendered.instance().rootElement.current.className).not.toContain(
-            managedClasses.stackPanel__isScrolling
+            managedClasses.stackPanel__scrolling
         );
     });
 });
