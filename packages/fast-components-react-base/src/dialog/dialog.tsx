@@ -54,6 +54,7 @@ class Dialog extends Foundation<DialogHandledProps, DialogUnhandledProps, {}> {
                     {this.renderModalOverlay()}
                     <div
                         role="dialog"
+                        aria-modal={this.props.modal}
                         tabIndex={-1}
                         className={classNames(dialog_contentRegion)}
                         style={{
