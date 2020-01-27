@@ -15,7 +15,7 @@ const itemA: JSX.Element = <SelectOption id="a" value="a" displayString="a" />;
 const itemB: JSX.Element = <SelectOption id="b" value="b" displayString="ab" />;
 const itemC: JSX.Element = <SelectOption id="c" value="c" displayString="abc" />;
 
-describe("button", (): void => {
+describe("select", (): void => {
     const href: string = "https://www.microsoft.com";
 
     test("should have a displayName that matches the component name", () => {

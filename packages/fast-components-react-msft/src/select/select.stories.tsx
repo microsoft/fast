@@ -5,7 +5,11 @@ import { Heading, HeadingSize } from "../heading";
 import { Select } from "./";
 import { uniqueId } from "lodash-es";
 import { action } from "@storybook/addon-actions";
-import { AxisPositioningMode } from "@microsoft/fast-components-react-base";
+import {
+    AxisPositioningMode,
+    ViewportPositionerVerticalPosition,
+    ViewportPositionerHorizontalPosition,
+} from "@microsoft/fast-components-react-base";
 import { Dialog } from "../dialog";
 
 const rootElement: React.RefObject<HTMLDivElement> = React.createRef<HTMLDivElement>();
@@ -154,12 +158,14 @@ storiesOf("Select", module)
             />
         </Select>
     ))
-    .add("Adjacent", () => (
+    .add("Right", () => (
         <Select
             placeholder="Select an option"
             onValueChange={action("onValueChange")}
             menuFlyoutConfig={{
                 horizontalPositioningMode: AxisPositioningMode.adjacent,
+                defaultHorizontalPosition: ViewportPositionerHorizontalPosition.right,
+                horizontalLockToDefault: true,
                 verticalPositioningMode: AxisPositioningMode.inset,
             }}
         >
@@ -185,7 +191,78 @@ storiesOf("Select", module)
             />
         </Select>
     ))
-    .add("Scaling in dialog", () => (
+    .add("left", () => (
+        <Select
+            style={{
+                marginLeft: "200px",
+            }}
+            placeholder="Select an option"
+            onValueChange={action("onValueChange")}
+            menuFlyoutConfig={{
+                horizontalPositioningMode: AxisPositioningMode.adjacent,
+                defaultHorizontalPosition: ViewportPositionerHorizontalPosition.left,
+                horizontalLockToDefault: true,
+                verticalPositioningMode: AxisPositioningMode.inset,
+            }}
+        >
+            <SelectOption
+                id={uniqueId()}
+                value="Select option 1"
+                displayString="Select option 1"
+            />
+            <SelectOption
+                id={uniqueId()}
+                value="Select option 2"
+                displayString="Select option 2"
+            />
+            <SelectOption
+                id={uniqueId()}
+                value="Select option 3"
+                displayString="Select option 3"
+            />
+            <SelectOption
+                id={uniqueId()}
+                value="Select option 4"
+                displayString="Select option 4"
+            />
+        </Select>
+    ))
+    .add("Above", () => (
+        <Select
+            style={{
+                marginTop: "200px",
+            }}
+            placeholder="Select an option"
+            onValueChange={action("onValueChange")}
+            menuFlyoutConfig={{
+                verticalPositioningMode: AxisPositioningMode.adjacent,
+                verticalLockToDefault: true,
+                defaultVerticalPosition: ViewportPositionerVerticalPosition.top,
+            }}
+        >
+            <SelectOption
+                id={uniqueId()}
+                value="Select option 1"
+                displayString="Select option 1"
+            />
+            <SelectOption
+                id={uniqueId()}
+                value="Select option 2"
+                displayString="Select option 2"
+            />
+            <SelectOption
+                id={uniqueId()}
+                value="Select option 3"
+                displayString="Select option 3"
+            />
+            <SelectOption
+                id={uniqueId()}
+                value="Select option 4"
+                displayString="Select option 4"
+            />
+        </Select>
+    ))
+    .add("Scaling", () => (
         <Dialog modal={true} visible={true}>
             <div
                 ref={rootElement}
@@ -193,24 +270,24 @@ storiesOf("Select", module)
                     height: "100%",
                     width: "100%",
                     overflowY: "scroll",
-                    overflowX: "hidden",
+                    overflowX: "scroll",
                 }}
             >
                 <div
                     style={{
                         height: "1000px",
+                        width: "1000px",
                     }}
                 >
                     <Select
                         style={{
-                            margin: "350px 0 0 20px",
+                            margin: "350px 0 0 300px",
                             width: "180px",
                         }}
                         placeholder="Select an option"
                         onValueChange={action("onValueChange")}
                         menuFlyoutConfig={{
                             viewport: rootElement,
-                            horizontalPositioningMode: AxisPositioningMode.uncontrolled,
                             verticalPositioningMode: AxisPositioningMode.adjacent,
                             scaleToFit: true,
                         }}
