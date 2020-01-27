@@ -7,6 +7,7 @@ import {
     directionSwitch,
     divide,
     format,
+    important,
     toPx,
 } from "@microsoft/fast-jss-utilities";
 import {
@@ -139,7 +140,7 @@ const styles: ComponentStyles<RadioClassNameContract, DesignSystem> = {
         "margin-right": directionSwitch("", horizontalSpacing(2)),
         [highContrastSelector]: {
             background: "transparent",
-            color: HighContrastColor.text,
+            color: important(HighContrastColor.text),
         },
     },
     radio__checked: {
