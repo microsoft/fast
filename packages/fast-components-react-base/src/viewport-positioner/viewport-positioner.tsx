@@ -4,7 +4,6 @@ import { classNames } from "@microsoft/fast-web-utilities";
 import { canUseDOM } from "exenv-es6";
 import { get, isNil } from "lodash-es";
 import React from "react";
-import ReactDOM from "react-dom";
 import {
     DisplayNamePrefix,
     extractHtmlElement,

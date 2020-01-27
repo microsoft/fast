@@ -291,4 +291,81 @@ describe("dialog", (): void => {
 
         document.body.removeChild(container);
     });
+
+    test("should invoke focusTargetOnClose function on unmount of non-modal dialogs", () => {
+        const mockRefocusFn: any = jest.fn();
+
+        const rendered: any = mount(
+            <Dialog
+                managedClasses={managedClasses}
+                modal={false}
+                focusTargetOnClose={mockRefocusFn}
+            />
+        );
+
+        rendered.unmount();
+        expect(mockRefocusFn).toHaveBeenCalledTimes(1);
+    });
+
+    test("should invoke focusTargetOnClose function after unregistering 'focusin' on unmount of modal dialogs", () => {
+        const mockRemoveListenerFn: any = jest.fn();
+
+        const mockRefocusFn: any = jest.fn();
+        document.removeEventListener = mockRemoveListenerFn;
+        const rendered: any = mount(
+            <Dialog
+                managedClasses={managedClasses}
+                modal={true}
+                focusTargetOnClose={mockRefocusFn}
+            />
+        );
+        rendered.unmount();
+        expect(mockRemoveListenerFn).toHaveBeenCalledTimes(2);
+        expect(mockRemoveListenerFn.mock.calls[1][0]).toBe("focusin");
+        expect(mockRefocusFn).toHaveBeenCalledTimes(1);
+    });
+
+    test("should invoke focusTargetOnClose function after unregistering 'focusin' on unmount of modal dialogs", () => {
+        const mockRemoveListenerFn: any = jest.fn();
+
+        const mockRefocusFn: any = jest.fn();
+        document.removeEventListener = mockRemoveListenerFn;
+        const rendered: any = mount(
+            <Dialog
+                managedClasses={managedClasses}
+                modal={true}
+                focusTargetOnClose={mockRefocusFn}
+            />
+        );
+        rendered.unmount();
+        expect(mockRemoveListenerFn).toHaveBeenCalledTimes(2);
+        expect(mockRemoveListenerFn.mock.calls[1][0]).toBe("focusin");
+        expect(mockRefocusFn).toHaveBeenCalledTimes(1);
+    });
+
+    test("should focus on focus target element after unregistering 'focusin' on unmount of modal dialogs", () => {
+        const testButton: HTMLButtonElement = document.createElement("button");
+        document.body.appendChild(testButton);
+
+        const container: HTMLDivElement = document.createElement("div");
+        document.body.appendChild(container);
+
+        const rendered: any = mount(
+            <Dialog
+                managedClasses={managedClasses}
+                modal={true}
+                focusTargetOnClose={testButton}
+            >
+                <button />
+            </Dialog>,
+            { attachTo: container }
+        );
+
+        expect(document.activeElement).not.toBe(testButton);
+        rendered.unmount();
+        expect(document.activeElement).toBe(testButton);
+
+        document.body.removeChild(testButton);
+        document.body.removeChild(container);
+    });
 });
