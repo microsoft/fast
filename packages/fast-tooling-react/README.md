@@ -916,7 +916,7 @@ The required properties are the `data`, `schema`, and `onChange` function. The d
 
 Example:
 ```jsx
-import Form from "@microsoft/fast-tooling-react";
+import { Form } from "@microsoft/fast-tooling-react";
 
 /**
  * Add to your render function
