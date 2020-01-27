@@ -360,6 +360,35 @@ describe("tabs", (): void => {
         expect(renderedWithChildren.prop("children")).not.toBe(undefined);
     });
 
+    test("should prevent default behavior on arrow down to prevent scroll events", (): void => {
+        const rendered: any = mount(
+            <Tabs managedClasses={tabsManagedClasses} label={"items"}>
+                {children}
+            </Tabs>
+        );
+
+        const preventDefault: any = jest.fn();
+        const tab1: any = rendered.find(Tab.displayName).at(0);
+        tab1.simulate("keydown", { keyCode: keyCodeArrowDown, preventDefault });
+
+        expect(preventDefault).toHaveBeenCalled();
+    });
+
+    test("should prevent default behavior on arrow up to prevent scroll events", (): void => {
+        const rendered: any = mount(
+            <Tabs managedClasses={tabsManagedClasses} label={"items"}>
+                {children}
+            </Tabs>
+        );
+
+        const preventDefault: any = jest.fn();
+        const tab2: any = rendered.find(Tab.displayName).at(1);
+
+        tab2.simulate("keydown", { keyCode: keyCodeArrowUp, preventDefault });
+
+        expect(preventDefault).toHaveBeenCalled();
+    });
+
     test("should allow a user to control the component from a callback", () => {
         const onUpdate: any = jest.fn();
         const rendered: any = mount(
@@ -742,7 +771,7 @@ describe("tabs", (): void => {
     });
 
     test("should not use the callback if it is not a function", () => {
-        const rendered: any = shallow(
+        const rendered: any = mount(
             <Tabs
                 managedClasses={tabsManagedClasses}
                 onUpdate={noop}
