@@ -7,6 +7,7 @@ import {
     directionSwitch,
     divide,
     format,
+    important,
     toPx,
 } from "@microsoft/fast-jss-utilities";
 import {
@@ -30,7 +31,6 @@ import { designUnit, outlineWidth } from "../utilities/design-system";
 import { applyCursorDisabled, applyCursorPointer } from "../utilities/cursor";
 import {
     HighContrastColor,
-    highContrastDisabledBorder,
     highContrastHighlightBackground,
     highContrastOptOutProperty,
     highContrastSelectedBackground,
@@ -52,9 +52,6 @@ const styles: ComponentStyles<RadioClassNameContract, DesignSystem> = {
         "flex-direction": "row",
         "align-items": "center",
         transition: "all 0.2s ease-in-out",
-        [highContrastSelector]: {
-            ...highContrastOptOutProperty,
-        },
     },
     radio_input: {
         position: "absolute",
@@ -103,6 +100,7 @@ const styles: ComponentStyles<RadioClassNameContract, DesignSystem> = {
             },
         }),
         [highContrastSelector]: {
+            ...highContrastOptOutProperty,
             background: "transparent",
             border: format(
                 "{0} solid {1}",
@@ -130,6 +128,9 @@ const styles: ComponentStyles<RadioClassNameContract, DesignSystem> = {
             right: indicatorMargin,
             background: "transparent",
         },
+        [highContrastSelector]: {
+            ...highContrastOptOutProperty,
+        },
     },
     radio_label: {
         ...applyCursorPointer(),
@@ -137,10 +138,6 @@ const styles: ComponentStyles<RadioClassNameContract, DesignSystem> = {
         ...applyScaledTypeRamp("t7"),
         "margin-left": directionSwitch(horizontalSpacing(2), ""),
         "margin-right": directionSwitch("", horizontalSpacing(2)),
-        [highContrastSelector]: {
-            background: "transparent",
-            color: HighContrastColor.text,
-        },
     },
     radio__checked: {
         "& $radio_stateIndicator": {
@@ -165,7 +162,13 @@ const styles: ComponentStyles<RadioClassNameContract, DesignSystem> = {
         ...applyDisabledState(),
         "& $radio_input, & $radio_label": {
             ...applyCursorDisabled(),
-            ...highContrastDisabledBorder,
+            [highContrastSelector]: {
+                ...highContrastOptOutProperty,
+                background: important(HighContrastColor.buttonBackground),
+                color: important(HighContrastColor.disabledText),
+                fill: important(HighContrastColor.disabledText),
+                "border-color": important(HighContrastColor.disabledText),
+            },
         },
     },
 };

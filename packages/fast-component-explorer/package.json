@@ -1,6 +1,6 @@
 {
   "name": "@microsoft/fast-component-explorer",
-  "version": "0.8.6",
+  "version": "0.8.7",
   "description": "Component exploration",
   "sideEffects": false,
   "private": true,
@@ -117,9 +117,9 @@
   },
   "dependencies": {
     "@microsoft/fast-colors": "^5.0.2",
-    "@microsoft/fast-components-react-base": "^4.23.6",
-    "@microsoft/fast-components-react-msft": "^4.29.1",
-    "@microsoft/fast-components-styles-msft": "^4.28.0",
+    "@microsoft/fast-components-react-base": "^4.24.0",
+    "@microsoft/fast-components-react-msft": "^4.29.2",
+    "@microsoft/fast-components-styles-msft": "^4.28.1",
     "@microsoft/fast-jss-manager-react": "^4.6.1",
     "@microsoft/fast-tooling-react": "^1.31.0",
     "@microsoft/fast-web-utilities": "^4.4.0",

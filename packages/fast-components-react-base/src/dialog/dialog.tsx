@@ -3,7 +3,7 @@ import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-
 import { classNames, keyCodeEscape, keyCodeTab } from "@microsoft/fast-web-utilities";
 import { canUseDOM } from "exenv-es6";
 import React from "react";
-import { DisplayNamePrefix } from "../utilities";
+import { DisplayNamePrefix, extractHtmlElement } from "../utilities";
 import { DialogHandledProps, DialogProps, DialogUnhandledProps } from "./dialog.props";
 import { isFunction, isNil } from "lodash-es";
 import Tabbable from "tabbable";
@@ -28,6 +28,7 @@ class Dialog extends Foundation<DialogHandledProps, DialogUnhandledProps, {}> {
         managedClasses: void 0,
         onDismiss: void 0,
         visible: void 0,
+        focusTargetOnClose: void 0,
     };
 
     private rootElement: React.RefObject<HTMLDivElement> = React.createRef<
@@ -54,6 +55,7 @@ class Dialog extends Foundation<DialogHandledProps, DialogUnhandledProps, {}> {
                     {this.renderModalOverlay()}
                     <div
                         role="dialog"
+                        aria-modal={this.props.modal}
                         tabIndex={-1}
                         className={classNames(dialog_contentRegion)}
                         style={{
@@ -126,6 +128,8 @@ class Dialog extends Foundation<DialogHandledProps, DialogUnhandledProps, {}> {
             if (this.props.modal) {
                 document.removeEventListener("focusin", this.handleDocumentFocus);
             }
+
+            this.invokeFocusOnCloseTarget();
         }
     }
 
@@ -273,6 +277,28 @@ class Dialog extends Foundation<DialogHandledProps, DialogUnhandledProps, {}> {
     private tryFocusOnRootElement = (): void => {
         if (this.rootElement.current instanceof HTMLElement) {
             this.rootElement.current.focus();
+        }
+    };
+
+    /**
+     * Act on focusTargetOnClose prop when component unmounts
+     */
+    private invokeFocusOnCloseTarget = (): void => {
+        if (isNil(this.props.focusTargetOnClose)) {
+            return;
+        }
+
+        if (isFunction(this.props.focusTargetOnClose)) {
+            this.props.focusTargetOnClose();
+            return;
+        }
+
+        const targetElement: HTMLElement = extractHtmlElement(
+            this.props.focusTargetOnClose
+        );
+
+        if (targetElement !== null) {
+            targetElement.focus();
         }
     };
 }

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.28.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-styles-msft@4.28.0...@microsoft/fast-components-styles-msft@4.28.1) (2020-01-27)
+
+
+### Bug Fixes
+
+* radio label color is being overwritten in high contrast  ([#2624](https://github.com/Microsoft/fast-dna/issues/2624)) ([b1d5ea6](https://github.com/Microsoft/fast-dna/commit/b1d5ea67480226bd886f78e588b4dc4cd6c02c36))
+
+
+
+
+
 # [4.28.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-styles-msft@4.27.2...@microsoft/fast-components-styles-msft@4.28.0) (2020-01-21)
 
 
