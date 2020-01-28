@@ -1,4 +1,5 @@
-import { BreadcrumbItemEventHandler, FormChildOptionItem } from "../form.props";
+import { BreadcrumbItemEventHandler } from "../form.props";
+import { FormChildOptionItem } from "../types";
 
 import arraysSchema from "../../__tests__/schemas/arrays.schema.json";
 import generalSchema from "../../__tests__/schemas/general.schema.json";

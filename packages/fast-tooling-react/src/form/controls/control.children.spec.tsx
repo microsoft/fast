@@ -11,6 +11,7 @@ import {
 import { ChildrenControl } from "./control.children";
 import { ChildrenControlProps } from "./control.children.props";
 import { ChildrenControlClassNameContract } from "./control.children.style";
+import { ControlType } from "../templates";
 
 const ChildrenFormControlWithDragAndDrop: typeof ChildrenControl &
     ContextComponent<any> = DragDropContext(HTML5Backend)(ChildrenControl);
@@ -43,6 +44,7 @@ const managedClasses: ChildrenControlClassNameContract = {
 };
 
 const childrenProps: ChildrenControlProps = {
+    type: ControlType.children,
     childOptions: [
         {
             name: "alpha",

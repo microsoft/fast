@@ -2,22 +2,16 @@ import {
     FormOrderByPropertyNamesCategories,
     FormOrderByPropertyNamesProperties,
     FormOrderByPropertyNamesProps,
-} from "./form.props";
-import { OnChangeConfig, StandardControlPlugin, UpdateSectionConfig } from "./templates";
-import { ErrorObject } from "ajv";
-import { SingleLineControlPlugin } from "./templates/plugin.control.single-line";
+} from "../form.props";
+import { SectionControlConfig } from "../templates";
+import { CombiningKeyword } from "../../data-utilities/types";
 
 /**
  * Section class name contract
  */
-export interface FormSectionClassNameContract {
-    formSection: string;
-    formSection__disabled: string;
-}
-
-export enum oneOfAnyOfType {
-    anyOf = "anyOf",
-    oneOf = "oneOf",
+export interface SectionControlClassNameContract {
+    sectionControl: string;
+    sectionControl__disabled: string;
 }
 
 export interface InitialOneOfAnyOfState {
@@ -36,7 +30,7 @@ export interface OneOfAnyOf {
     /**
      * The type (oneOf/anyOf)
      */
-    type: oneOfAnyOfType;
+    type: CombiningKeyword;
 
     /**
      * The active index
@@ -44,143 +38,11 @@ export interface OneOfAnyOf {
     activeIndex: number;
 }
 
-export type AddExampleData = (
-    propertyLocation: string,
-    additionalSchemaPathSyntax?: string
-) => void;
-
 /* tslint:disable-next-line */
-export interface FormSectionState extends InitialOneOfAnyOfState {}
+export interface SectionControlState extends InitialOneOfAnyOfState {}
 
-export interface Controls {
-    /**
-     * The button control
-     */
-    button: StandardControlPlugin;
-
-    /**
-     * The array control
-     */
-    array: StandardControlPlugin;
-
-    /**
-     * The checkbox control
-     */
-    checkbox: SingleLineControlPlugin;
-
-    /**
-     * The children control
-     */
-    children: StandardControlPlugin;
-
-    /**
-     * The display control
-     */
-    display: StandardControlPlugin;
-
-    /**
-     * The textarea control
-     */
-    textarea: StandardControlPlugin;
-
-    /**
-     * The select control
-     */
-    select: StandardControlPlugin;
-
-    /**
-     * The section link control
-     */
-    sectionLink: StandardControlPlugin;
-
-    /**
-     * The number field control
-     */
-    numberField: StandardControlPlugin;
-}
-
-export interface FormSectionProps {
-    /**
-     * The location of the data
-     */
-    dataLocation: string;
-
-    /**
-     * Control plugins
-     */
-    controls: Controls;
-
-    /**
-     * The custom control plugins which will be used
-     * instead of the default control plugins
-     */
-    controlPlugins?: StandardControlPlugin[];
-
-    /**
-     * A component dictionary to be used by type
-     */
-    controlComponents: { [key: string]: React.ComponentClass | React.FunctionComponent };
-
-    /**
-     * The default values
-     */
-    default: any;
-
-    /**
-     * The location in the schema
-     */
-    schemaLocation: string;
-
-    /**
-     * The data to map to the form section
-     */
-    data: any;
-
-    /**
-     * The optional components to be added as children
-     */
-    childOptions: any[];
-
-    /**
-     * The schema to create the section form items
-     */
-    schema: any;
-
-    /**
-     * The disabled prop which is passed down to each control
-     */
-    disabled: boolean;
-
-    /**
-     * The onChange event to trigger a data update
-     */
-    onChange: (config: OnChangeConfig) => void;
-
-    /**
-     * The update event to trigger a new active section and/or component
-     */
-    onUpdateSection: (config: UpdateSectionConfig) => void;
-
-    /**
-     * The string to be used if a prop is untitled
-     */
-    untitled: string;
-
-    /**
-     * The validation errors
-     */
-    validationErrors: ErrorObject[] | void;
-
-    /**
-     * Display the validation inline
-     */
-    displayValidationInline?: boolean;
-
-    /**
-     * Display the validation as browser default tooltips
-     */
-    displayValidationBrowserDefault?: boolean;
-}
+/* tslint:disable */
+export interface SectionControlProps extends SectionControlConfig {}
 
 export interface FormCategoryConfig {
     /**

@@ -2,7 +2,7 @@ import React from "react";
 import Adapter from "enzyme-adapter-react-16";
 import { configure, mount } from "enzyme";
 import Badge from "./badge";
-import { BadgeType } from "./template.control.utilities.props";
+import { BadgeType } from "./types";
 
 /*
  * Configure Enzyme

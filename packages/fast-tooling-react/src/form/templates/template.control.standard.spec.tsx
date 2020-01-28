@@ -2,12 +2,23 @@ import React from "react";
 import Adapter from "enzyme-adapter-react-16";
 import { configure, mount, shallow } from "enzyme";
 import { StandardControlTemplate } from "./template.control.standard";
-import {
-    ControlContext,
-    StandardControlTemplateProps,
-} from "./template.control.standard.props";
+import { StandardControlTemplateProps } from "./template.control.standard.props";
 import { StandardControlTemplateClassNameContract } from "./template.control.standard.style";
 import { ControlConfig } from "./template.control.utilities.props";
+import { ControlType } from "../index";
+import { ControlContext } from "./types";
+import {
+    ArrayControl,
+    ButtonControl,
+    CheckboxControl,
+    ChildrenControl,
+    DisplayControl,
+    NumberFieldControl,
+    SectionControl,
+    SectionLinkControl,
+    SelectControl,
+    TextareaControl,
+} from "../controls";
 
 /*
  * Configure Enzyme
@@ -34,6 +45,7 @@ const managedClasses: StandardControlTemplateClassNameContract = {
 
 const props: StandardControlTemplateProps = {
     index: 1,
+    type: ControlType.textarea,
     dataLocation: "",
     schemaLocation: "",
     control: jest.fn(),
@@ -46,6 +58,30 @@ const props: StandardControlTemplateProps = {
     invalidMessage: "",
     validationErrors: [],
     component: null,
+    controlComponents: {
+        [ControlType.array]: ArrayControl,
+        [ControlType.button]: ButtonControl,
+        [ControlType.checkbox]: CheckboxControl,
+        [ControlType.children]: ChildrenControl,
+        [ControlType.display]: DisplayControl,
+        [ControlType.numberField]: NumberFieldControl,
+        [ControlType.sectionLink]: SectionLinkControl,
+        [ControlType.section]: SectionControl,
+        [ControlType.select]: SelectControl,
+        [ControlType.textarea]: TextareaControl,
+    },
+    controls: {
+        [ControlType.array]: null,
+        [ControlType.button]: null,
+        [ControlType.checkbox]: null,
+        [ControlType.children]: null,
+        [ControlType.display]: null,
+        [ControlType.numberField]: null,
+        [ControlType.sectionLink]: null,
+        [ControlType.section]: null,
+        [ControlType.select]: null,
+        [ControlType.textarea]: null,
+    },
 };
 
 describe("StandardControlTemplate", () => {

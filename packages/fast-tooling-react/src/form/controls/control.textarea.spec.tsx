@@ -4,6 +4,7 @@ import { configure, mount, shallow } from "enzyme";
 import { TextareaControl } from "./control.textarea";
 import { TextareaControlProps } from "./control.textarea.props";
 import { TextareaControlClassNameContract } from "./control.textarea.style";
+import { ControlType } from "../templates";
 
 /*
  * Configure Enzyme
@@ -17,6 +18,7 @@ const managedClasses: TextareaControlClassNameContract = {
 };
 
 const textareaProps: TextareaControlProps = {
+    type: ControlType.textarea,
     dataLocation: "",
     onChange: jest.fn(),
     value: "",

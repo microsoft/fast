@@ -4,6 +4,7 @@ import { configure, mount, shallow } from "enzyme";
 import { ButtonControl } from "./control.button";
 import { ButtonControlProps } from "./control.button.props";
 import { ButtonControlClassNameContract } from "./control.button.style";
+import { ControlType } from "../templates";
 
 /*
  * Configure Enzyme
@@ -17,6 +18,7 @@ const managedClasses: ButtonControlClassNameContract = {
 };
 
 const buttonProps: ButtonControlProps = {
+    type: ControlType.button,
     dataLocation: "",
     onChange: jest.fn(),
     value: "",

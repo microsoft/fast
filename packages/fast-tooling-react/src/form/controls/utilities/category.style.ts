@@ -1,9 +1,9 @@
 import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager-react";
-import { background200, background800, foreground300 } from "../style";
-import { FormCategoryClassNameContract } from "./form-category.props";
+import { background200, background800, foreground300 } from "../../../style";
+import { CategoryClassNameContract } from "./category.props";
 
-const styles: ComponentStyles<FormCategoryClassNameContract, {}> = {
-    formCategory_button: {
+const styles: ComponentStyles<CategoryClassNameContract, {}> = {
+    category_button: {
         minHeight: "30px",
         boxSizing: "border-box",
         outline: "0",
@@ -55,7 +55,7 @@ const styles: ComponentStyles<FormCategoryClassNameContract, {}> = {
             background: foreground300,
         },
     },
-    formCategory_header: {
+    category_header: {
         display: "flex",
         alignItems: "center",
         textTransform: "uppercase",
@@ -73,7 +73,7 @@ const styles: ComponentStyles<FormCategoryClassNameContract, {}> = {
             margin: "0",
         },
     },
-    formCategory__collapsed: {
+    category__collapsed: {
         display: "none",
     },
 };

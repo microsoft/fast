@@ -2,26 +2,26 @@ import React from "react";
 import { isPlainObject, uniqueId } from "lodash-es";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
-import styles, { FormDictionaryClassNameContract } from "./form-dictionary.style";
-import { FormDictionaryProps, FormDictionaryState } from "./form-dictionary.props";
-import FormControlSwitch from "./form-control-switch";
-import { generateExampleData, getErrorFromDataLocation } from "./utilities";
-import { PropertyKeyword } from "../data-utilities/types";
+import styles, { DictionaryClassNameContract } from "./dictionary.style";
+import { DictionaryProps, DictionaryState } from "./dictionary.props";
+import ControlSwitch from "./control-switch";
+import { generateExampleData, getErrorFromDataLocation } from "../../utilities";
+import { PropertyKeyword } from "../../../data-utilities/types";
 
 /**
- * Form control definition
+ *  control definition
  */
-class FormDictionary extends React.Component<
-    FormDictionaryProps & ManagedClasses<FormDictionaryClassNameContract>,
-    FormDictionaryState
+class Dictionary extends React.Component<
+    DictionaryProps & ManagedClasses<DictionaryClassNameContract>,
+    DictionaryState
 > {
-    public static displayName: string = "FormDictionary";
+    public static displayName: string = "Dictionary";
 
     private rootElementRef: React.RefObject<HTMLDivElement> = React.createRef<
         HTMLDivElement
     >();
 
-    constructor(props: FormDictionaryProps) {
+    constructor(props: DictionaryProps) {
         super(props);
 
         this.state = {
@@ -33,11 +33,11 @@ class FormDictionary extends React.Component<
     public render(): React.ReactNode {
         return (
             <div
-                className={this.props.managedClasses.formDictionary}
+                className={this.props.managedClasses.dictionary}
                 ref={this.rootElementRef}
             >
                 {this.renderControl()}
-                {this.renderFormControls()}
+                {this.renderControls()}
             </div>
         );
     }
@@ -53,11 +53,11 @@ class FormDictionary extends React.Component<
     private updateValidity(): void {
         if (this.props.additionalProperties === false) {
             const {
-                formDictionary_itemControlInput,
-            }: FormDictionaryClassNameContract = this.props.managedClasses;
+                dictionary_itemControlInput,
+            }: DictionaryClassNameContract = this.props.managedClasses;
 
             this.rootElementRef.current
-                .querySelectorAll<HTMLInputElement>(`.${formDictionary_itemControlInput}`)
+                .querySelectorAll<HTMLInputElement>(`.${dictionary_itemControlInput}`)
                 .forEach((itemControlInput: HTMLInputElement) => {
                     itemControlInput.setCustomValidity(
                         "should NOT have additional properties"
@@ -68,22 +68,22 @@ class FormDictionary extends React.Component<
 
     private renderControl(): React.ReactNode {
         const {
-            formDictionary_controlAddTrigger,
-            formDictionary_controlLabel,
-            formDictionary_control,
-            formDictionary_controlRegion,
-        }: FormDictionaryClassNameContract = this.props.managedClasses;
+            dictionary_controlAddTrigger,
+            dictionary_controlLabel,
+            dictionary_control,
+            dictionary_controlRegion,
+        }: DictionaryClassNameContract = this.props.managedClasses;
 
         if (isPlainObject(this.props.additionalProperties)) {
             return (
-                <div className={formDictionary_controlRegion}>
-                    <div className={formDictionary_control}>
-                        <label className={formDictionary_controlLabel}>
+                <div className={dictionary_controlRegion}>
+                    <div className={dictionary_control}>
+                        <label className={dictionary_controlLabel}>
                             {this.props.label}
                         </label>
                     </div>
                     <button
-                        className={formDictionary_controlAddTrigger}
+                        className={dictionary_controlAddTrigger}
                         aria-label={"Select to add item"}
                         onClick={this.handleOnAddItem}
                     />
@@ -94,21 +94,21 @@ class FormDictionary extends React.Component<
 
     private renderItemControl(propertyName: string): React.ReactNode {
         const {
-            formDictionary_itemControlRegion,
-            formDictionary_itemControl,
-            formDictionary_itemControlLabel,
-            formDictionary_itemControlInput,
-            formDictionary_itemControlRemoveTrigger,
-        }: FormDictionaryClassNameContract = this.props.managedClasses;
+            dictionary_itemControlRegion,
+            dictionary_itemControl,
+            dictionary_itemControlLabel,
+            dictionary_itemControlInput,
+            dictionary_itemControlRemoveTrigger,
+        }: DictionaryClassNameContract = this.props.managedClasses;
 
         return (
-            <div className={formDictionary_itemControlRegion}>
-                <div className={formDictionary_itemControl}>
-                    <label className={formDictionary_itemControlLabel}>
+            <div className={dictionary_itemControlRegion}>
+                <div className={dictionary_itemControl}>
+                    <label className={dictionary_itemControlLabel}>
                         {this.props.propertyLabel}
                     </label>
                     <input
-                        className={formDictionary_itemControlInput}
+                        className={dictionary_itemControlInput}
                         type={"text"}
                         value={
                             this.state.focusedPropertyKey === propertyName
@@ -120,7 +120,7 @@ class FormDictionary extends React.Component<
                         onChange={this.handleKeyChange(propertyName)}
                     />
                     <button
-                        className={formDictionary_itemControlRemoveTrigger}
+                        className={dictionary_itemControlRemoveTrigger}
                         onClick={this.handleOnRemoveItem(propertyName)}
                     />
                 </div>
@@ -128,7 +128,7 @@ class FormDictionary extends React.Component<
         );
     }
 
-    private renderFormControls(): React.ReactNode {
+    private renderControls(): React.ReactNode {
         return (typeof this.props.data !== "undefined"
             ? Object.keys(this.props.data)
             : []
@@ -150,7 +150,7 @@ class FormDictionary extends React.Component<
                             {accumulator}
                             <div key={this.props.schemaLocation + index}>
                                 {this.renderItemControl(currentKey)}
-                                <FormControlSwitch
+                                <ControlSwitch
                                     index={index}
                                     controls={this.props.controls}
                                     controlPlugins={this.props.controlPlugins}
@@ -295,5 +295,5 @@ class FormDictionary extends React.Component<
     }
 }
 
-export { FormDictionary };
-export default manageJss(styles)(FormDictionary);
+export { Dictionary };
+export default manageJss(styles)(Dictionary);

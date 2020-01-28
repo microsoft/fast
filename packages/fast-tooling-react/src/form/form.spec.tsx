@@ -568,14 +568,21 @@ describe("Form", () => {
                 controlPlugins={[
                     new StandardControlPlugin({
                         control: (config: ControlConfig): React.ReactNode => {
-                            return <div className={id1} />;
+                            const MyComponent: any = config.component;
+
+                            return (
+                                <React.Fragment>
+                                    <div className={id1} />
+                                    <MyComponent {...config} />
+                                </React.Fragment>
+                            );
                         },
                     }),
                 ]}
             />
         );
 
-        expect(rendered.find(`.${id1}`)).toHaveLength(3);
+        expect(rendered.find(`.${id1}`)).toHaveLength(4);
     });
     test("should pass a control to the config that would have been used for the type", () => {
         const rendered: any = mount(
@@ -621,6 +628,7 @@ describe("Form", () => {
                 onChange={jest.fn()}
                 controlPlugins={[
                     new StandardControlPlugin({
+                        type: ControlType.numberField,
                         component: TextareaControl,
                         control: (config: ControlConfig): React.ReactNode => {
                             return <config.component {...config as any} />;
@@ -752,7 +760,7 @@ describe("Form", () => {
             />
         );
 
-        const categories: any = rendered.find("FormCategory");
+        const categories: any = rendered.find("Category");
 
         expect(categories).toHaveLength(2);
         expect(categories.at(0).find("TextareaControl")).toHaveLength(1);
@@ -802,7 +810,7 @@ describe("Form", () => {
             rendered.setProps({ data });
         }
 
-        const categoriesBefore: any = rendered.find("FormCategory");
+        const categoriesBefore: any = rendered.find("Category");
 
         expect(categoriesBefore).toHaveLength(0);
         expect(categoriesBefore.at(0).find("TextareaControl")).toHaveLength(0);
@@ -813,7 +821,7 @@ describe("Form", () => {
 
         select.simulate("change", { target: { value: "0" } });
 
-        const categoriesAfter: any = rendered.find("FormCategory");
+        const categoriesAfter: any = rendered.find("Category");
 
         expect(categoriesAfter).toHaveLength(2);
         expect(categoriesAfter.at(0).find("TextareaControl")).toHaveLength(1);

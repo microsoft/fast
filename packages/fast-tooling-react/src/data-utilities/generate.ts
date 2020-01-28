@@ -2,7 +2,6 @@ import { get } from "lodash-es";
 import { CombiningKeyword, DataType, PropertyKeyword } from "./types";
 import { ChildOptionItem } from ".";
 import { getChildOptionBySchemaId } from "./location";
-import { oneOfAnyOfType } from "../form/form-section.props";
 
 /**
  * This file contains all functionality for generating data
@@ -46,10 +45,10 @@ function getDataFromSchema(schema: any, childOptions?: ChildOptionItem[]): any {
     }
 
     if (isOneOfAnyOf(schema)) {
-        const oneOfAnyOf: oneOfAnyOfType =
-            schema[oneOfAnyOfType.oneOf] !== undefined
-                ? oneOfAnyOfType.oneOf
-                : oneOfAnyOfType.anyOf;
+        const oneOfAnyOf: CombiningKeyword =
+            schema[CombiningKeyword.oneOf] !== undefined
+                ? CombiningKeyword.oneOf
+                : CombiningKeyword.anyOf;
 
         return getDataFromSchema(schema[oneOfAnyOf][0], childOptions);
     }
@@ -156,7 +155,7 @@ function getDefaultOrExample(schema: any): any | void {
 }
 
 function isOneOfAnyOf(schema: any): boolean {
-    return schema[oneOfAnyOfType.oneOf] || schema[oneOfAnyOfType.anyOf];
+    return schema[CombiningKeyword.oneOf] || schema[CombiningKeyword.anyOf];
 }
 
 function isObjectDataType(schema: any): boolean {

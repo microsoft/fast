@@ -4,6 +4,7 @@ import { configure, mount, shallow } from "enzyme";
 import { DisplayControl } from "./control.display";
 import { DisplayControlProps } from "./control.display.props";
 import { DisplayControlClassNameContract } from "./control.display.style";
+import { ControlType } from "../templates";
 
 /*
  * Configure Enzyme
@@ -17,6 +18,7 @@ const managedClasses: DisplayControlClassNameContract = {
 };
 
 const displayProps: DisplayControlProps = {
+    type: ControlType.display,
     dataLocation: "",
     value: "",
     schema: {},

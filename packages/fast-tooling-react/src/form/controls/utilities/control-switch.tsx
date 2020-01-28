@@ -1,24 +1,24 @@
 import React from "react";
 import { get } from "lodash-es";
-import { FormControlSwitchProps } from "./form-control-switch.props";
+import { ControlSwitchProps } from "./control-switch.props";
 import {
     AdditionalControlConfigOptions,
     ControlTemplateUtilitiesProps,
     StandardControlPlugin,
-} from "./templates";
-import { FormChildOptionItem } from "./form.props";
-import { generateExampleData, isConst, isSelect } from "./utilities";
-import { ItemConstraints } from "./controls/control.array.props";
-import { SingleLineControlPlugin } from "./templates/plugin.control.single-line";
+} from "../../templates";
+import { FormChildOptionItem } from "../../types";
+import { generateExampleData, isConst, isSelect } from "../../utilities";
+import { ItemConstraints } from "../../../data-utilities/types";
+import { SingleLineControlPlugin } from "../../templates/plugin.control.single-line";
 import ControlPluginUtilities, {
     ControlPluginUtilitiesProps,
-    ControlType,
-} from "./templates/plugin.control.utilities";
+} from "../../templates/plugin.control.utilities";
+import { ControlType } from "../../";
 
-class FormControlSwitch extends React.Component<FormControlSwitchProps, {}> {
-    public static displayName: string = "FormControlSwitch";
+class ControlSwitch extends React.Component<ControlSwitchProps, {}> {
+    public static displayName: string = "ControlSwitch";
 
-    public static defaultProps: Partial<FormControlSwitchProps> = {
+    public static defaultProps: Partial<ControlSwitchProps> = {
         softRemove: true,
     };
 
@@ -32,7 +32,7 @@ class FormControlSwitch extends React.Component<FormControlSwitchProps, {}> {
     private renderControl(): React.ReactNode {
         let control: ControlPluginUtilities<ControlPluginUtilitiesProps>;
 
-        // Check to see if there is any associated `formControlId`
+        // Check to see if there is any associated `controlId`
         // then check for the id within the passed controlPlugins
         if (typeof this.props.schema.formControlId === "string") {
             control = this.props.controlPlugins.find(
@@ -103,13 +103,10 @@ class FormControlSwitch extends React.Component<FormControlSwitchProps, {}> {
 
     private renderChildren(control: StandardControlPlugin): React.ReactNode {
         control.updateProps(
-            Object.assign(
-                {
-                    childOptions: this.getChildOptions(),
-                    defaultChildOptions: this.props.schema.defaults || null,
-                },
-                this.getCommonControlProps(ControlType.children)
-            )
+            Object.assign(this.getCommonControlProps(ControlType.children), {
+                childOptions: this.getChildOptions(),
+                defaultChildOptions: this.props.schema.defaults || null,
+            })
         );
 
         return control.render();
@@ -120,14 +117,11 @@ class FormControlSwitch extends React.Component<FormControlSwitchProps, {}> {
      */
     private renderArray(control: StandardControlPlugin): React.ReactNode {
         control.updateProps(
-            Object.assign(
-                {
-                    minItems: get(this.props.schema, ItemConstraints.minItems, 0),
-                    maxItems: get(this.props.schema, ItemConstraints.maxItems, Infinity),
-                    onAddExampleData: this.handleAddExampleData,
-                },
-                this.getCommonControlProps(ControlType.array)
-            )
+            Object.assign(this.getCommonControlProps(ControlType.array), {
+                minItems: get(this.props.schema, ItemConstraints.minItems, 0),
+                maxItems: get(this.props.schema, ItemConstraints.maxItems, Infinity),
+                onAddExampleData: this.handleAddExampleData,
+            })
         );
 
         return control.render();
@@ -138,14 +132,11 @@ class FormControlSwitch extends React.Component<FormControlSwitchProps, {}> {
      */
     private renderNumberField(control: StandardControlPlugin): React.ReactNode {
         control.updateProps(
-            Object.assign(
-                {
-                    min: this.props.schema.minimum,
-                    max: this.props.schema.maximum,
-                    step: this.props.schema.multipleOf,
-                },
-                this.getCommonControlProps(ControlType.numberField)
-            )
+            Object.assign(this.getCommonControlProps(ControlType.numberField), {
+                min: this.props.schema.minimum,
+                max: this.props.schema.maximum,
+                step: this.props.schema.multipleOf,
+            })
         );
 
         return control.render();
@@ -177,12 +168,9 @@ class FormControlSwitch extends React.Component<FormControlSwitchProps, {}> {
         const rows: number | undefined = this.props.schema.rows || void 0;
 
         control.updateProps(
-            Object.assign(
-                {
-                    rows,
-                },
-                this.getCommonControlProps(ControlType.textarea)
-            )
+            Object.assign(this.getCommonControlProps(ControlType.textarea), {
+                rows,
+            })
         );
 
         return control.render();
@@ -199,12 +187,9 @@ class FormControlSwitch extends React.Component<FormControlSwitchProps, {}> {
         }
 
         control.updateProps(
-            Object.assign(
-                {
-                    options,
-                },
-                this.getCommonControlProps(ControlType.select)
-            )
+            Object.assign(this.getCommonControlProps(ControlType.select), {
+                options,
+            })
         );
 
         return control.render();
@@ -254,6 +239,7 @@ class FormControlSwitch extends React.Component<FormControlSwitchProps, {}> {
 
         return {
             index: this.props.index,
+            type,
             dataLocation: this.props.dataLocation,
             schemaLocation: this.props.schemaLocation,
             data: this.props.data,
@@ -279,9 +265,14 @@ class FormControlSwitch extends React.Component<FormControlSwitchProps, {}> {
             onUpdateSection: this.props.onUpdateSection,
             softRemove: this.props.softRemove,
             component: this.props.controlComponents[type],
+            controls: this.props.controls,
+            controlComponents: this.props.controlComponents,
+            controlPlugins: this.props.controlPlugins,
+            childOptions: this.props.childOptions,
+            untitled: this.props.untitled,
         };
     }
 }
 
-export default FormControlSwitch;
-export { FormControlSwitchProps };
+export default ControlSwitch;
+export { ControlSwitchProps };

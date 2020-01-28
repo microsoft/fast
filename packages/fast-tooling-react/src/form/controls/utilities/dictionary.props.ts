@@ -1,10 +1,10 @@
-import { ControlTemplateUtilitiesProps, StandardControlPlugin } from "./templates";
-import { FormChildOptionItem } from "./form.props";
-import { Controls } from "./form-section.props";
+import { ControlTemplateUtilitiesProps, StandardControlPlugin } from "../../templates";
+import { FormChildOptionItem } from "../../types";
+import { Controls } from "./types";
 import { Omit } from "utility-types";
 import ajv from "ajv";
 
-export interface FormDictionaryProps
+export interface DictionaryProps
     extends Omit<ControlTemplateUtilitiesProps, "invalidMessage" | "component"> {
     /**
      * The possible child options
@@ -61,7 +61,7 @@ export interface FormDictionaryProps
     validationErrors: ajv.ErrorObject[] | void;
 }
 
-export interface FormDictionaryState {
+export interface DictionaryState {
     /**
      * The current property key being edited
      */

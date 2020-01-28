@@ -12,7 +12,7 @@ import {
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { canUseDOM } from "exenv-es6";
 import { getChildOptionBySchemaId } from "../../data-utilities/location";
-import { FormChildOptionItem } from "../form.props";
+import { FormChildOptionItem } from "../types";
 import { reactChildrenStringSchema } from "./control.children.text";
 import styles, { ChildrenControlClassNameContract } from "./control.children.style";
 import {
@@ -21,7 +21,8 @@ import {
     ChildrenControlProps,
     ChildrenControlState,
 } from "./control.children.props";
-import { ArrayAction, DragItem } from "../templates";
+import { DragItem } from "../templates";
+import { ArrayAction } from "../templates/types";
 
 /**
  * Form control definition

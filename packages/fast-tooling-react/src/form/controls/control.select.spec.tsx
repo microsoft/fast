@@ -4,6 +4,7 @@ import { configure, mount, shallow } from "enzyme";
 import { SelectControl } from "./control.select";
 import { SelectControlProps } from "./control.select.props";
 import { SelectControlClassNameContract } from "./control.select.style";
+import { ControlType } from "../templates";
 
 /*
  * Configure Enzyme
@@ -18,6 +19,7 @@ const managedClasses: SelectControlClassNameContract = {
 };
 
 const selectProps: SelectControlProps = {
+    type: ControlType.select,
     dataLocation: "",
     disabled: false,
     options: [],

@@ -3,18 +3,7 @@ import {
     ControlConfig,
     ControlTemplateUtilitiesProps,
 } from "./template.control.utilities.props";
-
-export enum ControlType {
-    select = "select",
-    array = "array",
-    children = "children",
-    checkbox = "checkbox",
-    numberField = "numberField",
-    sectionLink = "sectionLink",
-    display = "display",
-    button = "button",
-    textarea = "textarea",
-}
+import { ControlType } from "./index";
 
 export interface ControlPluginUtilitiesProps {
     /**

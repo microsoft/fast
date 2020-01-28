@@ -4,6 +4,7 @@ import { configure, mount, shallow } from "enzyme";
 import { SectionLinkControl } from "./control.section-link";
 import { SectionLinkControlProps } from "./control.section-link.props";
 import { SectionLinkControlClassNameContract } from "./control.section-link.style";
+import { ControlType } from "../templates";
 
 /*
  * Configure Enzyme
@@ -18,6 +19,7 @@ const managedClasses: SectionLinkControlClassNameContract = {
 };
 
 const sectionLinkProps: SectionLinkControlProps = {
+    type: ControlType.sectionLink,
     dataLocation: "",
     schemaLocation: "",
     label: "",

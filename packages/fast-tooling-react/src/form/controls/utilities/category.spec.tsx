@@ -1,22 +1,22 @@
 import React from "react";
 import Adapter from "enzyme-adapter-react-16";
 import { configure, mount } from "enzyme";
-import FormCategory from "./form-category";
-import { FormCategoryProps } from "./form-category.props";
+import Category from "./category";
+import { CategoryProps } from "./category.props";
 
 /*
  * Configure Enzyme
  */
 configure({ adapter: new Adapter() });
 
-const formCategoryProps: FormCategoryProps = {
+const categoryProps: CategoryProps = {
     title: "Category",
 };
 
-describe("FormCategory", () => {
+describe("Category", () => {
     test("should not throw", () => {
         expect(() => {
-            mount(<FormCategory {...formCategoryProps} />);
+            mount(<Category {...categoryProps} />);
         }).not.toThrow();
     });
 });

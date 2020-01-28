@@ -1,13 +1,13 @@
 import React from "react";
 import Adapter from "enzyme-adapter-react-16";
 import { configure, mount, render, shallow } from "enzyme";
-import { controls } from "./form-control-switch.spec";
-import { FormDictionary } from "./form-dictionary";
-import { FormDictionaryProps } from "./form-dictionary.props";
-import { FormDictionaryClassNameContract } from "./form-dictionary.style";
-import { getValidationErrors } from "../utilities/ajv-validation";
-import { getErrorFromDataLocation } from "./utilities";
-import { ControlType } from "./templates";
+import { controls } from "./control-switch.spec";
+import { Dictionary } from "./dictionary";
+import { DictionaryProps } from "./dictionary.props";
+import { DictionaryClassNameContract } from "./dictionary.style";
+import { getValidationErrors } from "../../../utilities/ajv-validation";
+import { getErrorFromDataLocation } from "../../utilities";
+import { ControlType } from "../../templates";
 import {
     ArrayControl,
     ButtonControl,
@@ -18,24 +18,24 @@ import {
     SectionLinkControl,
     SelectControl,
     TextareaControl,
-} from "./";
+} from "../..";
 
 /*
  * Configure Enzyme
  */
 configure({ adapter: new Adapter() });
 
-const managedClasses: FormDictionaryClassNameContract = {
-    formDictionary: "formDictionary-class",
-    formDictionary_controlAddTrigger: "formDictionary_controlAddTrigger-class",
-    formDictionary_itemControlInput: "formDictionary_itemControlInput-class",
-    formDictionary_itemControlLabel: "formDictionary_itemControlLabel-class",
-    formDictionary_itemControlRemoveTrigger:
-        "formDictionary_itemControlRemoveTrigger-class",
+const managedClasses: DictionaryClassNameContract = {
+    dictionary: "dictionary-class",
+    dictionary_controlAddTrigger: "dictionary_controlAddTrigger-class",
+    dictionary_itemControlInput: "dictionary_itemControlInput-class",
+    dictionary_itemControlLabel: "dictionary_itemControlLabel-class",
+    dictionary_itemControlRemoveTrigger: "dictionary_itemControlRemoveTrigger-class",
 };
 
-const dictionaryProps: FormDictionaryProps = {
+const dictionaryProps: DictionaryProps = {
     index: 1,
+    type: ControlType.section,
     controls,
     dataLocation: "",
     schemaLocation: "",
@@ -66,18 +66,16 @@ const dictionaryProps: FormDictionaryProps = {
     },
 };
 
-describe("FormDictionary", () => {
+describe("Dictionary", () => {
     test("should not throw", () => {
         expect(() => {
-            shallow(
-                <FormDictionary {...dictionaryProps} managedClasses={managedClasses} />
-            );
+            shallow(<Dictionary {...dictionaryProps} managedClasses={managedClasses} />);
         }).not.toThrow();
     });
     test("should add a property if the add trigger is clicked", () => {
         const onChangeCallback: any = jest.fn();
         const rendered: any = mount(
-            <FormDictionary
+            <Dictionary
                 {...dictionaryProps}
                 managedClasses={managedClasses}
                 onChange={onChangeCallback}
@@ -89,7 +87,7 @@ describe("FormDictionary", () => {
         );
 
         rendered
-            .find(`.${managedClasses.formDictionary_controlAddTrigger}`)
+            .find(`.${managedClasses.dictionary_controlAddTrigger}`)
             .at(0)
             .simulate("click");
 
@@ -99,7 +97,7 @@ describe("FormDictionary", () => {
     test("should add a property using a default if a default has been provided", () => {
         const onChangeCallback: any = jest.fn();
         const rendered: any = mount(
-            <FormDictionary
+            <Dictionary
                 {...dictionaryProps}
                 managedClasses={managedClasses}
                 onChange={onChangeCallback}
@@ -115,7 +113,7 @@ describe("FormDictionary", () => {
         );
 
         rendered
-            .find(`.${managedClasses.formDictionary_controlAddTrigger}`)
+            .find(`.${managedClasses.dictionary_controlAddTrigger}`)
             .at(0)
             .simulate("click");
 
@@ -125,7 +123,7 @@ describe("FormDictionary", () => {
     test("should add a property using an example if an examples array has been provided", () => {
         const onChangeCallback: any = jest.fn();
         const rendered: any = mount(
-            <FormDictionary
+            <Dictionary
                 {...dictionaryProps}
                 managedClasses={managedClasses}
                 onChange={onChangeCallback}
@@ -141,7 +139,7 @@ describe("FormDictionary", () => {
         );
 
         rendered
-            .find(`.${managedClasses.formDictionary_controlAddTrigger}`)
+            .find(`.${managedClasses.dictionary_controlAddTrigger}`)
             .at(0)
             .simulate("click");
 
@@ -151,7 +149,7 @@ describe("FormDictionary", () => {
     test("should add a property using generated data if an empty examples array has been provided", () => {
         const onChangeCallback: any = jest.fn();
         const rendered: any = mount(
-            <FormDictionary
+            <Dictionary
                 {...dictionaryProps}
                 managedClasses={managedClasses}
                 onChange={onChangeCallback}
@@ -167,7 +165,7 @@ describe("FormDictionary", () => {
         );
 
         rendered
-            .find(`.${managedClasses.formDictionary_controlAddTrigger}`)
+            .find(`.${managedClasses.dictionary_controlAddTrigger}`)
             .at(0)
             .simulate("click");
 
@@ -177,7 +175,7 @@ describe("FormDictionary", () => {
     test("should remove a property if the remove trigger is clicked", () => {
         const onChangeCallback: any = jest.fn();
         const rendered: any = mount(
-            <FormDictionary
+            <Dictionary
                 {...dictionaryProps}
                 managedClasses={managedClasses}
                 onChange={onChangeCallback}
@@ -192,7 +190,7 @@ describe("FormDictionary", () => {
         );
 
         rendered
-            .find(`.${managedClasses.formDictionary_itemControlRemoveTrigger}`)
+            .find(`.${managedClasses.dictionary_itemControlRemoveTrigger}`)
             .at(0)
             .simulate("click");
 
@@ -205,7 +203,7 @@ describe("FormDictionary", () => {
     test("should update the property key if the property key input is updated", () => {
         const onChangeCallback: any = jest.fn();
         const rendered: any = mount(
-            <FormDictionary
+            <Dictionary
                 {...dictionaryProps}
                 managedClasses={managedClasses}
                 onChange={onChangeCallback}
@@ -221,7 +219,7 @@ describe("FormDictionary", () => {
         );
 
         rendered
-            .find(`.${managedClasses.formDictionary_itemControlInput}`)
+            .find(`.${managedClasses.dictionary_itemControlInput}`)
             .at(0)
             .simulate("blur", { target: { value: "c" } });
 
@@ -234,7 +232,7 @@ describe("FormDictionary", () => {
     test("should retain the location of the property keys in the object if they are updated", () => {
         const onChangeCallback: any = jest.fn();
         const rendered: any = mount(
-            <FormDictionary
+            <Dictionary
                 {...dictionaryProps}
                 managedClasses={managedClasses}
                 onChange={onChangeCallback}
@@ -250,7 +248,7 @@ describe("FormDictionary", () => {
         );
 
         rendered
-            .find(`.${managedClasses.formDictionary_itemControlInput}`)
+            .find(`.${managedClasses.dictionary_itemControlInput}`)
             .at(0)
             .simulate("blur", { target: { value: "c" } });
 
@@ -260,7 +258,7 @@ describe("FormDictionary", () => {
     test("should render a control based on the schema type", () => {
         const onChangeCallback: any = jest.fn();
         const rendered: any = mount(
-            <FormDictionary
+            <Dictionary
                 {...dictionaryProps}
                 managedClasses={managedClasses}
                 onChange={onChangeCallback}
@@ -281,7 +279,7 @@ describe("FormDictionary", () => {
     });
     test("should show all dictionary keys no matter the order", () => {
         const rendered: any = mount(
-            <FormDictionary
+            <Dictionary
                 {...dictionaryProps}
                 managedClasses={managedClasses}
                 data={{
@@ -304,7 +302,7 @@ describe("FormDictionary", () => {
     });
     test("should show only property key inputs if the additionalProperties is false", () => {
         const rendered: any = mount(
-            <FormDictionary
+            <Dictionary
                 {...dictionaryProps}
                 managedClasses={managedClasses}
                 data={{
@@ -316,10 +314,10 @@ describe("FormDictionary", () => {
         );
 
         const propertyKeyInputs: any = rendered.find(
-            `.${managedClasses.formDictionary_itemControlInput}`
+            `.${managedClasses.dictionary_itemControlInput}`
         );
         const formControlSwitch: any = rendered.find(
-            `.${managedClasses.formDictionary_controlRegion}`
+            `.${managedClasses.dictionary_controlRegion}`
         );
 
         expect(propertyKeyInputs).toHaveLength(2);
@@ -338,7 +336,7 @@ describe("FormDictionary", () => {
         };
         const validationErrors: any = getValidationErrors(schema, data);
         const rendered: any = render(
-            <FormDictionary
+            <Dictionary
                 {...dictionaryProps}
                 managedClasses={managedClasses}
                 data={data}

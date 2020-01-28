@@ -1,12 +1,12 @@
-import { ControlTemplateUtilitiesProps, StandardControlPlugin } from "./templates";
+import { ControlTemplateUtilitiesProps, StandardControlPlugin } from "../../templates";
 import {
-    FormAttributeSettingsMappingToPropertyNames,
+    AttributeSettingsMappingToPropertyNames,
     FormChildOptionItem,
-} from "./form.props";
-import { Controls } from "./form-section.props";
+} from "../../types";
+import { Controls } from "./types";
 import { Omit } from "utility-types";
 
-export interface FormControlSwitchProps
+export interface ControlSwitchProps
     extends Omit<ControlTemplateUtilitiesProps, "component"> {
     /**
      * The name of the property
@@ -52,7 +52,7 @@ export interface FormControlSwitchProps
     /**
      * The additional attributes mapped to a property name
      */
-    attributeSettingsMappingToPropertyNames?: FormAttributeSettingsMappingToPropertyNames;
+    attributeSettingsMappingToPropertyNames?: AttributeSettingsMappingToPropertyNames;
 
     /**
      * Allow soft remove

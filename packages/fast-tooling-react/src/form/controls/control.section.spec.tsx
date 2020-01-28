@@ -1,15 +1,17 @@
 import React from "react";
 import Adapter from "enzyme-adapter-react-16";
 import { configure, mount } from "enzyme";
-import StyledFormSection, { FormSection } from "./form-section";
-import { FormSectionClassNameContract, FormSectionProps } from "./form-section.props";
+import StyledSectionControl, { SectionControl } from "./control.section";
+import {
+    SectionControlClassNameContract,
+    SectionControlProps,
+} from "./control.section.props";
 import { ContextComponent, DragDropContext } from "react-dnd";
 import HTML5Backend from "react-dnd-html5-backend";
 
-const TestFormSection: typeof StyledFormSection & ContextComponent<any> = DragDropContext(
-    HTML5Backend
-)(StyledFormSection);
-import { controls } from "./form-control-switch.spec";
+const TestSectionControl: typeof StyledSectionControl &
+    ContextComponent<any> = DragDropContext(HTML5Backend)(StyledSectionControl);
+import { controls } from "./utilities/control-switch.spec";
 import ajv, { Ajv, ValidateFunction } from "ajv";
 import {
     ArrayControl,
@@ -22,21 +24,22 @@ import {
     SectionLinkControl,
     SelectControl,
     TextareaControl,
-} from "./";
+} from "..";
 
 /*
  * Configure Enzyme
  */
 configure({ adapter: new Adapter() });
 
-const formSectionProps: FormSectionProps = {
+const sectionControlProps: SectionControlProps = {
+    type: ControlType.section,
     dataLocation: "",
     schemaLocation: "",
     controls,
     childOptions: [],
     schema: {},
     disabled: false,
-    data: "",
+    value: "",
     untitled: "",
     onChange: jest.fn(),
     onUpdateSection: jest.fn(),
@@ -50,20 +53,25 @@ const formSectionProps: FormSectionProps = {
         [ControlType.display]: DisplayControl,
         [ControlType.numberField]: NumberFieldControl,
         [ControlType.sectionLink]: SectionLinkControl,
+        [ControlType.section]: SectionControl,
         [ControlType.select]: SelectControl,
         [ControlType.textarea]: TextareaControl,
     },
+    elementRef: null,
+    reportValidity: jest.fn(),
+    updateValidity: jest.fn(),
+    required: false,
 };
 
-const managedClasses: FormSectionClassNameContract = {
-    formSection: "formSection",
-    formSection__disabled: "formSection__disabeld",
+const managedClasses: SectionControlClassNameContract = {
+    sectionControl: "sectionControl",
+    sectionControl__disabled: "sectionControl__disabeld",
 };
 
-describe("FormSection", () => {
+describe("SectionControl", () => {
     test("should not throw", () => {
         expect(() => {
-            mount(<TestFormSection {...formSectionProps} />);
+            mount(<TestSectionControl {...sectionControlProps} />);
         }).not.toThrow();
     });
     test("should contain a root level fieldset element", () => {
@@ -71,15 +79,15 @@ describe("FormSection", () => {
             type: "object",
         };
         const rendered: any = mount(
-            <FormSection
-                {...formSectionProps}
+            <SectionControl
+                {...sectionControlProps}
                 managedClasses={managedClasses}
                 schema={schema}
             />
         );
 
         expect(rendered.find("fieldset").prop("className")).toEqual(
-            managedClasses.formSection
+            managedClasses.sectionControl
         );
     });
     test("should not be disabled if the disabled prop has not been passed", () => {
@@ -87,30 +95,32 @@ describe("FormSection", () => {
             type: "object",
         };
         const rendered: any = mount(
-            <FormSection
-                {...formSectionProps}
+            <SectionControl
+                {...sectionControlProps}
                 managedClasses={managedClasses}
                 schema={schema}
             />
         );
 
-        expect(rendered.find(`.${managedClasses.formSection}`).prop("disabled")).toEqual(
-            undefined
-        );
+        expect(
+            rendered.find(`.${managedClasses.sectionControl}`).prop("disabled")
+        ).toEqual(undefined);
     });
     test("should not add a disabled class if the disabled prop is not passed", () => {
         const schema: any = {
             type: "object",
         };
         const rendered: any = mount(
-            <FormSection
-                {...formSectionProps}
+            <SectionControl
+                {...sectionControlProps}
                 managedClasses={managedClasses}
                 schema={schema}
             />
         );
 
-        expect(rendered.find(`.${managedClasses.formSection__disabled}`)).toHaveLength(0);
+        expect(rendered.find(`.${managedClasses.sectionControl__disabled}`)).toHaveLength(
+            0
+        );
     });
     test("should not be disabled if the disabled prop is false", () => {
         const schema: any = {
@@ -118,16 +128,16 @@ describe("FormSection", () => {
             disabled: false,
         };
         const rendered: any = mount(
-            <FormSection
-                {...formSectionProps}
+            <SectionControl
+                {...sectionControlProps}
                 managedClasses={managedClasses}
                 schema={schema}
             />
         );
 
-        expect(rendered.find(`.${managedClasses.formSection}`).prop("disabled")).toEqual(
-            false
-        );
+        expect(
+            rendered.find(`.${managedClasses.sectionControl}`).prop("disabled")
+        ).toEqual(false);
     });
     test("should not add the disabled class if the disabled prop is false", () => {
         const schema: any = {
@@ -135,14 +145,16 @@ describe("FormSection", () => {
             disabled: false,
         };
         const rendered: any = mount(
-            <FormSection
-                {...formSectionProps}
+            <SectionControl
+                {...sectionControlProps}
                 managedClasses={managedClasses}
                 schema={schema}
             />
         );
 
-        expect(rendered.find(`.${managedClasses.formSection__disabled}`)).toHaveLength(0);
+        expect(rendered.find(`.${managedClasses.sectionControl__disabled}`)).toHaveLength(
+            0
+        );
     });
     test("should be disabled if the disabled prop is true", () => {
         const schema: any = {
@@ -150,16 +162,16 @@ describe("FormSection", () => {
             disabled: true,
         };
         const rendered: any = mount(
-            <FormSection
-                {...formSectionProps}
+            <SectionControl
+                {...sectionControlProps}
                 managedClasses={managedClasses}
                 schema={schema}
             />
         );
 
-        expect(rendered.find(`.${managedClasses.formSection}`).prop("disabled")).toEqual(
-            true
-        );
+        expect(
+            rendered.find(`.${managedClasses.sectionControl}`).prop("disabled")
+        ).toEqual(true);
     });
     test("should add a disabled class if the disabled prop is true", () => {
         const schema: any = {
@@ -167,16 +179,18 @@ describe("FormSection", () => {
             disabled: true,
         };
         const rendered: any = mount(
-            <FormSection
-                {...formSectionProps}
+            <SectionControl
+                {...sectionControlProps}
                 managedClasses={managedClasses}
                 schema={schema}
             />
         );
 
-        expect(rendered.find(`.${managedClasses.formSection__disabled}`)).toHaveLength(1);
+        expect(rendered.find(`.${managedClasses.sectionControl__disabled}`)).toHaveLength(
+            1
+        );
     });
-    test("should pass the disabled prop to the FormControlSwitch", () => {
+    test("should pass the disabled prop to the ControlSwitch", () => {
         const schema: any = {
             type: "object",
             properties: {
@@ -187,14 +201,14 @@ describe("FormSection", () => {
             disabled: true,
         };
         const rendered: any = mount(
-            <FormSection
-                {...formSectionProps}
+            <SectionControl
+                {...sectionControlProps}
                 managedClasses={managedClasses}
                 schema={schema}
             />
         );
 
-        expect(rendered.find("FormControlSwitch").prop("disabled")).toEqual(true);
+        expect(rendered.find("ControlSwitch").prop("disabled")).toEqual(true);
     });
     test("should show an invalid message if validation errors have been passed", () => {
         const schema: any = {
@@ -216,15 +230,15 @@ describe("FormSection", () => {
         }
 
         const rendered: any = mount(
-            <FormSection
-                {...formSectionProps}
+            <SectionControl
+                {...sectionControlProps}
                 managedClasses={managedClasses}
                 schema={schema}
                 validationErrors={validationErrors}
             />
         );
 
-        expect(rendered.find("FormSectionValidation")).toHaveLength(1);
+        expect(rendered.find("SectionValidation")).toHaveLength(1);
     });
     test("should not show an invalid message if no validation errors have been passed", () => {
         const schema: any = {
@@ -245,15 +259,15 @@ describe("FormSection", () => {
         }
 
         const rendered: any = mount(
-            <FormSection
-                {...formSectionProps}
+            <SectionControl
+                {...sectionControlProps}
                 managedClasses={managedClasses}
                 schema={schema}
-                data={{}}
+                value={{}}
                 validationErrors={validationErrors}
             />
         );
 
-        expect(rendered.find("FormSectionValidation")).toHaveLength(0);
+        expect(rendered.find("SectionValidation")).toHaveLength(0);
     });
 });

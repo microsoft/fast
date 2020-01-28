@@ -1,38 +1,38 @@
 import React from "react";
 import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
-import styles from "./form-one-of-any-of.style";
+import styles from "./section.one-of-any-of.style";
 import {
-    FormOneOfAnyOfClassNameContract,
-    FormOneOfAnyOfProps,
-    FormOneOfAnyOfState,
-} from "./form-one-of-any-of.props";
+    SectionOneOfAnyOfClassNameContract,
+    SectionOneOfAnyOfProps,
+    SectionOneOfAnyOfState,
+} from "./section.one-of-any-of.props";
 import { uniqueId } from "lodash-es";
 
 /**
  * Schema form component definition
  * @extends React.Component
  */
-class FormOneOfAnyOf extends React.Component<
-    FormOneOfAnyOfProps & ManagedClasses<FormOneOfAnyOfClassNameContract>,
-    FormOneOfAnyOfState
+class SectionOneOfAnyOf extends React.Component<
+    SectionOneOfAnyOfProps & ManagedClasses<SectionOneOfAnyOfClassNameContract>,
+    SectionOneOfAnyOfState
 > {
-    public static displayName: string = "FormOneOfAnyOf";
+    public static displayName: string = "SectionOneOfAnyOf";
 
     public render(): React.ReactNode {
         const id: string = uniqueId();
 
         return (
-            <div className={this.props.managedClasses.formOneOfAnyOf}>
+            <div className={this.props.managedClasses.sectionOneOfAnyOf}>
                 <label
                     htmlFor={id}
-                    className={this.props.managedClasses.formOneOfAnyOf_label}
+                    className={this.props.managedClasses.sectionOneOfAnyOf_label}
                 >
                     {this.props.label}
                 </label>
-                <span className={this.props.managedClasses.formOneOfAnyOf_selectSpan}>
+                <span className={this.props.managedClasses.sectionOneOfAnyOf_selectSpan}>
                     <select
-                        className={this.props.managedClasses.formOneOfAnyOf_select}
+                        className={this.props.managedClasses.sectionOneOfAnyOf_select}
                         id={id}
                         onChange={this.handleChange}
                         value={this.getActiveIndex()}
@@ -53,5 +53,5 @@ class FormOneOfAnyOf extends React.Component<
     };
 }
 
-export default manageJss(styles)(FormOneOfAnyOf);
-export { FormOneOfAnyOfProps };
+export default manageJss(styles)(SectionOneOfAnyOf);
+export { SectionOneOfAnyOfProps };

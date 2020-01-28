@@ -5,35 +5,31 @@ import {
     ChildrenControl,
     DisplayControl,
     NumberFieldControl,
+    SectionControl,
     SectionLinkControl,
     SelectControl,
     TextareaControl,
 } from "./controls";
 import {
-    ArrayControlConfig,
-    ChildrenControlConfig,
-    CommonControlConfig,
+    BareControlPlugin,
     ControlConfig,
-    ControlContext,
     ControlType,
-    ListControlConfig,
-    NumberFieldTypeControlConfig,
     OnChangeConfig,
-    SectionLinkControlConfig,
+    SingleLineControlPlugin,
     StandardControlPlugin,
-    TextareaControlConfig,
     UpdateSectionConfig,
 } from "./templates";
+import { ControlContext } from "./templates/types";
 import { BreadcrumbItem, getBreadcrumbs } from "./utilities/breadcrumb";
 import {
     BreadcrumbItemEventHandler,
     ControlPluginConfig,
-    FormChildOptionItem,
     FormClassNameContract,
     FormLocation,
     FormProps,
     FormState,
 } from "./form.props";
+import { FormChildOptionItem } from "./types";
 import Navigation, { NavigationItem } from "./utilities/navigation";
 import { cloneDeep, get, set, unset } from "lodash-es";
 import {
@@ -48,10 +44,8 @@ import {
 } from "../utilities/ajv-validation";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 
-import FormSection from "./form-section";
 import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 import React from "react";
-import { SingleLineControlPlugin } from "./templates/plugin.control.single-line";
 import { mapPluginsToSchema } from "./utilities";
 import stringify from "fast-json-stable-stringify";
 import styles from "./form.style";
@@ -107,6 +101,7 @@ class Form extends React.Component<
     private selectControl: StandardControlPlugin;
     private displayControl: StandardControlPlugin;
     private sectionLinkControl: StandardControlPlugin;
+    private sectionControl: BareControlPlugin;
     private checkboxControl: SingleLineControlPlugin;
     private numberFieldControl: StandardControlPlugin;
     private textareaControl: StandardControlPlugin;
@@ -318,6 +313,12 @@ class Form extends React.Component<
                     component: ButtonControl,
                     context: ControlContext.default,
                 };
+            default:
+                return {
+                    plugin: BareControlPlugin,
+                    component: SectionControl,
+                    context: ControlContext.default,
+                };
         }
     }
 
@@ -359,6 +360,10 @@ class Form extends React.Component<
         this.buttonControl = this.findControlPlugin(
             hasCustomControlPlugins,
             ControlType.button
+        );
+        this.sectionControl = this.findControlPlugin(
+            hasCustomControlPlugins,
+            ControlType.section
         );
     }
 
@@ -545,6 +550,7 @@ class Form extends React.Component<
      * Render the section to be shown
      */
     private renderSection(): React.ReactNode {
+        let control: BareControlPlugin = this.sectionControl;
         const lastNavigationItem: NavigationItem = this.state.navigation[
             this.state.navigation.length - 1
         ];
@@ -553,43 +559,59 @@ class Form extends React.Component<
             this.props.data,
             this.props.plugins
         );
-
-        return (
-            <FormSection
-                schema={get(
-                    currentSchema,
-                    lastNavigationItem.schemaLocation,
-                    currentSchema
-                )}
-                controls={{
-                    button: this.buttonControl,
-                    array: this.arrayControl,
-                    checkbox: this.checkboxControl,
-                    children: this.childrenControl,
-                    display: this.displayControl,
-                    textarea: this.textareaControl,
-                    select: this.selectControl,
-                    sectionLink: this.sectionLinkControl,
-                    numberField: this.numberFieldControl,
-                }}
-                controlPlugins={this.props.controlPlugins}
-                controlComponents={this.controlComponents}
-                onChange={this.handleOnChange}
-                onUpdateSection={this.handleUpdateActiveSection}
-                data={this.getData("data", "props")}
-                schemaLocation={lastNavigationItem.schemaLocation}
-                default={lastNavigationItem.default}
-                disabled={currentSchema.disabled}
-                dataLocation={this.state.activeDataLocation}
-                untitled={this.untitled}
-                childOptions={this.props.childOptions}
-                validationErrors={this.state.validationErrors}
-                displayValidationBrowserDefault={
-                    this.props.displayValidationBrowserDefault
-                }
-                displayValidationInline={this.props.displayValidationInline}
-            />
+        const sectionSchema: any = get(
+            currentSchema,
+            lastNavigationItem.schemaLocation,
+            currentSchema
         );
+
+        // Check to see if there is any associated `formControlId`
+        // then check for the id within the passed controlPlugins
+        if (typeof sectionSchema.formControlId === "string") {
+            control = this.props.controlPlugins.find(
+                (controlPlugin: StandardControlPlugin) => {
+                    return controlPlugin.matchesId(sectionSchema.formControlId);
+                }
+            );
+        }
+
+        control.updateProps({
+            index: 0,
+            type: ControlType.section,
+            required: false,
+            label: sectionSchema.title || this.untitled,
+            invalidMessage: "",
+            component: this.controlComponents[ControlType.section],
+            schema: sectionSchema,
+            controls: {
+                button: this.buttonControl,
+                array: this.arrayControl,
+                checkbox: this.checkboxControl,
+                children: this.childrenControl,
+                display: this.displayControl,
+                textarea: this.textareaControl,
+                select: this.selectControl,
+                section: this.sectionControl,
+                sectionLink: this.sectionLinkControl,
+                numberField: this.numberFieldControl,
+            },
+            controlPlugins: this.props.controlPlugins,
+            controlComponents: this.controlComponents,
+            onChange: this.handleOnChange,
+            onUpdateSection: this.handleUpdateActiveSection,
+            data: this.getData("data", "props"),
+            schemaLocation: lastNavigationItem.schemaLocation,
+            default: lastNavigationItem.default,
+            disabled: currentSchema.disabled,
+            dataLocation: this.state.activeDataLocation,
+            untitled: this.untitled,
+            childOptions: this.props.childOptions,
+            validationErrors: this.state.validationErrors,
+            displayValidationBrowserDefault: this.props.displayValidationBrowserDefault,
+            displayValidationInline: this.props.displayValidationInline,
+        });
+
+        return control.render();
     }
 
     private handleBreadcrumbClick = (
