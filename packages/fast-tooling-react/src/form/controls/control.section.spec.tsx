@@ -8,9 +8,6 @@ import {
 } from "./control.section.props";
 import { ContextComponent, DragDropContext } from "react-dnd";
 import HTML5Backend from "react-dnd-html5-backend";
-
-const TestSectionControl: typeof StyledSectionControl &
-    ContextComponent<any> = DragDropContext(HTML5Backend)(StyledSectionControl);
 import { controls } from "./utilities/control-switch.spec";
 import ajv, { Ajv, ValidateFunction } from "ajv";
 import {
@@ -25,6 +22,9 @@ import {
     SelectControl,
     TextareaControl,
 } from "..";
+
+const TestSectionControl: typeof StyledSectionControl &
+    ContextComponent<any> = DragDropContext(HTML5Backend)(StyledSectionControl);
 
 /*
  * Configure Enzyme
