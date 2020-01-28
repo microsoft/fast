@@ -32,10 +32,13 @@ import { SwatchFamily } from "@microsoft/fast-components-styles-msft/dist/utilit
 import { ColorRGBA64 } from "@microsoft/fast-colors";
 import {
     FillRecipeNode,
+    getPluginData,
     PluginDataNode,
     StrokeRecipeNode,
+    supports,
     TextFillRecipeNode,
 } from "./plugin-data";
+import { getDesignSystem } from "./utilities/design-system";
 /**
  * Defines the names used for color recipes through the app
  */

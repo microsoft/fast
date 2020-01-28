@@ -8,11 +8,14 @@ import {
     SetTextFillRecipeData,
 } from "./messaging/ui";
 import {
+    FillRecipeNode,
     getPluginData,
     PluginData,
     setPluginData,
+    StrokeRecipeNode,
     supports,
     supportsPluginData,
+    TextFillRecipeNode,
 } from "./plugin-data";
 import { canHaveChildren, getActiveNode } from "./utilities/node";
 import { getDesignSystem } from "./utilities/design-system";
@@ -32,14 +35,6 @@ figma.showUI(__html__, {
  */
 function onSelectionChange(): void {
     const node: SceneNode | null = getActiveNode();
-
-    if (node) {
-        console.log(getDesignSystem(node));
-
-        if (supports(node, "designSystem")) {
-            console.log(getPluginData(node, "designSystem"));
-        }
-    }
     setPluginUIState(getPluginUIState(node));
 }
 
@@ -57,58 +52,76 @@ async function onMessage(
     }
 
     if (message.type === SET_FILL_RECIPE && supports(node, "backgroundFill")) {
-        const parent = node.parent;
+        setBackgroundFill(node, message.value);
+    } else if (message.type === SET_TEXT_FILL_RECIPE && supports(node, "textFill")) {
+        setTextFill(node, message.value);
+    } else if (message.type === SET_STROKE_RECIPE && supports(node, "strokeFill")) {
+        setStroke(node, message.value);
+    }
 
-        if (parent) {
-            const designSystem: DesignSystem = getDesignSystem(parent);
-            const recipeType: ColorRecipeType = "backgroundFill";
-            const nodeDesignSystem: Partial<DesignSystem> = getPluginData(
-                node,
-                "designSystem"
-            );
-            const hex: string = await getRecipeValue(
-                recipeType,
-                message.value,
-                designSystem
-            );
+    // Sync UI with changes
+    setPluginUIState(getPluginUIState(node));
+}
+
+async function setBackgroundFill(node: FillRecipeNode, name: string): Promise<void> {
+    const recipeType: ColorRecipeType = "backgroundFill";
+    const parent = node.parent;
+    setPluginData(node, recipeType, name);
+
+    if (parent) {
+        const designSystem: DesignSystem = getDesignSystem(parent);
+        const nodeDesignSystem: Partial<DesignSystem> = getPluginData(
+            node,
+            "designSystem"
+        );
+
+        if (name === "") {
+            // We're removing a recipe
+            const removeBackground = { ...nodeDesignSystem };
+            delete removeBackground.backgroundColor;
+
+            setPluginData(node, "designSystem", {
+                ...removeBackground,
+            });
+        } else {
+            const hex: string = await getRecipeValue(recipeType, name, designSystem);
+
             const color: ColorRGBA64 | null = parseColorHexRGB(hex);
 
             if (color !== null) {
                 paintNode(node, recipeType, color);
-                setPluginData(node, recipeType, message.value);
                 setPluginData(node, "designSystem", {
                     ...nodeDesignSystem,
                     backgroundColor: hex,
                 });
-
-                setPluginUIState(getPluginUIState(node));
-                await updateTree(node);
             }
         }
-    } else if (message.type === SET_TEXT_FILL_RECIPE && supports(node, "textFill")) {
-        const designSystem: DesignSystem = getDesignSystem(node);
-        const recipeType: ColorRecipeType = "textFill";
-        const hex: string = await getRecipeValue(recipeType, message.value, designSystem);
-        const color: ColorRGBA64 | null = parseColorHexRGB(hex);
 
-        setPluginData(node, recipeType, message.value);
-        setPluginUIState(getPluginUIState(node));
+        await updateTree(node);
+    }
+}
 
-        if (color !== null) {
-            paintNode(node, recipeType, color);
-        }
-    } else if (message.type === SET_STROKE_RECIPE && supports(node, "strokeFill")) {
-        const designSystem: DesignSystem = getDesignSystem(node);
-        const recipeType: ColorRecipeType = "strokeFill";
-        const hex: string = await getRecipeValue(recipeType, message.value, designSystem);
-        const color: ColorRGBA64 | null = parseColorHexRGB(hex);
+async function setTextFill(node: TextFillRecipeNode, name: string): Promise<void> {
+    const recipeType: ColorRecipeType = "textFill";
+    setPluginData(node, recipeType, name);
 
-        setPluginData(node, recipeType, message.value);
-        setPluginUIState(getPluginUIState(node));
+    const hex: string = await getRecipeValue(recipeType, name, getDesignSystem(node));
+    const color: ColorRGBA64 | null = parseColorHexRGB(hex);
 
-        if (color !== null) {
-            paintNode(node, recipeType, color);
-        }
+    if (color !== null) {
+        paintNode(node, recipeType, color);
+    }
+}
+
+async function setStroke(node: StrokeRecipeNode, name: string): Promise<void> {
+    const recipeType: ColorRecipeType = "strokeFill";
+    setPluginData(node, recipeType, name);
+
+    const hex: string = await getRecipeValue(recipeType, name, getDesignSystem(node));
+    const color: ColorRGBA64 | null = parseColorHexRGB(hex);
+
+    if (color !== null) {
+        paintNode(node, recipeType, color);
     }
 }
 
@@ -122,12 +135,12 @@ async function updateTree(node: BaseNode): Promise<void> {
 
     for (const child of node.children) {
         if (supportsPluginData(child)) {
-            const designSystem: DesignSystem = await getDesignSystem(child);
             const fill: string = getPluginData(child, "backgroundFill");
             const stroke: string = getPluginData(child, "strokeFill");
             const textFill: string = getPluginData(child, "textFill");
 
             if (supports(child, "backgroundFill") && fill.length) {
+                const designSystem: DesignSystem = getDesignSystem(node);
                 const hex: string = await getRecipeValue(
                     "backgroundFill",
                     fill,
@@ -141,6 +154,7 @@ async function updateTree(node: BaseNode): Promise<void> {
             }
 
             if (supports(child, "strokeFill") && stroke.length) {
+                const designSystem: DesignSystem = getDesignSystem(child);
                 const hex: string = await getRecipeValue(
                     "strokeFill",
                     stroke,
@@ -154,6 +168,7 @@ async function updateTree(node: BaseNode): Promise<void> {
             }
 
             if (supports(child, "textFill") && textFill.length) {
+                const designSystem: DesignSystem = getDesignSystem(child);
                 const hex: string = await getRecipeValue(
                     "textFill",
                     textFill,
