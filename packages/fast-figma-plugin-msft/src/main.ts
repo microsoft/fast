@@ -52,17 +52,24 @@ async function onMessage(
 
     if (message.type === SET_FILL_RECIPE && supports(node, "backgroundFill")) {
         const recipeType: ColorRecipeType = "backgroundFill";
-
-        setPluginData(node, recipeType, message.value);
-        setPluginUIState(getPluginUIState(node));
+        const nodeDesignSystem: Partial<DesignSystem> = getPluginData(
+            node,
+            "designSystem"
+        );
         const hex: string = await getRecipeValue(recipeType, message.value, designSystem);
         const color: ColorRGBA64 | null = parseColorHexRGB(hex);
 
         if (color !== null) {
             paintNode(node, recipeType, color);
-        }
+            setPluginData(node, recipeType, message.value);
+            setPluginData(node, "designSystem", {
+                ...nodeDesignSystem,
+                backgroundColor: hex,
+            });
 
-        await updateTree(node);
+            setPluginUIState(getPluginUIState(node));
+            await updateTree(node);
+        }
     } else if (message.type === SET_TEXT_FILL_RECIPE && supports(node, "textFill")) {
         const recipeType: ColorRecipeType = "textFill";
         setPluginData(node, recipeType, message.value);
