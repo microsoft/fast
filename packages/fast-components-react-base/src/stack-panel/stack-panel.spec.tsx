@@ -7,7 +7,8 @@ import StackPanel, {
     StackPanelClassNameContract,
     StackPanelUnhandledProps,
 } from "./stack-panel";
-import { ItemSpanOverride, stackPanelOrientation } from "./stack-panel.props";
+import { ItemSpanOverride } from "./stack-panel.props";
+import { Orientation } from "@microsoft/fast-web-utilities";
 
 /*
  * Configure Enzyme
@@ -88,7 +89,7 @@ describe("stack panel", (): void => {
     test("getViewportSpan returns correct value when orientation is vertical", (): void => {
         const container: HTMLDivElement = document.createElement("div");
         const rendered: any = mount(
-            <StackPanel orientation={stackPanelOrientation.vertical}>item</StackPanel>
+            <StackPanel orientation={Orientation.vertical}>item</StackPanel>
         );
 
         rendered.first().instance().rootElement.current = {
@@ -105,7 +106,7 @@ describe("stack panel", (): void => {
 
     test("getViewportSpan returns correct value when orientation is horizontal", (): void => {
         const rendered: any = mount(
-            <StackPanel orientation={stackPanelOrientation.horizontal}>item</StackPanel>
+            <StackPanel orientation={Orientation.horizontal}>item</StackPanel>
         );
 
         rendered.first().instance().rootElement.current = {
@@ -232,7 +233,7 @@ describe("stack panel", (): void => {
 
     test("getDirection should return direction value when the ltr prop is passed", (): void => {
         const rendered: any = mount(
-            <StackPanel dir="ltr" orientation={stackPanelOrientation.horizontal}>
+            <StackPanel dir="ltr" orientation={Orientation.horizontal}>
                 {sampleStackPanelItems}
             </StackPanel>
         );
@@ -241,7 +242,7 @@ describe("stack panel", (): void => {
 
     test("getDirection should return direction value when the rtl prop is passed", (): void => {
         const rendered: any = mount(
-            <StackPanel dir="rtl" orientation={stackPanelOrientation.horizontal}>
+            <StackPanel dir="rtl" orientation={Orientation.horizontal}>
                 {sampleStackPanelItems}
             </StackPanel>
         );
@@ -250,7 +251,7 @@ describe("stack panel", (): void => {
 
     test("getDirection should return direction ltr when current ref is invalid", (): void => {
         const rendered: any = mount(
-            <StackPanel dir="rtl" orientation={stackPanelOrientation.horizontal}>
+            <StackPanel dir="rtl" orientation={Orientation.horizontal}>
                 {sampleStackPanelItems}
             </StackPanel>
         );
@@ -333,7 +334,7 @@ describe("stack panel", (): void => {
     });
     test("on onItemFocus correctly scrolls content - vertical, element below viewport ", () => {
         const rendered: any = mount(
-            <StackPanel orientation={stackPanelOrientation.vertical} nextItemPeek={0}>
+            <StackPanel orientation={Orientation.vertical} nextItemPeek={0}>
                 {sampleStackPanelItems}
             </StackPanel>
         );
@@ -358,7 +359,7 @@ describe("stack panel", (): void => {
 
     test("on onItemFocus correctly scrolls content - vertical, element above viewport ", () => {
         const rendered: any = mount(
-            <StackPanel orientation={stackPanelOrientation.vertical} nextItemPeek={0}>
+            <StackPanel orientation={Orientation.vertical} nextItemPeek={0}>
                 {sampleStackPanelItems}
             </StackPanel>
         );
@@ -383,7 +384,7 @@ describe("stack panel", (): void => {
 
     test("on onItemFocus correctly scrolls content - horizontal, element right of viewport ", () => {
         const rendered: any = mount(
-            <StackPanel orientation={stackPanelOrientation.horizontal} nextItemPeek={0}>
+            <StackPanel orientation={Orientation.horizontal} nextItemPeek={0}>
                 {sampleStackPanelItems}
             </StackPanel>
         );
@@ -408,7 +409,7 @@ describe("stack panel", (): void => {
 
     test("on onItemFocus correctly scrolls content - horizontal, element left of viewport", () => {
         const rendered: any = mount(
-            <StackPanel orientation={stackPanelOrientation.horizontal} nextItemPeek={0}>
+            <StackPanel orientation={Orientation.horizontal} nextItemPeek={0}>
                 {sampleStackPanelItems}
             </StackPanel>
         );

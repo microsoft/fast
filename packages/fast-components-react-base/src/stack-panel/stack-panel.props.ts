@@ -3,15 +3,11 @@ import {
     ManagedClasses,
     StackPanelClassNameContract,
 } from "@microsoft/fast-components-class-name-contracts-base";
+import { Orientation } from "@microsoft/fast-web-utilities";
 
 export interface StackPanelManagedClasses
     extends ManagedClasses<StackPanelClassNameContract> {}
 export interface StackPanelUnhandledProps extends React.HTMLAttributes<HTMLDivElement> {}
-
-export enum stackPanelOrientation {
-    horizontal = "horizontal",
-    vertical = "vertical",
-}
 
 export interface ItemSpanOverride {
     [key: number]: number;
@@ -48,12 +44,7 @@ export interface StackPanelHandledProps extends StackPanelManagedClasses {
     /**
      * The orientation of the stackpanel
      */
-    orientation?: stackPanelOrientation;
-
-    /**
-     * The children of the panel
-     */
-    children?: React.ReactNode;
+    orientation?: Orientation;
 
     /**
      * Callback for when scroll values change
