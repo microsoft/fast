@@ -3,8 +3,9 @@ import React from "react";
 import StackPanel, { StackPanelProps } from "./";
 import { isNil } from "lodash-es";
 import Foundation from "@microsoft/fast-components-foundation-react";
-import { ItemSpanOverride, stackPanelOrientation } from "./stack-panel.props";
+import { ItemSpanOverride } from "./stack-panel.props";
 import Button from "../button";
+import { Orientation } from "@microsoft/fast-web-utilities";
 
 const itemSpans: ItemSpanOverride = {
     0: 120,
@@ -175,14 +176,12 @@ class TestStackPanel extends React.Component<TestStackPanelProps, {}> {
                 : defaultSpan;
 
             const thisHeight: number =
-                this.props.stackPanelProps.orientation ===
-                stackPanelOrientation.horizontal
+                this.props.stackPanelProps.orientation === Orientation.horizontal
                     ? 100
                     : thisSpan;
 
             const thisWidth: number =
-                this.props.stackPanelProps.orientation ===
-                stackPanelOrientation.horizontal
+                this.props.stackPanelProps.orientation === Orientation.horizontal
                     ? thisSpan
                     : 100;
 
@@ -249,7 +248,7 @@ storiesOf("Stack Panel", module)
     .add("Horizontal uniform", () => (
         <StackPanel
             defaultItemSpan={100}
-            orientation={stackPanelOrientation.horizontal}
+            orientation={Orientation.horizontal}
             style={{
                 width: "400px",
                 height: "117px",
@@ -276,7 +275,7 @@ storiesOf("Stack Panel", module)
         <StackPanel
             defaultItemSpan={100}
             itemSpanOverrides={itemSpans}
-            orientation={stackPanelOrientation.horizontal}
+            orientation={Orientation.horizontal}
             style={{
                 width: "400px",
                 height: "117px",

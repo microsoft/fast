@@ -13,11 +13,11 @@ import {
 } from "../utilities";
 import {
     StackPanelHandledProps,
-    stackPanelOrientation,
     StackPanelProps,
     StackPanelUnhandledProps,
 } from "./stack-panel.props";
 import { isFunction } from "util";
+import { Orientation } from "@microsoft/fast-web-utilities";
 
 export interface StackPanelState {
     isScrolling: boolean;
@@ -49,7 +49,7 @@ class StackPanel extends Foundation<
         neverVirtualizeIndexes: [],
         defaultItemSpan: 100,
         preloadBufferLength: 1,
-        orientation: stackPanelOrientation.vertical,
+        orientation: Orientation.vertical,
         nextItemPeek: 50,
         itemSpanOverrides: {},
         enableSmoothScrolling: true,
@@ -149,7 +149,7 @@ class StackPanel extends Foundation<
                     ref={this.itemContainerElement}
                     style={{
                         position: "relative",
-                        ...(this.props.orientation === stackPanelOrientation.horizontal
+                        ...(this.props.orientation === Orientation.horizontal
                             ? {
                                   height: "100%",
                                   width: `${this.itemContainerSpan}px`,
@@ -282,7 +282,7 @@ class StackPanel extends Foundation<
 
         const newStyleProps: React.CSSProperties = {
             position: "absolute",
-            ...(this.props.orientation === stackPanelOrientation.horizontal
+            ...(this.props.orientation === Orientation.horizontal
                 ? {
                       width: toPx(this.itemPositions[index].span),
                       left: toPx(this.itemPositions[index].start),
@@ -348,7 +348,7 @@ class StackPanel extends Foundation<
         if (isNil(this.rootElement.current)) {
             return 0;
         }
-        if (this.props.orientation === stackPanelOrientation.horizontal) {
+        if (this.props.orientation === Orientation.horizontal) {
             return this.rootElement.current.clientWidth;
         } else {
             return this.rootElement.current.clientHeight;
@@ -385,7 +385,7 @@ class StackPanel extends Foundation<
             return;
         }
 
-        if (this.props.orientation === stackPanelOrientation.horizontal) {
+        if (this.props.orientation === Orientation.horizontal) {
             this.updateDirection();
         }
 
@@ -563,7 +563,7 @@ class StackPanel extends Foundation<
 
         let scrollPos: number = 0;
 
-        if (this.props.orientation === stackPanelOrientation.vertical) {
+        if (this.props.orientation === Orientation.vertical) {
             scrollPos = this.rootElement.current.scrollTop;
         } else {
             scrollPos = RtlScrollConverter.getScrollLeft(
@@ -584,7 +584,7 @@ class StackPanel extends Foundation<
             return;
         }
 
-        if (this.props.orientation === stackPanelOrientation.vertical) {
+        if (this.props.orientation === Orientation.vertical) {
             this.rootElement.current.scrollTop = scrollValue;
         } else {
             RtlScrollConverter.setScrollLeft(
@@ -619,12 +619,12 @@ class StackPanel extends Foundation<
 
         // smooth scroll into view
         const itemStart: number =
-            this.props.orientation === stackPanelOrientation.horizontal
+            this.props.orientation === Orientation.horizontal
                 ? (event.currentTarget as HTMLElement).offsetLeft
                 : (event.currentTarget as HTMLElement).offsetTop;
 
         const itemSpan: number =
-            this.props.orientation === stackPanelOrientation.horizontal
+            this.props.orientation === Orientation.horizontal
                 ? (event.currentTarget as HTMLElement).clientWidth
                 : (event.currentTarget as HTMLElement).clientHeight;
         const itemEnd: number = itemStart + itemSpan;
