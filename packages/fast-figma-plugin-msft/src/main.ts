@@ -32,6 +32,14 @@ figma.showUI(__html__, {
  */
 function onSelectionChange(): void {
     const node: SceneNode | null = getActiveNode();
+
+    if (node) {
+        console.log(getDesignSystem(node));
+
+        if (supports(node, "designSystem")) {
+            console.log(getPluginData(node, "designSystem"));
+        }
+    }
     setPluginUIState(getPluginUIState(node));
 }
 
@@ -48,44 +56,55 @@ async function onMessage(
         return;
     }
 
-    const designSystem: DesignSystem = await getDesignSystem(node);
-
     if (message.type === SET_FILL_RECIPE && supports(node, "backgroundFill")) {
-        const recipeType: ColorRecipeType = "backgroundFill";
-        const nodeDesignSystem: Partial<DesignSystem> = getPluginData(
-            node,
-            "designSystem"
-        );
-        const hex: string = await getRecipeValue(recipeType, message.value, designSystem);
-        const color: ColorRGBA64 | null = parseColorHexRGB(hex);
+        const parent = node.parent;
 
-        if (color !== null) {
-            paintNode(node, recipeType, color);
-            setPluginData(node, recipeType, message.value);
-            setPluginData(node, "designSystem", {
-                ...nodeDesignSystem,
-                backgroundColor: hex,
-            });
+        if (parent) {
+            const designSystem: DesignSystem = getDesignSystem(parent);
+            const recipeType: ColorRecipeType = "backgroundFill";
+            const nodeDesignSystem: Partial<DesignSystem> = getPluginData(
+                node,
+                "designSystem"
+            );
+            const hex: string = await getRecipeValue(
+                recipeType,
+                message.value,
+                designSystem
+            );
+            const color: ColorRGBA64 | null = parseColorHexRGB(hex);
 
-            setPluginUIState(getPluginUIState(node));
-            await updateTree(node);
+            if (color !== null) {
+                paintNode(node, recipeType, color);
+                setPluginData(node, recipeType, message.value);
+                setPluginData(node, "designSystem", {
+                    ...nodeDesignSystem,
+                    backgroundColor: hex,
+                });
+
+                setPluginUIState(getPluginUIState(node));
+                await updateTree(node);
+            }
         }
     } else if (message.type === SET_TEXT_FILL_RECIPE && supports(node, "textFill")) {
+        const designSystem: DesignSystem = getDesignSystem(node);
         const recipeType: ColorRecipeType = "textFill";
-        setPluginData(node, recipeType, message.value);
-        setPluginUIState(getPluginUIState(node));
         const hex: string = await getRecipeValue(recipeType, message.value, designSystem);
         const color: ColorRGBA64 | null = parseColorHexRGB(hex);
+
+        setPluginData(node, recipeType, message.value);
+        setPluginUIState(getPluginUIState(node));
 
         if (color !== null) {
             paintNode(node, recipeType, color);
         }
     } else if (message.type === SET_STROKE_RECIPE && supports(node, "strokeFill")) {
+        const designSystem: DesignSystem = getDesignSystem(node);
         const recipeType: ColorRecipeType = "strokeFill";
-        setPluginData(node, recipeType, message.value);
-        setPluginUIState(getPluginUIState(node));
         const hex: string = await getRecipeValue(recipeType, message.value, designSystem);
         const color: ColorRGBA64 | null = parseColorHexRGB(hex);
+
+        setPluginData(node, recipeType, message.value);
+        setPluginUIState(getPluginUIState(node));
 
         if (color !== null) {
             paintNode(node, recipeType, color);
