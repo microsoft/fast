@@ -13,7 +13,7 @@ import { SingleLineControlPlugin } from "../../templates/plugin.control.single-l
 import ControlPluginUtilities, {
     ControlPluginUtilitiesProps,
 } from "../../templates/plugin.control.utilities";
-import { ControlType } from "../../";
+import { ControlType } from "../../index";
 
 class ControlSwitch extends React.Component<ControlSwitchProps, {}> {
     public static displayName: string = "ControlSwitch";

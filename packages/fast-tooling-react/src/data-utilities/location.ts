@@ -11,7 +11,7 @@ import {
     propsKeyword,
     typeKeyword,
 } from "./types";
-import { ChildOptionItem } from "./";
+import { ChildOptionItem } from "./index";
 import { isPrimitiveReactNode } from "./node-types";
 import { validateData } from "../utilities/ajv-validation";
 

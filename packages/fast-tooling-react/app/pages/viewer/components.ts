@@ -1,4 +1,4 @@
-import { ChildOptionItem } from "../../../";
+import { ChildOptionItem } from "../../../index";
 import Example from "./example";
 import exampleSchema from "./example.schema.json";
 
