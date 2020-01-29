@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.32.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-tooling-react@1.31.0...@microsoft/fast-tooling-react@1.32.0) (2020-01-29)
+
+
+### Features
+
+* convert the section to a control ([#2628](https://github.com/Microsoft/fast-dna/issues/2628)) ([6763227](https://github.com/Microsoft/fast-dna/commit/6763227d9e0eaa99a46cf8b06c109c0b25f9024a))
+
+
+
+
+
 # [1.31.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-tooling-react@1.30.0...@microsoft/fast-tooling-react@1.31.0) (2020-01-24)
 
 
