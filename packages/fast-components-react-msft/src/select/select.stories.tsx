@@ -7,8 +7,8 @@ import { uniqueId } from "lodash-es";
 import { action } from "@storybook/addon-actions";
 import {
     AxisPositioningMode,
-    ViewportPositionerVerticalPosition,
     ViewportPositionerHorizontalPosition,
+    ViewportPositionerVerticalPosition,
 } from "@microsoft/fast-components-react-base";
 import { Dialog } from "../dialog";
 
