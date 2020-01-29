@@ -109,7 +109,7 @@ export function supports(node: BaseNode, type: "designSystem"): node is DesignSy
 export function supports(node: BaseNode, type: "backgroundFill"): node is FillRecipeNode;
 export function supports(node: BaseNode, type: "strokeFill"): node is StrokeRecipeNode;
 export function supports(node: BaseNode, type: "textFill"): node is TextNode;
-export function supports(node: BaseNode, type: keyof PluginData): boolean {
+export function supports(node: BaseNode, type: keyof PluginData): node is PluginDataNode {
     switch (type) {
         case "backgroundFill":
         case "strokeFill":
