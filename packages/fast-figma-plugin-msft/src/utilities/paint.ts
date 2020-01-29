@@ -73,7 +73,7 @@ export class PaintOperation {
         if (supports(node, type as any)) {
             const data = getPluginData(node, type);
 
-            if (Array.isArray(data)) {
+            if (!!data) {
                 const value = parseColor(data.value);
 
                 if (value instanceof ColorRGBA64) {

@@ -1,5 +1,6 @@
 import { getPluginUIState, setPluginUIState } from "./interface/plugin-ui.state";
 import {
+    REMOVE_PLUGIN_DATA,
     SET_FILL_RECIPE,
     SET_STROKE_RECIPE,
     SET_TEXT_FILL_RECIPE,
@@ -8,6 +9,8 @@ import {
 import {
     FillRecipeNode,
     getPluginData,
+    PluginData,
+    pluginDataKeys,
     PluginDataNode,
     setPluginData,
     StrokeRecipeNode,
@@ -53,6 +56,8 @@ async function onMessage(message: UIMessage): Promise<void> {
         await setTextFill(node, message.value);
     } else if (message.type === SET_STROKE_RECIPE && supports(node, "strokeFill")) {
         await setStrokeFill(node, message.value);
+    } else if (message.type === REMOVE_PLUGIN_DATA) {
+        removeDataFromTree(node);
     }
 
     // Sync plugin UI with node state and paint changed nodes
@@ -138,6 +143,28 @@ async function updateTree(node: BaseNode): Promise<void> {
         }
 
         await updateTree(child);
+    }
+}
+
+/**
+ * Sets all plugin data keys to an empty string, which is the default
+ * value returned from Figma when no data under a key is set.
+ *
+ * This is mostly for development purposes, getting back to a clean data
+ * state
+ * @param node The node to begin plugin data purge
+ */
+function removeDataFromTree(node: BaseNode): void {
+    if (supportsPluginData(node)) {
+        pluginDataKeys.forEach(
+            (key: keyof PluginData): void => {
+                setPluginData(node, key as any, null);
+            }
+        );
+    }
+
+    if (canHaveChildren(node)) {
+        node.children.forEach(removeDataFromTree);
     }
 }
 
