@@ -65,9 +65,9 @@ export async function getPluginUIState(node: SceneNode | null): Promise<PluginUI
 
         return {
             activeNodeType: node.type,
-            activeFill: Array.isArray(backgroundFill) ? backgroundFill[0] : "",
-            activeStroke: Array.isArray(strokeFill) ? strokeFill[0] : "",
-            activeTextFill: Array.isArray(textFill) ? textFill[0] : "",
+            activeFill: backgroundFill ? backgroundFill.name : "",
+            activeStroke: strokeFill ? strokeFill.name : "",
+            activeTextFill: textFill ? textFill.name : "",
             fills: supports(node, "backgroundFill")
                 ? [""].concat(await getRecipeNames("backgroundFill"))
                 : defaultState.fills,

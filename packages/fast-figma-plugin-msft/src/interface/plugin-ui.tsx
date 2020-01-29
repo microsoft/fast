@@ -4,6 +4,7 @@ import {
     DividerClassNameContract,
     Label,
     LabelClassNameContract,
+    NeutralButton,
     Paragraph,
     Select,
     SelectOption,
@@ -20,6 +21,7 @@ import React from "react";
 import { isSetUIStateMessage } from "../messaging/canvas";
 import { isPluginMessageEvent, PluginMessageData } from "../messaging/common";
 import {
+    REMOVE_PLUGIN_DATA,
     SET_FILL_RECIPE,
     SET_STROKE_RECIPE,
     SET_TEXT_FILL_RECIPE,
@@ -49,7 +51,7 @@ const recipeLabelStyleOverrides: ComponentStyleSheet<
 
 /**
  * At this point, this is essentially a controlled component.
- * State will be controlled by the main application and serilaized
+ * State will be controlled by the main application and serialized
  * state will be passed to this component to be parsed, set, and rendered
  *
  * There may be some local state we want to track that doesn't concern the primary application,
@@ -88,10 +90,27 @@ export class PluginUI extends React.Component<{}, PluginUIState> {
                     </div>
                     <div>
                         <Divider jssStyleSheet={dividerStyleOverrides} />
-                        <Caption>
-                            {this.state.activeNodeType ||
-                                stringById("invalidActiveNodeType")}
-                        </Caption>
+                        <div
+                            style={{
+                                display: "flex",
+                                flexDirection: "row",
+                                justifyContent: "space-between",
+                                alignItems: "center",
+                            }}
+                        >
+                            <Caption>
+                                {this.state.activeNodeType ||
+                                    stringById("invalidActiveNodeType")}
+                            </Caption>
+                            {this.state.activeNodeType ? (
+                                <NeutralButton
+                                    title="Clear all site data from this node and all child nodes"
+                                    onClick={this.handleRemoveDataClick}
+                                >
+                                    Clear data
+                                </NeutralButton>
+                            ) : null}
+                        </div>
                     </div>
                 </div>
             </DesignSystemProvider>
@@ -163,10 +182,7 @@ export class PluginUI extends React.Component<{}, PluginUIState> {
                 <Select
                     id={options.id}
                     selectedItems={[options.active]}
-                    onValueChange={this.handleRecipeValueChange.bind(
-                        this,
-                        options.action
-                    )}
+                    onValueChange={this.dispatch.bind(this, options.action)}
                     displayStringFormatter={this.recipeSelectorDisplayStringFormatter}
                 >
                     {options.selectOptions.map(this.renderRecipeOption)}
@@ -186,9 +202,18 @@ export class PluginUI extends React.Component<{}, PluginUIState> {
         );
     }
 
-    private handleRecipeValueChange(type: string, value: string): void {
+    /**
+     * Dispatch a message to the host
+     * @param type the type field of a the message
+     * @param value any value to send along with the type
+     */
+    private dispatch = (type: string, value?: string): void => {
         parent.postMessage({ pluginMessage: { type, value } }, "*");
-    }
+    };
+
+    private handleRemoveDataClick = (e: React.MouseEvent<HTMLButtonElement>): void => {
+        this.dispatch(REMOVE_PLUGIN_DATA);
+    };
 
     private recipeSelectorDisplayStringFormatter(
         selectedOptions: ListboxItemProps[]
