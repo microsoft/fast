@@ -8,9 +8,10 @@ import {
     AdditionalControlConfigOptions,
     ControlConfig,
     ControlTemplateUtilitiesProps,
+    FormHTMLElement,
     OnChangeConfig,
 } from "./template.control.utilities.props";
-import { FormHTMLElement } from "./template.control.utilities.props";
+import { ControlType } from "./types";
 
 /**
  * Control template definition
@@ -157,6 +158,7 @@ abstract class ControlTemplateUtilities<P, S> extends React.Component<
 
     public getConfig(): ControlConfig {
         return {
+            type: this.props.type,
             dataLocation: this.props.dataLocation,
             schemaLocation: this.props.schemaLocation,
             disabled: this.props.disabled,
@@ -165,7 +167,10 @@ abstract class ControlTemplateUtilities<P, S> extends React.Component<
             elementRef: this.ref,
             reportValidity: this.reportValidity,
             updateValidity: this.updateValidity,
-            onChange: this.handleChange,
+            onChange:
+                this.props.type === ControlType.section
+                    ? this.props.onChange
+                    : this.handleChange,
             min: this.props.min,
             max: this.props.max,
             step: this.props.step,
@@ -184,6 +189,10 @@ abstract class ControlTemplateUtilities<P, S> extends React.Component<
             childOptions: this.props.childOptions,
             component: this.props.component,
             required: this.props.required,
+            controls: this.props.controls,
+            controlComponents: this.props.controlComponents,
+            controlPlugins: this.props.controlPlugins,
+            untitled: this.props.untitled,
         };
     }
 

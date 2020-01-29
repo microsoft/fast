@@ -5,6 +5,7 @@ import { AlignControl as StyledAlignControl, AlignControlProps } from "./index";
 import { Alignment } from "./control.align.props";
 import { AlignControl } from "./control.align";
 import { AlignControlClassNameContract } from "./control.align.style";
+import { ControlType } from "../templates";
 
 /*
  * Configure Enzyme
@@ -12,6 +13,7 @@ import { AlignControlClassNameContract } from "./control.align.style";
 configure({ adapter: new Adapter() });
 
 const alignControlProps: AlignControlProps = {
+    type: ControlType.select,
     options: [Alignment.top, Alignment.center, Alignment.bottom],
     dataLocation: "",
     value: "",

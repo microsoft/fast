@@ -4,10 +4,8 @@ import ControlTemplateUtilities from "./template.control.utilities";
 import style, {
     StandardControlTemplateClassNameContract,
 } from "./template.control.standard.style";
-import {
-    ControlContext,
-    StandardControlTemplateProps,
-} from "./template.control.standard.props";
+import { StandardControlTemplateProps } from "./template.control.standard.props";
+import { ControlContext } from "./types";
 import manageJss from "@microsoft/fast-jss-manager-react";
 import { classNames } from "@microsoft/fast-web-utilities";
 

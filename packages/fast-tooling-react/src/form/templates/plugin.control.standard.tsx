@@ -3,7 +3,7 @@ import ControlPluginUtilities, {
     ControlPluginUtilitiesProps,
 } from "./plugin.control.utilities";
 import StandardControlTemplate from "./template.control.standard";
-import { ControlContext } from "./template.control.standard.props";
+import { ControlContext } from "./types";
 
 export interface StandardControlPluginProps extends ControlPluginUtilitiesProps {
     /**

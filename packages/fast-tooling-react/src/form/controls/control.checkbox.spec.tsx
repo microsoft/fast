@@ -4,6 +4,7 @@ import { configure, mount, shallow } from "enzyme";
 import { CheckboxControl } from "./control.checkbox";
 import { CheckboxControlProps } from "./control.checkbox.props";
 import { CheckboxControlClassNameContract } from "./control.checkbox.style";
+import { ControlType } from "../templates";
 
 /*
  * Configure Enzyme
@@ -17,6 +18,7 @@ const managedClasses: CheckboxControlClassNameContract = {
 };
 
 const checkboxProps: CheckboxControlProps = {
+    type: ControlType.checkbox,
     dataLocation: "",
     onChange: jest.fn(),
     value: false,

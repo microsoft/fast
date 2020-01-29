@@ -5,7 +5,8 @@ import React from "react";
 import { getArrayLinks, isRootLocation } from "../utilities";
 import styles, { ArrayControlClassNameContract } from "./control.array.style";
 import { ArrayControlProps, ArrayControlState } from "./control.array.props";
-import { ArrayAction, DragItem } from "../templates";
+import { DragItem } from "../templates";
+import { ArrayAction } from "../templates/types";
 import { classNames } from "@microsoft/fast-web-utilities";
 import { ErrorObject } from "ajv";
 

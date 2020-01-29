@@ -11,8 +11,7 @@ import {
     propsKeyword,
     typeKeyword,
 } from "./types";
-import { ChildOptionItem } from "./";
-import { oneOfAnyOfType } from "../form/form-section.props";
+import { ChildOptionItem } from "./index";
 import { isPrimitiveReactNode } from "./node-types";
 import { validateData } from "../utilities/ajv-validation";
 
@@ -310,21 +309,29 @@ function mapSchemaLocationSegmentFromDataLocationSegment(
     const additionalProperty: boolean = isAdditionalProperty(dataLocationSegment, schema);
 
     if (schema.oneOf) {
-        const index: number = getValidAnyOfOneOfIndex(oneOfAnyOfType.oneOf, data, schema);
+        const index: number = getValidAnyOfOneOfIndex(
+            CombiningKeyword.oneOf,
+            data,
+            schema
+        );
 
         return mapSchemaLocationSegmentFromDataLocationSegment(
             schema.oneOf[index],
             dataLocationSegment,
-            `${schemaLocation}${modifier}${oneOfAnyOfType.oneOf}[${index}]`,
+            `${schemaLocation}${modifier}${CombiningKeyword.oneOf}[${index}]`,
             data
         );
     } else if (schema.anyOf) {
-        const index: number = getValidAnyOfOneOfIndex(oneOfAnyOfType.anyOf, data, schema);
+        const index: number = getValidAnyOfOneOfIndex(
+            CombiningKeyword.anyOf,
+            data,
+            schema
+        );
 
         return mapSchemaLocationSegmentFromDataLocationSegment(
             schema.anyOf[index],
             dataLocationSegment,
-            `${schemaLocation}${modifier}${oneOfAnyOfType.anyOf}[${index}]`,
+            `${schemaLocation}${modifier}${CombiningKeyword.anyOf}[${index}]`,
             data
         );
     } else if (additionalProperty && get(schema, PropertyKeyword.additionalProperties)) {

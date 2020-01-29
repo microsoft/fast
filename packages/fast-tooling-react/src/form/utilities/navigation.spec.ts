@@ -1,6 +1,6 @@
 import "jest";
 import Navigation, { NavigationItem } from "./navigation";
-import { FormChildOptionItem } from "../form.props";
+import { FormChildOptionItem } from "../types";
 import { reactChildrenStringSchema } from "../controls/control.children.text";
 import oneOfSchema from "../../__tests__/schemas/one-of.schema.json";
 import childrenSchema from "../../__tests__/schemas/children.schema.json";

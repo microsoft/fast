@@ -2,11 +2,11 @@ import React from "react";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 import {
-    FormSectionValidationClassNameContract,
-    FormSectionValidationProps,
-    FormSectionValidationState,
-} from "./form-section-validation.props";
-import styles from "./form-section-validation.style";
+    SectionValidationClassNameContract,
+    SectionValidationProps,
+    SectionValidationState,
+} from "./section.validation.props";
+import styles from "./section.validation.style";
 import { ErrorObject } from "ajv";
 import { classNames } from "@microsoft/fast-web-utilities";
 
@@ -14,13 +14,13 @@ import { classNames } from "@microsoft/fast-web-utilities";
  * Schema form component definition
  * @extends React.Component
  */
-class FormSectionValidation extends React.Component<
-    FormSectionValidationProps & ManagedClasses<FormSectionValidationClassNameContract>,
-    FormSectionValidationState
+class SectionValidation extends React.Component<
+    SectionValidationProps & ManagedClasses<SectionValidationClassNameContract>,
+    SectionValidationState
 > {
     private validationIdentifier: string = "validation";
 
-    constructor(props: FormSectionValidationProps) {
+    constructor(props: SectionValidationProps) {
         super(props);
 
         this.state = {
@@ -30,12 +30,10 @@ class FormSectionValidation extends React.Component<
 
     public render(): React.ReactNode {
         return (
-            <div className={this.props.managedClasses.formSectionValidation}>
+            <div className={this.props.managedClasses.sectionValidation}>
                 {this.renderExpandTrigger()}
                 <div
-                    className={
-                        this.props.managedClasses.formSectionValidation_controlRegion
-                    }
+                    className={this.props.managedClasses.sectionValidation_controlRegion}
                 >
                     {this.renderInvalidMessage()}
                     {this.renderValidationErrorContainer()}
@@ -47,7 +45,7 @@ class FormSectionValidation extends React.Component<
     private renderInvalidMessage(): React.ReactNode {
         return (
             <div
-                className={this.props.managedClasses.formSectionValidation_message}
+                className={this.props.managedClasses.sectionValidation_message}
                 title={this.props.invalidMessage}
             >
                 {this.props.invalidMessage}
@@ -60,10 +58,10 @@ class FormSectionValidation extends React.Component<
             return (
                 <button
                     className={classNames(
-                        this.props.managedClasses.formSectionValidation_expandTrigger,
+                        this.props.managedClasses.sectionValidation_expandTrigger,
                         [
                             this.props.managedClasses
-                                .formSectionValidation_expandTrigger__active,
+                                .sectionValidation_expandTrigger__active,
                             this.state.expanded,
                         ]
                     )}
@@ -80,7 +78,7 @@ class FormSectionValidation extends React.Component<
         return (
             <ul
                 id={this.getId()}
-                className={this.props.managedClasses.formSectionValidation_errorList}
+                className={this.props.managedClasses.sectionValidation_errorList}
             >
                 {this.renderAllValidationErrors()}
             </ul>
@@ -95,8 +93,7 @@ class FormSectionValidation extends React.Component<
                         <li
                             key={`${this.props.dataLocation}${index}`}
                             className={
-                                this.props.managedClasses
-                                    .formSectionValidation_errorListItem
+                                this.props.managedClasses.sectionValidation_errorListItem
                             }
                         >
                             <span title={validationError.message}>
@@ -105,7 +102,7 @@ class FormSectionValidation extends React.Component<
                             <div
                                 className={
                                     this.props.managedClasses
-                                        .formSectionValidation_errorListItemDetails
+                                        .sectionValidation_errorListItemDetails
                                 }
                                 title={`Ajv dataPath: ${validationError.dataPath}`}
                             >
@@ -131,5 +128,5 @@ class FormSectionValidation extends React.Component<
     }
 }
 
-export { FormSectionValidation };
-export default manageJss(styles)(FormSectionValidation);
+export { SectionValidation };
+export default manageJss(styles)(SectionValidation);

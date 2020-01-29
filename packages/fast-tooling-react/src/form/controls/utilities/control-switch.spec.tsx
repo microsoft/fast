@@ -1,34 +1,34 @@
 import React from "react";
 import Adapter from "enzyme-adapter-react-16";
 import { configure, mount, render, shallow } from "enzyme";
-import FormControlSwitch, { FormControlSwitchProps } from "./form-control-switch";
+import ControlSwitch, { ControlSwitchProps } from "./control-switch";
 import { ContextComponent, DragDropContext } from "react-dnd";
 import HTML5Backend from "react-dnd-html5-backend";
 
-import oneOfSchema from "../__tests__/schemas/one-of.schema.json";
-import numberFieldSchema from "../__tests__/schemas/number-field.schema.json";
-import checkboxSchema from "../__tests__/schemas/checkbox.schema.json";
-import objectSchema from "../__tests__/schemas/objects.schema.json";
-import arraySchema from "../__tests__/schemas/arrays.schema.json";
-import childrenSchema from "../__tests__/schemas/children.schema.json";
-import textareaSchema from "../__tests__/schemas/textarea.schema.json";
+import oneOfSchema from "../../../__tests__/schemas/one-of.schema.json";
+import numberFieldSchema from "../../../__tests__/schemas/number-field.schema.json";
+import checkboxSchema from "../../../__tests__/schemas/checkbox.schema.json";
+import objectSchema from "../../../__tests__/schemas/objects.schema.json";
+import arraySchema from "../../../__tests__/schemas/arrays.schema.json";
+import childrenSchema from "../../../__tests__/schemas/children.schema.json";
+import textareaSchema from "../../../__tests__/schemas/textarea.schema.json";
 import {
     ArrayControlConfig,
-    BadgeType,
     ChildrenControlConfig,
     CommonControlConfig,
     ControlConfig,
-    ControlContext,
     ControlType,
     ListControlConfig,
     NumberFieldTypeControlConfig,
+    SectionControlConfig,
     SectionLinkControlConfig,
     SingleLineControlPlugin,
     StandardControlPlugin,
     TextareaControlConfig,
-} from "./templates";
-import { Controls } from "./form-section.props";
-import { reactChildrenStringSchema } from "./controls/control.children.text";
+} from "../../templates";
+import { Controls } from "./types";
+import { BadgeType, ControlContext } from "../../templates/types";
+import { reactChildrenStringSchema } from "../control.children.text";
 import {
     ArrayControl,
     ButtonControl,
@@ -36,10 +36,11 @@ import {
     ChildrenControl,
     DisplayControl,
     NumberFieldControl,
+    SectionControl,
     SectionLinkControl,
     SelectControl,
     TextareaControl,
-} from "./";
+} from "../..";
 
 const selectControl: StandardControlPlugin = new StandardControlPlugin({
     control: (config: ListControlConfig): React.ReactNode => {
@@ -73,6 +74,11 @@ const sectionLinkControl: StandardControlPlugin = new StandardControlPlugin({
         return <SectionLinkControl {...config} />;
     },
 });
+const sectionControl: StandardControlPlugin = new StandardControlPlugin({
+    control: (config: SectionControlConfig): React.ReactNode => {
+        return <SectionControl {...config} />;
+    },
+});
 const textareaControl: StandardControlPlugin = new StandardControlPlugin({
     control: (config: TextareaControlConfig): React.ReactNode => {
         return <TextareaControl {...config} />;
@@ -97,20 +103,23 @@ export const controls: Controls = {
     display: displayControl,
     textarea: textareaControl,
     select: selectControl,
+    section: sectionControl,
     sectionLink: sectionLinkControl,
     numberField: numberFieldControl,
 };
 
-const TestFormControlSwitch: typeof FormControlSwitch &
-    ContextComponent<any> = DragDropContext(HTML5Backend)(FormControlSwitch);
+const TestControlSwitch: typeof ControlSwitch & ContextComponent<any> = DragDropContext(
+    HTML5Backend
+)(ControlSwitch);
 
 /*
  * Configure Enzyme
  */
 configure({ adapter: new Adapter() });
 
-const formControlSwitchProps: FormControlSwitchProps = {
+const formControlSwitchProps: ControlSwitchProps = {
     index: 0,
+    type: ControlType.section,
     controls,
     propertyName: "",
     label: "Label",
@@ -138,22 +147,22 @@ const formControlSwitchProps: FormControlSwitchProps = {
     },
 };
 
-describe("FormControlSwitch", () => {
+describe("ControlSwitch", () => {
     test("should not throw", () => {
         expect(() => {
-            mount(<TestFormControlSwitch {...formControlSwitchProps} />);
+            mount(<TestControlSwitch {...formControlSwitchProps} />);
         }).not.toThrow();
     });
     test("should NOT render any controls when the schema is false", () => {
         const rendered: any = mount(
-            <TestFormControlSwitch {...formControlSwitchProps} schema={false} />
+            <TestControlSwitch {...formControlSwitchProps} schema={false} />
         );
 
         expect(rendered.html()).toEqual("");
     });
     test("should render a number field when a number type is available", () => {
         const rendered: any = mount(
-            <TestFormControlSwitch
+            <TestControlSwitch
                 {...formControlSwitchProps}
                 schema={numberFieldSchema.properties.quantity}
                 schemaLocation={"properties.quantity"}
@@ -167,7 +176,7 @@ describe("FormControlSwitch", () => {
     });
     test("should render a textarea when a string type is available", () => {
         const rendered: any = mount(
-            <TestFormControlSwitch
+            <TestControlSwitch
                 {...formControlSwitchProps}
                 schema={textareaSchema.properties.textWithDefault}
                 schemaLocation={"properties.text"}
@@ -181,7 +190,7 @@ describe("FormControlSwitch", () => {
     });
     test("should render a checkbox when a boolean type is available", () => {
         const rendered: any = mount(
-            <TestFormControlSwitch
+            <TestControlSwitch
                 {...formControlSwitchProps}
                 schema={checkboxSchema.properties.toggle}
                 schemaLocation={"properties.toggle"}
@@ -195,7 +204,7 @@ describe("FormControlSwitch", () => {
     });
     test("should render a link when an object type is available", () => {
         const rendered: any = mount(
-            <TestFormControlSwitch
+            <TestControlSwitch
                 {...formControlSwitchProps}
                 schema={objectSchema.properties.objectNoRequired}
                 schemaLocation={"properties.objectNoRequired"}
@@ -209,7 +218,7 @@ describe("FormControlSwitch", () => {
     });
     test("should render the array UI when an array type is available", () => {
         const rendered: any = mount(
-            <TestFormControlSwitch
+            <TestControlSwitch
                 {...formControlSwitchProps}
                 schema={arraySchema.properties.strings}
                 schemaLocation={"properties.strings"}
@@ -223,7 +232,7 @@ describe("FormControlSwitch", () => {
     });
     test("should render the children UI when a children type is available", () => {
         const rendered: any = mount(
-            <TestFormControlSwitch
+            <TestControlSwitch
                 {...formControlSwitchProps}
                 schema={childrenSchema.reactProperties.children}
                 schemaLocation={"reactProperties.children"}
@@ -237,7 +246,7 @@ describe("FormControlSwitch", () => {
     });
     test("should render a select when enums are available", () => {
         const rendered: any = mount(
-            <TestFormControlSwitch
+            <TestControlSwitch
                 {...formControlSwitchProps}
                 schema={textareaSchema.properties.tag}
                 schemaLocation={"properties.tag"}
@@ -251,7 +260,7 @@ describe("FormControlSwitch", () => {
     });
     test("should restrict the child options if ids have been passed", () => {
         const renderedWithDefault: any = mount(
-            <TestFormControlSwitch
+            <TestControlSwitch
                 {...formControlSwitchProps}
                 childOptions={[
                     {
@@ -276,7 +285,7 @@ describe("FormControlSwitch", () => {
         );
 
         const renderedWithoutDefaultAndIds: any = mount(
-            <TestFormControlSwitch
+            <TestControlSwitch
                 {...formControlSwitchProps}
                 childOptions={[
                     {
@@ -303,7 +312,7 @@ describe("FormControlSwitch", () => {
         );
 
         const renderedWithDefaultAndIds: any = mount(
-            <TestFormControlSwitch
+            <TestControlSwitch
                 {...formControlSwitchProps}
                 childOptions={[
                     {
@@ -336,7 +345,7 @@ describe("FormControlSwitch", () => {
             test("dataLocation", () => {
                 const dataLocation: string = "text";
                 const rendered: any = mount(
-                    <TestFormControlSwitch
+                    <TestControlSwitch
                         {...formControlSwitchProps}
                         schema={textareaSchema.properties.textWithDefault}
                         schemaLocation={"properties.text"}
@@ -353,7 +362,7 @@ describe("FormControlSwitch", () => {
             test("schemaLocation", () => {
                 const schemaLocation: string = "properties.text";
                 const rendered: any = mount(
-                    <TestFormControlSwitch
+                    <TestControlSwitch
                         {...formControlSwitchProps}
                         schema={textareaSchema.properties.textWithDefault}
                         schemaLocation={schemaLocation}
@@ -370,7 +379,7 @@ describe("FormControlSwitch", () => {
             test("data", () => {
                 const data: string = "Foo";
                 const rendered: any = mount(
-                    <TestFormControlSwitch
+                    <TestControlSwitch
                         {...formControlSwitchProps}
                         schema={textareaSchema.properties.textWithDefault}
                         schemaLocation={"properties.text"}
@@ -387,7 +396,7 @@ describe("FormControlSwitch", () => {
             test("schema", () => {
                 const schema: any = textareaSchema.properties.textWithDefault;
                 const rendered: any = mount(
-                    <TestFormControlSwitch
+                    <TestControlSwitch
                         {...formControlSwitchProps}
                         schema={schema}
                         schemaLocation={"properties.text"}
@@ -404,7 +413,7 @@ describe("FormControlSwitch", () => {
             });
             test("required", () => {
                 const rendered: any = mount(
-                    <TestFormControlSwitch {...formControlSwitchProps} required={true} />
+                    <TestControlSwitch {...formControlSwitchProps} required={true} />
                 );
 
                 expect(rendered.find("StandardControlTemplate").prop("required")).toEqual(
@@ -414,7 +423,7 @@ describe("FormControlSwitch", () => {
             test("label", () => {
                 const label: string = "Foo";
                 const rendered: any = mount(
-                    <TestFormControlSwitch
+                    <TestControlSwitch
                         {...formControlSwitchProps}
                         schema={{
                             title: label,
@@ -429,7 +438,7 @@ describe("FormControlSwitch", () => {
             test("labelTooltip", () => {
                 const labelTooltip: string = "Foo";
                 const rendered: any = mount(
-                    <TestFormControlSwitch
+                    <TestControlSwitch
                         {...formControlSwitchProps}
                         schema={{
                             description: labelTooltip,
@@ -444,7 +453,7 @@ describe("FormControlSwitch", () => {
             test("disabled", () => {
                 const disabled: boolean = true;
                 const rendered: any = mount(
-                    <TestFormControlSwitch
+                    <TestControlSwitch
                         {...formControlSwitchProps}
                         schema={{
                             disabled,
@@ -459,10 +468,7 @@ describe("FormControlSwitch", () => {
             test("onChange", () => {
                 const onChange: any = jest.fn();
                 const rendered: any = mount(
-                    <TestFormControlSwitch
-                        {...formControlSwitchProps}
-                        onChange={onChange}
-                    />
+                    <TestControlSwitch {...formControlSwitchProps} onChange={onChange} />
                 );
 
                 expect(rendered.find("StandardControlTemplate").prop("onChange")).toEqual(
@@ -472,7 +478,7 @@ describe("FormControlSwitch", () => {
             test("default", () => {
                 const defaultValue: string = "Bar";
                 const rendered: any = mount(
-                    <TestFormControlSwitch
+                    <TestControlSwitch
                         {...formControlSwitchProps}
                         schema={{
                             default: defaultValue,
@@ -487,7 +493,7 @@ describe("FormControlSwitch", () => {
             test("const", () => {
                 const constValue: string = "Bar";
                 const rendered: any = mount(
-                    <TestFormControlSwitch
+                    <TestControlSwitch
                         {...formControlSwitchProps}
                         schema={{
                             const: constValue,
@@ -501,7 +507,7 @@ describe("FormControlSwitch", () => {
             });
             test("badge", () => {
                 const rendered: any = mount(
-                    <TestFormControlSwitch
+                    <TestControlSwitch
                         {...formControlSwitchProps}
                         schema={{
                             badge: BadgeType.locked,
@@ -516,7 +522,7 @@ describe("FormControlSwitch", () => {
             test("badgeDescription", () => {
                 const badgeDescription: string = "Foo";
                 const rendered: any = mount(
-                    <TestFormControlSwitch
+                    <TestControlSwitch
                         {...formControlSwitchProps}
                         schema={{
                             badgeDescription,
@@ -531,7 +537,7 @@ describe("FormControlSwitch", () => {
             test("invalidMessage", () => {
                 const invalidMessage: string = "Foo";
                 const rendered: any = mount(
-                    <TestFormControlSwitch
+                    <TestControlSwitch
                         {...formControlSwitchProps}
                         invalidMessage={invalidMessage}
                     />
@@ -544,7 +550,7 @@ describe("FormControlSwitch", () => {
             test("displayValidationBrowserDefault", () => {
                 const displayValidationBrowserDefault: boolean = true;
                 const rendered: any = mount(
-                    <TestFormControlSwitch
+                    <TestControlSwitch
                         {...formControlSwitchProps}
                         displayValidationBrowserDefault={displayValidationBrowserDefault}
                     />
@@ -559,7 +565,7 @@ describe("FormControlSwitch", () => {
             test("displayValidationInline", () => {
                 const displayValidationInline: boolean = true;
                 const rendered: any = mount(
-                    <TestFormControlSwitch
+                    <TestControlSwitch
                         {...formControlSwitchProps}
                         displayValidationInline={displayValidationInline}
                     />
@@ -574,7 +580,7 @@ describe("FormControlSwitch", () => {
             test("displayValidationInline", () => {
                 const onUpdateSection: any = jest.fn();
                 const rendered: any = mount(
-                    <TestFormControlSwitch
+                    <TestControlSwitch
                         {...formControlSwitchProps}
                         onUpdateSection={onUpdateSection}
                     />
@@ -587,7 +593,7 @@ describe("FormControlSwitch", () => {
             test("softRemove", () => {
                 const softRemove: boolean = true;
                 const rendered: any = mount(
-                    <TestFormControlSwitch
+                    <TestControlSwitch
                         {...formControlSwitchProps}
                         softRemove={softRemove}
                     />

@@ -10,27 +10,27 @@ import {
     getLabel,
     getOneOfAnyOfSelectOptions,
     PropertyKeyword,
-} from "./utilities";
+} from "../utilities";
 import React from "react";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
-import FormCategory from "./form-category";
-import styles from "./form-section.style";
+import FormCategory from "./utilities/category";
+import styles from "./control.section.style";
 import { get, omit } from "lodash-es";
 import {
     FormCategoryConfig,
     FormControlItem,
     FormControlParameters,
     FormControlsWithConfigOptions,
-    FormSectionClassNameContract,
-    FormSectionProps,
-    FormSectionState,
     InitialOneOfAnyOfState,
-} from "./form-section.props";
-import FormSectionValidation from "./form-section-validation";
-import FormControlSwitch from "./form-control-switch";
-import FormOneOfAnyOf from "./form-one-of-any-of";
-import FormDictionary from "./form-dictionary";
+    SectionControlClassNameContract,
+    SectionControlProps,
+    SectionControlState,
+} from "./control.section.props";
+import SectionControlValidation from "./utilities/section.validation";
+import FormControlSwitch from "./utilities/control-switch";
+import FormOneOfAnyOf from "./utilities/section.one-of-any-of";
+import FormDictionary from "./utilities/dictionary";
 import { classNames } from "@microsoft/fast-web-utilities";
 import { ErrorObject } from "ajv";
 
@@ -38,33 +38,35 @@ import { ErrorObject } from "ajv";
  * Schema form component definition
  * @extends React.Component
  */
-class FormSection extends React.Component<
-    FormSectionProps & ManagedClasses<FormSectionClassNameContract>,
-    FormSectionState
+class SectionControl extends React.Component<
+    SectionControlProps & ManagedClasses<SectionControlClassNameContract>,
+    SectionControlState
 > {
-    public static displayName: string = "FormSection";
+    public static displayName: string = "SectionControl";
 
     public static defaultProps: Partial<
-        FormSectionProps & ManagedClasses<FormSectionClassNameContract>
+        SectionControlProps & ManagedClasses<SectionControlClassNameContract>
     > = {
         managedClasses: {},
     };
 
     public static getDerivedStateFromProps(
-        props: FormSectionProps,
-        state: FormSectionState
-    ): Partial<FormSectionState> {
+        props: SectionControlProps,
+        state: SectionControlState
+    ): Partial<SectionControlState> {
         if (props.schema !== state.schema) {
-            return getInitialOneOfAnyOfState(props.schema, props.data);
+            return getInitialOneOfAnyOfState(props.schema, props.value);
         }
 
         return null;
     }
 
-    constructor(props: FormSectionProps & ManagedClasses<FormSectionClassNameContract>) {
+    constructor(
+        props: SectionControlProps & ManagedClasses<SectionControlClassNameContract>
+    ) {
         super(props);
 
-        this.state = getInitialOneOfAnyOfState(this.props.schema, this.props.data);
+        this.state = getInitialOneOfAnyOfState(this.props.schema, this.props.value);
     }
 
     public render(): React.ReactNode {
@@ -76,14 +78,14 @@ class FormSection extends React.Component<
 
         return (
             <fieldset
-                className={classNames(this.props.managedClasses.formSection, [
-                    this.props.managedClasses.formSection__disabled,
+                className={classNames(this.props.managedClasses.sectionControl, [
+                    this.props.managedClasses.sectionControl__disabled,
                     isDisabled,
                 ])}
                 disabled={isDisabled}
             >
                 {this.renderFormValidation(invalidMessage)}
-                {this.renderFormSection(invalidMessage)}
+                {this.renderSectionControl(invalidMessage)}
             </fieldset>
         );
     }
@@ -91,11 +93,11 @@ class FormSection extends React.Component<
     /**
      * React lifecycle hook
      */
-    public componentDidUpdate(prevProps: FormSectionProps): void {
+    public componentDidUpdate(prevProps: SectionControlProps): void {
         if (checkIsDifferentSchema(prevProps.schema, this.props.schema)) {
             const initialOneOfAnyOfState: InitialOneOfAnyOfState = getInitialOneOfAnyOfState(
                 this.props.schema,
-                this.props.data
+                this.props.value
             );
 
             this.setState(initialOneOfAnyOfState);
@@ -157,7 +159,7 @@ class FormSection extends React.Component<
 
         return (
             <FormControlSwitch
-                key={[this.props.dataLocation, propertyName].join(".")}
+                key={dataLocation}
                 controls={this.props.controls}
                 controlPlugins={this.props.controlPlugins}
                 controlComponents={this.props.controlComponents}
@@ -166,7 +168,7 @@ class FormSection extends React.Component<
                 disabled={disabled}
                 default={get(this.props.default, propertyName)}
                 label={getLabel(label, this.state.schema.title)}
-                data={getData(propertyName, this.props.data)}
+                data={getData(propertyName, this.props.value)}
                 dataLocation={dataLocation}
                 schemaLocation={schemaLocation}
                 childOptions={this.props.childOptions}
@@ -422,6 +424,7 @@ class FormSection extends React.Component<
             return (
                 <FormDictionary
                     index={0}
+                    type={this.props.type}
                     controls={this.props.controls}
                     controlPlugins={this.props.controlPlugins}
                     controlComponents={this.props.controlComponents}
@@ -432,7 +435,7 @@ class FormSection extends React.Component<
                     propertyLabel={get(schema, `propertyTitle`, "Property key")}
                     additionalProperties={schema.additionalProperties}
                     enumeratedProperties={this.getEnumeratedProperties(schema)}
-                    data={this.props.data}
+                    data={this.props.value}
                     schema={schema}
                     required={schema.required}
                     label={schema.title || this.props.untitled}
@@ -454,7 +457,7 @@ class FormSection extends React.Component<
     private renderFormValidation(invalidMessage: string): React.ReactNode {
         if (invalidMessage !== "") {
             return (
-                <FormSectionValidation
+                <SectionControlValidation
                     invalidMessage={invalidMessage}
                     validationErrors={this.getValidationErrorsForSectionValidation()}
                     dataLocation={this.props.dataLocation}
@@ -463,7 +466,7 @@ class FormSection extends React.Component<
         }
     }
 
-    private renderFormSection(invalidMessage: string): React.ReactNode {
+    private renderSectionControl(invalidMessage: string): React.ReactNode {
         return (
             <div>
                 <div>
@@ -523,5 +526,5 @@ class FormSection extends React.Component<
     }
 }
 
-export { FormSection };
-export default manageJss(styles)(FormSection);
+export { SectionControl };
+export default manageJss(styles)(SectionControl);

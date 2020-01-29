@@ -1,7 +1,7 @@
 import "jest";
 import { get } from "lodash-es";
 import React from "react";
-import { ChildOptionItem, mapDataToComponent } from "./";
+import { ChildOptionItem, mapDataToComponent } from "./index";
 import {
     CodePreviewChildOption,
     CodePreviewConfig,

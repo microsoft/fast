@@ -1,13 +1,11 @@
 import React from "react";
 import Adapter from "enzyme-adapter-react-16";
 import { configure, mount } from "enzyme";
-import StyledFormSectionValidation, {
-    FormSectionValidation,
-} from "./form-section-validation";
+import StyledSectionValidation, { SectionValidation } from "./section.validation";
 import {
-    FormSectionValidationClassNameContract,
-    FormSectionValidationProps,
-} from "./form-section-validation.props";
+    SectionValidationClassNameContract,
+    SectionValidationProps,
+} from "./section.validation.props";
 import { ErrorObject } from "ajv";
 
 /*
@@ -15,21 +13,20 @@ import { ErrorObject } from "ajv";
  */
 configure({ adapter: new Adapter() });
 
-const formSectionValidationProps: FormSectionValidationProps = {
+const sectionValidationProps: SectionValidationProps = {
     invalidMessage: "",
     dataLocation: "",
     validationErrors: [],
 };
 
-const managedClasses: FormSectionValidationClassNameContract = {
-    formSectionValidation: "formSectionValidation",
-    formSectionValidation_expandTrigger: "formSectionValidation_expandTrigger",
-    formSectionValidation_expandTrigger__active:
-        "formSectionValidation_expandTrigger__active",
-    formSectionValidation_controlRegion: "formSectionValidation_controlRegion",
-    formSectionValidation_message: "formSectionValidation_message",
-    formSectionValidation_errorList: "formSectionValidation_errorList",
-    formSectionValidation_errorListItem: "formSectionValidation_errorListItem",
+const managedClasses: SectionValidationClassNameContract = {
+    sectionValidation: "sectionValidation",
+    sectionValidation_expandTrigger: "sectionValidation_expandTrigger",
+    sectionValidation_expandTrigger__active: "sectionValidation_expandTrigger__active",
+    sectionValidation_controlRegion: "sectionValidation_controlRegion",
+    sectionValidation_message: "sectionValidation_message",
+    sectionValidation_errorList: "sectionValidation_errorList",
+    sectionValidation_errorListItem: "sectionValidation_errorListItem",
 };
 
 const validationErrors: ErrorObject[] = [
@@ -49,42 +46,42 @@ const validationErrors: ErrorObject[] = [
     },
 ];
 
-describe("FormSectionValidation", () => {
+describe("SectionValidation", () => {
     test("should not throw", () => {
         expect(() => {
-            mount(<StyledFormSectionValidation {...formSectionValidationProps} />);
+            mount(<StyledSectionValidation {...sectionValidationProps} />);
         }).not.toThrow();
     });
     test("should show a top level message denoting that the object is invalid", () => {
         const rendered: any = mount(
-            <FormSectionValidation
-                {...formSectionValidationProps}
+            <SectionValidation
+                {...sectionValidationProps}
                 managedClasses={managedClasses}
                 invalidMessage={"foo"}
             />
         );
 
         expect(
-            rendered.find(`.${managedClasses.formSectionValidation}`).contains("foo")
+            rendered.find(`.${managedClasses.sectionValidation}`).contains("foo")
         ).toEqual(true);
     });
     test("should not contain an expand button when there are no validationErrors", () => {
         const rendered: any = mount(
-            <FormSectionValidation
-                {...formSectionValidationProps}
+            <SectionValidation
+                {...sectionValidationProps}
                 managedClasses={managedClasses}
                 invalidMessage={"foo"}
             />
         );
 
         expect(
-            rendered.find(`.${managedClasses.formSectionValidation_expandTrigger}`)
+            rendered.find(`.${managedClasses.sectionValidation_expandTrigger}`)
         ).toHaveLength(0);
     });
     test("should contain an expand button when validationErrors are passed", () => {
         const rendered: any = mount(
-            <FormSectionValidation
-                {...formSectionValidationProps}
+            <SectionValidation
+                {...sectionValidationProps}
                 managedClasses={managedClasses}
                 invalidMessage={"foo"}
                 validationErrors={validationErrors}
@@ -92,13 +89,13 @@ describe("FormSectionValidation", () => {
         );
 
         expect(
-            rendered.find(`.${managedClasses.formSectionValidation_expandTrigger}`)
+            rendered.find(`.${managedClasses.sectionValidation_expandTrigger}`)
         ).toHaveLength(1);
     });
     test("should not show validationError messages initially", () => {
         const rendered: any = mount(
-            <FormSectionValidation
-                {...formSectionValidationProps}
+            <SectionValidation
+                {...sectionValidationProps}
                 managedClasses={managedClasses}
                 invalidMessage={"foo"}
                 validationErrors={validationErrors}
@@ -106,44 +103,44 @@ describe("FormSectionValidation", () => {
         );
 
         expect(
-            rendered.find(`.${managedClasses.formSectionValidation_errorListItem}`)
+            rendered.find(`.${managedClasses.sectionValidation_errorListItem}`)
         ).toHaveLength(0);
     });
     test("should show all validationError messages when the expand button is pressed", () => {
         const rendered: any = mount(
-            <FormSectionValidation
-                {...formSectionValidationProps}
+            <SectionValidation
+                {...sectionValidationProps}
                 managedClasses={managedClasses}
                 invalidMessage={"foo"}
                 validationErrors={validationErrors}
             />
         );
         const expandTrigger: any = rendered.find(
-            `.${managedClasses.formSectionValidation_expandTrigger}`
+            `.${managedClasses.sectionValidation_expandTrigger}`
         );
         expandTrigger.simulate("click");
 
         expect(
-            rendered.find(`.${managedClasses.formSectionValidation_errorListItem}`)
+            rendered.find(`.${managedClasses.sectionValidation_errorListItem}`)
         ).toHaveLength(2);
     });
     test("should hide all validationError messages when the expand button is collapsed", () => {
         const rendered: any = mount(
-            <FormSectionValidation
-                {...formSectionValidationProps}
+            <SectionValidation
+                {...sectionValidationProps}
                 managedClasses={managedClasses}
                 invalidMessage={"foo"}
                 validationErrors={validationErrors}
             />
         );
         const expandTrigger: any = rendered.find(
-            `.${managedClasses.formSectionValidation_expandTrigger}`
+            `.${managedClasses.sectionValidation_expandTrigger}`
         );
         expandTrigger.simulate("click");
         expandTrigger.simulate("click");
 
         expect(
-            rendered.find(`.${managedClasses.formSectionValidation_errorListItem}`)
+            rendered.find(`.${managedClasses.sectionValidation_errorListItem}`)
         ).toHaveLength(0);
     });
 });

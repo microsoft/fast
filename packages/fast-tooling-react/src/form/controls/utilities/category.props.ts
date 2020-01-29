@@ -1,16 +1,16 @@
 /**
  * Select class name contract
  */
-export interface FormCategoryClassNameContract {
-    formCategory_button: string;
-    formCategory_header: string;
-    formCategory__collapsed: string;
+export interface CategoryClassNameContract {
+    category_button: string;
+    category_header: string;
+    category__collapsed: string;
 }
 
 /**
  * Select state interface
  */
-export interface FormCategoryProps {
+export interface CategoryProps {
     /**
      * Passes the category title
      * If the title is null, this should not render in a category
@@ -23,6 +23,6 @@ export interface FormCategoryProps {
     expandable?: boolean;
 }
 
-export interface FormCategoryState {
+export interface CategoryState {
     expanded?: boolean;
 }

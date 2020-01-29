@@ -4,6 +4,7 @@ import { configure, mount, shallow } from "enzyme";
 import { NumberFieldControl } from "./control.number-field";
 import { NumberFieldControlProps } from "./control.number-field.props";
 import { NumberFieldControlClassNameContract } from "./control.number-field.style";
+import { ControlType } from "../templates";
 
 /*
  * Configure Enzyme
@@ -17,6 +18,7 @@ const managedClasses: NumberFieldControlClassNameContract = {
 };
 
 const numberFieldProps: NumberFieldControlProps = {
+    type: ControlType.numberField,
     dataLocation: "",
     onChange: jest.fn(),
     min: 0,

@@ -1,14 +1,14 @@
 import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager-react";
-import { FormSectionClassNameContract } from "./form-section.props";
+import { SectionControlClassNameContract } from "./control.section.props";
 
-const styles: ComponentStyles<FormSectionClassNameContract, {}> = {
-    formSection: {
+const styles: ComponentStyles<SectionControlClassNameContract, {}> = {
+    sectionControl: {
         margin: "0",
         padding: "0",
         border: "none",
         "min-inline-size": "unset", // override for fieldsets inherited style
     },
-    formSection__disabled: {},
+    sectionControl__disabled: {},
 };
 
 export default styles;

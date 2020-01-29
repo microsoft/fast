@@ -2,17 +2,7 @@ import {
     ControlConfig,
     ControlTemplateUtilitiesProps,
 } from "./template.control.utilities.props";
-
-/**
- * This is the context in which the control exists,
- * "default" places the control inset to align with
- * actions that appear on the right, "fill" stretches
- * the control to be the full width of the available space
- */
-export enum ControlContext {
-    default = "default",
-    fill = "fill",
-}
+import { ControlContext } from "./types";
 
 export interface StandardControlTemplateProps extends ControlTemplateUtilitiesProps {
     /**
