@@ -55,7 +55,7 @@ async function onMessage(message: UIMessage): Promise<void> {
         await setStrokeFill(node, message.value);
     }
 
-    // paint
+    // Sync plugin UI with node state and paint changed nodes
     setPluginUIState(getPluginUIState(node));
     painter.paint();
 }
@@ -110,7 +110,8 @@ async function setBackgroundFill(node: FillRecipeNode, name: string): Promise<vo
 }
 
 /**
- * Re-evaluates all of the assigned recipes inside a given node.
+ * Updates all nodes recursively, re-evaluating any nodes with
+ * recipes assigned
  */
 async function updateTree(node: BaseNode): Promise<void> {
     if (!canHaveChildren(node)) {
