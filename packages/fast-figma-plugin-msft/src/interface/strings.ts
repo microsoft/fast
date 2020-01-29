@@ -3,6 +3,10 @@ const strings = {
     noValidElementSelected: "Select an element to see style options.",
     // Displayed where the active note type is when no valid node type is selected
     invalidActiveNodeType: "N/A",
+    // Button text to clear plugin data
+    clearPluginDataTriggerText: "Clear data",
+    clearPluginDataTriggerTooltip:
+        "Clear all site data from this node and all child nodes",
 };
 
 // Simple implementation of string retrieval that should support localization down the line

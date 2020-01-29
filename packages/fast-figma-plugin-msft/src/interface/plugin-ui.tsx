@@ -29,6 +29,7 @@ import {
 import { defaultState, PluginUIState } from "./plugin-ui.state";
 import { stringById } from "./strings";
 import { ListboxItemProps } from "@microsoft/fast-components-react-base";
+import { string } from "prop-types";
 
 const designSystem: DesignSystem = { ...DesignSystemDefaults, density: -2 };
 const dividerStyleOverrides: ComponentStyleSheet<
@@ -104,10 +105,10 @@ export class PluginUI extends React.Component<{}, PluginUIState> {
                             </Caption>
                             {this.state.activeNodeType ? (
                                 <NeutralButton
-                                    title="Clear all site data from this node and all child nodes"
+                                    title={stringById("clearPluginDataTriggerTooltip")}
                                     onClick={this.handleRemoveDataClick}
                                 >
-                                    Clear data
+                                    {stringById("clearPluginDataTriggerText")}
                                 </NeutralButton>
                             ) : null}
                         </div>
