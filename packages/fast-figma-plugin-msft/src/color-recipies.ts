@@ -131,6 +131,22 @@ export class PaintOperation {
     }
 }
 
+class Painter {
+    private queue: PaintOperation[];
+
+    /**
+     * Queues an operation to paint.
+     * @param operation The paint operation to queue
+     */
+    public queueOperation(operation: PaintOperation): () => void {
+        this.queue.push(operation);
+
+        return () => {
+            this.queue.filter((op: PaintOperation) => op !== operation);
+        };
+    }
+}
+
 export async function getRecipeValue(
     type: ColorRecipeType,
     name: string,
