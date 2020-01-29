@@ -29,7 +29,7 @@ import {
     neutralOutline,
 } from "@microsoft/fast-components-styles-msft";
 import { SwatchFamily } from "@microsoft/fast-components-styles-msft/dist/utilities/color/common";
-import { ColorRGBA64 } from "@microsoft/fast-colors";
+import { ColorRGBA64, parseColor } from "@microsoft/fast-colors";
 import {
     FillRecipeNode,
     getPluginData,
@@ -91,6 +91,46 @@ const fillRecipeNames: string[] = Object.keys(fillRecipes);
 const strokeRecipeNames: string[] = Object.keys(strokeRecipes);
 const textFillRecipeNames: string[] = Object.keys(textFillRecipes);
 
+export class PaintOperation {
+    private id: string;
+    private types: ColorRecipeType[] = ["backgroundFill", "strokeFill", "textFill"];
+
+    constructor(nodeID: string, ...types: ColorRecipeType[]) {
+        this.id = nodeID;
+
+        if (types.length) {
+            this.types = types;
+        }
+    }
+
+    public paint() {
+        const node = this.node;
+
+        if (!!node) {
+            this.types.forEach(this.paintProperty.bind(this, node));
+        }
+    }
+
+    private get node(): BaseNode | null {
+        return figma.getNodeById(this.id);
+    }
+
+    private paintProperty(node: BaseNode, type: ColorRecipeType) {
+        if (supports(node, type as any)) {
+            // TODO: why does a ColorRecipeType fail here?
+            const data: string[] | "" = getPluginData(node, type); // TODO: this will fail until we store key/value on node instead of just key
+
+            if (Array.isArray(data)) {
+                const value = parseColor(data[1]);
+
+                if (value instanceof ColorRGBA64) {
+                    paintNode(node, type as any, value); // TODO: Why does a ColorRecipeType fail here?
+                }
+            }
+        }
+    }
+}
+
 export async function getRecipeValue(
     type: ColorRecipeType,
     name: string,
@@ -121,6 +161,7 @@ export async function getRecipeValue(
         throw new Error(`No ${type} recipe of name ${name} found.`);
     }
 }
+``;
 
 export async function getRecipeNames(type: ColorRecipeType): Promise<string[]> {
     switch (type) {
