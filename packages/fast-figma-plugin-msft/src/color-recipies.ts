@@ -29,16 +29,7 @@ import {
     neutralOutline,
 } from "@microsoft/fast-components-styles-msft";
 import { SwatchFamily } from "@microsoft/fast-components-styles-msft/dist/utilities/color/common";
-import { ColorRGBA64, parseColor } from "@microsoft/fast-colors";
-import {
-    FillRecipeNode,
-    getPluginData,
-    PluginDataNode,
-    StrokeRecipeNode,
-    supports,
-    TextFillRecipeNode,
-} from "./plugin-data";
-import { getDesignSystem } from "./utilities/design-system";
+
 /**
  * Defines the names used for color recipes through the app
  */
@@ -91,62 +82,6 @@ const fillRecipeNames: string[] = Object.keys(fillRecipes);
 const strokeRecipeNames: string[] = Object.keys(strokeRecipes);
 const textFillRecipeNames: string[] = Object.keys(textFillRecipes);
 
-export class PaintOperation {
-    private id: string;
-    private types: ColorRecipeType[] = ["backgroundFill", "strokeFill", "textFill"];
-
-    constructor(nodeID: string, ...types: ColorRecipeType[]) {
-        this.id = nodeID;
-
-        if (types.length) {
-            this.types = types;
-        }
-    }
-
-    public paint() {
-        const node = this.node;
-
-        if (!!node) {
-            this.types.forEach(this.paintProperty.bind(this, node));
-        }
-    }
-
-    private get node(): BaseNode | null {
-        return figma.getNodeById(this.id);
-    }
-
-    private paintProperty(node: BaseNode, type: ColorRecipeType) {
-        if (supports(node, type as any)) {
-            // TODO: why does a ColorRecipeType fail here?
-            const data: string[] | "" = getPluginData(node, type); // TODO: this will fail until we store key/value on node instead of just key
-
-            if (Array.isArray(data)) {
-                const value = parseColor(data[1]);
-
-                if (value instanceof ColorRGBA64) {
-                    paintNode(node, type as any, value); // TODO: Why does a ColorRecipeType fail here?
-                }
-            }
-        }
-    }
-}
-
-class Painter {
-    private queue: PaintOperation[];
-
-    /**
-     * Queues an operation to paint.
-     * @param operation The paint operation to queue
-     */
-    public queueOperation(operation: PaintOperation): () => void {
-        this.queue.push(operation);
-
-        return () => {
-            this.queue.filter((op: PaintOperation) => op !== operation);
-        };
-    }
-}
-
 export async function getRecipeValue(
     type: ColorRecipeType,
     name: string,
@@ -177,7 +112,6 @@ export async function getRecipeValue(
         throw new Error(`No ${type} recipe of name ${name} found.`);
     }
 }
-``;
 
 export async function getRecipeNames(type: ColorRecipeType): Promise<string[]> {
     switch (type) {
@@ -187,51 +121,5 @@ export async function getRecipeNames(type: ColorRecipeType): Promise<string[]> {
             return textFillRecipeNames;
         case "strokeFill":
             return strokeRecipeNames;
-    }
-}
-
-/**
- * Applies color to a node, where what it paints depends on the ColorRecipeType
- */
-export function paintNode(
-    node: FillRecipeNode,
-    type: "backgroundFill",
-    color: ColorRGBA64
-): void;
-export function paintNode(
-    node: StrokeRecipeNode,
-    type: "strokeFill",
-    color: ColorRGBA64
-): void;
-export function paintNode(
-    node: TextFillRecipeNode,
-    type: "textFill",
-    color: ColorRGBA64
-): void;
-export function paintNode(
-    node: PluginDataNode,
-    type: ColorRecipeType,
-    color: ColorRGBA64
-): void {
-    const colorObject = color.toObject();
-    const paint: SolidPaint = {
-        type: "SOLID",
-        visible: true,
-        opacity: colorObject.a,
-        blendMode: "NORMAL",
-        color: {
-            r: colorObject.r,
-            g: colorObject.g,
-            b: colorObject.b,
-        },
-    };
-    switch (type) {
-        case "backgroundFill":
-        case "textFill":
-            node.fills = [paint];
-            break;
-        case "strokeFill":
-            node.strokes = [paint];
-            break;
     }
 }

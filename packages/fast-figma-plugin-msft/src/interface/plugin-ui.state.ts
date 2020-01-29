@@ -59,11 +59,15 @@ export async function getPluginUIState(node: SceneNode | null): Promise<PluginUI
     if (node === null || !supportsPluginData(node)) {
         return defaultState;
     } else {
+        const backgroundFill = getPluginData(node, "backgroundFill");
+        const strokeFill = getPluginData(node, "strokeFill");
+        const textFill = getPluginData(node, "textFill");
+
         return {
             activeNodeType: node.type,
-            activeFill: getPluginData(node, "backgroundFill"),
-            activeStroke: getPluginData(node, "strokeFill"),
-            activeTextFill: getPluginData(node, "textFill"),
+            activeFill: Array.isArray(backgroundFill) ? backgroundFill[0] : "",
+            activeStroke: Array.isArray(strokeFill) ? strokeFill[0] : "",
+            activeTextFill: Array.isArray(textFill) ? textFill[0] : "",
             fills: supports(node, "backgroundFill")
                 ? [""].concat(await getRecipeNames("backgroundFill"))
                 : defaultState.fills,
