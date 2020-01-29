@@ -1,5 +1,3 @@
-import { getPluginUIState, setPluginUIState } from "./interface/plugin-ui.state";
-import { getDesignSystem } from "./utilities/design-system";
 import {
     isComponentNode,
     isFrameNode,
@@ -15,8 +13,9 @@ import { DesignSystem } from "@microsoft/fast-components-styles-msft";
 /**
  * Describes the data stored by the plugin with https://www.figma.com/plugin-docs/api/properties/nodes-setplugindata/
  */
-export interface PluginData extends Record<ColorRecipeType, string> {
-    designSystem: Partial<DesignSystem>;
+export interface PluginData
+    extends Record<ColorRecipeType, null | { name: string; value: string }> {
+    designSystem: Partial<DesignSystem> | null;
 }
 
 const data: Record<keyof PluginData, void> = {
@@ -55,14 +54,10 @@ export function getPluginData(
 ): PluginData[keyof PluginData] {
     const raw = node.getPluginData(key);
 
-    if (key === "designSystem") {
-        try {
-            return JSON.parse(raw);
-        } catch (e) {
-            return {} as Partial<DesignSystem>;
-        }
-    } else {
-        return raw;
+    try {
+        return JSON.parse(raw);
+    } catch (e) {
+        return null;
     }
 }
 
@@ -81,17 +76,7 @@ export function setPluginData(
     key: keyof PluginData,
     value: PluginData[keyof PluginData]
 ): void {
-    if (key === "designSystem") {
-        node.setPluginData(key, JSON.stringify(value));
-    } else if (typeof value === "string") {
-        node.setPluginData(key, value);
-    } else {
-        throw new Error(
-            `Plugin property ${key} could not be set the the value of ${value} on node ${
-                node.id
-            }`
-        );
-    }
+    node.setPluginData(key, value === null ? "" : JSON.stringify(value));
 }
 
 export type FillRecipeNode = FrameNode | RectangleNode | PolygonNode | StarNode;
