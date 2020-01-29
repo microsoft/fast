@@ -21,7 +21,7 @@ import {
     SectionLinkControl,
     SelectControl,
     TextareaControl,
-} from "..";
+} from "../index";
 
 const TestSectionControl: typeof StyledSectionControl &
     ContextComponent<any> = DragDropContext(HTML5Backend)(StyledSectionControl);

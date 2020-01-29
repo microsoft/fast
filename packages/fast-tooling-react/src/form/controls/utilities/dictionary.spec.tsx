@@ -18,7 +18,7 @@ import {
     SectionLinkControl,
     SelectControl,
     TextareaControl,
-} from "../..";
+} from "../../index";
 
 /*
  * Configure Enzyme
