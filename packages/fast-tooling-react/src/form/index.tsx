@@ -1,11 +1,10 @@
 import React from "react";
 import BareForm from "./form";
-import { FormPlugin, FormPluginProps } from "./plugin";
 import {
     ControlConfig,
     ControlTemplateUtilities,
     ControlType,
-    StandardControlPlugin
+    StandardControlPlugin,
 } from "./templates";
 import { DndProvider } from "react-dnd";
 import HTML5Backend from "react-dnd-html5-backend";
@@ -25,8 +24,6 @@ export {
     ControlType,
     Form,
     BareForm,
-    FormPlugin,
-    FormPluginProps,
     StandardControlPlugin,
     ControlTemplateUtilities,
 };
