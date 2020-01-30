@@ -13,7 +13,6 @@ import {
 import { canUseDOM } from "exenv-es6";
 import { get, isEqual, isNil, uniqueId } from "lodash-es";
 import React from "react";
-import Button from "../button";
 import Listbox from "../listbox";
 import { ListboxItemProps } from "../listbox-item";
 import { DisplayNamePrefix } from "../utilities";
@@ -466,7 +465,10 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
         if (props.multiselectable) {
             return null;
         }
-        const labelledBy: string = `${this.props.labelledBy} ${triggerId}`;
+        const labelledByFromProp: string = isNil(this.props.labelledBy)
+            ? ""
+            : `${this.props.labelledBy} `;
+        const labelledBy: string = `${labelledByFromProp}${triggerId}`;
         return (
             <button
                 disabled={props.disabled}

@@ -7,6 +7,7 @@ import { DisplayNamePrefix } from "../utilities";
 import { SelectHandledProps, SelectProps, SelectUnhandledProps } from "./select.props";
 import { Background } from "../background";
 import { neutralLayerFloating } from "@microsoft/fast-components-styles-msft";
+import { isNil } from "lodash-es";
 
 class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, {}> {
     public static displayName: string = `${DisplayNamePrefix}Select`;
@@ -63,7 +64,11 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, {}> {
             select_buttonDisplayText,
         }: SelectClassNameContract = this.props.managedClasses;
 
-        const labelledBy: string = `${this.props.labelledBy} ${triggerId}`;
+        const labelledByFromProp: string = isNil(this.props.labelledBy)
+            ? ""
+            : `${this.props.labelledBy} `;
+
+        const labelledBy: string = `${labelledByFromProp}${triggerId}`;
 
         return (
             <button
