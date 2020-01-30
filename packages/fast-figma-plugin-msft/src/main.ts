@@ -166,28 +166,6 @@ async function updateTree(node: BaseNode): Promise<void> {
     }
 
     return;
-
-    // for (const child of node.children) {
-    //     if (supportsPluginData(child)) {
-    //         const fill = getPluginData(child, "backgroundFill");
-    //         const stroke = getPluginData(child, "strokeFill");
-    //         const textFill = getPluginData(child, "textFill");
-
-    //         if (supports(child, "backgroundFill") && fill && fill.name) {
-    //             await setBackgroundFill(child, fill.name);
-    //         }
-
-    //         if (supports(child, "strokeFill") && stroke && stroke.name) {
-    //             await setStrokeFill(child, stroke.name);
-    //         }
-
-    //         if (supports(child, "textFill") && textFill && textFill.name) {
-    //             await setTextFill(child, textFill.name);
-    //         }
-    //     }
-
-    //     await updateTree(child);
-    // }
 }
 
 /**
