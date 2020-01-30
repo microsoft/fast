@@ -54,6 +54,7 @@ async function onMessage(message: UIMessage): Promise<void> {
 
     if (message.type === SET_FILL_RECIPE && supports(node, "backgroundFill")) {
         await setBackgroundFill(node, message.value);
+        await updateTree(node);
     } else if (message.type === SET_TEXT_FILL_RECIPE && supports(node, "textFill")) {
         await setTextFill(node, message.value);
     } else if (message.type === SET_STROKE_RECIPE && supports(node, "strokeFill")) {
@@ -68,7 +69,7 @@ async function onMessage(message: UIMessage): Promise<void> {
         setPluginData(node, "designSystem", (!!data
             ? { ...data, ...message.value }
             : message.value) as Partial<DesignSystem>);
-        updateTree(node.parent!);
+        updateTree(node);
     } else if (
         message.type === REMOVE_DESIGN_SYSTEM_PROPERTY &&
         supports(node, "designSystem")
@@ -80,7 +81,7 @@ async function onMessage(message: UIMessage): Promise<void> {
             const value = Object.keys(data).length ? data : null;
 
             setPluginData(node, "designSystem", value);
-            updateTree(node.parent!);
+            updateTree(node);
         }
     }
 
@@ -130,8 +131,6 @@ async function setBackgroundFill(node: FillRecipeNode, name: string): Promise<vo
                 : { backgroundColor: value }
         );
         painter.queue(new PaintOperation(node.id, type));
-
-        updateTree(node);
     } catch (e) {
         // If we can't resolve the recipe
         setPluginData(node, type, null);
@@ -143,31 +142,52 @@ async function setBackgroundFill(node: FillRecipeNode, name: string): Promise<vo
  * recipes assigned
  */
 async function updateTree(node: BaseNode): Promise<void> {
-    if (!canHaveChildren(node)) {
-        return;
-    }
+    if (supportsPluginData(node)) {
+        const fill = getPluginData(node, "backgroundFill");
+        const stroke = getPluginData(node, "strokeFill");
+        const textFill = getPluginData(node, "textFill");
 
-    for (const child of node.children) {
-        if (supportsPluginData(child)) {
-            const fill = getPluginData(child, "backgroundFill");
-            const stroke = getPluginData(child, "strokeFill");
-            const textFill = getPluginData(child, "textFill");
-
-            if (supports(child, "backgroundFill") && fill && fill.name) {
-                await setBackgroundFill(child, fill.name);
-            }
-
-            if (supports(child, "strokeFill") && stroke && stroke.name) {
-                await setStrokeFill(child, stroke.name);
-            }
-
-            if (supports(child, "textFill") && textFill && textFill.name) {
-                await setTextFill(child, textFill.name);
-            }
+        if (supports(node, "backgroundFill") && fill && fill.name) {
+            await setBackgroundFill(node, fill.name);
         }
 
-        await updateTree(child);
+        if (supports(node, "strokeFill") && stroke && stroke.name) {
+            await setStrokeFill(node, stroke.name);
+        }
+
+        if (supports(node, "textFill") && textFill && textFill.name) {
+            await setTextFill(node, textFill.name);
+        }
     }
+    if (canHaveChildren(node)) {
+        for (const child of node.children) {
+            await updateTree(child);
+        }
+    }
+
+    return;
+
+    // for (const child of node.children) {
+    //     if (supportsPluginData(child)) {
+    //         const fill = getPluginData(child, "backgroundFill");
+    //         const stroke = getPluginData(child, "strokeFill");
+    //         const textFill = getPluginData(child, "textFill");
+
+    //         if (supports(child, "backgroundFill") && fill && fill.name) {
+    //             await setBackgroundFill(child, fill.name);
+    //         }
+
+    //         if (supports(child, "strokeFill") && stroke && stroke.name) {
+    //             await setStrokeFill(child, stroke.name);
+    //         }
+
+    //         if (supports(child, "textFill") && textFill && textFill.name) {
+    //             await setTextFill(child, textFill.name);
+    //         }
+    //     }
+
+    //     await updateTree(child);
+    // }
 }
 
 /**
