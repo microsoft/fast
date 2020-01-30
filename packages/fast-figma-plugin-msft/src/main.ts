@@ -5,6 +5,8 @@ import {
     SET_STROKE_RECIPE,
     SET_TEXT_FILL_RECIPE,
     UIMessage,
+    SET_DESIGN_SYSTEM_PROPERTY,
+    REMOVE_DESIGN_SYSTEM_PROPERTY,
 } from "./messaging/ui";
 import {
     FillRecipeNode,
@@ -58,6 +60,28 @@ async function onMessage(message: UIMessage): Promise<void> {
         await setStrokeFill(node, message.value);
     } else if (message.type === REMOVE_PLUGIN_DATA) {
         removeDataFromTree(node);
+    } else if (
+        message.type === SET_DESIGN_SYSTEM_PROPERTY &&
+        supports(node, "designSystem")
+    ) {
+        const data = getPluginData(node, "designSystem");
+        setPluginData(node, "designSystem", (!!data
+            ? { ...data, ...message.value }
+            : message.value) as Partial<DesignSystem>);
+        updateTree(node.parent!);
+    } else if (
+        message.type === REMOVE_DESIGN_SYSTEM_PROPERTY &&
+        supports(node, "designSystem")
+    ) {
+        const data = getPluginData(node, "designSystem");
+
+        if (data && data.hasOwnProperty(message.value)) {
+            delete data[message.value];
+            const value = Object.keys(data).length ? data : null;
+
+            setPluginData(node, "designSystem", value);
+            updateTree(node.parent!);
+        }
     }
 
     // Sync plugin UI with node state and paint changed nodes

@@ -1,6 +1,7 @@
 import { getRecipeNames } from "../color-recipies";
 import { setUIStateDataMessageCreator } from "../messaging/canvas";
 import { getPluginData, supports, supportsPluginData } from "../plugin-data";
+import { DesignSystem } from "@microsoft/fast-components-styles-msft";
 
 /**
  * Define the react state object for the Plugin UI
@@ -40,6 +41,11 @@ export interface PluginUIState {
      * The currently active textFill if any, otherwise null
      */
     activeTextFill: string;
+
+    /**
+     * The design system
+     */
+    designSystem: Partial<DesignSystem> | null;
 }
 
 export const defaultState: PluginUIState = {
@@ -50,6 +56,7 @@ export const defaultState: PluginUIState = {
     fills: [],
     strokes: [],
     textFills: [],
+    designSystem: null,
 };
 
 /**
@@ -77,6 +84,9 @@ export async function getPluginUIState(node: SceneNode | null): Promise<PluginUI
             textFills: supports(node, "textFill")
                 ? [""].concat(await getRecipeNames("textFill"))
                 : defaultState.textFills,
+            designSystem: supports(node, "designSystem")
+                ? getPluginData(node, "designSystem")
+                : null,
         };
     }
 }

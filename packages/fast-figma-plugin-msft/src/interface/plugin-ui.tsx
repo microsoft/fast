@@ -1,17 +1,20 @@
 import {
     Caption,
+    Checkbox,
     Divider,
     DividerClassNameContract,
     Label,
     LabelClassNameContract,
     NeutralButton,
     Paragraph,
+    Radio,
     Select,
     SelectOption,
 } from "@microsoft/fast-components-react-msft";
 import {
     DesignSystem,
     DesignSystemDefaults,
+    StandardLuminance,
 } from "@microsoft/fast-components-styles-msft";
 import {
     ComponentStyleSheet,
@@ -25,6 +28,8 @@ import {
     SET_FILL_RECIPE,
     SET_STROKE_RECIPE,
     SET_TEXT_FILL_RECIPE,
+    SET_DESIGN_SYSTEM_PROPERTY,
+    REMOVE_DESIGN_SYSTEM_PROPERTY,
 } from "../messaging/ui";
 import { defaultState, PluginUIState } from "./plugin-ui.state";
 import { stringById } from "./strings";
@@ -137,6 +142,7 @@ export class PluginUI extends React.Component<{}, PluginUIState> {
     private renderEditingUi(): JSX.Element {
         return (
             <div>
+                {this.renderThemeSwitcher()}
                 {this.state.fills.length > 0
                     ? this.renderRecipeSelector({
                           label: "Fill",
@@ -208,7 +214,7 @@ export class PluginUI extends React.Component<{}, PluginUIState> {
      * @param type the type field of a the message
      * @param value any value to send along with the type
      */
-    private dispatch = (type: string, value?: string): void => {
+    private dispatch = (type: string, value?: any): void => {
         parent.postMessage({ pluginMessage: { type, value } }, "*");
     };
 
@@ -223,4 +229,65 @@ export class PluginUI extends React.Component<{}, PluginUIState> {
             .map((option: ListboxItemProps): string => option.children as string)
             .join(" ");
     }
+
+    private renderThemeSwitcher(): JSX.Element | null {
+        if (!this.state.designSystem) {
+            return null;
+        }
+
+        const { baseLayerLuminance }: Partial<DesignSystem> = this.state.designSystem;
+        const themeSet: boolean = typeof baseLayerLuminance === "number";
+
+        return (
+            <div>
+                <Checkbox
+                    inputId={"theme-toggle"}
+                    checked={themeSet}
+                    onChange={themeSet ? this.removeTheme : this.setLightTheme}
+                >
+                    <Label slot="label" htmlFor={"theme-toggle"}>
+                        Theme
+                    </Label>
+                </Checkbox>
+                <Radio
+                    inputId={"light-theme"}
+                    checked={baseLayerLuminance === StandardLuminance.LightMode}
+                    disabled={!themeSet}
+                    name="theme"
+                    onChange={this.setLightTheme}
+                >
+                    <Label slot="label" htmlFor={"light-theme"}>
+                        Light
+                    </Label>
+                </Radio>
+                <Radio
+                    inputId={"dark-theme"}
+                    checked={baseLayerLuminance === StandardLuminance.DarkMode}
+                    disabled={!themeSet}
+                    name="theme"
+                    onChange={this.setDarkTheme}
+                >
+                    <Label slot="label" htmlFor={"dark-theme"}>
+                        Dark
+                    </Label>
+                </Radio>
+            </div>
+        );
+    }
+
+    private removeTheme = (): void => {
+        this.dispatch(REMOVE_DESIGN_SYSTEM_PROPERTY, "baseLayerLuminance");
+    };
+
+    private setLightTheme = (): void => {
+        this.dispatch(SET_DESIGN_SYSTEM_PROPERTY, {
+            baseLayerLuminance: StandardLuminance.LightMode,
+        });
+    };
+
+    private setDarkTheme = (): void => {
+        this.dispatch(SET_DESIGN_SYSTEM_PROPERTY, {
+            baseLayerLuminance: StandardLuminance.DarkMode,
+        });
+    };
 }
