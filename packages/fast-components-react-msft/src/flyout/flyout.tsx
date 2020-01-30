@@ -105,6 +105,7 @@ class Flyout extends Foundation<FlyoutHandledProps, FlyoutUnhandledProps, {}> {
                     ]
                 }
                 horizontalThreshold={this.props.horizontalThreshold}
+                horizontalLockToDefault={this.props.horizontalLockToDefault}
                 managedClasses={this.generateManagedClassNames()}
                 verticalAlwaysInView={this.props.verticalAlwaysInView}
                 verticalPositioningMode={
@@ -113,6 +114,7 @@ class Flyout extends Foundation<FlyoutHandledProps, FlyoutUnhandledProps, {}> {
                     ]
                 }
                 verticalThreshold={this.props.verticalThreshold}
+                verticalLockToDefault={this.props.verticalLockToDefault}
                 viewport={this.props.viewport}
                 style={{
                     height: this.props.height,
