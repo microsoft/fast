@@ -179,6 +179,7 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
     protected generateClassNames(): string {
         const {
             select,
+            select__scaleToFit,
             select__disabled,
             select_menu__open,
             select__multiSelectable,
@@ -187,6 +188,11 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
         return super.generateClassNames(
             classNames(
                 select,
+                [
+                    select__scaleToFit,
+                    !isNil(this.props.menuFlyoutConfig) &&
+                        this.props.menuFlyoutConfig.scaleToFit,
+                ],
                 [select__disabled, this.props.disabled],
                 [select_menu__open, this.state.isMenuOpen],
                 [select__multiSelectable, this.props.multiselectable]
