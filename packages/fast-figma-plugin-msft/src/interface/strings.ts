@@ -7,6 +7,10 @@ const strings = {
     clearPluginDataTriggerText: "Clear data",
     clearPluginDataTriggerTooltip:
         "Clear all site data from this node and all child nodes",
+    // Label for the input to turn theme on and off
+    toggleThemLabel: "Theme",
+    setLightThemeLabel: "Light",
+    setDarkThemeLabel: "dark",
 };
 
 // Simple implementation of string retrieval that should support localization down the line

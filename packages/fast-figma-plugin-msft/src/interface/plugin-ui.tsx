@@ -24,12 +24,12 @@ import React from "react";
 import { isSetUIStateMessage } from "../messaging/canvas";
 import { isPluginMessageEvent, PluginMessageData } from "../messaging/common";
 import {
+    REMOVE_DESIGN_SYSTEM_PROPERTY,
     REMOVE_PLUGIN_DATA,
+    SET_DESIGN_SYSTEM_PROPERTY,
     SET_FILL_RECIPE,
     SET_STROKE_RECIPE,
     SET_TEXT_FILL_RECIPE,
-    SET_DESIGN_SYSTEM_PROPERTY,
-    REMOVE_DESIGN_SYSTEM_PROPERTY,
 } from "../messaging/ui";
 import { defaultState, PluginUIState } from "./plugin-ui.state";
 import { stringById } from "./strings";
@@ -237,6 +237,9 @@ export class PluginUI extends React.Component<{}, PluginUIState> {
 
         const { baseLayerLuminance }: Partial<DesignSystem> = this.state.designSystem;
         const themeSet: boolean = typeof baseLayerLuminance === "number";
+        const style = {
+            marginInlineEnd: "12px",
+        };
 
         return (
             <div>
@@ -244,9 +247,10 @@ export class PluginUI extends React.Component<{}, PluginUIState> {
                     inputId={"theme-toggle"}
                     checked={themeSet}
                     onChange={themeSet ? this.removeTheme : this.setLightTheme}
+                    style={style}
                 >
                     <Label slot="label" htmlFor={"theme-toggle"}>
-                        Theme
+                        {stringById("toggleThemLabel")}
                     </Label>
                 </Checkbox>
                 <Radio
@@ -255,9 +259,10 @@ export class PluginUI extends React.Component<{}, PluginUIState> {
                     disabled={!themeSet}
                     name="theme"
                     onChange={this.setLightTheme}
+                    style={style}
                 >
                     <Label slot="label" htmlFor={"light-theme"}>
-                        Light
+                        {stringById("setLightThemeLabel")}
                     </Label>
                 </Radio>
                 <Radio
@@ -268,7 +273,7 @@ export class PluginUI extends React.Component<{}, PluginUIState> {
                     onChange={this.setDarkTheme}
                 >
                     <Label slot="label" htmlFor={"dark-theme"}>
-                        Dark
+                        {stringById("setDarkThemeLabel")}
                     </Label>
                 </Radio>
             </div>
