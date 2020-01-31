@@ -1404,21 +1404,6 @@ describe("viewport positioner", (): void => {
         expect(positionerDimension.height).toBe(110);
     });
 
-    test("extractElementFromRef function returns element passed in directly", (): void => {
-        const rendered: any = mount(
-            <ViewportPositioner
-                viewport={document.firstElementChild as HTMLElement}
-                anchor={anchorElement}
-                managedClasses={managedClasses}
-            />
-        );
-
-        const testElement: Element = document.createElement("div");
-        expect(rendered.instance()["extractElementFromRef"](testElement)).toBe(
-            testElement
-        );
-    });
-
     test("should create a resize observer if it is available", (): void => {
         const container: HTMLDivElement = document.createElement("div");
         document.body.appendChild(container);
