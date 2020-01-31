@@ -113,17 +113,22 @@ const styles: ComponentStyles<SelectClassNameContract, DesignSystem> = {
     },
     select__menuPositionTop: {
         "grid-template-rows": "1fr auto",
-
         "& $select_menu": {
             "grid-row": "2",
-            "margin-top": "12px",
         },
     },
     select__menuPositionBottom: {
         "grid-template-rows": "auto 1fr",
         "& $select_menu": {
             "grid-row": "1",
+        },
+    },
+    select__scaleToFit: {
+        "& $select_menu, & $select__menuPositionBottom": {
             "margin-bottom": "12px",
+        },
+        "& $select_menu, & $select__menuPositionTop": {
+            "margin-top": "12px",
         },
     },
 };

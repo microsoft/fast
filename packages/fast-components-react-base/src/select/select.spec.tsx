@@ -9,10 +9,7 @@ import {
     keyCodeSpace,
 } from "@microsoft/fast-web-utilities";
 import { DisplayNamePrefix } from "../utilities";
-import {
-    AxisPositioningMode,
-    ViewportPositionerVerticalPosition,
-} from "../viewport-positioner";
+import { AxisPositioningMode } from "../viewport-positioner";
 
 /*
  * Configure Enzyme
@@ -28,6 +25,7 @@ const itemC: JSX.Element = <ListboxItem id="c" value="c" displayString="abc" />;
 
 const managedClasses: SelectClassNameContract = {
     select: "select",
+    select__scaleToFit: "select__scaleToFit",
     select__disabled: "select__disabled",
     select_menu: "select_menu",
     select_menu__open: "select_menu__open",
@@ -494,6 +492,89 @@ describe("select", (): void => {
         );
         expect(positioner.prop("verticalPositioningMode")).toBe(
             AxisPositioningMode.inset
+        );
+    });
+
+    test("Default classname applied", (): void => {
+        const rendered: any = mount(
+            <Select managedClasses={managedClasses}>
+                {itemA}
+                {itemB}
+                {itemC}
+            </Select>
+        );
+
+        expect(rendered.instance().rootElement.current.className).toContain(
+            managedClasses.select
+        );
+        expect(rendered.instance().rootElement.current.className).not.toContain(
+            managedClasses.select__disabled
+        );
+        expect(rendered.instance().rootElement.current.className).not.toContain(
+            managedClasses.select__scaleToFit
+        );
+        expect(rendered.instance().rootElement.current.className).not.toContain(
+            managedClasses.select__multiSelectable
+        );
+        expect(rendered.instance().rootElement.current.className).not.toContain(
+            managedClasses.select_menu__open
+        );
+    });
+
+    test("Classname applied when disabled", (): void => {
+        const rendered: any = mount(
+            <Select managedClasses={managedClasses} disabled={true}>
+                {itemA}
+                {itemB}
+                {itemC}
+            </Select>
+        );
+        expect(rendered.instance().rootElement.current.className).toContain(
+            managedClasses.select__disabled
+        );
+    });
+
+    test("Classname applied when scaleToFit enabled", (): void => {
+        const rendered: any = mount(
+            <Select
+                managedClasses={managedClasses}
+                menuFlyoutConfig={{
+                    scaleToFit: true,
+                }}
+            >
+                {itemA}
+                {itemB}
+                {itemC}
+            </Select>
+        );
+        expect(rendered.instance().rootElement.current.className).toContain(
+            managedClasses.select__scaleToFit
+        );
+    });
+
+    test("Classname applied when multi-selectable", (): void => {
+        const rendered: any = mount(
+            <Select managedClasses={managedClasses} multiselectable={true}>
+                {itemA}
+                {itemB}
+                {itemC}
+            </Select>
+        );
+        expect(rendered.instance().rootElement.current.className).toContain(
+            managedClasses.select__multiSelectable
+        );
+    });
+
+    test("Classname applied when menu open", (): void => {
+        const rendered: any = mount(
+            <Select managedClasses={managedClasses} isMenuOpen={true}>
+                {itemA}
+                {itemB}
+                {itemC}
+            </Select>
+        );
+        expect(rendered.instance().rootElement.current.className).toContain(
+            managedClasses.select_menu__open
         );
     });
 });

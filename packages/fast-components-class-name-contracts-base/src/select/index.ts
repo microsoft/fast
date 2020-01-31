@@ -13,6 +13,11 @@ export interface SelectClassNameContract {
     select__disabled?: string;
 
     /**
+     * If the component is in "scale to fit" mode
+     */
+    select__scaleToFit?: string;
+
+    /**
      * The menu of the select component
      */
     select_menu?: string;
