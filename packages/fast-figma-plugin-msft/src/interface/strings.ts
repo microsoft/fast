@@ -10,7 +10,7 @@ const strings = {
     // Label for the input to turn theme on and off
     toggleThemLabel: "Theme",
     setLightThemeLabel: "Light",
-    setDarkThemeLabel: "dark",
+    setDarkThemeLabel: "Dark",
 };
 
 // Simple implementation of string retrieval that should support localization down the line
