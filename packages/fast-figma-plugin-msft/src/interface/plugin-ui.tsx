@@ -1,16 +1,20 @@
 import {
     Caption,
+    Checkbox,
     Divider,
     DividerClassNameContract,
     Label,
     LabelClassNameContract,
+    NeutralButton,
     Paragraph,
+    Radio,
     Select,
     SelectOption,
 } from "@microsoft/fast-components-react-msft";
 import {
     DesignSystem,
     DesignSystemDefaults,
+    StandardLuminance,
 } from "@microsoft/fast-components-styles-msft";
 import {
     ComponentStyleSheet,
@@ -20,6 +24,9 @@ import React from "react";
 import { isSetUIStateMessage } from "../messaging/canvas";
 import { isPluginMessageEvent, PluginMessageData } from "../messaging/common";
 import {
+    REMOVE_DESIGN_SYSTEM_PROPERTY,
+    REMOVE_PLUGIN_DATA,
+    SET_DESIGN_SYSTEM_PROPERTY,
     SET_FILL_RECIPE,
     SET_STROKE_RECIPE,
     SET_TEXT_FILL_RECIPE,
@@ -27,6 +34,7 @@ import {
 import { defaultState, PluginUIState } from "./plugin-ui.state";
 import { stringById } from "./strings";
 import { ListboxItemProps } from "@microsoft/fast-components-react-base";
+import { string } from "prop-types";
 
 const designSystem: DesignSystem = { ...DesignSystemDefaults, density: -2 };
 const dividerStyleOverrides: ComponentStyleSheet<
@@ -49,7 +57,7 @@ const recipeLabelStyleOverrides: ComponentStyleSheet<
 
 /**
  * At this point, this is essentially a controlled component.
- * State will be controlled by the main application and serilaized
+ * State will be controlled by the main application and serialized
  * state will be passed to this component to be parsed, set, and rendered
  *
  * There may be some local state we want to track that doesn't concern the primary application,
@@ -88,10 +96,27 @@ export class PluginUI extends React.Component<{}, PluginUIState> {
                     </div>
                     <div>
                         <Divider jssStyleSheet={dividerStyleOverrides} />
-                        <Caption>
-                            {this.state.activeNodeType ||
-                                stringById("invalidActiveNodeType")}
-                        </Caption>
+                        <div
+                            style={{
+                                display: "flex",
+                                flexDirection: "row",
+                                justifyContent: "space-between",
+                                alignItems: "center",
+                            }}
+                        >
+                            <Caption>
+                                {this.state.activeNodeType ||
+                                    stringById("invalidActiveNodeType")}
+                            </Caption>
+                            {this.state.activeNodeType ? (
+                                <NeutralButton
+                                    title={stringById("clearPluginDataTriggerTooltip")}
+                                    onClick={this.handleRemoveDataClick}
+                                >
+                                    {stringById("clearPluginDataTriggerText")}
+                                </NeutralButton>
+                            ) : null}
+                        </div>
                     </div>
                 </div>
             </DesignSystemProvider>
@@ -117,6 +142,7 @@ export class PluginUI extends React.Component<{}, PluginUIState> {
     private renderEditingUi(): JSX.Element {
         return (
             <div>
+                {this.renderThemeSwitcher()}
                 {this.state.fills.length > 0
                     ? this.renderRecipeSelector({
                           label: "Fill",
@@ -163,10 +189,7 @@ export class PluginUI extends React.Component<{}, PluginUIState> {
                 <Select
                     id={options.id}
                     selectedItems={[options.active]}
-                    onValueChange={this.handleRecipeValueChange.bind(
-                        this,
-                        options.action
-                    )}
+                    onValueChange={this.dispatch.bind(this, options.action)}
                     displayStringFormatter={this.recipeSelectorDisplayStringFormatter}
                 >
                     {options.selectOptions.map(this.renderRecipeOption)}
@@ -186,9 +209,18 @@ export class PluginUI extends React.Component<{}, PluginUIState> {
         );
     }
 
-    private handleRecipeValueChange(type: string, value: string): void {
+    /**
+     * Dispatch a message to the host
+     * @param type the type field of a the message
+     * @param value any value to send along with the type
+     */
+    private dispatch = (type: string, value?: any): void => {
         parent.postMessage({ pluginMessage: { type, value } }, "*");
-    }
+    };
+
+    private handleRemoveDataClick = (e: React.MouseEvent<HTMLButtonElement>): void => {
+        this.dispatch(REMOVE_PLUGIN_DATA);
+    };
 
     private recipeSelectorDisplayStringFormatter(
         selectedOptions: ListboxItemProps[]
@@ -197,4 +229,70 @@ export class PluginUI extends React.Component<{}, PluginUIState> {
             .map((option: ListboxItemProps): string => option.children as string)
             .join(" ");
     }
+
+    private renderThemeSwitcher(): JSX.Element | null {
+        if (!this.state.designSystem) {
+            return null;
+        }
+
+        const { baseLayerLuminance }: Partial<DesignSystem> = this.state.designSystem;
+        const themeSet: boolean = typeof baseLayerLuminance === "number";
+        const style = {
+            marginInlineEnd: "12px",
+        };
+
+        return (
+            <div>
+                <Checkbox
+                    inputId={"theme-toggle"}
+                    checked={themeSet}
+                    onChange={themeSet ? this.removeTheme : this.setLightTheme}
+                    style={style}
+                >
+                    <Label slot="label" htmlFor={"theme-toggle"}>
+                        {stringById("toggleThemLabel")}
+                    </Label>
+                </Checkbox>
+                <Radio
+                    inputId={"light-theme"}
+                    checked={baseLayerLuminance === StandardLuminance.LightMode}
+                    disabled={!themeSet}
+                    name="theme"
+                    onChange={this.setLightTheme}
+                    style={style}
+                >
+                    <Label slot="label" htmlFor={"light-theme"}>
+                        {stringById("setLightThemeLabel")}
+                    </Label>
+                </Radio>
+                <Radio
+                    inputId={"dark-theme"}
+                    checked={baseLayerLuminance === StandardLuminance.DarkMode}
+                    disabled={!themeSet}
+                    name="theme"
+                    onChange={this.setDarkTheme}
+                >
+                    <Label slot="label" htmlFor={"dark-theme"}>
+                        {stringById("setDarkThemeLabel")}
+                    </Label>
+                </Radio>
+            </div>
+        );
+    }
+
+    private removeTheme = (): void => {
+        this.dispatch(REMOVE_DESIGN_SYSTEM_PROPERTY, "baseLayerLuminance");
+    };
+
+    private setLightTheme = (): void => {
+        this.dispatch(SET_DESIGN_SYSTEM_PROPERTY, {
+            baseLayerLuminance: StandardLuminance.LightMode,
+        });
+    };
+
+    private setDarkTheme = (): void => {
+        this.dispatch(SET_DESIGN_SYSTEM_PROPERTY, {
+            baseLayerLuminance: StandardLuminance.DarkMode,
+        });
+    };
 }

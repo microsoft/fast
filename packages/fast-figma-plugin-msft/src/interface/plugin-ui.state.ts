@@ -1,6 +1,7 @@
 import { getRecipeNames } from "../color-recipies";
 import { setUIStateDataMessageCreator } from "../messaging/canvas";
 import { getPluginData, supports, supportsPluginData } from "../plugin-data";
+import { DesignSystem } from "@microsoft/fast-components-styles-msft";
 
 /**
  * Define the react state object for the Plugin UI
@@ -40,6 +41,11 @@ export interface PluginUIState {
      * The currently active textFill if any, otherwise null
      */
     activeTextFill: string;
+
+    /**
+     * The design system
+     */
+    designSystem: Partial<DesignSystem> | null;
 }
 
 export const defaultState: PluginUIState = {
@@ -50,6 +56,7 @@ export const defaultState: PluginUIState = {
     fills: [],
     strokes: [],
     textFills: [],
+    designSystem: null,
 };
 
 /**
@@ -59,11 +66,15 @@ export async function getPluginUIState(node: SceneNode | null): Promise<PluginUI
     if (node === null || !supportsPluginData(node)) {
         return defaultState;
     } else {
+        const backgroundFill = getPluginData(node, "backgroundFill");
+        const strokeFill = getPluginData(node, "strokeFill");
+        const textFill = getPluginData(node, "textFill");
+
         return {
             activeNodeType: node.type,
-            activeFill: getPluginData(node, "backgroundFill"),
-            activeStroke: getPluginData(node, "strokeFill"),
-            activeTextFill: getPluginData(node, "textFill"),
+            activeFill: backgroundFill ? backgroundFill.name : "",
+            activeStroke: strokeFill ? strokeFill.name : "",
+            activeTextFill: textFill ? textFill.name : "",
             fills: supports(node, "backgroundFill")
                 ? [""].concat(await getRecipeNames("backgroundFill"))
                 : defaultState.fills,
@@ -73,6 +84,9 @@ export async function getPluginUIState(node: SceneNode | null): Promise<PluginUI
             textFills: supports(node, "textFill")
                 ? [""].concat(await getRecipeNames("textFill"))
                 : defaultState.textFills,
+            designSystem: supports(node, "designSystem")
+                ? getPluginData(node, "designSystem")
+                : null,
         };
     }
 }

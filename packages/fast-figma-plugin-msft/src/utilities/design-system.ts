@@ -4,41 +4,46 @@ import {
 } from "@microsoft/fast-components-styles-msft";
 import { getPluginData, supports } from "../plugin-data";
 import { isSceneNode } from "../utilities/node";
-import { getRecipeNames, getRecipeValue } from "../color-recipies";
 
 /**
- * Determine the contextual design system merging all upstream design systems
+ * Retrieve the design system for a node. Note that this begins aggregating
+ * properties *at* the node provided, so the design-system
  */
-export async function getDesignSystem(node: BaseNode): Promise<DesignSystem> {
-    let parent = node.parent;
-    const fills: string[] = [];
-    const validFills: string[] = await getRecipeNames("backgroundFill");
+export function getDesignSystem(node: BaseNode | null): DesignSystem;
+export function getDesignSystem<T extends keyof DesignSystem>(
+    node: BaseNode | null,
+    ...keys: T[]
+): Pick<DesignSystem, T>;
+export function getDesignSystem(
+    node: BaseNode | null,
+    ...keys: string[]
+): Partial<DesignSystem> {
+    const _keys = keys.length ? keys : Object.keys(DesignSystemDefaults);
+    const propertyNames: Set<string> = new Set(_keys);
+    const designSystem: Partial<DesignSystem> = {};
 
-    while (parent !== null && isSceneNode(parent)) {
-        if (supports(parent, "backgroundFill")) {
-            const fillRecipe = getPluginData(parent, "backgroundFill");
+    while (node && isSceneNode(node) && propertyNames.size) {
+        if (supports(node, "designSystem")) {
+            const nodeData = getPluginData(node, "designSystem");
 
-            if (validFills.includes(fillRecipe)) {
-                fills.push(fillRecipe);
+            if (nodeData) {
+                for (const key of Object.keys(nodeData)) {
+                    if (propertyNames.has(key)) {
+                        designSystem[key] = nodeData[key];
+
+                        propertyNames.delete(key);
+                    }
+                }
             }
         }
 
-        parent = parent.parent;
+        node = node.parent;
     }
 
-    const reversedFills = fills.reverse();
-    // TODO: https://github.com/microsoft/fast-dna/issues/2589
-    let backgroundColor: string = DesignSystemDefaults.backgroundColor;
+    // Map any left over properties from the default design system
+    propertyNames.forEach(
+        (key: string) => (designSystem[key] = DesignSystemDefaults[key])
+    );
 
-    for (const name of reversedFills) {
-        backgroundColor = await getRecipeValue("backgroundFill", name, {
-            ...DesignSystemDefaults,
-            backgroundColor,
-        });
-    }
-
-    return {
-        ...DesignSystemDefaults,
-        backgroundColor,
-    } as DesignSystem;
+    return designSystem;
 }

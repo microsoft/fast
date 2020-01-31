@@ -29,13 +29,7 @@ import {
     neutralOutline,
 } from "@microsoft/fast-components-styles-msft";
 import { SwatchFamily } from "@microsoft/fast-components-styles-msft/dist/utilities/color/common";
-import { ColorRGBA64 } from "@microsoft/fast-colors";
-import {
-    FillRecipeNode,
-    PluginDataNode,
-    StrokeRecipeNode,
-    TextFillRecipeNode,
-} from "./plugin-data";
+
 /**
  * Defines the names used for color recipes through the app
  */
@@ -127,51 +121,5 @@ export async function getRecipeNames(type: ColorRecipeType): Promise<string[]> {
             return textFillRecipeNames;
         case "strokeFill":
             return strokeRecipeNames;
-    }
-}
-
-/**
- * Applies color to a node, where what it paints depends on the ColorRecipeType
- */
-export function paintNode(
-    node: FillRecipeNode,
-    type: "backgroundFill",
-    color: ColorRGBA64
-): void;
-export function paintNode(
-    node: StrokeRecipeNode,
-    type: "strokeFill",
-    color: ColorRGBA64
-): void;
-export function paintNode(
-    node: TextFillRecipeNode,
-    type: "textFill",
-    color: ColorRGBA64
-): void;
-export function paintNode(
-    node: PluginDataNode,
-    type: ColorRecipeType,
-    color: ColorRGBA64
-): void {
-    const colorObject = color.toObject();
-    const paint: SolidPaint = {
-        type: "SOLID",
-        visible: true,
-        opacity: colorObject.a,
-        blendMode: "NORMAL",
-        color: {
-            r: colorObject.r,
-            g: colorObject.g,
-            b: colorObject.b,
-        },
-    };
-    switch (type) {
-        case "backgroundFill":
-        case "textFill":
-            node.fills = [paint];
-            break;
-        case "strokeFill":
-            node.strokes = [paint];
-            break;
     }
 }
