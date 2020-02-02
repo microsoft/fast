@@ -53,9 +53,18 @@ export abstract class Controller {
     }
 
     /**
-     * Handle UI event
+     * Update data on individual node
      */
-    public abstract handleUIEvent(): void;
+    public setNodeProperty(ids: string[], updates: Partial<PluginNodeData>): void {
+        ids.map(id => this.getNode(id))
+            .filter(node => !!node)
+            .forEach(node => {
+                // We need to queue this node for painting
+                for (const key in updates) {
+                    node!.setPluginData(key as keyof PluginNodeData, updates[key]);
+                }
+            });
+    }
 
     /**
      * Provides the state object to the UI component and updates the UI
@@ -80,8 +89,3 @@ interface PluginUIUpdateEvent extends PluginUIEvent {
     type: typeof PluginUIEventType.update;
     value: Partial<PluginNodeData>;
 }
-
-const foo: PluginUIUpdateEvent = {
-    type: PluginUIEventType.update,
-    value: { colors: [] },
-};

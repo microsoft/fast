@@ -3,7 +3,6 @@ import ReactDOM from "react-dom";
 import { PluginUI, PluginUIProps } from "./core/ui";
 
 function render(props?: PluginUIProps): void {
-    console.log("RENDER", props);
     ReactDOM.render(<PluginUI {...props} />, root);
 }
 

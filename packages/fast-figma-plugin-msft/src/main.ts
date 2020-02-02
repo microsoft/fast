@@ -20,4 +20,6 @@ figma.on("selectionchange", () => {
     );
 });
 
-figma.ui.onmessage = (): void => controller.handleUIEvent();
+figma.ui.onmessage = (): void => {
+    // parse object
+};

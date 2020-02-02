@@ -12,11 +12,6 @@ export class FigmaContoller extends Controller {
     }
 
     public setPluginUIState(message: PluginUIProps): void {
-        console.log(message);
         figma.ui.postMessage(message);
-    }
-
-    public handleUIEvent(): void {
-        console.log("Some shit happend");
     }
 }
