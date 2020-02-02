@@ -1,10 +1,6 @@
 import { PluginUIProps } from "./ui";
 import { PluginNode, PluginNodeData } from "./node";
 
-export interface SetPluginUIStateMessage {
-    state: PluginUIProps;
-}
-
 /**
  * Controller class designed to handle the business logic of the plugin.
  * The controller is designed to be agnostic to the design environemnt,
@@ -37,8 +33,6 @@ export abstract class Controller {
     public async setSelectedNodes(ids: string[]): Promise<void> {
         this._selectedNode = ids;
 
-        console.log(this._selectedNode);
-
         // Queue update
         this.setPluginUIState(await this.getPluginUIState());
     }
@@ -47,8 +41,14 @@ export abstract class Controller {
      * Retrieve the UI state
      */
     public async getPluginUIState(): Promise<PluginUIProps> {
+        const selectedNodes = this.getSelectedNodes();
+
         return {
-            selectedNodes: this.getSelectedNodes(),
+            selectedNodes,
+            selectedNodeTypes: selectedNodes
+                .map((id: string) => this.getNode(id))
+                .filter(node => !!node)
+                .map(node => node!.type),
         };
     }
 

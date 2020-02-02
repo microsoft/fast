@@ -14,6 +14,7 @@ export interface PluginNodeData {
 
 export interface PluginNode {
     id: string;
+    type: string;
     getPluginData: <K extends keyof PluginNodeData>(key: K) => PluginNodeData[K];
     setPluginData: <K extends keyof PluginNodeData>(
         key: K,

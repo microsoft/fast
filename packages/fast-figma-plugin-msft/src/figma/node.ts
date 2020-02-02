@@ -54,6 +54,7 @@ export function canHaveChildren(
 
 export class FigmaPluginNode implements PluginNode {
     public id: string;
+    public type: string;
     private node: BaseNode;
     constructor(id: string) {
         const node = figma.getNodeById(id);
@@ -64,6 +65,7 @@ export class FigmaPluginNode implements PluginNode {
 
         this.node = node;
         this.id = id;
+        this.type = node.type;
     }
 
     public children(): FigmaPluginNode[] {
@@ -103,6 +105,22 @@ export class FigmaPluginNode implements PluginNode {
     }
 
     public supports<K extends keyof PluginNodeData>(key: K): boolean {
+        switch (key) {
+            case "backgrounds":
+            case "strokes":
+            case "designSystem":
+                return [
+                    isFrameNode,
+                    isRectangleNode,
+                    isPolygonNode,
+                    isStarNode,
+                    isComponentNode,
+                    isInstanceNode,
+                ].some((test: (node: BaseNode) => boolean) => test(this.node));
+            case "colors":
+                return isTextNode(this.node);
+        }
+
         return false;
     }
 }
