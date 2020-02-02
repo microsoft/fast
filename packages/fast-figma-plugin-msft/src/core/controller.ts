@@ -1,17 +1,9 @@
-interface DesignSystem {}
-interface RecipeProduct {
-    name: string;
-    value: string;
-}
+import { PluginUIProps } from "./ui";
+import { PluginNode, PluginNodeData } from "./node";
 
-interface PluginData {
-    backgrounds: RecipeProduct[];
-    strokes: RecipeProduct[];
-    colors: RecipeProduct[];
-    designSystem: Partial<DesignSystem>;
+export interface SetPluginUIStateMessage {
+    state: PluginUIProps;
 }
-
-interface UIState {}
 
 /**
  * Controller class designed to handle the business logic of the plugin.
@@ -19,7 +11,11 @@ interface UIState {}
  * relying on the abstract properties and methods to supply the implmenation
  * details that might exist for the eco system it is being run in. (Figma, Sketch, etc)
  */
-abstract class Controller {
+export abstract class Controller {
+    /**
+     * Track the currently selected node.
+     */
+    private _selectedNode: string[];
     /**
      * Retrieve a plugin Node by ID. Return null if no node by the provided ID exists
      * @param id The ID of the node
@@ -27,20 +23,9 @@ abstract class Controller {
     public abstract getNode(id: string): PluginNode | null;
 
     /**
-     * Provides the state object to the UI component and updates the UI
-     * @param state the UI state object
-     */
-    protected abstract async setPluginUIState(state: UIState): Promise<void>;
-
-    /**
-     * Track the currently selected node.
-     */
-    private _selectedNode: string | null;
-
-    /**
      * Retreive the slected node ID
      */
-    public getSelectedNode(): string | null {
+    public getSelectedNodes(): string[] {
         return this._selectedNode;
     }
 
@@ -49,30 +34,34 @@ abstract class Controller {
      * a UI refresh
      * @param id the node ID
      */
-    public async setSelectedNode(id: string | null) {
+    public async setSelectedNodes(ids: string[]): Promise<void> {
+        this._selectedNode = ids;
+
+        console.log(this._selectedNode);
+
         // Queue update
-        await this.setPluginUIState(this.getPluginUIState);
+        this.setPluginUIState(await this.getPluginUIState());
     }
 
     /**
      * Retrieve the UI state
      */
-    public async getPluginUIState(): Promise<UIState> {
-        return {}; // TODO: Implement
+    public async getPluginUIState(): Promise<PluginUIProps> {
+        return {
+            selectedNodes: this.getSelectedNodes(),
+        };
     }
 
     /**
      * Handle UI event
      */
-    public handleUIEvent(): void;
-}
+    public abstract handleUIEvent(): void;
 
-interface PluginNode {
-    id: string;
-    getPluginData: <K extends keyof PluginData>(key: K) => PluginData[K];
-    setPluginData: <K extends keyof PluginData>(key: K, value: PluginData[K]) => void;
-    children: () => PluginNode[];
-    supports: <K extends keyof PluginData>(key: K) => boolean;
+    /**
+     * Provides the state object to the UI component and updates the UI
+     * @param state the UI state object
+     */
+    protected abstract setPluginUIState(state: PluginUIProps): void;
 }
 
 /**
@@ -89,7 +78,7 @@ interface PluginUIEvent {
 
 interface PluginUIUpdateEvent extends PluginUIEvent {
     type: typeof PluginUIEventType.update;
-    value: Partial<PluginData>;
+    value: Partial<PluginNodeData>;
 }
 
 const foo: PluginUIUpdateEvent = {

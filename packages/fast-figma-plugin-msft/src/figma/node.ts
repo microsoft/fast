@@ -1,12 +1,4 @@
-/**
- * Returns the selected node if a single node is
- * selected, otherwise returns null
- */
-export function getActiveNode(): SceneNode | null {
-    const { selection }: typeof figma.currentPage = figma.currentPage;
-
-    return selection.length === 1 ? selection[0] : null;
-}
+import { PluginNode, PluginNodeData } from "../core/node";
 
 function isNodeType<T extends BaseNode>(type: NodeType): (node: BaseNode) => node is T {
     return (node: BaseNode): node is T => node.type === type;
@@ -58,4 +50,59 @@ export function canHaveChildren(
         isGroupNode,
         isBooleanOperationNode,
     ].some((test: (node: BaseNode) => boolean) => test(node));
+}
+
+export class FigmaPluginNode implements PluginNode {
+    public id: string;
+    private node: BaseNode;
+    constructor(id: string) {
+        const node = figma.getNodeById(id);
+
+        if (node === null) {
+            throw new Error(`Node of ID "${id} does not exist`);
+        }
+
+        this.node = node;
+        this.id = id;
+    }
+
+    public children(): FigmaPluginNode[] {
+        if (canHaveChildren(this.node)) {
+            const children: FigmaPluginNode[] = [];
+
+            for (const child of this.node.children) {
+                children.push(new FigmaPluginNode(child.id));
+            }
+
+            return children;
+        } else {
+            return [];
+        }
+    }
+
+    public getPluginData<K extends keyof PluginNodeData>(key: K): PluginNodeData[K] {
+        try {
+            return JSON.parse(this.node.getPluginData(key));
+        } catch (e) {
+            return key === "designSystem" ? ({} as any) : []; // Why does keyof not work here?!
+        }
+    }
+
+    public setPluginData<K extends keyof PluginNodeData>(
+        key: K,
+        value: PluginNodeData[K]
+    ): void {
+        let raw: string;
+        try {
+            raw = JSON.stringify(value);
+        } catch (e) {
+            raw = "";
+        }
+
+        this.node.setPluginData(key, raw);
+    }
+
+    public supports<K extends keyof PluginNodeData>(key: K): boolean {
+        return false;
+    }
 }

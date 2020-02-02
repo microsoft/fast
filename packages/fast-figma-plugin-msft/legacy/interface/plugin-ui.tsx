@@ -34,7 +34,6 @@ import {
 import { defaultState, PluginUIState } from "./plugin-ui.state";
 import { stringById } from "./strings";
 import { ListboxItemProps } from "@microsoft/fast-components-react-base";
-import { string } from "prop-types";
 
 const designSystem: DesignSystem = { ...DesignSystemDefaults, density: -2 };
 const dividerStyleOverrides: ComponentStyleSheet<
