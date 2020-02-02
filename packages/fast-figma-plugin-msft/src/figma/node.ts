@@ -1,4 +1,4 @@
-import { PluginNode, PluginNodeData } from "../core/node";
+import { PluginNode, PluginNodeData, PluginNodeDataKeys } from "../core/node";
 
 function isNodeType<T extends BaseNode>(type: NodeType): (node: BaseNode) => node is T {
     return (node: BaseNode): node is T => node.type === type;
@@ -104,23 +104,25 @@ export class FigmaPluginNode implements PluginNode {
         this.node.setPluginData(key, raw);
     }
 
-    public supports<K extends keyof PluginNodeData>(key: K): boolean {
-        switch (key) {
-            case "backgrounds":
-            case "strokes":
-            case "designSystem":
-                return [
-                    isFrameNode,
-                    isRectangleNode,
-                    isPolygonNode,
-                    isStarNode,
-                    isComponentNode,
-                    isInstanceNode,
-                ].some((test: (node: BaseNode) => boolean) => test(this.node));
-            case "colors":
-                return isTextNode(this.node);
-        }
-
-        return false;
+    public supports(): Array<keyof PluginNodeData> {
+        return PluginNodeDataKeys.filter(
+            (key: keyof PluginNodeData): boolean => {
+                switch (key) {
+                    case "backgroundFills":
+                    case "strokeFills":
+                    case "designSystem":
+                        return [
+                            isFrameNode,
+                            isRectangleNode,
+                            isPolygonNode,
+                            isStarNode,
+                            isComponentNode,
+                            isInstanceNode,
+                        ].some((test: (node: BaseNode) => boolean) => test(this.node));
+                    case "textFills":
+                        return isTextNode(this.node);
+                }
+            }
+        );
     }
 }

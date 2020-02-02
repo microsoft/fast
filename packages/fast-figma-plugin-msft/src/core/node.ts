@@ -1,16 +1,26 @@
 import { DesignSystem } from "@microsoft/fast-components-styles-msft";
 
-interface RecipeProduct {
+export interface RecipeData {
     name: string;
     value: string;
 }
 
 export interface PluginNodeData {
-    backgrounds: RecipeProduct[];
-    strokes: RecipeProduct[];
-    colors: RecipeProduct[];
+    backgroundFills: RecipeData[];
+    strokeFills: RecipeData[];
+    textFills: RecipeData[];
     designSystem: DesignSystem;
 }
+
+export const PluginNodeDataKeys: Array<keyof PluginNodeData> = (() => {
+    const keyMap: Record<keyof PluginNodeData, void> = {
+        backgroundFills: void 0,
+        strokeFills: void 0,
+        textFills: void 0,
+        designSystem: void 0,
+    };
+    return Object.keys(keyMap) as Array<keyof PluginNodeData>;
+})();
 
 export interface PluginNode {
     id: string;
@@ -21,5 +31,5 @@ export interface PluginNode {
         value: PluginNodeData[K]
     ) => void;
     children: () => PluginNode[];
-    supports: <K extends keyof PluginNodeData>(key: K) => boolean;
+    supports: () => Array<keyof PluginNodeData>;
 }

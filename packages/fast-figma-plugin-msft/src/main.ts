@@ -20,6 +20,7 @@ figma.on("selectionchange", () => {
     );
 });
 
-figma.ui.onmessage = (): void => {
+figma.ui.onmessage = (value): void => {
+    console.log(value);
     // parse object
 };

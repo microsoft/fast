@@ -34,21 +34,38 @@ export abstract class Controller {
         this._selectedNode = ids;
 
         // Queue update
-        this.setPluginUIState(await this.getPluginUIState());
+        try {
+            this.setPluginUIState(await this.getPluginUIState());
+        } catch (e) {
+            console.log(e);
+        }
     }
 
     /**
      * Retrieve the UI state
      */
     public async getPluginUIState(): Promise<PluginUIProps> {
-        const selectedNodes = this.getSelectedNodes();
+        const selectedIds = this.getSelectedNodes();
+        const selectedNodes = selectedIds
+            .map(id => this.getNode(id))
+            .filter((node): node is PluginNode => node !== null);
 
+        const suportedPropertyIntersection = this.getSupportedPropertyIntersection(
+            selectedIds
+        );
+
+        /**
+         * Determine availible recipes:
+         * 1. for each node, determine which recipe types can be set on the node.
+         * 2. filter sets to the intersection of recipe types
+         * 3. construct recipe data object
+         */
         return {
-            selectedNodes,
-            selectedNodeTypes: selectedNodes
-                .map((id: string) => this.getNode(id))
-                .filter(node => !!node)
-                .map(node => node!.type),
+            selectedNodes: selectedIds,
+            selectedNodeTypes: selectedNodes.map(node => node.type),
+            editableProperties: suportedPropertyIntersection.map(key => {
+                return { type: key, label: "TEST", options: [] } as any;
+            }), // TODO: retrieve recipes from node
         };
     }
 
@@ -57,13 +74,32 @@ export abstract class Controller {
      */
     public setNodeProperty(ids: string[], updates: Partial<PluginNodeData>): void {
         ids.map(id => this.getNode(id))
-            .filter(node => !!node)
+            .filter((node): node is PluginNode => node !== null)
             .forEach(node => {
-                // We need to queue this node for painting
-                for (const key in updates) {
-                    node!.setPluginData(key as keyof PluginNodeData, updates[key]);
-                }
+                // TODO: Need to invalidate nodes and queue paints
             });
+    }
+
+    /**
+     * get intersection of supported properties of selected nodes
+     */
+    private getSupportedPropertyIntersection(ids: string[]): Array<keyof PluginNodeData> {
+        const supports = ids
+            .map(id => this.getNode(id))
+            .filter((node): node is PluginNode => node !== null)
+            .map(node => node.supports());
+
+        const unique = Array.from(
+            new Set(
+                supports.length
+                    ? supports.reduce((prev, current) => prev.concat(current))
+                    : []
+            )
+        );
+
+        return unique.filter(key => {
+            return supports.every(set => set.includes(key));
+        });
     }
 
     /**
