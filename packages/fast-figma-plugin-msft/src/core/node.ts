@@ -1,35 +1,38 @@
 import { DesignSystem } from "@microsoft/fast-components-styles-msft";
-import { RecipeTypes } from "./controller";
 
 export interface RecipeData {
     name: string;
     value: string;
-    active: boolean;
 }
 
-export interface PluginNodeData extends Record<RecipeTypes, RecipeData[]> {
+export interface PluginNodeData {
+    fills: RecipeData[];
+    strokes: RecipeData[];
     designSystem: Partial<DesignSystem>;
 }
 
-export const PluginNodeDataKeys: Array<keyof PluginNodeData> = (() => {
+export const PluginNodeDataKeys: Array<keyof PluginNodeData> = ((): Array<
+    keyof PluginNodeData
+> => {
     const keyMap: Record<keyof PluginNodeData, void> = {
-        backgroundFills: void 0,
-        strokeFills: void 0,
-        textFills: void 0,
+        fills: void 0,
+        strokes: void 0,
         designSystem: void 0,
     };
     return Object.keys(keyMap) as Array<keyof PluginNodeData>;
 })();
 
 export abstract class PluginNode {
-    id: string;
-    type: string;
-    getPluginData: <K extends keyof PluginNodeData>(key: K) => PluginNodeData[K];
-    setPluginData: <K extends keyof PluginNodeData>(
+    public abstract id: string;
+    public abstract type: string;
+    public abstract getPluginData: <K extends keyof PluginNodeData>(
+        key: K
+    ) => PluginNodeData[K];
+    public abstract setPluginData: <K extends keyof PluginNodeData>(
         key: K,
         value: PluginNodeData[K]
     ) => void;
-    children: () => PluginNode[];
-    supports: () => Array<keyof PluginNodeData>;
-    designSystem: () => DesignSystem;
+    public abstract children: () => PluginNode[];
+    public abstract supports: () => Array<keyof PluginNodeData>;
+    public abstract designSystem: () => DesignSystem;
 }

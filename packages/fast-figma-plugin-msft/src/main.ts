@@ -22,6 +22,5 @@ figma.on("selectionchange", () => {
 });
 
 figma.ui.onmessage = (value): void => {
-    console.log(value);
     // parse object
 };

@@ -1,17 +1,17 @@
 import React from "react";
-import { RecipeData, PluginNodeData } from "./node";
+import { PluginNodeData, RecipeData } from "./node";
 import {
-    DesignSystemProvider,
     ComponentStyleSheet,
+    DesignSystemProvider,
 } from "@microsoft/fast-jss-manager-react";
 import {
-    DesignSystemDefaults,
     DesignSystem,
+    DesignSystemDefaults,
 } from "@microsoft/fast-components-styles-msft";
 import {
-    Divider,
     Caption,
     Checkbox,
+    Divider,
     DividerClassNameContract,
     Label,
     LabelClassNameContract,
@@ -21,17 +21,12 @@ import {
     Select,
     SelectOption,
 } from "@microsoft/fast-components-react-msft";
-import { recipeTypes, RecipeTypes } from "./controller";
-
-export interface PluginUIEditableRecipeData {
-    name: keyof PluginNodeData;
-    label: string;
-    options: RecipeData[];
-}
 
 export interface PluginUISelectedNodeData extends Partial<PluginNodeData> {
     id: string;
     type: string;
+    fillOptions: RecipeData[];
+    strokeOptions: RecipeData[];
 }
 
 export interface PluginUIProps {
@@ -56,10 +51,11 @@ const recipeLabelStyleOverrides: ComponentStyleSheet<
 };
 
 export class PluginUI extends React.Component<PluginUIProps> {
-    private designSystem: DesignSystem = { ...DesignSystemDefaults, density: -2 };
     public static defaultProps: PluginUIProps = {
         selectedNodes: [],
     };
+
+    private designSystem: DesignSystem = { ...DesignSystemDefaults, density: -2 };
 
     public render(): JSX.Element {
         return (
@@ -72,8 +68,7 @@ export class PluginUI extends React.Component<PluginUIProps> {
                         justifyContent: "space-between",
                     }}
                 >
-                    {" "}
-                    <div>{this.renderRecipeSelectors()}</div>
+                    <pre>{JSON.stringify(this.props, null, 2)}</pre>
                     <div>
                         <Divider jssStyleSheet={dividerStyleOverrides} />
                         <div
@@ -96,71 +91,71 @@ export class PluginUI extends React.Component<PluginUIProps> {
         );
     }
 
-    private renderRecipeSelectors(): JSX.Element {
-        if (this.props.selectedNodes.length > 1) {
-            return <p>We can only update one node at a time!</p>;
-        } else if (this.props.selectedNodes.length === 0) {
-            return <p>No nodes selected</p>;
-        }
+    // private renderRecipeSelectors(): JSX.Element {
+    //     if (this.props.selectedNodes.length > 1) {
+    //         return <p>We can only update one node at a time!</p>;
+    //     } else if (this.props.selectedNodes.length === 0) {
+    //         return <p>No nodes selected</p>;
+    //     }
 
-        return this.renderRecipeSelectorsForNode(this.props.selectedNodes[0]);
-    }
+    //     return this.renderRecipeSelectorsForNode(this.props.selectedNodes[0]);
+    // }
 
-    private renderRecipeSelectorsForNode(
-        nodeData: PluginUISelectedNodeData
-    ): JSX.Element {
-        const val = Object.keys(nodeData).filter(key => recipeTypes.includes(key as any));
+    // private renderRecipeSelectorsForNode(
+    //     nodeData: PluginUISelectedNodeData
+    // ): JSX.Element {
+    //     const val = Object.keys(nodeData).filter(key => recipeTypes.includes(key as any));
 
-        return (
-            <React.Fragment>
-                {val.map(value =>
-                    this.renderRecipeSelect(value as RecipeTypes, nodeData[value])
-                )}
-            </React.Fragment>
-        );
-    }
+    //     return (
+    //         <React.Fragment>
+    //             {val.map(value =>
+    //                 this.renderRecipeSelect(value as RecipeTypes, nodeData[value])
+    //             )}
+    //         </React.Fragment>
+    //     );
+    // }
 
-    private renderRecipeSelect(name: RecipeTypes, options: RecipeData[]): JSX.Element {
-        const id = name;
-        const active = options.filter(value => value.active);
-        const unset = {
-            name: "-",
-            value: "",
-            active: !!active.length,
-        };
+    // private renderRecipeSelect(name: RecipeTypes, options: RecipeData[]): JSX.Element {
+    //     const id = name;
+    //     const active = options.filter(value => value.active);
+    //     const unset = {
+    //         name: "-",
+    //         value: "",
+    //         active: !!active.length,
+    //     };
 
-        const onChange = (newValue: string) => {
-            // TODO: integrate proper dispatching
-            console.log({
-                type: "setNodeData",
-                key: name,
-                value: {
-                    name: newValue,
-                    value: options.find(option => option.name === newValue)!.value,
-                },
-            });
-        };
+    //     const onChange = (newValue: string) => {
+    //         // TODO: integrate proper dispatching
+    //         console.log({
+    //             type: "setNodeData",
+    //             key: name,
+    //             value: {
+    //                 name: newValue,
+    //                 value: options.find(option => option.name === newValue)!.value,
+    //             },
+    //         });
+    //     };
 
-        return (
-            <React.Fragment>
-                <Label htmlFor={id} jssStyleSheet={recipeLabelStyleOverrides}>
-                    {name}
-                </Label>
-                <Select
-                    id={id}
-                    selectedItems={
-                        active.length ? active.map(value => value.name) : [unset.name]
-                    }
-                    onValueChange={onChange}
-                >
-                    {[unset].concat(options).map(this.renderRecipeOption)}
-                </Select>
-            </React.Fragment>
-        );
-    }
+    //     return (
+    //         <React.Fragment>
+    //             <Label htmlFor={id} jssStyleSheet={recipeLabelStyleOverrides}>
+    //                 {name}
+    //             </Label>
+    //             <Select
+    //                 id={id}
+    //                 selectedItems={
+    //                     active.length ? active.map(value => value.name) : [unset.name]
+    //                 }
+    //                 onValueChange={onChange}
+    //             >
+    //                 {[unset].concat(options).map(this.renderRecipeOption)}
+    //             </Select>
+    //         </React.Fragment>
+    //     );
+    // }
 
-    private renderRecipeOption(option: RecipeData): JSX.Element {
-        const { name, value } = option;
-        return <SelectOption id={name} key={name} value={name} children={name} />;
-    }
+    // private renderRecipeOption(option: RecipeData): JSX.Element {
+    //     const { name, value } = option;
+    //     return <SelectOption id={name} key={name} value={name} children={name} />;
+    // }
 }

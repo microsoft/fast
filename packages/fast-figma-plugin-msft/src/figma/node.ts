@@ -106,25 +106,26 @@ export class FigmaPluginNode implements PluginNode {
     }
 
     public supports(): Array<keyof PluginNodeData> {
-        return PluginNodeDataKeys.filter(
-            (key: keyof PluginNodeData): boolean => {
-                switch (key) {
-                    case "backgroundFills":
-                    case "strokeFills":
-                    case "designSystem":
-                        return [
-                            isFrameNode,
-                            isRectangleNode,
-                            isPolygonNode,
-                            isStarNode,
-                            isComponentNode,
-                            isInstanceNode,
-                        ].some((test: (node: BaseNode) => boolean) => test(this.node));
-                    case "textFills":
-                        return isTextNode(this.node);
-                }
-            }
-        );
+        return [];
+        // return PluginNodeDataKeys.filter(
+        //     (key: keyof PluginNodeData): boolean => {
+        //         switch (key) {
+        //             case "backgroundFills":
+        //             case "strokeFills":
+        //             case "designSystem":
+        //                 return [
+        //                     isFrameNode,
+        //                     isRectangleNode,
+        //                     isPolygonNode,
+        //                     isStarNode,
+        //                     isComponentNode,
+        //                     isInstanceNode,
+        //                 ].some((test: (node: BaseNode) => boolean) => test(this.node));
+        //             case "textFills":
+        //                 return isTextNode(this.node);
+        //         }
+        //     }
+        // );
     }
 
     public designSystem(): DesignSystem {

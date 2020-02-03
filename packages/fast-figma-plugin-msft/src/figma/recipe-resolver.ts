@@ -1,5 +1,4 @@
 import { RecipeResolver } from "../core/recipe-resolver";
-import { RecipeTypes } from "../core/controller";
 
 import {
     accentFill,
@@ -32,6 +31,7 @@ import {
     neutralOutline,
 } from "@microsoft/fast-components-styles-msft";
 import { SwatchFamily } from "@microsoft/fast-components-styles-msft/dist/utilities/color/common";
+import { PluginNode } from "src/core/node";
 
 /**
  * Define the recipes that can be used. These are surfaced in
@@ -81,41 +81,40 @@ const strokeRecipeNames: string[] = Object.keys(strokeRecipes);
 const textFillRecipeNames: string[] = Object.keys(textFillRecipes);
 
 export class FigmaRecipeResolver extends RecipeResolver {
-    public async evalute(type: RecipeTypes, name: string, data: any): Promise<string> {
-        let recipes: {
-            [key: string]: DesignSystemResolver<string | SwatchFamily>;
-        } | null = null;
+    public async evaluate(node: PluginNode, name: any): Promise<string> {
+        return "#FFFFFF";
+        // let recipes: {
+        //     [key: string]: DesignSystemResolver<string | SwatchFamily>;
+        // } | null = null;
 
-        switch (type) {
-            case "backgroundFills":
-                recipes = fillRecipes;
-                break;
-            case "textFills":
-                recipes = textFillRecipes;
-                break;
-            case "strokeFills":
-                recipes = strokeRecipes;
-                break;
-        }
+        // switch (type) {
+        //     case "backgroundFills":
+        //         recipes = fillRecipes;
+        //         break;
+        //     case "textFills":
+        //         recipes = textFillRecipes;
+        //         break;
+        //     case "strokeFills":
+        //         recipes = strokeRecipes;
+        //         break;
+        // }
 
-        if (recipes !== null && typeof recipes[name] === "function") {
-            const value: string | SwatchFamily = recipes[name](data);
+        // if (recipes !== null && typeof recipes[name] === "function") {
+        //     const value: string | SwatchFamily = recipes[name](data);
 
-            // TODO: https://github.com/microsoft/fast-dna/issues/2588
-            return typeof value === "string" ? value : value.rest;
-        } else {
-            throw new Error(`No ${type} recipe of name ${name} found.`);
-        }
+        //     // TODO: https://github.com/microsoft/fast-dna/issues/2588
+        //     return typeof value === "string" ? value : value.rest;
+        // } else {
+        //     throw new Error(`No ${type} recipe of name ${name} found.`);
+        // }
     }
 
-    public async getRecipeNames(type: RecipeTypes): Promise<string[]> {
-        switch (type) {
-            case "backgroundFills":
-                return fillRecipeNames;
-            case "textFills":
-                return textFillRecipeNames;
-            case "strokeFills":
-                return strokeRecipeNames;
-        }
+    public async getRecipeNames(
+        node: PluginNode
+    ): Promise<Record<"fills" | "strokes", string[]>> {
+        return {
+            fills: ["foo"],
+            strokes: ["bar"],
+        };
     }
 }
