@@ -1,11 +1,10 @@
 import { DesignSystem } from "@microsoft/fast-components-styles-msft";
+import { RecipeTypes } from "./controller";
 
 export interface RecipeData {
     name: string;
     value: string;
 }
-
-export type RecipeTypes = "backgroundFills" | "strokeFills" | "textFills";
 
 export interface PluginNodeData extends Record<RecipeTypes, RecipeData[]> {
     designSystem: Partial<DesignSystem>;
@@ -21,7 +20,7 @@ export const PluginNodeDataKeys: Array<keyof PluginNodeData> = (() => {
     return Object.keys(keyMap) as Array<keyof PluginNodeData>;
 })();
 
-export interface PluginNode {
+export abstract class PluginNode {
     id: string;
     type: string;
     getPluginData: <K extends keyof PluginNodeData>(key: K) => PluginNodeData[K];

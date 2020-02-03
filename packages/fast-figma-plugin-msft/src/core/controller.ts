@@ -1,5 +1,17 @@
-import { PluginNode, PluginNodeData } from "./node";
+import { PluginNode, PluginNodeData, RecipeData } from "./node";
 import { PluginUIProps, PluginUISelectedNodeData } from "./ui";
+import { RecipeResolver } from "./recipe-resolver";
+
+export type RecipeTypes = "backgroundFills" | "strokeFills" | "textFills";
+export const recipeTypes: RecipeTypes[] = (() => {
+    const data: Record<RecipeTypes, void> = {
+        backgroundFills: void 0,
+        strokeFills: void 0,
+        textFills: void 0,
+    };
+
+    return Object.keys(data) as RecipeTypes[];
+})();
 
 /**
  * Controller class designed to handle the business logic of the plugin.
@@ -8,6 +20,8 @@ import { PluginUIProps, PluginUISelectedNodeData } from "./ui";
  * details that might exist for the eco system it is being run in. (Figma, Sketch, etc)
  */
 export abstract class Controller {
+    constructor(private recipeResolver: RecipeResolver) {}
+
     /**
      * Track the currently selected node.
      */
@@ -47,11 +61,25 @@ export abstract class Controller {
          * 2. filter sets to the intersection of recipe types
          * 3. construct recipe data object
          */
+
+        const recipeData: Partial<RecipeData> = {};
+
+        for (const type of recipeTypes) {
+            const names = await this.recipeResolver.getRecipeNames(type);
+            const values: RecipeData[] = [];
+
+            for (const name of names) {
+                const value = await this.recipeResolver.evalute(type, name, {});
+                values.push({ name, value });
+                // values.push(await this.recipeResolver.evalute(type as any, name as any, {} as any))
+            }
+
+            recipeData[type] = values;
+        }
+
         return {
             selectedNodes: this.getSelectedNodePluginUIData(),
-            textFills: [],
-            backgroundFills: [],
-            strokeFills: [],
+            ...(recipeData as any),
         };
     }
 

@@ -1,6 +1,7 @@
 import { FigmaContoller } from "./figma/controller";
+import { FigmaRecipeResolver } from "./figma/recipe-resolver";
 
-const controller = new FigmaContoller();
+const controller = new FigmaContoller(new FigmaRecipeResolver());
 
 /**
  * Show UI on plugin launch
