@@ -55,31 +55,11 @@ export abstract class Controller {
      * Retrieve the UI state
      */
     public async getPluginUIState(): Promise<PluginUIProps> {
-        /**
-         * Determine availible recipes:
-         * 1. for each node, determine which recipe types can be set on the node.
-         * 2. filter sets to the intersection of recipe types
-         * 3. construct recipe data object
-         */
-
-        const recipeData: Partial<RecipeData> = {};
-
-        for (const type of recipeTypes) {
-            const names = await this.recipeResolver.getRecipeNames(type);
-            const values: RecipeData[] = [];
-
-            for (const name of names) {
-                const value = await this.recipeResolver.evalute(type, name, {});
-                values.push({ name, value });
-                // values.push(await this.recipeResolver.evalute(type as any, name as any, {} as any))
-            }
-
-            recipeData[type] = values;
-        }
+        const recipeData = await this.getRecipeData();
 
         return {
             selectedNodes: this.getSelectedNodePluginUIData(),
-            ...(recipeData as any),
+            ...recipeData,
         };
     }
 
@@ -105,6 +85,27 @@ export abstract class Controller {
                     };
                 }
             );
+    }
+
+    /**
+     * Retrieve recipe data relative to input nodes
+     */
+    private async getRecipeData(): Promise<Pick<PluginUIProps, RecipeTypes>> {
+        const recipeData: Partial<Pick<PluginUIProps, RecipeTypes>> = {};
+
+        for (const type of recipeTypes) {
+            const names = await this.recipeResolver.getRecipeNames(type);
+            const values: RecipeData[] = [];
+
+            for (const name of names) {
+                const value = await this.recipeResolver.evalute(type, name, {});
+                values.push({ name, value });
+            }
+
+            recipeData[type] = values;
+        }
+
+        return recipeData as Pick<PluginUIProps, RecipeTypes>;
     }
 
     /**
