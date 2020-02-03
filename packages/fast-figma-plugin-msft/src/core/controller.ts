@@ -1,5 +1,5 @@
-import { PluginUIProps } from "./ui";
 import { PluginNode, PluginNodeData } from "./node";
+import { PluginUIProps, PluginUISelectedNodeData } from "./ui";
 
 /**
  * Controller class designed to handle the business logic of the plugin.
@@ -34,26 +34,13 @@ export abstract class Controller {
         this._selectedNode = ids;
 
         // Queue update
-        try {
-            this.setPluginUIState(await this.getPluginUIState());
-        } catch (e) {
-            console.log(e);
-        }
+        this.setPluginUIState(await this.getPluginUIState());
     }
 
     /**
      * Retrieve the UI state
      */
     public async getPluginUIState(): Promise<PluginUIProps> {
-        const selectedIds = this.getSelectedNodes();
-        const selectedNodes = selectedIds
-            .map(id => this.getNode(id))
-            .filter((node): node is PluginNode => node !== null);
-
-        const suportedPropertyIntersection = this.getSupportedPropertyIntersection(
-            selectedIds
-        );
-
         /**
          * Determine availible recipes:
          * 1. for each node, determine which recipe types can be set on the node.
@@ -61,12 +48,35 @@ export abstract class Controller {
          * 3. construct recipe data object
          */
         return {
-            selectedNodes: selectedIds,
-            selectedNodeTypes: selectedNodes.map(node => node.type),
-            editableProperties: suportedPropertyIntersection.map(key => {
-                return { type: key, label: "TEST", options: [] } as any;
-            }), // TODO: retrieve recipes from node
+            selectedNodes: this.getSelectedNodePluginUIData(),
+            textFills: [],
+            backgroundFills: [],
+            strokeFills: [],
         };
+    }
+
+    /**
+     * Retrieve node data to provide to UI for all selected nodes
+     */
+    private getSelectedNodePluginUIData(): PluginUISelectedNodeData[] {
+        return this.getSelectedNodes()
+            .map(id => this.getNode(id))
+            .filter((node): node is PluginNode => node !== null)
+            .map(
+                (node): PluginUISelectedNodeData => {
+                    const data = node.supports().reduce((current, next): Partial<
+                        PluginNodeData
+                    > => {
+                        return { ...current, [next]: node.getPluginData(next) };
+                    }, {});
+
+                    return {
+                        id: node.id,
+                        type: node.type,
+                        ...data,
+                    };
+                }
+            );
     }
 
     /**
@@ -81,47 +91,8 @@ export abstract class Controller {
     }
 
     /**
-     * get intersection of supported properties of selected nodes
-     */
-    private getSupportedPropertyIntersection(ids: string[]): Array<keyof PluginNodeData> {
-        const supports = ids
-            .map(id => this.getNode(id))
-            .filter((node): node is PluginNode => node !== null)
-            .map(node => node.supports());
-
-        const unique = Array.from(
-            new Set(
-                supports.length
-                    ? supports.reduce((prev, current) => prev.concat(current))
-                    : []
-            )
-        );
-
-        return unique.filter(key => {
-            return supports.every(set => set.includes(key));
-        });
-    }
-
-    /**
      * Provides the state object to the UI component and updates the UI
      * @param state the UI state object
      */
     protected abstract setPluginUIState(state: PluginUIProps): void;
-}
-
-/**
- * You're here - how do we do events?
- */
-enum PluginUIEventType {
-    update,
-    delete,
-}
-
-interface PluginUIEvent {
-    type: PluginUIEventType;
-}
-
-interface PluginUIUpdateEvent extends PluginUIEvent {
-    type: typeof PluginUIEventType.update;
-    value: Partial<PluginNodeData>;
 }

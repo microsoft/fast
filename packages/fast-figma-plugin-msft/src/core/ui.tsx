@@ -7,19 +7,23 @@ export interface PluginUIEditableRecipeData {
     options: RecipeData[];
 }
 
+export interface PluginUISelectedNodeData extends Partial<PluginNodeData> {
+    id: string;
+    type: string;
+}
+
 export type PluginUIEditablePropertyData = PluginUIEditableRecipeData;
 
-export interface PluginUIProps {
-    selectedNodes: string[];
-    selectedNodeTypes: string[];
-    editableProperties: PluginUIEditablePropertyData[];
+export interface PluginUIProps extends Omit<PluginNodeData, "designSystem"> {
+    selectedNodes: PluginUISelectedNodeData[];
 }
 
 export class PluginUI extends React.Component<PluginUIProps> {
     public static defaultProps: PluginUIProps = {
         selectedNodes: [],
-        selectedNodeTypes: [],
-        editableProperties: [],
+        backgroundFills: [],
+        strokeFills: [],
+        textFills: [],
     };
 
     public render(): JSX.Element {

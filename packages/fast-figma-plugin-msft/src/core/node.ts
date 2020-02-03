@@ -5,11 +5,10 @@ export interface RecipeData {
     value: string;
 }
 
-export interface PluginNodeData {
-    backgroundFills: RecipeData[];
-    strokeFills: RecipeData[];
-    textFills: RecipeData[];
-    designSystem: DesignSystem;
+export type RecipeTypes = "backgroundFills" | "strokeFills" | "textFills";
+
+export interface PluginNodeData extends Record<RecipeTypes, RecipeData[]> {
+    designSystem: Partial<DesignSystem>;
 }
 
 export const PluginNodeDataKeys: Array<keyof PluginNodeData> = (() => {
