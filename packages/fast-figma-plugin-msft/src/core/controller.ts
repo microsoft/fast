@@ -1,6 +1,7 @@
 import { PluginNode, PluginNodeData, RecipeData } from "./node";
 import { PluginUIProps, PluginUISelectedNodeData } from "./ui";
 import { RecipeResolver } from "./recipe-resolver";
+import { DesignSystemDefaults } from "@microsoft/fast-components-styles-msft";
 
 export type RecipeTypes = "backgroundFills" | "strokeFills" | "textFills";
 export const recipeTypes: RecipeTypes[] = (() => {
@@ -21,6 +22,8 @@ export const recipeTypes: RecipeTypes[] = (() => {
  */
 export abstract class Controller {
     constructor(private recipeResolver: RecipeResolver) {}
+
+    private defaultDesignSystem = DesignSystemDefaults;
 
     /**
      * Track the currently selected node.
@@ -55,57 +58,81 @@ export abstract class Controller {
      * Retrieve the UI state
      */
     public async getPluginUIState(): Promise<PluginUIProps> {
-        const recipeData = await this.getRecipeData();
-
         return {
-            selectedNodes: this.getSelectedNodePluginUIData(),
-            ...recipeData,
+            selectedNodes: await this.getSelectedNodesPluginUIData(),
         };
     }
 
     /**
      * Retrieve node data to provide to UI for all selected nodes
      */
-    private getSelectedNodePluginUIData(): PluginUISelectedNodeData[] {
-        return this.getSelectedNodes()
+    private async getSelectedNodesPluginUIData(): Promise<PluginUISelectedNodeData[]> {
+        const nodes = this.getSelectedNodes()
             .map(id => this.getNode(id))
-            .filter((node): node is PluginNode => node !== null)
-            .map(
-                (node): PluginUISelectedNodeData => {
-                    const data = node.supports().reduce((current, next): Partial<
-                        PluginNodeData
-                    > => {
-                        return { ...current, [next]: node.getPluginData(next) };
-                    }, {});
+            .filter((node): node is PluginNode => node !== null);
 
-                    return {
-                        id: node.id,
-                        type: node.type,
-                        ...data,
-                    };
-                }
-            );
-    }
+        const results: PluginUISelectedNodeData[] = [];
 
-    /**
-     * Retrieve recipe data relative to input nodes
-     */
-    private async getRecipeData(): Promise<Pick<PluginUIProps, RecipeTypes>> {
-        const recipeData: Partial<Pick<PluginUIProps, RecipeTypes>> = {};
+        for (const node of nodes) {
+            const syncedPluginData = await this.mapNodeDataToUIData(node);
+            const result = {
+                id: node.id,
+                type: node.type,
+                ...syncedPluginData,
+            };
 
-        for (const type of recipeTypes) {
-            const names = await this.recipeResolver.getRecipeNames(type);
-            const values: RecipeData[] = [];
-
-            for (const name of names) {
-                const value = await this.recipeResolver.evalute(type, name, {});
-                values.push({ name, value });
-            }
-
-            recipeData[type] = values;
+            results.push(result);
         }
 
-        return recipeData as Pick<PluginUIProps, RecipeTypes>;
+        return results;
+    }
+
+    private async mapNodeDataToUIData(
+        node: PluginNode
+    ): Promise<Partial<PluginNodeData>> {
+        const supportedProperties = node.supports();
+        const result: Partial<PluginNodeData> = {};
+
+        for (const prop of supportedProperties) {
+            switch (prop) {
+                case "backgroundFills":
+                case "strokeFills":
+                case "textFills":
+                    const recipeNames = await this.recipeResolver.getRecipeNames(prop);
+                    const values: RecipeData[] = [];
+                    const selected: string[] = node
+                        .getPluginData(prop)
+                        .map(value => value.name);
+
+                    for (const name of recipeNames) {
+                        values.push({
+                            name,
+                            active: false,
+                            value: await this.recipeResolver.evalute(
+                                prop,
+                                name,
+                                node.designSystem()
+                            ),
+                        });
+                    }
+
+                    /**
+                     * If any of the recipes styles exist as plugin data on the node, we need to
+                     * set those as active
+                     */
+                    result[prop] = values.map(
+                        value =>
+                            selected.includes(value.name)
+                                ? { ...value, active: true }
+                                : value
+                    );
+                    break;
+                default:
+                    result[prop] = node.getPluginData(prop);
+            }
+        }
+
+        return result;
     }
 
     /**

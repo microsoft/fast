@@ -1,4 +1,5 @@
 import { PluginNode, PluginNodeData, PluginNodeDataKeys } from "../core/node";
+import { DesignSystem } from "@microsoft/fast-components-styles-msft";
 
 function isNodeType<T extends BaseNode>(type: NodeType): (node: BaseNode) => node is T {
     return (node: BaseNode): node is T => node.type === type;
@@ -124,5 +125,9 @@ export class FigmaPluginNode implements PluginNode {
                 }
             }
         );
+    }
+
+    public designSystem(): DesignSystem {
+        return {} as any;
     }
 }

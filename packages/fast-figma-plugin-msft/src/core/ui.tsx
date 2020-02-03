@@ -14,16 +14,13 @@ export interface PluginUISelectedNodeData extends Partial<PluginNodeData> {
 
 export type PluginUIEditablePropertyData = PluginUIEditableRecipeData;
 
-export interface PluginUIProps extends Omit<PluginNodeData, "designSystem"> {
+export interface PluginUIProps {
     selectedNodes: PluginUISelectedNodeData[];
 }
 
 export class PluginUI extends React.Component<PluginUIProps> {
     public static defaultProps: PluginUIProps = {
         selectedNodes: [],
-        backgroundFills: [],
-        strokeFills: [],
-        textFills: [],
     };
 
     public render(): JSX.Element {

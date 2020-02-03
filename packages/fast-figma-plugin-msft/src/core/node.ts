@@ -4,6 +4,7 @@ import { RecipeTypes } from "./controller";
 export interface RecipeData {
     name: string;
     value: string;
+    active: boolean;
 }
 
 export interface PluginNodeData extends Record<RecipeTypes, RecipeData[]> {
@@ -30,4 +31,5 @@ export abstract class PluginNode {
     ) => void;
     children: () => PluginNode[];
     supports: () => Array<keyof PluginNodeData>;
+    designSystem: () => DesignSystem;
 }
