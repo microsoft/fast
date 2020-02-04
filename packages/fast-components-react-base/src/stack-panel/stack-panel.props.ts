@@ -49,14 +49,10 @@ export interface StackPanelHandledProps extends StackPanelManagedClasses {
     /**
      * Callback for when scroll values change
      */
-    onScrollChange?: (newScrollValue: number, scrollMaxValue: number) => void;
-
-    /**
-     * Callback for when the range of rendered items changes
-     */
-    onRenderedRangeChange?: (
-        renderedRangeStart: number,
-        renderedRangeEnd: number
+    onScrollChange?: (
+        newScrollValue: number,
+        scrollMaxValue: number,
+        viewportSpan: number
     ) => void;
 
     /**
