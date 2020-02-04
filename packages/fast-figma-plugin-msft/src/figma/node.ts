@@ -85,12 +85,11 @@ export class FigmaPluginNode implements PluginNode {
     }
 
     public getPluginData<K extends keyof PluginNodeData>(key: K): PluginNodeData[K] {
-        // try {
-        //     return JSON.parse(this.node.getPluginData(key));
-        // } catch (e) {
-        //     return key === "designSystem" ? ({} as any) : []; // Why does keyof not work here?!
-        // }
-        return {} as any;
+        try {
+            return JSON.parse(this.node.getPluginData(key as string));
+        } catch (e) {
+            return key === "designSystem" ? ({} as any) : []; // Why does keyof not work here?!
+        }
     }
 
     public setPluginData<K extends keyof PluginNodeData>(
@@ -106,7 +105,7 @@ export class FigmaPluginNode implements PluginNode {
         // this.node.setPluginData(key, raw);
     }
 
-    public recipeSupport(): Array<keyof typeof RecipeTypes> {
+    public supports(): Array<keyof typeof RecipeTypes> {
         return Object.keys(RecipeTypes).filter(key => {
             switch (key) {
                 case RecipeTypes.backgroundFills:
@@ -127,7 +126,7 @@ export class FigmaPluginNode implements PluginNode {
         }) as Array<keyof typeof RecipeTypes>;
     }
 
-    public contextOverrides(): DesignSystem {
+    public designSystem(): DesignSystem {
         return {} as any;
     }
 }

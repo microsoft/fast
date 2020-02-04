@@ -1,6 +1,6 @@
 import { PluginNode, PluginNodeData } from "./node";
-import { PluginUIProps, PluginUIPropsNodeRecipeOptions } from "./ui";
-import { RecipeResolver } from "./recipe-resolver";
+import { RecipeRegistry } from "./recipe-registry";
+import { PluginUIActiveNodeData, PluginUIProps } from "./ui";
 
 /**
  * Controller class designed to handle the business logic of the plugin.
@@ -9,11 +9,12 @@ import { RecipeResolver } from "./recipe-resolver";
  * details that might exist for the eco system it is being run in. (Figma, Sketch, etc)
  */
 export abstract class Controller {
+    public recipeRegistry: RecipeRegistry = new RecipeRegistry();
+
     /**
      * Track the currently selected node.
      */
     private _selectedNode: string[];
-    constructor(private recipeResolver: RecipeResolver) {}
 
     /**
      * Retrieve a plugin Node by ID. Return null if no node by the provided ID exists
@@ -33,42 +34,42 @@ export abstract class Controller {
      * a UI refresh
      * @param id the node ID
      */
-    public async setSelectedNodes(ids: string[]): Promise<void> {
+    public setSelectedNodes(ids: string[]): void {
         this._selectedNode = ids;
 
         // Queue update
-        this.setPluginUIState(await this.getPluginUIState());
+        this.setPluginUIState(this.getPluginUIState());
     }
 
     /**
      * Retrieve the UI state
      */
-    public async getPluginUIState(): Promise<PluginUIProps> {
+    public getPluginUIState(): PluginUIProps {
         const selectedNodes = this.getSelectedNodes()
             .map(id => this.getNode(id))
             .filter((node): node is PluginNode => node !== null);
 
-        const options = await Promise.all(
-            selectedNodes.map(async node => ({
-                id: node.id,
-                options: await this.recipeResolver.recipeDataForNode(node),
-            }))
-        );
-
         return {
             selectedNodes: selectedNodes.map(
-                (node): PluginNodeData => ({
+                (node): PluginUIActiveNodeData => ({
                     id: node.id,
                     type: node.type,
-                    contextOverrides: node.contextOverrides(),
+                    designSystem: node.getPluginData("designSystem"),
+                    backgroundFills: node.getPluginData("backgroundFills"),
+                    foregroundFills: node.getPluginData("foregroundFills"),
+                    strokeFills: node.getPluginData("strokeFills"),
+                    supports: node.supports().reduce(
+                        (prev, next) => ({
+                            ...prev,
+                            [next]: this.recipeRegistry.find(next).map(value => ({
+                                name: value.name,
+                                value: value.evaluate(node),
+                                id: value.id,
+                            })),
+                        }),
+                        {}
+                    ),
                 })
-            ),
-            recipeOptions: options.reduce(
-                (prev, current) => ({
-                    ...prev,
-                    [current.id]: current.options,
-                }),
-                {}
             ),
         };
     }
@@ -76,7 +77,9 @@ export abstract class Controller {
     /**
      * Update data on individual node
      */
-    public setNodeProperty(ids: string[], updates: Partial<PluginNodeData>): void {}
+    public setNodeProperty(ids: string[], updates: Partial<PluginNodeData>): void {
+        // TODO
+    }
 
     /**
      * Provides the state object to the UI component and updates the UI
