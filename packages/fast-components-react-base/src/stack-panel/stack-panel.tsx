@@ -70,7 +70,6 @@ class StackPanel extends Foundation<
         scrollDuration: void 0,
         managedClasses: void 0,
         initiallyVisibleItemIndex: void 0,
-        onRenderedRangeChange: void 0,
         onScrollChange: void 0,
     };
 
@@ -421,10 +420,6 @@ class StackPanel extends Foundation<
             renderEndIndex = lastIndex;
         }
 
-        if (isFunction(this.props.onRenderedRangeChange)) {
-            this.props.onRenderedRangeChange(renderStartIndex, renderEndIndex);
-        }
-
         this.setState({
             renderedRangeStartIndex: renderStartIndex,
             renderedRangeEndIndex: renderEndIndex,
@@ -507,10 +502,11 @@ class StackPanel extends Foundation<
         this.lastRecordedScroll = this.getScrollPosition();
         this.requestFrame();
         if (isFunction(this.props.onScrollChange)) {
-            // TODO: store max scroll so we don't recalc
+            // TODO: store max scroll so we don't recalculate
             this.props.onScrollChange(
                 this.lastRecordedScroll,
-                this.getMaxScrollDistance()
+                this.getMaxScrollDistance(),
+                this.viewPortSpan
             );
         }
     };

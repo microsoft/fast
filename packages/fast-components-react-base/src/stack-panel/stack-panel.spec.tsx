@@ -432,7 +432,7 @@ describe("stack panel", (): void => {
         expect(scrollContentFn.mock.calls[0][1]).toBe(100);
     });
 
-    test("Root classnames are applied", () => {
+    test("Root classname is applied", () => {
         const rendered: any = mount(
             <StackPanel managedClasses={managedClasses}>
                 {sampleStackPanelItems}
@@ -440,9 +440,6 @@ describe("stack panel", (): void => {
         );
         expect(rendered.instance().rootElement.current.className).toContain(
             managedClasses.stackPanel
-        );
-        expect(rendered.instance().rootElement.current.className).toContain(
-            managedClasses.stackPanel__scrolling
         );
     });
 
