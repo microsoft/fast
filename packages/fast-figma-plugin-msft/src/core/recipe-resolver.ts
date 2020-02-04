@@ -1,4 +1,5 @@
 import { PluginNode } from "./node";
+import { PluginUIPropsNodeRecipeOptions } from "./ui";
 
 /**
  * Problem statement:
@@ -14,8 +15,8 @@ import { PluginNode } from "./node";
  * The recipe resolver type
  */
 export abstract class RecipeResolver {
-    public abstract async getRecipeNames(
+    // public abstract async evaluate(name: string, data: T): Promise<string>;
+    public abstract async recipeDataForNode(
         node: PluginNode
-    ): Promise<Record<"fills" | "strokes", string[]>>;
-    public abstract async evaluate(node: PluginNode, recipeName: string): Promise<string>;
+    ): Promise<PluginUIPropsNodeRecipeOptions>;
 }

@@ -1,5 +1,6 @@
-import { PluginNode, PluginNodeData, PluginNodeDataKeys } from "../core/node";
+import { PluginNode, PluginNodeData } from "../core/node";
 import { DesignSystem } from "@microsoft/fast-components-styles-msft";
+import { RecipeTypes } from "../core/recipes";
 
 function isNodeType<T extends BaseNode>(type: NodeType): (node: BaseNode) => node is T {
     return (node: BaseNode): node is T => node.type === type;
@@ -84,51 +85,49 @@ export class FigmaPluginNode implements PluginNode {
     }
 
     public getPluginData<K extends keyof PluginNodeData>(key: K): PluginNodeData[K] {
-        try {
-            return JSON.parse(this.node.getPluginData(key));
-        } catch (e) {
-            return key === "designSystem" ? ({} as any) : []; // Why does keyof not work here?!
-        }
+        // try {
+        //     return JSON.parse(this.node.getPluginData(key));
+        // } catch (e) {
+        //     return key === "designSystem" ? ({} as any) : []; // Why does keyof not work here?!
+        // }
+        return {} as any;
     }
 
     public setPluginData<K extends keyof PluginNodeData>(
         key: K,
         value: PluginNodeData[K]
     ): void {
-        let raw: string;
-        try {
-            raw = JSON.stringify(value);
-        } catch (e) {
-            raw = "";
-        }
-
-        this.node.setPluginData(key, raw);
+        // let raw: string;
+        // try {
+        //     raw = JSON.stringify(value);
+        // } catch (e) {
+        //     raw = "";
+        // }
+        // this.node.setPluginData(key, raw);
     }
 
-    public supports(): Array<keyof PluginNodeData> {
-        return [];
-        // return PluginNodeDataKeys.filter(
-        //     (key: keyof PluginNodeData): boolean => {
-        //         switch (key) {
-        //             case "backgroundFills":
-        //             case "strokeFills":
-        //             case "designSystem":
-        //                 return [
-        //                     isFrameNode,
-        //                     isRectangleNode,
-        //                     isPolygonNode,
-        //                     isStarNode,
-        //                     isComponentNode,
-        //                     isInstanceNode,
-        //                 ].some((test: (node: BaseNode) => boolean) => test(this.node));
-        //             case "textFills":
-        //                 return isTextNode(this.node);
-        //         }
-        //     }
-        // );
+    public recipeSupport(): Array<keyof typeof RecipeTypes> {
+        return Object.keys(RecipeTypes).filter(key => {
+            switch (key) {
+                case RecipeTypes.backgroundFills:
+                case RecipeTypes.strokeFills:
+                    return [
+                        isFrameNode,
+                        isRectangleNode,
+                        isPolygonNode,
+                        isStarNode,
+                        isComponentNode,
+                        isInstanceNode,
+                    ].some((test: (node: BaseNode) => boolean) => test(this.node));
+                case RecipeTypes.foregroundFills:
+                    return isTextNode(this.node);
+                default:
+                    return false;
+            }
+        }) as Array<keyof typeof RecipeTypes>;
     }
 
-    public designSystem(): DesignSystem {
+    public contextOverrides(): DesignSystem {
         return {} as any;
     }
 }

@@ -7,8 +7,6 @@ import {
     accentForegroundCut,
     accentForegroundCutLarge,
     accentForegroundLarge,
-    DesignSystem,
-    DesignSystemResolver,
     neutralFill,
     neutralFillCard,
     neutralFillInput,
@@ -30,8 +28,9 @@ import {
     neutralLayerL4,
     neutralOutline,
 } from "@microsoft/fast-components-styles-msft";
-import { SwatchFamily } from "@microsoft/fast-components-styles-msft/dist/utilities/color/common";
-import { PluginNode } from "src/core/node";
+import { PluginNode } from "../core/node";
+import { PluginUIPropsNodeRecipeOptions } from "../core/ui";
+import { RecipeTypes } from "../core/recipes";
 
 /**
  * Define the recipes that can be used. These are surfaced in
@@ -76,45 +75,38 @@ const textFillRecipes = {
     neutralForegroundToggleLarge,
 };
 
-const fillRecipeNames: string[] = Object.keys(fillRecipes);
-const strokeRecipeNames: string[] = Object.keys(strokeRecipes);
-const textFillRecipeNames: string[] = Object.keys(textFillRecipes);
-
 export class FigmaRecipeResolver extends RecipeResolver {
-    public async evaluate(node: PluginNode, name: any): Promise<string> {
-        return "#FFFFFF";
-        // let recipes: {
-        //     [key: string]: DesignSystemResolver<string | SwatchFamily>;
-        // } | null = null;
-
-        // switch (type) {
-        //     case "backgroundFills":
-        //         recipes = fillRecipes;
-        //         break;
-        //     case "textFills":
-        //         recipes = textFillRecipes;
-        //         break;
-        //     case "strokeFills":
-        //         recipes = strokeRecipes;
-        //         break;
-        // }
-
-        // if (recipes !== null && typeof recipes[name] === "function") {
-        //     const value: string | SwatchFamily = recipes[name](data);
-
-        //     // TODO: https://github.com/microsoft/fast-dna/issues/2588
-        //     return typeof value === "string" ? value : value.rest;
-        // } else {
-        //     throw new Error(`No ${type} recipe of name ${name} found.`);
-        // }
+    private recipesByType(type: RecipeTypes) {
+        switch (type) {
+            case RecipeTypes.backgroundFills:
+                return fillRecipes;
+            case RecipeTypes.foregroundFills:
+                return textFillRecipes;
+            case RecipeTypes.strokeFills:
+                return strokeRecipes;
+        }
     }
-
-    public async getRecipeNames(
+    public async recipeDataForNode(
         node: PluginNode
-    ): Promise<Record<"fills" | "strokes", string[]>> {
-        return {
-            fills: ["foo"],
-            strokes: ["bar"],
-        };
+    ): Promise<PluginUIPropsNodeRecipeOptions> {
+        const data = await Promise.all(
+            node.recipeSupport().map(async type => {
+                const recipes = this.recipesByType(RecipeTypes[type]);
+
+                return {
+                    [type]: await Promise.all(
+                        Object.keys(recipes).map(async key => {
+                            return {
+                                name: key,
+                                id: key,
+                                value: recipes[key]({}), // TODO: node.designSystem
+                            };
+                        })
+                    ),
+                };
+            })
+        );
+
+        return data as any;
     }
 }

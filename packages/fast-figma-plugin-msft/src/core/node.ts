@@ -1,28 +1,13 @@
-import { DesignSystem } from "@microsoft/fast-components-styles-msft";
+import { MappedRecipeTypes, RecipeData, RecipeTypes } from "./recipes";
 
-export interface RecipeData {
-    name: string;
-    value: string;
+export interface PluginNodeData<T = any>
+    extends Partial<MappedRecipeTypes<Omit<RecipeData, "type">>> {
+    id: string;
+    type: string;
+    contextOverrides: Partial<T>;
 }
 
-export interface PluginNodeData {
-    fills: RecipeData[];
-    strokes: RecipeData[];
-    designSystem: Partial<DesignSystem>;
-}
-
-export const PluginNodeDataKeys: Array<keyof PluginNodeData> = ((): Array<
-    keyof PluginNodeData
-> => {
-    const keyMap: Record<keyof PluginNodeData, void> = {
-        fills: void 0,
-        strokes: void 0,
-        designSystem: void 0,
-    };
-    return Object.keys(keyMap) as Array<keyof PluginNodeData>;
-})();
-
-export abstract class PluginNode {
+export abstract class PluginNode<T = any> {
     public abstract id: string;
     public abstract type: string;
     public abstract getPluginData: <K extends keyof PluginNodeData>(
@@ -33,6 +18,6 @@ export abstract class PluginNode {
         value: PluginNodeData[K]
     ) => void;
     public abstract children: () => PluginNode[];
-    public abstract supports: () => Array<keyof PluginNodeData>;
-    public abstract designSystem: () => DesignSystem;
+    public abstract recipeSupport: () => Array<keyof typeof RecipeTypes>;
+    public abstract contextOverrides: () => T;
 }

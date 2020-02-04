@@ -1,10 +1,6 @@
-import { PluginNode, PluginNodeData, RecipeData } from "./node";
-import { PluginUIProps, PluginUISelectedNodeData } from "./ui";
+import { PluginNode, PluginNodeData } from "./node";
+import { PluginUIProps, PluginUIPropsNodeRecipeOptions } from "./ui";
 import { RecipeResolver } from "./recipe-resolver";
-import {
-    DesignSystem,
-    DesignSystemDefaults,
-} from "@microsoft/fast-components-styles-msft";
 
 /**
  * Controller class designed to handle the business logic of the plugin.
@@ -13,8 +9,6 @@ import {
  * details that might exist for the eco system it is being run in. (Figma, Sketch, etc)
  */
 export abstract class Controller {
-    private defaultDesignSystem: DesignSystem = DesignSystemDefaults;
-
     /**
      * Track the currently selected node.
      */
@@ -50,133 +44,43 @@ export abstract class Controller {
      * Retrieve the UI state
      */
     public async getPluginUIState(): Promise<PluginUIProps> {
+        const selectedNodes = this.getSelectedNodes()
+            .map(id => this.getNode(id))
+            .filter((node): node is PluginNode => node !== null);
+
+        const options = await Promise.all(
+            selectedNodes.map(async node => ({
+                id: node.id,
+                options: await this.recipeResolver.recipeDataForNode(node),
+            }))
+        );
+
         return {
-            selectedNodes: await this.getSelectedNodesPluginUIData(),
+            selectedNodes: selectedNodes.map(
+                (node): PluginNodeData => ({
+                    id: node.id,
+                    type: node.type,
+                    contextOverrides: node.contextOverrides(),
+                })
+            ),
+            recipeOptions: options.reduce(
+                (prev, current) => ({
+                    ...prev,
+                    [current.id]: current.options,
+                }),
+                {}
+            ),
         };
     }
 
     /**
      * Update data on individual node
      */
-    public setNodeProperty(ids: string[], updates: Partial<PluginNodeData>): void {
-        ids.map(id => this.getNode(id))
-            .filter((node): node is PluginNode => node !== null)
-            .forEach(node => {
-                // TODO: Need to invalidate nodes and queue paints
-            });
-    }
+    public setNodeProperty(ids: string[], updates: Partial<PluginNodeData>): void {}
 
     /**
      * Provides the state object to the UI component and updates the UI
      * @param state the UI state object
      */
     protected abstract setPluginUIState(state: PluginUIProps): void;
-
-    /**
-     * Retrieve node data to provide to UI for all selected nodes
-     */
-    private async getSelectedNodesPluginUIData(): Promise<PluginUISelectedNodeData[]> {
-        const nodes = this.getSelectedNodes()
-            .map(id => this.getNode(id))
-            .filter((node): node is PluginNode => node !== null);
-
-        const results: PluginUISelectedNodeData[] = [];
-
-        for (const node of nodes) {
-            // const recipeNames = await this.recipeResolver.getRecipeNames(node);
-            // const fillOptions = await Promise.all<RecipeData>(
-            //     recipeNames.fills.map(
-            //         async name => {
-            //             return {
-            //                 name,
-            //                 value: await this.recipeResolver.evaluate(node, name)
-            //             }
-            //         }
-            //     )
-            // );
-            const recipes = await this.getPluginUIRecipeData(node);
-
-            const result: PluginUISelectedNodeData = {
-                id: node.id,
-                type: node.type,
-                fills: node.getPluginData("fills"),
-                strokes: node.getPluginData("strokes"),
-                ...recipes,
-                designSystem: node.getPluginData("designSystem"),
-            };
-
-            results.push(result);
-        }
-
-        return results;
-    }
-
-    private async getPluginUIRecipeData(node: PluginNode): Promise<any> {
-        const recipeNames = await this.recipeResolver.getRecipeNames(node);
-
-        // return Promise.all(Object.assign(recipeNames).map(async type => {
-        //     return { [type]: await Promise.all(recipeNames[type].map(async name => ({
-        //         name,
-        //         value: this.recipeResolver.evaluate(node, name)
-        //     })))}
-        // })) as any;
-
-        const fillOptions = await Promise.all<RecipeData>(
-            recipeNames.fills.map(async name => {
-                return {
-                    name,
-                    value: await this.recipeResolver.evaluate(node, name),
-                };
-            })
-        );
-    }
-
-    private async mapNodeDataToUIData(
-        node: PluginNode
-    ): Promise<Partial<PluginNodeData>> {
-        // const supportedProperties = node.supports();
-        // const result: Partial<PluginNodeData> = {};
-
-        // for (const prop of supportedProperties) {
-        //     switch (prop) {
-        //         case "backgroundFills":
-        //         case "strokeFills":
-        //         case "textFills":
-        //             const recipeNames = await this.recipeResolver.getRecipeNames(prop);
-        //             const values: RecipeData[] = [];
-        //             const selected: string[] = node
-        //                 .getPluginData(prop)
-        //                 .map(value => value.name);
-
-        //             for (const name of recipeNames) {
-        //                 values.push({
-        //                     name,
-        //                     active: false,
-        //                     value: await this.recipeResolver.evalute(
-        //                         prop,
-        //                         name,
-        //                         node.designSystem()
-        //                     ),
-        //                 });
-        //             }
-
-        //             /**
-        //              * If any of the recipes styles exist as plugin data on the node, we need to
-        //              * set those as active
-        //              */
-        //             result[prop] = values.map(
-        //                 value =>
-        //                     selected.includes(value.name)
-        //                         ? { ...value, active: true }
-        //                         : value
-        //             );
-        //             break;
-        //         default:
-        //             result[prop] = node.getPluginData(prop);
-        //     }
-        // }
-
-        // return result;
-        return {} as any;
-    }
 }
