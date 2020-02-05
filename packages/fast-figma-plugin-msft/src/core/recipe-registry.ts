@@ -1,5 +1,4 @@
 import { PluginNode } from "./node";
-import { intersection } from "lodash-es";
 import { Serializable } from "puppeteer";
 
 export enum RecipeTypes {
@@ -33,11 +32,6 @@ export interface RecipeDefinition<T extends Serializable = any> {
     type: RecipeTypes;
 
     /**
-     * Applies a recipe to a node
-     */
-    apply: (node: PluginNode) => void;
-
-    /**
      * Evaluates a recipe
      */
     evaluate?: (node: PluginNode) => T;
@@ -47,7 +41,7 @@ export interface RecipeDefinition<T extends Serializable = any> {
  * Defines all data associated with a recipe
  */
 export interface RecipeData<T extends Serializable = any>
-    extends Omit<RecipeDefinition<T>, "apply" | "evaluate"> {
+    extends Omit<RecipeDefinition<T>, "evaluate"> {
     value?: T;
 }
 

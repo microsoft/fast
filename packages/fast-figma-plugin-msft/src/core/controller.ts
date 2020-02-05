@@ -1,6 +1,7 @@
 import { PluginNode, PluginNodeData } from "./node";
 import { isEvaluatableRecipeDefinition, RecipeRegistry } from "./recipe-registry";
 import { PluginUIActiveNodeData, PluginUIProps } from "./ui";
+import { UIMessage, RecipeMessage, MessageTypes, RecipeMessageAction } from "./messaging";
 
 /**
  * Controller class designed to handle the business logic of the plugin.
@@ -62,7 +63,7 @@ export abstract class Controller {
                     id: node.id,
                     type: node.type,
                     supports: node.supports(),
-                    recipes: node.getPluginData("recipes"),
+                    recipes: node.recipes,
                 })
             ),
             recipeOptions: selectedNodes.length
@@ -82,11 +83,31 @@ export abstract class Controller {
         };
     }
 
-    /**
-     * Update data on individual node
-     */
-    public setNodeProperty(ids: string[], updates: Partial<PluginNodeData>): void {
-        // TODO
+    public handleMessage(message: UIMessage): void {
+        this.handleRecipeMessage(message);
+    }
+
+    private handleRecipeMessage(message: RecipeMessage): void {
+        message.nodeIds.forEach(id => {
+            const node = this.getNode(id);
+            const recipe = this.recipeRegistry.get(message.id);
+
+            if (!node) {
+                return;
+            }
+
+            switch (message.action) {
+                case RecipeMessageAction.assign:
+                    node.recipes = node.recipes
+                        .filter(id => this.recipeRegistry.get(id).type !== recipe.type)
+                        .concat(recipe.id);
+                    break;
+            }
+
+            // We need to paint here
+        });
+
+        this.setPluginUIState(this.getPluginUIState());
     }
 
     /**

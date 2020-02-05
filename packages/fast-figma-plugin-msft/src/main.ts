@@ -11,9 +11,6 @@ function register(type: RecipeTypes, recipes: RecipeStore): void {
             id: key,
             name: key,
             type,
-            apply: (node: PluginNode): void => {
-                console.log("apply", key, "to", node.id);
-            },
             evaluate: (node: PluginNode): string => {
                 return recipes[key](node.designSystem());
             },
@@ -49,6 +46,5 @@ figma.on("selectionchange", () => {
 });
 
 figma.ui.onmessage = (value): void => {
-    console.log(value);
-    // parse object
+    controller.handleMessage(value);
 };

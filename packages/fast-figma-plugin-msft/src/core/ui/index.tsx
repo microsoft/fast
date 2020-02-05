@@ -110,7 +110,7 @@ export class PluginUI extends React.Component<PluginUIProps> {
                         inputId={option.id}
                         name={name}
                         style={{ margin: "2px 0" }}
-                        checked={this.recipeIsAssigned(option.id).length > 1}
+                        checked={!!this.recipeIsAssigned(option.id).length}
                         onChange={this.handleOnChange.bind(this, option.id, option.type)}
                     >
                         <Label

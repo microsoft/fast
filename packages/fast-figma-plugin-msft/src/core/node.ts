@@ -1,5 +1,5 @@
 import { DesignSystem } from "@microsoft/fast-components-styles-msft";
-import { RecipeTypes } from "./recipe-registry";
+import { RecipeTypes, RecipeDefinition } from "./recipe-registry";
 
 /**
  * Defines the data stored by the plugin on a node instance
@@ -24,14 +24,22 @@ export interface PluginNodeData {
 export abstract class PluginNode {
     public abstract id: string;
     public abstract type: string;
-    public abstract getPluginData: <K extends keyof PluginNodeData>(
+    protected abstract getPluginData<K extends keyof PluginNodeData>(
         key: K
-    ) => PluginNodeData[K];
-    public abstract setPluginData: <K extends keyof PluginNodeData>(
+    ): PluginNodeData[K];
+    protected abstract setPluginData<K extends keyof PluginNodeData>(
         key: K,
         value: PluginNodeData[K]
-    ) => void;
-    public abstract children: () => PluginNode[];
-    public abstract supports: () => RecipeTypes[];
-    public abstract designSystem: () => DesignSystem;
+    ): void;
+    public abstract children(): PluginNode[];
+    public abstract supports(): RecipeTypes[];
+    public abstract designSystem(): DesignSystem;
+
+    public get recipes(): string[] {
+        return this.getPluginData("recipes");
+    }
+
+    public set recipes(recipes: string[]) {
+        this.setPluginData("recipes", recipes);
+    }
 }

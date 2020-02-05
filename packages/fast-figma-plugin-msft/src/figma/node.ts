@@ -54,11 +54,12 @@ export function canHaveChildren(
     ].some((test: (node: BaseNode) => boolean) => test(node));
 }
 
-export class FigmaPluginNode implements PluginNode {
+export class FigmaPluginNode extends PluginNode {
     public id: string;
     public type: string;
     private node: BaseNode;
     constructor(id: string) {
+        super();
         const node = figma.getNodeById(id);
 
         if (node === null) {
@@ -84,7 +85,7 @@ export class FigmaPluginNode implements PluginNode {
         }
     }
 
-    public getPluginData<K extends keyof PluginNodeData>(key: K): PluginNodeData[K] {
+    protected getPluginData<K extends keyof PluginNodeData>(key: K): PluginNodeData[K] {
         try {
             return JSON.parse(this.node.getPluginData(key as string));
         } catch (e) {
@@ -92,17 +93,18 @@ export class FigmaPluginNode implements PluginNode {
         }
     }
 
-    public setPluginData<K extends keyof PluginNodeData>(
+    protected setPluginData<K extends keyof PluginNodeData>(
         key: K,
         value: PluginNodeData[K]
     ): void {
-        // let raw: string;
-        // try {
-        //     raw = JSON.stringify(value);
-        // } catch (e) {
-        //     raw = "";
-        // }
-        // this.node.setPluginData(key, raw);
+        console.log("settingPluginData", key, value);
+        let raw: string;
+        try {
+            raw = JSON.stringify(value);
+        } catch (e) {
+            raw = "";
+        }
+        this.node.setPluginData(key, raw);
     }
 
     public supports(): RecipeTypes[] {
