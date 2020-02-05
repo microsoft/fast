@@ -1,25 +1,25 @@
 import { PluginNode } from "./core/node";
-import {
-    fillRecipes,
-    RecipeStore,
-    RecipeTypes,
-    strokeRecipes,
-    textFillRecipes,
-} from "./core/recipes";
+import { fillRecipes, RecipeStore, strokeRecipes, textFillRecipes } from "./core/recipes";
 import { FigmaController } from "./figma/controller";
+import { RecipeTypes, RecipeDefinition } from "./core/recipe-registry";
 
 const controller = new FigmaController();
 
-function register(category: string, recipes: RecipeStore): void {
-    Object.keys(recipes).forEach((key: keyof RecipeStore) => {
-        controller.recipeRegistry.register({
-            id: key as string,
-            name: key as string,
-            categories: [category],
+function register(type: RecipeTypes, recipes: RecipeStore): void {
+    Object.keys(recipes).forEach((key: string) => {
+        const defintion: RecipeDefinition = {
+            id: key,
+            name: key,
+            type,
+            apply: (node: PluginNode): void => {
+                console.log("apply", key, "to", node.id);
+            },
             evaluate: (node: PluginNode): string => {
                 return recipes[key](node.designSystem());
             },
-        });
+        };
+
+        controller.recipeRegistry.register(defintion);
     });
 }
 

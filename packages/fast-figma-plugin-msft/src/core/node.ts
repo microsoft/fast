@@ -1,28 +1,26 @@
 import { DesignSystem } from "@microsoft/fast-components-styles-msft";
-import { MappedRecipeTypes, RecipeTypes } from "./recipes";
+import { RecipeTypes } from "./recipe-registry";
 
-export interface RecipeData {
-    name: string;
-    value: string;
-    id: string;
-}
+/**
+ * Defines the data stored by the plugin on a node instance
+ */
+export interface PluginNodeData {
+    /**
+     * A set of recipe IDs applied to the node
+     */
+    recipes: string[];
 
-export interface PluginNodeData extends MappedRecipeTypes<RecipeData[]> {
+    /**
+     * Design system overrides applied to the node
+     */
     designSystem: Partial<DesignSystem>;
 }
 
-export const PluginNodeDataKeys: Array<keyof PluginNodeData> = ((): Array<
-    keyof PluginNodeData
-> => {
-    const keyMap: Record<keyof PluginNodeData, void> = {
-        backgroundFills: void 0,
-        strokeFills: void 0,
-        foregroundFills: void 0,
-        designSystem: void 0,
-    };
-    return Object.keys(keyMap) as Array<keyof PluginNodeData>;
-})();
-
+/**
+ * The abstract class the plugin controller interacts with
+ * Implementation details of this class will need to be created
+ * for each design tool.
+ */
 export abstract class PluginNode {
     public abstract id: string;
     public abstract type: string;
@@ -34,6 +32,6 @@ export abstract class PluginNode {
         value: PluginNodeData[K]
     ) => void;
     public abstract children: () => PluginNode[];
-    public abstract supports: () => Array<keyof typeof RecipeTypes>;
+    public abstract supports: () => RecipeTypes[];
     public abstract designSystem: () => DesignSystem;
 }

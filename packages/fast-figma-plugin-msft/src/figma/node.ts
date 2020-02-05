@@ -1,6 +1,6 @@
 import { PluginNode, PluginNodeData } from "../core/node";
 import { DesignSystem } from "@microsoft/fast-components-styles-msft";
-import { RecipeTypes } from "../core/recipes";
+import { RecipeTypes } from "../core/recipe-registry";
 
 function isNodeType<T extends BaseNode>(type: NodeType): (node: BaseNode) => node is T {
     return (node: BaseNode): node is T => node.type === type;
@@ -105,7 +105,7 @@ export class FigmaPluginNode implements PluginNode {
         // this.node.setPluginData(key, raw);
     }
 
-    public supports(): Array<keyof typeof RecipeTypes> {
+    public supports(): RecipeTypes[] {
         return Object.keys(RecipeTypes).filter(key => {
             switch (key) {
                 case RecipeTypes.backgroundFills:
@@ -123,7 +123,7 @@ export class FigmaPluginNode implements PluginNode {
                 default:
                     return false;
             }
-        }) as Array<keyof typeof RecipeTypes>;
+        }) as RecipeTypes[];
     }
 
     public designSystem(): DesignSystem {

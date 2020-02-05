@@ -1,10 +1,6 @@
 import { PluginNode, PluginNodeData } from "./node";
-import { RecipeRegistry } from "./recipe-registry";
-import {
-    PluginUIActiveNodeData,
-    PluginUIActiveNodeRecipeSupportOptions,
-    PluginUIProps,
-} from "./ui";
+import { isEvaluatableRecipeDefinition, RecipeRegistry } from "./recipe-registry";
+import { PluginUIActiveNodeData, PluginUIProps } from "./ui";
 
 /**
  * Controller class designed to handle the business logic of the plugin.
@@ -52,30 +48,37 @@ export abstract class Controller {
         const selectedNodes = this.getSelectedNodes()
             .map(id => this.getNode(id))
             .filter((node): node is PluginNode => node !== null);
+        const allSupported = Array.from(
+            new Set(
+                selectedNodes
+                    .map(node => node.supports())
+                    .reduce((prev, next) => prev.concat(next), [])
+            )
+        );
 
         return {
             selectedNodes: selectedNodes.map(
                 (node): PluginUIActiveNodeData => ({
                     id: node.id,
                     type: node.type,
-                    designSystem: node.getPluginData("designSystem"),
-                    backgroundFills: node.getPluginData("backgroundFills"),
-                    foregroundFills: node.getPluginData("foregroundFills"),
-                    strokeFills: node.getPluginData("strokeFills"),
-                    supports: node.supports().reduce((prev, next) => {
-                        const data: PluginUIActiveNodeRecipeSupportOptions = {
-                            label: next,
-                            options: this.recipeRegistry.find(next).map(value => ({
-                                name: value.name,
-                                id: value.id,
-                                value: value.evaluate(node),
-                            })),
-                        };
-
-                        return { ...prev, [next]: data };
-                    }, {}),
+                    supports: node.supports(),
+                    recipes: node.getPluginData("recipes"),
                 })
             ),
+            recipeOptions: selectedNodes.length
+                ? allSupported.map(type => {
+                      return {
+                          type: type,
+                          options: this.recipeRegistry.find(type).map(
+                              item =>
+                                  this.recipeRegistry.toSerializable(
+                                      item.id,
+                                      selectedNodes[0]
+                                  ) // TODO: We probably shouldn't hard-code this, but what do we do if there are multiple selected?
+                          ),
+                      };
+                  })
+                : [],
         };
     }
 

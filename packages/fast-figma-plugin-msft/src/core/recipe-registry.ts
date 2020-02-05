@@ -1,7 +1,22 @@
 import { PluginNode } from "./node";
 import { intersection } from "lodash-es";
+import { Serializable } from "puppeteer";
 
-export interface RecipeDefinition {
+export enum RecipeTypes {
+    backgroundFills = "backgroundFills",
+    foregroundFills = "foregroundFills",
+    strokeFills = "strokeFills",
+}
+
+/**
+ * An interface where all keys of RecipeTypes map to a type
+ */
+export type MappedRecipeTypes<T> = { [K in keyof typeof RecipeTypes]: T };
+
+/**
+ * Defines a generic recipe
+ */
+export interface RecipeDefinition<T extends Serializable = any> {
     /**
      * The name of the recipe
      */
@@ -13,16 +28,42 @@ export interface RecipeDefinition {
     id: string;
 
     /**
-     * Arbitrary categories to associate the recipe to
+     * The type of recipe
      */
-    categories: string[];
+    type: RecipeTypes;
 
     /**
-     * Evaluates the recipe
+     * Applies a recipe to a node
      */
-    evaluate: (node: PluginNode) => string;
+    apply: (node: PluginNode) => void;
+
+    /**
+     * Evaluates a recipe
+     */
+    evaluate?: (node: PluginNode) => T;
 }
 
+/**
+ * Defines all data associated with a recipe
+ */
+export interface RecipeData<T extends Serializable = any>
+    extends Omit<RecipeDefinition<T>, "apply" | "evaluate"> {
+    value?: T;
+}
+
+export function isEvaluatableRecipeDefinition<T extends Serializable>(
+    recipe: RecipeDefinition<T>
+): recipe is Required<RecipeDefinition<T>> {
+    return (
+        [
+            RecipeTypes.backgroundFills,
+            RecipeTypes.foregroundFills,
+            RecipeTypes.strokeFills,
+        ].includes(recipe.type) &&
+        recipe.hasOwnProperty("evaluate") &&
+        typeof recipe["evaluate"] === "function"
+    );
+}
 export class RecipeRegistry {
     private entries: { [id: string]: RecipeDefinition } = {};
 
@@ -51,15 +92,6 @@ export class RecipeRegistry {
     }
 
     /**
-     * Applies a recipe to node
-     * @param id - the ID of the recipe to apply
-     * @param node - the node to evaluate the plugin on
-     */
-    public apply(id: string, node: PluginNode): void {
-        this.get(id).evaluate(node);
-    }
-
-    /**
      * Get a recipe definition by ID
      * @param id the id of the recipe
      */
@@ -79,9 +111,36 @@ export class RecipeRegistry {
         return this.entries.hasOwnProperty(id);
     }
 
-    public find(...categories: string[]): RecipeDefinition[] {
-        return Object.values(this.entries).filter(
-            value => intersection(value.categories, categories).length
-        );
+    /**
+     * Returns all entries of a given recipe type
+     * @param type the recipe type to return entries of
+     */
+    public find(type: RecipeTypes): RecipeDefinition[] {
+        return Object.values(this.entries).filter(value => value.type === type);
+    }
+
+    /**
+     * Returns a serializable object representing the recipe, with all functional
+     * data removed.
+     *
+     * @param id - the ID of the recipe to constuct data for
+     * @param node - the ID of the node we're constructing for. This will be provided to the evaluate function if it exists
+     */
+    public toSerializable(id: string, node: PluginNode): RecipeData {
+        const recipe = this.get(id);
+        const { name, type } = recipe;
+
+        return isEvaluatableRecipeDefinition(recipe)
+            ? {
+                  name,
+                  type,
+                  id,
+                  value: recipe.evaluate(node),
+              }
+            : {
+                  name,
+                  type,
+                  id,
+              };
     }
 }

@@ -1,6 +1,5 @@
 import React from "react";
-import { PluginNodeData, RecipeData } from "../node";
-import { MappedRecipeTypes } from "../recipes";
+import { PluginNodeData } from "../node";
 import {
     Caption,
     Divider,
@@ -9,34 +8,49 @@ import {
     Radio,
 } from "@microsoft/fast-components-react-msft";
 import Swatch from "./swatch";
-
-/**
- * Defines all data associated with a recipe
- */
-export interface RecipeOptionData {
-    name: string;
-    value: string;
-    id: string;
-}
+import { RecipeTypes, RecipeData } from "../recipe-registry";
 
 export interface PluginUIActiveNodeRecipeSupportOptions {
     label: string;
-    options: RecipeOptionData[];
+    options: RecipeData[];
 }
 
-export interface PluginUIActiveNodeData extends PluginNodeData {
+export interface PluginUIActiveNodeData {
+    /**
+     * The ID of the node
+     */
     id: string;
+
+    /**
+     * The node types
+     */
     type: string;
-    supports: Partial<MappedRecipeTypes<PluginUIActiveNodeRecipeSupportOptions>>;
+
+    /**
+     * The IDs of all recipes assigned to the item
+     */
+    recipes: string[];
+
+    /**
+     * The recipe types that the node supports
+     */
+    supports: RecipeTypes[];
+}
+
+export interface RecipeTypeOptions {
+    type: RecipeTypes;
+    options: RecipeData[];
 }
 
 export interface PluginUIProps {
     selectedNodes: PluginUIActiveNodeData[];
+    recipeOptions: RecipeTypeOptions[];
 }
 
 export class PluginUI extends React.Component<PluginUIProps> {
     public static defaultProps: PluginUIProps = {
         selectedNodes: [],
+        recipeOptions: [],
     };
 
     public render(): JSX.Element {
@@ -67,46 +81,55 @@ export class PluginUI extends React.Component<PluginUIProps> {
     }
 
     private renderBody(): JSX.Element {
-        if (this.props.selectedNodes.length > 1) {
-            return <Paragraph>Select a single node to edit.</Paragraph>;
-        } else if (this.props.selectedNodes.length === 0) {
-            return <Paragraph>No editable nodes selected</Paragraph>;
-        } else {
-            return <div>{this.renderRecipeSelector(this.props.selectedNodes[0])}</div>;
-        }
+        // return <pre>{JSON.stringify(this.props, null, 2)}</pre>
+
+        // if (this.props.selectedNodes.length > 1) {
+        //     return <Paragraph>Select a single node to edit.</Paragraph>;
+        // } else if (this.props.selectedNodes.length === 0) {
+        //     return <Paragraph>No editable nodes selected</Paragraph>;
+        // } else {
+        // return <div>{this.renderRecipeSelector(this.props.selectedNodes[0])}</div>;
+        // }
+        return <div>{this.props.recipeOptions.map(this.renderRecipeSelector)}</div>;
     }
 
-    private renderRecipeSelector(node: PluginUIActiveNodeData): JSX.Element[] {
-        return Object.entries(node.supports).map(entry => {
-            const [name, data] = entry;
-
-            return (
-                <fieldset key={name} style={{ border: "none" }}>
-                    <legend>{data!.label}</legend>
-                    {data!.options.map(option => (
-                        <Radio
-                            key={option.id}
-                            inputId={option.id}
-                            name={name}
-                            style={{ margin: "2px 0" }}
-                            checked={(node[name] as RecipeData[]).some(
-                                value => value.id === option.id
-                            )}
-                            onChange={this.handleOnChange.bind(this, option.id)}
+    private renderRecipeSelector = (optionType: RecipeTypeOptions): JSX.Element => {
+        return (
+            <fieldset key={optionType.type} style={{ border: "none" }}>
+                <legend>{optionType.type}</legend>
+                {optionType.options.map(option => (
+                    <Radio
+                        key={option.id}
+                        inputId={option.id}
+                        name={name}
+                        style={{ margin: "2px 0" }}
+                        checked={this.recipeIsAssigned(option.id).length > 1}
+                        onChange={this.handleOnChange.bind(this, option.id)}
+                    >
+                        <Label
+                            slot="label"
+                            htmlFor={option.id}
+                            style={{ display: "inline-flex", alignItems: "center" }}
                         >
-                            <Label
-                                slot="label"
-                                htmlFor={option.id}
-                                style={{ display: "inline-flex", alignItems: "center" }}
-                            >
-                                <Swatch color={option.value} />
-                                {option.name}
-                            </Label>
-                        </Radio>
-                    ))}
-                </fieldset>
-            );
-        });
+                            <Swatch color={option.value} />
+                            {option.name}
+                        </Label>
+                    </Radio>
+                ))}
+            </fieldset>
+        );
+    };
+
+    /**
+     * Returns the node ID's in which the recipe is assigned
+     * @param id - the recipe ID
+     */
+    private recipeIsAssigned(id: string): string[] {
+        return this.props.selectedNodes
+            .filter(node => {
+                return node.recipes.includes(id);
+            })
+            .map(node => node.id);
     }
 
     private handleOnChange = (recipeId: string): void => {
