@@ -9,7 +9,8 @@ function GlobalStyles(fn: () => JSX.Element): JSX.Element {
             <Global
                 styles={{
                     body: {
-                        fontFamily: "'Segoe UI'",
+                        fontFamily:
+                            "Segoe UI, SegoeUI, Helvetica Neue, Helvetica, Arial, sans-serif",
                     },
                 }}
             />
