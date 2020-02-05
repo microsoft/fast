@@ -4,6 +4,7 @@ import { MappedRecipeTypes, RecipeTypes } from "./recipes";
 export interface RecipeData {
     name: string;
     value: string;
+    id: string;
 }
 
 export interface PluginNodeData extends MappedRecipeTypes<RecipeData[]> {

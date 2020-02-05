@@ -1,5 +1,5 @@
 import React from "react";
-import { PluginNodeData } from "../node";
+import { PluginNodeData, RecipeData } from "../node";
 import { MappedRecipeTypes } from "../recipes";
 import {
     Caption,
@@ -9,6 +9,7 @@ import {
     Radio,
 } from "@microsoft/fast-components-react-msft";
 import Swatch from "./swatch";
+
 /**
  * Defines all data associated with a recipe
  */
@@ -88,6 +89,10 @@ export class PluginUI extends React.Component<PluginUIProps> {
                             inputId={option.id}
                             name={name}
                             style={{ margin: "2px 0" }}
+                            checked={(node[name] as RecipeData[]).some(
+                                value => value.id === option.id
+                            )}
+                            onChange={this.handleOnChange.bind(this, option.id)}
                         >
                             <Label
                                 slot="label"
@@ -103,4 +108,8 @@ export class PluginUI extends React.Component<PluginUIProps> {
             );
         });
     }
+
+    private handleOnChange = (recipeId: string): void => {
+        console.log(recipeId);
+    };
 }

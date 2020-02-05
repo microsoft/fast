@@ -18,7 +18,7 @@ export interface RecipeDefinition {
     categories: string[];
 
     /**
-     * Applies the recipe to a node
+     * Evaluates the recipe
      */
     evaluate: (node: PluginNode) => string;
 }
