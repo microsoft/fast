@@ -8,11 +8,11 @@ sidebar_label: Install
 
 ## Prerequisites
 
-Before setting up FAST-DNA, install Git and [yarn](https://yarnpkg.com/en/docs/install).
+Before setting up FAST-DNA, install Git and <a href="https://yarnpkg.com/en/docs/install" target="_blank">Yarn</a>.
 
 ## Setup the source repository
 
-Clone the repository, `cd` into the project, install [Lerna](https://github.com/lerna/lerna) and install dependencies:
+Clone the repository, `cd` into the project, install <a href="https://github.com/lerna/lerna" target="_blank">Lerna</a> and install dependencies:
 
 ```shell
 git clone https://github.com/Microsoft/fast-dna.git
@@ -20,21 +20,16 @@ cd fast-dna
 yarn global add lerna
 ```
 
-Install all dependencies:
+Install and symbolically link dependencies across all workspaces:
 
 ```shell
 yarn install
 ```
 
-Prepare the workspaces:
-
-```shell
-lerna run prepare
-```
-
+- `lerna run prepare` to symbolically link dependencies
 - `yarn tslint` or `yarn tslint:fix` runs tslint on typescript in a given package.
 - `yarn unit-tests` runs unit-tests for the package.
-- `yarn test` runs processes in a package required to pass prior to check-in. Generally includes building, linting, and unit-testing.
+- `yarn test` runs processes in a package required to pass prior to check-in and includes building, linting, and unit-testing.
 
 To run these processes across *all* projects, substitute `yarn` for `lerna run ____`:
 
