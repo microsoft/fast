@@ -44,7 +44,7 @@ export abstract class Controller {
     /**
      * Retrieve the UI state
      */
-    public getPluginUIState(): PluginUIProps {
+    public getPluginUIState(): Omit<PluginUIProps, "dispatch"> {
         const selectedNodes = this.getSelectedNodes()
             .map(id => this.getNode(id))
             .filter((node): node is PluginNode => node !== null);
@@ -93,5 +93,5 @@ export abstract class Controller {
      * Provides the state object to the UI component and updates the UI
      * @param state the UI state object
      */
-    protected abstract setPluginUIState(state: PluginUIProps): void;
+    protected abstract setPluginUIState(state: Omit<PluginUIProps, "dispatch">): void;
 }

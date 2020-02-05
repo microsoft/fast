@@ -9,6 +9,7 @@ import {
 } from "@microsoft/fast-components-react-msft";
 import Swatch from "./swatch";
 import { RecipeTypes, RecipeData } from "../recipe-registry";
+import { UIMessage, MessageTypes, RecipeMessageAction } from "../messaging";
 
 export interface PluginUIActiveNodeRecipeSupportOptions {
     label: string;
@@ -45,12 +46,18 @@ export interface RecipeTypeOptions {
 export interface PluginUIProps {
     selectedNodes: PluginUIActiveNodeData[];
     recipeOptions: RecipeTypeOptions[];
+    dispatch: (message: UIMessage) => void;
 }
 
 export class PluginUI extends React.Component<PluginUIProps> {
     public static defaultProps: PluginUIProps = {
         selectedNodes: [],
         recipeOptions: [],
+        dispatch: (message: UIMessage) => {
+            throw new Error(
+                `The UI message could not be dispatched - please provide a valid dispatch function the the PluginUI`
+            );
+        },
     };
 
     public render(): JSX.Element {
@@ -104,7 +111,7 @@ export class PluginUI extends React.Component<PluginUIProps> {
                         name={name}
                         style={{ margin: "2px 0" }}
                         checked={this.recipeIsAssigned(option.id).length > 1}
-                        onChange={this.handleOnChange.bind(this, option.id)}
+                        onChange={this.handleOnChange.bind(this, option.id, option.type)}
                     >
                         <Label
                             slot="label"
@@ -132,7 +139,16 @@ export class PluginUI extends React.Component<PluginUIProps> {
             .map(node => node.id);
     }
 
-    private handleOnChange = (recipeId: string): void => {
-        console.log(recipeId);
+    private handleOnChange = (recipeId: string, type: RecipeTypes): void => {
+        const nodeIds = this.props.selectedNodes
+            .filter(node => node.supports.includes(type))
+            .map(node => node.id);
+
+        this.props.dispatch({
+            id: recipeId,
+            type: MessageTypes.recipe,
+            nodeIds,
+            action: RecipeMessageAction.assign,
+        });
     };
 }

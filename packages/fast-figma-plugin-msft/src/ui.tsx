@@ -1,9 +1,18 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { PluginUI, PluginUIProps } from "./core/ui";
+import { UIMessage } from "./core/messaging";
+
+/**
+ * Dispatches a UI message to the host
+ * @param message The message to dispatch
+ */
+function dispatchMessage(message: UIMessage): void {
+    parent.postMessage({ pluginMessage: message }, "*");
+}
 
 function render(props?: PluginUIProps): void {
-    ReactDOM.render(<PluginUI {...props} />, root);
+    ReactDOM.render(<PluginUI {...props} dispatch={dispatchMessage} />, root);
 }
 
 // Import with require so the dependency doesn't get tree-shaken
