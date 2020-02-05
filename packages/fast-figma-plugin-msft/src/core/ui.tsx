@@ -1,22 +1,34 @@
 import React from "react";
 import { PluginNodeData } from "./node";
-import { MappedRecipeTypes, RecipeData, RecipeTypes } from "./recipes";
+import { MappedRecipeTypes, RecipeTypes } from "./recipes";
+
+/**
+ * Defines all data associated with a recipe
+ */
+export interface RecipeOptionData {
+    name: string;
+    value: string;
+    id: string;
+}
+
+export interface PluginUIActiveNodeRecipeSupportOptions {
+    label: string;
+    options: RecipeOptionData[];
+}
 
 export interface PluginUIActiveNodeData extends PluginNodeData {
     id: string;
     type: string;
-    supports: Partial<MappedRecipeTypes<RecipeData[]>>;
+    supports: Partial<MappedRecipeTypes<PluginUIActiveNodeRecipeSupportOptions>>;
 }
 
 export interface PluginUIProps {
     selectedNodes: PluginUIActiveNodeData[];
-    // recipeOptions: PluginUIPropsNodeRecipeOptions;
 }
 
 export class PluginUI extends React.Component<PluginUIProps> {
     public static defaultProps: PluginUIProps = {
         selectedNodes: [],
-        // recipeOptions: {},
     };
 
     public render(): JSX.Element {

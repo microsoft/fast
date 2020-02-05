@@ -20,7 +20,7 @@ export interface RecipeDefinition {
     /**
      * Applies the recipe to a node
      */
-    evaluate: (node: PluginNode) => void;
+    evaluate: (node: PluginNode) => string;
 }
 
 export class RecipeRegistry {

@@ -1,6 +1,10 @@
 import { PluginNode, PluginNodeData } from "./node";
 import { RecipeRegistry } from "./recipe-registry";
-import { PluginUIActiveNodeData, PluginUIProps } from "./ui";
+import {
+    PluginUIActiveNodeData,
+    PluginUIActiveNodeRecipeSupportOptions,
+    PluginUIProps,
+} from "./ui";
 
 /**
  * Controller class designed to handle the business logic of the plugin.
@@ -58,17 +62,18 @@ export abstract class Controller {
                     backgroundFills: node.getPluginData("backgroundFills"),
                     foregroundFills: node.getPluginData("foregroundFills"),
                     strokeFills: node.getPluginData("strokeFills"),
-                    supports: node.supports().reduce(
-                        (prev, next) => ({
-                            ...prev,
-                            [next]: this.recipeRegistry.find(next).map(value => ({
+                    supports: node.supports().reduce((prev, next) => {
+                        const data: PluginUIActiveNodeRecipeSupportOptions = {
+                            label: next,
+                            options: this.recipeRegistry.find(next).map(value => ({
                                 name: value.name,
-                                value: value.evaluate(node),
                                 id: value.id,
+                                value: value.evaluate(node),
                             })),
-                        }),
-                        {}
-                    ),
+                        };
+
+                        return { ...prev, [next]: data };
+                    }, {}),
                 })
             ),
         };
