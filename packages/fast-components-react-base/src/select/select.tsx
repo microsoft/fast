@@ -506,6 +506,7 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
         if (this.props.disabled || e.defaultPrevented) {
             return;
         }
+        e.preventDefault();
         this.toggleMenu(!this.state.isMenuOpen);
     };
 
