@@ -1,7 +1,6 @@
 import React from "react";
 import Adapter from "enzyme-adapter-react-16";
 import { configure, mount, shallow } from "enzyme";
-import Button from "../button";
 import { ConstructibleResizeObserver, DisplayNamePrefix } from "../utilities";
 import StackPanel, {
     StackPanelClassNameContract,
@@ -86,7 +85,7 @@ describe("stack panel", (): void => {
         expect(rendered.first().prop("aria-label")).toEqual("label");
     });
 
-    test("getViewportSpan returns correct value when orientation is vertical", (): void => {
+    test("getViewportSpan returns expected value when orientation is vertical", (): void => {
         const container: HTMLDivElement = document.createElement("div");
         const rendered: any = mount(
             <StackPanel orientation={Orientation.vertical}>item</StackPanel>
@@ -104,7 +103,7 @@ describe("stack panel", (): void => {
         ).toBe(100);
     });
 
-    test("getViewportSpan returns correct value when orientation is horizontal", (): void => {
+    test("getViewportSpan returns expected value when orientation is horizontal", (): void => {
         const rendered: any = mount(
             <StackPanel orientation={Orientation.horizontal}>item</StackPanel>
         );
@@ -120,7 +119,7 @@ describe("stack panel", (): void => {
                 ["getViewportSpan"]()
         ).toBe(200);
     });
-    test("getScrollIntoViewPosition returns correct value", (): void => {
+    test("getScrollIntoViewPosition returns expected values", (): void => {
         const rendered: any = mount(
             <StackPanel itemSpanOverrides={itemSpans}>{sampleStackPanelItems}</StackPanel>
         );
@@ -146,7 +145,7 @@ describe("stack panel", (): void => {
         ).toBe(2400);
     });
 
-    test("getMaxScrollDistance returns correct value", (): void => {
+    test("getMaxScrollDistance returns value corresponding to height of items and viewport", (): void => {
         const rendered: any = mount(
             <StackPanel itemSpanOverrides={itemSpans}>{sampleStackPanelItems}</StackPanel>
         );
@@ -258,27 +257,27 @@ describe("stack panel", (): void => {
         rendered.instance().rootElement.current = null;
         expect(rendered.instance()["getDirection"]()).toEqual("ltr");
     });
-    test("should ease the animation correctly when moving the scroll position", () => {
+    test("should ease the animation when moving the scroll position", () => {
         const rendered: any = mount(<StackPanel>{sampleStackPanelItems}</StackPanel>);
 
         expect(rendered.instance()["easeInOutQuad"](1, 0, 0.5, 50)).toBe(0.0004);
     });
-    test("should ease the animation correctly when at animation start time", () => {
+    test("should ease the animation when at animation start time", () => {
         const rendered: any = mount(<StackPanel>{sampleStackPanelItems}</StackPanel>);
 
         expect(rendered.instance()["easeInOutQuad"](0, 0, 0.5, 50)).toBe(0);
     });
-    test("should ease the animation correctly when at animation end time", () => {
+    test("should ease the animation when at animation end time", () => {
         const rendered: any = mount(<StackPanel>{sampleStackPanelItems}</StackPanel>);
 
         expect(rendered.instance()["easeInOutQuad"](50, 0, 0.5, 50)).toBe(0.5);
     });
-    test("should ease the animation correctly when moving the scroll position", () => {
+    test("should ease the animation when moving the scroll position", () => {
         const rendered: any = mount(<StackPanel>{sampleStackPanelItems}</StackPanel>);
 
         expect(rendered.instance()["easeInOutQuad"](1, 0, 0.5, 50)).toBe(0.0004);
     });
-    test("getScrollAnimationPosition returns correct start and end values", () => {
+    test("getScrollAnimationPosition returns expected start and end values", () => {
         const rendered: any = mount(<StackPanel>{sampleStackPanelItems}</StackPanel>);
 
         rendered.instance().currentScrollAnimStartPosition = 0;
@@ -287,7 +286,7 @@ describe("stack panel", (): void => {
         expect(rendered.instance()["getScrollAnimationPosition"](0, 1000)).toBe(0);
         expect(rendered.instance()["getScrollAnimationPosition"](1000, 1000)).toBe(100);
     });
-    test("settting and getting scroll position works correctly in ltr", (): void => {
+    test("settting and getting scroll position returns expected scroll values in ltr", (): void => {
         const rendered: any = mount(
             <StackPanel dir="ltr">{sampleStackPanelItems}</StackPanel>
         );
@@ -295,7 +294,7 @@ describe("stack panel", (): void => {
         rendered.instance()["setScrollPosition"](100);
         expect(rendered.instance()["getScrollPosition"]()).toEqual(100);
     });
-    test("settting and getting scroll position works correctly in rtl", (): void => {
+    test("settting and getting scroll position works in rtl", (): void => {
         const rendered: any = mount(
             <StackPanel dir="rtl">{sampleStackPanelItems}</StackPanel>
         );
@@ -307,7 +306,7 @@ describe("stack panel", (): void => {
         const rendered: any = mount(<StackPanel />);
         expect(rendered.instance()["getScrollIntoViewPosition"](0)).toEqual(0);
     });
-    test("should ease the animation correctly when moving the scroll position", () => {
+    test("should ease the animation when moving the scroll position", () => {
         const rendered: any = mount(<StackPanel>{sampleStackPanelItems}</StackPanel>);
         expect(rendered.instance()["easeInOutQuad"](1, 0, 0.5, 50)).toBe(0.0004);
     });
@@ -332,7 +331,7 @@ describe("stack panel", (): void => {
         expect(rendered.instance().isScrollAnimating).toEqual(false);
         expect(rendered.instance()["getScrollPosition"]()).toEqual(100);
     });
-    test("on onItemFocus correctly scrolls content - vertical, element below viewport ", () => {
+    test("on onItemFocus scrolls content into view - vertical, element below viewport ", () => {
         const rendered: any = mount(
             <StackPanel orientation={Orientation.vertical} nextItemPeek={0}>
                 {sampleStackPanelItems}
@@ -357,7 +356,7 @@ describe("stack panel", (): void => {
         expect(scrollContentFn.mock.calls[0][1]).toBe(250);
     });
 
-    test("on onItemFocus correctly scrolls content - vertical, element above viewport ", () => {
+    test("on onItemFocus scrolls content into view - vertical, element above viewport ", () => {
         const rendered: any = mount(
             <StackPanel orientation={Orientation.vertical} nextItemPeek={0}>
                 {sampleStackPanelItems}
@@ -382,7 +381,7 @@ describe("stack panel", (): void => {
         expect(scrollContentFn.mock.calls[0][1]).toBe(100);
     });
 
-    test("on onItemFocus correctly scrolls content - horizontal, element right of viewport ", () => {
+    test("on onItemFocus scrolls content into view - horizontal, element right of viewport ", () => {
         const rendered: any = mount(
             <StackPanel orientation={Orientation.horizontal} nextItemPeek={0}>
                 {sampleStackPanelItems}
@@ -407,7 +406,7 @@ describe("stack panel", (): void => {
         expect(scrollContentFn.mock.calls[0][1]).toBe(250);
     });
 
-    test("on onItemFocus correctly scrolls content - horizontal, element left of viewport", () => {
+    test("on onItemFocus scrolls content into view - horizontal, element left of viewport", () => {
         const rendered: any = mount(
             <StackPanel orientation={Orientation.horizontal} nextItemPeek={0}>
                 {sampleStackPanelItems}
