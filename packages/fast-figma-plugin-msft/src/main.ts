@@ -12,7 +12,7 @@ function register(type: RecipeTypes, recipes: RecipeStore): void {
             name: key,
             type,
             evaluate: (node: PluginNode): string => {
-                return recipes[key](node.designSystem());
+                return recipes[key](node.designSystem as any);
             },
         };
 

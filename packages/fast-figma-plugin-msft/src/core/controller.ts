@@ -117,7 +117,6 @@ export abstract class Controller {
                     node.paint(this.recipeRegistry.toSerializable(recipe.id, node));
                     break;
             }
-            // We need to paint here
         });
 
         this.setPluginUIState(this.getPluginUIState());
@@ -131,13 +130,22 @@ export abstract class Controller {
         }
 
         // Paint all recipes of the node
-        node.recipes.forEach(id =>
-            node.paint(this.recipeRegistry.toSerializable(id, node))
-        );
+        node.recipes.forEach(id => {
+            const recipe = this.recipeRegistry.get(id);
 
-        node.children().forEach(node => {
+            // TODO: We can probably be smarter about when to apply the backgroundColor property.
+            // This causes us to purge sub-trees un-necessairly, because setting the property
+            // automatically purges the tree.
+            if (recipe.type === RecipeTypes.backgroundFills) {
+                node.setDesignSystemPropety("backgroundColor", recipe.evaluate(node));
+            }
+
+            node.paint(this.recipeRegistry.toSerializable(id, node));
+        });
+
+        node.children().forEach(child => {
             if (node) {
-                this.paintTree(node.id);
+                this.paintTree(child.id);
             }
         });
     }

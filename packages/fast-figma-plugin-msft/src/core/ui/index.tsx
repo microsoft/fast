@@ -81,7 +81,9 @@ export class PluginUI extends React.Component<PluginUIProps> {
             <div>
                 <Divider style={{ marginBottom: "4px" }} />
                 <Caption>
-                    {this.props.selectedNodes.map(node => node.type).join(" | ") || "N/A"}
+                    {this.props.selectedNodes
+                        .map(node => `${node.type} - ${node.id}`)
+                        .join(" | ") || "N/A"}
                 </Caption>
             </div>
         );

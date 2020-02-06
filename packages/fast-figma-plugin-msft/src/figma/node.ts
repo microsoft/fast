@@ -2,6 +2,7 @@ import { PluginNode, PluginNodeData } from "../core/node";
 import { DesignSystem } from "@microsoft/fast-components-styles-msft";
 import { RecipeTypes, RecipeData, RecipeDefinition } from "../core/recipe-registry";
 import { parseColor } from "@microsoft/fast-colors";
+import { string } from "prop-types";
 
 function isNodeType<T extends BaseNode>(type: NodeType): (node: BaseNode) => node is T {
     return (node: BaseNode): node is T => node.type === type;
@@ -98,7 +99,6 @@ export class FigmaPluginNode extends PluginNode {
         key: K,
         value: PluginNodeData[K]
     ): void {
-        console.log("settingPluginData", key, value);
         let raw: string;
         try {
             raw = JSON.stringify(value);
@@ -127,10 +127,6 @@ export class FigmaPluginNode extends PluginNode {
                     return false;
             }
         }) as RecipeTypes[];
-    }
-
-    public designSystem(): DesignSystem {
-        return {} as any;
     }
 
     public paint(data: RecipeData): void {
@@ -175,5 +171,15 @@ export class FigmaPluginNode extends PluginNode {
                 (this.node as any).strokes = [paint];
                 break;
         }
+    }
+
+    public parent(): FigmaPluginNode | null {
+        const parent = this.node.parent;
+
+        if (parent === null) {
+            return null;
+        }
+
+        return new FigmaPluginNode(parent.id);
     }
 }
