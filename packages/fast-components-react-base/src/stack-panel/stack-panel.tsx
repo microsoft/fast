@@ -86,7 +86,7 @@ class StackPanel extends Foundation<
     private openRequestAnimationFrame: number = null;
     private resizeDetector: ResizeObserverClassDefinition;
     private itemPositions: ItemPosition[];
-    private viewPortSpan: number = 0;
+    private viewportSpan: number = 0;
     private itemContainerSpan: number = 0;
     private maxScroll: number = 0;
 
@@ -188,7 +188,7 @@ class StackPanel extends Foundation<
             }
         }
 
-        this.viewPortSpan = this.getViewportSpan();
+        this.viewportSpan = this.getViewportSpan();
         this.updateLayout();
 
         if (
@@ -207,7 +207,7 @@ class StackPanel extends Foundation<
      */
     public componentDidUpdate(prevProps: StackPanelProps): void {
         if (prevProps.orientation !== this.props.orientation) {
-            this.viewPortSpan = this.getViewportSpan();
+            this.viewportSpan = this.getViewportSpan();
         }
 
         if (
@@ -359,7 +359,7 @@ class StackPanel extends Foundation<
         }
 
         const contentSpan: number = this.itemPositions[this.itemPositions.length - 1].end;
-        return contentSpan - this.viewPortSpan;
+        return contentSpan - this.viewportSpan;
     }
 
     /**
@@ -412,8 +412,8 @@ class StackPanel extends Foundation<
             this.itemPositions.length === 0 ? 0 : this.itemPositions.length - 1;
 
         const effectiveViewportSpan: number =
-            this.viewPortSpan >= this.props.defaultItemSpan
-                ? this.viewPortSpan
+            this.viewportSpan >= this.props.defaultItemSpan
+                ? this.viewportSpan
                 : this.props.defaultItemSpan;
 
         const visibleRangeStartIndex: number = this.getThresholdItemIndex(
@@ -444,7 +444,7 @@ class StackPanel extends Foundation<
         this.setState({
             renderedRangeStartIndex: renderStartIndex,
             renderedRangeEndIndex: renderEndIndex,
-            isScrollable: this.itemContainerSpan > this.viewPortSpan ? true : false,
+            isScrollable: this.itemContainerSpan > this.viewportSpan ? true : false,
         });
     };
 
@@ -508,7 +508,7 @@ class StackPanel extends Foundation<
         if (!isNil(this.rootElement) && !isNil(this.rootElement.current)) {
             // one page is default
             const bufferSize: number = Math.ceil(
-                this.viewPortSpan / this.props.defaultItemSpan
+                this.viewportSpan / this.props.defaultItemSpan
             );
             return bufferSize > 1 ? bufferSize : 1;
         }
@@ -538,7 +538,7 @@ class StackPanel extends Foundation<
             this.props.onScrollChange(
                 this.lastRecordedScroll,
                 this.maxScroll,
-                this.viewPortSpan
+                this.viewportSpan
             );
         }
     };
@@ -547,7 +547,7 @@ class StackPanel extends Foundation<
      *  Handle viewport resize events
      */
     private handleResize = (entries: ResizeObserverEntry[]): void => {
-        this.viewPortSpan = this.getViewportSpan();
+        this.viewportSpan = this.getViewportSpan();
         this.updateLayout();
     };
 
@@ -628,7 +628,7 @@ class StackPanel extends Foundation<
      *  peek value to use. We don't want to clip focused item to get peek on next/previous item.
      */
     private getScrollPeek = (itemSpan: number): number => {
-        let maxPeek: number = this.viewPortSpan - itemSpan;
+        let maxPeek: number = this.viewportSpan - itemSpan;
         maxPeek = maxPeek < 0 ? 0 : maxPeek;
 
         const peek: number =
@@ -671,8 +671,8 @@ class StackPanel extends Foundation<
 
         if (itemStart - this.lastRecordedScroll < 0) {
             this.scrollContent(scrollStart, itemStart - peek);
-        } else if (itemEnd - scrollStart > this.viewPortSpan) {
-            this.scrollContent(scrollStart, itemEnd - this.viewPortSpan + peek);
+        } else if (itemEnd - scrollStart > this.viewportSpan) {
+            this.scrollContent(scrollStart, itemEnd - this.viewportSpan + peek);
         }
     };
 
