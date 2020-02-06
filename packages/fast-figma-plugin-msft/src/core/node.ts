@@ -1,5 +1,5 @@
 import { DesignSystem } from "@microsoft/fast-components-styles-msft";
-import { RecipeTypes, RecipeDefinition } from "./recipe-registry";
+import { RecipeTypes, RecipeData } from "./recipe-registry";
 
 /**
  * Defines the data stored by the plugin on a node instance
@@ -42,4 +42,6 @@ export abstract class PluginNode {
     public set recipes(recipes: string[]) {
         this.setPluginData("recipes", recipes);
     }
+
+    public abstract paint(data: RecipeData): void;
 }

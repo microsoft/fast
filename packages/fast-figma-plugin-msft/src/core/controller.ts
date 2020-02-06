@@ -1,5 +1,9 @@
 import { PluginNode, PluginNodeData } from "./node";
-import { isEvaluatableRecipeDefinition, RecipeRegistry } from "./recipe-registry";
+import {
+    isEvaluatableRecipeDefinition,
+    RecipeRegistry,
+    RecipeTypes,
+} from "./recipe-registry";
 import { PluginUIActiveNodeData, PluginUIProps } from "./ui";
 import { UIMessage, RecipeMessage, MessageTypes, RecipeMessageAction } from "./messaging";
 
@@ -104,10 +108,38 @@ export abstract class Controller {
                     break;
             }
 
+            switch (recipe.type) {
+                case RecipeTypes.backgroundFills:
+                    this.paintTree(node.id);
+                    break;
+                case RecipeTypes.foregroundFills:
+                case RecipeTypes.strokeFills:
+                    node.paint(this.recipeRegistry.toSerializable(recipe.id, node));
+                    break;
+            }
             // We need to paint here
         });
 
         this.setPluginUIState(this.getPluginUIState());
+    }
+
+    private paintTree(id: string): void {
+        const node = this.getNode(id);
+
+        if (!node) {
+            return;
+        }
+
+        // Paint all recipes of the node
+        node.recipes.forEach(id =>
+            node.paint(this.recipeRegistry.toSerializable(id, node))
+        );
+
+        node.children().forEach(node => {
+            if (node) {
+                this.paintTree(node.id);
+            }
+        });
     }
 
     /**

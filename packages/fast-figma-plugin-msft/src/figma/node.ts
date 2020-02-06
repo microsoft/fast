@@ -1,6 +1,7 @@
 import { PluginNode, PluginNodeData } from "../core/node";
 import { DesignSystem } from "@microsoft/fast-components-styles-msft";
-import { RecipeTypes } from "../core/recipe-registry";
+import { RecipeTypes, RecipeData, RecipeDefinition } from "../core/recipe-registry";
+import { parseColor } from "@microsoft/fast-colors";
 
 function isNodeType<T extends BaseNode>(type: NodeType): (node: BaseNode) => node is T {
     return (node: BaseNode): node is T => node.type === type;
@@ -130,5 +131,49 @@ export class FigmaPluginNode extends PluginNode {
 
     public designSystem(): DesignSystem {
         return {} as any;
+    }
+
+    public paint(data: RecipeData): void {
+        switch (data.type) {
+            case RecipeTypes.strokeFills:
+            case RecipeTypes.backgroundFills:
+            case RecipeTypes.foregroundFills:
+                this.paintColor(data);
+                break;
+            default:
+                throw new Error(`Recipe could not be painted ${JSON.stringify(data)}`);
+        }
+    }
+
+    private paintColor(data: RecipeData): void {
+        const color = parseColor(data.value);
+
+        if (color === null) {
+            throw new Error(
+                `The value "${data.value}" could not be converted to a ColorRGBA64`
+            );
+        }
+
+        const colorObject = color.toObject();
+        const paint: SolidPaint = {
+            type: "SOLID",
+            visible: true,
+            opacity: colorObject.a,
+            blendMode: "NORMAL",
+            color: {
+                r: colorObject.r,
+                g: colorObject.g,
+                b: colorObject.b,
+            },
+        };
+        switch (data.type) {
+            case RecipeTypes.backgroundFills:
+            case RecipeTypes.foregroundFills:
+                (this.node as any).fills = [paint];
+                break;
+            case RecipeTypes.strokeFills:
+                (this.node as any).strokes = [paint];
+                break;
+        }
     }
 }

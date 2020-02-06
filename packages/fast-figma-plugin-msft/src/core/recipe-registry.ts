@@ -34,7 +34,7 @@ export interface RecipeDefinition<T extends Serializable = any> {
     /**
      * Evaluates a recipe
      */
-    evaluate?: (node: PluginNode) => T;
+    evaluate: (node: PluginNode) => T;
 }
 
 /**
