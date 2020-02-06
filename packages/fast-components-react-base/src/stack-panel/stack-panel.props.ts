@@ -74,6 +74,12 @@ export interface StackPanelHandledProps extends StackPanelManagedClasses {
      * The index of the item initially in view
      */
     initiallyVisibleItemIndex?: number;
+
+    /**
+     * Delay in ms before viewport contents updated after scrolling stops
+     * default is 50
+     */
+    scrollLayoutUpdateDelay?: number;
 }
 
 export type StackPanelProps = StackPanelHandledProps & StackPanelUnhandledProps;

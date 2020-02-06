@@ -20,7 +20,7 @@ import { isFunction } from "util";
 import { Orientation } from "@microsoft/fast-web-utilities";
 
 export interface StackPanelState {
-    isScrolling: boolean;
+    isScrollable: boolean;
     renderedRangeStartIndex: number;
     renderedRangeEndIndex: number;
     direction: Direction;
@@ -54,6 +54,7 @@ class StackPanel extends Foundation<
         itemSpanOverrides: {},
         enableSmoothScrolling: true,
         scrollDuration: 500,
+        scrollLayoutUpdateDelay: 50,
     };
 
     private static DirectionAttributeName: string = "dir";
@@ -71,6 +72,7 @@ class StackPanel extends Foundation<
         managedClasses: void 0,
         initiallyVisibleItemIndex: void 0,
         onScrollChange: void 0,
+        scrollLayoutUpdateDelay: void 0,
     };
 
     private rootElement: React.RefObject<HTMLDivElement> = React.createRef<
@@ -86,6 +88,7 @@ class StackPanel extends Foundation<
     private itemPositions: ItemPosition[];
     private viewPortSpan: number = 0;
     private itemContainerSpan: number = 0;
+    private maxScroll: number = 0;
 
     /**
      *  The position the current scroll animation started at
@@ -113,6 +116,11 @@ class StackPanel extends Foundation<
     private lastRecordedScroll: number = 0;
 
     /**
+     * Stores last scroll position from scroll events
+     */
+    private scrollLayoutUpdateTimer: NodeJS.Timer;
+
+    /**
      * constructor
      */
     constructor(props: StackPanelProps) {
@@ -124,7 +132,7 @@ class StackPanel extends Foundation<
             renderedRangeStartIndex: 0,
             renderedRangeEndIndex: 0,
             direction: Direction.ltr,
-            isScrolling: false,
+            isScrollable: false,
         };
     }
 
@@ -181,6 +189,7 @@ class StackPanel extends Foundation<
         }
 
         this.viewPortSpan = this.getViewportSpan();
+        this.updateLayout();
 
         if (
             !isNil(this.props.initiallyVisibleItemIndex) &&
@@ -191,8 +200,6 @@ class StackPanel extends Foundation<
             );
             this.setScrollPosition(newScrollPosition);
         }
-
-        this.updateLayout();
     }
 
     /**
@@ -236,6 +243,7 @@ class StackPanel extends Foundation<
                 this.resizeDetector = null;
             }
         }
+        clearTimeout(this.scrollLayoutUpdateTimer);
     }
 
     /**
@@ -338,7 +346,21 @@ class StackPanel extends Foundation<
         this.itemPositions = itemPositions;
         this.itemContainerSpan =
             this.itemPositions.length > 0 ? this.itemPositions[itemCount - 1].end : 0;
+
+        this.maxScroll = this.getMaxScrollDistance();
     };
+
+    /**
+     * Gets the maximum distance that can be scrolled
+     */
+    private getMaxScrollDistance(): number {
+        if (this.itemPositions.length === 0) {
+            return 0;
+        }
+
+        const contentSpan: number = this.itemPositions[this.itemPositions.length - 1].end;
+        return contentSpan - this.viewPortSpan;
+    }
 
     /**
      *  Get the size of the viewport along the panel's axis
@@ -370,10 +392,7 @@ class StackPanel extends Foundation<
      */
     private gotAnimationFrame = (): void => {
         this.openRequestAnimationFrame = null;
-        this.updateLayout();
-        if (this.isScrollAnimating) {
-            this.updateScrollAnimation();
-        }
+        this.updateScrollAnimation();
     };
 
     /**
@@ -420,10 +439,12 @@ class StackPanel extends Foundation<
             renderEndIndex = lastIndex;
         }
 
+        clearTimeout(this.scrollLayoutUpdateTimer);
+
         this.setState({
             renderedRangeStartIndex: renderStartIndex,
             renderedRangeEndIndex: renderEndIndex,
-            isScrolling: this.itemContainerSpan > this.viewPortSpan ? true : false,
+            isScrollable: this.itemContainerSpan > this.viewPortSpan ? true : false,
         });
     };
 
@@ -500,12 +521,23 @@ class StackPanel extends Foundation<
      */
     private onScrollCapture = (): void => {
         this.lastRecordedScroll = this.getScrollPosition();
-        this.requestFrame();
+        clearTimeout(this.scrollLayoutUpdateTimer);
+        if (this.props.scrollLayoutUpdateDelay !== 0) {
+            this.scrollLayoutUpdateTimer = setTimeout((): void => {
+                this.updateLayout();
+            }, this.props.scrollLayoutUpdateDelay);
+        } else {
+            this.updateLayout();
+        }
+
+        if (this.isScrollAnimating) {
+            this.requestFrame();
+        }
+
         if (isFunction(this.props.onScrollChange)) {
-            // TODO: store max scroll so we don't recalculate
             this.props.onScrollChange(
                 this.lastRecordedScroll,
-                this.getMaxScrollDistance(),
+                this.maxScroll,
                 this.viewPortSpan
             );
         }
@@ -516,7 +548,7 @@ class StackPanel extends Foundation<
      */
     private handleResize = (entries: ResizeObserverEntry[]): void => {
         this.viewPortSpan = this.getViewportSpan();
-        this.requestFrame();
+        this.updateLayout();
     };
 
     /**
@@ -609,7 +641,7 @@ class StackPanel extends Foundation<
      * A child item got focus
      */
     private onItemFocus = (event: React.FocusEvent): void => {
-        if (!this.state.isScrolling || !this.props.enableSmoothScrolling) {
+        if (!this.state.isScrollable || !this.props.enableSmoothScrolling) {
             return;
         }
 
@@ -633,7 +665,7 @@ class StackPanel extends Foundation<
             const duration: number = this.props.scrollDuration;
             const currentDate: number = new Date().getTime();
             const currentTime: number = currentDate - this.currentScrollAnimStartTime;
-
+            this.updateLayout();
             scrollStart = this.getScrollAnimationPosition(currentTime, duration);
         }
 
@@ -653,7 +685,7 @@ class StackPanel extends Foundation<
     ): void {
         const newScrollPosition: number = Math.max(
             0,
-            Math.min(targetScrollPosition, this.getMaxScrollDistance())
+            Math.min(targetScrollPosition, this.maxScroll)
         );
 
         if (this.props.enableSmoothScrolling) {
@@ -664,6 +696,7 @@ class StackPanel extends Foundation<
             this.requestFrame();
         } else {
             this.isScrollAnimating = false;
+            this.updateLayout();
             this.setScrollPosition(newScrollPosition);
         }
     }
@@ -686,18 +719,6 @@ class StackPanel extends Foundation<
         currentTime--;
 
         return (-changeInValue / 2) * (currentTime * (currentTime - 2) - 1) + startValue;
-    }
-
-    /**
-     * Gets the maximum distance that can be scrolled
-     */
-    private getMaxScrollDistance(): number {
-        if (this.itemPositions.length === 0) {
-            return 0;
-        }
-
-        const contentSpan: number = this.itemPositions[this.itemPositions.length - 1].end;
-        return contentSpan - this.viewPortSpan;
     }
 
     /**
@@ -732,7 +753,7 @@ class StackPanel extends Foundation<
         const peek: number = this.getScrollPeek(itemPosition.span);
         const newScrollPosition: number = Math.max(
             0,
-            Math.min(itemPosition.start - peek, this.getMaxScrollDistance())
+            Math.min(itemPosition.start - peek, this.maxScroll)
         );
         return newScrollPosition;
     };

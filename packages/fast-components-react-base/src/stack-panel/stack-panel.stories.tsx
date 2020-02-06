@@ -317,7 +317,7 @@ storiesOf("Stack Panel", module)
     .add("Initially visible item set", () => (
         <StackPanel
             defaultItemSpan={100}
-            initiallyVisibleItemIndex={6}
+            initiallyVisibleItemIndex={8}
             style={{
                 width: "117px",
                 height: "400px",
