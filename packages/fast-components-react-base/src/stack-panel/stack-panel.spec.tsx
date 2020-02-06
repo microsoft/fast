@@ -125,7 +125,7 @@ describe("stack panel", (): void => {
             <StackPanel itemSpanOverrides={itemSpans}>{sampleStackPanelItems}</StackPanel>
         );
 
-        rendered.first().instance().viewPortSpan = 200;
+        rendered.first().instance().viewportSpan = 200;
         expect(
             rendered
                 .first()
@@ -151,7 +151,7 @@ describe("stack panel", (): void => {
             <StackPanel itemSpanOverrides={itemSpans}>{sampleStackPanelItems}</StackPanel>
         );
 
-        rendered.first().instance().viewPortSpan = 200;
+        rendered.first().instance().viewportSpan = 200;
         expect(
             rendered
                 .first()
@@ -163,7 +163,7 @@ describe("stack panel", (): void => {
     test("getMaxScrollDistance returns 0 when there are no items", (): void => {
         const rendered: any = mount(<StackPanel />);
 
-        rendered.first().instance().viewPortSpan = 200;
+        rendered.first().instance().viewportSpan = 200;
         expect(
             rendered
                 .first()
@@ -354,7 +354,7 @@ describe("stack panel", (): void => {
             },
         });
         expect(scrollContentFn.mock.calls[0][0]).toBe(0);
-        expect(scrollContentFn.mock.calls[0][1]).toBe(350);
+        expect(scrollContentFn.mock.calls[0][1]).toBe(250);
     });
 
     test("on onItemFocus correctly scrolls content - vertical, element above viewport ", () => {
@@ -404,7 +404,7 @@ describe("stack panel", (): void => {
             },
         });
         expect(scrollContentFn.mock.calls[0][0]).toBe(0);
-        expect(scrollContentFn.mock.calls[0][1]).toBe(350);
+        expect(scrollContentFn.mock.calls[0][1]).toBe(250);
     });
 
     test("on onItemFocus correctly scrolls content - horizontal, element left of viewport", () => {
