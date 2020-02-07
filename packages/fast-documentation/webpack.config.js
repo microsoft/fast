@@ -1,7 +1,5 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-const WebpackShellPlugin = require("webpack-shell-plugin");
-const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 const FaviconsWebpackPlugin = require("favicons-webpack-plugin");
 
 const appDir = path.resolve(__dirname, "./app");
@@ -62,25 +60,16 @@ module.exports = (env, args) => {
         },
         plugins: [
             new HtmlWebpackPlugin({
-                title: "FAST-DNA",
+                title: "FAST-DNA Documentation site",
                 contentBase: outDir,
                 meta: { viewport: "width=device-width, initial-scale=1, shrink-to-fit=no" }
             }),
             new FaviconsWebpackPlugin({
                 logo: "./images/favicon-32x32.png"
-            }),
-            new BundleAnalyzerPlugin({
-                // Remove this to inspect bundle sizes.
-                analyzerMode: "disabled"
             })
         ],
         resolve: {
-            extensions: [".js", ".tsx", ".ts", ".json"],
-            alias: {
-                // "lodash-es": path.resolve("./node_modules/lodash-es"),
-                // react: path.resolve("./node_modules/react"),
-                // "react-dom": path.resolve("./node_modules/react-dom")
-            }
+            extensions: [".js", ".tsx", ".ts", ".json"]
         },
         devServer: {
             compress: false,

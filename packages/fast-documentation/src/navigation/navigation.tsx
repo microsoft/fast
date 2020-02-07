@@ -30,14 +30,11 @@ interface NavigationStyle {
 /* tslint:disable */
 const FASTLogo = require("../../images/fast-dna.svg");
 /* tslint:enable */
-const navigationStyle: ComponentStyles<NavigationStyle, undefined> = {
+
+const navigationStyle: ComponentStyles<NavigationStyle, any> = {
     "@font-face": {
         fontFamily: "MDL2",
         src: "url(https://www.microsoft.com/design/fonts/FWMDL2.ttf) format('truetype')"
-    },
-    "@global": {
-        fontFamily: "'MDL2', 'Segoe MDL2 Assets'",
-        position: "absolute"
     },
     logoWrapper: {
         position: "relative",

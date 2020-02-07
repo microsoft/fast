@@ -58,15 +58,6 @@ const colors: any = {
     black: "#000"
 };
 
-const regularFontStack: string = "'Segoe UI', 'SegoeUI', 'Helvetica Neue', Helvetica, sans-serif";
-
-const fonts: any = {
-    regular: regularFontStack,
-    semibold: `"Segoe UI Semibold", "SegoeUISemibold", ${regularFontStack}`,
-    bold: `"Segoe UI Bold", "SegoeUIBold", ${regularFontStack}`,
-    symbols: "'MDL2', 'Segoe MDL2 Assets', 'SegoeMDL2Assets'"
-};
-
 /**
  * Box shadows
  */
@@ -81,4 +72,4 @@ const shadows: any = {
     }
 };
 
-export { breakpoints, colors, fonts, shadows };
+export { breakpoints, colors, shadows };

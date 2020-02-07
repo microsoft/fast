@@ -1,9 +1,8 @@
 import React, { HTMLAttributes } from "react";
-import ReactDOM from "react-dom";
 import manageJss, { ComponentStyles, ManagedClasses } from "@microsoft/fast-jss-manager-react";
 import { Column, ColumnClassNamesContract, Grid, Page } from "@microsoft/fast-layouts-react";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
-import { Banner, BannerProps, ContentPlacement, DesignSystem, Feature, FeatureProps, SectionDivider } from "../../src";
+import { Banner, BannerProps, ContentPlacement, DesignSystem, Feature, FeatureProps } from "../../src";
 import {
     Heading,
     HeadingClassNameContract,
@@ -42,7 +41,6 @@ const headerTwoStyles: ComponentStyles<HeadingClassNameContract, undefined> = {
 };
 
 const HomePageStyles: ComponentStyles<HomePageClassNameContract, DesignSystem> = {
-    // move these
     "@font-face": {
         fontFamily: "SegoeUIVF",
         src:
@@ -71,11 +69,8 @@ export interface HomePageUnhandledProps extends HTMLAttributes<HTMLDivElement> {
  * Images
  */
 /* tslint:disable */
-// const heroImage = require("../../images/site-background.svg");
 const featureVideo = require("../../images/AdaptiveUIScreens.mp4");
 /* tslint:enable */
-
-// const heroBackground: (className: string) => React.ReactNode = (className: string): React.ReactNode => <object className={className} data={heroImage} type="image/svg+xml" />;
 
 const bannerProps: BannerProps = {
     backgroundColor: "#C22551",
