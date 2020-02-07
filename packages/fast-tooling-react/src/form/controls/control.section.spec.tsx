@@ -24,14 +24,14 @@ import {
 } from "../index";
 
 const TestSectionControl: any = (
-        props: React.PropsWithChildren<SectionControlProps>
-    ): React.ReactElement => {
-        return (
-            <DndProvider backend={HTML5Backend}>
-                <StyledSectionControl {...props} />
-            </DndProvider>
-        );
-    };
+    props: React.PropsWithChildren<SectionControlProps>
+): React.ReactElement => {
+    return (
+        <DndProvider backend={HTML5Backend}>
+            <StyledSectionControl {...props} />
+        </DndProvider>
+    );
+};
 
 /*
  * Configure Enzyme

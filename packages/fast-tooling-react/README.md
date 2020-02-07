@@ -7,6 +7,9 @@ The tooling available in FAST Tooling React can be used together to create UI fo
 - [Benefits](#benefits)
 - [Installation](#installation)
 - [Concepts](#concepts)
+    - [Message System](#message-system)
+        - [Sending messages](#sending-messages)
+        - [Recieving messages](#recieving-messages)
     - [JSON Schema](#json-schema)
     - [Data structures for React Children](#data-structures-for-react-children)
 - [Data utilities](#data-utilities)
@@ -68,6 +71,59 @@ The FAST Tooling can be used in any combination for the following scenarios:
 `npm i --save @microsoft/fast-tooling-react`
 
 ## Concepts
+
+### Message system
+
+FAST tooling components rely on a [web worker](https://developer.mozilla.org/en-US/docs/Web/API/Worker) called the message system.
+
+This worker performs all of the data manipulation and provides a navigational data structure based on data passed.
+
+#### Sending messages
+
+The message system sends messages via the web worker which is intended to be passed to individual components which can then use the Worker `postMessage` to send messages to update data and navigation. For the components provided in this package that will happen internal to the component.
+
+#### Recieving messages
+
+The message system also comes with a registry, a secondary export called `MessageSystemRegistry`. This will need to be instantiated once, and the instance passed to each component that will opt in to the registry to receive messages.
+
+Example implementation:
+```js
+import { MessageSystemRegistry } from "@microsoft/fast-tooling-react";
+
+let fastMessageSystemWebWorker;
+let fastMessageSystemRegistry;
+
+// Your JSON schema
+const mySchema = {
+    id: "my-schema",
+    type: "string"
+}
+
+if (window.Worker) {
+
+    // this file is available from @microsoft/fast-tooling-react/webworker/message-system/index.js
+    fastMessageSystemWebWorker = new Worker("message-system.js");
+    fastMessageSystemRegistry = new MessageSystemRegistry({
+        messageSystem: fastMessageSystemWebWorker,
+
+        // your data dictionary (you may only need a single item)
+        data: [
+            {
+                dataDictionaryKey1: {
+                    schemaId: mySchema.id,
+                    data: "",
+                },
+            },
+            "dataDictionaryKey1",
+        ],
+
+        // your dictionary of schemas to validate data in the dictionary
+        schemas: {
+            [mySchema.id]: mySchema,
+        },
+    });
+}
+```
 
 ### JSON Schema
 
@@ -609,7 +665,7 @@ handleUpdateViewerWidth = (newViewerWidth) => {
 
 A custom post message may be sent through the viewer to the iframe via the `iframePostMessage` prop. Anytime this prop is update a message will be sent.
 
-A custom post message may be recieved through the viewer from the iframe and returned via the `onMessage` callback prop. This must be defined as a custom message.
+A custom post message may be received through the viewer from the iframe and returned via the `onMessage` callback prop. This must be defined as a custom message.
 
 Example message sent from the iframe src:
 
