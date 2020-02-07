@@ -1,22 +1,23 @@
+import { DesignSystem } from "@microsoft/fast-components-styles-msft";
+import { RecipeRegistry, RecipeTypes } from "./recipe-registry";
+
 export enum MessageTypes {
     recipe = "recipe",
+    designSystem = "designSystem",
+}
+
+interface UIMessageBase<T extends MessageTypes> {
+    type: T;
 }
 /**
  * The type of action that a recipe message should perform.
  */
-export enum RecipeMessageAction {
-    /**
-     * Assign a recipe to a node, removing all other recipes of the same type
-     */
+export enum MessageAction {
     assign = "assign",
+    delete = "delete",
 }
 
-export interface RecipeMessage {
-    /**
-     * Define this as a recipe message
-     */
-    type: MessageTypes.recipe;
-
+export interface RecipeMessage extends UIMessageBase<MessageTypes.recipe> {
     /**
      * The ID of the recipe
      */
@@ -28,9 +29,26 @@ export interface RecipeMessage {
     nodeIds: string[];
 
     /**
-     * The action to perfom
+     * The action to perform
      */
-    action: RecipeMessageAction;
+    action: MessageAction;
 }
 
-export type UIMessage = RecipeMessage;
+export interface SetDesignSystemPropertyMessage<T extends keyof DesignSystem>
+    extends UIMessageBase<MessageTypes.designSystem> {
+    action: MessageAction.assign;
+    property: T;
+    value: DesignSystem[T];
+    nodeIds: string[];
+}
+export interface RemoveDesignSystemPropertyMessage<T extends keyof DesignSystem>
+    extends UIMessageBase<MessageTypes.designSystem> {
+    action: MessageAction.delete;
+    property: T;
+    nodeIds: string[];
+}
+
+export type DesignSystemMessage =
+    | SetDesignSystemPropertyMessage<keyof DesignSystem>
+    | RemoveDesignSystemPropertyMessage<keyof DesignSystem>;
+export type UIMessage = RecipeMessage | DesignSystemMessage;

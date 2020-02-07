@@ -1,4 +1,10 @@
-import { RecipeMessage, RecipeMessageAction, UIMessage } from "./messaging";
+import {
+    DesignSystemMessage,
+    MessageTypes,
+    RecipeMessage,
+    MessageAction,
+    UIMessage,
+} from "./messaging";
 import { PluginNode } from "./node";
 import { RecipeRegistry, RecipeTypes } from "./recipe-registry";
 import { PluginUIActiveNodeData, PluginUIProps } from "./ui";
@@ -64,24 +70,36 @@ export abstract class Controller {
                     type: node.type,
                     supports: node.supports(),
                     recipes: node.recipes,
+                    designSystem: node.designSystemOverrides,
                 })
             ),
             recipeOptions: selectedNodes.length
-                ? allSupported.map(type => {
-                      return {
-                          type,
-                          options: this.recipeRegistry.find(type).map(
-                              item =>
-                                  this.recipeRegistry.toData(item.id, selectedNodes[0]) // TODO: We probably shouldn't hard-code this, but what do we do if there are multiple selected?
-                          ),
-                      };
-                  })
+                ? allSupported
+                      .filter((type): type is RecipeTypes => !!RecipeTypes[type])
+                      .map(type => {
+                          return {
+                              type,
+                              options: this.recipeRegistry.find(type).map(
+                                  item =>
+                                      this.recipeRegistry.toData(
+                                          item.id,
+                                          selectedNodes[0]
+                                      ) // TODO: We probably shouldn't hard-code this, but what do we do if there are multiple selected?
+                              ),
+                          };
+                      })
                 : [],
         };
     }
 
     public handleMessage(message: UIMessage): void {
-        this.handleRecipeMessage(message);
+        switch (message.type) {
+            case MessageTypes.recipe:
+                this.handleRecipeMessage(message);
+                break;
+            case MessageTypes.designSystem:
+                this.handleDesignSystemMessage(message);
+        }
     }
 
     /**
@@ -89,6 +107,27 @@ export abstract class Controller {
      * @param state the UI state object
      */
     protected abstract setPluginUIState(state: Omit<PluginUIProps, "dispatch">): void;
+
+    private handleDesignSystemMessage(message: DesignSystemMessage): void {
+        const nodes = message.nodeIds
+            .map(id => this.getNode(id))
+            .filter((node): node is PluginNode => node !== null);
+
+        switch (message.action) {
+            case MessageAction.assign:
+                nodes.forEach(node =>
+                    node.setDesignSystemProperty(message.property, message.value)
+                );
+                break;
+            case MessageAction.delete:
+                nodes.forEach(node => node.deleteDesignSystemProperty(message.property));
+                break;
+        }
+
+        nodes.forEach(node => this.paintTree(node.id));
+
+        this.setPluginUIState(this.getPluginUIState());
+    }
 
     private handleRecipeMessage(message: RecipeMessage): void {
         message.nodeIds.forEach(id => {
@@ -100,7 +139,7 @@ export abstract class Controller {
             }
 
             switch (message.action) {
-                case RecipeMessageAction.assign:
+                case MessageAction.assign:
                     node.recipes = node.recipes
                         .filter(
                             recipeId =>
@@ -136,7 +175,7 @@ export abstract class Controller {
             const recipe = this.recipeRegistry.get(recipeId);
 
             // TODO: We can probably be smarter about when to apply the backgroundColor property.
-            // This causes us to purge sub-trees un-necessairly, because setting the property
+            // This causes us to purge sub-trees un-necessarily, because setting the property
             // automatically purges the tree.
             if (recipe.type === RecipeTypes.backgroundFills) {
                 node.setDesignSystemProperty("backgroundColor", recipe.evaluate(node));

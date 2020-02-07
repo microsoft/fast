@@ -5,11 +5,22 @@ import { RecipeDefinition, RecipeTypes } from "./core/recipe-registry";
 
 const controller = new FigmaController();
 
+function friendlyName(str: string): string {
+    const result = str.split(/([A-Z])/).reduce((prev, current, index) => {
+        return index % 2 === 1 ? prev + " " + current : prev + current;
+    });
+
+    return result
+        .charAt(0)
+        .toUpperCase()
+        .concat(result.slice(1));
+}
+
 function register(type: RecipeTypes, recipes: RecipeStore): void {
     Object.keys(recipes).forEach((key: string) => {
         const definition: RecipeDefinition = {
             id: key,
-            name: key,
+            name: friendlyName(key),
             type,
             evaluate: (node: PluginNode): string => {
                 return recipes[key](node.designSystem as any);

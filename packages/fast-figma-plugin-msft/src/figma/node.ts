@@ -87,25 +87,28 @@ export class FigmaPluginNode extends PluginNode {
         }
     }
 
-    public supports(): RecipeTypes[] {
-        return Object.keys(RecipeTypes).filter(key => {
-            switch (key) {
-                case RecipeTypes.backgroundFills:
-                case RecipeTypes.strokeFills:
-                    return [
-                        isFrameNode,
-                        isRectangleNode,
-                        isPolygonNode,
-                        isStarNode,
-                        isComponentNode,
-                        isInstanceNode,
-                    ].some((test: (node: BaseNode) => boolean) => test(this.node));
-                case RecipeTypes.foregroundFills:
-                    return isTextNode(this.node);
-                default:
-                    return false;
-            }
-        }) as RecipeTypes[];
+    public supports(): Array<RecipeTypes | "designSystem"> {
+        return Object.keys(RecipeTypes)
+            .concat("designSystem")
+            .filter(key => {
+                switch (key) {
+                    case RecipeTypes.backgroundFills:
+                    case RecipeTypes.strokeFills:
+                    case "designSystem":
+                        return [
+                            isFrameNode,
+                            isRectangleNode,
+                            isPolygonNode,
+                            isStarNode,
+                            isComponentNode,
+                            isInstanceNode,
+                        ].some((test: (node: BaseNode) => boolean) => test(this.node));
+                    case RecipeTypes.foregroundFills:
+                        return isTextNode(this.node);
+                    default:
+                        return false;
+                }
+            }) as Array<RecipeTypes | "designSystem">;
     }
 
     public paint(data: RecipeData): void {

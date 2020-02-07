@@ -53,7 +53,7 @@ export abstract class PluginNode {
     public abstract type: string;
     public abstract children(): PluginNode[];
     public abstract parent(): PluginNode | null;
-    public abstract supports(): RecipeTypes[];
+    public abstract supports(): Array<RecipeTypes | "designSystem">;
 
     /**
      * Set a property of the design system on this node
@@ -70,6 +70,21 @@ export abstract class PluginNode {
         });
 
         PluginNode.purgeDesignSystemCache(this);
+    }
+
+    public deleteDesignSystemProperty<K extends keyof DesignSystem>(key: K): void {
+        const data = this.getPluginData("designSystem");
+        delete data[key];
+        this.setPluginData("designSystem", data);
+
+        PluginNode.purgeDesignSystemCache(this);
+    }
+
+    /**
+     * Returns all design system overrides applied to the node
+     */
+    public get designSystemOverrides(): Partial<DesignSystem> {
+        return this.getPluginData("designSystem");
     }
 
     public abstract paint(data: RecipeData): void;

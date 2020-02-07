@@ -1,8 +1,16 @@
-import { Caption, Divider, Label, Radio } from "@microsoft/fast-components-react-msft";
+import {
+    Caption,
+    Checkbox,
+    Divider,
+    Label,
+    Radio,
+} from "@microsoft/fast-components-react-msft";
 import React from "react";
-import { MessageTypes, RecipeMessageAction, UIMessage } from "../messaging";
+import { MessageAction, MessageTypes, UIMessage } from "../messaging";
 import { RecipeData, RecipeTypes } from "../recipe-registry";
 import Swatch from "./swatch";
+import { DesignSystem, StandardLuminance } from "@microsoft/fast-components-styles-msft";
+import { startCase } from "lodash-es";
 
 export interface PluginUIActiveNodeRecipeSupportOptions {
     label: string;
@@ -28,7 +36,12 @@ export interface PluginUIActiveNodeData {
     /**
      * The recipe types that the node supports
      */
-    supports: RecipeTypes[];
+    supports: Array<RecipeTypes | "designSystem">;
+
+    /**
+     * Any design system overrides applied to the node
+     */
+    designSystem: Partial<DesignSystem>;
 }
 
 export interface RecipeTypeOptions {
@@ -83,16 +96,16 @@ export class PluginUI extends React.Component<PluginUIProps> {
     }
 
     private renderBody(): JSX.Element {
-        // return <pre>{JSON.stringify(this.props, null, 2)}</pre>
-
-        // if (this.props.selectedNodes.length > 1) {
-        //     return <Paragraph>Select a single node to edit.</Paragraph>;
-        // } else if (this.props.selectedNodes.length === 0) {
-        //     return <Paragraph>No editable nodes selected</Paragraph>;
-        // } else {
-        // return <div>{this.renderRecipeSelector(this.props.selectedNodes[0])}</div>;
-        // }
-        return <div>{this.props.recipeOptions.map(this.renderRecipeSelector)}</div>;
+        return (
+            <div>
+                {this.props.selectedNodes.some(node =>
+                    node.supports.includes("designSystem")
+                )
+                    ? this.renderThemeSwitcher()
+                    : null}
+                {this.props.recipeOptions.map(this.renderRecipeSelector)}
+            </div>
+        );
     }
 
     private renderRecipeSelector = (optionType: RecipeTypeOptions): JSX.Element => {
@@ -143,7 +156,101 @@ export class PluginUI extends React.Component<PluginUIProps> {
             id: recipeId,
             type: MessageTypes.recipe,
             nodeIds,
-            action: RecipeMessageAction.assign,
+            action: MessageAction.assign,
         });
     };
+
+    private renderThemeSwitcher(): JSX.Element {
+        const key: keyof DesignSystem = "baseLayerLuminance";
+        const nodes = this.props.selectedNodes.filter(node =>
+            node.supports.includes("designSystem")
+        );
+        const themeData = nodes.map(node => node.designSystem.baseLayerLuminance);
+        const themesApplied = themeData.filter(value => typeof value === "number");
+        const nodeIds = nodes.map(node => node.id);
+
+        const style = {
+            marginInlineEnd: "12px",
+        };
+
+        const setLightTheme = this.setDesignSystemProperty.bind(
+            this,
+            key,
+            StandardLuminance.LightMode,
+            nodeIds
+        );
+
+        const setDarkTheme = this.setDesignSystemProperty.bind(
+            this,
+            key,
+            StandardLuminance.DarkMode,
+            nodeIds
+        );
+
+        const removeTheme = this.removeDesignSystemProperty.bind(this, key, nodeIds);
+
+        return (
+            <div>
+                <Checkbox
+                    inputId={"theme-toggle"}
+                    checked={themesApplied.length > 0}
+                    onChange={themesApplied.length ? removeTheme : setLightTheme}
+                    style={style}
+                >
+                    <Label slot="label" htmlFor={"theme-toggle"}>
+                        Theme
+                    </Label>
+                </Checkbox>
+                <Radio
+                    inputId={"light-theme"}
+                    checked={themesApplied.includes(StandardLuminance.LightMode)}
+                    disabled={themesApplied.length === 0}
+                    name="theme"
+                    style={style}
+                    onChange={setLightTheme}
+                >
+                    <Label slot="label" htmlFor={"light-theme"}>
+                        Light
+                    </Label>
+                </Radio>
+                <Radio
+                    inputId={"dark-theme"}
+                    checked={themesApplied.includes(StandardLuminance.DarkMode)}
+                    disabled={themesApplied.length === 0}
+                    name="theme"
+                    onChange={setDarkTheme}
+                >
+                    <Label slot="label" htmlFor={"dark-theme"}>
+                        Dark
+                    </Label>
+                </Radio>
+            </div>
+        );
+    }
+
+    private setDesignSystemProperty<K extends keyof DesignSystem>(
+        property: K,
+        value: DesignSystem[K],
+        nodeIds: string[]
+    ): void {
+        this.props.dispatch({
+            type: MessageTypes.designSystem,
+            action: MessageAction.assign,
+            property,
+            value,
+            nodeIds,
+        });
+    }
+
+    private removeDesignSystemProperty<K extends keyof DesignSystem>(
+        property: K,
+        nodeIds: string[]
+    ): void {
+        this.props.dispatch({
+            type: MessageTypes.designSystem,
+            action: MessageAction.delete,
+            property,
+            nodeIds,
+        });
+    }
 }
