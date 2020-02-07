@@ -1,10 +1,6 @@
-import React, { HTMLAttributes } from "react";
-import manageJss, { ComponentStyles, ManagedClasses, ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
+import React from "react";
+import manageJss, { ComponentStyles } from "@microsoft/fast-jss-manager-react";
 import { Column, ColumnClassNamesContract, Grid, Page } from "@microsoft/fast-layouts-react";
-
-const dividerColumn: ComponentStyles<ColumnClassNamesContract, undefined> = {
-    column: {}
-};
 
 interface DividerStyles {
     height1: string;
@@ -69,4 +65,4 @@ const BaseDivider: React.FC<{
     );
 };
 
-export const VerticalHeight: React.ComponentClass = manageJss(dividerStyles)(BaseDivider);
+export const VerticalHeight: any = manageJss(dividerStyles)(BaseDivider);
