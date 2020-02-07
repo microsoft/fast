@@ -21,14 +21,45 @@ function imageCellFn(
             className={className}
             style={{
                 gridColumn: props.columnIndex,
+                background: "orange",
             }}
         >
             <img
                 src={props.rowData[props.columnDefinition.columnDataKey]}
                 alt="Placeholder image"
                 style={{
-                    width: "100px",
-                    height: "60px",
+                    width: "auto",
+                    height: "auto",
+                }}
+            />
+        </div>
+    );
+}
+
+function recordIdCellFn(
+    props: DataGridCellProps,
+    className: string,
+    cellId: React.ReactText,
+    unhandledProps: object
+): React.ReactNode {
+    return (
+        <div
+            {...unhandledProps}
+            data-cellid={cellId}
+            className={className}
+            style={{
+                gridColumn: props.columnIndex,
+                background: "grey",
+            }}
+        >
+            <img
+                src={`https://placehold.it/120x100/414141/?text=${
+                    props.rowData[props.columnDefinition.columnDataKey]
+                }`}
+                alt="Placeholder image"
+                style={{
+                    width: "auto",
+                    height: "auto",
                 }}
             />
         </div>
@@ -37,15 +68,16 @@ function imageCellFn(
 
 const columnDefinitions: DataGridColumnDefinition[] = [
     {
+        columnDataKey: "recordId",
+        title: "RecordId",
+        columnWidth: "30%",
+        cell: recordIdCellFn,
+    },
+    {
         columnDataKey: "image",
         title: "Image",
         columnWidth: "70%",
         cell: imageCellFn,
-    },
-    {
-        columnDataKey: "recordId",
-        title: "RecordId",
-        columnWidth: "30%",
     },
 ];
 
@@ -53,13 +85,23 @@ function getDataSet(length: number): object[] {
     const dataSet: object[] = [];
 
     for (let i: number = 0; i < length; i++) {
+        const heightString: string = i % 2 ? "/300/200" : "/600/400";
         dataSet.push({
             recordId: `id-${i + 1}`,
-            image: `https://placehold.it/200x200/414141/?text=${i + 1}`,
+            image: `https://picsum.photos/id/${Math.floor(
+                Math.random() * 1000
+            )}${heightString}`,
         });
     }
 
     return dataSet;
+}
+
+function getItemHeight(itemData: object, rowIndex, defaultItemHeight) {
+    if (rowIndex % 2) {
+        return defaultItemHeight;
+    }
+    return defaultItemHeight * 2;
 }
 
 interface DataGridTestState {
@@ -82,27 +124,8 @@ interface DataGridTestProps extends Omit<DataGridProps, "gridData"> {
 }
 
 class DataGridTest extends React.Component<DataGridTestProps, DataGridTestState> {
-    public static getItemHeight(
-        rowData: object,
-        rowIndex: number,
-        defaultItemHeight: number
-    ): number {
-        if (rowIndex % 2) {
-            return defaultItemHeight;
-        }
-        return defaultItemHeight * 2;
-    }
-
-    private anchor: React.RefObject<any>;
-
-    private rootElement: React.RefObject<HTMLDivElement> = React.createRef<
-        HTMLDivElement
-    >();
-
     constructor(props: DataGridTestProps) {
         super(props);
-
-        this.anchor = React.createRef();
 
         this.state = {
             currentDataSet: this.props.primaryDataSet,
@@ -129,6 +152,7 @@ class DataGridTest extends React.Component<DataGridTestProps, DataGridTestState>
                     columnDefinitions={this.props.columnDefinitions}
                     dataRowKey={this.props.dataRowKey}
                     gridData={this.state.currentDataSet}
+                    itemHeight={this.props.itemHeight}
                     {...props}
                 />
             </div>
@@ -156,6 +180,7 @@ storiesOf("Data Grid", module)
             }}
             dataRowKey="recordId"
             gridData={getDataSet(100)}
+            itemHeight={100}
             columnDefinitions={columnDefinitions}
         />
     ))
@@ -166,6 +191,7 @@ storiesOf("Data Grid", module)
             }}
             dataRowKey="recordId"
             gridData={[]}
+            itemHeight={100}
             columnDefinitions={columnDefinitions}
         />
     ))
@@ -177,6 +203,7 @@ storiesOf("Data Grid", module)
             }}
             dataRowKey="recordId"
             gridData={getDataSet(100)}
+            itemHeight={100}
             columnDefinitions={columnDefinitions}
         />
     ))
@@ -189,6 +216,7 @@ storiesOf("Data Grid", module)
             dataRowKey="recordId"
             primaryDataSet={getDataSet(10000)}
             secondaryDataSet={getDataSet(2000)}
+            itemHeight={100}
             columnDefinitions={columnDefinitions}
         />
     ))
@@ -201,19 +229,20 @@ storiesOf("Data Grid", module)
             dataRowKey="recordId"
             primaryDataSet={getDataSet(100)}
             secondaryDataSet={getDataSet(0)}
+            itemHeight={100}
             columnDefinitions={columnDefinitions}
         />
     ))
     .add("Variable height rows", () => (
-        <DataGridTest
+        <DataGrid
             style={{
-                height: "300px",
-                width: "500px",
+                height: "600px",
+                width: "800px",
             }}
             dataRowKey="recordId"
-            primaryDataSet={getDataSet(100)}
-            secondaryDataSet={getDataSet(100)}
+            gridData={getDataSet(10000)}
+            itemHeight={200}
             columnDefinitions={columnDefinitions}
-            // itemHeightCallback={DataGridTest.getItemHeight}
+            itemHeightCallback={getItemHeight}
         />
     ));

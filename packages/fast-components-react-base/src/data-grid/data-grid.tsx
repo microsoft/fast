@@ -13,7 +13,7 @@ import DataGridRow from "./data-grid-row";
 import { classNames, Direction, KeyCodes } from "@microsoft/fast-web-utilities";
 import { DataGridCellProps } from "./data-grid-cell.props";
 import { DataGridContext, DataGridContextType } from "./data-grid-context";
-import StackPanel, { ItemSpanOverride } from "../stack-panel";
+import StackPanel from "../stack-panel";
 import { RowPosition } from "./data-grid-row.props";
 import throttle from "raf-throttle";
 
@@ -88,7 +88,7 @@ class DataGrid extends Foundation<
 
         const rowPositions: rowPosition[] = [];
         this.throttledScroll = throttle(this.handleScrollChange);
-        this.sizeNextPage(rowPositions);
+        this.sizeRowsToIndex(this.props.pageSize, rowPositions);
 
         let currentDataPageStartIndex: number = 0;
         let currentDataPageEndIndex = this.props.pageSize - 1;
@@ -109,7 +109,7 @@ class DataGrid extends Foundation<
                 currentDataPageEndIndex = this.props.gridData.length - 1;
             }
 
-            this.sizePagesToIndex(currentDataPageEndIndex, rowPositions);
+            this.sizeRowsToIndex(currentDataPageEndIndex, rowPositions);
         }
 
         let focusRowKey: React.ReactText = "";
@@ -147,21 +147,26 @@ class DataGrid extends Foundation<
     public render(): React.ReactElement<HTMLDivElement> {
         this.currentTemplateColumns = this.getGridTemplateColumns();
 
-        const itemSpanOverrides: ItemSpanOverride = {};
+        const itemSpans: number[] = [];
 
         if (this.state.rowPositions.length > 0) {
-            const startFillerItemSpan: number = this.state.rowPositions[
-                this.state.currentDataPageStartIndex
-            ].start;
-            const endFillerItemSpan: number =
+            itemSpans.push(
+                this.state.rowPositions[this.state.currentDataPageStartIndex].start
+            );
+
+            if (typeof this.props.itemHeightCallback === "function") {
+                for (
+                    let i: number = this.state.currentDataPageStartIndex;
+                    i <= this.state.currentDataPageEndIndex;
+                    i++
+                ) {
+                    itemSpans.push(this.state.rowPositions[i].span);
+                }
+            }
+            itemSpans.push(
                 this.state.estimatedTotalHeight -
-                this.state.rowPositions[this.state.currentDataPageEndIndex].end;
-            itemSpanOverrides[0] = startFillerItemSpan;
-            itemSpanOverrides[
-                this.state.currentDataPageEndIndex -
-                    this.state.currentDataPageStartIndex +
-                    1
-            ] = endFillerItemSpan;
+                    this.state.rowPositions[this.state.currentDataPageEndIndex].end
+            );
         }
 
         return (
@@ -190,8 +195,7 @@ class DataGrid extends Foundation<
                                 : this.props.defaultFocusRowIndex
                         }
                         onScrollChange={this.throttledScroll}
-                        defaultItemSpan={this.props.itemHeight}
-                        itemSpanOverrides={itemSpanOverrides}
+                        itemSpan={itemSpans}
                         style={{
                             height: "100%",
                             overflowY: "scroll",
@@ -239,7 +243,7 @@ class DataGrid extends Foundation<
                     ? 0
                     : newDataPageEndIndex - this.props.pageSize;
 
-            this.sizePagesToIndex(newDataPageEndIndex, newRowPositions);
+            this.sizeRowsToIndex(newDataPageEndIndex, newRowPositions);
 
             this.setState({
                 rowPositions: newRowPositions,
@@ -496,30 +500,30 @@ class DataGrid extends Foundation<
     /**
      * load next page of data
      */
-    private sizeNextPage = (rowPositions: rowPosition[]): void => {
-        const pageStartIndex: number = rowPositions.length;
-        const maxEndIndex: number = this.props.gridData.length - 1;
+    // private sizeNextPage = (rowPositions: rowPosition[]): void => {
+    //     const pageStartIndex: number = rowPositions.length;
+    //     const maxEndIndex: number = this.props.gridData.length - 1;
 
-        let pageEndIndex: number = pageStartIndex + this.props.pageSize - 1;
+    //     let pageEndIndex: number = pageStartIndex + this.props.pageSize - 1;
 
-        if (pageEndIndex > maxEndIndex) {
-            pageEndIndex = maxEndIndex;
-        }
+    //     if (pageEndIndex > maxEndIndex) {
+    //         pageEndIndex = maxEndIndex;
+    //     }
 
-        for (let i: number = pageStartIndex; i <= pageEndIndex; i++) {
-            const thisRowStart: number = i === 0 ? 0 : rowPositions[i - 1].end;
-            const thisRowHeight: number = this.props.itemHeightCallback(
-                this.props.gridData[i],
-                i,
-                this.props.itemHeight
-            );
-            rowPositions.push({
-                start: thisRowStart,
-                span: thisRowHeight,
-                end: thisRowStart + thisRowHeight,
-            });
-        }
-    };
+    //     for (let i: number = pageStartIndex; i <= pageEndIndex; i++) {
+    //         const thisRowStart: number = i === 0 ? 0 : rowPositions[i - 1].end;
+    //         const thisRowHeight: number = this.props.itemHeightCallback(
+    //             this.props.gridData[i],
+    //             i,
+    //             this.props.itemHeight
+    //         );
+    //         rowPositions.push({
+    //             start: thisRowStart,
+    //             span: thisRowHeight,
+    //             end: thisRowStart + thisRowHeight,
+    //         });
+    //     }
+    // };
 
     /**
      * get the estimated total height of the datagrid based on row heights calculated so far
@@ -536,37 +540,65 @@ class DataGrid extends Foundation<
     };
 
     /**
-     * recursive function to load pages to target index
+     * size rows to target index
+     * note: this modifies the provided rowposition array directly
      */
-    private sizePagesToIndex = (
+    private sizeRowsToIndex = (
         targetIndex: number,
         rowPositions: rowPosition[]
     ): void => {
-        let actualTargetIndex =
-            targetIndex <= this.props.gridData.length - 1
-                ? targetIndex
-                : this.props.gridData.length - 1;
-        const currentMaxCalculatedIndex = rowPositions.length - 1;
-        if (currentMaxCalculatedIndex < actualTargetIndex) {
-            this.sizeNextPage(rowPositions);
-            this.sizePagesToIndex(actualTargetIndex, rowPositions);
+        if (rowPositions.length - 1 < targetIndex) {
+            const startIndex: number = rowPositions.length;
+            const endIndex: number =
+                targetIndex > this.props.gridData.length - 1
+                    ? this.props.gridData.length - 1
+                    : targetIndex;
+            for (let i: number = startIndex; i <= endIndex; i++) {
+                const thisRowStart: number = i === 0 ? 0 : rowPositions[i - 1].end;
+                const thisRowHeight: number = this.props.itemHeightCallback(
+                    this.props.gridData[i],
+                    i,
+                    this.props.itemHeight
+                );
+                rowPositions.push({
+                    start: thisRowStart,
+                    span: thisRowHeight,
+                    end: thisRowStart + thisRowHeight,
+                });
+            }
         }
     };
 
     /**
-     * recursive function to load pages to target scroll value
+     * size rows to target scroll value
+     * appends rowposition data until the bottom of the last item
+     * is greater than target scroll value.
+     * note: this modifies the provided rowposition array directly
      */
-    private sizePagesToScrollPosition = (
+    private sizeRowsToScrollValue = (
         targetScrollValue: number,
         rowPositions: rowPosition[]
     ): void => {
-        const currentMaxCalculatedScroll = rowPositions[rowPositions.length - 1].end;
-        if (
-            currentMaxCalculatedScroll < targetScrollValue &&
-            rowPositions.length < this.props.gridData.length
-        ) {
-            this.sizeNextPage(rowPositions);
-            this.sizePagesToScrollPosition(targetScrollValue, rowPositions);
+        if (rowPositions[rowPositions.length - 1].end < targetScrollValue) {
+            const startIndex: number = rowPositions.length;
+            const endIndex: number = this.props.gridData.length - 1;
+            for (let i: number = startIndex; i <= endIndex; i++) {
+                const thisRowStart: number = i === 0 ? 0 : rowPositions[i - 1].end;
+                const thisRowHeight: number = this.props.itemHeightCallback(
+                    this.props.gridData[i],
+                    i,
+                    this.props.itemHeight
+                );
+                const thisRowEnd: number = thisRowStart + thisRowHeight;
+                rowPositions.push({
+                    start: thisRowStart,
+                    span: thisRowHeight,
+                    end: thisRowEnd,
+                });
+                if (thisRowEnd >= targetScrollValue) {
+                    break;
+                }
+            }
         }
     };
 
@@ -595,7 +627,7 @@ class DataGrid extends Foundation<
                 this.state.rowPositions.length - 1
             ].end;
             if (currentViewportBottom > highestCalculatedScrollPosition) {
-                this.sizePagesToScrollPosition(currentViewportBottom, newRowPositions);
+                this.sizeRowsToScrollValue(currentViewportBottom, newRowPositions);
             }
 
             const middleViewportPosition: number = Math.floor(
@@ -618,7 +650,7 @@ class DataGrid extends Foundation<
                 newDataPageEndIndex = this.props.gridData.length - 1;
             }
 
-            this.sizePagesToIndex(newDataPageEndIndex, newRowPositions);
+            this.sizeRowsToIndex(newDataPageEndIndex, newRowPositions);
 
             this.setState({
                 currentDataPageStartIndex: newDataPageStartIndex,
@@ -636,26 +668,37 @@ class DataGrid extends Foundation<
         scrollPosition: number,
         rowPositions: rowPosition[]
     ): number => {
+        const maxIndex = this.props.gridData.length - 1;
+
+        this.sizeRowsToScrollValue(scrollPosition, rowPositions);
+
         let estimatedItemIndex: number = Math.floor(
             scrollPosition / this.props.itemHeight
         );
 
-        if (estimatedItemIndex > this.props.gridData.length - 1) {
-            estimatedItemIndex = this.props.gridData.length - 1;
+        if (estimatedItemIndex > maxIndex) {
+            estimatedItemIndex = maxIndex;
         }
-        this.sizePagesToIndex(estimatedItemIndex, rowPositions);
+
+        if (estimatedItemIndex > rowPositions.length - 1) {
+            estimatedItemIndex = rowPositions.length - 1;
+        }
 
         if (scrollPosition < rowPositions[estimatedItemIndex].start) {
-            for (let i: number = estimatedItemIndex; i === 0; i--) {
-                if (rowPositions[i].end > scrollPosition) {
+            for (let i: number = estimatedItemIndex; i >= 0; i--) {
+                if (rowPositions[i].start < scrollPosition) {
                     return i;
                 }
             }
             return 0;
         } else if (scrollPosition > rowPositions[estimatedItemIndex].end) {
-            const maxIndex = rowPositions.length - 1;
-            for (let i: number = estimatedItemIndex; i === maxIndex; i++) {
-                if (rowPositions[i].start < scrollPosition) {
+            let maxRowpositionSizedIndex: number = rowPositions.length - 1;
+            for (let i: number = estimatedItemIndex; i <= maxIndex; i++) {
+                if (i > maxRowpositionSizedIndex) {
+                    this.sizeRowsToIndex(i, rowPositions);
+                    maxRowpositionSizedIndex++;
+                }
+                if (rowPositions[i].end > scrollPosition) {
                     return i;
                 }
             }
