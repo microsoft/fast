@@ -1,6 +1,6 @@
 import { get } from "lodash-es";
 import { MenuItem } from "@microsoft/fast-tooling-react";
-import { FormChildOptionItem } from "@microsoft/fast-tooling-react/dist/form/form";
+import { FormChildOptionItem } from "@microsoft/fast-tooling-react/dist/form/types";
 import { pascalCase } from "@microsoft/fast-web-utilities";
 import * as testComponentViewConfigs from "./components";
 import * as componentViewConfigs from "./utilities/configs";

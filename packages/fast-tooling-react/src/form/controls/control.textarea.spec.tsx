@@ -20,6 +20,8 @@ const managedClasses: TextareaControlClassNameContract = {
 const textareaProps: TextareaControlProps = {
     type: ControlType.textarea,
     dataLocation: "",
+    navigationId: "",
+    navigation: {},
     onChange: jest.fn(),
     value: "",
     schema: {},

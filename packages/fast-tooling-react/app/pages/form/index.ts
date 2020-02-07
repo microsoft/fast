@@ -3,138 +3,116 @@ export interface ExampleComponent {
     data?: any;
 }
 
-import TextareaSchema from "../../../src/__tests__/schemas/textarea.schema.json";
+import {
+    allControlTypesSchema,
+    anyOfSchema,
+    arraysSchema,
+    badgeSchema,
+    checkboxSchema,
+    childrenSchema,
+    constSchema as constKeywordSchema,
+    controlPluginSchema as customControlSchema,
+    defaultsSchema,
+    dictionarySchema,
+    generalSchema,
+    invalidDataSchema,
+    mergedOneOfSchema,
+    nestedOneOfSchema,
+    nullSchema as nullKeywordSchema,
+    numberFieldSchema,
+    objectsSchema,
+    oneOfDeeplyNestedSchema as oneOfArraysSchema,
+    oneOfSchema,
+    textareaSchema,
+    tooltipSchema,
+} from "../../../src/__tests__/schemas";
 
 export const textField: ExampleComponent = {
-    schema: TextareaSchema,
+    schema: textareaSchema,
 };
-
-import NumberFieldSchema from "../../../src/__tests__/schemas/number-field.schema.json";
 
 export const numberField: ExampleComponent = {
-    schema: NumberFieldSchema,
+    schema: numberFieldSchema,
 };
-
-import CheckboxSchema from "../../../src/__tests__/schemas/checkbox.schema.json";
 
 export const checkbox: ExampleComponent = {
-    schema: CheckboxSchema,
+    schema: checkboxSchema,
 };
-
-import AnyOfSchema from "../../../src/__tests__/schemas/any-of.schema.json";
 
 export const anyOf: ExampleComponent = {
-    schema: AnyOfSchema,
+    schema: anyOfSchema,
 };
-
-import OneOfSchema from "../../../src/__tests__/schemas/one-of.schema.json";
 
 export const oneOf: ExampleComponent = {
-    schema: OneOfSchema,
+    schema: oneOfSchema,
 };
-
-import NestedOneOfSchema from "../../../src/__tests__/schemas/nested-one-of.schema.json";
 
 export const nestedOneOf: ExampleComponent = {
-    schema: NestedOneOfSchema,
+    schema: nestedOneOfSchema,
 };
-
-import MergedOneOfSchema from "../../../src/__tests__/schemas/merged-one-of.schema.json";
 
 export const mergedOneOf: ExampleComponent = {
-    schema: MergedOneOfSchema,
+    schema: mergedOneOfSchema,
 };
-
-import ObjectsSchema from "../../../src/__tests__/schemas/objects.schema.json";
 
 export const objects: ExampleComponent = {
-    schema: ObjectsSchema,
+    schema: objectsSchema,
 };
-
-import ArraysSchema from "../../../src/__tests__/schemas/arrays.schema.json";
 
 export const arrays: ExampleComponent = {
-    schema: ArraysSchema,
+    schema: arraysSchema,
 };
-
-import OneOfArraysSchema from "../../../src/__tests__/schemas/one-of-deeply-nested.schema.json";
 
 export const oneOfArrays: ExampleComponent = {
-    schema: OneOfArraysSchema,
+    schema: oneOfArraysSchema,
 };
-
-import ChildrenSchema from "../../../src/__tests__/schemas/children.schema.json";
 
 export const children: ExampleComponent = {
-    schema: ChildrenSchema,
+    schema: childrenSchema,
 };
-
-import GeneralSchema from "../../../src/__tests__/schemas/general.schema.json";
 
 export const generalExample: ExampleComponent = {
-    schema: GeneralSchema,
+    schema: generalSchema,
 };
-
-import BadgeSchema from "../../../src/__tests__/schemas/badge.schema.json";
 
 export const badge: ExampleComponent = {
-    schema: BadgeSchema,
+    schema: badgeSchema,
 };
-
-import ConstKeywordSchema from "../../../src/__tests__/schemas/const.schema.json";
 
 export const constKeyword: ExampleComponent = {
-    schema: ConstKeywordSchema,
+    schema: constKeywordSchema,
 };
 
-import InvalidDataSchema from "../../../src/__tests__/schemas/invalid-data.schema.json";
 import InvalidDataDataSet from "../../../src/__tests__/datasets/invalid-data";
 
 export const invalidData: ExampleComponent = {
-    schema: InvalidDataSchema,
+    schema: invalidDataSchema,
     data: InvalidDataDataSet,
 };
 
-import DefaultsSchema from "../../../src/__tests__/schemas/defaults.schema.json";
-
 export const defaults: ExampleComponent = {
-    schema: DefaultsSchema,
+    schema: defaultsSchema,
 };
-
-import NullKeywordSchema from "../../../src/__tests__/schemas/null.schema.json";
 
 export const nullKeyword: ExampleComponent = {
-    schema: NullKeywordSchema,
+    schema: nullKeywordSchema,
 };
 
-import AllControlTypesSchema from "../../../src/__tests__/schemas/all-control-types.schema.json";
-
 export const allControlTypes: ExampleComponent = {
-    schema: AllControlTypesSchema,
+    schema: allControlTypesSchema,
 };
 
 import DictionaryDataSet from "../../../src/__tests__/datasets/dictionary";
-import DictionarySchema from "../../../src/__tests__/schemas/dictionary.schema.json";
 
 export const dictionary: ExampleComponent = {
-    schema: DictionarySchema,
+    schema: dictionarySchema,
     data: DictionaryDataSet,
 };
 
-import CustomControlSchema from "../../../src/__tests__/schemas/control-plugin.schema.json";
-
 export const customControl: ExampleComponent = {
-    schema: CustomControlSchema,
+    schema: customControlSchema,
 };
-
-import TooltipSchema from "../../../src/__tests__/schemas/tooltip.schema.json";
 
 export const tooltip: ExampleComponent = {
-    schema: TooltipSchema,
-};
-
-import CategoriesSchema from "../../../src/__tests__/schemas/categories.schema.json";
-
-export const categories: ExampleComponent = {
-    schema: CategoriesSchema,
+    schema: tooltipSchema,
 };

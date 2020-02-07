@@ -164,7 +164,6 @@ class Dictionary extends React.Component<
                                     schema={this.props.additionalProperties}
                                     disabled={this.props.additionalProperties === false}
                                     onUpdateSection={this.props.onUpdateSection}
-                                    childOptions={this.props.childOptions}
                                     required={this.isRequired(currentKey)}
                                     invalidMessage={invalidMessage}
                                     softRemove={false}

@@ -156,6 +156,19 @@ class ChildrenControl extends React.Component<
     }
 
     /**
+     * Get React's default children
+     */
+    // private getReactDefaultChildren(): FormChildOptionItem[] {
+    //     return [
+    //         {
+    //             name: "Text",
+    //             component: null,
+    //             schema: reactChildrenStringSchema,
+    //         },
+    //     ];
+    // }
+
+    /**
      * Renders the input, button and listbox for
      * adding a child
      */
