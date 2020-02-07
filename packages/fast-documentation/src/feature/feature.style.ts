@@ -3,11 +3,11 @@ import { FeatureClassNameContract } from "./feature.props";
 import { DesignSystem } from "../design-system/index";
 import {
     applyCornerRadius,
-    applyScaledTypeRamp,
-    neutralFillRest,
-    neutralForegroundRest,
     applyElevation,
-    ElevationMultiplier
+    applyScaledTypeRamp,
+    ElevationMultiplier,
+    neutralFillRest,
+    neutralForegroundRest
 } from "@microsoft/fast-components-styles-msft";
 import { format } from "@microsoft/fast-jss-utilities";
 
@@ -27,7 +27,6 @@ const styles: ComponentStyles<FeatureClassNameContract, DesignSystem> = {
             display: "flex",
             flexDirection: "column"
         },
-        // Update from hard-coded instances
         "@media only screen and (min-width: 1083px)": {
             flexDirection: "row"
         }

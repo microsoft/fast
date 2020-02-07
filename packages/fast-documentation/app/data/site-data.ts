@@ -1,4 +1,4 @@
-export interface INavData {
+export interface NavData {
     [componentName: string]: {
         external?: boolean;
         href: string;
@@ -7,7 +7,7 @@ export interface INavData {
     };
 }
 
-export const NavData: INavData = {
+export const NavData: NavData = {
     components: {
         external: true,
         href: "https://explore.fast.design",

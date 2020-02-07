@@ -1,13 +1,12 @@
 import React, { HTMLAttributes } from "react";
-import manageJss, { ComponentStyles, ManagedClasses } from "@microsoft/fast-jss-manager-react";
+import manageJss, { ComponentStyles, ManagedClasses, ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { Column, ColumnClassNamesContract, Grid, Page } from "@microsoft/fast-layouts-react";
-import { breakpoints } from "../../app/data/default-vars";
 
 const dividerColumn: ComponentStyles<ColumnClassNamesContract, undefined> = {
     column: {}
 };
 
-interface IDividerStyles {
+interface DividerStyles {
     height1: string;
     height2: string;
     height3: string;
@@ -21,7 +20,7 @@ interface IDividerStyles {
     height125: string;
 }
 
-const dividerStyles: ComponentStyles<IDividerStyles, undefined> = {
+const dividerStyles: ComponentStyles<DividerStyles, undefined> = {
     height1: {
         height: "10px"
     },
@@ -58,11 +57,11 @@ const dividerStyles: ComponentStyles<IDividerStyles, undefined> = {
 };
 
 const BaseDivider: React.FC<{
-    managedClasses: IDividerStyles;
+    managedClasses: DividerStyles;
     height?: number;
     row?: number | number[];
     span?: number[];
-}> = props => {
+}> = (props: any): JSX.Element => {
     return (
         <Column span={props.span} row={props.row}>
             <div className={props.managedClasses[`height${props.height}`]} />
@@ -70,4 +69,4 @@ const BaseDivider: React.FC<{
     );
 };
 
-export const VerticalHeight = manageJss(dividerStyles)(BaseDivider);
+export const VerticalHeight: React.ComponentClass = manageJss(dividerStyles)(BaseDivider);

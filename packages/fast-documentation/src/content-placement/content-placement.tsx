@@ -1,21 +1,15 @@
 import React from "react";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
-import {
-    ContentPlacementHandledProps,
-    ContentPlacementProps,
-    ContentPlacementUnhandledProps
-} from "./content-placement.props";
+import { ContentPlacementHandledProps, ContentPlacementUnhandledProps } from "./content-placement.props";
 import { get } from "lodash-es";
 import {
     Heading,
     HeadingProps,
+    HeadingSize,
+    HeadingTag,
     Paragraph,
     ParagraphProps,
-    HeadingTag,
-    HeadingSize,
-    ParagraphSize,
-    Divider,
-    DividerRoles
+    ParagraphSize
 } from "@microsoft/fast-components-react-msft";
 
 class ContentPlacement extends Foundation<ContentPlacementHandledProps, ContentPlacementUnhandledProps, {}> {

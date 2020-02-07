@@ -84,7 +84,7 @@ const BaseHero: React.FC<{
     tall?: boolean;
     destination: string;
     callToAction: string;
-}> = props => {
+}> = (props: any): JSX.Element => {
     return (
         <Background
             className={props.managedClasses.hero}
@@ -101,8 +101,8 @@ const BaseHero: React.FC<{
                         divider: {
                             marginTop: "48px",
                             width: "100%",
-                            maxWidth: "1299px", // because
-                            borderColor: neutralForegroundRest(() => "#000"), // force white
+                            maxWidth: "1299px",
+                            borderColor: neutralForegroundRest(() => "#000"),
                             [`@media only screen and (max-width: ${breakpoints.vp2Max})`]: {
                                 marginTop: "24px"
                             }
@@ -129,4 +129,4 @@ const BaseHero: React.FC<{
     );
 };
 
-export const Hero = manageJss(heroStyles)(BaseHero);
+export const Hero: any = manageJss(heroStyles)(BaseHero);

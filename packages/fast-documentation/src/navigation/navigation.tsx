@@ -1,15 +1,14 @@
 import React from "react";
 import manageJss, { ComponentStyles, DesignSystemProvider } from "@microsoft/fast-jss-manager-react";
-import { ColumnClassNamesContract, Grid, Page, Column, GridAlignment } from "@microsoft/fast-layouts-react";
-import { BrowserRouter as Router, Route, Link, RouteProps } from "react-router-dom";
-import { INavData } from "../../app/data/site-data";
-import { breakpoints, colors } from "../../app/data/default-vars";
-import { black, white } from "@microsoft/fast-components-styles-msft/dist/utilities/color/color-constants";
+import { Column, ColumnClassNamesContract, Grid, GridAlignment, Page } from "@microsoft/fast-layouts-react";
+import { Link, RouteProps } from "react-router-dom";
+import { NavData } from "../../app/data/site-data";
+import { breakpoints } from "../../app/data/default-vars";
 import { applyFontWeightSemiBold, neutralForegroundRest } from "@microsoft/fast-components-styles-msft";
 import { AccentButton, LightweightButton } from "@microsoft/fast-components-react-msft";
 import { DesignSystem } from "src/design-system";
 
-interface INavigationStyle {
+interface NavigationStyle {
     active: string;
     hamburger: string;
     hamburgerButton: string;
@@ -31,8 +30,7 @@ interface INavigationStyle {
 /* tslint:disable */
 const FASTLogo = require("../../images/fast-dna.svg");
 /* tslint:enable */
-const navigationStyle: ComponentStyles<INavigationStyle, undefined> = {
-    // TODO: remove typeface in favor of using SVG for hamburger nav menu
+const navigationStyle: ComponentStyles<NavigationStyle, undefined> = {
     "@font-face": {
         fontFamily: "MDL2",
         src: "url(https://www.microsoft.com/design/fonts/FWMDL2.ttf) format('truetype')"
@@ -70,14 +68,14 @@ const navigationStyle: ComponentStyles<INavigationStyle, undefined> = {
         }
     },
     navItem: {
-        color: neutralForegroundRest(() => "#000"),
+        color: neutralForegroundRest((): string => "#000"),
         margin: "0px 16px"
     },
     mobileNavItem: {
         margin: "24px 0px"
     },
     mobileNavLink: {
-        color: neutralForegroundRest(() => "#000"),
+        color: neutralForegroundRest((): string => "#000"),
         textDecoration: "none"
     },
     navItems: {
@@ -104,7 +102,6 @@ const navigationStyle: ComponentStyles<INavigationStyle, undefined> = {
         height: "28px",
         width: "26px",
         color: "#FFF",
-        // TODO: remove typeface in favor of using SVG for hamburger nav menu
         fontFamily: '"MDL2", "Segoe MDL2 Assets", "SegoeMDL2Assets"'
     },
     desktopNav: {
@@ -146,29 +143,29 @@ function routeCheck(route: string, href: string): boolean {
         return route === href;
     }
     if (href) {
-        const regex = /([aA-zZ-])\w+/g;
-        const match = href.match(regex) && href.match(regex)!.join("");
+        const regex: any = /([aA-zZ-])\w+/g;
+        const match: any = href.match(regex) && href.match(regex)!.join("");
         return route.includes(match!);
     }
     return false;
 }
 
-interface IMenuProps {
+interface MenuProps {
     isMobile: boolean;
-    NavData: INavData;
+    NavData: NavData;
     route: string;
-    style: INavigationStyle;
+    style: NavigationStyle;
 }
 
-function Menu({ isMobile, route, NavData, style }: IMenuProps): JSX.Element {
-    const menu = Object.keys(NavData);
+function Menu({ isMobile, route, style }: MenuProps): JSX.Element {
+    const menu: any = Object.keys(NavData);
 
     if (isMobile) {
         return (
             <Column span={12} position={1}>
-                {menu.map((item, index) => {
-                    const menuItem = NavData[item];
-                    const isActive = routeCheck(route, menuItem.href) ? style.active : "";
+                {menu.map((item: any, index: number) => {
+                    const menuItem: any = NavData[item];
+                    const isActive: any = routeCheck(route, menuItem.href) ? style.active : "";
                     let node: React.ReactNode;
 
                     if (!!menuItem.external) {
@@ -199,9 +196,9 @@ function Menu({ isMobile, route, NavData, style }: IMenuProps): JSX.Element {
     return (
         <div style={{ display: "flex", width: "100%" }}>
             <div className={style.navItems}>
-                {menu.map((item, index) => {
-                    const menuItem = NavData[item];
-                    const isActive = routeCheck(route, menuItem.href) ? style.active : "";
+                {menu.map((item: any, index: any) => {
+                    const menuItem: any = NavData[item];
+                    const isActive: any = routeCheck(route, menuItem.href) ? style.active : "";
                     let node: React.ReactNode;
 
                     if (!!menuItem.external) {
@@ -253,19 +250,20 @@ function useLockScroll(className: string, isOpen: boolean): void {
     // only run the effect if menu is open
 }
 
-interface INavigationProps {
-    NavData: INavData;
+interface NavigationProps {
+    NavData: NavData;
     routeProps: RouteProps;
-    managedClasses: INavigationStyle;
+    managedClasses: NavigationStyle;
 }
 const navigationColumn: ComponentStyles<ColumnClassNamesContract, DesignSystem> = {
     column: { display: "inline-flex", alignItems: "center", width: "100%" }
 };
-const Navigation: React.FC<INavigationProps> = props => {
-    const [isOpen, setOpen] = React.useState<boolean>(false);
 
-    function toggleOpen() {
-        setOpen(prev => !prev);
+const Navigation: React.FC<NavigationProps> = (props: NavigationProps): JSX.Element => {
+    const [isOpen, setOpen]: any = React.useState<boolean>(false);
+
+    function toggleOpen(): void {
+        setOpen((prev: any) => !prev);
     }
 
     React.useEffect(

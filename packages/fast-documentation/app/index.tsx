@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { BrowserRouter as Router, Route, Switch, withRouter, RouteProps } from "react-router-dom";
+import { BrowserRouter as Router, Route, RouteProps, Switch, withRouter } from "react-router-dom";
 import { DesignSystemProvider } from "@microsoft/fast-jss-manager-react";
 import { HomePage } from "./pages";
 import { designSystemDefaults, Footer } from "../src";
@@ -14,7 +14,7 @@ const root: HTMLElement = document.createElement("div");
 root.setAttribute("id", "root");
 document.body.appendChild(root);
 
-const Nav = withRouter((props: RouteProps) => <Navigation NavData={NavData} routeProps={props} />);
+const Nav: any = withRouter((props: RouteProps) => <Navigation NavData={NavData} routeProps={props} />);
 
 function render(): void {
     // tslint:disable:jsx-no-lambda
