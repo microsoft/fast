@@ -45,19 +45,6 @@ export interface RecipeData<T extends Serializable = any>
     value?: T;
 }
 
-export function isEvaluatableRecipeDefinition<T extends Serializable>(
-    recipe: RecipeDefinition<T>
-): recipe is Required<RecipeDefinition<T>> {
-    return (
-        [
-            RecipeTypes.backgroundFills,
-            RecipeTypes.foregroundFills,
-            RecipeTypes.strokeFills,
-        ].includes(recipe.type) &&
-        recipe.hasOwnProperty("evaluate") &&
-        typeof recipe["evaluate"] === "function"
-    );
-}
 export class RecipeRegistry {
     private entries: { [id: string]: RecipeDefinition } = {};
 
@@ -117,24 +104,18 @@ export class RecipeRegistry {
      * Returns a serializable object representing the recipe, with all functional
      * data removed.
      *
-     * @param id - the ID of the recipe to constuct data for
+     * @param id - the ID of the recipe to construct data for
      * @param node - the ID of the node we're constructing for. This will be provided to the evaluate function if it exists
      */
-    public toSerializable(id: string, node: PluginNode): RecipeData {
+    public toData(id: string, node: PluginNode): RecipeData {
         const recipe = this.get(id);
-        const { name, type } = recipe;
+        const { name, type, evaluate } = recipe;
 
-        return isEvaluatableRecipeDefinition(recipe)
-            ? {
-                  name,
-                  type,
-                  id,
-                  value: recipe.evaluate(node),
-              }
-            : {
-                  name,
-                  type,
-                  id,
-              };
+        return {
+            name,
+            type,
+            id,
+            value: evaluate(node),
+        };
     }
 }

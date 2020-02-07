@@ -1,10 +1,9 @@
-import React from "react";
-import manageJss from "@microsoft/fast-jss-manager-react";
 import {
     applyCornerRadius,
-    DesignSystem,
     applyElevation,
 } from "@microsoft/fast-components-styles-msft";
+import manageJss from "@microsoft/fast-jss-manager-react";
+import React from "react";
 
 interface SwatchManagedClasses {
     swatch: string;

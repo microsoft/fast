@@ -1,6 +1,6 @@
 import { PluginNode, PluginNodeData } from "../core/node";
 import { DesignSystem } from "@microsoft/fast-components-styles-msft";
-import { RecipeTypes, RecipeData, RecipeDefinition } from "../core/recipe-registry";
+import { RecipeData, RecipeDefinition, RecipeTypes } from "../core/recipe-registry";
 import { parseColor } from "@microsoft/fast-colors";
 import { string } from "prop-types";
 
@@ -87,27 +87,6 @@ export class FigmaPluginNode extends PluginNode {
         }
     }
 
-    protected getPluginData<K extends keyof PluginNodeData>(key: K): PluginNodeData[K] {
-        try {
-            return JSON.parse(this.node.getPluginData(key as string));
-        } catch (e) {
-            return key === "designSystem" ? ({} as any) : []; // Why does keyof not work here?!
-        }
-    }
-
-    protected setPluginData<K extends keyof PluginNodeData>(
-        key: K,
-        value: PluginNodeData[K]
-    ): void {
-        let raw: string;
-        try {
-            raw = JSON.stringify(value);
-        } catch (e) {
-            raw = "";
-        }
-        this.node.setPluginData(key, raw);
-    }
-
     public supports(): RecipeTypes[] {
         return Object.keys(RecipeTypes).filter(key => {
             switch (key) {
@@ -141,6 +120,37 @@ export class FigmaPluginNode extends PluginNode {
         }
     }
 
+    public parent(): FigmaPluginNode | null {
+        const parent = this.node.parent;
+
+        if (parent === null) {
+            return null;
+        }
+
+        return new FigmaPluginNode(parent.id);
+    }
+
+    protected getPluginData<K extends keyof PluginNodeData>(key: K): PluginNodeData[K] {
+        try {
+            return JSON.parse(this.node.getPluginData(key as string));
+        } catch (e) {
+            return key === "designSystem" ? ({} as any) : []; // Why does keyof not work here?!
+        }
+    }
+
+    protected setPluginData<K extends keyof PluginNodeData>(
+        key: K,
+        value: PluginNodeData[K]
+    ): void {
+        let raw: string;
+        try {
+            raw = JSON.stringify(value);
+        } catch (e) {
+            raw = "";
+        }
+        this.node.setPluginData(key, raw);
+    }
+
     private paintColor(data: RecipeData): void {
         const color = parseColor(data.value);
 
@@ -171,15 +181,5 @@ export class FigmaPluginNode extends PluginNode {
                 (this.node as any).strokes = [paint];
                 break;
         }
-    }
-
-    public parent(): FigmaPluginNode | null {
-        const parent = this.node.parent;
-
-        if (parent === null) {
-            return null;
-        }
-
-        return new FigmaPluginNode(parent.id);
     }
 }

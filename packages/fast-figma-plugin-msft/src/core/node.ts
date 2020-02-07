@@ -1,5 +1,5 @@
 import { DesignSystem } from "@microsoft/fast-components-styles-msft";
-import { RecipeTypes, RecipeData } from "./recipe-registry";
+import { RecipeData, RecipeTypes } from "./recipe-registry";
 
 const cache: Map<string, Partial<DesignSystem>> = new Map();
 /**
@@ -23,43 +23,6 @@ export interface PluginNodeData {
  * for each design tool.
  */
 export abstract class PluginNode {
-    private static purgeDesignSystemCache(node: PluginNode) {
-        if (cache.has(node.id)) {
-            cache.delete(node.id);
-        }
-
-        node.children().map(PluginNode.purgeDesignSystemCache);
-    }
-    public abstract id: string;
-    public abstract type: string;
-    protected abstract getPluginData<K extends keyof PluginNodeData>(
-        key: K
-    ): PluginNodeData[K];
-    protected abstract setPluginData<K extends keyof PluginNodeData>(
-        key: K,
-        value: PluginNodeData[K]
-    ): void;
-    public abstract children(): PluginNode[];
-    public abstract parent(): PluginNode | null;
-    public abstract supports(): RecipeTypes[];
-
-    /**
-     * Set a property of the design system on this node
-     * @param key - the design system property name
-     * @param value - the design system property value
-     */
-    public setDesignSystemPropety<K extends keyof DesignSystem>(
-        key: K,
-        value: DesignSystem[K]
-    ) {
-        this.setPluginData("designSystem", {
-            ...this.getPluginData("designSystem"),
-            [key]: value,
-        });
-
-        PluginNode.purgeDesignSystemCache(this);
-    }
-
     /**
      * Retrieves the contextual design system for the node
      */
@@ -79,8 +42,44 @@ export abstract class PluginNode {
     public set recipes(recipes: string[]) {
         this.setPluginData("recipes", recipes);
     }
+    private static purgeDesignSystemCache(node: PluginNode): void {
+        if (cache.has(node.id)) {
+            cache.delete(node.id);
+        }
+
+        node.children().map(PluginNode.purgeDesignSystemCache);
+    }
+    public abstract id: string;
+    public abstract type: string;
+    public abstract children(): PluginNode[];
+    public abstract parent(): PluginNode | null;
+    public abstract supports(): RecipeTypes[];
+
+    /**
+     * Set a property of the design system on this node
+     * @param key - the design system property name
+     * @param value - the design system property value
+     */
+    public setDesignSystemProperty<K extends keyof DesignSystem>(
+        key: K,
+        value: DesignSystem[K]
+    ): void {
+        this.setPluginData("designSystem", {
+            ...this.getPluginData("designSystem"),
+            [key]: value,
+        });
+
+        PluginNode.purgeDesignSystemCache(this);
+    }
 
     public abstract paint(data: RecipeData): void;
+    protected abstract getPluginData<K extends keyof PluginNodeData>(
+        key: K
+    ): PluginNodeData[K];
+    protected abstract setPluginData<K extends keyof PluginNodeData>(
+        key: K,
+        value: PluginNodeData[K]
+    ): void;
 
     /**
      * Resolves the contextual design system for a node.
@@ -89,7 +88,7 @@ export abstract class PluginNode {
      */
     private resolveDesignSystemContext(): Partial<DesignSystem> {
         let node: PluginNode | null = this.parent();
-        const intialDesignSystem = this.getPluginData("designSystem");
+        const initialDesignSystem = this.getPluginData("designSystem");
 
         /**
          * We need to delete the background color if it is set here because
@@ -97,11 +96,11 @@ export abstract class PluginNode {
          * the node itself, background colors should always be painted relative
          * to the *parent*
          */
-        if (intialDesignSystem.hasOwnProperty("backgroundColor")) {
-            delete intialDesignSystem.backgroundColor;
+        if (initialDesignSystem.hasOwnProperty("backgroundColor")) {
+            delete initialDesignSystem.backgroundColor;
         }
 
-        let designSystems: Partial<DesignSystem>[] = [intialDesignSystem];
+        const designSystems: Array<Partial<DesignSystem>> = [initialDesignSystem];
 
         while (node !== null) {
             designSystems.push(node.getPluginData("designSystem"));

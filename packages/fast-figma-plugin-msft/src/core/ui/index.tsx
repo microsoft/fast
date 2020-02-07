@@ -1,15 +1,8 @@
+import { Caption, Divider, Label, Radio } from "@microsoft/fast-components-react-msft";
 import React from "react";
-import { PluginNodeData } from "../node";
-import {
-    Caption,
-    Divider,
-    Label,
-    Paragraph,
-    Radio,
-} from "@microsoft/fast-components-react-msft";
+import { MessageTypes, RecipeMessageAction, UIMessage } from "../messaging";
+import { RecipeData, RecipeTypes } from "../recipe-registry";
 import Swatch from "./swatch";
-import { RecipeTypes, RecipeData } from "../recipe-registry";
-import { UIMessage, MessageTypes, RecipeMessageAction } from "../messaging";
 
 export interface PluginUIActiveNodeRecipeSupportOptions {
     label: string;
@@ -53,7 +46,7 @@ export class PluginUI extends React.Component<PluginUIProps> {
     public static defaultProps: PluginUIProps = {
         selectedNodes: [],
         recipeOptions: [],
-        dispatch: (message: UIMessage) => {
+        dispatch: (): void => {
             throw new Error(
                 `The UI message could not be dispatched - please provide a valid dispatch function the the PluginUI`
             );

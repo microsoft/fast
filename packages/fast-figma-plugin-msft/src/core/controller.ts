@@ -1,11 +1,7 @@
-import { PluginNode, PluginNodeData } from "./node";
-import {
-    isEvaluatableRecipeDefinition,
-    RecipeRegistry,
-    RecipeTypes,
-} from "./recipe-registry";
+import { RecipeMessage, RecipeMessageAction, UIMessage } from "./messaging";
+import { PluginNode } from "./node";
+import { RecipeRegistry, RecipeTypes } from "./recipe-registry";
 import { PluginUIActiveNodeData, PluginUIProps } from "./ui";
-import { UIMessage, RecipeMessage, MessageTypes, RecipeMessageAction } from "./messaging";
 
 /**
  * Controller class designed to handle the business logic of the plugin.
@@ -73,13 +69,10 @@ export abstract class Controller {
             recipeOptions: selectedNodes.length
                 ? allSupported.map(type => {
                       return {
-                          type: type,
+                          type,
                           options: this.recipeRegistry.find(type).map(
                               item =>
-                                  this.recipeRegistry.toSerializable(
-                                      item.id,
-                                      selectedNodes[0]
-                                  ) // TODO: We probably shouldn't hard-code this, but what do we do if there are multiple selected?
+                                  this.recipeRegistry.toData(item.id, selectedNodes[0]) // TODO: We probably shouldn't hard-code this, but what do we do if there are multiple selected?
                           ),
                       };
                   })
@@ -90,6 +83,12 @@ export abstract class Controller {
     public handleMessage(message: UIMessage): void {
         this.handleRecipeMessage(message);
     }
+
+    /**
+     * Provides the state object to the UI component and updates the UI
+     * @param state the UI state object
+     */
+    protected abstract setPluginUIState(state: Omit<PluginUIProps, "dispatch">): void;
 
     private handleRecipeMessage(message: RecipeMessage): void {
         message.nodeIds.forEach(id => {
@@ -103,7 +102,10 @@ export abstract class Controller {
             switch (message.action) {
                 case RecipeMessageAction.assign:
                     node.recipes = node.recipes
-                        .filter(id => this.recipeRegistry.get(id).type !== recipe.type)
+                        .filter(
+                            recipeId =>
+                                this.recipeRegistry.get(recipeId).type !== recipe.type
+                        )
                         .concat(recipe.id);
                     break;
             }
@@ -114,7 +116,7 @@ export abstract class Controller {
                     break;
                 case RecipeTypes.foregroundFills:
                 case RecipeTypes.strokeFills:
-                    node.paint(this.recipeRegistry.toSerializable(recipe.id, node));
+                    node.paint(this.recipeRegistry.toData(recipe.id, node));
                     break;
             }
         });
@@ -130,17 +132,17 @@ export abstract class Controller {
         }
 
         // Paint all recipes of the node
-        node.recipes.forEach(id => {
-            const recipe = this.recipeRegistry.get(id);
+        node.recipes.forEach(recipeId => {
+            const recipe = this.recipeRegistry.get(recipeId);
 
             // TODO: We can probably be smarter about when to apply the backgroundColor property.
             // This causes us to purge sub-trees un-necessairly, because setting the property
             // automatically purges the tree.
             if (recipe.type === RecipeTypes.backgroundFills) {
-                node.setDesignSystemPropety("backgroundColor", recipe.evaluate(node));
+                node.setDesignSystemProperty("backgroundColor", recipe.evaluate(node));
             }
 
-            node.paint(this.recipeRegistry.toSerializable(id, node));
+            node.paint(this.recipeRegistry.toData(recipeId, node));
         });
 
         node.children().forEach(child => {
@@ -149,10 +151,4 @@ export abstract class Controller {
             }
         });
     }
-
-    /**
-     * Provides the state object to the UI component and updates the UI
-     * @param state the UI state object
-     */
-    protected abstract setPluginUIState(state: Omit<PluginUIProps, "dispatch">): void;
 }

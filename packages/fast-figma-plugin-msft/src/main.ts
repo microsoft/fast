@@ -1,13 +1,13 @@
 import { PluginNode } from "./core/node";
 import { fillRecipes, RecipeStore, strokeRecipes, textFillRecipes } from "./core/recipes";
 import { FigmaController } from "./figma/controller";
-import { RecipeTypes, RecipeDefinition } from "./core/recipe-registry";
+import { RecipeDefinition, RecipeTypes } from "./core/recipe-registry";
 
 const controller = new FigmaController();
 
 function register(type: RecipeTypes, recipes: RecipeStore): void {
     Object.keys(recipes).forEach((key: string) => {
-        const defintion: RecipeDefinition = {
+        const definition: RecipeDefinition = {
             id: key,
             name: key,
             type,
@@ -16,7 +16,7 @@ function register(type: RecipeTypes, recipes: RecipeStore): void {
             },
         };
 
-        controller.recipeRegistry.register(defintion);
+        controller.recipeRegistry.register(definition);
     });
 }
 
