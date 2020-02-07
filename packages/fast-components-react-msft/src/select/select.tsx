@@ -78,7 +78,6 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, {}> {
                 aria-haspopup="listbox"
                 aria-labelledby={labelledBy}
                 aria-expanded={state.isMenuOpen}
-                aria-live="polite"
             >
                 <span className={classNames(select_buttonContentRegion)}>
                     <div className={classNames(select_buttonDisplayText)}>

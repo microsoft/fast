@@ -476,7 +476,6 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
                 aria-haspopup="listbox"
                 aria-labelledby={labelledBy}
                 aria-expanded={state.isMenuOpen}
-                aria-live="polite"
             >
                 {state.displayString}
             </button>
