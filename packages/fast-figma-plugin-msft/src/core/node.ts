@@ -42,6 +42,7 @@ export abstract class PluginNode {
     public set recipes(recipes: string[]) {
         this.setPluginData("recipes", recipes);
     }
+
     private static purgeDesignSystemCache(node: PluginNode): void {
         if (cache.has(node.id)) {
             cache.delete(node.id);
