@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080" preserveAspectRatio="xMinYMin slice">
+
+	<style>
+		#curve1 path {
+			animation: anim1 16s ease-in-out -12s infinite alternate;
+		}
+
+		@keyframes anim1 {
+			  0% {  }
+			100% { d: path("M1920 1080V180.6c-66.5 11.6-127.2 62.2-239.1 104.4-108.8 41-250.6 57.6-360.5 41-102.7-15.5-179.6-8.4-265.5 6.9-138.7 24.8-193.6-47.2-305.2-77.3-124.8-33.7-232.9-3.3-318.1 12.9C280.1 297.2 150.3 46.5 0 91.2V1080h1920z"); } }
+
+		#curve2 path {
+			animation: anim2 16s ease-in-out -4s infinite alternate;
+		}
+
+		@keyframes anim2 {
+			  0% {  }
+			100% { d: path("M1655.6 348.5c98.5 10.8 175.1-27.5 264.4-18.2V1080H0V335.6c76.2-19.9 175.9-65.3 299.9-42.4 128.8 23.8 244.3 24.8 307.2 9.9 71.3-16.8 179.8-77 273.5-36.7 78.3 33.7 124.8 153.6 240.8 150.6 120.4-3.1 156.4-100.9 268.5-115.9 110.9-14.8 157.7 35.5 265.7 47.4z"); } }
+
+		#curve3 path {
+			animation: anim3 16s ease-in-out -8s infinite alternate;
+		}
+
+		@keyframes anim3 {
+			  0% {  }
+			100% { d: path("M1920 1080V420.9c-128.7 3.1-381.6 97.3-534.2 173.5-169.9 84.9-233.8 142-404.3 111-143-26-276.4-101.8-548.9-43.6C216.8 707.9 19.7 537.7 0 529.7V369v711h1920z"); } }
+
+		#curve4 path {
+			animation: anim4 16s ease-in-out 0s infinite alternate;
+		}
+
+			@keyframes anim4 {
+			  0% {  }
+			100% { d: path("M238.5 465.6C157.3 438.2 78 416.1 0 438.6V1080h1727.2C1390.8 858.9 1237.4 449.3 960 481.5c-85.4 9.9-204.3 43.6-275.7 5.9-81.5-43-128.8-61.3-206.1-45.6-79.7 16.3-164.8 49.2-239.7 23.8z"); } }
+
+	</style>
+
+	<!-- Background - MIGHT NEED TO DELETE ME -->
+	<path d="M0 0h1920v1080H0z" fill="#021B4F"/>
+
+	<!-- Bright Back Curves -->
+	<g id="curve1">
+		<linearGradient id="gradient1" gradientUnits="userSpaceOnUse" x1="509.562" y1="-1016.382" x2="1408.152" y2="-1638.59" gradientTransform="matrix(1 0 0 -1 0 -698)">
+			<stop offset="0" stop-color="#AD3B8F"/>
+			<stop offset="1" stop-color="#D84498"/>
+		</linearGradient>
+		<path d="M1920 1080V180.6c-30.8 25.5-91.3 66.1-234 49.7-152.4-17.5-252.6 45.1-359.5 115.7-86.7 57.2-206.2 41.4-285.2-3.1-75.3-42.4-173.6-184.4-296.7-112.4-130 76-225.7 80.6-300.9 42.7C367.4 234.6 146.3 23.7 0 91.2V1080h1920z" fill="url(#gradient1)"/>
+	</g>
+
+	<!-- Bright Front Curves -->
+	<g id="curve2">
+		<linearGradient id="gradient2" gradientUnits="userSpaceOnUse" x1="423.43" y1="-1023.418" x2="1488.562" y2="-1777.18" gradientTransform="matrix(1 0 0 -1 0 -698)">
+			<stop offset="0" stop-color="#D34395"/>
+			<stop offset="0.3" stop-color="#B63386"/>
+			<stop offset="1" stop-color="#823389"/>
+		</linearGradient>
+		<path d="M1653.4 302.3c99.1 12.7 172.4 56.3 266.6 28V1080H0V335.6c87.9 60.7 153 74.1 289.2-14.1 135.5-87.7 241.6-114.6 300.6-100 61.8 15.3 144.7 91.6 241.5 120.7 101.4 30.5 148.4 46.1 233.9 53.6 84.9 7.4 199.8-5.1 279-40.4 88.2-39.4 209.3-66 309.2-53.1z" fill="url(#gradient2)"/>
+	</g>
+
+	<!-- Dark Blue Bottom Matte -->
+	<g id="curve3">
+		<path d="M1920 1080V420.9c-128.7 3.1-331.2 214.6-524.8 249.8-186.9 34-230.1-39.6-411.2-44.8-145.3-4.2-250.9 91.6-544.5 58.3C220.2 659.4 19.7 537.7 0 529.7V369v711h1920z" fill="#021B4F"/>
+	</g>
+
+	<!-- Purple Foreground Fade -->
+	<g id="curve4">
+		<linearGradient id="gradient4" gradientUnits="userSpaceOnUse" x1="369.253" y1="-1145.08" x2="1190.462" y2="-2196.5" gradientTransform="matrix(1 0 0 -1 0 -698)">
+			<stop offset="0" stop-color="#643187"/>
+			<stop offset="1" stop-color="#3722BA" stop-opacity="0"/>
+		</linearGradient>
+		<path d="M246.7 452.1c-79.5 32-162.4 27.1-246.7-13.5V1080h1727.2c-336.4-221.1-502.8-609.8-779.1-650.9-80.6-12-139.3 17.9-237.2 24.9-92 6.6-130.5-23.3-216.8-38.1-80.2-13.7-171.3 5.6-247.4 36.2z" fill="url(#gradient4)"/>
+	</g>
+
+	<!-- Bottom Gradient -->
+	<g id="gradient">
+		<linearGradient id="gradient5" gradientUnits="userSpaceOnUse" x1="960" y1="1080" x2="960" y2="740">
+			<stop offset="0" stop-color="#1B1B1B" stop-opacity="1"/>
+			<stop offset="1" stop-color="#1B1B1B" stop-opacity="0"/>
+		</linearGradient>
+		<path fill="url(#gradient5)" d="M0 740h1920v340H0z"/>
+	</g>
+
+</svg>

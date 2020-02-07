@@ -1,0 +1,11 @@
+<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 491 276">
+    <defs>
+        <style>.cls-1{fill:none;}.cls-2{fill:url(#linear-gradient);}.cls-3{fill:url(#linear-gradient-2);}</style>
+        <linearGradient id="linear-gradient" x1="-3494.44" y1="9393.47" x2="-3397.16" y2="9101.77" gradientTransform="matrix(1, 0, 0, -1, 3694, 9393.75)" gradientUnits="userSpaceOnUse"><stop offset="0.31" stop-color="#00241e" stop-opacity="0.06"/><stop offset="0.92" stop-color="#35fbd7"/></linearGradient>
+        <linearGradient id="linear-gradient-2" x1="-3494.35" y1="9393.22" x2="-3397.07" y2="9101.51" gradientTransform="matrix(1, 0, 0, -1, 3694, 9393.75)" gradientUnits="userSpaceOnUse"><stop offset="0.31" stop-color="#00241e" stop-opacity="0"/><stop offset="0.92" stop-color="#35fbd7"/></linearGradient>
+    </defs>
+    <title>animation</title>
+    <rect class="cls-1" width="491" height="276"/>
+    <path class="cls-2" d="M352.41,158.68c-23.35-23.36-47.2-10.85-82-45.62-35.17-35.16-21.67-58.13-45.37-81.83C202.64,8.8,163.92,6,138.73,31.23a60.9,60.9,0,0,0-.07,86.13c24.28,24.27,46.36,10,81.9,45.58,35.69,35.69,21.28,57.59,45.58,81.9a61,61,0,0,0,86.27-86.16Z"/>
+    <path class="cls-3" d="M352.41,158.68c-23.35-23.36-47.2-10.85-82-45.62-35.17-35.16-21.67-58.13-45.37-81.83C202.64,8.8,163.92,6,138.73,31.23a60.9,60.9,0,0,0-.07,86.13c24.28,24.27,46.36,10,81.9,45.58,35.69,35.69,21.28,57.59,45.58,81.9a61,61,0,0,0,86.27-86.16Z"/>
+</svg>
