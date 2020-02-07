@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.28.2](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-styles-msft@4.28.1...@microsoft/fast-components-styles-msft@4.28.2) (2020-02-07)
+
+
+### Bug Fixes
+
+* select - add css class for scaleToFit mode ([#2626](https://github.com/Microsoft/fast-dna/issues/2626)) ([15c7a50](https://github.com/Microsoft/fast-dna/commit/15c7a50ef336e4531261ce1fe6be3695c9533243))
+
+
+
+
+
 ## [4.28.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-styles-msft@4.28.0...@microsoft/fast-components-styles-msft@4.28.1) (2020-01-27)
 
 
