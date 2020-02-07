@@ -1,97 +1,124 @@
 import {
-    ComponentMessageIncoming,
-    ComponentMessageOutgoing,
-    ComponentRegistry,
-    ComponentsRegisteredBySubscription,
+    DataDictionaryMessageIncoming,
+    DataDictionaryMessageOutgoing,
     DataMessageIncoming,
     DataMessageOutgoing,
-    MessageSystemAction,
-    MessageSystemComponentTypeAction,
+    MessageSystemDataDictionaryTypeAction,
     MessageSystemDataTypeAction,
     MessageSystemIncoming,
+    MessageSystemNavigationDictionaryTypeAction,
+    MessageSystemNavigationTypeAction,
     MessageSystemOutgoing,
     MessageSystemType,
+    NavigationDictionaryMessageIncoming,
+    NavigationDictionaryMessageOutgoing,
+    NavigationMessageIncoming,
+    NavigationMessageOutgoing,
 } from "./message-system.props";
-import { set } from "lodash-es";
+import { get, set, uniqueId } from "lodash-es";
 import { getDataWithDuplicate } from "../data-utilities/duplicate";
 import {
     getDataUpdatedWithoutSourceData,
     getDataUpdatedWithSourceData,
 } from "../data-utilities/relocate";
-import Plugin, { PluginProps } from "./plugin";
+import { getNavigationDictionary } from "./navigation";
+import { TreeNavigationConfigDictionary } from "./navigation.props";
+import { Children, Data, DataDictionary } from "./data.props";
+import { SchemaDictionary } from "./schema.props";
 
 /**
  * This is the Message System, through which:
- * - Components may opt in/out of the messages
  * - Data manipulation may be performed
+ * - Navigation will be updated
  *
  * The main purpose of this is to tie together
  * process heavy actions onto a separate thread,
- * as well as to allow components to opt into a
+ * as well as to allow services to opt into a
  * single source for data updates.
  */
 
-const subscriptions: ComponentsRegisteredBySubscription = {
-    [MessageSystemComponentTypeAction.register]: new WeakMap(),
-    [MessageSystemComponentTypeAction.deregister]: new WeakMap(),
-    [MessageSystemDataTypeAction.add]: new WeakMap(),
-    [MessageSystemDataTypeAction.duplicate]: new WeakMap(),
-    [MessageSystemDataTypeAction.remove]: new WeakMap(),
-    [MessageSystemDataTypeAction.update]: new WeakMap(),
-};
-const registeredComponents: { [key: string]: ComponentRegistry } = {};
-let dataBlob: any = {};
-let schema: any = {};
-let plugins: Array<Plugin<PluginProps>> = [];
+let dataDictionary: DataDictionary<unknown>;
+let navigationDictionary: TreeNavigationConfigDictionary;
+let navigationActiveId: string;
+let activeId: string; // this controls both the data and navigation dictionaries which must remain in sync
+let schemaDictionary: SchemaDictionary;
 
 export function getMessage(data: MessageSystemIncoming): MessageSystemOutgoing {
     switch (data.type) {
-        case MessageSystemType.component:
-            return getComponentMessage(data);
         case MessageSystemType.data:
             return getDataMessage(data);
+        case MessageSystemType.dataDictionary:
+            return getDataDictionaryMessage(data);
+        case MessageSystemType.navigation:
+            return getNavigationMessage(data);
+        case MessageSystemType.navigationDictionary:
+            return getNavigationDictionaryMessage(data);
         case MessageSystemType.initialize:
-            dataBlob = data.data;
-            schema = data.schema;
-            plugins = data.plugins || [];
+            dataDictionary = data.data;
+            activeId = dataDictionary[1];
+            schemaDictionary = data.schemas;
+            navigationDictionary = getNavigationDictionary(
+                schemaDictionary,
+                dataDictionary
+            );
+            navigationActiveId = navigationDictionary[0][navigationDictionary[1]][1];
 
             return {
                 type: MessageSystemType.initialize,
-                data: dataBlob,
-                schema,
-                plugins,
+                data: dataDictionary[0][activeId].data,
+                navigation: navigationDictionary[0][activeId],
+                activeId: navigationActiveId,
+                schema: schemaDictionary[dataDictionary[0][activeId].schemaId],
             };
     }
 }
 
 /**
- * Handles all component related messages
+ * Handles all data dictionary messages
  */
-function getComponentMessage(data: ComponentMessageIncoming): ComponentMessageOutgoing {
+function getDataDictionaryMessage(
+    data: DataDictionaryMessageIncoming
+): DataDictionaryMessageOutgoing {
     switch (data.action) {
-        case MessageSystemComponentTypeAction.register:
-            registeredComponents[data.id] = {
-                self: data.id,
-                subscribe: data.subscribe,
+        case MessageSystemDataDictionaryTypeAction.get:
+            return {
+                type: MessageSystemType.dataDictionary,
+                action: MessageSystemDataDictionaryTypeAction.get,
+                dataDictionary,
+                activeId,
             };
-            data.subscribe.forEach((action: MessageSystemAction) => {
-                subscriptions[action].set(registeredComponents[data.id], data.id);
-            });
+        case MessageSystemDataDictionaryTypeAction.updateActiveId:
+            activeId = data.activeId;
 
             return {
-                type: MessageSystemType.component,
-                action: MessageSystemComponentTypeAction.register,
-                registry: Object.keys(registeredComponents),
-                id: data.id,
+                type: MessageSystemType.dataDictionary,
+                action: MessageSystemDataDictionaryTypeAction.updateActiveId,
+                activeId,
             };
-        case MessageSystemComponentTypeAction.deregister:
-            delete registeredComponents[data.id];
+    }
+}
+
+/**
+ * Handles all navigation dictionary messages
+ */
+function getNavigationDictionaryMessage(
+    data: NavigationDictionaryMessageIncoming
+): NavigationDictionaryMessageOutgoing {
+    switch (data.action) {
+        case MessageSystemNavigationDictionaryTypeAction.get:
+            return {
+                type: MessageSystemType.navigationDictionary,
+                action: MessageSystemNavigationDictionaryTypeAction.get,
+                navigationDictionary,
+                activeId,
+            };
+        case MessageSystemNavigationDictionaryTypeAction.updateActiveId:
+            activeId = data.activeId;
 
             return {
-                type: MessageSystemType.component,
-                action: MessageSystemComponentTypeAction.deregister,
-                registry: Object.keys(registeredComponents),
-                id: data.id,
+                type: MessageSystemType.navigationDictionary,
+                action: MessageSystemNavigationDictionaryTypeAction.updateActiveId,
+                activeId,
             };
     }
 }
@@ -102,45 +129,158 @@ function getComponentMessage(data: ComponentMessageIncoming): ComponentMessageOu
 function getDataMessage(data: DataMessageIncoming): DataMessageOutgoing {
     switch (data.action) {
         case MessageSystemDataTypeAction.duplicate:
-            dataBlob = getDataWithDuplicate(data.sourceDataLocation, dataBlob);
+            dataDictionary[0][activeId].data = getDataWithDuplicate(
+                data.sourceDataLocation,
+                dataDictionary[0][activeId].data
+            );
+            navigationDictionary = getNavigationDictionary(
+                schemaDictionary,
+                dataDictionary
+            );
 
             return {
                 type: MessageSystemType.data,
                 action: MessageSystemDataTypeAction.duplicate,
                 sourceDataLocation: data.sourceDataLocation,
-                data: dataBlob,
+                data: dataDictionary[0][activeId].data,
+                navigation: navigationDictionary[0][activeId],
             };
         case MessageSystemDataTypeAction.remove:
-            dataBlob = getDataUpdatedWithoutSourceData({
+            dataDictionary[0][activeId].data = getDataUpdatedWithoutSourceData({
                 sourceDataLocation: data.dataLocation,
-                data: dataBlob,
+                data: dataDictionary[0][activeId].data,
             });
+            navigationDictionary = getNavigationDictionary(
+                schemaDictionary,
+                dataDictionary
+            );
 
             return {
                 type: MessageSystemType.data,
                 action: MessageSystemDataTypeAction.remove,
-                data: dataBlob,
+                data: dataDictionary[0][activeId].data,
+                navigation: navigationDictionary[0][activeId],
             };
         case MessageSystemDataTypeAction.add:
-            dataBlob = getDataUpdatedWithSourceData({
+            dataDictionary[0][activeId].data = getDataUpdatedWithSourceData({
                 targetDataLocation: data.dataLocation,
                 targetDataType: data.dataType,
                 sourceData: data.data,
-                data: dataBlob,
+                data: dataDictionary[0][activeId].data,
             });
+            navigationDictionary = getNavigationDictionary(
+                schemaDictionary,
+                dataDictionary
+            );
 
             return {
                 type: MessageSystemType.data,
                 action: MessageSystemDataTypeAction.add,
-                data: dataBlob,
+                data: dataDictionary[0][activeId].data,
+                navigation: navigationDictionary[0][activeId],
             };
         case MessageSystemDataTypeAction.update:
-            set(dataBlob, data.dataLocation, data.data);
+            set(dataDictionary[0][activeId].data as object, data.dataLocation, data.data);
+            navigationDictionary = getNavigationDictionary(
+                schemaDictionary,
+                dataDictionary
+            );
 
             return {
                 type: MessageSystemType.data,
                 action: MessageSystemDataTypeAction.update,
-                data: dataBlob,
+                data: dataDictionary[0][activeId].data,
+                navigation: navigationDictionary[0][activeId],
+            };
+        case MessageSystemDataTypeAction.addChildren:
+            const childrenRefs: Children[] = [];
+            // add the children to the dictionary
+            data.children.forEach((children: Data<unknown>) => {
+                const id: string = uniqueId("fast");
+                dataDictionary[0][id] = children;
+                childrenRefs.push({ id });
+            });
+            // update the parent to include the added children
+            let currentChildrenRefs: Children[] | void = get(
+                dataDictionary[0][activeId].data,
+                data.dataLocation
+            );
+
+            if (Array.isArray(currentChildrenRefs)) {
+                currentChildrenRefs.concat(childrenRefs);
+            } else {
+                currentChildrenRefs = childrenRefs;
+            }
+
+            set(
+                dataDictionary[0][activeId].data as object,
+                data.dataLocation,
+                currentChildrenRefs
+            );
+
+            return {
+                type: MessageSystemType.data,
+                action: MessageSystemDataTypeAction.addChildren,
+                data: dataDictionary[0][activeId].data,
+                navigation: navigationDictionary[0][activeId],
+            };
+        case MessageSystemDataTypeAction.removeChildren:
+            // remove children from the dictionary
+            data.children.forEach((children: Children) => {
+                delete dataDictionary[0][children.id];
+            });
+
+            let filteredChildrenRefs: Children[] = get(
+                dataDictionary[0][activeId].data,
+                data.dataLocation,
+                []
+            );
+
+            // filter the children in the item the children are being removed from to not include
+            // those that were just removed
+            filteredChildrenRefs = filteredChildrenRefs.filter(
+                (filteredChildrenRef: Children) => {
+                    return (
+                        data.children.findIndex((children: Children) => {
+                            return children.id === filteredChildrenRef.id;
+                        }) === -1
+                    );
+                }
+            );
+
+            set(
+                dataDictionary[0][activeId].data as object,
+                data.dataLocation,
+                filteredChildrenRefs
+            );
+
+            return {
+                type: MessageSystemType.data,
+                action: MessageSystemDataTypeAction.removeChildren,
+                data: dataDictionary[0][activeId].data,
+                navigation: navigationDictionary[0][activeId],
+            };
+    }
+}
+
+function getNavigationMessage(
+    data: NavigationMessageIncoming
+): NavigationMessageOutgoing {
+    switch (data.action) {
+        case MessageSystemNavigationTypeAction.update:
+            navigationActiveId = data.activeId;
+
+            return {
+                type: MessageSystemType.navigation,
+                action: MessageSystemNavigationTypeAction.update,
+                activeId: data.activeId,
+            };
+        case MessageSystemNavigationTypeAction.get:
+            return {
+                type: MessageSystemType.navigation,
+                action: MessageSystemNavigationTypeAction.get,
+                activeId: navigationActiveId,
+                navigation: activeId[0][activeId],
             };
     }
 }

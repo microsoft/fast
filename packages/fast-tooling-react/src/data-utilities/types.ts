@@ -19,6 +19,7 @@ export enum DataType {
     null = "null",
     object = "object",
     children = "children",
+    unknown = "unknown",
 }
 
 export enum PropertyKeyword {
