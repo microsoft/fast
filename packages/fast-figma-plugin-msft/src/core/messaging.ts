@@ -4,9 +4,12 @@ import { RecipeRegistry, RecipeTypes } from "./recipe-registry";
 export enum MessageTypes {
     recipe = "recipe",
     designSystem = "designSystem",
+    reset = "reset",
+    sync = "sync",
 }
 
 interface UIMessageBase<T extends MessageTypes> {
+    nodeIds: string[];
     type: T;
 }
 /**
@@ -39,16 +42,20 @@ export interface SetDesignSystemPropertyMessage<T extends keyof DesignSystem>
     action: MessageAction.assign;
     property: T;
     value: DesignSystem[T];
-    nodeIds: string[];
 }
+
 export interface RemoveDesignSystemPropertyMessage<T extends keyof DesignSystem>
     extends UIMessageBase<MessageTypes.designSystem> {
     action: MessageAction.delete;
     property: T;
-    nodeIds: string[];
 }
 
 export type DesignSystemMessage =
     | SetDesignSystemPropertyMessage<keyof DesignSystem>
     | RemoveDesignSystemPropertyMessage<keyof DesignSystem>;
-export type UIMessage = RecipeMessage | DesignSystemMessage;
+
+export type UIMessage =
+    | RecipeMessage
+    | DesignSystemMessage
+    | UIMessageBase<MessageTypes.reset>
+    | UIMessageBase<MessageTypes.sync>;

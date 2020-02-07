@@ -99,6 +99,28 @@ export abstract class Controller {
                 break;
             case MessageTypes.designSystem:
                 this.handleDesignSystemMessage(message);
+                break;
+            case MessageTypes.reset:
+                message.nodeIds
+                    .map(id => this.getNode(id))
+                    .filter((node): node is PluginNode => node !== null)
+                    .forEach(node => {
+                        // Delete design system
+                        Object.keys(node.designSystemOverrides).map(key => {
+                            node.deleteDesignSystemProperty(
+                                key as keyof typeof node.designSystemOverrides
+                            );
+                        });
+
+                        node.recipes = [];
+                    });
+                this.setPluginUIState(this.getPluginUIState());
+
+                break;
+            case MessageTypes.sync:
+                message.nodeIds.forEach(id => this.paintTree(id));
+                this.setPluginUIState(this.getPluginUIState());
+                break;
         }
     }
 

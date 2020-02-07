@@ -10,7 +10,10 @@ import { MessageAction, MessageTypes, UIMessage } from "../messaging";
 import { RecipeData, RecipeTypes } from "../recipe-registry";
 import Swatch from "./swatch";
 import { DesignSystem, StandardLuminance } from "@microsoft/fast-components-styles-msft";
-import { startCase } from "lodash-es";
+import ActionTrigger, {
+    ActionTriggerAppearance,
+} from "@microsoft/fast-components-react-msft/dist/action-trigger/action-trigger";
+import { refresh, revertChanges } from "./glyphs";
 
 export interface PluginUIActiveNodeRecipeSupportOptions {
     label: string;
@@ -83,14 +86,48 @@ export class PluginUI extends React.Component<PluginUIProps> {
     }
 
     private renderFooter(): JSX.Element {
+        const refreshLabel = "Sync selected - will re-evaluate all applied recipes.";
+        const revertLabel = "Remove all plugin data from the current selection.";
+
         return (
             <div>
-                <Divider style={{ marginBottom: "4px" }} />
-                <Caption>
-                    {this.props.selectedNodes
-                        .map(node => `${node.type} - ${node.id}`)
-                        .join(" | ") || "N/A"}
-                </Caption>
+                <Divider />
+                <div
+                    style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                        padding: "4px 0",
+                    }}
+                >
+                    <Caption>
+                        {this.props.selectedNodes
+                            .map(node => `${node.type} - ${node.id}`)
+                            .join(" | ") || "N/A"}
+                    </Caption>
+                    <div>
+                        <ActionTrigger
+                            glyph={refresh}
+                            appearance={ActionTriggerAppearance.stealth}
+                            title={refreshLabel}
+                            aria-label={refreshLabel}
+                            onClick={this.props.dispatch.bind(this, {
+                                type: MessageTypes.sync,
+                                nodeIds: this.props.selectedNodes.map(node => node.id),
+                            })}
+                        />
+                        <ActionTrigger
+                            glyph={revertChanges}
+                            appearance={ActionTriggerAppearance.stealth}
+                            title={revertLabel}
+                            aria-label={revertLabel}
+                            onClick={this.props.dispatch.bind(this, {
+                                type: MessageTypes.reset,
+                                nodeIds: this.props.selectedNodes.map(node => node.id),
+                            })}
+                        />
+                    </div>
+                </div>
             </div>
         );
     }
@@ -110,7 +147,10 @@ export class PluginUI extends React.Component<PluginUIProps> {
 
     private renderRecipeSelector = (optionType: RecipeTypeOptions): JSX.Element => {
         return (
-            <fieldset key={optionType.type} style={{ border: "none" }}>
+            <fieldset
+                key={optionType.type}
+                style={{ border: "none", padding: "0", margin: "12px 0" }}
+            >
                 <legend>{optionType.type}</legend>
                 {optionType.options.map(option => (
                     <Radio
