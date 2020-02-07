@@ -48,3 +48,7 @@ figma.on("selectionchange", () => {
 figma.ui.onmessage = (value): void => {
     controller.handleMessage(value);
 };
+
+controller.setSelectedNodes(
+    figma.currentPage.selection.map((node: BaseNode): string => node.id)
+);
