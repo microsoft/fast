@@ -146,7 +146,11 @@ export class PluginUI extends React.Component<PluginUIProps> {
                 )
                     ? this.renderThemeSwitcher()
                     : null}
-                {this.props.recipeOptions.map(this.renderRecipeSelector)}
+                {this.props.recipeOptions
+                    .sort((a, b) => {
+                        return a.type < b.type ? -1 : a.type > b.type ? 1 : 0;
+                    })
+                    .map(this.renderRecipeSelector)}
             </div>
         );
     }
