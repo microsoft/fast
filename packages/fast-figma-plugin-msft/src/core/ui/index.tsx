@@ -140,7 +140,7 @@ export class PluginUI extends React.Component<PluginUIProps> {
 
     private renderBody(): JSX.Element {
         return (
-            <div>
+            <div style={{ overflowY: "auto" }}>
                 {this.props.selectedNodes.some(node =>
                     node.supports.includes("designSystem")
                 )
