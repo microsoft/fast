@@ -100,12 +100,18 @@ export class PluginUI extends React.Component<PluginUIProps> {
                         padding: "4px 0",
                     }}
                 >
-                    <Caption>
+                    <Caption
+                        style={{
+                            whiteSpace: "nowrap",
+                            overflow: "hidden",
+                            textOverflow: "ellipsis",
+                        }}
+                    >
                         {this.props.selectedNodes
                             .map(node => `${node.type} - ${node.id}`)
                             .join(" | ") || "N/A"}
                     </Caption>
-                    <div>
+                    <div style={{ display: "flex" }}>
                         <ActionTrigger
                             glyph={refresh}
                             appearance={ActionTriggerAppearance.stealth}
@@ -146,12 +152,38 @@ export class PluginUI extends React.Component<PluginUIProps> {
     }
 
     private renderRecipeSelector = (optionType: RecipeTypeOptions): JSX.Element => {
+        const anySelected = optionType.options.some(
+            option => !!this.recipeIsAssigned(option.id).length
+        );
+        const noneId = optionType.type + "none";
         return (
             <fieldset
                 key={optionType.type}
-                style={{ border: "none", padding: "0", margin: "12px 0" }}
+                style={{
+                    border: "none",
+                    padding: "0",
+                    margin: "12px 0",
+                    display: "flex",
+                }}
             >
                 <legend>{optionType.type}</legend>
+                <Radio
+                    key={noneId}
+                    inputId={noneId}
+                    name={name}
+                    style={{ margin: "2px 0" }}
+                    checked={!anySelected}
+                    onChange={this.removeRecipe.bind(this, optionType.type)}
+                >
+                    <Label
+                        slot="label"
+                        htmlFor={noneId}
+                        style={{ display: "inline-flex", alignItems: "center" }}
+                    >
+                        <Swatch color={"#FFF"} />
+                        None
+                    </Label>
+                </Radio>
                 {optionType.options.map(option => (
                     <Radio
                         key={option.id}
@@ -159,7 +191,7 @@ export class PluginUI extends React.Component<PluginUIProps> {
                         name={name}
                         style={{ margin: "2px 0" }}
                         checked={!!this.recipeIsAssigned(option.id).length}
-                        onChange={this.handleOnChange.bind(this, option.id, option.type)}
+                        onChange={this.setRecipe.bind(this, option.id, option.type)}
                     >
                         <Label
                             slot="label"
@@ -187,7 +219,20 @@ export class PluginUI extends React.Component<PluginUIProps> {
             .map(node => node.id);
     }
 
-    private handleOnChange = (recipeId: string, type: RecipeTypes): void => {
+    private removeRecipe = (type: RecipeTypes) => {
+        const nodeIds = this.props.selectedNodes
+            .filter(node => node.supports.includes(type))
+            .map(node => node.id);
+
+        this.props.dispatch({
+            type: MessageTypes.recipe,
+            nodeIds,
+            action: MessageAction.delete,
+            recipeType: type,
+        });
+    };
+
+    private setRecipe = (recipeId: string, type: RecipeTypes): void => {
         const nodeIds = this.props.selectedNodes
             .filter(node => node.supports.includes(type))
             .map(node => node.id);

@@ -6,7 +6,7 @@
   "private": true,
   "scripts": {
     "build": "webpack --progress --mode=production",
-    "watch": "webpack --progress --watch",
+    "watch": "webpack --progress --watch --mode=production",
     "prettier": "prettier --config ../../.prettierrc --write \"**/*.{ts,tsx}\"",
     "prettier:diff": "prettier --config ../../.prettierrc \"**/*.{ts,tsx}\" --list-different",
     "test": "yarn tslint && yarn build",

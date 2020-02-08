@@ -1,9 +1,10 @@
 import {
     DesignSystemMessage,
     MessageTypes,
-    RecipeMessage,
+    AssignRecipeMessage,
     MessageAction,
     UIMessage,
+    RemoveRecipeMessage,
 } from "./messaging";
 import { PluginNode } from "./node";
 import { RecipeRegistry, RecipeTypes } from "./recipe-registry";
@@ -95,7 +96,9 @@ export abstract class Controller {
     public handleMessage(message: UIMessage): void {
         switch (message.type) {
             case MessageTypes.recipe:
-                this.handleRecipeMessage(message);
+                message.action === MessageAction.assign
+                    ? this.assignRecipe(message)
+                    : this.removeRecipe(message);
                 break;
             case MessageTypes.designSystem:
                 this.handleDesignSystemMessage(message);
@@ -151,10 +154,23 @@ export abstract class Controller {
         this.setPluginUIState(this.getPluginUIState());
     }
 
-    private handleRecipeMessage(message: RecipeMessage): void {
+    private removeRecipe(message: RemoveRecipeMessage): void {
+        message.nodeIds
+            .map(id => this.getNode(id))
+            .filter((node): node is PluginNode => node !== null)
+            .forEach(node => {
+                node.recipes = node.recipes.filter(
+                    id => this.recipeRegistry.get(id).type !== message.recipeType
+                );
+            });
+
+        this.setPluginUIState(this.getPluginUIState());
+    }
+
+    private assignRecipe(message: AssignRecipeMessage): void {
         message.nodeIds.forEach(id => {
             const node = this.getNode(id);
-            const recipe = this.recipeRegistry.get(message.id);
+            const recipe = this.recipeRegistry.get((message as any).id);
 
             if (!node) {
                 return;

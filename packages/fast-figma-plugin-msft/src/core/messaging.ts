@@ -20,21 +20,22 @@ export enum MessageAction {
     delete = "delete",
 }
 
-export interface RecipeMessage extends UIMessageBase<MessageTypes.recipe> {
+export interface AssignRecipeMessage extends UIMessageBase<MessageTypes.recipe> {
     /**
      * The ID of the recipe
      */
     id: string;
 
     /**
-     * The ID of the nodes in which the message is contextual to
-     */
-    nodeIds: string[];
-
-    /**
      * The action to perform
      */
-    action: MessageAction;
+    action: MessageAction.assign;
+}
+
+export interface RemoveRecipeMessage extends UIMessageBase<MessageTypes.recipe> {
+    recipeType: RecipeTypes;
+
+    action: MessageAction.delete;
 }
 
 export interface SetDesignSystemPropertyMessage<T extends keyof DesignSystem>
@@ -55,7 +56,8 @@ export type DesignSystemMessage =
     | RemoveDesignSystemPropertyMessage<keyof DesignSystem>;
 
 export type UIMessage =
-    | RecipeMessage
+    | AssignRecipeMessage
+    | RemoveRecipeMessage
     | DesignSystemMessage
     | UIMessageBase<MessageTypes.reset>
     | UIMessageBase<MessageTypes.sync>;
