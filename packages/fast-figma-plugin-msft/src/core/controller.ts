@@ -162,6 +162,10 @@ export abstract class Controller {
                 node.recipes = node.recipes.filter(
                     id => this.recipeRegistry.get(id).type !== message.recipeType
                 );
+
+                if (message.recipeType === RecipeTypes.backgroundFills) {
+                    node.deleteDesignSystemProperty("backgroundColor");
+                }
             });
 
         this.setPluginUIState(this.getPluginUIState());
@@ -208,25 +212,10 @@ export abstract class Controller {
             return;
         }
 
-        // HACK: There is a bug that when syncing a node,
-        // child node's of the syncing node do not generate
-        // a color that is relative to the *new* color.
-        /**
-         * 1. create a set of three nested nodes all with neutralFillRest
-         * 2. Create a sibling node of the top-level node from step 1, apply dark theme and neutralLayerL1
-         * 3. Re-parent node from step one into node of step 2.
-         * 4. With the re-parented node selected, click the "sync" button
-         * - only the selected node re-styles. Clicking "sync" again works as expected.
-         */
-        // PluginNode.purgeDesignSystemCache(node);
-
         // Paint all recipes of the node
         node.recipes.forEach(recipeId => {
             const recipe = this.recipeRegistry.get(recipeId);
 
-            // TODO: We can probably be smarter about when to apply the backgroundColor property.
-            // This causes us to purge sub-trees un-necessarily, because setting the property
-            // automatically purges the tree.
             if (recipe.type === RecipeTypes.backgroundFills) {
                 node.setDesignSystemProperty("backgroundColor", recipe.evaluate(node));
             }
