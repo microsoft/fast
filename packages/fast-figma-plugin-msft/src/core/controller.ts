@@ -64,7 +64,7 @@ export abstract class Controller {
             )
         );
 
-        return {
+        const state = {
             selectedNodes: selectedNodes.map(
                 (node): PluginUIActiveNodeData => ({
                     id: node.id,
@@ -91,6 +91,8 @@ export abstract class Controller {
                       })
                 : [],
         };
+
+        return state;
     }
 
     public handleMessage(message: UIMessage): void {

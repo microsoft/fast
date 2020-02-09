@@ -1,4 +1,6 @@
 import {
+    ActionTrigger,
+    ActionTriggerAppearance,
     Caption,
     Checkbox,
     Divider,
@@ -10,9 +12,6 @@ import { MessageAction, MessageTypes, UIMessage } from "../messaging";
 import { RecipeData, RecipeTypes } from "../recipe-registry";
 import Swatch from "./swatch";
 import { DesignSystem, StandardLuminance } from "@microsoft/fast-components-styles-msft";
-import ActionTrigger, {
-    ActionTriggerAppearance,
-} from "@microsoft/fast-components-react-msft/dist/action-trigger/action-trigger";
 import { refresh, revertChanges } from "./glyphs";
 
 export interface PluginUIActiveNodeRecipeSupportOptions {
@@ -174,7 +173,7 @@ export class PluginUI extends React.Component<PluginUIProps> {
                 <Radio
                     key={noneId}
                     inputId={noneId}
-                    name={name}
+                    name={optionType.type}
                     style={{ margin: "2px 0" }}
                     checked={!anySelected}
                     onChange={this.removeRecipe.bind(this, optionType.type)}
@@ -192,7 +191,7 @@ export class PluginUI extends React.Component<PluginUIProps> {
                     <Radio
                         key={option.id}
                         inputId={option.id}
-                        name={name}
+                        name={optionType.type}
                         style={{ margin: "2px 0" }}
                         checked={!!this.recipeIsAssigned(option.id).length}
                         onChange={this.setRecipe.bind(this, option.id, option.type)}
@@ -279,7 +278,7 @@ export class PluginUI extends React.Component<PluginUIProps> {
         const removeTheme = this.removeDesignSystemProperty.bind(this, key, nodeIds);
 
         return (
-            <div>
+            <div style={{ marginTop: "4px" }}>
                 <Checkbox
                     inputId={"theme-toggle"}
                     checked={themesApplied.length > 0}

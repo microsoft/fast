@@ -1,7 +1,9 @@
-import { PluginNode } from "./core/node";
+import { PluginNode, PluginNodeData } from "./core/node";
 import { fillRecipes, RecipeStore, strokeRecipes, textFillRecipes } from "./core/recipes";
 import { FigmaController } from "./figma/controller";
 import { RecipeDefinition, RecipeTypes } from "./core/recipe-registry";
+import { isInstanceNode, canHaveChildren } from "./figma/node";
+import { UIMessage, MessageTypes } from "./core/messaging";
 
 const controller = new FigmaController();
 
@@ -31,6 +33,25 @@ function register(type: RecipeTypes, recipes: RecipeStore): void {
     });
 }
 
+function syncInstanceWithMaster(target: InstanceNode): void {
+    const source = target.masterComponent;
+
+    function sync(_source, _target) {
+        const pluginDataKeys: Array<keyof PluginNodeData> = ["recipes", "designSystem"];
+        pluginDataKeys.forEach(key => {
+            _target.setPluginData(key, _source.getPluginData(key));
+        });
+
+        if (canHaveChildren(_source) && canHaveChildren(_target)) {
+            _source.children.forEach((child, index) => {
+                sync(child, _target.children[index]);
+            });
+        }
+    }
+
+    sync(source, target);
+}
+
 /**
  * Register recipe types
  */
@@ -56,7 +77,14 @@ figma.on("selectionchange", () => {
     );
 });
 
-figma.ui.onmessage = (value): void => {
+figma.ui.onmessage = (value: UIMessage): void => {
+    if (value.type === MessageTypes.sync) {
+        value.nodeIds
+            .map(id => figma.getNodeById(id))
+            .filter(isInstanceNode)
+            .map(syncInstanceWithMaster);
+    }
+
     controller.handleMessage(value);
 };
 

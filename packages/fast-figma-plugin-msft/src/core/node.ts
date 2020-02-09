@@ -1,5 +1,6 @@
 import { DesignSystem } from "@microsoft/fast-components-styles-msft";
 import { RecipeData, RecipeTypes } from "./recipe-registry";
+import { C_NUMBER_MODE } from "highlight.js";
 
 /**
  * Defines the data stored by the plugin on a node instance
@@ -60,10 +61,13 @@ export abstract class PluginNode {
     }
 
     public get recipes(): string[] {
-        return this.getPluginData("recipes");
+        const recipes = this.getPluginData("recipes");
+        console.log("getting recipes", this.id, recipes);
+        return recipes;
     }
 
     public set recipes(recipes: string[]) {
+        console.log("setting recipes", this.id, recipes);
         this.setPluginData("recipes", recipes);
     }
 

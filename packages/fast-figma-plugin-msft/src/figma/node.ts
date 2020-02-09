@@ -46,13 +46,22 @@ export function isSceneNode(node: BaseNode): node is SceneNode {
 
 export function canHaveChildren(
     node: BaseNode
-): node is DocumentNode | PageNode | FrameNode | GroupNode | BooleanOperationNode {
+): node is
+    | DocumentNode
+    | PageNode
+    | FrameNode
+    | GroupNode
+    | BooleanOperationNode
+    | InstanceNode
+    | ComponentNode {
     return [
         isDocumentNode,
         isPageNode,
         isFrameNode,
         isGroupNode,
         isBooleanOperationNode,
+        isInstanceNode,
+        isComponentNode,
     ].some((test: (node: BaseNode) => boolean) => test(node));
 }
 
