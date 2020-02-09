@@ -1,7 +1,6 @@
 import { DesignSystem } from "@microsoft/fast-components-styles-msft";
 import { RecipeData, RecipeTypes } from "./recipe-registry";
-import { C_NUMBER_MODE } from "highlight.js";
-
+import { ColorRGBA64 } from "@microsoft/fast-colors";
 /**
  * Defines the data stored by the plugin on a node instance
  */
@@ -16,6 +15,8 @@ export interface PluginNodeData {
      */
     designSystem: Partial<DesignSystem>;
 }
+
+const DesignSystemCache: Map<string, Partial<DesignSystem>> = new Map();
 
 /**
  * The abstract class the plugin controller interacts with
@@ -33,41 +34,34 @@ export abstract class PluginNode {
      * Retrieves the contextual design system for the node
      */
     public get designSystem(): Partial<DesignSystem> {
-        let parent: PluginNode | null = this.parent();
-        const initialDesignSystem = this.getPluginData("designSystem");
-
-        /**
-         * We need to delete the background color if it is set here because
-         * we don't want to paint backgrounds on this node relative to
-         * the node itself, background colors should always be painted relative
-         * to the *parent*
-         *
-         * There is an issue here though, because *strokes* should be relative to the
-         * node BG color, not the parent.
-         */
-        if (initialDesignSystem.hasOwnProperty("backgroundColor")) {
-            delete initialDesignSystem.backgroundColor;
+        // Retrun value from the cache if we have it
+        if (DesignSystemCache.has(this.id)) {
+            return DesignSystemCache.get(this.id) as Partial<DesignSystem>;
         }
 
-        const designSystems: Array<Partial<DesignSystem>> = [initialDesignSystem];
+        let node: PluginNode | null = this;
+        const designSystems: Array<Partial<DesignSystem>> = [];
 
-        while (parent !== null) {
-            designSystems.push(parent.getPluginData("designSystem"));
-
-            parent = parent.parent();
+        while (node !== null) {
+            designSystems.push(node.getPluginData("designSystem"));
+            node = node.parent();
         }
 
-        return designSystems.reduceRight((prev, next) => ({ ...prev, ...next }));
+        const designSystem = designSystems.reduceRight((prev, next) => ({
+            ...prev,
+            ...next,
+        }));
+        DesignSystemCache.set(this.id, designSystem);
+
+        return designSystem;
     }
 
     public get recipes(): string[] {
         const recipes = this.getPluginData("recipes");
-        console.log("getting recipes", this.id, recipes);
         return recipes;
     }
 
     public set recipes(recipes: string[]) {
-        console.log("setting recipes", this.id, recipes);
         this.setPluginData("recipes", recipes);
     }
 
@@ -84,12 +78,15 @@ export abstract class PluginNode {
             ...this.getPluginData("designSystem"),
             [key]: value,
         });
+
+        this.invalidateDesignSystemCache();
     }
 
     public deleteDesignSystemProperty<K extends keyof DesignSystem>(key: K): void {
         const data = this.getPluginData("designSystem");
         delete data[key];
         this.setPluginData("designSystem", data);
+        this.invalidateDesignSystemCache();
     }
 
     /**
@@ -107,4 +104,25 @@ export abstract class PluginNode {
         key: K,
         value: PluginNodeData[K]
     ): void;
+
+    /**
+     * Retrieve the effective background color for the node.
+     * This color is communicated to color recipes as the
+     * backgroundColor context for a node
+     */
+    public abstract getEffectiveBackgroundColor(): ColorRGBA64;
+
+    public invalidateDesignSystemCache() {
+        function getIds(node: PluginNode): string[] {
+            let found = [node.id];
+
+            node.children().forEach(child => {
+                found = found.concat(getIds(child));
+            });
+
+            return found;
+        }
+
+        getIds(this).forEach(id => DesignSystemCache.delete(id));
+    }
 }

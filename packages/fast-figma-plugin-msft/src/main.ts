@@ -2,7 +2,7 @@ import { PluginNode, PluginNodeData } from "./core/node";
 import { fillRecipes, RecipeStore, strokeRecipes, textFillRecipes } from "./core/recipes";
 import { FigmaController } from "./figma/controller";
 import { RecipeDefinition, RecipeTypes } from "./core/recipe-registry";
-import { isInstanceNode, canHaveChildren } from "./figma/node";
+import { isInstanceNode, canHaveChildren, FigmaPluginNode } from "./figma/node";
 import { UIMessage, MessageTypes } from "./core/messaging";
 
 const controller = new FigmaController();
@@ -25,7 +25,25 @@ function register(type: RecipeTypes, recipes: RecipeStore): void {
             name: friendlyName(key),
             type,
             evaluate: (node: PluginNode): string => {
-                return recipes[key](node.designSystem as any);
+                const parent = node.parent();
+
+                /**
+                 * We need to delete the background color if it is set here because
+                 * we don't want to paint backgrounds on this node relative to
+                 * the node itself, background colors should always be painted relative
+                 * to the *parent*
+                 *
+                 * There is an issue here though, because *strokes* should be relative to the
+                 * node BG color, not the parent.
+                 */
+                const backgroundColor = parent
+                    ? parent.getEffectiveBackgroundColor()
+                    : node.getEffectiveBackgroundColor();
+
+                return recipes[key]({
+                    ...node.designSystem,
+                    backgroundColor: backgroundColor.toStringHexRGB(),
+                } as any);
             },
         };
 
@@ -50,6 +68,9 @@ function syncInstanceWithMaster(target: InstanceNode): void {
     }
 
     sync(source, target);
+
+    // Invalidate the cache
+    new FigmaPluginNode(target.id).invalidateDesignSystemCache();
 }
 
 /**

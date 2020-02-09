@@ -164,10 +164,6 @@ export abstract class Controller {
                 node.recipes = node.recipes.filter(
                     id => this.recipeRegistry.get(id).type !== message.recipeType
                 );
-
-                if (message.recipeType === RecipeTypes.backgroundFills) {
-                    node.deleteDesignSystemProperty("backgroundColor");
-                }
             });
 
         this.setPluginUIState(this.getPluginUIState());
@@ -216,12 +212,6 @@ export abstract class Controller {
 
         // Paint all recipes of the node
         node.recipes.forEach(recipeId => {
-            const recipe = this.recipeRegistry.get(recipeId);
-
-            if (recipe.type === RecipeTypes.backgroundFills) {
-                node.setDesignSystemProperty("backgroundColor", recipe.evaluate(node));
-            }
-
             node.paint(this.recipeRegistry.toData(recipeId, node));
         });
 

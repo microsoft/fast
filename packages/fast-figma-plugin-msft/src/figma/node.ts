@@ -1,8 +1,7 @@
+import { ColorRGBA64, parseColor } from "@microsoft/fast-colors";
 import { PluginNode, PluginNodeData } from "../core/node";
-import { DesignSystem } from "@microsoft/fast-components-styles-msft";
-import { RecipeData, RecipeDefinition, RecipeTypes } from "../core/recipe-registry";
-import { parseColor } from "@microsoft/fast-colors";
-import { string } from "prop-types";
+import { RecipeData, RecipeTypes } from "../core/recipe-registry";
+import { fill } from "lodash-es";
 
 function isNodeType<T extends BaseNode>(type: NodeType): (node: BaseNode) => node is T {
     return (node: BaseNode): node is T => node.type === type;
@@ -140,6 +139,36 @@ export class FigmaPluginNode extends PluginNode {
         }
 
         return new FigmaPluginNode(parent.id);
+    }
+
+    public getEffectiveBackgroundColor(): ColorRGBA64 {
+        let node: BaseNode | null = this.node;
+
+        while (node !== null) {
+            if ((node as GeometryMixin).fills) {
+                const fills = (node as GeometryMixin).fills;
+
+                if (Array.isArray(fills)) {
+                    const paints: SolidPaint[] = fills.filter(
+                        (fill: Paint) => fill.type === "SOLID"
+                    );
+
+                    /**
+                     * TODO: how do we process multiple paints?
+                     */
+                    if (paints.length === 1) {
+                        const parsed = ColorRGBA64.fromObject(paints[0].color);
+                        if (parsed instanceof ColorRGBA64) {
+                            return parsed;
+                        }
+                    }
+                }
+            }
+
+            node = node.parent;
+        }
+
+        return new ColorRGBA64(1, 1, 1);
     }
 
     protected getPluginData<K extends keyof PluginNodeData>(key: K): PluginNodeData[K] {
