@@ -38,6 +38,8 @@ const dictionaryProps: DictionaryProps = {
     type: ControlType.section,
     controls,
     dataLocation: "",
+    navigationId: "",
+    navigation: {},
     schemaLocation: "",
     data: "",
     schema: {},
@@ -51,7 +53,6 @@ const dictionaryProps: DictionaryProps = {
         type: "string",
     },
     enumeratedProperties: [],
-    childOptions: [],
     validationErrors: undefined,
     controlComponents: {
         [ControlType.array]: ArrayControl,

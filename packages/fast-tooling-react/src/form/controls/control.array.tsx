@@ -246,14 +246,9 @@ class ArrayControl extends React.Component<
         return (e: React.MouseEvent<HTMLButtonElement | HTMLAnchorElement>): void => {
             e.preventDefault();
 
-            const schemaLocation: string = isRootLocation(this.props.schemaLocation)
-                ? "items"
-                : `${this.props.schemaLocation}.items`;
-
-            this.props.onUpdateSection({
-                schemaLocation,
-                dataLocation: `${this.props.dataLocation}[${index}]`,
-            });
+            this.props.onUpdateSection(
+                this.props.navigation[this.props.navigationId].items[index]
+            );
         };
     };
 

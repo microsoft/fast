@@ -180,7 +180,16 @@ function getDataMessage(data: DataMessageIncoming): DataMessageOutgoing {
                 navigation: navigationDictionary[0][activeId],
             };
         case MessageSystemDataTypeAction.update:
-            set(dataDictionary[0][activeId].data as object, data.dataLocation, data.data);
+            if (data.dataLocation === "") {
+                dataDictionary[0][activeId].data = data.data;
+            } else {
+                set(
+                    dataDictionary[0][activeId].data as object,
+                    data.dataLocation,
+                    data.data
+                );
+            }
+
             navigationDictionary = getNavigationDictionary(
                 schemaDictionary,
                 dataDictionary

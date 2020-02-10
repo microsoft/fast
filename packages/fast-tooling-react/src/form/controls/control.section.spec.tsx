@@ -22,6 +22,7 @@ import {
     SelectControl,
     TextareaControl,
 } from "../index";
+import { DataType } from "../../data-utilities/types";
 
 const TestSectionControl: any = (
     props: React.PropsWithChildren<SectionControlProps>
@@ -41,9 +42,22 @@ configure({ adapter: new Adapter() });
 const sectionControlProps: SectionControlProps = {
     type: ControlType.section,
     dataLocation: "",
+    navigationId: "",
+    navigation: {
+        "": {
+            self: "",
+            parent: null,
+            relativeDataLocation: "",
+            schemaLocation: "",
+            schema: {},
+            data: void 0,
+            text: "foo",
+            type: DataType.object,
+            items: [],
+        },
+    },
     schemaLocation: "",
     controls,
-    childOptions: [],
     schema: {},
     disabled: false,
     value: "",
