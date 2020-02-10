@@ -8,6 +8,7 @@ import HTML5Backend from "react-dnd-html5-backend";
 import { DndProvider } from "react-dnd";
 import { ErrorObject } from "ajv";
 import { ControlType } from "../templates";
+import { DataType } from "../../data-utilities/types";
 
 const TestArrayControl: React.FC<any> = (
     props: React.PropsWithChildren<any>
@@ -27,6 +28,20 @@ configure({ adapter: new Adapter() });
 const arrayProps: ArrayControlProps = {
     type: ControlType.array,
     dataLocation: "",
+    navigationId: "",
+    navigation: {
+        "": {
+            self: "",
+            parent: null,
+            relativeDataLocation: "",
+            schemaLocation: "",
+            schema: {},
+            data: void 0,
+            text: "foo",
+            type: DataType.array,
+            items: [],
+        },
+    },
     schemaLocation: "",
     value: "",
     schema: {},
@@ -225,6 +240,41 @@ describe("ArrayControl", () => {
                 value={[arrayItem1, arrayItem2]}
                 managedClasses={managedClasses}
                 onUpdateSection={handleSectionUpdate}
+                navigation={{
+                    "": {
+                        self: "",
+                        parent: null,
+                        relativeDataLocation: "",
+                        schemaLocation: "",
+                        schema: {},
+                        data: void 0,
+                        text: "foo",
+                        type: DataType.array,
+                        items: ["[0]", "[1]"],
+                    },
+                    "[0]": {
+                        self: "[0]",
+                        parent: "",
+                        relativeDataLocation: "[0]",
+                        schemaLocation: "items",
+                        schema: {},
+                        data: void 0,
+                        text: "foo",
+                        type: DataType.string,
+                        items: [],
+                    },
+                    "[1]": {
+                        self: "[1]",
+                        parent: "",
+                        relativeDataLocation: "[1]",
+                        schemaLocation: "items",
+                        schema: {},
+                        data: void 0,
+                        text: "bar",
+                        type: DataType.string,
+                        items: [],
+                    },
+                }}
             />
         );
 
@@ -234,10 +284,7 @@ describe("ArrayControl", () => {
             .simulate("click");
 
         expect(handleSectionUpdate).toHaveBeenCalled();
-        expect(handleSectionUpdate.mock.calls[0][0]).toEqual({
-            dataLocation: "[0]",
-            schemaLocation: "items",
-        });
+        expect(handleSectionUpdate.mock.calls[0][0]).toEqual("[0]");
 
         const handleSectionUpdateWithTestLocations: any = jest.fn();
         const renderedWithTestLocations: any = mount(
@@ -248,6 +295,53 @@ describe("ArrayControl", () => {
                 onUpdateSection={handleSectionUpdateWithTestLocations}
                 schemaLocation={"properties.test"}
                 dataLocation={"test"}
+                navigationId={"test"}
+                navigation={{
+                    "": {
+                        self: "",
+                        parent: null,
+                        relativeDataLocation: "",
+                        schemaLocation: "",
+                        schema: {},
+                        data: void 0,
+                        text: "foo",
+                        type: DataType.object,
+                        items: ["test"],
+                    },
+                    test: {
+                        self: "test",
+                        parent: "",
+                        relativeDataLocation: "test",
+                        schemaLocation: "properties.test",
+                        schema: {},
+                        data: void 0,
+                        text: "foo",
+                        type: DataType.array,
+                        items: ["test[0]", "test[1]"],
+                    },
+                    "test[0]": {
+                        self: "test[0]",
+                        parent: "test",
+                        relativeDataLocation: "test[0]",
+                        schemaLocation: "items",
+                        schema: {},
+                        data: void 0,
+                        text: "foo",
+                        type: DataType.string,
+                        items: [],
+                    },
+                    "test[1]": {
+                        self: "test[1]",
+                        parent: "test",
+                        relativeDataLocation: "test[1]",
+                        schemaLocation: "items",
+                        schema: {},
+                        data: void 0,
+                        text: "bar",
+                        type: DataType.string,
+                        items: [],
+                    },
+                }}
             />
         );
 
@@ -257,10 +351,7 @@ describe("ArrayControl", () => {
             .simulate("click");
 
         expect(handleSectionUpdateWithTestLocations).toHaveBeenCalled();
-        expect(handleSectionUpdateWithTestLocations.mock.calls[0][0]).toEqual({
-            schemaLocation: "properties.test.items",
-            dataLocation: "test[0]",
-        });
+        expect(handleSectionUpdateWithTestLocations.mock.calls[0][0]).toEqual("test[0]");
     });
     test("should add a disabled class if the disabled prop has been passed", () => {
         const rendered: any = mount(

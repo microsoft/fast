@@ -6,7 +6,6 @@ import {
     ControlTemplateUtilitiesProps,
     StandardControlPlugin,
 } from "../../templates";
-import { FormChildOptionItem } from "../../types";
 import { generateExampleData, isConst, isSelect } from "../../utilities";
 import { ItemConstraints } from "../../../data-utilities/types";
 import { SingleLineControlPlugin } from "../../templates/plugin.control.single-line";
@@ -86,10 +85,6 @@ class ControlSwitch extends React.Component<ControlSwitchProps, {}> {
                 return this.renderArray(
                     control !== undefined ? control : this.props.controls.array
                 );
-            case "children":
-                return this.renderChildren(
-                    control !== undefined ? control : this.props.controls.children
-                );
             case "null":
                 return this.renderButton(
                     control !== undefined ? control : this.props.controls.button
@@ -99,17 +94,6 @@ class ControlSwitch extends React.Component<ControlSwitchProps, {}> {
                     control !== undefined ? control : this.props.controls.sectionLink
                 );
         }
-    }
-
-    private renderChildren(control: StandardControlPlugin): React.ReactNode {
-        control.updateProps(
-            Object.assign(this.getCommonControlProps(ControlType.children), {
-                childOptions: this.getChildOptions(),
-                defaultChildOptions: this.props.schema.defaults || null,
-            })
-        );
-
-        return control.render();
     }
 
     /**
@@ -215,21 +199,6 @@ class ControlSwitch extends React.Component<ControlSwitchProps, {}> {
     };
 
     /**
-     * Gets the child options available to the control
-     */
-    private getChildOptions(): FormChildOptionItem[] {
-        if (Array.isArray(this.props.schema.ids)) {
-            return this.props.childOptions.filter(
-                (childOption: FormChildOptionItem): boolean => {
-                    return this.props.schema.ids.includes(childOption.schema.id);
-                }
-            );
-        }
-
-        return this.props.childOptions;
-    }
-
-    /**
      * Gets the common form control props
      */
     private getCommonControlProps(
@@ -241,6 +210,8 @@ class ControlSwitch extends React.Component<ControlSwitchProps, {}> {
             index: this.props.index,
             type,
             dataLocation: this.props.dataLocation,
+            navigationId: this.props.navigationId,
+            navigation: this.props.navigation,
             schemaLocation: this.props.schemaLocation,
             data: this.props.data,
             schema,
@@ -268,7 +239,6 @@ class ControlSwitch extends React.Component<ControlSwitchProps, {}> {
             controls: this.props.controls,
             controlComponents: this.props.controlComponents,
             controlPlugins: this.props.controlPlugins,
-            childOptions: this.props.childOptions,
             untitled: this.props.untitled,
         };
     }

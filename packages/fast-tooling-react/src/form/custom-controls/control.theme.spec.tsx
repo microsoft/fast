@@ -16,6 +16,8 @@ const themeProps: ThemeControlProps = {
     type: ControlType.select,
     options: ["dark", "light"],
     dataLocation: "",
+    navigationId: "",
+    navigation: {},
     value: "",
     schema: {},
     onChange: jest.fn(),

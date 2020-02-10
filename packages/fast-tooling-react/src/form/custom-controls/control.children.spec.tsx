@@ -83,6 +83,8 @@ const childrenProps: ChildrenControlProps = {
     ],
     required: false,
     dataLocation: "locationOfChildren",
+    navigationId: "",
+    navigation: {},
     value: undefined,
     schema: {},
     onChange: jest.fn(),

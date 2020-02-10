@@ -1,49 +1,8 @@
 import { ErrorObject } from "ajv";
-import { FormChildOptionItem } from "../form";
 import { ControlType, StandardControlPlugin } from "../index";
 import { AddExampleData, Controls } from "../controls/utilities/types";
-import { BadgeType } from "./types";
-
-export interface UpdateSectionConfig {
-    /**
-     * The lodash path location of the data in the schema
-     */
-    schemaLocation: string;
-
-    /**
-     * The lodash path location of the data
-     */
-    dataLocation: string;
-
-    /**
-     * The JSON schema
-     */
-    schema?: any;
-}
-
-export interface OnChangeConfig extends ControlOnChangeConfig {
-    /**
-     * The lodash path location of the data
-     */
-    dataLocation: string;
-}
-
-export interface ControlOnChangeConfig {
-    /**
-     * The new value for the supplied data location
-     */
-    value: any;
-
-    /**
-     * Whether this data is an array
-     */
-    isArray?: boolean;
-
-    /**
-     * The index if this data is an array
-     */
-    index?: number;
-}
+import { BadgeType, ControlOnChangeConfig, OnChangeConfig } from "./types";
+import { TreeNavigation } from "../../message-system/navigation.props";
 
 export type FormHTMLElement =
     | HTMLTextAreaElement
@@ -57,7 +16,6 @@ export interface ControlTemplateUtilitiesProps
         TextareaControlOptions,
         SectionLinkControlOptions,
         ArrayControlOptions,
-        ChildrenControlOptions,
         AdditionalControlConfigOptions {
     /**
      * The index to assign as a React key for mapping
@@ -73,6 +31,16 @@ export interface ControlTemplateUtilitiesProps
      * The location of the data
      */
     dataLocation: string;
+
+    /**
+     * The navigation ID
+     */
+    navigationId: string;
+
+    /**
+     * The navigation
+     */
+    navigation: TreeNavigation;
 
     /**
      * The location of the data
@@ -118,7 +86,7 @@ export interface ControlTemplateUtilitiesProps
     /**
      * The update section callback
      */
-    onUpdateSection: (config: UpdateSectionConfig) => void;
+    onUpdateSection: (navigationId: string) => void;
 
     /**
      * The default data (if available)
@@ -198,6 +166,16 @@ export interface CommonControlConfig {
      * The location of the data referenced by lodash path syntax
      */
     dataLocation: string;
+
+    /**
+     * The navigation ID
+     */
+    navigationId: string;
+
+    /**
+     * The navigation
+     */
+    navigation: TreeNavigation;
 
     /**
      * The value of the data to be assigned to the control
@@ -308,7 +286,7 @@ export interface SectionLinkControlOptions {
     /**
      * The update section callback
      */
-    onUpdateSection?: (config: UpdateSectionConfig) => void;
+    onUpdateSection?: (navigationId: string) => void;
 }
 
 export interface SectionControlOptions {
@@ -334,14 +312,9 @@ export interface SectionControlOptions {
     schemaLocation: string;
 
     /**
-     * The optional components to be added as children
-     */
-    childOptions: any[];
-
-    /**
      * The update event to trigger a new active section and/or component
      */
-    onUpdateSection: (config: UpdateSectionConfig) => void;
+    onUpdateSection: (navigationId: string) => void;
 
     /**
      * The string to be used if a prop is untitled
@@ -373,7 +346,7 @@ export interface ArrayControlOptions {
     /**
      * The update section callback
      */
-    onUpdateSection?: (config: UpdateSectionConfig) => void;
+    onUpdateSection?: (navigationId: string) => void;
 
     /**
      * The location of the data
@@ -387,23 +360,6 @@ export interface ArrayControlOptions {
     invalidMessage?: string;
 }
 
-export interface ChildrenControlOptions {
-    /**
-     * The potential children to be added
-     */
-    childOptions?: FormChildOptionItem[];
-
-    /**
-     * The default children to be added
-     */
-    defaultChildOptions?: string[];
-
-    /**
-     * The update section callback
-     */
-    onUpdateSection?: (config: UpdateSectionConfig) => void;
-}
-
 export interface AdditionalControlConfigOptions {
     component: React.ComponentClass | React.FunctionComponent;
 }
@@ -415,7 +371,6 @@ export type TextareaControlConfig = CommonControlConfig & TextareaControlOptions
 export type SectionLinkControlConfig = CommonControlConfig & SectionLinkControlOptions;
 export type SectionControlConfig = CommonControlConfig & SectionControlOptions;
 export type ArrayControlConfig = CommonControlConfig & ArrayControlOptions;
-export type ChildrenControlConfig = CommonControlConfig & ChildrenControlOptions;
 export type ControlConfig = CommonControlConfig &
     NumberFieldTypeControlOptions &
     ListControlOptions &
@@ -423,5 +378,4 @@ export type ControlConfig = CommonControlConfig &
     SectionLinkControlOptions &
     SectionControlOptions &
     ArrayControlOptions &
-    ChildrenControlConfig &
     AdditionalControlConfigOptions;
