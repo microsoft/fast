@@ -1,6 +1,5 @@
 import React from "react";
 import manageJss, { ComponentStyles } from "@microsoft/fast-jss-manager-react";
-import { ColumnClassNamesContract } from "@microsoft/fast-layouts-react";
 import {
     Background,
     CallToAction,
@@ -15,10 +14,6 @@ import {
 import { DesignSystem } from "src/design-system";
 import { applyScaledTypeRamp, neutralForegroundRest } from "@microsoft/fast-components-styles-msft";
 import { breakpoints } from "../../app/data/default-vars";
-
-const heroColumn: ComponentStyles<ColumnClassNamesContract, undefined> = {
-    column: {}
-};
 
 interface HeroClassNameContract {
     hero: string;

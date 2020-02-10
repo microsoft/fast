@@ -1,7 +1,6 @@
 import { storiesOf } from "@storybook/react";
 import React from "react";
 import { Banner, BannerProps } from "./index";
-import { StealthButton } from "@microsoft/fast-components-react-msft";
 
 const props: BannerProps = {
     title: {

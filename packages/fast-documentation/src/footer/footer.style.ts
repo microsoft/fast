@@ -1,6 +1,6 @@
-import { ComponentStyles, ComponentStyleSheet } from "@microsoft/fast-jss-manager";
+import { ComponentStyles } from "@microsoft/fast-jss-manager";
 import { FooterClassNameContract } from "./footer.props";
-import { DesignSystem, withDesignSystemDefaults } from "../design-system/index";
+import { DesignSystem } from "../design-system/index";
 import {
     applyFontWeightSemiBold,
     applyScaledTypeRamp,

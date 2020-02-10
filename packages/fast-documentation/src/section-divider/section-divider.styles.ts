@@ -1,7 +1,7 @@
 import { DesignSystem } from "../design-system";
 import { ComponentStyles } from "@microsoft/fast-jss-manager";
 import { DividerClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
-import { format, toPx } from "@microsoft/fast-jss-utilities";
+import { format } from "@microsoft/fast-jss-utilities";
 import { accentFillRest } from "@microsoft/fast-components-styles-msft";
 
 const styles: ComponentStyles<DividerClassNameContract, DesignSystem> = {

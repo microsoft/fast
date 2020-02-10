@@ -1,6 +1,6 @@
 import React from "react";
 import manageJss, { ComponentStyles } from "@microsoft/fast-jss-manager-react";
-import { Column, ColumnClassNamesContract, Grid, Page } from "@microsoft/fast-layouts-react";
+import { Column } from "@microsoft/fast-layouts-react";
 
 interface DividerStyles {
     height1: string;

@@ -1,7 +1,6 @@
 import { ManagedClasses } from "@microsoft/fast-jss-manager-react";
 import { Omit } from "utility-types";
 import { BackgroundHandledProps, HeadingProps, ParagraphProps } from "@microsoft/fast-components-react-msft";
-import { DesignSystem } from "../design-system";
 import { ButtonProps } from "@microsoft/fast-components-react-base";
 
 /**

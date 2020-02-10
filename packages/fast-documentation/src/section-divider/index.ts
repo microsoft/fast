@@ -1,4 +1,3 @@
-import React from "react";
 import {
     Divider as BaseSectionDivider,
     DividerClassNameContract as SectionDividerClassNameContract,

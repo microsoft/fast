@@ -1,4 +1,3 @@
-import React from "react";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { DesignSystem } from "../design-system";
 import BannerStyles from "./banner.style";

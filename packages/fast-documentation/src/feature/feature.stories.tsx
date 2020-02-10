@@ -1,7 +1,7 @@
 import { storiesOf } from "@storybook/react";
 import React from "react";
 import { Feature, FeatureProps } from "./index";
-import { HeadingTag, LightweightButton } from "@microsoft/fast-components-react-msft";
+import { LightweightButton } from "@microsoft/fast-components-react-msft";
 
 const props: FeatureProps = {
     badge: "CASE STUDY",
