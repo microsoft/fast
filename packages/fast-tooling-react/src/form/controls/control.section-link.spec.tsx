@@ -21,6 +21,8 @@ const managedClasses: SectionLinkControlClassNameContract = {
 const sectionLinkProps: SectionLinkControlProps = {
     type: ControlType.sectionLink,
     dataLocation: "",
+    navigationId: "",
+    navigation: {},
     schemaLocation: "",
     label: "",
     value: {},
@@ -70,10 +72,7 @@ describe("SectionLinkControl", () => {
             .simulate("click");
 
         expect(handleSectionUpdate).toHaveBeenCalled();
-        expect(handleSectionUpdate.mock.calls[0][0]).toEqual({
-            dataLocation: "",
-            schemaLocation: "",
-        });
+        expect(handleSectionUpdate.mock.calls[0][0]).toEqual("");
 
         const handleSectionUpdateWithTestLocations: any = jest.fn();
         const renderedWithTestLocations: any = mount(
@@ -92,10 +91,7 @@ describe("SectionLinkControl", () => {
             .simulate("click");
 
         expect(handleSectionUpdateWithTestLocations).toHaveBeenCalled();
-        expect(handleSectionUpdateWithTestLocations.mock.calls[0][0]).toEqual({
-            schemaLocation: "properties.test",
-            dataLocation: "test",
-        });
+        expect(handleSectionUpdateWithTestLocations.mock.calls[0][0]).toEqual("");
     });
     test("should add a disabled class if the disabled prop is passed", () => {
         const rendered: any = mount(

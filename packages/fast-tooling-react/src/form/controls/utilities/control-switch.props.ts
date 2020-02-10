@@ -1,8 +1,5 @@
 import { ControlTemplateUtilitiesProps, StandardControlPlugin } from "../../templates";
-import {
-    AttributeSettingsMappingToPropertyNames,
-    FormChildOptionItem,
-} from "../../types";
+import { AttributeSettingsMappingToPropertyNames } from "../../types";
 import { Controls } from "./types";
 import { Omit } from "utility-types";
 
@@ -43,11 +40,6 @@ export interface ControlSwitchProps
      * The schema location (lodash path syntax)
      */
     schemaLocation: string;
-
-    /**
-     * The possible child options
-     */
-    childOptions: FormChildOptionItem[];
 
     /**
      * The additional attributes mapped to a property name

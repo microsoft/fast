@@ -72,10 +72,8 @@ import {
     ToggleClassNameContract,
     Typography,
 } from "@microsoft/fast-components-react-msft";
-import {
-    FormChildOptionItem,
-    FormClassNameContract,
-} from "@microsoft/fast-tooling-react/dist/form/form";
+import { FormChildOptionItem } from "@microsoft/fast-tooling-react/dist/form/types";
+import { FormClassNameContract } from "@microsoft/fast-tooling-react/dist/form/form";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import syntaxHighlighterStyles from "./syntax-highlighting-style";
 import { childOptions, history, menu } from "./config";
@@ -98,20 +96,22 @@ function setViewConfigsWithCustomConfig(
 ): ObjectOfComponentViewConfigs {
     const componentViewConfigs: ObjectOfComponentViewConfigs = {};
 
-    Object.keys(viewConfigs).forEach((viewConfigKey: string): void => {
-        componentViewConfigs[viewConfigKey] = Object.assign(
-            {},
-            viewConfigs[viewConfigKey],
-            {
-                scenarios: [
-                    {
-                        displayName: "Custom",
-                        data: viewConfigs[viewConfigKey].scenarios[0].data,
-                    },
-                ].concat(viewConfigs[viewConfigKey].scenarios),
-            }
-        );
-    });
+    Object.keys(viewConfigs).forEach(
+        (viewConfigKey: string): void => {
+            componentViewConfigs[viewConfigKey] = Object.assign(
+                {},
+                viewConfigs[viewConfigKey],
+                {
+                    scenarios: [
+                        {
+                            displayName: "Custom",
+                            data: viewConfigs[viewConfigKey].scenarios[0].data,
+                        },
+                    ].concat(viewConfigs[viewConfigKey].scenarios),
+                }
+            );
+        }
+    );
 
     return componentViewConfigs;
 }

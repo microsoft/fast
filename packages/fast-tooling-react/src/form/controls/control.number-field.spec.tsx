@@ -20,6 +20,8 @@ const managedClasses: NumberFieldControlClassNameContract = {
 const numberFieldProps: NumberFieldControlProps = {
     type: ControlType.numberField,
     dataLocation: "",
+    navigationId: "",
+    navigation: {},
     onChange: jest.fn(),
     min: 0,
     max: Infinity,

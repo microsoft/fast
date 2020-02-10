@@ -1,5 +1,6 @@
 import { BreadcrumbItemEventHandler } from "../form.props";
-import { NavigationItem } from "./navigation";
+import { TreeNavigation } from "../../message-system/navigation.props";
+import { DataType } from "../../data-utilities/types";
 
 export interface BreadcrumbItem {
     href: string;
@@ -7,30 +8,34 @@ export interface BreadcrumbItem {
     onClick: (e: React.MouseEvent<HTMLAnchorElement>) => void;
 }
 
-export type HandleBreadcrumbClick = (
-    schemaLocation: string,
-    dataLocation: string,
-    schema: any
-) => BreadcrumbItemEventHandler;
+export type HandleBreadcrumbClick = (navigationId: string) => BreadcrumbItemEventHandler;
 
 /**
  * Gets breadcrumbs from navigation items
  */
 export function getBreadcrumbs(
-    navigation: NavigationItem[],
+    navigation: TreeNavigation,
+    navigationId: string,
     handleClick: HandleBreadcrumbClick
 ): BreadcrumbItem[] {
-    return navigation.map(
-        (navigationItem: NavigationItem): BreadcrumbItem => {
-            return {
-                href: navigationItem.dataLocation,
-                text: navigationItem.title,
-                onClick: handleClick(
-                    navigationItem.schemaLocation,
-                    navigationItem.dataLocation,
-                    navigationItem.schema
-                ),
-            };
-        }
-    );
+    let navigationItems: BreadcrumbItem[] = [];
+
+    // Arrays do not need to be represented in breadcrumbs
+    // as the array items are shown at the same level as
+    // other simple controls
+    if (navigation[navigationId].type !== DataType.array) {
+        navigationItems.push({
+            href: navigation[navigationId].self,
+            text: navigation[navigationId].text,
+            onClick: handleClick(navigationId),
+        });
+    }
+
+    if (navigation[navigation[navigationId].parent]) {
+        navigationItems = navigationItems.concat(
+            getBreadcrumbs(navigation, navigation[navigationId].parent, handleClick)
+        );
+    }
+
+    return navigationItems.reverse();
 }

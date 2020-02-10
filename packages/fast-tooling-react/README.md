@@ -39,8 +39,6 @@ The tooling available in FAST Tooling React can be used together to create UI fo
     - [Drag and drop](#drag-and-drop)
     - [Using form control plugins](#using-form-control-plugins)
         - [List of control types](#list-of-control-types)
-    - [React children as options](#react-children-as-options)
-    - [Controlling the visible section](#controlling-the-visible-section)
     - [Validation](#validation)
     - [JSON schema metadata](#json-schema-metadata)
         - [Title](#title)
@@ -49,11 +47,9 @@ The tooling available in FAST Tooling React can be used together to create UI fo
         - [Examples & default](#examples-&-default)
         - [Badges](#badges)
         - [Dictionaries](#dictionaries)
-        - [Categories](#categories)
     - [JSON schema keywords](#json-schema-keywords)
         - [oneOf & anyOf](#oneof-&-anyof)
         - [Enums](#enums)
-        - [React children](#react-children)
         - [allOf & $ref](#allof-&-ref)
 
 
@@ -967,29 +963,45 @@ export class Example extends React.Component {
 
 ## Form
 
-The required properties are the `data`, `schema`, and `onChange` function. The data should be tied to your state as the data will change when editing the form. The `onChange` is used as a callback, it should take one argument that is the data that should be updated when any data has been changed from within the generated form.
+The required properties are the `messageSystem` and `messageSystemRegistry`.
 
 Example:
 ```jsx
-import { Form } from "@microsoft/fast-tooling-react";
+import { Form, MessageSystemRegistry } from "@microsoft/fast-tooling-react";
+
+const fastMessageSystem;
+const fastMessageSystemRegistry
+
+if ((window as any).Worker) {
+    fastMessageSystemWebWorker = new Worker("message-system.js");
+    fastMessageSystemRegistry = new MessageSystemRegistry({
+        messageSystem: fastMessageSystemWebWorker,
+        data: [
+            {
+                foo: {
+                    schemaId: "mySchema",
+                    data: {},
+                },
+            },
+            "foo",
+        ],
+        schemas: {
+            "mySchema": {
+                id: "mySchema",
+                type: "object"
+            },
+        },
+    });
+    fastMessageSystemRegistry.add({ onMessage: this.handleMessageSystem });
+}
 
 /**
  * Add to your render function
  */
 <Form
-    data={this.state.data}
-    schema={schema}
-    onChange={this.handleChange}
+    messageSystem={fastMessageSystem}
+    messageSystemRegistry={fastMessageSystemRegistry}
 />
-
-/**
- * onChange handler
- */
-handleChange = (data) => {
-    this.setState({
-        data
-    });
-}
 ```
 
 ### Drag and drop
@@ -1025,9 +1037,8 @@ JSON Schema:
 JSX:
 ```jsx
 <Form
-    schema={schema}
-    data={this.state.data}
-    onChange={this.handleChange}
+    messageSystem={fastMessageSystem}
+    messageSystemRegistry={fastMessageSystemRegistry}
     controlPlugins={[
         new StandardControlPlugin({
             id: "foo",
@@ -1047,9 +1058,8 @@ Example type plugin:
 
 ```jsx
 <Form
-    schema={schema}
-    data={this.state.data}
-    onChange={this.handleChange}
+    messageSystem={fastMessageSystem}
+    messageSystemRegistry={fastMessageSystemRegistry}
     controlPlugins={[
         new StandardControlPlugin({
             type: ControlType.textarea,
@@ -1080,6 +1090,7 @@ ControlType.children
 ControlType.checkbox
 ControlType.numberField
 ControlType.sectionLink
+ControlType.section
 ControlType.display
 ControlType.button
 ControlType.textarea
@@ -1093,6 +1104,7 @@ These control types can be paired with our default controls, the following of wh
 - `CheckboxControl`
 - `NumberFieldControl`
 - `SectionLinkControl`
+- `SectionControl`
 - `DisplayControl`
 - `ButtonControl`
 - `TextareaControl`
@@ -1107,9 +1119,8 @@ import { ControlType, TextareaControl } from "@microsoft/fast-tooling-react";
 ...
 
 <Form
-    schema={schema}
-    data={this.state.data}
-    onChange={this.handleChange}
+    messageSystem={fastMessageSystem}
+    messageSystemRegistry={fastMessageSystemRegistry}
     controlPlugins={[
         new StandardControlPlugin({
             type: ControlType.textarea,
@@ -1130,9 +1141,8 @@ Example of a replacement for all controls, using the component for the default c
 
 ```jsx
 <Form
-    schema={schema}
-    data={this.state.data}
-    onChange={this.handleChange}
+    messageSystem={fastMessageSystem}
+    messageSystemRegistry={fastMessageSystemRegistry}
     controlPlugins={[
         new StandardControlPlugin({
             control: (config) => {
@@ -1197,135 +1207,6 @@ The following methods are available:
 Note that with the exception of `renderControl` method, the others require a string argument, this will be used as a class so that the generated HTML from the render method can be styled. At this point it is up to the implementer to include their own styling for these items.
 
 It is recommended that the implementation also include the use of a label for accessibility.
-
-### Using form schema plugins
-
-**NOTE: Schema plugins are DEPRECATED and will be removed in the 2.0.0**
-
-Plugins may be created to determine if a form should change based on data. You can identify a piece of schema that should be updated by adding a unique key to your JSON schema `formPluginId`. When you initialize a custom plugin you will need to pass that same id to the plugin as part of its configuration.
-
-Example schema:
-```json
-{
-    "$schema": "http://json-schema.org/schema#",
-    "id": "my-component",
-    "title": "My component",
-    "type": "object",
-    "properties": {
-        "text": {
-            "title": "Text",
-            "type": "string",
-            "example": "Hello world",
-            "formPluginId": "my-custom-plugin-identifier"
-        },
-        "weight": {
-            "title": "Weight",
-            "type": "string",
-            "enum": [
-                "heavy",
-                "medium",
-                "light"
-            ]
-        }
-    },
-    "required": [
-        "text"
-    ]
-}
-```
-
-Example plugin which returns an unmodified schema, unless the weight property has been specified, then the options become specific to the data:
-
-```js
-import { FormPlugin, FormPluginProps } from "@microsoft/fast-tooling-react";
-
-export class MyCustomSchemaPlugin extends FormPlugin {
-    resolver(schema, data) {
-        switch (data.weight) {
-            case "heavy":
-                return Object.assign({}, schema, { enum: ["heavy text 1", "heavy text 2"] });
-            case "medium":
-                return Object.assign({}, schema, { enum: ["medium text 1", "medium text 2"] });
-            case "light":
-                return Object.assign({}, schema, { enum: ["light text 1", "light text 2"] });
-        }
-
-        return schema;
-    }
-}
-```
-
-Example implementation with the `Form`:
-
-*Note: When the plugins are used the schema used to render the `Form` is internally updated. To get the plugin-modified schema, you can optionally add the `onSchemaChange` callback which will return the newly updated schema.*
-
-**NOTE: The `onSchemaChange` callback is DEPRECATED and will be removed in the 2.0.0**
-
-```jsx
-import Form from "@microsoft/fast-tooling-react";
-import { Button, ButtonSchema } from "@microsoft/fast-components-react-msft";
-import { MyCustomSchemaPlugin } from "./my-custom-schema-plugin";
-
-<Form
-    data={this.state.currentComponentData}
-    schema={this.state.currentComponentSchema}
-    onChange={handleChange}
-    plugins={[
-        new MyCustomSchemaPlugin({
-            id: ["my-custom-plugin-identifier"]
-        })
-    ]}
-/>
-```
-
-### React children as options
-
-**NOTE: Child options are DEPRECATED and will be removed in the 2.0.0**
-
-Children by default only include text elements. If you want to add some child components you are providing, you can do this through the `childOptions`.
-
-```jsx
-import Form from "@microsoft/fast-tooling-react";
-import { Button, ButtonSchema } from "@microsoft/fast-components-react-msft";
-
-<Form
-    data={this.state.currentComponentData}
-    schema={currentComponentSchema}
-    onChange={handleChange}
-    childOptions={[
-        {
-            name: "Button",
-            component: Button,
-            schema: ButtonSchema
-        }
-    ]}
-/>
-```
-
-### Controlling the visible section
-
-The location prop allows the user to control which piece of JSON schema the form is pointing to and has two required properties. It takes `dataLocation` which is the location of the data to be edited, and `onChange` which will fire an update when the user performs an action on the form that would change the visible data to be edited. An example of this would be clicking on an array item to edit that item.
-
-```jsx
-import Form from "@microsoft/fast-tooling-react";
-
-<Form
-    data={this.state.currentComponentData}
-    schema={currentComponentSchema}
-    onChange={handleChange}
-    location={{
-        dataLocation: this.state.dataLocation,
-        onChange: this.handleChange
-    }}
-/>
-
-// example method to use for the location onChange
-handleChange = (dataLocation) => {
-    this.setState({
-        dataLocation: dataLocation
-    });
-}
-```
 
 ### Validation
 
@@ -1503,45 +1384,6 @@ Example:
 }
 ```
 
-#### Categories
-
-To allow properties in an object to be categorized, the JSON schema can be amended with a `formConfig` property at the same level of the object. These categories can be expandable and will appear in the order they appear in the array.
-
-Example:
-
-```json
-{
-    "type": "object",
-    "properties": {
-        "foo": {
-            "title": "String Property Foo",
-            "type": "string"
-        },
-        "bar": {
-            "title": "String Property Bar",
-            "type": "string"
-        }
-    },
-    "formConfig": {
-        "categories": [
-            {
-                "title": "Category A",
-                "expandable": true,
-                "items": [
-                    "foo"
-                ]
-            },
-            {
-                "title": "Category A",
-                "items": [
-                    "bar"
-                ]
-            }
-        ]
-    }
-}
-```
-
 ### JSON schema keywords
 
 Certain JSON schema keywords are interpreted to provide a better UI.
@@ -1610,42 +1452,6 @@ Any enums will be converted to a select dropdown.
 }
 ```
 
-#### React children
-
-**NOTE: reactProperties and type "children" are DEPRECATED and will be removed in the 2.0.0**
-
-React children are treated as special objects instead of simple properties and can be defined in an object as `reactProperties`. They can specify `ids` from the given `childOptions` and can be given defaults, currently there is one default `text`. If no `ids` are specified all `childOptions` are considered valid.
-
-Example of an object that includes children with specific ids and the text default:
-
-```json
-{
-    "$schema": "http://json-schema.org/schema#",
-    "id": "my-component",
-    "title": "My component",
-    "type": "object",
-    "properties": {
-        "color": {
-            "title": "Color",
-            "type": "string"
-        }
-    },
-    "reactProperties": {
-        "children": {
-            "title": "Components",
-            "type": "children",
-            "ids": [
-                "my-component",
-                "my-button-component"
-            ],
-            "defaults": [
-                "text"
-            ]
-        }
-    }
-}
-```
-
 #### allOf & $ref
 
-The allOf and $ref keywords cannot be interpreted by the schema form generator. To allow for most of the functionality there is a tool inside the @microsoft/fast-permutator which will simplify the schema and merge allOf arrays when it finds them, see `simplifySchemas`.
+The `allOf` and `$ref` keywords cannot be interpreted by the schema form generator.

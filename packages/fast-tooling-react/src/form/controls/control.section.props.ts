@@ -1,8 +1,3 @@
-import {
-    FormOrderByPropertyNamesCategories,
-    FormOrderByPropertyNamesProperties,
-    FormOrderByPropertyNamesProps,
-} from "../form.props";
 import { SectionControlConfig } from "../templates";
 import { CombiningKeyword } from "../../data-utilities/types";
 
@@ -44,23 +39,6 @@ export interface SectionControlState extends InitialOneOfAnyOfState {}
 /* tslint:disable */
 export interface SectionControlProps extends SectionControlConfig {}
 
-export interface FormCategoryConfig {
-    /**
-     * The display name, used as a category label
-     */
-    title: string | null;
-
-    /**
-     * Category property keys
-     */
-    items: string[];
-
-    /**
-     * Expandable
-     */
-    expandable?: boolean;
-}
-
 export interface FormControlParameters {
     /**
      * The schema property
@@ -76,6 +54,11 @@ export interface FormControlParameters {
      * The location of the data via lodash path syntax
      */
     dataLocation: string;
+
+    /**
+     * The navigation id
+     */
+    navigationId: string;
 
     /**
      * The location of the schema via lodash path syntax
@@ -106,30 +89,6 @@ export interface FormControlParameters {
      * The invalid message for this property
      */
     invalidMessage: string;
-}
-
-export interface AssignedCategoryParams {
-    /**
-     * The category name
-     */
-    category: string;
-
-    /**
-     * The category weight, acts the same as z-index,
-     * the larger the weight, the higher it is displayed
-     */
-    categoryWeight: number;
-
-    /**
-     * The item weight, similar to category weight will
-     * display higher the larger the weight is
-     */
-    itemWeight: number;
-
-    /**
-     * Allows category to be expandable
-     */
-    expandable?: boolean;
 }
 
 export interface FormControlItem {
@@ -166,12 +125,4 @@ export interface SchemaSubsectionConfig {
     schemaLocation: string;
     state: any;
     props: any;
-}
-
-export interface AssignedParamsByCategoryConfig {
-    categoryProperties: string[];
-    formControlParameter: FormControlParameters;
-    category: FormOrderByPropertyNamesCategories;
-    categoryProperty: FormOrderByPropertyNamesProperties;
-    assignedItemWeight: number;
 }
