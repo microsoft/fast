@@ -110,7 +110,7 @@ const featureExampleProps: FeatureProps = {
             role="img"
             aria-label={"Video of the Edge browser themes switching from light to dark"}
             autoPlay={true}
-            loop={true}
+            loop={false}
         >
             <source src={featureVideo} type="video/mp4" />
         </video>
