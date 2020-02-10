@@ -18,11 +18,6 @@ export interface Controls {
     checkbox: SingleLineControlPlugin;
 
     /**
-     * The children control
-     */
-    children: StandardControlPlugin;
-
-    /**
      * The display control
      */
     display: StandardControlPlugin;

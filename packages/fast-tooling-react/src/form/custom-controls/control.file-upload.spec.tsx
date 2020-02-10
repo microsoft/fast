@@ -14,6 +14,8 @@ configure({ adapter: new Adapter() });
 const fileUploadControlProps: FileUploadControlProps = {
     type: ControlType.textarea,
     dataLocation: "",
+    navigationId: "",
+    navigation: {},
     disabled: false,
     elementRef: null,
     value: "",
