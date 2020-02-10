@@ -16,6 +16,8 @@ const textAlignControlProps: TextAlignControlProps = {
     type: ControlType.select,
     options: ["left", "center", "right"],
     dataLocation: "",
+    navigationId: "",
+    navigation: {},
     value: "",
     schema: {},
     onChange: jest.fn(),

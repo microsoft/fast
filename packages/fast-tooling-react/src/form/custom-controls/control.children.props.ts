@@ -1,5 +1,23 @@
-import { ChildrenControlConfig, DragState } from "../templates";
+import { CommonControlConfig, DragState } from "../templates";
 import { FormChildOptionItem } from "../types";
+import { UpdateSectionConfig } from "../templates/types";
+
+export interface ChildrenControlOptions extends CommonControlConfig {
+    /**
+     * The potential children to be added
+     */
+    childOptions?: FormChildOptionItem[];
+
+    /**
+     * The default children to be added
+     */
+    defaultChildOptions?: string[];
+
+    /**
+     * The update section callback
+     */
+    onUpdateSection?: (config: UpdateSectionConfig) => void;
+}
 
 export interface ChildComponentDataMapping {
     [T: string]: any;
@@ -20,7 +38,7 @@ export interface ChildComponentConfig {
 export type ChildComponent = ChildComponentConfig | string;
 
 /* tslint:disable-next-line */
-export interface ChildrenControlProps extends ChildrenControlConfig {}
+export interface ChildrenControlProps extends ChildrenControlOptions {}
 
 export enum Action {
     add = "add",
