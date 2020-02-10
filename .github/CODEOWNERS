@@ -9,9 +9,10 @@
 
 # File type specific owners
 # Markdown specific files
-*.md    @awentzel @nalogiudice @chrisdholt @falkicon
-/docs/ @awentzel @nalogiudice @chrisdholt @falkicon
-/website/ @awentzel @nalogiudice @chrisdholt @falkicon
+*.md    @awentzel @chrisdholt @falkicon @EisenbergEffect
+/docs/ @awentzel @chrisdholt @falkicon @EisenbergEffect
+/website/ @awentzel @chrisdholt @falkicon @EisenbergEffect
+/packages/fast-documentation/ @awentzel @bheston @chrisdholt @falkicon @EisenbergEffect
 
 # Package specific owners
 
