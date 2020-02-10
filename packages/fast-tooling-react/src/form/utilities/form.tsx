@@ -11,7 +11,6 @@ import {
 import { oneOfAnyOfType } from "../../data-utilities/schema";
 import { ErrorObject } from "ajv";
 import { getDataFromSchema } from "../../data-utilities";
-import { reactChildrenStringSchema } from "../controls/control.children.text";
 import stringify from "fast-json-stable-stringify";
 import { validateData } from "../../utilities/ajv-validation";
 import { CombiningKeyword } from "../../data-utilities/types";
@@ -406,7 +405,6 @@ export const propsKeyword: string = "props";
 
 export enum PropertyKeyword {
     properties = "properties",
-    reactProperties = "reactProperties",
 }
 
 export interface NavigationItemConfig {
@@ -424,20 +422,10 @@ export interface NavigationItemConfig {
  * - array items
  * - breadcrumb links
  */
-export function getActiveComponentAndSection(
-    schemaLocation: string,
-    dataLocation: string,
-    schema?: any
-): Partial<FormState> {
-    const state: any = {};
+export function getActiveComponentAndSection(dataLocation: string): Partial<FormState> {
+    const state: Partial<FormState> = {};
 
-    state.activeDataLocation = dataLocation;
-    state.activeSchemaLocation = schemaLocation;
-
-    // if the schema is undefined its most likely an array
-    if (typeof schema !== "undefined") {
-        state.titleProps = schema.title || "Untitled";
-    }
+    state.activeNavigationId = dataLocation;
 
     return state;
 }
@@ -452,19 +440,6 @@ export function getLocationsFromSegments(segments: string[]): string[] {
     return segments.map((location: string, index: number) => {
         return segments.slice(0, index + 1).join(".");
     });
-}
-
-/**
- * Get React's default children
- */
-export function getReactDefaultChildren(): FormChildOptionItem[] {
-    return [
-        {
-            name: "Text",
-            component: null,
-            schema: reactChildrenStringSchema,
-        },
-    ];
 }
 
 /**

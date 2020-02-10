@@ -1,13 +1,7 @@
 import * as testConfigs from "./form/";
-
 import { AlignControl, Form } from "../../src";
 import { ControlConfig, StandardControlPlugin, TextAlignControl } from "../../src";
-import {
-    FormComponentMappingToPropertyNamesProps,
-    FormLocation,
-    FormOrderByPropertyNamesProps,
-    FormProps,
-} from "../../src/form/form.props";
+import { FormProps } from "../../src/form/form.props";
 import {
     FormAttributeSettingsMappingToPropertyNames,
     FormChildOptionItem,
@@ -16,19 +10,20 @@ import {
 import { DesignSystemProvider } from "@microsoft/fast-jss-manager-react";
 import React from "react";
 import { getDataFromSchema } from "../../src/data-utilities";
+import {
+    MessageSystemDataTypeAction,
+    MessageSystemType,
+} from "../../src/message-system/message-system.props";
+import { MessageSystemRegistry } from "../../src/message-system-registry";
 
 export type componentDataOnChange = (e: React.ChangeEvent<HTMLFormElement>) => void;
 
 export interface FormTestPageState {
     schema: any;
     data: any;
-    config?: FormComponentMappingToPropertyNamesProps;
-    orderByPropertyNames?: FormOrderByPropertyNamesProps;
+    navigation: any;
     attributeAssignment?: FormAttributeSettingsMappingToPropertyNames;
-    onChange: componentDataOnChange;
     showExtendedControls: boolean;
-    dataLocation: string;
-    controlled: ControlledState;
     defaultBrowserErrors?: boolean;
     inlineErrors?: boolean;
     dataSet?: any;
@@ -42,11 +37,6 @@ export interface GroupItem {
 export interface DataSet {
     displayName: string;
     data: any;
-}
-
-enum ControlledState {
-    controlled = "controlled",
-    uncontrolled = "uncontrolled",
 }
 
 const designSystemDefaults: any = {
@@ -85,6 +75,9 @@ const dataSets: DataSet[] = [
     },
 ];
 
+let fastMessageSystemWebWorker: Worker | void;
+let fastMessageSystemRegistry: MessageSystemRegistry;
+
 class FormTestPage extends React.Component<{}, FormTestPageState> {
     /**
      * These are the children that can be added
@@ -118,13 +111,31 @@ class FormTestPage extends React.Component<{}, FormTestPageState> {
 
         const exampleData: any = getDataFromSchema(testConfigs.textField.schema);
 
+        if ((window as any).Worker) {
+            fastMessageSystemWebWorker = new Worker("message-system.js");
+            fastMessageSystemRegistry = new MessageSystemRegistry({
+                messageSystem: fastMessageSystemWebWorker,
+                data: [
+                    {
+                        foo: {
+                            schemaId: testConfigs.textField.schema.id,
+                            data: exampleData,
+                        },
+                    },
+                    "foo",
+                ],
+                schemas: {
+                    [testConfigs.textField.schema.id]: testConfigs.textField.schema,
+                },
+            });
+            fastMessageSystemRegistry.add({ onMessage: this.handleMessageSystem });
+        }
+
         this.state = {
             schema: testConfigs.textField.schema,
             data: exampleData,
-            onChange: this.onChange,
+            navigation: void 0,
             showExtendedControls: false,
-            dataLocation: "",
-            controlled: ControlledState.uncontrolled,
             inlineErrors: void 0,
             defaultBrowserErrors: void 0,
             dataSet: dataSets[0].data,
@@ -153,22 +164,6 @@ class FormTestPage extends React.Component<{}, FormTestPageState> {
                         }}
                     >
                         <div>
-                            <button
-                                onClick={this.handleUpdateControlledState(
-                                    ControlledState.controlled
-                                )}
-                                style={this.getStyle(ControlledState.controlled)}
-                            >
-                                Controlled
-                            </button>
-                            <button
-                                onClick={this.handleUpdateControlledState(
-                                    ControlledState.uncontrolled
-                                )}
-                                style={this.getStyle(ControlledState.uncontrolled)}
-                            >
-                                Uncontrolled
-                            </button>
                             <select onChange={this.handleComponentUpdate}>
                                 {this.getComponentOptions()}
                             </select>
@@ -194,6 +189,7 @@ class FormTestPage extends React.Component<{}, FormTestPageState> {
                             </label>
                             <br />
                         </div>
+                        <h2>Data</h2>
                         <pre
                             style={{
                                 padding: "12px",
@@ -202,6 +198,16 @@ class FormTestPage extends React.Component<{}, FormTestPageState> {
                             }}
                         >
                             {JSON.stringify(this.state.data, null, 2)}
+                        </pre>
+                        <h2>Navigation</h2>
+                        <pre
+                            style={{
+                                padding: "12px",
+                                background: "rgb(244, 245, 246)",
+                                borderRadius: "4px",
+                            }}
+                        >
+                            {JSON.stringify(this.state.navigation, null, 2)}
                         </pre>
                     </div>
                 </div>
@@ -262,11 +268,9 @@ class FormTestPage extends React.Component<{}, FormTestPageState> {
 
     private coerceFormProps(): FormProps {
         const formProps: FormProps = {
-            schema: this.state.schema,
-            data: this.state.data,
-            onChange: this.state.onChange,
-            childOptions: this.childOptions,
-            controlPlugins: this.controlPlugins,
+            messageSystem: fastMessageSystemWebWorker,
+            messageSystemRegistry: fastMessageSystemRegistry,
+            controls: this.controlPlugins,
         };
 
         if (typeof this.state.defaultBrowserErrors === "boolean") {
@@ -277,20 +281,32 @@ class FormTestPage extends React.Component<{}, FormTestPageState> {
             formProps.displayValidationInline = this.state.inlineErrors;
         }
 
-        if (this.state.controlled === ControlledState.uncontrolled) {
-            return formProps;
-        } else {
-            const location: FormLocation = {
-                dataLocation: this.state.dataLocation,
-                onChange: this.handleLocationOnChange,
-            };
-
-            return {
-                ...formProps,
-                location,
-            };
-        }
+        return formProps;
     }
+
+    private handleMessageSystem = (e: MessageEvent): void => {
+        switch (e.data.type) {
+            case MessageSystemType.initialize:
+                if (e.data.data && e.data.navigation) {
+                    this.setState({
+                        data: e.data.data,
+                        navigation: e.data.navigation,
+                    });
+                }
+            case MessageSystemType.data:
+                if (e.data.data) {
+                    this.setState({
+                        data: e.data.data,
+                    });
+                }
+            case MessageSystemType.navigation:
+                if (e.data.navigation) {
+                    this.setState({
+                        data: e.data.navigation,
+                    });
+                }
+        }
+    };
 
     private handleDataSetUpdate = (e: React.ChangeEvent<HTMLSelectElement>): void => {
         this.setState({
@@ -322,52 +338,6 @@ class FormTestPage extends React.Component<{}, FormTestPageState> {
         }
     };
 
-    /**
-     * Handles the change in schema
-     */
-    private handleSchemaChange = (schema: any): void => {
-        this.setState({
-            schema,
-        });
-    };
-
-    /**
-     * Handles the change in location
-     */
-    private handleLocationOnChange = (dataLocation: string): void => {
-        this.setState({
-            dataLocation,
-        });
-    };
-
-    /**
-     * The app on change event
-     */
-    private onChange = (data: any): void => {
-        this.setState({
-            data,
-        });
-    };
-
-    private getStyle(controlledState: ControlledState): any {
-        if (controlledState === this.state.controlled) {
-            return {
-                background: "#414141",
-                color: "white",
-            };
-        }
-    }
-
-    private handleUpdateControlledState = (
-        controlledState: ControlledState
-    ): ((e: React.MouseEvent<HTMLButtonElement>) => void) => {
-        return (e: React.MouseEvent<HTMLButtonElement>): void => {
-            this.setState({
-                controlled: controlledState,
-            });
-        };
-    };
-
     private handleComponentUpdate = (e: React.ChangeEvent<HTMLSelectElement>): void => {
         const data: any = !!testConfigs[e.target.value].data
             ? testConfigs[e.target.value].data
@@ -376,11 +346,24 @@ class FormTestPage extends React.Component<{}, FormTestPageState> {
                 ? this.state.dataSet
                 : getDataFromSchema(testConfigs[e.target.value].schema);
 
-        this.setState({
-            schema: testConfigs[e.target.value].schema,
-            config: testConfigs[e.target.value].config,
-            data,
-        });
+        if ((window as any).Worker && fastMessageSystemWebWorker) {
+            fastMessageSystemWebWorker.postMessage({
+                type: MessageSystemType.initialize,
+                data: [
+                    {
+                        foo: {
+                            schemaId: testConfigs[e.target.value].schema.id,
+                            data,
+                        },
+                    },
+                    "foo",
+                ],
+                schemas: {
+                    [testConfigs[e.target.value].schema.id]:
+                        testConfigs[e.target.value].schema,
+                },
+            });
+        }
     };
 
     private getComponentOptions(): JSX.Element[] {

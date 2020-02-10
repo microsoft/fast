@@ -1,16 +1,10 @@
 import { ControlTemplateUtilitiesProps, StandardControlPlugin } from "../../templates";
-import { FormChildOptionItem } from "../../types";
 import { Controls } from "./types";
 import { Omit } from "utility-types";
 import ajv from "ajv";
 
 export interface DictionaryProps
     extends Omit<ControlTemplateUtilitiesProps, "invalidMessage" | "component"> {
-    /**
-     * The possible child options
-     */
-    childOptions: FormChildOptionItem[];
-
     /**
      * Control plugins
      */

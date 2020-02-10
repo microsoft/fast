@@ -160,6 +160,31 @@ describe("getMessage", () => {
 
             expect(message.data).toEqual({ hello: "venus" });
         });
+        test("should return a data blob with updated values when the data is at the root", () => {
+            getMessage({
+                type: MessageSystemType.initialize,
+                data: [
+                    {
+                        data: {
+                            schemaId: "foo",
+                            data: {},
+                        },
+                    },
+                    "data",
+                ],
+                schemas: {
+                    foo: { id: "foo" },
+                },
+            });
+            const message: UpdateDataMessageOutgoing = getMessage({
+                type: MessageSystemType.data,
+                action: MessageSystemDataTypeAction.update,
+                dataLocation: "",
+                data: { hello: "venus" },
+            }) as UpdateDataMessageOutgoing;
+
+            expect(message.data).toEqual({ hello: "venus" });
+        });
         test("should add children to the data and the data dictionary", () => {
             getMessage({
                 type: MessageSystemType.initialize,
