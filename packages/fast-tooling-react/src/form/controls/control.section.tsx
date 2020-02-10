@@ -14,11 +14,9 @@ import {
 import React from "react";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
-import FormCategory from "./utilities/category";
 import styles from "./control.section.style";
 import { get, omit } from "lodash-es";
 import {
-    FormCategoryConfig,
     FormControlItem,
     FormControlParameters,
     FormControlsWithConfigOptions,
@@ -33,6 +31,8 @@ import FormOneOfAnyOf from "./utilities/section.one-of-any-of";
 import FormDictionary from "./utilities/dictionary";
 import { classNames } from "@microsoft/fast-web-utilities";
 import { ErrorObject } from "ajv";
+import { validateData } from "../../utilities/ajv-validation";
+import { CombiningKeyword } from "../../data-utilities/types";
 
 /**
  * Schema form component definition
@@ -112,19 +112,10 @@ class SectionControl extends React.Component<
             omit(this.props.schema, [this.state.oneOfAnyOf.type]),
             this.props.schema[this.state.oneOfAnyOf.type][activeIndex]
         );
-        const updatedData: any = generateExampleData(updatedSchema, "");
 
         this.props.onChange({
             dataLocation: this.props.dataLocation,
-            value: updatedData,
-        });
-
-        this.setState({
-            schema: updatedSchema,
-            oneOfAnyOf: {
-                type: this.state.oneOfAnyOf.type,
-                activeIndex,
-            },
+            value: generateExampleData(updatedSchema, ""),
         });
     };
 
@@ -147,6 +138,7 @@ class SectionControl extends React.Component<
         propertyName: string,
         schemaLocation: string,
         dataLocation: string,
+        navigationId: string,
         required: boolean,
         disabled: boolean,
         label: string,
@@ -170,8 +162,9 @@ class SectionControl extends React.Component<
                 label={getLabel(label, this.state.schema.title)}
                 data={getData(propertyName, this.props.value)}
                 dataLocation={dataLocation}
+                navigationId={navigationId}
+                navigation={this.props.navigation}
                 schemaLocation={schemaLocation}
-                childOptions={this.props.childOptions}
                 propertyName={propertyName}
                 schema={schema}
                 onChange={this.props.onChange}
@@ -186,93 +179,6 @@ class SectionControl extends React.Component<
         );
     };
 
-    /**
-     * Renders form items into categories
-     */
-    private renderCategories(
-        categories: FormCategoryConfig[] = [],
-        controls: FormControlsWithConfigOptions
-    ): React.ReactNode {
-        return this.getAllCategories(categories).map(
-            (category: FormCategoryConfig, index: number): React.ReactNode => {
-                if (category.title === null) {
-                    return controls.items
-                        .concat([
-                            {
-                                propertyName: void 0,
-                                render: this.renderAdditionalProperties(),
-                            },
-                        ])
-                        .map(
-                            (
-                                controlItem: FormControlItem,
-                                itemIndex: number
-                            ): React.ReactNode => {
-                                if (
-                                    category.items.includes(controlItem.propertyName) ||
-                                    controlItem.propertyName === undefined
-                                ) {
-                                    return (
-                                        <React.Fragment key={itemIndex}>
-                                            {controlItem.render}
-                                        </React.Fragment>
-                                    );
-                                }
-                            }
-                        );
-                }
-
-                return (
-                    <FormCategory
-                        key={index}
-                        expandable={category.expandable}
-                        title={category.title}
-                    >
-                        {this.getCategoryItems(controls, category)}
-                    </FormCategory>
-                );
-            }
-        );
-    }
-
-    private getCategoryItems(
-        controls: FormControlsWithConfigOptions,
-        category: FormCategoryConfig
-    ): React.ReactNode {
-        return controls.items.map(
-            (controlItem: FormControlItem): React.ReactNode => {
-                if (category.items.includes(controlItem.propertyName)) {
-                    return controlItem.render;
-                }
-            }
-        );
-    }
-
-    private getAllCategories(categories: FormCategoryConfig[]): FormCategoryConfig[] {
-        // All categorized properties
-        const categorized: string[] = categories.reduce<string[]>(
-            (accumulator: string[], category: FormCategoryConfig): string[] => {
-                return accumulator.concat(category.items);
-            },
-            []
-        );
-        // All uncategorized properties
-        const uncategorized: string[] = Object.keys(
-            get(this.state.schema, PropertyKeyword.reactProperties, {})
-        )
-            .concat(Object.keys(get(this.state.schema, PropertyKeyword.properties, {})))
-            .filter((category: string) => {
-                return categorized.indexOf(category) < 0;
-            });
-        // All categorized and uncategorized properties
-        return [
-            {
-                title: null,
-                items: uncategorized,
-            },
-        ].concat(categories);
-    }
-
     private getFormControlsAndConfigurationOptions(
         schema: any,
         required: string[],
@@ -285,11 +191,7 @@ class SectionControl extends React.Component<
         const propertyKeys: string[] = [];
 
         if (schema.properties) {
-            propertyKeys.push("properties");
-        }
-
-        if (schema.reactProperties) {
-            propertyKeys.push("reactProperties");
+            propertyKeys.push(PropertyKeyword.properties);
         }
 
         propertyKeys.forEach(
@@ -313,12 +215,16 @@ class SectionControl extends React.Component<
                             this.props.dataLocation !== ""
                                 ? [this.props.dataLocation, propertyName].join(".")
                                 : propertyName;
+                        const navigationId: string = this.props.navigation[
+                            this.props.navigationId
+                        ].items[index];
 
                         if (!isNotRequired) {
                             const params: FormControlParameters = {
                                 index,
                                 schemaLocation,
                                 dataLocation,
+                                navigationId,
                                 propertyName,
                                 schema: schema[propertyKey][propertyName],
                                 isRequired,
@@ -339,6 +245,7 @@ class SectionControl extends React.Component<
                                     params.propertyName,
                                     params.schemaLocation,
                                     params.dataLocation,
+                                    params.navigationId,
                                     params.isRequired,
                                     params.isDisabled,
                                     params.title,
@@ -362,20 +269,27 @@ class SectionControl extends React.Component<
         required: string[],
         not?: string[]
     ): React.ReactNode {
-        let formControls: FormControlsWithConfigOptions;
-
         if (checkIsObject(schema, this.state.schema)) {
             // assign items to form elements
-            formControls = this.getFormControlsAndConfigurationOptions(
-                schema,
-                required,
-                not
-            );
-
-            return this.renderCategories(
-                get(schema, "formConfig.categories"),
-                formControls
-            );
+            return this.getFormControlsAndConfigurationOptions(schema, required, not)
+                .items.concat([
+                    {
+                        propertyName: void 0,
+                        render: this.renderAdditionalProperties(),
+                    },
+                ])
+                .map(
+                    (
+                        controlItem: FormControlItem,
+                        itemIndex: number
+                    ): React.ReactNode => {
+                        return (
+                            <React.Fragment key={itemIndex}>
+                                {controlItem.render}
+                            </React.Fragment>
+                        );
+                    }
+                );
         }
     }
 
@@ -395,10 +309,22 @@ class SectionControl extends React.Component<
                 this.state
             );
 
+            const combiningKeyword: CombiningKeyword = this.props.schema[
+                CombiningKeyword.oneOf
+            ]
+                ? CombiningKeyword.oneOf
+                : CombiningKeyword.anyOf;
+
+            const activeIndex: number = this.props.schema[combiningKeyword].findIndex(
+                (schemaItem: any) => {
+                    return validateData(schemaItem, this.props.value);
+                }
+            );
+
             return (
                 <FormOneOfAnyOf
                     label={get(this.props, "schema.title", "Configuration")}
-                    activeIndex={this.state.oneOfAnyOf.activeIndex}
+                    activeIndex={activeIndex}
                     onUpdate={this.handleAnyOfOneOfClick}
                 >
                     {unselectedOption}
@@ -430,6 +356,8 @@ class SectionControl extends React.Component<
                     controlComponents={this.props.controlComponents}
                     formControlId={this.state.schema.formControlId}
                     dataLocation={this.props.dataLocation}
+                    navigationId={this.props.navigationId}
+                    navigation={this.props.navigation}
                     schemaLocation={schemaLocation}
                     examples={get(schema, "examples")}
                     propertyLabel={get(schema, `propertyTitle`, "Property key")}
@@ -439,7 +367,6 @@ class SectionControl extends React.Component<
                     schema={schema}
                     required={schema.required}
                     label={schema.title || this.props.untitled}
-                    childOptions={this.props.childOptions}
                     onChange={this.props.onChange}
                     onUpdateSection={this.props.onUpdateSection}
                     validationErrors={this.props.validationErrors}
@@ -476,6 +403,7 @@ class SectionControl extends React.Component<
                         "",
                         this.getSchemaLocation(),
                         this.props.dataLocation,
+                        this.props.navigationId,
                         true,
                         this.props.disabled || this.state.schema.disabled,
                         "",
@@ -505,9 +433,7 @@ class SectionControl extends React.Component<
      * Get all enumerated properties for the object
      */
     private getEnumeratedProperties(schema: any): string[] {
-        return Object.keys(schema.properties || {}).concat(
-            Object.keys(schema.reactProperties || {})
-        );
+        return Object.keys(schema.properties || {});
     }
 
     private getSchemaLocation(): string {

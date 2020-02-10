@@ -1,6 +1,5 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-const CopyWebpackPlugin = require("copy-webpack-plugin");
 
 const appDir = path.resolve(__dirname, "./app");
 const outDir = path.resolve(__dirname, "./www");
@@ -19,6 +18,10 @@ module.exports = {
         focusVisible: path.resolve(
             __dirname,
             "../../node_modules/focus-visible/dist/focus-visible.min.js"
+        ),
+        "message-system": path.resolve(
+            __dirname,
+            "./dist/webworker/message-system/index.js"
         ),
     },
     output: {
@@ -48,12 +51,6 @@ module.exports = {
         new HtmlWebpackPlugin({
             contentBase: outDir,
         }),
-        new CopyWebpackPlugin([
-            {
-                from: "./dist/webworker/message-system/index.js",
-                to: `${outDir}/message-system.js`,
-            },
-        ]),
     ],
     resolve: {
         extensions: [".js", ".tsx", ".ts", ".json"],
