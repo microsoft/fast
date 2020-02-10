@@ -102,6 +102,10 @@ import Toggle from "./toggle";
 export { Toggle };
 export * from "./toggle";
 
+import Toolbar from "./toolbar";
+export { Toolbar };
+export * from "./toolbar";
+
 import TreeView from "./tree-view";
 export { TreeView };
 export * from "./tree-view";
