@@ -20,16 +20,21 @@ cd fast-dna
 yarn global add lerna
 ```
 
-Install and symbolically link dependencies across all workspaces:
+Installs all the dependencies:
 
 ```shell
 yarn install
 ```
 
-- `lerna run prepare` to symbolically link dependencies
-- `yarn tslint` or `yarn tslint:fix` runs tslint on typescript in a given package.
-- `yarn unit-tests` runs unit-tests for the package.
-- `yarn test` runs processes in a package required to pass prior to check-in and includes building, linting, and unit-testing.
+Builds all the packages:
+
+```shell
+lerna run prepare
+```
+
+- `yarn tslint` or `yarn tslint:fix` executes tslint on TypeScript in a given package.
+- `yarn unit-tests` execute unit testing for packages.
+- `yarn test` executes processes in a package required to pass before check-in and generally includes building, linting, and unit testing.
 
 To run these processes across *all* projects, substitute `yarn` for `lerna run ____`:
 
