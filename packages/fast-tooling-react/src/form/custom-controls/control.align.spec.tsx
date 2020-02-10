@@ -16,6 +16,8 @@ const alignControlProps: AlignControlProps = {
     type: ControlType.select,
     options: [Alignment.top, Alignment.center, Alignment.bottom],
     dataLocation: "",
+    navigationId: "",
+    navigation: {},
     value: "",
     schema: {},
     onChange: jest.fn(),

@@ -20,6 +20,8 @@ const managedClasses: DisplayControlClassNameContract = {
 const displayProps: DisplayControlProps = {
     type: ControlType.display,
     dataLocation: "",
+    navigationId: "",
+    navigation: {},
     value: "",
     schema: {},
     disabled: false,
