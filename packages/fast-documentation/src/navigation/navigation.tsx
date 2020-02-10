@@ -104,12 +104,14 @@ const navigationStyle: ComponentStyles<NavigationStyle, any> = {
     desktopNav: {
         display: "flex",
         marginTop: "24px",
-        [`@media only screen and (max-width: ${breakpoints.vp3})`]: { display: "none" }
+        [`@media only screen and (max-width: ${breakpoints.vp3})`]: {
+            display: "none!important"
+        }
     },
     mobileHeader: {
         marginTop: "24px",
         [`@media only screen and (min-width: ${breakpoints.vp3})`]: {
-            display: "none"
+            display: "none!important"
         }
     },
     mobileNavBase: {
@@ -121,7 +123,7 @@ const navigationStyle: ComponentStyles<NavigationStyle, any> = {
         width: "100%",
         paddingTop: "100px",
         [`@media only screen and (min-width: ${breakpoints.vp3})`]: {
-            display: "none"
+            display: "none!important"
         }
     },
     mobileNav: {
