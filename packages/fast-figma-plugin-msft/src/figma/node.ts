@@ -1,7 +1,6 @@
 import { ColorRGBA64, parseColor } from "@microsoft/fast-colors";
 import { PluginNode, PluginNodeData } from "../core/node";
 import { RecipeData, RecipeTypes } from "../core/recipe-registry";
-import { fill } from "lodash-es";
 
 function isNodeType<T extends BaseNode>(type: NodeType): (node: BaseNode) => node is T {
     return (node: BaseNode): node is T => node.type === type;

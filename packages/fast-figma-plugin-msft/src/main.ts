@@ -26,16 +26,6 @@ function register(type: RecipeTypes, recipes: RecipeStore): void {
             type,
             evaluate: (node: PluginNode): string => {
                 const parent = node.parent();
-
-                /**
-                 * We need to delete the background color if it is set here because
-                 * we don't want to paint backgrounds on this node relative to
-                 * the node itself, background colors should always be painted relative
-                 * to the *parent*
-                 *
-                 * There is an issue here though, because *strokes* should be relative to the
-                 * node BG color, not the parent.
-                 */
                 const backgroundColor = parent
                     ? parent.getEffectiveBackgroundColor()
                     : node.getEffectiveBackgroundColor();

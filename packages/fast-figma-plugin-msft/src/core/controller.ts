@@ -85,7 +85,7 @@ export abstract class Controller {
                                       this.recipeRegistry.toData(
                                           item.id,
                                           selectedNodes[0]
-                                      ) // TODO: We probably shouldn't hard-code this, but what do we do if there are multiple selected?
+                                      ) // TODO: We probably shouldn't hard-code this, but what color do we display if there are multiple nodes?
                               ),
                           };
                       })

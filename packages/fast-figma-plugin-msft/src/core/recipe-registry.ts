@@ -1,5 +1,4 @@
 import { PluginNode } from "./node";
-import { Serializable } from "puppeteer";
 
 export enum RecipeTypes {
     backgroundFills = "backgroundFills",
@@ -15,7 +14,7 @@ export type MappedRecipeTypes<T> = { [K in keyof typeof RecipeTypes]: T };
 /**
  * Defines a generic recipe
  */
-export interface RecipeDefinition<T extends Serializable = any> {
+export interface RecipeDefinition<T extends {} = any> {
     /**
      * The name of the recipe
      */
@@ -40,7 +39,7 @@ export interface RecipeDefinition<T extends Serializable = any> {
 /**
  * Defines all data associated with a recipe
  */
-export interface RecipeData<T extends Serializable = any>
+export interface RecipeData<T extends {} = any>
     extends Omit<RecipeDefinition<T>, "evaluate"> {
     value?: T;
 }

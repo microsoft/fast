@@ -16,7 +16,12 @@ interface SwatchProps extends React.HTMLAttributes<HTMLSpanElement> {
 function Swatch(props: SwatchProps): JSX.Element {
     const { managedClasses, color, ...rest } = props;
     return (
-        <span className={managedClasses.swatch} style={{ background: color }} {...rest} />
+        <span
+            title={color}
+            className={managedClasses.swatch}
+            style={{ background: color }}
+            {...rest}
+        />
     );
 }
 
