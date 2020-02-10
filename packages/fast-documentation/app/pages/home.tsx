@@ -76,11 +76,11 @@ const bannerProps: BannerProps = {
     backgroundColor: "#C22551",
     drawBackground: false,
     title: {
-        children: "Get started on Github"
+        children: "Get started on GitHub"
     },
     abstract: {
         children:
-            "Explore the FAST mono repository on Github and try out our components, utilities, and tools. Or, mix-and-match with your own solutions."
+            "Explore the FAST mono repository on GitHub and try out our components, utilities, and tools. Or, mix-and-match with your own solutions."
     },
     action: {
         href: "https://github.com/microsoft/fast-dna/"
