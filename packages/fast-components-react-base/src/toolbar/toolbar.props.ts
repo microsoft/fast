@@ -1,7 +1,7 @@
 import React from "react";
 import {
-    ToolbarClassNameContract,
     ManagedClasses,
+    ToolbarClassNameContract,
 } from "@microsoft/fast-components-class-name-contracts-base";
 import { Orientation } from "@microsoft/fast-web-utilities";
 

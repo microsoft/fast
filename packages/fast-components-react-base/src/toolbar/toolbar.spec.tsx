@@ -9,6 +9,7 @@ import {
     keyCodeArrowUp,
 } from "@microsoft/fast-web-utilities";
 import { DisplayNamePrefix } from "../utilities";
+import { Orientation } from "@microsoft/fast-web-utilities";
 
 /*
  * Configure Enzyme
@@ -20,135 +21,151 @@ describe("context menu", (): void => {
         expect(`${DisplayNamePrefix}${(Toolbar as any).name}`).toBe(Toolbar.displayName);
     });
 
-    // test("should have correct role attribute 'menu'", () => {
-    //     const rendered: ShallowWrapper = shallow(<ContextMenu />);
-    //     expect(rendered.first().prop("role")).toBe("menu");
-    // });
+    test("should have correct role attribute 'menu'", () => {
+        const rendered: ShallowWrapper = shallow(<Toolbar />);
+        expect(rendered.first().prop("role")).toBe("toolbar");
+    });
 
-    // test("should not throw if managedClasses are not provided", () => {
-    //     expect(() => {
-    //         shallow(<ContextMenu />);
-    //     }).not.toThrow();
-    // });
+    test("should not throw if managedClasses are not provided", () => {
+        expect(() => {
+            shallow(<Toolbar />);
+        }).not.toThrow();
+    });
 
-    // test("should implement unhandledProps", (): void => {
-    //     const unhandledProps: ContextMenuUnhandledProps = {
-    //         "aria-label": "label",
-    //     };
+    test("should implement unhandledProps", (): void => {
+        const unhandledProps: ToolbarUnhandledProps = {
+            "aria-label": "label",
+        };
 
-    //     const rendered: any = shallow(<ContextMenu {...unhandledProps} />);
+        const rendered: any = shallow(<Toolbar {...unhandledProps} />);
 
-    //     expect(rendered.first().prop("aria-label")).toEqual("label");
-    // });
+        expect(rendered.first().prop("aria-label")).toEqual("label");
+    });
 
-    // test("should not have a focusIndex if no children are focusable", (): void => {
-    //     const rendered: any = mount(
-    //         <ContextMenu>
-    //             <div>hello world</div>
-    //         </ContextMenu>
-    //     );
+    test("should not have a focusIndex if no children are focusable", (): void => {
+        const rendered: any = mount(
+            <Toolbar>
+                <div>hello world</div>
+            </Toolbar>
+        );
 
-    //     expect(rendered.state("focusIndex")).toBe(-1);
-    // });
+        expect(rendered.state("focusIndex")).toBe(-1);
+    });
 
-    // test("should set focusIndex to the first focusable element on mount", (): void => {
-    //     const rendered: any = mount(
-    //         <ContextMenu>
-    //             <div>not a focusable element</div>
-    //             <div role="menuitem">focusable element</div>
-    //         </ContextMenu>
-    //     );
+    test("should set focusIndex to the first focusable element on mount", (): void => {
+        const rendered: any = mount(
+            <Toolbar>
+                <div>not a focusable element</div>
+                <div role="menuitem">focusable element</div>
+            </Toolbar>
+        );
 
-    //     expect(rendered.state("focusIndex")).toBe(1);
-    // });
+        expect(rendered.state("focusIndex")).toBe(1);
+    });
 
-    // test("should move focus down when the down arrow is pressed", (): void => {
-    //     const rendered: any = mount(
-    //         <ContextMenu>
-    //             <div role="menuitem">one</div>
-    //             <div role="menuitem">two</div>
-    //         </ContextMenu>
-    //     );
+    test("should move focus down when the down arrow is pressed in vertical mode", (): void => {
+        const rendered: any = mount(
+            <Toolbar orientation={Orientation.vertical}>
+                <div role="menuitem">one</div>
+                <div role="menuitem">two</div>
+            </Toolbar>
+        );
 
-    //     rendered.childAt(0).simulate("keydown", { keyCode: keyCodeArrowDown });
+        rendered.childAt(0).simulate("keydown", { keyCode: keyCodeArrowDown });
 
-    //     expect(rendered.state("focusIndex")).toBe(1);
-    // });
+        expect(rendered.state("focusIndex")).toBe(1);
+    });
 
-    // test("should move focus down when the right arrow is pressed", (): void => {
-    //     const rendered: any = mount(
-    //         <ContextMenu>
-    //             <div role="menuitem">one</div>
-    //             <div role="menuitem">two</div>
-    //         </ContextMenu>
-    //     );
+    test("should not move focus down when the down arrow is pressed in horizontal mode", (): void => {
+        const rendered: any = mount(
+            <Toolbar orientation={Orientation.horizontal}>
+                <div role="menuitem">one</div>
+                <div role="menuitem">two</div>
+            </Toolbar>
+        );
 
-    //     rendered.childAt(0).simulate("keydown", { keyCode: keyCodeArrowRight });
+        rendered.childAt(0).simulate("keydown", { keyCode: keyCodeArrowDown });
 
-    //     expect(rendered.state("focusIndex")).toBe(1);
-    // });
+        expect(rendered.state("focusIndex")).toBe(0);
+    });
 
-    // test("should move focus up when the up arrow is pressed", (): void => {
-    //     const rendered: any = mount(
-    //         <ContextMenu>
-    //             <div role="menuitem">one</div>
-    //             <div role="menuitem">two</div>
-    //         </ContextMenu>
-    //     );
+    test("should move focus right when the right arrow is pressed in horizontal mode", (): void => {
+        const rendered: any = mount(
+            <Toolbar orientation={Orientation.horizontal}>
+                <div role="menuitem">one</div>
+                <div role="menuitem">two</div>
+            </Toolbar>
+        );
 
-    //     rendered.setState({ focusIndex: 1 });
+        rendered.childAt(0).simulate("keydown", { keyCode: keyCodeArrowRight });
 
-    //     rendered.childAt(0).simulate("keydown", { keyCode: keyCodeArrowUp });
+        expect(rendered.state("focusIndex")).toBe(1);
+    });
 
-    //     expect(rendered.state("focusIndex")).toBe(0);
-    // });
+    test("should not move focus right when the right arrow is pressed in vertical mode", (): void => {
+        const rendered: any = mount(
+            <Toolbar orientation={Orientation.vertical}>
+                <div role="menuitem">one</div>
+                <div role="menuitem">two</div>
+            </Toolbar>
+        );
 
-    // test("should move focus up when the left arrow is pressed", (): void => {
-    //     const rendered: any = mount(
-    //         <ContextMenu>
-    //             <div role="menuitem">one</div>
-    //             <div role="menuitem">two</div>
-    //         </ContextMenu>
-    //     );
+        rendered.childAt(0).simulate("keydown", { keyCode: keyCodeArrowRight });
 
-    //     rendered.setState({ focusIndex: 1 });
+        expect(rendered.state("focusIndex")).toBe(0);
+    });
 
-    //     rendered.childAt(0).simulate("keydown", { keyCode: keyCodeArrowUp });
+    test("should move focus up when the up arrow is pressed in vertical mode", (): void => {
+        const rendered: any = mount(
+            <Toolbar orientation={Orientation.vertical} initialFocusIndex={1}>
+                <div role="menuitem">one</div>
+                <div role="menuitem">two</div>
+            </Toolbar>
+        );
 
-    //     expect(rendered.state("focusIndex")).toBe(0);
-    // });
+        rendered.childAt(0).simulate("keydown", { keyCode: keyCodeArrowUp });
 
-    // test("should move focus the last focusable element when the end key is pressed", (): void => {
-    //     const rendered: any = mount(
-    //         <ContextMenu>
-    //             <div role="menuitem">one</div>
-    //             <div role="menuitem">two</div>
-    //             <div role="menuitem">three</div>
-    //             <div>four</div>
-    //         </ContextMenu>
-    //     );
+        expect(rendered.state("focusIndex")).toBe(0);
+    });
 
-    //     rendered.childAt(0).simulate("keydown", { keyCode: keyCodeEnd });
+    test("should not move focus up when the up arrow is pressed in horizontal mode", (): void => {
+        const rendered: any = mount(
+            <Toolbar orientation={Orientation.horizontal} initialFocusIndex={1}>
+                <div role="menuitem">one</div>
+                <div role="menuitem">two</div>
+            </Toolbar>
+        );
 
-    //     expect(rendered.state("focusIndex")).toBe(2);
-    // });
+        rendered.childAt(0).simulate("keydown", { keyCode: keyCodeArrowUp });
 
-    // test("should move focus the first focusable element when the home key is pressed", (): void => {
-    //     const rendered: any = mount(
-    //         <ContextMenu>
-    //             <div>one</div>
-    //             <div role="menuitem">two</div>
-    //             <div role="menuitem">three</div>
-    //             <div role="menuitem">four</div>
-    //         </ContextMenu>
-    //     );
+        expect(rendered.state("focusIndex")).toBe(1);
+    });
 
-    //     rendered.setState({ focusIndex: 3 });
+    test("should move focus left when the left arrow is pressed in horizontal mode", (): void => {
+        const rendered: any = mount(
+            <Toolbar orientation={Orientation.horizontal} initialFocusIndex={1}>
+                <div role="menuitem">one</div>
+                <div role="menuitem">two</div>
+            </Toolbar>
+        );
 
-    //     rendered.childAt(0).simulate("keydown", { keyCode: keyCodeHome });
+        rendered.childAt(0).simulate("keydown", { keyCode: keyCodeArrowLeft });
 
-    //     expect(rendered.state("focusIndex")).toBe(1);
-    // });
+        expect(rendered.state("focusIndex")).toBe(0);
+    });
+
+    test("should not move focus left when the right arrow is pressed in vertical mode", (): void => {
+        const rendered: any = mount(
+            <Toolbar orientation={Orientation.vertical} initialFocusIndex={1}>
+                <div role="menuitem">one</div>
+                <div role="menuitem">two</div>
+            </Toolbar>
+        );
+
+        rendered.childAt(0).simulate("keydown", { keyCode: keyCodeArrowLeft });
+
+        expect(rendered.state("focusIndex")).toBe(1);
+    });
 
     // test("should place focus any child with the proper role", (): void => {
     //     const children: React.ReactNode[] = Object.keys(ContextMenuItemRole).map(
