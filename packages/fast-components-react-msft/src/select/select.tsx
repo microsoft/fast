@@ -64,11 +64,9 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, {}> {
             select_buttonDisplayText,
         }: SelectClassNameContract = this.props.managedClasses;
 
-        const labelledByFromProp: string = isNil(this.props.labelledBy)
-            ? ""
-            : `${this.props.labelledBy} `;
-
-        const labelledBy: string = `${labelledByFromProp}${triggerId}`;
+        const labelledBy: string = `${
+            isNil(this.props.labelledBy) ? "" : `${this.props.labelledBy} `
+        }${triggerId}`;
 
         return (
             <button
