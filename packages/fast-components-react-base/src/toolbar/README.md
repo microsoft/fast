@@ -1,8 +1,24 @@
 ## Toolbar
-A generic menu component implementing the [menu](https://www.w3.org/TR/wai-aria-1.1/#menu) role and the keyboard navigation aligning to that role. The *context menu* will accept any child elements but is built to work with *context menu item* and *divider* components.
+A generic toolbar component implementing the [toolbar](https://www.w3.org/TR/wai-aria-1.1/#toolbar) role and the keyboard navigation aligning to that role. The *toolbar* will accept any child elements but will only assign focus to children with roles specified in the component's "focusableRoles" prop.
 
 ### Usage
-To accurately manage document focus, the *context menu* assumes that all rendered children are either an element with a role of `"menuitem"`, `"menuitemradio"`, `"menuitemcheckbox"`, or `"separator"` (an `hr` element is also acceptable). It also expects that these elements are passed as *direct* children. Wrapping all menu items inside of a `React.Fragment` (or some other single element) will throw off the internal focus tracking of the *context menu*. Additionally, the *context menu* expects that all menu item children implement the `tabIndex` property and apply that property to the underlying DOM.
+To accurately manage document focus, the *toolbar* assumes that all only children with the appropriate roles should be focusable. It also expects that these elements are passed as *direct* children. Wrapping all menu items inside of a `React.Fragment` (or some other single element) will throw off the internal focus tracking of the *toolbar*. Additionally, the *toolbar* expects that all menu item children implement the `tabIndex` property and apply that property to the underlying DOM.
+
+The default list of valid roles for toolbar items is as follows:
+    "button",
+    "checkbox",
+    "link",
+    "menuitem",
+    "menuitemradio",
+    "menuitemcheckbox",
+    "progressbar",
+    "radio",
+    "searchbox",
+    "slider",
+    "spinbutton",
+    "switch",
+    "textbox",
+
 
 ### Accessibility
-The *context menu* considers a child element focusable when it has a role of `"menuitem"`, `"menuitemradio"`, or `"menuitemcheckbox"`, and will manage focus between these elements automatically. 
+The *toolbar* considers a child element focusable when it has a role of that is included in the component's "focusableRoles" prop, and will manage focus between these elements automatically.  
