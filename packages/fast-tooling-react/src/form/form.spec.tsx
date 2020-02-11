@@ -3,7 +3,7 @@ import Adapter from "enzyme-adapter-react-16";
 import { configure, mount, render, shallow } from "enzyme";
 import { BareForm, Form } from "./";
 import { FormProps } from "./form.props";
-import { MessageSystemRegistry } from "../message-system-registry";
+import { MessageSystem } from "../message-system";
 
 import {
     arraysSchema as arraySchema,
@@ -17,21 +17,17 @@ import { TextareaControl } from "./controls/control.textarea";
 import { CheckboxControl } from "./controls/control.checkbox";
 import { ButtonControl } from "./controls/control.button";
 import { DataType } from "../data-utilities/types";
-import { Register } from "../message-system-registry/message-system-registry.props";
-import {
-    InitializeMessageOutgoing,
-    MessageSystemType,
-} from "../message-system/message-system.props";
+import { Register } from "../message-system/message-system.props";
+import { InitializeMessageOutgoing } from "../message-system/message-system.utilities.props";
+import { MessageSystemType } from "../message-system/types";
 
 /*
  * Configure Enzyme
  */
 configure({ adapter: new Adapter() });
-(window as any).Worker = true; // this enables the use of the registry
 
 const formProps: FormProps = {
     messageSystem: void 0,
-    messageSystemRegistry: void 0,
 };
 
 describe("Form", () => {
@@ -41,150 +37,98 @@ describe("Form", () => {
         }).not.toThrow();
     });
     test("should register the component with a message system", () => {
-        const fastMessageSystemRegistry: MessageSystemRegistry = new MessageSystemRegistry(
-            {
-                messageSystem: void 0,
-                data: [
-                    {
-                        "": {
-                            schemaId: "foo",
-                            data: {},
-                        },
-                    },
-                    "",
-                ],
-                schemas: {
-                    foo: {
-                        id: "foo",
-                        type: "object",
+        const fastMessageSystem: MessageSystem = new MessageSystem({
+            webWorker: "",
+            dataDictionary: [
+                {
+                    "": {
+                        schemaId: "foo",
+                        data: {},
                     },
                 },
-            }
-        );
+                "",
+            ],
+            schemas: {
+                foo: {
+                    id: "foo",
+                    type: "object",
+                },
+            },
+        });
 
         /* tslint:disable-next-line */
-        expect(fastMessageSystemRegistry["register"].size).toEqual(0);
+        expect(fastMessageSystem["register"].size).toEqual(0);
 
-        mount(<Form {...formProps} messageSystemRegistry={fastMessageSystemRegistry} />);
+        mount(<Form {...formProps} messageSystem={fastMessageSystem} />);
 
         /* tslint:disable-next-line */
-        expect(fastMessageSystemRegistry["register"].size).toEqual(1);
+        expect(fastMessageSystem["register"].size).toEqual(1);
     });
     test("should deregister the component with the message system on unmount", () => {
-        const fastMessageSystemRegistry: MessageSystemRegistry = new MessageSystemRegistry(
-            {
-                messageSystem: void 0,
-                data: [
-                    {
-                        "": {
-                            schemaId: "foo",
-                            data: {},
-                        },
-                    },
-                    "",
-                ],
-                schemas: {
-                    foo: {
-                        id: "foo",
-                        type: "object",
+        const fastMessageSystem: MessageSystem = new MessageSystem({
+            webWorker: "",
+            dataDictionary: [
+                {
+                    "": {
+                        schemaId: "foo",
+                        data: {},
                     },
                 },
-            }
-        );
+                "",
+            ],
+            schemas: {
+                foo: {
+                    id: "foo",
+                    type: "object",
+                },
+            },
+        });
 
         const formInstance: any = mount(
-            <Form {...formProps} messageSystemRegistry={fastMessageSystemRegistry} />
+            <Form {...formProps} messageSystem={fastMessageSystem} />
         );
 
         formInstance.unmount();
 
         /* tslint:disable-next-line */
-        expect(fastMessageSystemRegistry["register"].size).toEqual(0);
-    });
-    test("should fire an event to initialize the message system", () => {
-        const onMessageCallbackfn: any = jest.fn();
-        const postMessageCallbackfn: any = jest.fn();
-        const messageSystem: any = {
-            onmessage: onMessageCallbackfn,
-            postMessage: postMessageCallbackfn,
-        };
-        const fastMessageSystemRegistry: MessageSystemRegistry = new MessageSystemRegistry(
-            {
-                messageSystem,
-                data: [
-                    {
-                        "": {
-                            schemaId: "foo",
-                            data: {},
-                        },
-                    },
-                    "",
-                ],
-                schemas: {
-                    foo: {
-                        id: "foo",
-                        type: "object",
-                        properties: {
-                            bar: {
-                                type: "string",
-                            },
-                        },
-                    },
-                },
-            }
-        );
-
-        const formInstance: any = mount(
-            <Form {...formProps} messageSystemRegistry={fastMessageSystemRegistry} />
-        );
-
-        expect(onMessageCallbackfn).not.toHaveBeenCalled();
-        expect(postMessageCallbackfn).toHaveBeenCalledTimes(1);
+        expect(fastMessageSystem["register"].size).toEqual(0);
     });
     test("should show a section link if the schema contains a property which is an object", () => {
-        const onMessageCallbackfn: any = jest.fn();
-        const postMessageCallbackfn: any = jest.fn();
-        const messageSystem: any = {
-            onmessage: onMessageCallbackfn,
-            postMessage: postMessageCallbackfn,
-        };
-        const fastMessageSystemRegistry: MessageSystemRegistry = new MessageSystemRegistry(
-            {
-                messageSystem,
-                data: [
-                    {
-                        "": {
-                            schemaId: "foo",
-                            data: {},
-                        },
+        const fastMessageSystem: MessageSystem = new MessageSystem({
+            webWorker: "",
+            dataDictionary: [
+                {
+                    "": {
+                        schemaId: "foo",
+                        data: {},
                     },
-                    "",
-                ],
-                schemas: {
-                    foo: {
-                        id: "foo",
-                        type: "object",
-                        properties: {
-                            bar: {
-                                type: "object",
-                                properties: {
-                                    bat: {
-                                        type: "string",
-                                    },
+                },
+                "",
+            ],
+            schemas: {
+                foo: {
+                    id: "foo",
+                    type: "object",
+                    properties: {
+                        bar: {
+                            type: "object",
+                            properties: {
+                                bat: {
+                                    type: "string",
                                 },
                             },
                         },
                     },
                 },
-            }
-        );
+            },
+        });
 
         const formInstance: any = mount(
-            <BareForm {...formProps} messageSystemRegistry={fastMessageSystemRegistry} />
+            <BareForm {...formProps} messageSystem={fastMessageSystem} />
         );
 
         /* tslint:disable-next-line */
-        fastMessageSystemRegistry["register"].forEach((registeredItem: Register) => {
+        fastMessageSystem["register"].forEach((registeredItem: Register) => {
             registeredItem.onMessage({
                 data: {
                     type: MessageSystemType.initialize,
@@ -266,46 +210,38 @@ describe("Form", () => {
         expect(formInstance.find("SectionLinkControl")).toHaveLength(1);
     });
     test("should show a checkbox if the schema contains a property which is a boolean", () => {
-        const onMessageCallbackfn: any = jest.fn();
-        const postMessageCallbackfn: any = jest.fn();
-        const messageSystem: any = {
-            onmessage: onMessageCallbackfn,
-            postMessage: postMessageCallbackfn,
-        };
-        const fastMessageSystemRegistry: MessageSystemRegistry = new MessageSystemRegistry(
-            {
-                messageSystem,
-                data: [
-                    {
-                        "": {
-                            schemaId: "foo",
-                            data: {
-                                bar: true,
-                            },
-                        },
-                    },
-                    "",
-                ],
-                schemas: {
-                    foo: {
-                        id: "foo",
-                        type: "object",
-                        properties: {
-                            bar: {
-                                type: "boolean",
-                            },
+        const fastMessageSystem: MessageSystem = new MessageSystem({
+            webWorker: "",
+            dataDictionary: [
+                {
+                    "": {
+                        schemaId: "foo",
+                        data: {
+                            bar: true,
                         },
                     },
                 },
-            }
-        );
+                "",
+            ],
+            schemas: {
+                foo: {
+                    id: "foo",
+                    type: "object",
+                    properties: {
+                        bar: {
+                            type: "boolean",
+                        },
+                    },
+                },
+            },
+        });
 
         const formInstance: any = mount(
-            <BareForm {...formProps} messageSystemRegistry={fastMessageSystemRegistry} />
+            <BareForm {...formProps} messageSystem={fastMessageSystem} />
         );
 
         /* tslint:disable-next-line */
-        fastMessageSystemRegistry["register"].forEach((registeredItem: Register) => {
+        fastMessageSystem["register"].forEach((registeredItem: Register) => {
             registeredItem.onMessage({
                 data: {
                     type: MessageSystemType.initialize,
@@ -372,46 +308,38 @@ describe("Form", () => {
         expect(formInstance.find("CheckboxControl")).toHaveLength(1);
     });
     test("should show a textarea if the schema contains a property which is a string", () => {
-        const onMessageCallbackfn: any = jest.fn();
-        const postMessageCallbackfn: any = jest.fn();
-        const messageSystem: any = {
-            onmessage: onMessageCallbackfn,
-            postMessage: postMessageCallbackfn,
-        };
-        const fastMessageSystemRegistry: MessageSystemRegistry = new MessageSystemRegistry(
-            {
-                messageSystem,
-                data: [
-                    {
-                        "": {
-                            schemaId: "foo",
-                            data: {
-                                bar: "hello world",
-                            },
-                        },
-                    },
-                    "",
-                ],
-                schemas: {
-                    foo: {
-                        id: "foo",
-                        type: "object",
-                        properties: {
-                            bar: {
-                                type: "string",
-                            },
+        const fastMessageSystem: MessageSystem = new MessageSystem({
+            webWorker: "",
+            dataDictionary: [
+                {
+                    "": {
+                        schemaId: "foo",
+                        data: {
+                            bar: "hello world",
                         },
                     },
                 },
-            }
-        );
+                "",
+            ],
+            schemas: {
+                foo: {
+                    id: "foo",
+                    type: "object",
+                    properties: {
+                        bar: {
+                            type: "string",
+                        },
+                    },
+                },
+            },
+        });
 
         const formInstance: any = mount(
-            <BareForm {...formProps} messageSystemRegistry={fastMessageSystemRegistry} />
+            <BareForm {...formProps} messageSystem={fastMessageSystem} />
         );
 
         /* tslint:disable-next-line */
-        fastMessageSystemRegistry["register"].forEach((registeredItem: Register) => {
+        fastMessageSystem["register"].forEach((registeredItem: Register) => {
             registeredItem.onMessage({
                 data: {
                     type: MessageSystemType.initialize,
@@ -478,46 +406,38 @@ describe("Form", () => {
         expect(formInstance.find("TextareaControl")).toHaveLength(1);
     });
     test("should show a numberfield if the schema contains a property which is a number", () => {
-        const onMessageCallbackfn: any = jest.fn();
-        const postMessageCallbackfn: any = jest.fn();
-        const messageSystem: any = {
-            onmessage: onMessageCallbackfn,
-            postMessage: postMessageCallbackfn,
-        };
-        const fastMessageSystemRegistry: MessageSystemRegistry = new MessageSystemRegistry(
-            {
-                messageSystem,
-                data: [
-                    {
-                        "": {
-                            schemaId: "foo",
-                            data: {
-                                bar: 42,
-                            },
-                        },
-                    },
-                    "",
-                ],
-                schemas: {
-                    foo: {
-                        id: "foo",
-                        type: "object",
-                        properties: {
-                            bar: {
-                                type: "number",
-                            },
+        const fastMessageSystem: MessageSystem = new MessageSystem({
+            webWorker: "",
+            dataDictionary: [
+                {
+                    "": {
+                        schemaId: "foo",
+                        data: {
+                            bar: 42,
                         },
                     },
                 },
-            }
-        );
+                "",
+            ],
+            schemas: {
+                foo: {
+                    id: "foo",
+                    type: "object",
+                    properties: {
+                        bar: {
+                            type: "number",
+                        },
+                    },
+                },
+            },
+        });
 
         const formInstance: any = mount(
-            <BareForm {...formProps} messageSystemRegistry={fastMessageSystemRegistry} />
+            <BareForm {...formProps} messageSystem={fastMessageSystem} />
         );
 
         /* tslint:disable-next-line */
-        fastMessageSystemRegistry["register"].forEach((registeredItem: Register) => {
+        fastMessageSystem["register"].forEach((registeredItem: Register) => {
             registeredItem.onMessage({
                 data: {
                     type: MessageSystemType.initialize,
@@ -584,47 +504,39 @@ describe("Form", () => {
         expect(formInstance.find("NumberFieldControl")).toHaveLength(1);
     });
     test("should show a select if the schema contains a property which is an enum", () => {
-        const onMessageCallbackfn: any = jest.fn();
-        const postMessageCallbackfn: any = jest.fn();
-        const messageSystem: any = {
-            onmessage: onMessageCallbackfn,
-            postMessage: postMessageCallbackfn,
-        };
-        const fastMessageSystemRegistry: MessageSystemRegistry = new MessageSystemRegistry(
-            {
-                messageSystem,
-                data: [
-                    {
-                        "": {
-                            schemaId: "foo",
-                            data: {
-                                bar: 42,
-                            },
-                        },
-                    },
-                    "",
-                ],
-                schemas: {
-                    foo: {
-                        id: "foo",
-                        type: "object",
-                        properties: {
-                            bar: {
-                                type: "number",
-                                enum: [42, 24],
-                            },
+        const fastMessageSystem: MessageSystem = new MessageSystem({
+            webWorker: "",
+            dataDictionary: [
+                {
+                    "": {
+                        schemaId: "foo",
+                        data: {
+                            bar: 42,
                         },
                     },
                 },
-            }
-        );
+                "",
+            ],
+            schemas: {
+                foo: {
+                    id: "foo",
+                    type: "object",
+                    properties: {
+                        bar: {
+                            type: "number",
+                            enum: [42, 24],
+                        },
+                    },
+                },
+            },
+        });
 
         const formInstance: any = mount(
-            <BareForm {...formProps} messageSystemRegistry={fastMessageSystemRegistry} />
+            <BareForm {...formProps} messageSystem={fastMessageSystem} />
         );
 
         /* tslint:disable-next-line */
-        fastMessageSystemRegistry["register"].forEach((registeredItem: Register) => {
+        fastMessageSystem["register"].forEach((registeredItem: Register) => {
             registeredItem.onMessage({
                 data: {
                     type: MessageSystemType.initialize,
@@ -694,47 +606,39 @@ describe("Form", () => {
         expect(formInstance.find("SelectControl")).toHaveLength(1);
     });
     test("should show a display if the schema contains a property which is a const", () => {
-        const onMessageCallbackfn: any = jest.fn();
-        const postMessageCallbackfn: any = jest.fn();
-        const messageSystem: any = {
-            onmessage: onMessageCallbackfn,
-            postMessage: postMessageCallbackfn,
-        };
-        const fastMessageSystemRegistry: MessageSystemRegistry = new MessageSystemRegistry(
-            {
-                messageSystem,
-                data: [
-                    {
-                        "": {
-                            schemaId: "foo",
-                            data: {
-                                bar: 42,
-                                const: 42,
-                            },
-                        },
-                    },
-                    "",
-                ],
-                schemas: {
-                    foo: {
-                        id: "foo",
-                        type: "object",
-                        properties: {
-                            bar: {
-                                type: "number",
-                            },
+        const fastMessageSystem: MessageSystem = new MessageSystem({
+            webWorker: "",
+            dataDictionary: [
+                {
+                    "": {
+                        schemaId: "foo",
+                        data: {
+                            bar: 42,
+                            const: 42,
                         },
                     },
                 },
-            }
-        );
+                "",
+            ],
+            schemas: {
+                foo: {
+                    id: "foo",
+                    type: "object",
+                    properties: {
+                        bar: {
+                            type: "number",
+                        },
+                    },
+                },
+            },
+        });
 
         const formInstance: any = mount(
-            <BareForm {...formProps} messageSystemRegistry={fastMessageSystemRegistry} />
+            <BareForm {...formProps} messageSystem={fastMessageSystem} />
         );
 
         /* tslint:disable-next-line */
-        fastMessageSystemRegistry["register"].forEach((registeredItem: Register) => {
+        fastMessageSystem["register"].forEach((registeredItem: Register) => {
             registeredItem.onMessage({
                 data: {
                     type: MessageSystemType.initialize,
@@ -803,46 +707,38 @@ describe("Form", () => {
         expect(formInstance.find("DisplayControl")).toHaveLength(1);
     });
     test("should show a button if the schema contains a property which is null", () => {
-        const onMessageCallbackfn: any = jest.fn();
-        const postMessageCallbackfn: any = jest.fn();
-        const messageSystem: any = {
-            onmessage: onMessageCallbackfn,
-            postMessage: postMessageCallbackfn,
-        };
-        const fastMessageSystemRegistry: MessageSystemRegistry = new MessageSystemRegistry(
-            {
-                messageSystem,
-                data: [
-                    {
-                        "": {
-                            schemaId: "foo",
-                            data: {
-                                bar: null,
-                            },
-                        },
-                    },
-                    "",
-                ],
-                schemas: {
-                    foo: {
-                        id: "foo",
-                        type: "object",
-                        properties: {
-                            bar: {
-                                type: "null",
-                            },
+        const fastMessageSystem: MessageSystem = new MessageSystem({
+            webWorker: "",
+            dataDictionary: [
+                {
+                    "": {
+                        schemaId: "foo",
+                        data: {
+                            bar: null,
                         },
                     },
                 },
-            }
-        );
+                "",
+            ],
+            schemas: {
+                foo: {
+                    id: "foo",
+                    type: "object",
+                    properties: {
+                        bar: {
+                            type: "null",
+                        },
+                    },
+                },
+            },
+        });
 
         const formInstance: any = mount(
-            <BareForm {...formProps} messageSystemRegistry={fastMessageSystemRegistry} />
+            <BareForm {...formProps} messageSystem={fastMessageSystem} />
         );
 
         /* tslint:disable-next-line */
-        fastMessageSystemRegistry["register"].forEach((registeredItem: Register) => {
+        fastMessageSystem["register"].forEach((registeredItem: Register) => {
             registeredItem.onMessage({
                 data: {
                     type: MessageSystemType.initialize,
@@ -909,49 +805,41 @@ describe("Form", () => {
         expect(formInstance.find("ButtonControl")).toHaveLength(1);
     });
     test("should show an array if the schema contains a property which is an array", () => {
-        const onMessageCallbackfn: any = jest.fn();
-        const postMessageCallbackfn: any = jest.fn();
-        const messageSystem: any = {
-            onmessage: onMessageCallbackfn,
-            postMessage: postMessageCallbackfn,
-        };
-        const fastMessageSystemRegistry: MessageSystemRegistry = new MessageSystemRegistry(
-            {
-                messageSystem,
-                data: [
-                    {
-                        "": {
-                            schemaId: "foo",
-                            data: {
-                                bar: [],
-                            },
+        const fastMessageSystem: MessageSystem = new MessageSystem({
+            webWorker: "",
+            dataDictionary: [
+                {
+                    "": {
+                        schemaId: "foo",
+                        data: {
+                            bar: [],
                         },
                     },
-                    "",
-                ],
-                schemas: {
-                    foo: {
-                        id: "foo",
-                        type: "object",
-                        properties: {
-                            bar: {
-                                type: "array",
-                                items: {
-                                    type: "string",
-                                },
+                },
+                "",
+            ],
+            schemas: {
+                foo: {
+                    id: "foo",
+                    type: "object",
+                    properties: {
+                        bar: {
+                            type: "array",
+                            items: {
+                                type: "string",
                             },
                         },
                     },
                 },
-            }
-        );
+            },
+        });
 
         const formInstance: any = mount(
-            <BareForm {...formProps} messageSystemRegistry={fastMessageSystemRegistry} />
+            <BareForm {...formProps} messageSystem={fastMessageSystem} />
         );
 
         /* tslint:disable-next-line */
-        fastMessageSystemRegistry["register"].forEach((registeredItem: Register) => {
+        fastMessageSystem["register"].forEach((registeredItem: Register) => {
             registeredItem.onMessage({
                 data: {
                     type: MessageSystemType.initialize,
@@ -1027,47 +915,39 @@ describe("Form", () => {
         expect(formInstance.find("ArrayControl")).toHaveLength(1);
     });
     test("should not show breadcrumbs if the navigation location is at the root level", () => {
-        const onMessageCallbackfn: any = jest.fn();
-        const postMessageCallbackfn: any = jest.fn();
-        const messageSystem: any = {
-            onmessage: onMessageCallbackfn,
-            postMessage: postMessageCallbackfn,
-        };
-        const fastMessageSystemRegistry: MessageSystemRegistry = new MessageSystemRegistry(
-            {
-                messageSystem,
-                data: [
-                    {
-                        abc: {
-                            schemaId: "foo",
-                            data: {
-                                bar: {},
-                            },
-                        },
-                    },
-                    "abc",
-                ],
-                schemas: {
-                    foo: {
-                        id: "foo",
-                        type: "object",
-                        properties: {
-                            bar: {
-                                type: "object",
-                                properties: {},
-                            },
+        const fastMessageSystem: MessageSystem = new MessageSystem({
+            webWorker: "",
+            dataDictionary: [
+                {
+                    abc: {
+                        schemaId: "foo",
+                        data: {
+                            bar: {},
                         },
                     },
                 },
-            }
-        );
+                "abc",
+            ],
+            schemas: {
+                foo: {
+                    id: "foo",
+                    type: "object",
+                    properties: {
+                        bar: {
+                            type: "object",
+                            properties: {},
+                        },
+                    },
+                },
+            },
+        });
 
         const formInstance: any = mount(
-            <BareForm {...formProps} messageSystemRegistry={fastMessageSystemRegistry} />
+            <BareForm {...formProps} messageSystem={fastMessageSystem} />
         );
 
         /* tslint:disable-next-line */
-        fastMessageSystemRegistry["register"].forEach((registeredItem: Register) => {
+        fastMessageSystem["register"].forEach((registeredItem: Register) => {
             registeredItem.onMessage({
                 data: {
                     type: MessageSystemType.initialize,
@@ -1137,47 +1017,39 @@ describe("Form", () => {
         expect(formInstance.find("li")).toHaveLength(0);
     });
     test("should show breadcrumbs if the navigation location is not at the root level", () => {
-        const onMessageCallbackfn: any = jest.fn();
-        const postMessageCallbackfn: any = jest.fn();
-        const messageSystem: any = {
-            onmessage: onMessageCallbackfn,
-            postMessage: postMessageCallbackfn,
-        };
-        const fastMessageSystemRegistry: MessageSystemRegistry = new MessageSystemRegistry(
-            {
-                messageSystem,
-                data: [
-                    {
-                        abc: {
-                            schemaId: "foo",
-                            data: {
-                                bar: {},
-                            },
-                        },
-                    },
-                    "abc",
-                ],
-                schemas: {
-                    foo: {
-                        id: "foo",
-                        type: "object",
-                        properties: {
-                            bar: {
-                                type: "object",
-                                properties: {},
-                            },
+        const fastMessageSystem: MessageSystem = new MessageSystem({
+            webWorker: "",
+            dataDictionary: [
+                {
+                    abc: {
+                        schemaId: "foo",
+                        data: {
+                            bar: {},
                         },
                     },
                 },
-            }
-        );
+                "abc",
+            ],
+            schemas: {
+                foo: {
+                    id: "foo",
+                    type: "object",
+                    properties: {
+                        bar: {
+                            type: "object",
+                            properties: {},
+                        },
+                    },
+                },
+            },
+        });
 
         const formInstance: any = mount(
-            <BareForm {...formProps} messageSystemRegistry={fastMessageSystemRegistry} />
+            <BareForm {...formProps} messageSystem={fastMessageSystem} />
         );
 
         /* tslint:disable-next-line */
-        fastMessageSystemRegistry["register"].forEach((registeredItem: Register) => {
+        fastMessageSystem["register"].forEach((registeredItem: Register) => {
             registeredItem.onMessage({
                 data: {
                     type: MessageSystemType.initialize,
@@ -1247,45 +1119,37 @@ describe("Form", () => {
         expect(formInstance.find("li")).toHaveLength(2);
     });
     test("should show a custom form control when encountering a formControlId in the schema instead of the default control if one has been passed", () => {
-        const onMessageCallbackfn: any = jest.fn();
-        const postMessageCallbackfn: any = jest.fn();
-        const messageSystem: any = {
-            onmessage: onMessageCallbackfn,
-            postMessage: postMessageCallbackfn,
-        };
-        const fastMessageSystemRegistry: MessageSystemRegistry = new MessageSystemRegistry(
-            {
-                messageSystem,
-                data: [
-                    {
-                        abc: {
-                            schemaId: "foo",
-                            data: {
-                                bar: true,
-                            },
-                        },
-                    },
-                    "abc",
-                ],
-                schemas: {
-                    foo: {
-                        id: "foo",
-                        formControlId: "foobar",
-                        type: "object",
-                        properties: {
-                            bar: {
-                                type: "boolean",
-                            },
+        const fastMessageSystem: MessageSystem = new MessageSystem({
+            webWorker: "",
+            dataDictionary: [
+                {
+                    abc: {
+                        schemaId: "foo",
+                        data: {
+                            bar: true,
                         },
                     },
                 },
-            }
-        );
+                "abc",
+            ],
+            schemas: {
+                foo: {
+                    id: "foo",
+                    formControlId: "foobar",
+                    type: "object",
+                    properties: {
+                        bar: {
+                            type: "boolean",
+                        },
+                    },
+                },
+            },
+        });
 
         const formInstance: any = mount(
             <BareForm
                 {...formProps}
-                messageSystemRegistry={fastMessageSystemRegistry}
+                messageSystem={fastMessageSystem}
                 controls={[
                     new StandardControlPlugin({
                         id: "foobar",
@@ -1298,7 +1162,7 @@ describe("Form", () => {
         );
 
         /* tslint:disable-next-line */
-        fastMessageSystemRegistry["register"].forEach((registeredItem: Register) => {
+        fastMessageSystem["register"].forEach((registeredItem: Register) => {
             registeredItem.onMessage({
                 data: {
                     type: MessageSystemType.initialize,
@@ -1367,44 +1231,36 @@ describe("Form", () => {
         expect(formInstance.find(".test")).toHaveLength(1);
     });
     test("should show a custom form control as a type instead of the default control if one has been passed", () => {
-        const onMessageCallbackfn: any = jest.fn();
-        const postMessageCallbackfn: any = jest.fn();
-        const messageSystem: any = {
-            onmessage: onMessageCallbackfn,
-            postMessage: postMessageCallbackfn,
-        };
-        const fastMessageSystemRegistry: MessageSystemRegistry = new MessageSystemRegistry(
-            {
-                messageSystem,
-                data: [
-                    {
-                        abc: {
-                            schemaId: "foo",
-                            data: {
-                                bar: true,
-                            },
-                        },
-                    },
-                    "abc",
-                ],
-                schemas: {
-                    foo: {
-                        id: "foo",
-                        type: "object",
-                        properties: {
-                            bar: {
-                                type: "boolean",
-                            },
+        const fastMessageSystem: MessageSystem = new MessageSystem({
+            webWorker: "",
+            dataDictionary: [
+                {
+                    abc: {
+                        schemaId: "foo",
+                        data: {
+                            bar: true,
                         },
                     },
                 },
-            }
-        );
+                "abc",
+            ],
+            schemas: {
+                foo: {
+                    id: "foo",
+                    type: "object",
+                    properties: {
+                        bar: {
+                            type: "boolean",
+                        },
+                    },
+                },
+            },
+        });
 
         const formInstance: any = mount(
             <BareForm
                 {...formProps}
-                messageSystemRegistry={fastMessageSystemRegistry}
+                messageSystem={fastMessageSystem}
                 controls={[
                     new StandardControlPlugin({
                         type: ControlType.checkbox,
@@ -1417,7 +1273,7 @@ describe("Form", () => {
         );
 
         /* tslint:disable-next-line */
-        fastMessageSystemRegistry["register"].forEach((registeredItem: Register) => {
+        fastMessageSystem["register"].forEach((registeredItem: Register) => {
             registeredItem.onMessage({
                 data: {
                     type: MessageSystemType.initialize,
@@ -1485,44 +1341,36 @@ describe("Form", () => {
         expect(formInstance.find(".test")).toHaveLength(1);
     });
     test("should show a custom form control as all types instead of the default controls if one has been passed", () => {
-        const onMessageCallbackfn: any = jest.fn();
-        const postMessageCallbackfn: any = jest.fn();
-        const messageSystem: any = {
-            onmessage: onMessageCallbackfn,
-            postMessage: postMessageCallbackfn,
-        };
-        const fastMessageSystemRegistry: MessageSystemRegistry = new MessageSystemRegistry(
-            {
-                messageSystem,
-                data: [
-                    {
-                        abc: {
-                            schemaId: "foo",
-                            data: {
-                                bar: true,
-                            },
-                        },
-                    },
-                    "abc",
-                ],
-                schemas: {
-                    foo: {
-                        id: "foo",
-                        type: "object",
-                        properties: {
-                            bar: {
-                                type: "boolean",
-                            },
+        const fastMessageSystem: MessageSystem = new MessageSystem({
+            webWorker: "",
+            dataDictionary: [
+                {
+                    abc: {
+                        schemaId: "foo",
+                        data: {
+                            bar: true,
                         },
                     },
                 },
-            }
-        );
+                "abc",
+            ],
+            schemas: {
+                foo: {
+                    id: "foo",
+                    type: "object",
+                    properties: {
+                        bar: {
+                            type: "boolean",
+                        },
+                    },
+                },
+            },
+        });
 
         const formInstance: any = mount(
             <BareForm
                 {...formProps}
-                messageSystemRegistry={fastMessageSystemRegistry}
+                messageSystem={fastMessageSystem}
                 controls={[
                     new StandardControlPlugin({
                         control: (config: any): React.ReactNode => {
@@ -1534,7 +1382,7 @@ describe("Form", () => {
         );
 
         /* tslint:disable-next-line */
-        fastMessageSystemRegistry["register"].forEach((registeredItem: Register) => {
+        fastMessageSystem["register"].forEach((registeredItem: Register) => {
             registeredItem.onMessage({
                 data: {
                     type: MessageSystemType.initialize,

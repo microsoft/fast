@@ -19,10 +19,7 @@ module.exports = {
             __dirname,
             "../../node_modules/focus-visible/dist/focus-visible.min.js"
         ),
-        "message-system": path.resolve(
-            __dirname,
-            "./dist/webworker/message-system/index.js"
-        ),
+        "message-system": path.resolve(__dirname, "./dist/message-system.min.js"),
     },
     output: {
         path: outDir,
