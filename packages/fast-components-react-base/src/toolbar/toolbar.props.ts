@@ -20,6 +20,7 @@ export interface ToolbarHandledProps extends ToolbarManagedClasses {
 
     /**
      * The index of the child which gets focused when the toolbar initially gets focus
+     * If unset the toolbar will focus on the first valid focusable child.
      */
     initialFocusIndex?: number;
 
@@ -41,7 +42,7 @@ export interface ToolbarHandledProps extends ToolbarManagedClasses {
 
     /**
      * Whether child items are focusable when disabled.
-     * Detecting disabled elements is based onelements having a "aria-disabled" tag set to true when disabled
+     * Detecting disabled elements is based on elements having a "aria-disabled" tag set to true when disabled
      * default is true
      */
     allowFocusOnDisabledItems?: boolean;

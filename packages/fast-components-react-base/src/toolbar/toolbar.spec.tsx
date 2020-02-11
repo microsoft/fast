@@ -21,7 +21,7 @@ describe("context menu", (): void => {
         expect(`${DisplayNamePrefix}${(Toolbar as any).name}`).toBe(Toolbar.displayName);
     });
 
-    test("should have correct role attribute 'menu'", () => {
+    test("should have correct role attribute 'toolbar'", () => {
         const rendered: ShallowWrapper = shallow(<Toolbar />);
         expect(rendered.first().prop("role")).toBe("toolbar");
     });
