@@ -167,97 +167,83 @@ describe("context menu", (): void => {
         expect(rendered.state("focusIndex")).toBe(1);
     });
 
-    // test("should place focus any child with the proper role", (): void => {
-    //     const children: React.ReactNode[] = Object.keys(ContextMenuItemRole).map(
-    //         (key: string): React.ReactNode => {
-    //             return (
-    //                 <div key={key} role={ContextMenuItemRole[key]}>
-    //                     {key}
-    //                 </div>
-    //             );
-    //         }
-    //     );
+    test("should place focus any child with the proper role", (): void => {
+        const children: React.ReactNode[] = Toolbar.DefaultFocusableRoles.map(
+            (key: string): React.ReactNode => {
+                return (
+                    <button key={key} role={key}>
+                        {key}
+                    </button>
+                );
+            }
+        );
 
-    //     const rendered: any = mount(<ContextMenu>{children}</ContextMenu>);
+        const rendered: any = mount(<Toolbar>{children}</Toolbar>);
 
-    //     expect(rendered.state("focusIndex")).toBe(0);
+        expect(rendered.state("focusIndex")).toBe(0);
 
-    //     rendered.childAt(0).simulate("keydown", { keyCode: keyCodeArrowDown });
-    //     expect(rendered.state("focusIndex")).toBe(1);
+        const itemCount: number = Toolbar.DefaultFocusableRoles.length - 1;
+        for (let i: number = 0; i < itemCount; i++) {
+            rendered.childAt(0).simulate("keydown", { keyCode: keyCodeArrowRight });
+            expect(rendered.state("focusIndex")).toBe(i + 1);
+        }
+    });
 
-    //     rendered.childAt(0).simulate("keydown", { keyCode: keyCodeArrowDown });
-    //     expect(rendered.state("focusIndex")).toBe(2);
-    // });
+    test("should not place focus any child without a the proper role", (): void => {
+        const rendered: any = mount(
+            <Toolbar>
+                <button />
+                <button role="menuitem">two</button>
+                <button />
+                <button role="menuitem">three</button>
+                <button />
+                <button role="menuitem">four</button>
+                <button />
+            </Toolbar>
+        );
 
-    // test("should not place focus any child without a the proper role", (): void => {
-    //     const rendered: any = mount(
-    //         <ContextMenu>
-    //             <div />
-    //             <div role="menuitem">two</div>
-    //             <div />
-    //             <div role="menuitem">three</div>
-    //             <div />
-    //             <div role="menuitem">four</div>
-    //             <div />
-    //         </ContextMenu>
-    //     );
+        expect(rendered.state("focusIndex")).toBe(1);
 
-    //     expect(rendered.state("focusIndex")).toBe(1);
+        rendered.childAt(0).simulate("keydown", { keyCode: keyCodeArrowRight });
+        expect(rendered.state("focusIndex")).toBe(3);
 
-    //     rendered.childAt(0).simulate("keydown", { keyCode: keyCodeArrowDown });
-    //     expect(rendered.state("focusIndex")).toBe(3);
+        rendered.childAt(0).simulate("keydown", { keyCode: keyCodeArrowRight });
+        expect(rendered.state("focusIndex")).toBe(5);
+    });
 
-    //     rendered.childAt(0).simulate("keydown", { keyCode: keyCodeArrowDown });
-    //     expect(rendered.state("focusIndex")).toBe(5);
-    // });
+    test("should not call focus on mount when enableAutoFocus is false", (): void => {
+        const spy: jest.SpyInstance = jest.spyOn(Toolbar.prototype, "focus" as any);
 
-    // test("should not call focus on mount when enableAutoFocus is false", (): void => {
-    //     const spy: jest.SpyInstance = jest.spyOn(ContextMenu.prototype, "focus" as any);
+        const rendered: any = mount(
+            <Toolbar enableAutoFocus={false}>
+                <div role="menuitem">two</div>
+                <div role="menuitem">three</div>
+                <div role="menuitem">four</div>
+            </Toolbar>
+        );
 
-    //     const rendered: any = mount(
-    //         <ContextMenu enableAutoFocus={false}>
-    //             <div role="menuitem">two</div>
-    //             <div role="menuitem">three</div>
-    //             <div role="menuitem">four</div>
-    //         </ContextMenu>
-    //     );
+        const defaultRendered: any = mount(
+            <Toolbar>
+                <div role="menuitem">two</div>
+                <div role="menuitem">three</div>
+                <div role="menuitem">four</div>
+            </Toolbar>
+        );
 
-    //     const defaultRendered: any = mount(
-    //         <ContextMenu>
-    //             <div role="menuitem">two</div>
-    //             <div role="menuitem">three</div>
-    //             <div role="menuitem">four</div>
-    //         </ContextMenu>
-    //     );
+        expect(spy).toHaveBeenCalledTimes(0);
+    });
 
-    //     expect(spy).toHaveBeenCalledTimes(0);
-    // });
+    test("should call focus on mount when enableAutoFocus is true", (): void => {
+        const spy: jest.SpyInstance = jest.spyOn(Toolbar.prototype, "focus" as any);
 
-    // test("should call focus on mount when enableAutoFocus is true", (): void => {
-    //     const spy: jest.SpyInstance = jest.spyOn(ContextMenu.prototype, "focus" as any);
+        const rendered: any = mount(
+            <Toolbar enableAutoFocus={true}>
+                <div role="menuitem">two</div>
+                <div role="menuitem">three</div>
+                <div role="menuitem">four</div>
+            </Toolbar>
+        );
 
-    //     const rendered: any = mount(
-    //         <ContextMenu enableAutoFocus={true}>
-    //             <div role="menuitem">two</div>
-    //             <div role="menuitem">three</div>
-    //             <div role="menuitem">four</div>
-    //         </ContextMenu>
-    //     );
-
-    //     expect(spy).toHaveBeenCalledTimes(1);
-    // });
-
-    // test("Should accept a custom onKeyDown callback", (): void => {
-    //     const spy: jest.SpyInstance = jest.fn();
-    //     const rendered: any = mount(
-    //         <ContextMenu onKeyDown={spy as any}>
-    //             <div role="menuitem">One</div>
-    //             <div role="menuitem">two</div>
-    //             <div role="menuitem">three</div>
-    //             <div role="menuitem">four</div>
-    //         </ContextMenu>
-    //     );
-    //     rendered.simulate("keydown", {});
-    //     expect(spy).toHaveBeenCalledTimes(1);
-    // });
+        expect(spy).toHaveBeenCalledTimes(1);
+    });
 });
