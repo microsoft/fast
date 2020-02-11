@@ -2,7 +2,7 @@ import { ErrorObject } from "ajv";
 import { SingleLineControlPlugin, StandardControlPlugin } from "./templates";
 import { ControlContext } from "./templates/types";
 import { TreeNavigationConfig } from "../message-system/navigation.props";
-import { MessageSystemRegistry } from "../message-system-registry";
+import { MessageSystem } from "../message-system";
 
 /**
  * Form class name contract
@@ -26,15 +26,9 @@ export type FormTag = "form" | "div";
 export interface FormProps {
     /**
      * The message system
-     * used for sending data to the message system
+     * used for sending and receiving data to the message system
      */
-    messageSystem: void | Worker;
-
-    /**
-     * The message system registry
-     * used to register information about this component to the message system
-     */
-    messageSystemRegistry: MessageSystemRegistry;
+    messageSystem: MessageSystem;
 
     /**
      * Display the validation inline
