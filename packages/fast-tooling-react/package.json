@@ -20,7 +20,7 @@
   "scripts": {
     "build": "tsc -p ./tsconfig.build.json",
     "build:app": "webpack --progress --mode=production",
-    "build:message-system": "tsc -p ./tsconfig.build.message-system.json",
+    "build:message-system": "webpack --config webpack.message-system.config.js",
     "clean:dist": "node ../../build/clean.js dist",
     "prepare": "yarn clean:dist && yarn build && yarn build:message-system",
     "prettier": "prettier --config ../../.prettierrc --write \"**/*.{ts,tsx}\"",
