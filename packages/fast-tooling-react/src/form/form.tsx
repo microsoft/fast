@@ -35,10 +35,10 @@ import styles from "./form.style";
 import {
     MessageSystemDataTypeAction,
     MessageSystemNavigationTypeAction,
-    MessageSystemType,
-} from "../message-system/message-system.props";
+} from "../message-system/message-system.utilities.props";
+import { MessageSystemType } from "../message-system/types";
 import { classNames } from "@microsoft/fast-web-utilities";
-import { Register } from "../message-system-registry/message-system-registry.props";
+import { Register } from "../message-system/message-system.props";
 
 /**
  * Schema form component definition
@@ -80,7 +80,7 @@ class Form extends React.Component<
         [key: string]: React.ComponentClass | React.FunctionComponent;
     } = {};
 
-    private messageSystemRegistryConfig: Register;
+    private messageSystemConfig: Register;
 
     constructor(props: FormProps & ManagedClasses<FormClassNameContract>) {
         super(props);
@@ -89,12 +89,12 @@ class Form extends React.Component<
 
         this.updateControls();
 
-        this.messageSystemRegistryConfig = {
+        this.messageSystemConfig = {
             onMessage: this.handleMessageSystem,
         };
 
-        if ((window as any).Worker && props.messageSystemRegistry !== undefined) {
-            props.messageSystemRegistry.add(this.messageSystemRegistryConfig);
+        if (props.messageSystem !== undefined) {
+            props.messageSystem.add(this.messageSystemConfig);
         }
 
         this.state = {
@@ -115,8 +115,8 @@ class Form extends React.Component<
     }
 
     public componentWillUnmount(): void {
-        if ((window as any).Worker && this.props.messageSystemRegistry !== undefined) {
-            this.props.messageSystemRegistry.remove(this.messageSystemRegistryConfig);
+        if (this.props.messageSystem !== undefined) {
+            this.props.messageSystem.remove(this.messageSystemConfig);
         }
     }
 
