@@ -5,10 +5,7 @@ const outDir = path.resolve(__dirname, "./dist");
 
 module.exports = {
     entry: {
-        "message-system": path.resolve(
-            __dirname,
-            "./dist/webworker/message-system/webworker.js"
-        ),
+        "message-system": path.resolve(__dirname, "./src/message-system/webworker.ts"),
     },
     output: {
         path: outDir,
