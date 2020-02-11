@@ -60,7 +60,7 @@ module.exports = (env, args) => {
         },
         plugins: [
             new HtmlWebpackPlugin({
-                title: "FAST-DNA Documentation site",
+                title: "FAST-DNA Documentation",
                 contentBase: outDir,
                 meta: { viewport: "width=device-width, initial-scale=1, shrink-to-fit=no" }
             }),
