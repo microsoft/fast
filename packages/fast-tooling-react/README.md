@@ -8,8 +8,7 @@ The tooling available in FAST Tooling React can be used together to create UI fo
 - [Installation](#installation)
 - [Concepts](#concepts)
     - [Message System](#message-system)
-        - [Sending messages](#sending-messages)
-        - [Recieving messages](#recieving-messages)
+        - [Sending and receiving messages](#sending-and-receiving-messages)
     - [JSON Schema](#json-schema)
     - [Data structures for React Children](#data-structures-for-react-children)
 - [Data utilities](#data-utilities)
@@ -70,24 +69,19 @@ The FAST Tooling can be used in any combination for the following scenarios:
 
 ### Message system
 
-FAST tooling components rely on a [web worker](https://developer.mozilla.org/en-US/docs/Web/API/Worker) called the message system.
+FAST tooling components rely on including a secondary script which contains a [web worker](https://developer.mozilla.org/en-US/docs/Web/API/Worker) called the message system.
 
 This worker performs all of the data manipulation and provides a navigational data structure based on data passed.
 
-#### Sending messages
+#### Sending and receiving messages
 
-The message system sends messages via the web worker which is intended to be passed to individual components which can then use the Worker `postMessage` to send messages to update data and navigation. For the components provided in this package that will happen internal to the component.
-
-#### Recieving messages
-
-The message system also comes with a registry, a secondary export called `MessageSystemRegistry`. This will need to be instantiated once, and the instance passed to each component that will opt in to the registry to receive messages.
+There is a secondary export, `MessageSystem`, which must be instantiated with the location on the server of the web worker. The file is located at `@microsoft/fast-tooling-react/message-system.min.js`. This is then passed to various components that are part of the tooling package to sync data and navigation.
 
 Example implementation:
 ```js
-import { MessageSystemRegistry } from "@microsoft/fast-tooling-react";
+import { MessageSystem } from "@microsoft/fast-tooling-react";
 
-let fastMessageSystemWebWorker;
-let fastMessageSystemRegistry;
+let fastMessageSystem;
 
 // Your JSON schema
 const mySchema = {
@@ -97,13 +91,13 @@ const mySchema = {
 
 if (window.Worker) {
 
-    // this file is available from @microsoft/fast-tooling-react/webworker/message-system/index.js
-    fastMessageSystemWebWorker = new Worker("message-system.js");
-    fastMessageSystemRegistry = new MessageSystemRegistry({
-        messageSystem: fastMessageSystemWebWorker,
+    fastMessageSystem = new MessageSystem({
+        // the location of the file on the server
+        // if you are using webpack, include it in the entry section of the config
+        webWorker: "message-system.min.js",
 
-        // your data dictionary (you may only need a single item)
-        data: [
+        // your data dictionary to initialize with (you may only need a single item)
+        dataDictionary: [
             {
                 dataDictionaryKey1: {
                     schemaId: mySchema.id,
@@ -963,44 +957,17 @@ export class Example extends React.Component {
 
 ## Form
 
-The required properties are the `messageSystem` and `messageSystemRegistry`.
+The required property is the `messageSystem`, see the [message system](#message-system) section for details on setting this up.
 
 Example:
 ```jsx
-import { Form, MessageSystemRegistry } from "@microsoft/fast-tooling-react";
-
-const fastMessageSystem;
-const fastMessageSystemRegistry
-
-if ((window as any).Worker) {
-    fastMessageSystemWebWorker = new Worker("message-system.js");
-    fastMessageSystemRegistry = new MessageSystemRegistry({
-        messageSystem: fastMessageSystemWebWorker,
-        data: [
-            {
-                foo: {
-                    schemaId: "mySchema",
-                    data: {},
-                },
-            },
-            "foo",
-        ],
-        schemas: {
-            "mySchema": {
-                id: "mySchema",
-                type: "object"
-            },
-        },
-    });
-    fastMessageSystemRegistry.add({ onMessage: this.handleMessageSystem });
-}
+import { Form } from "@microsoft/fast-tooling-react";
 
 /**
  * Add to your render function
  */
 <Form
     messageSystem={fastMessageSystem}
-    messageSystemRegistry={fastMessageSystemRegistry}
 />
 ```
 
@@ -1038,8 +1005,7 @@ JSX:
 ```jsx
 <Form
     messageSystem={fastMessageSystem}
-    messageSystemRegistry={fastMessageSystemRegistry}
-    controlPlugins={[
+    controls={[
         new StandardControlPlugin({
             id: "foo",
             control: (config) => {
@@ -1059,8 +1025,7 @@ Example type plugin:
 ```jsx
 <Form
     messageSystem={fastMessageSystem}
-    messageSystemRegistry={fastMessageSystemRegistry}
-    controlPlugins={[
+    controls={[
         new StandardControlPlugin({
             type: ControlType.textarea,
             control: (config) => {
@@ -1120,8 +1085,7 @@ import { ControlType, TextareaControl } from "@microsoft/fast-tooling-react";
 
 <Form
     messageSystem={fastMessageSystem}
-    messageSystemRegistry={fastMessageSystemRegistry}
-    controlPlugins={[
+    controls={[
         new StandardControlPlugin({
             type: ControlType.textarea,
             control: (config) => {
@@ -1142,8 +1106,7 @@ Example of a replacement for all controls, using the component for the default c
 ```jsx
 <Form
     messageSystem={fastMessageSystem}
-    messageSystemRegistry={fastMessageSystemRegistry}
-    controlPlugins={[
+    controls={[
         new StandardControlPlugin({
             control: (config) => {
                 return (
