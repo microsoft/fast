@@ -577,4 +577,18 @@ describe("select", (): void => {
             managedClasses.select_menu__open
         );
     });
+
+    test("Trigger click events marked with preventDefault", (): void => {
+        const rendered: any = mount(
+            <Select managedClasses={managedClasses}>
+                {itemA}
+                {itemB}
+                {itemC}
+            </Select>
+        );
+
+        const preventDefault: jest.Mock = jest.fn();
+        rendered.simulate("click", { preventDefault });
+        expect(preventDefault).toHaveBeenCalledTimes(1);
+    });
 });
