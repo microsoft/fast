@@ -85,7 +85,7 @@ describe("select", (): void => {
         expect(rendered.first().prop("tabIndex")).toEqual(-1);
     });
 
-    test("default trigger aria tags are set correctly", (): void => {
+    test("default trigger aria tags are set", (): void => {
         const rendered: any = mount(
             <Select selectedItems={["a"]} labelledBy="testLabellledBy">
                 {itemA}
@@ -99,7 +99,6 @@ describe("select", (): void => {
         const trigger: any = rendered.find("button");
         expect(trigger.prop("aria-expanded")).toEqual(false);
         expect(trigger.prop("aria-haspopup")).toEqual("listbox");
-        expect(trigger.prop("aria-live")).toEqual("polite");
         expect(trigger.prop("aria-labelledby").split(" ")).toEqual([
             "testLabellledBy",
             rendered.instance().triggerId,
