@@ -8,8 +8,7 @@ import {
     FormChildOptionItem,
 } from "../../src/form/types";
 import * as testConfigs from "./form/";
-import { MessageSystemType } from "../../src/message-system/message-system.props";
-import { MessageSystemRegistry } from "../../src/message-system-registry";
+import { MessageSystem } from "../../src/message-system";
 
 export type componentDataOnChange = (e: React.ChangeEvent<HTMLFormElement>) => void;
 
@@ -35,8 +34,7 @@ const designSystemDefaults: any = {
     brandColor: "#0078D4",
 };
 
-let fastMessageSystemWebWorker: Worker | void;
-let fastMessageSystemRegistry: MessageSystemRegistry;
+let fastMessageSystem: MessageSystem;
 
 class FormAndNavigationTestPage extends React.Component<{}, FormTestPageState> {
     /**
@@ -52,10 +50,9 @@ class FormAndNavigationTestPage extends React.Component<{}, FormTestPageState> {
         const exampleData: any = getDataFromSchema(testConfigs.textField.schema);
 
         if ((window as any).Worker) {
-            fastMessageSystemWebWorker = new Worker("message-system.js");
-            fastMessageSystemRegistry = new MessageSystemRegistry({
-                messageSystem: fastMessageSystemWebWorker,
-                data: [
+            fastMessageSystem = new MessageSystem({
+                webWorker: "message-system.js",
+                dataDictionary: [
                     {
                         foo: {
                             schemaId: testConfigs.textField.schema.id,
@@ -201,8 +198,7 @@ class FormAndNavigationTestPage extends React.Component<{}, FormTestPageState> {
 
     private coerceFormProps(): FormProps {
         const formProps: FormProps = {
-            messageSystem: fastMessageSystemWebWorker,
-            messageSystemRegistry: fastMessageSystemRegistry,
+            messageSystem: fastMessageSystem,
         };
 
         if (typeof this.state.defaultBrowserErrors === "boolean") {
@@ -248,14 +244,6 @@ class FormAndNavigationTestPage extends React.Component<{}, FormTestPageState> {
             schema: testConfigs[e.target.value].schema,
             data,
         });
-
-        if ((window as any).Worker) {
-            (fastMessageSystemWebWorker as Worker).postMessage({
-                type: MessageSystemType.initialize,
-                data,
-                schema: testConfigs[e.target.value].schema,
-            });
-        }
     };
 
     /**
