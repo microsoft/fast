@@ -10,11 +10,7 @@ import {
 import { DesignSystemProvider } from "@microsoft/fast-jss-manager-react";
 import React from "react";
 import { getDataFromSchema } from "../../src/data-utilities";
-import {
-    MessageSystemDataTypeAction,
-    MessageSystemType,
-} from "../../src/message-system/message-system.props";
-import { MessageSystemRegistry } from "../../src/message-system-registry";
+import { MessageSystem, MessageSystemType } from "../../src/message-system";
 
 export type componentDataOnChange = (e: React.ChangeEvent<HTMLFormElement>) => void;
 
@@ -75,8 +71,7 @@ const dataSets: DataSet[] = [
     },
 ];
 
-let fastMessageSystemWebWorker: Worker | void;
-let fastMessageSystemRegistry: MessageSystemRegistry;
+let fastMessageSystem: MessageSystem;
 
 class FormTestPage extends React.Component<{}, FormTestPageState> {
     /**
@@ -112,10 +107,9 @@ class FormTestPage extends React.Component<{}, FormTestPageState> {
         const exampleData: any = getDataFromSchema(testConfigs.textField.schema);
 
         if ((window as any).Worker) {
-            fastMessageSystemWebWorker = new Worker("message-system.js");
-            fastMessageSystemRegistry = new MessageSystemRegistry({
-                messageSystem: fastMessageSystemWebWorker,
-                data: [
+            fastMessageSystem = new MessageSystem({
+                webWorker: "message-system.js",
+                dataDictionary: [
                     {
                         foo: {
                             schemaId: testConfigs.textField.schema.id,
@@ -128,7 +122,7 @@ class FormTestPage extends React.Component<{}, FormTestPageState> {
                     [testConfigs.textField.schema.id]: testConfigs.textField.schema,
                 },
             });
-            fastMessageSystemRegistry.add({ onMessage: this.handleMessageSystem });
+            fastMessageSystem.add({ onMessage: this.handleMessageSystem });
         }
 
         this.state = {
@@ -268,8 +262,7 @@ class FormTestPage extends React.Component<{}, FormTestPageState> {
 
     private coerceFormProps(): FormProps {
         const formProps: FormProps = {
-            messageSystem: fastMessageSystemWebWorker,
-            messageSystemRegistry: fastMessageSystemRegistry,
+            messageSystem: fastMessageSystem,
             controls: this.controlPlugins,
         };
 
@@ -346,8 +339,8 @@ class FormTestPage extends React.Component<{}, FormTestPageState> {
                 ? this.state.dataSet
                 : getDataFromSchema(testConfigs[e.target.value].schema);
 
-        if ((window as any).Worker && fastMessageSystemWebWorker) {
-            fastMessageSystemWebWorker.postMessage({
+        if ((window as any).Worker && fastMessageSystem) {
+            fastMessageSystem.postMessage({
                 type: MessageSystemType.initialize,
                 data: [
                     {

@@ -12,7 +12,6 @@ import {
     MessageSystemDataTypeAction,
     MessageSystemNavigationDictionaryTypeAction,
     MessageSystemNavigationTypeAction,
-    MessageSystemType,
     NavigationMessageOutgoing,
     RemoveDataMessageOutgoing,
     UpdateActiveIdDataDictionaryMessageIncoming,
@@ -20,8 +19,9 @@ import {
     UpdateActiveIdNavigationDictionaryMessageIncoming,
     UpdateActiveIdNavigationDictionaryMessageOutgoing,
     UpdateDataMessageOutgoing,
-} from "./message-system.props";
-import { getMessage } from "./message-system";
+} from "./message-system.utilities.props";
+import { MessageSystemType } from "../message-system/types";
+import { getMessage } from "./message-system.utilities";
 import { DataType } from "../data-utilities/types";
 import { Children, Data, DataDictionary } from "./data.props";
 import { SchemaDictionary } from "./schema.props";
