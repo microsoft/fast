@@ -38,7 +38,7 @@ export default {
         children: {
             title: "Children",
             type: "children",
-            formPluginId: "@microsoft/fast-components-react-base/context-menu/children",
+            formPluginId: "@microsoft/fast-components-react-base/toolbar/children",
             ids: [],
         },
     },
