@@ -1,6 +1,7 @@
 import { DesignSystem } from "@microsoft/fast-components-styles-msft";
 import { RecipeData, RecipeTypes } from "./recipe-registry";
 import { ColorRGBA64 } from "@microsoft/fast-colors";
+
 /**
  * Defines the data stored by the plugin on a node instance
  */
@@ -24,12 +25,6 @@ const DesignSystemCache: Map<string, Partial<DesignSystem>> = new Map();
  * for each design tool.
  */
 export abstract class PluginNode {
-    public abstract id: string;
-    public abstract type: string;
-    public abstract children(): PluginNode[];
-    public abstract parent(): PluginNode | null;
-    public abstract supports(): Array<RecipeTypes | "designSystem">;
-
     /**
      * Retrieves the contextual design system for the node
      */
@@ -66,6 +61,18 @@ export abstract class PluginNode {
     }
 
     /**
+     * Returns all design system overrides applied to the node
+     */
+    public get designSystemOverrides(): Partial<DesignSystem> {
+        return this.getPluginData("designSystem");
+    }
+    public abstract id: string;
+    public abstract type: string;
+    public abstract children(): PluginNode[];
+    public abstract parent(): PluginNode | null;
+    public abstract supports(): Array<RecipeTypes | "designSystem">;
+
+    /**
      * Set a property of the design system on this node
      * @param key - the design system property name
      * @param value - the design system property value
@@ -82,6 +89,10 @@ export abstract class PluginNode {
         this.invalidateDesignSystemCache();
     }
 
+    /**
+     * Remove a property from the design system on this node
+     * @param key The key of the design system to remove
+     */
     public deleteDesignSystemProperty<K extends keyof DesignSystem>(key: K): void {
         const data = this.getPluginData("designSystem");
         delete data[key];
@@ -89,21 +100,7 @@ export abstract class PluginNode {
         this.invalidateDesignSystemCache();
     }
 
-    /**
-     * Returns all design system overrides applied to the node
-     */
-    public get designSystemOverrides(): Partial<DesignSystem> {
-        return this.getPluginData("designSystem");
-    }
-
     public abstract paint(data: RecipeData): void;
-    protected abstract getPluginData<K extends keyof PluginNodeData>(
-        key: K
-    ): PluginNodeData[K];
-    protected abstract setPluginData<K extends keyof PluginNodeData>(
-        key: K,
-        value: PluginNodeData[K]
-    ): void;
 
     /**
      * Retrieve the effective background color for the node.
@@ -112,7 +109,11 @@ export abstract class PluginNode {
      */
     public abstract getEffectiveBackgroundColor(): ColorRGBA64;
 
-    public invalidateDesignSystemCache() {
+    /**
+     * Delete entries in the design system cache for this node
+     * and any child nodes
+     */
+    public invalidateDesignSystemCache(): void {
         function getIds(node: PluginNode): string[] {
             let found = [node.id];
 
@@ -125,4 +126,11 @@ export abstract class PluginNode {
 
         getIds(this).forEach(id => DesignSystemCache.delete(id));
     }
+    protected abstract getPluginData<K extends keyof PluginNodeData>(
+        key: K
+    ): PluginNodeData[K];
+    protected abstract setPluginData<K extends keyof PluginNodeData>(
+        key: K,
+        value: PluginNodeData[K]
+    ): void;
 }

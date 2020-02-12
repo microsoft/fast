@@ -222,7 +222,7 @@ export class PluginUI extends React.Component<PluginUIProps> {
             .map(node => node.id);
     }
 
-    private removeRecipe = (type: RecipeTypes) => {
+    private removeRecipe = (type: RecipeTypes): void => {
         const nodeIds = this.props.selectedNodes
             .filter(node => node.supports.includes(type))
             .map(node => node.id);
@@ -275,7 +275,7 @@ export class PluginUI extends React.Component<PluginUIProps> {
             nodeIds
         );
 
-        const removeTheme = this.removeDesignSystemProperty.bind(this, key, nodeIds);
+        const removeTheme = this.deleteDesignSystemProperty.bind(this, key, nodeIds);
 
         return (
             <div style={{ marginTop: "4px" }}>
@@ -330,7 +330,7 @@ export class PluginUI extends React.Component<PluginUIProps> {
         });
     }
 
-    private removeDesignSystemProperty<K extends keyof DesignSystem>(
+    private deleteDesignSystemProperty<K extends keyof DesignSystem>(
         property: K,
         nodeIds: string[]
     ): void {

@@ -1,10 +1,10 @@
 import {
-    DesignSystemMessage,
-    MessageTypes,
     AssignRecipeMessage,
+    DesignSystemMessage,
     MessageAction,
-    UIMessage,
+    MessageTypes,
     RemoveRecipeMessage,
+    UIMessage,
 } from "./messaging";
 import { PluginNode } from "./node";
 import { RecipeRegistry, RecipeTypes } from "./recipe-registry";
@@ -40,7 +40,7 @@ export abstract class Controller {
     /**
      * Set the selected node ID - setting the ID will trigger
      * a UI refresh
-     * @param id the node ID
+     * @param ids the node IDs
      */
     public setSelectedNodes(ids: string[]): void {
         this._selectedNode = ids;
@@ -64,7 +64,7 @@ export abstract class Controller {
             )
         );
 
-        const state = {
+        return {
             selectedNodes: selectedNodes.map(
                 (node): PluginUIActiveNodeData => ({
                     id: node.id,
@@ -91,8 +91,6 @@ export abstract class Controller {
                       })
                 : [],
         };
-
-        return state;
     }
 
     public handleMessage(message: UIMessage): void {
@@ -172,11 +170,12 @@ export abstract class Controller {
     private assignRecipe(message: AssignRecipeMessage): void {
         message.nodeIds.forEach(id => {
             const node = this.getNode(id);
-            const recipe = this.recipeRegistry.get((message as any).id);
 
             if (!node) {
                 return;
             }
+
+            const recipe = this.recipeRegistry.get((message as any).id);
 
             switch (message.action) {
                 case MessageAction.assign:

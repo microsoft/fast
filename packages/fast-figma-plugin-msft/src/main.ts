@@ -2,8 +2,8 @@ import { PluginNode, PluginNodeData } from "./core/node";
 import { fillRecipes, RecipeStore, strokeRecipes, textFillRecipes } from "./core/recipes";
 import { FigmaController } from "./figma/controller";
 import { RecipeDefinition, RecipeTypes } from "./core/recipe-registry";
-import { isInstanceNode, canHaveChildren, FigmaPluginNode } from "./figma/node";
-import { UIMessage, MessageTypes } from "./core/messaging";
+import { canHaveChildren, FigmaPluginNode, isInstanceNode } from "./figma/node";
+import { MessageTypes, UIMessage } from "./core/messaging";
 
 const controller = new FigmaController();
 
@@ -44,7 +44,7 @@ function register(type: RecipeTypes, recipes: RecipeStore): void {
 function syncInstanceWithMaster(target: InstanceNode): void {
     const source = target.masterComponent;
 
-    function sync(_source, _target) {
+    function sync(_source: BaseNode, _target: BaseNode): void {
         const pluginDataKeys: Array<keyof PluginNodeData> = ["recipes", "designSystem"];
         pluginDataKeys.forEach(key => {
             _target.setPluginData(key, _source.getPluginData(key));

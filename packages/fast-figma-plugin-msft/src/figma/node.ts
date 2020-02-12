@@ -174,7 +174,7 @@ export class FigmaPluginNode extends PluginNode {
         try {
             return JSON.parse(this.node.getPluginData(key as string));
         } catch (e) {
-            return key === "designSystem" ? ({} as any) : []; // Why does keyof not work here?!
+            return key === "designSystem" ? ({} as any) : [];
         }
     }
 
