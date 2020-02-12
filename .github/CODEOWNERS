@@ -76,3 +76,6 @@ build/ @janechu @nicholasrice @chrisdholt @awentzel
 
 # Figma plugin
 /packages/fast-figma-plugin-msft/ @nicholasrice @bheston @e-vanaubrey @Jeremy-Knudsen
+
+# fast-element
+/packages/fast-element/ @EisenbergEffect @chrisdholt @janechu @nicholasrice
