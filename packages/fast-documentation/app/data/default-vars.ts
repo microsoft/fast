@@ -36,40 +36,4 @@ const breakpoints: any = {
     vp6Max: `${vpMax}px`
 };
 
-/**
- * Colors
- */
-const colors: any = {
-    blue: {
-        base: "#2487DB"
-    },
-    purple: {
-        base: "#9365E1"
-    },
-    orange: {},
-    yellow: {},
-    green: {
-        light: "#1BB29F",
-        base: "#008575"
-    },
-    teal: {},
-    gray: {},
-    white: "#fff",
-    black: "#000"
-};
-
-/**
- * Box shadows
- */
-const shadows: any = {
-    light: {
-        rest: "0  2px 4px rgba(0, 0, 0, .06), 0 .5px 1px rgba(0, 0, 0, .05)",
-        hover: "0 19px 43px rgba(0, 0, 0, .22), 0 4px 11px rgba(0, 0, 0, .18)"
-    },
-    dark: {
-        rest: "0  2px 4px rgba(0, 0, 0, .18), 0 .5px 1px rgba(0, 0, 0, .15)",
-        hover: "0 19px 43px rgba(0, 0, 0, .66), 0 4px 11px rgba(0, 0, 0, .54)"
-    }
-};
-
-export { breakpoints, colors, shadows };
+export { breakpoints };
