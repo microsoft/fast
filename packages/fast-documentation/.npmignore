@@ -1,6 +1,5 @@
 # Tests
 __test__/
-*.spec.*
 *.test.*
 
 # Source files
