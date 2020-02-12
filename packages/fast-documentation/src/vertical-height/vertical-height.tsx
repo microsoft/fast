@@ -2,7 +2,7 @@ import React from "react";
 import manageJss, { ComponentStyles } from "@microsoft/fast-jss-manager-react";
 import { Column } from "@microsoft/fast-layouts-react";
 
-interface DividerStyles {
+interface VerticalHeightStyles {
     height1: string;
     height2: string;
     height3: string;
@@ -16,7 +16,7 @@ interface DividerStyles {
     height125: string;
 }
 
-const dividerStyles: ComponentStyles<DividerStyles, undefined> = {
+const verticalHeightStyles: ComponentStyles<VerticalHeightStyles, undefined> = {
     height1: {
         height: "10px"
     },
@@ -53,7 +53,7 @@ const dividerStyles: ComponentStyles<DividerStyles, undefined> = {
 };
 
 const BaseDivider: React.FC<{
-    managedClasses: DividerStyles;
+    managedClasses: VerticalHeightStyles;
     height?: number;
     row?: number | number[];
     span?: number[];
@@ -65,4 +65,4 @@ const BaseDivider: React.FC<{
     );
 };
 
-export const VerticalHeight: any = manageJss(dividerStyles)(BaseDivider);
+export const VerticalHeight: any = manageJss(verticalHeightStyles)(BaseDivider);
