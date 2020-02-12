@@ -250,7 +250,9 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = {
                     "box-shadow": "none !important",
                 },
                 "& $button_contentRegion::before": {
-                    background: highContrastLinkValue,
+                    [highContrastSelector]: {
+                        background: highContrastLinkValue,
+                    },
                 },
             },
             "&$button__disabled": {
@@ -276,7 +278,9 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = {
                     "box-shadow": "none !important",
                 },
                 "& $button_contentRegion::before": {
-                    background: highContrastLinkValue,
+                    [highContrastSelector]: {
+                        background: highContrastLinkValue,
+                    },
                 },
             },
             "&$button__disabled": {
