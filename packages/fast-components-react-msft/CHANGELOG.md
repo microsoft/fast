@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.29.4](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-msft@4.29.3...@microsoft/fast-components-react-msft@4.29.4) (2020-02-07)
+
+
+### Bug Fixes
+
+* ensure the horizontalLockFromDefault property from ViewportPositioner is passed to Flyout ([9bcdc05](https://github.com/Microsoft/fast-dna/commit/9bcdc05f52ab26a474ec5640a47495b77fcc66b7))
+* select - add css class for scaleToFit mode ([#2626](https://github.com/Microsoft/fast-dna/issues/2626)) ([15c7a50](https://github.com/Microsoft/fast-dna/commit/15c7a50ef336e4531261ce1fe6be3695c9533243))
+
+
+
+
+
 ## [4.29.3](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-msft@4.29.2...@microsoft/fast-components-react-msft@4.29.3) (2020-01-29)
 
 **Note:** Version bump only for package @microsoft/fast-components-react-msft

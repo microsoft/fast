@@ -65,7 +65,6 @@ describe("select", (): void => {
         const trigger: any = rendered.find("button");
         expect(trigger.prop("aria-expanded")).toEqual(false);
         expect(trigger.prop("aria-haspopup")).toEqual("listbox");
-        expect(trigger.prop("aria-live")).toEqual("polite");
     });
 
     test("Custom menu render function is called", (): void => {
