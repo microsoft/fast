@@ -26,6 +26,7 @@ export * from "./text-area";
 export * from "./text-field";
 export * from "./toggle";
 export * from "./toolbar";
+export * from "./toolbar-item-group";
 export * from "./tree-view";
 export * from "./tree-view-item";
 export * from "./typography";

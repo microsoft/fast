@@ -14,15 +14,10 @@ export interface ToolbarHandledProps extends ToolbarManagedClasses {
     children?: React.ReactNode;
 
     /**
-     * When true, the toolbar will immediately place focus on the appropriate focusable child when the toolbar mounts
-     */
-    enableAutoFocus?: boolean;
-
-    /**
      * The index of the child which gets focused when the toolbar initially gets focus
      * If unset the toolbar will focus on the first valid focusable child.
      */
-    initialFocusIndex?: number;
+    initialFocusIndex?: number | number[];
 
     /**
      * Whether the toolbar is horizontal or vertical.  Default is horizontal.
@@ -31,21 +26,6 @@ export interface ToolbarHandledProps extends ToolbarManagedClasses {
      * or the left/right arrows
      */
     orientation?: Orientation;
-
-    /**
-     * The toolbar component will only pass focus to children who have been assigned valid aria roles -
-     * https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/ARIA_Techniques
-     * The default list isToolbar.DefaultFocusableRoles and contains most "widget" types.
-     * Authors can pass their own list of valid roles instead.
-     */
-    focusableRoles?: string[];
-
-    /**
-     * Whether child items are focusable when disabled.
-     * Detecting disabled elements is based on elements having a "aria-disabled" tag set to true when disabled
-     * default is true
-     */
-    allowFocusOnDisabledItems?: boolean;
 }
 
 export type ToolbarProps = ToolbarHandledProps & ToolbarUnhandledProps;

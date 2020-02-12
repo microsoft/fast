@@ -16,7 +16,7 @@ import { Orientation } from "@microsoft/fast-web-utilities";
  */
 configure({ adapter: new Adapter() });
 
-describe("context menu", (): void => {
+describe("toolbar", (): void => {
     test("should have a displayName that matches the component name", () => {
         expect(`${DisplayNamePrefix}${(Toolbar as any).name}`).toBe(Toolbar.displayName);
     });
@@ -167,28 +167,6 @@ describe("context menu", (): void => {
         expect(rendered.state("focusIndex")).toBe(1);
     });
 
-    test("should place focus any child with the proper role", (): void => {
-        const children: React.ReactNode[] = Toolbar.DefaultFocusableRoles.map(
-            (key: string): React.ReactNode => {
-                return (
-                    <button key={key} role={key}>
-                        {key}
-                    </button>
-                );
-            }
-        );
-
-        const rendered: any = mount(<Toolbar>{children}</Toolbar>);
-
-        expect(rendered.state("focusIndex")).toBe(0);
-
-        const itemCount: number = Toolbar.DefaultFocusableRoles.length - 1;
-        for (let i: number = 0; i < itemCount; i++) {
-            rendered.childAt(0).simulate("keydown", { keyCode: keyCodeArrowRight });
-            expect(rendered.state("focusIndex")).toBe(i + 1);
-        }
-    });
-
     test("should not place focus any child without a the proper role", (): void => {
         const rendered: any = mount(
             <Toolbar>
@@ -209,41 +187,5 @@ describe("context menu", (): void => {
 
         rendered.childAt(0).simulate("keydown", { keyCode: keyCodeArrowRight });
         expect(rendered.state("focusIndex")).toBe(5);
-    });
-
-    test("should not call focus on mount when enableAutoFocus is false", (): void => {
-        const spy: jest.SpyInstance = jest.spyOn(Toolbar.prototype, "focus" as any);
-
-        const rendered: any = mount(
-            <Toolbar enableAutoFocus={false}>
-                <div role="menuitem">two</div>
-                <div role="menuitem">three</div>
-                <div role="menuitem">four</div>
-            </Toolbar>
-        );
-
-        const defaultRendered: any = mount(
-            <Toolbar>
-                <div role="menuitem">two</div>
-                <div role="menuitem">three</div>
-                <div role="menuitem">four</div>
-            </Toolbar>
-        );
-
-        expect(spy).toHaveBeenCalledTimes(0);
-    });
-
-    test("should call focus on mount when enableAutoFocus is true", (): void => {
-        const spy: jest.SpyInstance = jest.spyOn(Toolbar.prototype, "focus" as any);
-
-        const rendered: any = mount(
-            <Toolbar enableAutoFocus={true}>
-                <div role="menuitem">two</div>
-                <div role="menuitem">three</div>
-                <div role="menuitem">four</div>
-            </Toolbar>
-        );
-
-        expect(spy).toHaveBeenCalledTimes(1);
     });
 });

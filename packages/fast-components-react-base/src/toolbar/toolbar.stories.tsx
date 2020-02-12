@@ -1,35 +1,25 @@
 import { storiesOf } from "@storybook/react";
 import React from "react";
 import Toolbar from "./";
+import ToolbarItemGroup from "../toolbar-item-group";
+import Button from "../button";
 
 storiesOf("Toolbar", module)
     .add("Default", () => (
         <Toolbar>
-            <button role="button">Item 1</button>
-            <button role="button">Item 2</button>
-            <button role="button">Item 3</button>
-        </Toolbar>
-    ))
-    .add("Ignore elements without proper role set", () => (
-        <Toolbar>
-            <button role="button">Item 1</button>
-            <button>Button without a role</button>
-            <button role="button">Item 3</button>
+            <Button>Item 1</Button>
+            <button>Item 2</button>
+            <button>Item 3</button>
+            <ToolbarItemGroup>
+                <button>Item 4</button>
+                <button>Item 5</button>
+            </ToolbarItemGroup>
         </Toolbar>
     ))
     .add("Ignore disabled elements", () => (
-        <Toolbar allowFocusOnDisabledItems={false}>
-            <button role="button">Item 1</button>
-            <button role="button" aria-disabled="true">
-                Disabled
-            </button>
-            <button role="button">Item 3</button>
-        </Toolbar>
-    ))
-    .add("Autofocus", () => (
-        <Toolbar initialFocusIndex={1} enableAutoFocus={true}>
-            <button role="button">Item 1</button>
-            <button role="button">initial focus</button>
-            <button role="button">Item 3</button>
+        <Toolbar>
+            <button>Item 1</button>
+            <button disabled={true}>Disabled attribute</button>
+            <button disabled={false}>Item 3</button>
         </Toolbar>
     ));

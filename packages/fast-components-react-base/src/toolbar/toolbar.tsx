@@ -10,19 +10,22 @@ import {
 import { canUseDOM } from "exenv-es6";
 import { inRange, isNil } from "lodash-es";
 import React from "react";
-import { DisplayNamePrefix } from "../utilities";
+import { DisplayNamePrefix, extractHtmlElement } from "../utilities";
 import {
     ToolbarHandledProps,
     ToolbarProps,
     ToolbarUnhandledProps,
 } from "./toolbar.props";
 import { Orientation } from "@microsoft/fast-web-utilities";
+import ToolbarItemGroup from "../toolbar-item-group";
+import { isArray } from "util";
+import Tabbable from "tabbable";
 
 export interface ToolbarState {
     /**
-     * The index of the focusable child
+     * path to currently focused widget as string
      */
-    focusIndex: number;
+    focusItemPath: string | null;
 }
 
 class Toolbar extends Foundation<
@@ -31,54 +34,37 @@ class Toolbar extends Foundation<
     ToolbarState
 > {
     public static displayName: string = `${DisplayNamePrefix}Toolbar`;
-
-    /**
-     * The roles of direct children that the toolbar will assign focus to
-     */
-    public static DefaultFocusableRoles: string[] = [
-        "button",
-        "checkbox",
-        "link",
-        "menuitem",
-        "menuitemradio",
-        "menuitemcheckbox",
-        "progressbar",
-        "radio",
-        "searchbox",
-        "slider",
-        "spinbutton",
-        "switch",
-        "textbox",
-    ];
+    public static toolbarItemAttributeName: string =
+        "data-microsoft-fast-components-react-base-toolbar-item";
+    public static toolbarItemGroupAttributeName: string =
+        "data-microsoft-fast-components-react-base-toolbar-item-group";
 
     public static defaultProps: Partial<ToolbarProps> = {
         managedClasses: {},
         orientation: Orientation.horizontal,
-        allowFocusOnDisabledItems: true,
-        focusableRoles: Toolbar.DefaultFocusableRoles,
     };
 
     protected handledProps: HandledProps<ToolbarHandledProps> = {
         children: void 0,
         managedClasses: void 0,
-        enableAutoFocus: void 0,
         initialFocusIndex: void 0,
         orientation: void 0,
-        focusableRoles: void 0,
-        allowFocusOnDisabledItems: void 0,
     };
 
-    private rootElement: React.RefObject<HTMLDivElement> = React.createRef<
-        HTMLDivElement
+    private rootElement: React.RefObject<ToolbarItemGroup> = React.createRef<
+        ToolbarItemGroup
     >();
 
     constructor(props: ToolbarProps) {
         super(props);
 
         this.state = {
-            focusIndex: isNil(this.props.initialFocusIndex)
-                ? -1
-                : this.props.initialFocusIndex,
+            focusItemPath: isNil(this.props.initialFocusIndex)
+                ? "-1"
+                : (Array.isArray(this.props.initialFocusIndex)
+                      ? this.props.initialFocusIndex
+                      : [this.props.initialFocusIndex]
+                  ).toString(),
         };
     }
 
@@ -87,36 +73,46 @@ class Toolbar extends Foundation<
      */
     public render(): React.ReactElement<HTMLDivElement> {
         return (
-            <div
+            <ToolbarItemGroup
                 {...this.unhandledProps()}
-                ref={this.rootElement}
-                role="toolbar"
-                className={this.generateClassNames()}
-                onKeyDown={this.handleMenuKeyDown}
+                itemPath={[]}
+                currentFocusPath={this.state.focusItemPath}
+                onKeyDown={this.handleKeyDown}
                 onFocusCapture={this.handleItemFocus}
+                role="toolbar"
+                ref={this.rootElement}
+                // className={this.generateClassNames()}
             >
-                {this.renderChildren()}
-            </div>
+                {this.props.children}
+            </ToolbarItemGroup>
         );
     }
 
     public componentDidMount(): void {
-        if (this.state.focusIndex === -1) {
-            const children: Element[] = this.domChildren();
-            this.setState({
-                focusIndex: children.findIndex(this.isFocusableElement),
-            });
-        }
-        if (this.props.enableAutoFocus) {
-            this.focus();
-        }
-    }
+        const focusableWidgets: HTMLElement[] = this.getFocusableWidgets();
 
-    /**
-     * Brings focus to the appropriate menu-item
-     */
-    public focus(): void {
-        this.setFocus(this.state.focusIndex === -1 ? 0 : this.state.focusIndex, 1);
+        if (focusableWidgets.length === 0) {
+            return;
+        }
+
+        let initialFocusItemPath: number[] = [0];
+
+        if (!isNil(this.props.initialFocusIndex)) {
+            initialFocusItemPath = Array.isArray(this.props.initialFocusIndex)
+                ? this.props.initialFocusIndex
+                : [this.props.initialFocusIndex];
+        }
+
+        let itemPath: string = initialFocusItemPath.toString();
+
+        if (this.getWidgetIndex(focusableWidgets, itemPath) === -1) {
+            // default to first focusable widget
+            itemPath = focusableWidgets[0].getAttribute(Toolbar.toolbarItemAttributeName);
+        }
+
+        this.setState({
+            focusItemPath: itemPath,
+        });
     }
 
     /**
@@ -140,130 +136,150 @@ class Toolbar extends Foundation<
     }
 
     /**
-     * Render all child elements
+     * Handle the keydown event
      */
-    private renderChildren(): React.ReactChild[] {
-        return React.Children.map(this.props.children, this.renderChild);
-    }
-
-    /**
-     * Render a single child
-     */
-    private renderChild = (
-        child: React.ReactElement,
-        index: number
-    ): React.ReactChild => {
-        return React.cloneElement(child, {
-            tabIndex: index === this.state.focusIndex ? 0 : -1,
-        });
-    };
-
-    /**
-     * Determines if a given element should be focusable by the menu
-     */
-    private isFocusableElement = (element: Element): element is HTMLElement => {
-        return (
-            element instanceof HTMLElement &&
-            this.props.focusableRoles.indexOf(element.getAttribute("role")) !== -1 &&
-            (this.props.allowFocusOnDisabledItems || !this.isDisabledElement(element))
-        );
-    };
-
-    private isDisabledElement = (element: Element): element is HTMLElement => {
-        return (
-            element instanceof HTMLElement &&
-            element.getAttribute("aria-disabled") === "true"
-        );
-    };
-
-    /**
-     * Return an array of all focusabled elements that are children
-     * of the context menu
-     */
-    private domChildren(): Element[] {
-        return canUseDOM() && this.rootElement.current instanceof HTMLElement
-            ? Array.from(this.rootElement.current.children)
-            : [];
-    }
-
-    /**
-     * Ensure we always validate our internal state on item focus events, otherwise
-     * the component can get out of sync from click events
-     */
-    private handleItemFocus = (e: React.FocusEvent<HTMLElement>): void => {
-        const target: Element = e.currentTarget;
-        const focusIndex: number = this.domChildren().indexOf(target);
-
-        if (focusIndex === -1) {
-            return;
-        }
-
-        if (this.isDisabledElement(target)) {
-            target.blur();
-            return;
-        }
-
-        if (focusIndex !== this.state.focusIndex && focusIndex !== -1) {
-            this.setFocus(focusIndex, focusIndex > this.state.focusIndex ? 1 : -1);
-        }
-    };
-
-    /**
-     * Sets focus to the nearest focusable element to the supplied focusIndex.
-     * The adjustment controls how the function searches for other focusable elements
-     * if the element at the focusIndex is not focusable. A positive number will search
-     * towards the end of the children array, whereas a negative number will search towards
-     * the beginning of the children array.
-     */
-    private setFocus(focusIndex: number, adjustment: number): void {
-        const children: Element[] = this.domChildren();
-
-        while (inRange(focusIndex, children.length)) {
-            const child: Element = children[focusIndex];
-
-            if (this.isFocusableElement(child)) {
-                child.focus();
-
-                this.setState({
-                    focusIndex,
-                });
-
-                break;
-            }
-
-            focusIndex += adjustment;
-        }
-    }
-
-    /**
-     * Handle the keydown event of the root menu
-     */
-    private handleMenuKeyDown = (e: React.KeyboardEvent<HTMLDivElement>): void => {
+    private handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>): void => {
         if (this.props.orientation === Orientation.horizontal) {
             switch (e.keyCode) {
                 case keyCodeArrowRight:
                     e.preventDefault();
-                    this.setFocus(this.state.focusIndex + 1, 1);
+                    this.setFocus(this.state.focusItemPath, 1);
                     break;
 
                 case keyCodeArrowLeft:
                     e.preventDefault();
-                    this.setFocus(this.state.focusIndex - 1, -1);
+                    this.setFocus(this.state.focusItemPath, -1);
                     break;
             }
         } else {
             switch (e.keyCode) {
                 case keyCodeArrowDown:
                     e.preventDefault();
-                    this.setFocus(this.state.focusIndex + 1, 1);
+                    this.setFocus(this.state.focusItemPath, 1);
                     break;
 
                 case keyCodeArrowUp:
                     e.preventDefault();
-                    this.setFocus(this.state.focusIndex - 1, -1);
+                    this.setFocus(this.state.focusItemPath, -1);
                     break;
             }
         }
+    };
+
+    /**
+     *
+     */
+    private handleItemFocus = (e: React.FocusEvent<HTMLElement>): void => {
+        if (
+            e.defaultPrevented ||
+            !e.target.hasAttribute(Toolbar.toolbarItemAttributeName)
+        ) {
+            return;
+        }
+
+        e.preventDefault();
+
+        this.setState({
+            focusItemPath: e.target.getAttribute(Toolbar.toolbarItemAttributeName),
+        });
+    };
+
+    /**
+     *
+     */
+    private setFocus = (focusPath: string, adjustment: number): void => {
+        let focusableWidgets: HTMLElement[] = this.getFocusableWidgets();
+
+        if (focusableWidgets.length === 0) {
+            return;
+        }
+
+        let targetItemIndex: number = -1;
+        for (let i: number = 0; i < focusableWidgets.length; i++) {
+            if (
+                focusableWidgets[i].getAttribute(Toolbar.toolbarItemAttributeName) ===
+                focusPath
+            ) {
+                targetItemIndex = i;
+                break;
+            }
+        }
+
+        if (targetItemIndex === -1) {
+            focusableWidgets[0].focus();
+            return;
+        }
+
+        targetItemIndex = targetItemIndex + adjustment;
+
+        if (targetItemIndex > -1 && targetItemIndex < focusableWidgets.length) {
+            focusableWidgets[targetItemIndex].focus();
+        }
+    };
+
+    /**
+     *
+     */
+    private getFocusableWidgets = (): HTMLElement[] => {
+        const rootHtmlElement: HTMLElement = extractHtmlElement(this.rootElement);
+
+        if (rootHtmlElement === null) {
+            return [];
+        }
+
+        return this.appendContainerFocusableWidgets([], rootHtmlElement);
+    };
+
+    /**
+     *
+     */
+    private appendContainerFocusableWidgets = (
+        focusableWidgets: HTMLElement[],
+        container: HTMLElement
+    ): HTMLElement[] => {
+        const children: Element[] = this.getDomChildren(container);
+
+        for (let i: number = 0; i < children.length; i++) {
+            if (children[i] instanceof HTMLElement) {
+                const child: HTMLElement = children[i] as HTMLElement;
+
+                if (child.hasAttribute(Toolbar.toolbarItemGroupAttributeName)) {
+                    this.appendContainerFocusableWidgets(focusableWidgets, child);
+                } else if (Tabbable.isFocusable(child as HTMLElement)) {
+                    focusableWidgets.push(child);
+                }
+            }
+        }
+
+        return focusableWidgets;
+    };
+
+    /**
+     *
+     */
+    private getWidgetIndex = (
+        focusableWidgets: HTMLElement[],
+        itemPath: string
+    ): number => {
+        let index: number = -1;
+
+        for (let i: number = 0; i < focusableWidgets.length; i++) {
+            if (focusableWidgets[i].getAttribute(Toolbar.toolbarItemGroupAttributeName)) {
+                index = i;
+                break;
+            }
+        }
+
+        return index;
+    };
+
+    /**
+     * Return an array of all children of the provided HTMLElement
+     */
+    private getDomChildren = (container: HTMLElement): Element[] => {
+        return canUseDOM() && container instanceof HTMLElement
+            ? Array.from(container.children)
+            : [];
     };
 }
 
