@@ -32,12 +32,10 @@ class Footer extends Foundation<FooterHandledProps, FooterUnhandledProps, {}> {
                     {this.props.children}
                     <div className={get(this.props.managedClasses, "headerGrid", "")}>
                         <div className={get(this.props.managedClasses, "column", "")}>
-                            {/* TO DO: Make this dynamic based on page */}
                             <div className={get(this.props.managedClasses, "logo", "")}>
                                 <Image src={FASTLogo} alt={"FAST-DNA logo"} />
                             </div>
                         </div>
-
                         <div className={get(this.props.managedClasses, "column", "")}>
                             <div className={get(this.props.managedClasses, "social", "")}>
                                 <a href="https://medium.com/fast-dna" target="_blank">
@@ -46,19 +44,15 @@ class Footer extends Foundation<FooterHandledProps, FooterUnhandledProps, {}> {
                                 <a href="https://twitter.com/FAST_DNA" target="_blank">
                                     <img src={TwitterLogo} alt="Twitter logo" />
                                 </a>
-                                {/* <a href="https://www.facebook.com/microsoftdesign" target="_blank">
-                                    <img src={FacebookLogo} alt={"Facebook logo"} />
-                                </a>
-                                <a href="https://dribbble.com/microsoft" target="_blank">
-                                    <img src={DribbleLogo} alt={"Dribble logo"} />
-                                </a> */}
                             </div>
                             <ul className={get(this.props.managedClasses, "ul", "")}>
                                 <li>
                                     <a href="https://github.com/microsoft/fast-dna/blob/master/LICENSE">License</a>
                                 </li>
                                 <li>
-                                    <a href="https://privacy.microsoft.com/en-US/privacystatement">Privacy & Cookies</a>
+                                    <a href="https://privacy.microsoft.com/en-US/privacystatement">
+                                        Privacy &amp; Cookies
+                                    </a>
                                 </li>
                                 <li>
                                     <a href="https://www.microsoft.com/en-us/legal/intellectualproperty/copyright/default.aspx">
@@ -66,7 +60,7 @@ class Footer extends Foundation<FooterHandledProps, FooterUnhandledProps, {}> {
                                     </a>
                                 </li>
                                 <li>
-                                    <span>©2019 Microsoft</span>
+                                    <span>©2020 Microsoft</span>
                                 </li>
                             </ul>
                         </div>
