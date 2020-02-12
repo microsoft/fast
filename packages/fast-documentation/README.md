@@ -1,5 +1,4 @@
-# Open Prototyping
-
+# FAST Documentation
 ## Getting started
 
 1. Clone the repo.
@@ -10,6 +9,4 @@
 6. Run `yarn start` to start the webpack dev server.
 
 ## Dependencies to be aware of
-
-- [fast-dna](https://www.fast.design/)
 - [JSS](https://cssinjs.org/?v=v10.0.0-alpha.22)
