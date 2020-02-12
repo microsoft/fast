@@ -21,9 +21,14 @@ storiesOf("Toolbar", module)
         <Toolbar allowFocusOnDisabledItems={false}>
             <button role="button">Item 1</button>
             <button role="button" aria-disabled="true">
-                Disabled
+                Disabled aria
             </button>
-            <button role="button">Item 3</button>
+            <button role="button" disabled={true}>
+                Disabled attribute
+            </button>
+            <button role="button" disabled={false}>
+                Item 4
+            </button>
         </Toolbar>
     ))
     .add("Autofocus", () => (

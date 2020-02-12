@@ -42,7 +42,7 @@ export interface ToolbarHandledProps extends ToolbarManagedClasses {
 
     /**
      * Whether child items are focusable when disabled.
-     * Detecting disabled elements is based on elements having a "aria-disabled" tag set to true when disabled
+     * Detecting disabled elements is based on elements having a "aria-disabled" tag or disabled attribute set to true when disabled
      * default is true
      */
     allowFocusOnDisabledItems?: boolean;

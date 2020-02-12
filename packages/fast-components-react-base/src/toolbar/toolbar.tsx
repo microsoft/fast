@@ -172,7 +172,9 @@ class Toolbar extends Foundation<
     private isDisabledElement = (element: Element): element is HTMLElement => {
         return (
             element instanceof HTMLElement &&
-            element.getAttribute("aria-disabled") === "true"
+            (element.getAttribute("aria-disabled") === "true" ||
+                (element.hasAttribute("disabled") &&
+                    element.getAttribute("disabled") !== "false"))
         );
     };
 
