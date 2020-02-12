@@ -1,6 +1,6 @@
 {
   "name": "@microsoft/fast-storybook-design-system-addon",
-  "version": "1.2.26",
+  "version": "1.2.27",
   "description": "Storybook add-on for FAST MSFT DesignSystem",
   "main": "dist/index.js",
   "author": {
@@ -60,7 +60,7 @@
   },
   "dependencies": {
     "@microsoft/fast-colors": "^5.0.2",
-    "@microsoft/fast-components-styles-msft": "^4.28.1",
+    "@microsoft/fast-components-styles-msft": "^4.28.2",
     "@storybook/addons": "^5.1.3",
     "@storybook/api": "^5.1.3",
     "@storybook/client-logger": "^5.1.3",
@@ -72,7 +72,7 @@
     "jss-plugin-nested": "^10.0.0-alpha.7"
   },
   "devDependencies": {
-    "@microsoft/fast-jss-manager-react": "^4.6.1",
+    "@microsoft/fast-jss-manager-react": "^4.6.2",
     "@microsoft/fast-tslint-rules": "^3.0.4",
     "@storybook/react": "^5.1.3",
     "@types/jest": "^24.0.13",
