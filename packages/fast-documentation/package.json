@@ -7,7 +7,7 @@
   "scripts": {
     "build": "tsc -p ./tsconfig.build.json",
     "build:app": "webpack --progress --mode=production",
-    "clean:dist": "node ./build/clean.js dist",
+    "clean:dist": "node ../../build/clean.js dist",
     "prepare": "npm run clean:dist && npm run build",
     "prettier": "prettier --config ./.prettierrc --write \"**/*.{ts,tsx}\"",
     "prettier:diff": "prettier --config ./.prettierrc \"**/*.{ts,tsx}\" --list-different",
