@@ -3,24 +3,11 @@ import React from "react";
 import StackPanel, { StackPanelProps } from "./";
 import { isNil } from "lodash-es";
 import Foundation from "@microsoft/fast-components-foundation-react";
-import { ItemSpanOverride } from "./stack-panel.props";
 import Button from "../button";
 import { Orientation } from "@microsoft/fast-web-utilities";
+import { isArray } from "util";
 
-const itemSpans: ItemSpanOverride = {
-    0: 120,
-    1: 180,
-    2: 240,
-    3: 120,
-    4: 640,
-    5: 200,
-    6: 220,
-    7: 170,
-    8: 160,
-    9: 240,
-    10: 110,
-    11: 270,
-};
+const itemSpans: number[] = [120, 180, 240, 120, 640, 200, 220, 170, 160, 240, 110, 270];
 
 const horizontalImages: JSX.Element[] = [
     "https://placehold.it/120x100/414141/?text=1",
@@ -162,18 +149,12 @@ class TestStackPanel extends React.Component<TestStackPanelProps, {}> {
     private generateItems = (): React.ReactFragment[] => {
         const items: React.ReactFragment[] = [];
 
-        const defaultSpan: number = isNil(this.props.stackPanelProps.defaultItemSpan)
-            ? 100
-            : this.props.stackPanelProps.defaultItemSpan;
-
-        const overrideKeys: string[] = isNil(this.props.stackPanelProps.itemSpanOverrides)
-            ? []
-            : Object.keys(this.props.stackPanelProps.itemSpanOverrides);
-
         for (let i: number = 0; i < this.props.itemCount; i++) {
-            const thisSpan: number = overrideKeys.includes(`${i}`)
-                ? this.props.stackPanelProps.itemSpanOverrides[i]
-                : defaultSpan;
+            const thisSpan: number = isArray(this.props.stackPanelProps.itemSpan)
+                ? this.props.stackPanelProps.itemSpan[i]
+                : isNil(this.props.stackPanelProps.itemSpan)
+                    ? 100
+                    : this.props.stackPanelProps.itemSpan;
 
             const thisHeight: number =
                 this.props.stackPanelProps.orientation === Orientation.horizontal
@@ -222,7 +203,7 @@ class TestStackPanel extends React.Component<TestStackPanelProps, {}> {
 storiesOf("Stack Panel", module)
     .add("Disable virtualization", () => (
         <StackPanel
-            defaultItemSpan={100}
+            itemSpan={100}
             virtualize={false}
             style={{
                 width: "117px",
@@ -235,7 +216,7 @@ storiesOf("Stack Panel", module)
     ))
     .add("Vertical uniform", () => (
         <StackPanel
-            defaultItemSpan={100}
+            itemSpan={100}
             style={{
                 width: "117px",
                 height: "400px",
@@ -247,7 +228,7 @@ storiesOf("Stack Panel", module)
     ))
     .add("Horizontal uniform", () => (
         <StackPanel
-            defaultItemSpan={100}
+            itemSpan={100}
             orientation={Orientation.horizontal}
             style={{
                 width: "400px",
@@ -260,8 +241,7 @@ storiesOf("Stack Panel", module)
     ))
     .add("Vertical variable height", () => (
         <StackPanel
-            defaultItemSpan={100}
-            itemSpanOverrides={itemSpans}
+            itemSpan={itemSpans}
             style={{
                 width: "117px",
                 height: "400px",
@@ -273,8 +253,7 @@ storiesOf("Stack Panel", module)
     ))
     .add("Horizontal variable width", () => (
         <StackPanel
-            defaultItemSpan={100}
-            itemSpanOverrides={itemSpans}
+            itemSpan={itemSpans}
             orientation={Orientation.horizontal}
             style={{
                 width: "400px",
@@ -287,8 +266,7 @@ storiesOf("Stack Panel", module)
     ))
     .add("Never virtualize first and last", () => (
         <StackPanel
-            defaultItemSpan={100}
-            itemSpanOverrides={itemSpans}
+            itemSpan={itemSpans}
             neverVirtualizeIndexes={[0, 11]}
             style={{
                 width: "117px",
@@ -302,8 +280,7 @@ storiesOf("Stack Panel", module)
     .add("Disable smooth scrolling", () => (
         <StackPanel
             enableSmoothScrolling={false}
-            defaultItemSpan={100}
-            itemSpanOverrides={itemSpans}
+            itemSpan={itemSpans}
             neverVirtualizeIndexes={[0, 11]}
             style={{
                 width: "117px",
@@ -316,7 +293,7 @@ storiesOf("Stack Panel", module)
     ))
     .add("Initially visible item set", () => (
         <StackPanel
-            defaultItemSpan={100}
+            itemSpan={100}
             initiallyVisibleItemIndex={8}
             style={{
                 width: "117px",
@@ -330,7 +307,6 @@ storiesOf("Stack Panel", module)
     .add("Many items", () => (
         <TestStackPanel
             stackPanelProps={{
-                itemSpanOverrides: itemSpans,
                 virtualize: true,
                 preloadBufferLength: 6,
                 neverVirtualizeIndexes: [0, 9999],
