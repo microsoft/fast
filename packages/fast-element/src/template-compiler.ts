@@ -1,4 +1,4 @@
-import { InterpolationExpression, AccessScopeExpression, Getter } from "./ast";
+import { InterpolationExpression, AccessScopeExpression, Getter } from "./expression";
 import { HTMLTemplate } from "./template";
 import { ITargetedInstruction, CompositeInstruction } from "./instructions";
 import { DOM } from "./dom";

@@ -1,4 +1,4 @@
-import { AccessScopeExpression, IExpression, Getter } from "../ast";
+import { AccessScopeExpression, IExpression, Getter } from "../expression";
 import { ITemplate, ICaptureType } from "../template";
 import { IBehavior } from "../behaviors/behavior";
 import { DOM } from "../dom";

@@ -1,7 +1,7 @@
 import { DOM } from "../dom";
 import { ITemplate, ICaptureType } from "../template";
 import { ISyntheticView } from "../view";
-import { IExpression, AccessScopeExpression, Getter } from "../ast";
+import { IExpression, AccessScopeExpression, Getter } from "../expression";
 import { IBehavior } from "../behaviors/behavior";
 import {
     IPropertyChangeListener,

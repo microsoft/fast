@@ -4,7 +4,7 @@ export * from "./fast-element";
 export * from "./bindable";
 export * from "./controller";
 export * from "./interfaces";
-export * from "./ast";
+export * from "./expression";
 export * from "./template-compiler";
 export * from "./instructions";
 export * from "./styles";

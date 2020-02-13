@@ -1,18 +1,14 @@
 import { Directive } from "./directive";
-import { IExpressionSource, AccessScopeExpression, IExpression, Getter } from "../ast";
+import { IExpression } from "../expression";
 import { Observable, IGetterInspector } from "../observation/observable";
 import { BehaviorType } from "../behaviors/index";
 
-export class BindingDirective extends Directive implements IExpressionSource {
+export class BindingDirective extends Directive {
     public targetName?: string;
     public behavior!: BehaviorType;
 
     constructor(public expression: IExpression) {
         super();
-    }
-
-    public getExpression() {
-        return this.expression;
     }
 
     public evaluate<T = unknown>(scope: unknown): T {
@@ -28,8 +24,4 @@ export class BindingDirective extends Directive implements IExpressionSource {
         Observable.clearInspector();
         return value as T;
     }
-}
-
-export function bind<T = any, K = any>(expression: Getter<T, K> | keyof T) {
-    return new BindingDirective(AccessScopeExpression.from(expression as any));
 }

@@ -3,7 +3,7 @@ import { ITargetedInstruction } from "./instructions";
 import { HTMLView, IElementView, ISyntheticView } from "./view";
 import { DOM } from "./dom";
 import { IBehavior } from "./behaviors/behavior";
-import { Getter, AccessScopeExpression } from "./ast";
+import { Getter, AccessScopeExpression } from "./expression";
 import { Directive } from "./directives/directive";
 import { BindingDirective } from "./directives/bind";
 
