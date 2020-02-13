@@ -26,7 +26,7 @@ export class WhenBehavior
     implements IBehavior, IGetterInspector, IPropertyChangeListener {
     private location: Node;
     private view: ISyntheticView | null = null;
-    private chachedView?: ISyntheticView;
+    private cachedView?: ISyntheticView;
     private source: unknown;
 
     constructor(private directive: WhenDirective, marker: HTMLElement) {
@@ -61,8 +61,8 @@ export class WhenBehavior
     updateTarget(show: boolean) {
         if (show && this.view == null) {
             this.view =
-                this.chachedView ||
-                (this.chachedView = this.directive.template.create(true));
+                this.cachedView ||
+                (this.cachedView = this.directive.template.create(true));
             this.view.bind(this.source);
             this.view.insertBefore(this.location);
         } else if (!show && this.view !== null) {
