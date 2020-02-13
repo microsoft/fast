@@ -6,7 +6,6 @@ import StackPanel, {
     StackPanelClassNameContract,
     StackPanelUnhandledProps,
 } from "./stack-panel";
-import { ItemSpanOverride } from "./stack-panel.props";
 import { Orientation } from "@microsoft/fast-web-utilities";
 
 /*
@@ -20,20 +19,7 @@ const managedClasses: StackPanelClassNameContract = {
     stackPanel_items: "stackPanel_itemContainer",
 };
 
-const itemSpans: ItemSpanOverride = {
-    0: 120,
-    1: 180,
-    2: 240,
-    3: 120,
-    4: 640,
-    5: 200,
-    6: 220,
-    7: 170,
-    8: 160,
-    9: 240,
-    10: 110,
-    11: 270,
-};
+const itemSpans: number[] = [120, 180, 240, 120, 640, 200, 220, 170, 160, 240, 110, 270];
 
 const sampleStackPanelItems: JSX.Element[] = [
     "item1",
@@ -121,7 +107,7 @@ describe("stack panel", (): void => {
     });
     test("getScrollIntoViewPosition returns expected values", (): void => {
         const rendered: any = mount(
-            <StackPanel itemSpanOverrides={itemSpans}>{sampleStackPanelItems}</StackPanel>
+            <StackPanel itemSpan={itemSpans}>{sampleStackPanelItems}</StackPanel>
         );
 
         rendered.first().instance().viewportSpan = 200;
@@ -147,7 +133,7 @@ describe("stack panel", (): void => {
 
     test("getMaxScrollDistance returns value corresponding to height of items and viewport", (): void => {
         const rendered: any = mount(
-            <StackPanel itemSpanOverrides={itemSpans}>{sampleStackPanelItems}</StackPanel>
+            <StackPanel itemSpan={itemSpans}>{sampleStackPanelItems}</StackPanel>
         );
 
         rendered.first().instance().viewportSpan = 200;
