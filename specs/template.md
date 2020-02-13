@@ -68,9 +68,10 @@
 
 *Consider the accessibility of the component, including:*
 
-- *Use with Assistive Technology*
 - *Keyboard Navigation and Focus*
 - *Form Input*
+- *Use with Assistive Technology*
+  - e.g. The implications shadow dom might have on how roles are presented to the AT.
 
 ### Globalization
 
