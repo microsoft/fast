@@ -14,14 +14,10 @@ export default {
             title: "Indexes of items not to virtualize",
             type: "array",
         },
-        defaultItemSpan: {
+        itemSpan: {
             title: "Default item span",
-            type: "number",
+            type: "number | array",
             default: 100,
-        },
-        itemSpanOverrides: {
-            title: "Item span overrides",
-            type: "array",
         },
         preloadBufferLength: {
             title: "Preload buffer length",

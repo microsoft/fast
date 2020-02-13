@@ -9,10 +9,6 @@ export interface StackPanelManagedClasses
     extends ManagedClasses<StackPanelClassNameContract> {}
 export interface StackPanelUnhandledProps extends React.HTMLAttributes<HTMLDivElement> {}
 
-export interface ItemSpanOverride {
-    [key: number]: number;
-}
-
 export interface StackPanelHandledProps extends StackPanelManagedClasses {
     /**
      * Whether items outside the viewport should be rendered or not
@@ -26,15 +22,12 @@ export interface StackPanelHandledProps extends StackPanelManagedClasses {
     neverVirtualizeIndexes?: number[];
 
     /**
-     *  The default span of each item (width in horizontal orientation, height in vertical)
+     * The default span of each item in pixels (width in horizontal orientation, height in vertical)
+     * Provide a single value for panels where all items have the same value, or an array in the case where
+     * items have varying spans.
+     * default is 100
      */
-    defaultItemSpan?: number;
-
-    /**
-     * An object whose entries specifies the height of items that differ from the default height.
-     * Format is {itemIndex: heightValue}
-     */
-    itemSpanOverrides?: ItemSpanOverride;
+    itemSpan?: number | number[];
 
     /**
      * How many items to preload before and after the range defined by viewportMaxHeight

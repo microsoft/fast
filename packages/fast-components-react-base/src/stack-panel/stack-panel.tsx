@@ -16,7 +16,7 @@ import {
     StackPanelProps,
     StackPanelUnhandledProps,
 } from "./stack-panel.props";
-import { isFunction } from "util";
+import { isArray, isFunction } from "util";
 import { Orientation } from "@microsoft/fast-web-utilities";
 
 export interface StackPanelState {
@@ -47,11 +47,10 @@ class StackPanel extends Foundation<
         managedClasses: {},
         virtualize: true,
         neverVirtualizeIndexes: [],
-        defaultItemSpan: 100,
+        itemSpan: 100,
         preloadBufferLength: 1,
         orientation: Orientation.vertical,
         nextItemPeek: 50,
-        itemSpanOverrides: {},
         enableSmoothScrolling: true,
         scrollDuration: 500,
         scrollLayoutUpdateDelay: 50,
@@ -61,10 +60,9 @@ class StackPanel extends Foundation<
 
     protected handledProps: HandledProps<StackPanelHandledProps> = {
         nextItemPeek: void 0,
-        defaultItemSpan: void 0,
+        itemSpan: void 0,
         virtualize: void 0,
         neverVirtualizeIndexes: void 0,
-        itemSpanOverrides: void 0,
         preloadBufferLength: void 0,
         orientation: void 0,
         enableSmoothScrolling: void 0,
@@ -211,8 +209,7 @@ class StackPanel extends Foundation<
         }
 
         if (
-            prevProps.itemSpanOverrides !== this.props.itemSpanOverrides ||
-            prevProps.defaultItemSpan !== this.props.defaultItemSpan ||
+            prevProps.itemSpan !== this.props.itemSpan ||
             prevProps.orientation !== this.props.orientation ||
             prevProps.children !== this.props.children
         ) {
@@ -321,26 +318,24 @@ class StackPanel extends Foundation<
      */
     private updateItemPositions = (): void => {
         const itemPositions: ItemPosition[] = [];
-        let currentItemTop: number = 0;
+        let currentItemStart: number = 0;
         const childrenAsArray: React.ReactNode[] = React.Children.toArray(
             this.props.children
         );
         const itemCount: number = childrenAsArray.length;
-        const keys: string[] = Object.keys(this.props.itemSpanOverrides);
 
         for (let i: number = 0; i < itemCount; i++) {
-            const itemKey: string = i.toString();
-            const itemHeight: number = keys.includes(itemKey)
-                ? this.props.itemSpanOverrides[itemKey]
-                : this.props.defaultItemSpan;
-            const itemBottom: number = currentItemTop + itemHeight;
+            const itemSpan: number = isArray(this.props.itemSpan)
+                ? this.props.itemSpan[i]
+                : this.props.itemSpan;
+            const currentItemBottom: number = currentItemStart + itemSpan;
             itemPositions.push({
-                span: itemHeight,
-                start: currentItemTop,
-                end: itemBottom,
+                span: itemSpan,
+                start: currentItemStart,
+                end: currentItemBottom,
             });
 
-            currentItemTop = itemBottom;
+            currentItemStart = currentItemBottom;
         }
 
         this.itemPositions = itemPositions;
@@ -411,11 +406,6 @@ class StackPanel extends Foundation<
         const lastIndex: number =
             this.itemPositions.length === 0 ? 0 : this.itemPositions.length - 1;
 
-        const effectiveViewportSpan: number =
-            this.viewportSpan >= this.props.defaultItemSpan
-                ? this.viewportSpan
-                : this.props.defaultItemSpan;
-
         const visibleRangeStartIndex: number = this.getThresholdItemIndex(
             this.itemPositions,
             0,
@@ -424,7 +414,7 @@ class StackPanel extends Foundation<
         const visibleRangeEndIndex: number = this.getThresholdItemIndex(
             this.itemPositions,
             visibleRangeStartIndex,
-            scrollPos + effectiveViewportSpan
+            scrollPos + this.viewportSpan
         );
 
         const bufferLength: number = this.getBufferLength();
@@ -503,14 +493,6 @@ class StackPanel extends Foundation<
             this.props.preloadBufferLength >= 0
         ) {
             return Math.floor(this.props.preloadBufferLength);
-        }
-
-        if (!isNil(this.rootElement) && !isNil(this.rootElement.current)) {
-            // one page is default
-            const bufferSize: number = Math.ceil(
-                this.viewportSpan / this.props.defaultItemSpan
-            );
-            return bufferSize > 1 ? bufferSize : 1;
         }
 
         return 1;
