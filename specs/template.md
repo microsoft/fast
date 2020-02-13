@@ -78,7 +78,7 @@
 
 - *Special RTL handling*
 - *Swapping of internal icons/visuals*
-- *Localization of text*
+- *Localization*
 
 ### Security
 
