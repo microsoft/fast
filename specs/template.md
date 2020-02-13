@@ -22,7 +22,7 @@
 
 ### Prior Art/Examples
 
-*Screenshots and/or links to existing, canonical or exemplary implementations of the component.*
+*Screenshots and/or links to existing, canonical, or exemplary implementations of the component.*
 
 ---
 
