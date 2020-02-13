@@ -451,9 +451,7 @@ storiesOf("Viewport Positioner", module)
                         width: "100px",
                         background: "yellow",
                     }}
-                >
-                    Positioner
-                </div>,
+                />,
                 <div
                     key="c7.2"
                     style={{
@@ -461,9 +459,7 @@ storiesOf("Viewport Positioner", module)
                         width: "150px",
                         background: "orange",
                     }}
-                >
-                    Positioner
-                </div>,
+                />,
             ]}
             positionerProps={[
                 {
@@ -472,7 +468,8 @@ storiesOf("Viewport Positioner", module)
                     anchor: anchorElement,
                     delayContentInstanciation: true,
                     style: {
-                        display: "inline-block",
+                        height: "fit-content",
+                        width: "fit-content",
                     },
                 },
             ]}
