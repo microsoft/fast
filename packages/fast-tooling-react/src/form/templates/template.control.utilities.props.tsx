@@ -1,17 +1,8 @@
 import { ErrorObject } from "ajv";
-import { AddExampleData } from "../form-section.props";
 import { FormChildOptionItem } from "../form";
-
-export enum BadgeType {
-    warning = "warning",
-    info = "info",
-    locked = "locked",
-}
-
-export enum ArrayAction {
-    add = "add",
-    remove = "remove",
-}
+import { ControlType, StandardControlPlugin } from "../index";
+import { AddExampleData, Controls } from "../controls/utilities/types";
+import { BadgeType } from "./types";
 
 export interface UpdateSectionConfig {
     /**
@@ -66,11 +57,17 @@ export interface ControlTemplateUtilitiesProps
         TextareaControlOptions,
         SectionLinkControlOptions,
         ArrayControlOptions,
-        ChildrenControlOptions {
+        ChildrenControlOptions,
+        AdditionalControlConfigOptions {
     /**
      * The index to assign as a React key for mapping
      */
     index: number;
+
+    /**
+     * The type of control
+     */
+    type: ControlType;
 
     /**
      * The location of the data
@@ -168,9 +165,35 @@ export interface ControlTemplateUtilitiesProps
      * defaults to true
      */
     softRemove?: boolean;
+
+    /**
+     * Control plugins
+     */
+    controls: Controls;
+
+    /**
+     * The custom control plugins which will be used
+     * instead of the default control plugins
+     */
+    controlPlugins?: StandardControlPlugin[];
+
+    /**
+     * A component dictionary to be used by type
+     */
+    controlComponents: { [key: string]: React.ComponentClass | React.FunctionComponent };
+
+    /**
+     * The string to be used if a prop is untitled
+     */
+    untitled?: string;
 }
 
 export interface CommonControlConfig {
+    /**
+     * The type of control
+     */
+    type: ControlType;
+
     /**
      * The location of the data referenced by lodash path syntax
      */
@@ -195,6 +218,11 @@ export interface CommonControlConfig {
      * The disabled flag for this control
      */
     disabled: boolean;
+
+    /**
+     * The required prop for this control
+     */
+    required: boolean;
 
     /**
      * The ref belonging to the form element injected as part of the control
@@ -226,7 +254,7 @@ export interface CommonControlConfig {
     /**
      * Callback for handling the updating of the value
      */
-    onChange: (config: ControlOnChangeConfig) => void;
+    onChange: (config: ControlOnChangeConfig | OnChangeConfig) => void;
 }
 
 export interface NumberFieldTypeControlOptions {
@@ -283,6 +311,49 @@ export interface SectionLinkControlOptions {
     onUpdateSection?: (config: UpdateSectionConfig) => void;
 }
 
+export interface SectionControlOptions {
+    /**
+     * Control plugins
+     */
+    controls: Controls;
+
+    /**
+     * The custom control plugins which will be used
+     * instead of the default control plugins
+     */
+    controlPlugins?: StandardControlPlugin[];
+
+    /**
+     * A component dictionary to be used by type
+     */
+    controlComponents: { [key: string]: React.ComponentClass | React.FunctionComponent };
+
+    /**
+     * The location in the schema
+     */
+    schemaLocation: string;
+
+    /**
+     * The optional components to be added as children
+     */
+    childOptions: any[];
+
+    /**
+     * The update event to trigger a new active section and/or component
+     */
+    onUpdateSection: (config: UpdateSectionConfig) => void;
+
+    /**
+     * The string to be used if a prop is untitled
+     */
+    untitled: string;
+
+    /**
+     * Display the validation as browser default tooltips
+     */
+    displayValidationBrowserDefault?: boolean;
+}
+
 export interface ArrayControlOptions {
     /**
      * The callback to add example data as an array item
@@ -333,11 +404,16 @@ export interface ChildrenControlOptions {
     onUpdateSection?: (config: UpdateSectionConfig) => void;
 }
 
+export interface AdditionalControlConfigOptions {
+    component: React.ComponentClass | React.FunctionComponent;
+}
+
 export type NumberFieldTypeControlConfig = CommonControlConfig &
     NumberFieldTypeControlOptions;
 export type ListControlConfig = CommonControlConfig & ListControlOptions;
 export type TextareaControlConfig = CommonControlConfig & TextareaControlOptions;
 export type SectionLinkControlConfig = CommonControlConfig & SectionLinkControlOptions;
+export type SectionControlConfig = CommonControlConfig & SectionControlOptions;
 export type ArrayControlConfig = CommonControlConfig & ArrayControlOptions;
 export type ChildrenControlConfig = CommonControlConfig & ChildrenControlOptions;
 export type ControlConfig = CommonControlConfig &
@@ -345,5 +421,7 @@ export type ControlConfig = CommonControlConfig &
     ListControlOptions &
     TextareaControlOptions &
     SectionLinkControlOptions &
+    SectionControlOptions &
     ArrayControlOptions &
-    ChildrenControlConfig;
+    ChildrenControlConfig &
+    AdditionalControlConfigOptions;

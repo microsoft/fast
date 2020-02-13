@@ -1,5 +1,5 @@
 import { ChildrenControlConfig, DragState } from "../templates";
-import { FormChildOptionItem } from "../form.props";
+import { FormChildOptionItem } from "../types";
 
 export interface ChildComponentDataMapping {
     [T: string]: any;

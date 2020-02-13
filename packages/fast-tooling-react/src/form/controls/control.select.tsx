@@ -5,6 +5,7 @@ import styles from "./control.select.style";
 import { SelectControlProps } from "./control.select.props";
 import { SelectControlClassNameContract } from "./control.select.style";
 import { classNames } from "@microsoft/fast-web-utilities";
+import { isDefault } from "../utilities";
 
 /**
  * Form control definition
@@ -29,15 +30,20 @@ class SelectControl extends React.Component<
         const {
             selectControl,
             selectControl__disabled,
+            selectControl__default,
             selectControl_input,
         }: SelectControlClassNameContract = this.props.managedClasses;
 
         return (
             <span
-                className={classNames(selectControl, [
-                    selectControl__disabled,
-                    this.props.disabled,
-                ])}
+                className={classNames(
+                    selectControl,
+                    [selectControl__disabled, this.props.disabled],
+                    [
+                        selectControl__default,
+                        isDefault(this.props.value, this.props.default),
+                    ]
+                )}
             >
                 <select
                     className={selectControl_input}
@@ -47,6 +53,7 @@ class SelectControl extends React.Component<
                     ref={this.props.elementRef as React.Ref<HTMLSelectElement>}
                     onBlur={this.props.updateValidity}
                     onFocus={this.props.reportValidity}
+                    required={this.props.required}
                 >
                     {this.renderOptions()}
                 </select>
@@ -83,14 +90,14 @@ class SelectControl extends React.Component<
             ? this.props.value
             : typeof this.props.default !== "undefined"
                 ? this.props.default
-                : void 0;
+                : "";
     }
 
     /**
      * Renders the selects option elements
      */
     private renderOptions(): React.ReactNode {
-        return this.props.options.map((item: any, index: number) => {
+        return (this.props.options || []).map((item: any, index: number) => {
             return (
                 <option key={index} value={item}>
                     {typeof item === "string" || typeof item === "number"

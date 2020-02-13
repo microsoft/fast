@@ -1,6 +1,6 @@
 import React from "react";
-import { Plugin, PluginProps } from "../../";
-import { ChildOptionItem } from "../../";
+import { Plugin, PluginProps } from "../../index";
+import { ChildOptionItem } from "../../index";
 
 export default class MapChildrenPropToCallbackPassingClassName extends Plugin<
     PluginProps

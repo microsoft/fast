@@ -15,8 +15,18 @@ storiesOf("Call to action", module)
     .add("Justified", () => (
         <CallToAction appearance={CallToActionAppearance.justified}>Buy now</CallToAction>
     ))
+    .add("Justified Anchor", () => (
+        <CallToAction appearance={CallToActionAppearance.justified} href="#">
+            Buy now
+        </CallToAction>
+    ))
     .add("Lightweight", () => (
         <CallToAction appearance={CallToActionAppearance.lightweight}>
+            Buy now
+        </CallToAction>
+    ))
+    .add("Lightweight Anchor", () => (
+        <CallToAction appearance={CallToActionAppearance.lightweight} href="#">
             Buy now
         </CallToAction>
     ))

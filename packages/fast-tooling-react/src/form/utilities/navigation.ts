@@ -5,7 +5,7 @@ import {
     mapSchemaLocationFromDataLocation,
     normalizeDataLocation,
 } from "../../data-utilities/location";
-import { FormChildOptionItem } from "../form.props";
+import { FormChildOptionItem } from "../types";
 import { getReactDefaultChildren, propsKeyword } from "./form";
 import { reactChildrenStringSchema } from "../controls/control.children.text";
 

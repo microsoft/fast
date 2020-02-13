@@ -1,15 +1,7 @@
 import React from "react";
-import {
-    AttributeSettingsMappingToPropertyNames,
-    FormChildOptionItem,
-    FormState,
-} from "../form.props";
-import {
-    FormSectionProps,
-    InitialOneOfAnyOfState,
-    OneOfAnyOf,
-    oneOfAnyOfType,
-} from "../form-section.props";
+import { FormState } from "../form.props";
+import { AttributeSettingsMappingToPropertyNames, FormChildOptionItem } from "../types";
+import { InitialOneOfAnyOfState, OneOfAnyOf } from "../controls/control.section.props";
 import { cloneDeep, get, isEmpty, mergeWith, omit, set, unset } from "lodash-es";
 import {
     getChildOptionBySchemaId,
@@ -17,11 +9,11 @@ import {
     squareBracketsRegex,
 } from "../../data-utilities/location";
 import { ErrorObject } from "ajv";
-import { FormControlSwitchProps } from "../form-control-switch.props";
 import { getDataFromSchema } from "../../data-utilities";
 import { reactChildrenStringSchema } from "../controls/control.children.text";
 import stringify from "fast-json-stable-stringify";
 import { validateData } from "../../utilities/ajv-validation";
+import { CombiningKeyword } from "../../data-utilities/types";
 
 const containsInvalidDataMessage: string = "Contains invalid data";
 
@@ -71,13 +63,13 @@ export function getInitialOneOfAnyOfState(
     schema: any,
     data: any
 ): InitialOneOfAnyOfState {
-    let oneOfAnyOf: oneOfAnyOfType;
+    let oneOfAnyOf: CombiningKeyword;
     let oneOfAnyOfState: OneOfAnyOf;
     let activeIndex: number;
     let updatedSchema: any = schema;
 
     if (schema.oneOf || schema.anyOf) {
-        oneOfAnyOf = schema.oneOf ? oneOfAnyOfType.oneOf : oneOfAnyOfType.anyOf;
+        oneOfAnyOf = schema.oneOf ? CombiningKeyword.oneOf : CombiningKeyword.anyOf;
         activeIndex = getOneOfAnyOfActiveIndex(oneOfAnyOf, schema, data);
         updatedSchema =
             typeof activeIndex === "undefined"
@@ -279,11 +271,11 @@ function checkIsObjectAndSetType(schemaSection: any): any {
     return schemaSection.type;
 }
 
-function getOneOfAnyOfType(schemaSection: any): oneOfAnyOfType | null {
+function getOneOfAnyOfType(schemaSection: any): CombiningKeyword | null {
     return schemaSection.oneOf
-        ? oneOfAnyOfType.oneOf
+        ? CombiningKeyword.oneOf
         : schemaSection.anyOf
-            ? oneOfAnyOfType.anyOf
+            ? CombiningKeyword.anyOf
             : null;
 }
 
@@ -293,7 +285,7 @@ function getOneOfAnyOfType(schemaSection: any): oneOfAnyOfType | null {
 export function generateExampleData(schema: any, propertyLocation: string): any {
     let schemaSection: any =
         propertyLocation === "" ? schema : get(schema, propertyLocation);
-    const oneOfAnyOf: oneOfAnyOfType | null = getOneOfAnyOfType(schemaSection);
+    const oneOfAnyOf: CombiningKeyword | null = getOneOfAnyOfType(schemaSection);
 
     if (oneOfAnyOf !== null) {
         schemaSection = Object.assign(
@@ -370,24 +362,6 @@ export function checkIsDifferentSchema(currentSchema: any, nextSchema: any): boo
 
 export function checkIsDifferentData(currentData: any, nextData: any): boolean {
     return currentData !== nextData;
-}
-
-export function getOneOfAnyOfState(
-    oneOfAnyOf: OneOfAnyOf,
-    nextProps: FormSectionProps | FormControlSwitchProps
-): OneOfAnyOf {
-    const oneOfAnyOfState: Partial<OneOfAnyOf> = {};
-
-    oneOfAnyOfState.type = nextProps.schema.oneOf
-        ? oneOfAnyOfType.oneOf
-        : oneOfAnyOfType.anyOf;
-    oneOfAnyOfState.activeIndex = getOneOfAnyOfActiveIndex(
-        oneOfAnyOfState.type,
-        nextProps.schema,
-        nextProps.data
-    );
-
-    return oneOfAnyOfState as OneOfAnyOf;
 }
 
 export function getDataLocationRelativeToRoot(
@@ -627,4 +601,8 @@ export function getErrorFromDataLocation(
     }
 
     return error;
+}
+
+export function isDefault<T>(value: T | void, defaultValue: T | void): boolean {
+    return typeof value === "undefined" && typeof defaultValue !== "undefined";
 }

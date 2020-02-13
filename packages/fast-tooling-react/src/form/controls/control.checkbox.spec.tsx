@@ -4,6 +4,7 @@ import { configure, mount, shallow } from "enzyme";
 import { CheckboxControl } from "./control.checkbox";
 import { CheckboxControlProps } from "./control.checkbox.props";
 import { CheckboxControlClassNameContract } from "./control.checkbox.style";
+import { ControlType } from "../templates";
 
 /*
  * Configure Enzyme
@@ -13,9 +14,11 @@ configure({ adapter: new Adapter() });
 const managedClasses: CheckboxControlClassNameContract = {
     checkboxControl: "checkboxControl-class",
     checkboxControl__disabled: "checkboxControl__disabled-class",
+    checkboxControl__default: "checkboxControl__default-class",
 };
 
 const checkboxProps: CheckboxControlProps = {
+    type: ControlType.checkbox,
     dataLocation: "",
     onChange: jest.fn(),
     value: false,
@@ -25,6 +28,7 @@ const checkboxProps: CheckboxControlProps = {
     reportValidity: jest.fn(),
     updateValidity: jest.fn(),
     validationErrors: [],
+    required: false,
 };
 
 describe("CheckboxControl", () => {
@@ -82,13 +86,28 @@ describe("CheckboxControl", () => {
             />
         );
 
+        const wrapper: any = rendered.find("div");
         const input: any = rendered.find("input");
 
         expect(input).toHaveLength(1);
         expect(input.prop("disabled")).toBeTruthy();
-        expect(
-            rendered.find(`.${managedClasses.checkboxControl__disabled}`)
-        ).toHaveLength(1);
+        expect(wrapper.find(`.${managedClasses.checkboxControl__disabled}`)).toHaveLength(
+            1
+        );
+    });
+    test("should have the default class when default prop is passed", () => {
+        const rendered: any = mount(
+            <CheckboxControl
+                {...checkboxProps}
+                value={undefined}
+                default={true}
+                managedClasses={managedClasses}
+            />
+        );
+
+        expect(rendered.find(`.${managedClasses.checkboxControl__default}`)).toHaveLength(
+            1
+        );
     });
     test("should show default values if they exist and no data is available", () => {
         const rendered: any = mount(

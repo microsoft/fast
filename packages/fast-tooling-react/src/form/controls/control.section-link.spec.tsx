@@ -4,6 +4,7 @@ import { configure, mount, shallow } from "enzyme";
 import { SectionLinkControl } from "./control.section-link";
 import { SectionLinkControlProps } from "./control.section-link.props";
 import { SectionLinkControlClassNameContract } from "./control.section-link.style";
+import { ControlType } from "../templates";
 
 /*
  * Configure Enzyme
@@ -13,10 +14,12 @@ configure({ adapter: new Adapter() });
 const managedClasses: SectionLinkControlClassNameContract = {
     sectionLinkControl: "sectionLinkControl-class",
     sectionLinkControl__disabled: "sectionLinkControl__disabled-class",
+    sectionLinkControl__default: "sectionLinkControl__default-class",
     sectionLinkControl__invalid: "sectionLinkControl__invalid-class",
 };
 
 const sectionLinkProps: SectionLinkControlProps = {
+    type: ControlType.sectionLink,
     dataLocation: "",
     schemaLocation: "",
     label: "",
@@ -30,6 +33,7 @@ const sectionLinkProps: SectionLinkControlProps = {
     onUpdateSection: jest.fn(),
     invalidMessage: "",
     validationErrors: [],
+    required: false,
 };
 
 describe("SectionLinkControl", () => {
@@ -104,6 +108,20 @@ describe("SectionLinkControl", () => {
 
         expect(
             rendered.find(`.${managedClasses.sectionLinkControl__disabled}`)
+        ).toHaveLength(1);
+    });
+    test("should have the default class when default prop is passed", () => {
+        const rendered: any = mount(
+            <SectionLinkControl
+                {...sectionLinkProps}
+                value={undefined}
+                default={{}}
+                managedClasses={managedClasses}
+            />
+        );
+
+        expect(
+            rendered.find(`.${managedClasses.sectionLinkControl__default}`)
         ).toHaveLength(1);
     });
     test("should add an invalid class if the invalid prop is passed and is not an empty string", () => {

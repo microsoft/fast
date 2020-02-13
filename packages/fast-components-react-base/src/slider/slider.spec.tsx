@@ -19,6 +19,7 @@ import {
 } from "@microsoft/fast-web-utilities";
 import { DisplayNamePrefix } from "../utilities";
 import { SliderMode, SliderOrientation } from "./slider.props";
+import { findDOMNode, unmountComponentAtNode } from "react-dom";
 
 /*
  * Configure Enzyme
@@ -52,10 +53,16 @@ const managedClasses: SliderClassNameContract = {
 /* tslint:disable:no-string-literal */
 
 describe("Slider", (): void => {
+    const defaultCallback: any = jest.fn();
+
     const map: any = {};
     // tslint:disable-next-line:no-shadowed-variable
     window.addEventListener = jest.fn((event: string, callback: any) => {
         map[event] = callback;
+    });
+
+    window.removeEventListener = jest.fn((event: string, callback: any) => {
+        map[event] = defaultCallback;
     });
 
     test("should have a displayName that matches the component name", () => {
@@ -420,7 +427,7 @@ describe("Slider", (): void => {
         expect(rendered.prop("className")).toContain(managedClasses.slider__disabled);
     });
 
-    test("arrow key presses start and stop incrementing", (): void => {
+    test("arrow key presses start and stop incrementing on upper thumb", (): void => {
         const container: HTMLDivElement = document.createElement("div");
         document.body.appendChild(container);
 
@@ -455,6 +462,49 @@ describe("Slider", (): void => {
         map.keyup({ keyCode: keyCodeArrowLeft });
         expect(rendered.state("isIncrementing")).toBe(false);
 
+        unmountComponentAtNode(container);
+        document.body.removeChild(container);
+    });
+
+    test("arrow key presses start and stop incrementing on lower thumb", (): void => {
+        const container: HTMLDivElement = document.createElement("div");
+        document.body.appendChild(container);
+
+        const rendered: any = mount(
+            <Slider managedClasses={managedClasses} mode={SliderMode.adustLowerValue} />,
+            {
+                attachTo: container,
+            }
+        );
+
+        const thumb: any = rendered.find(`.${managedClasses.slider_thumb__lowerValue}`);
+        expect(rendered.state("isIncrementing")).toBe(false);
+        thumb.simulate("keydown", { keyCode: keyCodeArrowDown });
+        expect(rendered.state("isIncrementing")).toBe(true);
+        expect(rendered.state("incrementDirection")).toBe(-1);
+        expect(rendered.state("activeThumb")).toBe(SliderThumb.lowerThumb);
+        map.keyup({ keyCode: keyCodeArrowDown });
+        expect(rendered.state("isIncrementing")).toBe(false);
+
+        thumb.simulate("keydown", { keyCode: keyCodeArrowRight });
+        expect(rendered.state("isIncrementing")).toBe(true);
+        expect(rendered.state("incrementDirection")).toBe(1);
+        map.keyup({ keyCode: keyCodeArrowRight });
+        expect(rendered.state("isIncrementing")).toBe(false);
+
+        thumb.simulate("keydown", { keyCode: keyCodeArrowUp });
+        expect(rendered.state("isIncrementing")).toBe(true);
+        expect(rendered.state("incrementDirection")).toBe(1);
+        map.keyup({ keyCode: keyCodeArrowUp });
+        expect(rendered.state("isIncrementing")).toBe(false);
+
+        thumb.simulate("keydown", { keyCode: keyCodeArrowLeft });
+        expect(rendered.state("isIncrementing")).toBe(true);
+        expect(rendered.state("incrementDirection")).toBe(-1);
+        map.keyup({ keyCode: keyCodeArrowLeft });
+        expect(rendered.state("isIncrementing")).toBe(false);
+
+        unmountComponentAtNode(container);
         document.body.removeChild(container);
     });
 
@@ -483,6 +533,7 @@ describe("Slider", (): void => {
         expect(rendered.state("isIncrementing")).toBe(false);
         expect(rendered.state("usePageStep")).toBe(false);
 
+        unmountComponentAtNode(container);
         document.body.removeChild(container);
     });
 
@@ -517,6 +568,7 @@ describe("Slider", (): void => {
         expect(rendered.state("isIncrementing")).toBe(false);
         expect(rendered.state("usePageStep")).toBe(false);
 
+        unmountComponentAtNode(container);
         document.body.removeChild(container);
     });
 
@@ -652,6 +704,7 @@ describe("Slider", (): void => {
         thumb.simulate("mouseDown");
         expect(document.activeElement.className).toEqual(thumb.props().className);
 
+        unmountComponentAtNode(container);
         document.body.removeChild(container);
     });
 
@@ -680,6 +733,7 @@ describe("Slider", (): void => {
         const thumb: any = rendered.find(`.${managedClasses.slider_thumb__upperValue}`);
         expect(thumb.prop("aria-valuetext")).toBe("test Value");
 
+        unmountComponentAtNode(container);
         document.body.removeChild(container);
     });
 
@@ -710,6 +764,7 @@ describe("Slider", (): void => {
         expect(thumb.prop("aria-valuemin")).toBe(1000);
         expect(thumb.prop("aria-valuemax")).toBe(1000);
 
+        unmountComponentAtNode(container);
         document.body.removeChild(container);
     });
 
@@ -730,6 +785,32 @@ describe("Slider", (): void => {
         expect(rendered.instance()["constrainToStep"](16, 10)).toBe(20);
     });
 
+    test("constrainToRange limits return values to provided range", (): void => {
+        const rendered: any = mount(<Slider managedClasses={managedClasses} />);
+
+        // constrainToRange = (value: number, range: sliderRange): number
+        expect(
+            rendered.instance()["constrainToRange"](0, {
+                minValue: 10,
+                maxValue: 20,
+            })
+        ).toBe(10);
+
+        expect(
+            rendered.instance()["constrainToRange"](30, {
+                minValue: 10,
+                maxValue: 20,
+            })
+        ).toBe(20);
+
+        expect(
+            rendered.instance()["constrainToRange"](15, {
+                minValue: 10,
+                maxValue: 20,
+            })
+        ).toBe(15);
+    });
+
     test("home key sets value to start of range", (): void => {
         const container: HTMLDivElement = document.createElement("div");
         document.body.appendChild(container);
@@ -746,6 +827,7 @@ describe("Slider", (): void => {
         thumb.simulate("keydown", { keyCode: keyCodeHome, defaultPrevented: false });
         expect(rendered.state("upperValue")).toBe(0);
 
+        unmountComponentAtNode(container);
         document.body.removeChild(container);
     });
 
@@ -765,6 +847,7 @@ describe("Slider", (): void => {
         thumb.simulate("keydown", { keyCode: keyCodeEnd });
         expect(rendered.state("upperValue")).toBe(100);
 
+        unmountComponentAtNode(container);
         document.body.removeChild(container);
     });
 
@@ -780,6 +863,8 @@ describe("Slider", (): void => {
         );
 
         expect(rendered.state("direction")).toBe(Direction.ltr);
+
+        unmountComponentAtNode(container);
         document.body.removeChild(container);
     });
 
@@ -799,11 +884,306 @@ describe("Slider", (): void => {
         renderResults = rendered.instance()["render"]();
         expect(React.Children.toArray(renderResults.props.children)).toHaveLength(0);
 
+        unmountComponentAtNode(container);
         document.body.removeChild(container);
     });
 
-    // tslint:disable-next-line:no-shadowed-variable
-    window.removeEventListener = jest.fn((event: string, callback: any) => {
-        map[event] = callback;
+    test("Touch on thumb starts touch dragging", (): void => {
+        const container: HTMLDivElement = document.createElement("div");
+        document.body.appendChild(container);
+        const touchItemFn: any = jest.fn();
+        touchItemFn.mockReturnValue({ clientX: 0, clientY: 0 });
+
+        const rendered: any = mount(
+            <Slider managedClasses={managedClasses} initialValue={50} />,
+            {
+                attachTo: container,
+            }
+        );
+
+        expect(rendered.state("isTouchDragging")).toBe(false);
+        const thumb: any = rendered.find(`.${managedClasses.slider_thumb__upperValue}`);
+        thumb.simulate("touchStart", {
+            defaultPrevented: false,
+            nativeEvent: { touches: { item: touchItemFn } },
+        });
+        expect(rendered.state("isTouchDragging")).toBe(true);
+
+        unmountComponentAtNode(container);
+        document.body.removeChild(container);
+    });
+
+    test("Window touchend event ends touch dragging", (): void => {
+        const container: HTMLDivElement = document.createElement("div");
+        document.body.appendChild(container);
+        const touchItemFn: any = jest.fn();
+        touchItemFn.mockReturnValue({ clientX: 0, clientY: 0 });
+
+        const rendered: any = mount(
+            <Slider managedClasses={managedClasses} initialValue={50} />,
+            {
+                attachTo: container,
+            }
+        );
+
+        expect(rendered.state("isTouchDragging")).toBe(false);
+        const thumb: any = rendered.find(`.${managedClasses.slider_thumb__upperValue}`);
+        thumb.simulate("touchStart", {
+            defaultPrevented: false,
+            nativeEvent: { touches: { item: touchItemFn } },
+        });
+        expect(rendered.state("isTouchDragging")).toBe(true);
+        map.touchend({ preventDefault: jest.fn() });
+        expect(rendered.state("isTouchDragging")).toBe(false);
+
+        unmountComponentAtNode(container);
+        document.body.removeChild(container);
+    });
+
+    test("Window touchcancel event ends touch dragging", (): void => {
+        const container: HTMLDivElement = document.createElement("div");
+        document.body.appendChild(container);
+        const touchItemFn: any = jest.fn();
+        touchItemFn.mockReturnValue({ clientX: 0, clientY: 0 });
+
+        const rendered: any = mount(
+            <Slider managedClasses={managedClasses} initialValue={50} />,
+            {
+                attachTo: container,
+            }
+        );
+
+        expect(rendered.state("isTouchDragging")).toBe(false);
+        const thumb: any = rendered.find(`.${managedClasses.slider_thumb__upperValue}`);
+        thumb.simulate("touchStart", {
+            defaultPrevented: false,
+            nativeEvent: { touches: { item: touchItemFn } },
+        });
+        expect(rendered.state("isTouchDragging")).toBe(true);
+        map.touchcancel({ preventDefault: jest.fn() });
+        expect(rendered.state("isTouchDragging")).toBe(false);
+
+        unmountComponentAtNode(container);
+        document.body.removeChild(container);
+    });
+
+    test("Touch event listeners added on touchstart and removed on touch end, cancel and unmount", (): void => {
+        const container: HTMLDivElement = document.createElement("div");
+        document.body.appendChild(container);
+        const touchItemFn: any = jest.fn();
+        touchItemFn.mockReturnValue({ clientX: 0, clientY: 0 });
+
+        const rendered: any = mount(
+            <Slider managedClasses={managedClasses} initialValue={50} />,
+            {
+                attachTo: container,
+            }
+        );
+
+        expect(map.touchend).toEqual(defaultCallback);
+        expect(map.touchcancel).toEqual(defaultCallback);
+        expect(map.touchmove).toEqual(defaultCallback);
+
+        const thumb: any = rendered.find(`.${managedClasses.slider_thumb__upperValue}`);
+        thumb.simulate("touchStart", {
+            defaultPrevented: false,
+            nativeEvent: { touches: { item: touchItemFn } },
+        });
+
+        expect(map.touchend).not.toEqual(defaultCallback);
+        expect(map.touchcancel).not.toEqual(defaultCallback);
+        expect(map.touchmove).not.toEqual(defaultCallback);
+
+        map.touchend({ preventDefault: jest.fn() });
+
+        expect(map.touchend).toEqual(defaultCallback);
+        expect(map.touchcancel).toEqual(defaultCallback);
+        expect(map.touchmove).toEqual(defaultCallback);
+
+        thumb.simulate("touchStart", {
+            defaultPrevented: false,
+            nativeEvent: { touches: { item: touchItemFn } },
+        });
+
+        expect(map.touchend).not.toEqual(defaultCallback);
+        expect(map.touchcancel).not.toEqual(defaultCallback);
+        expect(map.touchmove).not.toEqual(defaultCallback);
+
+        map.touchcancel({ preventDefault: jest.fn() });
+
+        expect(map.touchend).toEqual(defaultCallback);
+        expect(map.touchcancel).toEqual(defaultCallback);
+        expect(map.touchmove).toEqual(defaultCallback);
+
+        thumb.simulate("touchStart", {
+            defaultPrevented: false,
+            nativeEvent: { touches: { item: touchItemFn } },
+        });
+
+        expect(map.touchend).not.toEqual(defaultCallback);
+        expect(map.touchcancel).not.toEqual(defaultCallback);
+        expect(map.touchmove).not.toEqual(defaultCallback);
+
+        unmountComponentAtNode(container);
+
+        expect(map.touchend).toEqual(defaultCallback);
+        expect(map.touchcancel).toEqual(defaultCallback);
+        expect(map.touchmove).toEqual(defaultCallback);
+
+        document.body.removeChild(container);
+    });
+
+    test("Mouse event listeners added on mousedown and removed on mouseup and unmount", (): void => {
+        const container: HTMLDivElement = document.createElement("div");
+        document.body.appendChild(container);
+
+        const rendered: any = mount(
+            <Slider managedClasses={managedClasses} initialValue={50} />,
+            {
+                attachTo: container,
+            }
+        );
+
+        expect(map.mouseup).toEqual(defaultCallback);
+        expect(map.mousemove).toEqual(defaultCallback);
+
+        const thumb: any = rendered.find(`.${managedClasses.slider_thumb__upperValue}`);
+        thumb.simulate("mouseDown", { defaultPrevented: false });
+
+        expect(map.mouseup).not.toEqual(defaultCallback);
+        expect(map.mousemove).not.toEqual(defaultCallback);
+
+        map.mouseup({});
+
+        expect(map.mouseup).toEqual(defaultCallback);
+        expect(map.mousemove).toEqual(defaultCallback);
+
+        thumb.simulate("mouseDown", { defaultPrevented: false });
+
+        expect(map.mouseup).not.toEqual(defaultCallback);
+        expect(map.mousemove).not.toEqual(defaultCallback);
+
+        unmountComponentAtNode(container);
+
+        expect(map.mouseup).toEqual(defaultCallback);
+        expect(map.mousemove).toEqual(defaultCallback);
+
+        document.body.removeChild(container);
+    });
+
+    test("onValueChange gets called on track click, upper value mode", (): void => {
+        const container: HTMLDivElement = document.createElement("div");
+        document.body.appendChild(container);
+        const onValueChangeFn: any = jest.fn();
+
+        const rendered: any = mount(
+            <Slider
+                range={{
+                    minValue: 0,
+                    maxValue: 100,
+                }}
+                mode={SliderMode.adustUpperValue}
+                managedClasses={managedClasses}
+                onValueChange={onValueChangeFn}
+            />,
+            {
+                attachTo: container,
+            }
+        );
+
+        expect(onValueChangeFn).toHaveBeenCalledTimes(0);
+        const track: any = rendered.find(`.${managedClasses.slider_track}`);
+        track.simulate("mouseDown", { pageY: 50, pageX: 50 });
+        expect(onValueChangeFn).toHaveBeenCalledTimes(1);
+
+        unmountComponentAtNode(container);
+        document.body.removeChild(container);
+    });
+
+    test("onValueChange gets called on track click, lower value mode", (): void => {
+        const container: HTMLDivElement = document.createElement("div");
+        document.body.appendChild(container);
+        const onValueChangeFn: any = jest.fn();
+
+        const rendered: any = mount(
+            <Slider
+                range={{
+                    minValue: 0,
+                    maxValue: 100,
+                }}
+                mode={SliderMode.adustLowerValue}
+                managedClasses={managedClasses}
+                onValueChange={onValueChangeFn}
+            />,
+            {
+                attachTo: container,
+            }
+        );
+
+        expect(onValueChangeFn).toHaveBeenCalledTimes(0);
+        const track: any = rendered.find(`.${managedClasses.slider_track}`);
+        track.simulate("mouseDown", { pageY: 50, pageX: 50 });
+        expect(onValueChangeFn).toHaveBeenCalledTimes(1);
+
+        unmountComponentAtNode(container);
+        document.body.removeChild(container);
+    });
+
+    test("onValueChange gets called on track click, adjust both mode", (): void => {
+        const container: HTMLDivElement = document.createElement("div");
+        document.body.appendChild(container);
+        const onValueChangeFn: any = jest.fn();
+
+        const rendered: any = mount(
+            <Slider
+                range={{
+                    minValue: 0,
+                    maxValue: 100,
+                }}
+                mode={SliderMode.adjustBoth}
+                managedClasses={managedClasses}
+                onValueChange={onValueChangeFn}
+            />,
+            {
+                attachTo: container,
+            }
+        );
+
+        expect(onValueChangeFn).toHaveBeenCalledTimes(0);
+        const track: any = rendered.find(`.${managedClasses.slider_track}`);
+        track.simulate("mouseDown", { pageY: 50, pageX: 50 });
+        expect(onValueChangeFn).toHaveBeenCalledTimes(1);
+
+        unmountComponentAtNode(container);
+        document.body.removeChild(container);
+    });
+
+    test("onValueChange gets called on track click, single value mode", (): void => {
+        const container: HTMLDivElement = document.createElement("div");
+        document.body.appendChild(container);
+        const onValueChangeFn: any = jest.fn();
+
+        const rendered: any = mount(
+            <Slider
+                range={{
+                    minValue: 0,
+                    maxValue: 100,
+                }}
+                mode={SliderMode.singleValue}
+                managedClasses={managedClasses}
+                onValueChange={onValueChangeFn}
+            />,
+            {
+                attachTo: container,
+            }
+        );
+
+        expect(onValueChangeFn).toHaveBeenCalledTimes(0);
+        const track: any = rendered.find(`.${managedClasses.slider_track}`);
+        track.simulate("mouseDown", { pageY: 50, pageX: 50 });
+        expect(onValueChangeFn).toHaveBeenCalledTimes(1);
+
+        unmountComponentAtNode(container);
+        document.body.removeChild(container);
     });
 });

@@ -1,4 +1,4 @@
-import { Plugin, PluginProps } from "../../";
+import { Plugin, PluginProps } from "../../index";
 
 export default class MapArrayPropToObject extends Plugin<PluginProps> {
     public resolver(data: string[]): any {

@@ -916,7 +916,7 @@ The required properties are the `data`, `schema`, and `onChange` function. The d
 
 Example:
 ```jsx
-import Form from "@microsoft/fast-tooling-react";
+import { Form } from "@microsoft/fast-tooling-react";
 
 /**
  * Add to your render function
@@ -1042,7 +1042,9 @@ These control types can be paired with our default controls, the following of wh
 - `ButtonControl`
 - `TextareaControl`
 
-Example:
+**Note: If the id and type are not specified, all controls will be replaced with the control.**
+
+Example of a replacement type:
 
 ```jsx
 import { ControlType, TextareaControl } from "@microsoft/fast-tooling-react";
@@ -1068,6 +1070,78 @@ import { ControlType, TextareaControl } from "@microsoft/fast-tooling-react";
     ]}
 />
 ```
+
+Example of a replacement for all controls, using the component for the default control:
+
+```jsx
+<Form
+    schema={schema}
+    data={this.state.data}
+    onChange={this.handleChange}
+    controlPlugins={[
+        new StandardControlPlugin({
+            control: (config) => {
+                return (
+                    <React.Fragment>
+                        <span>Hello world!</span>
+                        <config.component {...config} />
+                    </React.Fragement>
+                );
+            }
+        })
+    ]}
+/>
+```
+
+#### Making your own control plugin
+
+The `StandardControlPlugin` creates a standard template for expected functionality not specific to a control such as a `CheckboxControl`. This may include showing a button to set the value to the default value, an unset/reset button if the value represented in the control is optional, etc.
+
+It is possible to create your own control plugin template; this section is for more advanced usage and should be done with caution.
+
+To assist in the creation of a custom control plugin template, another secondary export is provided, `ControlTemplateUtilities`. This is an abstract class that can be extended, it includes all of the render methods for various actions that can be taken that are not control specific. It is possible to use this class to make your own template and include extra logic for when these items should render.
+
+Example:
+
+```jsx
+import { ControlTemplateUtilities } from "@microsoft/fast-tooling-react";
+
+export class MyControlTemplate extends ControlTemplateUtilities {
+    public render() {
+        return (
+            <div>
+                <label
+                    htmlFor={this.props.dataLocation}
+                    title={this.props.labelTooltip}
+                >
+                    {this.props.label}
+                </label>
+                {this.renderConstValueIndicator("const-value-indicator-css-class")}
+                {this.renderDefaultValueIndicator("default-value-indicator-css-class")}
+                {this.renderBadge("badge-css-class")}
+                {this.renderControl(this.props.control(this.getConfig()))}
+                {this.renderSoftRemove("soft-remove-css-class")}
+                {this.renderInvalidMessage("invalid-message-css-class")}
+            </div>
+        );
+    }
+}
+
+export { StandardControlTemplate };
+```
+
+The following methods are available:
+
+- `renderConstValueIndicator` - This will indicate that this value is not the const value and will set the value to the const value if clicked.
+- `renderDefaultValueIndicator` - This will indicate that this value is not the default value and will set the value to the default if clicked.
+- `renderBadge` - This renders a badge, as indicated by the [badge](#badges) section of this README.
+- `renderControl` - This renders the control, such as `CheckboxControl` etc. or whatever control has been specified if the default controls are not being used. This must include an argument to execute the control with the `getConfig` method as an argument.
+- `renderSoftRemove` - This allows for the rendering of an unset/reset button if the value of this control is optional.
+- `renderInvalidMessage` - This method renders the invalid message for this control as specified when validating the data against the JSON schema.
+
+Note that with the exception of `renderControl` method, the others require a string argument, this will be used as a class so that the generated HTML from the render method can be styled. At this point it is up to the implementer to include their own styling for these items.
+
+It is recommended that the implementation also include the use of a label for accessibility.
 
 ### Using form schema plugins
 

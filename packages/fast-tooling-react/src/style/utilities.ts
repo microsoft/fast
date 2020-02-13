@@ -9,6 +9,7 @@ import {
 import {
     accent,
     background800,
+    defaultColor,
     disabledOpacity,
     error,
     foreground200,
@@ -52,116 +53,6 @@ export function applyTriggerStyle(color: string): CSSRules<{}> {
     };
 }
 
-export function applyInteractiveFormControlIndicator(): CSSRules<{}> {
-    return {
-        display: "flex",
-        padding: "0",
-        alignSelf: "center",
-        background: "transparent",
-        border: "1px solid transparent",
-        borderRadius: "2px",
-        "& svg": {
-            fill: foreground800,
-            "min-height": "18px",
-            "min-width": "18px",
-            "box-sizing": "border-box",
-            padding: "1px 0",
-        },
-        "&:hover": {
-            "& svg": {
-                fill: accent,
-            },
-        },
-        ...applyFocusVisible({
-            borderColor: accent,
-            outline: "none",
-        }),
-    };
-}
-
-export function applyFormControlIndicator(): CSSRules<{}> {
-    return {
-        fill: foreground800,
-        padding: "0 4px",
-        "align-self": "center",
-        "min-width": "14px",
-        "min-height": "14px",
-    };
-}
-
-export function applyFormControlDisabled(): CSSRules<{}> {
-    return {
-        opacity: `${disabledOpacity}`,
-        cursor: "not-allowed",
-        "& label": {
-            cursor: "not-allowed",
-        },
-    };
-}
-
-/**
- * Used for styles radio buttons (vertical and horizontal alignment)
- */
-export function applyInputBackplateStyle(): CSSRules<{}> {
-    return {
-        appearance: "none",
-        height: "20px",
-        width: "20px",
-        margin: "0",
-        backgroundColor: background800,
-        "&:focus, &:hover": {
-            outline: "none",
-        },
-    };
-}
-
-export function applySelectSpanStyles(): CSSRules<{}> {
-    return {
-        position: "relative",
-        display: "flex",
-        "&::before": {
-            content: "''",
-            position: "absolute",
-            top: "9px",
-            right: "4px",
-            zIndex: "1",
-            borderLeft: "3px solid transparent",
-            borderRight: "3px solid transparent",
-            borderTop: `3px solid ${foreground300}`,
-        },
-    };
-}
-
-export function applySelectInputStyles(): CSSRules<{}> {
-    return {
-        width: "100%",
-        lineHeight: "16px",
-        fontSize: "12px",
-        backgroundColor: background800,
-        borderRadius: "2px",
-        appearance: "none",
-        outline: "none",
-        ...localizePadding(3, 5, 2, 5),
-        border: "none",
-        color: foreground300,
-        "&:-ms-expand": {
-            display: "none",
-        },
-        "& option": {
-            background: neutralLayerL4,
-        },
-        "&:disabled": {
-            cursor: "not-allowed",
-        },
-        "&:focus": {
-            ...insetStrongBoxShadow(accent),
-        },
-        "&:invalid": {
-            border: `1px solid ${error}`,
-        },
-    };
-}
-
 export function boxShadow(config: BoxShadowConfig): CSSRules<{}> {
     return {
         boxShadow: `${config.inset ? "inset " : ""}
@@ -189,153 +80,240 @@ export function insetStrongBoxShadow(color: string): CSSRules<{}> {
     };
 }
 
-export function applyLabelStyle(): CSSRules<{}> {
-    return {
-        flexGrow: "1",
-        lineHeight: "23px",
-        fontSize: "12px",
-        minHeight: "23px",
-        boxSizing: "border-box",
-        ...ellipsis(),
-    };
-}
-
-export function applyLabelRegionStyle(): CSSRules<{}> {
-    return {
-        display: "flex",
-        maxWidth: "100%",
-    };
-}
-
-export function applyInputStyle(): CSSRules<{}> {
-    return {
-        lineHeight: "16px",
-        fontSize: "12px",
-        backgroundColor: background800,
-        borderRadius: "2px",
-        ...localizePadding(3, 5, 2, 5),
-        border: "none",
+export const interactiveFormControlIndicatorStyle: CSSRules<{}> = {
+    display: "flex",
+    padding: "0",
+    alignSelf: "center",
+    background: "transparent",
+    border: "1px solid transparent",
+    borderRadius: "2px",
+    "& svg": {
+        fill: foreground800,
+        "min-height": "18px",
+        "min-width": "18px",
+        "box-sizing": "border-box",
+        padding: "1px 0",
+    },
+    "&:hover": {
+        "& svg": {
+            fill: accent,
+        },
+    },
+    ...applyFocusVisible({
+        borderColor: accent,
         outline: "none",
-        boxSizing: "border-box",
-        color: foreground300,
-        "&:disabled": {
-            cursor: "not-allowed",
-        },
-        "&:focus": {
-            ...insetStrongBoxShadow(accent),
-        },
-        "&:invalid": {
-            border: `1px solid ${error}`,
-        },
-        "&::placeholder": {
-            color: "#767676",
-        },
-    };
-}
+    }),
+};
+
+export const formControlIndicatorStyle: CSSRules<{}> = {
+    fill: foreground800,
+    padding: "0 4px",
+    "align-self": "center",
+    "min-width": "14px",
+    "min-height": "14px",
+};
+
+export const formControlDisabledStyle: CSSRules<{}> = {
+    opacity: `${disabledOpacity}`,
+    cursor: "not-allowed",
+    "& label": {
+        cursor: "not-allowed",
+    },
+};
+
+/**
+ * Used for styles radio buttons (vertical and horizontal alignment)
+ */
+export const inputBackplateStyle: CSSRules<{}> = {
+    appearance: "none",
+    height: "20px",
+    width: "20px",
+    margin: "0",
+    backgroundColor: background800,
+    "&:focus, &:hover": {
+        outline: "none",
+    },
+};
+
+export const selectSpanStyle: CSSRules<{}> = {
+    position: "relative",
+    display: "flex",
+    "&::before": {
+        content: "''",
+        position: "absolute",
+        top: "9px",
+        right: "4px",
+        zIndex: "1",
+        borderLeft: "3px solid transparent",
+        borderRight: "3px solid transparent",
+        borderTop: `3px solid ${foreground300}`,
+    },
+};
+
+export const selectInputStyle: CSSRules<{}> = {
+    width: "100%",
+    lineHeight: "16px",
+    fontSize: "12px",
+    backgroundColor: background800,
+    borderRadius: "2px",
+    appearance: "none",
+    outline: "none",
+    ...localizePadding(3, 5, 2, 5),
+    border: "none",
+    color: foreground300,
+    "&:-ms-expand": {
+        display: "none",
+    },
+    "& option": {
+        background: neutralLayerL4,
+    },
+    "&:disabled": {
+        cursor: "not-allowed",
+    },
+    "&:focus": {
+        ...insetStrongBoxShadow(accent),
+    },
+    "&:invalid": {
+        border: `1px solid ${error}`,
+    },
+};
+
+export const labelStyle: CSSRules<{}> = {
+    flexGrow: "1",
+    lineHeight: "23px",
+    fontSize: "12px",
+    minHeight: "23px",
+    boxSizing: "border-box",
+    ...ellipsis(),
+};
+
+export const labelRegionStyle: CSSRules<{}> = {
+    display: "flex",
+    maxWidth: "100%",
+};
+
+export const inputStyle: CSSRules<{}> = {
+    lineHeight: "16px",
+    fontSize: "12px",
+    backgroundColor: background800,
+    borderRadius: "2px",
+    ...localizePadding(3, 5, 2, 5),
+    border: "none",
+    outline: "none",
+    boxSizing: "border-box",
+    color: foreground300,
+    "&:disabled": {
+        cursor: "not-allowed",
+    },
+    "&:focus": {
+        ...insetStrongBoxShadow(accent),
+    },
+    "&:invalid": {
+        border: `1px solid ${error}`,
+    },
+    "&::placeholder": {
+        color: "#767676",
+    },
+};
 
 /**
  * Common wrapper that surrounds a label and an input
  */
-export function applyCleanListStyle(): CSSRules<{}> {
-    return {
+export const cleanListStyle: CSSRules<{}> = {
+    listStyle: "none",
+    margin: "0",
+    padding: "0",
+    listStylePosition: "outside",
+};
+
+export const globalStyle: CSSRules<{}> = {
+    'body > li[draggable="true"]': {
+        boxShadow: `0 4px 4px 4px rgba(0, 0, 0, 0.15)`,
+        borderColor: "transparent",
+        listStyleType: "none",
         listStyle: "none",
-        margin: "0",
-        padding: "0",
-        listStylePosition: "outside",
-    };
-}
+        background: foreground200,
+    },
+};
 
-export function applyGlobalStyle(): CSSRules<{}> {
-    return {
-        'body > li[draggable="true"]': {
-            boxShadow: `0 4px 4px 4px rgba(0, 0, 0, 0.15)`,
-            borderColor: "transparent",
-            listStyleType: "none",
-            listStyle: "none",
-            background: foreground200,
-        },
-    };
-}
+export const ariaHiddenStyle: CSSRules<{}> = {
+    '&[aria-hidden="true"]': {
+        display: "none",
+    },
+    '&[aria-hidden="false"]': {
+        display: "block",
+    },
+};
 
-export function applyAriaHiddenStyles(): CSSRules<{}> {
-    return {
-        '&[aria-hidden="true"]': {
-            display: "none",
-        },
-        '&[aria-hidden="false"]': {
-            display: "block",
-        },
-    };
-}
+export const defaultFontStyle: CSSRules<{}> = {
+    color: defaultColor,
+    "font-style": "italic",
+};
 
-export function applyRemoveItemStyle(): CSSRules<{}> {
-    return {
+export const removeItemStyle: CSSRules<{}> = {
+    position: "absolute",
+    top: "5px",
+    right: "5px",
+    appearance: "none",
+    background: "none",
+    border: "none",
+    padding: "0",
+    width: "20px",
+    height: "20px",
+    zIndex: "1",
+    borderRadius: "2px",
+    ...applyFocusVisible({
+        ...insetStrongBoxShadow(accent),
+        outline: "none",
+    }),
+    "&::before": {
         position: "absolute",
-        top: "5px",
-        right: "5px",
-        appearance: "none",
-        background: "none",
-        border: "none",
-        padding: "0",
-        width: "20px",
-        height: "20px",
-        zIndex: "1",
-        borderRadius: "2px",
-        ...applyFocusVisible({
-            ...insetStrongBoxShadow(accent),
-            outline: "none",
-        }),
-        "&::before": {
-            position: "absolute",
-            content: "''",
-            pointerEvents: "none",
-            width: "9px",
-            height: "1px",
-            left: "5.5px",
-            top: "9.5px",
-            background: foreground300,
-        },
-    };
-}
+        content: "''",
+        pointerEvents: "none",
+        width: "9px",
+        height: "1px",
+        left: "5.5px",
+        top: "9.5px",
+        background: foreground300,
+    },
+};
 
-export function applyAddItemStyle(): CSSRules<{}> {
-    return {
+export const addItemStyle: CSSRules<{}> = {
+    position: "absolute",
+    right: "5px",
+    top: "1px",
+    appearance: "none",
+    background: "none",
+    border: "none",
+    width: "20px",
+    height: "20px",
+    zIndex: "1",
+    borderRadius: "2px",
+    ...applyFocusVisible({
+        ...insetStrongBoxShadow(accent),
+        outline: "none",
+    }),
+    "&::before, &::after": {
         position: "absolute",
-        right: "5px",
-        top: "1px",
-        appearance: "none",
-        background: "none",
-        border: "none",
-        width: "20px",
-        height: "20px",
-        zIndex: "1",
-        borderRadius: "2px",
-        ...applyFocusVisible({
-            ...insetStrongBoxShadow(accent),
-            outline: "none",
-        }),
-        "&::before, &::after": {
-            position: "absolute",
-            content: "''",
-            pointerEvents: "none",
-            background: foreground300,
-        },
-        "&::before": {
-            width: "9px",
-            height: "1px",
-            left: "5.5px",
-            top: "9.5px",
-        },
-        "&::after": {
-            width: "1px",
-            height: "9px",
-            left: "9.5px",
-            top: "5.5px",
-        },
-    };
-}
+        content: "''",
+        pointerEvents: "none",
+        background: foreground300,
+    },
+    "&::before": {
+        width: "9px",
+        height: "1px",
+        left: "5.5px",
+        top: "9.5px",
+    },
+    "&::after": {
+        width: "1px",
+        height: "9px",
+        left: "9.5px",
+        top: "5.5px",
+    },
+};
 
-export const chevronDown: CSSRules<{}> = {
+export const chevronDownStyle: CSSRules<{}> = {
     position: "absolute",
     right: "5px",
     top: "1px",
@@ -371,80 +349,66 @@ export const chevronDown: CSSRules<{}> = {
     },
 };
 
-export const chevronUp: CSSRules<{}> = {
-    ...chevronDown,
+export const chevronUpStyle: CSSRules<{}> = {
+    ...chevronDownStyle,
     transform: "rotate(180deg)",
 };
 
-export function applyControlWrapper(): CSSRules<{}> {
-    return {
-        paddingTop: "7px",
-        marginBottom: "12px",
-    };
-}
+export const controlWrapperStyle: CSSRules<{}> = {
+    paddingTop: "7px",
+    marginBottom: "12px",
+};
 
-export function applyControlSingleLineWrapper(): CSSRules<{}> {
-    return {
-        display: "flex",
-        minHeight: "30px",
-        alignItems: "center",
-    };
-}
+export const controlSingleLineWrapperStyle: CSSRules<{}> = {
+    display: "flex",
+    minHeight: "30px",
+    alignItems: "center",
+};
 
-export function applyControl(): CSSRules<{}> {
-    return {
-        width: `calc(100% - 30px)`,
-    };
-}
+export const controlStyle: CSSRules<{}> = {
+    width: "calc(100% - 30px)",
+};
 
-export function applyControlRegion(): CSSRules<{}> {
-    return {
-        display: "flex",
-        width: "100%",
-        position: "relative",
-    };
-}
+export const controlRegionStyle: CSSRules<{}> = {
+    display: "flex",
+    width: "100%",
+    position: "relative",
+};
 
-export function applySoftRemove(): CSSRules<{}> {
-    return {
-        display: "flex",
-        height: "23px",
-        minWidth: "30px",
-        justifyContent: "center",
-        alignItems: "center",
-    };
-}
+export const softRemoveStyle: CSSRules<{}> = {
+    display: "flex",
+    height: "23px",
+    minWidth: "30px",
+    justifyContent: "center",
+    alignItems: "center",
+};
 
-export function applySoftRemoveInput(): CSSRules<{}> {
-    return {
-        appearance: "none",
-        background: "none",
-        position: "absolute",
-        border: "none",
-        width: "20px",
-        margin: "0",
-        height: "20px",
-        "z-index": "1",
-        "border-radius": "2px",
-        ...applyFocusVisible({
-            ...insetStrongBoxShadow(accent),
-            outline: "none",
-        }),
-        "& + svg": {
-            fill: foreground800,
-            "padding-top": "1px",
-        },
-        "&:disabled + svg": {
-            opacity: `${disabledOpacity}`,
-        },
-    };
-}
+export const softRemoveInputStyle: CSSRules<{}> = {
+    appearance: "none",
+    background: "none",
+    position: "absolute",
+    border: "none",
+    width: "20px",
+    margin: "0",
+    height: "20px",
+    "z-index": "1",
+    "border-radius": "2px",
+    ...applyFocusVisible({
+        ...insetStrongBoxShadow(accent),
+        outline: "none",
+    }),
+    "& + svg": {
+        fill: foreground800,
+        "padding-top": "1px",
+    },
+    "&:disabled + svg": {
+        opacity: `${disabledOpacity}`,
+    },
+};
 
-export function applyInvalidMessage(): CSSRules<{}> {
-    return {
-        color: error,
-        fontSize: "11px",
-        marginRight: "10px",
-        ...ellipsis(),
-    };
-}
+export const invalidMessageStyle: CSSRules<{}> = {
+    color: error,
+    fontSize: "11px",
+    marginRight: "10px",
+    ...ellipsis(),
+};

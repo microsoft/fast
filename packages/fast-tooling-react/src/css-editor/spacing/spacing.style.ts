@@ -1,6 +1,6 @@
 import { ComponentStyles } from "@microsoft/fast-jss-manager-react";
 import { toPx } from "@microsoft/fast-jss-utilities";
-import { applyControlWrapper, applyInputStyle, background000 } from "../../style";
+import { background000, controlWrapperStyle, inputStyle } from "../../style";
 
 export interface CSSSpacingClassNameContract {
     cssSpacing?: string;
@@ -29,7 +29,7 @@ const topBottomPositionActivePadding: number = typeThickness / 2 + 1;
 const styles: ComponentStyles<CSSSpacingClassNameContract, {}> = {
     cssSpacing: {
         fontSize: "11px",
-        ...applyControlWrapper(),
+        ...controlWrapperStyle,
     },
     cssSpacing_row: {
         display: "flex",
@@ -117,7 +117,7 @@ const styles: ComponentStyles<CSSSpacingClassNameContract, {}> = {
         borderColor: `rgba(${paddingTypeColor}, 1)`,
     },
     cssSpacing_input: {
-        ...applyInputStyle(),
+        ...inputStyle,
         alignSelf: "center",
         width: "45px",
     },

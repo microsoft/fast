@@ -6,6 +6,7 @@ import styles, {
 } from "./control.number-field.style";
 import { NumberFieldControlProps } from "./control.number-field.props";
 import { classNames } from "@microsoft/fast-web-utilities";
+import { isDefault } from "../utilities";
 
 /**
  * Form control definition
@@ -28,10 +29,17 @@ class NumberFieldControl extends React.Component<
     public render(): React.ReactNode {
         return (
             <input
-                className={classNames(this.props.managedClasses.numberFieldControl, [
-                    this.props.managedClasses.numberFieldControl__disabled,
-                    this.props.disabled,
-                ])}
+                className={classNames(
+                    this.props.managedClasses.numberFieldControl,
+                    [
+                        this.props.managedClasses.numberFieldControl__disabled,
+                        this.props.disabled,
+                    ],
+                    [
+                        this.props.managedClasses.numberFieldControl__default,
+                        isDefault(this.props.value, this.props.default),
+                    ]
+                )}
                 id={this.props.dataLocation}
                 type={"number"}
                 value={this.getValue(this.props.value)}
@@ -44,6 +52,7 @@ class NumberFieldControl extends React.Component<
                 ref={this.props.elementRef as React.Ref<HTMLInputElement>}
                 onBlur={this.props.updateValidity}
                 onFocus={this.props.reportValidity}
+                required={this.props.required}
             />
         );
     }

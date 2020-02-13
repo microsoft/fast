@@ -33,6 +33,11 @@ export enum CombiningKeyword {
     allOf = "allOf",
 }
 
+export enum ItemConstraints {
+    minItems = "minItems",
+    maxItems = "maxItems",
+}
+
 export interface PluginLocation {
     /**
      * The data location to be interpreted by the plugin

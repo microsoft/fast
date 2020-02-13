@@ -4,6 +4,19 @@ import { configure, mount, shallow } from "enzyme";
 import { SingleLineControlTemplate } from "./template.control.single-line";
 import { SingleLineControlTemplateProps } from "./template.control.single-line.props";
 import { SingleLineControlTemplateClassNameContract } from "./template.control.single-line.style";
+import { ControlType } from "../index";
+import {
+    ArrayControl,
+    ButtonControl,
+    CheckboxControl,
+    ChildrenControl,
+    DisplayControl,
+    NumberFieldControl,
+    SectionControl,
+    SectionLinkControl,
+    SelectControl,
+    TextareaControl,
+} from "../controls";
 
 /*
  * Configure Enzyme
@@ -26,6 +39,7 @@ const managedClasses: SingleLineControlTemplateClassNameContract = {
 
 const props: SingleLineControlTemplateProps = {
     index: 1,
+    type: ControlType.checkbox,
     dataLocation: "",
     schemaLocation: "",
     control: jest.fn(),
@@ -37,6 +51,31 @@ const props: SingleLineControlTemplateProps = {
     onUpdateSection: jest.fn(),
     invalidMessage: "",
     validationErrors: [],
+    component: null,
+    controlComponents: {
+        [ControlType.array]: ArrayControl,
+        [ControlType.button]: ButtonControl,
+        [ControlType.checkbox]: CheckboxControl,
+        [ControlType.children]: ChildrenControl,
+        [ControlType.display]: DisplayControl,
+        [ControlType.numberField]: NumberFieldControl,
+        [ControlType.sectionLink]: SectionLinkControl,
+        [ControlType.section]: SectionControl,
+        [ControlType.select]: SelectControl,
+        [ControlType.textarea]: TextareaControl,
+    },
+    controls: {
+        [ControlType.array]: null,
+        [ControlType.button]: null,
+        [ControlType.checkbox]: null,
+        [ControlType.children]: null,
+        [ControlType.display]: null,
+        [ControlType.numberField]: null,
+        [ControlType.sectionLink]: null,
+        [ControlType.section]: null,
+        [ControlType.select]: null,
+        [ControlType.textarea]: null,
+    },
 };
 
 describe("SingleLineControlTemplate", () => {

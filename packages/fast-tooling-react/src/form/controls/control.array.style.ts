@@ -1,12 +1,13 @@
 import { ellipsis } from "@microsoft/fast-jss-utilities";
 import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager-react";
 import {
-    applyAddItemStyle,
-    applyCleanListStyle,
-    applyInvalidMessage,
-    applyLabelRegionStyle,
-    applyLabelStyle,
-    applyRemoveItemStyle,
+    addItemStyle,
+    cleanListStyle,
+    defaultFontStyle,
+    invalidMessageStyle,
+    labelRegionStyle,
+    labelStyle,
+    removeItemStyle,
 } from "../../style";
 
 /**
@@ -39,23 +40,23 @@ const styles: ComponentStyles<ArrayControlClassNameContract, {}> = {
         },
     },
     arrayControl_invalidMessage: {
-        ...applyInvalidMessage(),
+        ...invalidMessageStyle,
         "padding-bottom": "5px",
         "margin-top": "-5px",
     },
     arrayControl_addItem: {
-        ...applyLabelRegionStyle(),
+        ...labelRegionStyle,
         position: "relative",
     },
     arrayControl_addItemLabel: {
-        ...applyLabelStyle(),
+        ...labelStyle,
         "max-width": "calc(100% - 30px)",
     },
     arrayControl_addItemButton: {
-        ...applyAddItemStyle(),
+        ...addItemStyle,
     },
     arrayControl_existingItemList: {
-        ...applyCleanListStyle(),
+        ...cleanListStyle,
         "font-size": "12px",
         position: "relative",
         "&::before": {
@@ -103,12 +104,14 @@ const styles: ComponentStyles<ArrayControlClassNameContract, {}> = {
         width: "calc(100% - 40px)",
         padding: "0 5px",
         "background-color": "rgba(255, 255, 255, 0.04)",
+        "&$arrayControl_existingItemListItemLink__default": {
+            ...defaultFontStyle,
+            cursor: "auto",
+        },
     },
-    arrayControl_existingItemListItemLink__default: {
-        cursor: "auto",
-    },
+    arrayControl_existingItemListItemLink__default: {},
     arrayControl_existingItemRemoveButton: {
-        ...applyRemoveItemStyle(),
+        ...removeItemStyle,
         cursor: "pointer",
     },
 };

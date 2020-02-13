@@ -15,7 +15,7 @@ const itemA: JSX.Element = <SelectOption id="a" value="a" displayString="a" />;
 const itemB: JSX.Element = <SelectOption id="b" value="b" displayString="ab" />;
 const itemC: JSX.Element = <SelectOption id="c" value="c" displayString="abc" />;
 
-describe("button", (): void => {
+describe("select", (): void => {
     const href: string = "https://www.microsoft.com";
 
     test("should have a displayName that matches the component name", () => {
@@ -65,7 +65,6 @@ describe("button", (): void => {
         const trigger: any = rendered.find("button");
         expect(trigger.prop("aria-expanded")).toEqual(false);
         expect(trigger.prop("aria-haspopup")).toEqual("listbox");
-        expect(trigger.prop("aria-live")).toEqual("polite");
     });
 
     test("Custom menu render function is called", (): void => {

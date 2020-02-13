@@ -119,6 +119,34 @@ describe("dialog", (): void => {
         );
     });
 
+    test('should have an attribute of `aria-modal="true"` when the `modal` prop is true', () => {
+        const rendered: any = shallow(
+            <Dialog managedClasses={managedClasses} modal={true} />
+        );
+
+        expect(
+            rendered.find(`.${managedClasses.dialog_contentRegion}`).prop("aria-modal")
+        ).toEqual(true);
+    });
+
+    test('should NOT have an attribute of `aria-modal="false"` when the `modal` prop is false', () => {
+        const rendered: any = shallow(
+            <Dialog managedClasses={managedClasses} modal={false} />
+        );
+
+        expect(
+            rendered.find(`.${managedClasses.dialog_contentRegion}`).prop("aria-modal")
+        ).toEqual(false);
+    });
+
+    test("should NOT have an attribute of `aria-modal` when the `modal` prop is not provided", () => {
+        const rendered: any = shallow(<Dialog managedClasses={managedClasses} />);
+
+        expect(
+            rendered.find(`.${managedClasses.dialog_contentRegion}`).prop("aria-modal")
+        ).toEqual(undefined);
+    });
+
     test("should call the `onDismiss` callback after a click event on the modal overlay when `visible` prop is true", () => {
         const onDismiss: any = jest.fn();
         const rendered: any = shallow(
@@ -261,6 +289,83 @@ describe("dialog", (): void => {
         expect(dialog.instance()["shouldForceFocus"](innerButton)).toEqual(false);
         expect(dialog.instance()["shouldForceFocus"](outerButton)).toEqual(true);
 
+        document.body.removeChild(container);
+    });
+
+    test("should invoke focusTargetOnClose function on unmount of non-modal dialogs", () => {
+        const mockRefocusFn: any = jest.fn();
+
+        const rendered: any = mount(
+            <Dialog
+                managedClasses={managedClasses}
+                modal={false}
+                focusTargetOnClose={mockRefocusFn}
+            />
+        );
+
+        rendered.unmount();
+        expect(mockRefocusFn).toHaveBeenCalledTimes(1);
+    });
+
+    test("should invoke focusTargetOnClose function after unregistering 'focusin' on unmount of modal dialogs", () => {
+        const mockRemoveListenerFn: any = jest.fn();
+
+        const mockRefocusFn: any = jest.fn();
+        document.removeEventListener = mockRemoveListenerFn;
+        const rendered: any = mount(
+            <Dialog
+                managedClasses={managedClasses}
+                modal={true}
+                focusTargetOnClose={mockRefocusFn}
+            />
+        );
+        rendered.unmount();
+        expect(mockRemoveListenerFn).toHaveBeenCalledTimes(2);
+        expect(mockRemoveListenerFn.mock.calls[1][0]).toBe("focusin");
+        expect(mockRefocusFn).toHaveBeenCalledTimes(1);
+    });
+
+    test("should invoke focusTargetOnClose function after unregistering 'focusin' on unmount of modal dialogs", () => {
+        const mockRemoveListenerFn: any = jest.fn();
+
+        const mockRefocusFn: any = jest.fn();
+        document.removeEventListener = mockRemoveListenerFn;
+        const rendered: any = mount(
+            <Dialog
+                managedClasses={managedClasses}
+                modal={true}
+                focusTargetOnClose={mockRefocusFn}
+            />
+        );
+        rendered.unmount();
+        expect(mockRemoveListenerFn).toHaveBeenCalledTimes(2);
+        expect(mockRemoveListenerFn.mock.calls[1][0]).toBe("focusin");
+        expect(mockRefocusFn).toHaveBeenCalledTimes(1);
+    });
+
+    test("should focus on focus target element after unregistering 'focusin' on unmount of modal dialogs", () => {
+        const testButton: HTMLButtonElement = document.createElement("button");
+        document.body.appendChild(testButton);
+
+        const container: HTMLDivElement = document.createElement("div");
+        document.body.appendChild(container);
+
+        const rendered: any = mount(
+            <Dialog
+                managedClasses={managedClasses}
+                modal={true}
+                focusTargetOnClose={testButton}
+            >
+                <button />
+            </Dialog>,
+            { attachTo: container }
+        );
+
+        expect(document.activeElement).not.toBe(testButton);
+        rendered.unmount();
+        expect(document.activeElement).toBe(testButton);
+
+        document.body.removeChild(testButton);
         document.body.removeChild(container);
     });
 });

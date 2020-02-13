@@ -4,6 +4,7 @@ import { configure, mount, shallow } from "enzyme";
 import { TextareaControl } from "./control.textarea";
 import { TextareaControlProps } from "./control.textarea.props";
 import { TextareaControlClassNameContract } from "./control.textarea.style";
+import { ControlType } from "../templates";
 
 /*
  * Configure Enzyme
@@ -13,9 +14,11 @@ configure({ adapter: new Adapter() });
 const managedClasses: TextareaControlClassNameContract = {
     textareaControl: "textareaFormControl-class",
     textareaControl__disabled: "textareaControl__disabled-class",
+    textareaControl__default: "textareaControl__default-class",
 };
 
 const textareaProps: TextareaControlProps = {
+    type: ControlType.textarea,
     dataLocation: "",
     onChange: jest.fn(),
     value: "",
@@ -25,6 +28,7 @@ const textareaProps: TextareaControlProps = {
     reportValidity: jest.fn(),
     updateValidity: jest.fn(),
     validationErrors: [],
+    required: false,
 };
 
 describe("TextareaControl", () => {
@@ -56,6 +60,20 @@ describe("TextareaControl", () => {
         expect(
             rendered.find(`.${managedClasses.textareaControl__disabled}`)
         ).toHaveLength(1);
+    });
+    test("should have the default class when default prop is passed", () => {
+        const rendered: any = mount(
+            <TextareaControl
+                {...textareaProps}
+                value={undefined}
+                default={"foo"}
+                managedClasses={managedClasses}
+            />
+        );
+
+        expect(rendered.find(`.${managedClasses.textareaControl__default}`)).toHaveLength(
+            1
+        );
     });
     test("should fire an `onChange` callback with the input is changed", () => {
         const handleChange: any = jest.fn();

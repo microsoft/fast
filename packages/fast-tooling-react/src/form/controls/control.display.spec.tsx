@@ -4,6 +4,7 @@ import { configure, mount, shallow } from "enzyme";
 import { DisplayControl } from "./control.display";
 import { DisplayControlProps } from "./control.display.props";
 import { DisplayControlClassNameContract } from "./control.display.style";
+import { ControlType } from "../templates";
 
 /*
  * Configure Enzyme
@@ -13,9 +14,11 @@ configure({ adapter: new Adapter() });
 const managedClasses: DisplayControlClassNameContract = {
     displayControl: "displayControl",
     displayControl__disabled: "displayControl__disabled",
+    displayControl__default: "displayControl__default",
 };
 
 const displayProps: DisplayControlProps = {
+    type: ControlType.display,
     dataLocation: "",
     value: "",
     schema: {},
@@ -25,6 +28,7 @@ const displayProps: DisplayControlProps = {
     onChange: jest.fn(),
     elementRef: null,
     validationErrors: [],
+    required: false,
 };
 
 describe("DisplayControl", () => {
@@ -53,6 +57,20 @@ describe("DisplayControl", () => {
             1
         );
         expect(rendered.find("input").prop("disabled")).toBeTruthy();
+    });
+    test("should have the default class when default prop is passed", () => {
+        const rendered: any = mount(
+            <DisplayControl
+                {...displayProps}
+                value={undefined}
+                default={"foo"}
+                managedClasses={managedClasses}
+            />
+        );
+
+        expect(rendered.find(`.${managedClasses.displayControl__default}`)).toHaveLength(
+            1
+        );
     });
     test("should show default values if they exist and no data is available", () => {
         const defaultValue: string = "bar";

@@ -3,18 +3,7 @@ import {
     ControlConfig,
     ControlTemplateUtilitiesProps,
 } from "./template.control.utilities.props";
-
-export enum ControlType {
-    select = "select",
-    array = "array",
-    children = "children",
-    checkbox = "checkbox",
-    numberField = "numberField",
-    sectionLink = "sectionLink",
-    display = "display",
-    button = "button",
-    textarea = "textarea",
-}
+import { ControlType } from "./index";
 
 export interface ControlPluginUtilitiesProps {
     /**
@@ -33,6 +22,11 @@ export interface ControlPluginUtilitiesProps {
      * used
      */
     type?: ControlType;
+
+    /**
+     * The component used as the control
+     */
+    component?: React.ComponentClass | React.FunctionComponent;
 }
 
 export default abstract class ControlPluginUtilities<
@@ -69,9 +63,20 @@ export default abstract class ControlPluginUtilities<
         return this.config.type === type;
     }
 
+    /**
+     * Determines if there is a match to any control
+     */
+    public matchesAllTypes(): boolean {
+        return this.config.type === undefined && this.config.id.length === 0;
+    }
+
     public updateConfig(config: C): void {
         this.config = Object.assign({}, config, {
-            id: Array.isArray(config.id) ? config.id : [config.id],
+            id: Array.isArray(config.id)
+                ? config.id
+                : config.id !== undefined
+                    ? [config.id]
+                    : [],
         });
     }
 

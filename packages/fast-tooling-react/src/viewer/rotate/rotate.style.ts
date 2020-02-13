@@ -4,7 +4,7 @@ import {
     CSSRules,
 } from "@microsoft/fast-jss-manager-react";
 import { RotateClassNameContract } from "./rotate.class-name-contract";
-import { accent, applyInputBackplateStyle, background800 } from "../../style";
+import { accent, background800, inputBackplateStyle } from "../../style";
 
 const landscape: string =
     "url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCA1MCA1MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48Zz48cGF0aCBmaWxsPSJ3aGl0ZSIgZD0iTTUwIDQzLjc1VjMuMTI1SDBWNDMuNzVINTBaTTQ2Ljg3NSA0MC42MjVIMy4xMjVWNi4yNUg0Ni44NzVWNDAuNjI1Wk0xNS42MjUgMzQuMzc1SDYuMjVWMzcuNUgxNS42MjVWMzQuMzc1Wk00My43NSAzNC4zNzVIMzQuMzc1VjM3LjVINDMuNzVWMzQuMzc1WiI+PC9wYXRoPjwvZz48L3N2Zz4=) center no-repeat";
@@ -21,7 +21,7 @@ const styles: ComponentStyleSheet<RotateClassNameContract, {}> = {
         height: "21px",
     },
     rotate_controlInput: {
-        ...applyInputBackplateStyle(),
+        ...inputBackplateStyle,
         "&:checked": {
             backgroundColor: accent,
         },

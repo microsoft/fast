@@ -5,6 +5,7 @@ import styles from "./control.textarea.style";
 import { TextareaControlProps } from "./control.textarea.props";
 import { TextareaControlClassNameContract } from "./control.textarea.style";
 import { classNames } from "@microsoft/fast-web-utilities";
+import { isDefault } from "../utilities";
 
 /**
  * Form control definition
@@ -24,10 +25,17 @@ class TextareaControl extends React.Component<
     public render(): React.ReactNode {
         return (
             <textarea
-                className={classNames(this.props.managedClasses.textareaControl, [
-                    this.props.managedClasses.textareaControl__disabled,
-                    this.props.disabled,
-                ])}
+                className={classNames(
+                    this.props.managedClasses.textareaControl,
+                    [
+                        this.props.managedClasses.textareaControl__disabled,
+                        this.props.disabled,
+                    ],
+                    [
+                        this.props.managedClasses.textareaControl__default,
+                        isDefault(this.props.value, this.props.default),
+                    ]
+                )}
                 id={this.props.dataLocation}
                 name={this.props.dataLocation}
                 rows={this.getRows()}
@@ -37,6 +45,7 @@ class TextareaControl extends React.Component<
                 ref={this.props.elementRef as React.Ref<HTMLTextAreaElement>}
                 onFocus={this.props.reportValidity}
                 onBlur={this.props.updateValidity}
+                required={this.props.required}
             />
         );
     }

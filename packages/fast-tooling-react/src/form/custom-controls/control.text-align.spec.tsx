@@ -5,6 +5,7 @@ import { TextAlignControl as StyledTextAlignControl } from "./index";
 import { TextAlignControl } from "./control.text-align";
 import { TextAlignControlProps } from "./control.text-align.props";
 import { TextAlignControlClassNameContract } from "./control.text-align.style";
+import { ControlType } from "../templates";
 
 /*
  * Configure Enzyme
@@ -12,6 +13,7 @@ import { TextAlignControlClassNameContract } from "./control.text-align.style";
 configure({ adapter: new Adapter() });
 
 const textAlignControlProps: TextAlignControlProps = {
+    type: ControlType.select,
     options: ["left", "center", "right"],
     dataLocation: "",
     value: "",
@@ -22,6 +24,7 @@ const textAlignControlProps: TextAlignControlProps = {
     reportValidity: jest.fn(),
     updateValidity: jest.fn(),
     validationErrors: [],
+    required: false,
 };
 
 const managedClasses: TextAlignControlClassNameContract = {

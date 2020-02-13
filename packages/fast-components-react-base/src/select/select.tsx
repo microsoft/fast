@@ -13,7 +13,6 @@ import {
 import { canUseDOM } from "exenv-es6";
 import { get, isEqual, isNil, uniqueId } from "lodash-es";
 import React from "react";
-import Button from "../button";
 import Listbox from "../listbox";
 import { ListboxItemProps } from "../listbox-item";
 import { DisplayNamePrefix } from "../utilities";
@@ -179,6 +178,7 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
     protected generateClassNames(): string {
         const {
             select,
+            select__scaleToFit,
             select__disabled,
             select_menu__open,
             select__multiSelectable,
@@ -187,6 +187,11 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
         return super.generateClassNames(
             classNames(
                 select,
+                [
+                    select__scaleToFit,
+                    !isNil(this.props.menuFlyoutConfig) &&
+                        this.props.menuFlyoutConfig.scaleToFit,
+                ],
                 [select__disabled, this.props.disabled],
                 [select_menu__open, this.state.isMenuOpen],
                 [select__multiSelectable, this.props.multiselectable]
@@ -460,7 +465,9 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
         if (props.multiselectable) {
             return null;
         }
-        const labelledBy: string = `${this.props.labelledBy} ${triggerId}`;
+        const labelledBy: string = `${
+            isNil(this.props.labelledBy) ? "" : `${this.props.labelledBy} `
+        }${triggerId}`;
         return (
             <button
                 disabled={props.disabled}
@@ -468,7 +475,6 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
                 aria-haspopup="listbox"
                 aria-labelledby={labelledBy}
                 aria-expanded={state.isMenuOpen}
-                aria-live="polite"
             >
                 {state.displayString}
             </button>
@@ -500,6 +506,7 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
         if (this.props.disabled || e.defaultPrevented) {
             return;
         }
+        e.preventDefault();
         this.toggleMenu(!this.state.isMenuOpen);
     };
 

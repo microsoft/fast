@@ -1645,49 +1645,4 @@ describe("viewport positioner", (): void => {
         expect(positionerDimension.width).toBe(110);
         expect(positionerDimension.height).toBe(110);
     });
-
-    test("extractElementFromRef function returns element passed in directly", (): void => {
-        const anchorElement: React.RefObject<HTMLDivElement> = React.createRef<
-            HTMLDivElement
-        >();
-
-        const rendered: any = mount(
-            <div>
-                <div ref={anchorElement} />
-                <ViewportPositioner
-                    viewport={document.firstElementChild as HTMLElement}
-                    anchor={anchorElement}
-                    managedClasses={managedClasses}
-                />
-            </div>
-        );
-
-        const positioner: any = rendered.find("BaseViewportPositioner");
-        const testElement: Element = document.createElement("div");
-        expect(positioner.instance()["extractElementFromRef"](testElement)).toBe(
-            testElement
-        );
-    });
-
-    test("extractElementFromRef function returns element passed in as a ref", (): void => {
-        const anchorElement: React.RefObject<HTMLDivElement> = React.createRef<
-            HTMLDivElement
-        >();
-
-        const rendered: any = mount(
-            <div>
-                <div ref={anchorElement} />
-                <ViewportPositioner
-                    viewport={document.firstElementChild as HTMLElement}
-                    anchor={anchorElement}
-                    managedClasses={managedClasses}
-                />
-            </div>
-        );
-
-        const positioner: any = rendered.find("BaseViewportPositioner");
-        expect(positioner.instance()["extractElementFromRef"](anchorElement)).toBe(
-            anchorElement.current
-        );
-    });
 });

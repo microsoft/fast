@@ -1,7 +1,9 @@
 import Navigation, { NavigationItem } from "./utilities/navigation";
 import { FormPlugin, FormPluginProps } from "./plugin";
 import { ErrorObject } from "ajv";
-import { StandardControlPlugin } from "./templates";
+import { SingleLineControlPlugin, StandardControlPlugin } from "./templates";
+import { ControlContext } from "./templates/types";
+import { FormChildOptionItem } from "./types";
 
 /**
  * Form class name contract
@@ -20,29 +22,6 @@ export type LocationOnChange = (dataLocation: string) => void;
 export type BreadcrumbItemEventHandler = (e: React.MouseEvent<HTMLAnchorElement>) => void;
 
 export type FormTag = "form" | "div";
-
-export interface FormChildOptionItem {
-    /**
-     * The name of the component
-     */
-    name?: string;
-
-    /**
-     * The React component
-     */
-    component: React.ComponentType;
-
-    /**
-     * The JSON schema for the component
-     */
-    schema: any;
-
-    /**
-     * The plugins for data assigned to this component
-     * TODO: enable this for #1445
-     */
-    // plugins?: Array<FormPlugin<FormPluginProps>>;
-}
 
 /**
  * The schema form props
@@ -168,39 +147,6 @@ export interface FormLocation {
     onChange: LocationOnChange;
 }
 
-export interface AttributeSettingsCommon {
-    /**
-     * The list of property names to change the attribute
-     */
-    propertyNames: string[];
-}
-
-export interface TextareaAttributeRows extends AttributeSettingsCommon {
-    /**
-     * The value to set the attribute to
-     */
-    value: number;
-}
-
-export interface TextareaAttributeSettingsMappingToPropertyNames {
-    /**
-     * The rows attribute
-     */
-    rows: TextareaAttributeRows[];
-}
-
-/**
- * The configuration for the mapping of attribute settings to property names
- */
-export interface FormAttributeSettingsMappingToPropertyNames {
-    /**
-     * The textarea component
-     */
-    textarea: TextareaAttributeSettingsMappingToPropertyNames;
-}
-
-export type AttributeSettingsMappingToPropertyNames = TextareaAttributeSettingsMappingToPropertyNames;
-
 /**
  * The configuration for the mapping property names to form controls
  */
@@ -304,4 +250,10 @@ export interface FormOrderByPropertyNamesProps {
      * The categories to drop properties into
      */
     categories: FormOrderByPropertyNamesCategories[];
+}
+
+export interface ControlPluginConfig {
+    plugin: typeof StandardControlPlugin | typeof SingleLineControlPlugin;
+    component: React.ComponentClass;
+    context: ControlContext;
 }

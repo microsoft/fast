@@ -8,7 +8,8 @@ import {
 import mergedOneOfSchema from "../../__tests__/schemas/merged-one-of.schema.json";
 import childrenSchema from "../../__tests__/schemas/children.schema.json";
 import textFieldSchema from "../../__tests__/schemas/textarea.schema.json";
-import { InitialOneOfAnyOfState, oneOfAnyOfType } from "../form-section.props";
+import { InitialOneOfAnyOfState } from "../controls/control.section.props";
+import { CombiningKeyword } from "../../data-utilities/types";
 import ajv, { ValidationError } from "ajv";
 import { getValidationErrors } from "../../utilities/ajv-validation";
 
@@ -100,11 +101,11 @@ describe("getInitialOneOfAnyOfState", () => {
         );
 
         expect(initialOneOfAnyOfNoData.oneOfAnyOf).toEqual({
-            type: oneOfAnyOfType.oneOf,
+            type: CombiningKeyword.oneOf,
             activeIndex: -1,
         });
         expect(initialOneOfAnyOfWithData.oneOfAnyOf).toEqual({
-            type: oneOfAnyOfType.oneOf,
+            type: CombiningKeyword.oneOf,
             activeIndex: 1,
         });
     });

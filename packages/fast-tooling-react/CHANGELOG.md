@@ -3,6 +3,46 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.32.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-tooling-react@1.32.0...@microsoft/fast-tooling-react@1.32.1) (2020-02-07)
+
+**Note:** Version bump only for package @microsoft/fast-tooling-react
+
+
+
+
+
+# [1.32.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-tooling-react@1.31.0...@microsoft/fast-tooling-react@1.32.0) (2020-01-29)
+
+
+### Features
+
+* convert the section to a control ([#2628](https://github.com/Microsoft/fast-dna/issues/2628)) ([6763227](https://github.com/Microsoft/fast-dna/commit/6763227d9e0eaa99a46cf8b06c109c0b25f9024a))
+
+
+
+
+
+# [1.31.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-tooling-react@1.30.0...@microsoft/fast-tooling-react@1.31.0) (2020-01-24)
+
+
+### Bug Fixes
+
+* checkbox control is visually represented with a checkmark when used outside of the SingleLineControlPlugin ([#2605](https://github.com/Microsoft/fast-dna/issues/2605)) ([3d0c9d6](https://github.com/Microsoft/fast-dna/commit/3d0c9d6798eba5241ff3385a4e1b036ca551d8a6))
+* ensure a controlled select never has an undefined value where it may fall back to a previously set value ([#2601](https://github.com/Microsoft/fast-dna/issues/2601)) ([ef954e9](https://github.com/Microsoft/fast-dna/commit/ef954e9d27a8cc0e7bde7d9383651482f352bd8c))
+* performance enhancement, update functions to plain objects for styling ([#2611](https://github.com/Microsoft/fast-dna/issues/2611)) ([ec8e6b5](https://github.com/Microsoft/fast-dna/commit/ec8e6b500308778c8c1f3c8d9e7daa3a673c2ed6))
+* re-address the validation issue caused by removing required from form elements and ensure all plugin configurations can be passed to the default plugins ([#2616](https://github.com/Microsoft/fast-dna/issues/2616)) ([a6a2a61](https://github.com/Microsoft/fast-dna/commit/a6a2a6195dd4e07396159e05fb0f6836f8137036))
+
+
+### Features
+
+* add default classes and stylings to differentiate when the value of an item is not set but a default has been provided ([#2583](https://github.com/Microsoft/fast-dna/issues/2583)) ([e1ea19a](https://github.com/Microsoft/fast-dna/commit/e1ea19a1f0661477a39c6098d032e5657a4baf48))
+* add the ControlTemplateUtilities to the root level export for greater flexibility when using the control plugin system ([#2607](https://github.com/Microsoft/fast-dna/issues/2607)) ([f19d3f6](https://github.com/Microsoft/fast-dna/commit/f19d3f6149892ed6fa9062343d1a1bb4e54164d4))
+* allow all controls to be overridden and provide the control to be used as an uninitialized react component in the config ([#2592](https://github.com/Microsoft/fast-dna/issues/2592)) ([4c1cd8c](https://github.com/Microsoft/fast-dna/commit/4c1cd8c3f6adcd4d099638cb84953773fffb8fe2))
+
+
+
+
+
 # [1.30.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-tooling-react@1.29.0...@microsoft/fast-tooling-react@1.30.0) (2020-01-21)
 
 

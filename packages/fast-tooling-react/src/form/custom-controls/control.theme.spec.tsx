@@ -5,6 +5,7 @@ import { ThemeControl as StyledThemeControl } from "./control.theme";
 import { ThemeControlProps } from "./control.theme.props";
 import { ThemeControl } from "./control.theme";
 import { ThemeControlClassNameContract } from "./control.theme.style";
+import { ControlType } from "../templates";
 
 /*
  * Configure Enzyme
@@ -12,6 +13,7 @@ import { ThemeControlClassNameContract } from "./control.theme.style";
 configure({ adapter: new Adapter() });
 
 const themeProps: ThemeControlProps = {
+    type: ControlType.select,
     options: ["dark", "light"],
     dataLocation: "",
     value: "",
@@ -22,6 +24,7 @@ const themeProps: ThemeControlProps = {
     disabled: false,
     elementRef: null,
     validationErrors: [],
+    required: false,
 };
 
 const managedClasses: ThemeControlClassNameContract = {

@@ -3,13 +3,15 @@ import { DesignSystemProvider } from "@microsoft/fast-jss-manager-react";
 import { getDataFromSchema } from "../../src/data-utilities";
 import { BareForm, FormPlugin, FormPluginProps, Navigation } from "../../src";
 import {
-    FormAttributeSettingsMappingToPropertyNames,
-    FormChildOptionItem,
     FormComponentMappingToPropertyNamesProps,
     FormLocation,
     FormOrderByPropertyNamesProps,
     FormProps,
 } from "../../src/form/form.props";
+import {
+    FormAttributeSettingsMappingToPropertyNames,
+    FormChildOptionItem,
+} from "../../src/form/types";
 import * as testConfigs from "./form/";
 import { StringUpdateSchemaPlugin } from "./form/plugin/plugin";
 

@@ -4,6 +4,7 @@ import { configure, mount } from "enzyme";
 import { FileUploadControl } from "./control.file-upload";
 import { FileUploadControl as StyledFileUploadControl } from "./control.file-upload";
 import { FileUploadControlProps } from "./control.file-upload.props";
+import { ControlType } from "../templates";
 
 /*
  * Configure Enzyme
@@ -11,6 +12,7 @@ import { FileUploadControlProps } from "./control.file-upload.props";
 configure({ adapter: new Adapter() });
 
 const fileUploadControlProps: FileUploadControlProps = {
+    type: ControlType.textarea,
     dataLocation: "",
     disabled: false,
     elementRef: null,
@@ -20,6 +22,7 @@ const fileUploadControlProps: FileUploadControlProps = {
     reportValidity: jest.fn(),
     updateValidity: jest.fn(),
     validationErrors: [],
+    required: false,
 };
 
 describe("FileUploadControl", () => {

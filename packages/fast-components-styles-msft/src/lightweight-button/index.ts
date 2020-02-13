@@ -82,7 +82,9 @@ const styles: ComponentStyles<LightweightButtonClassNameContract, DesignSystem> 
             },
             // Underline
             "&:hover $button_contentRegion::before": {
-                background: highContrastLinkValue,
+                [highContrastSelector]: {
+                    background: highContrastLinkValue,
+                },
             },
             "& $button_contentRegion::before": {
                 [highContrastSelector]: {

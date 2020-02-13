@@ -4,6 +4,7 @@ import { configure, mount, shallow } from "enzyme";
 import { ButtonControl } from "./control.button";
 import { ButtonControlProps } from "./control.button.props";
 import { ButtonControlClassNameContract } from "./control.button.style";
+import { ControlType } from "../templates";
 
 /*
  * Configure Enzyme
@@ -13,9 +14,11 @@ configure({ adapter: new Adapter() });
 const managedClasses: ButtonControlClassNameContract = {
     buttonControl: "buttonControl-class",
     buttonControl__disabled: "buttonControl__disabled-class",
+    buttonControl__default: "buttonControl__default-class",
 };
 
 const buttonProps: ButtonControlProps = {
+    type: ControlType.button,
     dataLocation: "",
     onChange: jest.fn(),
     value: "",
@@ -25,6 +28,7 @@ const buttonProps: ButtonControlProps = {
     updateValidity: jest.fn(),
     elementRef: null,
     validationErrors: [],
+    required: false,
 };
 
 describe("ButtonControl", () => {
@@ -54,6 +58,20 @@ describe("ButtonControl", () => {
         );
         expect(rendered.find("button").prop("disabled")).toBeTruthy();
         expect(rendered.find("input").prop("disabled")).toBeTruthy();
+    });
+    test("should have the default class when default prop is passed", () => {
+        const rendered: any = mount(
+            <ButtonControl
+                {...buttonProps}
+                value={undefined}
+                default={null}
+                managedClasses={managedClasses}
+            />
+        );
+
+        expect(rendered.find(`.${managedClasses.buttonControl__default}`)).toHaveLength(
+            1
+        );
     });
     test("should fire the onChange event when the button is clicked", () => {
         const callback: any = jest.fn();

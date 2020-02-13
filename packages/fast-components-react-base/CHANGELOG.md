@@ -3,6 +3,51 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.24.2](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-base@4.24.1...@microsoft/fast-components-react-base@4.24.2) (2020-02-07)
+
+
+### Bug Fixes
+
+* select - add css class for scaleToFit mode ([#2626](https://github.com/Microsoft/fast-dna/issues/2626)) ([15c7a50](https://github.com/Microsoft/fast-dna/commit/15c7a50ef336e4531261ce1fe6be3695c9533243))
+
+
+
+
+
+## [4.24.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-base@4.24.0...@microsoft/fast-components-react-base@4.24.1) (2020-01-29)
+
+**Note:** Version bump only for package @microsoft/fast-components-react-base
+
+
+
+
+
+# [4.24.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-base@4.23.6...@microsoft/fast-components-react-base@4.24.0) (2020-01-27)
+
+
+### Bug Fixes
+
+* prevent default on tabs component navigation ([#2617](https://github.com/Microsoft/fast-dna/issues/2617)) ([73e3706](https://github.com/Microsoft/fast-dna/commit/73e37064c628f5cb6c3cf6d350defb9d3a1dbf8d))
+
+
+### Features
+
+* add aria-modal attribute to modal dialogs ([#2621](https://github.com/Microsoft/fast-dna/issues/2621)) ([765b886](https://github.com/Microsoft/fast-dna/commit/765b88642fbe06ac6253e9f51579a5ca89a1cb99))
+* Add focusTargetOnClose prop to dialog component ([#2603](https://github.com/Microsoft/fast-dna/issues/2603)) ([8134ce5](https://github.com/Microsoft/fast-dna/commit/8134ce55b69668959033114575b8c600b6a34bf2))
+* move extractElementFromRef function to utilities ([#2613](https://github.com/Microsoft/fast-dna/issues/2613)) ([f012600](https://github.com/Microsoft/fast-dna/commit/f0126008cfa78adc63eced2e7639e8b6fa3162d7))
+
+
+
+
+
+## [4.23.6](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-base@4.23.5...@microsoft/fast-components-react-base@4.23.6) (2020-01-24)
+
+**Note:** Version bump only for package @microsoft/fast-components-react-base
+
+
+
+
+
 ## [4.23.5](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-base@4.23.4...@microsoft/fast-components-react-base@4.23.5) (2020-01-21)
 
 

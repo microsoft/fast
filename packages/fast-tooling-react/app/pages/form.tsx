@@ -3,13 +3,15 @@ import * as testConfigs from "./form/";
 import { AlignControl, ControlType, Form, FormPlugin, FormPluginProps } from "../../src";
 import { ControlConfig, StandardControlPlugin, TextAlignControl } from "../../src";
 import {
-    FormAttributeSettingsMappingToPropertyNames,
-    FormChildOptionItem,
     FormComponentMappingToPropertyNamesProps,
     FormLocation,
     FormOrderByPropertyNamesProps,
     FormProps,
 } from "../../src/form/form.props";
+import {
+    FormAttributeSettingsMappingToPropertyNames,
+    FormChildOptionItem,
+} from "../../src/form/types";
 import { OneOfUpdateSchemaPlugin, StringUpdateSchemaPlugin } from "./form/plugin/plugin";
 
 import { DesignSystemProvider } from "@microsoft/fast-jss-manager-react";

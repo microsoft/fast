@@ -1,4 +1,4 @@
-import { ChildOptionItem } from "./";
+import { ChildOptionItem } from "./index";
 
 export interface PluginProps {
     /**

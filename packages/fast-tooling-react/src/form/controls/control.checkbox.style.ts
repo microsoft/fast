@@ -1,6 +1,12 @@
 import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager-react";
 import { applyFocusVisible } from "@microsoft/fast-jss-utilities";
-import { error, foreground300, foreground800, insetStrongBoxShadow } from "../../style";
+import {
+    defaultColor,
+    error,
+    foreground300,
+    foreground800,
+    insetStrongBoxShadow,
+} from "../../style";
 
 /**
  * Checkbox class name contract
@@ -8,10 +14,19 @@ import { error, foreground300, foreground800, insetStrongBoxShadow } from "../..
 export interface CheckboxControlClassNameContract {
     checkboxControl?: string;
     checkboxControl__disabled?: string;
+    checkboxControl_input?: string;
+    checkboxControl_checkmark?: string;
+    checkboxControl__default?: string;
 }
 
 const styles: ComponentStyles<CheckboxControlClassNameContract, {}> = {
     checkboxControl: {
+        position: "relative",
+        height: "14px",
+        width: "14px",
+    },
+    checkboxControl_input: {
+        position: "absolute",
         appearance: "none",
         minWidth: "14px",
         height: "14px",
@@ -30,21 +45,8 @@ const styles: ComponentStyles<CheckboxControlClassNameContract, {}> = {
             outline: "none",
             ...insetStrongBoxShadow(foreground300),
         }),
-        "& + span": {
-            position: "absolute",
-            left: "0",
-            width: "14px",
-            height: "14px",
-            "&::after, &::before": {
-                position: "absolute",
-                display: "block",
-                content: "''",
-                width: "1px",
-                background: foreground300,
-            },
-        },
         "&:checked": {
-            "& + span": {
+            "& + $checkboxControl_checkmark": {
                 "&::before": {
                     height: "3px",
                     left: "4px",
@@ -62,8 +64,30 @@ const styles: ComponentStyles<CheckboxControlClassNameContract, {}> = {
         "&:invalid": {
             borderColor: error,
         },
+        "&$checkboxControl__default": {
+            "border-color": defaultColor,
+            "& + span": {
+                "&::after, &::before": {
+                    background: defaultColor,
+                },
+            },
+        },
+    },
+    checkboxControl_checkmark: {
+        position: "absolute",
+        left: "0",
+        width: "14px",
+        height: "14px",
+        "&::after, &::before": {
+            position: "absolute",
+            display: "block",
+            content: "''",
+            width: "1px",
+            background: foreground300,
+        },
     },
     checkboxControl__disabled: {},
+    checkboxControl__default: {},
 };
 
 export default styles;

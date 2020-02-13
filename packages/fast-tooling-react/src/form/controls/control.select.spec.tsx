@@ -4,6 +4,7 @@ import { configure, mount, shallow } from "enzyme";
 import { SelectControl } from "./control.select";
 import { SelectControlProps } from "./control.select.props";
 import { SelectControlClassNameContract } from "./control.select.style";
+import { ControlType } from "../templates";
 
 /*
  * Configure Enzyme
@@ -13,10 +14,12 @@ configure({ adapter: new Adapter() });
 const managedClasses: SelectControlClassNameContract = {
     selectControl: "selectControl-class",
     selectControl__disabled: "selectControl__disabled-class",
+    selectControl__default: "selectControl__default-class",
     selectControl_input: "selectControl_input-class",
 };
 
 const selectProps: SelectControlProps = {
+    type: ControlType.select,
     dataLocation: "",
     disabled: false,
     options: [],
@@ -27,6 +30,7 @@ const selectProps: SelectControlProps = {
     schema: {},
     elementRef: null,
     validationErrors: [],
+    required: false,
 };
 
 describe("SelectControl", () => {
@@ -124,6 +128,21 @@ describe("SelectControl", () => {
             1
         );
     });
+    test("should have the default class when default prop is passed", () => {
+        const rendered: any = mount(
+            <SelectControl
+                {...selectProps}
+                value={undefined}
+                default={"foo"}
+                options={["foo", "bar"]}
+                managedClasses={managedClasses}
+            />
+        );
+
+        expect(rendered.find(`.${managedClasses.selectControl__default}`)).toHaveLength(
+            1
+        );
+    });
     test("should show default values if they exist and no data is available", () => {
         const defaultValue: string = "foo";
         const rendered: any = mount(
@@ -160,5 +179,34 @@ describe("SelectControl", () => {
                 .at(0)
                 .prop("value")
         ).toBe(value);
+    });
+    test("should reset the value to an empty string if the value and default are undefined", () => {
+        const value: string = "foo";
+        const rendered: any = mount(
+            <SelectControl
+                {...selectProps}
+                managedClasses={managedClasses}
+                value={value}
+            />
+        );
+        expect(
+            rendered
+                .find("select")
+                .at(0)
+                .prop("value")
+        ).toBe(value);
+
+        rendered.setProps({
+            ...selectProps,
+            managedClasses,
+            value: void 0,
+        });
+
+        expect(
+            rendered
+                .find("select")
+                .at(0)
+                .prop("value")
+        ).toBe("");
     });
 });
