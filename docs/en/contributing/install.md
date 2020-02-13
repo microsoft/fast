@@ -23,7 +23,7 @@ yarn global add lerna
 Installs all the dependencies:
 
 ```shell
-yarn install
+yarn
 ```
 
 Builds all the packages:
