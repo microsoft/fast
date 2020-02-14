@@ -79,3 +79,6 @@ build/ @janechu @nicholasrice @chrisdholt @awentzel
 
 # fast-element
 /packages/fast-element/ @EisenbergEffect @chrisdholt @janechu @nicholasrice
+
+# fast-components
+/packages/fast-components/ @EisenbergEffect @chrisdholt @janechu @nicholasrice

@@ -1,0 +1,22 @@
+{
+    "extends": [
+        "@microsoft/fast-tslint-rules",
+        "tslint-config-prettier"
+    ],
+    "rules": {
+        "typedef": [
+            true,
+            "call-signature",
+            "parameter",
+            "property-declaration",
+            "member-variable-declarations"
+        ]
+    },
+    "linterOptions": {
+        "exclude": [
+            "node_modules/**",
+            "dist/**",
+            "src/**/*.stories.ts"
+        ]
+    }
+}
