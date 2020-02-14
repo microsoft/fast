@@ -27,6 +27,7 @@
     "tslint": "tslint -c ./tslint.json '**/*.ts'",
     "tslint:fix": "tslint -c ./tslint.json --fix '**/*.ts'",
     "start": "start-storybook -p 6006",
+    "test": "yarn build-storybook && yarn tslint",
     "build-storybook": "build-storybook"
   },
   "devDependencies": {
