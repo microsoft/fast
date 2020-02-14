@@ -1,7 +1,18 @@
+/**
+ * Implemented by objects that are interested in change notifications.
+ */
 export interface ISubscriber {
     handleChange(source: any, args: any): void;
 }
 
+/**
+ * Efficiently keeps track of subscribers interested in change notifications.
+ *
+ * @remarks
+ * This collection is optimized for the most common scenario of 1 - 3 subscribers.
+ * With this in mind, it can store a subscriber in an internal field, allowing it to avoid Array#push operations.
+ * If the collection ever exceeds three subscribers, it will spill over into an array.
+ */
 export class SubscriberCollection {
     private sub1: ISubscriber | undefined = void 0;
     private sub2: ISubscriber | undefined = void 0;
