@@ -18,7 +18,7 @@
 
 ### Risks and Challenges
 
-*Notable risks or challenges associated with implementing the component. Would we need to make any breaking changes to other parts of fast-dna in order to achieve this component's goals?*
+*Notable risks or challenges associated with implementing the component. Would we need to make any breaking changes in order to achieve this component's goals?*
 
 ### Prior Art/Examples
 
@@ -31,7 +31,7 @@
 *Describe the design of the component, thinking through several perspectives:*
 
 - *A customer using the component on a web page.*
-- *A developer building an app with the component and interacting through HTML/CSS/JS.*
+- *A developer building an app with the component and interacting through HTML/CSS/JavaScript.*
 - *A designer customizing the component.*
 
 ### API
@@ -43,7 +43,7 @@
 - *Methods*
 - *Events*
 
-*Consider high and low-level APIs. Attempt to design a powerful and extensible low-level API with a higher-level API for developer/designer ergonomics and simplicity.*
+*Consider high and low-level APIs. Attempt to design a powerful and extensible low-level API with a high-level API for developer/designer ergonomics and simplicity.*
 
 ### Anatomy and Appearance
 
@@ -58,7 +58,7 @@
 
 ## Implementation
 
-*Important aspects of the planned implementation, with careful consideration of web standards and integration.*
+*Important aspects of the planned implementation with careful consideration of web standards and integration.*
 
 ### States
 
@@ -109,7 +109,7 @@
 
 ### Documentation
 
-*What additions or changes would need to be made to our user documentation and demos? Are there any architectural/engineering docs we should create as well, perhaps due to some interesting technical challenge or design decisions related to this component?*
+*What additions or changes are needed for user documentation and demos? Are there any architectural/engineering docs we should create as well, perhaps due to some interesting technical challenge or design decisions related to this component?*
 
 ---
 
