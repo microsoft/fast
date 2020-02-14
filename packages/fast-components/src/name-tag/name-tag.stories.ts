@@ -1,12 +1,7 @@
 import { FASTNameTag } from ".";
 import MarkTemplate from "./fixtures/mark.html";
 
-try {
-    // Prevent tree-shaking
-    FASTNameTag;
-} catch (e) {
-    alert(e);
-}
+FASTNameTag;
 
 export default {
     title: "Name tag",
