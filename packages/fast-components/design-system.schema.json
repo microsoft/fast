@@ -1,0 +1,62 @@
+{
+    "$schema": "http://json-schema.org/schema#",
+    "title": "Design System",
+    "description": "A design system's schema definition.",
+    "id": "design-system",
+    "type": "object",
+    "properties": {
+        "accent-base-color": {
+            "title": "Accent base color",
+            "type": "string",
+            "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$",
+            "default": "#0078D4"
+        },
+        "background-color": {
+            "title": "Background color",
+            "type": "string",
+            "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+        },
+        "contrast": {
+            "title": "Contrast",
+            "type": "number",
+            "default": 0
+        },
+        "corner-radius": {
+            "title": "Corner radius",
+            "type": "number",
+            "default": 2
+        },
+        "disabled-opacity": {
+            "title": "Disabled opacity",
+            "type": "number",
+            "default": 0.3
+        },
+        "density": {
+            "title": "Density",
+            "type": "number",
+            "min": 0,
+            "max": 1,
+            "default": 0.5
+        },
+        "design-unit": {
+            "title": "Design unit",
+            "type": "number",
+            "default": 4
+        },
+        "elevated-corner-radius": {
+            "title": "Elevated corner radius",
+            "type": "number",
+            "default": 4
+        },
+        "focus-outline-width": {
+            "title": "Focus outline width",
+            "type": "number",
+            "default": 2
+        },
+        "outline-width": {
+            "title": "Outline width",
+            "type": "number",
+            "default": 1
+        }
+    }
+};
