@@ -1,26 +1,17 @@
-import { html, css, customElement, attr, FastElement } from "@microsoft/fast-element";
+import { css } from "@microsoft/fast-element";
 
-const template = html<NameTag>`
-  <div class="header">
-    <slot name="avatar"></slot>
-    <h3>${x => x.greeting.toUpperCase()}</h3>
-    <h4>my name is</h4>
-  </div>
+export const NameTagStyles = css`
+    :host {
+        --depth: 4;
+        --background-color: #f00;
+        --border-radius: 4;
 
-  <div class="body">
-    <slot></slot>
-  </div>
-
-  <div class="footer"></div>
-`;
-
-const styles = css`
-    ${normalize} :host {
-        display: inline-block;
+        display: block;
         color: white;
         background: var(--background-color);
         border-radius: var(--border-radius);
         min-width: 325px;
+        max-width: 500px;
         text-align: center;
         box-shadow: 0 0 calc(var(--depth) * 1px) rgba(0, 0, 0, 0.5);
     }
@@ -70,13 +61,3 @@ const styles = css`
         top: -4px;
     }
 `;
-
-@customElement({
-    name: "name-tag",
-    template,
-    dependencies: [styles],
-})
-export class NameTag extends FastElement {
-    @attr
-    greeting: string = "Hello";
-}

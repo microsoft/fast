@@ -1,6 +1,7 @@
 {
     "extends": "./tsconfig.json",
     "exclude": [
-        "**/stories.ts"
+        "**/stories.ts",
+        "./src/storybook-typings.d.ts"
     ]
 }

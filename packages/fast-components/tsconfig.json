@@ -3,7 +3,9 @@
     "compilerOptions": {
         "outDir": "dist",
         "baseUrl": ".",
-        "strictNullChecks": true
+        "strictNullChecks": true,
+        "experimentalDecorators": true,
+        "skipLibCheck": true
     },
     "include": [
         "src/**/*"
