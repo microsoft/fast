@@ -16,11 +16,6 @@
             "type": "string",
             "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
         },
-        "contrast": {
-            "title": "Contrast",
-            "type": "number",
-            "default": 0
-        },
         "corner-radius": {
             "title": "Corner radius",
             "type": "number",
