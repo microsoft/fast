@@ -12,7 +12,7 @@ import {
     enableArrayObservation,
     IndexMap,
 } from "../observation/array-observer";
-import { ISubscriber } from "src/observation/subscriber-collection";
+import { ISubscriber } from "../observation/subscriber-collection";
 
 export class RepeatDirective extends BindingDirective {
     behavior = RepeatBehavior;

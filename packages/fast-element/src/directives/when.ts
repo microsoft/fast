@@ -5,7 +5,7 @@ import { IExpression, AccessScopeExpression, Getter } from "../expression";
 import { IBehavior } from "../behaviors/behavior";
 import { Observable, IGetterInspector } from "../observation/observable";
 import { BindingDirective } from "./bind";
-import { ISubscriber } from "src/observation/subscriber-collection";
+import { ISubscriber } from "../observation/subscriber-collection";
 
 export class WhenDirective extends BindingDirective {
     behavior = WhenBehavior;
