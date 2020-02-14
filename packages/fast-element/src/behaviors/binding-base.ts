@@ -2,7 +2,7 @@ import { IBehavior } from "./behavior";
 import { IGetterInspector, Observable } from "../observation/observable";
 import { BindingDirective } from "../directives/bind";
 import { DOM } from "../dom";
-import { ISubscriber } from "src/observation/subscriber-collection";
+import { ISubscriber } from "../observation/subscriber-collection";
 
 class ObservationRecord {
     constructor(private source: any, private propertyName: string) {}
