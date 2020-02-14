@@ -29,6 +29,7 @@ export abstract class BindingBase
     implements IBehavior, IGetterInspector, IPropertyChangeListener {
     protected source: unknown;
     private record: ObservationRecord | null = null;
+    private needsQueue = true;
 
     constructor(protected directive: BindingDirective) {}
 
@@ -45,15 +46,15 @@ export abstract class BindingBase
         this.source = null;
     }
 
-    shouldQueueUpdate() {
-        return true;
-    }
-
     onPropertyChanged(source: any, propertyName: string): void {
-        this.shouldQueueUpdate() ? DOM.queueUpdate(this) : this.call();
+        if (this.needsQueue) {
+            this.needsQueue = false;
+            DOM.queueUpdate(this);
+        }
     }
 
     call() {
+        this.needsQueue = true;
         this.updateTarget(this.directive.evaluate(this.source));
     }
 

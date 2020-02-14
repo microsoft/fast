@@ -481,7 +481,11 @@ export class ArrayObserver implements INotifyPropertyChanged {
         propertyName: string,
         listener: IPropertyChangeListener
     ): void {
-        this.listeners.push(listener);
+        const index = this.listeners.indexOf(listener);
+
+        if (index === -1) {
+            this.listeners.push(listener);
+        }
     }
 
     public removePropertyChangeListener(
