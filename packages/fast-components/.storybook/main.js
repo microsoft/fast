@@ -11,7 +11,6 @@ module.exports = {
         });
         config.resolve.extensions.push(".ts");
 
-        // config.entry = config.entry.filter(entry => !entry.includes('/webpack-hot-middleware/'))
         return config;
     },
 };
