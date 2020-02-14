@@ -1,32 +1,22 @@
 import { IBehavior } from "./behavior";
-import {
-    IGetterInspector,
-    IPropertyChangeListener,
-    Observable,
-} from "../observation/observable";
+import { IGetterInspector, Observable } from "../observation/observable";
 import { BindingDirective } from "../directives/bind";
 import { DOM } from "../dom";
+import { ISubscriber } from "../observation/subscriber-collection";
 
 class ObservationRecord {
     constructor(private source: any, private propertyName: string) {}
 
-    subscribe(listener: IPropertyChangeListener) {
-        Observable.getNotifier(this.source).addPropertyChangeListener(
-            this.propertyName,
-            listener
-        );
+    subscribe(subscriber: ISubscriber) {
+        Observable.getNotifier(this.source).subscribe(subscriber, this.propertyName);
     }
 
-    unsubscribe(listener: IPropertyChangeListener) {
-        Observable.getNotifier(this.source).removePropertyChangeListener(
-            this.propertyName,
-            listener
-        );
+    unsubscribe(subscriber: ISubscriber) {
+        Observable.getNotifier(this.source).unsubscribe(subscriber, this.propertyName);
     }
 }
 
-export abstract class BindingBase
-    implements IBehavior, IGetterInspector, IPropertyChangeListener {
+export abstract class BindingBase implements IBehavior, IGetterInspector, ISubscriber {
     protected source: unknown;
     private record: ObservationRecord | null = null;
     private needsQueue = true;
@@ -46,7 +36,7 @@ export abstract class BindingBase
         this.source = null;
     }
 
-    onPropertyChanged(source: any, propertyName: string): void {
+    handleChange(source: any, propertyName: string): void {
         if (this.needsQueue) {
             this.needsQueue = false;
             DOM.queueUpdate(this);
