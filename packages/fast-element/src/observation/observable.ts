@@ -34,7 +34,12 @@ export class PropertyChangeNotifier implements INotifyPropertyChanged {
     ) {
         const listeners =
             this.listeners[propertyName] || (this.listeners[propertyName] = []);
-        listeners.push(listener);
+
+        const index = listeners.indexOf(listener);
+
+        if (index === -1) {
+            listeners.push(listener);
+        }
     }
 
     public removePropertyChangeListener(
