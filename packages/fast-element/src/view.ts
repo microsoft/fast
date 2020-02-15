@@ -1,5 +1,4 @@
 import { IBehavior } from "./behaviors/behavior";
-import { DOM } from "./dom";
 
 export interface IView {
     bind(source: unknown): void;
@@ -25,12 +24,9 @@ export class HTMLView implements IView, IElementView, ISyntheticView {
         private behaviors: IBehavior[],
         private isSynthetic: boolean = false
     ) {
-        if (this.isSynthetic) {
-            fragment.insertBefore(
-                (this.start = DOM.createLocation()),
-                fragment.firstChild
-            );
-            fragment.appendChild((this.end = DOM.createLocation()));
+        if (isSynthetic) {
+            this.start = fragment.firstChild!;
+            this.end = fragment.lastChild!;
         }
     }
 
@@ -71,10 +67,18 @@ export class HTMLView implements IView, IElementView, ISyntheticView {
     }
 
     bind(source: unknown) {
-        this.behaviors.forEach(x => x.bind(source));
+        const behaviors = this.behaviors;
+
+        for (let i = 0, ii = behaviors.length; i < ii; ++i) {
+            behaviors[i].bind(source);
+        }
     }
 
     unbind() {
-        this.behaviors.forEach(x => x.unbind());
+        const behaviors = this.behaviors;
+
+        for (let i = 0, ii = behaviors.length; i < ii; ++i) {
+            behaviors[i].unbind();
+        }
     }
 }

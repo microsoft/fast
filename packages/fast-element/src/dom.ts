@@ -1,16 +1,21 @@
 import { Callable } from "./interfaces";
+const markerClass = "fph fm";
 
 export const DOM = {
     pendingUpdates: [] as Callable[],
 
     createTextMarker() {
-        const marker = document.createElement("fm");
-        this.makeIntoInstructionTarget(marker);
+        const marker = document.createElement("template");
+        marker.className = markerClass;
         return marker;
     },
 
-    isMarker(node: HTMLElement): boolean {
-        return node.tagName === "TEMPLATE" && node.className === "fph";
+    isMarker(node: Node): boolean {
+        return (
+            node.nodeType === 1 &&
+            (node as HTMLElement).tagName === "TEMPLATE" &&
+            (node as HTMLElement).className === markerClass
+        );
     },
 
     makeIntoInstructionTarget(element: HTMLElement) {
@@ -33,7 +38,7 @@ export const DOM = {
     },
 
     createLocationPlaceholder(instructionIndex: number) {
-        return `<template i="${instructionIndex}" class="fph"></template><!---->`;
+        return `<template i="${instructionIndex}" class="${markerClass}"></template><!---->`;
     },
 
     queueUpdate(callable: Callable) {
