@@ -1,4 +1,4 @@
-import { attr, FastElement } from "@microsoft/fast-element";
+import { attr, FastElement, observable, Observable } from "@microsoft/fast-element";
 
 /**
  * The following interface is an implementation of
@@ -17,46 +17,56 @@ export interface DesignSystemData {
     outlineWidth: number;
 }
 
-const clamp = (min: number, max: number) => (value: number) =>
-    Math.min(max, Math.max(min, value));
+function camelToKebab(str: string): string {
+    return str.replace(/([a-z])([A-Z])/g, "$1-$2").toLowerCase();
+}
+
+/**
+ * Custom property reflector for the stub
+ */
+function cssCustomProperty(target: {}, name: string): void {
+    const store = `_${name}`;
+
+    Reflect.defineProperty(target, name, {
+        enumerable: true,
+        get(this: any): string {
+            return this[store];
+        },
+        set(this: any, value: any): void {
+            if (this[store] !== value) {
+                this[store] = value;
+
+                this.style.setProperty(`--${camelToKebab(name)}`, value);
+            }
+        },
+    });
+}
 
 export class DesignSystemProvider extends FastElement implements DesignSystemData {
-    @attr({ attribute: "accent-base-color" })
+    @cssCustomProperty
     public accentBaseColor: string = "#0078D4";
 
-    @attr({ attribute: "background-color" })
+    @cssCustomProperty
     public backgroundColor: string = "#FFFFFF";
 
-    @attr({ attribute: "corner-radius" })
+    @cssCustomProperty
     public cornerRadius: number = 2;
 
-    private _disabledOpacity = 0.3;
-    @attr({ attribute: "disabled-opacity" })
-    public get disabledOpacity() {
-        return this._disabledOpacity;
-    }
-    public set disabledOpacity(value: number) {
-        this._disabledOpacity = clamp(0, 1)(value);
-    }
+    @cssCustomProperty
+    public disabledOpacity = 0.3;
 
-    private _density = 0.5;
-    @attr
-    public get density() {
-        return this._density;
-    }
-    public set density(value: number) {
-        this._density = clamp(0, 1)(value);
-    }
+    @cssCustomProperty
+    public density = 0.5;
 
-    @attr({ attribute: "design-unit" })
+    @cssCustomProperty
     public designUnit = 4;
 
-    @attr({ attribute: "elevated-corner-radius" })
+    @cssCustomProperty
     public elevatedCornerRadius = 4;
 
-    @attr({ attribute: "focus-outline-width" })
-    public focusOutlineWidth: number;
+    @cssCustomProperty
+    public focusOutlineWidth: number = 2;
 
-    @attr({ attribute: "outline-width" })
+    @cssCustomProperty
     public outlineWidth = 1;
 }
