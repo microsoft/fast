@@ -11,3 +11,4 @@ import { DesignSystemProviderStyles } from "./design-system-provider.styles";
 export class FASTDesignSystemProvider extends DesignSystemProvider {}
 export * from "./design-system-provider.template";
 export * from "./design-system-provider";
+export * from "./design-system-provider.styles";
