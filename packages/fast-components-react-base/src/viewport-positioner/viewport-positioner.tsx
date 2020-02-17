@@ -205,15 +205,19 @@ class ViewportPositioner extends Foundation<
     }
 
     public componentDidUpdate(prevProps: ViewportPositionerProps): void {
-        // if anchor or viewport changes the component needs to reset
-        if (
-            prevProps.anchor !== this.props.anchor ||
-            prevProps.viewport !== this.props.viewport
-        ) {
-            this.detachListeners(prevProps.viewport);
+        if (prevProps !== this.props) {
+            // if anchor or viewport changes the component needs to reset
+            if (
+                prevProps.anchor !== this.props.anchor ||
+                prevProps.viewport !== this.props.viewport
+            ) {
+                this.detachListeners(prevProps.viewport);
 
-            this.setState(this.generateInitialState());
-            return;
+                this.setState(this.generateInitialState());
+                return;
+            }
+
+            this.requestFrame();
         }
 
         if (
@@ -223,8 +227,6 @@ class ViewportPositioner extends Foundation<
             this.updateDisabledState();
             return;
         }
-
-        this.requestFrame();
     }
 
     /**
