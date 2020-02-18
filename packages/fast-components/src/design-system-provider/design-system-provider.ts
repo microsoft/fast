@@ -30,12 +30,13 @@ function cssCustomProperty(target: {}, name: string): void {
     Reflect.defineProperty(target, name, {
         enumerable: true,
         get(this: any): string {
+            Observable.track(target, name);
             return this[store];
         },
         set(this: any, value: any): void {
             if (this[store] !== value) {
                 this[store] = value;
-
+                Observable.notify(target, name);
                 this.style.setProperty(`--${camelToKebab(name)}`, value);
             }
         },
