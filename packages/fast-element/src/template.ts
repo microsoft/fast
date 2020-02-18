@@ -20,6 +20,12 @@ export class HTMLTemplate extends Directive implements ITemplate {
         private instructions: ITargetedInstruction[]
     ) {
         super();
+
+        const fragment = templateElement.content;
+
+        if (DOM.isMarker(fragment.firstChild!)) {
+            fragment.insertBefore(DOM.createLocation(), fragment.firstChild);
+        }
     }
 
     public create(synthetic: boolean) {
