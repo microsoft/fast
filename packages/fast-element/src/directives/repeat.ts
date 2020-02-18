@@ -2,11 +2,7 @@ import { AccessScopeExpression, IExpression, Getter } from "../expression";
 import { ITemplate, ICaptureType } from "../template";
 import { IBehavior } from "../behaviors/behavior";
 import { DOM } from "../dom";
-import {
-    IPropertyChangeListener,
-    Observable,
-    IGetterInspector,
-} from "../observation/observable";
+import { Observable, IGetterInspector } from "../observation/observable";
 import { BindingDirective } from "./bind";
 import { ISyntheticView } from "../view";
 import {
@@ -16,6 +12,7 @@ import {
     enableArrayObservation,
     IndexMap,
 } from "../observation/array-observer";
+import { ISubscriber } from "../observation/subscriber-collection";
 
 export class RepeatDirective extends BindingDirective {
     behavior = RepeatBehavior;
@@ -30,8 +27,7 @@ export class RepeatDirective extends BindingDirective {
     }
 }
 
-export class RepeatBehavior
-    implements IBehavior, IGetterInspector, IPropertyChangeListener {
+export class RepeatBehavior implements IBehavior, IGetterInspector, ISubscriber {
     private location: Node;
     private source: unknown;
     private views: ISyntheticView[] = [];
@@ -68,14 +64,14 @@ export class RepeatBehavior
     }
 
     inspect(source: any, propertyName: string) {
-        Observable.getNotifier(source).addPropertyChangeListener(propertyName, this);
+        Observable.getNotifier(source).subscribe(this, propertyName);
     }
 
-    onPropertyChanged(source: any, propertyName: any): void {
-        if (typeof propertyName === "string") {
+    handleChange(source: any, args: string | IndexMap): void {
+        if (typeof args === "string") {
             this.source = source;
         } else {
-            this.indexMap = propertyName;
+            this.indexMap = args;
         }
 
         DOM.queueUpdate(this);
@@ -120,7 +116,7 @@ export class RepeatBehavior
         const oldObserver = this.observer;
         if (fromUnbind) {
             if (oldObserver !== void 0) {
-                oldObserver.removePropertyChangeListener("", this);
+                oldObserver.removeSubscriber(this);
             }
         } else {
             if (!this.items) {
@@ -132,11 +128,11 @@ export class RepeatBehavior
             ));
 
             if (oldObserver !== newObserver && oldObserver) {
-                oldObserver.removePropertyChangeListener("", this);
+                oldObserver.removeSubscriber(this);
             }
 
             if (newObserver) {
-                newObserver.addPropertyChangeListener("", this);
+                newObserver.addSubscriber(this);
             }
         }
     }

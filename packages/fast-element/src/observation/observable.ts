@@ -1,66 +1,13 @@
 import { Controller } from "../controller";
 import { FastElement } from "../fast-element";
-
-export interface IPropertyChangeListener {
-    onPropertyChanged(source: any, propertyName: string): void;
-}
-
-export interface INotifyPropertyChanged {
-    notifyPropertyChanged(source: any, propertyName: string): void;
-    addPropertyChangeListener(
-        propertyName: string,
-        listener: IPropertyChangeListener
-    ): void;
-    removePropertyChangeListener(
-        propertyName: string,
-        listener: IPropertyChangeListener
-    ): void;
-}
-
-export class PropertyChangeNotifier implements INotifyPropertyChanged {
-    private listeners: Record<string, IPropertyChangeListener[]> = {};
-
-    public notifyPropertyChanged(source: any, propertyName: string) {
-        const listeners = this.listeners[propertyName];
-
-        if (listeners !== void 0) {
-            listeners.forEach(x => x.onPropertyChanged(source, propertyName));
-        }
-    }
-
-    public addPropertyChangeListener(
-        propertyName: string,
-        listener: IPropertyChangeListener
-    ) {
-        const listeners =
-            this.listeners[propertyName] || (this.listeners[propertyName] = []);
-        listeners.push(listener);
-    }
-
-    public removePropertyChangeListener(
-        propertyName: string,
-        listener: IPropertyChangeListener
-    ) {
-        const listeners = this.listeners[propertyName];
-
-        if (listeners === void 0) {
-            return;
-        }
-
-        const index = listeners.indexOf(listener);
-
-        if (index !== -1) {
-            listeners.splice(index, 1);
-        }
-    }
-}
+import { INotifier, PropertyChangeNotifier } from "./notifier";
 
 export interface IGetterInspector {
     inspect(source: unknown, propertyName: string): void;
 }
 
-const notifierLookup = new WeakMap<any, PropertyChangeNotifier>();
-let currentInspector: IGetterInspector | null = null;
+const notifierLookup = new WeakMap<any, INotifier>();
+let currentInspector: IGetterInspector | undefined = void 0;
 
 export const Observable = {
     setInspector(watcher: IGetterInspector) {
@@ -68,16 +15,14 @@ export const Observable = {
     },
 
     clearInspector() {
-        currentInspector = null;
+        currentInspector = void 0;
     },
 
-    createArrayObserver(array: any[]): INotifyPropertyChanged {
+    createArrayObserver(array: any[]): INotifier {
         throw new Error("Must call enableArrayObservation before observing arrays.");
     },
 
-    getNotifier<T extends INotifyPropertyChanged = INotifyPropertyChanged>(
-        source: any
-    ): T {
+    getNotifier<T extends INotifier = INotifier>(source: any): T {
         let found = source.$controller || notifierLookup.get(source);
 
         if (found === void 0) {
@@ -85,7 +30,6 @@ export const Observable = {
                 found = Controller.forCustomElement(source);
             } else if (Array.isArray(source)) {
                 found = Observable.createArrayObserver(source);
-                notifierLookup.set(source, found);
             } else {
                 notifierLookup.set(source, (found = new PropertyChangeNotifier()));
             }
@@ -94,14 +38,14 @@ export const Observable = {
         return found;
     },
 
-    notifyPropertyAccessed(source: unknown, propertyName: string) {
-        if (currentInspector != null) {
+    track(source: unknown, propertyName: string) {
+        if (currentInspector !== void 0) {
             currentInspector.inspect(source, propertyName);
         }
     },
 
-    notifyPropertyChanged(source: unknown, propertyName: string) {
-        Observable.getNotifier(source).notifyPropertyChanged(source, propertyName);
+    notify(source: unknown, args: any) {
+        Observable.getNotifier(source).notify(source, args);
     },
 
     define(target: {}, propertyName: string) {
@@ -112,7 +56,7 @@ export const Observable = {
         Reflect.defineProperty(target, propertyName, {
             enumerable: true,
             get: function(this: any) {
-                Observable.notifyPropertyAccessed(this, propertyName);
+                Observable.track(this, propertyName);
                 return this[fieldName];
             },
             set: function(this: any, value) {
@@ -125,7 +69,7 @@ export const Observable = {
                         this[callbackName]();
                     }
 
-                    Observable.notifyPropertyChanged(this, propertyName);
+                    Observable.notify(this, propertyName);
                 }
             },
         });

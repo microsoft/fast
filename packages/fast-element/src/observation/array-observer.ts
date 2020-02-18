@@ -1,8 +1,6 @@
-import {
-    INotifyPropertyChanged,
-    IPropertyChangeListener,
-    Observable,
-} from "./observable";
+import { Observable } from "./observable";
+import { SubscriberCollection } from "./subscriber-collection";
+import { INotifier } from "./notifier";
 
 /**
  * An array of indices, where the index of an element represents the index to map FROM, and the numeric value of the element itself represents the index to map TO
@@ -236,7 +234,7 @@ const observe = {
         if ($this.$raw !== void 0) {
             $this = $this.$raw;
         }
-        const o = ($this as any).$controller;
+        const o = ($this as any).$controller as ArrayObserver;
         if (o === void 0) {
             return $push.apply($this, args);
         }
@@ -252,7 +250,7 @@ const observe = {
             o.indexMap[i] = -2;
             i++;
         }
-        o.notifyPropertyChanged();
+        o.notify();
         return $this.length;
     },
     // https://tc39.github.io/ecma262/#sec-array.prototype.unshift
@@ -264,7 +262,7 @@ const observe = {
         if ($this.$raw !== void 0) {
             $this = $this.$raw;
         }
-        const o = ($this as any).$controller;
+        const o = ($this as any).$controller as ArrayObserver;
         if (o === void 0) {
             return $unshift.apply($this, args);
         }
@@ -276,7 +274,7 @@ const observe = {
         }
         $unshift.apply(o.indexMap, inserts);
         const len = $unshift.apply($this, args);
-        o.notifyPropertyChanged();
+        o.notify();
         return len;
     },
     // https://tc39.github.io/ecma262/#sec-array.prototype.pop
@@ -285,7 +283,7 @@ const observe = {
         if ($this.$raw !== void 0) {
             $this = $this.$raw;
         }
-        const o = ($this as any).$controller;
+        const o = ($this as any).$controller as ArrayObserver;
         if (o === void 0) {
             return $pop.call($this);
         }
@@ -297,7 +295,7 @@ const observe = {
             indexMap.deletedItems.push(indexMap[index]);
         }
         $pop.call(indexMap);
-        o.notifyPropertyChanged();
+        o.notify();
         return element;
     },
     // https://tc39.github.io/ecma262/#sec-array.prototype.shift
@@ -306,7 +304,7 @@ const observe = {
         if ($this.$raw !== void 0) {
             $this = $this.$raw;
         }
-        const o = ($this as any).$controller;
+        const o = ($this as any).$controller as ArrayObserver;
         if (o === void 0) {
             return $shift.call($this);
         }
@@ -317,7 +315,7 @@ const observe = {
             indexMap.deletedItems.push(indexMap[0]);
         }
         $shift.call(indexMap);
-        o.notifyPropertyChanged();
+        o.notify();
         return element;
     },
     // https://tc39.github.io/ecma262/#sec-array.prototype.splice
@@ -331,7 +329,7 @@ const observe = {
         if ($this.$raw !== void 0) {
             $this = $this.$raw;
         }
-        const o = ($this as any).$controller;
+        const o = ($this as any).$controller as ArrayObserver;
         if (o === void 0) {
             return $splice.apply($this, args);
         }
@@ -367,7 +365,7 @@ const observe = {
             $splice.apply(indexMap, args);
         }
         const deleted = $splice.apply($this, args);
-        o.notifyPropertyChanged();
+        o.notify();
         return deleted;
     },
     // https://tc39.github.io/ecma262/#sec-array.prototype.reverse
@@ -376,7 +374,7 @@ const observe = {
         if ($this.$raw !== void 0) {
             $this = $this.$raw;
         }
-        const o = ($this as any).$controller;
+        const o = ($this as any).$controller as ArrayObserver;
         if (o === void 0) {
             $reverse.call($this);
             return this;
@@ -396,7 +394,7 @@ const observe = {
             o.indexMap[upper] = lowerIndex;
             lower++;
         }
-        o.notifyPropertyChanged();
+        o.notify();
         return this;
     },
     // https://tc39.github.io/ecma262/#sec-array.prototype.sort
@@ -409,7 +407,7 @@ const observe = {
         if ($this.$raw !== void 0) {
             $this = $this.$raw;
         }
-        const o = ($this as any).$controller;
+        const o = ($this as any).$controller as ArrayObserver;
         if (o === void 0) {
             $sort.call($this, compareFn);
             return this;
@@ -434,7 +432,7 @@ const observe = {
             compareFn = sortCompare;
         }
         quickSort($this, o.indexMap, 0, i, compareFn);
-        o.notifyPropertyChanged();
+        o.notify();
         return this;
     },
 };
@@ -460,12 +458,15 @@ export function enableArrayObservation(): void {
     arrayObservationEnabled = true;
 }
 
-export class ArrayObserver implements INotifyPropertyChanged {
+export class ArrayObserver extends SubscriberCollection implements INotifier {
     indexMap: IndexMap;
     collection: any[];
-    listeners: IPropertyChangeListener[] = [];
+    subscribe = this.addSubscriber;
+    unsubscribe = this.removeSubscriber;
 
     public constructor(array: IObservedArray) {
+        super();
+
         enableArrayObservation();
 
         for (const method of methods) {
@@ -477,37 +478,11 @@ export class ArrayObserver implements INotifyPropertyChanged {
         this.indexMap = createIndexMap(array.length);
     }
 
-    public addPropertyChangeListener(
-        propertyName: string,
-        listener: IPropertyChangeListener
-    ): void {
-        this.listeners.push(listener);
-    }
-
-    public removePropertyChangeListener(
-        propertyName: string,
-        listener: IPropertyChangeListener
-    ): void {
-        const index = this.listeners.indexOf(listener);
-
-        if (index !== -1) {
-            this.listeners.splice(index, 1);
-        }
-    }
-
-    public notifyPropertyChanged(): void {
+    public notify(): void {
         const indexMap = this.indexMap;
         const length = this.collection.length;
         this.indexMap = createIndexMap(length);
-        const listeners = this.listeners;
-
-        if (listeners == void 0) {
-            return;
-        }
-
-        for (let i = 0, ii = listeners.length; i < ii; ++i) {
-            listeners[i].onPropertyChanged(this, indexMap as any);
-        }
+        this.notifySubscribers(this, indexMap);
     }
 }
 
