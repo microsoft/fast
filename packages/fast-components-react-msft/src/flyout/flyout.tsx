@@ -61,6 +61,7 @@ class Flyout extends Foundation<FlyoutHandledProps, FlyoutUnhandledProps, {}> {
         verticalThreshold: void 0,
         viewport: void 0,
         width: void 0,
+        delayContentInstanciation: void 0,
         scaleToFit: void 0,
     };
 
@@ -116,6 +117,7 @@ class Flyout extends Foundation<FlyoutHandledProps, FlyoutUnhandledProps, {}> {
                 verticalThreshold={this.props.verticalThreshold}
                 verticalLockToDefault={this.props.verticalLockToDefault}
                 viewport={this.props.viewport}
+                delayContentInstanciation={this.props.delayContentInstanciation}
                 style={{
                     height: this.props.height,
                     width: this.props.width,
