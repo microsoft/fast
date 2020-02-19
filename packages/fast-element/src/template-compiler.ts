@@ -54,14 +54,12 @@ export class TemplateCompiler {
                 if (DOM.isMarker(node as HTMLElement)) {
                     return this.compileBlock(
                         node as HTMLElement,
-                        parentNode,
                         directives,
                         instructions
                     );
                 } else {
                     return this.compileElement(
                         node as HTMLElement,
-                        parentNode,
                         directives,
                         instructions
                     );
@@ -113,7 +111,6 @@ export class TemplateCompiler {
 
     private compileElement(
         node: HTMLElement,
-        parentNode: Node,
         directives: Directive[],
         instructions: ITargetedInstruction[]
     ): MaybeNode {
@@ -156,13 +153,11 @@ export class TemplateCompiler {
 
     private compileBlock(
         node: HTMLElement,
-        parentNode: Node,
         directives: Directive[],
         instructions: ITargetedInstruction[]
     ): MaybeNode {
         const instructionIndex = parseInt(node.getAttribute("i")!);
         const directive = directives[instructionIndex];
-        DOM.makeIntoInstructionTarget(node);
         instructions.push(directive);
         return node.nextSibling!;
     }

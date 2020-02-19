@@ -28,6 +28,7 @@
     "integration-tests:alpha": "node build/testing/sauce-labs/test-browsers.js alpha",
     "integration-tests:beta": "node build/testing/sauce-labs/test-browsers.js beta",
     "integration-tests:release": "node build/testing/sauce-labs/test-browsers.js release",
+    "prepare": "lerna run prepare",
     "test": "yarn tslint && yarn unit-tests",
     "tslint": "tslint -c ./tslint.json 'build/**/*.ts'",
     "tslint:fix": "tslint -c ./tslint.json --fix 'build/**/*.ts'",
