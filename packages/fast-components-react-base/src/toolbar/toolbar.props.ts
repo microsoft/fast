@@ -9,11 +9,6 @@ export interface ToolbarManagedClasses extends ManagedClasses<ToolbarClassNameCo
 export interface ToolbarUnhandledProps extends React.HTMLAttributes<HTMLDivElement> {}
 export interface ToolbarHandledProps extends ToolbarManagedClasses {
     /**
-     * The toolbar children
-     */
-    children?: React.ReactNode;
-
-    /**
      * The index of the child which gets focused when the toolbar initially gets focus
      * If unset the toolbar will focus on the first valid focusable child.
      */

@@ -166,26 +166,4 @@ describe("toolbar", (): void => {
 
         expect(rendered.state("focusIndex")).toBe(1);
     });
-
-    test("should not place focus any child without a the proper role", (): void => {
-        const rendered: any = mount(
-            <Toolbar>
-                <button />
-                <button role="menuitem">two</button>
-                <button />
-                <button role="menuitem">three</button>
-                <button />
-                <button role="menuitem">four</button>
-                <button />
-            </Toolbar>
-        );
-
-        expect(rendered.state("focusIndex")).toBe(1);
-
-        rendered.childAt(0).simulate("keydown", { keyCode: keyCodeArrowRight });
-        expect(rendered.state("focusIndex")).toBe(3);
-
-        rendered.childAt(0).simulate("keydown", { keyCode: keyCodeArrowRight });
-        expect(rendered.state("focusIndex")).toBe(5);
-    });
 });

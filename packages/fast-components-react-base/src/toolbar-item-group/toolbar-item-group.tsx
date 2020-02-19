@@ -1,12 +1,6 @@
 import { ToolbarItemGroupClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
-import {
-    classNames,
-    keyCodeArrowDown,
-    keyCodeArrowLeft,
-    keyCodeArrowRight,
-    keyCodeArrowUp,
-} from "@microsoft/fast-web-utilities";
+import { classNames } from "@microsoft/fast-web-utilities";
 import { canUseDOM } from "exenv-es6";
 import React from "react";
 import { DisplayNamePrefix } from "../utilities";

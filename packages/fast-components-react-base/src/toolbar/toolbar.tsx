@@ -1,14 +1,15 @@
 import { ToolbarClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import {
-    classNames,
     keyCodeArrowDown,
     keyCodeArrowLeft,
     keyCodeArrowRight,
     keyCodeArrowUp,
+    keyCodeHome,
+    keyCodeEnd,
 } from "@microsoft/fast-web-utilities";
 import { canUseDOM } from "exenv-es6";
-import { inRange, isNil } from "lodash-es";
+import { isNil } from "lodash-es";
 import React from "react";
 import { DisplayNamePrefix, extractHtmlElement } from "../utilities";
 import {
@@ -18,7 +19,6 @@ import {
 } from "./toolbar.props";
 import { Orientation } from "@microsoft/fast-web-utilities";
 import ToolbarItemGroup from "../toolbar-item-group";
-import { isArray } from "util";
 import Tabbable from "tabbable";
 
 export interface ToolbarState {
@@ -45,7 +45,6 @@ class Toolbar extends Foundation<
     };
 
     protected handledProps: HandledProps<ToolbarHandledProps> = {
-        children: void 0,
         managedClasses: void 0,
         initialFocusIndex: void 0,
         orientation: void 0,
@@ -72,6 +71,12 @@ class Toolbar extends Foundation<
      * Renders the component
      */
     public render(): React.ReactElement<HTMLDivElement> {
+        const {
+            toolbar,
+            toolbar__horizontal,
+            toolbar__vertical,
+        }: ToolbarClassNameContract = this.props.managedClasses;
+
         return (
             <ToolbarItemGroup
                 {...this.unhandledProps()}
@@ -81,7 +86,11 @@ class Toolbar extends Foundation<
                 onFocusCapture={this.handleItemFocus}
                 role="toolbar"
                 ref={this.rootElement}
-                // className={this.generateClassNames()}
+                managedClasses={{
+                    toolbarItemGroup: toolbar,
+                    toolbarItemGroup__horizontal: toolbar__horizontal,
+                    toolbarItemGroup__vertical: toolbar__vertical,
+                }}
             >
                 {this.props.children}
             </ToolbarItemGroup>
@@ -116,26 +125,6 @@ class Toolbar extends Foundation<
     }
 
     /**
-     * Create class names
-     */
-    protected generateClassNames(): string {
-        const {
-            toolbar,
-            toolbar__horizontal,
-            toolbar__vertical,
-        }: ToolbarClassNameContract = this.props.managedClasses;
-        const isVertical: boolean = this.props.orientation === Orientation.vertical;
-
-        return super.generateClassNames(
-            classNames(
-                this.props.managedClasses.toolbar,
-                [toolbar__vertical, isVertical],
-                [toolbar__horizontal, !isVertical]
-            )
-        );
-    }
-
-    /**
      * Handle the keydown event
      */
     private handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>): void => {
@@ -163,6 +152,21 @@ class Toolbar extends Foundation<
                     this.setFocus(this.state.focusItemPath, -1);
                     break;
             }
+        }
+
+        switch (e.keyCode) {
+            case keyCodeHome:
+                e.preventDefault();
+                this.setFocus(this.state.focusItemPath, 0);
+                break;
+
+            case keyCodeEnd:
+                e.preventDefault();
+                this.setFocus(
+                    this.state.focusItemPath,
+                    this.getFocusableWidgets().length - 1
+                );
+                break;
         }
     };
 

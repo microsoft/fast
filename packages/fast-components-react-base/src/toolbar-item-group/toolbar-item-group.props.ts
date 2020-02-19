@@ -11,11 +11,6 @@ export interface ToolbarItemGroupUnhandledProps
     extends React.HTMLAttributes<HTMLDivElement> {}
 export interface ToolbarItemGroupHandledProps extends ToolbarItemGroupManagedClasses {
     /**
-     * The toolbar item group children
-     */
-    children?: React.ReactNode;
-
-    /**
      *
      */
     itemPath?: number[];
