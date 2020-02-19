@@ -19,6 +19,15 @@ export class SubscriberCollection {
     private sub3: ISubscriber | undefined = void 0;
     private spillover: ISubscriber[] | undefined = void 0;
 
+    public hasSubscribers() {
+        return (
+            this.sub1 !== void 0 ||
+            this.sub2 !== void 0 ||
+            this.sub3 !== void 0 ||
+            (this.spillover !== void 0 && this.spillover!.length > 0)
+        );
+    }
+
     public hasSubscriber(subscriber: ISubscriber) {
         if (this.sub1 === subscriber) return true;
         if (this.sub2 === subscriber) return true;
