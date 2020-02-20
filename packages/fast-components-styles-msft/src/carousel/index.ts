@@ -1,11 +1,17 @@
 import { DesignSystem, DesignSystemResolver } from "../design-system";
 import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager";
-import { directionSwitch, format, toPx } from "@microsoft/fast-jss-utilities";
+import {
+    directionSwitch,
+    format,
+    toPx,
+    applyFocusVisible,
+} from "@microsoft/fast-jss-utilities";
 import {
     neutralFillStealthHover,
     neutralFillStealthRest,
     neutralForegroundRest,
     neutralOutlineRest,
+    neutralFocus,
 } from "../utilities/color";
 import { CarouselClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import { designUnit, outlineWidth } from "../utilities/design-system";
@@ -41,6 +47,13 @@ const lightModeNeutralOutlineRest: DesignSystemResolver<string> = neutralOutline
     (): string => white
 );
 
+const darkModeNneutralFocus: DesignSystemResolver<string> = neutralFocus(
+    (): string => black
+);
+const lightModeNneutralFocus: DesignSystemResolver<string> = neutralFocus(
+    (): string => white
+);
+
 function flipperStyles(): CSSRules<{}> {
     return {
         position: "absolute",
@@ -66,7 +79,7 @@ const styles: ComponentStyles<CarouselClassNameContract, DesignSystem> = {
     carousel_slides: {},
     carousel_sequenceIndicators: {
         position: "absolute",
-        bottom: "8px",
+        bottom: "4px",
         display: "inline-flex",
         padding: "0",
         "text-align": "center",
@@ -80,10 +93,26 @@ const styles: ComponentStyles<CarouselClassNameContract, DesignSystem> = {
     },
     carousel_sequenceIndicator: {
         display: "inline-block",
-        padding: "0 2px",
+        padding: "4px",
+        position: "relative",
         "&:focus": {
             outline: "none",
         },
+        ...applyFocusVisible<DesignSystem>({
+            "&::after": {
+                opacity: "1",
+                position: "absolute",
+                border: "2px solid transparent",
+                "border-radius": "40px",
+                top: "0",
+                right: "0",
+                left: "0",
+                bottom: "0",
+                content: "''",
+                display: "block",
+                transition: "all 0.05s ease-in-out",
+            },
+        }),
         "&::before": {
             opacity: "0.45",
             border: "1px solid transparent",
@@ -172,10 +201,16 @@ const styles: ComponentStyles<CarouselClassNameContract, DesignSystem> = {
                 "border-color": darkModeNeutralOutlineRest,
                 ...highContrastButtonColorIndicator,
             },
+            "&::after": {
+                "border-color": darkModeNneutralFocus,
+            },
             "&$carousel_sequenceIndicator__active": {
                 "&::before": {
                     background: darkModeNeutralFillStealthRest,
                     ...highContrastHighlightColorIndicator,
+                },
+                "&::after": {
+                    "border-color": darkModeNneutralFocus,
                 },
             },
         },
@@ -226,10 +261,16 @@ const styles: ComponentStyles<CarouselClassNameContract, DesignSystem> = {
                 "border-color": lightModeNeutralOutlineRest,
                 ...highContrastButtonColorIndicator,
             },
+            "&::after": {
+                "border-color": lightModeNneutralFocus,
+            },
             "&$carousel_sequenceIndicator__active": {
                 "&::before": {
                     background: lightModeNeutralFillStealthRest,
                     ...highContrastHighlightColorIndicator,
+                },
+                "&::after": {
+                    "border-color": lightModeNneutralFocus,
                 },
             },
         },
