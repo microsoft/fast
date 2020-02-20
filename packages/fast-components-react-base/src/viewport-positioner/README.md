@@ -42,9 +42,9 @@ The "AlwaysInView" props (i.e. "horizontalAlwaysInView" and "verticalAlwaysInVie
 
 The "fixedAfterInitialPlacement" prop is set the component will not adjust positioning after the initial render.
 
-Authors should be mindful that instanciating a flyout positioner can cause layout changes as it is actually inserted into the DOM and can cause parent containers to expand, move siblings down the page, etc.  It is up to authors to place the component such that it does not cause unwanted layout changes.  
+When the "delayContentInstanciation" prop is true the child of the positioner will not be rendered until the component has been positioned relative to its anchor.  This may be useful in cases where the browser auto scrolls to bring a focused child into view before it has been positioned, for example.  Default is false. This flag may be removed in a future version and become the default behavior.
 
-Authors should ensure that the positioner element has fixed dimensions. If these are dynamic this can cause incorrect positioning to be calculated.   
+Authors should be mindful that instanciating a flyout positioner can cause layout changes as it is actually inserted into the DOM and can cause parent containers to expand, move siblings down the page, etc.  It is up to authors to place the component such that it does not cause unwanted layout changes.    
 
 The not fully supported [ResizeObserver](https://developers.google.com/web/updates/2016/10/resizeobserver) and [IntersectionObserver](https://developers.google.com/web/updates/2016/04/intersectionobserver) are used (supported in Chrome), so it is necessary to apply a polyfill if more thorough browser support is needed (Safari and Firefox). Full adaptation is expected soon.
 
