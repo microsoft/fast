@@ -11,13 +11,16 @@ export interface IElementView extends IView {
 }
 
 export interface ISyntheticView extends IView {
+    readonly firstChild: Node;
+    readonly lastChild: Node;
     insertBefore(node: Node): void;
 }
 
 export class HTMLView implements IView, IElementView, ISyntheticView {
     private parent?: Node;
-    private start?: Node;
-    private end?: Node;
+    private source: any = void 0;
+    public firstChild!: Node;
+    public lastChild!: Node;
 
     constructor(
         private fragment: DocumentFragment,
@@ -25,8 +28,8 @@ export class HTMLView implements IView, IElementView, ISyntheticView {
         private isSynthetic: boolean = false
     ) {
         if (isSynthetic) {
-            this.start = fragment.firstChild!;
-            this.end = fragment.lastChild!;
+            this.firstChild = fragment.firstChild!;
+            this.lastChild = fragment.lastChild!;
         }
     }
 
@@ -36,14 +39,32 @@ export class HTMLView implements IView, IElementView, ISyntheticView {
     }
 
     public insertBefore(node: Node) {
-        node.parentNode!.insertBefore(this.fragment, node);
+        if (this.fragment.hasChildNodes()) {
+            node.parentNode!.insertBefore(this.fragment, node);
+        } else {
+            let parentNode = node.parentNode!;
+            let current: Node | null = this.firstChild!;
+            const end = this.lastChild!;
+            let next;
+
+            while (current) {
+                next = current.nextSibling;
+                parentNode.insertBefore(current, node);
+
+                if (current === end) {
+                    break;
+                }
+
+                current = next;
+            }
+        }
     }
 
     public remove() {
         if (this.isSynthetic) {
             const fragment = this.fragment;
-            let current: Node | null = this.start!;
-            const end = this.end!;
+            let current: Node | null = this.firstChild!;
+            const end = this.lastChild!;
             let next;
 
             while (current) {
@@ -67,6 +88,12 @@ export class HTMLView implements IView, IElementView, ISyntheticView {
     }
 
     bind(source: unknown) {
+        if (this.source === source) {
+            return;
+        } else if (this.source !== void 0) {
+            this.unbind();
+        }
+
         const behaviors = this.behaviors;
 
         for (let i = 0, ii = behaviors.length; i < ii; ++i) {
@@ -75,10 +102,16 @@ export class HTMLView implements IView, IElementView, ISyntheticView {
     }
 
     unbind() {
+        if (this.source === void 0) {
+            return;
+        }
+
         const behaviors = this.behaviors;
 
         for (let i = 0, ii = behaviors.length; i < ii; ++i) {
             behaviors[i].unbind();
         }
+
+        this.source = void 0;
     }
 }
