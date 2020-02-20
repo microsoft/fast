@@ -76,7 +76,7 @@ function spliceOperationsFromEditDistances(distances: number[][]) {
     let i = distances.length - 1;
     let j = distances[0].length - 1;
     let current = distances[i][j];
-    const edits = [];
+    const edits: number[] = [];
 
     while (i > 0 || j > 0) {
         if (i === 0) {
@@ -194,7 +194,7 @@ export function calcSplices(
         calcEditDistances(current, currentStart, currentEnd, old, oldStart, oldEnd)
     );
 
-    const splices = [];
+    const splices: Splice[] = [];
     let splice: Splice | undefined = void 0;
     let index = currentStart;
     let oldIndex = oldStart;
