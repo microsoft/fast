@@ -119,6 +119,39 @@ Finally, we associate the template with our custom element by using a different 
 
 With this in place, we now have a `name-tag` element that will render its template into the Shadow DOM and automatically update the `h3` content whenever the name tag's `greeting` attribute changes. Give it a try!
 
+### Understanding Template Expressions
+
+We've seen how arrow functions can be used to declare dynamic parts of templates. Let's look at a few more examples to see the options available to you.
+
+#### Dynamic Content
+
+To bind the content of an element, simply provide the expression within the start and end tags of the element. It can be the sole content of the element, or interwoven with other elements and text.
+
+**Example 1: Basic Text Content**
+
+```HTML
+<h3>${x => x.greeting.toUpperCase()}</h3>
+```
+
+**Example 2: Interwoven Text Content**
+
+```HTML
+<h3>${x => x.greeting}, my name is ${x => x.name}.</h3>
+```
+
+**Example 3: Heterogeneous Content**
+
+```HTML
+<h3>
+  ${x => x.greeting}, my name is
+  <span class="name">${x => x.name}</span>.
+</h3>
+```
+
+> **Note:** Dynamic content is set via the `textContent` HTML property. You *cannot* set HTML content this way. See below for the explicit, opt-in mechanism for setting HTML.
+
+#### Dynamic Properties
+
 
 
 TODO
