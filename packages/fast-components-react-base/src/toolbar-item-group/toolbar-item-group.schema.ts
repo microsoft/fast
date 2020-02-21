@@ -5,7 +5,12 @@ export default {
     type: "object",
     id: "@microsoft/fast-components-react-base/toolbar-item-group",
     formPluginId: "@microsoft/fast-components-react-base/toolbar-item-group",
-    properties: {},
+    properties: {
+        itemPath: {
+            title: "Item path",
+            type: "array",
+        },
+    },
     reactProperties: {
         children: {
             title: "Children",

@@ -212,6 +212,7 @@ class Dialog extends Foundation<DialogHandledProps, DialogUnhandledProps, {}> {
             // only handle tab keystrokes when modal
             return;
         }
+
         const tabbableElements: HTMLElement[] = Tabbable(this.rootElement.current);
         const tabbableElementCount: number = tabbableElements.length;
         if (tabbableElementCount === 0) {

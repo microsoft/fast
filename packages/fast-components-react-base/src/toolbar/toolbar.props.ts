@@ -11,14 +11,15 @@ export interface ToolbarHandledProps extends ToolbarManagedClasses {
     /**
      * The index of the child which gets focused when the toolbar initially gets focus
      * If unset the toolbar will focus on the first valid focusable child.
+     * In toolbars with nested item groups the index can be described with an array
+     * indicating the the index of the child group(s) in succession
+     * ie. [1, 3] places focus on child at index 3 of a group at index 1 of the toolbar root.
      */
     initialFocusIndex?: number | number[];
 
     /**
-     * Whether the toolbar is horizontal or vertical.  Default is horizontal.
-     * Note that actual layout of the toolbar is controlled via css styling and
-     * this prop mostly affects whether navigation is controlled by the up/down arrows
-     * or the left/right arrows
+     * Whether the toolbar is horizontal or vertical. This prop determines whether navigation is controlled by the up/down arrows
+     * or the left/right arrows and also applies css classes for styling
      */
     orientation?: Orientation;
 }

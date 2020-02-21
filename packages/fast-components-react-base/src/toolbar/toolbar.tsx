@@ -5,8 +5,8 @@ import {
     keyCodeArrowLeft,
     keyCodeArrowRight,
     keyCodeArrowUp,
-    keyCodeHome,
     keyCodeEnd,
+    keyCodeHome,
 } from "@microsoft/fast-web-utilities";
 import { canUseDOM } from "exenv-es6";
 import { isNil } from "lodash-es";
@@ -19,13 +19,14 @@ import {
 } from "./toolbar.props";
 import { Orientation } from "@microsoft/fast-web-utilities";
 import ToolbarItemGroup from "../toolbar-item-group";
+import { ToolbarContext } from "./toolbar-context";
 import Tabbable from "tabbable";
 
 export interface ToolbarState {
     /**
      * path to currently focused widget as string
      */
-    focusItemPath: string | null;
+    focusItemPath: string;
 }
 
 class Toolbar extends Foundation<
@@ -42,6 +43,10 @@ class Toolbar extends Foundation<
     public static defaultProps: Partial<ToolbarProps> = {
         managedClasses: {},
         orientation: Orientation.horizontal,
+    };
+
+    public static isFocusable = (element: HTMLElement): boolean => {
+        return Tabbable.isFocusable(element);
     };
 
     protected handledProps: HandledProps<ToolbarHandledProps> = {
@@ -78,32 +83,89 @@ class Toolbar extends Foundation<
         }: ToolbarClassNameContract = this.props.managedClasses;
 
         return (
-            <ToolbarItemGroup
-                {...this.unhandledProps()}
-                itemPath={[]}
-                currentFocusPath={this.state.focusItemPath}
-                onKeyDown={this.handleKeyDown}
-                onFocusCapture={this.handleItemFocus}
-                role="toolbar"
-                ref={this.rootElement}
-                managedClasses={{
-                    toolbarItemGroup: toolbar,
-                    toolbarItemGroup__horizontal: toolbar__horizontal,
-                    toolbarItemGroup__vertical: toolbar__vertical,
+            <ToolbarContext.Provider
+                value={{
+                    currentFocusItemPath: this.state.focusItemPath,
+                    orientation: this.props.orientation,
                 }}
             >
-                {this.props.children}
-            </ToolbarItemGroup>
+                <ToolbarItemGroup
+                    {...this.unhandledProps()}
+                    itemPath={[]}
+                    onKeyDown={this.handleKeyDown}
+                    onFocusCapture={this.updateFocusItemPath}
+                    onBlurCapture={this.updateFocusItemPath}
+                    role="toolbar"
+                    ref={this.rootElement}
+                    managedClasses={{
+                        toolbarItemGroup: toolbar,
+                        toolbarItemGroup__horizontal: toolbar__horizontal,
+                        toolbarItemGroup__vertical: toolbar__vertical,
+                    }}
+                >
+                    {this.props.children}
+                </ToolbarItemGroup>
+            </ToolbarContext.Provider>
         );
     }
 
     public componentDidMount(): void {
-        const focusableWidgets: HTMLElement[] = this.getFocusableWidgets();
+        // When the toolbar first mounts we need to identify where to put focus if the toolbar gets it
+        const focusableItems: HTMLElement[] = this.getFocusableItems();
 
-        if (focusableWidgets.length === 0) {
+        if (focusableItems.length === 0) {
             return;
         }
 
+        this.setDefaultFocusItem(focusableItems);
+    }
+
+    public componentDidUpdate(prevProps: ToolbarProps): void {
+        // if props have changed and we don't contain focus we need to ensure the
+        // default focus item is valid
+        // we don't do this when focus is within the toolbar because focus/blur
+        // event handling deals with it
+        if (
+            prevProps !== this.props &&
+            this.rootElement.current instanceof HTMLElement &&
+            !(this.rootElement.current as HTMLElement).contains(document.activeElement)
+        ) {
+            // reset if initialFocusIndex prop has changed
+            if (prevProps.initialFocusIndex !== this.props.initialFocusIndex) {
+                this.setDefaultFocusItem(this.getFocusableItems());
+                return;
+            }
+
+            this.validateCurrentFocusItem();
+        }
+    }
+
+    /**
+     * Ensures that the current focus item path is valid
+     * and resets if not
+     */
+    private validateCurrentFocusItem = (): void => {
+        const focusableItems: HTMLElement[] = this.getFocusableItems();
+
+        if (focusableItems.length === 0) {
+            this.setState({
+                focusItemPath: "-1",
+            });
+            return;
+        }
+
+        if (
+            // reset default focus if the old focused item does not exist
+            this.getItemIndex(focusableItems, this.state.focusItemPath) === -1
+        ) {
+            this.setDefaultFocusItem(focusableItems);
+        }
+    };
+
+    /**
+     * Sets the current focuus item path based on default focus item
+     */
+    private setDefaultFocusItem = (focusableItems: HTMLElement[]): void => {
         let initialFocusItemPath: number[] = [0];
 
         if (!isNil(this.props.initialFocusIndex)) {
@@ -114,94 +176,99 @@ class Toolbar extends Foundation<
 
         let itemPath: string = initialFocusItemPath.toString();
 
-        if (this.getWidgetIndex(focusableWidgets, itemPath) === -1) {
+        if (this.getItemIndex(focusableItems, itemPath) === -1) {
             // default to first focusable widget
-            itemPath = focusableWidgets[0].getAttribute(Toolbar.toolbarItemAttributeName);
+            itemPath = focusableItems[0].getAttribute(Toolbar.toolbarItemAttributeName);
         }
 
         this.setState({
             focusItemPath: itemPath,
         });
-    }
+    };
 
     /**
      * Handle the keydown event
      */
     private handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>): void => {
+        // increment focused widget on arrow keys
         if (this.props.orientation === Orientation.horizontal) {
             switch (e.keyCode) {
                 case keyCodeArrowRight:
                     e.preventDefault();
-                    this.setFocus(this.state.focusItemPath, 1);
+                    this.incrementFocus(this.state.focusItemPath, 1);
                     break;
 
                 case keyCodeArrowLeft:
                     e.preventDefault();
-                    this.setFocus(this.state.focusItemPath, -1);
+                    this.incrementFocus(this.state.focusItemPath, -1);
                     break;
             }
         } else {
             switch (e.keyCode) {
                 case keyCodeArrowDown:
                     e.preventDefault();
-                    this.setFocus(this.state.focusItemPath, 1);
+                    this.incrementFocus(this.state.focusItemPath, 1);
                     break;
 
                 case keyCodeArrowUp:
                     e.preventDefault();
-                    this.setFocus(this.state.focusItemPath, -1);
+                    this.incrementFocus(this.state.focusItemPath, -1);
                     break;
             }
         }
 
+        // shortcuts
+        let focusableWidgets: HTMLElement[] = null;
         switch (e.keyCode) {
             case keyCodeHome:
                 e.preventDefault();
-                this.setFocus(this.state.focusItemPath, 0);
+                focusableWidgets = this.getFocusableItems();
+                if (focusableWidgets.length === 0) {
+                    return;
+                }
+                focusableWidgets[0].focus();
                 break;
 
             case keyCodeEnd:
                 e.preventDefault();
-                this.setFocus(
-                    this.state.focusItemPath,
-                    this.getFocusableWidgets().length - 1
-                );
+                focusableWidgets = this.getFocusableItems();
+                if (focusableWidgets.length === 0) {
+                    return;
+                }
+                focusableWidgets[focusableWidgets.length - 1].focus();
                 break;
         }
     };
 
     /**
-     *
+     * Respond to focus changes within the component (on blur/focus capture)
+     * Essentially we want to validate that the default focus item is valid
      */
-    private handleItemFocus = (e: React.FocusEvent<HTMLElement>): void => {
-        if (
-            e.defaultPrevented ||
-            !e.target.hasAttribute(Toolbar.toolbarItemAttributeName)
-        ) {
+    private updateFocusItemPath = (e: React.FocusEvent<HTMLElement>): void => {
+        if (e.target.hasAttribute(Toolbar.toolbarItemAttributeName)) {
+            this.setState({
+                focusItemPath: e.target.getAttribute(Toolbar.toolbarItemAttributeName),
+            });
             return;
         }
 
-        e.preventDefault();
-
-        this.setState({
-            focusItemPath: e.target.getAttribute(Toolbar.toolbarItemAttributeName),
-        });
+        this.validateCurrentFocusItem();
     };
 
     /**
-     *
+     *  Increments focus relative to the item with the provided path
      */
-    private setFocus = (focusPath: string, adjustment: number): void => {
-        let focusableWidgets: HTMLElement[] = this.getFocusableWidgets();
+    private incrementFocus = (focusPath: string, adjustment: number): void => {
+        const focusableItems: HTMLElement[] = this.getFocusableItems();
 
-        if (focusableWidgets.length === 0) {
+        if (focusableItems.length === 0) {
             return;
         }
 
         let targetItemIndex: number = -1;
-        for (let i: number = 0; i < focusableWidgets.length; i++) {
+        for (let i: number = 0; i < focusableItems.length; i++) {
             if (
-                focusableWidgets[i].getAttribute(Toolbar.toolbarItemAttributeName) ===
+                focusableItems[i].getAttribute(Toolbar.toolbarItemAttributeName) ===
                 focusPath
             ) {
                 targetItemIndex = i;
@@ -210,65 +277,61 @@ class Toolbar extends Foundation<
         }
 
         if (targetItemIndex === -1) {
-            focusableWidgets[0].focus();
+            focusableItems[0].focus();
             return;
         }
 
         targetItemIndex = targetItemIndex + adjustment;
 
-        if (targetItemIndex > -1 && targetItemIndex < focusableWidgets.length) {
-            focusableWidgets[targetItemIndex].focus();
+        if (targetItemIndex > -1 && targetItemIndex < focusableItems.length) {
+            focusableItems[targetItemIndex].focus();
         }
     };
 
     /**
-     *
+     *  Returns an array of focusable items in the toolbar in focus order
      */
-    private getFocusableWidgets = (): HTMLElement[] => {
+    private getFocusableItems = (): HTMLElement[] => {
         const rootHtmlElement: HTMLElement = extractHtmlElement(this.rootElement);
 
         if (rootHtmlElement === null) {
             return [];
         }
 
-        return this.appendContainerFocusableWidgets([], rootHtmlElement);
+        return this.appendContainerFocusableItems([], rootHtmlElement);
     };
 
     /**
-     *
+     *  Recursive function that retrieves focusable items from provided toolbar item group
      */
-    private appendContainerFocusableWidgets = (
-        focusableWidgets: HTMLElement[],
+    private appendContainerFocusableItems = (
+        focusableItems: HTMLElement[],
         container: HTMLElement
     ): HTMLElement[] => {
         const children: Element[] = this.getDomChildren(container);
 
-        for (let i: number = 0; i < children.length; i++) {
-            if (children[i] instanceof HTMLElement) {
-                const child: HTMLElement = children[i] as HTMLElement;
-
-                if (child.hasAttribute(Toolbar.toolbarItemGroupAttributeName)) {
-                    this.appendContainerFocusableWidgets(focusableWidgets, child);
-                } else if (Tabbable.isFocusable(child as HTMLElement)) {
-                    focusableWidgets.push(child);
-                }
+        children.forEach((child: HTMLElement, index: number) => {
+            if (child.hasAttribute(Toolbar.toolbarItemGroupAttributeName)) {
+                this.appendContainerFocusableItems(focusableItems, child);
+            } else if (Toolbar.isFocusable(child as HTMLElement)) {
+                focusableItems.push(child);
             }
-        }
+        });
 
-        return focusableWidgets;
+        return focusableItems;
     };
 
     /**
-     *
+     *  Get the index of an item with the provided itemPath from the provided array of items
      */
-    private getWidgetIndex = (
-        focusableWidgets: HTMLElement[],
-        itemPath: string
-    ): number => {
+    private getItemIndex = (focusableItems: HTMLElement[], itemPath: string): number => {
         let index: number = -1;
 
-        for (let i: number = 0; i < focusableWidgets.length; i++) {
-            if (focusableWidgets[i].getAttribute(Toolbar.toolbarItemGroupAttributeName)) {
+        for (let i: number = 0; i < focusableItems.length; i++) {
+            if (
+                focusableItems[i].getAttribute(Toolbar.toolbarItemAttributeName) ===
+                itemPath
+            ) {
                 index = i;
                 break;
             }

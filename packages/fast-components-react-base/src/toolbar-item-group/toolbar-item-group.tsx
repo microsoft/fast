@@ -1,6 +1,6 @@
 import { ToolbarItemGroupClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
-import { classNames } from "@microsoft/fast-web-utilities";
+import { classNames, Orientation } from "@microsoft/fast-web-utilities";
 import { canUseDOM } from "exenv-es6";
 import React from "react";
 import { DisplayNamePrefix } from "../utilities";
@@ -9,15 +9,15 @@ import {
     ToolbarItemGroupProps,
     ToolbarItemGroupUnhandledProps,
 } from "./toolbar-item-group.props";
-import Tabbable from "tabbable";
+import Toolbar from "../toolbar/toolbar";
 import { isNil } from "lodash-es";
-import Toolbar from "../toolbar";
+import { ToolbarContext, ToolbarContextType } from "../toolbar/toolbar-context";
 
 export interface ToolbarItemGroupState {
     /**
-     *
+     *  the indexes of children of this component that can receive focus
      */
-    validWidgetIndexes: number[] | null;
+    focusableItemIndexes: number[] | null;
 }
 
 class ToolbarItemGroup extends Foundation<
@@ -26,16 +26,15 @@ class ToolbarItemGroup extends Foundation<
     ToolbarItemGroupState
 > {
     public static displayName: string = `${DisplayNamePrefix}ToolbarItemGroup`;
+    public static contextType: React.Context<ToolbarContextType> = ToolbarContext;
 
     public static defaultProps: Partial<ToolbarItemGroupProps> = {
         itemPath: [],
-        currentFocusPath: "",
         managedClasses: {},
     };
 
     protected handledProps: HandledProps<ToolbarItemGroupHandledProps> = {
         itemPath: void 0,
-        currentFocusPath: void 0,
         managedClasses: void 0,
     };
 
@@ -46,7 +45,7 @@ class ToolbarItemGroup extends Foundation<
     constructor(props: ToolbarItemGroupProps) {
         super(props);
         this.state = {
-            validWidgetIndexes: null,
+            focusableItemIndexes: null,
         };
     }
 
@@ -66,18 +65,20 @@ class ToolbarItemGroup extends Foundation<
     }
 
     public componentDidMount(): void {
-        this.updateValidWidgets();
+        this.updateFocusableItems();
     }
 
     public componentDidUpdate(prevProps: ToolbarItemGroupProps): void {
         if (prevProps !== this.props) {
+            // when props update we need to reset focusable items so we
+            // can mark the correct tabindex values on render
             this.setState({
-                validWidgetIndexes: null,
+                focusableItemIndexes: null,
             });
             return;
         }
-        if (this.state.validWidgetIndexes === null) {
-            this.updateValidWidgets();
+        if (this.state.focusableItemIndexes === null) {
+            this.updateFocusableItems();
         }
     }
 
@@ -85,8 +86,24 @@ class ToolbarItemGroup extends Foundation<
      * Create class names
      */
     protected generateClassNames(): string {
+        const {
+            toolbarItemGroup,
+            toolbarItemGroup__horizontal,
+            toolbarItemGroup__vertical,
+        }: ToolbarItemGroupClassNameContract = this.props.managedClasses;
+
         return super.generateClassNames(
-            classNames(this.props.managedClasses.toolbarItemGroup)
+            classNames(
+                toolbarItemGroup,
+                [
+                    toolbarItemGroup__horizontal,
+                    this.context.orientation === Orientation.horizontal,
+                ],
+                [
+                    toolbarItemGroup__vertical,
+                    this.context.orientation === Orientation.vertical,
+                ]
+            )
         );
     }
 
@@ -104,13 +121,12 @@ class ToolbarItemGroup extends Foundation<
         child: React.ReactElement,
         index: number
     ): React.ReactChild => {
-        const thisItemPath = this.props.itemPath.slice(0);
+        const thisItemPath: number[] = this.props.itemPath.slice(0);
         thisItemPath.push(index);
         const itemPathAsString: string = thisItemPath.toString();
 
         if (child.type === ToolbarItemGroup) {
             const groupProps: object = {
-                currentFocusPath: this.props.currentFocusPath,
                 itemPath: thisItemPath,
             };
 
@@ -118,18 +134,18 @@ class ToolbarItemGroup extends Foundation<
             return React.cloneElement(child, groupProps);
         }
 
-        const isValidWidgetIndex: boolean =
-            isNil(this.state.validWidgetIndexes) ||
-            this.state.validWidgetIndexes.includes(index);
+        const isFocusableItemIndex: boolean =
+            isNil(this.state.focusableItemIndexes) ||
+            this.state.focusableItemIndexes.includes(index);
 
         const itemProps: object = {
-            tabIndex: isValidWidgetIndex
-                ? this.props.currentFocusPath === itemPathAsString
+            tabIndex: isFocusableItemIndex
+                ? this.context.currentFocusItemPath === itemPathAsString
                     ? 0
                     : -1
                 : null,
         };
-        itemProps[Toolbar.toolbarItemAttributeName] = isValidWidgetIndex
+        itemProps[Toolbar.toolbarItemAttributeName] = isFocusableItemIndex
             ? itemPathAsString
             : null;
 
@@ -137,18 +153,18 @@ class ToolbarItemGroup extends Foundation<
     };
 
     /**
-     *
+     *  identifies which children are focusable and sets state
      */
-    private updateValidWidgets = (): void => {
+    private updateFocusableItems = (): void => {
         const domChildren: Element[] = this.domChildren();
-        const validWidgetIndexes = [];
+        const validItemIndexes: number[] = [];
         domChildren.forEach((element: HTMLElement, index: number) => {
-            if (Tabbable.isFocusable(element)) {
-                validWidgetIndexes.push(index);
+            if (Toolbar.isFocusable(element)) {
+                validItemIndexes.push(index);
             }
         });
         this.setState({
-            validWidgetIndexes: validWidgetIndexes,
+            focusableItemIndexes: validItemIndexes,
         });
     };
 
@@ -161,7 +177,7 @@ class ToolbarItemGroup extends Foundation<
             : [];
     };
 }
-
+ToolbarItemGroup.contextType = ToolbarContext;
 export default ToolbarItemGroup;
 export * from "./toolbar-item-group.props";
 export { ToolbarItemGroupClassNameContract };
