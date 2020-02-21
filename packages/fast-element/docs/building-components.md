@@ -1,6 +1,6 @@
 # Building Components
 
-The `fast-element` library is a lightweight solution for easily building performant, memory-efficient, standards-compliant web components. Fast elements work in every major browser and can be used in combination with any front-end framework or even without a framework.
+The `fast-element` library is a lightweight solution for easily building performant, memory-efficient, standards-compliant Web Components. FAST Elements work in every major browser and can be used in combination with any front-end framework or even without a framework.
 
 ## Defining an Element
 
@@ -50,9 +50,35 @@ To see it in action, you can use the same HTML as above, or change the default `
 <name-tag greeting="Hola"></name-tag>
 ```
 
-## The Custom Element Lifecycle
+## The Element Lifecycle
 
+All Web Components support a series of lifecycle events that you can tap into to execute custom code at specific points in time. FAST Element implements several of these callbacks automatically, in order to enable features of its templating engine (described below). However, you can override them to provide your own code. Here's an example of how you would execute custom code at the time when your element is connected to the DOM.
 
+```TypeScript
+@customElement('name-tag')
+export class NameTag extends FastElement {
+  @attr greeting: string = 'Hello';
+
+  greetingChanged() {
+    this.shadowRoot!.innerHTML = this.greeting;
+  }
+
+  connectedCallback() {
+    super.connectedCallback();
+    console.log('name-tag is now connected to the DOM');
+  }
+}
+```
+
+The full list of available lifecyle callbacks is:
+
+| Callback | Description |
+| ------------- |-------------|
+| constructor | Runs when the element is created or upgraded. FAST Element will attach the shadow DOM at this time and hydrate it with the HTML template, if one was provided. |
+| connectedCallback | Runs when the element is inserted into the DOM. FAST Element will connect template bindings in order to finalize the initial render at this time. |
+| disconnectedCallback | Runs when the element is removed from the DOM. FAST Element will remove template bindings and clean up resources at this time. |
+| attributeChangedCallback(attrName, oldVal, newVal) | Runs any time one of the element's custom attributes changes. FAST Element uses this to sync the attribute with its property. When the property updates, a render update is also queued, if there was a template dependency. |
+| adoptedCallback | Runs if the element was moved from its current `document` into a new `document` via a call to the `adoptNode(...)` API. |
 
 TODO
 
