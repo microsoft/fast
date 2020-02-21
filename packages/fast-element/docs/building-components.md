@@ -271,6 +271,42 @@ Place the `ref` directive on the element you want to reference and provide it wi
 
 #### The When Directive
 
+The `when` directive enables you to conditionally render blocks of HTML. When you provide an expression to `when` it will render the child template into the DOM when the expression evaluates to `true` and remove the child template when it evaluates to `false` (or if it is never `true`, the rendering will be skipped entirely).
+
+**Example 1: Conditional Rendering**
+
+```TypeScript
+import { FastElement, customElement, attr, html } from '@microsoft/fast-element';
+import { when } from '@microsoft/fast-element/directives/when';
+
+const template = html<MyApp>`
+  <h1>My App</h1>
+
+  ${when(x => !x.ready, html<MyApp>`
+    Loading...
+  `)}
+`;
+
+@customElement({
+  name: 'my-app',
+  template
+})
+export class MyApp extends FastElement {
+  @attr ready: boolean = false;
+
+  connectedCallback() {
+    super.connectedCallback();
+
+    fetch('some/resource').then(response => {
+      // do something with response...
+      this.ready = true;
+    });
+  }
+}
+```
+
+> **NOTE**: Additional features are planned for `when` which would enable `elseif` and `else` conditional rendering. Today, you need multiple, separate `when` blocks to achieve the same end result.
+
 #### The Repeat Directive
 
 TODO
