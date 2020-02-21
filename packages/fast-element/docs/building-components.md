@@ -188,9 +188,27 @@ You can also use an expression to set a property on an HTML element. Simply plac
 
 > **WARNING:** Avoid scenarios that require you to directly set HTML, especially when the content is coming from an external source. If you must do this, always sanitize the HTML content using a robust HTML sanitizer library, represented by the use of the `sanitize` function above.
 
-### Dynamic Attributes
+#### Dynamic Attributes
 
+Most HTML attributes have a corresponding property on the HTML element itself, so the method of property binding described above will be the most common mechanism used. However, there are some scenarios, such as with [ARIA attributes](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA), where there is no corresponding element property. For these scenarios, prepend a `$` to the attribute name, and the value will be set with the `setAttribute` API instead of through a property. Additionally, some attributes are known as [boolean attributes](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes#Boolean_Attributes)  (e.g. required, readonly, disabled). These attributes behave differently form normal attributes, and need special value handling. The templating engine will handle this for you if you prepend the attribute name with a `?`.
 
+**Example 1: ARIA Attributes**
+
+```HTML
+<div role="progressbar"
+     $aria-valuenow="${x => x.value}"
+     $aria-valuemin="${x => x.min}"
+     $aria-valuemax="${x => x.max}">
+</div>
+```
+
+**Example 2: Boolean Attributes**
+
+```HTML
+<button type="submit" ?disabled="${x => !x.enabled}">Submit</button>
+```
+
+#### Events
 
 TODO
 
