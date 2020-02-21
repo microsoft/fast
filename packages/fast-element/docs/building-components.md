@@ -40,7 +40,7 @@ export class NameTag extends FastElement {
 
 To add attributes to your HTML element, create properties decorated by the `@attr` decorator. All attributes defined this way will be automatically registered with the platform so that they can be updated through the browser's native `setAttribute` API as well as the property. You can optionally add a method with the naming convention *propertyName*Changed to your class (e.g. `greeting` and `greetingChanged()`), and this method will be called whenever your property changes, whether it changes through the property or the attribute API.
 
-> **Note:** All properties decorated with `@attr` are also *observable*. See the templating section below for information about how observables enable efficient rendering.
+> **NOTE:** All properties decorated with `@attr` are also *observable*. See the templating section below for information about how observables enable efficient rendering.
 
 By default, anything extending from `FastElement` will automatically have a *shadow root* attached in order to enable encapsulated rendering. The example above references the `shadowRoot` to set its `innerHTML` any time the `greeting` property changes.
 
@@ -121,7 +121,7 @@ With this in place, we now have a `name-tag` element that will render its templa
 
 ### Understanding Template Expressions
 
-We've seen how arrow functions can be used to declare dynamic parts of templates. Let's look at a few more examples to see the options available to you.
+We've seen how arrow functions can be used to declare dynamic parts of templates. Let's look at a few more examples to see the breadth of what is available to you.
 
 #### Dynamic Content
 
@@ -133,7 +133,7 @@ To bind the content of an element, simply provide the expression within the star
 <h3>${x => x.greeting.toUpperCase()}</h3>
 ```
 
-**Example 2: Interwoven Text Content**
+**Example 2: Interpolated Text Content**
 
 ```HTML
 <h3>${x => x.greeting}, my name is ${x => x.name}.</h3>
@@ -148,9 +148,47 @@ To bind the content of an element, simply provide the expression within the star
 </h3>
 ```
 
-> **Note:** Dynamic content is set via the `textContent` HTML property. You *cannot* set HTML content this way. See below for the explicit, opt-in mechanism for setting HTML.
+> **NOTE:** Dynamic content is set via the `textContent` HTML property. You *cannot* set HTML content this way. See below for the explicit, opt-in mechanism for setting HTML.
 
 #### Dynamic Properties
+
+You can also use an expression to set a property on an HTML element. Simply place the expression where the value of the HTML attribute would normal go. The template engine will map your attribute to the element's property and set it with the value of your expression.
+
+**Example 1: Basic Property Values**
+
+```HTML
+<a href=${x => x.aboutLink}>About</a>
+```
+
+**Example 2: Interpolated Property Values**
+
+```HTML
+<a href="products/${x => x.id}">
+  ${x => x.name}
+</a>
+```
+
+```HTML
+<li class="list-item ${x => x.type}">
+  ...
+</li>
+```
+
+```HTML
+<span style="text-decoration: ${x => x.done ? 'line-through' : ''}">
+  ${x => x.description}
+</span>
+```
+
+**Example 3: Inner HTML**
+
+```HTML
+<div innerhtml=${x => sanitize(x.someDangerousHTMLContent)}></div>
+```
+
+> **WARNING:** Avoid scenarios that require you to directly set HTML, especially when the content is coming from an external source. If you must do this, always sanitize the HTML content using a robust HTML sanitizer library, represented by the use of the `sanitize` function above.
+
+### Dynamic Attributes
 
 
 
