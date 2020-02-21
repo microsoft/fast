@@ -97,7 +97,7 @@ const template = html<NameTag>`
     <h4>my name is</h4>
   </div>
 
-  <div class="body"></div>
+  <div class="body">TODO: Name Here</div>
 
   <div class="footer"></div>
 `;
@@ -323,7 +323,7 @@ const template = html<FriendList>`
   <h1>Friends</h1>
 
   <form @submit=${x => x.addFriend()}>
-    <input type="text" value=${x => x.friendName} @input=${(x, c) => x.onFriendNameChanged(c.event)}>
+    <input type="text" value=${x => x.name} @input=${(x, c) => x.onNameChanged(c.event)}>
     <button type="submit">Add Friend</button>
   </form>
   <ul>
@@ -339,36 +339,103 @@ const template = html<FriendList>`
 })
 export class FriendList extends FastElement {
   @observable friends: string[] = [];
-  @observable friendName: string = '';
+  @observable name: string = '';
 
   addFriend() {
-    if (!this.friendName) {
+    if (!this.name) {
       return;
     }
 
-    this.friends.push(this.friendName);
-    this.friendName = '';
+    this.friends.push(this.name);
+    this.name = '';
   }
 
-  onFriendNameChanged(event: Event) {
-    this.friendName = (event.target! as HTMLInputElement).value;
+  onNameChanged(event: Event) {
+    this.name = (event.target! as HTMLInputElement).value;
   }
 }
 ```
 
 #### Composing Templates
 
+The `HTMLTemplate` returned from the `html` tag helper is also a directive itself. As a result, you can create templates and compose them into other templates.
 
+**Example 1: Composing Templates**
+
+```TypeScript
+import { FastElement, customElement, observable, html } from '@microsoft/fast-element';
+import { repeat } from '@microsoft/fast-element/directives/repeat';
+import { when } from '@microsoft/fast-element/directives/when';
+
+class Person {
+  @observable name: string;
+
+  constructor(name: string) {
+    this.name = name;
+  }
+}
+
+const nameTemplate = html<{ name: string }>`
+  <span class="name">${x => x.name}</span>
+`;
+
+const template = html<FriendList>`
+  <h1>Friends</h1>
+
+  <form @submit=${x => x.addFriend()}>
+    <input type="text" value=${x => x.name} @input=${(x, c) => x.onNameChanged(c.event)}>
+
+    ${when(x => x.name, html`
+      <div>Name: ${nameTemplate}</div>
+    `)}
+    
+    <div class="button-bar">
+      <button type="submit">Add Friend</button>
+    </div>
+  </form>
+  <ul>
+    ${repeat(x => x.friends, html`
+      <li>${nameTemplate}</li>
+    `)}
+  </ul>
+`;
+
+@customElement({
+  name: 'friend-list',
+  template
+})
+export class FriendList extends FastElement {
+  @observable friends: Person[] = [];
+  @observable name: string = '';
+
+  addFriend() {
+    if (!this.name) {
+      return;
+    }
+
+    this.friends.push(new Person(this.name));
+    this.name = '';
+  }
+
+  onNameChanged(event: Event) {
+    this.name = (event.target! as HTMLInputElement).value;
+  }
+}
+```
 
 ### Observables and Rendering
 
 
-- Working with Shadow DOM
-    - slots (default, named, fallback content)
-- Defining CSS
-    - composing CSS
-    - shadow dom styling
-        - :host
-        - ::slotted()
-        - CSS contain
-    - CSS properties
+
+## Working with Shadow DOM
+
+- slots (default, named, fallback content)
+
+## Defining CSS
+
+- shadow dom styling
+  - :host
+  - ::slotted()
+  - CSS contain
+- CSS properties
+    
