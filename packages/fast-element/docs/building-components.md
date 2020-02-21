@@ -38,7 +38,7 @@ export class NameTag extends FastElement {
 }
 ```
 
-To add attributes to your HTML element, create properties decorated by the `@attr` decorator. All attributes defined this way will be automatically registered with the platform so that they can be updated through the browser's native `setAttribute` API as well as the property. You can optionally add a `$propertyName$Changed` method to your class, and it will be called whenever your property changes, whether it changes through the property or the attribute API.
+To add attributes to your HTML element, create properties decorated by the `@attr` decorator. All attributes defined this way will be automatically registered with the platform so that they can be updated through the browser's native `setAttribute` API as well as the property. You can optionally add a method with the naming convention *propertyName*Changed to your class (e.g. `greeting` and `greetingChanged()`), and this method will be called whenever your property changes, whether it changes through the property or the attribute API.
 
 > **Note:** All properties decorated with `@attr` are also *observable*. See the templating section below for information about how observables enable efficient rendering.
 
@@ -52,7 +52,7 @@ To see it in action, you can use the same HTML as above, or change the default `
 
 ### The Element Lifecycle
 
-All Web Components support a series of lifecycle events that you can tap into to execute custom code at specific points in time. FAST Element implements several of these callbacks automatically, in order to enable features of its templating engine (described below). However, you can override them to provide your own code. Here's an example of how you would execute custom code at the time when your element is connected to the DOM.
+All Web Components support a series of lifecycle events that you can tap into to execute custom code at specific points in time. `FastElement` implements several of these callbacks automatically, in order to enable features of its templating engine (described below). However, you can override them to provide your own code. Here's an example of how you would execute custom code when your element is inserted into the DOM.
 
 ```TypeScript
 @customElement('name-tag')
@@ -74,17 +74,17 @@ The full list of available lifecyle callbacks is:
 
 | Callback | Description |
 | ------------- |-------------|
-| constructor | Runs when the element is created or upgraded. FAST Element will attach the shadow DOM at this time and hydrate it with the HTML template, if one was provided. |
-| connectedCallback | Runs when the element is inserted into the DOM. FAST Element will connect template bindings in order to finalize the initial render at this time. |
-| disconnectedCallback | Runs when the element is removed from the DOM. FAST Element will remove template bindings and clean up resources at this time. |
-| attributeChangedCallback(attrName, oldVal, newVal) | Runs any time one of the element's custom attributes changes. FAST Element uses this to sync the attribute with its property. When the property updates, a render update is also queued, if there was a template dependency. |
+| constructor | Runs when the element is created or upgraded. `FastElement` will attach the shadow DOM at this time and hydrate it with the HTML template, if one was provided. |
+| connectedCallback | Runs when the element is inserted into the DOM. `FastElement` will connect template bindings in order to finalize the initial render at this time. |
+| disconnectedCallback | Runs when the element is removed from the DOM. `FastElement` will remove template bindings and clean up resources at this time. |
+| attributeChangedCallback(attrName, oldVal, newVal) | Runs any time one of the element's custom attributes changes. `FastElement` uses this to sync the attribute with its property. When the property updates, a render update is also queued, if there was a template dependency. |
 | adoptedCallback | Runs if the element was moved from its current `document` into a new `document` via a call to the `adoptNode(...)` API. |
 
 ## Declaring a Template
 
-While you can create and update nodes in the Shadow DOM manually, FAST Element provides a streamlined templating system for the most common rendering scenarios. To create an HTML template for an element, import and use the `html` tagged template helper and pass the template to the `@customElement` decorator.
+While you can create and update nodes in the Shadow DOM manually, `FastElement` provides a streamlined templating system for the most common rendering scenarios. To create an HTML template for an element, import and use the `html` tagged template helper and pass the template to the `@customElement` decorator.
 
-Here's how we would add a template for our `name-tag` component that renders some basics structure as well as our `greeting`:
+Here's how we would add a template for our `name-tag` component that renders some basic structure as well as our `greeting`:
 
 ```TypeScript
 import { FastElement, customElement, attr, html } from '../fast-dna';
@@ -108,6 +108,18 @@ export class NameTag extends FastElement {
   @attr greeting: string = 'Hello';
 }
 ```
+
+There are several important details in the above example, so let's break them down one-by-one.
+
+First we create a template by using a [tagged template literal](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals). The tag, `html`, provides special processing for the HTML string that follows, returning an instance of `HTMLTemplate`. Your templates can be *typed* to the data model that they are rendering over. In TypeScript, we simply provide the type as part of the tag: `html<NameTag>`.
+
+Within a template, we provide *expressions* that declare the *dynamic parts* of our template. These expressions are declared with [arrow functions](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions). Because the template is typed, the input to your arrow function will be an instance of the data model you delcared in your `html` tag. When the `html` tag processes your template, it identifies these dynamic expressions and builds up an optimized model, capable of high-performance rendering, and efficient, incremental batched updates.
+
+Finally, we associate the template with our custom element by using a different from of the `@customElement` decorator, which allows us to pass more options. In this configuration, we pass an options object specifying the `name` and the `template`.
+
+With this in place, we now have a `name-tag` element that will render its template into the Shadow DOM and automatically update the `h3` content whenever the name tag's `greeting` attribute changes. Give it a try!
+
+
 
 TODO
 
