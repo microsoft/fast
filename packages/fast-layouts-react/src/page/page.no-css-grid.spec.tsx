@@ -22,6 +22,18 @@ describe("Page - without CSS grid support", (): void => {
         expect(rendered.props().style.display).toEqual("-ms-grid");
     });
 
+    test("should set an inline style of `display: -ms-grid` when -ms-grid is specified and CSS grid is NOT supported", () => {
+        const rendered: any = shallow(<Page cssGridPropertyName="-ms-grid" />);
+
+        expect(rendered.props().style.display).toEqual("-ms-grid");
+    });
+
+    test("should set an inline style of `display: grid` when grid is specified and CSS grid is NOT supported", () => {
+        const rendered: any = shallow(<Page cssGridPropertyName="grid" />);
+
+        expect(rendered.props().style.display).toEqual("grid");
+    });
+
     test("should set an inline style of `msGridColumns` when CSS grid is supported", () => {
         const expectedMargin: string = "0";
         const expectedMaxWidth: string = "1200px";

@@ -61,6 +61,18 @@ describe("Page", (): void => {
         expect(rendered.props().style.display).toEqual("grid");
     });
 
+    test("should set an inline style of `display: -ms-grid` when -ms-grid is specified and CSS grid is supported", () => {
+        const rendered: any = shallow(<Page cssGridPropertyName="-ms-grid" />);
+
+        expect(rendered.props().style.display).toEqual("-ms-grid");
+    });
+
+    test("should set an inline style of `display: grid` when grid is specified and CSS grid is supported", () => {
+        const rendered: any = shallow(<Page cssGridPropertyName="grid" />);
+
+        expect(rendered.props().style.display).toEqual("grid");
+    });
+
     test("should set a default maxWidth value if no `maxWidth` prop is passed", () => {
         const rendered: any = mount(<Page managedClasses={managedClasses} />);
 
@@ -104,13 +116,5 @@ describe("Page", (): void => {
         expect(rendered.props().style.gridTemplateColumns).toEqual(
             gridTemplateColumnsFormatter(expectedMargin, expectedMaxWidth)
         );
-    });
-});
-
-describe("Page - without CSS grid support but `cssGridPropertyName` prop is `grid`", (): void => {
-    test("should set an inline style of `display: grid` when CSS grid is NOT supported but the `cssGridPropertyName` prop passed is `grid`", () => {
-        const rendered: any = shallow(<Page cssGridPropertyName={"grid"} />);
-
-        expect(rendered.props().style.display).toEqual("grid");
     });
 });
