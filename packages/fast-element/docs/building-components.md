@@ -50,7 +50,7 @@ To see it in action, you can use the same HTML as above, or change the default `
 <name-tag greeting="Hola"></name-tag>
 ```
 
-## The Element Lifecycle
+### The Element Lifecycle
 
 All Web Components support a series of lifecycle events that you can tap into to execute custom code at specific points in time. FAST Element implements several of these callbacks automatically, in order to enable features of its templating engine (described below). However, you can override them to provide your own code. Here's an example of how you would execute custom code at the time when your element is connected to the DOM.
 
@@ -79,6 +79,35 @@ The full list of available lifecyle callbacks is:
 | disconnectedCallback | Runs when the element is removed from the DOM. FAST Element will remove template bindings and clean up resources at this time. |
 | attributeChangedCallback(attrName, oldVal, newVal) | Runs any time one of the element's custom attributes changes. FAST Element uses this to sync the attribute with its property. When the property updates, a render update is also queued, if there was a template dependency. |
 | adoptedCallback | Runs if the element was moved from its current `document` into a new `document` via a call to the `adoptNode(...)` API. |
+
+## Declaring a Template
+
+While you can create and update nodes in the Shadow DOM manually, FAST Element provides a streamlined templating system for the most common rendering scenarios. To create an HTML template for an element, import and use the `html` tagged template helper and pass the template to the `@customElement` decorator.
+
+Here's how we would add a template for our `name-tag` component that renders some basics structure as well as our `greeting`:
+
+```TypeScript
+import { FastElement, customElement, attr, html } from '../fast-dna';
+
+const template = html<NameTag>`
+  <div class="header">
+    <h3>${x => x.greeting.toUpperCase()}</h3>
+    <h4>my name is</h4>
+  </div>
+
+  <div class="body"></div>
+
+  <div class="footer"></div>
+`;
+
+@customElement({
+  name: 'name-tag',
+  template
+})
+export class NameTag extends FastElement {
+  @attr greeting: string = 'Hello';
+}
+```
 
 TODO
 
