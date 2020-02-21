@@ -276,7 +276,7 @@ The `when` directive enables you to conditionally render blocks of HTML. When yo
 **Example 1: Conditional Rendering**
 
 ```TypeScript
-import { FastElement, customElement, attr, html } from '@microsoft/fast-element';
+import { FastElement, customElement, observable, html } from '@microsoft/fast-element';
 import { when } from '@microsoft/fast-element/directives/when';
 
 const template = html<MyApp>`
@@ -292,7 +292,7 @@ const template = html<MyApp>`
   template
 })
 export class MyApp extends FastElement {
-  @attr ready: boolean = false;
+  @observable ready: boolean = false;
 
   connectedCallback() {
     super.connectedCallback();
@@ -305,15 +305,64 @@ export class MyApp extends FastElement {
 }
 ```
 
+> **IMPORTANT:** You may have noticed the use of the `@observable` decorator on the `ready` property above. The `@observable` decorator creates a property that the template system can watch for changes. It is simlar to `@attr`, but the property is not surfaced as an HTML attribute on the element itself. While `@attr` can only be used in a `FastElement`, `@observable` can be used in any class. You can learn more about observation and incremental template updates below in the section "Observables and Rendering".
+
 > **NOTE**: Additional features are planned for `when` which would enable `elseif` and `else` conditional rendering. Today, you need multiple, separate `when` blocks to achieve the same end result.
 
 #### The Repeat Directive
 
-TODO
+To render a list of data, use the `repeat` directive, providing the list to render and a template to use in rendering each item.
 
-- Declare a template
-    - Composing templates
-    - Declare observable properties
+**Example 1: List Rendering**
+
+```TypeScript
+import { FastElement, customElement, observable, html } from '@microsoft/fast-element';
+import { repeat } from '@microsoft/fast-element/directives/repeat';
+
+const template = html<FriendList>`
+  <h1>Friends</h1>
+
+  <form @submit=${x => x.addFriend()}>
+    <input type="text" value=${x => x.friendName} @input=${(x, c) => x.onFriendNameChanged(c.event)}>
+    <button type="submit">Add Friend</button>
+  </form>
+  <ul>
+    ${repeat(x => x.friends, html<string>`
+      <li>${x => x}</li>
+    `)}
+  </ul>
+`;
+
+@customElement({
+  name: 'friend-list',
+  template
+})
+export class FriendList extends FastElement {
+  @observable friends: string[] = [];
+  @observable friendName: string = '';
+
+  addFriend() {
+    if (!this.friendName) {
+      return;
+    }
+
+    this.friends.push(this.friendName);
+    this.friendName = '';
+  }
+
+  onFriendNameChanged(event: Event) {
+    this.friendName = (event.target! as HTMLInputElement).value;
+  }
+}
+```
+
+#### Composing Templates
+
+
+
+### Observables and Rendering
+
+
 - Working with Shadow DOM
     - slots (default, named, fallback content)
 - Defining CSS
