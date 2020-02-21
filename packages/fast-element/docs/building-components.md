@@ -55,6 +55,8 @@ To see it in action, you can use the same HTML as above, or change the default `
 All Web Components support a series of lifecycle events that you can tap into to execute custom code at specific points in time. `FastElement` implements several of these callbacks automatically, in order to enable features of its templating engine (described below). However, you can override them to provide your own code. Here's an example of how you would execute custom code when your element is inserted into the DOM.
 
 ```TypeScript
+import { FastElement, customElement, attr } from '@microsoft/fast-element';
+
 @customElement('name-tag')
 export class NameTag extends FastElement {
   @attr greeting: string = 'Hello';
@@ -87,7 +89,7 @@ While you can create and update nodes in the Shadow DOM manually, `FastElement` 
 Here's how we would add a template for our `name-tag` component that renders some basic structure as well as our `greeting`:
 
 ```TypeScript
-import { FastElement, customElement, attr, html } from '../fast-dna';
+import { FastElement, customElement, attr, html } from '@microsoft/fast-element';
 
 const template = html<NameTag>`
   <div class="header">
@@ -230,12 +232,50 @@ Besides rendering content, properties, and attributes, you'll often want to add 
 
 ### Using Directives
 
+In addition to declaring dynamic parts of templates with expressions, you also have access to several powerful *directives*, which aid in common scenarios.
+
+#### The Ref Directive
+
+Sometimes you need a direct reference to a DOM node from your template. This might be because you want to control playback of a `video` element, use the drawing context of a `canvas` element, or pass an element to a 3rd party library. Whatever the reason, you can get a reference to the DOM node by using the `ref` directive.
+
+**Example 1: Referencing an Element**
+
+```TypeScript
+import { FastElement, customElement, attr, html } from '@microsoft/fast-element';
+import { ref } from '@microsoft/fast-element/directives/ref';
+
+const template = html<MP4Player>`
+  <video ${ref('video')}>
+    <source src=${x => x.src} type="video/mp4">
+  </video>
+`;
+
+@customElement({
+  name: 'mp4-player',
+  template
+})
+export class MP4Player extends FastElement {
+  @attr src: string;
+  video: HTMLVideoElement;
+
+  connectedCallback() {
+    super.connectedCallback();
+    this.video.play();
+  }
+}
+```
+
+Place the `ref` directive on the element you want to reference and provide it with a property name to assign the reference to. Once the `connectedCallback` lifecycle event runs, your property will be set to the reference, ready for use.
+
+> **NOTE:** If you provide a type for your HTML template, TypeScript will type check the property name you provide to ensure that it actually exists on your element.
+
+#### The When Directive
+
+#### The Repeat Directive
+
 TODO
 
 - Declare a template
-    - Ref bindings
-    - When directive
-    - Repeat directive
     - Composing templates
     - Declare observable properties
 - Working with Shadow DOM
