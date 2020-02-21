@@ -210,11 +210,29 @@ Most HTML attributes have a corresponding property on the HTML element itself, s
 
 #### Events
 
+Besides rendering content, properties, and attributes, you'll often want to add event listeners and execute code when events fire. To do that, prepend the event name with `@` and provide the expression to be called when that event fires. Within an event expression, you also have access to a special *context* argument from which you can access the event args.
+
+**Example 1: Basic Events**
+
+```HTML
+<button @click="${x => x.remove()}">Remove</button>
+```
+
+**Example 2: Accessing Event Details**
+
+```HTML
+<input type="text"
+       value="${x => x.description}"
+       @input="${(x, c) => x.onDescriptionChange(c.event)}">
+```
+
+> **IMPORTANT:** The templating engine only supports *unidirectional data flow* (model => view). It does not support *two-way data binding* (model <=> view). As shown above, pushing data from the view back to the model should be handled with explicit events that call into your model's API.
+
+### Using Directives
+
 TODO
 
 - Declare a template
-    - Use arrow functions for dynamic template parts
-    - Binding to properties, attributes, content, events
     - Ref bindings
     - When directive
     - Repeat directive
