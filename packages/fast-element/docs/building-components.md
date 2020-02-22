@@ -425,7 +425,31 @@ export class FriendList extends FastElement {
 
 ### Observables and Rendering
 
+The arrow function expressions and directives allow the `fast-element` templating engine to intelligently update only the parts of the DOM that actually change, with no need for a virtual DOM, VDOM diffing, or DOM reconcilliation algorithms. This approach enables top-tier initial render time, industry-leading incremental DOM updates, and ulta-low memory allocation.
 
+When an expression is used within a template, the underlying engine uses a technique to capture which properties are accessed in that expression. With the list of properties captured, it then subscribes to changes in their values. Any time a value changes, a task is scheduled on the DOM update queue. When the queue is processed, all updates run as a batch, updating precisely the aspects of the DOM that have changed.
+
+To enable expression tracking and change notification, properties must be decorated with either `@attr` or `@observable`. These decorators are a means of meta-programming the properties on your class, such that they include all the implementation needed to support tracking and observation. You can access any property within your template, but if it hasn't been decorated with one of these two decorators, its value will not update after the initial render.
+
+In addition to observing properties, the templating system can also observe arrays. The `repeat` directive is able to efficient respond to array change records, updating the DOM based on changes in the collection.
+
+#### Features of @attr and @observable
+
+* **Tracking** - Provides property access tracking for the templating engine.
+* **Observation** - Provides an ability to subscribe to changes in the property. The templating engine uses this, but you can also directly subsribe as well. Here's how you would subscribe to changes in the `Person`'s `name` property:
+  ```TypeScript
+    const person = new Person('John');
+    const notifier = Observable.getNotifier(person);
+    const handler = {
+      handleChange(source: any, propertyName: string) {
+        // respond to the change here
+      }
+    };
+
+    notifier.subscribe(handler, 'name')
+    notifier.unsubscribe(handler, 'name');
+  ```
+* **Self Observation** - On the class where the attr/observable is defined, you can optionally implement a *propertyName*Changed method to easily respond to changes.
 
 ## Working with Shadow DOM
 
