@@ -198,9 +198,11 @@ class HorizontalOverflow extends Foundation<
             ? this.props.fixedHeight
             : this.getItemMaxHeight();
 
-        this.setState({
-            itemsHeight,
-        });
+        if (itemsHeight !== this.state.itemsHeight) {
+            this.setState({
+                itemsHeight,
+            });
+        }
 
         if (canUseDOM() && this.horizontalOverflowItemsRef.current) {
             this.updateDirection();
