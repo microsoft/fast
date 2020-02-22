@@ -42,6 +42,7 @@ class HorizontalOverflow extends Foundation<
     public static defaultProps: Partial<HorizontalOverflowProps> = {
         managedClasses: {},
         nextItemPeek: 50,
+        fixedHeight: null,
     };
     private static DirectionAttributeName: string = "dir";
     private static defaultScrollAnimationDuration: number = 500;
@@ -52,6 +53,7 @@ class HorizontalOverflow extends Foundation<
         onScrollChange: void 0,
         onOverflowChange: void 0,
         nextItemPeek: void 0,
+        fixedHeight: void 0,
     };
 
     private horizontalOverflowItemsRef: React.RefObject<HTMLUListElement>;
@@ -129,7 +131,7 @@ class HorizontalOverflow extends Foundation<
 
         this.state = {
             direction: Direction.ltr,
-            itemsHeight: null,
+            itemsHeight: props.fixedHeight,
         };
     }
 
@@ -192,7 +194,9 @@ class HorizontalOverflow extends Foundation<
             return;
         }
 
-        const itemsHeight: number = this.getItemMaxHeight();
+        const itemsHeight: number = this.props.fixedHeight
+            ? this.props.fixedHeight
+            : this.getItemMaxHeight();
 
         this.setState({
             itemsHeight,
@@ -404,7 +408,9 @@ class HorizontalOverflow extends Foundation<
      * onLoad handler to make sure any children affecting height are accounted for
      */
     private itemsOnLoad = (): void => {
-        const itemsHeight: number = this.getItemMaxHeight();
+        const itemsHeight: number = this.props.fixedHeight
+            ? this.props.fixedHeight
+            : this.getItemMaxHeight();
 
         if (itemsHeight !== this.state.itemsHeight) {
             this.setState({
