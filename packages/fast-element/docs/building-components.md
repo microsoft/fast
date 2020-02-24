@@ -640,9 +640,9 @@ In addition to the declarative means of using slots described so far, the browse
 
 | API | Description |
 | ------------- |-------------|
-| `slotchange` | By adding an event listener for the `slotchange` event on a `slot` element, you can recieve notifications any time the slotted nodes of a particular slot change. |
+| `slotchange` | By adding an event listener for the `slotchange` event on a `slot` element, you can receive notifications any time the slotted nodes of a particular slot change. |
 | `assignedNodes()` | The `slot` element provides an `assignedNodes()` method that can be called to get a list of all nodes that a particular slot currently renders. You can pass an option object with `{ flatten: true }` if you wish to also see fallback content nodes. |
-| `assignedSlot` | The `assignedSlot` property is present on any `Element` that has been projected to a slot so that you can determine where it is projected. |
+| `assignedSlot` | The `assignedSlot` property is present on any element that has been projected to a slot so that you can determine where it is projected. |
 
 > **TIP:** Remember that you can use the templating system's event support to repond to `slotchange` events with `<slot @slotchange=${...}></slot>`. You can also obtain a reference to any slot with the `ref` directive, making it easy to call APIs like `assignedNodes()` or manually add/remove event listeners.
 
