@@ -498,7 +498,7 @@ To make this clear, let's look at how the `name-tag` element would be used with 
 
 ```HTML
 <name-tag>
-  <!--ShadowRoot-->
+  #shadow-root
     <div class="header">
       <h3>HELLO</h3>
       <h4>my name is</h4>
@@ -509,7 +509,7 @@ To make this clear, let's look at how the `name-tag` element would be used with 
     </div>
 
     <div class="footer"></div>
-  <!--ShadowRoot-->
+
   John Doe
 </name-tag>
 ```
@@ -561,11 +561,61 @@ export class NameTag extends FastElement {
 </name-tag>
 ```
 
-If an element declares named slots, its content can then leverage the `slot` *attribute* to indicate where it wants to be slotted. Anything without a `slot` attribute will be projected to the default slot. Anything with a `slot` attribute will be projected into its requested slot. Here are a couple of quick notes on slots:
+**Example 3: Rendered Output for `name-tag` with a named slot**
+
+```HTML
+<name-tag>
+  #shadow-root
+    <div class="header">
+      <slot name="avatar">
+        <img slot="avatar" src="...">
+      </slot>
+      <h3>HELLO</h3>
+      <h4>my name is</h4>
+    </div>
+
+    <div class="body">
+      <slot>John Doe</slot>
+    </div>
+
+    <div class="footer"></div>
+
+  John Doe
+  <img slot="avatar" src="...">
+</name-tag>
+```
+
+If an element declares named slots, its content can then leverage the `slot` *attribute* to indicate where it wants to be slotted. Anything without a `slot` attribute will be projected to the default slot. Anything with a `slot` attribute will be projected into its requested slot.
+
+Here are a couple of quick notes on slots:
 
 * You can have any number of content nodes project into the same slot.
-* If you have content in the Light DOM for which there is no corresponding Shadow DOM slot, it will not be rendered.
+* You can only place `slot` attributes on direct content of the containing element.
+  ```HTML
+  <name-tag>
+    <div> <!--Projected to default slot-->
+      <img slot="avatar"> <!--Ignored!-->
+    </div>
+    <img slot="avatar"> <!--Projected to "avatar" slot-->
+  </name-tag>
+  ```
+* If you have direct content elements in the Light DOM for which there is no corresponding Shadow DOM slot, it will not be rendered.
 * Ordering is maintained when projecting to slots. So, if you have two elements projecting into the same slot, they will render in the slot in the same order as they appeared in the Light DOM.
+* A `slot` element can also have a `slot` attribute if the slot element is the direct child of another custom element used in your template. In this case, it means that whatever content would be projected into that slot gets re-projected into the slot of the containing element.
+  ```HTML
+  <div class="uber-name-tag-template">
+    ...
+    <name-tag>
+      <slot name="uber-avatar" slot="avatar">
+        <!--uber-name-tag's "uber-avatar" content gets projected into name-tag's "avatar" slot-->
+      </slot>
+      <slot>
+        <!--uber-name-tag's default content gets projected into name-tag's default slot-->
+      </slot>
+    </name-tag>
+    ...
+  </div>
+  ```
 * You do not need to provide content for every declared slot. In the above example, just because the `name-tag` has an "avatar" slot does not mean we must provide content for that slot. If no content is provided for a slot, then nothing will be rendered at that location, unless the slot declared fallback content...
 
 ### Fallback Content
