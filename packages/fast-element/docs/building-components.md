@@ -646,6 +646,10 @@ In addition to the declarative means of using slots described so far, the browse
 
 > **TIP:** Remember that you can use the templating system's event support to repond to `slotchange` events with `<slot @slotchange=${...}></slot>`. You can also obtain a reference to any slot with the `ref` directive, making it easy to call APIs like `assignedNodes()` or manually add/remove event listeners.
 
+### Events
+
+### Shadow DOM Configuration
+
 ## Defining CSS
 
 - shadow dom styling
