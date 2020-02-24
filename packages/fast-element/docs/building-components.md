@@ -620,7 +620,19 @@ Here are a couple of quick notes on slots:
 
 ### Fallback Content
 
-// TODO
+There are several scenarios for using slots in your elements. So far, we've been showing how to use slots for content projection. However, another major use case is to enable various parts of your element's rendering to be replaced by the software using your element. To enable this, you can provide *fallback content* for any slot. This content will render if the element consumer provides no content for that slot, but if they do, their own content will override the fallback content.
+
+**Example 1: Fallback slot content**
+
+```HTML
+<div class="my-slider-template">
+  <slot name="thumb">
+    <span class="thumb"></span>
+  </slot>
+</div>
+```
+
+In the example above, the author of the `my-slider` custom element provides default HTML for the slider's "thumb", ensuring that the element will always render and function properly. However, this design leaves open the option to the component's consumer, to replace the thumb with their own HTML by simply providing HTML and assigning the proper slot name.
 
 ### Slot APIs
 
