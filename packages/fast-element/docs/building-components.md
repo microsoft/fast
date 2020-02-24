@@ -488,13 +488,13 @@ Inside the body `div`, we've placed a `slot` element. This is referred to as the
 
 To make this clear, let's look at how the `name-tag` element would be used with content and then see how the browser would composite the final rendered output.
 
-**Using `name-tag`**
+**Example 1: Using `name-tag` with a default slot**
 
 ```HTML
 <name-tag>John Doe<name-tag>
 ```
 
-**Rendered Output for `name-tag`**
+**Example 2: Rendered Output for `name-tag` with a  default slot**
 
 ```HTML
 <name-tag>
@@ -522,7 +522,51 @@ With slots at our disposal, we now unlock the full compositional model of HTML f
 
 ### Named Slots
 
-// TODO
+In the example above, we use a single `slot` element to render *all* content placed between the start and end tags of the `name-tag`. However, we're not limited to only having a default slot. We can also have *named slots* that declare other locations to which we can render content. To demonstrate this, let's add a named slot to our `name-tag`'s template where we can display the person's avatar.
+
+**Example 1: `name-tag` with a named slot**
+
+```TypeScript
+import { FastElement, customElement, attr, html } from '@microsoft/fast-element';
+
+const template = html<NameTag>`
+  <div class="header">
+    <slot name="avatar"></slot>
+    <h3>${x => x.greeting.toUpperCase()}</h3>
+    <h4>my name is</h4>
+  </div>
+
+  <div class="body">
+    <slot></slot>
+  </div>
+
+  <div class="footer"></div>
+`;
+
+@customElement({
+  name: 'name-tag',
+  template
+})
+export class NameTag extends FastElement {
+  @attr greeting: string = 'Hello';
+}
+```
+
+**Example 2: Using `name-tag` with a named slot**
+
+```HTML
+<name-tag>
+  John Doe
+  <img slot="avatar" src="...">
+</name-tag>
+```
+
+If an element declares named slots, its content can then leverage the `slot` *attribute* to indicate where it wants to be slotted. Anything without a `slot` attribute will be projected to the default slot. Anything with a `slot` attribute will be projected into its requested slot. Here are a couple of quick notes on slots:
+
+* You can have any number of content nodes project into the same slot.
+* If you have content in the Light DOM for which there is no corresponding Shadow DOM slot, it will not be rendered.
+* Ordering is maintained when projecting to slots. So, if you have two elements projecting into the same slot, they will render in the slot in the same order as they appeared in the Light DOM.
+* You do not need to provide content for every declared slot. In the above example, just because the `name-tag` has an "avatar" slot does not mean we must provide content for that slot. If no content is provided for a slot, then nothing will be rendered at that location, unless the slot declared fallback content...
 
 ### Fallback Content
 
