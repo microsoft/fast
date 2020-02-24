@@ -14,7 +14,7 @@ import {
     neutralOutlineRest,
 } from "../utilities/color";
 import { CarouselClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
-import { designUnit, outlineWidth } from "../utilities/design-system";
+import { designUnit, focusOutlineWidth, outlineWidth } from "../utilities/design-system";
 import {
     highContrastButtonColorIndicator,
     HighContrastColor,
@@ -100,9 +100,8 @@ const styles: ComponentStyles<CarouselClassNameContract, DesignSystem> = {
         },
         ...applyFocusVisible<DesignSystem>({
             "&::after": {
-                opacity: "1",
                 position: "absolute",
-                border: "2px solid transparent",
+                border: format("{0} solid transparent", toPx(focusOutlineWidth)),
                 "border-radius": "40px",
                 top: "0",
                 right: "0",
