@@ -1,17 +1,17 @@
 import { DesignSystem, DesignSystemResolver } from "../design-system";
 import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager";
 import {
+    applyFocusVisible,
     directionSwitch,
     format,
     toPx,
-    applyFocusVisible,
 } from "@microsoft/fast-jss-utilities";
 import {
     neutralFillStealthHover,
     neutralFillStealthRest,
+    neutralFocus,
     neutralForegroundRest,
     neutralOutlineRest,
-    neutralFocus,
 } from "../utilities/color";
 import { CarouselClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import { designUnit, outlineWidth } from "../utilities/design-system";
