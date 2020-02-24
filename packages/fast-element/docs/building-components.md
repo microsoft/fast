@@ -453,7 +453,84 @@ In addition to observing properties, the templating system can also observe arra
 
 ## Working with Shadow DOM
 
-- slots (default, named, fallback content)
+So far we've looked at how to define elements, how to define attributes on those elements, and how to control element rendering through declarative templates. However, we haven't yet seen how our custom elements can be composed together with standard HTML or other custom elements.
+
+To enable composition, `FastElement` leverages the Shadow DOM standard. Previously, we've seen how `FastElement` automatically attaches a `ShadowRoot`, and when your element declares a template, it renders that template into the Shadow DOM. To enable element composition, all we need to do is make use of the standard `<slot>` element within our template.
+
+Let's return to our original `name-tag` element example and see how we can use a `slot` to compose the person's name.
+
+```TypeScript
+import { FastElement, customElement, attr, html } from '@microsoft/fast-element';
+
+const template = html<NameTag>`
+  <div class="header">
+    <h3>${x => x.greeting.toUpperCase()}</h3>
+    <h4>my name is</h4>
+  </div>
+
+  <div class="body">
+    <slot></slot>
+  </div>
+
+  <div class="footer"></div>
+`;
+
+@customElement({
+  name: 'name-tag',
+  template
+})
+export class NameTag extends FastElement {
+  @attr greeting: string = 'Hello';
+}
+```
+
+Inside the body `div`, we've placed a `slot` element. This is referred to as the "default slot" for the component because, by default, all content placed between the element's opening and closing tags will be *rendered* at this location.
+
+To make this clear, let's look at how the `name-tag` element would be used with content and then see how the browser would composite the final rendered output.
+
+**Using `name-tag`**
+
+```HTML
+<name-tag>John Doe<name-tag>
+```
+
+**Rendered Output for `name-tag`**
+
+```HTML
+<name-tag>
+  <!--ShadowRoot-->
+    <div class="header">
+      <h3>HELLO</h3>
+      <h4>my name is</h4>
+    </div>
+
+    <div class="body">
+      <slot>John Doe</slot>
+    </div>
+
+    <div class="footer"></div>
+  <!--ShadowRoot-->
+  John Doe
+</name-tag>
+```
+
+The text "John Doe" exists in the "Light DOM", but it gets *projected* into the location of the `slot` within the "Shadow DOM".
+
+> **NOTE:** If you find the terms "Light DOM" and "Shadow DOM" unintuitive, you're not alone. Another way to think of "Light DOM" is as the "Semantic DOM". It represents your semantic content model, without any concern for rendering. Another way to think of "Shadow DOM' is as the "Render DOM". It represents how your element is rendered, independent of content or semantics.
+
+With slots at our disposal, we now unlock the full compositional model of HTML for use in our own elements. However, there's even more that slots can do.
+
+### Named Slots
+
+// TODO
+
+### Fallback Content
+
+// TODO
+
+### Slot APIs
+
+// TODO
 
 ## Defining CSS
 
@@ -462,4 +539,4 @@ In addition to observing properties, the templating system can also observe arra
   - ::slotted()
   - CSS contain
 - CSS properties
-    
+- Composing styles
