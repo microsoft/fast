@@ -1,5 +1,5 @@
 import { storiesOf } from "@storybook/react";
-import React from "react";
+import React, { useState } from "react";
 import {
     Carousel,
     CarouselClassNameContract,
@@ -23,7 +23,7 @@ function itemsFiller(
         const theme: CarouselSlideTheme =
             x > 0 ? CarouselSlideTheme.light : CarouselSlideTheme.dark;
         fillerArray.push({
-            id: uniqueId(),
+            id: `slide${i}`,
             theme,
             content: (className?: string): React.ReactNode => (
                 <CarouselHero
@@ -64,10 +64,49 @@ const carouselSequenceStylesOverrides: ComponentStyles<
     },
 };
 
+function CarouselSateHandler(props: {
+    autoPlay: boolean;
+    children: (
+        autoPlay: boolean,
+        onFocus: (event: React.FocusEvent) => void,
+        onBlur: (event: React.FocusEvent) => void
+    ) => JSX.Element;
+}): JSX.Element {
+    const [autoPlay, setAutoPlay]: [
+        boolean,
+        React.Dispatch<React.SetStateAction<boolean>>
+    ] = useState(props.autoPlay);
+
+    function handleOnFocus(event: React.FocusEvent): void {
+        setAutoPlay(false);
+    }
+
+    function handleOnBlur(event: React.FocusEvent): void {
+        setAutoPlay(props.autoPlay);
+    }
+
+    return props.children(autoPlay, handleOnFocus, handleOnBlur);
+}
+
 storiesOf("Carousel", module)
-    .add("Default", () => (
-        <Carousel label="A carousel of items" autoplay={true} items={itemsFiller(6)} />
-    ))
+    .add("Default", () => {
+        function render(
+            autoPlay: boolean,
+            onFocus: (event: React.FocusEvent) => void,
+            onBlur: (event: React.FocusEvent) => void
+        ): JSX.Element {
+            return (
+                <Carousel
+                    label="A carousel of items"
+                    onFocus={onFocus}
+                    onBlur={onBlur}
+                    autoplay={autoPlay}
+                    items={itemsFiller(6)}
+                />
+            );
+        }
+        return <CarouselSateHandler autoPlay={true}>{render}</CarouselSateHandler>;
+    })
     .add("No Looping and No Autoplay", () => (
         <Carousel
             label="A carousel of items"
@@ -76,25 +115,47 @@ storiesOf("Carousel", module)
             items={itemsFiller(8)}
         />
     ))
-    .add("Looping and Autoplay", () => (
-        <Carousel
-            label="A carousel of items"
-            autoplay={true}
-            loop={true}
-            items={itemsFiller(4)}
-        />
-    ))
-    .add("Sequence Indicator Test with Many Items", () => (
-        <Carousel
-            label="A carousel of items"
-            autoplay={true}
-            loop={true}
-            items={itemsFiller(
-                30,
-                "Sequence Indicator Test",
-                "The Sequence Indicators Container should not be full width and not cover up any actions that are in the content corners. If the individual Indicator's widths are not reduced, as they are here, the container will be too wide and cover up the buttons in the lower corners.",
-                true
-            )}
-            jssStyleSheet={carouselSequenceStylesOverrides}
-        />
-    ));
+    .add("Looping and Autoplay", () => {
+        function render(
+            autoPlay: boolean,
+            onFocus: (event: React.FocusEvent) => void,
+            onBlur: (event: React.FocusEvent) => void
+        ): JSX.Element {
+            return (
+                <Carousel
+                    label="A carousel of items"
+                    onFocus={onFocus}
+                    onBlur={onBlur}
+                    autoplay={autoPlay}
+                    loop={true}
+                    items={itemsFiller(4)}
+                />
+            );
+        }
+        return <CarouselSateHandler autoPlay={true}>{render}</CarouselSateHandler>;
+    })
+    .add("Sequence Indicator Test with Many Items", () => {
+        function render(
+            autoPlay: boolean,
+            onFocus: (event: React.FocusEvent) => void,
+            onBlur: (event: React.FocusEvent) => void
+        ): JSX.Element {
+            return (
+                <Carousel
+                    label="A carousel of items"
+                    onFocus={onFocus}
+                    onBlur={onBlur}
+                    autoplay={autoPlay}
+                    loop={true}
+                    items={itemsFiller(
+                        30,
+                        "Sequence Indicator Test",
+                        "The Sequence Indicators Container should not be full width and not cover up any actions that are in the content corners. If the individual Indicator's widths are not reduced, as they are here, the container will be too wide and cover up the buttons in the lower corners.",
+                        true
+                    )}
+                    jssStyleSheet={carouselSequenceStylesOverrides}
+                />
+            );
+        }
+        return <CarouselSateHandler autoPlay={true}>{render}</CarouselSateHandler>;
+    });
