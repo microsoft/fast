@@ -726,9 +726,93 @@ In addition to the Shadow DOM mode, `shadowOptions` exposes all the options that
 
 ## Defining CSS
 
-- shadow dom styling
+The final piece of our component story is CSS. Similar to HTML, `FastElement` provides a `css` tagged template helper to allow creating and re-using CSS. Let's add some CSS for our `name-tag` component.
+
+**Example 1: CSS for the NameTag Component
+
+```TypeScript
+import { html, css, customElement, attr, FastElement } from "@microsoft/fast-element";
+
+const template = html<NameTag>`
+  <div class="header">
+    <slot name="avatar"></slot>
+    <h3>${x => x.greeting.toUpperCase()}</h3>
+    <h4>my name is</h4>
+  </div>
+
+  <div class="body">
+    <slot></slot>
+  </div>
+
+  <div class="footer"></div>
+`;
+
+const styles = css`
+  :host {
+    display: inline-block;
+    color: white;
+    background: var(--background-color);
+    border-radius: var(--border-radius);
+    min-width: 325px;
+    text-align: center;
+    box-shadow: 0 0 calc(var(--depth) * 1px) rgba(0,0,0,.5);
+  }
+
+  .header {
+    margin: 16px 0;
+    position: relative;
+  }
+
+  h3 {
+    font-weight: bold;
+    font-family: 'Source Sans Pro';
+    letter-spacing: 4px;
+    font-size: 32px;
+    margin: 0;
+	  padding: 0;
+  }
+
+  h4 {
+    font-family: sans-serif;
+    font-size: 18px;
+    margin: 0;
+	  padding: 0;
+  }
+
+  .body {
+    background: white;
+    color: black;
+    padding: 32px 8px;
+    font-size: 42px;
+    font-family: cursive;
+  }
+
+  .footer {
+    height: 16px;
+    background: var(--background-color);
+    border-radius: 0 0 var(--border-radius) var(--border-radius);
+  }
+`;
+
+@customElement({
+  name: 'name-tag',
+  template,
+  dependencies: [styles]
+})
+export class NameTag extends FastElement {
+  @attr greeting: string = 'Hello';
+}
+```
+
+Using the `css` helper, we're able to create a `CSSRegistry`, which is a special type that `FastElement` understands. We add this registry to the element's `dependencies` array, indicating that the element is dependent on the CSS. Internally, the registry will leverage [Constructable Stylesheet Objects](https://wicg.github.io/construct-stylesheets/) and `ShadowRoot#adoptedStyleSheets` to efficienly re-use CSS across components. This means that even if we have 1k instances of our `name-tag` component, they will all share a single instane of the associated styles, allowing for reduced memory allocation and improved performance.
+
+> **Note:** We've used [CSS Custom Properties](https://developer.mozilla.org/en-US/docs/Web/CSS/--*) throughout our CSS as well as [CSS Calc](https://developer.mozilla.org/en-US/docs/Web/CSS/calc) in order to enable our component to be styled in basic ways by consumers. Additionally, consider adding [CSS Shadow Parts](https://developer.mozilla.org/en-US/docs/Web/CSS/::part) to your template, to enable even more powerful customization.
+
+### Composing Styles
+
+### Shadow DOM Styling
+
   - :host
   - ::slotted()
   - CSS contain
 - CSS properties
-- Composing styles
