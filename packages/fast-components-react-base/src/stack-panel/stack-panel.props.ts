@@ -70,7 +70,9 @@ export interface StackPanelHandledProps extends StackPanelManagedClasses {
 
     /**
      * Delay in ms before viewport contents updated after scrolling stops
-     * default is 50
+     * This allows developers to block updating children while scroll operations
+     * are in progress
+     * default is 0
      */
     scrollLayoutUpdateDelay?: number;
 }
