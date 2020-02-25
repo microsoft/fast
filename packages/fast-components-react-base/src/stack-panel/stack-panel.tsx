@@ -73,10 +73,15 @@ class StackPanel extends Foundation<
         scrollLayoutUpdateDelay: void 0,
     };
 
+    // ref to the root element of the component
     private rootElement: React.RefObject<HTMLDivElement> = React.createRef<
         HTMLDivElement
     >();
 
+    /**
+     * ref to the element which is the container all children are rendered into
+     * It is sized accomodate all children and is the container that is being scrolled
+     */
     private itemContainerElement: React.RefObject<HTMLDivElement> = React.createRef<
         HTMLDivElement
     >();
@@ -177,6 +182,7 @@ class StackPanel extends Foundation<
      * React life-cycle method
      */
     public componentDidMount(): void {
+        // set up resize observer so we can update layout when component is resized
         if (!isNil(this.rootElement.current)) {
             if (((window as unknown) as WindowWithResizeObserver).ResizeObserver) {
                 this.resizeDetector = new ((window as unknown) as WindowWithResizeObserver).ResizeObserver(
@@ -189,6 +195,7 @@ class StackPanel extends Foundation<
         this.viewportSpan = this.getViewportSpan();
         this.updateLayout();
 
+        // if we need to have a particular child scrolled into view on mount do so
         if (
             !isNil(this.props.initiallyVisibleItemIndex) &&
             this.itemPositions.length > this.props.initiallyVisibleItemIndex
@@ -217,6 +224,8 @@ class StackPanel extends Foundation<
             this.updateLayout();
         }
 
+        // if the initiallyVisibleItemIndex prop is changed to a non-null value
+        // after initial mount we scroll to that position
         if (
             prevProps.initiallyVisibleItemIndex !==
                 this.props.initiallyVisibleItemIndex &&
@@ -249,14 +258,11 @@ class StackPanel extends Foundation<
     protected generateClassNames(): string {
         const {
             stackPanel,
-        }: // stackPanel__scrolling,
-        StackPanelClassNameContract = this.props.managedClasses;
+            stackPanel__scrollable,
+        }: StackPanelClassNameContract = this.props.managedClasses;
 
         return super.generateClassNames(
-            classNames(
-                stackPanel
-                // [stackPanel__scrolling, this.state.isScrolling]
-            )
+            classNames(stackPanel, [stackPanel__scrollable, this.state.isScrollable])
         );
     }
 

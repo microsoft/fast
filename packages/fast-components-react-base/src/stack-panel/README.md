@@ -2,7 +2,7 @@
 
 NOTE: this component is in initial development and should not yet be considered stable.
 
-The *stack panel* component is a container that enables smooth scrolling and virtualization of child elements arranged horizontally or vertically.
+The *stack panel* component is a container that enables smooth scrolling and virtualization of child elements arranged in a horizontal or vertical linear 'stack'. 
 
 ### Usage
 
@@ -37,6 +37,8 @@ enableSmoothScrolling:  Whether smooth scrolling is enabled or not.  When disabl
 scrollDuration: The lenght of the scroll animation in milliseconds.  Default is 500.
 
 initiallyVisibleItemIndex:  When provided the component will initially render with the child at that index scrolled into view.  After the component is initialzed if this value is changed 
+
+scrollLayoutUpdateDelay: Enables authors to delay updateing layout (ie. instanciating items) while there is a continuous scroll operation in progress.  The value corresponds to the time interval between dom generated scroll events that must pass before the component updates item layout.  Default is 0 (off).
 
 
 
