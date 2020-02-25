@@ -91,8 +91,8 @@ class AutoSuggest extends Foundation<
 
         if (
             !this.state.isMenuOpen &&
-            React.Children.count(this.getFilteredChildren(prevProps.children)) === 0 &&
-            React.Children.count(this.getFilteredChildren(this.props.children)) > 0 &&
+            React.Children.count(this.renderChildren(prevProps.children)) === 0 &&
+            React.Children.count(this.renderChildren()) > 0 &&
             !isNil(this.rootElement.current) &&
             this.rootElement.current.contains(document.activeElement)
         ) {
@@ -219,15 +219,18 @@ class AutoSuggest extends Foundation<
                     listbox__disabled: autoSuggest__disabled,
                 }}
             >
-                {this.getFilteredChildren(this.props.children)}
+                {this.renderChildren()}
             </Listbox>
         );
     }
 
-    private getFilteredChildren(children: React.ReactNode): React.ReactNode {
+    private renderChildren(alternateChildren?: React.ReactNode): React.ReactNode {
+        const children: React.ReactNode = isNil(alternateChildren)
+            ? this.props.children
+            : alternateChildren;
         if (this.props.filterSuggestions) {
             return React.Children.map(
-                children,
+                children as React.ReactNode,
                 (node: React.ReactElement<any>): React.ReactNode | null => {
                     if (!isNil(node.props)) {
                         if (node.props[AutoSuggest.valuePropertyKey] === undefined) {
@@ -465,17 +468,13 @@ class AutoSuggest extends Foundation<
             return false;
         }
 
-        const filteredChildren: React.ReactNode = this.getFilteredChildren(
-            this.props.children
-        );
-
         const childrenAsArray: React.ReactNode[] = React.Children.toArray(
-            filteredChildren
+            this.renderChildren()
         );
 
         const currentItemIndex: number = Listbox.getItemIndexById(
             this.state.focusedItem.id,
-            filteredChildren
+            this.renderChildren()
         );
 
         const startIndex: number = currentItemIndex + increment;
@@ -519,7 +518,7 @@ class AutoSuggest extends Foundation<
     private focusOnMenu = (increment: number): void => {
         this.storedValueString = this.state.value;
         const childrenAsArray: React.ReactNode[] = React.Children.toArray(
-            this.getFilteredChildren(this.props.children)
+            this.renderChildren()
         );
 
         if (childrenAsArray.length === 0) {
@@ -594,7 +593,7 @@ class AutoSuggest extends Foundation<
     private validateMenuState = (desiredMenuState: boolean): boolean => {
         return typeof this.props.isMenuOpen === "boolean"
             ? this.props.isMenuOpen
-            : React.Children.count(this.getFilteredChildren(this.props.children)) === 0
+            : React.Children.count(this.renderChildren()) === 0
                 ? false
                 : desiredMenuState;
     };
