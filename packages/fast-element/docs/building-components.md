@@ -27,7 +27,7 @@ With this in place, you can now use your `name-tag` element anywhere in HTML wit
 
 > **IMPORTANT:** Web Component names must contain a `-`, in order to prevent future conflicts with built-in elements and to namespace components from different libraries. For more information on the basics of Web Components [see this set of articles](https://developers.google.com/web/fundamentals/web-components).
 
-We've got a basic web component in place, but it doesn't do much. So, let's add an attribute and make it render something. 
+We've got a basic Web Component in place, but it doesn't do much. So, let's add an attribute and make it render something. 
 
 **Example: Adding Attributes to a `FastElement`**
 
@@ -48,7 +48,7 @@ To add attributes to your HTML element, create properties decorated by the `@att
 
 > **NOTE:** All properties decorated with `@attr` are also *observable*. See the templating section below for information about how observables enable efficient rendering.
 
-By default, anything extending from `FastElement` will automatically have a *shadow root* attached in order to enable encapsulated rendering. The example above references the `shadowRoot` to set its `innerHTML` any time the `greeting` property changes.
+By default, anything extending from `FastElement` will automatically have a `ShadowRoot` attached in order to enable encapsulated rendering. The example above references the `shadowRoot` to set its `innerHTML` any time the `greeting` property changes.
 
 To see it in action, you can use the same HTML as above, or change the default `greeting` with the following:
 
@@ -125,7 +125,7 @@ export class NameTag extends FastElement {
 
 There are several important details in the above example, so let's break them down one-by-one.
 
-First we create a template by using a [tagged template literal](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals). The tag, `html`, provides special processing for the HTML string that follows, returning an instance of `HTMLTemplate`. Your templates can be *typed* to the data model that they are rendering over. In TypeScript, we simply provide the type as part of the tag: `html<NameTag>`.
+First, we create a template by using a [tagged template literal](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals). The tag, `html`, provides special processing for the HTML string that follows, returning an instance of `HTMLTemplate`. Your templates can be *typed* to the data model that they are rendering over. In TypeScript, we simply provide the type as part of the tag: `html<NameTag>`.
 
 Within a template, we provide *expressions* that declare the *dynamic parts* of our template. These expressions are declared with [arrow functions](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions). Because the template is typed, the input to your arrow function will be an instance of the data model you delcared in your `html` tag. When the `html` tag processes your template, it identifies these dynamic expressions and builds up an optimized model, capable of high-performance rendering, and efficient, incremental batched updates.
 
@@ -398,7 +398,7 @@ const template = html<FriendList>`
     <input type="text" value=${x => x.name} @input=${(x, c) => x.onNameChanged(c.event)}>
 
     ${when(x => x.name, html`
-      <div>Name: ${nameTemplate}</div>
+      <div>Next Name: ${nameTemplate}</div>
     `)}
     
     <div class="button-bar">
@@ -442,6 +442,8 @@ The arrow function expressions and directives allow the `fast-element` templatin
 When an expression is used within a template, the underlying engine uses a technique to capture which properties are accessed in that expression. With the list of properties captured, it then subscribes to changes in their values. Any time a value changes, a task is scheduled on the DOM update queue. When the queue is processed, all updates run as a batch, updating precisely the aspects of the DOM that have changed.
 
 To enable expression tracking and change notification, properties must be decorated with either `@attr` or `@observable`. These decorators are a means of meta-programming the properties on your class, such that they include all the implementation needed to support tracking and observation. You can access any property within your template, but if it hasn't been decorated with one of these two decorators, its value will not update after the initial render.
+
+> **IMPORTANT:** Properties with only a getter, that function as a computed property over other observables, should not be decoratored with `@attr` or `@observable`.
 
 In addition to observing properties, the templating system can also observe arrays. The `repeat` directive is able to efficient respond to array change records, updating the DOM based on changes in the collection.
 
@@ -679,7 +681,7 @@ Here are some events which do not compose and are only visible from within the S
 * `select`
 * `slotchange`
 
-To get the fully composed event path from an event object, invoke the `composedPath()` method on the event itself. This will return an array of targets representing the path through which the event bubbled. If your custom element uses "closed" Shadow DOM mode, targets within the Shadow DOM will not be present in the composed path, and it will appear as if the custom element itself was the first target.
+To get the fully composed event path from an event object, invoke the `composedPath()` method on the event itself. This will return an array of targets representing the path through which the event bubbled. If your custom element uses `closed` Shadow DOM mode, targets within the Shadow DOM will not be present in the composed path, and it will appear as if the custom element itself was the first target.
 
 #### Custom Events
 
@@ -860,7 +862,7 @@ Rather than simply concatenating CSS strings, the `css` helper understands that 
 You may have noticed the `:host` selector we used in our `name-tag` styles. This selector allows us to apply styles directly to our custom element. Here are a few things to consider always configuring for your host element:
 
 * **display** - By default, the `display` property of a custom element is `inline`, so consider whether you want your element's default display behavior to be different.
-* **contain** - If your element's painting is contained within its bounds, consider setting the CSS `contain` property to `content`. The right containment model can positively affect your element's performance. [See the the MDN docs](https://developer.mozilla.org/en-US/docs/web/css/contain) for more information on the various values of `contain` and what they do. 
+* **contain** - If your element's painting is contained within its bounds, consider setting the CSS `contain` property to `content`. The right containment model can positively affect your element's performance. [See the MDN docs](https://developer.mozilla.org/en-US/docs/web/css/contain) for more information on the various values of `contain` and what they do. 
 * **hidden** - In addition to a default `display` style, add support for `hidden` so that your default `display` does not override this state. This can be done with `:host([hidden]) { display: none }`.
 
 ### Slotted Content
