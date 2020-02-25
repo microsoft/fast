@@ -36,7 +36,7 @@ Typically it's best to include a selected and unselected message but it is not r
 
 <div>
     <label id="toggle-label">Toggle label</label>
-    <button role="switch" aria-checked="true" aria-labelledby="toggle-label" aria-describedby="status-message"/>
+    <button role="switch" aria-checked="true" aria-labelledby="toggle-label" aria-describedby="status-message">
         <!-- Status Indicator -->
         <span/>
     </button>
