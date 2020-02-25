@@ -25,7 +25,7 @@ With this in place, you can now use your `name-tag` element anywhere in HTML wit
 <name-tag></name-tag>
 ```
 
-> **IMPORTANT:** Web Component names must contain a `-`, in order to prevent future conflicts with built-in elements and to namespace components from different libraries. For more information on the basics of web components [see this set of articles](https://developers.google.com/web/fundamentals/web-components).
+> **IMPORTANT:** Web Component names must contain a `-`, in order to prevent future conflicts with built-in elements and to namespace components from different libraries. For more information on the basics of Web Components [see this set of articles](https://developers.google.com/web/fundamentals/web-components).
 
 We've got a basic web component in place, but it doesn't do much. So, let's add an attribute and make it render something. 
 
@@ -204,7 +204,7 @@ You can also use an expression to set a property on an HTML element. Simply plac
 
 #### Dynamic Attributes
 
-Most HTML attributes have a corresponding property on the HTML element itself, so the method of property binding described above will be the most common mechanism used. However, there are some scenarios, such as with [ARIA attributes](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA), where there is no corresponding element property. For these scenarios, prepend a `$` to the attribute name, and the value will be set with the `setAttribute` API instead of through a property. Additionally, some attributes are known as [boolean attributes](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes#Boolean_Attributes)  (e.g. required, readonly, disabled). These attributes behave differently form normal attributes, and need special value handling. The templating engine will handle this for you if you prepend the attribute name with a `?`.
+Most HTML attributes have a corresponding property on the HTML element itself, so the method of property binding described above will be the most common mechanism used. However, there are some scenarios, such as with [ARIA attributes](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA), where there is no corresponding element property. For these scenarios, prepend a `$` to the attribute name, and the value will be set with the `setAttribute` API instead of through a property. Additionally, some attributes are known as [boolean attributes](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes#Boolean_Attributes)  (e.g. required, readonly, disabled). These attributes behave differently from normal attributes, and need special value handling. The templating engine will handle this for you if you prepend the attribute name with a `?`.
 
 **Example: ARIA Attributes**
 
@@ -823,7 +823,7 @@ export class NameTag extends FastElement {
 }
 ```
 
-Using the `css` helper, we're able to create a `CSSRegistry`, which is a special type that `FastElement` understands. We add this registry to the element's `dependencies` array, indicating that the element is dependent on the CSS. Internally, the registry will leverage [Constructable Stylesheet Objects](https://wicg.github.io/construct-stylesheets/) and `ShadowRoot#adoptedStyleSheets` to efficienly re-use CSS across components. This means that even if we have 1k instances of our `name-tag` component, they will all share a single instane of the associated styles, allowing for reduced memory allocation and improved performance.
+Using the `css` helper, we're able to create a `CSSRegistry`, which is a special type that `FastElement` understands. We add this registry to the element's `dependencies` array, indicating that the element is dependent on the CSS. Internally, the registry will leverage [Constructable Stylesheet Objects](https://wicg.github.io/construct-stylesheets/) and `ShadowRoot#adoptedStyleSheets` to efficiently re-use CSS across components. This means that even if we have 1k instances of our `name-tag` component, they will all share a single instance of the associated styles, allowing for reduced memory allocation and improved performance. Because the styles are associated with the `ShadowRoot`, they will also be encapsulated. This ensures that your styles don't affect other elements and other element styles don't affect your element.
 
 > **NOTE:** We've used [CSS Custom Properties](https://developer.mozilla.org/en-US/docs/Web/CSS/--*) throughout our CSS as well as [CSS Calc](https://developer.mozilla.org/en-US/docs/Web/CSS/calc) in order to enable our component to be styled in basic ways by consumers. Additionally, consider adding [CSS Shadow Parts](https://developer.mozilla.org/en-US/docs/Web/CSS/::part) to your template, to enable even more powerful customization.
 
@@ -893,4 +893,4 @@ const styles = css`
 
 ## Wrapping Up
 
-We've seen how to use `FastElement` to declaratively build web components. In addition to the basics of element and attribute definition, `FastElement` also provides a way to declare templates capable of high-performance rendering, and efficient, incremental batched updates. Finally, CSS can easily be associated with an element in a way that leverages core platform optimizations for performance and low memory allocation.
+We've seen how to use `FastElement` to declaratively build Web Components. In addition to the basics of element and attribute definition, `FastElement` also provides a way to declare templates capable of high-performance rendering, and efficient, incremental batched updates. Finally, CSS can easily be associated with an element in a way that leverages core platform optimizations for performance and low memory allocation.
