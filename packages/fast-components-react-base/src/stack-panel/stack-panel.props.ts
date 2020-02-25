@@ -49,21 +49,6 @@ export interface StackPanelHandledProps extends StackPanelManagedClasses {
     ) => void;
 
     /**
-     * When the component scrolls focused content into view how many pixels should the next item "peek" into view
-     */
-    nextItemPeek?: number;
-
-    /**
-     * Whether to enable smooth scrolling
-     */
-    enableSmoothScrolling?: boolean;
-
-    /**
-     * The duration the scroll movement should last
-     */
-    scrollDuration?: number;
-
-    /**
      * The index of the item initially in view
      */
     initiallyVisibleItemIndex?: number;
