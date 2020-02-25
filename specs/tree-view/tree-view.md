@@ -22,11 +22,11 @@ Primarily used to present a hierarchical list such as a file system. A tree view
 - **Selection:** A tree view can support either single select or multi-select behavior for nodes. **I would propose that for the initial spec we start with supporting single select only.*
 
 
-- **Drag & Drop support:** Often, as is in the case of a "file system" example, drag and drop support is desired
+- **Drag & Drop support:** Often, as is in the case of a "file system" example, drag and drop support is desired. This does present [challenges](#drag-&-drop).
 
 ### Risks and Challenges
 
-**Nesting**:
+#### Nesting:
 
 Infinite nesting combined with the current visual design presents a styling challenge. Consider a scenario where we have the following tree in pseudo code:
 ```html
@@ -43,7 +43,7 @@ Infinite nesting combined with the current visual design presents a styling chal
 ```
 In this scenario, there is no root node with an expand/collapse glyph. The third item in the tree view is a parent node, which *would* have an expand/collapse glyph to the right. To ensure that the content of the parent node align with the rest of the root nodes, the entire tree will need to visually shift to ensure alignmnet of the tree content. This presents an interesting challenge for how we will communicate these changes to the parent to ensure the styling is appropriately applied. Ultimately, the parent just needs to know that *one* of the items below has child nodes.
 
-**Drag & Drop**
+#### Drag & Drop
 
 Drag & Drop support poses a unique set of challenges, especially if our goal is to provide out of the box support via the [HTML Drag and Drop API](https://developer.mozilla.org/en-US/docs/Web/API/HTML_Drag_and_Drop_API). Alternatively, those using our components with React, Vue, Angular, etc may want to use libraries built to work with their specific framework flavor. 
 
