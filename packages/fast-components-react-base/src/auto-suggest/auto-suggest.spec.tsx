@@ -233,6 +233,25 @@ describe("auto suggest", (): void => {
         expect(listbox.prop("id")).toBe("listboxId");
     });
 
+    test("menu should close when the component loses focus", (): void => {
+        const rendered: any = mount(
+            <AutoSuggest listboxId="listboxId">
+                {itemA}
+                {itemB}
+                {itemC}
+            </AutoSuggest>
+        );
+
+        // const autoSuggest: any = rendered.find(AutoSuggest.displayName);
+        expect(rendered.state("isMenuOpen")).toBe(false);
+        const input: any = rendered.find("input");
+        input.simulate("click");
+        expect(rendered.state("isMenuOpen")).toBe(true);
+
+        input.simulate("blur");
+        expect(rendered.state("isMenuOpen")).toBe(false);
+    });
+
     test("arrow keys properly traverse the listbox and input region and cause focus and value to changes appropriately", (): void => {
         const container: HTMLDivElement = document.createElement("div");
         document.body.appendChild(container);

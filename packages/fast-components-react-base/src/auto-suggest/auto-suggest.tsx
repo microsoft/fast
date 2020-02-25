@@ -128,6 +128,7 @@ class AutoSuggest extends Foundation<
             <div
                 {...this.unhandledProps()}
                 ref={this.rootElement}
+                onBlurCapture={this.handleBlurCapture}
                 className={this.generateClassNames()}
             >
                 <AutoSuggestContext.Provider
@@ -281,6 +282,20 @@ class AutoSuggest extends Foundation<
                 aria-controls={listboxId || null}
             />
         );
+    };
+
+    /**
+     * Handle blur events
+     */
+    private handleBlurCapture = (event: React.FocusEvent): void => {
+        if (
+            this.state.isMenuOpen &&
+            this.rootElement.current !== null &&
+            !this.rootElement.current.contains(event.relatedTarget as Element)
+        ) {
+            // close the menu when focus moves out of the component
+            this.toggleMenu(false);
+        }
     };
 
     /**
