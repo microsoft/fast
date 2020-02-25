@@ -648,7 +648,49 @@ In addition to the declarative means of using slots described so far, the browse
 
 ### Events
 
+Events originating from within the Shadow DOM appear as if they originated from the custom element itself. In order for an event to propagate from within the Shadow DOM, it must be dispatched with the `composed: true` option. The following is a list of built-in events that compose:
+
+* `blur`, `focus`, `focusin`, `focusout`
+* `click`, `dblclick`, `mousedown`, `mouseenter`, `mousemove`, etc.
+* `wheel`
+* `beforeinput`, `input`
+* `keydown`, `keyup`
+* `compositionstart`, `compositionupdate`, `compositionend`
+* `dragstart`, `drag`, `dragend`, `drop`, etc.
+
+Here are some events which do not compose and are only visible from within the Shadow DOM itself:
+
+* `mouseenter`, `mouseleave`
+* `load`, `unload`, `abort`, `error`
+* `select`
+* `slotchange`
+
+To get the fully composed event path from an event object, invoke the `composedPath()` method on the event itself. This will return an array of targets representing the path through which the event bubbled. If your custom element uses "closed" Shadow DOM mode, targets within the Shadow DOM will not be present in the composed path, and it will appear as if the custom element itself was the first target.
+
+#### Custom Events
+
+In various scenarios, it may be appropriate for a custom element to publish its own element-specific events. To do this, create an instance of `CustomEvent` and use the `dispatchEvent` API on `FastElement`. Set the `bubbles: true` option if you want the event to bubble and `composed: true` if you want it to propagate outside of your Shadow DOM and be visible in the composed path.
+
+**Example 1: Custom Event Dispatch**
+
+```TypeScript
+customElement('my-input')
+export class MyInput extends FastElement {
+  @attr value: string = '';
+
+  valueChanged() {
+    this.dispatchEvent(new CustomEvent('change', {
+      bubbles: true,
+      composed: true,
+      detail: this.value
+    }));
+  }
+}
+```
+
 ### Shadow DOM Configuration
+
+TODO
 
 ## Defining CSS
 
