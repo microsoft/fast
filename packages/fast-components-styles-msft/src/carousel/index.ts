@@ -27,30 +27,30 @@ import {
 
 const white: string = "#FFF";
 const black: string = "#101010";
-const darkModeNeutralForegroundRest: DesignSystemResolver<string> = neutralForegroundRest(
-    (): string => black
-);
-const lightModeNeutralForegroundRest: DesignSystemResolver<
+const themeDarkNeutralForegroundRest: DesignSystemResolver<
+    string
+> = neutralForegroundRest((): string => black);
+const themeLightNeutralForegroundRest: DesignSystemResolver<
     string
 > = neutralForegroundRest((): string => white);
-const darkModeNeutralFillStealthRest: DesignSystemResolver<
+const themeDarkNeutralFillStealthRest: DesignSystemResolver<
     string
 > = neutralFillStealthRest((): string => black);
-const lightModeNeutralFillStealthRest: DesignSystemResolver<
+const themeLightNeutralFillStealthRest: DesignSystemResolver<
     string
 > = neutralFillStealthRest((): string => white);
 
-const darkModeNeutralOutlineRest: DesignSystemResolver<string> = neutralOutlineRest(
+const themeDarkNeutralOutlineRest: DesignSystemResolver<string> = neutralOutlineRest(
     (): string => black
 );
-const lightModeNeutralOutlineRest: DesignSystemResolver<string> = neutralOutlineRest(
+const themeLightNeutralOutlineRest: DesignSystemResolver<string> = neutralOutlineRest(
     (): string => white
 );
 
-const darkModeNneutralFocus: DesignSystemResolver<string> = neutralFocus(
+const themeDarkNeutralFocus: DesignSystemResolver<string> = neutralFocus(
     (): string => black
 );
-const lightModeNneutralFocus: DesignSystemResolver<string> = neutralFocus(
+const themeLightNeutralFocus: DesignSystemResolver<string> = neutralFocus(
     (): string => white
 );
 
@@ -157,18 +157,18 @@ const styles: ComponentStyles<CarouselClassNameContract, DesignSystem> = {
     carousel__themeDark: {
         "& $carousel_flipperPrevious, & $carousel_flipperNext": {
             "&::before": {
-                color: darkModeNeutralForegroundRest,
-                fill: darkModeNeutralForegroundRest,
-                background: darkModeNeutralFillStealthRest,
+                color: themeDarkNeutralForegroundRest,
+                fill: themeDarkNeutralForegroundRest,
+                background: themeDarkNeutralFillStealthRest,
                 border: format(
                     "{0} solid {1}",
                     toPx<DesignSystem>(outlineWidth),
-                    darkModeNeutralOutlineRest
+                    themeDarkNeutralOutlineRest
                 ),
                 ...highContrastColorBackground,
             },
             "& span::before": {
-                "border-color": darkModeNeutralForegroundRest,
+                "border-color": themeDarkNeutralForegroundRest,
             },
             "&:hover": {
                 "&::before": {
@@ -183,11 +183,11 @@ const styles: ComponentStyles<CarouselClassNameContract, DesignSystem> = {
                     },
                 },
                 "& span::before": {
-                    "border-color": darkModeNeutralForegroundRest,
+                    "border-color": themeDarkNeutralForegroundRest,
                 },
             },
             "& > svg": {
-                fill: darkModeNeutralForegroundRest,
+                fill: themeDarkNeutralForegroundRest,
                 ...highContrastForeground,
             },
             [highContrastSelector]: {
@@ -196,20 +196,17 @@ const styles: ComponentStyles<CarouselClassNameContract, DesignSystem> = {
         },
         "& $carousel_sequenceIndicator": {
             "&::before": {
-                background: darkModeNeutralFillStealthRest,
-                "border-color": darkModeNeutralOutlineRest,
+                background: themeDarkNeutralFillStealthRest,
+                "border-color": themeDarkNeutralOutlineRest,
                 ...highContrastButtonColorIndicator,
             },
             "&::after": {
-                "border-color": darkModeNneutralFocus,
+                "border-color": themeDarkNeutralFocus,
             },
             "&$carousel_sequenceIndicator__active": {
                 "&::before": {
-                    background: darkModeNeutralFillStealthRest,
+                    background: themeDarkNeutralFillStealthRest,
                     ...highContrastHighlightColorIndicator,
-                },
-                "&::after": {
-                    "border-color": darkModeNneutralFocus,
                 },
             },
         },
@@ -217,18 +214,18 @@ const styles: ComponentStyles<CarouselClassNameContract, DesignSystem> = {
     carousel__themeLight: {
         "& $carousel_flipperPrevious, & $carousel_flipperNext": {
             "&::before": {
-                color: lightModeNeutralForegroundRest,
-                fill: lightModeNeutralForegroundRest,
-                background: lightModeNeutralFillStealthRest,
+                color: themeLightNeutralForegroundRest,
+                fill: themeLightNeutralForegroundRest,
+                background: themeLightNeutralFillStealthRest,
                 border: format(
                     "{0} solid {1}",
                     toPx<DesignSystem>(outlineWidth),
-                    lightModeNeutralOutlineRest
+                    themeLightNeutralOutlineRest
                 ),
                 ...highContrastColorBackground,
             },
             "& span::before": {
-                "border-color": lightModeNeutralForegroundRest,
+                "border-color": themeLightNeutralForegroundRest,
             },
             "&:hover": {
                 "&::before": {
@@ -243,11 +240,11 @@ const styles: ComponentStyles<CarouselClassNameContract, DesignSystem> = {
                     },
                 },
                 "& span::before": {
-                    "border-color": lightModeNeutralForegroundRest,
+                    "border-color": themeLightNeutralForegroundRest,
                 },
             },
             "& > svg": {
-                fill: lightModeNeutralForegroundRest,
+                fill: themeLightNeutralForegroundRest,
                 ...highContrastForeground,
             },
             [highContrastSelector]: {
@@ -256,20 +253,17 @@ const styles: ComponentStyles<CarouselClassNameContract, DesignSystem> = {
         },
         "& $carousel_sequenceIndicator": {
             "&::before": {
-                background: lightModeNeutralFillStealthRest,
-                "border-color": lightModeNeutralOutlineRest,
+                background: themeLightNeutralFillStealthRest,
+                "border-color": themeLightNeutralOutlineRest,
                 ...highContrastButtonColorIndicator,
             },
             "&::after": {
-                "border-color": lightModeNneutralFocus,
+                "border-color": themeLightNeutralFocus,
             },
             "&$carousel_sequenceIndicator__active": {
                 "&::before": {
-                    background: lightModeNeutralFillStealthRest,
+                    background: themeLightNeutralFillStealthRest,
                     ...highContrastHighlightColorIndicator,
-                },
-                "&::after": {
-                    "border-color": lightModeNneutralFocus,
                 },
             },
         },
