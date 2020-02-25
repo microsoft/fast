@@ -277,20 +277,6 @@ storiesOf("Stack Panel", module)
             {verticalImages}
         </StackPanel>
     ))
-    .add("Disable smooth scrolling", () => (
-        <StackPanel
-            enableSmoothScrolling={false}
-            itemSpan={itemSpans}
-            neverVirtualizeIndexes={[0, 11]}
-            style={{
-                width: "117px",
-                height: "400px",
-                overflowY: "scroll",
-            }}
-        >
-            {verticalImages}
-        </StackPanel>
-    ))
     .add("Initially visible item set", () => (
         <StackPanel
             itemSpan={100}
