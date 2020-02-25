@@ -6,6 +6,8 @@ The `fast-element` library is a lightweight solution for easily building perform
 
 To define a custom element, begin by creating a class that extends `FastElement` and decorate it with the `@customElement` decorator, providing the element name.
 
+**Example: A Basic `FastElement` Definition**
+
 ```TypeScript
 import { FastElement, customElement } from '@microsoft/fast-element';
 
@@ -17,6 +19,8 @@ export class NameTag extends FastElement {
 
 With this in place, you can now use your `name-tag` element anywhere in HTML with the following markup:
 
+**Example: Using a Web Component**
+
 ```HTML
 <name-tag></name-tag>
 ```
@@ -24,6 +28,8 @@ With this in place, you can now use your `name-tag` element anywhere in HTML wit
 > **IMPORTANT:** Web Component names must contain a `-`, in order to prevent future conflicts with built-in elements and to namespace components from different libraries. For more information on the basics of web components [see this set of articles](https://developers.google.com/web/fundamentals/web-components).
 
 We've got a basic web component in place, but it doesn't do much. So, let's add an attribute and make it render something. 
+
+**Example: Adding Attributes to a `FastElement`**
 
 ```TypeScript
 import { FastElement, customElement, attr } from '@microsoft/fast-element';
@@ -46,6 +52,8 @@ By default, anything extending from `FastElement` will automatically have a *sha
 
 To see it in action, you can use the same HTML as above, or change the default `greeting` with the following:
 
+**Example: Using a Web Component with Attributes**
+
 ```HTML
 <name-tag greeting="Hola"></name-tag>
 ```
@@ -53,6 +61,8 @@ To see it in action, you can use the same HTML as above, or change the default `
 ### The Element Lifecycle
 
 All Web Components support a series of lifecycle events that you can tap into to execute custom code at specific points in time. `FastElement` implements several of these callbacks automatically, in order to enable features of its templating engine (described below). However, you can override them to provide your own code. Here's an example of how you would execute custom code when your element is inserted into the DOM.
+
+**Example: Tapping into the Custom Element Lifecycle**
 
 ```TypeScript
 import { FastElement, customElement, attr } from '@microsoft/fast-element';
@@ -87,6 +97,8 @@ The full list of available lifecyle callbacks is:
 While you can create and update nodes in the Shadow DOM manually, `FastElement` provides a streamlined templating system for the most common rendering scenarios. To create an HTML template for an element, import and use the `html` tagged template helper and pass the template to the `@customElement` decorator.
 
 Here's how we would add a template for our `name-tag` component that renders some basic structure as well as our `greeting`:
+
+**Example: Adding a Template to a `FastElement`**
 
 ```TypeScript
 import { FastElement, customElement, attr, html } from '@microsoft/fast-element';
@@ -129,19 +141,19 @@ We've seen how arrow functions can be used to declare dynamic parts of templates
 
 To bind the content of an element, simply provide the expression within the start and end tags of the element. It can be the sole content of the element, or interwoven with other elements and text.
 
-**Example 1: Basic Text Content**
+**Example: Basic Text Content**
 
 ```HTML
 <h3>${x => x.greeting.toUpperCase()}</h3>
 ```
 
-**Example 2: Interpolated Text Content**
+**Example: Interpolated Text Content**
 
 ```HTML
 <h3>${x => x.greeting}, my name is ${x => x.name}.</h3>
 ```
 
-**Example 3: Heterogeneous Content**
+**Example: Heterogeneous Content**
 
 ```HTML
 <h3>
@@ -156,13 +168,13 @@ To bind the content of an element, simply provide the expression within the star
 
 You can also use an expression to set a property on an HTML element. Simply place the expression where the value of the HTML attribute would normal go. The template engine will map your attribute to the element's property and set it with the value of your expression.
 
-**Example 1: Basic Property Values**
+**Example: Basic Property Values**
 
 ```HTML
 <a href=${x => x.aboutLink}>About</a>
 ```
 
-**Example 2: Interpolated Property Values**
+**Example: Interpolated Property Values**
 
 ```HTML
 <a href="products/${x => x.id}">
@@ -182,7 +194,7 @@ You can also use an expression to set a property on an HTML element. Simply plac
 </span>
 ```
 
-**Example 3: Inner HTML**
+**Example: Inner HTML**
 
 ```HTML
 <div innerhtml=${x => sanitize(x.someDangerousHTMLContent)}></div>
@@ -194,7 +206,7 @@ You can also use an expression to set a property on an HTML element. Simply plac
 
 Most HTML attributes have a corresponding property on the HTML element itself, so the method of property binding described above will be the most common mechanism used. However, there are some scenarios, such as with [ARIA attributes](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA), where there is no corresponding element property. For these scenarios, prepend a `$` to the attribute name, and the value will be set with the `setAttribute` API instead of through a property. Additionally, some attributes are known as [boolean attributes](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes#Boolean_Attributes)  (e.g. required, readonly, disabled). These attributes behave differently form normal attributes, and need special value handling. The templating engine will handle this for you if you prepend the attribute name with a `?`.
 
-**Example 1: ARIA Attributes**
+**Example: ARIA Attributes**
 
 ```HTML
 <div role="progressbar"
@@ -204,7 +216,7 @@ Most HTML attributes have a corresponding property on the HTML element itself, s
 </div>
 ```
 
-**Example 2: Boolean Attributes**
+**Example: Boolean Attributes**
 
 ```HTML
 <button type="submit" ?disabled="${x => !x.enabled}">Submit</button>
@@ -214,13 +226,13 @@ Most HTML attributes have a corresponding property on the HTML element itself, s
 
 Besides rendering content, properties, and attributes, you'll often want to add event listeners and execute code when events fire. To do that, prepend the event name with `@` and provide the expression to be called when that event fires. Within an event expression, you also have access to a special *context* argument from which you can access the event args.
 
-**Example 1: Basic Events**
+**Example: Basic Events**
 
 ```HTML
 <button @click="${x => x.remove()}">Remove</button>
 ```
 
-**Example 2: Accessing Event Details**
+**Example: Accessing Event Details**
 
 ```HTML
 <input type="text"
@@ -238,7 +250,7 @@ In addition to declaring dynamic parts of templates with expressions, you also h
 
 Sometimes you need a direct reference to a DOM node from your template. This might be because you want to control playback of a `video` element, use the drawing context of a `canvas` element, or pass an element to a 3rd party library. Whatever the reason, you can get a reference to the DOM node by using the `ref` directive.
 
-**Example 1: Referencing an Element**
+**Example: Referencing an Element**
 
 ```TypeScript
 import { FastElement, customElement, attr, html } from '@microsoft/fast-element';
@@ -273,7 +285,7 @@ Place the `ref` directive on the element you want to reference and provide it wi
 
 The `when` directive enables you to conditionally render blocks of HTML. When you provide an expression to `when` it will render the child template into the DOM when the expression evaluates to `true` and remove the child template when it evaluates to `false` (or if it is never `true`, the rendering will be skipped entirely).
 
-**Example 1: Conditional Rendering**
+**Example: Conditional Rendering**
 
 ```TypeScript
 import { FastElement, customElement, observable, html } from '@microsoft/fast-element';
@@ -313,7 +325,7 @@ export class MyApp extends FastElement {
 
 To render a list of data, use the `repeat` directive, providing the list to render and a template to use in rendering each item.
 
-**Example 1: List Rendering**
+**Example: List Rendering**
 
 ```TypeScript
 import { FastElement, customElement, observable, html } from '@microsoft/fast-element';
@@ -360,7 +372,7 @@ export class FriendList extends FastElement {
 
 The `HTMLTemplate` returned from the `html` tag helper is also a directive itself. As a result, you can create templates and compose them into other templates.
 
-**Example 1: Composing Templates**
+**Example: Composing Templates**
 
 ```TypeScript
 import { FastElement, customElement, observable, html } from '@microsoft/fast-element';
@@ -459,6 +471,8 @@ To enable composition, `FastElement` leverages the Shadow DOM standard. Previous
 
 Let's return to our original `name-tag` element example and see how we can use a `slot` to compose the person's name.
 
+**Example: Using Slots in a `FastElement`**
+
 ```TypeScript
 import { FastElement, customElement, attr, html } from '@microsoft/fast-element';
 
@@ -488,13 +502,13 @@ Inside the body `div`, we've placed a `slot` element. This is referred to as the
 
 To make this clear, let's look at how the `name-tag` element would be used with content and then see how the browser would composite the final rendered output.
 
-**Example 1: Using `name-tag` with a default slot**
+**Example: Using `name-tag` with a Default Slot**
 
 ```HTML
 <name-tag>John Doe<name-tag>
 ```
 
-**Example 2: Rendered Output for `name-tag` with a  default slot**
+**Example: Rendered Output for `name-tag` with a  Default Slot**
 
 ```HTML
 <name-tag>
@@ -524,7 +538,7 @@ With slots at our disposal, we now unlock the full compositional model of HTML f
 
 In the example above, we use a single `slot` element to render *all* content placed between the start and end tags of the `name-tag`. However, we're not limited to only having a default slot. We can also have *named slots* that declare other locations to which we can render content. To demonstrate this, let's add a named slot to our `name-tag`'s template where we can display the person's avatar.
 
-**Example 1: `name-tag` with a named slot**
+**Example: `name-tag` with a Named Slot**
 
 ```TypeScript
 import { FastElement, customElement, attr, html } from '@microsoft/fast-element';
@@ -552,7 +566,7 @@ export class NameTag extends FastElement {
 }
 ```
 
-**Example 2: Using `name-tag` with a named slot**
+**Example: Using `name-tag` with a Named Slot**
 
 ```HTML
 <name-tag>
@@ -561,7 +575,7 @@ export class NameTag extends FastElement {
 </name-tag>
 ```
 
-**Example 3: Rendered Output for `name-tag` with a named slot**
+**Example: Rendered Output for `name-tag` with a Named Slot**
 
 ```HTML
 <name-tag>
@@ -622,7 +636,7 @@ Here are a couple of quick notes on slots:
 
 There are several scenarios for using slots in your elements. So far, we've been showing how to use slots for content projection. However, another major use case is to enable various parts of your element's rendering to be replaced by the software using your element. To enable this, you can provide *fallback content* for any slot. This content will render if the element consumer provides no content for that slot, but if they do, their own content will override the fallback content.
 
-**Example 1: Fallback slot content**
+**Example: Fallback Slot Content**
 
 ```HTML
 <div class="my-slider-template">
@@ -671,7 +685,7 @@ To get the fully composed event path from an event object, invoke the `composedP
 
 In various scenarios, it may be appropriate for a custom element to publish its own element-specific events. To do this, create an instance of `CustomEvent` and use the `dispatchEvent` API on `FastElement`. Set the `bubbles: true` option if you want the event to bubble and `composed: true` if you want it to propagate outside of your Shadow DOM and be visible in the composed path.
 
-**Example 1: Custom Event Dispatch**
+**Example: Custom Event Dispatch**
 
 ```TypeScript
 customElement('my-input')
@@ -692,7 +706,7 @@ export class MyInput extends FastElement {
 
 In all the examples we've seen so far `FastElement` automatically creates a Shadow Root for your element and attaches it in `open` mode. However, if desired, you can specify `closed` mode or make the element render into the Light DOM instead. These choices can be made by using the `shadowOptions` setting with your `@customElement` decorator.
 
-**Example 1: Shadow DOM in Closed Mode**
+**Example: Shadow DOM in Closed Mode**
 
 ```TypeScript
 @customElement({
@@ -707,7 +721,7 @@ export class NameTag extends FastElement {
 
 > **TIP:** Avoid using `closed` mode since it affects event propagation and makes custom elements less inspectable.
 
-**Example 2: Render to Light DOM**
+**Example: Render to Light DOM**
 
 ```TypeScript
 @customElement({
@@ -728,7 +742,7 @@ In addition to the Shadow DOM mode, `shadowOptions` exposes all the options that
 
 The final piece of our component story is CSS. Similar to HTML, `FastElement` provides a `css` tagged template helper to allow creating and re-using CSS. Let's add some CSS for our `name-tag` component.
 
-**Example 1: CSS for the NameTag Component
+**Example: Adding CSS to a `FastElement`**
 
 ```TypeScript
 import { html, css, customElement, attr, FastElement } from "@microsoft/fast-element";
@@ -810,9 +824,33 @@ Using the `css` helper, we're able to create a `CSSRegistry`, which is a special
 
 ### Composing Styles
 
+One of the nice features of a `CSSRegistry` is that it can be composed with other registries. Imagine that we had a CSS normalize registry that we wanted to use in our `name-tag` component. We could compose that into our styles like this:
+
+**Example: Composing CSS Registries**
+
+```TypeScript
+import { normalize } from './normalize';
+
+const styles = css`
+  ${normalize}
+  :host {
+    display: inline-block;
+    color: white;
+    background: var(--background-color);
+    border-radius: var(--border-radius);
+    min-width: 325px;
+    text-align: center;
+    box-shadow: 0 0 calc(var(--depth) * 1px) rgba(0,0,0,.5);
+  }
+
+  ...
+`;
+```
+
+Rather than simply concatenating CSS strings, the `css` helper understands that `normalize` is a registry and is able to re-use the same Constructable StyleSheet instance as any other component that uses `normalize`. 
+
 ### Shadow DOM Styling
 
   - :host
   - ::slotted()
   - CSS contain
-- CSS properties
