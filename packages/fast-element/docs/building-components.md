@@ -1,6 +1,6 @@
 # Building Components
 
-The `fast-element` library is a lightweight solution for easily building performant, memory-efficient, standards-compliant Web Components. FAST Elements work in every major browser and can be used in combination with any front-end framework or even without a framework.
+The `fast-element` library is a lightweight means to easily building performant, memory-efficient, standards-compliant Web Components. FAST Elements work in every major browser and can be used in combination with any front-end framework or even without a framework.
 
 ## Defining an Element
 
@@ -764,12 +764,17 @@ const template = html<NameTag>`
 const styles = css`
   :host {
     display: inline-block;
+    contain: content;
     color: white;
     background: var(--background-color);
     border-radius: var(--border-radius);
     min-width: 325px;
     text-align: center;
     box-shadow: 0 0 calc(var(--depth) * 1px) rgba(0,0,0,.5);
+  }
+
+  :host([hidden]) { 
+    display: none;
   }
 
   .header {
@@ -820,7 +825,7 @@ export class NameTag extends FastElement {
 
 Using the `css` helper, we're able to create a `CSSRegistry`, which is a special type that `FastElement` understands. We add this registry to the element's `dependencies` array, indicating that the element is dependent on the CSS. Internally, the registry will leverage [Constructable Stylesheet Objects](https://wicg.github.io/construct-stylesheets/) and `ShadowRoot#adoptedStyleSheets` to efficienly re-use CSS across components. This means that even if we have 1k instances of our `name-tag` component, they will all share a single instane of the associated styles, allowing for reduced memory allocation and improved performance.
 
-> **Note:** We've used [CSS Custom Properties](https://developer.mozilla.org/en-US/docs/Web/CSS/--*) throughout our CSS as well as [CSS Calc](https://developer.mozilla.org/en-US/docs/Web/CSS/calc) in order to enable our component to be styled in basic ways by consumers. Additionally, consider adding [CSS Shadow Parts](https://developer.mozilla.org/en-US/docs/Web/CSS/::part) to your template, to enable even more powerful customization.
+> **NOTE:** We've used [CSS Custom Properties](https://developer.mozilla.org/en-US/docs/Web/CSS/--*) throughout our CSS as well as [CSS Calc](https://developer.mozilla.org/en-US/docs/Web/CSS/calc) in order to enable our component to be styled in basic ways by consumers. Additionally, consider adding [CSS Shadow Parts](https://developer.mozilla.org/en-US/docs/Web/CSS/::part) to your template, to enable even more powerful customization.
 
 ### Composing Styles
 
@@ -835,6 +840,7 @@ const styles = css`
   ${normalize}
   :host {
     display: inline-block;
+    contain: content;
     color: white;
     background: var(--background-color);
     border-radius: var(--border-radius);
@@ -851,6 +857,40 @@ Rather than simply concatenating CSS strings, the `css` helper understands that 
 
 ### Shadow DOM Styling
 
-  - :host
-  - ::slotted()
-  - CSS contain
+You may have noticed the `:host` selector we used in our `name-tag` styles. This selector allows us to apply styles directly to our custom element. Here are a few things to consider always configuring for your host element:
+
+* **display** - By default, the `display` property of a custom element is `inline`, so consider whether you want your element's default display behavior to be different.
+* **contain** - If your element's painting is contained within its bounds, consider setting the CSS `contain` property to `content`. The right containment model can positively affect your element's performance. [See the the MDN docs](https://developer.mozilla.org/en-US/docs/web/css/contain) for more information on the various values of `contain` and what they do. 
+* **hidden** - In addition to a default `display` style, add support for `hidden` so that your default `display` does not override this state. This can be done with `:host([hidden]) { display: none }`.
+
+### Slotted Content
+
+In addition to providing host styles, you can also provide default styles for content that gets slotted. For example, if we wanted to style all `img` elements that were slotted into our `name-tag`, we could do it like this:
+
+**Example: Slotted Styles**
+
+```TypeScript
+import { normalize } from './normalize';
+
+const styles = css`
+  ...
+
+  ::slotted(img) {
+    border-radius: 50%;
+    height: 64px;
+    width: 64px;
+    box-shadow: 0 0 calc(var(--depth) / 2px) rgba(0,0,0,.5);
+    position: absolute;
+    left: 16px;
+    top: -4px;
+  }
+
+  ...
+`;
+```
+
+> **NOTE:** Both slotted and host styles can be overriden by the element user. Think of these as the *default* styles that you are providing, so that your elements look and function correctly out-of-the-box.
+
+## Wrapping Up
+
+We've seen how to use `FastElement` to declaratively build web components. In addition to the basics of element and attribute definition, `FastElement` also provides a way to declare templates capable of high-performance rendering, and efficient, incremental batched updates. Finally, CSS can easily be associated with an element in a way that leverages core platform optimizations for performance and low memory allocation.
