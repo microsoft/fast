@@ -202,20 +202,6 @@ describe("stack panel", (): void => {
         (window as WindowWithResizeObserver).ResizeObserver = ActualObserver;
     });
 
-    test("updateScrollAnimation marks scrollAnimating as complete when time reaches duration", (): void => {
-        const rendered: any = mount(<StackPanel>{sampleStackPanelItems}</StackPanel>);
-
-        let currentTime: number = new Date().getTime();
-        rendered.instance().currentScrollAnimStartTime = currentTime;
-        rendered.instance().isScrollAnimating = true;
-        const targetDelayTime: number = currentTime + 500;
-        while (currentTime < targetDelayTime) {
-            currentTime = new Date().getTime();
-        }
-        rendered.instance()["updateScrollAnimation"]();
-        expect(rendered.instance().isScrollAnimating).toEqual(false);
-    });
-
     test("getDirection should return direction value when the ltr prop is passed", (): void => {
         const rendered: any = mount(
             <StackPanel dir="ltr" orientation={Orientation.horizontal}>
@@ -243,36 +229,8 @@ describe("stack panel", (): void => {
         rendered.instance().rootElement.current = null;
         expect(rendered.instance()["getDirection"]()).toEqual("ltr");
     });
-    test("should ease the animation when moving the scroll position", () => {
-        const rendered: any = mount(<StackPanel>{sampleStackPanelItems}</StackPanel>);
 
-        expect(rendered.instance()["easeInOutQuad"](1, 0, 0.5, 50)).toBe(0.0004);
-    });
-    test("should ease the animation when at animation start time", () => {
-        const rendered: any = mount(<StackPanel>{sampleStackPanelItems}</StackPanel>);
-
-        expect(rendered.instance()["easeInOutQuad"](0, 0, 0.5, 50)).toBe(0);
-    });
-    test("should ease the animation when at animation end time", () => {
-        const rendered: any = mount(<StackPanel>{sampleStackPanelItems}</StackPanel>);
-
-        expect(rendered.instance()["easeInOutQuad"](50, 0, 0.5, 50)).toBe(0.5);
-    });
-    test("should ease the animation when moving the scroll position", () => {
-        const rendered: any = mount(<StackPanel>{sampleStackPanelItems}</StackPanel>);
-
-        expect(rendered.instance()["easeInOutQuad"](1, 0, 0.5, 50)).toBe(0.0004);
-    });
-    test("getScrollAnimationPosition returns expected start and end values", () => {
-        const rendered: any = mount(<StackPanel>{sampleStackPanelItems}</StackPanel>);
-
-        rendered.instance().currentScrollAnimStartPosition = 0;
-        rendered.instance().currentScrollAnimEndPosition = 100;
-
-        expect(rendered.instance()["getScrollAnimationPosition"](0, 1000)).toBe(0);
-        expect(rendered.instance()["getScrollAnimationPosition"](1000, 1000)).toBe(100);
-    });
-    test("settting and getting scroll position returns expected scroll values in ltr", (): void => {
+    test("setting and getting scroll position returns expected scroll values in ltr", (): void => {
         const rendered: any = mount(
             <StackPanel dir="ltr">{sampleStackPanelItems}</StackPanel>
         );
@@ -280,7 +238,8 @@ describe("stack panel", (): void => {
         rendered.instance()["setScrollPosition"](100);
         expect(rendered.instance()["getScrollPosition"]()).toEqual(100);
     });
-    test("settting and getting scroll position works in rtl", (): void => {
+
+    test("setting and getting scroll position works in rtl", (): void => {
         const rendered: any = mount(
             <StackPanel dir="rtl">{sampleStackPanelItems}</StackPanel>
         );
@@ -288,133 +247,10 @@ describe("stack panel", (): void => {
         rendered.instance()["setScrollPosition"](100);
         expect(rendered.instance()["getScrollPosition"]()).toEqual(100);
     });
+
     test("getScrollIntoViewPosition returns 0 when there are no children", (): void => {
         const rendered: any = mount(<StackPanel />);
         expect(rendered.instance()["getScrollIntoViewPosition"](0)).toEqual(0);
-    });
-    test("should ease the animation when moving the scroll position", () => {
-        const rendered: any = mount(<StackPanel>{sampleStackPanelItems}</StackPanel>);
-        expect(rendered.instance()["easeInOutQuad"](1, 0, 0.5, 50)).toBe(0.0004);
-    });
-    test("scrollContent properly configures a smooth scrolling animation", () => {
-        const rendered: any = mount(
-            <StackPanel enableSmoothScrolling={true}>{sampleStackPanelItems}</StackPanel>
-        );
-        expect(rendered.instance().isScrollAnimating).toEqual(false);
-        rendered.requestFrame = jest.fn();
-        rendered.instance()["scrollContent"](0, 100);
-        expect(rendered.instance().isScrollAnimating).toEqual(true);
-        expect(rendered.instance().currentScrollAnimStartPosition).toEqual(0);
-        expect(rendered.instance().currentScrollAnimEndPosition).toEqual(100);
-    });
-    test("scrollContent does not start smooth scrolling animation and sets scroll value when smooth scrolling disabled", () => {
-        const rendered: any = mount(
-            <StackPanel enableSmoothScrolling={false}>{sampleStackPanelItems}</StackPanel>
-        );
-        expect(rendered.instance().isScrollAnimating).toEqual(false);
-        expect(rendered.instance()["getScrollPosition"]()).toEqual(0);
-        rendered.instance()["scrollContent"](0, 100);
-        expect(rendered.instance().isScrollAnimating).toEqual(false);
-        expect(rendered.instance()["getScrollPosition"]()).toEqual(100);
-    });
-    test("on onItemFocus scrolls content into view - vertical, element below viewport ", () => {
-        const rendered: any = mount(
-            <StackPanel orientation={Orientation.vertical} nextItemPeek={0}>
-                {sampleStackPanelItems}
-            </StackPanel>
-        );
-
-        const scrollContentFn: any = jest.fn();
-        rendered.instance().scrollContent = scrollContentFn;
-        rendered.instance().lastRecordedScroll = 0;
-        rendered.instance().isScrollAnimating = false;
-        rendered.instance().viewportSpan = 100;
-        rendered.instance().isScrolling = true;
-        rendered.instance()["onItemFocus"]({
-            currentTarget: {
-                clientHeight: 100,
-                clientWidth: 0,
-                offsetTop: 250,
-                offsetLeft: 0,
-            },
-        });
-        expect(scrollContentFn.mock.calls[0][0]).toBe(0);
-        expect(scrollContentFn.mock.calls[0][1]).toBe(250);
-    });
-
-    test("on onItemFocus scrolls content into view - vertical, element above viewport ", () => {
-        const rendered: any = mount(
-            <StackPanel orientation={Orientation.vertical} nextItemPeek={0}>
-                {sampleStackPanelItems}
-            </StackPanel>
-        );
-
-        const scrollContentFn: any = jest.fn();
-        rendered.instance().scrollContent = scrollContentFn;
-        rendered.instance().lastRecordedScroll = 300;
-        rendered.instance().isScrollAnimating = false;
-        rendered.instance().viewportSpan = 100;
-        rendered.instance().isScrolling = true;
-        rendered.instance()["onItemFocus"]({
-            currentTarget: {
-                clientHeight: 100,
-                clientWidth: 0,
-                offsetTop: 100,
-                offsetLeft: 0,
-            },
-        });
-        expect(scrollContentFn.mock.calls[0][0]).toBe(300);
-        expect(scrollContentFn.mock.calls[0][1]).toBe(100);
-    });
-
-    test("on onItemFocus scrolls content into view - horizontal, element right of viewport ", () => {
-        const rendered: any = mount(
-            <StackPanel orientation={Orientation.horizontal} nextItemPeek={0}>
-                {sampleStackPanelItems}
-            </StackPanel>
-        );
-
-        const scrollContentFn: any = jest.fn();
-        rendered.instance().scrollContent = scrollContentFn;
-        rendered.instance().lastRecordedScroll = 0;
-        rendered.instance().isScrollAnimating = false;
-        rendered.instance().viewportSpan = 100;
-        rendered.instance().isScrolling = true;
-        rendered.instance()["onItemFocus"]({
-            currentTarget: {
-                clientHeight: 0,
-                clientWidth: 100,
-                offsetTop: 0,
-                offsetLeft: 250,
-            },
-        });
-        expect(scrollContentFn.mock.calls[0][0]).toBe(0);
-        expect(scrollContentFn.mock.calls[0][1]).toBe(250);
-    });
-
-    test("on onItemFocus scrolls content into view - horizontal, element left of viewport", () => {
-        const rendered: any = mount(
-            <StackPanel orientation={Orientation.horizontal} nextItemPeek={0}>
-                {sampleStackPanelItems}
-            </StackPanel>
-        );
-
-        const scrollContentFn: any = jest.fn();
-        rendered.instance().scrollContent = scrollContentFn;
-        rendered.instance().lastRecordedScroll = 300;
-        rendered.instance().isScrollAnimating = false;
-        rendered.instance().viewportSpan = 100;
-        rendered.instance().isScrolling = true;
-        rendered.instance()["onItemFocus"]({
-            currentTarget: {
-                clientHeight: 0,
-                clientWidth: 100,
-                offsetTop: 0,
-                offsetLeft: 100,
-            },
-        });
-        expect(scrollContentFn.mock.calls[0][0]).toBe(300);
-        expect(scrollContentFn.mock.calls[0][1]).toBe(100);
     });
 
     test("Root classname is applied", () => {
@@ -439,7 +275,7 @@ describe("stack panel", (): void => {
         );
     });
 
-    test("isScrolling classname not applied when component does not need to scroll", () => {
+    test("isScrollable classname not applied when component does not need to scroll", () => {
         const rendered: any = mount(<StackPanel managedClasses={managedClasses} />);
         expect(rendered.instance().rootElement.current.className).not.toContain(
             managedClasses.stackPanel__scrollable
