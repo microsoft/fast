@@ -80,11 +80,11 @@ Drag & Drop support poses a unique set of challenges, especially if our goal is 
 - expanded - nodes with child-nodes can either be expanded or collapsed. 
 - selected - the node is selected
 - content - the content for the tree view
-- beforeContent - slot which precedes content, often a glyph or icon
-- afterContent - slot which follows content, often a glyph or icon
-- expandCollapseGlyph - slot for svg, will include a default svg
-- onExpandedChange - callback for when the expanded state has changed
-- onSelected - callback for when an item has been selected
+- before-content - slot which precedes content, often a glyph or icon
+- after-content - slot which follows content, often a glyph or icon
+- expand-collapse-glyph - slot for svg, will include a default svg
+- on-expanded-change - callback for when the expanded state has changed
+- on-selected - callback for when an item has been selected
 
 ### Anatomy and Appearance
 
@@ -137,17 +137,17 @@ Like tree view, the tree view item has a default slot for its children.
 
 Slots:
 - `content`
-- `beforeContent`
-- `afterContent` 
-- `expandCollapseGlyph`
+- `before-content`
+- `after-content` 
+- `expand-collapse-glyph`
 
 Parts:
 - root
 - content
-- beforeContent
-- afterContent
-- expandCollapseGlyph
-- childNodes
+- before-content
+- after-content
+- expand-collapse-glyph
+- child-nodes
 - expanded
 - selected
 
