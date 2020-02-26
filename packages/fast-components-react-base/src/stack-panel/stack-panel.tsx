@@ -50,7 +50,7 @@ class StackPanel extends Foundation<
         itemSpan: 100,
         preloadBufferLength: 1,
         orientation: Orientation.vertical,
-        scrollLayoutUpdateDelay: 50,
+        scrollLayoutUpdateDelay: 0,
     };
 
     private static DirectionAttributeName: string = "dir";
