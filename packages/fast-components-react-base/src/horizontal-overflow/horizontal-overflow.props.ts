@@ -73,7 +73,7 @@ export interface HorizontalOverflowHandledProps extends HorizontalOverflowManage
      * Set the horizontal overflow to a fixed height instead of sizing to the largest child item.
      * Useful when server side rendering to ensure server and client DOM matching.
      */
-    fixedHeight?: number;
+    fixedHeight?: number | null;
 }
 
 export type HorizontalOverflowProps = HorizontalOverflowHandledProps &

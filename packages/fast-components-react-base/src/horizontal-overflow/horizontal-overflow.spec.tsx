@@ -206,7 +206,7 @@ describe("horizontal overflow", (): void => {
 
         expect(rendered.state("itemsHeight")).toBe(100);
     });
-    test("should set `itemHeight` to the fixedHeight if children have been passed but a fixedHeight has been set", () => {
+    test("should set `itemHeight` to the fixedHeight if children have been passed and a fixedHeight has been set", () => {
         const rendered: any = mount(
             <HorizontalOverflow managedClasses={managedClasses} fixedHeight={100}>
                 <img key="image1" src="https://placehold.it/200x200?text=1" />

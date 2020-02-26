@@ -194,9 +194,10 @@ class HorizontalOverflow extends Foundation<
             return;
         }
 
-        const itemsHeight: number = this.props.fixedHeight
-            ? this.props.fixedHeight
-            : this.getItemMaxHeight();
+        const itemsHeight: number =
+            this.props.fixedHeight !== null
+                ? this.props.fixedHeight
+                : this.getItemMaxHeight();
 
         if (itemsHeight !== this.state.itemsHeight) {
             this.setState({
@@ -410,9 +411,10 @@ class HorizontalOverflow extends Foundation<
      * onLoad handler to make sure any children affecting height are accounted for
      */
     private itemsOnLoad = (): void => {
-        const itemsHeight: number = this.props.fixedHeight
-            ? this.props.fixedHeight
-            : this.getItemMaxHeight();
+        const itemsHeight: number =
+            this.props.fixedHeight !== null
+                ? this.props.fixedHeight
+                : this.getItemMaxHeight();
 
         if (itemsHeight !== this.state.itemsHeight) {
             this.setState({
