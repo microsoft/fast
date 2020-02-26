@@ -35,7 +35,7 @@ const styles: ComponentStyles<LightweightButtonClassNameContract, DesignSystem> 
             neutralOutlineRest
         ),
         padding: format("0 {0}", horizontalSpacing(outlineWidth)),
-        "&:hover:enabled": {
+        "&:hover:enabled, a&:not($button__disabled):hover": {
             background: "transparent",
             border: format(
                 "{0} solid {1}",
@@ -44,7 +44,7 @@ const styles: ComponentStyles<LightweightButtonClassNameContract, DesignSystem> 
             ),
             ...highContrastSelected,
         },
-        "&:active:enabled": {
+        "&:active:enabled, a&:not($button__disabled):active": {
             background: "transparent",
             border: format(
                 "{0} solid {1}",
@@ -67,16 +67,11 @@ const styles: ComponentStyles<LightweightButtonClassNameContract, DesignSystem> 
         ...highContrastOutline,
         "a&": {
             ...highContrastLinkOutline,
-            "&:hover": {
+            "&:not($button__disabled):hover": {
                 ...highContrastLinkBorder,
             },
             "&$button__disabled": {
                 ...highContrastDisabledBorder,
-                "&:hover": {
-                    [highContrastSelector]: {
-                        "box-shadow": "none !important",
-                    },
-                },
             },
         },
     },

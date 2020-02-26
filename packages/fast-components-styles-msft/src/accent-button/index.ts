@@ -32,14 +32,14 @@ const styles: ComponentStyles<AccentButtonClassNameContract, DesignSystem> = {
         color: accentForegroundCut,
         fill: accentForegroundCut,
         background: accentFillRest,
-        "&:hover:enabled": {
+        "&:hover:enabled, a&:not($button__disabled):hover": {
             background: accentFillHover,
             ...highContrastSelectedOutline,
             "& $button_beforeContent, & $button_afterContent": {
                 ...highContrastHighlightForeground,
             },
         },
-        "&:active:enabled": {
+        "&:active:enabled, a&:not($button__disabled):active": {
             background: accentFillActive,
         },
         ...applyFocusVisible<DesignSystem>({
@@ -66,7 +66,7 @@ const styles: ComponentStyles<AccentButtonClassNameContract, DesignSystem> = {
             "& $button_beforeContent, & $button_afterContent": {
                 ...highContrastLinkForeground,
             },
-            "&:hover": {
+            "&:not($button__disabled):hover": {
                 ...highContrastLinkBorder,
                 "& $button_beforeContent, & $button_afterContent": {
                     ...highContrastLinkForeground,

@@ -15,6 +15,7 @@ import {
     highContrastDisabledForeground,
     highContrastHighlightBackground,
     highContrastHighlightForeground,
+    highContrastLinkForeground,
     highContrastLinkValue,
     highContrastSelector,
     highContrastStealth,
@@ -62,13 +63,13 @@ const styles: ComponentStyles<LightweightButtonClassNameContract, DesignSystem> 
             "background-color": "transparent",
             ...highContrastDisabledForeground,
         },
-        "&:hover:enabled": {
+        "&:hover:enabled, a&:not($button__disabled):hover": {
             color: accentForegroundHover,
             fill: accentForegroundHover,
             "background-color": "transparent",
             ...highContrastHighlightForeground,
         },
-        "&:active:enabled": {
+        "&:active:enabled, a&:not($button__disabled):active": {
             color: accentForegroundActive,
             fill: accentForegroundActive,
             "background-color": "transparent",
@@ -79,6 +80,9 @@ const styles: ComponentStyles<LightweightButtonClassNameContract, DesignSystem> 
                 background: HighContrastColor.background,
                 color: highContrastLinkValue,
                 fill: highContrastLinkValue,
+            },
+            "&:not($button__disabled):hover": {
+                ...highContrastLinkForeground,
             },
             // Underline
             "&:hover $button_contentRegion::before": {
