@@ -379,6 +379,10 @@ import { FastElement, customElement, observable, html } from '@microsoft/fast-el
 import { repeat } from '@microsoft/fast-element/directives/repeat';
 import { when } from '@microsoft/fast-element/directives/when';
 
+interface Named {
+  name: string;
+}
+
 class Person {
   @observable name: string;
 
@@ -387,7 +391,7 @@ class Person {
   }
 }
 
-const nameTemplate = html<{ name: string }>`
+const nameTemplate = html<Named>`
   <span class="name">${x => x.name}</span>
 `;
 
