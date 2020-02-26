@@ -441,7 +441,7 @@ export class FriendList extends FastElement {
 
 ### Observables and Rendering
 
-The arrow function expressions and directives allow the `fast-element` templating engine to intelligently update only the parts of the DOM that actually change, with no need for a virtual DOM, VDOM diffing, or DOM reconcilliation algorithms. This approach enables top-tier initial render time, industry-leading incremental DOM updates, and ulta-low memory allocation.
+The arrow function expressions and directives allow the `fast-element` templating engine to intelligently update only the parts of the DOM that actually change, with no need for a virtual DOM, VDOM diffing, or DOM reconcilliation algorithms. This approach enables top-tier initial render time, industry-leading incremental DOM updates, and ultra-low memory allocation.
 
 When an expression is used within a template, the underlying engine uses a technique to capture which properties are accessed in that expression. With the list of properties captured, it then subscribes to changes in their values. Any time a value changes, a task is scheduled on the DOM update queue. When the queue is processed, all updates run as a batch, updating precisely the aspects of the DOM that have changed.
 
@@ -449,7 +449,7 @@ To enable expression tracking and change notification, properties must be decora
 
 > **IMPORTANT:** Properties with only a getter, that function as a computed property over other observables, should not be decoratored with `@attr` or `@observable`.
 
-In addition to observing properties, the templating system can also observe arrays. The `repeat` directive is able to efficient respond to array change records, updating the DOM based on changes in the collection.
+In addition to observing properties, the templating system can also observe arrays. The `repeat` directive is able to efficiently respond to array change records, updating the DOM based on changes in the collection.
 
 #### Features of @attr and @observable
 
