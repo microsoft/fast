@@ -708,6 +708,8 @@ export class MyInput extends FastElement {
 }
 ```
 
+> **TIP:** When creating custom events, ensure that your event name is always lower-case, so that your Web Components stay compatible with various front-end frameworks that attach events through DOM binding patterns (the DOM is case insensitive).
+
 ### Shadow DOM Configuration
 
 In all the examples we've seen so far `FastElement` automatically creates a Shadow Root for your element and attaches it in `open` mode. However, if desired, you can specify `closed` mode or make the element render into the Light DOM instead. These choices can be made by using the `shadowOptions` setting with your `@customElement` decorator.
