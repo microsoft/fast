@@ -1,20 +1,20 @@
-import { ITemplate, noopTemplate } from "./template";
+import { Template, noopTemplate } from "./template";
 import { BindableDefinition, Bindable } from "./bindable";
 import { Constructable } from "./interfaces";
-import { IRegistry } from "./di";
+import { Registry } from "./di";
 import { Observable } from "./observation/observable";
 
 export type PartialCustomElementDefinition = {
     readonly name: string;
-    readonly template?: ITemplate;
+    readonly template?: Template;
     readonly bindables?: Record<string, BindableDefinition>;
-    readonly dependencies?: IRegistry[];
+    readonly dependencies?: Registry[];
     readonly shadowOptions?: ShadowRootInit | null;
     readonly elementOptions?: ElementDefinitionOptions;
 };
 
 export function customElement(nameOrDef: string | PartialCustomElementDefinition) {
-    return function(type: Constructable) {
+    return function(type: Constructable<HTMLElement>) {
         CustomElement.define(nameOrDef, type);
     };
 }
@@ -22,7 +22,7 @@ export function customElement(nameOrDef: string | PartialCustomElementDefinition
 const elementDefinitions = new Map<Constructable, CustomElementDefinition>();
 
 export const CustomElement = {
-    define<T extends Constructable>(
+    define<T extends Constructable<HTMLElement>>(
         nameOrDef: string | PartialCustomElementDefinition,
         Type: T
     ): T {
@@ -49,7 +49,7 @@ export const CustomElement = {
     },
 };
 
-function buildTemplate(def: PartialCustomElementDefinition): ITemplate {
+function buildTemplate(def: PartialCustomElementDefinition): Template {
     if (def.template === void 0) {
         return noopTemplate;
     }
@@ -62,9 +62,9 @@ export class CustomElementDefinition {
 
     public constructor(
         public readonly name: string,
-        public readonly template: ITemplate,
+        public readonly template: Template,
         public readonly bindables: Record<string, BindableDefinition>,
-        public readonly dependencies: IRegistry[],
+        public readonly dependencies: Registry[],
         public readonly shadowOptions: ShadowRootInit | null,
         public readonly elementOptions: ElementDefinitionOptions | undefined
     ) {
