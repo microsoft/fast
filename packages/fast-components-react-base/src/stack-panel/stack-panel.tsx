@@ -289,7 +289,9 @@ class StackPanel extends Foundation<
             ...(this.props.orientation === Orientation.horizontal
                 ? {
                       width: toPx(this.itemPositions[index].span),
-                      left: toPx(this.itemPositions[index].start),
+                      ...(this.state.direction === Direction.ltr
+                          ? { left: toPx(this.itemPositions[index].start) }
+                          : { right: toPx(this.itemPositions[index].start) }),
                   }
                 : {
                       height: toPx(this.itemPositions[index].span),
