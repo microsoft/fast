@@ -239,6 +239,20 @@ storiesOf("Stack Panel", module)
             {uniformImages}
         </StackPanel>
     ))
+    .add("Horizontal rtl", () => (
+        <StackPanel
+            dir="rtl"
+            itemSpan={100}
+            orientation={Orientation.horizontal}
+            style={{
+                width: "400px",
+                height: "117px",
+                overflowX: "scroll",
+            }}
+        >
+            {uniformImages}
+        </StackPanel>
+    ))
     .add("Vertical variable height", () => (
         <StackPanel
             itemSpan={itemSpans}
@@ -298,5 +312,25 @@ storiesOf("Stack Panel", module)
                 neverVirtualizeIndexes: [0, 9999],
             }}
             itemCount={10000}
+        />
+    ))
+    .add("200 items no virtualization", () => (
+        <TestStackPanel
+            stackPanelProps={{
+                virtualize: false,
+                preloadBufferLength: 6,
+                neverVirtualizeIndexes: [0, 199],
+            }}
+            itemCount={200}
+        />
+    ))
+    .add("200 items virtualized", () => (
+        <TestStackPanel
+            stackPanelProps={{
+                virtualize: true,
+                preloadBufferLength: 6,
+                neverVirtualizeIndexes: [0, 199],
+            }}
+            itemCount={200}
         />
     ));
