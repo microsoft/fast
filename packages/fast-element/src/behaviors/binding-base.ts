@@ -1,34 +1,25 @@
-import { IBehavior } from "./behavior";
-import {
-    IGetterInspector,
-    IPropertyChangeListener,
-    Observable,
-} from "../observation/observable";
+import { Behavior } from "./behavior";
+import { GetterInspector, Observable } from "../observation/observable";
 import { BindingDirective } from "../directives/bind";
 import { DOM } from "../dom";
+import { Subscriber } from "../observation/subscriber-collection";
 
 class ObservationRecord {
     constructor(private source: any, private propertyName: string) {}
 
-    subscribe(listener: IPropertyChangeListener) {
-        Observable.getNotifier(this.source).addPropertyChangeListener(
-            this.propertyName,
-            listener
-        );
+    subscribe(subscriber: Subscriber) {
+        Observable.getNotifier(this.source).subscribe(subscriber, this.propertyName);
     }
 
-    unsubscribe(listener: IPropertyChangeListener) {
-        Observable.getNotifier(this.source).removePropertyChangeListener(
-            this.propertyName,
-            listener
-        );
+    unsubscribe(subscriber: Subscriber) {
+        Observable.getNotifier(this.source).unsubscribe(subscriber, this.propertyName);
     }
 }
 
-export abstract class BindingBase
-    implements IBehavior, IGetterInspector, IPropertyChangeListener {
+export abstract class BindingBase implements Behavior, GetterInspector, Subscriber {
     protected source: unknown;
     private record: ObservationRecord | null = null;
+    private needsQueue = true;
 
     constructor(protected directive: BindingDirective) {}
 
@@ -45,15 +36,15 @@ export abstract class BindingBase
         this.source = null;
     }
 
-    shouldQueueUpdate() {
-        return true;
-    }
-
-    onPropertyChanged(source: any, propertyName: string): void {
-        this.shouldQueueUpdate() ? DOM.queueUpdate(this) : this.call();
+    handleChange(source: any, propertyName: string): void {
+        if (this.needsQueue) {
+            this.needsQueue = false;
+            DOM.queueUpdate(this);
+        }
     }
 
     call() {
+        this.needsQueue = true;
         this.updateTarget(this.directive.evaluate(this.source));
     }
 

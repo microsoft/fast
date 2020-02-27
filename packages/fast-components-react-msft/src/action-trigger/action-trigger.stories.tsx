@@ -28,11 +28,31 @@ storiesOf("Action trigger", module)
             Download
         </ActionTrigger>
     ))
+    .add("Justified Anchor", () => (
+        <ActionTrigger
+            glyph={glyphFactory(SVGGlyph.download)}
+            appearance={ActionTriggerAppearance.justified}
+            onClick={action("onClick")}
+            href="#"
+        >
+            Download
+        </ActionTrigger>
+    ))
     .add("Lightweight", () => (
         <ActionTrigger
             glyph={glyphFactory(SVGGlyph.download)}
             appearance={ActionTriggerAppearance.lightweight}
             onClick={action("onClick")}
+        >
+            Download
+        </ActionTrigger>
+    ))
+    .add("Lightweight Anchor", () => (
+        <ActionTrigger
+            glyph={glyphFactory(SVGGlyph.download)}
+            appearance={ActionTriggerAppearance.lightweight}
+            onClick={action("onClick")}
+            href="#"
         >
             Download
         </ActionTrigger>
@@ -46,6 +66,16 @@ storiesOf("Action trigger", module)
             Download
         </ActionTrigger>
     ))
+    .add("Outline Anchor", () => (
+        <ActionTrigger
+            glyph={glyphFactory(SVGGlyph.download)}
+            appearance={ActionTriggerAppearance.outline}
+            onClick={action("onClick")}
+            href="#"
+        >
+            Download
+        </ActionTrigger>
+    ))
     .add("Primary", () => (
         <ActionTrigger
             glyph={glyphFactory(SVGGlyph.download)}
@@ -55,11 +85,42 @@ storiesOf("Action trigger", module)
             Download
         </ActionTrigger>
     ))
+    .add("Primary Anchor", () => (
+        <ActionTrigger
+            glyph={glyphFactory(SVGGlyph.download)}
+            appearance={ActionTriggerAppearance.primary}
+            onClick={action("onClick")}
+            href="#"
+        >
+            Download
+        </ActionTrigger>
+    ))
+    .add("Primary Anchor Disabled", () => (
+        <ActionTrigger
+            glyph={glyphFactory(SVGGlyph.download)}
+            appearance={ActionTriggerAppearance.primary}
+            onClick={action("onClick")}
+            disabled={true}
+            href="#"
+        >
+            Download
+        </ActionTrigger>
+    ))
     .add("Stealth", () => (
         <ActionTrigger
             glyph={glyphFactory(SVGGlyph.download)}
             appearance={ActionTriggerAppearance.stealth}
             onClick={action("onClick")}
+        >
+            Download
+        </ActionTrigger>
+    ))
+    .add("Stealth Anchor", () => (
+        <ActionTrigger
+            glyph={glyphFactory(SVGGlyph.download)}
+            appearance={ActionTriggerAppearance.stealth}
+            onClick={action("onClick")}
+            href="#"
         >
             Download
         </ActionTrigger>

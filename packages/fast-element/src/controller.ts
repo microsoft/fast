@@ -1,26 +1,20 @@
 import { CustomElementDefinition, CustomElement } from "./custom-element";
 import { Constructable } from "./interfaces";
-import { IContainer, IRegistry, Resolver, InterfaceSymbol } from "./di";
-import { IElementView } from "./view";
-import { IElementProjector, HostProjector, ShadowDOMProjector } from "./projectors";
-import {
-    INotifyPropertyChanged,
-    IPropertyChangeListener,
-    PropertyChangeNotifier,
-} from "./observation/observable";
+import { Container, Registry, Resolver, InterfaceSymbol } from "./di";
+import { ElementView } from "./view";
+import { ElementProjector, HostProjector, ShadowDOMProjector } from "./projectors";
+import { PropertyChangeNotifier } from "./observation/notifier";
 
-const controllerLookup: WeakMap<HTMLElement, Controller> = new WeakMap();
-
-export class Controller implements IContainer, INotifyPropertyChanged {
-    public view: IElementView | null = null;
-    private propertyChangeNotifier = new PropertyChangeNotifier();
+export class Controller extends PropertyChangeNotifier implements Container {
+    public view: ElementView | null = null;
     private resolvers = new Map<any, Resolver>();
 
     public constructor(
         public readonly element: HTMLElement,
         public readonly definition: CustomElementDefinition,
-        public readonly projector: IElementProjector
+        public readonly projector: ElementProjector
     ) {
+        super();
         this.definition.dependencies.forEach(x => x.register(this));
     }
 
@@ -49,7 +43,7 @@ export class Controller implements IContainer, INotifyPropertyChanged {
         (this.element as any)[bindable.property] = newValue;
     }
 
-    public register(registry: IRegistry) {
+    public register(registry: Registry) {
         registry.register(this);
     }
 
@@ -68,34 +62,18 @@ export class Controller implements IContainer, INotifyPropertyChanged {
         this.resolvers.set(key, resolver);
     }
 
-    public notifyPropertyChanged(source: any, propertyName: string) {
-        this.propertyChangeNotifier.notifyPropertyChanged(source, propertyName);
-    }
-
-    public addPropertyChangeListener(
-        propertyName: string,
-        listener: IPropertyChangeListener
-    ) {
-        this.propertyChangeNotifier.addPropertyChangeListener(propertyName, listener);
-    }
-
-    public removePropertyChangeListener(
-        propertyName: string,
-        listener: IPropertyChangeListener
-    ) {
-        this.propertyChangeNotifier.removePropertyChangeListener(propertyName, listener);
-    }
-
     public static forCustomElement(element: HTMLElement) {
-        if (controllerLookup.has(element)) {
-            return (controllerLookup.get(element) as unknown) as Controller;
+        let controller: Controller = (element as any).$controller;
+
+        if (controller !== void 0) {
+            return controller;
         }
 
         const definition = CustomElement.getDefinition(
             element.constructor as Constructable
         );
         if (definition === void 0) {
-            throw new Error(`Missing definition for custom element.`);
+            throw new Error("Missing custom element definition.");
         }
 
         const projector =
@@ -103,10 +81,11 @@ export class Controller implements IContainer, INotifyPropertyChanged {
                 ? new HostProjector(element)
                 : new ShadowDOMProjector(element, definition);
 
-        const controller = new Controller(element, definition, projector);
-
-        (element as any).$controller = controller;
-        controllerLookup.set(element, controller);
+        (element as any).$controller = controller = new Controller(
+            element,
+            definition,
+            projector
+        );
         controller.hydrateCustomElement();
 
         return controller;

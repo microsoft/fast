@@ -16,7 +16,6 @@ import {
     highContrastLinkOutline,
     highContrastOutlineFocus,
     highContrastSelected,
-    highContrastSelector,
     highContrastStealth,
 } from "../utilities/high-contrast";
 
@@ -27,11 +26,11 @@ const styles: ComponentStyles<StealthButtonClassNameContract, DesignSystem> = {
         color: neutralForegroundRest,
         fill: neutralForegroundRest,
         background: neutralFillStealthRest,
-        "&:hover:enabled": {
+        "&:hover:enabled, a&:not($button__disabled):hover": {
             "background-color": neutralFillStealthHover,
             ...highContrastSelected,
         },
-        "&:active:enabled": {
+        "&:active:enabled, a&:not($button__disabled):active": {
             "background-color": neutralFillStealthActive,
         },
         ...applyFocusVisible<DesignSystem>({
@@ -42,18 +41,13 @@ const styles: ComponentStyles<StealthButtonClassNameContract, DesignSystem> = {
             ...highContrastDisabledBorder,
         },
         ...highContrastStealth,
-        "a&": {
+        "a&:not($button__disabled)": {
             ...highContrastLinkOutline,
-            "&:hover": {
+            "&:not($button__disabled):hover": {
                 ...highContrastLinkBorder,
             },
             "&$button__disabled": {
                 ...highContrastDisabledBorder,
-                "&:hover": {
-                    [highContrastSelector]: {
-                        "box-shadow": "none !important",
-                    },
-                },
             },
         },
     },

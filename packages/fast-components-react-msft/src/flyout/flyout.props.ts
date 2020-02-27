@@ -70,6 +70,11 @@ export interface FlyoutHandledProps
     verticalPositioningMode?: FlyoutAxisPositioningMode;
 
     /**
+     * Sets the visibility of the flyout
+     */
+    delayContentInstanciation?: boolean;
+
+    /**
      *  The flyout height
      */
     height?: string;

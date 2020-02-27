@@ -1,26 +1,18 @@
-import { AccessScopeExpression, IExpression, Getter } from "../expression";
-import { ITemplate, ICaptureType } from "../template";
-import { IBehavior } from "../behaviors/behavior";
+import { AccessScopeExpression, Expression, Getter } from "../expression";
+import { Template, CaptureType } from "../template";
+import { Behavior } from "../behaviors/behavior";
 import { DOM } from "../dom";
-import {
-    IPropertyChangeListener,
-    Observable,
-    IGetterInspector,
-} from "../observation/observable";
+import { Observable, GetterInspector } from "../observation/observable";
 import { BindingDirective } from "./bind";
-import { ISyntheticView } from "../view";
-import {
-    synchronizeIndices,
-    applyMutationsToIndices,
-    ArrayObserver,
-    enableArrayObservation,
-    IndexMap,
-} from "../observation/array-observer";
+import { SyntheticView } from "../view";
+import { Subscriber } from "../observation/subscriber-collection";
+import { ArrayObserver, enableArrayObservation } from "../observation/array-observer";
+import { Splice } from "../observation/array-change-records";
 
 export class RepeatDirective extends BindingDirective {
     behavior = RepeatBehavior;
 
-    constructor(public expression: IExpression, public template: ITemplate) {
+    constructor(public expression: Expression, public template: Template) {
         super(expression);
         enableArrayObservation();
     }
@@ -30,14 +22,12 @@ export class RepeatDirective extends BindingDirective {
     }
 }
 
-export class RepeatBehavior
-    implements IBehavior, IGetterInspector, IPropertyChangeListener {
+export class RepeatBehavior implements Behavior, GetterInspector, Subscriber {
     private location: Node;
     private source: unknown;
-    private views: ISyntheticView[] = [];
+    private views: SyntheticView[] = [];
     private items: any[] | null = null;
     private observer?: ArrayObserver;
-    private indexMap?: IndexMap;
 
     constructor(private directive: RepeatDirective, marker: HTMLElement) {
         this.location = DOM.convertMarkerToLocation(marker);
@@ -46,73 +36,29 @@ export class RepeatBehavior
     bind(source: unknown) {
         this.source = source;
         this.items = this.directive.inspectAndEvaluate(source, this);
-
-        // bind
         this.checkCollectionObserver(false);
-        this.processViewsKeyed(void 0);
-
-        // attach
-        this.attachViews(void 0);
+        this.refreshAllViews();
     }
 
     unbind() {
         this.source = null;
         this.items = null;
-
-        // detach
-        this.detachViewsByRange(0, this.views.length);
-
-        // unbind
+        this.unbindAllViews();
         this.checkCollectionObserver(true);
-        this.unbindAndRemoveViewsByRange(0, this.views.length, false);
     }
 
     inspect(source: any, propertyName: string) {
-        Observable.getNotifier(source).addPropertyChangeListener(propertyName, this);
+        Observable.getNotifier(source).subscribe(this, propertyName);
     }
 
-    onPropertyChanged(source: any, propertyName: any): void {
-        if (typeof propertyName === "string") {
+    handleChange(source: any, args: string | Splice[]): void {
+        if (typeof args === "string") {
             this.source = source;
-        } else {
-            this.indexMap = propertyName;
-        }
-
-        DOM.queueUpdate(this);
-    }
-
-    public call() {
-        if (this.indexMap === void 0) {
             this.items = this.directive.inspectAndEvaluate(this.source, this);
             this.checkCollectionObserver(false);
-            this.processViewsKeyed(void 0);
+            this.refreshAllViews();
         } else {
-            const indexMap = this.indexMap;
-            this.indexMap = void 0;
-            this.processViewsKeyed(indexMap);
-        }
-    }
-
-    private processViewsKeyed(indexMap: IndexMap | undefined): void {
-        const oldLength = this.views.length;
-        if (indexMap === void 0) {
-            this.detachViewsByRange(0, oldLength);
-            this.unbindAndRemoveViewsByRange(0, oldLength, false);
-            this.createAndBindAllViews();
-            this.attachViewsKeyed();
-        } else {
-            applyMutationsToIndices(indexMap);
-
-            // first detach+unbind+(remove from array) the deleted view indices
-            if (indexMap.deletedItems.length > 0) {
-                indexMap.deletedItems.sort(compareNumber);
-                this.detachViewsByKey(indexMap);
-                this.unbindAndRemoveViewsByKey(indexMap);
-            }
-
-            // then insert new views at the "added" indices to bring the views array in aligment with indexMap size
-            this.createAndBindNewViewsByKey(indexMap);
-            this.sortViewsByKey(oldLength, indexMap);
+            this.updateViews(args);
         }
     }
 
@@ -120,7 +66,7 @@ export class RepeatBehavior
         const oldObserver = this.observer;
         if (fromUnbind) {
             if (oldObserver !== void 0) {
-                oldObserver.removePropertyChangeListener("", this);
+                oldObserver.removeSubscriber(this);
             }
         } else {
             if (!this.items) {
@@ -132,247 +78,101 @@ export class RepeatBehavior
             ));
 
             if (oldObserver !== newObserver && oldObserver) {
-                oldObserver.removePropertyChangeListener("", this);
+                oldObserver.removeSubscriber(this);
             }
 
             if (newObserver) {
-                newObserver.addPropertyChangeListener("", this);
+                newObserver.addSubscriber(this);
             }
         }
     }
 
-    private detachViewsByRange(iStart: number, iEnd: number): void {
+    private updateViews(splices: Splice[]) {
         const views = this.views;
-        let view: ISyntheticView;
-        for (let i = iStart; i < iEnd; ++i) {
-            view = views[i];
-            view.remove();
-        }
-    }
+        const totalRemoved: SyntheticView[] = [];
+        let removeDelta = 0;
 
-    private unbindAndRemoveViewsByRange(
-        iStart: number,
-        iEnd: number,
-        adjustLength: boolean
-    ): void {
-        const views = this.views;
-        let view: ISyntheticView;
-        for (let i = iStart; i < iEnd; ++i) {
-            view = views[i];
+        for (let i = 0, ii = splices.length; i < ii; ++i) {
+            const splice = splices[i];
+            const removed = splice.removed;
+
+            totalRemoved.push(
+                ...views.splice(splice.index + removeDelta, removed.length)
+            );
+
+            removeDelta -= splice.addedCount;
+        }
+
+        const items = this.items!;
+        const template = this.directive.template;
+
+        for (let i = 0, ii = splices.length; i < ii; ++i) {
+            const splice = splices[i];
+            let addIndex = splice.index;
+            const end = addIndex + splice.addedCount;
+
+            for (; addIndex < end; ++addIndex) {
+                const neighbor = views[addIndex];
+                const location = neighbor ? neighbor.firstChild : this.location;
+                const view =
+                    totalRemoved.length > 0
+                        ? totalRemoved.shift()!
+                        : template.create(true);
+
+                views.splice(addIndex, 0, view);
+                view.bind(items[addIndex]);
+                view.insertBefore(location);
+            }
+        }
+
+        for (let i = 0, ii = totalRemoved.length; i < ii; ++i) {
+            const view = totalRemoved[i];
+            view.remove();
             view.unbind();
         }
-
-        if (adjustLength) {
-            this.views.length = iStart;
-        }
     }
 
-    private detachViewsByKey(indexMap: IndexMap): void {
+    private refreshAllViews() {
+        const items = this.items!;
         const views = this.views;
-        const deleted = indexMap.deletedItems;
-        const deletedLen = deleted.length;
-        let view: ISyntheticView;
-        for (let i = 0; i < deletedLen; ++i) {
-            view = views[deleted[i]];
-            view.remove();
-        }
-    }
+        const viewsLength = views.length;
+        const template = this.directive.template;
 
-    private unbindAndRemoveViewsByKey(indexMap: IndexMap): void {
-        const views = this.views;
-        const deleted = indexMap.deletedItems;
-        const deletedLen = deleted.length;
-        let view: ISyntheticView;
+        let itemsLength = items.length;
         let i = 0;
-        for (; i < deletedLen; ++i) {
-            view = views[deleted[i]];
+
+        for (; i < itemsLength; ++i) {
+            if (i < viewsLength) {
+                views[i].bind(items[i]);
+            } else {
+                const view = template.create(true);
+                view.bind(items[i]);
+                views.push(view);
+                view.insertBefore(this.location);
+            }
+        }
+
+        const removed = views.splice(i, viewsLength - i);
+
+        for (i = 0, itemsLength = removed.length; i < itemsLength; ++i) {
+            const view = removed[i];
+            view.remove();
             view.unbind();
         }
-
-        i = 0;
-        let j = 0;
-        for (; i < deletedLen; ++i) {
-            j = deleted[i] - i;
-            this.views.splice(j, 1);
-        }
     }
 
-    private createAndBindAllViews(): void {
-        let view: ISyntheticView;
-        const factory = this.directive.template;
-        const items = this.items;
-        const newLen = this.items!.length;
-        const views = (this.views = Array(newLen));
-
-        for (let i = 0; i < newLen; ++i) {
-            view = views[i] = factory.create(true)!;
-            view.bind(items![i]);
-        }
-    }
-
-    private createAndBindNewViewsByKey(indexMap: IndexMap): void {
-        let view: ISyntheticView;
-        const factory = this.directive.template;
+    private unbindAllViews() {
         const views = this.views;
-        const mapLen = indexMap.length;
-        const items = this.items;
 
-        for (let i = 0; i < mapLen; ++i) {
-            if (indexMap[i] === -2) {
-                view = factory.create(true)!;
-                view.bind(items![i]);
-                views.splice(i, 0, view);
-            }
-        }
-
-        if (views.length !== mapLen) {
-            throw new Error(`viewsLen=${views.length}, mapLen=${mapLen}`);
-        }
-    }
-
-    private attachViews(indexMap: IndexMap | undefined): void {
-        let view: ISyntheticView;
-
-        const views = this.views;
-        const location = this.location;
-
-        if (indexMap === void 0) {
-            for (let i = 0, ii = views.length; i < ii; ++i) {
-                view = views[i];
-                view.insertBefore(location);
-            }
-        } else {
-            for (let i = 0, ii = views.length; i < ii; ++i) {
-                if (indexMap[i] !== i) {
-                    view = views[i];
-                    view.insertBefore(location);
-                }
-            }
-        }
-    }
-
-    private attachViewsKeyed(): void {
-        let view: ISyntheticView;
-        const { views, location } = this;
         for (let i = 0, ii = views.length; i < ii; ++i) {
-            view = views[i];
-            view.insertBefore(location);
+            views[i].unbind();
         }
     }
-
-    private sortViewsByKey(oldLength: number, indexMap: IndexMap): void {
-        // TODO: integrate with tasks
-        const location = this.location;
-        const views = this.views;
-        const newLen = indexMap.length;
-        synchronizeIndices(views, indexMap);
-
-        // this algorithm retrieves the indices of the longest increasing subsequence of items in the repeater
-        // the items on those indices are not moved; this minimizes the number of DOM operations that need to be performed
-        const seq = longestIncreasingSubsequence(indexMap);
-        const seqLen = seq.length;
-
-        let next: ISyntheticView;
-        let j = seqLen - 1;
-        let i = newLen - 1;
-        let view: ISyntheticView;
-        for (; i >= 0; --i) {
-            view = views[i];
-            if (indexMap[i] === -2) {
-                view.insertBefore(location);
-            } else if (j < 0 || seqLen === 1 || i !== seq[j]) {
-                // view.attach();
-            } else {
-                --j;
-            }
-
-            next = views[i + 1];
-            if (next !== void 0) {
-                // view.nodes!.link(next.nodes);
-            } else {
-                // view.nodes!.link(location);
-            }
-        }
-    }
-}
-
-let maxLen = 16;
-let prevIndices = new Int32Array(maxLen);
-let tailIndices = new Int32Array(maxLen);
-
-// Based on inferno's lis_algorithm @ https://github.com/infernojs/inferno/blob/master/packages/inferno/src/DOM/patching.ts#L732
-// with some tweaks to make it just a bit faster + account for IndexMap (and some names changes for readability)
-function longestIncreasingSubsequence(indexMap: IndexMap): Int32Array {
-    const len = indexMap.length;
-
-    if (len > maxLen) {
-        maxLen = len;
-        prevIndices = new Int32Array(len);
-        tailIndices = new Int32Array(len);
-    }
-
-    let cursor = 0;
-    let cur = 0;
-    let prev = 0;
-    let i = 0;
-    let j = 0;
-    let low = 0;
-    let high = 0;
-    let mid = 0;
-
-    for (; i < len; i++) {
-        cur = indexMap[i];
-        if (cur !== -2) {
-            j = prevIndices[cursor];
-
-            prev = indexMap[j];
-            if (prev !== -2 && prev < cur) {
-                tailIndices[i] = j;
-                prevIndices[++cursor] = i;
-                continue;
-            }
-
-            low = 0;
-            high = cursor;
-
-            while (low < high) {
-                mid = (low + high) >> 1;
-                prev = indexMap[prevIndices[mid]];
-                if (prev !== -2 && prev < cur) {
-                    low = mid + 1;
-                } else {
-                    high = mid;
-                }
-            }
-
-            prev = indexMap[prevIndices[low]];
-            if (cur < prev || prev === -2) {
-                if (low > 0) {
-                    tailIndices[i] = prevIndices[low - 1];
-                }
-                prevIndices[low] = i;
-            }
-        }
-    }
-    i = ++cursor;
-    const result = new Int32Array(i);
-    cur = prevIndices[cursor - 1];
-
-    while (cursor-- > 0) {
-        result[cursor] = cur;
-        cur = tailIndices[cur];
-    }
-    while (i-- > 0) prevIndices[i] = 0;
-    return result;
-}
-
-function compareNumber(a: number, b: number): number {
-    return a - b;
 }
 
 export function repeat<T = any, K = any>(
     expression: Getter<T, K[]> | keyof T,
-    template: ITemplate
-): ICaptureType<T> {
+    template: Template
+): CaptureType<T> {
     return new RepeatDirective(AccessScopeExpression.from(expression as any), template);
 }

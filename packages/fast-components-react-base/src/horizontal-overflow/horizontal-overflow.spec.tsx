@@ -192,12 +192,28 @@ describe("horizontal overflow", (): void => {
 
         expect(renderedWithImages.find("img").length).toBe(6);
     });
-    test("should not set `itemHeight` if no children have been passed", () => {
+    test("should not set `itemHeight` if no children have been passed or fixedHeight set", () => {
         const rendered: any = mount(
             <HorizontalOverflow managedClasses={managedClasses} />
         );
 
         expect(rendered.state("itemsHeight")).toBe(null);
+    });
+    test("should set `itemHeight` to the fixedHeight if no children have been passed but a fixedHeight has been set", () => {
+        const rendered: any = mount(
+            <HorizontalOverflow managedClasses={managedClasses} fixedHeight={100} />
+        );
+
+        expect(rendered.state("itemsHeight")).toBe(100);
+    });
+    test("should set `itemHeight` to the fixedHeight if children have been passed and a fixedHeight has been set", () => {
+        const rendered: any = mount(
+            <HorizontalOverflow managedClasses={managedClasses} fixedHeight={100}>
+                <img key="image1" src="https://placehold.it/200x200?text=1" />
+            </HorizontalOverflow>
+        );
+
+        expect(rendered.state("itemsHeight")).toBe(100);
     });
     test("should update the rendering of a series of items if they are modified", () => {
         const renderedWithImages: any = mount(

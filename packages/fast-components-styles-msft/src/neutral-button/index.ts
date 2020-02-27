@@ -17,7 +17,6 @@ import {
     highContrastOutline,
     highContrastOutlineFocus,
     highContrastSelected,
-    highContrastSelector,
 } from "../utilities/high-contrast";
 
 const styles: ComponentStyles<NeutralButtonClassNameContract, DesignSystem> = {
@@ -27,11 +26,11 @@ const styles: ComponentStyles<NeutralButtonClassNameContract, DesignSystem> = {
         color: neutralForegroundRest,
         fill: neutralForegroundRest,
         background: neutralFillRest,
-        "&:hover:enabled": {
+        "&:hover:enabled, a&:not($button__disabled):hover": {
             background: neutralFillHover,
             ...highContrastSelected,
         },
-        "&:active:enabled": {
+        "&:active:enabled, a&:not($button__disabled):active": {
             background: neutralFillActive,
         },
         ...applyFocusVisible<DesignSystem>({
@@ -45,18 +44,13 @@ const styles: ComponentStyles<NeutralButtonClassNameContract, DesignSystem> = {
             border: "0",
         },
         ...highContrastOutline,
-        "a&": {
+        "a&:not($button__disabled)": {
             ...highContrastLinkOutline,
-            "&:hover": {
+            "&:not($button__disabled):hover": {
                 ...highContrastLinkBorder,
             },
             "&$button__disabled": {
                 ...highContrastDisabledBorder,
-                "&:hover": {
-                    [highContrastSelector]: {
-                        "box-shadow": "none !important",
-                    },
-                },
             },
         },
     },

@@ -41,7 +41,7 @@ const styles: ComponentStyles<ActionTriggerClassNameContract, DesignSystem> = {
         "& $actionTrigger_glyph": {
             ...highContrastForeground,
         },
-        "&:hover:enabled": {
+        "&:hover:enabled, a&:not($actionTrigger__disabled):hover": {
             "& $actionTrigger_glyph": {
                 [highContrastSelector]: {
                     ...highContrastSelectedForeground,
@@ -49,7 +49,7 @@ const styles: ComponentStyles<ActionTriggerClassNameContract, DesignSystem> = {
             },
         },
         [`&$actionTrigger__justified, &$actionTrigger__lightweight`]: {
-            "&:hover:enabled": {
+            "&:hover:enabled, a&:not($actionTrigger__disabled):hover": {
                 "& $actionTrigger_glyph": {
                     [highContrastSelector]: {
                         fill: "Highlight !important",
@@ -72,7 +72,7 @@ const styles: ComponentStyles<ActionTriggerClassNameContract, DesignSystem> = {
                 ...highContrastSelectedForeground,
             },
         },
-        "&:hover:enabled": {
+        "&:hover:enabled, a&:not($actionTrigger__disabled):hover": {
             "& $actionTrigger_glyph": {
                 [highContrastSelector]: {
                     fill: "Highlight !important",

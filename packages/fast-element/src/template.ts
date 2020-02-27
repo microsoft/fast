@@ -1,31 +1,37 @@
 import { TemplateCompiler } from "./template-compiler";
-import { ITargetedInstruction } from "./instructions";
-import { HTMLView, IElementView, ISyntheticView } from "./view";
+import { TargetedInstruction } from "./instructions";
+import { HTMLView, ElementView, SyntheticView } from "./view";
 import { DOM } from "./dom";
-import { IBehavior } from "./behaviors/behavior";
+import { Behavior } from "./behaviors/behavior";
 import { Getter, AccessScopeExpression } from "./expression";
 import { Directive } from "./directives/directive";
 import { BindingDirective } from "./directives/bind";
 
-export interface ITemplate {
-    create(synthetic: false): IElementView | null;
-    create(synthetic: true): ISyntheticView;
+export interface Template {
+    create(synthetic: false): ElementView | null;
+    create(synthetic: true): SyntheticView;
 }
 
-export class HTMLTemplate extends Directive implements ITemplate {
+export class HTMLTemplate extends Directive implements Template {
     public behavior = HTMLTemplateBehavior;
 
     constructor(
         private templateElement: HTMLTemplateElement,
-        private instructions: ITargetedInstruction[]
+        private instructions: TargetedInstruction[]
     ) {
         super();
+
+        const fragment = templateElement.content;
+
+        if (DOM.isMarker(fragment.firstChild!)) {
+            fragment.insertBefore(DOM.createLocation(), fragment.firstChild);
+        }
     }
 
     public create(synthetic: boolean) {
         const fragment = this.templateElement.content.cloneNode(true) as DocumentFragment;
         const targets = fragment.querySelectorAll(".fm");
-        const behaviors: IBehavior[] = [];
+        const behaviors: Behavior[] = [];
 
         for (let i = 0, ii = targets.length; i < ii; ++i) {
             this.instructions[i].hydrate(targets[i], behaviors);
@@ -39,11 +45,11 @@ export class HTMLTemplate extends Directive implements ITemplate {
     }
 }
 
-export class HTMLTemplateBehavior implements IBehavior {
+export class HTMLTemplateBehavior implements Behavior {
     private location: Node;
-    private view: ISyntheticView;
+    private view: SyntheticView;
 
-    constructor(directive: ITemplate, marker: HTMLElement) {
+    constructor(directive: Template, marker: HTMLElement) {
         this.location = DOM.convertMarkerToLocation(marker);
         this.view = directive.create(true);
         this.view.insertBefore(this.location);
@@ -58,14 +64,14 @@ export class HTMLTemplateBehavior implements IBehavior {
     }
 }
 
-export const noopTemplate: ITemplate = {
+export const noopTemplate: Template = {
     create() {
         return null as any;
     },
 };
 
-export interface ICaptureType<T> {}
-type TemplateValue<T> = Getter<T> | string | number | Directive | ICaptureType<T>;
+export interface CaptureType<T> {}
+type TemplateValue<T> = Getter<T> | string | number | Directive | CaptureType<T>;
 
 export function html<T = any>(
     strings: TemplateStringsArray,

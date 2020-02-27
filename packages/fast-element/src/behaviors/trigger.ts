@@ -1,7 +1,7 @@
-import { IBehavior } from "./behavior";
+import { Behavior } from "./behavior";
 import { BindingDirective } from "../directives/bind";
 
-export class TriggerBinding implements IBehavior {
+export class TriggerBinding implements Behavior {
     private source: unknown = null;
 
     constructor(private directive: BindingDirective, private target: HTMLElement) {}

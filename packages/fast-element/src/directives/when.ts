@@ -1,19 +1,16 @@
 import { DOM } from "../dom";
-import { ITemplate, ICaptureType } from "../template";
-import { ISyntheticView } from "../view";
-import { IExpression, AccessScopeExpression, Getter } from "../expression";
-import { IBehavior } from "../behaviors/behavior";
-import {
-    IPropertyChangeListener,
-    Observable,
-    IGetterInspector,
-} from "../observation/observable";
+import { Template, CaptureType } from "../template";
+import { SyntheticView } from "../view";
+import { Expression, AccessScopeExpression, Getter } from "../expression";
+import { Behavior } from "../behaviors/behavior";
+import { Observable, GetterInspector } from "../observation/observable";
 import { BindingDirective } from "./bind";
+import { Subscriber } from "../observation/subscriber-collection";
 
 export class WhenDirective extends BindingDirective {
     behavior = WhenBehavior;
 
-    constructor(public expression: IExpression, public template: ITemplate) {
+    constructor(public expression: Expression, public template: Template) {
         super(expression);
     }
 
@@ -22,11 +19,10 @@ export class WhenDirective extends BindingDirective {
     }
 }
 
-export class WhenBehavior
-    implements IBehavior, IGetterInspector, IPropertyChangeListener {
+export class WhenBehavior implements Behavior, GetterInspector, Subscriber {
     private location: Node;
-    private view: ISyntheticView | null = null;
-    private cachedView?: ISyntheticView;
+    private view: SyntheticView | null = null;
+    private cachedView?: SyntheticView;
     private source: unknown;
 
     constructor(private directive: WhenDirective, marker: HTMLElement) {
@@ -47,10 +43,10 @@ export class WhenBehavior
     }
 
     inspect(source: any, propertyName: string) {
-        Observable.getNotifier(source).addPropertyChangeListener(propertyName, this);
+        Observable.getNotifier(source).subscribe(this, propertyName);
     }
 
-    onPropertyChanged(source: any, propertyName: string): void {
+    handleChange(source: any, propertyName: string): void {
         DOM.queueUpdate(this);
     }
 
@@ -75,7 +71,7 @@ export class WhenBehavior
 
 export function when<T = any, K = any>(
     expression: Getter<T, K> | keyof T,
-    template: ITemplate
-): ICaptureType<T> {
+    template: Template
+): CaptureType<T> {
     return new WhenDirective(AccessScopeExpression.from(expression as any), template);
 }

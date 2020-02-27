@@ -46,9 +46,13 @@ export class Page extends Foundation<PageHandledProps, PageUnhandledProps, {}> {
             ...attributes,
             style: {
                 display:
-                    this.props.cssGridPropertyName || canUseCssGrid()
+                    this.props.cssGridPropertyName === "grid"
                         ? "grid"
-                        : "-ms-grid",
+                        : this.props.cssGridPropertyName === "-ms-grid"
+                            ? "-ms-grid"
+                            : canUseCssGrid()
+                                ? "grid"
+                                : "-ms-grid",
                 gridTemplateColumns: columns,
                 msGridColumns: columns,
                 // attributes.style has to be spread here again in order to
