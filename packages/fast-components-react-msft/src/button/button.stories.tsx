@@ -37,6 +37,17 @@ storiesOf("Button", module)
             Primary Button
         </Button>
     ))
+    .add("Primary Anchor - disabled", () => (
+        <Button
+            appearance={ButtonAppearance.primary}
+            href="#"
+            beforeContent={glyphFactory(SVGGlyph.user)}
+            afterContent={glyphFactory(SVGGlyph.download)}
+            disabled={true}
+        >
+            Primary Anchor
+        </Button>
+    ))
     .add("Outline", () => (
         <Button appearance={ButtonAppearance.outline}>Outline Button</Button>
     ))

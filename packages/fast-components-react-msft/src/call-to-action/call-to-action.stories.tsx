@@ -12,6 +12,15 @@ storiesOf("Call to action", module)
             Buy now
         </CallToAction>
     ))
+    .add("Primary Anchor - disabled", () => (
+        <CallToAction
+            appearance={CallToActionAppearance.primary}
+            href="#"
+            disabled={true}
+        >
+            Buy now
+        </CallToAction>
+    ))
     .add("Justified", () => (
         <CallToAction appearance={CallToActionAppearance.justified}>Buy now</CallToAction>
     ))
@@ -33,9 +42,19 @@ storiesOf("Call to action", module)
     .add("Outline", () => (
         <CallToAction appearance={CallToActionAppearance.outline}>Buy now</CallToAction>
     ))
+    .add("Outline Anchor", () => (
+        <CallToAction appearance={CallToActionAppearance.outline} href="#">
+            Buy now
+        </CallToAction>
+    ))
     .add("Primary", () => (
         <CallToAction appearance={CallToActionAppearance.primary}>Buy now</CallToAction>
     ))
     .add("Stealth", () => (
         <CallToAction appearance={CallToActionAppearance.stealth}>Buy now</CallToAction>
+    ))
+    .add("Stealth Anchor", () => (
+        <CallToAction appearance={CallToActionAppearance.stealth} href="#">
+            Buy now
+        </CallToAction>
     ));
