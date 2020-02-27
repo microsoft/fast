@@ -34,8 +34,8 @@
     "@babel/core": "^7.8.4",
     "@storybook/cli": "^5.3.13",
     "@storybook/html": "^5.3.13",
-    "awesome-typescript-loader": "^5.2.1",
     "prettier": "1.14.3",
+    "ts-loader": "^6.2.1",
     "typescript": "^3.7.5"
   },
   "dependencies": {

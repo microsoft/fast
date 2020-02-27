@@ -1,18 +1,18 @@
 import { CustomElementDefinition, CustomElement } from "./custom-element";
 import { Constructable } from "./interfaces";
-import { IContainer, IRegistry, Resolver, InterfaceSymbol } from "./di";
-import { IElementView } from "./view";
-import { IElementProjector, HostProjector, ShadowDOMProjector } from "./projectors";
+import { Container, Registry, Resolver, InterfaceSymbol } from "./di";
+import { ElementView } from "./view";
+import { ElementProjector, HostProjector, ShadowDOMProjector } from "./projectors";
 import { PropertyChangeNotifier } from "./observation/notifier";
 
-export class Controller extends PropertyChangeNotifier implements IContainer {
-    public view: IElementView | null = null;
+export class Controller extends PropertyChangeNotifier implements Container {
+    public view: ElementView | null = null;
     private resolvers = new Map<any, Resolver>();
 
     public constructor(
         public readonly element: HTMLElement,
         public readonly definition: CustomElementDefinition,
-        public readonly projector: IElementProjector
+        public readonly projector: ElementProjector
     ) {
         super();
         this.definition.dependencies.forEach(x => x.register(this));
@@ -43,7 +43,7 @@ export class Controller extends PropertyChangeNotifier implements IContainer {
         (this.element as any)[bindable.property] = newValue;
     }
 
-    public register(registry: IRegistry) {
+    public register(registry: Registry) {
         registry.register(this);
     }
 
