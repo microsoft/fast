@@ -1,18 +1,18 @@
-import { AccessScopeExpression, IExpression, Getter } from "../expression";
-import { ITemplate, ICaptureType } from "../template";
-import { IBehavior } from "../behaviors/behavior";
+import { AccessScopeExpression, Expression, Getter } from "../expression";
+import { Template, CaptureType } from "../template";
+import { Behavior } from "../behaviors/behavior";
 import { DOM } from "../dom";
-import { Observable, IGetterInspector } from "../observation/observable";
+import { Observable, GetterInspector } from "../observation/observable";
 import { BindingDirective } from "./bind";
-import { ISyntheticView } from "../view";
-import { ISubscriber } from "../observation/subscriber-collection";
+import { SyntheticView } from "../view";
+import { Subscriber } from "../observation/subscriber-collection";
 import { ArrayObserver, enableArrayObservation } from "../observation/array-observer";
 import { Splice } from "../observation/array-change-records";
 
 export class RepeatDirective extends BindingDirective {
     behavior = RepeatBehavior;
 
-    constructor(public expression: IExpression, public template: ITemplate) {
+    constructor(public expression: Expression, public template: Template) {
         super(expression);
         enableArrayObservation();
     }
@@ -22,10 +22,10 @@ export class RepeatDirective extends BindingDirective {
     }
 }
 
-export class RepeatBehavior implements IBehavior, IGetterInspector, ISubscriber {
+export class RepeatBehavior implements Behavior, GetterInspector, Subscriber {
     private location: Node;
     private source: unknown;
-    private views: ISyntheticView[] = [];
+    private views: SyntheticView[] = [];
     private items: any[] | null = null;
     private observer?: ArrayObserver;
 
@@ -89,7 +89,7 @@ export class RepeatBehavior implements IBehavior, IGetterInspector, ISubscriber 
 
     private updateViews(splices: Splice[]) {
         const views = this.views;
-        const totalRemoved: ISyntheticView[] = [];
+        const totalRemoved: SyntheticView[] = [];
         let removeDelta = 0;
 
         for (let i = 0, ii = splices.length; i < ii; ++i) {
@@ -172,7 +172,7 @@ export class RepeatBehavior implements IBehavior, IGetterInspector, ISubscriber 
 
 export function repeat<T = any, K = any>(
     expression: Getter<T, K[]> | keyof T,
-    template: ITemplate
-): ICaptureType<T> {
+    template: Template
+): CaptureType<T> {
     return new RepeatDirective(AccessScopeExpression.from(expression as any), template);
 }

@@ -1,7 +1,7 @@
 /**
  * Implemented by objects that are interested in change notifications.
  */
-export interface ISubscriber {
+export interface Subscriber {
     handleChange(source: any, args: any): void;
 }
 
@@ -14,10 +14,10 @@ export interface ISubscriber {
  * If the collection ever exceeds three subscribers, it will spill over into an array.
  */
 export class SubscriberCollection {
-    private sub1: ISubscriber | undefined = void 0;
-    private sub2: ISubscriber | undefined = void 0;
-    private sub3: ISubscriber | undefined = void 0;
-    private spillover: ISubscriber[] | undefined = void 0;
+    private sub1: Subscriber | undefined = void 0;
+    private sub2: Subscriber | undefined = void 0;
+    private sub3: Subscriber | undefined = void 0;
+    private spillover: Subscriber[] | undefined = void 0;
 
     public hasSubscribers() {
         return (
@@ -28,14 +28,14 @@ export class SubscriberCollection {
         );
     }
 
-    public hasSubscriber(subscriber: ISubscriber) {
+    public hasSubscriber(subscriber: Subscriber) {
         if (this.sub1 === subscriber) return true;
         if (this.sub2 === subscriber) return true;
         if (this.sub3 === subscriber) return true;
         return this.spillover !== void 0 && this.spillover.indexOf(subscriber) !== -1;
     }
 
-    public addSubscriber(subscriber: ISubscriber) {
+    public addSubscriber(subscriber: Subscriber) {
         if (this.hasSubscriber(subscriber)) {
             return;
         }
@@ -62,7 +62,7 @@ export class SubscriberCollection {
         this.spillover.push(subscriber);
     }
 
-    public removeSubscriber(subscriber: ISubscriber) {
+    public removeSubscriber(subscriber: Subscriber) {
         if (this.sub1 === subscriber) {
             this.sub1 = void 0;
             return;
