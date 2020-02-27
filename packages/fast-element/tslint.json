@@ -8,5 +8,8 @@
             "node_modules/**",
             "dist/**"
         ]
+    },
+    "rules": {
+        "max-classes-per-file": false
     }
 }
