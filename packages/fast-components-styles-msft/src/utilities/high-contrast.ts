@@ -223,6 +223,7 @@ export const highContrastBorderColor: CSSRules<DesignSystem> = {
 // Used to set box-shadow border color to be 'link' color
 export const highContrastLinkBorder: CSSRules<DesignSystem> = {
     [highContrastSelector]: {
+        background: HighContrastColor.buttonBackground,
         "box-shadow": format(
             "0 0 0 {0} inset {1}",
             toPx(outlineWidth),

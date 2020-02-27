@@ -61,7 +61,7 @@ const styles: ComponentStyles<AccentButtonClassNameContract, DesignSystem> = {
             ...highContrastSelectedForeground,
         },
         ...highContrastAccent,
-        "a&": {
+        "a&:not($button__disabled)": {
             ...highContrastLinkOutline,
             "& $button_beforeContent, & $button_afterContent": {
                 ...highContrastLinkForeground,

@@ -19,7 +19,6 @@ import {
     highContrastOutline,
     highContrastOutlineFocus,
     highContrastSelected,
-    highContrastSelector,
 } from "../utilities/high-contrast";
 
 const styles: ComponentStyles<LightweightButtonClassNameContract, DesignSystem> = {
@@ -65,7 +64,7 @@ const styles: ComponentStyles<LightweightButtonClassNameContract, DesignSystem> 
             ...highContrastDisabledBorder,
         },
         ...highContrastOutline,
-        "a&": {
+        "a&:not($button__disabled)": {
             ...highContrastLinkOutline,
             "&:not($button__disabled):hover": {
                 ...highContrastLinkBorder,

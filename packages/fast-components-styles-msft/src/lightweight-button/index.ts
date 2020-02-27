@@ -75,7 +75,7 @@ const styles: ComponentStyles<LightweightButtonClassNameContract, DesignSystem> 
             "background-color": "transparent",
         },
         ...highContrastStealth,
-        "a&": {
+        "a&:not($button__disabled)": {
             [highContrastSelector]: {
                 background: HighContrastColor.background,
                 color: highContrastLinkValue,

@@ -16,7 +16,6 @@ import {
     highContrastLinkOutline,
     highContrastOutlineFocus,
     highContrastSelected,
-    highContrastSelector,
     highContrastStealth,
 } from "../utilities/high-contrast";
 
@@ -42,7 +41,7 @@ const styles: ComponentStyles<StealthButtonClassNameContract, DesignSystem> = {
             ...highContrastDisabledBorder,
         },
         ...highContrastStealth,
-        "a&": {
+        "a&:not($button__disabled)": {
             ...highContrastLinkOutline,
             "&:not($button__disabled):hover": {
                 ...highContrastLinkBorder,
