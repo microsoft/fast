@@ -1,6 +1,6 @@
-import { IBehavior } from "../behaviors/behavior";
+import { Behavior } from "../behaviors/behavior";
 import { Directive } from "./directive";
-import { ICaptureType } from "../template";
+import { CaptureType } from "../template";
 
 export class RefDirective extends Directive {
     behavior = RefBinding;
@@ -14,7 +14,7 @@ export class RefDirective extends Directive {
     }
 }
 
-export class RefBinding implements IBehavior {
+export class RefBinding implements Behavior {
     constructor(private directive: RefDirective, private target: HTMLElement) {}
 
     bind(source: any) {
@@ -24,6 +24,6 @@ export class RefBinding implements IBehavior {
     unbind() {}
 }
 
-export function ref<T = any>(propertyName: keyof T & string): ICaptureType<T> {
+export function ref<T = any>(propertyName: keyof T & string): CaptureType<T> {
     return new RefDirective(propertyName);
 }

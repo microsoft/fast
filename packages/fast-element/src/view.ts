@@ -1,22 +1,22 @@
-import { IBehavior } from "./behaviors/behavior";
+import { Behavior } from "./behaviors/behavior";
 
-export interface IView {
+export interface View {
     bind(source: unknown): void;
     unbind(): void;
     remove(): void;
 }
 
-export interface IElementView extends IView {
+export interface ElementView extends View {
     appendTo(node: Node): void;
 }
 
-export interface ISyntheticView extends IView {
+export interface SyntheticView extends View {
     readonly firstChild: Node;
     readonly lastChild: Node;
     insertBefore(node: Node): void;
 }
 
-export class HTMLView implements IView, IElementView, ISyntheticView {
+export class HTMLView implements View, ElementView, SyntheticView {
     private parent?: Node;
     private source: any = void 0;
     public firstChild!: Node;
@@ -24,7 +24,7 @@ export class HTMLView implements IView, IElementView, ISyntheticView {
 
     constructor(
         private fragment: DocumentFragment,
-        private behaviors: IBehavior[],
+        private behaviors: Behavior[],
         private isSynthetic: boolean = false
     ) {
         if (isSynthetic) {
