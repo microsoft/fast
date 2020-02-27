@@ -1,6 +1,6 @@
-import { InterpolationExpression, AccessScopeExpression, Getter } from "./expression";
+import { InterpolationExpression, AccessScopeExpression } from "./expression";
 import { HTMLTemplate } from "./template";
-import { ITargetedInstruction, CompositeInstruction } from "./instructions";
+import { TargetedInstruction, CompositeInstruction } from "./instructions";
 import { DOM } from "./dom";
 import {
     TextBinding,
@@ -37,7 +37,7 @@ export class TemplateCompiler {
             element = html;
         }
 
-        const instructions: ITargetedInstruction[] = [];
+        const instructions: TargetedInstruction[] = [];
         this.compileNode(element.content, element, directives, instructions);
 
         return new HTMLTemplate(element, instructions);
@@ -47,7 +47,7 @@ export class TemplateCompiler {
         node: Node,
         parentNode: Node,
         directives: Directive[],
-        instructions: ITargetedInstruction[]
+        instructions: TargetedInstruction[]
     ): MaybeNode {
         switch (node.nodeType) {
             case 1: //element node
@@ -112,10 +112,10 @@ export class TemplateCompiler {
     private compileElement(
         node: HTMLElement,
         directives: Directive[],
-        instructions: ITargetedInstruction[]
+        instructions: TargetedInstruction[]
     ): MaybeNode {
         const attributes = node.attributes;
-        let elementInstruction: ITargetedInstruction | null = null;
+        let elementInstruction: TargetedInstruction | null = null;
 
         for (let i = 0, ii = attributes.length; i < ii; ++i) {
             const attr = attributes[i];
@@ -154,7 +154,7 @@ export class TemplateCompiler {
     private compileBlock(
         node: HTMLElement,
         directives: Directive[],
-        instructions: ITargetedInstruction[]
+        instructions: TargetedInstruction[]
     ): MaybeNode {
         const instructionIndex = parseInt(node.getAttribute("i")!);
         const directive = directives[instructionIndex];

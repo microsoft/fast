@@ -1,28 +1,28 @@
 import { Controller } from "../controller";
 import { FastElement } from "../fast-element";
-import { INotifier, PropertyChangeNotifier } from "./notifier";
+import { Notifier, PropertyChangeNotifier } from "./notifier";
 
-export interface IGetterInspector {
+export interface GetterInspector {
     inspect(source: unknown, propertyName: string): void;
 }
 
-const notifierLookup = new WeakMap<any, INotifier>();
-let currentInspector: IGetterInspector | undefined = void 0;
+const notifierLookup = new WeakMap<any, Notifier>();
+let currentInspector: GetterInspector | undefined = void 0;
 
 export const Observable = {
-    setInspector(watcher: IGetterInspector) {
-        currentInspector = watcher;
+    setInspector(inspector: GetterInspector) {
+        currentInspector = inspector;
     },
 
     clearInspector() {
         currentInspector = void 0;
     },
 
-    createArrayObserver(array: any[]): INotifier {
+    createArrayObserver(array: any[]): Notifier {
         throw new Error("Must call enableArrayObservation before observing arrays.");
     },
 
-    getNotifier<T extends INotifier = INotifier>(source: any): T {
+    getNotifier<T extends Notifier = Notifier>(source: any): T {
         let found = source.$controller || notifierLookup.get(source);
 
         if (found === void 0) {

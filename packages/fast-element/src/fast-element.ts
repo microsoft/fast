@@ -1,6 +1,6 @@
 import { Controller } from "./controller";
 
-export function createFastElement(BaseType = HTMLElement) {
+export function createFastElement(BaseType: typeof HTMLElement) {
     return class FastElement extends BaseType {
         public $controller!: Controller;
 
@@ -27,4 +27,4 @@ export function createFastElement(BaseType = HTMLElement) {
     };
 }
 
-export const FastElement = createFastElement();
+export const FastElement = createFastElement(HTMLElement);
