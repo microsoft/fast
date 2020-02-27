@@ -14,7 +14,7 @@ export type PartialCustomElementDefinition = {
 };
 
 export function customElement(nameOrDef: string | PartialCustomElementDefinition) {
-    return function(type: Constructable<HTMLElement>) {
+    return function(type: Constructable) {
         CustomElement.define(nameOrDef, type);
     };
 }
@@ -22,7 +22,7 @@ export function customElement(nameOrDef: string | PartialCustomElementDefinition
 const elementDefinitions = new Map<Constructable, CustomElementDefinition>();
 
 export const CustomElement = {
-    define<T extends Constructable<HTMLElement>>(
+    define<T extends Constructable>(
         nameOrDef: string | PartialCustomElementDefinition,
         Type: T
     ): T {
@@ -40,7 +40,7 @@ export const CustomElement = {
         );
 
         elementDefinitions.set(Type, definition);
-        customElements.define(definition.name, Type, definition.elementOptions);
+        customElements.define(definition.name, Type as any, definition.elementOptions);
         return Type;
     },
 
