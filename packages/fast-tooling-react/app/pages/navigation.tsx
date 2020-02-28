@@ -1,19 +1,38 @@
 import React from "react";
 import { Navigation } from "../../src";
-import childrenSchema from "./navigation/children.schema.json";
-import { childOptions, children } from "./navigation/example.data";
+import childrenSchema from "./navigation/children.schema";
+import { children } from "./navigation/example.data";
+import { MessageSystem, MessageSystemType } from "../../src/message-system";
+import noChildrenSchema from "./navigation/no-children.schema";
 
 export interface NavigationTestPageState {
-    data: any;
+    navigation: any;
     dragAndDropReordering: boolean;
 }
+
+let fastMessageSystem: MessageSystem;
 
 class NavigationTestPage extends React.Component<{}, NavigationTestPageState> {
     constructor(props: {}) {
         super(props);
 
+        if ((window as any).Worker) {
+            fastMessageSystem = new MessageSystem({
+                webWorker: "message-system.js",
+                dataDictionary: children,
+                schemaDictionary: {
+                    [childrenSchema.id]: childrenSchema,
+                    [noChildrenSchema.id]: noChildrenSchema,
+                },
+            });
+        }
+
+        fastMessageSystem.add({
+            onMessage: this.handleMessageSystem,
+        });
+
         this.state = {
-            data: children,
+            navigation: null,
             dragAndDropReordering: false,
         };
     }
@@ -29,27 +48,28 @@ class NavigationTestPage extends React.Component<{}, NavigationTestPageState> {
                 />
                 <label htmlFor={"dragAndDropReordering"}>Drag and drop reordering</label>
                 <Navigation
-                    data={this.state.data}
-                    schema={childrenSchema}
-                    childOptions={childOptions}
-                    onChange={this.handleChange}
+                    messageSystem={fastMessageSystem}
                     dragAndDropReordering={this.state.dragAndDropReordering}
                 />
-                <pre>{JSON.stringify(this.state.data, null, 2)}</pre>
+                <pre>{JSON.stringify(this.state.navigation, null, 2)}</pre>
             </div>
         );
     }
-
-    private handleChange = (data: any): void => {
-        this.setState({
-            data,
-        });
-    };
 
     private handleUpdateDragAndDropReordering = (): void => {
         this.setState({
             dragAndDropReordering: !this.state.dragAndDropReordering,
         });
+    };
+
+    private handleMessageSystem = (e: MessageEvent): void => {
+        if (e.data) {
+            if (e.data.type === MessageSystemType.initialize) {
+                this.setState({
+                    navigation: e.data.navigationDictionary,
+                });
+            }
+        }
     };
 }
 
