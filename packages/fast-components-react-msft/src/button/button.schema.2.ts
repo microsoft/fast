@@ -1,4 +1,4 @@
-import { childrenSchema, ChildrenType } from "@microsoft/fast-tooling";
+import { linkedDataSchema } from "@microsoft/fast-tooling";
 
 /**
  * Complies with FAST Tooling 2.0
@@ -25,24 +25,21 @@ export default {
             enum: ["justified", "lightweight", "outline", "primary", "stealth"],
         },
         children: {
-            ...childrenSchema,
+            ...linkedDataSchema,
             formPluginId: "@microsoft/fast-components-react-msft/button/children",
             examples: ["Lorem"],
-            allowTypes: [ChildrenType.string],
         },
         beforeContent: {
-            ...childrenSchema,
+            ...linkedDataSchema,
             title: "Before content",
             formPluginId: "@microsoft/fast-components-react-msft/button/beforeContent",
             pluginId: "@microsoft/fast-components-react-msft/button/beforeContent",
-            allowTypes: [ChildrenType.component],
         },
         afterContent: {
-            ...childrenSchema,
+            ...linkedDataSchema,
             title: "After content",
             formPluginId: "@microsoft/fast-components-react-msft/button/afterContent",
             pluginId: "@microsoft/fast-components-react-msft/button/afterContent",
-            allowTypes: [ChildrenType.component],
         },
     },
     required: ["children"],

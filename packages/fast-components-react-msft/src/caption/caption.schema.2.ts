@@ -1,4 +1,4 @@
-import { childrenSchema, ChildrenType } from "@microsoft/fast-tooling";
+import { linkedDataSchema } from "@microsoft/fast-tooling";
 
 /**
  * Complies with FAST Tooling 2.0
@@ -24,10 +24,9 @@ export default {
             default: 1,
         },
         children: {
-            ...childrenSchema,
+            ...linkedDataSchema,
             formPluginId: "@microsoft/fast-components-react-msft/caption/children",
             examples: ["Lorem ipsum dolor sit amet."],
-            allowTypes: [ChildrenType.string, ChildrenType.component],
         },
     },
     required: ["children"],
