@@ -21,5 +21,5 @@ export interface MessageSystemConfig {
     /**
      * The schema to map to the message system
      */
-    schemas: SchemaDictionary;
+    schemaDictionary: SchemaDictionary;
 }

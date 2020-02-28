@@ -7,6 +7,18 @@ export interface TreeNavigation {
     [key: string]: TreeNavigationItem;
 }
 
+export interface ParentDictionaryItem {
+    /**
+     * The dictionary ID
+     */
+    id: string;
+
+    /**
+     * The data location from the dictionary item
+     */
+    dataLocation: string;
+}
+
 export interface TreeNavigationItem {
     /**
      * The ID for this item
@@ -17,6 +29,11 @@ export interface TreeNavigationItem {
      * The ID for the parent of this item
      */
     parent: string | null;
+
+    /**
+     * The dictionary item that is the parent of this item
+     */
+    parentDictionaryItem?: ParentDictionaryItem;
 
     /**
      * The relative data location
