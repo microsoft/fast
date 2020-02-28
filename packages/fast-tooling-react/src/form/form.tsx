@@ -3,6 +3,7 @@ import {
     ButtonControl,
     CheckboxControl,
     DisplayControl,
+    LinkedDataControl,
     NumberFieldControl,
     SectionControl,
     SectionLinkControl,
@@ -16,8 +17,8 @@ import {
     SingleLineControlPlugin,
     StandardControlPlugin,
 } from "./templates";
-import { ControlContext, OnChangeConfig } from "./templates/types";
-import { BreadcrumbItem, getBreadcrumbs } from "./utilities/breadcrumb";
+import { ControlContext, LinkedDataActionType, OnChangeConfig } from "./templates/types";
+import { BreadcrumbItem, getDictionaryBreadcrumbs } from "./utilities/breadcrumb";
 import {
     BreadcrumbItemEventHandler,
     ControlPluginConfig,
@@ -51,6 +52,7 @@ class Form extends React.Component<
     public static displayName: string = "Form";
 
     public static defaultProps: Partial<FormProps> = {
+        controls: [],
         displayValidationBrowserDefault: true,
     };
 
@@ -64,6 +66,7 @@ class Form extends React.Component<
      */
     private selectControl: StandardControlPlugin;
     private displayControl: StandardControlPlugin;
+    private linkedDataControl: StandardControlPlugin;
     private sectionLinkControl: StandardControlPlugin;
     private sectionControl: BareControlPlugin;
     private checkboxControl: SingleLineControlPlugin;
@@ -98,10 +101,14 @@ class Form extends React.Component<
         }
 
         this.state = {
-            activeNavigationId: "",
+            activeDictionaryId: "",
+            activeNavigationConfigId: "",
             data: void 0,
+            dataDictionary: void 0,
             schema: {},
+            schemaDictionary: {},
             navigation: void 0,
+            navigationDictionary: void 0,
             validationErrors: [],
         };
     }
@@ -121,7 +128,7 @@ class Form extends React.Component<
     }
 
     private renderForm(): React.ReactNode {
-        return this.state.navigation ? (
+        return this.state.navigationDictionary ? (
             <form onSubmit={this.handleSubmit}>
                 {this.renderBreadcrumbs()}
                 {this.renderSection()}
@@ -137,9 +144,13 @@ class Form extends React.Component<
             case MessageSystemType.initialize:
                 this.setState({
                     schema: e.data.schema,
+                    schemaDictionary: e.data.schemaDictionary,
                     data: e.data.data,
+                    dataDictionary: e.data.dataDictionary,
                     navigation: e.data.navigation,
-                    activeNavigationId: e.data.activeId,
+                    navigationDictionary: e.data.navigationDictionary,
+                    activeDictionaryId: e.data.activeDictionaryId,
+                    activeNavigationConfigId: e.data.activeNavigationConfigId,
                     validationErrors: getValidationErrors(
                         e.data.schema,
                         this.getDataForValidation(this.props, e.data.data)
@@ -149,7 +160,9 @@ class Form extends React.Component<
             case MessageSystemType.data:
                 this.setState({
                     data: e.data.data,
+                    dataDictionary: e.data.dataDictionary,
                     navigation: e.data.navigation,
+                    navigationDictionary: e.data.navigationDictionary,
                     validationErrors: getValidationErrors(
                         this.state.schema,
                         this.getDataForValidation(this.props, e.data.data)
@@ -158,8 +171,10 @@ class Form extends React.Component<
                 break;
             case MessageSystemType.navigation:
                 this.setState({
-                    activeNavigationId: e.data.activeId,
+                    activeDictionaryId: e.data.activeDictionaryId,
+                    activeNavigationConfigId: e.data.activeNavigationConfigId,
                 });
+                break;
         }
     };
 
@@ -230,6 +245,12 @@ class Form extends React.Component<
                     component: ArrayControl,
                     context: ControlContext.fill,
                 };
+            case ControlType.linkedData:
+                return {
+                    plugin: StandardControlPlugin,
+                    component: LinkedDataControl,
+                    context: ControlContext.fill,
+                };
             case ControlType.numberField:
                 return {
                     plugin: StandardControlPlugin,
@@ -286,6 +307,10 @@ class Form extends React.Component<
             hasCustomControlPlugins,
             ControlType.array
         );
+        this.linkedDataControl = this.findControlPlugin(
+            hasCustomControlPlugins,
+            ControlType.linkedData
+        );
         this.numberFieldControl = this.findControlPlugin(
             hasCustomControlPlugins,
             ControlType.numberField
@@ -327,9 +352,10 @@ class Form extends React.Component<
      * Generates the breadcrumb navigation
      */
     private renderBreadcrumbs(): JSX.Element {
-        const breadcrumbs: BreadcrumbItem[] = getBreadcrumbs(
-            this.state.navigation[0],
-            this.state.activeNavigationId,
+        const breadcrumbs: BreadcrumbItem[] = getDictionaryBreadcrumbs(
+            this.state.navigationDictionary,
+            this.state.activeDictionaryId,
+            this.state.activeNavigationConfigId,
             this.handleBreadcrumbClick
         );
 
@@ -369,9 +395,9 @@ class Form extends React.Component<
      */
     private renderSection(): React.ReactNode {
         let control: BareControlPlugin = this.sectionControl;
-        const navigationItem: TreeNavigationItem = this.state.navigation[0][
-            this.state.activeNavigationId
-        ];
+        const navigationItem: TreeNavigationItem = this.state.navigationDictionary[0][
+            this.state.activeDictionaryId
+        ][0][this.state.activeNavigationConfigId];
 
         // Check to see if there is any associated `formControlId`
         // then check for the id within the passed controlPlugins
@@ -381,6 +407,10 @@ class Form extends React.Component<
                     (navigationItem.schema as any).formControlId
                 );
             });
+
+            if (control === undefined) {
+                control = this.sectionControl;
+            }
         }
 
         control.updateProps({
@@ -391,9 +421,11 @@ class Form extends React.Component<
             invalidMessage: "",
             component: this.controlComponents[ControlType.section],
             schema: navigationItem.schema,
+            schemaDictionary: this.state.schemaDictionary,
             controls: {
                 button: this.buttonControl,
                 array: this.arrayControl,
+                linkedData: this.linkedDataControl,
                 checkbox: this.checkboxControl,
                 display: this.displayControl,
                 textarea: this.textareaControl,
@@ -410,10 +442,15 @@ class Form extends React.Component<
             schemaLocation: navigationItem.schemaLocation,
             default: get(navigationItem, "schema.default"),
             disabled: get(navigationItem, "schema.disabled"),
-            dataLocation: this.state.navigation[0][navigationItem.self]
-                .relativeDataLocation,
-            navigationId: navigationItem.self,
-            navigation: this.state.navigation[0],
+            dataLocation: this.state.navigationDictionary[0][
+                this.state.activeDictionaryId
+            ][0][navigationItem.self].relativeDataLocation,
+            navigationConfigId: navigationItem.self,
+            dictionaryId: this.state.activeDictionaryId,
+            dataDictionary: this.state.dataDictionary,
+            navigation: this.state.navigationDictionary[0][
+                this.state.activeDictionaryId
+            ][0],
             untitled: this.untitled,
             validationErrors: this.state.validationErrors,
             displayValidationBrowserDefault: this.props.displayValidationBrowserDefault,
@@ -424,18 +461,42 @@ class Form extends React.Component<
     }
 
     private handleBreadcrumbClick = (
-        navigationId: string
+        dictionaryId: string,
+        navigationConfigId: string
     ): BreadcrumbItemEventHandler => {
         return (e: React.MouseEvent): void => {
             e.preventDefault();
 
-            this.handleUpdateActiveSection(navigationId);
+            this.handleUpdateActiveSection(dictionaryId, navigationConfigId);
         };
     };
 
     private handleOnChange = (config: OnChangeConfig): void => {
         if (this.props.messageSystem) {
-            if (config.isArray) {
+            if (config.isLinkedData) {
+                if (config.linkedDataAction === LinkedDataActionType.add) {
+                    this.props.messageSystem.postMessage({
+                        type: MessageSystemType.data,
+                        action: MessageSystemDataTypeAction.addLinkedData,
+                        dataLocation: config.dataLocation,
+                        linkedData: config.value,
+                    });
+                } else if (config.linkedDataAction === LinkedDataActionType.reorder) {
+                    this.props.messageSystem.postMessage({
+                        type: MessageSystemType.data,
+                        action: MessageSystemDataTypeAction.reorderLinkedData,
+                        dataLocation: config.dataLocation,
+                        linkedData: config.value,
+                    });
+                } else if (config.linkedDataAction === LinkedDataActionType.remove) {
+                    this.props.messageSystem.postMessage({
+                        type: MessageSystemType.data,
+                        action: MessageSystemDataTypeAction.removeLinkedData,
+                        dataLocation: config.dataLocation,
+                        linkedData: config.value,
+                    });
+                }
+            } else if (config.isArray) {
                 const updatedData: any = cloneDeep(
                     get(this.state.data, config.dataLocation)
                 );
@@ -477,12 +538,19 @@ class Form extends React.Component<
     /**
      * Handles an update to the active section and component
      */
-    private handleUpdateActiveSection = (navigationId: string): void => {
+    private handleUpdateActiveSection = (
+        dictionaryId: string,
+        navigationConfigId?: string
+    ): void => {
         if (this.props.messageSystem) {
             this.props.messageSystem.postMessage({
                 type: MessageSystemType.navigation,
                 action: MessageSystemNavigationTypeAction.update,
-                activeId: navigationId,
+                activeNavigationConfigId:
+                    navigationConfigId !== undefined
+                        ? navigationConfigId
+                        : this.state.navigationDictionary[0][dictionaryId][1],
+                activeDictionaryId: dictionaryId,
             });
         }
     };

@@ -162,7 +162,10 @@ class SectionControl extends React.Component<
                 label={getLabel(label, this.state.schema.title)}
                 data={getData(propertyName, this.props.value)}
                 dataLocation={dataLocation}
-                navigationId={navigationId}
+                dictionaryId={this.props.dictionaryId}
+                dataDictionary={this.props.dataDictionary}
+                schemaDictionary={this.props.schemaDictionary}
+                navigationConfigId={navigationId}
                 navigation={this.props.navigation}
                 schemaLocation={schemaLocation}
                 propertyName={propertyName}
@@ -216,7 +219,7 @@ class SectionControl extends React.Component<
                                 ? [this.props.dataLocation, propertyName].join(".")
                                 : propertyName;
                         const navigationId: string = this.props.navigation[
-                            this.props.navigationId
+                            this.props.navigationConfigId
                         ].items[index];
 
                         if (!isNotRequired) {
@@ -356,7 +359,9 @@ class SectionControl extends React.Component<
                     controlComponents={this.props.controlComponents}
                     formControlId={this.state.schema.formControlId}
                     dataLocation={this.props.dataLocation}
-                    navigationId={this.props.navigationId}
+                    navigationConfigId={this.props.navigationConfigId}
+                    dictionaryId={this.props.dictionaryId}
+                    dataDictionary={this.props.dataDictionary}
                     navigation={this.props.navigation}
                     schemaLocation={schemaLocation}
                     examples={get(schema, "examples")}
@@ -365,6 +370,7 @@ class SectionControl extends React.Component<
                     enumeratedProperties={this.getEnumeratedProperties(schema)}
                     data={this.props.value}
                     schema={schema}
+                    schemaDictionary={this.props.schemaDictionary}
                     required={schema.required}
                     label={schema.title || this.props.untitled}
                     onChange={this.props.onChange}
@@ -403,7 +409,7 @@ class SectionControl extends React.Component<
                         "",
                         this.getSchemaLocation(),
                         this.props.dataLocation,
-                        this.props.navigationId,
+                        this.props.navigationConfigId,
                         true,
                         this.props.disabled || this.state.schema.disabled,
                         "",

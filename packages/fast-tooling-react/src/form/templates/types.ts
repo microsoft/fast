@@ -1,7 +1,7 @@
 export enum ControlType {
     select = "select",
     array = "array",
-    children = "children",
+    linkedData = "linkedData",
     checkbox = "checkbox",
     numberField = "numberField",
     section = "section",
@@ -33,21 +33,10 @@ export enum ArrayAction {
     remove = "remove",
 }
 
-export interface UpdateSectionConfig {
-    /**
-     * The lodash path location of the data in the schema
-     */
-    schemaLocation: string;
-
-    /**
-     * The lodash path location of the data
-     */
-    dataLocation: string;
-
-    /**
-     * The JSON schema
-     */
-    schema?: any;
+export enum LinkedDataActionType {
+    add = "add",
+    remove = "remove",
+    reorder = "reorder",
 }
 
 export interface OnChangeConfig extends ControlOnChangeConfig {
@@ -55,6 +44,11 @@ export interface OnChangeConfig extends ControlOnChangeConfig {
      * The lodash path location of the data
      */
     dataLocation: string;
+
+    /**
+     * The dictionaryId of the data
+     */
+    dictionaryId: string;
 }
 
 export interface ControlOnChangeConfig {
@@ -67,6 +61,16 @@ export interface ControlOnChangeConfig {
      * Whether this data is an array
      */
     isArray?: boolean;
+
+    /**
+     * Whether this data is a new linked data item
+     */
+    isLinkedData?: boolean;
+
+    /**
+     *
+     */
+    linkedDataAction?: LinkedDataActionType;
 
     /**
      * The index if this data is an array

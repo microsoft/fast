@@ -31,11 +31,22 @@ const props: BareControlTemplateProps = {
     index: 1,
     type: ControlType.section,
     dataLocation: "",
-    navigationId: "",
+    navigationConfigId: "",
+    dictionaryId: "",
+    dataDictionary: [
+        {
+            "": {
+                schemaId: "",
+                data: {},
+            },
+        },
+        "",
+    ],
     navigation: {},
     schemaLocation: "",
     control: jest.fn(),
     data: void 0,
+    schemaDictionary: {},
     schema: {},
     required: void 0,
     label: "foo",
@@ -57,6 +68,7 @@ const props: BareControlTemplateProps = {
     },
     controls: {
         [ControlType.array]: null,
+        [ControlType.linkedData]: null,
         [ControlType.button]: null,
         [ControlType.checkbox]: null,
         [ControlType.display]: null,

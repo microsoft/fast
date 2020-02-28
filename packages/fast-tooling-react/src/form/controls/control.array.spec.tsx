@@ -28,7 +28,8 @@ configure({ adapter: new Adapter() });
 const arrayProps: ArrayControlProps = {
     type: ControlType.array,
     dataLocation: "",
-    navigationId: "",
+    navigationConfigId: "",
+    dictionaryId: "",
     navigation: {
         "": {
             self: "",
@@ -240,6 +241,7 @@ describe("ArrayControl", () => {
                 value={[arrayItem1, arrayItem2]}
                 managedClasses={managedClasses}
                 onUpdateSection={handleSectionUpdate}
+                navigationConfigId={""}
                 navigation={{
                     "": {
                         self: "",
@@ -284,7 +286,7 @@ describe("ArrayControl", () => {
             .simulate("click");
 
         expect(handleSectionUpdate).toHaveBeenCalled();
-        expect(handleSectionUpdate.mock.calls[0][0]).toEqual("[0]");
+        expect(handleSectionUpdate.mock.calls[0][1]).toEqual("[0]");
 
         const handleSectionUpdateWithTestLocations: any = jest.fn();
         const renderedWithTestLocations: any = mount(
@@ -295,7 +297,7 @@ describe("ArrayControl", () => {
                 onUpdateSection={handleSectionUpdateWithTestLocations}
                 schemaLocation={"properties.test"}
                 dataLocation={"test"}
-                navigationId={"test"}
+                navigationConfigId={"test"}
                 navigation={{
                     "": {
                         self: "",
@@ -351,7 +353,7 @@ describe("ArrayControl", () => {
             .simulate("click");
 
         expect(handleSectionUpdateWithTestLocations).toHaveBeenCalled();
-        expect(handleSectionUpdateWithTestLocations.mock.calls[0][0]).toEqual("test[0]");
+        expect(handleSectionUpdateWithTestLocations.mock.calls[0][1]).toEqual("test[0]");
     });
     test("should add a disabled class if the disabled prop has been passed", () => {
         const rendered: any = mount(
