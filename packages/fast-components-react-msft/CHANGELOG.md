@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.30.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-msft@4.29.4...@microsoft/fast-components-react-msft@4.30.0) (2020-02-28)
+
+
+### Bug Fixes
+
+* button anchors have no hover or active states ([#2698](https://github.com/Microsoft/fast-dna/issues/2698)) ([e2d1973](https://github.com/Microsoft/fast-dna/commit/e2d1973))
+* select "aria-labelledby" should never be"undefined" string, remove "aria-live" tag ([#2650](https://github.com/Microsoft/fast-dna/issues/2650)) ([9ed0124](https://github.com/Microsoft/fast-dna/commit/9ed0124))
+* update high contrast link color value inside high contrast query ([#2673](https://github.com/Microsoft/fast-dna/issues/2673)) ([e131e69](https://github.com/Microsoft/fast-dna/commit/e131e69))
+* update sequence indicators to have visual focus styling ([#2686](https://github.com/Microsoft/fast-dna/issues/2686)) ([8e591cf](https://github.com/Microsoft/fast-dna/commit/8e591cf))
+
+
+### Features
+
+* viewport positioner enable delayed instanciation ([#2654](https://github.com/Microsoft/fast-dna/issues/2654)) ([e81991a](https://github.com/Microsoft/fast-dna/commit/e81991a))
+
+
+
+
+
 ## [4.29.4](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-msft@4.29.3...@microsoft/fast-components-react-msft@4.29.4) (2020-02-07)
 
 
