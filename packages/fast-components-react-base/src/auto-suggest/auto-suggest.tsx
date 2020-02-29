@@ -87,8 +87,6 @@ class AutoSuggest extends Foundation<
     }
 
     public componentDidUpdate(prevProps: AutoSuggestProps): void {
-        let updatedMenuVisibility: boolean = this.state.isMenuOpen;
-
         if (
             !this.state.isMenuOpen &&
             React.Children.count(this.renderChildren(prevProps.children)) === 0 &&
@@ -98,11 +96,7 @@ class AutoSuggest extends Foundation<
         ) {
             // if the component has focus and a previously empty suggestions list is
             // populated we should open the menu
-            updatedMenuVisibility = true;
-        }
-
-        if (updatedMenuVisibility !== this.state.isMenuOpen) {
-            this.toggleMenu(updatedMenuVisibility);
+            this.toggleMenu(true);
         }
 
         if (this.props.value !== prevProps.value) {
@@ -293,7 +287,7 @@ class AutoSuggest extends Foundation<
     private handleBlurCapture = (event: React.FocusEvent): void => {
         if (
             this.state.isMenuOpen &&
-            this.rootElement.current !== null &&
+            !isNil(this.rootElement.current) &&
             !this.rootElement.current.contains(event.relatedTarget as Element)
         ) {
             // close the menu when focus moves out of the component
