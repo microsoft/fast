@@ -158,7 +158,8 @@ export const selectInputStyle: CSSRules<{}> = {
     borderRadius: "2px",
     appearance: "none",
     outline: "none",
-    ...localizePadding(3, 5, 2, 5),
+    ...localizePadding(3, 16, 2, 5),
+    ...ellipsis(),
     border: "none",
     color: foreground300,
     "&:-ms-expand": {
