@@ -1,2 +1,2 @@
 export const pluginIdKeyword: string = "pluginId";
-export const childrenPluginId: string = "@microsoft/fast-tooling/default-children";
+export const linkedDataPluginId: string = "@microsoft/fast-tooling/linked-data";

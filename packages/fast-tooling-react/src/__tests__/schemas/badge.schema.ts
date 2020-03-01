@@ -1,4 +1,4 @@
-import { childrenSchema, ChildrenType } from "@microsoft/fast-tooling";
+import { linkedDataSchema } from "@microsoft/fast-tooling";
 
 export default {
     $schema: "http://json-schema.org/schema#",
@@ -124,14 +124,14 @@ export default {
             default: "B",
         },
         children: {
-            ...childrenSchema,
-            allowTypes: [ChildrenType.string, ChildrenType.component],
+            ...linkedDataSchema,
+
             badge: "warning",
             badgeDescription: "Warning message",
         },
         childrenWithDefault: {
-            ...childrenSchema,
-            allowTypes: [ChildrenType.string, ChildrenType.component],
+            ...linkedDataSchema,
+
             badge: "warning",
             badgeDescription: "Warning message",
             default: {

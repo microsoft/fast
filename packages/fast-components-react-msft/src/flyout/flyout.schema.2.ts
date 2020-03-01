@@ -1,4 +1,4 @@
-import { childrenSchema, ChildrenType } from "@microsoft/fast-tooling";
+import { linkedDataSchema } from "@microsoft/fast-tooling";
 
 /**
  * Complies with FAST Tooling 2.0
@@ -70,8 +70,7 @@ export default {
             default: "280px",
         },
         children: {
-            ...childrenSchema,
-            allowTypes: [ChildrenType.string, ChildrenType.component],
+            ...linkedDataSchema,
         },
     },
 };

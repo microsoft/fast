@@ -1,4 +1,4 @@
-import { childrenSchema, ChildrenType } from "@microsoft/fast-tooling";
+import { linkedDataSchema } from "@microsoft/fast-tooling";
 
 /**
  * Complies with FAST Tooling 2.0
@@ -26,13 +26,12 @@ export default {
             enum: ["justified", "lightweight", "outline", "primary", "stealth"],
         },
         children: {
-            ...childrenSchema,
+            ...linkedDataSchema,
             formPluginId: "@microsoft/fast-components-react-msft/action-trigger/children",
             examples: ["Lorem ipsum"],
-            allowTypes: [ChildrenType.string, ChildrenType.component],
         },
         glyph: {
-            ...childrenSchema,
+            ...linkedDataSchema,
             title: "Glyph",
             pluginId: "@microsoft/fast-components-react-msft/action-trigger/glyph",
             formPluginId: "@microsoft/fast-components-react-msft/action-trigger/glyph",
@@ -42,7 +41,6 @@ export default {
                     props: {},
                 },
             ],
-            allowTypes: [ChildrenType.component],
         },
     },
     required: ["children", "glyph"],
