@@ -1,4 +1,4 @@
-import { childrenSchema, ChildrenType } from "@microsoft/fast-tooling";
+import { linkedDataSchema } from "@microsoft/fast-tooling";
 
 /**
  * Complies with FAST Tooling 2.0
@@ -12,13 +12,12 @@ export default {
     formPluginId: "@microsoft/fast-components-react-base/context-menu",
     properties: {
         children: {
-            ...childrenSchema,
+            ...linkedDataSchema,
             formPluginId: "@microsoft/fast-components-react-base/context-menu/children",
             ids: [
                 "@microsoft/fast-components-react-base/context-menu-item",
                 "@microsoft/fast-components-react-base/divider",
             ],
-            allowTypes: [ChildrenType.component],
         },
     },
 };

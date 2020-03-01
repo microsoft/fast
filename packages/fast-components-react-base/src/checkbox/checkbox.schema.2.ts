@@ -1,4 +1,4 @@
-import { childrenSchema, ChildrenType } from "@microsoft/fast-tooling";
+import { linkedDataSchema } from "@microsoft/fast-tooling";
 
 /**
  * Complies with FAST Tooling 2.0
@@ -33,16 +33,14 @@ export default {
             examples: ["name"],
         },
         children: {
-            ...childrenSchema,
+            ...linkedDataSchema,
             formPluginId: "@microsoft/fast-components-react-base/checkbox/children",
-            allowTypes: [ChildrenType.component],
         },
         label: {
-            ...childrenSchema,
+            ...linkedDataSchema,
             title: "Label",
             formPluginId: "@microsoft/fast-components-react-base/checkbox/label",
             pluginId: "@microsoft/fast-components-react-base/checkbox/label",
-            allowTypes: [ChildrenType.component],
         },
     },
 };
