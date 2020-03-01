@@ -1,4 +1,4 @@
-import { childrenSchema, ChildrenType } from "@microsoft/fast-tooling";
+import { linkedDataSchema } from "@microsoft/fast-tooling";
 
 /**
  * Complies with FAST Tooling 2.0
@@ -34,36 +34,31 @@ export default {
             type: "string",
         },
         selectedGlyph: {
-            ...childrenSchema,
+            ...linkedDataSchema,
             title: "Selected glyph",
             formPluginId:
                 "@microsoft/fast-components-react-msft/action-toggle/selectedGlyph",
             pluginId: "@microsoft/fast-components-react-msft/action-toggle/selectedGlyph",
-            allowTypes: [ChildrenType.component],
         },
         unselectedGlyph: {
-            ...childrenSchema,
+            ...linkedDataSchema,
             title: "Unselected glyph",
             formPluginId:
                 "@microsoft/fast-components-react-msft/action-toggle/unselectedGlyph",
             pluginId:
                 "@microsoft/fast-components-react-msft/action-toggle/unselectedGlyph",
-
-            allowTypes: [ChildrenType.component],
         },
         selectedContent: {
-            ...childrenSchema,
+            ...linkedDataSchema,
             title: "Selected content",
             formPluginId:
                 "@microsoft/fast-components-react-msft/action-toggle/selectedContent",
-            allowTypes: [ChildrenType.component],
         },
         unselectedContent: {
-            ...childrenSchema,
+            ...linkedDataSchema,
             title: "Unselected content",
             formPluginId:
                 "@microsoft/fast-components-react-msft/action-toggle/unselectedContent",
-            allowTypes: [ChildrenType.component],
         },
     },
 };

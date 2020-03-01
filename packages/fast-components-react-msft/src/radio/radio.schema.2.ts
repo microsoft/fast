@@ -1,4 +1,4 @@
-import { childrenSchema, ChildrenType } from "@microsoft/fast-tooling";
+import { linkedDataSchema } from "@microsoft/fast-tooling";
 
 /**
  * Complies with FAST Tooling 2.0
@@ -30,14 +30,14 @@ export default {
             examples: ["name"],
         },
         children: {
-            ...childrenSchema,
+            ...linkedDataSchema,
             formPluginId: "@microsoft/fast-components-react-msft/radio/children",
             defaults: ["text"],
         },
         label: {
-            ...childrenSchema,
+            ...linkedDataSchema,
             title: "Label",
-            allowTypes: [ChildrenType.string, ChildrenType.component],
+
             formPluginId: "@microsoft/fast-components-react-msft/radio/label",
             pluginId: "@microsoft/fast-components-react-msft/radio/label",
         },
