@@ -1,4 +1,4 @@
-import { childrenSchema, ChildrenType } from "@microsoft/fast-tooling";
+import { linkedDataSchema } from "@microsoft/fast-tooling";
 
 /**
  * Complies with FAST Tooling 2.0
@@ -21,27 +21,24 @@ export default {
             type: "boolean",
         },
         children: {
-            ...childrenSchema,
+            ...linkedDataSchema,
             title: "Child nodes",
             defaults: ["@microsoft/fast-components-react-base/tree-view-item"],
-            allowTypes: [ChildrenType.string, ChildrenType.component],
         },
         expandCollapseGlyph: {
-            ...childrenSchema,
+            ...linkedDataSchema,
             title: "Expand / Collapse glyph",
             formPluginId:
                 "@microsoft/fast-components-react-base/tree-view-item/expandCollapseGlyph",
             pluginId:
                 "@microsoft/fast-components-react-base/tree-view-item/expandCollapseGlyph",
-            allowTypes: [ChildrenType.component],
         },
         titleContent: {
-            ...childrenSchema,
+            ...linkedDataSchema,
             title: "Title content",
             formPluginId:
                 "@microsoft/fast-components-react-base/tree-view-item/titleContent",
             pluginId: "@microsoft/fast-components-react-base/tree-view-item/titleContent",
-            allowTypes: [ChildrenType.component],
         },
     },
     required: ["titleContent"],
