@@ -1,4 +1,4 @@
-import { childrenSchema, ChildrenType } from "@microsoft/fast-tooling";
+import { linkedDataSchema } from "@microsoft/fast-tooling";
 
 /**
  * Complies with FAST Tooling 2.0
@@ -45,13 +45,12 @@ export default {
                         enum: ["dark", "light"],
                     },
                     content: {
-                        ...childrenSchema,
+                        ...linkedDataSchema,
                         title: "Slide content",
                         formPluginId:
                             "@microsoft/fast-components-react-msft/carousel/items/content",
                         pluginId:
                             "@microsoft/fast-components-react-msft/carousel/items/content",
-                        allowTypes: [ChildrenType.component],
                     },
                 },
                 required: ["id"],

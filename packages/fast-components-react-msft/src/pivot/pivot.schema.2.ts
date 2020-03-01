@@ -1,4 +1,4 @@
-import { childrenSchema, ChildrenType } from "@microsoft/fast-tooling";
+import { linkedDataSchema } from "@microsoft/fast-tooling";
 
 /**
  * Complies with FAST Tooling 2.0
@@ -36,21 +36,19 @@ export default {
                         type: "string",
                     },
                     tab: {
-                        ...childrenSchema,
+                        ...linkedDataSchema,
                         title: "Pivot tab",
                         formPluginId:
                             "@microsoft/fast-components-react-msft/pivot/items/tab",
                         pluginId: "@microsoft/fast-components-react-msft/pivot/items/tab",
-                        allowTypes: [ChildrenType.string, ChildrenType.component],
                     },
                     content: {
-                        ...childrenSchema,
+                        ...linkedDataSchema,
                         title: "Pivot content",
                         formPluginId:
                             "@microsoft/fast-components-react-msft/pivot/items/content",
                         pluginId:
                             "@microsoft/fast-components-react-msft/pivot/items/content",
-                        allowTypes: [ChildrenType.string, ChildrenType.component],
                     },
                 },
                 required: ["tab", "content", "id"],

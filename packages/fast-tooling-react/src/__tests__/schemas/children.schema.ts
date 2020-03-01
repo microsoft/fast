@@ -1,4 +1,4 @@
-import { childrenSchema } from "@microsoft/fast-tooling";
+import { linkedDataSchema } from "@microsoft/fast-tooling";
 
 export default {
     $schema: "http://json-schema.org/schema#",
@@ -13,7 +13,7 @@ export default {
             properties: {
                 nestedObjectChildren: {
                     title: "Children in object",
-                    ...childrenSchema,
+                    ...linkedDataSchema,
                 },
             },
         },
@@ -26,28 +26,28 @@ export default {
                 properties: {
                     nestedArrayChildren: {
                         title: "Children",
-                        ...childrenSchema,
+                        ...linkedDataSchema,
                     },
                 },
             },
         },
         children: {
             title: "Children",
-            ...childrenSchema,
+            ...linkedDataSchema,
+            formControlId: "react-children",
             defaults: ["text"],
             examples: ["Foo"],
         },
         restrictedWithChildren: {
             title: "Restricted children with react defaults",
-            ...childrenSchema,
+            ...linkedDataSchema,
             ids: ["objects", "arrays"],
             defaults: ["text"],
         },
         restrictedChildrenWithReactDefaults: {
             title: "Restricted children without react defaults",
-            ...childrenSchema,
+            ...linkedDataSchema,
             ids: ["children"],
         },
     },
-    required: ["children"],
 };

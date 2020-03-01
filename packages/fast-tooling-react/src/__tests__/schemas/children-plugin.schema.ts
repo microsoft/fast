@@ -1,4 +1,4 @@
-import { childrenSchema, ChildrenType } from "@microsoft/fast-tooling";
+import { linkedDataSchema } from "@microsoft/fast-tooling";
 
 export default {
     $schema: "http://json-schema.org/schema#",
@@ -29,16 +29,15 @@ export default {
                 type: "object",
                 properties: {
                     content: {
-                        ...childrenSchema,
-                        allowTypes: [ChildrenType.string, ChildrenType.component],
+                        ...linkedDataSchema,
                         pluginId: "children-plugin-resolver",
                     },
                 },
             },
         },
         render: {
-            ...childrenSchema,
-            allowTypes: [ChildrenType.string, ChildrenType.component],
+            ...linkedDataSchema,
+
             pluginId: "children-plugin-resolver",
         },
     },

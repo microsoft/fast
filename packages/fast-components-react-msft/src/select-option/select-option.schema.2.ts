@@ -1,4 +1,4 @@
-import { childrenSchema, ChildrenType } from "@microsoft/fast-tooling";
+import { linkedDataSchema } from "@microsoft/fast-tooling";
 
 /**
  * Complies with FAST Tooling 2.0
@@ -28,14 +28,14 @@ export default {
             type: "string",
         },
         children: {
-            ...childrenSchema,
+            ...linkedDataSchema,
             formPluginId: "@microsoft/fast-components-react-msft/select-option/children",
             defaults: ["text"],
         },
         glyph: {
-            ...childrenSchema,
+            ...linkedDataSchema,
             title: "Glyph",
-            allowTypes: [ChildrenType.string, ChildrenType.component],
+
             formPluginId: "@microsoft/fast-components-react-msft/select-option/glyph",
             pluginId: "@microsoft/fast-components-react-msft/select-option/glyph",
         },

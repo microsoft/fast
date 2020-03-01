@@ -1,4 +1,4 @@
-import { childrenSchema, ChildrenType } from "@microsoft/fast-tooling";
+import { linkedDataSchema } from "@microsoft/fast-tooling";
 
 /**
  * Complies with FAST Tooling 2.0
@@ -28,9 +28,8 @@ export default {
             type: "string",
         },
         children: {
-            ...childrenSchema,
+            ...linkedDataSchema,
             formPluginId: "@microsoft/fast-components-react-base/listbox-item/children",
-            allowTypes: [ChildrenType.string, ChildrenType.component],
         },
     },
     required: ["id", "value"],

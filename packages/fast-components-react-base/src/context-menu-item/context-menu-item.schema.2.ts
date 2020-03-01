@@ -1,4 +1,4 @@
-import { childrenSchema, ChildrenType } from "@microsoft/fast-tooling";
+import { linkedDataSchema } from "@microsoft/fast-tooling";
 
 /**
  * Complies with FAST Tooling 2.0
@@ -22,11 +22,10 @@ export default {
             enum: ["menuitem", "menuitemradio", "menuitemcheckbox"],
         },
         children: {
-            ...childrenSchema,
+            ...linkedDataSchema,
             formPluginId:
                 "@microsoft/fast-components-react-base/context-menu-item/children",
             ids: ["metatext"],
-            allowTypes: [ChildrenType.string, ChildrenType.component],
         },
     },
 };
