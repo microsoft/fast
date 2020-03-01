@@ -1,4 +1,4 @@
-import { childrenSchema, ChildrenType } from "@microsoft/fast-tooling";
+import { linkedDataSchema } from "@microsoft/fast-tooling";
 
 /**
  * Complies with FAST Tooling 2.0
@@ -25,23 +25,23 @@ export default {
             enum: ["filled", "outline"],
         },
         beforeGlyph: {
-            ...childrenSchema,
+            ...linkedDataSchema,
             title: "Before glyph",
-            allowTypes: [ChildrenType.component],
+
             formPluginId: "@microsoft/fast-components-react-msft/text-action/beforeGlyph",
             pluginId: "@microsoft/fast-components-react-msft/text-action/beforeGlyph",
         },
         button: {
-            ...childrenSchema,
-            allowTypes: [ChildrenType.component],
+            ...linkedDataSchema,
+
             title: "Button",
             formPluginId: "@microsoft/fast-components-react-msft/text-action/button",
             pluginId: "@microsoft/fast-components-react-msft/text-action/button",
         },
         afterGlyph: {
-            ...childrenSchema,
+            ...linkedDataSchema,
             title: "After glyph",
-            allowTypes: [ChildrenType.component],
+
             formPluginId: "@microsoft/fast-components-react-msft/text-action/afterGlyph",
             pluginId: "@microsoft/fast-components-react-msft/text-action/afterGlyph",
         },

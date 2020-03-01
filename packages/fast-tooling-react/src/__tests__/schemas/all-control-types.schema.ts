@@ -1,4 +1,4 @@
-import { childrenSchema, ChildrenType } from "@microsoft/fast-tooling";
+import { linkedDataSchema } from "@microsoft/fast-tooling";
 
 export default {
     $schema: "http://json-schema.org/schema#",
@@ -44,8 +44,7 @@ export default {
             enum: ["foo", "bar", "bat"],
         },
         children: {
-            ...childrenSchema,
-            allowTypes: [ChildrenType.string, ChildrenType.component],
+            ...linkedDataSchema,
         },
     },
 };

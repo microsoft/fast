@@ -1,4 +1,4 @@
-import { childrenSchema, ChildrenType } from "@microsoft/fast-tooling";
+import { linkedDataSchema } from "@microsoft/fast-tooling";
 
 /**
  * Complies with FAST Tooling 2.0
@@ -21,41 +21,41 @@ export default {
             type: "boolean",
         },
         children: {
-            ...childrenSchema,
+            ...linkedDataSchema,
             title: "Child nodes",
-            allowTypes: [ChildrenType.string, ChildrenType.component],
+
             defaults: ["@microsoft/fast-components-react-msft/tree-view-item"],
         },
         beforeContent: {
-            ...childrenSchema,
+            ...linkedDataSchema,
             title: "Before content",
-            allowTypes: [ChildrenType.component],
+
             formPluginId:
                 "@microsoft/fast-components-react-msft/tree-view-item/beforeContent",
             pluginId:
                 "@microsoft/fast-components-react-msft/tree-view-item/beforeContent",
         },
         afterContent: {
-            ...childrenSchema,
+            ...linkedDataSchema,
             title: "After content",
-            allowTypes: [ChildrenType.component],
+
             formPluginId:
                 "@microsoft/fast-components-react-msft/tree-view-item/afterContent",
             pluginId: "@microsoft/fast-components-react-msft/tree-view-item/afterContent",
         },
         expandCollapseGlyph: {
-            ...childrenSchema,
+            ...linkedDataSchema,
             title: "Expand / Collapse glyph",
-            allowTypes: [ChildrenType.component],
+
             formPluginId:
                 "@microsoft/fast-components-react-msft/tree-view-item/expandCollapseGlyph",
             pluginId:
                 "@microsoft/fast-components-react-msft/tree-view-item/expandCollapseGlyph",
         },
         titleContent: {
-            ...childrenSchema,
+            ...linkedDataSchema,
             title: "Title content",
-            allowTypes: [ChildrenType.component],
+
             formPluginId:
                 "@microsoft/fast-components-react-msft/tree-view-item/titleContent",
             pluginId: "@microsoft/fast-components-react-msft/tree-view-item/titleContent",
