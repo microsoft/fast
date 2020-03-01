@@ -1,4 +1,4 @@
-import { childrenSchema, ChildrenType } from "@microsoft/fast-tooling";
+import { linkedDataSchema } from "@microsoft/fast-tooling";
 
 /**
  * Complies with FAST Tooling 2.0
@@ -12,9 +12,9 @@ export default {
     formPluginId: "@microsoft/fast-components-react-msft/tree-view",
     properties: {
         children: {
-            ...childrenSchema,
+            ...linkedDataSchema,
             title: "Child nodes",
-            allowTypes: [ChildrenType.component],
+
             ids: ["@microsoft/fast-components-react-msft/tree-view-item"],
         },
     },

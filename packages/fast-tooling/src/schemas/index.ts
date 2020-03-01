@@ -1,4 +1,4 @@
-import childrenSchema, { ChildrenType } from "./children.schema";
+import linkedDataSchema, { dictionaryLink } from "./linked-data.schema";
 export * from "./keywords";
 
-export { childrenSchema, ChildrenType };
+export { linkedDataSchema, dictionaryLink };

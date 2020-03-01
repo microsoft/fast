@@ -1,4 +1,4 @@
-import { childrenSchema, ChildrenType } from "@microsoft/fast-tooling";
+import { linkedDataSchema } from "@microsoft/fast-tooling";
 
 /**
  * Complies with FAST Tooling 2.0
@@ -116,9 +116,9 @@ export default {
             },
         },
         children: {
-            ...childrenSchema,
+            ...linkedDataSchema,
             title: "Building blocks",
-            allowTypes: [ChildrenType.string, ChildrenType.component],
+
             formPluginId: "@microsoft/fast-components-react-msft/select/children",
             ids: ["@microsoft/fast-components-react-msft/select-option"],
             defaults: ["listbox-item"],

@@ -1,4 +1,4 @@
-import { childrenSchema, ChildrenType } from "@microsoft/fast-tooling";
+import { linkedDataSchema } from "@microsoft/fast-tooling";
 
 /**
  * Complies with FAST Tooling 2.0
@@ -27,9 +27,8 @@ export default {
             examples: ["See previous"],
         },
         children: {
-            ...childrenSchema,
+            ...linkedDataSchema,
             formPluginId: "@microsoft/fast-components-react-msft/flipper/children",
-            allowTypes: [ChildrenType.string, ChildrenType.component],
         },
     },
 };
