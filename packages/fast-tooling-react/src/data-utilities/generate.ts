@@ -2,6 +2,7 @@ import { get } from "lodash-es";
 import { CombiningKeyword, DataType, PropertyKeyword } from "./types";
 import { ChildOptionItem } from ".";
 import { getChildOptionBySchemaId } from "./location";
+import { DataDictionary } from "../message-system/data.props";
 
 /**
  * This file contains all functionality for generating data
@@ -29,12 +30,6 @@ function getDataFromSchema(schema: any, childOptions?: ChildOptionItem[]): any {
                     case PropertyKeyword.properties:
                         exampleData[requiredItem] = getDataFromSchema(
                             schema[propertyType][requiredItem]
-                        );
-                        break;
-                    case PropertyKeyword.reactProperties:
-                        exampleData[requiredItem] = getReactChildrenFromSchema(
-                            schema[propertyType][requiredItem],
-                            childOptions
                         );
                         break;
                 }
@@ -101,34 +96,6 @@ function getDataFromSchemaByDataType(schema: any): any {
                 return getDataFromSchema(schema[oneOfAnyOf][0]);
             }
             break;
-    }
-}
-
-/**
- * Gets a react child example
- */
-function getReactChildrenFromSchema(schema: any, childOptions?: ChildOptionItem[]): any {
-    const defaultOrExample: any = getDefaultOrExample(schema);
-
-    if (typeof defaultOrExample !== "undefined") {
-        return defaultOrExample;
-    }
-
-    if (Array.isArray(schema.defaults) && schema.defaults.includes("text")) {
-        return exampleString;
-    }
-
-    if (
-        Array.isArray(schema.ids) &&
-        Array.isArray(childOptions) &&
-        schema.type === DataType.children
-    ) {
-        const childOption: any = getChildOptionBySchemaId(schema.ids[0], childOptions);
-
-        return {
-            id: schema.ids[0],
-            props: getDataFromSchema(childOption.schema, childOptions),
-        };
     }
 }
 
