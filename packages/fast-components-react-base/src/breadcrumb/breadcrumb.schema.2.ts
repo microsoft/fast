@@ -1,4 +1,4 @@
-import { childrenSchema, ChildrenType } from "@microsoft/fast-tooling";
+import { linkedDataSchema } from "@microsoft/fast-tooling";
 
 /**
  * Complies with FAST Tooling 2.0
@@ -16,15 +16,14 @@ export default {
             type: "string",
         },
         children: {
-            ...childrenSchema,
+            ...linkedDataSchema,
             formPluginId: "@microsoft/fast-components-react-base/breadcrumb/children",
         },
         separator: {
-            ...childrenSchema,
+            ...linkedDataSchema,
             formPluginId:
                 "@microsoft/fast-components-react-base/badbreadcrumbge/separator",
             pluginId: "@microsoft/fast-components-react-base/breadcrumb/separator",
-            allowTypes: [ChildrenType.string, ChildrenType.component],
         },
     },
 };
