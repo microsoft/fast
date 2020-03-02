@@ -24,9 +24,11 @@ export class Controller extends PropertyChangeNotifier implements Container {
 
     public hydrateCustomElement() {
         const definition = this.definition;
-        const view = (this.view = definition.template.create(false));
+        const template = definition.template;
 
-        if (view !== null) {
+        if (template !== null) {
+            const view = (this.view = template.create());
+
             if (definition.shadowOptions === null) {
                 view.appendTo(this.element);
             } else {

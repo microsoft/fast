@@ -1,5 +1,5 @@
 import { DOM } from "../dom";
-import { Template, CaptureType } from "../template";
+import { SyntheticViewTemplate, CaptureType } from "../template";
 import { SyntheticView } from "../view";
 import { Expression, AccessScopeExpression, Getter } from "../expression";
 import { Behavior } from "../behaviors/behavior";
@@ -10,7 +10,7 @@ import { Subscriber } from "../observation/subscriber-collection";
 export class WhenDirective extends BindingDirective {
     behavior = WhenBehavior;
 
-    constructor(public expression: Expression, public template: Template) {
+    constructor(public expression: Expression, public template: SyntheticViewTemplate) {
         super(expression);
     }
 
@@ -57,8 +57,7 @@ export class WhenBehavior implements Behavior, GetterInspector, Subscriber {
     updateTarget(show: boolean) {
         if (show && this.view == null) {
             this.view =
-                this.cachedView ||
-                (this.cachedView = this.directive.template.create(true));
+                this.cachedView || (this.cachedView = this.directive.template.create());
             this.view.bind(this.source);
             this.view.insertBefore(this.location);
         } else if (!show && this.view !== null) {
@@ -71,7 +70,7 @@ export class WhenBehavior implements Behavior, GetterInspector, Subscriber {
 
 export function when<T = any, K = any>(
     expression: Getter<T, K> | keyof T,
-    template: Template
+    template: SyntheticViewTemplate
 ): CaptureType<T> {
     return new WhenDirective(AccessScopeExpression.from(expression as any), template);
 }

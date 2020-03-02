@@ -1,6 +1,6 @@
 import { TemplateCompiler } from "./template-compiler";
 import { TargetedInstruction } from "./instructions";
-import { HTMLView, ElementView, SyntheticView } from "./view";
+import { HTMLView, ElementView, SyntheticView, View } from "./view";
 import { DOM } from "./dom";
 import { Behavior } from "./behaviors/behavior";
 import { Getter, AccessScopeExpression } from "./expression";
@@ -8,11 +8,19 @@ import { Directive } from "./directives/directive";
 import { BindingDirective } from "./directives/bind";
 
 export interface Template {
-    create(synthetic: false): ElementView | null;
-    create(synthetic: true): SyntheticView;
+    create(): View;
 }
 
-export class HTMLTemplate extends Directive implements Template {
+export interface ElementViewTemplate extends Template {
+    create(): ElementView;
+}
+
+export interface SyntheticViewTemplate extends Template {
+    create(): SyntheticView;
+}
+
+export class HTMLTemplate extends Directive
+    implements ElementViewTemplate, SyntheticViewTemplate {
     public behavior = HTMLTemplateBehavior;
 
     constructor(
@@ -28,16 +36,17 @@ export class HTMLTemplate extends Directive implements Template {
         }
     }
 
-    public create(synthetic: boolean) {
+    public create() {
         const fragment = this.templateElement.content.cloneNode(true) as DocumentFragment;
         const targets = fragment.querySelectorAll(".fm");
+        const instructions = this.instructions;
         const behaviors: Behavior[] = [];
 
         for (let i = 0, ii = targets.length; i < ii; ++i) {
-            this.instructions[i].hydrate(targets[i], behaviors);
+            instructions[i].hydrate(targets[i], behaviors);
         }
 
-        return new HTMLView(fragment, behaviors, synthetic);
+        return new HTMLView(fragment, behaviors);
     }
 
     public createPlaceholder(instructionIndex: number) {
@@ -49,9 +58,9 @@ export class HTMLTemplateBehavior implements Behavior {
     private location: Node;
     private view: SyntheticView;
 
-    constructor(directive: Template, marker: HTMLElement) {
+    constructor(directive: SyntheticViewTemplate, marker: HTMLElement) {
         this.location = DOM.convertMarkerToLocation(marker);
-        this.view = directive.create(true);
+        this.view = directive.create();
         this.view.insertBefore(this.location);
     }
 
@@ -63,12 +72,6 @@ export class HTMLTemplateBehavior implements Behavior {
         this.view.unbind();
     }
 }
-
-export const noopTemplate: Template = {
-    create() {
-        return null as any;
-    },
-};
 
 export interface CaptureType<T> {}
 type TemplateValue<T> = Getter<T> | string | number | Directive | CaptureType<T>;

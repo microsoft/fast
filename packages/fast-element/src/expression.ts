@@ -46,8 +46,16 @@ export class InterpolationExpression implements Expression {
     constructor(private parts: (string | Getter)[]) {}
 
     public evaluate(scope: unknown, context?: ExpressionContext) {
-        return this.parts
-            .map(x => (typeof x === "string" ? x : x(scope, context!)))
-            .join("");
+        let output = "";
+        const parts = this.parts;
+
+        for (let i = 0, ii = parts.length; i < ii; ++i) {
+            const current = parts[i];
+            output =
+                output +
+                (typeof current === "string" ? current : current(scope, context!));
+        }
+
+        return output;
     }
 }
