@@ -82,3 +82,6 @@ build/ @janechu @nicholasrice @chrisdholt @awentzel
 
 # fast-components
 /packages/fast-components/ @EisenbergEffect @chrisdholt @janechu @nicholasrice
+
+# Web Component specs
+/specs/ @EisenbergEffect @chrisdholt @janechu @nicholasrice
