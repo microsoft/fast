@@ -17,6 +17,7 @@ import {
     CommonControlConfig,
     ControlConfig,
     ControlType,
+    LinkedDataControlConfig,
     ListControlConfig,
     NumberFieldTypeControlConfig,
     SectionControlConfig,
@@ -31,6 +32,7 @@ import {
     ButtonControl,
     CheckboxControl,
     DisplayControl,
+    LinkedDataControl,
     NumberFieldControl,
     SectionControl,
     SectionLinkControl,
@@ -47,6 +49,12 @@ const arrayControl: StandardControlPlugin = new StandardControlPlugin({
     context: ControlContext.fill,
     control: (config: ArrayControlConfig): React.ReactNode => {
         return <ArrayControl {...config} />;
+    },
+});
+const linkedDataControl: StandardControlPlugin = new StandardControlPlugin({
+    context: ControlContext.default,
+    control: (config: LinkedDataControlConfig): React.ReactNode => {
+        return <LinkedDataControl {...config} />;
     },
 });
 const numberFieldControl: StandardControlPlugin = new StandardControlPlugin({
@@ -88,6 +96,7 @@ const buttonControl: StandardControlPlugin = new StandardControlPlugin({
 export const controls: Controls = {
     button: buttonControl,
     array: arrayControl,
+    linkedData: linkedDataControl,
     checkbox: checkboxControl,
     display: displayControl,
     textarea: textareaControl,
@@ -120,11 +129,22 @@ const formControlSwitchProps: ControlSwitchProps = {
     label: "Label",
     schema: {},
     data: {},
+    schemaDictionary: {},
     required: false,
     untitled: "",
     schemaLocation: "",
     dataLocation: "",
-    navigationId: "",
+    navigationConfigId: "",
+    dictionaryId: "",
+    dataDictionary: [
+        {
+            "": {
+                schemaId: "",
+                data: {},
+            },
+        },
+        "",
+    ],
     navigation: {},
     onUpdateSection: null,
     onChange: null,

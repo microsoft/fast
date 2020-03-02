@@ -21,7 +21,8 @@ const managedClasses: SelectControlClassNameContract = {
 const selectProps: SelectControlProps = {
     type: ControlType.select,
     dataLocation: "",
-    navigationId: "",
+    navigationConfigId: "",
+    dictionaryId: "",
     navigation: {},
     disabled: false,
     options: [],

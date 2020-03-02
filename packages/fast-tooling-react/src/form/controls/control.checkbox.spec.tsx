@@ -20,7 +20,8 @@ const managedClasses: CheckboxControlClassNameContract = {
 const checkboxProps: CheckboxControlProps = {
     type: ControlType.checkbox,
     dataLocation: "",
-    navigationId: "",
+    navigationConfigId: "",
+    dictionaryId: "",
     navigation: {},
     onChange: jest.fn(),
     value: false,
