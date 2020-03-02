@@ -77,7 +77,6 @@ const props: SingleLineControlTemplateProps = {
     },
     controls: {
         [ControlType.array]: null,
-        [ControlType.linkedData]: null,
         [ControlType.button]: null,
         [ControlType.checkbox]: null,
         [ControlType.display]: null,
