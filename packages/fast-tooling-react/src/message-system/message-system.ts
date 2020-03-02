@@ -24,7 +24,7 @@ export default class MessageSystem {
             this.worker.postMessage({
                 type: MessageSystemType.initialize,
                 data: config.dataDictionary,
-                schemas: config.schemas,
+                schemaDictionary: config.schemaDictionary,
             });
         }
     }

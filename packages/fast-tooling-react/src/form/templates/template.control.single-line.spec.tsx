@@ -40,11 +40,22 @@ const props: SingleLineControlTemplateProps = {
     index: 1,
     type: ControlType.checkbox,
     dataLocation: "",
-    navigationId: "",
+    navigationConfigId: "",
+    dictionaryId: "",
+    dataDictionary: [
+        {
+            "": {
+                schemaId: "",
+                data: {},
+            },
+        },
+        "",
+    ],
     navigation: {},
     schemaLocation: "",
     control: jest.fn(),
     data: void 0,
+    schemaDictionary: {},
     schema: {},
     required: void 0,
     label: "foo",
