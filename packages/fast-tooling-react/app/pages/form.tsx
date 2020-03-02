@@ -11,6 +11,7 @@ import { DesignSystemProvider } from "@microsoft/fast-jss-manager-react";
 import React from "react";
 import { getDataFromSchema } from "../../src/data-utilities";
 import { MessageSystem, MessageSystemType } from "../../src/message-system";
+import { SchemaDictionary } from "../../src/message-system/schema.props";
 
 export type componentDataOnChange = (e: React.ChangeEvent<HTMLFormElement>) => void;
 
@@ -118,9 +119,7 @@ class FormTestPage extends React.Component<{}, FormTestPageState> {
                     },
                     "foo",
                 ],
-                schemas: {
-                    [testConfigs.textField.schema.id]: testConfigs.textField.schema,
-                },
+                schemaDictionary: this.generateSchemaDictionary(),
             });
             fastMessageSystem.add({ onMessage: this.handleMessageSystem });
         }
@@ -219,6 +218,17 @@ class FormTestPage extends React.Component<{}, FormTestPageState> {
         }
     }
 
+    private generateSchemaDictionary(): SchemaDictionary {
+        const schemaDictionary: SchemaDictionary = {};
+
+        Object.keys(testConfigs).forEach((testConfigKey: string) => {
+            schemaDictionary[testConfigs[testConfigKey].schema.id] =
+                testConfigs[testConfigKey].schema;
+        });
+
+        return schemaDictionary;
+    }
+
     /**
      * Gets the child options for the schema form
      */
@@ -295,7 +305,7 @@ class FormTestPage extends React.Component<{}, FormTestPageState> {
             case MessageSystemType.navigation:
                 if (e.data.navigation) {
                     this.setState({
-                        data: e.data.navigation,
+                        navigation: e.data.navigation,
                     });
                 }
         }
@@ -351,10 +361,7 @@ class FormTestPage extends React.Component<{}, FormTestPageState> {
                     },
                     "foo",
                 ],
-                schemas: {
-                    [testConfigs[e.target.value].schema.id]:
-                        testConfigs[e.target.value].schema,
-                },
+                schemaDictionary: this.generateSchemaDictionary(),
             });
         }
     };

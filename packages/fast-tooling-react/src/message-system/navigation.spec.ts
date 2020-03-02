@@ -2,11 +2,8 @@ import "jest";
 import { getNavigation, getNavigationDictionary } from "./navigation";
 import { TreeNavigationConfigDictionary } from "./navigation.props";
 import { TreeNavigation, TreeNavigationItem } from "./navigation.props";
-
-import noChildrenSchema from "../../app/configs/no-children.schema.json";
-import childrenSchema from "../../app/configs/children.schema.json";
-import { TargetPosition } from "../data-utilities/relocate";
 import { DataType } from "../data-utilities/types";
+import { dictionaryLink } from "@microsoft/fast-tooling";
 
 /**
  * Gets the navigation
@@ -480,7 +477,7 @@ describe("getNavigationDictionary", () => {
                     type: "object",
                     properties: {
                         foo: {
-                            messageSystemPluginId: "foo",
+                            [dictionaryLink]: "foo",
                         },
                     },
                 },
@@ -499,11 +496,19 @@ describe("getNavigationDictionary", () => {
                     abc: {
                         schemaId: "baz",
                         data: {
-                            foo: {},
+                            foo: [
+                                {
+                                    id: "def",
+                                },
+                            ],
                         },
                     },
                     def: {
                         schemaId: "bat",
+                        parent: {
+                            id: "abc",
+                            dataLocation: "foo",
+                        },
                         data: {
                             bar: "hello world",
                         },
@@ -514,6 +519,15 @@ describe("getNavigationDictionary", () => {
         );
 
         expect(Object.keys(navigation[0])).toHaveLength(2);
+        expect(
+            navigation[0].def[0][navigation[0].def[1]].parentDictionaryItem
+        ).not.toEqual(undefined);
+        expect(
+            navigation[0].def[0][navigation[0].def[1]].parentDictionaryItem.id
+        ).toEqual("abc");
+        expect(
+            navigation[0].def[0][navigation[0].def[1]].parentDictionaryItem.dataLocation
+        ).toEqual("foo");
     });
 });
 
