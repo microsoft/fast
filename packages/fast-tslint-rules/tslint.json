@@ -24,14 +24,9 @@
         "typedef": [
             true,
             "call-signature",
-            "arrow-call-signature",
             "parameter",
-            "arrow-parameter",
             "property-declaration",
-            "variable-declaration",
-            "member-variable-declaration",
-            "object-destructuring",
-            "array-destructuring"
+            "member-variable-declaration"
         ],
         "variable-name": [
             true,
