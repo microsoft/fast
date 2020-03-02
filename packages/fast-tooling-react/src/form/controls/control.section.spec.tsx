@@ -14,7 +14,6 @@ import {
     ArrayControl,
     ButtonControl,
     CheckboxControl,
-    ChildrenControl,
     ControlType,
     DisplayControl,
     NumberFieldControl,
@@ -42,7 +41,17 @@ configure({ adapter: new Adapter() });
 const sectionControlProps: SectionControlProps = {
     type: ControlType.section,
     dataLocation: "",
-    navigationId: "",
+    navigationConfigId: "",
+    dictionaryId: "",
+    dataDictionary: [
+        {
+            "": {
+                schemaId: "",
+                data: {},
+            },
+        },
+        "",
+    ],
     navigation: {
         "": {
             self: "",
@@ -59,6 +68,7 @@ const sectionControlProps: SectionControlProps = {
     schemaLocation: "",
     controls,
     schema: {},
+    schemaDictionary: {},
     disabled: false,
     value: "",
     untitled: "",
@@ -70,7 +80,6 @@ const sectionControlProps: SectionControlProps = {
         [ControlType.array]: ArrayControl,
         [ControlType.button]: ButtonControl,
         [ControlType.checkbox]: CheckboxControl,
-        [ControlType.children]: ChildrenControl,
         [ControlType.display]: DisplayControl,
         [ControlType.numberField]: NumberFieldControl,
         [ControlType.sectionLink]: SectionLinkControl,

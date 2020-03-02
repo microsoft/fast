@@ -8,7 +8,8 @@ import {
     FormChildOptionItem,
 } from "../../src/form/types";
 import * as testConfigs from "./form/";
-import { MessageSystem } from "../../src/message-system";
+import { MessageSystem, MessageSystemType } from "../../src/message-system";
+import { SchemaDictionary } from "../../src/message-system/schema.props";
 
 export type componentDataOnChange = (e: React.ChangeEvent<HTMLFormElement>) => void;
 
@@ -54,17 +55,16 @@ class FormAndNavigationTestPage extends React.Component<{}, FormTestPageState> {
                 webWorker: "message-system.js",
                 dataDictionary: [
                     {
-                        foo: {
+                        "": {
                             schemaId: testConfigs.textField.schema.id,
                             data: exampleData,
                         },
                     },
-                    "foo",
+                    "",
                 ],
-                schemas: {
-                    [testConfigs.textField.schema.id]: testConfigs.textField.schema,
-                },
+                schemaDictionary: this.generateSchemaDictionary(),
             });
+            fastMessageSystem.add({ onMessage: this.handleMessageSystem });
         }
 
         this.state = {
@@ -165,6 +165,17 @@ class FormAndNavigationTestPage extends React.Component<{}, FormTestPageState> {
         );
     }
 
+    private generateSchemaDictionary(): SchemaDictionary {
+        const schemaDictionary: SchemaDictionary = {};
+
+        Object.keys(testConfigs).forEach((testConfigKey: string) => {
+            schemaDictionary[testConfigs[testConfigKey].schema.id] =
+                testConfigs[testConfigKey].schema;
+        });
+
+        return schemaDictionary;
+    }
+
     /**
      * Gets the child options for the schema form
      */
@@ -236,14 +247,28 @@ class FormAndNavigationTestPage extends React.Component<{}, FormTestPageState> {
         }
     };
 
-    private handleComponentUpdate = (e: React.ChangeEvent<HTMLSelectElement>): void => {
-        const data: any =
-            testConfigs[e.target.value].data ||
-            getDataFromSchema(testConfigs[e.target.value].schema);
-        this.setState({
-            schema: testConfigs[e.target.value].schema,
-            data,
-        });
+    private handleMessageSystem = (e: MessageEvent): void => {
+        switch (e.data.type) {
+            case MessageSystemType.initialize:
+                if (e.data.data && e.data.navigation) {
+                    this.setState({
+                        data: e.data.data,
+                        navigation: e.data.navigation,
+                    });
+                }
+            case MessageSystemType.data:
+                if (e.data.data) {
+                    this.setState({
+                        data: e.data.data,
+                    });
+                }
+            case MessageSystemType.navigation:
+                if (e.data.navigation) {
+                    this.setState({
+                        data: e.data.navigation,
+                    });
+                }
+        }
     };
 
     /**
@@ -260,6 +285,28 @@ class FormAndNavigationTestPage extends React.Component<{}, FormTestPageState> {
             data,
             dataLocation,
         });
+    };
+
+    private handleComponentUpdate = (e: React.ChangeEvent<HTMLSelectElement>): void => {
+        const data: any = !!testConfigs[e.target.value].data
+            ? testConfigs[e.target.value].data
+            : getDataFromSchema(testConfigs[e.target.value].schema);
+
+        if ((window as any).Worker && fastMessageSystem) {
+            fastMessageSystem.postMessage({
+                type: MessageSystemType.initialize,
+                data: [
+                    {
+                        "": {
+                            schemaId: testConfigs[e.target.value].schema.id,
+                            data,
+                        },
+                    },
+                    "",
+                ],
+                schemaDictionary: this.generateSchemaDictionary(),
+            });
+        }
     };
 
     private getComponentOptions(): JSX.Element[] {

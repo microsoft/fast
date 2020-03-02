@@ -46,11 +46,22 @@ const props: StandardControlTemplateProps = {
     index: 1,
     type: ControlType.textarea,
     dataLocation: "",
-    navigationId: "",
+    navigationConfigId: "",
+    dictionaryId: "",
+    dataDictionary: [
+        {
+            "": {
+                schemaId: "",
+                data: {},
+            },
+        },
+        "",
+    ],
     navigation: {},
     schemaLocation: "",
     control: jest.fn(),
     data: void 0,
+    schemaDictionary: {},
     schema: {},
     required: void 0,
     label: "foo",

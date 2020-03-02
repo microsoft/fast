@@ -12,7 +12,6 @@ import {
     ArrayControl,
     ButtonControl,
     CheckboxControl,
-    ChildrenControl,
     DisplayControl,
     NumberFieldControl,
     SectionLinkControl,
@@ -36,9 +35,20 @@ const managedClasses: DictionaryClassNameContract = {
 const dictionaryProps: DictionaryProps = {
     index: 1,
     type: ControlType.section,
+    schemaDictionary: {},
     controls,
     dataLocation: "",
-    navigationId: "",
+    navigationConfigId: "",
+    dictionaryId: "",
+    dataDictionary: [
+        {
+            "": {
+                schemaId: "",
+                data: {},
+            },
+        },
+        "",
+    ],
     navigation: {},
     schemaLocation: "",
     data: "",
@@ -58,7 +68,6 @@ const dictionaryProps: DictionaryProps = {
         [ControlType.array]: ArrayControl,
         [ControlType.button]: ButtonControl,
         [ControlType.checkbox]: CheckboxControl,
-        [ControlType.children]: ChildrenControl,
         [ControlType.display]: DisplayControl,
         [ControlType.numberField]: NumberFieldControl,
         [ControlType.sectionLink]: SectionLinkControl,
@@ -198,6 +207,7 @@ describe("Dictionary", () => {
         expect(onChangeCallback).toHaveBeenCalled();
         expect(onChangeCallback.mock.calls[0][0]).toEqual({
             dataLocation: "a",
+            dictionaryId: "",
             value: void 0,
         });
     });
@@ -227,6 +237,7 @@ describe("Dictionary", () => {
         expect(onChangeCallback).toHaveBeenCalled();
         expect(onChangeCallback.mock.calls[0][0]).toEqual({
             dataLocation: "",
+            dictionaryId: "",
             value: { b: "bar", c: "foo" },
         });
     });
