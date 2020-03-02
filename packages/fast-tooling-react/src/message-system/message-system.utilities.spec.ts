@@ -1,7 +1,7 @@
 import jest from "jest";
 import {
-    AddChildrenDataMessageOutgoing,
     AddDataMessageOutgoing,
+    AddLinkedDataDataMessageOutgoing,
     DuplicateDataMessageOutgoing,
     GetDataDictionaryMessageIncoming,
     GetDataDictionaryMessageOutgoing,
@@ -23,7 +23,7 @@ import {
 import { MessageSystemType } from "../message-system/types";
 import { getMessage } from "./message-system.utilities";
 import { DataType } from "../data-utilities/types";
-import { Children, Data, DataDictionary } from "./data.props";
+import { Data, DataDictionary, LinkedData } from "./data.props";
 import { SchemaDictionary } from "./schema.props";
 
 /* tslint:disable */
@@ -41,18 +41,18 @@ describe("getMessage", () => {
                 },
                 "data",
             ];
-            const schemas: SchemaDictionary = {
+            const schemaDictionary: SchemaDictionary = {
                 foo: { id: "foo" },
             };
             const message: InitializeMessageOutgoing = getMessage({
                 type: MessageSystemType.initialize,
                 data: dataBlob,
-                schemas,
+                schemaDictionary,
             }) as InitializeMessageOutgoing;
 
             expect(message.type).toEqual(MessageSystemType.initialize);
             expect(message.data).toEqual(dataBlob[0][dataBlob[1]].data);
-            expect(message.schema).toEqual(schemas["foo"]);
+            expect(message.schema).toEqual(schemaDictionary["foo"]);
             expect(typeof message.navigation).toEqual("object");
         });
     });
@@ -71,7 +71,7 @@ describe("getMessage", () => {
                     },
                     "data",
                 ],
-                schemas: {
+                schemaDictionary: {
                     foo: { id: "foo" },
                 },
             });
@@ -97,7 +97,7 @@ describe("getMessage", () => {
                     },
                     "data",
                 ],
-                schemas: {
+                schemaDictionary: {
                     foo: { id: "foo" },
                 },
             });
@@ -121,7 +121,7 @@ describe("getMessage", () => {
                     },
                     "data",
                 ],
-                schemas: {
+                schemaDictionary: {
                     foo: { id: "foo" },
                 },
             });
@@ -147,7 +147,7 @@ describe("getMessage", () => {
                     },
                     "data",
                 ],
-                schemas: {
+                schemaDictionary: {
                     foo: { id: "foo" },
                 },
             });
@@ -172,7 +172,7 @@ describe("getMessage", () => {
                     },
                     "data",
                 ],
-                schemas: {
+                schemaDictionary: {
                     foo: { id: "foo" },
                 },
             });
@@ -185,7 +185,7 @@ describe("getMessage", () => {
 
             expect(message.data).toEqual({ hello: "venus" });
         });
-        test("should add children to the data and the data dictionary", () => {
+        test("should add linkedData to the data and the data dictionary", () => {
             getMessage({
                 type: MessageSystemType.initialize,
                 data: [
@@ -197,11 +197,11 @@ describe("getMessage", () => {
                     },
                     "data",
                 ],
-                schemas: {
+                schemaDictionary: {
                     foo: { id: "foo" },
                 },
             });
-            const children: Data<unknown>[] = [
+            const linkedData: Data<unknown>[] = [
                 {
                     schemaId: "foo",
                     data: {
@@ -209,17 +209,17 @@ describe("getMessage", () => {
                     },
                 },
             ];
-            const message: AddChildrenDataMessageOutgoing = getMessage({
+            const message: AddLinkedDataDataMessageOutgoing = getMessage({
                 type: MessageSystemType.data,
-                action: MessageSystemDataTypeAction.addChildren,
-                children,
-                dataLocation: "children",
-            }) as AddChildrenDataMessageOutgoing;
+                action: MessageSystemDataTypeAction.addLinkedData,
+                linkedData,
+                dataLocation: "linkedData",
+            }) as AddLinkedDataDataMessageOutgoing;
 
-            expect(Array.isArray((message.data as any).children)).toEqual(true);
-            expect((message.data as any).children.length).toEqual(1);
+            expect(Array.isArray((message.data as any).linkedData)).toEqual(true);
+            expect((message.data as any).linkedData.length).toEqual(1);
 
-            const id: string = (message.data as any).children[0].id;
+            const id: string = (message.data as any).linkedData[0].id;
             const dictionary: GetDataDictionaryMessageOutgoing = getMessage({
                 type: MessageSystemType.dataDictionary,
                 action: MessageSystemDataDictionaryTypeAction.get,
@@ -232,9 +232,71 @@ describe("getMessage", () => {
                     }
                 )
             ).not.toEqual(-1);
-            expect(dictionary.dataDictionary[0][id]).toEqual(children[0]);
+            expect(dictionary.dataDictionary[0][id].data).toEqual(linkedData[0].data);
         });
-        test("should remove children from the data and the data dictionary", () => {
+        test("should add linkedData to the data and the data dictionary when specifying a dictionary ID", () => {
+            getMessage({
+                type: MessageSystemType.initialize,
+                data: [
+                    {
+                        data: {
+                            schemaId: "foo",
+                            data: {},
+                        },
+                        abc: {
+                            schemaId: "foo",
+                            data: {},
+                        },
+                    },
+                    "data",
+                ],
+                schemaDictionary: {
+                    foo: { id: "foo" },
+                },
+            });
+            const linkedData: Data<unknown>[] = [
+                {
+                    schemaId: "foo",
+                    data: {
+                        hello: "world",
+                    },
+                },
+            ];
+            const message: AddLinkedDataDataMessageOutgoing = getMessage({
+                type: MessageSystemType.data,
+                action: MessageSystemDataTypeAction.addLinkedData,
+                dictionaryId: "abc",
+                linkedData,
+                dataLocation: "linkedData",
+            }) as AddLinkedDataDataMessageOutgoing;
+
+            expect(
+                Array.isArray((message.dataDictionary[0].abc.data as any).linkedData)
+            ).toEqual(true);
+            expect((message.dataDictionary[0].abc.data as any).linkedData.length).toEqual(
+                1
+            );
+
+            const id: string = (message.dataDictionary[0].abc.data as any).linkedData[0]
+                .id;
+            const dictionary: GetDataDictionaryMessageOutgoing = getMessage({
+                type: MessageSystemType.dataDictionary,
+                action: MessageSystemDataDictionaryTypeAction.get,
+            }) as GetDataDictionaryMessageOutgoing;
+
+            expect(
+                Object.keys(dictionary.dataDictionary[0]).findIndex(
+                    (dictionaryKey: string) => {
+                        return dictionaryKey === id;
+                    }
+                )
+            ).not.toEqual(-1);
+            expect(dictionary.dataDictionary[0][id].data).toEqual(linkedData[0].data);
+            expect((dictionary.dataDictionary[0].abc.data as any).linkedData).toEqual([
+                { id },
+            ]);
+        });
+        test("should add linkedData to an existing array of linkedData items", () => {
             getMessage({
                 type: MessageSystemType.initialize,
                 data: [
@@ -242,7 +304,68 @@ describe("getMessage", () => {
                         data: {
                             schemaId: "foo",
                             data: {
-                                children: [
+                                linkedData: [
+                                    {
+                                        id: "foo",
+                                    },
+                                ],
+                            },
+                        },
+                        foo: {
+                            schemaId: "foo",
+                            data: {
+                                test: "hello world",
+                            },
+                        },
+                    },
+                    "data",
+                ],
+                schemaDictionary: {
+                    foo: { id: "foo" },
+                },
+            });
+            const linkedData: Data<unknown>[] = [
+                {
+                    schemaId: "foo",
+                    data: {
+                        hello: "world",
+                    },
+                },
+            ];
+            const message: AddLinkedDataDataMessageOutgoing = getMessage({
+                type: MessageSystemType.data,
+                action: MessageSystemDataTypeAction.addLinkedData,
+                linkedData,
+                dataLocation: "linkedData",
+            }) as AddLinkedDataDataMessageOutgoing;
+
+            expect(Array.isArray((message.data as any).linkedData)).toEqual(true);
+            expect((message.data as any).linkedData.length).toEqual(2);
+
+            const id: string = (message.data as any).linkedData[1].id;
+            const dictionary: GetDataDictionaryMessageOutgoing = getMessage({
+                type: MessageSystemType.dataDictionary,
+                action: MessageSystemDataDictionaryTypeAction.get,
+            }) as GetDataDictionaryMessageOutgoing;
+
+            expect(
+                Object.keys(dictionary.dataDictionary[0]).findIndex(
+                    (dictionaryKey: string) => {
+                        return dictionaryKey === id;
+                    }
+                )
+            ).not.toEqual(-1);
+            expect(dictionary.dataDictionary[0][id].data).toEqual(linkedData[0].data);
+        });
+        test("should remove linkedData from the data and the data dictionary", () => {
+            getMessage({
+                type: MessageSystemType.initialize,
+                data: [
+                    {
+                        data: {
+                            schemaId: "foo",
+                            data: {
+                                linkedData: [
                                     {
                                         id: "data2",
                                     },
@@ -258,37 +381,146 @@ describe("getMessage", () => {
                     },
                     "data",
                 ],
-                schemas: {
+                schemaDictionary: {
                     foo: { id: "foo" },
                 },
             });
-            const children: Children[] = [
+            const linkedData: LinkedData[] = [
                 {
                     id: "data2",
                 },
             ];
-            const message: AddChildrenDataMessageOutgoing = getMessage({
+            const message: AddLinkedDataDataMessageOutgoing = getMessage({
                 type: MessageSystemType.data,
-                action: MessageSystemDataTypeAction.removeChildren,
-                children,
-                dataLocation: "children",
-            }) as AddChildrenDataMessageOutgoing;
+                action: MessageSystemDataTypeAction.removeLinkedData,
+                linkedData,
+                dataLocation: "linkedData",
+            }) as AddLinkedDataDataMessageOutgoing;
 
-            expect((message.data as any).children).toEqual([]);
+            expect((message.data as any).linkedData).toEqual([]);
+        });
+        test("should remove linkedData from the data and the data dictionary when specifying a dictionary ID", () => {
+            getMessage({
+                type: MessageSystemType.initialize,
+                data: [
+                    {
+                        data1: {
+                            schemaId: "foo",
+                            data: {
+                                hello: "world",
+                            },
+                        },
+                        data: {
+                            schemaId: "foo",
+                            data: {
+                                linkedData: [
+                                    {
+                                        id: "data2",
+                                    },
+                                ],
+                            },
+                        },
+                        data2: {
+                            schemaId: "foo",
+                            data: {
+                                hello: "world",
+                            },
+                        },
+                    },
+                    "data1",
+                ],
+                schemaDictionary: {
+                    foo: { id: "foo" },
+                },
+            });
+            const linkedData: LinkedData[] = [
+                {
+                    id: "data2",
+                },
+            ];
+            const message: AddLinkedDataDataMessageOutgoing = getMessage({
+                type: MessageSystemType.data,
+                action: MessageSystemDataTypeAction.removeLinkedData,
+                linkedData,
+                dictionaryId: "data",
+                dataLocation: "linkedData",
+            }) as AddLinkedDataDataMessageOutgoing;
+
+            expect((message.dataDictionary[0].data.data as any).linkedData).toEqual([]);
+        });
+        test("should reorder linkedData in the exist array of linkedData items", () => {
+            getMessage({
+                type: MessageSystemType.initialize,
+                data: [
+                    {
+                        data: {
+                            schemaId: "foo",
+                            data: {
+                                linkedData: [
+                                    {
+                                        id: "foo",
+                                    },
+                                    {
+                                        id: "bar",
+                                    },
+                                ],
+                            },
+                        },
+                        foo: {
+                            schemaId: "foo",
+                            data: {
+                                test: "hello world",
+                            },
+                        },
+                        bar: {
+                            schemaId: "foo",
+                            data: {
+                                test: "hello world",
+                            },
+                        },
+                    },
+                    "data",
+                ],
+                schemaDictionary: {
+                    foo: { id: "foo" },
+                },
+            });
+            const linkedData: LinkedData[] = [
+                {
+                    id: "bar",
+                },
+                {
+                    id: "foo",
+                },
+            ];
+            const message: AddLinkedDataDataMessageOutgoing = getMessage({
+                type: MessageSystemType.data,
+                action: MessageSystemDataTypeAction.reorderLinkedData,
+                linkedData,
+                dataLocation: "linkedData",
+            }) as AddLinkedDataDataMessageOutgoing;
+
+            expect(Array.isArray((message.data as any).linkedData)).toEqual(true);
+            expect((message.data as any).linkedData.length).toEqual(2);
+            expect((message.data as any).linkedData[0].id).toEqual("bar");
+            expect((message.data as any).linkedData[1].id).toEqual("foo");
         });
     });
     describe("navigation", () => {
         test("should return messages sent with navigation updates", () => {
-            const id: string = "foo";
+            const dictionaryId: string = "foo";
+            const navigationConfigId: string = "";
             const message: NavigationMessageOutgoing = getMessage({
                 type: MessageSystemType.navigation,
                 action: MessageSystemNavigationTypeAction.update,
-                activeId: id,
+                activeDictionaryId: dictionaryId,
+                activeNavigationConfigId: navigationConfigId,
             }) as NavigationMessageOutgoing;
 
             expect(message.type).toEqual(MessageSystemType.navigation);
             expect(message.action).toEqual(MessageSystemNavigationTypeAction.update);
-            expect(message.activeId).toEqual(id);
+            expect(message.activeDictionaryId).toEqual(dictionaryId);
+            expect(message.activeNavigationConfigId).toEqual(navigationConfigId);
         });
     });
     describe("dataDictionary", () => {
@@ -304,13 +536,13 @@ describe("getMessage", () => {
                 },
                 "data",
             ];
-            const schemas: SchemaDictionary = {
+            const schemaDictionary: SchemaDictionary = {
                 foo: { id: "foo" },
             };
             getMessage({
                 type: MessageSystemType.initialize,
                 data: dataBlob,
-                schemas,
+                schemaDictionary,
             });
             const getDataDictionary: GetDataDictionaryMessageOutgoing = getMessage({
                 type: MessageSystemType.dataDictionary,
@@ -322,7 +554,7 @@ describe("getMessage", () => {
                 MessageSystemDataDictionaryTypeAction.get
             );
             expect(getDataDictionary.dataDictionary).toEqual(dataBlob);
-            expect(getDataDictionary.activeId).toEqual(dataBlob[1]);
+            expect(getDataDictionary.activeDictionaryId).toEqual(dataBlob[1]);
         });
         test("should return messages set to update the active id of the data dictionary", () => {
             const dataBlob: DataDictionary<unknown> = [
@@ -341,6 +573,7 @@ describe("getMessage", () => {
                         schemaId: "foo",
                         parent: {
                             id: "abc",
+                            dataLocation: "foo",
                         },
                         data: {
                             bat: "baz",
@@ -349,20 +582,20 @@ describe("getMessage", () => {
                 },
                 "abc",
             ];
-            const schemas: SchemaDictionary = {
+            const schemaDictionary: SchemaDictionary = {
                 foo: { id: "foo" },
             };
             getMessage({
                 type: MessageSystemType.initialize,
                 data: dataBlob,
-                schemas,
+                schemaDictionary,
             });
 
             const updateDataDictionaryActiveId: UpdateActiveIdDataDictionaryMessageOutgoing = getMessage(
                 {
                     type: MessageSystemType.dataDictionary,
                     action: MessageSystemDataDictionaryTypeAction.updateActiveId,
-                    activeId: "def",
+                    activeDictionaryId: "def",
                 } as UpdateActiveIdDataDictionaryMessageIncoming
             ) as UpdateActiveIdDataDictionaryMessageOutgoing;
 
@@ -372,7 +605,7 @@ describe("getMessage", () => {
             expect(updateDataDictionaryActiveId.action).toEqual(
                 MessageSystemDataDictionaryTypeAction.updateActiveId
             );
-            expect(updateDataDictionaryActiveId.activeId).toEqual("def");
+            expect(updateDataDictionaryActiveId.activeDictionaryId).toEqual("def");
         });
     });
     describe("navigationDictionary", () => {
@@ -388,13 +621,13 @@ describe("getMessage", () => {
                 },
                 "data",
             ];
-            const schemas: SchemaDictionary = {
+            const schemaDictionary: SchemaDictionary = {
                 foo: { id: "foo" },
             };
             getMessage({
                 type: MessageSystemType.initialize,
                 data: dataBlob,
-                schemas,
+                schemaDictionary,
             });
             const getNavigationDictionary: GetNavigationDictionaryMessageOutgoing = getMessage(
                 {
@@ -410,7 +643,7 @@ describe("getMessage", () => {
                 MessageSystemNavigationDictionaryTypeAction.get
             );
             expect(getNavigationDictionary.navigationDictionary).not.toEqual(undefined);
-            expect(getNavigationDictionary.activeId).not.toEqual(undefined);
+            expect(getNavigationDictionary.activeDictionaryId).not.toEqual(undefined);
         });
         test("should return messages set to update the active id of the navigation dictionary", () => {
             const dataBlob: DataDictionary<unknown> = [
@@ -424,20 +657,20 @@ describe("getMessage", () => {
                 },
                 "data",
             ];
-            const schemas: SchemaDictionary = {
+            const schemaDictionary: SchemaDictionary = {
                 foo: { id: "foo" },
             };
             getMessage({
                 type: MessageSystemType.initialize,
                 data: dataBlob,
-                schemas,
+                schemaDictionary,
             });
 
             const updateNavigationDictionaryActiveId: UpdateActiveIdNavigationDictionaryMessageOutgoing = getMessage(
                 {
                     type: MessageSystemType.navigationDictionary,
                     action: MessageSystemNavigationDictionaryTypeAction.updateActiveId,
-                    activeId: "nav2",
+                    activeDictionaryId: "nav2",
                 } as UpdateActiveIdNavigationDictionaryMessageIncoming
             ) as UpdateActiveIdNavigationDictionaryMessageOutgoing;
 
@@ -447,7 +680,7 @@ describe("getMessage", () => {
             expect(updateNavigationDictionaryActiveId.action).toEqual(
                 MessageSystemNavigationDictionaryTypeAction.updateActiveId
             );
-            expect(updateNavigationDictionaryActiveId.activeId).toEqual("nav2");
+            expect(updateNavigationDictionaryActiveId.activeDictionaryId).toEqual("nav2");
         });
     });
 });

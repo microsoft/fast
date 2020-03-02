@@ -425,7 +425,7 @@ export interface NavigationItemConfig {
 export function getActiveComponentAndSection(dataLocation: string): Partial<FormState> {
     const state: Partial<FormState> = {};
 
-    state.activeNavigationId = dataLocation;
+    state.activeNavigationConfigId = dataLocation;
 
     return state;
 }
