@@ -9,7 +9,6 @@ export * from "./template-compiler";
 export * from "./instructions";
 export * from "./styles";
 export * from "./di";
-export * from "./projectors";
 export * from "./view";
 export * from "./observation/observable";
 export * from "./behaviors/index";
