@@ -114,7 +114,11 @@ import Typography from "./typography";
 export { Typography };
 export * from "./typography";
 
-export { WindowWithIntersectionObserver, WindowWithResizeObserver } from "./utilities";
+export {
+    WindowWithIntersectionObserver,
+    WindowWithResizeObserver,
+    extractHtmlElement,
+} from "./utilities";
 export * from "./utilities/resize-observer";
 export * from "./utilities/resize-observer-entry";
 export * from "./utilities/intersection-observer";
