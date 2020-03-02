@@ -44,7 +44,6 @@ const DragItem: React.FC<DragItemProps> = ({
         },
     });
     const dragSource: ConnectDragSource = drag[1] as ConnectDragSource;
-
     const drop: [
         {
             isOver: boolean;
@@ -66,7 +65,6 @@ const DragItem: React.FC<DragItemProps> = ({
     });
     const dropTarget: ConnectDropTarget = drop[1] as ConnectDropTarget;
     const isOver: boolean = (drop[0] as { isOver: boolean }).isOver;
-
     const renderDeleteArrayItemTrigger: (itemIndex: number) => React.ReactNode = (
         itemIndex: number
     ): React.ReactNode => {

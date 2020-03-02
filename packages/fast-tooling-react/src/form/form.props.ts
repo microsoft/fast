@@ -1,8 +1,12 @@
 import { ErrorObject } from "ajv";
 import { SingleLineControlPlugin, StandardControlPlugin } from "./templates";
 import { ControlContext } from "./templates/types";
-import { TreeNavigationConfig } from "../message-system/navigation.props";
+import {
+    TreeNavigationConfig,
+    TreeNavigationConfigDictionary,
+} from "../message-system/navigation.props";
 import { MessageSystem } from "../message-system";
+import { DataDictionary } from "../message-system/data.props";
 
 /**
  * Form class name contract
@@ -52,9 +56,14 @@ export interface FormProps {
  */
 export interface FormState {
     /**
-     * Current active navigation ID
+     * Current active dictionary ID
      */
-    activeNavigationId: string;
+    activeDictionaryId: string;
+
+    /**
+     * Current active navigation config ID
+     */
+    activeNavigationConfigId: string;
 
     /**
      * The schema
@@ -62,14 +71,29 @@ export interface FormState {
     schema: any;
 
     /**
+     * The dictionary of schemas
+     */
+    schemaDictionary: { [key: string]: any };
+
+    /**
      * The data
      */
     data: any;
 
     /**
+     * The dictionary of data items
+     */
+    dataDictionary: DataDictionary<any>;
+
+    /**
      * The navigation
      */
     navigation: TreeNavigationConfig;
+
+    /**
+     * The navigation dictionary
+     */
+    navigationDictionary: TreeNavigationConfigDictionary;
 
     /**
      * The validation errors if there are any
