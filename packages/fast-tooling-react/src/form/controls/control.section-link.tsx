@@ -51,7 +51,10 @@ class SectionLinkControl extends React.Component<
     }
 
     private handleUpdateSection = (e: React.MouseEvent<HTMLAnchorElement>): void => {
-        this.props.onUpdateSection(this.props.navigationId);
+        this.props.onUpdateSection(
+            this.props.dictionaryId,
+            this.props.navigationConfigId
+        );
     };
 }
 

@@ -1,6 +1,6 @@
 import { DataType } from "../data-utilities/types";
 import { TreeNavigationConfig, TreeNavigationConfigDictionary } from "./navigation.props";
-import { Children, Data, DataDictionary } from "./data.props";
+import { Data, DataDictionary, LinkedData } from "./data.props";
 import { SchemaDictionary } from "./schema.props";
 import { MessageSystemType } from "./types";
 
@@ -14,8 +14,9 @@ export enum MessageSystemDataTypeAction {
     remove = "remove",
     add = "add",
     duplicate = "duplicate",
-    removeChildren = "remove-children",
-    addChildren = "add-children",
+    removeLinkedData = "remove-linked-data",
+    addLinkedData = "add-linked-data",
+    reorderLinkedData = "reorder-linked-data",
 }
 
 export enum MessageSystemNavigationDictionaryTypeAction {
@@ -34,7 +35,7 @@ export enum MessageSystemNavigationTypeAction {
 export interface InitializeMessageIncoming {
     type: MessageSystemType.initialize;
     data: DataDictionary<unknown>;
-    schemas: SchemaDictionary;
+    schemaDictionary: SchemaDictionary;
 }
 
 /**
@@ -43,9 +44,13 @@ export interface InitializeMessageIncoming {
 export interface InitializeMessageOutgoing {
     type: MessageSystemType.initialize;
     data: unknown;
+    dataDictionary: DataDictionary<unknown>;
     navigation: TreeNavigationConfig;
-    activeId: string;
+    navigationDictionary: TreeNavigationConfigDictionary;
+    activeDictionaryId: string;
+    activeNavigationConfigId: string;
     schema: any;
+    schemaDictionary: SchemaDictionary;
 }
 
 /**
@@ -63,7 +68,7 @@ export interface GetDataDictionaryMessageOutgoing {
     type: MessageSystemType.dataDictionary;
     action: MessageSystemDataDictionaryTypeAction.get;
     dataDictionary: DataDictionary<unknown>;
-    activeId: string;
+    activeDictionaryId: string;
 }
 
 /**
@@ -81,7 +86,7 @@ export interface GetNavigationDictionaryMessageOutgoing {
     type: MessageSystemType.navigationDictionary;
     action: MessageSystemNavigationDictionaryTypeAction.get;
     navigationDictionary: TreeNavigationConfigDictionary;
-    activeId: string;
+    activeDictionaryId: string;
 }
 
 /**
@@ -90,7 +95,7 @@ export interface GetNavigationDictionaryMessageOutgoing {
 export interface UpdateActiveIdDataDictionaryMessageIncoming {
     type: MessageSystemType.dataDictionary;
     action: MessageSystemDataDictionaryTypeAction.updateActiveId;
-    activeId: string;
+    activeDictionaryId: string;
 }
 
 /**
@@ -99,7 +104,7 @@ export interface UpdateActiveIdDataDictionaryMessageIncoming {
 export interface UpdateActiveIdDataDictionaryMessageOutgoing {
     type: MessageSystemType.dataDictionary;
     action: MessageSystemDataDictionaryTypeAction.updateActiveId;
-    activeId: string;
+    activeDictionaryId: string;
 }
 
 /**
@@ -108,7 +113,7 @@ export interface UpdateActiveIdDataDictionaryMessageOutgoing {
 export interface UpdateActiveIdNavigationDictionaryMessageIncoming {
     type: MessageSystemType.navigationDictionary;
     action: MessageSystemNavigationDictionaryTypeAction.updateActiveId;
-    activeId: string;
+    activeDictionaryId: string;
 }
 
 /**
@@ -117,7 +122,7 @@ export interface UpdateActiveIdNavigationDictionaryMessageIncoming {
 export interface UpdateActiveIdNavigationDictionaryMessageOutgoing {
     type: MessageSystemType.navigationDictionary;
     action: MessageSystemNavigationDictionaryTypeAction.updateActiveId;
-    activeId: string;
+    activeDictionaryId: string;
 }
 
 /**
@@ -137,47 +142,85 @@ export interface UpdateDataMessageOutgoing {
     type: MessageSystemType.data;
     action: MessageSystemDataTypeAction.update;
     data: unknown;
+    dataDictionary: DataDictionary<unknown>;
     navigation: TreeNavigationConfig;
+    navigationDictionary: TreeNavigationConfigDictionary;
 }
 
 /**
- * The message to add a child
+ * The message to add a linked data
  */
-export interface AddChildrenDataMessageIncoming {
+export interface AddLinkedDataDataMessageIncoming {
     type: MessageSystemType.data;
-    action: MessageSystemDataTypeAction.addChildren;
+    action: MessageSystemDataTypeAction.addLinkedData;
+    /**
+     * Dictionary ID to use if it is different from the current
+     * active dictionary ID
+     */
+    dictionaryId?: string;
     dataLocation: string;
-    children: Array<Data<unknown>>;
+    linkedData: Array<Data<unknown>>;
 }
 
 /**
- * The message that a child has been added
+ * The message that linked data has been added
  */
-export interface AddChildrenDataMessageOutgoing {
+export interface AddLinkedDataDataMessageOutgoing {
     type: MessageSystemType.data;
-    action: MessageSystemDataTypeAction.addChildren;
+    action: MessageSystemDataTypeAction.addLinkedData;
     data: unknown;
+    dataDictionary: DataDictionary<unknown>;
     navigation: TreeNavigationConfig;
+    navigationDictionary: TreeNavigationConfigDictionary;
 }
 
 /**
- * The message to remove a child
+ * The message to remove linked data
  */
-export interface RemoveChildrenDataMessageIncoming {
+export interface RemoveLinkedDataDataMessageIncoming {
     type: MessageSystemType.data;
-    action: MessageSystemDataTypeAction.removeChildren;
+    action: MessageSystemDataTypeAction.removeLinkedData;
+    /**
+     * Dictionary ID to use if it is different from the current
+     * active dictionary ID
+     */
+    dictionaryId?: string;
     dataLocation: string;
-    children: Children[];
+    linkedData: LinkedData[];
 }
 
 /**
- * The message that a child has been removed
+ * The message that linked data has been removed
  */
-export interface RemoveChildrenDataMessageOutgoing {
+export interface RemoveLinkedDataDataMessageOutgoing {
     type: MessageSystemType.data;
-    action: MessageSystemDataTypeAction.removeChildren;
+    action: MessageSystemDataTypeAction.removeLinkedData;
     data: unknown;
+    dataDictionary: DataDictionary<unknown>;
     navigation: TreeNavigationConfig;
+    navigationDictionary: TreeNavigationConfigDictionary;
+}
+
+/**
+ * The message to reorder linked data
+ */
+export interface ReorderLinkedDataDataMessageIncoming {
+    type: MessageSystemType.data;
+    action: MessageSystemDataTypeAction.reorderLinkedData;
+    dataLocation: string;
+    linkedData: LinkedData[];
+}
+
+/**
+ * The message that linked data has been reordered
+ */
+export interface ReorderLinkedDataDataMessageOutgoing {
+    type: MessageSystemType.data;
+    action: MessageSystemDataTypeAction.reorderLinkedData;
+    data: unknown;
+    dataDictionary: DataDictionary<unknown>;
+    navigation: TreeNavigationConfig;
+    navigationDictionary: TreeNavigationConfigDictionary;
 }
 
 /**
@@ -198,7 +241,9 @@ export interface DuplicateDataMessageOutgoing {
     action: MessageSystemDataTypeAction.duplicate;
     sourceDataLocation: string;
     data: unknown;
+    dataDictionary: DataDictionary<unknown>;
     navigation: TreeNavigationConfig;
+    navigationDictionary: TreeNavigationConfigDictionary;
 }
 
 /**
@@ -218,7 +263,9 @@ export interface RemoveDataMessageOutgoing {
     type: MessageSystemType.data;
     action: MessageSystemDataTypeAction.remove;
     data: unknown;
+    dataDictionary: DataDictionary<unknown>;
     navigation: TreeNavigationConfig;
+    navigationDictionary: TreeNavigationConfigDictionary;
 }
 
 /**
@@ -240,7 +287,9 @@ export interface AddDataMessageOutgoing {
     type: MessageSystemType.data;
     action: MessageSystemDataTypeAction.add;
     data: unknown;
+    dataDictionary: DataDictionary<unknown>;
     navigation: TreeNavigationConfig;
+    navigationDictionary: TreeNavigationConfigDictionary;
 }
 
 /**
@@ -251,8 +300,9 @@ export type DataMessageIncoming =
     | DuplicateDataMessageIncoming
     | RemoveDataMessageIncoming
     | AddDataMessageIncoming
-    | AddChildrenDataMessageIncoming
-    | RemoveChildrenDataMessageIncoming;
+    | AddLinkedDataDataMessageIncoming
+    | RemoveLinkedDataDataMessageIncoming
+    | ReorderLinkedDataDataMessageIncoming;
 
 /**
  * Outgoing data messages to the message system
@@ -262,8 +312,9 @@ export type DataMessageOutgoing =
     | RemoveDataMessageOutgoing
     | AddDataMessageOutgoing
     | UpdateDataMessageOutgoing
-    | AddChildrenDataMessageOutgoing
-    | RemoveChildrenDataMessageOutgoing;
+    | AddLinkedDataDataMessageOutgoing
+    | RemoveLinkedDataDataMessageOutgoing
+    | ReorderLinkedDataDataMessageOutgoing;
 
 /**
  * The message to update navigation
@@ -271,7 +322,8 @@ export type DataMessageOutgoing =
 export interface UpdateNavigationMessageIncoming {
     type: MessageSystemType.navigation;
     action: MessageSystemNavigationTypeAction.update;
-    activeId: string;
+    activeDictionaryId: string;
+    activeNavigationConfigId: string;
 }
 
 /**
@@ -280,7 +332,8 @@ export interface UpdateNavigationMessageIncoming {
 export interface UpdateNavigationMessageOutgoing {
     type: MessageSystemType.navigation;
     action: MessageSystemNavigationTypeAction.update;
-    activeId: string;
+    activeDictionaryId: string;
+    activeNavigationConfigId: string;
 }
 
 /**
@@ -297,7 +350,8 @@ export interface GetNavigationMessageIncoming {
 export interface GetNavigationMessageOutgoing {
     type: MessageSystemType.navigation;
     action: MessageSystemNavigationTypeAction.get;
-    activeId: string;
+    activeDictionaryId: string;
+    activeNavigationConfigId: string;
     navigation: TreeNavigationConfig;
 }
 

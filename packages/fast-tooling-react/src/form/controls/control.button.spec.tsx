@@ -20,7 +20,8 @@ const managedClasses: ButtonControlClassNameContract = {
 const buttonProps: ButtonControlProps = {
     type: ControlType.button,
     dataLocation: "",
-    navigationId: "",
+    navigationConfigId: "",
+    dictionaryId: "",
     navigation: {},
     onChange: jest.fn(),
     value: "",

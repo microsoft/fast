@@ -21,7 +21,8 @@ const managedClasses: SectionLinkControlClassNameContract = {
 const sectionLinkProps: SectionLinkControlProps = {
     type: ControlType.sectionLink,
     dataLocation: "",
-    navigationId: "",
+    navigationConfigId: "",
+    dictionaryId: "",
     navigation: {},
     schemaLocation: "",
     label: "",

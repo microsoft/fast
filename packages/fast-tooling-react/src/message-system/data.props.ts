@@ -3,12 +3,16 @@ export interface Parent {
      * The id of the parent data blob in the dictionary
      */
     id: string;
+
+    /**
+     * The data location of the parent data blob in the dictionary
+     */
+    dataLocation: string;
 }
 
-export interface Children {
+export interface LinkedData {
     /**
-     * The id of the children data blob in the dictionary
-     * that is linked from within the data
+     * The id of the linked data blob in the dictionary
      */
     id: string;
 }

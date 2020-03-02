@@ -13,10 +13,10 @@ import {
 } from "../data-utilities/types";
 import ajv from "ajv";
 import { SchemaDictionary } from "./schema.props";
-import { DataDictionary } from "./data.props";
+import { DataDictionary, Parent } from "./data.props";
 
 export function getNavigationDictionary(
-    schemas: SchemaDictionary,
+    schemaDictionary: SchemaDictionary,
     data: DataDictionary<unknown>
 ): TreeNavigationConfigDictionary {
     const navigationConfigs: TreeNavigationConfigDictionary[] = [];
@@ -25,8 +25,9 @@ export function getNavigationDictionary(
         navigationConfigs.push([
             {
                 [dataKey]: getNavigation(
-                    schemas[data[0][dataKey].schemaId],
-                    data[0][dataKey].data
+                    schemaDictionary[data[0][dataKey].schemaId],
+                    data[0][dataKey].data,
+                    data[0][dataKey].parent
                 ),
             },
             dataKey,
@@ -49,13 +50,18 @@ export function getNavigationDictionary(
     ];
 }
 
-export function getNavigation(schema: any, data?: any): TreeNavigationConfig {
-    return getNavigationRecursive(schema, data);
+export function getNavigation(
+    schema: any,
+    data?: any,
+    parent?: Parent
+): TreeNavigationConfig {
+    return getNavigationRecursive(schema, data, parent);
 }
 
 function getNavigationRecursive(
     schema: any,
     data?: any,
+    dictionaryParent?: Parent,
     dataLocation: string = "",
     schemaLocation: string = "",
     parent: string | null = null,
@@ -75,6 +81,13 @@ function getNavigationRecursive(
             [self]: {
                 self,
                 parent,
+                parentDictionaryItem:
+                    dictionaryParent !== undefined
+                        ? {
+                              id: dictionaryParent.id,
+                              dataLocation: dictionaryParent.dataLocation,
+                          }
+                        : undefined,
                 relativeDataLocation: dataLocation,
                 schemaLocation,
                 schema,
@@ -142,6 +155,7 @@ function getNavigationItems(
             getNavigationRecursive(
                 schema[combiningKeyword][combiningIndex],
                 data,
+                undefined,
                 dataLocation,
                 currentSchemaLocation,
                 parent,
@@ -157,6 +171,7 @@ function getNavigationItems(
                     return getNavigationRecursive(
                         schema.properties[propertyKey],
                         get(data, propertyKey) ? data[propertyKey] : void 0,
+                        undefined,
                         dataLocation ? `${dataLocation}.${propertyKey}` : propertyKey,
                         schemaLocation
                             ? `${schemaLocation}.${
@@ -173,6 +188,7 @@ function getNavigationItems(
                     return getNavigationRecursive(
                         schema.items,
                         data[index],
+                        undefined,
                         dataLocation ? `${dataLocation}[${index}]` : `[${index}]`,
                         schemaLocation
                             ? `${schemaLocation}.${itemsKeyword}`
