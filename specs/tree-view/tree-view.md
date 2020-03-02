@@ -2,20 +2,18 @@
 
 ## Overview
 
-There are technically two components being presented as part of this specification - tree view, and tree view item. 
+There are two components being presented as part of this specification - tree view, and tree view item. 
 
 As defined by the W3C:
 > A tree view widget presents a hierarchical list. Any item in the hierarchy may have child items, and items that have children may be expanded or collapsed to show or hide the children. For example, in a file system navigator that uses a tree view to display folders and files, an item representing a folder can be expanded to reveal the contents of the folder, which may be files, folders, or both.
 
 ### Background
 
-We recently created a React implementation of Tree View and Tree View Item with [PR #2510](https://github.com/microsoft/fast-dna/pull/2510). 
-
 Currently, a react implementation exists which supports a `defaultExpanded` value which sets the default expanded or collapsed state. In the event that the `defaultExpanded` value is false, but there is a selected child the tree will expand automatically. [Issue #2597](https://github.com/microsoft/fast-dna/issues/2597) requests an expanded prop to fully control the expanded/collapsed state.
 
 ### Use Cases
 
-Primarily used to present a hierarchical list such as a file system. A tree view can also be served as a flat list where the items will function as navigation.
+Primarily used to present a hierarchical list such as a file system. A tree view can also be served as a flat list.
   
 ### Features
 
@@ -28,15 +26,15 @@ Primarily used to present a hierarchical list such as a file system. A tree view
 
 #### Nesting:
 
-Infinite nesting combined with the current visual design presents a styling challenge. Consider a scenario where we have the following tree in pseudo code:
+Infinite nesting combined with the current visual design presents a styling challenge. Consider a scenario where we have the following tree:
 ```html
 <fast-tree-view>
     <fast-tree-item>Root node one</fast-tree-item>
     <fast-tree-item>Root node two</fast-tree-item>
     <fast-tree-item>
         Parent Node && Root node
-        <fast-tree-item>Nested node one</fast-tree-item>
-        <fast-tree-item>Nested node two</fast-tree-item>
+        <fast-tree-item slot="child-nodes">Nested node one</fast-tree-item slot="child-nodes">
+        <fast-tree-item slot="child-nodes">Nested node two</fast-tree-item>
     </fast-tree-item>
     <fast-tree-item>Root node three</fast-tree-item>
 </fast-tree-view>
@@ -61,12 +59,6 @@ Drag & Drop support poses a unique set of challenges, especially if our goal is 
 
 ## Design
 
-*Describe the design of the component, thinking through several perspectives:*
-
-- *A customer using the component on a web page.*
-- *A developer building an app with the component and interacting through HTML/CSS/JavaScript.*
-- *A designer customizing the component.*
-
 ### API
 
 *The key elements of the component's public API surface:*
@@ -74,21 +66,23 @@ Drag & Drop support poses a unique set of challenges, especially if our goal is 
 **Tree View**
 
 - extends HTML Element props
+- custom CSS property for `depth` to support the infinite nesting scenario
 
 **Tree View Item**
 
 - expanded - nodes with child-nodes can either be expanded or collapsed. 
 - selected - the node is selected
-- content - the content for the tree view
+- content - slot for the content (the default slot for the item)
 - before-content - slot which precedes content, often a glyph or icon
 - after-content - slot which follows content, often a glyph or icon
 - expand-collapse-glyph - slot for svg, will include a default svg
-- on-expanded-change - callback for when the expanded state has changed
-- on-selected - callback for when an item has been selected
+    - You could use a single glyph and rotate using CSS which would be the default. 
+    - With the expanded callback an implementor knows when a tree item is expanded or not. The glyph provided could be updated based on the expanded/collapsed state of the control.
+    - The glyph could be overridden with CSS using the named :part. This can change based on the expanded state as well.
+- expanded-change (event) - event for when the expanded state has changed
+- selected-change (event) - event for when an item has been selected
 
 ### Anatomy and Appearance
-
-*Screenshots and/or description of the basic appearance of the component. Outline its structure with a diagram of its visual tree (shadow dom). Enumerate key areas of visual customization, such as:*
 
 **Tree View**
 
@@ -121,25 +115,24 @@ Nested tree:
 
 **Tree view item**
 
-Default
-![](./images/tree-item.png)
-
-Selected
-![](./images/tree-item-selected.png)
-
-Expanded
-![](./images/tree-item-expanded.png)
-
-Collapsed
-![](./images/tree-item-collapsed.png)
+| State | Image |
+| ----- | ----- |
+| default | ![](./images/tree-item.png) |
+| selected | ![](./images/tree-item-selected.png)
+| expaned | ![](./images/tree-item-expanded.png)
+| collapsed | ![](./images/tree-item-collapsed.png)
+| selected/expanded | ![](./images/tree-item-selected-expanded.png)
+| selected/collapsed | ![](./images/tree-item-selected-expanded.png)
 
 Like tree view, the tree view item has a default slot for its children.
 
 Slots:
-- `content`
-- `before-content`
-- `after-content` 
-- `expand-collapse-glyph`
+- `content` - the default slot.
+- `child-nodes` - named slot for child nodes.
+- `before-content` - named slot to optionally include content (often a glyph) before the `content` slot
+- `after-content` - named slot to optionally include content (often a glyph) after the `content` slot
+- `expand-collapse-glyph` - named slot which can be used to provide an element which will serve as the expand/collapse glyph
+    - 
 
 Parts:
 - root
@@ -154,8 +147,6 @@ Parts:
 ---
 
 ## Implementation
-
-*Important aspects of the planned implementation with careful consideration of web standards and integration.*
 
 ### States
 
