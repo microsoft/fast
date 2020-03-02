@@ -247,7 +247,8 @@ class ArrayControl extends React.Component<
             e.preventDefault();
 
             this.props.onUpdateSection(
-                this.props.navigation[this.props.navigationId].items[index]
+                this.props.dictionaryId,
+                this.props.navigation[this.props.navigationConfigId].items[index]
             );
         };
     };

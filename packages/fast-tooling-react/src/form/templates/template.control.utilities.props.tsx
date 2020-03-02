@@ -3,6 +3,12 @@ import { ControlType, StandardControlPlugin } from "../index";
 import { AddExampleData, Controls } from "../controls/utilities/types";
 import { BadgeType, ControlOnChangeConfig, OnChangeConfig } from "./types";
 import { TreeNavigation } from "../../message-system/navigation.props";
+import { DataDictionary } from "../../message-system/data.props";
+
+export type UpdateNavigationCallback = (
+    dictionaryId: string,
+    navigationConfigId?: string
+) => void;
 
 export type FormHTMLElement =
     | HTMLTextAreaElement
@@ -33,9 +39,19 @@ export interface ControlTemplateUtilitiesProps
     dataLocation: string;
 
     /**
+     * The dictionary ID
+     */
+    dictionaryId: string;
+
+    /**
+     * The dictionary of available data items
+     */
+    dataDictionary: DataDictionary<any>;
+
+    /**
      * The navigation ID
      */
-    navigationId: string;
+    navigationConfigId: string;
 
     /**
      * The navigation
@@ -86,7 +102,7 @@ export interface ControlTemplateUtilitiesProps
     /**
      * The update section callback
      */
-    onUpdateSection: (navigationId: string) => void;
+    onUpdateSection: UpdateNavigationCallback;
 
     /**
      * The default data (if available)
@@ -154,6 +170,11 @@ export interface ControlTemplateUtilitiesProps
      * The string to be used if a prop is untitled
      */
     untitled?: string;
+
+    /**
+     * A dictionary of schemas
+     */
+    schemaDictionary: { [key: string]: any };
 }
 
 export interface CommonControlConfig {
@@ -168,9 +189,14 @@ export interface CommonControlConfig {
     dataLocation: string;
 
     /**
+     * The dictionary ID
+     */
+    dictionaryId: string;
+
+    /**
      * The navigation ID
      */
-    navigationId: string;
+    navigationConfigId: string;
 
     /**
      * The navigation
@@ -286,7 +312,7 @@ export interface SectionLinkControlOptions {
     /**
      * The update section callback
      */
-    onUpdateSection?: (navigationId: string) => void;
+    onUpdateSection?: UpdateNavigationCallback;
 }
 
 export interface SectionControlOptions {
@@ -314,7 +340,7 @@ export interface SectionControlOptions {
     /**
      * The update event to trigger a new active section and/or component
      */
-    onUpdateSection: (navigationId: string) => void;
+    onUpdateSection: UpdateNavigationCallback;
 
     /**
      * The string to be used if a prop is untitled
@@ -325,6 +351,16 @@ export interface SectionControlOptions {
      * Display the validation as browser default tooltips
      */
     displayValidationBrowserDefault?: boolean;
+
+    /**
+     * A dictionary of schemas
+     */
+    schemaDictionary: { [key: string]: any };
+
+    /**
+     * The dictionary of available data items
+     */
+    dataDictionary: DataDictionary<any>;
 }
 
 export interface ArrayControlOptions {
@@ -346,7 +382,7 @@ export interface ArrayControlOptions {
     /**
      * The update section callback
      */
-    onUpdateSection?: (navigationId: string) => void;
+    onUpdateSection?: UpdateNavigationCallback;
 
     /**
      * The location of the data
@@ -364,8 +400,26 @@ export interface AdditionalControlConfigOptions {
     component: React.ComponentClass | React.FunctionComponent;
 }
 
+export interface LinkedDataControlOptions {
+    /**
+     * The potential linkedData to be added
+     */
+    schemaDictionary: { [key: string]: any };
+
+    /**
+     * The update section callback
+     */
+    onUpdateSection?: UpdateNavigationCallback;
+
+    /**
+     * The dictionary of available data items
+     */
+    dataDictionary: DataDictionary<any>;
+}
+
 export type NumberFieldTypeControlConfig = CommonControlConfig &
     NumberFieldTypeControlOptions;
+export type LinkedDataControlConfig = CommonControlConfig & LinkedDataControlOptions;
 export type ListControlConfig = CommonControlConfig & ListControlOptions;
 export type TextareaControlConfig = CommonControlConfig & TextareaControlOptions;
 export type SectionLinkControlConfig = CommonControlConfig & SectionLinkControlOptions;
@@ -373,6 +427,7 @@ export type SectionControlConfig = CommonControlConfig & SectionControlOptions;
 export type ArrayControlConfig = CommonControlConfig & ArrayControlOptions;
 export type ControlConfig = CommonControlConfig &
     NumberFieldTypeControlOptions &
+    LinkedDataControlOptions &
     ListControlOptions &
     TextareaControlOptions &
     SectionLinkControlOptions &
