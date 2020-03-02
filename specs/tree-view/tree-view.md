@@ -33,8 +33,8 @@ Infinite nesting combined with the current visual design presents a styling chal
     <fast-tree-item>Root node two</fast-tree-item>
     <fast-tree-item>
         Parent Node && Root node
-        <fast-tree-item slot="child-nodes">Nested node one</fast-tree-item slot="child-nodes">
-        <fast-tree-item slot="child-nodes">Nested node two</fast-tree-item>
+        <fast-tree-item slot="tree-item">Nested node one</fast-tree-item slot="tree-item">
+        <fast-tree-item slot="tree-item">Nested node two</fast-tree-item>
     </fast-tree-item>
     <fast-tree-item>Root node three</fast-tree-item>
 </fast-tree-view>
@@ -70,9 +70,10 @@ Drag & Drop support poses a unique set of challenges, especially if our goal is 
 
 **Tree View Item**
 
-- expanded - nodes with child-nodes can either be expanded or collapsed. 
+- expanded - nodes with child nodes (tree items) can either be expanded or collapsed. 
 - selected - the node is selected
 - content - slot for the content (the default slot for the item)
+- tree-item - the optional child nodes
 - before-content - slot which precedes content, often a glyph or icon
 - after-content - slot which follows content, often a glyph or icon
 - expand-collapse-glyph - slot for svg, will include a default svg
@@ -88,7 +89,7 @@ Drag & Drop support poses a unique set of challenges, especially if our goal is 
 
 ![](./images/tree-view.png)
 
-The tree view has no named slots or parts - it has a default slot for children.
+The tree view has no named slots or parts - it has a default slot for tree items.
 
 Flat tree:
 ```html
@@ -124,11 +125,11 @@ Nested tree:
 | selected/expanded | ![](./images/tree-item-selected-expanded.png)
 | selected/collapsed | ![](./images/tree-item-selected-expanded.png)
 
-Like tree view, the tree view item has a default slot for its children.
+Tree view item has a named slot for tree items (tree-item) and a default slot for content.
 
 Slots:
 - `content` - the default slot.
-- `child-nodes` - named slot for child nodes.
+- `tree-item` - named slot for child nodes.
 - `before-content` - named slot to optionally include content (often a glyph) before the `content` slot
 - `after-content` - named slot to optionally include content (often a glyph) after the `content` slot
 - `expand-collapse-glyph` - named slot which can be used to provide an element which will serve as the expand/collapse glyph
@@ -140,7 +141,7 @@ Parts:
 - before-content
 - after-content
 - expand-collapse-glyph
-- child-nodes
+- tree-item
 - expanded
 - selected
 
