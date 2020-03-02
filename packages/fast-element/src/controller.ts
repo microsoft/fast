@@ -2,8 +2,8 @@ import { CustomElementDefinition, CustomElement } from "./custom-element";
 import { Constructable } from "./interfaces";
 import { Container, Registry, Resolver, InterfaceSymbol } from "./di";
 import { ElementView } from "./view";
-import { ElementProjector, HostProjector, ShadowDOMProjector } from "./projectors";
 import { PropertyChangeNotifier } from "./observation/notifier";
+import { ShadowDOMStyles } from "./styles";
 
 export class Controller extends PropertyChangeNotifier implements Container {
     public view: ElementView | null = null;
@@ -11,18 +11,34 @@ export class Controller extends PropertyChangeNotifier implements Container {
 
     public constructor(
         public readonly element: HTMLElement,
-        public readonly definition: CustomElementDefinition,
-        public readonly projector: ElementProjector
+        public readonly definition: CustomElementDefinition
     ) {
         super();
+
         this.definition.dependencies.forEach(x => x.register(this));
+
+        if (definition.shadowOptions !== null) {
+            this.element.attachShadow(definition.shadowOptions!);
+        }
     }
 
     public hydrateCustomElement() {
-        this.view = this.definition.template.create(false);
+        const definition = this.definition;
+        const view = (this.view = definition.template.create(false));
 
-        if (this.view !== null) {
-            this.projector.project(this.view, this);
+        if (view !== null) {
+            if (definition.shadowOptions === null) {
+                view.appendTo(this.element);
+            } else {
+                const root = this.element.shadowRoot!;
+                const styles = this.get(ShadowDOMStyles);
+
+                view.appendTo(root);
+
+                if (styles !== null) {
+                    styles.applyTo(root);
+                }
+            }
         }
     }
 
@@ -72,22 +88,14 @@ export class Controller extends PropertyChangeNotifier implements Container {
         const definition = CustomElement.getDefinition(
             element.constructor as Constructable
         );
+
         if (definition === void 0) {
             throw new Error("Missing custom element definition.");
         }
 
-        const projector =
-            definition.shadowOptions === null
-                ? new HostProjector(element)
-                : new ShadowDOMProjector(element, definition);
+        (element as any).$controller = controller = new Controller(element, definition);
 
-        (element as any).$controller = controller = new Controller(
-            element,
-            definition,
-            projector
-        );
         controller.hydrateCustomElement();
-
         return controller;
     }
 }
