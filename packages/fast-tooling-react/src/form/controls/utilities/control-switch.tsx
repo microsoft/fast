@@ -45,12 +45,6 @@ class ControlSwitch extends React.Component<ControlSwitchProps, {}> {
             );
         }
 
-        if (this.props.schema[dictionaryLink]) {
-            return this.renderDataLink(
-                control !== undefined ? control : this.props.controls.linkedData
-            );
-        }
-
         const hasEnum: boolean = isSelect({ enum: this.props.schema.enum });
 
         if (
