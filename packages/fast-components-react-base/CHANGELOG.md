@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.25.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-base@4.24.2...@microsoft/fast-components-react-base@4.25.0) (2020-02-28)
+
+
+### Bug Fixes
+
+* select "aria-labelledby" should never be"undefined" string, remove "aria-live" tag ([#2650](https://github.com/Microsoft/fast-dna/issues/2650)) ([9ed0124](https://github.com/Microsoft/fast-dna/commit/9ed0124))
+* select calls preventDefault on trigger click ([#2663](https://github.com/Microsoft/fast-dna/issues/2663)) ([147deab](https://github.com/Microsoft/fast-dna/commit/147deab))
+
+
+### Features
+
+* add fixed height to horizontal overflow ([#2692](https://github.com/Microsoft/fast-dna/issues/2692)) ([8ca3695](https://github.com/Microsoft/fast-dna/commit/8ca3695))
+* viewport positioner enable delayed instanciation ([#2654](https://github.com/Microsoft/fast-dna/issues/2654)) ([e81991a](https://github.com/Microsoft/fast-dna/commit/e81991a))
+
+
+
+
+
 ## [4.24.2](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-base@4.24.1...@microsoft/fast-components-react-base@4.24.2) (2020-02-07)
 
 

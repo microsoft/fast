@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.11.3](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-layouts-react@4.11.2...@microsoft/fast-layouts-react@4.11.3) (2020-02-28)
+
+
+### Bug Fixes
+
+* applying the cssGridPropertyName correctly in Page.tsx ([#2691](https://github.com/Microsoft/fast-dna/issues/2691)) ([3808def](https://github.com/Microsoft/fast-dna/commit/3808def))
+
+
+
+
+
 ## [4.11.2](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-layouts-react@4.11.1...@microsoft/fast-layouts-react@4.11.2) (2020-02-07)
 
 **Note:** Version bump only for package @microsoft/fast-layouts-react
