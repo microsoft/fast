@@ -13,6 +13,7 @@ import ControlPluginUtilities, {
     ControlPluginUtilitiesProps,
 } from "../../templates/plugin.control.utilities";
 import { ControlType } from "../../index";
+import { dictionaryLink } from "@microsoft/fast-tooling";
 
 class ControlSwitch extends React.Component<ControlSwitchProps, {}> {
     public static displayName: string = "ControlSwitch";
@@ -33,11 +34,20 @@ class ControlSwitch extends React.Component<ControlSwitchProps, {}> {
 
         // Check to see if there is any associated `controlId`
         // then check for the id within the passed controlPlugins
-        if (typeof this.props.schema.formControlId === "string") {
+        if (
+            typeof this.props.schema.formControlId === "string" &&
+            this.props.controlPlugins
+        ) {
             control = this.props.controlPlugins.find(
                 (controlPlugin: StandardControlPlugin) => {
                     return controlPlugin.matchesId(this.props.schema.formControlId);
                 }
+            );
+        }
+
+        if (this.props.schema[dictionaryLink]) {
+            return this.renderDataLink(
+                control !== undefined ? control : this.props.controls.linkedData
             );
         }
 
@@ -94,6 +104,12 @@ class ControlSwitch extends React.Component<ControlSwitchProps, {}> {
                     control !== undefined ? control : this.props.controls.sectionLink
                 );
         }
+    }
+
+    private renderDataLink(control: StandardControlPlugin): React.ReactNode {
+        control.updateProps(this.getCommonControlProps(ControlType.linkedData));
+
+        return control.render();
     }
 
     /**
@@ -210,10 +226,13 @@ class ControlSwitch extends React.Component<ControlSwitchProps, {}> {
             index: this.props.index,
             type,
             dataLocation: this.props.dataLocation,
-            navigationId: this.props.navigationId,
+            navigationConfigId: this.props.navigationConfigId,
+            dictionaryId: this.props.dictionaryId,
+            dataDictionary: this.props.dataDictionary,
             navigation: this.props.navigation,
             schemaLocation: this.props.schemaLocation,
             data: this.props.data,
+            schemaDictionary: this.props.schemaDictionary,
             schema,
             required: this.props.required,
             label: schema.title || schema.description || this.props.untitled,
