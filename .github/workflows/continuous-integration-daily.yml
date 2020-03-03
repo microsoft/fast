@@ -1,4 +1,4 @@
-name: Pipeline Workflows
+name: FAST Workflows
 
 on:
   push: 
