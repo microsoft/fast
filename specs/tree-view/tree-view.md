@@ -64,14 +64,30 @@ Drag & Drop support poses a unique set of challenges, especially if our goal is 
 *The key elements of the component's public API surface:*
 
 **Tree View**
+*Component name:*
+- `fast-tree-view`
 
-- extends HTML Element props
+*Attributes:*
+- extends HTML Element attributes
+
+*Slots:*
+- default slot for items
+
+*Custom properties*
 - custom CSS property for `depth` to support the infinite nesting scenario
 
-**Tree View Item**
+*Events*
+- none
 
+**Tree View Item**
+*Component name:*
+- `fast-tree-item`
+
+*Attributes:*
 - expanded - nodes with child nodes (tree items) can either be expanded or collapsed. 
 - selected - the node is selected
+
+*Slots:*
 - content - slot for the content (the default slot for the item)
 - item - the optional child node(s)
 - before-content - slot which precedes content, often a glyph or icon
@@ -79,7 +95,9 @@ Drag & Drop support poses a unique set of challenges, especially if our goal is 
 - expand-collapse-glyph - slot for svg, will include a default svg
     - You could use a single glyph and rotate using CSS which would be the default. 
     - With the expanded callback an implementor knows when a tree item is expanded or not. The glyph provided could be updated based on the expanded/collapsed state of the control.
-    - The glyph could be overridden with CSS using the named :part. This can change based on the expanded state as well.
+    - The glyph could be overridden with CSS using the named :part. This can change based on the expanded state as well.\
+
+*Events:*
 - expanded-change (event) - event for when the expanded state has changed
 - selected-change (event) - event for when an item has been selected
 
