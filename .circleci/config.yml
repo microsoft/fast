@@ -12,7 +12,6 @@ aliases:
 version: 2
 jobs:
     build_dependencies:
-        resource_class: large # implements 4 vCPUS and 8GB ram,
         <<: *container_config
         steps:
             - *lerna_install
