@@ -31,14 +31,6 @@ Typically it's best to include a checked and unchecked message but it is not req
 
 ---
 
-## Design
-
-*Describe the design of the component, thinking through several perspectives:*
-
-- *A customer using the component on a web page.*
-- *A developer building an app with the component and interacting through HTML/CSS/JavaScript.*
-- *A designer customizing the component.*
-
 ### API
 
 *Component name:*
