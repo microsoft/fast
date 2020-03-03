@@ -7,12 +7,14 @@ import SectionControl from "./control.section";
 import SectionLinkControl from "./control.section-link";
 import SelectControl from "./control.select";
 import TextareaControl from "./control.textarea";
+import LinkedDataControl from "./control.linked-data";
 
 export {
     ArrayControl,
     ButtonControl,
     CheckboxControl,
     DisplayControl,
+    LinkedDataControl,
     NumberFieldControl,
     SectionControl,
     SectionLinkControl,
