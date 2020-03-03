@@ -3,6 +3,7 @@ import {
     ButtonControl,
     CheckboxControl,
     DisplayControl,
+    LinkedDataControl,
     NumberFieldControl,
     SectionControl,
     SectionLinkControl,
@@ -244,6 +245,12 @@ class Form extends React.Component<
                     component: ArrayControl,
                     context: ControlContext.fill,
                 };
+            case ControlType.linkedData:
+                return {
+                    plugin: StandardControlPlugin,
+                    component: LinkedDataControl,
+                    context: ControlContext.fill,
+                };
             case ControlType.numberField:
                 return {
                     plugin: StandardControlPlugin,
@@ -418,6 +425,7 @@ class Form extends React.Component<
             controls: {
                 button: this.buttonControl,
                 array: this.arrayControl,
+                linkedData: this.linkedDataControl,
                 checkbox: this.checkboxControl,
                 display: this.displayControl,
                 textarea: this.textareaControl,
