@@ -153,15 +153,7 @@ class FormAndNavigationTestPage extends React.Component<{}, FormTestPageState> {
 
     private renderNavigation(): React.ReactNode {
         return (
-            <Navigation
-                data={this.state.data}
-                schema={this.state.schema}
-                childOptions={this.getChildOptions()}
-                onLocationUpdate={this.handleLocationOnChange}
-                dataLocation={this.state.dataLocation}
-                onChange={this.handleDataOnChange}
-                dragAndDropReordering={true}
-            />
+            <Navigation messageSystem={fastMessageSystem} dragAndDropReordering={true} />
         );
     }
 
@@ -269,22 +261,6 @@ class FormAndNavigationTestPage extends React.Component<{}, FormTestPageState> {
                     });
                 }
         }
-    };
-
-    /**
-     * Handles the change in location
-     */
-    private handleLocationOnChange = (dataLocation: string): void => {
-        this.setState({
-            dataLocation,
-        });
-    };
-
-    private handleDataOnChange = (data: any, dataLocation: string): void => {
-        this.setState({
-            data,
-            dataLocation,
-        });
     };
 
     private handleComponentUpdate = (e: React.ChangeEvent<HTMLSelectElement>): void => {
