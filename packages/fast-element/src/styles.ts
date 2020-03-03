@@ -1,63 +1,39 @@
-import { Container, Registry, DI } from "./di";
+const elementStylesBrand = Symbol();
 
-export interface ShadowDOMStyles {
+export interface ElementStyles {
+    readonly styles: InjectableStyles[];
     applyTo(shadowRoot: ShadowRoot): void;
 }
 
-export const ShadowDOMStyles = DI.createInterface<ShadowDOMStyles>("ShadowDOMStyles");
+type InjectableStyles = string | ElementStyles;
+type ElementStyleFactory = (styles: InjectableStyles[]) => ElementStyles;
 
-type InjectableStyles = string | ShadowDOMRegistry;
-type ShadowDOMStyleFactory = (styles: InjectableStyles[]) => ShadowDOMStyles;
+function isElementStyles(object: any): object is ElementStyles {
+    return object.brand === elementStylesBrand;
+}
+
+function reduceStyles(styles: InjectableStyles[]): string[] {
+    return styles
+        .map(x => (isElementStyles(x) ? reduceStyles(x.styles) : [x]))
+        .reduce((prev, curr) => prev.concat(curr), []);
+}
+
 type HasAdoptedStyleSheets = ShadowRoot & {
     adoptedStyleSheets: CSSStyleSheet[];
 };
 
-function reduceStyles(styles: InjectableStyles[]): string[] {
-    return styles
-        .map(x => (x instanceof ShadowDOMRegistry ? reduceStyles(x.styles) : [x]))
-        .reduce((prev, curr) => prev.concat(curr), []);
-}
-
-export class ShadowDOMRegistry implements Registry {
-    private static _createStyles: ShadowDOMStyleFactory;
-    private get createStyles(): ShadowDOMStyleFactory {
-        return (
-            ShadowDOMRegistry._createStyles ||
-            (ShadowDOMRegistry._createStyles = ShadowDOMRegistry.createStyleFactory())
-        );
-    }
-
-    public constructor(public styles: InjectableStyles[]) {}
-
-    public register(container: Container) {
-        container.registerResolver(ShadowDOMStyles, () => this.createStyles(this.styles));
-    }
-
-    public static createStyleFactory(): ShadowDOMStyleFactory {
-        if (AdoptedStyleSheetsStyles.supported()) {
-            const styleSheetCache = new Map();
-            return function(styles: InjectableStyles[]) {
-                return new AdoptedStyleSheetsStyles(styles, styleSheetCache);
-            };
-        }
-
-        return function(styles: InjectableStyles[]) {
-            return new StyleElementStyles(styles);
-        };
-    }
-}
-
-export class AdoptedStyleSheetsStyles implements ShadowDOMStyles {
+export class AdoptedStyleSheetsStyles implements ElementStyles {
+    public readonly brand = elementStylesBrand;
     private readonly styleSheets: CSSStyleSheet[];
 
     public constructor(
-        styles: (string | ShadowDOMRegistry)[],
+        public styles: InjectableStyles[],
         styleSheetCache: Map<string, CSSStyleSheet>
     ) {
         this.styleSheets = reduceStyles(styles).map(x => {
             let sheet = styleSheetCache.get(x);
 
-            if (!sheet) {
+            if (sheet === void 0) {
                 sheet = new CSSStyleSheet();
                 (sheet as any).replaceSync(x);
                 styleSheetCache.set(x, sheet);
@@ -65,10 +41,6 @@ export class AdoptedStyleSheetsStyles implements ShadowDOMStyles {
 
             return sheet;
         });
-    }
-
-    public static supported(): boolean {
-        return "adoptedStyleSheets" in (window as any).ShadowRoot.prototype;
     }
 
     public applyTo(shadowRoot: HasAdoptedStyleSheets) {
@@ -81,24 +53,39 @@ export class AdoptedStyleSheetsStyles implements ShadowDOMStyles {
     }
 }
 
-export class StyleElementStyles implements ShadowDOMStyles {
-    public constructor(private styles: (string | ShadowDOMRegistry)[]) {}
+export class StyleElementStyles implements ElementStyles {
+    public readonly brand = elementStylesBrand;
+    private styleSheets: string[];
+
+    public constructor(public styles: InjectableStyles[]) {
+        this.styleSheets = reduceStyles(styles);
+    }
 
     public applyTo(shadowRoot: ShadowRoot) {
-        const styles = reduceStyles(this.styles);
+        const styleSheets = this.styleSheets;
 
-        for (let i = styles.length - 1; i > -1; --i) {
+        for (let i = styleSheets.length - 1; i > -1; --i) {
             const element = document.createElement("style");
-            element.innerHTML = styles[i];
+            element.innerHTML = styleSheets[i];
             shadowRoot.prepend(element);
         }
     }
 }
 
+export const createStyles: ElementStyleFactory = (() => {
+    if ("adoptedStyleSheets" in window.ShadowRoot.prototype) {
+        const styleSheetCache = new Map();
+        return (styles: InjectableStyles[]) =>
+            new AdoptedStyleSheetsStyles(styles, styleSheetCache);
+    }
+
+    return (styles: InjectableStyles[]) => new StyleElementStyles(styles);
+})();
+
 export function css(
     strings: TemplateStringsArray,
-    ...values: (string | ShadowDOMRegistry)[]
-): ShadowDOMRegistry {
+    ...values: InjectableStyles[]
+): ElementStyles {
     const styles: InjectableStyles[] = [];
     let cssString = "";
 
@@ -106,7 +93,7 @@ export function css(
         cssString += strings[i];
         const value = values[i];
 
-        if (value instanceof ShadowDOMRegistry) {
+        if (isElementStyles(value)) {
             styles.push(value);
         } else {
             cssString += value;
@@ -116,5 +103,5 @@ export function css(
     cssString += strings[strings.length - 1];
     styles.push(cssString);
 
-    return new ShadowDOMRegistry(styles);
+    return createStyles(styles);
 }
