@@ -14,8 +14,8 @@ Any custom element that should associate a value to a form.
 The implementation will be an *abstract class* that will extend `FastElement`. The class will expose implementations for all of the common form element capabilities. It will also expose and manage an implementation for when the form-associated custom element APIs are not available.
 
 Another option I looked at is using a decorator, but there are a few challenges with that approach:
-  1. decorators cannot augment the class type, so we would need to use a pattern similar to https://www.typescriptlang.org/docs/handbook/mixins.html to gain accurate type definitions
-  2. Decorators cannot provide a *default* implementation that can be overridden by the extending class. Using an abstract class allows straight overrides of implementation or merging of implementation with super
+  1. decorators cannot augment the class type directly, so we would need to use a pattern similar to https://www.typescriptlang.org/docs/handbook/mixins.html to gain accurate type definitions
+  2. Decorators cannot (easily?) provide a *default* implementation that can be overridden by the extending class. Using an abstract class allows straight overrides of implementation or merging of implementation with super
 
 The implementation will standardize an interface between two common cases: browsers with form-associated-custom-element support and browsers without.
 
