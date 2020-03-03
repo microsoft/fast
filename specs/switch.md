@@ -14,7 +14,7 @@ A switch should allow the following properties:
 - `checked`, whether the switch is cheched or not.
 - `checked-message`, the message that displays when the switch is checked.
 - `unchecked-message`, the message that displays when switch is not checked.
-- `disbaled`, whether the switch is disabled or not.
+- `disabled`, whether the switch is disabled or not.
 
 ### Risks and Challenges
 
