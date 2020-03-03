@@ -32,9 +32,11 @@ jobs:
 
     - name: Execute unit tests
       run: lerna run test --stream
-      
+
   code_coverage:
 
+    runs-on: ubuntu-latest
+    
     needs: [ build_linux ]
     name: coverage
 
