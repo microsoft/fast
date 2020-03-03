@@ -138,7 +138,7 @@ Nested tree:
 | ----- | ----- |
 | default | ![](./images/tree-item.png) |
 | selected | ![](./images/tree-item-selected.png)
-| expaned | ![](./images/tree-item-expanded.png)
+| expanded | ![](./images/tree-item-expanded.png)
 | collapsed | ![](./images/tree-item-collapsed.png)
 | selected/expanded | ![](./images/tree-item-selected-expanded.png)
 | selected/collapsed | ![](./images/tree-item-selected-expanded.png)
