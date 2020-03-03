@@ -51,7 +51,7 @@ class Toolbar extends Foundation<
 
     protected handledProps: HandledProps<ToolbarHandledProps> = {
         managedClasses: void 0,
-        initialFocusIndex: void 0,
+        initialFocusTarget: void 0,
         orientation: void 0,
     };
 
@@ -63,12 +63,7 @@ class Toolbar extends Foundation<
         super(props);
 
         this.state = {
-            focusItemPath: isNil(this.props.initialFocusIndex)
-                ? "-1"
-                : (Array.isArray(this.props.initialFocusIndex)
-                      ? this.props.initialFocusIndex
-                      : [this.props.initialFocusIndex]
-                  ).toString(),
+            focusItemPath: "-1",
         };
     }
 
@@ -130,8 +125,8 @@ class Toolbar extends Foundation<
             this.rootElement.current instanceof HTMLElement &&
             !(this.rootElement.current as HTMLElement).contains(document.activeElement)
         ) {
-            // reset if initialFocusIndex prop has changed
-            if (prevProps.initialFocusIndex !== this.props.initialFocusIndex) {
+            // reset if initialFocusTarget prop has changed
+            if (prevProps.initialFocusTarget !== this.props.initialFocusTarget) {
                 this.setDefaultFocusItem(this.getFocusableItems());
                 return;
             }
@@ -163,26 +158,29 @@ class Toolbar extends Foundation<
     };
 
     /**
-     * Sets the current focuus item path based on default focus item
+     * Sets the current focus item path based on default focus item
      */
     private setDefaultFocusItem = (focusableItems: HTMLElement[]): void => {
-        let initialFocusItemPath: number[] = [0];
+        let focusableItemPath: string = "-1";
 
-        if (!isNil(this.props.initialFocusIndex)) {
-            initialFocusItemPath = Array.isArray(this.props.initialFocusIndex)
-                ? this.props.initialFocusIndex
-                : [this.props.initialFocusIndex];
-        }
+        if (focusableItems.length > 0) {
+            if (!isNil(this.props.initialFocusTarget)) {
+                const focusElement: HTMLElement = extractHtmlElement(
+                    this.props.initialFocusTarget
+                );
 
-        let itemPath: string = initialFocusItemPath.toString();
+                if (focusElement !== null) {
+                    focusableItemPath = this.extractItemPath(focusElement);
+                }
+            }
 
-        if (this.getItemIndex(focusableItems, itemPath) === -1) {
-            // default to first focusable widget
-            itemPath = focusableItems[0].getAttribute(Toolbar.toolbarItemAttributeName);
+            if (focusableItemPath === "-1") {
+                focusableItemPath = this.extractItemPath(focusableItems[0]);
+            }
         }
 
         this.setState({
-            focusItemPath: itemPath,
+            focusItemPath: focusableItemPath,
         });
     };
 
@@ -218,41 +216,53 @@ class Toolbar extends Foundation<
         }
 
         // shortcuts
-        let focusableWidgets: HTMLElement[] = null;
+        let focusableItems: HTMLElement[];
         switch (e.keyCode) {
             case keyCodeHome:
                 e.preventDefault();
-                focusableWidgets = this.getFocusableItems();
-                if (focusableWidgets.length === 0) {
+                focusableItems = this.getFocusableItems();
+                if (focusableItems.length === 0) {
                     return;
                 }
-                focusableWidgets[0].focus();
+                focusableItems[0].focus();
                 break;
 
             case keyCodeEnd:
                 e.preventDefault();
-                focusableWidgets = this.getFocusableItems();
-                if (focusableWidgets.length === 0) {
+                focusableItems = this.getFocusableItems();
+                if (focusableItems.length === 0) {
                     return;
                 }
-                focusableWidgets[focusableWidgets.length - 1].focus();
+                focusableItems[focusableItems.length - 1].focus();
                 break;
         }
     };
 
     /**
      * Respond to focus changes within the component (on blur/focus capture)
-     * Essentially we want to validate that the default focus item is valid
      */
     private updateFocusItemPath = (e: React.FocusEvent<HTMLElement>): void => {
-        if (e.target.hasAttribute(Toolbar.toolbarItemAttributeName)) {
+        const itemPath: string = this.extractItemPath(e.target);
+
+        if (itemPath !== "-1") {
             this.setState({
-                focusItemPath: e.target.getAttribute(Toolbar.toolbarItemAttributeName),
+                focusItemPath: itemPath,
             });
             return;
         }
 
         this.validateCurrentFocusItem();
+    };
+
+    /**
+     * Get the itempath from the provided hmtl element
+     */
+    private extractItemPath = (element: HTMLElement): string => {
+        if (element.hasAttribute(Toolbar.toolbarItemAttributeName)) {
+            return element.getAttribute(Toolbar.toolbarItemAttributeName);
+        }
+
+        return "-1";
     };
 
     /**
@@ -265,16 +275,10 @@ class Toolbar extends Foundation<
             return;
         }
 
-        let targetItemIndex: number = -1;
-        for (let i: number = 0; i < focusableItems.length; i++) {
-            if (
-                focusableItems[i].getAttribute(Toolbar.toolbarItemAttributeName) ===
-                focusPath
-            ) {
-                targetItemIndex = i;
-                break;
-            }
-        }
+        let targetItemIndex: number = focusableItems.findIndex(
+            (element: HTMLElement) =>
+                element.getAttribute(Toolbar.toolbarItemAttributeName) === focusPath
+        );
 
         if (targetItemIndex === -1) {
             focusableItems[0].focus();

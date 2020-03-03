@@ -6,9 +6,9 @@ export default {
     id: "@microsoft/fast-components-react-base/toolbar",
     formPluginId: "@microsoft/fast-components-react-base/toolbar",
     properties: {
-        initialFocusIndex: {
-            title: "Initial focus index",
-            type: "array",
+        initialFocusTarget: {
+            title: "Initial focus target",
+            type: "object",
         },
         orientation: {
             title: "Orientation",

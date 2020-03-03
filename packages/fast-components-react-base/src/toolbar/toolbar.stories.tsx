@@ -4,6 +4,10 @@ import Toolbar from "./";
 import ToolbarItemGroup from "../toolbar-item-group";
 import Button from "../button";
 
+const focusElement: React.RefObject<HTMLButtonElement> = React.createRef<
+    HTMLButtonElement
+>();
+
 storiesOf("Toolbar", module)
     .add("Default", () => (
         <Toolbar>
@@ -25,19 +29,19 @@ storiesOf("Toolbar", module)
         </Toolbar>
     ))
     .add("Initial focus simple", () => (
-        <Toolbar initialFocusIndex={1}>
+        <Toolbar initialFocusTarget={focusElement}>
             <button>Item 1</button>
-            <button>Item 2</button>
+            <button ref={focusElement}>Item 2</button>
             <button>Item 3</button>
         </Toolbar>
     ))
     .add("Initial focus nested", () => (
-        <Toolbar initialFocusIndex={[3, 0]}>
+        <Toolbar initialFocusTarget={focusElement}>
             <Button>Item 1</Button>
             <button>Item 2</button>
             <button>Item 3</button>
             <ToolbarItemGroup>
-                <button>Item 4</button>
+                <button ref={focusElement}>Item 4</button>
                 <button>Item 5</button>
             </ToolbarItemGroup>
         </Toolbar>

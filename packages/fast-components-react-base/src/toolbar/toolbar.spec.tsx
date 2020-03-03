@@ -26,6 +26,10 @@ Toolbar.isFocusable = jest.fn(
     }
 );
 
+const focusElement: React.RefObject<HTMLButtonElement> = React.createRef<
+    HTMLButtonElement
+>();
+
 /* tslint:disable:no-string-literal */
 describe("toolbar", (): void => {
     test("should have a displayName that matches the component name", () => {
@@ -85,14 +89,17 @@ describe("toolbar", (): void => {
         expect(rendered.state("focusItemPath")).toBe("1");
     });
 
-    test("initial focus index prop is applied", (): void => {
+    test("initial focus target prop is applied", (): void => {
         const container: HTMLDivElement = document.createElement("div");
         document.body.appendChild(container);
 
         const rendered: any = mount(
-            <Toolbar orientation={Orientation.horizontal} initialFocusIndex={1}>
+            <Toolbar
+                orientation={Orientation.horizontal}
+                initialFocusTarget={focusElement}
+            >
                 <button>one</button>
-                <button>two</button>
+                <button ref={focusElement}>two</button>
             </Toolbar>,
             { attachTo: container }
         );
@@ -190,9 +197,9 @@ describe("toolbar", (): void => {
         document.body.appendChild(container);
 
         const rendered: any = mount(
-            <Toolbar orientation={Orientation.vertical} initialFocusIndex={1}>
+            <Toolbar orientation={Orientation.vertical} initialFocusTarget={focusElement}>
                 <button>one</button>
-                <button>two</button>
+                <button ref={focusElement}>two</button>
             </Toolbar>,
             { attachTo: container }
         );
@@ -212,9 +219,12 @@ describe("toolbar", (): void => {
         document.body.appendChild(container);
 
         const rendered: any = mount(
-            <Toolbar orientation={Orientation.horizontal} initialFocusIndex={1}>
+            <Toolbar
+                orientation={Orientation.horizontal}
+                initialFocusTarget={focusElement}
+            >
                 <button>one</button>
-                <button>two</button>
+                <button ref={focusElement}>two</button>
             </Toolbar>,
             { attachTo: container }
         );
@@ -234,9 +244,12 @@ describe("toolbar", (): void => {
         document.body.appendChild(container);
 
         const rendered: any = mount(
-            <Toolbar orientation={Orientation.horizontal} initialFocusIndex={1}>
+            <Toolbar
+                orientation={Orientation.horizontal}
+                initialFocusTarget={focusElement}
+            >
                 <button>one</button>
-                <button>two</button>
+                <button ref={focusElement}>two</button>
             </Toolbar>,
             { attachTo: container }
         );
@@ -256,9 +269,9 @@ describe("toolbar", (): void => {
         document.body.appendChild(container);
 
         const rendered: any = mount(
-            <Toolbar orientation={Orientation.vertical} initialFocusIndex={1}>
+            <Toolbar orientation={Orientation.vertical} initialFocusTarget={focusElement}>
                 <button>one</button>
-                <button>two</button>
+                <button ref={focusElement}>two</button>
             </Toolbar>,
             { attachTo: container }
         );
