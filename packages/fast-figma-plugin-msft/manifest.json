@@ -1,5 +1,5 @@
 {
-  "name": "fast-figma-plugin-msft",
+  "name": "(Alpha) Theme Designer",
   "api": "1.0.0",
   "main": "./dist/main.js",
   "ui": "./dist/index.html",
