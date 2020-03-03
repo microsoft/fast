@@ -63,12 +63,10 @@ class NavigationTestPage extends React.Component<{}, NavigationTestPageState> {
     };
 
     private handleMessageSystem = (e: MessageEvent): void => {
-        if (e.data) {
-            if (e.data.type === MessageSystemType.initialize) {
-                this.setState({
-                    navigation: e.data.navigationDictionary,
-                });
-            }
+        if (e.data && e.data.type === MessageSystemType.initialize) {
+            this.setState({
+                navigation: e.data.navigationDictionary,
+            });
         }
     };
 }
