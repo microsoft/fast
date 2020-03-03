@@ -32,3 +32,15 @@ jobs:
 
     - name: Execute unit tests
       run: lerna run test --stream
+      
+  code_coverage:
+
+    needs: [ build_linux ]
+    name: coverage
+
+    steps:
+    - uses: paambaati/codeclimate-action@v2.5.2
+      env:
+        CC_TEST_REPORTER_id: ${{ secrets.CODE_CLIMATE_TEST_REPORTER_ID }}
+      with:
+        coverageCommand: yarn coverage
