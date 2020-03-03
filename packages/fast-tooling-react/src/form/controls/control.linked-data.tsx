@@ -88,14 +88,9 @@ class LinkedDataControl extends React.Component<
     }
 
     private renderFilteredLinkedDataOptions(): React.ReactNode {
-        return Object.keys(this.props.schemaDictionary).map(
-            (schemaDictionaryKey: string) => {
-                return (
-                    <option
-                        key={schemaDictionaryKey}
-                        value={this.props.schemaDictionary[schemaDictionaryKey].title}
-                    />
-                );
+        return Object.entries(this.props.schemaDictionary).map(
+            ([key, value]: [string, any]): React.ReactNode => {
+                return <option key={key} value={value.title} />;
             }
         );
     }
