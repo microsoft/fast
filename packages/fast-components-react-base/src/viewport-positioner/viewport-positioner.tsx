@@ -1,12 +1,12 @@
 import { ViewportPositionerClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import { classNames } from "@microsoft/fast-web-utilities";
+import { extractHtmlElement } from "@microsoft/fast-react-utilities";
 import { canUseDOM } from "exenv-es6";
 import { get, isNil } from "lodash-es";
 import React from "react";
 import {
     DisplayNamePrefix,
-    extractHtmlElement,
     IntersectionObserverEntry,
     ResizeObserverClassDefinition,
     ResizeObserverEntry,
