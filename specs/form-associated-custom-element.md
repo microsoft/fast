@@ -1,7 +1,7 @@
 # Form Associated Custom Elements
 
 ## Overview
-This spec regards a general implementation to facilitate form communication and connection for components that should be form-associated, including checkboxes,radios, text inputs, and other components which store user input and should be captured during form submission.
+This spec regards a general implementation to facilitate form communication and connection for components that should be form-associated, including checkboxes, radios, text inputs, and other components which store user input and should be captured during form submission.
 
 ### Background
 Components that replace or behave like native form elements (input, textarea, select) should generally behave like native like their native counterpart. One key aspect to this is associating the element with the parent form. To do this, we will expose a mechanism to expose form-association to custom elements that can be shared across implementations with maximum re-use.
