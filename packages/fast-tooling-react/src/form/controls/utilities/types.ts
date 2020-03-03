@@ -13,6 +13,11 @@ export interface Controls {
     array: StandardControlPlugin;
 
     /**
+     * The linked data control
+     */
+    linkedData: StandardControlPlugin;
+
+    /**
      * The checkbox control
      */
     checkbox: SingleLineControlPlugin;
