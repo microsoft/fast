@@ -32,4 +32,3 @@ jobs:
 
     - name: Execute unit tests
       run: lerna run test --stream
-      timeout-minutes: 15
