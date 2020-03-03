@@ -49,8 +49,8 @@ Typically it's best to include a checked and unchecked message but it is not req
 - `disabled`: boolean
 
 *Slots:*
-- `unchecked-message`: slot
-- `checked-message`: slot
+- `unchecked-message`
+- `checked-message`
 
 *Events:*
 - `change` - fires when component is clicked or "spacebar" is pressed. This is a standard `onChange` event from the `input`
