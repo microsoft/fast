@@ -49,6 +49,7 @@ Typically it's best to include a checked and unchecked message but it is not req
 - `disabled`: boolean
 
 *Slots:*
+- `default`
 - `unchecked-message`
 - `checked-message`
 
