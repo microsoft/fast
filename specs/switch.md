@@ -46,9 +46,11 @@ Typically it's best to include a checked and unchecked message but it is not req
 
 *Attributes:*
 - `checked`: boolean
+- `disabled`: boolean
+
+*Slots:*
 - `unchecked-message`: slot
 - `checked-message`: slot
-- `disabled`: boolean
 
 *Events:*
 - `change` - fires when component is clicked or "spacebar" is pressed. This is a standard `onChange` event from the `input`
@@ -84,8 +86,6 @@ Typically it's best to include a checked and unchecked message but it is not req
     checked={true}
     unchecked-message="On"
     checked-message="Off"
-    label-id="label-id"
-    statusMessageId="status-id"
 >
     Notify by Email
 </fast-switch>
