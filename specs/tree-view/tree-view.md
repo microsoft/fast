@@ -151,7 +151,6 @@ Slots:
 - `before-content` - named slot to optionally include content (often a glyph) before the `content` slot
 - `after-content` - named slot to optionally include content (often a glyph) after the `content` slot
 - `expand-collapse-glyph` - named slot which can be used to provide an element which will serve as the expand/collapse glyph
-    - 
 
 Parts:
 - root

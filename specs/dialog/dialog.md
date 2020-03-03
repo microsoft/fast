@@ -37,9 +37,6 @@ As defined by the W3C:
 
 ### API
 
-*The key elements of the component's public API surface:*
-
-**Tree View**
 *Component name:*
 - `fast-dialog`
 
@@ -52,6 +49,9 @@ As defined by the W3C:
 
 ** See the [W3C Specification](https://w3c.github.io/aria-practices/#dialog_roles_states_props) for requirements and details.
 
+*Custom properties:*
+- width
+- height
 
 *Slots:*
 - default slot for content
