@@ -4,8 +4,7 @@
         "outDir": "dist",
         "baseUrl": ".",
         "strictNullChecks": true,
-        "experimentalDecorators": true,
-        "skipLibCheck": true
+        "experimentalDecorators": true
     },
     "include": [
         "src/**/*"

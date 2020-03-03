@@ -1,16 +1,16 @@
 import { DOM } from "../dom";
-import { ITemplate, ICaptureType } from "../template";
-import { ISyntheticView } from "../view";
-import { IExpression, AccessScopeExpression, Getter } from "../expression";
-import { IBehavior } from "../behaviors/behavior";
-import { Observable, IGetterInspector } from "../observation/observable";
+import { SyntheticViewTemplate, CaptureType } from "../template";
+import { SyntheticView } from "../view";
+import { Expression, AccessScopeExpression, Getter } from "../expression";
+import { Behavior } from "../behaviors/behavior";
+import { Observable, GetterInspector } from "../observation/observable";
 import { BindingDirective } from "./bind";
-import { ISubscriber } from "../observation/subscriber-collection";
+import { Subscriber } from "../observation/subscriber-collection";
 
 export class WhenDirective extends BindingDirective {
     behavior = WhenBehavior;
 
-    constructor(public expression: IExpression, public template: ITemplate) {
+    constructor(public expression: Expression, public template: SyntheticViewTemplate) {
         super(expression);
     }
 
@@ -19,10 +19,10 @@ export class WhenDirective extends BindingDirective {
     }
 }
 
-export class WhenBehavior implements IBehavior, IGetterInspector, ISubscriber {
+export class WhenBehavior implements Behavior, GetterInspector, Subscriber {
     private location: Node;
-    private view: ISyntheticView | null = null;
-    private cachedView?: ISyntheticView;
+    private view: SyntheticView | null = null;
+    private cachedView?: SyntheticView;
     private source: unknown;
 
     constructor(private directive: WhenDirective, marker: HTMLElement) {
@@ -57,8 +57,7 @@ export class WhenBehavior implements IBehavior, IGetterInspector, ISubscriber {
     updateTarget(show: boolean) {
         if (show && this.view == null) {
             this.view =
-                this.cachedView ||
-                (this.cachedView = this.directive.template.create(true));
+                this.cachedView || (this.cachedView = this.directive.template.create());
             this.view.bind(this.source);
             this.view.insertBefore(this.location);
         } else if (!show && this.view !== null) {
@@ -71,7 +70,7 @@ export class WhenBehavior implements IBehavior, IGetterInspector, ISubscriber {
 
 export function when<T = any, K = any>(
     expression: Getter<T, K> | keyof T,
-    template: ITemplate
-): ICaptureType<T> {
+    template: SyntheticViewTemplate
+): CaptureType<T> {
     return new WhenDirective(AccessScopeExpression.from(expression as any), template);
 }

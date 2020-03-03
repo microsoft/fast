@@ -99,7 +99,7 @@ const applyTransparentBackplateStyles: CSSRules<DesignSystem> = {
     "&$button__disabled, &$button__disabled $button_contentRegion::before": {
         ...transparentBackground,
     },
-    "&:hover:enabled": {
+    "&:hover:enabled, a&:not($button__disabled):hover": {
         color: accentForegroundHover,
         ...transparentBackground,
         ...highContrastHighlightForeground,
@@ -108,7 +108,7 @@ const applyTransparentBackplateStyles: CSSRules<DesignSystem> = {
             ...highContrastHighlightForeground,
         },
     },
-    "&:active:enabled": {
+    "&:active:enabled, a&:not($button__disabled):active": {
         color: accentForegroundActive,
         fill: accentForegroundActive,
         ...transparentBackground,
@@ -140,14 +140,14 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = {
         color: neutralForegroundRest,
         fill: neutralForegroundRest,
         background: neutralFillRest,
-        "&:hover:enabled": {
+        "&:hover:enabled, a&:not($button__disabled):hover": {
             background: neutralFillHover,
             ...highContrastSelected,
             "& $button_beforeContent, & $button_afterContent": {
                 ...highContrastSelectedForeground,
             },
         },
-        "&:active:enabled": {
+        "&:active:enabled, a&:not($button__disabled):active": {
             background: neutralFillActive,
         },
         ...applyFocusVisible<DesignSystem>({
@@ -161,10 +161,13 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = {
             border: "0",
         },
         ...highContrastOutline,
-        "a&": {
+        "a&:not($button__disabled)": {
             ...highContrastLinkOutline,
-            "&:hover": {
+            "&:not($button__disabled):hover": {
                 ...highContrastLinkBorder,
+                "& $button_beforeContent, & $button_afterContent": {
+                    ...highContrastLinkForeground,
+                },
             },
             "&$button__disabled": {
                 ...highContrastDisabledBorder,
@@ -180,11 +183,11 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = {
         color: accentForegroundCut,
         fill: accentForegroundCut,
         background: accentFillRest,
-        "&:hover:enabled": {
+        "&:hover:enabled, a&:not($button__disabled):hover": {
             background: accentFillHover,
             ...highContrastSelectedOutline,
         },
-        "&:active:enabled": {
+        "&:active:enabled, a&:not($button__disabled):active": {
             background: accentFillActive,
         },
         ...applyFocusVisible<DesignSystem>({
@@ -200,7 +203,7 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = {
             fill: accentForegroundCut,
         },
         ...highContrastAccent,
-        "a&": {
+        "a&:not($button__disabled)": {
             "& $button_beforeContent, & $button_afterContent": {
                 ...highContrastLinkForeground,
             },
@@ -214,7 +217,7 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = {
             neutralOutlineRest
         ),
         padding: format("0 {0}", horizontalSpacing(outlineWidth)),
-        "&:hover:enabled": {
+        "&:hover:enabled, a&:not($button__disabled):hover": {
             background: "transparent",
             border: format(
                 "{0} solid {1}",
@@ -223,7 +226,7 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = {
             ),
             ...highContrastSelected,
         },
-        "&:active:enabled": {
+        "&:active:enabled, a&:not($button__disabled):active": {
             background: "transparent",
             border: format(
                 "{0} solid {1}",
@@ -244,10 +247,12 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = {
     },
     button__lightweight: {
         ...applyTransparentBackplateStyles,
-        "a&": {
-            "&:hover": {
+        "a&:not($button__disabled)": {
+            "&:not($button__disabled):hover": {
                 [highContrastSelector]: {
                     "box-shadow": "none !important",
+                    color: highContrastLinkValue,
+                    fill: highContrastLinkValue,
                 },
                 "& $button_contentRegion::before": {
                     [highContrastSelector]: {
@@ -272,10 +277,12 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = {
         "padding-right": "0",
         "border-width": "0",
         "justify-content": "flex-start",
-        "a&": {
-            "&:hover": {
+        "a&:not($button__disabled)": {
+            "&:not($button__disabled):hover": {
                 [highContrastSelector]: {
                     "box-shadow": "none !important",
+                    color: highContrastLinkValue,
+                    fill: highContrastLinkValue,
                 },
                 "& $button_contentRegion::before": {
                     [highContrastSelector]: {
@@ -290,11 +297,11 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = {
     },
     button__stealth: {
         background: neutralFillStealthRest,
-        "&:hover:enabled": {
+        "&:hover:enabled, a&:not($button__disabled):hover": {
             "background-color": neutralFillStealthHover,
             ...highContrastSelected,
         },
-        "&:active:enabled": {
+        "&:active:enabled, a&:not($button__disabled):active": {
             "background-color": neutralFillStealthActive,
         },
         ...applyFocusVisible<DesignSystem>({

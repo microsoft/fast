@@ -1,12 +1,12 @@
-import { ISubscriber, SubscriberCollection } from "./subscriber-collection";
+import { Subscriber, SubscriberCollection } from "./subscriber-collection";
 
-export interface INotifier {
+export interface Notifier {
     notify(source: any, args: any): void;
-    subscribe(subscriber: ISubscriber, context?: any): void;
-    unsubscribe(subscriber: ISubscriber, context?: any): void;
+    subscribe(subscriber: Subscriber, context?: any): void;
+    unsubscribe(subscriber: Subscriber, context?: any): void;
 }
 
-export class PropertyChangeNotifier implements INotifier {
+export class PropertyChangeNotifier implements Notifier {
     private subscribers: Record<string, SubscriberCollection> = {};
 
     public notify(source: any, propertyName: string) {
@@ -17,7 +17,7 @@ export class PropertyChangeNotifier implements INotifier {
         }
     }
 
-    public subscribe(subscriber: ISubscriber, propertyName: string) {
+    public subscribe(subscriber: Subscriber, propertyName: string) {
         const subscribers =
             this.subscribers[propertyName] ||
             (this.subscribers[propertyName] = new SubscriberCollection());
@@ -25,7 +25,7 @@ export class PropertyChangeNotifier implements INotifier {
         subscribers.addSubscriber(subscriber);
     }
 
-    public unsubscribe(subscriber: ISubscriber, propertyName: string): void {
+    public unsubscribe(subscriber: Subscriber, propertyName: string): void {
         const subscribers = this.subscribers[propertyName];
 
         if (subscribers === void 0) {

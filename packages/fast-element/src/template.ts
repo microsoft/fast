@@ -1,23 +1,31 @@
 import { TemplateCompiler } from "./template-compiler";
-import { ITargetedInstruction } from "./instructions";
-import { HTMLView, IElementView, ISyntheticView } from "./view";
+import { TargetedInstruction } from "./instructions";
+import { HTMLView, ElementView, SyntheticView, View } from "./view";
 import { DOM } from "./dom";
-import { IBehavior } from "./behaviors/behavior";
+import { Behavior } from "./behaviors/behavior";
 import { Getter, AccessScopeExpression } from "./expression";
 import { Directive } from "./directives/directive";
 import { BindingDirective } from "./directives/bind";
 
-export interface ITemplate {
-    create(synthetic: false): IElementView | null;
-    create(synthetic: true): ISyntheticView;
+export interface Template {
+    create(): View;
 }
 
-export class HTMLTemplate extends Directive implements ITemplate {
+export interface ElementViewTemplate extends Template {
+    create(): ElementView;
+}
+
+export interface SyntheticViewTemplate extends Template {
+    create(): SyntheticView;
+}
+
+export class HTMLTemplate extends Directive
+    implements ElementViewTemplate, SyntheticViewTemplate {
     public behavior = HTMLTemplateBehavior;
 
     constructor(
         private templateElement: HTMLTemplateElement,
-        private instructions: ITargetedInstruction[]
+        private instructions: TargetedInstruction[]
     ) {
         super();
 
@@ -28,16 +36,17 @@ export class HTMLTemplate extends Directive implements ITemplate {
         }
     }
 
-    public create(synthetic: boolean) {
+    public create() {
         const fragment = this.templateElement.content.cloneNode(true) as DocumentFragment;
         const targets = fragment.querySelectorAll(".fm");
-        const behaviors: IBehavior[] = [];
+        const instructions = this.instructions;
+        const behaviors: Behavior[] = [];
 
         for (let i = 0, ii = targets.length; i < ii; ++i) {
-            this.instructions[i].hydrate(targets[i], behaviors);
+            instructions[i].hydrate(targets[i], behaviors);
         }
 
-        return new HTMLView(fragment, behaviors, synthetic);
+        return new HTMLView(fragment, behaviors);
     }
 
     public createPlaceholder(instructionIndex: number) {
@@ -45,13 +54,13 @@ export class HTMLTemplate extends Directive implements ITemplate {
     }
 }
 
-export class HTMLTemplateBehavior implements IBehavior {
+export class HTMLTemplateBehavior implements Behavior {
     private location: Node;
-    private view: ISyntheticView;
+    private view: SyntheticView;
 
-    constructor(directive: ITemplate, marker: HTMLElement) {
+    constructor(directive: SyntheticViewTemplate, marker: HTMLElement) {
         this.location = DOM.convertMarkerToLocation(marker);
-        this.view = directive.create(true);
+        this.view = directive.create();
         this.view.insertBefore(this.location);
     }
 
@@ -64,14 +73,8 @@ export class HTMLTemplateBehavior implements IBehavior {
     }
 }
 
-export const noopTemplate: ITemplate = {
-    create() {
-        return null as any;
-    },
-};
-
-export interface ICaptureType<T> {}
-type TemplateValue<T> = Getter<T> | string | number | Directive | ICaptureType<T>;
+export interface CaptureType<T> {}
+type TemplateValue<T> = Getter<T> | string | number | Directive | CaptureType<T>;
 
 export function html<T = any>(
     strings: TemplateStringsArray,

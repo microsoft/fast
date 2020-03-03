@@ -1,28 +1,46 @@
 import { CustomElementDefinition, CustomElement } from "./custom-element";
 import { Constructable } from "./interfaces";
-import { IContainer, IRegistry, Resolver, InterfaceSymbol } from "./di";
-import { IElementView } from "./view";
-import { IElementProjector, HostProjector, ShadowDOMProjector } from "./projectors";
+import { Container, Registry, Resolver, InterfaceSymbol } from "./di";
+import { ElementView } from "./view";
 import { PropertyChangeNotifier } from "./observation/notifier";
+import { ShadowDOMStyles } from "./styles";
 
-export class Controller extends PropertyChangeNotifier implements IContainer {
-    public view: IElementView | null = null;
+export class Controller extends PropertyChangeNotifier implements Container {
+    public view: ElementView | null = null;
     private resolvers = new Map<any, Resolver>();
 
     public constructor(
         public readonly element: HTMLElement,
-        public readonly definition: CustomElementDefinition,
-        public readonly projector: IElementProjector
+        public readonly definition: CustomElementDefinition
     ) {
         super();
+
         this.definition.dependencies.forEach(x => x.register(this));
+
+        if (definition.shadowOptions !== null) {
+            this.element.attachShadow(definition.shadowOptions!);
+        }
     }
 
     public hydrateCustomElement() {
-        this.view = this.definition.template.create(false);
+        const definition = this.definition;
+        const template = definition.template;
 
-        if (this.view !== null) {
-            this.projector.project(this.view, this);
+        if (template !== null) {
+            const view = (this.view = template.create());
+
+            if (definition.shadowOptions === null) {
+                view.appendTo(this.element);
+            } else {
+                const root = this.element.shadowRoot!;
+                const styles = this.get(ShadowDOMStyles);
+
+                view.appendTo(root);
+
+                if (styles !== null) {
+                    styles.applyTo(root);
+                }
+            }
         }
     }
 
@@ -43,7 +61,7 @@ export class Controller extends PropertyChangeNotifier implements IContainer {
         (this.element as any)[bindable.property] = newValue;
     }
 
-    public register(registry: IRegistry) {
+    public register(registry: Registry) {
         registry.register(this);
     }
 
@@ -72,22 +90,14 @@ export class Controller extends PropertyChangeNotifier implements IContainer {
         const definition = CustomElement.getDefinition(
             element.constructor as Constructable
         );
+
         if (definition === void 0) {
             throw new Error("Missing custom element definition.");
         }
 
-        const projector =
-            definition.shadowOptions === null
-                ? new HostProjector(element)
-                : new ShadowDOMProjector(element, definition);
+        (element as any).$controller = controller = new Controller(element, definition);
 
-        (element as any).$controller = controller = new Controller(
-            element,
-            definition,
-            projector
-        );
         controller.hydrateCustomElement();
-
         return controller;
     }
 }

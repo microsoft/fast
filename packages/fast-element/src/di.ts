@@ -1,16 +1,16 @@
-export type Resolver = (container: IContainer) => any;
+export type Resolver = (container: Container) => any;
 
-export interface IServiceLocator {
+export interface ServiceLocator {
     get<T>(key: InterfaceSymbol<T>): T | null;
     get<T = any>(key: any): T | null;
 }
 
-export interface IContainer extends IServiceLocator {
+export interface Container extends ServiceLocator {
     registerResolver(key: any, resolver: Resolver): void;
 }
 
-export interface IRegistry {
-    register(controller: IContainer): void;
+export interface Registry {
+    register(controller: Container): void;
 }
 
 export interface InterfaceSymbol<T> {}

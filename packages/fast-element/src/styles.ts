@@ -1,14 +1,13 @@
-import { IContainer, IRegistry, DI } from "./di";
-import { Constructable } from "./interfaces";
+import { Container, Registry, DI } from "./di";
 
-export interface IShadowDOMStyles {
+export interface ShadowDOMStyles {
     applyTo(shadowRoot: ShadowRoot): void;
 }
 
-export const IShadowDOMStyles = DI.createInterface<IShadowDOMStyles>("IShadowDOMStyles");
+export const ShadowDOMStyles = DI.createInterface<ShadowDOMStyles>("ShadowDOMStyles");
 
 type InjectableStyles = string | ShadowDOMRegistry;
-type ShadowDOMStyleFactory = (styles: InjectableStyles[]) => IShadowDOMStyles;
+type ShadowDOMStyleFactory = (styles: InjectableStyles[]) => ShadowDOMStyles;
 type HasAdoptedStyleSheets = ShadowRoot & {
     adoptedStyleSheets: CSSStyleSheet[];
 };
@@ -19,7 +18,7 @@ function reduceStyles(styles: InjectableStyles[]): string[] {
         .reduce((prev, curr) => prev.concat(curr), []);
 }
 
-export class ShadowDOMRegistry implements IRegistry {
+export class ShadowDOMRegistry implements Registry {
     private static _createStyles: ShadowDOMStyleFactory;
     private get createStyles(): ShadowDOMStyleFactory {
         return (
@@ -30,10 +29,8 @@ export class ShadowDOMRegistry implements IRegistry {
 
     public constructor(public styles: InjectableStyles[]) {}
 
-    public register(container: IContainer) {
-        container.registerResolver(IShadowDOMStyles, () =>
-            this.createStyles(this.styles)
-        );
+    public register(container: Container) {
+        container.registerResolver(ShadowDOMStyles, () => this.createStyles(this.styles));
     }
 
     public static createStyleFactory(): ShadowDOMStyleFactory {
@@ -50,7 +47,7 @@ export class ShadowDOMRegistry implements IRegistry {
     }
 }
 
-export class AdoptedStyleSheetsStyles implements IShadowDOMStyles {
+export class AdoptedStyleSheetsStyles implements ShadowDOMStyles {
     private readonly styleSheets: CSSStyleSheet[];
 
     public constructor(
@@ -84,7 +81,7 @@ export class AdoptedStyleSheetsStyles implements IShadowDOMStyles {
     }
 }
 
-export class StyleElementStyles implements IShadowDOMStyles {
+export class StyleElementStyles implements ShadowDOMStyles {
     public constructor(private styles: (string | ShadowDOMRegistry)[]) {}
 
     public applyTo(shadowRoot: ShadowRoot) {

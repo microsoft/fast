@@ -1,6 +1,6 @@
 import { Observable } from "./observable";
 import { SubscriberCollection } from "./subscriber-collection";
-import { INotifier } from "./notifier";
+import { Notifier } from "./notifier";
 import { DOM } from "../dom";
 import {
     projectArraySplices,
@@ -158,7 +158,7 @@ function adjustIndex(changeRecord: Splice, array: any[]) {
     return changeRecord;
 }
 
-export class ArrayObserver extends SubscriberCollection implements INotifier {
+export class ArrayObserver extends SubscriberCollection implements Notifier {
     private collection: any[];
     private oldCollection: any[] | undefined = void 0;
     private splices: any[] | undefined = void 0;

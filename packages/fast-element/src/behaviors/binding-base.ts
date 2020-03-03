@@ -1,22 +1,22 @@
-import { IBehavior } from "./behavior";
-import { IGetterInspector, Observable } from "../observation/observable";
+import { Behavior } from "./behavior";
+import { GetterInspector, Observable } from "../observation/observable";
 import { BindingDirective } from "../directives/bind";
 import { DOM } from "../dom";
-import { ISubscriber } from "../observation/subscriber-collection";
+import { Subscriber } from "../observation/subscriber-collection";
 
 class ObservationRecord {
     constructor(private source: any, private propertyName: string) {}
 
-    subscribe(subscriber: ISubscriber) {
+    subscribe(subscriber: Subscriber) {
         Observable.getNotifier(this.source).subscribe(subscriber, this.propertyName);
     }
 
-    unsubscribe(subscriber: ISubscriber) {
+    unsubscribe(subscriber: Subscriber) {
         Observable.getNotifier(this.source).unsubscribe(subscriber, this.propertyName);
     }
 }
 
-export abstract class BindingBase implements IBehavior, IGetterInspector, ISubscriber {
+export abstract class BindingBase implements Behavior, GetterInspector, Subscriber {
     protected source: unknown;
     private record: ObservationRecord | null = null;
     private needsQueue = true;
