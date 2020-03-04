@@ -1,3 +1,5 @@
+import { emptyArray } from "../interfaces";
+
 export interface Splice {
     index: number;
     removed: any[];
@@ -175,7 +177,7 @@ export function calcSplices(
     oldEnd -= suffixCount;
 
     if (currentEnd - currentStart === 0 && oldEnd - oldStart === 0) {
-        return [];
+        return emptyArray;
     }
 
     if (currentStart === currentEnd) {
