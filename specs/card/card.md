@@ -31,9 +31,9 @@
 - `fast-card`
 
 *Attributes:*
-- extends HTMLDivElement
+- none
 
-*Custom properties:*
+*CSS custom properties:*
 - width
 - height
 - elevation
