@@ -43,12 +43,6 @@ It's import to not over dominate the users screen with the use of *badge*. They 
 
 ### Anatomy and Appearance
 
-*Parts:*
-- label
-- checkbox
-- status-indicator
-- status-message
-
 *Template:*
 ```
 <span>
