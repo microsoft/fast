@@ -1,12 +1,14 @@
-import { Template, noopTemplate } from "./template";
+import { ElementViewTemplate } from "./template";
 import { BindableDefinition, Bindable } from "./bindable";
 import { Constructable } from "./interfaces";
 import { Registry } from "./di";
 import { Observable } from "./observation/observable";
+import { ElementStyles } from "./styles";
 
 export type PartialCustomElementDefinition = {
     readonly name: string;
-    readonly template?: Template;
+    readonly template?: ElementViewTemplate;
+    readonly styles?: ElementStyles;
     readonly bindables?: Record<string, BindableDefinition>;
     readonly dependencies?: Registry[];
     readonly shadowOptions?: ShadowRootInit | null;
@@ -49,20 +51,13 @@ export const CustomElement = {
     },
 };
 
-function buildTemplate(def: PartialCustomElementDefinition): Template {
-    if (def.template === void 0) {
-        return noopTemplate;
-    }
-
-    return def.template;
-}
-
 export class CustomElementDefinition {
     public readonly attributes: Record<string, BindableDefinition>;
 
     public constructor(
         public readonly name: string,
-        public readonly template: Template,
+        public readonly template: ElementViewTemplate | null,
+        public readonly styles: ElementStyles | null,
         public readonly bindables: Record<string, BindableDefinition>,
         public readonly dependencies: Registry[],
         public readonly shadowOptions: ShadowRootInit | null,
@@ -93,7 +88,8 @@ export class CustomElementDefinition {
 
         return new CustomElementDefinition(
             name,
-            buildTemplate(nameOrDef),
+            nameOrDef.template || null,
+            nameOrDef.styles || null,
             bindables,
             dependencies,
             shadowOptions,

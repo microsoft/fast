@@ -3,7 +3,6 @@ import { Constructable } from "./interfaces";
 import { Container, Registry, Resolver, InterfaceSymbol } from "./di";
 import { ElementView } from "./view";
 import { PropertyChangeNotifier } from "./observation/notifier";
-import { ShadowDOMStyles } from "./styles";
 
 export class Controller extends PropertyChangeNotifier implements Container {
     public view: ElementView | null = null;
@@ -15,31 +14,28 @@ export class Controller extends PropertyChangeNotifier implements Container {
     ) {
         super();
 
-        this.definition.dependencies.forEach(x => x.register(this));
+        const template = definition.template;
+        const styles = definition.styles;
+        const shadowRoot =
+            definition.shadowOptions === null
+                ? null
+                : element.attachShadow(definition.shadowOptions);
 
-        if (definition.shadowOptions !== null) {
-            this.element.attachShadow(definition.shadowOptions!);
-        }
-    }
+        if (template !== null) {
+            const view = (this.view = template.create());
 
-    public hydrateCustomElement() {
-        const definition = this.definition;
-        const view = (this.view = definition.template.create(false));
-
-        if (view !== null) {
-            if (definition.shadowOptions === null) {
-                view.appendTo(this.element);
+            if (shadowRoot === null) {
+                view.appendTo(element);
             } else {
-                const root = this.element.shadowRoot!;
-                const styles = this.get(ShadowDOMStyles);
-
-                view.appendTo(root);
-
-                if (styles !== null) {
-                    styles.applyTo(root);
-                }
+                view.appendTo(shadowRoot);
             }
         }
+
+        if (styles !== null && shadowRoot !== null) {
+            styles.applyTo(shadowRoot);
+        }
+
+        definition.dependencies.forEach(x => x.register(this));
     }
 
     public onConnectedCallback() {
@@ -79,7 +75,7 @@ export class Controller extends PropertyChangeNotifier implements Container {
     }
 
     public static forCustomElement(element: HTMLElement) {
-        let controller: Controller = (element as any).$controller;
+        const controller: Controller = (element as any).$controller;
 
         if (controller !== void 0) {
             return controller;
@@ -93,9 +89,6 @@ export class Controller extends PropertyChangeNotifier implements Container {
             throw new Error("Missing custom element definition.");
         }
 
-        (element as any).$controller = controller = new Controller(element, definition);
-
-        controller.hydrateCustomElement();
-        return controller;
+        return ((element as any).$controller = new Controller(element, definition));
     }
 }

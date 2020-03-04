@@ -1,5 +1,5 @@
 import { AccessScopeExpression, Expression, Getter } from "../expression";
-import { Template, CaptureType } from "../template";
+import { SyntheticViewTemplate, CaptureType } from "../template";
 import { Behavior } from "../behaviors/behavior";
 import { DOM } from "../dom";
 import { Observable, GetterInspector } from "../observation/observable";
@@ -12,7 +12,7 @@ import { Splice } from "../observation/array-change-records";
 export class RepeatDirective extends BindingDirective {
     behavior = RepeatBehavior;
 
-    constructor(public expression: Expression, public template: Template) {
+    constructor(public expression: Expression, public template: SyntheticViewTemplate) {
         super(expression);
         enableArrayObservation();
     }
@@ -115,9 +115,7 @@ export class RepeatBehavior implements Behavior, GetterInspector, Subscriber {
                 const neighbor = views[addIndex];
                 const location = neighbor ? neighbor.firstChild : this.location;
                 const view =
-                    totalRemoved.length > 0
-                        ? totalRemoved.shift()!
-                        : template.create(true);
+                    totalRemoved.length > 0 ? totalRemoved.shift()! : template.create();
 
                 views.splice(addIndex, 0, view);
                 view.bind(items[addIndex]);
@@ -145,7 +143,7 @@ export class RepeatBehavior implements Behavior, GetterInspector, Subscriber {
             if (i < viewsLength) {
                 views[i].bind(items[i]);
             } else {
-                const view = template.create(true);
+                const view = template.create();
                 view.bind(items[i]);
                 views.push(view);
                 view.insertBefore(this.location);
@@ -172,7 +170,7 @@ export class RepeatBehavior implements Behavior, GetterInspector, Subscriber {
 
 export function repeat<T = any, K = any>(
     expression: Getter<T, K[]> | keyof T,
-    template: Template
+    template: SyntheticViewTemplate
 ): CaptureType<T> {
     return new RepeatDirective(AccessScopeExpression.from(expression as any), template);
 }
