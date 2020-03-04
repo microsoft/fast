@@ -1,5 +1,9 @@
 import { ElementViewTemplate } from "./template";
-import { BindableDefinition, Bindable } from "./bindable";
+import {
+    BindableDefinition,
+    Bindable,
+    PartialBindableDefinitionPropertyOmitted,
+} from "./bindable";
 import { emptyArray } from "./interfaces";
 import { Registry } from "./di";
 import { Observable } from "./observation/observable";
@@ -9,7 +13,9 @@ export type PartialCustomElementDefinition = {
     readonly name: string;
     readonly template?: ElementViewTemplate;
     readonly styles?: ElementStyles;
-    readonly bindables?: Record<string, BindableDefinition>;
+    readonly bindables?:
+        | Record<string, PartialBindableDefinitionPropertyOmitted>
+        | string[];
     readonly dependencies?: Registry[];
     readonly shadowOptions?: ShadowRootInit | null;
     readonly elementOptions?: ElementDefinitionOptions;
