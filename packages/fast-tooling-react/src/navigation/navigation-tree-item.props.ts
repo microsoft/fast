@@ -1,7 +1,4 @@
-import {
-    TreeNavigationConfig,
-    TreeNavigationItem,
-} from "../message-system/navigation.props";
+import { TreeNavigationConfig, TreeNavigationItem } from "@microsoft/fast-tooling";
 
 export enum VerticalDragDirection {
     up,

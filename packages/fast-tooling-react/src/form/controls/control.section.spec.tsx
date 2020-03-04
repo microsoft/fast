@@ -21,7 +21,7 @@ import {
     SelectControl,
     TextareaControl,
 } from "../index";
-import { DataType } from "../../data-utilities/types";
+import { DataType } from "@microsoft/fast-tooling";
 
 const TestSectionControl: any = (
     props: React.PropsWithChildren<SectionControlProps>
