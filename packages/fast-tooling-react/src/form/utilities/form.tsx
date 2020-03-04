@@ -8,7 +8,6 @@ import {
     normalizeDataLocationToDotNotation,
     squareBracketsRegex,
 } from "../../data-utilities/location";
-import { oneOfAnyOfType } from "../../data-utilities/schema";
 import { ErrorObject } from "ajv";
 import { getDataFromSchema } from "../../data-utilities";
 import stringify from "fast-json-stable-stringify";
