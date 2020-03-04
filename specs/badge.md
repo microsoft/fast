@@ -11,7 +11,7 @@ Typical use cases include, but are not limited to, denoting a sale or new item a
   
 ### Features
 
-A toggle should allow the following properties:
+A badge should allow the following properties:
 - `filled`, whether the badge draws a backplate or not.
 - `size`, the size the badge is rendered.
 
