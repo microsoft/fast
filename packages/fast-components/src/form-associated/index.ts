@@ -93,7 +93,7 @@ export abstract class FormAssociated<
     public disabled: boolean = false;
     private disabledChanged(): void {
         if (this.proxy instanceof HTMLElement) {
-            this.proxy.disabled = this.disabled === ("" as any); // TODO: Change when there is boolean attribute support
+            this.proxy.disabled = this.disabled === ("" as any); // TODO: https://github.com/microsoft/fast-dna/issues/2742
         }
     }
 
@@ -112,7 +112,7 @@ export abstract class FormAssociated<
     public required: boolean = false;
     private requiredChanged(): void {
         if (this.proxy instanceof HTMLElement) {
-            this.proxy.required = this.required === ("" as any); // TODO: Change when there is boolean attribute support
+            this.proxy.required = this.required === ("" as any); // TODO: https://github.com/microsoft/fast-dna/issues/2742
         }
     }
 
@@ -159,8 +159,8 @@ export abstract class FormAssociated<
             // property change callbacks, but during initilization
             // on the intial call of the callback, the proxy is
             // still undefined. We should find a better way to address this.
-            this.proxy.disabled = this.disabled === ("" as any); // TODO: Change when there is boolean attribute support
-            this.proxy.required = this.required === ("" as any); // TODO: Change when there is boolean attribute support
+            this.proxy.disabled = this.disabled === ("" as any); // TODO: https://github.com/microsoft/fast-dna/issues/2742
+            this.proxy.required = this.required === ("" as any); // TODO: https://github.com/microsoft/fast-dna/issues/2742
             if (typeof this.name === "string") {
                 this.proxy.name = this.name;
             }
