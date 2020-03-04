@@ -233,6 +233,25 @@ describe("auto suggest", (): void => {
         expect(listbox.prop("id")).toBe("listboxId");
     });
 
+    test("menu should close when the component loses focus", (): void => {
+        const rendered: any = mount(
+            <AutoSuggest listboxId="listboxId">
+                {itemA}
+                {itemB}
+                {itemC}
+            </AutoSuggest>
+        );
+
+        // const autoSuggest: any = rendered.find(AutoSuggest.displayName);
+        expect(rendered.state("isMenuOpen")).toBe(false);
+        const input: any = rendered.find("input");
+        input.simulate("click");
+        expect(rendered.state("isMenuOpen")).toBe(true);
+
+        input.simulate("blur");
+        expect(rendered.state("isMenuOpen")).toBe(false);
+    });
+
     test("arrow keys properly traverse the listbox and input region and cause focus and value to changes appropriately", (): void => {
         const container: HTMLDivElement = document.createElement("div");
         document.body.appendChild(container);
@@ -472,5 +491,30 @@ describe("auto suggest", (): void => {
         );
 
         expect(rendered.find(Listbox.displayName).get(0).props.children).toHaveLength(2);
+    });
+
+    test("closing menu focuses on input element", (): void => {
+        const container: HTMLDivElement = document.createElement("div");
+        document.body.appendChild(container);
+
+        const rendered: any = mount(
+            <AutoSuggest listboxId="listboxId" initialValue="search">
+                {itemA}
+                {itemB}
+                {itemC}
+            </AutoSuggest>,
+            { attachTo: container }
+        );
+        const input: any = rendered.find("input");
+        expect(document.activeElement.id).toBe("");
+        expect(rendered.state("value")).toEqual("search");
+        input.simulate("keydown", { keyCode: keyCodeArrowDown });
+        expect(document.activeElement.id).toBe("a");
+        rendered
+            .find({ id: "a" })
+            .find(ListboxItem.displayName)
+            .simulate("keydown", { keyCode: keyCodeEscape });
+        expect(document.activeElement.getAttribute("role")).toBe("combobox");
+        document.body.removeChild(container);
     });
 });

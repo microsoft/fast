@@ -87,12 +87,16 @@ class AutoSuggest extends Foundation<
     }
 
     public componentDidUpdate(prevProps: AutoSuggestProps): void {
-        const updatedMenuVisibility: boolean = this.validateMenuState(
-            this.state.isMenuOpen
-        );
-
-        if (updatedMenuVisibility !== this.state.isMenuOpen) {
-            this.toggleMenu(updatedMenuVisibility);
+        if (
+            !this.state.isMenuOpen &&
+            React.Children.count(this.renderChildren(prevProps.children)) === 0 &&
+            React.Children.count(this.renderChildren()) > 0 &&
+            !isNil(this.rootElement.current) &&
+            this.rootElement.current.contains(document.activeElement)
+        ) {
+            // if the component has focus and a previously empty suggestions list is
+            // populated we should open the menu
+            this.toggleMenu(true);
         }
 
         if (this.props.value !== prevProps.value) {
@@ -118,6 +122,7 @@ class AutoSuggest extends Foundation<
             <div
                 {...this.unhandledProps()}
                 ref={this.rootElement}
+                onBlurCapture={this.handleBlurCapture}
                 className={this.generateClassNames()}
             >
                 <AutoSuggestContext.Provider
@@ -213,11 +218,13 @@ class AutoSuggest extends Foundation<
         );
     }
 
-    private renderChildren(): React.ReactNode {
+    private renderChildren(alternateChildren?: React.ReactNode): React.ReactNode {
+        const children: React.ReactNode = isNil(alternateChildren)
+            ? this.props.children
+            : alternateChildren;
         if (this.props.filterSuggestions) {
-            const children: React.ReactNode = this.props.children;
             return React.Children.map(
-                children,
+                children as React.ReactNode,
                 (node: React.ReactElement<any>): React.ReactNode | null => {
                     if (!isNil(node.props)) {
                         if (node.props[AutoSuggest.valuePropertyKey] === undefined) {
@@ -228,7 +235,7 @@ class AutoSuggest extends Foundation<
                 }
             );
         } else {
-            return this.props.children;
+            return children;
         }
     }
 
@@ -272,6 +279,20 @@ class AutoSuggest extends Foundation<
                 aria-controls={listboxId || null}
             />
         );
+    };
+
+    /**
+     * Handle blur events
+     */
+    private handleBlurCapture = (event: React.FocusEvent): void => {
+        if (
+            this.state.isMenuOpen &&
+            !isNil(this.rootElement.current) &&
+            !this.rootElement.current.contains(event.relatedTarget as Element)
+        ) {
+            // close the menu when focus moves out of the component
+            this.toggleMenu(false);
+        }
     };
 
     /**

@@ -10,5 +10,7 @@ The expected usage pattern of the component is for authors to watch the "onValue
 
 The input region of the component can be customized using the component's "inputRegion" render prop.
 
+The "isMenuOpen" prop enables authors to take control of when the menu is open.  Setting "isMenuOpen" to false keeps the menu closed, and setting it to true keeps it open (unless there are no children, in which case it is always closed).
+
 ### Accessibility
 *Auto suggest* implements the recommended keyboard navigation scheme described [here](https://www.w3.org/TR/wai-aria-practices-1.1/#Listbox) for interacting with the listbox.
