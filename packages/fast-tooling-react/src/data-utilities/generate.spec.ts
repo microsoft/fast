@@ -1,6 +1,5 @@
 import "jest";
 import { getDataFromSchema } from "./generate";
-import { ChildOptionItem } from ".";
 
 /**
  * Gets an example from a schema
@@ -326,7 +325,7 @@ describe("getDataFromSchema", () => {
             required: ["foo", "bar"],
         };
 
-        expect(getDataFromSchema(schemaWithNestedOneOfs, [])).toEqual({
+        expect(getDataFromSchema(schemaWithNestedOneOfs)).toEqual({
             foo: "example text",
             bar: true,
         });
