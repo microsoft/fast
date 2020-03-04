@@ -123,14 +123,6 @@ const styles: ComponentStyles<SelectClassNameContract, DesignSystem> = {
             "grid-row": "1",
         },
     },
-    select__scaleToFit: {
-        "& $select_menu, & $select__menuPositionBottom": {
-            "margin-bottom": "12px",
-        },
-        "& $select_menu, & $select__menuPositionTop": {
-            "margin-top": "12px",
-        },
-    },
 };
 
 export default styles;
