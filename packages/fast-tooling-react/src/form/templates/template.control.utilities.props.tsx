@@ -2,8 +2,7 @@ import { ErrorObject } from "ajv";
 import { ControlType, StandardControlPlugin } from "../index";
 import { AddExampleData, Controls } from "../controls/utilities/types";
 import { BadgeType, ControlOnChangeConfig, OnChangeConfig } from "./types";
-import { TreeNavigation } from "../../message-system/navigation.props";
-import { DataDictionary } from "../../message-system/data.props";
+import { DataDictionary, TreeNavigation } from "@microsoft/fast-tooling";
 
 export type UpdateNavigationCallback = (
     dictionaryId: string,

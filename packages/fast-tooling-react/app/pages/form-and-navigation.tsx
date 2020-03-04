@@ -8,8 +8,11 @@ import {
     FormChildOptionItem,
 } from "../../src/form/types";
 import * as testConfigs from "./form/";
-import { MessageSystem, MessageSystemType } from "../../src/message-system";
-import { SchemaDictionary } from "../../src/message-system/schema.props";
+import {
+    MessageSystem,
+    MessageSystemType,
+    SchemaDictionary,
+} from "@microsoft/fast-tooling";
 
 export type componentDataOnChange = (e: React.ChangeEvent<HTMLFormElement>) => void;
 
