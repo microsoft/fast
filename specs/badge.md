@@ -5,7 +5,7 @@
 *Badge* component is used to highlight an item and attract attention or flag status, such as “New”, “Sale”, or other short phrases.
 
 ### Use Cases
-Keep the *badge* label short and succinct &ndash; it should not be a sentence or a long phrase (recommend 2-3 words). Short phrases are work well, such as “App of the day,” but keep in mind that they will generally become longer when localized. Keep the text to nouns and adjectives if possible (e.g. “New” or “New today”), so the user won’t think it is an actionable element.
+Keep the *badge* label short and succinct &ndash; it should not be a sentence or a long phrase (recommend 2-3 words). Short phrases work well, such as “App of the day,” but keep in mind that they will generally become longer when localized. Keep the text to nouns and adjectives if possible (e.g. “New” or “New today”), so the user won’t think it is an actionable element.
 
 Typical use cases include, but are not limited to, denoting a sale or new item and flagging an item as part of a category
   
