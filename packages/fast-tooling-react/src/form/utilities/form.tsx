@@ -8,7 +8,6 @@ import {
     normalizeDataLocationToDotNotation,
     squareBracketsRegex,
 } from "../../data-utilities/location";
-import { oneOfAnyOfType } from "../../data-utilities/schema";
 import { ErrorObject } from "ajv";
 import { CombiningKeyword, getDataFromSchema } from "@microsoft/fast-tooling";
 import stringify from "fast-json-stable-stringify";
