@@ -35,6 +35,6 @@ jobs:
     - name: Reporting Code coverage
       uses: paambaati/codeclimate-action@v2.5.2
       env:
-        CC_TEST_REPORTER_id: ${{ secrets.CODE_CLIMATE_TEST_REPORTER_ID }}
+        CC_TEST_REPORTER_ID: ${{ secrets.CODE_CLIMATE_TEST_REPORTER_ID }}
       with:
         coverageCommand: yarn coverage
