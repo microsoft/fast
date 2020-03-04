@@ -1,10 +1,10 @@
 import { BreadcrumbItemEventHandler } from "../form.props";
 import {
+    Parent,
     TreeNavigation,
     TreeNavigationConfigDictionary,
-} from "../../message-system/navigation.props";
+} from "@microsoft/fast-tooling";
 import { DataType } from "../../data-utilities/types";
-import { Parent } from "../../message-system/data.props";
 
 export interface BreadcrumbItem {
     href: string;

@@ -1,9 +1,13 @@
 import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 import { NavigationClassNameContract } from "./navigation.style";
-import { MessageSystem } from "../message-system";
-import { TreeNavigationConfigDictionary } from "../message-system/navigation.props";
-import { Data, DataDictionary, LinkedData } from "../message-system/data.props";
-import { SchemaDictionary } from "../message-system/schema.props";
+import {
+    Data,
+    DataDictionary,
+    LinkedData,
+    MessageSystem,
+    SchemaDictionary,
+    TreeNavigationConfigDictionary,
+} from "@microsoft/fast-tooling";
 
 export enum NavigationDataType {
     object = "object",

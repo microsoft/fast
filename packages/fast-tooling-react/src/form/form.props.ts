@@ -2,11 +2,11 @@ import { ErrorObject } from "ajv";
 import { SingleLineControlPlugin, StandardControlPlugin } from "./templates";
 import { ControlContext } from "./templates/types";
 import {
+    DataDictionary,
+    MessageSystem,
     TreeNavigationConfig,
     TreeNavigationConfigDictionary,
-} from "../message-system/navigation.props";
-import { MessageSystem } from "../message-system";
-import { DataDictionary } from "../message-system/data.props";
+} from "@microsoft/fast-tooling";
 
 /**
  * Form class name contract
