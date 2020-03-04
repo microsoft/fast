@@ -248,8 +248,7 @@ export abstract class FormAssociated<
     }
 
     /**
-     * We need to stop propogation of various events from the
-     * proxy element. Events should
+     * Used to stop propogation of proxy element events
      * @param e Event object
      */
     private stopPropogation(e: Event) {
