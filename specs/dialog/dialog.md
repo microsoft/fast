@@ -19,7 +19,7 @@ As defined by the W3C:
 
 - **Soft dismiss (light dismiss):** In certain implementations, app authors want a dialog to close when a user clicks outside the content region or presses the `esc` key with their keyboard.
 
-- **Focus management:** In all circumstances, focus should move to an element contained in the dialog. Per the W3C, "Unless a condition where doing otherwise is advisable, focus is initially set on the *first* focusable element" (emphasis mine). If an element within the dialog is set to be focused by an app author, our control should not override that behavior. In both modal and non-modal dialogs, tab focus should remain within the dialog content region and not move outside it. When a dialog the dialog is closed, users may also want a way to return focus to the element which invoked the dialog.
+- **Focus management:** In all circumstances, focus should move to an element contained in the dialog. Per the W3C, "Unless a condition where doing otherwise is advisable, focus is initially set on the *first* focusable element" (emphasis mine). If an element within the dialog is set to be focused by an app author, our control should not override that behavior. In both modal and non-modal dialogs, tab focus should remain within the dialog content region and not move outside it. When the dialog is closed, users may also want a way to return focus to the element which invoked the dialog.
 
 ### Prior Art/Examples
 - [FAST-DNA (React)](https://explore.fast.design/components/dialog)
@@ -41,8 +41,8 @@ As defined by the W3C:
 - `fast-dialog`
 
 *Attributes:*
-- `modal` - boolean value for modal functionality. Sets aria-modal to true.
-- `visible` - boolean value to toggle the visibility of the dialog
+- `modal` - boolean value for modal functionality. Sets aria-modal to true (defaults to true).
+- `hidden` - boolean value to toggle the visibility of the dialog (defaults to false).
 - `aria-labelledby` - optional based on implementation**
 - `aria-describedby` - optional based on implementation**
 - `aria-label` - optional, based on implementation**
