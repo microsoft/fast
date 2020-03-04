@@ -12,7 +12,6 @@ import {
     typeKeyword,
 } from "./types";
 import { ChildOptionItem } from "./index";
-import { isPrimitiveReactNode } from "./node-types";
 import { validateData } from "../utilities/ajv-validation";
 
 /**
@@ -172,9 +171,7 @@ export function getDataLocationsOfPlugins(
                 `${normalizedDataLocation}.${propsKeyword}`
             );
             const isNotAnArrayOfChildren: boolean =
-                (isChildComponent &&
-                    (typeof childrenProps !== "undefined" ||
-                        isPrimitiveReactNode(get(data, normalizedDataLocation)))) ||
+                (isChildComponent && typeof childrenProps !== "undefined") ||
                 !isChildComponent;
 
             // check to see if the data location matches with the current schema and includes a plugin identifier
