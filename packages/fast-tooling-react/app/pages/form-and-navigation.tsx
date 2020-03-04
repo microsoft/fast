@@ -1,6 +1,5 @@
 import React from "react";
 import { DesignSystemProvider } from "@microsoft/fast-jss-manager-react";
-import { getDataFromSchema } from "../../src/data-utilities";
 import { BareForm, Navigation } from "../../src";
 import { FormProps } from "../../src/form/form.props";
 import {
@@ -9,6 +8,7 @@ import {
 } from "../../src/form/types";
 import * as testConfigs from "./form/";
 import {
+    getDataFromSchema,
     MessageSystem,
     MessageSystemType,
     SchemaDictionary,
