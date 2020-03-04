@@ -68,7 +68,7 @@ As defined by the W3C:
         <div
             role="dialog"
             aria-modal="true"
-            tabIndex={-1}
+            tabindex="-1"
             class="content-region"
             aria-describedby="foo"
             aria-labelledby="bar"
