@@ -1,19 +1,16 @@
 # FAST-Checkbox
 
 ## Overview
-
 An implementation of a checkbox as a form-connected web-component.
 
 ### Use Cases
-
-Used anywhere someone might otherwise use an `input[type="checkbox"]`
+Used anywhere an author might otherwise use an `input[type="checkbox"]`
   
 ### Features
-
 - form association
+- focus delegation
 
 ### Risks and Challenges
-
 We want general feature-parity between this component and an `input[type="checkbox"]`. Most of these concerns are addressed by https://github.com/microsoft/fast-dna/pull/2723, but some stateful nuance will need to be handled by this component.
 
 ### Prior Art/Examples
@@ -58,70 +55,66 @@ Extends API exposed by: https://github.com/microsoft/fast-dna/pull/2723/files
 
 *Screenshots and/or description of the basic appearance of the component. Outline its structure with a diagram of its visual tree (shadow dom). Enumerate key areas of visual customization, such as:*
 
-- *Slot Names*
-- *Host Classes*
-- *Slotted Content/Slotted Classes*
-- *CSS Parts*
+*Slot Names*
+- default: label for the checkbox?
+  - Can we label this from shadow-dom?
 
----
+*Host Classes*
+- checked
+- disabled
+- invalid
 
-## Implementation
-
-*Important aspects of the planned implementation with careful consideration of web standards and integration.*
+*Slotted Content/Slotted Classes*
+*CSS Parts*
+- root
+- label?
+  - Can we label this form shadow-dom?
+- state-indicator
 
 ### States
+**checked**: `true` or `false`
+The checked state can be toggled by:
+- Clicking the checkbox (or any of it's labels
+- Pressing the space-bar while focus is placed on the checkbox
+- Adding / removing the "checked" content attribute
+  - This will only trigger a change if the "checked" property has not been changed, either through user action or programmatically
 
-*Key component states, valid state transitions, and how interactions trigger a state transition.*
+**disabled**: `true` or `false`
+When disabled, the value will not be changeable through user interaction. It should also not expose it's value to a form submission.
+
+**readonly**: `true` or `false`
+When readonly, the value will not be changeable through user interaction. The value will still be exposed to forms on submission.
 
 ### Accessibility
+The root element inside the shadow-dom of the checkbox will be a focusable element with the following accessability content attributes:
+- role: checkbox
+- aria-checked: the checked state of the component
+- aria-required: the required state of the component
+- aria-disabled: the disabled state of the component
+- tabindex: 0
 
-*Consider the accessibility of the component, including:*
-
-- *Keyboard Navigation and Focus*
-- *Form Input*
-- *Use with Assistive Technology*
-  - e.g. The implications shadow dom might have on how roles are presented to the AT.
+Because we're delegating focus to this element, the relevant information will be presented to AT users when they focus this element.
 
 ### Globalization
-
-*Consider whether the component has any special globalization needs such as:*
-
-- *Special RTL handling*
-- *Swapping of internal icons/visuals*
-- *Localization*
+N/A
 
 ### Security
-
-*Are there any security implications surrounding the component?*
+N/A
 
 ### Performance
-
-*Are there any performance pitfalls or challenges with implementing the component?*
+N/A
 
 ### Dependencies
-
-*Will implementing the component require taking on any dependencies?*
-
-- *3rd party libraries*
-- *Upcoming standards we need to polyfill*
-- *Dependencies on other fast components or utilities*
-
-*Do any of these dependencies bring along an associated timeline?*
+N/A
 
 ### Test Plan
-
-*What is the plan for testing the component, if different from the normal path?*
+N/A
 
 ### Tooling
-
-*Are there any special considerations for tooling? Will tooling changes need to be made? Is there a special way to light up this component in our tooling that would be compelling for developers/designers?*
+N/A
 
 ### Documentation
-
-*What additions or changes are needed for user documentation and demos? Are there any architectural/engineering docs we should create as well, perhaps due to some interesting technical challenge or design decisions related to this component?*
-
----
+N/A
 
 ## Resources
-
-*Any related resource links such as web standards, discussion threads, diagrams, etc.*
+N/A
