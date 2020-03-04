@@ -49,7 +49,7 @@ As defined by the W3C:
 
 ** See the [W3C Specification](https://w3c.github.io/aria-practices/#dialog_roles_states_props) for requirements and details.
 
-*Custom properties:*
+*CSS custom properties:*
 - width
 - height
 
@@ -92,6 +92,18 @@ Parts:
 - modal-overlay - the modal overlay
 - content-region - the region where content is actually rendered. This part is where the `role="dialog"` will actually exist
 
+Animation:
+The current working model (assumption) is that animation iwill be taken up as part of the adaptive ui story in the design system at some point. This will provide configurability to users. From a dialog standpoint, I think we'll have a default animation baked in, though this would be configurable through the design system.
+
+If we compose our dialog with two sets of styles, one for the dialog itself and another for the animation, that would also provide an easy way for users to create a new instance:
+
+```js
+@customElement({
+    name: "my-dialog",
+    template,
+    styles: css`${dialogBaseStyles}${myAnimationStyles}`
+})
+```
 ---
 
 ## Implementation
