@@ -2,7 +2,6 @@ import { Dictionary } from "lodash";
 import {
     getDataUpdatedWithoutSourceData,
     getDataUpdatedWithSourceData,
-    TargetPosition,
 } from "./relocate";
 import { DataType } from "./types";
 

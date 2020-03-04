@@ -4,7 +4,6 @@ import {
     TreeNavigationConfig,
     TreeNavigationConfigDictionary,
 } from "./navigation.props";
-import { getDataUpdatedWithSourceData, TargetPosition } from "../data-utilities/relocate";
 import {
     CombiningKeyword,
     DataType,

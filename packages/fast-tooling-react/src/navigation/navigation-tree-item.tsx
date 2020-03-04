@@ -10,7 +10,7 @@ import {
     useDrag,
     useDrop,
 } from "react-dnd";
-import { TreeNavigationItem } from "../message-system/navigation.props";
+import { TreeNavigationItem } from "@microsoft/fast-tooling";
 
 function getStyle(
     isOver: boolean,

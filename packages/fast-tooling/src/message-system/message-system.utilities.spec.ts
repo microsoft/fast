@@ -20,7 +20,7 @@ import {
     UpdateActiveIdNavigationDictionaryMessageOutgoing,
     UpdateDataMessageOutgoing,
 } from "./message-system.utilities.props";
-import { MessageSystemType } from "../message-system/types";
+import { MessageSystemType } from "./types";
 import { getMessage } from "./message-system.utilities";
 import { DataType } from "../data-utilities/types";
 import { Data, DataDictionary, LinkedData } from "./data.props";
