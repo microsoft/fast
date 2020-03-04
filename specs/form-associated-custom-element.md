@@ -73,7 +73,7 @@ Accessing the [`labels`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLIn
   1. any parent `<label>`element. Can be retrieved from the proxy element's `labels` property
   2. any `<label>` element with `[for="$id"]`, where $id is the `id` attribute *of the custom element*. Because the custom element does not reflect it's `id` attribute to the proxy element (that would result in two elements with the same ID in the DOM), the labels are not automatically associated to the `labels` property of the proxy.
 
-`NodeList`s are not constructable in JavaScript, and because we need to construct the label set in cases where we're using a proxy element, I'm purposing standardizing this property to `Node[]` , which AFAIK is as close to `NodeList` as we can get.
+`NodeList`s are not constructable in JavaScript, thus this property is standardized to `Node[]` due to the need to construct the label when implementing with a proxy element. The use of Node[] is intended to map as close to `NodeList` as possible.
 
 #### Clicking labels
 Clicking a label of a native input element can have several side effects. First (and in general) it will focus the element. In cases like radio and checkbox, it changes the value of the input. There are likely other side-effects.
@@ -82,7 +82,7 @@ How this works under the hood seems to be that clicking the label *also* invokes
 
 However, because (in proxy element cases) the label's aren't *actually* associated to the element, the click event on the custom element isn't ever fired. This is the case for all label's using the `for` attribute to make the association. *Wrapping* labels (`<label><custom-element></label>`) *do* seem to fire the click event on the custom element.
 
-In order to *truly* support this scenario, we need to attach click event handlers to all labels for the elements. It *also* means that new listeners must be attached when *new* labels get added to the DOM. This is the tricky part. A mutation observer could be used, but this could be heavy-handed for this edge case. 
+To *truly* support this scenario, click event handlers must be attached to all labels for the elements. It *also* means that new listeners must be attached when *new* labels get added to the DOM. This is the tricky part. A mutation observer could be used, but this could be heavy-handed for this edge case. 
 
 Another options would be to document the gap and not support this scenario, instead only attaching listeners to elements that are in the DOM when the component connects. Any other thoughts here?
 
@@ -112,6 +112,6 @@ TBD. Form association APIs are very new so JSDOM is not likely to expose the fea
 
 
 ## Resources
-- https://docs.google.com/document/d/1JO8puctCSpW-ZYGU8lF-h4FWRIDQNDVexzHoOQ2iQmY/edit?pli=1
-- https://html.spec.whatwg.org/multipage/custom-elements.html#custom-elements-face-example
-- https://web.dev/more-capable-form-controls/
+- [Form Participation API Explained](https://docs.google.com/document/d/1JO8puctCSpW-ZYGU8lF-h4FWRIDQNDVexzHoOQ2iQmY/edit?pli=1)
+- [Creating a form-associated custom element](https://html.spec.whatwg.org/multipage/custom-elements.html#custom-elements-face-example)
+- [More capable form controls](https://web.dev/more-capable-form-controls/)
