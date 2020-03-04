@@ -45,8 +45,6 @@ The implementation will manage a "proxy" element that will be appended to the li
   - Provides form-association through dedicated APIs.
 - `protected setFormValue(value: File | string | FormData | null, state?: File | string | FormData): void`
   - When using `elementInternals`, this will set the value in the form. With no FACE support, this will do nothing because the value will automatically be associated by the proxy element. This can be overridden as necessary by components with more advanced behavior.
-- `protected onLabelClick(): void`: **Discussion**
-  - see [risks and challenges](#clicking-labels)
 - `protected handleKeyPress(): void`
   - Will submit the form when `enter` key is pressed to match standard input behavior. Can be overridden or extended.
 - `protected setValidity(flags: ValidityStateFlags, message?: string, anchor?: HTMLElement): void;`
@@ -82,9 +80,7 @@ How this works under the hood seems to be that clicking the label *also* invokes
 
 However, because (in proxy element cases) the label's aren't *actually* associated to the element, the click event on the custom element isn't ever fired. This is the case for all label's using the `for` attribute to make the association. *Wrapping* labels (`<label><custom-element></label>`) *do* seem to fire the click event on the custom element.
 
-To *truly* support this scenario, click event handlers must be attached to all labels for the elements. It *also* means that new listeners must be attached when *new* labels get added to the DOM. This is the tricky part. A mutation observer could be used, but this could be heavy-handed for this edge case. 
-
-Another options would be to document the gap and not support this scenario, instead only attaching listeners to elements that are in the DOM when the component connects. Any other thoughts here?
+See (next steps)[#next-steps].
 
 ### Accessibility
 
