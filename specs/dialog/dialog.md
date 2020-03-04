@@ -93,7 +93,7 @@ Parts:
 - content-region - the region where content is actually rendered. This part is where the `role="dialog"` will actually exist
 
 Animation:
-The current working model (assumption) is that animation iwill be taken up as part of the adaptive ui story in the design system at some point. This will provide configurability to users. From a dialog standpoint, I think we'll have a default animation baked in, though this would be configurable through the design system.
+The current working model (assumption) is that animation will be taken up as part of the adaptive ui story in the design system at some point. This will provide configurability to users. From a dialog standpoint, I think we'll have a default animation baked in, though this would be configurable through the design system.
 
 If we compose our dialog with two sets of styles, one for the dialog itself and another for the animation, that would also provide an easy way for users to create a new instance:
 
@@ -110,7 +110,7 @@ If we compose our dialog with two sets of styles, one for the dialog itself and 
 
 ### States
 
-Visible - The dialog is visible. This state is managed solely by the app author via the visible attribute.
+Hidden - The dialog is hidden. This state is managed solely by the app author via the hidden attribute. The default for this is `false`.
 
 ### Accessibility
 
