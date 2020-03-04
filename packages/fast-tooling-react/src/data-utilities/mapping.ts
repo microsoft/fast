@@ -21,7 +21,6 @@ import {
     pluginFindIndexCallback,
 } from "./location";
 import { Arguments } from "../typings";
-import { isPrimitiveReactNode } from "./node-types";
 
 /**
  * Maps data returned from the form generator to the React components
@@ -78,7 +77,7 @@ function getPluginResolvedChildren(
     dataLocation: string
 ): any {
     return pluginResolver.resolver(
-        isPrimitiveReactNode(pluginData) ? pluginData : get(pluginData, propsKeyword),
+        get(pluginData, propsKeyword),
         getChildOptionBySchemaId(pluginData.id, childOptions),
         dataLocation
     );
