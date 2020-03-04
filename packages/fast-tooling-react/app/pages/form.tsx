@@ -9,8 +9,8 @@ import {
 
 import { DesignSystemProvider } from "@microsoft/fast-jss-manager-react";
 import React from "react";
-import { getDataFromSchema } from "../../src/data-utilities";
 import {
+    getDataFromSchema,
     MessageSystem,
     MessageSystemType,
     SchemaDictionary,
