@@ -3,7 +3,7 @@ import { getNavigation, getNavigationDictionary } from "./navigation";
 import { TreeNavigationConfigDictionary } from "./navigation.props";
 import { TreeNavigation, TreeNavigationItem } from "./navigation.props";
 import { DataType } from "../data-utilities/types";
-import { dictionaryLink } from "@microsoft/fast-tooling";
+import { dictionaryLink } from "../schemas";
 
 /**
  * Gets the navigation

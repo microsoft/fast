@@ -1,5 +1,5 @@
 import { BreadcrumbItem, getBreadcrumbs, getDictionaryBreadcrumbs } from "./breadcrumb";
-import { DataType } from "../../data-utilities/types";
+import { DataType } from "@microsoft/fast-tooling";
 
 /**
  * Gets breadcrumbs from navigation dictionary

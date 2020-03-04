@@ -2,7 +2,7 @@ import React from "react";
 import { Navigation } from "../../src";
 import childrenSchema from "./navigation/children.schema";
 import { children } from "./navigation/example.data";
-import { MessageSystem, MessageSystemType } from "../../src/message-system";
+import { MessageSystem, MessageSystemType } from "@microsoft/fast-tooling";
 import noChildrenSchema from "./navigation/no-children.schema";
 
 export interface NavigationTestPageState {

@@ -23,16 +23,18 @@ import {
 import { dictionaryLink } from "@microsoft/fast-tooling";
 import { DraggableNavigationTreeItem, NavigationTreeItem } from "./navigation-tree-item";
 import { DragDropItemType, NavigationTreeItemProps } from "./navigation-tree-item.props";
-import { Register } from "../message-system/message-system.props";
-import { MessageSystemType } from "../message-system";
 import {
+    Data,
+    DataDictionary,
+    getNavigationDictionary,
+    LinkedData,
     MessageSystemDataTypeAction,
     MessageSystemNavigationTypeAction,
-} from "../message-system/message-system.utilities.props";
-import { DataDictionary, LinkedData, Parent } from "../message-system/data.props";
-import { Data } from "../message-system/data.props";
-import { TreeNavigationConfigDictionary } from "../message-system/navigation.props";
-import { getNavigationDictionary } from "../message-system/navigation";
+    MessageSystemType,
+    Parent,
+    Register,
+    TreeNavigationConfigDictionary,
+} from "@microsoft/fast-tooling";
 import manageJss, { ManagedClasses } from "@microsoft/fast-jss-manager-react";
 import styles, { NavigationClassNameContract } from "./navigation.style";
 
