@@ -67,6 +67,10 @@ It's import to not over dominate the users screen with the use of *badge*. They 
 </fast-badge>
 ```
 
+### Accessibility
+
+There are currently no accessibility requirements for badge.
+
 ### Globalization
 
 *Badge* should mirror in RTL languages, meaning the *badge* should flip to the other side of the item it is labeling.
