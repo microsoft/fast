@@ -1,8 +1,4 @@
-import { get } from "lodash-es";
 import { CombiningKeyword, DataType, PropertyKeyword } from "./types";
-import { ChildOptionItem } from ".";
-import { getChildOptionBySchemaId } from "./location";
-import { DataDictionary } from "../message-system/data.props";
 
 /**
  * This file contains all functionality for generating data
@@ -13,26 +9,15 @@ const exampleString: string = "example text";
 /**
  * Gets a single example from a schema
  */
-function getDataFromSchema(schema: any, childOptions?: ChildOptionItem[]): any {
+function getDataFromSchema(schema: any): any {
     if (isObjectDataType(schema)) {
         const exampleData: any = {};
 
         if (hasRequired(schema)) {
             for (const requiredItem of schema.required) {
-                const propertyType: PropertyKeyword = get(
-                    schema,
-                    `${PropertyKeyword.properties}.${requiredItem}`
-                )
-                    ? PropertyKeyword.properties
-                    : PropertyKeyword.reactProperties;
-
-                switch (propertyType) {
-                    case PropertyKeyword.properties:
-                        exampleData[requiredItem] = getDataFromSchema(
-                            schema[propertyType][requiredItem]
-                        );
-                        break;
-                }
+                exampleData[requiredItem] = getDataFromSchema(
+                    schema[PropertyKeyword.properties][requiredItem]
+                );
             }
         }
 
@@ -45,7 +30,7 @@ function getDataFromSchema(schema: any, childOptions?: ChildOptionItem[]): any {
                 ? CombiningKeyword.oneOf
                 : CombiningKeyword.anyOf;
 
-        return getDataFromSchema(schema[oneOfAnyOf][0], childOptions);
+        return getDataFromSchema(schema[oneOfAnyOf][0]);
     }
 
     return getDataFromSchemaByDataType(schema);
