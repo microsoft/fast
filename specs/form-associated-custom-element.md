@@ -1,53 +1,56 @@
 # Form Associated Custom Elements
 
 ## Overview
-This spec regards a general implementation to facilitate form communication and connection for components that should be form-associated, including checkboxes, radios, text inputs, and other components which store user input and should be captured during form submission.
+This spec regards a general implementation for components that should be form-associated, including checkboxes, radios, text inputs, and other components which store user input and should be captured during form submission.
+
+### Defintions and acronyms:
+- FACE: form-associated custom elements
 
 ### Background
-Components that replace or behave like native form elements (input, textarea, select) should generally behave like native like their native counterpart. One key aspect to this is associating the element with the parent form. To do this, we will expose a mechanism to expose form-association to custom elements that can be shared across implementations with maximum re-use.
+Components that are intended to replace a native form element (input, textarea, select) should generally behave like their native counterpart. One key aspect to this is associating the element with the parent form. To do this, we will expose a mechanism to expose form-association to custom elements that can be shared across implementations with maximum re-use.
 
 ### Use Cases
 Any custom element that should associate a value to a form.
 
 ## Design
-The implementation will be an *abstract class* that will extend `FastElement`. The class will expose implementations for all of the common form element capabilities. It will also expose and manage an implementation for when the form-associated custom element APIs are not available.
+The implementation will be an *abstract class* that will extend `FastElement`. The class will expose implementations for all of the common form element capabilities. It will also expose and manage an implementation for when the FACE APIs are not available.
 
-Another option I looked at is using a decorator, but there are a few challenges with that approach:
+Another possible implementation is a decorator, but there are a few challenges with that approach:
   1. decorators cannot augment the class type directly, so we would need to use a pattern similar to https://www.typescriptlang.org/docs/handbook/mixins.html to gain accurate type definitions
   2. Decorators cannot (easily?) provide a *default* implementation that can be overridden by the extending class. Using an abstract class allows straight overrides of implementation or merging of implementation with super
 
-The implementation will standardize an interface between two common cases: browsers with form-associated-custom-element support and browsers without.
+The implementation will standardize an interface between two common cases: browsers with FACE API support and browsers without.
 
 ### Browsers with FACE support
 For browsers *with* support, methods and properties will generally proxy to the `ElementInternals` implementation.
 
 ### Browsers with FACE support
-The implementation will manage a "proxy" element that will be appended to the light-dom. This proxy element will server as the custom-element's association to the form. All relevant properties will be forwarded to this element, and certain API calls will retrieve data from it.
+The implementation will manage a "proxy" element that will be appended to the light-dom. This proxy element will serve as the custom-element's association to the form. All relevant properties will be forwarded to this element, and certain API calls will retrieve data from it.
 
 ### API
 #### IDL attributes
 - `public static formAssociated: boolean`
-  - Required for form-associated custom element API. This will feature-detect the API and resolve a value corresponding to feature-support
+  - Requirement of FACE API. This will feature-detect the API and resolve a value corresponding to feature-support.
 - `public readonly validity: ValidityState`
-  - Returns the [validity](https://developer.mozilla.org/en-US/docs/Web/API/ValidityState) of the component
+  - Returns the [validity](https://developer.mozilla.org/en-US/docs/Web/API/ValidityState) of the component.
 - `public readonly form: HTMLFormElement | null`
-  - The associated form element
+  - The associated form element.
 - `public readonly validationMessage: string`
-  - The current validation message of the element
+  - The current validation message of the element.
 - `public readonly labels: Node[]`
-  - Labels associated to the element. See [risks and challenges](#retrieving-labels)
+  - Labels associated to the element. See [risks and challenges](#retrieving-labels).
 - `protected abstract proxy: HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement`
-  - A proxy element that will be appended to the DOM when form-association APIs are unavailable. It will server as the custom-elements connection to the form.
+  - A proxy element that will be appended to the DOM when FACE APIs are unavailable. It will server as the custom-elements connection to the form.
 - `protected elementInternals: ElementInternals`
   - Provides form-association through dedicated APIs.
 - `protected setFormValue(value: File | string | FormData | null, state?: File | string | FormData): void`
-  - When using `elementInternals`, this will set the value in the form. With no form-association support, this will noop because the value will automatically be associated by the proxy element. This can be overridden as necessary by components with more advanced behavior.
+  - When using `elementInternals`, this will set the value in the form. With no FACE support, this will do nothing because the value will automatically be associated by the proxy element. This can be overridden as necessary by components with more advanced behavior.
 - `protected onLabelClick(): void`: **Discussion**
   - see [risks and challenges](#clicking-labels)
 - `protected handleKeyPress(): void`
   - Will submit the form when `enter` key is pressed to match standard input behavior. Can be overridden or extended.
 - `protected setValidity(flags: ValidityStateFlags, message?: string, anchor?: HTMLElement): void;`
-  - With form association support, will set the validity of the component. With no form association, this will noop unless a message is passed. If a message is passed, the proxy element's `setCustomValidity` method will be invoked with the value of the message.
+  - With form association support, will set the validity of the component. With no form association, this will do nothing unless a message is passed. If a message is passed, the proxy element's `setCustomValidity` method will be invoked with the value of the message.
 
 #### Content attributes
 - `id: string`
@@ -66,7 +69,7 @@ The implementation will manage a "proxy" element that will be appended to the li
 ### Risks and Challenges
 
 #### Retrieving labels
-Accessing the [`labels`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement/labels) property of a native input returns a `NodeList`. In cases where the form-association APIs are available, the implementation from `ElementInternals.labels` works as expected. In cases where we implement a proxy element though, we need to construct the label set from the following:
+Accessing the [`labels`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement/labels) property of a native input returns a `NodeList`. In cases where the FACE APIs are available, the implementation from `ElementInternals.labels` works as expected. In cases where we implement a proxy element though, we need to construct the label set from the following:
   1. any parent `<label>`element. Can be retrieved from the proxy element's `labels` property
   2. any `<label>` element with `[for="$id"]`, where $id is the `id` attribute *of the custom element*. Because the custom element does not reflect it's `id` attribute to the proxy element (that would result in two elements with the same ID in the DOM), the labels are not automatically associated to the `labels` property of the proxy.
 
@@ -79,7 +82,7 @@ How this works under the hood seems to be that clicking the label *also* invokes
 
 However, because (in proxy element cases) the label's aren't *actually* associated to the element, the click event on the custom element isn't ever fired. This is the case for all label's using the `for` attribute to make the association. *Wrapping* labels (`<label><custom-element></label>`) *do* seem to fire the click event on the custom element.
 
-In order to *truly* support this scenario, we need to attach click event handlers to all labels for the elements. It *also* means that we need to attach new listeners when *new* labels get added to the DOM. This is the tricky part. We could use mutation observer, but my fear is that is heavy-handed for an edge-case scenario. 
+In order to *truly* support this scenario, we need to attach click event handlers to all labels for the elements. It *also* means that new listeners must be attached when *new* labels get added to the DOM. This is the tricky part. A mutation observer could be used, but this could be heavy-handed for this edge case. 
 
 Another options would be to document the gap and not support this scenario, instead only attaching listeners to elements that are in the DOM when the component connects. Any other thoughts here?
 
