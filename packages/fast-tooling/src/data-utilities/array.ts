@@ -1,5 +1,5 @@
 import { get } from "lodash-es";
-import { normalizeDataLocationToDotNotation } from "../data-utilities/location";
+import { normalizeDataLocationToDotNotation } from "./location";
 
 /**
  * The target is in an array

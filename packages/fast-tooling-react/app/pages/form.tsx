@@ -10,8 +10,11 @@ import {
 import { DesignSystemProvider } from "@microsoft/fast-jss-manager-react";
 import React from "react";
 import { getDataFromSchema } from "../../src/data-utilities";
-import { MessageSystem, MessageSystemType } from "../../src/message-system";
-import { SchemaDictionary } from "../../src/message-system/schema.props";
+import {
+    MessageSystem,
+    MessageSystemType,
+    SchemaDictionary,
+} from "@microsoft/fast-tooling";
 
 export type componentDataOnChange = (e: React.ChangeEvent<HTMLFormElement>) => void;
 

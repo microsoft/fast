@@ -1,5 +1,5 @@
-import { DataDictionary } from "../message-system/data.props";
-import { SchemaDictionary } from "../message-system/schema.props";
+import { DataDictionary } from "./data.props";
+import { SchemaDictionary } from "./schema.props";
 
 export interface Register {
     onMessage: OnMessageCallback;

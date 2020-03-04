@@ -29,17 +29,17 @@ import {
 import { cloneDeep, get } from "lodash-es";
 import { getValidationErrors } from "../utilities/ajv-validation";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
-import { TreeNavigationItem } from "../message-system/navigation.props";
 import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 import React from "react";
 import styles from "./form.style";
+import { classNames } from "@microsoft/fast-web-utilities";
 import {
     MessageSystemDataTypeAction,
     MessageSystemNavigationTypeAction,
-} from "../message-system/message-system.utilities.props";
-import { MessageSystemType } from "../message-system/types";
-import { classNames } from "@microsoft/fast-web-utilities";
-import { Register } from "../message-system/message-system.props";
+    MessageSystemType,
+    Register,
+    TreeNavigationItem,
+} from "@microsoft/fast-tooling";
 
 /**
  * Schema form component definition

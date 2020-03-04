@@ -3,7 +3,14 @@ import Adapter from "enzyme-adapter-react-16";
 import { configure, mount, render, shallow } from "enzyme";
 import { BareForm, Form } from "./";
 import { FormProps } from "./form.props";
-import { MessageSystem } from "../message-system";
+import {
+    DataType,
+    InitializeMessageOutgoing,
+    MessageSystem,
+    MessageSystemType,
+    Register,
+    TreeNavigationConfig,
+} from "@microsoft/fast-tooling";
 
 import {
     arraysSchema as arraySchema,
@@ -16,12 +23,6 @@ import { ControlConfig, ControlType, StandardControlPlugin } from "./templates";
 import { TextareaControl } from "./controls/control.textarea";
 import { CheckboxControl } from "./controls/control.checkbox";
 import { ButtonControl } from "./controls/control.button";
-import { DataType } from "../data-utilities/types";
-import { Register } from "../message-system/message-system.props";
-import { InitializeMessageOutgoing } from "../message-system/message-system.utilities.props";
-import { MessageSystemType } from "../message-system/types";
-import { TreeNavigationConfig } from "../message-system/navigation.props";
-import { DataDictionary } from "../message-system/data.props";
 
 /*
  * Configure Enzyme
