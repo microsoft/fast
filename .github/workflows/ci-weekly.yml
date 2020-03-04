@@ -3,8 +3,8 @@ name: FAST Workflows - Cross Platforms
 on:
   schedule:
     - cron: '0 0 * * 2'
-    branches:
-    - master
+    - branches:
+      - master
 
 jobs:
   build_windows:
