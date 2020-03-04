@@ -11,34 +11,29 @@ on:
     - releases/*
 
 jobs:
-
   build_linux:
     runs-on: ubuntu-latest
     
     steps:
+    - uses: actions/checkout@v2
+
+    - name: Install Lerna
+      run: sudo yarn global add lerna@3.18.2  
+
+    - name: Install package dependencies
+      run: yarn install --frozen-lockfile
+
     - name: Build Yarn workspaces
       run: lerna run prepare
 
-    - name: Ensure Prettier formatting
+    - name: Testing Prettier format
       run: lerna run prettier:diff
 
-  
-  test_linux:
-    runs-on: ubuntu-latest
-
-    steps:
-    - name: Execute unit tests
+    - name: Testing unit tests
       run: lerna run test --stream
 
-  
-  report_linux:
-    runs-on: ubuntu-latest
-    
-    needs: [ build_linux ]
-    name: Code coverage
-
-    steps:
-    - uses: paambaati/codeclimate-action@v2.5.2
+    - name: Reporting Code coverage
+      uses: paambaati/codeclimate-action@v2.5.2
       env:
         CC_TEST_REPORTER_id: ${{ secrets.CODE_CLIMATE_TEST_REPORTER_ID }}
       with:
