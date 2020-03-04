@@ -3,40 +3,34 @@
  * using data locations (lodash path syntax).
  */
 
-import { at, cloneDeep, get, isFunction, set, unset } from "lodash-es";
+import { cloneDeep, get, isFunction, set, unset } from "lodash-es";
 import { normalizeDataLocationToDotNotation } from "./location";
 import { DataType } from "./types";
 
-export enum TargetPosition {
-    prepend,
-    append,
-    insert,
-}
-
-export interface UpdateDataWithSourceConfig {
+interface UpdateDataWithSourceConfig {
     targetDataLocation: string;
     targetDataType: DataType;
     sourceData: unknown;
     data: unknown;
 }
 
-export interface UpdateDataWithoutSourceConfig {
+interface UpdateDataWithoutSourceConfig {
     sourceDataLocation: string;
     data: unknown;
 }
 
-export interface ItemArrayConfig {
+interface ItemArrayConfig {
     dataLocationOfArray: string;
     isArray: true;
     index: number;
 }
 
-export interface ItemObjectConfig {
+interface ItemObjectConfig {
     dataLocationOfObject: string;
     isArray: false;
 }
 
-export type RelocatedDataConfig = ItemArrayConfig | ItemObjectConfig;
+type RelocatedDataConfig = ItemArrayConfig | ItemObjectConfig;
 
 /**
  * Gets updated data with new source data

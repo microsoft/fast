@@ -5,11 +5,14 @@ import { DndProvider } from "react-dnd";
 import HTML5Backend from "react-dnd-html5-backend";
 import { NavigationProps } from "./navigation.props";
 import { Navigation } from "./navigation";
-import { MessageSystem, MessageSystemType } from "../message-system";
-import { Register } from "../message-system/message-system.props";
-import { InitializeMessageOutgoing } from "../message-system/message-system.utilities.props";
-import { TreeNavigationConfig } from "../message-system/navigation.props";
-import { DataType } from "../data-utilities/types";
+import {
+    DataType,
+    InitializeMessageOutgoing,
+    MessageSystem,
+    MessageSystemType,
+    Register,
+    TreeNavigationConfig,
+} from "@microsoft/fast-tooling";
 
 /*
  * Configure Enzyme
