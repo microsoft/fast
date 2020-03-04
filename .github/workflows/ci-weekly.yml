@@ -9,7 +9,6 @@ on:
 jobs:
   build_windows:
     name: Validate on Windows
-
     runs-on: windows-latest
 
     steps:
@@ -30,6 +29,7 @@ jobs:
     - name: Execute unit tests
       run: lerna run test --stream
 
+  
   build_macos:
     name: Validate on MacOS
     
