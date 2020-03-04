@@ -8,7 +8,7 @@ import HTML5Backend from "react-dnd-html5-backend";
 import { DndProvider } from "react-dnd";
 import { ErrorObject } from "ajv";
 import { ControlType } from "../templates";
-import { DataType } from "../../data-utilities/types";
+import { DataType } from "@microsoft/fast-tooling";
 
 const TestArrayControl: React.FC<any> = (
     props: React.PropsWithChildren<any>

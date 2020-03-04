@@ -20,9 +20,8 @@
   "scripts": {
     "build": "tsc -p ./tsconfig.build.json",
     "build:app": "webpack --progress --mode=production",
-    "build:message-system": "webpack --config webpack.message-system.config.js",
     "clean:dist": "node ../../build/clean.js dist",
-    "prepare": "yarn clean:dist && yarn build && yarn build:message-system",
+    "prepare": "yarn clean:dist && yarn build",
     "prettier": "prettier --config ../../.prettierrc --write \"**/*.{ts,tsx}\"",
     "prettier:diff": "prettier --config ../../.prettierrc \"**/*.{ts,tsx}\" --list-different",
     "start": "webpack-dev-server",
@@ -37,7 +36,7 @@
     "coverageThreshold": {
       "global": {
         "statements": 80,
-        "branches": 65,
+        "branches": 64,
         "functions": 80,
         "lines": 80
       }
