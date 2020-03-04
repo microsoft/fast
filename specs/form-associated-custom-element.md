@@ -110,8 +110,10 @@ No Dependencies
 
 TBD. Form association APIs are very new so JSDOM is not likely to expose the feature. It might make sense to do in-browser tests against browsers both with and without support to ensure parity.
 
-
 ## Resources
 - [Form Participation API Explained](https://docs.google.com/document/d/1JO8puctCSpW-ZYGU8lF-h4FWRIDQNDVexzHoOQ2iQmY/edit?pli=1)
 - [Creating a form-associated custom element](https://html.spec.whatwg.org/multipage/custom-elements.html#custom-elements-face-example)
 - [More capable form controls](https://web.dev/more-capable-form-controls/)
+
+### Next Steps
+We will solve label-clicking for browsers with no FACE support in the future. A promising approach would be to catch click events on the parent form and delegate focus from there. The edge-case this does not address is elements that are not a descendent of the form element but are still associated using the [`form`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#htmlattrdefform) content attributes.
