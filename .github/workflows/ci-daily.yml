@@ -41,8 +41,7 @@ jobs:
           curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./coverage/cc-test-reporter
           chmod +x ./coverage/cc-test-reporter
         fi
-        echo CC_TEST_REPORTER_ID
-
+    
     - name: Notify Code Climate that a build is starting
       run: ./coverage/cc-test-reporter before-build 
     
