@@ -3,13 +3,12 @@ import { FormState } from "../form.props";
 import { AttributeSettingsMappingToPropertyNames, FormChildOptionItem } from "../types";
 import { InitialOneOfAnyOfState, OneOfAnyOf } from "../controls/control.section.props";
 import { cloneDeep, get, isEmpty, mergeWith, omit, set, unset } from "lodash-es";
-import {
-    getChildOptionBySchemaId,
-    normalizeDataLocationToDotNotation,
-    squareBracketsRegex,
-} from "../../data-utilities/location";
 import { ErrorObject } from "ajv";
-import { CombiningKeyword, getDataFromSchema } from "@microsoft/fast-tooling";
+import {
+    CombiningKeyword,
+    getDataFromSchema,
+    normalizeDataLocationToDotNotation,
+} from "@microsoft/fast-tooling";
 import stringify from "fast-json-stable-stringify";
 import { validateData } from "../../utilities/ajv-validation";
 
@@ -451,13 +450,6 @@ export function getCurrentComponentDataLocation(
 }
 
 /**
- * Removes any references to array index
- */
-export function normalizeSchemaLocation(schemaLocation: string): string {
-    return schemaLocation.replace(squareBracketsRegex, "");
-}
-
-/**
  * Check to see if we are on the root location
  */
 export function isRootLocation(location: string): boolean {
@@ -502,18 +494,6 @@ export function getSchemaByDataLocation(
     return childOptionWithMatchingSchemaId
         ? childOptionWithMatchingSchemaId.schema
         : currentSchema;
-}
-
-/**
- * Finds the component using the schema id
- */
-export function getComponentByDataLocation(
-    id: string,
-    childOptions: FormChildOptionItem[]
-): any {
-    const childOption: FormChildOptionItem = getChildOptionBySchemaId(id, childOptions);
-
-    return childOption ? childOption.component : null;
 }
 
 /**
