@@ -1,7 +1,7 @@
 import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 import React from "react";
 import { keyCodeEnter } from "@microsoft/fast-web-utilities";
-import { getDataFromSchema } from "../../data-utilities";
+import { getDataFromSchema } from "@microsoft/fast-tooling";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import styles, { LinkedDataControlClassNameContract } from "./control.linked-data.style";
 import {
