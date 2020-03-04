@@ -1,7 +1,10 @@
 /**
- * HTMLElement.attachInternals()
- * remove when this goes through: https://github.com/microsoft/TSJS-lib-generator/pull/818/files
+ * This file enables typing support for ElementInternals APIs.
+ * It is largely taken from https://github.com/microsoft/TSJS-lib-generator/pull/818/files.
+ *
+ * When TypeScript adds support for these APIs we can delete this file.
  */
+
 interface ValidityStateFlags {
     badInput?: boolean;
     customError?: boolean;
@@ -45,7 +48,8 @@ interface ElementInternals {
      */
     checkValidity(): boolean;
     /**
-     * Returns true if internals target element has no validity problems; otherwise, returns false, fires an invalid event at the element, and (if the event isn't canceled) reports the problem to the user.
+     * Returns true if internals target element has no validity problems; otherwise,
+     * returns false, fires an invalid event at the element, and (if the event isn't canceled) reports the problem to the user.
      */
     reportValidity(): boolean;
     /**
@@ -61,8 +65,10 @@ interface ElementInternals {
     ): void;
     /**
      * Marks internals target element as suffering from the constraints indicated by the flags argument,
-     * and sets the element's validation message to message. If anchor is specified, the user agent might use
-     * it to indicate problems with the constraints of internals target element when the form owner is validated interactively or reportValidity() is called.
+     * and sets the element's validation message to message.
+     * If anchor is specified, the user agent might use
+     * it to indicate problems with the constraints of internals target
+     * element when the form owner is validated interactively or reportValidity() is called.
      */
     setValidity(flags: ValidityStateFlags, message?: string, anchor?: HTMLElement): void;
 }
