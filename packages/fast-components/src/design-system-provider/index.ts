@@ -1,12 +1,12 @@
 import { customElement } from "@microsoft/fast-element";
 import { DesignSystemProvider } from "./design-system-provider";
-import { DesignSystemProviderTemplate } from "./design-system-provider.template";
-import { DesignSystemProviderStyles } from "./design-system-provider.styles";
+import { DesignSystemProviderTemplate as template } from "./design-system-provider.template";
+import { DesignSystemProviderStyles as styles } from "./design-system-provider.styles";
 
 @customElement({
     name: "fast-design-system-provider",
-    template: DesignSystemProviderTemplate,
-    dependencies: [DesignSystemProviderStyles],
+    template,
+    styles,
 })
 export class FASTDesignSystemProvider extends DesignSystemProvider {}
 export * from "./design-system-provider.template";

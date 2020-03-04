@@ -3,10 +3,12 @@ import { BindableDefinition, Bindable } from "./bindable";
 import { Constructable } from "./interfaces";
 import { Registry } from "./di";
 import { Observable } from "./observation/observable";
+import { ElementStyles } from "./styles";
 
 export type PartialCustomElementDefinition = {
     readonly name: string;
     readonly template?: ElementViewTemplate;
+    readonly styles?: ElementStyles;
     readonly bindables?: Record<string, BindableDefinition>;
     readonly dependencies?: Registry[];
     readonly shadowOptions?: ShadowRootInit | null;
@@ -55,6 +57,7 @@ export class CustomElementDefinition {
     public constructor(
         public readonly name: string,
         public readonly template: ElementViewTemplate | null,
+        public readonly styles: ElementStyles | null,
         public readonly bindables: Record<string, BindableDefinition>,
         public readonly dependencies: Registry[],
         public readonly shadowOptions: ShadowRootInit | null,
@@ -86,6 +89,7 @@ export class CustomElementDefinition {
         return new CustomElementDefinition(
             name,
             nameOrDef.template || null,
+            nameOrDef.styles || null,
             bindables,
             dependencies,
             shadowOptions,
