@@ -824,20 +824,20 @@ const styles = css`
 @customElement({
   name: 'name-tag',
   template,
-  dependencies: [styles]
+  styles
 })
 export class NameTag extends FastElement {
   @attr greeting: string = 'Hello';
 }
 ```
 
-Using the `css` helper, we're able to create a `CSSRegistry`, which is a special type that `FastElement` understands. We add this registry to the element's `dependencies` array, indicating that the element is dependent on the CSS. Internally, the registry will leverage [Constructable Stylesheet Objects](https://wicg.github.io/construct-stylesheets/) and `ShadowRoot#adoptedStyleSheets` to efficiently re-use CSS across components. This means that even if we have 1k instances of our `name-tag` component, they will all share a single instance of the associated styles, allowing for reduced memory allocation and improved performance. Because the styles are associated with the `ShadowRoot`, they will also be encapsulated. This ensures that your styles don't affect other elements and other element styles don't affect your element.
+Using the `css` helper, we're able to create `ElementStyles`. We configure this with the element through the `styles` option of the decorator. Internally, `FastElement` will leverage [Constructable Stylesheet Objects](https://wicg.github.io/construct-stylesheets/) and `ShadowRoot#adoptedStyleSheets` to efficiently re-use CSS across components. This means that even if we have 1k instances of our `name-tag` component, they will all share a single instance of the associated styles, allowing for reduced memory allocation and improved performance. Because the styles are associated with the `ShadowRoot`, they will also be encapsulated. This ensures that your styles don't affect other elements and other element styles don't affect your element.
 
 > **NOTE:** We've used [CSS Custom Properties](https://developer.mozilla.org/en-US/docs/Web/CSS/--*) throughout our CSS as well as [CSS Calc](https://developer.mozilla.org/en-US/docs/Web/CSS/calc) in order to enable our component to be styled in basic ways by consumers. Additionally, consider adding [CSS Shadow Parts](https://developer.mozilla.org/en-US/docs/Web/CSS/::part) to your template, to enable even more powerful customization.
 
 ### Composing Styles
 
-One of the nice features of a `CSSRegistry` is that it can be composed with other registries. Imagine that we had a CSS normalize registry that we wanted to use in our `name-tag` component. We could compose that into our styles like this:
+One of the nice features of a `ElementStyles` is that it can be composed with other styles. Imagine that we had a CSS normalize that we wanted to use in our `name-tag` component. We could compose that into our styles like this:
 
 **Example: Composing CSS Registries**
 
@@ -861,7 +861,7 @@ const styles = css`
 `;
 ```
 
-Rather than simply concatenating CSS strings, the `css` helper understands that `normalize` is a registry and is able to re-use the same Constructable StyleSheet instance as any other component that uses `normalize`. 
+Rather than simply concatenating CSS strings, the `css` helper understands that `normalize` is `ElementStyles` and is able to re-use the same Constructable StyleSheet instance as any other component that uses `normalize`. 
 
 ### Shadow DOM Styling
 
