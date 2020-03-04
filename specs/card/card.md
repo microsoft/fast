@@ -13,6 +13,14 @@
 ### Prior Art/Examples
 - [FAST-DNA (React)](https://explore.fast.design/components/card)
 
+**Cards are a building block used to compose examples like those below:
+
+| Examples | light | dark |
+| ----- | ----- | ----- |
+| favorite | ![](./images/favorites-card.png) | ![](./images/favorites-card-dark.png)
+| content | ![](./images/content-card.png) | ![](./images/content-card-dark.png) |
+| shopping | ![](./images/shopping-card.png) | ![](./images/shopping-card-dark.png) |
+
 ---
 
 ## Design
