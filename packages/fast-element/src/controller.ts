@@ -1,5 +1,4 @@
 import { CustomElementDefinition, CustomElement } from "./custom-element";
-import { Constructable } from "./interfaces";
 import { Container, Registry, Resolver, InterfaceSymbol } from "./di";
 import { ElementView } from "./view";
 import { PropertyChangeNotifier } from "./observation/notifier";
@@ -17,21 +16,21 @@ export class Controller extends PropertyChangeNotifier implements Container {
         const template = definition.template;
         const styles = definition.styles;
         const shadowRoot =
-            definition.shadowOptions === null
-                ? null
+            definition.shadowOptions === void 0
+                ? void 0
                 : element.attachShadow(definition.shadowOptions);
 
-        if (template !== null) {
+        if (template !== void 0) {
             const view = (this.view = template.create());
 
-            if (shadowRoot === null) {
+            if (shadowRoot === void 0) {
                 view.appendTo(element);
             } else {
                 view.appendTo(shadowRoot);
             }
         }
 
-        if (styles !== null && shadowRoot !== null) {
+        if (styles !== void 0 && shadowRoot !== void 0) {
             styles.applyTo(shadowRoot);
         }
 
@@ -81,9 +80,7 @@ export class Controller extends PropertyChangeNotifier implements Container {
             return controller;
         }
 
-        const definition = CustomElement.getDefinition(
-            element.constructor as Constructable
-        );
+        const definition = CustomElement.getDefinition(element.constructor as any);
 
         if (definition === void 0) {
             throw new Error("Missing custom element definition.");

@@ -6,7 +6,7 @@ export type PartialBindableDefinition = {
 };
 
 type Omit<T, K extends keyof any> = Pick<T, Exclude<keyof T, K>>;
-type PartialBindableDefinitionPropertyOmitted = Omit<
+export type PartialBindableDefinitionPropertyOmitted = Omit<
     PartialBindableDefinition,
     "property"
 >;

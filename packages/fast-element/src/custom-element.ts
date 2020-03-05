@@ -1,6 +1,10 @@
 import { ElementViewTemplate } from "./template";
-import { BindableDefinition, Bindable } from "./bindable";
-import { Constructable } from "./interfaces";
+import {
+    BindableDefinition,
+    Bindable,
+    PartialBindableDefinitionPropertyOmitted,
+} from "./bindable";
+import { emptyArray } from "./interfaces";
 import { Registry } from "./di";
 import { Observable } from "./observation/observable";
 import { ElementStyles } from "./styles";
@@ -9,26 +13,32 @@ export type PartialCustomElementDefinition = {
     readonly name: string;
     readonly template?: ElementViewTemplate;
     readonly styles?: ElementStyles;
-    readonly bindables?: Record<string, BindableDefinition>;
+    readonly bindables?:
+        | Record<string, PartialBindableDefinitionPropertyOmitted>
+        | string[];
     readonly dependencies?: Registry[];
     readonly shadowOptions?: ShadowRootInit | null;
     readonly elementOptions?: ElementDefinitionOptions;
 };
 
+type CustomElementConstructor = {
+    new (): HTMLElement;
+};
+
 export function customElement(nameOrDef: string | PartialCustomElementDefinition) {
-    return function(type: Constructable) {
-        CustomElement.define(nameOrDef, type);
+    return function(type: CustomElementConstructor) {
+        CustomElement.define(type, nameOrDef);
     };
 }
 
-const elementDefinitions = new Map<Constructable, CustomElementDefinition>();
+const elementDefinitions = new Map<CustomElementConstructor, CustomElementDefinition>();
 
 export const CustomElement = {
-    define<T extends Constructable>(
-        nameOrDef: string | PartialCustomElementDefinition,
-        Type: T
+    define<T extends CustomElementConstructor>(
+        Type: T,
+        nameOrDef?: string | PartialCustomElementDefinition
     ): T {
-        const definition = CustomElementDefinition.create(nameOrDef, Type);
+        const definition = CustomElementDefinition.create(Type, nameOrDef);
         const observedAttributes = Object.keys(definition.attributes);
         const proto = Type.prototype;
 
@@ -42,11 +52,13 @@ export const CustomElement = {
         );
 
         elementDefinitions.set(Type, definition);
-        customElements.define(definition.name, Type as any, definition.elementOptions);
+        customElements.define(definition.name, Type, definition.elementOptions);
         return Type;
     },
 
-    getDefinition<T extends Constructable>(Type: T): CustomElementDefinition | undefined {
+    getDefinition<T extends CustomElementConstructor>(
+        Type: T
+    ): CustomElementDefinition | undefined {
         return elementDefinitions.get(Type);
     },
 };
@@ -56,12 +68,12 @@ export class CustomElementDefinition {
 
     public constructor(
         public readonly name: string,
-        public readonly template: ElementViewTemplate | null,
-        public readonly styles: ElementStyles | null,
         public readonly bindables: Record<string, BindableDefinition>,
-        public readonly dependencies: Registry[],
-        public readonly shadowOptions: ShadowRootInit | null,
-        public readonly elementOptions: ElementDefinitionOptions | undefined
+        public readonly template?: ElementViewTemplate,
+        public readonly styles?: ElementStyles,
+        public readonly shadowOptions?: ShadowRootInit,
+        public readonly elementOptions?: ElementDefinitionOptions,
+        public readonly dependencies: ReadonlyArray<Registry> = emptyArray
     ) {
         this.attributes = {};
         Object.keys(this.bindables).forEach(key => {
@@ -70,9 +82,9 @@ export class CustomElementDefinition {
         });
     }
 
-    public static create(
-        nameOrDef: string | PartialCustomElementDefinition,
-        Type: Constructable
+    public static create<T extends CustomElementConstructor>(
+        Type: T,
+        nameOrDef: string | PartialCustomElementDefinition = (Type as any).definition
     ) {
         if (typeof nameOrDef === "string") {
             nameOrDef = { name: nameOrDef };
@@ -80,20 +92,19 @@ export class CustomElementDefinition {
 
         const name = nameOrDef.name;
         const bindables = Bindable.from((Type as any).bindables, nameOrDef.bindables);
-        const dependencies = nameOrDef.dependencies || [];
         const shadowOptions =
             nameOrDef.shadowOptions === void 0
                 ? ({ mode: "open" } as ShadowRootInit)
-                : nameOrDef.shadowOptions;
+                : nameOrDef.shadowOptions || void 0;
 
         return new CustomElementDefinition(
             name,
-            nameOrDef.template || null,
-            nameOrDef.styles || null,
             bindables,
-            dependencies,
+            nameOrDef.template,
+            nameOrDef.styles,
             shadowOptions,
-            nameOrDef.elementOptions
+            nameOrDef.elementOptions,
+            nameOrDef.dependencies
         );
     }
 }
