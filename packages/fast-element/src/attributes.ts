@@ -1,5 +1,3 @@
-import { Omit } from "./interfaces";
-
 export type AttributeConfiguration = {
     property: string;
     attribute?: string;
