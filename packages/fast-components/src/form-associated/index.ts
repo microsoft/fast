@@ -95,12 +95,6 @@ export abstract class FormAssociated<
     @attr
     public value: string = "";
 
-    /**
-     * Whether the element should be autofocused
-     */
-    @attr
-    public autofocus: boolean;
-
     @attr
     public disabled: boolean = false;
     private disabledChanged(): void {
