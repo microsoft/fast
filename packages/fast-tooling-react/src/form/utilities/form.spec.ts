@@ -10,7 +10,7 @@ import {
     textFieldSchema,
 } from "../../__tests__/schemas";
 import { InitialOneOfAnyOfState } from "../controls/control.section.props";
-import { CombiningKeyword } from "../../data-utilities/types";
+import { CombiningKeyword } from "@microsoft/fast-tooling";
 import ajv, { ValidationError } from "ajv";
 import { getValidationErrors } from "../../utilities/ajv-validation";
 

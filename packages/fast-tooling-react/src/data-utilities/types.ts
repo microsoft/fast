@@ -4,7 +4,6 @@ export const typeKeyword: string = "type";
 export const pluginIdKeyword: string = "pluginId";
 export const propsKeyword: string = "props";
 export const idKeyword: string = "id";
-export const itemsKeyword: string = "items";
 
 export enum DataResolverType {
     plugin = "plugin",
@@ -26,17 +25,6 @@ export enum PropertyKeyword {
     properties = "properties",
     reactProperties = "reactProperties",
     additionalProperties = "additionalProperties",
-}
-
-export enum CombiningKeyword {
-    anyOf = "anyOf",
-    oneOf = "oneOf",
-    allOf = "allOf",
-}
-
-export enum ItemConstraints {
-    minItems = "minItems",
-    maxItems = "maxItems",
 }
 
 export interface PluginLocation {
