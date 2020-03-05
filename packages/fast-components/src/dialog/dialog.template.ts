@@ -4,7 +4,7 @@ import { Dialog } from "./dialog";
 
 // or when the document gets a esc key clicked
 export const DialogTemplate = html<Dialog>`
-<div part="root" hidden=${x => x.hidden} ${ref("root")}>
+<div part="root" ?hidden=${x => x.hidden}>
     <div class="positioning-region" part="positioning-region">
         ${when(
             x => x.modal,
@@ -13,6 +13,7 @@ export const DialogTemplate = html<Dialog>`
                 class="overlay"
                 part="overlay"
                 role="presentation"
+                tabindex="-1"
                 @click=${(x, c) => x.dismiss()}
             ></div>
         `
@@ -21,11 +22,11 @@ export const DialogTemplate = html<Dialog>`
             role="dialog"
             class="content-region"
             part="content-region"
-            aria-modal=${x => x.modal}
-            tabindex="-1"
-            aria-describedby=${x => x.ariaDescribedby}
-            aria-labelledby=${x => x.ariaLabelledby}
-            aria-label=${x => x.ariaLabel}
+            $aria-modal=${x => x.modal}
+            $aria-describedby=${x => x.ariaDescribedby}
+            $aria-labelledby=${x => x.ariaLabelledby}
+            $aria-label=${x => x.ariaLabel}
+            ${ref("dialog")}
         >
             <slot></slot>
         </div>

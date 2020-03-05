@@ -6,7 +6,7 @@ export class Dialog extends FastElement {
     @attr
     public modal: boolean = true;
 
-    @attr
+    @attr // this should be boolean, but we do not yet have boolean support
     public hidden: boolean = false;
 
     @attr({ attribute: "trap-focus" })
@@ -21,7 +21,7 @@ export class Dialog extends FastElement {
     @attr({ attribute: "aria-label" })
     public ariaLabel: string;
 
-    public root: HTMLDivElement;
+    public dialog: HTMLDivElement;
 
     public dismiss(): void {
         this.dispatchEvent(
@@ -34,10 +34,9 @@ export class Dialog extends FastElement {
 
     public connectedCallback(): void {
         super.connectedCallback();
-
         document.addEventListener("keydown", this.handleDocumentKeydown);
 
-        if (this.trapFocus) {
+        if (this.shouldDialogTrapFocus()) {
             document.addEventListener("focusin", this.handleDocumentFocus);
 
             if (this.shouldForceFocus(document.activeElement)) {
@@ -50,10 +49,15 @@ export class Dialog extends FastElement {
         super.disconnectedCallback();
 
         document.removeEventListener("keydown", this.handleDocumentKeydown);
+
+        if (this.shouldDialogTrapFocus()) {
+            document.removeEventListener("focusin", this.handleDocumentFocus);
+        }
     }
 
-    private handleDocumentKeydown(e: KeyboardEvent): void {
-        if (!e.defaultPrevented && !this.hidden) {
+    private handleDocumentKeydown = (e: KeyboardEvent): void => {
+        // remove as any here when we have boolean support
+        if (!e.defaultPrevented && !this.isDialogHidden()) {
             switch (e.keyCode) {
                 case keyCodeEscape:
                     this.dismiss();
@@ -64,25 +68,25 @@ export class Dialog extends FastElement {
                     break;
             }
         }
-    }
+    };
 
-    private handleDocumentFocus(e: Event): void {
+    private handleDocumentFocus = (e: Event): void => {
         if (!e.defaultPrevented && this.shouldForceFocus(e.target as HTMLElement)) {
             this.focusFirstElement();
             e.preventDefault();
         }
-    }
+    };
 
-    private handleTabKeyDown(e: KeyboardEvent): void {
-        if (!this.trapFocus) {
+    private handleTabKeyDown = (e: KeyboardEvent): void => {
+        if (!this.shouldDialogTrapFocus()) {
             return;
         }
 
-        const tabbableElements: HTMLElement[] = tabbable(this.root);
+        const tabbableElements: HTMLElement[] = tabbable(this);
         const tabbableElementCount: number = tabbableElements.length;
 
         if (tabbableElementCount === 0) {
-            this.root.focus();
+            this.dialog.focus();
             e.preventDefault();
             return;
         }
@@ -97,15 +101,16 @@ export class Dialog extends FastElement {
             tabbableElements[0].focus();
             e.preventDefault();
         }
-    }
+    };
 
     /**
      * focus on first element of tab queue
      */
     private focusFirstElement = (): void => {
-        const tabbableElements: HTMLElement[] = tabbable(this.root);
+        const tabbableElements: HTMLElement[] = tabbable(this);
+
         if (tabbableElements.length === 0) {
-            this.root.focus();
+            this.dialog.focus();
         } else {
             tabbableElements[0].focus();
         }
@@ -115,6 +120,26 @@ export class Dialog extends FastElement {
      * we should only focus if focus has not already been brought to the dialog
      */
     private shouldForceFocus = (currentFocusElement: Element | null): boolean => {
-        return !this.hidden && this.root && !this.root.contains(currentFocusElement);
+        return !this.isDialogHidden() && !this.contains(currentFocusElement);
     };
+
+    /**
+     * TODO: Issue #2742 - https://github.com/microsoft/fast-dna/issues/2742
+     * This is a placeholder function to check if the hidden attribute is present
+     * Currently there is not support for boolean attributes.
+     * Once support is added, we will simply use this.hidden.
+     */
+    private isDialogHidden(): boolean {
+        return typeof this.hidden !== "boolean";
+    }
+
+    /**
+     * TODO: Issue #2742 - https://github.com/microsoft/fast-dna/issues/2742
+     * This is a placeholder function to check if the trapFocus attribute is present
+     * Currently there is not support for boolean attributes.
+     * Once support is added, we will simply use this.trapFocus.
+     */
+    private shouldDialogTrapFocus(): boolean {
+        return typeof this.trapFocus !== "boolean";
+    }
 }
