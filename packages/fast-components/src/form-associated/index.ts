@@ -157,7 +157,7 @@ export abstract class FormAssociated<
             this.appendChild(this.proxy);
 
             this.proxyEventsToBlock.forEach(name =>
-                this.proxy.addEventListener(name, this.stopPropogation)
+                this.proxy.addEventListener(name, this.stopPropagation)
             );
 
             // These are typically mapped to the proxy during
@@ -181,7 +181,7 @@ export abstract class FormAssociated<
 
     public disconnectedCallback(): void {
         this.proxyEventsToBlock.forEach(name =>
-            this.proxy.removeEventListener(name, this.stopPropogation)
+            this.proxy.removeEventListener(name, this.stopPropagation)
         );
         this.removeChild(this.proxy);
     }
@@ -256,7 +256,7 @@ export abstract class FormAssociated<
      * Used to stop propagation of proxy element events
      * @param e Event object
      */
-    private stopPropogation(e: Event): void {
+    private stopPropagation(e: Event): void {
         e.stopPropagation();
     }
 }
