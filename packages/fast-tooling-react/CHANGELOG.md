@@ -3,6 +3,45 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.0.0-alpha.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-tooling-react@1.32.1...@microsoft/fast-tooling-react@2.0.0-alpha.0) (2020-03-05)
+
+
+### Bug Fixes
+
+* adjust select styling to prevent text overflow ([#2706](https://github.com/Microsoft/fast-dna/issues/2706)) ([4b5bed6](https://github.com/Microsoft/fast-dna/commit/4b5bed631615fea0d01b2dd5688107e76e9c2f5c))
+* update the message system to combine declaring a new worker and registration from a single class ([#2670](https://github.com/Microsoft/fast-dna/issues/2670)) ([64eacab](https://github.com/Microsoft/fast-dna/commit/64eacab6403d74cd382af3085e252b6d7fe775eb))
+
+
+### Features
+
+* add a JSON schema for react children ([#2529](https://github.com/Microsoft/fast-dna/issues/2529)) ([c467116](https://github.com/Microsoft/fast-dna/commit/c4671164140ac88009b7275ce5a267a4bf4999e8))
+* add an initial plugin system for the message system ([#2535](https://github.com/Microsoft/fast-dna/issues/2535)) ([d0f592c](https://github.com/Microsoft/fast-dna/commit/d0f592c9a652ddb3683c63261a076fbf9c323bba))
+* add initialization with data to message system ([#2505](https://github.com/Microsoft/fast-dna/issues/2505)) ([6d902fd](https://github.com/Microsoft/fast-dna/commit/6d902fdf59f01000d50a0ad4c7bdef54205655e7))
+* add linked data control to update dictionary data ([#2710](https://github.com/Microsoft/fast-dna/issues/2710)) ([1bb608d](https://github.com/Microsoft/fast-dna/commit/1bb608da7e3f86511f35b624e282abcfb8fbb16a))
+* add message system ([#2504](https://github.com/Microsoft/fast-dna/issues/2504)) ([78ca655](https://github.com/Microsoft/fast-dna/commit/78ca655bbb04b6c6fd6b103fe6f31d48ff8c0dfb))
+* add message system registration class and adjust message system to use a dictionary to account for multiple data sets ([#2662](https://github.com/Microsoft/fast-dna/issues/2662)) ([2766b80](https://github.com/Microsoft/fast-dna/commit/2766b80433a4c9ae563d2be5769028ccdccdf2ed))
+* add new package for framework-less tooling ([#2560](https://github.com/Microsoft/fast-dna/issues/2560)) ([c9c59ad](https://github.com/Microsoft/fast-dna/commit/c9c59adcfca2720c4c49f4145faeba53b62b3bfe))
+* allow adding and removing data from the message-system ([#2526](https://github.com/Microsoft/fast-dna/issues/2526)) ([4aa155c](https://github.com/Microsoft/fast-dna/commit/4aa155cabbdcbaec13caf81303e1b99dfb7ec1ae))
+* convert form to use the message system ([#2665](https://github.com/Microsoft/fast-dna/issues/2665)) ([9fe5499](https://github.com/Microsoft/fast-dna/commit/9fe54994b1818e00b13537f873b093d909432679))
+* convert the Navigation component API to use the message system ([#2718](https://github.com/Microsoft/fast-dna/issues/2718)) ([ac70e24](https://github.com/Microsoft/fast-dna/commit/ac70e247b83a7cf1bca28ed0b0dd02c0c476dda0))
+* place duplicate data functionality in data utilities and add duplication to the message system ([#2506](https://github.com/Microsoft/fast-dna/issues/2506)) ([a0140ab](https://github.com/Microsoft/fast-dna/commit/a0140abfa317c06368197c2528777ba60aac8cad))
+* remove the onSchemaChange callback and schema plugins ([#2522](https://github.com/Microsoft/fast-dna/issues/2522)) ([1f3dfba](https://github.com/Microsoft/fast-dna/commit/1f3dfbaa563b5054a312e525d96fe2c157be393a))
+* standardize the naming of linked items to linked data, add more information to message system callbacks and add data location information to linked data, update the form navigation to include breadcrumbs from the dictionary ([#2705](https://github.com/Microsoft/fast-dna/issues/2705)) ([77197fb](https://github.com/Microsoft/fast-dna/commit/77197fb9feb751b892dcc60814d04ebbc67e98b0))
+* update dependencies to allow the use of latest typescript version ([b7d57be](https://github.com/Microsoft/fast-dna/commit/b7d57bec42ed9e25df1254e03ad1ce41ed17dda6)), closes [#2476](https://github.com/Microsoft/fast-dna/issues/2476)
+
+
+### BREAKING CHANGES
+
+* updates the message system to be a single class instantiation which includes the web worker implementation and the registry
+* This change updates the Form API to not include data, schema or the onChange callback and instead replace them with the message system
+* This removes the onSchemaChange callback and plugins from the Form as well as the plugin export
+* This changes how contexts are used for the BareForm
+component due to the update of react-dnd to 9.0.0
+
+
+
+
+
 ## [1.32.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-tooling-react@1.32.0...@microsoft/fast-tooling-react@1.32.1) (2020-02-07)
 
 **Note:** Version bump only for package @microsoft/fast-tooling-react
