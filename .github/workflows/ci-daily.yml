@@ -1,0 +1,63 @@
+name: FAST Workflows
+
+on:
+  push: 
+    branches:
+    - master
+    - releases/*
+  pull_request:
+    branches:
+    - master
+    - releases/*
+
+jobs:
+  build_linux:
+    runs-on: ubuntu-latest
+    env:
+        CC_TEST_REPORTER_ID: ${{ secrets.CODE_CLIMATE_TEST_REPORTER_ID }}
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Install Lerna
+      run: sudo yarn global add lerna@3.18.2  
+
+    - name: Install package dependencies
+      run: yarn install --frozen-lockfile
+
+    - name: Build Yarn workspaces
+      run: lerna run prepare
+
+    - name: Testing Prettier format
+      run: lerna run prettier:diff
+
+    - name: Testing unit tests
+      run: lerna run test --stream
+
+    - name: Install Code Climate
+      run: |
+        if [ ! -f ./coverage/cc-test-reporter ]; then
+          mkdir -p ./coverage/
+          curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./coverage/cc-test-reporter
+          chmod +x ./coverage/cc-test-reporter
+        fi
+    
+    - name: Notify Code Climate that a build is starting
+      run: ./coverage/cc-test-reporter before-build 
+    
+    - name: Collect coverage reports
+      run: |
+        for f in packages/*; do
+          if [ -d "$f" ]; then
+            echo $f
+            set +e
+            if [ -d "$f/coverage" ]; then
+              ./coverage/cc-test-reporter format-coverage -t lcov -o coverage/coverage.${f//\//-}.json $f/coverage/lcov.info
+            fi
+          fi
+        done;
+    
+    - name: Summarize and upload code coverage
+      run: |
+        ./coverage/cc-test-reporter sum-coverage -o coverage/coverage.total.json coverage/coverage.*.json
+        ./coverage/cc-test-reporter upload-coverage -i coverage/coverage.total.json
