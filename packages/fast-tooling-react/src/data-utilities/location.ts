@@ -1,16 +1,15 @@
 import { get, isPlainObject } from "lodash-es";
 import {
-    CombiningKeyword,
     DataResolverType,
     DataType,
     idKeyword,
-    itemsKeyword,
     pluginIdKeyword,
     PluginLocation,
     PropertyKeyword,
     propsKeyword,
     typeKeyword,
 } from "./types";
+import { CombiningKeyword, itemsKeyword } from "@microsoft/fast-tooling";
 import { ChildOptionItem } from "./index";
 import { validateData } from "../utilities/ajv-validation";
 

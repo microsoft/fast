@@ -7,7 +7,7 @@ import {
     StandardControlPlugin,
 } from "../../templates";
 import { generateExampleData, isConst, isSelect } from "../../utilities";
-import { ItemConstraints } from "../../../data-utilities/types";
+import { ItemConstraints } from "@microsoft/fast-tooling";
 import { SingleLineControlPlugin } from "../../templates/plugin.control.single-line";
 import ControlPluginUtilities, {
     ControlPluginUtilitiesProps,
