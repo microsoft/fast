@@ -1,4 +1,4 @@
-import { CustomElementDefinition, CustomElement } from "./custom-element";
+import { FastElementDefinition, FastElement } from "./fast-element";
 import { Container, Registry, Resolver, InterfaceSymbol } from "./di";
 import { ElementView } from "./view";
 import { PropertyChangeNotifier } from "./observation/notifier";
@@ -9,7 +9,7 @@ export class Controller extends PropertyChangeNotifier implements Container {
 
     public constructor(
         public readonly element: HTMLElement,
-        public readonly definition: CustomElementDefinition
+        public readonly definition: FastElementDefinition
     ) {
         super();
 
@@ -50,8 +50,7 @@ export class Controller extends PropertyChangeNotifier implements Container {
     }
 
     public onAttributeChangedCallback(name: string, oldValue: string, newValue: string) {
-        const bindable = this.definition.attributes[name];
-        (this.element as any)[bindable.property] = newValue;
+        (this.element as any)[this.definition.attributeLookup[name].property] = newValue;
     }
 
     public register(registry: Registry) {
@@ -80,10 +79,10 @@ export class Controller extends PropertyChangeNotifier implements Container {
             return controller;
         }
 
-        const definition = CustomElement.getDefinition(element.constructor as any);
+        const definition = FastElement.getDefinition(element.constructor as any);
 
         if (definition === void 0) {
-            throw new Error("Missing custom element definition.");
+            throw new Error("Missing fast element definition.");
         }
 
         return ((element as any).$controller = new Controller(element, definition));
