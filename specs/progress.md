@@ -1,20 +1,19 @@
-# fast-progress
+# Progress
 
 ## Overview
 
-*Progress* is used to display the length of a process or to represent an unspecified wait time. *Progress* can either be circular or linear. *Progress* can either be in an **indeterminate** or **determinate** state. This is determined by whether `value` attribute is passed to the component. 
+*Progress* is used to display the length of time a process will take (referred to as a **determinate** state) or to represent an unspecified wait time (referred to as an **indeterminate** state). *Progress* is typically visually represented by a circular or linear animation. When the `value` attribute is passed the state is **determinate**, otherwise it is **indeterminate**.
 
 ### Use Cases
 
-The *progress* component should be used for an element that displays the progress status for a task that takes a long time or consists of several steps. Typical use cases include loading elements or status of a download. 
+The *progress* component should be used for an element that displays the progress status for a task that takes a more than a few seconds or consists of several steps. Typical use cases include loading elements or status of a download. 
   
 ### Features
 
-A progress should allow the following properties:
+A progress should allow the following attributes:
 - `value`, the value of the progress, if not passed the progress will be put into its "indeterminate" state.
 - `min-value`, the minimum value.
 - `max-value`, the maximum value.
-- `circular`, whether the progress renders circular or not.
 - `paused`, whether the progress is paused or not.
 
 ### Prior Art/Examples
@@ -38,7 +37,6 @@ A progress should allow the following properties:
 - `value`: number
 - `min-value`: number
 - `max-value`: number
-- `circular`: boolean
 - `paused`: boolean
 
 ### Anatomy and Appearance
