@@ -53,7 +53,14 @@ Extends API exposed by: https://github.com/microsoft/fast-dna/pull/2723/files
 
 ### Anatomy and Appearance
 
-*Screenshots and/or description of the basic appearance of the component. Outline its structure with a diagram of its visual tree (shadow dom). Enumerate key areas of visual customization, such as:*
+```HTML
+<!-- shadow root -->
+<label part="label"><slot></slot></label>
+<div part="root">
+  <div part="state-indicator"></div>
+</div>
+<!-- end shadow root -->
+```
 
 *Slot Names*
 - default: label for the checkbox
@@ -116,3 +123,6 @@ N/A
 
 ## Resources
 N/A
+
+## Next steps
+Adding mechanisms, slots, and data for surfacing validation error messages.
