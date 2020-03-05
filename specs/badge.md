@@ -12,7 +12,7 @@ Typical use cases include, but are not limited to, denoting a sale or new item a
 ### Features
 
 A badge should allow the following properties:
-- `filled`, whether the badge draws a backplate or not.
+- `fill`, a string that passes the color value for the backplate. Defaults to "transparent".
 - `size`, the size the badge is rendered.
 
 ### Risks and Challenges
@@ -35,8 +35,10 @@ It's import to not over dominate the users screen with the use of *badge*. They 
 - `fast-badge`
 
 *Attributes:*
-- `filled`: boolean
+- `fill`: string
 - `size`: enum
+    - `small`
+    - `large`
 
 *Slots:*
 - `default`
@@ -45,7 +47,7 @@ It's import to not over dominate the users screen with the use of *badge*. They 
 
 *Template:*
 ```
-<span>
+<span style={{backgtound: "#FFD800"}}>
     <slot></slot>
 </span>
 ```
@@ -54,8 +56,8 @@ It's import to not over dominate the users screen with the use of *badge*. They 
 
 ```
 <fast-badge
-    filled={true}
-    size="Large"
+    fill="#FFD800"
+    size="large"
 >
     New
 </fast-badge>
@@ -75,4 +77,4 @@ No dependencies outside of fast-element itself.
 
 ### Documentation
 
-*Badge* component is a short inline [`<span>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/span) element highlight an item and attract attention or flag status, such as “New”, “Sale”, or other short phrases. It is not interactive, however, it generally overlays interactive content or is positioned close to a commanding component.
+*Badge* component is an inline element meant to highlight an item / attract attention or flag status, such as “New”, “Sale”, or other short phrases. It is not interactive, however, it generally overlays interactive content or is positioned close to a commanding component.
