@@ -152,7 +152,7 @@ export abstract class FormAssociated<
     public connectedCallback(): void {
         super.connectedCallback();
 
-        if (this.proxy instanceof HTMLElement) {
+        if (!FormAssociated.formAssociated) {
             this.proxy.style.display = "none";
             this.appendChild(this.proxy);
 
