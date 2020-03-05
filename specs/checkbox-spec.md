@@ -56,8 +56,7 @@ Extends API exposed by: https://github.com/microsoft/fast-dna/pull/2723/files
 *Screenshots and/or description of the basic appearance of the component. Outline its structure with a diagram of its visual tree (shadow dom). Enumerate key areas of visual customization, such as:*
 
 *Slot Names*
-- default: label for the checkbox?
-  - Can we label this from shadow-dom?
+- default: label for the checkbox
 
 *Host Classes*
 - checked
@@ -67,8 +66,7 @@ Extends API exposed by: https://github.com/microsoft/fast-dna/pull/2723/files
 *Slotted Content/Slotted Classes*
 *CSS Parts*
 - root
-- label?
-  - Can we label this form shadow-dom?
+- label
 - state-indicator
 
 ### States
