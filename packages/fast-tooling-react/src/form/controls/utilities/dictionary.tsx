@@ -6,7 +6,7 @@ import styles, { DictionaryClassNameContract } from "./dictionary.style";
 import { DictionaryProps, DictionaryState } from "./dictionary.props";
 import ControlSwitch from "./control-switch";
 import { generateExampleData, getErrorFromDataLocation } from "../../utilities";
-import { PropertyKeyword } from "../../../data-utilities/types";
+import { PropertyKeyword } from "@microsoft/fast-tooling";
 
 /**
  *  control definition

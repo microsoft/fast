@@ -1,5 +1,5 @@
 import { SectionControlConfig } from "../templates";
-import { CombiningKeyword } from "../../data-utilities/types";
+import { CombiningKeyword } from "@microsoft/fast-tooling";
 
 /**
  * Section class name contract

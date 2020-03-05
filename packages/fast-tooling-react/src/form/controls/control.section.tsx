@@ -32,7 +32,7 @@ import FormDictionary from "./utilities/dictionary";
 import { classNames } from "@microsoft/fast-web-utilities";
 import { ErrorObject } from "ajv";
 import { validateData } from "../../utilities/ajv-validation";
-import { CombiningKeyword } from "../../data-utilities/types";
+import { CombiningKeyword } from "@microsoft/fast-tooling";
 
 /**
  * Schema form component definition

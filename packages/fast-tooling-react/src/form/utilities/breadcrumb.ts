@@ -4,7 +4,7 @@ import {
     TreeNavigation,
     TreeNavigationConfigDictionary,
 } from "@microsoft/fast-tooling";
-import { DataType } from "../../data-utilities/types";
+import { DataType } from "@microsoft/fast-tooling";
 
 export interface BreadcrumbItem {
     href: string;
