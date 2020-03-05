@@ -1,13 +1,17 @@
 import { attr, FastElement } from "@microsoft/fast-element";
 import { keyCodeEnter } from "@microsoft/fast-web-utilities";
 
+/**
+ * Disable member ordering to keep property callbacks
+ * grouped with property declaration
+ */
 /* tslint:disable:member-ordering */
 export abstract class FormAssociated<
     T extends HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
 > extends FastElement {
     /**
-     * Must evalute to true to enable elementInternals.
-     * Feature detects API support and resolve respectivly.
+     * Must evaluate to true to enable elementInternals.
+     * Feature detects API support and resolve respectively
      */
     public static get formAssociated(): boolean {
         return "ElementInternals" in window;
@@ -24,7 +28,7 @@ export abstract class FormAssociated<
 
     /**
      * Retrieve a reference to the associated form.
-     * Returns null if not assoicated to any form.
+     * Returns null if not associated to any form.
      */
     public get form(): HTMLFormElement | null {
         return FormAssociated.formAssociated
@@ -34,7 +38,7 @@ export abstract class FormAssociated<
 
     /**
      * Retrieve the localized validation message,
-     * or custom validation messge if set.
+     * or custom validation message if set.
      */
     public get validationMessage(): string {
         return FormAssociated.formAssociated
@@ -130,7 +134,7 @@ export abstract class FormAssociated<
 
     /**
      * These are events that are still fired by the proxy
-     * element based on user / programatic interaction.
+     * element based on user / programmatic interaction.
      *
      * The proxy implementation should be transparent to
      * the app author, so block these events from emitting.
@@ -157,7 +161,7 @@ export abstract class FormAssociated<
             );
 
             // These are typically mapped to the proxy during
-            // property change callbacks, but during initilization
+            // property change callbacks, but during initialization
             // on the intial call of the callback, the proxy is
             // still undefined. We should find a better way to address this.
             this.proxy.disabled = this.disabled === ("" as any); // TODO: https://github.com/microsoft/fast-dna/issues/2742
@@ -203,7 +207,7 @@ export abstract class FormAssociated<
 
     /**
      * Set the validity of the control. In cases when the elementInternals object is not
-     * availible (and the proxy element is used to report validity), this function will
+     * available (and the proxy element is used to report validity), this function will
      * do nothing unless a message is provided, at which point the setCustomValidity method
      * of the proxy element will be invoked with the provided message.
      * @param flags Validity flags
@@ -225,7 +229,7 @@ export abstract class FormAssociated<
     /**
      *
      * @param value The value to set
-     * @param state The state object provided to during sesson restores and when autofilling.
+     * @param state The state object provided to during session restores and when autofilling.
      */
     protected setFormValue(
         value: File | string | FormData | null,
@@ -249,7 +253,7 @@ export abstract class FormAssociated<
     }
 
     /**
-     * Used to stop propogation of proxy element events
+     * Used to stop propagation of proxy element events
      * @param e Event object
      */
     private stopPropogation(e: Event): void {
