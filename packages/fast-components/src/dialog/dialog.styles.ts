@@ -33,7 +33,7 @@ export const DialogStyles = css`
         overflow: auto;
     }
 
-    .content-region {
+    .root {
         margin-top: auto;
         margin-bottom: auto;
         border-radius: calc(var(--elevated-corner-radius));

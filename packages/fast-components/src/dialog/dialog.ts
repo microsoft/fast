@@ -56,7 +56,6 @@ export class Dialog extends FastElement {
     }
 
     private handleDocumentKeydown = (e: KeyboardEvent): void => {
-        // remove as any here when we have boolean support
         if (!e.defaultPrevented && !this.isDialogHidden()) {
             switch (e.keyCode) {
                 case keyCodeEscape:
