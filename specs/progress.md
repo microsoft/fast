@@ -2,7 +2,7 @@
 
 ## Overview
 
-*Progress* is used to display the length of a process or to represent an unspecified wait time. *Progress* can either be circular or linear. *Progress* can either me in an **indeterminate** state or **determinate** state this is determined by whether `value` attribute is passed to the component. 
+*Progress* is used to display the length of a process or to represent an unspecified wait time. *Progress* can either be circular or linear. *Progress* can either be in an **indeterminate** or **determinate** state. This is determined by whether `value` attribute is passed to the component. 
 
 ### Use Cases
 
