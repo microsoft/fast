@@ -1,6 +1,8 @@
 import { attr, emptyArray, FastElement } from "@microsoft/fast-element";
 import { keyCodeEnter } from "@microsoft/fast-web-utilities";
 
+export const supportsElementInternals = "ElementInternals" in window;
+
 /**
  * Disable member ordering to keep property callbacks
  * grouped with property declaration
@@ -13,18 +15,15 @@ export abstract class FormAssociated<
      * Must evaluate to true to enable elementInternals.
      * Feature detects API support and resolve respectively
      */
-    private static cachedFormAssociated: boolean | null = null;
     public static get formAssociated(): boolean {
-        return FormAssociated.cachedFormAssociated === null
-            ? (FormAssociated.cachedFormAssociated = "ElementInternals" in window)
-            : FormAssociated.cachedFormAssociated;
+        return supportsElementInternals;
     }
 
     /**
      * Returns the validty state of the element
      */
     public get validity(): ValidityState {
-        return FormAssociated.formAssociated
+        return supportsElementInternals
             ? this.elementInternals.validity
             : this.proxy.validity;
     }
@@ -34,9 +33,7 @@ export abstract class FormAssociated<
      * Returns null if not associated to any form.
      */
     public get form(): HTMLFormElement | null {
-        return FormAssociated.formAssociated
-            ? this.elementInternals.form
-            : this.proxy.form;
+        return supportsElementInternals ? this.elementInternals.form : this.proxy.form;
     }
 
     /**
@@ -44,7 +41,7 @@ export abstract class FormAssociated<
      * or custom validation message if set.
      */
     public get validationMessage(): string {
-        return FormAssociated.formAssociated
+        return supportsElementInternals
             ? this.elementInternals.validationMessage
             : this.proxy.validationMessage;
     }
@@ -54,7 +51,7 @@ export abstract class FormAssociated<
      * form is submitted
      */
     public get willValidate(): boolean {
-        return FormAssociated.formAssociated
+        return supportsElementInternals
             ? this.elementInternals.willValidate
             : this.proxy.willValidate;
     }
@@ -63,7 +60,7 @@ export abstract class FormAssociated<
      * A reference to all associated label elements
      */
     public get labels(): ReadonlyArray<Node> {
-        if (FormAssociated.formAssociated) {
+        if (supportsElementInternals) {
             return Object.freeze(Array.from(this.elementInternals.labels));
         } else if (
             this.proxy instanceof HTMLElement &&
@@ -145,7 +142,7 @@ export abstract class FormAssociated<
     constructor() {
         super();
 
-        if (FormAssociated.formAssociated) {
+        if (supportsElementInternals) {
             this.elementInternals = (this as any).attachInternals();
         }
     }
@@ -153,7 +150,7 @@ export abstract class FormAssociated<
     public connectedCallback(): void {
         super.connectedCallback();
 
-        if (!FormAssociated.formAssociated) {
+        if (!supportsElementInternals) {
             this.proxy.style.display = "none";
             this.appendChild(this.proxy);
 
@@ -191,7 +188,7 @@ export abstract class FormAssociated<
      * Return the current validity of the element
      */
     public checkValidity(): boolean {
-        return FormAssociated.formAssociated
+        return supportsElementInternals
             ? this.elementInternals.checkValidity()
             : this.proxy.checkValidity();
     }
@@ -201,7 +198,7 @@ export abstract class FormAssociated<
      * If false, fires an invalid event at the element.
      */
     public reportValidity(): boolean {
-        return FormAssociated.formAssociated
+        return supportsElementInternals
             ? this.elementInternals.reportValidity()
             : this.proxy.reportValidity();
     }
@@ -220,7 +217,7 @@ export abstract class FormAssociated<
         message?: string,
         anchor?: HTMLElement
     ): void {
-        if (FormAssociated.formAssociated) {
+        if (supportsElementInternals) {
             this.elementInternals.setValidity(flags, message, anchor);
         } else if (typeof message === "string") {
             this.proxy.setCustomValidity(message);
@@ -236,7 +233,7 @@ export abstract class FormAssociated<
         value: File | string | FormData | null,
         state?: File | string | FormData | null
     ): void {
-        if (FormAssociated.formAssociated) {
+        if (supportsElementInternals) {
             this.elementInternals.setFormValue(value, state);
         }
     }
