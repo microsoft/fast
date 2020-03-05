@@ -25,7 +25,7 @@ We want general feature-parity between this component and an `input[type="checkb
 ---
 
 ### API
-Extends API exposed by: https://github.com/microsoft/fast-dna/pull/2723/files
+Extends [form associated custom element](./form-associated-custom-element.md).
 
 *Component Name*
 `fast-checkbox`
