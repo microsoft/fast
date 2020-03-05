@@ -99,7 +99,7 @@ export abstract class FormAssociated<
      * Whether the element should be autofocused
      */
     @attr
-    public autofocus: boolean; // Map to proxy element
+    public autofocus: boolean;
 
     @attr
     public disabled: boolean = false;
