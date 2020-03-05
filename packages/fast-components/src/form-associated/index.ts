@@ -171,10 +171,6 @@ export abstract class FormAssociated<
                 this.proxy.value = this.value;
             }
         }
-
-        if (this.autofocus) {
-            this.focus();
-        }
     }
 
     public disconnectedCallback(): void {
