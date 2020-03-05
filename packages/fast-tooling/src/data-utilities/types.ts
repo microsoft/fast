@@ -20,3 +20,8 @@ export enum CombiningKeyword {
     oneOf = "oneOf",
     allOf = "allOf",
 }
+
+export enum ItemConstraints {
+    minItems = "minItems",
+    maxItems = "maxItems",
+}

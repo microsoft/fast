@@ -113,7 +113,6 @@
     "@microsoft/fast-web-utilities": "^4.4.2",
     "@microsoft/fast-tooling": "^0.0.0",
     "ajv": "^6.10.0",
-    "copy-webpack-plugin": "^5.0.5",
     "exenv-es6": "^1.0.0",
     "raf-throttle": "^2.0.3",
     "react-dnd": "^9.0.0",
