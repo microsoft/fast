@@ -47,7 +47,7 @@ It's import to not over dominate the users screen with the use of *badge*. They 
 
 *Template:*
 ```
-<span>
+<span style={{background: #FFD800}}>
     <slot></slot>
 </span>
 ```
