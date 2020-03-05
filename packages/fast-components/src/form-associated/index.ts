@@ -1,6 +1,7 @@
-import { FastElement, attr } from "@microsoft/fast-element";
+import { attr, FastElement } from "@microsoft/fast-element";
 import { keyCodeEnter } from "@microsoft/fast-web-utilities";
 
+/* tslint:disable:member-ordering */
 export abstract class FormAssociated<
     T extends HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
 > extends FastElement {
@@ -144,7 +145,7 @@ export abstract class FormAssociated<
         }
     }
 
-    public connectedCallback() {
+    public connectedCallback(): void {
         super.connectedCallback();
 
         if (this.proxy instanceof HTMLElement) {
@@ -174,7 +175,7 @@ export abstract class FormAssociated<
         }
     }
 
-    public disconnectedCallback() {
+    public disconnectedCallback(): void {
         this.proxyEventsToBlock.forEach(name =>
             this.proxy.removeEventListener(name, this.stopPropogation)
         );
@@ -213,7 +214,7 @@ export abstract class FormAssociated<
         flags: ValidityStateFlags,
         message?: string,
         anchor?: HTMLElement
-    ) {
+    ): void {
         if (FormAssociated.formAssociated) {
             this.elementInternals.setValidity(flags, message, anchor);
         } else if (typeof message === "string") {
@@ -229,13 +230,13 @@ export abstract class FormAssociated<
     protected setFormValue(
         value: File | string | FormData | null,
         state?: File | string | FormData | null
-    ) {
+    ): void {
         if (FormAssociated.formAssociated) {
             this.elementInternals.setFormValue(value, state);
         }
     }
 
-    protected keypressHandler(e: KeyboardEvent) {
+    protected keypressHandler(e: KeyboardEvent): void {
         switch (e.keyCode) {
             case keyCodeEnter:
                 if (this.form instanceof HTMLFormElement) {
@@ -251,7 +252,8 @@ export abstract class FormAssociated<
      * Used to stop propogation of proxy element events
      * @param e Event object
      */
-    private stopPropogation(e: Event) {
+    private stopPropogation(e: Event): void {
         e.stopPropagation();
     }
 }
+/* tslint:enable:member-ordering */
