@@ -2,7 +2,6 @@ import { html } from "@microsoft/fast-element";
 import { ref, when } from "@microsoft/fast-element/dist/directives/";
 import { Dialog } from "./dialog";
 
-// or when the document gets a esc key clicked
 export const DialogTemplate = html<Dialog>`
 <div part="root" ?hidden=${x => x.hidden}>
     <div class="positioning-region" part="positioning-region">

@@ -6,7 +6,7 @@ export class Dialog extends FastElement {
     @attr
     public modal: boolean = true;
 
-    @attr // this should be boolean, but we do not yet have boolean support
+    @attr
     public hidden: boolean = false;
 
     @attr({ attribute: "trap-focus" })
