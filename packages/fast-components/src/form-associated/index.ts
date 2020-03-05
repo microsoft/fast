@@ -1,4 +1,4 @@
-import { attr, FastElement } from "@microsoft/fast-element";
+import { attr, emptyArray, FastElement } from "@microsoft/fast-element";
 import { keyCodeEnter } from "@microsoft/fast-web-utilities";
 
 /**
@@ -13,8 +13,11 @@ export abstract class FormAssociated<
      * Must evaluate to true to enable elementInternals.
      * Feature detects API support and resolve respectively
      */
+    private static cachedFormAssociated: boolean | null = null;
     public static get formAssociated(): boolean {
-        return "ElementInternals" in window;
+        return FormAssociated.cachedFormAssociated === null
+            ? (FormAssociated.cachedFormAssociated = "ElementInternals" in window)
+            : FormAssociated.cachedFormAssociated;
     }
 
     /**
@@ -59,9 +62,9 @@ export abstract class FormAssociated<
     /**
      * A reference to all associated label elements
      */
-    public get labels(): Node[] {
+    public get labels(): ReadonlyArray<Node> {
         if (FormAssociated.formAssociated) {
-            return Array.from(this.elementInternals.labels);
+            return Object.freeze(Array.from(this.elementInternals.labels));
         } else if (
             this.proxy instanceof HTMLElement &&
             this.proxy.ownerDocument &&
@@ -71,14 +74,18 @@ export abstract class FormAssociated<
             const parentLabels = this.proxy.labels;
             // Labels associated using the `for` attribute
             const forLabels = Array.from(
-                this.proxy.ownerDocument.querySelectorAll(`[for='${this.id}']`)
+                (this.proxy.getRootNode() as HTMLDocument | ShadowRoot).querySelectorAll(
+                    `[for='${this.id}']`
+                )
             );
 
-            return !!parentLabels
+            const labels = !!parentLabels
                 ? forLabels.concat(Array.from(parentLabels))
                 : forLabels;
+
+            return Object.freeze(labels);
         } else {
-            return [];
+            return emptyArray;
         }
     }
 
