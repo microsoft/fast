@@ -97,6 +97,9 @@ export abstract class FormAssociated<
         if (this.proxy instanceof HTMLElement) {
             this.proxy.disabled = this.disabled === ("" as any); // TODO: https://github.com/microsoft/fast-dna/issues/2742
         }
+        this.disabled === ("" as any)
+            ? this.classList.add("disabled")
+            : this.classList.remove("disabled");
     }
 
     @attr
@@ -116,6 +119,10 @@ export abstract class FormAssociated<
         if (this.proxy instanceof HTMLElement) {
             this.proxy.required = this.required === ("" as any); // TODO: https://github.com/microsoft/fast-dna/issues/2742
         }
+
+        this.required === ("" as any)
+            ? this.classList.add("required")
+            : this.classList.remove("required");
     }
 
     /**
@@ -176,7 +183,6 @@ export abstract class FormAssociated<
         this.proxyEventsToBlock.forEach(name =>
             this.proxy.removeEventListener(name, this.stopPropagation)
         );
-        this.removeChild(this.proxy);
     }
 
     /**

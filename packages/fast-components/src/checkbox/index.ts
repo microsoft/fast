@@ -7,6 +7,10 @@ import { CheckboxStyles as styles } from "./checkbox.styles";
     name: "fast-checkbox",
     template,
     styles,
+    shadowOptions: {
+        mode: "open",
+        delegatesFocus: true,
+    },
 })
 export class FASTCheckbox extends Checkbox {}
 export * from "./checkbox.template";

@@ -67,8 +67,12 @@ export class Checkbox extends FormAssociated<HTMLInputElement> {
         }
 
         if (this.constructed) {
-            this.dispatchEvent(new CustomEvent("change", { bubbles: true }));
+            this.dispatchEvent(
+                new CustomEvent("change", { bubbles: true, composed: true })
+            );
         }
+
+        this.checked ? this.classList.add("checked") : this.classList.remove("checked");
     }
 
     protected proxy = document.createElement("input");
@@ -78,6 +82,11 @@ export class Checkbox extends FormAssociated<HTMLInputElement> {
      */
     @observable
     public indeterminate: boolean = false;
+    private indeterminateChanged(): void {
+        this.indeterminate
+            ? this.classList.add("indeterminate")
+            : this.classList.remove("indeterminate");
+    }
 
     /**
      * Tracks whether the "checked" property has been changed.
@@ -101,10 +110,6 @@ export class Checkbox extends FormAssociated<HTMLInputElement> {
     public connectedCallback(): void {
         super.connectedCallback();
 
-        if (this.autofocus) {
-            this.focus();
-        }
-
         this.updateForm();
 
         this.addEventListener("keypress", this.keypressHandler);
@@ -127,7 +132,9 @@ export class Checkbox extends FormAssociated<HTMLInputElement> {
     };
 
     private clickHandler = (e: MouseEvent) => {
-        this.checked = !this.checked;
+        if (this.disabled !== ("" as any) && this.readOnly !== ("" as any)) {
+            this.checked = !this.checked;
+        }
     };
 }
 /* tslint:enable:member-ordering */
