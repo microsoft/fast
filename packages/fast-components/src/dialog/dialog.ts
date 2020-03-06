@@ -23,7 +23,6 @@ export class Dialog extends FastElement {
 
     public dialog: HTMLDivElement;
 
-    @observable
     private tabbableElements: HTMLElement[];
 
     private observer: MutationObserver;
