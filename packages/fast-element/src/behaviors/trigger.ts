@@ -18,7 +18,7 @@ export class TriggerBinding implements Behavior {
 
     handleEvent(event: Event) {
         const context = { event };
-        this.directive.expression.evaluate(this.source, context as any);
+        this.directive.expression(this.source, context as any);
         event.preventDefault();
     }
 }

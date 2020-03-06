@@ -1,7 +1,7 @@
 import { DOM } from "../dom";
 import { SyntheticViewTemplate, CaptureType } from "../template";
 import { SyntheticView } from "../view";
-import { Expression, AccessScopeExpression, Getter } from "../expression";
+import { Expression } from "../interfaces";
 import { Behavior } from "../behaviors/behavior";
 import { Observable, GetterInspector } from "../observation/observable";
 import { BindingDirective } from "./bind";
@@ -69,8 +69,8 @@ export class WhenBehavior implements Behavior, GetterInspector, Subscriber {
 }
 
 export function when<T = any, K = any>(
-    expression: Getter<T, K> | keyof T,
+    expression: Expression<T, K>,
     template: SyntheticViewTemplate
 ): CaptureType<T> {
-    return new WhenDirective(AccessScopeExpression.from(expression as any), template);
+    return new WhenDirective(expression, template);
 }
