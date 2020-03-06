@@ -45,21 +45,19 @@ A designer can override any internal styling applied to the slotted labels, the 
 - `step` - limits the values of the `slider` to increments of the `step` value added to the minimum value of the 
 `slider`'s total range.  The default value is 1. The minimum and maximum values of a `slider`'s range are always valid results regardless of the `step` prop. The `step` prop is used as the value for incrementing the thumb by pressing the arrow keys.
 - `mode`
-The slider component can be set to different modes using the `mode` prop.  The default is `singleValue`.  The modes are as follows:
- > - `singleValue` -  A single thumb, no selected range is displayed.
- > - `adjustUpperValue` -  A single thumb associated with the upper value of slider's selected range.  The *slider*'s front bar element displays and is anchored to the low end of the slider's current range as the user adjusts the maximum value.
- > - `adjustLowerValue` -  A single thumb associated with the lower value of slider's selected range.  The *slider*'s front bar element displays and is anchored to the high end of the slider's current range as the user adjusts the minimum value.
- > - `adjustBoth` - in which case the selected range starts at 40% to 60% of the total range
+The slider component can be set to different modes using the `mode` prop.  The default is `single-value`.  The modes are as follows:
+ > - `single-value` -  A single thumb, no selected range is displayed.
+ > - `adjust-upper-value` -  A single thumb associated with the upper value of slider's selected range.  The *slider*'s front bar element displays and is anchored to the low end of the slider's current range as the user adjusts the maximum value.
+ > - `adjust-lower-value` -  A single thumb associated with the lower value of slider's selected range.  The *slider*'s front bar element displays and is anchored to the high end of the slider's current range as the user adjusts the minimum value.
+ > - `adjust-both` - in which case the selected range starts at 40% to 60% of the total range
 
- - `initialValue` - The `initialValue` prop allows authors to specify the initial selected range of the `slider`.  It defaults to a (step constrained) value at the midpoint on the `slider`'s total range for all modes except `adjustBoth`.
-
-The aria values by default will be the min, max and value number but can be overridden via these props
-- `aria-valuemin` -
-- `aria-valuemax` - 
-- `aria-valuenow` - 
+ - `value` - Allows authors to specify the initial selected range of the `slider`.  It defaults to a (step constrained) value at the midpoint on the `slider`'s total range for all modes except `adjust-both`. 
 
 *Events*
-- `onValueChange`
+- `change`
+
+*Methods*
+- `valueChanged`
 
 *Slots*
 - `backgroundTrack`
@@ -75,9 +73,6 @@ The aria values by default will be the min, max and value number but can be over
 ```
   <div
     role="slider"
-    $aria-valuenow="${x => x.aria-valuenow}"
-    $aria-valuemin="${x => x.aria-valuemin}"
-    $aria-valuemax="${x => x.aria-valuemax}"
   >
     <input type="range" 
       id="${x => x.id}"
@@ -113,10 +108,7 @@ The aria values by default will be the min, max and value number but can be over
 ```
 <fast-slider
     id="slider1"
-    initialValue={32}
-    ariaminvalue={"0"}
-    ariamaxvalue={"40"}
-    ariavaluenow="32"}
+    value={32}
     min={0}
     max={44}
     step={1}
@@ -161,7 +153,7 @@ While testing is still TBD for our web components, I would expect this to align 
 
 ## Overview
 
-The `slider-label` component provides a default styled label to be placed inside a `slider` component. Users can choose to not show the tickmark as well as provide custom label content.
+The `slider-label` component provides a default styled label to be placed inside a `slider` component. Users can choose to not show the mark as well as provide custom label content.
 
 ### Use Cases
 
@@ -174,11 +166,11 @@ If they use <slider-label> elements those will be styled a specific way internal
 - `slider-label`
 
 *Attributes*
-- `showTickmark` - boolean to show/hide the tick mark. Default is show.
-- `valuePosition` - used to position the label on the track relative to the min and max values
+- `show-mark` - boolean to show/hide the mark. Default is show.
+- `position` - used to position the label on the track relative to the min and max values
 
 *Slots*
-- `tickmark`
+- `mark`
 
 *Parts*
 - `label`
@@ -188,8 +180,8 @@ If they use <slider-label> elements those will be styled a specific way internal
 
 ```
   <div>
-    ${when(x => x.showTickMark, html<slider-label>`
-      <slot name="tickmark"><div>|</div></slot>
+    ${when(x => x.show-mark, html<slider-label>`
+      <slot name="mark"><div>|</div></slot>
     ')}
     <div part="label">
       <slot></slot>
@@ -202,8 +194,8 @@ If they use <slider-label> elements those will be styled a specific way internal
 ## Implementation
 
 <fast-slider-label
-  showTickMark="false"
-  valuePosition="0"
+  show-mark="false"
+  position="0"
 >
   <svg path="..."></svg>
 </fast-slider-label>
