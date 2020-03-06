@@ -57,8 +57,13 @@ export class Dialog extends FastElement {
     public disconnectedCallback(): void {
         super.disconnectedCallback();
 
+        // disconnect observer
+        this.observer.disconnect();
+
+        // remove keydown event listener
         document.removeEventListener("keydown", this.handleDocumentKeydown);
 
+        // if we are trapping focus remove the focusin listener
         if (this.shouldDialogTrapFocus()) {
             document.removeEventListener("focusin", this.handleDocumentFocus);
         }
