@@ -55,8 +55,6 @@ The implementation will manage a "proxy" element that will be appended to the li
   - The id attribute of the component. Used for label association.
 - `value: string | File | FormData`
   - When provided as a content attribute, value must be a string. When provided as an IDL property, value can be a `string`, `File`, or `FormData`
-- `autofocus: boolean`
-  - Boolean attribute. Will auto-focus the element on page load.
 - `disabled: boolean`
   - Boolean attribute. Disables the form control, ensuring it doesn't participate in form submission
 - `name: string`
@@ -112,4 +110,5 @@ TBD. Form association APIs are very new so JSDOM is not likely to expose the fea
 - [More capable form controls](https://web.dev/more-capable-form-controls/)
 
 ### Next Steps
-We will solve label-clicking for browsers with no FACE support in the future. A promising approach would be to catch click events on the parent form and delegate focus from there. The edge-case this does not address is elements that are not a descendent of the form element but are still associated using the [`form`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#htmlattrdefform) content attributes.
+- We will solve label-clicking for browsers with no FACE support in the future. A promising approach would be to catch click events on the parent form and delegate focus from there. The edge-case this does not address is elements that are not a descendent of the form element but are still associated using the [`form`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#htmlattrdefform) content attributes.
+- Determine how autofocus needs to be handled
