@@ -25,6 +25,7 @@ class ViewerContent extends React.Component<{}, ViewerContentState> {
                 this.setState({
                     message: JSON.stringify(JSON.parse(e.data), null, 2),
                 });
+                /* tslint:disable-next-line */
             } catch (e) {}
         }
     };
