@@ -36,13 +36,10 @@ export class Dialog extends FastElement {
         super.connectedCallback();
         document.addEventListener("keydown", this.handleDocumentKeydown);
 
-        if (this.shouldDialogTrapFocus()) {
-            document.addEventListener("focusin", this.handleDocumentFocus);
-
-            if (this.shouldForceFocus(document.activeElement)) {
-                this.focusFirstElement();
-            }
-        }
+        // Need Rob to export DOM.queueUpdate
+        setTimeout(() => {
+            this.trapFocusChanged();
+        }, 10);
     }
 
     public disconnectedCallback(): void {
@@ -54,6 +51,21 @@ export class Dialog extends FastElement {
             document.removeEventListener("focusin", this.handleDocumentFocus);
         }
     }
+
+    private trapFocusChanged = (): void => {
+        if (this.shouldDialogTrapFocus()) {
+            // Add an event listener for focusin events if we should be trapping focus
+            document.addEventListener("focusin", this.handleDocumentFocus);
+
+            // determine if we should move focus inside the dialog
+            if (this.shouldForceFocus(document.activeElement)) {
+                this.focusFirstElement();
+            }
+        } else {
+            // remove event listener if we are not trapping focus
+            document.removeEventListener("focusin", this.handleDocumentFocus);
+        }
+    };
 
     private handleDocumentKeydown = (e: KeyboardEvent): void => {
         if (!e.defaultPrevented && !this.isDialogHidden()) {
@@ -139,6 +151,6 @@ export class Dialog extends FastElement {
      * Once support is added, we will simply use this.trapFocus.
      */
     private shouldDialogTrapFocus(): boolean {
-        return typeof this.trapFocus !== "boolean";
+        return typeof this.trapFocus === "boolean";
     }
 }
