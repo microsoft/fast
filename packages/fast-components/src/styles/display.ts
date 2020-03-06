@@ -31,25 +31,24 @@ const hidden = css`
     }
 `;
 
-/* tslint:disable */
 const cache: { [key: string]: ReturnType<typeof css> } = {};
 
 /**
  * Apply the common styles for every component
  * @param display The CSS display property value
  */
-export function display(display: CSSDisplayPropertyValue): ReturnType<typeof css> {
-    if (cache.hasOwnProperty(display)) {
-        return cache[display];
+export function display(displayValue: CSSDisplayPropertyValue): ReturnType<typeof css> {
+    if (cache.hasOwnProperty(displayValue)) {
+        return cache[displayValue];
     }
 
     const style = css`
         ${hidden} :host {
-            display: ${display};
+            display: ${displayValue};
         }
     `;
 
-    cache[display] = style;
+    cache[displayValue] = style;
 
     return style;
 }
