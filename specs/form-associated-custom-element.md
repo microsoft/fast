@@ -112,3 +112,4 @@ TBD. Form association APIs are very new so JSDOM is not likely to expose the fea
 ### Next Steps
 - We will solve label-clicking for browsers with no FACE support in the future. A promising approach would be to catch click events on the parent form and delegate focus from there. The edge-case this does not address is elements that are not a descendent of the form element but are still associated using the [`form`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#htmlattrdefform) content attributes.
 - Determine how autofocus needs to be handled
+- Determine how to react to fieldset / form disabling in non-FACE browsers

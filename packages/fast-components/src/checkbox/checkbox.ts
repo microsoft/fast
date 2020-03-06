@@ -1,6 +1,7 @@
 import { attr, FastElement, observable, Observable } from "@microsoft/fast-element";
 import { FormAssociated } from "../form-associated";
 import { keyCodeSpace } from "@microsoft/fast-web-utilities";
+import { bool } from "../utilities";
 
 /* tslint:disable:member-ordering */
 export class Checkbox extends FormAssociated<HTMLInputElement> {
@@ -132,7 +133,7 @@ export class Checkbox extends FormAssociated<HTMLInputElement> {
     };
 
     private clickHandler = (e: MouseEvent) => {
-        if (this.disabled !== ("" as any) && this.readOnly !== ("" as any)) {
+        if (!bool(this.disabled) && !bool(this.readOnly)) {
             this.checked = !this.checked;
         }
     };

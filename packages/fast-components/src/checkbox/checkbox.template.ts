@@ -1,22 +1,17 @@
 import { html, when } from "@microsoft/fast-element";
 import { Checkbox } from "./checkbox";
+import { bool } from "../utilities";
 
-/**
- * TODO: no tabindex attribute should exist for disabled or readonly instances.
- * Right now, clicking still brings focus because tabindex="-1" makes the div
- * focusabled,
- */
 export const CheckboxTemplate = html<Checkbox>`
     <div
         part="checkbox"
         role="checkbox"
         class="checkbox"
-        $aria-checked="${x => x.checked}"
-        $aria-required="${x => x.required === ("" as any)}"
-        $aria-disabled="${x => x.disabled}"
+        $aria-checked="${x => bool(x.checked)}"
+        $aria-required="${x => bool(x.required)}"
+        $aria-disabled="${x => bool(x.disabled)}"
         aria-labelledby="checkbox-label"
-        tabindex="${x =>
-            x.disabled === ("" as any) || x.readOnly === ("" as any) ? -1 : 0}"
+        $tabindex="${x => (bool(x.disabled) || bool(x.readOnly) ? null : 0)}"
         id="checkbox"
     >
             <slot
@@ -29,7 +24,6 @@ export const CheckboxTemplate = html<Checkbox>`
                     viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"
                 >
                     <path
-                        fill="inherit"
                         fill-rule="evenodd"
                         clip-rule="evenodd"
                         d="M8.143 12.6697L15.235 4.5L16.8 5.90363L8.23812 15.7667L3.80005 11.2556L5.27591 9.7555L8.143 12.6697Z"
