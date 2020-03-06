@@ -3,7 +3,7 @@ import { TargetedInstruction } from "./instructions";
 import { HTMLView, ElementView, SyntheticView, View } from "./view";
 import { DOM } from "./dom";
 import { Behavior } from "./behaviors/behavior";
-import { Getter, AccessScopeExpression } from "./expression";
+import { Expression } from "./interfaces";
 import { Directive } from "./directives/directive";
 import { BindingDirective } from "./directives/bind";
 
@@ -74,7 +74,7 @@ export class HTMLTemplateBehavior implements Behavior {
 }
 
 export interface CaptureType<T> {}
-type TemplateValue<T> = Getter<T> | string | number | Directive | CaptureType<T>;
+type TemplateValue<T> = Expression<T> | string | number | Directive | CaptureType<T>;
 
 export function html<T = any>(
     strings: TemplateStringsArray,
@@ -88,7 +88,7 @@ export function html<T = any>(
         let value = values[i];
 
         if (typeof value === "function") {
-            value = new BindingDirective(new AccessScopeExpression(value as Getter));
+            value = new BindingDirective(value as Expression);
         }
 
         if (value instanceof Directive) {
