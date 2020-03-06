@@ -1,17 +1,19 @@
 <fast-design-system-provider>
     <style>
-        fast-card {
+        .class-override {
             height: 163px;
             width: 300px;
         }
 
-        fast-card.custom:hover {
+        .state-override:hover {
             --elevation: 12;
         }
     </style>
-    <fast-card>Card with text</fast-card>
-    <br>
-    <fast-card style="--elevation: 12">Custom depth</fast-card>
-    <br>
-    <fast-card class="custom">Custom depth on hover using CSS</fast-card>
+    <div>
+        <fast-card style="--card-height: 400px; --card-width: 500px">Card with text</fast-card>
+        <br>
+        <fast-card class="class-override" style="--elevation: 12">Custom depth with class-based height/width</fast-card>
+        <br>
+        <fast-card class="state-override">Custom depth on hover using CSS</fast-card>
+    </div>
 </fast-design-system-provider>
