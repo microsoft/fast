@@ -1,4 +1,5 @@
 import React from "react";
+import { MessageSystem } from "@microsoft/fast-tooling";
 import {
     defaultDevices,
     Device,
@@ -16,9 +17,32 @@ export interface PageState {
     orientation: Orientation;
 }
 
-class BasicPage extends React.Component<{}, PageState> {
+let fastMessageSystem: MessageSystem;
+
+class ViewerPage extends React.Component<{}, PageState> {
     constructor(props: {}) {
         super(props);
+
+        if ((window as any).Worker) {
+            fastMessageSystem = new MessageSystem({
+                webWorker: "message-system.js",
+                dataDictionary: [
+                    {
+                        "": {
+                            schemaId: "foo",
+                            data: {},
+                        },
+                    },
+                    "",
+                ],
+                schemaDictionary: {
+                    foo: {
+                        type: "object",
+                        properties: {},
+                    },
+                },
+            });
+        }
 
         this.state = {
             height: 800,
@@ -52,10 +76,11 @@ class BasicPage extends React.Component<{}, PageState> {
                 <Viewer
                     height={this.state.height}
                     width={this.state.width}
-                    iframeSrc={"/viewer/device/content"}
+                    iframeSrc={"/viewer/content"}
                     responsive={this.state.activeDevice.display === Display.responsive}
                     onUpdateHeight={this.handleUpdatedHeight}
                     onUpdateWidth={this.handleUpdatedWidth}
+                    messageSystem={fastMessageSystem}
                 />
             </div>
         );
@@ -107,4 +132,4 @@ class BasicPage extends React.Component<{}, PageState> {
     };
 }
 
-export default BasicPage;
+export default ViewerPage;
