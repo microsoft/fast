@@ -22,11 +22,11 @@ A developer can inject labels on the slider as children, if they use <slider-lab
 A designer can override any internal styling applied to the slotted labels, the background track, the slider track and the thumb(s) if appropriate.
   
 ### Features
-- Implement your own lower and upper thumb UI, default provided.
-- Implement your own background and slider track UI, default provided.
-- Developers can hook up to the `slider`'s `onValueChange` callback to be notified when the value has changed.
-- Customize the tick marks along the track.
-- Form association, if the `slider` component is part of a form the results will be submitted along with the form.
+- Implement your own lower and upper thumb UI, default provided
+- Implement your own background and slider track UI, default provided
+- Handle the `slider`'s `onValueChange` callback to be notified when the value has changed.
+- Customize the tick marks along the track
+- Include slider in form based operations
 
 ### Prior Art/Examples
 - [FAST-DNA (React)](https://explore.fast.design/components/slider)
@@ -44,14 +44,8 @@ A designer can override any internal styling applied to the slotted labels, the 
 - `max` - maximum allowed value for the slider
 - `step` - limits the values of the `slider` to increments of the `step` value added to the minimum value of the 
 `slider`'s total range.  The default value is 1. The minimum and maximum values of a `slider`'s range are always valid results regardless of the `step` prop. The `step` prop is used as the value for incrementing the thumb by pressing the arrow keys.
-- `mode`
-The slider component can be set to different modes using the `mode` prop.  The default is `single-value`.  The modes are as follows:
- > - `single-value` -  A single thumb, no selected range is displayed.
- > - `adjust-upper-value` -  A single thumb associated with the upper value of slider's selected range.  The *slider*'s front bar element displays and is anchored to the low end of the slider's current range as the user adjusts the maximum value.
- > - `adjust-lower-value` -  A single thumb associated with the lower value of slider's selected range.  The *slider*'s front bar element displays and is anchored to the high end of the slider's current range as the user adjusts the minimum value.
- > - `adjust-both` - in which case the selected range starts at 40% to 60% of the total range
 
- - `value` - Allows authors to specify the initial selected range of the `slider`.  It defaults to a (step constrained) value at the midpoint on the `slider`'s total range for all modes except `adjust-both`. 
+ - `value` - Allows authors to specify the initial selected range of the `slider`.  It defaults to a (step constrained) value at the midpoint on the `slider`'s total range. 
 
 *Events*
 - `change` - raise the change event for external parties to be informed of the value change.
@@ -60,12 +54,9 @@ The slider component can be set to different modes using the `mode` prop.  The d
 - `onValueChanged` - handling the internal framework call when the value attribute is changed.
 
 *Slots*
-- `background-track`
-- `foreground-track`
-- `slider-track`
-- `lower-thumb`
-- `upper-thumb`
-
+- `background-track` - background area encompassing the track and labels
+- `slider-track` - the horizontal or vertical track along which the thumb slides
+- `thumb` - the control the user drags along the track to change the value of the slider
 
 ### Anatomy and Appearance
 **Structure:**
@@ -90,13 +81,7 @@ The slider component can be set to different modes using the `mode` prop.  The d
     <slot name="slider-track">
       <div></div>
     </slot>
-    <slot name="slider-foreground-track">
-      <div></div>
-    </slot>
-    <slot name="lower-thumb">
-      <div></div>
-    </slot>
-    <slot name="upper-thumb">
+    <slot name="thumb">
       <div></div>
     </slot>
     <slot></slot>
@@ -114,6 +99,7 @@ The slider component can be set to different modes using the `mode` prop.  The d
     step={1}
 >
     <h2 slot="label"><b>Density</b></h2>
+    <div slot="thumb"><img src="..."/></div>
     <fast-slider-label
       label="32"
       show-mark="true"
