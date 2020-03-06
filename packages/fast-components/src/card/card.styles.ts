@@ -1,6 +1,10 @@
 import { css } from "@microsoft/fast-element";
 
 export const CardStyles = css`
+    :host([hidden]) {
+        display: none;
+    }
+
     :host {
         --elevation: 4;
         height: var(--card-height, 200px);
