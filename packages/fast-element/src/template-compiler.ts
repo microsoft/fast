@@ -1,4 +1,4 @@
-import { InterpolationExpression, AccessScopeExpression } from "./expression";
+import { ExpressionContext } from "./interfaces";
 import { HTMLTemplate } from "./template";
 import { TargetedInstruction, CompositeInstruction } from "./instructions";
 import { DOM } from "./dom";
@@ -365,16 +365,23 @@ export class TemplateCompiler {
             return parts[0] as T;
         }
 
-        return (new BindingDirective(
-            new InterpolationExpression(
-                parts!.map(
-                    x =>
-                        typeof x === "string"
-                            ? x
-                            : ((x as BindingDirective)
-                                  .expression as AccessScopeExpression).getter
-                )
-            )
-        ) as unknown) as T;
+        const finalParts = parts!.map(
+            x => (typeof x === "string" ? x : (x as BindingDirective).expression)
+        );
+
+        const expression = (scope: unknown, context: ExpressionContext) => {
+            let output = "";
+
+            for (let i = 0, ii = finalParts.length; i < ii; ++i) {
+                const current = finalParts[i];
+                output =
+                    output +
+                    (typeof current === "string" ? current : current(scope, context));
+            }
+
+            return output;
+        };
+
+        return (new BindingDirective(expression) as unknown) as T;
     }
 }
