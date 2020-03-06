@@ -1,4 +1,4 @@
-import { attr, FastElement } from "@microsoft/fast-element";
+import { attr, FastElement, observable } from "@microsoft/fast-element";
 import { keyCodeEscape, keyCodeTab } from "@microsoft/fast-web-utilities";
 import tabbable from "tabbable";
 
@@ -23,6 +23,11 @@ export class Dialog extends FastElement {
 
     public dialog: HTMLDivElement;
 
+    @observable
+    private tabbableElements: HTMLElement[];
+
+    private observer: MutationObserver;
+
     public dismiss(): void {
         this.dispatchEvent(
             new CustomEvent("dismiss", {
@@ -34,8 +39,15 @@ export class Dialog extends FastElement {
 
     public connectedCallback(): void {
         super.connectedCallback();
-        document.addEventListener("keydown", this.handleDocumentKeydown);
 
+        // store references to tabbable elements
+        this.tabbableElements = tabbable(this);
+
+        this.observer = new MutationObserver(this.onChildListChange);
+        // only observe if nodes are added or removed
+        this.observer.observe(this, { childList: true });
+
+        document.addEventListener("keydown", this.handleDocumentKeydown);
         // Need Rob to export DOM.queueUpdate
         setTimeout(() => {
             this.trapFocusChanged();
@@ -49,6 +61,15 @@ export class Dialog extends FastElement {
 
         if (this.shouldDialogTrapFocus()) {
             document.removeEventListener("focusin", this.handleDocumentFocus);
+        }
+    }
+
+    private onChildListChange(
+        mutations: MutationRecord[],
+        observer: MutationObserver
+    ): void {
+        if (mutations!.length) {
+            this.tabbableElements = tabbable(this);
         }
     }
 
@@ -93,8 +114,7 @@ export class Dialog extends FastElement {
             return;
         }
 
-        const tabbableElements: HTMLElement[] = tabbable(this);
-        const tabbableElementCount: number = tabbableElements.length;
+        const tabbableElementCount: number = this.tabbableElements.length;
 
         if (tabbableElementCount === 0) {
             this.dialog.focus();
@@ -102,14 +122,14 @@ export class Dialog extends FastElement {
             return;
         }
 
-        if (e.shiftKey && e.target === tabbableElements[0]) {
-            tabbableElements[tabbableElementCount - 1].focus();
+        if (e.shiftKey && e.target === this.tabbableElements[0]) {
+            this.tabbableElements[tabbableElementCount - 1].focus();
             e.preventDefault();
         } else if (
             !e.shiftKey &&
-            e.target === tabbableElements[tabbableElementCount - 1]
+            e.target === this.tabbableElements[tabbableElementCount - 1]
         ) {
-            tabbableElements[0].focus();
+            this.tabbableElements[0].focus();
             e.preventDefault();
         }
     };
@@ -118,12 +138,10 @@ export class Dialog extends FastElement {
      * focus on first element of tab queue
      */
     private focusFirstElement = (): void => {
-        const tabbableElements: HTMLElement[] = tabbable(this);
-
-        if (tabbableElements.length === 0) {
+        if (this.tabbableElements.length === 0) {
             this.dialog.focus();
         } else {
-            tabbableElements[0].focus();
+            this.tabbableElements[0].focus();
         }
     };
 
