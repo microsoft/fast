@@ -335,7 +335,7 @@ const template = html<FriendList>`
   <h1>Friends</h1>
 
   <form @submit=${x => x.addFriend()}>
-    <input type="text" value=${x => x.name} @input=${(x, c) => x.onNameChanged(c.event)}>
+    <input type="text" value=${x => x.name} @input=${(x, c) => x.handleNameInput(c.event)}>
     <button type="submit">Add Friend</button>
   </form>
   <ul>
@@ -362,7 +362,7 @@ export class FriendList extends FastElement {
     this.name = '';
   }
 
-  onNameChanged(event: Event) {
+  handleNameInput(event: Event) {
     this.name = (event.target! as HTMLInputElement).value;
   }
 }
@@ -399,7 +399,7 @@ const template = html<FriendList>`
   <h1>Friends</h1>
 
   <form @submit=${x => x.addFriend()}>
-    <input type="text" value=${x => x.name} @input=${(x, c) => x.onNameChanged(c.event)}>
+    <input type="text" value=${x => x.name} @input=${(x, c) => x.handleNameInput(c.event)}>
 
     ${when(x => x.name, html`
       <div>Next Name: ${nameTemplate}</div>
@@ -433,7 +433,7 @@ export class FriendList extends FastElement {
     this.name = '';
   }
 
-  onNameChanged(event: Event) {
+  handleNameInput(event: Event) {
     this.name = (event.target! as HTMLInputElement).value;
   }
 }
