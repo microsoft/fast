@@ -12,8 +12,9 @@ The *progress* component should be used for an element that displays the progres
 
 A progress should allow the following attributes:
 - `value`, the value of the progress, if not passed the progress will be put into its "indeterminate" state.
-- `min-value`, the minimum value.
-- `max-value`, the maximum value.
+- `min`, the minimum value.
+- `max`, the maximum value.
+- `circular`, whether the progress renders circular or not.
 - `paused`, whether the progress is paused or not.
 
 ### Prior Art/Examples
@@ -35,9 +36,14 @@ A progress should allow the following attributes:
 
 *Attributes:*
 - `value`: number
-- `min-value`: number
-- `max-value`: number
+- `min`: number
+- `max`: number
+- `circular`: boolean
 - `paused`: boolean
+
+*Slots:*
+- `indetermimate-linear`
+- `indetermimate-circular`
 
 ### Anatomy and Appearance
 
@@ -73,10 +79,12 @@ A progress should allow the following attributes:
 ```
 <div role="progressbar">
     <div part="indeterminate" slot={"indeterminate"}>
-        <svg part="circular-container" viewBox="0 0 16 16">
-            <circle part="circular-background" cx="8px" cy="8px" r="7px" />
-            <circle part="circular-indeterminate" cx="8px" cy="8px" r="7px" />
-        </svg>
+        <slot name="indetermimate-circular"></slot>
+            <svg part="circular-container" viewBox="0 0 16 16">
+                <circle part="circular-background" cx="8px" cy="8px" r="7px" />
+                <circle part="circular-indeterminate" cx="8px" cy="8px" r="7px" />
+            </svg>
+        </slot>
     </div>
 </div>
 ```
@@ -99,8 +107,10 @@ A progress should allow the following attributes:
 ```
 <div role="progressbar">
     <div part="indeterminate" slot={"indeterminate"}>
-        <span part="linear-indeterminate-indicator-1"/>
-        <span part="linear-indeterminate-indicator-2"/>
+        <slot name="indetermimate-linear">
+            <span part="linear-indeterminate-indicator-1"/>
+            <span part="linear-indeterminate-indicator-2"/>
+        </slot>
     </div>
 </div>
 ```
@@ -111,8 +121,8 @@ A progress should allow the following attributes:
 ```
 <fast-progress
     value={50}
-    min-value={0}
-    max-value={100}
+    min={0}
+    max={100}
     circular={true}
 />
 ```
