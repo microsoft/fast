@@ -54,17 +54,17 @@ The slider component can be set to different modes using the `mode` prop.  The d
  - `value` - Allows authors to specify the initial selected range of the `slider`.  It defaults to a (step constrained) value at the midpoint on the `slider`'s total range for all modes except `adjust-both`. 
 
 *Events*
-- `change`
+- `change` - raise the change event for external parties to be informed of the value change.
 
 *Methods*
-- `valueChanged`
+- `onValueChanged` - handling the internal framework call when the value attribute is changed.
 
 *Slots*
-- `backgroundTrack`
-- `foregroundTrack`
-- `sliderTrack`
-- `lowerThumb`
-- `upperThumb`
+- `background-track`
+- `foreground-track`
+- `slider-track`
+- `lower-thumb`
+- `upper-thumb`
 
 
 ### Anatomy and Appearance
@@ -84,19 +84,19 @@ The slider component can be set to different modes using the `mode` prop.  The d
     <slot name="label">
       <div>${x => x.label}</div>
     </slot>
-    <slot name="backgroundTrack">
+    <slot name="background-track">
       <div></div>
     </slot>
-    <slot name="sliderTrack">
+    <slot name="slider-track">
       <div></div>
     </slot>
-    <slot name="sliderForegroundTrack">
+    <slot name="slider-foreground-track">
       <div></div>
     </slot>
-    <slot name="lowerThumb">
+    <slot name="lower-thumb">
       <div></div>
     </slot>
-    <slot name="upperThumb">
+    <slot name="upper-thumb">
       <div></div>
     </slot>
     <slot></slot>
@@ -116,7 +116,7 @@ The slider component can be set to different modes using the `mode` prop.  The d
     <h2 slot="label"><b>Density</b></h2>
     <fast-slider-label
       label="32"
-      showTickMark="true"
+      show-mark="true"
     >
     </fast-slider-label>
 </fast-slider>
