@@ -179,9 +179,11 @@ If they use <slider-label> elements those will be styled a specific way internal
 
 ## Implementation
 
+```
 <fast-slider-label
   show-mark="false"
   position="0"
 >
   <svg path="..."></svg>
 </fast-slider-label>
+```
