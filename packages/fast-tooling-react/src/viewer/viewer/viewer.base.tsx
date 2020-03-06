@@ -8,13 +8,7 @@ import {
     ViewerHandledProps,
     ViewerUnhandledProps,
 } from "./viewer.props";
-import {
-    CustomViewerMessage,
-    ViewerMessage,
-    ViewerMessageTarget,
-    ViewerMessageType,
-} from "../utilities/message-system";
-import { ViewerProps } from "./viewer";
+import { MessageSystemType, Register } from "@microsoft/fast-tooling";
 
 export interface ViewerState {
     /**
@@ -51,7 +45,10 @@ export class Viewer extends Foundation<
         height: void 0,
         width: void 0,
         responsive: void 0,
+        messageSystem: void 0,
     };
+
+    private messageSystemConfig: Register;
 
     private iframeRef: React.RefObject<HTMLIFrameElement>;
 
@@ -64,6 +61,14 @@ export class Viewer extends Foundation<
             dragReferenceX: null,
             dragHandleLocation: null,
         };
+
+        this.messageSystemConfig = {
+            onMessage: this.handleMessageSystem,
+        };
+
+        if (props.messageSystem !== undefined) {
+            props.messageSystem.add(this.messageSystemConfig);
+        }
 
         this.iframeRef = React.createRef();
         this.handleMouseMove = rafThrottle(this.handleMouseMove);
@@ -78,16 +83,12 @@ export class Viewer extends Foundation<
     ): void {
         if (canUseDOM()) {
             this.shouldUpdateResizingEventListeners(prevState);
-            this.shouldSendUpdateMessage(prevProps);
         }
     }
 
-    public componentDidMount(): void {
-        if (canUseDOM() && get(this.iframeRef, "current.contentWindow")) {
-            this.iframeRef.current.contentWindow.addEventListener(
-                "message",
-                this.handleMessage
-            );
+    public componentWillUnmount(): void {
+        if (this.props.messageSystem !== undefined) {
+            this.props.messageSystem.remove(this.messageSystemConfig);
         }
     }
 
@@ -185,32 +186,6 @@ export class Viewer extends Foundation<
         }
     }
 
-    private shouldSendUpdateMessage(prevProps: ViewerProps): void {
-        if (
-            JSON.stringify(prevProps.iframePostMessage) !==
-            JSON.stringify(this.props.iframePostMessage)
-        ) {
-            this.updateMessage(this.props.iframePostMessage);
-        } else if (
-            JSON.stringify(prevProps.viewerContentProps) !==
-            JSON.stringify(this.props.viewerContentProps)
-        ) {
-            this.updateMessage();
-        }
-    }
-
-    private updateMessage(message?: CustomViewerMessage): void {
-        this.postMessage(
-            typeof message !== "undefined"
-                ? message
-                : {
-                      type: ViewerMessageType.updateProps,
-                      target: ViewerMessageTarget.viewerContent,
-                      props: this.props.viewerContentProps,
-                  }
-        );
-    }
-
     private getHeight(): any {
         if (this.props.height) {
             return {
@@ -237,7 +212,7 @@ export class Viewer extends Foundation<
         return classes;
     }
 
-    private postMessage(message: ViewerMessage): void {
+    private postMessage(message: MessageEvent): void {
         if (canUseDOM() && get(this.iframeRef, "current.contentWindow")) {
             this.iframeRef.current.contentWindow.postMessage(
                 JSON.stringify(message),
@@ -246,54 +221,8 @@ export class Viewer extends Foundation<
         }
     }
 
-    private handleMessage = (e: MessageEvent): void => {
-        const message: ViewerMessage =
-            typeof e.data === "string" ? JSON.parse(e.data) : undefined;
-
-        if (message && get(message, "target") === ViewerMessageTarget.viewer) {
-            switch (message.type) {
-                case ViewerMessageType.initialize:
-                    const initMessage: ViewerMessage = {
-                        type: ViewerMessageType.initialize,
-                        target: ViewerMessageTarget.viewerContent,
-                        props: this.props.viewerContentProps,
-                    };
-
-                    if (typeof this.props.onInitializeViewerContentProps === "function") {
-                        this.props.onInitializeViewerContentProps(initMessage);
-                    } else {
-                        this.postMessage(initMessage);
-                    }
-
-                    break;
-                case ViewerMessageType.updateProps:
-                    const updateMessage: ViewerMessage = {
-                        type: ViewerMessageType.updateProps,
-                        target: ViewerMessageTarget.viewerContent,
-                        props: message.props,
-                    };
-
-                    if (typeof this.props.onUpdateViewerContentProps === "function") {
-                        this.props.onUpdateViewerContentProps(updateMessage);
-                    } else {
-                        this.postMessage(updateMessage);
-                    }
-
-                    break;
-                case ViewerMessageType.custom:
-                    const customMessage: CustomViewerMessage = {
-                        type: ViewerMessageType.custom,
-                        target: ViewerMessageTarget.viewer,
-                        data: (message as CustomViewerMessage).data,
-                    };
-
-                    if (typeof this.props.onMessage === "function") {
-                        this.props.onMessage(customMessage);
-                    }
-
-                    break;
-            }
-        }
+    private handleMessageSystem = (e: MessageEvent): void => {
+        this.postMessage(e.data);
     };
 
     /**
