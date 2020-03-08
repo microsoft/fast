@@ -1,4 +1,4 @@
-# FAST-Checkbox
+# Checkbox
 
 ## Overview
 An implementation of a checkbox as a form-connected web-component.
@@ -56,8 +56,9 @@ Extends [form associated custom element](./form-associated-custom-element.md).
 ```HTML
 <!-- shadow root -->
 <label part="label"><slot></slot></label>
-<div part="root">
-  <div part="state-indicator"></div>
+<div part="checkbox">
+  <div part="checked-indicator"></div>
+  <div part="indeterminate-indicator"></div>
 </div>
 <!-- end shadow root -->
 ```
@@ -68,18 +69,20 @@ Extends [form associated custom element](./form-associated-custom-element.md).
 *Host Classes*
 - checked
 - disabled
-- invalid
+- required
+- readonly
 
 *Slotted Content/Slotted Classes*
 *CSS Parts*
-- root
+- checkbox
 - label
-- state-indicator
+- checked-indicator
+- indeterminate-indicator
 
 ### States
 **checked**: `true` or `false`
 The checked state can be toggled by:
-- Clicking the checkbox (or any of it's labels
+- Clicking the checkbox (or any of it's labels)
 - Pressing the space-bar while focus is placed on the checkbox
 - Adding / removing the "checked" content attribute
   - This will only trigger a change if the "checked" property has not been changed, either through user action or programmatically
