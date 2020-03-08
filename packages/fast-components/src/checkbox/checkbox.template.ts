@@ -5,14 +5,7 @@ import { bool } from "../utilities";
 export const CheckboxTemplate = html<Checkbox>`
     <div
         part="checkbox"
-        role="checkbox"
         class="checkbox"
-        $aria-checked="${x => bool(x.checked)}"
-        $aria-required="${x => bool(x.required)}"
-        $aria-disabled="${x => bool(x.disabled)}"
-        aria-labelledby="checkbox-label"
-        $tabindex="${x => (bool(x.disabled) || bool(x.readOnly) ? null : 0)}"
-        id="checkbox"
     >
             <slot
                 name="checked-indicator"
@@ -44,8 +37,6 @@ export const CheckboxTemplate = html<Checkbox>`
         x => x.childNodes.length,
         html`
         <label
-            for="checkbox"
-            id="checkbox-label"
             part="label"
             class="label"
         ><slot></slot></label>

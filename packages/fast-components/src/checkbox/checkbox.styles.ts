@@ -34,7 +34,7 @@ export const CheckboxStyles = css`
         border-color: var(--neutral-outline-hover);
     }
 
-    .checkbox:focus {
+    :host(:focus) .checkbox {
         box-shadow: 0 0 0 1px var(--neutral-focus) inset;
         border-color: var(--neutral-focus);
     }
