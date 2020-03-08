@@ -27,7 +27,7 @@ export const CheckboxStyles = css`
     .label {
         font-family: var(--body-font);
         color: var(--neutral-foreground-rest);
-        ${/* Need to discuss with Brian how HorizontalSpacingNumber can work */ ""} padding-inline-start: calc(var(--design-unit) * 2px + 2px);
+        ${/* Need to discuss with Brian how HorizontalSpacingNumber can work. https://github.com/microsoft/fast-dna/issues/2766 */ ""} padding-inline-start: calc(var(--design-unit) * 2px + 2px);
         margin-inline-end: calc(var(--design-unit) * 2px + 2px);
         cursor: pointer;
         ${/* Font size is temporary - replace when adaptive typography is figured out */ ""} font-size: calc(1rem + (var(--density) * 2px));
