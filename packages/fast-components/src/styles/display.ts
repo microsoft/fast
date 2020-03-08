@@ -1,56 +1,44 @@
 import { css } from "@microsoft/fast-element";
 
 export type CSSDisplayPropertyValue =
-    | "inline"
     | "block"
     | "contents"
     | "flex"
     | "grid"
+    | "inherit"
+    | "initial"
+    | "inline"
     | "inline-block"
     | "inline-flex"
     | "inline-grid"
     | "inline-table"
     | "list-item"
+    | "none"
     | "run-in"
     | "table"
     | "table-caption"
-    | "table-column-group"
-    | "table-header-group"
-    | "table-footer-group"
-    | "table-row-group"
     | "table-cell"
     | "table-column"
+    | "table-column-group"
+    | "table-footer-group"
+    | "table-header-group"
     | "table-row"
-    | "none"
-    | "initial"
-    | "inherit";
+    | "table-row-group";
 
-const hidden = css`
+export const hidden = `
     :host([hidden]) {
         display: none;
     }
 `;
 
-const cache: { [key: string]: ReturnType<typeof css> } = {};
-
 /**
  * Apply the common styles for every component
  * @param display The CSS display property value
  */
-export function display(displayValue: CSSDisplayPropertyValue): ReturnType<typeof css> {
-    if (cache.hasOwnProperty(displayValue)) {
-        return cache[displayValue];
-    }
-
-    const style = css`
+export function display(displayValue: CSSDisplayPropertyValue): string {
+    return `
         ${hidden} :host {
             display: ${displayValue};
         }
     `;
-
-    cache[displayValue] = style;
-
-    return style;
 }
-
-/* tslint:disable */

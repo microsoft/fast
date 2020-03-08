@@ -1,5 +1,5 @@
 import { css } from "@microsoft/fast-element";
-import { disabled, display } from "../styles";
+import { disabledCursor, display } from "../styles";
 
 export const CheckboxStyles = css`
     ${display("inline-flex")} :host {
@@ -24,21 +24,6 @@ export const CheckboxStyles = css`
         cursor: pointer;
     }
 
-    :host(.disabled) .checkbox,
-    :host(.readonly) .checkbox {
-        cursor: not-allowed;
-    }
-
-    .checkbox:hover {
-        background: var(--neutral-fill-input-hover);
-        border-color: var(--neutral-outline-hover);
-    }
-
-    :host(:focus) .checkbox {
-        box-shadow: 0 0 0 1px var(--neutral-focus) inset;
-        border-color: var(--neutral-focus);
-    }
-
     .label {
         font-family: var(--body-font);
         color: var(--neutral-foreground-rest);
@@ -46,11 +31,6 @@ export const CheckboxStyles = css`
         margin-inline-end: calc(var(--design-unit) * 2px + 2px);
         cursor: pointer;
         ${/* Font size is temporary - replace when adaptive typography is figured out */ ""} font-size: calc(1rem + (var(--density) * 2px));
-    }
-
-    :host(.disabled) .label,
-    :host(.readonly) .label {
-        cursor: not-allowed;
     }
 
     .checked-indicator {
@@ -73,12 +53,29 @@ export const CheckboxStyles = css`
         opacity: 0;
     }
 
+    .checkbox:hover {
+        background: var(--neutral-fill-input-hover);
+        border-color: var(--neutral-outline-hover);
+    }
+
+    :host(:focus) .checkbox {
+        box-shadow: 0 0 0 1px var(--neutral-focus) inset;
+        border-color: var(--neutral-focus);
+    }
+
+    :host(.disabled) .label,
+    :host(.readonly) .label,
+    :host(.readonly) .checkbox,
+    :host(.disabled) .checkbox {
+        cursor: ${disabledCursor};
+    }
+
     :host(.checked:not(.indeterminate)) .checked-indicator,
     :host(.indeterminate) .indeterminate-indicator {
         opacity: 1;
     }
 
     :host(.disabled) {
-        ${disabled};
+        opacity: var(--disabled-opacity);
     }
 `;
