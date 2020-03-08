@@ -7,7 +7,6 @@ export const supportsElementInternals = "ElementInternals" in window;
  * Disable member ordering to keep property callbacks
  * grouped with property declaration
  */
-/* tslint:disable:member-ordering */
 export abstract class FormAssociated<
     T extends HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
 > extends FastElement {
@@ -254,4 +253,3 @@ export abstract class FormAssociated<
         e.stopPropagation();
     }
 }
-/* tslint:enable:member-ordering */
