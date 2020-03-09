@@ -21,7 +21,7 @@ export class Controller extends PropertyChangeNotifier implements Container {
                 : element.attachShadow(definition.shadowOptions);
 
         if (template !== void 0) {
-            const view = (this.view = template.create());
+            const view = (this.view = template.create(this.element));
 
             if (shadowRoot === void 0) {
                 view.appendTo(element);
