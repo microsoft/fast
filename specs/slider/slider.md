@@ -1,4 +1,4 @@
-# slider + slider-label
+# Slider + Slider-Label
 
 ## Overview
 
@@ -16,7 +16,7 @@ Just styling `<input type="range"/>` and using `<datalist>` for the tickmarks wa
 On a web page the customer drags the slider from min to max values ultimately setting the value of the component to a value constrained by step and min and max values.
 
 - *A developer building an app with the component and interacting through HTML/CSS/JavaScript.*
-A developer can inject labels on the slider as children, if they use <slider-label> elements those will be styled a specific way internally and the dev can override any part of that style they want. Alternatively the dev can put whatever they want in children and style as they wish.
+A developer can inject labels on the slider into the default slot, if they use <slider-label> elements those will be styled a specific way internally and any part of that style can be overridden. Styles and items intending to be placed in the default slot can be replaced as needed.
 
 - *A designer customizing the component.*
 A designer can override any internal styling applied to the slotted labels, the background track, the slider track and the thumb(s) if appropriate.
@@ -44,7 +44,6 @@ A designer can override any internal styling applied to the slotted labels, the 
 - `max` - maximum allowed value for the slider
 - `step` - limits the values of the `slider` to increments of the `step` value added to the minimum value of the 
 `slider`'s total range.  The default value is 1. The minimum and maximum values of a `slider`'s range are always valid results regardless of the `step` prop. The `step` prop is used as the value for incrementing the thumb by pressing the arrow keys.
-
  - `value` - Allows authors to specify the initial selected range of the `slider`.  It defaults to a (step constrained) value at the midpoint on the `slider`'s total range. 
 
 *Events*
@@ -61,7 +60,7 @@ A designer can override any internal styling applied to the slotted labels, the 
 ### Anatomy and Appearance
 **Structure:**
 
-```
+```html
   <div
     role="slider"
   >
@@ -90,13 +89,13 @@ A designer can override any internal styling applied to the slotted labels, the 
 
 ## Implementation
 
-```
+```html
 <fast-slider
     id="slider1"
-    value={32}
-    min={0}
-    max={44}
-    step={1}
+    value="32"
+    min="0"
+    max="44"
+    step="1"
 >
     <h2 slot="label"><b>Density</b></h2>
     <div slot="thumb"><img src="..."/></div>
@@ -120,10 +119,6 @@ A designer can override any internal styling applied to the slotted labels, the 
 
 
 ### Globalization
-
-*Consider whether the component has any special globalization needs such as:*
-
-- *Special RTL handling*
 Slider should render a mirror view in rtl for example:
 ![](./images/slider-rtl.png) 
 
@@ -135,7 +130,7 @@ While testing is still TBD for our web components, I would expect this to align 
 
 ---
 
-# Slider label
+# Slider Label
 
 ## Overview
 
@@ -153,7 +148,7 @@ If they use <slider-label> elements those will be styled a specific way internal
 
 *Attributes*
 - `show-mark` - boolean to show/hide the mark. Default is show.
-- `position` - used to position the label on the track relative to the min and max values
+- `position` - used to position the label at the corresponding value on the track
 
 *Slots*
 - `mark`
@@ -164,11 +159,11 @@ If they use <slider-label> elements those will be styled a specific way internal
 ### Anatomy and Appearance
 **Structure:**
 
-```
+```html
   <div>
     ${when(x => x.show-mark, html<slider-label>`
       <slot name="mark"><div>|</div></slot>
-    ')}
+    `)}
     <div part="label">
       <slot></slot>
     </div>
@@ -179,7 +174,7 @@ If they use <slider-label> elements those will be styled a specific way internal
 
 ## Implementation
 
-```
+```html
 <fast-slider-label
   show-mark="false"
   position="0"
