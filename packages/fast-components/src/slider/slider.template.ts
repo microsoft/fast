@@ -11,13 +11,13 @@ export const CheckboxTemplate = html<Slider>`
       <div>${x => x.label}</div>
     </slot>
     <slot name="background-track">
-      <div></div>
+      <div part="background-track"></div>
     </slot>
     <slot name="track">
-      <div></div>
+      <div part="track"></div>
     </slot>
     <slot name="thumb">
-      <div></div>
+      <div part="thumb"></div>
     </slot>
     ${when(
         x => x.childNodes.length,

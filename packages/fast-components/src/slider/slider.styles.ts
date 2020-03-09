@@ -25,14 +25,16 @@ export const SliderStyles = css`
         outline: none;
         cursor: pointer;
     }
-    ::slotted(background-track) {
+    .background-track {
         background: red,
         border-radius: "999px"
     }
-    ::slotted(track) {
-
+    .track {
+        background: black,
+        width: 100%,
+        height: 4px
     }
-    ::slotted(thumb) {
+    .thumb {
         height: var(--thumb-size),
         width: va(--thumb-size),
         border: "none",
