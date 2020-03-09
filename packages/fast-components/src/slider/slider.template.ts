@@ -10,15 +10,15 @@ export const SliderTemplate = html<Slider>`
     <slot name="label">
       <div>${x => x.label}</div>
     </slot>
-    <div part="layout-region">
+    <div part="layout-region" class="layout-region">
       <slot name="background-track">
-        <div part="background-track"></div>
+        <div part="background-track" class="background-track"></div>
       </slot>
       <slot name="track">
-        <div part="track"></div>
+        <div part="track" class="track"></div>
       </slot>
       <slot name="thumb">
-        <div part="thumb">test</div>
+        <div part="thumb" class="thumb">test</div>
       </slot>
       ${when(
           x => x.childNodes.length,

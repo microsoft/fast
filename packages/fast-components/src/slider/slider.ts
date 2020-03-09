@@ -37,6 +37,7 @@ export class Slider extends FormAssociated<HTMLInputElement> {
     @attr
     public value: string; // Map to proxy element.
     private valueChanged(): void {
+        console.log("value changed this.value:", this.value);
         if (this.proxy instanceof HTMLElement) {
             this.proxy.value = this.value;
         }

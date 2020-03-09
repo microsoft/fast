@@ -20,7 +20,7 @@ export const SliderStyles = css`
         left: -2px;
         align-self: start;
         margin-top: 6px;
-        height: 8px;
+        height: 4px;
     }
     .layout-region {
         position: relative;
@@ -31,11 +31,13 @@ export const SliderStyles = css`
     .track {
     }
     .thumb {
+        position: absolute;
+        right: 58%;
         height: 16px;
         width: 16px;
         border: none;
         background: #2b2b2b;
-        border-radius: "50%";
+        border-radius: 50%;
         transition: "all 0.2s ease";
         "&:hover": {
             background: red;
