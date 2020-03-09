@@ -7,8 +7,8 @@ export const DialogStyles = css`
 
     :host {
         --elevation: 8;
-        --height: 480px;
-        --width: 640px;
+        --dialog-height: 480px;
+        --dialog-width: 640px;
         display: block;
     }
 
@@ -37,8 +37,8 @@ export const DialogStyles = css`
         margin-top: auto;
         margin-bottom: auto;
         border-radius: calc(var(--elevated-corner-radius));
-        width: var(--width);
-        height: var(--height);
+        width: var(--dialog-width);
+        height: var(--dialog-height);
         box-shadow: 0 0 calc(var(--elevation) * 1px) rgba(0, 0, 0, 0.5);
         background: var(--background-color);
         z-index: 1;
