@@ -1,5 +1,5 @@
 import React from "react";
-import { CSSEditor } from "../../src";
+import { CSSEditor } from "../../src/css-editor";
 import { CSSPropertyEditor } from "../../src/css-property-editor";
 
 interface CSSEditorTestPageState {

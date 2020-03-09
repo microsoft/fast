@@ -23,6 +23,7 @@ import oneOfDeeplyNestedSchema from "./one-of-deeply-nested.schema";
 import oneOfSchema from "./one-of.schema";
 import textFieldSchema from "./text-field.schema";
 import textareaSchema from "./textarea.schema";
+import textSchema from "./text.schema";
 import tooltipSchema from "./tooltip.schema";
 
 export {
@@ -51,5 +52,6 @@ export {
     oneOfSchema,
     textFieldSchema,
     textareaSchema,
+    textSchema,
     tooltipSchema,
 };
