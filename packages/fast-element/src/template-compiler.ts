@@ -33,14 +33,32 @@ export class TemplateCompiler {
         if (typeof html === "string") {
             element = document.createElement("template");
             element.innerHTML = html;
+
+            const fec = element.content.firstElementChild;
+
+            if (fec !== null && fec.tagName === "TEMPLATE" && !DOM.isMarker(fec)) {
+                element = fec as HTMLTemplateElement;
+            }
         } else {
             element = html;
         }
 
-        const instructions: TargetedInstruction[] = [];
-        this.compileNode(element.content, element, directives, instructions);
+        const viewInstructions: TargetedInstruction[] = [];
+        const hostInstruction = this.compileAttributes(element, directives, true);
 
-        return new HTMLTemplate(element, instructions);
+        const node = element.content;
+        let currentChild: MaybeNode = node.firstChild;
+
+        while (currentChild) {
+            currentChild = this.compileNode(
+                currentChild,
+                node,
+                directives,
+                viewInstructions
+            );
+        }
+
+        return new HTMLTemplate(element, viewInstructions, hostInstruction);
     }
 
     private compileNode(
@@ -51,19 +69,9 @@ export class TemplateCompiler {
     ): MaybeNode {
         switch (node.nodeType) {
             case 1: //element node
-                if (DOM.isMarker(node as HTMLElement)) {
-                    return this.compileBlock(
-                        node as HTMLElement,
-                        directives,
-                        instructions
-                    );
-                } else {
-                    return this.compileElement(
-                        node as HTMLElement,
-                        directives,
-                        instructions
-                    );
-                }
+                return DOM.isMarker(node)
+                    ? this.compileBlock(node as HTMLElement, directives, instructions)
+                    : this.compileElement(node as HTMLElement, directives, instructions);
             case 3: //text node
                 //use wholeText to retrieve the textContent of all adjacent text nodes.
                 const directive = this.tryParsePlaceholders<BindingDirective>(
@@ -91,17 +99,6 @@ export class TemplateCompiler {
                 }
 
                 return node.nextSibling;
-            case 11: //document fragment node
-                let currentChild: MaybeNode = node.firstChild;
-                while (currentChild) {
-                    currentChild = this.compileNode(
-                        currentChild,
-                        node,
-                        directives,
-                        instructions
-                    );
-                }
-                break;
             default:
                 break;
         }
@@ -114,15 +111,45 @@ export class TemplateCompiler {
         directives: Directive[],
         instructions: TargetedInstruction[]
     ): MaybeNode {
+        const elementInstruction = this.compileAttributes(node, directives);
+
+        if (elementInstruction !== null) {
+            DOM.makeIntoInstructionTarget(node);
+            instructions.push(elementInstruction);
+        }
+
+        let currentChild: MaybeNode = node.firstChild;
+        while (currentChild) {
+            currentChild = this.compileNode(currentChild, node, directives, instructions);
+        }
+
+        return node.nextSibling;
+    }
+
+    private compileAttributes(
+        node: HTMLElement,
+        directives: Directive[],
+        includeBasicValues: boolean = false
+    ) {
         const attributes = node.attributes;
         let elementInstruction: TargetedInstruction | null = null;
 
         for (let i = 0, ii = attributes.length; i < ii; ++i) {
             const attr = attributes[i];
-            const directive = this.tryParsePlaceholders(attr.value, directives);
+            const attrName = attr.name;
+            const attrValue = attr.value;
+            let directive = this.tryParsePlaceholders(attrValue, directives);
 
             if (directive !== null) {
-                this.prepareAttributeDirective(node, attr.name, directive);
+                this.prepareAttributeDirective(node, attrName, directive);
+            } else if (includeBasicValues) {
+                const attrDirective = new BindingDirective(x => attrValue);
+                attrDirective.targetName = attrName;
+                attrDirective.behavior = AttributeBinding;
+                directive = attrDirective;
+            }
+
+            if (directive !== null) {
                 node.removeAttributeNode(attr);
                 i--;
                 ii--;
@@ -138,17 +165,7 @@ export class TemplateCompiler {
             }
         }
 
-        if (elementInstruction !== null) {
-            DOM.makeIntoInstructionTarget(node);
-            instructions.push(elementInstruction);
-        }
-
-        let currentChild: MaybeNode = node.firstChild;
-        while (currentChild) {
-            currentChild = this.compileNode(currentChild, node, directives, instructions);
-        }
-
-        return node.nextSibling;
+        return elementInstruction;
     }
 
     private compileBlock(
