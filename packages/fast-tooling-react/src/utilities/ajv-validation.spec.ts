@@ -6,7 +6,7 @@ import {
 } from "./ajv-validation";
 
 import { ErrorObject } from "ajv";
-import oneOfSchema from "../__tests__/schemas/one-of.schema.json";
+import oneOfSchema from "../__tests__/schemas/one-of.schema";
 
 describe("validateData", () => {
     test("should validate data against schema and return same result after subsequent call.", () => {
