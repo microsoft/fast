@@ -6,7 +6,6 @@ import ViewerContentPage from "./pages/viewer/content";
 import { CSSEditorTestPage } from "./pages/css-editor";
 import { StyleEditorsTestPage } from "./pages/style-editors";
 import { FormTestPage } from "./pages/form";
-import { CodePreviewTestPage } from "./pages/code-preview/";
 import { FormAndNavigationTestPage } from "./pages/form-and-navigation";
 import { CSSPropertyEditorTestPage } from "./pages/css-property-editor";
 import { NavigationMenuTestPage } from "./pages/navigation-menu";
@@ -52,11 +51,6 @@ class App extends React.Component<{}, {}> {
                         <Route exact={true} path={"/form"} component={FormTestPage} />
                         <Route
                             exact={true}
-                            path={"/code-preview"}
-                            component={CodePreviewTestPage}
-                        />
-                        <Route
-                            exact={true}
                             path={"/form-and-navigation"}
                             component={FormAndNavigationTestPage}
                         />
@@ -76,9 +70,6 @@ class App extends React.Component<{}, {}> {
                     <ul>
                         <li>
                             <Link to="/navigation-menu">Navigation Menu</Link>
-                        </li>
-                        <li>
-                            <Link to="/code-preview">Code Preview</Link>
                         </li>
                         <li>
                             <Link to="/css-editor">CSS Editor</Link>
