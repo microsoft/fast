@@ -10,7 +10,8 @@
             "parameter",
             "property-declaration",
             "member-variable-declarations"
-        ]
+        ],
+        "member-ordering": false
     },
     "linterOptions": {
         "exclude": [
