@@ -1,22 +1,39 @@
-import React from "react";
+import React, { ReactElement, ReactNode } from "react";
 import Adapter from "enzyme-adapter-react-16";
-import { configure, mount, shallow } from "enzyme";
+import { configure, mount } from "enzyme";
 import { extractHtmlElement } from "./extract-element";
 
 /*
  * Configure Enzyme
  */
+
+/* tslint:disable:max-classes-per-file */
 configure({ adapter: new Adapter() });
 
+class TextComponentClass extends React.Component<{}, {}> {
+    constructor(props: {}) {
+        super(props);
+    }
+
+    public render(): JSX.Element {
+        return <React.Fragment>"test"</React.Fragment>;
+    }
+}
+
 class TestClass extends React.Component<{}, {}> {
-    private testRef: React.RefObject<HTMLDivElement> = React.createRef<HTMLDivElement>();
+    private testRef: React.RefObject<HTMLElement> = React.createRef<HTMLElement>();
 
     constructor(props: {}) {
         super(props);
     }
 
     public render(): JSX.Element {
-        return <div ref={this.testRef} />;
+        const children: ReactNode[] = React.Children.toArray(this.props.children);
+        if (children.length === 0) {
+            return null;
+        }
+
+        return React.cloneElement(children[0] as ReactElement, { ref: this.testRef });
     }
 }
 
@@ -26,11 +43,26 @@ describe("extract-element", (): void => {
         expect(extractHtmlElement(testElement)).toBe(testElement);
     });
 
-    test("extractHtmlElement function returns element passed in as a ref", (): void => {
-        const rendered: any = shallow(<TestClass />);
-
-        const extracted: HTMLElement = extractHtmlElement(rendered.instance().testRef);
+    test("extractHtmlElement function returns div element passed in as a ref", (): void => {
+        const rendered: any = mount(
+            <TestClass>
+                <div />
+            </TestClass>
+        );
+        const extracted: any = extractHtmlElement(rendered.instance().testRef);
+        expect(extracted).not.toBe(null);
         expect(extracted).toEqual(rendered.instance().testRef.current);
+    });
+
+    test("extractHtmlElement function returns text element passed in as a ref", (): void => {
+        const rendered: any = mount(
+            <TestClass>
+                <TextComponentClass />
+            </TestClass>
+        );
+        const extracted: any = extractHtmlElement(rendered.instance().testRef);
+        expect(extracted).not.toBe(null);
+        expect(extracted).toBeInstanceOf(Text);
     });
 
     test("extractHtmlElement function returns null from uninitialized ref object", (): void => {

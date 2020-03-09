@@ -373,7 +373,7 @@ class ViewportPositioner extends Foundation<
         const viewportElement: HTMLElement | null = this.getViewportElement(
             this.props.viewport
         );
-        const anchorElement: HTMLElement | null = this.getAnchorElement();
+        const anchorElement: HTMLElement | Text | null = this.getAnchorElement();
 
         if (
             !this.state.disabled ||
@@ -425,7 +425,7 @@ class ViewportPositioner extends Foundation<
      */
     private setNoObserverMode = (): void => {
         const viewportElement: HTMLElement = this.getViewportElement(this.props.viewport);
-        const anchorElement: HTMLElement = this.getAnchorElement();
+        const anchorElement: HTMLElement | Text = this.getAnchorElement();
 
         if (isNil(viewportElement) || isNil(anchorElement)) {
             return;
@@ -1168,7 +1168,7 @@ class ViewportPositioner extends Foundation<
         if (isNil(this.props.anchor)) {
             return null;
         }
-        return extractHtmlElement(this.props.anchor);
+        return this.extractElement(this.props.anchor);
     };
 
     /**
@@ -1178,15 +1178,34 @@ class ViewportPositioner extends Foundation<
         viewportRef: React.RefObject<any> | HTMLElement
     ): HTMLElement | null => {
         if (!isNil(viewportRef)) {
-            return extractHtmlElement(viewportRef);
+            const extractedElement: HTMLElement | null = this.extractElement(viewportRef);
+            return extractedElement !== null ? extractedElement : null;
         }
 
         if (!isNil(this.context.viewport)) {
-            return extractHtmlElement(this.context.viewport);
+            const extractedElement: HTMLElement | null = this.extractElement(
+                this.context.viewport
+            );
+            return extractedElement !== null ? extractedElement : null;
         }
 
         if (document.scrollingElement instanceof HTMLElement) {
             return document.scrollingElement as HTMLElement;
+        }
+        return null;
+    };
+
+    /**
+     * returns null if the extracted viewport element is Text
+     */
+    private extractElement = (
+        elementRef: React.RefObject<any> | HTMLElement
+    ): HTMLElement | null => {
+        const extractedElement: HTMLElement | Text | null = extractHtmlElement(
+            elementRef
+        );
+        if (extractedElement instanceof HTMLElement) {
+            return extractedElement;
         }
         return null;
     };

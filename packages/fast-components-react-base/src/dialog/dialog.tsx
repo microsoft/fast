@@ -294,11 +294,11 @@ class Dialog extends Foundation<DialogHandledProps, DialogUnhandledProps, {}> {
             return;
         }
 
-        const targetElement: HTMLElement = extractHtmlElement(
+        const targetElement: HTMLElement | Text = extractHtmlElement(
             this.props.focusTargetOnClose
         );
 
-        if (targetElement !== null) {
+        if (targetElement instanceof HTMLElement) {
             targetElement.focus();
         }
     };
