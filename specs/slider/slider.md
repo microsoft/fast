@@ -49,9 +49,6 @@ A designer can override any internal styling applied to the slotted labels, the 
 *Events*
 - `change` - raise the change event for external parties to be informed of the value change.
 
-*Methods*
-- `onValueChanged` - handling the internal framework call when the value attribute is changed.
-
 *Slots*
 - `background-track` - background area encompassing the track and labels
 - `slider-track` - the horizontal or vertical track along which the thumb slides
