@@ -2,19 +2,6 @@ import { css } from "@microsoft/fast-element";
 //import { disabledCursor, display } from "../styles";
 
 export const SliderStyles = css`
-    --thumb-size: 30px;
-    :host {
-        display: inline-flex;
-        align-items: center;
-        outline: none;
-        margin: calc(var(--design-unit) * 1px) 0;
-        ${
-            /*
-           * Chromium likes to select label text or the default slot when
-           * the checkbox is clicked. Maybe there is a better solution here?
-           */ ""
-        } user-select: none;
-    }
     .slider {
         position: relative;
         width: 400px;
@@ -24,48 +11,37 @@ export const SliderStyles = css`
         background: white;
         outline: none;
         cursor: pointer;
+        display: grid;
     }
     .background-track {
-        background: red,
-        border-radius: "999px"
+        background: #bebebe;
+        position: absolute;
+        right: -2px;
+        left: -2px;
+        align-self: start;
+        margin-top: 6px;
+        height: 8px;
+    }
+    .layout-region {
+        position: relative;
+        margin: 0 8px;
+        display: grid;
+        grid-template-rows: 16px 1fr;
     }
     .track {
-        background: black,
-        width: 100%,
-        height: 4px
     }
     .thumb {
-        height: var(--thumb-size),
-        width: va(--thumb-size),
-        border: "none",
-        background: blue,
-        "border-radius": "50%",
-        transition: "all 0.2s ease",
+        height: 16px;
+        width: 16px;
+        border: none;
+        background: #2b2b2b;
+        border-radius: "50%";
+        transition: "all 0.2s ease";
         "&:hover": {
-            background: red,
-        },
+            background: red;
+        }
         "&:active": {
-            background: green,
-        },
-    }
-    .label {
-        font-family: var(--body-font);
-        color: var(--neutral-foreground-rest);
-        ${
-            /* Need to discuss with Brian how HorizontalSpacingNumber can work. https://github.com/microsoft/fast-dna/issues/2766 */ ""
-        } padding-inline-start: calc(var(--design-unit) * 2px + 2px);
-        margin-inline-end: calc(var(--design-unit) * 2px + 2px);
-        cursor: pointer;
-        ${
-            /* Font size is temporary - replace when adaptive typography is figured out */ ""
-        } font-size: calc(1rem + (var(--density) * 2px));
-    }
-    .slider:hover {
-        background: var(--neutral-fill-input-hover);
-        border-color: var(--neutral-outline-hover);
-    }
-    :host(:focus) .slider {
-        box-shadow: 0 0 0 1px var(--neutral-focus) inset;
-        border-color: var(--neutral-focus);
+            background: green;
+        }
     }
 `;
