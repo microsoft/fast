@@ -11,6 +11,7 @@ FAST Tooling is a library agnostic specific set of utilities to assist in creati
     - [Sending and receiving messages](#sending-and-receiving-messages)
 - [Data utilities](#data-utilities)
     - [Generating data](#generating-data-from-json-schema)
+    - [Mapping data](#mapping-data)
 
 ## Installation
 
@@ -115,4 +116,59 @@ An example of generating data from the `@microsoft/fast-tooling` package:
 import { getDataFromSchema } from "@microsoft/fast-tooling";
 
 const data = getDataFromSchema(schema);
+```
+
+### Mapping data
+
+Data from the dictionary of data can be mapped with a helper `mapDataDictionary`. This will allow you transform the data dictionary into another type of data structure by writing a helper. For example, if the data dictionary represented React component props, you could write a mapper using the React createElement function and return a functional React component.
+
+The `mapDataDictionary` export takes an object with the following properties:
+
+- **dataDictionary** - A dictionary of data, this is similar to other data dictionary formats in this library but instead of specifying a root data item, it is the dictionary only.
+- **dataDictionaryKey** - This should be the root data items key.
+- **schemaDictionary** - This should be the dictionary of JSON schemas where each schema is identified in the object by its id which is used as a key.
+- **mapper** - The function provided that maps the data.
+
+The mapping function that should be provided as the **mapper** in the `mapDataDictionary` argument accepts as its argument an object with the following properties:
+
+- **data** - The raw unchanged data.
+- **resolvedData** - Data that has been run through the mapper before.
+- **schema** - The JSON schema that maps to this piece of data, it should validate against the **data** property.
+
+Example:
+
+```javascript
+import { mapDataDictionary } from "@microsoft/fast-tooling";
+
+const mappingFunction = function(config) {
+    return config.resolvedData;
+}
+
+const mappedData = mapDataDictionary({
+    dataDictionary: {
+        "root": {
+            schemaId: "foo",
+            data: {
+                greeting: "Hello world"
+            }
+        }
+    },
+    dataDictionaryKey: "root",
+    schemaDictionary: {
+        foo: {
+            id: "foo",
+            type: "object"
+        }
+    },
+    mapper: mappingFunction
+});
+
+```
+
+The expected result:
+
+```javascript
+{
+    greeting: "Hello world"
+}
 ```
