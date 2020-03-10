@@ -3,6 +3,16 @@ import { Checkbox } from "./checkbox";
 import { bool } from "../utilities";
 
 export const CheckboxTemplate = html<Checkbox>`
+    <template
+        role="checkbox"
+        $aria-checked="${x => bool(x.checked)}"
+        $aria-required="${x => bool(x.required)}"
+        $aria-disabled="${x => bool(x.disabled)}"
+        $aria-readonly="${x => bool(x.readOnly)}"
+        $tabindex="${x => (bool(x.disabled) ? null : 0)}"
+        @keypress="${(x, c) => x.keypressHandler(c.event as KeyboardEvent)}"
+        @click="${(x, c) => x.clickHandler(c.event as MouseEvent)}"
+    >
     <div
         part="checkbox"
         class="checkbox"
@@ -42,4 +52,5 @@ export const CheckboxTemplate = html<Checkbox>`
         ><slot></slot></label>
     `
     )}
+    </template>
 `;

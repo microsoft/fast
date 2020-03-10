@@ -15,7 +15,6 @@ export class Checkbox extends FormAssociated<HTMLInputElement> {
         this.readOnly
             ? this.classList.add("readonly")
             : this.classList.remove("readonly");
-        this.setAttribute("aria-readonly", bool(this.readOnly).toString());
     }
 
     /**
@@ -38,18 +37,6 @@ export class Checkbox extends FormAssociated<HTMLInputElement> {
     public checkedAttribute: string | null;
     private checkedAttributeChanged(): void {
         this.defaultChecked = typeof this.checkedAttribute === "string";
-    }
-
-    protected disabledChanged(): void {
-        super.disabledChanged();
-
-        this.setAttribute("aria-disabled", bool(this.disabled).toString());
-    }
-
-    protected requiredChanged(): void {
-        super.requiredChanged();
-
-        this.setAttribute("aria-required", bool(this.required).toString());
     }
 
     /**
@@ -91,7 +78,6 @@ export class Checkbox extends FormAssociated<HTMLInputElement> {
         }
 
         this.checked ? this.classList.add("checked") : this.classList.remove("checked");
-        this.setAttribute("aria-checked", this.checked.toString());
     }
 
     protected proxy = document.createElement("input");
@@ -123,9 +109,6 @@ export class Checkbox extends FormAssociated<HTMLInputElement> {
         super();
 
         this.proxy.setAttribute("type", "checkbox");
-        this.setAttribute("role", "checkbox");
-        this.setAttribute("tabindex", "0");
-
         this.constructed = true;
     }
 
@@ -133,14 +116,6 @@ export class Checkbox extends FormAssociated<HTMLInputElement> {
         super.connectedCallback();
 
         this.updateForm();
-
-        this.addEventListener("keypress", this.keypressHandler);
-        this.addEventListener("click", this.clickHandler);
-    }
-
-    public disconnectedCallback(): void {
-        this.removeEventListener("keypress", this.keypressHandler);
-        this.removeEventListener("click", this.clickHandler);
     }
 
     private updateForm(): void {
@@ -148,7 +123,7 @@ export class Checkbox extends FormAssociated<HTMLInputElement> {
         this.setFormValue(value, value);
     }
 
-    protected keypressHandler = (e: KeyboardEvent) => {
+    public keypressHandler = (e: KeyboardEvent) => {
         super.keypressHandler(e);
 
         switch (e.keyCode) {
@@ -158,7 +133,7 @@ export class Checkbox extends FormAssociated<HTMLInputElement> {
         }
     };
 
-    private clickHandler = (e: MouseEvent) => {
+    public clickHandler = (e: MouseEvent) => {
         if (!bool(this.disabled) && !bool(this.readOnly)) {
             this.checked = !this.checked;
         }
