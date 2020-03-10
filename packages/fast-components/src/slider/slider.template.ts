@@ -12,9 +12,9 @@ export const SliderTemplate = html<Slider>`
       <div>${x => x.label}</div>
     </slot>
     <div part="layout-region" class="layout-region">
-      <div part="background-track" class="background-track">
+      <div ${ref("backgroundTrack")} part="background-track" class="background-track">
         <slot name="background-track"></slot>
-      </div>        
+      </div>
       <slot name="track">
         <div part="track" class="track"></div>
       </slot>
