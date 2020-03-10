@@ -1,5 +1,5 @@
 import React from "react";
-import { Navigation } from "../../src";
+import { ModularNavigation } from "../../src";
 import childrenSchema from "./navigation/children.schema";
 import { children } from "./navigation/example.data";
 import { MessageSystem, MessageSystemType } from "@microsoft/fast-tooling";
@@ -7,7 +7,6 @@ import noChildrenSchema from "./navigation/no-children.schema";
 
 export interface NavigationTestPageState {
     navigation: any;
-    dragAndDropReordering: boolean;
 }
 
 let fastMessageSystem: MessageSystem;
@@ -33,34 +32,17 @@ class NavigationTestPage extends React.Component<{}, NavigationTestPageState> {
 
         this.state = {
             navigation: null,
-            dragAndDropReordering: false,
         };
     }
 
     public render(): React.ReactNode {
         return (
             <div>
-                <input
-                    type={"checkbox"}
-                    id={"dragAndDropReordering"}
-                    value={this.state.dragAndDropReordering.toString()}
-                    onChange={this.handleUpdateDragAndDropReordering}
-                />
-                <label htmlFor={"dragAndDropReordering"}>Drag and drop reordering</label>
-                <Navigation
-                    messageSystem={fastMessageSystem}
-                    dragAndDropReordering={this.state.dragAndDropReordering}
-                />
+                <ModularNavigation messageSystem={fastMessageSystem} />
                 <pre>{JSON.stringify(this.state.navigation, null, 2)}</pre>
             </div>
         );
     }
-
-    private handleUpdateDragAndDropReordering = (): void => {
-        this.setState({
-            dragAndDropReordering: !this.state.dragAndDropReordering,
-        });
-    };
 
     private handleMessageSystem = (e: MessageEvent): void => {
         if (e.data && e.data.type === MessageSystemType.initialize) {
