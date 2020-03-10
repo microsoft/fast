@@ -1,6 +1,6 @@
 import React from "react";
 import { DesignSystemProvider } from "@microsoft/fast-jss-manager-react";
-import { BareForm, Navigation } from "../../src";
+import { ModularForm, ModularNavigation } from "../../src";
 import { FormProps } from "../../src/form/form.props";
 import {
     FormAttributeSettingsMappingToPropertyNames,
@@ -147,7 +147,7 @@ class FormAndNavigationTestPage extends React.Component<{}, FormTestPageState> {
                                 "Segoe UI, SegoeUI, Helvetica Neue, Helvetica, Arial, sans-serif",
                         }}
                     >
-                        <BareForm {...this.coerceFormProps()} />
+                        <ModularForm {...this.coerceFormProps()} />
                     </div>
                 </div>
             </DesignSystemProvider>
@@ -155,9 +155,7 @@ class FormAndNavigationTestPage extends React.Component<{}, FormTestPageState> {
     }
 
     private renderNavigation(): React.ReactNode {
-        return (
-            <Navigation messageSystem={fastMessageSystem} dragAndDropReordering={true} />
-        );
+        return <ModularNavigation messageSystem={fastMessageSystem} />;
     }
 
     private generateSchemaDictionary(): SchemaDictionary {

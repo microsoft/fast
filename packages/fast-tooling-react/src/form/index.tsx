@@ -1,5 +1,5 @@
 import React from "react";
-import BareForm from "./form";
+import ModularForm from "./form";
 import {
     ControlConfig,
     ControlTemplateUtilities,
@@ -12,7 +12,7 @@ import HTML5Backend from "react-dnd-html5-backend";
 const Form: React.FC<any> = (props: React.PropsWithChildren<any>): React.ReactElement => {
     return (
         <DndProvider backend={HTML5Backend}>
-            <BareForm {...props} />
+            <ModularForm {...props} />
         </DndProvider>
     );
 };
@@ -23,7 +23,7 @@ export {
     ControlConfig,
     ControlType,
     Form,
-    BareForm,
+    ModularForm,
     StandardControlPlugin,
     ControlTemplateUtilities,
 };

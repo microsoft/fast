@@ -5,6 +5,8 @@ The tooling available in FAST Tooling React can be used together to create UI fo
 ![JavaScript](https://img.shields.io/badge/ES6-Supported-yellow.svg?style=for-the-badge&logo=JavaScript) &nbsp; ![TypeScript](https://img.shields.io/badge/TypeScript-Supported-blue.svg?style=for-the-badge)
 
 - [Benefits](#benefits)
+- [Concepts](#concepts)
+    - [Ecosystem](#ecosystem)
 - [Installation](#installation)
 - [Requirements](#requirements)
 - [Form](#form)
@@ -43,6 +45,32 @@ The FAST Tooling can be used in any combination for the following scenarios:
 - Using a navigation generated from a components data
 - All of the above to create a live editing UI
 
+## Concepts
+
+### Ecosystem
+
+The following components are intended to work together as an ecosystem of components:
+
+- `ModularForm` - see [Form](#form)
+- `ModularViewer` - see [Viewer](#viewer)
+- `ModularNavigation` - see [Navigation](#navigation)
+
+Each of these components is provided as a standalone version and a version intended to work with another of the above components. If the `Form` is intended to be used with the `Viewer` then the `Modular` prefixed versions should be used. This enables them to share certain capabilities such as drag and drop.
+
+Example:
+
+```jsx
+import { DndProvider } from "react-dnd";
+import HTML5Backend from "react-dnd-html5-backend";
+
+// See details on implementation from the standalone
+// versions of Form and Viewer
+<DndProvider backend={HTML5Backend}>
+    <ModularForm {...props} />
+    <ModularViewer {...props} />
+</DndProvider>
+```
+
 ## Installation
 
 `npm i --save @microsoft/fast-tooling-react`
@@ -69,7 +97,7 @@ import { Form } from "@microsoft/fast-tooling-react";
 
 ### Drag and drop
 
-Drag and drop is provided to the `Form` using the `react-dnd` package as well as the `HTML5Backend`. If you are using `react-dnd` somewhere else and need to implement the backend once, use the secondary export `BareForm`.
+Drag and drop is provided to the `Form` using the `react-dnd` package as well as the `HTML5Backend`. If you are using `react-dnd` somewhere else and need to implement the backend once, use the secondary export `ModularForm`.
 
 ### Using form control plugins
 
@@ -526,10 +554,6 @@ Example:
     messageSystem={fastMessageSystem}
 />
 ```
-
-### Drag and drop
-
-Using the `dragAndDropReordering` option allows React children (referred to as linked data) to be re-arranged from the navigation.
 
 ## Navigation Menu
 
