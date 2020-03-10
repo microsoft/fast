@@ -98,10 +98,11 @@
       left: 0px;
       right: 8px;
     }
+
     /*
     /*———————————————————————————————————*/
     /*               HEADER              */
-    /*———————————————————————————————————*/    
+    /*———————————————————————————————————*/
     header {
       overflow: visible;
       display: flex;
@@ -118,14 +119,15 @@
     header buttongroup {
       margin-right: -4px;
     }
+
     /*
     /*———————————————————————————————————*/
     /*              GRIDVIEW             */
-    /*———————————————————————————————————*/    
+    /*———————————————————————————————————*/
     gridview:first-of-type {
       padding-top: 28px;
     }
-    
+
     gridview {
       padding-top: 0px;
     }
@@ -145,6 +147,7 @@
       flex-basis: 70px;
       color: #444;
     }
+
     /*
     /*———————————————————————————————————*/
     /*           COLOR SWATCHES          */
@@ -173,63 +176,78 @@
     /*———————————————————————————————————*/
     /* L1 */
     #pageBackgrounds-L1 swatch label {
-      content:"L1"
+      content: "L1"
     }
+
     #pageBackgrounds-L1 swatch path:not(:first-of-type) {
       fill: var(--colors-pageBackgrounds-L1);
       fill-opacity: var(--colors-pageBackgrounds-L1-opacity);
     }
+
     #pageBackgrounds-L1 swatch path:nth-of-type(2) {
       opacity: var(--colors-pageBackgrounds-L1-opacity);
     }
+
     /* L1 Alt */
     #pageBackgrounds-L1Alt swatch path:not(:first-of-type) {
       fill: var(--colors-pageBackgrounds-L1);
       fill-opacity: var(--colors-pageBackgrounds-L1Alt-opacity);
     }
+
     #pageBackgrounds-L1Alt swatch path:nth-of-type(2) {
       opacity: var(--colors-pageBackgrounds-L1Alt-opacity);
     }
+
     /* L2 */
     #pageBackgrounds-L2 swatch path:not(:first-of-type) {
       fill: var(--colors-pageBackgrounds-L2);
       fill-opacity: var(--colors-pageBackgrounds-L2-opacity);
     }
+
     #pageBackgrounds-L2 swatch path:nth-of-type(2) {
       opacity: var(--colors-pageBackgrounds-L2-opacity);
     }
+
     /* L3 */
     #pageBackgrounds-L3 swatch path:not(:first-of-type) {
       fill: var(--colors-pageBackgrounds-L3);
       fill-opacity: var(--colors-pageBackgrounds-L3-opacity);
     }
+
     #pageBackgrounds-L3 swatch path:nth-of-type(2) {
       opacity: var(--colors-pageBackgrounds-L3-opacity);
     }
+
     /* L4 */
     #pageBackgrounds-L4 swatch path:not(:first-of-type) {
       fill: var(--colors-pageBackgrounds-L4);
       fill-opacity: var(--colors-pageBackgrounds-L4-opacity);
     }
+
     #pageBackgrounds-L4 swatch path:nth-of-type(2) {
       opacity: var(--colors-pageBackgrounds-L4-opacity);
     }
+
     /* Flyout */
     #pageBackgrounds-flyout swatch path:not(:first-of-type) {
       fill: var(--colors-pageBackgrounds-flyout);
       fill-opacity: var(--colors-pageBackgrounds-flyout-opacity);
     }
+
     #pageBackgrounds-flyout swatch path:nth-of-type(2) {
       opacity: var(--colors-pageBackgrounds-flyout-opacity);
     }
+
     /* Smoke Overlay */
     #pageBackgrounds-smokeOverlay swatch path:not(:first-of-type) {
       fill: var(--colors-pageBackgrounds-smokeOverlay);
       fill-opacity: var(--colors-pageBackgrounds-smokeOverlay-opacity);
     }
+
     #pageBackgrounds-smokeOverlay swatch path:nth-of-type(2) {
       opacity: var(--colors-pageBackgrounds-smokeOverlay-opacity);
     }
+
     /*
     /*———————————————————————————————————*/
     /*    COLOR SWATCHES - FOREGROUNDS   */
@@ -239,42 +257,51 @@
       fill: var(--colors-foregrounds-primary);
       fill-opacity: var(--colors-foregrounds-primary-opacity);
     }
+
     #foregrounds-primary swatch path:nth-of-type(2) {
       opacity: var(--colors-foregrounds-primary-opacity);
     }
+
     /* Secondary */
     #foregrounds-secondary swatch path:not(:first-of-type) {
       fill: var(--colors-foregrounds-secondary);
       fill-opacity: var(--colors-foregrounds-secondary-opacity);
     }
+
     #foregrounds-secondary swatch path:nth-of-type(2) {
       opacity: var(--colors-foregrounds-secondary-opacity);
     }
+
     /* Accent */
     #foregrounds-accent swatch path:not(:first-of-type) {
       fill: var(--colors-foregrounds-accent);
       fill-opacity: var(--colors-foregrounds-accent-opacity);
     }
+
     #foregrounds-accent swatch path:nth-of-type(2) {
       opacity: var(--colors-foregrounds-accent-opacity);
     }
+
     /* On Accent */
     #foregrounds-onAccent swatch path:not(:first-of-type) {
       fill: var(--colors-foregrounds-onAccent);
       fill-opacity: var(--colors-foregrounds-onAccent-opacity);
     }
+
     #foregrounds-onAccent swatch path:nth-of-type(2) {
       opacity: var(--colors-foregrounds-onAccent-opacity);
     }
+
     /* Inverse */
     #foregrounds-inverse swatch path:not(:first-of-type) {
       fill: var(--colors-foregrounds-inverse);
       fill-opacity: var(--colors-foregrounds-inverse-opacity);
     }
+
     #foregrounds-inverse swatch path:nth-of-type(2) {
       opacity: var(--colors-foregrounds-inverse-opacity);
     }
-    
+
     item>label {
       justify-content: center;
       height: 26px;
@@ -1950,7 +1977,7 @@
 <body>
   <div class="wrapper">
     <header id="colors" class="section-title fixed">Colors<buttongroup>
-        <iconbutton class="icon--button icon--styles icon--selected"></iconbutton>      
+        <iconbutton class="icon--button icon--styles icon--selected"></iconbutton>
         <iconbutton class="icon--button icon--plus"></iconbutton>
       </buttongroup>
     </header>
@@ -1961,11 +1988,11 @@
       <item id="pageBackgrounds-L1">
         <swatch>
           <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M32 32H0V0L32 32Z" fill="white"/>
-            <path opacity="0.5" d="M0 0H32V32L0 0Z" fill="#0078D4" fill-opacity="0.5"/>
-            <path d="M32 32H0V0L32 32Z" fill="#0078D4" fill-opacity="0.5"/>
-            <rect x="0.5" y="0.5" width="31" height="31" rx="3.5" stroke="black" stroke-opacity="0.13"/>
-            </svg>            
+            <path d="M32 32H0V0L32 32Z" fill="white" />
+            <path opacity="0.5" d="M0 0H32V32L0 0Z" fill="#0078D4" fill-opacity="0.5" />
+            <path d="M32 32H0V0L32 32Z" fill="#0078D4" fill-opacity="0.5" />
+            <rect x="0.5" y="0.5" width="31" height="31" rx="3.5" stroke="black" stroke-opacity="0.13" />
+          </svg>
         </swatch>
         <label class="type--pos-small-normal">L1</label>
       </item>
@@ -1973,11 +2000,11 @@
       <item id="pageBackgrounds-L1Alt">
         <swatch>
           <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M32 32H0V0L32 32Z" fill="white"/>
-            <path opacity="0.5" d="M0 0H32V32L0 0Z" fill="#0078D4" fill-opacity="0.5"/>
-            <path d="M32 32H0V0L32 32Z" fill="#0078D4" fill-opacity="0.5"/>
-            <rect x="0.5" y="0.5" width="31" height="31" rx="3.5" stroke="black" stroke-opacity="0.13"/>
-            </svg>            
+            <path d="M32 32H0V0L32 32Z" fill="white" />
+            <path opacity="0.5" d="M0 0H32V32L0 0Z" fill="#0078D4" fill-opacity="0.5" />
+            <path d="M32 32H0V0L32 32Z" fill="#0078D4" fill-opacity="0.5" />
+            <rect x="0.5" y="0.5" width="31" height="31" rx="3.5" stroke="black" stroke-opacity="0.13" />
+          </svg>
         </swatch>
         <label class="type--pos-small-normal">L1 Alt</label>
       </item>
@@ -1985,44 +2012,45 @@
       <item id="pageBackgrounds-L2">
         <swatch>
           <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M32 32H0V0L32 32Z" fill="white"/>
-            <path opacity="0.5" d="M0 0H32V32L0 0Z" fill="#0078D4" fill-opacity="0.5"/>
-            <path d="M32 32H0V0L32 32Z" fill="#0078D4" fill-opacity="0.5"/>
-            <rect x="0.5" y="0.5" width="31" height="31" rx="3.5" stroke="black" stroke-opacity="0.13"/>
-            </svg>            
+            <path d="M32 32H0V0L32 32Z" fill="white" />
+            <path opacity="0.5" d="M0 0H32V32L0 0Z" fill="#0078D4" fill-opacity="0.5" />
+            <path d="M32 32H0V0L32 32Z" fill="#0078D4" fill-opacity="0.5" />
+            <rect x="0.5" y="0.5" width="31" height="31" rx="3.5" stroke="black" stroke-opacity="0.13" />
+          </svg>
         </swatch>
         <label class="type--pos-small-normal">L2</label>
       </item>
       <item id="pageBackgrounds-L3">
         <swatch>
           <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M32 32H0V0L32 32Z" fill="white"/>
-            <path opacity="0.5" d="M0 0H32V32L0 0Z" fill="#0078D4" fill-opacity="0.5"/>
-            <path d="M32 32H0V0L32 32Z" fill="#0078D4" fill-opacity="0.5"/>
-            <rect x="0.5" y="0.5" width="31" height="31" rx="3.5" stroke="black" stroke-opacity="0.13"/>
-            </svg>            
+            <path d="M32 32H0V0L32 32Z" fill="white" />
+            <path opacity="0.5" d="M0 0H32V32L0 0Z" fill="#0078D4" fill-opacity="0.5" />
+            <path d="M32 32H0V0L32 32Z" fill="#0078D4" fill-opacity="0.5" />
+            <rect x="0.5" y="0.5" width="31" height="31" rx="3.5" stroke="black" stroke-opacity="0.13" />
+          </svg>
         </swatch>
         <label class="type--pos-small-normal">L3</label>
       </item>
+
       <item id="pageBackgrounds-L4">
         <swatch>
           <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M32 32H0V0L32 32Z" fill="white"/>
-            <path opacity="0.5" d="M0 0H32V32L0 0Z" fill="#0078D4" fill-opacity="0.5"/>
-            <path d="M32 32H0V0L32 32Z" fill="#0078D4" fill-opacity="0.5"/>
-            <rect x="0.5" y="0.5" width="31" height="31" rx="3.5" stroke="black" stroke-opacity="0.13"/>
-            </svg>            
+            <path d="M32 32H0V0L32 32Z" fill="white" />
+            <path opacity="0.5" d="M0 0H32V32L0 0Z" fill="#0078D4" fill-opacity="0.5" />
+            <path d="M32 32H0V0L32 32Z" fill="#0078D4" fill-opacity="0.5" />
+            <rect x="0.5" y="0.5" width="31" height="31" rx="3.5" stroke="black" stroke-opacity="0.13" />
+          </svg>
         </swatch>
         <label class="type--pos-small-normal">L4</label>
       </item>
       <item id="pageBackgrounds-flyout">
         <swatch>
-          <!-- <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M32 32H0V0L32 32Z" fill="white"/>
-            <path opacity="0.5" d="M0 0H32V32L0 0Z" fill="#0078D4" fill-opacity="0.5"/>
-            <path d="M32 32H0V0L32 32Z" fill="#0078D4" fill-opacity="0.5"/>
-            <rect x="0.5" y="0.5" width="31" height="31" rx="3.5" stroke="black" stroke-opacity="0.13"/>
-            </svg>             -->
+          <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M32 32H0V0L32 32Z" fill="white" />
+            <path opacity="0.5" d="M0 0H32V32L0 0Z" fill="#0078D4" fill-opacity="0.5" />
+            <path d="M32 32H0V0L32 32Z" fill="#0078D4" fill-opacity="0.5" />
+            <rect x="0.5" y="0.5" width="31" height="31" rx="3.5" stroke="black" stroke-opacity="0.13" />
+          </svg>
         </swatch>
         <label class="type--pos-small-normal">Flyout</label>
       </item>
@@ -2030,136 +2058,94 @@
       <item id="pageBackgrounds-SmokeOverlay">
         <swatch>
           <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M32 32H0V0L32 32Z" fill="white"/>
-            <path opacity="0.5" d="M0 0H32V32L0 0Z" fill="#0078D4" fill-opacity="0.5"/>
-            <path d="M32 32H0V0L32 32Z" fill="#0078D4" fill-opacity="0.5"/>
-            <rect x="0.5" y="0.5" width="31" height="31" rx="3.5" stroke="black" stroke-opacity="0.13"/>
-            </svg>            
+            <path d="M32 32H0V0L32 32Z" fill="white" />
+            <path opacity="0.5" d="M0 0H32V32L0 0Z" fill="#0078D4" fill-opacity="0.5" />
+            <path d="M32 32H0V0L32 32Z" fill="#0078D4" fill-opacity="0.5" />
+            <rect x="0.5" y="0.5" width="31" height="31" rx="3.5" stroke="black" stroke-opacity="0.13" />
+          </svg>
         </swatch>
         <label class="type--pos-small-normal">Smoke Overlay</label>
       </item>
-      
-      <!--  DO NOT DELETE : Placeholder items are used to maekt he last row wrap correctly. Set to max-columns minus 1, e.g. 5 columns minus 1 = 4 placeholder items-->
+
+      <!--  DO NOT DELETE : Placeholder items are used to make the last row wrap correctly. Set to max-columns minus 1, e.g. 5 columns minus 1 = 4 placeholder items-->
       <item aria-hidden="true"></item>
       <item aria-hidden="true"></item>
       <item aria-hidden="true"></item>
       <item aria-hidden="true"></item>
       <!------------------------------------------------------->
     </gridview>
-  
+
     <gridview>
       <section id="colors-foregrounds" class="section-subtitle label sticky">Foregrounds</section>
+      
       <item id="foregrounds-primary">
         <swatch class="swatch--circle">
           <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M32 32H0V0L32 32Z" fill="white"/>
-            <path opacity="0.5" d="M0 0H32V32L0 0Z" fill="#0078D4" fill-opacity="0.5"/>
-            <path d="M32 32H0V0L32 32Z" fill="#0078D4" fill-opacity="0.5"/>
-            <rect x="0.5" y="0.5" width="31" height="31" rx="3.5" stroke="black" stroke-opacity="0.13"/>
+            <path d="M32 32H0V0L32 32Z" fill="white" />
+            <path opacity="0.5" d="M0 0H32V32L0 0Z" fill="#0078D4" fill-opacity="0.5" />
+            <path d="M32 32H0V0L32 32Z" fill="#0078D4" fill-opacity="0.5" />
+            <rect x="0.5" y="0.5" width="31" height="31" rx="3.5" stroke="black" stroke-opacity="0.13" />
           </svg>
         </swatch>
         <label class="type--pos-small-normal">Primary</label>
       </item>
+      
       <item id="foregrounds-secondary">
         <swatch class="swatch--circle">
           <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M32 32H0V0L32 32Z" fill="white"/>
-            <path opacity="0.5" d="M0 0H32V32L0 0Z" fill="#0078D4" fill-opacity="0.5"/>
-            <path d="M32 32H0V0L32 32Z" fill="#0078D4" fill-opacity="0.5"/>
-            <rect x="0.5" y="0.5" width="31" height="31" rx="3.5" stroke="black" stroke-opacity="0.13"/>
-            </svg>            
+            <path d="M32 32H0V0L32 32Z" fill="white" />
+            <path opacity="0.5" d="M0 0H32V32L0 0Z" fill="#0078D4" fill-opacity="0.5" />
+            <path d="M32 32H0V0L32 32Z" fill="#0078D4" fill-opacity="0.5" />
+            <rect x="0.5" y="0.5" width="31" height="31" rx="3.5" stroke="black" stroke-opacity="0.13" />
+          </svg>
         </swatch>
         <label class="type--pos-small-normal">Secondary</label>
       </item>
-      <item id="foregrounds-accent" >
+      
+      <item id="foregrounds-accent">
         <swatch class="swatch--circle">
           <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M32 32H0V0L32 32Z" fill="white"/>
-            <path opacity="0.5" d="M0 0H32V32L0 0Z" fill="#0078D4" fill-opacity="0.5"/>
-            <path d="M32 32H0V0L32 32Z" fill="#0078D4" fill-opacity="0.5"/>
-            <rect x="0.5" y="0.5" width="31" height="31" rx="3.5" stroke="black" stroke-opacity="0.13"/>
-            </svg>            
+            <path d="M32 32H0V0L32 32Z" fill="white" />
+            <path opacity="0.5" d="M0 0H32V32L0 0Z" fill="#0078D4" fill-opacity="0.5" />
+            <path d="M32 32H0V0L32 32Z" fill="#0078D4" fill-opacity="0.5" />
+            <rect x="0.5" y="0.5" width="31" height="31" rx="3.5" stroke="black" stroke-opacity="0.13" />
+          </svg>
         </swatch>
         <label class="type--pos-small-normal">Accent</label>
       </item>
+      
       <item id="foregrounds-onAccent">
         <swatch class="swatch--circle">
           <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M32 32H0V0L32 32Z" fill="white"/>
-            <path opacity="0.5" d="M0 0H32V32L0 0Z" fill="#0078D4" fill-opacity="0.5"/>
-            <path d="M32 32H0V0L32 32Z" fill="#0078D4" fill-opacity="0.5"/>
-            <rect x="0.5" y="0.5" width="31" height="31" rx="3.5" stroke="black" stroke-opacity="0.13"/>
-            </svg>            
+            <path d="M32 32H0V0L32 32Z" fill="white" />
+            <path opacity="0.5" d="M0 0H32V32L0 0Z" fill="#0078D4" fill-opacity="0.5" />
+            <path d="M32 32H0V0L32 32Z" fill="#0078D4" fill-opacity="0.5" />
+            <rect x="0.5" y="0.5" width="31" height="31" rx="3.5" stroke="black" stroke-opacity="0.13" />
+          </svg>
         </swatch>
         <label class="type--pos-small-normal">On Accent</label>
       </item>
-      <item  id="foregrounds-inverse">
+      
+      <item id="foregrounds-inverse">
         <swatch class="swatch--circle">
           <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M32 32H0V0L32 32Z" fill="white"/>
-            <path opacity="0.5" d="M0 0H32V32L0 0Z" fill="#0078D4" fill-opacity="0.5"/>
-            <path d="M32 32H0V0L32 32Z" fill="#0078D4" fill-opacity="0.5"/>
-            <rect x="0.5" y="0.5" width="31" height="31" rx="3.5" stroke="black" stroke-opacity="0.13"/>
-            </svg>            
+            <path d="M32 32H0V0L32 32Z" fill="white" />
+            <path opacity="0.5" d="M0 0H32V32L0 0Z" fill="#0078D4" fill-opacity="0.5" />
+            <path d="M32 32H0V0L32 32Z" fill="#0078D4" fill-opacity="0.5" />
+            <rect x="0.5" y="0.5" width="31" height="31" rx="3.5" stroke="black" stroke-opacity="0.13" />
+          </svg>
         </swatch>
         <label class="type--pos-small-normal">Inverse</label>
       </item>
+      
       <!--  DO NOT DELETE : Placeholder items are used to maekt he last row wrap correctly. Set to max-columns minus 1, e.g. 5 columns minus 1 = 4 placeholder items-->
       <item aria-hidden="true"></item>
       <item aria-hidden="true"></item>
       <item aria-hidden="true"></item>
       <item aria-hidden="true"></item>
       <!------------------------------------------------------->
-
     </gridview>
   </div>
   <!-- <resize id="resizeGrip" style="cursor:nwse-resize; position:fixed; display:block; bottom:0px; right:0px; width:0px; height:0px; border-top: 24px solid transparent; border-bottom: 24px solid transparent; border-left: 24px solid green; transform-origin: left bottom; transform:rotate(45deg);"></resize> -->
 
-  <script>
-    
-    document.getElementById("resizeGrip").addEventListener('mousedown', resize(e, true));
-
-
-
-    // resizeGrip.addEventListener('mousemove', e => {
-    //   if (isResizing) {
-    //     console.log(isResizing);
-    //     figma.ui.resize(e.pageX, e.pageY);
-    //     x = e.pageX;
-    //     y = e.pageY;
-    //   }
-    // });
-
-    document.getElementById("resizeGrip").addEventListener('mouseup', resize(e, false));
-
-    function resize(e, isResizing) {
-
-      
-      e = e || window.event;
-      let mousePosInit = { x: e.pageX, y: e.pageY };
-      console.log(`is resizing: ${isResizing}`);
-      console.log(e.timeStamp);
-      console.log(`initial mouse pos = ${mousePosInit.x}, ${mousePosInit.y}`);
-      console.log(e);
-      console.log("here");
-      x = e.pageX;
-      y = e.pageY;
-      console.log(x);
-
-    }
-      let mousePosInit = { x: e.pageX, y: e.pageY };
-      console.log(`initial mouse pos = ${mousePosInit.x}, ${mousePosInit.y}`);
-      console.log(e);
-    }
-
-
-    document.getElementById('create').onclick = () => {
-      const textbox = document.getElementById('count');
-      const count = parseInt(textbox.value, 10);
-      parent.postMessage({ pluginMessage: { type: 'create-rectangles', count } }, '*')
-    }
-    document.getElementById('cancel').onclick = () => {
-      parent.postMessage({ pluginMessage: { type: 'cancel' } }, '*')
-    }
-  </script>
 </body>
