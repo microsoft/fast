@@ -5,7 +5,6 @@
 * **Experiment:** Condense all binding classes into a single type, removing polymorphism. See if this has an effect on performance and/or library size.
 * **Feature:** Revisit the implementation of `ref` and convert to a general design for attached behaviors.
 * **Feature**: Enable `@attr` to specify boolean attribute behavior as well as basic type conversion.
-* **Feature**: `$emit` helper on `FastElement` to fire events with default settings and only if the `$controller` has been connected.
 * **Feature**: Dependency injection infrastructure, including simple decorator-based property injection for `FastElement`.
 * **Test**: Testing infrastructure and test coverage.
 * **Fix**: Improve subscription cleanup on complex observable expressions.

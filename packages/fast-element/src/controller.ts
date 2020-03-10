@@ -3,8 +3,14 @@ import { Container, Registry, Resolver, InterfaceSymbol } from "./di";
 import { ElementView } from "./view";
 import { PropertyChangeNotifier } from "./observation/notifier";
 
+const defaultEventOptions: CustomEventInit = {
+    bubbles: true,
+    composed: true,
+};
+
 export class Controller extends PropertyChangeNotifier implements Container {
     public view: ElementView | null = null;
+    public isConnected: boolean = false;
     private resolvers = new Map<any, Resolver>();
 
     public constructor(
@@ -38,12 +44,24 @@ export class Controller extends PropertyChangeNotifier implements Container {
     }
 
     public onConnectedCallback() {
+        if (this.isConnected) {
+            return;
+        }
+
         if (this.view !== null) {
             this.view.bind(this.element);
         }
+
+        this.isConnected = true;
     }
 
     public onDisconnectedCallback() {
+        if (this.isConnected === false) {
+            return;
+        }
+
+        this.isConnected = false;
+
         if (this.view !== null) {
             this.view.unbind();
         }
@@ -51,6 +69,16 @@ export class Controller extends PropertyChangeNotifier implements Container {
 
     public onAttributeChangedCallback(name: string, oldValue: string, newValue: string) {
         (this.element as any)[this.definition.attributeLookup[name].property] = newValue;
+    }
+
+    public emit(type: string, detail?: any, options?: Omit<CustomEventInit, "detail">) {
+        if (this.isConnected) {
+            return this.element.dispatchEvent(
+                new CustomEvent(type, { detail, ...defaultEventOptions, ...options })
+            );
+        }
+
+        return false;
     }
 
     public register(registry: Registry) {
