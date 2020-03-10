@@ -30,9 +30,24 @@ export const SliderStyles = css`
     }
     .track {
     }
+    ::slotted(.thumb) {
+        position: absolute;
+        height: 16px;
+        width: 16px;
+        border: none;
+        background: #2b2b2b;
+        border-radius: 50%;
+        transition: "all 0.2s ease";
+        "&:hover": {
+            background: red;
+        }
+        "&:active": {
+            background: green;
+        }
+    }
     .thumb {
         position: absolute;
-        right: 58%;
+        right: 50%;
         height: 16px;
         width: 16px;
         border: none;

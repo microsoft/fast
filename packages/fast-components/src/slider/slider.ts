@@ -21,6 +21,8 @@ export class Slider extends FormAssociated<HTMLInputElement> {
     @observable
     public position: string;
     private positionOnSlider: number = 0;
+    private fullTrackWidth: number = 0;
+    private fullTrackMinWidth: number = 0;
 
     private readOnlyChanged(): void {
         if (this.proxy instanceof HTMLElement) {
@@ -110,20 +112,21 @@ export class Slider extends FormAssociated<HTMLInputElement> {
         super.connectedCallback();
 
         //this.updateForm();
+        this.proxy.value = this.value;
 
-        this.addEventListener("keypress", this.keypressHandler);
-        this.addEventListener("click", this.clickHandler);
+        this.addEventListener("keydown", this.keypressHandler);
+        this.addEventListener("mousedown", this.clickHandler);
     }
 
     public disconnectedCallback(): void {
-        this.removeEventListener("keypress", this.keypressHandler);
-        this.removeEventListener("click", this.clickHandler);
+        this.removeEventListener("keydown", this.keypressHandler);
+        this.removeEventListener("mousedown", this.clickHandler);
     }
 
     protected keypressHandler = (e: KeyboardEvent) => {
         super.keypressHandler(e);
 
-        console.log("keypressHandler happened e:", e);
+        console.log("keydownHandler happened e:", e);
         switch (e.keyCode) {
             case keyCodeArrowRight:
             case keyCodeArrowUp:
@@ -139,35 +142,56 @@ export class Slider extends FormAssociated<HTMLInputElement> {
     private clickHandler = (e: MouseEvent) => {
         console.log("clickedHandler e:", e);
         if (!bool(this.disabled) && !bool(this.readOnly)) {
-            if (e.clientX > this.positionOnSlider) {
-                this.increment();
-            } else {
-                this.decrement();
+            let trackElement: any = this.shadowRoot!.querySelector(".background-track");
+            this.fullTrackWidth = trackElement.clientWidth;
+            if (this.fullTrackWidth === 0) {
+                this.fullTrackWidth = 1;
             }
-            console.log("e.movementX:", e.movementX);
-            console.log("e.clientX:", e.clientX);
-            console.log("this.positionOnSlider:", this.positionOnSlider);
-            this.positionOnSlider = e.clientX;
+            this.fullTrackMinWidth = trackElement.getBoundingClientRect().left;
+            const newPosition = this.convertPixelToPercent(e.pageX);
+            const newValue: number = (this.max - this.min) * newPosition + this.min;
+            this.positionOnSlider = newPosition;
+            this.value = `${newValue}`;
+            this.proxy.value = `${newValue}`;
         }
-
-        // console.log("track ref element this.track.slot:", this.crimsonTide.slot);
-        // console.log("this.track.clientWidth:", this.crimsonTide.clientWidth);
-        // console.log("this.track.style.left", this.crimsonTide.style.left);
     };
 
     private increment = (): void => {
-        console.log("incrementing the slider value value:", this.value);
-
-        if (Number(this.value) + Number(this.step) < Number(this.max)) {
-            this.value = `${Number(this.value) + 1}`;
-            this.proxy.value = `${Number(this.value) + 1}`;
-        }
+        const incrementedVal: number = Number(this.value) + Number(this.step);
+        const incrementedValString: string =
+            incrementedVal < Number(this.max) ? `${incrementedVal}` : `${this.max}`;
+        console.log("\n***incrementing the slider value value:", incrementedValString);
+        this.value = incrementedValString;
+        this.proxy.value = incrementedValString;
     };
 
     private decrement = (): void => {
-        if (Number(this.value) - this.step > this.min) {
-            this.value = `${Number(this.value) - this.step}`;
-            this.proxy.value = `${Number(this.value) - this.step}`;
+        const decrementedVal: number = Number(this.value) - Number(this.step);
+        const decrementedValString: string =
+            decrementedVal > Number(this.min) ? `${decrementedVal}` : `${this.min}`;
+        console.log("\n***decrementing the slider value value:", decrementedValString);
+        this.value = decrementedValString;
+        this.proxy.value = decrementedValString;
+    };
+
+    /**
+     * Converts a pixel coordinate on the track to a percent of the track's range
+     */
+    private convertPixelToPercent = (pixelPos: number): number => {
+        let pct: number = 0;
+        pct = (pixelPos - this.fullTrackMinWidth) / this.fullTrackWidth;
+        if (pct < 0) {
+            pct = 0;
+        } else if (pct > 1) {
+            pct = 1;
         }
+        // if (
+        //     this.state.direction === Direction.rtl &&
+        //     this.props.orientation !== SliderOrientation.vertical
+        // ) {
+        //     pct = 1 - pct;
+        // }
+
+        return pct;
     };
 }

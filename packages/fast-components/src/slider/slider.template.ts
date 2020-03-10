@@ -1,7 +1,6 @@
-import { html, when } from "@microsoft/fast-element";
+import { html } from "@microsoft/fast-element";
 import { Slider } from "./slider";
-//import { bool } from "../utilities";
-import { ref } from "@microsoft/fast-element/src/directives";
+import { ref } from "@microsoft/fast-element/dist/directives";
 
 export const SliderTemplate = html<Slider>`
     <div
@@ -21,12 +20,7 @@ export const SliderTemplate = html<Slider>`
       <slot name="thumb">
         <div part="thumb" class="thumb" style=${x => x.position}></div>
       </slot>
-      ${when(
-          x => x.childNodes.length,
-          html`
           <slot></slot>
-      `
-      )}
       </div>
     </div>
 `;
