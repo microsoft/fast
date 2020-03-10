@@ -1,4 +1,4 @@
-import { AccessScopeExpression, Expression, Getter } from "../expression";
+import { Expression } from "../interfaces";
 import { SyntheticViewTemplate, CaptureType } from "../template";
 import { Behavior } from "../behaviors/behavior";
 import { DOM } from "../dom";
@@ -169,8 +169,8 @@ export class RepeatBehavior implements Behavior, GetterInspector, Subscriber {
 }
 
 export function repeat<T = any, K = any>(
-    expression: Getter<T, K[]> | keyof T,
+    expression: Expression<T, K[]>,
     template: SyntheticViewTemplate
 ): CaptureType<T> {
-    return new RepeatDirective(AccessScopeExpression.from(expression as any), template);
+    return new RepeatDirective(expression, template);
 }
