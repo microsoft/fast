@@ -1,10 +1,8 @@
-export * from "./custom-element";
 export * from "./template";
 export * from "./fast-element";
-export * from "./bindable";
+export * from "./attributes";
 export * from "./controller";
 export * from "./interfaces";
-export * from "./expression";
 export * from "./template-compiler";
 export * from "./instructions";
 export * from "./styles";
@@ -14,3 +12,5 @@ export * from "./observation/observable";
 export * from "./behaviors/index";
 export * from "./directives/directive";
 export * from "./directives/bind";
+export * from "./dom";
+export * from "./directives/when";

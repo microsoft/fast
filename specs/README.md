@@ -6,6 +6,7 @@ Here you'll find specifications for custom elements and other library features.
 
 ## Specs
 - [Card](./card/card.md)
+- [Checkbox](./checkbox.md)
 - [Dialog](./dialog/dialog.md)
 - [Form associated custom elements]("./form-associated-custom-element.md")
 - [Switch](./switch.md)

@@ -1,12 +1,12 @@
 import { css } from "@microsoft/fast-element";
+import { display } from "../styles";
 
 export const DesignSystemProviderStyles = css`
-    :host([hidden]) {
-        display: none;
-    }
+    ${display("block")} :host {
+        --height-number: calc(
+            (var(--base-height-multiplier) + var(--density)) * var(--design-unit)
+        );
 
-    :host {
-        display: block;
         --neutral-foreground-rest: #2b2b2b;
         --neutral-foreground-hover: #2b2b2b;
         --neutral-foreground-active: #2b2b2b;

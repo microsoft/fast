@@ -3,19 +3,15 @@ import { TargetedInstruction } from "./instructions";
 import { HTMLView, ElementView, SyntheticView, View } from "./view";
 import { DOM } from "./dom";
 import { Behavior } from "./behaviors/behavior";
-import { Getter, AccessScopeExpression } from "./expression";
+import { Expression } from "./interfaces";
 import { Directive } from "./directives/directive";
 import { BindingDirective } from "./directives/bind";
 
-export interface Template {
-    create(): View;
+export interface ElementViewTemplate {
+    create(host: Element): ElementView;
 }
 
-export interface ElementViewTemplate extends Template {
-    create(): ElementView;
-}
-
-export interface SyntheticViewTemplate extends Template {
+export interface SyntheticViewTemplate {
     create(): SyntheticView;
 }
 
@@ -25,7 +21,8 @@ export class HTMLTemplate extends Directive
 
     constructor(
         private templateElement: HTMLTemplateElement,
-        private instructions: TargetedInstruction[]
+        private viewInstructions: TargetedInstruction[],
+        private hostInstruction: TargetedInstruction | null = null
     ) {
         super();
 
@@ -36,14 +33,19 @@ export class HTMLTemplate extends Directive
         }
     }
 
-    public create() {
+    public create(host?: Element) {
         const fragment = this.templateElement.content.cloneNode(true) as DocumentFragment;
         const targets = fragment.querySelectorAll(".fm");
-        const instructions = this.instructions;
+        const viewInstructions = this.viewInstructions;
+        const hostInstruction = this.hostInstruction;
         const behaviors: Behavior[] = [];
 
         for (let i = 0, ii = targets.length; i < ii; ++i) {
-            instructions[i].hydrate(targets[i], behaviors);
+            viewInstructions[i].hydrate(targets[i], behaviors);
+        }
+
+        if (host !== void 0 && hostInstruction !== null) {
+            hostInstruction.hydrate(host, behaviors);
         }
 
         return new HTMLView(fragment, behaviors);
@@ -74,7 +76,7 @@ export class HTMLTemplateBehavior implements Behavior {
 }
 
 export interface CaptureType<T> {}
-type TemplateValue<T> = Getter<T> | string | number | Directive | CaptureType<T>;
+type TemplateValue<T> = Expression<T> | string | number | Directive | CaptureType<T>;
 
 export function html<T = any>(
     strings: TemplateStringsArray,
@@ -88,7 +90,7 @@ export function html<T = any>(
         let value = values[i];
 
         if (typeof value === "function") {
-            value = new BindingDirective(new AccessScopeExpression(value as Getter));
+            value = new BindingDirective(value as Expression);
         }
 
         if (value instanceof Directive) {

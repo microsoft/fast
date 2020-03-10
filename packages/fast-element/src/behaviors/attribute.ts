@@ -7,6 +7,10 @@ export class AttributeBinding extends BindingBase {
     }
 
     updateTarget(value: unknown) {
-        this.target.setAttribute(this.directive.targetName!, value as string);
+        if (value === null || value === void 0) {
+            this.target.removeAttribute(this.directive.targetName!);
+        } else {
+            this.target.setAttribute(this.directive.targetName!, value as string);
+        }
     }
 }
