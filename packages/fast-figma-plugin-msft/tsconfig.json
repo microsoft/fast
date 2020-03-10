@@ -1,11 +1,5 @@
 {
-    "extends": "../../tsconfig.json",
-    "compilerOptions": {
-        "target": "es6",
-        "baseUrl": ".",
-        "outDir": "./dist",
-        "declaration": false,
-        "strictNullChecks": true
-    },
-    "include": ["./src"]
+  "compilerOptions": {
+    "target": "es6"
+  }
 }

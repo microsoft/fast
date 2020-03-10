@@ -1,7 +1,7 @@
 {
-  "name": "fast-figma-plugin-msft",
+  "name": "Theme Designer",
+  "id": "817512779757241429",
   "api": "1.0.0",
-  "main": "./dist/main.js",
-  "ui": "./dist/index.html",
-  "id": "796902094715412666"
+  "main": "code.js",
+  "ui": "ui.html"
 }
