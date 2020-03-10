@@ -24,11 +24,16 @@ import {
     oneOfDeeplyNestedSchema as oneOfArraysSchema,
     oneOfSchema,
     textareaSchema,
+    textSchema,
     tooltipSchema,
 } from "../../../src/__tests__/schemas";
 
 export const textField: ExampleComponent = {
     schema: textareaSchema,
+};
+
+export const text: ExampleComponent = {
+    schema: textSchema,
 };
 
 export const numberField: ExampleComponent = {
