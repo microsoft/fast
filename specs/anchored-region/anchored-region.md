@@ -18,7 +18,7 @@ It is envisioned that this component would be used as a building block for other
 
 ### Features
 
-- **Relative positioning:** Users can use to it position an element relative to another another element directly, like enabling a menu to open above or below a trigger button.
+- **Relative positioning:** Users can use it to position an element relative to another another element directly, like enabling a menu to open above or below a trigger button.
 
 - **Responsive positioning:** Users can use it to position an element relative to another element based on available space, for example a menu could open upwards if the trigger button is near the bottom of the page, and downwards if it is nearer the top.
 
@@ -40,8 +40,8 @@ Also, some css settings can interfere with the data returned by intersection obs
             Button is an anchor
         </button>
         <anchored-region
-            viewportid="viewport"
-            anchorid="anchor"
+            viewport="viewport"
+            anchor="anchor"
             verticalPositioningMode="locktodefault"
             verticalDefaultPosition="top"
         >
@@ -68,7 +68,7 @@ A region that always renders above the anchor element.
         Button is an anchor
     </button>
     <anchored-region
-        anchorid="anchor"
+        anchor="anchor"
         verticalPositioningMode="locktodefault"
         verticalDefaultPosition="top"
     >
@@ -87,7 +87,7 @@ A region that renders above or below the anchor depending on available space.
         Button is an anchor
     </button>
     <anchored-region
-        anchorid="anchor"
+        anchor="anchor"
         verticalpositioningmode="dynamic"
     >
       This shows up above or below the anchor depending on available space
@@ -105,7 +105,7 @@ A region that renders above or below the anchor depending on available space but
         Button is an anchor
     </button>
     <anchored-region
-        anchorid="anchor"
+        anchor="anchor"
         verticalpositioningmode="onetime"
     >
       This shows up above or below the anchor depending on available space
@@ -124,7 +124,7 @@ A region that overlaps the anchor and renders above or below it depending on ava
         Button is an anchor
     </button>
     <anchored-region
-        anchorid="anchor"
+        anchor="anchor"
         verticalPositioningMode="dynamic"
         verticalinset="true"
     >
@@ -144,7 +144,7 @@ A region renders above or below the anchor based on available space and is sized
         Button is an anchor
     </button>
     <anchored-region
-        anchorid="anchor"
+        anchor="anchor"
         verticalPositioningMode="dynamic"
         verticalscalingenabled="true"
     >
@@ -163,7 +163,7 @@ A region that renders below the anchor until that space is less than 100px.
         Button is an anchor
     </button>
     <anchored-region
-        anchorid="anchor"
+        anchor="anchor"
         verticalpositioningmode="dynamic"
         verticaldefaultposition="below"
         verticalthreshold="100"
@@ -176,18 +176,24 @@ A region that renders below the anchor until that space is less than 100px.
 
 The dimensions of the anchored region will match the dimensions of the content unless scaling is enabled on a particular axis (verticalscalingenabled & horizontalscalingenabled) in which case it will fill all available space between the anchor and viewport.
 
+The component allows users to set a "Positioning Mode" on each axis which defines how the component will behave:
+- 'uncontrolled':  The anchored region will appear as it normally would in document flow.
+- 'locktodefault': The anchored region will always be placed in the specified default position regardless of available space.  For example a menu that always opens upwards.
+- 'dynamic': The anchored region is placed relative to the anchor element based on how much space is available between it and the viewport.  For example a menu that opens opens upwards when it is near the bottom of the page, and downwards when near the top.
+- 'onetime': As the 'dynamic' option, but position is not changed after initial placement.
+
 ### API
 
 *Component name:*
 - `fast-anchored-region`
 
 *Attributes:*
-- anchorId - The html id of the HTMLElement used as the anchor around which the positioning region is placed.  This must be set for the component's positioning logic to be active.
+- anchor - The html id of the HTMLElement used as the anchor around which the positioning region is placed.  This must be set for the component's positioning logic to be active.
 
-- viewportId - The html id of the HTMLElement used as the viewport the component uses to determine available layout space around the anchor element.  If unset the immediate parent element of the positioner is used.
+- viewport - The html id of the HTMLElement used as the viewport the component uses to determine available layout space around the anchor element.  If unset the immediate parent element of the positioner is used.
 
 - horizontalPositioningMode - Can be 'uncontrolled', 'locktodefault', 'dynamic' or 'onetime'.  Default is 'uncontrolled'.
-- horizontalDefaultPosition - Can be 'left', 'right' or 'unset'.  Default is 'unset'
+- horizontalDefaultPosition - Can be 'start', 'end', 'left', 'right' or 'unset'.  Default is 'unset'
 - horizontalInset - Boolean that indicates whether the region should overlap the anchor on the horizontal axis. Default is false which places the region adjacent to the anchor element.
 - horizontalThreshold - Numeric value that defines how small in pixels the region must be to the edge of the viewport to switch to the opposite side of the anchor. The component favors the default position until this value is crossed.  When there is not enough space on either side or the value is unset the side with the most space is chosen.
 - horizontalScalingEnabled - The region is sized from code to match available space, in other scenarios the region gets sized via content size.
@@ -205,7 +211,7 @@ The dimensions of the anchored region will match the dimensions of the content u
 - default slot for content
 
 *Events:*
-- positionchanged - event is thrown whenever the placement of the region relative to the anchor changes (top/bottom and left/right). 
+- positionchange - event is thrown whenever the placement of the region relative to the anchor changes (top/bottom and left/right). 
 
 
 ### Anatomy and Appearance
