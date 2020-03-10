@@ -13,3 +13,13 @@ export abstract class Directive implements TargetedInstruction {
         behaviors.push(new this.behavior!(this, target));
     }
 }
+
+export class AttachedBehaviorDirective<T> extends Directive {
+    constructor(private name: string, public behavior: BehaviorType, public options: T) {
+        super();
+    }
+
+    public createPlaceholder(index: number) {
+        return `${this.name}="${super.createPlaceholder(index)}"`;
+    }
+}
