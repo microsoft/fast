@@ -62,6 +62,7 @@ Example:
 ```jsx
 import { DndProvider } from "react-dnd";
 import HTML5Backend from "react-dnd-html5-backend";
+import { ModularForm, ModularViewer } from "@microsoft/fast-tooling-react";
 
 // See details on implementation from the standalone
 // versions of Form and Viewer
