@@ -61,6 +61,36 @@ describe("getDataUpdatedWithSourceData", () => {
             foo: ["a", "b", "c", "d"],
         });
     });
+    test("should update a target in an undefined array with source data", () => {
+        const data: Dictionary<unknown> = {
+            foo: void 0,
+        };
+        const targetDataLocation: string = "foo[0]";
+        const sourceData: string = "b";
+        const updatedData: unknown = getDataUpdatedWithSourceData({
+            data,
+            sourceData,
+            targetDataLocation,
+            targetDataType: DataType.array,
+        });
+
+        expect(updatedData).toEqual({
+            foo: ["b"],
+        });
+    });
+    test("should update a target in an array at the root level with source data", () => {
+        const data: Dictionary<unknown> = void 0;
+        const targetDataLocation: string = "[0]";
+        const sourceData: string = "b";
+        const updatedData: unknown = getDataUpdatedWithSourceData({
+            data,
+            sourceData,
+            targetDataLocation,
+            targetDataType: DataType.array,
+        });
+
+        expect(updatedData).toEqual(["b"]);
+    });
     test("should update a target below an array item with source data", () => {
         const data: Dictionary<unknown> = {
             foo: ["a", "b", "d"],
