@@ -11,6 +11,10 @@
 ### Use Cases
 
 *Primary use cases for this component.*
+
+### Non-goals
+
+*A list of use cases, features, or functionality which are **not** goals for the component*
   
 ### Features
 
