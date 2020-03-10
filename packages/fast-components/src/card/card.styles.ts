@@ -1,5 +1,5 @@
 import { css } from "@microsoft/fast-element";
-import { display } from "../styles";
+import { display, elevation } from "../styles";
 
 export const CardStyles = css`
     ${display("block")} :host {
@@ -11,6 +11,6 @@ export const CardStyles = css`
         box-sizing: border-box;
         background: var(--neutral-layer-card);
         border-radius: var(--elevated-corner-radius);
-        box-shadow: 0 0 calc(var(--elevation) * 1px) rgba(0, 0, 0, 0.5);
+        ${elevation};
     }
 `;
