@@ -13,10 +13,6 @@ export const DialogStyles = css`
         display: block;
     }
 
-    ::slotted(*) {
-        --elevation: 0;
-    }
-
     .overlay {
         position: fixed;
         top: 0;
