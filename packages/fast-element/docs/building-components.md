@@ -335,7 +335,7 @@ const template = html<FriendList>`
   <h1>Friends</h1>
 
   <form @submit=${x => x.addFriend()}>
-    <input type="text" value=${x => x.name} @input=${(x, c) => x.onNameChanged(c.event)}>
+    <input type="text" value=${x => x.name} @input=${(x, c) => x.handleNameInput(c.event)}>
     <button type="submit">Add Friend</button>
   </form>
   <ul>
@@ -362,7 +362,7 @@ export class FriendList extends FastElement {
     this.name = '';
   }
 
-  onNameChanged(event: Event) {
+  handleNameInput(event: Event) {
     this.name = (event.target! as HTMLInputElement).value;
   }
 }
@@ -399,7 +399,7 @@ const template = html<FriendList>`
   <h1>Friends</h1>
 
   <form @submit=${x => x.addFriend()}>
-    <input type="text" value=${x => x.name} @input=${(x, c) => x.onNameChanged(c.event)}>
+    <input type="text" value=${x => x.name} @input=${(x, c) => x.handleNameInput(c.event)}>
 
     ${when(x => x.name, html`
       <div>Next Name: ${nameTemplate}</div>
@@ -433,10 +433,42 @@ export class FriendList extends FastElement {
     this.name = '';
   }
 
-  onNameChanged(event: Event) {
+  handleNameInput(event: Event) {
     this.name = (event.target! as HTMLInputElement).value;
   }
 }
+```
+
+### Host Directives
+
+In all the examples above, our bindings and directives have only affected elements within the Shadow DOM of the component. However, sometimes you want to affect the host element itself, based on property state. For example, a progress component might want to write various `aria` attributes to the host, based on the progress state. In order to facilitate scenarios like this, you can use a `template` element as the root of your template, and it will represent the host element. Any attribute or directive you place on the `template` element will be applied to the host itself.
+
+**Example: Host Directive Template**
+
+```JavaScript
+const template = html<MyProgress>`
+  <template (Represents my-progress element)
+      role="progressbar"
+      $aria-valuenow={x => x.value}
+      $aria-valuemin={x => x.min}
+      $aria-valuemax={x => x.max}>
+    (template targeted at Shadow DOM here)
+  </template>
+`;
+```
+
+**Example: DOM with Host Directive Output**
+
+```HTML
+<my-progress
+    min="0"              (from user)
+    max="100"            (from user)
+    value="50"           (from user)
+    role="progressbar"   (from host directive)
+    aria-valuenow="50"   (from host directive)
+    aria-valuemin="0"    (from host directive)
+    aria-valuemax="100"  (from host directive)>
+</my-progress>
 ```
 
 ### Observables and Rendering

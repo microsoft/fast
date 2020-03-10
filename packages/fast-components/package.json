@@ -39,6 +39,8 @@
     "typescript": "^3.7.5"
   },
   "dependencies": {
-    "@microsoft/fast-element": "^0.1.0"
+    "@microsoft/fast-element": "^0.1.0",
+    "@microsoft/fast-web-utilities": "^4.4.0",
+    "tabbable": "^4.0.0"
   }
 }
