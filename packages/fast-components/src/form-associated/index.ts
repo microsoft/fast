@@ -1,5 +1,6 @@
 import { attr, emptyArray, FastElement } from "@microsoft/fast-element";
 import { keyCodeEnter } from "@microsoft/fast-web-utilities";
+import { bool } from "../utilities";
 
 export const supportsElementInternals = "ElementInternals" in window;
 
@@ -93,15 +94,18 @@ export abstract class FormAssociated<
 
     @attr
     public disabled: boolean = false;
-    private disabledChanged(): void {
+    protected disabledChanged(): void {
+        const disabled = bool(this.disabled);
         if (this.proxy instanceof HTMLElement) {
-            this.proxy.disabled = this.disabled === ("" as any); // TODO: https://github.com/microsoft/fast-dna/issues/2742
+            this.proxy.disabled = disabled; // TODO: https://github.com/microsoft/fast-dna/issues/2742
         }
+
+        disabled ? this.classList.add("disabled") : this.classList.remove("disabled");
     }
 
     @attr
     public name: string;
-    private nameChanged(): void {
+    protected nameChanged(): void {
         if (this.proxy instanceof HTMLElement) {
             this.proxy.name = this.name;
         }
@@ -112,10 +116,13 @@ export abstract class FormAssociated<
      */
     @attr
     public required: boolean = false;
-    private requiredChanged(): void {
+    protected requiredChanged(): void {
+        const required = bool(this.required);
         if (this.proxy instanceof HTMLElement) {
-            this.proxy.required = this.required === ("" as any); // TODO: https://github.com/microsoft/fast-dna/issues/2742
+            this.proxy.required = required; // TODO: https://github.com/microsoft/fast-dna/issues/2742
         }
+
+        required ? this.classList.add("required") : this.classList.remove("required");
     }
 
     /**
@@ -161,8 +168,8 @@ export abstract class FormAssociated<
             // property change callbacks, but during initialization
             // on the intial call of the callback, the proxy is
             // still undefined. We should find a better way to address this.
-            this.proxy.disabled = this.disabled === ("" as any); // TODO: https://github.com/microsoft/fast-dna/issues/2742
-            this.proxy.required = this.required === ("" as any); // TODO: https://github.com/microsoft/fast-dna/issues/2742
+            this.proxy.disabled = bool(this.disabled); // TODO: https://github.com/microsoft/fast-dna/issues/2742
+            this.proxy.required = bool(this.required); // TODO: https://github.com/microsoft/fast-dna/issues/2742
             if (typeof this.name === "string") {
                 this.proxy.name = this.name;
             }
@@ -176,7 +183,6 @@ export abstract class FormAssociated<
         this.proxyEventsToBlock.forEach(name =>
             this.proxy.removeEventListener(name, this.stopPropagation)
         );
-        this.removeChild(this.proxy);
     }
 
     /**
@@ -217,6 +223,15 @@ export abstract class FormAssociated<
         } else if (typeof message === "string") {
             this.proxy.setCustomValidity(message);
         }
+    }
+
+    /**
+     * Invoked when a connected component's form or fieldset has it's disabled
+     * state changed.
+     * @param disabled the disabled value of the form / fieldset
+     */
+    public formDisabledCallback(disabled: boolean): void {
+        this.disabled = disabled;
     }
 
     /**
