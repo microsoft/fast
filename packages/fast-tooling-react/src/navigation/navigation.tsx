@@ -53,7 +53,6 @@ class Navigation extends Foundation<
 
     protected handledProps: HandledProps<NavigationHandledProps> = {
         messageSystem: void 0,
-        dragAndDropReordering: void 0,
     };
 
     private messageSystemConfig: Register;
@@ -232,7 +231,7 @@ class Navigation extends Foundation<
             ),
         ];
 
-        if (this.props.dragAndDropReordering && isDraggable) {
+        if (isDraggable) {
             return (
                 <DraggableNavigationTreeItem
                     key={dictionaryKey + navigationConfigKey}
@@ -795,7 +794,7 @@ class Navigation extends Foundation<
                 }`;
             }
 
-            if (this.props.dragAndDropReordering && canDrag) {
+            if (canDrag) {
                 classes = `${classes} ${get(
                     this.props,
                     "managedClasses.navigation_item__draggable",
@@ -819,7 +818,7 @@ class Navigation extends Foundation<
         return (dragging: boolean, canDrag: boolean): string => {
             let classes: string = this.props.managedClasses.navigation_item;
 
-            if (this.props.dragAndDropReordering && canDrag) {
+            if (canDrag) {
                 classes = `${classes} ${get(
                     this.props,
                     "managedClasses.navigation_item__draggable",
