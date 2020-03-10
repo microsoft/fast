@@ -5,6 +5,10 @@ export interface ComponentDictionary {
     [key: string]: FunctionComponent<any> | ComponentClass<any> | string;
 }
 
+/**
+ * A mapping function intended to be used with the
+ * `mapDataDictionary` export from the @microsoft/fast-tooling library
+ */
 export function reactMapper(
     componentDictionary: ComponentDictionary
 ): (config: MapperConfig<JSX.Element>) => JSX.Element {
