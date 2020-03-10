@@ -1,7 +1,7 @@
 import React from "react";
 import Adapter from "enzyme-adapter-react-16";
 import { configure, mount, render, shallow } from "enzyme";
-import { BareForm, Form } from "./";
+import { Form, ModularForm } from "./";
 import { FormProps } from "./form.props";
 import {
     DataType,
@@ -158,7 +158,7 @@ describe("Form", () => {
         });
 
         const formInstance: any = mount(
-            <BareForm {...formProps} messageSystem={fastMessageSystem} />
+            <ModularForm {...formProps} messageSystem={fastMessageSystem} />
         );
 
         /* tslint:disable-next-line */
@@ -256,7 +256,7 @@ describe("Form", () => {
         });
 
         const formInstance: any = mount(
-            <BareForm {...formProps} messageSystem={fastMessageSystem} />
+            <ModularForm {...formProps} messageSystem={fastMessageSystem} />
         );
 
         /* tslint:disable-next-line */
@@ -354,7 +354,7 @@ describe("Form", () => {
         });
 
         const formInstance: any = mount(
-            <BareForm {...formProps} messageSystem={fastMessageSystem} />
+            <ModularForm {...formProps} messageSystem={fastMessageSystem} />
         );
 
         /* tslint:disable-next-line */
@@ -452,7 +452,7 @@ describe("Form", () => {
         });
 
         const formInstance: any = mount(
-            <BareForm {...formProps} messageSystem={fastMessageSystem} />
+            <ModularForm {...formProps} messageSystem={fastMessageSystem} />
         );
 
         /* tslint:disable-next-line */
@@ -550,7 +550,7 @@ describe("Form", () => {
             },
         });
         const formInstance: any = mount(
-            <BareForm {...formProps} messageSystem={fastMessageSystem} />
+            <ModularForm {...formProps} messageSystem={fastMessageSystem} />
         );
 
         /* tslint:disable-next-line */
@@ -649,7 +649,7 @@ describe("Form", () => {
         });
 
         const formInstance: any = mount(
-            <BareForm {...formProps} messageSystem={fastMessageSystem} />
+            <ModularForm {...formProps} messageSystem={fastMessageSystem} />
         );
 
         /* tslint:disable-next-line */
@@ -747,7 +747,7 @@ describe("Form", () => {
         });
 
         const formInstance: any = mount(
-            <BareForm {...formProps} messageSystem={fastMessageSystem} />
+            <ModularForm {...formProps} messageSystem={fastMessageSystem} />
         );
 
         /* tslint:disable-next-line */
@@ -849,7 +849,7 @@ describe("Form", () => {
         });
 
         const formInstance: any = mount(
-            <BareForm {...formProps} messageSystem={fastMessageSystem} />
+            <ModularForm {...formProps} messageSystem={fastMessageSystem} />
         );
 
         /* tslint:disable-next-line */
@@ -920,7 +920,7 @@ describe("Form", () => {
         });
 
         const formInstance: any = mount(
-            <BareForm {...formProps} messageSystem={fastMessageSystem} />
+            <ModularForm {...formProps} messageSystem={fastMessageSystem} />
         );
 
         const navigation: TreeNavigationConfig = [
@@ -1052,7 +1052,7 @@ describe("Form", () => {
         });
 
         const formInstance: any = mount(
-            <BareForm {...formProps} messageSystem={fastMessageSystem} />
+            <ModularForm {...formProps} messageSystem={fastMessageSystem} />
         );
 
         const navigation: TreeNavigationConfig = [
@@ -1185,7 +1185,7 @@ describe("Form", () => {
         });
 
         const formInstance: any = mount(
-            <BareForm
+            <ModularForm
                 {...formProps}
                 messageSystem={fastMessageSystem}
                 controls={[
@@ -1322,7 +1322,7 @@ describe("Form", () => {
             },
         });
         const formInstance: any = mount(
-            <BareForm
+            <ModularForm
                 {...formProps}
                 messageSystem={fastMessageSystem}
                 controls={[
@@ -1404,7 +1404,7 @@ describe("Form", () => {
         });
 
         const formInstance: any = mount(
-            <BareForm
+            <ModularForm
                 {...formProps}
                 messageSystem={fastMessageSystem}
                 controls={[
