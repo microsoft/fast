@@ -772,7 +772,7 @@ export class NameTag extends FastElement {
 
 > **IMPORTANT:** If you choose to render to the Light DOM, you will not be able to compose content, use slots, or leverage encapsulated styles. Light DOM rendering is not recommended for re-usable components. It may have some limited use as the root component of a small app.
 
-In addition to the Shadow DOM mode, `shadowOptions` exposes all the options that can be set through the standard `attachShadow` API. This means that you can also use it to specify new options such as `delegatesFocus: true`.
+In addition to the Shadow DOM mode, `shadowOptions` exposes all the options that can be set through the standard `attachShadow` API. This means that you can also use it to specify new options such as `delegatesFocus: true`. You only need to specify options that are different from the defaults mentioned above.
 
 ## Defining CSS
 
