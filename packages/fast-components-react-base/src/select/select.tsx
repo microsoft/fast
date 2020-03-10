@@ -282,6 +282,7 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
                 onSelectedItemsChanged={this.menuSelectionChange}
                 onBlur={this.handleMenuBlur}
                 selectOnFocus={false}
+                tabIndex={-1}
                 managedClasses={{
                     listbox: get(this.props.managedClasses, "select_menu", ""),
                     listbox__disabled: get(
