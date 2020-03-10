@@ -721,7 +721,7 @@ To get the fully composed event path from an event object, invoke the `composedP
 
 #### Custom Events
 
-In various scenarios, it may be appropriate for a custom element to publish its own element-specific events. To do this, create an instance of `CustomEvent` and use the `dispatchEvent` API on `FastElement`. Set the `bubbles: true` option if you want the event to bubble and `composed: true` if you want it to propagate outside of your Shadow DOM and be visible in the composed path.
+In various scenarios, it may be appropriate for a custom element to publish its own element-specific events. To do this, you can use the `$emit` helper on `FastElement`. It's a convenience method that creates an instance of `CustomEvent` and uses the `dispatchEvent` API on `FastElement` with the `bubbles: true` and `composed: true` options. It also ensures that the event is only emitted if the custom element is fully connected to the DOM. Here's an example:
 
 **Example: Custom Event Dispatch**
 
@@ -731,16 +731,12 @@ export class MyInput extends FastElement {
   @attr value: string = '';
 
   valueChanged() {
-    this.dispatchEvent(new CustomEvent('change', {
-      bubbles: true,
-      composed: true,
-      detail: this.value
-    }));
+    this.$emit('change', this.value);
   }
 }
 ```
 
-> **TIP:** When creating custom events, ensure that your event name is always lower-case, so that your Web Components stay compatible with various front-end frameworks that attach events through DOM binding patterns (the DOM is case insensitive).
+> **TIP:** When emitting custom events, ensure that your event name is always lower-case, so that your Web Components stay compatible with various front-end frameworks that attach events through DOM binding patterns (the DOM is case insensitive).
 
 ### Shadow DOM Configuration
 
