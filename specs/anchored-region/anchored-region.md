@@ -190,7 +190,7 @@ The component allows users to set a "Positioning Mode" on each axis which define
 *Attributes:*
 - anchor - The html id of the HTMLElement used as the anchor around which the positioning region is placed.  This must be set for the component's positioning logic to be active.
 
-- viewport - The html id of the HTMLElement used as the viewport the component uses to determine available layout space around the anchor element.  If unset the immediate parent element of the positioner is used.
+- viewport - Used to identify the HTMLElement used as the viewport the component uses to determine available layout space around the anchor element. Possible values are the id of the desired viewport element, '#document' or '#parent'.  The default value is '#parent'.
 
 - horizontalPositioningMode - Can be 'uncontrolled', 'locktodefault', 'dynamic' or 'onetime'.  Default is 'uncontrolled'.
 - horizontalDefaultPosition - Can be 'start', 'end', 'left', 'right' or 'unset'.  Default is 'unset'
