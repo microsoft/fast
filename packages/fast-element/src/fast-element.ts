@@ -15,6 +15,14 @@ function createFastElement(BaseType: typeof HTMLElement) {
             Controller.forCustomElement(this);
         }
 
+        public $emit(
+            type: string,
+            detail?: any,
+            options?: Omit<CustomEventInit, "detail">
+        ) {
+            return this.$controller.emit(type, detail, options);
+        }
+
         public connectedCallback() {
             this.$controller.onConnectedCallback();
         }
