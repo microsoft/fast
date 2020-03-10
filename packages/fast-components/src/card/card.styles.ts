@@ -1,11 +1,8 @@
 import { css } from "@microsoft/fast-element";
+import { display } from "../styles";
 
 export const CardStyles = css`
-    :host([hidden]) {
-        display: none;
-    }
-
-    :host {
+    ${display("block")} :host {
         --elevation: 4;
         display: block;
         contain: content;
