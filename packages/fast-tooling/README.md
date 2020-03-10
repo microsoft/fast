@@ -7,6 +7,7 @@ FAST Tooling is a library agnostic specific set of utilities to assist in creati
 - [Installation](#installation)
 - [Concepts](#concepts)
     - [JSON Schema](#json-schema)
+        - [Nesting data](#nesting-data)
 - [Message system](#message-system)
     - [Sending and receiving messages](#sending-and-receiving-messages)
 - [Data utilities](#data-utilities)
@@ -22,6 +23,8 @@ FAST Tooling is a library agnostic specific set of utilities to assist in creati
 ### JSON Schema
 
 [JSON schema](http://json-schema.org/) are used by FAST tooling libraries for generating data and creating UI. They have been extended to provide additional hooks for plugin systems in the FAST tooling libraries.
+
+#### Nesting data
 
 To identify nesting structures in the JSON schemas, such as with composable components, use the `linkedDataSchema` export from the `@microsoft/fast-tooling` package which defines the interface expected for the link and adds a property key to identify this section of data as linked data.
 
@@ -104,7 +107,7 @@ if (window.Worker) {
 
 ## Data utilities
 
-Data utilities are provided for the various data manipulations in the message system, they are also provided as exports.
+Data utilities are used for the various data manipulations in the message system, they are also provided as exports.
 
 ### Generating data from JSON schema
 

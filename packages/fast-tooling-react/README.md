@@ -34,8 +34,6 @@ The tooling available in FAST Tooling React can be used together to create UI fo
         - [Devices](#devices)
     - [Rotate](#rotate)
 
-
-
 ## Benefits
 
 The FAST Tooling can be used in any combination for the following scenarios:
@@ -52,7 +50,6 @@ The FAST Tooling can be used in any combination for the following scenarios:
 ## Requirements
 
 The `@microsoft/fast-tooling-react` package will be installed with `@microsoft/fast-tooling`. The `@microsoft/fast-tooling` package includes exports required for implementing the React specific components, namely the `MessageSystem` and the minified webworker which handles data manipulation. Please refer to the documentation for `@microsoft/fast-tooling` for a better understanding of these systems.
-
 
 ## Form
 
@@ -150,8 +147,8 @@ import { ControlType } from "@microsoft/fast-tooling-react";
 // Available types
 ControlType.select
 ControlType.array
-ControlType.children
 ControlType.checkbox
+ControlType.linkedData
 ControlType.numberField
 ControlType.sectionLink
 ControlType.section
@@ -164,8 +161,8 @@ These control types can be paired with our default controls, the following of wh
 
 - `SelectControl`
 - `ArrayControl`
-- `ChildrenControl`
 - `CheckboxControl`
+- `LinkedDataControl`
 - `NumberFieldControl`
 - `SectionLinkControl`
 - `SectionControl`
@@ -532,7 +529,7 @@ Example:
 
 ### Drag and drop
 
-Using the `dragAndDropReordering` option allows React children to be re-arranged from the navigation.
+Using the `dragAndDropReordering` option allows React children (referred to as linked data) to be re-arranged from the navigation.
 
 ## Navigation Menu
 
@@ -621,6 +618,7 @@ Example:
 
 ```jsx
 <Viewer
+    messageSystem={fastMessageSystem}
     iframeSrc={"/example-content"}
     width={500}
     height={300}
@@ -633,6 +631,7 @@ Exampe:
 
 ```jsx
 <Viewer
+    messageSystem={fastMessageSystem}
     iframeSrc={"/example-content"}
     width={this.state.viewerWidth}
     height={this.state.viewerHeight}
