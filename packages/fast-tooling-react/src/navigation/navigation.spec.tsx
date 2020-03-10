@@ -1,10 +1,8 @@
 import React from "react";
 import Adapter from "enzyme-adapter-react-16";
 import { configure, mount, render, shallow } from "enzyme";
-import { DndProvider } from "react-dnd";
-import HTML5Backend from "react-dnd-html5-backend";
 import { NavigationProps } from "./navigation.props";
-import { Navigation } from "./navigation";
+import { ModularNavigation, Navigation } from "./index";
 import {
     DataType,
     InitializeMessageOutgoing,
@@ -23,25 +21,15 @@ const navigationProps: NavigationProps = {
     messageSystem: void 0,
 };
 
-const DragDropNavigation: React.FC<NavigationProps> = (
-    props: React.PropsWithChildren<NavigationProps>
-): React.ReactElement => {
-    return (
-        <DndProvider backend={HTML5Backend}>
-            <Navigation {...props} />
-        </DndProvider>
-    );
-};
-
 describe("Navigation", () => {
     test("should not throw if there is no drag and drop available", () => {
         expect(() => {
-            shallow(<Navigation {...navigationProps} />);
+            shallow(<ModularNavigation {...navigationProps} />);
         }).not.toThrow();
     });
     test("should not throw if drag and drop is available", () => {
         expect(() => {
-            shallow(<DragDropNavigation {...navigationProps} />);
+            shallow(<Navigation {...navigationProps} />);
         }).not.toThrow();
     });
     test("should register with the message system", () => {
@@ -73,7 +61,7 @@ describe("Navigation", () => {
         expect(fastMessageSystem["register"].size).toEqual(0);
 
         const rendered: any = mount(
-            <Navigation {...navigationProps} messageSystem={fastMessageSystem} />
+            <ModularNavigation {...navigationProps} messageSystem={fastMessageSystem} />
         );
 
         /* tslint:disable-next-line */
@@ -105,7 +93,7 @@ describe("Navigation", () => {
         });
 
         const rendered: any = mount(
-            <Navigation {...navigationProps} messageSystem={fastMessageSystem} />
+            <ModularNavigation {...navigationProps} messageSystem={fastMessageSystem} />
         );
 
         rendered.unmount();
@@ -164,7 +152,7 @@ describe("Navigation", () => {
         });
 
         const rendered: any = mount(
-            <Navigation {...navigationProps} messageSystem={fastMessageSystem} />
+            <ModularNavigation {...navigationProps} messageSystem={fastMessageSystem} />
         );
 
         /* tslint:disable-next-line */
@@ -268,7 +256,7 @@ describe("Navigation", () => {
         });
 
         const rendered: any = mount(
-            <Navigation {...navigationProps} messageSystem={fastMessageSystem} />
+            <ModularNavigation {...navigationProps} messageSystem={fastMessageSystem} />
         );
 
         /* tslint:disable-next-line */
