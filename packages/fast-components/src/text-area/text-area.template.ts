@@ -8,6 +8,7 @@ export const TextAreaTemplate = html<TextArea>`
         <label
             part="label"
             class="label"
+            for="control"
         >
             <slot name="label"></slot>
         </label>
@@ -16,6 +17,7 @@ export const TextAreaTemplate = html<TextArea>`
     <textarea
         part="control"
         class="control"
+        id="${x => (x.childNodes.length ? "control" : null)}"
         $autofocus="${x => x.autofocus}"
         $cols="${x => x.cols}"
         $disabled="${x => x.disabled}"
@@ -29,5 +31,5 @@ export const TextAreaTemplate = html<TextArea>`
         $required="${x => x.required}"
         $rows="${x => x.rows}"
         $spellcheck="${x => x.spellcheck}"
-    ></textarea>
+    ><slot></slot></textarea>
 `;
