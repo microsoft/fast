@@ -89,6 +89,7 @@ We want general feature-parity between this component and the typical correspond
 | default | ![](./images/text-area.png) |
 | focus | ![](./images/text-area-focus.png)
 | placeholder | ![](./images/text-area-placeholder.png)
+| with label | ![](./images/text-area-label.png)
 
 *Slot Names*
 - default - the content of the text area. Unlike an input which stores a value and has no content, text area can have content which is treated as the value. This content must always be text.
