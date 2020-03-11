@@ -7,6 +7,9 @@ import { TextAreaStyles as styles } from "./text-area.styles";
     name: "fast-text-area",
     template,
     styles,
+    shadowOptions: {
+        delegatesFocus: true,
+    },
 })
 export class FASTTextArea extends TextArea {}
 export * from "./text-area.template";
