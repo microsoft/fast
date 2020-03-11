@@ -87,18 +87,16 @@ function getArrayDataUpdatedWithSourceData(config: UpdateDataWithSourceConfig): 
  */
 function getParentDataLocation(
     dataLocation: string,
-    arrayIndexCallback?: (index: number) => void
+    arrayIndexCallback: (index: number) => void
 ): string {
     const dataLocationAsDotNotation: string = normalizeDataLocationToDotNotation(
         dataLocation
     );
     const dataLocationSegments: string[] = dataLocationAsDotNotation.split(".");
 
-    if (isFunction(arrayIndexCallback)) {
-        arrayIndexCallback(
-            parseInt(dataLocationSegments[dataLocationSegments.length - 1], 10)
-        );
-    }
+    arrayIndexCallback(
+        parseInt(dataLocationSegments[dataLocationSegments.length - 1], 10)
+    );
 
     return dataLocationSegments.slice(0, dataLocationSegments.length - 1).join(".");
 }
