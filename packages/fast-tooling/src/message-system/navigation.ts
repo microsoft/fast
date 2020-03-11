@@ -64,16 +64,16 @@ function getNavigationRecursive(
     dataLocation: string = "",
     schemaLocation: string = "",
     parent: string | null = null,
-    id: string = ""
+    id?: string
 ): TreeNavigationConfig {
+    const self: string = id || dataLocation;
     const items: TreeNavigationConfig[] = getNavigationItems(
         schema,
         data,
         dataLocation,
         schemaLocation,
-        dataLocation
+        self
     );
-    const self: string = `${id}${dataLocation}`;
 
     return [
         {
@@ -114,17 +114,15 @@ function getCombiningIndex(schema: any, data: any): number {
     if (data !== undefined) {
         const ajvInstance: ajv.Ajv = new ajv();
 
-        if (Array.isArray(schema)) {
-            schema.forEach((schemaItem: any, valueIndex: number) => {
-                const valueIndexKey: string = `${valueIndex}`;
-                ajvInstance.addSchema(schemaItem, valueIndexKey);
+        schema.forEach((schemaItem: any, valueIndex: number) => {
+            const valueIndexKey: string = `${valueIndex}`;
+            ajvInstance.addSchema(schemaItem, valueIndexKey);
 
-                if (ajvInstance.validate(valueIndexKey, data)) {
-                    index = valueIndex;
-                    return;
-                }
-            });
-        }
+            if (ajvInstance.validate(valueIndexKey, data)) {
+                index = valueIndex;
+                return;
+            }
+        });
     }
 
     return index;
@@ -133,22 +131,25 @@ function getCombiningIndex(schema: any, data: any): number {
 function getNavigationItems(
     schema: any,
     data: any,
-    dataLocation: string = "",
-    schemaLocation: string = "",
-    parent: string = ""
+    dataLocation: string,
+    schemaLocation: string,
+    parent: string
 ): TreeNavigationConfig[] {
     const combiningKeyword: CombiningKeyword | void = schema[CombiningKeyword.oneOf]
         ? CombiningKeyword.oneOf
         : schema[CombiningKeyword.anyOf]
-            ? schema[CombiningKeyword.anyOf]
+            ? CombiningKeyword.anyOf
             : void 0;
 
     if (combiningKeyword) {
         const combiningIndex: number = getCombiningIndex(schema[combiningKeyword], data);
-        const currentSchemaLocation: string =
-            schemaLocation === ""
-                ? `${combiningKeyword}[${combiningIndex}]`
-                : `${schemaLocation}.${combiningKeyword}[${combiningIndex}]`;
+        const schemaLocationIsRoot: boolean = schemaLocation === "";
+        const currentSchemaLocation: string = schemaLocationIsRoot
+            ? `${combiningKeyword}[${combiningIndex}]`
+            : `${schemaLocation}.${combiningKeyword}[${combiningIndex}]`;
+        const currentId: string = `${dataLocation}{${schemaLocation}${
+            schemaLocationIsRoot ? "" : "."
+        }${combiningKeyword}[${combiningIndex}]}`;
 
         return [
             getNavigationRecursive(
@@ -158,7 +159,7 @@ function getNavigationItems(
                 dataLocation,
                 currentSchemaLocation,
                 parent,
-                currentSchemaLocation
+                currentId
             ),
         ];
     }
@@ -188,7 +189,7 @@ function getNavigationItems(
                         schema.items,
                         data[index],
                         undefined,
-                        dataLocation ? `${dataLocation}[${index}]` : `[${index}]`,
+                        `${dataLocation}[${index}]`,
                         schemaLocation
                             ? `${schemaLocation}.${itemsKeyword}`
                             : `${itemsKeyword}`,
