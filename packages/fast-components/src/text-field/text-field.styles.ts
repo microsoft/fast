@@ -14,7 +14,6 @@ export const TextFieldStyles = css`
         display: flex;
         flex-direction: row;
         color: var(--neutral-foreground-rest);
-        border-radius: var(--corner-radius);
         background: var(--neutral-fill-input-rest);
         border-radius: calc(var(--corner-radius) * 1px);
         border: calc(var(--outline-width) * 1px) solid var(--neutral-outline-rest);
