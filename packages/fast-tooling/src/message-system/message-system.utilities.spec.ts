@@ -7,6 +7,7 @@ import {
     GetDataDictionaryMessageOutgoing,
     GetNavigationDictionaryMessageIncoming,
     GetNavigationDictionaryMessageOutgoing,
+    GetNavigationMessageOutgoing,
     InitializeMessageOutgoing,
     MessageSystemDataDictionaryTypeAction,
     MessageSystemDataTypeAction,
@@ -25,6 +26,7 @@ import { getMessage } from "./message-system.utilities";
 import { DataType } from "../data-utilities/types";
 import { Data, DataDictionary, LinkedData } from "./data.props";
 import { SchemaDictionary } from "./schema.props";
+import { getNavigationDictionary } from "./navigation";
 
 /* tslint:disable */
 describe("getMessage", () => {
@@ -521,6 +523,48 @@ describe("getMessage", () => {
             expect(message.action).toEqual(MessageSystemNavigationTypeAction.update);
             expect(message.activeDictionaryId).toEqual(dictionaryId);
             expect(message.activeNavigationConfigId).toEqual(navigationConfigId);
+        });
+        test("should return messages sent with navigation getter", () => {
+            const dictionaryId: string = "data";
+            const navigationConfigId: string = "";
+
+            const dataBlob: DataDictionary<unknown> = [
+                {
+                    data: {
+                        schemaId: "foo",
+                        data: {
+                            foo: "bar",
+                        },
+                    },
+                },
+                "data",
+            ];
+            const schemaDictionary: SchemaDictionary = {
+                foo: { id: "foo" },
+            };
+            getMessage({
+                type: MessageSystemType.initialize,
+                data: dataBlob,
+                schemaDictionary,
+            }) as InitializeMessageOutgoing;
+            const message: GetNavigationMessageOutgoing = getMessage({
+                type: MessageSystemType.navigation,
+                action: MessageSystemNavigationTypeAction.get,
+            }) as GetNavigationMessageOutgoing;
+
+            expect(message.type).toEqual(MessageSystemType.navigation);
+            expect(message.action).toEqual(MessageSystemNavigationTypeAction.get);
+            expect(message.activeDictionaryId).toEqual(dictionaryId);
+            expect(message.activeNavigationConfigId).toEqual(navigationConfigId);
+
+            const navigationDictionary = getNavigationDictionary(
+                schemaDictionary,
+                dataBlob
+            );
+
+            expect(message.navigation).toEqual(
+                navigationDictionary[0][message.activeDictionaryId]
+            );
         });
     });
     describe("dataDictionary", () => {

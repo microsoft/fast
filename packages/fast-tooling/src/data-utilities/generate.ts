@@ -10,20 +10,6 @@ const exampleString: string = "example text";
  * Gets a single example from a schema
  */
 function getDataFromSchema(schema: any): any {
-    if (isObjectDataType(schema)) {
-        const exampleData: any = {};
-
-        if (hasRequired(schema)) {
-            for (const requiredItem of schema.required) {
-                exampleData[requiredItem] = getDataFromSchema(
-                    schema[PropertyKeyword.properties][requiredItem]
-                );
-            }
-        }
-
-        return exampleData;
-    }
-
     if (isOneOfAnyOf(schema)) {
         const oneOfAnyOf: CombiningKeyword =
             schema[CombiningKeyword.oneOf] !== undefined
@@ -47,11 +33,17 @@ function getDataFromSchemaByDataType(schema: any): any {
     }
 
     if (isObjectDataType(schema)) {
+        const exampleData: any = {};
+
         if (hasRequired(schema)) {
-            return getDataFromSchema(schema);
+            for (const requiredItem of schema.required) {
+                exampleData[requiredItem] = getDataFromSchema(
+                    schema[PropertyKeyword.properties][requiredItem]
+                );
+            }
         }
 
-        return {};
+        return exampleData;
     }
 
     switch (schema.type) {
@@ -72,15 +64,6 @@ function getDataFromSchemaByDataType(schema: any): any {
             return exampleString;
         case DataType.number:
             return Math.round(Math.random() * 100);
-        default:
-            if (schema[CombiningKeyword.oneOf] || schema[CombiningKeyword.anyOf]) {
-                const oneOfAnyOf: CombiningKeyword = schema[CombiningKeyword.oneOf]
-                    ? CombiningKeyword.oneOf
-                    : CombiningKeyword.anyOf;
-
-                return getDataFromSchema(schema[oneOfAnyOf][0]);
-            }
-            break;
     }
 }
 
