@@ -332,7 +332,7 @@ function getNavigationMessage(
     switch (data.action) {
         case MessageSystemNavigationTypeAction.update:
             activeDictionaryId = data.activeDictionaryId;
-            activeNavigationConfigId = data.activeDictionaryId;
+            activeNavigationConfigId = data.activeNavigationConfigId;
 
             return {
                 type: MessageSystemType.navigation,
@@ -346,7 +346,7 @@ function getNavigationMessage(
                 action: MessageSystemNavigationTypeAction.get,
                 activeDictionaryId,
                 activeNavigationConfigId,
-                navigation: activeDictionaryId[0][activeDictionaryId],
+                navigation: navigationDictionary[0][activeDictionaryId],
             };
     }
 }
