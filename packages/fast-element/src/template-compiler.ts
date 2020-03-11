@@ -11,7 +11,7 @@ import {
     BehaviorType,
 } from "./behaviors/index";
 import { BindingDirective } from "./directives/bind";
-import { Directive } from "./directives/directive";
+import { Directive, AttachedBehaviorDirective } from "./directives/directive";
 
 type MaybeNode = Node | null;
 
@@ -184,7 +184,7 @@ export class TemplateCompiler {
         attrName: string,
         directive: Directive
     ) {
-        if (attrName === "ref") {
+        if (directive instanceof AttachedBehaviorDirective) {
             return;
         }
 
