@@ -1,7 +1,7 @@
 import { set } from "lodash-es";
 import { Data, SchemaDictionary } from "../message-system";
 
-export interface MapperConfig {
+export interface MapperConfig<T> {
     /**
      * Data that maps to the JSON schema
      */
@@ -11,7 +11,7 @@ export interface MapperConfig {
      * The data that has been previously
      * resolved from the mapper
      */
-    resolvedData: any;
+    resolvedData: T;
 
     /**
      * JSON schema
@@ -23,7 +23,7 @@ interface MapDataDictionaryConfig<T> {
     /**
      * The dictionary of data
      */
-    dataDictionary: { [key: string]: Data<T> };
+    dataDictionary: { [key: string]: Data<unknown> };
 
     /**
      * The dictionary of data key
@@ -39,7 +39,7 @@ interface MapDataDictionaryConfig<T> {
     /**
      * The mapping function
      */
-    mapper: (config: MapperConfig) => T;
+    mapper: (config: MapperConfig<T>) => T;
 }
 
 /**
@@ -49,7 +49,7 @@ interface MapDataDictionaryConfig<T> {
 export function mapDataDictionary<T>(config: MapDataDictionaryConfig<T>): T {
     const resolvedData: any = config.dataDictionary[config.dataDictionaryKey].data;
     Object.entries(config.dataDictionary).map(
-        ([key, value]: [string, Data<any>]): void => {
+        ([key, value]: [string, Data<unknown>]): void => {
             if (value.parent && value.parent.id === config.dataDictionaryKey) {
                 set(
                     resolvedData,
