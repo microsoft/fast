@@ -1,5 +1,4 @@
 import { css } from "@microsoft/fast-element";
-//import { disabledCursor, display } from "../styles";
 
 export const SliderStyles = css`
     .slider {
