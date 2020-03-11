@@ -91,7 +91,7 @@ We want general feature-parity between this component and the typical correspond
 | placeholder | ![](./images/text-area-placeholder.png)
 
 *Slot Names*
-- default - the content of the text area. Unlike input where content is a value, the content of a text area is predefined children.
+- default - the content of the text area. Unlike an input which stores a value and has no content, text area can have content which is treated as the value. This content must always be text.
 - label - the label content
 
 *Host Classes*
