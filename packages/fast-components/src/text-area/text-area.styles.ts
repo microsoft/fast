@@ -24,6 +24,7 @@ export const TextAreaStyles = css`
         padding-top: calc(var(--design-unit) * 1.5);
         padding-bottom: calc(var(--design-unit) * 1.5);
         max-width: 100%;
+        resize: none;
     }
 
     .control:hover:enabled {
@@ -51,6 +52,18 @@ export const TextAreaStyles = css`
     :host(.filled:hover:not([disabled])) .control {
         background: var(--neutral-fill-hover);
         border-color: transparent;
+    }
+
+    :host(.resize-both) .control {
+        resize: both;
+    }
+
+    :host(.resize-horizontal) .control {
+        resize: horizontal;
+    }
+
+    :host(.resize-vertical) .control {
+        resize: vertical;
     }
 
     .label {

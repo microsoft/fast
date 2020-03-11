@@ -5,6 +5,13 @@ export enum TextAreaAppearance {
     outline = "outline",
 }
 
+export enum TextAreaResize {
+    none = "none",
+    both = "both",
+    horizontal = "horizontal",
+    vertical = "vertical",
+}
+
 export class TextArea extends FastElement {
     @attr
     public appearance: TextAreaAppearance = TextAreaAppearance.outline;
@@ -28,6 +35,14 @@ export class TextArea extends FastElement {
         this.readonly
             ? this.classList.add("readonly")
             : this.classList.remove("readonly");
+    }
+
+    @attr
+    public resize: TextAreaResize = TextAreaResize.none;
+    private resizeChanged(): void {
+        this.resize !== TextAreaResize.none
+            ? this.classList.add(`resize-${this.resize}`)
+            : this.classList.remove(`resize-${this.resize}`);
     }
 
     @attr
