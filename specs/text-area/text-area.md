@@ -75,9 +75,7 @@ We want general feature-parity between this component and the typical correspond
     $required="${x => x.required}"
     $rows="${x => x.rows}"
     $spellcheck="${x => x.spellcheck}"
->
-    <slot></slot>
-</textarea>
+></textarea>
 <!-- end shadow root -->
 ```
 
@@ -92,7 +90,7 @@ We want general feature-parity between this component and the typical correspond
 | with label | ![](./images/text-area-label.png)
 
 *Slot Names*
-- default - the content of the text area. Unlike an input which stores a value and has no content, text area can have content which is treated as the value. This content must always be text.
+- default - There will no slot in the template here, but the textarea children will act as the default slot. Unlike an input which stores a value and has no content, text area can have content which is treated as the value. This content must always be text.
 - label - the label content
 
 *Host Classes*
