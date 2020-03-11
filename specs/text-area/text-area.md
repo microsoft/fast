@@ -42,7 +42,6 @@ We want general feature-parity between this component and the typical correspond
 - `maxlength`	- the maximum number of characters the input should accept
 - `minlength` -	the minimum number of characters long the input can be and still be considered valid
 - `name` - the name of the control
-- `pattern` - a regular expression the input's contents must match in order to be valid
 - `placeholder` - an exemplar value to display in the `<textarea>` whenever it is empty
 - `readonly` - the `<textarea>` should be submitted with the form but should not be editable.
 - `required` - boolean value that sets the `<textarea>` as required
@@ -71,7 +70,6 @@ We want general feature-parity between this component and the typical correspond
     $maxlength="${x => x.maxlength}"
     $minlength="${x => x.minlength}"
     $name="${x => x.name}"
-    $pattern="${x => x.pattern}"
     $placeholder="${x => x.placeholder}"
     $readonly="${x => x.readonly}"
     $required="${x => x.required}"
