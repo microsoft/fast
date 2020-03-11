@@ -6,6 +6,9 @@ import { ElementStyles } from "./styles";
 import { AttributeDefinition, AttributeConfiguration } from "./attributes";
 import { Registry } from "./di";
 
+const defaultShadowOptions: ShadowRootInit = { mode: "open" };
+const defaultElementOptions: ElementDefinitionOptions = {};
+
 function createFastElement(BaseType: typeof HTMLElement) {
     return class FastElement extends BaseType {
         public $controller!: Controller;
@@ -13,6 +16,14 @@ function createFastElement(BaseType: typeof HTMLElement) {
         public constructor() {
             super();
             Controller.forCustomElement(this);
+        }
+
+        public $emit(
+            type: string,
+            detail?: any,
+            options?: Omit<CustomEventInit, "detail">
+        ) {
+            return this.$controller.emit(type, detail, options);
         }
 
         public connectedCallback() {
@@ -55,8 +66,15 @@ export const FastElement = Object.assign(createFastElement(HTMLElement), {
         );
         const shadowOptions =
             nameOrDef.shadowOptions === void 0
-                ? ({ mode: "open" } as ShadowRootInit)
-                : nameOrDef.shadowOptions || void 0;
+                ? defaultShadowOptions
+                : nameOrDef.shadowOptions === null
+                    ? void 0
+                    : { ...defaultShadowOptions, ...nameOrDef.shadowOptions };
+
+        const elementOptions =
+            nameOrDef.elementOptions === void 0
+                ? defaultElementOptions
+                : { ...defaultElementOptions, ...nameOrDef.shadowOptions };
 
         const observedAttributes = new Array(attributes.length);
         const proto = Type.prototype;
@@ -84,7 +102,7 @@ export const FastElement = Object.assign(createFastElement(HTMLElement), {
             nameOrDef.template,
             nameOrDef.styles,
             shadowOptions,
-            nameOrDef.elementOptions,
+            elementOptions,
             nameOrDef.dependencies
         );
 
@@ -106,7 +124,7 @@ export type PartialFastElementDefinition = {
     readonly styles?: ElementStyles;
     readonly attributes?: (AttributeConfiguration | string)[];
     readonly dependencies?: Registry[];
-    readonly shadowOptions?: ShadowRootInit | null;
+    readonly shadowOptions?: Partial<ShadowRootInit> | null;
     readonly elementOptions?: ElementDefinitionOptions;
 };
 
