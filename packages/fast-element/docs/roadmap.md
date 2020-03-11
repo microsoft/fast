@@ -7,6 +7,7 @@
 * **Feature**: Dependency injection infrastructure, including simple decorator-based property injection for `FastElement`.
 * **Test**: Testing infrastructure and test coverage.
 * **Fix**: Improve subscription cleanup on complex observable expressions.
+* **Feature**: Add a `children` decorator that internally sets up a MutationObserver to watch children, provides a simple callback, and constructs a standard JS of selected children, which can be bound in templates.
 
 ## Medium-term
 
