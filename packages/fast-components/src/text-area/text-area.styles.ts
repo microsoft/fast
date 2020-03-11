@@ -1,5 +1,5 @@
 import { css } from "@microsoft/fast-element";
-import { display } from "../styles";
+import { disabledCursor, display } from "../styles";
 
 export const TextAreaStyles = css`
     ${display("inline-block")} :host {
@@ -75,5 +75,15 @@ export const TextAreaStyles = css`
         font-weight: 400px;
         line-height: 20px;
         margin-bottom: 4px;
+    }
+
+    :host([disabled]) .label,
+    :host([readonly]) .label,
+    :host([readonly]) .control,
+    :host([disabled]) .control {
+        cursor: ${disabledCursor};
+    }
+    :host([disabled]) {
+        opacity: var(--disabled-opacity);
     }
 `;
