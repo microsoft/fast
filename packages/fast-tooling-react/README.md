@@ -35,6 +35,8 @@ The tooling available in FAST Tooling React can be used together to create UI fo
     - [Select device](#select-device)
         - [Devices](#devices)
     - [Rotate](#rotate)
+- [Data utilities](#data-utilities)
+    - [Transforming data](#transforming-data)
 
 ## Benefits
 
@@ -738,3 +740,48 @@ import {
     onUpdateOrientation={this.handleOrientationUpdate}
 />
 ```
+
+## Data utilities
+
+### Transforming data
+
+As data from the dictionary of data is intended to be mapped to JSON schema, it may need to be transformed to be useful as, for instance, a React component.
+
+Assuming that each JSON schema represents React props for a given component, a mapper has been provided which can be used in conjunction with the `@microsoft/fast-tooling` export `mapDataDictionary`.
+
+Example:
+
+```js
+import { mapDataDictionary } from "@microsoft/fast-tooling";
+import { reactMapper } from "@microsoft/fast-tooling-react";
+
+const componentDictionary = {
+    "button-schema-id": MyButton
+}
+
+const myComponentInstance = mapDataDictionary({
+    dataDictionary: {
+        foo: {
+            schemaId: "button-schema-id",
+            data: {
+                children: "Hello world",
+            },
+        },
+    },
+    dataDictionaryKey: "foo",
+    mapper: reactMapper(componentDictionary),
+    schemaDictionary: {
+        "button-schema-id": {
+            id: "button-schema-id",
+            type: "object",
+            properties: {
+                children: {
+                    type: "string",
+                },
+            },
+        },
+    },
+});
+```
+
+Expected result from the example above is an instance of `MyButton` with the text "Hello world". This is a simple mapper that assumes that any linked data is a React component that is nested.

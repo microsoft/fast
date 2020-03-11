@@ -56,7 +56,7 @@ describe("mapDataDictionary", () => {
         expect(mapper).toHaveBeenCalledTimes(2);
     });
     test("should map a single dictionary entry", () => {
-        const mapper: any = function(config: MapperConfig): any {
+        const mapper: any = function(config: MapperConfig<any>): any {
             return config.resolvedData;
         };
 
@@ -83,7 +83,7 @@ describe("mapDataDictionary", () => {
         });
     });
     test("should map multiple dictionary entries", () => {
-        const mapper: any = function(config: MapperConfig): any {
+        const mapper: any = function(config: MapperConfig<any>): any {
             return config.resolvedData;
         };
 
