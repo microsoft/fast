@@ -39,6 +39,9 @@ export class TextField extends FastElement {
     }
 
     @attr
+    public autofocus: boolean;
+
+    @attr
     public disabled: boolean;
 
     @attr

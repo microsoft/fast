@@ -29,6 +29,7 @@ export const TextFieldTemplate = html<TextField>`
             part="control"
             id=${x => (x.childNodes.length ? "control" : void 0)}
             $type=${x => x.type}
+            $autofocus=${x => x.autofocus}
             $disabled=${x => x.disabled}
             $placeholder=${x => x.placeholder}
             $list=${x => x.list}
