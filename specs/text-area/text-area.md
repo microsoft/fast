@@ -52,6 +52,7 @@ We want general feature-parity between this component and the typical correspond
   - vertical
 - `rows` - the number of visible text lines
 - `spellcheck` - controls whether or not to enable spell checking for the `<textarea>`, or if the default spell checking configuration should be used
+- `value` - the value (content) of the textarea. While the textarea element supports content being supplied as content within its opening and closing tags, it does not support slot projection. Value will be used instead.
 
 *Events*
 - `change: CustomEvent`
@@ -63,7 +64,7 @@ We want general feature-parity between this component and the typical correspond
 ```HTML
 <!-- shadow root -->
 <label part="label">
-    <slot name="label"></slot>
+    <slot></slot>
 </label>
 <textarea
     part="control"
@@ -95,8 +96,7 @@ We want general feature-parity between this component and the typical correspond
 | with label | ![](./images/text-area-label.png)
 
 *Slot Names*
-- default - There will no slot in the template here, but the textarea children will act as the default slot. Unlike an input which stores a value and has no content, text area can have content which is treated as the value. This content must always be text.
-- label - the label content
+- default - The label content
 
 *Host Classes*
 - disabled
