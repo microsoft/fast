@@ -1,4 +1,4 @@
-import { html, when } from "@microsoft/fast-element";
+import { html, ref, when } from "@microsoft/fast-element";
 import { TextArea } from "./text-area";
 
 export const TextAreaTemplate = html<TextArea>`
@@ -17,7 +17,7 @@ export const TextAreaTemplate = html<TextArea>`
     <textarea
         part="control"
         class="control"
-        id="${x => (x.childNodes.length ? "control" : null)}"
+        id="${x => (x.childNodes.length ? "control" : void 0)}"
         $autofocus="${x => x.autofocus}"
         $cols="${x => x.cols}"
         $disabled="${x => x.disabled}"
@@ -31,5 +31,8 @@ export const TextAreaTemplate = html<TextArea>`
         $required="${x => x.required}"
         $rows="${x => x.rows}"
         $spellcheck="${x => x.spellcheck}"
-    ><slot></slot></textarea>
+        $value="${x => x.value}"
+        @input=${x => x.handleTextInput()}"
+        ${ref("textarea")}
+    ></textarea>
 `;

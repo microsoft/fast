@@ -45,6 +45,8 @@ export class TextArea extends FastElement {
             : this.classList.remove(`resize-${this.resize}`);
     }
 
+    public textarea: HTMLTextAreaElement;
+
     @attr
     public autofocus: boolean;
 
@@ -77,4 +79,24 @@ export class TextArea extends FastElement {
 
     @attr
     public spellcheck: boolean;
+
+    @attr
+    public value: string;
+    public valueChanged(): void {
+        if (this.textarea && this.value !== this.textarea.value) {
+            this.textarea.value = this.value;
+        }
+    }
+
+    public connectedCallback(): void {
+        super.connectedCallback();
+
+        if (this.value) {
+            this.textarea.value = this.value;
+        }
+    }
+
+    public handleTextInput = (): void => {
+        this.$emit("change", this.textarea.value);
+    };
 }

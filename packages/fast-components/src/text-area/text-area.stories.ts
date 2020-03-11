@@ -10,4 +10,4 @@ export default {
     title: "Text area",
 };
 
-export const Mark = () => TextAreaTemplate;
+export const TextField = () => TextAreaTemplate;
