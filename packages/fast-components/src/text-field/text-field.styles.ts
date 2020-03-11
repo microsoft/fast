@@ -1,28 +1,11 @@
 import { css } from "@microsoft/fast-element";
 import { disabledCursor, display } from "../styles";
-// ...applyScaledTypeRamp("t7"),
-//         ...applyFontWeightNormal(),
-//         background: neutralFillInputRest,
-//         border: format(
-//             "{0} solid {1}",
-//             toPx<DesignSystem>(outlineWidth),
-//             neutralOutlineRest
-//         ),
-//         color: neutralForegroundRest,
-//         "font-family": "inherit",
-//         "box-sizing": "border-box",
-//         padding: format("0 {0}", horizontalSpacing(outlineWidth)),
-//         ...applyCornerRadius(),
-//         margin: "0",
-//         transition: "all 0.2s ease-in-out",
+
 export const TextFieldStyles = css`
     ${display("inline-block")} :host {
         font-family: var(--body-font);
         outline: none;
-        ${/*
-            * Chromium likes to select label text or the default slot when
-            * the checkbox is clicked. Maybe there is a better solution here?
-            */ ""} user-select: none;
+        user-select: none;
     }
 
     .root {
