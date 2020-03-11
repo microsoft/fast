@@ -34,6 +34,13 @@ describe("getDataFromSchema", () => {
 
         expect(getDataFromSchema(schema)).toEqual("foo");
     });
+    test("should return a const value", () => {
+        const schema: any = {
+            const: "foo",
+        };
+
+        expect(getDataFromSchema(schema)).toEqual("foo");
+    });
     test("should return a string", () => {
         const schema: any = {
             type: "string",
