@@ -60,6 +60,9 @@ export class TextField extends FastElement {
     public minlength: number;
 
     @attr
+    public name: string;
+
+    @attr
     public pattern: RegExp;
 
     @attr

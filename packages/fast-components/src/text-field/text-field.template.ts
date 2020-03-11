@@ -35,6 +35,7 @@ export const TextFieldTemplate = html<TextField>`
             $list=${x => x.list}
             $maxlength=${x => x.maxlength}
             $minlength=${x => x.minlength}
+            $name=${x => x.name}
             $pattern=${x => x.pattern}
             $readonly=${x => x.readonly}
             $required=${x => x.required}
