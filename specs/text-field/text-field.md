@@ -15,8 +15,7 @@ Used anywhere an author might otherwise use:
 
 ### Features
 
-1. Form Association where supported
-2. Focus Delegation
+1. Focus Delegation
 
 ### Risks and Challenges
 
@@ -37,12 +36,13 @@ We want general feature-parity between this component and the typical correspond
 
 ### API
 
-Extends form associated custom element
+Extends FAST Element
 
 *Component Name*
 - `fast-text-field`
 
 *Attrs* - Adapted from [MDN](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/text)
+- `autofocus` - automatically focuses the control
 - `readonly` - the text field should be submitted with the form but should not be editable.
 - `placeholder` - an exemplar value to display in the input field whenever it is empty
 - `required` - boolean value that sets the field as required
@@ -51,6 +51,7 @@ Extends form associated custom element
 - `list` - the id of the `<datalist>` element that contains the optional pre-defined autocomplete options
 - `maxlength`	- the maximum number of characters the input should accept
 - `minlength` -	the minimum number of characters long the input can be and still be considered valid
+- `name` - the name of the control
 - `pattern` - a regular expression the input's contents must match in order to be valid
 - `size` - a number indicating how many characters wide the input field should be
 - `spellcheck` - controls whether or not to enable spell checking for the input field, or if the default spell checking configuration should be used
@@ -122,11 +123,7 @@ Extends form associated custom element
 
 ### Accessibility
 
-The input element inside the shadow-dom of the checkbox will be a focusable element with the following accessability content attributes:
-- role: [textbox](https://www.w3.org/WAI/PF/aria/roles#textbox)
-- aria-required: the required state of the component
-- aria-disabled: the disabled state of the component
-- tabindex: 0
+The input element inside the shadow-dom of the checkbox will be a focusable element. With this in mind, so long as the text field recieves focus, assistive technology should treat it as such.
 
 ### Globalization
 
