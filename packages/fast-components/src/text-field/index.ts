@@ -9,7 +9,6 @@ import { TextFieldStyles as styles } from "./text-field.styles";
     styles,
     shadowOptions: {
         delegatesFocus: true,
-        mode: "open",
     },
 })
 export class FASTTextField extends TextField {}
