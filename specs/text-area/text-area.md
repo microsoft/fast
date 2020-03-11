@@ -45,6 +45,11 @@ We want general feature-parity between this component and the typical correspond
 - `placeholder` - an exemplar value to display in the `<textarea>` whenever it is empty
 - `readonly` - the `<textarea>` should be submitted with the form but should not be editable.
 - `required` - boolean value that sets the `<textarea>` as required
+- `resize` - enum value to set the resize behavior for the textarea. Defaults to both. While this is not a standard attribute, I think it's a value-add to be able to set an attribute here rather than manage this from a stylesheet.
+  - none
+  - both
+  - horizontal
+  - vertical
 - `rows` - the number of visible text lines
 - `spellcheck` - controls whether or not to enable spell checking for the `<textarea>`, or if the default spell checking configuration should be used
 
