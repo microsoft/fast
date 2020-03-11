@@ -1,5 +1,4 @@
-import { html, when } from "@microsoft/fast-element";
-import { ref } from "@microsoft/fast-element/dist/directives";
+import { html, ref, when } from "@microsoft/fast-element";
 import { TextField } from "./text-field";
 
 export const TextFieldTemplate = html<TextField>`

@@ -1,4 +1,4 @@
-import { attr, FastElement, observable } from "@microsoft/fast-element";
+import { attr, FastElement } from "@microsoft/fast-element";
 
 export enum TextFieldAppearance {
     filled = "filled",

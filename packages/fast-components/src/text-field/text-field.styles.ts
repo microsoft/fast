@@ -32,6 +32,7 @@ export const TextFieldStyles = css`
         padding: 0 calc(var(--design-unit) * 2px + 1px);
         ${/* Font size is temporary - 
             replace when adaptive typography is figured out */ ""} font-size: 14px;
+        line-height: 20px;
     }
 
     .control:hover,
