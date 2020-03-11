@@ -6,7 +6,7 @@ An *anchored region* is a container component which enables authors to create la
 
 ### Background
 
-This component is inspired by the ["Viewport positioner"](https://github.com/microsoft/fast-dna/issues/2597)  component in the React component set.  It is used as a building block in other components to enable responsive flyouts, or positionable/scaling menus in the [select](https://explore.fast.design/components/select) component. 
+This component is inspired by the ["Viewport positioner"](https://github.com/microsoft/fast-dna/tree/master/packages/fast-components-react-base/src/viewport-positioner)  component in the React component set.  It is used as a building block in other components to enable responsive flyouts, or positionable/scaling menus in the [select](https://github.com/microsoft/fast-dna/tree/master/packages/fast-components-react-base/src/select) component. 
 
 A primary goal of the component was to enable authors to create responsive layouts without resorting to expensive [getBoundingClientRect()](https://developer.mozilla.org/en-US/docs/Web/API/Element/getBoundingClientRect) calls. It instead depends on the more performant [IntersectionObserver](https://developer.mozilla.org/en-US/docs/Web/API/IntersectionObserver) and [ResizeObserver](https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver) interfaces.
 
@@ -28,25 +28,25 @@ Note that the "always in view" functionality that existed in Viewport Positioner
 
 ### Risks and Challenges
 
-This component depends on getting accurate positioning data from the dom outside of the component and it is possible for authors to break the relationship in advanced scenarios.
+This component depends on getting accurate positioning data from the DOM outside of the component and it is possible for authors to break the relationship in advanced scenarios.
 
-For example can likely only guarantee positioning if there are no other scrolling containers between the viewport and the anchor/anchored-region.  Authors should avoid nested scrolling containers.
+Positioning may only be guaranteed if there are no other scrolling containers between the viewport and the anchor/anchored-region.  Authors should avoid nested scrolling containers.
 
-Also, some css settings can interfere with the data returned by intersection observer and break the positioning functionality.  For example an element with position="fixed" in the dom hierarchy would be a no-no:
+Also, some css settings can interfere with the data returned by intersection observer and break the positioning functionality.  For example an element with position="fixed" in the DOM hierarchy would be a no-no:
 ```
 <div id="viewport">
     <div style="{{position:fixed}}">
         <button id="anchor">
             Button is an anchor
         </button>
-        <anchored-region
+        <fast-anchored-region
             viewport="viewport"
             anchor="anchor"
             verticalPositioningMode="locktodefault"
             verticalDefaultPosition="top"
         >
             This won't work because of the fixed element
-        </anchored-region>
+        </fast-anchored-region>
     <div>
 </div>
 ```
@@ -58,6 +58,28 @@ Also, some css settings can interfere with the data returned by intersection obs
 
 ## Design
 
+### Relative placement: 'Inset' vs 'Adjacent';
+By default the anchored region is positioned adjacent to the element it is anchored to, but if the "horizontal-inset" or "vertical-inset" attributes are set then the region will be 'inset' and overlap the anchor on that axis.  Various combinations of these attributes can enable some commonly desired layouts.  In the following images the menu would be conidered to be the *anchored region* and the "Select an option" button the anchor.
+
+Adjacent vertically and inset horizontally can be used for a typical drop down menu:
+
+![](./images/inset-adjacent.png)
+
+Inset vertically and adjacent horizontally positions the region to the side of the anchor button:
+
+![](./images/adjacent-inset.png)
+
+Inset on both axis positions the region so that it overlaps the anchor:
+
+![](./images/inset-inset.png)
+
+Adjacent on both axis positions the region diagonally to the anchor:
+
+![](./images/adjacent-adjacent.png)
+
+
+
+### Markup Examples
 (note: examples are for the vertical axis, equivalent is true for horizontal)
 
 A region that always renders above the anchor element.
@@ -67,13 +89,13 @@ A region that always renders above the anchor element.
     <button id="anchor">
         Button is an anchor
     </button>
-    <anchored-region
+    <fast-anchored-region
         anchor="anchor"
-        verticalPositioningMode="locktodefault"
-        verticalDefaultPosition="top"
+        vertical-positioning-mode="locktodefault"
+        vertical-default-position="top"
     >
       This shows up above the button
-    </anchored-region>
+    </fast-anchored-region>
     ...stuff...
 </div>
 
@@ -86,12 +108,12 @@ A region that renders above or below the anchor depending on available space.
     <button id="anchor">
         Button is an anchor
     </button>
-    <anchored-region
+    <fast-anchored-region
         anchor="anchor"
-        verticalpositioningmode="dynamic"
+        vertical-positioning-mode="dynamic"
     >
       This shows up above or below the anchor depending on available space
-    </anchored-region>
+    </fast-anchored-region>
     ...stuff...
 </div>
 
@@ -104,12 +126,12 @@ A region that renders above or below the anchor depending on available space but
     <button id="anchor">
         Button is an anchor
     </button>
-    <anchored-region
+    <fast-anchored-region
         anchor="anchor"
-        verticalpositioningmode="onetime"
+        vertical-positioning-mode="onetime"
     >
       This shows up above or below the anchor depending on available space
-    </anchored-region>
+    </fast-anchored-region>
     ...stuff...
 </div>
 
@@ -123,13 +145,13 @@ A region that overlaps the anchor and renders above or below it depending on ava
     <button id="anchor">
         Button is an anchor
     </button>
-    <anchored-region
+    <fast-anchored-region
         anchor="anchor"
-        verticalPositioningMode="dynamic"
-        verticalinset="true"
+        vertical-positioning-mode="dynamic"
+        vertical-inset="true"
     >
       This overlaps the anchor and extends above or below it depending on available space.
-    </anchored-region>
+    </fast-anchored-region>
     ...stuff...
 </div>
 
@@ -143,13 +165,13 @@ A region renders above or below the anchor based on available space and is sized
     <button id="anchor">
         Button is an anchor
     </button>
-    <anchored-region
+    <fast-anchored-region
         anchor="anchor"
-        verticalPositioningMode="dynamic"
-        verticalscalingenabled="true"
+        vertical-positioning-mode="dynamic"
+        vertical-scaling-enabled="true"
     >
        This region renders above or below the anchor based on available space and sizes itself to match.
-    </anchored-region>
+    </fast-anchored-region>
     ...stuff...
 </div>
 
@@ -162,14 +184,14 @@ A region that renders below the anchor until that space is less than 100px.
     <button id="anchor">
         Button is an anchor
     </button>
-    <anchored-region
+    <fast-anchored-region
         anchor="anchor"
-        verticalpositioningmode="dynamic"
-        verticaldefaultposition="below"
-        verticalthreshold="100"
+        vertical-positioning-mode="dynamic"
+        vertical-default-position="below"
+        vertical-threshold="100"
     >
       This shows renders below the anchor as long as there is at least 100px available there.
-    </anchored-region>
+    </fast-anchored-region>
     ...stuff...
 </div>
 ```
@@ -192,20 +214,20 @@ The component allows users to set a "Positioning Mode" on each axis which define
 
 - viewport - Used to identify the HTMLElement used as the viewport the component uses to determine available layout space around the anchor element. Possible values are the id of the desired viewport element, '#document' or '#parent'.  The default value is '#parent'.
 
-- horizontalPositioningMode - Can be 'uncontrolled', 'locktodefault', 'dynamic' or 'onetime'.  Default is 'uncontrolled'.
-- horizontalDefaultPosition - Can be 'start', 'end', 'left', 'right' or 'unset'.  Default is 'unset'
-- horizontalInset - Boolean that indicates whether the region should overlap the anchor on the horizontal axis. Default is false which places the region adjacent to the anchor element.
-- horizontalThreshold - Numeric value that defines how small in pixels the region must be to the edge of the viewport to switch to the opposite side of the anchor. The component favors the default position until this value is crossed.  When there is not enough space on either side or the value is unset the side with the most space is chosen.
-- horizontalScalingEnabled - The region is sized from code to match available space, in other scenarios the region gets sized via content size.
+- horizontal-positioning-mode - Can be 'uncontrolled', 'locktodefault', 'dynamic' or 'onetime'.  Default is 'uncontrolled'.
+- horizontal-default-position - Can be 'start', 'end', 'left', 'right' or 'unset'.  Default is 'unset'
+- horizontal-inset - Boolean that indicates whether the region should overlap the anchor on the horizontal axis. Default is false which places the region adjacent to the anchor element.
+- horizontal-threshold - Numeric value that defines how small in pixels the region must be to the edge of the viewport to switch to the opposite side of the anchor. The component favors the default position until this value is crossed.  When there is not enough space on either side or the value is unset the side with the most space is chosen.
+- horizontal-scaling-enabled - The region is sized from code to match available space, in other scenarios the region gets sized via content size.
 
-- verticalPositioningMode - Can be 'uncontrolled', 'locktodefault', 'dynamic' or 'onetime'.  Default is 'uncontrolled'.
-- verticalDefaultPosition - Can be 'top', 'bottom' or 'unset'. Default is unset.
-- verticalInset - Boolean that indicates whether the region should overlap the anchor on the vertical axis. Default is false which places the region adjacent to the anchor element.
-- verticalThreshold - Numeric value that defines how small the region must be to the edge of the viewport to switch to the opposite side of the anchor. The component favors the default position until this value is crossed.  When there is not enough space on either side or the value is unset the side with the most space is chosen.
-- verticalScalingEnabled - The region is sized from code to match available space, in other scenarios the region gets sized via content size.
+- vertical-positioning-mode - Can be 'uncontrolled', 'locktodefault', 'dynamic' or 'onetime'.  Default is 'uncontrolled'.
+- vertical-default-position - Can be 'top', 'bottom' or 'unset'. Default is unset.
+- vertical-inset - Boolean that indicates whether the region should overlap the anchor on the vertical axis. Default is false which places the region adjacent to the anchor element.
+- vertical-threshold - Numeric value that defines how small the region must be to the edge of the viewport to switch to the opposite side of the anchor. The component favors the default position until this value is crossed.  When there is not enough space on either side or the value is unset the side with the most space is chosen.
+- vertical-scaling-enabled - The region is sized from code to match available space, in other scenarios the region gets sized via content size.
 
-- horizontalPosition - read only, the current horizontal position of the component. Possible values are 'left', 'right' or 'unset'.
-- verticalPosition - read only, the current vertical position of the component. Possible values are 'top', 'bottom' or 'unset'.
+- horizontal-position - read only, the current horizontal position of the component. Possible values are 'left', 'right' or 'unset'.
+- vertical-position - read only, the current vertical position of the component. Possible values are 'top', 'bottom' or 'unset'.
 
 *Slots:*
 - default slot for content
@@ -237,7 +259,7 @@ Layout update checks in the component happen when:
 - intersection observer reports a collision with the viewport
 - resize observer reports a resize event on the anchor, the viewport or the component itself.
 
-These layout checks analyse the dom geometry based on callbacks and repositions the anchored region appropriately: top/bottom/unset for the vertical axis and left/right/unset for the horizontal axis. 
+These layout checks analyse the DOM geometry based on callbacks and repositions the anchored region appropriately: top/bottom/unset for the vertical axis and left/right/unset for the horizontal axis. 
 
 The component will have an initialization state to determine placement where the instanciation of content will be delayed by one frame to give the component a chance to get placed correctly.  This is to avoid content triggering the browser's scroll into view behavior prematurely if a contained element gains focus immediately.
 
@@ -257,4 +279,7 @@ Question - do we support a fallback mode that relies on getBoundingClientRect() 
 
 ### Test Plan
 TBD
+
+## Next Steps
+- add support for passing references for anchor and viewport as HTMLElements through javascript.
 
