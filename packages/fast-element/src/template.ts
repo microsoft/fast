@@ -1,8 +1,7 @@
 import { TemplateCompiler } from "./template-compiler";
-import { TargetedInstruction } from "./instructions";
 import { HTMLView, ElementView, SyntheticView, View } from "./view";
 import { DOM } from "./dom";
-import { Behavior } from "./directives/behavior";
+import { Behavior, BehaviorFactory } from "./directives/behavior";
 import { Expression } from "./interfaces";
 import { Directive } from "./directives/directive";
 import { BindingDirective } from "./directives/binding";
@@ -17,12 +16,10 @@ export interface SyntheticViewTemplate {
 
 export class HTMLTemplate extends Directive
     implements ElementViewTemplate, SyntheticViewTemplate {
-    public behavior = HTMLTemplateBehavior;
-
     constructor(
         private templateElement: HTMLTemplateElement,
-        private viewInstructions: TargetedInstruction[],
-        private hostInstruction: TargetedInstruction | null = null
+        private viewBehaviorFactories: BehaviorFactory[],
+        private hostBehaviorFactory: BehaviorFactory | null = null
     ) {
         super();
 
@@ -36,23 +33,31 @@ export class HTMLTemplate extends Directive
     public create(host?: Element) {
         const fragment = this.templateElement.content.cloneNode(true) as DocumentFragment;
         const targets = fragment.querySelectorAll(".fm");
-        const viewInstructions = this.viewInstructions;
-        const hostInstruction = this.hostInstruction;
-        const behaviors: Behavior[] = [];
+        const viewBehaviorFactories = this.viewBehaviorFactories;
+        const hostBehaviorFactories = this.hostBehaviorFactory;
+        const hasHostBehaviors = host !== void 0 && hostBehaviorFactories !== null;
+        const behaviorCount = hasHostBehaviors
+            ? viewBehaviorFactories.length + 1
+            : viewBehaviorFactories.length;
+        const behaviors = new Array<Behavior>(behaviorCount);
 
         for (let i = 0, ii = targets.length; i < ii; ++i) {
-            viewInstructions[i].hydrate(targets[i], behaviors);
+            behaviors[i] = viewBehaviorFactories[i].createBehavior(targets[i]);
         }
 
-        if (host !== void 0 && hostInstruction !== null) {
-            hostInstruction.hydrate(host, behaviors);
+        if (hasHostBehaviors) {
+            behaviors[behaviorCount - 1] = hostBehaviorFactories!.createBehavior(host);
         }
 
         return new HTMLView(fragment, behaviors);
     }
 
-    public createPlaceholder(instructionIndex: number) {
-        return DOM.createLocationPlaceholder(instructionIndex);
+    public createPlaceholder(index: number) {
+        return DOM.createBlockPlaceholder(index);
+    }
+
+    public createBehavior(target: any) {
+        return new HTMLTemplateBehavior(this, target);
     }
 }
 
@@ -60,9 +65,9 @@ export class HTMLTemplateBehavior implements Behavior {
     private location: Node;
     private view: SyntheticView;
 
-    constructor(directive: SyntheticViewTemplate, marker: HTMLElement) {
+    constructor(template: SyntheticViewTemplate, marker: HTMLElement) {
         this.location = DOM.convertMarkerToLocation(marker);
-        this.view = directive.create();
+        this.view = template.create();
         this.view.insertBefore(this.location);
     }
 

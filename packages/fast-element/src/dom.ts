@@ -18,7 +18,7 @@ export const DOM = {
         );
     },
 
-    makeIntoInstructionTarget(element: HTMLElement) {
+    makeIntoBehaviorTarget(element: HTMLElement) {
         const value = element.getAttribute("class");
         element.setAttribute("class", value ? value + " fm" : "fm");
     },
@@ -29,16 +29,16 @@ export const DOM = {
         return next;
     },
 
-    createInterpolationPlaceholder(instructionIndex: number) {
-        return `@{${instructionIndex}}`;
+    createInterpolationPlaceholder(index: number) {
+        return `@{${index}}`;
     },
 
     createLocation() {
         return document.createComment("");
     },
 
-    createLocationPlaceholder(instructionIndex: number) {
-        return `<template i="${instructionIndex}" class="${markerClass}"></template><!---->`;
+    createBlockPlaceholder(index: number) {
+        return `<template i="${index}" class="${markerClass}"></template><!---->`;
     },
 
     queueUpdate(callable: Callable) {

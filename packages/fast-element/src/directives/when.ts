@@ -12,14 +12,14 @@ import { Subscriber } from "../observation/subscriber-collection";
 import { Directive } from "./directive";
 
 export class WhenDirective extends Directive {
-    behavior = WhenBehavior;
+    createPlaceholder = DOM.createBlockPlaceholder;
 
     constructor(public expression: Expression, public template: SyntheticViewTemplate) {
         super();
     }
 
-    public createPlaceholder(index: number) {
-        return DOM.createLocationPlaceholder(index);
+    public createBehavior(target: any) {
+        return new WhenBehavior(target, this.expression, this.template);
     }
 }
 
@@ -29,19 +29,18 @@ export class WhenBehavior implements Behavior, GetterInspector, Subscriber {
     private cachedView?: SyntheticView;
     private source: unknown;
 
-    constructor(private directive: WhenDirective, marker: HTMLElement) {
+    constructor(
+        marker: HTMLElement,
+        private expression: Expression,
+        private template: SyntheticViewTemplate
+    ) {
         this.location = DOM.convertMarkerToLocation(marker);
     }
 
     bind(source: unknown) {
         this.source = source;
         this.updateTarget(
-            inspectAndEvaluate<boolean>(
-                this.directive.expression,
-                source,
-                null as any,
-                this
-            )
+            inspectAndEvaluate<boolean>(this.expression, source, null as any, this)
         );
     }
 
@@ -62,13 +61,12 @@ export class WhenBehavior implements Behavior, GetterInspector, Subscriber {
     }
 
     public call() {
-        this.updateTarget(this.directive.expression(this.source, null as any));
+        this.updateTarget(this.expression(this.source, null as any));
     }
 
     updateTarget(show: boolean) {
         if (show && this.view == null) {
-            this.view =
-                this.cachedView || (this.cachedView = this.directive.template.create());
+            this.view = this.cachedView || (this.cachedView = this.template.create());
             this.view.bind(this.source);
             this.view.insertBefore(this.location);
         } else if (!show && this.view !== null) {

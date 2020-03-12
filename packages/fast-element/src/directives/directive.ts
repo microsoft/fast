@@ -1,25 +1,27 @@
 import { DOM } from "../dom";
-import { Behavior, BehaviorType } from "./behavior";
-import { TargetedInstruction } from "../instructions";
+import { Behavior, BehaviorFactory } from "./behavior";
 
-export abstract class Directive implements TargetedInstruction {
-    public abstract behavior: BehaviorType;
-
-    public createPlaceholder(instructionIndex: number) {
-        return DOM.createInterpolationPlaceholder(instructionIndex);
-    }
-
-    public hydrate(target: any, behaviors: Behavior[]): void {
-        behaviors.push(new this.behavior!(this, target));
-    }
+export abstract class Directive implements BehaviorFactory {
+    public abstract createPlaceholder(index: number): string;
+    public abstract createBehavior(target: any): Behavior;
 }
 
+export type AttachedBehaviorType<T = any> = new (target: any, options: T) => Behavior;
+
 export class AttachedBehaviorDirective<T = any> extends Directive {
-    constructor(private name: string, public behavior: BehaviorType, public options: T) {
+    constructor(
+        private name: string,
+        private behavior: AttachedBehaviorType<T>,
+        private options: T
+    ) {
         super();
     }
 
     public createPlaceholder(index: number) {
-        return `${this.name}="${super.createPlaceholder(index)}"`;
+        return `${this.name}="${DOM.createInterpolationPlaceholder(index)}"`;
+    }
+
+    public createBehavior(target: any) {
+        return new this.behavior(target, this.options);
     }
 }

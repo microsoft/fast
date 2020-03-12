@@ -14,15 +14,15 @@ import { Splice } from "../observation/array-change-records";
 import { Directive } from "./directive";
 
 export class RepeatDirective extends Directive {
-    behavior = RepeatBehavior;
+    createPlaceholder = DOM.createBlockPlaceholder;
 
     constructor(public expression: Expression, public template: SyntheticViewTemplate) {
         super();
         enableArrayObservation();
     }
 
-    public createPlaceholder(index: number) {
-        return DOM.createLocationPlaceholder(index);
+    public createBehavior(target: any) {
+        return new RepeatBehavior(target, this.expression, this.template);
     }
 }
 
@@ -33,18 +33,17 @@ export class RepeatBehavior implements Behavior, GetterInspector, Subscriber {
     private items: any[] | null = null;
     private observer?: ArrayObserver;
 
-    constructor(private directive: RepeatDirective, marker: HTMLElement) {
+    constructor(
+        marker: HTMLElement,
+        private expression: Expression,
+        private template: SyntheticViewTemplate
+    ) {
         this.location = DOM.convertMarkerToLocation(marker);
     }
 
     bind(source: unknown) {
         this.source = source;
-        this.items = inspectAndEvaluate(
-            this.directive.expression,
-            source,
-            null as any,
-            this
-        );
+        this.items = inspectAndEvaluate(this.expression, source, null as any, this);
         this.checkCollectionObserver(false);
         this.refreshAllViews();
     }
@@ -64,7 +63,7 @@ export class RepeatBehavior implements Behavior, GetterInspector, Subscriber {
         if (typeof args === "string") {
             this.source = source;
             this.items = inspectAndEvaluate(
-                this.directive.expression,
+                this.expression,
                 this.source,
                 null as any,
                 this
@@ -118,7 +117,7 @@ export class RepeatBehavior implements Behavior, GetterInspector, Subscriber {
         }
 
         const items = this.items!;
-        const template = this.directive.template;
+        const template = this.template;
 
         for (let i = 0, ii = splices.length; i < ii; ++i) {
             const splice = splices[i];
@@ -148,7 +147,7 @@ export class RepeatBehavior implements Behavior, GetterInspector, Subscriber {
         const items = this.items!;
         const views = this.views;
         const viewsLength = views.length;
-        const template = this.directive.template;
+        const template = this.template;
 
         let itemsLength = items.length;
         let i = 0;

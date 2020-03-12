@@ -1,6 +1,10 @@
 import { ExpressionContext } from "./interfaces";
 import { HTMLTemplate } from "./template";
-import { TargetedInstruction, CompositeInstruction } from "./instructions";
+import {
+    BehaviorFactory,
+    CompositeBehaviorFactory,
+    CompositeBehavior,
+} from "./directives/behavior";
 import { DOM } from "./dom";
 import { BindingDirective, BindingType, BindingBehavior } from "./directives/binding";
 import { Directive, AttachedBehaviorDirective } from "./directives/directive";
@@ -36,8 +40,8 @@ export class TemplateCompiler {
             element = html;
         }
 
-        const viewInstructions: TargetedInstruction[] = [];
-        const hostInstruction = this.compileAttributes(element, directives, true);
+        const viewFactories: BehaviorFactory[] = [];
+        const hostFactory = this.compileAttributes(element, directives, true);
 
         const node = element.content;
         let currentChild: MaybeNode = node.firstChild;
@@ -47,24 +51,24 @@ export class TemplateCompiler {
                 currentChild,
                 node,
                 directives,
-                viewInstructions
+                viewFactories
             );
         }
 
-        return new HTMLTemplate(element, viewInstructions, hostInstruction);
+        return new HTMLTemplate(element, viewFactories, hostFactory);
     }
 
     private compileNode(
         node: Node,
         parentNode: Node,
         directives: Directive[],
-        instructions: TargetedInstruction[]
+        factories: BehaviorFactory[]
     ): MaybeNode {
         switch (node.nodeType) {
             case 1: //element node
                 return DOM.isMarker(node)
-                    ? this.compileBlock(node as HTMLElement, directives, instructions)
-                    : this.compileElement(node as HTMLElement, directives, instructions);
+                    ? this.compileBlock(node as HTMLElement, directives, factories)
+                    : this.compileElement(node as HTMLElement, directives, factories);
             case 3: //text node
                 //use wholeText to retrieve the textContent of all adjacent text nodes.
                 const directive = this.tryParsePlaceholders(
@@ -78,7 +82,7 @@ export class TemplateCompiler {
                     node.textContent = " ";
 
                     directive.type = BindingType.text;
-                    instructions.push(directive);
+                    factories.push(directive);
 
                     //remove adjacent text nodes.
                     while (node.nextSibling && node.nextSibling.nodeType === 3) {
@@ -102,18 +106,18 @@ export class TemplateCompiler {
     private compileElement(
         node: HTMLElement,
         directives: Directive[],
-        instructions: TargetedInstruction[]
+        factories: BehaviorFactory[]
     ): MaybeNode {
-        const elementInstruction = this.compileAttributes(node, directives);
+        const elementFactory = this.compileAttributes(node, directives);
 
-        if (elementInstruction !== null) {
-            DOM.makeIntoInstructionTarget(node);
-            instructions.push(elementInstruction);
+        if (elementFactory !== null) {
+            DOM.makeIntoBehaviorTarget(node);
+            factories.push(elementFactory);
         }
 
         let currentChild: MaybeNode = node.firstChild;
         while (currentChild) {
-            currentChild = this.compileNode(currentChild, node, directives, instructions);
+            currentChild = this.compileNode(currentChild, node, directives, factories);
         }
 
         return node.nextSibling;
@@ -125,7 +129,7 @@ export class TemplateCompiler {
         includeBasicValues: boolean = false
     ) {
         const attributes = node.attributes;
-        let elementInstruction: TargetedInstruction | null = null;
+        let elementFactory: BehaviorFactory | null = null;
 
         for (let i = 0, ii = attributes.length; i < ii; ++i) {
             const attr = attributes[i];
@@ -147,28 +151,26 @@ export class TemplateCompiler {
                 i--;
                 ii--;
 
-                if (elementInstruction === null) {
-                    elementInstruction = directive;
+                if (elementFactory === null) {
+                    elementFactory = directive;
                 } else {
-                    elementInstruction = new CompositeInstruction(
-                        elementInstruction,
+                    elementFactory = new CompositeBehaviorFactory(
+                        elementFactory,
                         directive
                     );
                 }
             }
         }
 
-        return elementInstruction;
+        return elementFactory;
     }
 
     private compileBlock(
         node: HTMLElement,
         directives: Directive[],
-        instructions: TargetedInstruction[]
+        factories: BehaviorFactory[]
     ): MaybeNode {
-        const instructionIndex = parseInt(node.getAttribute("i")!);
-        const directive = directives[instructionIndex];
-        instructions.push(directive);
+        factories.push(directives[parseInt(node.getAttribute("i")!)]);
         return node.nextSibling!;
     }
 
