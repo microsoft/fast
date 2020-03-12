@@ -16,6 +16,7 @@ export interface SyntheticViewTemplate {
 
 export class HTMLTemplate extends Directive
     implements ElementViewTemplate, SyntheticViewTemplate {
+    public createPlaceholder = DOM.createBlockPlaceholder;
     constructor(
         private templateElement: HTMLTemplateElement,
         private viewBehaviorFactories: BehaviorFactory[],
@@ -50,10 +51,6 @@ export class HTMLTemplate extends Directive
         }
 
         return new HTMLView(fragment, behaviors);
-    }
-
-    public createPlaceholder(index: number) {
-        return DOM.createBlockPlaceholder(index);
     }
 
     public createBehavior(target: any) {
