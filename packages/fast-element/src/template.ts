@@ -1,4 +1,4 @@
-import { TemplateCompiler } from "./template-compiler";
+import { compileTemplate } from "./template-compiler";
 import { HTMLView, ElementView, SyntheticView, View } from "./view";
 import { DOM } from "./dom";
 import { Behavior, BehaviorFactory } from "./directives/behavior";
@@ -105,5 +105,5 @@ export function html<T = any>(
 
     html += strings[strings.length - 1];
 
-    return TemplateCompiler.instance.compile(html, directives);
+    return compileTemplate(html, directives);
 }
