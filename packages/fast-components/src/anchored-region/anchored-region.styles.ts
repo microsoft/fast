@@ -8,9 +8,7 @@ export const AnchoredRegionStyles = css`
         width: 0px;
     }
 
-    .root {
+    .region {
         position: relative;
-        height: fit-content;
-        width: fit-content;
     }
 `;

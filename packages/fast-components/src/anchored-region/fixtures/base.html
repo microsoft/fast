@@ -1,11 +1,77 @@
 <fast-design-system-provider>
-    <div
-        style="position: relative; height:500px; width: 1000px;"
+    <h1>Anchored region</h1>
+
+    <h4>Dynamic - default</h4>
+    <div 
+        id="viewport-1"
+        style="position: relative; height:400px; width: 400px; background: lightgray; overflow: scroll;"
     >
-        <fast-anchored-region
-           horizontalpositioningmode="left"
+        <div
+            style="height:1000px; width: 1000px;"
         >
-            Boo
-        </fast-anchored-region>
+            <fast-anchored-region 
+                anchor="anchor-1" 
+                viewport="viewport-1"
+                vertical-positioning-mode="dynamic"
+                horizontal-positioning-mode="dynamic"
+            >
+                <div style="height:100px; width: 100px; background: yellow">
+                </div>
+            </fast-anchored-region>
+            <button id="anchor-1" style="margin-left: 500px; margin-top: 500px;">
+                anchor
+            </button>
+        </div>
+    </div>
+
+    <h4>Lock to default</h4>
+    <div 
+        id="viewport-2"
+        style="position: relative; height:400px; width: 400px; background: lightgray; overflow: scroll;"
+    >
+        <div
+            style="height:1000px; width: 1000px;"
+        >
+            <fast-anchored-region 
+                anchor="anchor-2" 
+                viewport="viewport-2"
+                vertical-positioning-mode="locktodefault"
+                vertical-default-position="top"
+                vertical-inset="true"
+                horizontal-positioning-mode="locktodefault"
+                horizontal-default-position="left"
+            >
+                <div style="height:100px; width: 100px; background: yellow">
+                </div>
+            </fast-anchored-region>
+            <button id="anchor-2" style="margin-left: 500px; margin-top: 500px;">
+                anchor
+            </button>
+        </div>
+    </div>
+
+    <h4>Scaling</h4>
+    <div 
+        id="viewport-3"
+        style="position: relative; height:400px; width: 400px; background: lightgray; overflow: scroll;"
+    >
+        <div
+            style="height:1000px; width: 1000px; overflow: hidden;"
+        >
+        <button id="anchor-3" style="margin-left: 500px; margin-top: 500px;">
+            anchor
+        </button>
+            <fast-anchored-region 
+                anchor="anchor-3" 
+                viewport="viewport-3"
+                vertical-positioning-mode="dynamic"
+                vertical-scaling="true"
+                horizontal-positioning-mode="dynamic"
+                horizontal-scaling="true"
+            >
+                <div style="height:100%; width: 100%; background: yellow">
+                </div>
+            </fast-anchored-region>
+        </div>
     </div>
 </fast-design-system-provider>

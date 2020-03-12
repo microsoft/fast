@@ -1,8 +1,14 @@
-import { html } from "@microsoft/fast-element";
+import { html, ref } from "@microsoft/fast-element";
 import { AnchoredRegion } from "./anchored-region";
 
 export const AnchoredRegionTemplate = html<AnchoredRegion>`
-  <div class="root">
+  <template>
+      <div
+          class="region"
+          ${ref("region")}
+          style=${x => x.regionStyle}
+    >
     <slot></slot>
-  </div>
+    </div>
+  </template>
 `;
