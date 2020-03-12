@@ -2,10 +2,10 @@ import { TemplateCompiler } from "./template-compiler";
 import { TargetedInstruction } from "./instructions";
 import { HTMLView, ElementView, SyntheticView, View } from "./view";
 import { DOM } from "./dom";
-import { Behavior } from "./behaviors/behavior";
+import { Behavior } from "./directives/behavior";
 import { Expression } from "./interfaces";
 import { Directive } from "./directives/directive";
-import { BindingDirective } from "./directives/bind";
+import { BindingDirective } from "./directives/binding";
 
 export interface ElementViewTemplate {
     create(host: Element): ElementView;

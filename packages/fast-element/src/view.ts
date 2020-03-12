@@ -1,4 +1,4 @@
-import { Behavior } from "./behaviors/behavior";
+import { Behavior } from "./directives/behavior";
 
 export interface View {
     bind(source: unknown): void;

@@ -1,5 +1,5 @@
 import { DOM } from "../dom";
-import { Behavior, BehaviorType } from "../behaviors/behavior";
+import { Behavior, BehaviorType } from "./behavior";
 import { TargetedInstruction } from "../instructions";
 
 export abstract class Directive implements TargetedInstruction {
@@ -14,7 +14,7 @@ export abstract class Directive implements TargetedInstruction {
     }
 }
 
-export class AttachedBehaviorDirective<T> extends Directive {
+export class AttachedBehaviorDirective<T = any> extends Directive {
     constructor(private name: string, public behavior: BehaviorType, public options: T) {
         super();
     }

@@ -2,16 +2,20 @@ import { DOM } from "../dom";
 import { SyntheticViewTemplate, CaptureType } from "../template";
 import { SyntheticView } from "../view";
 import { Expression } from "../interfaces";
-import { Behavior } from "../behaviors/behavior";
-import { Observable, GetterInspector } from "../observation/observable";
-import { BindingDirective } from "./bind";
+import { Behavior } from "./behavior";
+import {
+    Observable,
+    GetterInspector,
+    inspectAndEvaluate,
+} from "../observation/observable";
 import { Subscriber } from "../observation/subscriber-collection";
+import { Directive } from "./directive";
 
-export class WhenDirective extends BindingDirective {
+export class WhenDirective extends Directive {
     behavior = WhenBehavior;
 
     constructor(public expression: Expression, public template: SyntheticViewTemplate) {
-        super(expression);
+        super();
     }
 
     public createPlaceholder(index: number) {
@@ -31,7 +35,14 @@ export class WhenBehavior implements Behavior, GetterInspector, Subscriber {
 
     bind(source: unknown) {
         this.source = source;
-        this.updateTarget(this.directive.inspectAndEvaluate<boolean>(source, this));
+        this.updateTarget(
+            inspectAndEvaluate<boolean>(
+                this.directive.expression,
+                source,
+                null as any,
+                this
+            )
+        );
     }
 
     unbind() {
@@ -51,7 +62,7 @@ export class WhenBehavior implements Behavior, GetterInspector, Subscriber {
     }
 
     public call() {
-        this.updateTarget(this.directive.evaluate<boolean>(this.source));
+        this.updateTarget(this.directive.expression(this.source, null as any));
     }
 
     updateTarget(show: boolean) {

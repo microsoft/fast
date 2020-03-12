@@ -1,19 +1,23 @@
 import { Expression } from "../interfaces";
 import { SyntheticViewTemplate, CaptureType } from "../template";
-import { Behavior } from "../behaviors/behavior";
+import { Behavior } from "./behavior";
 import { DOM } from "../dom";
-import { Observable, GetterInspector } from "../observation/observable";
-import { BindingDirective } from "./bind";
+import {
+    Observable,
+    GetterInspector,
+    inspectAndEvaluate,
+} from "../observation/observable";
 import { SyntheticView } from "../view";
 import { Subscriber } from "../observation/subscriber-collection";
 import { ArrayObserver, enableArrayObservation } from "../observation/array-observer";
 import { Splice } from "../observation/array-change-records";
+import { Directive } from "./directive";
 
-export class RepeatDirective extends BindingDirective {
+export class RepeatDirective extends Directive {
     behavior = RepeatBehavior;
 
     constructor(public expression: Expression, public template: SyntheticViewTemplate) {
-        super(expression);
+        super();
         enableArrayObservation();
     }
 
@@ -35,7 +39,12 @@ export class RepeatBehavior implements Behavior, GetterInspector, Subscriber {
 
     bind(source: unknown) {
         this.source = source;
-        this.items = this.directive.inspectAndEvaluate(source, this);
+        this.items = inspectAndEvaluate(
+            this.directive.expression,
+            source,
+            null as any,
+            this
+        );
         this.checkCollectionObserver(false);
         this.refreshAllViews();
     }
@@ -54,7 +63,12 @@ export class RepeatBehavior implements Behavior, GetterInspector, Subscriber {
     handleChange(source: any, args: string | Splice[]): void {
         if (typeof args === "string") {
             this.source = source;
-            this.items = this.directive.inspectAndEvaluate(this.source, this);
+            this.items = inspectAndEvaluate(
+                this.directive.expression,
+                this.source,
+                null as any,
+                this
+            );
             this.checkCollectionObserver(false);
             this.refreshAllViews();
         } else {

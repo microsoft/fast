@@ -1,4 +1,4 @@
-import { Behavior } from "./behaviors/behavior";
+import { Behavior } from "./directives/behavior";
 
 export interface TargetedInstruction {
     hydrate(target: any, bindings: Behavior[]): void;

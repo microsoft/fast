@@ -1,4 +1,4 @@
-import { Behavior } from "../behaviors/behavior";
+import { Behavior } from "./behavior";
 import { AttachedBehaviorDirective } from "./directive";
 import { CaptureType } from "../template";
 

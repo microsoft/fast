@@ -2,23 +2,16 @@ import { ExpressionContext } from "./interfaces";
 import { HTMLTemplate } from "./template";
 import { TargetedInstruction, CompositeInstruction } from "./instructions";
 import { DOM } from "./dom";
-import {
-    TextBinding,
-    TriggerBinding,
-    PropertyBinding,
-    AttributeBinding,
-    BooleanAttributeBinding,
-    BehaviorType,
-} from "./behaviors/index";
-import { BindingDirective } from "./directives/bind";
+import { BindingDirective, BindingType, BindingBehavior } from "./directives/binding";
 import { Directive, AttachedBehaviorDirective } from "./directives/directive";
 
 type MaybeNode = Node | null;
+type InlineDirective = BindingDirective | AttachedBehaviorDirective;
 
-const prefixToBehaviorLookup: Record<string, BehaviorType> = {
-    "@": TriggerBinding,
-    $: AttributeBinding,
-    "?": BooleanAttributeBinding,
+const prefixToBindingType: Record<string, BindingType> = {
+    "@": BindingType.trigger,
+    $: BindingType.attribute,
+    "?": BindingType.booleanAttribute,
 };
 
 export class TemplateCompiler {
@@ -74,17 +67,17 @@ export class TemplateCompiler {
                     : this.compileElement(node as HTMLElement, directives, instructions);
             case 3: //text node
                 //use wholeText to retrieve the textContent of all adjacent text nodes.
-                const directive = this.tryParsePlaceholders<BindingDirective>(
+                const directive = this.tryParsePlaceholders(
                     (node as Text).wholeText,
                     directives
-                );
+                ) as BindingDirective;
 
                 if (directive !== null) {
                     const marker = DOM.createTextMarker();
                     (node.parentNode || parentNode).insertBefore(marker, node);
                     node.textContent = " ";
 
-                    directive.behavior = TextBinding;
+                    directive.type = BindingType.text;
                     instructions.push(directive);
 
                     //remove adjacent text nodes.
@@ -145,7 +138,7 @@ export class TemplateCompiler {
             } else if (includeBasicValues) {
                 const attrDirective = new BindingDirective(x => attrValue);
                 attrDirective.targetName = attrName;
-                attrDirective.behavior = AttributeBinding;
+                attrDirective.type = BindingType.attribute;
                 directive = attrDirective;
             }
 
@@ -182,30 +175,28 @@ export class TemplateCompiler {
     private prepareAttributeDirective(
         element: HTMLElement,
         attrName: string,
-        directive: Directive
+        directive: InlineDirective
     ) {
         if (directive instanceof AttachedBehaviorDirective) {
             return;
         }
 
-        const binding = directive as BindingDirective;
         const firstChar = attrName[0];
-        const behavior = prefixToBehaviorLookup[firstChar];
+        const bindingType = prefixToBindingType[firstChar];
 
-        if (behavior === void 0) {
+        if (bindingType === void 0) {
             if (attrName === "style") {
-                binding.behavior = AttributeBinding;
-                binding.targetName = "style";
+                directive.type = BindingType.attribute;
+                directive.targetName = "style";
             } else {
-                binding.behavior = PropertyBinding;
-                binding.targetName = this.attrNameToPropertyName(
+                directive.targetName = this.attrNameToPropertyName(
                     element.tagName,
                     attrName
                 );
             }
         } else {
-            binding.behavior = behavior;
-            binding.targetName = attrName.substr(1);
+            directive.type = bindingType;
+            directive.targetName = attrName.substr(1);
         }
     }
 
@@ -289,10 +280,7 @@ export class TemplateCompiler {
         }
     }
 
-    tryParsePlaceholders<T extends Directive>(
-        value: string,
-        directives: Directive[]
-    ): T | null {
+    tryParsePlaceholders(value: string, directives: Directive[]): InlineDirective | null {
         let i = value.indexOf("@{", 0);
         let ii = value.length;
         let char;
@@ -379,7 +367,7 @@ export class TemplateCompiler {
         parts = parts!.filter(x => x !== "");
 
         if (parts.length == 1) {
-            return parts[0] as T;
+            return parts[0] as InlineDirective;
         }
 
         const finalParts = parts!.map(
@@ -399,6 +387,6 @@ export class TemplateCompiler {
             return output;
         };
 
-        return (new BindingDirective(expression) as unknown) as T;
+        return new BindingDirective(expression);
     }
 }
