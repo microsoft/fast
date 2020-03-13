@@ -17,7 +17,7 @@ export const TextAreaTemplate = html<TextArea>`
     <textarea
         part="control"
         class="control"
-        id="${x => (x.childNodes.length ? "control" : void 0)}"
+        id="control"
         $autofocus="${x => x.autofocus}"
         $cols="${x => x.cols}"
         $disabled="${x => x.disabled}"
