@@ -2,6 +2,7 @@ import { attr, observable } from "@microsoft/fast-element";
 import { FormAssociated } from "../form-associated";
 import { keyCodeSpace } from "@microsoft/fast-web-utilities";
 import { bool } from "../utilities";
+import { type } from "os";
 
 export class Switch extends FormAssociated<HTMLInputElement> {
     @attr({ attribute: "readonly" })
@@ -55,9 +56,7 @@ export class Switch extends FormAssociated<HTMLInputElement> {
         }
 
         if (this.constructed) {
-            this.dispatchEvent(
-                new CustomEvent("change", { bubbles: true, composed: true })
-            );
+            this.$emit("change");
         }
 
         this.checked ? this.classList.add("checked") : this.classList.remove("checked");
@@ -76,6 +75,19 @@ export class Switch extends FormAssociated<HTMLInputElement> {
      * Set to true when the component has constructed
      */
     private constructed: boolean = false;
+
+    constructor() {
+        super();
+
+        this.proxy.setAttribute("type", "checkbox");
+        this.constructed = true;
+    }
+
+    public connectedCallback(): void {
+        super.connectedCallback();
+
+        this.updateForm();
+    }
 
     private updateForm(): void {
         const value = this.checked ? this.value : null;

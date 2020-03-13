@@ -1,16 +1,19 @@
 import { css } from "@microsoft/fast-element";
-import { disabledCursor } from "../styles";
+import { disabledCursor, display } from "../styles";
 
 export const SwitchStyles = css`
     :host([hidden]) {
         display: none;
     }
 
-    :host {
-        position: relative;
-        display: inline-flex;
+    ${display("inline-flex")} :host {
         align-items: center;
         outline: none;
+        margin: calc(var(--design-unit) * 1px) 0;
+        ${/*
+           * Chromium likes to select label text or the default slot when
+           * the checkbox is clicked. Maybe there is a better solution here?
+           */ ""} user-select: none;
     }
 
     :host(.disabled) {
@@ -49,7 +52,7 @@ export const SwitchStyles = css`
         border-color: var(--neutral-focus);
     }
 
-    .status-indicator {
+    .checked-indicator {
         position: absolute;
         height: calc((var(--height-number) - (var(--design-unit) * 2)) * 1px);
         width: calc((var(--height-number) - (var(--design-unit) * 2)) * 1px);
@@ -71,11 +74,11 @@ export const SwitchStyles = css`
         ${/* Need to discuss with Brian how HorizontalSpacingNumber can work. https://github.com/microsoft/fast-dna/issues/2766 */ ""} margin-inline-end: calc(var(--design-unit) * 2px + 2px);
     }
 
-    ::slotted(.content) {
+    ::slotted(*) {
         ${/* Need to discuss with Brian how HorizontalSpacingNumber can work. https://github.com/microsoft/fast-dna/issues/2766 */ ""} margin-inline-start: calc(var(--design-unit) * 2px + 2px);
     }
 
-    :host(.checked) .status-indicator {
+    :host(.checked) .checked-indicator {
         left: calc((var(--height-number) + var(--design-unit)) * 1px);
         background: var(--accent-foreground-cut-rest);
     }

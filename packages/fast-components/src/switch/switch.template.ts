@@ -6,7 +6,9 @@ export const SwitchTemplate = html<Switch>`
     <template
         role="switch"
         $aria-checked="${x => bool(x.checked)}"
+        $aria-required="${x => bool(x.required)}"
         $aria-disabled="${x => bool(x.disabled)}"
+        $aria-readonly="${x => bool(x.readOnly)}"
         $tabindex="${x => (bool(x.disabled) ? null : 0)}"
         @keypress="${(x, c) => x.keypressHandler(c.event as KeyboardEvent)}"
         @click="${(x, c) => x.clickHandler(c.event as MouseEvent)}"
@@ -27,7 +29,7 @@ export const SwitchTemplate = html<Switch>`
             part="switch"
             class="switch"
         >
-            <span class="status-indicator" part="status-indicator"></span>
+            <span class="checked-indicator" part="checked-indicator"></span>
         </div>
         <span class="status-message" part="status-message">
             <span class="checked-message" part="checked-message">

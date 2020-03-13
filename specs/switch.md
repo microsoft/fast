@@ -42,8 +42,8 @@ Typically it's best to include a checked and unchecked message but it is not req
 
 *Slots:*
 - `default`
-- `unchecked-message` pass "content" class for default styling
-- `checked-message` pass "content" class for default styling
+- `unchecked-message`
+- `checked-message`
 
 *Events:*
 - `change` - fires when component is clicked or "spacebar" is pressed. This is a standard `onChange` event from the `input`
@@ -53,7 +53,7 @@ Typically it's best to include a checked and unchecked message but it is not req
 *Parts:*
 - label
 - checkbox
-- status-indicator
+- checked-indicator
 - status-message
 
 *Template:*
@@ -63,7 +63,7 @@ Typically it's best to include a checked and unchecked message but it is not req
         <slot></slot>
     </label>
     <div part="switch" class="switch>
-        <span part="status-indicator"/>
+        <span part="checked-indicator"/>
     </div>
     <span part="status-message" id="status-message">
         <span class="checked-message" part="checked-message">
@@ -83,8 +83,8 @@ Typically it's best to include a checked and unchecked message but it is not req
     checked={true}
 >
     Notify by Email
-    <span class="content" slot="checked-message">On</span>
-    <span class="content" slot="unchecked-message">Off</span>
+    <span slot="checked-message">On</span>
+    <span slot="unchecked-message">Off</span>
 </fast-switch>
 ```
 
