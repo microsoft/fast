@@ -1,5 +1,5 @@
 import { Callable } from "./interfaces";
-const markerClass = "fph";
+const markerClass = `fast-${String(Math.random()).slice(2)}`;
 
 export const DOM = {
     pendingUpdates: [] as Callable[],
@@ -8,7 +8,7 @@ export const DOM = {
         return node.nodeType === 8 && (node as Comment).data.startsWith(markerClass);
     },
 
-    extractMarkerIndex(node: Comment): number {
+    extractDirectiveIndexFromMarker(node: Comment): number {
         return parseInt(node.data.replace(`${markerClass}:`, ""));
     },
 

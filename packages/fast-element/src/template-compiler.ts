@@ -85,7 +85,8 @@ export function compileTemplate(
                 break;
             case 8: // comment
                 if (DOM.isMarker(node)) {
-                    const directive = directives[DOM.extractMarkerIndex(node)];
+                    const directive =
+                        directives[DOM.extractDirectiveIndexFromMarker(node)];
                     directive.targetIndex = compilationContext.targetIndex;
                     compilationContext.locatedDirectives++;
                     viewFactories.push(directive);
