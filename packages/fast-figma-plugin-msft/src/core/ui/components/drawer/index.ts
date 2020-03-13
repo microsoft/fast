@@ -22,17 +22,11 @@ const template = html`
                 </svg>
             </td-stealth-button>
         </div>
-        <div class="expanded-content ${x =>
-            bool(x.expanded)
-                ? "expanded"
-                : "collapsed"}" role="region" id="expanded-content">
+        <div class="expanded-content" role="region" id="expanded-content">
             <slot></slot>
         </div>
-        <div class="collapsed-content ${x =>
-            bool(x.expanded)
-                ? "collapsed"
-                : "expanded"}" role="region" id="collapsed-content">
-            <slot></slot>
+        <div class="collapsed-content" role="region" id="collapsed-content">
+            <slot name="collapsed-content"></slot>
         </div>
     <template>
 `;
@@ -53,13 +47,14 @@ const styles = css`
         font-weight: 600;
     }
 
-    .expanded-content.collapsed {
+    :host(.collapsed) .expanded-content,
+    :host(.expanded) .collapsed-content {
         display: none;
     }
 
-    .expanded-content.expanded {
+    :host(.expanded) .expanded-content,
+    :host(.collapsed) .collapsed-content {
         display: block;
-        padding-bottom: 16px;
     }
 `;
 
@@ -77,7 +72,7 @@ export function bool(value: string | boolean | null): boolean {
     template,
     styles,
 })
-export class ThemeDesignerDrawer extends FastElement {
+export class Drawer extends FastElement {
     @attr
     public expanded: boolean;
 

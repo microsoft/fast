@@ -1,7 +1,17 @@
 
+/* Import Inter font
+ * https://rsms.me/inter/
+ * https://github.com/rsms/inter/blob/master/LICENSE.txt
+ */
+@import url('https://rsms.me/inter/inter.css');
+html { font-family: 'Inter', sans-serif; font-size: 11px;  }
+@supports (font-variation-settings: normal) {
+      html { font-family: 'Inter var', sans-serif;  }
+      
+}
+
 body {
-    font-family: Segoe UI, sans-serif;
-    margin-bottom: 0;
+    margin: 0;
 }
 
 #root {
