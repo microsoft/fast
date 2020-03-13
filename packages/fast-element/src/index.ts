@@ -11,7 +11,4 @@ export * from "./view";
 export * from "./observation/observable";
 export * from "./behaviors/index";
 export * from "./dom";
-export * from "./directives/directive";
-export * from "./directives/bind";
-export * from "./directives/when";
-export * from "./directives/ref";
+export * from "./directives";

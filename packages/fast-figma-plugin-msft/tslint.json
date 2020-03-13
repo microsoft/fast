@@ -11,5 +11,6 @@
     },
     "rules": {
         "max-classes-per-file": [ false ]
+        "member-ordering": [false]
     }
 }

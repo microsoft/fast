@@ -14,7 +14,7 @@ module.exports = (env, args) => {
         devtool: isProduction ? "none" : "inline-source-map",
         entry: {
             main: path.resolve(appDir, "main.ts"),
-            ui: path.resolve(appDir, "ui.tsx"),
+            ui: path.resolve(appDir, "ui.ts"),
         },
         output: {
             path: outDir,
@@ -55,6 +55,7 @@ module.exports = (env, args) => {
                 contentBase: outDir,
                 chunks: ["ui"],
                 inlineSource: "(js)$",
+                template: path.resolve(appDir, "index.html"),
             }),
             new HtmlWebpackInlineSourcePlugin(),
             new BundleAnalyzerPlugin({
