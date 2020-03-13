@@ -15,7 +15,7 @@ jobs:
       AZURE_WEBAPP_SLOT_NAME: alpha
 
     steps:
-    - uses: azure/login@v2.1
+    - uses: azure/login@v1
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS_EXPLORE_FAST_DESIGN }}
 
