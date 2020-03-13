@@ -116,16 +116,12 @@ function compileAttributes(
         const attrValue = attr.value;
         let directive = tryParsePlaceholders(attrValue, directives);
 
-        if (directive !== null) {
-            prepareAttributeDirective(node, attrName, directive);
-        } else if (includeBasicValues) {
-            const attrDirective = new BindingDirective(x => attrValue);
-            attrDirective.targetName = attrName;
-            attrDirective.type = BindingType.attribute;
-            directive = attrDirective;
+        if (directive === null && includeBasicValues) {
+            directive = new BindingDirective(x => attrValue);
         }
 
         if (directive !== null) {
+            prepareAttributeDirective(node, attrName, directive);
             node.removeAttributeNode(attr);
             i--;
             ii--;
@@ -333,9 +329,10 @@ function tryParsePlaceholders(
         return parts[0] as InlineDirective;
     }
 
+    const partCount = parts.length;
     const finalParts = parts!.map(x => {
         if (typeof x === "string") {
-            return x;
+            return () => x;
         }
 
         compilationContext.locatedDirectives++;
@@ -345,11 +342,8 @@ function tryParsePlaceholders(
     const expression = (scope: unknown, context: ExpressionContext) => {
         let output = "";
 
-        for (let i = 0, ii = finalParts.length; i < ii; ++i) {
-            const current = finalParts[i];
-            output =
-                output +
-                (typeof current === "string" ? current : current(scope, context));
+        for (let i = 0; i < partCount; ++i) {
+            output += finalParts[i](scope, context);
         }
 
         return output;
