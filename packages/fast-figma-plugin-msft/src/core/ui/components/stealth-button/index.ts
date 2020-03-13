@@ -24,6 +24,7 @@ const styles = css`
         border: none;
         background: var(--neutral-fill-stealth-rest);
         outline: none;
+        font-size: inherit;
     }
 
     button:focus {

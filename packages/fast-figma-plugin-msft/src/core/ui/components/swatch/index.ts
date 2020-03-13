@@ -23,7 +23,6 @@ const styles = css`
         display: inline-flex;
         align-items: center;
         text-align: center;
-        font-size: 11px;
         color: var(--neutral-foreground-hint);
     }
 
