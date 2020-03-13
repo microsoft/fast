@@ -28,11 +28,10 @@ Note that the "always in view" functionality that existed in Viewport Positioner
 
 ### Risks and Challenges
 
-This component depends on getting accurate positioning data from the DOM outside of the component and it is possible for authors to break the relationship in advanced scenarios.
+This component depends on getting accurate positioning data about the DOM surrounding the component from the[Intersection Observer API](https://developer.mozilla.org/en-US/docs/Web/API/IntersectionObserver) in order to place elements correctly and some configurations can interfere with that.
 
-Positioning may only be guaranteed if there are no other scrolling containers between the viewport and the anchor/anchored-region.  Authors should avoid nested scrolling containers.
+For example, using css to set 'position:fixed' on an HTMLElement in the hierarchy between the viewport element and the anchor or anchored-region as in the example below is problematic. It effectively places those elements in a different coordinate system from the viewport, and as a result the values reported by [Intersection Observer](https://developer.mozilla.org/en-US/docs/Web/API/IntersectionObserver) entries can't be used to make required calculations for positioning relative to the viewport (assuming collision events even generate as expected).
 
-Also, some css settings can interfere with the data returned by intersection observer and break the positioning functionality.  For example an element with position="fixed" in the DOM hierarchy would be a no-no:
 ```
 <div id="viewport">
     <div style="{{position:fixed}}">
@@ -50,6 +49,11 @@ Also, some css settings can interfere with the data returned by intersection obs
     <div>
 </div>
 ```
+A common place this issue has come up is when authors want to add a flyout menu in a toolbar that has a fixed position but they also want the menu to react to the size of the parent window. Workarounds for this involve not using fixed positioning on the toolbar, or authors can control the placement of the menu directly based on window size.
+
+Also, nested scrolling containers can be a problem.  For one, the component assumes that the anchor and anchored region are within the same scrolling container. This should be thought of as "by design". Second, for the scaling feature to work properly there must not be any active scrolling surfaces in the DOM hierarchy between the viewport and the anchor/region.  This is because in the scaling scenario we rely on scrolling events from the viewport to recalculate the size of the scaled region as not all scroll events generate an intersection observer event.  Note that most scenarios we'd want this component to solve don't involve multiple nested scrolling regions.
+
+It is worth noting that one of the main goals of this component is to be a performant layout widget, so while we may be able to technically make the component cover more corner cases we should not necessarily do so if the perf impact is too high.
 
 ### Prior Art/Examples
 - [FAST-DNA React Viewport positioner component](https://github.com/microsoft/fast-dna/tree/master/packages/fast-components-react-base/src/viewport-positioner)
@@ -61,21 +65,12 @@ Also, some css settings can interfere with the data returned by intersection obs
 ### Relative placement: 'Inset' vs 'Adjacent';
 By default the anchored region is positioned adjacent to the element it is anchored to, but if the "horizontal-inset" or "vertical-inset" attributes are set then the region will be 'inset' and overlap the anchor on that axis.  Various combinations of these attributes can enable some commonly desired layouts.  In the following images the menu would be conidered to be the *anchored region* and the "Select an option" button the anchor.
 
-Adjacent vertically and inset horizontally can be used for a typical drop down menu:
-
-![](./images/inset-adjacent.png)
-
-Inset vertically and adjacent horizontally positions the region to the side of the anchor button:
-
-![](./images/adjacent-inset.png)
-
-Inset on both axis positions the region so that it overlaps the anchor:
-
-![](./images/inset-inset.png)
-
-Adjacent on both axis positions the region diagonally to the anchor:
-
-![](./images/adjacent-adjacent.png)
+| State | Image |
+| ----- | ----- |
+| Adjacent vertically and inset horizontally can be used for a typical drop down menu: | ![](./images/inset-adjacent.png) |
+| Inset vertically and adjacent horizontally positions the region to the side of the anchor button: | ![](./images/adjacent-inset.png) |
+| Inset on both axis positions the region so that it overlaps the anchor: | ![](./images/inset-inset.png) |
+| Adjacent on both axis positions the region diagonally to the anchor: | ![](./images/adjacent-adjacent.png)|
 
 
 
@@ -233,7 +228,7 @@ The component allows users to set a "Positioning Mode" on each axis which define
 - default slot for content
 
 *Events:*
-- positionchange - event is thrown whenever the placement of the region relative to the anchor changes (top/bottom and left/right). 
+- change - event is thrown whenever the placement of the region relative to the anchor changes (top/bottom and left/right). 
 
 
 ### Anatomy and Appearance
