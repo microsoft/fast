@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.25.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-base@4.25.0...@microsoft/fast-components-react-base@4.25.1) (2020-03-13)
+
+
+### Bug Fixes
+
+* auto suggest menu opens with new suggestions and closes on blur ([#2699](https://github.com/Microsoft/fast-dna/issues/2699)) ([0314653](https://github.com/Microsoft/fast-dna/commit/0314653))
+
+
+
+
+
 # [4.25.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-base@4.24.2...@microsoft/fast-components-react-base@4.25.0) (2020-02-28)
 
 

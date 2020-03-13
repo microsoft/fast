@@ -1,9 +1,10 @@
-name: FAST Workflows - Cross Platforms
+name: CI - Cross Platform Validation
 
 on:
   schedule:
-  - cron: '0 0 * * 3'
-  
+  - cron: 0 7 * * 3 # Every Wednesday at 7am
+
+
 jobs:
   build_windows:
     name: Validate on Windows
@@ -31,7 +32,7 @@ jobs:
   build_macos:
     name: Validate on MacOS
     
-    runs-on: macOS-latest
+    runs-on: macos-latest
 
     steps:
     - uses: actions/checkout@v2
