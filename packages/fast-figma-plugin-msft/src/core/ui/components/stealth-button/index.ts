@@ -23,6 +23,7 @@ const styles = css`
         height: 30px;
         border: none;
         background: var(--neutral-fill-stealth-rest);
+        fill: var(--neutral-foreground-rest);
         outline: none;
         font-size: inherit;
     }
@@ -36,6 +37,19 @@ const styles = css`
 
     button:active {
         background: var(--neutral-fill-stealth-active);
+    }
+
+    :host([aria-expanded="true"]) button {
+        background: var(--accent-fill-rest);
+        fill: var(--accent-foreground-cut-rest);
+    }
+
+    :host([aria-expanded="true"]) button:hover {
+        background: var(--accent-fill-hover);
+    }
+
+    :host([aria-expanded="true"]) button:active {
+        background: var(--accent-fill-active);
     }
 `;
 
