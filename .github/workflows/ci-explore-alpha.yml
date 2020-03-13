@@ -14,7 +14,7 @@ jobs:
       AZURE_WEBAPP_PACKAGE_PATH: 'packages/fast-component-explorer/www/'
 
     steps:
-    - uses: azure/login@v1
+    - uses: azure/login@v2.1
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS_EXPLORE_FAST_DESIGN }}
 
