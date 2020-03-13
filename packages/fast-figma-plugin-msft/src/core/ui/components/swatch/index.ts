@@ -10,7 +10,8 @@ import { bool } from "../drawer";
 
 const template = html`
     <template class="${x => x.orientation} ${x => x.type} ${x =>
-    bool(x.circular) ? "circular" : ""}" style="--swatch-value: ${x =>
+    bool(x.circular) ? "circular" : ""} ${x =>
+    x.value === "none" ? "none" : ""}" style="--swatch-value: ${x =>
     x.value === "none" ? "transparent" : x.value}">
         <div class="swatch"></div>
         <slot></slot>
@@ -50,6 +51,18 @@ const styles = css`
         border-radius: calc(var(--cornerRadius) * 2px);
     }
 
+    .swatch::after {
+        content: "";
+        display: none;
+        width: 1px;
+        height: 32px;
+        background: #ff3366;
+        left: calc(50% - 0.5px);
+        position: relative;
+        transform-origin: center;
+        transform: rotate(45deg);
+    }
+
     :host(.vertical) {
         flex-direction: column;
         max-width: 58px;
@@ -69,6 +82,10 @@ const styles = css`
     }
 
     :host(.border) .swatch::before {
+        display: block;
+    }
+
+    :host(.none) .swatch::after {
         display: block;
     }
 `;
