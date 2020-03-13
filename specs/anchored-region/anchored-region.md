@@ -18,7 +18,7 @@ It is envisioned that this component would be used as a building block for other
 
 ### Features
 
-- **Relative positioning:** Users can use it to position an element relative to another another element directly, like enabling a menu to open above or below a trigger button.
+- **Relative positioning:** Users can use it to position an element relative to another another element directly, like enabling a menu to open above or below a trigger button. Additonally, the same anchored region can change which element it is anchored to dynamically.  For example a single tooltip instance in a page could be positioned next to any other element on the page by switching the anchor property of the anchored region that contains it.
 
 - **Responsive positioning:** Users can use it to position an element relative to another element based on available space, for example a menu could open upwards if the trigger button is near the bottom of the page, and downwards if it is nearer the top.
 
