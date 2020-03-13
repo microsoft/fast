@@ -21,8 +21,11 @@ export class Slider extends FormAssociated<HTMLInputElement> {
     @observable
     public position: string;
     private positionOnSlider: number = 0;
-    private fullTrackWidth: number = 0;
-    private fullTrackMinWidth: number = 0;
+
+    @observable
+    public fullTrackWidth: number = 0;
+    @observable
+    public fullTrackMinWidth: number = 0;
 
     private readOnlyChanged(): void {
         if (this.proxy instanceof HTMLElement) {
@@ -106,13 +109,28 @@ export class Slider extends FormAssociated<HTMLInputElement> {
         this.setAttribute("tabindex", "0");
 
         this.constructed = true;
+
+        const slots = this.shadowRoot!.querySelectorAll("slot");
+        console.log("attempted to get slots in ctor:", slots);
+        slots.forEach((slot: any) => {
+            if (slot.name === undefined || slot.name === "") {
+                // default slot, labels should be here, setup listener
+                console.log("adding slot change handler for default slot...");
+                slot.addEventListener("slotchange", this.slotChangeHandler);
+            }
+        });
     }
 
     public connectedCallback(): void {
         super.connectedCallback();
-
         //this.updateForm();
         this.proxy.value = this.value;
+        // const slots = this.shadowRoot!.querySelectorAll("slot");
+        // slots.forEach((slot: any) => {
+        //     console.log("slot:", slot);
+        // });
+        this.fullTrackWidth = this.backgroundTrack.clientWidth;
+        this.fullTrackMinWidth = this.backgroundTrack.getBoundingClientRect().left;
 
         this.addEventListener("keydown", this.keypressHandler);
         this.addEventListener("mousedown", this.clickHandler);
@@ -122,6 +140,16 @@ export class Slider extends FormAssociated<HTMLInputElement> {
         this.removeEventListener("keydown", this.keypressHandler);
         this.removeEventListener("mousedown", this.clickHandler);
     }
+
+    protected slotChangeHandler = (e: any) => {
+        console.log("***Default slot changed, e:", e.target);
+        console.log("assignedNode:", e.target.assignedNodes());
+        e.target.assignedNodes().forEach((node: any) => {
+            if (node.nodeName === "FAST-SLIDER-LABEL") {
+                console.log("fast-slider-label found:", node);
+            }
+        });
+    };
 
     protected keypressHandler = (e: KeyboardEvent) => {
         super.keypressHandler(e);

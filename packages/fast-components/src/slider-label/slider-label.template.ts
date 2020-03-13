@@ -5,17 +5,14 @@ export const SliderLabelTemplate = html<SliderLabel>`
     <div
         part="sliderlabel"
         class="sliderlabel"
-        style=${x => this.positionStyle}
+        style=${x => x.positionStyle}
     >
-        <span class="sliderLabel_label"}>
-            ${x => x.label}
-        </span>
-        ${when(
-            x => x.showMark,
-            html`
+        <div class="sliderLabel_container">
             <div class="sliderLabel_mark">
             </div>
-        `
-        )}
+            <span class="sliderLabel_label"}>
+            ${x => x.label}
+            </span>
+        </div>
     </div>
 `;
