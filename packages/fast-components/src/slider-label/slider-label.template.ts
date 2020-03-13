@@ -10,9 +10,11 @@ export const SliderLabelTemplate = html<SliderLabel>`
         <div class="sliderLabel_container">
             <div class="sliderLabel_mark">
             </div>
-            <span class="sliderLabel_label"}>
-            ${x => x.label}
-            </span>
+            <slot name="label">
+                <span class="sliderLabel_label"}>
+                ${x => x.label}
+                </span>
+            </slot>
         </div>
     </div>
 `;

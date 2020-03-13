@@ -17,9 +17,9 @@ export const SliderTemplate = html<Slider>`
         <slot name="track">
           <div part="track" class="track"></div>
         </slot>
-        <slot name="thumb">
-          <div part="thumb" class="thumb" style=${x => x.position}></div>
-        </slot>
+        <div part="thumb_container" class="thumb_container" style=${x => x.position}>
+            <slot name="thumb"><div class="thumb_cursor"></div></slot>
+        </div>
         <slot></slot>
     </div>
   </div>

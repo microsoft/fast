@@ -6,9 +6,7 @@ export const SliderStyles = css`
     }
     .slider {
         position: relative;
-        width: 400px;
-        height: 30px;
-        margin: 10px 2px;
+        margin: 40px 4px;
         box-sizing: border-box;
         border-radius: calc(var(--corner-radius) * 1px);
         background: white;
@@ -32,12 +30,17 @@ export const SliderStyles = css`
     }
     .track {
     }
-    .thumb {
+    .thumb_container {
         position: absolute;
         right: 50%;
         height: 16px;
         width: 16px;
+    }
+    .thumb_cursor {
         border: none;
+        width: 16px;
+        height: 16px;
+        position: relative;
         background: #2b2b2b;
         border-radius: 50%;
         transition: "all 0.2s ease";
