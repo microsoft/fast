@@ -40,8 +40,7 @@ const styles = css`
         height: 48px;
         justify-content: space-between;
         align-items: center;
-
-        font-weight: bold;
+        font-weight: 600;
     }
 
     .content.collapsed {
