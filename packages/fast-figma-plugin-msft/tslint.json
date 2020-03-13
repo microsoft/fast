@@ -10,14 +10,6 @@
         ]
     },
     "rules": {
-        "typedef": [
-            true,
-            "call-signature",
-            "arrow-call-signature",
-            "parameter",
-            "property-declaration",
-            "member-variable-declaration"
-        ],
         "max-classes-per-file": [ false ]
     }
 }
