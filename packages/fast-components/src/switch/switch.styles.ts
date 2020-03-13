@@ -99,13 +99,4 @@ export const SwitchStyles = css`
     :host(.checked) .checked-message {
         display: block;
     }
-
-    .root {
-        margin-bottom: auto;
-        border-radius: calc(var(--elevated-corner-radius));
-        width: var(--dialog-width);
-        height: var(--dialog-height);
-        background: var(--background-color);
-        z-index: 1;
-    }
 `;
