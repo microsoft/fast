@@ -1,7 +1,7 @@
 name: CI Component Explorer
 
 on:
-  push:
+  pull_request:
     branches:
     - master
 
