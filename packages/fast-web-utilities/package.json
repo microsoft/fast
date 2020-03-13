@@ -1,7 +1,7 @@
 {
   "name": "@microsoft/fast-web-utilities",
   "description": "FAST web utilities",
-  "version": "4.4.0",
+  "version": "4.4.1",
   "sideEffects": false,
   "author": {
     "name": "Microsoft",
@@ -61,7 +61,7 @@
   "devDependencies": {
     "@babel/core": "^7.0.0",
     "@babel/preset-env": "^7.1.0",
-    "@microsoft/fast-tslint-rules": "^3.0.4",
+    "@microsoft/fast-tslint-rules": "^3.1.0",
     "@types/jest": "^24.0.11",
     "@types/lodash-es": "^4.17.0",
     "babel-core": "^7.0.0-bridge.0",
