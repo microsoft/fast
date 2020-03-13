@@ -49,20 +49,13 @@ export class BindingBehavior implements Behavior, GetterInspector, Subscriber {
     private source: unknown;
     private record: ObservationRecord | null = null;
     private needsQueue = true;
-    private target: Node;
 
     constructor(
-        target: HTMLElement,
+        private target: any,
         private expression: Expression,
         private type: BindingType,
         private targetName?: string
-    ) {
-        if (type === BindingType.text) {
-            this.target = DOM.convertMarkerToLocation(target);
-        } else {
-            this.target = target;
-        }
-    }
+    ) {}
 
     bind(source: unknown) {
         this.source = source;

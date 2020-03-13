@@ -2,6 +2,7 @@ import { DOM } from "../dom";
 import { Behavior, BehaviorFactory } from "./behavior";
 
 export abstract class Directive implements BehaviorFactory {
+    public targetIndex: number = 0;
     public abstract createPlaceholder(index: number): string;
     public abstract createBehavior(target: any): Behavior;
 }

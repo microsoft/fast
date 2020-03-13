@@ -1,44 +1,23 @@
 import { Callable } from "./interfaces";
-const markerClass = "fph fm";
+const markerClass = "fph";
 
 export const DOM = {
     pendingUpdates: [] as Callable[],
 
-    createTextMarker() {
-        const marker = document.createElement("template");
-        marker.className = markerClass;
-        return marker;
+    isMarker(node: Node): node is Comment {
+        return node.nodeType === 8 && (node as Comment).data.startsWith(markerClass);
     },
 
-    isMarker(node: Node): boolean {
-        return (
-            node.nodeType === 1 &&
-            (node as HTMLElement).tagName === "TEMPLATE" &&
-            (node as HTMLElement).className === markerClass
-        );
-    },
-
-    makeIntoBehaviorTarget(element: HTMLElement) {
-        const value = element.getAttribute("class");
-        element.setAttribute("class", value ? value + " fm" : "fm");
-    },
-
-    convertMarkerToLocation(marker: Node): Node {
-        const next = marker.nextSibling! as Node;
-        marker.parentNode!.removeChild(marker);
-        return next;
+    extractMarkerIndex(node: Comment): number {
+        return parseInt(node.data.replace(`${markerClass}:`, ""));
     },
 
     createInterpolationPlaceholder(index: number) {
         return `@{${index}}`;
     },
 
-    createLocation() {
-        return document.createComment("");
-    },
-
     createBlockPlaceholder(index: number) {
-        return `<template i="${index}" class="${markerClass}"></template><!---->`;
+        return `<!--${markerClass}:${index}-->`;
     },
 
     queueUpdate(callable: Callable) {

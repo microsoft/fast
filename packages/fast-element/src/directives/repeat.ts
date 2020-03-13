@@ -27,19 +27,16 @@ export class RepeatDirective extends Directive {
 }
 
 export class RepeatBehavior implements Behavior, GetterInspector, Subscriber {
-    private location: Node;
     private source: unknown;
     private views: SyntheticView[] = [];
     private items: any[] | null = null;
     private observer?: ArrayObserver;
 
     constructor(
-        marker: HTMLElement,
+        private location: Node,
         private expression: Expression,
         private template: SyntheticViewTemplate
-    ) {
-        this.location = DOM.convertMarkerToLocation(marker);
-    }
+    ) {}
 
     bind(source: unknown) {
         this.source = source;

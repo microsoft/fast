@@ -24,18 +24,15 @@ export class WhenDirective extends Directive {
 }
 
 export class WhenBehavior implements Behavior, GetterInspector, Subscriber {
-    private location: Node;
     private view: SyntheticView | null = null;
     private cachedView?: SyntheticView;
     private source: unknown;
 
     constructor(
-        marker: HTMLElement,
+        private location: Node,
         private expression: Expression,
         private template: SyntheticViewTemplate
-    ) {
-        this.location = DOM.convertMarkerToLocation(marker);
-    }
+    ) {}
 
     bind(source: unknown) {
         this.source = source;

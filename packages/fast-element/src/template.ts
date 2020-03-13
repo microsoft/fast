@@ -20,34 +20,45 @@ export class HTMLTemplate extends Directive
     constructor(
         private templateElement: HTMLTemplateElement,
         private viewBehaviorFactories: BehaviorFactory[],
-        private hostBehaviorFactory: BehaviorFactory | null = null
+        private hostBehaviorFactories: BehaviorFactory[]
     ) {
         super();
-
-        const fragment = templateElement.content;
-
-        if (DOM.isMarker(fragment.firstChild!)) {
-            fragment.insertBefore(DOM.createLocation(), fragment.firstChild);
-        }
     }
 
     public create(host?: Element) {
         const fragment = this.templateElement.content.cloneNode(true) as DocumentFragment;
-        const targets = fragment.querySelectorAll(".fm");
-        const viewBehaviorFactories = this.viewBehaviorFactories;
-        const hostBehaviorFactories = this.hostBehaviorFactory;
-        const hasHostBehaviors = host !== void 0 && hostBehaviorFactories !== null;
-        const behaviorCount = hasHostBehaviors
-            ? viewBehaviorFactories.length + 1
-            : viewBehaviorFactories.length;
-        const behaviors = new Array<Behavior>(behaviorCount);
+        const viewFactories = this.viewBehaviorFactories;
+        const hostFactories = this.hostBehaviorFactories;
+        const behaviors = new Array<Behavior>(
+            viewFactories.length + hostFactories.length
+        );
+        const walker = document.createTreeWalker(
+            fragment,
+            133, // element, text, comment
+            null,
+            false
+        );
 
-        for (let i = 0, ii = targets.length; i < ii; ++i) {
-            behaviors[i] = viewBehaviorFactories[i].createBehavior(targets[i]);
+        let targetIndex = -1;
+        let behaviorIndex = 0;
+        let node;
+
+        for (let ii = viewFactories.length; behaviorIndex < ii; ++behaviorIndex) {
+            const factory = viewFactories[behaviorIndex];
+            const factoryIndex = factory.targetIndex;
+
+            do {
+                if (targetIndex === factoryIndex) {
+                    behaviors[behaviorIndex] = factory.createBehavior(node);
+                    break;
+                }
+
+                targetIndex++;
+            } while ((node = walker.nextNode()!));
         }
 
-        if (hasHostBehaviors) {
-            behaviors[behaviorCount - 1] = hostBehaviorFactories!.createBehavior(host);
+        for (let i = 0, ii = hostFactories.length; i < ii; ++i, ++behaviorIndex) {
+            behaviors[behaviorIndex] = hostFactories[i].createBehavior(host);
         }
 
         return new HTMLView(fragment, behaviors);
@@ -59,13 +70,11 @@ export class HTMLTemplate extends Directive
 }
 
 export class HTMLTemplateBehavior implements Behavior {
-    private location: Node;
     private view: SyntheticView;
 
-    constructor(template: SyntheticViewTemplate, marker: HTMLElement) {
-        this.location = DOM.convertMarkerToLocation(marker);
+    constructor(template: SyntheticViewTemplate, location: HTMLElement) {
         this.view = template.create();
-        this.view.insertBefore(this.location);
+        this.view.insertBefore(location);
     }
 
     bind(source: unknown) {

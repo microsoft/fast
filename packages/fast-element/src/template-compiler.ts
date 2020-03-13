@@ -1,13 +1,13 @@
 import { ExpressionContext } from "./interfaces";
 import { HTMLTemplate } from "./template";
-import { BehaviorFactory, CompositeBehaviorFactory } from "./directives/behavior";
+import { BehaviorFactory } from "./directives/behavior";
 import { DOM } from "./dom";
 import { BindingDirective, BindingType } from "./directives/binding";
 import { Directive, AttachedBehaviorDirective } from "./directives/directive";
 
-type MaybeNode = Node | null;
 type InlineDirective = BindingDirective | AttachedBehaviorDirective;
 
+const compilationContext = { locatedDirectives: 0, targetIndex: -1 };
 const prefixToBindingType: Record<string, BindingType> = {
     "@": BindingType.trigger,
     $: BindingType.attribute,
@@ -26,98 +26,89 @@ export function compileTemplate(
 
         const fec = element.content.firstElementChild;
 
-        if (fec !== null && fec.tagName === "TEMPLATE" && !DOM.isMarker(fec)) {
+        if (fec !== null && fec.tagName === "TEMPLATE") {
             element = fec as HTMLTemplateElement;
         }
     } else {
         element = html;
     }
 
+    const hostFactories: BehaviorFactory[] = [];
+    compileAttributes(element, directives, hostFactories, true);
+
+    const fragment = element.content;
     const viewFactories: BehaviorFactory[] = [];
-    const hostFactory = compileAttributes(element, directives, true);
+    const directiveCount = directives.length;
+    const walker = document.createTreeWalker(
+        fragment,
+        133, // element, text, comment
+        null,
+        false
+    );
 
-    const node = element.content;
-    let currentChild: MaybeNode = node.firstChild;
+    compilationContext.locatedDirectives = 0;
+    compilationContext.targetIndex = -1;
 
-    while (currentChild) {
-        currentChild = compileNode(currentChild, node, directives, viewFactories);
-    }
+    while (compilationContext.locatedDirectives < directiveCount) {
+        const node = walker.nextNode();
 
-    return new HTMLTemplate(element, viewFactories, hostFactory);
-}
-
-function compileNode(
-    node: Node,
-    parentNode: Node,
-    directives: Directive[],
-    factories: BehaviorFactory[]
-): MaybeNode {
-    switch (node.nodeType) {
-        case 1: //element node
-            return DOM.isMarker(node)
-                ? compileBlock(node as HTMLElement, directives, factories)
-                : compileElement(node as HTMLElement, directives, factories);
-        case 3: //text node
-            //use wholeText to retrieve the textContent of all adjacent text nodes.
-            const directive = tryParsePlaceholders(
-                (node as Text).wholeText,
-                directives
-            ) as BindingDirective;
-
-            if (directive !== null) {
-                const marker = DOM.createTextMarker();
-                (node.parentNode || parentNode).insertBefore(marker, node);
-                node.textContent = " ";
-
-                directive.type = BindingType.text;
-                factories.push(directive);
-
-                //remove adjacent text nodes.
-                while (node.nextSibling && node.nextSibling.nodeType === 3) {
-                    (node.parentNode || parentNode).removeChild(node.nextSibling);
-                }
-            } else {
-                //skip parsing adjacent text nodes.
-                while (node.nextSibling && node.nextSibling.nodeType === 3) {
-                    node = node.nextSibling;
-                }
-            }
-
-            return node.nextSibling;
-        default:
+        if (node === null) {
             break;
+        }
+
+        compilationContext.targetIndex++;
+
+        switch (node.nodeType) {
+            case 1: // element node
+                compileAttributes(node as HTMLElement, directives, viewFactories);
+                break;
+            case 3: // text node
+                // use wholeText to retrieve the textContent of all adjacent text nodes.
+                const directive = tryParsePlaceholders(
+                    (node as Text).wholeText,
+                    directives
+                ) as BindingDirective;
+
+                if (directive !== null) {
+                    node.textContent = " ";
+                    directive.type = BindingType.text;
+                    viewFactories.push(directive);
+                    directive.targetIndex = compilationContext.targetIndex;
+
+                    //remove adjacent text nodes.
+                    while (node.nextSibling && node.nextSibling.nodeType === 3) {
+                        node.parentNode!.removeChild(node.nextSibling);
+                    }
+                }
+
+                break;
+            case 8: // comment
+                if (DOM.isMarker(node)) {
+                    const directive = directives[DOM.extractMarkerIndex(node)];
+                    directive.targetIndex = compilationContext.targetIndex;
+                    compilationContext.locatedDirectives++;
+                    viewFactories.push(directive);
+                } else {
+                    node.parentNode!.removeChild(node);
+                    compilationContext.targetIndex--;
+                }
+        }
     }
 
-    return node.nextSibling;
-}
-
-function compileElement(
-    node: HTMLElement,
-    directives: Directive[],
-    factories: BehaviorFactory[]
-): MaybeNode {
-    const elementFactory = compileAttributes(node, directives);
-
-    if (elementFactory !== null) {
-        DOM.makeIntoBehaviorTarget(node);
-        factories.push(elementFactory);
+    if (DOM.isMarker(fragment.firstChild!)) {
+        fragment.insertBefore(document.createComment(""), fragment.firstChild);
     }
 
-    let currentChild: MaybeNode = node.firstChild;
-    while (currentChild) {
-        currentChild = compileNode(currentChild, node, directives, factories);
-    }
-
-    return node.nextSibling;
+    return new HTMLTemplate(element, viewFactories, hostFactories);
 }
 
 function compileAttributes(
     node: HTMLElement,
     directives: Directive[],
+    factories: BehaviorFactory[],
     includeBasicValues: boolean = false
 ) {
     const attributes = node.attributes;
-    let elementFactory: BehaviorFactory | null = null;
 
     for (let i = 0, ii = attributes.length; i < ii; ++i) {
         const attr = attributes[i];
@@ -139,24 +130,10 @@ function compileAttributes(
             i--;
             ii--;
 
-            if (elementFactory === null) {
-                elementFactory = directive;
-            } else {
-                elementFactory = new CompositeBehaviorFactory(elementFactory, directive);
-            }
+            directive.targetIndex = compilationContext.targetIndex;
+            factories.push(directive);
         }
     }
-
-    return elementFactory;
-}
-
-function compileBlock(
-    node: HTMLElement,
-    directives: Directive[],
-    factories: BehaviorFactory[]
-): MaybeNode {
-    factories.push(directives[parseInt(node.getAttribute("i")!)]);
-    return node.nextSibling!;
 }
 
 function prepareAttributeDirective(
@@ -352,12 +329,18 @@ function tryParsePlaceholders(
     parts = parts!.filter(x => x !== "");
 
     if (parts.length == 1) {
+        compilationContext.locatedDirectives++;
         return parts[0] as InlineDirective;
     }
 
-    const finalParts = parts!.map(
-        x => (typeof x === "string" ? x : (x as BindingDirective).expression)
-    );
+    const finalParts = parts!.map(x => {
+        if (typeof x === "string") {
+            return x;
+        }
+
+        compilationContext.locatedDirectives++;
+        return (x as BindingDirective).expression;
+    });
 
     const expression = (scope: unknown, context: ExpressionContext) => {
         let output = "";
