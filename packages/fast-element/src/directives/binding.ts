@@ -17,17 +17,97 @@ export const enum BindingType {
     trigger = 4,
 }
 
+function normalBind(this: BindingBehavior, source: unknown) {
+    this.source = source;
+    this.updateTarget(inspectAndEvaluate(this.expression, source, context, this));
+}
+
+function triggerBind(this: BindingBehavior, source: unknown) {
+    this.source = source;
+    this.target.addEventListener(this.targetName!, this, true);
+}
+
+function normalUnbind(this: BindingBehavior) {
+    if (this.record !== null) {
+        this.record.unsubscribe(this);
+    }
+
+    this.source = null;
+}
+
+function triggerUnbind(this: BindingBehavior) {
+    this.target.removeEventListener(this.targetName!, this, true);
+    this.source = null;
+}
+
+function updateAttributeTarget(this: BindingBehavior, value: unknown): void {
+    (value as boolean)
+        ? (this.target as HTMLElement).setAttribute(this.targetName!, "")
+        : (this.target as HTMLElement).removeAttribute(this.targetName!);
+}
+
+function updateBooleanAttributeTarget(this: BindingBehavior, value: unknown): void {
+    (value as boolean)
+        ? (this.target as HTMLElement).setAttribute(this.targetName!, "")
+        : (this.target as HTMLElement).removeAttribute(this.targetName!);
+}
+
+function updateTextTarget(this: BindingBehavior, value: unknown): void {
+    this.target.textContent = value as string;
+}
+
+function updatePropertyTarget(this: BindingBehavior, value: unknown): void {
+    this.target[this.targetName!] = value;
+}
+
 export class BindingDirective extends Directive {
     public targetName?: string;
-    public type: BindingType = BindingType.property;
     public createPlaceholder = DOM.createInterpolationPlaceholder;
+    private bind: typeof normalBind = normalBind;
+    private unbind: typeof normalUnbind = normalUnbind;
+    private updateTarget: typeof updatePropertyTarget = updatePropertyTarget;
 
     constructor(public expression: Expression) {
         super();
     }
 
+    setType(type: BindingType) {
+        switch (type) {
+            case BindingType.trigger:
+                this.bind = triggerBind;
+                this.unbind = triggerUnbind;
+                break;
+            default:
+                this.bind = normalBind;
+                this.unbind = normalUnbind;
+                break;
+        }
+
+        switch (type) {
+            case BindingType.attribute:
+                this.updateTarget = updateAttributeTarget;
+                break;
+            case BindingType.booleanAttribute:
+                this.updateTarget = updateBooleanAttributeTarget;
+                break;
+            case BindingType.text:
+                this.updateTarget = updateTextTarget;
+                break;
+            case BindingType.text:
+                this.updateTarget = updatePropertyTarget;
+                break;
+        }
+    }
+
     createBehavior(target: any) {
-        return new BindingBehavior(target, this.expression, this.type, this.targetName);
+        return new BindingBehavior(
+            target,
+            this.expression,
+            this.bind,
+            this.unbind,
+            this.updateTarget,
+            this.targetName
+        );
     }
 }
 
@@ -46,36 +126,18 @@ class ObservationRecord {
 const context = {} as any;
 
 export class BindingBehavior implements Behavior, GetterInspector, Subscriber {
-    private source: unknown;
-    private record: ObservationRecord | null = null;
+    public source: unknown;
+    public record: ObservationRecord | null = null;
     private needsQueue = true;
 
     constructor(
-        private target: any,
-        private expression: Expression,
-        private type: BindingType,
-        private targetName?: string
+        public target: any,
+        public expression: Expression,
+        public bind: typeof normalBind,
+        public unbind: typeof normalUnbind,
+        public updateTarget: typeof updatePropertyTarget,
+        public targetName?: string
     ) {}
-
-    bind(source: unknown) {
-        this.source = source;
-
-        if (this.type === BindingType.trigger) {
-            this.target.addEventListener(this.targetName!, this, true);
-        } else {
-            this.updateTarget(inspectAndEvaluate(this.expression, source, context, this));
-        }
-    }
-
-    unbind() {
-        if (this.type === BindingType.trigger) {
-            this.target.removeEventListener(this.targetName!, this, true);
-        } else if (this.record !== null) {
-            this.record.unsubscribe(this);
-        }
-
-        this.source = null;
-    }
 
     handleChange(source: any, propertyName: string): void {
         if (this.needsQueue) {
@@ -102,26 +164,5 @@ export class BindingBehavior implements Behavior, GetterInspector, Subscriber {
 
         this.record = new ObservationRecord(source, propertyName);
         this.record.subscribe(this);
-    }
-
-    updateTarget(value: unknown): void {
-        switch (this.type) {
-            case BindingType.attribute:
-                (value as boolean)
-                    ? (this.target as HTMLElement).setAttribute(this.targetName!, "")
-                    : (this.target as HTMLElement).removeAttribute(this.targetName!);
-                break;
-            case BindingType.booleanAttribute:
-                (value as boolean)
-                    ? (this.target as HTMLElement).setAttribute(this.targetName!, "")
-                    : (this.target as HTMLElement).removeAttribute(this.targetName!);
-                break;
-            case BindingType.text:
-                this.target.textContent = value as string;
-                break;
-            case BindingType.property:
-                this.target[this.targetName!] = value;
-                break;
-        }
     }
 }

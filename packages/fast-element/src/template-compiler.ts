@@ -72,7 +72,7 @@ export function compileTemplate(
 
                 if (directive !== null) {
                     node.textContent = " ";
-                    directive.type = BindingType.text;
+                    directive.setType(BindingType.text);
                     viewFactories.push(directive);
                     directive.targetIndex = compilationContext.targetIndex;
 
@@ -148,13 +148,13 @@ function prepareAttributeDirective(
 
     if (bindingType === void 0) {
         if (attrName === "style") {
-            directive.type = BindingType.attribute;
+            directive.setType(BindingType.attribute);
             directive.targetName = "style";
         } else {
             directive.targetName = attrNameToPropertyName(element.tagName, attrName);
         }
     } else {
-        directive.type = bindingType;
+        directive.setType(bindingType);
         directive.targetName = attrName.substr(1);
     }
 }
