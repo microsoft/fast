@@ -10,9 +10,9 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      AZURE_WEBAPP_NAME: fast-explore
-      AZURE_WEBAPP_PACKAGE_PATH: 'packages/fast-component-explorer/www/'
-      AZURE_WEBAPP_SLOT_NAME: alpha
+      AZURE_WEBAPP_NAME: 'fast-explore'
+      AZURE_WEBAPP_PACKAGE_PATH: './packages/fast-component-explorer/www/'
+      AZURE_WEBAPP_SLOT_NAME: 'alpha'
 
     steps:
     - uses: azure/login@v1
@@ -29,11 +29,19 @@ jobs:
 
     - name: Prepare Yarn workspaces
       run: lerna run prepare
+    
+    - name: Build Web Application
+      run: | 
+        cd packages/fast-component-explorer
+        yarn build:app
 
     - name: 'Deploy to Azure WebApp'
       uses: azure/webapps-deploy@v2
-      with: 
+      with:
         app-name: ${{ env.AZURE_WEBAPP_NAME }}
         publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE_EXPLORE_FAST_DESIGN_ALPHA }}
         package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
         slot-name: env.AZURE_WEBAPP_SLOT_NAME
+        # startup-command: 'pm2 start /home/site/wwwroot/server.js --no-daemon'
+      # outputs:
+      #   webapp-url: fast-explore-alpha.azurewebsites.net
