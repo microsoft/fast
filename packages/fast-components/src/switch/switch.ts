@@ -55,9 +55,7 @@ export class Switch extends FormAssociated<HTMLInputElement> {
             this.proxy.checked = this.checked;
         }
 
-        if (this.constructed) {
-            this.$emit("change");
-        }
+        this.$emit("change");
 
         this.checked ? this.classList.add("checked") : this.classList.remove("checked");
     }
@@ -71,16 +69,10 @@ export class Switch extends FormAssociated<HTMLInputElement> {
      */
     private dirtyChecked: boolean = false;
 
-    /**
-     * Set to true when the component has constructed
-     */
-    private constructed: boolean = false;
-
     constructor() {
         super();
 
         this.proxy.setAttribute("type", "checkbox");
-        this.constructed = true;
     }
 
     public connectedCallback(): void {
