@@ -31,9 +31,7 @@ A badge should allow the following properties:
 
 *Attributes:*
 - `fill`: string
-- `size`: enum
-    - `small`
-    - `large`
+- `size`: string
 
 *Slots:*
 - `default`
@@ -42,16 +40,25 @@ A badge should allow the following properties:
 
 *Template:*
 ```
-<span style={{background: #FFD800}}>
-    <slot></slot>
-</span>
+<slot></slot>
 ```
 
 ## Implementation
 
 ```
+fast-badge {
+   --fill-primary: rgba(255, 0, 0, 1);
+   --fill-secondary: #00FF00;
+   --fill-transparent: transparent;
+   --size-small: 12px;
+   --size-medium: 16px;
+   --size-large: 20px;
+}
+```
+
+```
 <fast-badge
-    fill="#FFD800"
+    fill="primary"
     size="large"
 >
     New
