@@ -34,6 +34,8 @@ export function compileTemplate(
     }
 
     const hostFactories: BehaviorFactory[] = [];
+
+    compilationContext.locatedDirectives = 0;
     compileAttributes(element, directives, hostFactories, true);
 
     const fragment = element.content;
@@ -46,7 +48,6 @@ export function compileTemplate(
         false
     );
 
-    compilationContext.locatedDirectives = 0;
     compilationContext.targetIndex = -1;
 
     while (compilationContext.locatedDirectives < directiveCount) {
