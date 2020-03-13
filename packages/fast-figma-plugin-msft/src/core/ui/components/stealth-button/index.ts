@@ -10,6 +10,7 @@ const template = html`
 const styles = css`
     :host {
         display: inline-block;
+        outline: none;
     }
 
     :host(.has-glyph.has-content) span {
@@ -22,6 +23,7 @@ const styles = css`
         min-width: 30px;
         height: 30px;
         border: none;
+        border-radius: calc(var(--corner-radius) * 1px);
         background: var(--neutral-fill-stealth-rest);
         fill: var(--neutral-foreground-rest);
         outline: none;

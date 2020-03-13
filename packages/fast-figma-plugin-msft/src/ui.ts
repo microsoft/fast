@@ -1,10 +1,12 @@
 import { ThemeDesigner } from "./core/ui/theme-designer";
 import { PluginUI, PluginUIProps } from "./core/ui";
 import { UIMessage } from "./core/messaging";
+import { FASTDesignSystemProvider } from "@microsoft/fast-components";
 
 // tslint:disable
 const styles = require("./global.css");
 ThemeDesigner;
+FASTDesignSystemProvider;
 // tslint:enable
 /**
  * Dispatches a UI message to the host
