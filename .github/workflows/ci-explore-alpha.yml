@@ -15,7 +15,8 @@ jobs:
       AZURE_WEBAPP_SLOT_NAME: 'alpha'
 
     steps:
-    - uses: azure/login@v1
+    - name: Azure Login
+      uses: azure/login@v1
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS_EXPLORE_FAST_DESIGN }}
 
@@ -46,6 +47,6 @@ jobs:
       # outputs:
       #   webapp-url: fast-explore-alpha.azurewebsites.net
 
-    - name: logout
+    - name: Azure Logout
       run: |
         az logout
