@@ -138,14 +138,14 @@ export class PluginUI extends React.Component<PluginUIProps> {
 
         return (
             <>
-                <td-drawer name="Windows 10X Theme" />
+                <td-drawer name="Theme" />
                 <td-drawer name="Color">
                     <div slot="collapsed-content">
                         {backgroundRecipes.length ? (
                             <>
-                                <p className="title">Background</p>
+                                <p className="title inset">Background</p>
                                 {backgroundRecipes.map(recipe => (
-                                    <p>
+                                    <p className="inset">
                                         <td-swatch
                                             circular
                                             value={recipe.value}
@@ -159,9 +159,9 @@ export class PluginUI extends React.Component<PluginUIProps> {
                         ) : null}
                         {foregroundRecipes.length ? (
                             <>
-                                <p className="title">Foreground</p>
+                                <p className="title inset">Foreground</p>
                                 {foregroundRecipes.map(recipe => (
-                                    <p>
+                                    <p className="inset">
                                         <td-swatch
                                             circular
                                             value={recipe.value}
@@ -175,9 +175,9 @@ export class PluginUI extends React.Component<PluginUIProps> {
                         ) : null}
                         {strokeRecipes.length ? (
                             <>
-                                <p className="title">Border</p>
+                                <p className="title inset">Border</p>
                                 {strokeRecipes.map(recipe => (
-                                    <p>
+                                    <p className="inset">
                                         <td-swatch
                                             circular
                                             value={recipe.value}
@@ -196,7 +196,7 @@ export class PluginUI extends React.Component<PluginUIProps> {
                             node.supports.includes(RecipeTypes.backgroundFills)
                         ) ? (
                             <>
-                                <p className="title">Page backgrounds</p>
+                                <p className="title inset">Page backgrounds</p>
                                 <div className="swatch-grid">
                                     {this.pageBackgroundIds()
                                         .map(id =>
@@ -228,7 +228,7 @@ export class PluginUI extends React.Component<PluginUIProps> {
                             node.supports.includes(RecipeTypes.foregroundFills)
                         ) ? (
                             <>
-                                <p className="title">Foregrounds</p>
+                                <p className="title inset">Foregrounds</p>
                                 <div className="swatch-grid">
                                     {this.recipeOptionsByType(
                                         RecipeTypes.foregroundFills
@@ -254,77 +254,7 @@ export class PluginUI extends React.Component<PluginUIProps> {
                 <td-drawer name="Corner Radius" />
             </>
         );
-        // return (
-        //     <div style={{ overflowY: "auto" }}>
-        //         {this.props.selectedNodes.some(node =>
-        //             node.supports.includes("designSystem")
-        //         )
-        //             ? this.renderThemeSwitcher()
-        //             : null}
-        //         {this.props.recipeOptions
-        //             .sort((a, b) => {
-        //                 return a.type < b.type ? -1 : a.type > b.type ? 1 : 0;
-        //             })
-        //             .map(this.renderRecipeSelector)}
-        //     </div>
-        // );
     }
-
-    // private renderRecipeSelector = (optionType: RecipeTypeOptions): JSX.Element => {
-    //     const anySelected = optionType.options.some(
-    //         option => !!this.recipeIsAssigned(option.id).length
-    //     );
-    //     const noneId = optionType.type + "none";
-    //     return (
-    //         <fieldset
-    //             key={optionType.type}
-    //             style={{
-    //                 border: "none",
-    //                 padding: "0",
-    //                 margin: "12px 0",
-    //                 display: "flex",
-    //             }}
-    //         >
-    //             <legend>{optionType.type}</legend>
-    //             <Radio
-    //                 key={noneId}
-    //                 inputId={noneId}
-    //                 name={optionType.type}
-    //                 style={{ margin: "2px 0" }}
-    //                 checked={!anySelected}
-    //                 onChange={this.removeRecipe.bind(this, optionType.type)}
-    //             >
-    //                 <Label
-    //                     slot="label"
-    //                     htmlFor={noneId}
-    //                     style={{ display: "inline-flex", alignItems: "center" }}
-    //                 >
-    //                     <Swatch color={"#FFF"} />
-    //                     None
-    //                 </Label>
-    //             </Radio>
-    //             {optionType.options.map(option => (
-    //                 <Radio
-    //                     key={option.id}
-    //                     inputId={option.id}
-    //                     name={optionType.type}
-    //                     style={{ margin: "2px 0" }}
-    //                     checked={!!this.recipeIsAssigned(option.id).length}
-    //                     onChange={this.setRecipe.bind(this, option.id, option.type)}
-    //                 >
-    //                     <Label
-    //                         slot="label"
-    //                         htmlFor={option.id}
-    //                         style={{ display: "inline-flex", alignItems: "center" }}
-    //                     >
-    //                         <Swatch color={option.value} />
-    //                         {option.name}
-    //                     </Label>
-    //                 </Radio>
-    //             ))}
-    //         </fieldset>
-    //     );
-    // };
 
     private appliedRecipes(type: RecipeTypes) {
         const set = new Set();

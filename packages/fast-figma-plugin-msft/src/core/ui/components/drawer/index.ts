@@ -34,8 +34,6 @@ const template = html`
 const styles = css`
     :host {
         display: block;
-        padding-inline-start: 16px;
-        padding-inline-end: 8px;
         border-bottom: 1px solid #efefef;
     }
 
@@ -45,6 +43,8 @@ const styles = css`
         justify-content: space-between;
         align-items: center;
         font-weight: 600;
+        padding-inline-start: 16px;
+        padding-inline-end: 8px;
     }
 
     :host(.collapsed) .expanded-content,
