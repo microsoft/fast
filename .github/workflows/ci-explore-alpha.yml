@@ -10,9 +10,9 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      AZURE_WEBAPP_NAME: 'fast-explore'
-      AZURE_WEBAPP_PACKAGE_PATH: './packages/fast-component-explorer/www/'
-      AZURE_WEBAPP_SLOT_NAME: 'alpha'
+      AZURE_WEBAPP_NAME: fast-explore
+      AZURE_WEBAPP_PACKAGE_PATH: ./packages/fast-component-explorer/www/
+      AZURE_WEBAPP_SLOT_NAME: alpha
 
     steps:
     - name: Azure Login
@@ -45,7 +45,7 @@ jobs:
         slot-name: env.AZURE_WEBAPP_SLOT_NAME
         # startup-command: 'pm2 start /home/site/wwwroot/server.js --no-daemon'
       # outputs:
-      #   webapp-url: fast-explore-alpha.azurewebsites.net
+        webapp-url: fast-explore-alpha.azurewebsites.net
 
     - name: Azure Logout
       run: |
