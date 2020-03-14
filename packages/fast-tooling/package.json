@@ -77,6 +77,5 @@
         "lodash-es": "^4.0.0"
     },
     "dependencies": {
-        "ajv": "^6.10.0"
     }
 }
