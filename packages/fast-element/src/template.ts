@@ -17,21 +17,23 @@ export interface SyntheticViewTemplate {
 export class HTMLTemplate extends Directive
     implements ElementViewTemplate, SyntheticViewTemplate {
     public createPlaceholder = DOM.createBlockPlaceholder;
+    private behaviorCount: number;
+    private hasHostBehaviors: boolean;
     constructor(
         private templateElement: HTMLTemplateElement,
         private viewBehaviorFactories: BehaviorFactory[],
         private hostBehaviorFactories: BehaviorFactory[]
     ) {
         super();
+        this.behaviorCount =
+            this.viewBehaviorFactories.length + this.hostBehaviorFactories.length;
+        this.hasHostBehaviors = this.hostBehaviorFactories.length > 0;
     }
 
     public create(host?: Element) {
         const fragment = this.templateElement.content.cloneNode(true) as DocumentFragment;
         const viewFactories = this.viewBehaviorFactories;
-        const hostFactories = this.hostBehaviorFactories;
-        const behaviors = new Array<Behavior>(
-            viewFactories.length + hostFactories.length
-        );
+        const behaviors = new Array<Behavior>(this.behaviorCount);
         const walker = document.createTreeWalker(
             fragment,
             133, // element, text, comment
@@ -39,7 +41,7 @@ export class HTMLTemplate extends Directive
             false
         );
 
-        let targetIndex = -1;
+        let targetIndex = 0;
         let behaviorIndex = 0;
         let node;
 
@@ -47,18 +49,22 @@ export class HTMLTemplate extends Directive
             const factory = viewFactories[behaviorIndex];
             const factoryIndex = factory.targetIndex;
 
-            do {
+            while ((node = walker.nextNode()) !== null) {
                 if (targetIndex === factoryIndex) {
                     behaviors[behaviorIndex] = factory.createBehavior(node);
                     break;
                 }
 
                 targetIndex++;
-            } while ((node = walker.nextNode()!));
+            }
         }
 
-        for (let i = 0, ii = hostFactories.length; i < ii; ++i, ++behaviorIndex) {
-            behaviors[behaviorIndex] = hostFactories[i].createBehavior(host);
+        if (this.hasHostBehaviors) {
+            const hostFactories = this.hostBehaviorFactories;
+
+            for (let i = 0, ii = hostFactories.length; i < ii; ++i, ++behaviorIndex) {
+                behaviors[behaviorIndex] = hostFactories[i].createBehavior(host);
+            }
         }
 
         return new HTMLView(fragment, behaviors);
