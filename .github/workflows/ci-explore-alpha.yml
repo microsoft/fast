@@ -45,3 +45,7 @@ jobs:
         # startup-command: 'pm2 start /home/site/wwwroot/server.js --no-daemon'
       # outputs:
       #   webapp-url: fast-explore-alpha.azurewebsites.net
+
+    - name: logout
+      run: |
+        az logout
