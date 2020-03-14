@@ -18,7 +18,7 @@ jobs:
     - name: Azure Login
       uses: azure/login@v1
       with:
-        creds: ${{ secrets.AZURE_CREDENTIALS_EXPLORE_FAST_DESIGN }}
+        creds: ${{ secrets.AZURE_CREDENTIALS_FAST_DESIGN }}
 
     - name: Checkout Branch
       uses: actions/checkout@master
