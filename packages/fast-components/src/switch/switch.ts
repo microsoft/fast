@@ -2,7 +2,6 @@ import { attr, observable } from "@microsoft/fast-element";
 import { FormAssociated } from "../form-associated";
 import { keyCodeSpace } from "@microsoft/fast-web-utilities";
 import { bool } from "../utilities";
-import { type } from "os";
 
 export class Switch extends FormAssociated<HTMLInputElement> {
     @attr({ attribute: "readonly" })
