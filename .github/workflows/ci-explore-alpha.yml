@@ -11,7 +11,7 @@ jobs:
 
     env:
       AZURE_WEBAPP_NAME: fast-explore
-      AZURE_WEBAPP_PACKAGE_PATH: www
+      AZURE_WEBAPP_PACKAGE_PATH: ./packages/fast-component-explorer/www
       AZURE_WEBAPP_SLOT_NAME: alpha
 
     steps:
