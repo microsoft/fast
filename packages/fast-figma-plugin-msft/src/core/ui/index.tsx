@@ -10,9 +10,15 @@ import {
 import React from "react";
 import { MessageAction, MessageTypes, UIMessage } from "../messaging";
 import { RecipeData, RecipeTypes } from "../recipe-registry";
-import Swatch from "./swatch";
+// import Swatch from "./swatch";
 import { DesignSystem, StandardLuminance } from "@microsoft/fast-components-styles-msft";
 import { refresh, revertChanges } from "./glyphs";
+import { Drawer, Swatch } from "./components";
+
+/* tslint:disable:no-unused-expression */
+Drawer;
+Swatch;
+/* tslint:enable:no-unused-expression */
 
 export interface PluginUIActiveNodeRecipeSupportOptions {
     label: string;
@@ -69,19 +75,7 @@ export class PluginUI extends React.Component<PluginUIProps> {
     };
 
     public render(): JSX.Element {
-        return (
-            <div
-                style={{
-                    height: "100%",
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "space-between",
-                }}
-            >
-                {this.renderBody()}
-                {this.renderFooter()}
-            </div>
-        );
+        return this.renderBody();
     }
 
     private renderFooter(): JSX.Element {
@@ -138,77 +132,240 @@ export class PluginUI extends React.Component<PluginUIProps> {
     }
 
     private renderBody(): JSX.Element {
+        const backgroundRecipes = this.appliedRecipes(RecipeTypes.backgroundFills);
+        const foregroundRecipes = this.appliedRecipes(RecipeTypes.foregroundFills);
+        const strokeRecipes = this.appliedRecipes(RecipeTypes.strokeFills);
+
         return (
-            <div style={{ overflowY: "auto" }}>
-                {this.props.selectedNodes.some(node =>
-                    node.supports.includes("designSystem")
-                )
-                    ? this.renderThemeSwitcher()
-                    : null}
-                {this.props.recipeOptions
-                    .sort((a, b) => {
-                        return a.type < b.type ? -1 : a.type > b.type ? 1 : 0;
-                    })
-                    .map(this.renderRecipeSelector)}
-            </div>
+            <>
+                <td-drawer name="Windows 10X Theme" />
+                <td-drawer name="Color">
+                    <div slot="collapsed-content">
+                        {backgroundRecipes.length ? (
+                            <>
+                                <p className="title">Background</p>
+                                {backgroundRecipes.map(recipe => (
+                                    <p>
+                                        <td-swatch
+                                            circular
+                                            value={recipe.value}
+                                            orientation="horizontal"
+                                        >
+                                            {recipe.value.replace("#", "")}
+                                        </td-swatch>
+                                    </p>
+                                ))}
+                            </>
+                        ) : null}
+                        {foregroundRecipes.length ? (
+                            <>
+                                <p className="title">Foreground</p>
+                                {foregroundRecipes.map(recipe => (
+                                    <p>
+                                        <td-swatch
+                                            circular
+                                            value={recipe.value}
+                                            orientation="horizontal"
+                                        >
+                                            {recipe.value.replace("#", "")}
+                                        </td-swatch>
+                                    </p>
+                                ))}
+                            </>
+                        ) : null}
+                        {strokeRecipes.length ? (
+                            <>
+                                <p className="title">Border</p>
+                                {strokeRecipes.map(recipe => (
+                                    <p>
+                                        <td-swatch
+                                            circular
+                                            value={recipe.value}
+                                            orientation="horizontal"
+                                            type="border"
+                                        >
+                                            {recipe.value.replace("#", "")}
+                                        </td-swatch>
+                                    </p>
+                                ))}
+                            </>
+                        ) : null}
+                    </div>
+                    <div>
+                        {this.props.selectedNodes.some(node =>
+                            node.supports.includes(RecipeTypes.backgroundFills)
+                        ) ? (
+                            <>
+                                <p className="title">Page backgrounds</p>
+                                <div className="swatch-grid">
+                                    {this.pageBackgroundIds()
+                                        .map(id =>
+                                            this.recipeOptionsByType(
+                                                RecipeTypes.backgroundFills
+                                            ).find(item => item.id === id)
+                                        )
+                                        .filter(
+                                            (recipe): recipe is RecipeData => !!recipe
+                                        )
+                                        .map(recipe => (
+                                            <td-swatch
+                                                circular
+                                                value={recipe.value}
+                                                title={recipe.value}
+                                                onClick={this.setRecipe.bind(
+                                                    this,
+                                                    recipe.id,
+                                                    recipe.type
+                                                )}
+                                            >
+                                                {recipe.name}
+                                            </td-swatch>
+                                        ))}
+                                </div>
+                            </>
+                        ) : null}
+                        {this.props.selectedNodes.some(node =>
+                            node.supports.includes(RecipeTypes.foregroundFills)
+                        ) ? (
+                            <>
+                                <p className="title">Foregrounds</p>
+                                <div className="swatch-grid">
+                                    {this.recipeOptionsByType(
+                                        RecipeTypes.foregroundFills
+                                    ).map(recipe => (
+                                        <td-swatch
+                                            circular
+                                            value={recipe.value}
+                                            title={recipe.value}
+                                            onClick={this.setRecipe.bind(
+                                                this,
+                                                recipe.id,
+                                                recipe.type
+                                            )}
+                                        >
+                                            {recipe.name}
+                                        </td-swatch>
+                                    ))}
+                                </div>
+                            </>
+                        ) : null}
+                    </div>
+                </td-drawer>
+                <td-drawer name="Corner Radius" />
+            </>
         );
+        // return (
+        //     <div style={{ overflowY: "auto" }}>
+        //         {this.props.selectedNodes.some(node =>
+        //             node.supports.includes("designSystem")
+        //         )
+        //             ? this.renderThemeSwitcher()
+        //             : null}
+        //         {this.props.recipeOptions
+        //             .sort((a, b) => {
+        //                 return a.type < b.type ? -1 : a.type > b.type ? 1 : 0;
+        //             })
+        //             .map(this.renderRecipeSelector)}
+        //     </div>
+        // );
     }
 
-    private renderRecipeSelector = (optionType: RecipeTypeOptions): JSX.Element => {
-        const anySelected = optionType.options.some(
-            option => !!this.recipeIsAssigned(option.id).length
+    // private renderRecipeSelector = (optionType: RecipeTypeOptions): JSX.Element => {
+    //     const anySelected = optionType.options.some(
+    //         option => !!this.recipeIsAssigned(option.id).length
+    //     );
+    //     const noneId = optionType.type + "none";
+    //     return (
+    //         <fieldset
+    //             key={optionType.type}
+    //             style={{
+    //                 border: "none",
+    //                 padding: "0",
+    //                 margin: "12px 0",
+    //                 display: "flex",
+    //             }}
+    //         >
+    //             <legend>{optionType.type}</legend>
+    //             <Radio
+    //                 key={noneId}
+    //                 inputId={noneId}
+    //                 name={optionType.type}
+    //                 style={{ margin: "2px 0" }}
+    //                 checked={!anySelected}
+    //                 onChange={this.removeRecipe.bind(this, optionType.type)}
+    //             >
+    //                 <Label
+    //                     slot="label"
+    //                     htmlFor={noneId}
+    //                     style={{ display: "inline-flex", alignItems: "center" }}
+    //                 >
+    //                     <Swatch color={"#FFF"} />
+    //                     None
+    //                 </Label>
+    //             </Radio>
+    //             {optionType.options.map(option => (
+    //                 <Radio
+    //                     key={option.id}
+    //                     inputId={option.id}
+    //                     name={optionType.type}
+    //                     style={{ margin: "2px 0" }}
+    //                     checked={!!this.recipeIsAssigned(option.id).length}
+    //                     onChange={this.setRecipe.bind(this, option.id, option.type)}
+    //                 >
+    //                     <Label
+    //                         slot="label"
+    //                         htmlFor={option.id}
+    //                         style={{ display: "inline-flex", alignItems: "center" }}
+    //                     >
+    //                         <Swatch color={option.value} />
+    //                         {option.name}
+    //                     </Label>
+    //                 </Radio>
+    //             ))}
+    //         </fieldset>
+    //     );
+    // };
+
+    private appliedRecipes(type: RecipeTypes) {
+        const set = new Set();
+        const recipes: RecipeData[] = [];
+
+        this.props.selectedNodes.forEach(node =>
+            node.recipes.forEach(recipe => set.add(recipe))
         );
-        const noneId = optionType.type + "none";
-        return (
-            <fieldset
-                key={optionType.type}
-                style={{
-                    border: "none",
-                    padding: "0",
-                    margin: "12px 0",
-                    display: "flex",
-                }}
-            >
-                <legend>{optionType.type}</legend>
-                <Radio
-                    key={noneId}
-                    inputId={noneId}
-                    name={optionType.type}
-                    style={{ margin: "2px 0" }}
-                    checked={!anySelected}
-                    onChange={this.removeRecipe.bind(this, optionType.type)}
-                >
-                    <Label
-                        slot="label"
-                        htmlFor={noneId}
-                        style={{ display: "inline-flex", alignItems: "center" }}
-                    >
-                        <Swatch color={"#FFF"} />
-                        None
-                    </Label>
-                </Radio>
-                {optionType.options.map(option => (
-                    <Radio
-                        key={option.id}
-                        inputId={option.id}
-                        name={optionType.type}
-                        style={{ margin: "2px 0" }}
-                        checked={!!this.recipeIsAssigned(option.id).length}
-                        onChange={this.setRecipe.bind(this, option.id, option.type)}
-                    >
-                        <Label
-                            slot="label"
-                            htmlFor={option.id}
-                            style={{ display: "inline-flex", alignItems: "center" }}
-                        >
-                            <Swatch color={option.value} />
-                            {option.name}
-                        </Label>
-                    </Radio>
-                ))}
-            </fieldset>
-        );
-    };
+
+        this.props.recipeOptions.forEach(optionSet => {
+            optionSet.options.forEach(option => {
+                if (set.has(option.id)) {
+                    recipes.push(option);
+                }
+            });
+        });
+
+        return recipes.filter(recipe => recipe.type === type);
+    }
+
+    private recipeOptionsByType(type: RecipeTypes): RecipeData[] {
+        const found = this.props.recipeOptions.find(x => x.type === type);
+
+        const val = found ? found.options : [];
+        return val;
+    }
+
+    /**
+     * TODO: Replace implementation after demo
+     */
+    private pageBackgroundIds() {
+        return [
+            "neutralLayerL1",
+            "neutralLayerL1Alt",
+            "neutralLayerL2",
+            "neutralLayerL3",
+            "neutralLayerL4",
+            "neutralLayerL5",
+            "neutralLayerCard",
+        ];
+    }
 
     /**
      * Returns the node ID's in which the recipe is assigned

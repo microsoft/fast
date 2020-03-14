@@ -17,3 +17,13 @@ body {
 #root {
     height: 100%;
 }
+
+.swatch-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    justify-items: start;
+}
+
+.swatch-grid td-swatch {
+    margin-bottom: calc(var(--design-unit) * 2px);
+}

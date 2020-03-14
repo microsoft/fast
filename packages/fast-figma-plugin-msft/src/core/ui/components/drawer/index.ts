@@ -6,7 +6,7 @@ StealthButton;
 const template = html`
     <template class="${x => (bool(x.expanded) ? "expanded" : "collapsed")}">
         <div class="header">
-            ${x => x.title}
+            ${x => x.name}
             <td-stealth-button
                 class="expand-button"
                 aria-label="Expand region"
@@ -77,7 +77,7 @@ export class Drawer extends FastElement {
     public expanded: boolean;
 
     @attr
-    public title: string = "";
+    public name: string = "";
 
     private handleExpandButtonClick(): void {
         this.expanded = !bool(this.expanded);

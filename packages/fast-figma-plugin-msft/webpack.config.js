@@ -14,7 +14,7 @@ module.exports = (env, args) => {
         devtool: isProduction ? "none" : "inline-source-map",
         entry: {
             main: path.resolve(appDir, "main.ts"),
-            ui: path.resolve(appDir, "ui.ts"),
+            ui: path.resolve(appDir, "ui.tsx"),
         },
         output: {
             path: outDir,

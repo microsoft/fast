@@ -23,48 +23,56 @@ const template = html`
     </td-drawer>
     <td-drawer title="Color">
         <div slot="collapsed-content">
-        ${when(
-            x => x.backgroundRecipes.length,
-            html`
-            <p class="title">Background</p>    
-            ${repeat(
-                x => x.backgroundRecipes,
+            ${when(
+                x => x.appliedRecipes(RecipeTypes.backgroundFills).length,
                 html`
-                <p><td-swatch circular $value="${x =>
-                    x.value}" orientation="horizontal">${x =>
-                    x.value.replace("#", "")}</td-swatch></p>
+                <p class="title">Background</p>    
+                ${repeat(
+                    x => x.backgroundRecipes,
+                    html`
+                    <p><td-swatch circular $value="${x =>
+                        x.value}" orientation="horizontal">${x =>
+                        x.value.replace("#", "")}</td-swatch></p>
+                `
+                )}
             `
             )}
-        `
-        )}
-        ${when(
-            x => x.foregroundRecipes.length,
-            html`
-           <p class="title">Foreground</p>    
-           ${repeat(
-               x => x.foregroundRecipes,
-               html`
-               <p><td-swatch circular $value="${x =>
-                   x.value}" orientation="horizontal">${x =>
-                   x.value.replace("#", "")}</td-swatch></p>
-           `
-           )}
-        `
-        )}
-        ${when(
-            x => x.strokeRecipes.length,
-            html`
-           <p class="title">Border</p>    
-           ${repeat(
-               x => x.strokeRecipes,
-               html`
-               <p><td-swatch circular $value="${x =>
-                   x.value}" orientation="horizontal">${x =>
-                   x.value.replace("#", "")}</td-swatch></p>
-           `
-           )}
-        `
-        )}
+            ${when(
+                x => x.appliedRecipes(RecipeTypes.foregroundFills).length,
+                html`
+               <p class="title">Foreground</p>    
+               ${repeat(
+                   x => x.foregroundRecipes,
+                   html`
+                   <p><td-swatch circular $value="${x =>
+                       x.value}" orientation="horizontal">${x =>
+                       x.value.replace("#", "")}</td-swatch></p>
+               `
+               )}
+            `
+            )}
+            ${when(
+                x => x.appliedRecipes(RecipeTypes.strokeFills).length,
+                html`
+               <p class="title">Border</p>    
+               ${repeat(
+                   x => x.strokeRecipes,
+                   html`
+                   <p><td-swatch circular $value="${x =>
+                       x.value}" orientation="horizontal" type="border">${x =>
+                       x.value.replace("#", "")}</td-swatch></p>
+               `
+               )}
+            `
+            )}
+        </div>
+        <div>
+            ${repeat(
+                x => x.recipeOptionsByType(RecipeTypes.backgroundFills),
+                html`
+                Hello world
+            `
+            )}
         </div>
     </td-drawer>
     <td-drawer title="Corner Radius">
@@ -82,6 +90,7 @@ export class ThemeDesigner extends FastElement {
     @observable
     public selectedNodes: PluginUIActiveNodeData[] = [];
     private selectedNodesChanged(): void {
+        console.log(this.selectedNodes);
         if (this.constructed) {
             this.activeRecipes = this.setActiveRecipes();
         }
@@ -97,20 +106,13 @@ export class ThemeDesigner extends FastElement {
 
     @observable
     private activeRecipes: RecipeData[] = [];
-    private get backgroundRecipes() {
-        return this.activeRecipes.filter(
-            recipe => recipe.type === RecipeTypes.backgroundFills
-        );
+
+    private appliedRecipes(type: RecipeTypes) {
+        return this.activeRecipes.filter(recipe => recipe.type === type);
     }
-    private get foregroundRecipes() {
-        return this.activeRecipes.filter(
-            recipe => recipe.type === RecipeTypes.foregroundFills
-        );
-    }
-    private get strokeRecipes() {
-        return this.activeRecipes.filter(
-            recipe => recipe.type === RecipeTypes.strokeFills
-        );
+
+    private recipeOptionsByType(type: RecipeTypes) {
+        return this.recipeOptions.find(x => x.type === type) || [];
     }
 
     private setActiveRecipes(): RecipeData[] {
@@ -130,6 +132,10 @@ export class ThemeDesigner extends FastElement {
         });
 
         return recipes;
+    }
+
+    private supports(type: RecipeTypes): boolean {
+        return this.selectedNodes.some(node => node.supports.includes(type));
     }
 
     /**
