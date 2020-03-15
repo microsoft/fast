@@ -228,6 +228,6 @@ export class FigmaPluginNode extends PluginNode {
     }
 
     private paintCornerRadius(data: RecipeData): void {
-        (this.node as any).cornerRadius = parseInt(data.value, 10);
+        (this.node as any).cornerRadius = data.value;
     }
 }

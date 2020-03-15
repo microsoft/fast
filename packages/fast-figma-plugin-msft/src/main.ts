@@ -74,8 +74,8 @@ Object.keys(cornerRadiusRecipe).forEach(key => {
         id: key,
         name: recipe.name,
         type: RecipeTypes.cornerRadius,
-        evaluate: (node: PluginNode): string => {
-            return recipe.resolver({} as any).toString();
+        evaluate: (node: PluginNode): number => {
+            return recipe.resolver({} as any);
         },
     };
 
