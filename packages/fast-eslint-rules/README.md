@@ -1,11 +1,24 @@
 # `@microsoft/fast-eslint-rules`
 
-> TODO: description
-
 ## Usage
 
-```
-const fastEslintRules = require('@microsoft/fast-eslint-rules');
+### Installation
 
-// TODO: DEMONSTRATE API
+Install the package:
 ```
+npm install @microsoft/fast-eslint-rules
+```
+
+### Configure your eslint config
+
+Add `fast-eslint-rules` as an extension in your eslint config
+```js
+{
+    "extends": [
+        "@microsoft/fast-eslint-rules",
+        // Other rule sets (if any)
+    ]
+}
+```
+
+Please see [configuring eslint](https://eslint.org/docs/user-guide/configuring) for more details.
