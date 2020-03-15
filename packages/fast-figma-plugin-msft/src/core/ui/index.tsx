@@ -90,10 +90,11 @@ export class PluginUI extends React.Component<PluginUIProps> {
                         display: "flex",
                         justifyContent: "space-between",
                         alignItems: "center",
-                        padding: "4px 0",
+                        padding:
+                            "4px calc(var(--design-unit) * 2px) 4px calc(var(--design-unit) * 4px)",
                     }}
                 >
-                    <Caption
+                    <p
                         style={{
                             whiteSpace: "nowrap",
                             overflow: "hidden",
@@ -101,9 +102,9 @@ export class PluginUI extends React.Component<PluginUIProps> {
                         }}
                     >
                         {this.props.selectedNodes
-                            .map(node => `${node.type} - ${node.id}`)
-                            .join(" | ") || "N/A"}
-                    </Caption>
+                            .map(node => `${node.type}`)
+                            .join(" | ") || "No selection"}
+                    </p>
                     <div style={{ display: "flex" }}>
                         <ActionTrigger
                             glyph={refresh}
@@ -137,77 +138,116 @@ export class PluginUI extends React.Component<PluginUIProps> {
         const strokeRecipes = this.appliedRecipes(RecipeTypes.strokeFills);
 
         return (
-            <>
-                <td-drawer name="Theme" />
-                <td-drawer name="Color">
-                    <div slot="collapsed-content">
-                        {backgroundRecipes.length ? (
-                            <>
-                                <p className="title inset">Background</p>
-                                {backgroundRecipes.map(recipe => (
-                                    <p className="inset">
-                                        <td-swatch
-                                            circular
-                                            value={recipe.value}
-                                            orientation="horizontal"
-                                        >
-                                            {recipe.value.replace("#", "")}
-                                        </td-swatch>
-                                    </p>
-                                ))}
-                            </>
-                        ) : null}
-                        {foregroundRecipes.length ? (
-                            <>
-                                <p className="title inset">Foreground</p>
-                                {foregroundRecipes.map(recipe => (
-                                    <p className="inset">
-                                        <td-swatch
-                                            circular
-                                            value={recipe.value}
-                                            orientation="horizontal"
-                                        >
-                                            {recipe.value.replace("#", "")}
-                                        </td-swatch>
-                                    </p>
-                                ))}
-                            </>
-                        ) : null}
-                        {strokeRecipes.length ? (
-                            <>
-                                <p className="title inset">Border</p>
-                                {strokeRecipes.map(recipe => (
-                                    <p className="inset">
-                                        <td-swatch
-                                            circular
-                                            value={recipe.value}
-                                            orientation="horizontal"
-                                            type="border"
-                                        >
-                                            {recipe.value.replace("#", "")}
-                                        </td-swatch>
-                                    </p>
-                                ))}
-                            </>
-                        ) : null}
-                    </div>
-                    <div>
+            <div
+                style={{
+                    display: "grid",
+                    gridTemplateRows: "1fr auto",
+                    height: "100%",
+                    overflow: "auto",
+                }}
+            >
+                <div>
+                    <td-drawer name="Theme">
                         {this.props.selectedNodes.some(node =>
-                            node.supports.includes(RecipeTypes.backgroundFills)
-                        ) ? (
-                            <>
-                                <p className="title inset">Page backgrounds</p>
-                                <div className="swatch-grid">
-                                    {this.pageBackgroundIds()
-                                        .map(id =>
-                                            this.recipeOptionsByType(
-                                                RecipeTypes.backgroundFills
-                                            ).find(item => item.id === id)
-                                        )
-                                        .filter(
-                                            (recipe): recipe is RecipeData => !!recipe
-                                        )
-                                        .map(recipe => (
+                            node.supports.includes("designSystem")
+                        )
+                            ? this.renderThemeSwitcher()
+                            : null}
+                    </td-drawer>
+                    <td-drawer name="Color">
+                        <div slot="collapsed-content">
+                            {backgroundRecipes.length ? (
+                                <>
+                                    <p className="title inset">Background</p>
+                                    {backgroundRecipes.map(recipe => (
+                                        <p className="inset">
+                                            <td-swatch
+                                                circular
+                                                value={recipe.value}
+                                                orientation="horizontal"
+                                            >
+                                                {recipe.value.replace("#", "")}
+                                            </td-swatch>
+                                        </p>
+                                    ))}
+                                </>
+                            ) : null}
+                            {foregroundRecipes.length ? (
+                                <>
+                                    <p className="title inset">Foreground</p>
+                                    {foregroundRecipes.map(recipe => (
+                                        <p className="inset">
+                                            <td-swatch
+                                                circular
+                                                value={recipe.value}
+                                                orientation="horizontal"
+                                            >
+                                                {recipe.value.replace("#", "")}
+                                            </td-swatch>
+                                        </p>
+                                    ))}
+                                </>
+                            ) : null}
+                            {strokeRecipes.length ? (
+                                <>
+                                    <p className="title inset">Border</p>
+                                    {strokeRecipes.map(recipe => (
+                                        <p className="inset">
+                                            <td-swatch
+                                                circular
+                                                value={recipe.value}
+                                                orientation="horizontal"
+                                                type="border"
+                                            >
+                                                {recipe.value.replace("#", "")}
+                                            </td-swatch>
+                                        </p>
+                                    ))}
+                                </>
+                            ) : null}
+                        </div>
+                        <div>
+                            {this.props.selectedNodes.some(node =>
+                                node.supports.includes(RecipeTypes.backgroundFills)
+                            ) ? (
+                                <>
+                                    <p className="title inset">Page backgrounds</p>
+                                    <div className="swatch-grid">
+                                        {this.pageBackgroundIds()
+                                            .map(id =>
+                                                this.recipeOptionsByType(
+                                                    RecipeTypes.backgroundFills
+                                                ).find(item => item.id === id)
+                                            )
+                                            .filter(
+                                                (recipe): recipe is RecipeData => !!recipe
+                                            )
+                                            .map(recipe => (
+                                                <td-swatch
+                                                    circular
+                                                    value={recipe.value}
+                                                    title={recipe.value}
+                                                    onClick={this.setRecipe.bind(
+                                                        this,
+                                                        recipe.id,
+                                                        recipe.type
+                                                    )}
+                                                >
+                                                    {recipe.name}
+                                                </td-swatch>
+                                            ))}
+                                    </div>
+                                </>
+                            ) : null}
+                            {this.props.selectedNodes.some(node =>
+                                node.supports.includes(RecipeTypes.foregroundFills)
+                            ) ? (
+                                <>
+                                    <p className="title inset">Foregrounds</p>
+                                    <div className="swatch-grid">
+                                        {this.recipeOptionsByType(
+                                            RecipeTypes.foregroundFills
+                                        ).map(recipe => (
                                             <td-swatch
                                                 circular
                                                 value={recipe.value}
@@ -221,38 +261,15 @@ export class PluginUI extends React.Component<PluginUIProps> {
                                                 {recipe.name}
                                             </td-swatch>
                                         ))}
-                                </div>
-                            </>
-                        ) : null}
-                        {this.props.selectedNodes.some(node =>
-                            node.supports.includes(RecipeTypes.foregroundFills)
-                        ) ? (
-                            <>
-                                <p className="title inset">Foregrounds</p>
-                                <div className="swatch-grid">
-                                    {this.recipeOptionsByType(
-                                        RecipeTypes.foregroundFills
-                                    ).map(recipe => (
-                                        <td-swatch
-                                            circular
-                                            value={recipe.value}
-                                            title={recipe.value}
-                                            onClick={this.setRecipe.bind(
-                                                this,
-                                                recipe.id,
-                                                recipe.type
-                                            )}
-                                        >
-                                            {recipe.name}
-                                        </td-swatch>
-                                    ))}
-                                </div>
-                            </>
-                        ) : null}
-                    </div>
-                </td-drawer>
-                <td-drawer name="Corner Radius" />
-            </>
+                                    </div>
+                                </>
+                            ) : null}
+                        </div>
+                    </td-drawer>
+                    <td-drawer name="Corner Radius" />
+                </div>
+                {this.renderFooter()}
+            </div>
         );
     }
 
@@ -365,7 +382,7 @@ export class PluginUI extends React.Component<PluginUIProps> {
         const removeTheme = this.deleteDesignSystemProperty.bind(this, key, nodeIds);
 
         return (
-            <div style={{ marginTop: "4px" }}>
+            <div style={{ padding: "4px 16px 16px" }}>
                 <Checkbox
                     inputId={"theme-toggle"}
                     checked={themesApplied.length > 0}
