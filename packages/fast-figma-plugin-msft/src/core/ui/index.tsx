@@ -14,6 +14,7 @@ import { RecipeData, RecipeTypes } from "../recipe-registry";
 import { DesignSystem, StandardLuminance } from "@microsoft/fast-components-styles-msft";
 import { refresh, revertChanges } from "./glyphs";
 import { Drawer, Swatch } from "./components";
+import { fillRecipes, strokeRecipes } from "../recipes";
 
 /* tslint:disable:no-unused-expression */
 Drawer;
@@ -143,10 +144,9 @@ export class PluginUI extends React.Component<PluginUIProps> {
                     display: "grid",
                     gridTemplateRows: "1fr auto",
                     height: "100%",
-                    overflow: "auto",
                 }}
             >
-                <div>
+                <div style={{ overflow: "auto" }}>
                     <td-drawer name="Theme">
                         {this.props.selectedNodes.some(node =>
                             node.supports.includes("designSystem")
@@ -236,6 +236,60 @@ export class PluginUI extends React.Component<PluginUIProps> {
                                                     {recipe.name}
                                                 </td-swatch>
                                             ))}
+                                    </div>
+                                    <p className="title inset">Component recipes</p>
+                                    <div className="inset swatch-stack">
+                                        {this.recipeOptionsByType(
+                                            RecipeTypes.backgroundFills
+                                        )
+                                            .filter(
+                                                recipe =>
+                                                    !this.pageBackgroundIds().includes(
+                                                        recipe.id
+                                                    )
+                                            )
+                                            .map(recipe => {
+                                                return (
+                                                    <td-swatch
+                                                        circular
+                                                        value={recipe.value}
+                                                        title={recipe.value}
+                                                        orientation="horizontal"
+                                                        onClick={this.setRecipe.bind(
+                                                            this,
+                                                            recipe.id,
+                                                            recipe.type
+                                                        )}
+                                                    >
+                                                        {recipe.name}
+                                                    </td-swatch>
+                                                );
+                                            })}
+                                        {this.recipeOptionsByType(RecipeTypes.strokeFills)
+                                            .filter(
+                                                recipe =>
+                                                    !this.pageBackgroundIds().includes(
+                                                        recipe.id
+                                                    )
+                                            )
+                                            .map(recipe => {
+                                                return (
+                                                    <td-swatch
+                                                        circular
+                                                        value={recipe.value}
+                                                        title={recipe.value}
+                                                        orientation="horizontal"
+                                                        type="border"
+                                                        onClick={this.setRecipe.bind(
+                                                            this,
+                                                            recipe.id,
+                                                            recipe.type
+                                                        )}
+                                                    >
+                                                        {recipe.name}
+                                                    </td-swatch>
+                                                );
+                                            })}
                                     </div>
                                 </>
                             ) : null}

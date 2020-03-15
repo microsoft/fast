@@ -24,8 +24,21 @@ body {
     justify-items: center;
 }
 
-.swatch-grid td-swatch {
+.swatch-grid > td-swatch {
     margin-bottom: calc(var(--design-unit) * 3px);
+}
+
+.swatch-stack {
+    display: flex;
+    flex-direction: column;
+}
+
+.swatch-stack > td-swatch {
+    margin: calc(var(--design-unit) * 2px) 0;
+}
+
+.swatch-stack > td-swatch td-swatch {
+    margin: 0;
 }
 
 .inset {

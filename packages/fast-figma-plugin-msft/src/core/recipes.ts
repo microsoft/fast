@@ -37,10 +37,10 @@ export interface RecipeStore {
 
 export const fillRecipes: RecipeStore = {
     accentFillRest: { resolver: accentFillRest, name: "Accent Fill" },
-    // accentFillLargeRest,
+    accentFillLargeRest: { resolver: accentFillLargeRest, name: "Accent Contrast Fill" },
     neutralFillRest: { resolver: neutralFillRest, name: "Neutral Fill" },
     // neutralFillCard,
-    // neutralFillInputRest,
+    neutralFillInputRest: { resolver: neutralFillInputRest, name: "Neutral Input" },
     // neutralFillStealthRest,
     // neutralFillToggleRest,
     neutralLayerCard: { resolver: neutralLayerCard, name: "Flyout" },
