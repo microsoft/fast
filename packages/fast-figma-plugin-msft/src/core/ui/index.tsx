@@ -13,12 +13,12 @@ import { RecipeData, RecipeTypes } from "../recipe-registry";
 // import Swatch from "./swatch";
 import { DesignSystem, StandardLuminance } from "@microsoft/fast-components-styles-msft";
 import { refresh, revertChanges } from "./glyphs";
-import { Drawer, Swatch } from "./components";
-import { fillRecipes, strokeRecipes } from "../recipes";
+import { Drawer, Swatch, CornerRadius } from "./components";
 
 /* tslint:disable:no-unused-expression */
 Drawer;
 Swatch;
+CornerRadius;
 /* tslint:enable:no-unused-expression */
 
 export interface PluginUIActiveNodeRecipeSupportOptions {
@@ -137,6 +137,7 @@ export class PluginUI extends React.Component<PluginUIProps> {
         const backgroundRecipes = this.appliedRecipes(RecipeTypes.backgroundFills);
         const foregroundRecipes = this.appliedRecipes(RecipeTypes.foregroundFills);
         const strokeRecipes = this.appliedRecipes(RecipeTypes.strokeFills);
+        const cornerRadiusRecipes = this.appliedRecipes(RecipeTypes.cornerRadius);
 
         return (
             <div
@@ -324,11 +325,12 @@ export class PluginUI extends React.Component<PluginUIProps> {
                         {this.props.selectedNodes.some(node =>
                             node.supports.includes(RecipeTypes.cornerRadius)
                         ) ? (
-                            <div slot="collapsed-content" className="inset">
+                            <div className="swatch-grid">
                                 {this.recipeOptionsByType(RecipeTypes.cornerRadius).map(
                                     recipe => {
                                         return (
-                                            <button
+                                            <td-corner-radius
+                                                value={recipe.value}
                                                 onClick={this.setRecipe.bind(
                                                     this,
                                                     recipe.id,
@@ -336,10 +338,29 @@ export class PluginUI extends React.Component<PluginUIProps> {
                                                 )}
                                             >
                                                 {recipe.name}
-                                            </button>
+                                            </td-corner-radius>
                                         );
                                     }
                                 )}
+                            </div>
+                        ) : null}
+                        {cornerRadiusRecipes.length ? (
+                            <div slot="collapsed-content" className="inset">
+                                {cornerRadiusRecipes.map(recipe => (
+                                    <p>
+                                        <td-corner-radius
+                                            value={recipe.value}
+                                            orientation="horizontal"
+                                            onClick={this.setRecipe.bind(
+                                                this,
+                                                recipe.id,
+                                                recipe.type
+                                            )}
+                                        >
+                                            {recipe.name}
+                                        </td-corner-radius>
+                                    </p>
+                                ))}
                             </div>
                         ) : null}
                     </td-drawer>

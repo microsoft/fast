@@ -11,5 +11,11 @@ declare namespace JSX {
             title?: string;
             onClick?: any;
         };
+        "td-corner-radius": {
+            value: string;
+            children?: React.ReactNode;
+            orientation?: "horizontal" | "vertical";
+            onClick?: any;
+        };
     }
 }

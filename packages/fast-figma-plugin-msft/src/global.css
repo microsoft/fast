@@ -24,7 +24,7 @@ body {
     justify-items: center;
 }
 
-.swatch-grid > td-swatch {
+.swatch-grid > * {
     margin-bottom: calc(var(--design-unit) * 3px);
 }
 
@@ -33,12 +33,8 @@ body {
     flex-direction: column;
 }
 
-.swatch-stack > td-swatch {
+.swatch-stack > * {
     margin: calc(var(--design-unit) * 2px) 0;
-}
-
-.swatch-stack > td-swatch td-swatch {
-    margin: 0;
 }
 
 .inset {
