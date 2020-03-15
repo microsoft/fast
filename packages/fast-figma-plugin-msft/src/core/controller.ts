@@ -7,7 +7,7 @@ import {
     UIMessage,
 } from "./messaging";
 import { PluginNode } from "./node";
-import { RecipeDefinition, RecipeRegistry, RecipeTypes } from "./recipe-registry";
+import { RecipeRegistry, RecipeTypes } from "./recipe-registry";
 import { PluginUIActiveNodeData, PluginUIProps } from "./ui";
 
 /**
@@ -54,25 +54,19 @@ export abstract class Controller {
      */
     public getPluginUIState(): Omit<PluginUIProps, "dispatch"> {
         const selectedNodes = this.getSelectedNodes()
-            .map((id: string) => this.getNode(id))
-            .filter((node: PluginNode | null): node is PluginNode => node !== null);
+            .map(id => this.getNode(id))
+            .filter((node): node is PluginNode => node !== null);
         const allSupported = Array.from(
             new Set(
                 selectedNodes
-                    .map((node: PluginNode) => node.supports())
-                    .reduce(
-                        (
-                            prev: (RecipeTypes | "designSystem")[],
-                            next: (RecipeTypes | "designSystem")[]
-                        ) => prev.concat(next),
-                        []
-                    )
+                    .map(node => node.supports())
+                    .reduce((prev, next) => prev.concat(next), [])
             )
         );
 
         return {
             selectedNodes: selectedNodes.map(
-                (node: PluginNode): PluginUIActiveNodeData => ({
+                (node): PluginUIActiveNodeData => ({
                     id: node.id,
                     type: node.type,
                     supports: node.supports(),
@@ -82,14 +76,12 @@ export abstract class Controller {
             ),
             recipeOptions: selectedNodes.length
                 ? allSupported
-                      .filter(
-                          (type: RecipeTypes): type is RecipeTypes => !!RecipeTypes[type]
-                      )
-                      .map((type: RecipeTypes) => {
+                      .filter((type): type is RecipeTypes => !!RecipeTypes[type])
+                      .map(type => {
                           return {
                               type,
                               options: this.recipeRegistry.find(type).map(
-                                  (item: RecipeDefinition<any>) =>
+                                  item =>
                                       this.recipeRegistry.toData(
                                           item.id,
                                           selectedNodes[0]
@@ -113,11 +105,11 @@ export abstract class Controller {
                 break;
             case MessageTypes.reset:
                 message.nodeIds
-                    .map((id: string) => this.getNode(id))
-                    .filter((node: PluginNode): node is PluginNode => node !== null)
-                    .forEach((node: PluginNode) => {
+                    .map(id => this.getNode(id))
+                    .filter((node): node is PluginNode => node !== null)
+                    .forEach(node => {
                         // Delete design system
-                        Object.keys(node.designSystemOverrides).map((key: string) => {
+                        Object.keys(node.designSystemOverrides).map(key => {
                             node.deleteDesignSystemProperty(
                                 key as keyof typeof node.designSystemOverrides
                             );
@@ -129,7 +121,7 @@ export abstract class Controller {
 
                 break;
             case MessageTypes.sync:
-                message.nodeIds.forEach((id: string) => this.paintTree(id));
+                message.nodeIds.forEach(id => this.paintTree(id));
                 this.setPluginUIState(this.getPluginUIState());
                 break;
         }
@@ -143,35 +135,32 @@ export abstract class Controller {
 
     private handleDesignSystemMessage(message: DesignSystemMessage): void {
         const nodes = message.nodeIds
-            .map((id: string) => this.getNode(id))
-            .filter((node: PluginNode): node is PluginNode => node !== null);
+            .map(id => this.getNode(id))
+            .filter((node): node is PluginNode => node !== null);
 
         switch (message.action) {
             case MessageAction.assign:
-                nodes.forEach((node: PluginNode) =>
+                nodes.forEach(node =>
                     node.setDesignSystemProperty(message.property, message.value)
                 );
                 break;
             case MessageAction.delete:
-                nodes.forEach((node: PluginNode) =>
-                    node.deleteDesignSystemProperty(message.property)
-                );
+                nodes.forEach(node => node.deleteDesignSystemProperty(message.property));
                 break;
         }
 
-        nodes.forEach((node: PluginNode) => this.paintTree(node.id));
+        nodes.forEach(node => this.paintTree(node.id));
 
         this.setPluginUIState(this.getPluginUIState());
     }
 
     private removeRecipe(message: RemoveRecipeMessage): void {
         message.nodeIds
-            .map((id: string) => this.getNode(id))
-            .filter((node: PluginNode): node is PluginNode => node !== null)
-            .forEach((node: PluginNode) => {
+            .map(id => this.getNode(id))
+            .filter((node): node is PluginNode => node !== null)
+            .forEach(node => {
                 node.recipes = node.recipes.filter(
-                    (id: string) =>
-                        this.recipeRegistry.get(id).type !== message.recipeType
+                    id => this.recipeRegistry.get(id).type !== message.recipeType
                 );
             });
 
@@ -179,7 +168,7 @@ export abstract class Controller {
     }
 
     private assignRecipe(message: AssignRecipeMessage): void {
-        message.nodeIds.forEach((id: string) => {
+        message.nodeIds.forEach(id => {
             const node = this.getNode(id);
 
             if (!node) {
@@ -192,7 +181,7 @@ export abstract class Controller {
                 case MessageAction.assign:
                     node.recipes = node.recipes
                         .filter(
-                            (recipeId: string) =>
+                            recipeId =>
                                 this.recipeRegistry.get(recipeId).type !== recipe.type
                         )
                         .concat(recipe.id);
@@ -205,6 +194,7 @@ export abstract class Controller {
                     break;
                 case RecipeTypes.foregroundFills:
                 case RecipeTypes.strokeFills:
+                case RecipeTypes.cornerRadius:
                     node.paint(this.recipeRegistry.toData(recipe.id, node));
                     break;
             }
@@ -221,11 +211,11 @@ export abstract class Controller {
         }
 
         // Paint all recipes of the node
-        node.recipes.forEach((recipeId: string) => {
+        node.recipes.forEach(recipeId => {
             node.paint(this.recipeRegistry.toData(recipeId, node));
         });
 
-        node.children().forEach((child: PluginNode) => {
+        node.children().forEach(child => {
             if (node) {
                 this.paintTree(child.id);
             }

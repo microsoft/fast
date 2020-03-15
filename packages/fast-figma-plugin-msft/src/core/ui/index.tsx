@@ -320,7 +320,29 @@ export class PluginUI extends React.Component<PluginUIProps> {
                             ) : null}
                         </div>
                     </td-drawer>
-                    <td-drawer name="Corner Radius" />
+                    <td-drawer name="Corner Radius">
+                        {this.props.selectedNodes.some(node =>
+                            node.supports.includes(RecipeTypes.cornerRadius)
+                        ) ? (
+                            <div slot="collapsed-content" className="inset">
+                                {this.recipeOptionsByType(RecipeTypes.cornerRadius).map(
+                                    recipe => {
+                                        return (
+                                            <button
+                                                onClick={this.setRecipe.bind(
+                                                    this,
+                                                    recipe.id,
+                                                    recipe.type
+                                                )}
+                                            >
+                                                {recipe.name}
+                                            </button>
+                                        );
+                                    }
+                                )}
+                            </div>
+                        ) : null}
+                    </td-drawer>
                 </div>
                 {this.renderFooter()}
             </div>

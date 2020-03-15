@@ -88,6 +88,10 @@ const styles = css`
     :host(.none) .swatch::after {
         display: block;
     }
+
+    :host(:hover) {
+        cursor: pointer;
+    }
 `;
 export enum SwatchTypes {
     background = "background",

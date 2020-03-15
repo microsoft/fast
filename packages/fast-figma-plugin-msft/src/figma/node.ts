@@ -101,6 +101,7 @@ export class FigmaPluginNode extends PluginNode {
                 switch (key) {
                     case RecipeTypes.backgroundFills:
                     case RecipeTypes.strokeFills:
+                    case RecipeTypes.cornerRadius:
                     case "designSystem":
                         return [
                             isFrameNode,
@@ -124,6 +125,9 @@ export class FigmaPluginNode extends PluginNode {
             case RecipeTypes.backgroundFills:
             case RecipeTypes.foregroundFills:
                 this.paintColor(data);
+                break;
+            case RecipeTypes.cornerRadius:
+                this.paintCornerRadius(data);
                 break;
             default:
                 throw new Error(`Recipe could not be painted ${JSON.stringify(data)}`);
@@ -221,5 +225,9 @@ export class FigmaPluginNode extends PluginNode {
                 (this.node as any).strokes = [paint];
                 break;
         }
+    }
+
+    private paintCornerRadius(data: RecipeData): void {
+        (this.node as any).cornerRadius = parseInt(data.value, 10);
     }
 }

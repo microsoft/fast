@@ -28,9 +28,9 @@ import {
     neutralOutlineRest,
 } from "@microsoft/fast-components-styles-msft";
 
-export interface RecipeStore {
+export interface RecipeStore<T = string> {
     [key: string]: {
-        resolver: DesignSystemResolver<string>;
+        resolver: DesignSystemResolver<T>;
         name: string;
     };
 }
@@ -69,4 +69,12 @@ export const textFillRecipes: RecipeStore = {
     // neutralForegroundHintLarge,
     // neutralForegroundToggle,
     // neutralForegroundToggleLarge,
+};
+
+export const cornerRadiusRecipe: RecipeStore<number> = {
+    square: { resolver: () => 0, name: "Square" },
+    control: { resolver: () => 2, name: "Control" },
+    surface: { resolver: () => 4, name: "Surface" },
+    illustration: { resolver: () => 8, name: "Illustration" },
+    round: { resolver: () => 99999, name: "Round" },
 };

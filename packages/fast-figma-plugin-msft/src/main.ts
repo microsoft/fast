@@ -1,5 +1,11 @@
 import { PluginNode, PluginNodeData } from "./core/node";
-import { fillRecipes, RecipeStore, strokeRecipes, textFillRecipes } from "./core/recipes";
+import {
+    fillRecipes,
+    RecipeStore,
+    strokeRecipes,
+    textFillRecipes,
+    cornerRadiusRecipe,
+} from "./core/recipes";
 import { FigmaController } from "./figma/controller";
 import { RecipeDefinition, RecipeTypes } from "./core/recipe-registry";
 import { canHaveChildren, FigmaPluginNode, isInstanceNode } from "./figma/node";
@@ -7,17 +13,7 @@ import { MessageTypes, UIMessage } from "./core/messaging";
 
 const controller = new FigmaController();
 
-function friendlyName(str: string): string {
-    const result = str
-        .split(/([A-Z])/)
-        .reduce((prev: string, current: string, index: number) => {
-            return index % 2 === 1 ? prev + " " + current : prev + current;
-        });
-
-    return result.charAt(0).toUpperCase().concat(result.slice(1));
-}
-
-function register(type: RecipeTypes, recipes: RecipeStore): void {
+function registerColorRecipe(type: RecipeTypes, recipes: RecipeStore): void {
     Object.keys(recipes).forEach((key: string) => {
         const recipe = recipes[key];
 
@@ -67,10 +63,24 @@ function syncInstanceWithMaster(target: InstanceNode): void {
 /**
  * Register recipe types
  */
-register(RecipeTypes.backgroundFills, fillRecipes);
-register(RecipeTypes.foregroundFills, textFillRecipes);
-register(RecipeTypes.strokeFills, strokeRecipes);
+registerColorRecipe(RecipeTypes.backgroundFills, fillRecipes);
+registerColorRecipe(RecipeTypes.foregroundFills, textFillRecipes);
+registerColorRecipe(RecipeTypes.strokeFills, strokeRecipes);
 
+Object.keys(cornerRadiusRecipe).forEach(key => {
+    const recipe = cornerRadiusRecipe[key];
+
+    const definition: RecipeDefinition = {
+        id: key,
+        name: recipe.name,
+        type: RecipeTypes.cornerRadius,
+        evaluate: (node: PluginNode): string => {
+            return recipe.resolver({} as any).toString();
+        },
+    };
+
+    controller.recipeRegistry.register(definition);
+});
 /**
  * Show UI on plugin launch
  */
