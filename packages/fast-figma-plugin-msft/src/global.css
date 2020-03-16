@@ -54,6 +54,14 @@ body {
     padding-inline-end: calc(var(--design-unit) * 2px);
 }
 
+.applied-recipe > div {
+    display: flex;
+    align-items: center;
+}
+
+.applied-recipe > div > span {
+    margin-inline-end: 8px;
+}
 
 .button {
     color: #FFF;

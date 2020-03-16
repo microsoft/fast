@@ -176,24 +176,29 @@ export class PluginUI extends React.Component<PluginUIProps> {
                                                 value={recipe.value}
                                                 orientation="horizontal"
                                             >
-                                                {recipe.value.replace("#", "")}
+                                                {recipe.name}
                                             </td-swatch>
 
-                                            <ActionTrigger
-                                                glyph={detach}
-                                                appearance={
-                                                    ActionTriggerAppearance.stealth
-                                                }
-                                                title={"Detach"}
-                                                aria-label={"Detach"}
-                                                onClick={this.removeRecipe.bind(
-                                                    this,
-                                                    RecipeTypes.backgroundFills
-                                                )}
-                                                jssStyleSheet={{
-                                                    actionTrigger: { padding: "6px" },
-                                                }}
-                                            />
+                                            <div>
+                                                <span>
+                                                    {recipe.value.replace("#", "")}
+                                                </span>
+                                                <ActionTrigger
+                                                    glyph={detach}
+                                                    appearance={
+                                                        ActionTriggerAppearance.stealth
+                                                    }
+                                                    title={"Detach"}
+                                                    aria-label={"Detach"}
+                                                    onClick={this.removeRecipe.bind(
+                                                        this,
+                                                        RecipeTypes.backgroundFills
+                                                    )}
+                                                    jssStyleSheet={{
+                                                        actionTrigger: { padding: "6px" },
+                                                    }}
+                                                />
+                                            </div>
                                         </p>
                                     ))}
                                 </>
@@ -208,24 +213,29 @@ export class PluginUI extends React.Component<PluginUIProps> {
                                                 value={recipe.value}
                                                 orientation="horizontal"
                                             >
-                                                {recipe.value.replace("#", "")}
+                                                {recipe.name}
                                             </td-swatch>
 
-                                            <ActionTrigger
-                                                glyph={detach}
-                                                appearance={
-                                                    ActionTriggerAppearance.stealth
-                                                }
-                                                title={"Detach"}
-                                                aria-label={"Detach"}
-                                                onClick={this.removeRecipe.bind(
-                                                    this,
-                                                    RecipeTypes.foregroundFills
-                                                )}
-                                                jssStyleSheet={{
-                                                    actionTrigger: { padding: "6px" },
-                                                }}
-                                            />
+                                            <div>
+                                                <span>
+                                                    {recipe.value.replace("#", "")}
+                                                </span>
+                                                <ActionTrigger
+                                                    glyph={detach}
+                                                    appearance={
+                                                        ActionTriggerAppearance.stealth
+                                                    }
+                                                    title={"Detach"}
+                                                    aria-label={"Detach"}
+                                                    onClick={this.removeRecipe.bind(
+                                                        this,
+                                                        RecipeTypes.foregroundFills
+                                                    )}
+                                                    jssStyleSheet={{
+                                                        actionTrigger: { padding: "6px" },
+                                                    }}
+                                                />
+                                            </div>
                                         </p>
                                     ))}
                                 </>
@@ -241,24 +251,28 @@ export class PluginUI extends React.Component<PluginUIProps> {
                                                 orientation="horizontal"
                                                 type="border"
                                             >
-                                                {recipe.value.replace("#", "")}
+                                                {recipe.name}
                                             </td-swatch>
-
-                                            <ActionTrigger
-                                                glyph={detach}
-                                                appearance={
-                                                    ActionTriggerAppearance.stealth
-                                                }
-                                                title={"Detach"}
-                                                aria-label={"Detach"}
-                                                onClick={this.removeRecipe.bind(
-                                                    this,
-                                                    RecipeTypes.strokeFills
-                                                )}
-                                                jssStyleSheet={{
-                                                    actionTrigger: { padding: "6px" },
-                                                }}
-                                            />
+                                            <div>
+                                                <span>
+                                                    {recipe.value.replace("#", "")}
+                                                </span>
+                                                <ActionTrigger
+                                                    glyph={detach}
+                                                    appearance={
+                                                        ActionTriggerAppearance.stealth
+                                                    }
+                                                    title={"Detach"}
+                                                    aria-label={"Detach"}
+                                                    onClick={this.removeRecipe.bind(
+                                                        this,
+                                                        RecipeTypes.strokeFills
+                                                    )}
+                                                    jssStyleSheet={{
+                                                        actionTrigger: { padding: "6px" },
+                                                    }}
+                                                />
+                                            </div>
                                         </p>
                                     ))}
                                 </>
@@ -446,20 +460,24 @@ export class PluginUI extends React.Component<PluginUIProps> {
                                         >
                                             {recipe.name}
                                         </td-corner-radius>
-
-                                        <ActionTrigger
-                                            glyph={detach}
-                                            appearance={ActionTriggerAppearance.stealth}
-                                            title={"Detach"}
-                                            aria-label={"Detach"}
-                                            onClick={this.removeRecipe.bind(
-                                                this,
-                                                RecipeTypes.cornerRadius
-                                            )}
-                                            jssStyleSheet={{
-                                                actionTrigger: { padding: "6px" },
-                                            }}
-                                        />
+                                        <div>
+                                            <span>{recipe.value}</span>
+                                            <ActionTrigger
+                                                glyph={detach}
+                                                appearance={
+                                                    ActionTriggerAppearance.stealth
+                                                }
+                                                title={"Detach"}
+                                                aria-label={"Detach"}
+                                                onClick={this.removeRecipe.bind(
+                                                    this,
+                                                    RecipeTypes.cornerRadius
+                                                )}
+                                                jssStyleSheet={{
+                                                    actionTrigger: { padding: "6px" },
+                                                }}
+                                            />
+                                        </div>
                                     </p>
                                 ))}
                             </div>
