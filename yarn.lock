@@ -3753,17 +3753,17 @@
     react-dom "^16.6.0"
     react-test-renderer "^16.3.0"
 
-"@microsoft/fast-tooling-react@^1.32.1":
-  version "1.32.1"
-  resolved "https://registry.yarnpkg.com/@microsoft/fast-tooling-react/-/fast-tooling-react-1.32.1.tgz#1dbfb7834a6545efd4bb42c9f7cf1ffe4bb19abb"
-  integrity sha512-O5QA4hFY+7J93ouhbdzlhZVGnrM+nxYcKPnIhdaljPaNSONuCkNk3kYNaHDC6hvtXaM4CH+lIiiutqvN25A66g==
+"@microsoft/fast-tooling-react@^1.32.2":
+  version "1.32.2"
+  resolved "https://registry.yarnpkg.com/@microsoft/fast-tooling-react/-/fast-tooling-react-1.32.2.tgz#c5c905e17ff53b4331ea66423c7f4d335df8812f"
+  integrity sha512-xs+BTW90Y9rKFCX/8SLREDzvyuab7bUWu/8w2gdBKJyy4mwz7kjgkX8U41GFrFk40muDWt0SiB+lLMEaVKsSFA==
   dependencies:
-    "@microsoft/fast-colors" "^5.0.2"
-    "@microsoft/fast-components-class-name-contracts-base" "^4.6.1"
-    "@microsoft/fast-components-foundation-react" "^3.1.3"
-    "@microsoft/fast-jss-manager-react" "^4.6.2"
-    "@microsoft/fast-jss-utilities" "^4.7.6"
-    "@microsoft/fast-web-utilities" "^4.4.0"
+    "@microsoft/fast-colors" "^5.0.3"
+    "@microsoft/fast-components-class-name-contracts-base" "^4.6.2"
+    "@microsoft/fast-components-foundation-react" "^3.1.4"
+    "@microsoft/fast-jss-manager-react" "^4.6.3"
+    "@microsoft/fast-jss-utilities" "^4.7.7"
+    "@microsoft/fast-web-utilities" "^4.4.1"
     ajv "^6.10.0"
     exenv-es6 "^1.0.0"
     raf-throttle "^2.0.3"
