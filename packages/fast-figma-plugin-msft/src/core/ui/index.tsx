@@ -11,9 +11,14 @@ import React from "react";
 import { MessageAction, MessageTypes, UIMessage } from "../messaging";
 import { RecipeData, RecipeTypes } from "../recipe-registry";
 // import Swatch from "./swatch";
-import { DesignSystem, StandardLuminance } from "@microsoft/fast-components-styles-msft";
+import {
+    DesignSystem,
+    StandardLuminance,
+    DesignSystemDefaults,
+} from "@microsoft/fast-components-styles-msft";
 import { refresh, revertChanges, detach } from "./glyphs";
 import { Drawer, Swatch, CornerRadius } from "./components";
+import { ColorRGBA64, parseColorHexRGB } from "@microsoft/fast-colors";
 
 /* tslint:disable:no-unused-expression */
 Drawer;
@@ -142,6 +147,9 @@ export class PluginUI extends React.Component<PluginUIProps> {
         const foregroundRecipes = this.appliedRecipes(RecipeTypes.foregroundFills);
         const strokeRecipes = this.appliedRecipes(RecipeTypes.strokeFills);
         const cornerRadiusRecipes = this.appliedRecipes(RecipeTypes.cornerRadius);
+        const supportsDesignSystem = this.props.selectedNodes.some(node =>
+            node.supports.includes("designSystem")
+        );
 
         return (
             <div
@@ -153,11 +161,8 @@ export class PluginUI extends React.Component<PluginUIProps> {
             >
                 <div style={{ overflowY: "overlay" as any }}>
                     <td-drawer name="Theme">
-                        {this.props.selectedNodes.some(node =>
-                            node.supports.includes("designSystem")
-                        )
-                            ? this.renderThemeSwitcher()
-                            : null}
+                        {supportsDesignSystem ? this.renderThemeSwitcher() : null}
+                        {supportsDesignSystem ? this.renderColorPicker() : null}
                     </td-drawer>
                     <td-drawer name="Color">
                         <div slot="collapsed-content">
@@ -466,6 +471,43 @@ export class PluginUI extends React.Component<PluginUIProps> {
         );
     }
 
+    private renderColorPicker(): JSX.Element {
+        const type = "accentBaseColor";
+        const values = this.props.selectedNodes
+            .map(node => node.designSystem[type])
+            .filter(value => !!value);
+
+        const onChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+            const { value } = e.target;
+            const parsed = parseColorHexRGB(value);
+
+            if (parsed instanceof ColorRGBA64) {
+                this.props.dispatch({
+                    nodeIds: this.props.selectedNodes.map(node => node.id),
+                    type: MessageTypes.designSystem,
+                    action: MessageAction.assign,
+                    value: value.toUpperCase(),
+                    property: type,
+                });
+            }
+        };
+
+        return (
+            <p className="inset">
+                <Label>
+                    <input
+                        type="color"
+                        disabled={values.length > 1}
+                        style={{ margin: "4px 8px 0 0" }}
+                        onChange={onChange}
+                        value={values.length ? values[0] : DesignSystemDefaults[type]}
+                    />
+                    Accent color
+                </Label>
+            </p>
+        );
+    }
+
     private appliedRecipes(type: RecipeTypes) {
         const set = new Set();
         const recipes: RecipeData[] = [];
@@ -575,7 +617,7 @@ export class PluginUI extends React.Component<PluginUIProps> {
         const removeTheme = this.deleteDesignSystemProperty.bind(this, key, nodeIds);
 
         return (
-            <div style={{ padding: "4px 16px 16px" }}>
+            <div style={{ padding: "4px 16px 4px" }}>
                 <Checkbox
                     inputId={"theme-toggle"}
                     checked={themesApplied.length > 0}
