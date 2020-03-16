@@ -53,21 +53,25 @@ Typically it's best to include a checked and unchecked message but it is not req
 *Parts:*
 - label
 - checkbox
-- status-indicator
+- checked-indicator
 - status-message
 
 *Template:*
 ```
 <div>
-    <label part="label" id="switch-label">
+    <label class="label" part="label" id="switch-label">
         <slot></slot>
     </label>
-    <input part="checkbox" type="checkbox" role="switch" aria-checked="true" aria-labelledby="switch-label" aria-describedby="status-message">
-        <!-- Status Indicator -->
-        <span part="status-indicator"/>
-    </input>
+    <div part="switch" class="switch>
+        <span part="checked-indicator"/>
+    </div>
     <span part="status-message" id="status-message">
-        <slot name="checked-message">On</slot>
+        <span class="checked-message" part="checked-message">
+           <slot name="checked-message">On</slot>
+        </span>
+        <span class="unchecked-message" part="unchecked-message">
+           <slot name="unchecked-message">On</slot>
+        </span>
     </span>
 </div>
 ```
@@ -77,10 +81,10 @@ Typically it's best to include a checked and unchecked message but it is not req
 ```
 <fast-switch
     checked={true}
-    unchecked-message="On"
-    checked-message="Off"
 >
     Notify by Email
+    <span slot="checked-message">On</span>
+    <span slot="unchecked-message">Off</span>
 </fast-switch>
 ```
 
