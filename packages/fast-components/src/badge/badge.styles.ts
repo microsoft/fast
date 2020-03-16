@@ -17,12 +17,13 @@ export const BadgeStyles = css`
     }
 
     :host(.circular) .badge {
-        border-radius: 100%;
+        border-radius: 100px;
         padding: 0;
         display: flex;
         align-items: center;
         justify-content: center;
         overflow: hidden;
+        box-sizing: border-box;
     }
 
     :host(.small) .badge {
@@ -35,8 +36,8 @@ export const BadgeStyles = css`
 
     :host(.circular.small) .badge {
         ${/* Need to work with Brian on width and height here */ ""} height: 20px;
-        width: 20px;
-        padding: 0;
+        min-width: 20px;
+        padding: 0 calc(var(--design-unit) * 1px);
     }
 
     :host(.medium)) .badge {
@@ -49,8 +50,8 @@ export const BadgeStyles = css`
 
     :host(.circular.medium) .badge {
         ${/* Need to work with Brian on width and height here */ ""} height: 26px;
-        width: 26px;
-        padding: 0;
+        min-width: 26px;
+        padding: 0 calc(var(--design-unit) * 1px) 0;
     }
 
     :host(.large) .badge {
@@ -63,7 +64,7 @@ export const BadgeStyles = css`
 
     :host(.circular.large) .badge {
         ${/* Need to work with Brian on width and height here */ ""} height: calc(var(--height-number) * 1px);
-        width: calc(var(--height-number) * 1px);
-        padding: 0;
+        min-width: calc(var(--height-number) * 1px);
+        padding: 0 calc(var(--design-unit) * 1px) 0;
     }
 `;
