@@ -331,6 +331,7 @@ export class PluginUI extends React.Component<PluginUIProps> {
                                                     </td-swatch>
                                                 );
                                             })}
+                                        <Divider style={{ marginTop: 12 }} />
                                         {this.recipeOptionsByType(RecipeTypes.strokeFills)
                                             .filter(
                                                 recipe =>
