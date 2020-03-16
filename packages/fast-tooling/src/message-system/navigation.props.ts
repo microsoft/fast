@@ -51,6 +51,11 @@ export interface TreeNavigationItem {
     schema: any;
 
     /**
+     * The disabled state
+     */
+    disabled: boolean;
+
+    /**
      * The data
      */
     data: any;

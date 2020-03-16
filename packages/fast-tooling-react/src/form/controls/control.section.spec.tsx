@@ -59,6 +59,7 @@ const sectionControlProps: SectionControlProps = {
             relativeDataLocation: "",
             schemaLocation: "",
             schema: {},
+            disabled: false,
             data: void 0,
             text: "foo",
             type: DataType.object,
@@ -219,26 +220,6 @@ describe("SectionControl", () => {
         expect(rendered.find(`.${managedClasses.sectionControl__disabled}`)).toHaveLength(
             1
         );
-    });
-    test("should pass the disabled prop to the ControlSwitch", () => {
-        const schema: any = {
-            type: "object",
-            properties: {
-                foo: {
-                    type: "string",
-                },
-            },
-            disabled: true,
-        };
-        const rendered: any = mount(
-            <SectionControl
-                {...sectionControlProps}
-                managedClasses={managedClasses}
-                schema={schema}
-            />
-        );
-
-        expect(rendered.find("ControlSwitch").prop("disabled")).toEqual(true);
     });
     test("should show an invalid message if validation errors have been passed", () => {
         const schema: any = {
