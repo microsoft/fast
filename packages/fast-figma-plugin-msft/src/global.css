@@ -51,7 +51,7 @@ body {
     display: flex;
     justify-content: space-between;
     padding-inline-start: calc(var(--design-unit) * 4px);
-    padding-inline-end: calc(var(--design-unit) * 1px);
+    padding-inline-end: calc(var(--design-unit) * 2px);
 }
 /* scrollbar */
 /* For the "inset" look only */
