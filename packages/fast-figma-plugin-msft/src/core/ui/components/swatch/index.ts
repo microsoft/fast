@@ -65,7 +65,6 @@ const styles = css`
 
     :host(.vertical) {
         flex-direction: column;
-        max-width: 58px;
     }
 
     :host(.vertical) .swatch {

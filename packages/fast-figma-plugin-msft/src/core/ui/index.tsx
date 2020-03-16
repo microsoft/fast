@@ -12,7 +12,7 @@ import { MessageAction, MessageTypes, UIMessage } from "../messaging";
 import { RecipeData, RecipeTypes } from "../recipe-registry";
 // import Swatch from "./swatch";
 import { DesignSystem, StandardLuminance } from "@microsoft/fast-components-styles-msft";
-import { refresh, revertChanges } from "./glyphs";
+import { refresh, revertChanges, detach } from "./glyphs";
 import { Drawer, Swatch, CornerRadius } from "./components";
 
 /* tslint:disable:no-unused-expression */
@@ -84,7 +84,7 @@ export class PluginUI extends React.Component<PluginUIProps> {
         const revertLabel = "Remove all plugin data from the current selection.";
 
         return (
-            <div>
+            <div style={{ overflow: "hidden" }}>
                 <Divider />
                 <div
                     style={{
@@ -151,7 +151,7 @@ export class PluginUI extends React.Component<PluginUIProps> {
                     height: "100%",
                 }}
             >
-                <div style={{ overflow: "auto" }}>
+                <div style={{ overflowY: "scroll" }}>
                     <td-drawer name="Theme">
                         {this.props.selectedNodes.some(node =>
                             node.supports.includes("designSystem")
@@ -165,7 +165,7 @@ export class PluginUI extends React.Component<PluginUIProps> {
                                 <>
                                     <p className="title inset">Background</p>
                                     {backgroundRecipes.map(recipe => (
-                                        <p className="inset">
+                                        <p className="applied-recipe">
                                             <td-swatch
                                                 circular
                                                 value={recipe.value}
@@ -173,6 +173,22 @@ export class PluginUI extends React.Component<PluginUIProps> {
                                             >
                                                 {recipe.value.replace("#", "")}
                                             </td-swatch>
+
+                                            <ActionTrigger
+                                                glyph={detach}
+                                                appearance={
+                                                    ActionTriggerAppearance.stealth
+                                                }
+                                                title={"Detach"}
+                                                aria-label={"Detach"}
+                                                onClick={this.removeRecipe.bind(
+                                                    this,
+                                                    RecipeTypes.backgroundFills
+                                                )}
+                                                jssStyleSheet={{
+                                                    actionTrigger: { padding: "6px" },
+                                                }}
+                                            />
                                         </p>
                                     ))}
                                 </>
@@ -181,7 +197,7 @@ export class PluginUI extends React.Component<PluginUIProps> {
                                 <>
                                     <p className="title inset">Foreground</p>
                                     {foregroundRecipes.map(recipe => (
-                                        <p className="inset">
+                                        <p className="applied-recipe">
                                             <td-swatch
                                                 circular
                                                 value={recipe.value}
@@ -189,6 +205,22 @@ export class PluginUI extends React.Component<PluginUIProps> {
                                             >
                                                 {recipe.value.replace("#", "")}
                                             </td-swatch>
+
+                                            <ActionTrigger
+                                                glyph={detach}
+                                                appearance={
+                                                    ActionTriggerAppearance.stealth
+                                                }
+                                                title={"Detach"}
+                                                aria-label={"Detach"}
+                                                onClick={this.removeRecipe.bind(
+                                                    this,
+                                                    RecipeTypes.foregroundFills
+                                                )}
+                                                jssStyleSheet={{
+                                                    actionTrigger: { padding: "6px" },
+                                                }}
+                                            />
                                         </p>
                                     ))}
                                 </>
@@ -197,7 +229,7 @@ export class PluginUI extends React.Component<PluginUIProps> {
                                 <>
                                     <p className="title inset">Border</p>
                                     {strokeRecipes.map(recipe => (
-                                        <p className="inset">
+                                        <p className="applied-recipe">
                                             <td-swatch
                                                 circular
                                                 value={recipe.value}
@@ -206,6 +238,22 @@ export class PluginUI extends React.Component<PluginUIProps> {
                                             >
                                                 {recipe.value.replace("#", "")}
                                             </td-swatch>
+
+                                            <ActionTrigger
+                                                glyph={detach}
+                                                appearance={
+                                                    ActionTriggerAppearance.stealth
+                                                }
+                                                title={"Detach"}
+                                                aria-label={"Detach"}
+                                                onClick={this.removeRecipe.bind(
+                                                    this,
+                                                    RecipeTypes.strokeFills
+                                                )}
+                                                jssStyleSheet={{
+                                                    actionTrigger: { padding: "6px" },
+                                                }}
+                                            />
                                         </p>
                                     ))}
                                 </>
@@ -229,7 +277,6 @@ export class PluginUI extends React.Component<PluginUIProps> {
                                             )
                                             .map(recipe => (
                                                 <td-swatch
-                                                    circular
                                                     value={recipe.value}
                                                     title={recipe.value}
                                                     onClick={this.setRecipe.bind(
@@ -242,7 +289,7 @@ export class PluginUI extends React.Component<PluginUIProps> {
                                                 </td-swatch>
                                             ))}
                                     </div>
-                                    <p className="title inset">Component recipes</p>
+                                    <p className="title inset">Backgrounds and borders</p>
                                     <div className="inset swatch-stack">
                                         {this.recipeOptionsByType(
                                             RecipeTypes.backgroundFills
@@ -329,7 +376,7 @@ export class PluginUI extends React.Component<PluginUIProps> {
                         {this.props.selectedNodes.some(node =>
                             node.supports.includes(RecipeTypes.cornerRadius)
                         ) ? (
-                            <div className="swatch-grid">
+                            <div className="swatch-grid" style={{ marginTop: 8 }}>
                                 {this.recipeOptionsByType(RecipeTypes.cornerRadius).map(
                                     recipe => {
                                         return (
@@ -349,9 +396,9 @@ export class PluginUI extends React.Component<PluginUIProps> {
                             </div>
                         ) : null}
                         {cornerRadiusRecipes.length ? (
-                            <div slot="collapsed-content" className="inset">
+                            <div slot="collapsed-content">
                                 {cornerRadiusRecipes.map(recipe => (
-                                    <p>
+                                    <p className="applied-recipe">
                                         <td-corner-radius
                                             value={recipe.value}
                                             orientation="horizontal"
@@ -363,6 +410,20 @@ export class PluginUI extends React.Component<PluginUIProps> {
                                         >
                                             {recipe.name}
                                         </td-corner-radius>
+
+                                        <ActionTrigger
+                                            glyph={detach}
+                                            appearance={ActionTriggerAppearance.stealth}
+                                            title={"Detach"}
+                                            aria-label={"Detach"}
+                                            onClick={this.removeRecipe.bind(
+                                                this,
+                                                RecipeTypes.cornerRadius
+                                            )}
+                                            jssStyleSheet={{
+                                                actionTrigger: { padding: "6px" },
+                                            }}
+                                        />
                                     </p>
                                 ))}
                             </div>

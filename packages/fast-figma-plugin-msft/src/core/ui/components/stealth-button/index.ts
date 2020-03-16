@@ -20,8 +20,8 @@ const styles = css`
     button {
         box-sizing: border-box;
         padding: 0 8px;
-        min-width: 30px;
-        height: 30px;
+        min-width: 32px;
+        height: 32px;
         border: none;
         border-radius: calc(var(--corner-radius) * 1px);
         background: var(--neutral-fill-stealth-rest);

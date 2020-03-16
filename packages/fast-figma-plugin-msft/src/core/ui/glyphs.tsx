@@ -35,3 +35,22 @@ export function revertChanges(className: string): JSX.Element {
         </svg>
     );
 }
+
+export function detach(className: string): JSX.Element {
+    return (
+        <svg
+            width="14"
+            height="15"
+            viewBox="0 0 14 15"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            className={className}
+        >
+            <path
+                d="M6.5 3.99962L9.23223 1.26739C10.2085 0.291079 11.7915 0.291079 12.7678 1.26739C13.7441 2.2437 13.7441 3.82661 12.7678 4.80292L10.0707 7.5M4 6.49962L1.23223 9.26739C0.255922 10.2437 0.255922 11.8266 1.23223 12.8029C2.20854 13.7792 3.79146 13.7792 4.76777 12.8029L7.57069 10M0 4.5H3M4.5 0V3M11 9.5H14M9.5 11V14"
+                stroke="#474747"
+                fill="none"
+            />
+        </svg>
+    );
+}

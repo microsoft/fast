@@ -50,7 +50,7 @@ export const fillRecipes: RecipeStore = {
     neutralLayerL1Alt: { resolver: neutralLayerL1Alt, name: "L1 Alt" },
     neutralLayerL2: { resolver: neutralLayerL2, name: "L2" },
     neutralLayerL3: { resolver: neutralLayerL3, name: "L3" },
-    neutralLayerL4: { resolver: neutralLayerL4, name: "L3" },
+    neutralLayerL4: { resolver: neutralLayerL4, name: "L4" },
 };
 
 export const strokeRecipes: RecipeStore = {

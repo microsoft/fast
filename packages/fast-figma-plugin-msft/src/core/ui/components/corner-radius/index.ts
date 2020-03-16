@@ -17,8 +17,8 @@ const styles = css`
     }
 
     .indicator {
-        width: 32px;
-        height: 32px;
+        width: 28px;
+        height: 28px;
         position: relative;
         overflow: hidden;
     }
@@ -42,7 +42,7 @@ const styles = css`
     }
 
     :host(.horizontal) .indicator {
-        margin-inline-end: 8px;
+        margin-inline-end: 12px;
     }
 
     :host(:hover) {
