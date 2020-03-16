@@ -441,7 +441,7 @@ class Form extends React.Component<
             data: navigationItem.data,
             schemaLocation: navigationItem.schemaLocation,
             default: get(navigationItem, "schema.default"),
-            disabled: get(navigationItem, "schema.disabled"),
+            disabled: navigationItem.disabled,
             dataLocation: this.state.navigationDictionary[0][
                 this.state.activeDictionaryId
             ][0][navigationItem.self].relativeDataLocation,
