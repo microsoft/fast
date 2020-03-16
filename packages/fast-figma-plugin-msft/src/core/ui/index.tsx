@@ -108,16 +108,7 @@ export class PluginUI extends React.Component<PluginUIProps> {
                     </p>
                     <div style={{ display: "flex" }}>
                         <ActionTrigger
-                            glyph={refresh}
-                            appearance={ActionTriggerAppearance.stealth}
-                            title={refreshLabel}
-                            aria-label={refreshLabel}
-                            onClick={this.props.dispatch.bind(this, {
-                                type: MessageTypes.sync,
-                                nodeIds: this.props.selectedNodes.map(node => node.id),
-                            })}
-                        />
-                        <ActionTrigger
+                            style={{ fontSize: 11 }}
                             glyph={revertChanges}
                             appearance={ActionTriggerAppearance.stealth}
                             title={revertLabel}
@@ -126,6 +117,19 @@ export class PluginUI extends React.Component<PluginUIProps> {
                                 type: MessageTypes.reset,
                                 nodeIds: this.props.selectedNodes.map(node => node.id),
                             })}
+                            children="Reset"
+                        />
+                        <ActionTrigger
+                            style={{ fontSize: 11 }}
+                            glyph={refresh}
+                            appearance={ActionTriggerAppearance.stealth}
+                            title={refreshLabel}
+                            aria-label={refreshLabel}
+                            onClick={this.props.dispatch.bind(this, {
+                                type: MessageTypes.sync,
+                                nodeIds: this.props.selectedNodes.map(node => node.id),
+                            })}
+                            children="Sync"
                         />
                     </div>
                 </div>
