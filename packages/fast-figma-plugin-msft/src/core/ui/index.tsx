@@ -465,6 +465,7 @@ export class PluginUI extends React.Component<PluginUIProps> {
                             </div>
                         ) : null}
                     </td-drawer>
+                    <button className="button">Export</button>
                 </div>
                 {this.renderFooter()}
             </div>
