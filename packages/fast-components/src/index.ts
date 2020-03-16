@@ -1,3 +1,4 @@
+export * from "./badge";
 export * from "./checkbox";
 export * from "./design-system-provider";
 export * from "./dialog";

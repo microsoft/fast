@@ -1,0 +1,71 @@
+<fast-design-system-provider>
+    <style>
+        fast-badge {
+            --badge-fill-primary: #D223CB;
+            --badge-fill-secondary: #3278CD;
+            --badge-fill-tertiary: #DFDFDF;
+            --badge-fill-foo: #EE1010;
+            --badge-fill-bar: rgba(238,6,16,0.7);
+            --badge-color-foo: white;
+            --badge-color-bar: black;
+        }
+    </style>
+    <h1>Badge</h1>
+    <h4>Default</h4>
+    <fast-badge fill="primary" color="foo" size="small" id="foo" aria-label="Simple badge" modal="true">
+        Small
+    </fast-badge>
+    <fast-badge fill="secondary" color="foo" size="medium" id="foo" aria-label="Simple badge" modal="true">
+        Medium
+    </fast-badge>
+    <fast-badge fill="tertiary" color="bar" size="large" id="foo" aria-label="Simple badge" modal="true">
+        Large
+    </fast-badge>
+    <h4>Circular</h4>
+    <fast-badge fill="primary" color="foo" size="small" id="foo" circular="true" aria-label="Simple badge" modal="true">
+        9
+    </fast-badge>
+    <fast-badge fill="secondary" color="foo" size="medium" id="foo" circular="true" aria-label="Simple badge" modal="true">
+        99
+    </fast-badge>
+    <fast-badge fill="tertiary" color="bar" size="large" id="foo" circular="true" aria-label="Simple badge" modal="true">
+        999
+    </fast-badge>
+    <h4>Examples</h4>
+    <div>
+        <div style="position: relative; display: inline-flex;">
+            <img src="https://placehold.it/120x140/DFDFDF/171717">
+            <fast-badge style="position: absolute; right: 4px; top: 4px;" fill="foo" color="foo" id="foo" aria-label="Simple badge" modal="true">
+                Sale
+            </fast-badge>
+        </div>
+        <div style="position: relative; display: inline-flex;">
+            <img src="https://placehold.it/140x140/DFDFDF/171717">
+            <fast-badge style="position: absolute; right: 4px; top: 4px;" fill="secondary" size="small" color="foo" id="foo" aria-label="Simple badge" modal="true">
+                App of the day
+            </fast-badge>
+        </div>
+    </div>
+    <div>
+        <div style="position: relative; display: inline-flex; width: 50px; height: 50px; background: #DFDFDF; margin: 12px;">
+            <fast-badge style="position: absolute; right: -6px; top: -6px;" circular="true" fill="bar" size="small" color="foo" id="foo" aria-label="Simple badge" modal="true">
+                3
+            </fast-badge>
+        </div>
+        <div style="position: relative; display: inline-flex; width: 50px; height: 50px; background: #DFDFDF; margin: 12px;">
+            <fast-badge style="position: absolute; right: -6px; top: -6px;" circular="true" fill="bar" size="small" color="foo" id="foo" aria-label="Simple badge" modal="true">
+                35
+            </fast-badge>
+        </div>
+        <div style="position: relative; display: inline-flex; width: 50px; height: 50px; background: #DFDFDF; margin: 12px;">
+            <fast-badge style="position: absolute; right: -6px; top: -6px;" circular="true" fill="bar" size="small" color="foo" id="foo" aria-label="Simple badge" modal="true">
+                4
+            </fast-badge>
+        </div>
+        <div style="position: relative; display: inline-flex; width: 50px; height: 50px; background: #DFDFDF; margin: 12px;">
+            <fast-badge style="position: absolute; right: -6px; top: -6px;" circular="true" fill="bar" size="small" color="foo" id="foo" aria-label="Simple badge" modal="true">
+                1
+            </fast-badge>
+        </div>
+    </div>
+</fast-design-system-provider>
