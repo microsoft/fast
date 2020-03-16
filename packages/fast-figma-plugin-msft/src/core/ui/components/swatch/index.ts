@@ -11,10 +11,11 @@ import { bool } from "../drawer";
 const template = html`
     <template class="${x => x.orientation} ${x => x.type} ${x =>
     bool(x.circular) ? " circular" : ""} ${x => (x.value === "none" ? "none" : "")} ${x =>
-    bool(x.interactive) ? "interactive" : ""}" style="--swatch-value: ${x =>
+    bool(x.interactive) ? "interactive" : ""} ${x =>
+    bool(x.selected) ? "selected" : ""}" style="--swatch-value: ${x =>
     x.value === "none" ? "transparent" : x.value}" $tabindex="${x =>
     bool(x.interactive) ? "0" : null}" role="${x =>
-    bool(x.interactive) ? "button" : null}">
+    bool(x.interactive) ? "button" : null}" $aria-selected="${x => bool(x.selected)}">
         <div class="swatch"></div>
         <slot></slot>
     </template>
@@ -99,6 +100,11 @@ const styles = css`
         cursor: pointer;
         background: var(--neutral-fill-stealth-hover);
     }
+
+    :host(.selected),
+    :host(.selected:hover) {
+        background: #daebf7;
+    }
 `;
 export enum SwatchTypes {
     background = "background",
@@ -128,4 +134,10 @@ export class Swatch extends FastElement {
 
     @attr
     public interactive: boolean = false;
+
+    @attr
+    public selected: boolean = false;
+    private selectedChanged() {
+        console.log("selected", this.selected, typeof this.selected);
+    }
 }

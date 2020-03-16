@@ -25,6 +25,7 @@ body {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     justify-items: stretch;
+    margin-inline-end: calc(var(--design-unit) * 2px);
 }
 
 .swatch-grid > * {

@@ -275,20 +275,27 @@ export class PluginUI extends React.Component<PluginUIProps> {
                                             .filter(
                                                 (recipe): recipe is RecipeData => !!recipe
                                             )
-                                            .map(recipe => (
-                                                <td-swatch
-                                                    value={recipe.value}
-                                                    title={recipe.value}
-                                                    interactive
-                                                    onClick={this.setRecipe.bind(
-                                                        this,
-                                                        recipe.id,
-                                                        recipe.type
-                                                    )}
-                                                >
-                                                    {recipe.name}
-                                                </td-swatch>
-                                            ))}
+                                            .map(recipe => {
+                                                return (
+                                                    <td-swatch
+                                                        value={recipe.value}
+                                                        title={recipe.value}
+                                                        interactive
+                                                        selected={
+                                                            !!this.recipeIsAssigned(
+                                                                recipe.id
+                                                            ).length
+                                                        }
+                                                        onClick={this.setRecipe.bind(
+                                                            this,
+                                                            recipe.id,
+                                                            recipe.type
+                                                        )}
+                                                    >
+                                                        {recipe.name}
+                                                    </td-swatch>
+                                                );
+                                            })}
                                     </div>
                                     <p className="title inset">Backgrounds and borders</p>
                                     <div className="swatch-stack">
@@ -309,6 +316,11 @@ export class PluginUI extends React.Component<PluginUIProps> {
                                                         title={recipe.value}
                                                         orientation="horizontal"
                                                         interactive
+                                                        selected={
+                                                            !!this.recipeIsAssigned(
+                                                                recipe.id
+                                                            ).length
+                                                        }
                                                         onClick={this.setRecipe.bind(
                                                             this,
                                                             recipe.id,
@@ -335,6 +347,11 @@ export class PluginUI extends React.Component<PluginUIProps> {
                                                         orientation="horizontal"
                                                         interactive
                                                         type="border"
+                                                        selected={
+                                                            !!this.recipeIsAssigned(
+                                                                recipe.id
+                                                            ).length
+                                                        }
                                                         onClick={this.setRecipe.bind(
                                                             this,
                                                             recipe.id,
@@ -362,6 +379,10 @@ export class PluginUI extends React.Component<PluginUIProps> {
                                                 value={recipe.value}
                                                 title={recipe.value}
                                                 interactive
+                                                selected={
+                                                    !!this.recipeIsAssigned(recipe.id)
+                                                        .length
+                                                }
                                                 onClick={this.setRecipe.bind(
                                                     this,
                                                     recipe.id,
@@ -387,6 +408,10 @@ export class PluginUI extends React.Component<PluginUIProps> {
                                             <td-corner-radius
                                                 value={recipe.value}
                                                 interactive
+                                                selected={
+                                                    !!this.recipeIsAssigned(recipe.id)
+                                                        .length
+                                                }
                                                 onClick={this.setRecipe.bind(
                                                     this,
                                                     recipe.id,

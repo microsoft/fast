@@ -64,7 +64,11 @@ const styles = css`
  * https://github.com/microsoft/fast-dna/issues/2742
  */
 export function bool(value: string | boolean | null): boolean {
-    return typeof value === "boolean" ? value : typeof value === "string";
+    return typeof value === "boolean"
+        ? value
+        : typeof value === "string"
+            ? value === "true" || value === ""
+            : false;
 }
 
 @customElement({

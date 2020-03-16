@@ -11,6 +11,7 @@ declare namespace JSX {
             title?: string;
             onClick?: any;
             interactive?: boolean;
+            selected?: boolean;
         };
         "td-corner-radius": {
             value: string;
@@ -18,6 +19,7 @@ declare namespace JSX {
             orientation?: "horizontal" | "vertical";
             onClick?: any;
             interactive?: boolean;
+            selected?: boolean;
         };
     }
 }

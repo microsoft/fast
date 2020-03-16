@@ -3,8 +3,11 @@ import { bool } from "../drawer";
 
 const template = html<CornerRadius>`
     <template class="${x => x.orientation} ${x =>
-    bool(x.interactive) ? "interactive" : ""}" style="--radius: ${x =>
-    x.value}" $tabindex="${x => (bool(x.interactive) ? "interactive" : null)}">
+    bool(x.interactive) ? "interactive" : ""} ${x =>
+    bool(x.selected) ? "selected" : ""}" style="--radius: ${x =>
+    x.value}" $tabindex="${x =>
+    bool(x.interactive) ? "interactive" : null}" $aria-selected="${x =>
+    bool(x.selected)}">
         <div class="indicator"></div>
         <slot></slot>
     </template>
@@ -56,6 +59,11 @@ const styles = css`
         cursor: pointer;
         background: var(--neutral-fill-stealth-hover);
     }
+
+    :host(.selected),
+    :host(.selected:hover) {
+        background: #daebf7;
+    }
 `;
 
 @customElement({
@@ -72,4 +80,7 @@ export class CornerRadius extends FastElement {
 
     @attr
     public interactive: boolean = false;
+
+    @attr
+    public selected: boolean = false;
 }
