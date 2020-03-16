@@ -1,6 +1,6 @@
 import { css } from "@microsoft/fast-element";
 
-export const NameTagStyles = css`
+export const TreeViewStyles = css`
     :host([hidden]) {
         display: none;
     }
