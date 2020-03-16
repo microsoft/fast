@@ -120,17 +120,6 @@ class SectionControl extends React.Component<
     };
 
     /**
-     * Renders the form
-     */
-    private renderRootObject(schema: any): React.ReactNode {
-        return this.generateFormObject(
-            schema,
-            schema.required || undefined,
-            schema.not ? schema.not.required : undefined
-        );
-    }
-
-    /**
      * Generates form elements based on field type
      */
     private renderFormControl = (
@@ -146,7 +135,7 @@ class SectionControl extends React.Component<
     ): React.ReactNode => {
         // if this is a root level object use it to generate the form and do not generate a link
         if (schema.type === "object" && propertyName === "") {
-            return this.renderRootObject(schema);
+            return this.getFormControls();
         }
 
         return (
@@ -182,118 +171,51 @@ class SectionControl extends React.Component<
         );
     };
 
-    private getFormControlsAndConfigurationOptions(
-        schema: any,
-        required: string[],
-        not: string[]
-    ): FormControlsWithConfigOptions {
-        const formControls: FormControlsWithConfigOptions = {
-            items: [],
-        };
+    private getFormControl(item: string): React.ReactNode {
+        const splitDataLocation: string[] = this.props.navigation[
+            item
+        ].relativeDataLocation.split(".");
+        const propertyName: string = splitDataLocation[splitDataLocation.length - 1];
+        const requiredArray: string[] | void = this.props.navigation[
+            this.props.navigationConfigId
+        ].schema.required;
+        const isRequired: boolean =
+            Array.isArray(requiredArray) && requiredArray.includes(propertyName);
 
-        const propertyKeys: string[] = [];
-
-        if (schema.properties) {
-            propertyKeys.push(PropertyKeyword.properties);
-        }
-
-        propertyKeys.forEach(
-            (propertyKey: string): void => {
-                Object.keys(schema[propertyKey]).forEach(
-                    (propertyName: string, index: number) => {
-                        const isRequired: boolean = getIsRequired(propertyName, required);
-                        const isNotRequired: boolean = getIsNotRequired(
-                            propertyName,
-                            not
-                        );
-                        const schemaLocation: string =
-                            this.getSchemaLocation() === ""
-                                ? [propertyKey, propertyName].join(".")
-                                : [
-                                      this.getSchemaLocation(),
-                                      propertyKey,
-                                      propertyName,
-                                  ].join(".");
-                        const dataLocation: string =
-                            this.props.dataLocation !== ""
-                                ? [this.props.dataLocation, propertyName].join(".")
-                                : propertyName;
-                        const navigationId: string = this.props.navigation[
-                            this.props.navigationConfigId
-                        ].items[index];
-
-                        if (!isNotRequired) {
-                            const params: FormControlParameters = {
-                                index,
-                                schemaLocation,
-                                dataLocation,
-                                navigationId,
-                                propertyName,
-                                schema: schema[propertyKey][propertyName],
-                                isRequired,
-                                isDisabled: this.isDisabled(),
-                                title:
-                                    schema[propertyKey][propertyName].title ||
-                                    this.props.untitled,
-                                invalidMessage: getErrorFromDataLocation(
-                                    dataLocation,
-                                    this.props.validationErrors
-                                ),
-                            };
-
-                            formControls.items.push({
-                                propertyName: params.propertyName,
-                                render: this.renderFormControl(
-                                    params.schema,
-                                    params.propertyName,
-                                    params.schemaLocation,
-                                    params.dataLocation,
-                                    params.navigationId,
-                                    params.isRequired,
-                                    params.isDisabled,
-                                    params.title,
-                                    params.invalidMessage
-                                ),
-                            });
-                        }
-                    }
-                );
-            }
+        return this.renderFormControl(
+            this.props.navigation[item].schema,
+            propertyName,
+            this.props.navigation[item].schemaLocation,
+            this.props.navigation[item].relativeDataLocation,
+            item,
+            isRequired,
+            this.props.navigation[item].disabled,
+            this.props.navigation[item].schema.title || this.props.untitled,
+            getErrorFromDataLocation(
+                this.props.navigation[item].relativeDataLocation,
+                this.props.validationErrors
+            )
         );
-
-        return formControls;
     }
 
-    /**
-     * Pushes a list of elements found inside an object to an array
-     */
-    private generateFormObject(
-        schema: any,
-        required: string[],
-        not?: string[]
-    ): React.ReactNode {
-        if (checkIsObject(schema, this.state.schema)) {
-            // assign items to form elements
-            return this.getFormControlsAndConfigurationOptions(schema, required, not)
-                .items.concat([
-                    {
-                        propertyName: void 0,
-                        render: this.renderAdditionalProperties(),
-                    },
-                ])
-                .map(
-                    (
-                        controlItem: FormControlItem,
-                        itemIndex: number
-                    ): React.ReactNode => {
-                        return (
-                            <React.Fragment key={itemIndex}>
-                                {controlItem.render}
-                            </React.Fragment>
-                        );
-                    }
-                );
+    private getFormControls(): React.ReactNode {
+        if (typeof this.state.oneOfAnyOf !== "undefined") {
+            return this.props.navigation[
+                this.props.navigation[this.props.navigationConfigId].items[
+                    this.state.oneOfAnyOf.activeIndex
+                ]
+            ].items.map(
+                (item: string): React.ReactNode => {
+                    return this.getFormControl(item);
+                }
+            );
         }
+
+        return this.props.navigation[this.props.navigationConfigId].items.map(
+            (item: string): React.ReactNode => {
+                return this.getFormControl(item);
+            }
+        );
     }
 
     /**
@@ -415,6 +337,7 @@ class SectionControl extends React.Component<
                         "",
                         invalidMessage
                     )}
+                    {this.renderAdditionalProperties()}
                 </div>
             </div>
         );

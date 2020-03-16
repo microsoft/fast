@@ -10,7 +10,6 @@ import {
     itemsKeyword,
     PropertyKeyword,
 } from "../data-utilities/types";
-import ajv from "ajv";
 import { SchemaDictionary } from "./schema.props";
 import { DataDictionary, Parent } from "./data.props";
 
@@ -54,11 +53,12 @@ export function getNavigation(
     data?: any,
     parent?: Parent
 ): TreeNavigationConfig {
-    return getNavigationRecursive(schema, data, parent);
+    return getNavigationRecursive(schema, !!schema.disabled, data, parent);
 }
 
 function getNavigationRecursive(
     schema: any,
+    disabled: boolean,
     data?: any,
     dictionaryParent?: Parent,
     dataLocation: string = "",
@@ -69,6 +69,7 @@ function getNavigationRecursive(
     const self: string = id || dataLocation;
     const items: TreeNavigationConfig[] = getNavigationItems(
         schema,
+        disabled,
         data,
         dataLocation,
         schemaLocation,
@@ -90,6 +91,7 @@ function getNavigationRecursive(
                 relativeDataLocation: dataLocation,
                 schemaLocation,
                 schema,
+                disabled,
                 data,
                 text: schema.title,
                 type: schema.type || DataType.unknown,
@@ -108,28 +110,9 @@ function getNavigationRecursive(
     ];
 }
 
-function getCombiningIndex(schema: any, data: any): number {
-    let index: number = 0;
-
-    if (data !== undefined) {
-        const ajvInstance: ajv.Ajv = new ajv();
-
-        schema.forEach((schemaItem: any, valueIndex: number) => {
-            const valueIndexKey: string = `${valueIndex}`;
-            ajvInstance.addSchema(schemaItem, valueIndexKey);
-
-            if (ajvInstance.validate(valueIndexKey, data)) {
-                index = valueIndex;
-                return;
-            }
-        });
-    }
-
-    return index;
-}
-
 function getNavigationItems(
     schema: any,
+    disabled: boolean,
     data: any,
     dataLocation: string,
     schemaLocation: string,
@@ -142,26 +125,26 @@ function getNavigationItems(
             : void 0;
 
     if (combiningKeyword) {
-        const combiningIndex: number = getCombiningIndex(schema[combiningKeyword], data);
-        const schemaLocationIsRoot: boolean = schemaLocation === "";
-        const currentSchemaLocation: string = schemaLocationIsRoot
-            ? `${combiningKeyword}[${combiningIndex}]`
-            : `${schemaLocation}.${combiningKeyword}[${combiningIndex}]`;
-        const currentId: string = `${dataLocation}{${schemaLocation}${
-            schemaLocationIsRoot ? "" : "."
-        }${combiningKeyword}[${combiningIndex}]}`;
+        return schema[combiningKeyword].map((subSchema: any, index: number) => {
+            const schemaLocationIsRoot: boolean = schemaLocation === "";
+            const currentSchemaLocation: string = schemaLocationIsRoot
+                ? `${combiningKeyword}[${index}]`
+                : `${schemaLocation}.${combiningKeyword}[${index}]`;
+            const currentId: string = `${dataLocation}{${schemaLocation}${
+                schemaLocationIsRoot ? "" : "."
+            }${combiningKeyword}[${index}]}`;
 
-        return [
-            getNavigationRecursive(
-                schema[combiningKeyword][combiningIndex],
+            return getNavigationRecursive(
+                subSchema,
+                disabled || !!subSchema.disabled,
                 data,
                 undefined,
                 dataLocation,
                 currentSchemaLocation,
                 parent,
                 currentId
-            ),
-        ];
+            );
+        });
     }
 
     switch (schema.type) {
@@ -170,6 +153,7 @@ function getNavigationItems(
                 return Object.keys(schema.properties).map((propertyKey: string) => {
                     return getNavigationRecursive(
                         schema.properties[propertyKey],
+                        disabled || !!schema.properties[propertyKey].disabled,
                         get(data, propertyKey) ? data[propertyKey] : void 0,
                         undefined,
                         dataLocation ? `${dataLocation}.${propertyKey}` : propertyKey,
@@ -187,6 +171,7 @@ function getNavigationItems(
                 return data.map((value: any, index: number) => {
                     return getNavigationRecursive(
                         schema.items,
+                        disabled || !!schema.items.disabled,
                         data[index],
                         undefined,
                         `${dataLocation}[${index}]`,
