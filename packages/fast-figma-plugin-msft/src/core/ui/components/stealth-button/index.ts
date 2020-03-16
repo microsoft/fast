@@ -42,16 +42,8 @@ const styles = css`
     }
 
     :host([aria-expanded="true"]) button {
-        background: var(--accent-fill-rest);
+        background: #18a0fb;
         fill: var(--accent-foreground-cut-rest);
-    }
-
-    :host([aria-expanded="true"]) button:hover {
-        background: var(--accent-fill-hover);
-    }
-
-    :host([aria-expanded="true"]) button:active {
-        background: var(--accent-fill-active);
     }
 `;
 
