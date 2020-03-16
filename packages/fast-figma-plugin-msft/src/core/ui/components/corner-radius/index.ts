@@ -1,7 +1,10 @@
 import { attr, css, customElement, FastElement, html } from "@microsoft/fast-element";
+import { bool } from "../drawer";
 
 const template = html<CornerRadius>`
-    <template class="${x => x.orientation}" style="--radius: ${x => x.value}">
+    <template class="${x => x.orientation} ${x =>
+    bool(x.interactive) ? "interactive" : ""}" style="--radius: ${x =>
+    x.value}" $tabindex="${x => (bool(x.interactive) ? "interactive" : null)}">
         <div class="indicator"></div>
         <slot></slot>
     </template>
@@ -34,7 +37,7 @@ const styles = css`
 
     :host(.vertical) {
         flex-direction: column;
-        max-width: 58px;
+        padding: 8px;
     }
 
     :host(.vertical) .indicator {
@@ -45,8 +48,13 @@ const styles = css`
         margin-inline-end: 12px;
     }
 
-    :host(:hover) {
+    :host(.interactive) {
+        outline: none;
+    }
+
+    :host(.interactive:hover) {
         cursor: pointer;
+        background: var(--neutral-fill-stealth-hover);
     }
 `;
 
@@ -61,4 +69,7 @@ export class CornerRadius extends FastElement {
 
     @attr
     public orientation: "vertical" | "horizontal" = "vertical";
+
+    @attr
+    public interactive: boolean = false;
 }

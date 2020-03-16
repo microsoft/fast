@@ -151,7 +151,7 @@ export class PluginUI extends React.Component<PluginUIProps> {
                     height: "100%",
                 }}
             >
-                <div style={{ overflowY: "scroll" }}>
+                <div style={{ overflowY: "overlay" as any }}>
                     <td-drawer name="Theme">
                         {this.props.selectedNodes.some(node =>
                             node.supports.includes("designSystem")
@@ -279,6 +279,7 @@ export class PluginUI extends React.Component<PluginUIProps> {
                                                 <td-swatch
                                                     value={recipe.value}
                                                     title={recipe.value}
+                                                    interactive
                                                     onClick={this.setRecipe.bind(
                                                         this,
                                                         recipe.id,
@@ -290,7 +291,7 @@ export class PluginUI extends React.Component<PluginUIProps> {
                                             ))}
                                     </div>
                                     <p className="title inset">Backgrounds and borders</p>
-                                    <div className="inset swatch-stack">
+                                    <div className="swatch-stack">
                                         {this.recipeOptionsByType(
                                             RecipeTypes.backgroundFills
                                         )
@@ -307,6 +308,7 @@ export class PluginUI extends React.Component<PluginUIProps> {
                                                         value={recipe.value}
                                                         title={recipe.value}
                                                         orientation="horizontal"
+                                                        interactive
                                                         onClick={this.setRecipe.bind(
                                                             this,
                                                             recipe.id,
@@ -331,6 +333,7 @@ export class PluginUI extends React.Component<PluginUIProps> {
                                                         value={recipe.value}
                                                         title={recipe.value}
                                                         orientation="horizontal"
+                                                        interactive
                                                         type="border"
                                                         onClick={this.setRecipe.bind(
                                                             this,
@@ -358,6 +361,7 @@ export class PluginUI extends React.Component<PluginUIProps> {
                                                 circular
                                                 value={recipe.value}
                                                 title={recipe.value}
+                                                interactive
                                                 onClick={this.setRecipe.bind(
                                                     this,
                                                     recipe.id,
@@ -382,6 +386,7 @@ export class PluginUI extends React.Component<PluginUIProps> {
                                         return (
                                             <td-corner-radius
                                                 value={recipe.value}
+                                                interactive
                                                 onClick={this.setRecipe.bind(
                                                     this,
                                                     recipe.id,

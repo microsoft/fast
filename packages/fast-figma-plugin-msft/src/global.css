@@ -37,7 +37,9 @@ body {
 }
 
 .swatch-stack > * {
-    margin: calc(var(--design-unit) * 2px) 0;
+    padding: calc(var(--design-unit) * 2px) 0;
+    padding-inline-start: calc(var(--design-unit) * 4px);
+    padding-inline-end: calc(var(--design-unit) * 1px);
 }
 
 .inset {
@@ -48,6 +50,7 @@ body {
     display: flex;
     justify-content: space-between;
     padding-inline-start: calc(var(--design-unit) * 4px);
+    padding-inline-end: calc(var(--design-unit) * 1px);
 }
 /* scrollbar */
 /* For the "inset" look only */
