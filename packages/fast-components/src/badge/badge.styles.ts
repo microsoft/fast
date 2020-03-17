@@ -51,7 +51,7 @@ export const BadgeStyles = css`
     :host(.circular.medium) .badge {
         ${/* Need to work with Brian on width and height here */ ""} height: 26px;
         min-width: 26px;
-        padding: 0 calc(var(--design-unit) * 1px) 0;
+        padding: 0 calc(var(--design-unit) * 1px);
     }
 
     :host(.large) .badge {
@@ -65,6 +65,6 @@ export const BadgeStyles = css`
     :host(.circular.large) .badge {
         ${/* Need to work with Brian on width and height here */ ""} height: calc(var(--height-number) * 1px);
         min-width: calc(var(--height-number) * 1px);
-        padding: 0 calc(var(--design-unit) * 1px) 0;
+        padding: 0 calc(var(--horizontal-spacing) * 1px);
     }
 `;
