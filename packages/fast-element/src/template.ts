@@ -43,19 +43,20 @@ export class HTMLTemplate extends Directive
 
         let targetIndex = 0;
         let behaviorIndex = 0;
-        let node;
+        let node = walker.nextNode();
 
         for (let ii = viewFactories.length; behaviorIndex < ii; ++behaviorIndex) {
             const factory = viewFactories[behaviorIndex];
             const factoryIndex = factory.targetIndex;
 
-            while ((node = walker.nextNode()) !== null) {
+            while (node !== null) {
                 if (targetIndex === factoryIndex) {
                     behaviors[behaviorIndex] = factory.createBehavior(node);
                     break;
+                } else {
+                    node = walker.nextNode();
+                    targetIndex++;
                 }
-
-                targetIndex++;
             }
         }
 
