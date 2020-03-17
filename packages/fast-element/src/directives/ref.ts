@@ -1,15 +1,12 @@
-import { Behavior } from "../behaviors/behavior";
+import { Behavior } from "./behavior";
 import { AttachedBehaviorDirective } from "./directive";
 import { CaptureType } from "../template";
 
 export class RefBehavior implements Behavior {
-    constructor(
-        private directive: AttachedBehaviorDirective<string>,
-        private target: HTMLElement
-    ) {}
+    constructor(private target: HTMLElement, private propertyName: string) {}
 
     bind(source: any) {
-        source[this.directive.options] = this.target;
+        source[this.propertyName] = this.target;
     }
 
     unbind() {}
