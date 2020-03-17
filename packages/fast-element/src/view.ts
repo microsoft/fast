@@ -1,4 +1,4 @@
-import { Behavior } from "./behaviors/behavior";
+import { Behavior } from "./directives/behavior";
 
 export interface View {
     bind(source: unknown): void;
@@ -35,39 +35,33 @@ export class HTMLView implements ElementView, SyntheticView {
             node.parentNode!.insertBefore(this.fragment, node);
         } else {
             let parentNode = node.parentNode!;
-            let current: Node | null = this.firstChild!;
             const end = this.lastChild!;
+            let current = this.firstChild!;
             let next;
 
-            while (current) {
+            while (current !== end) {
                 next = current.nextSibling;
                 parentNode.insertBefore(current, node);
-
-                if (current === end) {
-                    break;
-                }
-
-                current = next;
+                current = next!;
             }
+
+            parentNode.insertBefore(end, node);
         }
     }
 
     public remove() {
         const fragment = this.fragment;
-        let current: Node | null = this.firstChild!;
         const end = this.lastChild!;
+        let current = this.firstChild!;
         let next;
 
-        while (current) {
+        while (current !== end) {
             next = current.nextSibling;
             fragment.appendChild(current);
-
-            if (current === end) {
-                break;
-            }
-
-            current = next;
+            current = next!;
         }
+
+        fragment.appendChild(end);
     }
 
     public bind(source: unknown) {

@@ -1,11 +1,10 @@
-import { TemplateCompiler } from "./template-compiler";
-import { TargetedInstruction } from "./instructions";
+import { compileTemplate } from "./template-compiler";
 import { HTMLView, ElementView, SyntheticView, View } from "./view";
 import { DOM } from "./dom";
-import { Behavior } from "./behaviors/behavior";
+import { Behavior, BehaviorFactory } from "./directives/behavior";
 import { Expression } from "./interfaces";
 import { Directive } from "./directives/directive";
-import { BindingDirective } from "./directives/bind";
+import { BindingDirective } from "./directives/binding";
 
 export interface ElementViewTemplate {
     create(host: Element): ElementView;
@@ -17,53 +16,72 @@ export interface SyntheticViewTemplate {
 
 export class HTMLTemplate extends Directive
     implements ElementViewTemplate, SyntheticViewTemplate {
-    public behavior = HTMLTemplateBehavior;
-
+    public createPlaceholder = DOM.createBlockPlaceholder;
+    private behaviorCount: number;
+    private hasHostBehaviors: boolean;
     constructor(
         private templateElement: HTMLTemplateElement,
-        private viewInstructions: TargetedInstruction[],
-        private hostInstruction: TargetedInstruction | null = null
+        private viewBehaviorFactories: BehaviorFactory[],
+        private hostBehaviorFactories: BehaviorFactory[]
     ) {
         super();
-
-        const fragment = templateElement.content;
-
-        if (DOM.isMarker(fragment.firstChild!)) {
-            fragment.insertBefore(DOM.createLocation(), fragment.firstChild);
-        }
+        this.behaviorCount =
+            this.viewBehaviorFactories.length + this.hostBehaviorFactories.length;
+        this.hasHostBehaviors = this.hostBehaviorFactories.length > 0;
     }
 
     public create(host?: Element) {
         const fragment = this.templateElement.content.cloneNode(true) as DocumentFragment;
-        const targets = fragment.querySelectorAll(".fm");
-        const viewInstructions = this.viewInstructions;
-        const hostInstruction = this.hostInstruction;
-        const behaviors: Behavior[] = [];
+        const viewFactories = this.viewBehaviorFactories;
+        const behaviors = new Array<Behavior>(this.behaviorCount);
+        const walker = document.createTreeWalker(
+            fragment,
+            133, // element, text, comment
+            null,
+            false
+        );
 
-        for (let i = 0, ii = targets.length; i < ii; ++i) {
-            viewInstructions[i].hydrate(targets[i], behaviors);
+        let targetIndex = 0;
+        let behaviorIndex = 0;
+        let node = walker.nextNode();
+
+        for (let ii = viewFactories.length; behaviorIndex < ii; ++behaviorIndex) {
+            const factory = viewFactories[behaviorIndex];
+            const factoryIndex = factory.targetIndex;
+
+            while (node !== null) {
+                if (targetIndex === factoryIndex) {
+                    behaviors[behaviorIndex] = factory.createBehavior(node);
+                    break;
+                } else {
+                    node = walker.nextNode();
+                    targetIndex++;
+                }
+            }
         }
 
-        if (host !== void 0 && hostInstruction !== null) {
-            hostInstruction.hydrate(host, behaviors);
+        if (this.hasHostBehaviors) {
+            const hostFactories = this.hostBehaviorFactories;
+
+            for (let i = 0, ii = hostFactories.length; i < ii; ++i, ++behaviorIndex) {
+                behaviors[behaviorIndex] = hostFactories[i].createBehavior(host);
+            }
         }
 
         return new HTMLView(fragment, behaviors);
     }
 
-    public createPlaceholder(instructionIndex: number) {
-        return DOM.createLocationPlaceholder(instructionIndex);
+    public createBehavior(target: any) {
+        return new HTMLTemplateBehavior(this, target);
     }
 }
 
 export class HTMLTemplateBehavior implements Behavior {
-    private location: Node;
     private view: SyntheticView;
 
-    constructor(directive: SyntheticViewTemplate, marker: HTMLElement) {
-        this.location = DOM.convertMarkerToLocation(marker);
-        this.view = directive.create();
-        this.view.insertBefore(this.location);
+    constructor(template: SyntheticViewTemplate, location: HTMLElement) {
+        this.view = template.create();
+        this.view.insertBefore(location);
     }
 
     bind(source: unknown) {
@@ -103,5 +121,5 @@ export function html<T = any>(
 
     html += strings[strings.length - 1];
 
-    return TemplateCompiler.instance.compile(html, directives);
+    return compileTemplate(html, directives);
 }
