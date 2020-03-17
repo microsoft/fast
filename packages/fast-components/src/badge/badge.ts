@@ -19,6 +19,7 @@ export class Badge extends FastElement {
     @attr
     public size: BadgeSize;
     private sizeChanged(): void {
+        this.classList.remove(this.size);
         switch (this.size) {
             case BadgeSize.small:
                 this.classList.add("small");
