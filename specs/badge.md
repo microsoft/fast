@@ -12,6 +12,7 @@ Typical use cases include, but are not limited to, denoting a sale or new item, 
 
 A badge should allow the following properties:
 - `fill`, a string that passes the color value for the backplate. Defaults to "transparent".
+- `circular`, if circular styling is desired.
 - `size`, the size the badge is rendered.
 
 ### Prior Art/Examples
@@ -31,7 +32,11 @@ A badge should allow the following properties:
 
 *Attributes:*
 - `fill`: string
-- `size`: string
+- `circular`: boolean
+- `size`: enum
+  - small
+  - medium
+  - large
 
 *Slots:*
 - `default`
