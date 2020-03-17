@@ -41,9 +41,11 @@ function triggerUnbind(this: BindingBehavior) {
 }
 
 function updateAttributeTarget(this: BindingBehavior, value: unknown): void {
-    (value as boolean)
-        ? (this.target as HTMLElement).setAttribute(this.targetName!, "")
-        : (this.target as HTMLElement).removeAttribute(this.targetName!);
+    if (value === null || value === void 0) {
+        this.target.removeAttribute(this.targetName!);
+    } else {
+        this.target.setAttribute(this.targetName!, value as string);
+    }
 }
 
 function updateBooleanAttributeTarget(this: BindingBehavior, value: unknown): void {
@@ -93,7 +95,7 @@ export class BindingDirective extends Directive {
             case BindingType.text:
                 this.updateTarget = updateTextTarget;
                 break;
-            case BindingType.text:
+            case BindingType.property:
                 this.updateTarget = updatePropertyTarget;
                 break;
         }
