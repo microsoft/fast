@@ -30,13 +30,13 @@ export const SliderStyles = css`
     }
     .track {
     }
-    .thumb_container {
+    .thumb-container {
         position: absolute;
         right: 50%;
         height: 16px;
         width: 16px;
     }
-    .thumb_cursor {
+    .thumb-cursor {
         border: none;
         width: 16px;
         height: 16px;

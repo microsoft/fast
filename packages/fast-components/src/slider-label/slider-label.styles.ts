@@ -8,17 +8,17 @@ export const SliderLabelStyles = css`
         margin-top: -2;
         display: grid;
     }
-    .sliderLabel_container {
+    .sliderLabel-container {
         display: grid;
         justify-self: center;
         grid-template-rows: auto auto;
         grid-template-columns: 0;
     }
-    .sliderLabel_label {
+    .sliderLabel-label {
         width: 18px;
         justify-self: center;
     }
-    .sliderLabel_mark {
+    .sliderLabel-mark {
         width: 2px;
         height: 8px;
         background: #bebebe;
