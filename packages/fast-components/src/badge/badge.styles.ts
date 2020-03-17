@@ -8,8 +8,8 @@ export const BadgeStyles = css`
     }
 
     .badge {
-        border-radius: calc(var(--elevated-corner-radius) * 1px);
-        padding: calc(var(--design-unit) * 1.5px);
+        border-radius: calc(var(--corner-radius) * 1px);
+        padding: calc(var(--design-unit) * 0.5px) calc(var(--design-unit) * 1px);
         ${/* Font size, weight, and line height are temporary - 
             replace when adaptive typography is figured out */ ""} font-size: 12px;
         font-weight: 400px;
@@ -27,7 +27,6 @@ export const BadgeStyles = css`
     }
 
     :host(.small) .badge {
-        padding: calc(var(--design-unit) * 1px);
         ${/* Font size, weight, and line height are temporary - 
             replace when adaptive typography is figured out */ ""} font-size: 10px;
         font-weight: 400px;
@@ -41,7 +40,6 @@ export const BadgeStyles = css`
     }
 
     :host(.medium)) .badge {
-        padding: calc(var(--design-unit) * 1.5px);
         ${/* Font size, weight, and line height are temporary - 
             replace when adaptive typography is figured out */ ""} font-size: 12px;
         font-weight: 400px;
@@ -55,7 +53,6 @@ export const BadgeStyles = css`
     }
 
     :host(.large) .badge {
-        padding: calc(var(--design-unit) * 2px);
         ${/* Font size, weight, and line height are temporary - 
             replace when adaptive typography is figured out */ ""} font-size: 14px;
         font-weight: 400px;
