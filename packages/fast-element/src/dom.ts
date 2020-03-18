@@ -1,62 +1,41 @@
 import { Callable } from "./interfaces";
-const markerClass = "fph fm";
+const markerClass = `fast-${Math.random()
+    .toString(36)
+    .substring(7)}`;
+const updateQueue = [] as Callable[];
 
 export const DOM = {
-    pendingUpdates: [] as Callable[],
-
-    createTextMarker() {
-        const marker = document.createElement("template");
-        marker.className = markerClass;
-        return marker;
+    isMarker(node: Node): node is Comment {
+        return node.nodeType === 8 && (node as Comment).data.startsWith(markerClass);
     },
 
-    isMarker(node: Node): boolean {
-        return (
-            node.nodeType === 1 &&
-            (node as HTMLElement).tagName === "TEMPLATE" &&
-            (node as HTMLElement).className === markerClass
-        );
+    extractDirectiveIndexFromMarker(node: Comment): number {
+        return parseInt(node.data.replace(`${markerClass}:`, ""));
     },
 
-    makeIntoInstructionTarget(element: HTMLElement) {
-        const value = element.getAttribute("class");
-        element.setAttribute("class", value ? value + " fm" : "fm");
+    createInterpolationPlaceholder(index: number) {
+        return `@{${index}}`;
     },
 
-    convertMarkerToLocation(marker: Node): Node {
-        const next = marker.nextSibling! as Node;
-        marker.parentNode!.removeChild(marker);
-        return next;
-    },
-
-    createInterpolationPlaceholder(instructionIndex: number) {
-        return `@{${instructionIndex}}`;
-    },
-
-    createLocation() {
-        return document.createComment("");
-    },
-
-    createLocationPlaceholder(instructionIndex: number) {
-        return `<template i="${instructionIndex}" class="${markerClass}"></template><!---->`;
+    createBlockPlaceholder(index: number) {
+        return `<!--${markerClass}:${index}-->`;
     },
 
     queueUpdate(callable: Callable) {
-        if (this.pendingUpdates.length < 1) {
+        if (updateQueue.length < 1) {
             window.requestAnimationFrame(processQueue);
         }
 
-        this.pendingUpdates.push(callable);
+        updateQueue.push(callable);
     },
 };
 
 function processQueue() {
-    const queue = DOM.pendingUpdates;
     const capacity = 1024;
     let index = 0;
 
-    while (index < queue.length) {
-        const task = queue[index];
+    while (index < updateQueue.length) {
+        const task = updateQueue[index];
         (task as any).call();
         index++;
 
@@ -69,17 +48,17 @@ function processQueue() {
             // Manually shift all values starting at the index back to the
             // beginning of the queue.
             for (
-                let scan = 0, newLength = queue.length - index;
+                let scan = 0, newLength = updateQueue.length - index;
                 scan < newLength;
                 scan++
             ) {
-                queue[scan] = queue[scan + index];
+                updateQueue[scan] = updateQueue[scan + index];
             }
 
-            queue.length -= index;
+            updateQueue.length -= index;
             index = 0;
         }
     }
 
-    queue.length = 0;
+    updateQueue.length = 0;
 }
