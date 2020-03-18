@@ -53,7 +53,7 @@ function designSystemProperty(target: DesignSystemProvider, name: string): void 
 export class DesignSystemProvider extends FastElement implements DesignSystemData {
     @designSystemProperty
     public accentBaseColor: string = "#0078D4";
-    private accentBaseColorChanged() {
+    private accentBaseColorChanged(): void {
         const color = parseColorHexRGB(this.accentBaseColor);
         if (color !== null) {
             this.designSystem = {
