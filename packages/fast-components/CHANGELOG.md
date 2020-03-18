@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.3.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components@0.2.0...@microsoft/fast-components@0.3.0) (2020-03-18)
+
+
+### Features
+
+* add switch as new web component ([#2789](https://github.com/Microsoft/fast-dna/issues/2789)) ([803e49b](https://github.com/Microsoft/fast-dna/commit/803e49b))
+* add text area web component ([#2787](https://github.com/Microsoft/fast-dna/issues/2787)) ([0ecf9b2](https://github.com/Microsoft/fast-dna/commit/0ecf9b2))
+
+
+
+
+
 # [0.2.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components@0.1.0...@microsoft/fast-components@0.2.0) (2020-03-13)
 
 
