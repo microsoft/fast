@@ -22,11 +22,8 @@ jobs:
     - name: Install Lerna
       run: sudo yarn global add lerna@3.18.2  
 
-    - name: Install package dependencies
+    - name: Install package dependencies / prepare workspaces
       run: yarn install --frozen-lockfile
-
-    - name: Build Yarn workspaces
-      run: lerna run prepare
 
     - name: Testing Prettier format
       run: lerna run prettier:diff

@@ -16,11 +16,8 @@ jobs:
     - name: Install Lerna
       run: npm i -g lerna
 
-    - name: Install package dependencies
+    - name: Install package dependencies / prepare workspaces
       run: yarn install --frozen-lockfile
-
-    - name: Build Yarn workspaces
-      run: lerna run prepare
 
     - name: Ensure Prettier formatting
       run: lerna run prettier:diff
