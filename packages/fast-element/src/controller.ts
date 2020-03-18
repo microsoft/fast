@@ -1,46 +1,84 @@
-import { CustomElementDefinition, CustomElement } from "./custom-element";
-import { Constructable } from "./interfaces";
+import { FastElementDefinition, FastElement } from "./fast-element";
 import { Container, Registry, Resolver, InterfaceSymbol } from "./di";
 import { ElementView } from "./view";
-import { ElementProjector, HostProjector, ShadowDOMProjector } from "./projectors";
 import { PropertyChangeNotifier } from "./observation/notifier";
+
+const defaultEventOptions: CustomEventInit = {
+    bubbles: true,
+    composed: true,
+};
 
 export class Controller extends PropertyChangeNotifier implements Container {
     public view: ElementView | null = null;
+    public isConnected: boolean = false;
     private resolvers = new Map<any, Resolver>();
 
     public constructor(
         public readonly element: HTMLElement,
-        public readonly definition: CustomElementDefinition,
-        public readonly projector: ElementProjector
+        public readonly definition: FastElementDefinition
     ) {
         super();
-        this.definition.dependencies.forEach(x => x.register(this));
-    }
 
-    public hydrateCustomElement() {
-        this.view = this.definition.template.create(false);
+        const template = definition.template;
+        const styles = definition.styles;
+        const shadowRoot =
+            definition.shadowOptions === void 0
+                ? void 0
+                : element.attachShadow(definition.shadowOptions);
 
-        if (this.view !== null) {
-            this.projector.project(this.view, this);
+        if (template !== void 0) {
+            const view = (this.view = template.create(this.element));
+
+            if (shadowRoot === void 0) {
+                view.appendTo(element);
+            } else {
+                view.appendTo(shadowRoot);
+            }
         }
+
+        if (styles !== void 0 && shadowRoot !== void 0) {
+            styles.applyTo(shadowRoot);
+        }
+
+        definition.dependencies.forEach(x => x.register(this));
     }
 
     public onConnectedCallback() {
+        if (this.isConnected) {
+            return;
+        }
+
         if (this.view !== null) {
             this.view.bind(this.element);
         }
+
+        this.isConnected = true;
     }
 
     public onDisconnectedCallback() {
+        if (this.isConnected === false) {
+            return;
+        }
+
+        this.isConnected = false;
+
         if (this.view !== null) {
             this.view.unbind();
         }
     }
 
     public onAttributeChangedCallback(name: string, oldValue: string, newValue: string) {
-        const bindable = this.definition.attributes[name];
-        (this.element as any)[bindable.property] = newValue;
+        (this.element as any)[this.definition.attributeLookup[name].property] = newValue;
+    }
+
+    public emit(type: string, detail?: any, options?: Omit<CustomEventInit, "detail">) {
+        if (this.isConnected) {
+            return this.element.dispatchEvent(
+                new CustomEvent(type, { detail, ...defaultEventOptions, ...options })
+            );
+        }
+
+        return false;
     }
 
     public register(registry: Registry) {
@@ -63,31 +101,18 @@ export class Controller extends PropertyChangeNotifier implements Container {
     }
 
     public static forCustomElement(element: HTMLElement) {
-        let controller: Controller = (element as any).$controller;
+        const controller: Controller = (element as any).$controller;
 
         if (controller !== void 0) {
             return controller;
         }
 
-        const definition = CustomElement.getDefinition(
-            element.constructor as Constructable
-        );
+        const definition = FastElement.getDefinition(element.constructor as any);
+
         if (definition === void 0) {
-            throw new Error("Missing custom element definition.");
+            throw new Error("Missing fast element definition.");
         }
 
-        const projector =
-            definition.shadowOptions === null
-                ? new HostProjector(element)
-                : new ShadowDOMProjector(element, definition);
-
-        (element as any).$controller = controller = new Controller(
-            element,
-            definition,
-            projector
-        );
-        controller.hydrateCustomElement();
-
-        return controller;
+        return ((element as any).$controller = new Controller(element, definition));
     }
 }

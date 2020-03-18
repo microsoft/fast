@@ -1,37 +1,44 @@
 import { DOM } from "../dom";
-import { Template, CaptureType } from "../template";
+import { SyntheticViewTemplate, CaptureType } from "../template";
 import { SyntheticView } from "../view";
-import { Expression, AccessScopeExpression, Getter } from "../expression";
-import { Behavior } from "../behaviors/behavior";
-import { Observable, GetterInspector } from "../observation/observable";
-import { BindingDirective } from "./bind";
+import { Expression } from "../interfaces";
+import { Behavior } from "./behavior";
+import {
+    Observable,
+    GetterInspector,
+    inspectAndEvaluate,
+} from "../observation/observable";
 import { Subscriber } from "../observation/subscriber-collection";
+import { Directive } from "./directive";
 
-export class WhenDirective extends BindingDirective {
-    behavior = WhenBehavior;
+export class WhenDirective extends Directive {
+    createPlaceholder = DOM.createBlockPlaceholder;
 
-    constructor(public expression: Expression, public template: Template) {
-        super(expression);
+    constructor(public expression: Expression, public template: SyntheticViewTemplate) {
+        super();
     }
 
-    public createPlaceholder(index: number) {
-        return DOM.createLocationPlaceholder(index);
+    public createBehavior(target: any) {
+        return new WhenBehavior(target, this.expression, this.template);
     }
 }
 
 export class WhenBehavior implements Behavior, GetterInspector, Subscriber {
-    private location: Node;
     private view: SyntheticView | null = null;
     private cachedView?: SyntheticView;
     private source: unknown;
 
-    constructor(private directive: WhenDirective, marker: HTMLElement) {
-        this.location = DOM.convertMarkerToLocation(marker);
-    }
+    constructor(
+        private location: Node,
+        private expression: Expression,
+        private template: SyntheticViewTemplate
+    ) {}
 
     bind(source: unknown) {
         this.source = source;
-        this.updateTarget(this.directive.inspectAndEvaluate<boolean>(source, this));
+        this.updateTarget(
+            inspectAndEvaluate<boolean>(this.expression, source, null as any, this)
+        );
     }
 
     unbind() {
@@ -51,14 +58,12 @@ export class WhenBehavior implements Behavior, GetterInspector, Subscriber {
     }
 
     public call() {
-        this.updateTarget(this.directive.evaluate<boolean>(this.source));
+        this.updateTarget(this.expression(this.source, null as any));
     }
 
     updateTarget(show: boolean) {
         if (show && this.view == null) {
-            this.view =
-                this.cachedView ||
-                (this.cachedView = this.directive.template.create(true));
+            this.view = this.cachedView || (this.cachedView = this.template.create());
             this.view.bind(this.source);
             this.view.insertBefore(this.location);
         } else if (!show && this.view !== null) {
@@ -70,8 +75,8 @@ export class WhenBehavior implements Behavior, GetterInspector, Subscriber {
 }
 
 export function when<T = any, K = any>(
-    expression: Getter<T, K> | keyof T,
-    template: Template
+    expression: Expression<T, K>,
+    template: SyntheticViewTemplate
 ): CaptureType<T> {
-    return new WhenDirective(AccessScopeExpression.from(expression as any), template);
+    return new WhenDirective(expression, template);
 }

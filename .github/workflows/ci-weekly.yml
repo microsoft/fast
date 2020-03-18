@@ -1,0 +1,53 @@
+name: CI - Cross Platform Validation
+
+on:
+  schedule:
+  - cron: 0 7 * * 3 # Every Wednesday at 7am
+
+
+jobs:
+  build_windows:
+    name: Validate on Windows
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Install Lerna
+      run: npm i -g lerna
+
+    - name: Install package dependencies
+      run: yarn install --frozen-lockfile
+
+    - name: Build Yarn workspaces
+      run: lerna run prepare
+
+    - name: Ensure Prettier formatting
+      run: lerna run prettier:diff
+
+    - name: Execute unit tests
+      run: lerna run test --stream
+
+  
+  build_macos:
+    name: Validate on MacOS
+    
+    runs-on: macos-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Install Lerna
+      run: sudo yarn global add lerna@3.18.2  
+
+    - name: Install package dependencies
+      run: yarn install --frozen-lockfile
+
+    - name: Build Yarn workspaces
+      run: lerna run prepare
+
+    - name: Ensure Prettier formatting
+      run: lerna run prettier:diff
+
+    - name: Execute unit tests
+      run: lerna run test --stream

@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.4.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-figma-plugin-msft@0.4.0...@microsoft/fast-figma-plugin-msft@0.4.1) (2020-03-13)
+
+**Note:** Version bump only for package @microsoft/fast-figma-plugin-msft
+
+
+
+
+
+# [0.4.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-figma-plugin-msft@0.3.0...@microsoft/fast-figma-plugin-msft@0.4.0) (2020-02-28)
+
+
+### Features
+
+* adds general extensibility and component syncing ([#2666](https://github.com/Microsoft/fast-dna/issues/2666)) ([bf13b15](https://github.com/Microsoft/fast-dna/commit/bf13b15))
+
+
+
+
+
 # [0.3.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-figma-plugin-msft@0.2.2...@microsoft/fast-figma-plugin-msft@0.3.0) (2020-02-07)
 
 

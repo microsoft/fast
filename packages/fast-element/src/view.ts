@@ -1,9 +1,8 @@
-import { Behavior } from "./behaviors/behavior";
+import { Behavior } from "./directives/behavior";
 
 export interface View {
     bind(source: unknown): void;
     unbind(): void;
-    remove(): void;
 }
 
 export interface ElementView extends View {
@@ -14,27 +13,20 @@ export interface SyntheticView extends View {
     readonly firstChild: Node;
     readonly lastChild: Node;
     insertBefore(node: Node): void;
+    remove(): void;
 }
 
-export class HTMLView implements View, ElementView, SyntheticView {
-    private parent?: Node;
+export class HTMLView implements ElementView, SyntheticView {
     private source: any = void 0;
-    public firstChild!: Node;
-    public lastChild!: Node;
+    public firstChild: Node;
+    public lastChild: Node;
 
-    constructor(
-        private fragment: DocumentFragment,
-        private behaviors: Behavior[],
-        private isSynthetic: boolean = false
-    ) {
-        if (isSynthetic) {
-            this.firstChild = fragment.firstChild!;
-            this.lastChild = fragment.lastChild!;
-        }
+    constructor(private fragment: DocumentFragment, private behaviors: Behavior[]) {
+        this.firstChild = fragment.firstChild!;
+        this.lastChild = fragment.lastChild!;
     }
 
     public appendTo(node: Node) {
-        this.parent = node;
         node.appendChild(this.fragment);
     }
 
@@ -43,51 +35,36 @@ export class HTMLView implements View, ElementView, SyntheticView {
             node.parentNode!.insertBefore(this.fragment, node);
         } else {
             let parentNode = node.parentNode!;
-            let current: Node | null = this.firstChild!;
             const end = this.lastChild!;
+            let current = this.firstChild!;
             let next;
 
-            while (current) {
+            while (current !== end) {
                 next = current.nextSibling;
                 parentNode.insertBefore(current, node);
-
-                if (current === end) {
-                    break;
-                }
-
-                current = next;
+                current = next!;
             }
+
+            parentNode.insertBefore(end, node);
         }
     }
 
     public remove() {
-        if (this.isSynthetic) {
-            const fragment = this.fragment;
-            let current: Node | null = this.firstChild!;
-            const end = this.lastChild!;
-            let next;
+        const fragment = this.fragment;
+        const end = this.lastChild!;
+        let current = this.firstChild!;
+        let next;
 
-            while (current) {
-                next = current.nextSibling;
-                fragment.appendChild(current);
-
-                if (current === end) {
-                    break;
-                }
-
-                current = next;
-            }
-        } else {
-            const parent = this.parent!;
-            const fragment = this.fragment;
-
-            while (parent.hasChildNodes()) {
-                fragment.appendChild(parent.firstChild!);
-            }
+        while (current !== end) {
+            next = current.nextSibling;
+            fragment.appendChild(current);
+            current = next!;
         }
+
+        fragment.appendChild(end);
     }
 
-    bind(source: unknown) {
+    public bind(source: unknown) {
         if (this.source === source) {
             return;
         } else if (this.source !== void 0) {
@@ -101,7 +78,7 @@ export class HTMLView implements View, ElementView, SyntheticView {
         }
     }
 
-    unbind() {
+    public unbind() {
         if (this.source === void 0) {
             return;
         }

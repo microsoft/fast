@@ -51,13 +51,19 @@ export class DesignSystemProvider extends FastElement implements DesignSystemDat
     public backgroundColor: string = "#FFFFFF";
 
     @cssCustomProperty
+    public baseHeightMultiplier: number = 8;
+
+    @cssCustomProperty
+    public bodyFont: string = "Segoe UI, sans-serif";
+
+    @cssCustomProperty
     public cornerRadius: number = 2;
 
     @cssCustomProperty
     public disabledOpacity = 0.3;
 
     @cssCustomProperty
-    public density = 0.5;
+    public density = 0;
 
     @cssCustomProperty
     public designUnit = 4;

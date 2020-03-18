@@ -1,12 +1,12 @@
 import { customElement } from "@microsoft/fast-element";
 import { NameTag } from "./name-tag";
-import { NameTagTemplate } from "./name-tag.template";
-import { NameTagStyles } from "./name-tag.styles";
+import { NameTagTemplate as template } from "./name-tag.template";
+import { NameTagStyles as styles } from "./name-tag.styles";
 
 @customElement({
     name: "fast-name-tag",
-    template: NameTagTemplate,
-    dependencies: [NameTagStyles],
+    template,
+    styles,
 })
 export class FASTNameTag extends NameTag {}
 export * from "./name-tag.template";

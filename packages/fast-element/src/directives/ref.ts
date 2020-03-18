@@ -1,29 +1,17 @@
-import { Behavior } from "../behaviors/behavior";
-import { Directive } from "./directive";
+import { Behavior } from "./behavior";
+import { AttachedBehaviorDirective } from "./directive";
 import { CaptureType } from "../template";
 
-export class RefDirective extends Directive {
-    behavior = RefBinding;
-
-    constructor(public propertyName: string) {
-        super();
-    }
-
-    public createPlaceholder(index: number) {
-        return `ref="${super.createPlaceholder(index)}"`;
-    }
-}
-
-export class RefBinding implements Behavior {
-    constructor(private directive: RefDirective, private target: HTMLElement) {}
+export class RefBehavior implements Behavior {
+    constructor(private target: HTMLElement, private propertyName: string) {}
 
     bind(source: any) {
-        source[this.directive.propertyName] = this.target;
+        source[this.propertyName] = this.target;
     }
 
     unbind() {}
 }
 
 export function ref<T = any>(propertyName: keyof T & string): CaptureType<T> {
-    return new RefDirective(propertyName);
+    return new AttachedBehaviorDirective("ref", RefBehavior, propertyName);
 }

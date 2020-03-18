@@ -1,6 +1,10 @@
 import { css } from "@microsoft/fast-element";
 
 export const NameTagStyles = css`
+    :host([hidden]) {
+        display: none;
+    }
+
     :host {
         --depth: 4;
         display: block;

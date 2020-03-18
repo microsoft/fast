@@ -3,6 +3,27 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.28.4](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-styles-msft@4.28.3...@microsoft/fast-components-styles-msft@4.28.4) (2020-03-13)
+
+**Note:** Version bump only for package @microsoft/fast-components-styles-msft
+
+
+
+
+
+## [4.28.3](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-styles-msft@4.28.2...@microsoft/fast-components-styles-msft@4.28.3) (2020-02-28)
+
+
+### Bug Fixes
+
+* button anchors have no hover or active states ([#2698](https://github.com/Microsoft/fast-dna/issues/2698)) ([e2d1973](https://github.com/Microsoft/fast-dna/commit/e2d1973))
+* update high contrast link color value inside high contrast query ([#2673](https://github.com/Microsoft/fast-dna/issues/2673)) ([e131e69](https://github.com/Microsoft/fast-dna/commit/e131e69))
+* update sequence indicators to have visual focus styling ([#2686](https://github.com/Microsoft/fast-dna/issues/2686)) ([8e591cf](https://github.com/Microsoft/fast-dna/commit/8e591cf))
+
+
+
+
+
 ## [4.28.2](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-styles-msft@4.28.1...@microsoft/fast-components-styles-msft@4.28.2) (2020-02-07)
 
 

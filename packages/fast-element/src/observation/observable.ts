@@ -1,6 +1,7 @@
 import { Controller } from "../controller";
 import { FastElement } from "../fast-element";
 import { Notifier, PropertyChangeNotifier } from "./notifier";
+import { Expression, ExpressionContext } from "../interfaces";
 
 export interface GetterInspector {
     inspect(source: unknown, propertyName: string): void;
@@ -78,4 +79,16 @@ export const Observable = {
 
 export function observable($target: {}, $prop: string) {
     Observable.define($target, $prop);
+}
+
+export function inspectAndEvaluate<T = unknown>(
+    expression: Expression,
+    scope: unknown,
+    context: ExpressionContext,
+    inspector: GetterInspector
+): T {
+    Observable.setInspector(inspector);
+    const value = expression(scope, context);
+    Observable.clearInspector();
+    return value as T;
 }

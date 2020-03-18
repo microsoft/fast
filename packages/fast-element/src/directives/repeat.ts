@@ -1,41 +1,46 @@
-import { AccessScopeExpression, Expression, Getter } from "../expression";
-import { Template, CaptureType } from "../template";
-import { Behavior } from "../behaviors/behavior";
+import { Expression } from "../interfaces";
+import { SyntheticViewTemplate, CaptureType } from "../template";
+import { Behavior } from "./behavior";
 import { DOM } from "../dom";
-import { Observable, GetterInspector } from "../observation/observable";
-import { BindingDirective } from "./bind";
+import {
+    Observable,
+    GetterInspector,
+    inspectAndEvaluate,
+} from "../observation/observable";
 import { SyntheticView } from "../view";
 import { Subscriber } from "../observation/subscriber-collection";
 import { ArrayObserver, enableArrayObservation } from "../observation/array-observer";
 import { Splice } from "../observation/array-change-records";
+import { Directive } from "./directive";
 
-export class RepeatDirective extends BindingDirective {
-    behavior = RepeatBehavior;
+export class RepeatDirective extends Directive {
+    createPlaceholder = DOM.createBlockPlaceholder;
 
-    constructor(public expression: Expression, public template: Template) {
-        super(expression);
+    constructor(public expression: Expression, public template: SyntheticViewTemplate) {
+        super();
         enableArrayObservation();
     }
 
-    public createPlaceholder(index: number) {
-        return DOM.createLocationPlaceholder(index);
+    public createBehavior(target: any) {
+        return new RepeatBehavior(target, this.expression, this.template);
     }
 }
 
 export class RepeatBehavior implements Behavior, GetterInspector, Subscriber {
-    private location: Node;
     private source: unknown;
     private views: SyntheticView[] = [];
     private items: any[] | null = null;
     private observer?: ArrayObserver;
 
-    constructor(private directive: RepeatDirective, marker: HTMLElement) {
-        this.location = DOM.convertMarkerToLocation(marker);
-    }
+    constructor(
+        private location: Node,
+        private expression: Expression,
+        private template: SyntheticViewTemplate
+    ) {}
 
     bind(source: unknown) {
         this.source = source;
-        this.items = this.directive.inspectAndEvaluate(source, this);
+        this.items = inspectAndEvaluate(this.expression, source, null as any, this);
         this.checkCollectionObserver(false);
         this.refreshAllViews();
     }
@@ -54,7 +59,12 @@ export class RepeatBehavior implements Behavior, GetterInspector, Subscriber {
     handleChange(source: any, args: string | Splice[]): void {
         if (typeof args === "string") {
             this.source = source;
-            this.items = this.directive.inspectAndEvaluate(this.source, this);
+            this.items = inspectAndEvaluate(
+                this.expression,
+                this.source,
+                null as any,
+                this
+            );
             this.checkCollectionObserver(false);
             this.refreshAllViews();
         } else {
@@ -104,7 +114,7 @@ export class RepeatBehavior implements Behavior, GetterInspector, Subscriber {
         }
 
         const items = this.items!;
-        const template = this.directive.template;
+        const template = this.template;
 
         for (let i = 0, ii = splices.length; i < ii; ++i) {
             const splice = splices[i];
@@ -115,9 +125,7 @@ export class RepeatBehavior implements Behavior, GetterInspector, Subscriber {
                 const neighbor = views[addIndex];
                 const location = neighbor ? neighbor.firstChild : this.location;
                 const view =
-                    totalRemoved.length > 0
-                        ? totalRemoved.shift()!
-                        : template.create(true);
+                    totalRemoved.length > 0 ? totalRemoved.shift()! : template.create();
 
                 views.splice(addIndex, 0, view);
                 view.bind(items[addIndex]);
@@ -136,7 +144,7 @@ export class RepeatBehavior implements Behavior, GetterInspector, Subscriber {
         const items = this.items!;
         const views = this.views;
         const viewsLength = views.length;
-        const template = this.directive.template;
+        const template = this.template;
 
         let itemsLength = items.length;
         let i = 0;
@@ -145,7 +153,7 @@ export class RepeatBehavior implements Behavior, GetterInspector, Subscriber {
             if (i < viewsLength) {
                 views[i].bind(items[i]);
             } else {
-                const view = template.create(true);
+                const view = template.create();
                 view.bind(items[i]);
                 views.push(view);
                 view.insertBefore(this.location);
@@ -171,8 +179,8 @@ export class RepeatBehavior implements Behavior, GetterInspector, Subscriber {
 }
 
 export function repeat<T = any, K = any>(
-    expression: Getter<T, K[]> | keyof T,
-    template: Template
+    expression: Expression<T, K[]>,
+    template: SyntheticViewTemplate
 ): CaptureType<T> {
-    return new RepeatDirective(AccessScopeExpression.from(expression as any), template);
+    return new RepeatDirective(expression, template);
 }

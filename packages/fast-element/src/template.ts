@@ -1,58 +1,87 @@
-import { TemplateCompiler } from "./template-compiler";
-import { TargetedInstruction } from "./instructions";
-import { HTMLView, ElementView, SyntheticView } from "./view";
+import { compileTemplate } from "./template-compiler";
+import { HTMLView, ElementView, SyntheticView, View } from "./view";
 import { DOM } from "./dom";
-import { Behavior } from "./behaviors/behavior";
-import { Getter, AccessScopeExpression } from "./expression";
+import { Behavior, BehaviorFactory } from "./directives/behavior";
+import { Expression } from "./interfaces";
 import { Directive } from "./directives/directive";
-import { BindingDirective } from "./directives/bind";
+import { BindingDirective } from "./directives/binding";
 
-export interface Template {
-    create(synthetic: false): ElementView | null;
-    create(synthetic: true): SyntheticView;
+export interface ElementViewTemplate {
+    create(host: Element): ElementView;
 }
 
-export class HTMLTemplate extends Directive implements Template {
-    public behavior = HTMLTemplateBehavior;
+export interface SyntheticViewTemplate {
+    create(): SyntheticView;
+}
 
+export class HTMLTemplate extends Directive
+    implements ElementViewTemplate, SyntheticViewTemplate {
+    public createPlaceholder = DOM.createBlockPlaceholder;
+    private behaviorCount: number;
+    private hasHostBehaviors: boolean;
     constructor(
         private templateElement: HTMLTemplateElement,
-        private instructions: TargetedInstruction[]
+        private viewBehaviorFactories: BehaviorFactory[],
+        private hostBehaviorFactories: BehaviorFactory[]
     ) {
         super();
-
-        const fragment = templateElement.content;
-
-        if (DOM.isMarker(fragment.firstChild!)) {
-            fragment.insertBefore(DOM.createLocation(), fragment.firstChild);
-        }
+        this.behaviorCount =
+            this.viewBehaviorFactories.length + this.hostBehaviorFactories.length;
+        this.hasHostBehaviors = this.hostBehaviorFactories.length > 0;
     }
 
-    public create(synthetic: boolean) {
+    public create(host?: Element) {
         const fragment = this.templateElement.content.cloneNode(true) as DocumentFragment;
-        const targets = fragment.querySelectorAll(".fm");
-        const behaviors: Behavior[] = [];
+        const viewFactories = this.viewBehaviorFactories;
+        const behaviors = new Array<Behavior>(this.behaviorCount);
+        const walker = document.createTreeWalker(
+            fragment,
+            133, // element, text, comment
+            null,
+            false
+        );
 
-        for (let i = 0, ii = targets.length; i < ii; ++i) {
-            this.instructions[i].hydrate(targets[i], behaviors);
+        let targetIndex = 0;
+        let behaviorIndex = 0;
+        let node = walker.nextNode();
+
+        for (let ii = viewFactories.length; behaviorIndex < ii; ++behaviorIndex) {
+            const factory = viewFactories[behaviorIndex];
+            const factoryIndex = factory.targetIndex;
+
+            while (node !== null) {
+                if (targetIndex === factoryIndex) {
+                    behaviors[behaviorIndex] = factory.createBehavior(node);
+                    break;
+                } else {
+                    node = walker.nextNode();
+                    targetIndex++;
+                }
+            }
         }
 
-        return new HTMLView(fragment, behaviors, synthetic);
+        if (this.hasHostBehaviors) {
+            const hostFactories = this.hostBehaviorFactories;
+
+            for (let i = 0, ii = hostFactories.length; i < ii; ++i, ++behaviorIndex) {
+                behaviors[behaviorIndex] = hostFactories[i].createBehavior(host);
+            }
+        }
+
+        return new HTMLView(fragment, behaviors);
     }
 
-    public createPlaceholder(instructionIndex: number) {
-        return DOM.createLocationPlaceholder(instructionIndex);
+    public createBehavior(target: any) {
+        return new HTMLTemplateBehavior(this, target);
     }
 }
 
 export class HTMLTemplateBehavior implements Behavior {
-    private location: Node;
     private view: SyntheticView;
 
-    constructor(directive: Template, marker: HTMLElement) {
-        this.location = DOM.convertMarkerToLocation(marker);
-        this.view = directive.create(true);
-        this.view.insertBefore(this.location);
+    constructor(template: SyntheticViewTemplate, location: HTMLElement) {
+        this.view = template.create();
+        this.view.insertBefore(location);
     }
 
     bind(source: unknown) {
@@ -64,14 +93,8 @@ export class HTMLTemplateBehavior implements Behavior {
     }
 }
 
-export const noopTemplate: Template = {
-    create() {
-        return null as any;
-    },
-};
-
 export interface CaptureType<T> {}
-type TemplateValue<T> = Getter<T> | string | number | Directive | CaptureType<T>;
+type TemplateValue<T> = Expression<T> | string | number | Directive | CaptureType<T>;
 
 export function html<T = any>(
     strings: TemplateStringsArray,
@@ -85,7 +108,7 @@ export function html<T = any>(
         let value = values[i];
 
         if (typeof value === "function") {
-            value = new BindingDirective(new AccessScopeExpression(value as Getter));
+            value = new BindingDirective(value as Expression);
         }
 
         if (value instanceof Directive) {
@@ -98,5 +121,5 @@ export function html<T = any>(
 
     html += strings[strings.length - 1];
 
-    return TemplateCompiler.instance.compile(html, directives);
+    return compileTemplate(html, directives);
 }

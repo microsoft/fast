@@ -11,6 +11,10 @@
 ### Use Cases
 
 *Primary use cases for this component.*
+
+### Non-goals
+
+*A list of use cases, features, or functionality which are **not** goals for the component*
   
 ### Features
 
@@ -116,3 +120,7 @@
 ## Resources
 
 *Any related resource links such as web standards, discussion threads, diagrams, etc.*
+
+## Next Steps
+
+*What next steps, if any, are there? Is there some functionality that would be a nice-to-have or a common feature in other implementations that could be added but is not considered part of the MVP?*

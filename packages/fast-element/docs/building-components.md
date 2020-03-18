@@ -335,7 +335,7 @@ const template = html<FriendList>`
   <h1>Friends</h1>
 
   <form @submit=${x => x.addFriend()}>
-    <input type="text" value=${x => x.name} @input=${(x, c) => x.onNameChanged(c.event)}>
+    <input type="text" value=${x => x.name} @input=${(x, c) => x.handleNameInput(c.event)}>
     <button type="submit">Add Friend</button>
   </form>
   <ul>
@@ -362,7 +362,7 @@ export class FriendList extends FastElement {
     this.name = '';
   }
 
-  onNameChanged(event: Event) {
+  handleNameInput(event: Event) {
     this.name = (event.target! as HTMLInputElement).value;
   }
 }
@@ -399,7 +399,7 @@ const template = html<FriendList>`
   <h1>Friends</h1>
 
   <form @submit=${x => x.addFriend()}>
-    <input type="text" value=${x => x.name} @input=${(x, c) => x.onNameChanged(c.event)}>
+    <input type="text" value=${x => x.name} @input=${(x, c) => x.handleNameInput(c.event)}>
 
     ${when(x => x.name, html`
       <div>Next Name: ${nameTemplate}</div>
@@ -433,10 +433,42 @@ export class FriendList extends FastElement {
     this.name = '';
   }
 
-  onNameChanged(event: Event) {
+  handleNameInput(event: Event) {
     this.name = (event.target! as HTMLInputElement).value;
   }
 }
+```
+
+### Host Directives
+
+In all the examples above, our bindings and directives have only affected elements within the Shadow DOM of the component. However, sometimes you want to affect the host element itself, based on property state. For example, a progress component might want to write various `aria` attributes to the host, based on the progress state. In order to facilitate scenarios like this, you can use a `template` element as the root of your template, and it will represent the host element. Any attribute or directive you place on the `template` element will be applied to the host itself.
+
+**Example: Host Directive Template**
+
+```JavaScript
+const template = html<MyProgress>`
+  <template (Represents my-progress element)
+      role="progressbar"
+      $aria-valuenow={x => x.value}
+      $aria-valuemin={x => x.min}
+      $aria-valuemax={x => x.max}>
+    (template targeted at Shadow DOM here)
+  </template>
+`;
+```
+
+**Example: DOM with Host Directive Output**
+
+```HTML
+<my-progress
+    min="0"              (from user)
+    max="100"            (from user)
+    value="50"           (from user)
+    role="progressbar"   (from host directive)
+    aria-valuenow="50"   (from host directive)
+    aria-valuemin="0"    (from host directive)
+    aria-valuemax="100"  (from host directive)>
+</my-progress>
 ```
 
 ### Observables and Rendering
@@ -689,7 +721,7 @@ To get the fully composed event path from an event object, invoke the `composedP
 
 #### Custom Events
 
-In various scenarios, it may be appropriate for a custom element to publish its own element-specific events. To do this, create an instance of `CustomEvent` and use the `dispatchEvent` API on `FastElement`. Set the `bubbles: true` option if you want the event to bubble and `composed: true` if you want it to propagate outside of your Shadow DOM and be visible in the composed path.
+In various scenarios, it may be appropriate for a custom element to publish its own element-specific events. To do this, you can use the `$emit` helper on `FastElement`. It's a convenience method that creates an instance of `CustomEvent` and uses the `dispatchEvent` API on `FastElement` with the `bubbles: true` and `composed: true` options. It also ensures that the event is only emitted if the custom element is fully connected to the DOM. Here's an example:
 
 **Example: Custom Event Dispatch**
 
@@ -699,16 +731,12 @@ export class MyInput extends FastElement {
   @attr value: string = '';
 
   valueChanged() {
-    this.dispatchEvent(new CustomEvent('change', {
-      bubbles: true,
-      composed: true,
-      detail: this.value
-    }));
+    this.$emit('change', this.value);
   }
 }
 ```
 
-> **TIP:** When creating custom events, ensure that your event name is always lower-case, so that your Web Components stay compatible with various front-end frameworks that attach events through DOM binding patterns (the DOM is case insensitive).
+> **TIP:** When emitting custom events, ensure that your event name is always lower-case, so that your Web Components stay compatible with various front-end frameworks that attach events through DOM binding patterns (the DOM is case insensitive).
 
 ### Shadow DOM Configuration
 
@@ -744,7 +772,7 @@ export class NameTag extends FastElement {
 
 > **IMPORTANT:** If you choose to render to the Light DOM, you will not be able to compose content, use slots, or leverage encapsulated styles. Light DOM rendering is not recommended for re-usable components. It may have some limited use as the root component of a small app.
 
-In addition to the Shadow DOM mode, `shadowOptions` exposes all the options that can be set through the standard `attachShadow` API. This means that you can also use it to specify new options such as `delegatesFocus: true`.
+In addition to the Shadow DOM mode, `shadowOptions` exposes all the options that can be set through the standard `attachShadow` API. This means that you can also use it to specify new options such as `delegatesFocus: true`. You only need to specify options that are different from the defaults mentioned above.
 
 ## Defining CSS
 
@@ -824,20 +852,20 @@ const styles = css`
 @customElement({
   name: 'name-tag',
   template,
-  dependencies: [styles]
+  styles
 })
 export class NameTag extends FastElement {
   @attr greeting: string = 'Hello';
 }
 ```
 
-Using the `css` helper, we're able to create a `CSSRegistry`, which is a special type that `FastElement` understands. We add this registry to the element's `dependencies` array, indicating that the element is dependent on the CSS. Internally, the registry will leverage [Constructable Stylesheet Objects](https://wicg.github.io/construct-stylesheets/) and `ShadowRoot#adoptedStyleSheets` to efficiently re-use CSS across components. This means that even if we have 1k instances of our `name-tag` component, they will all share a single instance of the associated styles, allowing for reduced memory allocation and improved performance. Because the styles are associated with the `ShadowRoot`, they will also be encapsulated. This ensures that your styles don't affect other elements and other element styles don't affect your element.
+Using the `css` helper, we're able to create `ElementStyles`. We configure this with the element through the `styles` option of the decorator. Internally, `FastElement` will leverage [Constructable Stylesheet Objects](https://wicg.github.io/construct-stylesheets/) and `ShadowRoot#adoptedStyleSheets` to efficiently re-use CSS across components. This means that even if we have 1k instances of our `name-tag` component, they will all share a single instance of the associated styles, allowing for reduced memory allocation and improved performance. Because the styles are associated with the `ShadowRoot`, they will also be encapsulated. This ensures that your styles don't affect other elements and other element styles don't affect your element.
 
 > **NOTE:** We've used [CSS Custom Properties](https://developer.mozilla.org/en-US/docs/Web/CSS/--*) throughout our CSS as well as [CSS Calc](https://developer.mozilla.org/en-US/docs/Web/CSS/calc) in order to enable our component to be styled in basic ways by consumers. Additionally, consider adding [CSS Shadow Parts](https://developer.mozilla.org/en-US/docs/Web/CSS/::part) to your template, to enable even more powerful customization.
 
 ### Composing Styles
 
-One of the nice features of a `CSSRegistry` is that it can be composed with other registries. Imagine that we had a CSS normalize registry that we wanted to use in our `name-tag` component. We could compose that into our styles like this:
+One of the nice features of a `ElementStyles` is that it can be composed with other styles. Imagine that we had a CSS normalize that we wanted to use in our `name-tag` component. We could compose that into our styles like this:
 
 **Example: Composing CSS Registries**
 
@@ -861,7 +889,7 @@ const styles = css`
 `;
 ```
 
-Rather than simply concatenating CSS strings, the `css` helper understands that `normalize` is a registry and is able to re-use the same Constructable StyleSheet instance as any other component that uses `normalize`. 
+Rather than simply concatenating CSS strings, the `css` helper understands that `normalize` is `ElementStyles` and is able to re-use the same Constructable StyleSheet instance as any other component that uses `normalize`. 
 
 ### Shadow DOM Styling
 

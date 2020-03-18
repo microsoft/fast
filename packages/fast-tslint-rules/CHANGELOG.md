@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.1.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-tslint-rules@3.0.4...@microsoft/fast-tslint-rules@3.1.0) (2020-03-13)
+
+
+### Features
+
+* relax tslint rules to allow non-typed lambda functions and variable assignment ([0f6a2c5](https://github.com/Microsoft/fast-dna/commit/0f6a2c5))
+
+
+
+
+
 ## [3.0.4](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-tslint-rules@3.0.3...@microsoft/fast-tslint-rules@3.0.4) (2019-11-07)
 
 **Note:** Version bump only for package @microsoft/fast-tslint-rules

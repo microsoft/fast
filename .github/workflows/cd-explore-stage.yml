@@ -1,0 +1,49 @@
+name: CI Component Explorer
+
+on:
+  push:
+    branches:
+    - master
+
+jobs:
+  build_linux:
+    runs-on: ubuntu-latest
+
+    env:
+      AZURE_WEBAPP_NAME: fast-explore
+      AZURE_WEBAPP_PACKAGE_PATH: ./packages/fast-component-explorer/www
+      AZURE_WEBAPP_SLOT_NAME: stage
+
+    steps:
+    - name: Azure Login
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS_FAST_DESIGN }}
+
+    - name: Checkout Branch
+      uses: actions/checkout@master
+
+    - name: Install Lerna
+      run: sudo yarn global add lerna
+
+    - name: Install package dependencies
+      run: yarn install --frozen-lockfile
+
+    - name: Prepare Yarn workspaces
+      run: lerna run prepare
+    
+    - name: Build Web Application
+      run: | 
+        cd packages/fast-component-explorer
+        yarn build:app
+
+    - name: 'Deploy to Azure'
+      uses: azure/webapps-deploy@v2
+      with:
+        app-name: ${{ env.AZURE_WEBAPP_NAME }}
+        package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+        slot-name: ${{ env.AZURE_WEBAPP_SLOT_NAME }}
+
+    - name: Azure Logout
+      run: |
+        az logout
