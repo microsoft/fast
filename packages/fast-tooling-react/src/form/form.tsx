@@ -164,7 +164,10 @@ class Form extends React.Component<
                     navigation: e.data.navigation,
                     navigationDictionary: e.data.navigationDictionary,
                     validationErrors: getValidationErrors(
-                        this.state.schema,
+                        this.state.schemaDictionary[
+                            e.data.dataDictionary[0][this.state.activeDictionaryId]
+                                .schemaId
+                        ],
                         this.getDataForValidation(this.props, e.data.data)
                     ),
                 });
