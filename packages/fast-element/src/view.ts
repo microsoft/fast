@@ -99,6 +99,10 @@ export class HTMLView implements ElementView, SyntheticView {
     }
 
     public static disposeContiguousBatch(views: SyntheticView[]) {
+        if (views.length === 0) {
+            return;
+        }
+
         range.setStart(views[0].firstChild, 0);
         range.setEnd(views[views.length - 1].lastChild, 0);
         range.deleteContents();
