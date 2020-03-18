@@ -1,24 +1,20 @@
-import { html } from "@microsoft/fast-element";
-import { DesignSystemProvider } from "./design-system-provider";
 import {
     accentFill,
-    accentFillLargeRest,
-    accentFillRest,
+    accentFillLarge,
     accentForeground,
     accentForegroundCut,
-    accentForegroundCutLarge,
-    accentForegroundLargeRest,
-    accentForegroundRest,
-    DesignSystemResolver,
+    accentForegroundLarge,
+    neutralDividerRest,
+    neutralFill,
     neutralFillCard,
-    neutralFillInputRest,
-    neutralFillRest,
-    neutralFillStealthRest,
-    neutralFillToggleRest,
+    neutralFillInput,
+    neutralFillStealth,
+    neutralFillToggle,
     neutralFocus,
+    neutralFocusInnerAccent,
+    neutralForeground,
     neutralForegroundHint,
     neutralForegroundHintLarge,
-    neutralForeground,
     neutralForegroundToggle,
     neutralForegroundToggleLarge,
     neutralLayerCard,
@@ -29,17 +25,10 @@ import {
     neutralLayerL2,
     neutralLayerL3,
     neutralLayerL4,
-    neutralOutlineRest,
-    accentForegroundLarge,
-    neutralFill,
-    neutralFillStealth,
-    neutralFillToggle,
-    neutralFillInput,
-    accentFillLarge,
     neutralOutline,
-    neutralDividerRest,
-    neutralFocusInnerAccent,
 } from "@microsoft/fast-components-styles-msft";
+import { html } from "@microsoft/fast-element";
+import { DesignSystemProvider } from "./design-system-provider";
 
 export const DesignSystemProviderTemplate = html<DesignSystemProvider>`
   <template style="

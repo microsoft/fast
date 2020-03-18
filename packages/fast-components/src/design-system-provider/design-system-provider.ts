@@ -1,10 +1,10 @@
-import { FastElement, observable, Observable } from "@microsoft/fast-element";
+import { parseColorHexRGB } from "@microsoft/fast-colors";
 import {
+    createColorPalette,
     DesignSystem,
     DesignSystemDefaults,
-    createColorPalette,
 } from "@microsoft/fast-components-styles-msft";
-import { parseColorHexRGB } from "@microsoft/fast-colors";
+import { FastElement, observable, Observable } from "@microsoft/fast-element";
 
 /**
  * The following interface is an implementation of
