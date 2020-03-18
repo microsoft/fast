@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.25.2](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-base@4.25.1...@microsoft/fast-components-react-base@4.25.2) (2020-03-18)
+
+
+### Bug Fixes
+
+* ensure null values are removed from tabs ([#2805](https://github.com/Microsoft/fast-dna/issues/2805)) ([5c032d0](https://github.com/Microsoft/fast-dna/commit/5c032d0))
+* update horizontal overflow to properly initialize flipper hydration ([#2801](https://github.com/Microsoft/fast-dna/issues/2801)) ([4b427bd](https://github.com/Microsoft/fast-dna/commit/4b427bd))
+
+
+
+
+
 ## [4.25.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-base@4.25.0...@microsoft/fast-components-react-base@4.25.1) (2020-03-13)
 
 

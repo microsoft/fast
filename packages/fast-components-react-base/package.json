@@ -2,7 +2,7 @@
   "name": "@microsoft/fast-components-react-base",
   "description": "FAST base components implemented in React.",
   "sideEffects": false,
-  "version": "4.25.1",
+  "version": "4.25.2",
   "author": {
     "name": "Microsoft",
     "url": "https://discord.gg/FcSNfg4"
@@ -115,8 +115,8 @@
   "dependencies": {
     "@microsoft/fast-components-class-name-contracts-base": "^4.6.2",
     "@microsoft/fast-components-foundation-react": "^3.1.4",
-    "@microsoft/fast-web-utilities": "^4.4.1",
     "@microsoft/fast-react-utilities": "^1.1.1",
+    "@microsoft/fast-web-utilities": "^4.4.1",
     "exenv-es6": "^1.0.0",
     "raf-throttle": "^2.0.3",
     "tabbable": "^4.0.0",
