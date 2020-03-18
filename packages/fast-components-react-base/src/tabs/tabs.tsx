@@ -411,7 +411,9 @@ class Tabs extends Foundation<TabsHandledProps, TabsUnhandledProps, TabsState> {
         children: React.ReactNode,
         slot: TabsSlot | string
     ): React.ReactNode {
-        const childBySlot: React.ReactNode = this.withSlot(slot, children);
+        const childBySlot: React.ReactNode = this.filterChildren(
+            this.withSlot(slot, children)
+        );
 
         return slot !== this.getSlot(TabsSlot.tabItem)
             ? childBySlot
@@ -421,6 +423,17 @@ class Tabs extends Foundation<TabsHandledProps, TabsUnhandledProps, TabsState> {
                       return this.isValidTabItem(node) ? node : null;
                   }
               );
+    }
+
+    /**
+     * Need to filter out none truthy results for Preact.
+     * Can remove if below gets merged in.
+     * https://github.com/preactjs/preact-compat/pull/461
+     */
+    private filterChildren(nodes: any): React.ReactNode {
+        if (this.props.children || this.props.items) {
+            return nodes.filter(Boolean);
+        }
     }
 
     /**
