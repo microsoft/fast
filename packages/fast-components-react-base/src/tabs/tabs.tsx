@@ -431,9 +431,11 @@ class Tabs extends Foundation<TabsHandledProps, TabsUnhandledProps, TabsState> {
      * Can remove if below gets merged in.
      * https://github.com/preactjs/preact-compat/pull/461
      */
-    private filterChildren(nodes: any): React.ReactNode {
-        if (!isNil(nodes)) {
+    private filterChildren(nodes: React.ReactNode): React.ReactNode {
+        if (Array.isArray(nodes)) {
             return nodes.filter(Boolean);
+        } else {
+            return undefined;
         }
     }
 
