@@ -202,6 +202,10 @@ class HorizontalOverflow extends Foundation<
             });
         }
 
+        if (this.overflow !== this.isOverflow()) {
+            this.handleOverflowChange();
+        }
+
         if (canUseDOM() && this.horizontalOverflowItemsRef.current) {
             this.updateDirection();
             this.lastRecordedScroll = this.getScrollPosition();
