@@ -39,8 +39,8 @@
     "typescript": "^3.7.5"
   },
   "dependencies": {
-    "@microsoft/fast-colors": "^5.0.2",
-    "@microsoft/fast-components-styles-msft": "^4.28.3",
+    "@microsoft/fast-colors": "^5.0.3",
+    "@microsoft/fast-components-styles-msft": "^4.28.4",
     "@microsoft/fast-element": "^0.2.1",
     "@microsoft/fast-web-utilities": "^4.4.1",
     "tabbable": "^4.0.0"
