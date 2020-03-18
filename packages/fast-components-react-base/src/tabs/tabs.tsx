@@ -435,7 +435,7 @@ class Tabs extends Foundation<TabsHandledProps, TabsUnhandledProps, TabsState> {
         if (Array.isArray(nodes)) {
             return nodes.filter(Boolean);
         } else {
-            return undefined;
+            return nodes;
         }
     }
 
