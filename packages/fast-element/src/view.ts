@@ -14,7 +14,10 @@ export interface SyntheticView extends View {
     readonly lastChild: Node;
     insertBefore(node: Node): void;
     remove(): void;
+    dispose(): void;
 }
+
+const range = document.createRange();
 
 export class HTMLView implements ElementView, SyntheticView {
     private source: any = void 0;
@@ -50,18 +53,21 @@ export class HTMLView implements ElementView, SyntheticView {
     }
 
     public remove() {
-        const fragment = this.fragment;
-        const end = this.lastChild!;
-        let current = this.firstChild!;
-        let next;
+        range.setStart(this.firstChild, 0);
+        range.setEnd(this.lastChild, 0);
+        this.fragment = range.extractContents();
+    }
 
-        while (current !== end) {
-            next = current.nextSibling;
-            fragment.appendChild(current);
-            current = next!;
+    public dispose() {
+        range.setStart(this.firstChild, 0);
+        range.setEnd(this.lastChild, 0);
+        range.deleteContents();
+
+        const behaviors = this.behaviors;
+
+        for (let i = 0, ii = behaviors.length; i < ii; ++i) {
+            behaviors[i].unbind();
         }
-
-        fragment.appendChild(end);
     }
 
     public bind(source: unknown) {
@@ -90,5 +96,19 @@ export class HTMLView implements ElementView, SyntheticView {
         }
 
         this.source = void 0;
+    }
+
+    public static disposeContiguousBatch(views: SyntheticView[]) {
+        range.setStart(views[0].firstChild, 0);
+        range.setEnd(views[views.length - 1].lastChild, 0);
+        range.deleteContents();
+
+        for (let i = 0, ii = views.length; i < ii; ++i) {
+            const behaviors = (views[i] as any).behaviors as Behavior[];
+
+            for (let j = 0, jj = behaviors.length; j < jj; ++j) {
+                behaviors[j].unbind();
+            }
+        }
     }
 }
