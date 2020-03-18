@@ -26,11 +26,8 @@ jobs:
     - name: Install Lerna
       run: sudo yarn global add lerna
 
-    - name: Install package dependencies
+    - name: Install package dependencies / prepare workspaces
       run: yarn install --frozen-lockfile
-
-    - name: Prepare Yarn workspaces
-      run: lerna run prepare
     
     - name: Build Web Application
       run: | 
