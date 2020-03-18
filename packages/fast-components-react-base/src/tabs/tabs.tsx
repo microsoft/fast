@@ -14,6 +14,7 @@ import React from "react";
 import { DisplayNamePrefix } from "../utilities";
 import Tab, { TabManagedClasses } from "./tab";
 import TabItem from "./tab-item";
+import { isNil } from "lodash-es";
 import TabPanel, { TabPanelManagedClasses } from "./tab-panel";
 import { TabsHandledProps, TabsItem, TabsProps, TabsUnhandledProps } from "./tabs.props";
 
@@ -431,7 +432,7 @@ class Tabs extends Foundation<TabsHandledProps, TabsUnhandledProps, TabsState> {
      * https://github.com/preactjs/preact-compat/pull/461
      */
     private filterChildren(nodes: any): React.ReactNode {
-        if (this.props.children || this.props.items) {
+        if (!isNil(nodes)) {
             return nodes.filter(Boolean);
         }
     }
