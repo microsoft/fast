@@ -7,7 +7,7 @@ import {
     GetterInspector,
     inspectAndEvaluate,
 } from "../observation/observable";
-import { SyntheticView } from "../view";
+import { SyntheticView, HTMLView } from "../view";
 import { Subscriber } from "../observation/subscriber-collection";
 import { ArrayObserver, enableArrayObservation } from "../observation/array-observer";
 import { Splice } from "../observation/array-change-records";
@@ -134,38 +134,52 @@ export class RepeatBehavior implements Behavior, GetterInspector, Subscriber {
         }
 
         for (let i = 0, ii = totalRemoved.length; i < ii; ++i) {
-            const view = totalRemoved[i];
-            view.remove();
-            view.unbind();
+            totalRemoved[i].dispose();
         }
     }
 
     private refreshAllViews() {
         const items = this.items!;
-        const views = this.views;
+        let itemsLength = items.length;
+        let views = this.views;
         const viewsLength = views.length;
         const template = this.template;
+        const location = this.location;
 
-        let itemsLength = items.length;
-        let i = 0;
+        if (itemsLength === 0) {
+            // all views need to be removed
+            HTMLView.disposeContiguousBatch(this.views);
+            this.views = [];
+        } else if (viewsLength === 0) {
+            // all views need to be created
+            this.views = views = new Array(itemsLength);
 
-        for (; i < itemsLength; ++i) {
-            if (i < viewsLength) {
-                views[i].bind(items[i]);
-            } else {
+            for (let i = 0; i < itemsLength; ++i) {
                 const view = template.create();
                 view.bind(items[i]);
-                views.push(view);
-                view.insertBefore(this.location);
+                views[i] = view;
+                view.insertBefore(location);
             }
-        }
+        } else {
+            // attempt to reuse existing views with new data
+            let i = 0;
 
-        const removed = views.splice(i, viewsLength - i);
+            for (; i < itemsLength; ++i) {
+                if (i < viewsLength) {
+                    views[i].bind(items[i]);
+                } else {
+                    const view = template.create();
+                    view.bind(items[i]);
+                    views.push(view);
+                    view.insertBefore(location);
+                }
+            }
 
-        for (i = 0, itemsLength = removed.length; i < itemsLength; ++i) {
-            const view = removed[i];
-            view.remove();
-            view.unbind();
+            const removed = views.splice(i, viewsLength - i);
+
+            for (i = 0, itemsLength = removed.length; i < itemsLength; ++i) {
+                removed[i].dispose();
+            }
         }
     }
 
