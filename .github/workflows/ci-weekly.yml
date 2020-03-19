@@ -1,4 +1,4 @@
-name: CI - Cross Platform Validation
+name: CI - FAST Validation
 
 on:
   schedule:

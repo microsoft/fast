@@ -1,4 +1,4 @@
-name: CI Component Explorer
+name: CD - Component Explorer
 
 on:
   push:

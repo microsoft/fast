@@ -1,4 +1,4 @@
-name: FAST Workflows
+name: CI - FAST
 
 on:
   push: 
