@@ -1,5 +1,15 @@
 import { attr, FastElement, observable } from "@microsoft/fast-element";
 import { bool } from "../utilities";
+import {
+    keyCodeArrowLeft,
+    keyCodeArrowRight,
+    keyCodeArrowDown,
+    keyCodeArrowUp,
+    keyCodeEnter,
+    keyCodeSpace,
+    isHTMLElement,
+    getDisplayedNodes,
+} from "@microsoft/fast-web-utilities";
 
 export class TreeItem extends FastElement {
     @attr
@@ -17,6 +27,7 @@ export class TreeItem extends FastElement {
 
     public treeItem: HTMLDivElement;
 
+    @observable
     public focusable: boolean = false;
 
     public afterContent: HTMLSlotElement;
@@ -69,23 +80,145 @@ export class TreeItem extends FastElement {
         }
     }
 
-    public handleFocus = (): void => {
-        return;
+    public handleFocus = (e: Event): void => {
+        if (e.target === e.currentTarget) {
+            this.focusable = true;
+        }
     };
 
-    public handleBlur = (): void => {
-        return;
+    public handleBlur = (e: FocusEvent): void => {
+        if (e.target !== e.currentTarget) {
+            return;
+        }
+
+        this.focusable = false;
     };
 
-    public handleKeyDown = (): void => {
-        return;
+    public handleKeyDown = (e: KeyboardEvent): void => {
+        if (e.target !== e.currentTarget) {
+            return;
+        }
+
+        switch (e.keyCode) {
+            case keyCodeArrowLeft:
+                this.handleArrowLeft();
+                break;
+            case keyCodeArrowRight:
+                this.handleArrowRight();
+                break;
+            case keyCodeArrowDown:
+                // preventDefault to ensure we don't scroll the page
+                e.preventDefault();
+                this.focusNextNode(1);
+                break;
+            case keyCodeArrowUp:
+                // preventDefault to ensure we don't scroll the page
+                e.preventDefault();
+                this.focusNextNode(-1);
+                break;
+            case keyCodeEnter:
+                this.handleSelected(e);
+                break;
+            case keyCodeSpace:
+                this.handleSpaceBar();
+                break;
+        }
     };
 
     public handleExpandCollapseButtonClick = (): void => {
-        return;
+        this.setExpanded(!this.expanded);
     };
 
-    public handleContainerClick = (): void => {
-        return;
+    public handleContainerClick = (e: MouseEvent): void => {
+        const expandButton: HTMLElement | null = this.expandCollapseButton;
+
+        if (
+            !isHTMLElement(expandButton) ||
+            (isHTMLElement(expandButton) && expandButton !== e.target)
+        ) {
+            this.handleSelected(e);
+        }
     };
+
+    private handleArrowLeft(): void {
+        if (this.expanded) {
+            this.setExpanded(false);
+        } else if (isHTMLElement(this.treeItem.parentElement)) {
+            const parentElement: HTMLElement | null = this.treeItem.parentElement;
+
+            if (isHTMLElement(parentElement)) {
+                const parentNode: Element | null | undefined = parentElement!.closest(
+                    "[role='treeitem']"
+                );
+
+                if (isHTMLElement(parentNode)) {
+                    (parentNode as HTMLElement).focus();
+                }
+            }
+        }
+    }
+
+    private handleArrowRight(): void {
+        if (typeof this.expanded !== "boolean") {
+            return;
+        }
+
+        if (this.expanded) {
+            this.setExpanded(true);
+        } else {
+            this.focusNextNode(1);
+        }
+    }
+
+    private handleSpaceBar(): void {
+        if (typeof this.expanded !== "boolean") {
+            return;
+        }
+
+        this.setExpanded(!this.expanded);
+    }
+
+    private focusNextNode(delta: number): void {
+        const visibleNodes: HTMLElement[] | void = this.getVisibleNodes();
+
+        if (!visibleNodes) {
+            return;
+        }
+
+        const currentIndex: number = visibleNodes.indexOf(this.treeItem);
+
+        if (currentIndex !== -1) {
+            const nextElement: HTMLElement = visibleNodes[currentIndex + delta];
+
+            if (isHTMLElement(nextElement)) {
+                nextElement.focus();
+            }
+        }
+    }
+
+    private getVisibleNodes(): HTMLElement[] | void {
+        return getDisplayedNodes(this.getTreeRoot(), "[role='treeitem']");
+    }
+
+    private getTreeRoot(): HTMLElement | null {
+        const currentNode: HTMLElement = this.treeItem;
+
+        if (!isHTMLElement(currentNode)) {
+            return null;
+        }
+
+        return currentNode.closest("[role='tree']") as HTMLElement;
+    }
+
+    private handleSelected(e?: Event): void {
+        this.$emit("selected-change", e);
+    }
+
+    private setExpanded(expanded: boolean): void {
+        if (this.hasItems) {
+            this.expanded = expanded;
+
+            this.$emit("expanded-change", this);
+        }
+    }
 }

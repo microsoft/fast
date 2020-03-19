@@ -4,19 +4,19 @@ import { TreeItem } from "./tree-item";
 
 export const TreeItemTemplate = html<TreeItem>`
 <template
-    role="treeitem"
+    $role="treeitem"
     $aria-expanded="${x => (x.hasItems ? bool(x.expanded) : void 0)}"
     $aria-selected="${x => bool(x.selected)}"
     tabindex="${x => (x.focusable ? 0 : -1) /* need to manage focus here */}"
-    @focus=${(x, c) => x.handleFocus}
-    @blur=${(x, c) => x.handleBlur}
-    @keydown=${(x, c) => x.handleKeyDown}
+    @focus=${(x, c) => x.handleFocus(c.event as FocusEvent)}
+    @blur=${(x, c) => x.handleBlur(c.event as FocusEvent)}
+    @keydown=${(x, c) => x.handleKeyDown(c.event as KeyboardEvent)}
     ${ref("treeItem")}
 >
     <div
         class="positioning-region"
         part="positioning-region"
-        @click="${(x, c) => x.handleContainerClick}"
+        @click="${(x, c) => x.handleContainerClick(c.event as MouseEvent)}"
     >
         <div
             class="content-region"
@@ -29,7 +29,7 @@ export const TreeItemTemplate = html<TreeItem>`
                     aria-hidden="true"
                     class="expand-collapse-button"
                     part="expand-collapse-button"
-                    @click="${x => x.handleExpandCollapseButtonClick}"
+                    @click="${x => x.handleExpandCollapseButtonClick()}"
                     ${ref("expandCollapseButton")}
                 >
                     <slot name="expand-collapse-glyph">
