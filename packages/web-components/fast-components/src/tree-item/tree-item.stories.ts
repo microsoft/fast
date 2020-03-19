@@ -7,7 +7,7 @@ FASTTreeItem;
 FASTDesignSystemProvider;
 
 export default {
-    title: "TreeItem",
+    title: "Tree item",
 };
 
 export const TreeItem = () => TreeItemTemplate;
