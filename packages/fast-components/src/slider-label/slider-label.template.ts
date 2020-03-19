@@ -1,4 +1,5 @@
 import { html, when } from "@microsoft/fast-element";
+import { bool } from "../utilities";
 import { SliderLabel } from "./slider-label";
 
 export const SliderLabelTemplate = html<SliderLabel>`
@@ -9,17 +10,19 @@ export const SliderLabelTemplate = html<SliderLabel>`
     >
         <div class="sliderLabel-container">
             ${when(
-                x => x.showMark,
+                x => bool(x.showMark),
                 html`
                 <div class="sliderLabel-mark">
                 </div>    
             `
             )}
-            <slot name="label">
-                <span class="sliderLabel-label"}>
-                ${x => x.label}
-                </span>
-            </slot>
+            <div class="sliderLabel-labelPositioner">
+                <slot name="label">
+                    <span class="sliderLabel-label"}>
+                    ${x => x.label}
+                    </span>
+                </slot>
+            </div>
         </div>
     </div>
 `;

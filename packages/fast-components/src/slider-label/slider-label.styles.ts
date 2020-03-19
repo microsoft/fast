@@ -18,6 +18,11 @@ export const SliderLabelStyles = css`
         width: 18px;
         justify-self: center;
     }
+    .sliderLabel-labelPositioner {
+        justify-self: center;
+        width: 18px;
+        margin: 2px 0;
+    }
     .sliderLabel-mark {
         width: 2px;
         height: 8px;

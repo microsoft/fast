@@ -1,6 +1,8 @@
 import { css } from "@microsoft/fast-element";
 
 export const SliderStyles = css`
+    --thumbSize: 16px;
+    --trackOffset: 12px;
     :host([hidden]) {
         display: none;
     }
