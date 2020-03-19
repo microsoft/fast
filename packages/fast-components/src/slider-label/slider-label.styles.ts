@@ -26,7 +26,7 @@ export const SliderLabelStyles = css`
     .sliderLabel-mark {
         width: 2px;
         height: 8px;
-        background: #bebebe;
+        background: var(--neutral-outline-rest);
         justify-self: center;
     }
 `;

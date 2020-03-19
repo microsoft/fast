@@ -1,8 +1,12 @@
 import { css } from "@microsoft/fast-element";
 
 export const SliderStyles = css`
-    --thumbSize: 16px;
-    --trackOffset: 12px;
+    :host {
+        --thumb-size: calc(var(--height-number) * 0.5);
+        --thumb-translate: calc(var(--thumb-size) * 0.5);
+        --track-offset: 12;
+        display: block;
+    }
     :host([hidden]) {
         display: none;
     }
@@ -11,12 +15,11 @@ export const SliderStyles = css`
         margin: 40px 4px;
         box-sizing: border-box;
         border-radius: calc(var(--corner-radius) * 1px);
-        background: white;
         outline: none;
         cursor: pointer;
     }
     .background-track {
-        background: #bebebe;
+        background: var(--neutral-outline-rest);
         position: absolute;
         right: -2px;
         left: -2px;
@@ -35,22 +38,23 @@ export const SliderStyles = css`
     .thumb-container {
         position: absolute;
         right: 50%;
-        height: 16px;
-        width: 16px;
+        height: calc(var(--thumb-size) * 1px);
+        width: calc(var(--thumb-size) * 1px);
+        transform: translateX(calc(var(--thumb-translate) * 1px));
     }
     .thumb-cursor {
         border: none;
-        width: 16px;
-        height: 16px;
+        width: calc(var(--thumb-size) * 1px);
+        height: calc(var(--thumb-size) * 1px);
         position: relative;
-        background: #2b2b2b;
+        background: var(--neutral-foreground-rest);
         border-radius: 50%;
         transition: "all 0.2s ease";
         "&:hover": {
-            background: red;
+            background: var(--neutral-foreground-hover);
         }
         "&:active": {
-            background: green;
+            background: var(--neutral-foreground-active);
         }
     }
 `;
