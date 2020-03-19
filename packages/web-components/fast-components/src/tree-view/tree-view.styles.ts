@@ -6,7 +6,6 @@ export const TreeViewStyles = css`
     }
 
     :host {
-        --depth: 4;
         display: flex;
         flex-direction: column;
         align-items: stretch;

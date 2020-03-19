@@ -1,4 +1,4 @@
-import { attr, FastElement } from "@microsoft/fast-element";
+import { attr, FastElement, observable } from "@microsoft/fast-element";
 import { bool } from "../utilities";
 
 export class TreeItem extends FastElement {
@@ -35,18 +35,38 @@ export class TreeItem extends FastElement {
             : this.beforeContentContainer.classList.remove("before-content");
     }
 
+    @observable
     public hasItems: boolean;
 
     public items: HTMLSlotElement;
     public handleItemsChange(): void {
-        this.hasItems = this.items.assignedNodes().length > 0;
+        // we only want to project the slot of there will be items
+        this.hasItems = this.querySelectorAll("[slot='item']").length > 0;
+
+        if (this.hasItems) {
+            this.nested = true;
+        }
     }
 
     // need to manage if this is a nested tree view item / items How???
-    @attr
+    @observable
     private nested: boolean;
-    private nestedChange(): void {
+    private nestedChanged(): void {
         this.nested ? this.classList.add("nested") : this.classList.remove("nested");
+    }
+
+    constructor() {
+        super();
+
+        this.handleItemsChange();
+    }
+
+    public connectedCallback(): void {
+        super.connectedCallback();
+
+        if (this.hasItems) {
+            this.nested = true;
+        }
     }
 
     public handleFocus = (): void => {

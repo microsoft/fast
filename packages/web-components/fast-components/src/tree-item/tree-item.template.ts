@@ -22,15 +22,28 @@ export const TreeItemTemplate = html<TreeItem>`
             class="content-region"
             part="content-region"
         >
-            <div
-                aria-hidden="true"
-                class="expand-collapse-button"
-                part="expand-collapse-button"
-                @click="${x => x.handleExpandCollapseButtonClick}"
-                ${ref("expandCollapseButton")}
-            >
-                <slot name="expand-collapse-glyph"></slot>
-            </div>
+            ${when(
+                x => !!x.hasItems,
+                html<TreeItem>`
+                <div
+                    aria-hidden="true"
+                    class="expand-collapse-button"
+                    part="expand-collapse-button"
+                    @click="${x => x.handleExpandCollapseButtonClick}"
+                    ${ref("expandCollapseButton")}
+                >
+                    <slot name="expand-collapse-glyph">
+                        <svg
+                            viewBox="0 0 16 16"
+                            xmlns="http://www.w3.org/2000/svg"
+                            class="expand-collapse-glyph"
+                        >
+                            <path d="M4.29 12L12 4.29V12H4.29z" />
+                        </svg>
+                    </slot>
+                </div>
+                `
+            )}
             <span
                 part="before-content"
                 ${ref("beforeContentContainer")}
@@ -55,7 +68,7 @@ export const TreeItemTemplate = html<TreeItem>`
         </div>
     </div>
     ${when(
-        x => x.hasItems,
+        x => !!x.hasItems,
         html<TreeItem>`
             <div
                 role="group"

@@ -8,6 +8,12 @@ export const TreeItemStyles = css`
         color: var(--neutral-foreground-rest);
         background: var(--neutral-fill-stealth-rest);
         cursor: pointer;
+        --expand-collapse-button-size: calc(var(--height-number) * 1px);
+        --tree-item-nested-width: 0;
+    }
+
+    :host(:focus) {
+        outline: none;
     }
 
     host:focus-visible > .positioning-region {
@@ -26,7 +32,7 @@ export const TreeItemStyles = css`
     .positioning-region::before {
         content: "";
         display: block;
-        width: 0;
+        width: var(--tree-item-nested-width);
         flex-shrink: 0;
     }
 
@@ -55,16 +61,12 @@ export const TreeItemStyles = css`
             update when density story is figured out */ ""} font-size: calc(1em + 20px);
     }
 
-    .items .positioning-region::before {
-        width: 1em;
-    }
-
     .expand-collapse-button {
         background: none;
         border: none;
         outline: none;
         ${/* Width and Height should be based off calc(glyph-size-number + (design-unit * 4) * 1px) - 
-            update when density story is figured out */ ""} width: var(--expand-collapse-button-size, var(--height-number * 1px));
+            update when density story is figured out */ ""} width: var(--expand-collapse-button-size);
         height: var(--expand-collapse-button-size);
         padding: 0;
         display: flex;
@@ -125,13 +127,18 @@ export const TreeItemStyles = css`
         border-radius: calc(var(--corner-radius) * 1px);
     }
 
-    :host([nested]) .content-region {
+    :host(.nested) .content-region {
         position: relative;
         margin-inline-start: var(--expand-collapse-button-size);
     }
 
-    :host([nested]) .expand-collapse-button {
+    :host(.nested) .expand-collapse-button {
         position: absolute;
-        ${/* value needs to be localized */ ""} left: calc(var(--expand-collapse-button-size) * -1px);
+        ${/* value needs to be localized */ ""} left: var(--expand-collapse-button-nested-width, calc(var(--height-number) * -1px));
+    }
+
+    ::slotted(fast-tree-item) {
+        --tree-item-nested-width: 1em;
+        --expand-collapse-button-nested-width: calc(var(--height-number) * -1px);
     }
 `;
