@@ -6,6 +6,8 @@ export enum BadgeSize {
     large = "large",
 }
 
+let lastBadgeSize: string;
+
 export class Badge extends FastElement {
     @attr({ attribute: "fill" })
     public fill: string;
@@ -19,19 +21,23 @@ export class Badge extends FastElement {
     @attr
     public size: BadgeSize;
     private sizeChanged(): void {
-        this.classList.remove(this.size);
+        this.classList.remove(lastBadgeSize);
         switch (this.size) {
             case BadgeSize.small:
-                this.classList.add("small");
+                this.classList.add(BadgeSize.small);
+                lastBadgeSize = BadgeSize.small;
                 break;
             case BadgeSize.medium:
-                this.classList.add("medium");
+                this.classList.add(BadgeSize.medium);
+                lastBadgeSize = BadgeSize.medium;
                 break;
             case BadgeSize.large:
-                this.classList.add("large");
+                this.classList.add(BadgeSize.large);
+                lastBadgeSize = BadgeSize.large;
                 break;
             default:
-                this.classList.add("medium");
+                this.classList.add(BadgeSize.medium);
+                lastBadgeSize = BadgeSize.medium;
                 break;
         }
     }
