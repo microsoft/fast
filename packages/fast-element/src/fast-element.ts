@@ -1,5 +1,5 @@
 import { Controller } from "./controller";
-import { CustomElementConstructor, emptyArray } from "./interfaces";
+import { emptyArray } from "./interfaces";
 import { Observable } from "./observation/observable";
 import { ElementViewTemplate } from "./template";
 import { ElementStyles } from "./styles";
@@ -44,14 +44,14 @@ function createFastElement(BaseType: typeof HTMLElement) {
     };
 }
 
-const fastDefinitions = new Map<CustomElementConstructor, FastElementDefinition>();
+const fastDefinitions = new Map<Function, FastElementDefinition>();
 
 export const FastElement = Object.assign(createFastElement(HTMLElement), {
     from(BaseType: typeof HTMLElement) {
         return createFastElement(BaseType);
     },
 
-    define<T extends CustomElementConstructor>(
+    define<T extends Function>(
         Type: T,
         nameOrDef: string | PartialFastElementDefinition = (Type as any).definition
     ): T {
@@ -107,13 +107,11 @@ export const FastElement = Object.assign(createFastElement(HTMLElement), {
         );
 
         fastDefinitions.set(Type, definition);
-        customElements.define(name, Type, definition.elementOptions);
+        customElements.define(name, Type as any, definition.elementOptions);
         return Type;
     },
 
-    getDefinition<T extends CustomElementConstructor>(
-        Type: T
-    ): FastElementDefinition | undefined {
+    getDefinition<T extends Function>(Type: T): FastElementDefinition | undefined {
         return fastDefinitions.get(Type);
     },
 });
@@ -143,7 +141,7 @@ export class FastElementDefinition {
 }
 
 export function customElement(nameOrDef: string | PartialFastElementDefinition) {
-    return function(type: CustomElementConstructor) {
+    return function(type: Function) {
         FastElement.define(type, nameOrDef);
     };
 }

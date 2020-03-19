@@ -2,10 +2,6 @@ export type Callable = typeof Function.prototype.call | { call(): void };
 
 export const emptyArray = Object.freeze([]);
 
-export type CustomElementConstructor = {
-    new (): HTMLElement;
-};
-
 /**
  * Provides additional contextual information available to arrow functions
  * evaluated in the context of a template update.
