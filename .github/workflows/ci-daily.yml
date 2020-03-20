@@ -14,7 +14,7 @@ jobs:
   build_linux:
     runs-on: ubuntu-latest
     env:
-        CC_TEST_REPORTER_ID: ${{ secrets.CODE_CLIMATE_TEST_REPORTER_ID }}
+        CC_TEST_REPORTER_ID: 08a773cb4ea5811add5a45e12873e5cd2634c005568705cc37abfd5217617a32
 
     steps:
     - uses: actions/checkout@v2
