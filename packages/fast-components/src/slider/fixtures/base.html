@@ -3,6 +3,9 @@
         <!-- Basic -->
         <fast-slider step="1" min="0" max="10"></fast-slider>
 
+        <!-- No max or min -->
+        <fast-slider></fast-slider>
+
         <!-- Custom Labels -->
         <fast-slider
             label="With labels"
@@ -25,7 +28,7 @@
 
         <!-- Using slot for custom thumb -->
         <fast-slider
-            label="Custom thumb"
+            label="Custom thumb (step 10)"
             min="0"
             max="100"
             step="10"
@@ -101,7 +104,7 @@
         <!-- Required -->
 
         <fast-slider
-        label="Custom labels & thumb"
+        label="Custom labels & thumb (step 10)"
         min="0"
         max="100"
         step="10"
@@ -157,14 +160,14 @@
 
         <!-- Don't show tick marks -->
         <fast-slider
-            label="No Tick Marks"
+            label="No Tick Marks (step 5)"
             min="0"
             max="100"
-            step="10"
+            step="5"
         >
             <fast-slider-label
-            position="0"
-            label="0"
+                position="0"
+                label="0"
             >
             </fast-slider-label>
             <fast-slider-label

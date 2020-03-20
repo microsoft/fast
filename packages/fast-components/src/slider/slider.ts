@@ -148,21 +148,39 @@ export class Slider extends FormAssociated<HTMLInputElement> {
             this.fullTrackMinWidth = trackElement.getBoundingClientRect().left;
             const newPosition = this.convertPixelToPercent(e.pageX);
             const newValue: number = (this.max - this.min) * newPosition + this.min;
-            this.value = `${newValue}`;
+            this.value = `${this.convertToConstrainedValue(newValue)}`;
             this.updateForm();
         }
     };
 
+    private convertToConstrainedValue = (value: number): number => {
+        const remainderVal: number = value % Number(this.step);
+        return remainderVal >= Number(this.step) / 2
+            ? value - remainderVal + Number(this.step)
+            : value - remainderVal;
+    };
+
     private increment = (): void => {
-        const incrementedVal: number = Number(this.value) + Number(this.step);
+        const remainderVal: number = Number(this.value) % Number(this.step);
+        const constrainedVal: number =
+            remainderVal >= Number(this.step) / 2
+                ? Number(this.value) - remainderVal + Number(this.step)
+                : Number(this.value) - remainderVal;
+
+        const incrementedVal: number = this.convertToConstrainedValue(
+            Number(this.value) + Number(this.step)
+        );
         const incrementedValString: string =
             incrementedVal < Number(this.max) ? `${incrementedVal}` : `${this.max}`;
         this.value = incrementedValString;
+
         this.updateForm();
     };
 
     private decrement = (): void => {
-        const decrementedVal: number = Number(this.value) - Number(this.step);
+        const decrementedVal: number = this.convertToConstrainedValue(
+            Number(this.value) - Number(this.step)
+        );
         const decrementedValString: string =
             decrementedVal > Number(this.min) ? `${decrementedVal}` : `${this.min}`;
         this.value = decrementedValString;
