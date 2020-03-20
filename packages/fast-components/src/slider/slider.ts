@@ -29,6 +29,10 @@ export class Slider extends FormAssociated<HTMLInputElement> {
 
     @observable
     public backgroundTrack: HTMLDivElement;
+
+    @observable
+    public thumb: HTMLDivElement;
+
     @observable
     public position: string;
     @observable
@@ -113,6 +117,7 @@ export class Slider extends FormAssociated<HTMLInputElement> {
         this.fullTrackMinWidth = this.backgroundTrack.getBoundingClientRect().left;
         this.addEventListener("keydown", this.keypressHandler);
         this.addEventListener("mousedown", this.clickHandler);
+        this.thumb.addEventListener("mousedown", this.handleThumbMouseDown);
     }
 
     public disconnectedCallback(): void {
@@ -138,6 +143,73 @@ export class Slider extends FormAssociated<HTMLInputElement> {
         this.proxy.value = this.value;
     };
 
+    /**
+     *  Handle mouse moves during a thumb drag operation
+     */
+    private handleThumbMouseDown = (event: MouseEvent): void => {
+        if (this.disabled || event.defaultPrevented) {
+            return;
+        }
+
+        console.log("handleTHumbMouseMove event:", event);
+
+        event.preventDefault();
+        (event.target as HTMLElement).focus();
+        window.addEventListener("mouseup", this.handleWindowMouseUp);
+        window.addEventListener("mousemove", this.handleMouseMove);
+
+        // this.value = `${this.convertToConstrainedValue(dragValue)}`;
+        // this.updateForm();
+        // this.updateDragValue(
+        //     this.getDragValue(event, this.state.activeThumb),
+        //     this.state.activeThumb
+        // );
+    };
+
+    /**
+     *  Handle mouse moves during a thumb drag operation
+     */
+    private handleMouseMove = (e: MouseEvent): void => {
+        if (this.disabled || e.defaultPrevented) {
+            return;
+        }
+        const pixelCoordinate: number = e.clientX;
+        const dragValue: number =
+            (this.fullTrackWidth - this.fullTrackMinWidth) *
+                this.convertPixelToPercent(pixelCoordinate) +
+            this.fullTrackMinWidth;
+
+        // update the value based on current position
+        const newPosition = this.convertPixelToPercent(e.pageX);
+        const newValue: number = (this.max - this.min) * newPosition + this.min;
+
+        console.log("e.pageX:", e.pageX);
+        console.log("e.clientX:", e.clientX);
+
+        console.log("dragValue:", dragValue);
+        console.log("better dragValue:", newValue);
+
+        this.value = `${this.convertToConstrainedValue(newValue)}`;
+
+        // this.updateDragValue(
+        //     this.getDragValue(event, this.state.activeThumb),
+        //     this.state.activeThumb
+        // );
+    };
+
+    /**
+     * Handle a window mouse up during a drag operation
+     */
+    private handleWindowMouseUp = (event: MouseEvent): void => {
+        this.stopDragging();
+    };
+
+    private stopDragging = (): void => {
+        console.log("stopDragging called, removing window listeners ****");
+        window.removeEventListener("mouseup", this.handleWindowMouseUp);
+        window.removeEventListener("mousemove", this.handleMouseMove);
+    };
+
     private clickHandler = (e: MouseEvent) => {
         if (!bool(this.disabled) && !bool(this.readOnly)) {
             let trackElement: any = this.shadowRoot!.querySelector(".background-track");
@@ -146,6 +218,13 @@ export class Slider extends FormAssociated<HTMLInputElement> {
                 this.fullTrackWidth = 1;
             }
             this.fullTrackMinWidth = trackElement.getBoundingClientRect().left;
+
+            e.preventDefault();
+            (e.target as HTMLElement).focus();
+            window.addEventListener("mouseup", this.handleWindowMouseUp);
+            window.addEventListener("mousemove", this.handleMouseMove);
+
+            // update the value based on current position
             const newPosition = this.convertPixelToPercent(e.pageX);
             const newValue: number = (this.max - this.min) * newPosition + this.min;
             this.value = `${this.convertToConstrainedValue(newValue)}`;
