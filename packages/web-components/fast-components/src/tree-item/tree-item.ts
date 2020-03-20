@@ -1,23 +1,27 @@
 import { attr, FastElement, observable } from "@microsoft/fast-element";
-import { bool } from "../utilities";
 import {
+    getDisplayedNodes,
+    isHTMLElement,
+    keyCodeArrowDown,
     keyCodeArrowLeft,
     keyCodeArrowRight,
-    keyCodeArrowDown,
     keyCodeArrowUp,
     keyCodeEnter,
     keyCodeSpace,
-    isHTMLElement,
-    getDisplayedNodes,
 } from "@microsoft/fast-web-utilities";
 
 export class TreeItem extends FastElement {
     @attr
     public expanded: boolean;
+    public expandedChanged(): void {
+        this.expanded
+            ? this.classList.add("expanded")
+            : this.classList.remove("expanded");
+    }
 
     @attr
     public selected: boolean;
-    public selectedChange(): void {
+    public selectedChanged(): void {
         this.selected
             ? this.classList.add("selected")
             : this.classList.remove("selected");
@@ -25,7 +29,7 @@ export class TreeItem extends FastElement {
 
     public expandCollapseButton: HTMLDivElement;
 
-    public treeItem: HTMLDivElement;
+    public treeItem: HTMLElement;
 
     @observable
     public focusable: boolean = false;
@@ -141,6 +145,7 @@ export class TreeItem extends FastElement {
     };
 
     private handleArrowLeft(): void {
+        console.log("got it!");
         if (this.expanded) {
             this.setExpanded(false);
         } else if (isHTMLElement(this.treeItem.parentElement)) {

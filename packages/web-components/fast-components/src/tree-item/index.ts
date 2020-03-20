@@ -7,6 +7,9 @@ import { TreeItemStyles as styles } from "./tree-item.styles";
     name: "fast-tree-item",
     template,
     styles,
+    shadowOptions: {
+        delegatesFocus: true,
+    },
 })
 export class FASTTreeItem extends TreeItem {}
 export * from "./tree-item.template";

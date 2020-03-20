@@ -1,12 +1,11 @@
 import { html, ref, when } from "@microsoft/fast-element";
-import { bool } from "../utilities";
 import { TreeItem } from "./tree-item";
 
 export const TreeItemTemplate = html<TreeItem>`
 <template
     $role="treeitem"
-    $aria-expanded="${x => (x.hasItems ? bool(x.expanded) : void 0)}"
-    $aria-selected="${x => bool(x.selected)}"
+    $aria-expanded="${x => x.hasItems ? x.expanded : void 0}"
+    $aria-selected="${x => x.selected}"
     tabindex="${x => (x.focusable ? 0 : -1) /* need to manage focus here */}"
     @focus=${(x, c) => x.handleFocus(c.event as FocusEvent)}
     @blur=${(x, c) => x.handleBlur(c.event as FocusEvent)}

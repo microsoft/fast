@@ -8,6 +8,7 @@ export const TreeItemStyles = css`
         color: var(--neutral-foreground-rest);
         background: var(--neutral-fill-stealth-rest);
         cursor: pointer;
+        font-family: var(--body-font);
         --expand-collapse-button-size: calc(var(--height-number) * 1px);
         --tree-item-nested-width: 0;
     }
@@ -101,11 +102,11 @@ export const TreeItemStyles = css`
         ${/* need to swap out once we understand how horizontalSpacing will work */ ""} margin-inline-start: calc(var(--design-unit) * 2px + 2px);
     }
 
-    :host([expanded]) > .positioning-region .expand-collapse-glyph {
+    :host(.expanded) > .positioning-region .expand-collapse-glyph {
         ${/* transform needs to be localized */ ""} transform: rotate(0deg);
     }
 
-    :host([expanded]) > .items {
+    :host(.expanded) > .items {
         display: block;
     }
 
