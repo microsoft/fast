@@ -9,6 +9,8 @@ import { FormTestPage } from "./pages/form";
 import { FormAndNavigationTestPage } from "./pages/form-and-navigation";
 import { CSSPropertyEditorTestPage } from "./pages/css-property-editor";
 import { NavigationMenuTestPage } from "./pages/navigation-menu";
+import { WebComponentTestPage } from "./pages/web-components";
+import WebComponentViewerContent from "./pages/web-components/web-component-viewer-content";
 
 class App extends React.Component<{}, {}> {
     public render(): React.ReactNode {
@@ -54,8 +56,18 @@ class App extends React.Component<{}, {}> {
                             path={"/form-and-navigation"}
                             component={FormAndNavigationTestPage}
                         />
+                        <Route
+                            exact={true}
+                            path={"/web-components"}
+                            component={WebComponentTestPage}
+                        />
+                        <Route
+                            exact={true}
+                            path={"/web-components/content"}
+                            component={WebComponentViewerContent}
+                        />
                         <Route exact={true} path={"/"}>
-                            <Redirect to={"/navigation-menu"} />
+                            <Redirect to={"/web-components"} />
                         </Route>
                     </Switch>
                 </div>
@@ -91,6 +103,9 @@ class App extends React.Component<{}, {}> {
                         </li>
                         <li>
                             <Link to="/viewer">Viewer</Link>
+                        </li>
+                        <li>
+                            <Link to="/web-components">Web Components</Link>
                         </li>
                     </ul>
                     <hr />
