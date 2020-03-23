@@ -6,15 +6,25 @@
 
 ### Use Cases
 
-The *progress* component should be used for an element that displays the progress status for a task that takes a more than a few seconds or consists of several steps. Typical use cases include loading elements or status of a download. 
-  
+The *progress* component should be used for an element that displays the progress status for a task that takes more than a few seconds or consists of several steps. Typical use cases include loading elements or status of a download. 
+
+- Jim is building a dashboard to track fullfilment for his online store he uses progress ring to visualize various metrics.
+
+- Susan is downloading a large collection of research music onto her harddrive. She sees a linear progress displaying the percentage complete for the currently downloading song and indeterminate linear progress for those songs in queue.
+
+- Fin is scrolling a large list of continuously loading data as he scrolls he sees a indeterminate progress ring to let him know that data is loading.
+
+### Types
+*Progress* can be visually represented in 2 ways.
+- Linear - A straight horizontal line. `fast-progress`
+- Circular - A cicular ring shape. `fast-progress-ring`
+
 ### Features
 
 A progress should allow the following attributes:
 - `value`, the value of the progress, if not passed the progress will be put into its "indeterminate" state.
 - `min`, the minimum value.
 - `max`, the maximum value.
-- `circular`, whether the progress renders circular or not.
 - `paused`, whether the progress is paused or not.
 
 ### Prior Art/Examples
@@ -33,30 +43,33 @@ A progress should allow the following attributes:
 
 *Component name:*
 - `fast-progress`
+- `fast-progress-ring`
 
 *Attributes:*
 - `value`: number
 - `min`: number
 - `max`: number
-- `circular`: boolean
 - `paused`: boolean
 
 *Slots:*
-- `indetermimate-linear`
-- `indetermimate-circular`
+- `indeterminate-linear`
+- `indeterminate-circular`
 
 ### Anatomy and Appearance
 
 *Parts:*
+Linear parts:
 - determinate
 - indeterminate
+- linear-determinate
+- linear-indeterminate-indicator-1
+- linear-indeterminate-indicator-2
+
+Circular parts:
 - circular-container
 - circular-background
 - circular-determinate
 - circular-indeterminate
-- linear-determinate
-- linear-indeterminate-indicator-1
-- linear-indeterminate-indicator-2
 
 *Circular Determinate Template:*
 ```
@@ -79,7 +92,7 @@ A progress should allow the following attributes:
 ```
 <div role="progressbar">
     <div part="indeterminate" slot={"indeterminate"}>
-        <slot name="indetermimate-circular"></slot>
+        <slot name="indeterminate-circular"></slot>
             <svg part="circular-container" viewBox="0 0 16 16">
                 <circle part="circular-background" cx="8px" cy="8px" r="7px" />
                 <circle part="circular-indeterminate" cx="8px" cy="8px" r="7px" />
@@ -107,7 +120,7 @@ A progress should allow the following attributes:
 ```
 <div role="progressbar">
     <div part="indeterminate" slot={"indeterminate"}>
-        <slot name="indetermimate-linear">
+        <slot name="indeterminate-linear">
             <span part="linear-indeterminate-indicator-1"/>
             <span part="linear-indeterminate-indicator-2"/>
         </slot>
