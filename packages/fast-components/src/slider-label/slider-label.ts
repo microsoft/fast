@@ -1,4 +1,4 @@
-import { attr, FastElement, observable, Observable } from "@microsoft/fast-element";
+import { attr, FastElement, observable } from "@microsoft/fast-element";
 import { FASTSlider } from "../slider";
 export function bool(value: string | boolean | null): boolean {
     return typeof value === "boolean" ? value : typeof value === "string";
@@ -41,20 +41,21 @@ export class SliderLabel extends FastElement {
             (this.parentNode as FASTSlider).fullTrackMinWidth
         );
         this.sliderWidth = Number((this.parentNode as FASTSlider).fullTrackWidth);
-        //const newPosition: number = this.convertPixelToPercent(Number(this.position));
-        // const newValue: number =
-        //     (this.sliderMax - this.sliderMin) * newPosition + this.sliderMin;
         this.positionStyle = this.positionAsStyle();
     }
 
     private positionAsStyle = (): any => {
+        const direction: string = (this.parentNode as FASTSlider).direction;
         const rightNum: number =
             ((this.sliderMax - this.sliderMin - Number(this.position)) /
                 (this.sliderMax - this.sliderMin)) *
             100;
         const leftNum: number =
             (Number(this.position) / (this.sliderMax - this.sliderMin)) * 100;
-        return `left: ${leftNum}%; right: ${rightNum}%;`;
+
+        return direction === "rtl"
+            ? `right: ${leftNum}%; left: ${rightNum}%;`
+            : `left: ${leftNum}%; right: ${rightNum}%;`;
     };
 
     // private convertPixelToPercent = (pixelPos: number): number => {

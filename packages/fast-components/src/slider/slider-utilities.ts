@@ -4,7 +4,8 @@
 export function convertPixelToPercent(
     pixelPos: number,
     minPosition: number,
-    maxPosition: number
+    maxPosition: number,
+    direction?: string
 ): number {
     let pct: number = 0;
     pct = (pixelPos - minPosition) / maxPosition;
@@ -13,12 +14,12 @@ export function convertPixelToPercent(
     } else if (pct > 1) {
         pct = 1;
     }
-    // if (
-    //     this.state.direction === Direction.rtl &&
-    //     this.props.orientation !== SliderOrientation.vertical
-    // ) {
-    //     pct = 1 - pct;
-    // }
 
+    if (typeof direction === "string" && direction === "rtl") {
+        console.log("convertPixelToPercent using RTL");
+        pct = 1 - pct;
+    }
+
+    console.log("slider-utilities pct:", pct);
     return pct;
 }

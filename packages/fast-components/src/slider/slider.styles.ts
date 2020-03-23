@@ -15,6 +15,7 @@ export const SliderStyles = css`
     ${display("inline-flex")} :host {
         align-items: center;
         outline: none;
+        width: 100%;
         margin: calc(var(--design-unit) * 1px) 0;
         ${/*
            * Chromium likes to select label text or the default slot when

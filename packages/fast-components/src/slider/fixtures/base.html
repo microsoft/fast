@@ -6,9 +6,9 @@
         <!-- No max or min -->
         <fast-slider></fast-slider>
 
-        <!-- Custom Labels -->
+        <!-- Text Labels -->
         <fast-slider
-            label="With labels"
+            label="Text labels"
             min="0"
             max="100"
             step="10"
@@ -25,6 +25,41 @@
             </fast-slider-label>
         </fast-slider>
 
+        <!-- Custom labels (rtl) -->
+        <div dir="rtl" style="width: 100%">
+            <fast-slider
+                label="With labels - rtl"
+                min="0"
+                max="100"
+                step="10"
+            >
+                <fast-slider-label
+                    position="10"
+                    label="10"
+                >
+                </fast-slider-label>
+                <fast-slider-label
+                    position="20"
+                    label="20"
+                >
+                </fast-slider-label>
+                <fast-slider-label
+                    position="40"
+                    label="40"
+                >
+                </fast-slider-label>
+                <fast-slider-label
+                    position="60"
+                    label="60"
+                >
+                </fast-slider-label>                                                
+                <fast-slider-label
+                    position="80"
+                    label="80"
+                >
+                </fast-slider-label>
+            </fast-slider>
+        </div>        
 
         <!-- Using slot for custom thumb -->
         <fast-slider

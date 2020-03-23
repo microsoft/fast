@@ -6,7 +6,7 @@ import {
     keyCodeArrowDown,
     keyCodeArrowUp,
 } from "@microsoft/fast-web-utilities";
-// import { bool } from "../utilities";
+import { convertPixelToPercent } from "./slider-utilities";
 
 export function bool(value: string | boolean | null): boolean {
     return typeof value === "boolean" ? value : typeof value === "string";
@@ -33,7 +33,10 @@ export class Slider extends FormAssociated<HTMLInputElement> {
     public thumb: HTMLDivElement;
 
     @observable
-    public isDragging: boolean = false;
+    public direction: string = "ltr";
+    private directionChanged(): void {
+        console.log("directionChanged called this.direction:", this.direction);
+    }
 
     @observable
     public position: string;
@@ -120,6 +123,7 @@ export class Slider extends FormAssociated<HTMLInputElement> {
         this.addEventListener("keydown", this.keypressHandler);
         this.addEventListener("mousedown", this.clickHandler);
         this.thumb.addEventListener("mousedown", this.handleThumbMouseDown);
+        this.direction = this.parentElement!.attributes["dir"].value;
     }
 
     public disconnectedCallback(): void {
@@ -166,7 +170,6 @@ export class Slider extends FormAssociated<HTMLInputElement> {
         if (bool(this.readOnly) || bool(this.disabled) || e.defaultPrevented) {
             return;
         }
-        this.isDragging = true;
 
         // update the value based on current position
         this.value = `${this.calculateNewValue(e.pageX)}`;
@@ -174,7 +177,11 @@ export class Slider extends FormAssociated<HTMLInputElement> {
 
     private calculateNewValue = (rawValue: number): number => {
         // update the value based on current position
-        const newPosition = this.convertPixelToPercent(rawValue);
+        const newPosition = convertPixelToPercent(
+            rawValue,
+            this.fullTrackMinWidth,
+            this.fullTrackWidth
+        );
         return this.convertToConstrainedValue(
             (this.max - this.min) * newPosition + this.min
         );
@@ -188,7 +195,6 @@ export class Slider extends FormAssociated<HTMLInputElement> {
     };
 
     private stopDragging = (): void => {
-        this.isDragging = false;
         window.removeEventListener("mouseup", this.handleWindowMouseUp);
         window.removeEventListener("mousemove", this.handleMouseMove);
     };
@@ -220,19 +226,12 @@ export class Slider extends FormAssociated<HTMLInputElement> {
     };
 
     private increment = (): void => {
-        const remainderVal: number = Number(this.value) % Number(this.step);
-        const constrainedVal: number =
-            remainderVal >= Number(this.step) / 2
-                ? Number(this.value) - remainderVal + Number(this.step)
-                : Number(this.value) - remainderVal;
-
         const incrementedVal: number = this.convertToConstrainedValue(
             Number(this.value) + Number(this.step)
         );
         const incrementedValString: string =
             incrementedVal < Number(this.max) ? `${incrementedVal}` : `${this.max}`;
         this.value = incrementedValString;
-
         this.updateForm();
     };
 
@@ -244,27 +243,5 @@ export class Slider extends FormAssociated<HTMLInputElement> {
             decrementedVal > Number(this.min) ? `${decrementedVal}` : `${this.min}`;
         this.value = decrementedValString;
         this.updateForm();
-    };
-
-    /**
-     * Converts a pixel coordinate on the track to a percent of the track's range
-     */
-    private convertPixelToPercent = (pixelPos: number): number => {
-        let pct: number = 0;
-        pct = (pixelPos - this.fullTrackMinWidth) / this.fullTrackWidth;
-        if (pct < 0) {
-            pct = 0;
-        } else if (pct > 1) {
-            pct = 1;
-        }
-
-        // if (
-        //     this.state.direction === Direction.rtl &&
-        //     this.props.orientation !== SliderOrientation.vertical
-        // ) {
-        //     pct = 1 - pct;
-        // }
-
-        return pct;
     };
 }
