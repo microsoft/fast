@@ -11,7 +11,7 @@ Typical use cases include, but are not limited to, denoting a sale or new item, 
 ### Features
 
 A badge should allow the following properties:
-- `fill`, a string that passes the color value for the backplate. Defaults to "transparent".
+- `fill`, a string that maps to author defined variables.
 - `circular`, if circular styling is desired.
 - `size`, the size the badge is rendered.
 
@@ -52,12 +52,9 @@ A badge should allow the following properties:
 
 ```
 fast-badge {
-   --fill-primary: rgba(255, 0, 0, 1);
-   --fill-secondary: #00FF00;
-   --fill-transparent: transparent;
-   --size-small: 12px;
-   --size-medium: 16px;
-   --size-large: 20px;
+   --badge-fill-primary: rgba(255, 0, 0, 1);
+   --badge-fill-secondary: #00FF00;
+   --badge-fill-transparent: transparent;
 }
 ```
 
