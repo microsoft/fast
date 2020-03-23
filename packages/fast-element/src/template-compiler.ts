@@ -97,10 +97,6 @@ export function compileTemplate(
         }
     }
 
-    if (DOM.isMarker(fragment.firstChild!)) {
-        fragment.insertBefore(document.createComment(""), fragment.firstChild);
-    }
-
     return new HTMLTemplate(element, viewFactories, hostFactories);
 }
 

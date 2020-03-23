@@ -19,19 +19,32 @@ export class HTMLTemplate extends Directive
     public createPlaceholder = DOM.createBlockPlaceholder;
     private behaviorCount: number;
     private hasHostBehaviors: boolean;
+    private fragment: DocumentFragment;
+    private targetOffset = 0;
     constructor(
-        private templateElement: HTMLTemplateElement,
+        { content: fragment }: HTMLTemplateElement,
         private viewBehaviorFactories: BehaviorFactory[],
         private hostBehaviorFactories: BehaviorFactory[]
     ) {
         super();
+
+        this.fragment = fragment;
         this.behaviorCount =
             this.viewBehaviorFactories.length + this.hostBehaviorFactories.length;
         this.hasHostBehaviors = this.hostBehaviorFactories.length > 0;
+
+        if (DOM.isMarker(fragment.firstChild!)) {
+            // If the first node in a fragment is a marker, that means it's an unstable first node,
+            // because something like a when, repeat, etc. could add nodes before the marker.
+            // To mitigate this, we insert a stable first node. However, if we insert a node,
+            // that will alter the result of the TreeWalker. So, we also need to offset the target index.
+            fragment.insertBefore(document.createComment(""), fragment.firstChild);
+            this.targetOffset = -1;
+        }
     }
 
     public create(host?: Element) {
-        const fragment = this.templateElement.content.cloneNode(true) as DocumentFragment;
+        const fragment = this.fragment.cloneNode(true) as DocumentFragment;
         const viewFactories = this.viewBehaviorFactories;
         const behaviors = new Array<Behavior>(this.behaviorCount);
         const walker = document.createTreeWalker(
@@ -41,8 +54,8 @@ export class HTMLTemplate extends Directive
             false
         );
 
-        let targetIndex = 0;
         let behaviorIndex = 0;
+        let targetIndex = this.targetOffset;
         let node = walker.nextNode();
 
         for (let ii = viewFactories.length; behaviorIndex < ii; ++behaviorIndex) {
