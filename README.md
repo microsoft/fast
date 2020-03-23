@@ -7,7 +7,7 @@ An unopinionated system of components, development tools, and utilities used à 
 
 [![Maintainability](https://api.codeclimate.com/v1/badges/8a74621e634a6e9b9561/maintainability)](https://codeclimate.com/github/Microsoft/fast-dna/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/8a74621e634a6e9b9561/test_coverage)](https://codeclimate.com/github/Microsoft/fast-dna/test_coverage)
-![Pipeline Workflows](https://github.com/microsoft/fast-dna/workflows/FAST%20Workflows/badge.svg)
+![workflows](https://github.com/microsoft/fast-dna/workflows/CI%20-%20FAST/badge.svg?branch=master&event=push)
 [![lerna](https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg)](https://lerna.js.org/)
 [![Discord](https://img.shields.io/badge/support%20with-discord-cc00ff.svg)](https://discord.gg/FcSNfg4)
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
@@ -47,6 +47,7 @@ Because FAST-DNA has abstracted base components from their style, you get a head
 FAST-DNA is a mono repository managed with [Lerna](https://github.com/lerna/lerna). Users choose à la carte which package to use in their project.
 
 ### Component Explorer
+![CD Component Explorer](https://github.com/microsoft/fast-dna/workflows/CI%20Component%20Explorer/badge.svg?branch=master&event=push)
 
 Launch our [Component Explorer](https://explore.fast.design) to experience our [Microsoft React Components](https://github.com/microsoft/fast-dna/tree/master/packages/fast-components-react-msft) package and development tools.
 
