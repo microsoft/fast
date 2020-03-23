@@ -55,34 +55,34 @@ export function reactMapper(
  */
 export function reactResolver(config: ResolverConfig<unknown>): any {
     if (config.dataDictionary[1] !== config.dictionaryId) {
-        let childrenData =
+        // the original data in the children location
+        const childrenAtLocation =
             config.dataDictionary[0][
                 config.dataDictionary[0][config.dictionaryId].parent.id
             ].data.props[
                 config.dataDictionary[0][config.dictionaryId].parent.dataLocation
             ];
-        let childItem;
+        // the child item being resolved to a react component
+        const newChildrenAtLocation =
+            typeof config.dataDictionary[0][config.dictionaryId].data === "string"
+                ? config.dataDictionary[0][config.dictionaryId].data
+                : React.createElement(
+                      config.dataDictionary[0][config.dictionaryId].data.component,
+                      {
+                          ...config.dataDictionary[0][config.dictionaryId].data.props,
+                          key: Array.isArray(childrenAtLocation)
+                              ? childrenAtLocation.length
+                              : 0,
+                      }
+                  );
 
-        if (typeof config.dataDictionary[0][config.dictionaryId].data === "string") {
-            childItem = config.dataDictionary[0][config.dictionaryId].data;
-        } else {
-            childItem = React.createElement(
-                config.dataDictionary[0][config.dictionaryId].data.component,
-                {
-                    ...config.dataDictionary[0][config.dictionaryId].data.props,
-                    key: Array.isArray(childrenData) ? childrenData.length : 0,
-                }
-            );
-        }
-
-        childrenData =
-            childrenData === undefined ? [childItem] : [childItem, ...childrenData];
-
+        // re-assign this prop with the new child item
         config.dataDictionary[0][
             config.dataDictionary[0][config.dictionaryId].parent.id
-        ].data.props[
-            config.dataDictionary[0][config.dictionaryId].parent.dataLocation
-        ] = childrenData;
+        ].data.props[config.dataDictionary[0][config.dictionaryId].parent.dataLocation] =
+            childrenAtLocation === undefined
+                ? [newChildrenAtLocation]
+                : [newChildrenAtLocation, ...childrenAtLocation];
     }
 
     if (typeof config.dataDictionary[0][config.dictionaryId].data === "string") {
