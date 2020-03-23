@@ -1,5 +1,6 @@
 import { css } from "@microsoft/fast-element";
 import { disabledCursor, display } from "../styles";
+import { focusVisible } from "../styles/focus";
 
 export const SwitchStyles = css`
     :host([hidden]) {
@@ -10,10 +11,12 @@ export const SwitchStyles = css`
         align-items: center;
         outline: none;
         margin: calc(var(--design-unit) * 1px) 0;
-        ${/*
+        ${
+            /*
            * Chromium likes to select label text or the default slot when
            * the checkbox is clicked. Maybe there is a better solution here?
-           */ ""} user-select: none;
+           */ ""
+        } user-select: none;
     }
 
     :host(.disabled) {
@@ -47,7 +50,7 @@ export const SwitchStyles = css`
         border-color: var(--neutral-outline-active);
     }
 
-    :host(:focus) .switch {
+    :host(:${focusVisible}) .switch {
         box-shadow: 0 0 0 1px var(--neutral-focus) inset;
         border-color: var(--neutral-focus);
     }
@@ -67,15 +70,21 @@ export const SwitchStyles = css`
         font-family: var(--body-font);
         color: var(--neutral-foreground-rest);
         cursor: pointer;
-        ${/* Font size is temporary - replace when adaptive typography is figured out */ ""} font-size: calc(1rem + (var(--density) * 2px));
+        ${
+            /* Font size is temporary - replace when adaptive typography is figured out */ ""
+        } font-size: calc(1rem + (var(--density) * 2px));
     }
 
     .label {
-        ${/* Need to discuss with Brian how HorizontalSpacingNumber can work. https://github.com/microsoft/fast-dna/issues/2766 */ ""} margin-inline-end: calc(var(--design-unit) * 2px + 2px);
+        ${
+            /* Need to discuss with Brian how HorizontalSpacingNumber can work. https://github.com/microsoft/fast-dna/issues/2766 */ ""
+        } margin-inline-end: calc(var(--design-unit) * 2px + 2px);
     }
 
     ::slotted(*) {
-        ${/* Need to discuss with Brian how HorizontalSpacingNumber can work. https://github.com/microsoft/fast-dna/issues/2766 */ ""} margin-inline-start: calc(var(--design-unit) * 2px + 2px);
+        ${
+            /* Need to discuss with Brian how HorizontalSpacingNumber can work. https://github.com/microsoft/fast-dna/issues/2766 */ ""
+        } margin-inline-start: calc(var(--design-unit) * 2px + 2px);
     }
 
     :host(.checked) .checked-indicator {
