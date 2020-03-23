@@ -67,8 +67,9 @@ export class WhenBehavior implements Behavior, GetterInspector, Subscriber {
             this.view.bind(this.source);
             this.view.insertBefore(this.location);
         } else if (!show && this.view !== null) {
-            this.view.unbind();
+            // do not dispose, since we may want to use the view again
             this.view.remove();
+            this.view.unbind();
             this.view = null;
         }
     }
