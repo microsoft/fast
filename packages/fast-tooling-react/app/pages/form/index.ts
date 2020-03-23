@@ -14,6 +14,7 @@ import {
     controlPluginSchema as customControlSchema,
     defaultsSchema,
     dictionarySchema,
+    disabledSchema,
     generalSchema,
     invalidDataSchema,
     mergedOneOfSchema,
@@ -120,4 +121,8 @@ export const customControl: ExampleComponent = {
 
 export const tooltip: ExampleComponent = {
     schema: tooltipSchema,
+};
+
+export const disabled: ExampleComponent = {
+    schema: disabledSchema,
 };

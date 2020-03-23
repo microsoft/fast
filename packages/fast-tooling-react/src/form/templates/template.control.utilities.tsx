@@ -41,7 +41,11 @@ abstract class ControlTemplateUtilities<P, S> extends React.Component<
                     className={className}
                     checked={this.props.data !== undefined}
                     onChange={this.handleSoftRemove}
-                    disabled={this.props.data === undefined && this.cache === undefined}
+                    disabled={
+                        this.props.disabled &&
+                        this.props.data === undefined &&
+                        this.cache === undefined
+                    }
                 />
             );
         }
@@ -62,7 +66,11 @@ abstract class ControlTemplateUtilities<P, S> extends React.Component<
     public renderConstValueIndicator(className: string): React.ReactNode {
         if (this.props.const !== undefined && this.props.data !== this.props.const) {
             return (
-                <ConstValue className={className} onChange={this.handleSetConstValue} />
+                <ConstValue
+                    className={className}
+                    disabled={this.props.disabled}
+                    onChange={this.handleSetConstValue}
+                />
             );
         }
     }
@@ -79,6 +87,7 @@ abstract class ControlTemplateUtilities<P, S> extends React.Component<
             return (
                 <DefaultValue
                     className={className}
+                    disabled={this.props.disabled}
                     onChange={this.handleSetDefaultValue}
                 />
             );
