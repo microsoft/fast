@@ -117,6 +117,8 @@ export class HTMLView implements ElementView, SyntheticView {
         range.setStart(this.firstChild, 0);
         range.setEnd(this.lastChild, 0);
         this.fragment = range.extractContents();
+        this.firstChild = this.fragment.firstChild!;
+        this.lastChild = this.fragment.lastChild!;
     }
 
     /**
