@@ -9,10 +9,13 @@ import {
     MessageSystemNavigationDictionaryTypeAction,
     MessageSystemNavigationTypeAction,
     MessageSystemOutgoing,
+    MessageSystemValidationTypeAction,
     NavigationDictionaryMessageIncoming,
     NavigationDictionaryMessageOutgoing,
     NavigationMessageIncoming,
     NavigationMessageOutgoing,
+    ValidationMessageIncoming,
+    ValidationMessageOutgoing,
 } from "./message-system.utilities.props";
 import { MessageSystemType } from "./types";
 import { get, set, uniqueId } from "lodash-es";
@@ -25,6 +28,7 @@ import { getNavigationDictionary } from "./navigation";
 import { TreeNavigationConfigDictionary } from "./navigation.props";
 import { Data, DataDictionary, LinkedData } from "./data.props";
 import { SchemaDictionary } from "./schema.props";
+import { Validation } from "./validation.props";
 
 /**
  * This is the Message System, through which:
@@ -42,6 +46,7 @@ let navigationDictionary: TreeNavigationConfigDictionary;
 let activeNavigationConfigId: string;
 let activeDictionaryId: string; // this controls both the data and navigation dictionaries which must remain in sync
 let schemaDictionary: SchemaDictionary;
+const validation: Validation = {};
 
 export function getMessage(data: MessageSystemIncoming): MessageSystemOutgoing {
     switch (data.type) {
@@ -53,6 +58,8 @@ export function getMessage(data: MessageSystemIncoming): MessageSystemOutgoing {
             return getNavigationMessage(data);
         case MessageSystemType.navigationDictionary:
             return getNavigationDictionaryMessage(data);
+        case MessageSystemType.validation:
+            return getValidationMessage(data);
         case MessageSystemType.initialize:
             dataDictionary = data.data;
             activeDictionaryId = dataDictionary[1];
@@ -74,6 +81,32 @@ export function getMessage(data: MessageSystemIncoming): MessageSystemOutgoing {
                 activeNavigationConfigId,
                 schema: schemaDictionary[dataDictionary[0][activeDictionaryId].schemaId],
                 schemaDictionary,
+            };
+    }
+}
+
+/**
+ * Handles all validation messages
+ */
+function getValidationMessage(
+    data: ValidationMessageIncoming
+): ValidationMessageOutgoing {
+    switch (data.action) {
+        case MessageSystemValidationTypeAction.update:
+            validation[data.dictionaryId] = data.validationErrors;
+
+            return {
+                type: MessageSystemType.validation,
+                action: MessageSystemValidationTypeAction.update,
+                dictionaryId: data.dictionaryId,
+                validationErrors: data.validationErrors,
+            };
+        case MessageSystemValidationTypeAction.get:
+            return {
+                type: MessageSystemType.validation,
+                action: MessageSystemValidationTypeAction.get,
+                dictionaryId: data.dictionaryId,
+                validationErrors: validation[data.dictionaryId],
             };
     }
 }
