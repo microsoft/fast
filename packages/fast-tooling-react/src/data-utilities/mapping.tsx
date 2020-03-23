@@ -24,27 +24,29 @@ export function reactMapper(
 
         const allAvailableProps = Object.keys(config.schema[PropertyKeyword.properties]);
 
-        // a list of available slots for this element
-        const availableLinkedDataIds = allAvailableProps.filter((propName: string) => {
-            if (config.schema[PropertyKeyword.properties][propName][dictionaryLink]) {
-                return propName;
-            }
-        });
-
-        // a list of attributes for this element
-        const props = allAvailableProps.filter(potentialProp => {
-            // remove slots from the attributes list
-            return !availableLinkedDataIds.includes(potentialProp);
-        });
-
         config.dataDictionary[0][config.dictionaryId].data = {
             component: componentDictionary[config.schema.id],
-            props: props.reduce((previousValue: {}, currentValue: string) => {
-                return {
-                    ...previousValue,
-                    [currentValue]: allAvailableProps[currentValue],
-                };
-            }, {}),
+            props: allAvailableProps
+                .filter(potentialProp => {
+                    // remove slots from the attributes list
+                    return !allAvailableProps
+                        .filter((propName: string) => {
+                            if (
+                                config.schema[PropertyKeyword.properties][propName][
+                                    dictionaryLink
+                                ]
+                            ) {
+                                return propName;
+                            }
+                        })
+                        .includes(potentialProp);
+                })
+                .reduce((previousValue: {}, currentValue: string) => {
+                    return {
+                        ...previousValue,
+                        [currentValue]: allAvailableProps[currentValue],
+                    };
+                }, {}),
         };
     };
 }
