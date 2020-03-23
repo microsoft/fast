@@ -63,6 +63,28 @@ export function rgbToLinearLuminance(rgb: ColorRGBA64): number {
     return rgb.r * 0.2126 + rgb.g * 0.7152 + rgb.b * 0.0722;
 }
 
+/**
+ * Calculate an overlay color that uses rgba (rgb + alpha) that matches the appareance of a given solid color when placed on the same background
+ * @param rgbMatch The solid color the overlay should match in appearance when placed over the rgbBackground
+ * @param rgbBackground The background on which the overlay rests
+ * @param rgbOverlay The rgb color of the overlay. Typically this is either pure white or pure black. This color will be used in the returned output
+ * @returns The rgba (rgb + alpha) color of the overlay
+ */
+export function calculateOverlayColor(
+    rgbMatch: ColorRGBA64,
+    rgbBackground: ColorRGBA64,
+    rgbOverlay: ColorRGBA64
+): ColorRGBA64 {
+    const rChannel: number =
+        (rgbMatch.r - rgbBackground.r) / (rgbOverlay.r - rgbBackground.r);
+    const gChannel: number =
+        (rgbMatch.g - rgbBackground.g) / (rgbOverlay.g - rgbBackground.g);
+    const bChannel: number =
+        (rgbMatch.b - rgbBackground.b) / (rgbOverlay.b - rgbBackground.b);
+    const alpha: number = (rChannel + gChannel + bChannel) / 3;
+    return new ColorRGBA64(rgbOverlay.r, rgbOverlay.g, rgbOverlay.b, alpha);
+}
+
 // The alpha channel of the input is ignored
 export function rgbToHSL(rgb: ColorRGBA64): ColorHSL {
     const max: number = Math.max(rgb.r, rgb.g, rgb.b);

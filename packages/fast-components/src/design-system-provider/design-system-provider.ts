@@ -1,4 +1,10 @@
-import { attr, FastElement, observable, Observable } from "@microsoft/fast-element";
+import { parseColorHexRGB } from "@microsoft/fast-colors";
+import {
+    createColorPalette,
+    DesignSystem,
+    DesignSystemDefaults,
+} from "@microsoft/fast-components-styles-msft";
+import { FastElement, observable, Observable } from "@microsoft/fast-element";
 
 /**
  * The following interface is an implementation of
@@ -17,15 +23,12 @@ export interface DesignSystemData {
     outlineWidth: number;
 }
 
-function camelToKebab(str: string): string {
-    return str.replace(/([a-z])([A-Z])/g, "$1-$2").toLowerCase();
-}
-
 /**
  * Custom property reflector for the stub
  */
-function cssCustomProperty(target: {}, name: string): void {
+function designSystemProperty(target: DesignSystemProvider, name: string): void {
     const store = `_${name}`;
+    const callbackName = `${name}Changed`;
 
     Reflect.defineProperty(target, name, {
         enumerable: true,
@@ -37,43 +40,59 @@ function cssCustomProperty(target: {}, name: string): void {
             if (this[store] !== value) {
                 this[store] = value;
                 Observable.notify(this, name);
-                this.style.setProperty(`--${camelToKebab(name)}`, value);
+                this.designSystem = { ...this.designSystem, [name]: value };
+
+                if (typeof this[callbackName] === "function") {
+                    this[callbackName]();
+                }
             }
         },
     });
 }
 
 export class DesignSystemProvider extends FastElement implements DesignSystemData {
-    @cssCustomProperty
+    @designSystemProperty
     public accentBaseColor: string = "#0078D4";
+    private accentBaseColorChanged(): void {
+        const color = parseColorHexRGB(this.accentBaseColor);
+        if (color !== null) {
+            this.designSystem = {
+                ...this.designSystem,
+                accentPalette: createColorPalette(color),
+            };
+        }
+    }
 
-    @cssCustomProperty
+    @designSystemProperty
     public backgroundColor: string = "#FFFFFF";
 
-    @cssCustomProperty
+    @designSystemProperty
     public baseHeightMultiplier: number = 8;
 
-    @cssCustomProperty
+    @designSystemProperty
     public bodyFont: string = "Segoe UI, sans-serif";
 
-    @cssCustomProperty
+    @designSystemProperty
     public cornerRadius: number = 2;
 
-    @cssCustomProperty
+    @designSystemProperty
     public disabledOpacity = 0.3;
 
-    @cssCustomProperty
+    @designSystemProperty
     public density = 0;
 
-    @cssCustomProperty
+    @designSystemProperty
     public designUnit = 4;
 
-    @cssCustomProperty
+    @designSystemProperty
     public elevatedCornerRadius = 4;
 
-    @cssCustomProperty
-    public focusOutlineWidth: number = 2;
+    @designSystemProperty
+    public focusOutlineWidth = 2;
 
-    @cssCustomProperty
+    @designSystemProperty
     public outlineWidth = 1;
+
+    @observable
+    public designSystem: DesignSystem = DesignSystemDefaults;
 }
