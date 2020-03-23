@@ -6,13 +6,12 @@ import {
     keyCodeArrowDown,
     keyCodeArrowUp,
 } from "@microsoft/fast-web-utilities";
-//import { bool } from "../utilities";
+// import { bool } from "../utilities";
 
 export function bool(value: string | boolean | null): boolean {
     return typeof value === "boolean" ? value : typeof value === "string";
 }
 
-/* tslint:disable:member-ordering */
 export class Slider extends FormAssociated<HTMLInputElement> {
     @attr({ attribute: "readonly" })
     public readOnly: boolean; // Map to proxy element
@@ -34,6 +33,9 @@ export class Slider extends FormAssociated<HTMLInputElement> {
     public thumb: HTMLDivElement;
 
     @observable
+    public isDragging: boolean = false;
+
+    @observable
     public position: string;
     @observable
     public fullTrackWidth: number = 0;
@@ -48,7 +50,7 @@ export class Slider extends FormAssociated<HTMLInputElement> {
      * Default to "" to reach parity with input[type="range"]
      */
     @attr
-    public value: string = "5"; // Map to proxy element.
+    public value: string = "0"; // Map to proxy element.
     private valueChanged(): void {
         if (Number(this.value) === Number.NaN) {
             this.value = "0";
@@ -147,54 +149,35 @@ export class Slider extends FormAssociated<HTMLInputElement> {
      *  Handle mouse moves during a thumb drag operation
      */
     private handleThumbMouseDown = (event: MouseEvent): void => {
-        if (this.disabled || event.defaultPrevented) {
+        if (bool(this.readOnly) || bool(this.disabled) || event.defaultPrevented) {
             return;
         }
-
-        console.log("handleTHumbMouseMove event:", event);
 
         event.preventDefault();
         (event.target as HTMLElement).focus();
         window.addEventListener("mouseup", this.handleWindowMouseUp);
         window.addEventListener("mousemove", this.handleMouseMove);
-
-        // this.value = `${this.convertToConstrainedValue(dragValue)}`;
-        // this.updateForm();
-        // this.updateDragValue(
-        //     this.getDragValue(event, this.state.activeThumb),
-        //     this.state.activeThumb
-        // );
     };
 
     /**
      *  Handle mouse moves during a thumb drag operation
      */
     private handleMouseMove = (e: MouseEvent): void => {
-        if (this.disabled || e.defaultPrevented) {
+        if (bool(this.readOnly) || bool(this.disabled) || e.defaultPrevented) {
             return;
         }
-        const pixelCoordinate: number = e.clientX;
-        const dragValue: number =
-            (this.fullTrackWidth - this.fullTrackMinWidth) *
-                this.convertPixelToPercent(pixelCoordinate) +
-            this.fullTrackMinWidth;
+        this.isDragging = true;
 
         // update the value based on current position
-        const newPosition = this.convertPixelToPercent(e.pageX);
-        const newValue: number = (this.max - this.min) * newPosition + this.min;
+        this.value = `${this.calculateNewValue(e.pageX)}`;
+    };
 
-        console.log("e.pageX:", e.pageX);
-        console.log("e.clientX:", e.clientX);
-
-        console.log("dragValue:", dragValue);
-        console.log("better dragValue:", newValue);
-
-        this.value = `${this.convertToConstrainedValue(newValue)}`;
-
-        // this.updateDragValue(
-        //     this.getDragValue(event, this.state.activeThumb),
-        //     this.state.activeThumb
-        // );
+    private calculateNewValue = (rawValue: number): number => {
+        // update the value based on current position
+        const newPosition = this.convertPixelToPercent(rawValue);
+        return this.convertToConstrainedValue(
+            (this.max - this.min) * newPosition + this.min
+        );
     };
 
     /**
@@ -205,7 +188,7 @@ export class Slider extends FormAssociated<HTMLInputElement> {
     };
 
     private stopDragging = (): void => {
-        console.log("stopDragging called, removing window listeners ****");
+        this.isDragging = false;
         window.removeEventListener("mouseup", this.handleWindowMouseUp);
         window.removeEventListener("mousemove", this.handleMouseMove);
     };
@@ -224,10 +207,7 @@ export class Slider extends FormAssociated<HTMLInputElement> {
             window.addEventListener("mouseup", this.handleWindowMouseUp);
             window.addEventListener("mousemove", this.handleMouseMove);
 
-            // update the value based on current position
-            const newPosition = this.convertPixelToPercent(e.pageX);
-            const newValue: number = (this.max - this.min) * newPosition + this.min;
-            this.value = `${this.convertToConstrainedValue(newValue)}`;
+            this.value = `${this.calculateNewValue(e.pageX)}`;
             this.updateForm();
         }
     };

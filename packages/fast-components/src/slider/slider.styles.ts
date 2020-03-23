@@ -1,4 +1,5 @@
 import { css } from "@microsoft/fast-element";
+import { disabledCursor, display } from "../styles";
 
 export const SliderStyles = css`
     :host {
@@ -10,9 +11,30 @@ export const SliderStyles = css`
     :host([hidden]) {
         display: none;
     }
+
+    ${display("inline-flex")} :host {
+        align-items: center;
+        outline: none;
+        margin: calc(var(--design-unit) * 1px) 0;
+        ${/*
+           * Chromium likes to select label text or the default slot when
+           * the checkbox is clicked. Maybe there is a better solution here?
+           */ ""} user-select: none;
+    }
+
+    :host(.disabled) .label,
+    :host(.readonly) .label,
+    :host(.readonly) .checkbox,
+    :host(.disabled) .checkbox {
+        cursor: ${disabledCursor};
+    }
+    :host(.disabled) {
+        opacity: var(--disabled-opacity);
+    }
     .slider {
         position: relative;
         margin: 40px 4px;
+        width: 100%;
         box-sizing: border-box;
         border-radius: calc(var(--corner-radius) * 1px);
         outline: none;
