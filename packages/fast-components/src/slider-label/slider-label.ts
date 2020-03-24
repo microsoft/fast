@@ -18,11 +18,8 @@ export class SliderLabel extends FastElement {
     @attr
     public label: string;
 
-    @attr({ attribute: "show-mark" })
-    public showMark: boolean = true;
-
-    @attr
-    public orientation: string = "horizontal";
+    @attr({ attribute: "hide-mark" })
+    public hideMark: boolean = false;
 
     private sliderMax: number;
     private sliderMin: number;

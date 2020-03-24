@@ -134,7 +134,7 @@
             </svg>
         </fast-slider>
 
-        <!-- Required -->
+        <!-- Custom labels and thumb hide marks on labels -->
 
         <fast-slider
         label="Custom labels & thumb (step 10)"
@@ -144,6 +144,7 @@
         >
             <fast-slider-label
                 position="0"
+                hide-mark="true"
             >
                 <svg
                     slot="label"
@@ -160,10 +161,12 @@
             <fast-slider-label
                 position="50"
                 label="50"
+                hide-mark="true"
             >
             </fast-slider-label>            
             <fast-slider-label
                 position="100"
+                hide-mark="true"
             >
                 <svg
                     slot="label"
@@ -191,9 +194,8 @@
             </svg>
         </fast-slider>
 
-        <!-- Don't show tick marks -->
+        <!-- Disabled -->
         <fast-slider
-            label="No Tick Marks (step 5)"
             min="0"
             max="100"
             step="5"

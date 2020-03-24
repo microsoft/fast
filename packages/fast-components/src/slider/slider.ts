@@ -34,9 +34,6 @@ export class Slider extends FormAssociated<HTMLInputElement> {
 
     @observable
     public direction: string = "ltr";
-    private directionChanged(): void {
-        console.log("directionChanged called this.direction:", this.direction);
-    }
 
     @observable
     public position: string;

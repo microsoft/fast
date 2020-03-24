@@ -10,7 +10,7 @@ export const SliderLabelTemplate = html<SliderLabel>`
     >
         <div class="slider-label-container">
             ${when(
-                x => bool(x.showMark),
+                x => !bool(x.hideMark),
                 html`
                 <div class="mark">
                 </div>    
