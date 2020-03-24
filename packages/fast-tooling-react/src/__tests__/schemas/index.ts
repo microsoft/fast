@@ -11,6 +11,7 @@ import constSchema from "./const.schema";
 import controlPluginSchema from "./control-plugin.schema";
 import defaultsSchema from "./defaults.schema";
 import dictionarySchema from "./dictionary.schema";
+import disabledSchema from "./disabled.schema";
 import generalExampleSchema from "./general-example.schema";
 import generalSchema from "./general.schema";
 import invalidDataSchema from "./invalid-data.schema";
@@ -40,6 +41,7 @@ export {
     controlPluginSchema,
     defaultsSchema,
     dictionarySchema,
+    disabledSchema,
     generalExampleSchema,
     generalSchema,
     invalidDataSchema,
