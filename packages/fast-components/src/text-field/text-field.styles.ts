@@ -1,6 +1,7 @@
 import { css } from "@microsoft/fast-element";
 import { disabledCursor, display } from "../styles";
 import { focusVisible } from "../styles/focus";
+import { SystemColors } from "../styles/forced-colors";
 
 export const TextFieldStyles = css`
     ${display("inline-block")} :host {
@@ -104,5 +105,28 @@ export const TextFieldStyles = css`
 
     :host([disabled]) {
         opacity: var(--disabled-opacity);
+    }
+
+    @media (forced-colors: active) {
+        .root, :host(.filled) .root {
+            forced-color-adjust: none;
+            background: ${SystemColors.Field};
+            border-color: ${SystemColors.FieldText};
+        }
+
+        :host([disabled]) {
+            opacity: 1;
+        }
+        
+        :host([disabled]) .root {
+            border-color: ${SystemColors.GrayText};
+            background: ${SystemColors.Field};
+        }
+
+        
+        :host(:focus-within) .root {
+            border-color: ${SystemColors.Highlight};
+            box-shadow: 0 0 0 1px ${SystemColors.Highlight} inset;
+        }
     }
 `;

@@ -115,11 +115,6 @@ export const CheckboxStyles = css`
             border-color: ${SystemColors.GrayText};
         }
 
-        :host(.disabled) .label {
-            forced-color-adjust: none;
-            color: ${SystemColors.GrayText};
-        }
-
         :host(.disabled) .indeterminate-indicator {
             forced-color-adjust: none;
             background: ${SystemColors.GrayText};
