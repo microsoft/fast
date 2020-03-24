@@ -122,7 +122,7 @@ While testing is still TBD for our web components, I would expect this to align 
 
 ## Overview
 
-The `slider-label` component provides a default styled label to be placed inside a `slider` component. Users can choose to not show the mark as well as provide custom label content.
+The `slider-label` component provides a default styled label to be placed inside a `slider` component. Users can choose to hide the mark as well as provide custom label content.
 
 ### Use Cases
 
@@ -135,7 +135,7 @@ If they use <slider-label> elements those will be styled a specific way internal
 - `slider-label`
 
 *Attributes*
-- `show-mark` - boolean to show/hide the mark. Default is show.
+- `hide-mark` - boolean to show/hide the mark. Default is false.
 - `position` - used to position the label at the corresponding value on the track
 
 *Slots*
@@ -155,7 +155,7 @@ If they use <slider-label> elements those will be styled a specific way internal
 >
     <div class="slider-label-container">
         ${when(
-            x => bool(x.showMark),
+            x => bool(x.hideMark),
             html`
             <div class="mark">
             </div>    
@@ -178,7 +178,7 @@ If they use <slider-label> elements those will be styled a specific way internal
 
 ```html
 <fast-slider-label
-  show-mark="false"
+  hide-mark="true"
   position="0"
 >
   <svg path="..."></svg>
