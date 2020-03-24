@@ -676,7 +676,7 @@ class HorizontalOverflow extends Foundation<
      */
     private getItemWidths(): number[] {
         if (isNil(this.horizontalOverflowItemsRef.current)) {
-            return null;
+            return [];
         }
         const items: HTMLElement[] = Array.prototype.slice.call(
             this.horizontalOverflowItemsRef.current.childNodes
