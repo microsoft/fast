@@ -1,5 +1,6 @@
 import { css } from "@microsoft/fast-element";
 import { disabledCursor, display } from "../styles";
+import { focusVisible } from "../styles/focus";
 
 export const TextAreaStyles = css`
     ${display("inline-block")} :host {
@@ -17,8 +18,10 @@ export const TextAreaStyles = css`
         border: calc(var(--outline-width) * 1px) solid var(--neutral-outline-rest);
         height: calc(var(--height-number) * 2px);
         font: inherit;
-        ${/* Font size, weight, and line height are temporary - 
-            replace when adaptive typography is figured out */ ""} font-size: 14px;
+        ${
+            /* Font size, weight, and line height are temporary - 
+            replace when adaptive typography is figured out */ ""
+        } font-size: 14px;
         font-weight: 400px;
         line-height: 20px;
         padding-top: calc(var(--design-unit) * 1.5);
@@ -33,7 +36,7 @@ export const TextAreaStyles = css`
     }
 
     .control:hover,
-    .control:focus,
+    .control:${focusVisible},
     .control:disabled,
     .control:active {
         outline: none;
@@ -70,8 +73,10 @@ export const TextAreaStyles = css`
         display: block;
         color: var(--neutral-foreground-rest);
         cursor: pointer;
-        ${/* Font size, weight, and line height temporary - 
-            replace when adaptive typography is figured out */ ""} font-size: 14px;
+        ${
+            /* Font size, weight, and line height temporary - 
+            replace when adaptive typography is figured out */ ""
+        } font-size: 14px;
         font-weight: 400px;
         line-height: 20px;
         margin-bottom: 4px;

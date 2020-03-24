@@ -1,5 +1,6 @@
 import { css } from "@microsoft/fast-element";
 import { disabledCursor, display } from "../styles";
+import { focusVisible } from "../styles/focus";
 
 export const TextFieldStyles = css`
     ${display("inline-block")} :host {
@@ -30,13 +31,15 @@ export const TextFieldStyles = css`
         margin-bottom: auto;
         border: none;
         padding: 0 calc(var(--design-unit) * 2px + 1px);
-        ${/* Font size is temporary - 
-            replace when adaptive typography is figured out */ ""} font-size: 14px;
+        ${
+            /* Font size is temporary - 
+            replace when adaptive typography is figured out */ ""
+        } font-size: 14px;
         line-height: 20px;
     }
 
     .control:hover,
-    .control:focus,
+    .control:${focusVisible},
     .control:disabled,
     .control:active {
         outline: none;
@@ -46,15 +49,19 @@ export const TextFieldStyles = css`
         display: block;
         color: var(--neutral-foreground-rest);
         cursor: pointer;
-        ${/* Font size is temporary - 
-            replace when adaptive typography is figured out */ ""} font-size: 14px;
+        ${
+            /* Font size is temporary - 
+            replace when adaptive typography is figured out */ ""
+        } font-size: 14px;
         margin-bottom: 4px;
     }
 
     .before-content,
     .after-content {
-        ${/* Glyph size and margin-left is temporary - 
-            replace when adaptive typography is figured out */ ""} width: 16px;
+        ${
+            /* Glyph size and margin-left is temporary - 
+            replace when adaptive typography is figured out */ ""
+        } width: 16px;
         height: 16px;
         margin: auto;
         fill: var(--neutral-foreground-rest);
