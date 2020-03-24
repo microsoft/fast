@@ -207,7 +207,7 @@ The component allows users to set a "Positioning Mode" on each axis which define
 *Attributes:*
 - anchor - The html id of the HTMLElement used as the anchor around which the positioning region is placed.  This must be set for the component's positioning logic to be active.
 
-- viewport - Used to identify the HTMLElement used as the viewport the component uses to determine available layout space around the anchor element. Possible values are the id of the desired viewport element, '#document' or '#parent'.  The default value is '#parent'.
+- viewport - The ID of the HTMLElement to be used as the viewport used to determine available layout space around the anchor element.  If unset the parent element of the anchored region is used.
 
 - horizontal-positioning-mode - Can be 'uncontrolled', 'locktodefault', 'dynamic' or 'onetime'.  Default is 'uncontrolled'.
 - horizontal-default-position - Can be 'start', 'end', 'left', 'right' or 'unset'.  Default is 'unset'
@@ -233,18 +233,20 @@ The component allows users to set a "Positioning Mode" on each axis which define
 
 ### Anatomy and Appearance
 **Structure:**
+
+The host template by default has a height and width of 0, although authors can override this.  Generally having a fixed size wrapper around the anchored region is useful to prevent changes in the dimensions of the region from causing changes to the parent layout.
+
 ```
-<div class="root">
-    <slot></slot>
-</div>
+  <template>
+      <div
+          class="region"
+          ${ref("region")}
+          style="...positioning styles..."
+    >
+    <slot>Custom content</slot>
+    </div>
+  </template>
 ```
-
-**Appearance:**
-
-Parts:
-- root - the root of the anchored-region
-
----
 
 ## Implementation
 
