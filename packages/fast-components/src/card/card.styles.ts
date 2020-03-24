@@ -1,6 +1,6 @@
 import { css } from "@microsoft/fast-element";
 import { display, elevation } from "../styles";
-import { SystemColors } from "../styles/forced-colors";
+import { SystemColors } from "../styles/system-colors";
 
 export const CardStyles = css`
     ${display("block")} :host {

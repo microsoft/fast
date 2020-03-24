@@ -1,7 +1,7 @@
 import { css } from "@microsoft/fast-element";
 import { disabledCursor, display } from "../styles";
 import { focusVisible } from "../styles/focus";
-import { SystemColors } from "../styles/forced-colors";
+import { SystemColors } from "../styles/system-colors";
 
 export const SwitchStyles = css`
     :host([hidden]) {
@@ -151,11 +151,6 @@ export const SwitchStyles = css`
         :host(.disabled) .switch {
             background: ${SystemColors.Field};
             border-color: ${SystemColors.GrayText};
-        }
-
-        :host(.disabled) .label {
-            forced-color-adjust: none;
-            color: ${SystemColors.GrayText};
         }
     }
 `;

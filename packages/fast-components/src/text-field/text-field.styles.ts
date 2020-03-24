@@ -1,7 +1,7 @@
 import { css } from "@microsoft/fast-element";
 import { disabledCursor, display } from "../styles";
 import { focusVisible } from "../styles/focus";
-import { SystemColors } from "../styles/forced-colors";
+import { SystemColors } from "../styles/system-colors";
 
 export const TextFieldStyles = css`
     ${display("inline-block")} :host {

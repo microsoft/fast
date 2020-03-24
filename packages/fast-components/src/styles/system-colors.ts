@@ -1,7 +1,7 @@
 /**
- * Define system colors for use
+ * Define system colors for use in CSS stylesheets.
+ *
  * https://drafts.csswg.org/css-color/#css-system-colors
- * https://developer.mozilla.org/en-US/docs/Web/CSS/@media/forced-colors
  */
 export enum SystemColors {
     Canvas = "Canvas",
