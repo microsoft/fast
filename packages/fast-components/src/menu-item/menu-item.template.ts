@@ -11,26 +11,6 @@ export const MenuItemTemplate = html<MenuItem>`
         @keydown=${(x, c) => x.handleMenuItemKeyDown(c.event as KeyboardEvent)}
         @click=${(x, c) => x.handleMenuItemClick(c.event as MouseEvent)}
     >
-        <span
-            part="before-content"
-            ${ref("beforeContentContainer")}
-            @slotchange=${x => x.handleBeforeContentChange()}
-        >
-            <slot
-                name="before-content"
-                ${ref("beforeContent")}
-            ></slot>
-        </span>
         <slot></slot>
-        <span
-            part="after-content"
-            ${ref("afterContentContainer")}
-            @slotchange=${x => x.handleAfterContentChange()}
-        >
-            <slot
-                name="after-content"
-                ${ref("afterContent")}
-            ></slot>
-        </span>
     </template>
 `;
