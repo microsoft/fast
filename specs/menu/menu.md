@@ -1,4 +1,4 @@
-# Menu
+# Menu + Menu Item
 
 ## Overview
 
@@ -33,19 +33,19 @@ Infinite nesting of menus (submenus) presents a challenge for keyboard navigatio
     <fast-menu-item>Menu item two</fast-menu-item>
     <fast-menu-item>
         Menu item three
-        <fast-menu>
-            <fast-menu-item slot="item">Nested item one</fast-menu-item>
-            <fast-menu-item slot="item">Nested item two</fast-menu-item>
+        <fast-menu slot="item">
+            <fast-menu-item>Nested item one</fast-menu-item>
+            <fast-menu-item>Nested item two</fast-menu-item>
             <fast-menu-item>
                 Nested item three
-                <fast-menu>
-                    <fast-menu-item slot="item">Nested item one</fast-menu-item>
-                    <fast-menu-item slot="item">Nested item two</fast-menu-item>
+                <fast-menu slot="item">
+                    <fast-menu-item>Nested item one</fast-menu-item>
+                    <fast-menu-item>Nested item two</fast-menu-item>
                 </fast-menu>
             </fast-menu-item>
         </fast-menu>
     </fast-menu-item>
-    <fast-menu-item>Menu item four</fast-tree-item>
+    <fast-menu-item>Menu item four</fast-menu-item>
 </fast-context-menu>
 ```
 
@@ -54,12 +54,12 @@ Infinite nesting of menus (submenus) presents a challenge for keyboard navigatio
 Consider a scenario where we have the following menu - some menu items have glyphs, others do not:
 ```html
 <fast-menu>
-    <fast-menu-item slot="item">Menu item one</fast-menu-item>
-    <fast-menu-item slot="item">Menu item two</fast-menu-item>
-    <fast-menu-item slot="item">
+    <fast-menu-item>Menu item one</fast-menu-item>
+    <fast-menu-item>Menu item two</fast-menu-item>
+    <fast-menu-item>
         <fancy-icon slot="icon"></fany-icon>
         Menu item three
-    </fast-tree-item>
+    </fast-menu-item>
 </fast-context-menu>
 ```
 The third item in the menu has a glyph, which would inset the text from the other menu items. To ensure that the content of this menu item aligns with the rest of the items, all items need to visually shift to ensure alignmnet of the menu content. This presents an interesting challenge for how we will communicate these changes to ensure the styling is appropriately applied. Ultimately, the parent just needs to know that *one* of the items below has a menu item with the glyph.
@@ -131,9 +131,9 @@ The third item in the menu has a glyph, which would inset the text from the othe
 | default | ![](./images/menu.png)
 | with glyph | ![](./images/menu-glyph.png)
 
-The menu has no named slots or parts - it has a default slot for tree items.
+The menu has no named slots or parts - it has a default slot for menu items.
 
-Flat tree:
+Flat menu:
 ```html
 <fast-menu>
     <fast-menu-item>Root node one</fast-menu-item>
@@ -143,7 +143,7 @@ Flat tree:
 </fast-menu>
 ```
 
-Nested tree:
+Nested menu:
 ```html
 <fast-menu>
     <fast-menu-item>Menu item one</fast-menu-item>
@@ -151,18 +151,18 @@ Nested tree:
     <fast-menu-item>
         Menu item three
         <fast-menu slot="item">
-            <fast-menu-item slot="item">Nested item one</fast-menu-item>
-            <fast-menu-item slot="item">Nested item two</fast-menu-item>
-            <fast-menu-item slot="item">
+            <fast-menu-item>Nested item one</fast-menu-item>
+            <fast-menu-item>Nested item two</fast-menu-item>
+            <fast-menu-item>
                 Nested item three
                 <fast-menu slot="item">
-                    <fast-menu-item slot="item">Nested item one</fast-menu-item>
-                    <fast-menu-item slot="item">Nested item two</fast-menu-item>
+                    <fast-menu-item>Nested item one</fast-menu-item>
+                    <fast-menu-item>Nested item two</fast-menu-item>
                 </fast-menu>
             </fast-menu-item>
         </fast-menu>
     </fast-menu-item>
-    <fast-menu-item>Menu item four</fast-tree-item>
+    <fast-menu-item>Menu item four</fast-menu-item>
 </fast-context-menu>
 ```
 
@@ -188,16 +188,13 @@ Nested tree:
 
 Checked:
 
- A parent node with child nodes can be either expanded or collapsed (not expanded). The following state transitions or interactions are all valid:
+ A menu with menuitemcheckbox or menuitemradio roles can be "checked".
 
- - the control may be initialized with no parent nodes expanded
- - the control may be initialized with all or some parent nodes expanded
- - clicking on the expand/collapse button will expand or collapse a parent node
- - in a vertical tree, when a parent node has focus, right arrow expands and left arrow collapses the parent node.
- - in a vertical tree, when a parent node has focus, space bar expands and collapses the tree.
+ - the control may be initialized in the checked state
+ - clicking on the control or using enter/spacebar would set the item as checked
 
 Disabled:
-
+- disabled menu items are focusable but cannot be activated.
 
 ### Accessibility
 
