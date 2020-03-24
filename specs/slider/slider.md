@@ -22,7 +22,7 @@ A developer can inject labels on the slider into the default slot, if they use <
 A designer can override any internal styling applied to the slotted labels, the background track, the slider track and the thumb(s) if appropriate.
   
 ### Features
-- Implement your own lower and upper thumb UI, default provided
+- Implement your own thumb UI, default provided
 - Implement your own background and slider track UI, default provided
 - Handle the `slider`'s `onValueChange` callback to be notified when the value has changed.
 - Customize the tick marks along the track
