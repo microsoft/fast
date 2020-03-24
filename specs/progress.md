@@ -2,7 +2,7 @@
 
 ## Overview
 
-*Progress* and *progress ring* is used to display the length of time a process will take or to visualize percentage value (referred to as a **determinate** state) and to represent an unspecified wait time (referred to as an **indeterminate** state). *Progress* components are typically visually represented by a circular or linear animation. When the `value` attribute is passed the state is **determinate**, otherwise it is **indeterminate**.
+*Progress* and *progress ring* are used to display the length of time a process will take or to visualize percentage value (referred to as a **determinate** state) and to represent an unspecified wait time (referred to as an **indeterminate** state). *Progress* components are typically visually represented by a circular or linear animation. When the `value` attribute is passed the state is **determinate**, otherwise it is **indeterminate**.
 
 ### Use Cases
 
@@ -76,7 +76,7 @@ A progress should allow the following attributes:
 </fast-progress-ring>
 ```
 
-*Orogress Ring Indeterminate Template:*
+*Progress Ring Indeterminate Template:*
 ```
 <fast-progress-ring role="progressbar">
     <slot name="indeterminate" slot="indeterminate">
