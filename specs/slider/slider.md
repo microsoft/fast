@@ -52,6 +52,7 @@ A designer can override any internal styling applied to the slotted labels, the 
 *Slots*
 - `background-track` - the horizontal or vertical track along which the thumb slides
 - `thumb` - the control the user drags along the track to change the value of the slider
+- `default` slot - Providing child elements to the `fast-slider` will be hosted in the default slot and presented as track labels. See `fast-slider-label` below.
 
 ### Anatomy and Appearance
 **Structure:**
@@ -85,7 +86,6 @@ A designer can override any internal styling applied to the slotted labels, the 
     max="100"
     step="10"
 >
-    <h2 slot="label"><b>Density</b></h2>
     <div slot="thumb"><img src="..."/></div>
     <fast-slider-label
       label="50"
@@ -139,10 +139,10 @@ If they use <slider-label> elements those will be styled a specific way internal
 - `position` - used to position the label at the corresponding value on the track
 
 *Slots*
-- `mark`
+- `label` - replace the label with your dom
 
 *Parts*
-- `label`
+- `label` - style the label shown under the mark
 
 ### Anatomy and Appearance
 **Structure:**
@@ -163,7 +163,7 @@ If they use <slider-label> elements those will be styled a specific way internal
         )}
         <div class="label-positioner">
             <slot name="label">
-                <span class="label"}>
+                <span part="label" class="label"}>
                     ${x => x.label}
                 </span>
             </slot>
