@@ -23,7 +23,6 @@ export const SliderStyles = css`
     }
     .slider {
         position: relative;
-        margin: 40px 4px;
         width: 100%;
         box-sizing: border-box;
         border-radius: calc(var(--corner-radius) * 1px);
