@@ -5,7 +5,7 @@ export interface Parent {
     id: string;
 
     /**
-     * The data location of the parent data blob in the dictionary
+     * The data location of the data within the parent data blob
      */
     dataLocation: string;
 }
