@@ -102,7 +102,7 @@ export const CheckboxStyles = css`
             background: ${SystemColors.FieldText};
         }
         
-        :host(:focus) .checkbox {
+        :host(:${focusVisible}) .checkbox {
             border-color: ${SystemColors.Highlight};
         }
 
