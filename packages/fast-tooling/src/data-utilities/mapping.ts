@@ -1,5 +1,5 @@
-import { get, set } from "lodash-es";
-import { Data, SchemaDictionary } from "../message-system";
+import { cloneDeep, get } from "lodash-es";
+import { Data, DataDictionary, LinkedData, SchemaDictionary } from "../message-system";
 import {
     DataType,
     ElementDictionary,
@@ -11,13 +11,12 @@ export interface MapperConfig<T> {
     /**
      * Data that maps to the JSON schema
      */
-    data: any;
+    dataDictionary: DataDictionary<any>;
 
     /**
-     * The data that has been previously
-     * resolved from the mapper
+     * The ID of the current dictionary item
      */
-    resolvedData: T;
+    dictionaryId: string;
 
     /**
      * JSON schema
@@ -25,16 +24,72 @@ export interface MapperConfig<T> {
     schema: any;
 }
 
-interface MapDataDictionaryConfig<T> {
+export interface MapDataConfig<T> {
+    /**
+     * Data that maps to the JSON schema
+     */
+    dataDictionary: DataDictionary<any>;
+
+    /**
+     * The dictionary of JSON schema that maps
+     * to data in the dictionary of data
+     */
+    schemaDictionary: SchemaDictionary;
+
+    /**
+     * The mapper that will update the data in the dictionary
+     */
+    mapper: (config: MapperConfig<T>) => T;
+
+    /**
+     * The resolver that resolves the data dictionary into another structure
+     */
+    resolver: (config: ResolverConfig<T>) => T;
+}
+
+interface AttachResolvedDataDictionaryConfig<T> {
+    /**
+     * The data resolved to a specified type
+     */
+    resolvedData: T;
+
+    /**
+     * Data that maps to the JSON schema
+     */
+    dataDictionary: DataDictionary<any>;
+
+    /**
+     * The dictionary of JSON schema that maps
+     * to data in the dictionary of data
+     */
+    schemaDictionary: SchemaDictionary;
+
+    /**
+     * The data items in the reversed order from children to parent
+     */
+    items: string[];
+
+    /**
+     * The resolver that resolves the data dictionary into another structure
+     */
+    resolver: (config: ResolverConfig<T>) => T;
+}
+
+interface ResolveDataInDataDictionaryConfig<T> {
     /**
      * The dictionary of data
      */
-    dataDictionary: { [key: string]: Data<unknown> };
+    dataDictionary: DataDictionary<unknown>;
 
     /**
      * The dictionary of data key
      */
-    dataDictionaryKey: string;
+    dictionaryId: string;
+
+    /**
+     * The array of resolved IDs
+     */
+    resolvedDictionaryIds: string[];
 
     /**
      * The dictionary of JSON schema that maps
@@ -48,51 +103,144 @@ interface MapDataDictionaryConfig<T> {
     mapper: (config: MapperConfig<T>) => T;
 }
 
-/**
- * Maps the data in a dictionary to a mapping function
- * should result in a data tree
- */
-export function mapDataDictionary<T>(config: MapDataDictionaryConfig<T>): T {
-    const resolvedData: any = config.dataDictionary[config.dataDictionaryKey].data;
-    Object.entries(config.dataDictionary).map(
-        ([key, value]: [string, Data<unknown>]): void => {
-            if (value.parent && value.parent.id === config.dataDictionaryKey) {
-                set(
-                    resolvedData,
-                    value.parent.dataLocation,
-                    mapDataDictionary({
-                        dataDictionary: config.dataDictionary,
-                        dataDictionaryKey: key,
-                        schemaDictionary: config.schemaDictionary,
-                        mapper: config.mapper,
-                    })
+export interface ResolverConfig<T> {
+    /**
+     * The data resolved to a specified type
+     */
+    resolvedData: T;
+
+    /**
+     * The dictionary of data
+     */
+    dataDictionary: DataDictionary<any>;
+
+    /**
+     * The dictionary of JSON schema that maps
+     * to data in the dictionary of data
+     */
+    schemaDictionary: SchemaDictionary;
+
+    /**
+     * The ID of the item in the dictionary
+     */
+    dictionaryId: string;
+
+    /**
+     * The parent of the dictionary item
+     */
+    parent: string | null;
+}
+
+export function mapDataDictionary<T>(config: MapDataConfig<T>): T {
+    // clone the data given, this will be mutated
+    const clonedData = cloneDeep(config.dataDictionary);
+    // The items as they are resolved
+    const resolvedDictionaryIds: string[] = [];
+
+    // map the dictionary items to the cloned data
+    // store the dictionary items as a list in order
+    resolveDataInDataDictionary({
+        dataDictionary: clonedData,
+        resolvedDictionaryIds,
+        dictionaryId: clonedData[1],
+        schemaDictionary: config.schemaDictionary,
+        mapper: config.mapper,
+    });
+
+    // resolve the data dictionary items up the tree
+    return attachResolvedDataDictionary({
+        resolvedData: undefined,
+        dataDictionary: clonedData,
+        schemaDictionary: config.schemaDictionary,
+        items: resolvedDictionaryIds.reverse(),
+        resolver: config.resolver,
+    });
+}
+
+export function resolveDataInDataDictionary<T>(
+    config: ResolveDataInDataDictionaryConfig<T>
+): void {
+    config.resolvedDictionaryIds.push(config.dictionaryId);
+
+    // find all linked data for this piece of data
+    let linkedDataIds: string[] = [];
+
+    Object.entries(config.dataDictionary[0]).map(
+        ([key]: [string, Data<unknown>]): void => {
+            if (
+                config.dataDictionary[0][key].parent &&
+                config.dataDictionary[0][key].parent.id === config.dictionaryId &&
+                !linkedDataIds.includes(key)
+            ) {
+                linkedDataIds = linkedDataIds.concat(
+                    (config.dataDictionary[0][config.dataDictionary[0][key].parent.id]
+                        .data as object)[
+                        config.dataDictionary[0][key].parent.dataLocation
+                    ].map(
+                        (slotItem: LinkedData): string => {
+                            return slotItem.id;
+                        }
+                    )
                 );
             }
         }
     );
 
-    return config.mapper({
-        data: config.dataDictionary[config.dataDictionaryKey].data,
-        resolvedData,
+    config.mapper({
+        dictionaryId: config.dictionaryId,
+        dataDictionary: config.dataDictionary,
         schema:
             config.schemaDictionary[
-                config.dataDictionary[config.dataDictionaryKey].schemaId
+                config.dataDictionary[0][config.dictionaryId].schemaId
             ],
     });
+
+    // call the resolver on all children
+    linkedDataIds.map(
+        (key: string): void => {
+            resolveDataInDataDictionary({
+                dataDictionary: config.dataDictionary,
+                dictionaryId: key,
+                resolvedDictionaryIds: config.resolvedDictionaryIds,
+                schemaDictionary: config.schemaDictionary,
+                mapper: config.mapper,
+            });
+        }
+    );
+}
+
+function attachResolvedDataDictionary<T>(
+    config: AttachResolvedDataDictionaryConfig<T>
+): T {
+    for (let i = 0, itemsLength = config.items.length; i < itemsLength; i++) {
+        config.resolvedData = config.resolver({
+            resolvedData: config.resolvedData,
+            dataDictionary: config.dataDictionary,
+            schemaDictionary: config.schemaDictionary,
+            dictionaryId: config.items[i],
+            parent: config.dataDictionary[0][config.items[i]].parent
+                ? config.dataDictionary[0][config.items[i]].parent.id
+                : null,
+        });
+    }
+
+    return config.resolvedData;
 }
 
 /**
  * This is the HTML mapper to be used with mapDataDictionary
- * which will return HTML elements
+ * which will map items in the data dictionary to HTMLElement or Text
  */
 export function htmlMapper(
     elementDictionary: ElementDictionary
-): (config: MapperConfig<any>) => HTMLElement | string {
-    return (config: MapperConfig<string>): HTMLElement | string => {
-        let mappedData: HTMLElement | string;
+): (config: MapperConfig<string>) => void {
+    return (config: MapperConfig<string>): void => {
+        const data = config.dataDictionary[0][config.dictionaryId].data;
 
-        if (typeof config.resolvedData === "string") {
-            mappedData = config.resolvedData;
+        if (typeof data === "string") {
+            config.dataDictionary[0][config.dictionaryId].data = document.createTextNode(
+                data
+            );
         } else if (
             config.schema.type === DataType.object &&
             config.schema[ReservedElementMappingKeyword.mapsToTagName] &&
@@ -113,65 +261,55 @@ export function htmlMapper(
                 const availableElementSlots = elementDefinition.slots.map(elementSlot => {
                     return elementSlot.name;
                 });
-                // a list of current slots used for this element
-                const elementSlots = Object.keys(config.resolvedData).filter(
-                    potentialAttribute => {
-                        // remove slots from the attributes list
-                        return availableElementSlots.includes(
-                            get(
-                                config.schema,
-                                // This makes an assumption that the schema will not be wrapped with any special
-                                // keywords such as oneOf or anyOf
-                                `${PropertyKeyword.properties}[${potentialAttribute}][${
-                                    ReservedElementMappingKeyword.mapsToSlot
-                                }]`
-                            )
-                        );
-                    }
-                );
                 // a list of attributes for this element
-                const elementAttributes = Object.keys(config.resolvedData).filter(
-                    potentialAttribute => {
-                        // remove slots from the attributes list
-                        return !availableElementSlots.includes(
-                            get(
-                                config.schema,
-                                `${PropertyKeyword.properties}[${potentialAttribute}][${
-                                    ReservedElementMappingKeyword.mapsToSlot
-                                }]`
-                            )
-                        );
-                    }
-                );
+                const elementAttributes = Object.keys(data).filter(potentialAttribute => {
+                    // remove slots from the attributes list
+                    return !availableElementSlots.includes(
+                        get(
+                            config.schema,
+                            `${PropertyKeyword.properties}[${potentialAttribute}][${
+                                ReservedElementMappingKeyword.mapsToSlot
+                            }]`
+                        )
+                    );
+                });
                 elementAttributes.forEach(elementAttribute => {
-                    newElement.setAttribute(
-                        elementAttribute,
-                        config.resolvedData[elementAttribute]
-                    );
-                });
-                elementSlots.forEach(elementSlot => {
-                    const slotName = get(
-                        config.schema,
-                        // This makes an assumption that the schema will not be wrapped with any special
-                        // keywords such as oneOf or anyOf
-                        `${PropertyKeyword.properties}[${elementSlot}][${
-                            ReservedElementMappingKeyword.mapsToSlot
-                        }]`
-                    );
-                    if (
-                        slotName !== "" &&
-                        typeof config.resolvedData[elementSlot] !== "string"
-                    ) {
-                        config.resolvedData[elementSlot].setAttribute("slot", slotName);
-                    }
-
-                    newElement.append(config.resolvedData[elementSlot]);
+                    newElement.setAttribute(elementAttribute, data[elementAttribute]);
                 });
 
-                mappedData = newElement;
+                config.dataDictionary[0][config.dictionaryId].data = newElement;
             }
         }
-
-        return mappedData;
     };
+}
+
+/**
+ * The resolver for an HTML data dictionary
+ */
+export function htmlResolver(config: ResolverConfig<any>): HTMLElement | Text {
+    if (config.dataDictionary[1] !== config.dictionaryId) {
+        config.dataDictionary[0][
+            config.dataDictionary[0][config.dictionaryId].parent.id
+        ].data.prepend(config.dataDictionary[0][config.dictionaryId].data);
+
+        const slotName: boolean = get(
+            config.schemaDictionary,
+            `[${
+                config.dataDictionary[0][
+                    config.dataDictionary[0][config.dictionaryId].parent.id
+                ].schemaId
+            }][${PropertyKeyword.properties}][${
+                config.dataDictionary[0][config.dictionaryId].parent.dataLocation
+            }][${ReservedElementMappingKeyword.mapsToSlot}]`
+        );
+
+        if (typeof slotName === "string" && slotName !== "") {
+            config.dataDictionary[0][config.dictionaryId].data.setAttribute(
+                "slot",
+                slotName
+            );
+        }
+    }
+
+    return config.dataDictionary[0][config.dictionaryId].data;
 }
