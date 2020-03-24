@@ -4,4 +4,5 @@ export enum MessageSystemType {
     navigation = "navigation",
     navigationDictionary = "navigation-dictionary",
     initialize = "initialize",
+    validation = "validation",
 }
