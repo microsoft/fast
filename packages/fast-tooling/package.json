@@ -74,7 +74,8 @@
         "typescript": "^3.3.3"
     },
     "peerDependencies": {
-        "lodash-es": "^4.0.0"
+        "lodash-es": "^4.0.0",
+        "ajv": "^6.10.0"
     },
     "dependencies": {
     }
