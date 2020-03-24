@@ -4,22 +4,22 @@ import { SliderLabel } from "./slider-label";
 
 export const SliderLabelTemplate = html<SliderLabel>`
     <div
-        part="sliderlabel"
-        class="sliderlabel"
+        part="slider-label"
+        class="slider-label"
         style=${x => x.positionStyle}
     >
-        <div class="sliderLabel-container">
+        <div class="slider-label-container">
             ${when(
                 x => bool(x.showMark),
                 html`
-                <div class="sliderLabel-mark">
+                <div class="mark">
                 </div>    
             `
             )}
-            <div class="sliderLabel-labelPositioner">
+            <div class="label-positioner">
                 <slot name="label">
-                    <span class="sliderLabel-label"}>
-                    ${x => x.label}
+                    <span class="label"}>
+                        ${x => x.label}
                     </span>
                 </slot>
             </div>

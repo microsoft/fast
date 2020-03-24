@@ -5,7 +5,6 @@ export const SliderStyles = css`
     :host {
         --thumb-size: calc(var(--height-number) * 0.5);
         --thumb-translate: calc(var(--thumb-size) * 0.5);
-        --track-offset: 12;
         display: block;
     }
     :host([hidden]) {
@@ -21,16 +20,6 @@ export const SliderStyles = css`
            * Chromium likes to select label text or the default slot when
            * the checkbox is clicked. Maybe there is a better solution here?
            */ ""} user-select: none;
-    }
-
-    :host(.disabled) .label,
-    :host(.readonly) .label,
-    :host(.readonly) .checkbox,
-    :host(.disabled) .checkbox {
-        cursor: ${disabledCursor};
-    }
-    :host(.disabled) {
-        opacity: var(--disabled-opacity);
     }
     .slider {
         position: relative;
@@ -56,8 +45,6 @@ export const SliderStyles = css`
         display: grid;
         grid-template-rows: 16px 1fr;
     }
-    .track {
-    }
     .thumb-container {
         position: absolute;
         right: 50%;
@@ -79,5 +66,14 @@ export const SliderStyles = css`
         "&:active": {
             background: var(--neutral-foreground-active);
         }
+    }
+    :host(.disabled) .label,
+    :host(.readonly) .label,
+    :host(.readonly) .checkbox,
+    :host(.disabled) .checkbox {
+        cursor: ${disabledCursor};
+    }
+    :host(.disabled) {
+        opacity: var(--disabled-opacity);
     }
 `;

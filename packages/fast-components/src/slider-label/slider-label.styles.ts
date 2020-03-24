@@ -1,31 +1,35 @@
 import { css } from "@microsoft/fast-element";
 
 export const SliderLabelStyles = css`
-    .sliderlabel {
+    :host {
+        --half-thumb-size: calc(var(--height-number) * 0.25);
+        display: block;
+    }
+    .slider-label {
         position: absolute;
         align-self: start;
         grid-row: 2;
         margin-top: -2;
         display: grid;
     }
-    .sliderLabel-container {
+    .slider-label-container {
         display: grid;
         justify-self: center;
         grid-template-rows: auto auto;
         grid-template-columns: 0;
     }
-    .sliderLabel-label {
+    .label {
         width: 18px;
         justify-self: center;
     }
-    .sliderLabel-labelPositioner {
+    .label-positioner {
         justify-self: center;
         width: 18px;
         margin: 2px 0;
     }
-    .sliderLabel-mark {
+    .mark {
         width: 2px;
-        height: 8px;
+        height: calc(var(--half-thumb-size) * 1px);
         background: var(--neutral-outline-rest);
         justify-self: center;
     }

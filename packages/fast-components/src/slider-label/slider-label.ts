@@ -57,23 +57,4 @@ export class SliderLabel extends FastElement {
             ? `right: ${leftNum}%; left: ${rightNum}%;`
             : `left: ${leftNum}%; right: ${rightNum}%;`;
     };
-
-    // private convertPixelToPercent = (pixelPos: number): number => {
-    //     let pct: number = 0;
-    //     pct = (pixelPos - this.sliderMinimumPosition) / this.sliderWidth;
-    //     if (pct < 0) {
-    //         pct = 0;
-    //     } else if (pct > 1) {
-    //         pct = 1;
-    //     }
-    //     // if (
-    //     //     this.state.direction === Direction.rtl &&
-    //     //     this.props.orientation !== SliderOrientation.vertical
-    //     // ) {
-    //     //     pct = 1 - pct;
-    //     // }
-    //     return pct;
-    // };
-
-    public disconnectedCallback(): void {}
 }
