@@ -1,6 +1,7 @@
 import { css } from "@microsoft/fast-element";
 import { disabledCursor, display } from "../styles";
 import { focusVisible } from "../styles/focus";
+import { SystemColors } from "../styles/forced-colors";
 
 export const CheckboxStyles = css`
     ${display("inline-flex")} :host {
@@ -84,5 +85,49 @@ export const CheckboxStyles = css`
 
     :host(.disabled) {
         opacity: var(--disabled-opacity);
+    }
+
+    @media (forced-colors: active) {
+        .checkbox, .checkbox:hover, .checkbox:active {
+            forced-color-adjust: none;
+            border-color: ${SystemColors.FieldText};
+            background: ${SystemColors.Field};
+        }
+        
+        .checked-indicator {
+            fill: ${SystemColors.FieldText};
+        }
+
+        .indeterminate-indicator  {
+            background: ${SystemColors.FieldText};
+        }
+        
+        :host(:focus) .checkbox {
+            border-color: ${SystemColors.Highlight};
+        }
+
+        :host(.disabled) {
+            opacity: 1;
+        }
+
+        :host(.disabled) .checkbox {
+            forced-color-adjust: none;
+            border-color: ${SystemColors.GrayText};
+        }
+
+        :host(.disabled) .label {
+            forced-color-adjust: none;
+            color: ${SystemColors.GrayText};
+        }
+
+        :host(.disabled) .indeterminate-indicator {
+            forced-color-adjust: none;
+            background: ${SystemColors.GrayText};
+        }
+
+        :host(.disabled) .checked-indicator {
+            forced-color-adjust: none;
+            fill: ${SystemColors.GrayText};
+        }
     }
 `;
