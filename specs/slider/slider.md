@@ -50,55 +50,46 @@ A designer can override any internal styling applied to the slotted labels, the 
 - `change` - raise the change event for external parties to be informed of the value change.
 
 *Slots*
-- `background-track` - background area encompassing the track and labels
-- `slider-track` - the horizontal or vertical track along which the thumb slides
+- `background-track` - the horizontal or vertical track along which the thumb slides
 - `thumb` - the control the user drags along the track to change the value of the slider
 
 ### Anatomy and Appearance
 **Structure:**
 
 ```html
-  <div
-    role="slider"
-  >
-    <input type="range" 
-      id="${x => x.id}"
-      min="${x => x.min}"
-      max="${x => x.max}"
-      step="${x => x.step}"
-      value="${x => x.value}"
-    >
-    <slot name="label">
-      <div>${x => x.label}</div>
-    </slot>
-    <slot name="background-track">
-      <div></div>
-    </slot>
-    <slot name="slider-track">
-      <div></div>
-    </slot>
-    <slot name="thumb">
-      <div></div>
-    </slot>
-    <slot></slot>
+<div
+    part="slider"
+    class="slider"
+>
+  <div part="layout-region" class="layout-region">
+      <div part="background-track" class="background-track">
+        <slot name="background-track"></slot>
+      </div>
+      <slot name="track">
+        <div part="track" class="track"></div>
+      </slot>
+      <div part="thumb-container" class="thumb-container" style=${x => x.position}>
+          <slot name="thumb"><div class="thumb-cursor"></div></slot>
+      </div>
+      <slot></slot>
   </div>
+</div>
 ```
 
 ## Implementation
 
 ```html
 <fast-slider
-    id="slider1"
-    value="32"
+    value="50"
     min="0"
-    max="44"
-    step="1"
+    max="100"
+    step="10"
 >
     <h2 slot="label"><b>Density</b></h2>
     <div slot="thumb"><img src="..."/></div>
     <fast-slider-label
-      label="32"
-      show-mark="true"
+      label="50"
+      show-mark="false"
     >
     </fast-slider-label>
 </fast-slider>
@@ -157,14 +148,28 @@ If they use <slider-label> elements those will be styled a specific way internal
 **Structure:**
 
 ```html
-  <div>
-    ${when(x => x.show-mark, html<slider-label>`
-      <slot name="mark"><div>|</div></slot>
-    `)}
-    <div part="label">
-      <slot></slot>
+<div
+    part="slider-label"
+    class="slider-label"
+    style=${x => x.positionStyle}
+>
+    <div class="slider-label-container">
+        ${when(
+            x => bool(x.showMark),
+            html`
+            <div class="mark">
+            </div>    
+        `
+        )}
+        <div class="label-positioner">
+            <slot name="label">
+                <span class="label"}>
+                    ${x => x.label}
+                </span>
+            </slot>
+        </div>
     </div>
-  </div>
+</div>
 ```
 
 ---
