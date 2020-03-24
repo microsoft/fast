@@ -1,7 +1,7 @@
 import { html, when } from "@microsoft/fast-element";
 import { BaseProgress } from "../base-progress";
 
-export const LinearProgressTemplate = html<BaseProgress>`
+export const ProgressTemplate = html<BaseProgress>`
     <template
         role="progressbar"
         $aria-valuenow="${x => x.value}"
@@ -22,8 +22,8 @@ export const LinearProgressTemplate = html<BaseProgress>`
             html<BaseProgress>`
             <div class="progress" part="progress" slot="indeterminate">
                 <slot class="indeterminate" name="indeterminate">
-                    <span class="linear-indeterminate-indicator-1" part="linear-indeterminate-indicator-1"></span>
-                    <span class="linear-indeterminate-indicator-2" part="linear-indeterminate-indicator-2"></span>
+                    <span class="indeterminate-indicator-1" part="indeterminate-indicator-1"></span>
+                    <span class="indeterminate-indicator-2" part="indeterminate-indicator-2"></span>
                 </slot>
             </div>
         `

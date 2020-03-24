@@ -12,4 +12,7 @@ export class BaseProgress extends FastElement {
 
     @attr
     public paused: boolean;
+    private pausedChanged(): void {
+        this.paused ? this.classList.add("paused") : this.classList.remove("paused");
+    }
 }

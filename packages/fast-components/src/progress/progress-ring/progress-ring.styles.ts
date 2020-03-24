@@ -1,7 +1,7 @@
 import { css } from "@microsoft/fast-element";
 import { display } from "../../styles";
 
-export const CircularProgressStyles = css`
+export const ProgressRingStyles = css`
     :host([hidden]) {
         display: none;
     }
@@ -9,12 +9,14 @@ export const CircularProgressStyles = css`
     ${display("flex")} :host {
         align-items: center;
         outline: none;
+        height: calc(var(--height-number) * 1px);
+        width: calc(var(--height-number) * 1px);
         margin: calc(var(--design-unit) * 1px) 0;
     }
 
     .progress {
-        height: calc(var(--height-number) * 1px);
-        width: calc(var(--height-number) * 1px);
+        height: 100%;
+        width: 100%;
     }
 
     .background {
@@ -33,7 +35,7 @@ export const CircularProgressStyles = css`
         transition: all 0.2s ease-in-out;
     }
 
-    .indeterminate {
+    .indeterminate-indicator-1 {
         stroke: var(--accent-fill-rest);
         fill: none;
         stroke-width: 2px;
@@ -42,6 +44,15 @@ export const CircularProgressStyles = css`
         transform: rotate(-90deg);
         transition: all 0.2s ease-in-out;
         animation: spin-infinite 2s linear infinite;
+    }
+
+    :host(.paused) .indeterminate-indicator-1 {
+        animation-play-state: paused;
+        stroke: var(--neutral-fill-rest);
+    }
+
+    :host(.paused) .determinate {
+        stroke: var(--neutral-foreground-hint);
     }
 
     @keyframes spin-infinite {
@@ -54,26 +65,8 @@ export const CircularProgressStyles = css`
             transform: rotate(450deg);
         }
         100% {
-            stroke-dasharray: .01px 43.97px;
+            stroke-dasharray: 0.01px 43.97px;
             transform: rotate(1080deg);
         }
     }
-
-    @keyframes indeterminate-2 {
-        0% {
-            opacity: 0;
-            transform: translateX(-150%);
-        }
-        29.99% {
-            opacity: 0;
-        }
-        30% {
-            opacity: 1;
-            transform: translateX(-150%);
-        }
-        100% {
-            transform: translateX(166.66%);
-            opacity: 1;
-        },
-    },
 `;

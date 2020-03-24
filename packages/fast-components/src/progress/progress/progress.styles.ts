@@ -1,7 +1,7 @@
 import { css } from "@microsoft/fast-element";
 import { display } from "../../styles";
 
-export const LinearProgressStyles = css`
+export const ProgressStyles = css`
     :host([hidden]) {
         display: none;
     }
@@ -40,7 +40,7 @@ export const LinearProgressStyles = css`
         overflow: hidden;
     }
 
-    .linear-indeterminate-indicator-1 {
+    .indeterminate-indicator-1 {
         position: absolute;
         opacity: 0;
         height: 100%;
@@ -51,7 +51,7 @@ export const LinearProgressStyles = css`
         animation: indeterminate-1 2s infinite;
     }
 
-    .linear-indeterminate-indicator-2 {
+    .indeterminate-indicator-2 {
         position: absolute;
         opacity: 0;
         height: 100%;
@@ -62,6 +62,19 @@ export const LinearProgressStyles = css`
         animation: indeterminate-2 2s infinite;
     }
 
+    :host(.paused) .indeterminate-indicator-1 {
+        animation-play-state: paused;
+        background: var(--neutral-fill-rest);
+    }
+
+    :host(.paused) .indeterminate-indicator-2 {
+        animation-play-state: paused;
+        background: var(--neutral-fill-rest);
+    }
+
+    :host(.paused) .determinate {
+        background: var(--neutral-foreground-hint);
+    }
 
     @keyframes indeterminate-1 {
         0% {
