@@ -3,6 +3,7 @@ import { TreeNavigationConfig, TreeNavigationConfigDictionary } from "./navigati
 import { Data, DataDictionary, LinkedData } from "./data.props";
 import { SchemaDictionary } from "./schema.props";
 import { MessageSystemType } from "./types";
+import { Validation, ValidationErrors } from "./validation.props";
 
 export enum MessageSystemDataDictionaryTypeAction {
     get = "get",
@@ -25,6 +26,11 @@ export enum MessageSystemNavigationDictionaryTypeAction {
 }
 
 export enum MessageSystemNavigationTypeAction {
+    update = "update",
+    get = "get",
+}
+
+export enum MessageSystemValidationTypeAction {
     update = "update",
     get = "get",
 }
@@ -69,6 +75,45 @@ export interface GetDataDictionaryMessageOutgoing {
     action: MessageSystemDataDictionaryTypeAction.get;
     dataDictionary: DataDictionary<unknown>;
     activeDictionaryId: string;
+}
+
+/**
+ * The message that the validation should be updated
+ */
+export interface UpdateValidationMessageIncoming {
+    type: MessageSystemType.validation;
+    action: MessageSystemValidationTypeAction.update;
+    dictionaryId: string;
+    validationErrors: ValidationErrors[];
+}
+
+/**
+ * The message that the validation has been updated
+ */
+export interface UpdateValidationMessageOutgoing {
+    type: MessageSystemType.validation;
+    action: MessageSystemValidationTypeAction.update;
+    dictionaryId: string;
+    validationErrors: ValidationErrors[];
+}
+
+/**
+ * The message to get the validation
+ */
+export interface GetValidationMessageIncoming {
+    type: MessageSystemType.validation;
+    action: MessageSystemValidationTypeAction.get;
+    dictionaryId: string;
+}
+
+/**
+ * The message that the validation has been given
+ */
+export interface GetValidationMessageOutgoing {
+    type: MessageSystemType.validation;
+    action: MessageSystemValidationTypeAction.get;
+    dictionaryId: string;
+    validationErrors: ValidationErrors[];
 }
 
 /**
@@ -398,6 +443,20 @@ export type NavigationMessageOutgoing =
     | GetNavigationMessageOutgoing;
 
 /**
+ * Incoming validation messages to the message system
+ */
+export type ValidationMessageIncoming =
+    | UpdateValidationMessageIncoming
+    | GetValidationMessageIncoming;
+
+/**
+ * Outgoing validation messages to the message system
+ */
+export type ValidationMessageOutgoing =
+    | UpdateValidationMessageOutgoing
+    | GetValidationMessageOutgoing;
+
+/**
  * Incoming messages to the message system
  */
 export type MessageSystemIncoming =
@@ -405,7 +464,8 @@ export type MessageSystemIncoming =
     | DataMessageIncoming
     | NavigationMessageIncoming
     | NavigationDictionaryMessageIncoming
-    | DataDictionaryMessageIncoming;
+    | DataDictionaryMessageIncoming
+    | ValidationMessageIncoming;
 
 /**
  * Outgoing messages from the message system
@@ -415,4 +475,5 @@ export type MessageSystemOutgoing =
     | DataMessageOutgoing
     | NavigationMessageOutgoing
     | NavigationDictionaryMessageOutgoing
-    | DataDictionaryMessageOutgoing;
+    | DataDictionaryMessageOutgoing
+    | ValidationMessageOutgoing;
