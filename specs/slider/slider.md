@@ -120,7 +120,7 @@ While testing is still TBD for our web components, I would expect this to align 
 ### Future enhancements
 
 - Allow vertical and horizontal orientation
-- Allow for two thumb mode
+- Allow for dual thumb mode
 
 ---
 
