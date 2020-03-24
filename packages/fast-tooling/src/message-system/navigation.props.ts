@@ -1,22 +1,11 @@
 import { DataType } from "../data-utilities/types";
+import { Parent } from "./data.props";
 
 export interface TreeNavigation {
     /**
      * A dictionary of items
      */
     [key: string]: TreeNavigationItem;
-}
-
-export interface ParentDictionaryItem {
-    /**
-     * The dictionary ID
-     */
-    id: string;
-
-    /**
-     * The data location from the dictionary item
-     */
-    dataLocation: string;
 }
 
 export interface TreeNavigationItem {
@@ -33,7 +22,7 @@ export interface TreeNavigationItem {
     /**
      * The dictionary item that is the parent of this item
      */
-    parentDictionaryItem?: ParentDictionaryItem;
+    parentDictionaryItem?: Parent;
 
     /**
      * The relative data location
