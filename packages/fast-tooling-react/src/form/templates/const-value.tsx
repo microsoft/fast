@@ -4,7 +4,11 @@ import { ConstValueProps } from "./const-value.props";
 class ConstValue extends React.Component<ConstValueProps, {}> {
     public render(): React.ReactNode {
         return (
-            <button className={this.props.className} onClick={this.props.onChange}>
+            <button
+                className={this.props.className}
+                onClick={this.props.onChange}
+                disabled={this.props.disabled}
+            >
                 <svg
                     width={"13"}
                     height={"13"}

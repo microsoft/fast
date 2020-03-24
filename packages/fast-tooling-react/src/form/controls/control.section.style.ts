@@ -8,7 +8,9 @@ const styles: ComponentStyles<SectionControlClassNameContract, {}> = {
         border: "none",
         "min-inline-size": "unset", // override for fieldsets inherited style
     },
-    sectionControl__disabled: {},
+    sectionControl__disabled: {
+        opacity: "1", // override the fieldset disabled inherited style
+    },
 };
 
 export default styles;
