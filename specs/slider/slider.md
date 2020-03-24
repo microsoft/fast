@@ -117,6 +117,11 @@ Slider should render a mirror view in rtl for example:
 
 While testing is still TBD for our web components, I would expect this to align with the testing strategy and not require any additional test support.
 
+### Future enhancements
+
+- Allow vertical and horizontal orientation
+- Allow for two thumb mode
+
 ---
 
 # Slider Label
