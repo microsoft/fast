@@ -13,6 +13,7 @@ import {
     MessageSystemDataTypeAction,
     MessageSystemNavigationDictionaryTypeAction,
     MessageSystemNavigationTypeAction,
+    MessageSystemValidationTypeAction,
     NavigationMessageOutgoing,
     RemoveDataMessageOutgoing,
     UpdateActiveIdDataDictionaryMessageIncoming,
@@ -20,6 +21,7 @@ import {
     UpdateActiveIdNavigationDictionaryMessageIncoming,
     UpdateActiveIdNavigationDictionaryMessageOutgoing,
     UpdateDataMessageOutgoing,
+    ValidationMessageIncoming,
 } from "./message-system.utilities.props";
 import { MessageSystemType } from "./types";
 import { getMessage } from "./message-system.utilities";
@@ -725,6 +727,49 @@ describe("getMessage", () => {
                 MessageSystemNavigationDictionaryTypeAction.updateActiveId
             );
             expect(updateNavigationDictionaryActiveId.activeDictionaryId).toEqual("nav2");
+        });
+    });
+    describe("validation", () => {
+        test("should return messages sent to update the validation", () => {
+            const validationUpdate: ValidationMessageIncoming = {
+                type: MessageSystemType.validation,
+                action: MessageSystemValidationTypeAction.update,
+                validationErrors: [
+                    {
+                        invalidMessage: "foo",
+                        dataLocation: "",
+                    },
+                ],
+                dictionaryId: "foo",
+            };
+
+            expect(getMessage(validationUpdate)).toEqual(validationUpdate);
+        });
+        test("should return messages sent to get the validation", () => {
+            const getValidation: ValidationMessageIncoming = {
+                type: MessageSystemType.validation,
+                action: MessageSystemValidationTypeAction.get,
+                dictionaryId: "bar",
+            };
+
+            const validationUpdate: ValidationMessageIncoming = {
+                type: MessageSystemType.validation,
+                action: MessageSystemValidationTypeAction.update,
+                validationErrors: [
+                    {
+                        invalidMessage: "bar",
+                        dataLocation: "",
+                    },
+                ],
+                dictionaryId: "bar",
+            };
+
+            getMessage(validationUpdate);
+
+            expect(getMessage(getValidation)).toEqual({
+                ...getValidation,
+                validationErrors: validationUpdate.validationErrors,
+            });
         });
     });
 });
