@@ -68,7 +68,11 @@ export class Controller extends PropertyChangeNotifier implements Container {
     }
 
     public onAttributeChangedCallback(name: string, oldValue: string, newValue: string) {
-        (this.element as any)[this.definition.attributeLookup[name].property] = newValue;
+        const attrDef = this.definition.attributeLookup[name];
+
+        if (attrDef !== void 0) {
+            attrDef.onAttributeChangedCallback(this.element, newValue);
+        }
     }
 
     public emit(type: string, detail?: any, options?: Omit<CustomEventInit, "detail">) {

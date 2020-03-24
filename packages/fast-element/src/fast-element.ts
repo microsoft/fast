@@ -60,10 +60,7 @@ export const FastElement = Object.assign(createFastElement(HTMLElement), {
         }
 
         const name = nameOrDef.name;
-        const attributes = AttributeDefinition.collect(
-            (Type as any).attributes,
-            nameOrDef.attributes
-        );
+        const attributes = AttributeDefinition.collect(Type, nameOrDef.attributes);
         const shadowOptions =
             nameOrDef.shadowOptions === void 0
                 ? defaultShadowOptions
@@ -83,10 +80,19 @@ export const FastElement = Object.assign(createFastElement(HTMLElement), {
 
         for (let i = 0, ii = attributes.length; i < ii; ++i) {
             const current = attributes[i];
-            Observable.define(proto, current.property);
             observedAttributes[i] = current.attribute;
             propertyLookup[current.property] = current;
             attributeLookup[current.attribute] = current;
+
+            Reflect.defineProperty(proto, current.property, {
+                enumerable: true,
+                get: function(this: any) {
+                    return current.getValue(this);
+                },
+                set: function(this: any, value) {
+                    return current.setValue(this, value);
+                },
+            });
         }
 
         Reflect.defineProperty(Type, "observedAttributes", {
