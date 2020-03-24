@@ -13,7 +13,6 @@ Typical use cases include, but are not limited to, denoting a sale or new item, 
 A badge should allow the following properties:
 - `fill`, a string that maps to author defined variables.
 - `circular`, if circular styling is desired.
-- `size`, the size the badge is rendered.
 
 ### Prior Art/Examples
 - [FAST-DNA (React)](https://explore.fast.design/components/badge)
@@ -33,10 +32,6 @@ A badge should allow the following properties:
 *Attributes:*
 - `fill`: string
 - `circular`: boolean
-- `size`: enum
-  - small
-  - medium
-  - large
 
 *Slots:*
 - `default`
@@ -61,9 +56,17 @@ fast-badge {
 ```
 <fast-badge
     fill="primary"
-    size="large"
 >
     New
+</fast-badge>
+```
+
+```
+<fast-badge
+    fill="secondary"
+    circular=true
+>
+    99
 </fast-badge>
 ```
 
