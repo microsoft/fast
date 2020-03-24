@@ -63,7 +63,11 @@ export class Slider extends FormAssociated<HTMLInputElement> {
             this.updateForm();
         }
 
-        const percentage: number = (1 - (Number(this.value) / this.max - this.min)) * 100;
+        const percentage: number =
+            this.direction !== "rtl"
+                ? (1 - (Number(this.value) / this.max - this.min)) * 100
+                : (Number(this.value) / this.max - this.min) * 100;
+
         this.position = `right: ${percentage}%`;
     }
 
@@ -112,6 +116,8 @@ export class Slider extends FormAssociated<HTMLInputElement> {
         this.proxy.setAttribute("type", "range");
         this.setAttribute("role", "slider");
         this.setAttribute("tabindex", "0");
+        const dirAttribute = this.parentElement!.attributes["dir"];
+        this.direction = dirAttribute ? dirAttribute.value : "ltr";
         this.constructed = true;
     }
 
@@ -123,7 +129,6 @@ export class Slider extends FormAssociated<HTMLInputElement> {
         this.addEventListener("keydown", this.keypressHandler);
         this.addEventListener("mousedown", this.clickHandler);
         this.thumb.addEventListener("mousedown", this.handleThumbMouseDown);
-        this.direction = this.parentElement!.attributes["dir"].value;
     }
 
     public disconnectedCallback(): void {
@@ -173,6 +178,10 @@ export class Slider extends FormAssociated<HTMLInputElement> {
 
         // update the value based on current position
         this.value = `${this.calculateNewValue(e.pageX)}`;
+        console.log("e.pageX:", e.pageX);
+        console.log("e.clientX:", e.clientX);
+        console.log("\n***New Value is now:", this.value, "\n");
+        this.updateForm();
     };
 
     private calculateNewValue = (rawValue: number): number => {
@@ -180,11 +189,13 @@ export class Slider extends FormAssociated<HTMLInputElement> {
         const newPosition = convertPixelToPercent(
             rawValue,
             this.fullTrackMinWidth,
-            this.fullTrackWidth
+            this.fullTrackWidth,
+            this.direction
         );
-        return this.convertToConstrainedValue(
-            (this.max - this.min) * newPosition + this.min
-        );
+        console.log("in calculateNewValue newPosition:", newPosition);
+        const newValue: number = (this.max - this.min) * newPosition + this.min;
+        console.log("calculateNewValue newValue:", newValue);
+        return this.convertToConstrainedValue(newValue);
     };
 
     /**
@@ -214,6 +225,7 @@ export class Slider extends FormAssociated<HTMLInputElement> {
             window.addEventListener("mousemove", this.handleMouseMove);
 
             this.value = `${this.calculateNewValue(e.pageX)}`;
+            console.log("clickHandler newValue:", this.value);
             this.updateForm();
         }
     };

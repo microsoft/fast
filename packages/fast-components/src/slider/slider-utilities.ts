@@ -16,7 +16,7 @@ export function convertPixelToPercent(
     }
 
     if (typeof direction === "string" && direction === "rtl") {
-        console.log("convertPixelToPercent using RTL");
+        console.log("\n***convertPixelToPercent using RTL");
         pct = 1 - pct;
     }
 
