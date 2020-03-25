@@ -58,6 +58,73 @@ To see it in action, you can use the same HTML as above, or change the default `
 <name-tag greeting="Hola"></name-tag>
 ```
 
+### Customizing Attributes
+
+By default, any attribute created with `@attr` will perform no explicit type coercion other than when it reflects its value to the HTML DOM via the `setAttribute` API. However, you can convert DOM attribute string values to and from arbitrary types as well as control the `mode` that is used to reflect property values to the DOM. There are three modes available through the `mode` property of the attribute configuration:
+
+* `reflect` - The *default* mode that is used if none is specified. This reflects property changes to the DOM. If a `converter` is supplied, it will invoke the converter before calling the `setAttribute` DOM API.
+* `boolean` - This mode causes your attribute to function using the HTML boolean attribute behavior. When your attribute is present in the DOM or equal to its own name, the value will be true. When the attribute is absent from the DOM, the value of the property will be false. Setting the property will also update the DOM by adding/removing the attribute.
+* `none` - This mode skips reflecting the value of the property back to the HTML attribute, but does receive updates when changed through `setAttribute`.
+
+In addition to setting the `mode`, you can also supply a custom `ValueConverter` by setting the `converter` property of the attribute configuration. The converter must implement the following interface:
+
+```TypeScript
+interface ValueConverter {
+    toView(value: any): string;
+    fromView(value: string): any;
+}
+```
+
+Here's how it works:
+
+* When the DOM attribute value changes, the converter's `fromView` method will be called, allowing custom code to coerce the value to the proper type expected by the property.
+* When the property value changes, the converter's `fromView` method will also be called, also ensuring that the type is correct. After this, the `mode` will be determined. If the mode is set to `reflect` then the converter's `toView` method will be called to allow the type to be formatted before writing to the attribute using `setAttribute`.
+
+> **NOTE:** When the `mode` is set to `boolean`, a built-in `booleanConverter` is automatically used to ensure type correctness so that manual configuration of the converter is not needed in this common scenario.
+
+**Example: An Attribute in Reflect Mode with No Special Conversion**
+
+```TypeScript
+import { FastElement, customElement, attr } from '@microsoft/fast-element';
+
+@customElement('name-tag')
+export class NameTag extends FastElement {
+  @attr greeting: string = 'Hello';
+}
+```
+
+**Example: An Attribute in Boolean Mode with Boolean Conversion**
+
+```TypeScript
+import { FastElement, customElement, attr } from '@microsoft/fast-element';
+
+@customElement('my-checkbox')
+export class MyCheckbox extends FastElement {
+  @attr({ mode: 'boolean' }) disabled: boolean = false;
+}
+```
+
+**Example: An Attribute in Reflect Mode with Custom Conversion**
+
+```TypeScript
+import { FastElement, customElement, attr, ValueConverter } from '@microsoft/fast-element';
+
+const numberConverter: ValueConverter = {
+  toView(value: any): string {
+    // convert numbers to strings
+  },
+
+  fromView(value: string): any {
+    // convert strings to numbers
+  }
+};
+
+@customElement('my-counter')
+export class MyCounter extends FastElement {
+  @attr({ converter: numberConverter }) count: number = 0;
+}
+```
+
 ### The Element Lifecycle
 
 All Web Components support a series of lifecycle events that you can tap into to execute custom code at specific points in time. `FastElement` implements several of these callbacks automatically, in order to enable features of its templating engine (described below). However, you can override them to provide your own code. Here's an example of how you would execute custom code when your element is inserted into the DOM.
