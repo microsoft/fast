@@ -1,6 +1,6 @@
 import "jest";
 import { getNavigation, getNavigationDictionary } from "./navigation";
-import { TreeNavigationConfigDictionary } from "./navigation.props";
+import { NavigationConfigDictionary } from "./navigation.props";
 import { TreeNavigation, TreeNavigationItem } from "./navigation.props";
 import { DataType } from "../data-utilities/types";
 import { dictionaryLink } from "../schemas";
@@ -967,7 +967,7 @@ describe("getNavigationDictionary", () => {
         ).not.toThrow();
     });
     test("should return a dictionary with a single navigation config", () => {
-        const navigation: TreeNavigationConfigDictionary = getNavigationDictionary(
+        const navigation: NavigationConfigDictionary = getNavigationDictionary(
             {
                 foo: { id: "foo" },
             },
@@ -987,7 +987,7 @@ describe("getNavigationDictionary", () => {
         expect(Object.keys(navigation[0])).toEqual([navigationId]);
     });
     test("should return a dictionary with multiple navigation configs", () => {
-        const navigation: TreeNavigationConfigDictionary = getNavigationDictionary(
+        const navigation: NavigationConfigDictionary = getNavigationDictionary(
             {
                 baz: {
                     id: "baz",

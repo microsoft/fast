@@ -1,8 +1,8 @@
 import { BreadcrumbItemEventHandler } from "../form.props";
 import {
+    NavigationConfigDictionary,
     Parent,
     TreeNavigation,
-    TreeNavigationConfigDictionary,
 } from "@microsoft/fast-tooling";
 import { DataType } from "@microsoft/fast-tooling";
 
@@ -21,7 +21,7 @@ export type HandleBreadcrumbClick = (
  * Get breadcrumbs from navigation dictionary
  */
 export function getDictionaryBreadcrumbs(
-    navigationDictionary: TreeNavigationConfigDictionary,
+    navigationDictionary: NavigationConfigDictionary,
     dictionaryId: string,
     navigationConfigId: string,
     handleClick: HandleBreadcrumbClick,
