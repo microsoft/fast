@@ -2,10 +2,6 @@ import { css } from "@microsoft/fast-element";
 import { display } from "../../styles";
 
 export const ProgressStyles = css`
-    :host([hidden]) {
-        display: none;
-    }
-
     ${display("flex")} :host {
         align-items: center;
         outline: none;
