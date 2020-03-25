@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.4.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components@0.3.0...@microsoft/fast-components@0.4.0) (2020-03-25)
+
+
+### Features
+
+* adds focus-visible support to components ([#2821](https://github.com/Microsoft/fast-dna/issues/2821)) ([cb20dd0](https://github.com/Microsoft/fast-dna/commit/cb20dd0db9c82d64051890c708341e9b7cd8e11f))
+* wire recipes to design-system-provider ([#2807](https://github.com/Microsoft/fast-dna/issues/2807)) ([0148434](https://github.com/Microsoft/fast-dna/commit/0148434d6ba65d620295aa3e3a61fbb2673b1a0e))
+
+
+
+
+
 # [0.3.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components@0.2.0...@microsoft/fast-components@0.3.0) (2020-03-18)
 
 
