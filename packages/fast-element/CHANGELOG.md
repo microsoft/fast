@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.3.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-element@0.3.0...@microsoft/fast-element@0.3.1) (2020-03-25)
+
+
+### Bug Fixes
+
+* **fast-element:** add docs and ensure boolean attrs true when empty ([#2833](https://github.com/Microsoft/fast-dna/issues/2833)) ([4bf2c41](https://github.com/Microsoft/fast-dna/commit/4bf2c41efb4520152fe041fb3e67eaf31fbe8e66))
+
+
+
+
+
 # [0.3.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-element@0.2.1...@microsoft/fast-element@0.3.0) (2020-03-25)
 
 
