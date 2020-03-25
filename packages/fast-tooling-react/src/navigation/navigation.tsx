@@ -20,20 +20,20 @@ import {
     NavigationProps,
     NavigationState,
 } from "./navigation.props";
-import { dictionaryLink } from "@microsoft/fast-tooling";
 import { DraggableNavigationTreeItem, NavigationTreeItem } from "./navigation-tree-item";
 import { DragDropItemType, NavigationTreeItemProps } from "./navigation-tree-item.props";
 import {
     Data,
     DataDictionary,
+    dictionaryLink,
     getNavigationDictionary,
     LinkedData,
     MessageSystemDataTypeAction,
     MessageSystemNavigationTypeAction,
     MessageSystemType,
+    NavigationConfigDictionary,
     Parent,
     Register,
-    TreeNavigationConfigDictionary,
 } from "@microsoft/fast-tooling";
 import manageJss, { ManagedClasses } from "@microsoft/fast-jss-manager-react";
 import styles, { NavigationClassNameContract } from "./navigation.style";
@@ -651,7 +651,7 @@ class Navigation extends Foundation<
         );
     }
 
-    private getNavigationDictionary(): TreeNavigationConfigDictionary | null {
+    private getNavigationDictionary(): NavigationConfigDictionary | null {
         return this.state.isDragging
             ? this.state.updatedNavigationDictionary
             : this.state.navigationDictionary;

@@ -4,8 +4,8 @@ import { ControlContext } from "./templates/types";
 import {
     DataDictionary,
     MessageSystem,
-    TreeNavigationConfig,
-    TreeNavigationConfigDictionary,
+    NavigationConfig,
+    NavigationConfigDictionary,
 } from "@microsoft/fast-tooling";
 
 /**
@@ -88,12 +88,12 @@ export interface FormState {
     /**
      * The navigation
      */
-    navigation: TreeNavigationConfig;
+    navigation: NavigationConfig;
 
     /**
      * The navigation dictionary
      */
-    navigationDictionary: TreeNavigationConfigDictionary;
+    navigationDictionary: NavigationConfigDictionary;
 
     /**
      * The validation errors if there are any

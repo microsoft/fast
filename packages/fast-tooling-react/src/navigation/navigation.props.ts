@@ -5,8 +5,8 @@ import {
     DataDictionary,
     LinkedData,
     MessageSystem,
+    NavigationConfigDictionary,
     SchemaDictionary,
-    TreeNavigationConfigDictionary,
 } from "@microsoft/fast-tooling";
 
 export enum NavigationDataType {
@@ -41,12 +41,12 @@ export interface NavigationState {
     /**
      * The navigation dictionary
      */
-    navigationDictionary: TreeNavigationConfigDictionary | null;
+    navigationDictionary: NavigationConfigDictionary | null;
 
     /**
      * The dragging navigation dictionary
      */
-    updatedNavigationDictionary: TreeNavigationConfigDictionary | null;
+    updatedNavigationDictionary: NavigationConfigDictionary | null;
 
     /**
      * The data dictionary

@@ -8,8 +8,8 @@ import {
     InitializeMessageOutgoing,
     MessageSystem,
     MessageSystemType,
+    NavigationConfig,
     Register,
-    TreeNavigationConfig,
 } from "@microsoft/fast-tooling";
 
 import {
@@ -114,7 +114,7 @@ describe("Form", () => {
                 },
             },
         };
-        const navigation: TreeNavigationConfig = [
+        const navigation: NavigationConfig = [
             {
                 abc: {
                     self: "abc",
@@ -214,7 +214,7 @@ describe("Form", () => {
                 },
             },
         };
-        const navigation: TreeNavigationConfig = [
+        const navigation: NavigationConfig = [
             {
                 abc: {
                     self: "abc",
@@ -314,7 +314,7 @@ describe("Form", () => {
                 },
             },
         };
-        const navigation: TreeNavigationConfig = [
+        const navigation: NavigationConfig = [
             {
                 abc: {
                     self: "abc",
@@ -414,7 +414,7 @@ describe("Form", () => {
                 },
             },
         };
-        const navigation: TreeNavigationConfig = [
+        const navigation: NavigationConfig = [
             {
                 abc: {
                     self: "abc",
@@ -515,7 +515,7 @@ describe("Form", () => {
                 },
             },
         };
-        const navigation: TreeNavigationConfig = [
+        const navigation: NavigationConfig = [
             {
                 abc: {
                     self: "abc",
@@ -615,7 +615,7 @@ describe("Form", () => {
                 },
             },
         };
-        const navigation: TreeNavigationConfig = [
+        const navigation: NavigationConfig = [
             {
                 abc: {
                     self: "abc",
@@ -715,7 +715,7 @@ describe("Form", () => {
                 },
             },
         };
-        const navigation: TreeNavigationConfig = [
+        const navigation: NavigationConfig = [
             {
                 abc: {
                     self: "abc",
@@ -818,7 +818,7 @@ describe("Form", () => {
                 },
             },
         };
-        const navigation: TreeNavigationConfig = [
+        const navigation: NavigationConfig = [
             {
                 abc: {
                     self: "abc",
@@ -939,7 +939,7 @@ describe("Form", () => {
             <ModularForm {...formProps} messageSystem={fastMessageSystem} />
         );
 
-        const navigation: TreeNavigationConfig = [
+        const navigation: NavigationConfig = [
             {
                 abc: {
                     self: "abc",
@@ -1073,7 +1073,7 @@ describe("Form", () => {
             <ModularForm {...formProps} messageSystem={fastMessageSystem} />
         );
 
-        const navigation: TreeNavigationConfig = [
+        const navigation: NavigationConfig = [
             {
                 abc: {
                     self: "abc",
@@ -1219,7 +1219,7 @@ describe("Form", () => {
             />
         );
 
-        const navigation: TreeNavigationConfig = [
+        const navigation: NavigationConfig = [
             {
                 abc: {
                     self: "abc",
@@ -1301,7 +1301,7 @@ describe("Form", () => {
                 },
             },
         };
-        const navigation: TreeNavigationConfig = [
+        const navigation: NavigationConfig = [
             {
                 abc: {
                     self: "abc",
@@ -1441,7 +1441,7 @@ describe("Form", () => {
             />
         );
 
-        const navigation: TreeNavigationConfig = [
+        const navigation: NavigationConfig = [
             {
                 abc: {
                     self: "abc",

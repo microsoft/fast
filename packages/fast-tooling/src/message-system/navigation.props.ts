@@ -66,7 +66,7 @@ export interface TreeNavigationItem {
     items: string[];
 }
 
-export interface TreeNavigationConfig {
+export interface NavigationConfig {
     /**
      * The component schemas tree navigation
      */
@@ -78,23 +78,23 @@ export interface TreeNavigationConfig {
     1: string;
 }
 
-export interface TreeNavigationConfigResolver {
+export interface NavigationConfigResolver {
     /**
      * The root level tree navigation
      */
-    0: TreeNavigationConfig;
+    0: NavigationConfig;
 
     /**
      * Additional tree navigation to add to the dictionary
      */
-    1: { [key: string]: TreeNavigationConfig };
+    1: { [key: string]: NavigationConfig };
 }
 
-export interface TreeNavigationConfigDictionary {
+export interface NavigationConfigDictionary {
     /**
      * The dictionary of tree navigation configs
      */
-    0: { [key: string]: TreeNavigationConfig };
+    0: { [key: string]: NavigationConfig };
 
     /**
      * The key of the root tree navigation config
