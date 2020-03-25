@@ -8,8 +8,8 @@ import {
     InitializeMessageOutgoing,
     MessageSystem,
     MessageSystemType,
+    NavigationConfig,
     Register,
-    TreeNavigationConfig,
 } from "@microsoft/fast-tooling";
 
 /*
@@ -119,7 +119,7 @@ describe("Navigation", () => {
         const data: any = {
             bar: "hello world",
         };
-        const navigation: TreeNavigationConfig = [
+        const navigation: NavigationConfig = [
             {
                 "": {
                     self: "",
@@ -161,8 +161,8 @@ describe("Navigation", () => {
             registeredItem.onMessage({
                 data: {
                     type: MessageSystemType.initialize,
-                    activeDictionaryId: "",
-                    activeNavigationConfigId: "",
+                    dictionaryId: "",
+                    navigationConfigId: "",
                     schema,
                     data,
                     dataDictionary: [
@@ -213,7 +213,7 @@ describe("Navigation", () => {
         const data: any = {
             bar: "hello world",
         };
-        const navigation: TreeNavigationConfig = [
+        const navigation: NavigationConfig = [
             {
                 "": {
                     self: "",
@@ -267,8 +267,8 @@ describe("Navigation", () => {
             registeredItem.onMessage({
                 data: {
                     type: MessageSystemType.initialize,
-                    activeDictionaryId: "",
-                    activeNavigationConfigId: "",
+                    dictionaryId: "",
+                    navigationConfigId: "",
                     schema,
                     data,
                     dataDictionary: [

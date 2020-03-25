@@ -1,8 +1,8 @@
 import { get } from "lodash-es";
 import {
+    NavigationConfig,
+    NavigationConfigDictionary,
     TreeNavigation,
-    TreeNavigationConfig,
-    TreeNavigationConfigDictionary,
 } from "./navigation.props";
 import {
     CombiningKeyword,
@@ -16,8 +16,8 @@ import { DataDictionary, Parent } from "./data.props";
 export function getNavigationDictionary(
     schemaDictionary: SchemaDictionary,
     data: DataDictionary<unknown>
-): TreeNavigationConfigDictionary {
-    const navigationConfigs: TreeNavigationConfigDictionary[] = [];
+): NavigationConfigDictionary {
+    const navigationConfigs: NavigationConfigDictionary[] = [];
 
     Object.keys(data[0]).forEach((dataKey: string) => {
         navigationConfigs.push([
@@ -35,8 +35,8 @@ export function getNavigationDictionary(
     return [
         navigationConfigs.reduce(
             (
-                accum: { [key: string]: TreeNavigationConfig },
-                navigationConfig: TreeNavigationConfigDictionary
+                accum: { [key: string]: NavigationConfig },
+                navigationConfig: NavigationConfigDictionary
             ) => {
                 accum[navigationConfig[1]] = navigationConfig[0][navigationConfig[1]];
 
@@ -52,7 +52,7 @@ export function getNavigation(
     schema: any,
     data?: any,
     parent?: Parent
-): TreeNavigationConfig {
+): NavigationConfig {
     return getNavigationRecursive(schema, !!schema.disabled, data, parent);
 }
 
@@ -65,9 +65,9 @@ function getNavigationRecursive(
     schemaLocation: string = "",
     parent: string | null = null,
     id?: string
-): TreeNavigationConfig {
+): NavigationConfig {
     const self: string = id || dataLocation;
-    const items: TreeNavigationConfig[] = getNavigationItems(
+    const items: NavigationConfig[] = getNavigationItems(
         schema,
         disabled,
         data,
@@ -95,12 +95,12 @@ function getNavigationRecursive(
                 data,
                 text: schema.title,
                 type: schema.type || DataType.unknown,
-                items: items.map((item: TreeNavigationConfig) => {
+                items: items.map((item: NavigationConfig) => {
                     return item[1];
                 }),
             },
             ...items.reduce(
-                (accum: TreeNavigation, item: TreeNavigationConfig): TreeNavigation => {
+                (accum: TreeNavigation, item: NavigationConfig): TreeNavigation => {
                     return { ...accum, ...item[0] };
                 },
                 {}
@@ -117,7 +117,7 @@ function getNavigationItems(
     dataLocation: string,
     schemaLocation: string,
     parent: string
-): TreeNavigationConfig[] {
+): NavigationConfig[] {
     const combiningKeyword: CombiningKeyword | void = schema[CombiningKeyword.oneOf]
         ? CombiningKeyword.oneOf
         : schema[CombiningKeyword.anyOf]

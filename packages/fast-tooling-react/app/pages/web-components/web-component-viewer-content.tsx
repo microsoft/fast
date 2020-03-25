@@ -2,6 +2,7 @@ import React from "react";
 import {
     DataDictionary,
     htmlMapper,
+    htmlResolver,
     mapDataDictionary,
     MessageSystemType,
     SchemaDictionary,
@@ -61,10 +62,7 @@ class WebComponentViewerContent extends React.Component<
                     });
                 } else if (parsedJSON.type === MessageSystemType.data) {
                     const mappedData: HTMLElement = mapDataDictionary({
-                        dataDictionary: (parsedJSON.dataDictionary as DataDictionary<
-                            any
-                        >)[0],
-                        dataDictionaryKey: this.state.activeDictionaryId,
+                        dataDictionary: parsedJSON.dataDictionary as DataDictionary<any>,
                         schemaDictionary: this.state.schemaDictionary,
                         mapper: htmlMapper({
                             version: 1,
@@ -82,6 +80,7 @@ class WebComponentViewerContent extends React.Component<
                                 },
                             ],
                         }),
+                        resolver: htmlResolver,
                     });
 
                     this.ref.current.innerHTML = "";

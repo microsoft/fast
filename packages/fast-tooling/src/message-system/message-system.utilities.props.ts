@@ -1,5 +1,5 @@
 import { DataType } from "../data-utilities/types";
-import { TreeNavigationConfig, TreeNavigationConfigDictionary } from "./navigation.props";
+import { NavigationConfig, NavigationConfigDictionary } from "./navigation.props";
 import { Data, DataDictionary, LinkedData } from "./data.props";
 import { SchemaDictionary } from "./schema.props";
 import { MessageSystemType } from "./types";
@@ -51,8 +51,8 @@ export interface InitializeMessageOutgoing {
     type: MessageSystemType.initialize;
     data: unknown;
     dataDictionary: DataDictionary<unknown>;
-    navigation: TreeNavigationConfig;
-    navigationDictionary: TreeNavigationConfigDictionary;
+    navigation: NavigationConfig;
+    navigationDictionary: NavigationConfigDictionary;
     activeDictionaryId: string;
     activeNavigationConfigId: string;
     schema: any;
@@ -130,7 +130,7 @@ export interface GetNavigationDictionaryMessageIncoming {
 export interface GetNavigationDictionaryMessageOutgoing {
     type: MessageSystemType.navigationDictionary;
     action: MessageSystemNavigationDictionaryTypeAction.get;
-    navigationDictionary: TreeNavigationConfigDictionary;
+    navigationDictionary: NavigationConfigDictionary;
     activeDictionaryId: string;
 }
 
@@ -188,8 +188,8 @@ export interface UpdateDataMessageOutgoing {
     action: MessageSystemDataTypeAction.update;
     data: unknown;
     dataDictionary: DataDictionary<unknown>;
-    navigation: TreeNavigationConfig;
-    navigationDictionary: TreeNavigationConfigDictionary;
+    navigation: NavigationConfig;
+    navigationDictionary: NavigationConfigDictionary;
 }
 
 /**
@@ -215,8 +215,8 @@ export interface AddLinkedDataDataMessageOutgoing {
     action: MessageSystemDataTypeAction.addLinkedData;
     data: unknown;
     dataDictionary: DataDictionary<unknown>;
-    navigation: TreeNavigationConfig;
-    navigationDictionary: TreeNavigationConfigDictionary;
+    navigation: NavigationConfig;
+    navigationDictionary: NavigationConfigDictionary;
 }
 
 /**
@@ -242,8 +242,8 @@ export interface RemoveLinkedDataDataMessageOutgoing {
     action: MessageSystemDataTypeAction.removeLinkedData;
     data: unknown;
     dataDictionary: DataDictionary<unknown>;
-    navigation: TreeNavigationConfig;
-    navigationDictionary: TreeNavigationConfigDictionary;
+    navigation: NavigationConfig;
+    navigationDictionary: NavigationConfigDictionary;
 }
 
 /**
@@ -264,8 +264,8 @@ export interface ReorderLinkedDataDataMessageOutgoing {
     action: MessageSystemDataTypeAction.reorderLinkedData;
     data: unknown;
     dataDictionary: DataDictionary<unknown>;
-    navigation: TreeNavigationConfig;
-    navigationDictionary: TreeNavigationConfigDictionary;
+    navigation: NavigationConfig;
+    navigationDictionary: NavigationConfigDictionary;
 }
 
 /**
@@ -287,8 +287,8 @@ export interface DuplicateDataMessageOutgoing {
     sourceDataLocation: string;
     data: unknown;
     dataDictionary: DataDictionary<unknown>;
-    navigation: TreeNavigationConfig;
-    navigationDictionary: TreeNavigationConfigDictionary;
+    navigation: NavigationConfig;
+    navigationDictionary: NavigationConfigDictionary;
 }
 
 /**
@@ -309,8 +309,8 @@ export interface RemoveDataMessageOutgoing {
     action: MessageSystemDataTypeAction.remove;
     data: unknown;
     dataDictionary: DataDictionary<unknown>;
-    navigation: TreeNavigationConfig;
-    navigationDictionary: TreeNavigationConfigDictionary;
+    navigation: NavigationConfig;
+    navigationDictionary: NavigationConfigDictionary;
 }
 
 /**
@@ -333,8 +333,8 @@ export interface AddDataMessageOutgoing {
     action: MessageSystemDataTypeAction.add;
     data: unknown;
     dataDictionary: DataDictionary<unknown>;
-    navigation: TreeNavigationConfig;
-    navigationDictionary: TreeNavigationConfigDictionary;
+    navigation: NavigationConfig;
+    navigationDictionary: NavigationConfigDictionary;
 }
 
 /**
@@ -397,7 +397,7 @@ export interface GetNavigationMessageOutgoing {
     action: MessageSystemNavigationTypeAction.get;
     activeDictionaryId: string;
     activeNavigationConfigId: string;
-    navigation: TreeNavigationConfig;
+    navigation: NavigationConfig;
 }
 
 /**

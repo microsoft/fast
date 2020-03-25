@@ -8,8 +8,8 @@ import {
     InitializeMessageOutgoing,
     MessageSystem,
     MessageSystemType,
+    NavigationConfig,
     Register,
-    TreeNavigationConfig,
 } from "@microsoft/fast-tooling";
 
 import {
@@ -114,7 +114,7 @@ describe("Form", () => {
                 },
             },
         };
-        const navigation: TreeNavigationConfig = [
+        const navigation: NavigationConfig = [
             {
                 abc: {
                     self: "abc",
@@ -168,8 +168,8 @@ describe("Form", () => {
             registeredItem.onMessage({
                 data: {
                     type: MessageSystemType.initialize,
-                    activeDictionaryId: "",
-                    activeNavigationConfigId: "abc",
+                    dictionaryId: "",
+                    navigationConfigId: "abc",
                     schema,
                     data,
                     dataDictionary: [
@@ -214,7 +214,7 @@ describe("Form", () => {
                 },
             },
         };
-        const navigation: TreeNavigationConfig = [
+        const navigation: NavigationConfig = [
             {
                 abc: {
                     self: "abc",
@@ -268,8 +268,8 @@ describe("Form", () => {
             registeredItem.onMessage({
                 data: {
                     type: MessageSystemType.initialize,
-                    activeDictionaryId: "",
-                    activeNavigationConfigId: "abc",
+                    dictionaryId: "",
+                    navigationConfigId: "abc",
                     schema,
                     data,
                     dataDictionary: [
@@ -314,7 +314,7 @@ describe("Form", () => {
                 },
             },
         };
-        const navigation: TreeNavigationConfig = [
+        const navigation: NavigationConfig = [
             {
                 abc: {
                     self: "abc",
@@ -368,8 +368,8 @@ describe("Form", () => {
             registeredItem.onMessage({
                 data: {
                     type: MessageSystemType.initialize,
-                    activeDictionaryId: "",
-                    activeNavigationConfigId: "abc",
+                    dictionaryId: "",
+                    navigationConfigId: "abc",
                     schema,
                     data,
                     dataDictionary: [
@@ -414,7 +414,7 @@ describe("Form", () => {
                 },
             },
         };
-        const navigation: TreeNavigationConfig = [
+        const navigation: NavigationConfig = [
             {
                 abc: {
                     self: "abc",
@@ -468,8 +468,8 @@ describe("Form", () => {
             registeredItem.onMessage({
                 data: {
                     type: MessageSystemType.initialize,
-                    activeDictionaryId: "",
-                    activeNavigationConfigId: "abc",
+                    dictionaryId: "",
+                    navigationConfigId: "abc",
                     schema,
                     data,
                     dataDictionary: [
@@ -515,7 +515,7 @@ describe("Form", () => {
                 },
             },
         };
-        const navigation: TreeNavigationConfig = [
+        const navigation: NavigationConfig = [
             {
                 abc: {
                     self: "abc",
@@ -568,8 +568,8 @@ describe("Form", () => {
             registeredItem.onMessage({
                 data: {
                     type: MessageSystemType.initialize,
-                    activeDictionaryId: "",
-                    activeNavigationConfigId: "abc",
+                    dictionaryId: "",
+                    navigationConfigId: "abc",
                     schema,
                     data,
                     dataDictionary: [
@@ -615,7 +615,7 @@ describe("Form", () => {
                 },
             },
         };
-        const navigation: TreeNavigationConfig = [
+        const navigation: NavigationConfig = [
             {
                 abc: {
                     self: "abc",
@@ -669,8 +669,8 @@ describe("Form", () => {
             registeredItem.onMessage({
                 data: {
                     type: MessageSystemType.initialize,
-                    activeDictionaryId: "",
-                    activeNavigationConfigId: "abc",
+                    dictionaryId: "",
+                    navigationConfigId: "abc",
                     schema,
                     data,
                     dataDictionary: [
@@ -715,7 +715,7 @@ describe("Form", () => {
                 },
             },
         };
-        const navigation: TreeNavigationConfig = [
+        const navigation: NavigationConfig = [
             {
                 abc: {
                     self: "abc",
@@ -769,8 +769,8 @@ describe("Form", () => {
             registeredItem.onMessage({
                 data: {
                     type: MessageSystemType.initialize,
-                    activeDictionaryId: "",
-                    activeNavigationConfigId: "abc",
+                    dictionaryId: "",
+                    navigationConfigId: "abc",
                     schema,
                     data,
                     dataDictionary: [
@@ -818,7 +818,7 @@ describe("Form", () => {
                 },
             },
         };
-        const navigation: TreeNavigationConfig = [
+        const navigation: NavigationConfig = [
             {
                 abc: {
                     self: "abc",
@@ -873,8 +873,8 @@ describe("Form", () => {
             registeredItem.onMessage({
                 data: {
                     type: MessageSystemType.initialize,
-                    activeDictionaryId: "",
-                    activeNavigationConfigId: "abc",
+                    dictionaryId: "",
+                    navigationConfigId: "abc",
                     schema,
                     data,
                     dataDictionary: [
@@ -939,7 +939,7 @@ describe("Form", () => {
             <ModularForm {...formProps} messageSystem={fastMessageSystem} />
         );
 
-        const navigation: TreeNavigationConfig = [
+        const navigation: NavigationConfig = [
             {
                 abc: {
                     self: "abc",
@@ -996,8 +996,8 @@ describe("Form", () => {
             registeredItem.onMessage({
                 data: {
                     type: MessageSystemType.initialize,
-                    activeDictionaryId: "",
-                    activeNavigationConfigId: "abc",
+                    dictionaryId: "",
+                    navigationConfigId: "abc",
                     schema: {
                         id: "foo",
                         type: "object",
@@ -1073,7 +1073,7 @@ describe("Form", () => {
             <ModularForm {...formProps} messageSystem={fastMessageSystem} />
         );
 
-        const navigation: TreeNavigationConfig = [
+        const navigation: NavigationConfig = [
             {
                 abc: {
                     self: "abc",
@@ -1130,8 +1130,8 @@ describe("Form", () => {
             registeredItem.onMessage({
                 data: {
                     type: MessageSystemType.initialize,
-                    activeDictionaryId: "",
-                    activeNavigationConfigId: "bar",
+                    dictionaryId: "",
+                    navigationConfigId: "bar",
                     schema: {
                         id: "foo",
                         type: "object",
@@ -1219,7 +1219,7 @@ describe("Form", () => {
             />
         );
 
-        const navigation: TreeNavigationConfig = [
+        const navigation: NavigationConfig = [
             {
                 abc: {
                     self: "abc",
@@ -1254,8 +1254,8 @@ describe("Form", () => {
             registeredItem.onMessage({
                 data: {
                     type: MessageSystemType.initialize,
-                    activeDictionaryId: "",
-                    activeNavigationConfigId: "abc",
+                    dictionaryId: "",
+                    navigationConfigId: "abc",
                     schema,
                     data,
                     dataDictionary: [
@@ -1301,7 +1301,7 @@ describe("Form", () => {
                 },
             },
         };
-        const navigation: TreeNavigationConfig = [
+        const navigation: NavigationConfig = [
             {
                 abc: {
                     self: "abc",
@@ -1365,8 +1365,8 @@ describe("Form", () => {
             registeredItem.onMessage({
                 data: {
                     type: MessageSystemType.initialize,
-                    activeDictionaryId: "",
-                    activeNavigationConfigId: "abc",
+                    dictionaryId: "",
+                    navigationConfigId: "abc",
                     schema,
                     data,
                     dataDictionary: [
@@ -1441,7 +1441,7 @@ describe("Form", () => {
             />
         );
 
-        const navigation: TreeNavigationConfig = [
+        const navigation: NavigationConfig = [
             {
                 abc: {
                     self: "abc",
@@ -1488,8 +1488,8 @@ describe("Form", () => {
             registeredItem.onMessage({
                 data: {
                     type: MessageSystemType.initialize,
-                    activeDictionaryId: "",
-                    activeNavigationConfigId: "abc",
+                    dictionaryId: "",
+                    navigationConfigId: "abc",
                     schema: {
                         id: "foo",
                         type: "object",
