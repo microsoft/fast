@@ -17,16 +17,18 @@ export class MenuItem extends FastElement {
     @attr
     public checked: boolean;
 
-    public handleMenuItemKeyDown = (e: KeyboardEvent): void => {
+    public handleMenuItemKeyDown = (e: KeyboardEvent): boolean => {
         switch (e.keyCode) {
             case keyCodeEnter:
             case keyCodeSpace:
-                this.$emit("invoke", e);
+                this.$emit("click", e);
                 break;
         }
+
+        return true;
     };
 
     public handleMenuItemClick = (e: MouseEvent): void => {
-        this.$emit("invoke", e);
+        this.$emit("click", e);
     };
 }
