@@ -224,6 +224,11 @@ The component allows users to set a "Positioning Mode" on each axis which define
 - horizontal-position - read only, the current horizontal position of the component. Possible values are 'left', 'right' or 'unset'.
 - vertical-position - read only, the current vertical position of the component. Possible values are 'top', 'bottom' or 'unset'.
 
+*Properties:*
+- anchorElement - Holds a reference to the HTMLElement currently being used as the anchor.  Can be set directly or be populated by setting the anchor attribute.
+
+- viewportElement - Holds a reference to the HTMLElement currently being used as the viewport.  Can be set directly or be populated by setting the anchor attribute.
+
 *Slots:*
 - default slot for content
 
@@ -270,9 +275,8 @@ Authors may want to change default position from left to right or vice versa bas
 Layout logic could called frequently during scrolling and resize operations so efficient code is a priority here. At a minimum layout recalculations should be limited to once per frame.
 
 ### Dependencies
-[IntersectionObserver api](https://developer.mozilla.org/en-US/docs/Web/API/IntersectionObserver) is unsupported on IE, and [ResizeObserver](https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver) is unsupported on IE, Safari and Firefox.  Both are required by the component.
+[IntersectionObserver api](https://developer.mozilla.org/en-US/docs/Web/API/IntersectionObserver) is unsupported on IE, and [ResizeObserver](https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver) is unsupported on IE, Safari and Firefox.  Both are required by the component.  Authors who wish to use this component on these platforms will need to use polyfills.
 
-Question - do we support a fallback mode that relies on getBoundingClientRect() if the observers are not present? 
 
 ### Test Plan
 TBD
