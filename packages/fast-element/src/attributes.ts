@@ -25,7 +25,6 @@ export const booleanConverter: ValueConverter = {
         if (
             value === null ||
             value === void 0 ||
-            value === "" ||
             value === "false" ||
             value === false ||
             value === 0
