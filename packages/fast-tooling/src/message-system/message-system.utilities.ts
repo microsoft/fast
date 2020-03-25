@@ -25,7 +25,7 @@ import {
     getDataUpdatedWithSourceData,
 } from "../data-utilities/relocate";
 import { getNavigationDictionary } from "./navigation";
-import { TreeNavigationConfigDictionary } from "./navigation.props";
+import { NavigationConfigDictionary } from "./navigation.props";
 import { Data, DataDictionary, LinkedData } from "./data.props";
 import { SchemaDictionary } from "./schema.props";
 import { Validation } from "./validation.props";
@@ -42,7 +42,7 @@ import { Validation } from "./validation.props";
  */
 
 let dataDictionary: DataDictionary<unknown>;
-let navigationDictionary: TreeNavigationConfigDictionary;
+let navigationDictionary: NavigationConfigDictionary;
 let activeNavigationConfigId: string;
 let activeDictionaryId: string; // this controls both the data and navigation dictionaries which must remain in sync
 let schemaDictionary: SchemaDictionary;
