@@ -3,18 +3,19 @@ import { MenuItemRole } from "../menu-item";
 import { inRange, invert } from "lodash-es";
 import {
     keyCodeArrowDown,
+    keyCodeArrowLeft,
     keyCodeArrowRight,
     keyCodeArrowUp,
-    keyCodeArrowLeft,
     keyCodeEnd,
     keyCodeHome,
+    keyCodeTab,
 } from "@microsoft/fast-web-utilities";
 
 export class Menu extends FastElement {
     @attr
     public autofocus: boolean = false;
 
-    public menu: HTMLElement;
+    public items: HTMLSlotElement;
 
     /**
      * The index of the focusable element in the items array
@@ -27,11 +28,15 @@ export class Menu extends FastElement {
     );
 
     public connectedCallback(): void {
+        super.connectedCallback();
+
         const children: Element[] = this.domChildren();
         const focusIndex: number = children.findIndex(this.isFocusableElement);
 
         if (focusIndex !== -1) {
             this.focusIndex = focusIndex;
+
+            children[focusIndex].setAttribute("tabindex", "0");
         }
 
         if (this.autofocus) {
@@ -49,29 +54,32 @@ export class Menu extends FastElement {
             case keyCodeArrowRight:
                 e.preventDefault();
                 this.setFocus(this.focusIndex + 1, 1);
-
                 break;
 
             case keyCodeArrowUp:
             case keyCodeArrowLeft:
                 e.preventDefault();
                 this.setFocus(this.focusIndex - 1, -1);
-
                 break;
 
             case keyCodeEnd:
                 e.preventDefault();
                 this.setFocus(this.domChildren().length - 1, -1);
-
                 break;
 
             case keyCodeHome:
                 e.preventDefault();
                 this.setFocus(0, 1);
-
+                break;
+            default:
+                console.log(e, "default");
                 break;
         }
     };
+
+    public focus(): void {
+        this.setFocus(this.focusIndex === -1 ? 0 : this.focusIndex, 1);
+    }
 
     private isMenuItemElement(element: Element): element is HTMLElement {
         return (
@@ -99,7 +107,7 @@ export class Menu extends FastElement {
      * of the context menu
      */
     private domChildren(): Element[] {
-        return Array.from(this.menu.children);
+        return Array.from(this.children);
     }
 
     /**
@@ -109,10 +117,9 @@ export class Menu extends FastElement {
     private handleMenuItemFocus = (e: FocusEvent): void => {
         const target: Element = e.currentTarget as Element;
         const focusIndex: number = this.domChildren().indexOf(target);
-        console.log(e.target, "target in menu item focus");
+        console.log("handle menu item focus called");
         if (this.isDisabledElement(target)) {
             target.blur();
-
             return;
         }
 

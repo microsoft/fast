@@ -5,7 +5,7 @@ export const MenuItemStyles = css`
     ${display("grid")} :host {
         box-sizing: border-box;
         height: calc(var(--height-number) * 1px);
-        grid-template-columns:  0 auto 0;
+        grid-template-columns:  calc(var(--design-unit) * 1px) auto calc(var(--design-unit) * 1px);
         grid-template-rows: auto;
         justify-items: center;
         align-items: center;
