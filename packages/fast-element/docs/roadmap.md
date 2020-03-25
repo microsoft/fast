@@ -2,7 +2,7 @@
 
 ## Short-term
 
-* **Feature**: Enable mixed case proeprty binding
+* **Feature**: Enable mixed case property binding
 * **Feature**: Dependency injection infrastructure, including simple decorator-based property injection for `FastElement`.
 * **Test**: Testing infrastructure and test coverage.
 * **Fix**: Improve subscription cleanup on complex observable expressions.
