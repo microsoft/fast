@@ -168,8 +168,8 @@ describe("Form", () => {
             registeredItem.onMessage({
                 data: {
                     type: MessageSystemType.initialize,
-                    dictionaryId: "",
-                    navigationConfigId: "abc",
+                    activeDictionaryId: "",
+                    activeNavigationConfigId: "abc",
                     schema,
                     data,
                     dataDictionary: [
@@ -268,8 +268,8 @@ describe("Form", () => {
             registeredItem.onMessage({
                 data: {
                     type: MessageSystemType.initialize,
-                    dictionaryId: "",
-                    navigationConfigId: "abc",
+                    activeDictionaryId: "",
+                    activeNavigationConfigId: "abc",
                     schema,
                     data,
                     dataDictionary: [
@@ -368,8 +368,8 @@ describe("Form", () => {
             registeredItem.onMessage({
                 data: {
                     type: MessageSystemType.initialize,
-                    dictionaryId: "",
-                    navigationConfigId: "abc",
+                    activeDictionaryId: "",
+                    activeNavigationConfigId: "abc",
                     schema,
                     data,
                     dataDictionary: [
@@ -468,8 +468,8 @@ describe("Form", () => {
             registeredItem.onMessage({
                 data: {
                     type: MessageSystemType.initialize,
-                    dictionaryId: "",
-                    navigationConfigId: "abc",
+                    activeDictionaryId: "",
+                    activeNavigationConfigId: "abc",
                     schema,
                     data,
                     dataDictionary: [
@@ -568,8 +568,8 @@ describe("Form", () => {
             registeredItem.onMessage({
                 data: {
                     type: MessageSystemType.initialize,
-                    dictionaryId: "",
-                    navigationConfigId: "abc",
+                    activeDictionaryId: "",
+                    activeNavigationConfigId: "abc",
                     schema,
                     data,
                     dataDictionary: [
@@ -669,8 +669,8 @@ describe("Form", () => {
             registeredItem.onMessage({
                 data: {
                     type: MessageSystemType.initialize,
-                    dictionaryId: "",
-                    navigationConfigId: "abc",
+                    activeDictionaryId: "",
+                    activeNavigationConfigId: "abc",
                     schema,
                     data,
                     dataDictionary: [
@@ -769,8 +769,8 @@ describe("Form", () => {
             registeredItem.onMessage({
                 data: {
                     type: MessageSystemType.initialize,
-                    dictionaryId: "",
-                    navigationConfigId: "abc",
+                    activeDictionaryId: "",
+                    activeNavigationConfigId: "abc",
                     schema,
                     data,
                     dataDictionary: [
@@ -873,8 +873,8 @@ describe("Form", () => {
             registeredItem.onMessage({
                 data: {
                     type: MessageSystemType.initialize,
-                    dictionaryId: "",
-                    navigationConfigId: "abc",
+                    activeDictionaryId: "",
+                    activeNavigationConfigId: "abc",
                     schema,
                     data,
                     dataDictionary: [
@@ -996,8 +996,8 @@ describe("Form", () => {
             registeredItem.onMessage({
                 data: {
                     type: MessageSystemType.initialize,
-                    dictionaryId: "",
-                    navigationConfigId: "abc",
+                    activeDictionaryId: "",
+                    activeNavigationConfigId: "abc",
                     schema: {
                         id: "foo",
                         type: "object",
@@ -1130,8 +1130,8 @@ describe("Form", () => {
             registeredItem.onMessage({
                 data: {
                     type: MessageSystemType.initialize,
-                    dictionaryId: "",
-                    navigationConfigId: "bar",
+                    activeDictionaryId: "",
+                    activeNavigationConfigId: "bar",
                     schema: {
                         id: "foo",
                         type: "object",
@@ -1254,8 +1254,8 @@ describe("Form", () => {
             registeredItem.onMessage({
                 data: {
                     type: MessageSystemType.initialize,
-                    dictionaryId: "",
-                    navigationConfigId: "abc",
+                    activeDictionaryId: "",
+                    activeNavigationConfigId: "abc",
                     schema,
                     data,
                     dataDictionary: [
@@ -1365,8 +1365,8 @@ describe("Form", () => {
             registeredItem.onMessage({
                 data: {
                     type: MessageSystemType.initialize,
-                    dictionaryId: "",
-                    navigationConfigId: "abc",
+                    activeDictionaryId: "",
+                    activeNavigationConfigId: "abc",
                     schema,
                     data,
                     dataDictionary: [
@@ -1488,8 +1488,8 @@ describe("Form", () => {
             registeredItem.onMessage({
                 data: {
                     type: MessageSystemType.initialize,
-                    dictionaryId: "",
-                    navigationConfigId: "abc",
+                    activeDictionaryId: "",
+                    activeNavigationConfigId: "abc",
                     schema: {
                         id: "foo",
                         type: "object",

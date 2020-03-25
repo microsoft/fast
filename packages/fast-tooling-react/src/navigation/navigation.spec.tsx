@@ -161,8 +161,8 @@ describe("Navigation", () => {
             registeredItem.onMessage({
                 data: {
                     type: MessageSystemType.initialize,
-                    dictionaryId: "",
-                    navigationConfigId: "",
+                    activeDictionaryId: "",
+                    activeNavigationConfigId: "",
                     schema,
                     data,
                     dataDictionary: [
@@ -267,8 +267,8 @@ describe("Navigation", () => {
             registeredItem.onMessage({
                 data: {
                     type: MessageSystemType.initialize,
-                    dictionaryId: "",
-                    navigationConfigId: "",
+                    activeDictionaryId: "",
+                    activeNavigationConfigId: "",
                     schema,
                     data,
                     dataDictionary: [
