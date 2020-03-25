@@ -1,17 +1,17 @@
-import { attr, FastElement } from "@microsoft/fast-element";
+import { attr, FastElement, nullableNumberConverter } from "@microsoft/fast-element";
 
 export class BaseProgress extends FastElement {
-    @attr
-    public value: number;
+    @attr({ converter: nullableNumberConverter })
+    value: number;
 
-    @attr
-    public min: number;
+    @attr({ converter: nullableNumberConverter })
+    min: number;
 
-    @attr
-    public max: number;
+    @attr({ converter: nullableNumberConverter })
+    max: number;
 
-    @attr
-    public paused: boolean;
+    @attr({ mode: "boolean" })
+    paused;
     private pausedChanged(): void {
         this.paused ? this.classList.add("paused") : this.classList.remove("paused");
     }
