@@ -21,7 +21,7 @@ export class TextArea extends FastElement {
             : this.classList.remove("filled");
     }
 
-    @attr({ attribute: "required" })
+    @attr({ attribute: "required", mode: "boolean" })
     public required: boolean;
     private requiredChanged(): void {
         this.required
@@ -29,7 +29,7 @@ export class TextArea extends FastElement {
             : this.classList.remove("required");
     }
 
-    @attr
+    @attr({ mode: "boolean" })
     public readonly: boolean;
     private readonlyChanged(): void {
         this.readonly
