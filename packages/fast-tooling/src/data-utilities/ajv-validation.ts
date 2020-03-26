@@ -37,10 +37,17 @@ export class AjvMapper {
         this.messageSystem = config.messageSystem;
     }
 
+    /**
+     * Destroy this before dereferencing the validator
+     * or this will not be garbage collected
+     */
     public destroy(): void {
         this.messageSystem.remove(this.messageSystemConfig);
     }
 
+    /**
+     * Handles messages from the message system
+     */
     private handleMessageSystem = (e: MessageEvent): void => {
         switch (e.data.type) {
             case MessageSystemType.initialize:
@@ -109,6 +116,9 @@ export class AjvMapper {
         );
     }
 
+    /**
+     * Validates the data
+     */
     private validateData = (
         data: any,
         schema: any,
