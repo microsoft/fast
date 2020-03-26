@@ -95,7 +95,7 @@ export abstract class FormAssociated<
     public disabled: boolean = false;
     protected disabledChanged(): void {
         if (this.proxy instanceof HTMLElement) {
-            this.proxy.disabled = this.disabled; // TODO: https://github.com/microsoft/fast-dna/issues/2742
+            this.proxy.disabled = this.disabled;
         }
 
         this.disabled
@@ -118,7 +118,7 @@ export abstract class FormAssociated<
     public required: boolean = false;
     protected requiredChanged(): void {
         if (this.proxy instanceof HTMLElement) {
-            this.proxy.required = this.required; // TODO: https://github.com/microsoft/fast-dna/issues/2742
+            this.proxy.required = this.required;
         }
 
         this.required
