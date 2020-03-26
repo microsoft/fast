@@ -4,7 +4,6 @@ export function bool(value: string | boolean | null): boolean {
     return typeof value === "boolean" ? value : typeof value === "string";
 }
 
-/* tslint:disable:member-ordering */
 export class SliderLabel extends FastElement {
     @observable
     public positionStyle: string;
@@ -23,8 +22,6 @@ export class SliderLabel extends FastElement {
 
     private sliderMax: number;
     private sliderMin: number;
-    private sliderWidth: number;
-    private sliderMinimumPosition: number;
 
     constructor() {
         super();
@@ -34,10 +31,6 @@ export class SliderLabel extends FastElement {
         super.connectedCallback();
         this.sliderMax = (this.parentNode as FASTSlider).max;
         this.sliderMin = (this.parentNode as FASTSlider).min;
-        this.sliderMinimumPosition = Number(
-            (this.parentNode as FASTSlider).fullTrackMinWidth
-        );
-        this.sliderWidth = Number((this.parentNode as FASTSlider).fullTrackWidth);
         this.positionStyle = this.positionAsStyle();
     }
 

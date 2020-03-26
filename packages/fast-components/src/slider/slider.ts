@@ -1,4 +1,4 @@
-import { attr, observable } from "@microsoft/fast-element";
+import { attr, FastElement, observable, Observable } from "@microsoft/fast-element";
 import { FormAssociated } from "../form-associated";
 import {
     keyCodeArrowRight,
@@ -27,7 +27,7 @@ export class Slider extends FormAssociated<HTMLInputElement> {
     }
 
     @observable
-    public backgroundTrack: HTMLDivElement;
+    public track: HTMLDivElement;
 
     @observable
     public thumb: HTMLDivElement;
@@ -38,12 +38,9 @@ export class Slider extends FormAssociated<HTMLInputElement> {
     @observable
     public position: string;
     @observable
-    public fullTrackWidth: number = 0;
+    public trackWidth: number = 0;
     @observable
-    public fullTrackMinWidth: number = 0;
-
-    @attr
-    public label: string;
+    public trackMinWidth: number = 0;
 
     /**
      * The element's value to be included in form submission when checked.
@@ -66,6 +63,7 @@ export class Slider extends FormAssociated<HTMLInputElement> {
                 : (Number(this.value) / this.max - this.min) * 100;
 
         this.position = `right: ${percentage}%`;
+        this.$emit("change", this.value);
     }
 
     /**
@@ -121,8 +119,8 @@ export class Slider extends FormAssociated<HTMLInputElement> {
     public connectedCallback(): void {
         super.connectedCallback();
         this.updateForm();
-        this.fullTrackWidth = this.backgroundTrack.clientWidth;
-        this.fullTrackMinWidth = this.backgroundTrack.getBoundingClientRect().left;
+        this.trackWidth = this.track.clientWidth;
+        this.trackMinWidth = this.track.getBoundingClientRect().left;
         this.addEventListener("keydown", this.keypressHandler);
         this.addEventListener("mousedown", this.clickHandler);
         this.thumb.addEventListener("mousedown", this.handleThumbMouseDown);
@@ -158,7 +156,6 @@ export class Slider extends FormAssociated<HTMLInputElement> {
         if (bool(this.readOnly) || bool(this.disabled) || event.defaultPrevented) {
             return;
         }
-
         event.preventDefault();
         (event.target as HTMLElement).focus();
         window.addEventListener("mouseup", this.handleWindowMouseUp);
@@ -172,12 +169,8 @@ export class Slider extends FormAssociated<HTMLInputElement> {
         if (bool(this.readOnly) || bool(this.disabled) || e.defaultPrevented) {
             return;
         }
-
         // update the value based on current position
         this.value = `${this.calculateNewValue(e.pageX)}`;
-        console.log("e.pageX:", e.pageX);
-        console.log("e.clientX:", e.clientX);
-        console.log("\n***New Value is now:", this.value, "\n");
         this.updateForm();
     };
 
@@ -185,13 +178,11 @@ export class Slider extends FormAssociated<HTMLInputElement> {
         // update the value based on current position
         const newPosition = convertPixelToPercent(
             rawValue,
-            this.fullTrackMinWidth,
-            this.fullTrackWidth,
+            this.trackMinWidth,
+            this.trackWidth,
             this.direction
         );
-        console.log("in calculateNewValue newPosition:", newPosition);
         const newValue: number = (this.max - this.min) * newPosition + this.min;
-        console.log("calculateNewValue newValue:", newValue);
         return this.convertToConstrainedValue(newValue);
     };
 
@@ -209,12 +200,12 @@ export class Slider extends FormAssociated<HTMLInputElement> {
 
     private clickHandler = (e: MouseEvent) => {
         if (!bool(this.disabled) && !bool(this.readOnly)) {
-            let trackElement: any = this.shadowRoot!.querySelector(".background-track");
-            this.fullTrackWidth = trackElement.clientWidth;
-            if (this.fullTrackWidth === 0) {
-                this.fullTrackWidth = 1;
+            let trackElement: any = this.shadowRoot!.querySelector(".track");
+            this.trackWidth = trackElement.clientWidth;
+            if (this.trackWidth === 0) {
+                this.trackWidth = 1;
             }
-            this.fullTrackMinWidth = trackElement.getBoundingClientRect().left;
+            this.trackMinWidth = trackElement.getBoundingClientRect().left;
 
             e.preventDefault();
             (e.target as HTMLElement).focus();
@@ -222,7 +213,6 @@ export class Slider extends FormAssociated<HTMLInputElement> {
             window.addEventListener("mousemove", this.handleMouseMove);
 
             this.value = `${this.calculateNewValue(e.pageX)}`;
-            console.log("clickHandler newValue:", this.value);
             this.updateForm();
         }
     };
@@ -235,9 +225,11 @@ export class Slider extends FormAssociated<HTMLInputElement> {
     };
 
     private increment = (): void => {
-        const incrementedVal: number = this.convertToConstrainedValue(
-            Number(this.value) + Number(this.step)
-        );
+        const newVal: number =
+            this.direction !== "rtl"
+                ? Number(this.value) + Number(this.step)
+                : Number(this.value) - Number(this.step);
+        const incrementedVal: number = this.convertToConstrainedValue(newVal);
         const incrementedValString: string =
             incrementedVal < Number(this.max) ? `${incrementedVal}` : `${this.max}`;
         this.value = incrementedValString;
@@ -245,9 +237,11 @@ export class Slider extends FormAssociated<HTMLInputElement> {
     };
 
     private decrement = (): void => {
-        const decrementedVal: number = this.convertToConstrainedValue(
-            Number(this.value) - Number(this.step)
-        );
+        const newVal =
+            this.direction !== "rtl"
+                ? Number(this.value) - Number(this.step)
+                : Number(this.value) + Number(this.step);
+        const decrementedVal: number = this.convertToConstrainedValue(newVal);
         const decrementedValString: string =
             decrementedVal > Number(this.min) ? `${decrementedVal}` : `${this.min}`;
         this.value = decrementedValString;

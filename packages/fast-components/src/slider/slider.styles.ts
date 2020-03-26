@@ -29,9 +29,9 @@ export const SliderStyles = css`
         outline: none;
         cursor: pointer;
     }
-    .background-track {
+    .track {
         background: var(--neutral-outline-rest);
-        position: absolute;
+        position: relative;
         right: -2px;
         left: -2px;
         align-self: start;
@@ -68,8 +68,8 @@ export const SliderStyles = css`
     }
     :host(.disabled) .label,
     :host(.readonly) .label,
-    :host(.readonly) .checkbox,
-    :host(.disabled) .checkbox {
+    :host(.readonly) .slider,
+    :host(.disabled) .slider {
         cursor: ${disabledCursor};
     }
     :host(.disabled) {
