@@ -22,10 +22,7 @@ function setChangeHandler(): void {
     document.querySelectorAll("fast-slider").forEach(el => {
         if (el instanceof FASTSlider) {
             el.addEventListener("change", (e: any) => {
-                console.log(
-                    "handler in slider story hit, e.target.value:",
-                    e.target.value
-                );
+                console.log("e.target.value:", e.target.value);
             });
         }
     });
