@@ -8,12 +8,8 @@ import {
 } from "@microsoft/fast-web-utilities";
 import { convertPixelToPercent } from "./slider-utilities";
 
-export function bool(value: string | boolean | null): boolean {
-    return typeof value === "boolean" ? value : typeof value === "string";
-}
-
 export class Slider extends FormAssociated<HTMLInputElement> {
-    @attr({ attribute: "readonly" })
+    @attr({ attribute: "readonly", mode: "boolean" })
     public readOnly: boolean; // Map to proxy element
     private readOnlyChanged(): void {
         if (this.proxy instanceof HTMLElement) {
@@ -23,7 +19,7 @@ export class Slider extends FormAssociated<HTMLInputElement> {
         this.readOnly
             ? this.classList.add("readonly")
             : this.classList.remove("readonly");
-        this.setAttribute("aria-readonly", bool(this.readOnly).toString());
+        this.setAttribute("aria-readonly", this.readOnly.toString());
     }
 
     @observable
@@ -153,7 +149,7 @@ export class Slider extends FormAssociated<HTMLInputElement> {
      *  Handle mouse moves during a thumb drag operation
      */
     private handleThumbMouseDown = (event: MouseEvent): void => {
-        if (bool(this.readOnly) || bool(this.disabled) || event.defaultPrevented) {
+        if (this.readOnly || this.disabled || event.defaultPrevented) {
             return;
         }
         event.preventDefault();
@@ -166,7 +162,7 @@ export class Slider extends FormAssociated<HTMLInputElement> {
      *  Handle mouse moves during a thumb drag operation
      */
     private handleMouseMove = (e: MouseEvent): void => {
-        if (bool(this.readOnly) || bool(this.disabled) || e.defaultPrevented) {
+        if (this.readOnly || this.disabled || e.defaultPrevented) {
             return;
         }
         // update the value based on current position
@@ -199,7 +195,7 @@ export class Slider extends FormAssociated<HTMLInputElement> {
     };
 
     private clickHandler = (e: MouseEvent) => {
-        if (!bool(this.disabled) && !bool(this.readOnly)) {
+        if (!this.disabled && !this.readOnly) {
             let trackElement: any = this.shadowRoot!.querySelector(".track");
             this.trackWidth = trackElement.clientWidth;
             if (this.trackWidth === 0) {
