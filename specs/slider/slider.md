@@ -50,7 +50,7 @@ A designer can override any internal styling applied to the slotted labels, the 
 - `change` - raise the change event for external parties to be informed of the value change.
 
 *Slots*
-- `background-track` - the horizontal or vertical track along which the thumb slides
+- `track` - the horizontal or vertical track along which the thumb slides
 - `thumb` - the control the user drags along the track to change the value of the slider
 - `default` slot - Providing child elements to the `fast-slider` will be hosted in the default slot and presented as track labels. See `fast-slider-label` below.
 
@@ -63,11 +63,11 @@ A designer can override any internal styling applied to the slotted labels, the 
     class="slider"
 >
   <div part="layout-region" class="layout-region">
-      <div part="background-track" class="background-track">
-        <slot name="background-track"></slot>
+      <div part="track" class="track">
+        <slot name="track"></slot>
       </div>
-      <slot name="track">
-        <div part="track" class="track"></div>
+      <slot name="foreground-track">
+        <div part="foreground-track" class="foreground-track"></div>
       </slot>
       <div part="thumb-container" class="thumb-container" style=${x => x.position}>
           <slot name="thumb"><div class="thumb-cursor"></div></slot>
