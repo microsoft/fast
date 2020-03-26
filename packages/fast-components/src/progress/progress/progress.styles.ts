@@ -1,5 +1,6 @@
 import { css } from "@microsoft/fast-element";
 import { display } from "../../styles";
+import { SystemColors } from "../../styles/system-colors";
 
 export const ProgressStyles = css`
     ${display("flex")} :host {
@@ -10,7 +11,7 @@ export const ProgressStyles = css`
     }
 
     .progress {
-        background: var(--neutral-fill-rest);
+        background-color: var(--neutral-fill-rest);
         border-radius: calc(var(--design-unit) * 1px);
         width: 100%;
         height: 100%;
@@ -20,7 +21,7 @@ export const ProgressStyles = css`
     }
 
     .determinate {
-        background: var(--accent-fill-rest);
+        background-color: var(--accent-fill-rest);
         border-radius: calc(var(--design-unit) * 1px);
         height: 100%;
         transition: all 0.2s ease-in-out;
@@ -58,18 +59,31 @@ export const ProgressStyles = css`
         animation: indeterminate-2 2s infinite;
     }
 
-    :host(.paused) .indeterminate-indicator-1 {
+    :host(.paused) .indeterminate-indicator-1, .indeterminate-indicator-2 {
         animation-play-state: paused;
-        background: var(--neutral-fill-rest);
-    }
-
-    :host(.paused) .indeterminate-indicator-2 {
-        animation-play-state: paused;
-        background: var(--neutral-fill-rest);
+        background-color: var(--neutral-fill-rest);
     }
 
     :host(.paused) .determinate {
-        background: var(--neutral-foreground-hint);
+        background-color: var(--neutral-foreground-hint);
+    }
+
+    @media (forced-colors: active) {
+        .indeterminate-indicator-1, .indeterminate-indicator-2, .determinate  {
+            background-color: ${SystemColors.FieldText};
+        }
+
+        .progress {
+            background-color: ${SystemColors.Field};
+        }
+
+        :host(.paused) .indeterminate-indicator-1, .indeterminate-indicator-2 {
+            background-color: ${SystemColors.Field};
+        }
+
+        :host(.paused) .determinate {
+            background-color: ${SystemColors.GrayText};
+        }
     }
 
     @keyframes indeterminate-1 {

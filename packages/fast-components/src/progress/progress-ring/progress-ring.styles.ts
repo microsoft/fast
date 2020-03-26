@@ -1,5 +1,6 @@
 import { css } from "@microsoft/fast-element";
 import { display } from "../../styles";
+import { SystemColors } from "../../styles/system-colors";
 
 export const ProgressRingStyles = css`
     ${display("flex")} :host {
@@ -49,6 +50,25 @@ export const ProgressRingStyles = css`
 
     :host(.paused) .determinate {
         stroke: var(--neutral-foreground-hint);
+    }
+
+    @media (forced-colors: active) {
+        .indeterminate-indicator-1,
+        .determinate {
+            stroke: ${SystemColors.FieldText};
+        }
+
+        .background {
+            stroke: ${SystemColors.Field};
+        }
+
+        :host(.paused) .indeterminate-indicator-1 {
+            stroke: ${SystemColors.Field};
+        }
+
+        :host(.paused) .determinate {
+            stroke: ${SystemColors.GrayText};
+        }
     }
 
     @keyframes spin-infinite {
