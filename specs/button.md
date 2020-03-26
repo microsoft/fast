@@ -81,5 +81,4 @@ All "anchor" components will support all methods and attributes of the [anchor](
 ### Accessibility
 Button elements will appear utilize the button role and will behave as the native `button` element.
 
-
 Anchor elements will function slightly differently to preserve some of the native capabilities that come from anchors like opening anchors in new tabs, opening anchors in new tabs without navigating to them, and the augmented command menu that gets opened when right+clicking an anchor. They will create an *internal* anchor element to which attributes will get reflected. Focus will also be defered to this element.
