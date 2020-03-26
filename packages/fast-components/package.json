@@ -3,7 +3,7 @@
   "description": "A library of Web Components",
   "private": true,
   "sideEffects": false,
-  "version": "0.3.0",
+  "version": "0.5.0",
   "author": {
     "name": "Microsoft",
     "url": "https://discord.gg/FcSNfg4"
@@ -39,9 +39,9 @@
     "typescript": "^3.7.5"
   },
   "dependencies": {
-    "@microsoft/fast-colors": "^5.0.3",
-    "@microsoft/fast-components-styles-msft": "^4.28.4",
-    "@microsoft/fast-element": "^0.2.1",
+    "@microsoft/fast-colors": "^5.0.4",
+    "@microsoft/fast-components-styles-msft": "^4.28.5",
+    "@microsoft/fast-element": "^0.3.1",
     "@microsoft/fast-web-utilities": "^4.4.1",
     "tabbable": "^4.0.0"
   }

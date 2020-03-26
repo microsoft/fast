@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.30.4](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-msft@4.30.3...@microsoft/fast-components-react-msft@4.30.4) (2020-03-25)
+
+**Note:** Version bump only for package @microsoft/fast-components-react-msft
+
+
+
+
+
+## [4.30.3](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-msft@4.30.2...@microsoft/fast-components-react-msft@4.30.3) (2020-03-25)
+
+**Note:** Version bump only for package @microsoft/fast-components-react-msft
+
+
+
+
+
 ## [4.30.2](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-msft@4.30.1...@microsoft/fast-components-react-msft@4.30.2) (2020-03-18)
 
 **Note:** Version bump only for package @microsoft/fast-components-react-msft

@@ -91,4 +91,10 @@ export const TextAreaStyles = css`
     :host([disabled]) {
         opacity: var(--disabled-opacity);
     }
+
+    @media (forced-colors: active) {
+        :host([disabled]) {
+            opacity: 1;
+        }
+    }
 `;
