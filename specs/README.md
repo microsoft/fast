@@ -9,6 +9,7 @@ Here you'll find specifications for custom elements and other library features.
 - [Checkbox](./checkbox.md)
 - [Dialog](./dialog/dialog.md)
 - [Form associated custom elements]("./form-associated-custom-element.md")
+- [Progress](./progress.md)
 - [Switch](./switch.md)
 - [Text Area](./text-area/text-area.md)
 - [Text Field](./text-field/text-field.md)
