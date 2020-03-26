@@ -1,132 +1,85 @@
-# Spec Title
+# Button
 
 ## Overview
 
-*The name of the component, along with a high-level description.*
-
-### Background
-
-*Relevant historical or background information, related existing issues, etc.*
+The button component represent an control that should invoke an action or perform a navigation.
 
 ### Use Cases
-
-*Primary use cases for this component.*
+- Creating simple button or link elements
 
 ### Non-goals
-
-*A list of use cases, features, or functionality which are **not** goals for the component*
+- Complex or compisite buttons (like split button)
   
 ### Features
-- Can represent either a hyperlink or a button 
+- Can represent either a hyperlink or a button
+- Appearances including "lightweight", "justified", "outline", "primary" and "stealth"
+  - I'm proposing droping "justified" because this is a simple matter of removing starting padding.
 
 ### Risks and Challenges
 
-Prior implementations of button provide the oppertunity to create a `button` element or an `a` element. The `button` element is a form-associated element but the `a` element is not. If we expose a single component polymophic button that can represent both a `button` and an `a` - we need to figure out how to only form-associate the `button`.
+Prior implementations of button provide the oppertunity to create a `button` element or an `a` element. The `button` element is a form-associated element but the `a` element is not. If we expose a single component polymophic button component that can represent both a `button` and an `a` - we need to figure out how to only form-associate the `button`.
+
+Button also supports a number of appearance options. Ideally these using one of these appearances does not incur the debt of the others, including recipe registrations and CSS bloat.
 
 ### Prior Art/Examples
 - [FAST DNA React](https://explore.fast.design/components/button)
 - [Material UI](https://material-ui.com/components/buttons/)
 - [Lightning Design System](https://www.lightningdesignsystem.com/components/buttons/)
 - [Carbon Design](https://www.carbondesignsystem.com/components/button/code)
-
-- [Ant Design](https://ant.design/components/checkbox/)
-- [Atlassian](https://atlaskit.atlassian.com/packages/core/checkbox)
-- [Office Fabric](https://developer.microsoft.com/en-us/fabric#/controls/web/checkbox)
-- [Windows (UWP)](https://docs.microsoft.com/en-us/windows/uwp/design/controls-and-patterns/checkbox)
+- [Ant Design](https://ant.design/components/button/)
+- [Atlassian](https://atlaskit.atlassian.com/packages/core/button)
+- [Office Fabric](https://developer.microsoft.com/en-us/fabric#/controls/web/button)
+- [Windows (UWP)](https://docs.microsoft.com/en-us/windows/uwp/design/controls-and-patterns/buttons)
 
 ---
 
 ## Design
+The library would expose 8 custom element definitions: 
+1. `fast-button-lightweight`
+2. `fast-button-outline`
+3. `fast-button-primary`
+4. `fast-button-stealth`
+5. `fast-anchor-lightweight`
+6. `fast-anchor-outline`
+7. `fast-anchor-primary`
+8. `fast-anchor-stealth`
 
-*Describe the design of the component, thinking through several perspectives:*
+All "button" components will be form-associated and support all methods and attributes of the [button](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button) element.
 
-- *A customer using the component on a web page.*
-- *A developer building an app with the component and interacting through HTML/CSS/JavaScript.*
-- *A designer customizing the component.*
+All "anchor" components will support all methods and attributes of the [anchor](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a) element.
 
 ### API
+- [button]([button](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button))
+- [anchor](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a)
 
-*The key elements of the component's public API surface:*
-
-- *Component Name*
-- *Props/Attrs*
-- *Methods*
-- *Events*
-
-*Consider high and low-level APIs. Attempt to design a powerful and extensible low-level API with a high-level API for developer/designer ergonomics and simplicity.*
 
 ### Anatomy and Appearance
-
-*Screenshots and/or description of the basic appearance of the component. Outline its structure with a diagram of its visual tree (shadow dom). Enumerate key areas of visual customization, such as:*
+#### Button
+```html
+<host>
+  <slot name="before"></slot>
+  <slot></slot>
+  <slot name="after"></slot>
+</host>
+```
+#### Anchor
+```html
+<host>
+  <a> <!-- focus defered to this element -->
+    <slot name="before"></slot>
+    <slot></slot>
+    <slot name="after"></slot>
+  </a>
+</host>
+```
 
 - *Slot Names*
-- *Host Classes*
-- *Slotted Content/Slotted Classes*
-- *CSS Parts*
-
----
-
-## Implementation
-
-*Important aspects of the planned implementation with careful consideration of web standards and integration.*
-
-### States
-
-*Key component states, valid state transitions, and how interactions trigger a state transition.*
+  - before: the content to place before the primary content
+  - default: the element's content
+  - after: the content to place after the primary content
 
 ### Accessibility
+Button elements will appear utilize the button role and will behave as the native `button` element.
 
-*Consider the accessibility of the component, including:*
 
-- *Keyboard Navigation and Focus*
-- *Form Input*
-- *Use with Assistive Technology*
-  - e.g. The implications shadow dom might have on how roles are presented to the AT.
-
-### Globalization
-
-*Consider whether the component has any special globalization needs such as:*
-
-- *Special RTL handling*
-- *Swapping of internal icons/visuals*
-- *Localization*
-
-### Security
-
-*Are there any security implications surrounding the component?*
-
-### Performance
-
-*Are there any performance pitfalls or challenges with implementing the component?*
-
-### Dependencies
-
-*Will implementing the component require taking on any dependencies?*
-
-- *3rd party libraries*
-- *Upcoming standards we need to polyfill*
-- *Dependencies on other fast components or utilities*
-
-*Do any of these dependencies bring along an associated timeline?*
-
-### Test Plan
-
-*What is the plan for testing the component, if different from the normal path?*
-
-### Tooling
-
-*Are there any special considerations for tooling? Will tooling changes need to be made? Is there a special way to light up this component in our tooling that would be compelling for developers/designers?*
-
-### Documentation
-
-*What additions or changes are needed for user documentation and demos? Are there any architectural/engineering docs we should create as well, perhaps due to some interesting technical challenge or design decisions related to this component?*
-
----
-
-## Resources
-
-*Any related resource links such as web standards, discussion threads, diagrams, etc.*
-
-## Next Steps
-
-*What next steps, if any, are there? Is there some functionality that would be a nice-to-have or a common feature in other implementations that could be added but is not considered part of the MVP?*
+Anchor elements will function slightly differently to preserve some of the native capabilities that come from anchors like opening anchors in new tabs, opening anchors in new tabs without navigating to them, and the augmented command menu that gets opened when right+clicking an anchor. They will create an *internal* anchor element to which attributes will get reflected. Focus will also be defered to this element.
