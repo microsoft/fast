@@ -33,12 +33,12 @@ Infinite nesting of menus (submenus) presents a challenge for keyboard navigatio
     <fast-menu-item>Menu item two</fast-menu-item>
     <fast-menu-item>
         Menu item three
-        <fast-menu slot="item">
+        <fast-menu slot="menu">
             <fast-menu-item>Nested item one</fast-menu-item>
             <fast-menu-item>Nested item two</fast-menu-item>
             <fast-menu-item>
                 Nested item three
-                <fast-menu slot="item">
+                <fast-menu slot="menu">
                     <fast-menu-item>Nested item one</fast-menu-item>
                     <fast-menu-item>Nested item two</fast-menu-item>
                 </fast-menu>
@@ -57,12 +57,12 @@ Consider a scenario where we have the following menu - some menu items have glyp
     <fast-menu-item>Menu item one</fast-menu-item>
     <fast-menu-item>Menu item two</fast-menu-item>
     <fast-menu-item>
-        <fancy-icon slot="icon"></fany-icon>
+        <fancy-icon slot="before"></fany-icon>
         Menu item three
     </fast-menu-item>
 </fast-context-menu>
 ```
-The third item in the menu has a glyph, which would inset the text from the other menu items. To ensure that the content of this menu item aligns with the rest of the items, all items need to visually shift to ensure alignmnet of the menu content. This presents an interesting challenge for how we will communicate these changes to ensure the styling is appropriately applied. Ultimately, the parent just needs to know that *one* of the items below has a menu item with the glyph.
+The third item in the menu has a glyph, which would inset the text from the other menu items. To ensure that the content of this menu item aligns with the rest of the items, all items need to visually shift to ensure alignment of the menu content. This presents an interesting challenge for how we will communicate these changes to ensure the styling is appropriately applied. Ultimately, the parent just needs to know that *one* of the items below has a menu item with the glyph.
 
 ### Prior Art/Examples
 - [FAST-DNA (React)](https://explore.fast.design/components/context-menu)
@@ -108,19 +108,19 @@ The third item in the menu has a glyph, which would inset the text from the othe
 - checked - sets the checked value for menuitemcheckbox or menuitemradio items
 
 *Slots:*
+- before - slot which precedes content
 - content - slot for the content (the default slot for the item)
-- item - the optional children
-- before-content - slot which precedes content, often a glyph or icon
-- after-content - slot which follows content, often a glyph or icon
+- after - slot which comes after content
+- menu - the slot used to generate a submenu
 
 *CSS Parts*
+- before
 - content
-- before-content
-- after-content
-- item
+- after
+- menu
 
 *Events:*
-- invoke (event) - event for when the item has been clicked or invoked via keyboard
+- click (event) - event for when the item has been clicked or invoked via keyboard
 
 ### Anatomy and Appearance
 
@@ -150,12 +150,12 @@ Nested menu:
     <fast-menu-item>Menu item two</fast-menu-item>
     <fast-menu-item>
         Menu item three
-        <fast-menu slot="item">
+        <fast-menu slot="menu">
             <fast-menu-item>Nested item one</fast-menu-item>
             <fast-menu-item>Nested item two</fast-menu-item>
             <fast-menu-item>
                 Nested item three
-                <fast-menu slot="item">
+                <fast-menu slot="menu">
                     <fast-menu-item>Nested item one</fast-menu-item>
                     <fast-menu-item>Nested item two</fast-menu-item>
                 </fast-menu>
