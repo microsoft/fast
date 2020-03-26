@@ -1,7 +1,7 @@
 import { Observable } from "./observation/observable";
 
 export interface ValueConverter {
-    toView(value: any): string;
+    toView(value: any): string | null;
     fromView(value: string): any;
 }
 
@@ -33,6 +33,18 @@ export const booleanConverter: ValueConverter = {
         }
 
         return true;
+    },
+};
+
+export const nullableNumberConverter: ValueConverter = {
+    toView(value: any): string | null {
+        let number = value * 1;
+        return isNaN(number) ? null : number.toString();
+    },
+
+    fromView(value: any): any {
+        let number = value * 1;
+        return isNaN(number) ? null : number;
     },
 };
 

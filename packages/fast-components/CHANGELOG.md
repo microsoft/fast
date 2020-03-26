@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.5.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components@0.4.0...@microsoft/fast-components@0.5.0) (2020-03-25)
+
+
+### Features
+
+* add forced-color support to existing components ([#2830](https://github.com/Microsoft/fast-dna/issues/2830)) ([45a4cc5](https://github.com/Microsoft/fast-dna/commit/45a4cc5e30031d617dd2b4e68604cb2f1e5f4a6e))
+
+
+
+
+
 # [0.4.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components@0.3.0...@microsoft/fast-components@0.4.0) (2020-03-25)
 
 

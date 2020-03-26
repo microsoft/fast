@@ -2,6 +2,14 @@ import { html, ref, when } from "@microsoft/fast-element";
 import { TextField } from "./text-field";
 
 export const TextFieldTemplate = html<TextField>`
+<template
+    role="textbox"
+    appearance="${x => x.appearance}"
+    $aria-required="${x => x.required}"
+    $aria-disabled="${x => x.disabled}"
+    $aria-readonly="${x => x.readOnly}"
+    $tabindex="${x => (x.disabled ? null : 0)}"
+>
     ${when(
         x => x.childNodes.length,
         html`
@@ -12,7 +20,10 @@ export const TextFieldTemplate = html<TextField>`
         ><slot></slot></label>
     `
     )}
-    <div class="root" part="root">
+    <div
+        class="root"
+        part="root"    
+    >
         <span
             part="before-content"
             ${ref("beforeContentContainer")}
@@ -26,21 +37,14 @@ export const TextFieldTemplate = html<TextField>`
         <input
             class="control"
             part="control"
-            id=${x => (x.childNodes.length ? "control" : void 0)}
-            $type=${x => x.type}
-            $autofocus=${x => x.autofocus}
-            $disabled=${x => x.disabled}
+            id="control"
+            @input=${x => x.handleTextInput()}
             $placeholder=${x => x.placeholder}
-            $list=${x => x.list}
-            $maxlength=${x => x.maxlength}
-            $minlength=${x => x.minlength}
-            $name=${x => x.name}
-            $pattern=${x => x.pattern}
-            $readonly=${x => x.readonly}
-            $required=${x => x.required}
-            $size=${x => x.size}
-            $spellcheck=${x => x.spellcheck}
-            $value=${x => x.value}
+            required=${x => x.required}
+            disabled=${x => x.disabled}
+            $readonly=${x => x.readOnly}
+            value=${x => x.value}
+            ${ref("control")}
         />
         <span
             part="after-content"
@@ -53,4 +57,5 @@ export const TextFieldTemplate = html<TextField>`
             ></slot>
         </span>
     </div>
+</template>
 `;
