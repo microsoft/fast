@@ -64,7 +64,7 @@ By default, any attribute created with `@attr` will perform no explicit type coe
 
 * `reflect` - The *default* mode that is used if none is specified. This reflects property changes to the DOM. If a `converter` is supplied, it will invoke the converter before calling the `setAttribute` DOM API.
 * `boolean` - This mode causes your attribute to function using the HTML boolean attribute behavior. When your attribute is present in the DOM or equal to its own name, the value will be true. When the attribute is absent from the DOM, the value of the property will be false. Setting the property will also update the DOM by adding/removing the attribute.
-* `none` - This mode skips reflecting the value of the property back to the HTML attribute, but does receive updates when changed through `setAttribute`.
+* `fromView` - This mode skips reflecting the value of the property back to the HTML attribute, but does receive updates when changed through `setAttribute`.
 
 In addition to setting the `mode`, you can also supply a custom `ValueConverter` by setting the `converter` property of the attribute configuration. The converter must implement the following interface:
 
@@ -78,7 +78,7 @@ interface ValueConverter {
 Here's how it works:
 
 * When the DOM attribute value changes, the converter's `fromView` method will be called, allowing custom code to coerce the value to the proper type expected by the property.
-* When the property value changes, the converter's `fromView` method will also be called, also ensuring that the type is correct. After this, the `mode` will be determined. If the mode is set to `reflect` then the converter's `toView` method will be called to allow the type to be formatted before writing to the attribute using `setAttribute`.
+* When the property value changes, the converter's `fromView` method will also be called, ensuring that the type is correct. After this, the `mode` will be determined. If the mode is set to `reflect` then the converter's `toView` method will be called to allow the type to be formatted before writing to the attribute using `setAttribute`.
 
 > **NOTE:** When the `mode` is set to `boolean`, a built-in `booleanConverter` is automatically used to ensure type correctness so that manual configuration of the converter is not needed in this common scenario.
 
@@ -307,7 +307,7 @@ Besides rendering content, properties, and attributes, you'll often want to add 
        @input="${(x, c) => x.onDescriptionChange(c.event)}">
 ```
 
-In the examples above, after your event handler is executed, `preventDefault()` will be called on the event object automatically. You can return `true` from your handler to opt out of this behavior.
+In both examples above, after your event handler is executed, `preventDefault()` will be called on the event object automatically. You can return `true` from your handler to opt out of this behavior.
 
 > **IMPORTANT:** The templating engine only supports *unidirectional data flow* (model => view). It does not support *two-way data binding* (model <=> view). As shown above, pushing data from the view back to the model should be handled with explicit events that call into your model's API.
 
