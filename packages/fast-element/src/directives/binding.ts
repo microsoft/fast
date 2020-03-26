@@ -156,8 +156,11 @@ export class BindingBehavior implements Behavior, GetterInspector, Subscriber {
 
     handleEvent(event: Event) {
         const context = { event };
-        this.expression(this.source, context as any);
-        event.preventDefault();
+        const result = this.expression(this.source, context as any);
+
+        if (result !== true) {
+            event.preventDefault();
+        }
     }
 
     call() {
