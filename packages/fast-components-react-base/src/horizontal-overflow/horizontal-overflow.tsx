@@ -440,7 +440,10 @@ class HorizontalOverflow extends Foundation<
     private isOverflow(): boolean {
         const availableWidth: number = this.getAvailableWidth();
         const itemWidths: number[] = this.getItemWidths();
-        const totalItemWidth: number = itemWidths.reduce((a: number, b: number) => a + b);
+        const totalItemWidth: number = itemWidths.reduce(
+            (a: number, b: number) => a + b,
+            0
+        );
 
         return totalItemWidth > availableWidth;
     }

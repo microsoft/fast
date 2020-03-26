@@ -1,6 +1,7 @@
 import { css } from "@microsoft/fast-element";
 import { disabledCursor, display } from "../styles";
 import { focusVisible } from "../styles/focus";
+import { SystemColors } from "../styles/system-colors";
 
 export const SwitchStyles = css`
     :host([hidden]) {
@@ -38,6 +39,10 @@ export const SwitchStyles = css`
         background: var(--neutral-fill-input-rest);
         border-radius: calc(var(--height-number) * 1px);
         border: calc(var(--outline-width) * 1px) solid var(--neutral-outline-rest);
+    }
+
+    .switch:hover {
+        cursor: pointer;
     }
 
     .switch:hover {
@@ -110,5 +115,42 @@ export const SwitchStyles = css`
 
     :host(.checked) .checked-message {
         display: block;
+    }
+
+    @media (forced-colors: active) {
+        .checked-indicator {
+            forced-color-adjust: none;
+            background: ${SystemColors.FieldText};
+        }
+
+        .switch, .switch:hover, .switch:active {
+            forced-color-adjust: none;
+            background: ${SystemColors.Field};
+            border-color: ${SystemColors.FieldText};
+        }
+
+        :host(.checked) .switch {
+            background: ${SystemColors.FieldText};
+        }
+
+        :host(.checked) .checked-indicator {
+            background: ${SystemColors.Field};
+        }
+
+        :host(.disabled) {
+            opacity: 1;
+        }
+
+        :host(:${focusVisible}) .switch {
+            border-color: ${SystemColors.Highlight};
+        }
+        :host(.disabled) .checked-indicator {
+            background: ${SystemColors.GrayText};
+        }
+
+        :host(.disabled) .switch {
+            background: ${SystemColors.Field};
+            border-color: ${SystemColors.GrayText};
+        }
     }
 `;
