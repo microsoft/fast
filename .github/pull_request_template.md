@@ -27,9 +27,9 @@
 <!--- Review the list and check the boxes that apply. -->
 
 - [ ] I have added tests for my changes.
-- [x] I have tested my changes.
+- [ ] I have tested my changes.
 - [ ] I have updated the project documentation to reflect my changes.
-- [x] I have read the [CONTRIBUTING](https://github.com/Microsoft/fast-dna/blob/master/CONTRIBUTING.md) documentation and followed the [standards](https://www.fast.design/docs/en/contributing/standards) for this project.
+- [ ] I have read the [CONTRIBUTING](https://github.com/Microsoft/fast-dna/blob/master/CONTRIBUTING.md) documentation and followed the [standards](https://www.fast.design/docs/en/contributing/standards) for this project.
 
 <!---
 Formatting guidelines:
