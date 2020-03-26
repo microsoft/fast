@@ -1,5 +1,4 @@
 import { html, when } from "@microsoft/fast-element";
-import { bool } from "../utilities";
 import { SliderLabel } from "./slider-label";
 
 export const SliderLabelTemplate = html<SliderLabel>`
@@ -10,7 +9,7 @@ export const SliderLabelTemplate = html<SliderLabel>`
     >
         <div class="slider-label-container">
             ${when(
-                x => !bool(x.hideMark),
+                x => !x.hideMark,
                 html`
                 <div class="mark">
                 </div>    

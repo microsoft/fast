@@ -19,22 +19,16 @@ addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
 });
 
 function setChangeHandler(): void {
-    document.querySelectorAll(".fastest-slider").forEach(el => {
-        console.log("found another slider...");
+    document.querySelectorAll("fast-slider").forEach(el => {
         if (el instanceof FASTSlider) {
-            console.log("attaching handler for onchange");
             el.addEventListener("change", (e: any) => {
-                console.log("handler in slider story hit, e:", e);
+                console.log(
+                    "handler in slider story hit, e.target.value:",
+                    e.target.value
+                );
             });
         }
     });
 }
-
-document.addEventListener("readystatechange", () => {
-    if (document.readyState === "complete") {
-        console.log("SLIDER STORY READY!");
-        setChangeHandler();
-    }
-});
 
 export const Base = () => Examples;

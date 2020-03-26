@@ -1,8 +1,5 @@
 import { attr, FastElement, observable } from "@microsoft/fast-element";
 import { FASTSlider } from "../slider";
-export function bool(value: string | boolean | null): boolean {
-    return typeof value === "boolean" ? value : typeof value === "string";
-}
 
 export class SliderLabel extends FastElement {
     @observable
@@ -17,7 +14,7 @@ export class SliderLabel extends FastElement {
     @attr
     public label: string;
 
-    @attr({ attribute: "hide-mark" })
+    @attr({ attribute: "hide-mark", mode: "boolean" })
     public hideMark: boolean = false;
 
     private sliderMax: number;

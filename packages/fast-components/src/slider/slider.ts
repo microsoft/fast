@@ -59,7 +59,7 @@ export class Slider extends FormAssociated<HTMLInputElement> {
                 : (Number(this.value) / this.max - this.min) * 100;
 
         this.position = `right: ${percentage}%`;
-        this.$emit("change", this.value);
+        this.$emit("change");
     }
 
     /**
@@ -215,9 +215,17 @@ export class Slider extends FormAssociated<HTMLInputElement> {
 
     private convertToConstrainedValue = (value: number): number => {
         const remainderVal: number = value % Number(this.step);
-        return remainderVal >= Number(this.step) / 2
-            ? value - remainderVal + Number(this.step)
-            : value - remainderVal;
+        const constrainedVal: number =
+            remainderVal >= Number(this.step) / 2
+                ? value - remainderVal + Number(this.step)
+                : value - remainderVal;
+
+        if (constrainedVal < this.min || constrainedVal > this.max) {
+            console.log("Error invalid value for slider:", constrainedVal);
+            return Number(this.value);
+        } else {
+            return constrainedVal;
+        }
     };
 
     private increment = (): void => {

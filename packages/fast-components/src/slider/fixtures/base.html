@@ -1,35 +1,33 @@
 <fast-design-system-provider style="font-family: var(--body-font)">
-    <fast-slider class="flag-indeterminate"></fast-slider>
     <div style="display: flex; flex-direction: column; justify-content: space-evenly; width: 500px; height: 100vh">
         <!-- No max or min -->
-        <fast-slider class="flag-indeterminate"></fast-slider>
+        <fast-slider></fast-slider>
 
         <!-- Text Labels -->
-        <label for="tester">With change event handler</label>
-        <fast-slider
-            class="fastest-slider"
-            id="tester"
-            min="0"
-            max="100"
-            step="10"
-        >
-            <fast-slider-label
-                position="10"
-                label="Start"
+        <div style="display: flex; flex-direction: column; height:min-content">
+            <label for="tester">With change event handler</label>
+            <fast-slider
+                id="tester"
+                min="0"
+                max="100"
+                step="10"
             >
-            </fast-slider-label>
-            <fast-slider-label
-                position="90"
-                label="End"
-            >
-            </fast-slider-label>
-        </fast-slider>
+                <fast-slider-label
+                    position="10"
+                    label="Start"
+                >
+                </fast-slider-label>
+                <fast-slider-label
+                    position="90"
+                    label="End"
+                >
+                </fast-slider-label>
+            </fast-slider>
+        </div>
 
         <!-- Custom labels (rtl) -->
         <div dir="rtl" style="width: 100%">
             <fast-slider
-                class="flag-indeterminate"
-                label="With labels - rtl"
                 min="0"
                 max="100"
                 step="10"
@@ -65,7 +63,6 @@
 
         <!-- Using slot for custom thumb -->
         <fast-slider
-            label="Custom thumb (step 10)"
             min="0"
             max="100"
             step="10"
@@ -141,7 +138,6 @@
         <!-- Custom labels and thumb hide marks on labels -->
 
         <fast-slider
-            label="Custom labels & thumb (step 10)"
             min="0"
             max="100"
             step="10"
