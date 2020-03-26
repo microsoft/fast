@@ -194,7 +194,7 @@ There are several important details in the above example, so let's break them do
 
 First, we create a template by using a [tagged template literal](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals). The tag, `html`, provides special processing for the HTML string that follows, returning an instance of `HTMLTemplate`. Your templates can be *typed* to the data model that they are rendering over. In TypeScript, we simply provide the type as part of the tag: `html<NameTag>`.
 
-Within a template, we provide *expressions* that declare the *dynamic parts* of our template. These expressions are declared with [arrow functions](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions). Because the template is typed, the input to your arrow function will be an instance of the data model you delcared in your `html` tag. When the `html` tag processes your template, it identifies these dynamic expressions and builds up an optimized model, capable of high-performance rendering, and efficient, incremental batched updates.
+Within a template, we provide *expressions* that declare the *dynamic parts* of our template. These expressions are declared with [arrow functions](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions). Because the template is typed, the input to your arrow function will be an instance of the data model you declared in your `html` tag. When the `html` tag processes your template, it identifies these dynamic expressions and builds up an optimized model, capable of high-performance rendering, and efficient, incremental batched updates.
 
 Finally, we associate the template with our custom element by using a different from of the `@customElement` decorator, which allows us to pass more options. In this configuration, we pass an options object specifying the `name` and the `template`.
 
@@ -229,19 +229,19 @@ To bind the content of an element, simply provide the expression within the star
 </h3>
 ```
 
-> **NOTE:** Dynamic content is set via the `textContent` HTML property. You *cannot* set HTML content this way. See below for the explicit, opt-in mechanism for setting HTML.
+> **NOTE:** Dynamic content is set via the `textContent` HTML property for security reasons. You *cannot* set HTML content this way. See below for the explicit, opt-in mechanism for setting HTML.
 
-#### Dynamic Properties
+#### Dynamic Attributes
 
-You can also use an expression to set a property on an HTML element. Simply place the expression where the value of the HTML attribute would normal go. The template engine will map your attribute to the element's property and set it with the value of your expression.
+You can also use an expression to set an attribute value on an HTML Element. Simply place the expression where the value of the HTML attribute could go. The template engine will then use your expression to set the value using `setAttribute(...)`, whenever it needs to be updated. Additionally, some attributes are known as [boolean attributes](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes#Boolean_Attributes) (e.g. required, readonly, disabled). These attributes behave differently from normal attributes, and need special value handling. The templating engine will handle this for you if you prepend the attribute name with a `?`.
 
-**Example: Basic Property Values**
+**Example: A Basic Attribute Values**
 
 ```HTML
 <a href=${x => x.aboutLink}>About</a>
 ```
 
-**Example: Interpolated Property Values**
+**Example: Interpolated Attribute Values**
 
 ```HTML
 <a href="products/${x => x.id}">
@@ -261,25 +261,13 @@ You can also use an expression to set a property on an HTML element. Simply plac
 </span>
 ```
 
-**Example: Inner HTML**
-
-```HTML
-<div innerhtml=${x => sanitize(x.someDangerousHTMLContent)}></div>
-```
-
-> **WARNING:** Avoid scenarios that require you to directly set HTML, especially when the content is coming from an external source. If you must do this, always sanitize the HTML content using a robust HTML sanitizer library, represented by the use of the `sanitize` function above.
-
-#### Dynamic Attributes
-
-Most HTML attributes have a corresponding property on the HTML element itself, so the method of property binding described above will be the most common mechanism used. However, there are some scenarios, such as with [ARIA attributes](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA), where there is no corresponding element property. For these scenarios, prepend a `$` to the attribute name, and the value will be set with the `setAttribute` API instead of through a property. Additionally, some attributes are known as [boolean attributes](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes#Boolean_Attributes)  (e.g. required, readonly, disabled). These attributes behave differently from normal attributes, and need special value handling. The templating engine will handle this for you if you prepend the attribute name with a `?`.
-
 **Example: ARIA Attributes**
 
 ```HTML
 <div role="progressbar"
-     $aria-valuenow="${x => x.value}"
-     $aria-valuemin="${x => x.min}"
-     $aria-valuemax="${x => x.max}">
+     aria-valuenow="${x => x.value}"
+     aria-valuemin="${x => x.min}"
+     aria-valuemax="${x => x.max}">
 </div>
 ```
 
@@ -289,9 +277,29 @@ Most HTML attributes have a corresponding property on the HTML element itself, s
 <button type="submit" ?disabled="${x => !x.enabled}">Submit</button>
 ```
 
+#### Dynamic Properties
+
+Properties can also be set directly on an HTML element. To do so, prepend the property name with `:` to indicate a property binding. The template engine will then use your expression to assign the element's property value.
+
+**Example: Basic Property Values**
+
+```HTML
+<my-element :myCustomProperty=${x => x.mySpecialData}>
+  ...
+</my-element>
+```
+
+**Example: Inner HTML**
+
+```HTML
+<div :innerHTML=${x => sanitize(x.someDangerousHTMLContent)}></div>
+```
+
+> **WARNING:** Avoid scenarios that require you to directly set HTML, especially when the content is coming from an external source. If you must do this, always sanitize the HTML content using a robust HTML sanitizer library, represented by the use of the `sanitize` function above.
+
 #### Events
 
-Besides rendering content, properties, and attributes, you'll often want to add event listeners and execute code when events fire. To do that, prepend the event name with `@` and provide the expression to be called when that event fires. Within an event expression, you also have access to a special *context* argument from which you can access the event args.
+Besides rendering content, attributes, and properties, you'll often want to add event listeners and execute code when events fire. To do that, prepend the event name with `@` and provide the expression to be called when that event fires. Within an event expression, you also have access to a special *context* argument from which you can access the event args.
 
 **Example: Basic Events**
 
@@ -303,13 +311,13 @@ Besides rendering content, properties, and attributes, you'll often want to add 
 
 ```HTML
 <input type="text"
-       value="${x => x.description}"
-       @input="${(x, c) => x.onDescriptionChange(c.event)}">
+       :value="${x => x.description}"
+       @input="${(x, c) => x.handleDescriptionChange(c.event)}">
 ```
 
-In both examples above, after your event handler is executed, `preventDefault()` will be called on the event object automatically. You can return `true` from your handler to opt out of this behavior.
+In both examples above, after your event handler is executed, `preventDefault()` will be called on the event object by default. You can return `true` from your handler to opt out of this behavior.
 
-> **IMPORTANT:** The templating engine only supports *unidirectional data flow* (model => view). It does not support *two-way data binding* (model <=> view). As shown above, pushing data from the view back to the model should be handled with explicit events that call into your model's API.
+The second example demonstrates an important characteristic of the templating engine: it only supports *unidirectional data flow* (model => view). It does not support *two-way data binding* (model <=> view). As shown above, pushing data from the view back to the model should be handled with explicit events that call into your model's API.
 
 ### Using Directives
 
@@ -322,8 +330,7 @@ Sometimes you need a direct reference to a DOM node from your template. This mig
 **Example: Referencing an Element**
 
 ```TypeScript
-import { FastElement, customElement, attr, html } from '@microsoft/fast-element';
-import { ref } from '@microsoft/fast-element/directives/ref';
+import { FastElement, customElement, attr, html, ref } from '@microsoft/fast-element';
 
 const template = html<MP4Player>`
   <video ${ref('video')}>
@@ -357,8 +364,7 @@ The `when` directive enables you to conditionally render blocks of HTML. When yo
 **Example: Conditional Rendering**
 
 ```TypeScript
-import { FastElement, customElement, observable, html } from '@microsoft/fast-element';
-import { when } from '@microsoft/fast-element/directives/when';
+import { FastElement, customElement, observable, html, when } from '@microsoft/fast-element';
 
 const template = html<MyApp>`
   <h1>My App</h1>
@@ -386,9 +392,9 @@ export class MyApp extends FastElement {
 }
 ```
 
-> **IMPORTANT:** You may have noticed the use of the `@observable` decorator on the `ready` property above. The `@observable` decorator creates a property that the template system can watch for changes. It is simlar to `@attr`, but the property is not surfaced as an HTML attribute on the element itself. While `@attr` can only be used in a `FastElement`, `@observable` can be used in any class. You can learn more about observation and incremental template updates below in the section "Observables and Rendering".
+> **IMPORTANT:** You may have noticed the use of the `@observable` decorator on the `ready` property above. The `@observable` decorator creates a property that the template system can watch for changes. It is similar to `@attr`, but the property is not surfaced as an HTML attribute on the element itself. While `@attr` can only be used in a `FastElement`, `@observable` can be used in any class. You can learn more about observation and incremental template updates below in the section "Observables and Rendering".
 
-> **NOTE**: Additional features are planned for `when` which would enable `elseif` and `else` conditional rendering. Today, you need multiple, separate `when` blocks to achieve the same end result.
+> **NOTE**: Additional features are planned for `when` which will enable `elseif` and `else` conditional rendering. Today, you need multiple, separate `when` blocks to achieve the same end result.
 
 #### The Repeat Directive
 
@@ -404,7 +410,7 @@ const template = html<FriendList>`
   <h1>Friends</h1>
 
   <form @submit=${x => x.addFriend()}>
-    <input type="text" value=${x => x.name} @input=${(x, c) => x.handleNameInput(c.event)}>
+    <input type="text" :value=${x => x.name} @input=${(x, c) => x.handleNameInput(c.event)}>
     <button type="submit">Add Friend</button>
   </form>
   <ul>
@@ -468,7 +474,7 @@ const template = html<FriendList>`
   <h1>Friends</h1>
 
   <form @submit=${x => x.addFriend()}>
-    <input type="text" value=${x => x.name} @input=${(x, c) => x.handleNameInput(c.event)}>
+    <input type="text" :value=${x => x.name} @input=${(x, c) => x.handleNameInput(c.event)}>
 
     ${when(x => x.name, html`
       <div>Next Name: ${nameTemplate}</div>
@@ -542,20 +548,20 @@ const template = html<MyProgress>`
 
 ### Observables and Rendering
 
-The arrow function expressions and directives allow the `fast-element` templating engine to intelligently update only the parts of the DOM that actually change, with no need for a virtual DOM, VDOM diffing, or DOM reconcilliation algorithms. This approach enables top-tier initial render time, industry-leading incremental DOM updates, and ultra-low memory allocation.
+The arrow function expressions and directives allow the `fast-element` templating engine to intelligently update only the parts of the DOM that actually change, with no need for a virtual DOM, VDOM diffing, or DOM reconciliation algorithms. This approach enables top-tier initial render time, industry-leading incremental DOM updates, and ultra-low memory allocation.
 
 When an expression is used within a template, the underlying engine uses a technique to capture which properties are accessed in that expression. With the list of properties captured, it then subscribes to changes in their values. Any time a value changes, a task is scheduled on the DOM update queue. When the queue is processed, all updates run as a batch, updating precisely the aspects of the DOM that have changed.
 
 To enable expression tracking and change notification, properties must be decorated with either `@attr` or `@observable`. These decorators are a means of meta-programming the properties on your class, such that they include all the implementation needed to support tracking and observation. You can access any property within your template, but if it hasn't been decorated with one of these two decorators, its value will not update after the initial render.
 
-> **IMPORTANT:** Properties with only a getter, that function as a computed property over other observables, should not be decoratored with `@attr` or `@observable`.
+> **IMPORTANT:** Properties with only a getter, that function as a computed property over other observables, should not be decorated with `@attr` or `@observable`.
 
 In addition to observing properties, the templating system can also observe arrays. The `repeat` directive is able to efficiently respond to array change records, updating the DOM based on changes in the collection.
 
 #### Features of @attr and @observable
 
 * **Tracking** - Provides property access tracking for the templating engine.
-* **Observation** - Provides an ability to subscribe to changes in the property. The templating engine uses this, but you can also directly subsribe as well. Here's how you would subscribe to changes in the `Person`'s `name` property:
+* **Observation** - Provides an ability to subscribe to changes in the property. The templating engine uses this, but you can also directly subscribe as well. Here's how you would subscribe to changes in the `Person`'s `name` property:
   ```TypeScript
     const person = new Person('John');
     const notifier = Observable.getNotifier(person);
@@ -630,6 +636,7 @@ To make this clear, let's look at how the `name-tag` element would be used with 
     </div>
 
     <div class="footer"></div>
+  #shadow-root
 
   John Doe
 </name-tag>
@@ -637,7 +644,7 @@ To make this clear, let's look at how the `name-tag` element would be used with 
 
 The text "John Doe" exists in the "Light DOM", but it gets *projected* into the location of the `slot` within the "Shadow DOM".
 
-> **NOTE:** If you find the terms "Light DOM" and "Shadow DOM" unintuitive, you're not alone. Another way to think of "Light DOM" is as the "Semantic DOM". It represents your semantic content model, without any concern for rendering. Another way to think of "Shadow DOM' is as the "Render DOM". It represents how your element is rendered, independent of content or semantics.
+> **NOTE:** If you find the terms "Light DOM" and "Shadow DOM" unintuitive, you're not alone. Another way to think of "Light DOM" is as the "Semantic DOM". It represents your semantic content model, without any concern for rendering. Another way to think of "Shadow DOM" is as the "Render DOM". It represents how your element is rendered, independent of content or semantics.
 
 With slots at our disposal, we now unlock the full compositional model of HTML for use in our own elements. However, there's even more that slots can do.
 
@@ -700,6 +707,7 @@ export class NameTag extends FastElement {
     </div>
 
     <div class="footer"></div>
+  #shadow-root
 
   John Doe
   <img slot="avatar" src="...">
@@ -715,7 +723,7 @@ Here are a couple of quick notes on slots:
   ```HTML
   <name-tag>
     <div> <!--Projected to default slot-->
-      <img slot="avatar"> <!--Ignored!-->
+      <img slot="avatar"> <!--Slot Ignored!-->
     </div>
     <img slot="avatar"> <!--Projected to "avatar" slot-->
   </name-tag>
@@ -765,7 +773,7 @@ In addition to the declarative means of using slots described so far, the browse
 | `assignedNodes()` | The `slot` element provides an `assignedNodes()` method that can be called to get a list of all nodes that a particular slot currently renders. You can pass an option object with `{ flatten: true }` if you wish to also see fallback content nodes. |
 | `assignedSlot` | The `assignedSlot` property is present on any element that has been projected to a slot so that you can determine where it is projected. |
 
-> **TIP:** Remember that you can use the templating system's event support to repond to `slotchange` events with `<slot @slotchange=${...}></slot>`. You can also obtain a reference to any slot with the `ref` directive, making it easy to call APIs like `assignedNodes()` or manually add/remove event listeners.
+> **TIP:** Remember that you can use the templating system's event support to respond to `slotchange` events with `<slot @slotchange=${...}></slot>`. You can also obtain a reference to any slot with the `ref` directive, making it easy to call APIs like `assignedNodes()` or manually add/remove event listeners.
 
 ### Events
 
@@ -934,7 +942,7 @@ Using the `css` helper, we're able to create `ElementStyles`. We configure this 
 
 ### Composing Styles
 
-One of the nice features of a `ElementStyles` is that it can be composed with other styles. Imagine that we had a CSS normalize that we wanted to use in our `name-tag` component. We could compose that into our styles like this:
+One of the nice features of `ElementStyles` is that it can be composed with other styles. Imagine that we had a CSS normalize that we wanted to use in our `name-tag` component. We could compose that into our styles like this:
 
 **Example: Composing CSS Registries**
 
@@ -975,8 +983,6 @@ In addition to providing host styles, you can also provide default styles for co
 **Example: Slotted Styles**
 
 ```TypeScript
-import { normalize } from './normalize';
-
 const styles = css`
   ...
 
