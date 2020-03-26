@@ -59,7 +59,7 @@ export const ProgressStyles = css`
         animation: indeterminate-2 2s infinite;
     }
 
-    :host(.paused) .indeterminate-indicator-1, .indeterminate-indicator-2 {
+    :host(.paused) .indeterminate-indicator-1, :host(.paused) .indeterminate-indicator-2 {
         animation-play-state: paused;
         background-color: var(--neutral-fill-rest);
     }
