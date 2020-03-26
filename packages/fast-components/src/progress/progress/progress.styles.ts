@@ -70,11 +70,13 @@ export const ProgressStyles = css`
 
     @media (forced-colors: active) {
         .indeterminate-indicator-1, .indeterminate-indicator-2, .determinate  {
+            forced-color-adjust: none;
             background-color: ${SystemColors.FieldText};
         }
 
         .progress {
             background-color: ${SystemColors.Field};
+            border: calc(var(--outline-width) * 1px) solid ${SystemColors.FieldText};
         }
 
         :host(.paused) .indeterminate-indicator-1, .indeterminate-indicator-2 {
