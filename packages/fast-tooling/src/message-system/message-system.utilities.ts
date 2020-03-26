@@ -285,9 +285,10 @@ function getDataMessage(data: DataMessageIncoming): DataMessageOutgoing {
             return {
                 type: MessageSystemType.data,
                 action: MessageSystemDataTypeAction.addLinkedData,
-                data: dataDictionary[0][activeDictionaryId].data,
+                dictionaryId: addLinkedDataDictionaryId,
+                data: dataDictionary[0][addLinkedDataDictionaryId].data,
                 dataDictionary,
-                navigation: navigationDictionary[0][activeDictionaryId],
+                navigation: navigationDictionary[0][addLinkedDataDictionaryId],
                 navigationDictionary,
             };
         case MessageSystemDataTypeAction.removeLinkedData:
