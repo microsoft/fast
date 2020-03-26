@@ -6,9 +6,7 @@ The `slider` component allows the user to move one or two `thumb` elements along
 
 ### Background
 
-Just styling `<input type="range"/>` and using `<datalist>` for the tickmarks was considered but the standards aren't supported enough to allow for the level customization we want to provide.
-
-** see [MDN Docs](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/range)
+There is a standard input for sliders, `<input type="range"/>` and using `<datalist>`, but it doesn't support the full level of detail, styling, etc that most design systems need or required. For context please see [MDN Docs](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/range) and [caniuse](https://caniuse.com/#search=datalist).
 
 ### Use Cases
 
@@ -45,7 +43,8 @@ A designer can override any internal styling applied to the slotted labels, the 
 - `max` - maximum allowed value for the slider
 - `step` - limits the values of the `slider` to increments of the `step` value added to the minimum value of the 
 `slider`'s total range.  The default value is 1. The minimum and maximum values of a `slider`'s range are always valid results regardless of the `step` prop. The `step` prop is used as the value for incrementing the thumb by pressing the arrow keys.
- - `value` - Allows authors to specify the initial selected range of the `slider`.  It defaults to a (step constrained) value at the midpoint on the `slider`'s total range. 
+ - `value` - Allows authors to specify the initial selected range of the `slider`.  It defaults to a (step constrained) value at the midpoint on the `slider`'s total range.
+ - `orientation` - horizontal or vertical values allowed.
 
 *Events*
 - `change` - raise the change event for external parties to be informed of the value change.
@@ -100,18 +99,9 @@ A designer can override any internal styling applied to the slotted labels, the 
 
 ### Accessibility
 
-*Slider* implements the recommended keyboard navigation scheme described [W3C aria-practices](http://w3c.github.io/aria-practices/examples/slider/multithumb-slider.html).
+*Slider* Sliders are RTL compliant and support the following aria best practices for sliders [W3C aria-practices](https://www.w3.org/TR/wai-aria-practices-1.1/#slider)
 
-- aria-valuenow will be set as the slider value changes
-- right and up arrow move the slider in increasing value and left and down arrows move it in decreasing increments
 - *Form Input*
-
-
-### Globalization
-Slider should render a mirror view in rtl for example:
-![](./images/slider-rtl.png) 
-
-- Strings passed into the component should already be localized
 
 ### Test Plan
 
@@ -119,7 +109,6 @@ While testing is still TBD for our web components, I would expect this to align 
 
 ### Future enhancements
 
-- Allow vertical and horizontal orientation
 - Allow for dual thumb mode
 
 ---
