@@ -9,6 +9,8 @@ The button component represent an control that should invoke an action or perfor
 
 ### Non-goals
 - Complex or compisite buttons (like split button)
+- Inline "hypertext" anchor
+  - This component will expose a base class that a "hypertext" component can leverage, but the component itself is not in the scope of the button.
   
 ### Features
 - Can represent either a hyperlink or a button
@@ -17,7 +19,7 @@ The button component represent an control that should invoke an action or perfor
 
 ### Risks and Challenges
 
-Prior implementations of button provide the oppertunity to create a `button` element or an `a` element. The `button` element is a form-associated element but the `a` element is not. If we expose a single component polymophic button component that can represent both a `button` and an `a` - we need to figure out how to only form-associate the `button`.
+Prior implementations of button provide the oppertunity to create a `button` element or an `a` element. The `button` element is a form-associated element but the `a` element is not. If we expose a single polymophic button component that can represent both a `button` and an `a` - we need to figure out how to only form-associate the `button`.
 
 Button also supports a number of appearance options. Ideally these using one of these appearances does not incur the debt of the others, including recipe registrations and CSS bloat.
 
