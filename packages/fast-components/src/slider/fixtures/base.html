@@ -1,11 +1,13 @@
 <fast-design-system-provider style="font-family: var(--body-font)">
+    <fast-slider class="flag-indeterminate"></fast-slider>
     <div style="display: flex; flex-direction: column; justify-content: space-evenly; width: 500px; height: 100vh">
         <!-- No max or min -->
-        <fast-slider></fast-slider>
+        <fast-slider class="flag-indeterminate"></fast-slider>
 
         <!-- Text Labels -->
         <label for="tester">With change event handler</label>
         <fast-slider
+            class="fastest-slider"
             id="tester"
             min="0"
             max="100"
@@ -26,6 +28,7 @@
         <!-- Custom labels (rtl) -->
         <div dir="rtl" style="width: 100%">
             <fast-slider
+                class="flag-indeterminate"
                 label="With labels - rtl"
                 min="0"
                 max="100"
