@@ -5,10 +5,10 @@ export const TextFieldTemplate = html<TextField>`
 <template
     role="textbox"
     appearance="${x => x.appearance}"
-    $aria-required="${x => x.required}"
-    $aria-disabled="${x => x.disabled}"
-    $aria-readonly="${x => x.readOnly}"
-    $tabindex="${x => (x.disabled ? null : 0)}"
+    aria-required="${x => x.required}"
+    aria-disabled="${x => x.disabled}"
+    aria-readonly="${x => x.readOnly}"
+    :tabindex="${x => (x.disabled ? null : 0)}"
 >
     ${when(
         x => x.childNodes.length,
@@ -39,10 +39,10 @@ export const TextFieldTemplate = html<TextField>`
             part="control"
             id="control"
             @input=${x => x.handleTextInput()}
-            $placeholder=${x => x.placeholder}
-            required=${x => x.required}
-            disabled=${x => x.disabled}
-            $readonly=${x => x.readOnly}
+            placeholder=${x => x.placeholder}
+            ?required=${x => x.required}
+            ?disabled=${x => x.disabled}
+            ?readonly=${x => x.readOnly}
             value=${x => x.value}
             ${ref("control")}
         />
