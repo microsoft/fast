@@ -105,12 +105,12 @@ function compileAttributes(
 
     for (let i = 0, ii = attributes.length; i < ii; ++i) {
         const attr = attributes[i];
-        const attrName = attr.name;
         const attrValue = attr.value;
         let directive = tryParsePlaceholders(attrValue, directives);
 
         if (directive === null && includeBasicValues) {
             directive = new BindingDirective(x => attrValue);
+            directive.targetName = attr.name;
         }
 
         if (directive !== null) {
