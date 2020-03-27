@@ -8,7 +8,7 @@ export const TextFieldTemplate = html<TextField>`
     aria-required="${x => x.required}"
     aria-disabled="${x => x.disabled}"
     aria-readonly="${x => x.readOnly}"
-    :tabindex="${x => (x.disabled ? null : 0)}"
+    tabindex="${x => (x.disabled ? null : 0)}"
 >
     ${when(
         x => x.childNodes.length,
