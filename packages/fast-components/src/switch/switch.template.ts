@@ -4,11 +4,11 @@ import { Switch } from "./switch";
 export const SwitchTemplate = html<Switch>`
     <template
         role="switch"
-        $aria-checked="${x => x.checked}"
-        $aria-required="${x => x.required}"
-        $aria-disabled="${x => x.disabled}"
-        $aria-readonly="${x => x.readOnly}"
-        $tabindex="${x => (x.disabled ? null : 0)}"
+        aria-checked="${x => x.checked}"
+        aria-required="${x => x.required}"
+        aria-disabled="${x => x.disabled}"
+        aria-readonly="${x => x.readOnly}"
+        tabindex="${x => (x.disabled ? null : 0)}"
         @keypress="${(x, c) => x.keypressHandler(c.event as KeyboardEvent)}"
         @click="${(x, c) => x.clickHandler(c.event as MouseEvent)}"
     >
