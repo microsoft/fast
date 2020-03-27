@@ -771,5 +771,13 @@ describe("getMessage", () => {
                 validationErrors: validationUpdate.validationErrors,
             });
         });
+        test("should return custom messages sent", () => {
+            const customMessage: any = {
+                type: MessageSystemType.custom,
+                foo: "bar",
+            };
+
+            expect(getMessage(customMessage)).toEqual(customMessage);
+        });
     });
 });
