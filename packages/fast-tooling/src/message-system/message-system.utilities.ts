@@ -48,8 +48,12 @@ let activeDictionaryId: string; // this controls both the data and navigation di
 let schemaDictionary: SchemaDictionary;
 const validation: Validation = {};
 
-export function getMessage(data: MessageSystemIncoming): MessageSystemOutgoing {
+export function getMessage<C = {}>(
+    data: MessageSystemIncoming<C>
+): MessageSystemOutgoing<C> {
     switch (data.type) {
+        case MessageSystemType.custom:
+            return getCustomMessage(data);
         case MessageSystemType.data:
             return getDataMessage(data);
         case MessageSystemType.dataDictionary:
@@ -83,6 +87,13 @@ export function getMessage(data: MessageSystemIncoming): MessageSystemOutgoing {
                 schemaDictionary,
             };
     }
+}
+
+/**
+ * Handles all custom messages
+ */
+function getCustomMessage<C>(data: C): C {
+    return data;
 }
 
 /**
