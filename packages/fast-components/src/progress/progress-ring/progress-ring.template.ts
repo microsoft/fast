@@ -4,9 +4,9 @@ import { BaseProgress } from "../base-progress";
 export const ProgressRingTemplate = html<BaseProgress>`
     <template
         role="progressbar"
-        $aria-valuenow="${x => x.value}"
-        $aria-valuemin="${x => x.min}"
-        $aria-valuemax="${x => x.max}"
+        aria-valuenow="${x => x.value}"
+        aria-valuemin="${x => x.min}"
+        aria-valuemax="${x => x.max}"
     >
         ${when(
             x => x.value,

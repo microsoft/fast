@@ -5,7 +5,7 @@ export interface ValueConverter {
     fromView(value: string): any;
 }
 
-export type AttributeMode = "reflect" | "boolean" | "none";
+export type AttributeMode = "reflect" | "boolean" | "fromView";
 
 export type AttributeConfiguration = {
     property: string;
@@ -38,11 +38,17 @@ export const booleanConverter: ValueConverter = {
 
 export const nullableNumberConverter: ValueConverter = {
     toView(value: any): string | null {
+        if (value === null || value === undefined) {
+            return null;
+        }
         let number = value * 1;
         return isNaN(number) ? null : number.toString();
     },
 
     fromView(value: any): any {
+        if (value === null || value === undefined) {
+            return null;
+        }
         let number = value * 1;
         return isNaN(number) ? null : number;
     },
@@ -113,7 +119,7 @@ export class AttributeDefinition {
     ) {
         const mode = this.mode;
 
-        if (this.guards.has(object) || mode === "none") {
+        if (this.guards.has(object) || mode === "fromView") {
             return;
         }
 
