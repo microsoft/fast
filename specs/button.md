@@ -36,15 +36,9 @@ Button also supports a number of appearance options. Ideally these using one of 
 ---
 
 ## Design
-The library would expose 8 custom element definitions: 
-1. `fast-button-lightweight`
-2. `fast-button-outline`
-3. `fast-button-primary`
-4. `fast-button-stealth`
-5. `fast-anchor-lightweight`
-6. `fast-anchor-outline`
-7. `fast-anchor-primary`
-8. `fast-anchor-stealth`
+The library would expose 2 custom element definitions: 
+1. `fast-button`
+8. `fast-anchor-button`
 
 All "button" components will be form-associated and support all methods and attributes of the [button](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button) element.
 
@@ -53,7 +47,7 @@ All "anchor" components will support all methods and attributes of the [anchor](
 ### API
 - [button]([button](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button))
 - [anchor](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a)
-
+- appearance: `"neutral"  | "outline" | "lightweight" | "stealth" | "primary"`
 
 ### Anatomy and Appearance
 #### Button
@@ -83,4 +77,4 @@ All "anchor" components will support all methods and attributes of the [anchor](
 ### Accessibility
 Button elements will appear utilize the button role and will behave as the native `button` element.
 
-Anchor elements will function slightly differently to preserve some of the native capabilities that come from anchors like opening anchors in new tabs, opening anchors in new tabs without navigating to them, and the augmented command menu that gets opened when right+clicking an anchor. They will create an *internal* anchor element to which attributes will get reflected. Focus will also be defered to this element.
+Anchor elements will function slightly differently to preserve some of the native capabilities that come from anchors like opening anchors in new tabs, opening anchors in new tabs without navigating to them, and the augmented command menu that gets opened when right+clicking an anchor. They will create an *internal* anchor element to which attributes will get reflected. Focus will also be defered to this internal element.
