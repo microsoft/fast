@@ -39,7 +39,7 @@ A designer can override any internal styling applied to the slotted labels, the 
 *Component Name*:
 - `fast-slider`
 
-*Props/Attrs*
+*Attributes:*
 - `min` - minimum allowed value for the slider
 - `max` - maximum allowed value for the slider
 - `step` - limits the values of the `slider` to increments of the `step` value added to the minimum value of the 
