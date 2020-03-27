@@ -401,8 +401,6 @@ export interface GetNavigationMessageOutgoing {
     navigation: NavigationConfig;
 }
 
-export type CustomMessageContent<T> = { [P in keyof T]?: T[P] };
-
 export interface CustomMessageIncomingOutgoing {
     type: MessageSystemType.custom;
 }
@@ -410,7 +408,7 @@ export interface CustomMessageIncomingOutgoing {
 /**
  * The custom message interface
  */
-type CustomMessage<T> = CustomMessageIncomingOutgoing & CustomMessageContent<T>;
+type CustomMessage<T> = CustomMessageIncomingOutgoing & T;
 
 /**
  * Incoming navigation dictionary messages to the message system
@@ -471,7 +469,7 @@ export type ValidationMessageOutgoing =
 /**
  * Incoming messages to the message system
  */
-export type MessageSystemIncoming<C> =
+export type MessageSystemIncoming<C = {}> =
     | InitializeMessageIncoming
     | DataMessageIncoming
     | NavigationMessageIncoming
@@ -483,7 +481,7 @@ export type MessageSystemIncoming<C> =
 /**
  * Outgoing messages from the message system
  */
-export type MessageSystemOutgoing<C> =
+export type MessageSystemOutgoing<C = {}> =
     | InitializeMessageOutgoing
     | DataMessageOutgoing
     | NavigationMessageOutgoing
