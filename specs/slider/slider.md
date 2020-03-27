@@ -17,7 +17,7 @@ On a web page the customer drags the slider from min to max values ultimately se
 A developer can inject labels on the slider into the default slot, if they use `slider-label` elements those will be styled a specific way internally and any part of that style can be overridden. Styles and items intending to be placed in the default slot can be replaced as needed.
 
 - *A designer customizing the component.*
-A designer can override any internal styling applied to the slotted labels, the background track, the slider track and the thumb(s) if appropriate.
+A designer can override any internal styling applied to the slotted labels, the track, the progress track and the thumb(s) if appropriate.
   
 ### Features
 - Implement your own thumb UI, default provided
@@ -25,6 +25,8 @@ A designer can override any internal styling applied to the slotted labels, the 
 - Handle the `slider`'s `change` callback to be notified when the value has changed.
 - Customize the tick marks along the track
 - Include slider in form based operations
+- Utilize `mode` attribute to allow the slider to operate in different configurations, `single-value`, `range`, `adjust-from-lower` and `adjust-from-upper`.
+**proposing that for the initial spec we start with supporting `single-value` only.*
 
 ### Prior Art/Examples
 - [FAST-DNA (React)](https://explore.fast.design/components/slider)
