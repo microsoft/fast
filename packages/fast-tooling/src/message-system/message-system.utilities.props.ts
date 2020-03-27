@@ -401,6 +401,15 @@ export interface GetNavigationMessageOutgoing {
     navigation: NavigationConfig;
 }
 
+export interface CustomMessageIncomingOutgoing {
+    type: MessageSystemType.custom;
+}
+
+/**
+ * The custom message interface
+ */
+type CustomMessage<T> = CustomMessageIncomingOutgoing & T;
+
 /**
  * Incoming navigation dictionary messages to the message system
  */
@@ -460,21 +469,23 @@ export type ValidationMessageOutgoing =
 /**
  * Incoming messages to the message system
  */
-export type MessageSystemIncoming =
+export type MessageSystemIncoming<C = {}> =
     | InitializeMessageIncoming
     | DataMessageIncoming
     | NavigationMessageIncoming
     | NavigationDictionaryMessageIncoming
     | DataDictionaryMessageIncoming
-    | ValidationMessageIncoming;
+    | ValidationMessageIncoming
+    | CustomMessage<C>;
 
 /**
  * Outgoing messages from the message system
  */
-export type MessageSystemOutgoing =
+export type MessageSystemOutgoing<C = {}> =
     | InitializeMessageOutgoing
     | DataMessageOutgoing
     | NavigationMessageOutgoing
     | NavigationDictionaryMessageOutgoing
     | DataDictionaryMessageOutgoing
-    | ValidationMessageOutgoing;
+    | ValidationMessageOutgoing
+    | CustomMessage<C>;
