@@ -1,30 +1,16 @@
 import { attr, FastElement, observable, ref } from "@microsoft/fast-element";
 import { isNil } from "lodash-es";
+import {
+    ConstructibleResizeObserver,
+    ResizeObserverClassDefinition,
+} from "./resize-observer";
+import { ContentRect } from "./resize-observer-entry";
 
 export type AxisPositioningMode = "uncontrolled" | "locktodefault" | "dynamic";
 
 export type HorizontalPosition = "start" | "end" | "left" | "right" | "unset";
 
 export type VerticalPosition = "top" | "bottom" | "unset";
-
-export declare class ResizeObserverClassDefinition {
-    constructor(callback: ResizeObserverCallback);
-    public observe(target: Element): void;
-    public unobserve(target: Element): void;
-    public disconnect(): void;
-}
-
-export declare type ResizeObserverCallback = (
-    entries: ResizeObserverEntry[],
-    observer: ResizeObserverClassDefinition
-) => void;
-
-export interface ContentRect {
-    height: number;
-    left: number;
-    top: number;
-    width: number;
-}
 
 export declare const contentRect: (target: Element) => Readonly<ContentRect>;
 
@@ -125,6 +111,12 @@ export class AnchoredRegion extends FastElement {
     @observable
     public regionStyle: string = "";
 
+    /**
+     * indicates that an initial positioning pass on layout has completed
+     */
+    @observable
+    public initialLayoutComplete: boolean = false;
+
     public horizontalPosition: HorizontalPosition = "unset";
     public verticalPosition: VerticalPosition = "unset";
 
@@ -161,11 +153,6 @@ export class AnchoredRegion extends FastElement {
     private baseHorizontalOffset: number = 0;
     private baseVerticalOffset: number = 0;
 
-    /**
-     * indicates that an initial positioning pass on layout has completed
-     */
-    initialLayoutComplete: boolean = false;
-
     public region: HTMLDivElement;
 
     constructor() {
@@ -191,11 +178,11 @@ export class AnchoredRegion extends FastElement {
         this.collisionDetector.observe(this.region);
         this.collisionDetector.observe(anchorElement);
 
-        // this.resizeDetector = new (window as WindowWithResizeObserver).ResizeObserver(
-        //     this.handleResize
-        // );
-        // this.resizeDetector.observe(anchorElement);
-        // this.resizeDetector.observe(this.rootElement.current);
+        this.resizeDetector = new ((window as unknown) as WindowWithResizeObserver).ResizeObserver(
+            this.handleResize
+        );
+        this.resizeDetector.observe(anchorElement);
+        this.resizeDetector.observe(this.region);
 
         viewportElement.addEventListener("scroll", this.handleScroll);
 
@@ -354,24 +341,73 @@ export class AnchoredRegion extends FastElement {
     };
 
     /**
+     *  Handle resize events
+     */
+    private handleResize = (entries: ResizeObserverEntry[]): void => {
+        entries.forEach((entry: ResizeObserverEntry) => {
+            if (entry.target === this.region) {
+                this.handleRegionResize(entry);
+            } else {
+                this.handleAnchorResize(entry);
+            }
+        });
+
+        this.updateLayout();
+    };
+
+    /**
+     *  Handle region resize events
+     */
+    private handleRegionResize = (entry: ResizeObserverEntry): void => {
+        if (!this.horizontalScaling) {
+            this.positionerDimension.width = entry.contentRect.width;
+        }
+
+        if (!this.verticalScaling) {
+            this.positionerDimension.height = entry.contentRect.height;
+        }
+    };
+
+    /**
+     *  Handle anchor resize events
+     */
+    private handleAnchorResize = (entry: ResizeObserverEntry): void => {
+        this.anchorHeight = entry.contentRect.height;
+        this.anchorWidth = entry.contentRect.width;
+
+        if (
+            this.currentVerticalPosition === AnchoredRegionVerticalPositionLabel.top ||
+            this.currentVerticalPosition === AnchoredRegionVerticalPositionLabel.insetTop
+        ) {
+            this.anchorBottom = this.anchorTop + this.anchorHeight;
+        } else {
+            this.anchorTop = this.anchorBottom - this.anchorHeight;
+        }
+
+        if (
+            this.currentHorizontalPosition ===
+                AnchoredRegionHorizontalPositionLabel.left ||
+            this.currentHorizontalPosition ===
+                AnchoredRegionHorizontalPositionLabel.insetLeft
+        ) {
+            this.anchorRight = this.anchorLeft + this.anchorWidth;
+        } else {
+            this.anchorLeft = this.anchorRight - this.anchorWidth;
+        }
+    };
+
+    /**
+     *  Handle scroll events
+     */
+    private handleScroll = (): void => {
+        this.updateLayout();
+    };
+
+    /**
      *  Recalculate layout related state values
      */
     private updateLayout = (): void => {
-        // if (
-        //     isNil(this.viewportRect) ||
-        //     isNil(this.positionerDimension) ||
-        //     (this.fixedAfterInitialPlacement && this.state.initialLayoutComplete) ||
-        //     (this.state.initialLayoutComplete)
-        // ) {
-        //     return;
-        // }
-
-        if (
-            isNil(this.viewportRect) ||
-            isNil(this.positionerDimension)
-            // (this.fixedAfterInitialPlacement && this.state.initialLayoutComplete) ||
-            // (this.state.initialLayoutComplete)
-        ) {
+        if (isNil(this.viewportRect) || isNil(this.positionerDimension)) {
             return;
         }
 
@@ -386,6 +422,7 @@ export class AnchoredRegion extends FastElement {
             const horizontalOptions: AnchoredRegionHorizontalPositionLabel[] = this.getHorizontalPositioningOptions();
             if (this.horizontalDefaultPosition !== "unset") {
                 switch (this.horizontalDefaultPosition) {
+                    // todo: rtl support for start/end
                     case "left":
                     case "start":
                         desiredHorizontalPosition = this.horizontalInset
@@ -641,13 +678,6 @@ export class AnchoredRegion extends FastElement {
                     break;
             }
         }
-    };
-
-    /**
-     *  Handle scroll events
-     */
-    private handleScroll = (): void => {
-        this.updateLayout();
     };
 
     /**
