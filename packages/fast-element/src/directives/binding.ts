@@ -9,14 +9,6 @@ import {
 import { DOM } from "../dom";
 import { Behavior } from "./behavior";
 
-export const enum BindingType {
-    attribute = 0,
-    booleanAttribute = 1,
-    text = 2,
-    property = 3,
-    trigger = 4,
-}
-
 function normalBind(this: BindingBehavior, source: unknown) {
     this.source = source;
     this.updateTarget(inspectAndEvaluate(this.expression, source, context, this));
@@ -63,42 +55,56 @@ function updatePropertyTarget(this: BindingBehavior, value: unknown): void {
 }
 
 export class BindingDirective extends Directive {
-    public targetName?: string;
+    private _cleanedTargetName?: string;
+    private _targetName?: string;
+
     public createPlaceholder = DOM.createInterpolationPlaceholder;
     private bind: typeof normalBind = normalBind;
     private unbind: typeof normalUnbind = normalUnbind;
-    private updateTarget: typeof updatePropertyTarget = updatePropertyTarget;
+    private updateTarget: typeof updateAttributeTarget = updateAttributeTarget;
 
     constructor(public expression: Expression) {
         super();
     }
 
-    setType(type: BindingType) {
-        switch (type) {
-            case BindingType.trigger:
+    public get targetName() {
+        return this._targetName;
+    }
+
+    public set targetName(value: string | undefined) {
+        this._targetName = value;
+
+        if (value === void 0) {
+            return;
+        }
+
+        switch (value[0]) {
+            case ":":
+                this._cleanedTargetName = value.substr(1);
+                this.updateTarget = updatePropertyTarget;
+                break;
+            case "?":
+                this._cleanedTargetName = value.substr(1);
+                this.updateTarget = updateBooleanAttributeTarget;
+                break;
+            case "@":
+                this._cleanedTargetName = value.substr(1);
                 this.bind = triggerBind;
                 this.unbind = triggerUnbind;
                 break;
             default:
-                this.bind = normalBind;
-                this.unbind = normalUnbind;
+                if (value === "class") {
+                    this._cleanedTargetName = "className";
+                    this.updateTarget = updatePropertyTarget;
+                } else {
+                    this._cleanedTargetName = value;
+                }
                 break;
         }
+    }
 
-        switch (type) {
-            case BindingType.attribute:
-                this.updateTarget = updateAttributeTarget;
-                break;
-            case BindingType.booleanAttribute:
-                this.updateTarget = updateBooleanAttributeTarget;
-                break;
-            case BindingType.text:
-                this.updateTarget = updateTextTarget;
-                break;
-            case BindingType.property:
-                this.updateTarget = updatePropertyTarget;
-                break;
-        }
+    public makeIntoTextBinding() {
+        this.updateTarget = updateTextTarget;
     }
 
     createBehavior(target: any) {
@@ -108,7 +114,7 @@ export class BindingDirective extends Directive {
             this.bind,
             this.unbind,
             this.updateTarget,
-            this.targetName
+            this._cleanedTargetName
         );
     }
 }
@@ -150,8 +156,11 @@ export class BindingBehavior implements Behavior, GetterInspector, Subscriber {
 
     handleEvent(event: Event) {
         const context = { event };
-        this.expression(this.source, context as any);
-        event.preventDefault();
+        const result = this.expression(this.source, context as any);
+
+        if (result !== true) {
+            event.preventDefault();
+        }
     }
 
     call() {

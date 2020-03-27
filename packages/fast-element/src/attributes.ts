@@ -5,7 +5,7 @@ export interface ValueConverter {
     fromView(value: string): any;
 }
 
-export type AttributeMode = "reflect" | "boolean" | "none";
+export type AttributeMode = "reflect" | "boolean" | "fromView";
 
 export type AttributeConfiguration = {
     property: string;
@@ -113,7 +113,7 @@ export class AttributeDefinition {
     ) {
         const mode = this.mode;
 
-        if (this.guards.has(object) || mode === "none") {
+        if (this.guards.has(object) || mode === "fromView") {
             return;
         }
 

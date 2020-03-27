@@ -2,17 +2,12 @@ import { ExpressionContext } from "./interfaces";
 import { HTMLTemplate } from "./template";
 import { BehaviorFactory } from "./directives/behavior";
 import { DOM } from "./dom";
-import { BindingDirective, BindingType } from "./directives/binding";
+import { BindingDirective } from "./directives/binding";
 import { Directive, AttachedBehaviorDirective } from "./directives/directive";
 
 type InlineDirective = BindingDirective | AttachedBehaviorDirective;
 
 const compilationContext = { locatedDirectives: 0, targetIndex: -1 };
-const prefixToBindingType: Record<string, BindingType> = {
-    "@": BindingType.trigger,
-    $: BindingType.attribute,
-    "?": BindingType.booleanAttribute,
-};
 
 export function compileTemplate(
     html: string | HTMLTemplateElement,
@@ -72,7 +67,7 @@ export function compileTemplate(
 
                 if (directive !== null) {
                     node.textContent = " ";
-                    directive.setType(BindingType.text);
+                    directive.makeIntoTextBinding();
                     viewFactories.push(directive);
                     directive.targetIndex = compilationContext.targetIndex;
 
@@ -119,7 +114,6 @@ function compileAttributes(
         }
 
         if (directive !== null) {
-            prepareAttributeDirective(node, attrName, directive);
             node.removeAttributeNode(attr);
             i--;
             ii--;
@@ -127,111 +121,6 @@ function compileAttributes(
             directive.targetIndex = compilationContext.targetIndex;
             factories.push(directive);
         }
-    }
-}
-
-function prepareAttributeDirective(
-    element: HTMLElement,
-    attrName: string,
-    directive: InlineDirective
-) {
-    if (directive instanceof AttachedBehaviorDirective) {
-        return;
-    }
-
-    const firstChar = attrName[0];
-    const bindingType = prefixToBindingType[firstChar];
-
-    if (bindingType === void 0) {
-        if (attrName === "style") {
-            directive.setType(BindingType.attribute);
-            directive.targetName = "style";
-        } else {
-            directive.targetName = attrNameToPropertyName(element.tagName, attrName);
-        }
-    } else {
-        directive.setType(bindingType);
-        directive.targetName = attrName.substr(1);
-    }
-}
-
-function attrNameToPropertyName(tagName: string, attr: string): string {
-    switch (tagName) {
-        case "LABEL":
-            switch (attr) {
-                case "for":
-                    return "htmlFor";
-                default:
-                    return attr;
-            }
-        case "IMG":
-            switch (attr) {
-                case "usemap":
-                    return "useMap";
-                default:
-                    return attr;
-            }
-        case "INPUT":
-            switch (attr) {
-                case "maxlength":
-                    return "maxLength";
-                case "minlength":
-                    return "minLength";
-                case "formaction":
-                    return "formAction";
-                case "formenctype":
-                    return "formEncType";
-                case "formmethod":
-                    return "formMethod";
-                case "formnovalidate":
-                    return "formNoValidate";
-                case "formtarget":
-                    return "formTarget";
-                case "inputmode":
-                    return "inputMode";
-                default:
-                    return attr;
-            }
-        case "TEXTAREA":
-            switch (attr) {
-                case "maxlength":
-                    return "maxLength";
-                default:
-                    return attr;
-            }
-        case "TD":
-        case "TH":
-            switch (attr) {
-                case "rowspan":
-                    return "rowSpan";
-                case "colspan":
-                    return "colSpan";
-                default:
-                    return attr;
-            }
-        default:
-            switch (attr) {
-                case "class":
-                    return "classList";
-                case "accesskey":
-                    return "accessKey";
-                case "contenteditable":
-                    return "contentEditable";
-                case "tabindex":
-                    return "tabIndex";
-                case "textcontent":
-                    return "textContent";
-                case "innerhtml":
-                    return "innerHTML";
-                case "scrolltop":
-                    return "scrollTop";
-                case "scrollleft":
-                    return "scrollLeft";
-                case "readonly":
-                    return "readOnly";
-                default:
-                    return attr;
-            }
     }
 }
 
@@ -327,12 +216,14 @@ function tryParsePlaceholders(
         return parts[0] as InlineDirective;
     }
 
+    let targetName!: string;
     const partCount = parts.length;
     const finalParts = parts!.map(x => {
         if (typeof x === "string") {
             return () => x;
         }
 
+        targetName = (x as BindingDirective).targetName || targetName;
         compilationContext.locatedDirectives++;
         return (x as BindingDirective).expression;
     });
@@ -347,5 +238,7 @@ function tryParsePlaceholders(
         return output;
     };
 
-    return new BindingDirective(expression);
+    const binding = new BindingDirective(expression);
+    binding.targetName = targetName;
+    return binding;
 }
