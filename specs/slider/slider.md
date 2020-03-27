@@ -6,7 +6,7 @@ The `slider` component allows the user to move one or two `thumb` elements along
 
 ### Background
 
-There is a standard input for sliders, `<input type="range"/>`, but it doesn't support the full level of detail, styling, etc that most design systems need or require. For context please see [MDN Docs](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/range) and [caniuse](https://caniuse.com/#search=datalist).
+There is a standard input for sliders, `<input type="range"/>`, but it doesn't support the full level of detail, styling, etc that most design systems need or require. For this reason a hidden input is created to support form input operations but not visible. For context please see [MDN Docs](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/range) and [caniuse](https://caniuse.com/#search=datalist).
 
 ### Use Cases
 
