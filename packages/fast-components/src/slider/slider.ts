@@ -26,7 +26,16 @@ export class Slider extends FormAssociated<HTMLInputElement> {
     public track: HTMLDivElement;
 
     @observable
+    public foregroundTrack: HTMLDivElement;
+
+    @observable
     public thumb: HTMLDivElement;
+
+    @observable
+    public upperThumb: HTMLDivElement;
+
+    @observable
+    public lowerThumb: HTMLDivElement;
 
     @observable
     public direction: string = "ltr";
@@ -34,13 +43,17 @@ export class Slider extends FormAssociated<HTMLInputElement> {
     @observable
     public position: string;
     @observable
+    public lowerPosition: string;
+    @observable
+    public upperPosition: string;
+    @observable
     public trackWidth: number = 0;
     @observable
     public trackMinWidth: number = 0;
 
     /**
      * The element's value to be included in form submission when checked.
-     * Default to "" to reach parity with input[type="range"]
+     * Default to 0
      */
     @attr
     public value: string = "0"; // Map to proxy element.
@@ -63,7 +76,7 @@ export class Slider extends FormAssociated<HTMLInputElement> {
     }
 
     /**
-     * The element's min value
+     * Min allowed value
      */
     @attr
     public min: number = 0; // Map to proxy element.
@@ -74,7 +87,7 @@ export class Slider extends FormAssociated<HTMLInputElement> {
     }
 
     /**
-     * The element's max value
+     * Max allowed value
      */
     @attr
     public max: number = 10; // Map to proxy element.
@@ -84,9 +97,6 @@ export class Slider extends FormAssociated<HTMLInputElement> {
         }
     }
 
-    /**
-     * The element's max value
-     */
     @attr
     public step: number = 1; // Map to proxy element.
     private stepChanged(): void {
@@ -94,6 +104,18 @@ export class Slider extends FormAssociated<HTMLInputElement> {
             this.proxy.step = `${this.step}`;
         }
     }
+
+    /**
+     * Orientation value, horizontal or vertical
+     */
+    @attr
+    public orientation: string = "horizontal";
+
+    /**
+     * mode value, singleValue | dualThumb | adjustFromUpper | adjustFromLower
+     */
+    @attr
+    public mode: string = "singleValue";
 
     /**
      * Set to true when the component has constructed
