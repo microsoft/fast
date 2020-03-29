@@ -1,8 +1,10 @@
 import { attr, observable } from "@microsoft/fast-element";
 import { keyCodeSpace } from "@microsoft/fast-web-utilities";
 import { FormAssociated } from "../form-associated";
+import { consumer } from "../context";
 
 /* tslint:disable:member-ordering */
+@consumer
 export class Checkbox extends FormAssociated<HTMLInputElement> {
     @attr({ attribute: "readonly", mode: "boolean" })
     public readOnly: boolean; // Map to proxy element
