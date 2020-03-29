@@ -87,6 +87,7 @@ const props: SingleLineControlTemplateProps = {
         [ControlType.select]: null,
         [ControlType.textarea]: null,
     },
+    messageSystem: void 0,
 };
 
 describe("SingleLineControlTemplate", () => {

@@ -36,8 +36,8 @@
     "coverageThreshold": {
       "global": {
         "statements": 80,
-        "branches": 61,
-        "functions": 78,
+        "branches": 60,
+        "functions": 77,
         "lines": 80
       }
     },
@@ -112,7 +112,6 @@
     "@microsoft/fast-jss-utilities": "^4.7.7",
     "@microsoft/fast-web-utilities": "^4.4.1",
     "@microsoft/fast-tooling": "^0.0.1",
-    "ajv": "^6.10.0",
     "exenv-es6": "^1.0.0",
     "raf-throttle": "^2.0.3",
     "react-dnd": "^9.0.0",

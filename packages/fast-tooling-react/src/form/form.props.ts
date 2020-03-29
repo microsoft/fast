@@ -1,4 +1,3 @@
-import { ErrorObject } from "ajv";
 import { SingleLineControlPlugin, StandardControlPlugin } from "./templates";
 import { ControlContext } from "./templates/types";
 import {
@@ -6,6 +5,7 @@ import {
     MessageSystem,
     NavigationConfig,
     NavigationConfigDictionary,
+    Validation,
 } from "@microsoft/fast-tooling";
 
 /**
@@ -98,7 +98,7 @@ export interface FormState {
     /**
      * The validation errors if there are any
      */
-    validationErrors: ErrorObject[] | void;
+    validationErrors: Validation;
 }
 
 export interface ControlPluginConfig {

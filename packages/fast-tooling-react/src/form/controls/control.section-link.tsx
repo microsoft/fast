@@ -6,7 +6,7 @@ import styles, {
     SectionLinkControlClassNameContract,
 } from "./control.section-link.style";
 import { SectionLinkControlProps } from "./control.section-link.props";
-import { isDefault } from "../utilities";
+import { isDefault } from "./utilities/form";
 
 /**
  * Form control definition

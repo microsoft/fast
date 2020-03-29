@@ -32,6 +32,7 @@ const checkboxProps: CheckboxControlProps = {
     updateValidity: jest.fn(),
     validationErrors: [],
     required: false,
+    messageSystem: void 0,
 };
 
 describe("CheckboxControl", () => {

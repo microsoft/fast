@@ -4,7 +4,7 @@ import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-
 import styles, { DisplayControlClassNameContract } from "./control.display.style";
 import { DisplayControlProps } from "./control.display.props";
 import { classNames } from "@microsoft/fast-web-utilities";
-import { isDefault } from "../utilities";
+import { isDefault } from "./utilities/form";
 
 /**
  * Form control definition

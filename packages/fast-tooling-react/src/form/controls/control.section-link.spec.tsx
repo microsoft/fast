@@ -37,6 +37,7 @@ const sectionLinkProps: SectionLinkControlProps = {
     invalidMessage: "",
     validationErrors: [],
     required: false,
+    messageSystem: void 0,
 };
 
 describe("SectionLinkControl", () => {
