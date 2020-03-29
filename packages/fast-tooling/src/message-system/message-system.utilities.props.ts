@@ -3,7 +3,7 @@ import { NavigationConfig, NavigationConfigDictionary } from "./navigation.props
 import { Data, DataDictionary, LinkedData } from "./data.props";
 import { SchemaDictionary } from "./schema.props";
 import { MessageSystemType } from "./types";
-import { Validation, ValidationErrors } from "./validation.props";
+import { ValidationError } from "./validation.props";
 
 export enum MessageSystemDataDictionaryTypeAction {
     get = "get",
@@ -84,7 +84,7 @@ export interface UpdateValidationMessageIncoming {
     type: MessageSystemType.validation;
     action: MessageSystemValidationTypeAction.update;
     dictionaryId: string;
-    validationErrors: ValidationErrors[];
+    validationErrors: ValidationError[];
 }
 
 /**
@@ -94,7 +94,7 @@ export interface UpdateValidationMessageOutgoing {
     type: MessageSystemType.validation;
     action: MessageSystemValidationTypeAction.update;
     dictionaryId: string;
-    validationErrors: ValidationErrors[];
+    validationErrors: ValidationError[];
 }
 
 /**
@@ -113,7 +113,7 @@ export interface GetValidationMessageOutgoing {
     type: MessageSystemType.validation;
     action: MessageSystemValidationTypeAction.get;
     dictionaryId: string;
-    validationErrors: ValidationErrors[];
+    validationErrors: ValidationError[];
 }
 
 /**
