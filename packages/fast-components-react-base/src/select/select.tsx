@@ -509,6 +509,9 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
         }
         e.preventDefault();
         this.toggleMenu(!this.state.isMenuOpen);
+        if (this.validateMenuState(!this.state.isMenuOpen) === false) {
+            this.focusTriggerElement();
+        }
     };
 
     /**
