@@ -12,6 +12,9 @@ import {
     NavigationConfigDictionary,
     Register,
     RemoveLinkedDataDataMessageOutgoing,
+    SchemaSetValidationAction,
+    SchemaSetValidationMessageRequest,
+    SchemaSetValidationMessageResponse,
     UpdateDataMessageOutgoing,
 } from "../message-system";
 import { DataType } from "./types";
@@ -269,7 +272,7 @@ describe("AjvMapper", () => {
             },
         ]);
     });
-    describe("should call the message callback if an data message has been sent", () => {
+    describe("should call the message callback if a data message has been sent", () => {
         const schema: any = {
             $schema: "http://json-schema.org/schema#",
             id: "foo",
@@ -591,6 +594,144 @@ describe("AjvMapper", () => {
                     invalidMessage: "should be string",
                 },
             ]);
+        });
+    });
+    describe("should call the message callback if a custom validation message has been sent", () => {
+        const containsValidSchema: any[] = [
+            {
+                $schema: "http://json-schema.org/schema#",
+                id: "bar",
+                type: "string",
+            },
+            {
+                $schema: "http://json-schema.org/schema#",
+                id: "foo",
+                type: "number",
+            },
+        ];
+        const containsInvalidSchema: any[] = [
+            {
+                $schema: "http://json-schema.org/schema#",
+                id: "bar",
+                type: "string",
+            },
+            {
+                $schema: "http://json-schema.org/schema#",
+                id: "foo",
+                type: "boolean",
+            },
+        ];
+        const data = 42;
+
+        test("with action type 'request' when there is a valid schema in the schema set", () => {
+            const callback: any = jest.fn();
+            const postMessageCallback: any = jest.fn();
+            const messageSystem = new MessageSystem({
+                webWorker: "",
+                dataDictionary: null,
+                schemaDictionary: null,
+            });
+            messageSystem.postMessage = postMessageCallback;
+            const ajvMapper: AjvMapper = new AjvMapper({
+                messageSystem,
+            });
+            const id: string = "foobarbat";
+            messageSystem.add({
+                onMessage: callback,
+            });
+            const requestMessage: SchemaSetValidationMessageRequest = {
+                type: MessageSystemType.custom,
+                action: SchemaSetValidationAction.request,
+                id,
+                schemas: containsValidSchema,
+                data,
+            };
+
+            /* tslint:disable-next-line */
+            messageSystem["register"].forEach((registeredItem: Register) => {
+                registeredItem.onMessage({
+                    data: requestMessage,
+                } as any);
+            });
+
+            expect(postMessageCallback).toHaveBeenCalledTimes(1);
+            expect(postMessageCallback.mock.calls[0][0]).toEqual({
+                type: MessageSystemType.custom,
+                action: SchemaSetValidationAction.response,
+                id,
+                index: 1,
+            });
+        });
+        test("with action type 'request' when there is no valid schema in the schema set", () => {
+            const callback: any = jest.fn();
+            const postMessageCallback: any = jest.fn();
+            const messageSystem = new MessageSystem({
+                webWorker: "",
+                dataDictionary: null,
+                schemaDictionary: null,
+            });
+            messageSystem.postMessage = postMessageCallback;
+            const ajvMapper: AjvMapper = new AjvMapper({
+                messageSystem,
+            });
+            const id: string = "foobarbat";
+            messageSystem.add({
+                onMessage: callback,
+            });
+            const requestMessage: SchemaSetValidationMessageRequest = {
+                type: MessageSystemType.custom,
+                action: SchemaSetValidationAction.request,
+                id,
+                schemas: containsInvalidSchema,
+                data,
+            };
+
+            /* tslint:disable-next-line */
+            messageSystem["register"].forEach((registeredItem: Register) => {
+                registeredItem.onMessage({
+                    data: requestMessage,
+                } as any);
+            });
+
+            expect(postMessageCallback).toHaveBeenCalledTimes(1);
+            expect(postMessageCallback.mock.calls[0][0]).toEqual({
+                type: MessageSystemType.custom,
+                action: SchemaSetValidationAction.response,
+                id,
+                index: -1,
+            });
+        });
+        test("with action type that is not 'request'", () => {
+            const callback: any = jest.fn();
+            const postMessageCallback: any = jest.fn();
+            const messageSystem = new MessageSystem({
+                webWorker: "",
+                dataDictionary: null,
+                schemaDictionary: null,
+            });
+            messageSystem.postMessage = postMessageCallback;
+            const ajvMapper: AjvMapper = new AjvMapper({
+                messageSystem,
+            });
+            const id: string = "foobarbat";
+            messageSystem.add({
+                onMessage: callback,
+            });
+            const responseMessage: SchemaSetValidationMessageResponse = {
+                type: MessageSystemType.custom,
+                action: SchemaSetValidationAction.response,
+                id,
+                index: -1,
+            };
+
+            /* tslint:disable-next-line */
+            messageSystem["register"].forEach((registeredItem: Register) => {
+                registeredItem.onMessage({
+                    data: responseMessage,
+                } as any);
+            });
+
+            expect(postMessageCallback).toHaveBeenCalledTimes(0);
         });
     });
 });

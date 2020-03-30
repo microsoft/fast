@@ -4,10 +4,15 @@ import {
     MessageSystemType,
     MessageSystemValidationTypeAction,
     NavigationConfigDictionary,
+    SchemaDictionary,
     Validation,
-    ValidationErrors,
+    ValidationError,
 } from "../message-system";
 import { normalizeDataLocationToDotNotation } from "./location";
+import {
+    SchemaSetValidationAction,
+    SchemaSetValidationMessageResponse,
+} from "../message-system";
 import Ajv from "ajv";
 
 export interface AjvMapperConfig {
@@ -22,6 +27,7 @@ export class AjvMapper {
     private activeDictionaryId: string;
     private navigationDictionary: NavigationConfigDictionary;
     private validation: Validation = {};
+    private schemaDictionary: SchemaDictionary = {};
     private messageSystem: MessageSystem;
     private messageSystemConfig: { onMessage: (e: MessageEvent) => void };
     private ajv: Ajv.Ajv = new Ajv({ schemaId: "auto", allErrors: true });
@@ -53,14 +59,14 @@ export class AjvMapper {
             case MessageSystemType.initialize:
                 this.activeDictionaryId = e.data.activeDictionaryId;
                 this.navigationDictionary = e.data.navigationDictionary;
+                this.validation = {};
                 this.validation[e.data.activeDictionaryId] = this.validateData(
                     this.navigationDictionary[0][e.data.activeDictionaryId][0][
                         this.navigationDictionary[0][e.data.activeDictionaryId][1]
                     ].data,
                     this.navigationDictionary[0][e.data.activeDictionaryId][0][
                         this.navigationDictionary[0][e.data.activeDictionaryId][1]
-                    ].schema,
-                    e.data.activeDictionaryId
+                    ].schema
                 );
 
                 this.messageSystem.postMessage({
@@ -84,9 +90,15 @@ export class AjvMapper {
                         const linkedDataRootId: string = e.data.navigation[1];
                         this.validation[linkedDataRootId] = this.validateData(
                             e.data.navigation[0][linkedDataRootId].data,
-                            e.data.navigation[0][linkedDataRootId].schema,
-                            e.data.dictionaryId
+                            e.data.navigation[0][linkedDataRootId].schema
                         );
+
+                        this.messageSystem.postMessage({
+                            type: MessageSystemType.validation,
+                            action: MessageSystemValidationTypeAction.update,
+                            validationErrors: this.validation[linkedDataRootId],
+                            dictionaryId: linkedDataRootId,
+                        });
                     } else {
                         this.validation[this.activeDictionaryId] = this.validateData(
                             this.navigationDictionary[0][this.activeDictionaryId][0][
@@ -94,13 +106,28 @@ export class AjvMapper {
                             ].data,
                             this.navigationDictionary[0][this.activeDictionaryId][0][
                                 this.navigationDictionary[0][this.activeDictionaryId][1]
-                            ].schema,
-                            this.activeDictionaryId
+                            ].schema
                         );
+
+                        this.messageSystem.postMessage({
+                            type: MessageSystemType.validation,
+                            action: MessageSystemValidationTypeAction.update,
+                            validationErrors: this.validation[this.activeDictionaryId],
+                            dictionaryId: this.activeDictionaryId,
+                        });
                     }
                 }
 
                 break;
+            case MessageSystemType.custom:
+                if (e.data.action === SchemaSetValidationAction.request) {
+                    this.messageSystem.postMessage({
+                        type: MessageSystemType.custom,
+                        action: SchemaSetValidationAction.response,
+                        id: e.data.id,
+                        index: this.findValidSchema(e.data.schemas, e.data.data),
+                    } as SchemaSetValidationMessageResponse);
+                }
         }
     };
 
@@ -117,16 +144,28 @@ export class AjvMapper {
     }
 
     /**
+     * Validate the data against multiple schemas
+     * and return the first valid index or if none
+     * are valid, return -1
+     */
+    private findValidSchema(schemas: any[], data: any): number {
+        for (let i = 0, schemasLength = schemas.length; i < schemasLength; i++) {
+            if (this.ajv.compile(schemas[i])(data)) {
+                return i;
+            }
+        }
+
+        return -1;
+    }
+
+    /**
      * Validates the data
      */
-    private validateData = (
-        data: any,
-        schema: any,
-        dictionaryId: string
-    ): ValidationErrors[] => {
+    private validateData = (data: any, schema: any): ValidationError[] => {
         // if this data has never been validated against,
         // add the schema to ajv
-        if (this.validation[dictionaryId] === undefined) {
+        if (this.schemaDictionary[schema.id] === undefined) {
+            this.schemaDictionary[schema.id] = schema;
             this.ajv.addSchema(schema, schema.id);
         }
 
