@@ -200,6 +200,8 @@ The component allows users to set a "Positioning Mode" on each axis which define
 
 ### API
 
+NOTE: this component api will not be exposed outside of the fast-components package until we are satisfied that we have the correct implementation for this functionality.  
+
 *Component name:*
 - `fast-anchored-region`
 
