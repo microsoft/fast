@@ -11,21 +11,4 @@ FASTDesignSystemProvider;
 export default {
     title: "Slider",
 };
-
-addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
-    if (name.toLowerCase().startsWith("slider")) {
-        setChangeHandler();
-    }
-});
-
-function setChangeHandler(): void {
-    document.querySelectorAll("fast-slider").forEach(el => {
-        if (el instanceof FASTSlider) {
-            el.addEventListener("change", (e: any) => {
-                console.log("e.target.value:", e.target.value);
-            });
-        }
-    });
-}
-
 export const Base = () => Examples;
