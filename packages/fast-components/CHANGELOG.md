@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.6.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components@0.5.0...@microsoft/fast-components@0.6.0) (2020-03-30)
+
+
+### Bug Fixes
+
+* attribute bindings in fast components ([#2847](https://github.com/Microsoft/fast-dna/issues/2847)) ([0d25806](https://github.com/Microsoft/fast-dna/commit/0d25806360b987a3f3c3a69dc5dd005415f70795))
+* implement new boolean attribute mode ([#2841](https://github.com/Microsoft/fast-dna/issues/2841)) ([8fe3b94](https://github.com/Microsoft/fast-dna/commit/8fe3b9481b295508aaf762604f81272bb8ad2276))
+* udpate text tield as form connected ([#2842](https://github.com/Microsoft/fast-dna/issues/2842)) ([51b8e7c](https://github.com/Microsoft/fast-dna/commit/51b8e7c65f8007cb0f135959c50528cc7d2905b7))
+
+
+### Features
+
+* add progress web component ([#2828](https://github.com/Microsoft/fast-dna/issues/2828)) ([5f2be52](https://github.com/Microsoft/fast-dna/commit/5f2be52738396aa1985a49eac667bd6e397abfa7))
+
+
+
+
+
 # [0.5.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components@0.4.0...@microsoft/fast-components@0.5.0) (2020-03-25)
 
 

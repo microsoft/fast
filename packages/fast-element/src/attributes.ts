@@ -38,11 +38,17 @@ export const booleanConverter: ValueConverter = {
 
 export const nullableNumberConverter: ValueConverter = {
     toView(value: any): string | null {
+        if (value === null || value === undefined) {
+            return null;
+        }
         let number = value * 1;
         return isNaN(number) ? null : number.toString();
     },
 
     fromView(value: any): any {
+        if (value === null || value === undefined) {
+            return null;
+        }
         let number = value * 1;
         return isNaN(number) ? null : number;
     },

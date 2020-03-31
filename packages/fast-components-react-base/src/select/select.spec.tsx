@@ -38,9 +38,6 @@ const managedClasses: SelectClassNameContract = {
     select__menuPositionVerticalInset: "select__menuPositionVerticalInset",
 };
 
-const container: HTMLDivElement = document.createElement("div");
-document.body.appendChild(container);
-
 describe("select", (): void => {
     test("should have a displayName that matches the component name", () => {
         expect(`${DisplayNamePrefix}${(Select as any).name}`).toBe(Select.displayName);
@@ -589,5 +586,51 @@ describe("select", (): void => {
         const preventDefault: jest.Mock = jest.fn();
         rendered.simulate("click", { preventDefault });
         expect(preventDefault).toHaveBeenCalledTimes(1);
+    });
+
+    test("trigger element is focused after menu selection via keyboard", (): void => {
+        const container: HTMLDivElement = document.createElement("div");
+        document.body.appendChild(container);
+
+        const rendered: any = mount(
+            <Select>
+                {itemA}
+                {itemB}
+                {itemC}
+            </Select>,
+            { attachTo: container }
+        );
+
+        rendered.simulate("click");
+        expect(rendered.state("isMenuOpen")).toBe(true);
+        rendered
+            .find('[displayString="a"]')
+            .simulate("keydown", { keyCode: keyCodeSpace });
+        expect(rendered.state("isMenuOpen")).toBe(false);
+        expect(document.activeElement.id.startsWith("selecttrigger")).toBe(true);
+
+        document.body.removeChild(container);
+    });
+
+    test("trigger element is focused after menu selection via click", (): void => {
+        const container: HTMLDivElement = document.createElement("div");
+        document.body.appendChild(container);
+
+        const rendered: any = mount(
+            <Select>
+                {itemA}
+                {itemB}
+                {itemC}
+            </Select>,
+            { attachTo: container }
+        );
+
+        rendered.simulate("click");
+        expect(rendered.state("isMenuOpen")).toBe(true);
+        rendered.find('[displayString="a"]').simulate("click");
+        expect(rendered.state("isMenuOpen")).toBe(false);
+        expect(document.activeElement.id.startsWith("selecttrigger")).toBe(true);
+
+        document.body.removeChild(container);
     });
 });
