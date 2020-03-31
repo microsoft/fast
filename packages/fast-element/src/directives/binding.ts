@@ -82,6 +82,10 @@ export class BindingDirective extends Directive {
             case ":":
                 this._cleanedTargetName = value.substr(1);
                 this.updateTarget = updatePropertyTarget;
+                if (this._cleanedTargetName === "innerHTML") {
+                    const expression = this.expression;
+                    this.expression = (s, c) => DOM.createHTML(expression(s, c));
+                }
                 break;
             case "?":
                 this._cleanedTargetName = value.substr(1);

@@ -4,7 +4,35 @@ const markerClass = `fast-${Math.random()
     .substring(7)}`;
 const updateQueue = [] as Callable[];
 
-export const DOM = {
+type TrustedTypesPolicy = { createHTML(html: string): string };
+
+// Tiny API-only polyfill for trustedTypes
+if (globalThis.trustedTypes === void 0) {
+    globalThis.trustedTypes = { createPolicy: (name, rules) => rules };
+}
+
+const fastHTMLPolicy: TrustedTypesPolicy = globalThis.trustedTypes.createPolicy(
+    "fast-html",
+    {
+        createHTML: html => html,
+    }
+);
+
+let htmlPolicy: TrustedTypesPolicy = fastHTMLPolicy;
+
+export const DOM = Object.freeze({
+    setHTMLPolicy(policy: TrustedTypesPolicy) {
+        if (htmlPolicy !== fastHTMLPolicy) {
+            throw new Error("The HTML policy can only be set once.");
+        }
+
+        htmlPolicy = policy;
+    },
+
+    createHTML(html: string) {
+        return htmlPolicy.createHTML(html);
+    },
+
     isMarker(node: Node): node is Comment {
         return node.nodeType === 8 && (node as Comment).data.startsWith(markerClass);
     },
@@ -15,6 +43,10 @@ export const DOM = {
 
     createInterpolationPlaceholder(index: number) {
         return `@{${index}}`;
+    },
+
+    createCustomAttributePlaceholder(attributeName: string, index: number) {
+        return `${attributeName}="${this.createInterpolationPlaceholder(index)}"`;
     },
 
     createBlockPlaceholder(index: number) {
@@ -28,7 +60,7 @@ export const DOM = {
 
         updateQueue.push(callable);
     },
-};
+});
 
 function processQueue() {
     const capacity = 1024;

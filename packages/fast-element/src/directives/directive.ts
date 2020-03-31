@@ -19,7 +19,7 @@ export class AttachedBehaviorDirective<T = any> extends Directive {
     }
 
     public createPlaceholder(index: number) {
-        return `${this.name}="${DOM.createInterpolationPlaceholder(index)}"`;
+        return DOM.createCustomAttributePlaceholder(this.name, index);
     }
 
     public createBehavior(target: any) {
