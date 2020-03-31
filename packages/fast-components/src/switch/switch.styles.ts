@@ -71,7 +71,7 @@ export const SwitchStyles = css`
         transition: all 0.2s ease-in-out;
     }
 
-    .label .status-maessage {
+    .status-message {
         font-family: var(--body-font);
         color: var(--neutral-foreground-rest);
         cursor: pointer;
@@ -81,6 +81,8 @@ export const SwitchStyles = css`
     }
 
     .label {
+        color: var(--neutral-foreground-rest);
+
         ${
             /* Need to discuss with Brian how HorizontalSpacingNumber can work. https://github.com/microsoft/fast-dna/issues/2766 */ ""
         } margin-inline-end: calc(var(--design-unit) * 2px + 2px);
