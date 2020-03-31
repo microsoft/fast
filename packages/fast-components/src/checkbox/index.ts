@@ -2,7 +2,7 @@ import { customElement } from "@microsoft/fast-element";
 import { Checkbox } from "./checkbox";
 import { CheckboxTemplate as template } from "./checkbox.template";
 import { CheckboxStyles as styles } from "./checkbox.styles";
-import { consumer } from "../design-system-provider/design-system-consumer";
+import { designSystemConsumer } from "../design-system-provider/design-system-consumer";
 import {
     neutralfillinputhover,
     neutralfillinputrest,
@@ -16,7 +16,7 @@ import {
     template,
     styles,
 })
-@consumer({
+@designSystemConsumer({
     recipes: [
         neutraloutlinerest,
         neutralfillinputrest,

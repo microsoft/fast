@@ -139,6 +139,7 @@ export class DesignSystemProvider extends FastElement {
     public suscribe(consumer: { recipes: DesignSystemResolverEntry[] }) {
         if (!this.consumers.has(consumer)) {
             this.consumers.add(consumer);
+            console.log("consumer added", consumer);
             this.writeRecipeData();
         }
     }

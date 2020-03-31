@@ -2,7 +2,7 @@ import { customElement } from "@microsoft/fast-element";
 import { Switch } from "./switch";
 import { SwitchTemplate as template } from "./switch.template";
 import { SwitchStyles as styles } from "./switch.styles";
-import { consumer } from "../design-system-provider/design-system-consumer";
+import { designSystemConsumer } from "../design-system-provider/design-system-consumer";
 import {
     accentfillrest,
     accentforegroundcutrest,
@@ -20,7 +20,7 @@ import {
     template,
     styles,
 })
-@consumer({
+@designSystemConsumer({
     recipes: [
         neutralfillinputrest,
         neutraloutlinerest,

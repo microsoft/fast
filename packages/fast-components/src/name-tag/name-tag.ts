@@ -1,8 +1,8 @@
 import { attr, FastElement } from "@microsoft/fast-element";
-import { consumer } from "../design-system-provider/design-system-consumer";
+import { designSystemConsumer } from "../design-system-provider/design-system-consumer";
 import { neutralfillrest } from "../styles/recipes";
 
-@consumer({
+@designSystemConsumer({
     recipes: [neutralfillrest],
 })
 export class NameTag extends FastElement {

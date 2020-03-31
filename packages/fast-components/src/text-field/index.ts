@@ -2,7 +2,7 @@ import { customElement } from "@microsoft/fast-element";
 import { TextField } from "./text-field";
 import { TextFieldTemplate as template } from "./text-field.template";
 import { TextFieldStyles as styles } from "./text-field.styles";
-import { consumer } from "../design-system-provider/design-system-consumer";
+import { designSystemConsumer } from "../design-system-provider/design-system-consumer";
 import {
     neutralfillhover,
     neutralfillinputhover,
@@ -22,7 +22,7 @@ import {
         delegatesFocus: true,
     },
 })
-@consumer({
+@designSystemConsumer({
     recipes: [
         neutralforegroundrest,
         neutralfillinputrest,
