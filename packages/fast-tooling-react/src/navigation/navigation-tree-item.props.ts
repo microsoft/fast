@@ -1,4 +1,4 @@
-import { NavigationConfig, TreeNavigationItem } from "@microsoft/fast-tooling";
+import { HoverLocation } from "./navigation.props";
 
 export enum VerticalDragDirection {
     up,
@@ -16,39 +16,14 @@ export interface NavigationTreeItemProps
     extends NavigationTreeItemDragSourceCollectedProps,
         NavigationTreeItemDropTargetCollectedProps {
     /**
-     * The React ref
-     */
-    ref?: (node: HTMLDivElement | HTMLAnchorElement) => React.ReactElement<any>;
-
-    /**
      * The type of item for drag and drop
      */
     type: DragDropItemType;
 
     /**
-     * The tree navigation item
+     * The class names assigned to style the drag item
      */
-    item: TreeNavigationItem;
-
-    /**
-     * The React children
-     */
-    children?: React.ReactNode;
-
-    /**
-     * The class name for the content
-     */
-    contentClassName: (dragging: boolean, canDrag: boolean) => string;
-
-    /**
-     * The class name for the link
-     */
-    linkClassName: (dragging: boolean, canDrag: boolean) => string;
-
-    /**
-     * The expanded state
-     */
-    expanded: boolean;
+    className: string;
 
     /**
      * The dictionary ID
@@ -56,19 +31,19 @@ export interface NavigationTreeItemProps
     dictionaryId: string;
 
     /**
+     * The index of this drag item
+     */
+    index: number;
+
+    /**
      * The navigation ID
      */
     navigationConfigId: string;
 
     /**
-     * Whether this navigation item is draggable
+     * Whether this navigation item is collapsible
      */
-    isDraggable: boolean;
-
-    /**
-     * Whether this is the current linked data item being dragged
-     */
-    isCurrentDragItem: boolean;
+    isCollapsible: boolean;
 
     /**
      * The click handler for expanding an item
@@ -81,20 +56,6 @@ export interface NavigationTreeItemProps
     handleKeyDown: React.KeyboardEventHandler<HTMLElement>;
 
     /**
-     * Callback for moving the item
-     */
-    moveDragItem: (
-        type: DragDropItemType,
-        dictionaryId: string,
-        navigationConfigId: string
-    ) => void;
-
-    /**
-     * Callback for dropping the item
-     */
-    dropDragItem: (type: DragDropItemType) => void;
-
-    /**
      * Callback for starting the drag
      */
     dragStart: (dictionaryId: string) => void;
@@ -103,6 +64,17 @@ export interface NavigationTreeItemProps
      * Callback for ending the drag
      */
     dragEnd: () => void;
+
+    /**
+     * Callback for hovering an item
+     */
+    dragHover: (
+        type: DragDropItemType,
+        dictionaryId: string,
+        navigationConfigId: string,
+        index: number,
+        location: HoverLocation
+    ) => void;
 }
 
 export interface NavigationTreeItemDragSourceCollectedProps {
