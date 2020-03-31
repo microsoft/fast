@@ -32,7 +32,7 @@ export function consumer(args: ConsumerArgs): (source: any) => any {
                 return null;
             }
 
-            public connectedCallback() {
+            public connectedCallback(): void {
                 super.connectedCallback();
 
                 const provider = this.findProvider();

@@ -4,11 +4,11 @@ import { CheckboxTemplate as template } from "./checkbox.template";
 import { CheckboxStyles as styles } from "./checkbox.styles";
 import { consumer } from "../design-system-provider/design-system-consumer";
 import {
-    neutraloutlinerest,
+    neutralfillinputhover,
     neutralfillinputrest,
     neutralforegroundrest,
-    neutralfillinputhover,
     neutraloutlinehover,
+    neutraloutlinerest,
 } from "../styles/recipes";
 
 @customElement({

@@ -4,8 +4,8 @@ import { ProgressRingTemplate as template } from "./progress-ring.template";
 import { ProgressRingStyles as styles } from "./progress-ring.styles";
 import { consumer } from "../../design-system-provider/design-system-consumer";
 import {
-    neutralfillrest,
     accentfillrest,
+    neutralfillrest,
     neutralforegroundhint,
 } from "../../styles/recipes";
 

@@ -46,7 +46,7 @@ export class DesignSystemProvider extends FastElement {
      */
     protected designSystemProperties: Array<{ property: string; name: string }>;
 
-    public connectedCallback() {
+    public connectedCallback(): void {
         super.connectedCallback();
         const provider = this.findProvider();
 

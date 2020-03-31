@@ -4,14 +4,14 @@ import { TextAreaTemplate as template } from "./text-area.template";
 import { TextAreaStyles as styles } from "./text-area.styles";
 import { consumer } from "../design-system-provider/design-system-consumer";
 import {
-    neutralforegroundrest,
-    neutralfillinputrest,
-    neutraloutlinerest,
-    neutralfillinputhover,
-    neutraloutlinehover,
-    neutralfocus,
-    neutralfillrest,
     neutralfillhover,
+    neutralfillinputhover,
+    neutralfillinputrest,
+    neutralfillrest,
+    neutralfocus,
+    neutralforegroundrest,
+    neutraloutlinehover,
+    neutraloutlinerest,
 } from "../styles/recipes";
 
 @customElement({

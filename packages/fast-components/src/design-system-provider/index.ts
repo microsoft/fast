@@ -1,15 +1,15 @@
 import {
     attr,
     customElement,
-    observable,
     nullableNumberConverter,
+    observable,
 } from "@microsoft/fast-element";
-import { DesignSystemProvider, designSystemProperty } from "./design-system-provider";
+import { designSystemProperty, DesignSystemProvider } from "./design-system-provider";
 import { DesignSystemProviderStyles as styles } from "./design-system-provider.styles";
 import { DesignSystemProviderTemplate as template } from "./design-system-provider.template";
 import {
-    DesignSystem,
     DensityOffset,
+    DesignSystem,
     DesignSystemDefaults,
 } from "@microsoft/fast-components-styles-msft";
 
@@ -36,7 +36,7 @@ export class FASTDesignSystemProvider extends DesignSystemProvider
     @attr({ attribute: "use-defaults" })
     public useDefaults: boolean;
 
-    connectedCallback() {
+    public connectedCallback() {
         super.connectedCallback();
 
         if (this.useDefaults === ("" as any)) {
@@ -109,223 +109,223 @@ export class FASTDesignSystemProvider extends DesignSystemProvider
 
     @attr({ attribute: "accent-fill-rest-delta", converter: nullableNumberConverter })
     @designSystemProperty("accent-fill-rest-delta")
-    accentFillRestDelta: number;
+    public accentFillRestDelta: number;
 
     @attr({ attribute: "accent-fill-hover-delta", converter: nullableNumberConverter })
     @designSystemProperty("accent-fill-hover-delta")
-    accentFillHoverDelta: number;
+    public accentFillHoverDelta: number;
 
     @attr({ attribute: "accent-fill-active-delta", converter: nullableNumberConverter })
     @designSystemProperty("accent-fill-active-delta")
-    accentFillActiveDelta: number;
+    public accentFillActiveDelta: number;
 
     @attr({ attribute: "accent-fill-focus-delta", converter: nullableNumberConverter })
     @designSystemProperty("accent-fill-focus-delta")
-    accentFillFocusDelta: number;
+    public accentFillFocusDelta: number;
 
     @attr({ attribute: "accent-fill-selected-delta", converter: nullableNumberConverter })
     @designSystemProperty("accent-fill-selected-delta")
-    accentFillSelectedDelta: number;
+    public accentFillSelectedDelta: number;
 
     @attr({
         attribute: "accent-foreground-rest-delta",
         converter: nullableNumberConverter,
     })
     @designSystemProperty("accent-foreground-rest-delta")
-    accentForegroundRestDelta: number;
+    public accentForegroundRestDelta: number;
 
     @attr({
         attribute: "accent-foreground-hover-delta",
         converter: nullableNumberConverter,
     })
     @designSystemProperty("accent-foreground-hover-delta")
-    accentForegroundHoverDelta: number;
+    public accentForegroundHoverDelta: number;
 
     @attr({
         attribute: "accent-foreground-active-delta",
         converter: nullableNumberConverter,
     })
     @designSystemProperty("accent-foreground-active-delta")
-    accentForegroundActiveDelta: number;
+    public accentForegroundActiveDelta: number;
 
     @attr({
         attribute: "accent-foreground-focus-delta",
         converter: nullableNumberConverter,
     })
     @designSystemProperty("accent-foreground-focus-delta")
-    accentForegroundFocusDelta: number;
+    public accentForegroundFocusDelta: number;
 
     @attr({ attribute: "neutral-fill-rest-delta", converter: nullableNumberConverter })
     @designSystemProperty("neutral-fill-rest-delta")
-    neutralFillRestDelta: number;
+    public neutralFillRestDelta: number;
 
     @attr({ attribute: "neutral-fill-hover-delta", converter: nullableNumberConverter })
     @designSystemProperty("neutral-fill-hover-delta")
-    neutralFillHoverDelta: number;
+    public neutralFillHoverDelta: number;
 
     @attr({ attribute: "neutral-fill-active-delta", converter: nullableNumberConverter })
     @designSystemProperty("neutral-fill-active-delta")
-    neutralFillActiveDelta: number;
+    public neutralFillActiveDelta: number;
 
     @attr({ attribute: "neutral-fill-focus-delta", converter: nullableNumberConverter })
     @designSystemProperty("neutral-fill-focus-delta")
-    neutralFillFocusDelta: number;
+    public neutralFillFocusDelta: number;
 
     @attr({
         attribute: "neutral-fill-selected-delta",
         converter: nullableNumberConverter,
     })
     @designSystemProperty("neutral-fill-selected-delta")
-    neutralFillSelectedDelta: number;
+    public neutralFillSelectedDelta: number;
 
     @attr({
         attribute: "neutral-fill-input-rest-delta",
         converter: nullableNumberConverter,
     })
     @designSystemProperty("neutral-fill-input-rest-delta")
-    neutralFillInputRestDelta: number;
+    public neutralFillInputRestDelta: number;
 
     @attr({
         attribute: "neutral-fill-input-hover-delta",
         converter: nullableNumberConverter,
     })
     @designSystemProperty("neutral-fill-input-hover-delta")
-    neutralFillInputHoverDelta: number;
+    public neutralFillInputHoverDelta: number;
 
     @attr({
         attribute: "neutral-fill-input-active-delta",
         converter: nullableNumberConverter,
     })
     @designSystemProperty("neutral-fill-input-active-delta")
-    neutralFillInputActiveDelta: number;
+    public neutralFillInputActiveDelta: number;
 
     @attr({
         attribute: "neutral-fill-input-focus-delta",
         converter: nullableNumberConverter,
     })
     @designSystemProperty("neutral-fill-input-focus-delta")
-    neutralFillInputFocusDelta: number;
+    public neutralFillInputFocusDelta: number;
 
     @attr({
         attribute: "neutral-fill-input-selected-delta",
         converter: nullableNumberConverter,
     })
     @designSystemProperty("neutral-fill-input-selected-delta")
-    neutralFillInputSelectedDelta: number;
+    public neutralFillInputSelectedDelta: number;
 
     @attr({
         attribute: "neutral-fill-stealth-rest-delta",
         converter: nullableNumberConverter,
     })
     @designSystemProperty("neutral-fill-stealth-rest-delta")
-    neutralFillStealthRestDelta: number;
+    public neutralFillStealthRestDelta: number;
 
     @attr({
         attribute: "neutral-fill-stealth-hover-delta",
         converter: nullableNumberConverter,
     })
     @designSystemProperty("neutral-fill-stealth-hover-delta")
-    neutralFillStealthHoverDelta: number;
+    public neutralFillStealthHoverDelta: number;
 
     @attr({
         attribute: "neutral-fill-stealth-active-delta",
         converter: nullableNumberConverter,
     })
     @designSystemProperty("neutral-fill-stealth-active-delta")
-    neutralFillStealthActiveDelta: number;
+    public neutralFillStealthActiveDelta: number;
 
     @attr({
         attribute: "neutral-fill-stealth-focus-delta",
         converter: nullableNumberConverter,
     })
     @designSystemProperty("neutral-fill-stealth-focus-delta")
-    neutralFillStealthFocusDelta: number;
+    public neutralFillStealthFocusDelta: number;
 
     @attr({
         attribute: "neutral-fill-stealth-selected-delta",
         converter: nullableNumberConverter,
     })
     @designSystemProperty("neutral-fill-stealth-selected-delta")
-    neutralFillStealthSelectedDelta: number;
+    public neutralFillStealthSelectedDelta: number;
 
     @attr({
         attribute: "neutral-fill-toggle-hover-delta",
         converter: nullableNumberConverter,
     })
     @designSystemProperty("neutral-fill-toggle-hover-delta")
-    neutralFillToggleHoverDelta: number;
+    public neutralFillToggleHoverDelta: number;
 
     @attr({
         attribute: "neutral-fill-toggle-hover-active",
         converter: nullableNumberConverter,
     })
     @designSystemProperty("neutral-fill-toggle-hover-active")
-    neutralFillToggleActiveDelta: number;
+    public neutralFillToggleActiveDelta: number;
 
     @attr({
         attribute: "neutral-fill-toggle-hover-focus",
         converter: nullableNumberConverter,
     })
     @designSystemProperty("neutral-fill-toggle-hover-focus")
-    neutralFillToggleFocusDelta: number;
+    public neutralFillToggleFocusDelta: number;
 
     @attr({ attribute: "base-layer-luminance", converter: nullableNumberConverter })
     @designSystemProperty("base-layer-luminance")
-    baseLayerLuminance: number; // 0...1
+    public baseLayerLuminance: number; // 0...1
 
     @attr({ attribute: "neutral-fill-card-delta", converter: nullableNumberConverter })
     @designSystemProperty("neutral-fill-card-delta")
-    neutralFillCardDelta: number;
+    public neutralFillCardDelta: number;
 
     @attr({
         attribute: "neutral-foreground-hover-delta",
         converter: nullableNumberConverter,
     })
     @designSystemProperty("neutral-foreground-hover-delta")
-    neutralForegroundHoverDelta: number;
+    public neutralForegroundHoverDelta: number;
 
     @attr({
         attribute: "neutral-foreground-active-delta",
         converter: nullableNumberConverter,
     })
     @designSystemProperty("neutral-foreground-active-delta")
-    neutralForegroundActiveDelta: number;
+    public neutralForegroundActiveDelta: number;
 
     @attr({
         attribute: "neutral-foreground-focus-delta",
         converter: nullableNumberConverter,
     })
     @designSystemProperty("neutral-foreground-focus-delta")
-    neutralForegroundFocusDelta: number;
+    public neutralForegroundFocusDelta: number;
 
     @attr({ attribute: "neutral-divider-rest-delta", converter: nullableNumberConverter })
     @designSystemProperty("neutral-divider-rest-delta")
-    neutralDividerRestDelta: number;
+    public neutralDividerRestDelta: number;
 
     @attr({ attribute: "neutral-outline-rest-delta", converter: nullableNumberConverter })
     @designSystemProperty("neutral-outline-rest-delta")
-    neutralOutlineRestDelta: number;
+    public neutralOutlineRestDelta: number;
 
     @attr({
         attribute: "neutral-outline-hover-delta",
         converter: nullableNumberConverter,
     })
     @designSystemProperty("neutral-outline-hover-delta")
-    neutralOutlineHoverDelta: number;
+    public neutralOutlineHoverDelta: number;
 
     @attr({
         attribute: "neutral-outline-active-delta",
         converter: nullableNumberConverter,
     })
     @designSystemProperty("neutral-outline-active-delta")
-    neutralOutlineActiveDelta: number;
+    public neutralOutlineActiveDelta: number;
 
     @attr({
         attribute: "neutral-outline-focus-delta",
         converter: nullableNumberConverter,
     })
     @designSystemProperty("neutral-outline-focus-delta")
-    neutralOutlineFocusDelta: number;
+    public neutralOutlineFocusDelta: number;
 }
 export * from "./design-system-provider";
 export * from "./design-system-provider.styles";

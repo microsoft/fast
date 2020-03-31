@@ -4,15 +4,15 @@ import { SwitchTemplate as template } from "./switch.template";
 import { SwitchStyles as styles } from "./switch.styles";
 import { consumer } from "../design-system-provider/design-system-consumer";
 import {
-    neutralfillinputrest,
-    neutraloutlinerest,
-    neutralfillinputhover,
-    neutraloutlinehover,
-    neutralfillinputactive,
-    neutraloutlineactive,
-    neutralforegroundrest,
-    accentforegroundcutrest,
     accentfillrest,
+    accentforegroundcutrest,
+    neutralfillinputactive,
+    neutralfillinputhover,
+    neutralfillinputrest,
+    neutralforegroundrest,
+    neutraloutlineactive,
+    neutraloutlinehover,
+    neutraloutlinerest,
 } from "../styles/recipes";
 
 @customElement({

@@ -4,14 +4,14 @@ import { TextFieldTemplate as template } from "./text-field.template";
 import { TextFieldStyles as styles } from "./text-field.styles";
 import { consumer } from "../design-system-provider/design-system-consumer";
 import {
-    neutralforegroundrest,
-    neutralfillinputrest,
-    neutraloutlinerest,
-    neutralfillinputhover,
-    neutraloutlinehover,
-    neutralfocus,
-    neutralfillrest,
     neutralfillhover,
+    neutralfillinputhover,
+    neutralfillinputrest,
+    neutralfillrest,
+    neutralfocus,
+    neutralforegroundrest,
+    neutraloutlinehover,
+    neutraloutlinerest,
 } from "../styles/recipes";
 
 @customElement({

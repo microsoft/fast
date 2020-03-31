@@ -4,8 +4,8 @@ import { ProgressTemplate as template } from "./progress.template";
 import { ProgressStyles as styles } from "./progress.styles";
 import { consumer } from "../../design-system-provider/design-system-consumer";
 import {
-    neutralfillrest,
     accentfillrest,
+    neutralfillrest,
     neutralforegroundhint,
 } from "../../styles/recipes";
 
