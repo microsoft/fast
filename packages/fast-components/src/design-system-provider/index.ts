@@ -12,7 +12,6 @@ import {
     DensityOffset,
     DesignSystemDefaults,
 } from "@microsoft/fast-components-styles-msft";
-import { property } from "lodash-es";
 
 @customElement({
     name: "fast-design-system-provider",

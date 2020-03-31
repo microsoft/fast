@@ -1,6 +1,7 @@
 /* tslint:disable */
 import { FastElement, observable, Observable } from "@microsoft/fast-element";
 import { composedParent } from "../utilities";
+import { DesignSystemResolverEntry } from "../styles/recipes";
 
 /**
  * TODO: This should accept a config instead of a string:
@@ -26,11 +27,17 @@ export function designSystemProperty(nameOrSource: any, target?: string) {
     }
 }
 
+interface DesignSystemConsumer {
+    recipes: DesignSystemResolverEntry[];
+}
+
 export class DesignSystemProvider extends FastElement {
     @observable
     public designSystem: any = {};
 
     private provider: DesignSystemProvider | null = null;
+
+    private consumers: Set<DesignSystemConsumer> = new Set();
 
     /**
      * Track all design system property names so we can react to changes
@@ -75,6 +82,7 @@ export class DesignSystemProvider extends FastElement {
      */
     public handleChange(source, key) {
         this.designSystem = this.collectDesignSystem();
+        this.writeRecipeData();
 
         if (source === this) {
             // TODO: Refactor
@@ -126,5 +134,23 @@ export class DesignSystemProvider extends FastElement {
         return !!this.provider
             ? { ...this.provider.designSystem, ...this.collectLocalDesignSystem() }
             : this.collectLocalDesignSystem();
+    }
+
+    public suscribe(consumer: { recipes: DesignSystemResolverEntry[] }) {
+        if (!this.consumers.has(consumer)) {
+            this.consumers.add(consumer);
+            this.writeRecipeData();
+        }
+    }
+
+    private writeRecipeData() {
+        this.consumers.forEach(consumer => {
+            consumer.recipes.forEach(recipe => {
+                this.style.setProperty(
+                    `--${recipe.name}`,
+                    recipe.resolver(this.designSystem).toString()
+                );
+            });
+        });
     }
 }
