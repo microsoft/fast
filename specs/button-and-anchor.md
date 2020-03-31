@@ -1,4 +1,4 @@
-# Button
+# Button & Anchor
 
 ## Overview
 
@@ -53,26 +53,26 @@ All "anchor" components will support all methods and attributes of the [anchor](
 #### Button
 ```html
 <host>
-  <slot name="before"></slot>
+  <slot name="start"></slot>
   <slot></slot>
-  <slot name="after"></slot>
+  <slot name="end"></slot>
 </host>
 ```
 #### Anchor
 ```html
 <host>
   <a> <!-- focus defered to this element -->
-    <slot name="before"></slot>
+    <slot name="start"></slot>
     <slot></slot>
-    <slot name="after"></slot>
+    <slot name="end"></slot>
   </a>
 </host>
 ```
 
 - *Slot Names*
-  - before: the content to place before the primary content
+  - start: the content to place at the start of the primary content
   - default: the element's content
-  - after: the content to place after the primary content
+  - end: the content to place at the end of the the primary content
 
 ### Accessibility
 Button elements will appear utilize the button role and will behave as the native `button` element.
