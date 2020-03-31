@@ -38,7 +38,7 @@ Button also supports a number of appearance options. Ideally these using one of 
 ## Design
 The library would expose 2 custom element definitions: 
 1. `fast-button`
-8. `fast-anchor-button`
+8. `fast-anchor`
 
 All "button" components will be form-associated and support all methods and attributes of the [button](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button) element.
 
@@ -47,7 +47,7 @@ All "anchor" components will support all methods and attributes of the [anchor](
 ### API
 - [button]([button](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button))
 - [anchor](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a)
-- appearance: `"neutral"  | "outline" | "lightweight" | "stealth" | "primary"`
+- appearance: `"neutral"  | "outline" | "lightweight" | "stealth" | "primary"` (and `"hypertext"` for anchor)
 
 ### Anatomy and Appearance
 #### Button
