@@ -30,7 +30,7 @@ Here you'll find specifications for custom elements and other library features.
 | [Slider](../packages/web-components/fast-components/src/slider/slider.spec.md) | :white_check_mark: | :white_check_mark: |
 | Spin button | -- | -- |
 | [Switch](../packages/web-components/fast-components/src/switch/switch.spec.md) | :white_check_mark: | :white_check_mark: |
-| [Tabs](./tabs/tabs.md) | :white_check_mark: | :white_check_mark: |
+| [Tabs](../packages/web-components/fast-components/src//tabs/tabs.md) | :white_check_mark: | :white_check_mark: |
 | [Text area](../packages/web-components/fast-components/src/text-area/text-area.spec.md) | :white_check_mark: | :white_check_mark: |
 | [Text field](../packages/web-components/fast-components/src/text-field/text-field.spec.md) | :white_check_mark: | :white_check_mark: |
 | Toolbar | -- | -- |
