@@ -51,6 +51,10 @@ Extends Form associated component
   - outline (default)
   - filled
 
+*Methods*
+- `stepUp(stepIncrement?: number)`
+- `stepDown(stepIncrement?: number)`
+
 *Events*
 - `change: CustomEvent`
   - no custom data
