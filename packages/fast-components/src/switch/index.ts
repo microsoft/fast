@@ -2,11 +2,36 @@ import { customElement } from "@microsoft/fast-element";
 import { Switch } from "./switch";
 import { SwitchTemplate as template } from "./switch.template";
 import { SwitchStyles as styles } from "./switch.styles";
+import { consumer } from "../design-system-provider/design-system-consumer";
+import {
+    neutralfillinputrest,
+    neutraloutlinerest,
+    neutralfillinputhover,
+    neutraloutlinehover,
+    neutralfillinputactive,
+    neutraloutlineactive,
+    neutralforegroundrest,
+    accentforegroundcutrest,
+    accentfillrest,
+} from "../styles/recipes";
 
 @customElement({
     name: "fast-switch",
     template,
     styles,
+})
+@consumer({
+    recipes: [
+        neutralfillinputrest,
+        neutraloutlinerest,
+        neutralfillinputhover,
+        neutraloutlinehover,
+        neutralfillinputactive,
+        neutraloutlineactive,
+        neutralforegroundrest,
+        accentforegroundcutrest,
+        accentfillrest,
+    ],
 })
 export class FASTSwitch extends Switch {}
 export * from "./switch.template";
