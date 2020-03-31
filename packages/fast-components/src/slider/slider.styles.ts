@@ -5,13 +5,12 @@ export const SliderStyles = css`
     :host {
         --thumb-size: calc(var(--height-number) * 0.5);
         --thumb-translate: calc(var(--thumb-size) * 0.5);
-        display: block;
     }
     :host([hidden]) {
         display: none;
     }
 
-    ${display("inline-flex")} :host {
+    ${display("inline-grid")} :host {
         align-items: center;
         outline: none;
         width: 100%;
@@ -22,7 +21,6 @@ export const SliderStyles = css`
            */ ""} user-select: none;
     }
     .slider {
-        position: relative;
         width: 100%;
         box-sizing: border-box;
         border-radius: calc(var(--corner-radius) * 1px);
@@ -31,12 +29,16 @@ export const SliderStyles = css`
     }
     .track {
         background: var(--neutral-outline-rest);
-        position: relative;
+        position: absolute;
         right: -2px;
         left: -2px;
         align-self: start;
         margin-top: 6px;
         height: 4px;
+    }
+    .foreground-track {
+        display: none;
+        background: var(--neutral-foreground-hint);
     }
     .layout-region {
         position: relative;
@@ -49,6 +51,7 @@ export const SliderStyles = css`
         right: 50%;
         height: calc(var(--thumb-size) * 1px);
         width: calc(var(--thumb-size) * 1px);
+        transition: "all 0.2s ease";
         transform: translateX(calc(var(--thumb-translate) * 1px));
     }
     .thumb-cursor {
@@ -58,7 +61,6 @@ export const SliderStyles = css`
         position: relative;
         background: var(--neutral-foreground-rest);
         border-radius: 50%;
-        transition: "all 0.2s ease";
         "&:hover": {
             background: var(--neutral-foreground-hover);
         }

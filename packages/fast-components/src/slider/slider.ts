@@ -71,7 +71,7 @@ export class Slider extends FormAssociated<HTMLInputElement> {
                 ? (1 - (Number(this.value) / this.max - this.min)) * 100
                 : (Number(this.value) / this.max - this.min) * 100;
 
-        this.position = `right: ${percentage}%`;
+        this.position = `right: ${percentage}%; transition: all 0.2s ease;`;
         this.$emit("change");
     }
 

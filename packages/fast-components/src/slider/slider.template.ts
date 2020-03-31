@@ -5,6 +5,9 @@ import { ref } from "@microsoft/fast-element/dist/directives";
 export const SliderTemplate = html<Slider>`
   <template
     role="slider"
+    aria-valuenow="${x => x.value}"
+    aria-valuemin="${x => x.min}"
+    aria-valuemax="${x => x.max}"
   >
     <div
           part="slider"
