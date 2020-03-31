@@ -1,32 +1,28 @@
 /* tslint:disable */
-import { parseColorHexRGB } from "@microsoft/fast-colors";
-import {
-    createColorPalette,
-    DesignSystem,
-    DesignSystemDefaults,
-} from "@microsoft/fast-components-styles-msft";
-import {
-    FastElement,
-    observable,
-    Observable,
-    attr,
-    FastElementDefinition,
-} from "@microsoft/fast-element";
+import { FastElement, observable, Observable } from "@microsoft/fast-element";
 import { composedParent } from "../utilities";
 
-function designSystem(source: any, target: string) {
-    if (!source.hasOwnProperty("designSystemProperties")) {
-        source.designSystemProperties = [];
-    }
+export function designSystemProperty(name: string): (source: any, target: string) => void;
+export function designSystemProperty(source: any, target: string);
+export function designSystemProperty(nameOrSource: any, target?: string) {
+    const decorator = (source: any, property: string, name: string) => {
+        if (!source.hasOwnProperty("designSystemProperties")) {
+            source.designSystemProperties = [];
+        }
 
-    source.designSystemProperties.push(target);
+        source.designSystemProperties.push({ property, name });
+    };
+
+    if (typeof nameOrSource === "string") {
+        return (source: any, target: any) => {
+            decorator(source, target, nameOrSource);
+        };
+    } else {
+        decorator(nameOrSource, target!, target!);
+    }
 }
 
 export class DesignSystemProvider extends FastElement {
-    @attr({ attribute: "background-color" })
-    @designSystem
-    public backgroundColor: string;
-
     @observable
     public designSystem: any = {};
 
@@ -35,9 +31,11 @@ export class DesignSystemProvider extends FastElement {
     /**
      * Track all design system property names so we can react to changes
      * in those properties. Do not initialize or it will clobber vlaues stored
-     * by the decorator
+     * by the decorator.
+     *
+     * These tokens will also be mapped to custom CSS properties
      */
-    private designSystemProperties: string[];
+    private designSystemProperties: Array<{ property: string; name: string }>;
 
     public connectedCallback() {
         super.connectedCallback();
@@ -52,7 +50,17 @@ export class DesignSystemProvider extends FastElement {
 
         const notifier = Observable.getNotifier(this);
         this.designSystemProperties.forEach(property => {
-            notifier.subscribe(this, property);
+            notifier.subscribe(this, property.property);
+        });
+
+        // TODO: Refactor
+        Object.entries(this.collectLocalDesignSystem()).forEach(entry => {
+            const [property, value] = entry;
+            const name = this.designSystemProperties.find(
+                prop => prop.property === property
+            )!.name;
+
+            this.style.setProperty(`--${name}`, value);
         });
     }
 
@@ -65,6 +73,18 @@ export class DesignSystemProvider extends FastElement {
      */
     public handleChange(source, key) {
         this.designSystem = this.collectDesignSystem();
+
+        if (source === this) {
+            // TODO: Refactor
+            Object.entries(this.collectLocalDesignSystem()).forEach(entry => {
+                const [property, value] = entry;
+                const name = this.designSystemProperties.find(
+                    prop => prop.property === property
+                )!.name;
+
+                this.style.setProperty(`--${name}`, value);
+            });
+        }
     }
 
     /**
@@ -72,7 +92,7 @@ export class DesignSystemProvider extends FastElement {
      * TODO: We'll likely want to share this with the recipe consumer
      */
     public findProvider(): DesignSystemProvider | null {
-        let parent = composedParent(this as HTMLElement);
+        let parent = composedParent(this as any);
 
         while (parent !== null) {
             if (parent instanceof DesignSystemProvider) {
@@ -89,11 +109,11 @@ export class DesignSystemProvider extends FastElement {
      * Pick all design-system properties of this instance
      * that are not null or undefined into an object
      */
-    private collectLocalDesignSystem() {
+    private collectLocalDesignSystem(): { [key: string]: any } {
         return this.designSystemProperties.reduce((prev, next) => {
-            const value = this[next];
+            const value = this[next.property];
             if (value !== undefined && value !== null) {
-                prev[next] = value;
+                prev[next.property] = value;
             }
 
             return prev;

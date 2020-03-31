@@ -31,6 +31,8 @@ import { html } from "@microsoft/fast-element";
 import { DesignSystemProvider } from "./design-system-provider";
 
 export const DesignSystemProviderTemplate = html<DesignSystemProvider>`
-    <pre>${x => JSON.stringify(x.designSystem)}</pre>
-    <slot></slot>
+    <template>
+        <pre>${x => JSON.stringify(x.designSystem)}</pre>
+        <slot></slot>
+    </template>
 `;
