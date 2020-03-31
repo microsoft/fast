@@ -2,6 +2,10 @@
 import { FastElement, observable, Observable } from "@microsoft/fast-element";
 import { composedParent } from "../utilities";
 
+/**
+ * TODO: This should accept a config instead of a string:
+ * interface conf { customPropertyName: string, customProperty: boolean }
+ */
 export function designSystemProperty(name: string): (source: any, target: string) => void;
 export function designSystemProperty(source: any, target: string);
 export function designSystemProperty(nameOrSource: any, target?: string) {
@@ -32,10 +36,8 @@ export class DesignSystemProvider extends FastElement {
      * Track all design system property names so we can react to changes
      * in those properties. Do not initialize or it will clobber vlaues stored
      * by the decorator.
-     *
-     * These tokens will also be mapped to custom CSS properties
      */
-    private designSystemProperties: Array<{ property: string; name: string }>;
+    protected designSystemProperties: Array<{ property: string; name: string }>;
 
     public connectedCallback() {
         super.connectedCallback();

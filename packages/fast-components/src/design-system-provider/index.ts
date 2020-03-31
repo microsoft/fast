@@ -7,7 +7,12 @@ import {
 import { DesignSystemProvider, designSystemProperty } from "./design-system-provider";
 import { DesignSystemProviderStyles as styles } from "./design-system-provider.styles";
 import { DesignSystemProviderTemplate as template } from "./design-system-provider.template";
-import { DesignSystem, DensityOffset } from "@microsoft/fast-components-styles-msft";
+import {
+    DesignSystem,
+    DensityOffset,
+    DesignSystemDefaults,
+} from "@microsoft/fast-components-styles-msft";
+import { property } from "lodash-es";
 
 @customElement({
     name: "fast-design-system-provider",
@@ -24,6 +29,27 @@ export class FASTDesignSystemProvider extends DesignSystemProvider
             | "neutralForegroundDarkIndex"
             | "neutralForegroundLightIndex"
         > {
+    /**
+     * Applies the default design-system values to the instance where properties
+     * are not explicitly assigned. This is generally used to set the root design
+     * system context.
+     */
+    @attr({ attribute: "use-defaults" })
+    public useDefaults: boolean;
+
+    connectedCallback() {
+        super.connectedCallback();
+
+        if (this.useDefaults === ("" as any)) {
+            this.designSystemProperties.forEach(property => {
+                const propName = property.property;
+
+                if (this[propName] === void 0) {
+                    this[property.property] = DesignSystemDefaults[property.property];
+                }
+            });
+        }
+    }
     /**
      * Define design system property atttributes
      */
