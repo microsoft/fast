@@ -1,9 +1,6 @@
 import { attr, FastElement, observable, ref } from "@microsoft/fast-element";
 import { isNil } from "lodash-es";
-import {
-    ConstructibleResizeObserver,
-    ResizeObserverClassDefinition,
-} from "./resize-observer";
+import { ResizeObserverClassDefinition } from "./resize-observer";
 import { ContentRect } from "./resize-observer-entry";
 
 export type AxisPositioningMode = "uncontrolled" | "locktodefault" | "dynamic";
@@ -54,8 +51,11 @@ enum Location {
 export class AnchoredRegion extends FastElement {
     @attr
     public anchor: string = "";
+    private anchorChanged(): void {}
+
     @attr
     public viewport: string = "";
+    private viewportChanged(): void {}
 
     @attr({ attribute: "horizontal-positioning-mode" })
     public horizontalPositioningMode: AxisPositioningMode = "uncontrolled";
@@ -79,35 +79,6 @@ export class AnchoredRegion extends FastElement {
     @attr({ attribute: "vertical-scaling" })
     public verticalScaling: boolean = false;
 
-    /**
-     * values to be applied to the component's transform origin attribute on render
-     */
-    @observable
-    public transformOrigin: string = "top left";
-
-    /**
-     * values to be applied to the component's positioning attributes on render
-     */
-    @observable
-    public regionTop: string = "unset";
-
-    @observable
-    public regionRight: string = "unset";
-
-    @observable
-    public regionBottom: string = "unset";
-
-    @observable
-    public regionLeft: string = "unset";
-
-    /**
-     * the span in pixels of the selected position on each axis
-     */
-    @observable
-    public regionWidth: string = "fit-content";
-    @observable
-    public regionHeight: string = "fit-content";
-
     @observable
     public regionStyle: string = "";
 
@@ -115,103 +86,103 @@ export class AnchoredRegion extends FastElement {
      * indicates that an initial positioning pass on layout has completed
      */
     @observable
-    public initialLayoutComplete: boolean = false;
+    public initialLayoutComplete: boolean;
 
-    public horizontalPosition: HorizontalPosition = "unset";
-    public verticalPosition: VerticalPosition = "unset";
+    public anchorElement: HTMLElement | null;
+    private anchorElementChanged(): void {}
 
-    private xTransformOrigin: string = Location.left;
-    private yTransformOrigin: string = Location.top;
+    public viewportElement: HTMLElement | null;
+    private viewportElementChanged(): void {}
+
+    /**
+     * values to be applied to the component's transform origin attribute on render
+     */
+    private transformOrigin: string;
+
+    /**
+     * values to be applied to the component's positioning attributes on render
+     */
+    private regionTop: string;
+    private regionRight: string;
+    private regionBottom: string;
+    private regionLeft: string;
+
+    /**
+     * the span in pixels of the selected position on each axis
+     */
+    private regionWidth: string;
+    private regionHeight: string;
+
+    private xTransformOrigin: string;
+    private yTransformOrigin: string;
 
     private collisionDetector: IntersectionObserver;
     private resizeDetector: ResizeObserverClassDefinition;
 
-    private viewportRect: ClientRect | DOMRect | null = null;
-    private positionerDimension: Dimension = { height: 0, width: 0 };
+    private viewportRect: ClientRect | DOMRect | null;
+    private positionerDimension: Dimension;
 
-    private anchorTop: number = 0;
-    private anchorRight: number = 0;
-    private anchorBottom: number = 0;
-    private anchorLeft: number = 0;
-    private anchorHeight: number = 0;
-    private anchorWidth: number = 0;
+    private anchorTop: number;
+    private anchorRight: number;
+    private anchorBottom: number;
+    private anchorLeft: number;
+    private anchorHeight: number;
+    private anchorWidth: number;
 
-    private viewportScrollTop: number = 0;
-    private viewportScrollLeft: number = 0;
+    private viewportScrollTop: number;
+    private viewportScrollLeft: number;
 
     /**
      * the positions currently being applied to layout
      */
-    currentVerticalPosition: AnchoredRegionVerticalPositionLabel =
-        AnchoredRegionVerticalPositionLabel.undefined;
-    currentHorizontalPosition: AnchoredRegionHorizontalPositionLabel =
-        AnchoredRegionHorizontalPositionLabel.undefined;
+    currentVerticalPosition: AnchoredRegionVerticalPositionLabel;
+    currentHorizontalPosition: AnchoredRegionHorizontalPositionLabel;
 
     /**
      * base offsets between the positioner's base position and the anchor's
      */
-    private baseHorizontalOffset: number = 0;
-    private baseVerticalOffset: number = 0;
+    private baseHorizontalOffset: number;
+    private baseVerticalOffset: number;
 
     public region: HTMLDivElement;
 
     constructor() {
         super();
+        this.setInitialState();
     }
 
     connectedCallback() {
         super.connectedCallback();
 
-        const viewportElement: Element | null = this.getViewport();
-        const anchorElement: Element | null = this.getAnchor();
+        if (isNil(this.viewportElement)) {
+            this.viewportElement = this.getViewport();
+        }
 
-        if (anchorElement === null || viewportElement === null) {
+        if (isNil(this.anchorElement)) {
+            this.anchorElement = this.getAnchor();
+        }
+
+        if (isNil(this.anchorElement) || isNil(this.viewportElement)) {
             return;
         }
 
-        this.collisionDetector = new IntersectionObserver(this.handleCollision, {
-            root: viewportElement,
-            rootMargin: "0px",
-            threshold: [0, 1],
-        });
-
-        this.collisionDetector.observe(this.region);
-        this.collisionDetector.observe(anchorElement);
-
-        this.resizeDetector = new ((window as unknown) as WindowWithResizeObserver).ResizeObserver(
-            this.handleResize
-        );
-        this.resizeDetector.observe(anchorElement);
-        this.resizeDetector.observe(this.region);
-
-        viewportElement.addEventListener("scroll", this.handleScroll);
+        this.connectObservers();
 
         this.updateLayout();
     }
 
     public disconnectedCallback(): void {
         super.disconnectedCallback();
-
-        const viewportElement: Element | null = this.getViewport();
-
-        // disconnect observers
-        this.collisionDetector.disconnect();
-        this.resizeDetector.disconnect();
-
-        if (viewportElement !== null) {
-            viewportElement.removeEventListener("scroll", this.handleScroll);
-        }
+        this.disconnectObservers();
     }
 
     adoptedCallback() {
         //do we need to handle this?
     }
 
-    anchorChanged() {}
-
-    viewportChanged() {}
-
     positionChanged() {
+        this.classList.add();
+        this.classList.remove();
         // this.dispatchEvent(
         //     new CustomEvent("changed", {
         //         bubbles: false,
@@ -221,10 +192,75 @@ export class AnchoredRegion extends FastElement {
         // );
     }
 
+    private setInitialState = (): void => {
+        this.initialLayoutComplete = false;
+        this.transformOrigin = "top left";
+        this.regionTop = "unset";
+        this.regionRight = "unset";
+        this.regionBottom = "unset";
+        this.regionLeft = "unset";
+        this.regionWidth = "fit-content";
+        this.regionHeight = "fit-content";
+
+        this.xTransformOrigin = Location.left;
+        this.yTransformOrigin = Location.top;
+
+        this.viewportRect = null;
+        this.positionerDimension = { height: 0, width: 0 };
+
+        this.anchorTop = 0;
+        this.anchorRight = 0;
+        this.anchorBottom = 0;
+        this.anchorLeft = 0;
+        this.anchorHeight = 0;
+        this.anchorWidth = 0;
+
+        this.viewportScrollTop = 0;
+        this.viewportScrollLeft = 0;
+
+        this.currentVerticalPosition = AnchoredRegionVerticalPositionLabel.undefined;
+        this.currentHorizontalPosition = AnchoredRegionHorizontalPositionLabel.undefined;
+
+        this.baseHorizontalOffset = 0;
+        this.baseVerticalOffset = 0;
+    };
+
+    private connectObservers = (): void => {
+        if (isNil(this.anchorElement) || isNil(this.viewportElement)) {
+            return;
+        }
+
+        this.collisionDetector = new IntersectionObserver(this.handleCollision, {
+            root: this.viewportElement,
+            rootMargin: "0px",
+            threshold: [0, 1],
+        });
+
+        this.collisionDetector.observe(this.region);
+        this.collisionDetector.observe(this.anchorElement);
+
+        this.resizeDetector = new ((window as unknown) as WindowWithResizeObserver).ResizeObserver(
+            this.handleResize
+        );
+        this.resizeDetector.observe(this.anchorElement);
+        this.resizeDetector.observe(this.region);
+
+        this.viewportElement.addEventListener("scroll", this.handleScroll);
+    };
+
+    private disconnectObservers = (): void => {
+        this.collisionDetector.disconnect();
+        this.resizeDetector.disconnect();
+
+        if (this.viewportElement !== null) {
+            this.viewportElement.removeEventListener("scroll", this.handleScroll);
+        }
+    };
+
     /**
      * Gets the viewport element
      */
-    private getViewport = (): Element | null => {
+    private getViewport = (): HTMLElement | null => {
         if (isNil(this.viewport)) {
             return this.region.parentElement;
         }
@@ -255,10 +291,10 @@ export class AnchoredRegion extends FastElement {
                 this.handleAnchorCollision(entry);
             }
         });
-        const viewPortElement: Element | null = this.getViewport();
-        if (!isNil(viewPortElement)) {
-            this.viewportScrollTop = viewPortElement.scrollTop;
-            this.viewportScrollLeft = viewPortElement.scrollLeft;
+
+        if (!isNil(this.viewportElement)) {
+            this.viewportScrollTop = this.viewportElement.scrollTop;
+            this.viewportScrollLeft = this.viewportElement.scrollLeft;
         }
         if (entries.length === 2 && positionerRect !== null) {
             this.updatePositionerOffset(positionerRect);
@@ -684,13 +720,11 @@ export class AnchoredRegion extends FastElement {
      * Check for scroll changes in viewport and adjust position data
      */
     private updateForScrolling = (): void => {
-        const viewportElement: Element | null = this.getViewport();
-
-        if (viewportElement === null || isNaN(viewportElement.scrollTop)) {
+        if (isNil(this.viewportElement) || isNaN(this.viewportElement.scrollTop)) {
             return;
         }
-        const scrollTop: number = viewportElement.scrollTop;
-        const scrollLeft: number = viewportElement.scrollLeft;
+        const scrollTop: number = this.viewportElement.scrollTop;
+        const scrollLeft: number = this.viewportElement.scrollLeft;
         if (this.viewportScrollTop !== scrollTop) {
             const verticalScrollDelta: number = this.viewportScrollTop - scrollTop;
             this.viewportScrollTop = scrollTop;
@@ -745,7 +779,7 @@ export class AnchoredRegion extends FastElement {
     private getAvailableWidth = (
         positionOption: AnchoredRegionHorizontalPositionLabel
     ): number => {
-        if (this.viewportRect !== null) {
+        if (!isNil(this.viewportRect)) {
             const spaceLeft: number = this.anchorLeft - this.viewportRect.left;
             const spaceRight: number =
                 this.viewportRect.right - (this.anchorLeft + this.anchorWidth);
@@ -771,7 +805,7 @@ export class AnchoredRegion extends FastElement {
     private getAvailableHeight = (
         positionOption: AnchoredRegionVerticalPositionLabel
     ): number => {
-        if (this.viewportRect !== null) {
+        if (!isNil(this.viewportRect)) {
             const spaceAbove: number = this.anchorTop - this.viewportRect.top;
             const spaceBelow: number =
                 this.viewportRect.bottom - (this.anchorTop + this.anchorHeight);
