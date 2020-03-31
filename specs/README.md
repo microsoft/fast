@@ -19,6 +19,7 @@ Here you'll find specifications for custom elements and other library features.
 | [Progress](../packages/web-components/fast-components/src/progress/progress.spec.md) | :white_check_mark: |
 | [Slider](../packages/web-components/fast-components/src/slider/slider.spec.md) | :white_check_mark: |
 | [Switch](../packages/web-components/fast-components/src/switch/switch.spec.md) | :white_check_mark: |
+| [Tabs](../packages/web-components/fast-components/src/tabs/tabs.md) | :white_check_mark: |
 | [Text Area](../packages/web-components/fast-components/src/text-area/text-area.spec.md) | :white_check_mark: |
 | [Text Field](../packages/web-components/fast-components/src/text-field/text-field.spec.md) | :white_check_mark: |
 | [Tooltip](./tooltip.md) | -- |
