@@ -206,7 +206,7 @@ describe("tabs", (): void => {
         );
     });
 
-    test("should have an aria-orientation if the orientation prop is passed", () => {
+    test("should set an aria-orientation value equal to the value of the orientation prop when passed", () => {
         const renderedWithChildren: any = mount(
             <Tabs managedClasses={tabsManagedClasses} label={"items"}>
                 {children}
@@ -231,7 +231,6 @@ describe("tabs", (): void => {
             </Tabs>
         );
 
-        expect(renderedWithChildren.find("[aria-orientation]")).toHaveLength(0);
         expect(
             renderedWithChildrenHorizontal.find("[aria-orientation]").props()[
                 "aria-orientation"
@@ -242,6 +241,16 @@ describe("tabs", (): void => {
                 "aria-orientation"
             ]
         ).toBe(Orientation.vertical);
+    });
+
+    test("should set a default orientation of `horizontal`", () => {
+        const renderedWithChildren: any = mount(
+            <Tabs managedClasses={tabsManagedClasses} label={"items"}>
+                {children}
+            </Tabs>
+        );
+
+        expect(renderedWithChildren.prop("orientation")).toBe(Orientation.horizontal);
     });
 
     test("should use an id prop passed to a TabItem as aria-controls on the Tab and aria-labelledby on the TabPanel", () => {
@@ -360,9 +369,33 @@ describe("tabs", (): void => {
         expect(renderedWithChildren.prop("children")).not.toBe(undefined);
     });
 
-    test("should prevent default behavior on arrow down to prevent scroll events", (): void => {
+    test("should NOT prevent default behavior on arrow down to prevent scroll events when horizontally oriented", (): void => {
         const rendered: any = mount(
-            <Tabs managedClasses={tabsManagedClasses} label={"items"}>
+            <Tabs
+                managedClasses={tabsManagedClasses}
+                label={"items"}
+                orientation={Orientation.horizontal}
+            >
+                {children}
+            </Tabs>
+        );
+
+        const preventDefault: any = jest.fn();
+        const tab1: any = rendered.find(Tab.displayName).at(0);
+        tab1.simulate("keydown", { keyCode: keyCodeArrowDown, preventDefault });
+
+        expect(preventDefault).not.toHaveBeenCalled();
+
+        rendered.unmount();
+    });
+
+    test("should prevent default behavior on arrow down to prevent scroll events when vertically oriented", (): void => {
+        const rendered: any = mount(
+            <Tabs
+                managedClasses={tabsManagedClasses}
+                label={"items"}
+                orientation={Orientation.vertical}
+            >
                 {children}
             </Tabs>
         );
@@ -372,11 +405,38 @@ describe("tabs", (): void => {
         tab1.simulate("keydown", { keyCode: keyCodeArrowDown, preventDefault });
 
         expect(preventDefault).toHaveBeenCalled();
+
+        rendered.unmount();
     });
 
-    test("should prevent default behavior on arrow up to prevent scroll events", (): void => {
+    test("should NOT prevent default behavior on arrow up to prevent scroll events when horizontally oriented", (): void => {
         const rendered: any = mount(
-            <Tabs managedClasses={tabsManagedClasses} label={"items"}>
+            <Tabs
+                managedClasses={tabsManagedClasses}
+                label={"items"}
+                orientation={Orientation.horizontal}
+            >
+                {children}
+            </Tabs>
+        );
+
+        const preventDefault: any = jest.fn();
+        const tab2: any = rendered.find(Tab.displayName).at(1);
+
+        tab2.simulate("keydown", { keyCode: keyCodeArrowUp, preventDefault });
+
+        expect(preventDefault).not.toHaveBeenCalled();
+
+        rendered.unmount();
+    });
+
+    test("should prevent default behavior on arrow up to prevent scroll events when vertically oriented", (): void => {
+        const rendered: any = mount(
+            <Tabs
+                managedClasses={tabsManagedClasses}
+                label={"items"}
+                orientation={Orientation.vertical}
+            >
                 {children}
             </Tabs>
         );
@@ -387,6 +447,89 @@ describe("tabs", (): void => {
         tab2.simulate("keydown", { keyCode: keyCodeArrowUp, preventDefault });
 
         expect(preventDefault).toHaveBeenCalled();
+
+        rendered.unmount();
+    });
+
+    test("should NOT prevent default behavior on arrow left to prevent scroll events when vertically oriented", (): void => {
+        const rendered: any = mount(
+            <Tabs
+                managedClasses={tabsManagedClasses}
+                label={"items"}
+                orientation={Orientation.vertical}
+            >
+                {children}
+            </Tabs>
+        );
+
+        const preventDefault: any = jest.fn();
+        const tab1: any = rendered.find(Tab.displayName).at(0);
+        tab1.simulate("keydown", { keyCode: keyCodeArrowLeft, preventDefault });
+
+        expect(preventDefault).not.toHaveBeenCalled();
+
+        rendered.unmount();
+    });
+
+    test("should prevent default behavior on arrow left to prevent scroll events when horizontally oriented", (): void => {
+        const rendered: any = mount(
+            <Tabs
+                managedClasses={tabsManagedClasses}
+                label={"items"}
+                orientation={Orientation.horizontal}
+            >
+                {children}
+            </Tabs>
+        );
+
+        const preventDefault: any = jest.fn();
+        const tab1: any = rendered.find(Tab.displayName).at(0);
+        tab1.simulate("keydown", { keyCode: keyCodeArrowLeft, preventDefault });
+
+        expect(preventDefault).toHaveBeenCalled();
+
+        rendered.unmount();
+    });
+
+    test("should NOT prevent default behavior on arrow right to prevent scroll events when vertically oriented", (): void => {
+        const rendered: any = mount(
+            <Tabs
+                managedClasses={tabsManagedClasses}
+                label={"items"}
+                orientation={Orientation.vertical}
+            >
+                {children}
+            </Tabs>
+        );
+
+        const preventDefault: any = jest.fn();
+        const tab1: any = rendered.find(Tab.displayName).at(0);
+        tab1.simulate("keydown", { keyCode: keyCodeArrowRight, preventDefault });
+
+        expect(preventDefault).not.toHaveBeenCalled();
+
+        rendered.unmount();
+    });
+
+    test("should prevent default behavior on arrow right to prevent scroll events when horizontally oriented", (): void => {
+        const rendered: any = mount(
+            <Tabs
+                managedClasses={tabsManagedClasses}
+                label={"items"}
+                orientation={Orientation.horizontal}
+            >
+                {children}
+            </Tabs>
+        );
+
+        const preventDefault: any = jest.fn();
+        const tab2: any = rendered.find(Tab.displayName).at(1);
+
+        tab2.simulate("keydown", { keyCode: keyCodeArrowRight, preventDefault });
+
+        expect(preventDefault).toHaveBeenCalled();
+
+        rendered.unmount();
     });
 
     test("should allow a user to control the component from a callback", () => {
@@ -525,89 +668,7 @@ describe("tabs", (): void => {
                 .prop("active")
         ).toBe(false);
 
-        tab1.simulate("keydown", { keyCode: keyCodeArrowUp });
-
-        expect(onUpdate).toBeCalledWith(id2);
-
-        expect(
-            rendered
-                .find(Tab.displayName)
-                .at(0)
-                .prop("tabIndex")
-        ).toEqual(0);
-        expect(
-            rendered
-                .find(Tab.displayName)
-                .at(1)
-                .prop("tabIndex")
-        ).toEqual(-1);
-        expect(
-            rendered
-                .find(Tab.displayName)
-                .at(2)
-                .prop("tabIndex")
-        ).toEqual(-1);
-        expect(
-            rendered
-                .find(Tab.displayName)
-                .at(0)
-                .prop("active")
-        ).toBe(true);
-        expect(
-            rendered
-                .find(Tab.displayName)
-                .at(1)
-                .prop("active")
-        ).toBe(false);
-        expect(
-            rendered
-                .find(Tab.displayName)
-                .at(2)
-                .prop("active")
-        ).toBe(false);
-
         tab1.simulate("keydown", { keyCode: keyCodeArrowRight });
-
-        expect(onUpdate).toBeCalledWith(id1);
-
-        expect(
-            rendered
-                .find(Tab.displayName)
-                .at(0)
-                .prop("tabIndex")
-        ).toEqual(0);
-        expect(
-            rendered
-                .find(Tab.displayName)
-                .at(1)
-                .prop("tabIndex")
-        ).toEqual(-1);
-        expect(
-            rendered
-                .find(Tab.displayName)
-                .at(2)
-                .prop("tabIndex")
-        ).toEqual(-1);
-        expect(
-            rendered
-                .find(Tab.displayName)
-                .at(0)
-                .prop("active")
-        ).toBe(true);
-        expect(
-            rendered
-                .find(Tab.displayName)
-                .at(1)
-                .prop("active")
-        ).toBe(false);
-        expect(
-            rendered
-                .find(Tab.displayName)
-                .at(2)
-                .prop("active")
-        ).toBe(false);
-
-        tab1.simulate("keydown", { keyCode: keyCodeArrowDown });
 
         expect(onUpdate).toBeCalledWith(id1);
 
@@ -810,6 +871,7 @@ describe("tabs", (): void => {
         const rendered: any = mount(
             <Tabs
                 managedClasses={tabsManagedClasses}
+                orientation={Orientation.vertical}
                 children={children}
                 label={"items"}
             />
@@ -856,7 +918,7 @@ describe("tabs", (): void => {
                 .prop("active")
         ).toBe(false);
 
-        tab1.simulate("keydown", { keyCode: keyCodeArrowLeft });
+        tab1.simulate("keydown", { keyCode: keyCodeArrowUp });
 
         expect(
             rendered
@@ -934,7 +996,7 @@ describe("tabs", (): void => {
                 .prop("active")
         ).toBe(false);
 
-        tab2.simulate("keydown", { keyCode: keyCodeArrowLeft });
+        tab2.simulate("keydown", { keyCode: keyCodeArrowUp });
 
         expect(
             rendered
@@ -973,7 +1035,7 @@ describe("tabs", (): void => {
                 .prop("active")
         ).toBe(false);
 
-        tab1.simulate("keydown", { keyCode: keyCodeArrowRight });
+        tab1.simulate("keydown", { keyCode: keyCodeArrowDown });
 
         expect(
             rendered
@@ -1051,7 +1113,7 @@ describe("tabs", (): void => {
                 .prop("active")
         ).toBe(true);
 
-        tab3.simulate("keydown", { keyCode: keyCodeArrowRight });
+        tab3.simulate("keydown", { keyCode: keyCodeArrowDown });
 
         expect(
             rendered
