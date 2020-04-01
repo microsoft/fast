@@ -10,6 +10,7 @@ export const SliderTemplate = html<Slider>`
     aria-valuemax="${x => x.max}"
   >
     <div
+          ${ref("root")}
           part="slider"
           class="slider"
     >

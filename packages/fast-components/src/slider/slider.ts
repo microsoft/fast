@@ -8,6 +8,18 @@ import {
 } from "@microsoft/fast-web-utilities";
 import { convertPixelToPercent } from "./slider-utilities";
 
+export enum SliderMode {
+    singleValue = "single-value",
+    adjustFromLower = "adjust-from-lower",
+    adjustFromUpper = "adjust-from-upper",
+    dualThumb = "dual-thumb",
+}
+
+export enum SliderOrientation {
+    horizontal = "horizontal",
+    vertical = "vertical",
+}
+
 export class Slider extends FormAssociated<HTMLInputElement> {
     @attr({ attribute: "readonly", mode: "boolean" })
     public readOnly: boolean; // Map to proxy element
@@ -21,6 +33,9 @@ export class Slider extends FormAssociated<HTMLInputElement> {
             : this.classList.remove("readonly");
         this.setAttribute("aria-readonly", this.readOnly.toString());
     }
+
+    @observable
+    public root: HTMLDivElement;
 
     @observable
     public track: HTMLDivElement;
@@ -53,10 +68,9 @@ export class Slider extends FormAssociated<HTMLInputElement> {
 
     /**
      * The element's value to be included in form submission when checked.
-     * Default to 0
      */
     @attr
-    public value: string = "0"; // Map to proxy element.
+    public value: string; // Map to proxy element.
     private valueChanged(): void {
         if (Number(this.value) === Number.NaN) {
             this.value = "0";
@@ -109,13 +123,13 @@ export class Slider extends FormAssociated<HTMLInputElement> {
      * Orientation value, horizontal or vertical
      */
     @attr
-    public orientation: string = "horizontal";
+    public orientation: SliderOrientation = SliderOrientation.horizontal;
 
     /**
      * mode value, singleValue | dualThumb | adjustFromUpper | adjustFromLower
      */
     @attr
-    public mode: string = "singleValue";
+    public mode: SliderMode = SliderMode.singleValue;
 
     /**
      * Set to true when the component has constructed
@@ -129,6 +143,7 @@ export class Slider extends FormAssociated<HTMLInputElement> {
         this.proxy.setAttribute("type", "range");
         this.setAttribute("role", "slider");
         this.setAttribute("tabindex", "0");
+        // TODO: marjon find dir the right way
         const dirAttribute = this.parentElement!.attributes["dir"];
         this.direction = dirAttribute ? dirAttribute.value : "ltr";
         this.constructed = true;
@@ -137,11 +152,10 @@ export class Slider extends FormAssociated<HTMLInputElement> {
     public connectedCallback(): void {
         super.connectedCallback();
         this.updateForm();
-        this.trackWidth = this.track.clientWidth;
-        this.trackMinWidth = this.track.getBoundingClientRect().left;
-        this.addEventListener("keydown", this.keypressHandler);
-        this.addEventListener("mousedown", this.clickHandler);
-        this.thumb.addEventListener("mousedown", this.handleThumbMouseDown);
+        this.setupTrackConstraints();
+        this.setupListeners();
+        this.setupClassForOrientation();
+        this.setupDefaultValue();
     }
 
     public disconnectedCallback(): void {
@@ -160,6 +174,32 @@ export class Slider extends FormAssociated<HTMLInputElement> {
             case keyCodeArrowDown:
                 this.decrement();
                 break;
+        }
+    };
+
+    private setupTrackConstraints = (): void => {
+        this.trackWidth = this.track.clientWidth;
+        this.trackMinWidth = this.track.getBoundingClientRect().left;
+    };
+
+    private setupListeners = (): void => {
+        this.addEventListener("keydown", this.keypressHandler);
+        this.addEventListener("mousedown", this.clickHandler);
+        this.thumb.addEventListener("mousedown", this.handleThumbMouseDown);
+    };
+
+    private setupClassForOrientation = (): void => {
+        if (this.orientation === SliderOrientation.horizontal) {
+            this.root.classList.add("slider-horizontal");
+        } else {
+            this.root.classList.add("slider-vertical");
+        }
+    };
+
+    private setupDefaultValue = (): void => {
+        if (this.value === "") {
+            this.value = `${this.convertToConstrainedValue((this.max - this.min) / 2)}`;
+            this.updateForm();
         }
     };
 

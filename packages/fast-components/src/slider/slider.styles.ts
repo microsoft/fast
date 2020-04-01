@@ -21,20 +21,10 @@ export const SliderStyles = css`
            */ ""} user-select: none;
     }
     .slider {
-        width: 100%;
         box-sizing: border-box;
         border-radius: calc(var(--corner-radius) * 1px);
         outline: none;
         cursor: pointer;
-    }
-    .track {
-        background: var(--neutral-outline-rest);
-        position: absolute;
-        right: -2px;
-        left: -2px;
-        align-self: start;
-        margin-top: 6px;
-        height: 4px;
     }
     .foreground-track {
         display: none;
@@ -48,17 +38,14 @@ export const SliderStyles = css`
     }
     .thumb-container {
         position: absolute;
-        right: 50%;
         height: calc(var(--thumb-size) * 1px);
         width: calc(var(--thumb-size) * 1px);
         transition: "all 0.2s ease";
-        transform: translateX(calc(var(--thumb-translate) * 1px));
     }
     .thumb-cursor {
         border: none;
         width: calc(var(--thumb-size) * 1px);
         height: calc(var(--thumb-size) * 1px);
-        position: relative;
         background: var(--neutral-foreground-rest);
         border-radius: 50%;
         "&:hover": {
@@ -67,6 +54,36 @@ export const SliderStyles = css`
         "&:active": {
             background: var(--neutral-foreground-active);
         }
+    }
+    .slider-horizontal .thumb-container {
+        transform: translateX(calc(var(--thumb-translate) * 1px));
+    }
+    .slider-vertical .thumb-container {
+        transform: translateY(calc(var(--thumb-translate) * 1px));
+    }
+    .slider-horizontal {
+        width: 100%;
+    }
+    .slider-horizontal .track {
+        right: -2px;
+        left: -2px;
+        align-self: start;
+        margin-top: 6px;
+        height: 4px;
+    }
+    .slider-vertical .track {
+        top: -2px;
+        bottom: -2px;
+        justify-self: start;
+        margin-left: 6px;
+        width: 4px;
+    }
+    .track {
+        background: var(--neutral-outline-rest);
+        position: absolute;
+    }
+    .slider-vertical {
+        height: 100%;
     }
     :host(.disabled) .label,
     :host(.readonly) .label,

@@ -1,8 +1,9 @@
-import { html, when } from "@microsoft/fast-element";
+import { html, when, ref } from "@microsoft/fast-element";
 import { SliderLabel } from "./slider-label";
 
 export const SliderLabelTemplate = html<SliderLabel>`
     <div
+        ${ref("root")}
         part="slider-label"
         class="slider-label"
         style=${x => x.positionStyle}

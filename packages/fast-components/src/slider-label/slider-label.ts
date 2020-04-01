@@ -1,9 +1,13 @@
 import { attr, FastElement, observable } from "@microsoft/fast-element";
 import { FASTSlider } from "../slider";
+import { SliderOrientation } from "../slider/slider";
 
 export class SliderLabel extends FastElement {
     @observable
     public positionStyle: string;
+
+    @observable
+    public root: HTMLDivElement;
 
     @attr
     public max;
@@ -19,17 +23,24 @@ export class SliderLabel extends FastElement {
 
     private sliderMax: number;
     private sliderMin: number;
-
-    constructor() {
-        super();
-    }
+    private sliderOrientation: SliderOrientation;
 
     public connectedCallback(): void {
         super.connectedCallback();
         this.sliderMax = (this.parentNode as FASTSlider).max;
         this.sliderMin = (this.parentNode as FASTSlider).min;
+        this.sliderOrientation = (this.parentNode as FASTSlider).orientation;
         this.positionStyle = this.positionAsStyle();
+        this.styleForOrientation();
     }
+
+    private styleForOrientation = (): void => {
+        if (this.sliderOrientation === SliderOrientation.horizontal) {
+            this.root.classList.add("slider-label-horizontal");
+        } else {
+            this.root.classList.add("slider-label-vertical");
+        }
+    };
 
     private positionAsStyle = (): any => {
         const direction: string = (this.parentNode as FASTSlider).direction;
