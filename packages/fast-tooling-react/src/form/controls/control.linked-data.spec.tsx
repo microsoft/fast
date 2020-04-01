@@ -98,6 +98,7 @@ const linkedDataProps: LinkedDataControlProps = {
     disabled: false,
     elementRef: null,
     validationErrors: [],
+    messageSystem: void 0,
 };
 
 /* tslint:disable:no-string-literal */

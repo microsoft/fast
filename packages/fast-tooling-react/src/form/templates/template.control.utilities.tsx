@@ -212,6 +212,7 @@ abstract class ControlTemplateUtilities<P, S> extends React.Component<
             controlComponents: this.props.controlComponents,
             controlPlugins: this.props.controlPlugins,
             untitled: this.props.untitled,
+            messageSystem: this.props.messageSystem,
         };
     }
 

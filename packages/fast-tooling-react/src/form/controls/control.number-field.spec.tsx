@@ -35,6 +35,7 @@ const numberFieldProps: NumberFieldControlProps = {
     updateValidity: jest.fn(),
     validationErrors: [],
     required: false,
+    messageSystem: void 0,
 };
 
 describe("NumberFieldControl", () => {

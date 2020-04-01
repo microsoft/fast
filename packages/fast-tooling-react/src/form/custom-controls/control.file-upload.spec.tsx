@@ -26,6 +26,7 @@ const fileUploadControlProps: FileUploadControlProps = {
     updateValidity: jest.fn(),
     validationErrors: [],
     required: false,
+    messageSystem: void 0,
 };
 
 describe("FileUploadControl", () => {
