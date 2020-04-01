@@ -1,4 +1,4 @@
-import { html } from "@microsoft/fast-element";
+import { html, repeat } from "@microsoft/fast-element";
 import { DesignSystemProvider } from "./design-system-provider";
 
 // TODO: height-number should be a string interpolation

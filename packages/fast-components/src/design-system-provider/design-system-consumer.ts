@@ -1,51 +1,12 @@
-import { FastElement, Observable } from "@microsoft/fast-element";
+import { FastElement, Observable, observable } from "@microsoft/fast-element";
 import { DesignSystemResolverEntry } from "../styles/recipes";
 import { neutralforegroundrest } from "../styles/recipes";
 import { composedParent } from "../utilities";
 import { DesignSystemProvider } from "./design-system-provider";
 
 /* tslint:disable */
-interface ConsumerArgs {
+export interface ConsumerArgs {
     recipes: DesignSystemResolverEntry[];
-}
-
-export function consumer(args: ConsumerArgs): (source: any) => any {
-    return (source: any) => {
-        return class Consumer extends source {
-            public readonly recipes = args.recipes;
-
-            private provider: DesignSystemProvider | null = null; // TODO: duplicate
-            /**
-             * Find the parent DesignSystem provider.
-             * TODO: duplicate
-             */
-            public findProvider(): DesignSystemProvider | null {
-                let parent = composedParent(this as any);
-
-                while (parent !== null) {
-                    if (parent instanceof DesignSystemProvider) {
-                        return parent;
-                    } else {
-                        parent = composedParent(parent);
-                    }
-                }
-
-                return null;
-            }
-
-            public connectedCallback(): void {
-                super.connectedCallback();
-
-                const provider = this.findProvider();
-
-                if (!!provider) {
-                    this.provider = provider;
-
-                    this.recipes.forEach(recipe => this.provider!.suscribe(this));
-                }
-            }
-        };
-    };
 }
 
 export interface DesignSystemConsumer {
@@ -61,9 +22,10 @@ export function designSystemConsumer<T extends { new (...args: any[]) }>(
     argsOrConstructor: any
 ) {
     function decorator(constructor: T, options: ConsumerArgs) {
-        return class extends constructor implements DesignSystemConsumer {
+        class Consumer extends constructor implements DesignSystemConsumer {
             public readonly recipes = options.recipes;
 
+            @observable
             public provider: DesignSystemProvider | null = null;
 
             /**
@@ -73,8 +35,8 @@ export function designSystemConsumer<T extends { new (...args: any[]) }>(
                 let parent = composedParent(this as any);
 
                 while (parent !== null) {
-                    if (parent instanceof DesignSystemProvider) {
-                        return parent;
+                    if ((parent as any).isDesignSystemProvider) {
+                        return parent as any;
                     } else {
                         parent = composedParent(parent);
                     }
@@ -93,7 +55,9 @@ export function designSystemConsumer<T extends { new (...args: any[]) }>(
                     this.provider.suscribe(this);
                 }
             }
-        };
+        }
+
+        return Consumer;
     }
 
     if (typeof argsOrConstructor === "function") {
