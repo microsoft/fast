@@ -56,6 +56,9 @@ export class Slider extends FormAssociated<HTMLInputElement> {
     public direction: string = "ltr";
 
     @observable
+    public isDragging: boolean = false;
+
+    @observable
     public position: string;
     @observable
     public lowerPosition: string;
@@ -85,7 +88,10 @@ export class Slider extends FormAssociated<HTMLInputElement> {
                 ? (1 - (Number(this.value) / this.max - this.min)) * 100
                 : (Number(this.value) / this.max - this.min) * 100;
 
-        this.position = `right: ${percentage}%; transition: all 0.2s ease;`;
+        this.position = this.isDragging
+            ? `right: ${percentage}%; transition: all 0.1s ease;`
+            : `right: ${percentage}%; transition: all 0.2s ease;`;
+
         this.$emit("change");
     }
 
@@ -218,6 +224,7 @@ export class Slider extends FormAssociated<HTMLInputElement> {
         (event.target as HTMLElement).focus();
         window.addEventListener("mouseup", this.handleWindowMouseUp);
         window.addEventListener("mousemove", this.handleMouseMove);
+        this.isDragging = true;
     };
 
     /**
@@ -252,6 +259,7 @@ export class Slider extends FormAssociated<HTMLInputElement> {
     };
 
     private stopDragging = (): void => {
+        this.isDragging = false;
         window.removeEventListener("mouseup", this.handleWindowMouseUp);
         window.removeEventListener("mousemove", this.handleMouseMove);
     };

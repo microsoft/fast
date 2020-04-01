@@ -8,7 +8,7 @@ export const SliderLabelTemplate = html<SliderLabel>`
         class="slider-label"
         style=${x => x.positionStyle}
     >
-        <div class="slider-label-container">
+        <div class="container">
             ${when(
                 x => !x.hideMark,
                 html`

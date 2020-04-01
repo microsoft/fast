@@ -5,7 +5,7 @@
 
         <!-- Text Labels -->
         <div style="display: flex; flex-direction: column; height:min-content">
-            <label for="slider1">Label for slider</label>
+            <label for="slider1" style="margin-left: 8px;">Label for slider</label>
             <fast-slider
                 id="slider1"
                 min="0"
@@ -26,40 +26,44 @@
         </div>
 
         <!-- Custom labels (rtl) -->
-        <div dir="rtl" style="width: 100%">
-            <fast-slider
-                min="0"
-                max="100"
-                step="10"
-                value="80"
-            >
-                <fast-slider-label
-                    position="10"
-                    label="10"
+        <div style="display: flex; flex-direction: column; height:min-content">
+            <label for="rtl-slider" style="margin-left: 8px;">rtl support</label>
+            <div dir="rtl" style="width: 100%">
+                <fast-slider
+                    id="rtl-slider"
+                    min="0"
+                    max="100"
+                    step="10"
+                    value="80"
                 >
-                </fast-slider-label>
-                <fast-slider-label
-                    position="20"
-                    label="20"
-                >
-                </fast-slider-label>
-                <fast-slider-label
-                    position="40"
-                    label="40"
-                >
-                </fast-slider-label>
-                <fast-slider-label
-                    position="60"
-                    label="60"
-                >
-                </fast-slider-label>                                                
-                <fast-slider-label
-                    position="80"
-                    label="80"
-                >
-                </fast-slider-label>
-            </fast-slider>
-        </div>        
+                    <fast-slider-label
+                        position="10"
+                        label="10"
+                    >
+                    </fast-slider-label>
+                    <fast-slider-label
+                        position="20"
+                        label="20"
+                    >
+                    </fast-slider-label>
+                    <fast-slider-label
+                        position="40"
+                        label="40"
+                    >
+                    </fast-slider-label>
+                    <fast-slider-label
+                        position="60"
+                        label="60"
+                    >
+                    </fast-slider-label>                                                
+                    <fast-slider-label
+                        position="80"
+                        label="80"
+                    >
+                    </fast-slider-label>
+                </fast-slider>
+            </div>
+        </div>
 
         <!-- Using slot for custom thumb -->
         <fast-slider

@@ -5,6 +5,7 @@ export const SliderStyles = css`
     :host {
         --thumb-size: calc(var(--height-number) * 0.5);
         --thumb-translate: calc(var(--thumb-size) * 0.5);
+        --track-overhang: calc((var(--design-unit) / 2) * -1);
     }
     :host([hidden]) {
         display: none;
@@ -29,6 +30,7 @@ export const SliderStyles = css`
     .foreground-track {
         display: none;
         background: var(--neutral-foreground-hint);
+        transition: all 0.2s ease;
     }
     .layout-region {
         position: relative;
@@ -66,15 +68,15 @@ export const SliderStyles = css`
         width: 100%;
     }
     .slider-horizontal .track {
-        right: -2px;
-        left: -2px;
+        right: calc(var(--track-overhang) * 1px);
+        left: calc(var(--track-overhang) * 1px);
         align-self: start;
         margin-top: 6px;
         height: 4px;
     }
     .slider-vertical .track {
-        top: -2px;
-        bottom: -2px;
+        top: calc(var(--track-overhang) * 1px);
+        bottom: calc(var(--track-overhang) * 1px);
         justify-self: start;
         margin-left: 6px;
         width: 4px;

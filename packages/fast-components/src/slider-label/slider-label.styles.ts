@@ -19,15 +19,15 @@ export const SliderLabelStyles = css`
         grid-column: 2;
         margin-left: -2px;
     }
-    .slider-label-container {
+    .container {
         display: grid;
         justify-self: center;
     }
-    .slider-label-horizontal .slider-label-container {
+    .slider-label-horizontal .container {
         grid-template-rows: auto auto;
         grid-template-columns: 0;
     }
-    .slider-label-vertical .slider-label-container {
+    .slider-label-vertical .container {
         grid-template-columns: auto auto;
         grid-template-rows: 0;
     }
@@ -41,7 +41,7 @@ export const SliderLabelStyles = css`
         margin: 2px 0;
     }
     .mark {
-        width: 2px;
+        width: calc((var(--design-unit) / 2) * 1px);
         height: calc(var(--half-thumb-size) * 1px);
         background: var(--neutral-outline-rest);
         justify-self: center;
