@@ -1,7 +1,7 @@
 import { observable } from "@microsoft/fast-element";
 import { DesignSystemResolverEntry } from "../styles/recipes";
 import { composedParent } from "../utilities";
-import { DesignSystemProvider } from "./design-system-provider";
+import { DesignSystemProvider } from "../design-system-provider";
 
 export interface ConsumerArgs {
     recipes: DesignSystemResolverEntry[];

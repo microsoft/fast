@@ -1,5 +1,5 @@
 import { attr, FastElement } from "@microsoft/fast-element";
-import { designSystemConsumer } from "../design-system-provider/design-system-consumer";
+import { designSystemConsumer } from "../design-system-consumer";
 import { neutralfillrest } from "../styles/recipes";
 
 @designSystemConsumer({

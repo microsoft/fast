@@ -2,7 +2,7 @@ import { customElement } from "@microsoft/fast-element";
 import { TextArea } from "./text-area";
 import { TextAreaTemplate as template } from "./text-area.template";
 import { TextAreaStyles as styles } from "./text-area.styles";
-import { designSystemConsumer } from "../design-system-provider/design-system-consumer";
+import { designSystemConsumer } from "../design-system-consumer";
 import {
     neutralfillhover,
     neutralfillinputhover,

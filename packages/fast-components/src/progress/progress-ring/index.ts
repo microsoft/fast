@@ -2,7 +2,7 @@ import { customElement } from "@microsoft/fast-element";
 import { BaseProgress } from "../base-progress";
 import { ProgressRingTemplate as template } from "./progress-ring.template";
 import { ProgressRingStyles as styles } from "./progress-ring.styles";
-import { designSystemConsumer } from "../../design-system-provider/design-system-consumer";
+import { designSystemConsumer } from "../../design-system-consumer";
 import {
     accentfillrest,
     neutralfillrest,

@@ -1,8 +1,5 @@
 import { FastElement, Observable } from "@microsoft/fast-element";
-import {
-    DesignSystemConsumer,
-    designSystemConsumer,
-} from "../design-system-consumer/design-system-consumer";
+import { DesignSystemConsumer, designSystemConsumer } from "../design-system-consumer";
 
 interface CustomPropertyDefinition {
     name: string;
@@ -32,13 +29,15 @@ export function designSystemProperty<T extends DesignSystemProvider>(
 ): any {
     const decorator = (
         source: T,
-        property: string,
+        prop: string,
         config: DesignSystemPropertyDeclarationConfig = {}
     ) => {
-        if (!source.designSystemProperties) source.designSystemProperties = {};
+        if (!source.designSystemProperties) {
+            source.designSystemProperties = {};
+        }
 
-        source.designSystemProperties[property] = {
-            customPropertyName: config.customPropertyName || property,
+        source.designSystemProperties[prop] = {
+            customPropertyName: config.customPropertyName || prop,
             customProperty:
                 typeof config.customProperty === "boolean" ? config.customProperty : true,
         };
@@ -48,10 +47,10 @@ export function designSystemProperty<T extends DesignSystemProvider>(
         // Invoked with no options
         decorator(configOrSource as T, property!);
     } else {
-        return (source: T, property: string) => {
+        return (source: T, prop: string) => {
             decorator(
                 source,
-                property,
+                prop,
                 configOrSource as DesignSystemPropertyDeclarationConfig
             );
         };
@@ -76,6 +75,7 @@ const designSystemKey = "designSystem";
  * not allow type mutation for decorators.
  * https://github.com/microsoft/TypeScript/issues/4881
  */
+/* tslint:disable-next-line */
 export interface DesignSystemProvider extends DesignSystemConsumer {}
 @designSystemConsumer
 export class DesignSystemProvider extends FastElement {
@@ -129,7 +129,7 @@ export class DesignSystemProvider extends FastElement {
      * @param source The source object changing
      * @param key The property of the source object that changed
      */
-    public handleChange(source: any, key: string) {
+    public handleChange(source: any, key: string): void {
         if (source === this && this.designSystemProperties.hasOwnProperty(key)) {
             // If a property on *this* object that is declared as a design system property
             this.designSystem[key] = this[key];
@@ -149,7 +149,7 @@ export class DesignSystemProvider extends FastElement {
         }
     }
 
-    public suscribe(consumer: DesignSystemConsumer) {
+    public suscribe(consumer: DesignSystemConsumer): void {
         if (!this.consumers.has(consumer)) {
             this.consumers.add(consumer);
             this.writeConsumerRecipeData(consumer);
@@ -179,7 +179,7 @@ export class DesignSystemProvider extends FastElement {
      * overrides. Any value defined on the instance will take priority
      * over the value defined by the provider
      */
-    private syncDesignSystemWithProvider() {
+    private syncDesignSystemWithProvider(): void {
         if (this.provider) {
             Object.keys(this.provider.designSystem).forEach(key => {
                 if (this[key] === void 0) {
@@ -197,7 +197,7 @@ export class DesignSystemProvider extends FastElement {
     private providerChanged(
         prev: DesignSystemProvider | null,
         next: DesignSystemProvider | null
-    ) {
+    ): void {
         if (prev instanceof HTMLElement) {
             Observable.getNotifier(prev).unsubscribe(this, designSystemKey);
         }
@@ -215,13 +215,13 @@ export class DesignSystemProvider extends FastElement {
  * @param source The object to fire notifications
  * @param key The observable property name to fire a notification on
  */
-function mutationObserver(source, key) {
+function mutationObserver(source: any, key: string): {} {
     const notifier = Observable.getNotifier(source);
 
     return new Proxy(
         {},
         {
-            set: function(obj, prop, value) {
+            set(obj: any, prop: string, value: any): boolean {
                 obj[prop] = value;
 
                 notifier.notify(source, key);
@@ -231,17 +231,19 @@ function mutationObserver(source, key) {
     );
 }
 
-function setCustomPropertyFactory(source: any) {
+function setCustomPropertyFactory(
+    source: any
+): (definition: CustomPropertyDefinition) => void {
     let store: CustomPropertyDefinition[] = [];
     let ticking = false;
 
-    return (operation: CustomPropertyDefinition) => {
-        const index = store.findIndex(x => x.name === operation.name);
+    return (definition: CustomPropertyDefinition) => {
+        const index = store.findIndex(x => x.name === definition.name);
 
         if (index !== -1) {
-            store[index] = operation;
+            store[index] = definition;
         } else {
-            store.push(operation);
+            store.push(definition);
         }
 
         if (ticking) {
@@ -252,7 +254,8 @@ function setCustomPropertyFactory(source: any) {
             window.requestAnimationFrame(() => {
                 ticking = false;
 
-                for (var i = 0; i < store.length; i++) {
+                /* tslint:disable-next-line */
+                for (let i = 0; i < store.length; i++) {
                     const value = store[i];
 
                     source.style.setProperty(
