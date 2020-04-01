@@ -5,8 +5,6 @@ import { controls } from "./control-switch.spec";
 import { Dictionary } from "./dictionary";
 import { DictionaryProps } from "./dictionary.props";
 import { DictionaryClassNameContract } from "./dictionary.style";
-import { getValidationErrors } from "../../../utilities/ajv-validation";
-import { getErrorFromDataLocation } from "../../utilities";
 import { ControlType } from "../../templates";
 import {
     ArrayControl,
@@ -74,6 +72,7 @@ const dictionaryProps: DictionaryProps = {
         [ControlType.select]: SelectControl,
         [ControlType.textarea]: TextareaControl,
     },
+    messageSystem: void 0,
 };
 
 describe("Dictionary", () => {
@@ -346,14 +345,22 @@ describe("Dictionary", () => {
             randoma: "foo",
             b: "bar",
         };
-        const validationErrors: any = getValidationErrors(schema, data);
         const rendered: any = render(
             <Dictionary
                 {...dictionaryProps}
                 managedClasses={managedClasses}
                 data={data}
                 schema={schema}
-                validationErrors={validationErrors}
+                validationErrors={[
+                    {
+                        dataLocation: "randoma",
+                        invalidMessage: "should be number",
+                    },
+                    {
+                        dataLocation: "b",
+                        invalidMessage: "should be number",
+                    },
+                ]}
                 additionalProperties={{
                     type: "number",
                 }}

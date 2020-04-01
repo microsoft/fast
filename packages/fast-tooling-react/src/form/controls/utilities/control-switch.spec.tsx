@@ -160,6 +160,7 @@ const formControlSwitchProps: ControlSwitchProps = {
         [ControlType.select]: SelectControl,
         [ControlType.textarea]: TextareaControl,
     },
+    messageSystem: void 0,
 };
 
 describe("ControlSwitch", () => {

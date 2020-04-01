@@ -93,6 +93,7 @@ const props: StandardControlTemplateProps = {
         [ControlType.select]: null,
         [ControlType.textarea]: null,
     },
+    messageSystem: void 0,
 };
 
 describe("StandardControlTemplate", () => {
