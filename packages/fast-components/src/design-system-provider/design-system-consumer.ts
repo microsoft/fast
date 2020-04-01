@@ -3,7 +3,6 @@ import { DesignSystemResolverEntry } from "../styles/recipes";
 import { composedParent } from "../utilities";
 import { DesignSystemProvider } from "./design-system-provider";
 
-/* tslint:disable */
 export interface ConsumerArgs {
     recipes: DesignSystemResolverEntry[];
 }
@@ -13,14 +12,16 @@ export interface DesignSystemConsumer {
     provider: DesignSystemProvider | null;
 }
 
-export function designSystemConsumer<T extends { new (...args: any[]) }>(constructor: T);
+export function designSystemConsumer<T extends { new (...args: any[]) }>(
+    constructor: T
+): T;
 export function designSystemConsumer<T extends { new (...args: any[]) }>(
     args: ConsumerArgs
-);
+): <_T>(contructor: _T) => _T;
 export function designSystemConsumer<T extends { new (...args: any[]) }>(
     argsOrConstructor: any
-) {
-    function decorator(constructor: T, options: ConsumerArgs) {
+): any {
+    function decorator(constructor: T, options: ConsumerArgs): T {
         class Consumer extends constructor implements DesignSystemConsumer {
             public readonly recipes = options.recipes;
 
@@ -54,6 +55,12 @@ export function designSystemConsumer<T extends { new (...args: any[]) }>(
                     this.provider.suscribe(this);
                 }
             }
+
+            public disconnectedCallback(): void {
+                if (!!this.provider) {
+                    this.provider.unsubscribe(this);
+                }
+            }
         }
 
         return Consumer;
@@ -62,7 +69,7 @@ export function designSystemConsumer<T extends { new (...args: any[]) }>(
     if (typeof argsOrConstructor === "function") {
         return decorator(argsOrConstructor, { recipes: [] });
     } else {
-        return (constructor: T) => {
+        return (constructor: T): T => {
             return decorator(constructor, argsOrConstructor);
         };
     }

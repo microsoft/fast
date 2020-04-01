@@ -36,7 +36,7 @@ export class FASTDesignSystemProvider extends DesignSystemProvider
     @attr({ attribute: "use-defaults" })
     public useDefaults: boolean;
 
-    public connectedCallback() {
+    public connectedCallback(): void {
         super.connectedCallback();
 
         if (this.useDefaults === ("" as any)) {
