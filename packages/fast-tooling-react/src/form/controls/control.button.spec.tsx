@@ -32,6 +32,7 @@ const buttonProps: ButtonControlProps = {
     elementRef: null,
     validationErrors: [],
     required: false,
+    messageSystem: void 0,
 };
 
 describe("ButtonControl", () => {

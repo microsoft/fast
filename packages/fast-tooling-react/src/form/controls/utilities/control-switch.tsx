@@ -6,7 +6,7 @@ import {
     ControlTemplateUtilitiesProps,
     StandardControlPlugin,
 } from "../../templates";
-import { generateExampleData, isConst, isSelect } from "../../utilities";
+import { generateExampleData, isConst, isSelect } from "./form";
 import { ItemConstraints } from "@microsoft/fast-tooling";
 import { SingleLineControlPlugin } from "../../templates/plugin.control.single-line";
 import ControlPluginUtilities, {
@@ -259,6 +259,7 @@ class ControlSwitch extends React.Component<ControlSwitchProps, {}> {
             controlComponents: this.props.controlComponents,
             controlPlugins: this.props.controlPlugins,
             untitled: this.props.untitled,
+            messageSystem: this.props.messageSystem,
         };
     }
 }

@@ -4,7 +4,7 @@ import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-
 import styles, { CheckboxControlClassNameContract } from "./control.checkbox.style";
 import { CheckboxControlProps } from "./control.checkbox.props";
 import { classNames } from "@microsoft/fast-web-utilities";
-import { isDefault } from "../utilities";
+import { isDefault } from "./utilities/form";
 
 /**
  * Form control definition

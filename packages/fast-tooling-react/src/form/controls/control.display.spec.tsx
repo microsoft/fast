@@ -32,6 +32,7 @@ const displayProps: DisplayControlProps = {
     elementRef: null,
     validationErrors: [],
     required: false,
+    messageSystem: void 0,
 };
 
 describe("DisplayControl", () => {

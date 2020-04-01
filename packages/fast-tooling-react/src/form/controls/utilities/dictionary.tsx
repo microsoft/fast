@@ -5,7 +5,7 @@ import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-
 import styles, { DictionaryClassNameContract } from "./dictionary.style";
 import { DictionaryProps, DictionaryState } from "./dictionary.props";
 import ControlSwitch from "./control-switch";
-import { generateExampleData, getErrorFromDataLocation } from "../../utilities";
+import { generateExampleData, getErrorFromDataLocation } from "./form";
 import { PropertyKeyword } from "@microsoft/fast-tooling";
 
 /**

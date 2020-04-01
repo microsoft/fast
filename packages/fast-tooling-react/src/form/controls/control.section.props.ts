@@ -18,7 +18,7 @@ export interface InitialOneOfAnyOfState {
     /**
      * Whether there is a oneOf/anyOf at the root level
      */
-    oneOfAnyOf?: OneOfAnyOf;
+    oneOfAnyOf: OneOfAnyOf | null;
 }
 
 export interface OneOfAnyOf {

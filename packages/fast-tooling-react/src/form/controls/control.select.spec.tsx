@@ -34,6 +34,7 @@ const selectProps: SelectControlProps = {
     elementRef: null,
     validationErrors: [],
     required: false,
+    messageSystem: void 0,
 };
 
 describe("SelectControl", () => {

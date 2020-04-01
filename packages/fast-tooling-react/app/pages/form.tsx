@@ -10,6 +10,7 @@ import {
 import { DesignSystemProvider } from "@microsoft/fast-jss-manager-react";
 import React from "react";
 import {
+    AjvMapper,
     getDataFromSchema,
     MessageSystem,
     MessageSystemType,
@@ -76,6 +77,7 @@ const dataSets: DataSet[] = [
 ];
 
 let fastMessageSystem: MessageSystem;
+let ajvMapper: AjvMapper;
 
 class FormTestPage extends React.Component<{}, FormTestPageState> {
     /**
@@ -123,6 +125,9 @@ class FormTestPage extends React.Component<{}, FormTestPageState> {
                     "foo",
                 ],
                 schemaDictionary: this.generateSchemaDictionary(),
+            });
+            ajvMapper = new AjvMapper({
+                messageSystem: fastMessageSystem,
             });
             fastMessageSystem.add({ onMessage: this.handleMessageSystem });
         }

@@ -18,7 +18,7 @@ import {
     StandardControlPlugin,
 } from "./templates";
 import { ControlContext, LinkedDataActionType, OnChangeConfig } from "./templates/types";
-import { BreadcrumbItem, getDictionaryBreadcrumbs } from "./utilities/breadcrumb";
+import { BreadcrumbItem, getDictionaryBreadcrumbs } from "./utilities";
 import {
     BreadcrumbItemEventHandler,
     ControlPluginConfig,
@@ -27,7 +27,6 @@ import {
     FormState,
 } from "./form.props";
 import { cloneDeep, get } from "lodash-es";
-import { getValidationErrors } from "../utilities/ajv-validation";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 import React from "react";
@@ -109,7 +108,7 @@ class Form extends React.Component<
             schemaDictionary: {},
             navigation: void 0,
             navigationDictionary: void 0,
-            validationErrors: [],
+            validationErrors: {},
         };
     }
 
@@ -151,10 +150,6 @@ class Form extends React.Component<
                     navigationDictionary: e.data.navigationDictionary,
                     activeDictionaryId: e.data.activeDictionaryId,
                     activeNavigationConfigId: e.data.activeNavigationConfigId,
-                    validationErrors: getValidationErrors(
-                        e.data.schema,
-                        this.getDataForValidation(this.props, e.data.data)
-                    ),
                 });
                 break;
             case MessageSystemType.data:
@@ -163,19 +158,20 @@ class Form extends React.Component<
                     dataDictionary: e.data.dataDictionary,
                     navigation: e.data.navigation,
                     navigationDictionary: e.data.navigationDictionary,
-                    validationErrors: getValidationErrors(
-                        this.state.schemaDictionary[
-                            e.data.dataDictionary[0][this.state.activeDictionaryId]
-                                .schemaId
-                        ],
-                        this.getDataForValidation(this.props, e.data.data)
-                    ),
                 });
                 break;
             case MessageSystemType.navigation:
                 this.setState({
                     activeDictionaryId: e.data.activeDictionaryId,
                     activeNavigationConfigId: e.data.activeNavigationConfigId,
+                });
+                break;
+            case MessageSystemType.validation:
+                this.setState({
+                    validationErrors: {
+                        ...this.state.validationErrors,
+                        [e.data.dictionaryId]: e.data.validationErrors,
+                    },
                 });
                 break;
         }
@@ -345,13 +341,6 @@ class Form extends React.Component<
     }
 
     /**
-     * Gets the data to use for validation against the JSON schema
-     */
-    private getDataForValidation(props: FormProps, data: any): any {
-        return data; // TODO: provide the ability to use different data
-    }
-
-    /**
      * Generates the breadcrumb navigation
      */
     private renderBreadcrumbs(): JSX.Element {
@@ -455,9 +444,10 @@ class Form extends React.Component<
                 this.state.activeDictionaryId
             ][0],
             untitled: this.untitled,
-            validationErrors: this.state.validationErrors,
+            validationErrors: this.state.validationErrors[this.state.activeDictionaryId],
             displayValidationBrowserDefault: this.props.displayValidationBrowserDefault,
             displayValidationInline: this.props.displayValidationInline,
+            messageSystem: this.props.messageSystem,
         });
 
         return control.render();
@@ -521,12 +511,20 @@ class Form extends React.Component<
                     data: newArray,
                 });
             } else {
-                this.props.messageSystem.postMessage({
-                    type: MessageSystemType.data,
-                    action: MessageSystemDataTypeAction.update,
-                    dataLocation: config.dataLocation,
-                    data: config.value,
-                });
+                if (config.value === undefined) {
+                    this.props.messageSystem.postMessage({
+                        type: MessageSystemType.data,
+                        action: MessageSystemDataTypeAction.remove,
+                        dataLocation: config.dataLocation,
+                    });
+                } else {
+                    this.props.messageSystem.postMessage({
+                        type: MessageSystemType.data,
+                        action: MessageSystemDataTypeAction.update,
+                        dataLocation: config.dataLocation,
+                        data: config.value,
+                    });
+                }
             }
         }
     };

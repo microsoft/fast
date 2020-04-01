@@ -32,6 +32,7 @@ const textareaProps: TextareaControlProps = {
     updateValidity: jest.fn(),
     validationErrors: [],
     required: false,
+    messageSystem: void 0,
 };
 
 describe("TextareaControl", () => {

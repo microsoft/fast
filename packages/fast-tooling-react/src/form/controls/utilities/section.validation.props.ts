@@ -1,4 +1,4 @@
-import { ErrorObject } from "ajv";
+import { ValidationError } from "@microsoft/fast-tooling";
 
 export interface SectionValidationClassNameContract {
     sectionValidation?: string;
@@ -20,7 +20,7 @@ export interface SectionValidationProps {
     /**
      * The validation errors
      */
-    validationErrors: ErrorObject[];
+    validationErrors: ValidationError[];
 
     /**
      * The location of the data using lodash path syntax

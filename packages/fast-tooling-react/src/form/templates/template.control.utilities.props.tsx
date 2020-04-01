@@ -1,8 +1,12 @@
-import { ErrorObject } from "ajv";
 import { ControlType, StandardControlPlugin } from "../index";
 import { AddExampleData, Controls } from "../controls/utilities/types";
 import { BadgeType, ControlOnChangeConfig, OnChangeConfig } from "./types";
-import { DataDictionary, TreeNavigation } from "@microsoft/fast-tooling";
+import {
+    DataDictionary,
+    MessageSystem,
+    TreeNavigation,
+    ValidationError,
+} from "@microsoft/fast-tooling";
 
 export type UpdateNavigationCallback = (
     dictionaryId: string,
@@ -129,9 +133,9 @@ export interface ControlTemplateUtilitiesProps
     invalidMessage: string;
 
     /**
-     * The provided error message from ajv
+     * The provided error message
      */
-    validationErrors: ErrorObject[] | void;
+    validationErrors: ValidationError[];
 
     /**
      * Display the validation inline
@@ -174,6 +178,11 @@ export interface ControlTemplateUtilitiesProps
      * A dictionary of schemas
      */
     schemaDictionary: { [key: string]: any };
+
+    /**
+     * The message system
+     */
+    messageSystem: MessageSystem;
 }
 
 export interface CommonControlConfig {
@@ -235,7 +244,7 @@ export interface CommonControlConfig {
     /**
      * The invalid error object
      */
-    validationErrors: ErrorObject[] | void;
+    validationErrors: ValidationError[];
 
     /**
      * Display the validation inline
@@ -258,6 +267,11 @@ export interface CommonControlConfig {
      * Callback for handling the updating of the value
      */
     onChange: (config: ControlOnChangeConfig | OnChangeConfig) => void;
+
+    /**
+     * The message system
+     */
+    messageSystem: MessageSystem;
 }
 
 export interface NumberFieldTypeControlOptions {

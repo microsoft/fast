@@ -6,7 +6,7 @@ import {
     SectionValidationClassNameContract,
     SectionValidationProps,
 } from "./section.validation.props";
-import { ErrorObject } from "ajv";
+import { ValidationError } from "@microsoft/fast-tooling";
 
 /*
  * Configure Enzyme
@@ -29,20 +29,14 @@ const managedClasses: SectionValidationClassNameContract = {
     sectionValidation_errorListItem: "sectionValidation_errorListItem",
 };
 
-const validationErrors: ErrorObject[] = [
+const validationErrors: ValidationError[] = [
     {
-        keyword: "",
-        params: {},
-        dataPath: "",
-        schemaPath: "",
-        message: "bar",
+        dataLocation: "",
+        invalidMessage: "bar",
     },
     {
-        keyword: "",
-        params: {},
-        dataPath: "",
-        schemaPath: "",
-        message: "bat",
+        dataLocation: "",
+        invalidMessage: "bat",
     },
 ];
 

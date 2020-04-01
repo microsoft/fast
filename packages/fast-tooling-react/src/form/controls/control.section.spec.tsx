@@ -9,7 +9,6 @@ import {
 import { DndProvider } from "react-dnd";
 import HTML5Backend from "react-dnd-html5-backend";
 import { controls } from "./utilities/control-switch.spec";
-import ajv, { Ajv, ValidateFunction } from "ajv";
 import {
     ArrayControl,
     ButtonControl,
@@ -92,6 +91,7 @@ const sectionControlProps: SectionControlProps = {
     reportValidity: jest.fn(),
     updateValidity: jest.fn(),
     required: false,
+    messageSystem: void 0,
 };
 
 const managedClasses: SectionControlClassNameContract = {
@@ -231,21 +231,17 @@ describe("SectionControl", () => {
             },
             required: ["foo"],
         };
-        const validator: Ajv = new ajv({ schemaId: "auto", allErrors: true });
-        const validate: ValidateFunction = validator.compile(schema);
-        const isValid: boolean | PromiseLike<any> = validate({});
-        let validationErrors: any = [];
-
-        if (!!!isValid) {
-            validationErrors = validate.errors;
-        }
-
         const rendered: any = mount(
             <SectionControl
                 {...sectionControlProps}
                 managedClasses={managedClasses}
                 schema={schema}
-                validationErrors={validationErrors}
+                validationErrors={[
+                    {
+                        dataLocation: "foo",
+                        invalidMessage: "is required",
+                    },
+                ]}
             />
         );
 
@@ -260,22 +256,13 @@ describe("SectionControl", () => {
                 },
             },
         };
-        const validator: Ajv = new ajv({ schemaId: "auto", allErrors: true });
-        const validate: ValidateFunction = validator.compile(schema);
-        const isValid: boolean | PromiseLike<any> = validate({});
-        let validationErrors: any = [];
-
-        if (!!!isValid) {
-            validationErrors = validate.errors;
-        }
-
         const rendered: any = mount(
             <SectionControl
                 {...sectionControlProps}
                 managedClasses={managedClasses}
                 schema={schema}
                 value={{}}
-                validationErrors={validationErrors}
+                validationErrors={[]}
             />
         );
 
