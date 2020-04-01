@@ -7,16 +7,29 @@ export const SliderLabelStyles = css`
     }
     .slider-label {
         position: absolute;
+        display: grid;
+    }
+    .slider-label-horizontal {
         align-self: start;
         grid-row: 2;
-        margin-top: -2;
-        display: grid;
+        margin-top: -2px;
+    }
+    .slider-label-vertical {
+        justify-self: start;
+        grid-column: 2;
+        margin-left: -2px;
     }
     .slider-label-container {
         display: grid;
         justify-self: center;
+    }
+    .slider-label-horizontal .slider-label-container {
         grid-template-rows: auto auto;
         grid-template-columns: 0;
+    }
+    .slider-label-vertical .slider-label-container {
+        grid-template-columns: auto auto;
+        grid-template-rows: 0;
     }
     .label {
         width: 18px;

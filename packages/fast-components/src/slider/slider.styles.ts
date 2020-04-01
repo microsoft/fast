@@ -48,12 +48,13 @@ export const SliderStyles = css`
         height: calc(var(--thumb-size) * 1px);
         background: var(--neutral-foreground-rest);
         border-radius: 50%;
-        "&:hover": {
-            background: var(--neutral-foreground-hover);
-        }
-        "&:active": {
-            background: var(--neutral-foreground-active);
-        }
+    }
+    .thumb-cursor:hover {
+        background: var(--neutral-foreground-hover);
+        border-color: var(--neutral-outline-hover);
+    }
+    .thumb-cursor:active {
+        background: var(--neutral-foreground-active);
     }
     .slider-horizontal .thumb-container {
         transform: translateX(calc(var(--thumb-translate) * 1px));
