@@ -1,40 +1,20 @@
 import { ExpressionContext } from "./interfaces";
-import { HTMLTemplate } from "./template";
 import { BehaviorFactory } from "./directives/behavior";
 import { DOM } from "./dom";
 import { BindingDirective } from "./directives/binding";
 import { Directive, AttachedBehaviorDirective } from "./directives/directive";
 
 type InlineDirective = BindingDirective | AttachedBehaviorDirective;
-
 const compilationContext = { locatedDirectives: 0, targetIndex: -1 };
 
-export function compileTemplate(
-    html: string | HTMLTemplateElement,
-    directives: Directive[]
-): HTMLTemplate {
-    let element: HTMLTemplateElement;
-
-    if (typeof html === "string") {
-        element = document.createElement("template");
-        element.innerHTML = html;
-
-        const fec = element.content.firstElementChild;
-
-        if (fec !== null && fec.tagName === "TEMPLATE") {
-            element = fec as HTMLTemplateElement;
-        }
-    } else {
-        element = html;
-    }
-
-    const hostFactories: BehaviorFactory[] = [];
+export function compileTemplate(template: HTMLTemplateElement, directives: Directive[]) {
+    const hostBehaviorFactories: BehaviorFactory[] = [];
 
     compilationContext.locatedDirectives = 0;
-    compileAttributes(element, directives, hostFactories, true);
+    compileAttributes(template, directives, hostBehaviorFactories, true);
 
-    const fragment = element.content;
-    const viewFactories: BehaviorFactory[] = [];
+    const fragment = template.content;
+    const viewBehaviorFactories: BehaviorFactory[] = [];
     const directiveCount = directives.length;
     const walker = document.createTreeWalker(
         fragment,
@@ -56,7 +36,7 @@ export function compileTemplate(
 
         switch (node.nodeType) {
             case 1: // element node
-                compileAttributes(node as HTMLElement, directives, viewFactories);
+                compileAttributes(node as HTMLElement, directives, viewBehaviorFactories);
                 break;
             case 3: // text node
                 // use wholeText to retrieve the textContent of all adjacent text nodes.
@@ -68,7 +48,7 @@ export function compileTemplate(
                 if (directive !== null) {
                     node.textContent = " ";
                     directive.makeIntoTextBinding();
-                    viewFactories.push(directive);
+                    viewBehaviorFactories.push(directive);
                     directive.targetIndex = compilationContext.targetIndex;
 
                     //remove adjacent text nodes.
@@ -84,7 +64,7 @@ export function compileTemplate(
                         directives[DOM.extractDirectiveIndexFromMarker(node)];
                     directive.targetIndex = compilationContext.targetIndex;
                     compilationContext.locatedDirectives++;
-                    viewFactories.push(directive);
+                    viewBehaviorFactories.push(directive);
                 } else {
                     node.parentNode!.removeChild(node);
                     compilationContext.targetIndex--;
@@ -92,7 +72,23 @@ export function compileTemplate(
         }
     }
 
-    return new HTMLTemplate(element, viewFactories, hostFactories);
+    let targetOffset = 0;
+
+    if (DOM.isMarker(fragment.firstChild!)) {
+        // If the first node in a fragment is a marker, that means it's an unstable first node,
+        // because something like a when, repeat, etc. could add nodes before the marker.
+        // To mitigate this, we insert a stable first node. However, if we insert a node,
+        // that will alter the result of the TreeWalker. So, we also need to offset the target index.
+        fragment.insertBefore(document.createComment(""), fragment.firstChild);
+        targetOffset = -1;
+    }
+
+    return {
+        fragment,
+        viewBehaviorFactories,
+        hostBehaviorFactories,
+        targetOffset,
+    };
 }
 
 function compileAttributes(
