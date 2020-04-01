@@ -2,6 +2,7 @@ import { css } from "@microsoft/fast-element";
 import { disabledCursor, display } from "../styles";
 import { focusVisible } from "../styles/focus";
 import { SystemColors } from "../styles/system-colors";
+import { heightNumber } from "../styles/size";
 
 export const SwitchStyles = css`
     :host([hidden]) {
@@ -34,10 +35,10 @@ export const SwitchStyles = css`
     .switch {
         position: relative;
         outline: none;
-        width: calc(var(--height-number) * 2px);
-        height: calc(var(--height-number) * 1px);
+        width: calc(${heightNumber} * 2px);
+        height: calc(${heightNumber} * 1px);
         background: var(--neutral-fill-input-rest);
-        border-radius: calc(var(--height-number) * 1px);
+        border-radius: calc(${heightNumber} * 1px);
         border: calc(var(--outline-width) * 1px) solid var(--neutral-outline-rest);
     }
 
@@ -62,8 +63,8 @@ export const SwitchStyles = css`
 
     .checked-indicator {
         position: absolute;
-        height: calc((var(--height-number) - (var(--design-unit) * 2)) * 1px);
-        width: calc((var(--height-number) - (var(--design-unit) * 2)) * 1px);
+        height: calc((${heightNumber} - (var(--design-unit) * 2)) * 1px);
+        width: calc((${heightNumber} - (var(--design-unit) * 2)) * 1px);
         top: calc(var(--design-unit) * 1px);
         left: calc(var(--design-unit) * 1px);
         background: var(--neutral-foreground-rest);
@@ -95,7 +96,7 @@ export const SwitchStyles = css`
     }
 
     :host(.checked) .checked-indicator {
-        left: calc((var(--height-number) + var(--design-unit)) * 1px);
+        left: calc((${heightNumber} + var(--design-unit)) * 1px);
         background: var(--accent-foreground-cut-rest);
     }
 

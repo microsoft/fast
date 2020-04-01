@@ -1,6 +1,7 @@
 import { css } from "@microsoft/fast-element";
 import { disabledCursor, display } from "../styles";
 import { focusVisible } from "../styles/focus";
+import { heightNumber } from "../styles/size";
 
 export const TextAreaStyles = css`
     ${display("inline-block")} :host {
@@ -16,7 +17,7 @@ export const TextAreaStyles = css`
         background: var(--neutral-fill-input-rest);
         border-radius: calc(var(--corner-radius) * 1px);
         border: calc(var(--outline-width) * 1px) solid var(--neutral-outline-rest);
-        height: calc(var(--height-number) * 2px);
+        height: calc(${heightNumber} * 2px);
         font: inherit;
         ${
             /* Font size, weight, and line height are temporary - 
