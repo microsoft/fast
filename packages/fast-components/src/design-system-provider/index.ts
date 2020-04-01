@@ -40,10 +40,9 @@ export class FASTDesignSystemProvider extends DesignSystemProvider
         super.connectedCallback();
 
         if (this.useDefaults === ("" as any)) {
-            this.designSystemProperties.forEach(property => {
-                const propName = property.property;
-                if (this[propName] === void 0) {
-                    this[property.property] = DesignSystemDefaults[property.property];
+            Object.keys(this.designSystemProperties).forEach(property => {
+                if (this[property] === void 0) {
+                    this[property] = DesignSystemDefaults[property];
                 }
             });
         }

@@ -7,45 +7,48 @@ interface CustomPropertyDefinition {
     value: string | (() => string);
 }
 
+interface DesignSystemPropertyDeclarationConfig {
+    customPropertyName?: string;
+    customProperty?: boolean;
+}
+
 /**
  * Decorator to declare a property as a design-system property.
  * Accepts an optional config to customize whether a css custom property
  * wll be written and if so, what the name of that property is
  */
-export function designSystemProperty(config: {
-    customPropertyName?: string;
-    customProperty?: boolean;
-}): (source: any, target: string) => void;
-export function designSystemProperty(source: any, target: string);
-export function designSystemProperty(nameOrSource: any, target?: string) {
+export function designSystemProperty<T extends DesignSystemProvider>(
+    config: DesignSystemPropertyDeclarationConfig
+): (source: T, property: string) => void;
+export function designSystemProperty<T extends DesignSystemProvider>(
+    source: T,
+    property: string
+): void;
+export function designSystemProperty<T extends DesignSystemProvider>(
+    configOrSource: T | DesignSystemPropertyDeclarationConfig,
+    property?: string
+): any {
     const decorator = (
-        source: any,
+        source: T,
         property: string,
-        customPropertyName: string,
-        customProperty: boolean
+        config: DesignSystemPropertyDeclarationConfig = {}
     ) => {
-        if (!source.hasOwnProperty("designSystemProperties")) {
-            source.designSystemProperties = [];
-        }
-
-        source.designSystemProperties.push({
-            property,
-            customPropertyName,
-            customProperty,
+        source.registerDesignSystemProperty(property, {
+            customPropertyName: config.customPropertyName || property,
+            customProperty:
+                typeof config.customProperty === "boolean" ? config.customProperty : true,
         });
     };
 
     if (arguments.length > 1) {
         // Invoked with no options
-        decorator(nameOrSource, target!, target!, true);
+        decorator(configOrSource as T, property!);
     } else {
-        return (source: any, target: any) => {
-            const { customPropertyName, customProperty } = nameOrSource;
+        return (source: T, property: string) => {
             decorator(
                 source,
-                target,
-                customPropertyName || target,
-                customProperty === void 0 ? true : customProperty
+                property,
+                configOrSource as DesignSystemPropertyDeclarationConfig
             );
         };
     }
@@ -55,6 +58,7 @@ export function designSystemProperty(nameOrSource: any, target?: string) {
  * Simple proxy object to notifiy observers on
  * object mutation.
  * @param source The object to fire notifications
+ * @param key The observable property name to fire a notification on
  */
 function mutationObserver(source, key) {
     const notifier = Observable.getNotifier(source);
@@ -118,6 +122,8 @@ export function isDesignSystemProvider(
     return (el as any).isDesignSystemProvider;
 }
 
+const designSystemKey = "designSystem";
+
 /**
  * Slight hack to get intelisense and type checking for the
  * @designSystemConsumer decorator because TypeScript does
@@ -135,10 +141,7 @@ export class DesignSystemProvider extends FastElement {
      */
     public readonly isDesignSystemProvider = true;
 
-    @observable
-    public customProperties: CustomPropertyDefinition[] = [];
-
-    public designSystem = mutationObserver(this, "designSystem");
+    public designSystem = mutationObserver(this, designSystemKey);
 
     private consumers: Set<DesignSystemConsumer> = new Set();
 
@@ -147,21 +150,29 @@ export class DesignSystemProvider extends FastElement {
      * in those properties. Do not initialize or it will clobber value stored
      * by the decorator.
      */
-    protected designSystemProperties: Array<{
-        property: string;
-        customPropertyName: string;
-        customProperty: boolean;
-    }>;
+    protected designSystemProperties: {
+        [propertyName: string]: Required<DesignSystemPropertyDeclarationConfig>;
+    };
+
+    public registerDesignSystemProperty(
+        propertyName: string,
+        config: Required<DesignSystemPropertyDeclarationConfig>
+    ): void {
+        if (!this.designSystemProperties) this.designSystemProperties = {};
+
+        console.log(Observable.getNotifier(this));
+        this.designSystemProperties[propertyName] = config;
+    }
 
     public connectedCallback(): void {
         super.connectedCallback();
         const notifier = Observable.getNotifier(this);
 
-        this.designSystemProperties.forEach(property => {
-            notifier.subscribe(this, property.property);
+        Object.keys(this.designSystemProperties).forEach(property => {
+            notifier.subscribe(this, property);
         });
 
-        notifier.subscribe(this, "designSystem");
+        notifier.subscribe(this, designSystemKey);
     }
 
     /**
@@ -172,26 +183,22 @@ export class DesignSystemProvider extends FastElement {
      * @param key The property of the source object that changed
      */
     public handleChange(source: any, key: string) {
-        if (
-            source === this &&
-            this.designSystemProperties.some(value => value.property === key)
-        ) {
+        if (source === this && this.designSystemProperties.hasOwnProperty(key)) {
+            // If a property on *this* object that is declared as a design system property
             this.designSystem[key] = this[key];
-            const desginSystemProperty = this.designSystemProperties.find(
-                x => x.property === key
-            );
+            const desginSystemProperty = this.designSystemProperties[key];
 
             if (desginSystemProperty && desginSystemProperty.customProperty) {
                 this.setCustomProperty({
                     name: desginSystemProperty.customPropertyName,
-                    value: this[desginSystemProperty.property],
+                    value: this[key],
                 });
             }
-        } else if (source !== this && key === "designSystem") {
+            this.consumers.forEach(this.writeConsumerRecipeData);
+        } else if (source !== this && key === designSystemKey) {
             this.syncDesignSystemWithProvider();
+            this.consumers.forEach(this.writeConsumerRecipeData);
         }
-
-        this.consumers.forEach(this.writeConsumerRecipeData);
     }
 
     public suscribe(consumer: DesignSystemConsumer) {
@@ -216,7 +223,7 @@ export class DesignSystemProvider extends FastElement {
 
     /**
      * Syncronizes the provider's design system with the local
-     * overrides. Any value defined on the instance will take precidences
+     * overrides. Any value defined on the instance will take priority
      * over the value defined by the provider
      */
     private syncDesignSystemWithProvider() {
@@ -239,11 +246,11 @@ export class DesignSystemProvider extends FastElement {
         next: DesignSystemProvider | null
     ) {
         if (prev instanceof HTMLElement) {
-            Observable.getNotifier(prev).unsubscribe(this, "designSystem");
+            Observable.getNotifier(prev).unsubscribe(this, designSystemKey);
         }
 
         if (next instanceof HTMLElement && isDesignSystemProvider(next)) {
-            Observable.getNotifier(next).subscribe(this, "designSystem");
+            Observable.getNotifier(next).subscribe(this, designSystemKey);
             this.syncDesignSystemWithProvider();
         }
     }
