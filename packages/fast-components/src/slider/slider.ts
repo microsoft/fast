@@ -149,9 +149,7 @@ export class Slider extends FormAssociated<HTMLInputElement> {
         this.proxy.setAttribute("type", "range");
         this.setAttribute("role", "slider");
         this.setAttribute("tabindex", "0");
-        // TODO: marjon find dir the right way
-        const dirAttribute = this.parentElement!.attributes["dir"];
-        this.direction = dirAttribute ? dirAttribute.value : "ltr";
+        this.direction = this.getDirection();
         this.constructed = true;
     }
 
@@ -181,6 +179,11 @@ export class Slider extends FormAssociated<HTMLInputElement> {
                 this.decrement();
                 break;
         }
+    };
+
+    private getDirection = (): string => {
+        const dirNode: any = this.parentElement!.closest("div[dir]");
+        return dirNode !== null && dirNode["dir"] === "rtl" ? "rtl" : "ltr";
     };
 
     private setupTrackConstraints = (): void => {

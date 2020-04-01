@@ -106,7 +106,17 @@ export const SliderStyles = css`
         .thumb-cursor, .thumb-cursor:hover, .thumb-cursor:active {
             forced-color-adjust: none;
             border-color: ${SystemColors.FieldText};
-            background: ${SystemColors.Field};
+            background: ${SystemColors.FieldText};
+        }
+
+        .track {
+            forced-color-adjust: none;
+            background: ${SystemColors.FieldText};
+        }
+
+        .foreground-track {
+            forced-color-adjust: none;
+            background: ${SystemColors.ActiveText}
         }
         
         :host(:${focusVisible}) .thumb-cursor {
@@ -117,14 +127,9 @@ export const SliderStyles = css`
             opacity: 1;
         }
 
-        :host(.disabled) .slider {
+        :host(.disabled) .slider .track .thumb-cursor {
             forced-color-adjust: none;
-            border-color: ${SystemColors.GrayText};
-        }
-
-        :host(.disabled) .checked-indicator {
-            forced-color-adjust: none;
-            fill: ${SystemColors.GrayText};
+            background: ${SystemColors.GrayText};
         }
     }
 `;

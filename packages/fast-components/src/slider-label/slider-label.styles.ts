@@ -1,4 +1,5 @@
 import { css } from "@microsoft/fast-element";
+import { SystemColors } from "../styles/system-colors";
 
 export const SliderLabelStyles = css`
     :host {
@@ -32,12 +33,14 @@ export const SliderLabelStyles = css`
         grid-template-rows: 0;
     }
     .label {
-        width: 18px;
+        max-width: 18px;
         justify-self: center;
+        align-self: center;
+        white-space: nowrap;
     }
     .label-positioner {
         justify-self: center;
-        width: 18px;
+        max-width: 30px;
         margin: 2px 0;
     }
     .mark {
@@ -45,5 +48,11 @@ export const SliderLabelStyles = css`
         height: calc(var(--half-thumb-size) * 1px);
         background: var(--neutral-outline-rest);
         justify-self: center;
+    }
+    @media (forced-colors: active) {
+        .mark {
+            forced-color-adjust: none;
+            background: ${SystemColors.FieldText};
+        }
     }
 `;
