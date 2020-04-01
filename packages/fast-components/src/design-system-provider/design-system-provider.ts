@@ -1,6 +1,8 @@
-/* tslint:disable */
-import { FastElement, observable, Observable } from "@microsoft/fast-element";
-import { DesignSystemConsumer, designSystemConsumer } from "./design-system-consumer";
+import { FastElement, Observable } from "@microsoft/fast-element";
+import {
+    DesignSystemConsumer,
+    designSystemConsumer,
+} from "../design-system-consumer/design-system-consumer";
 
 interface CustomPropertyDefinition {
     name: string;
