@@ -1,9 +1,16 @@
 /* tslint:disable */
 import { FastElement, observable, Observable } from "@microsoft/fast-element";
 import { DesignSystemConsumer, designSystemConsumer } from "./design-system-consumer";
+
+interface CustomPropertyDefinition {
+    name: string;
+    value: string | (() => string);
+}
+
 /**
- * TODO: This should accept a config instead of a string:
- * interface conf { customPropertyName: string, customProperty: boolean }
+ * Decorator to declare a property as a design-system property.
+ * Accepts an optional config to customize whether a css custom property
+ * wll be written and if so, what the name of that property is
  */
 export function designSystemProperty(config: {
     customPropertyName?: string;
@@ -65,11 +72,6 @@ function mutationObserver(source, key) {
     );
 }
 
-interface CustomPropertyDefinition {
-    name: string;
-    value: string | (() => string);
-}
-
 function setCustomPropertyFactory(source: any) {
     let store: CustomPropertyDefinition[] = [];
     let ticking = false;
@@ -107,6 +109,16 @@ function setCustomPropertyFactory(source: any) {
 }
 
 /**
+ * Type-safe checking for if an HTMLElement is a DesignSystemProvider.
+ * @param el The element to test
+ */
+export function isDesignSystemProvider(
+    el: HTMLElement | DesignSystemProvider
+): el is DesignSystemProvider {
+    return (el as any).isDesignSystemProvider;
+}
+
+/**
  * Slight hack to get intelisense and type checking for the
  * @designSystemConsumer decorator because TypeScript does
  * not allow type mutation for decorators.
@@ -119,13 +131,14 @@ export class DesignSystemProvider extends FastElement {
 
     /**
      * Allows other components to identify this as a provider.
+     * Using instanceof DesignSystemProvider did not seem to work.
      */
     public readonly isDesignSystemProvider = true;
 
     @observable
     public customProperties: CustomPropertyDefinition[] = [];
 
-    public designSystem: any = mutationObserver(this, "designSystem");
+    public designSystem = mutationObserver(this, "designSystem");
 
     private consumers: Set<DesignSystemConsumer> = new Set();
 
@@ -158,7 +171,7 @@ export class DesignSystemProvider extends FastElement {
      * @param source The source object changing
      * @param key The property of the source object that changed
      */
-    public handleChange(source, key) {
+    public handleChange(source: any, key: string) {
         if (
             source === this &&
             this.designSystemProperties.some(value => value.property === key)
@@ -174,7 +187,11 @@ export class DesignSystemProvider extends FastElement {
                     value: this[desginSystemProperty.property],
                 });
             }
+        } else if (source !== this && key === "designSystem") {
+            this.syncDesignSystemWithProvider();
         }
+
+        this.consumers.forEach(this.writeConsumerRecipeData);
     }
 
     public suscribe(consumer: DesignSystemConsumer) {
@@ -184,16 +201,50 @@ export class DesignSystemProvider extends FastElement {
         }
     }
 
-    private writeConsumerRecipeData(consumer: DesignSystemConsumer) {
+    private writeConsumerRecipeData = (consumer: DesignSystemConsumer) => {
         consumer.recipes.forEach(recipe => {
             this.setCustomProperty({
                 name: recipe.name,
-                value: recipe.resolver.bind(this, this.designSystem),
+                // use spread on the designSystem object to circumvent memoization
+                // done in the color recipes - we use the same *reference* in WC
+                // for performance improvements but that throws off the recipes
+                // We should look at making the recipes require preset args
+                value: recipe.resolver.bind(this, { ...this.designSystem }),
             });
         });
+    };
+
+    /**
+     * Syncronizes the provider's design system with the local
+     * overrides. Any value defined on the instance will take precidences
+     * over the value defined by the provider
+     */
+    private syncDesignSystemWithProvider() {
+        if (this.provider) {
+            Object.keys(this.provider.designSystem).forEach(key => {
+                if (this[key] === void 0) {
+                    this.designSystem[key] = this.provider!.designSystem[key];
+                }
+            });
+        }
     }
 
-    private providerChanged() {
-        console.log("provider changed", this.provider);
+    /**
+     * Invoked when the provider observable property defined by the consumer is changed
+     * @param prev the previous value
+     * @param next the next value
+     */
+    private providerChanged(
+        prev: DesignSystemProvider | null,
+        next: DesignSystemProvider | null
+    ) {
+        if (prev instanceof HTMLElement) {
+            Observable.getNotifier(prev).unsubscribe(this, "designSystem");
+        }
+
+        if (next instanceof HTMLElement && isDesignSystemProvider(next)) {
+            Observable.getNotifier(next).subscribe(this, "designSystem");
+            this.syncDesignSystemWithProvider();
+        }
     }
 }

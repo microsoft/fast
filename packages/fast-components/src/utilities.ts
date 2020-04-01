@@ -12,7 +12,7 @@ export function composedParent<T extends HTMLElement>(element: T): HTMLElement |
     } else {
         const rootNode = element.getRootNode();
 
-        if (rootNode.hasOwnProperty("host")) {
+        if ((rootNode as ShadowRoot).host instanceof HTMLElement) {
             // this is shadow-root
             return (rootNode as ShadowRoot).host as HTMLElement;
         }

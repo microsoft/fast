@@ -1,6 +1,5 @@
-import { FastElement, Observable, observable } from "@microsoft/fast-element";
+import { observable } from "@microsoft/fast-element";
 import { DesignSystemResolverEntry } from "../styles/recipes";
-import { neutralforegroundrest } from "../styles/recipes";
 import { composedParent } from "../utilities";
 import { DesignSystemProvider } from "./design-system-provider";
 
