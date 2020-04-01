@@ -1,26 +1,17 @@
 import {
     checkIsDifferentSchema,
-    checkIsObject,
-    generateExampleData,
     getData,
     getErrorFromDataLocation,
-    getInitialOneOfAnyOfState,
-    getIsNotRequired,
-    getIsRequired,
     getLabel,
     getOneOfAnyOfSelectOptions,
-    PropertyKeyword,
-} from "../utilities";
+    updateControlSectionState,
+} from "./utilities/form";
 import React from "react";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 import styles from "./control.section.style";
-import { get, omit } from "lodash-es";
+import { get, uniqueId } from "lodash-es";
 import {
-    FormControlItem,
-    FormControlParameters,
-    FormControlsWithConfigOptions,
-    InitialOneOfAnyOfState,
     SectionControlClassNameContract,
     SectionControlProps,
     SectionControlState,
@@ -30,9 +21,13 @@ import FormControlSwitch from "./utilities/control-switch";
 import FormOneOfAnyOf from "./utilities/section.one-of-any-of";
 import FormDictionary from "./utilities/dictionary";
 import { classNames } from "@microsoft/fast-web-utilities";
-import { ErrorObject } from "ajv";
-import { validateData } from "../../utilities/ajv-validation";
-import { CombiningKeyword } from "@microsoft/fast-tooling";
+import {
+    MessageSystemType,
+    Register,
+    SchemaSetValidationAction,
+    SchemaSetValidationMessageRequest,
+    TreeNavigationItem,
+} from "@microsoft/fast-tooling";
 
 /**
  * Schema form component definition
@@ -55,18 +50,36 @@ class SectionControl extends React.Component<
         state: SectionControlState
     ): Partial<SectionControlState> {
         if (props.schema !== state.schema) {
-            return getInitialOneOfAnyOfState(props.schema, props.value);
+            return updateControlSectionState(props);
         }
 
         return null;
     }
+
+    /**
+     * The message system registration configuration
+     */
+    private messageSystemConfig: Register;
+
+    /**
+     * The ID of the requested validation
+     */
+    private oneOfAnyOfValidationRequestId: string;
 
     constructor(
         props: SectionControlProps & ManagedClasses<SectionControlClassNameContract>
     ) {
         super(props);
 
-        this.state = getInitialOneOfAnyOfState(this.props.schema, this.props.value);
+        this.messageSystemConfig = {
+            onMessage: this.handleMessageSystem,
+        };
+
+        if (props.messageSystem !== undefined) {
+            props.messageSystem.add(this.messageSystemConfig);
+        }
+
+        this.state = updateControlSectionState(props);
     }
 
     public render(): React.ReactNode {
@@ -95,27 +108,64 @@ class SectionControl extends React.Component<
      */
     public componentDidUpdate(prevProps: SectionControlProps): void {
         if (checkIsDifferentSchema(prevProps.schema, this.props.schema)) {
-            const initialOneOfAnyOfState: InitialOneOfAnyOfState = getInitialOneOfAnyOfState(
-                this.props.schema,
-                this.props.value
+            const updatedState: SectionControlState = updateControlSectionState(
+                this.props
             );
 
-            this.setState(initialOneOfAnyOfState);
+            if (updatedState.oneOfAnyOf !== null) {
+                this.oneOfAnyOfValidationRequestId = uniqueId("schemaset");
+
+                this.props.messageSystem.postMessage({
+                    type: MessageSystemType.custom,
+                    action: SchemaSetValidationAction.request,
+                    id: this.oneOfAnyOfValidationRequestId,
+                    schemas: this.props.schema[this.state.oneOfAnyOf.type],
+                    data: this.props.value,
+                } as SchemaSetValidationMessageRequest);
+            }
+
+            this.setState(updatedState);
         }
     }
+
+    /**
+     * React lifecycle hook
+     */
+    public componentWillUnmount(): void {
+        if (this.props.messageSystem !== undefined) {
+            this.props.messageSystem.remove(this.messageSystemConfig);
+        }
+    }
+
+    /**
+     * Handle the message system messages
+     */
+    private handleMessageSystem = (e: MessageEvent): void => {
+        switch (e.data.type) {
+            case MessageSystemType.custom:
+                if (
+                    e.data.action === SchemaSetValidationAction.response &&
+                    e.data.id === this.oneOfAnyOfValidationRequestId
+                ) {
+                    this.setState({
+                        oneOfAnyOf: {
+                            type: this.state.oneOfAnyOf.type,
+                            activeIndex: e.data.index,
+                        },
+                    });
+                }
+        }
+    };
 
     /**
      * Handles updating the schema to another active oneOf/anyOf schema
      */
     private handleAnyOfOneOfClick = (activeIndex: number): void => {
-        const updatedSchema: any = Object.assign(
-            omit(this.props.schema, [this.state.oneOfAnyOf.type]),
-            this.props.schema[this.state.oneOfAnyOf.type][activeIndex]
-        );
-
-        this.props.onChange({
-            dataLocation: this.props.dataLocation,
-            value: generateExampleData(updatedSchema, ""),
+        this.setState({
+            oneOfAnyOf: {
+                type: this.state.oneOfAnyOf.type,
+                activeIndex,
+            },
         });
     };
 
@@ -134,7 +184,11 @@ class SectionControl extends React.Component<
         invalidMessage: string | null
     ): React.ReactNode => {
         // if this is a root level object use it to generate the form and do not generate a link
-        if (schema.type === "object" && propertyName === "") {
+        if (
+            schema.type === "object" &&
+            propertyName === "" &&
+            this.state.oneOfAnyOf === null
+        ) {
             return this.getFormControls();
         }
 
@@ -167,6 +221,7 @@ class SectionControl extends React.Component<
                     this.props.displayValidationBrowserDefault
                 }
                 displayValidationInline={this.props.displayValidationInline}
+                messageSystem={this.props.messageSystem}
             />
         );
     };
@@ -199,19 +254,9 @@ class SectionControl extends React.Component<
     }
 
     private getFormControls(): React.ReactNode {
-        if (typeof this.state.oneOfAnyOf !== "undefined") {
-            return this.props.navigation[
-                this.props.navigation[this.props.navigationConfigId].items[
-                    this.state.oneOfAnyOf.activeIndex
-                ]
-            ].items.map(
-                (item: string): React.ReactNode => {
-                    return this.getFormControl(item);
-                }
-            );
-        }
+        const navigationItem: TreeNavigationItem = this.getActiveTreeNavigationItem();
 
-        return this.props.navigation[this.props.navigationConfigId].items.map(
+        return navigationItem.items.map(
             (item: string): React.ReactNode => {
                 return this.getFormControl(item);
             }
@@ -223,7 +268,7 @@ class SectionControl extends React.Component<
      */
     private renderAnyOfOneOfSelect(): React.ReactNode {
         if (
-            typeof this.state.oneOfAnyOf !== "undefined" &&
+            this.state.oneOfAnyOf !== null &&
             this.props.schema[this.state.oneOfAnyOf.type]
         ) {
             const unselectedOption: React.ReactNode = (
@@ -234,22 +279,10 @@ class SectionControl extends React.Component<
                 this.state
             );
 
-            const combiningKeyword: CombiningKeyword = this.props.schema[
-                CombiningKeyword.oneOf
-            ]
-                ? CombiningKeyword.oneOf
-                : CombiningKeyword.anyOf;
-
-            const activeIndex: number = this.props.schema[combiningKeyword].findIndex(
-                (schemaItem: any) => {
-                    return validateData(schemaItem, this.props.value);
-                }
-            );
-
             return (
                 <FormOneOfAnyOf
                     label={get(this.props, "schema.title", "Configuration")}
-                    activeIndex={activeIndex}
+                    activeIndex={this.state.oneOfAnyOf.activeIndex}
                     onUpdate={this.handleAnyOfOneOfClick}
                 >
                     {unselectedOption}
@@ -265,12 +298,11 @@ class SectionControl extends React.Component<
      * Renders additional properties if they have been declared
      */
     private renderAdditionalProperties(): React.ReactNode {
-        const schemaLocation: string = this.getSchemaLocation();
-        const schema: any = get(this.state.schema, schemaLocation, this.state.schema);
+        const navigationItem: TreeNavigationItem = this.getActiveTreeNavigationItem();
 
         if (
-            typeof schema.additionalProperties === "object" ||
-            schema.additionalProperties === false
+            typeof navigationItem.schema.additionalProperties === "object" ||
+            navigationItem.schema.additionalProperties === false
         ) {
             return (
                 <FormDictionary
@@ -285,16 +317,22 @@ class SectionControl extends React.Component<
                     dictionaryId={this.props.dictionaryId}
                     dataDictionary={this.props.dataDictionary}
                     navigation={this.props.navigation}
-                    schemaLocation={schemaLocation}
-                    examples={get(schema, "examples")}
-                    propertyLabel={get(schema, `propertyTitle`, "Property key")}
-                    additionalProperties={schema.additionalProperties}
-                    enumeratedProperties={this.getEnumeratedProperties(schema)}
+                    schemaLocation={navigationItem.schemaLocation}
+                    examples={get(navigationItem.schema, "examples")}
+                    propertyLabel={get(
+                        navigationItem.schema,
+                        `propertyTitle`,
+                        "Property key"
+                    )}
+                    additionalProperties={navigationItem.schema.additionalProperties}
+                    enumeratedProperties={this.getEnumeratedProperties(
+                        navigationItem.schema
+                    )}
                     data={this.props.value}
-                    schema={schema}
+                    schema={navigationItem.schema}
                     schemaDictionary={this.props.schemaDictionary}
-                    required={schema.required}
-                    label={schema.title || this.props.untitled}
+                    required={navigationItem.schema.required}
+                    label={navigationItem.schema.title || this.props.untitled}
                     onChange={this.props.onChange}
                     onUpdateSection={this.props.onUpdateSection}
                     validationErrors={this.props.validationErrors}
@@ -302,6 +340,7 @@ class SectionControl extends React.Component<
                         this.props.displayValidationBrowserDefault
                     }
                     displayValidationInline={this.props.displayValidationInline}
+                    messageSystem={this.props.messageSystem}
                 />
             );
         }
@@ -314,7 +353,7 @@ class SectionControl extends React.Component<
             return (
                 <SectionControlValidation
                     invalidMessage={invalidMessage}
-                    validationErrors={this.getValidationErrorsForSectionValidation()}
+                    validationErrors={this.props.validationErrors}
                     dataLocation={this.props.dataLocation}
                 />
             );
@@ -322,16 +361,18 @@ class SectionControl extends React.Component<
     }
 
     private renderSectionControl(invalidMessage: string): React.ReactNode {
+        const navigationItem: TreeNavigationItem = this.getActiveTreeNavigationItem();
+
         return (
             <div>
                 <div>
                     {this.renderAnyOfOneOfSelect()}
                     {this.renderFormControl(
-                        this.state.schema,
+                        navigationItem.schema,
                         "",
-                        this.getSchemaLocation(),
+                        navigationItem.schemaLocation,
                         this.props.dataLocation,
-                        this.props.navigationConfigId,
+                        navigationItem.self,
                         true,
                         this.props.disabled || this.state.schema.disabled,
                         "",
@@ -343,19 +384,18 @@ class SectionControl extends React.Component<
         );
     }
 
-    /**
-     * Gets the validation errors for the top level section,
-     * these should only be passed if they are arrays with 2 or more items
-     */
-    private getValidationErrorsForSectionValidation(): ErrorObject[] {
-        if (
-            Array.isArray(this.props.validationErrors) &&
-            this.props.validationErrors.length > 1
-        ) {
-            return this.props.validationErrors;
-        }
-
-        return [];
+    private getActiveTreeNavigationItem(): TreeNavigationItem {
+        return this.state.oneOfAnyOf === null
+            ? this.props.navigation[this.props.navigationConfigId]
+            : this.state.oneOfAnyOf.activeIndex === -1
+                ? this.props.navigation[
+                      this.props.navigation[this.props.navigationConfigId].items[0]
+                  ]
+                : this.props.navigation[
+                      this.props.navigation[this.props.navigationConfigId].items[
+                          this.state.oneOfAnyOf.activeIndex
+                      ]
+                  ];
     }
 
     /**
@@ -363,17 +403,6 @@ class SectionControl extends React.Component<
      */
     private getEnumeratedProperties(schema: any): string[] {
         return Object.keys(schema.properties || {});
-    }
-
-    private getSchemaLocation(): string {
-        if (this.state.oneOfAnyOf) {
-            const separator: string = this.props.schemaLocation === "" ? "" : ".";
-            return `${this.props.schemaLocation}${separator}${
-                this.state.oneOfAnyOf.type
-            }[${this.state.oneOfAnyOf.activeIndex}]`;
-        } else {
-            return this.props.schemaLocation;
-        }
     }
 
     private isDisabled(): boolean {

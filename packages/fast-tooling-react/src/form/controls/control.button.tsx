@@ -4,7 +4,7 @@ import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-
 import styles, { ButtonControlClassNameContract } from "./control.button.style";
 import { ButtonControlProps } from "./control.button.props";
 import { classNames } from "@microsoft/fast-web-utilities";
-import { isDefault } from "../utilities";
+import { isDefault } from "./utilities/form";
 
 /**
  * Form control definition

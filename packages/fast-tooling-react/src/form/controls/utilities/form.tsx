@@ -1,16 +1,20 @@
 import React from "react";
-import { FormState } from "../form.props";
-import { AttributeSettingsMappingToPropertyNames, FormChildOptionItem } from "../types";
-import { InitialOneOfAnyOfState, OneOfAnyOf } from "../controls/control.section.props";
+import { FormState } from "../../form.props";
+import {
+    AttributeSettingsMappingToPropertyNames,
+    FormChildOptionItem,
+} from "../../types";
+import { SectionControlProps, SectionControlState } from "../control.section.props";
 import { cloneDeep, get, isEmpty, mergeWith, omit, set, unset } from "lodash-es";
-import { ErrorObject } from "ajv";
 import {
     CombiningKeyword,
     getDataFromSchema,
+    MessageSystem,
+    MessageSystemType,
     normalizeDataLocationToDotNotation,
+    ValidationError,
 } from "@microsoft/fast-tooling";
 import stringify from "fast-json-stable-stringify";
-import { validateData } from "../../utilities/ajv-validation";
 
 const containsInvalidDataMessage: string = "Contains invalid data";
 
@@ -56,39 +60,6 @@ export function getStringValue(
         : getStringFromData(defaultData);
 }
 
-export function getInitialOneOfAnyOfState(
-    schema: any,
-    data: any
-): InitialOneOfAnyOfState {
-    let oneOfAnyOf: CombiningKeyword;
-    let oneOfAnyOfState: OneOfAnyOf;
-    let activeIndex: number;
-    let updatedSchema: any = schema;
-
-    if (schema.oneOf || schema.anyOf) {
-        oneOfAnyOf = schema.oneOf ? CombiningKeyword.oneOf : CombiningKeyword.anyOf;
-        activeIndex = getOneOfAnyOfActiveIndex(oneOfAnyOf, schema, data);
-        updatedSchema =
-            typeof activeIndex === "undefined"
-                ? {
-                      type: "undefined",
-                  }
-                : Object.assign(
-                      omit(schema, [oneOfAnyOf]),
-                      schema[oneOfAnyOf][activeIndex]
-                  );
-        oneOfAnyOfState = {
-            type: oneOfAnyOf,
-            activeIndex,
-        };
-    }
-
-    return {
-        schema: updatedSchema,
-        oneOfAnyOf: oneOfAnyOfState,
-    };
-}
-
 /**
  * Determine if an item is required
  */
@@ -126,67 +97,6 @@ export function getIsNotRequired(item: any, not?: string[]): boolean {
 }
 
 /**
- * Gets the options for a oneOf/anyOf select
- */
-export function getOneOfAnyOfSelectOptions(schema: any, state: any): React.ReactNode {
-    return schema[state.oneOfAnyOf.type].map(
-        (oneOfAnyOfOption: any, index: number): React.ReactNode => {
-            return (
-                <option key={index} value={index}>
-                    {get(oneOfAnyOfOption, "title") ||
-                        get(oneOfAnyOfOption, "description") ||
-                        "No title"}
-                </option>
-            );
-        }
-    );
-}
-
-function removeUndefinedKeys(data: any): any {
-    const clonedData: any = cloneDeep(data);
-
-    if (clonedData !== undefined) {
-        Object.keys(clonedData).forEach((key: string) => {
-            if (typeof clonedData[key] === "undefined") {
-                // if this is a child we may be getting undefined default props, remove these
-                delete clonedData[key];
-            }
-        });
-    }
-
-    return clonedData;
-}
-
-function checkSchemaTypeIsArray(schema: any, type: string): boolean {
-    return schema && Array.isArray(schema[type]);
-}
-
-/**
- * Find out what the active index should be based on the data
- */
-export function getOneOfAnyOfActiveIndex(type: string, schema: any, data: any): number {
-    let activeIndex: number = -1;
-
-    if (checkSchemaTypeIsArray(schema, type)) {
-        const newData: any = removeUndefinedKeys(data);
-
-        schema[type].forEach((oneOfAnyOfItem: any, index: number) => {
-            const updatedSchema: any = Object.assign(
-                omit(schema, [type]),
-                oneOfAnyOfItem
-            );
-
-            if (validateData(updatedSchema, newData)) {
-                activeIndex = index;
-                return;
-            }
-        });
-    }
-
-    return activeIndex;
-}
-
-/**
  * Resolves generated example data with any matching data in the cache
  */
 export function resolveExampleDataWithCachedData(schema: any, cachedData: any): any {
@@ -219,10 +129,6 @@ function cachedDataResolver(objValue: any, srcValue: any, key: number, object: a
     ) {
         const newObj: any = cloneDeep(object);
         set(newObj, key, srcValue);
-
-        if (!validateData(this, newObj)) {
-            return objValue;
-        }
 
         return srcValue;
     } else {
@@ -497,23 +403,11 @@ export function getSchemaByDataLocation(
 }
 
 /**
- * Normalize the dataPaths provided by Ajv to the dataLocation path syntax
- */
-export function normalizeAjvDataPath(dataPath: string): string {
-    return normalizeDataLocationToDotNotation(
-        dataPath
-            .replace(/(\[')/g, ".")
-            .replace(/('\])/g, "")
-            .replace(/^(\.+)/, "")
-    );
-}
-
-/**
  * Gets the validation error message using a data location
  */
 export function getErrorFromDataLocation(
     dataLocation: string,
-    validationErrors: ErrorObject[] | void
+    validationErrors: ValidationError[]
 ): string {
     let error: string = "";
 
@@ -523,25 +417,23 @@ export function getErrorFromDataLocation(
         );
 
         for (const validationError of validationErrors) {
-            const normalizedDataPath: string = normalizeAjvDataPath(
-                validationError.dataPath
-            );
-
-            if (normalizedDataLocation === normalizedDataPath) {
-                error = validationError.message;
+            if (normalizedDataLocation === validationError.dataLocation) {
+                error = validationError.invalidMessage;
             } else {
                 let containsInvalidData: boolean;
 
                 if (normalizedDataLocation === "") {
                     containsInvalidData = true;
                 } else {
-                    const dataPathItems: string[] = normalizedDataPath.split(".");
+                    const dataLocations: string[] = validationError.dataLocation.split(
+                        "."
+                    );
 
-                    containsInvalidData = dataPathItems.some(
+                    containsInvalidData = dataLocations.some(
                         (value: string, index: number) => {
                             return (
                                 normalizedDataLocation ===
-                                dataPathItems.slice(0, index + 1).join(".")
+                                dataLocations.slice(0, index + 1).join(".")
                             );
                         }
                     );
@@ -559,4 +451,42 @@ export function getErrorFromDataLocation(
 
 export function isDefault<T>(value: T | void, defaultValue: T | void): boolean {
     return typeof value === "undefined" && typeof defaultValue !== "undefined";
+}
+
+export function updateControlSectionState(
+    props: SectionControlProps
+): SectionControlState {
+    return {
+        schema: props.schema,
+        oneOfAnyOf: props.navigation[props.navigationConfigId].schema[
+            CombiningKeyword.anyOf
+        ]
+            ? {
+                  type: CombiningKeyword.anyOf,
+                  activeIndex: -1,
+              }
+            : props.navigation[props.navigationConfigId].schema[CombiningKeyword.oneOf]
+                ? {
+                      type: CombiningKeyword.oneOf,
+                      activeIndex: -1,
+                  }
+                : null,
+    };
+}
+
+/**
+ * Gets the options for a oneOf/anyOf select
+ */
+export function getOneOfAnyOfSelectOptions(schema: any, state: any): React.ReactNode {
+    return schema[state.oneOfAnyOf.type].map(
+        (oneOfAnyOfOption: any, index: number): React.ReactNode => {
+            return (
+                <option key={index} value={index}>
+                    {get(oneOfAnyOfOption, "title") ||
+                        get(oneOfAnyOfOption, "description") ||
+                        "No title"}
+                </option>
+            );
+        }
+    );
 }

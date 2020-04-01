@@ -28,6 +28,7 @@ const alignControlProps: AlignControlProps = {
     updateValidity: jest.fn(),
     validationErrors: [],
     required: false,
+    messageSystem: void 0,
 };
 
 const managedClasses: AlignControlClassNameContract = {

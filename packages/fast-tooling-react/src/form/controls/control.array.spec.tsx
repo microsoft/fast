@@ -6,9 +6,8 @@ import { ArrayControlProps } from "./control.array.props";
 import { ArrayControlClassNameContract } from "./control.array.style";
 import HTML5Backend from "react-dnd-html5-backend";
 import { DndProvider } from "react-dnd";
-import { ErrorObject } from "ajv";
 import { ControlType } from "../templates";
-import { DataType } from "@microsoft/fast-tooling";
+import { DataType, ValidationError } from "@microsoft/fast-tooling";
 
 const TestArrayControl: React.FC<any> = (
     props: React.PropsWithChildren<any>
@@ -58,6 +57,7 @@ const arrayProps: ArrayControlProps = {
     updateValidity: jest.fn(),
     validationErrors: [],
     required: false,
+    messageSystem: void 0,
 };
 
 const managedClasses: ArrayControlClassNameContract = {
@@ -391,7 +391,7 @@ describe("ArrayControl", () => {
                 {...arrayProps}
                 invalidMessage={"foo"}
                 validationErrors={[
-                    { dataPath: ".foo[0]", message: "bar" } as ErrorObject,
+                    { dataLocation: "foo.0", invalidMessage: "bar" } as ValidationError,
                 ]}
                 managedClasses={managedClasses}
                 dataLocation={"foo"}
@@ -410,7 +410,10 @@ describe("ArrayControl", () => {
                 {...arrayProps}
                 invalidMessage={"foo"}
                 validationErrors={[
-                    { dataPath: ".foo[0]", message: invalidItemMessage } as ErrorObject,
+                    {
+                        dataLocation: "foo.0",
+                        invalidMessage: invalidItemMessage,
+                    } as ValidationError,
                 ]}
                 displayValidationInline={true}
                 managedClasses={managedClasses}
