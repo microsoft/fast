@@ -1,5 +1,7 @@
 import { css } from "@microsoft/fast-element";
 import { disabledCursor, display } from "../styles";
+import { focusVisible } from "../styles/focus";
+import { SystemColors } from "../styles/system-colors";
 
 export const SliderStyles = css`
     :host {
@@ -16,10 +18,12 @@ export const SliderStyles = css`
         outline: none;
         width: 100%;
         margin: calc(var(--design-unit) * 1px) 0;
-        ${/*
+        ${
+            /*
            * Chromium likes to select label text or the default slot when
            * the checkbox is clicked. Maybe there is a better solution here?
-           */ ""} user-select: none;
+           */ ""
+        } user-select: none;
     }
     .slider {
         box-sizing: border-box;
@@ -36,7 +40,7 @@ export const SliderStyles = css`
         position: relative;
         margin: 0 8px;
         display: grid;
-        grid-template-rows: 16px 1fr;
+        grid-template-rows: calc(var(--thumb-size) * 1px) 1fr;
     }
     .thumb-container {
         position: absolute;
@@ -96,5 +100,31 @@ export const SliderStyles = css`
     }
     :host(.disabled) {
         opacity: var(--disabled-opacity);
+    }
+
+    @media (forced-colors: active) {
+        .thumb-cursor, .thumb-cursor:hover, .thumb-cursor:active {
+            forced-color-adjust: none;
+            border-color: ${SystemColors.FieldText};
+            background: ${SystemColors.Field};
+        }
+        
+        :host(:${focusVisible}) .thumb-cursor {
+            border-color: ${SystemColors.Highlight};
+        }
+
+        :host(.disabled) {
+            opacity: 1;
+        }
+
+        :host(.disabled) .slider {
+            forced-color-adjust: none;
+            border-color: ${SystemColors.GrayText};
+        }
+
+        :host(.disabled) .checked-indicator {
+            forced-color-adjust: none;
+            fill: ${SystemColors.GrayText};
+        }
     }
 `;
