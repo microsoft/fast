@@ -160,7 +160,6 @@ export class DesignSystemProvider extends FastElement {
     ): void {
         if (!this.designSystemProperties) this.designSystemProperties = {};
 
-        console.log(Observable.getNotifier(this));
         this.designSystemProperties[propertyName] = config;
     }
 
@@ -206,6 +205,10 @@ export class DesignSystemProvider extends FastElement {
             this.consumers.add(consumer);
             this.writeConsumerRecipeData(consumer);
         }
+    }
+
+    public unsubscribe(consumer: DesignSystemConsumer): void {
+        this.consumers.delete(consumer);
     }
 
     private writeConsumerRecipeData = (consumer: DesignSystemConsumer) => {
