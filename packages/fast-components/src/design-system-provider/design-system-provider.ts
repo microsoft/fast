@@ -14,7 +14,8 @@ interface DesignSystemPropertyDeclarationConfig {
 /**
  * Decorator to declare a property as a design-system property.
  * Accepts an optional config to customize whether a css custom property
- * wll be written and if so, what the name of that property is.
+ * will be written and if so, what the name of that property is.
+
  */
 export function designSystemProperty<T extends DesignSystemProvider>(
     config: DesignSystemPropertyDeclarationConfig
