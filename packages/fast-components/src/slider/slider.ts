@@ -145,10 +145,7 @@ export class Slider extends FormAssociated<HTMLInputElement> {
 
     constructor() {
         super();
-
         this.proxy.setAttribute("type", "range");
-        this.setAttribute("role", "slider");
-        this.setAttribute("tabindex", "0");
         this.direction = this.getDirection();
         this.constructed = true;
     }
@@ -165,6 +162,7 @@ export class Slider extends FormAssociated<HTMLInputElement> {
     public disconnectedCallback(): void {
         this.removeEventListener("keydown", this.keypressHandler);
         this.removeEventListener("mousedown", this.clickHandler);
+        this.thumb.removeEventListener("mousedown", this.handleThumbMouseDown);
     }
 
     protected keypressHandler = (e: KeyboardEvent) => {

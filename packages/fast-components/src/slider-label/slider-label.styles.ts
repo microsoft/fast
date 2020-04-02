@@ -33,12 +33,9 @@ export const SliderLabelStyles = css`
         grid-template-rows: 0;
     }
     .label {
-        max-width: 18px;
         justify-self: center;
         align-self: center;
         white-space: nowrap;
-    }
-    .label-positioner {
         justify-self: center;
         max-width: 30px;
         margin: 2px 0;

@@ -15,9 +15,6 @@ export class SliderLabel extends FastElement {
     @attr
     public position: string;
 
-    @attr
-    public label: string;
-
     @attr({ attribute: "hide-mark", mode: "boolean" })
     public hideMark: boolean = false;
 
@@ -27,12 +24,22 @@ export class SliderLabel extends FastElement {
 
     public connectedCallback(): void {
         super.connectedCallback();
-        this.sliderMax = (this.parentNode as FASTSlider).max;
-        this.sliderMin = (this.parentNode as FASTSlider).min;
-        this.sliderOrientation = (this.parentNode as FASTSlider).orientation;
+        this.setupSliderValues();
         this.positionStyle = this.positionAsStyle();
         this.styleForOrientation();
     }
+
+    private setupSliderValues = (): void => {
+        if (this.parentNode instanceof FASTSlider) {
+            this.sliderMax = (this.parentNode as FASTSlider).max;
+            this.sliderMin = (this.parentNode as FASTSlider).min;
+            this.sliderOrientation = (this.parentNode as FASTSlider).orientation;
+        } else {
+            this.sliderMax = 0;
+            this.sliderMin = 0;
+            this.sliderOrientation = SliderOrientation.horizontal;
+        }
+    };
 
     private styleForOrientation = (): void => {
         if (this.sliderOrientation === SliderOrientation.horizontal) {

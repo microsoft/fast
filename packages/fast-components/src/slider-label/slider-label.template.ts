@@ -16,11 +16,8 @@ export const SliderLabelTemplate = html<SliderLabel>`
                 </div>    
             `
             )}
-            <div class="label-positioner">
-                <slot name="label">
-                    <span class="label"}>
-                        ${x => x.label}
-                    </span>
+            <div class="label">
+                <slot>
                 </slot>
             </div>
         </div>
