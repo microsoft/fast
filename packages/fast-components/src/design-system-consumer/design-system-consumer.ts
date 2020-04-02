@@ -17,7 +17,7 @@ export function designSystemConsumer<T extends { new (...args: any[]) }>(
 ): T;
 export function designSystemConsumer<T extends { new (...args: any[]) }>(
     args: ConsumerArgs
-): <_T>(contructor: _T) => _T;
+): <_T>(constructor: _T) => _T;
 export function designSystemConsumer<T extends { new (...args: any[]) }>(
     argsOrConstructor: any
 ): any {
@@ -52,7 +52,7 @@ export function designSystemConsumer<T extends { new (...args: any[]) }>(
 
                 if (!!provider) {
                     this.provider = provider;
-                    this.provider.suscribe(this);
+                    this.provider.subscribe(this);
                 }
             }
 

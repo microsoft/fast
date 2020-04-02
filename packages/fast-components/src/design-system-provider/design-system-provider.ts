@@ -93,7 +93,7 @@ export class DesignSystemProvider extends FastElement {
 
     /**
      * The design-system object.
-     * This is "obvservable" but will notify on object mutation
+     * This is "observable" but will notify on object mutation
      * instead of object assignment
      */
     public designSystem = mutationObserver(this, designSystemKey);
@@ -150,7 +150,7 @@ export class DesignSystemProvider extends FastElement {
         }
     }
 
-    public suscribe(consumer: DesignSystemConsumer): void {
+    public subscribe(consumer: DesignSystemConsumer): void {
         if (!this.consumers.has(consumer)) {
             this.consumers.add(consumer);
             this.writeConsumerRecipeData(consumer);
@@ -169,14 +169,14 @@ export class DesignSystemProvider extends FastElement {
                 // done in the color recipes - we use the same *reference* in WC
                 // for performance improvements but that throws off the recipes
                 // We should look at making the recipes use simple args that
-                // we can individuall memoize.
+                // we can individually memoize.
                 value: recipe.resolver.bind(this, { ...this.designSystem }),
             });
         });
     };
 
     /**
-     * Syncronizes the provider's design system with the local
+     * Synchronize the provider's design system with the local
      * overrides. Any value defined on the instance will take priority
      * over the value defined by the provider
      */
@@ -211,7 +211,7 @@ export class DesignSystemProvider extends FastElement {
 }
 
 /**
- * Simple proxy object to notifiy observers on
+ * Simple proxy object to notify observers on
  * object mutation.
  * @param source The object to fire notifications
  * @param key The observable property name to fire a notification on
