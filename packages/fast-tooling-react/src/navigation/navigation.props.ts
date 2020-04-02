@@ -1,13 +1,10 @@
-import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
-import { NavigationClassNameContract } from "./navigation.style";
 import {
     Data,
     DataDictionary,
-    LinkedData,
     MessageSystem,
     NavigationConfigDictionary,
-    SchemaDictionary,
 } from "@microsoft/fast-tooling";
+import { DragDropItemType } from "./navigation-tree-item.props";
 
 export enum NavigationDataType {
     object = "object",
@@ -15,6 +12,11 @@ export enum NavigationDataType {
     children = "children",
     component = "component",
     primitiveChild = "primitiveChild",
+}
+
+export enum HoverLocation {
+    before = "before",
+    after = "after",
 }
 
 export interface NavigationState {
@@ -44,19 +46,9 @@ export interface NavigationState {
     navigationDictionary: NavigationConfigDictionary | null;
 
     /**
-     * The dragging navigation dictionary
-     */
-    updatedNavigationDictionary: NavigationConfigDictionary | null;
-
-    /**
      * The data dictionary
      */
     dataDictionary: DataDictionary<unknown>;
-
-    /**
-     * The schema to map to the message system
-     */
-    schemaDictionary: SchemaDictionary;
 
     /**
      * The dragging state
@@ -69,9 +61,9 @@ export interface NavigationState {
     linkedData: Data<unknown>;
 
     /**
-     * The linked datas original location
+     * The linked datas location
      */
-    originalLinkedDataLocation: {
+    linkedDataLocation: {
         /**
          * Dictionary key
          */
@@ -81,21 +73,36 @@ export interface NavigationState {
          * Navigation config key
          */
         1: string;
+
+        /**
+         * The index
+         */
+        2: number;
     } | null;
 
     /**
-     * The linked datas new location
+     * The item being hovered
      */
-    updatedLinkedDataLocation: {
+    hoveredItem: {
         /**
-         * Dictionary key
+         * The type of the hovered item
          */
-        0: string;
+        0: DragDropItemType;
 
         /**
-         * Navigation config key
+         * The dictionary ID
          */
         1: string;
+
+        /**
+         * The navigation config ID
+         */
+        2: string;
+
+        /**
+         * The location of the hover
+         */
+        3: HoverLocation;
     } | null;
 }
 

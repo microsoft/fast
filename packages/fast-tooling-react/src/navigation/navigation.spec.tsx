@@ -153,7 +153,7 @@ describe("Navigation", () => {
         });
 
         const rendered: any = mount(
-            <ModularNavigation {...navigationProps} messageSystem={fastMessageSystem} />
+            <Navigation {...navigationProps} messageSystem={fastMessageSystem} />
         );
 
         /* tslint:disable-next-line */
@@ -188,17 +188,20 @@ describe("Navigation", () => {
             } as any);
         });
 
-        rendered.setState({
-            navigationDictionary: [
-                {
-                    "": navigation,
-                },
-                "",
-            ],
-        });
+        rendered
+            .find("Navigation")
+            .at(1)
+            .setState({
+                navigationDictionary: [
+                    {
+                        "": navigation,
+                    },
+                    "",
+                ],
+            });
 
         const item: any = rendered.find('div[role="treeitem"]');
-        expect(item).toHaveLength(1);
+        expect(item).toHaveLength(2);
     });
     test("should render a single navigation item as an end leaf item", () => {
         const schema: any = {
@@ -259,7 +262,7 @@ describe("Navigation", () => {
         });
 
         const rendered: any = mount(
-            <ModularNavigation {...navigationProps} messageSystem={fastMessageSystem} />
+            <Navigation {...navigationProps} messageSystem={fastMessageSystem} />
         );
 
         /* tslint:disable-next-line */
@@ -294,7 +297,9 @@ describe("Navigation", () => {
             } as any);
         });
 
-        rendered.setState({
+        const renderedNavigation: any = rendered.find("Navigation").at(1);
+
+        renderedNavigation.setState({
             navigationDictionary: [
                 {
                     "": navigation,
@@ -303,7 +308,7 @@ describe("Navigation", () => {
             ],
         });
 
-        const item: any = rendered.find('a[role="treeitem"]');
-        expect(item).toHaveLength(1);
+        const item: any = rendered.find('div[role="treeitem"]');
+        expect(item).toHaveLength(3);
     });
 });

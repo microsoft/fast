@@ -277,7 +277,11 @@ function getDataMessage(data: DataMessageIncoming): DataMessageOutgoing {
             );
 
             if (Array.isArray(currentLinkedDataRefs)) {
-                currentLinkedDataRefs = currentLinkedDataRefs.concat(linkedDataRefs);
+                if (typeof data.index === "number") {
+                    currentLinkedDataRefs.splice(data.index, 0, ...linkedDataRefs);
+                } else {
+                    currentLinkedDataRefs = currentLinkedDataRefs.concat(linkedDataRefs);
+                }
             } else {
                 currentLinkedDataRefs = linkedDataRefs;
             }

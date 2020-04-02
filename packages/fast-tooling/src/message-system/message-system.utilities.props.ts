@@ -203,6 +203,11 @@ export interface AddLinkedDataDataMessageIncoming {
      * active dictionary ID
      */
     dictionaryId?: string;
+    /**
+     * The index to insert the linked data to, if this is not provided
+     * the linked data will be added to the end of the list
+     */
+    index?: number;
     dataLocation: string;
     linkedData: Array<Data<unknown>>;
 }
