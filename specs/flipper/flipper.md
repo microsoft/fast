@@ -30,6 +30,7 @@ Extends FAST Element
 - `fast-flipper`
 
 *Attrs*
+- `direction` - enum, previous or next. Defaults to next
 - `hiddenFromAT` - The control is hidden from assistive technology. Defaults to true
 - `disabled` - the control is disabled. There are scenarios where a flipper would be visible and disabled
 - `label` - the accessible label for the control, exposed to AT when not hidden
