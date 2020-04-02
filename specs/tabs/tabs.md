@@ -46,17 +46,30 @@ Some scenarios require an indicator that highlights the currently active tab the
 - `orientation` - enum
   - horizontal - default
   - vertical
+<<<<<<< HEAD
 - `activeid` - string
 - `activeindicator` - boolean, defaults to true
 
 *Events:*
 - `change` - fires when component `activetab` updates
+=======
+- `activeId` - string
+- `tab-activation` - enum 
+  - auto - default
+  - manual
+
+*Events:*
+- `change` - fires when component `activeId` updates
+
+### Anatomy and Appearance
+>>>>>>> addressed some PR comments
 
 *Parts:*
 - tabs
 - tablist
 - tab
 - tabpanel
+<<<<<<< HEAD
 - activeindicator
 
 *Slot Names*
@@ -69,6 +82,8 @@ Some scenarios require an indicator that highlights the currently active tab the
 
 *Attributes:*
 - `id` - string
+=======
+>>>>>>> addressed some PR comments
 
 *Slot Names*
 - start
